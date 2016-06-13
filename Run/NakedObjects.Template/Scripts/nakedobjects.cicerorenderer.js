@@ -89,7 +89,7 @@ var NakedObjects;
                 var actionMember_1 = repWithActions.actionMember(routeData.dialogId);
                 var actionName = actionMember_1.extensions().friendlyName();
                 output += "Action dialog: " + actionName + ". ";
-                _.forEach(routeData.dialogFields, function (value, key) {
+                _.forEach(NakedObjects.getParametersAndCurrentValue(actionMember_1, context), function (value, key) {
                     output += FriendlyNameForParam(actionMember_1, key) + ": ";
                     output += value.toString() || "empty";
                     output += ", ";

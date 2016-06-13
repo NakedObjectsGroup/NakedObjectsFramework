@@ -31,8 +31,9 @@ module NakedObjects {
     import CollectionMember = Models.CollectionMember;
     import CollectionRepresentation = Models.CollectionRepresentation;
     import ObjectIdWrapper = Models.ObjectIdWrapper;
-    import InvokableActionMember = NakedObjects.Models.InvokableActionMember;
-    import UserRepresentation = NakedObjects.Models.UserRepresentation;
+    import InvokableActionMember = Models.InvokableActionMember;
+    import UserRepresentation = Models.UserRepresentation;
+
 
     export interface IContext {
 
@@ -43,14 +44,19 @@ module NakedObjects {
         getVersion: () => ng.IPromise<VersionRepresentation>;
         getMenus: () => ng.IPromise<MenusRepresentation>;
         getMenu: (menuId: string) => ng.IPromise<MenuRepresentation>;
-        getObject: (paneId: number, oid: ObjectIdWrapper, interactionMode: InteractionMode) => ng.IPromise<DomainObjectRepresentation>;
-        getListFromMenu: (paneId: number, routeData: PaneRouteData, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
-        getListFromObject: (paneId: number, routeData: PaneRouteData, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
+        getObject: (paneId: number, oid: ObjectIdWrapper, interactionMode: InteractionMode)
+            => ng.IPromise<DomainObjectRepresentation>;
+        getListFromMenu: (paneId: number, routeData: PaneRouteData, page?: number, pageSize?: number)
+            => angular.IPromise<ListRepresentation>;
+        getListFromObject: (paneId: number, routeData: PaneRouteData, page?: number, pageSize?: number)
+            => angular.IPromise<ListRepresentation>;
 
         getActionDetails: (actionMember: ActionMember) => ng.IPromise<ActionRepresentation>;
-        getCollectionDetails: (collectionMember: CollectionMember, state: CollectionViewState, ignoreCache: boolean) => ng.IPromise<CollectionRepresentation>;
+        getCollectionDetails: (collectionMember: CollectionMember, state: CollectionViewState, ignoreCache: boolean)
+            => ng.IPromise<CollectionRepresentation>;
 
-        getInvokableAction: (actionmember: ActionMember | ActionRepresentation | IInvokableAction) => ng.IPromise<InvokableActionMember | ActionRepresentation>;
+        getInvokableAction: (actionmember: ActionMember | ActionRepresentation | IInvokableAction)
+            => ng.IPromise<InvokableActionMember | ActionRepresentation>;
 
         getError: () => ErrorWrapper;
         getPreviousUrl: () => string;
@@ -60,29 +66,42 @@ module NakedObjects {
         mustReload: (oid: ObjectIdWrapper) => boolean;
 
         //The object values are only needed on a transient object / editable view model
-        autoComplete(field: IField, id: string, objectValues: () => _.Dictionary<Value>, searchTerm: string): ng.IPromise<_.Dictionary<Value>>;
+        autoComplete(field: IField, id: string, objectValues: () => _.Dictionary<Value>, searchTerm: string): ng.
+        IPromise<_.Dictionary<Value>>;
         //The object values are only needed on a transient object / editable view model
-        conditionalChoices(field: IField, id: string, objectValues: () => _.Dictionary<Value>, args: _.Dictionary<Value>): ng.IPromise<_.Dictionary<Value>>;
+        conditionalChoices(field: IField,
+            id: string,
+            objectValues: () => _.Dictionary<Value>,
+            args: _.Dictionary<Value>): ng.IPromise<_.Dictionary<Value>>;
 
-        invokeAction(action: IInvokableAction, paneId: number, parms: _.Dictionary<Value>): ng.IPromise<ActionResultRepresentation>;
+        invokeAction(action: IInvokableAction, parms: _.Dictionary<Value>, fromPaneId? : number, toPaneId?: number): ng. IPromise<ActionResultRepresentation>;
 
-        updateObject(object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean): ng.IPromise<DomainObjectRepresentation>;
-        saveObject(object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean): ng.IPromise<DomainObjectRepresentation>;
+        updateObject(object: DomainObjectRepresentation,
+            props: _.Dictionary<Value>,
+            paneId: number,
+            viewSavedObject: boolean): ng.IPromise<DomainObjectRepresentation>;
+        saveObject(object: DomainObjectRepresentation,
+            props: _.Dictionary<Value>,
+            paneId: number,
+            viewSavedObject: boolean): ng.IPromise<DomainObjectRepresentation>;
 
         validateUpdateObject(object: DomainObjectRepresentation, props: _.Dictionary<Value>): ng.IPromise<boolean>;
         validateSaveObject(object: DomainObjectRepresentation, props: _.Dictionary<Value>): ng.IPromise<boolean>;
 
 
-        reloadObject: (paneId: number, object: DomainObjectRepresentation) => angular.IPromise<DomainObjectRepresentation>;
+        reloadObject: (paneId: number, object: DomainObjectRepresentation) => angular.
+        IPromise<DomainObjectRepresentation>;
 
-        getObjectForEdit: (paneId: number, object: DomainObjectRepresentation) => angular.IPromise<DomainObjectRepresentation>;
+        getObjectForEdit: (paneId: number, object: DomainObjectRepresentation) => angular.
+        IPromise<DomainObjectRepresentation>;
 
         setError: (reject: ErrorWrapper) => void;
 
         isSubTypeOf(toCheckType: string, againstType: string): ng.IPromise<boolean>;
 
         getActionExtensionsFromMenu: (menuId: string, actionId: string) => angular.IPromise<Extensions>;
-        getActionExtensionsFromObject: (paneId: number, oid: ObjectIdWrapper, actionId: string) => angular.IPromise<Extensions>;
+        getActionExtensionsFromObject: (paneId: number, oid: ObjectIdWrapper, actionId: string) => angular.
+        IPromise<Extensions>;
 
         swapCurrentObjects(): void;
 
@@ -102,6 +121,19 @@ module NakedObjects {
         setFile: (object: DomainObjectRepresentation, url: string, mt: string, file: Blob) => angular.IPromise<boolean>;
 
         clearCachedFile: (url: string) => void;
+
+        setFieldValue: (dialogId: string, pid: string, pv: Value, paneId?: number) => void;
+
+       
+
+        clearDialog: (paneId?: number) => void;
+
+        getCurrentDialogValues: (dialogId?: string, paneId?: number) => _.Dictionary<Value>;
+
+        setParmUpdater: (updater: () => void, paneId?: number) => void;
+        clearParmUpdater : (paneId?: number) => void;
+
+        updateParms : () => void;
     }
 
     interface IContextInternal extends IContext {
@@ -110,8 +142,9 @@ module NakedObjects {
         getServices: () => ng.IPromise<DomainServicesRepresentation>;
         getService: (paneId: number, type: string) => ng.IPromise<DomainObjectRepresentation>;
         setObject: (paneId: number, object: DomainObjectRepresentation) => void;
-        setResult(action: IInvokableAction, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number): void;
+        setResult(action: IInvokableAction, result: ActionResultRepresentation, fromPaneId : number, toPaneId: number, page: number, pageSize: number): void;
         setPreviousUrl: (url: string) => void;
+        
     }
 
     enum DirtyState {
@@ -214,6 +247,58 @@ module NakedObjects {
         }
     }
 
+    class ParameterCache {
+
+        private currentValues: _.Dictionary<Value>[] = [, {}, {}];
+        private currentDialogId: string[] = [, "", ""];
+
+        addValue(dialogId: string, parmId : string,  value: Value, paneId: number) {
+            if (this.currentDialogId[paneId] !== dialogId) {
+                this.currentDialogId[paneId] = dialogId;
+                this.currentValues[paneId] = {};
+            }
+
+            this.currentValues[paneId][parmId] = value;
+        }
+
+        getValue(dialogId: string, parmId: string, paneId: number) {
+            if (this.currentDialogId[paneId] !== dialogId) {
+                this.currentDialogId[paneId] = dialogId;
+                this.currentValues[paneId] = {};
+            }
+
+            return this.currentValues[paneId][parmId];
+        }
+
+        getValues(dialogId: string, paneId: number) {
+            if (dialogId && this.currentDialogId[paneId] !== dialogId) {
+                this.currentDialogId[paneId] = dialogId;
+                this.currentValues[paneId] = {};
+            }
+
+            return this.currentValues[paneId];
+        }
+
+        clearDialog(paneId: number) {
+            this.currentDialogId[paneId] = "";
+            this.currentValues[paneId] = {};
+        }
+
+        swap() {
+            const [, d1, d2] = this.currentDialogId;
+
+            this.currentDialogId[1] = d2;
+            this.currentDialogId[2] = d1;
+
+            const [, v1, v2] = this.currentValues;
+
+            this.currentValues[1] = v2;
+            this.currentValues[2] = v1;
+        }
+
+    }
+
+
     app.service("context", function ($q: ng.IQService,
         repLoader: IRepLoader,
         urlManager: IUrlManager,
@@ -236,6 +321,22 @@ module NakedObjects {
         const recentcache = new RecentCache();
         const dirtyList = new DirtyList();
         const currentLists: _.Dictionary<{ list: ListRepresentation; added: number }> = {};
+        const parameterCache = new ParameterCache();
+
+        const parmUpdaters =  [, () => {}, () => {}];
+
+        context.setParmUpdater = (updater: () => void, paneId = 1) => {
+            parmUpdaters[paneId] = updater;
+        }
+
+        context.clearParmUpdater = (paneId = 1) => {
+            parmUpdaters[paneId] = () => {};
+        }
+
+        context.updateParms = () => {
+            parmUpdaters[1]();
+            parmUpdaters[2]();
+        }
 
         context.getFile = (object: DomainObjectRepresentation, url: string, mt: string) => {
             const isDirty = context.getIsDirty(object.getOid());
@@ -447,6 +548,7 @@ module NakedObjects {
         };
 
         context.getObject = (paneId: number, oid: ObjectIdWrapper, interactionMode: InteractionMode) => {
+            context.updateParms();
             return oid.isService ? context.getService(paneId, oid.domainType) : context.getDomainObject(paneId, oid, interactionMode);
         };
 
@@ -455,6 +557,7 @@ module NakedObjects {
             const entry = currentLists[index];
             return entry ? entry.list : null;
         };
+
         context.clearCachedList = (paneId: number, page: number, pageSize: number) => {
             const index = urlManager.getListCacheIndex(paneId, page, pageSize);
             delete currentLists[index];
@@ -545,10 +648,14 @@ module NakedObjects {
         context.setObject = (paneId: number, co: DomainObjectRepresentation) => currentObjects[paneId] = co;
 
         context.swapCurrentObjects = () => {
+            parameterCache.swap();
             const [, p1, p2] = currentObjects;
             currentObjects[1] = p2;
             currentObjects[2] = p1;
+
+
         };
+
         let currentError: ErrorWrapper = null;
 
         context.getError = () => currentError;
@@ -576,7 +683,7 @@ module NakedObjects {
 
         let nextTransientId = 0;
 
-        context.setResult = (action: IInvokableAction, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number) => {
+        context.setResult = (action: IInvokableAction, result: ActionResultRepresentation, fromPaneId : number, toPaneId: number, page: number, pageSize: number) => {
 
             const warnings = result.extensions().warnings() || [];
             const messages = result.extensions().messages() || [];
@@ -597,11 +704,11 @@ module NakedObjects {
 
                         resultObject.hateoasUrl = `/${domainType}/${nextTransientId}`;
 
-                        context.setObject(paneId, resultObject);
-                        transientCache.add(paneId, resultObject);
-                        urlManager.pushUrlState(paneId);
-                        urlManager.setObject(resultObject, paneId);
-                        urlManager.setInteractionMode(InteractionMode.Transient, paneId);
+                        context.setObject(toPaneId, resultObject);
+                        transientCache.add(toPaneId, resultObject);
+                        urlManager.pushUrlState(toPaneId);
+                        urlManager.setObject(resultObject, toPaneId);
+                        urlManager.setInteractionMode(InteractionMode.Transient, toPaneId);
                     } else {
 
                         // persistent object
@@ -611,8 +718,8 @@ module NakedObjects {
                         // copy the etag down into the object
                         resultObject.etagDigest = result.etagDigest;
 
-                        context.setObject(paneId, resultObject);
-                        urlManager.setObject(resultObject, paneId);
+                        context.setObject(toPaneId, resultObject);
+                        urlManager.setObject(resultObject, toPaneId);
 
                         // update angular cache 
                         const url = resultObject.selfLink().href() + `?${roInlinePropertyDetails}=false`;
@@ -620,8 +727,8 @@ module NakedObjects {
 
                         // if render in edit must be  a form 
                         if (resultObject.extensions().interactionMode() === "form") {
-                            urlManager.pushUrlState(paneId);
-                            urlManager.setInteractionMode(InteractionMode.Form, paneId);
+                            urlManager.pushUrlState(toPaneId);
+                            urlManager.setInteractionMode(InteractionMode.Form, toPaneId);
                         } else {
                             addRecentlyViewed(resultObject);
                         }
@@ -630,17 +737,17 @@ module NakedObjects {
 
                     const resultList = result.result().list();
 
-                    urlManager.setList(action, paneId);
+                    urlManager.setList(action, fromPaneId, toPaneId);
 
-                    const index = urlManager.getListCacheIndex(paneId, page, pageSize);
+                    const index = urlManager.getListCacheIndex(toPaneId, page, pageSize);
                     cacheList(resultList, index);
                 }
             }
         };
 
-        function invokeActionInternal(invokeMap: InvokeMap, action: IInvokableAction, paneId: number, setDirty: () => void) {
+        function invokeActionInternal(invokeMap: InvokeMap, action: IInvokableAction, fromPaneId: number, toPaneId: number, setDirty: () => void) {
 
-            focusManager.setCurrentPane(paneId);
+            focusManager.setCurrentPane(toPaneId);
 
             invokeMap.setUrlParameter(roInlinePropertyDetails, false);
 
@@ -651,7 +758,7 @@ module NakedObjects {
             return repLoader.retrieve(invokeMap, ActionResultRepresentation, action.parent.etagDigest).
                 then((result: ActionResultRepresentation) => {
                     setDirty();
-                    context.setResult(action, result, paneId, 1, defaultPageSize);
+                    context.setResult(action, result, fromPaneId, toPaneId, 1, defaultPageSize);
                     return $q.when(result);
                 });
         }
@@ -686,13 +793,13 @@ module NakedObjects {
             return () => { };
         }
 
-        context.invokeAction = (action: IInvokableAction, paneId: number, parms: _.Dictionary<Value>) => {
+        context.invokeAction = (action: IInvokableAction, parms: _.Dictionary<Value>, fromPaneId = 1, toPaneId = 1) => {
 
             const invokeOnMap = (iAction: IInvokableAction) => {
                 const im = iAction.getInvokeMap();
                 _.each(parms, (parm, k) => im.setParameter(k, parm));
                 const setDirty = getSetDirtyFunction(iAction, parms);
-                return invokeActionInternal(im, iAction, paneId, setDirty);
+                return invokeActionInternal(im, iAction, fromPaneId, toPaneId, setDirty);
             }
 
             return invokeOnMap(action);
@@ -765,11 +872,7 @@ module NakedObjects {
 
             const promise = repLoader.populate(isSubTypeOf, true).
                 then((updatedObject: DomainTypeActionInvokeRepresentation) => {
-                    const is = updatedObject.value();
-                    //const entry: _.Dictionary<boolean> = {};
-                    //entry[againstType] = is;
-                    //subTypeCache[toCheckType] = entry;
-                    return is;
+                    return updatedObject.value();
                 }).
                 catch((reject: ErrorWrapper) => {
                     return false;
@@ -867,6 +970,19 @@ module NakedObjects {
         }
 
         $rootScope.$on(geminiLogoffEvent, () => logoff());
+
+
+        context.setFieldValue = (dialogId: string, pid: string, pv: Value, paneId = 1) => {
+            parameterCache.addValue(dialogId, pid, pv, paneId);       
+        }
+
+        context.getCurrentDialogValues = (dialogId: string = null, paneId = 1) => {
+            return parameterCache.getValues(dialogId, paneId);
+        }
+
+        context.clearDialog = (paneId = 1) => {
+            parameterCache.clearDialog(paneId);
+        }
 
     });
 

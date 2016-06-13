@@ -8,7 +8,7 @@ var NakedObjects;
     var ErrorCategory = NakedObjects.Models.ErrorCategory;
     var ClientErrorCode = NakedObjects.Models.ClientErrorCode;
     var ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
-    NakedObjects.app.service("handlers", function ($routeParams, $location, $q, $cacheFactory, $rootScope, repLoader, context, viewModelFactory, color, navigation, urlManager, focusManager) {
+    NakedObjects.app.service("handlers", function ($routeParams, $location, $q, $cacheFactory, $rootScope, repLoader, context, viewModelFactory, color, navigation, urlManager, focusManager, template) {
         var handlers = this;
         var perPaneListViews = [,
             new NakedObjects.ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q),
@@ -42,10 +42,15 @@ var NakedObjects;
             };
             return DeReg;
         }());
-        var deRegDialog = [, new DeReg(), new DeReg()];
+        //const deRegDialog = [, new DeReg(), new DeReg()];
         var deRegObject = [, new DeReg(), new DeReg()];
+        function clearDialog($scope, paneId) {
+            $scope.dialogTemplate = null;
+            $scope.dialog = null;
+            context.clearParmUpdater(paneId);
+        }
         function setDialog($scope, action, routeData) {
-            deRegDialog[routeData.paneId].deReg();
+            context.clearParmUpdater(routeData.paneId);
             $scope.dialogTemplate = NakedObjects.dialogTemplate;
             var dialogViewModel = perPaneDialogViews[routeData.paneId];
             var isAlreadyViewModel = action instanceof NakedObjects.ActionViewModel;
@@ -54,11 +59,8 @@ var NakedObjects;
                 : action;
             dialogViewModel.reset(actionViewModel, routeData);
             $scope.dialog = dialogViewModel;
-            deRegDialog[routeData.paneId].add($scope
-                .$on("$locationChangeStart", dialogViewModel.setParms));
-            deRegDialog[routeData.paneId].add($scope
-                .$watch(function () { return $location.search(); }, dialogViewModel.setParms, true));
-            dialogViewModel.deregister = function () { return deRegDialog[routeData.paneId].deReg(); };
+            context.setParmUpdater(dialogViewModel.setParms, routeData.paneId);
+            dialogViewModel.deregister = function () { return context.clearParmUpdater(routeData.paneId); };
         }
         var versionValidated = false;
         handlers.handleBackground = function ($scope) {
@@ -110,16 +112,12 @@ var NakedObjects;
                 });
                 return;
             }
-            $scope.dialogTemplate = null;
-            $scope.dialog = null;
+            clearDialog($scope, routeData.paneId);
             focusManager.focusOn(focusTarget, 0, routeData.paneId);
         }
         function logoff() {
             for (var pane = 1; pane <= 2; pane++) {
-                deRegDialog[pane].deReg();
-                deRegObject[pane].deReg();
-                deRegDialog[pane] = new DeReg();
-                deRegObject[pane] = new DeReg();
+                context.clearParmUpdater(pane);
                 perPaneListViews[pane] = new NakedObjects.ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q);
                 perPaneObjectViews[pane] = new NakedObjects.DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q);
                 perPaneDialogViews[pane] = new NakedObjects.DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope);
@@ -145,12 +143,14 @@ var NakedObjects;
                     // dialog changed set new dialog only 
                     setNewDialog($scope, currentMenu.menuRep, newDialogId, routeData, NakedObjects.FocusTarget.SubAction);
                 }
+                else if ($scope.dialog) {
+                    $scope.dialog.refresh();
+                }
             }
             else {
                 $scope.actionsTemplate = null;
                 $scope.menu = null;
-                $scope.dialogTemplate = null;
-                $scope.dialog = null;
+                clearDialog($scope, routeData.paneId);
                 focusManager.focusOn(NakedObjects.FocusTarget.Menu, 0, routeData.paneId);
             }
         };
@@ -184,6 +184,9 @@ var NakedObjects;
                 var listViewModel = $scope.collection;
                 var actionViewModel = _.find(listViewModel.actions, function (a) { return a.actionRep.actionId() === newDialogId; });
                 setNewDialog($scope, listViewModel, newDialogId, routeData, focusTarget, actionViewModel);
+            }
+            else if ($scope.dialog) {
+                $scope.dialog.refresh();
             }
         }
         function handleListSearchChanged($scope, routeData) {
@@ -244,18 +247,15 @@ var NakedObjects;
         };
         function handleNewObjectSearch($scope, routeData) {
             var ovm = $scope.object;
-            var newObjectTemplate;
             var newActionsTemplate;
+            var newObjectTemplate = template.getTemplateName(ovm.domainType, routeData.interactionMode);
             if (routeData.interactionMode === NakedObjects.InteractionMode.Form) {
-                newObjectTemplate = NakedObjects.formTemplate;
                 newActionsTemplate = NakedObjects.formActionsTemplate;
             }
             else if (routeData.interactionMode === NakedObjects.InteractionMode.View) {
-                newObjectTemplate = NakedObjects.objectViewTemplate;
                 newActionsTemplate = routeData.actionsOpen ? NakedObjects.actionsTemplate : NakedObjects.nullTemplate;
             }
             else {
-                newObjectTemplate = NakedObjects.objectEditTemplate;
                 newActionsTemplate = NakedObjects.nullTemplate;
             }
             // only update if changed
@@ -285,6 +285,9 @@ var NakedObjects;
                 setNewDialog($scope, ovm.domainObject, newDialogId, routeData, focusTarget);
             }
             else {
+                if ($scope.dialog) {
+                    $scope.dialog.refresh();
+                }
                 focusManager.focusOn(focusTarget, 0, routeData.paneId);
             }
         }

@@ -21,6 +21,22 @@ var NakedObjects;
     var isDateOrDateTime = NakedObjects.Models.isDateOrDateTime;
     var toDateString = NakedObjects.Models.toDateString;
     var ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
+    var isIInvokableAction = NakedObjects.Models.isIInvokableAction;
+    function getParametersAndCurrentValue(action, context) {
+        if (isIInvokableAction(action)) {
+            var parms = action.parameters();
+            var values_1 = context.getCurrentDialogValues(action.actionId());
+            return _.mapValues(parms, function (p) {
+                var value = values_1[p.id()];
+                if (value === undefined) {
+                    return p.default();
+                }
+                return value;
+            });
+        }
+        return {};
+    }
+    NakedObjects.getParametersAndCurrentValue = getParametersAndCurrentValue;
     var Command = (function () {
         function Command(urlManager, nglocation, commandFactory, context, navigation, $q, $route, mask) {
             this.urlManager = urlManager;
@@ -80,8 +96,7 @@ var NakedObjects;
             }
         };
         //argNo starts from 0.
-        //If argument does not parse correctly, message will be passed to UI
-        //and command aborted.
+        //If argument does not parse correctly, message will be passed to UI and command aborted.
         Command.prototype.argumentAsString = function (argString, argNo, optional, toLower) {
             if (optional === void 0) { optional = false; }
             if (toLower === void 0) { toLower = true; }
@@ -328,7 +343,7 @@ var NakedObjects;
                 if (fieldEntryType === EntryType.MultipleChoices || field.isCollectionContributed()) {
                     var valuesFromRouteData_1 = new Array();
                     if (field instanceof Parameter) {
-                        var rd = this.routeData().dialogFields[field.id()];
+                        var rd = getParametersAndCurrentValue(field.parent, this.context)[field.id()];
                         if (rd)
                             valuesFromRouteData_1 = rd.list(); //TODO: what if only one?
                     }
@@ -393,6 +408,10 @@ var NakedObjects;
             else {
                 valuesFromRouteData.push(valToAdd);
             }
+        };
+        Command.prototype.setFieldValueInContextAndUrl = function (field, urlVal) {
+            this.context.setFieldValue(this.routeData().dialogId, field.id(), urlVal);
+            this.urlManager.setFieldValue(this.routeData().dialogId, field, urlVal); //TODO: do this everywhere, combine into one method
         };
         return Command;
     }());
@@ -477,11 +496,12 @@ var NakedObjects;
         };
         Action.prototype.openActionDialog = function (action) {
             var _this = this;
+            this.context.clearDialog();
             this.urlManager.setDialog(action.actionId());
             this.context.getInvokableAction(action).then(function (invokable) {
                 _.forEach(invokable.parameters(), function (p) {
-                    var pVal = _this.valueForUrl(p.default(), p);
-                    _this.urlManager.setFieldValue(action.actionId(), p, pVal);
+                    var pVal = p.default();
+                    _this.setFieldValueInContextAndUrl(p, pVal);
                 });
             });
         };
@@ -529,7 +549,7 @@ var NakedObjects;
                 this.urlManager.setInteractionMode(NakedObjects.InteractionMode.View);
             }
             if (this.isDialog()) {
-                this.urlManager.closeDialog();
+                this.urlManager.closeDialogReplaceHistory();
             }
         };
         ;
@@ -692,7 +712,7 @@ var NakedObjects;
                     case 1:
                         if (fieldEntry === "?") {
                             var p = params[0];
-                            var value = _this.routeData().dialogFields[p.id()];
+                            var value = getParametersAndCurrentValue(p.parent, _this.context)[p.id()];
                             var s = _this.renderFieldDetails(p, value);
                             _this.clearInputAndSetMessage(s);
                         }
@@ -755,7 +775,7 @@ var NakedObjects;
         Enter.prototype.setFieldValue = function (field, value) {
             var urlVal = this.valueForUrl(value, field);
             if (field instanceof Parameter) {
-                this.urlManager.setFieldValue(this.routeData().dialogId, field, urlVal);
+                this.setFieldValueInContextAndUrl(field, urlVal);
             }
             else if (field instanceof PropertyMember) {
                 var parent_1 = field.parent;
@@ -838,9 +858,11 @@ var NakedObjects;
             }
         };
         Enter.prototype.handleConditionalChoices = function (field, fieldEntry) {
-            var _this = this;
             //TODO: need to cover both dialog fields and editable properties!
-            var enteredFields = this.routeData().dialogFields;
+            var _this = this;
+            var enteredFields = field instanceof Parameter
+                ? getParametersAndCurrentValue(field.parent, this.context)
+                : {};
             // fromPairs definition is faulty
             var args = _.fromPairs(_.map(field.promptLink().arguments(), function (v, key) { return [key, new Value(v.value)]; }));
             _.forEach(_.keys(args), function (key) {
@@ -850,6 +872,7 @@ var NakedObjects;
                 .then(function (choices) {
                 var matches = _this.findMatchingChoicesForRef(choices, fieldEntry);
                 _this.switchOnMatches(field, fieldEntry, matches);
+            }).catch(function (reject) {
             });
         };
         Enter.prototype.renderFieldDetails = function (field, value) {
@@ -1108,9 +1131,9 @@ var NakedObjects;
                     fieldMap = _this.routeData().props; //Props passed in as pseudo-params to action
                 }
                 else {
-                    fieldMap = _this.routeData().dialogFields;
+                    fieldMap = getParametersAndCurrentValue(action, _this.context);
                 }
-                _this.context.invokeAction(action, 1, fieldMap)
+                _this.context.invokeAction(action, fieldMap)
                     .then(function (result) {
                     // todo handle case where result is empty - this is no longer handled 
                     // by reject below
@@ -1122,7 +1145,7 @@ var NakedObjects;
                     if (messages) {
                         _.forEach(messages, function (m) { return _this.vm.alert += "\n" + m; });
                     }
-                    _this.urlManager.closeDialog();
+                    _this.urlManager.closeDialogReplaceHistory();
                 }).
                     catch(function (reject) {
                     var display = function (em) {

@@ -176,7 +176,6 @@ module NakedObjects {
     export class ChoiceViewModel {
         id: string;
         name: string;
-        value: string;
         search: string;
         isEnum: boolean;
         isReference: boolean;
@@ -187,23 +186,26 @@ module NakedObjects {
             choiceViewModel.wrapped = value;
             choiceViewModel.id = id;
             choiceViewModel.name = name || value.toString();
-            choiceViewModel.value = value.isReference() ? value.link().href() : value.toValueString();
             choiceViewModel.search = searchTerm || choiceViewModel.name;
 
-            choiceViewModel.isEnum = !value.isReference() && (choiceViewModel.name !== choiceViewModel.value);
+            choiceViewModel.isEnum = !value.isReference() && (choiceViewModel.name !== choiceViewModel.getValue().toValueString());
             choiceViewModel.isReference = value.isReference();
             return choiceViewModel;
+        }
+
+        getValue() {
+            return this.wrapped;
         }
 
         equals(other: ChoiceViewModel) {
             return this.id === other.id &&
                 this.name === other.name &&
-                this.value === other.value;
+                this.wrapped.toValueString() === other.wrapped.toValueString();
         }
 
         match(other: ChoiceViewModel) {
-            const thisValue = this.isEnum ? this.value.trim() : this.search.trim();
-            const otherValue = this.isEnum ? other.value.trim() : other.search.trim();
+            const thisValue = this.isEnum ? this.wrapped.toValueString().trim() : this.search.trim();
+            const otherValue = this.isEnum ? other.wrapped.toValueString().trim() : other.search.trim();
             return thisValue === otherValue;
         }
     }
@@ -336,7 +338,7 @@ module NakedObjects {
         setColor(color: IColor) {
 
             if (this.entryType === EntryType.AutoComplete && this.choice && this.type === "ref") {
-                const href = this.choice.value;
+                const href = this.choice.getValue().href();
                 if (href) {
                     color.toColorNumberFromHref(href).then((c: number) => this.color = `${linkColor}${c}`);
                     return;
@@ -362,20 +364,20 @@ module NakedObjects {
                 if (this.entryType === EntryType.MultipleChoices || this.entryType === EntryType.MultipleConditionalChoices || this.isCollectionContributed) {
                     const selections = this.multiChoices || [];
                     if (this.type === "scalar") {
-                        const selValues = _.map(selections, cvm => cvm.value);
+                        const selValues = _.map(selections, cvm => cvm.getValue().scalar());
                         return new Value(selValues);
                     }
-                    const selRefs = _.map(selections, cvm => ({ href: cvm.value, title: cvm.name })); // reference 
+                    const selRefs = _.map(selections, cvm => ({ href: cvm.getValue().href(), title: cvm.name })); // reference 
                     return new Value(selRefs);
                 }
 
 
                 if (this.type === "scalar") {
-                    return new Value(this.choice && this.choice.value != null ? this.choice.value : "");
+                    return new Value(this.choice && this.choice.getValue().scalar() != null ? this.choice.getValue().scalar() : "");
                 }
 
                 // reference 
-                return new Value(this.choice && this.choice.value ? { href: this.choice.value, title: this.choice.name } : null);
+                return new Value(this.choice && this.choice.isReference ? { href: this.choice.getValue().href(), title: this.choice.name } : null);
             }
 
             if (this.type === "scalar") {
@@ -453,7 +455,7 @@ module NakedObjects {
             this.actionViewModel = actionViewModel;
             this.onPaneId = routeData.paneId;
 
-            const fields = routeData.dialogFields;
+            const fields = this.context.getCurrentDialogValues(this.actionMember().actionId(), this.onPaneId);
 
             const parameters = _.pickBy(actionViewModel.invokableActionRep.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Parameter>;
             this.parameters = _.map(parameters, p => this.viewModelFactory.parameterViewModel(p, fields[p.id()], this.onPaneId));
@@ -464,6 +466,12 @@ module NakedObjects {
             this.id = actionViewModel.actionRep.actionId();
             return this;
         }
+
+        refresh() {
+            const fields = this.context.getCurrentDialogValues(this.actionMember().actionId(), this.onPaneId);
+            _.forEach(this.parameters, p => p.refresh(fields[p.id]));
+        }
+
 
         private actionMember = () => this.actionViewModel.actionRep;
         title: string;
@@ -480,13 +488,14 @@ module NakedObjects {
 
         tooltip = () => tooltip(this, this.parameters);
 
-        setParms = () =>
-            _.forEach(this.parameters, p => this.urlManager.setFieldValue(this.actionMember().actionId(), p.parameterRep, p.getValue(), this.onPaneId));
+        setParms = () => _.forEach(this.parameters, p => this.context.setFieldValue(this.actionMember().actionId(), p.parameterRep.id(), p.getValue(), this.onPaneId));
 
         private executeInvoke = (right?: boolean) => {
 
             const pps = this.parameters;
             _.forEach(pps, p => this.urlManager.setFieldValue(this.actionMember().actionId(), p.parameterRep, p.getValue(), this.onPaneId));
+            //_.forEach(pps, p => this.context.setFieldValue(this.actionMember().actionId(), p.parameterRep.id(), p.getValue(), this.onPaneId));
+            this.context.updateParms();
             return this.actionViewModel.executeInvoke(pps, right);
         };
 
@@ -498,14 +507,17 @@ module NakedObjects {
                     } else if (actionResult.resultType() === "void") {
                         // dialog staying on same page so treat as cancel 
                         // for url replacing purposes
-                        this.doCancel();
+                        this.doCloseReplaceHistory();
+                    }
+                    else if (!this.isQueryOnly) {
+                        // not query only - always close
+                        this.doCloseReplaceHistory();
                     }
                     else if (!right) {
-                        // going to new page close dialog (and do not replace url)
-                        this.doClose();
+                        // query only going to new page close dialog and keep history
+                        this.doCloseKeepHistory();
                     }
-                    // else leave open if opening on other pane and dialog has result
-
+                    // else query only going to other tab leave dialog open
                 }).
                 catch((reject: ErrorWrapper) => {
                     const parent = this.actionMember().parent instanceof DomainObjectRepresentation ? this.actionMember().parent as DomainObjectRepresentation : null;
@@ -514,20 +526,20 @@ module NakedObjects {
                         parent,
                         () => {
                             // this should just be called if concurrency
-                            this.doClose();
+                            this.doCloseKeepHistory();
                             this.$rootScope.$broadcast(geminiDisplayErrorEvent, new ErrorMap({}, 0, concurrencyError));
                         },
                         display);
                 });
 
-        doClose = () => {
+        doCloseKeepHistory = () => {
             this.deregister();
-            this.urlManager.closeDialog(this.onPaneId);
+            this.urlManager.closeDialogKeepHistory(this.onPaneId);
         }
 
-        doCancel = () => {
+        doCloseReplaceHistory = () => {
             this.deregister();
-            this.urlManager.cancelDialog(this.onPaneId);
+            this.urlManager.closeDialogReplaceHistory(this.onPaneId);
         }
 
         clearMessages = () => {
@@ -578,7 +590,11 @@ module NakedObjects {
             this.allSelected = _.every(this.items, item => item.selected);
             const count = this.items.length;
             this.size = count;
-            this.description = () => pageMessage(this.page, this.numPages, count, totalCount);
+            if (count > 0) {
+                this.description = () => pageMessage(this.page, this.numPages, count, totalCount);
+            } else {
+                this.description = () => noItemsFound;
+            }
         }
 
         hasTableData = () => {
@@ -624,8 +640,7 @@ module NakedObjects {
                     const parms = _.values(action.parameters()) as Parameter[];
                     const contribParm = _.find(parms, p => p.isCollectionContributed());
                     const parmValue = new Value(_.map(selected, i => i.link));
-                    const collectionParmVm = this.viewModelFactory
-                        .parameterViewModel(contribParm, parmValue, this.onPaneId);
+                    const collectionParmVm = this.viewModelFactory.parameterViewModel(contribParm, parmValue, this.onPaneId);
 
                     const allpps = _.clone(pps);
                     allpps.push(collectionParmVm);
@@ -649,6 +664,7 @@ module NakedObjects {
             showDialog().
                 then((show: boolean) => actionViewModel.doInvoke = show ?
                     (right?: boolean) => {
+                        this.context.clearDialog(this.onPaneId);
                         this.focusManager.focusOverrideOff();
                         this.urlManager.setDialog(actionViewModel.actionRep.actionId(), this.onPaneId);
                     } :
@@ -666,7 +682,6 @@ module NakedObjects {
             this.collectionContributedActionDecorator(actionViewModel);
             this.collectionContributedInvokeDecorator(actionViewModel);
         }
-
 
         reset(list: ListRepresentation, routeData: PaneRouteData) {
             this.listRep = list;
@@ -752,9 +767,18 @@ module NakedObjects {
         private pageNextDisabled = this.laterDisabled;
         private pagePreviousDisabled = this.earlierDisabled;
 
-        doSummary = () => this.urlManager.setListState(CollectionViewState.Summary, this.onPaneId);
-        doList = () => this.urlManager.setListState(CollectionViewState.List, this.onPaneId);
-        doTable = () => this.urlManager.setListState(CollectionViewState.Table, this.onPaneId);
+        doSummary = () => {
+            this.context.updateParms();
+            this.urlManager.setListState(CollectionViewState.Summary, this.onPaneId)
+        };
+        doList = () => {
+            this.context.updateParms();
+            this.urlManager.setListState(CollectionViewState.List, this.onPaneId);
+        };
+        doTable = () => {
+            this.context.updateParms();
+            this.urlManager.setListState(CollectionViewState.Table, this.onPaneId);
+        };
 
         reload = () => {
             this.context.clearCachedList(this.onPaneId, this.routeData.page, this.routeData.pageSize);
@@ -766,7 +790,7 @@ module NakedObjects {
             item.checkboxChange(i);
         });
 
-        description(): string { return this.size ? this.size.toString() : "" }
+        description(): string { return null; } 
 
         template: string;
 
@@ -788,9 +812,10 @@ module NakedObjects {
     export class CollectionViewModel {
 
         title: string;
-        size: string;
+        details: string;
         pluralName: string;
         color: string;
+        mayHaveItems: boolean;
         items: ItemViewModel[];
         header: string[];
         onPaneId: number;
@@ -802,7 +827,7 @@ module NakedObjects {
         doTable(): void { }
         doList(): void { }
 
-        description(): string { return this.size.toString() }
+        description(): string { return this.details.toString() }
 
         template: string;
 

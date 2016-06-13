@@ -13,6 +13,7 @@ var NakedObjects;
     var MenuRepresentation = NakedObjects.Models.MenuRepresentation;
     var ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
     var propertyIdFromUrl = NakedObjects.Models.propertyIdFromUrl;
+    var getOtherPane = NakedObjects.Models.getOtherPane;
     NakedObjects.app.service("urlManager", function ($routeParams, $location, $window) {
         var helper = this;
         // keep in alphabetic order to help avoid name collisions 
@@ -227,7 +228,7 @@ var NakedObjects;
             Transition[Transition["ToMenu"] = 2] = "ToMenu";
             Transition[Transition["ToDialog"] = 3] = "ToDialog";
             Transition[Transition["FromDialog"] = 4] = "FromDialog";
-            Transition[Transition["CancelDialog"] = 5] = "CancelDialog";
+            Transition[Transition["FromDialogKeepHistory"] = 5] = "FromDialogKeepHistory";
             Transition[Transition["ToObjectView"] = 6] = "ToObjectView";
             Transition[Transition["ToList"] = 7] = "ToList";
             Transition[Transition["LeaveEdit"] = 8] = "LeaveEdit";
@@ -245,13 +246,21 @@ var NakedObjects;
         function clearId(key, search) {
             delete search[key];
         }
-        function setFieldsToParms(paneId, search) {
-            var ids = _.filter(_.keys(search), function (k) { return k.indexOf("" + akm.field + paneId) === 0; });
-            var fields = _.pick(search, ids);
+        function setFieldsToParms(paneId, newValues) {
+            var ids = _.filter(_.keys(newValues), function (k) { return k.indexOf("" + akm.field + paneId) === 0; });
+            var fields = _.pick(newValues, ids);
             var parms = _.mapKeys(fields, function (v, k) { return k.replace(akm.field, akm.parm); });
-            search = _.omit(search, ids);
-            search = _.merge(search, parms);
-            return search;
+            newValues = _.omit(newValues, ids);
+            newValues = _.merge(newValues, parms);
+            return newValues;
+        }
+        function copyFieldsIntoValues(fromPaneId, toPaneId, newValues) {
+            var search = getSearch();
+            var ids = _.filter(_.keys(search), function (k) { return k.indexOf("" + akm.field + fromPaneId) === 0; });
+            var fromPaneFields = _.pick(search, ids);
+            var toPaneFields = _.mapKeys(fromPaneFields, function (v, k) { return k.replace("" + akm.field + fromPaneId, "" + akm.field + toPaneId); });
+            newValues = _.merge(newValues, toPaneFields);
+            return newValues;
         }
         function handleTransition(paneId, search, transition) {
             var replace = true;
@@ -264,11 +273,13 @@ var NakedObjects;
                     search = clearPane(search, paneId);
                     break;
                 case (Transition.FromDialog):
-                    replace = false;
-                // fall through
-                case (Transition.ToDialog):
-                case (Transition.CancelDialog):
                     search = clearFieldKeys(search, paneId);
+                    replace = true;
+                    break;
+                case (Transition.ToDialog):
+                case (Transition.FromDialogKeepHistory):
+                    search = clearFieldKeys(search, paneId);
+                    replace = false;
                     break;
                 case (Transition.ToObjectView):
                     replace = false;
@@ -277,7 +288,6 @@ var NakedObjects;
                     setId(akm.interactionMode + paneId, NakedObjects.InteractionMode[NakedObjects.InteractionMode.View], search);
                     break;
                 case (Transition.ToList):
-                    search = setFieldsToParms(paneId, search);
                     replace = setupPaneNumberAndTypes(paneId, NakedObjects.listPath);
                     clearId(akm.menu + paneId, search);
                     clearId(akm.object + paneId, search);
@@ -348,13 +358,13 @@ var NakedObjects;
             var newValues = _.zipObject([key], [null]);
             executeTransition(newValues, paneId, transition, function () { return true; });
         }
-        helper.closeDialog = function (paneId) {
+        helper.closeDialogKeepHistory = function (paneId) {
+            if (paneId === void 0) { paneId = 1; }
+            closeOrCancelDialog(paneId, Transition.FromDialogKeepHistory);
+        };
+        helper.closeDialogReplaceHistory = function (paneId) {
             if (paneId === void 0) { paneId = 1; }
             closeOrCancelDialog(paneId, Transition.FromDialog);
-        };
-        helper.cancelDialog = function (paneId) {
-            if (paneId === void 0) { paneId = 1; }
-            closeOrCancelDialog(paneId, Transition.CancelDialog);
         };
         helper.setObject = function (resultObject, paneId) {
             if (paneId === void 0) { paneId = 1; }
@@ -363,25 +373,30 @@ var NakedObjects;
             var newValues = _.zipObject([key], [oid]);
             executeTransition(newValues, paneId, Transition.ToObjectView, function () { return true; });
         };
-        helper.setList = function (actionMember, paneId) {
-            if (paneId === void 0) { paneId = 1; }
+        helper.setList = function (actionMember, fromPaneId, toPaneId) {
+            if (fromPaneId === void 0) { fromPaneId = 1; }
+            if (toPaneId === void 0) { toPaneId = 1; }
             var newValues = {};
             var parent = actionMember.parent;
             if (parent instanceof DomainObjectRepresentation) {
-                newValues[("" + akm.object + paneId)] = parent.id();
+                newValues[("" + akm.object + toPaneId)] = parent.id();
             }
             if (parent instanceof MenuRepresentation) {
-                newValues[("" + akm.menu + paneId)] = parent.menuId();
+                newValues[("" + akm.menu + toPaneId)] = parent.menuId();
             }
-            newValues[("" + akm.action + paneId)] = actionMember.actionId();
-            newValues[("" + akm.page + paneId)] = "1";
-            newValues[("" + akm.pageSize + paneId)] = NakedObjects.defaultPageSize.toString();
-            newValues[("" + akm.selected + paneId)] = "0";
+            newValues[("" + akm.action + toPaneId)] = actionMember.actionId();
+            newValues[("" + akm.page + toPaneId)] = "1";
+            newValues[("" + akm.pageSize + toPaneId)] = NakedObjects.defaultPageSize.toString();
+            newValues[("" + akm.selected + toPaneId)] = "0";
             var newState = actionMember.extensions().renderEagerly() ?
                 NakedObjects.CollectionViewState[NakedObjects.CollectionViewState.Table] :
                 NakedObjects.CollectionViewState[NakedObjects.CollectionViewState.List];
-            newValues[("" + akm.collection + paneId)] = newState;
-            executeTransition(newValues, paneId, Transition.ToList, function () { return true; });
+            newValues[("" + akm.collection + toPaneId)] = newState;
+            // This will also swap the panes of the field values if we are 
+            // right clicking into the other pane.
+            newValues = copyFieldsIntoValues(fromPaneId, toPaneId, newValues);
+            newValues = setFieldsToParms(toPaneId, newValues);
+            executeTransition(newValues, toPaneId, Transition.ToList, function () { return true; });
         };
         helper.setProperty = function (propertyMember, paneId) {
             if (paneId === void 0) { paneId = 1; }
@@ -575,7 +590,7 @@ var NakedObjects;
             var mode = segments[1], oldPane1 = segments[2], _a = segments[3], oldPane2 = _a === void 0 ? NakedObjects.homePath : _a;
             var newPath = "/" + mode + "/" + oldPane2 + "/" + oldPane1;
             var search = swapSearchIds(getSearch());
-            currentPaneId = currentPaneId === 1 ? 2 : 1;
+            currentPaneId = getOtherPane(currentPaneId);
             $location.path(newPath).search(search);
         };
         helper.cicero = function () {
@@ -591,7 +606,7 @@ var NakedObjects;
             currentPaneId = 1;
             if (!singlePane()) {
                 var paneToKeepId = paneId;
-                var paneToRemoveId = paneToKeepId === 1 ? 2 : 1;
+                var paneToRemoveId = getOtherPane(paneToKeepId);
                 var path = $location.path();
                 var segments = path.split("/");
                 var mode = segments[1];

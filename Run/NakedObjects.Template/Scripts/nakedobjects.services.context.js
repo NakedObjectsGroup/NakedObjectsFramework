@@ -103,6 +103,46 @@ var NakedObjects;
         };
         return RecentCache;
     }());
+    var ParameterCache = (function () {
+        function ParameterCache() {
+            this.currentValues = [, {}, {}];
+            this.currentDialogId = [, "", ""];
+        }
+        ParameterCache.prototype.addValue = function (dialogId, parmId, value, paneId) {
+            if (this.currentDialogId[paneId] !== dialogId) {
+                this.currentDialogId[paneId] = dialogId;
+                this.currentValues[paneId] = {};
+            }
+            this.currentValues[paneId][parmId] = value;
+        };
+        ParameterCache.prototype.getValue = function (dialogId, parmId, paneId) {
+            if (this.currentDialogId[paneId] !== dialogId) {
+                this.currentDialogId[paneId] = dialogId;
+                this.currentValues[paneId] = {};
+            }
+            return this.currentValues[paneId][parmId];
+        };
+        ParameterCache.prototype.getValues = function (dialogId, paneId) {
+            if (dialogId && this.currentDialogId[paneId] !== dialogId) {
+                this.currentDialogId[paneId] = dialogId;
+                this.currentValues[paneId] = {};
+            }
+            return this.currentValues[paneId];
+        };
+        ParameterCache.prototype.clearDialog = function (paneId) {
+            this.currentDialogId[paneId] = "";
+            this.currentValues[paneId] = {};
+        };
+        ParameterCache.prototype.swap = function () {
+            var _a = this.currentDialogId, d1 = _a[1], d2 = _a[2];
+            this.currentDialogId[1] = d2;
+            this.currentDialogId[2] = d1;
+            var _b = this.currentValues, v1 = _b[1], v2 = _b[2];
+            this.currentValues[1] = v2;
+            this.currentValues[2] = v1;
+        };
+        return ParameterCache;
+    }());
     NakedObjects.app.service("context", function ($q, repLoader, urlManager, focusManager, $cacheFactory, $rootScope) {
         var context = this;
         // cached values
@@ -116,6 +156,20 @@ var NakedObjects;
         var recentcache = new RecentCache();
         var dirtyList = new DirtyList();
         var currentLists = {};
+        var parameterCache = new ParameterCache();
+        var parmUpdaters = [, function () { }, function () { }];
+        context.setParmUpdater = function (updater, paneId) {
+            if (paneId === void 0) { paneId = 1; }
+            parmUpdaters[paneId] = updater;
+        };
+        context.clearParmUpdater = function (paneId) {
+            if (paneId === void 0) { paneId = 1; }
+            parmUpdaters[paneId] = function () { };
+        };
+        context.updateParms = function () {
+            parmUpdaters[1]();
+            parmUpdaters[2]();
+        };
         context.getFile = function (object, url, mt) {
             var isDirty = context.getIsDirty(object.getOid());
             return repLoader.getFile(url, mt, isDirty);
@@ -283,6 +337,7 @@ var NakedObjects;
             });
         };
         context.getObject = function (paneId, oid, interactionMode) {
+            context.updateParms();
             return oid.isService ? context.getService(paneId, oid.domainType) : context.getDomainObject(paneId, oid, interactionMode);
         };
         context.getCachedList = function (paneId, page, pageSize) {
@@ -366,6 +421,7 @@ var NakedObjects;
         };
         context.setObject = function (paneId, co) { return currentObjects[paneId] = co; };
         context.swapCurrentObjects = function () {
+            parameterCache.swap();
             var p1 = currentObjects[1], p2 = currentObjects[2];
             currentObjects[1] = p2;
             currentObjects[2] = p1;
@@ -389,7 +445,7 @@ var NakedObjects;
             return doPrompt(field, id, null, function (map) { return map.setArguments(args); }, objectValues);
         };
         var nextTransientId = 0;
-        context.setResult = function (action, result, paneId, page, pageSize) {
+        context.setResult = function (action, result, fromPaneId, toPaneId, page, pageSize) {
             var warnings = result.extensions().warnings() || [];
             var messages = result.extensions().messages() || [];
             $rootScope.$broadcast(NakedObjects.geminiWarningEvent, warnings);
@@ -403,11 +459,11 @@ var NakedObjects;
                         resultObject.wrapped().domainType = domainType;
                         resultObject.wrapped().instanceId = (nextTransientId++).toString();
                         resultObject.hateoasUrl = "/" + domainType + "/" + nextTransientId;
-                        context.setObject(paneId, resultObject);
-                        transientCache.add(paneId, resultObject);
-                        urlManager.pushUrlState(paneId);
-                        urlManager.setObject(resultObject, paneId);
-                        urlManager.setInteractionMode(NakedObjects.InteractionMode.Transient, paneId);
+                        context.setObject(toPaneId, resultObject);
+                        transientCache.add(toPaneId, resultObject);
+                        urlManager.pushUrlState(toPaneId);
+                        urlManager.setObject(resultObject, toPaneId);
+                        urlManager.setInteractionMode(NakedObjects.InteractionMode.Transient, toPaneId);
                     }
                     else {
                         // persistent object
@@ -415,15 +471,15 @@ var NakedObjects;
                         // so we don't hit the server again. 
                         // copy the etag down into the object
                         resultObject.etagDigest = result.etagDigest;
-                        context.setObject(paneId, resultObject);
-                        urlManager.setObject(resultObject, paneId);
+                        context.setObject(toPaneId, resultObject);
+                        urlManager.setObject(resultObject, toPaneId);
                         // update angular cache 
                         var url = resultObject.selfLink().href() + ("?" + NakedObjects.roInlinePropertyDetails + "=false");
                         repLoader.addToCache(url, resultObject.wrapped());
                         // if render in edit must be  a form 
                         if (resultObject.extensions().interactionMode() === "form") {
-                            urlManager.pushUrlState(paneId);
-                            urlManager.setInteractionMode(NakedObjects.InteractionMode.Form, paneId);
+                            urlManager.pushUrlState(toPaneId);
+                            urlManager.setInteractionMode(NakedObjects.InteractionMode.Form, toPaneId);
                         }
                         else {
                             addRecentlyViewed(resultObject);
@@ -432,14 +488,14 @@ var NakedObjects;
                 }
                 else if (result.resultType() === "list") {
                     var resultList = result.result().list();
-                    urlManager.setList(action, paneId);
-                    var index = urlManager.getListCacheIndex(paneId, page, pageSize);
+                    urlManager.setList(action, fromPaneId, toPaneId);
+                    var index = urlManager.getListCacheIndex(toPaneId, page, pageSize);
                     cacheList(resultList, index);
                 }
             }
         };
-        function invokeActionInternal(invokeMap, action, paneId, setDirty) {
-            focusManager.setCurrentPane(paneId);
+        function invokeActionInternal(invokeMap, action, fromPaneId, toPaneId, setDirty) {
+            focusManager.setCurrentPane(toPaneId);
             invokeMap.setUrlParameter(NakedObjects.roInlinePropertyDetails, false);
             if (action.extensions().returnType() === "list" && action.extensions().renderEagerly()) {
                 invokeMap.setUrlParameter(NakedObjects.roInlineCollectionItems, true);
@@ -447,7 +503,7 @@ var NakedObjects;
             return repLoader.retrieve(invokeMap, ActionResultRepresentation, action.parent.etagDigest).
                 then(function (result) {
                 setDirty();
-                context.setResult(action, result, paneId, 1, NakedObjects.defaultPageSize);
+                context.setResult(action, result, fromPaneId, toPaneId, 1, NakedObjects.defaultPageSize);
                 return $q.when(result);
             });
         }
@@ -475,12 +531,14 @@ var NakedObjects;
             }
             return function () { };
         }
-        context.invokeAction = function (action, paneId, parms) {
+        context.invokeAction = function (action, parms, fromPaneId, toPaneId) {
+            if (fromPaneId === void 0) { fromPaneId = 1; }
+            if (toPaneId === void 0) { toPaneId = 1; }
             var invokeOnMap = function (iAction) {
                 var im = iAction.getInvokeMap();
                 _.each(parms, function (parm, k) { return im.setParameter(k, parm); });
                 var setDirty = getSetDirtyFunction(iAction, parms);
-                return invokeActionInternal(im, iAction, paneId, setDirty);
+                return invokeActionInternal(im, iAction, fromPaneId, toPaneId, setDirty);
             };
             return invokeOnMap(action);
         };
@@ -536,11 +594,7 @@ var NakedObjects;
             var isSubTypeOf = new DomainTypeActionInvokeRepresentation(againstType, toCheckType);
             var promise = repLoader.populate(isSubTypeOf, true).
                 then(function (updatedObject) {
-                var is = updatedObject.value();
-                //const entry: _.Dictionary<boolean> = {};
-                //entry[againstType] = is;
-                //subTypeCache[toCheckType] = entry;
-                return is;
+                return updatedObject.value();
             }).
                 catch(function (reject) {
                 return false;
@@ -616,6 +670,19 @@ var NakedObjects;
             _.forEach(currentLists, function (k, v) { return delete currentLists[v]; });
         }
         $rootScope.$on(NakedObjects.geminiLogoffEvent, function () { return logoff(); });
+        context.setFieldValue = function (dialogId, pid, pv, paneId) {
+            if (paneId === void 0) { paneId = 1; }
+            parameterCache.addValue(dialogId, pid, pv, paneId);
+        };
+        context.getCurrentDialogValues = function (dialogId, paneId) {
+            if (dialogId === void 0) { dialogId = null; }
+            if (paneId === void 0) { paneId = 1; }
+            return parameterCache.getValues(dialogId, paneId);
+        };
+        context.clearDialog = function (paneId) {
+            if (paneId === void 0) { paneId = 1; }
+            parameterCache.clearDialog(paneId);
+        };
     });
 })(NakedObjects || (NakedObjects = {}));
 //# sourceMappingURL=nakedobjects.services.context.js.map

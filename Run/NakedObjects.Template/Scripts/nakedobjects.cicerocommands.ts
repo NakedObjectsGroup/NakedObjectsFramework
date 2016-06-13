@@ -30,6 +30,23 @@ module NakedObjects {
     import ObjectIdWrapper = Models.ObjectIdWrapper;
     import InvokableActionMember = Models.InvokableActionMember;
     import IInvokableAction = Models.IInvokableAction;
+    import isIInvokableAction = Models.isIInvokableAction;
+
+    export function getParametersAndCurrentValue(action: ActionMember | IInvokableAction, context: IContext): _.Dictionary<Value> {
+
+        if (isIInvokableAction(action)) {
+            const parms = action.parameters();
+            const values = context.getCurrentDialogValues(action.actionId());
+            return _.mapValues(parms, p => {
+                const value = values[p.id()];
+                if (value === undefined) {
+                    return p.default();
+                }
+                return value;
+            });
+        }
+        return {};
+    }
 
     export abstract class Command {
 
@@ -104,8 +121,7 @@ module NakedObjects {
         }
 
         //argNo starts from 0.
-        //If argument does not parse correctly, message will be passed to UI
-        //and command aborted.
+        //If argument does not parse correctly, message will be passed to UI and command aborted.
         protected argumentAsString(argString: string, argNo: number, optional: boolean = false, toLower: boolean = true): string {
             if (!argString) return undefined;
             if (!optional && argString.split(",").length < argNo + 1) {
@@ -372,7 +388,7 @@ module NakedObjects {
                 if (fieldEntryType === EntryType.MultipleChoices || field.isCollectionContributed()) {
                     let valuesFromRouteData = new Array<Value>();
                     if (field instanceof Parameter) {
-                        const rd = this.routeData().dialogFields[field.id()];
+                        const rd = getParametersAndCurrentValue(field.parent, this.context)[field.id()];
                         if (rd) valuesFromRouteData = rd.list(); //TODO: what if only one?
                     } else if (field instanceof PropertyMember) {
                         const rd = this.routeData().props[field.id()];
@@ -441,6 +457,11 @@ module NakedObjects {
             } else {
                 valuesFromRouteData.push(valToAdd);
             }
+        }
+
+        protected setFieldValueInContextAndUrl(field: Parameter, urlVal: Value) {
+            this.context.setFieldValue(this.routeData().dialogId, field.id(), urlVal);
+            this.urlManager.setFieldValue(this.routeData().dialogId, field, urlVal); //TODO: do this everywhere, combine into one method
         }
     }
 
@@ -522,11 +543,12 @@ module NakedObjects {
         }
 
         private openActionDialog(action: ActionMember) {
+            this.context.clearDialog();
             this.urlManager.setDialog(action.actionId());
             this.context.getInvokableAction(action).then((invokable: Models.IInvokableAction) => {
                 _.forEach(invokable.parameters(), (p) => {
-                    const pVal = this.valueForUrl(p.default(), p);
-                    this.urlManager.setFieldValue(action.actionId(), p, pVal);
+                    const pVal = p.default();
+                    this.setFieldValueInContextAndUrl(p, pVal);
                 });
             });
         }
@@ -570,7 +592,7 @@ module NakedObjects {
                 this.urlManager.setInteractionMode(InteractionMode.View);
             }
             if (this.isDialog()) {
-                this.urlManager.closeDialog();
+                this.urlManager.closeDialogReplaceHistory();
             }
         };
     }
@@ -719,7 +741,7 @@ module NakedObjects {
                     case 1:
                         if (fieldEntry === "?") {
                             const p = params[0];
-                            const value = this.routeData().dialogFields[p.id()];
+                            const value = getParametersAndCurrentValue(p.parent, this.context)[p.id()];
                             const s = this.renderFieldDetails(p, value);
                             this.clearInputAndSetMessage(s);
                         } else {
@@ -784,7 +806,7 @@ module NakedObjects {
         private setFieldValue(field: IField, value: Value): void {
             const urlVal = this.valueForUrl(value, field);
             if (field instanceof Parameter) {
-                this.urlManager.setFieldValue(this.routeData().dialogId, field, urlVal);
+                this.setFieldValueInContextAndUrl(field, urlVal);
             } else if (field instanceof PropertyMember) {
                 const parent = field.parent;
                 if (parent instanceof DomainObjectRepresentation) {
@@ -869,7 +891,10 @@ module NakedObjects {
 
         private handleConditionalChoices(field: IField, fieldEntry: string): void {
             //TODO: need to cover both dialog fields and editable properties!
-            const enteredFields = this.routeData().dialogFields;
+
+            const enteredFields = field instanceof Parameter
+                ? getParametersAndCurrentValue(field.parent, this.context)
+                : {} as _.Dictionary<Value>;
 
             // fromPairs definition is faulty
             const args = (<any>_).fromPairs(_.map(field.promptLink().arguments(), (v: any, key : string) => [key, new Value(v.value)])) as _.Dictionary<Value>;
@@ -880,7 +905,11 @@ module NakedObjects {
                 .then((choices: _.Dictionary<Value>) => {
                     const matches = this.findMatchingChoicesForRef(choices, fieldEntry);
                     this.switchOnMatches(field, fieldEntry, matches);
-                });
+                }).catch(
+                reject => {
+                    
+                }
+            );
         }
 
         private renderFieldDetails(field: IField, value: Value): string {
@@ -1116,9 +1145,9 @@ module NakedObjects {
                 if (this.isForm()) {
                     fieldMap = this.routeData().props; //Props passed in as pseudo-params to action
                 } else {
-                    fieldMap = this.routeData().dialogFields;
+                    fieldMap = getParametersAndCurrentValue(action, this.context);
                 }
-                this.context.invokeAction(action, 1, fieldMap)
+                this.context.invokeAction(action, fieldMap)
                     .then((result: ActionResultRepresentation) => {
                         // todo handle case where result is empty - this is no longer handled 
                         // by reject below
@@ -1130,7 +1159,7 @@ module NakedObjects {
                         if (messages) {
                             _.forEach(messages, m => this.vm.alert += `\n${m}`);
                         }
-                        this.urlManager.closeDialog();
+                        this.urlManager.closeDialogReplaceHistory();
                     }).
                     catch((reject: ErrorWrapper) => {
 

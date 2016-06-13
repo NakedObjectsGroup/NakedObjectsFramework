@@ -60,6 +60,10 @@ module NakedObjects.Models {
         return object && object instanceof Object && "value" in object;
     }
 
+    export function isIInvokableAction(object: any): object is IInvokableAction {
+        return object && "parameters" in object && "extensions" in object;
+    }
+
     function getId(prop: PropertyRepresentation | PropertyMember) {
         if (prop instanceof PropertyRepresentation) {
             return prop.instanceId();
@@ -508,6 +512,10 @@ module NakedObjects.Models {
             return this.isReference() ? <Link>this.wrapped : null;
         }
 
+        href(): string {
+            return this.link() ? this.link().href() : null;
+        }
+
         scalar(): scalarValueType {
             return this.isScalar() ? this.wrapped as scalarValueType : null;
         }
@@ -569,10 +577,14 @@ module NakedObjects.Models {
         }
 
         toJsonString(): string {
+            
             this.compress();
             const value = this.wrapped;
             const raw = (value instanceof Link) ? value.wrapped : value;
-            return JSON.stringify(raw);
+            const asJson = JSON.stringify(raw);
+            // TODO temp hack to avoid changing value - better to not change in first place !
+            this.decompress();
+            return asJson;
         }
 
         setValue(target: IValue) {

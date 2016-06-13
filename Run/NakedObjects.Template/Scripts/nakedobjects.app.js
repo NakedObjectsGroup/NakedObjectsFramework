@@ -221,8 +221,4 @@ var NakedObjects;
         $cacheFactory("recentlyViewed");
     });
 })(NakedObjects || (NakedObjects = {}));
-var NakedObjects;
-(function (NakedObjects) {
-    NakedObjects.version = "8.0.0-beta7";
-})(NakedObjects || (NakedObjects = {}));
 //# sourceMappingURL=nakedobjects.app.js.map

@@ -175,6 +175,7 @@ module NakedObjects {
             itemViewModel.selected = selected;
 
             itemViewModel.checkboxChange = (index) => {
+                context.updateParms();
                 urlManager.setListItem(index, itemViewModel.selected, paneId);
                 focusManager.focusOverrideOn(FocusTarget.CheckBox, index + 1, paneId);
             };
@@ -286,8 +287,10 @@ module NakedObjects {
 
                     if (fieldEntryType === EntryType.Choices) {
                         parmViewModel.choice = _.find(parmViewModel.choices, c => c.match(choiceToSet));
-                    } else {
-                        parmViewModel.choice = choiceToSet;
+                    } else {                    
+                        if (!parmViewModel.choice || parmViewModel.choice.getValue().toValueString() !== choiceToSet.getValue().toValueString()) {
+                            parmViewModel.choice = choiceToSet;
+                        } 
                     }
                 }
 
@@ -386,7 +389,7 @@ module NakedObjects {
             actionViewModel.executeInvoke = (pps: ParameterViewModel[], right?: boolean) => {
                 const parmMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
                 _.forEach(pps, p => urlManager.setParameterValue(actionRep.actionId(), p.parameterRep, p.getValue(), paneId));
-                return context.getInvokableAction(actionViewModel.actionRep).then(details => context.invokeAction(details, clickHandler.pane(paneId, right), parmMap));
+                return context.getInvokableAction(actionViewModel.actionRep).then(details => context.invokeAction(details, parmMap, paneId, clickHandler.pane(paneId, right)));
             };
 
             // form actions should never show dialogs
@@ -397,6 +400,8 @@ module NakedObjects {
                 (right?: boolean) => {
                     focusManager.setCurrentPane(paneId);
                     focusManager.focusOverrideOff();
+                    // clear any previous dialog 
+                    context.clearDialog(paneId);
                     urlManager.setDialog(actionRep.actionId(), paneId);
                     focusManager.focusOn(FocusTarget.Dialog, 0, paneId); // in case dialog is already open
                 } :
@@ -495,7 +500,7 @@ module NakedObjects {
             if (propertyRep instanceof CollectionMember) {
                 const size = propertyRep.size();
 
-                tableRowColumnViewModel.formattedValue = getCollectionCount(size);
+                tableRowColumnViewModel.formattedValue = getCollectionDetails(size);
                 tableRowColumnViewModel.value = "";
                 tableRowColumnViewModel.type = "scalar";
                 tableRowColumnViewModel.returnType = "string";
@@ -720,7 +725,7 @@ module NakedObjects {
             return items;
         };
 
-        function getCollectionCount(count: number) {
+        function getCollectionDetails(count: number) {
             if (count == null) {
                 return unknownCollectionSize;
             }
@@ -764,8 +769,10 @@ module NakedObjects {
 
                 if (resetting || state !== collectionViewModel.currentState) {
 
-                    collectionViewModel.size = getCollectionCount(size);
-
+                    if (size > 0 || size == null ) {
+                        collectionViewModel.mayHaveItems = true;
+                    }
+                    collectionViewModel.details = getCollectionDetails(size);
                     const getDetails = itemLinks == null || state === CollectionViewState.Table;
 
                     if (state === CollectionViewState.Summary) {
@@ -779,7 +786,7 @@ module NakedObjects {
                                     state === CollectionViewState.Table,
                                     routeData,
                                     collectionViewModel);
-                                collectionViewModel.size = getCollectionCount(collectionViewModel.items.length);
+                                collectionViewModel.details = getCollectionDetails(collectionViewModel.items.length);
                             })
                             .catch((reject: ErrorWrapper) => {
                                 context.handleWrappedError(reject, null, () => { }, () => { });
@@ -906,31 +913,38 @@ module NakedObjects {
                 const tvm = new ToolBarViewModel();
                 tvm.goHome = (right?: boolean) => {
                     focusManager.focusOverrideOff();
+                    context.updateParms();
                     urlManager.setHome(clickHandler.pane(1, right));
                 };
                 tvm.goBack = () => {
                     focusManager.focusOverrideOff();
+                    context.updateParms();
                     navigation.back();
                 };
                 tvm.goForward = () => {
                     focusManager.focusOverrideOff();
+                    context.updateParms();
                     navigation.forward();
                 };
                 tvm.swapPanes = () => {
                     $rootScope.$broadcast(geminiPaneSwapEvent);
+                    context.updateParms();
                     context.swapCurrentObjects();
                     urlManager.swapPanes();
                 };
                 tvm.singlePane = (right?: boolean) => {
+                    context.updateParms();
                     urlManager.singlePane(clickHandler.pane(1, right));
                     focusManager.refresh(1);
                 };
                 tvm.cicero = () => {
+                    context.updateParms();
                     urlManager.singlePane(clickHandler.pane(1));
                     urlManager.cicero();
                 };
 
                 tvm.recent = (right?: boolean) => {
+                    context.updateParms();
                     focusManager.focusOverrideOff();
                     urlManager.setRecent(clickHandler.pane(1, right));
                 };
@@ -956,6 +970,7 @@ module NakedObjects {
                 };
 
                 tvm.applicationProperties = () => {
+                    context.updateParms();
                     urlManager.applicationProperties();
                 };
 
@@ -1019,7 +1034,7 @@ module NakedObjects {
                                 });
                         } else {
                             cvm.clearInput();
-                            cvm.output = "Welcome to Cicero. Type 'help' and the Enter key for more information.";
+                            cvm.output = welcomeMessage;
                         }
                     }
                 };
@@ -1136,6 +1151,22 @@ module NakedObjects {
 
         $rootScope.$on(geminiLogoffEvent, () => logoff());
 
+
+        function renderActionDialog(
+            invokable: Models.IInvokableAction,
+            routeData: PaneRouteData,
+            mask: IMask): string {
+            const actionName = invokable.extensions().friendlyName();
+            let output = `Action dialog: ${actionName}\n`;
+            _.forEach(getParametersAndCurrentValue(invokable, context), (value, paramId) => {
+                output += FriendlyNameForParam(invokable, paramId) + ": ";
+                const param = invokable.parameters()[paramId];
+                output += renderFieldValue(param, value, mask);
+                output += "\n";
+            });
+            return output;
+        }
+
     });
 
     //Returns collection Ids for any collections on an object that are currently in List or Table mode
@@ -1193,39 +1224,7 @@ module NakedObjects {
         }
     }
 
-    function renderActionDialogIfOpen(
-        repWithActions: IHasActions,
-        routeData: PaneRouteData,
-        mask: IMask): string {
-        let output = "";
-        if (routeData.dialogId) {
-            const actionMember = repWithActions.actionMember(routeData.dialogId) as InvokableActionMember;
-            const actionName = actionMember.extensions().friendlyName();
-            output += `Action dialog: ${actionName}\n`;
-            _.forEach(routeData.dialogFields, (value, paramId) => {
-                output += FriendlyNameForParam(actionMember, paramId) + ": ";
-                const param = actionMember.parameters()[paramId];
-                output += renderFieldValue(param, value, mask);
-                output += "\n";
-            });
-        }
-        return output;
-    }
-
-    function renderActionDialog(
-        invokable: Models.IInvokableAction,
-        routeData: PaneRouteData,
-        mask: IMask): string {
-        const actionName = invokable.extensions().friendlyName();
-        let output = `Action dialog: ${actionName}\n`;
-        _.forEach(routeData.dialogFields, (value, paramId) => {
-            output += FriendlyNameForParam(invokable, paramId) + ": ";
-            const param = invokable.parameters()[paramId];
-            output += renderFieldValue(param, value, mask);
-            output += "\n";
-        });
-        return output;
-    }
+    
 
 
 }

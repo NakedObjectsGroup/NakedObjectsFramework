@@ -16,6 +16,10 @@ var NakedObjects;
             return (NakedObjects.showDirtyFlag && context.getIsDirty(oid)) ? "*" : "";
         }
         Models.dirtyMarker = dirtyMarker;
+        function getOtherPane(paneId) {
+            return paneId === 1 ? 2 : 1;
+        }
+        Models.getOtherPane = getOtherPane;
         function toDateString(dt) {
             var year = dt.getFullYear().toString();
             var month = (dt.getMonth() + 1).toString();

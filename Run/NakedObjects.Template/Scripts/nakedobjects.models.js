@@ -42,6 +42,10 @@ var NakedObjects;
         function isIValue(object) {
             return object && object instanceof Object && "value" in object;
         }
+        function isIInvokableAction(object) {
+            return object && "parameters" in object && "extensions" in object;
+        }
+        Models.isIInvokableAction = isIInvokableAction;
         function getId(prop) {
             if (prop instanceof PropertyRepresentation) {
                 return prop.instanceId();
@@ -401,6 +405,9 @@ var NakedObjects;
             Value.prototype.link = function () {
                 return this.isReference() ? this.wrapped : null;
             };
+            Value.prototype.href = function () {
+                return this.link() ? this.link().href() : null;
+            };
             Value.prototype.scalar = function () {
                 return this.isScalar() ? this.wrapped : null;
             };
@@ -456,7 +463,10 @@ var NakedObjects;
                 this.compress();
                 var value = this.wrapped;
                 var raw = (value instanceof Link) ? value.wrapped : value;
-                return JSON.stringify(raw);
+                var asJson = JSON.stringify(raw);
+                // TODO temp hack to avoid changing value - better to not change in first place !
+                this.decompress();
+                return asJson;
             };
             Value.prototype.setValue = function (target) {
                 if (this.isFileReference()) {

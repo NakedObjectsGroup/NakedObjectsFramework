@@ -4,15 +4,16 @@
 <form>
     <div class="parameters">
         <div class="parameter" ng-repeat="parameter in dialog.parameters" ng-switch="parameter.type">
-            <div class="name"><label for="{{parameter.paneArgId}}">{{parameter.title}}</label></div>
+            <div class="name"><label for="{{parameter.paneArgId}}">{{parameter.title}}</label>
+            </div>
             <div ng-switch-when="ref">
 
                 <div class="value input-control text" ng-switch="parameter.entryType">
-                    <input type="hidden" value="{{parameter.reference}}" ng-model="parameter.reference" />
+                    <input type="hidden" value="{{parameter.reference}}" ng-model="parameter.reference"/>
 
                     <!--"EntryType.AutoComplete"-->
                     <div ng-switch-when="5">
-                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" ng-class="parameter.color" placeholder="{{parameter.description}}" type="text" ng-model="$parent.parameter.choice" select="parameter.prompt(request)" gemini-drop gemini-autocomplete gemini-fieldmandatorycheck />
+                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" ng-class="parameter.color" placeholder="{{parameter.description}}" type="text" ng-model="$parent.parameter.choice" select="parameter.prompt(request)" gemini-drop gemini-autocomplete gemini-fieldmandatorycheck/>
                     </div>
 
                     <!--"EntryType.MultipleConditionalChoices"-->
@@ -58,12 +59,12 @@
 
                     <!--"EntryType.File"-->
                     <div ng-switch-when="6">
-                        <input id="{{parameter.paneArgId}}"  type="file"  class="{{parameter.status}}" ng-model="$parent.parameter.file"  placeholder="{{parameter.description}}" gemini-fileupload/>
+                        <input id="{{parameter.paneArgId}}" type="file" class="{{parameter.status}}" ng-model="$parent.parameter.file" placeholder="{{parameter.description}}" gemini-fileupload/>
                     </div>
 
                     <!--"EntryType.AutoComplete"-->
                     <div ng-switch-when="5">
-                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" ng-model="$parent.parameter.choice" select="parameter.prompt(request)" placeholder="{{parameter.description}}" gemini-autocomplete gemini-fieldmandatorycheck/>                         
+                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" ng-model="$parent.parameter.choice" select="parameter.prompt(request)" placeholder="{{parameter.description}}" gemini-autocomplete gemini-fieldmandatorycheck/>
                     </div>
 
                     <!--"EntryType.MultipleConditionalChoices"-->
@@ -103,10 +104,10 @@
                                     <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="date" placeholder="{{parameter.description}}" ng-model="$parent.parameter.value" gemini-datepicker gemini-fieldvalidate/>
                                 </div>
                                 <div ng-switch-when="time">
-                                    <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="time" placeholder="{{parameter.description}}" ng-model="$parent.parameter.value" gemini-timepicker gemini-fieldvalidate />
+                                    <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="time" placeholder="{{parameter.description}}" ng-model="$parent.parameter.value" gemini-timepicker gemini-fieldvalidate/>
                                 </div>
                                 <div ng-switch-default ng-switch="parameter.multipleLines">
-                                    <input ng-switch-when="1" id="{{parameter.paneArgId}}" class="{{parameter.status}}" placeholder="{{parameter.description}}" type="{{parameter.password ? 'password' : 'text'}}" ng-model="parameter.value" gemini-fieldvalidate />
+                                    <input ng-switch-when="1" id="{{parameter.paneArgId}}" class="{{parameter.status}}" placeholder="{{parameter.description}}" type="{{parameter.password ? 'password' : 'text'}}" ng-model="parameter.value" gemini-fieldvalidate/>
                                     <textarea ng-switch-default rows="{{$parent.parameter.multipleLines}}" id="{{$parent.parameter.paneArgId}}" class="{{$parent.parameter.status}}" ng-model="$parent.parameter.value" gemini-fieldvalidate gemini-placeholder="$parent.parameter.description"></textarea>
                                 </div>
                             </div>
@@ -125,6 +126,6 @@
         </div>
         <div class="co-validation">{{dialog.message}}</div>
     </div>
-    <input class="ok" tabindex="0" type="submit" value="OK" title="{{dialog.tooltip()}}"  ng-disabled="!dialog.clientValid()"    gemini-enter="dialog.doInvoke()" ng-click="dialog.doInvoke()" gemini-rightclick="dialog.doInvoke(true)" />
-    <input class="cancel" tabindex="0" type="button" gemini-enter="dialog.doClose()" ng-click="dialog.doCancel()" value="Cancel" />
+    <input class="ok" tabindex="0" type="submit" value="OK" title="{{dialog.tooltip()}}" ng-disabled="!dialog.clientValid()" gemini-enter="dialog.doInvoke()" ng-click="dialog.doInvoke()" gemini-rightclick="dialog.doInvoke(true)"/>
+    <input class="cancel" tabindex="0" type="button" gemini-enter="dialog.doCloseReplaceHistory()" ng-click="dialog.doCloseReplaceHistory()" value="Cancel" />
 </form>

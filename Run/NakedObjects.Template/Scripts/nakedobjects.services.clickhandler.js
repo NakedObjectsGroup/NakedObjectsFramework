@@ -3,6 +3,7 @@
 /// <reference path="nakedobjects.app.ts" />
 var NakedObjects;
 (function (NakedObjects) {
+    var getOtherPane = NakedObjects.Models.getOtherPane;
     NakedObjects.app.service("clickHandler", function () {
         var clickHandler = this;
         function leftRightClickHandler(currentPane, right) {
@@ -11,8 +12,7 @@ var NakedObjects;
         }
         function sameOtherClickHandler(currentPane, right) {
             if (right === void 0) { right = false; }
-            var otherPane = currentPane === 1 ? 2 : 1;
-            return right ? otherPane : currentPane;
+            return right ? getOtherPane(currentPane) : currentPane;
         }
         clickHandler.pane = sameOtherClickHandler;
     });

@@ -237,17 +237,17 @@ var NakedObjects;
                         }
                         _.forEach(cvms, function (cvm) {
                             var opt = $("<option></option>");
-                            opt.val(cvm.value);
+                            opt.val(cvm.getValue().toValueString());
                             opt.text(cvm.name);
                             element.append(opt);
                         });
                         currentOptions = cvms;
                         if (viewModel.entryType === EntryType.MultipleConditionalChoices) {
-                            var vals = _.map(viewModel.multiChoices, function (c) { return c.value; });
+                            var vals = _.map(viewModel.multiChoices, function (c) { return c.getValue().toValueString(); });
                             $(element).val(vals);
                         }
                         else if (viewModel.choice) {
-                            $(element).val(viewModel.choice.value);
+                            $(element).val(viewModel.choice.getValue().toValueString());
                         }
                         else {
                             $(element).val("");
@@ -262,19 +262,25 @@ var NakedObjects;
                         currentOptions = [];
                     });
                 }
+                function wrapReferences(val) {
+                    if (val && viewModel.type === "ref") {
+                        return { href: val };
+                    }
+                    return val;
+                }
                 function optionChanged() {
                     if (viewModel.entryType === EntryType.MultipleConditionalChoices) {
                         var options = $(element).find("option:selected");
                         var kvps_1 = [];
                         options.each(function (n, e) { return kvps_1.push({ key: $(e).text(), value: $(e).val() }); });
-                        var cvms = _.map(kvps_1, function (o) { return NakedObjects.ChoiceViewModel.create(new Value(o.value), viewModel.id, o.key); });
+                        var cvms = _.map(kvps_1, function (o) { return NakedObjects.ChoiceViewModel.create(new Value(wrapReferences(o.value)), viewModel.id, o.key); });
                         viewModel.multiChoices = cvms;
                     }
                     else {
                         var option = $(element).find("option:selected");
                         var val = option.val();
                         var key = option.text();
-                        var cvm_1 = NakedObjects.ChoiceViewModel.create(new Value(val), viewModel.id, key);
+                        var cvm_1 = NakedObjects.ChoiceViewModel.create(new Value(wrapReferences(val)), viewModel.id, key);
                         viewModel.choice = cvm_1;
                         scope.$apply(function () {
                             ngModel.$parsers.push(function () { return cvm_1; });
@@ -634,7 +640,7 @@ var NakedObjects;
                 var viewModel = parent.parameter || parent.property;
                 var val;
                 if (viewValue instanceof NakedObjects.ChoiceViewModel) {
-                    val = viewValue.value;
+                    val = viewValue.getValue().toValueString();
                 }
                 else if (viewValue instanceof Array) {
                     if (viewValue.length) {

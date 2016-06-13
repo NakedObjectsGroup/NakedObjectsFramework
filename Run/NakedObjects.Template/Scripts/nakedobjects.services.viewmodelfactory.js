@@ -92,6 +92,7 @@ var NakedObjects;
             initLinkViewModel(itemViewModel, linkRep);
             itemViewModel.selected = selected;
             itemViewModel.checkboxChange = function (index) {
+                context.updateParms();
                 urlManager.setListItem(index, itemViewModel.selected, paneId);
                 focusManager.focusOverrideOn(NakedObjects.FocusTarget.CheckBox, index + 1, paneId);
             };
@@ -181,7 +182,9 @@ var NakedObjects;
                         parmViewModel.choice = _.find(parmViewModel.choices, function (c) { return c.match(choiceToSet); });
                     }
                     else {
-                        parmViewModel.choice = choiceToSet;
+                        if (!parmViewModel.choice || parmViewModel.choice.getValue().toValueString() !== choiceToSet.getValue().toValueString()) {
+                            parmViewModel.choice = choiceToSet;
+                        }
                     }
                 }
                 parmViewModel.refresh = function (newValue) {
@@ -260,7 +263,7 @@ var NakedObjects;
             actionViewModel.executeInvoke = function (pps, right) {
                 var parmMap = _.zipObject(_.map(pps, function (p) { return p.id; }), _.map(pps, function (p) { return p.getValue(); }));
                 _.forEach(pps, function (p) { return urlManager.setParameterValue(actionRep.actionId(), p.parameterRep, p.getValue(), paneId); });
-                return context.getInvokableAction(actionViewModel.actionRep).then(function (details) { return context.invokeAction(details, clickHandler.pane(paneId, right), parmMap); });
+                return context.getInvokableAction(actionViewModel.actionRep).then(function (details) { return context.invokeAction(details, parmMap, paneId, clickHandler.pane(paneId, right)); });
             };
             // form actions should never show dialogs
             var showDialog = function () { return actionRep.extensions().hasParams() && (routeData.interactionMode !== NakedObjects.InteractionMode.Form); };
@@ -269,6 +272,8 @@ var NakedObjects;
                 function (right) {
                     focusManager.setCurrentPane(paneId);
                     focusManager.focusOverrideOff();
+                    // clear any previous dialog 
+                    context.clearDialog(paneId);
                     urlManager.setDialog(actionRep.actionId(), paneId);
                     focusManager.focusOn(NakedObjects.FocusTarget.Dialog, 0, paneId); // in case dialog is already open
                 } :
@@ -356,7 +361,7 @@ var NakedObjects;
             tableRowColumnViewModel.title = propertyRep.extensions().friendlyName();
             if (propertyRep instanceof CollectionMember) {
                 var size = propertyRep.size();
-                tableRowColumnViewModel.formattedValue = getCollectionCount(size);
+                tableRowColumnViewModel.formattedValue = getCollectionDetails(size);
                 tableRowColumnViewModel.value = "";
                 tableRowColumnViewModel.type = "scalar";
                 tableRowColumnViewModel.returnType = "string";
@@ -539,7 +544,7 @@ var NakedObjects;
             }
             return items;
         };
-        function getCollectionCount(count) {
+        function getCollectionDetails(count) {
             if (count == null) {
                 return NakedObjects.unknownCollectionSize;
             }
@@ -571,7 +576,10 @@ var NakedObjects;
                     state = getDefaultTableState(collectionRep.extensions());
                 }
                 if (resetting || state !== collectionViewModel.currentState) {
-                    collectionViewModel.size = getCollectionCount(size);
+                    if (size > 0 || size == null) {
+                        collectionViewModel.mayHaveItems = true;
+                    }
+                    collectionViewModel.details = getCollectionDetails(size);
                     var getDetails = itemLinks == null || state === NakedObjects.CollectionViewState.Table;
                     if (state === NakedObjects.CollectionViewState.Summary) {
                         collectionViewModel.items = [];
@@ -581,7 +589,7 @@ var NakedObjects;
                         context.getCollectionDetails(collectionRep, state, resetting)
                             .then(function (details) {
                             collectionViewModel.items = viewModelFactory.getItems(details.value(), state === NakedObjects.CollectionViewState.Table, routeData, collectionViewModel);
-                            collectionViewModel.size = getCollectionCount(collectionViewModel.items.length);
+                            collectionViewModel.details = getCollectionDetails(collectionViewModel.items.length);
                         })
                             .catch(function (reject) {
                             context.handleWrappedError(reject, null, function () { }, function () { });
@@ -683,30 +691,37 @@ var NakedObjects;
                 var tvm_1 = new NakedObjects.ToolBarViewModel();
                 tvm_1.goHome = function (right) {
                     focusManager.focusOverrideOff();
+                    context.updateParms();
                     urlManager.setHome(clickHandler.pane(1, right));
                 };
                 tvm_1.goBack = function () {
                     focusManager.focusOverrideOff();
+                    context.updateParms();
                     navigation.back();
                 };
                 tvm_1.goForward = function () {
                     focusManager.focusOverrideOff();
+                    context.updateParms();
                     navigation.forward();
                 };
                 tvm_1.swapPanes = function () {
                     $rootScope.$broadcast(NakedObjects.geminiPaneSwapEvent);
+                    context.updateParms();
                     context.swapCurrentObjects();
                     urlManager.swapPanes();
                 };
                 tvm_1.singlePane = function (right) {
+                    context.updateParms();
                     urlManager.singlePane(clickHandler.pane(1, right));
                     focusManager.refresh(1);
                 };
                 tvm_1.cicero = function () {
+                    context.updateParms();
                     urlManager.singlePane(clickHandler.pane(1));
                     urlManager.cicero();
                 };
                 tvm_1.recent = function (right) {
+                    context.updateParms();
                     focusManager.focusOverrideOff();
                     urlManager.setRecent(clickHandler.pane(1, right));
                 };
@@ -729,6 +744,7 @@ var NakedObjects;
                     });
                 };
                 tvm_1.applicationProperties = function () {
+                    context.updateParms();
                     urlManager.applicationProperties();
                 };
                 tvm_1.template = NakedObjects.appBarTemplate;
@@ -787,7 +803,7 @@ var NakedObjects;
                         }
                         else {
                             cvm.clearInput();
-                            cvm.output = "Welcome to Cicero. Type 'help' and the Enter key for more information.";
+                            cvm.output = NakedObjects.welcomeMessage;
                         }
                     }
                 };
@@ -905,6 +921,17 @@ var NakedObjects;
             cvm = null;
         }
         $rootScope.$on(NakedObjects.geminiLogoffEvent, function () { return logoff(); });
+        function renderActionDialog(invokable, routeData, mask) {
+            var actionName = invokable.extensions().friendlyName();
+            var output = "Action dialog: " + actionName + "\n";
+            _.forEach(NakedObjects.getParametersAndCurrentValue(invokable, context), function (value, paramId) {
+                output += FriendlyNameForParam(invokable, paramId) + ": ";
+                var param = invokable.parameters()[paramId];
+                output += renderFieldValue(param, value, mask);
+                output += "\n";
+            });
+            return output;
+        }
     });
     //Returns collection Ids for any collections on an object that are currently in List or Table mode
     function openCollectionIds(routeData) {
@@ -963,31 +990,5 @@ var NakedObjects;
         }
     }
     NakedObjects.renderFieldValue = renderFieldValue;
-    function renderActionDialogIfOpen(repWithActions, routeData, mask) {
-        var output = "";
-        if (routeData.dialogId) {
-            var actionMember_1 = repWithActions.actionMember(routeData.dialogId);
-            var actionName = actionMember_1.extensions().friendlyName();
-            output += "Action dialog: " + actionName + "\n";
-            _.forEach(routeData.dialogFields, function (value, paramId) {
-                output += FriendlyNameForParam(actionMember_1, paramId) + ": ";
-                var param = actionMember_1.parameters()[paramId];
-                output += renderFieldValue(param, value, mask);
-                output += "\n";
-            });
-        }
-        return output;
-    }
-    function renderActionDialog(invokable, routeData, mask) {
-        var actionName = invokable.extensions().friendlyName();
-        var output = "Action dialog: " + actionName + "\n";
-        _.forEach(routeData.dialogFields, function (value, paramId) {
-            output += FriendlyNameForParam(invokable, paramId) + ": ";
-            var param = invokable.parameters()[paramId];
-            output += renderFieldValue(param, value, mask);
-            output += "\n";
-        });
-        return output;
-    }
 })(NakedObjects || (NakedObjects = {}));
 //# sourceMappingURL=nakedobjects.services.viewmodelfactory.js.map

@@ -16,6 +16,10 @@ module NakedObjects.Models {
         return (showDirtyFlag && context.getIsDirty(oid)) ? "*" : "";
     }
 
+    export function getOtherPane(paneId: number) {
+        return paneId === 1 ? 2 : 1;
+    }
+
     export function toDateString(dt: Date) {
 
         const year = dt.getFullYear().toString();

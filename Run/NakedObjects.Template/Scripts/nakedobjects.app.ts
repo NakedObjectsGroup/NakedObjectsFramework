@@ -236,5 +236,3 @@ module NakedObjects {
         $cacheFactory("recentlyViewed");
     });
 }
-
-module NakedObjects { export const version = "8.0.0-beta7" }

@@ -132,20 +132,22 @@ var NakedObjects;
             choiceViewModel.wrapped = value;
             choiceViewModel.id = id;
             choiceViewModel.name = name || value.toString();
-            choiceViewModel.value = value.isReference() ? value.link().href() : value.toValueString();
             choiceViewModel.search = searchTerm || choiceViewModel.name;
-            choiceViewModel.isEnum = !value.isReference() && (choiceViewModel.name !== choiceViewModel.value);
+            choiceViewModel.isEnum = !value.isReference() && (choiceViewModel.name !== choiceViewModel.getValue().toValueString());
             choiceViewModel.isReference = value.isReference();
             return choiceViewModel;
+        };
+        ChoiceViewModel.prototype.getValue = function () {
+            return this.wrapped;
         };
         ChoiceViewModel.prototype.equals = function (other) {
             return this.id === other.id &&
                 this.name === other.name &&
-                this.value === other.value;
+                this.wrapped.toValueString() === other.wrapped.toValueString();
         };
         ChoiceViewModel.prototype.match = function (other) {
-            var thisValue = this.isEnum ? this.value.trim() : this.search.trim();
-            var otherValue = this.isEnum ? other.value.trim() : other.search.trim();
+            var thisValue = this.isEnum ? this.wrapped.toValueString().trim() : this.search.trim();
+            var otherValue = this.isEnum ? other.wrapped.toValueString().trim() : other.search.trim();
             return thisValue === otherValue;
         };
         return ChoiceViewModel;
@@ -228,7 +230,7 @@ var NakedObjects;
         ValueViewModel.prototype.setColor = function (color) {
             var _this = this;
             if (this.entryType === EntryType.AutoComplete && this.choice && this.type === "ref") {
-                var href = this.choice.value;
+                var href = this.choice.getValue().href();
                 if (href) {
                     color.toColorNumberFromHref(href).then(function (c) { return _this.color = "" + NakedObjects.linkColor + c; });
                     return;
@@ -248,17 +250,17 @@ var NakedObjects;
                 if (this.entryType === EntryType.MultipleChoices || this.entryType === EntryType.MultipleConditionalChoices || this.isCollectionContributed) {
                     var selections = this.multiChoices || [];
                     if (this.type === "scalar") {
-                        var selValues = _.map(selections, function (cvm) { return cvm.value; });
+                        var selValues = _.map(selections, function (cvm) { return cvm.getValue().scalar(); });
                         return new Value(selValues);
                     }
-                    var selRefs = _.map(selections, function (cvm) { return ({ href: cvm.value, title: cvm.name }); }); // reference 
+                    var selRefs = _.map(selections, function (cvm) { return ({ href: cvm.getValue().href(), title: cvm.name }); }); // reference 
                     return new Value(selRefs);
                 }
                 if (this.type === "scalar") {
-                    return new Value(this.choice && this.choice.value != null ? this.choice.value : "");
+                    return new Value(this.choice && this.choice.getValue().scalar() != null ? this.choice.getValue().scalar() : "");
                 }
                 // reference 
-                return new Value(this.choice && this.choice.value ? { href: this.choice.value, title: this.choice.name } : null);
+                return new Value(this.choice && this.choice.isReference ? { href: this.choice.getValue().href(), title: this.choice.name } : null);
             }
             if (this.type === "scalar") {
                 if (this.value == null) {
@@ -322,12 +324,12 @@ var NakedObjects;
             this.actionMember = function () { return _this.actionViewModel.actionRep; };
             this.clientValid = function () { return _.every(_this.parameters, function (p) { return p.clientValid; }); };
             this.tooltip = function () { return tooltip(_this, _this.parameters); };
-            this.setParms = function () {
-                return _.forEach(_this.parameters, function (p) { return _this.urlManager.setFieldValue(_this.actionMember().actionId(), p.parameterRep, p.getValue(), _this.onPaneId); });
-            };
+            this.setParms = function () { return _.forEach(_this.parameters, function (p) { return _this.context.setFieldValue(_this.actionMember().actionId(), p.parameterRep.id(), p.getValue(), _this.onPaneId); }); };
             this.executeInvoke = function (right) {
                 var pps = _this.parameters;
                 _.forEach(pps, function (p) { return _this.urlManager.setFieldValue(_this.actionMember().actionId(), p.parameterRep, p.getValue(), _this.onPaneId); });
+                //_.forEach(pps, p => this.context.setFieldValue(this.actionMember().actionId(), p.parameterRep.id(), p.getValue(), this.onPaneId));
+                _this.context.updateParms();
                 return _this.actionViewModel.executeInvoke(pps, right);
             };
             this.doInvoke = function (right) {
@@ -339,31 +341,35 @@ var NakedObjects;
                     else if (actionResult.resultType() === "void") {
                         // dialog staying on same page so treat as cancel 
                         // for url replacing purposes
-                        _this.doCancel();
+                        _this.doCloseReplaceHistory();
+                    }
+                    else if (!_this.isQueryOnly) {
+                        // not query only - always close
+                        _this.doCloseReplaceHistory();
                     }
                     else if (!right) {
-                        // going to new page close dialog (and do not replace url)
-                        _this.doClose();
+                        // query only going to new page close dialog and keep history
+                        _this.doCloseKeepHistory();
                     }
-                    // else leave open if opening on other pane and dialog has result
+                    // else query only going to other tab leave dialog open
                 }).
                     catch(function (reject) {
                     var parent = _this.actionMember().parent instanceof DomainObjectRepresentation ? _this.actionMember().parent : null;
                     var display = function (em) { return _this.viewModelFactory.handleErrorResponse(em, _this, _this.parameters); };
                     _this.context.handleWrappedError(reject, parent, function () {
                         // this should just be called if concurrency
-                        _this.doClose();
+                        _this.doCloseKeepHistory();
                         _this.$rootScope.$broadcast(NakedObjects.geminiDisplayErrorEvent, new ErrorMap({}, 0, NakedObjects.concurrencyError));
                     }, display);
                 });
             };
-            this.doClose = function () {
+            this.doCloseKeepHistory = function () {
                 _this.deregister();
-                _this.urlManager.closeDialog(_this.onPaneId);
+                _this.urlManager.closeDialogKeepHistory(_this.onPaneId);
             };
-            this.doCancel = function () {
+            this.doCloseReplaceHistory = function () {
                 _this.deregister();
-                _this.urlManager.cancelDialog(_this.onPaneId);
+                _this.urlManager.closeDialogReplaceHistory(_this.onPaneId);
             };
             this.clearMessages = function () {
                 _this.resetMessage();
@@ -374,7 +380,7 @@ var NakedObjects;
             var _this = this;
             this.actionViewModel = actionViewModel;
             this.onPaneId = routeData.paneId;
-            var fields = routeData.dialogFields;
+            var fields = this.context.getCurrentDialogValues(this.actionMember().actionId(), this.onPaneId);
             var parameters = _.pickBy(actionViewModel.invokableActionRep.parameters(), function (p) { return !p.isCollectionContributed(); });
             this.parameters = _.map(parameters, function (p) { return _this.viewModelFactory.parameterViewModel(p, fields[p.id()], _this.onPaneId); });
             this.title = this.actionMember().extensions().friendlyName();
@@ -382,6 +388,10 @@ var NakedObjects;
             this.resetMessage();
             this.id = actionViewModel.actionRep.actionId();
             return this;
+        };
+        DialogViewModel.prototype.refresh = function () {
+            var fields = this.context.getCurrentDialogValues(this.actionMember().actionId(), this.onPaneId);
+            _.forEach(this.parameters, function (p) { return p.refresh(fields[p.id]); });
         };
         return DialogViewModel;
     }(MessageViewModel));
@@ -451,9 +461,18 @@ var NakedObjects;
             this.pageLastDisabled = this.laterDisabled;
             this.pageNextDisabled = this.laterDisabled;
             this.pagePreviousDisabled = this.earlierDisabled;
-            this.doSummary = function () { return _this.urlManager.setListState(NakedObjects.CollectionViewState.Summary, _this.onPaneId); };
-            this.doList = function () { return _this.urlManager.setListState(NakedObjects.CollectionViewState.List, _this.onPaneId); };
-            this.doTable = function () { return _this.urlManager.setListState(NakedObjects.CollectionViewState.Table, _this.onPaneId); };
+            this.doSummary = function () {
+                _this.context.updateParms();
+                _this.urlManager.setListState(NakedObjects.CollectionViewState.Summary, _this.onPaneId);
+            };
+            this.doList = function () {
+                _this.context.updateParms();
+                _this.urlManager.setListState(NakedObjects.CollectionViewState.List, _this.onPaneId);
+            };
+            this.doTable = function () {
+                _this.context.updateParms();
+                _this.urlManager.setListState(NakedObjects.CollectionViewState.Table, _this.onPaneId);
+            };
             this.reload = function () {
                 _this.context.clearCachedList(_this.onPaneId, _this.routeData.page, _this.routeData.pageSize);
                 _this.setPage(_this.page, _this.state);
@@ -475,7 +494,12 @@ var NakedObjects;
             this.allSelected = _.every(this.items, function (item) { return item.selected; });
             var count = this.items.length;
             this.size = count;
-            this.description = function () { return NakedObjects.pageMessage(_this.page, _this.numPages, count, totalCount); };
+            if (count > 0) {
+                this.description = function () { return NakedObjects.pageMessage(_this.page, _this.numPages, count, totalCount); };
+            }
+            else {
+                this.description = function () { return NakedObjects.noItemsFound; };
+            }
         };
         ListViewModel.prototype.refresh = function (routeData) {
             var _this = this;
@@ -511,8 +535,7 @@ var NakedObjects;
                     var parms = _.values(action.parameters());
                     var contribParm = _.find(parms, function (p) { return p.isCollectionContributed(); });
                     var parmValue = new Value(_.map(selected, function (i) { return i.link; }));
-                    var collectionParmVm = _this.viewModelFactory
-                        .parameterViewModel(contribParm, parmValue, _this.onPaneId);
+                    var collectionParmVm = _this.viewModelFactory.parameterViewModel(contribParm, parmValue, _this.onPaneId);
                     var allpps = _.clone(pps);
                     allpps.push(collectionParmVm);
                     return allpps;
@@ -532,6 +555,7 @@ var NakedObjects;
             showDialog().
                 then(function (show) { return actionViewModel.doInvoke = show ?
                 function (right) {
+                    _this.context.clearDialog(_this.onPaneId);
                     _this.focusManager.focusOverrideOff();
                     _this.urlManager.setDialog(actionViewModel.actionRep.actionId(), _this.onPaneId);
                 } :
@@ -566,7 +590,7 @@ var NakedObjects;
             _.forEach(this.actions, function (a) { return _this.decorate(a); });
             return this;
         };
-        ListViewModel.prototype.description = function () { return this.size ? this.size.toString() : ""; };
+        ListViewModel.prototype.description = function () { return null; };
         ListViewModel.prototype.disableActions = function () {
             return !this.actions || this.actions.length === 0 || !this.items || this.items.length === 0;
         };
@@ -579,7 +603,7 @@ var NakedObjects;
         CollectionViewModel.prototype.doSummary = function () { };
         CollectionViewModel.prototype.doTable = function () { };
         CollectionViewModel.prototype.doList = function () { };
-        CollectionViewModel.prototype.description = function () { return this.size.toString(); };
+        CollectionViewModel.prototype.description = function () { return this.details.toString(); };
         return CollectionViewModel;
     }());
     NakedObjects.CollectionViewModel = CollectionViewModel;

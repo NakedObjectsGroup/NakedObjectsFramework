@@ -92,7 +92,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Architecture, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\NakedObjects.Core.8.0.0-beta7\lib\net451\NakedObjects.Architecture.dll</HintPath>
+      <HintPath>packages\NakedObjects.Core.8.0.0-beta8\lib\net451\NakedObjects.Architecture.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Attributes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -100,19 +100,19 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\NakedObjects.Core.8.0.0-beta7\lib\net451\NakedObjects.Core.dll</HintPath>
+      <HintPath>packages\NakedObjects.Core.8.0.0-beta8\lib\net451\NakedObjects.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Facade, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\NakedObjects.Facade.8.0.0-beta7\lib\net451\NakedObjects.Facade.dll</HintPath>
+      <HintPath>packages\NakedObjects.Facade.8.0.0-beta8\lib\net451\NakedObjects.Facade.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Facade.Impl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\NakedObjects.Facade.Impl.8.0.0-beta7\lib\net451\NakedObjects.Facade.Impl.dll</HintPath>
+      <HintPath>packages\NakedObjects.Facade.Impl.8.0.0-beta8\lib\net451\NakedObjects.Facade.Impl.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.FWResources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\NakedObjects.Core.8.0.0-beta7\lib\net451\NakedObjects.FWResources.dll</HintPath>
+      <HintPath>packages\NakedObjects.Core.8.0.0-beta8\lib\net451\NakedObjects.FWResources.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Helpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -120,11 +120,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Metamodel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\NakedObjects.Core.8.0.0-beta7\lib\net451\NakedObjects.Metamodel.dll</HintPath>
+      <HintPath>packages\NakedObjects.Core.8.0.0-beta8\lib\net451\NakedObjects.Metamodel.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Persistor.Entity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\NakedObjects.Core.8.0.0-beta7\lib\net451\NakedObjects.Persistor.Entity.dll</HintPath>
+      <HintPath>packages\NakedObjects.Core.8.0.0-beta8\lib\net451\NakedObjects.Persistor.Entity.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.PMResources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -132,19 +132,19 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Reflector, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\NakedObjects.Core.8.0.0-beta7\lib\net451\NakedObjects.Reflector.dll</HintPath>
+      <HintPath>packages\NakedObjects.Core.8.0.0-beta8\lib\net451\NakedObjects.Reflector.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Rest, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\NakedObjects.Rest.8.0.0-beta7\lib\net452\NakedObjects.Rest.dll</HintPath>
+      <HintPath>packages\NakedObjects.Rest.8.0.0-beta8\lib\net452\NakedObjects.Rest.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Rest.Snapshot, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\NakedObjects.Rest.8.0.0-beta7\lib\net452\NakedObjects.Rest.Snapshot.dll</HintPath>
+      <HintPath>packages\NakedObjects.Rest.8.0.0-beta8\lib\net452\NakedObjects.Rest.Snapshot.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Snapshot.Xml, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\NakedObjects.Core.8.0.0-beta7\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>
+      <HintPath>packages\NakedObjects.Core.8.0.0-beta8\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Types, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -152,7 +152,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Unity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\NakedObjects.Core.8.0.0-beta7\lib\net451\NakedObjects.Unity.dll</HintPath>
+      <HintPath>packages\NakedObjects.Core.8.0.0-beta8\lib\net451\NakedObjects.Unity.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -208,6 +208,7 @@
     <Content Include="Content\partials\collectionSummary.html" />
     <Content Include="Content\partials\collectionTable.html" />
     <Content Include="Content\partials\concurrencyError.html" />
+    <Content Include="Content\partials\customObjectView.html" />
     <Content Include="Content\partials\dialog.html" />
     <Content Include="Content\partials\error.html" />
     <Content Include="Content\partials\expiredTransient.html" />
@@ -311,24 +312,6 @@
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
-    <Content Include="Scripts\nakedobjects.app.js" />
-    <Content Include="Scripts\nakedobjects.cicerocommandfactory.js" />
-    <Content Include="Scripts\nakedobjects.cicerocommands.js" />
-    <Content Include="Scripts\nakedobjects.cicerorenderer.js" />
-    <Content Include="Scripts\nakedobjects.config.js" />
-    <Content Include="Scripts\nakedobjects.constants.js" />
-    <Content Include="Scripts\nakedobjects.controllers.js" />
-    <Content Include="Scripts\nakedobjects.directives.js" />
-    <Content Include="Scripts\nakedobjects.exceptionhandler.js" />
-    <Content Include="Scripts\nakedobjects.models.helpers.js" />
-    <Content Include="Scripts\nakedobjects.models.js" />
-    <Content Include="Scripts\nakedobjects.rointerfaces.custom.js" />
-    <Content Include="Scripts\nakedobjects.rointerfaces.js" />
-    <Content Include="Scripts\nakedobjects.routedata.js" />
-    <Content Include="Scripts\nakedobjects.services.clickhandler.js" />
-    <Content Include="Scripts\nakedobjects.services.color.config.js" />
-    <Content Include="Scripts\nakedobjects.services.color.config.js.map" />
-    <Content Include="Scripts\nakedobjects.config.js.map" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="packages.config">
       <SubType>Designer</SubType>
@@ -336,46 +319,6 @@
     <Content Include="Scripts\angular-route.min.js.map" />
     <Content Include="Scripts\angular-touch.min.js.map" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
-    <Content Include="Scripts\nakedobjects.services.color.js" />
-    <Content Include="Scripts\nakedobjects.services.context.js" />
-    <Content Include="Scripts\nakedobjects.services.focusmanager.js" />
-    <Content Include="Scripts\nakedobjects.services.handlers.js" />
-    <Content Include="Scripts\nakedobjects.services.mask.config.js" />
-    <Content Include="Scripts\nakedobjects.services.mask.js" />
-    <Content Include="Scripts\nakedobjects.services.navigation.browser.js" />
-    <Content Include="Scripts\nakedobjects.services.navigation.simple.js" />
-    <Content Include="Scripts\nakedobjects.services.representationloader.js" />
-    <Content Include="Scripts\nakedobjects.services.urlmanager.js" />
-    <Content Include="Scripts\nakedobjects.services.viewmodelfactory.js" />
-    <Content Include="Scripts\nakedobjects.userMessages.config.js" />
-    <Content Include="Scripts\nakedobjects.viewmodels.js" />
-    <Content Include="Scripts\nakedobjects.viewmodels.js.map" />
-    <Content Include="Scripts\nakedobjects.userMessages.config.js.map" />
-    <Content Include="Scripts\nakedobjects.services.viewmodelfactory.js.map" />
-    <Content Include="Scripts\nakedobjects.services.urlmanager.js.map" />
-    <Content Include="Scripts\nakedobjects.services.representationloader.js.map" />
-    <Content Include="Scripts\nakedobjects.services.navigation.simple.js.map" />
-    <Content Include="Scripts\nakedobjects.services.navigation.browser.js.map" />
-    <Content Include="Scripts\nakedobjects.services.mask.js.map" />
-    <Content Include="Scripts\nakedobjects.services.mask.config.js.map" />
-    <Content Include="Scripts\nakedobjects.services.handlers.js.map" />
-    <Content Include="Scripts\nakedobjects.services.focusmanager.js.map" />
-    <Content Include="Scripts\nakedobjects.services.context.js.map" />
-    <Content Include="Scripts\nakedobjects.services.color.js.map" />
-    <Content Include="Scripts\nakedobjects.services.clickhandler.js.map" />
-    <Content Include="Scripts\nakedobjects.routedata.js.map" />
-    <Content Include="Scripts\nakedobjects.rointerfaces.js.map" />
-    <Content Include="Scripts\nakedobjects.rointerfaces.custom.js.map" />
-    <Content Include="Scripts\nakedobjects.models.js.map" />
-    <Content Include="Scripts\nakedobjects.models.helpers.js.map" />
-    <Content Include="Scripts\nakedobjects.exceptionhandler.js.map" />
-    <Content Include="Scripts\nakedobjects.directives.js.map" />
-    <Content Include="Scripts\nakedobjects.controllers.js.map" />
-    <Content Include="Scripts\nakedobjects.constants.js.map" />
-    <Content Include="Scripts\nakedobjects.cicerorenderer.js.map" />
-    <Content Include="Scripts\nakedobjects.cicerocommands.js.map" />
-    <Content Include="Scripts\nakedobjects.cicerocommandfactory.js.map" />
-    <Content Include="Scripts\nakedobjects.app.js.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -432,9 +375,12 @@
     <TypeScriptCompile Include="Scripts\nakedobjects.services.navigation.browser.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.navigation.simple.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.representationloader.ts" />
+    <TypeScriptCompile Include="Scripts\nakedobjects.services.template.config.ts" />
+    <TypeScriptCompile Include="Scripts\nakedobjects.services.template.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.urlmanager.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.viewmodelfactory.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.userMessages.config.ts" />
+    <TypeScriptCompile Include="Scripts\nakedobjects.version.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.viewmodels.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
