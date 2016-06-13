@@ -335,7 +335,7 @@ module NakedObjects {
                 }
 
                 function wrapReferences(val: string) : string | RoInterfaces.ILink {
-                    if (viewModel.type === "ref") {
+                    if (val && viewModel.type === "ref") {
                         return { href: val };
                     }
                     return val;
