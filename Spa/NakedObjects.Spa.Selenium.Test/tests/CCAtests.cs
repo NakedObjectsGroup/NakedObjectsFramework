@@ -71,37 +71,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CheckIndividualItem(5, maxQty,newMax, false);
         }
 
-        public virtual void TableViewWithParmDialogAlreadyOpen()
-        {
-            GeminiUrl("home");
-            WaitForView(Pane.Single, PaneType.Home);
-            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&c1=Table&as1=open&d1=ChangeDiscount");
-            Reload();
-            var rand = new Random();
-            var newPct = "0." + rand.Next(51, 59);           
-            TypeIntoFieldWithoutClearing("#newdiscount1", newPct);
-            WaitForCss("td", 64);
-            //Now select items
-            SelectCheckBox("#item1-6");
-            SelectCheckBox("#item1-8");
-            Click(OKButton());
-            WaitUntilElementDoesNotExist(".dialog");
-            CheckIndividualItem(6, "Discount Pct:", newPct);
-            CheckIndividualItem(7, "Discount Pct:", newPct, false);
-            CheckIndividualItem(8, "Discount Pct:", newPct);
-
-            GeminiUrl("home");
-            WaitForView(Pane.Single, PaneType.Home);
-            //Reset to below 50%
-            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&c1=Table&as1=open&d1=ChangeDiscount");
-            Reload();
-            TypeIntoFieldWithoutClearing("#newdiscount1", "0.10");
-            var cells = WaitForCss("td", 64);
-            SelectCheckBox("#item1-6");
-            SelectCheckBox("#item1-8");
-            Click(OKButton());
-            WaitUntilElementDoesNotExist(".dialog");
-        }
 
         public virtual void TableViewWithParmDialogNotOpen()
         {
@@ -186,38 +155,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitUntilElementDoesNotExist(".dialog");
             Reload();
         }
-
-        public virtual void ZeroParamAction()
-        {
-            GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=20&ps1=5&s1=0&as1=open&c1=Table");
-            Reload();
-            wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count >30);
-            //Wait for no checkboxes selected
-            SelectCheckBox("#all"); //To clear
-            Click(GetObjectAction("Clear Comments"));
-            Thread.Sleep(1000);
-            Reload();
-            wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) == 0);
-
-            SelectCheckBox("#all", true); //To clear
-            WaitForSelectedCheckboxes(0);
-
-            //Now add comments
-            SelectCheckBox("#item1-1");
-            SelectCheckBox("#item1-2");
-            SelectCheckBox("#item1-3");
-            Click(GetObjectAction("Comment As Users Unhappy"));
-            Thread.Sleep(1000); //Because there is no visible change to wait for
-            Reload();
-            wait.Until( dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) ==3);
-            //Confirm three checkboxes still selected:
-            SelectCheckBox("#all"); //To clear
-            Click(GetObjectAction("Clear Comments"));
-            Thread.Sleep(1000);
-            Reload();
-            wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) == 0);
-        }
-
         public virtual void TestSelectAll()
         {
             GeminiUrl("home");
@@ -268,10 +205,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual(0, checkboxes.Count(cb => cb.Displayed));
             //Check that actions menu is disabled and 
         }
-        private void WaitForSelectedCheckboxes(int number)
-        {
-            wait.Until(dr => dr.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type") == "checkbox" && el.Selected) == number);
-        }
 
         public virtual void SelectionRetainedWhenNavigatingAwayAndBack()
         {
@@ -310,22 +243,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForTextStarting(".details", "Page 1 of ");
             WaitForSelectedCheckboxes(0);
         }
-
-        #region Helpers
-        private void CheckIndividualItem(int itemNo, string label, string value, bool equal = true)
-        {
-            GeminiUrl("object?o1=___1.SpecialOffer--" + (itemNo + 1));
-            var html = label + "\r\n" + value;
-            if (equal)
-            {
-                wait.Until( dr => dr.FindElements(By.CssSelector(".property")).First(p => p.Text.StartsWith(label)).Text == html);
-            }
-            else
-            {
-                wait.Until(dr => dr.FindElements(By.CssSelector(".property")).First(p => p.Text.StartsWith(label)).Text != html);
-            }
-        }
-        #endregion
     }
 
     public abstract class CCAtestsServer : CCAtestsRoot
@@ -363,38 +280,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             base.SelectionClearedWhenPageChanged();
         }
-    }
-
-    //These tests are  unreliable when run on the server
-    [TestClass, Ignore]
-    public class CCAtestsClientFirefox : CCAtestsRoot
-    {
-        #region Initialize
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest()
-        {
-            InitFirefoxDriver();
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest()
-        {
-            base.CleanUpTest();
-        }
-        #endregion
-
-        [TestMethod] 
-        public override void TableViewWithParmDialogAlreadyOpen() { base.TableViewWithParmDialogAlreadyOpen(); }
-
-        [TestMethod] 
-        public override void ZeroParamAction() { base.ZeroParamAction(); }
-
     }
 
     #region browsers specific subclasses

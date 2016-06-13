@@ -1429,7 +1429,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             UnrecognisedCommand();
             UpAndDownArrow();
             ScenarioEditAndSave();
-            //ScenarioMultiSelect(); //TODO: Failing on both client and server
+            ScenarioMultiSelect();
             ScenarioTransientObject();
             ScenarioUsingClipboard(); 
             ScenarioTestEditableVM();

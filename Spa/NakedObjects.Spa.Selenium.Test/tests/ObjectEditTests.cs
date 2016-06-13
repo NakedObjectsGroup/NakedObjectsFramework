@@ -37,7 +37,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("List Price:\r\n" + currency, properties[5].Text);
             Assert.AreEqual("Days To Manufacture:\r\n" + newDays, properties[17].Text);
         }
-
         public virtual void LocalValidationOfMandatoryFields()
         {
             GeminiUrl("object?i1=Edit&o1=___1.SpecialOffer--11");
@@ -62,7 +61,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Too long").Count() == 0);
             SaveButton().AssertIsEnabled();
         }
-
         public virtual void LocalValidationOfRegex()
         {
             GeminiUrl("object?i1=Edit&o1=___1.EmailAddress--12043--11238");
@@ -111,7 +109,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             SaveObject();
             wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[6].Text == "Email Promotion:\r\nNo Promotions");
         }
-
         public virtual void ObjectEditChangeDateTime()
         {
             GeminiUrl("object?o1=___1.Product--870");
@@ -133,24 +130,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Sell Start Date:\r\n" + sellStart.ToString("d MMM yyyy"), properties[18].Text);
            Assert.AreEqual("Sell End Date:\r\n"+sellEnd.ToString("d MMM yyyy"), properties[19].Text); //...but output format standardised.
         }
-
-        public virtual void ObjectEditChangeChoices()
-        {
-            GeminiUrl("object?o1=___1.Product--870");
-            EditObject();
-
-            // set product line 
-
-            SelectDropDownOnField("#productline1", "S");
-
-            ClearFieldThenType("#daystomanufacture1", "1");
-            SaveObject();
-
-            ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
-
-            Assert.AreEqual("Product Line:\r\nS", properties[8].Text);
-        }
-
         public virtual void CanSetAndClearAnOptionalDropDown()
         {
             GeminiUrl("object?o1=___1.WorkOrder--54064");
@@ -166,74 +145,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             prop = WaitForCssNo(".property", 4);
             Assert.AreEqual("Scrap Reason:", prop.Text);
         }
-
-        public virtual void ObjectEditChangeConditionalChoices()
-        {
-            GeminiUrl("object?o1=___1.Product--870");
-            EditObject();
-            // set product category and sub category
-            SelectDropDownOnField("#productcategory1", "Clothing");
-
-            wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory1 option")).Any(el => el.Text == "Bib-Shorts"));
-
-            SelectDropDownOnField("#productsubcategory1", "Bib-Shorts");
-
-            ClearFieldThenType("#daystomanufacture1", Keys.Backspace + "1");
-
-            SaveObject();
-
-            ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
-
-            Assert.AreEqual("Product Category:\r\nClothing", properties[6].Text);
-            Assert.AreEqual("Product Subcategory:\r\nBib-Shorts", properties[7].Text);
-
-            EditObject();
-
-            // set product category and sub category
-
-            var slctd = new SelectElement(br.FindElement(By.CssSelector("select#productcategory1")));
-
-            Assert.AreEqual("Clothing", slctd.SelectedOption.Text);
-
-            Assert.AreEqual(5, br.FindElements(By.CssSelector("select#productcategory1 option")).Count);
-
-            wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory1 option")).Count == 9);
-
-            Assert.AreEqual(9, br.FindElements(By.CssSelector("select#productsubcategory1 option")).Count);
-
-            SelectDropDownOnField("#productcategory1", "Bikes");
-
-            wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory1 option")).Count == 4);
-
-            SelectDropDownOnField("#productsubcategory1", "Mountain Bikes");
-
-            SaveObject();
-
-            properties = br.FindElements(By.CssSelector(".property"));
-
-            Assert.AreEqual("Product Category:\r\nBikes", properties[6].Text);
-            Assert.AreEqual("Product Subcategory:\r\nMountain Bikes", properties[7].Text);
-
-            // set values back
-            EditObject();
-
-            SelectDropDownOnField("#productcategory1", "Accessories");
-
-            var slpsc = new SelectElement(br.FindElement(By.CssSelector("select#productsubcategory1")));
-            wait.Until(d => slpsc.Options.Count == 13);
-
-            SelectDropDownOnField("#productsubcategory1", "Bottles and Cages");
-            SaveObject();
-
-            properties = br.FindElements(By.CssSelector(".property"));
-
-            Assert.AreEqual("Product Category:\r\nAccessories", properties[6].Text);
-            Assert.AreEqual("Product Subcategory:\r\nBottles and Cages", properties[7].Text);
-        }
-
         public virtual void ObjectEditPicksUpLatestServerVersion()
         {
-
             GeminiUrl("object?o1=___1.Person--8410&as1=open");
             WaitForView(Pane.Single, PaneType.Object);
             var original = WaitForCss(".property:nth-child(6) .value").Text;
@@ -249,21 +162,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(GetCancelEditButton()); //but can't read the value, so go back to view
             Assert.AreEqual(newValue, WaitForCss(".property:nth-child(6) .value").Text);
         }
-
-        public virtual void CoValidationOnSavingChanges()
-        {
-            GeminiUrl("object?o1=___1.WorkOrder--43134&i1=Edit");
-            WaitForView(Pane.Single, PaneType.Object);
-            //ClearFieldThenType("input#startdate1", ""); //Seems to be necessary to clear the date fields fully
-            //ClearFieldThenType("input#startdate1", "");
-            ClearFieldThenType("input#startdate1", "17 Oct 2007");
-            //ClearFieldThenType("input#duedate1", ""); //Seems to be necessary to clear the date fields fully
-            //ClearFieldThenType("input#duedate1", "");
-            ClearFieldThenType("input#duedate1", "15 Oct 2007");
-            Click(SaveButton());
-            WaitForMessage("StartDate must be before DueDate");
-        }
-
         public virtual void ViewModelEditOpensInEditMode()
         {
             GeminiUrl("object?o1=___1.EmailTemplate--1&i1=Form");
@@ -304,27 +202,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         [TestMethod]
         public override void  ObjectEditChangeEnum() { base.ObjectEditChangeEnum(); }
-
         [TestMethod]
         public override void ObjectEditChangeDateTime() { base.ObjectEditChangeDateTime(); }
-
-        [TestMethod]
-        public override void ObjectEditChangeChoices() { base.ObjectEditChangeChoices(); }
         [TestMethod]
         public override void CanSetAndClearAnOptionalDropDown() { base.CanSetAndClearAnOptionalDropDown(); }
-
-        [TestMethod]
-        public override void ObjectEditChangeConditionalChoices() { base.ObjectEditChangeConditionalChoices(); }
-
         [TestMethod]
         public override void ObjectEditPicksUpLatestServerVersion() { base.ObjectEditPicksUpLatestServerVersion(); }
-
-        [TestMethod]
-        public override void CoValidationOnSavingChanges() { base.CoValidationOnSavingChanges(); }
-
         [TestMethod]
         public override void ViewModelEditOpensInEditMode() { base.ViewModelEditOpensInEditMode(); }
-
         [TestMethod]
         public override void MultiLineText() { base.MultiLineText();  }
     }
@@ -418,12 +303,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             LocalValidationOfRegex();
             LocalValidationOfRange();
             ObjectEditChangeEnum();
-            ObjectEditChangeDateTime();
-            //ObjectEditChangeChoices();
+            ObjectEditChangeDateTime();            
             CanSetAndClearAnOptionalDropDown();
-            //ObjectEditChangeConditionalChoices(); //Unreliable on server
             ObjectEditPicksUpLatestServerVersion();
-            //CoValidationOnSavingChanges(); //Unreliable on server
             ViewModelEditOpensInEditMode();
             MultiLineText(); 
         }

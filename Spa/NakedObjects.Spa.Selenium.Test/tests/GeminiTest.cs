@@ -616,7 +616,26 @@ namespace NakedObjects.Web.UnitTests.Selenium
             }
         }
         #endregion
+        #region CCAs
+        protected void CheckIndividualItem(int itemNo, string label, string value, bool equal = true)
+        {
+            GeminiUrl("object?o1=___1.SpecialOffer--" + (itemNo + 1));
+            var html = label + "\r\n" + value;
+            if (equal)
+            {
+                wait.Until(dr => dr.FindElements(By.CssSelector(".property")).First(p => p.Text.StartsWith(label)).Text == html);
+            }
+            else
+            {
+                wait.Until(dr => dr.FindElements(By.CssSelector(".property")).First(p => p.Text.StartsWith(label)).Text != html);
+            }
+        }
 
+        protected void WaitForSelectedCheckboxes(int number)
+        {
+            wait.Until(dr => dr.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type") == "checkbox" && el.Selected) == number);
+        }
+        #endregion 
         #region ToolBar icons
         protected IWebElement HomeIcon()
         {

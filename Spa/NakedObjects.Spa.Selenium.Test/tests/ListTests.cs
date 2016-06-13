@@ -150,65 +150,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
                  .Text.StartsWith("Page 1 of 45"));
         }
-        public virtual void PagingTableView()
-        {
-            GeminiUrl("list?m1=CustomerRepository&a1=FindIndividualCustomerByName&p1=1&ps1=20&pm1_firstName=%22%22&pm1_lastName=%22a%22&c1=Table");
-            Reload();
-            //Confirm in Table view
-            WaitForCss("thead tr th");
-            WaitForCss(".icon-list");
-            WaitUntilElementDoesNotExist(".icon-table");
-            //Test content of collection
-            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
-                .Text.StartsWith("Page 1 of"));
-            GetButton("First").AssertIsDisabled();
-            GetButton("Previous").AssertIsDisabled();
-            var next = GetButton("Next").AssertIsEnabled();
-            GetButton("Last").AssertIsEnabled();
-            //Go to next page
-            Click(next);
-            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
-                 .Text.StartsWith("Page 2 of"));
-            //Confirm in Table view
-            WaitForCss("thead tr th");
-            WaitForCss(".icon-list");
-            WaitUntilElementDoesNotExist(".icon-table");
-
-            GetButton("First").AssertIsEnabled();
-            GetButton("Previous").AssertIsEnabled();
-            GetButton("Next").AssertIsEnabled();
-            var last = GetButton("Last").AssertIsEnabled();
-            Click(last);
-            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
-                    .Text.StartsWith("Page 45 of 45"));
-            //Confirm in Table view
-            WaitForCss("thead tr th");
-            var iconList = WaitForCss(".icon-list");
-            WaitUntilElementDoesNotExist(".icon-table");
-
-            GetButton("First").AssertIsEnabled();
-            var prev = GetButton("Previous").AssertIsEnabled();
-            GetButton("Next").AssertIsDisabled();
-            GetButton("Last").AssertIsDisabled();
-            Click(prev);
-            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
-                .Text.StartsWith("Page 44 of 45"));
-            //Confirm in Table view
-            WaitForCss("thead tr th");
-            WaitForCss(".icon-list");
-            WaitUntilElementDoesNotExist(".icon-table");
-            var first = GetButton("First").AssertIsEnabled();
-            GetButton("Previous").AssertIsEnabled();
-            GetButton("Next").AssertIsEnabled();
-            GetButton("Last").AssertIsEnabled();
-            Click(first);
-            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
-                 .Text.StartsWith("Page 1 of 45"));
-            //Confirm in Table view
-            WaitForCss("thead tr th");
-            WaitForCss(".icon-list");
-            WaitUntilElementDoesNotExist(".icon-table");
-        }
         public virtual void ListDoesNotRefreshWithoutReload()
         {
             GeminiUrl("list?m1=SpecialOfferRepository&a1=SpecialOffersWithNoMinimumQty&p1=1&ps1=20");
@@ -296,8 +237,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void NavigateToItemFromTableView() { base.NavigateToItemFromTableView(); }
         [TestMethod]
         public override void Paging() { base.Paging(); }
-        [TestMethod]
-        public override void PagingTableView() { base.PagingTableView(); }
         [TestMethod]
         public override void ListDoesNotRefreshWithoutReload() { base.ListDoesNotRefreshWithoutReload(); }
         [TestMethod]
@@ -395,7 +334,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             NavigateToItemFromListView();
             NavigateToItemFromTableView();
             Paging();
-            //PagingTableView(); //TODO: Unreliable on server
             ListDoesNotRefreshWithoutReload();
             ReloadingListGetsUpdatedObject();
             EagerlyRenderTableViewFromAction();
