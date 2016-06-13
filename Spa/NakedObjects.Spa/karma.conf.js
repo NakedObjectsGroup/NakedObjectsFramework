@@ -32,6 +32,8 @@ module.exports = function(config) {
       "Scripts/nakedobjects.app.js",
       "Scripts/nakedobjects.services.color.js",
       "Scripts/nakedobjects.services.color.config.js",
+      "Scripts/nakedobjects.services.template.js",
+      "Scripts/nakedobjects.services.template.config.js",
       "Scripts/nakedobjects.services.mask.js",
       "Scripts/nakedobjects.services.representationloader.js",
       "Scripts/nakedobjects.controllers.js",
