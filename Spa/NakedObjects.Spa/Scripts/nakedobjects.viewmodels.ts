@@ -176,7 +176,6 @@ module NakedObjects {
     export class ChoiceViewModel {
         id: string;
         name: string;
-        value: string;
         search: string;
         isEnum: boolean;
         isReference: boolean;
@@ -187,23 +186,26 @@ module NakedObjects {
             choiceViewModel.wrapped = value;
             choiceViewModel.id = id;
             choiceViewModel.name = name || value.toString();
-            choiceViewModel.value = value.isReference() ? value.link().href() : value.toValueString();
             choiceViewModel.search = searchTerm || choiceViewModel.name;
 
-            choiceViewModel.isEnum = !value.isReference() && (choiceViewModel.name !== choiceViewModel.value);
+            choiceViewModel.isEnum = !value.isReference() && (choiceViewModel.name !== choiceViewModel.getValue().toValueString());
             choiceViewModel.isReference = value.isReference();
             return choiceViewModel;
+        }
+
+        getValue() {
+            return this.wrapped;
         }
 
         equals(other: ChoiceViewModel) {
             return this.id === other.id &&
                 this.name === other.name &&
-                this.value === other.value;
+                this.wrapped.toValueString() === other.wrapped.toValueString();
         }
 
         match(other: ChoiceViewModel) {
-            const thisValue = this.isEnum ? this.value.trim() : this.search.trim();
-            const otherValue = this.isEnum ? other.value.trim() : other.search.trim();
+            const thisValue = this.isEnum ? this.wrapped.toValueString().trim() : this.search.trim();
+            const otherValue = this.isEnum ? other.wrapped.toValueString().trim() : other.search.trim();
             return thisValue === otherValue;
         }
     }
@@ -336,7 +338,7 @@ module NakedObjects {
         setColor(color: IColor) {
 
             if (this.entryType === EntryType.AutoComplete && this.choice && this.type === "ref") {
-                const href = this.choice.value;
+                const href = this.choice.getValue().link().href();
                 if (href) {
                     color.toColorNumberFromHref(href).then((c: number) => this.color = `${linkColor}${c}`);
                     return;
@@ -362,20 +364,20 @@ module NakedObjects {
                 if (this.entryType === EntryType.MultipleChoices || this.entryType === EntryType.MultipleConditionalChoices || this.isCollectionContributed) {
                     const selections = this.multiChoices || [];
                     if (this.type === "scalar") {
-                        const selValues = _.map(selections, cvm => cvm.value);
+                        const selValues = _.map(selections, cvm => cvm.getValue().scalar());
                         return new Value(selValues);
                     }
-                    const selRefs = _.map(selections, cvm => ({ href: cvm.value, title: cvm.name })); // reference 
+                    const selRefs = _.map(selections, cvm => ({ href: cvm.getValue().link().href(), title: cvm.name })); // reference 
                     return new Value(selRefs);
                 }
 
 
                 if (this.type === "scalar") {
-                    return new Value(this.choice && this.choice.value != null ? this.choice.value : "");
+                    return new Value(this.choice && this.choice.getValue().scalar() != null ? this.choice.getValue().scalar() : "");
                 }
 
                 // reference 
-                return new Value(this.choice && this.choice.value ? { href: this.choice.value, title: this.choice.name } : null);
+                return new Value(this.choice && this.choice.isReference ? { href: this.choice.getValue().link().href(), title: this.choice.name } : null);
             }
 
             if (this.type === "scalar") {
