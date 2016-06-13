@@ -338,7 +338,7 @@ module NakedObjects {
         setColor(color: IColor) {
 
             if (this.entryType === EntryType.AutoComplete && this.choice && this.type === "ref") {
-                const href = this.choice.getValue().link().href();
+                const href = this.choice.getValue().href();
                 if (href) {
                     color.toColorNumberFromHref(href).then((c: number) => this.color = `${linkColor}${c}`);
                     return;
@@ -367,7 +367,7 @@ module NakedObjects {
                         const selValues = _.map(selections, cvm => cvm.getValue().scalar());
                         return new Value(selValues);
                     }
-                    const selRefs = _.map(selections, cvm => ({ href: cvm.getValue().link().href(), title: cvm.name })); // reference 
+                    const selRefs = _.map(selections, cvm => ({ href: cvm.getValue().href(), title: cvm.name })); // reference 
                     return new Value(selRefs);
                 }
 
@@ -377,7 +377,7 @@ module NakedObjects {
                 }
 
                 // reference 
-                return new Value(this.choice && this.choice.isReference ? { href: this.choice.getValue().link().href(), title: this.choice.name } : null);
+                return new Value(this.choice && this.choice.isReference ? { href: this.choice.getValue().href(), title: this.choice.name } : null);
             }
 
             if (this.type === "scalar") {

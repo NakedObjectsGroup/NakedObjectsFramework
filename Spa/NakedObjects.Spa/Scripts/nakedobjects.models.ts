@@ -512,6 +512,10 @@ module NakedObjects.Models {
             return this.isReference() ? <Link>this.wrapped : null;
         }
 
+        href(): string {
+            return this.link() ? this.link().href() : null;
+        }
+
         scalar(): scalarValueType {
             return this.isScalar() ? this.wrapped as scalarValueType : null;
         }
