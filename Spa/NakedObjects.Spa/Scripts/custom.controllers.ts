@@ -1,5 +1,16 @@
 ﻿module NakedObjects {
     import ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
+
+    app.controller("DialogController", ($scope: INakedObjectsScope, urlManager: IUrlManager) => {
+        const rd = () => urlManager.getRouteData().pane()[$scope.object.onPaneId];
+
+        // if no dialog open 
+
+        if (!rd().dialogId) {
+            urlManager.setDialog("adialogID", $scope.object.onPaneId);
+        }
+    });
+
     app.controller("PollingController", ($scope: INakedObjectsScope, $timeout: ng.ITimeoutService, urlManager: IUrlManager) => {
 
         const scope = $scope;
