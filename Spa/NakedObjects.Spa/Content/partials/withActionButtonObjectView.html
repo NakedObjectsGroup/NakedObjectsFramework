@@ -12,6 +12,11 @@
         <div class="action clickable-area" tabindex="0" gemini-enter="object.doReload()" ng-click="object.doReload()">
             Reload
         </div>
+        <div ng-repeat="action in object.actions">
+            <div class="action clickable-area" title="{{action.description}}" tabindex="0" ng-click="action.doInvoke()" gemini-enter="action.doInvoke()" gemini-rightclick="action.doInvoke(true)" ng-disabled="action.disabled()">
+                {{action.title}}
+            </div>
+        </div>
         <div class="messages">{{object.message}}</div>
     </div>
     <div class="actions" ng-include="actionsTemplate"></div>

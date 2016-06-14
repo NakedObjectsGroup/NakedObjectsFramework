@@ -22,6 +22,16 @@
     <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Content\partials\accordionCollections.html" />
+    <Content Include="Content\partials\pollingObjectView.html" />
+    <Content Include="Content\partials\properties.html" />
+    <Content Include="Content\partials\groupedProperties.html" />
+    <Content Include="Content\partials\readOnlyProperty.html" />
+    <Content Include="Content\partials\withAccordionObjectView.html" />
+    <Content Include="Content\partials\withGroupedPropertiesObjectView.html" />
+    <Content Include="Content\partials\withActionButtonObjectView.html" />
+    <Content Include="Content\partials\openbydefaultObjectView.html" />
+    <Content Include="Content\partials\openbydefaultactions.html" />
     <Content Include="Content\partials\attachment.html" />
     <Content Include="Content\partials\applicationProperties.html" />
     <Content Include="Content\partials\customObjectView.html" />
@@ -131,6 +141,7 @@
     <Content Include="index.html" />
     <None Include="Scripts\nakedobjects.config.ts.pp" />
     <None Include="Scripts\nakedobjects.services.color.config.ts.pp" />
+    <TypeScriptCompile Include="Scripts\custom.controllers.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.template.config.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.template.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.version.ts" />

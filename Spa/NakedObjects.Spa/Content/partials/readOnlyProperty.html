@@ -1,0 +1,31 @@
+﻿<div ng-switch="property.type">
+    <div class="name">{{property.title}}:</div>
+
+    <div ng-switch-when="ref" ng-switch="property.refType">
+        <div ng-switch-when="null"></div> <!--So that empty reference field is not tabbed onto-->
+        <div ng-switch-when="notNavigable">
+            <div class="value">{{property.formattedValue}}</div>
+        </div>
+        <div ng-switch-default class="reference clickable-area" ng-class="property.color" ng-click="property.doClick()" gemini-rightclick="property.doClick(true)" gemini-drag gemini-enter="property.doClick()" tabindex="0">
+            {{property.formattedValue}}
+        </div>
+    </div>
+
+    <div ng-switch-when="scalar" ng-switch="property.returnType">
+
+        <div ng-switch-when="string" ng-switch="property.format">
+            <div ng-switch-when="blob" class="reference clickable-area" ng-model="$parent.property.attachment" ng-click='property.attachment.doClick()' gemini-rightclick='property.attachment.doClick(true)' gemini-enter='property.attachment.doClick()' gemini-attachment tabindex="0"></div>
+            <div ng-switch-default ng-switch="property.multipleLines">
+                <div ng-switch-when="1" class="value">{{property.formattedValue}}</div>
+                <div ng-switch-default class="value multiline" ng-style="{height: $parent.property.multipleLines * 20+'px'}"><pre>{{property.formattedValue}}</pre></div>
+            </div>
+        </div>
+        <div ng-switch-when="boolean">
+            <input type="checkbox" onclick="return false" ng-checked="property.value" disabled="disabled" />
+        </div>
+
+        <div ng-switch-default>
+            <div class="value">{{property.formattedValue}}</div>
+        </div>
+    </div>
+</div>
