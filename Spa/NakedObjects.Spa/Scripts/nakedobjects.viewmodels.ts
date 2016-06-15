@@ -616,7 +616,7 @@ module NakedObjects {
                             this.updateItems(list.value());
                         }).
                         catch((reject: ErrorWrapper) => {
-                            this.error.handleWrappedError(reject, null, () => { }, () => { });
+                            this.error.handleError(reject);
                         });
                 } else {
                     this.updateItems(this.listRep.value());
@@ -675,7 +675,7 @@ module NakedObjects {
                             then(result => this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || noResultMessage : "")).
                             catch((reject: ErrorWrapper) => {
                                 const display = (em: ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
-                                this.error.handleWrappedError(reject, null, () => { }, display);
+                                this.error.handleErrorAndDisplayMessages(reject,  display);
                             });
                     });
         }
@@ -730,7 +730,7 @@ module NakedObjects {
                 }).
                 catch((reject: ErrorWrapper) => {
                     const display = (em: ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
-                    this.error.handleWrappedError(reject, null, () => { }, display);
+                    this.error.handleErrorAndDisplayMessages(reject, display);
                 });
         };
 

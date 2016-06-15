@@ -790,7 +790,7 @@ module NakedObjects {
                                 collectionViewModel.details = getCollectionDetails(collectionViewModel.items.length);
                             })
                             .catch((reject: ErrorWrapper) => {
-                                error.handleWrappedError(reject, null, () => { }, () => { });
+                                error.handleError(reject);
                             });
                     } else {
                         collectionViewModel.items = viewModelFactory.getItems(itemLinks, state === CollectionViewState.Table, routeData, collectionViewModel);
@@ -835,7 +835,7 @@ module NakedObjects {
                 recreate().
                     then(() => $route.reload()).
                     catch((reject: ErrorWrapper) => {
-                        error.handleWrappedError(reject, null, () => { }, () => { });
+                        error.handleError(reject);
                     });
 
             return collectionPlaceholderViewModel;
@@ -1099,16 +1099,11 @@ module NakedObjects {
                                     }
                                 }
                             }).catch((reject: ErrorWrapper) => {
-
-                                const custom = (cc: ClientErrorCode) => {
-                                    if (cc === ClientErrorCode.ExpiredTransient) {
-                                        cvm.output = "The requested view of unsaved object details has expired";
-                                        return true;
-                                    }
-                                    return false;
-                                };
-
-                                error.handleWrappedError(reject, null, () => { }, () => { }, custom);
+                                if (reject.category === ErrorCategory.ClientError && reject.clientErrorCode === ClientErrorCode.ExpiredTransient) {
+                                    cvm.output = "The requested view of unsaved object details has expired";
+                                } else {
+                                    error.handleError(reject);
+                                }
                             });
                     }
                 };

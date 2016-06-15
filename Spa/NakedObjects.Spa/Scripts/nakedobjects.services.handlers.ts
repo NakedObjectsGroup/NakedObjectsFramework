@@ -159,7 +159,7 @@ module NakedObjects {
                         setNewDialog($scope, menu, routeData.dialogId, routeData, FocusTarget.SubAction);
                     })
                     .catch((reject: ErrorWrapper) => {
-                        error.handleWrappedError(reject, null, () => { }, () => { });
+                        error.handleError(reject);
                     });
             }
 
@@ -246,7 +246,7 @@ module NakedObjects {
                         handlers.handleHomeSearch($scope, routeData);
                     })
                     .catch((reject: ErrorWrapper) => {
-                        error.handleWrappedError(reject, null, () => { }, () => { });
+                        error.handleError(reject);
                     });
             };
 
@@ -432,14 +432,12 @@ module NakedObjects {
 
                     }).catch((reject: ErrorWrapper) => {
 
-                        const handler = (cc: ClientErrorCode) => {
-                            if (cc === ClientErrorCode.ExpiredTransient) {
-                                $scope.objectTemplate = expiredTransientTemplate;
-                                return true;
-                            }
-                            return false;
-                        };
-                        error.handleWrappedError(reject, null, () => { }, () => { }, handler);
+                        if (reject.category === ErrorCategory.ClientError && reject.clientErrorCode === ClientErrorCode.ExpiredTransient) {
+                            context.setError(reject);
+                            $scope.objectTemplate = expiredTransientTemplate;
+                        } else {
+                            error.handleError(reject);
+                        }
                     });
 
             };

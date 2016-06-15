@@ -7,14 +7,23 @@ module NakedObjects {
     import DomainObjectRepresentation = Models.DomainObjectRepresentation;
     import ErrorMap = Models.ErrorMap;
     import HttpStatusCode = Models.HttpStatusCode;
-    import ClientErrorCode = Models.ClientErrorCode;
+   
+
+    export interface IServerErrorHandler {
+        handle(reject : Models.ErrorWrapper) : void;
+    }
+
 
     export interface IError {
+
+        handleError(reject: Models.ErrorWrapper): void;
+
+        handleErrorAndDisplayMessages(reject: Models.ErrorWrapper, displayMessages: (em: Models.ErrorMap) => void): void;
+
         handleWrappedError(reject: Models.ErrorWrapper,
             toReload: Models.DomainObjectRepresentation,
             onReload: (updatedObject: Models.DomainObjectRepresentation) => void,
-            displayMessages: (em: Models.ErrorMap) => void,
-            customClientHandler?: (ec: Models.ClientErrorCode) => boolean): void;
+            displayMessages: (em: Models.ErrorMap) => void): void;
     }
 
     app.service("error",
@@ -50,18 +59,14 @@ module NakedObjects {
 
             }
 
-            function handleClientError(reject: ErrorWrapper, customClientHandler: (ec: ClientErrorCode) => boolean) {
-
-                if (!customClientHandler(reject.clientErrorCode)) {
-                    urlManager.setError(ErrorCategory.ClientError, reject.clientErrorCode);
-                }
+            function handleClientError(reject: ErrorWrapper) {
+                urlManager.setError(ErrorCategory.ClientError, reject.clientErrorCode);
             }
 
             errorService.handleWrappedError = (reject: ErrorWrapper,
-                toReload: DomainObjectRepresentation,
-                onReload: (updatedObject: DomainObjectRepresentation) => void,
-                displayMessages: (em: ErrorMap) => void,
-                customClientHandler: (ec: ClientErrorCode) => boolean = () => false) => {
+                                               toReload: DomainObjectRepresentation,
+                                               onReload: (updatedObject: DomainObjectRepresentation) => void,
+                                               displayMessages: (em: ErrorMap) => void) => {
                 if (reject.handled) {
                     return;
                 }
@@ -76,11 +81,17 @@ module NakedObjects {
                     handleHttpClientError(reject, toReload, onReload, displayMessages);
                     break;
                 case (ErrorCategory.ClientError):
-                    handleClientError(reject, customClientHandler);
+                    handleClientError(reject);
                     break;
                 }
             };
 
+            errorService.handleError = (reject: ErrorWrapper) => {
+                errorService.handleWrappedError(reject, null, () => {}, () => {});
+            };
 
+            errorService.handleErrorAndDisplayMessages = (reject: Models.ErrorWrapper, displayMessages: (em: Models.ErrorMap) => void) => {
+                errorService.handleWrappedError(reject, null, () => {}, displayMessages);
+            };
         });
 }

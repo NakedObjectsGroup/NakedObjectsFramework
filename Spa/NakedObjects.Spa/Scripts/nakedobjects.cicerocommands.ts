@@ -1168,7 +1168,7 @@ module NakedObjects {
                             const paramFriendlyName = (paramId: string) => FriendlyNameForParam(action, paramId);
                             this.handleErrorResponse(em, paramFriendlyName);
                         };
-                        this.error.handleWrappedError(reject, null, () => { }, display);
+                        this.error.handleErrorAndDisplayMessages(reject, display);
                     });
             });
         }
@@ -1377,7 +1377,7 @@ module NakedObjects {
                 saveOrUpdate(obj, propMap, 1, true).
                     catch((reject: ErrorWrapper) => {
                         const display = (em: ErrorMap) => this.handleError(em, obj);
-                        this.error.handleWrappedError(reject, null, () => { }, display);
+                        this.error.handleErrorAndDisplayMessages(reject, display);
                     });
             });
         };
