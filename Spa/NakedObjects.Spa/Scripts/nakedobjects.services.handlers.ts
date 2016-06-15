@@ -45,22 +45,23 @@ module NakedObjects {
             navigation: INavigation,
             urlManager: IUrlManager,
             focusManager: IFocusManager,
-            template : ITemplate) {
+            template: ITemplate,
+            error : IError) {
             const handlers = <IHandlers>this;
 
             const perPaneListViews = [,
-                new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q),
-                new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q)
+                new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $q),
+                new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $q)
             ];
 
             const perPaneObjectViews = [,
-                new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q),
-                new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q)
+                new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $q),
+                new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $q)
             ];
 
             const perPaneDialogViews = [,
-                new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope),
-                new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope)
+                new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $rootScope),
+                new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $rootScope)
             ];
 
             const perPaneMenusViews = [,
@@ -158,7 +159,7 @@ module NakedObjects {
                         setNewDialog($scope, menu, routeData.dialogId, routeData, FocusTarget.SubAction);
                     })
                     .catch((reject: ErrorWrapper) => {
-                        context.handleWrappedError(reject, null, () => { }, () => { });
+                        error.handleWrappedError(reject, null, () => { }, () => { });
                     });
             }
 
@@ -191,9 +192,9 @@ module NakedObjects {
                 for (let pane = 1; pane <= 2; pane++) {
                     context.clearParmUpdater(pane);
 
-                    perPaneListViews[pane] = new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q);
-                    perPaneObjectViews[pane] = new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q);
-                    perPaneDialogViews[pane] = new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope);
+                    perPaneListViews[pane] = new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $q);
+                    perPaneObjectViews[pane] = new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $q);
+                    perPaneDialogViews[pane] = new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $rootScope);
                     perPaneMenusViews[pane] = new MenusViewModel(viewModelFactory);
                 }
             }
@@ -245,7 +246,7 @@ module NakedObjects {
                         handlers.handleHomeSearch($scope, routeData);
                     })
                     .catch((reject: ErrorWrapper) => {
-                        context.handleWrappedError(reject, null, () => { }, () => { });
+                        error.handleWrappedError(reject, null, () => { }, () => { });
                     });
             };
 
@@ -438,7 +439,7 @@ module NakedObjects {
                             }
                             return false;
                         };
-                        context.handleWrappedError(reject, null, () => { }, () => { }, handler);
+                        error.handleWrappedError(reject, null, () => { }, () => { }, handler);
                     });
 
             };

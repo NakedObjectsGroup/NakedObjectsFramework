@@ -30,6 +30,8 @@ module.exports = function(config) {
       "Scripts/nakedobjects.viewmodels.js",
       "Scripts/nakedobjects.routedata.js",
       "Scripts/nakedobjects.app.js",
+      "Scripts/nakedobjects.services.error.js",
+      "Scripts/nakedobjects.services.error.config.js",
       "Scripts/nakedobjects.services.color.js",
       "Scripts/nakedobjects.services.color.config.js",
       "Scripts/nakedobjects.services.template.js",

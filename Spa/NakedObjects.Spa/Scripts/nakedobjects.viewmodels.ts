@@ -447,6 +447,7 @@ module NakedObjects {
             private viewModelFactory: IViewModelFactory,
             private urlManager: IUrlManager,
             private focusManager: IFocusManager,
+            private error: IError,
             private $rootScope: ng.IRootScopeService) {
             super();
         }
@@ -522,7 +523,7 @@ module NakedObjects {
                 catch((reject: ErrorWrapper) => {
                     const parent = this.actionMember().parent instanceof DomainObjectRepresentation ? this.actionMember().parent as DomainObjectRepresentation : null;
                     const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.parameters);
-                    this.context.handleWrappedError(reject,
+                    this.error.handleWrappedError(reject,
                         parent,
                         () => {
                             // this should just be called if concurrency
@@ -576,6 +577,7 @@ module NakedObjects {
             private viewModelFactory: IViewModelFactory,
             private urlManager: IUrlManager,
             private focusManager: IFocusManager,
+            private error: IError,
             private $q: ng.IQService) {
             super();
         }
@@ -614,7 +616,7 @@ module NakedObjects {
                             this.updateItems(list.value());
                         }).
                         catch((reject: ErrorWrapper) => {
-                            this.context.handleWrappedError(reject, null, () => { }, () => { });
+                            this.error.handleWrappedError(reject, null, () => { }, () => { });
                         });
                 } else {
                     this.updateItems(this.listRep.value());
@@ -673,7 +675,7 @@ module NakedObjects {
                             then(result => this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || noResultMessage : "")).
                             catch((reject: ErrorWrapper) => {
                                 const display = (em: ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
-                                this.context.handleWrappedError(reject, null, () => { }, display);
+                                this.error.handleWrappedError(reject, null, () => { }, display);
                             });
                     });
         }
@@ -728,7 +730,7 @@ module NakedObjects {
                 }).
                 catch((reject: ErrorWrapper) => {
                     const display = (em: ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
-                    this.context.handleWrappedError(reject, null, () => { }, display);
+                    this.error.handleWrappedError(reject, null, () => { }, display);
                 });
         };
 
@@ -905,6 +907,7 @@ module NakedObjects {
             private viewModelFactory: IViewModelFactory,
             private urlManager: IUrlManager,
             private focusManager: IFocusManager,
+            private error: IError,
             private $q: ng.IQService) {
             super();
         }
@@ -1087,7 +1090,7 @@ module NakedObjects {
         private handleWrappedError = (reject: ErrorWrapper) => {
             const reset = (updatedObject: DomainObjectRepresentation) => this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
             const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.properties);
-            this.contextService.handleWrappedError(reject, this.domainObject, reset, display);
+            this.error.handleWrappedError(reject, this.domainObject, reset, display);
         };
 
         doSave = (viewObject: boolean) => {
@@ -1150,7 +1153,7 @@ module NakedObjects {
         serverVersion: IVersionRepresentation;
         user: IUserRepresentation;
         serverUrl: string;
-        clientVersion: string = "8.0.0-Beta7"; //TODO: derive automatically from package version
+        clientVersion: string;
     }
 
     export class ToolBarViewModel {

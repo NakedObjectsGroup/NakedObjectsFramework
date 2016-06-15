@@ -57,7 +57,8 @@ module NakedObjects {
             protected navigation: INavigation,
             protected $q: ng.IQService,
             protected $route: ng.route.IRouteService,
-            protected mask: IMask
+            protected mask: IMask,
+            protected error: IError
         ) { }
 
         fullCommand: string;
@@ -1167,7 +1168,7 @@ module NakedObjects {
                             const paramFriendlyName = (paramId: string) => FriendlyNameForParam(action, paramId);
                             this.handleErrorResponse(em, paramFriendlyName);
                         };
-                        this.context.handleWrappedError(reject, null, () => { }, display);
+                        this.error.handleWrappedError(reject, null, () => { }, display);
                     });
             });
         }
@@ -1376,7 +1377,7 @@ module NakedObjects {
                 saveOrUpdate(obj, propMap, 1, true).
                     catch((reject: ErrorWrapper) => {
                         const display = (em: ErrorMap) => this.handleError(em, obj);
-                        this.context.handleWrappedError(reject, null, () => { }, display);
+                        this.error.handleWrappedError(reject, null, () => { }, display);
                     });
             });
         };

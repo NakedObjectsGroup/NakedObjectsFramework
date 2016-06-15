@@ -72,22 +72,23 @@ module NakedObjects {
     }
 
     app.service("viewModelFactory", function ($q: ng.IQService,
-        $timeout: ng.ITimeoutService,
-        $location: ng.ILocationService,
-        $filter: ng.IFilterService,
-        $cacheFactory: ng.ICacheFactoryService,
-        repLoader: IRepLoader,
-        color: IColor,
-        context: IContext,
-        mask: IMask,
-        urlManager: IUrlManager,
-        focusManager: IFocusManager,
-        navigation: INavigation,
-        clickHandler: IClickHandler,
-        commandFactory: ICommandFactory,
-        $rootScope: ng.IRootScopeService,
-        $route: ng.route.IRouteService,
-        $http: ng.IHttpService) {
+                                              $timeout: ng.ITimeoutService,
+                                              $location: ng.ILocationService,
+                                              $filter: ng.IFilterService,
+                                              $cacheFactory: ng.ICacheFactoryService,
+                                              $rootScope: ng.IRootScopeService,
+                                              $route: ng.route.IRouteService,
+                                              $http: ng.IHttpService,
+                                              repLoader: IRepLoader,
+                                              color: IColor,
+                                              context: IContext,
+                                              mask: IMask,
+                                              urlManager: IUrlManager,
+                                              focusManager: IFocusManager,
+                                              navigation: INavigation,
+                                              clickHandler: IClickHandler,
+                                              commandFactory: ICommandFactory,
+                                              error: IError) {
 
         var viewModelFactory = <IViewModelFactoryInternal>this;
 
@@ -413,7 +414,7 @@ module NakedObjects {
                             const parent = actionRep.parent as DomainObjectRepresentation;
                             const reset = (updatedObject: DomainObjectRepresentation) => this.reset(updatedObject, urlManager.getRouteData().pane()[this.onPaneId]);
                             const display = (em: ErrorMap) => vm.setMessage(em.invalidReason() || em.warningMessage);
-                            context.handleWrappedError(reject, parent, reset, display);
+                            error.handleWrappedError(reject, parent, reset, display);
                         });
                 };
 
@@ -789,7 +790,7 @@ module NakedObjects {
                                 collectionViewModel.details = getCollectionDetails(collectionViewModel.items.length);
                             })
                             .catch((reject: ErrorWrapper) => {
-                                context.handleWrappedError(reject, null, () => { }, () => { });
+                                error.handleWrappedError(reject, null, () => { }, () => { });
                             });
                     } else {
                         collectionViewModel.items = viewModelFactory.getItems(itemLinks, state === CollectionViewState.Table, routeData, collectionViewModel);
@@ -834,7 +835,7 @@ module NakedObjects {
                 recreate().
                     then(() => $route.reload()).
                     catch((reject: ErrorWrapper) => {
-                        context.handleWrappedError(reject, null, () => { }, () => { });
+                        error.handleWrappedError(reject, null, () => { }, () => { });
                     });
 
             return collectionPlaceholderViewModel;
@@ -1107,7 +1108,7 @@ module NakedObjects {
                                     return false;
                                 };
 
-                                context.handleWrappedError(reject, null, () => { }, () => { }, custom);
+                                error.handleWrappedError(reject, null, () => { }, () => { }, custom);
                             });
                     }
                 };

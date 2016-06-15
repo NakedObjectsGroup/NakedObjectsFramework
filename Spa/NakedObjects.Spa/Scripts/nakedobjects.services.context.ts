@@ -106,11 +106,7 @@ module NakedObjects {
         clearMessages(): void;
         clearWarnings(): void;
 
-        handleWrappedError(reject: ErrorWrapper,
-            toReload: DomainObjectRepresentation,
-            onReload: (updatedObject: DomainObjectRepresentation) => void,
-            displayMessages: (em: ErrorMap) => void,
-            customClientHandler?: (ec: ClientErrorCode) => boolean): void;
+     
 
         getRecentlyViewed(): DomainObjectRepresentation[];
 
@@ -883,65 +879,7 @@ module NakedObjects {
             return promise;
         };
 
-        function handleHttpServerError(reject: ErrorWrapper) {
-            urlManager.setError(ErrorCategory.HttpServerError);
-        }
-
-        function handleHttpClientError(reject: ErrorWrapper,
-            toReload: DomainObjectRepresentation,
-            onReload: (updatedObject: DomainObjectRepresentation) => void,
-            displayMessages: (em: ErrorMap) => void) {
-            switch (reject.httpErrorCode) {
-                case (HttpStatusCode.PreconditionFailed):
-
-                    if (toReload.isTransient()) {
-                        urlManager.setError(ErrorCategory.HttpClientError, reject.httpErrorCode);
-                    } else {
-                        context.reloadObject(1, toReload).
-                            then((updatedObject: DomainObjectRepresentation) => {
-                                onReload(updatedObject);
-                            });
-                    }
-                    break;
-                case (HttpStatusCode.UnprocessableEntity):
-                    displayMessages(reject.error as ErrorMap);
-                    break;
-                default:
-                    urlManager.setError(ErrorCategory.HttpClientError, reject.httpErrorCode);
-            }
-
-        }
-
-        function handleClientError(reject: ErrorWrapper, customClientHandler: (ec: ClientErrorCode) => boolean) {
-
-            if (!customClientHandler(reject.clientErrorCode)) {
-                urlManager.setError(ErrorCategory.ClientError, reject.clientErrorCode);
-            }
-        }
-
-        context.handleWrappedError = (reject: ErrorWrapper,
-            toReload: DomainObjectRepresentation,
-            onReload: (updatedObject: DomainObjectRepresentation) => void,
-            displayMessages: (em: ErrorMap) => void,
-            customClientHandler: (ec: ClientErrorCode) => boolean = () => false) => {
-            if (reject.handled) {
-                return;
-            }
-            reject.handled = true;
-
-            context.setError(reject);
-            switch (reject.category) {
-                case (ErrorCategory.HttpServerError):
-                    handleHttpServerError(reject);
-                    break;
-                case (ErrorCategory.HttpClientError):
-                    handleHttpClientError(reject, toReload, onReload, displayMessages);
-                    break;
-                case (ErrorCategory.ClientError):
-                    handleClientError(reject, customClientHandler);
-                    break;
-            }
-        };
+       
 
         function addRecentlyViewed(obj: DomainObjectRepresentation) {
             recentcache.add(obj);
