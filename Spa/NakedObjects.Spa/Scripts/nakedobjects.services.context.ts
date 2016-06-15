@@ -44,8 +44,7 @@ module NakedObjects {
         getVersion: () => ng.IPromise<VersionRepresentation>;
         getMenus: () => ng.IPromise<MenusRepresentation>;
         getMenu: (menuId: string) => ng.IPromise<MenuRepresentation>;
-        getObject: (paneId: number, oid: ObjectIdWrapper, interactionMode: InteractionMode)
-            => ng.IPromise<DomainObjectRepresentation>;
+        getObject: (paneId: number, oid: ObjectIdWrapper, interactionMode: InteractionMode) => ng.IPromise<DomainObjectRepresentation>;
         getListFromMenu: (paneId: number, routeData: PaneRouteData, page?: number, pageSize?: number)
             => angular.IPromise<ListRepresentation>;
         getListFromObject: (paneId: number, routeData: PaneRouteData, page?: number, pageSize?: number)
@@ -89,8 +88,7 @@ module NakedObjects {
         validateSaveObject(object: DomainObjectRepresentation, props: _.Dictionary<Value>): ng.IPromise<boolean>;
 
 
-        reloadObject: (paneId: number, object: DomainObjectRepresentation) => angular.
-        IPromise<DomainObjectRepresentation>;
+        reloadObject: (paneId: number, object: DomainObjectRepresentation) => angular.IPromise<DomainObjectRepresentation>;
 
         getObjectForEdit: (paneId: number, object: DomainObjectRepresentation) => angular.
         IPromise<DomainObjectRepresentation>;
