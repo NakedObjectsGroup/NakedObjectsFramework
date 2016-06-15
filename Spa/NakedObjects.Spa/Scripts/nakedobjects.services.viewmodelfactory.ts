@@ -417,7 +417,7 @@ module NakedObjects {
                                 $rootScope.$broadcast(geminiDisplayErrorEvent, new ErrorMap({}, 0, concurrencyError));
                             };
                             const display = (em: ErrorMap) => vm.setMessage(em.invalidReason() || em.warningMessage);
-                            error.handleWrappedError(reject, parent, reset, display);
+                            error.handleErrorWithReload(reject, parent, reset, display);
                         });
                 };
 

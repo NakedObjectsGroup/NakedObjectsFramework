@@ -523,7 +523,7 @@ module NakedObjects {
                 catch((reject: ErrorWrapper) => {
                     const parent = this.actionMember().parent instanceof DomainObjectRepresentation ? this.actionMember().parent as DomainObjectRepresentation : null;
                     const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.parameters);
-                    this.error.handleWrappedError(reject,
+                    this.error.handleErrorWithReload(reject,
                         parent,
                         () => {
                             // this should just be called if concurrency
@@ -1090,7 +1090,7 @@ module NakedObjects {
         private handleWrappedError = (reject: ErrorWrapper) => {
             const reset = (updatedObject: DomainObjectRepresentation) => this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
             const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.properties);
-            this.error.handleWrappedError(reject, this.domainObject, reset, display);
+            this.error.handleErrorWithReload(reject, this.domainObject, reset, display);
         };
 
         doSave = (viewObject: boolean) => {

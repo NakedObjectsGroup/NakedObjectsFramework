@@ -8,27 +8,28 @@ module NakedObjects {
     import ErrorMap = Models.ErrorMap;
     import HttpStatusCode = Models.HttpStatusCode;
    
-
-    export interface IServerErrorHandler {
-        handle(reject : Models.ErrorWrapper) : void;
-    }
-
-
+    export type errorHandler = (reject: ErrorWrapper) => void;
+    
     export interface IError {
 
         handleError(reject: Models.ErrorWrapper): void;
 
         handleErrorAndDisplayMessages(reject: Models.ErrorWrapper, displayMessages: (em: Models.ErrorMap) => void): void;
 
-        handleWrappedError(reject: Models.ErrorWrapper,
+        handleErrorWithReload(reject: Models.ErrorWrapper,
             toReload: Models.DomainObjectRepresentation,
             onReload: (updatedObject: Models.DomainObjectRepresentation) => void,
             displayMessages: (em: Models.ErrorMap) => void): void;
+
+        setErrorPreprocessor(handler: errorHandler) : void;
+
     }
 
     app.service("error",
         function(urlManager: IUrlManager, context: IContext) {
             const errorService = <IError>this;
+
+            const preProcessors: errorHandler[] = [];
 
             function handleHttpServerError(reject: ErrorWrapper) {
                 urlManager.setError(ErrorCategory.HttpServerError);
@@ -63,10 +64,14 @@ module NakedObjects {
                 urlManager.setError(ErrorCategory.ClientError, reject.clientErrorCode);
             }
 
-            errorService.handleWrappedError = (reject: ErrorWrapper,
+            errorService.handleErrorWithReload = (reject: ErrorWrapper,
                                                toReload: DomainObjectRepresentation,
                                                onReload: (updatedObject: DomainObjectRepresentation) => void,
                                                displayMessages: (em: ErrorMap) => void) => {
+
+
+                preProcessors.forEach(p => p(reject));
+
                 if (reject.handled) {
                     return;
                 }
@@ -87,11 +92,15 @@ module NakedObjects {
             };
 
             errorService.handleError = (reject: ErrorWrapper) => {
-                errorService.handleWrappedError(reject, null, () => {}, () => {});
+                errorService.handleErrorWithReload(reject, null, () => {}, () => {});
             };
 
             errorService.handleErrorAndDisplayMessages = (reject: Models.ErrorWrapper, displayMessages: (em: Models.ErrorMap) => void) => {
-                errorService.handleWrappedError(reject, null, () => {}, displayMessages);
+                errorService.handleErrorWithReload(reject, null, () => {}, displayMessages);
+            };
+
+            errorService.setErrorPreprocessor = (handler: errorHandler) => {
+                preProcessors.push(handler);
             };
         });
 }
