@@ -5,34 +5,32 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OpenQA.Selenium;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenQA.Selenium;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
-
     /// <summary>
     /// Tests only that a given URLs return the correct views. No actions performed on them
     /// </summary>
     /// 
-    public abstract class UrlTestsRoot : AWTest
-    {
-        public virtual void UnrecognisedUrlGoesToHome()
-        {
+    public abstract class UrlTestsRoot : AWTest {
+        public virtual void UnrecognisedUrlGoesToHome() {
             GeminiUrl("unrecognised");
             WaitForView(Pane.Single, PaneType.Home, "Home");
             Assert.IsTrue(br.FindElements(By.CssSelector(".actions")).Count == 0);
         }
+
         #region Single pane Urls
-        public virtual void Home()
-        {
+
+        public virtual void Home() {
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home, "Home");
             Assert.IsTrue(br.FindElements(By.CssSelector(".actions")).Count == 0);
         }
-        public virtual void HomeWithMenu()
-        {
+
+        public virtual void HomeWithMenu() {
             GeminiUrl("home?m1=CustomerRepository");
             WaitForView(Pane.Single, PaneType.Home, "Home");
             wait.Until(d => d.FindElement(By.CssSelector(".actions")));
@@ -48,15 +46,15 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             //Assert.AreEqual("Customer Dashboard", actions[7].Text);
             //Assert.AreEqual("Throw Domain Exception", actions[8].Text);
         }
-        public virtual void Object()
-        {
+
+        public virtual void Object() {
             GeminiUrl("object?o1=___1.Store--350");
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
             wait.Until(d => d.FindElement(By.CssSelector(".view")));
             AssertObjectElementsPresent();
         }
-        private void AssertObjectElementsPresent()
-        {
+
+        private void AssertObjectElementsPresent() {
             wait.Until(d => d.FindElement(By.CssSelector(".single")));
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
             wait.Until(d => d.FindElement(By.CssSelector(".view")));
@@ -66,22 +64,21 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(d => d.FindElement(By.CssSelector(".collections")));
 
             Assert.IsTrue(br.FindElements(By.CssSelector(".error")).Count == 0);
-
         }
-        public virtual void ObjectWithNoSuchObject()
-        {
+
+        public virtual void ObjectWithNoSuchObject() {
             GeminiUrl("object?o1=___1.Foo--555");
             wait.Until(d => d.FindElement(By.CssSelector(".error")));
         }
-        public virtual void ObjectWithActions()
-        {
+
+        public virtual void ObjectWithActions() {
             GeminiUrl("object?o1=___1.Store--350&as1=open");
             GetObjectAction("Create New Address");
             AssertObjectElementsPresent();
         }
+
         //TODO:  Need to add tests for object & home (later, list) with action (dialog) open
-        public virtual void ObjectWithCollections()
-        {
+        public virtual void ObjectWithCollections() {
             GeminiUrl("object?o1=___1.Store--350&&c1_Addresses=List&c1_Contacts=Table");
             wait.Until(d => d.FindElement(By.CssSelector(".collections")));
             AssertObjectElementsPresent();
@@ -99,8 +96,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             //Assert.IsTrue(collections[0].FindElements(By.CssSelector(".icon-list")).Count == 0);
         }
-        public virtual void ObjectInEditMode()
-        {
+
+        public virtual void ObjectInEditMode() {
             GeminiUrl("object?o1=___1.Store--350&i1=Edit");
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
             wait.Until(d => d.FindElement(By.CssSelector(".edit")));
@@ -108,100 +105,101 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             GetCancelEditButton();
             // AssertObjectElementsPresent();
         }
-        public virtual void ListZeroParameterAction()
-        {
+
+        public virtual void ListZeroParameterAction() {
             GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders");
             Reload(Pane.Single);
             wait.Until(d => d.FindElement(By.CssSelector(".list")));
             WaitForView(Pane.Single, PaneType.List, "Highest Value Orders");
         }
+
         #endregion
+
         #region Split pane Urls
-        public virtual void SplitHomeHome()
-        {
+
+        public virtual void SplitHomeHome() {
             GeminiUrl("home/home");
             WaitForView(Pane.Left, PaneType.Home, "Home");
             WaitForView(Pane.Right, PaneType.Home, "Home");
         }
-        public virtual void SplitHomeObject()
-        {
+
+        public virtual void SplitHomeObject() {
             GeminiUrl("home/object?o2=___1.Store--350");
             WaitForView(Pane.Left, PaneType.Home, "Home");
             WaitForView(Pane.Right, PaneType.Object, "Twin Cycles");
         }
-        public virtual void SplitHomeList()
-        {
+
+        public virtual void SplitHomeList() {
             GeminiUrl("home/list?&m2=OrderRepository&a2=HighestValueOrders");
             WaitForView(Pane.Left, PaneType.Home, "Home");
             WaitForView(Pane.Right, PaneType.List, "Highest Value Orders");
-         }
-        public virtual void SplitObjectHome()
-        {
+        }
+
+        public virtual void SplitObjectHome() {
             GeminiUrl("object/home?o1=___1.Store--350");
             WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
             WaitForView(Pane.Right, PaneType.Home, "Home");
         }
-        public virtual void SplitObjectObject()
-        {
+
+        public virtual void SplitObjectObject() {
             GeminiUrl("object/object?o1=___1.Store--350&o2=___1.Store--604");
             WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
             WaitForView(Pane.Right, PaneType.Object, "Mechanical Sports Center");
         }
-        public virtual void SplitObjectList()
-        {
+
+        public virtual void SplitObjectList() {
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
             GeminiUrl("object/list?o1=___1.Store--350&m2=OrderRepository&a2=HighestValueOrders");
             WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
             WaitForView(Pane.Right, PaneType.List, "Highest Value Orders");
         }
-        public virtual void SplitListHome()
-        {
+
+        public virtual void SplitListHome() {
             GeminiUrl("list/home?m1=OrderRepository&a1=HighestValueOrders");
             WaitForView(Pane.Left, PaneType.List, "Highest Value Orders");
             WaitForView(Pane.Right, PaneType.Home, "Home");
         }
-        public virtual void SplitListObject()
-        {
+
+        public virtual void SplitListObject() {
             GeminiUrl("list/object?m1=OrderRepository&a1=HighestValueOrders&o2=___1.Store--604");
             WaitForView(Pane.Left, PaneType.List, "Highest Value Orders");
             WaitForView(Pane.Right, PaneType.Object, "Mechanical Sports Center");
         }
-        public virtual void SplitListList()
-        {
+
+        public virtual void SplitListList() {
             GeminiUrl("list/list?m2=PersonRepository&pm2_firstName=%22a%22&pm2_lastName=%22a%22&a2=FindContactByName&p2=1&ps2=20&s2=0&m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0");
             WaitForView(Pane.Left, PaneType.List, "Current Special Offers");
             WaitForView(Pane.Right, PaneType.List, "Find Contact By Name");
         }
+
         #endregion
     }
-    public abstract class UrlTests : UrlTestsRoot
-    {
+
+    public abstract class UrlTests : UrlTestsRoot {
         [TestMethod]
-        public override void UnrecognisedUrlGoesToHome()
-        {
+        public override void UnrecognisedUrlGoesToHome() {
             base.UnrecognisedUrlGoesToHome();
         }
 
         #region Single pane Urls
+
         [TestMethod]
-        public override void Home()
-        {
+        public override void Home() {
             base.Home();
         }
 
         [TestMethod]
-        public override void HomeWithMenu()
-        {
+        public override void HomeWithMenu() {
             base.HomeWithMenu();
         }
-       [TestMethod]
-        public override void Object()
-        {
+
+        [TestMethod]
+        public override void Object() {
             base.Object();
         }
-        private void AssertObjectElementsPresent()
-        {
+
+        private void AssertObjectElementsPresent() {
             wait.Until(d => d.FindElement(By.CssSelector(".single")));
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
             wait.Until(d => d.FindElement(By.CssSelector(".view")));
@@ -211,98 +209,84 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(d => d.FindElement(By.CssSelector(".collections")));
 
             Assert.IsTrue(br.FindElements(By.CssSelector(".error")).Count == 0);
-
         }
 
         [TestMethod]
-        public override void ObjectWithNoSuchObject()
-        {
+        public override void ObjectWithNoSuchObject() {
             base.ObjectWithNoSuchObject();
         }
 
         [TestMethod]
-        public override void ObjectWithActions()
-        {
+        public override void ObjectWithActions() {
             base.ObjectWithActions();
         }
 
         [TestMethod]
-        public override void ObjectWithCollections()
-        {
+        public override void ObjectWithCollections() {
             base.ObjectWithCollections();
         }
 
         [TestMethod]
-        public override void ObjectInEditMode()
-        {
+        public override void ObjectInEditMode() {
             base.ObjectInEditMode();
         }
 
         [TestMethod]
-        public override void ListZeroParameterAction()
-        {
+        public override void ListZeroParameterAction() {
             base.ListZeroParameterAction();
         }
+
         #endregion
 
         #region Split pane Urls
 
         [TestMethod]
-        public override void SplitHomeHome()
-        {
+        public override void SplitHomeHome() {
             base.SplitHomeHome();
         }
 
         [TestMethod]
-        public override void SplitHomeObject()
-        {
+        public override void SplitHomeObject() {
             base.SplitHomeObject();
         }
 
         [TestMethod]
-        public override void SplitHomeList()
-        {
-            base.SplitHomeList();        }
+        public override void SplitHomeList() {
+            base.SplitHomeList();
+        }
 
         [TestMethod]
-        public override void SplitObjectHome()
-        {
+        public override void SplitObjectHome() {
             base.SplitObjectHome();
         }
 
         [TestMethod]
-        public override void SplitObjectObject()
-        {
+        public override void SplitObjectObject() {
             base.SplitObjectObject();
         }
 
         [TestMethod]
-        public override void SplitObjectList()
-        {
+        public override void SplitObjectList() {
             base.SplitObjectList();
         }
 
         [TestMethod]
-        public override void SplitListHome()
-        {
+        public override void SplitListHome() {
             base.SplitListHome();
         }
 
-        [TestMethod] 
-        public override void SplitListObject()
-        {
+        [TestMethod]
+        public override void SplitListObject() {
             base.SplitListObject();
         }
 
         [TestMethod]
-        public override void SplitListList()
-        {
+        public override void SplitListList() {
             base.SplitListList();
         }
+
         #endregion
-
     }
-
 
     #region browsers specific subclasses 
 
@@ -343,6 +327,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             base.CleanUpTest();
         }
     }
+
     public class UrlTestsChrome : UrlTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -369,31 +354,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
     #endregion
 
-    [TestClass]
-    public class MegaUrlTestFirefox : UrlTestsRoot
-    {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest()
-        {
-            InitFirefoxDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest()
-        {
-            base.CleanUpTest();
-        }
-
+    public class MegaUrlTestRoot : UrlTestsRoot {
         [TestMethod] //Mega
-        public virtual void MegaUrlTest()
-        {
+        public virtual void MegaUrlTest() {
             Home();
             UnrecognisedUrlGoesToHome();
             HomeWithMenu();
@@ -411,6 +374,45 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             SplitListHome();
             SplitListObject();
             SplitListList();
+        }
+    }
+
+    //[TestClass]
+    public class MegaUrlTestFirefox : MegaUrlTestRoot {
+        [ClassInitialize]
+        public new static void InitialiseClass(TestContext context) {
+            AWTest.InitialiseClass(context);
+        }
+
+        [TestInitialize]
+        public virtual void InitializeTest() {
+            InitFirefoxDriver();
+            Url(BaseUrl);
+        }
+
+        [TestCleanup]
+        public virtual void CleanupTest() {
+            base.CleanUpTest();
+        }
+    }
+
+    [TestClass]
+    public class MegaUrlTestIe : MegaUrlTestRoot {
+        [ClassInitialize]
+        public new static void InitialiseClass(TestContext context) {
+            FilePath(@"drivers.IEDriverServer.exe");
+            AWTest.InitialiseClass(context);
+        }
+
+        [TestInitialize]
+        public virtual void InitializeTest() {
+            InitIeDriver();
+            Url(BaseUrl);
+        }
+
+        [TestCleanup]
+        public virtual void CleanupTest() {
+            base.CleanUpTest();
         }
     }
 }

@@ -5,24 +5,20 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Collections.ObjectModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using System.Collections.ObjectModel;
-using System.Linq;
 
-namespace NakedObjects.Web.UnitTests.Selenium
-{
-    public abstract class FooterTestsRoot : AWTest
-    {
-        public virtual void Home()
-        {
+namespace NakedObjects.Web.UnitTests.Selenium {
+    public abstract class FooterTestsRoot : AWTest {
+        public virtual void Home() {
             GeminiUrl("object?o1=___1.Product--968");
             WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
             Click(br.FindElement(By.CssSelector(".icon-home")));
             WaitForView(Pane.Single, PaneType.Home, "Home");
         }
-        public virtual void BackAndForward()
-        {
+
+        public virtual void BackAndForward() {
             Url(BaseUrl);
             GoToMenuFromHomePage("Orders");
             Click(GetObjectAction("Random Order"));
@@ -33,7 +29,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             ClickForwardButton();
             WaitForView(Pane.Single, PaneType.Object, orderTitle);
             EditObject();
-            WaitForView(Pane.Single, PaneType.Object, "Editing - "+orderTitle);
+            WaitForView(Pane.Single, PaneType.Object, "Editing - " + orderTitle);
             ClickBackButton();
             WaitForView(Pane.Single, PaneType.Home);
             ClickForwardButton();
@@ -61,8 +57,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             ClickBackButton();
             WaitForView(Pane.Single, PaneType.Object, orderTitle);
         }
-        public virtual void Cicero()
-        {
+
+        public virtual void Cicero() {
             GeminiUrl("object?o1=___1.Product--968");
             WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
             Click(WaitForCss(".icon-speech"));
@@ -78,8 +74,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(WaitForCss(".icon-speech"));
             WaitForOutput("Product: Touring-1000 Blue, 54\r\nAction dialog: Best Special Offer\r\nQuantity: empty");
         }
-        public virtual void WarningsAndInfo()
-        {
+
+        public virtual void WarningsAndInfo() {
             GeminiUrl("home?m1=WorkOrderRepository");
             Click(GetObjectAction("Generate Info And Warning"));
             var warn = WaitForCss(".footer .warnings");
@@ -92,8 +88,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitUntilElementDoesNotExist(".footer .warnings");
             WaitUntilElementDoesNotExist(".footer .messages");
         }
-        public virtual void RecentObjects()
-        {
+
+        public virtual void RecentObjects() {
             GeminiUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber&f1_accountNumber=%22AW%22");
             ClearFieldThenType("#accountnumber1", "AW00000042");
             Click(OKButton());
@@ -116,15 +112,15 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.Recent);
             var el = WaitForCssNo("tr td:nth-child(1)", 0);
             Assert.AreEqual("Long-Sleeve Logo Jersey, S", el.Text);
-             el = WaitForCssNo("tr td:nth-child(1)", 1);
+            el = WaitForCssNo("tr td:nth-child(1)", 1);
             Assert.AreEqual("Marcus Collins, AW00022262", el.Text);
-             el = WaitForCssNo("tr td:nth-child(1)", 2);
+            el = WaitForCssNo("tr td:nth-child(1)", 2);
             Assert.AreEqual("Mechanical Sports Center, AW00000359", el.Text);
-             el = WaitForCssNo("tr td:nth-child(1)", 3);
+            el = WaitForCssNo("tr td:nth-child(1)", 3);
             Assert.AreEqual("Healthy Activity Store, AW00000042", el.Text);
         }
-        public virtual void ApplicationProperties()
-        {
+
+        public virtual void ApplicationProperties() {
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
             ClickPropertiesButton();
@@ -137,119 +133,119 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.IsTrue(properties[3].Text.StartsWith("Client version: 8.0.0"));
         }
 
-        public virtual void LogOff()
-        {
+        public virtual void LogOff() {
             GeminiUrl("home");
             ClickLogOffButton();
             IAlert alert = br.SwitchTo().Alert();
             Assert.IsTrue(alert.Text.StartsWith("Please confirm logoff of user:"));
         }
     }
-    public abstract class FooterTests : FooterTestsRoot
-    {
+
+    public abstract class FooterTests : FooterTestsRoot {
+        [TestMethod]
+        public override void Home() {
+            base.Home();
+        }
 
         [TestMethod]
-        public override void Home() { base.Home(); }
+        public override void BackAndForward() {
+            base.BackAndForward();
+        }
 
         [TestMethod]
-        public override void BackAndForward() { base.BackAndForward(); }
+        public override void Cicero() {
+            base.Cicero();
+        }
 
         [TestMethod]
-        public override void Cicero() { base.Cicero(); }
+        public override void WarningsAndInfo() {
+            base.WarningsAndInfo();
+        }
 
-        [TestMethod] 
-        public override void WarningsAndInfo() { base.WarningsAndInfo(); }
+        [TestMethod]
+        public override void RecentObjects() {
+            base.RecentObjects();
+        }
 
         [TestMethod]
-        public override void RecentObjects() { base.RecentObjects(); }
+        public override void ApplicationProperties() {
+            base.ApplicationProperties();
+        }
+
         [TestMethod]
-        public override void ApplicationProperties() { base.ApplicationProperties(); }
-        [TestMethod]
-        public override void LogOff() { base.LogOff(); }
+        public override void LogOff() {
+            base.LogOff();
+        }
     }
 
     #region browsers specific subclasses 
 
-    public class FooterIconTestsIe : FooterTests
-    {
+    public class FooterIconTestsIe : FooterTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitIeDriver();
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
     }
 
     //[TestClass] //Firefox Individual
-    public class FooterIconTestsFirefox : FooterTests
-    {
+    public class FooterIconTestsFirefox : FooterTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitFirefoxDriver();
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
     }
 
-    public class FooterIconTestsChrome : FooterTests
-    {
+    public class FooterIconTestsChrome : FooterTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitChromeDriver();
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
 
-        protected override void ScrollTo(IWebElement element)
-        {
+        protected override void ScrollTo(IWebElement element) {
             string script = string.Format("window.scrollTo(0, {0})", element.Location.Y);
-            ((IJavaScriptExecutor)br).ExecuteScript(script);
+            ((IJavaScriptExecutor) br).ExecuteScript(script);
         }
     }
 
     #endregion
 
     #region Mega tests
-    public abstract class MegaFooterTestsRoot : FooterTestsRoot
-    {
+
+    public abstract class MegaFooterTestsRoot : FooterTestsRoot {
         [TestMethod] //Mega
-        public void MegaFooterTest()
-        {
+        public void MegaFooterTest() {
             Home();
             BackAndForward();
             Cicero();
@@ -260,27 +256,45 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass]
-    public class MegaFooterTestsFirefox : MegaFooterTestsRoot
-    {
+   // [TestClass]
+    public class MegaFooterTestsFirefox : MegaFooterTestsRoot {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitFirefoxDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
     }
+
+    [TestClass]
+    public class MegaFooterTestsIe : MegaFooterTestsRoot {
+        [ClassInitialize]
+        public new static void InitialiseClass(TestContext context) {
+            FilePath(@"drivers.IEDriverServer.exe");
+            AWTest.InitialiseClass(context);
+        }
+
+        [TestInitialize]
+        public virtual void InitializeTest() {
+            InitIeDriver();
+            Url(BaseUrl);
+        }
+
+        [TestCleanup]
+        public virtual void CleanupTest() {
+            base.CleanUpTest();
+        }
+    }
+
+
     #endregion
 }

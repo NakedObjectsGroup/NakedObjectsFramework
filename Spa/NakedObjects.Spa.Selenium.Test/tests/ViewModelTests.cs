@@ -5,24 +5,19 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Web.UnitTests.Selenium
-{
-
-    public abstract class ViewModelTestsRoot : AWTest
-    {
-        public virtual void CreateVM()
-        {
+namespace NakedObjects.Web.UnitTests.Selenium {
+    public abstract class ViewModelTestsRoot : AWTest {
+        public virtual void CreateVM() {
             GeminiUrl("object?i1=View&o1=___1.CustomerDashboard--20071&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Sean Campbell - Dashboard");
             //TODO: test for no Edit button?
         }
-        public virtual void CreateEditableVM()
-        {
+
+        public virtual void CreateEditableVM() {
             GeminiUrl("object?i1=View&o1=___1.Person--9169&as1=open");
             Click(GetObjectAction("Create Email"));
             WaitForView(Pane.Single, PaneType.Object, "New email");
@@ -34,7 +29,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             ClearFieldThenType("#message1", "Hello");
 
             var action = wait.Until(d => d.FindElements(By.CssSelector(".action")).
-                     Single(we => we.Text == "Send"));
+                Single(we => we.Text == "Send"));
             Click(action);
             wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(5)")).Text == "Status:\r\nSent");
             Assert.AreEqual("To:", WaitForCss(".property:nth-child(1)").Text);
@@ -42,97 +37,93 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Sent email", title.Text);
         }
 
-        public virtual void CreateSwitchableVM()
-        {
+        public virtual void CreateSwitchableVM() {
             GeminiUrl("object?i1=View&o1=___1.StoreSalesInfo--AW00000293--False&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Sales Info for: Fashionable Bikes and Accessories");
             Click(GetObjectAction("Edit")); //Note: not same as the generic (object) Edit button
             WaitForView(Pane.Single, PaneType.Object, "Editing - Sales Info for: Fashionable Bikes and Accessories");
             SelectDropDownOnField("#salesterritory1", "Central");
-            Click(SaveButton());  //TODO: check if this works
+            Click(SaveButton()); //TODO: check if this works
             WaitForView(Pane.Single, PaneType.Object, "Sales Info for: Fashionable Bikes and Accessories");
             WaitForTextEquals(".property", 2, "Sales Territory:\r\nCentral");
         }
     }
-    public abstract class ViewModelsTests : ViewModelTestsRoot
-    {
+
+    public abstract class ViewModelsTests : ViewModelTestsRoot {
         [TestMethod]
-        public override void CreateVM() { base.CreateVM(); }
+        public override void CreateVM() {
+            base.CreateVM();
+        }
+
         [TestMethod]
-        public override void CreateEditableVM() { base.CreateEditableVM(); }
+        public override void CreateEditableVM() {
+            base.CreateEditableVM();
+        }
+
         [TestMethod]
-        public override void CreateSwitchableVM() { base.CreateSwitchableVM(); }
+        public override void CreateSwitchableVM() {
+            base.CreateSwitchableVM();
+        }
     }
+
     #region browsers specific subclasses
 
-    public class ViewModelTestsIe : ViewModelsTests
-    {
+    public class ViewModelTestsIe : ViewModelsTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitIeDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
     }
 
     //[TestClass] //Firefox Individual
-    public class ViewModelFirefox : ViewModelsTests
-    {
+    public class ViewModelFirefox : ViewModelsTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitFirefoxDriver();
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
 
-        protected override void ScrollTo(IWebElement element)
-        {
+        protected override void ScrollTo(IWebElement element) {
             string script = string.Format("window.scrollTo({0}, {1});return true;", element.Location.X, element.Location.Y);
-            ((IJavaScriptExecutor)br).ExecuteScript(script);
+            ((IJavaScriptExecutor) br).ExecuteScript(script);
         }
     }
-    public class ViewModelTestsChrome : ViewModelsTests
-    {
+
+    public class ViewModelTestsChrome : ViewModelsTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitChromeDriver();
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
     }
@@ -140,37 +131,54 @@ namespace NakedObjects.Web.UnitTests.Selenium
     #endregion
 
     #region Mega tests
-    public abstract class MegaViewModelTestsRoot : ViewModelTestsRoot
-    {
+
+    public abstract class MegaViewModelTestsRoot : ViewModelTestsRoot {
         [TestMethod] //Mega
-        public void MegaViewModelTest()
-        {
+        public void MegaViewModelTest() {
             CreateVM();
             CreateEditableVM();
             CreateSwitchableVM();
         }
     }
-    [TestClass]
-    public class MegaViewModelTestsFirefox : MegaViewModelTestsRoot
-    {
+
+    //[TestClass]
+    public class MegaViewModelTestsFirefox : MegaViewModelTestsRoot {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitFirefoxDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
     }
+
+    [TestClass]
+    public class MegaViewModelTestsIe : MegaViewModelTestsRoot {
+        [ClassInitialize]
+        public new static void InitialiseClass(TestContext context) {
+            FilePath(@"drivers.IEDriverServer.exe");
+            AWTest.InitialiseClass(context);
+        }
+
+        [TestInitialize]
+        public virtual void InitializeTest() {
+            InitIeDriver();
+            Url(BaseUrl);
+        }
+
+        [TestCleanup]
+        public virtual void CleanupTest() {
+            base.CleanUpTest();
+        }
+    }
+
     #endregion
 }

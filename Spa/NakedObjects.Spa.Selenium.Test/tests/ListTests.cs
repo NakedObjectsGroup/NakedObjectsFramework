@@ -5,20 +5,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OpenQA.Selenium;
 using System.Linq;
 using System.Threading;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenQA.Selenium;
 
-namespace NakedObjects.Web.UnitTests.Selenium
-{
+namespace NakedObjects.Web.UnitTests.Selenium {
     /// <summary>
     /// Tests applied from a List view.
     /// </summary>
-    public abstract class ListTestsRoot : AWTest
-    {
-        public virtual void ActionReturnsListView()
-        {
+    public abstract class ListTestsRoot : AWTest {
+        public virtual void ActionReturnsListView() {
             Url(OrdersMenuUrl);
             Click(GetObjectAction("Highest Value Orders"));
             WaitForView(Pane.Single, PaneType.List, "Highest Value Orders");
@@ -31,30 +28,29 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual(20, br.FindElements(By.CssSelector(".collection table tbody tr td.checkbox")).Count);
             Assert.AreEqual(0, br.FindElements(By.CssSelector(".cell")).Count); //Cells are in Table view only
         }
-        public virtual void ActionReturnsEmptyList()
-        {
+
+        public virtual void ActionReturnsEmptyList() {
             GeminiUrl("home?m1=ProductRepository&d1=FindProductByName");
             ClearFieldThenType("#searchstring1", "zzz");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Find Product By Name");
             WaitForTextEquals(".details", "No items found");
-
         }
-        public virtual void TableViewAttributeHonoured()
-        {
+
+        public virtual void TableViewAttributeHonoured() {
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
             GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&pg1=1&ps1=20&s1=0&c1=Table");
             Reload();
-            var cols = WaitForCss("th", 4).ToArray();           
+            var cols = WaitForCss("th", 4).ToArray();
             Assert.AreEqual(4, cols.Length);
             Assert.AreEqual("All", cols[0].Text);
             Assert.AreEqual("Description", cols[1].Text);
             Assert.AreEqual("Category", cols[2].Text);
             Assert.AreEqual("Discount Pct", cols[3].Text);
         }
-        public virtual void TableViewCanIncludeCollectionSummaries()
-        {
+
+        public virtual void TableViewCanIncludeCollectionSummaries() {
             GeminiUrl("list?m1=OrderRepository&a1=OrdersWithMostLines&pg1=1&ps1=20&s1=0&c1=Table");
             Reload();
             var header = WaitForCss("thead");
@@ -66,8 +62,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Details", cols[3].Text);
             WaitForTextEquals("tbody tr:nth-child(1) td:nth-child(4)", "72 Items");
         }
-        public virtual void SwitchToTableViewAndBackToList()
-        {
+
+        public virtual void SwitchToTableViewAndBackToList() {
             Url(SpecialOffersMenuUrl);
             Click(GetObjectAction("Current Special Offers"));
             WaitForView(Pane.Single, PaneType.List, "Current Special Offers");
@@ -89,8 +85,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count > 1);
             Assert.AreEqual(0, br.FindElements(By.CssSelector(".cell")).Count); //Cells are in Table view only
         }
-        public virtual void NavigateToItemFromListView()
-        {
+
+        public virtual void NavigateToItemFromListView() {
             Url(SpecialOffersMenuUrl);
             Click(GetObjectAction("Current Special Offers"));
             WaitForView(Pane.Single, PaneType.List, "Current Special Offers");
@@ -98,8 +94,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(row);
             WaitForView(Pane.Single, PaneType.Object, "No Discount");
         }
-        public virtual void NavigateToItemFromTableView()
-        {
+
+        public virtual void NavigateToItemFromTableView() {
             Url(SpecialOffersMenuUrl);
             Click(GetObjectAction("Current Special Offers"));
             WaitForView(Pane.Single, PaneType.List, "Current Special Offers");
@@ -112,8 +108,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(row);
             WaitForView(Pane.Single, PaneType.Object, "No Discount");
         }
-        public virtual void Paging()
-        {
+
+        public virtual void Paging() {
             GeminiUrl("list?m1=CustomerRepository&a1=FindIndividualCustomerByName&p1=1&ps1=20&pm1_firstName=%22%22&pm1_lastName=%22a%22");
             Reload();
 
@@ -127,14 +123,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //Go to next page
             Click(next);
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
-                 .Text.StartsWith("Page 2 of 45"));
+                .Text.StartsWith("Page 2 of 45"));
             GetButton("First").AssertIsEnabled();
             GetButton("Previous").AssertIsEnabled();
             GetButton("Next").AssertIsEnabled();
             var last = GetButton("Last").AssertIsEnabled();
             Click(last);
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
-                    .Text.StartsWith("Page 45 of 45"));
+                .Text.StartsWith("Page 45 of 45"));
             GetButton("First").AssertIsEnabled();
             var prev = GetButton("Previous").AssertIsEnabled();
             GetButton("Next").AssertIsDisabled();
@@ -148,10 +144,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
             GetButton("Last").AssertIsEnabled();
             Click(first);
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
-                 .Text.StartsWith("Page 1 of 45"));
+                .Text.StartsWith("Page 1 of 45"));
         }
-        public virtual void ListDoesNotRefreshWithoutReload()
-        {
+
+        public virtual void ListDoesNotRefreshWithoutReload() {
             GeminiUrl("list?m1=SpecialOfferRepository&a1=SpecialOffersWithNoMinimumQty&p1=1&ps1=20");
             Reload();
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
@@ -163,10 +159,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
             GeminiUrl("list?m1=SpecialOfferRepository&a1=SpecialOffersWithNoMinimumQty&p1=1&ps1=20");
             WaitForView(Pane.Single, PaneType.List, "Special Offers With No Minimum Qty");
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
-                == "Page 1 of 1; viewing 11 of 11 items");
+                             == "Page 1 of 1; viewing 11 of 11 items");
             Reload();
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
-                == "Page 1 of 1; viewing 10 of 10 items");
+                             == "Page 1 of 1; viewing 10 of 10 items");
 
             //Undo to leave in original state
             GeminiUrl("object?o1=___1.SpecialOffer--7");
@@ -177,10 +173,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.List, "Special Offers With No Minimum Qty");
             Reload();
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
-                == "Page 1 of 1; viewing 11 of 11 items");
+                             == "Page 1 of 1; viewing 11 of 11 items");
         }
-        public virtual void ReloadingListGetsUpdatedObject()
-        {
+
+        public virtual void ReloadingListGetsUpdatedObject() {
             Url(SpecialOffersMenuUrl);
             Click(GetObjectAction("Current Special Offers"));
             WaitForView(Pane.Single, PaneType.List, "Current Special Offers");
@@ -206,8 +202,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             ClearFieldThenType("#description1", "Volume Discount 11 to 14");
             SaveObject();
         }
-        public virtual void EagerlyRenderTableViewFromAction()
-        {
+
+        public virtual void EagerlyRenderTableViewFromAction() {
             GeminiUrl("home?m1=EmployeeRepository");
             Click(GetObjectAction("List All Departments"));
             WaitForView(Pane.Single, PaneType.List, "List All Departments");
@@ -219,113 +215,132 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Group Name", cols[2].Text);
         }
     }
-    public abstract class ListTests : ListTestsRoot
-    {
+
+    public abstract class ListTests : ListTestsRoot {
         [TestMethod]
-        public override void ActionReturnsListView() { base.ActionReturnsListView(); }
+        public override void ActionReturnsListView() {
+            base.ActionReturnsListView();
+        }
+
         [TestMethod]
-        public override void ActionReturnsEmptyList() { base.ActionReturnsEmptyList(); }
+        public override void ActionReturnsEmptyList() {
+            base.ActionReturnsEmptyList();
+        }
+
         [TestMethod]
-        public override void TableViewAttributeHonoured() { base.TableViewAttributeHonoured(); }
+        public override void TableViewAttributeHonoured() {
+            base.TableViewAttributeHonoured();
+        }
+
         [TestMethod]
-        public override void TableViewCanIncludeCollectionSummaries() { base.TableViewCanIncludeCollectionSummaries(); }
+        public override void TableViewCanIncludeCollectionSummaries() {
+            base.TableViewCanIncludeCollectionSummaries();
+        }
+
         [TestMethod]
-        public override void SwitchToTableViewAndBackToList() { base.SwitchToTableViewAndBackToList(); }
+        public override void SwitchToTableViewAndBackToList() {
+            base.SwitchToTableViewAndBackToList();
+        }
+
         [TestMethod]
-        public override void NavigateToItemFromListView() { base.NavigateToItemFromListView(); }
+        public override void NavigateToItemFromListView() {
+            base.NavigateToItemFromListView();
+        }
+
         [TestMethod]
-        public override void NavigateToItemFromTableView() { base.NavigateToItemFromTableView(); }
+        public override void NavigateToItemFromTableView() {
+            base.NavigateToItemFromTableView();
+        }
+
         [TestMethod]
-        public override void Paging() { base.Paging(); }
+        public override void Paging() {
+            base.Paging();
+        }
+
         [TestMethod]
-        public override void ListDoesNotRefreshWithoutReload() { base.ListDoesNotRefreshWithoutReload(); }
+        public override void ListDoesNotRefreshWithoutReload() {
+            base.ListDoesNotRefreshWithoutReload();
+        }
+
         [TestMethod]
-        public override void ReloadingListGetsUpdatedObject() { base.ReloadingListGetsUpdatedObject(); }
+        public override void ReloadingListGetsUpdatedObject() {
+            base.ReloadingListGetsUpdatedObject();
+        }
+
         [TestMethod]
-        public override void EagerlyRenderTableViewFromAction() { base.EagerlyRenderTableViewFromAction(); }
+        public override void EagerlyRenderTableViewFromAction() {
+            base.EagerlyRenderTableViewFromAction();
+        }
     }
 
     #region browsers specific subclasses
 
-    public class ListTestsIe : ListTests
-    {
+    public class ListTestsIe : ListTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitIeDriver();
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
     }
 
     //[TestClass] //Firefox Individual
-    public class ListTestsFirefox : ListTests
-    {
+    public class ListTestsFirefox : ListTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitFirefoxDriver();
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
     }
 
-    public class ListTestsChrome : ListTests
-    {
+    public class ListTestsChrome : ListTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitChromeDriver();
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
 
-        protected override void ScrollTo(IWebElement element)
-        {
+        protected override void ScrollTo(IWebElement element) {
             string script = string.Format("window.scrollTo({0}, {1});return true;", element.Location.X, element.Location.Y);
-            ((IJavaScriptExecutor)br).ExecuteScript(script);
+            ((IJavaScriptExecutor) br).ExecuteScript(script);
         }
     }
 
     #endregion
+
     #region Mega tests
-    public abstract class MegaListTestsRoot : ListTestsRoot
-    {
+
+    public abstract class MegaListTestsRoot : ListTestsRoot {
         [TestMethod] //Mega
-        public void MegaListTest()
-        {
+        public void MegaListTest() {
             ActionReturnsListView();
             ActionReturnsEmptyList();
             TableViewAttributeHonoured();
@@ -339,27 +354,46 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EagerlyRenderTableViewFromAction();
         }
     }
-    [TestClass]
-    public class MegaListTestsFirefox : MegaListTestsRoot
-    {
+
+    //[TestClass]
+    public class MegaListTestsFirefox : MegaListTestsRoot {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitFirefoxDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
     }
+
+    [TestClass]
+    public class MegaListTestsIe : MegaListTestsRoot {
+        [ClassInitialize]
+        public new static void InitialiseClass(TestContext context) {
+            FilePath(@"drivers.IEDriverServer.exe");
+            AWTest.InitialiseClass(context);
+        }
+
+        [TestInitialize]
+        public virtual void InitializeTest() {
+            InitIeDriver();
+            Url(BaseUrl);
+        }
+
+        [TestCleanup]
+        public virtual void CleanupTest() {
+            base.CleanUpTest();
+        }
+    }
+
+
     #endregion
 }

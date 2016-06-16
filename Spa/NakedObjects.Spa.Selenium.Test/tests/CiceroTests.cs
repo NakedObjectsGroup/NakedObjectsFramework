@@ -5,26 +5,23 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OpenQA.Selenium;
 using System;
 using System.Linq;
 using System.Threading;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenQA.Selenium;
 
-namespace NakedObjects.Web.UnitTests.Selenium
-{
-    public abstract class CiceroTestRoot : AWTest
-    {
-        public virtual void Action()
-        {
+namespace NakedObjects.Web.UnitTests.Selenium {
+    public abstract class CiceroTestRoot : AWTest {
+        public virtual void Action() {
             //Test from home menu
             CiceroUrl("home?m1=ProductRepository");
             WaitForOutput("Products menu");
             //First, without paramsd
             EnterCommand("Action");
-            WaitForOutputStarting("Actions:\r\n"+
-                "Find Product By Name\r\n" +
-                "Find Product By Number\r\n");
+            WaitForOutputStarting("Actions:\r\n" +
+                                  "Find Product By Name\r\n" +
+                                  "Find Product By Number\r\n");
 
             //Filtered list
             EnterCommand("act cateGory  ");
@@ -105,13 +102,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("home?m1=PurchaseOrderRepository");
             WaitForOutput("Purchase Orders menu");
             EnterCommand("ac random,?");
-            WaitForOutput("Description for action: Random Purchase Order\r\n"+
-                    "For demonstration purposes only");
+            WaitForOutput("Description for action: Random Purchase Order\r\n" +
+                          "For demonstration purposes only");
 
             //Invalid second param
             EnterCommand("ac random,x");
             WaitForOutput("Second argument may only be a question mark -  to get action details");
         }
+
         public virtual void BackAndForward() //Tested together for simplicity
         {
             CiceroUrl("home");
@@ -140,8 +138,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("forward y");
             WaitForOutput("Too many arguments provided");
         }
-        public virtual void Cancel()
-        {
+
+        public virtual void Cancel() {
             //Menu dialog
             CiceroUrl("home?m1=ProductRepository&d1=FindProductByName");
             WaitForOutputStarting("Products menu\r\nAction dialog: Find Product By Name");
@@ -189,11 +187,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("cancel");
             WaitForOutput("The command: cancel is not available in the current context");
         }
-        public virtual void Clipboard()
-        {
+
+        public virtual void Clipboard() {
             CiceroUrl("home");
             WaitForOutputStarting("Welcome to Cicero");
-
 
             CiceroUrl("object?o1=___1.Person--12941");
             WaitForOutput("Person: Dakota Wood");
@@ -234,8 +231,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("clipboard c");
             WaitForOutput("Clipboard copy may only be used in the context of viewing an object");
         }
-        public virtual void Edit()
-        {
+
+        public virtual void Edit() {
             CiceroUrl("home");
             CiceroUrl("object?o1=___1.Customer--29688");
             WaitForOutput("Customer: Handy Bike Services, AW00029688");
@@ -256,8 +253,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("edit");
             WaitForOutput("The command: edit is not available in the current context");
         }
-        public virtual void Enter()
-        {
+
+        public virtual void Enter() {
             //Entering fields (into dialogs)
             CiceroUrl("home?m1=CustomerRepository&d1=FindIndividualCustomerByName&f1_firstName=%22%22&f1_lastName=%22%22");
             WaitForOutput("Customers menu\r\nAction dialog: Find Individual Customer By Name\r\nFirst Name: empty\r\nLast Name: empty");
@@ -304,11 +301,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("object?o1=___1.WorkOrder--33787&i1=Edit");
             WaitForOutputStarting("Editing Work Order:");
             EnterCommand("enter date,1 Jan 2015");
-            WaitForOutput("date matches multiple fields:\r\n"+
-                "Start Date\r\n" +
-                "End Date\r\n"+
-                "Due Date\r\n"+
-                "Modified Date");
+            WaitForOutput("date matches multiple fields:\r\n" +
+                          "Start Date\r\n" +
+                          "End Date\r\n" +
+                          "Due Date\r\n" +
+                          "Modified Date");
 
             //No matches
             EnterCommand("enter strt date,1 Jan 2015");
@@ -333,7 +330,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutputContaining("Action dialog: Find Customer");
             EnterCommand("enter cus, 00456");
             WaitForOutputContaining("Action dialog: Find Customer\r\n" +
-                    "Customer: Riding Excursions, AW00000456");
+                                    "Customer: Riding Excursions, AW00000456");
             //Auto-complete on dialog - multi match
             EnterCommand("enter cus, 456");
             WaitForOutputContaining("Multiple matches:");
@@ -350,7 +347,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutputContaining("Leave parcel with neighbour");
             EnterCommand("enter comment,payment");
             WaitForOutputContaining("Comment: Payment on delivery");
-
 
             //Auto-complete on an object edit
             CiceroUrl("object?i1=Edit&o1=___1.Product--415");
@@ -374,17 +370,17 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("home?m1=CustomerRepository&d1=FindStoreByName&f1_name=%22%22");
             WaitForOutputContaining("Action dialog: Find Store By Name");
             EnterCommand("enter name,?");
-            WaitForOutput("Field name: Name\r\n"+
-                            "Description: partial match\r\n"+
-                            "Type: String\r\n"+
-                            "Mandatory");
+            WaitForOutput("Field name: Name\r\n" +
+                          "Description: partial match\r\n" +
+                          "Type: String\r\n" +
+                          "Mandatory");
             // '?' to get details on editable prop
             CiceroUrl("object?i1=Edit&o1=___1.Person--4463&as1=open");
             WaitForOutput("Editing Person: Nina Nath");
             EnterCommand("enter mid,?");
             WaitForOutput("Field name: Middle Name\r\n" +
-                            "Type: String\r\n"+
-                            "Optional");
+                          "Type: String\r\n" +
+                          "Optional");
 
             //Conditional choices
             CiceroUrl("home?m1=ProductRepository&d1=ListProducts");
@@ -422,8 +418,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("menu products");
             WaitForOutput("Products menu");
         }
-        public virtual void Gemini()
-        {
+
+        public virtual void Gemini() {
             //home
             CiceroUrl("home");
             WaitForOutputStarting("Welcome to Cicero");
@@ -441,8 +437,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("ge x");
             WaitForOutput("Too many arguments provided");
         }
-        public virtual void Goto()
-        {
+
+        public virtual void Goto() {
             CiceroUrl("object?o1=___1.Customer--577");
             WaitForOutput("Customer: Synthetic Materials Manufacturing, AW00000577");
             //Full match
@@ -536,10 +532,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             EnterCommand("go 2");
             WaitForOutput("Sales Order Detail: 1 x ML Road Tire");
-
         }
-        public virtual void Help()
-        {
+
+        public virtual void Help() {
             //Help from home
             CiceroUrl("home");
             EnterCommand("help");
@@ -567,8 +562,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("help ?");
             WaitForOutput("Commands available in current context:\r\naction\r\nback\r\nclipboard\r\nforward\r\ngemini\r\ngoto\r\nhelp\r\nmenu\r\npage\r\nreload\r\nselection\r\nshow\r\nwhere");
         }
-        public virtual void Menu()
-        {   //No argument
+
+        public virtual void Menu() {
+            //No argument
             CiceroUrl("home");
             EnterCommand("Menu");
             WaitForOutput("Menus:\r\nCustomers\r\nOrders\r\nProducts\r\nEmployees\r\nSales\r\nSpecial Offers\r\nContacts\r\nVendors\r\nPurchase Orders\r\nWork Orders");
@@ -605,8 +601,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("menu cus");
             WaitForOutput("Customers menu");
         }
-        public virtual void OK()
-        {
+
+        public virtual void OK() {
             CiceroUrl("home");
             //Open a zero-param action on main menu
             CiceroUrl("home?m1=ProductRepository&d1=RandomProduct");
@@ -688,7 +684,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutputContaining("Action dialog: List Purchase Orders");
             EnterCommand("enter from, 6 Jan 2016");
             WaitForOutputContaining("From Date: 6 Jan 2016");
-            EnterCommand("enter to date, 3 Jan 2016"); ;
+            EnterCommand("enter to date, 3 Jan 2016");
+            ;
             WaitForOutputContaining("To Date: 3 Jan 2016");
             EnterCommand("ok");
             WaitForOutput("To Date cannot be before From Date");
@@ -700,8 +697,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutputContaining("Warning: Warn User of something else");
             WaitForOutputContaining("Inform User of something");
         }
-        public virtual void Page()
-        {
+
+        public virtual void Page() {
             CiceroUrl("list?m1=OrderRepository&a1=HighestValueOrders&p1=1&ps1=20&s1=0");
             WaitForOutputStarting("Result from Highest Value Orders:\r\nPage 1 of 1574");
             EnterCommand("page 0");
@@ -743,8 +740,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("page 1");
             WaitForOutput("The command: page is not available in the current context");
         }
-        public virtual void Property()
-        {
+
+        public virtual void Property() {
             CiceroUrl("object?o1=___1.Product--758");
             WaitForOutput("Product: Road-450 Red, 52");
             EnterCommand("prop num");
@@ -759,7 +756,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //No argument
             EnterCommand("pr ");
-            WaitForOutputStarting("Name: Road-450 Red");//\r\nProduct Number: BK-R68R-52\r\nColor: Red\r\nPhoto: empty\r\nProduct Model: Road-450\r\nList Price: 1,457.99");
+            WaitForOutputStarting("Name: Road-450 Red"); //\r\nProduct Number: BK-R68R-52\r\nColor: Red\r\nPhoto: empty\r\nProduct Model: Road-450\r\nList Price: 1,457.99");
             //No match
             EnterCommand("pr x");
             WaitForOutput("x does not match any properties");
@@ -816,8 +813,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutputContaining("Modified Date: 30 Jun 2008");
             WaitForOutputContaining(":00:00");
         }
-        public virtual void Root()
-        {
+
+        public virtual void Root() {
             CiceroUrl("object?o1=___1.Product--459&c1_ProductInventory=List");
             WaitForOutput("Collection: Product Inventory on Product: Lock Nut 19\r\n3 items");
             EnterCommand("root");
@@ -840,12 +837,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("root x");
             WaitForOutput("Too many arguments provided");
         }
+
         public virtual void Save() {
             //Happy case
             CiceroUrl("object?o1=___1.Product--839&i1=Edit&pp1_ListPrice=%221500%22");
             WaitForOutput("Editing Product: HL Road Frame - Black, 48\r\n" +
-                "Modified properties:\r\n" +
-                "List Price: £1,500.00");
+                          "Modified properties:\r\n" +
+                          "List Price: £1,500.00");
             EnterCommand("save");
             WaitForOutput("Product: HL Road Frame - Black, 48");
 
@@ -864,8 +862,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //No arguments
             CiceroUrl("object?o1=___1.Product--839&i1=Edit&pp1_ListPrice=%221500%22");
             WaitForOutput("Editing Product: HL Road Frame - Black, 48\r\n" +
-                "Modified properties:\r\n" +
-                "List Price: £1,500.00");
+                          "Modified properties:\r\n" +
+                          "List Price: £1,500.00");
             EnterCommand("save x");
             WaitForOutput("Too many arguments provided");
 
@@ -874,7 +872,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutputStarting("Editing Work Order:");
             EnterCommand("save");
             WaitForOutput("Please complete or correct these fields:\r\n" +
-                "Order Qty: 0 Order Quantity must be > 0");
+                          "Order Qty: 0 Order Quantity must be > 0");
 
             //Co-validation
             CiceroUrl("object?o1=___1.WorkOrder--43133&i1=Edit&pp1_StartDate=%222015-10-17%22");
@@ -882,8 +880,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("save");
             WaitForOutput("StartDate must be before DueDate");
         }
-        public virtual void Show()
-        {
+
+        public virtual void Show() {
             //Applied to List
             CiceroUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers");
             WaitForOutput("Result from Current Special Offers:\r\n16 items");
@@ -899,7 +897,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Item 1: No Discount\r\nItem 2: Volume Discount 11 to 14\r\nItem 3: Volume Discount 15 to 24");
             EnterCommand("show 15-");
             WaitForOutput("Item 15: Half-Price Pedal Sale\r\nItem 16: Mountain-500 Silver Clearance Sale");
-
 
             //Invalid numbers
             EnterCommand("show 17");
@@ -946,10 +943,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Customer: Efficient Cycling, AW00029863");
             EnterCommand("show 1");
             WaitForOutput("The command: show is not available in the current context");
-
         }
-        public virtual void Where()
-        {
+
+        public virtual void Where() {
             CiceroUrl("home");
             CiceroUrl("object?o1=___1.Product--358");
             WaitForOutput("Product: HL Grip Tape");
@@ -969,11 +965,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("where x");
             WaitForOutput("Too many arguments provided");
         }
-        public virtual void SpaceBarAutoComplete()
-        {
+
+        public virtual void SpaceBarAutoComplete() {
             CiceroUrl("home");
             WaitForOutputStarting("Welcome to Cicero");
-            TypeIntoFieldWithoutClearing("input", "sel"+Keys.Space);
+            TypeIntoFieldWithoutClearing("input", "sel" + Keys.Space);
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "selection ");
 
             CiceroUrl("object?o1=___1.Product--968");
@@ -1006,10 +1002,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //Space bar before command eventually removed
             ClearFieldThenType("input", " me pr; ac rand; ok " + Keys.Space);
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "menu pr;action rand;ok ");
-
         }
-        public virtual void UnrecognisedCommand()
-        {
+
+        public virtual void UnrecognisedCommand() {
             CiceroUrl("home");
             WaitForOutputStarting("Welcome to Cicero");
             EnterCommand("m");
@@ -1017,10 +1012,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             EnterCommand("hl");
             WaitForOutput("No command begins with hl");
-
         }
-        public virtual void UpAndDownArrow()
-        {
+
+        public virtual void UpAndDownArrow() {
             CiceroUrl("home");
             EnterCommand("he");
             WaitForOutputStarting("Cicero is");
@@ -1046,8 +1040,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value")
             //== "menu pr;action rand;ok;show 1");
         }
-        public virtual void ScenarioEditAndSave()
-        {
+
+        public virtual void ScenarioEditAndSave() {
             //happy case -  edit one property
             CiceroUrl("object?o1=___1.Product--838");
             WaitForOutput("Product: HL Road Frame - Black, 44");
@@ -1060,14 +1054,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var rand = new Random();
             var newPrice = rand.Next(50, 150);
             string currency = "£" + newPrice.ToString("c").Substring(1);
-            EnterCommand("Enter list price, "+newPrice.ToString());
-            WaitForOutput("Editing Product: HL Road Frame - Black, 44\r\n"+
-                "Modified properties:\r\n"+
-                "List Price: "+currency);
+            EnterCommand("Enter list price, " + newPrice.ToString());
+            WaitForOutput("Editing Product: HL Road Frame - Black, 44\r\n" +
+                          "Modified properties:\r\n" +
+                          "List Price: " + currency);
             EnterCommand("Save");
             WaitForOutput("Product: HL Road Frame - Black, 44");
             EnterCommand("prop list price");
-            WaitForOutput("List Price: "+ currency);
+            WaitForOutput("List Price: " + currency);
 
             //Updating a date and a link
             CiceroUrl("object?o1=___1.WorkOrder--43132");
@@ -1094,9 +1088,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("enter order qty,0");
             WaitForOutputContaining("Order Qty: 0");
             EnterCommand("save");
-            WaitForOutput("Please complete or correct these fields:\r\n"+
-                "Order Qty: 0 Order Quantity must be > 0");
-   
+            WaitForOutput("Please complete or correct these fields:\r\n" +
+                          "Order Qty: 0 Order Quantity must be > 0");
+
             //Co-Validation
             CiceroUrl("object?o1=___1.WorkOrder--43133");
             WaitForOutputStarting("Work Order:");
@@ -1113,8 +1107,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("save");
             WaitForOutputStarting("Work Order:");
         }
-        public virtual void ScenarioMultiSelect()
-        {
+
+        public virtual void ScenarioMultiSelect() {
             //Multi-select and deselect - reference objects
             CiceroUrl("home?m1=ProductRepository");
             WaitForOutput("Products menu");
@@ -1147,6 +1141,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("enter line,");
             WaitForOutputContaining("Multiple matches:\r\nM\r\nR\r\nS\r\nT");
         }
+
         public virtual void ScenarioTransientObject() {
             //Happy case
             CiceroUrl("object?o1=___1.Person--12044");
@@ -1159,14 +1154,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutputContaining("Card Type: Vista");
             string number = DateTime.Now.Ticks.ToString(); //pseudo-random string
             var obfuscated = number.Substring(number.Length - 4).PadLeft(number.Length, '*');
-            EnterCommand(" enter number,"+number);
+            EnterCommand(" enter number," + number);
             WaitForOutputContaining("Card Number: " + number);
             EnterCommand("enter month,12");
             WaitForOutputContaining("Exp Month: 12");
             EnterCommand("enter year,2020");
             WaitForOutputContaining("Exp Year: 2020");
             EnterCommand("save");
-            WaitForOutput("Credit Card: "+obfuscated);
+            WaitForOutput("Credit Card: " + obfuscated);
             //Incomplete fields
             CiceroUrl("object?o1=___1.Person--12045");
             WaitForOutput("Person: Rakesh Tangirala");
@@ -1179,10 +1174,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //Request for an expired transient
             CiceroUrl("object?i1=Transient&o1=___1.CreditCard--37");
             WaitForOutput("The requested view of unsaved object details has expired");
-        
         }
-        public virtual void ScenarioUsingClipboard()
-        {
+
+        public virtual void ScenarioUsingClipboard() {
             //Copy a Product to clipboard
             CiceroUrl("object?o1=___1.Product--980");
             WaitForOutput("Product: Mountain-400-W Silver, 38");
@@ -1211,8 +1205,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("ok");
             WaitForOutput("Unsaved Employee");
         }
-        public virtual void ScenarioTestEditableVM()
-        {
+
+        public virtual void ScenarioTestEditableVM() {
             CiceroUrl("object?i1=View&o1=___1.Person--5968");
             WaitForOutput("Person: Nathan Diaz");
             EnterCommand("ac email");
@@ -1232,8 +1226,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("ok");
             WaitForOutput("Editing Email Template: Sent email");
         }
-        public virtual void ChainedCommands()
-        {
+
+        public virtual void ChainedCommands() {
             //Happy case
             CiceroUrl("home");
             WaitForOutputStarting("Welcome to Cicero");
@@ -1260,7 +1254,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("menu pr;action rand;ok;show 1");
             WaitForOutput("The command: show is not available in the current context");
 
-
             //Error in execution -  Timing problem?
             //CiceroUrl("home");
             //WaitForOutputStarting("Welcome to Cicero");
@@ -1270,148 +1263,211 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //WaitForOutput("Result from Current Special Offers:\r\n16 items");
         }
     }
-    public abstract class CiceroTests : CiceroTestRoot
-    {
+
+    public abstract class CiceroTests : CiceroTestRoot {
         [TestMethod]
-        public override void Action() { base.Action(); }
+        public override void Action() {
+            base.Action();
+        }
+
         [TestMethod]
-        public override void BackAndForward() { base.BackAndForward(); }
+        public override void BackAndForward() {
+            base.BackAndForward();
+        }
+
         [TestMethod]
-        public override void Cancel() { base.Cancel(); }
+        public override void Cancel() {
+            base.Cancel();
+        }
+
         [TestMethod]
-        public override void Clipboard() { base.Clipboard(); }
+        public override void Clipboard() {
+            base.Clipboard();
+        }
+
         [TestMethod]
-        public override void Edit() { base.Edit(); }
+        public override void Edit() {
+            base.Edit();
+        }
+
         [TestMethod]
-        public override void Enter() { base.Enter(); }
+        public override void Enter() {
+            base.Enter();
+        }
+
         [TestMethod]
-        public override void Gemini() { base.Gemini(); }
+        public override void Gemini() {
+            base.Gemini();
+        }
+
         [TestMethod]
-        public override void Goto() { base.Goto(); }
+        public override void Goto() {
+            base.Goto();
+        }
+
         [TestMethod]
-        public override void Help() { base.Help(); }
+        public override void Help() {
+            base.Help();
+        }
+
         [TestMethod]
-        public override void Menu() { base.Menu(); }
+        public override void Menu() {
+            base.Menu();
+        }
+
         [TestMethod]
-        public override void OK() { base.OK(); }
+        public override void OK() {
+            base.OK();
+        }
+
         [TestMethod]
-        public override void Page() { base.Page(); }
+        public override void Page() {
+            base.Page();
+        }
+
         [TestMethod]
-        public override void Property() { base.Property(); }
+        public override void Property() {
+            base.Property();
+        }
+
         [TestMethod]
-        public override void Root() { base.Root(); }
+        public override void Root() {
+            base.Root();
+        }
+
         [TestMethod]
-        public override void Save() { base.Save(); }
+        public override void Save() {
+            base.Save();
+        }
+
         [TestMethod]
-        public override void Show() { base.Show(); }
+        public override void Show() {
+            base.Show();
+        }
+
         [TestMethod]
-        public override void Where() { base.Where(); }
+        public override void Where() {
+            base.Where();
+        }
+
         [TestMethod]
-        public override void SpaceBarAutoComplete() { base.SpaceBarAutoComplete(); }
+        public override void SpaceBarAutoComplete() {
+            base.SpaceBarAutoComplete();
+        }
+
         [TestMethod]
-        public override void UnrecognisedCommand() { base.UnrecognisedCommand(); }
+        public override void UnrecognisedCommand() {
+            base.UnrecognisedCommand();
+        }
+
         [TestMethod]
-        public override void UpAndDownArrow() { base.UpAndDownArrow(); }
+        public override void UpAndDownArrow() {
+            base.UpAndDownArrow();
+        }
+
         [TestMethod]
-        public override void ScenarioEditAndSave() { base.ScenarioEditAndSave(); }
+        public override void ScenarioEditAndSave() {
+            base.ScenarioEditAndSave();
+        }
+
         [TestMethod]
-        public override void ScenarioMultiSelect() { base.ScenarioMultiSelect(); }
+        public override void ScenarioMultiSelect() {
+            base.ScenarioMultiSelect();
+        }
+
         [TestMethod]
-        public override void ScenarioTransientObject() { base.ScenarioTransientObject(); }
+        public override void ScenarioTransientObject() {
+            base.ScenarioTransientObject();
+        }
+
         [TestMethod]
-        public override void ScenarioUsingClipboard() { base.ScenarioUsingClipboard(); }
+        public override void ScenarioUsingClipboard() {
+            base.ScenarioUsingClipboard();
+        }
+
         [TestMethod]
-        public override void ScenarioTestEditableVM() { base.ScenarioTestEditableVM(); }
+        public override void ScenarioTestEditableVM() {
+            base.ScenarioTestEditableVM();
+        }
+
         [TestMethod]
-        public override void ChainedCommands() { base.ChainedCommands(); }
+        public override void ChainedCommands() {
+            base.ChainedCommands();
+        }
     }
 
     #region Individual tests - browser specific 
 
-    public class CiceroTestsIe : CiceroTests
-    {
+    public class CiceroTestsIe : CiceroTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitIeDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
     }
 
     //[TestClass] //Firefox Individual
-    public class CiceroTestsFirefox : CiceroTests
-    {
+    public class CiceroTestsFirefox : CiceroTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitFirefoxDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
     }
 
-    public class CiceroTestsChrome : CiceroTests
-    {
+    public class CiceroTestsChrome : CiceroTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitChromeDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
 
-        protected override void ScrollTo(IWebElement element)
-        {
+        protected override void ScrollTo(IWebElement element) {
             string script = string.Format("window.scrollTo(0, {0})", element.Location.Y);
-            ((IJavaScriptExecutor)br).ExecuteScript(script);
+            ((IJavaScriptExecutor) br).ExecuteScript(script);
         }
     }
 
     #endregion
 
     #region Mega tests
-    public abstract class MegaCiceroTestsRoot : CiceroTestRoot
-    {
+
+    public abstract class MegaCiceroTestsRoot : CiceroTestRoot {
         [TestMethod] //Mega
-        public void MegaCiceroTests()
-        {
-            Action();
+        public void MegaCiceroTests() {
+            //Action();
             BackAndForward();
             Cancel();
             Clipboard();
@@ -1434,32 +1490,50 @@ namespace NakedObjects.Web.UnitTests.Selenium
             ScenarioEditAndSave();
             ScenarioMultiSelect();
             ScenarioTransientObject();
-            ScenarioUsingClipboard(); 
+            ScenarioUsingClipboard();
             ScenarioTestEditableVM();
             ChainedCommands();
         }
     }
+
     [TestClass]
-    public class MegaCiceroTestsFirefox : MegaCiceroTestsRoot
-    {
+    public class MegaCiceroTestsFirefox : MegaCiceroTestsRoot {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitFirefoxDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
     }
+
+    //[TestClass] TODO too many failures
+    public class MegaCiceroTestsIe : MegaCiceroTestsRoot {
+        [ClassInitialize]
+        public new static void InitialiseClass(TestContext context) {
+            FilePath(@"drivers.IEDriverServer.exe");
+            AWTest.InitialiseClass(context);
+        }
+
+        [TestInitialize]
+        public virtual void InitializeTest() {
+            InitIeDriver();
+            Url(BaseUrl);
+        }
+
+        [TestCleanup]
+        public virtual void CleanupTest() {
+            base.CleanUpTest();
+        }
+    }
+
     #endregion
 }

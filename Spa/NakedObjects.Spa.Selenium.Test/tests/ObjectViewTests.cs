@@ -8,17 +8,12 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Web.UnitTests.Selenium
-{
-
-    public abstract class ObjectViewTestsRoot : AWTest
-    {
-        public virtual void ActionsAlreadyOpen()
-        {
+namespace NakedObjects.Web.UnitTests.Selenium {
+    public abstract class ObjectViewTestsRoot : AWTest {
+        public virtual void ActionsAlreadyOpen() {
             GeminiUrl("object?o1=___1.Customer--555&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Twin Cycles, AW00000555");
             OpenSubMenu("Orders");
@@ -31,16 +26,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Open Orders", actions[5].Text);
             Assert.AreEqual("Recent Orders", actions[6].Text);
         }
-        public virtual void OpenActionsMenuNotAlreadyOpen()
-        {
+
+        public virtual void OpenActionsMenuNotAlreadyOpen() {
             GeminiUrl("object?o1=___1.Customer--309");
             WaitForView(Pane.Single, PaneType.Object, "The Gear Store, AW00000309");
             OpenObjectActions();
             OpenSubMenu("Orders");
             GetObjectActions(7);
         }
-        public virtual void OpenAndCloseSubMenusTo2Levels()
-        {
+
+        public virtual void OpenAndCloseSubMenusTo2Levels() {
             GeminiUrl("object?i1=View&o1=___1.ProductInventory--320--1&as1=open");
             AssertActionNotDisplayed("Action1");
             OpenSubMenu("Sub Menu");
@@ -55,8 +50,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             AssertActionNotDisplayed("Action1");
             AssertActionNotDisplayed("Action2");
         }
-        public virtual void Properties()
-        {
+
+        public virtual void Properties() {
             GeminiUrl("object?o1=___1.Store--350&as1=open");
             wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 4);
 
@@ -67,14 +62,15 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Sales Person:\r\nLynn Tsoflias", properties[2].Text);
             Assert.IsTrue(properties[3].Text.StartsWith("Modified Date:\r\n13 Oct 2008"));
         }
-        public virtual void Collections() { 
+
+        public virtual void Collections() {
             GeminiUrl("object?i1=View&o1=___1.Product--821");
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text.StartsWith("Product Inventory:\r\n2 Items"));
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[1].Text.StartsWith("Product Reviews:\r\nEmpty"));
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[2].Text.StartsWith("Special Offers:\r\n1 Item"));
         }
-        public virtual void CollectionEagerlyRendered()
-        {
+
+        public virtual void CollectionEagerlyRendered() {
             GeminiUrl("object?i1=View&o1=___1.WorkOrder--35410");
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text.StartsWith("Work Order Routings:\r\n1 Item"));
             var cols = WaitForCss("th", 6).ToArray();
@@ -83,8 +79,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Planned Cost", cols[5].Text);
             WaitForCss("tbody tr", 1);
         }
-        public virtual void NonNavigableReferenceProperty()
-        {
+
+        public virtual void NonNavigableReferenceProperty() {
             //Tests properties of types that have had the NonNavigable Facet added to them 
             //(in this case by the custom AdventureWorksNotNavigableFacetFactory)
             GeminiUrl("object?i1=View&o1=___1.Product--869");
@@ -101,6 +97,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var links = cat.FindElements(By.CssSelector(".reference.clickable-area"));
             Assert.AreEqual(0, links.Count());
         }
+
         public virtual void DateAndCurrencyProperties() {
             GeminiUrl("object?o1=___1.SalesOrderHeader--68389");
             wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 24);
@@ -116,8 +113,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //Currency properties formatted to 2 places & with default currency symbok (£)
             Assert.AreEqual("Sub Total:\r\n£819.31", properties[11].Text);
         }
-        public virtual void TableViewHonouredOnCollection()
-        {
+
+        public virtual void TableViewHonouredOnCollection() {
             GeminiUrl("object?i1=View&o1=___1.Employee--83&c1_DepartmentHistory=Summary&c1_PayHistory=Table");
             var header = WaitForCss("thead");
             var cols = WaitForCss("th", 3).ToArray();
@@ -132,31 +129,31 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var cell = WaitForCss("td:nth-child(5)");
             Assert.AreEqual("31 Dec 2008", cell.Text);
         }
-        public virtual void ClickReferenceProperty()
-        {
+
+        public virtual void ClickReferenceProperty() {
             GeminiUrl("object?o1=___1.Store--350&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Twin Cycles");
             var reference = GetReferenceProperty("Sales Person", "Lynn Tsoflias");
             Click(reference);
             WaitForView(Pane.Single, PaneType.Object, "Lynn Tsoflias");
         }
-        public virtual void OpenCollectionAsList()
-        {
+
+        public virtual void OpenCollectionAsList() {
             GeminiUrl("object?i1=View&o1=___1.Employee--5");
             WaitForCss(".collection", 2);
             var iconList = WaitForCssNo(".collection .icon-list", 0);
             Click(iconList);
             WaitForCss("table");
             // cancel table view 
-            Click(WaitForCssNo(".icon-summary",0));
-            WaitUntilGone(d => d.FindElement(By.CssSelector(".table")));           
+            Click(WaitForCssNo(".icon-summary", 0));
+            WaitUntilGone(d => d.FindElement(By.CssSelector(".table")));
         }
-        public virtual void NotCountedCollection()
-        {
+
+        public virtual void NotCountedCollection() {
             //Test NotCounted collection
             GeminiUrl("object?i1=View&o1=___1.Vendor--1662");
             WaitForView(Pane.Single, PaneType.Object, "Northern Bike Travel");
-            wait.Until(dr => dr.FindElement(By.CssSelector(".collection")).Text== "Product - Order Info:");
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection")).Text == "Product - Order Info:");
             var iconList = WaitForCssNo(".collection .icon-list", 0);
             Click(iconList);
             WaitForCss("table");
@@ -167,16 +164,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection")).Text == "Product - Order Info:");
         }
-        public virtual void ClickOnLineItemWithCollectionAsList()
-        {
+
+        public virtual void ClickOnLineItemWithCollectionAsList() {
             var testUrl = GeminiBaseUrl + "object?o1=___1.Store--350&as1=open" + "&c1_Addresses=List";
             Url(testUrl);
             var row = WaitForCss("table .reference");
             Click(row);
             WaitForView(Pane.Single, PaneType.Object, "Main Office: 2253-217 Palmer Street ...");
         }
-        public virtual void ClickOnLineItemWithCollectionAsTable()
-        {
+
+        public virtual void ClickOnLineItemWithCollectionAsTable() {
             var testUrl = GeminiBaseUrl + "object?o1=___1.Store--350&as1=open" + "&c1_Addresses=Table";
             Url(testUrl);
             var row = wait.Until(dr => dr.FindElement(By.CssSelector("table tbody tr")));
@@ -188,68 +185,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.Object, type + ": " + addr);
         }
 
-        #region Actions
-        public virtual void DialogAction()
-        {
-            GeminiUrl("home");
-            GeminiUrl("object?o1=___1.Customer--555&as1=open");
-            OpenSubMenu("Orders");
-            OpenActionDialog("Search For Orders");
-        }
-        public virtual void DialogActionOk()
-        {
-            GeminiUrl("home");
-            GeminiUrl("object?o1=___1.Customer--555&as1=open");
-            OpenSubMenu("Orders");
-            var dialog = OpenActionDialog("Search For Orders", Pane.Single, 2);
-            GetInputNumber(dialog, 0).SendKeys("1 Jan 2003");
-            GetInputNumber(dialog, 1).SendKeys("1 Dec 2003" + Keys.Escape);
-            dialog.FindElements(By.CssSelector(".parameter .value input"))[0].SendKeys("1 Jan 2003");
-            dialog.FindElements(By.CssSelector(".parameter .value input"))[1].SendKeys("1 Dec 2003" + Keys.Escape);
-            Click(OKButton());
-            WaitForView(Pane.Single, PaneType.List, "Search For Orders");
-        }
-        public virtual void ObjectAction()
-        {
-            GeminiUrl("home");
-            GeminiUrl("object?o1=___1.Customer--555&as1=open");
-            OpenSubMenu("Orders");
-            Click(GetObjectAction("Last Order"));
-            wait.Until(d => d.FindElement(By.CssSelector(".object")));
-        }
-        public virtual void CollectionAction()
-        {
-            GeminiUrl("home");
-            GeminiUrl("object?o1=___1.Customer--555&as1=open");
-            OpenSubMenu("Orders");
-            Click(GetObjectAction("Recent Orders"));
-            WaitForView(Pane.Single, PaneType.List, "Recent Orders");
-        }
-        public virtual void DescriptionRenderedAsTooltip()
-        {
-            GeminiUrl("home?m1=SalesRepository");
-            var a = GetObjectAction("Create New Sales Person");
-            Assert.AreEqual("... from an existing Employee", a.GetAttribute("title"));
-        }
-        public virtual void DisabledAction()
-        {
-            GeminiUrl("object?o1=___1.SalesOrderHeader--43893&as1=open");
-            //First the control test
-            GetObjectAction("Add New Sales Reason").AssertIsEnabled();
-
-            //Then the real test
-            GetObjectAction("Add New Detail").AssertIsDisabled("Can only add to 'In Process' order");
-        }
-        public virtual void ActionsMenuDisabledOnObjectWithNoActions()
-        {
-            GeminiUrl("object?o1=___1.Address--21467");
-            WaitForView(Pane.Single, PaneType.Object, "3022 Terra Calitina ...");
-            var actions = wait.Until(dr => dr.FindElement(By.CssSelector(".header .menu")));
-            Assert.AreEqual("true", actions.GetAttribute("disabled"));
-        }
-        #endregion
-        public virtual void QueryOnlyActionDoesNotReloadAutomatically()
-        {
+        public virtual void QueryOnlyActionDoesNotReloadAutomatically() {
             GeminiUrl("object?o1=___1.Person--8410&as1=open");
             WaitForView(Pane.Single, PaneType.Object);
             var original = WaitForCss(".property:nth-child(6) .value").Text;
@@ -268,20 +204,20 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Reload();
             wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(6) .value")).Text == newValue);
         }
-        public virtual void PotentActionDoesReloadAutomatically()
-        {
+
+        public virtual void PotentActionDoesReloadAutomatically() {
             GeminiUrl("object?o1=___1.Person--8410&as1=open");
             WaitForView(Pane.Single, PaneType.Object);
             var original = WaitForCss(".property:nth-child(3) .value").Text;
-            var dialog = OpenActionDialog("Update Middle Name"); 
+            var dialog = OpenActionDialog("Update Middle Name");
             var field1 = WaitForCss(".parameter:nth-child(1) input");
             var newValue = DateTime.Now.Millisecond.ToString();
             ClearFieldThenType(".parameter:nth-child(1) input", newValue);
             Click(OKButton());
             wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(3) .value")).Text == newValue);
         }
-        public virtual void Colours()
-        {
+
+        public virtual void Colours() {
             //Specific type matches
             GeminiUrl("object?i1=View&o1=___1.Customer--226");
             WaitForView(Pane.Single, PaneType.Object, "Leisure Activities, AW00000226");
@@ -293,10 +229,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Regex matches
             GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--59289&c1_Details=List");
-            WaitForView(Pane.Single, PaneType.Object, "SO59289"); 
+            WaitForView(Pane.Single, PaneType.Object, "SO59289");
             WaitForCss(".object.object-color2");
-             WaitForCss("tr", 2);
-           wait.Until(dr => dr.FindElements(By.CssSelector("tr.link-color2")).Count == 2);
+            WaitForCss("tr", 2);
+            wait.Until(dr => dr.FindElements(By.CssSelector("tr.link-color2")).Count == 2);
             GeminiUrl("object?i1=View&o1=___1.SalesOrderDetail--59289--71041");
             WaitForView(Pane.Single, PaneType.Object, "1 x Mountain-400-W Silver, 46");
             WaitForCss(".object.object-color2");
@@ -315,21 +251,19 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var cc = GetReferenceFromProperty("Credit Card");
             Assert.IsTrue(cc.GetAttribute("class").Contains("link-color0"));
         }
-        public virtual void ZeroIntValues()
-        {
+
+        public virtual void ZeroIntValues() {
             GeminiUrl("object?i1=View&o1=___1.SpecialOffer--13");
             WaitForView(Pane.Single, PaneType.Object, "Touring-3000 Promotion");
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
 
             Assert.AreEqual("Max Qty:", properties[7].Text);
             Assert.AreEqual("Min Qty:\r\n0", properties[6].Text);
-
         }
 
-        public virtual void AddingObjectToCollectionUpdatesTableView()
-        {
+        public virtual void AddingObjectToCollectionUpdatesTableView() {
             GeminiUrl("object?i1=View&o1=___1.SalesPerson--276&as1=open&c1_QuotaHistory=Table&d1=ChangeSalesQuota");
-            var details = WaitForCssNo(".summary .details",0).Text;
+            var details = WaitForCssNo(".summary .details", 0).Text;
             Assert.IsTrue(details.Contains("Item"));
             var rowCount = Int32.Parse(details.Split(' ')[0]);
             WaitForCss("tbody tr", rowCount);
@@ -337,160 +271,283 @@ namespace NakedObjects.Web.UnitTests.Selenium
             ClearFieldThenType("#newquota1", "345");
             Click(OKButton());
             wait.Until(dr => dr.FindElements(By.CssSelector("tbody"))[0].FindElements(By.CssSelector("tr")).Count >= rowCount + 1);
-            Assert.AreEqual(rowCount +1, br.FindElements(By.CssSelector("tbody"))[0].FindElements(By.CssSelector("tr")).Count);
+            Assert.AreEqual(rowCount + 1, br.FindElements(By.CssSelector("tbody"))[0].FindElements(By.CssSelector("tr")).Count);
         }
 
-        public virtual void TimeSpanProperty()
-        {
+        public virtual void TimeSpanProperty() {
             GeminiUrl("object?i1=View&o1=___1.Shift--2");
             WaitForTextEquals(".property", 2, "Start Time:\r\n15:00"); //TODO value not correct
         }
+
+        #region Actions
+
+        public virtual void DialogAction() {
+            GeminiUrl("home");
+            GeminiUrl("object?o1=___1.Customer--555&as1=open");
+            OpenSubMenu("Orders");
+            OpenActionDialog("Search For Orders");
+        }
+
+        public virtual void DialogActionOk() {
+            GeminiUrl("home");
+            GeminiUrl("object?o1=___1.Customer--555&as1=open");
+            OpenSubMenu("Orders");
+            var dialog = OpenActionDialog("Search For Orders", Pane.Single, 2);
+            GetInputNumber(dialog, 0).SendKeys("1 Jan 2003");
+            GetInputNumber(dialog, 1).SendKeys("1 Dec 2003" + Keys.Escape);
+            dialog.FindElements(By.CssSelector(".parameter .value input"))[0].SendKeys("1 Jan 2003");
+            dialog.FindElements(By.CssSelector(".parameter .value input"))[1].SendKeys("1 Dec 2003" + Keys.Escape);
+            Click(OKButton());
+            WaitForView(Pane.Single, PaneType.List, "Search For Orders");
+        }
+
+        public virtual void ObjectAction() {
+            GeminiUrl("home");
+            GeminiUrl("object?o1=___1.Customer--555&as1=open");
+            OpenSubMenu("Orders");
+            Click(GetObjectAction("Last Order"));
+            wait.Until(d => d.FindElement(By.CssSelector(".object")));
+        }
+
+        public virtual void CollectionAction() {
+            GeminiUrl("home");
+            GeminiUrl("object?o1=___1.Customer--555&as1=open");
+            OpenSubMenu("Orders");
+            Click(GetObjectAction("Recent Orders"));
+            WaitForView(Pane.Single, PaneType.List, "Recent Orders");
+        }
+
+        public virtual void DescriptionRenderedAsTooltip() {
+            GeminiUrl("home?m1=SalesRepository");
+            var a = GetObjectAction("Create New Sales Person");
+            Assert.AreEqual("... from an existing Employee", a.GetAttribute("title"));
+        }
+
+        public virtual void DisabledAction() {
+            GeminiUrl("object?o1=___1.SalesOrderHeader--43893&as1=open");
+            //First the control test
+            GetObjectAction("Add New Sales Reason").AssertIsEnabled();
+
+            //Then the real test
+            GetObjectAction("Add New Detail").AssertIsDisabled("Can only add to 'In Process' order");
+        }
+
+        public virtual void ActionsMenuDisabledOnObjectWithNoActions() {
+            GeminiUrl("object?o1=___1.Address--21467");
+            WaitForView(Pane.Single, PaneType.Object, "3022 Terra Calitina ...");
+            var actions = wait.Until(dr => dr.FindElement(By.CssSelector(".header .menu")));
+            Assert.AreEqual("true", actions.GetAttribute("disabled"));
+        }
+
+        #endregion
     }
-    public abstract class ObjectViewTests : ObjectViewTestsRoot
-    {
+
+    public abstract class ObjectViewTests : ObjectViewTestsRoot {
         [TestMethod]
-        public override void ActionsAlreadyOpen() { base.ActionsAlreadyOpen(); }
-        [TestMethod]
-        public override void OpenActionsMenuNotAlreadyOpen() { base.OpenActionsMenuNotAlreadyOpen(); }
-        [TestMethod]
-        public override void OpenAndCloseSubMenusTo2Levels() { base.OpenAndCloseSubMenusTo2Levels(); }
-        [TestMethod]
-        public override void Properties() { base.Properties(); }
-        [TestMethod]
-        public override void Collections() { base.Collections(); }
-        [TestMethod]
-        public override void CollectionEagerlyRendered() { base.CollectionEagerlyRendered(); }
-        [TestMethod]
-        public override void DateAndCurrencyProperties() { base.DateAndCurrencyProperties(); }
-       
-        [TestMethod]
-        public override void TableViewHonouredOnCollection() { base.TableViewHonouredOnCollection(); }
+        public override void ActionsAlreadyOpen() {
+            base.ActionsAlreadyOpen();
+        }
 
         [TestMethod]
-        public override void ClickReferenceProperty() { base.ClickReferenceProperty(); }
+        public override void OpenActionsMenuNotAlreadyOpen() {
+            base.OpenActionsMenuNotAlreadyOpen();
+        }
 
         [TestMethod]
-        public override void OpenCollectionAsList() { base.OpenCollectionAsList(); }
-        [TestMethod]
-        public override void NotCountedCollection() { base.NotCountedCollection(); }
+        public override void OpenAndCloseSubMenusTo2Levels() {
+            base.OpenAndCloseSubMenusTo2Levels();
+        }
 
         [TestMethod]
-        public override void ClickOnLineItemWithCollectionAsList() { base.ClickOnLineItemWithCollectionAsList(); }
-        [TestMethod]
-        public override void ClickOnLineItemWithCollectionAsTable() { base.ClickOnLineItemWithCollectionAsTable(); }
-        [TestMethod]
-        public override void DialogAction() { base.DialogAction(); }
-        [TestMethod]
-        public override void DialogActionOk() { base.DialogActionOk(); }
-        [TestMethod]
-        public override void ObjectAction() { base.ObjectAction(); }
-        [TestMethod]
-        public override void CollectionAction() { base.CollectionAction(); }
-        [TestMethod]
-        public override void DescriptionRenderedAsTooltip() { base.DescriptionRenderedAsTooltip(); }
-        [TestMethod]
-        public override void DisabledAction() { base.DisabledAction(); }
-        [TestMethod]
-        public override void ActionsMenuDisabledOnObjectWithNoActions() { base.ActionsMenuDisabledOnObjectWithNoActions(); }
-        [TestMethod]
-        public override void QueryOnlyActionDoesNotReloadAutomatically() { base.QueryOnlyActionDoesNotReloadAutomatically(); }
-        [TestMethod]
-        public override void PotentActionDoesReloadAutomatically() { base.PotentActionDoesReloadAutomatically(); }
-        [TestMethod]
-        public override void NonNavigableReferenceProperty() { base.NonNavigableReferenceProperty(); }
-        [TestMethod]
-        public override void Colours() { base.Colours(); }
-        [TestMethod]
-        public override void ZeroIntValues() { base.ZeroIntValues(); }
-        [TestMethod]
-        public override void AddingObjectToCollectionUpdatesTableView() { base.AddingObjectToCollectionUpdatesTableView(); }
-        [TestMethod]
-        public override void TimeSpanProperty() { base.TimeSpanProperty(); }
+        public override void Properties() {
+            base.Properties();
+        }
 
+        [TestMethod]
+        public override void Collections() {
+            base.Collections();
+        }
 
+        [TestMethod]
+        public override void CollectionEagerlyRendered() {
+            base.CollectionEagerlyRendered();
+        }
+
+        [TestMethod]
+        public override void DateAndCurrencyProperties() {
+            base.DateAndCurrencyProperties();
+        }
+
+        [TestMethod]
+        public override void TableViewHonouredOnCollection() {
+            base.TableViewHonouredOnCollection();
+        }
+
+        [TestMethod]
+        public override void ClickReferenceProperty() {
+            base.ClickReferenceProperty();
+        }
+
+        [TestMethod]
+        public override void OpenCollectionAsList() {
+            base.OpenCollectionAsList();
+        }
+
+        [TestMethod]
+        public override void NotCountedCollection() {
+            base.NotCountedCollection();
+        }
+
+        [TestMethod]
+        public override void ClickOnLineItemWithCollectionAsList() {
+            base.ClickOnLineItemWithCollectionAsList();
+        }
+
+        [TestMethod]
+        public override void ClickOnLineItemWithCollectionAsTable() {
+            base.ClickOnLineItemWithCollectionAsTable();
+        }
+
+        [TestMethod]
+        public override void DialogAction() {
+            base.DialogAction();
+        }
+
+        [TestMethod]
+        public override void DialogActionOk() {
+            base.DialogActionOk();
+        }
+
+        [TestMethod]
+        public override void ObjectAction() {
+            base.ObjectAction();
+        }
+
+        [TestMethod]
+        public override void CollectionAction() {
+            base.CollectionAction();
+        }
+
+        [TestMethod]
+        public override void DescriptionRenderedAsTooltip() {
+            base.DescriptionRenderedAsTooltip();
+        }
+
+        [TestMethod]
+        public override void DisabledAction() {
+            base.DisabledAction();
+        }
+
+        [TestMethod]
+        public override void ActionsMenuDisabledOnObjectWithNoActions() {
+            base.ActionsMenuDisabledOnObjectWithNoActions();
+        }
+
+        [TestMethod]
+        public override void QueryOnlyActionDoesNotReloadAutomatically() {
+            base.QueryOnlyActionDoesNotReloadAutomatically();
+        }
+
+        [TestMethod]
+        public override void PotentActionDoesReloadAutomatically() {
+            base.PotentActionDoesReloadAutomatically();
+        }
+
+        [TestMethod]
+        public override void NonNavigableReferenceProperty() {
+            base.NonNavigableReferenceProperty();
+        }
+
+        [TestMethod]
+        public override void Colours() {
+            base.Colours();
+        }
+
+        [TestMethod]
+        public override void ZeroIntValues() {
+            base.ZeroIntValues();
+        }
+
+        [TestMethod]
+        public override void AddingObjectToCollectionUpdatesTableView() {
+            base.AddingObjectToCollectionUpdatesTableView();
+        }
+
+        [TestMethod]
+        public override void TimeSpanProperty() {
+            base.TimeSpanProperty();
+        }
     }
+
     #region browsers specific subclasses
 
-    public class ObjectViewTestsIe : ObjectViewTests
-    {
+    public class ObjectViewTestsIe : ObjectViewTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitIeDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
     }
 
     //[TestClass] //Firefox Individual
-    public class ObjectViewTestsFirefox : ObjectViewTests
-    {
+    public class ObjectViewTestsFirefox : ObjectViewTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitFirefoxDriver();
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
 
-        protected override void ScrollTo(IWebElement element)
-        {
+        protected override void ScrollTo(IWebElement element) {
             string script = string.Format("window.scrollTo({0}, {1});return true;", element.Location.X, element.Location.Y);
-            ((IJavaScriptExecutor)br).ExecuteScript(script);
+            ((IJavaScriptExecutor) br).ExecuteScript(script);
         }
     }
 
-    public class ObjectViewTestsChrome : ObjectViewTests
-    {
+    public class ObjectViewTestsChrome : ObjectViewTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitChromeDriver();
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
     }
 
     #endregion
+
     #region Mega tests
-    public abstract class MegaObjectViewTestsRoot : ObjectViewTestsRoot
-    {
+
+    public abstract class MegaObjectViewTestsRoot : ObjectViewTestsRoot {
         [TestMethod] //Mega
-        public void MegaObjectViewTest()
-        {
+        public void MegaObjectViewTest() {
             ActionsAlreadyOpen();
             OpenActionsMenuNotAlreadyOpen();
             OpenAndCloseSubMenusTo2Levels();
@@ -520,27 +577,45 @@ namespace NakedObjects.Web.UnitTests.Selenium
             TimeSpanProperty();
         }
     }
-    [TestClass]
-    public class MegaObjectViewTestFirefox : MegaObjectViewTestsRoot
-    {
+
+    //[TestClass]
+    public class MegaObjectViewTestFirefox : MegaObjectViewTestsRoot {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitFirefoxDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
     }
+
+    [TestClass]
+    public class MegaObjectViewTestIe : MegaObjectViewTestsRoot {
+        [ClassInitialize]
+        public new static void InitialiseClass(TestContext context) {
+            FilePath(@"drivers.IEDriverServer.exe");
+            AWTest.InitialiseClass(context);
+        }
+
+        [TestInitialize]
+        public virtual void InitializeTest() {
+            InitIeDriver();
+            Url(BaseUrl);
+        }
+
+        [TestCleanup]
+        public virtual void CleanupTest() {
+            base.CleanUpTest();
+        }
+    }
+
     #endregion
 }

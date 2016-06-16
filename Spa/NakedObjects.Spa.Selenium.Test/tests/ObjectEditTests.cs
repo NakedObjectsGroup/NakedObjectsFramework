@@ -6,19 +6,15 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Linq;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
-using System.Threading;
 
-namespace NakedObjects.Web.UnitTests.Selenium
-{
-    public abstract class ObjectEditTestsRoot : AWTest
-    {
-        public virtual void ObjectEditChangeScalar()
-        {
+namespace NakedObjects.Web.UnitTests.Selenium {
+    public abstract class ObjectEditTestsRoot : AWTest {
+        public virtual void ObjectEditChangeScalar() {
             var rand = new Random();
             GeminiUrl("object?o1=___1.Product--870");
             EditObject();
@@ -37,8 +33,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("List Price:\r\n" + currency, properties[5].Text);
             Assert.AreEqual("Days To Manufacture:\r\n" + newDays, properties[17].Text);
         }
-        public virtual void LocalValidationOfMandatoryFields()
-        {
+
+        public virtual void LocalValidationOfMandatoryFields() {
             GeminiUrl("object?i1=Edit&o1=___1.SpecialOffer--11");
             SaveButton().AssertIsEnabled();
             ClearFieldThenType("#startdate1", "");
@@ -50,8 +46,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             ClearFieldThenType("#minqty1", "1");
             SaveButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Description; Start Date; ");
         }
-        public virtual void LocalValidationOfMaxLength()
-        {
+
+        public virtual void LocalValidationOfMaxLength() {
             GeminiUrl("object?i1=Edit&o1=___1.Person--12125&c1_Addresses=List&c1_EmailAddresses=List");
             ClearFieldThenType("#title1", "Generalis");
             wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Too long").Count() == 1);
@@ -61,8 +57,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Too long").Count() == 0);
             SaveButton().AssertIsEnabled();
         }
-        public virtual void LocalValidationOfRegex()
-        {
+
+        public virtual void LocalValidationOfRegex() {
             GeminiUrl("object?i1=Edit&o1=___1.EmailAddress--12043--11238");
             ClearFieldThenType("#emailaddress11", "arthur44@adventure-works");
             wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Invalid entry").Count() == 1);
@@ -72,8 +68,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Invalid entry").Count() == 0);
             SaveButton().AssertIsEnabled();
         }
-        public virtual void LocalValidationOfRange()
-        {
+
+        public virtual void LocalValidationOfRange() {
             GeminiUrl("object?i1=Edit&o1=___1.Product--817");
             WaitForView(Pane.Single, PaneType.Object, "Editing - HL Mountain Front Wheel");
             wait.Until(dr => dr.FindElement(By.CssSelector("#daystomanufacture1")).GetAttribute("value") == "1");
@@ -96,8 +92,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //Confirm that the save button is disabled & has helper tooltip
             SaveButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Days To Manufacture; ");
         }
-        public virtual void ObjectEditChangeEnum()
-        {
+
+        public virtual void ObjectEditChangeEnum() {
             GeminiUrl("object?i1=View&o1=___1.Person--6748");
             wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[6].Text == "Email Promotion:\r\nNo Promotions");
             EditObject();
@@ -109,15 +105,15 @@ namespace NakedObjects.Web.UnitTests.Selenium
             SaveObject();
             wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[6].Text == "Email Promotion:\r\nNo Promotions");
         }
-        public virtual void ObjectEditChangeDateTime()
-        {
+
+        public virtual void ObjectEditChangeDateTime() {
             GeminiUrl("object?o1=___1.Product--870");
             EditObject();
 
             var rand = new Random();
-           var date = new DateTime(2000, 1, 1);
+            var date = new DateTime(2000, 1, 1);
             var sellStart = date.AddDays(rand.Next(2000));
-            var sellEnd = date.AddDays(rand.Next(2000,3000));
+            var sellEnd = date.AddDays(rand.Next(2000, 3000));
             Thread.Sleep(500);
             ClearFieldThenType("#sellstartdate1", sellStart.ToString("d MMM yyyy"));
             ClearFieldThenType("#sellenddate1", sellEnd.ToString("dd/MM/yy")); //Test different input format...
@@ -128,10 +124,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             Assert.AreEqual("Days To Manufacture:\r\n1", properties[17].Text);
             Assert.AreEqual("Sell Start Date:\r\n" + sellStart.ToString("d MMM yyyy"), properties[18].Text);
-           Assert.AreEqual("Sell End Date:\r\n"+sellEnd.ToString("d MMM yyyy"), properties[19].Text); //...but output format standardised.
+            Assert.AreEqual("Sell End Date:\r\n" + sellEnd.ToString("d MMM yyyy"), properties[19].Text); //...but output format standardised.
         }
-        public virtual void CanSetAndClearAnOptionalDropDown()
-        {
+
+        public virtual void CanSetAndClearAnOptionalDropDown() {
             GeminiUrl("object?o1=___1.WorkOrder--54064");
             WaitForView(Pane.Single, PaneType.Object);
             EditObject();
@@ -145,8 +141,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             prop = WaitForCssNo(".property", 4);
             Assert.AreEqual("Scrap Reason:", prop.Text);
         }
-        public virtual void ObjectEditPicksUpLatestServerVersion()
-        {
+
+        public virtual void ObjectEditPicksUpLatestServerVersion() {
             GeminiUrl("object?o1=___1.Person--8410&as1=open");
             WaitForView(Pane.Single, PaneType.Object);
             var original = WaitForCss(".property:nth-child(6) .value").Text;
@@ -162,8 +158,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(GetCancelEditButton()); //but can't read the value, so go back to view
             Assert.AreEqual(newValue, WaitForCss(".property:nth-child(6) .value").Text);
         }
-        public virtual void ViewModelEditOpensInEditMode()
-        {
+
+        public virtual void ViewModelEditOpensInEditMode() {
             GeminiUrl("object?o1=___1.EmailTemplate--1&i1=Form");
             WaitForCss("input#to1");
             WaitForCss("input#from1");
@@ -171,8 +167,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //as individual buttons, and NO generic Save button
         }
 
-        public virtual void MultiLineText()
-        {
+        public virtual void MultiLineText() {
             GeminiUrl("object?i1=Edit&o1=___1.SalesOrderHeader--44440");
             var ta = WaitForCss("textarea#comment1");
             Assert.AreEqual("Free-form text", ta.GetAttribute("placeholder"));
@@ -182,109 +177,126 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var ran3 = rand.Next(10000);
             ClearFieldThenType("#comment1", ran1 + Keys.Enter + ran2 + Keys.Enter + ran3);
             Click(SaveButton());
-            wait.Until(d => br.FindElements(By.CssSelector(".property"))[20].Text == 
-                "Comment:\r\n"+ ran1+"\r\n"+ ran2+"\r\n"+ran3);
+            wait.Until(d => br.FindElements(By.CssSelector(".property"))[20].Text ==
+                            "Comment:\r\n" + ran1 + "\r\n" + ran2 + "\r\n" + ran3);
         }
     }
-    public abstract class ObjectEditTests : ObjectEditTestsRoot
-    {
+
+    public abstract class ObjectEditTests : ObjectEditTestsRoot {
+        [TestMethod]
+        public override void ObjectEditChangeScalar() {
+            base.ObjectEditChangeScalar();
+        }
 
         [TestMethod]
-        public override void ObjectEditChangeScalar() { base.ObjectEditChangeScalar(); }
-        [TestMethod]
-        public override void LocalValidationOfMandatoryFields() { base.LocalValidationOfMandatoryFields(); }
-        [TestMethod]
-        public override void LocalValidationOfMaxLength() { base.LocalValidationOfMaxLength(); }
-        [TestMethod]
-        public override void LocalValidationOfRegex() { base.LocalValidationOfRegex(); }
-        [TestMethod]
-        public override void LocalValidationOfRange() { base.LocalValidationOfRange(); }
+        public override void LocalValidationOfMandatoryFields() {
+            base.LocalValidationOfMandatoryFields();
+        }
 
         [TestMethod]
-        public override void  ObjectEditChangeEnum() { base.ObjectEditChangeEnum(); }
+        public override void LocalValidationOfMaxLength() {
+            base.LocalValidationOfMaxLength();
+        }
+
         [TestMethod]
-        public override void ObjectEditChangeDateTime() { base.ObjectEditChangeDateTime(); }
+        public override void LocalValidationOfRegex() {
+            base.LocalValidationOfRegex();
+        }
+
         [TestMethod]
-        public override void CanSetAndClearAnOptionalDropDown() { base.CanSetAndClearAnOptionalDropDown(); }
+        public override void LocalValidationOfRange() {
+            base.LocalValidationOfRange();
+        }
+
         [TestMethod]
-        public override void ObjectEditPicksUpLatestServerVersion() { base.ObjectEditPicksUpLatestServerVersion(); }
+        public override void ObjectEditChangeEnum() {
+            base.ObjectEditChangeEnum();
+        }
+
         [TestMethod]
-        public override void ViewModelEditOpensInEditMode() { base.ViewModelEditOpensInEditMode(); }
+        public override void ObjectEditChangeDateTime() {
+            base.ObjectEditChangeDateTime();
+        }
+
         [TestMethod]
-        public override void MultiLineText() { base.MultiLineText();  }
+        public override void CanSetAndClearAnOptionalDropDown() {
+            base.CanSetAndClearAnOptionalDropDown();
+        }
+
+        [TestMethod]
+        public override void ObjectEditPicksUpLatestServerVersion() {
+            base.ObjectEditPicksUpLatestServerVersion();
+        }
+
+        [TestMethod]
+        public override void ViewModelEditOpensInEditMode() {
+            base.ViewModelEditOpensInEditMode();
+        }
+
+        [TestMethod]
+        public override void MultiLineText() {
+            base.MultiLineText();
+        }
     }
 
     #region browsers specific subclasses
 
-    public class ObjectEditPageTestsIe : ObjectEditTests
-    {
+    public class ObjectEditPageTestsIe : ObjectEditTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitIeDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
     }
 
     //[TestClass] //Firefox Individual
-    public class ObjectEditPageTestsFirefox : ObjectEditTests
-    {
+    public class ObjectEditPageTestsFirefox : ObjectEditTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitFirefoxDriver();
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
 
-        protected override void ScrollTo(IWebElement element)
-        {
+        protected override void ScrollTo(IWebElement element) {
             string script = string.Format("window.scrollTo({0}, {1});return true;", element.Location.X, element.Location.Y);
-            ((IJavaScriptExecutor)br).ExecuteScript(script);
+            ((IJavaScriptExecutor) br).ExecuteScript(script);
         }
     }
 
-    public class ObjectEditPageTestsChrome : ObjectEditTests
-    {
+    public class ObjectEditPageTestsChrome : ObjectEditTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitChromeDriver();
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
     }
@@ -292,46 +304,62 @@ namespace NakedObjects.Web.UnitTests.Selenium
     #endregion
 
     #region Mega tests
-    public abstract class MegaObjectEditTestsRoot : ObjectEditTestsRoot
-    {
+
+    public abstract class MegaObjectEditTestsRoot : ObjectEditTestsRoot {
         [TestMethod] //Mega
-        public void MegaObjectEditTest()
-        {
+        public void MegaObjectEditTest() {
             ObjectEditChangeScalar();
             LocalValidationOfMandatoryFields();
             LocalValidationOfMaxLength();
             LocalValidationOfRegex();
             LocalValidationOfRange();
             ObjectEditChangeEnum();
-            ObjectEditChangeDateTime();            
+            ObjectEditChangeDateTime();
             CanSetAndClearAnOptionalDropDown();
             ObjectEditPicksUpLatestServerVersion();
             ViewModelEditOpensInEditMode();
-            MultiLineText(); 
+            MultiLineText();
         }
     }
 
-    [TestClass]
-    public class MegaObjectEditTestsFirefox : MegaObjectEditTestsRoot
-    {
+    //[TestClass]
+    public class MegaObjectEditTestsFirefox : MegaObjectEditTestsRoot {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitFirefoxDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
     }
+
+    [TestClass]
+    public class MegaObjectEditTestsIe : MegaObjectEditTestsRoot {
+        [ClassInitialize]
+        public new static void InitialiseClass(TestContext context) {
+            FilePath(@"drivers.IEDriverServer.exe");
+            AWTest.InitialiseClass(context);
+        }
+
+        [TestInitialize]
+        public virtual void InitializeTest() {
+            InitIeDriver();
+            Url(BaseUrl);
+        }
+
+        [TestCleanup]
+        public virtual void CleanupTest() {
+            base.CleanUpTest();
+        }
+    }
+
     #endregion
 }

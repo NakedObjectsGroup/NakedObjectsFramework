@@ -7,17 +7,13 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using System.Threading;
 
-namespace NakedObjects.Web.UnitTests.Selenium
-{
+namespace NakedObjects.Web.UnitTests.Selenium {
     /// <summary>
     /// Tests content and operations within from Home representation
     /// </summary>
-    public abstract class HomeTestsRoot : AWTest
-    {
-        public virtual void WaitForSingleHome()
-        {
+    public abstract class HomeTestsRoot : AWTest {
+        public virtual void WaitForSingleHome() {
             WaitForView(Pane.Single, PaneType.Home, "Home");
             WaitForCss(".main-column");
             var menus = WaitForCss(".menu", MainMenusCount);
@@ -38,22 +34,20 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         #region Clicking on menus and opening/closing dialogs
 
-        public virtual void ClickOnVariousMenus()
-        {
+        public virtual void ClickOnVariousMenus() {
             GoToMenuFromHomePage("Customers");
             OpenSubMenu("Stores");
             OpenSubMenu("Individuals");
-            AssertAction(0,"Find Customer By Account Number");
-            AssertAction(1,"Find Store By Name");
-            AssertAction(2,"Create New Store Customer");
-            AssertAction(3,"Random Store");
-            AssertAction(4,"Find Individual Customer By Name");
-            AssertAction(5,"Create New Individual Customer");
-            AssertAction(6,"Random Individual");
-            AssertAction(7,"Customer Dashboard");
-            AssertAction(8,"Throw Domain Exception");
-            AssertAction(9,"Find Customer");
-
+            AssertAction(0, "Find Customer By Account Number");
+            AssertAction(1, "Find Store By Name");
+            AssertAction(2, "Create New Store Customer");
+            AssertAction(3, "Random Store");
+            AssertAction(4, "Find Individual Customer By Name");
+            AssertAction(5, "Create New Individual Customer");
+            AssertAction(6, "Random Individual");
+            AssertAction(7, "Customer Dashboard");
+            AssertAction(8, "Throw Domain Exception");
+            AssertAction(9, "Find Customer");
 
             GoToMenuFromHomePage("Sales");
             AssertAction(0, "Create New Sales Person");
@@ -64,8 +58,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //AssertHasFocus(actions[0]);
         }
 
-        public virtual void OpenAndCloseSubMenus()
-        {
+        public virtual void OpenAndCloseSubMenus() {
             GoToMenuFromHomePage("Customers");
             AssertActionNotDisplayed("Random Store");
             AssertActionNotDisplayed("Random Individual");
@@ -110,8 +103,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             AssertActionNotDisplayed("Action3");
             AssertActionNotDisplayed("Action4");
         }
-        public virtual void SelectSuccessiveDialogActionsThenCancel()
-        {
+
+        public virtual void SelectSuccessiveDialogActionsThenCancel() {
             Url(CustomersMenuUrl);
             WaitForCss(".actions .action", CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
@@ -119,11 +112,12 @@ namespace NakedObjects.Web.UnitTests.Selenium
             OpenActionDialog("Find Customer By Account Number");
             CancelDialog();
         }
+
         #endregion
 
         #region Invoking main menu actions        
-        public virtual void ZeroParamReturnsObject()
-        {
+
+        public virtual void ZeroParamReturnsObject() {
             Url(CustomersMenuUrl);
             OpenSubMenu("Stores");
             Click(GetObjectAction("Random Store"));
@@ -133,8 +127,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //AssertHasFocus(title);
         }
 
-        public virtual void ZeroParamReturnsCollection()
-        {
+        public virtual void ZeroParamReturnsCollection() {
             Url(OrdersMenuUrl);
             WaitForCss(".actions .action", OrderServiceActions);
             Click(GetObjectAction("Highest Value Orders"));
@@ -145,8 +138,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //AssertHasFocus(first); //TODO: test all focus separately
         }
 
-        public virtual void ZeroParamThrowsError()
-        {
+        public virtual void ZeroParamThrowsError() {
             Url(CustomersMenuUrl);
             WaitForCss(".actions .action", CustomerServiceActions);
             Click(GetObjectAction("Throw Domain Exception"));
@@ -154,8 +146,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Message: Foo", msg.Text);
         }
 
-        public virtual void ZeroParamReturnsEmptyCollection()
-        {
+        public virtual void ZeroParamReturnsEmptyCollection() {
             Url(CustomersMenuUrl);
             OpenSubMenu("Individuals");
             Click(GetObjectAction("Find Individual Customer By Name"));
@@ -167,8 +158,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
 
         //Failing due to focus issue 
-        public virtual void DialogActionOK()
-        {
+        public virtual void DialogActionOK() {
             Url(CustomersMenuUrl);
             WaitForCss(".actions .action", CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
@@ -180,172 +170,134 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Marcus Collins, AW00022262");
         }
+
         #endregion
     }
-    public abstract class HomeTests : HomeTestsRoot
-    {
 
+    public abstract class HomeTests : HomeTestsRoot {
         [TestMethod]
-        public override void WaitForSingleHome()
-        {
+        public override void WaitForSingleHome() {
             base.WaitForSingleHome();
         }
 
         #region Clicking on menus and opening/closing dialogs
+
         [TestMethod]
-        public override void ClickOnVariousMenus()
-        {
+        public override void ClickOnVariousMenus() {
             base.ClickOnVariousMenus();
         }
+
         [TestMethod]
-        public override void OpenAndCloseSubMenus()
-        {
+        public override void OpenAndCloseSubMenus() {
             base.OpenAndCloseSubMenus();
         }
 
         [TestMethod]
-        public override void SelectSuccessiveDialogActionsThenCancel()
-        {
+        public override void SelectSuccessiveDialogActionsThenCancel() {
             base.SelectSuccessiveDialogActionsThenCancel();
         }
+
         #endregion
 
         #region Invoking main menu actions
+
         [TestMethod]
-        public override void ZeroParamReturnsObject()
-        {
+        public override void ZeroParamReturnsObject() {
             base.ZeroParamReturnsObject();
         }
 
         [TestMethod]
-        public override void ZeroParamReturnsCollection()
-        {
+        public override void ZeroParamReturnsCollection() {
             base.ZeroParamReturnsCollection();
         }
 
         [TestMethod]
-        public override void ZeroParamThrowsError()
-        {
+        public override void ZeroParamThrowsError() {
             base.ZeroParamThrowsError();
         }
 
         [TestMethod]
-        public override void ZeroParamReturnsEmptyCollection()
-        {
+        public override void ZeroParamReturnsEmptyCollection() {
             base.ZeroParamReturnsEmptyCollection();
         }
 
         [TestMethod] //Failing due to focus issue 
-        public override void DialogActionOK()
-        {
+        public override void DialogActionOK() {
             base.DialogActionOK();
         }
+
         #endregion
     }
+
     #region browsers specific subclasses 
 
-    public class HomeTestsIe : HomeTests
-    {
+    public class HomeTestsIe : HomeTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitIeDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
     }
 
     //[TestClass] //Firefox Individual
-    public class HomeTestsFirefox : HomeTests
-    {
+    public class HomeTestsFirefox : HomeTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitFirefoxDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
     }
 
-    public class HomeTestsChrome : HomeTests
-    {
+    public class HomeTestsChrome : HomeTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitChromeDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
 
-        protected override void ScrollTo(IWebElement element)
-        {
+        protected override void ScrollTo(IWebElement element) {
             string script = string.Format("window.scrollTo(0, {0})", element.Location.Y);
-            ((IJavaScriptExecutor)br).ExecuteScript(script);
+            ((IJavaScriptExecutor) br).ExecuteScript(script);
         }
     }
 
     #endregion
 
-    [TestClass]
-    public class MegaHomeTestFirefox : HomeTestsRoot
-    {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest()
-        {
-            InitFirefoxDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest()
-        {
-            base.CleanUpTest();
-        }
-
+    public class MegaHomeTestBase : HomeTestsRoot {
         [TestMethod] //Mega
-        public virtual void MegaHomeTest()
-        {
+        public virtual void MegaHomeTest() {
             WaitForSingleHome();
             ClickOnVariousMenus();
             OpenAndCloseSubMenus();
@@ -355,6 +307,45 @@ namespace NakedObjects.Web.UnitTests.Selenium
             ZeroParamThrowsError();
             ZeroParamReturnsEmptyCollection();
             DialogActionOK();
+        }
+    }
+
+    //[TestClass]
+    public class MegaHomeTestFirefox : MegaHomeTestBase {
+        [ClassInitialize]
+        public new static void InitialiseClass(TestContext context) {
+            AWTest.InitialiseClass(context);
+        }
+
+        [TestInitialize]
+        public virtual void InitializeTest() {
+            InitFirefoxDriver();
+            Url(BaseUrl);
+        }
+
+        [TestCleanup]
+        public virtual void CleanupTest() {
+            base.CleanUpTest();
+        }
+    }
+
+    [TestClass]
+    public class MegaHomeTestIe : MegaHomeTestBase {
+        [ClassInitialize]
+        public new static void InitialiseClass(TestContext context) {
+            FilePath(@"drivers.IEDriverServer.exe");
+            AWTest.InitialiseClass(context);
+        }
+
+        [TestInitialize]
+        public virtual void InitializeTest() {
+            InitIeDriver();
+            Url(BaseUrl);
+        }
+
+        [TestCleanup]
+        public virtual void CleanupTest() {
+            base.CleanUpTest();
         }
     }
 }

@@ -440,7 +440,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
     #region Mega tests
 
-    [TestClass]
+    //[TestClass]
     public class MegaSplitPaneTestFirefox : SplitPaneTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -467,6 +467,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     public class MegaSplitPaneTestIe : SplitPaneTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
+            FilePath(@"drivers.IEDriverServer.exe");
             AWTest.InitialiseClass(context);
         }
 
