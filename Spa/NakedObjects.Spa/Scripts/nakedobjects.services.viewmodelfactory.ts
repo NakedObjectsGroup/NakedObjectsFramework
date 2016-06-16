@@ -411,13 +411,9 @@ module NakedObjects {
                     const pps = actionViewModel.parameters();
                     actionViewModel.executeInvoke(pps, right).
                         catch((reject: ErrorWrapper) => {
-                            const parent = actionRep.parent as DomainObjectRepresentation;
-                            const reset = () => {
-                                // this should just be called if concurrency
-                                $rootScope.$broadcast(geminiDisplayErrorEvent, new ErrorMap({}, 0, concurrencyError));
-                            };
+                         
                             const display = (em: ErrorMap) => vm.setMessage(em.invalidReason() || em.warningMessage);
-                            error.handleErrorWithReload(reject, parent, reset, display);
+                            error.handleErrorAndDisplayMessages(reject,  display);
                         });
                 };
 

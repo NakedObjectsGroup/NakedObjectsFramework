@@ -33,7 +33,7 @@ module NakedObjects {
     export const noItemsSelected = "Must select items for collection contributed action";
     export const dropPrompt = "(drop here)";
     export const autoCompletePrompt = "(auto-complete or drop)";
-    export const concurrencyError = "Object has been updated by another user\n. Object has been reloaded.";
+    export const concurrencyMessage = "Object has been updated by another user\n. Object has been reloaded.";
     export const loadingMessage = "Loading...";
 
 

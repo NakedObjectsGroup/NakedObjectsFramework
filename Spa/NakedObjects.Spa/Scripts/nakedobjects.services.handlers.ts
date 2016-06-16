@@ -423,7 +423,7 @@ module NakedObjects {
                         deRegObject[routeData.paneId].add($scope.$on("$locationChangeStart", ovm.setProperties) as () => void);
                         deRegObject[routeData.paneId].add($scope.$watch(() => $location.search(), ovm.setProperties, true) as () => void);
                         deRegObject[routeData.paneId].add($scope.$on(geminiPaneSwapEvent, ovm.setProperties) as () => void);
-                        deRegObject[routeData.paneId].add($scope.$on(geminiDisplayErrorEvent, ovm.displayError()) as () => void);
+                        deRegObject[routeData.paneId].add($scope.$on(geminiConcurrencyEvent, ovm.concurrency()) as () => void);
 
                     }).catch((reject: ErrorWrapper) => {
 

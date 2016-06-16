@@ -495,7 +495,6 @@ module NakedObjects {
 
             const pps = this.parameters;
             _.forEach(pps, p => this.urlManager.setFieldValue(this.actionMember().actionId(), p.parameterRep, p.getValue(), this.onPaneId));
-            //_.forEach(pps, p => this.context.setFieldValue(this.actionMember().actionId(), p.parameterRep.id(), p.getValue(), this.onPaneId));
             this.context.updateParms();
             return this.actionViewModel.executeInvoke(pps, right);
         };
@@ -521,16 +520,8 @@ module NakedObjects {
                     // else query only going to other tab leave dialog open
                 }).
                 catch((reject: ErrorWrapper) => {
-                    const parent = this.actionMember().parent instanceof DomainObjectRepresentation ? this.actionMember().parent as DomainObjectRepresentation : null;
                     const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.parameters);
-                    this.error.handleErrorWithReload(reject,
-                        parent,
-                        () => {
-                            // this should just be called if concurrency
-                            this.doCloseKeepHistory();
-                            this.$rootScope.$broadcast(geminiDisplayErrorEvent, new ErrorMap({}, 0, concurrencyError));
-                        },
-                        display);
+                    this.error.handleErrorAndDisplayMessages(reject, display);
                 });
 
         doCloseKeepHistory = () => {
@@ -1019,13 +1010,19 @@ module NakedObjects {
             return this;
         }
 
-        displayError() {
+        concurrency() {
             return (event: ng.IAngularEvent, em: ErrorMap) => {
                 this.routeData = this.urlManager.getRouteData().pane()[this.onPaneId];
                 this.contextService.getObject(this.onPaneId, this.domainObject.getOid(), this.routeData.interactionMode)
                     .then(obj => {
-                        this.reset(obj, this.routeData);
-                        this.viewModelFactory.handleErrorResponse(em, this, this.properties);
+                        this.contextService.reloadObject(this.onPaneId, obj)
+                            .then(reloadedObj => {
+                                if (this.routeData.dialogId) {
+                                    this.urlManager.closeDialogReplaceHistory(this.onPaneId);
+                                }
+                                this.reset(reloadedObj, this.routeData);
+                                this.viewModelFactory.handleErrorResponse(em, this, this.properties);
+                            });
                     });
             }
         }
@@ -1088,9 +1085,8 @@ module NakedObjects {
         private validateHandler = () => this.domainObject.isTransient() ? this.contextService.validateSaveObject : this.contextService.validateUpdateObject;
 
         private handleWrappedError = (reject: ErrorWrapper) => {
-            const reset = (updatedObject: DomainObjectRepresentation) => this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
             const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.properties);
-            this.error.handleErrorWithReload(reject, this.domainObject, reset, display);
+            this.error.handleErrorAndDisplayMessages(reject, display);
         };
 
         doSave = (viewObject: boolean) => {

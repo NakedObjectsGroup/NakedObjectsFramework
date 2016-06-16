@@ -4,7 +4,6 @@
 module NakedObjects {
     import ErrorWrapper = Models.ErrorWrapper;
     import ErrorCategory = Models.ErrorCategory;
-    import DomainObjectRepresentation = Models.DomainObjectRepresentation;
     import ErrorMap = Models.ErrorMap;
     import HttpStatusCode = Models.HttpStatusCode;
 
@@ -14,18 +13,10 @@ module NakedObjects {
     export interface IError {
 
         handleError(reject: Models.ErrorWrapper): void;
-
         handleErrorAndDisplayMessages(reject: Models.ErrorWrapper, displayMessages: (em: Models.ErrorMap) => void): void;
-
-        handleErrorWithReload(reject: Models.ErrorWrapper,
-            toReload: Models.DomainObjectRepresentation,
-            onReload: (updatedObject: Models.DomainObjectRepresentation) => void,
-            displayMessages: (em: Models.ErrorMap) => void): void;
-
-        setErrorPreprocessor(handler: errorPreprocessor): void;
-
         displayError($scope: INakedObjectsScope, routeData: PaneRouteData): void;
 
+        setErrorPreprocessor(handler: errorPreprocessor): void;
         setErrorDisplayHandler(handler: errorDisplayHandler): void;
     }
 
@@ -41,21 +32,8 @@ module NakedObjects {
             }
 
             function handleHttpClientError(reject: ErrorWrapper,
-                toReload: DomainObjectRepresentation,
-                onReload: (updatedObject: DomainObjectRepresentation) => void,
-                displayMessages: (em: ErrorMap) => void) {
+                                           displayMessages: (em: ErrorMap) => void) {
                 switch (reject.httpErrorCode) {
-                case (HttpStatusCode.PreconditionFailed):
-
-                    if (toReload.isTransient()) {
-                        urlManager.setError(ErrorCategory.HttpClientError, reject.httpErrorCode);
-                    } else {
-                        context.reloadObject(1, toReload)
-                            .then((updatedObject: DomainObjectRepresentation) => {
-                                onReload(updatedObject);
-                            });
-                    }
-                    break;
                 case (HttpStatusCode.UnprocessableEntity):
                     displayMessages(reject.error as ErrorMap);
                     break;
@@ -68,12 +46,11 @@ module NakedObjects {
                 urlManager.setError(ErrorCategory.ClientError, reject.clientErrorCode);
             }
 
-            errorService.handleErrorWithReload = (reject: ErrorWrapper,
-                toReload: DomainObjectRepresentation,
-                onReload: (updatedObject: DomainObjectRepresentation) => void,
-                displayMessages: (em: ErrorMap) => void) => {
+            errorService.handleError = (reject: ErrorWrapper) => {
+                errorService.handleErrorAndDisplayMessages(reject, () => {});
+            };
 
-
+            errorService.handleErrorAndDisplayMessages = (reject: Models.ErrorWrapper, displayMessages: (em: Models.ErrorMap) => void) => {
                 preProcessors.forEach(p => p(reject));
 
                 if (reject.handled) {
@@ -87,20 +64,12 @@ module NakedObjects {
                     handleHttpServerError(reject);
                     break;
                 case (ErrorCategory.HttpClientError):
-                    handleHttpClientError(reject, toReload, onReload, displayMessages);
+                    handleHttpClientError(reject, displayMessages);
                     break;
                 case (ErrorCategory.ClientError):
                     handleClientError(reject);
                     break;
                 }
-            };
-
-            errorService.handleError = (reject: ErrorWrapper) => {
-                errorService.handleErrorWithReload(reject, null, () => {}, () => {});
-            };
-
-            errorService.handleErrorAndDisplayMessages = (reject: Models.ErrorWrapper, displayMessages: (em: Models.ErrorMap) => void) => {
-                errorService.handleErrorWithReload(reject, null, () => {}, displayMessages);
             };
 
             errorService.setErrorPreprocessor = (handler: errorPreprocessor) => {
