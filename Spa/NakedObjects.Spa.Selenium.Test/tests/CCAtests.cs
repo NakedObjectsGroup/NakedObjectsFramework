@@ -284,7 +284,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
     #region browsers specific subclasses
 
-    [TestClass]
+    //[TestClass]
     public class CCAtestsIe : CCAtestsServer {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -303,7 +303,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class CCAtestsFirefox : CCAtestsServer {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

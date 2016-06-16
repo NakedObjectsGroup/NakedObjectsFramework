@@ -5,25 +5,86 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using System;
-using System.Threading;
-using System.Linq;
 using OpenQA.Selenium.Interactions;
-using System.Collections.ObjectModel;
 using OpenQA.Selenium.Support.UI;
 
-namespace NakedObjects.Web.UnitTests.Selenium
-{
+namespace NakedObjects.Web.UnitTests.Selenium {
     /// <summary>
     /// These are all tests that should pass when run locally, but are unreliable on the server
     /// </summary>
-    public abstract class LocallyRunTestsRoot : AWTest
-    {
+    public abstract class LocallyRunTestsRoot : AWTest {
+        #region List
+
+        public virtual void PagingTableView() {
+            GeminiUrl("list?m1=CustomerRepository&a1=FindIndividualCustomerByName&p1=1&ps1=20&pm1_firstName=%22%22&pm1_lastName=%22a%22&c1=Table");
+            Reload();
+            //Confirm in Table view
+            WaitForCss("thead tr th");
+            WaitForCss(".icon-list");
+            WaitUntilElementDoesNotExist(".icon-table");
+            //Test content of collection
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
+                .Text.StartsWith("Page 1 of"));
+            GetButton("First").AssertIsDisabled();
+            GetButton("Previous").AssertIsDisabled();
+            var next = GetButton("Next").AssertIsEnabled();
+            GetButton("Last").AssertIsEnabled();
+            //Go to next page
+            Click(next);
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
+                .Text.StartsWith("Page 2 of"));
+            //Confirm in Table view
+            WaitForCss("thead tr th");
+            WaitForCss(".icon-list");
+            WaitUntilElementDoesNotExist(".icon-table");
+
+            GetButton("First").AssertIsEnabled();
+            GetButton("Previous").AssertIsEnabled();
+            GetButton("Next").AssertIsEnabled();
+            var last = GetButton("Last").AssertIsEnabled();
+            Click(last);
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
+                .Text.StartsWith("Page 45 of 45"));
+            //Confirm in Table view
+            WaitForCss("thead tr th");
+            var iconList = WaitForCss(".icon-list");
+            WaitUntilElementDoesNotExist(".icon-table");
+
+            GetButton("First").AssertIsEnabled();
+            var prev = GetButton("Previous").AssertIsEnabled();
+            GetButton("Next").AssertIsDisabled();
+            GetButton("Last").AssertIsDisabled();
+            Click(prev);
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
+                .Text.StartsWith("Page 44 of 45"));
+            //Confirm in Table view
+            WaitForCss("thead tr th");
+            WaitForCss(".icon-list");
+            WaitUntilElementDoesNotExist(".icon-table");
+            var first = GetButton("First").AssertIsEnabled();
+            GetButton("Previous").AssertIsEnabled();
+            GetButton("Next").AssertIsEnabled();
+            GetButton("Last").AssertIsEnabled();
+            Click(first);
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
+                .Text.StartsWith("Page 1 of 45"));
+            //Confirm in Table view
+            WaitForCss("thead tr th");
+            WaitForCss(".icon-list");
+            WaitUntilElementDoesNotExist(".icon-table");
+        }
+
+        #endregion
+
         #region CCAs
-        public virtual void TableViewWithParmDialogAlreadyOpen()
-        {
+
+        public virtual void TableViewWithParmDialogAlreadyOpen() {
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
             GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&c1=Table&as1=open&d1=ChangeDiscount");
@@ -54,9 +115,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitUntilElementDoesNotExist(".dialog");
         }
 
-
-        public virtual void ZeroParamAction()
-        {
+        public virtual void ZeroParamAction() {
             GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=20&ps1=5&s1=0&as1=open&c1=Table");
             Reload();
             wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count > 30);
@@ -85,10 +144,12 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Reload();
             wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) == 0);
         }
-#endregion
+
+        #endregion
+
         #region Copy & Paste
-        public virtual void IfNoObjectInClipboardCtrlVRevertsToBrowserBehaviour()
-        {
+
+        public virtual void IfNoObjectInClipboardCtrlVRevertsToBrowserBehaviour() {
             GeminiUrl("home?m1=EmployeeRepository&d1=CreateNewEmployeeFromContact&f1_contactDetails=null");
             WaitForView(Pane.Single, PaneType.Home);
             var home = WaitForCss(".title");
@@ -105,8 +166,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Home", target.GetAttribute("value"));
         }
 
-        public virtual void CanClearADroppableReferenceField()
-        {
+        public virtual void CanClearADroppableReferenceField() {
             GeminiUrl("object?o1=___1.PurchaseOrderHeader--561&i1=Edit");
             WaitForView(Pane.Single, PaneType.Object);
             var fieldCss = ".property:nth-child(4) .value.droppable";
@@ -118,70 +178,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
 
         #endregion
-        #region List
-        public virtual void PagingTableView()
-        {
-            GeminiUrl("list?m1=CustomerRepository&a1=FindIndividualCustomerByName&p1=1&ps1=20&pm1_firstName=%22%22&pm1_lastName=%22a%22&c1=Table");
-            Reload();
-            //Confirm in Table view
-            WaitForCss("thead tr th");
-            WaitForCss(".icon-list");
-            WaitUntilElementDoesNotExist(".icon-table");
-            //Test content of collection
-            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
-                .Text.StartsWith("Page 1 of"));
-            GetButton("First").AssertIsDisabled();
-            GetButton("Previous").AssertIsDisabled();
-            var next = GetButton("Next").AssertIsEnabled();
-            GetButton("Last").AssertIsEnabled();
-            //Go to next page
-            Click(next);
-            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
-                 .Text.StartsWith("Page 2 of"));
-            //Confirm in Table view
-            WaitForCss("thead tr th");
-            WaitForCss(".icon-list");
-            WaitUntilElementDoesNotExist(".icon-table");
 
-            GetButton("First").AssertIsEnabled();
-            GetButton("Previous").AssertIsEnabled();
-            GetButton("Next").AssertIsEnabled();
-            var last = GetButton("Last").AssertIsEnabled();
-            Click(last);
-            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
-                    .Text.StartsWith("Page 45 of 45"));
-            //Confirm in Table view
-            WaitForCss("thead tr th");
-            var iconList = WaitForCss(".icon-list");
-            WaitUntilElementDoesNotExist(".icon-table");
-
-            GetButton("First").AssertIsEnabled();
-            var prev = GetButton("Previous").AssertIsEnabled();
-            GetButton("Next").AssertIsDisabled();
-            GetButton("Last").AssertIsDisabled();
-            Click(prev);
-            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
-                .Text.StartsWith("Page 44 of 45"));
-            //Confirm in Table view
-            WaitForCss("thead tr th");
-            WaitForCss(".icon-list");
-            WaitUntilElementDoesNotExist(".icon-table");
-            var first = GetButton("First").AssertIsEnabled();
-            GetButton("Previous").AssertIsEnabled();
-            GetButton("Next").AssertIsEnabled();
-            GetButton("Last").AssertIsEnabled();
-            Click(first);
-            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
-                 .Text.StartsWith("Page 1 of 45"));
-            //Confirm in Table view
-            WaitForCss("thead tr th");
-            WaitForCss(".icon-list");
-            WaitUntilElementDoesNotExist(".icon-table");
-        }
-        #endregion
         #region Object Edit
-        public virtual void ObjectEditChangeChoices()
-        {
+
+        public virtual void ObjectEditChangeChoices() {
             GeminiUrl("object?o1=___1.Product--870");
             EditObject();
 
@@ -196,8 +196,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             Assert.AreEqual("Product Line:\r\nS", properties[8].Text);
         }
-        public virtual void ObjectEditChangeConditionalChoices()
-        {
+
+        public virtual void ObjectEditChangeConditionalChoices() {
             GeminiUrl("object?o1=___1.Product--870");
             EditObject();
             // set product category and sub category
@@ -259,8 +259,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Product Category:\r\nAccessories", properties[6].Text);
             Assert.AreEqual("Product Subcategory:\r\nBottles and Cages", properties[7].Text);
         }
-        public virtual void CoValidationOnSavingChanges()
-        {
+
+        public virtual void CoValidationOnSavingChanges() {
             GeminiUrl("object?o1=___1.WorkOrder--43134&i1=Edit");
             WaitForView(Pane.Single, PaneType.Object);
             //ClearFieldThenType("input#startdate1", ""); //Seems to be necessary to clear the date fields fully
@@ -272,114 +272,132 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(SaveButton());
             WaitForMessage("StartDate must be before DueDate");
         }
+
         #endregion
     }
-    public abstract class LocallyRunTests : LocallyRunTestsRoot
-    {
-        #region CCA Tests
-        [TestMethod]
-        public override void TableViewWithParmDialogAlreadyOpen() { base.TableViewWithParmDialogAlreadyOpen(); }
+
+    public abstract class LocallyRunTests : LocallyRunTestsRoot {
+        #region List tests
 
         [TestMethod]
-        public override void ZeroParamAction() { base.ZeroParamAction(); }
+        public override void PagingTableView() {
+            base.PagingTableView();
+        }
+
         #endregion
+
+        #region CCA Tests
+
+        [TestMethod]
+        public override void TableViewWithParmDialogAlreadyOpen() {
+            base.TableViewWithParmDialogAlreadyOpen();
+        }
+
+        [TestMethod]
+        public override void ZeroParamAction() {
+            base.ZeroParamAction();
+        }
+
+        #endregion
+
         #region Copy & Paste
+
         [TestMethod]
-        public override void CanClearADroppableReferenceField() { base.CanClearADroppableReferenceField(); }
+        public override void CanClearADroppableReferenceField() {
+            base.CanClearADroppableReferenceField();
+        }
+
         [TestMethod]
-        public override void IfNoObjectInClipboardCtrlVRevertsToBrowserBehaviour()
-        {
+        public override void IfNoObjectInClipboardCtrlVRevertsToBrowserBehaviour() {
             base.IfNoObjectInClipboardCtrlVRevertsToBrowserBehaviour();
         }
+
         #endregion
-        #region List tests
-        [TestMethod]
-        public override void PagingTableView() { base.PagingTableView(); }
-        #endregion
+
         #region Object Edit
+
         [TestMethod]
-        public override void ObjectEditChangeChoices() { base.ObjectEditChangeChoices(); }
+        public override void ObjectEditChangeChoices() {
+            base.ObjectEditChangeChoices();
+        }
+
         [TestMethod]
-        public override void ObjectEditChangeConditionalChoices() { base.ObjectEditChangeConditionalChoices(); }
+        public override void ObjectEditChangeConditionalChoices() {
+            base.ObjectEditChangeConditionalChoices();
+        }
+
         [TestMethod]
-        public override void CoValidationOnSavingChanges() { base.CoValidationOnSavingChanges(); }
+        public override void CoValidationOnSavingChanges() {
+            base.CoValidationOnSavingChanges();
+        }
+
         #endregion
     }
+
     #region browsers specific subclasses 
 
-    public class LocallyRunTestsIe : LocallyRunTests
-    {
+    [TestClass, Ignore] //IE Individual
+    public class LocallyRunTestsIe : LocallyRunTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitIeDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
     }
+
     [TestClass, Ignore] //Firefox Individual
-    public class LocallyRunTestsFirefox : LocallyRunTests
-    {
+    public class LocallyRunTestsFirefox : LocallyRunTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitFirefoxDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
     }
-    public class LocallyRunTestsChrome : LocallyRunTests
-    {
+
+    public class LocallyRunTestsChrome : LocallyRunTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitChromeDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
 
-        protected override void ScrollTo(IWebElement element)
-        {
+        protected override void ScrollTo(IWebElement element) {
             string script = string.Format("window.scrollTo(0, {0})", element.Location.Y);
-            ((IJavaScriptExecutor)br).ExecuteScript(script);
+            ((IJavaScriptExecutor) br).ExecuteScript(script);
         }
     }
 
     #endregion
-
 }
