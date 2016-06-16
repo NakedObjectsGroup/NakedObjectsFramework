@@ -8,7 +8,8 @@ module NakedObjects {
     import ErrorMap = Models.ErrorMap;
     import HttpStatusCode = Models.HttpStatusCode;
 
-    export type errorHandler = (reject: ErrorWrapper) => void;
+    export type errorPreprocessor = (reject: ErrorWrapper) => void;
+    export type errorDisplayHandler = ($scope: INakedObjectsScope) => void;
 
     export interface IError {
 
@@ -21,16 +22,19 @@ module NakedObjects {
             onReload: (updatedObject: Models.DomainObjectRepresentation) => void,
             displayMessages: (em: Models.ErrorMap) => void): void;
 
-        setErrorPreprocessor(handler: errorHandler): void;
+        setErrorPreprocessor(handler: errorPreprocessor): void;
 
         displayError($scope: INakedObjectsScope, routeData: PaneRouteData): void;
+
+        setErrorDisplayHandler(handler: errorDisplayHandler): void;
     }
 
     app.service("error",
         function(urlManager: IUrlManager, context: IContext) {
             const errorService = <IError>this;
 
-            const preProcessors: errorHandler[] = [];
+            const preProcessors: errorPreprocessor[] = [];
+            const displayHandlers: errorDisplayHandler[] = [];
 
             function handleHttpServerError(reject: ErrorWrapper) {
                 urlManager.setError(ErrorCategory.HttpServerError);
@@ -99,14 +103,19 @@ module NakedObjects {
                 errorService.handleErrorWithReload(reject, null, () => {}, displayMessages);
             };
 
-            errorService.setErrorPreprocessor = (handler: errorHandler) => {
+            errorService.setErrorPreprocessor = (handler: errorPreprocessor) => {
                 preProcessors.push(handler);
             };
 
+            errorService.setErrorDisplayHandler = (handler: errorDisplayHandler) => {
+                displayHandlers.push(handler);
+            };
+
             errorService.displayError = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
-                if ($scope.error.isConcurrencyError) {
-                    $scope.errorTemplate = concurrencyTemplate;
-                } else {
+                // first allow handlers to set error template, if none does then default 
+                displayHandlers.forEach(h => h($scope));
+
+                if (!$scope.errorTemplate) {
                     $scope.errorTemplate = errorTemplate;
                 }
             };
