@@ -336,12 +336,7 @@ module NakedObjects {
             handlers.handleError = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
                 const evm = viewModelFactory.errorViewModel(context.getError());
                 $scope.error = evm;
-
-                if (evm.isConcurrencyError) {
-                    $scope.errorTemplate = concurrencyTemplate;
-                } else {
-                    $scope.errorTemplate = errorTemplate;
-                }
+                error.displayError($scope, routeData);
             };
 
             handlers.handleToolBar = ($scope: INakedObjectsScope) => {
