@@ -7,9 +7,9 @@ module NakedObjects {
     import DomainObjectRepresentation = Models.DomainObjectRepresentation;
     import ErrorMap = Models.ErrorMap;
     import HttpStatusCode = Models.HttpStatusCode;
-   
+
     export type errorHandler = (reject: ErrorWrapper) => void;
-    
+
     export interface IError {
 
         handleError(reject: Models.ErrorWrapper): void;
@@ -21,8 +21,9 @@ module NakedObjects {
             onReload: (updatedObject: Models.DomainObjectRepresentation) => void,
             displayMessages: (em: Models.ErrorMap) => void): void;
 
-        setErrorPreprocessor(handler: errorHandler) : void;
+        setErrorPreprocessor(handler: errorHandler): void;
 
+        displayError($scope: INakedObjectsScope, routeData: PaneRouteData): void;
     }
 
     app.service("error",
@@ -57,7 +58,6 @@ module NakedObjects {
                 default:
                     urlManager.setError(ErrorCategory.HttpClientError, reject.httpErrorCode);
                 }
-
             }
 
             function handleClientError(reject: ErrorWrapper) {
@@ -65,9 +65,9 @@ module NakedObjects {
             }
 
             errorService.handleErrorWithReload = (reject: ErrorWrapper,
-                                               toReload: DomainObjectRepresentation,
-                                               onReload: (updatedObject: DomainObjectRepresentation) => void,
-                                               displayMessages: (em: ErrorMap) => void) => {
+                toReload: DomainObjectRepresentation,
+                onReload: (updatedObject: DomainObjectRepresentation) => void,
+                displayMessages: (em: ErrorMap) => void) => {
 
 
                 preProcessors.forEach(p => p(reject));
@@ -102,5 +102,14 @@ module NakedObjects {
             errorService.setErrorPreprocessor = (handler: errorHandler) => {
                 preProcessors.push(handler);
             };
+
+            errorService.displayError = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
+                if ($scope.error.isConcurrencyError) {
+                    $scope.errorTemplate = concurrencyTemplate;
+                } else {
+                    $scope.errorTemplate = errorTemplate;
+                }
+            };
+
         });
 }
