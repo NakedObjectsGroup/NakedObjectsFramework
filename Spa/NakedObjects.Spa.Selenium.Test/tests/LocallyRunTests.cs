@@ -83,6 +83,43 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         #endregion
 
         #region CCAs
+        public virtual void TableViewWithParmDialogNotOpen()
+        {
+            GeminiUrl("home");
+            WaitForView(Pane.Single, PaneType.Home);
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&as1=open&c1=Table");
+            WaitForView(Pane.Single, PaneType.List);
+            Reload();
+            SelectCheckBox("#item1-2");
+            SelectCheckBox("#item1-3");
+            SelectCheckBox("#item1-4");
+            OpenActionDialog("Change Discount");
+            var rand = new Random();
+            var newPct = "0." + rand.Next(51, 59);
+            TypeIntoFieldWithoutClearing("#newdiscount1", newPct);
+            Click(OKButton());
+            WaitUntilElementDoesNotExist(".dialog");
+            Reload();
+            //Check that exactly three rows were updated
+            CheckIndividualItem(1, "Discount Pct:", newPct, false);
+            CheckIndividualItem(2, "Discount Pct:", newPct);
+            CheckIndividualItem(3, "Discount Pct:", newPct);
+            CheckIndividualItem(4, "Discount Pct:", newPct);
+            CheckIndividualItem(5, "Discount Pct:", newPct, false);
+
+            //Reset to below 50%
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&as1=open&c1=Table");
+            WaitForView(Pane.Single, PaneType.List);
+            Reload();
+            WaitForCss("td", 64);
+            OpenActionDialog("Change Discount");
+            TypeIntoFieldWithoutClearing("#newdiscount1", "0.10");
+            SelectCheckBox("#item1-2");
+            SelectCheckBox("#item1-3");
+            SelectCheckBox("#item1-4");
+            Click(OKButton());
+            WaitUntilElementDoesNotExist(".dialog");
+        }
 
         public virtual void TableViewWithParmDialogAlreadyOpen() {
             GeminiUrl("home");
@@ -287,6 +324,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         #endregion
 
         #region CCA Tests
+        [TestMethod]
+        public override void TableViewWithParmDialogNotOpen()
+        {
+            base.TableViewWithParmDialogNotOpen();
+        }
 
         [TestMethod]
         public override void TableViewWithParmDialogAlreadyOpen() {
