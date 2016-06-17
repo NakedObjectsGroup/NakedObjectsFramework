@@ -1803,6 +1803,8 @@ let VerifyGetInvokeActionReturnQueryable refType oType oid f (api : RestfulObjec
                                                            TProperty("ACollectionContributedActionParm", 
                                                                      TObjectJson(makeServiceActionMember "ACollectionContributedActionParm" contribName roType [ p2; p3 ]))]))
 
+
+
     let expected = 
         [ TProperty(JsonPropertyNames.Links, links)
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
@@ -1815,8 +1817,8 @@ let VerifyGetInvokeActionReturnQueryable refType oType oid f (api : RestfulObjec
                                        
                                        TArray
                                            ([ ]))
-                                  TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]))
-          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
+                                  TProperty(JsonPropertyNames.Extensions, TObjectJson([ TProperty(JsonPropertyNames.ElementType, TObjectVal(roType)) ])) ]))
+          TProperty(JsonPropertyNames.Extensions, TObjectJson([]) )]
     
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
@@ -1900,7 +1902,7 @@ let VerifyGetInvokeActionReturnQueryableWithPaging refType oType oid f (api : Re
                                        
                                        TArray
                                            ([  ]))
-                                  TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]))
+                                  TProperty(JsonPropertyNames.Extensions, TObjectJson([ TProperty(JsonPropertyNames.ElementType, TObjectVal(roType)) ])) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
@@ -2003,7 +2005,7 @@ let VerifyPostInvokeActionReturnCollection refType oType oid f (api : RestfulObj
                                        
                                        TArray
                                            ([  ]))
-                                  TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]))
+                                  TProperty(JsonPropertyNames.Extensions, TObjectJson([ TProperty(JsonPropertyNames.ElementType, TObjectVal(roType)) ])) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
@@ -2070,7 +2072,7 @@ let VerifyPostInvokeActionReturnEmptyCollection refType oType oid f (api : Restf
                                        
                                        TArray
                                            ([  ]))
-                                  TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]))
+                                  TProperty(JsonPropertyNames.Extensions, TObjectJson([ TProperty(JsonPropertyNames.ElementType, TObjectVal(roType)) ])) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
@@ -2223,7 +2225,7 @@ let VerifyGetInvokeActionWithScalarParmsReturnQuerySimple refType oType oid f (a
                                        
                                        TArray
                                            ([  ]))
-                                  TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]))
+                                  TProperty(JsonPropertyNames.Extensions, TObjectJson([ TProperty(JsonPropertyNames.ElementType, TObjectVal(roType)) ])) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
@@ -2408,7 +2410,7 @@ let VerifyPostInvokeActionReturnQuery refType oType oid f (api : RestfulObjectsC
                                        
                                        TArray
                                            ([  ]))
-                                  TProperty(JsonPropertyNames.Extensions, TObjectJson([]))
+                                  TProperty(JsonPropertyNames.Extensions, TObjectJson([ TProperty(JsonPropertyNames.ElementType, TObjectVal(roType)) ]))
                                   pageProp
                                   membersProp
                                   TProperty(JsonPropertyNames.Value, 
@@ -2525,7 +2527,7 @@ let VerifyPostInvokeActionWithScalarParmsReturnQuery refType oType oid f (api : 
                                        
                                        TArray
                                            ([  ]))
-                                  TProperty(JsonPropertyNames.Extensions, TObjectJson([]))
+                                  TProperty(JsonPropertyNames.Extensions, TObjectJson([ TProperty(JsonPropertyNames.ElementType, TObjectVal(roType)) ]))
                                   pageProp
                                   membersProp
                                   TProperty(JsonPropertyNames.Value, 
@@ -2693,7 +2695,7 @@ let VerifyPostInvokeActionWithScalarParmsReturnCollection refType oType oid f (a
                                        
                                        TArray
                                            ([  ]))
-                                  TProperty(JsonPropertyNames.Extensions, TObjectJson([]))
+                                  TProperty(JsonPropertyNames.Extensions, TObjectJson([ TProperty(JsonPropertyNames.ElementType, TObjectVal(roType)) ]))
                                   pageProp
                                   membersProp
                                   TProperty(JsonPropertyNames.Value, 
@@ -2813,7 +2815,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnQuery refType oType oid f (api
                                        
                                        TArray
                                            ([  ]))
-                                  TProperty(JsonPropertyNames.Extensions, TObjectJson([]))
+                                  TProperty(JsonPropertyNames.Extensions, TObjectJson([ TProperty(JsonPropertyNames.ElementType, TObjectVal(roType)) ]))
                                   pageProp
                                   membersProp
                                   TProperty(JsonPropertyNames.Value, 
@@ -2914,7 +2916,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnCollection refType oType oid f
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
           TProperty(JsonPropertyNames.Result, 
                     TObjectJson([ TProperty (JsonPropertyNames.Links,  TArray ([]))
-                                  TProperty(JsonPropertyNames.Extensions, TObjectJson([]))
+                                  TProperty(JsonPropertyNames.Extensions, TObjectJson([ TProperty(JsonPropertyNames.ElementType, TObjectVal(roType)) ]))
                                   pageProp
                                   membersProp
                                   TProperty(JsonPropertyNames.Value, 

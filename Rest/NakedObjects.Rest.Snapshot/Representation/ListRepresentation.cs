@@ -40,7 +40,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Value = list.ToEnumerable().Select(no => CreateObjectLink(oidStrategy, req, no, actionContext)).ToArray();
 
             SetLinks(req, actionContext);
-            SetExtensions();
+            SetExtensions(oidStrategy, actionContext);
             SetHeader(false);
         }
 
@@ -55,6 +55,16 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         private void SetExtensions() {
             Extensions = new MapRepresentation();
+        }
+
+        private void SetExtensions(IOidStrategy oidStrategy, ActionContextFacade actionContext) {
+            var exts = new Dictionary<string, object> {
+                {
+                    JsonPropertyNames.ElementType, RestUtils.SpecToTypeAndFormatString(actionContext.ElementSpecification, oidStrategy, false).Item1
+                }
+            };
+
+            Extensions = RestUtils.CreateMap(exts);
         }
 
         private void SetLinks(HttpRequestMessage req) {
