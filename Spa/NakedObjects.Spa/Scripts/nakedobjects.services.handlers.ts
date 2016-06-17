@@ -312,7 +312,7 @@ module NakedObjects {
 
                 if (cachedList) {
                     const listViewModel = perPaneListViews[routeData.paneId];
-                    $scope.listTemplate = routeData.state === CollectionViewState.List ? listTemplate : listAsTableTemplate;
+                    $scope.listTemplate =  routeData.state === CollectionViewState.List ? listTemplate : listAsTableTemplate;
                     listViewModel.reset(cachedList, routeData);
                     $scope.collection = listViewModel;
                     getActionExtensions(routeData).then((ext: Extensions) => $scope.title = ext.friendlyName());
@@ -349,7 +349,7 @@ module NakedObjects {
 
                 let newActionsTemplate: string;
 
-                const newObjectTemplate = template.getTemplateName(ovm.domainType, routeData.interactionMode);
+                const newObjectTemplate = template.getTemplateName(ovm.domainType, TemplateType.Object,  routeData.interactionMode);
 
                 if (routeData.interactionMode === InteractionMode.Form) {
                     newActionsTemplate = formActionsTemplate;
