@@ -829,7 +829,7 @@ namespace NakedObjects.Facade.Impl {
             var menu = item as IMenuImmutable;
 
             if (menu != null) {
-                parent = parent + (string.IsNullOrEmpty(parent) ? "" : "-") + menu.Name;
+                parent = parent + (string.IsNullOrEmpty(parent) ? "" : "_") + menu.Name;
                 return menu.MenuItems.SelectMany(i => GetMenuItem(i, parent)).ToArray();
             }
 
