@@ -391,6 +391,9 @@ th, td {
     vertical-align: top;
 }
 
+    text-align:right;
+}
+
 /*Error*/
 .error {
     font-size: 16pt;
