@@ -82,7 +82,7 @@ module NakedObjects {
         let menu = "";
 
         if (menupath && menupath.length > 0) {
-            const menus = menupath.split("-");
+            const menus = menupath.split("_");
 
             if (menus.length > level) {
                 menu = menus[level];
