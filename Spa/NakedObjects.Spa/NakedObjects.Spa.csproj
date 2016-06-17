@@ -22,19 +22,10 @@
     <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Content\partials\accordionCollections.html" />
-    <Content Include="Content\partials\pollingObjectView.html" />
     <Content Include="Content\partials\properties.html" />
-    <Content Include="Content\partials\groupedProperties.html" />
     <Content Include="Content\partials\readOnlyProperty.html" />
-    <Content Include="Content\partials\withAccordionObjectView.html" />
-    <Content Include="Content\partials\withGroupedPropertiesObjectView.html" />
-    <Content Include="Content\partials\withActionButtonObjectView.html" />
-    <Content Include="Content\partials\openbydefaultObjectView.html" />
-    <Content Include="Content\partials\openbydefaultactions.html" />
     <Content Include="Content\partials\attachment.html" />
     <Content Include="Content\partials\applicationProperties.html" />
-    <Content Include="Content\partials\customObjectView.html" />
     <Content Include="Content\partials\singleApplicationProperties.html" />
     <Content Include="Content\partials\formActions.html" />
     <Content Include="Content\partials\collectionList.html" />
