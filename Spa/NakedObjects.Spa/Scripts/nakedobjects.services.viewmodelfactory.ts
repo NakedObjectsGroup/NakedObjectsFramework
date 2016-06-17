@@ -207,6 +207,7 @@ module NakedObjects {
             parmViewModel.optional = parmRep.extensions().optional();
             let required = parmViewModel.optional ? "" : "* ";
             parmViewModel.description = parmRep.extensions().description();
+            parmViewModel.presentationHint = parmRep.extensions().presentationHint();
             parmViewModel.setMessage("");
             parmViewModel.id = parmRep.id();
             parmViewModel.argId = `${parmViewModel.id.toLowerCase()}`;
@@ -378,6 +379,7 @@ module NakedObjects {
             }
 
             actionViewModel.title = actionRep.extensions().friendlyName();
+            actionViewModel.presentationHint = actionRep.extensions().presentationHint();
             actionViewModel.menuPath = actionRep.extensions().menuPath() || "";
             actionViewModel.disabled = () => !!actionRep.disabledReason();
             actionViewModel.description = actionViewModel.disabled() ? actionRep.disabledReason() : actionRep.extensions().description();
@@ -558,6 +560,7 @@ module NakedObjects {
             propertyViewModel.paneArgId = `${propertyViewModel.argId}${paneId}`;
             propertyViewModel.isEditable = !propertyRep.disabledReason();
             propertyViewModel.title = propertyRep.extensions().friendlyName();
+            propertyViewModel.presentationHint = propertyRep.extensions().presentationHint();
             propertyViewModel.optional = propertyRep.extensions().optional();
             propertyViewModel.returnType = propertyRep.extensions().returnType();
             propertyViewModel.draggableType = propertyRep.extensions().returnType();
@@ -757,6 +760,7 @@ module NakedObjects {
             collectionViewModel.collectionRep = collectionRep;
             collectionViewModel.onPaneId = paneId;
             collectionViewModel.title = collectionRep.extensions().friendlyName();
+            collectionViewModel.presentationHint = collectionRep.extensions().presentationHint();
             collectionViewModel.pluralName = collectionRep.extensions().pluralName();
             color.toColorNumberFromType(collectionRep.extensions().elementType()).then((c: number) => collectionViewModel.color = `${linkColor}${c}`);
 

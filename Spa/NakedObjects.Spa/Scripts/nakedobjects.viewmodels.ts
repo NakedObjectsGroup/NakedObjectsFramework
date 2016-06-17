@@ -302,6 +302,7 @@ module NakedObjects {
 
         color: string;
         description: string;
+        presentationHint: string;
         optional: boolean;
         isCollectionContributed: boolean;
         onPaneId: number;
@@ -421,6 +422,7 @@ module NakedObjects {
         menuPath: string;
         title: string;
         description: string;
+        presentationHint : string;
 
         // todo - confusing name better 
         doInvoke: (right?: boolean) => void;
@@ -814,6 +816,7 @@ module NakedObjects {
         header: string[];
         onPaneId: number;
         currentState: CollectionViewState;
+        presentationHint: string;
 
         id: string;
 
@@ -979,6 +982,7 @@ module NakedObjects {
             this.title = this.title + dirtyMarker(this.contextService, obj.getOid());
 
             this.friendlyName = this.domainObject.extensions().friendlyName();
+            this.presentationHint = this.domainObject.extensions().presentationHint();
             this.domainType = this.domainObject.domainType();
             this.instanceId = this.domainObject.instanceId();
             this.draggableType = this.domainObject.domainType();
@@ -1035,6 +1039,7 @@ module NakedObjects {
 
         title: string;
         friendlyName: string;
+        presentationHint: string;
         domainType: string;
         instanceId: string;
         draggableType: string;
