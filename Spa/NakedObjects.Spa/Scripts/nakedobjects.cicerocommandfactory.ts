@@ -56,7 +56,6 @@ module NakedObjects {
             "me": new Menu(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
             "ok": new OK(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
             "pa": new Page(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
-            "pr": new Property(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
             "re": new Reload(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
             "ro": new Root(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
             "sa": new Save(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),

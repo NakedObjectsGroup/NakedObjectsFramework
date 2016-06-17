@@ -292,7 +292,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             //Then property entries
             CiceroUrl("object?o1=___1.Product--871&i1=Edit");
             WaitForOutput("Editing Product: Mountain Bottle Cage");
-            EnterCommand("prop price");
+            EnterCommand("show price");
             WaitForOutput("List Price: £9.99");
             EnterCommand("enter list price, 10.50");
             WaitForOutput("Editing Product: Mountain Bottle Cage\r\nModified properties:\r\nList Price: £10.50");
@@ -546,7 +546,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForOutput("Product: LL Mountain Frame - Black, 40");
             //First with no params
             EnterCommand("help ?");
-            WaitForOutput("Commands available in current context:\r\naction\r\nback\r\nclipboard\r\nedit\r\nforward\r\ngemini\r\ngoto\r\nhelp\r\nmenu\r\nproperty\r\nreload\r\nwhere");
+            WaitForOutput("Commands available in current context:\r\naction\r\nback\r\nclipboard\r\nedit\r\nforward\r\ngemini\r\ngoto\r\nhelp\r\nmenu\r\nreload\r\nshow\r\nwhere");
             //Now with params
             EnterCommand("help me");
             WaitForOutputContaining("menu command:\r\nOpen a named main menu");
@@ -741,79 +741,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForOutput("The command: page is not available in the current context");
         }
 
-        public virtual void Property() {
-            CiceroUrl("object?o1=___1.Product--758");
-            WaitForOutput("Product: Road-450 Red, 52");
-            EnterCommand("prop num");
-            WaitForOutput("Product Number: BK-R68R-52");
-            EnterCommand("pr product");
-            WaitForOutputStarting("Product Number: BK-R68R-52");
-            var actual = WaitForCss(".output").Text;
-            //Note that spacing of Road-450 and  Line: R is different to how it appears on screen!
-            //Name: Road-450 Red, 52
-            var expected = "Product Number: BK-R68R-52\r\nProduct Model: Road-450\r\nProduct Category: Bikes\r\nProduct Subcategory: Road Bikes\r\nProduct Line: R \r\nProduct Inventory (collection): 2 items\r\nProduct Reviews (collection): empty";
-            Assert.AreEqual(expected, actual);
-
-            //No argument
-            EnterCommand("pr ");
-            WaitForOutputStarting("Name: Road-450 Red"); //\r\nProduct Number: BK-R68R-52\r\nColor: Red\r\nPhoto: empty\r\nProduct Model: Road-450\r\nList Price: 1,457.99");
-            //No match
-            EnterCommand("pr x");
-            WaitForOutput("x does not match any properties");
-
-            //Invalid context
-            CiceroUrl("home");
-            EnterCommand("prop");
-            WaitForOutput("The command: property is not available in the current context");
-
-            //Multi-clause match
-            CiceroUrl("object?o1=___1.SalesPerson--284");
-            WaitForOutput("Sales Person: Tete Mensa-Annan");
-            EnterCommand("pr sales a");
-            WaitForOutput("Sales Territory: Northwest\r\nSales Quota: £300,000.00\r\nSales YTD: £1,576,562.20\r\nSales Last Year: £0.00");
-            EnterCommand("pr ter ory");
-            WaitForOutput("Sales Territory: Northwest\r\nTerritory History (collection): 1 item");
-            EnterCommand("pr sales z");
-            WaitForOutput("sales z does not match any properties");
-
-            //No fields
-            CiceroUrl("object?o1=___1.AddressType--2");
-            WaitForOutput("Address Type: Home");
-            EnterCommand("prop");
-            WaitForOutput("No visible properties");
-
-            //To many args
-            EnterCommand("prop num,x");
-            WaitForOutput("Too many arguments provided");
-
-            //Reading properties in edit mode
-            CiceroUrl("object?o1=___1.Product--369&i1=Edit&pp1_Style=%22U%20%22&pp1_ListPrice=%22500%22");
-            WaitForOutputStarting("Editing");
-            EnterCommand("prop");
-            WaitForOutputContaining("List Price: 500 (modified)");
-            WaitForOutputContaining("Style: U  (modified)");
-
-            //exact match takes priority over partial match
-            //TODO: Need example from properties, not action params -  transfer this to Enter test
-            //EnterCommand("field product category"); //which would also match product subcategory
-            //WaitForOutput("Product Category: Bikes");
-
-            //Check that enum property renders as text, not number
-            CiceroUrl("object?o1=___1.SalesOrderHeader--70996");
-            WaitForOutput("Sales Order: SO70996");
-            EnterCommand("pr status");
-            WaitForOutput("Status: Shipped");
-
-            //Test that date properties are correctly formatted/masked
-            CiceroUrl("object?i1=View&o1=___1.WorkOrder--71031");
-            WaitForOutput("Work Order: Road-750 Black, 52: 19 Jun 2008");
-            EnterCommand("pr start");
-            WaitForOutput("Start Date: 19 Jun 2008");
-            EnterCommand("pr modified");
-            WaitForOutputContaining("Modified Date: 30 Jun 2008");
-            WaitForOutputContaining(":00:00");
-        }
-
         public virtual void Root() {
             CiceroUrl("object?o1=___1.Product--459&c1_ProductInventory=List");
             WaitForOutput("Collection: Product Inventory on Product: Lock Nut 19\r\n3 items");
@@ -882,7 +809,79 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         public virtual void Show() {
-            //Applied to List
+            #region In an object  -  to show properties
+            CiceroUrl("object?o1=___1.Product--758");
+            WaitForOutput("Product: Road-450 Red, 52");
+            EnterCommand("show num");
+            WaitForOutput("Product Number: BK-R68R-52");
+            EnterCommand("sh product");
+            WaitForOutputStarting("Product Number: BK-R68R-52");
+            var actual = WaitForCss(".output").Text;
+            //Note that spacing of Road-450 and  Line: R is different to how it appears on screen!
+            //Name: Road-450 Red, 52
+            var expected = "Product Number: BK-R68R-52\r\nProduct Model: Road-450\r\nProduct Category: Bikes\r\nProduct Subcategory: Road Bikes\r\nProduct Line: R \r\nProduct Inventory (collection): 2 items\r\nProduct Reviews (collection): empty";
+            Assert.AreEqual(expected, actual);
+
+            //No argument
+            EnterCommand("sh ");
+            WaitForOutputStarting("Name: Road-450 Red"); //\r\nProduct Number: BK-R68R-52\r\nColor: Red\r\nPhoto: empty\r\nProduct Model: Road-450\r\nList Price: 1,457.99");
+            //No match
+            EnterCommand("sh x");
+            WaitForOutput("x does not match any properties");
+
+            //Invalid context
+            CiceroUrl("home");
+            EnterCommand("show");
+            WaitForOutput("The command: show is not available in the current context");
+
+            //Multi-clause match
+            CiceroUrl("object?o1=___1.SalesPerson--284");
+            WaitForOutput("Sales Person: Tete Mensa-Annan");
+            EnterCommand("sh sales a");
+            WaitForOutput("Sales Territory: Northwest\r\nSales Quota: £300,000.00\r\nSales YTD: £1,576,562.20\r\nSales Last Year: £0.00");
+            EnterCommand("sh ter ory");
+            WaitForOutput("Sales Territory: Northwest\r\nTerritory History (collection): 1 item");
+            EnterCommand("sh sales z");
+            WaitForOutput("sales z does not match any properties");
+
+            //No fields
+            CiceroUrl("object?o1=___1.AddressType--2");
+            WaitForOutput("Address Type: Home");
+            EnterCommand("show");
+            WaitForOutput("No visible properties");
+
+            //To many args
+            EnterCommand("show num,x");
+            WaitForOutput("Too many arguments provided");
+
+            //Reading properties in edit mode
+            CiceroUrl("object?o1=___1.Product--369&i1=Edit&pp1_Style=%22U%20%22&pp1_ListPrice=%22500%22");
+            WaitForOutputStarting("Editing");
+            EnterCommand("show");
+            WaitForOutputContaining("List Price: 500 (modified)");
+            WaitForOutputContaining("Style: U  (modified)");
+
+            //exact match takes priority over partial match
+            //TODO: Need example from properties, not action params -  transfer this to Enter test
+            //EnterCommand("field product category"); //which would also match product subcategory
+            //WaitForOutput("Product Category: Bikes");
+
+            //Check that enum property renders as text, not number
+            CiceroUrl("object?o1=___1.SalesOrderHeader--70996");
+            WaitForOutput("Sales Order: SO70996");
+            EnterCommand("sh status");
+            WaitForOutput("Status: Shipped");
+
+            //Test that date properties are correctly formatted/masked
+            CiceroUrl("object?i1=View&o1=___1.WorkOrder--71031");
+            WaitForOutput("Work Order: Road-750 Black, 52: 19 Jun 2008");
+            EnterCommand("sh start");
+            WaitForOutput("Start Date: 19 Jun 2008");
+            EnterCommand("sh modified");
+            WaitForOutputContaining("Modified Date: 30 Jun 2008");
+            WaitForOutputContaining(":00:00");
+            #endregion
+            #region In a list
             CiceroUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers");
             WaitForOutput("Result from Current Special Offers:\r\n16 items");
             EnterCommand("show 1");
@@ -909,8 +908,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForOutput("Item number or range values must be greater than zero");
             EnterCommand("show 5-4");
             WaitForOutput("Starting item number cannot be greater than the ending item number");
-
-            //Applied to collection
+            #endregion
+            #region In a collection
             CiceroUrl("object?o1=___1.SalesOrderHeader--44518&c1_Details=List");
             WaitForOutput("Collection: Details on Sales Order: SO44518\r\n20 items");
             EnterCommand("show 1");
@@ -929,8 +928,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             //Alpha parm
             EnterCommand("show one");
             WaitForOutput("one is not a number");
-
-            //Invalid context
+            #endregion
+            #region Invalid context
             CiceroUrl("home");
             WaitForOutputStarting("Welcome to Cicero");
             EnterCommand("show 1");
@@ -939,10 +938,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForOutput("Customers menu");
             EnterCommand("show 1");
             WaitForOutput("The command: show is not available in the current context");
-            CiceroUrl("object?o1=___1.Customer--29863");
-            WaitForOutput("Customer: Efficient Cycling, AW00029863");
-            EnterCommand("show 1");
-            WaitForOutput("The command: show is not available in the current context");
+            #endregion
         }
 
         public virtual void Where() {
@@ -1045,7 +1041,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             //happy case -  edit one property
             CiceroUrl("object?o1=___1.Product--838");
             WaitForOutput("Product: HL Road Frame - Black, 44");
-            EnterCommand("prop list price");
+            EnterCommand("show list price");
             WaitForOutputStarting("List Price: ");
             var output = WaitForCss(".output").Text;
             var oldPrice = output.Split(' ').Last();
@@ -1060,7 +1056,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
                           "List Price: " + currency);
             EnterCommand("Save");
             WaitForOutput("Product: HL Road Frame - Black, 44");
-            EnterCommand("prop list price");
+            EnterCommand("show list price");
             WaitForOutput("List Price: " + currency);
 
             //Updating a date and a link
@@ -1074,9 +1070,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForOutputContaining("Scrap Reason: Gouge in metal");
             EnterCommand("save");
             WaitForOutputStarting("Work Order:");
-            EnterCommand("prop end date");
+            EnterCommand("show end date");
             WaitForOutputContaining("2015"); // because Masks not being honoured
-            EnterCommand("prop scrap rea");
+            EnterCommand("show scrap rea");
             WaitForOutput("Scrap Reason: Gouge in metal");
 
             //Field validation
@@ -1251,7 +1247,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             //Try to chain a command that is not avialable in the current context
             CiceroUrl("home");
             WaitForOutputStarting("Welcome to Cicero");
-            EnterCommand("menu pr;action rand;ok;show 1");
+            EnterCommand("menu sh;action rand;ok;show 1");
             WaitForOutput("The command: show is not available in the current context");
 
             //Error in execution -  Timing problem?
@@ -1323,11 +1319,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public override void Page() {
             base.Page();
-        }
-
-        [TestMethod]
-        public override void Property() {
-            base.Property();
         }
 
         [TestMethod]
@@ -1467,7 +1458,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     public abstract class MegaCiceroTestsRoot : CiceroTestRoot {
         [TestMethod] //Mega
         public void MegaCiceroTests() {
-            //Action();
+            Action();
             BackAndForward();
             Cancel();
             Clipboard();
@@ -1479,7 +1470,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Menu();
             OK();
             Page();
-            Property();
             Root();
             Save();
             Show();
@@ -1488,7 +1478,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             UnrecognisedCommand();
             UpAndDownArrow();
             ScenarioEditAndSave();
-            ScenarioMultiSelect();
+            //ScenarioMultiSelect();
             ScenarioTransientObject();
             ScenarioUsingClipboard();
             ScenarioTestEditableVM();
