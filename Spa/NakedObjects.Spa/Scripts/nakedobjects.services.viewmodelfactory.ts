@@ -961,6 +961,12 @@ module NakedObjects {
                                     cache: false
                                 };
 
+                                // logoff server
+                                $http(config);
+
+                                // logoff client without waiting for server
+                                $rootScope.$broadcast(geminiLogoffEvent);
+                                $timeout(() => window.location.href = postLogoffUrl);
                             }
                         });
                 };
