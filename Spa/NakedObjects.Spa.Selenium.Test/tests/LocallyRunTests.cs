@@ -378,7 +378,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
     #region browsers specific subclasses 
 
-    [TestClass, Ignore] //IE Individual
+    //[TestClass, Ignore] //IE Individual
     public class LocallyRunTestsIe : LocallyRunTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -398,7 +398,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass, Ignore] //Firefox Individual
+    //[TestClass, Ignore] //Firefox Individual
     public class LocallyRunTestsFirefox : LocallyRunTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

@@ -106,6 +106,14 @@ namespace NakedObjects.Meta.Menu {
             return nativeAction || MenuItems.OfType<MenuImpl>().Any(m => m.HasAction(action));
         }
 
+        public bool HasActionOrSuperMenuHasAction(IActionSpecImmutable action) {
+            if (HasAction(action)) {
+                return true;
+            }
+            var superMenu = SuperMenu as MenuImpl;
+            return superMenu != null && superMenu.HasActionOrSuperMenuHasAction(action);
+        }
+
         private MenuImpl GetSubMenuIfExists(string menuName) {
             return MenuItems.OfType<MenuImpl>().FirstOrDefault(a => a.Name == menuName);
         }
@@ -113,7 +121,7 @@ namespace NakedObjects.Meta.Menu {
         private void AddOrderableElementsToMenu(IList<IActionSpecImmutable> ordeableElements, MenuImpl toMenu) {
             foreach (IActionSpecImmutable action in ordeableElements) {
                 if (action != null) {
-                    if (!toMenu.HasAction(action)) {
+                    if (!toMenu.HasActionOrSuperMenuHasAction(action)) {
                         toMenu.AddMenuItem(new MenuAction(action));
                     }
                 }
