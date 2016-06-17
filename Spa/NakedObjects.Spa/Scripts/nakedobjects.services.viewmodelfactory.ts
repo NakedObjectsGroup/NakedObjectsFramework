@@ -95,6 +95,7 @@ module NakedObjects {
         viewModelFactory.errorViewModel = (error: ErrorWrapper) => {
             const errorViewModel = new ErrorViewModel();
 
+            errorViewModel.originalError = error;
             if (error) {
                 errorViewModel.title = error.title;
                 errorViewModel.description = error.description;

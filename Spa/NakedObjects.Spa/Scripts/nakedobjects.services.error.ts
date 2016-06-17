@@ -21,7 +21,7 @@ module NakedObjects {
     }
 
     app.service("error",
-        function(urlManager: IUrlManager, context: IContext) {
+        function(urlManager: IUrlManager, context: IContext, $rootScope : ng.IRootScopeService) {
             const errorService = <IError>this;
 
             const preProcessors: errorPreprocessor[] = [];
@@ -88,6 +88,16 @@ module NakedObjects {
                     $scope.errorTemplate = errorTemplate;
                 }
             };
+
+            // initialise error preprocessor with some concurrency handling code
+            errorService.setErrorPreprocessor((reject: ErrorWrapper) => {
+
+                if (reject.category === ErrorCategory.HttpClientError &&
+                    reject.httpErrorCode === HttpStatusCode.PreconditionFailed) {
+                    $rootScope.$broadcast(geminiConcurrencyEvent, new Models.ErrorMap({}, 0, concurrencyMessage));
+                    reject.handled = true;
+                }
+            });
 
         });
 }

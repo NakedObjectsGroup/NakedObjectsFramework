@@ -211,6 +211,7 @@ module NakedObjects {
     }
 
     export class ErrorViewModel {
+        originalError : ErrorWrapper;
         title: string;
         message: string;
         stackTrace: string[];
