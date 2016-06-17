@@ -281,8 +281,9 @@ module NakedObjects {
 
             function handleListSearchChanged($scope: INakedObjectsScope, routeData: PaneRouteData) {
                 // only update templates if changed 
-                const newListTemplate = routeData.state === CollectionViewState.List ? listTemplate : listAsTableTemplate;
                 const listViewModel = $scope.collection;
+
+                const newListTemplate = template.getTemplateName(listViewModel.listRep.extensions().elementType(), TemplateType.List, routeData.state);
 
                 if ($scope.listTemplate !== newListTemplate) {
                     $scope.listTemplate = newListTemplate;
@@ -312,7 +313,7 @@ module NakedObjects {
 
                 if (cachedList) {
                     const listViewModel = perPaneListViews[routeData.paneId];
-                    $scope.listTemplate =  routeData.state === CollectionViewState.List ? listTemplate : listAsTableTemplate;
+                    $scope.listTemplate = template.getTemplateName(cachedList.extensions().elementType(), TemplateType.List, routeData.state);
                     listViewModel.reset(cachedList, routeData);
                     $scope.collection = listViewModel;
                     getActionExtensions(routeData).then((ext: Extensions) => $scope.title = ext.friendlyName());
