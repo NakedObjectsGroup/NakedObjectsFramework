@@ -152,17 +152,20 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         private IDictionary<string, object> GetCustomExtensions(IObjectFacade objectFacade) {
 
-            string mode = "persistent";
+            InteractionMode mode;
 
             if (objectFacade.IsTransient) {
-                mode = "transient";
+                mode = InteractionMode.Transient;
             }
             else if (objectFacade.IsViewModelEditView) {
-                mode = "form";
+                mode = InteractionMode.Form;
+            }
+            else {
+                mode = InteractionMode.Persistent;
             }
 
             return new Dictionary<string, object> {
-                [JsonPropertyNames.InteractionMode] = mode
+                [JsonPropertyNames.InteractionMode] = mode.ToString().ToLower()
             };
         }
 
