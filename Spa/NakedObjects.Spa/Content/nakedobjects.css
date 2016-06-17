@@ -391,6 +391,7 @@ th, td {
     vertical-align: top;
 }
 
+tbody .number {
     text-align:right;
 }
 
