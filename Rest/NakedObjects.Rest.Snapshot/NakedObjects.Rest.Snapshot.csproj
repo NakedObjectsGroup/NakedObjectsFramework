@@ -106,6 +106,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\InteractionMode.cs" />
     <Compile Include="Constants\JsonPropertyNames.cs" />
     <Compile Include="Constants\PredefinedJsonType.cs" />
     <Compile Include="Constants\PredefinedTypeExtensions.cs" />
