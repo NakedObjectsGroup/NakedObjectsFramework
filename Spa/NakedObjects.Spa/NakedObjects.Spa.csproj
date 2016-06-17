@@ -22,6 +22,15 @@
     <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Content\customTemplates\accordionCollections.html" />
+    <Content Include="Content\customTemplates\customObjectView.html" />
+    <Content Include="Content\customTemplates\groupedProperties.html" />
+    <Content Include="Content\customTemplates\openbydefaultactions.html" />
+    <Content Include="Content\customTemplates\openbydefaultObjectView.html" />
+    <Content Include="Content\customTemplates\pollingObjectView.html" />
+    <Content Include="Content\customTemplates\withAccordionObjectView.html" />
+    <Content Include="Content\customTemplates\withActionButtonObjectView.html" />
+    <Content Include="Content\customTemplates\withGroupedPropertiesObjectView.html" />
     <Content Include="Content\partials\properties.html" />
     <Content Include="Content\partials\readOnlyProperty.html" />
     <Content Include="Content\partials\attachment.html" />
