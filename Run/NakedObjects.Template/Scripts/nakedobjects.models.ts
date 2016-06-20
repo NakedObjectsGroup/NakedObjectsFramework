@@ -797,6 +797,7 @@ module NakedObjects.Models {
         range = () => this.wrapped["x-ro-nof-range"] as IRange;
         notNavigable = () => this.wrapped["x-ro-nof-notNavigable"] as boolean;
         renderEagerly = () => this.wrapped["x-ro-nof-renderEagerly"] as boolean;
+        presentationHint = () => this.wrapped["x-ro-nof-presentationHint"] as string;
     }
 
     // matches a action invoke resource 19.0 representation 

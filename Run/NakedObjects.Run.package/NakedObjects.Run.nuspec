@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NakedObjects.Run</id>
-    <version>8.0.0-beta9</version>
+    <version>8.0.0-rc</version>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -16,9 +16,9 @@
     <description>Creates a RestfulAPI and a Single Page Application to run against POCO domain model(s).
     Install into into a new ASP.NET Web.Api project.</description>
     <dependencies>
-      <dependency id="NakedObjects.Rest" version="[8.0.0-beta9, 9)" />
-      <dependency id="NakedObjects.Facade.Impl" version="[8.0.0-beta9, 9)" />
-      <dependency id="NakedObjects.Spa" version="[8.0.0-beta9, 9)" />
+      <dependency id="NakedObjects.Rest" version="[8.0.0-rc, 9)" />
+      <dependency id="NakedObjects.Facade.Impl" version="[8.0.0-rc, 9)" />
+      <dependency id="NakedObjects.Spa" version="[8.0.0-rc, 9)" />
       <dependency id="WebActivatorEx" version="[2.1.0, 3.0)" />
       <dependency id="Unity.AspNet.WebApi" version="[3.5.1404, 4.0)" />
     </dependencies>

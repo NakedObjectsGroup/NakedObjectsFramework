@@ -87,7 +87,7 @@ module NakedObjects {
     export const geminiFocusEvent = "nof-focus-on";
     export const geminiLogoffEvent = "nof-logoff";
     export const geminiPaneSwapEvent = "nof-pane-swap";
-    export const geminiDisplayErrorEvent = "nof-display-error";
+    export const geminiConcurrencyEvent = "nof-concurrency";
     export const geminiAjaxChangeEvent = "nof-ajax-change";
     export const geminiWarningEvent = "nof-warning";
     export const geminiMessageEvent = "nof-message";

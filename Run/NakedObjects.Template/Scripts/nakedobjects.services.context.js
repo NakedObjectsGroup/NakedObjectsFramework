@@ -13,7 +13,6 @@ var NakedObjects;
     var ErrorCategory = NakedObjects.Models.ErrorCategory;
     var PromptRepresentation = NakedObjects.Models.PromptRepresentation;
     var DomainTypeActionInvokeRepresentation = NakedObjects.Models.DomainTypeActionInvokeRepresentation;
-    var HttpStatusCode = NakedObjects.Models.HttpStatusCode;
     var ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
     var DirtyState;
     (function (DirtyState) {
@@ -603,53 +602,6 @@ var NakedObjects;
             entry[againstType] = promise;
             subTypeCache[toCheckType] = entry;
             return promise;
-        };
-        function handleHttpServerError(reject) {
-            urlManager.setError(ErrorCategory.HttpServerError);
-        }
-        function handleHttpClientError(reject, toReload, onReload, displayMessages) {
-            switch (reject.httpErrorCode) {
-                case (HttpStatusCode.PreconditionFailed):
-                    if (toReload.isTransient()) {
-                        urlManager.setError(ErrorCategory.HttpClientError, reject.httpErrorCode);
-                    }
-                    else {
-                        context.reloadObject(1, toReload).
-                            then(function (updatedObject) {
-                            onReload(updatedObject);
-                        });
-                    }
-                    break;
-                case (HttpStatusCode.UnprocessableEntity):
-                    displayMessages(reject.error);
-                    break;
-                default:
-                    urlManager.setError(ErrorCategory.HttpClientError, reject.httpErrorCode);
-            }
-        }
-        function handleClientError(reject, customClientHandler) {
-            if (!customClientHandler(reject.clientErrorCode)) {
-                urlManager.setError(ErrorCategory.ClientError, reject.clientErrorCode);
-            }
-        }
-        context.handleWrappedError = function (reject, toReload, onReload, displayMessages, customClientHandler) {
-            if (customClientHandler === void 0) { customClientHandler = function () { return false; }; }
-            if (reject.handled) {
-                return;
-            }
-            reject.handled = true;
-            context.setError(reject);
-            switch (reject.category) {
-                case (ErrorCategory.HttpServerError):
-                    handleHttpServerError(reject);
-                    break;
-                case (ErrorCategory.HttpClientError):
-                    handleHttpClientError(reject, toReload, onReload, displayMessages);
-                    break;
-                case (ErrorCategory.ClientError):
-                    handleClientError(reject, customClientHandler);
-                    break;
-            }
         };
         function addRecentlyViewed(obj) {
             recentcache.add(obj);

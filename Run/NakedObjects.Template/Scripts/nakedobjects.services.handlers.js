@@ -8,19 +8,19 @@ var NakedObjects;
     var ErrorCategory = NakedObjects.Models.ErrorCategory;
     var ClientErrorCode = NakedObjects.Models.ClientErrorCode;
     var ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
-    NakedObjects.app.service("handlers", function ($routeParams, $location, $q, $cacheFactory, $rootScope, repLoader, context, viewModelFactory, color, navigation, urlManager, focusManager, template) {
+    NakedObjects.app.service("handlers", function ($routeParams, $location, $q, $cacheFactory, $rootScope, repLoader, context, viewModelFactory, color, navigation, urlManager, focusManager, template, error) {
         var handlers = this;
         var perPaneListViews = [,
-            new NakedObjects.ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q),
-            new NakedObjects.ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q)
+            new NakedObjects.ListViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $q),
+            new NakedObjects.ListViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $q)
         ];
         var perPaneObjectViews = [,
-            new NakedObjects.DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q),
-            new NakedObjects.DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q)
+            new NakedObjects.DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $q),
+            new NakedObjects.DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $q)
         ];
         var perPaneDialogViews = [,
-            new NakedObjects.DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope),
-            new NakedObjects.DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope)
+            new NakedObjects.DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $rootScope),
+            new NakedObjects.DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $rootScope)
         ];
         var perPaneMenusViews = [,
             new NakedObjects.MenusViewModel(viewModelFactory),
@@ -96,7 +96,7 @@ var NakedObjects;
                 setNewDialog($scope, menu, routeData.dialogId, routeData, NakedObjects.FocusTarget.SubAction);
             })
                 .catch(function (reject) {
-                context.handleWrappedError(reject, null, function () { }, function () { });
+                error.handleError(reject);
             });
         }
         function setNewDialog($scope, holder, newDialogId, routeData, focusTarget, actionViewModel) {
@@ -118,9 +118,9 @@ var NakedObjects;
         function logoff() {
             for (var pane = 1; pane <= 2; pane++) {
                 context.clearParmUpdater(pane);
-                perPaneListViews[pane] = new NakedObjects.ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q);
-                perPaneObjectViews[pane] = new NakedObjects.DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q);
-                perPaneDialogViews[pane] = new NakedObjects.DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope);
+                perPaneListViews[pane] = new NakedObjects.ListViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $q);
+                perPaneObjectViews[pane] = new NakedObjects.DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $q);
+                perPaneDialogViews[pane] = new NakedObjects.DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $rootScope);
                 perPaneMenusViews[pane] = new NakedObjects.MenusViewModel(viewModelFactory);
             }
         }
@@ -163,7 +163,7 @@ var NakedObjects;
                 handlers.handleHomeSearch($scope, routeData);
             })
                 .catch(function (reject) {
-                context.handleWrappedError(reject, null, function () { }, function () { });
+                error.handleError(reject);
             });
         };
         function getActionExtensions(routeData) {
@@ -191,8 +191,8 @@ var NakedObjects;
         }
         function handleListSearchChanged($scope, routeData) {
             // only update templates if changed 
-            var newListTemplate = routeData.state === NakedObjects.CollectionViewState.List ? NakedObjects.listTemplate : NakedObjects.listAsTableTemplate;
             var listViewModel = $scope.collection;
+            var newListTemplate = template.getTemplateName(listViewModel.listRep.extensions().elementType(), NakedObjects.TemplateType.List, routeData.state);
             if ($scope.listTemplate !== newListTemplate) {
                 $scope.listTemplate = newListTemplate;
                 listViewModel.refresh(routeData);
@@ -213,7 +213,7 @@ var NakedObjects;
             var cachedList = context.getCachedList(routeData.paneId, routeData.page, routeData.pageSize);
             if (cachedList) {
                 var listViewModel = perPaneListViews[routeData.paneId];
-                $scope.listTemplate = routeData.state === NakedObjects.CollectionViewState.List ? NakedObjects.listTemplate : NakedObjects.listAsTableTemplate;
+                $scope.listTemplate = template.getTemplateName(cachedList.extensions().elementType(), NakedObjects.TemplateType.List, routeData.state);
                 listViewModel.reset(cachedList, routeData);
                 $scope.collection = listViewModel;
                 getActionExtensions(routeData).then(function (ext) { return $scope.title = ext.friendlyName(); });
@@ -235,12 +235,7 @@ var NakedObjects;
         handlers.handleError = function ($scope, routeData) {
             var evm = viewModelFactory.errorViewModel(context.getError());
             $scope.error = evm;
-            if (evm.isConcurrencyError) {
-                $scope.errorTemplate = NakedObjects.concurrencyTemplate;
-            }
-            else {
-                $scope.errorTemplate = NakedObjects.errorTemplate;
-            }
+            error.displayError($scope, routeData);
         };
         handlers.handleToolBar = function ($scope) {
             $scope.toolBar = viewModelFactory.toolBarViewModel();
@@ -248,7 +243,7 @@ var NakedObjects;
         function handleNewObjectSearch($scope, routeData) {
             var ovm = $scope.object;
             var newActionsTemplate;
-            var newObjectTemplate = template.getTemplateName(ovm.domainType, routeData.interactionMode);
+            var newObjectTemplate = template.getTemplateName(ovm.domainType, NakedObjects.TemplateType.Object, routeData.interactionMode);
             if (routeData.interactionMode === NakedObjects.InteractionMode.Form) {
                 newActionsTemplate = NakedObjects.formActionsTemplate;
             }
@@ -312,16 +307,15 @@ var NakedObjects;
                 deRegObject[routeData.paneId].add($scope.$on("$locationChangeStart", ovm.setProperties));
                 deRegObject[routeData.paneId].add($scope.$watch(function () { return $location.search(); }, ovm.setProperties, true));
                 deRegObject[routeData.paneId].add($scope.$on(NakedObjects.geminiPaneSwapEvent, ovm.setProperties));
-                deRegObject[routeData.paneId].add($scope.$on(NakedObjects.geminiDisplayErrorEvent, ovm.displayError()));
+                deRegObject[routeData.paneId].add($scope.$on(NakedObjects.geminiConcurrencyEvent, ovm.concurrency()));
             }).catch(function (reject) {
-                var handler = function (cc) {
-                    if (cc === ClientErrorCode.ExpiredTransient) {
-                        $scope.objectTemplate = NakedObjects.expiredTransientTemplate;
-                        return true;
-                    }
-                    return false;
-                };
-                context.handleWrappedError(reject, null, function () { }, function () { }, handler);
+                if (reject.category === ErrorCategory.ClientError && reject.clientErrorCode === ClientErrorCode.ExpiredTransient) {
+                    context.setError(reject);
+                    $scope.objectTemplate = NakedObjects.expiredTransientTemplate;
+                }
+                else {
+                    error.handleError(reject);
+                }
             });
         }
         ;

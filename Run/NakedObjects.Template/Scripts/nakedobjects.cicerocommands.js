@@ -38,7 +38,7 @@ var NakedObjects;
     }
     NakedObjects.getParametersAndCurrentValue = getParametersAndCurrentValue;
     var Command = (function () {
-        function Command(urlManager, nglocation, commandFactory, context, navigation, $q, $route, mask) {
+        function Command(urlManager, nglocation, commandFactory, context, navigation, $q, $route, mask, error) {
             this.urlManager = urlManager;
             this.nglocation = nglocation;
             this.commandFactory = commandFactory;
@@ -47,6 +47,7 @@ var NakedObjects;
             this.$q = $q;
             this.$route = $route;
             this.mask = mask;
+            this.error = error;
         }
         //Must be called after construction and before execute is called
         Command.prototype.initialiseWithViewModel = function (cvm) {
@@ -1152,7 +1153,7 @@ var NakedObjects;
                         var paramFriendlyName = function (paramId) { return FriendlyNameForParam(action, paramId); };
                         _this.handleErrorResponse(em, paramFriendlyName);
                     };
-                    _this.context.handleWrappedError(reject, null, function () { }, display);
+                    _this.error.handleErrorAndDisplayMessages(reject, display);
                 });
             });
         };
@@ -1222,84 +1223,6 @@ var NakedObjects;
         return Page;
     }(Command));
     NakedObjects.Page = Page;
-    var Property = (function (_super) {
-        __extends(Property, _super);
-        function Property() {
-            _super.apply(this, arguments);
-            this.fullCommand = NakedObjects.propertyCommand;
-            this.helpText = NakedObjects.propertyHelp;
-            this.minArguments = 0;
-            this.maxArguments = 1;
-        }
-        Property.prototype.isAvailableInCurrentContext = function () {
-            return this.isObject();
-        };
-        Property.prototype.doExecute = function (args, chained) {
-            var _this = this;
-            var fieldName = this.argumentAsString(args, 0);
-            this.getObject()
-                .then(function (obj) {
-                var props = _this.matchingProperties(obj, fieldName);
-                var colls = _this.matchingCollections(obj, fieldName);
-                //TODO -  include these
-                var s;
-                switch (props.length + colls.length) {
-                    case 0:
-                        if (!fieldName) {
-                            s = "No visible properties";
-                        }
-                        else {
-                            s = fieldName + " does not match any properties";
-                        }
-                        break;
-                    case 1:
-                        if (props.length > 0) {
-                            s = _this.renderPropNameAndValue(props[0]);
-                        }
-                        else {
-                            s = _this.renderColl(colls[0]);
-                        }
-                        break;
-                    default:
-                        s = _.reduce(props, function (s, prop) {
-                            return s + _this.renderPropNameAndValue(prop);
-                        }, "");
-                        s += _.reduce(colls, function (s, coll) {
-                            return s + _this.renderColl(coll);
-                        }, "");
-                }
-                _this.clearInputAndSetMessage(s);
-            });
-        };
-        Property.prototype.renderPropNameAndValue = function (pm) {
-            var name = pm.extensions().friendlyName();
-            var value;
-            var propInUrl = this.routeData().props[pm.id()];
-            if (this.isEdit() && !pm.disabledReason() && propInUrl) {
-                value = propInUrl.toString() + " (modified)";
-            }
-            else {
-                value = NakedObjects.renderFieldValue(pm, pm.value(), this.mask);
-            }
-            return name + ": " + value + "\n";
-        };
-        Property.prototype.renderColl = function (coll) {
-            var output = coll.extensions().friendlyName() + " (collection): ";
-            switch (coll.size()) {
-                case 0:
-                    output += "empty";
-                    break;
-                case 1:
-                    output += "1 item";
-                    break;
-                default:
-                    output += coll.size() + " items";
-            }
-            return output + "\n";
-        };
-        return Property;
-    }(Command));
-    NakedObjects.Property = Property;
     var Reload = (function (_super) {
         __extends(Reload, _super);
         function Reload() {
@@ -1383,7 +1306,7 @@ var NakedObjects;
                 saveOrUpdate(obj, propMap, 1, true).
                     catch(function (reject) {
                     var display = function (em) { return _this.handleError(em, obj); };
-                    _this.context.handleWrappedError(reject, null, function () { }, display);
+                    _this.error.handleErrorAndDisplayMessages(reject, display);
                 });
             });
         };
@@ -1441,26 +1364,91 @@ var NakedObjects;
             this.maxArguments = 1;
         }
         Show.prototype.isAvailableInCurrentContext = function () {
-            return this.isCollection() || this.isList();
+            return this.isObject() || this.isCollection() || this.isList();
         };
         Show.prototype.doExecute = function (args, chained) {
             var _this = this;
-            var arg = this.argumentAsString(args, 0, true);
-            var _a = this.parseRange(arg), start = _a.start, end = _a.end;
             if (this.isCollection()) {
+                var arg = this.argumentAsString(args, 0, true);
+                var _a = this.parseRange(arg), start_1 = _a.start, end_1 = _a.end;
                 this.getObject().then(function (obj) {
                     var openCollIds = NakedObjects.openCollectionIds(_this.routeData());
                     var coll = obj.collectionMember(openCollIds[0]);
-                    _this.renderCollectionItems(coll, start, end);
+                    _this.renderCollectionItems(coll, start_1, end_1);
                 });
                 return;
             }
-            //must be List
-            this.getList().then(function (list) {
-                _this.renderItems(list, start, end);
-            });
+            else if (this.isList()) {
+                var arg = this.argumentAsString(args, 0, true);
+                var _b = this.parseRange(arg), start_2 = _b.start, end_2 = _b.end;
+                this.getList().then(function (list) {
+                    _this.renderItems(list, start_2, end_2);
+                });
+            }
+            else if (this.isObject()) {
+                var fieldName_1 = this.argumentAsString(args, 0);
+                this.getObject()
+                    .then(function (obj) {
+                    var props = _this.matchingProperties(obj, fieldName_1);
+                    var colls = _this.matchingCollections(obj, fieldName_1);
+                    //TODO -  include these
+                    var s;
+                    switch (props.length + colls.length) {
+                        case 0:
+                            if (!fieldName_1) {
+                                s = "No visible properties";
+                            }
+                            else {
+                                s = fieldName_1 + " does not match any properties";
+                            }
+                            break;
+                        case 1:
+                            if (props.length > 0) {
+                                s = _this.renderPropNameAndValue(props[0]);
+                            }
+                            else {
+                                s = _this.renderColl(colls[0]);
+                            }
+                            break;
+                        default:
+                            s = _.reduce(props, function (s, prop) {
+                                return s + _this.renderPropNameAndValue(prop);
+                            }, "");
+                            s += _.reduce(colls, function (s, coll) {
+                                return s + _this.renderColl(coll);
+                            }, "");
+                    }
+                    _this.clearInputAndSetMessage(s);
+                });
+            }
         };
         ;
+        Show.prototype.renderPropNameAndValue = function (pm) {
+            var name = pm.extensions().friendlyName();
+            var value;
+            var propInUrl = this.routeData().props[pm.id()];
+            if (this.isEdit() && !pm.disabledReason() && propInUrl) {
+                value = propInUrl.toString() + " (modified)";
+            }
+            else {
+                value = NakedObjects.renderFieldValue(pm, pm.value(), this.mask);
+            }
+            return name + ": " + value + "\n";
+        };
+        Show.prototype.renderColl = function (coll) {
+            var output = coll.extensions().friendlyName() + " (collection): ";
+            switch (coll.size()) {
+                case 0:
+                    output += "empty";
+                    break;
+                case 1:
+                    output += "1 item";
+                    break;
+                default:
+                    output += coll.size() + " items";
+            }
+            return output + "\n";
+        };
         Show.prototype.renderCollectionItems = function (coll, startNo, endNo) {
             var _this = this;
             if (coll.value()) {

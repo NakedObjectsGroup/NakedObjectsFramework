@@ -40,19 +40,8 @@ module NakedObjects {
             if (cvm.message) {
                 cvm.outputMessageThenClearIt();
             } else {
-                let output = "";
                 if (routeData.menuId) {
-                    context.getMenu(routeData.menuId)
-                        .then((menu: MenuRepresentation) => {
-                            output += menu.title() + " menu" + "\n";
-                            return routeData.dialogId ? context.getInvokableAction(menu.actionMember(routeData.dialogId)) : $q.when(null);
-                        }).then((details: IInvokableAction) => {
-                            if (details) {
-                                output += renderActionDialog(details, routeData, mask);
-                            }
-                        }).finally(() => {
-                            cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-                        });
+                    renderOpenMenu(routeData, cvm);
                 } else {
                     cvm.clearInput();
                     cvm.output = welcomeMessage;
@@ -161,6 +150,21 @@ module NakedObjects {
         //Returns collection Ids for any collections on an object that are currently in List or Table mode
         function openCollectionIds(routeData: PaneRouteData): string[] {
             return _.filter(_.keys(routeData.collections), k => routeData.collections[k] != CollectionViewState.Summary);
+        }
+
+        function renderOpenMenu(routeData: PaneRouteData, cvm: CiceroViewModel) {
+            var output = "";
+            context.getMenu(routeData.menuId)
+                .then((menu: MenuRepresentation) => {
+                    output += menu.title() + " menu" + "\n";
+                    return routeData.dialogId ? context.getInvokableAction(menu.actionMember(routeData.dialogId)) : $q.when(null);
+                }).then((details: IInvokableAction) => {
+                    if (details) {
+                        output += renderActionDialog(details, routeData, mask);
+                    }
+                }).finally(() => {
+                    cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+                });
         }
 
         function renderActionDialog(

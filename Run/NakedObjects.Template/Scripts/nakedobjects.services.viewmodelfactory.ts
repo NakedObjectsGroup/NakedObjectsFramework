@@ -76,6 +76,9 @@ module NakedObjects {
         $location: ng.ILocationService,
         $filter: ng.IFilterService,
         $cacheFactory: ng.ICacheFactoryService,
+        $rootScope: ng.IRootScopeService,
+        $route: ng.route.IRouteService,
+        $http: ng.IHttpService,
         repLoader: IRepLoader,
         color: IColor,
         context: IContext,
@@ -85,15 +88,15 @@ module NakedObjects {
         navigation: INavigation,
         clickHandler: IClickHandler,
         commandFactory: ICommandFactory,
-        $rootScope: ng.IRootScopeService,
-        $route: ng.route.IRouteService,
-        $http: ng.IHttpService) {
+        error: IError,
+        ciceroRenderer: ICiceroRenderer) {
 
         var viewModelFactory = <IViewModelFactoryInternal>this;
 
         viewModelFactory.errorViewModel = (error: ErrorWrapper) => {
             const errorViewModel = new ErrorViewModel();
 
+            errorViewModel.originalError = error;
             if (error) {
                 errorViewModel.title = error.title;
                 errorViewModel.description = error.description;
@@ -205,6 +208,7 @@ module NakedObjects {
             parmViewModel.optional = parmRep.extensions().optional();
             let required = parmViewModel.optional ? "" : "* ";
             parmViewModel.description = parmRep.extensions().description();
+            parmViewModel.presentationHint = parmRep.extensions().presentationHint();
             parmViewModel.setMessage("");
             parmViewModel.id = parmRep.id();
             parmViewModel.argId = `${parmViewModel.id.toLowerCase()}`;
@@ -287,10 +291,10 @@ module NakedObjects {
 
                     if (fieldEntryType === EntryType.Choices) {
                         parmViewModel.choice = _.find(parmViewModel.choices, c => c.match(choiceToSet));
-                    } else {                    
+                    } else {
                         if (!parmViewModel.choice || parmViewModel.choice.getValue().toValueString() !== choiceToSet.getValue().toValueString()) {
                             parmViewModel.choice = choiceToSet;
-                        } 
+                        }
                     }
                 }
 
@@ -376,6 +380,7 @@ module NakedObjects {
             }
 
             actionViewModel.title = actionRep.extensions().friendlyName();
+            actionViewModel.presentationHint = actionRep.extensions().presentationHint();
             actionViewModel.menuPath = actionRep.extensions().menuPath() || "";
             actionViewModel.disabled = () => !!actionRep.disabledReason();
             actionViewModel.description = actionViewModel.disabled() ? actionRep.disabledReason() : actionRep.extensions().description();
@@ -410,10 +415,9 @@ module NakedObjects {
                     const pps = actionViewModel.parameters();
                     actionViewModel.executeInvoke(pps, right).
                         catch((reject: ErrorWrapper) => {
-                            const parent = actionRep.parent as DomainObjectRepresentation;
-                            const reset = (updatedObject: DomainObjectRepresentation) => this.reset(updatedObject, urlManager.getRouteData().pane()[this.onPaneId]);
+
                             const display = (em: ErrorMap) => vm.setMessage(em.invalidReason() || em.warningMessage);
-                            context.handleWrappedError(reject, parent, reset, display);
+                            error.handleErrorAndDisplayMessages(reject, display);
                         });
                 };
 
@@ -557,6 +561,7 @@ module NakedObjects {
             propertyViewModel.paneArgId = `${propertyViewModel.argId}${paneId}`;
             propertyViewModel.isEditable = !propertyRep.disabledReason();
             propertyViewModel.title = propertyRep.extensions().friendlyName();
+            propertyViewModel.presentationHint = propertyRep.extensions().presentationHint();
             propertyViewModel.optional = propertyRep.extensions().optional();
             propertyViewModel.returnType = propertyRep.extensions().returnType();
             propertyViewModel.draggableType = propertyRep.extensions().returnType();
@@ -756,6 +761,7 @@ module NakedObjects {
             collectionViewModel.collectionRep = collectionRep;
             collectionViewModel.onPaneId = paneId;
             collectionViewModel.title = collectionRep.extensions().friendlyName();
+            collectionViewModel.presentationHint = collectionRep.extensions().presentationHint();
             collectionViewModel.pluralName = collectionRep.extensions().pluralName();
             color.toColorNumberFromType(collectionRep.extensions().elementType()).then((c: number) => collectionViewModel.color = `${linkColor}${c}`);
 
@@ -769,7 +775,7 @@ module NakedObjects {
 
                 if (resetting || state !== collectionViewModel.currentState) {
 
-                    if (size > 0 || size == null ) {
+                    if (size > 0 || size == null) {
                         collectionViewModel.mayHaveItems = true;
                     }
                     collectionViewModel.details = getCollectionDetails(size);
@@ -789,7 +795,7 @@ module NakedObjects {
                                 collectionViewModel.details = getCollectionDetails(collectionViewModel.items.length);
                             })
                             .catch((reject: ErrorWrapper) => {
-                                context.handleWrappedError(reject, null, () => { }, () => { });
+                                error.handleError(reject);
                             });
                     } else {
                         collectionViewModel.items = viewModelFactory.getItems(itemLinks, state === CollectionViewState.Table, routeData, collectionViewModel);
@@ -834,7 +840,7 @@ module NakedObjects {
                 recreate().
                     then(() => $route.reload()).
                     catch((reject: ErrorWrapper) => {
-                        context.handleWrappedError(reject, null, () => { }, () => { });
+                        error.handleError(reject);
                     });
 
             return collectionPlaceholderViewModel;
@@ -960,11 +966,12 @@ module NakedObjects {
                                     cache: false
                                 };
 
-                                $http(config)
-                                    .finally(() => {
-                                        $rootScope.$broadcast(geminiLogoffEvent);
-                                        $timeout(() => window.location.href = postLogoffUrl);
-                                    });
+                                // logoff server
+                                $http(config);
+
+                                // logoff client without waiting for server
+                                $rootScope.$broadcast(geminiLogoffEvent);
+                                $timeout(() => window.location.href = postLogoffUrl);
                             }
                         });
                 };
@@ -1014,133 +1021,10 @@ module NakedObjects {
                 cvm.autoComplete = (input: string) => {
                     commandFactory.autoComplete(input, cvm);
                 };
-                cvm.renderHome = (routeData: PaneRouteData) => {
-                    //TODO: Could put this in a function passed into a render method on CVM
-                    if (cvm.message) {
-                        cvm.outputMessageThenClearIt();
-                    } else {
-                        let output = "";
-                        if (routeData.menuId) {
-                            context.getMenu(routeData.menuId)
-                                .then((menu: MenuRepresentation) => {
-                                    output += menu.title() + " menu" + "\n";
-                                    return routeData.dialogId ? context.getInvokableAction(menu.actionMember(routeData.dialogId)) : $q.when(null);
-                                }).then((details: IInvokableAction) => {
-                                    if (details) {
-                                        output += renderActionDialog(details, routeData, mask);
-                                    }
-                                }).finally(() => {
-                                    cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-                                });
-                        } else {
-                            cvm.clearInput();
-                            cvm.output = welcomeMessage;
-                        }
-                    }
-                };
-                cvm.renderObject = (routeData: PaneRouteData) => {
-                    if (cvm.message) {
-                        cvm.outputMessageThenClearIt();
-                    } else {
-                        const oid = ObjectIdWrapper.fromObjectId(routeData.objectId);
-
-                        context.getObject(1, oid, routeData.interactionMode) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
-                            .then((obj: DomainObjectRepresentation) => {
-                                let output = "";
-                                const openCollIds = openCollectionIds(routeData);
-                                if (_.some(openCollIds)) {
-                                    const id = openCollIds[0];
-                                    const coll = obj.collectionMember(id);
-                                    output += `Collection: ${coll.extensions().friendlyName()} on ${TypePlusTitle(obj)}\n`;
-                                    switch (coll.size()) {
-                                        case 0:
-                                            output += "empty";
-                                            break;
-                                        case 1:
-                                            output += "1 item";
-                                            break;
-                                        default:
-                                            output += `${coll.size()} items`;
-                                    }
-                                    cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-                                } else {
-                                    if (obj.isTransient()) {
-                                        output += "Unsaved ";
-                                        output += obj.extensions().friendlyName() + "\n";
-                                        output += renderModifiedProperties(obj, routeData, mask);
-                                        cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-                                    } else if (routeData.interactionMode === InteractionMode.Edit ||
-                                        routeData.interactionMode === InteractionMode.Form) {
-                                        let output = "Editing ";
-                                        output += PlusTitle(obj) + "\n";
-                                        if (routeData.dialogId) {
-                                            context.getInvokableAction(obj.actionMember(routeData.dialogId))
-                                                .then((details: IInvokableAction) => {
-                                                    output += renderActionDialog(details, routeData, mask);
-                                                    cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-                                                });
-                                        } else {
-                                            output += renderModifiedProperties(obj, routeData, mask);
-                                            cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-                                        }
-                                    } else {
-                                        let output = Title(obj) + "\n";
-                                        if (routeData.dialogId) {
-                                            context.getInvokableAction(obj.actionMember(routeData.dialogId))
-                                                .then((details: IInvokableAction) => {
-                                                    output += renderActionDialog(details, routeData, mask);
-                                                    cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-                                                });
-                                        } else {
-                                            cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-                                        }
-
-                                    }
-                                }
-                            }).catch((reject: ErrorWrapper) => {
-
-                                const custom = (cc: ClientErrorCode) => {
-                                    if (cc === ClientErrorCode.ExpiredTransient) {
-                                        cvm.output = "The requested view of unsaved object details has expired";
-                                        return true;
-                                    }
-                                    return false;
-                                };
-
-                                context.handleWrappedError(reject, null, () => { }, () => { }, custom);
-                            });
-                    }
-                };
-                cvm.renderList = (routeData: PaneRouteData) => {
-                    if (cvm.message) {
-                        cvm.outputMessageThenClearIt();
-                    } else {
-                        const listPromise = context.getListFromMenu(1, routeData, routeData.page, routeData.pageSize);
-                        listPromise.then((list: ListRepresentation) => {
-                            context.getMenu(routeData.menuId).then((menu: MenuRepresentation) => {
-                                const count = list.value().length;
-                                const numPages = list.pagination().numPages;
-                                let description: string;
-                                if (numPages > 1) {
-                                    const page = list.pagination().page;
-                                    const totalCount = list.pagination().totalCount;
-                                    description = `Page ${page} of ${numPages} containing ${count} of ${totalCount} items`;
-                                } else {
-                                    description = `${count} items`;
-                                }
-                                const actionMember = menu.actionMember(routeData.actionId);
-                                const actionName = actionMember.extensions().friendlyName();
-                                const output = `Result from ${actionName}:\n${description}`;
-                                cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-                            });
-                        });
-                    }
-                };
-                cvm.renderError = () => {
-                    const err = context.getError().error as ErrorRepresentation;
-                    cvm.clearInput();
-                    cvm.output = `Sorry, an application error has occurred. ${err.message()}`;
-                };
+                cvm.renderHome = _.partial(ciceroRenderer.renderHome, cvm) as (routeData: PaneRouteData) => void;
+                cvm.renderObject = _.partial(ciceroRenderer.renderObject, cvm) as (routeData: PaneRouteData) => void;
+                cvm.renderList = _.partial(ciceroRenderer.renderList, cvm) as (routeData: PaneRouteData) => void;
+                cvm.renderError = _.partial(ciceroRenderer.renderError, cvm);
             }
             return cvm;
         };
@@ -1150,81 +1034,5 @@ module NakedObjects {
         }
 
         $rootScope.$on(geminiLogoffEvent, () => logoff());
-
-
-        function renderActionDialog(
-            invokable: Models.IInvokableAction,
-            routeData: PaneRouteData,
-            mask: IMask): string {
-            const actionName = invokable.extensions().friendlyName();
-            let output = `Action dialog: ${actionName}\n`;
-            _.forEach(getParametersAndCurrentValue(invokable, context), (value, paramId) => {
-                output += FriendlyNameForParam(invokable, paramId) + ": ";
-                const param = invokable.parameters()[paramId];
-                output += renderFieldValue(param, value, mask);
-                output += "\n";
-            });
-            return output;
-        }
-
     });
-
-    //Returns collection Ids for any collections on an object that are currently in List or Table mode
-    export function openCollectionIds(routeData: PaneRouteData): string[] {
-        return _.filter(_.keys(routeData.collections), k => routeData.collections[k] !== CollectionViewState.Summary);
-    }
-
-    function renderModifiedProperties(obj: DomainObjectRepresentation, routeData: PaneRouteData, mask: IMask): string {
-        let output = "";
-        if (_.keys(routeData.props).length > 0) {
-            output += "Modified properties:\n";
-            _.each(routeData.props, (value, propId) => {
-                output += FriendlyNameForProperty(obj, propId) + ": ";
-                const pm = obj.propertyMember(propId);
-                output += renderFieldValue(pm, value, mask);
-                output += "\n";
-            });
-        }
-        return output;
-    }
-
-    //Handles empty values, and also enum conversion
-    export function renderFieldValue(field: IField, value: Value, mask: IMask): string {
-        if (!field.isScalar()) { //i.e. a reference
-            return value.isNull() ? "empty" : value.toString();
-        }
-        //Rest is for scalar fields only:
-        if (value.toString()) { //i.e. not empty
-            //This is to handle an enum: render it as text, not a number:           
-            if (field.entryType() === EntryType.Choices) {
-                const inverted = _.invert(field.choices());
-                return (<any>inverted)[value.toValueString()];
-            } else if (field.entryType() === EntryType.MultipleChoices && value.isList()) {
-                const inverted = _.invert(field.choices());
-                let output = "";
-                const values = value.list();
-                _.forEach(values, v => {
-                    output += (<any>inverted)[v.toValueString()] + ",";
-                });
-                return output;
-            }
-        }
-        let properScalarValue: number | string | boolean | Date;
-        if (isDateOrDateTime(field)) {
-            properScalarValue = toUtcDate(value);
-        } else {
-            properScalarValue = value.scalar();
-        }
-        if (properScalarValue === "" || properScalarValue == null) {
-            return "empty";
-        } else {
-            const remoteMask = field.extensions().mask();
-            const format = field.extensions().format();
-            return mask.toLocalFilter(remoteMask, format).filter(properScalarValue);
-        }
-    }
-
-    
-
-
 }

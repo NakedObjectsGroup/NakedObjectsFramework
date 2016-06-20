@@ -57,7 +57,8 @@ module NakedObjects {
             protected navigation: INavigation,
             protected $q: ng.IQService,
             protected $route: ng.route.IRouteService,
-            protected mask: IMask
+            protected mask: IMask,
+            protected error: IError
         ) { }
 
         fullCommand: string;
@@ -1167,7 +1168,7 @@ module NakedObjects {
                             const paramFriendlyName = (paramId: string) => FriendlyNameForParam(action, paramId);
                             this.handleErrorResponse(em, paramFriendlyName);
                         };
-                        this.context.handleWrappedError(reject, null, () => { }, display);
+                        this.error.handleErrorAndDisplayMessages(reject, display);
                     });
             });
         }
@@ -1224,80 +1225,6 @@ module NakedObjects {
         private setPage(page : number) {
             const pageSize = this.routeData().pageSize;
             this.urlManager.setListPaging(page, pageSize, CollectionViewState.List);
-        }
-    }
-
-    export class Property extends Command {
-
-        fullCommand = propertyCommand;
-        helpText = propertyHelp;
-        protected minArguments = 0;
-        protected maxArguments = 1;
-
-        isAvailableInCurrentContext(): boolean {
-            return this.isObject();
-        }
-
-        doExecute(args: string, chained: boolean): void {
-            const fieldName = this.argumentAsString(args, 0);
-            this.getObject()
-                .then((obj: DomainObjectRepresentation) => {
-                    const props = this.matchingProperties(obj, fieldName);
-                    const colls = this.matchingCollections(obj, fieldName);
-                    //TODO -  include these
-                    let s: string;
-                    switch (props.length + colls.length) {
-                        case 0:
-                            if (!fieldName) {
-                                s = "No visible properties";
-                            } else {
-                                s = fieldName + " does not match any properties";
-                            }
-                            break;
-                        case 1:
-                            if (props.length > 0) {
-                                s = this.renderPropNameAndValue(props[0]);
-                            } else {
-                                s = this.renderColl(colls[0]);
-                            }
-                            break;
-                        default:
-                            s = _.reduce(props, (s, prop) => {
-                                return s + this.renderPropNameAndValue(prop);
-                            }, "");
-                            s += _.reduce(colls, (s, coll) => {
-                                return s + this.renderColl(coll);
-                            }, "");
-                    }
-                    this.clearInputAndSetMessage(s);
-                });
-        }
-
-        private renderPropNameAndValue(pm: PropertyMember): string {
-            const name = pm.extensions().friendlyName();
-            let value: string;
-            const propInUrl = this.routeData().props[pm.id()];
-            if (this.isEdit() && !pm.disabledReason() && propInUrl) {
-                value = propInUrl.toString() + " (modified)";
-            } else {
-                value = renderFieldValue(pm, pm.value(), this.mask);
-            }
-            return name + ": " + value + "\n";
-        }
-
-        private renderColl(coll: CollectionMember): string {
-            let output = coll.extensions().friendlyName() + " (collection): ";
-            switch (coll.size()) {
-                case 0:
-                    output += "empty";
-                    break;
-                case 1:
-                    output += "1 item";
-                    break;
-                default:
-                    output += `${coll.size() } items`;
-            }
-            return output + "\n";
         }
     }
 
@@ -1376,7 +1303,7 @@ module NakedObjects {
                 saveOrUpdate(obj, propMap, 1, true).
                     catch((reject: ErrorWrapper) => {
                         const display = (em: ErrorMap) => this.handleError(em, obj);
-                        this.context.handleWrappedError(reject, null, () => { }, display);
+                        this.error.handleErrorAndDisplayMessages(reject, display);
                     });
             });
         };
@@ -1427,13 +1354,13 @@ module NakedObjects {
         protected maxArguments = 1;
 
         isAvailableInCurrentContext(): boolean {
-            return this.isCollection() || this.isList();
+            return this.isObject() || this.isCollection() || this.isList();
         }
 
         doExecute(args: string, chained: boolean): void {
-            const arg = this.argumentAsString(args, 0, true);
-            const { start, end } = this.parseRange(arg);
             if (this.isCollection()) {
+                const arg = this.argumentAsString(args, 0, true);
+                const { start, end } = this.parseRange(arg);
                 this.getObject().then((obj: DomainObjectRepresentation) => {
                     const openCollIds = openCollectionIds(this.routeData());
                     const coll = obj.collectionMember(openCollIds[0]);
@@ -1441,11 +1368,75 @@ module NakedObjects {
                 });
                 return;
             }
-            //must be List
-            this.getList().then((list: ListRepresentation) => {
-                this.renderItems(list, start, end);
-            });
+            else if (this.isList()) {
+                const arg = this.argumentAsString(args, 0, true);
+                const { start, end } = this.parseRange(arg);
+                this.getList().then((list: ListRepresentation) => {
+                    this.renderItems(list, start, end);
+                });
+            }
+            else if (this.isObject()) {
+                const fieldName = this.argumentAsString(args, 0);
+                this.getObject()
+                    .then((obj: DomainObjectRepresentation) => {
+                        const props = this.matchingProperties(obj, fieldName);
+                        const colls = this.matchingCollections(obj, fieldName);
+                        //TODO -  include these
+                        let s: string;
+                        switch (props.length + colls.length) {
+                            case 0:
+                                if (!fieldName) {
+                                    s = "No visible properties";
+                                } else {
+                                    s = fieldName + " does not match any properties";
+                                }
+                                break;
+                            case 1:
+                                if (props.length > 0) {
+                                    s = this.renderPropNameAndValue(props[0]);
+                                } else {
+                                    s = this.renderColl(colls[0]);
+                                }
+                                break;
+                            default:
+                                s = _.reduce(props, (s, prop) => {
+                                    return s + this.renderPropNameAndValue(prop);
+                                }, "");
+                                s += _.reduce(colls, (s, coll) => {
+                                    return s + this.renderColl(coll);
+                                }, "");
+                        }
+                        this.clearInputAndSetMessage(s);
+                    });
+            }
         };
+
+        private renderPropNameAndValue(pm: PropertyMember): string {
+            const name = pm.extensions().friendlyName();
+            let value: string;
+            const propInUrl = this.routeData().props[pm.id()];
+            if (this.isEdit() && !pm.disabledReason() && propInUrl) {
+                value = propInUrl.toString() + " (modified)";
+            } else {
+                value = renderFieldValue(pm, pm.value(), this.mask);
+            }
+            return name + ": " + value + "\n";
+        }
+
+        private renderColl(coll: CollectionMember): string {
+            let output = coll.extensions().friendlyName() + " (collection): ";
+            switch (coll.size()) {
+                case 0:
+                    output += "empty";
+                    break;
+                case 1:
+                    output += "1 item";
+                    break;
+                default:
+                    output += `${coll.size()} items`;
+            }
+            return output + "\n";
+        }
 
         private renderCollectionItems(coll: CollectionMember, startNo: number, endNo: number) {
             if (coll.value()) {

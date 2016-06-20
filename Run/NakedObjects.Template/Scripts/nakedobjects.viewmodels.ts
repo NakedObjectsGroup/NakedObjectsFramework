@@ -82,7 +82,7 @@ module NakedObjects {
         let menu = "";
 
         if (menupath && menupath.length > 0) {
-            const menus = menupath.split("-");
+            const menus = menupath.split("_");
 
             if (menus.length > level) {
                 menu = menus[level];
@@ -211,6 +211,7 @@ module NakedObjects {
     }
 
     export class ErrorViewModel {
+        originalError : ErrorWrapper;
         title: string;
         message: string;
         stackTrace: string[];
@@ -301,6 +302,7 @@ module NakedObjects {
 
         color: string;
         description: string;
+        presentationHint: string;
         optional: boolean;
         isCollectionContributed: boolean;
         onPaneId: number;
@@ -420,6 +422,7 @@ module NakedObjects {
         menuPath: string;
         title: string;
         description: string;
+        presentationHint : string;
 
         // todo - confusing name better 
         doInvoke: (right?: boolean) => void;
@@ -447,6 +450,7 @@ module NakedObjects {
             private viewModelFactory: IViewModelFactory,
             private urlManager: IUrlManager,
             private focusManager: IFocusManager,
+            private error: IError,
             private $rootScope: ng.IRootScopeService) {
             super();
         }
@@ -494,7 +498,6 @@ module NakedObjects {
 
             const pps = this.parameters;
             _.forEach(pps, p => this.urlManager.setFieldValue(this.actionMember().actionId(), p.parameterRep, p.getValue(), this.onPaneId));
-            //_.forEach(pps, p => this.context.setFieldValue(this.actionMember().actionId(), p.parameterRep.id(), p.getValue(), this.onPaneId));
             this.context.updateParms();
             return this.actionViewModel.executeInvoke(pps, right);
         };
@@ -520,16 +523,8 @@ module NakedObjects {
                     // else query only going to other tab leave dialog open
                 }).
                 catch((reject: ErrorWrapper) => {
-                    const parent = this.actionMember().parent instanceof DomainObjectRepresentation ? this.actionMember().parent as DomainObjectRepresentation : null;
                     const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.parameters);
-                    this.context.handleWrappedError(reject,
-                        parent,
-                        () => {
-                            // this should just be called if concurrency
-                            this.doCloseKeepHistory();
-                            this.$rootScope.$broadcast(geminiDisplayErrorEvent, new ErrorMap({}, 0, concurrencyError));
-                        },
-                        display);
+                    this.error.handleErrorAndDisplayMessages(reject, display);
                 });
 
         doCloseKeepHistory = () => {
@@ -576,6 +571,7 @@ module NakedObjects {
             private viewModelFactory: IViewModelFactory,
             private urlManager: IUrlManager,
             private focusManager: IFocusManager,
+            private error: IError,
             private $q: ng.IQService) {
             super();
         }
@@ -614,7 +610,7 @@ module NakedObjects {
                             this.updateItems(list.value());
                         }).
                         catch((reject: ErrorWrapper) => {
-                            this.context.handleWrappedError(reject, null, () => { }, () => { });
+                            this.error.handleError(reject);
                         });
                 } else {
                     this.updateItems(this.listRep.value());
@@ -673,7 +669,7 @@ module NakedObjects {
                             then(result => this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || noResultMessage : "")).
                             catch((reject: ErrorWrapper) => {
                                 const display = (em: ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
-                                this.context.handleWrappedError(reject, null, () => { }, display);
+                                this.error.handleErrorAndDisplayMessages(reject,  display);
                             });
                     });
         }
@@ -728,7 +724,7 @@ module NakedObjects {
                 }).
                 catch((reject: ErrorWrapper) => {
                     const display = (em: ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
-                    this.context.handleWrappedError(reject, null, () => { }, display);
+                    this.error.handleErrorAndDisplayMessages(reject, display);
                 });
         };
 
@@ -820,6 +816,7 @@ module NakedObjects {
         header: string[];
         onPaneId: number;
         currentState: CollectionViewState;
+        presentationHint: string;
 
         id: string;
 
@@ -905,6 +902,7 @@ module NakedObjects {
             private viewModelFactory: IViewModelFactory,
             private urlManager: IUrlManager,
             private focusManager: IFocusManager,
+            private error: IError,
             private $q: ng.IQService) {
             super();
         }
@@ -984,6 +982,7 @@ module NakedObjects {
             this.title = this.title + dirtyMarker(this.contextService, obj.getOid());
 
             this.friendlyName = this.domainObject.extensions().friendlyName();
+            this.presentationHint = this.domainObject.extensions().presentationHint();
             this.domainType = this.domainObject.domainType();
             this.instanceId = this.domainObject.instanceId();
             this.draggableType = this.domainObject.domainType();
@@ -1016,13 +1015,19 @@ module NakedObjects {
             return this;
         }
 
-        displayError() {
+        concurrency() {
             return (event: ng.IAngularEvent, em: ErrorMap) => {
                 this.routeData = this.urlManager.getRouteData().pane()[this.onPaneId];
                 this.contextService.getObject(this.onPaneId, this.domainObject.getOid(), this.routeData.interactionMode)
                     .then(obj => {
-                        this.reset(obj, this.routeData);
-                        this.viewModelFactory.handleErrorResponse(em, this, this.properties);
+                        this.contextService.reloadObject(this.onPaneId, obj)
+                            .then(reloadedObj => {
+                                if (this.routeData.dialogId) {
+                                    this.urlManager.closeDialogReplaceHistory(this.onPaneId);
+                                }
+                                this.reset(reloadedObj, this.routeData);
+                                this.viewModelFactory.handleErrorResponse(em, this, this.properties);
+                            });
                     });
             }
         }
@@ -1034,6 +1039,7 @@ module NakedObjects {
 
         title: string;
         friendlyName: string;
+        presentationHint: string;
         domainType: string;
         instanceId: string;
         draggableType: string;
@@ -1085,9 +1091,8 @@ module NakedObjects {
         private validateHandler = () => this.domainObject.isTransient() ? this.contextService.validateSaveObject : this.contextService.validateUpdateObject;
 
         private handleWrappedError = (reject: ErrorWrapper) => {
-            const reset = (updatedObject: DomainObjectRepresentation) => this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
             const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.properties);
-            this.contextService.handleWrappedError(reject, this.domainObject, reset, display);
+            this.error.handleErrorAndDisplayMessages(reject, display);
         };
 
         doSave = (viewObject: boolean) => {
@@ -1150,7 +1155,7 @@ module NakedObjects {
         serverVersion: IVersionRepresentation;
         user: IUserRepresentation;
         serverUrl: string;
-        clientVersion: string = "8.0.0-Beta7"; //TODO: derive automatically from package version
+        clientVersion: string;
     }
 
     export class ToolBarViewModel {
