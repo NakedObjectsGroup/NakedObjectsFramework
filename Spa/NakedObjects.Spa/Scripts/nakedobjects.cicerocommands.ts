@@ -466,6 +466,11 @@ module NakedObjects {
             this.context.setFieldValue(this.routeData().dialogId, field.id(), urlVal);
             this.urlManager.setFieldValue(this.routeData().dialogId, field, urlVal); //TODO: do this everywhere, combine into one method
         }
+
+        protected setPropertyValueinContextAndUrl(obj : DomainObjectRepresentation, property : PropertyMember, urlVal: Value) {
+            this.context.setPropertyValue(obj, property, urlVal);
+            this.urlManager.setPropertyValue(obj, property, urlVal);
+        }
     }
 
     export class Action extends Command {
@@ -814,7 +819,7 @@ module NakedObjects {
             } else if (field instanceof PropertyMember) {
                 const parent = field.parent;
                 if (parent instanceof DomainObjectRepresentation) {
-                    this.context.setPropertyValue(parent, field, urlVal);
+                    this.setPropertyValueinContextAndUrl(parent, field, urlVal);
                 }
             }
         }

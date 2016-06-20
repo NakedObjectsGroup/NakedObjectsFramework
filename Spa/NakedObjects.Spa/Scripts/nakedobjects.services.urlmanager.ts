@@ -61,7 +61,7 @@ module NakedObjects {
 
         setParameterValue: (actionId: string, p: Parameter, pv: Value, paneId?: number) => void;
 
-        //setPropertyValue: (obj: DomainObjectRepresentation, p: PropertyMember, pv: Value, paneId?: number) => void;
+        setPropertyValue: (obj: DomainObjectRepresentation, p: PropertyMember, pv: Value, paneId?: number) => void;
 
         currentpane(): number;
 
@@ -606,17 +606,17 @@ module NakedObjects {
                 search => setParameter(paneId, search, p, pv));
 
 
-        //helper.setPropertyValue = (obj: DomainObjectRepresentation, p: PropertyMember, pv: Value, paneId = 1) =>
-        //    checkAndSetValue(paneId,
-        //        search => {
-        //            // only add value if matching object (to catch case when swapping panes) 
-        //            // and only add to edit url
-        //            const oid = obj.id();
-        //            const currentOid = getId(`${akm.object}${paneId}`, search);
-        //            const currentMode = getInteractionMode(getId(`${akm.interactionMode}${paneId}`, search));
-        //            return currentOid === oid && currentMode !== InteractionMode.View;
-        //        },
-        //        search => setProperty(paneId, search, p, pv));
+        helper.setPropertyValue = (obj: DomainObjectRepresentation, p: PropertyMember, pv: Value, paneId = 1) =>
+            checkAndSetValue(paneId,
+                search => {
+                    // only add value if matching object (to catch case when swapping panes) 
+                    // and only add to edit url
+                    const oid = obj.id();
+                    const currentOid = getId(`${akm.object}${paneId}`, search);
+                    const currentMode = getInteractionMode(getId(`${akm.interactionMode}${paneId}`, search));
+                    return currentOid === oid && currentMode !== InteractionMode.View;
+                },
+                search => setProperty(paneId, search, p, pv));
 
 
         helper.setCollectionMemberState = (collectionMemberId: string, state: CollectionViewState, paneId = 1) => {

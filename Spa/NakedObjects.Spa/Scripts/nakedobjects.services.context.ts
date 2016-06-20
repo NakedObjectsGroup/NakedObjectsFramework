@@ -951,7 +951,7 @@ module NakedObjects {
             objectEditCache.clear(paneId);
         }
 
-        context.setPropertyValue = (obj: DomainObjectRepresentation, p: PropertyMember, pv: Value, paneId?: number) => {
+        context.setPropertyValue = (obj: DomainObjectRepresentation, p: PropertyMember, pv: Value, paneId = 1) => {
             objectEditCache.addValue(obj.id(), p.id(), pv, paneId);
         }
 
