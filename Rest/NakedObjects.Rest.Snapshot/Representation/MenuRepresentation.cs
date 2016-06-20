@@ -12,6 +12,7 @@ using System.Net.Http;
 using System.Runtime.Serialization;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
+using NakedObjects.Facade.Utility;
 using NakedObjects.Rest.Snapshot.Constants;
 using NakedObjects.Rest.Snapshot.Utility;
 
@@ -78,7 +79,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             var menuFacade = item as IMenuFacade;
 
             if (menuFacade != null) {
-                parent = parent + (string.IsNullOrEmpty(parent) ? "" : "-") + menuFacade.Name;
+                parent = parent + (string.IsNullOrEmpty(parent) ? "" : IdConstants.MenuItemDivider) + menuFacade.Name;
                 return menuFacade.MenuItems.SelectMany(i => GetMenuItem(i, parent)).ToArray();
             }
 

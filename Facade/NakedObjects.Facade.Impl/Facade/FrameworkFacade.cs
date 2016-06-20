@@ -27,6 +27,7 @@ using NakedObjects.Facade.Facade;
 using NakedObjects.Facade.Impl.Contexts;
 using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Facade.Translation;
+using NakedObjects.Facade.Utility;
 using NakedObjects.Util;
 
 namespace NakedObjects.Facade.Impl {
@@ -829,7 +830,7 @@ namespace NakedObjects.Facade.Impl {
             var menu = item as IMenuImmutable;
 
             if (menu != null) {
-                parent = parent + (string.IsNullOrEmpty(parent) ? "" : "_") + menu.Name;
+                parent = parent + (string.IsNullOrEmpty(parent) ? "" : IdConstants.MenuItemDivider) + menu.Name;
                 return menu.MenuItems.SelectMany(i => GetMenuItem(i, parent)).ToArray();
             }
 

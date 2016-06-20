@@ -136,5 +136,7 @@ namespace NakedObjects.Facade.Utility {
         public const string PageSizeKey = "pageSize";
         public const string FormatKey = "format";
         public const string ActiveClass = "active";
+        // menus 
+        public const string MenuItemDivider = "_";
     }
 }
