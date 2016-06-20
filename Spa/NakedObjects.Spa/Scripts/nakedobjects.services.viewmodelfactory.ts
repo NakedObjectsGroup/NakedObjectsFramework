@@ -178,7 +178,7 @@ module NakedObjects {
             itemViewModel.selected = selected;
 
             itemViewModel.checkboxChange = (index) => {
-                context.updateParms();
+                context.updateValues();
                 urlManager.setListItem(index, itemViewModel.selected, paneId);
                 focusManager.focusOverrideOn(FocusTarget.CheckBox, index + 1, paneId);
             };
@@ -406,7 +406,7 @@ module NakedObjects {
                     focusManager.setCurrentPane(paneId);
                     focusManager.focusOverrideOff();
                     // clear any previous dialog 
-                    context.clearDialog(paneId);
+                    context.clearDialogValues(paneId);
                     urlManager.setDialog(actionRep.actionId(), paneId);
                     focusManager.focusOn(FocusTarget.Dialog, 0, paneId); // in case dialog is already open
                 } :
@@ -919,38 +919,38 @@ module NakedObjects {
                 const tvm = new ToolBarViewModel();
                 tvm.goHome = (right?: boolean) => {
                     focusManager.focusOverrideOff();
-                    context.updateParms();
+                    context.updateValues();
                     urlManager.setHome(clickHandler.pane(1, right));
                 };
                 tvm.goBack = () => {
                     focusManager.focusOverrideOff();
-                    context.updateParms();
+                    context.updateValues();
                     navigation.back();
                 };
                 tvm.goForward = () => {
                     focusManager.focusOverrideOff();
-                    context.updateParms();
+                    context.updateValues();
                     navigation.forward();
                 };
                 tvm.swapPanes = () => {
                     $rootScope.$broadcast(geminiPaneSwapEvent);
-                    context.updateParms();
+                    context.updateValues();
                     context.swapCurrentObjects();
                     urlManager.swapPanes();
                 };
                 tvm.singlePane = (right?: boolean) => {
-                    context.updateParms();
+                    context.updateValues();
                     urlManager.singlePane(clickHandler.pane(1, right));
                     focusManager.refresh(1);
                 };
                 tvm.cicero = () => {
-                    context.updateParms();
+                    context.updateValues();
                     urlManager.singlePane(clickHandler.pane(1));
                     urlManager.cicero();
                 };
 
                 tvm.recent = (right?: boolean) => {
-                    context.updateParms();
+                    context.updateValues();
                     focusManager.focusOverrideOff();
                     urlManager.setRecent(clickHandler.pane(1, right));
                 };
@@ -977,7 +977,7 @@ module NakedObjects {
                 };
 
                 tvm.applicationProperties = () => {
-                    context.updateParms();
+                    context.updateValues();
                     urlManager.applicationProperties();
                 };
 

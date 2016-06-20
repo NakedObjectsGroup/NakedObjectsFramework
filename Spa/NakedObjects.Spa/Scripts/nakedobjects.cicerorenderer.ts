@@ -180,9 +180,10 @@ module NakedObjects {
 
         function renderModifiedProperties(obj: DomainObjectRepresentation, routeData: PaneRouteData, mask: IMask): string {
             let output = "";
-            if (_.keys(routeData.props).length > 0) {
+            const props = context.getCurrentObjectValues(obj.id());
+            if (_.keys(props).length > 0) {
                 output += "Modified properties:\n";
-                _.each(routeData.props, (value, propId) => {
+                _.each(props, (value, propId) => {
                     output += FriendlyNameForProperty(obj, propId) + ": ";
                     const pm = obj.propertyMember(propId);
                     output += renderFieldValue(pm, value, mask);

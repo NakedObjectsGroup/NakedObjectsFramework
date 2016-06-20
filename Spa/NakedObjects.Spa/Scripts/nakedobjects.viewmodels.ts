@@ -498,7 +498,7 @@ module NakedObjects {
 
             const pps = this.parameters;
             _.forEach(pps, p => this.urlManager.setFieldValue(this.actionMember().actionId(), p.parameterRep, p.getValue(), this.onPaneId));
-            this.context.updateParms();
+            this.context.updateValues();
             return this.actionViewModel.executeInvoke(pps, right);
         };
 
@@ -660,7 +660,7 @@ module NakedObjects {
             showDialog().
                 then((show: boolean) => actionViewModel.doInvoke = show ?
                     (right?: boolean) => {
-                        this.context.clearDialog(this.onPaneId);
+                        this.context.clearDialogValues(this.onPaneId);
                         this.focusManager.focusOverrideOff();
                         this.urlManager.setDialog(actionViewModel.actionRep.actionId(), this.onPaneId);
                     } :
@@ -764,15 +764,15 @@ module NakedObjects {
         private pagePreviousDisabled = this.earlierDisabled;
 
         doSummary = () => {
-            this.context.updateParms();
+            this.context.updateValues();
             this.urlManager.setListState(CollectionViewState.Summary, this.onPaneId)
         };
         doList = () => {
-            this.context.updateParms();
+            this.context.updateValues();
             this.urlManager.setListState(CollectionViewState.List, this.onPaneId);
         };
         doTable = () => {
-            this.context.updateParms();
+            this.context.updateValues();
             this.urlManager.setListState(CollectionViewState.Table, this.onPaneId);
         };
 
@@ -938,7 +938,7 @@ module NakedObjects {
             this.routeData = routeData;
             const iMode = this.domainObject.extensions().interactionMode();
             this.isInEdit = routeData.interactionMode !== InteractionMode.View || iMode === "form" || iMode === "transient";
-            this.props = routeData.interactionMode !== InteractionMode.View ? routeData.props : {};
+            this.props = routeData.interactionMode !== InteractionMode.View ? this.contextService.getCurrentObjectValues(this.domainObject.id(), routeData.paneId) : {};
 
             _.forEach(this.properties, p => p.refresh(this.props[p.id]));
             _.forEach(this.collections, c => c.refresh(this.routeData, false));
@@ -965,7 +965,7 @@ module NakedObjects {
             this.routeData = routeData;
             const iMode = this.domainObject.extensions().interactionMode();
             this.isInEdit = routeData.interactionMode !== InteractionMode.View || iMode === "form" || iMode === "transient";
-            this.props = routeData.interactionMode !== InteractionMode.View ? routeData.props : {};
+            this.props = routeData.interactionMode !== InteractionMode.View ? this.contextService.getCurrentObjectValues(this.domainObject.id(), routeData.paneId) : {};
 
             const actions = _.values(this.domainObject.actionMembers()) as ActionMember[];
             this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, this.routeData));
@@ -1066,8 +1066,9 @@ module NakedObjects {
         };
 
         private editProperties = () => _.filter(this.properties, p => p.isEditable && p.isDirty());
+
         setProperties = () =>
-            _.forEach(this.editProperties(), p => this.urlManager.setPropertyValue(this.domainObject, p.propertyRep, p.getValue(), this.onPaneId));
+            _.forEach(this.editProperties(), p => this.contextService.setPropertyValue(this.domainObject, p.propertyRep, p.getValue(), this.onPaneId));
 
         private cancelHandler = () => this.domainObject.extensions().interactionMode() === "form" || this.domainObject.extensions().interactionMode() === "transient" ?
             () => this.urlManager.popUrlState(this.onPaneId) :
@@ -1075,10 +1076,12 @@ module NakedObjects {
 
         editComplete = () => {
             this.setProperties();
+            this.contextService.clearObjectUpdater(this.onPaneId);
         };
 
         doEditCancel = () => {
             this.editComplete();
+            this.contextService.clearObjectValues(this.onPaneId);
             this.cancelHandler()();
         };
 
@@ -1099,6 +1102,7 @@ module NakedObjects {
             this.clearCachedFiles();
             this.setProperties();
             const propMap = this.propertyMap();
+            this.contextService.clearObjectUpdater(this.onPaneId);
             this.saveHandler()(this.domainObject, propMap, this.onPaneId, viewObject).
                 then(obj => this.reset(obj, this.urlManager.getRouteData().pane()[this.onPaneId])).
                 catch((reject: ErrorWrapper) => this.handleWrappedError(reject));
@@ -1120,6 +1124,7 @@ module NakedObjects {
 
         doEdit = () => {
             this.clearCachedFiles();
+            this.contextService.clearObjectValues(this.onPaneId);
             this.contextService.getObjectForEdit(this.onPaneId, this.domainObject).
                 then((updatedObject: DomainObjectRepresentation) => {
                     this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);

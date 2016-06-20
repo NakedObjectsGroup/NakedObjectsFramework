@@ -63,7 +63,7 @@ module NakedObjects {
 
         actionParams: _.Dictionary<Value>;
         state: CollectionViewState;
-        props: _.Dictionary<Value>;
+        //props: _.Dictionary<Value>;
         dialogId: string;
         dialogFields: _.Dictionary<Value>;
         page: number;

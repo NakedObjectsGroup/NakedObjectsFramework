@@ -392,7 +392,9 @@ module NakedObjects {
                         const rd = getParametersAndCurrentValue(field.parent, this.context)[field.id()];
                         if (rd) valuesFromRouteData = rd.list(); //TODO: what if only one?
                     } else if (field instanceof PropertyMember) {
-                        const rd = this.routeData().props[field.id()];
+                        const obj = field.parent as DomainObjectRepresentation;
+                        const props = this.context.getCurrentObjectValues(obj.id());
+                        const rd = props[field.id()];
                         if (rd) valuesFromRouteData = rd.list(); //TODO: what if only one?
                     }
                     let vals: Value[] = [];
@@ -544,7 +546,7 @@ module NakedObjects {
         }
 
         private openActionDialog(action: ActionMember) {
-            this.context.clearDialog();
+            this.context.clearDialogValues();
             this.urlManager.setDialog(action.actionId());
             this.context.getInvokableAction(action).then((invokable: Models.IInvokableAction) => {
                 _.forEach(invokable.parameters(), (p) => {
@@ -676,6 +678,7 @@ module NakedObjects {
                 this.mayNotBeChained();
                 return;
             }
+            this.context.clearObjectValues();
             this.urlManager.setInteractionMode(InteractionMode.Edit);
         };
     }
@@ -811,7 +814,7 @@ module NakedObjects {
             } else if (field instanceof PropertyMember) {
                 const parent = field.parent;
                 if (parent instanceof DomainObjectRepresentation) {
-                    this.urlManager.setPropertyValue(parent, field, urlVal);
+                    this.context.setPropertyValue(parent, field, urlVal);
                 }
             }
         }
@@ -1144,7 +1147,8 @@ module NakedObjects {
                 }
                 let fieldMap: _.Dictionary<Value>;
                 if (this.isForm()) {
-                    fieldMap = this.routeData().props; //Props passed in as pseudo-params to action
+                    const obj = action.parent as DomainObjectRepresentation; 
+                    fieldMap = this.context.getCurrentObjectValues(obj.id()); //Props passed in as pseudo-params to action
                 } else {
                     fieldMap = getParametersAndCurrentValue(action, this.context);
                 }
@@ -1278,7 +1282,7 @@ module NakedObjects {
             }
             this.getObject().then((obj: DomainObjectRepresentation) => {
                 const props = obj.propertyMembers();
-                const newValsFromUrl = this.routeData().props;
+                const newValsFromUrl = this.context.getCurrentObjectValues(obj.id());
                 const propIds = new Array<string>();
                 const values = new Array<Value>();
                 _.forEach(props, (propMember, propId) => {
@@ -1414,7 +1418,9 @@ module NakedObjects {
         private renderPropNameAndValue(pm: PropertyMember): string {
             const name = pm.extensions().friendlyName();
             let value: string;
-            const propInUrl = this.routeData().props[pm.id()];
+            const parent = pm.parent as DomainObjectRepresentation;
+            const props = this.context.getCurrentObjectValues(parent.id());
+            const propInUrl = props[pm.id()];
             if (this.isEdit() && !pm.disabledReason() && propInUrl) {
                 value = propInUrl.toString() + " (modified)";
             } else {
