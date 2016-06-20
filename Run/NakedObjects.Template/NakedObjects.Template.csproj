@@ -208,7 +208,6 @@
     <Content Include="Content\partials\collectionSummary.html" />
     <Content Include="Content\partials\collectionTable.html" />
     <Content Include="Content\partials\concurrencyError.html" />
-    <Content Include="Content\partials\customObjectView.html" />
     <Content Include="Content\partials\dialog.html" />
     <Content Include="Content\partials\error.html" />
     <Content Include="Content\partials\expiredTransient.html" />
@@ -223,6 +222,8 @@
     <Content Include="Content\partials\null.html" />
     <Content Include="Content\partials\objectEdit.html" />
     <Content Include="Content\partials\objectView.html" />
+    <Content Include="Content\partials\properties.html" />
+    <Content Include="Content\partials\readOnlyProperty.html" />
     <Content Include="Content\partials\recent.html" />
     <Content Include="Content\partials\singleApplicationProperties.html" />
     <Content Include="Content\partials\singleError.html" />
@@ -319,6 +320,10 @@
     <Content Include="Scripts\angular-route.min.js.map" />
     <Content Include="Scripts\angular-touch.min.js.map" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
+    <Content Include="Scripts\nakedobjects.services.error.config.js" />
+    <Content Include="Scripts\nakedobjects.services.error.js" />
+    <Content Include="Scripts\nakedobjects.services.error.js.map" />
+    <Content Include="Scripts\nakedobjects.services.error.config.js.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -368,6 +373,8 @@
     <TypeScriptCompile Include="Scripts\nakedobjects.services.color.config.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.color.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.context.ts" />
+    <TypeScriptCompile Include="Scripts\nakedobjects.services.error.config.ts" />
+    <TypeScriptCompile Include="Scripts\nakedobjects.services.error.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.focusmanager.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.handlers.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.mask.config.ts" />

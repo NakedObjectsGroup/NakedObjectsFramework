@@ -4,30 +4,29 @@
 /// <reference path="nakedobjects.app.ts" />
 var NakedObjects;
 (function (NakedObjects) {
-    NakedObjects.app.service("commandFactory", function ($q, $location, $filter, $route, $cacheFactory, repLoader, color, context, mask, urlManager, focusManager, navigation) {
+    NakedObjects.app.service("commandFactory", function ($q, $location, $filter, $route, $cacheFactory, repLoader, color, context, mask, urlManager, focusManager, navigation, error) {
         var commandFactory = this;
         var commandsInitialised = false;
         var commands = {
-            "ac": new NakedObjects.Action(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
-            "ba": new NakedObjects.Back(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
-            "ca": new NakedObjects.Cancel(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
-            "cl": new NakedObjects.Clipboard(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
-            "ed": new NakedObjects.Edit(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
-            "en": new NakedObjects.Enter(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
-            "fo": new NakedObjects.Forward(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
-            "ge": new NakedObjects.Gemini(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
-            "go": new NakedObjects.Goto(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
-            "he": new NakedObjects.Help(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
-            "me": new NakedObjects.Menu(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
-            "ok": new NakedObjects.OK(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
-            "pa": new NakedObjects.Page(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
-            "pr": new NakedObjects.Property(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
-            "re": new NakedObjects.Reload(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
-            "ro": new NakedObjects.Root(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
-            "sa": new NakedObjects.Save(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
-            "se": new NakedObjects.Selection(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
-            "sh": new NakedObjects.Show(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
-            "wh": new NakedObjects.Where(urlManager, $location, commandFactory, context, navigation, $q, $route, mask)
+            "ac": new NakedObjects.Action(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
+            "ba": new NakedObjects.Back(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
+            "ca": new NakedObjects.Cancel(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
+            "cl": new NakedObjects.Clipboard(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
+            "ed": new NakedObjects.Edit(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
+            "en": new NakedObjects.Enter(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
+            "fo": new NakedObjects.Forward(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
+            "ge": new NakedObjects.Gemini(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
+            "go": new NakedObjects.Goto(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
+            "he": new NakedObjects.Help(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
+            "me": new NakedObjects.Menu(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
+            "ok": new NakedObjects.OK(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
+            "pa": new NakedObjects.Page(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
+            "re": new NakedObjects.Reload(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
+            "ro": new NakedObjects.Root(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
+            "sa": new NakedObjects.Save(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
+            "se": new NakedObjects.Selection(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
+            "sh": new NakedObjects.Show(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
+            "wh": new NakedObjects.Where(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error)
         };
         commandFactory.initialiseCommands = function (cvm) {
             if (!commandsInitialised) {

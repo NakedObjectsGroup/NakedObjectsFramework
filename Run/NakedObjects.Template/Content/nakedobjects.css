@@ -391,6 +391,10 @@ th, td {
     vertical-align: top;
 }
 
+tbody .number {
+    text-align:right;
+}
+
 /*Error*/
 .error {
     font-size: 16pt;

@@ -11,7 +11,6 @@ var NakedObjects;
     var Value = NakedObjects.Models.Value;
     var EntryType = NakedObjects.Models.EntryType;
     var ErrorWrapper = NakedObjects.Models.ErrorWrapper;
-    var DomainObjectRepresentation = NakedObjects.Models.DomainObjectRepresentation;
     var ErrorMap = NakedObjects.Models.ErrorMap;
     var ErrorCategory = NakedObjects.Models.ErrorCategory;
     var HttpStatusCode = NakedObjects.Models.HttpStatusCode;
@@ -52,7 +51,7 @@ var NakedObjects;
     function getMenuForLevel(menupath, level) {
         var menu = "";
         if (menupath && menupath.length > 0) {
-            var menus = menupath.split("-");
+            var menus = menupath.split("_");
             if (menus.length > level) {
                 menu = menus[level];
             }
@@ -312,7 +311,7 @@ var NakedObjects;
     NakedObjects.MenuItemViewModel = MenuItemViewModel;
     var DialogViewModel = (function (_super) {
         __extends(DialogViewModel, _super);
-        function DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope) {
+        function DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $rootScope) {
             var _this = this;
             _super.call(this);
             this.color = color;
@@ -320,6 +319,7 @@ var NakedObjects;
             this.viewModelFactory = viewModelFactory;
             this.urlManager = urlManager;
             this.focusManager = focusManager;
+            this.error = error;
             this.$rootScope = $rootScope;
             this.actionMember = function () { return _this.actionViewModel.actionRep; };
             this.clientValid = function () { return _.every(_this.parameters, function (p) { return p.clientValid; }); };
@@ -328,7 +328,6 @@ var NakedObjects;
             this.executeInvoke = function (right) {
                 var pps = _this.parameters;
                 _.forEach(pps, function (p) { return _this.urlManager.setFieldValue(_this.actionMember().actionId(), p.parameterRep, p.getValue(), _this.onPaneId); });
-                //_.forEach(pps, p => this.context.setFieldValue(this.actionMember().actionId(), p.parameterRep.id(), p.getValue(), this.onPaneId));
                 _this.context.updateParms();
                 return _this.actionViewModel.executeInvoke(pps, right);
             };
@@ -354,13 +353,8 @@ var NakedObjects;
                     // else query only going to other tab leave dialog open
                 }).
                     catch(function (reject) {
-                    var parent = _this.actionMember().parent instanceof DomainObjectRepresentation ? _this.actionMember().parent : null;
                     var display = function (em) { return _this.viewModelFactory.handleErrorResponse(em, _this, _this.parameters); };
-                    _this.context.handleWrappedError(reject, parent, function () {
-                        // this should just be called if concurrency
-                        _this.doCloseKeepHistory();
-                        _this.$rootScope.$broadcast(NakedObjects.geminiDisplayErrorEvent, new ErrorMap({}, 0, NakedObjects.concurrencyError));
-                    }, display);
+                    _this.error.handleErrorAndDisplayMessages(reject, display);
                 });
             };
             this.doCloseKeepHistory = function () {
@@ -413,7 +407,7 @@ var NakedObjects;
     NakedObjects.CollectionPlaceholderViewModel = CollectionPlaceholderViewModel;
     var ListViewModel = (function (_super) {
         __extends(ListViewModel, _super);
-        function ListViewModel(colorService, context, viewModelFactory, urlManager, focusManager, $q) {
+        function ListViewModel(colorService, context, viewModelFactory, urlManager, focusManager, error, $q) {
             var _this = this;
             _super.call(this);
             this.colorService = colorService;
@@ -421,6 +415,7 @@ var NakedObjects;
             this.viewModelFactory = viewModelFactory;
             this.urlManager = urlManager;
             this.focusManager = focusManager;
+            this.error = error;
             this.$q = $q;
             this.hasTableData = function () {
                 var valueLinks = _this.listRep.value();
@@ -444,7 +439,7 @@ var NakedObjects;
                 }).
                     catch(function (reject) {
                     var display = function (em) { return _this.setMessage(em.invalidReason() || em.warningMessage); };
-                    _this.context.handleWrappedError(reject, null, function () { }, display);
+                    _this.error.handleErrorAndDisplayMessages(reject, display);
                 });
             };
             this.setPage = function (newPage, newState) {
@@ -513,7 +508,7 @@ var NakedObjects;
                         _this.updateItems(list.value());
                     }).
                         catch(function (reject) {
-                        _this.context.handleWrappedError(reject, null, function () { }, function () { });
+                        _this.error.handleError(reject);
                     });
                 }
                 else {
@@ -564,7 +559,7 @@ var NakedObjects;
                         then(function (result) { return _this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || NakedObjects.noResultMessage : ""); }).
                         catch(function (reject) {
                         var display = function (em) { return _this.setMessage(em.invalidReason() || em.warningMessage); };
-                        _this.context.handleWrappedError(reject, null, function () { }, display);
+                        _this.error.handleErrorAndDisplayMessages(reject, display);
                     });
                 }; });
         };
@@ -659,7 +654,7 @@ var NakedObjects;
     NakedObjects.TableRowViewModel = TableRowViewModel;
     var DomainObjectViewModel = (function (_super) {
         __extends(DomainObjectViewModel, _super);
-        function DomainObjectViewModel(colorService, contextService, viewModelFactory, urlManager, focusManager, $q) {
+        function DomainObjectViewModel(colorService, contextService, viewModelFactory, urlManager, focusManager, error, $q) {
             var _this = this;
             _super.call(this);
             this.colorService = colorService;
@@ -667,6 +662,7 @@ var NakedObjects;
             this.viewModelFactory = viewModelFactory;
             this.urlManager = urlManager;
             this.focusManager = focusManager;
+            this.error = error;
             this.$q = $q;
             this.propertyMap = function () {
                 var pps = _.filter(_this.properties, function (property) { return property.isEditable; });
@@ -699,9 +695,8 @@ var NakedObjects;
             this.saveHandler = function () { return _this.domainObject.isTransient() ? _this.contextService.saveObject : _this.contextService.updateObject; };
             this.validateHandler = function () { return _this.domainObject.isTransient() ? _this.contextService.validateSaveObject : _this.contextService.validateUpdateObject; };
             this.handleWrappedError = function (reject) {
-                var reset = function (updatedObject) { return _this.reset(updatedObject, _this.urlManager.getRouteData().pane()[_this.onPaneId]); };
                 var display = function (em) { return _this.viewModelFactory.handleErrorResponse(em, _this, _this.properties); };
-                _this.contextService.handleWrappedError(reject, _this.domainObject, reset, display);
+                _this.error.handleErrorAndDisplayMessages(reject, display);
             };
             this.doSave = function (viewObject) {
                 _this.clearCachedFiles();
@@ -800,6 +795,7 @@ var NakedObjects;
             this.title = this.unsaved ? "Unsaved " + this.domainObject.extensions().friendlyName() : this.domainObject.title();
             this.title = this.title + dirtyMarker(this.contextService, obj.getOid());
             this.friendlyName = this.domainObject.extensions().friendlyName();
+            this.presentationHint = this.domainObject.extensions().presentationHint();
             this.domainType = this.domainObject.domainType();
             this.instanceId = this.domainObject.instanceId();
             this.draggableType = this.domainObject.domainType();
@@ -825,14 +821,20 @@ var NakedObjects;
             }
             return this;
         };
-        DomainObjectViewModel.prototype.displayError = function () {
+        DomainObjectViewModel.prototype.concurrency = function () {
             var _this = this;
             return function (event, em) {
                 _this.routeData = _this.urlManager.getRouteData().pane()[_this.onPaneId];
                 _this.contextService.getObject(_this.onPaneId, _this.domainObject.getOid(), _this.routeData.interactionMode)
                     .then(function (obj) {
-                    _this.reset(obj, _this.routeData);
-                    _this.viewModelFactory.handleErrorResponse(em, _this, _this.properties);
+                    _this.contextService.reloadObject(_this.onPaneId, obj)
+                        .then(function (reloadedObj) {
+                        if (_this.routeData.dialogId) {
+                            _this.urlManager.closeDialogReplaceHistory(_this.onPaneId);
+                        }
+                        _this.reset(reloadedObj, _this.routeData);
+                        _this.viewModelFactory.handleErrorResponse(em, _this, _this.properties);
+                    });
                 });
             };
         };
@@ -844,7 +846,6 @@ var NakedObjects;
     NakedObjects.DomainObjectViewModel = DomainObjectViewModel;
     var ApplicationPropertiesViewModel = (function () {
         function ApplicationPropertiesViewModel() {
-            this.clientVersion = "8.0.0-Beta7"; //TODO: derive automatically from package version
         }
         return ApplicationPropertiesViewModel;
     }());

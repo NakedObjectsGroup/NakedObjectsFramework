@@ -678,6 +678,7 @@ var NakedObjects;
                 this.range = function () { return _this.wrapped["x-ro-nof-range"]; };
                 this.notNavigable = function () { return _this.wrapped["x-ro-nof-notNavigable"]; };
                 this.renderEagerly = function () { return _this.wrapped["x-ro-nof-renderEagerly"]; };
+                this.presentationHint = function () { return _this.wrapped["x-ro-nof-presentationHint"]; };
             }
             return Extensions;
         }());

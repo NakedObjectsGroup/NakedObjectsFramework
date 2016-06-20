@@ -4,34 +4,42 @@
 module NakedObjects {
 
     export interface ITemplate {
-        getTemplateName(type: string, iType: InteractionMode): string;
-        setTemplateName(type: string, iType: InteractionMode, name: string): any;
+        getTemplateName(type: string, tType: TemplateType, iType: InteractionMode | CollectionViewState): string;
+        setTemplateName(type: string, tType: TemplateType, iType: InteractionMode | CollectionViewState, name: string): void;
+    }
+
+    export enum TemplateType {
+        Object, 
+        List
     }
 
     app.service("template",
         function() {
             const templateService = <ITemplate>this;
 
-            const templates: _.Dictionary<string[]> = {};
-            const defaults = [objectViewTemplate, objectEditTemplate, objectEditTemplate, formTemplate];
+            const templates: _.Dictionary<string[]>[] = [{}, {}];
+            const objectDefaults = [objectViewTemplate, objectEditTemplate, objectEditTemplate, formTemplate];
+            const listDefaults = ["", listTemplate, listAsTableTemplate];
 
-            templateService.getTemplateName = (type: string, iType: InteractionMode) => {
+            const defaults = [objectDefaults, listDefaults];
 
-                const custom = templates[type];
+            templateService.getTemplateName = (type: string, tType : TemplateType,  iType: InteractionMode | CollectionViewState) : string => {
+
+                const custom = templates[tType][type];
 
                 if (custom) {
                     return custom[iType];
                 }
 
-                return defaults[iType];
+                return defaults[tType][iType];
             };
 
-            templateService.setTemplateName = (type: string, iType: InteractionMode, name: string) => {
-                if (!templates[type]) {
-                    templates[type] = _.clone(defaults);
+            templateService.setTemplateName = (type: string, tType: TemplateType, iType: InteractionMode | CollectionViewState, name: string) => {
+                if (!templates[tType][type]) {
+                    templates[tType][type] = _.clone(defaults[tType]);
                 }
 
-                templates[type][iType] = name;
+                templates[tType][type][iType] = name;
             };
 
         });

@@ -45,22 +45,23 @@ module NakedObjects {
             navigation: INavigation,
             urlManager: IUrlManager,
             focusManager: IFocusManager,
-            template : ITemplate) {
+            template: ITemplate,
+            error : IError) {
             const handlers = <IHandlers>this;
 
             const perPaneListViews = [,
-                new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q),
-                new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q)
+                new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $q),
+                new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $q)
             ];
 
             const perPaneObjectViews = [,
-                new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q),
-                new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q)
+                new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $q),
+                new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $q)
             ];
 
             const perPaneDialogViews = [,
-                new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope),
-                new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope)
+                new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $rootScope),
+                new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $rootScope)
             ];
 
             const perPaneMenusViews = [,
@@ -158,7 +159,7 @@ module NakedObjects {
                         setNewDialog($scope, menu, routeData.dialogId, routeData, FocusTarget.SubAction);
                     })
                     .catch((reject: ErrorWrapper) => {
-                        context.handleWrappedError(reject, null, () => { }, () => { });
+                        error.handleError(reject);
                     });
             }
 
@@ -191,9 +192,9 @@ module NakedObjects {
                 for (let pane = 1; pane <= 2; pane++) {
                     context.clearParmUpdater(pane);
 
-                    perPaneListViews[pane] = new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q);
-                    perPaneObjectViews[pane] = new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q);
-                    perPaneDialogViews[pane] = new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope);
+                    perPaneListViews[pane] = new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $q);
+                    perPaneObjectViews[pane] = new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $q);
+                    perPaneDialogViews[pane] = new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $rootScope);
                     perPaneMenusViews[pane] = new MenusViewModel(viewModelFactory);
                 }
             }
@@ -245,7 +246,7 @@ module NakedObjects {
                         handlers.handleHomeSearch($scope, routeData);
                     })
                     .catch((reject: ErrorWrapper) => {
-                        context.handleWrappedError(reject, null, () => { }, () => { });
+                        error.handleError(reject);
                     });
             };
 
@@ -280,8 +281,9 @@ module NakedObjects {
 
             function handleListSearchChanged($scope: INakedObjectsScope, routeData: PaneRouteData) {
                 // only update templates if changed 
-                const newListTemplate = routeData.state === CollectionViewState.List ? listTemplate : listAsTableTemplate;
                 const listViewModel = $scope.collection;
+
+                const newListTemplate = template.getTemplateName(listViewModel.listRep.extensions().elementType(), TemplateType.List, routeData.state);
 
                 if ($scope.listTemplate !== newListTemplate) {
                     $scope.listTemplate = newListTemplate;
@@ -311,7 +313,7 @@ module NakedObjects {
 
                 if (cachedList) {
                     const listViewModel = perPaneListViews[routeData.paneId];
-                    $scope.listTemplate = routeData.state === CollectionViewState.List ? listTemplate : listAsTableTemplate;
+                    $scope.listTemplate = template.getTemplateName(cachedList.extensions().elementType(), TemplateType.List, routeData.state);
                     listViewModel.reset(cachedList, routeData);
                     $scope.collection = listViewModel;
                     getActionExtensions(routeData).then((ext: Extensions) => $scope.title = ext.friendlyName());
@@ -335,12 +337,7 @@ module NakedObjects {
             handlers.handleError = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
                 const evm = viewModelFactory.errorViewModel(context.getError());
                 $scope.error = evm;
-
-                if (evm.isConcurrencyError) {
-                    $scope.errorTemplate = concurrencyTemplate;
-                } else {
-                    $scope.errorTemplate = errorTemplate;
-                }
+                error.displayError($scope, routeData);
             };
 
             handlers.handleToolBar = ($scope: INakedObjectsScope) => {
@@ -353,7 +350,7 @@ module NakedObjects {
 
                 let newActionsTemplate: string;
 
-                const newObjectTemplate = template.getTemplateName(ovm.domainType, routeData.interactionMode);
+                const newObjectTemplate = template.getTemplateName(ovm.domainType, TemplateType.Object,  routeData.interactionMode);
 
                 if (routeData.interactionMode === InteractionMode.Form) {
                     newActionsTemplate = formActionsTemplate;
@@ -427,18 +424,16 @@ module NakedObjects {
                         deRegObject[routeData.paneId].add($scope.$on("$locationChangeStart", ovm.setProperties) as () => void);
                         deRegObject[routeData.paneId].add($scope.$watch(() => $location.search(), ovm.setProperties, true) as () => void);
                         deRegObject[routeData.paneId].add($scope.$on(geminiPaneSwapEvent, ovm.setProperties) as () => void);
-                        deRegObject[routeData.paneId].add($scope.$on(geminiDisplayErrorEvent, ovm.displayError()) as () => void);
+                        deRegObject[routeData.paneId].add($scope.$on(geminiConcurrencyEvent, ovm.concurrency()) as () => void);
 
                     }).catch((reject: ErrorWrapper) => {
 
-                        const handler = (cc: ClientErrorCode) => {
-                            if (cc === ClientErrorCode.ExpiredTransient) {
-                                $scope.objectTemplate = expiredTransientTemplate;
-                                return true;
-                            }
-                            return false;
-                        };
-                        context.handleWrappedError(reject, null, () => { }, () => { }, handler);
+                        if (reject.category === ErrorCategory.ClientError && reject.clientErrorCode === ClientErrorCode.ExpiredTransient) {
+                            context.setError(reject);
+                            $scope.objectTemplate = expiredTransientTemplate;
+                        } else {
+                            error.handleError(reject);
+                        }
                     });
 
             };

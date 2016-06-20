@@ -76,7 +76,7 @@ var NakedObjects;
     NakedObjects.geminiFocusEvent = "nof-focus-on";
     NakedObjects.geminiLogoffEvent = "nof-logoff";
     NakedObjects.geminiPaneSwapEvent = "nof-pane-swap";
-    NakedObjects.geminiDisplayErrorEvent = "nof-display-error";
+    NakedObjects.geminiConcurrencyEvent = "nof-concurrency";
     NakedObjects.geminiAjaxChangeEvent = "nof-ajax-change";
     NakedObjects.geminiWarningEvent = "nof-warning";
     NakedObjects.geminiMessageEvent = "nof-message";
