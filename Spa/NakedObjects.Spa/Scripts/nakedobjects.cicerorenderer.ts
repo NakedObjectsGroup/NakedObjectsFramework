@@ -53,59 +53,19 @@ module NakedObjects {
                 cvm.outputMessageThenClearIt();
             } else {
                 const oid = ObjectIdWrapper.fromObjectId(routeData.objectId);
-
                 context.getObject(1, oid, routeData.interactionMode) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
                     .then((obj: DomainObjectRepresentation) => {
                         let output = "";
                         const openCollIds = openCollectionIds(routeData);
                         if (_.some(openCollIds)) {
-                            const id = openCollIds[0];
-                            const coll = obj.collectionMember(id);
-                            output += `Collection: ${coll.extensions().friendlyName()} on ${TypePlusTitle(obj)}\n`;
-                            switch (coll.size()) {
-                                case 0:
-                                    output += "empty";
-                                    break;
-                                case 1:
-                                    output += "1 item";
-                                    break;
-                                default:
-                                    output += `${coll.size()} items`;
-                            }
-                            cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+                            renderOpenCollection(openCollIds[0], obj, cvm);
+                        } else if (obj.isTransient()) {
+                            renderTransientObject(routeData, obj, cvm);
+                        } else if (routeData.interactionMode === InteractionMode.Edit ||
+                            routeData.interactionMode === InteractionMode.Form) {
+                            renderForm(routeData, obj, cvm);
                         } else {
-                            if (obj.isTransient()) {
-                                output += "Unsaved ";
-                                output += obj.extensions().friendlyName() + "\n";
-                                output += renderModifiedProperties(obj, routeData, mask);
-                                cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-                            } else if (routeData.interactionMode === InteractionMode.Edit ||
-                                routeData.interactionMode === InteractionMode.Form) {
-                                let output = "Editing ";
-                                output += PlusTitle(obj) + "\n";
-                                if (routeData.dialogId) {
-                                    context.getInvokableAction(obj.actionMember(routeData.dialogId))
-                                        .then((details: IInvokableAction) => {
-                                            output += renderActionDialog(details, routeData, mask);
-                                            cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-                                        });
-                                } else {
-                                    output += renderModifiedProperties(obj, routeData, mask);
-                                    cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-                                }
-                            } else {
-                                let output = Title(obj) + "\n";
-                                if (routeData.dialogId) {
-                                    context.getInvokableAction(obj.actionMember(routeData.dialogId))
-                                        .then((details: IInvokableAction) => {
-                                            output += renderActionDialog(details, routeData, mask);
-                                            cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-                                        });
-                                } else {
-                                    cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-                                }
-
-                            }
+                            renderObjectTitleAndDialogIfOpen(routeData, obj, cvm);
                         }
                     }).catch((reject: ErrorWrapper) => {
                         if (reject.category === ErrorCategory.ClientError && reject.clientErrorCode === ClientErrorCode.ExpiredTransient) {
@@ -125,14 +85,7 @@ module NakedObjects {
                     context.getMenu(routeData.menuId).then((menu: MenuRepresentation) => {
                         const count = list.value().length;
                         const numPages = list.pagination().numPages;
-                        let description: string;
-                        if (numPages > 1) {
-                            const page = list.pagination().page;
-                            const totalCount = list.pagination().totalCount;
-                            description = `Page ${page} of ${numPages} containing ${count} of ${totalCount} items`;
-                        } else {
-                            description = `${count} items`;
-                        }
+                        const description = getListDescription(numPages, list, count);
                         const actionMember = menu.actionMember(routeData.actionId);
                         const actionName = actionMember.extensions().friendlyName();
                         const output = `Result from ${actionName}:\n${description}`;
@@ -147,9 +100,70 @@ module NakedObjects {
             cvm.output = `Sorry, an application error has occurred. ${err.message()}`;
         };
 
+        function getListDescription(numPages: number, list: ListRepresentation, count: number) {
+            if (numPages > 1) {
+                const page = list.pagination().page;
+                const totalCount = list.pagination().totalCount;
+                return `Page ${page} of ${numPages} containing ${count} of ${totalCount} items`;
+            } else {
+                return `${count} items`;
+            }
+        }
+
         //Returns collection Ids for any collections on an object that are currently in List or Table mode
         function openCollectionIds(routeData: PaneRouteData): string[] {
             return _.filter(_.keys(routeData.collections), k => routeData.collections[k] != CollectionViewState.Summary);
+        }
+
+        function renderOpenCollection(collId: string, obj: DomainObjectRepresentation, cvm: CiceroViewModel) {
+            const coll = obj.collectionMember(collId);
+            var output = `Collection: ${coll.extensions().friendlyName()} on ${TypePlusTitle(obj)}\n`;
+            switch (coll.size()) {
+                case 0:
+                    output += "empty";
+                    break;
+                case 1:
+                    output += "1 item";
+                    break;
+                default:
+                    output += `${coll.size()} items`;
+            }
+            cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+        }
+
+        function renderTransientObject(routeData: PaneRouteData, obj: DomainObjectRepresentation, cvm: CiceroViewModel) {
+            var output = "Unsaved ";
+            output += obj.extensions().friendlyName() + "\n";
+            output += renderModifiedProperties(obj, routeData, mask);
+            cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+        }
+
+        function renderForm(routeData: PaneRouteData, obj: DomainObjectRepresentation, cvm: CiceroViewModel) {
+            let output = "Editing ";
+            output += PlusTitle(obj) + "\n";
+            if (routeData.dialogId) {
+                context.getInvokableAction(obj.actionMember(routeData.dialogId))
+                    .then((details: IInvokableAction) => {
+                        output += renderActionDialog(details, routeData, mask);
+                        cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+                    });
+            } else {
+                output += renderModifiedProperties(obj, routeData, mask);
+                cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+            }
+        }
+
+        function renderObjectTitleAndDialogIfOpen(routeData: PaneRouteData, obj: DomainObjectRepresentation, cvm: CiceroViewModel) {
+            let output = Title(obj) + "\n";
+            if (routeData.dialogId) {
+                context.getInvokableAction(obj.actionMember(routeData.dialogId))
+                    .then((details: IInvokableAction) => {
+                        output += renderActionDialog(details, routeData, mask);
+                        cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+                    });
+            } else {
+                cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+            }
         }
 
         function renderOpenMenu(routeData: PaneRouteData, cvm: CiceroViewModel) {
@@ -208,19 +222,11 @@ module NakedObjects {
             return value.isNull() ? "empty" : value.toString();
         }
         //Rest is for scalar fields only:
-        if (value.toString()) { //i.e. not empty
-            //This is to handle an enum: render it as text, not a number:           
+        if (value.toString()) { //i.e. not empty        
             if (field.entryType() === EntryType.Choices) {
-                const inverted = _.invert(field.choices());
-                return (<any>inverted)[value.toValueString()];
+                return renderSingleChoice(field, value);
             } else if (field.entryType() === EntryType.MultipleChoices && value.isList()) {
-                const inverted = _.invert(field.choices());
-                let output = "";
-                const values = value.list();
-                _.forEach(values, v => {
-                    output += (<any>inverted)[v.toValueString()] + ",";
-                });
-                return output;
+                return renderMultipleChoicesCommaSeparated(field, value);
             }
         }
         let properScalarValue: number | string | boolean | Date;
@@ -236,5 +242,22 @@ module NakedObjects {
             const format = field.extensions().format();
             return mask.toLocalFilter(remoteMask, format).filter(properScalarValue);
         }
+    }
+
+    function renderSingleChoice(field: IField, value: Value) {
+       //This is to handle an enum: render it as text, not a number:  
+        const inverted = _.invert(field.choices());
+        return (<any>inverted)[value.toValueString()];
+    }
+
+    function renderMultipleChoicesCommaSeparated(field: IField, value: Value) {
+        //This is to handle an enum: render it as text, not a number: 
+        const inverted = _.invert(field.choices());
+        let output = "";
+        const values = value.list();
+        _.forEach(values, v => {
+            output += (<any>inverted)[v.toValueString()] + ",";
+        });
+        return output;
     }
 }
