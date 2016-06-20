@@ -767,10 +767,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         public virtual void Save() {
             //Happy case
-            CiceroUrl("object?o1=___1.Product--839&i1=Edit&pp1_ListPrice=%221500%22");
-            WaitForOutput("Editing Product: HL Road Frame - Black, 48\r\n" +
-                          "Modified properties:\r\n" +
-                          "List Price: £1,500.00");
+            CiceroUrl("object?o1=___1.Product--839&i1=Edit");
+            WaitForOutput("Editing Product: HL Road Frame - Black, 48");
+            EnterCommand("enter list price, 1500");
+            WaitForOutputContaining("Modified properties:\r\nList Price: £1,500.00");
             EnterCommand("save");
             WaitForOutput("Product: HL Road Frame - Black, 48");
 
@@ -787,7 +787,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForOutput("The command: save is not available in the current context");
 
             //No arguments
-            CiceroUrl("object?o1=___1.Product--839&i1=Edit&pp1_ListPrice=%221500%22");
+            CiceroUrl("object?o1=___1.Product--839&i1=Edit");
             WaitForOutput("Editing Product: HL Road Frame - Black, 48\r\n" +
                           "Modified properties:\r\n" +
                           "List Price: £1,500.00");
@@ -795,15 +795,19 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForOutput("Too many arguments provided");
 
             //Field validation
-            CiceroUrl("object?o1=___1.WorkOrder--43134&i1=Edit&pp1_OrderQty=%220%22");
+            CiceroUrl("object?o1=___1.WorkOrder--43134&i1=Edit");
             WaitForOutputStarting("Editing Work Order:");
+            EnterCommand("enter order qty,0");
+            WaitForOutputContaining("Order Qty: 0");
             EnterCommand("save");
             WaitForOutput("Please complete or correct these fields:\r\n" +
                           "Order Qty: 0 Order Quantity must be > 0");
 
             //Co-validation
-            CiceroUrl("object?o1=___1.WorkOrder--43133&i1=Edit&pp1_StartDate=%222015-10-17%22");
+            CiceroUrl("object?o1=___1.WorkOrder--43133&i1=Edit");
             WaitForOutputStarting("Editing Work Order:");
+            EnterCommand("enter start date, 17/10/2015");
+            WaitForOutputContaining("Start Date: 17 Oct 2015");
             EnterCommand("save");
             WaitForOutput("StartDate must be before DueDate");
         }
