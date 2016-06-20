@@ -90,7 +90,6 @@ module NakedObjects {
                 }
             }
 
-            //const deRegDialog = [, new DeReg(), new DeReg()];
             const deRegObject = [, new DeReg(), new DeReg()];
 
             function clearDialog($scope : INakedObjectsScope, paneId : number) {
@@ -191,6 +190,7 @@ module NakedObjects {
             function logoff() {
                 for (let pane = 1; pane <= 2; pane++) {
                     context.clearParmUpdater(pane);
+                    context.clearObjectUpdater(pane);
 
                     perPaneListViews[pane] = new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $q);
                     perPaneObjectViews[pane] = new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $q);
@@ -379,6 +379,7 @@ module NakedObjects {
                 } else if (routeData.actionsOpen) {
                     focusTarget = FocusTarget.SubAction;
                 } else if (ovm.isInEdit) {
+                    context.setObjectUpdater(ovm.setProperties, routeData.paneId);
                     focusTarget = FocusTarget.Property;
                 } else {
                     focusTarget = FocusTarget.ObjectTitle;
@@ -405,6 +406,7 @@ module NakedObjects {
                 color.toColorNumberFromType(oid.domainType).then(c => $scope.backgroundColor = `${objectColor}${c}`);
 
                 deRegObject[routeData.paneId].deReg();
+                context.clearObjectUpdater(routeData.paneId);
 
                 const wasDirty = context.getIsDirty(oid);
 
@@ -421,9 +423,6 @@ module NakedObjects {
 
                         handleNewObjectSearch($scope, routeData);
 
-                        deRegObject[routeData.paneId].add($scope.$on("$locationChangeStart", ovm.setProperties) as () => void);
-                        deRegObject[routeData.paneId].add($scope.$watch(() => $location.search(), ovm.setProperties, true) as () => void);
-                        deRegObject[routeData.paneId].add($scope.$on(geminiPaneSwapEvent, ovm.setProperties) as () => void);
                         deRegObject[routeData.paneId].add($scope.$on(geminiConcurrencyEvent, ovm.concurrency()) as () => void);
 
                     }).catch((reject: ErrorWrapper) => {

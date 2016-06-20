@@ -217,8 +217,8 @@ module NakedObjects {
             const fieldKeyMap = getAndMapIds(akm.field, paneId);
             paneRouteData.dialogFields = getMappedValues(fieldKeyMap);
 
-            const propKeyMap = getAndMapIds(akm.prop, paneId);
-            paneRouteData.props = getMappedValues(propKeyMap);
+            //const propKeyMap = getAndMapIds(akm.prop, paneId);
+            //paneRouteData.props = getMappedValues(propKeyMap);
 
             paneRouteData.page = parseInt(getId(akm.page + paneId, $routeParams));
             paneRouteData.pageSize = parseInt(getId(akm.pageSize + paneId, $routeParams));

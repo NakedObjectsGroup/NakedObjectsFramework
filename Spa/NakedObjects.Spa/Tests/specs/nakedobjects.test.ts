@@ -28,7 +28,7 @@ module NakedObjects.Test {
              
             trd.collections = {};
             trd.actionParams = {};
-            trd.props = {};
+            //trd.props = {};
             trd.dialogFields = {};
             return trd;
         }

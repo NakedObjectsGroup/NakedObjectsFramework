@@ -16,7 +16,6 @@ module NakedObjects {
     import IField = Models.IField;
     import ActionResultRepresentation = Models.ActionResultRepresentation;
     import Extensions = Models.Extensions;
-    import ErrorMap = Models.ErrorMap;
     import ClientErrorCode = Models.ClientErrorCode;
     import HomePageRepresentation = Models.HomePageRepresentation;
     import DomainServicesRepresentation = Models.DomainServicesRepresentation;
@@ -25,7 +24,6 @@ module NakedObjects {
     import PromptRepresentation = Models.PromptRepresentation;
     import InvokeMap = Models.InvokeMap;
     import DomainTypeActionInvokeRepresentation = Models.DomainTypeActionInvokeRepresentation;
-    import HttpStatusCode = Models.HttpStatusCode;
     import ActionRepresentation = Models.ActionRepresentation;
     import IInvokableAction = Models.IInvokableAction;
     import CollectionMember = Models.CollectionMember;
@@ -33,7 +31,7 @@ module NakedObjects {
     import ObjectIdWrapper = Models.ObjectIdWrapper;
     import InvokableActionMember = Models.InvokableActionMember;
     import UserRepresentation = Models.UserRepresentation;
-
+    import PropertyMember = Models.PropertyMember;
 
     export interface IContext {
 
@@ -106,8 +104,6 @@ module NakedObjects {
         clearMessages(): void;
         clearWarnings(): void;
 
-     
-
         getRecentlyViewed(): DomainObjectRepresentation[];
 
         getFile: (object: DomainObjectRepresentation, url: string, mt: string) => angular.IPromise<Blob>;
@@ -118,16 +114,22 @@ module NakedObjects {
 
         setFieldValue: (dialogId: string, pid: string, pv: Value, paneId?: number) => void;
 
-       
+        setPropertyValue: (obj: DomainObjectRepresentation, p: PropertyMember, pv: Value, paneId?: number) => void;
 
-        clearDialog: (paneId?: number) => void;
+        clearDialogValues: (paneId?: number) => void;
+        clearObjectValues: (paneId?: number) => void;
 
         getCurrentDialogValues: (dialogId?: string, paneId?: number) => _.Dictionary<Value>;
+
+        getCurrentObjectValues: (objectId?: string, paneId?: number) => _.Dictionary<Value>;
 
         setParmUpdater: (updater: () => void, paneId?: number) => void;
         clearParmUpdater : (paneId?: number) => void;
 
-        updateParms : () => void;
+        setObjectUpdater: (updater: () => void, paneId?: number) => void;
+        clearObjectUpdater: (paneId?: number) => void;
+
+        updateValues: () => void;
     }
 
     interface IContextInternal extends IContext {
@@ -241,48 +243,48 @@ module NakedObjects {
         }
     }
 
-    class ParameterCache {
+    class ValueCache {
 
         private currentValues: _.Dictionary<Value>[] = [, {}, {}];
-        private currentDialogId: string[] = [, "", ""];
+        private currentId: string[] = [, "", ""];
 
-        addValue(dialogId: string, parmId : string,  value: Value, paneId: number) {
-            if (this.currentDialogId[paneId] !== dialogId) {
-                this.currentDialogId[paneId] = dialogId;
+        addValue(id: string, valueId : string,  value: Value, paneId: number) {
+            if (this.currentId[paneId] !== id) {
+                this.currentId[paneId] = id;
                 this.currentValues[paneId] = {};
             }
 
-            this.currentValues[paneId][parmId] = value;
+            this.currentValues[paneId][valueId] = value;
         }
 
-        getValue(dialogId: string, parmId: string, paneId: number) {
-            if (this.currentDialogId[paneId] !== dialogId) {
-                this.currentDialogId[paneId] = dialogId;
+        getValue(id: string, valueId: string, paneId: number) {
+            if (this.currentId[paneId] !== id) {
+                this.currentId[paneId] = id;
                 this.currentValues[paneId] = {};
             }
 
-            return this.currentValues[paneId][parmId];
+            return this.currentValues[paneId][valueId];
         }
 
-        getValues(dialogId: string, paneId: number) {
-            if (dialogId && this.currentDialogId[paneId] !== dialogId) {
-                this.currentDialogId[paneId] = dialogId;
+        getValues(id: string, paneId: number) {
+            if (id && this.currentId[paneId] !== id) {
+                this.currentId[paneId] = id;
                 this.currentValues[paneId] = {};
             }
 
             return this.currentValues[paneId];
         }
 
-        clearDialog(paneId: number) {
-            this.currentDialogId[paneId] = "";
+        clear(paneId: number) {
+            this.currentId[paneId] = "";
             this.currentValues[paneId] = {};
         }
 
         swap() {
-            const [, d1, d2] = this.currentDialogId;
+            const [, i1, i2] = this.currentId;
 
-            this.currentDialogId[1] = d2;
-            this.currentDialogId[2] = d1;
+            this.currentId[1] = i2;
+            this.currentId[2] = i1;
 
             const [, v1, v2] = this.currentValues;
 
@@ -315,22 +317,43 @@ module NakedObjects {
         const recentcache = new RecentCache();
         const dirtyList = new DirtyList();
         const currentLists: _.Dictionary<{ list: ListRepresentation; added: number }> = {};
-        const parameterCache = new ParameterCache();
+        const parameterCache = new ValueCache();
+        const objectEditCache = new ValueCache();
 
-        const parmUpdaters =  [, () => {}, () => {}];
+        const parmUpdaters = [, () => { }, () => { }];
+        const objectUpdaters = [, () => { }, () => { }];
 
         context.setParmUpdater = (updater: () => void, paneId = 1) => {
             parmUpdaters[paneId] = updater;
+        }
+
+        context.setObjectUpdater = (updater: () => void, paneId = 1) => {
+            objectUpdaters[paneId] = updater;
         }
 
         context.clearParmUpdater = (paneId = 1) => {
             parmUpdaters[paneId] = () => {};
         }
 
-        context.updateParms = () => {
+        context.clearObjectUpdater = (paneId = 1) => {
+            objectUpdaters[paneId] = () => { };
+        }  
+
+        const updateParmValues = () => {
             parmUpdaters[1]();
             parmUpdaters[2]();
         }
+
+        const updateObjectValues = () => {
+            objectUpdaters[1]();
+            objectUpdaters[2]();
+        }
+
+        context.updateValues = () => {
+            updateObjectValues();
+            updateParmValues();
+        }
+
 
         context.getFile = (object: DomainObjectRepresentation, url: string, mt: string) => {
             const isDirty = context.getIsDirty(object.getOid());
@@ -542,7 +565,7 @@ module NakedObjects {
         };
 
         context.getObject = (paneId: number, oid: ObjectIdWrapper, interactionMode: InteractionMode) => {
-            context.updateParms();
+            context.updateValues();
             return oid.isService ? context.getService(paneId, oid.domainType) : context.getDomainObject(paneId, oid, interactionMode);
         };
 
@@ -642,12 +665,12 @@ module NakedObjects {
         context.setObject = (paneId: number, co: DomainObjectRepresentation) => currentObjects[paneId] = co;
 
         context.swapCurrentObjects = () => {
-            parameterCache.swap();
+            parameterCache.swap();    
+            objectEditCache.swap();     
             const [, p1, p2] = currentObjects;
             currentObjects[1] = p2;
             currentObjects[2] = p1;
-
-
+        
         };
 
         let currentError: ErrorWrapper = null;
@@ -916,9 +939,22 @@ module NakedObjects {
             return parameterCache.getValues(dialogId, paneId);
         }
 
-        context.clearDialog = (paneId = 1) => {
-            parameterCache.clearDialog(paneId);
+        context.getCurrentObjectValues = (objectId: string = null, paneId = 1) => {
+            return objectEditCache.getValues(objectId, paneId);
         }
+
+        context.clearDialogValues = (paneId = 1) => {
+            parameterCache.clear(paneId);
+        }
+
+        context.clearObjectValues = (paneId = 1) => {
+            objectEditCache.clear(paneId);
+        }
+
+        context.setPropertyValue = (obj: DomainObjectRepresentation, p: PropertyMember, pv: Value, paneId = 1) => {
+            objectEditCache.addValue(obj.id(), p.id(), pv, paneId);
+        }
+
 
     });
 
