@@ -49,6 +49,7 @@ module.exports = function(config) {
       "Scripts/nakedobjects.services.clickhandler.js",
       "Scripts/nakedobjects.cicerocommands.js",
       "Scripts/nakedobjects.cicerocommandFactory.js",
+      "Scripts/nakedobjects.cicerorenderer.js",
       "Tests/specs/nakedobjects.test.helpers.js",
       "Tests/specs/nakedobjects.test.js",
       "Tests/specs/nakedobjects.test.masks.js",
