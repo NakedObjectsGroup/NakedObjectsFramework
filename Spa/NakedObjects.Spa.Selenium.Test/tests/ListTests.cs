@@ -181,11 +181,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Click(GetObjectAction("Current Special Offers"));
             WaitForView(Pane.Single, PaneType.List, "Current Special Offers");
             WaitForCss(".reference", 16);
-            var row = WaitForCssNo(".reference", 1);
+            var row = WaitForCssNo(".reference", 6);
             Click(row);
-            WaitForView(Pane.Single, PaneType.Object, "Volume Discount 11 to 14");
+            WaitForView(Pane.Single, PaneType.Object, "Mountain-100 Clearance Sale");
             EditObject();
-            ClearFieldThenType("#description1", "Volume Discount 11 - 14");
+            ClearFieldThenType("#description1", "Mountain-100: Clearance Sale");
             SaveObject();
 
             ClickBackButton();
@@ -193,13 +193,13 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForView(Pane.Single, PaneType.List, "Current Special Offers");
             Reload();
             WaitForCss(".reference", 16);
-            row = WaitForCssNo(".reference", 1);
+            row = WaitForCssNo(".reference", 6);
             Click(row);
-            WaitForView(Pane.Single, PaneType.Object, "Volume Discount 11 - 14");
+            WaitForView(Pane.Single, PaneType.Object, "Mountain-100: Clearance Sale");
 
             //Now revert
             EditObject();
-            ClearFieldThenType("#description1", "Volume Discount 11 to 14");
+            ClearFieldThenType("#description1", "Mountain-100 Clearance Sale");
             SaveObject();
         }
 
