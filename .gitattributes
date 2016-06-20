@@ -2,6 +2,11 @@
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
 * text=auto
+*.js text
+*.js.map text
+*.ts text
+*.html text
+*.config text
 
 ###############################################################################
 # Set default behavior for command prompt diff.
