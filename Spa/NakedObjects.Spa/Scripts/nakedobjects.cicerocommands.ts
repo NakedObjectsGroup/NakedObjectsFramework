@@ -1404,7 +1404,7 @@ module NakedObjects {
                                 if (props.length > 0) {
                                     s = this.renderPropNameAndValue(props[0]);
                                 } else {
-                                    s = this.renderColl(colls[0]);
+                                    s = this.renderCollection(colls[0]);
                                 }
                                 break;
                             default:
@@ -1412,7 +1412,7 @@ module NakedObjects {
                                     return s + this.renderPropNameAndValue(prop);
                                 }, "");
                                 s += _.reduce(colls, (s, coll) => {
-                                    return s + this.renderColl(coll);
+                                    return s + this.renderCollection(coll);
                                 }, "");
                         }
                         this.clearInputAndSetMessage(s);
@@ -1425,16 +1425,16 @@ module NakedObjects {
             let value: string;
             const parent = pm.parent as DomainObjectRepresentation;
             const props = this.context.getCurrentObjectValues(parent.id());
-            const propInUrl = props[pm.id()];
-            if (this.isEdit() && !pm.disabledReason() && propInUrl) {
-                value = propInUrl.toString() + " (modified)";
+            const modifiedValue = props[pm.id()];
+            if (this.isEdit() && !pm.disabledReason() && modifiedValue) {
+                value = renderFieldValue(pm, modifiedValue, this.mask) + " (modified)";
             } else {
                 value = renderFieldValue(pm, pm.value(), this.mask);
             }
             return name + ": " + value + "\n";
         }
 
-        private renderColl(coll: CollectionMember): string {
+        private renderCollection(coll: CollectionMember): string {
             let output = coll.extensions().friendlyName() + " (collection): ";
             switch (coll.size()) {
                 case 0:

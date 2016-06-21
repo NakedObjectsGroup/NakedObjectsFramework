@@ -848,6 +848,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             EnterCommand("sh sales z");
             WaitForOutput("sales z does not match any properties");
 
+
             //No fields
             CiceroUrl("object?o1=___1.AddressType--2");
             WaitForOutput("Address Type: Home");
@@ -859,10 +860,14 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForOutput("Too many arguments provided");
 
             //Reading properties in edit mode
-            CiceroUrl("object?o1=___1.Product--369&i1=Edit&pp1_Style=%22U%20%22&pp1_ListPrice=%22500%22");
+            CiceroUrl("object?o1=___1.Product--369&i1=Edit");
             WaitForOutputStarting("Editing");
+            EnterCommand("enter style,U");
+            WaitForOutputContaining("Style: U");
+            EnterCommand("enter list price,500");
+            WaitForOutputContaining("List Price: £500");
             EnterCommand("show");
-            WaitForOutputContaining("List Price: 500 (modified)");
+            WaitForOutputContaining("List Price: £500.00 (modified)");
             WaitForOutputContaining("Style: U  (modified)");
 
             //exact match takes priority over partial match
