@@ -145,6 +145,7 @@
     <TypeScriptCompile Include="Scripts\custom.controllers.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.error.config.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.error.ts" />
+    <None Include="Scripts\nakedobjects.services.template.config.ts.pp" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.template.config.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.template.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.version.ts" />
