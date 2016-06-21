@@ -176,8 +176,8 @@ module NakedObjects {
                 const parent = scope.$parent as IPropertyOrParameterScope;
                 const viewModel = parent.parameter || parent.property;
 
-                function render(initialChoice?: ChoiceViewModel) {
-                    const cvm = ngModel.$modelValue as ChoiceViewModel || initialChoice;
+                function render(initialChoice?: IChoiceViewModel) {
+                    const cvm = ngModel.$modelValue as IChoiceViewModel || initialChoice;
 
                     if (cvm) {
                         ngModel.$parsers.push(() => cvm);
@@ -188,7 +188,7 @@ module NakedObjects {
 
                 ngModel.$render = render;
 
-                const updateModel = (cvm: ChoiceViewModel) => {
+                const updateModel = (cvm: IChoiceViewModel) => {
 
                     scope.$apply(() => {
                         viewModel.clear();                        
@@ -623,7 +623,7 @@ module NakedObjects {
                 }
 
                 ngModel.$render = () => {
-                    const attachment: AttachmentViewModel = ngModel.$modelValue;
+                    const attachment: IAttachmentViewModel = ngModel.$modelValue;
 
                     if (attachment) {
                         const title = attachment.title;

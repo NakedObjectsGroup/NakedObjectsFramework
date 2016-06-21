@@ -62,7 +62,7 @@ module NakedObjects {
         getItems(links: Link[], tableView: boolean, routeData: PaneRouteData, collectionViewModel: CollectionViewModel | ListViewModel): ItemViewModel[];
         linkViewModel(linkRep: Link, paneId: number): LinkViewModel;
         recentItemsViewModel(paneId: number): RecentItemsViewModel;
-        attachmentViewModel(propertyRep: PropertyMember, paneId: number): AttachmentViewModel;
+        attachmentViewModel(propertyRep: PropertyMember, paneId: number): IAttachmentViewModel;
     }
 
     interface IViewModelFactoryInternal extends IViewModelFactory {
@@ -280,7 +280,7 @@ module NakedObjects {
                     const choicesToSet = _.map(vals.list(), val => ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null));
 
                     if (fieldEntryType === EntryType.MultipleChoices) {
-                        parmViewModel.multiChoices = _.filter(parmViewModel.choices, c => _.some(choicesToSet, choiceToSet => c.match(choiceToSet)));
+                        parmViewModel.multiChoices = _.filter(parmViewModel.choices, c => _.some(choicesToSet, choiceToSet => c.valuesEqual(choiceToSet)));
                     } else {
                         parmViewModel.multiChoices = choicesToSet;
                     }
@@ -290,7 +290,7 @@ module NakedObjects {
                     const choiceToSet = ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
 
                     if (fieldEntryType === EntryType.Choices) {
-                        parmViewModel.choice = _.find(parmViewModel.choices, c => c.match(choiceToSet));
+                        parmViewModel.choice = _.find(parmViewModel.choices, c => c.valuesEqual(choiceToSet));
                     } else {
                         if (!parmViewModel.choice || parmViewModel.choice.getValue().toValueString() !== choiceToSet.getValue().toValueString()) {
                             parmViewModel.choice = choiceToSet;
@@ -529,7 +529,7 @@ module NakedObjects {
                     if (propertyRep.entryType() === EntryType.Choices) {
                         const currentChoice = ChoiceViewModel.create(value, id);
                         const choices = _.map(propertyRep.choices(), (v, n) => ChoiceViewModel.create(v, id, n));
-                        const choice = _.find(choices, (c: ChoiceViewModel) => c.match(currentChoice));
+                        const choice = _.find(choices, c => c.valuesEqual(currentChoice));
 
                         if (choice) {
                             tableRowColumnViewModel.value = choice.name;
@@ -586,7 +586,7 @@ module NakedObjects {
 
                 setupChoice = (newValue: Value) => {
                     const currentChoice = ChoiceViewModel.create(newValue, id);
-                    propertyViewModel.choice = _.find(propertyViewModel.choices, (c: ChoiceViewModel) => c.match(currentChoice));
+                    propertyViewModel.choice = _.find(propertyViewModel.choices, c => c.valuesEqual(currentChoice));
                 }
             } else {
                 // use choice for draggable/droppable references

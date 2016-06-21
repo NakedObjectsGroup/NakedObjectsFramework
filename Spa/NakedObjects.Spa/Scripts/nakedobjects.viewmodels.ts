@@ -34,7 +34,7 @@ module NakedObjects {
         canDropOn: (targetType: string) => ng.IPromise<boolean>;
         value: scalarValueType | Date;
         reference: string;
-        choice: ChoiceViewModel;
+        choice: IChoiceViewModel;
         color: string;
         draggableType: string;
     }
@@ -140,7 +140,7 @@ module NakedObjects {
         return _.map(menus, m => createSubmenuItems(avms, m, 0));
     }
 
-    export class AttachmentViewModel {
+    export class AttachmentViewModel implements IAttachmentViewModel {
         href: string;
         mimeType: string;
         title: string;
@@ -159,7 +159,7 @@ module NakedObjects {
             attachmentViewModel.parent = parent;
             attachmentViewModel.context = context;
             attachmentViewModel.onPaneId = paneId;
-            return attachmentViewModel;
+            return attachmentViewModel as IAttachmentViewModel;
         }
 
         downloadFile = () => this.context.getFile(this.parent, this.href, this.mimeType);
@@ -173,13 +173,13 @@ module NakedObjects {
         doClick: (right?: boolean) => void;
     }
 
-    export class ChoiceViewModel {
-        id: string;
+    export class ChoiceViewModel implements IChoiceViewModel {
         name: string;
-        search: string;
-        isEnum: boolean;
-        isReference: boolean;
-        wrapped: Value;
+
+        private id: string;
+        private search: string;
+        private isEnum: boolean;
+        private wrapped: Value;
 
         static create(value: Value, id: string, name?: string, searchTerm?: string) {
             const choiceViewModel = new ChoiceViewModel();
@@ -189,8 +189,7 @@ module NakedObjects {
             choiceViewModel.search = searchTerm || choiceViewModel.name;
 
             choiceViewModel.isEnum = !value.isReference() && (choiceViewModel.name !== choiceViewModel.getValue().toValueString());
-            choiceViewModel.isReference = value.isReference();
-            return choiceViewModel;
+            return choiceViewModel as IChoiceViewModel;
         }
 
         getValue() {
@@ -203,7 +202,7 @@ module NakedObjects {
                 this.wrapped.toValueString() === other.wrapped.toValueString();
         }
 
-        match(other: ChoiceViewModel) {
+        valuesEqual(other: ChoiceViewModel) {
             const thisValue = this.isEnum ? this.wrapped.toValueString().trim() : this.search.trim();
             const otherValue = this.isEnum ? other.wrapped.toValueString().trim() : other.search.trim();
             return thisValue === otherValue;
@@ -221,7 +220,6 @@ module NakedObjects {
     }
 
 
-
     export class LinkViewModel implements IDraggableViewModel {
         title: string;
         color: string;
@@ -231,7 +229,7 @@ module NakedObjects {
 
         value: scalarValueType;
         reference: string;
-        choice: ChoiceViewModel;
+        choice: IChoiceViewModel;
         domainType: string;
         draggableType: string;
         link: Link;
@@ -283,12 +281,12 @@ module NakedObjects {
         id: string;
         argId: string;
         paneArgId: string;
-        choices: ChoiceViewModel[];
+        choices: IChoiceViewModel[];
 
         type: "scalar" | "ref";
         reference: string;
-        choice: ChoiceViewModel;
-        multiChoices: ChoiceViewModel[];
+        choice: IChoiceViewModel;
+        multiChoices: IChoiceViewModel[];
         file: Link;
 
         returnType: string;
@@ -373,13 +371,13 @@ module NakedObjects {
                     return new Value(selRefs);
                 }
 
-
-                if (this.type === "scalar") {
-                    return new Value(this.choice && this.choice.getValue().scalar() != null ? this.choice.getValue().scalar() : "");
+                const choiceValue = this.choice ? this.choice.getValue() : null;
+                if (this.type === "scalar") {                
+                    return new Value(choiceValue && choiceValue.scalar() != null ? choiceValue.scalar() : "");
                 }
 
                 // reference 
-                return new Value(this.choice && this.choice.isReference ? { href: this.choice.getValue().href(), title: this.choice.name } : null);
+                return new Value(choiceValue && choiceValue.isReference() ? { href: choiceValue.href(), title: this.choice.name } : null);
             }
 
             if (this.type === "scalar") {
@@ -550,7 +548,7 @@ module NakedObjects {
         propertyRep: PropertyMember;
         target: string;
         isEditable: boolean;
-        attachment: AttachmentViewModel;
+        attachment: IAttachmentViewModel;
         draggableType: string;
         refType: "null" | "navigable" | "notNavigable";
 
@@ -1046,7 +1044,7 @@ module NakedObjects {
         isInEdit: boolean;
         value: string;
         reference: string;
-        choice: ChoiceViewModel;
+        choice: IChoiceViewModel;
         color: string;
         actions: ActionViewModel[];
         menuItems: MenuItemViewModel[];
@@ -1212,7 +1210,7 @@ module NakedObjects {
         collectionPlaceholder: CollectionPlaceholderViewModel;
         toolBar: ToolBarViewModel;
         cicero: CiceroViewModel;
-        attachment: AttachmentViewModel;
+        attachment: IAttachmentViewModel;
         applicationProperties: ApplicationPropertiesViewModel;
     }
 

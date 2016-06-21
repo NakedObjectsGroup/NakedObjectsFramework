@@ -176,6 +176,7 @@
     <TypeScriptCompile Include="Scripts\nakedobjects.cicerocommandfactory.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.viewmodelfactory.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.exceptionhandler.ts" />
+    <TypeScriptCompile Include="Scripts\nakedobjects.vminterfaces.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.viewmodels.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.models.helpers.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.models.ts" />
