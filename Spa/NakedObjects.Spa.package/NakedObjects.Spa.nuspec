@@ -30,13 +30,14 @@
   </metadata>
   <files>
     <file src="..\..\Spa\NakedObjects.Spa\Content\themes\base\jquery.timepicker.css" target="Content\Content\themes\base" />
-    <file src="..\..\Spa\NakedObjects.Spa\Scripts\jquery.timepicker.js" target="Content\Scripts" />
     <file src="..\..\Spa\NakedObjects.Spa\Content\partials\*.*" target="Content\Content\partials" />
     <file src="..\..\Spa\NakedObjects.Spa\Content\nakedobjects.css" target="Content\Content" />
     <file src="..\..\Spa\NakedObjects.Spa\fonts\*.*" target="Content\fonts" />
     <file src="..\..\Spa\NakedObjects.Spa\images\*.*" target="Content\images" />
-    <file src="..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects*.*" target="Content\Scripts" exclude="nakedobjects.config.ts; nakedobjects.services.color.config.ts" />
-    <!--But config.ts.pp files will be included-->
+    <file src="..\..\Spa\NakedObjects.Spa\Scripts\jquery.timepicker.js" target="Content\Scripts" />
+    <file src="..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects*.ts" target="Content\Scripts" 
+          exclude="..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects.config.ts;..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects.services.color.config.ts;..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects.services.template.config.ts" />
+    <file src="..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects*.pp" target="Content\Scripts" />
     <file src="..\..\Spa\NakedObjects.Spa\index.html" target="Content" />
   </files>
 </package>
