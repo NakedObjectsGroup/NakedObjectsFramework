@@ -213,6 +213,14 @@ module NakedObjects {
             this.transientCache = [, [], []];
         }
 
+        swap() {
+            const [, t1, t2] = this.transientCache;
+
+            this.transientCache[1] = t2;
+            this.transientCache[2] = t1;
+        }
+
+
     }
 
     class RecentCache {
@@ -565,7 +573,6 @@ module NakedObjects {
         };
 
         context.getObject = (paneId: number, oid: ObjectIdWrapper, interactionMode: InteractionMode) => {
-            context.updateValues();
             return oid.isService ? context.getService(paneId, oid.domainType) : context.getDomainObject(paneId, oid, interactionMode);
         };
 
@@ -666,7 +673,8 @@ module NakedObjects {
 
         context.swapCurrentObjects = () => {
             parameterCache.swap();    
-            objectEditCache.swap();     
+            objectEditCache.swap();
+            transientCache.swap();
             const [, p1, p2] = currentObjects;
             currentObjects[1] = p2;
             currentObjects[2] = p1;
