@@ -3,11 +3,8 @@
 
 module NakedObjects {
     app.run((template: ITemplate) => {
-        //template.setTemplateName("AdventureWorksModel.Product", TemplateType.Object, InteractionMode.View, "Content/customTemplates/openbydefaultObjectView.html");
-        //template.setTemplateName("AdventureWorksModel.Product", TemplateType.Object, InteractionMode.View, "Content/customTemplates/withActionButtonObjectView.html");
-        //template.setTemplateName("AdventureWorksModel.Product", TemplateType.Object, InteractionMode.View, "Content/customTemplates/withGroupedPropertiesObjectView.html");
-        //template.setTemplateName("AdventureWorksModel.Product", TemplateType.Object, InteractionMode.View, "Content/customTemplates/withAccordionObjectView.html");
-        //template.setTemplateName("AdventureWorksModel.Product", TemplateType.Object, InteractionMode.View, "Content/customTemplates/pollingObjectView.html");
-        //template.setTemplateName("AdventureWorksModel.Product", TemplateType.List, CollectionViewState.List, "Content/customTemplates/productList.html");
+        template.setTemplateName("AdventureWorksModel.Location", TemplateType.Object, InteractionMode.View, "Content/customTemplates/locationView.html");
+        template.setTemplateName("AdventureWorksModel.WorkOrderRouting", TemplateType.Object, InteractionMode.Edit, "Content/customTemplates/workOrderRoutingEdit.html");
+        template.setTemplateName("AdventureWorksModel.Location", TemplateType.List, CollectionViewState.List, "Content/customTemplates/locationList.html");
     });
 }

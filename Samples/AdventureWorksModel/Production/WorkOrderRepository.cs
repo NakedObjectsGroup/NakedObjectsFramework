@@ -67,5 +67,10 @@ namespace AdventureWorksModel {
         }
 
         #endregion
+
+        public IQueryable<Location> AllLocations()
+        {
+            return Container.Instances<Location>();
+        }
     }
 }

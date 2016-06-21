@@ -74,6 +74,7 @@
     <Compile Include="tests\KeyboardNavigationTests.cs" />
     <Compile Include="tests\CCAtests.cs" />
     <Compile Include="tests\NewTestFramework.cs" />
+    <Compile Include="tests\CustomTemplateTests.cs" />
     <Compile Include="tests\ViewModelTests.cs" />
     <Compile Include="tests\TransientObjectTests.cs" />
     <Compile Include="tests\SplitPaneTests.cs" />
