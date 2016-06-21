@@ -18,9 +18,42 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForView(Pane.Single, PaneType.Home);
             WaitForCss(".header .title").Click();
             var element = br.SwitchTo().ActiveElement();
+
             element.SendKeys(Keys.Alt + "h");
             element = br.SwitchTo().ActiveElement();
             Assert.AreEqual("Home (Alt-h)", element.GetAttribute("title"));
+
+            element.SendKeys(Keys.Alt + "b");
+            element = br.SwitchTo().ActiveElement();
+            Assert.AreEqual("Back (Alt-b)", element.GetAttribute("title"));
+
+            element.SendKeys(Keys.Alt + "f");
+            element = br.SwitchTo().ActiveElement();
+            Assert.AreEqual("Forward (Alt-f)", element.GetAttribute("title"));
+
+            element.SendKeys(Keys.Alt + "e");
+            element = br.SwitchTo().ActiveElement();
+            Assert.AreEqual("Expand pane (Alt-e)", element.GetAttribute("title"));
+
+            element.SendKeys(Keys.Alt + "s");
+            element = br.SwitchTo().ActiveElement();
+            Assert.AreEqual("Swap panes (Alt-s)", element.GetAttribute("title"));
+
+            element.SendKeys(Keys.Alt + "r");
+            element = br.SwitchTo().ActiveElement();
+            Assert.AreEqual("Recent object (Alt-r)", element.GetAttribute("title"));
+
+            element.SendKeys(Keys.Alt + "c");
+            element = br.SwitchTo().ActiveElement();
+            Assert.AreEqual("Cicero - Speech Interface (Alt-c)", element.GetAttribute("title"));
+
+            element.SendKeys(Keys.Alt + "p");
+            element = br.SwitchTo().ActiveElement();
+            Assert.AreEqual("Application Properties (Alt-p)", element.GetAttribute("title"));
+
+            element.SendKeys(Keys.Alt + "l");
+            element = br.SwitchTo().ActiveElement();
+            Assert.AreEqual("Log off (Alt-l)", element.GetAttribute("title"));
         }
 
         public virtual void SelectObjectActionsWithAccessKey()
@@ -145,14 +178,14 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod] //Mega
         public void MegaKeyboardTest()
         {
-            //SelectFooterIconsWithAccessKeys(); TODO: Does not work on Firefox in test mode
-            //SelectObjectActionsWithAccessKey();  TODO: Does not work on Firefox in test mode
+            SelectFooterIconsWithAccessKeys();// TODO: Does not work on Firefox in test mode
+            SelectObjectActionsWithAccessKey();  //TODO: Does not work on Firefox in test mode
             EnterEquivalentToLeftClick();
             ShiftEnterEquivalentToRightClick();
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class MegaKeyboardTestsFirefox : MegaKeyboardTestsRoot
     {
         [ClassInitialize]
@@ -165,6 +198,30 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void InitializeTest()
         {
             InitFirefoxDriver();
+            Url(BaseUrl);
+        }
+
+        [TestCleanup]
+        public virtual void CleanupTest()
+        {
+            base.CleanUpTest();
+        }
+    }
+
+    [TestClass]
+    public class MegaKeyboardTestsIe : MegaKeyboardTestsRoot
+    {
+        [ClassInitialize]
+        public new static void InitialiseClass(TestContext context)
+        {
+            FilePath(@"drivers.IEDriverServer.exe");
+            AWTest.InitialiseClass(context);
+        }
+
+        [TestInitialize]
+        public virtual void InitializeTest()
+        {
+            InitIeDriver();
             Url(BaseUrl);
         }
 
