@@ -24,6 +24,7 @@
   <ItemGroup>
     <Content Include="Content\customTemplates\accordionCollections.html" />
     <Content Include="Content\customTemplates\customObjectView.html" />
+    <Content Include="Content\customTemplates\internalServerError.html" />
     <Content Include="Content\customTemplates\groupedProperties.html" />
     <Content Include="Content\customTemplates\locationList.html" />
     <Content Include="Content\customTemplates\locationView.html" />
@@ -146,6 +147,7 @@
     <None Include="Scripts\nakedobjects.config.ts.pp" />
     <None Include="Scripts\nakedobjects.services.color.config.ts.pp" />
     <TypeScriptCompile Include="Scripts\custom.controllers.ts" />
+    <None Include="Scripts\nakedobjects.services.error.config.ts.pp" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.error.config.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.error.ts" />
     <None Include="Scripts\nakedobjects.services.template.config.ts.pp" />

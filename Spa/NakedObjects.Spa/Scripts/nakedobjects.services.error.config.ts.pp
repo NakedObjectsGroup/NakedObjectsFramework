@@ -13,10 +13,6 @@ module NakedObjects {
             if ($scope.error.isConcurrencyError) {
                 $scope.errorTemplate = concurrencyTemplate;
             }
-            if ($scope.error.originalError.httpErrorCode == Models.HttpStatusCode.InternalServerError) {
-                $scope.errorTemplate = getSvrPath() + "Content/customTemplates/internalServerError.html";
-            }
         });
-
     });
 }

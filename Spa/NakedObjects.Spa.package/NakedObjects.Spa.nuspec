@@ -36,7 +36,7 @@
     <file src="..\..\Spa\NakedObjects.Spa\images\*.*" target="Content\images" />
     <file src="..\..\Spa\NakedObjects.Spa\Scripts\jquery.timepicker.js" target="Content\Scripts" />
     <file src="..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects*.ts" target="Content\Scripts" 
-          exclude="..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects.config.ts;..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects.services.color.config.ts;..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects.services.template.config.ts" />
+          exclude="..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects.config.ts;..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects.services.color.config.ts;..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects.services.template.config.ts..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects.services.error.config.ts" />
     <file src="..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects*.pp" target="Content\Scripts" />
     <file src="..\..\Spa\NakedObjects.Spa\index.html" target="Content" />
   </files>

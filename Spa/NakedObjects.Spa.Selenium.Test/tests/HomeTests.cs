@@ -138,14 +138,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             //AssertHasFocus(first); //TODO: test all focus separately
         }
 
-        public virtual void ZeroParamThrowsError() {
-            Url(CustomersMenuUrl);
-            WaitForCss(".actions .action", CustomerServiceActions);
-            Click(GetObjectAction("Throw Domain Exception"));
-            var msg = WaitForCss(".error .message");
-            Assert.AreEqual("Message: Foo", msg.Text);
-        }
-
         public virtual void ZeroParamReturnsEmptyCollection() {
             Url(CustomersMenuUrl);
             OpenSubMenu("Individuals");
@@ -209,11 +201,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public override void ZeroParamReturnsCollection() {
             base.ZeroParamReturnsCollection();
-        }
-
-        [TestMethod]
-        public override void ZeroParamThrowsError() {
-            base.ZeroParamThrowsError();
         }
 
         [TestMethod]
@@ -304,7 +291,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             SelectSuccessiveDialogActionsThenCancel();
             ZeroParamReturnsObject();
             ZeroParamReturnsCollection();
-            ZeroParamThrowsError();
             ZeroParamReturnsEmptyCollection();
             DialogActionOK();
         }

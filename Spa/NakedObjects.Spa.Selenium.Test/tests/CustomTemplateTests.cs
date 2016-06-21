@@ -27,6 +27,15 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Reload();
             WaitForView(Pane.Single, PaneType.List, "Location - custom list");
         }
+        public virtual void CustomErrorHandling()
+        {
+            Url(CustomersMenuUrl);
+            WaitForCss(".actions .action", CustomerServiceActions);
+            Click(GetObjectAction("Throw Domain Exception"));
+            WaitForView(Pane.Single, PaneType.Error);
+            Assert.AreEqual("Internal Server Error", WaitForCss(".title").Text);
+            Assert.AreEqual("Foo", WaitForCss(".message").Text);
+        }
     }
 
     public abstract class CustomTemplateTests : CustomTemplateTestsRoot
@@ -37,6 +46,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public override void CustomEditTemplate() { base.CustomEditTemplate(); }
         [TestMethod]
         public override void CustomListTemplate() { base.CustomListTemplate(); }
+        [TestMethod]
+        public override void CustomErrorHandling() { base.CustomErrorHandling(); }
     }
 
     #region browsers specific subclasses
@@ -115,10 +126,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             base.CustomViewTemplate();
             base.CustomEditTemplate();
             base.CustomListTemplate();
+            base.CustomErrorHandling();
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class MegaCustomTemplateTestsFirefox : MegaCustomTemplateTestsRoot
     {
         [ClassInitialize]

@@ -353,7 +353,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             List,
             Recent,
             Attachment,
-            Properties
+            Properties,
+            Error
         }
 
         protected enum ClickType
