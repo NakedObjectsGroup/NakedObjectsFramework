@@ -14,6 +14,7 @@ namespace AdventureWorksModel {
     [IconName("globe.png")]
     [Bounded]
     [Immutable]
+    [PresentationHint("Topaz")]
     public class Location {
 
         #region Life Cycle Methods

@@ -15,6 +15,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             GeminiUrl("object?i1=View&o1=___1.Location--60");
             WaitForView(Pane.Single, PaneType.Object, "Location - custom view");
+            Assert.AreEqual("Topaz", WaitForCss(".presentationHint").Text);
         }
         public virtual void CustomEditTemplate()
         {
@@ -130,7 +131,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class MegaCustomTemplateTestsFirefox : MegaCustomTemplateTestsRoot
     {
         [ClassInitialize]

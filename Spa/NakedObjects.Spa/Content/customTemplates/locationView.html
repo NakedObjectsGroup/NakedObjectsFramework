@@ -2,6 +2,7 @@
     <div class="header">
         <div class="type">{{object.friendlyName}}</div>
         <div class="title" gemini-drag tabindex="0">Location - custom view</div>
+     <div class="presentationHint">{{object.presentationHint}}</div>
         <div>{{object.isDirty() ? "*" : ""}} </div>
         <div class="menu clickable-area" tabindex="0" gemini-enter="object.toggleActionMenu()" ng-click="object.toggleActionMenu()" ng-disabled="object.disableActions()" title={{object.actionsTooltip()}} accesskey="a">
             Actions
