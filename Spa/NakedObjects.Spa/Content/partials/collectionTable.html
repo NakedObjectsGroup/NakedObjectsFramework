@@ -2,8 +2,8 @@
     <div class='name'>{{collection.title}}:</div>
     <div class="details">{{collection.details}}</div>
     <div ng-if="collection.mayHaveItems">
-         <img class="icon-summary clickable-area" ng-click="collection.doSummary()" src="images/summary.png" title="Close Collection" />
-         <img class="icon-list clickable-area" ng-click="collection.doList()" src="images/list.png" title="View as List" />
+        <img class="icon-summary clickable-area" ng-click="collection.doSummary()" src="images/summary.png" title="Close Collection" />
+        <img class="icon-list clickable-area" ng-click="collection.doList()" src="images/list.png" title="View as List" />
     </div>
 </div>
 <table>
@@ -15,11 +15,11 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-switch="item.target.hasTitle" ng-repeat="item in collection.items" ng-class="item.color" class="clickable-area" gemini-enter="item.doClick()" ng-click="item.doClick()" gemini-rightclick="item.doClick(true)" gemini-drag tabindex="0">
+        <tr ng-switch="item.tableRowViewModel.hasTitle" ng-repeat="item in collection.items" ng-class="item.color" class="clickable-area" gemini-enter="item.doClick()" ng-click="item.doClick()" gemini-rightclick="item.doClick(true)" gemini-drag tabindex="0">
             <td ng-switch-when="true" class="cell">
-                {{item.target.title}}
+                {{item.tableRowViewModel.title}}
             </td>
-            <td class="cell" ng-repeat="property in item.target.properties" ng-switch="property.type">
+            <td class="cell" ng-repeat="property in item.tableRowViewModel.properties" ng-switch="property.type">
                 <div ng-switch-when="ref" class="clickable-area">
                     {{property.formattedValue}}
                 </div>
@@ -28,7 +28,7 @@
                         <input type="checkbox" ng-checked="property.value" disabled="disabled" />
                     </div>
                     <div ng-switch-when="number" class="clickable-area">
-                     <div class="clickable-area number">{{property.formattedValue}}</div>
+                        <div class="clickable-area number">{{property.formattedValue}}</div>
                     </div>
                     <div ng-switch-default class="clickable-area">
                         <div class="clickable-area">{{property.formattedValue}}</div>

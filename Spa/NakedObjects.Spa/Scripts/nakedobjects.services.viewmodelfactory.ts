@@ -59,14 +59,14 @@ module NakedObjects {
         propertyViewModel(propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number, parentValues: () => _.Dictionary<Value>): PropertyViewModel;
         ciceroViewModel(): CiceroViewModel;
         handleErrorResponse(err: ErrorMap, vm: MessageViewModel, vms: ValueViewModel[]): void;
-        getItems(links: Link[], tableView: boolean, routeData: PaneRouteData, collectionViewModel: CollectionViewModel | ListViewModel): ItemViewModel[];
-        linkViewModel(linkRep: Link, paneId: number): LinkViewModel;
+        getItems(links: Link[], tableView: boolean, routeData: PaneRouteData, collectionViewModel: CollectionViewModel | ListViewModel): IItemViewModel[];
+        linkViewModel(linkRep: Link, paneId: number): ILinkViewModel;
         recentItemsViewModel(paneId: number): RecentItemsViewModel;
         attachmentViewModel(propertyRep: PropertyMember, paneId: number): IAttachmentViewModel;
     }
 
     interface IViewModelFactoryInternal extends IViewModelFactory {
-        itemViewModel(linkRep: Link, paneId: number, selected: boolean): ItemViewModel;
+        itemViewModel(linkRep: Link, paneId: number, selected: boolean): IItemViewModel;
         recentItemViewModel(obj: DomainObjectRepresentation, linkRep: Link, paneId: number, selected: boolean): RecentItemViewModel;
         propertyTableViewModel(propertyRep: PropertyMember, id: string, paneId: number): TableRowColumnViewModel;
     }
@@ -100,7 +100,7 @@ module NakedObjects {
             if (error) {
                 errorViewModel.title = error.title;
                 errorViewModel.description = error.description;
-                errorViewModel.code = error.errorCode;
+                errorViewModel.errorCode = error.errorCode;
                 errorViewModel.message = error.message;
                 const stackTrace = error.stackTrace;
 
@@ -112,7 +112,7 @@ module NakedObjects {
             }
 
             errorViewModel.description = errorViewModel.description || "No description available";
-            errorViewModel.code = errorViewModel.code || "No code available";
+            errorViewModel.errorCode = errorViewModel.errorCode || "No code available";
             errorViewModel.message = errorViewModel.message || "No message available";
             errorViewModel.stackTrace = errorViewModel.stackTrace || ["No stack trace available"];
 
@@ -121,25 +121,19 @@ module NakedObjects {
 
 
         function initLinkViewModel(linkViewModel: LinkViewModel, linkRep: Link) {
-            linkViewModel.title = linkRep.title();
-
-            color.toColorNumberFromHref(linkRep.href()).then((c: number) => linkViewModel.color = `${linkColor}${c}`);
-
+            linkViewModel.title = linkRep.title() + dirtyMarker(context, linkRep.getOid());
             linkViewModel.link = linkRep;
-
             linkViewModel.domainType = linkRep.type().domainType;
-            linkViewModel.draggableType = linkViewModel.domainType;
-
+                    
             // for dropping 
             const value = new Value(linkRep);
 
             linkViewModel.value = value.toString();
             linkViewModel.reference = value.toValueString();
             linkViewModel.choice = ChoiceViewModel.create(value, "");
-
+            linkViewModel.draggableType = linkViewModel.domainType;
+            color.toColorNumberFromHref(linkRep.href()).then(c => linkViewModel.color = `${linkColor}${c}`);
             linkViewModel.canDropOn = (targetType: string) => context.isSubTypeOf(linkViewModel.domainType, targetType);
-
-            linkViewModel.title = linkViewModel.title + dirtyMarker(context, linkRep.getOid());
         }
 
         const createChoiceViewModels = (id: string, searchTerm: string, choices: _.Dictionary<Value>) =>
@@ -163,7 +157,7 @@ module NakedObjects {
                 focusManager.focusOn(FocusTarget.SubAction, 0, paneId);
             };
             initLinkViewModel(linkViewModel, linkRep);
-            return linkViewModel;
+            return linkViewModel as ILinkViewModel;
         };
 
         viewModelFactory.itemViewModel = (linkRep: Link, paneId: number, selected: boolean) => {
@@ -177,7 +171,7 @@ module NakedObjects {
 
             itemViewModel.selected = selected;
 
-            itemViewModel.checkboxChange = (index) => {
+            itemViewModel.selectionChange = (index) => {
                 context.updateValues();
                 urlManager.setListItem(index, itemViewModel.selected, paneId);
                 focusManager.focusOverrideOn(FocusTarget.CheckBox, index + 1, paneId);
@@ -186,8 +180,8 @@ module NakedObjects {
             const members = linkRep.members();
 
             if (members) {
-                itemViewModel.target = viewModelFactory.tableRowViewModel(members, paneId);
-                itemViewModel.target.title = itemViewModel.title;
+                itemViewModel.tableRowViewModel = viewModelFactory.tableRowViewModel(members, paneId);
+                itemViewModel.tableRowViewModel.title = itemViewModel.title;
             }
 
             return itemViewModel;
@@ -709,12 +703,12 @@ module NakedObjects {
 
                     getExtensions().then((ext: Extensions) => {
                         _.forEach(items, itemViewModel => {
-                            itemViewModel.target.hasTitle = ext.tableViewTitle();
-                            itemViewModel.target.title = itemViewModel.title;
+                            itemViewModel.tableRowViewModel.hasTitle = ext.tableViewTitle();
+                            itemViewModel.tableRowViewModel.title = itemViewModel.title;
                         });
 
                         if (!listViewModel.header) {
-                            const firstItem = items[0].target;
+                            const firstItem = items[0].tableRowViewModel;
                             const propertiesHeader = _.map(firstItem.properties, property => property.title);
 
                             listViewModel.header = firstItem.hasTitle ? [""].concat(propertiesHeader) : propertiesHeader;

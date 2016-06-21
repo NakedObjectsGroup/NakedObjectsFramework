@@ -30,15 +30,7 @@ module NakedObjects {
     import IVersionRepresentation = RoInterfaces.IVersionRepresentation;
     import IUserRepresentation = RoInterfaces.IUserRepresentation;
 
-    export interface IDraggableViewModel {
-        canDropOn: (targetType: string) => ng.IPromise<boolean>;
-        value: scalarValueType | Date;
-        reference: string;
-        choice: IChoiceViewModel;
-        color: string;
-        draggableType: string;
-    }
-
+    
     function tooltip(onWhat: { clientValid: () => boolean }, fields: ValueViewModel[]): string {
         if (onWhat.clientValid()) {
             return "";
@@ -196,49 +188,55 @@ module NakedObjects {
             return this.wrapped;
         }
 
-        equals(other: ChoiceViewModel) {
-            return this.id === other.id &&
+        equals(other: IChoiceViewModel) : boolean {
+            return other instanceof ChoiceViewModel &&
+                this.id === other.id &&
                 this.name === other.name &&
                 this.wrapped.toValueString() === other.wrapped.toValueString();
         }
 
-        valuesEqual(other: ChoiceViewModel) {
-            const thisValue = this.isEnum ? this.wrapped.toValueString().trim() : this.search.trim();
-            const otherValue = this.isEnum ? other.wrapped.toValueString().trim() : other.search.trim();
-            return thisValue === otherValue;
+        valuesEqual(other: IChoiceViewModel) : boolean {
+           
+            if (other instanceof ChoiceViewModel) {
+                const thisValue = this.isEnum ? this.wrapped.toValueString().trim() : this.search.trim();
+                const otherValue = this.isEnum ? other.wrapped.toValueString().trim() : other.search.trim();
+                return thisValue === otherValue;
+            }
+            return false;
         }
     }
 
-    export class ErrorViewModel {
+    export class ErrorViewModel implements IErrorViewModel{
         originalError : ErrorWrapper;
         title: string;
         message: string;
         stackTrace: string[];
-        code: string;
+        errorCode: string;
         description: string;
         isConcurrencyError: boolean;
     }
 
-
-    export class LinkViewModel implements IDraggableViewModel {
+    export class LinkViewModel implements ILinkViewModel, IDraggableViewModel {
+        // ILinkViewModel
         title: string;
-        color: string;
+        domainType: string;
+        link: Link;
+
         doClick: (right?: boolean) => void;
 
-        canDropOn: (targetType: string) => ng.IPromise<boolean>;
-
+        // IDraggableViewModel 
+        color: string;
         value: scalarValueType;
         reference: string;
         choice: IChoiceViewModel;
-        domainType: string;
         draggableType: string;
-        link: Link;
+        canDropOn: (targetType: string) => ng.IPromise<boolean>;
     }
 
-    export class ItemViewModel extends LinkViewModel {
-        target: TableRowViewModel;
+    export class ItemViewModel extends LinkViewModel implements IItemViewModel, IDraggableViewModel {
+        tableRowViewModel: TableRowViewModel;
         selected: boolean;
-        checkboxChange: (index: number) => void;
+        selectionChange: (index: number) => void;
     }
 
     export class RecentItemViewModel extends ItemViewModel {
@@ -732,7 +730,7 @@ module NakedObjects {
         size: number;
         pluralName: string;
         color: string;
-        items: ItemViewModel[];
+        items: IItemViewModel[];
         header: string[];
         onPaneId: number;
         page: number;
@@ -781,7 +779,7 @@ module NakedObjects {
 
         selectAll = () => _.each(this.items, (item, i) => {
             item.selected = this.allSelected;
-            item.checkboxChange(i);
+            item.selectionChange(i);
         });
 
         description(): string { return null; } 
@@ -810,7 +808,7 @@ module NakedObjects {
         pluralName: string;
         color: string;
         mayHaveItems: boolean;
-        items: ItemViewModel[];
+        items: IItemViewModel[];
         header: string[];
         onPaneId: number;
         currentState: CollectionViewState;
@@ -837,7 +835,7 @@ module NakedObjects {
     export class ServicesViewModel {
         title: string;
         color: string;
-        items: LinkViewModel[];
+        items: ILinkViewModel[];
     }
 
     export class MenusViewModel {
@@ -859,7 +857,7 @@ module NakedObjects {
         onPaneId: number;
         title: string;
         color: string;
-        items: LinkViewModel[];
+        items: ILinkViewModel[];
     }
 
     export class ServiceViewModel extends MessageViewModel {
