@@ -788,9 +788,11 @@ module NakedObjects {
         id: string;
 
         private setPage = (newPage: number, newState: CollectionViewState) => {
+            this.context.updateValues();
             this.focusManager.focusOverrideOff();
             this.pageOrRecreate(newPage, this.pageSize, newState);
         };
+
         pageNext = () => this.setPage(this.page < this.numPages ? this.page + 1 : this.page, this.state);
         pagePrevious = () => this.setPage(this.page > 1 ? this.page - 1 : this.page, this.state);
         pageFirst = () => this.setPage(1, this.state);
@@ -1103,6 +1105,7 @@ module NakedObjects {
 
         toggleActionMenu = () => {
             this.focusManager.focusOverrideOff();
+            this.contextService.updateValues();
             this.urlManager.toggleObjectMenu(this.onPaneId);
         };
 
@@ -1116,7 +1119,7 @@ module NakedObjects {
             () => this.urlManager.setInteractionMode(InteractionMode.View, this.onPaneId);
 
         editComplete = () => {
-            this.setProperties();
+            this.contextService.updateValues();
             this.contextService.clearObjectUpdater(this.onPaneId);
         };
 
@@ -1141,7 +1144,7 @@ module NakedObjects {
 
         doSave = (viewObject: boolean) => {
             this.clearCachedFiles();
-            this.setProperties();
+            this.contextService.updateValues();
             const propMap = this.propertyMap();
             this.contextService.clearObjectUpdater(this.onPaneId);
             this.saveHandler()(this.domainObject, propMap, this.onPaneId, viewObject).
@@ -1164,6 +1167,7 @@ module NakedObjects {
         };
 
         doEdit = () => {
+            this.contextService.updateValues(); // for other panes
             this.clearCachedFiles();
             this.contextService.clearObjectValues(this.onPaneId);
             this.contextService.getObjectForEdit(this.onPaneId, this.domainObject).
@@ -1176,6 +1180,7 @@ module NakedObjects {
         };
 
         doReload = () => {
+            this.contextService.updateValues();
             this.clearCachedFiles();
             this.contextService.reloadObject(this.onPaneId, this.domainObject)
                 .then((updatedObject: DomainObjectRepresentation) => {
