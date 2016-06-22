@@ -36,7 +36,7 @@ module NakedObjects {
     export interface IViewModelFactory {
         toolBarViewModel(): ToolBarViewModel;
         errorViewModel(errorRep: ErrorWrapper): ErrorViewModel;
-        actionViewModel(actionRep: ActionMember | ActionRepresentation, vm: IMessageViewModel, routedata: PaneRouteData): ActionViewModel;
+        actionViewModel(actionRep: ActionMember | ActionRepresentation, vm: IMessageViewModel, routedata: PaneRouteData): IActionViewModel;
         collectionViewModel(collectionRep: CollectionMember, routeData: PaneRouteData): CollectionViewModel;
         listPlaceholderViewModel(routeData: PaneRouteData): CollectionPlaceholderViewModel;
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
@@ -209,7 +209,7 @@ module NakedObjects {
                 return _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, parms[parm.id()], paneId));
             };
 
-            actionViewModel.executeInvoke = (pps: ParameterViewModel[], right?: boolean) => {
+            actionViewModel.execute = (pps: ParameterViewModel[], right?: boolean) => {
                 const parmMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
                 _.forEach(pps, p => urlManager.setParameterValue(actionRep.actionId(), p.parameterRep, p.getValue(), paneId));
                 return context.getInvokableAction(actionViewModel.actionRep).then(details => context.invokeAction(details, parmMap, paneId, clickHandler.pane(paneId, right)));
@@ -231,7 +231,7 @@ module NakedObjects {
                 (right?: boolean) => {
                     focusManager.focusOverrideOff();
                     const pps = actionViewModel.parameters();
-                    actionViewModel.executeInvoke(pps, right).
+                    actionViewModel.execute(pps, right).
                         catch((reject: ErrorWrapper) => {
 
                             const display = (em: ErrorMap) => vm.setMessage(em.invalidReason() || em.warningMessage);
@@ -241,7 +241,7 @@ module NakedObjects {
 
             actionViewModel.makeInvokable = (details: IInvokableAction) => actionViewModel.invokableActionRep = details;
 
-            return actionViewModel;
+            return actionViewModel as IActionViewModel;
         };
 
 

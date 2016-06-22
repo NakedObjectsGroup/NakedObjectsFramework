@@ -84,16 +84,16 @@ module NakedObjects {
         return menu || "";
     }
 
-    function removeDuplicateMenus(menus: MenuItemViewModel[]) {
-        return _.uniqWith(menus, (a: MenuItemViewModel, b: MenuItemViewModel) => {
-            if (a.name && b.name) {
-                return a.name === b.name;
+    function removeDuplicateMenus(menus: IMenuItemViewModel[]) {
+        return _.uniqWith(menus, (m1: IMenuItemViewModel, m2: IMenuItemViewModel) => {
+            if (m1.name && m2.name) {
+                return m1.name === m2.name;
             }
             return false;
         });
     }
 
-    export function createSubmenuItems(avms: ActionViewModel[], menu: MenuItemViewModel, level: number) {
+    export function createSubmenuItems(avms: IActionViewModel[], menu: IMenuItemViewModel, level: number) {
         // if not root menu aggregate all actions with same name
         if (menu.name) {
             const actions = _.filter(avms, a => getMenuForLevel(a.menuPath, level) === menu.name && !getMenuForLevel(a.menuPath, level + 1));
@@ -114,7 +114,7 @@ module NakedObjects {
         return menu;
     }
 
-    export function createMenuItems(avms: ActionViewModel[]) {
+    export function createMenuItems(avms: IActionViewModel[]) {
 
         // first create a top level menu for each action 
         // note at top level we leave 'un-menued' actions
@@ -454,7 +454,7 @@ module NakedObjects {
         dflt: string;
     }
 
-    export class ActionViewModel {
+    export class ActionViewModel implements IActionViewModel {
         actionRep: ActionMember | ActionRepresentation;
         invokableActionRep: IInvokableAction;
 
@@ -463,27 +463,20 @@ module NakedObjects {
         description: string;
         presentationHint : string;
 
-        // todo - confusing name better 
         doInvoke: (right?: boolean) => void;
-        executeInvoke: (pps: IParameterViewModel[], right?: boolean) => ng.IPromise<ActionResultRepresentation>;
-
-        disabled(): boolean { return false; }
-
+        execute: (pps: IParameterViewModel[], right?: boolean) => ng.IPromise<ActionResultRepresentation>;
+        disabled : () => boolean;
         parameters: () => IParameterViewModel[];
-        stopWatchingParms: () => void;
-
         makeInvokable: (details: IInvokableAction) => void;
     }
 
-    export class MenuItemViewModel {
-
+    export class MenuItemViewModel implements IMenuItemViewModel {
         constructor(public name: string,
-            public actions: ActionViewModel[],
-            public menuItems: MenuItemViewModel[]) { }
-
+                    public actions: IActionViewModel[],
+                    public menuItems: IMenuItemViewModel[]) { }
     }
 
-    export class DialogViewModel extends MessageViewModel {
+    export class DialogViewModel extends MessageViewModel implements IDialogViewModel {
         constructor(private color: IColor,
             private context: IContext,
             private viewModelFactory: IViewModelFactory,
@@ -493,8 +486,26 @@ module NakedObjects {
             private $rootScope: ng.IRootScopeService) {
             super();
         }
+             
+        private onPaneId: number;
+        private isQueryOnly: boolean; 
 
-        reset(actionViewModel: ActionViewModel, routeData: PaneRouteData) {
+        private actionMember = () => this.actionViewModel.actionRep;
+
+        private execute = (right?: boolean) => {
+
+            const pps = this.parameters;
+            _.forEach(pps, p => this.urlManager.setFieldValue(this.actionMember().actionId(), p.parameterRep, p.getValue(), this.onPaneId));
+            this.context.updateValues();
+            return this.actionViewModel.execute(pps, right);
+        };
+
+        actionViewModel: IActionViewModel;
+        title: string;           
+        id: string;
+        parameters: IParameterViewModel[];
+
+        reset(actionViewModel: IActionViewModel, routeData: PaneRouteData) {
             this.actionViewModel = actionViewModel;
             this.onPaneId = routeData.paneId;
 
@@ -507,7 +518,6 @@ module NakedObjects {
             this.isQueryOnly = actionViewModel.invokableActionRep.invokeLink().method() === "GET";
             this.resetMessage();
             this.id = actionViewModel.actionRep.actionId();
-            return this;
         }
 
         refresh() {
@@ -515,17 +525,7 @@ module NakedObjects {
             _.forEach(this.parameters, p => p.refresh(fields[p.id]));
         }
 
-
-        private actionMember = () => this.actionViewModel.actionRep;
-        title: string;
-
-        isQueryOnly: boolean;
-        onPaneId: number;
-        id: string;
-
-        deregister: () => void;
-
-        actionViewModel: ActionViewModel;
+        deregister: () => void;    
 
         clientValid = () => _.every(this.parameters, p => p.clientValid);
 
@@ -533,16 +533,9 @@ module NakedObjects {
 
         setParms = () => _.forEach(this.parameters, p => this.context.setFieldValue(this.actionMember().actionId(), p.parameterRep.id(), p.getValue(), this.onPaneId));
 
-        private executeInvoke = (right?: boolean) => {
-
-            const pps = this.parameters;
-            _.forEach(pps, p => this.urlManager.setFieldValue(this.actionMember().actionId(), p.parameterRep, p.getValue(), this.onPaneId));
-            this.context.updateValues();
-            return this.actionViewModel.executeInvoke(pps, right);
-        };
-
+      
         doInvoke = (right?: boolean) =>
-            this.executeInvoke(right).
+            this.execute(right).
                 then((actionResult: ActionResultRepresentation) => {
                     if (actionResult.shouldExpectResult()) {
                         this.setMessage(actionResult.warningsOrMessages() || noResultMessage);
@@ -579,12 +572,8 @@ module NakedObjects {
         clearMessages = () => {
             this.resetMessage();
             _.each(this.actionViewModel.parameters, parm => parm.clearMessage());
-        };
-
-        parameters: IParameterViewModel[];
+        };        
     }
-
-    
 
     export class PropertyViewModel extends ValueViewModel implements IPropertyViewModel,  IDraggableViewModel {
 
@@ -670,9 +659,9 @@ module NakedObjects {
             }
         }
 
-        collectionContributedActionDecorator(actionViewModel: ActionViewModel) {
-            const wrappedInvoke = actionViewModel.executeInvoke;
-            actionViewModel.executeInvoke = (pps: IParameterViewModel[], right?: boolean) => {
+        collectionContributedActionDecorator(actionViewModel: IActionViewModel) {
+            const wrappedInvoke = actionViewModel.execute;
+            actionViewModel.execute = (pps: IParameterViewModel[], right?: boolean) => {
                 const selected = _.filter(this.items, i => i.selected);
 
                 if (selected.length === 0) {
@@ -704,7 +693,7 @@ module NakedObjects {
             }
         }
 
-        collectionContributedInvokeDecorator(actionViewModel: ActionViewModel) {
+        collectionContributedInvokeDecorator(actionViewModel: IActionViewModel) {
             const showDialog = () => this.context.getInvokableAction(actionViewModel.actionRep as ActionMember).
                 then((ia: IInvokableAction) => _.keys(ia.parameters()).length > 1);
 
@@ -717,7 +706,7 @@ module NakedObjects {
                         this.urlManager.setDialog(actionViewModel.actionRep.actionId(), this.onPaneId);
                     } :
                     (right?: boolean) => {
-                        actionViewModel.executeInvoke([], right).
+                        actionViewModel.execute([], right).
                             then(result => this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || noResultMessage : "")).
                             catch((reject: ErrorWrapper) => {
                                 const display = (em: ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
@@ -726,7 +715,7 @@ module NakedObjects {
                     });
         }
 
-        decorate(actionViewModel: ActionViewModel) {
+        decorate(actionViewModel: IActionViewModel) {
             this.collectionContributedActionDecorator(actionViewModel);
             this.collectionContributedInvokeDecorator(actionViewModel);
         }
@@ -850,8 +839,8 @@ module NakedObjects {
 
         actionsTooltip = () => actionsTooltip(this, !!this.routeData.actionsOpen);
 
-        actions: ActionViewModel[];
-        menuItems: MenuItemViewModel[];
+        actions: IActionViewModel[];
+        menuItems: IMenuItemViewModel[];
 
         actionMember = (id: string) => {
             const actionViewModel = _.find(this.actions, a => a.actionRep.actionId() === id);
@@ -882,8 +871,8 @@ module NakedObjects {
 
         template: string;
 
-        actions: ActionViewModel[];
-        menuItems: MenuItemViewModel[];
+        actions: IActionViewModel[];
+        menuItems: IMenuItemViewModel[];
         messages: string;
 
         collectionRep: CollectionMember | CollectionRepresentation;
@@ -921,16 +910,16 @@ module NakedObjects {
     export class ServiceViewModel extends MessageViewModel {
         title: string;
         serviceId: string;
-        actions: ActionViewModel[];
-        menuItems: MenuItemViewModel[];
+        actions: IActionViewModel[];
+        menuItems: IMenuItemViewModel[];
         color: string;
     }
 
     export class MenuViewModel extends MessageViewModel {
         id: string;
         title: string;
-        actions: ActionViewModel[];
-        menuItems: MenuItemViewModel[];
+        actions: IActionViewModel[];
+        menuItems: IMenuItemViewModel[];
         color: string;
         menuRep: Models.MenuRepresentation;
     }
@@ -966,9 +955,9 @@ module NakedObjects {
             return _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
         };
 
-        wrapAction(a: ActionViewModel) {
-            const wrappedInvoke = a.executeInvoke;
-            a.executeInvoke = (pps: IParameterViewModel[], right?: boolean) => {
+        wrapAction(a: IActionViewModel) {
+            const wrappedInvoke = a.execute;
+            a.execute = (pps: IParameterViewModel[], right?: boolean) => {
                 this.setProperties();
                 const pairs = _.map(this.editProperties(), p => [p.id, p.getValue()]);
                 const prps = (<any>_).fromPairs(pairs) as _.Dictionary<Value>;
@@ -1102,8 +1091,8 @@ module NakedObjects {
         reference: string;
         choice: IChoiceViewModel;
         color: string;
-        actions: ActionViewModel[];
-        menuItems: MenuItemViewModel[];
+        actions: IActionViewModel[];
+        menuItems: IMenuItemViewModel[];
         properties: IPropertyViewModel[];
         collections: CollectionViewModel[];
         unsaved: boolean;
@@ -1262,7 +1251,7 @@ module NakedObjects {
         menus: MenusViewModel;
         object: DomainObjectViewModel;
         menu: MenuViewModel;
-        dialog: DialogViewModel;
+        dialog: IDialogViewModel;
         error: ErrorViewModel;
         recent: RecentItemsViewModel;
         collection: ListViewModel;
