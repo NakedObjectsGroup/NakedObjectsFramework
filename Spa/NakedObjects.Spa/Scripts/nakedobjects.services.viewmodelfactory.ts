@@ -368,104 +368,117 @@ module NakedObjects {
             return tableRowColumnViewModel;
         };
 
+        function setupPropertyAutocomplete(propertyViewModel: PropertyViewModel, parentValues: () => _.Dictionary<Value>) {
+            const propertyRep = propertyViewModel.propertyRep;
+            propertyViewModel.prompt = (searchTerm: string) => {
+                const createcvm = _.partial(createChoiceViewModels, propertyViewModel.id, searchTerm);
+                return context.autoComplete(propertyRep, propertyViewModel.id, parentValues, searchTerm).then(createcvm);
+            };
+            propertyViewModel.minLength = propertyRep.promptLink().extensions().minLength();
+            propertyViewModel.description = propertyViewModel.description || autoCompletePrompt;
+        }
+
+        function setupPropertyConditionalChoices(propertyViewModel: PropertyViewModel) {
+            const propertyRep = propertyViewModel.propertyRep;
+            propertyViewModel.conditionalChoices = (args: _.Dictionary<Value>) => {
+                const createcvm = _.partial(createChoiceViewModels, propertyViewModel.id, null);
+                return context.conditionalChoices(propertyRep, propertyViewModel.id, () => <_.Dictionary<Value>>{}, args).then(createcvm);
+            };
+            // fromPairs definition faulty
+            propertyViewModel.arguments = (<any>_).fromPairs(_.map(propertyRep.promptLink().arguments(), (v: any, key: string) => [key, new Value(v.value)]));
+        }
+
+        function callIfChanged(propertyViewModel: PropertyViewModel, newValue: Value, doRefresh: (newValue: Value) => void) {
+            const propertyRep = propertyViewModel.propertyRep;
+            const value = newValue || propertyRep.value();
+
+            if (propertyViewModel.currentValue == null || value.toValueString() !== propertyViewModel.currentValue.toValueString()) {
+                doRefresh(value);
+                propertyViewModel.currentValue = value;
+            }
+        }
+
+        function setupChoice(propertyViewModel: PropertyViewModel, newValue: Value) {
+            if (propertyViewModel.entryType === EntryType.Choices) {
+                const propertyRep = propertyViewModel.propertyRep;
+                const choices = propertyRep.choices();
+                propertyViewModel.choices = _.map(choices, (v, n) => ChoiceViewModel.create(v, propertyViewModel.id, n));
+
+                const currentChoice = ChoiceViewModel.create(newValue, propertyViewModel.id);
+                propertyViewModel.choice = _.find(propertyViewModel.choices, c => c.valuesEqual(currentChoice));
+            } else {
+                propertyViewModel.choice = ChoiceViewModel.create(newValue, propertyViewModel.id);
+            }
+        }
+
+        function setupScalarPropertyValue(propertyViewModel: PropertyViewModel) {
+            const propertyRep = propertyViewModel.propertyRep;
+            propertyViewModel.type = "scalar";
+
+            const remoteMask = propertyRep.extensions().mask();
+            const localFilter = mask.toLocalFilter(remoteMask, propertyRep.extensions().format());
+            propertyViewModel.localFilter = localFilter;
+            // formatting also happens in in directive - at least for dates - value is now date in that case
+
+            propertyViewModel.refresh = (newValue: Value) => callIfChanged(propertyViewModel, newValue, (value: Value) => {
+
+                setupChoice(propertyViewModel, value);
+                if (isDateOrDateTime(propertyRep)) {
+                    propertyViewModel.value = toUtcDate(value);
+                } else if (isTime(propertyRep)) {
+                    propertyViewModel.value = toTime(value);
+                } else {
+                    propertyViewModel.value = value.scalar();
+                }
+
+                if (propertyRep.entryType() === EntryType.Choices) {
+                    if (propertyViewModel.choice) {
+                        propertyViewModel.value = propertyViewModel.choice.name;
+                        propertyViewModel.formattedValue = propertyViewModel.choice.name;
+                    }
+                } else if (propertyViewModel.password) {
+                    propertyViewModel.formattedValue = obscuredText;
+                } else {
+                    propertyViewModel.formattedValue = localFilter.filter(propertyViewModel.value);
+                }
+            });
+        }
+
+        function setupReferencePropertyValue(propertyViewModel: PropertyViewModel) {
+            const propertyRep = propertyViewModel.propertyRep;
+            propertyViewModel.refresh = (newValue: Value) => callIfChanged(propertyViewModel, newValue, (value: Value) => {
+                setupChoice(propertyViewModel, value);
+                setupReference(propertyViewModel, value, propertyRep);
+            });
+        }
+
         viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number, parentValues: () => _.Dictionary<Value>) => {
             const propertyViewModel = new PropertyViewModel(propertyRep);
 
             propertyViewModel.id = id;
             propertyViewModel.onPaneId = paneId;
             propertyViewModel.argId = `${id.toLowerCase()}`;
-            propertyViewModel.paneArgId = `${propertyViewModel.argId}${paneId}`;
-  
-            const required = propertyViewModel.optional ? "" : "* ";
+            propertyViewModel.paneArgId = `${propertyViewModel.argId}${paneId}`;          
            
             if (propertyRep.attachmentLink() != null) {
                 propertyViewModel.attachment = viewModelFactory.attachmentViewModel(propertyRep, paneId);
             }
-
+                   
             const fieldEntryType = propertyViewModel.entryType;
-            let setupChoice: (newValue: Value) => void;
-
-            if (fieldEntryType === EntryType.Choices) {
-                const choices = propertyRep.choices();
-                propertyViewModel.choices = _.map(choices, (v, n) => ChoiceViewModel.create(v, id, n));
-
-                setupChoice = (newValue: Value) => {
-                    const currentChoice = ChoiceViewModel.create(newValue, id);
-                    propertyViewModel.choice = _.find(propertyViewModel.choices, c => c.valuesEqual(currentChoice));
-                }
-            } else {
-                // use choice for draggable/droppable references
-                setupChoice = (newValue: Value) => propertyViewModel.choice = ChoiceViewModel.create(newValue, id);
-            }
-
 
             if (fieldEntryType === EntryType.AutoComplete) {
-
-                propertyViewModel.prompt = (searchTerm: string) => {
-                    const createcvm = _.partial(createChoiceViewModels, id, searchTerm);
-                    return context.autoComplete(propertyRep, id, parentValues, searchTerm).then(createcvm);
-                };
-                propertyViewModel.minLength = propertyRep.promptLink().extensions().minLength();
-                propertyViewModel.description = propertyViewModel.description || autoCompletePrompt;
+                setupPropertyAutocomplete(propertyViewModel, parentValues);
             }
 
             if (fieldEntryType === EntryType.ConditionalChoices) {
-
-                propertyViewModel.conditionalChoices = (args: _.Dictionary<Value>) => {
-                    const createcvm = _.partial(createChoiceViewModels, id, null);
-                    return context.conditionalChoices(propertyRep, id, () => <_.Dictionary<Value>>{}, args).then(createcvm);
-                };
-                // fromPairs definition faulty
-                propertyViewModel.arguments = (<any>_).fromPairs(_.map(propertyRep.promptLink().arguments(), (v: any, key: string) => [key, new Value(v.value)]));
-            }
-
-            function callIfChanged(newValue: Value, doRefresh: (newValue: Value) => void) {
-                const value = newValue || propertyRep.value();
-
-                if (propertyViewModel.currentValue == null || value.toValueString() !== propertyViewModel.currentValue.toValueString()) {
-                    doRefresh(value);
-                    propertyViewModel.currentValue = value;
-                }
+               setupPropertyConditionalChoices(propertyViewModel);
             }
 
             if (propertyRep.isScalar()) {
-                propertyViewModel.type = "scalar";
-
-                const remoteMask = propertyRep.extensions().mask();
-                const localFilter = mask.toLocalFilter(remoteMask, propertyRep.extensions().format());
-                propertyViewModel.localFilter = localFilter;
-                // formatting also happens in in directive - at least for dates - value is now date in that case
-
-                propertyViewModel.refresh = (newValue: Value) => callIfChanged(newValue,  (value: Value) => {
-
-                        setupChoice(value);
-                        if (isDateOrDateTime(propertyRep)) {
-                            propertyViewModel.value = toUtcDate(value);
-                        } else if (isTime(propertyRep)) {
-                            propertyViewModel.value = toTime(value);
-                        } else {
-                            propertyViewModel.value = value.scalar();
-                        }
-
-                        if (propertyRep.entryType() === EntryType.Choices) {
-                            if (propertyViewModel.choice) {
-                                propertyViewModel.value = propertyViewModel.choice.name;
-                                propertyViewModel.formattedValue = propertyViewModel.choice.name;
-                            }
-                        } else if (propertyViewModel.password) {
-                            propertyViewModel.formattedValue = obscuredText;
-                        } else {
-                            propertyViewModel.formattedValue = localFilter.filter(propertyViewModel.value);
-                        }
-                    });
-
+                setupScalarPropertyValue(propertyViewModel);
             } else {
                 // is reference
-
-                propertyViewModel.refresh = (newValue: Value) => callIfChanged(newValue, (value: Value) => {
-                    setupChoice(value);
-                    setupReference(propertyViewModel, value, propertyRep);
-                });
+                setupReferencePropertyValue(propertyViewModel);
             }
 
             propertyViewModel.refresh(previousValue);
@@ -477,6 +490,7 @@ module NakedObjects {
                 propertyViewModel.originalValue = propertyViewModel.getValue();
             }
 
+            const required = propertyViewModel.optional ? "" : "* ";
             propertyViewModel.description = required + propertyViewModel.description;
 
             propertyViewModel.isDirty = () => !!previousValue || propertyViewModel.getValue().toValueString() !== propertyViewModel.originalValue.toValueString();
@@ -600,9 +614,7 @@ module NakedObjects {
         }
 
         viewModelFactory.parameterViewModel = (parmRep: Parameter, previousValue: Value, paneId: number) => {
-            const parmViewModel = new ParameterViewModel(parmRep);
-
-            parmViewModel.onPaneId = paneId;
+            const parmViewModel = new ParameterViewModel(parmRep, paneId);
 
             const fieldEntryType = parmViewModel.entryType;
           

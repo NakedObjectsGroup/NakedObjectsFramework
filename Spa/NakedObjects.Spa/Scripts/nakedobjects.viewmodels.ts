@@ -426,9 +426,10 @@ module NakedObjects {
 
     export class ParameterViewModel extends ValueViewModel {
 
-        constructor(parmRep: Parameter) {
+        constructor(parmRep: Parameter, paneId : number) {
             super(parmRep.extensions());
             this.parameterRep = parmRep;
+            this.onPaneId = paneId;
             this.type = parmRep.isScalar() ? "scalar" : "ref";
             this.dflt = parmRep.default().toString();
             this.id = parmRep.id();
