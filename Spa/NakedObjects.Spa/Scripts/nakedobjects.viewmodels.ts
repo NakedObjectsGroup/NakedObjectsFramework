@@ -31,7 +31,7 @@ module NakedObjects {
     import IUserRepresentation = RoInterfaces.IUserRepresentation;
     import Extensions = Models.Extensions;
 
-    function tooltip(onWhat: { clientValid: () => boolean }, fields: ValueViewModel[]): string {
+    function tooltip(onWhat: { clientValid: () => boolean }, fields: IFieldViewModel[]): string {
         if (onWhat.clientValid()) {
             return "";
         }
@@ -96,14 +96,12 @@ module NakedObjects {
     export function createSubmenuItems(avms: ActionViewModel[], menu: MenuItemViewModel, level: number) {
         // if not root menu aggregate all actions with same name
         if (menu.name) {
-            const actions = _.filter(avms, a => getMenuForLevel(a.menuPath, level) === menu.name &&
-                !getMenuForLevel(a.menuPath, level + 1));
+            const actions = _.filter(avms, a => getMenuForLevel(a.menuPath, level) === menu.name && !getMenuForLevel(a.menuPath, level + 1));
             menu.actions = actions;
 
             //then collate submenus 
 
-            const submenuActions = _.filter(avms, a => getMenuForLevel(a.menuPath, level) === menu.name &&
-                getMenuForLevel(a.menuPath, level + 1));
+            const submenuActions = _.filter(avms, a => getMenuForLevel(a.menuPath, level) === menu.name && getMenuForLevel(a.menuPath, level + 1));
             let menus = _
                 .chain(submenuActions)
                 .map(a => new MenuItemViewModel(getMenuForLevel(a.menuPath, level + 1), null, null))
@@ -260,9 +258,9 @@ module NakedObjects {
         getMessage = () => this.message; 
     }
 
-    export class ValueViewModel extends MessageViewModel {
+    abstract class ValueViewModel extends MessageViewModel implements IFieldViewModel {
 
-        constructor(ext: Extensions) {
+        constructor(ext: Extensions, color : IColor) {
             super();
             this.optional = ext.optional();
             this.description = ext.description();
@@ -272,7 +270,8 @@ module NakedObjects {
             this.returnType = ext.returnType();
             this.format = ext.format();
             this.multipleLines = ext.multipleLines() || 1;
-            this.password = ext.dataType() === "password";                                         
+            this.password = ext.dataType() === "password";
+            this.updateColor = _.partial(this.setColor, color);                                         
         }
 
         id: string;
@@ -290,10 +289,8 @@ module NakedObjects {
         multipleLines: number;
         password: boolean;
 
-
         clientValid = true;
       
-
         type: "scalar" | "ref";
         reference: string = "";
         minLength: number;
@@ -301,26 +298,42 @@ module NakedObjects {
         color: string;
         
         isCollectionContributed: boolean;
-       
-    
-        arguments: _.Dictionary<Value>;
-        
-        
+          
+        promptArguments: _.Dictionary<Value>;
+         
         currentValue: Value;
         originalValue: Value;
 
         localFilter: ILocalFilter;
-        formattedValue: string;
-        value: scalarValueType | Date;
+        formattedValue: string;    
       
         choices: IChoiceViewModel[] = [];  
 
-        choice: IChoiceViewModel;
+        private currentChoice: IChoiceViewModel;
+
+        get choice(): IChoiceViewModel {
+            return this.currentChoice;
+        }
+
+        set choice(newChoice : IChoiceViewModel) {
+            this.currentChoice = newChoice;
+            this.updateColor();
+        }
+
+        private currentRawValue: scalarValueType | Date;
+
+        get value(): scalarValueType | Date {
+            return this.currentRawValue;
+        }
+
+        set value(newValue: scalarValueType | Date) {
+            this.currentRawValue = newValue;
+            this.updateColor();
+        }
+
         multiChoices: IChoiceViewModel[];
 
-        file: Link;     
-
-        isDirty = () => false;
+        private file: Link;     
 
         entryType: EntryType;
 
@@ -328,13 +341,9 @@ module NakedObjects {
 
         refresh: (newValue: Value) => void;
 
-        prompt(searchTerm: string): ng.IPromise<ChoiceViewModel[]> {
-            return null;
-        }
+        prompt : (searchTerm: string)=> ng.IPromise<ChoiceViewModel[]>;
 
-        conditionalChoices(args: _.Dictionary<Value>): ng.IPromise<ChoiceViewModel[]> {
-            return null;
-        }
+        conditionalChoices : (args: _.Dictionary<Value>) => ng.IPromise<ChoiceViewModel[]>;
 
         setNewValue(newValue: IDraggableViewModel) {
             this.value = newValue.value;
@@ -352,7 +361,9 @@ module NakedObjects {
             this.color = "";
         }
 
-        setColor(color: IColor) {
+        private updateColor : () => void ; 
+
+        private setColor(color: IColor) {
 
             if (this.entryType === EntryType.AutoComplete && this.choice && this.type === "ref") {
                 const href = this.choice.getValue().href();
@@ -426,8 +437,8 @@ module NakedObjects {
 
     export class ParameterViewModel extends ValueViewModel {
 
-        constructor(parmRep: Parameter, paneId : number) {
-            super(parmRep.extensions());
+        constructor(parmRep: Parameter, paneId : number, color : IColor) {
+            super(parmRep.extensions(), color);
             this.parameterRep = parmRep;
             this.onPaneId = paneId;
             this.type = parmRep.isScalar() ? "scalar" : "ref";
@@ -454,11 +465,11 @@ module NakedObjects {
 
         // todo - confusing name better 
         doInvoke: (right?: boolean) => void;
-        executeInvoke: (pps: ParameterViewModel[], right?: boolean) => ng.IPromise<ActionResultRepresentation>;
+        executeInvoke: (pps: IParameterViewModel[], right?: boolean) => ng.IPromise<ActionResultRepresentation>;
 
         disabled(): boolean { return false; }
 
-        parameters: () => ParameterViewModel[];
+        parameters: () => IParameterViewModel[];
         stopWatchingParms: () => void;
 
         makeInvokable: (details: IInvokableAction) => void;
@@ -570,13 +581,15 @@ module NakedObjects {
             _.each(this.actionViewModel.parameters, parm => parm.clearMessage());
         };
 
-        parameters: ParameterViewModel[];
+        parameters: IParameterViewModel[];
     }
 
-    export class PropertyViewModel extends ValueViewModel implements IDraggableViewModel {
+    
 
-        constructor(propertyRep: PropertyMember) {
-            super(propertyRep.extensions());
+    export class PropertyViewModel extends ValueViewModel implements IPropertyViewModel,  IDraggableViewModel {
+
+        constructor(propertyRep: PropertyMember, color : IColor) {
+            super(propertyRep.extensions(), color);
             this.draggableType = propertyRep.extensions().returnType();
 
             this.propertyRep = propertyRep;
@@ -587,17 +600,15 @@ module NakedObjects {
 
 
         propertyRep: PropertyMember;
-        target: string;
         isEditable: boolean;
         attachment: IAttachmentViewModel;
-        draggableType: string;
         refType: "null" | "navigable" | "notNavigable";
+        isDirty: () => boolean;
+        doClick: (right?: boolean) => void;
 
-        doClick(right?: boolean): void {}
-
-        canDropOn: (targetType: string) => ng.IPromise<boolean>;
-
-   
+        // IDraggableViewModel
+        draggableType: string;
+        canDropOn: (targetType: string) => ng.IPromise<boolean>;  
    }
 
     export class CollectionPlaceholderViewModel {
@@ -661,7 +672,7 @@ module NakedObjects {
 
         collectionContributedActionDecorator(actionViewModel: ActionViewModel) {
             const wrappedInvoke = actionViewModel.executeInvoke;
-            actionViewModel.executeInvoke = (pps: ParameterViewModel[], right?: boolean) => {
+            actionViewModel.executeInvoke = (pps: IParameterViewModel[], right?: boolean) => {
                 const selected = _.filter(this.items, i => i.selected);
 
                 if (selected.length === 0) {
@@ -957,7 +968,7 @@ module NakedObjects {
 
         wrapAction(a: ActionViewModel) {
             const wrappedInvoke = a.executeInvoke;
-            a.executeInvoke = (pps: ParameterViewModel[], right?: boolean) => {
+            a.executeInvoke = (pps: IParameterViewModel[], right?: boolean) => {
                 this.setProperties();
                 const pairs = _.map(this.editProperties(), p => [p.id, p.getValue()]);
                 const prps = (<any>_).fromPairs(pairs) as _.Dictionary<Value>;
@@ -1093,7 +1104,7 @@ module NakedObjects {
         color: string;
         actions: ActionViewModel[];
         menuItems: MenuItemViewModel[];
-        properties: PropertyViewModel[];
+        properties: IPropertyViewModel[];
         collections: CollectionViewModel[];
         unsaved: boolean;
 

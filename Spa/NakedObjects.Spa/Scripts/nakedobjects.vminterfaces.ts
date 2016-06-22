@@ -4,6 +4,8 @@ module NakedObjects {
     import Value = Models.Value;
     import scalarValueType = RoInterfaces.scalarValueType;
     import ErrorWrapper = Models.ErrorWrapper;
+    import EntryType = NakedObjects.Models.EntryType;
+    import Parameter = NakedObjects.Models.Parameter;
 
     export interface IAttachmentViewModel {
         href: string;
@@ -72,5 +74,78 @@ module NakedObjects {
         getMessage: () => string;
     }
 
+    export interface IFieldViewModel extends IMessageViewModel {
+        id: string;
+        argId: string;
+        paneArgId: string;
+        onPaneId: number;
 
+        optional: boolean;
+        description: string;
+        presentationHint: string;
+        mask: string;
+        title: string;
+        returnType: string;
+        format: formatType;
+        multipleLines: number;
+        password: boolean;
+        clientValid: boolean;
+
+        type: "scalar" | "ref";
+        reference: string;
+        minLength: number;
+
+        color: string;
+
+        isCollectionContributed: boolean;
+
+        promptArguments: _.Dictionary<Value>;
+
+        currentValue: Value;
+        originalValue: Value;
+
+        localFilter: ILocalFilter;
+        formattedValue: string;
+
+        choices: IChoiceViewModel[];  
+
+        choice: IChoiceViewModel;
+
+        value : scalarValueType | Date;
+
+        multiChoices: IChoiceViewModel[];
+
+        entryType: EntryType;
+
+        validate: (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
+
+        refresh: (newValue: Value) => void;
+
+        prompt: (searchTerm: string) => ng.IPromise<ChoiceViewModel[]>;
+
+        conditionalChoices: (args: _.Dictionary<Value>) => ng.IPromise<ChoiceViewModel[]>;
+
+        setNewValue : (newValue: IDraggableViewModel) => void ;
+
+        drop: (newValue: IDraggableViewModel) => void;
+
+        clear : () => void ; 
+
+        getValue: () => Value;
+     
+    }
+
+    export interface IParameterViewModel extends IFieldViewModel {
+        parameterRep: Parameter;
+        dflt: string;
+    }
+
+    export interface IPropertyViewModel extends IFieldViewModel {
+        propertyRep: Models.PropertyMember;
+        isEditable: boolean;
+        attachment: IAttachmentViewModel;
+        refType: "null" | "navigable" | "notNavigable";
+        isDirty: () => boolean;
+        doClick: (right?: boolean) => void;
+    }
 }
