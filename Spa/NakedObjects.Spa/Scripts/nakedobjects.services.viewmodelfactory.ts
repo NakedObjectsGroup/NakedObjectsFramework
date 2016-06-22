@@ -20,19 +20,9 @@ module NakedObjects {
     import ErrorCategory = Models.ErrorCategory;
     import HttpStatusCode = Models.HttpStatusCode;
     import EntryType = Models.EntryType;
-    import Extensions = Models.Extensions;
-    import ClientErrorCode = Models.ClientErrorCode;
-    import ListRepresentation = Models.ListRepresentation;
-    import ErrorRepresentation = Models.ErrorRepresentation;
-    import IField = Models.IField;
-    import IHasActions = Models.IHasActions;
-    import TypePlusTitle = Models.typePlusTitle;
+    import Extensions = Models.Extensions;  
     import toUtcDate = Models.toUtcDate;
     import isDateOrDateTime = Models.isDateOrDateTime;
-    import PlusTitle = Models.typePlusTitle;
-    import Title = Models.typePlusTitle;
-    import FriendlyNameForProperty = Models.friendlyNameForProperty;
-    import FriendlyNameForParam = Models.friendlyNameForParam;
     import ActionRepresentation = Models.ActionRepresentation;
     import IInvokableAction = Models.IInvokableAction;
     import CollectionRepresentation = Models.CollectionRepresentation;
@@ -46,7 +36,7 @@ module NakedObjects {
     export interface IViewModelFactory {
         toolBarViewModel(): ToolBarViewModel;
         errorViewModel(errorRep: ErrorWrapper): ErrorViewModel;
-        actionViewModel(actionRep: ActionMember | ActionRepresentation, vm: MessageViewModel, routedata: PaneRouteData): ActionViewModel;
+        actionViewModel(actionRep: ActionMember | ActionRepresentation, vm: IMessageViewModel, routedata: PaneRouteData): ActionViewModel;
         collectionViewModel(collectionRep: CollectionMember, routeData: PaneRouteData): CollectionViewModel;
         listPlaceholderViewModel(routeData: PaneRouteData): CollectionPlaceholderViewModel;
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
@@ -58,7 +48,7 @@ module NakedObjects {
         parameterViewModel(parmRep: Parameter, previousValue: Value, paneId: number): ParameterViewModel;
         propertyViewModel(propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number, parentValues: () => _.Dictionary<Value>): PropertyViewModel;
         ciceroViewModel(): CiceroViewModel;
-        handleErrorResponse(err: ErrorMap, vm: MessageViewModel, vms: ValueViewModel[]): void;
+        handleErrorResponse(err: ErrorMap, vm: IMessageViewModel, vms: ValueViewModel[]): void;
         getItems(links: Link[], tableView: boolean, routeData: PaneRouteData, collectionViewModel: CollectionViewModel | ListViewModel): IItemViewModel[];
         linkViewModel(linkRep: Link, paneId: number): ILinkViewModel;
         recentItemsViewModel(paneId: number): RecentItemsViewModel;
@@ -67,7 +57,7 @@ module NakedObjects {
 
     interface IViewModelFactoryInternal extends IViewModelFactory {
         itemViewModel(linkRep: Link, paneId: number, selected: boolean): IItemViewModel;
-        recentItemViewModel(obj: DomainObjectRepresentation, linkRep: Link, paneId: number, selected: boolean): RecentItemViewModel;
+        recentItemViewModel(obj: DomainObjectRepresentation, linkRep: Link, paneId: number, selected: boolean): IRecentItemViewModel;
         propertyTableViewModel(propertyRep: PropertyMember, id: string, paneId: number): TableRowColumnViewModel;
     }
 
@@ -119,7 +109,6 @@ module NakedObjects {
             return errorViewModel;
         };
 
-
         function initLinkViewModel(linkViewModel: LinkViewModel, linkRep: Link) {
             linkViewModel.title = linkRep.title() + dirtyMarker(context, linkRep.getOid());
             linkViewModel.link = linkRep;
@@ -149,6 +138,8 @@ module NakedObjects {
 
         viewModelFactory.linkViewModel = (linkRep: Link, paneId: number) => {
             const linkViewModel = new LinkViewModel();
+            initLinkViewModel(linkViewModel, linkRep);
+
             linkViewModel.doClick = () => {
                 // because may be clicking on menu already open so want to reset focus             
                 urlManager.setMenu(linkRep.rel().parms[0].value, paneId);
@@ -156,17 +147,12 @@ module NakedObjects {
                 focusManager.focusOverrideOff();
                 focusManager.focusOn(FocusTarget.SubAction, 0, paneId);
             };
-            initLinkViewModel(linkViewModel, linkRep);
+            
             return linkViewModel as ILinkViewModel;
         };
 
         viewModelFactory.itemViewModel = (linkRep: Link, paneId: number, selected: boolean) => {
-            const itemViewModel = new ItemViewModel();
-            itemViewModel.doClick = (right?: boolean) => {
-                const currentPane = clickHandler.pane(paneId, right);
-                focusManager.setCurrentPane(currentPane);
-                urlManager.setItem(linkRep, currentPane);
-            };
+            const itemViewModel = new ItemViewModel();    
             initLinkViewModel(itemViewModel, linkRep);
 
             itemViewModel.selected = selected;
@@ -175,6 +161,12 @@ module NakedObjects {
                 context.updateValues();
                 urlManager.setListItem(index, itemViewModel.selected, paneId);
                 focusManager.focusOverrideOn(FocusTarget.CheckBox, index + 1, paneId);
+            };
+
+            itemViewModel.doClick = (right?: boolean) => {
+                const currentPane = clickHandler.pane(paneId, right);
+                focusManager.setCurrentPane(currentPane);
+                urlManager.setItem(linkRep, currentPane);
             };
 
             const members = linkRep.members();
@@ -188,180 +180,12 @@ module NakedObjects {
         };
 
         viewModelFactory.recentItemViewModel = (obj: DomainObjectRepresentation, linkRep: Link, paneId: number, selected: boolean) => {
-            const recentItemViewModel = viewModelFactory.itemViewModel(linkRep, paneId, selected) as RecentItemViewModel;
-            recentItemViewModel.friendlyName = obj.extensions().friendlyName();
-            return recentItemViewModel;
+            const recentItemViewModel = viewModelFactory.itemViewModel(linkRep, paneId, selected) as ILinkViewModel;
+            (recentItemViewModel as IRecentItemViewModel).friendlyName = obj.extensions().friendlyName();
+            return recentItemViewModel as IRecentItemViewModel;
         };
 
-        viewModelFactory.parameterViewModel = (parmRep: Parameter, previousValue: Value, paneId: number) => {
-            const parmViewModel = new ParameterViewModel();
-
-            parmViewModel.parameterRep = parmRep;
-            parmViewModel.type = parmRep.isScalar() ? "scalar" : "ref";
-            parmViewModel.dflt = parmRep.default().toString();
-            parmViewModel.optional = parmRep.extensions().optional();
-            let required = parmViewModel.optional ? "" : "* ";
-            parmViewModel.description = parmRep.extensions().description();
-            parmViewModel.presentationHint = parmRep.extensions().presentationHint();
-            parmViewModel.setMessage("");
-            parmViewModel.id = parmRep.id();
-            parmViewModel.argId = `${parmViewModel.id.toLowerCase()}`;
-            parmViewModel.paneArgId = `${parmViewModel.argId}${paneId}`;
-            parmViewModel.reference = "";
-
-            parmViewModel.mask = parmRep.extensions().mask();
-            parmViewModel.title = parmRep.extensions().friendlyName();
-            parmViewModel.returnType = parmRep.extensions().returnType();
-            parmViewModel.format = parmRep.extensions().format();
-            parmViewModel.isCollectionContributed = parmRep.isCollectionContributed();
-            parmViewModel.onPaneId = paneId;
-
-            parmViewModel.multipleLines = parmRep.extensions().multipleLines() || 1;
-            parmViewModel.password = parmRep.extensions().dataType() === "password";
-            parmViewModel.clientValid = true;
-
-
-            const fieldEntryType = parmRep.entryType();
-            parmViewModel.entryType = fieldEntryType;
-
-            parmViewModel.choices = [];
-
-            if (fieldEntryType === EntryType.Choices || fieldEntryType === EntryType.MultipleChoices) {
-                parmViewModel.choices = _.map(parmRep.choices(), (v, n) => ChoiceViewModel.create(v, parmRep.id(), n));
-            }
-
-            if (fieldEntryType === EntryType.AutoComplete) {
-                parmViewModel.prompt = (searchTerm: string) => {
-                    const createcvm = _.partial(createChoiceViewModels, parmViewModel.id, searchTerm);
-                    return context.autoComplete(parmRep, parmViewModel.id, () => <_.Dictionary<Value>>{}, searchTerm).
-                        then(createcvm);
-                };
-                parmViewModel.minLength = parmRep.promptLink().extensions().minLength();
-                parmViewModel.description = parmViewModel.description || autoCompletePrompt;
-            }
-
-            if (fieldEntryType === EntryType.FreeForm && parmViewModel.type === "ref") {
-                parmViewModel.description = parmViewModel.description || dropPrompt;
-
-                parmViewModel.refresh = (newValue: Value) => {
-
-                    const val = newValue && !newValue.isNull() ? newValue : parmRep.default();
-
-                    if (!val.isNull() && val.isReference()) {
-                        parmViewModel.reference = val.link().href();
-                        parmViewModel.choice = ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
-                    }
-                    parmViewModel.setColor(color);
-                }
-
-                parmViewModel.refresh(previousValue);
-            }
-
-            if (fieldEntryType === EntryType.ConditionalChoices || fieldEntryType === EntryType.MultipleConditionalChoices) {
-                parmViewModel.conditionalChoices = (args: _.Dictionary<Value>) => {
-                    const createcvm = _.partial(createChoiceViewModels, parmViewModel.id, null);
-                    return context.conditionalChoices(parmRep, parmViewModel.id, () => <_.Dictionary<Value>>{}, args).
-                        then(createcvm);
-                };
-                // fromPairs definition faulty
-                parmViewModel.arguments = (<any>_).fromPairs(_.map(parmRep.promptLink().arguments(), (v: any, key: string) => [key, new Value(v.value)]));
-            }
-
-            if (fieldEntryType !== EntryType.FreeForm || parmViewModel.isCollectionContributed) {
-
-                function setCurrentChoices(vals: Value) {
-
-                    const choicesToSet = _.map(vals.list(), val => ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null));
-
-                    if (fieldEntryType === EntryType.MultipleChoices) {
-                        parmViewModel.multiChoices = _.filter(parmViewModel.choices, c => _.some(choicesToSet, choiceToSet => c.valuesEqual(choiceToSet)));
-                    } else {
-                        parmViewModel.multiChoices = choicesToSet;
-                    }
-                }
-
-                function setCurrentChoice(val: Value) {
-                    const choiceToSet = ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
-
-                    if (fieldEntryType === EntryType.Choices) {
-                        parmViewModel.choice = _.find(parmViewModel.choices, c => c.valuesEqual(choiceToSet));
-                    } else {
-                        if (!parmViewModel.choice || parmViewModel.choice.getValue().toValueString() !== choiceToSet.getValue().toValueString()) {
-                            parmViewModel.choice = choiceToSet;
-                        }
-                    }
-                }
-
-                parmViewModel.refresh = (newValue: Value) => {
-
-                    if (newValue || parmViewModel.dflt) {
-                        const toSet = newValue || parmRep.default();
-                        if (fieldEntryType === EntryType.MultipleChoices ||
-                            fieldEntryType === EntryType.MultipleConditionalChoices ||
-                            parmViewModel.isCollectionContributed) {
-                            setCurrentChoices(toSet);
-                        } else {
-                            setCurrentChoice(toSet);
-                        }
-                    }
-                    parmViewModel.setColor(color);
-                }
-
-                parmViewModel.refresh(previousValue);
-
-            } else {
-                const returnType = parmRep.extensions().returnType();
-
-                parmViewModel.refresh = (newValue: Value) => {
-
-                    if (returnType === "boolean") {
-                        const valueToSet = (newValue ? newValue.toValueString() : null) ||
-                            parmRep.default().scalar();
-                        let bValueToSet = toTriStateBoolean(valueToSet);
-
-                        parmViewModel.value = bValueToSet;
-                        if (bValueToSet !== null) {
-                            // reset required indicator
-                            required = "";
-                        }
-
-                    } else if (isDateOrDateTime(parmRep)) {
-                        parmViewModel.value = toUtcDate(newValue || new Value(parmViewModel.dflt));
-                    } else if (isTime(parmRep)) {
-                        parmViewModel.value = toTime(newValue || new Value(parmViewModel.dflt));
-                    } else {
-                        parmViewModel.value = (newValue ? newValue.toString() : null) || parmViewModel.dflt || "";
-                    }
-                    parmViewModel.setColor(color);
-                }
-
-                parmViewModel.refresh(previousValue);
-            }
-
-            const remoteMask = parmRep.extensions().mask();
-
-            if (remoteMask && parmRep.isScalar()) {
-                const localFilter = mask.toLocalFilter(remoteMask, parmRep.extensions().format());
-                parmViewModel.localFilter = localFilter;
-                // formatting also happens in in directive - at least for dates - value is now date in that case
-                parmViewModel.formattedValue = parmViewModel.value ? localFilter.filter(parmViewModel.value.toString()) : "";
-            }
-
-            parmViewModel.setColor(color);
-
-            parmViewModel.validate = _.partial(validate, parmRep, parmViewModel) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
-
-            parmViewModel.drop = _.partial(drop, parmViewModel);
-
-            parmViewModel.description = required + parmViewModel.description;
-
-            parmViewModel.refresh = parmViewModel.refresh || ((newValue: Value) => { });
-
-            return parmViewModel;
-        };
-
-
-        viewModelFactory.actionViewModel = (actionRep: ActionMember | ActionRepresentation, vm: MessageViewModel, routeData: PaneRouteData) => {
+        viewModelFactory.actionViewModel = (actionRep: ActionMember | ActionRepresentation, vm: IMessageViewModel, routeData: PaneRouteData) => {
             const actionViewModel = new ActionViewModel();
 
             const parms = routeData.actionParams;
@@ -421,7 +245,7 @@ module NakedObjects {
         };
 
 
-        viewModelFactory.handleErrorResponse = (err: ErrorMap, messageViewModel: MessageViewModel, valueViewModels: ValueViewModel[]) => {
+        viewModelFactory.handleErrorResponse = (err: ErrorMap, messageViewModel: IMessageViewModel, valueViewModels: ValueViewModel[]) => {
 
             let requiredFieldsMissing = false; // only show warning message if we have nothing else 
             let fieldValidationErrors = false;
@@ -545,36 +369,23 @@ module NakedObjects {
         };
 
         viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number, parentValues: () => _.Dictionary<Value>) => {
-            const propertyViewModel = new PropertyViewModel();
+            const propertyViewModel = new PropertyViewModel(propertyRep);
 
-            propertyViewModel.onPaneId = paneId;
-            propertyViewModel.propertyRep = propertyRep;
-            propertyViewModel.entryType = propertyRep.entryType();
             propertyViewModel.id = id;
+            propertyViewModel.onPaneId = paneId;
             propertyViewModel.argId = `${id.toLowerCase()}`;
             propertyViewModel.paneArgId = `${propertyViewModel.argId}${paneId}`;
-            propertyViewModel.isEditable = !propertyRep.disabledReason();
-            propertyViewModel.title = propertyRep.extensions().friendlyName();
-            propertyViewModel.presentationHint = propertyRep.extensions().presentationHint();
-            propertyViewModel.optional = propertyRep.extensions().optional();
-            propertyViewModel.returnType = propertyRep.extensions().returnType();
-            propertyViewModel.draggableType = propertyRep.extensions().returnType();
-            propertyViewModel.format = propertyRep.extensions().format();
-            propertyViewModel.multipleLines = propertyRep.extensions().multipleLines() || 1;
-            propertyViewModel.password = propertyRep.extensions().dataType() === "password";
-
-            propertyViewModel.clientValid = true;
-
+  
             const required = propertyViewModel.optional ? "" : "* ";
-            propertyViewModel.description = propertyRep.extensions().description();
-
+           
             if (propertyRep.attachmentLink() != null) {
                 propertyViewModel.attachment = viewModelFactory.attachmentViewModel(propertyRep, paneId);
             }
 
+            const fieldEntryType = propertyViewModel.entryType;
             let setupChoice: (newValue: Value) => void;
 
-            if (propertyRep.entryType() === EntryType.Choices) {
+            if (fieldEntryType === EntryType.Choices) {
                 const choices = propertyRep.choices();
                 propertyViewModel.choices = _.map(choices, (v, n) => ChoiceViewModel.create(v, id, n));
 
@@ -584,13 +395,11 @@ module NakedObjects {
                 }
             } else {
                 // use choice for draggable/droppable references
-                propertyViewModel.choices = [];
-
                 setupChoice = (newValue: Value) => propertyViewModel.choice = ChoiceViewModel.create(newValue, id);
             }
 
 
-            if (propertyRep.entryType() === EntryType.AutoComplete) {
+            if (fieldEntryType === EntryType.AutoComplete) {
 
                 propertyViewModel.prompt = (searchTerm: string) => {
                     const createcvm = _.partial(createChoiceViewModels, id, searchTerm);
@@ -600,7 +409,7 @@ module NakedObjects {
                 propertyViewModel.description = propertyViewModel.description || autoCompletePrompt;
             }
 
-            if (propertyRep.entryType() === EntryType.ConditionalChoices) {
+            if (fieldEntryType === EntryType.ConditionalChoices) {
 
                 propertyViewModel.conditionalChoices = (args: _.Dictionary<Value>) => {
                     const createcvm = _.partial(createChoiceViewModels, id, null);
@@ -620,7 +429,6 @@ module NakedObjects {
             }
 
             if (propertyRep.isScalar()) {
-                propertyViewModel.reference = "";
                 propertyViewModel.type = "scalar";
 
                 const remoteMask = propertyRep.extensions().mask();
@@ -628,8 +436,7 @@ module NakedObjects {
                 propertyViewModel.localFilter = localFilter;
                 // formatting also happens in in directive - at least for dates - value is now date in that case
 
-                propertyViewModel.refresh = (newValue: Value) => callIfChanged(newValue,
-                    (value: Value) => {
+                propertyViewModel.refresh = (newValue: Value) => callIfChanged(newValue,  (value: Value) => {
 
                         setupChoice(value);
                         if (isDateOrDateTime(propertyRep)) {
@@ -678,10 +485,164 @@ module NakedObjects {
             propertyViewModel.drop = _.partial(drop, propertyViewModel);
             propertyViewModel.doClick = (right?: boolean) => urlManager.setProperty(propertyRep, clickHandler.pane(paneId, right));
 
-
             return propertyViewModel;
         };
 
+        function setupParameterChoices(parmViewModel: ParameterViewModel) {
+            const parmRep = parmViewModel.parameterRep;
+            parmViewModel.choices = _.map(parmRep.choices(), (v, n) => ChoiceViewModel.create(v, parmRep.id(), n));
+        }
+
+        function setupParameterAutocomplete(parmViewModel: ParameterViewModel) {
+            const parmRep = parmViewModel.parameterRep;
+            parmViewModel.prompt = (searchTerm: string) => {
+                const createcvm = _.partial(createChoiceViewModels, parmViewModel.id, searchTerm);
+                return context.autoComplete(parmRep, parmViewModel.id, () => <_.Dictionary<Value>>{}, searchTerm).
+                    then(createcvm);
+            };
+            parmViewModel.minLength = parmRep.promptLink().extensions().minLength();
+            parmViewModel.description = parmViewModel.description || autoCompletePrompt;
+        }
+
+        function setupParameterFreeformReference(parmViewModel: ParameterViewModel, previousValue: Value) {
+            const parmRep = parmViewModel.parameterRep;
+            parmViewModel.description = parmViewModel.description || dropPrompt;
+
+            const val = previousValue && !previousValue.isNull() ? previousValue : parmRep.default();
+
+            if (!val.isNull() && val.isReference()) {
+                parmViewModel.reference = val.link().href();
+                parmViewModel.choice = ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
+            }
+        }
+
+        function setupParameterConditionalChoices(parmViewModel: ParameterViewModel) {
+            const parmRep = parmViewModel.parameterRep;
+            parmViewModel.conditionalChoices = (args: _.Dictionary<Value>) => {
+                const createcvm = _.partial(createChoiceViewModels, parmViewModel.id, null);
+                return context.conditionalChoices(parmRep, parmViewModel.id, () => <_.Dictionary<Value>>{}, args).
+                    then(createcvm);
+            };
+            // fromPairs definition faulty
+            parmViewModel.arguments = (<any>_).fromPairs(_.map(parmRep.promptLink().arguments(), (v: any, key: string) => [key, new Value(v.value)]));
+        }
+
+        function setupParameterSelectedChoices(parmViewModel: ParameterViewModel, previousValue: Value) {
+            const parmRep = parmViewModel.parameterRep;
+            const fieldEntryType = parmViewModel.entryType;
+            function setCurrentChoices(vals: Value) {
+
+                const choicesToSet = _.map(vals.list(), val => ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null));
+
+                if (fieldEntryType === EntryType.MultipleChoices) {
+                    parmViewModel.multiChoices = _.filter(parmViewModel.choices, c => _.some(choicesToSet, choiceToSet => c.valuesEqual(choiceToSet)));
+                } else {
+                    parmViewModel.multiChoices = choicesToSet;
+                }
+            }
+
+            function setCurrentChoice(val: Value) {
+                const choiceToSet = ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
+
+                if (fieldEntryType === EntryType.Choices) {
+                    parmViewModel.choice = _.find(parmViewModel.choices, c => c.valuesEqual(choiceToSet));
+                } else {
+                    if (!parmViewModel.choice || parmViewModel.choice.getValue().toValueString() !== choiceToSet.getValue().toValueString()) {
+                        parmViewModel.choice = choiceToSet;
+                    }
+                }
+            }
+
+            parmViewModel.refresh = (newValue: Value) => {
+
+                if (newValue || parmViewModel.dflt) {
+                    const toSet = newValue || parmRep.default();
+                    if (fieldEntryType === EntryType.MultipleChoices || fieldEntryType === EntryType.MultipleConditionalChoices ||
+                        parmViewModel.isCollectionContributed) {
+                        setCurrentChoices(toSet);
+                    } else {
+                        setCurrentChoice(toSet);
+                    }
+                }
+                parmViewModel.setColor(color);
+            }
+
+            parmViewModel.refresh(previousValue);
+            
+        }
+
+        function setupParameterSelectedValue(parmViewModel: ParameterViewModel, previousValue: Value) {
+            const parmRep = parmViewModel.parameterRep;
+            const returnType = parmRep.extensions().returnType();
+
+            parmViewModel.refresh = (newValue: Value) => {
+
+                if (returnType === "boolean") {
+                    const valueToSet = (newValue ? newValue.toValueString() : null) || parmRep.default().scalar();
+                    const bValueToSet = toTriStateBoolean(valueToSet);
+
+                    parmViewModel.value = bValueToSet;
+                } else if (isDateOrDateTime(parmRep)) {
+                    parmViewModel.value = toUtcDate(newValue || new Value(parmViewModel.dflt));
+                } else if (isTime(parmRep)) {
+                    parmViewModel.value = toTime(newValue || new Value(parmViewModel.dflt));
+                } else {
+                    parmViewModel.value = (newValue ? newValue.toString() : null) || parmViewModel.dflt || "";
+                }
+                parmViewModel.setColor(color);
+            }
+
+            parmViewModel.refresh(previousValue);
+        }
+
+        function getRequiredIndicator(parmViewModel: ParameterViewModel) {
+            return parmViewModel.optional || parmViewModel.value instanceof Boolean ? "" : "* ";
+        }
+
+        viewModelFactory.parameterViewModel = (parmRep: Parameter, previousValue: Value, paneId: number) => {
+            const parmViewModel = new ParameterViewModel(parmRep);
+
+            parmViewModel.onPaneId = paneId;
+
+            const fieldEntryType = parmViewModel.entryType;
+          
+            if (fieldEntryType === EntryType.Choices || fieldEntryType === EntryType.MultipleChoices) {
+                setupParameterChoices(parmViewModel);
+            }
+
+            if (fieldEntryType === EntryType.AutoComplete) {
+                setupParameterAutocomplete(parmViewModel);
+            }
+
+            if (fieldEntryType === EntryType.FreeForm && parmViewModel.type === "ref") {
+                setupParameterFreeformReference(parmViewModel, previousValue);
+            }
+
+            if (fieldEntryType === EntryType.ConditionalChoices || fieldEntryType === EntryType.MultipleConditionalChoices) {
+                setupParameterConditionalChoices(parmViewModel);
+            }
+
+            if (fieldEntryType !== EntryType.FreeForm || parmViewModel.isCollectionContributed) {
+                setupParameterSelectedChoices(parmViewModel, previousValue);
+            } else {
+                setupParameterSelectedValue(parmViewModel, previousValue);
+            }
+
+            const remoteMask = parmRep.extensions().mask();
+
+            if (remoteMask && parmRep.isScalar()) {
+                const localFilter = mask.toLocalFilter(remoteMask, parmRep.extensions().format());
+                parmViewModel.localFilter = localFilter;
+                // formatting also happens in in directive - at least for dates - value is now date in that case
+                parmViewModel.formattedValue = parmViewModel.value ? localFilter.filter(parmViewModel.value.toString()) : "";
+            }
+
+            parmViewModel.description = getRequiredIndicator(parmViewModel) + parmViewModel.description;
+            parmViewModel.validate = _.partial(validate, parmRep, parmViewModel) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
+            parmViewModel.drop = _.partial(drop, parmViewModel);
+
+            return parmViewModel;
+        };
 
         viewModelFactory.getItems = (links: Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: ListViewModel | CollectionViewModel) => {
             const selectedItems = routeData.selectedItems;

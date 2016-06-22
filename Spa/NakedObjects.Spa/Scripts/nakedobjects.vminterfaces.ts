@@ -26,7 +26,7 @@ module NakedObjects {
         valuesEqual: (other: IChoiceViewModel) => boolean;
     }
 
-    export interface IDraggableViewModel {       
+    export interface IDraggableViewModel {
         value: scalarValueType | Date;
         reference: string;
         choice: IChoiceViewModel;
@@ -48,7 +48,7 @@ module NakedObjects {
 
     export interface ILinkViewModel {
         title: string;
-        domainType: string;   
+        domainType: string;
         link: Link;
 
         doClick: (right?: boolean) => void;
@@ -60,5 +60,17 @@ module NakedObjects {
 
         selectionChange: (index: number) => void;
     }
+
+    export interface IRecentItemViewModel extends ILinkViewModel {
+        friendlyName: string;
+    }
+
+    export interface  IMessageViewModel {
+        clearMessage : () => void ;
+        resetMessage : () => void ;
+        setMessage: (msg: string) => void;
+        getMessage: () => string;
+    }
+
 
 }

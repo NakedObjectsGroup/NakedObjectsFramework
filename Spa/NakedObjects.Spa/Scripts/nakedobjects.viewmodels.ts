@@ -29,14 +29,14 @@ module NakedObjects {
     import toTimeString = Models.toTimeString;
     import IVersionRepresentation = RoInterfaces.IVersionRepresentation;
     import IUserRepresentation = RoInterfaces.IUserRepresentation;
+    import Extensions = Models.Extensions;
 
-    
     function tooltip(onWhat: { clientValid: () => boolean }, fields: ValueViewModel[]): string {
         if (onWhat.clientValid()) {
             return "";
         }
 
-        const missingMandatoryFields = _.filter(fields, p => !p.clientValid && !p.message);
+        const missingMandatoryFields = _.filter(fields, p => !p.clientValid && !p.getMessage());
 
         if (missingMandatoryFields.length > 0) {
             return _.reduce(missingMandatoryFields, (s, t) => s + t.title + "; ", mandatoryFieldsPrefix);
@@ -239,14 +239,15 @@ module NakedObjects {
         selectionChange: (index: number) => void;
     }
 
-    export class RecentItemViewModel extends ItemViewModel {
+    export class RecentItemViewModel extends LinkViewModel implements IRecentItemViewModel, IDraggableViewModel {
         friendlyName: string;
     }
 
-    export class MessageViewModel {
-        previousMessage: string = "";
-        message: string = "";
-        clearMessage() {
+    abstract class MessageViewModel implements IMessageViewModel {
+        private previousMessage = "";
+        private message = "";
+        
+        clearMessage = () => {
             if (this.message === this.previousMessage) {
                 this.resetMessage();
             } else {
@@ -254,58 +255,76 @@ module NakedObjects {
             }
         }
 
-        resetMessage() {
-            this.message = this.previousMessage = "";
-        }
-
-        setMessage(msg: string) {
-            this.message = msg;
-        }
+        resetMessage = () => this.message = this.previousMessage = "";
+        setMessage = (msg: string) => this.message = msg;
+        getMessage = () => this.message; 
     }
 
     export class ValueViewModel extends MessageViewModel {
 
-        validate: (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
-        clientValid: boolean;
+        constructor(ext: Extensions) {
+            super();
+            this.optional = ext.optional();
+            this.description = ext.description();
+            this.presentationHint = ext.presentationHint();
+            this.mask = ext.mask();
+            this.title = ext.friendlyName();
+            this.returnType = ext.returnType();
+            this.format = ext.format();
+            this.multipleLines = ext.multipleLines() || 1;
+            this.password = ext.dataType() === "password";                                         
+        }
 
-        isDirty = () => false;
+        id: string;
+        argId: string;
+        paneArgId: string;
+        onPaneId: number;
 
+        optional: boolean;
+        description: string;
+        presentationHint: string;
+        mask: string;
+        title: string;
+        returnType: string;
+        format: formatType;
+        multipleLines: number;
+        password: boolean;
+
+
+        clientValid = true;
+      
+
+        type: "scalar" | "ref";
+        reference: string = "";
+        minLength: number;
+
+        color: string;
+        
+        isCollectionContributed: boolean;
+       
+    
+        arguments: _.Dictionary<Value>;
+        
+        
         currentValue: Value;
         originalValue: Value;
 
         localFilter: ILocalFilter;
         formattedValue: string;
         value: scalarValueType | Date;
-        id: string;
-        argId: string;
-        paneArgId: string;
-        choices: IChoiceViewModel[];
+      
+        choices: IChoiceViewModel[] = [];  
 
-        type: "scalar" | "ref";
-        reference: string;
         choice: IChoiceViewModel;
         multiChoices: IChoiceViewModel[];
-        file: Link;
 
-        returnType: string;
-        title: string;
-        format: formatType;
-        arguments: _.Dictionary<Value>;
-        mask: string;
-        password: boolean;
+        file: Link;     
 
-        minLength: number;
-
-        color: string;
-        description: string;
-        presentationHint: string;
-        optional: boolean;
-        isCollectionContributed: boolean;
-        onPaneId: number;
-
-        multipleLines: number;
+        isDirty = () => false;
 
         entryType: EntryType;
+
+        validate: (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
 
         refresh: (newValue: Value) => void;
 
@@ -349,7 +368,6 @@ module NakedObjects {
 
             this.color = "";
         }
-
 
         getValue(): Value {
 
@@ -407,6 +425,19 @@ module NakedObjects {
     }
 
     export class ParameterViewModel extends ValueViewModel {
+
+        constructor(parmRep: Parameter) {
+            super(parmRep.extensions());
+            this.parameterRep = parmRep;
+            this.type = parmRep.isScalar() ? "scalar" : "ref";
+            this.dflt = parmRep.default().toString();
+            this.id = parmRep.id();
+            this.argId = `${this.id.toLowerCase()}`;
+            this.paneArgId = `${this.argId}${this.onPaneId}`;
+            this.isCollectionContributed = parmRep.isCollectionContributed();
+            this.entryType = parmRep.entryType();
+        }
+
         parameterRep: Parameter;
         dflt: string;
     }
@@ -475,7 +506,7 @@ module NakedObjects {
 
         private actionMember = () => this.actionViewModel.actionRep;
         title: string;
-        message: string;
+
         isQueryOnly: boolean;
         onPaneId: number;
         id: string;
@@ -543,6 +574,17 @@ module NakedObjects {
 
     export class PropertyViewModel extends ValueViewModel implements IDraggableViewModel {
 
+        constructor(propertyRep: PropertyMember) {
+            super(propertyRep.extensions());
+            this.draggableType = propertyRep.extensions().returnType();
+
+            this.propertyRep = propertyRep;
+            this.entryType = propertyRep.entryType();
+            this.isEditable = !propertyRep.disabledReason();
+            this.entryType = propertyRep.entryType();
+        }
+
+
         propertyRep: PropertyMember;
         target: string;
         isEditable: boolean;
@@ -550,10 +592,12 @@ module NakedObjects {
         draggableType: string;
         refType: "null" | "navigable" | "notNavigable";
 
-        doClick(right?: boolean): void { }
+        doClick(right?: boolean): void {}
 
         canDropOn: (targetType: string) => ng.IPromise<boolean>;
-    }
+
+   
+   }
 
     export class CollectionPlaceholderViewModel {
         description: () => string;
@@ -761,7 +805,7 @@ module NakedObjects {
 
         doSummary = () => {
             this.context.updateValues();
-            this.urlManager.setListState(CollectionViewState.Summary, this.onPaneId)
+            this.urlManager.setListState(CollectionViewState.Summary, this.onPaneId);
         };
         doList = () => {
             this.context.updateValues();
@@ -1180,7 +1224,7 @@ module NakedObjects {
 
     export class RecentItemsViewModel {
         onPaneId: number;
-        items: RecentItemViewModel[];
+        items: IRecentItemViewModel[];
     }
 
     export interface INakedObjectsScope extends ng.IScope {
