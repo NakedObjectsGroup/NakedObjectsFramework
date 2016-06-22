@@ -314,6 +314,56 @@ module NakedObjects {
             }
         }
 
+        function setScalarValueInView(vm: { value: string | number | boolean| Date }, propertyRep : PropertyMember,  value: Value) {
+            if (isDateOrDateTime(propertyRep)) {
+                vm.value = toUtcDate(value);
+            } else if (isTime(propertyRep)) {
+                vm.value = toTime(value);
+            } else {
+                vm.value = value.scalar();
+            }
+        }
+
+        function setupChoice(propertyViewModel: PropertyViewModel, newValue: Value) {
+            if (propertyViewModel.entryType === EntryType.Choices) {
+                const propertyRep = propertyViewModel.propertyRep;
+                const choices = propertyRep.choices();
+                propertyViewModel.choices = _.map(choices, (v, n) => ChoiceViewModel.create(v, propertyViewModel.id, n));
+
+                const currentChoice = ChoiceViewModel.create(newValue, propertyViewModel.id);
+                propertyViewModel.choice = _.find(propertyViewModel.choices, c => c.valuesEqual(currentChoice));
+            } else {
+                propertyViewModel.choice = ChoiceViewModel.create(newValue, propertyViewModel.id);
+            }
+        }
+
+        function setupScalarPropertyValue(propertyViewModel: PropertyViewModel) {
+            const propertyRep = propertyViewModel.propertyRep;
+            propertyViewModel.type = "scalar";
+
+            const remoteMask = propertyRep.extensions().mask();
+            const localFilter = mask.toLocalFilter(remoteMask, propertyRep.extensions().format());
+            propertyViewModel.localFilter = localFilter;
+            // formatting also happens in in directive - at least for dates - value is now date in that case
+
+            propertyViewModel.refresh = (newValue: Value) => callIfChanged(propertyViewModel, newValue, (value: Value) => {
+
+                setupChoice(propertyViewModel, value);
+                setScalarValueInView(propertyViewModel, propertyRep, value);
+                
+                if (propertyRep.entryType() === EntryType.Choices) {
+                    if (propertyViewModel.choice) {
+                        propertyViewModel.value = propertyViewModel.choice.name;
+                        propertyViewModel.formattedValue = propertyViewModel.choice.name;
+                    }
+                } else if (propertyViewModel.password) {
+                    propertyViewModel.formattedValue = obscuredText;
+                } else {
+                    propertyViewModel.formattedValue = localFilter.filter(propertyViewModel.value);
+                }
+            });
+        }
+
         viewModelFactory.propertyTableViewModel = (propertyRep: PropertyMember | CollectionMember, id: string, paneId: number) => {
             const tableRowColumnViewModel = new TableRowColumnViewModel();
 
@@ -334,13 +384,9 @@ module NakedObjects {
                 tableRowColumnViewModel.returnType = propertyRep.extensions().returnType();
 
                 if (propertyRep.isScalar()) {
-                    if (isDateOrDateTime(propertyRep)) {
-                        tableRowColumnViewModel.value = toUtcDate(value);
-                    } else {
-                        tableRowColumnViewModel.value = value.scalar();
-                    }
                     tableRowColumnViewModel.type = "scalar";
-
+                    setScalarValueInView(tableRowColumnViewModel, propertyRep, value);
+                    
                     const remoteMask = propertyRep.extensions().mask();
                     const localFilter = mask.toLocalFilter(remoteMask, propertyRep.extensions().format());
 
@@ -396,53 +442,7 @@ module NakedObjects {
                 doRefresh(value);
                 propertyViewModel.currentValue = value;
             }
-        }
-
-        function setupChoice(propertyViewModel: PropertyViewModel, newValue: Value) {
-            if (propertyViewModel.entryType === EntryType.Choices) {
-                const propertyRep = propertyViewModel.propertyRep;
-                const choices = propertyRep.choices();
-                propertyViewModel.choices = _.map(choices, (v, n) => ChoiceViewModel.create(v, propertyViewModel.id, n));
-
-                const currentChoice = ChoiceViewModel.create(newValue, propertyViewModel.id);
-                propertyViewModel.choice = _.find(propertyViewModel.choices, c => c.valuesEqual(currentChoice));
-            } else {
-                propertyViewModel.choice = ChoiceViewModel.create(newValue, propertyViewModel.id);
-            }
-        }
-
-        function setupScalarPropertyValue(propertyViewModel: PropertyViewModel) {
-            const propertyRep = propertyViewModel.propertyRep;
-            propertyViewModel.type = "scalar";
-
-            const remoteMask = propertyRep.extensions().mask();
-            const localFilter = mask.toLocalFilter(remoteMask, propertyRep.extensions().format());
-            propertyViewModel.localFilter = localFilter;
-            // formatting also happens in in directive - at least for dates - value is now date in that case
-
-            propertyViewModel.refresh = (newValue: Value) => callIfChanged(propertyViewModel, newValue, (value: Value) => {
-
-                setupChoice(propertyViewModel, value);
-                if (isDateOrDateTime(propertyRep)) {
-                    propertyViewModel.value = toUtcDate(value);
-                } else if (isTime(propertyRep)) {
-                    propertyViewModel.value = toTime(value);
-                } else {
-                    propertyViewModel.value = value.scalar();
-                }
-
-                if (propertyRep.entryType() === EntryType.Choices) {
-                    if (propertyViewModel.choice) {
-                        propertyViewModel.value = propertyViewModel.choice.name;
-                        propertyViewModel.formattedValue = propertyViewModel.choice.name;
-                    }
-                } else if (propertyViewModel.password) {
-                    propertyViewModel.formattedValue = obscuredText;
-                } else {
-                    propertyViewModel.formattedValue = localFilter.filter(propertyViewModel.value);
-                }
-            });
-        }
+        } 
 
         function setupReferencePropertyValue(propertyViewModel: PropertyViewModel) {
             const propertyRep = propertyViewModel.propertyRep;
@@ -610,7 +610,7 @@ module NakedObjects {
         }
 
         function getRequiredIndicator(parmViewModel: ParameterViewModel) {
-            return parmViewModel.optional || parmViewModel.value instanceof Boolean ? "" : "* ";
+            return parmViewModel.optional || typeof parmViewModel.value === "boolean" ? "" : "* ";
         }
 
         viewModelFactory.parameterViewModel = (parmRep: Parameter, previousValue: Value, paneId: number) => {
