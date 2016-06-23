@@ -57,7 +57,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             ClickBackButton();
             WaitForView(Pane.Single, PaneType.Object, orderTitle);
         }
-
         public virtual void Cicero() {
             GeminiUrl("object?o1=___1.Product--968");
             WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
@@ -74,21 +73,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Click(WaitForCss(".icon-speech"));
             WaitForOutput("Product: Touring-1000 Blue, 54\r\nAction dialog: Best Special Offer\r\nQuantity: empty");
         }
-
-        public virtual void WarningsAndInfo() {
-            GeminiUrl("home?m1=WorkOrderRepository");
-            Click(GetObjectAction("Generate Info And Warning"));
-            var warn = WaitForCss(".footer .warnings");
-            Assert.AreEqual("Warn User of something else", warn.Text);
-            var msg = WaitForCss(".footer .messages");
-            Assert.AreEqual("Inform User of something", msg.Text);
-
-            //Test that both are cleared by next action
-            Click(GetObjectAction("Random Work Order"));
-            WaitUntilElementDoesNotExist(".footer .warnings");
-            WaitUntilElementDoesNotExist(".footer .messages");
-        }
-
         public virtual void RecentObjects() {
             GeminiUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber&f1_accountNumber=%22AW%22");
             ClearFieldThenType("#accountnumber1", "AW00000042");
@@ -119,7 +103,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             el = WaitForCssNo("tr td:nth-child(1)", 3);
             Assert.AreEqual("Healthy Activity Store, AW00000042", el.Text);
         }
-
         public virtual void ApplicationProperties() {
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
@@ -132,13 +115,37 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.IsTrue(properties[2].Text.StartsWith("Server version: 8.0.0"));
             Assert.IsTrue(properties[3].Text.StartsWith("Client version: 8.0.0"));
         }
-
         public virtual void LogOff() {
             GeminiUrl("home");
             ClickLogOffButton();
             IAlert alert = br.SwitchTo().Alert();
             Assert.IsTrue(alert.Text.StartsWith("Please confirm logoff of user:"));
         }
+        #region WarningsAndInfo
+        public virtual void ExplicitWarningsAndInfo()
+        {
+            GeminiUrl("home?m1=WorkOrderRepository");
+            Click(GetObjectAction("Generate Info And Warning"));
+            var warn = WaitForCss(".footer .warnings");
+            Assert.AreEqual("Warn User of something else", warn.Text);
+            var msg = WaitForCss(".footer .messages");
+            Assert.AreEqual("Inform User of something", msg.Text);
+
+            //Test that both are cleared by next action
+            Click(GetObjectAction("Random Work Order"));
+            WaitUntilElementDoesNotExist(".footer .warnings");
+            WaitUntilElementDoesNotExist(".footer .messages");
+        }
+
+        public virtual void ZeroParamActionReturningNullGeneratesGenericWarning()
+        {
+            GeminiUrl("home?m1=EmployeeRepository");
+            Click(GetObjectAction("Me"));
+            WaitForTextEquals(".footer .warnings", "no result found");
+            Click(GetObjectAction("My Departmental Colleagues"));
+            WaitForTextEquals(".footer .warnings", "Current user unknown");
+        }
+        #endregion
     }
 
     public abstract class FooterTests : FooterTestsRoot {
@@ -158,11 +165,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        public override void WarningsAndInfo() {
-            base.WarningsAndInfo();
-        }
-
-        [TestMethod]
         public override void RecentObjects() {
             base.RecentObjects();
         }
@@ -176,6 +178,19 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public override void LogOff() {
             base.LogOff();
         }
+
+        #region Warnings and Info
+        [TestMethod]
+        public override void ExplicitWarningsAndInfo()
+        {
+            base.ExplicitWarningsAndInfo();
+        }
+        [TestMethod]
+        public override void ZeroParamActionReturningNullGeneratesGenericWarning()
+        {
+            base.ZeroParamActionReturningNullGeneratesGenericWarning();
+        }
+        #endregion
     }
 
     #region browsers specific subclasses 
@@ -249,10 +264,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Home();
             BackAndForward();
             Cicero();
-            WarningsAndInfo();
             RecentObjects();
             ApplicationProperties();
             LogOff();
+            ExplicitWarningsAndInfo();
+            ZeroParamActionReturningNullGeneratesGenericWarning();
         }
     }
 

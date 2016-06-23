@@ -215,6 +215,14 @@ namespace AdventureWorksModel {
         {
             this.ManagerID = manager.BusinessEntityID;
         }
+
+        public IQueryable<Employee> ColleaguesInSameDept()
+        {
+            var allCurrent = Container.Instances<EmployeeDepartmentHistory>().Where(edh => edh.EndDate == null);
+            var thisId = this.BusinessEntityID;
+            var thisDeptId = allCurrent.Single(edh => edh.EmployeeID == thisId).DepartmentID;
+            return allCurrent.Where(edh => edh.DepartmentID == thisDeptId).Select(edh => edh.Employee);
+        }
         #endregion
     }
 }

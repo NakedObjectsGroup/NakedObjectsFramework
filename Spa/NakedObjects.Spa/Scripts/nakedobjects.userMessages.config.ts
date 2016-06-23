@@ -33,9 +33,8 @@ module NakedObjects {
     export const noItemsSelected = "Must select items for collection contributed action";
     export const dropPrompt = "(drop here)";
     export const autoCompletePrompt = "(auto-complete or drop)";
-    export const concurrencyMessage = "Object has been updated by another user\n. Object has been reloaded.";
+    export const concurrencyMessage = "The object has been reloaded to pick up changes by another user. Please review, and re-enter any changes you still require.";
     export const loadingMessage = "Loading...";
-
 
     export const outOfRange = (val: any, min: any, max: any, filter: ILocalFilter) => `Value is outside the range ${filter.filter(min) || "unlimited"} to ${filter.filter(max) || "unlimited"}`;
 

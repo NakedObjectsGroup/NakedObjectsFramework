@@ -93,11 +93,20 @@ namespace AdventureWorksModel {
         [FinderAction]
         [QueryOnly]
         public Employee Me() {
-            Employee currentUser = CurrentUserAsEmployee();
-            if (currentUser == null) {
-                WarnUser("No Employee for current user");
+            return CurrentUserAsEmployee();
+        }
+
+        public IQueryable<Employee> MyDepartmentalColleagues()
+        {
+            var me = CurrentUserAsEmployee();
+            if (me == null)
+            {
+                Container.WarnUser("Current user unknown");
+                return null;
+            } else
+            {
+                return me.ColleaguesInSameDept();
             }
-            return currentUser;
         }
 
         #region RandomEmployee

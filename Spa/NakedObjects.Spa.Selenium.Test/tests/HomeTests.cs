@@ -149,7 +149,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual(0, rows.Count);
         }
 
-        //Failing due to focus issue 
         public virtual void DialogActionOK() {
             Url(CustomersMenuUrl);
             WaitForCss(".actions .action", CustomerServiceActions);
@@ -162,7 +161,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Marcus Collins, AW00022262");
         }
-
         #endregion
     }
 
@@ -212,6 +210,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public override void DialogActionOK() {
             base.DialogActionOK();
         }
+
+
 
         #endregion
     }
