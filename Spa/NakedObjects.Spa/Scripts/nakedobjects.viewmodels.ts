@@ -318,7 +318,7 @@ module NakedObjects {
         set choice(newChoice: IChoiceViewModel) {
             // type guard becauase angular pushes string value here until directive finds 
             // choice
-            if (newChoice instanceof ChoiceViewModel) {
+            if (newChoice instanceof ChoiceViewModel || newChoice == null) {
                 this.currentChoice = newChoice;
                 this.updateColor();
             }
