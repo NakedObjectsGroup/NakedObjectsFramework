@@ -361,11 +361,16 @@ public virtual void AutoCompleteOptionalParamNotSelected()
         {
             //Test written against a bug in 8.0.0-beta9
             GeminiUrl("home?m1=OrderRepository&d1=FindOrders");
-            ClearFieldThenType("#customer1", "AW00000"); 
+            OKButton().AssertIsEnabled();
+            ClearFieldThenType("#customer1", "AW00000");
             //but don't select the item
-            Click(OKButton());
-            //Previously error thrown here
-            WaitForView(Pane.Single, PaneType.List, "Find Orders");
+            //TODO: Message should change to Invalid fields
+            OKButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Customer; ");
+            ClearFieldThenType("#customer1", "AW00000456");
+            wait.Until(dr => dr.FindElement(By.CssSelector(".ui-menu-item")).Text == "Riding Excursions, AW00000456");
+            var item = br.FindElement(By.CssSelector(".ui-menu-item"));
+            Click(item);
+            OKButton().AssertIsEnabled();
         }
         #endregion
 
@@ -580,7 +585,7 @@ public virtual void AutoCompleteOptionalParamNotSelected()
         public override void AutoCompleteScalarField() {
             base.AutoCompleteScalarField();
         }
-        [TestMethod, Ignore] //Pending bug fix
+        [TestMethod]
         public override void AutoCompleteOptionalParamNotSelected()
         {
             base.AutoCompleteOptionalParamNotSelected();
@@ -615,7 +620,7 @@ public virtual void AutoCompleteOptionalParamNotSelected()
             base.CoValidationOfMultipleParameters();
         }
 
-        [TestMethod, Ignore]//Pending bug fix
+        [TestMethod]
         public override void OptionalReferenceParamCanBeNull()
         {
             base.OptionalReferenceParamCanBeNull();
@@ -713,7 +718,7 @@ public virtual void AutoCompleteOptionalParamNotSelected()
             ClearingAutoCompleteTextClearsUnderlyingReference();
             AutoCompleteParmShowSingleItem();
             AutoCompleteScalarField();
-            //AutoCompleteOptionalParamNotSelected();
+            AutoCompleteOptionalParamNotSelected();
             MandatoryParameterEnforced();
             ValidateSingleValueParameter();
             ValidateSingleRefParamFromChoices();
@@ -724,7 +729,7 @@ public virtual void AutoCompleteOptionalParamNotSelected()
             DefaultReferenceParamRendersCorrectly();
             QueryOnlyActionDialogPersists();
             PotentActionDialogDisappearsAndFieldsNotRemembered();
-            //OptionalReferenceParamCanBeNull();
+            OptionalReferenceParamCanBeNull();
         }
     }
 
