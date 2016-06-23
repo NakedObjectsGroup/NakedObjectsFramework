@@ -302,7 +302,7 @@ namespace AdventureWorksModel {
         [MemberOrder(5)]
         public IQueryable<Product> FindByProductLineAndClass(ProductLineEnum productLine, ProductClassEnum productClass) {
             string pls = Enum.GetName(typeof (ProductLineEnum), productLine);
-            string pcs = Enum.GetName(typeof (ProductClassEnum), productLine);
+            string pcs = Enum.GetName(typeof (ProductClassEnum), productClass);
 
             return Container.Instances<Product>().Where(p => p.ProductLine == pls && p.Class == pcs);
         }
