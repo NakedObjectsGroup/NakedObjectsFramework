@@ -29,14 +29,14 @@ module NakedObjects {
     import toTimeString = Models.toTimeString;
     import IVersionRepresentation = RoInterfaces.IVersionRepresentation;
     import IUserRepresentation = RoInterfaces.IUserRepresentation;
+    import Extensions = Models.Extensions;
 
-    
-    function tooltip(onWhat: { clientValid: () => boolean }, fields: ValueViewModel[]): string {
+    function tooltip(onWhat: { clientValid: () => boolean }, fields: IFieldViewModel[]): string {
         if (onWhat.clientValid()) {
             return "";
         }
 
-        const missingMandatoryFields = _.filter(fields, p => !p.clientValid && !p.message);
+        const missingMandatoryFields = _.filter(fields, p => !p.clientValid && !p.getMessage());
 
         if (missingMandatoryFields.length > 0) {
             return _.reduce(missingMandatoryFields, (s, t) => s + t.title + "; ", mandatoryFieldsPrefix);
@@ -84,26 +84,24 @@ module NakedObjects {
         return menu || "";
     }
 
-    function removeDuplicateMenus(menus: MenuItemViewModel[]) {
-        return _.uniqWith(menus, (a: MenuItemViewModel, b: MenuItemViewModel) => {
-            if (a.name && b.name) {
-                return a.name === b.name;
+    function removeDuplicateMenus(menus: IMenuItemViewModel[]) {
+        return _.uniqWith(menus, (m1: IMenuItemViewModel, m2: IMenuItemViewModel) => {
+            if (m1.name && m2.name) {
+                return m1.name === m2.name;
             }
             return false;
         });
     }
 
-    export function createSubmenuItems(avms: ActionViewModel[], menu: MenuItemViewModel, level: number) {
+    export function createSubmenuItems(avms: IActionViewModel[], menu: IMenuItemViewModel, level: number) {
         // if not root menu aggregate all actions with same name
         if (menu.name) {
-            const actions = _.filter(avms, a => getMenuForLevel(a.menuPath, level) === menu.name &&
-                !getMenuForLevel(a.menuPath, level + 1));
+            const actions = _.filter(avms, a => getMenuForLevel(a.menuPath, level) === menu.name && !getMenuForLevel(a.menuPath, level + 1));
             menu.actions = actions;
 
             //then collate submenus 
 
-            const submenuActions = _.filter(avms, a => getMenuForLevel(a.menuPath, level) === menu.name &&
-                getMenuForLevel(a.menuPath, level + 1));
+            const submenuActions = _.filter(avms, a => getMenuForLevel(a.menuPath, level) === menu.name && getMenuForLevel(a.menuPath, level + 1));
             let menus = _
                 .chain(submenuActions)
                 .map(a => new MenuItemViewModel(getMenuForLevel(a.menuPath, level + 1), null, null))
@@ -116,7 +114,7 @@ module NakedObjects {
         return menu;
     }
 
-    export function createMenuItems(avms: ActionViewModel[]) {
+    export function createMenuItems(avms: IActionViewModel[]) {
 
         // first create a top level menu for each action 
         // note at top level we leave 'un-menued' actions
@@ -239,14 +237,15 @@ module NakedObjects {
         selectionChange: (index: number) => void;
     }
 
-    export class RecentItemViewModel extends ItemViewModel {
+    export class RecentItemViewModel extends LinkViewModel implements IRecentItemViewModel, IDraggableViewModel {
         friendlyName: string;
     }
 
-    export class MessageViewModel {
-        previousMessage: string = "";
-        message: string = "";
-        clearMessage() {
+    abstract class MessageViewModel implements IMessageViewModel {
+        private previousMessage = "";
+        private message = "";
+        
+        clearMessage = () => {
             if (this.message === this.previousMessage) {
                 this.resetMessage();
             } else {
@@ -254,68 +253,101 @@ module NakedObjects {
             }
         }
 
-        resetMessage() {
-            this.message = this.previousMessage = "";
-        }
-
-        setMessage(msg: string) {
-            this.message = msg;
-        }
+        resetMessage = () => this.message = this.previousMessage = "";
+        setMessage = (msg: string) => this.message = msg;
+        getMessage = () => this.message; 
     }
 
-    export class ValueViewModel extends MessageViewModel {
+    abstract class ValueViewModel extends MessageViewModel implements IFieldViewModel {
 
-        validate: (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
-        clientValid: boolean;
+        constructor(ext: Extensions, color : IColor) {
+            super();
+            this.optional = ext.optional();
+            this.description = ext.description();
+            this.presentationHint = ext.presentationHint();
+            this.mask = ext.mask();
+            this.title = ext.friendlyName();
+            this.returnType = ext.returnType();
+            this.format = ext.format();
+            this.multipleLines = ext.multipleLines() || 1;
+            this.password = ext.dataType() === "password";
+            this.updateColor = _.partial(this.setColor, color);                                         
+        }
 
-        isDirty = () => false;
+        id: string;
+        argId: string;
+        paneArgId: string;
+        onPaneId: number;
 
+        optional: boolean;
+        description: string;
+        presentationHint: string;
+        mask: string;
+        title: string;
+        returnType: string;
+        format: formatType;
+        multipleLines: number;
+        password: boolean;
+
+        clientValid = true;
+      
+        type: "scalar" | "ref";
+        reference: string = "";
+        minLength: number;
+
+        color: string;
+        
+        isCollectionContributed: boolean;
+          
+        promptArguments: _.Dictionary<Value>;
+         
         currentValue: Value;
         originalValue: Value;
 
         localFilter: ILocalFilter;
-        formattedValue: string;
-        value: scalarValueType | Date;
-        id: string;
-        argId: string;
-        paneArgId: string;
-        choices: IChoiceViewModel[];
+        formattedValue: string;    
+      
+        choices: IChoiceViewModel[] = [];  
 
-        type: "scalar" | "ref";
-        reference: string;
-        choice: IChoiceViewModel;
+        private currentChoice: IChoiceViewModel;
+
+        get choice(): IChoiceViewModel {
+            return this.currentChoice;
+        }
+
+        set choice(newChoice: IChoiceViewModel) {
+            // type guard becauase angular pushes string value here until directive finds 
+            // choice
+            if (newChoice instanceof ChoiceViewModel || newChoice == null) {
+                this.currentChoice = newChoice;
+                this.updateColor();
+            }
+        }
+
+        private currentRawValue: scalarValueType | Date;
+
+        get value(): scalarValueType | Date {
+            return this.currentRawValue;
+        }
+
+        set value(newValue: scalarValueType | Date) {
+            this.currentRawValue = newValue;
+            this.updateColor();
+        }
+
         multiChoices: IChoiceViewModel[];
-        file: Link;
 
-        returnType: string;
-        title: string;
-        format: formatType;
-        arguments: _.Dictionary<Value>;
-        mask: string;
-        password: boolean;
-
-        minLength: number;
-
-        color: string;
-        description: string;
-        presentationHint: string;
-        optional: boolean;
-        isCollectionContributed: boolean;
-        onPaneId: number;
-
-        multipleLines: number;
+        private file: Link;     
 
         entryType: EntryType;
 
+        validate: (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
+
         refresh: (newValue: Value) => void;
 
-        prompt(searchTerm: string): ng.IPromise<ChoiceViewModel[]> {
-            return null;
-        }
+        prompt : (searchTerm: string)=> ng.IPromise<ChoiceViewModel[]>;
 
-        conditionalChoices(args: _.Dictionary<Value>): ng.IPromise<ChoiceViewModel[]> {
-            return null;
-        }
+        conditionalChoices : (args: _.Dictionary<Value>) => ng.IPromise<ChoiceViewModel[]>;
 
         setNewValue(newValue: IDraggableViewModel) {
             this.value = newValue.value;
@@ -333,7 +365,9 @@ module NakedObjects {
             this.color = "";
         }
 
-        setColor(color: IColor) {
+        private updateColor : () => void ; 
+
+        private setColor(color: IColor) {
 
             if (this.entryType === EntryType.AutoComplete && this.choice && this.type === "ref") {
                 const href = this.choice.getValue().href();
@@ -349,7 +383,6 @@ module NakedObjects {
 
             this.color = "";
         }
-
 
         getValue(): Value {
 
@@ -407,11 +440,25 @@ module NakedObjects {
     }
 
     export class ParameterViewModel extends ValueViewModel {
+
+        constructor(parmRep: Parameter, paneId : number, color : IColor) {
+            super(parmRep.extensions(), color);
+            this.parameterRep = parmRep;
+            this.onPaneId = paneId;
+            this.type = parmRep.isScalar() ? "scalar" : "ref";
+            this.dflt = parmRep.default().toString();
+            this.id = parmRep.id();
+            this.argId = `${this.id.toLowerCase()}`;
+            this.paneArgId = `${this.argId}${this.onPaneId}`;
+            this.isCollectionContributed = parmRep.isCollectionContributed();
+            this.entryType = parmRep.entryType();
+        }
+
         parameterRep: Parameter;
         dflt: string;
     }
 
-    export class ActionViewModel {
+    export class ActionViewModel implements IActionViewModel {
         actionRep: ActionMember | ActionRepresentation;
         invokableActionRep: IInvokableAction;
 
@@ -420,27 +467,20 @@ module NakedObjects {
         description: string;
         presentationHint : string;
 
-        // todo - confusing name better 
         doInvoke: (right?: boolean) => void;
-        executeInvoke: (pps: ParameterViewModel[], right?: boolean) => ng.IPromise<ActionResultRepresentation>;
-
-        disabled(): boolean { return false; }
-
-        parameters: () => ParameterViewModel[];
-        stopWatchingParms: () => void;
-
+        execute: (pps: IParameterViewModel[], right?: boolean) => ng.IPromise<ActionResultRepresentation>;
+        disabled : () => boolean;
+        parameters: () => IParameterViewModel[];
         makeInvokable: (details: IInvokableAction) => void;
     }
 
-    export class MenuItemViewModel {
-
+    export class MenuItemViewModel implements IMenuItemViewModel {
         constructor(public name: string,
-            public actions: ActionViewModel[],
-            public menuItems: MenuItemViewModel[]) { }
-
+                    public actions: IActionViewModel[],
+                    public menuItems: IMenuItemViewModel[]) { }
     }
 
-    export class DialogViewModel extends MessageViewModel {
+    export class DialogViewModel extends MessageViewModel implements IDialogViewModel {
         constructor(private color: IColor,
             private context: IContext,
             private viewModelFactory: IViewModelFactory,
@@ -450,8 +490,26 @@ module NakedObjects {
             private $rootScope: ng.IRootScopeService) {
             super();
         }
+             
+        private onPaneId: number;
+        private isQueryOnly: boolean; 
 
-        reset(actionViewModel: ActionViewModel, routeData: PaneRouteData) {
+        private actionMember = () => this.actionViewModel.actionRep;
+
+        private execute = (right?: boolean) => {
+
+            const pps = this.parameters;
+            _.forEach(pps, p => this.urlManager.setFieldValue(this.actionMember().actionId(), p.parameterRep, p.getValue(), this.onPaneId));
+            this.context.updateValues();
+            return this.actionViewModel.execute(pps, right);
+        };
+
+        actionViewModel: IActionViewModel;
+        title: string;           
+        id: string;
+        parameters: IParameterViewModel[];
+
+        reset(actionViewModel: IActionViewModel, routeData: PaneRouteData) {
             this.actionViewModel = actionViewModel;
             this.onPaneId = routeData.paneId;
 
@@ -464,7 +522,6 @@ module NakedObjects {
             this.isQueryOnly = actionViewModel.invokableActionRep.invokeLink().method() === "GET";
             this.resetMessage();
             this.id = actionViewModel.actionRep.actionId();
-            return this;
         }
 
         refresh() {
@@ -472,17 +529,7 @@ module NakedObjects {
             _.forEach(this.parameters, p => p.refresh(fields[p.id]));
         }
 
-
-        private actionMember = () => this.actionViewModel.actionRep;
-        title: string;
-        message: string;
-        isQueryOnly: boolean;
-        onPaneId: number;
-        id: string;
-
-        deregister: () => void;
-
-        actionViewModel: ActionViewModel;
+        deregister: () => void;    
 
         clientValid = () => _.every(this.parameters, p => p.clientValid);
 
@@ -490,16 +537,9 @@ module NakedObjects {
 
         setParms = () => _.forEach(this.parameters, p => this.context.setFieldValue(this.actionMember().actionId(), p.parameterRep.id(), p.getValue(), this.onPaneId));
 
-        private executeInvoke = (right?: boolean) => {
-
-            const pps = this.parameters;
-            _.forEach(pps, p => this.urlManager.setFieldValue(this.actionMember().actionId(), p.parameterRep, p.getValue(), this.onPaneId));
-            this.context.updateValues();
-            return this.actionViewModel.executeInvoke(pps, right);
-        };
-
+      
         doInvoke = (right?: boolean) =>
-            this.executeInvoke(right).
+            this.execute(right).
                 then((actionResult: ActionResultRepresentation) => {
                     if (actionResult.shouldExpectResult()) {
                         this.setMessage(actionResult.warningsOrMessages() || noResultMessage);
@@ -536,24 +576,33 @@ module NakedObjects {
         clearMessages = () => {
             this.resetMessage();
             _.each(this.actionViewModel.parameters, parm => parm.clearMessage());
-        };
-
-        parameters: ParameterViewModel[];
+        };        
     }
 
-    export class PropertyViewModel extends ValueViewModel implements IDraggableViewModel {
+    export class PropertyViewModel extends ValueViewModel implements IPropertyViewModel,  IDraggableViewModel {
+
+        constructor(propertyRep: PropertyMember, color : IColor) {
+            super(propertyRep.extensions(), color);
+            this.draggableType = propertyRep.extensions().returnType();
+
+            this.propertyRep = propertyRep;
+            this.entryType = propertyRep.entryType();
+            this.isEditable = !propertyRep.disabledReason();
+            this.entryType = propertyRep.entryType();
+        }
+
 
         propertyRep: PropertyMember;
-        target: string;
         isEditable: boolean;
         attachment: IAttachmentViewModel;
-        draggableType: string;
         refType: "null" | "navigable" | "notNavigable";
+        isDirty: () => boolean;
+        doClick: (right?: boolean) => void;
 
-        doClick(right?: boolean): void { }
-
-        canDropOn: (targetType: string) => ng.IPromise<boolean>;
-    }
+        // IDraggableViewModel
+        draggableType: string;
+        canDropOn: (targetType: string) => ng.IPromise<boolean>;  
+   }
 
     export class CollectionPlaceholderViewModel {
         description: () => string;
@@ -614,9 +663,9 @@ module NakedObjects {
             }
         }
 
-        collectionContributedActionDecorator(actionViewModel: ActionViewModel) {
-            const wrappedInvoke = actionViewModel.executeInvoke;
-            actionViewModel.executeInvoke = (pps: ParameterViewModel[], right?: boolean) => {
+        collectionContributedActionDecorator(actionViewModel: IActionViewModel) {
+            const wrappedInvoke = actionViewModel.execute;
+            actionViewModel.execute = (pps: IParameterViewModel[], right?: boolean) => {
                 const selected = _.filter(this.items, i => i.selected);
 
                 if (selected.length === 0) {
@@ -648,7 +697,7 @@ module NakedObjects {
             }
         }
 
-        collectionContributedInvokeDecorator(actionViewModel: ActionViewModel) {
+        collectionContributedInvokeDecorator(actionViewModel: IActionViewModel) {
             const showDialog = () => this.context.getInvokableAction(actionViewModel.actionRep as ActionMember).
                 then((ia: IInvokableAction) => _.keys(ia.parameters()).length > 1);
 
@@ -661,7 +710,7 @@ module NakedObjects {
                         this.urlManager.setDialog(actionViewModel.actionRep.actionId(), this.onPaneId);
                     } :
                     (right?: boolean) => {
-                        actionViewModel.executeInvoke([], right).
+                        actionViewModel.execute([], right).
                             then(result => this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || noResultMessage : "")).
                             catch((reject: ErrorWrapper) => {
                                 const display = (em: ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
@@ -670,7 +719,7 @@ module NakedObjects {
                     });
         }
 
-        decorate(actionViewModel: ActionViewModel) {
+        decorate(actionViewModel: IActionViewModel) {
             this.collectionContributedActionDecorator(actionViewModel);
             this.collectionContributedInvokeDecorator(actionViewModel);
         }
@@ -743,9 +792,11 @@ module NakedObjects {
         id: string;
 
         private setPage = (newPage: number, newState: CollectionViewState) => {
+            this.context.updateValues();
             this.focusManager.focusOverrideOff();
             this.pageOrRecreate(newPage, this.pageSize, newState);
         };
+
         pageNext = () => this.setPage(this.page < this.numPages ? this.page + 1 : this.page, this.state);
         pagePrevious = () => this.setPage(this.page > 1 ? this.page - 1 : this.page, this.state);
         pageFirst = () => this.setPage(1, this.state);
@@ -761,7 +812,7 @@ module NakedObjects {
 
         doSummary = () => {
             this.context.updateValues();
-            this.urlManager.setListState(CollectionViewState.Summary, this.onPaneId)
+            this.urlManager.setListState(CollectionViewState.Summary, this.onPaneId);
         };
         doList = () => {
             this.context.updateValues();
@@ -792,8 +843,8 @@ module NakedObjects {
 
         actionsTooltip = () => actionsTooltip(this, !!this.routeData.actionsOpen);
 
-        actions: ActionViewModel[];
-        menuItems: MenuItemViewModel[];
+        actions: IActionViewModel[];
+        menuItems: IMenuItemViewModel[];
 
         actionMember = (id: string) => {
             const actionViewModel = _.find(this.actions, a => a.actionRep.actionId() === id);
@@ -824,8 +875,8 @@ module NakedObjects {
 
         template: string;
 
-        actions: ActionViewModel[];
-        menuItems: MenuItemViewModel[];
+        actions: IActionViewModel[];
+        menuItems: IMenuItemViewModel[];
         messages: string;
 
         collectionRep: CollectionMember | CollectionRepresentation;
@@ -863,16 +914,16 @@ module NakedObjects {
     export class ServiceViewModel extends MessageViewModel {
         title: string;
         serviceId: string;
-        actions: ActionViewModel[];
-        menuItems: MenuItemViewModel[];
+        actions: IActionViewModel[];
+        menuItems: IMenuItemViewModel[];
         color: string;
     }
 
     export class MenuViewModel extends MessageViewModel {
         id: string;
         title: string;
-        actions: ActionViewModel[];
-        menuItems: MenuItemViewModel[];
+        actions: IActionViewModel[];
+        menuItems: IMenuItemViewModel[];
         color: string;
         menuRep: Models.MenuRepresentation;
     }
@@ -908,9 +959,9 @@ module NakedObjects {
             return _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
         };
 
-        wrapAction(a: ActionViewModel) {
-            const wrappedInvoke = a.executeInvoke;
-            a.executeInvoke = (pps: ParameterViewModel[], right?: boolean) => {
+        wrapAction(a: IActionViewModel) {
+            const wrappedInvoke = a.execute;
+            a.execute = (pps: IParameterViewModel[], right?: boolean) => {
                 this.setProperties();
                 const pairs = _.map(this.editProperties(), p => [p.id, p.getValue()]);
                 const prps = (<any>_).fromPairs(pairs) as _.Dictionary<Value>;
@@ -1044,9 +1095,9 @@ module NakedObjects {
         reference: string;
         choice: IChoiceViewModel;
         color: string;
-        actions: ActionViewModel[];
-        menuItems: MenuItemViewModel[];
-        properties: PropertyViewModel[];
+        actions: IActionViewModel[];
+        menuItems: IMenuItemViewModel[];
+        properties: IPropertyViewModel[];
         collections: CollectionViewModel[];
         unsaved: boolean;
 
@@ -1058,6 +1109,7 @@ module NakedObjects {
 
         toggleActionMenu = () => {
             this.focusManager.focusOverrideOff();
+            this.contextService.updateValues();
             this.urlManager.toggleObjectMenu(this.onPaneId);
         };
 
@@ -1071,7 +1123,7 @@ module NakedObjects {
             () => this.urlManager.setInteractionMode(InteractionMode.View, this.onPaneId);
 
         editComplete = () => {
-            this.setProperties();
+            this.contextService.updateValues();
             this.contextService.clearObjectUpdater(this.onPaneId);
         };
 
@@ -1096,7 +1148,7 @@ module NakedObjects {
 
         doSave = (viewObject: boolean) => {
             this.clearCachedFiles();
-            this.setProperties();
+            this.contextService.updateValues();
             const propMap = this.propertyMap();
             this.contextService.clearObjectUpdater(this.onPaneId);
             this.saveHandler()(this.domainObject, propMap, this.onPaneId, viewObject).
@@ -1119,6 +1171,7 @@ module NakedObjects {
         };
 
         doEdit = () => {
+            this.contextService.updateValues(); // for other panes
             this.clearCachedFiles();
             this.contextService.clearObjectValues(this.onPaneId);
             this.contextService.getObjectForEdit(this.onPaneId, this.domainObject).
@@ -1131,6 +1184,7 @@ module NakedObjects {
         };
 
         doReload = () => {
+            this.contextService.updateValues();
             this.clearCachedFiles();
             this.contextService.reloadObject(this.onPaneId, this.domainObject)
                 .then((updatedObject: DomainObjectRepresentation) => {
@@ -1180,7 +1234,7 @@ module NakedObjects {
 
     export class RecentItemsViewModel {
         onPaneId: number;
-        items: RecentItemViewModel[];
+        items: IRecentItemViewModel[];
     }
 
     export interface INakedObjectsScope extends ng.IScope {
@@ -1201,7 +1255,7 @@ module NakedObjects {
         menus: MenusViewModel;
         object: DomainObjectViewModel;
         menu: MenuViewModel;
-        dialog: DialogViewModel;
+        dialog: IDialogViewModel;
         error: ErrorViewModel;
         recent: RecentItemsViewModel;
         collection: ListViewModel;

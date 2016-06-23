@@ -99,7 +99,7 @@ module NakedObjects {
             }
 
             function setDialog($scope: INakedObjectsScope,
-                action: ActionMember | ActionRepresentation | ActionViewModel,
+                action: ActionMember | ActionRepresentation | IActionViewModel,
                 routeData: PaneRouteData) {
                 context.clearParmUpdater(routeData.paneId);
 
@@ -110,7 +110,7 @@ module NakedObjects {
                     ? viewModelFactory.actionViewModel(action as ActionMember | ActionRepresentation,
                         dialogViewModel,
                         routeData)
-                    : action as ActionViewModel;
+                    : action as IActionViewModel;
 
                 dialogViewModel.reset(actionViewModel, routeData);
                 $scope.dialog = dialogViewModel;
@@ -167,7 +167,7 @@ module NakedObjects {
                                   newDialogId: string,
                                   routeData: PaneRouteData,
                                   focusTarget: FocusTarget,
-                                  actionViewModel?: ActionViewModel) {
+                                  actionViewModel?: IActionViewModel) {
                 if (newDialogId) {
                     const action = holder.actionMember(routeData.dialogId);
                     context.getInvokableAction(action)

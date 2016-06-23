@@ -1076,15 +1076,15 @@ module NakedObjects {
             const arg = this.argumentAsString(args, 0);
             if (!arg ) {
                 this.clearInputAndSetMessage(basicHelp);
-            } else if (arg == "?") {
+            } else if (arg === "?") {
                 const commands = this.commandFactory.allCommandsForCurrentContext();
                 this.clearInputAndSetMessage(commands);
             } else {
                 try {
                     const c = this.commandFactory.getCommand(arg);
                     this.clearInputAndSetMessage(c.fullCommand + " command:\n" + c.helpText);
-                } catch (Error) {
-                    this.clearInputAndSetMessage(Error.message);
+                } catch (e) {
+                    this.clearInputAndSetMessage(e.message);
                 }
             }
         };

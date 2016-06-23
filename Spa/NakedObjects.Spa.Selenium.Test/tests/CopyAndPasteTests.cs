@@ -104,7 +104,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             PasteIntoReferenceField("#pane1 .parameter .value.droppable");
             //Test that color has changed
-            WaitForCss(selector + ".object-color5");
+            WaitForCss(selector + ".link-color5");
         }
 
         public virtual void PasteAnImplementationOfAnInterface() {

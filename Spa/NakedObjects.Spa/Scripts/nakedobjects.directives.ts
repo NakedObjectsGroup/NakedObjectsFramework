@@ -21,8 +21,8 @@ module NakedObjects {
     }
 
     interface IPropertyOrParameterScope extends INakedObjectsScope {
-        property?: ValueViewModel;
-        parameter?: ValueViewModel;
+        property?: IFieldViewModel;
+        parameter?: IFieldViewModel;
     }
 
     app.directive("geminiDatepicker", (mask: IMask, $timeout: ng.ITimeoutService): ng.IDirective => {
@@ -195,7 +195,6 @@ module NakedObjects {
                         ngModel.$parsers.push(() => cvm);
                         ngModel.$setViewValue(cvm.name);
                         element.val(cvm.name);      
-                        viewModel.setColor(color);               
                     });
                 };
 
@@ -246,7 +245,7 @@ module NakedObjects {
 
                 const parent = scope.$parent as IPropertyOrParameterScope;
                 const viewModel = parent.parameter || parent.property;
-                const pArgs = _.omit(viewModel.arguments, "x-ro-nof-members") as _.Dictionary<Value>;
+                const pArgs = _.omit(viewModel.promptArguments, "x-ro-nof-members") as _.Dictionary<Value>;
                 const paneId = viewModel.onPaneId;
                 let currentOptions: ChoiceViewModel[] = [];
 
@@ -547,7 +546,7 @@ module NakedObjects {
         const parameterScope = () => scope.$parent.$parent;
 
         const accept = (draggable: any) => {
-            const droppableVm: ValueViewModel = propertyScope().property || parameterScope().parameter;
+            const droppableVm: IFieldViewModel = propertyScope().property || parameterScope().parameter;
             const draggableVm: IDraggableViewModel = draggable.data(draggableVmKey);
 
             if (draggableVm) {
@@ -575,7 +574,7 @@ module NakedObjects {
             if (element.hasClass("candrop")) {
 
                 const droppableScope = propertyScope().property ? propertyScope() : parameterScope();
-                const droppableVm: ValueViewModel = droppableScope.property || droppableScope.parameter;
+                const droppableVm: IFieldViewModel = droppableScope.property || droppableScope.parameter;
                 const draggableVm = <IDraggableViewModel>ui.draggable.data(draggableVmKey);
 
                 droppableScope.$apply(() => {
@@ -592,7 +591,7 @@ module NakedObjects {
              
 
                 const droppableScope = propertyScope().property ? propertyScope() : parameterScope();
-                const droppableVm: ValueViewModel = droppableScope.property || droppableScope.parameter;
+                const droppableVm: IFieldViewModel = droppableScope.property || droppableScope.parameter;
                 const draggableVm = <IDraggableViewModel>($("div.footer div.currentcopy .reference").data(draggableVmKey) as any);
 
                 if (draggableVm) {
@@ -603,7 +602,7 @@ module NakedObjects {
             }
             if (event.keyCode === deleteKeyCode) {
                 const droppableScope = propertyScope().property ? propertyScope() : parameterScope();
-                const droppableVm: ValueViewModel = droppableScope.property || droppableScope.parameter;
+                const droppableVm: IFieldViewModel = droppableScope.property || droppableScope.parameter;
 
                 scope.$apply(droppableVm.clear());
             }
