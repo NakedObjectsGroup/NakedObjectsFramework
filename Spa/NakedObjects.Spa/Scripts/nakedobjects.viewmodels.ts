@@ -1067,6 +1067,7 @@ module NakedObjects {
                 this.routeData = this.urlManager.getRouteData().pane()[this.onPaneId];
                 this.contextService.getObject(this.onPaneId, this.domainObject.getOid(), this.routeData.interactionMode)
                     .then(obj => {
+                        this.contextService.clearObjectValues(this.onPaneId);
                         this.contextService.reloadObject(this.onPaneId, obj)
                             .then(reloadedObj => {
                                 if (this.routeData.dialogId) {
