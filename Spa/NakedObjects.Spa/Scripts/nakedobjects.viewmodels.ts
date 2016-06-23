@@ -604,7 +604,7 @@ module NakedObjects {
         canDropOn: (targetType: string) => ng.IPromise<boolean>;  
    }
 
-    export class CollectionPlaceholderViewModel {
+    export class CollectionPlaceholderViewModel implements ICollectionPlaceholderViewModel {
         description: () => string;
         reload: () => void;
     }
@@ -621,7 +621,62 @@ module NakedObjects {
             super();
         }
 
-        updateItems(value: Link[]) {
+        private routeData: PaneRouteData;
+        private onPaneId: number;
+        private page: number;
+        private pageSize: number;
+        private numPages: number;
+        private state: CollectionViewState;
+        private allSelected: boolean;
+
+        id: string;
+        listRep: ListRepresentation;
+        size: number;
+        pluralName: string;    
+        header: string[];        
+        items: IItemViewModel[];
+        actions: IActionViewModel[];
+        menuItems: IMenuItemViewModel[];
+        description: () => string;
+
+        private recreate = (page: number, pageSize: number) => {
+            return this.routeData.objectId ?
+                this.context.getListFromObject(this.routeData.paneId, this.routeData, page, pageSize) :
+                this.context.getListFromMenu(this.routeData.paneId, this.routeData, page, pageSize);
+        };
+
+        private pageOrRecreate = (newPage: number, newPageSize: number, newState?: CollectionViewState) => {
+            this.recreate(newPage, newPageSize).
+                then((list: ListRepresentation) => {
+                    this.urlManager.setListPaging(newPage, newPageSize, newState || this.routeData.state, this.onPaneId);
+                    this.routeData = this.urlManager.getRouteData().pane()[this.onPaneId];
+                    this.reset(list, this.routeData);
+                }).
+                catch((reject: ErrorWrapper) => {
+                    const display = (em: ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
+                    this.error.handleErrorAndDisplayMessages(reject, display);
+                });
+        };
+
+        private setPage = (newPage: number, newState: CollectionViewState) => {
+            this.context.updateValues();
+            this.focusManager.focusOverrideOff();
+            this.pageOrRecreate(newPage, this.pageSize, newState);
+        };
+
+        private earlierDisabled = () => this.page === 1 || this.numPages === 1;
+
+        private laterDisabled = () => this.page === this.numPages || this.numPages === 1;
+
+        private pageFirstDisabled = this.earlierDisabled;
+
+        private pageLastDisabled = this.laterDisabled;
+
+        private pageNextDisabled = this.laterDisabled;
+
+        private pagePreviousDisabled = this.earlierDisabled;
+
+        private updateItems(value: Link[]) {
             this.items = this.viewModelFactory.getItems(value,
                 this.state === CollectionViewState.Table,
                 this.routeData,
@@ -638,32 +693,12 @@ module NakedObjects {
             }
         }
 
-        hasTableData = () => {
+        private hasTableData = () => {
             const valueLinks = this.listRep.value();
             return valueLinks && _.some(valueLinks, (i: Link) => i.members());
         }
 
-        refresh(routeData: PaneRouteData) {
-
-            this.routeData = routeData;
-            if (this.state !== routeData.state) {
-                this.state = routeData.state;
-                if (this.state === CollectionViewState.Table && !this.hasTableData()) {
-                    this.recreate(this.page, this.pageSize).
-                        then(list => {
-                            this.listRep = list;
-                            this.updateItems(list.value());
-                        }).
-                        catch((reject: ErrorWrapper) => {
-                            this.error.handleError(reject);
-                        });
-                } else {
-                    this.updateItems(this.listRep.value());
-                }
-            }
-        }
-
-        collectionContributedActionDecorator(actionViewModel: IActionViewModel) {
+        private collectionContributedActionDecorator(actionViewModel: IActionViewModel) {
             const wrappedInvoke = actionViewModel.execute;
             actionViewModel.execute = (pps: IParameterViewModel[], right?: boolean) => {
                 const selected = _.filter(this.items, i => i.selected);
@@ -697,7 +732,7 @@ module NakedObjects {
             }
         }
 
-        collectionContributedInvokeDecorator(actionViewModel: IActionViewModel) {
+        private collectionContributedInvokeDecorator(actionViewModel: IActionViewModel) {
             const showDialog = () => this.context.getInvokableAction(actionViewModel.actionRep as ActionMember).
                 then((ia: IInvokableAction) => _.keys(ia.parameters()).length > 1);
 
@@ -719,9 +754,29 @@ module NakedObjects {
                     });
         }
 
-        decorate(actionViewModel: IActionViewModel) {
+        private decorate(actionViewModel: IActionViewModel) {
             this.collectionContributedActionDecorator(actionViewModel);
             this.collectionContributedInvokeDecorator(actionViewModel);
+        }
+
+        refresh(routeData: PaneRouteData) {
+
+            this.routeData = routeData;
+            if (this.state !== routeData.state) {
+                this.state = routeData.state;
+                if (this.state === CollectionViewState.Table && !this.hasTableData()) {
+                    this.recreate(this.page, this.pageSize).
+                        then(list => {
+                            this.listRep = list;
+                            this.updateItems(list.value());
+                        }).
+                        catch((reject: ErrorWrapper) => {
+                            this.error.handleError(reject);
+                        });
+                } else {
+                    this.updateItems(this.listRep.value());
+                }
+            }
         }
 
         reset(list: ListRepresentation, routeData: PaneRouteData) {
@@ -754,70 +809,21 @@ module NakedObjects {
             this.urlManager.toggleObjectMenu(this.onPaneId);
         };
 
-        private recreate = (page: number, pageSize: number) => {
-            return this.routeData.objectId ?
-                this.context.getListFromObject(this.routeData.paneId, this.routeData, page, pageSize) :
-                this.context.getListFromMenu(this.routeData.paneId, this.routeData, page, pageSize);
-        };
-
-        private pageOrRecreate = (newPage: number, newPageSize: number, newState?: CollectionViewState) => {
-            this.recreate(newPage, newPageSize).
-                then((list: ListRepresentation) => {
-                    this.urlManager.setListPaging(newPage, newPageSize, newState || this.routeData.state, this.onPaneId);
-                    this.routeData = this.urlManager.getRouteData().pane()[this.onPaneId];
-                    this.reset(list, this.routeData);
-                }).
-                catch((reject: ErrorWrapper) => {
-                    const display = (em: ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
-                    this.error.handleErrorAndDisplayMessages(reject, display);
-                });
-        };
-
-        listRep: ListRepresentation;
-        routeData: PaneRouteData;
-
-        size: number;
-        pluralName: string;
-        color: string;
-        items: IItemViewModel[];
-        header: string[];
-        onPaneId: number;
-        page: number;
-        pageSize: number;
-        numPages: number;
-        state: CollectionViewState;
-
-        allSelected: boolean;
-
-        id: string;
-
-        private setPage = (newPage: number, newState: CollectionViewState) => {
-            this.context.updateValues();
-            this.focusManager.focusOverrideOff();
-            this.pageOrRecreate(newPage, this.pageSize, newState);
-        };
-
         pageNext = () => this.setPage(this.page < this.numPages ? this.page + 1 : this.page, this.state);
         pagePrevious = () => this.setPage(this.page > 1 ? this.page - 1 : this.page, this.state);
         pageFirst = () => this.setPage(1, this.state);
         pageLast = () => this.setPage(this.numPages, this.state);
 
-        private earlierDisabled = () => this.page === 1 || this.numPages === 1;
-        private laterDisabled = () => this.page === this.numPages || this.numPages === 1;
-
-        private pageFirstDisabled = this.earlierDisabled;
-        private pageLastDisabled = this.laterDisabled;
-        private pageNextDisabled = this.laterDisabled;
-        private pagePreviousDisabled = this.earlierDisabled;
-
         doSummary = () => {
             this.context.updateValues();
             this.urlManager.setListState(CollectionViewState.Summary, this.onPaneId);
         };
+
         doList = () => {
             this.context.updateValues();
             this.urlManager.setListState(CollectionViewState.List, this.onPaneId);
         };
+
         doTable = () => {
             this.context.updateValues();
             this.urlManager.setListState(CollectionViewState.Table, this.onPaneId);
@@ -833,18 +839,9 @@ module NakedObjects {
             item.selectionChange(i);
         });
 
-        description(): string { return null; } 
-
-        template: string;
-
-        disableActions(): boolean {
-            return !this.actions || this.actions.length === 0 || !this.items || this.items.length === 0;
-        }
-
+        disableActions = () => !this.actions || this.actions.length === 0 || !this.items || this.items.length === 0;
+        
         actionsTooltip = () => actionsTooltip(this, !!this.routeData.actionsOpen);
-
-        actions: IActionViewModel[];
-        menuItems: IMenuItemViewModel[];
 
         actionMember = (id: string) => {
             const actionViewModel = _.find(this.actions, a => a.actionRep.actionId() === id);
@@ -1067,6 +1064,7 @@ module NakedObjects {
                 this.routeData = this.urlManager.getRouteData().pane()[this.onPaneId];
                 this.contextService.getObject(this.onPaneId, this.domainObject.getOid(), this.routeData.interactionMode)
                     .then(obj => {
+                        // cleared cached values so all values are from reloaded representation 
                         this.contextService.clearObjectValues(this.onPaneId);
                         this.contextService.reloadObject(this.onPaneId, obj)
                             .then(reloadedObj => {
@@ -1260,7 +1258,7 @@ module NakedObjects {
         error: ErrorViewModel;
         recent: RecentItemsViewModel;
         collection: ListViewModel;
-        collectionPlaceholder: CollectionPlaceholderViewModel;
+        collectionPlaceholder: ICollectionPlaceholderViewModel;
         toolBar: ToolBarViewModel;
         cicero: CiceroViewModel;
         attachment: IAttachmentViewModel;

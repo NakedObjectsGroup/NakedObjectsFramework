@@ -39,7 +39,7 @@ module NakedObjects {
         errorViewModel(errorRep: ErrorWrapper): ErrorViewModel;
         actionViewModel(actionRep: ActionMember | ActionRepresentation, vm: IMessageViewModel, routedata: PaneRouteData): IActionViewModel;
         collectionViewModel(collectionRep: CollectionMember, routeData: PaneRouteData): CollectionViewModel;
-        listPlaceholderViewModel(routeData: PaneRouteData): CollectionPlaceholderViewModel;
+        listPlaceholderViewModel(routeData: PaneRouteData): ICollectionPlaceholderViewModel;
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
         serviceViewModel(serviceRep: DomainObjectRepresentation, routeData: PaneRouteData): ServiceViewModel;
 
@@ -812,8 +812,9 @@ module NakedObjects {
                         error.handleError(reject);
                     });
 
-            return collectionPlaceholderViewModel;
+            return collectionPlaceholderViewModel as ICollectionPlaceholderViewModel;
         };
+
         viewModelFactory.servicesViewModel = (servicesRep: DomainServicesRepresentation) => {
             const servicesViewModel = new ServicesViewModel();
 
