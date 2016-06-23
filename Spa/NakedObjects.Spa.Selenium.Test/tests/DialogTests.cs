@@ -23,7 +23,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             //Check that params marked with DataType.Password show up as input type="password" for browser to obscure
             wait.Until(dr => dr.FindElements(By.CssSelector("input")).Where(el => el.GetAttribute("type") == "password").Count() == 3);
         }
-
         public virtual void ScalarChoicesParm() {
             Url(OrdersMenuUrl);
             OpenActionDialog("Orders By Value");
@@ -32,14 +31,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForView(Pane.Single, PaneType.List, "Orders By Value");
             AssertTopItemInListIs("SO51131");
         }
-
         public virtual void TestCancelDialog() {
             Url(OrdersMenuUrl);
             OpenActionDialog("Orders By Value");
             CancelDialog();
             WaitUntilElementDoesNotExist(".dialog");
         }
-
         public virtual void FieldsRetainedWhenNavigatingAwayAndBack() {
             GeminiUrl("home?m1=CustomerRepository&d1=FindIndividualCustomerByName");
             ClearFieldThenType("#firstname1", "arthur");
@@ -52,7 +49,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(d => d.FindElement(By.CssSelector("#firstname1")).GetAttribute("value") == "arthur");
             wait.Until(d => d.FindElement(By.CssSelector("#lastname1")).GetAttribute("value") == "brent");
         }
-
         public virtual void ReopeningADialogThatWasntCancelledDoesNotRetainFields() {
             ClickRecentButton();
             WaitForView(Pane.Single, PaneType.Recent);
@@ -64,7 +60,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(d => d.FindElement(By.CssSelector("#firstname1")).GetAttribute("value") == "");
             wait.Until(d => d.FindElement(By.CssSelector("#lastname1")).GetAttribute("value") == "");
         }
-
         public virtual void ScalarParmShowsDefaultValue() {
             Url(CustomersMenuUrl);
             GetObjectActions(CustomerServiceActions);
@@ -72,7 +67,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             var input = WaitForCss(".value input");
             Assert.AreEqual("AW", input.GetAttribute("value"));
         }
-
         public virtual void DateTimeParmKeepsValue() {
             GeminiUrl("object?o1=___1.Customer--29923&as1=open");
             OpenSubMenu("Orders");
@@ -88,7 +82,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             var details = WaitForCss(".summary .details");
             Assert.AreEqual("Page 1 of 1; viewing 2 of 2 items", details.Text);
         }
-
         public virtual void TimeSpanParm() {
             GeminiUrl("object?i1=View&o1=___1.Shift--1&as1=open");
             OpenActionDialog("Change Times");
@@ -101,7 +94,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForTextEquals(".property", 2, "Start Time:\r\n" + start);
             WaitForTextEquals(".property", 3, "End Time:\r\n" + end);
         }
-
         public virtual void RefChoicesParmKeepsValue() {
             Url(ProductServiceUrl);
             OpenActionDialog("List Products By Sub Category");
@@ -111,7 +103,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForView(Pane.Single, PaneType.List, "List Products By Sub Category");
             wait.Until(dr => dr.FindElements(By.CssSelector("td.reference"))[0].Text == "HL Fork");
         }
-
         public virtual void MultipleRefChoicesDefaults() {
             Url(ProductServiceUrl);
             OpenActionDialog("List Products By Sub Categories");
@@ -123,7 +114,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForView(Pane.Single, PaneType.List, "List Products By Sub Categories");
             AssertTopItemInListIs("Mountain-100 Black, 38");
         }
-
         public virtual void MultipleRefChoicesChangeDefaults() {
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
@@ -146,7 +136,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(dr => dr.FindElement(By.CssSelector(".summary .details")).Text == "Page 1 of 4; viewing 20 of 65 items");
             AssertTopItemInListIs("Road-150 Red, 44");
         }
-
         public virtual void ChoicesDefaults() {
             Url(ProductServiceUrl);
             OpenActionDialog("Find By Product Line And Class");
@@ -161,14 +150,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForView(Pane.Single, PaneType.List, "Find By Product Line And Class");
             AssertTopItemInListIs("HL Mountain Frame - Silver, 42");
         }
-
         public virtual void ChoicesOptional() {
             //Test that a field with choices that is optional can be left blank
             GeminiUrl("home?m1=ProductRepository&d1=FindByOptionalProductLinesAndClasses&f1_productLine=%5B%5D&f1_productClass=%5B%5D");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Find By Optional Product Lines And Classes");
         }
-
         public virtual void ChoicesChangeDefaults() {
             Url(ProductServiceUrl);
             OpenActionDialog("Find By Product Line And Class");
@@ -180,7 +167,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForView(Pane.Single, PaneType.List, "Find By Product Line And Class");
             AssertTopItemInListIs("LL Road Frame - Black, 58");
         }
-
         public virtual void ConditionalChoices() {
             GeminiUrl("home?m1=ProductRepository");
             WaitForView(Pane.Single, PaneType.Home);
@@ -200,7 +186,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             msg = OKButton().AssertIsEnabled().GetAttribute("title");
             Assert.AreEqual("", msg);
         }
-
         public virtual void ConditionalChoicesDefaults() {
             Url(ProductServiceUrl);
             OpenActionDialog("Find Products By Category");
@@ -220,7 +205,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForView(Pane.Single, PaneType.List, "Find Products By Category");
             AssertTopItemInListIs("Mountain-100 Black, 38");
         }
-
         public virtual void ConditionalChoicesMultiple() {
             Url(ProductServiceUrl);
 
@@ -242,13 +226,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForView(Pane.Single, PaneType.List, "Find Products By Category");
             AssertTopItemInListIs("Mountain-100 Black, 38");
         }
-
         public virtual void ParameterDescriptionRenderedAsPlaceholder() {
             GeminiUrl("home?m1=CustomerRepository&d1=FindStoreByName");
             var name = WaitForCss("input#name1");
             Assert.AreEqual("* partial match", name.GetAttribute("placeholder"));
         }
-
         public virtual void NullableBooleanParams() {
             GeminiUrl("home?m1=EmployeeRepository&d1=ListEmployees");
 
@@ -289,7 +271,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Click(current);
             Assert.AreEqual("true", current.GetAttribute("checked"));
         }
-
         public virtual void WarningShownWithinDialogAndInFooter() {
             GeminiUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber&f1_accountNumber=%22AW%22");
             ClearFieldThenType("#accountnumber1", "AW1");
@@ -297,14 +278,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(dr => dr.FindElement(By.CssSelector(".co-validation")).Text.Contains("No matching object found"));
             wait.Until(dr => dr.FindElement(By.CssSelector(".footer .warnings")).Text.Contains("No matching object found"));
         }
-
-        //To test a previous bug, where reference was beign rendered as a Url, not its title
         public virtual void DefaultReferenceParamRendersCorrectly() {
+            //To test a previous bug, where reference was beign rendered as a Url, not its title
             GeminiUrl("object?i1=View&o1=___1.Person--18542&as1=open");
             OpenActionDialog("Create Letter");
             wait.Until(dr => dr.FindElement(By.CssSelector(".droppable")).Text.StartsWith("Zeiter Weg 9922"));
         }
-
         public virtual void QueryOnlyActionDialogPersists() {
             //To test:
             //Query only action OK, left click & go back, right click & remains open
@@ -324,7 +303,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             field = WaitForCss("#searchstring1");
             Assert.AreEqual("b", field.GetAttribute("value"));
         }
-
         public virtual void PotentActionDialogDisappearsAndFieldsNotRemembered() {
             GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--57732&as1=open");
             OpenActionDialog("Add Multi Line Comment");
@@ -336,7 +314,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         #region Auto Complete
-
         public virtual void AutoCompleteParm() {
             Url(SalesServiceUrl);
             WaitForView(Pane.Single, PaneType.Home, "Home");
@@ -349,18 +326,14 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "List Accounts For Sales Person");
         }
-
         public virtual void AutoCompleteParmDefault() {
             Url(ProductServiceUrl);
             WaitForView(Pane.Single, PaneType.Home, "Home");
             OpenActionDialog("Find Product");
-
             Assert.AreEqual("Adjustable Race", WaitForCss(".value input[type='text']").GetAttribute("value"));
-
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Adjustable Race");
         }
-
         public virtual void ClearingAutoCompleteTextClearsUnderlyingReference() {
             Url(ProductServiceUrl);
             OpenActionDialog("Find Product");
@@ -368,7 +341,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             ClearFieldThenType("#product1", "");
             OKButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Product; ");
         }
-
         public virtual void AutoCompleteParmShowSingleItem() {
             Url(ProductServiceUrl);
             OpenActionDialog("Find Product");
@@ -379,17 +351,25 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "BB Ball Bearing");
         }
-
         public virtual void AutoCompleteScalarField() {
             GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--54461&as1=open&d1=AddComment&f1_comment=%22%22");
             WaitForView(Pane.Single, PaneType.Object, "SO54461");
             ClearFieldThenType("#comment1", "parc");
             wait.Until(d => d.FindElements(By.CssSelector(".ui-menu-item")).Count == 2);
         }
+public virtual void AutoCompleteOptionalParamNotSelected()
+        {
+            //Test written against a bug in 8.0.0-beta9
+            GeminiUrl("home?m1=OrderRepository&d1=FindOrders");
+            ClearFieldThenType("#customer1", "AW00000"); 
+            //but don't select the item
+            Click(OKButton());
+            //Previously error thrown here
+            WaitForView(Pane.Single, PaneType.List, "Find Orders");
+        }
         #endregion
 
         #region Parameter validation
-
         public virtual void MandatoryParameterEnforced() {
             GeminiUrl("home?m1=SalesRepository&d1=FindSalesPersonByName");
             wait.Until(dr => dr.FindElement(By.CssSelector("input#firstname1")).GetAttribute("placeholder") == "");
@@ -448,6 +428,13 @@ namespace NakedObjects.Web.UnitTests.Selenium {
                              "Qty Into Stock + Qty Rejected must add up to Qty Received");
         }
 
+        public virtual void OptionalReferenceParamCanBeNull()
+        {
+            //Test written against specific bug in 8.0Beta9
+            GeminiUrl("home?m1=OrderRepository&d1=FindOrders");
+            Click(OKButton());
+            WaitForView(Pane.Single, PaneType.List, "Find Orders");
+        }
         #endregion
     }
 
@@ -593,7 +580,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public override void AutoCompleteScalarField() {
             base.AutoCompleteScalarField();
         }
-
+        [TestMethod, Ignore] //Pending bug fix
+        public override void AutoCompleteOptionalParamNotSelected()
+        {
+            base.AutoCompleteOptionalParamNotSelected();
+        }
         #endregion
 
         #region Parameter validation
@@ -624,6 +615,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             base.CoValidationOfMultipleParameters();
         }
 
+        [TestMethod, Ignore]//Pending bug fix
+        public override void OptionalReferenceParamCanBeNull()
+        {
+            base.OptionalReferenceParamCanBeNull();
+        }
         #endregion
     }
 
@@ -717,6 +713,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             ClearingAutoCompleteTextClearsUnderlyingReference();
             AutoCompleteParmShowSingleItem();
             AutoCompleteScalarField();
+            //AutoCompleteOptionalParamNotSelected();
             MandatoryParameterEnforced();
             ValidateSingleValueParameter();
             ValidateSingleRefParamFromChoices();
@@ -727,6 +724,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             DefaultReferenceParamRendersCorrectly();
             QueryOnlyActionDialogPersists();
             PotentActionDialogDisappearsAndFieldsNotRemembered();
+            //OptionalReferenceParamCanBeNull();
         }
     }
 
