@@ -159,7 +159,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Find By Product Line And Class");
-            AssertTopItemInListIs("Mountain-300 Black, 38");
+            AssertTopItemInListIs("HL Mountain Frame - Silver, 42");
         }
 
         public virtual void ChoicesOptional() {
@@ -178,7 +178,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Find By Product Line And Class");
-            AssertTopItemInListIs("HL Road Frame - Black, 58");
+            AssertTopItemInListIs("LL Road Frame - Black, 58");
         }
 
         public virtual void ConditionalChoices() {
