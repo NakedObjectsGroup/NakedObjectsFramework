@@ -315,9 +315,13 @@ module NakedObjects {
             return this.currentChoice;
         }
 
-        set choice(newChoice : IChoiceViewModel) {
-            this.currentChoice = newChoice;
-            this.updateColor();
+        set choice(newChoice: IChoiceViewModel) {
+            // type guard becauase angular pushes string value here until directive finds 
+            // choice
+            if (newChoice instanceof ChoiceViewModel) {
+                this.currentChoice = newChoice;
+                this.updateColor();
+            }
         }
 
         private currentRawValue: scalarValueType | Date;
