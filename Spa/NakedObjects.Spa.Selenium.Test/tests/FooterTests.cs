@@ -11,6 +11,31 @@ using OpenQA.Selenium;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
     public abstract class FooterTestsRoot : AWTest {
+        #region WarningsAndInfo
+        public virtual void ExplicitWarningsAndInfo()
+        {
+            GeminiUrl("home?m1=WorkOrderRepository");
+            Click(GetObjectAction("Generate Info And Warning"));
+            var warn = WaitForCss(".footer .warnings");
+            Assert.AreEqual("Warn User of something else", warn.Text);
+            var msg = WaitForCss(".footer .messages");
+            Assert.AreEqual("Inform User of something", msg.Text);
+
+            //Test that both are cleared by next action
+            Click(GetObjectAction("Random Work Order"));
+            WaitUntilElementDoesNotExist(".footer .warnings");
+            WaitUntilElementDoesNotExist(".footer .messages");
+        }
+
+        public virtual void ZeroParamActionReturningNullGeneratesGenericWarning()
+        {
+            GeminiUrl("home?m1=EmployeeRepository");
+            Click(GetObjectAction("Me"));
+            WaitForTextEquals(".footer .warnings", "no result found");
+            Click(GetObjectAction("My Departmental Colleagues"));
+            WaitForTextEquals(".footer .warnings", "Current user unknown");
+        }
+        #endregion
         public virtual void Home() {
             GeminiUrl("object?o1=___1.Product--968");
             WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
@@ -121,34 +146,22 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             IAlert alert = br.SwitchTo().Alert();
             Assert.IsTrue(alert.Text.StartsWith("Please confirm logoff of user:"));
         }
-        #region WarningsAndInfo
-        public virtual void ExplicitWarningsAndInfo()
-        {
-            GeminiUrl("home?m1=WorkOrderRepository");
-            Click(GetObjectAction("Generate Info And Warning"));
-            var warn = WaitForCss(".footer .warnings");
-            Assert.AreEqual("Warn User of something else", warn.Text);
-            var msg = WaitForCss(".footer .messages");
-            Assert.AreEqual("Inform User of something", msg.Text);
-
-            //Test that both are cleared by next action
-            Click(GetObjectAction("Random Work Order"));
-            WaitUntilElementDoesNotExist(".footer .warnings");
-            WaitUntilElementDoesNotExist(".footer .messages");
-        }
-
-        public virtual void ZeroParamActionReturningNullGeneratesGenericWarning()
-        {
-            GeminiUrl("home?m1=EmployeeRepository");
-            Click(GetObjectAction("Me"));
-            WaitForTextEquals(".footer .warnings", "no result found");
-            Click(GetObjectAction("My Departmental Colleagues"));
-            WaitForTextEquals(".footer .warnings", "Current user unknown");
-        }
-        #endregion
     }
 
     public abstract class FooterTests : FooterTestsRoot {
+
+        #region Warnings and Info
+        [TestMethod]
+        public override void ExplicitWarningsAndInfo()
+        {
+            base.ExplicitWarningsAndInfo();
+        }
+        [TestMethod]
+        public override void ZeroParamActionReturningNullGeneratesGenericWarning()
+        {
+            base.ZeroParamActionReturningNullGeneratesGenericWarning();
+        }
+        #endregion
         [TestMethod]
         public override void Home() {
             base.Home();
@@ -178,19 +191,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public override void LogOff() {
             base.LogOff();
         }
-
-        #region Warnings and Info
-        [TestMethod]
-        public override void ExplicitWarningsAndInfo()
-        {
-            base.ExplicitWarningsAndInfo();
-        }
-        [TestMethod]
-        public override void ZeroParamActionReturningNullGeneratesGenericWarning()
-        {
-            base.ZeroParamActionReturningNullGeneratesGenericWarning();
-        }
-        #endregion
     }
 
     #region browsers specific subclasses 
@@ -261,14 +261,14 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     public abstract class MegaFooterTestsRoot : FooterTestsRoot {
         [TestMethod] //Mega
         public void MegaFooterTest() {
+            ExplicitWarningsAndInfo();
+            ZeroParamActionReturningNullGeneratesGenericWarning();
             Home();
             BackAndForward();
             Cicero();
             RecentObjects();
             ApplicationProperties();
             LogOff();
-            ExplicitWarningsAndInfo();
-            ZeroParamActionReturningNullGeneratesGenericWarning();
         }
     }
 
