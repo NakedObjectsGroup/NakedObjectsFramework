@@ -102,7 +102,10 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                     }
                 }
                 else {
-                    var valueRef = RefValueRepresentation.Create(OidStrategy, new ObjectRelType(RelValues.Self, new UriMtHelper(OidStrategy, req, visibleParamContext.ProposedObjectFacade)), Flags);
+                    RefValueRepresentation valueRef = null;
+                    if (visibleParamContext.ProposedObjectFacade != null) {
+                        valueRef = RefValueRepresentation.Create(OidStrategy, new ObjectRelType(RelValues.Self, new UriMtHelper(OidStrategy, req, visibleParamContext.ProposedObjectFacade)), Flags);
+                    }
                     value = MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, valueRef));
                 }
 
