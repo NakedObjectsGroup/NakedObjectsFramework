@@ -188,4 +188,9 @@ module NakedObjects {
         doCloseReplaceHistory: () => void;
         clearMessages: () => void;
     }
+
+    export interface ICollectionPlaceholderViewModel {
+        description: () => string;
+        reload: () => void;
+    }
 }
