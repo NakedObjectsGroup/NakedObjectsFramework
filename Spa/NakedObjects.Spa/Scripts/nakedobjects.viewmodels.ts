@@ -350,19 +350,17 @@ module NakedObjects {
         conditionalChoices : (args: _.Dictionary<Value>) => ng.IPromise<ChoiceViewModel[]>;
 
         setNewValue(newValue: IDraggableViewModel) {
-            this.value = newValue.value;
-            this.reference = newValue.reference;
             this.choice = newValue.choice;
-            this.color = newValue.color;
+            this.value = newValue.value;
+            this.reference = newValue.reference;         
         }
 
         drop: (newValue: IDraggableViewModel) => void;
 
         clear() {
-            this.value = null;
-            this.reference = "";
             this.choice = null;
-            this.color = "";
+            this.value = null;
+            this.reference = "";          
         }
 
         private updateColor : () => void ; 

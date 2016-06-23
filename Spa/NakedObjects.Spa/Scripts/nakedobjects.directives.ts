@@ -224,6 +224,22 @@ module NakedObjects {
                 element.keyup(clearHandler);
                 (element as any).autocomplete(optionsObj);
                 render(viewModel.choice);
+
+                (ngModel as any).$validators.geminiAutocomplete = (modelValue: any, viewValue: string) => {
+                    // return OK if no value or value is of correct type.
+                    if (viewModel.optional && !viewValue) {
+                        // optional with no value
+                        viewModel.clientValid = true;
+                    }
+                    else if (modelValue instanceof ChoiceViewModel) {
+                        viewModel.clientValid = !!modelValue.name;
+                    }
+                    else {
+                        viewModel.clientValid = false;
+                    }
+
+                    return viewModel.clientValid;
+                };
             }
         };
     });
