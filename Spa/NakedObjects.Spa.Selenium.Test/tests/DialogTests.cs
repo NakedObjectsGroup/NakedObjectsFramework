@@ -386,7 +386,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             ClearFieldThenType("#comment1", "parc");
             wait.Until(d => d.FindElements(By.CssSelector(".ui-menu-item")).Count == 2);
         }
-
         #endregion
 
         #region Parameter validation
@@ -401,7 +400,15 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Find Sales Person By Name");
         }
-
+        public virtual void AutoCompleteMandatoryParmWithoutSelectionFails()
+        {
+            //To test  -  enter valid text but don't select from drop-down
+            //Assuming parm is mandatory, hitting Ok should give validation message
+            GeminiUrl("home?m1=CustomerRepository&d1=FindCustomer");
+            ClearFieldThenType("#customer1", "AW000");
+            wait.Until(d => d.FindElements(By.CssSelector(".ui-menu-item")).Count == 10);
+            OKButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Customer; ");
+        }
         public virtual void ValidateSingleValueParameter() {
             GeminiUrl("object?o1=___1.Product--342&as1=open&d1=BestSpecialOffer");
             //var qty = WaitForCss("input#quantity1");
@@ -594,6 +601,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public override void MandatoryParameterEnforced() {
             base.MandatoryParameterEnforced();
+        }
+
+        [TestMethod]
+        public override void AutoCompleteMandatoryParmWithoutSelectionFails()
+        {
+            base.AutoCompleteMandatoryParmWithoutSelectionFails();
         }
 
         [TestMethod]

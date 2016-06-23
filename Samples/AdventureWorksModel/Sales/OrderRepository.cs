@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedObjects;
 using NakedObjects.Services;
+using System;
 
 namespace AdventureWorksModel {
     public enum Ordering {
@@ -97,6 +98,27 @@ namespace AdventureWorksModel {
             return Instances<SalesOrderHeader>().OrderByDescending(obj => obj.Details.Count);
         }
 
+        public IQueryable<SalesOrderHeader> FindOrders([Optionally] Customer customer, [Optionally] DateTime? orderDate)
+        {
+            IQueryable<SalesOrderHeader> results;
+            if (customer != null)
+            {
+                results = OrdersForCustomer(customer);
+            } else
+            {
+                results = Container.Instances<SalesOrderHeader>();
+            }
+            if (orderDate != null)
+            {
+                results = results.Where(soh => soh.OrderDate == orderDate);
+            }
+            return results;
+        }
 
+        [PageSize(10)]
+        public Customer AutoComplete0FindOrders([MinLength(10)] string accountNumber)
+        {
+            return CustomerRepository.FindCustomerByAccountNumber(accountNumber);
+        }
     }
 }

@@ -215,6 +215,11 @@ html, #main, body, .background, .single, .split {
         height: auto;
     }
 
+    /*Don't let IE render the 'x' clear within input as it doesn't work well*/
+input::-ms-clear {
+    display: none;
+}
+
 .input-control input:not([type='checkbox']), textarea {
     width: 245px;
 }
