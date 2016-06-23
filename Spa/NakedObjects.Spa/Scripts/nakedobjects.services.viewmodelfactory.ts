@@ -32,6 +32,7 @@ module NakedObjects {
     import InvokableActionMember = Models.InvokableActionMember;
     import isTime = Models.isTime;
     import toTime = Models.toTime;
+    import ActionResultRepresentation = NakedObjects.Models.ActionResultRepresentation;
 
     export interface IViewModelFactory {
         toolBarViewModel(): ToolBarViewModel;
@@ -232,8 +233,13 @@ module NakedObjects {
                     focusManager.focusOverrideOff();
                     const pps = actionViewModel.parameters();
                     actionViewModel.execute(pps, right).
+                        then((actionResult: ActionResultRepresentation) => {
+                            // if expect result and no warning from server generate one here
+                            if (actionResult.shouldExpectResult() && !actionResult.warningsOrMessages()) {
+                                $rootScope.$broadcast(geminiWarningEvent, [noResultMessage]);
+                            }
+                        }).
                         catch((reject: ErrorWrapper) => {
-
                             const display = (em: ErrorMap) => vm.setMessage(em.invalidReason() || em.warningMessage);
                             error.handleErrorAndDisplayMessages(reject, display);
                         });
