@@ -321,8 +321,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(dr => dr.FindElement(By.CssSelector("#sp1")).GetAttribute("placeholder") == "* (auto-complete or drop)");
             ClearFieldThenType("#sp1", "Valdez");
             wait.Until(d => d.FindElements(By.CssSelector(".ui-menu-item")).Count > 0);
+            //As the match has not yet been selected,the field is invalid, so...
+            WaitForTextEquals(".validation", "Pending auto-complete...");
+            OKButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Sp; ");
             Click(WaitForCss(".ui-menu-item"));
             WaitForCss("#sp1.link-color6");
+            OKButton().AssertIsEnabled();
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "List Accounts For Sales Person");
         }
@@ -340,6 +344,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Adjustable Race", WaitForCss(".value input[type='text']").GetAttribute("value"));
             ClearFieldThenType("#product1", "");
             OKButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Product; ");
+            ClearFieldThenType("#product1", "xxx");
+            //As the match has not yet been selected,the field is invalid, so...
+            WaitForTextEquals(".validation", "Pending auto-complete...");
+            OKButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Product; ");
         }
         public virtual void AutoCompleteParmShowSingleItem() {
             Url(ProductServiceUrl);
@@ -347,6 +355,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             ClearFieldThenType("#product1", "BB");
             wait.Until(dr => dr.FindElement(By.CssSelector(".ui-menu-item")).Text == "BB Ball Bearing");
             var item = br.FindElement(By.CssSelector(".ui-menu-item"));
+            //As the match has not yet been selected,the field is invalid, so...
+            WaitForTextEquals(".validation", "Pending auto-complete...");
             Click(item);
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "BB Ball Bearing");
@@ -365,7 +375,7 @@ public virtual void AutoCompleteOptionalParamNotSelected()
             ClearFieldThenType("#customer1", "AW00000");
             //but don't select the item
             //TODO: Message should change to Invalid fields
-            OKButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Customer; ");
+            OKButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Customer; ");
             ClearFieldThenType("#customer1", "AW00000456");
             wait.Until(dr => dr.FindElement(By.CssSelector(".ui-menu-item")).Text == "Riding Excursions, AW00000456");
             var item = br.FindElement(By.CssSelector(".ui-menu-item"));

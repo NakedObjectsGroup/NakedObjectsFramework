@@ -240,13 +240,13 @@ module NakedObjects {
                     else if (modelValue instanceof ChoiceViewModel) {
                         // has view model check if it's valid                       
                         if (!modelValue.name) {
-                            viewModel.setMessage(noPatternMatch);
+                            viewModel.setMessage(pendingAutoComplete);
                             viewModel.clientValid = false;
                         }
                     }
                     else { 
                         // has value but not ChoiceViewModel so must be invalid 
-                        viewModel.setMessage(noPatternMatch);
+                        viewModel.setMessage(pendingAutoComplete);
                         viewModel.clientValid = false;
                     }
 

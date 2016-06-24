@@ -20,6 +20,7 @@ module NakedObjects {
     export const notAnInteger = "Not an integer";
     export const notANumber = "Not a number";
     export const mandatory = "Mandatory";
+    export const pendingAutoComplete = "Pending auto-complete...";
     export const noPatternMatch = "Invalid entry";
     export const closeActions = "Close actions";
     export const noActions = "No actions available";
