@@ -101,7 +101,7 @@ module NakedObjects {
 
             //then collate submenus 
 
-            const submenuActions = _.filter(avms, a => getMenuForLevel(a.menuPath, level) === menu.name && getMenuForLevel(a.menuPath, level + 1));
+            const submenuActions = _.filter(avms, (a : IActionViewModel) => getMenuForLevel(a.menuPath, level) === menu.name && getMenuForLevel(a.menuPath, level + 1));
             let menus = _
                 .chain(submenuActions)
                 .map(a => new MenuItemViewModel(getMenuForLevel(a.menuPath, level + 1), null, null))
@@ -849,7 +849,7 @@ module NakedObjects {
         }
     }
 
-    export class CollectionViewModel {
+    export class CollectionViewModel implements ICollectionViewModel  {
 
         title: string;
         details: string;
@@ -861,22 +861,17 @@ module NakedObjects {
         onPaneId: number;
         currentState: CollectionViewState;
         presentationHint: string;
-
-        id: string;
-
-        doSummary(): void { }
-        doTable(): void { }
-        doList(): void { }
-
-        description(): string { return this.details.toString() }
-
         template: string;
-
         actions: IActionViewModel[];
         menuItems: IMenuItemViewModel[];
         messages: string;
-
         collectionRep: CollectionMember | CollectionRepresentation;
+
+        doSummary: () => void;
+        doTable: () => void;
+        doList: () => void;
+
+        description = () => this.details.toString();      
         refresh: (routeData: PaneRouteData, resetting: boolean) => void;
     }
 
@@ -1097,7 +1092,7 @@ module NakedObjects {
         actions: IActionViewModel[];
         menuItems: IMenuItemViewModel[];
         properties: IPropertyViewModel[];
-        collections: CollectionViewModel[];
+        collections: ICollectionViewModel[];
         unsaved: boolean;
 
         clientValid = () => _.every(this.properties, p => p.clientValid);

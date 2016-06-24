@@ -227,4 +227,29 @@ module NakedObjects {
         actionMember : (id: string) => ActionMember | ActionRepresentation;
     }
 
+    export interface ICollectionViewModel {
+        title: string;
+        details: string;
+        pluralName: string;
+        color: string;
+        mayHaveItems: boolean;
+        items: IItemViewModel[];
+        header: string[];
+        onPaneId: number;
+        currentState: CollectionViewState;
+        presentationHint: string;
+        template: string;
+        actions: IActionViewModel[];
+        menuItems: IMenuItemViewModel[];
+        messages: string;
+        collectionRep: Models.CollectionMember | Models.CollectionRepresentation;
+
+        doSummary: () => void;
+        doTable: () => void;
+        doList: () => void;
+
+        description: () => string;
+        refresh: (routeData: PaneRouteData, resetting: boolean) => void;
+    }
+
 }

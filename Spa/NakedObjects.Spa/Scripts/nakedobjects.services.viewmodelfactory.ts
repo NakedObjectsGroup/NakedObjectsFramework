@@ -38,7 +38,7 @@ module NakedObjects {
         toolBarViewModel(): ToolBarViewModel;
         errorViewModel(errorRep: ErrorWrapper): ErrorViewModel;
         actionViewModel(actionRep: ActionMember | ActionRepresentation, vm: IMessageViewModel, routedata: PaneRouteData): IActionViewModel;
-        collectionViewModel(collectionRep: CollectionMember, routeData: PaneRouteData): CollectionViewModel;
+        collectionViewModel(collectionRep: CollectionMember, routeData: PaneRouteData): ICollectionViewModel;
         listPlaceholderViewModel(routeData: PaneRouteData): ICollectionPlaceholderViewModel;
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
         serviceViewModel(serviceRep: DomainObjectRepresentation, routeData: PaneRouteData): ServiceViewModel;
@@ -50,7 +50,7 @@ module NakedObjects {
         propertyViewModel(propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number, parentValues: () => _.Dictionary<Value>): IPropertyViewModel;
         ciceroViewModel(): CiceroViewModel;
         handleErrorResponse(err: ErrorMap, vm: IMessageViewModel, vms: IFieldViewModel[]): void;
-        getItems(links: Link[], tableView: boolean, routeData: PaneRouteData, collectionViewModel: CollectionViewModel | IListViewModel): IItemViewModel[];
+        getItems(links: Link[], tableView: boolean, routeData: PaneRouteData, collectionViewModel: ICollectionViewModel | IListViewModel): IItemViewModel[];
         linkViewModel(linkRep: Link, paneId: number): ILinkViewModel;
         recentItemsViewModel(paneId: number): RecentItemsViewModel;
         attachmentViewModel(propertyRep: PropertyMember, paneId: number): IAttachmentViewModel;
@@ -658,7 +658,7 @@ module NakedObjects {
             return parmViewModel as IParameterViewModel;
         };
 
-        viewModelFactory.getItems = (links: Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: IListViewModel | CollectionViewModel) => {
+        viewModelFactory.getItems = (links: Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: IListViewModel | ICollectionViewModel) => {
             const selectedItems = routeData.selectedItems;
 
             const items = _.map(links, (link, i) => viewModelFactory.itemViewModel(link, routeData.paneId, selectedItems[i]));
