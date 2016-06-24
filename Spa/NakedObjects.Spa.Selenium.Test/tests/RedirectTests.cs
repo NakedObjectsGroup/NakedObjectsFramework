@@ -7,6 +7,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using System.Threading;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
     /// <summary>
@@ -18,14 +19,20 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             GeminiUrl("home?m1=SalesRepository");
             Click(GetObjectAction("Random Sales Tax Rate"));
             WaitForView(Pane.Single, PaneType.Object);
-            //TODO
+            //Redirected from a SalesTaxRate to corresponding StateProvice
+            wait.Until(dr => dr.FindElement(By.CssSelector(".properties")).Text.Contains("Is Only State Province"));
         }
         public virtual void RedirectFromLink()
         {
             GeminiUrl("home?m1=SalesRepository");
             Click(GetObjectAction("Sales Tax Rates"));
             WaitForView(Pane.Single, PaneType.List);
-            //TODO
+            WaitForCss(".reference", 20);
+            var row = WaitForCssNo(".reference",0);
+            Assert.AreEqual("Tax Rate for: Alberta", row.Text);
+            Click(row);
+            //Redirected from a SalesTaxeRate to corresponding StateProvice
+            WaitForView(Pane.Single, PaneType.Object, "Alberta");
         }
     }
 
@@ -130,7 +137,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass, Ignore]
+    [TestClass]
     public class MegaRedirectTestIe : MegaRedirectTestBase {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
