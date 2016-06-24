@@ -202,6 +202,10 @@ module NakedObjects {
             }
             return false;
         }
+
+        toString() {
+            return this.name;
+        }
     }
 
     export class ErrorViewModel implements IErrorViewModel{

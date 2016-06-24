@@ -176,7 +176,7 @@ module NakedObjects {
         "May take 1 argument: the partial field name.\n" +
         "If this matches more than one property, a list of matches is returned.\n" +
         "If no argument is provided, the full list of properties is returned.\n"+
-        "In the context of an opened object collection, or a list,\n"
+        "In the context of an opened object collection, or a list,\n" +
         "shows one or more items from that collection or list.\n" +
         "If no arguments are specified, show will list all of the the items in the collection,\n" +
         "or the first page of items if in a list view.\n" +

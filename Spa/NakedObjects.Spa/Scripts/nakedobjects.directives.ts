@@ -229,12 +229,24 @@ module NakedObjects {
                     // return OK if no value or value is of correct type.
                     if (viewModel.optional && !viewValue) {
                         // optional with no value
+                        viewModel.resetMessage();
                         viewModel.clientValid = true;
                     }
-                    else if (modelValue instanceof ChoiceViewModel) {
-                        viewModel.clientValid = !!modelValue.name;
+                    else if (!viewModel.optional && !viewValue) {
+                        // mandatory with no value
+                        viewModel.resetMessage();
+                        viewModel.clientValid = false;
                     }
-                    else {
+                    else if (modelValue instanceof ChoiceViewModel) {
+                        // has view model check if it's valid                       
+                        if (!modelValue.name) {
+                            viewModel.setMessage(noPatternMatch);
+                            viewModel.clientValid = false;
+                        }
+                    }
+                    else { 
+                        // has value but not ChoiceViewModel so must be invalid 
+                        viewModel.setMessage(noPatternMatch);
                         viewModel.clientValid = false;
                     }
 
