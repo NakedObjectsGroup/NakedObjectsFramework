@@ -943,7 +943,7 @@ module NakedObjects {
         items: IRecentItemViewModel[];
     }
 
-    export class DomainObjectViewModel extends MessageViewModel implements IDraggableViewModel {
+    export class DomainObjectViewModel extends MessageViewModel implements IDomainObjectViewModel, IDraggableViewModel {
 
         constructor(private colorService: IColor,
             private contextService: IContext,
@@ -955,12 +955,56 @@ module NakedObjects {
             super();
         }
 
-        propertyMap = () => {
+        private routeData: PaneRouteData;
+        private props: _.Dictionary<Value>;
+        private instanceId: string;
+        private unsaved: boolean;
+
+        // IDraggableViewModel
+        value: string;
+        reference: string;
+        choice: IChoiceViewModel;
+        color: string;
+        draggableType: string;
+
+        domainObject: DomainObjectRepresentation;
+        onPaneId: number;
+        
+        title: string;
+        friendlyName: string;
+        presentationHint: string;
+        domainType: string;
+        
+        isInEdit: boolean;
+                   
+        actions: IActionViewModel[];
+        menuItems: IMenuItemViewModel[];
+        properties: IPropertyViewModel[];
+        collections: ICollectionViewModel[];
+        
+        private editProperties = () => _.filter(this.properties, p => p.isEditable && p.isDirty());
+
+        private isFormOrTransient = () => this.domainObject.extensions().interactionMode() === "form" || this.domainObject.extensions().interactionMode() === "transient";
+
+        private cancelHandler = () => this.isFormOrTransient() ?
+            () => this.urlManager.popUrlState(this.onPaneId) :
+            () => this.urlManager.setInteractionMode(InteractionMode.View, this.onPaneId);
+
+        private saveHandler = () => this.domainObject.isTransient() ? this.contextService.saveObject : this.contextService.updateObject;
+
+        private validateHandler = () => this.domainObject.isTransient() ? this.contextService.validateSaveObject : this.contextService.validateUpdateObject;
+
+        private handleWrappedError = (reject: ErrorWrapper) => {
+            const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.properties);
+            this.error.handleErrorAndDisplayMessages(reject, display);
+        };
+
+        private propertyMap = () => {
             const pps = _.filter(this.properties, property => property.isEditable);
             return _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
         };
 
-        wrapAction(a: IActionViewModel) {
+        private wrapAction(a: IActionViewModel) {
             const wrappedInvoke = a.execute;
             a.execute = (pps: IParameterViewModel[], right?: boolean) => {
                 this.setProperties();
@@ -976,6 +1020,12 @@ module NakedObjects {
                     });
             };
         }
+
+        private editComplete = () => {
+            this.contextService.updateValues();
+            this.contextService.clearObjectUpdater(this.onPaneId);
+        };
+
 
         // must be careful with this - OK for changes on client but after server updates should use  reset
         // because parameters may have appeared or disappeared etc and refesh just updates existing views. 
@@ -1003,11 +1053,9 @@ module NakedObjects {
 
             // leave message from previous refresh 
             this.clearMessage();
-
-            return this;
         }
 
-        reset(obj: DomainObjectRepresentation, routeData: PaneRouteData) {
+        reset(obj: DomainObjectRepresentation, routeData: PaneRouteData) : IDomainObjectViewModel {
             this.domainObject = obj;
             this.onPaneId = routeData.paneId;
             this.routeData = routeData;
@@ -1050,17 +1098,14 @@ module NakedObjects {
             this.reference = sav ? sav.toValueString() : "";
             this.choice = sav ? ChoiceViewModel.create(sav, "") : null;
 
-            this.colorService.toColorNumberFromType(this.domainObject.domainType()).then((c: number) => {
-                this.color = `${objectColor}${c}`;
-            });
+            this.colorService.toColorNumberFromType(this.domainObject.domainType()).then(c => this.color = `${objectColor}${c}`);
 
             this.resetMessage();
 
             if (routeData.interactionMode === InteractionMode.Form) {
                 _.forEach(this.actions, a => this.wrapAction(a));
             }
-
-            return this;
+            return this as IDomainObjectViewModel;
         }
 
         concurrency() {
@@ -1082,28 +1127,6 @@ module NakedObjects {
             }
         }
 
-        routeData: PaneRouteData;
-        domainObject: DomainObjectRepresentation;
-        onPaneId: number;
-        props: _.Dictionary<Value>;
-
-        title: string;
-        friendlyName: string;
-        presentationHint: string;
-        domainType: string;
-        instanceId: string;
-        draggableType: string;
-        isInEdit: boolean;
-        value: string;
-        reference: string;
-        choice: IChoiceViewModel;
-        color: string;
-        actions: IActionViewModel[];
-        menuItems: IMenuItemViewModel[];
-        properties: IPropertyViewModel[];
-        collections: ICollectionViewModel[];
-        unsaved: boolean;
-
         clientValid = () => _.every(this.properties, p => p.clientValid);
 
         tooltip = () => tooltip(this, this.properties);
@@ -1116,38 +1139,16 @@ module NakedObjects {
             this.urlManager.toggleObjectMenu(this.onPaneId);
         };
 
-        private editProperties = () => _.filter(this.properties, p => p.isEditable && p.isDirty());
-
-        setProperties = () =>
-            _.forEach(this.editProperties(), p => this.contextService.setPropertyValue(this.domainObject, p.propertyRep, p.getValue(), this.onPaneId));
-
-        private cancelHandler = () => this.domainObject.extensions().interactionMode() === "form" || this.domainObject.extensions().interactionMode() === "transient" ?
-            () => this.urlManager.popUrlState(this.onPaneId) :
-            () => this.urlManager.setInteractionMode(InteractionMode.View, this.onPaneId);
-
-        editComplete = () => {
-            this.contextService.updateValues();
-            this.contextService.clearObjectUpdater(this.onPaneId);
-        };
-
+        setProperties = () => _.forEach(this.editProperties(),
+            p => this.contextService.setPropertyValue(this.domainObject, p.propertyRep, p.getValue(), this.onPaneId));
+      
         doEditCancel = () => {
             this.editComplete();
             this.contextService.clearObjectValues(this.onPaneId);
             this.cancelHandler()();
         };
 
-        clearCachedFiles = () => {
-            _.forEach(this.properties, p => p.attachment ? p.attachment.clearCachedFile() : null);
-        }
-
-        private saveHandler = () => this.domainObject.isTransient() ? this.contextService.saveObject : this.contextService.updateObject;
-
-        private validateHandler = () => this.domainObject.isTransient() ? this.contextService.validateSaveObject : this.contextService.validateUpdateObject;
-
-        private handleWrappedError = (reject: ErrorWrapper) => {
-            const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.properties);
-            this.error.handleErrorAndDisplayMessages(reject, display);
-        };
+        clearCachedFiles = () => _.forEach(this.properties, p => p.attachment ? p.attachment.clearCachedFile() : null);
 
         doSave = (viewObject: boolean) => {
             this.clearCachedFiles();
@@ -1178,7 +1179,7 @@ module NakedObjects {
             this.clearCachedFiles();
             this.contextService.clearObjectValues(this.onPaneId);
             this.contextService.getObjectForEdit(this.onPaneId, this.domainObject).
-                then((updatedObject: DomainObjectRepresentation) => {
+                then(updatedObject => {
                     this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
                     this.urlManager.pushUrlState(this.onPaneId);
                     this.urlManager.setInteractionMode(InteractionMode.Edit, this.onPaneId);
@@ -1190,20 +1191,13 @@ module NakedObjects {
             this.contextService.updateValues();
             this.clearCachedFiles();
             this.contextService.reloadObject(this.onPaneId, this.domainObject)
-                .then((updatedObject: DomainObjectRepresentation) => {
-                    this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
-                })
+                .then(updatedObject => this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]))
                 .catch((reject: ErrorWrapper) => this.handleWrappedError(reject));
         }
 
+        hideEdit = () => this.isFormOrTransient() || _.every(this.properties, p => !p.isEditable);
 
-        hideEdit = () => this.domainObject.extensions().interactionMode() === "form" ||
-            this.domainObject.extensions().interactionMode() === "transient" ||
-            _.every(this.properties, p => !p.isEditable);
-
-        disableActions(): boolean {
-            return !this.actions || this.actions.length === 0;
-        }
+        disableActions = () => !this.actions || this.actions.length === 0;
 
         canDropOn = (targetType: string) => this.contextService.isSubTypeOf(this.domainType, targetType);
     }
@@ -1224,7 +1218,7 @@ module NakedObjects {
         applicationPropertiesTemplate: string;
 
         menus: IMenusViewModel;
-        object: DomainObjectViewModel;
+        object: IDomainObjectViewModel;
         menu: IMenuViewModel;
         dialog: IDialogViewModel;
         error: IErrorViewModel;
@@ -1237,7 +1231,7 @@ module NakedObjects {
         applicationProperties: IApplicationPropertiesViewModel;
     }
 
-    export class CiceroViewModel {
+    export class CiceroViewModel implements ICiceroViewModel {
         message: string;
         output: string;
         alert = ""; //Alert is appended before the output
@@ -1246,11 +1240,11 @@ module NakedObjects {
         previousInput: string;
         chainedCommands: string[];
 
-        selectPreviousInput(): void {
+        selectPreviousInput = () => {
             this.input = this.previousInput;
         }
 
-        clearInput(): void {
+        clearInput = () => {
             this.input = null;
         }
 

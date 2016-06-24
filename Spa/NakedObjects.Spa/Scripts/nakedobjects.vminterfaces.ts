@@ -12,6 +12,8 @@ module NakedObjects {
     import MenusRepresentation = Models.MenusRepresentation;
     import IVersionRepresentation = RoInterfaces.IVersionRepresentation;
     import IUserRepresentation = RoInterfaces.IUserRepresentation;
+    import DomainObjectRepresentation = NakedObjects.Models.DomainObjectRepresentation;
+    import ErrorMap = NakedObjects.Models.ErrorMap;
 
     export interface IAttachmentViewModel {
         href: string;
@@ -311,5 +313,70 @@ module NakedObjects {
     export interface IRecentItemsViewModel {
         onPaneId: number;
         items: IRecentItemViewModel[];
+    }
+
+    export interface IDomainObjectViewModel extends IMessageViewModel {
+        domainObject: Models.DomainObjectRepresentation;
+        onPaneId: number;
+
+        title: string;
+        friendlyName: string;
+        presentationHint: string;
+        domainType: string;
+
+        isInEdit: boolean;
+
+        actions: IActionViewModel[];
+        menuItems: IMenuItemViewModel[];
+        properties: IPropertyViewModel[];
+        collections: ICollectionViewModel[];
+
+        refresh: (routeData: PaneRouteData) => void;
+        reset: (obj: DomainObjectRepresentation, routeData: PaneRouteData) => IDomainObjectViewModel;
+        concurrency: () => (event: ng.IAngularEvent, em: ErrorMap) => void;
+        clientValid: () => boolean;
+        tooltip: () => string;
+        actionsTooltip: () => string;
+        toggleActionMenu: () => void;
+        setProperties: () => void;
+        doEditCancel: () => void;
+        clearCachedFiles: () => void;
+        doSave: (viewObject: boolean) => void;
+        doSaveValidate: () => ng.IPromise<boolean>;
+        doEdit: () => void;
+        doReload: () => void;
+        hideEdit: () => boolean;
+        disableActions: () => boolean;
+    }
+
+    export interface ICiceroViewModel {
+        message: string;
+        output: string;
+        alert: string;
+        input: string;
+        parseInput: (input: string) => void;
+        previousInput: string;
+        chainedCommands: string[];
+
+        selectPreviousInput: () => void;
+
+        clearInput: () => void;
+
+        autoComplete: (input: string) => void;
+
+        outputMessageThenClearIt: () => void;
+
+        renderHome: (routeData: PaneRouteData) => void;
+        renderObject: (routeData: PaneRouteData) => void;
+        renderList: (routeData: PaneRouteData) => void;
+        renderError: () => void;
+        viewType: ViewType;
+        clipboard: DomainObjectRepresentation;
+
+        executeNextChainedCommandIfAny: () => void;
+
+        popNextCommand: () => string;
+
+        clearInputRenderOutputAndAppendAlertIfAny: (output: string) => void;
     }
 }
