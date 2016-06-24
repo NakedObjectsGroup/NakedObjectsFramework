@@ -8,9 +8,16 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
+using NakedObjects.Redirect;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AdventureWorksModel {
-    public class SalesTaxRate  {
+
+    //Redirects to the StateProvince object on the Azure server
+    public class SalesTaxRate : IRedirectedObject {
+        #region Injected Services
+        public IDomainObjectContainer Container { set; protected get; }
+        #endregion
 
         #region Life Cycle Methods
         public virtual void Persisting() {
@@ -23,9 +30,16 @@ namespace AdventureWorksModel {
         }
         #endregion
 
+        public override string ToString()
+        {
+            var t = Container.NewTitleBuilder();
+            t.Append("Tax Rate for: ").Append(StateProvince);
+            return t.ToString();
+        }
+
         [NakedObjectsIgnore]
         public virtual int SalesTaxRateID { get; set; }
-        public byte TaxType { get; set; }
+        public virtual byte TaxType { get; set; }
         public virtual decimal TaxRate { get; set; }
         public virtual string Name { get; set; }
 
@@ -48,6 +62,17 @@ namespace AdventureWorksModel {
 
         [NakedObjectsIgnore]
         public virtual Guid rowguid { get; set; }
+
+        [NakedObjectsIgnore, NotMapped]
+        public virtual string ServerName { get
+            {
+                return "nakedobjectsrodemo.azurewebsites.net";
+            }  set { } }
+
+        [NakedObjectsIgnore, NotMapped]
+        public virtual string Oid { get {
+                return "AdventureWorksModel.StateProvince/"+StateProvinceID;
+            } set { } }
 
         #endregion
 

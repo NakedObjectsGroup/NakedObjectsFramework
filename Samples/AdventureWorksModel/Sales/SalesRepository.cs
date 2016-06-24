@@ -65,6 +65,17 @@ namespace AdventureWorksModel {
 
         #endregion
 
+
+        public IQueryable<SalesTaxRate> SalesTaxRates()
+        {
+            return Container.Instances<SalesTaxRate>();
+        }
+
+        public SalesTaxRate RandomSalesTaxRate()
+        {
+            return Random<SalesTaxRate>();
+        }
+
         #region Sub-menu hierarchy for testing only
 
         public static void Menu(IMenu menu)
@@ -73,6 +84,8 @@ namespace AdventureWorksModel {
             menu.AddAction(nameof(FindSalesPersonByName));
             menu.AddAction(nameof(ListAccountsForSalesPerson));
             menu.AddAction(nameof(RandomSalesPerson));
+            menu.AddAction(nameof(SalesTaxRates));
+            menu.AddAction(nameof(RandomSalesTaxRate));
             menu.CreateSubMenu("Sub Menu")
                 .AddAction(nameof(Action1))
                 .CreateSubMenu("Level 2 sub menu")
