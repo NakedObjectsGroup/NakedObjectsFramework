@@ -60,6 +60,10 @@ module NakedObjects.Models {
         return object && object instanceof Object && "value" in object;
     }
 
+    export function isIDomainObjectRepresentation(object: any): object is RoInterfaces.IDomainObjectRepresentation {
+        return object && object instanceof Object && "domainType" in object && "instanceId" in object && "members" in object;
+    }
+
     export function isIInvokableAction(object: any): object is IInvokableAction {
         return object && "parameters" in object && "extensions" in object;
     }
