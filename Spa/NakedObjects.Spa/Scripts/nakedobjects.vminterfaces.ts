@@ -6,11 +6,12 @@ module NakedObjects {
     import ErrorWrapper = Models.ErrorWrapper;
     import EntryType = Models.EntryType;
     import Parameter = Models.Parameter;
-    import IListRepresentation = RoInterfaces.IListRepresentation;
-    import ListRepresentation = NakedObjects.Models.ListRepresentation;
-    import IActionRepresentation = NakedObjects.RoInterfaces.IActionRepresentation;
-    import ActionMember = NakedObjects.Models.ActionMember;
-    import ActionRepresentation = NakedObjects.Models.ActionRepresentation;
+    import ListRepresentation = Models.ListRepresentation;
+    import ActionMember = Models.ActionMember;
+    import ActionRepresentation = Models.ActionRepresentation;
+    import MenusRepresentation = Models.MenusRepresentation;
+    import IVersionRepresentation = RoInterfaces.IVersionRepresentation;
+    import IUserRepresentation = RoInterfaces.IUserRepresentation;
 
     export interface IAttachmentViewModel {
         href: string;
@@ -62,7 +63,7 @@ module NakedObjects {
     }
 
     export interface IItemViewModel extends ILinkViewModel {
-        tableRowViewModel: TableRowViewModel;
+        tableRowViewModel: ITableRowViewModel;
         selected: boolean;
 
         selectionChange: (index: number) => void;
@@ -252,4 +253,63 @@ module NakedObjects {
         refresh: (routeData: PaneRouteData, resetting: boolean) => void;
     }
 
+    export interface IMenusViewModel {
+        reset: (menusRep: MenusRepresentation, routeData: PaneRouteData) => IMenusViewModel;
+        menusRep: MenusRepresentation;
+        onPaneId: number;
+        items: ILinkViewModel[];
+    }
+
+    export interface IMenuViewModel extends IMessageViewModel {
+        id: string;
+        title: string;
+        actions: IActionViewModel[];
+        menuItems: IMenuItemViewModel[];
+        menuRep: Models.MenuRepresentation;
+    }
+
+    export interface ITableRowColumnViewModel {
+        type: "ref" | "scalar";
+        returnType: string;
+        value: scalarValueType | Date;
+        formattedValue: string;
+        title: string;
+    }
+
+    export interface ITableRowViewModel {
+        title: string;
+        hasTitle: boolean;
+        properties: ITableRowColumnViewModel[];
+    }
+
+    export interface  IApplicationPropertiesViewModel {
+        serverVersion: IVersionRepresentation;
+        user: IUserRepresentation;
+        serverUrl: string;
+        clientVersion: string;
+    }
+
+    export interface IToolBarViewModel {
+        loading: string;
+        template: string;
+        footerTemplate: string;
+        goHome: (right?: boolean) => void;
+        goBack: () => void;
+        goForward: () => void;
+        swapPanes: () => void;
+        logOff: () => void;
+        singlePane: (right?: boolean) => void;
+        recent: (right?: boolean) => void;
+        cicero: () => void;
+        userName: string;
+        applicationProperties: () => void;
+
+        warnings: string[];
+        messages: string[];
+    }
+
+    export interface IRecentItemsViewModel {
+        onPaneId: number;
+        items: IRecentItemViewModel[];
+    }
 }

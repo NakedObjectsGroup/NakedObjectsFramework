@@ -236,7 +236,7 @@ module NakedObjects {
     }
 
     export class ItemViewModel extends LinkViewModel implements IItemViewModel, IDraggableViewModel {
-        tableRowViewModel: TableRowViewModel;
+        tableRowViewModel: ITableRowViewModel;
         selected: boolean;
         selectionChange: (index: number) => void;
     }
@@ -875,52 +875,30 @@ module NakedObjects {
         refresh: (routeData: PaneRouteData, resetting: boolean) => void;
     }
 
-    export class ServicesViewModel {
-        title: string;
-        color: string;
-        items: ILinkViewModel[];
-    }
-
-    export class MenusViewModel {
-        constructor(private viewModelFactory: IViewModelFactory) {
-
-        }
+    export class MenusViewModel implements IMenusViewModel {
+        constructor(private viewModelFactory: IViewModelFactory) {}
 
         reset(menusRep: MenusRepresentation, routeData: PaneRouteData) {
             this.menusRep = menusRep;
             this.onPaneId = routeData.paneId;
-
-            this.title = "Menus";
-            this.color = "bg-color-darkBlue";
             this.items = _.map(this.menusRep.value(), link => this.viewModelFactory.linkViewModel(link, this.onPaneId));
             return this;
         }
 
         menusRep: MenusRepresentation;
         onPaneId: number;
-        title: string;
-        color: string;
         items: ILinkViewModel[];
     }
 
-    export class ServiceViewModel extends MessageViewModel {
-        title: string;
-        serviceId: string;
-        actions: IActionViewModel[];
-        menuItems: IMenuItemViewModel[];
-        color: string;
-    }
-
-    export class MenuViewModel extends MessageViewModel {
+    export class MenuViewModel extends MessageViewModel implements IMenuViewModel {
         id: string;
         title: string;
         actions: IActionViewModel[];
         menuItems: IMenuItemViewModel[];
-        color: string;
         menuRep: Models.MenuRepresentation;
     }
 
-    export class TableRowColumnViewModel {
+    export class TableRowColumnViewModel implements ITableRowColumnViewModel {
         type: "ref" | "scalar";
         returnType: string;
         value: scalarValueType | Date;
@@ -928,10 +906,41 @@ module NakedObjects {
         title: string;
     }
 
-    export class TableRowViewModel {
+    export class TableRowViewModel implements ITableRowViewModel{
         title: string;
         hasTitle: boolean;
-        properties: TableRowColumnViewModel[];
+        properties: ITableRowColumnViewModel[];
+    }
+
+    export class ApplicationPropertiesViewModel implements IApplicationPropertiesViewModel {
+        serverVersion: IVersionRepresentation;
+        user: IUserRepresentation;
+        serverUrl: string;
+        clientVersion: string;
+    }
+
+    export class ToolBarViewModel implements IToolBarViewModel{
+        loading: string;
+        template: string;
+        footerTemplate: string;
+        goHome: (right?: boolean) => void;
+        goBack: () => void;
+        goForward: () => void;
+        swapPanes: () => void;
+        logOff: () => void;
+        singlePane: (right?: boolean) => void;
+        recent: (right?: boolean) => void;
+        cicero: () => void;
+        userName: string;
+        applicationProperties: () => void;
+
+        warnings: string[];
+        messages: string[];
+    }
+
+    export class RecentItemsViewModel implements IRecentItemsViewModel{
+        onPaneId: number;
+        items: IRecentItemViewModel[];
     }
 
     export class DomainObjectViewModel extends MessageViewModel implements IDraggableViewModel {
@@ -1199,38 +1208,6 @@ module NakedObjects {
         canDropOn = (targetType: string) => this.contextService.isSubTypeOf(this.domainType, targetType);
     }
 
-
-    export class ApplicationPropertiesViewModel {
-        serverVersion: IVersionRepresentation;
-        user: IUserRepresentation;
-        serverUrl: string;
-        clientVersion: string;
-    }
-
-    export class ToolBarViewModel {
-        loading: string;
-        template: string;
-        footerTemplate: string;
-        goHome: (right?: boolean) => void;
-        goBack: () => void;
-        goForward: () => void;
-        swapPanes: () => void;
-        logOff: () => void;
-        singlePane: (right?: boolean) => void;
-        recent: (right?: boolean) => void;
-        cicero: () => void;
-        userName: string;
-        applicationProperties: () => void;
-
-        warnings: string[];
-        messages: string[];
-    }
-
-    export class RecentItemsViewModel {
-        onPaneId: number;
-        items: IRecentItemViewModel[];
-    }
-
     export interface INakedObjectsScope extends ng.IScope {
         backgroundColor: string;
         title: string;
@@ -1246,18 +1223,18 @@ module NakedObjects {
         attachmentTemplate: string;
         applicationPropertiesTemplate: string;
 
-        menus: MenusViewModel;
+        menus: IMenusViewModel;
         object: DomainObjectViewModel;
-        menu: MenuViewModel;
+        menu: IMenuViewModel;
         dialog: IDialogViewModel;
-        error: ErrorViewModel;
-        recent: RecentItemsViewModel;
+        error: IErrorViewModel;
+        recent: IRecentItemsViewModel;
         collection: IListViewModel;
         collectionPlaceholder: ICollectionPlaceholderViewModel;
-        toolBar: ToolBarViewModel;
+        toolBar: IToolBarViewModel;
         cicero: CiceroViewModel;
         attachment: IAttachmentViewModel;
-        applicationProperties: ApplicationPropertiesViewModel;
+        applicationProperties: IApplicationPropertiesViewModel;
     }
 
     export class CiceroViewModel {

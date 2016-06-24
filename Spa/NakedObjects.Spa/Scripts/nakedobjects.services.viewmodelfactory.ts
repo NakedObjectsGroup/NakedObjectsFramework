@@ -35,31 +35,29 @@ module NakedObjects {
     import ActionResultRepresentation = NakedObjects.Models.ActionResultRepresentation;
 
     export interface IViewModelFactory {
-        toolBarViewModel(): ToolBarViewModel;
+        toolBarViewModel(): IToolBarViewModel;
         errorViewModel(errorRep: ErrorWrapper): ErrorViewModel;
         actionViewModel(actionRep: ActionMember | ActionRepresentation, vm: IMessageViewModel, routedata: PaneRouteData): IActionViewModel;
         collectionViewModel(collectionRep: CollectionMember, routeData: PaneRouteData): ICollectionViewModel;
         listPlaceholderViewModel(routeData: PaneRouteData): ICollectionPlaceholderViewModel;
-        servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
-        serviceViewModel(serviceRep: DomainObjectRepresentation, routeData: PaneRouteData): ServiceViewModel;
-
+      
         menuViewModel(menuRep: MenuRepresentation, routeData: PaneRouteData): MenuViewModel;
 
-        tableRowViewModel(properties: _.Dictionary<PropertyMember>, paneId: number): TableRowViewModel;
+        tableRowViewModel(properties: _.Dictionary<PropertyMember>, paneId: number): ITableRowViewModel;
         parameterViewModel(parmRep: Parameter, previousValue: Value, paneId: number): IParameterViewModel;
         propertyViewModel(propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number, parentValues: () => _.Dictionary<Value>): IPropertyViewModel;
         ciceroViewModel(): CiceroViewModel;
         handleErrorResponse(err: ErrorMap, vm: IMessageViewModel, vms: IFieldViewModel[]): void;
         getItems(links: Link[], tableView: boolean, routeData: PaneRouteData, collectionViewModel: ICollectionViewModel | IListViewModel): IItemViewModel[];
         linkViewModel(linkRep: Link, paneId: number): ILinkViewModel;
-        recentItemsViewModel(paneId: number): RecentItemsViewModel;
+        recentItemsViewModel(paneId: number): IRecentItemsViewModel;
         attachmentViewModel(propertyRep: PropertyMember, paneId: number): IAttachmentViewModel;
     }
 
     interface IViewModelFactoryInternal extends IViewModelFactory {
         itemViewModel(linkRep: Link, paneId: number, selected: boolean): IItemViewModel;
         recentItemViewModel(obj: DomainObjectRepresentation, linkRep: Link, paneId: number, selected: boolean): IRecentItemViewModel;
-        propertyTableViewModel(propertyRep: PropertyMember, id: string, paneId: number): TableRowColumnViewModel;
+        propertyTableViewModel(propertyRep: PropertyMember, id: string, paneId: number): ITableRowColumnViewModel;
     }
 
     app.service("viewModelFactory", function ($q: ng.IQService,
@@ -815,36 +813,6 @@ module NakedObjects {
             return collectionPlaceholderViewModel as ICollectionPlaceholderViewModel;
         };
 
-        viewModelFactory.servicesViewModel = (servicesRep: DomainServicesRepresentation) => {
-            const servicesViewModel = new ServicesViewModel();
-
-            // filter out contributed action services 
-            const links = _.filter(servicesRep.value(), m => {
-                const sid = m.rel().parms[0].value;
-                return sid.indexOf("ContributedActions") === -1;
-            });
-
-            servicesViewModel.title = "Services";
-            servicesViewModel.color = "bg-color-darkBlue";
-            servicesViewModel.items = _.map(links, link => viewModelFactory.linkViewModel(link, 1));
-            return servicesViewModel;
-        };
-
-        viewModelFactory.serviceViewModel = (serviceRep: DomainObjectRepresentation, routeData: PaneRouteData) => {
-            const serviceViewModel = new ServiceViewModel();
-            const actions = serviceRep.actionMembers();
-            serviceViewModel.serviceId = serviceRep.serviceId();
-            serviceViewModel.title = serviceRep.title();
-            serviceViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, serviceViewModel, routeData));
-            serviceViewModel.menuItems = createMenuItems(serviceViewModel.actions);
-
-            color.toColorNumberFromType(serviceRep.serviceId()).then((c: number) => {
-                serviceViewModel.color = `${objectColor}${c}`;
-            });
-
-            return serviceViewModel;
-        };
-
         viewModelFactory.menuViewModel = (menuRep: MenuRepresentation, routeData: PaneRouteData) => {
             const menuViewModel = new MenuViewModel();
 
@@ -875,14 +843,14 @@ module NakedObjects {
             return recentItemsViewModel;
         };
 
-        viewModelFactory.tableRowViewModel = (properties: _.Dictionary<PropertyMember>, paneId: number): TableRowViewModel => {
+        viewModelFactory.tableRowViewModel = (properties: _.Dictionary<PropertyMember>, paneId: number): ITableRowViewModel => {
             const tableRowViewModel = new TableRowViewModel();
             tableRowViewModel.properties = _.map(properties, (property, id) => viewModelFactory.propertyTableViewModel(property, id, paneId));
             return tableRowViewModel;
         };
 
 
-        let cachedToolBarViewModel: ToolBarViewModel;
+        let cachedToolBarViewModel: IToolBarViewModel;
 
         function getToolBarViewModel() {
             if (!cachedToolBarViewModel) {
