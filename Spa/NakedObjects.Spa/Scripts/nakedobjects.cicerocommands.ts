@@ -65,10 +65,10 @@ module NakedObjects {
         helpText: string;
         protected minArguments: number;
         protected maxArguments: number;
-        protected vm: CiceroViewModel;
+        protected vm: ICiceroViewModel;
 
         //Must be called after construction and before execute is called
-        initialiseWithViewModel(cvm: CiceroViewModel) {
+        initialiseWithViewModel(cvm: ICiceroViewModel) {
             this.vm = cvm;
         }
 

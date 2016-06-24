@@ -8,13 +8,13 @@ module NakedObjects {
 
     export interface ICommandFactory {
 
-        initialiseCommands(cvm: CiceroViewModel): void;
+        initialiseCommands(cvm: ICiceroViewModel): void;
 
-        parseInput(input: string, cvm: CiceroViewModel): void;
+        parseInput(input: string, cvm: ICiceroViewModel): void;
 
-        processSingleCommand(command: string, cvm: CiceroViewModel, chained: boolean): void;
+        processSingleCommand(command: string, cvm: ICiceroViewModel, chained: boolean): void;
 
-        autoComplete(partialCommand: string, cvm: CiceroViewModel): void;
+        autoComplete(partialCommand: string, cvm: ICiceroViewModel): void;
 
         //Returns all commands that may be invoked in the current context
         allCommandsForCurrentContext(): string;
@@ -63,14 +63,14 @@ module NakedObjects {
             "sh": new Show(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
             "wh": new Where(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error)
         };
-        commandFactory.initialiseCommands = (cvm: CiceroViewModel) => {
+        commandFactory.initialiseCommands = (cvm: ICiceroViewModel) => {
             if (!commandsInitialised) {
                 _.forEach(commands, command => command.initialiseWithViewModel(cvm));
                 commandsInitialised = true;
             }
         };
 
-        commandFactory.parseInput = (input: string, cvm: CiceroViewModel) => {
+        commandFactory.parseInput = (input: string, cvm: ICiceroViewModel) => {
             cvm.chainedCommands = null; //TODO: Maybe not needed if unexecuted commands are cleared down upon error?
             if (!input) { //Special case for hitting Enter with no input
                 commandFactory.getCommand("wh").execute(null, false);
@@ -90,7 +90,7 @@ module NakedObjects {
             }
         };
 
-        commandFactory.processSingleCommand = (input: string, cvm: CiceroViewModel, chained: boolean) => {
+        commandFactory.processSingleCommand = (input: string, cvm: ICiceroViewModel, chained: boolean) => {
             try {
                 input = input.trim();
                 const firstWord = input.split(" ")[0].toLowerCase();
@@ -109,7 +109,7 @@ module NakedObjects {
 
         //TODO: change the name & functionality to pre-parse or somesuch as could do more than auto
         //complete e.g. reject unrecognised action or one not available in context.
-        commandFactory.autoComplete = (input: string, cvm: CiceroViewModel) => {
+        commandFactory.autoComplete = (input: string, cvm: ICiceroViewModel) => {
             if (!input) return;
             let lastInChain = _.last(input.split(";")).toLowerCase();
             const charsTyped = lastInChain.length;

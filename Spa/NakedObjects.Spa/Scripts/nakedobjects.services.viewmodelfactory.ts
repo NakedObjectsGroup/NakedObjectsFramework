@@ -46,7 +46,7 @@ module NakedObjects {
         tableRowViewModel(properties: _.Dictionary<PropertyMember>, paneId: number): ITableRowViewModel;
         parameterViewModel(parmRep: Parameter, previousValue: Value, paneId: number): IParameterViewModel;
         propertyViewModel(propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number, parentValues: () => _.Dictionary<Value>): IPropertyViewModel;
-        ciceroViewModel(): CiceroViewModel;
+        ciceroViewModel(): ICiceroViewModel;
         handleErrorResponse(err: ErrorMap, vm: IMessageViewModel, vms: IFieldViewModel[]): void;
         getItems(links: Link[], tableView: boolean, routeData: PaneRouteData, collectionViewModel: ICollectionViewModel | IListViewModel): IItemViewModel[];
         linkViewModel(linkRep: Link, paneId: number): ILinkViewModel;
@@ -941,7 +941,7 @@ module NakedObjects {
 
         viewModelFactory.toolBarViewModel = () => getToolBarViewModel();
 
-        let cvm: CiceroViewModel = null;
+        let cvm: ICiceroViewModel = null;
 
         viewModelFactory.ciceroViewModel = () => {
             if (cvm == null) {

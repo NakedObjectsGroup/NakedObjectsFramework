@@ -25,10 +25,10 @@ module NakedObjects {
 
     export interface ICiceroRenderer {
 
-        renderHome(cvm: CiceroViewModel, routeData: PaneRouteData): void;
-        renderObject(cvm: CiceroViewModel, routeData: PaneRouteData): void;
-        renderList(cvm: CiceroViewModel, routeData: PaneRouteData): void;
-        renderError(cvm: CiceroViewModel): void;
+        renderHome(cvm: ICiceroViewModel, routeData: PaneRouteData): void;
+        renderObject(cvm: ICiceroViewModel, routeData: PaneRouteData): void;
+        renderList(cvm: ICiceroViewModel, routeData: PaneRouteData): void;
+        renderError(cvm: ICiceroViewModel): void;
     }
 
     app.service("ciceroRenderer", function ($q: ng.IQService,
@@ -36,7 +36,7 @@ module NakedObjects {
         mask: IMask,
         error: IError) {
         const renderer = <ICiceroRenderer>this;
-        renderer.renderHome = (cvm: CiceroViewModel, routeData: PaneRouteData) => {
+        renderer.renderHome = (cvm: ICiceroViewModel, routeData: PaneRouteData) => {
             if (cvm.message) {
                 cvm.outputMessageThenClearIt();
             } else {
@@ -48,7 +48,7 @@ module NakedObjects {
                 }
             }
         };
-        renderer.renderObject = (cvm: CiceroViewModel, routeData: PaneRouteData) => {
+        renderer.renderObject = (cvm: ICiceroViewModel, routeData: PaneRouteData) => {
             if (cvm.message) {
                 cvm.outputMessageThenClearIt();
             } else {
@@ -76,7 +76,7 @@ module NakedObjects {
                     });
             }
         };
-        renderer.renderList = (cvm: CiceroViewModel, routeData: PaneRouteData) => {
+        renderer.renderList = (cvm: ICiceroViewModel, routeData: PaneRouteData) => {
             if (cvm.message) {
                 cvm.outputMessageThenClearIt();
             } else {
@@ -94,7 +94,7 @@ module NakedObjects {
                 });
             }
         };
-        renderer.renderError = (cvm: CiceroViewModel) => {
+        renderer.renderError = (cvm: ICiceroViewModel) => {
             const err = context.getError().error as ErrorRepresentation;
             cvm.clearInput();
             cvm.output = `Sorry, an application error has occurred. ${err.message()}`;
@@ -115,7 +115,7 @@ module NakedObjects {
             return _.filter(_.keys(routeData.collections), k => routeData.collections[k] != CollectionViewState.Summary);
         }
 
-        function renderOpenCollection(collId: string, obj: DomainObjectRepresentation, cvm: CiceroViewModel) {
+        function renderOpenCollection(collId: string, obj: DomainObjectRepresentation, cvm: ICiceroViewModel) {
             const coll = obj.collectionMember(collId);
             var output = `Collection: ${coll.extensions().friendlyName()} on ${TypePlusTitle(obj)}\n`;
             switch (coll.size()) {
@@ -131,14 +131,14 @@ module NakedObjects {
             cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
         }
 
-        function renderTransientObject(routeData: PaneRouteData, obj: DomainObjectRepresentation, cvm: CiceroViewModel) {
+        function renderTransientObject(routeData: PaneRouteData, obj: DomainObjectRepresentation, cvm: ICiceroViewModel) {
             var output = "Unsaved ";
             output += obj.extensions().friendlyName() + "\n";
             output += renderModifiedProperties(obj, routeData, mask);
             cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
         }
 
-        function renderForm(routeData: PaneRouteData, obj: DomainObjectRepresentation, cvm: CiceroViewModel) {
+        function renderForm(routeData: PaneRouteData, obj: DomainObjectRepresentation, cvm: ICiceroViewModel) {
             let output = "Editing ";
             output += PlusTitle(obj) + "\n";
             if (routeData.dialogId) {
@@ -153,7 +153,7 @@ module NakedObjects {
             }
         }
 
-        function renderObjectTitleAndDialogIfOpen(routeData: PaneRouteData, obj: DomainObjectRepresentation, cvm: CiceroViewModel) {
+        function renderObjectTitleAndDialogIfOpen(routeData: PaneRouteData, obj: DomainObjectRepresentation, cvm: ICiceroViewModel) {
             let output = Title(obj) + "\n";
             if (routeData.dialogId) {
                 context.getInvokableAction(obj.actionMember(routeData.dialogId))
@@ -166,7 +166,7 @@ module NakedObjects {
             }
         }
 
-        function renderOpenMenu(routeData: PaneRouteData, cvm: CiceroViewModel) {
+        function renderOpenMenu(routeData: PaneRouteData, cvm: ICiceroViewModel) {
             var output = "";
             context.getMenu(routeData.menuId)
                 .then((menu: MenuRepresentation) => {

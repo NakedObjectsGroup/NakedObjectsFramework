@@ -1226,7 +1226,7 @@ module NakedObjects {
         collection: IListViewModel;
         collectionPlaceholder: ICollectionPlaceholderViewModel;
         toolBar: IToolBarViewModel;
-        cicero: CiceroViewModel;
+        cicero: ICiceroViewModel;
         attachment: IAttachmentViewModel;
         applicationProperties: IApplicationPropertiesViewModel;
     }
