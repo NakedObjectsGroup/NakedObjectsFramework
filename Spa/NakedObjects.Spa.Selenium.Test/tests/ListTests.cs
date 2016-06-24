@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using System;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
     /// <summary>
@@ -183,9 +184,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForCss(".reference", 16);
             var row = WaitForCssNo(".reference", 6);
             Click(row);
-            WaitForView(Pane.Single, PaneType.Object, "Mountain-100 Clearance Sale");
+            WaitForView(Pane.Single, PaneType.Object);
             EditObject();
-            ClearFieldThenType("#description1", "Mountain-100: Clearance Sale");
+            var rand = new Random();
+            var suffix = rand.Next().ToString();
+            var newDescription = "Mountain-100 Clearance Sale " + suffix;
+            ClearFieldThenType("#description1", newDescription);
             SaveObject();
 
             ClickBackButton();
@@ -195,7 +199,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForCss(".reference", 16);
             row = WaitForCssNo(".reference", 6);
             Click(row);
-            WaitForView(Pane.Single, PaneType.Object, "Mountain-100: Clearance Sale");
+            WaitForView(Pane.Single, PaneType.Object);
+            wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(1)")).Text.EndsWith(suffix));
 
             //Now revert
             EditObject();
@@ -355,7 +360,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class MegaListTestsFirefox : MegaListTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
