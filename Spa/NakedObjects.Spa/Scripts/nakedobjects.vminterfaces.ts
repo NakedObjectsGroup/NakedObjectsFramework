@@ -6,6 +6,11 @@ module NakedObjects {
     import ErrorWrapper = Models.ErrorWrapper;
     import EntryType = Models.EntryType;
     import Parameter = Models.Parameter;
+    import IListRepresentation = RoInterfaces.IListRepresentation;
+    import ListRepresentation = NakedObjects.Models.ListRepresentation;
+    import IActionRepresentation = NakedObjects.RoInterfaces.IActionRepresentation;
+    import ActionMember = NakedObjects.Models.ActionMember;
+    import ActionRepresentation = NakedObjects.Models.ActionRepresentation;
 
     export interface IAttachmentViewModel {
         href: string;
@@ -193,4 +198,33 @@ module NakedObjects {
         description: () => string;
         reload: () => void;
     }
+
+    export interface IListViewModel extends IMessageViewModel {
+        id: string;
+        listRep: ListRepresentation;
+        size: number;
+        pluralName: string;
+        header: string[];
+        items: IItemViewModel[];
+        actions: IActionViewModel[];
+        menuItems: IMenuItemViewModel[];
+
+        description: () => string;
+        refresh : (routeData: PaneRouteData) => void;
+        reset : (list: ListRepresentation, routeData: PaneRouteData) => void;
+        toggleActionMenu : () => void;
+        pageNext  : () => void;
+        pagePrevious : () => void;
+        pageFirst : () => void;
+        pageLast : () => void;
+        doSummary: () => void;
+        doList: () => void;
+        doTable: () => void;
+        reload: () => void;
+        selectAll: () => void;
+        disableActions: () => void;
+        actionsTooltip : () => string;
+        actionMember : (id: string) => ActionMember | ActionRepresentation;
+    }
+
 }

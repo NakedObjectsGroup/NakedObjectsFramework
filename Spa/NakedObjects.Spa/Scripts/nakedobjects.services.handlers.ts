@@ -163,7 +163,7 @@ module NakedObjects {
             }
 
             function setNewDialog($scope: INakedObjectsScope,
-                                  holder: MenuRepresentation | DomainObjectRepresentation | ListViewModel,
+                                  holder: MenuRepresentation | DomainObjectRepresentation | IListViewModel,
                                   newDialogId: string,
                                   routeData: PaneRouteData,
                                   focusTarget: FocusTarget,

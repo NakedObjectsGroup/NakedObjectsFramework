@@ -611,7 +611,7 @@ module NakedObjects {
         reload: () => void;
     }
 
-    export class ListViewModel extends MessageViewModel {
+    export class ListViewModel extends MessageViewModel implements IListViewModel {
 
         constructor(private colorService: IColor,
             private context: IContext,
@@ -802,8 +802,6 @@ module NakedObjects {
             this.menuItems = createMenuItems(this.actions);
 
             _.forEach(this.actions, a => this.decorate(a));
-
-            return this;
         }
 
         toggleActionMenu = () => {
@@ -1259,7 +1257,7 @@ module NakedObjects {
         dialog: IDialogViewModel;
         error: ErrorViewModel;
         recent: RecentItemsViewModel;
-        collection: ListViewModel;
+        collection: IListViewModel;
         collectionPlaceholder: ICollectionPlaceholderViewModel;
         toolBar: ToolBarViewModel;
         cicero: CiceroViewModel;
