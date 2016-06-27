@@ -762,7 +762,8 @@ module NakedObjects {
 
                     const resultList = result.result().list();
 
-                    urlManager.setList(action, fromPaneId, toPaneId);
+                    const parms = parameterCache.getValues(action.actionId(), fromPaneId);
+                    urlManager.setList(action, parms, fromPaneId, toPaneId);
 
                     const index = urlManager.getListCacheIndex(toPaneId, page, pageSize);
                     cacheList(resultList, index);
