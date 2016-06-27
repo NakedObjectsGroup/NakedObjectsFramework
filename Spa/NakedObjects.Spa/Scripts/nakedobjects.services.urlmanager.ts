@@ -70,7 +70,7 @@ module NakedObjects {
         reload(): void;
         applicationProperties(): void;
 
-        changeSearch() : void;
+        triggerPageReloadByChangingUrlSearch() : void;
     }
 
     app.service("urlManager", function ($routeParams: ng.route.IRouteParamsService, $location: ng.ILocationService, $window: ng.IWindowService) {
@@ -639,10 +639,15 @@ module NakedObjects {
             const segments = path.split("/");
 
             const paneType = segments[paneId + 1] || homePath;
-            const paneSearch = capturePane(paneId);
+            let paneSearch = capturePane(paneId);
+
+            // clear any dialogs so we don't return  to a dialog
+
+            paneSearch = _.omit(paneSearch, `${akm.dialog}${paneId}`);
 
             return { paneType: paneType, search: paneSearch };
         };
+
         helper.getListCacheIndex = (paneId: number, newPage: number, newPageSize: number, format?: CollectionViewState) => {
             const search = getSearch();
 
@@ -762,7 +767,7 @@ module NakedObjects {
             return segments[paneId + 1] === homePath; // e.g. segments 0=~/1=cicero/2=home/3=home
         };
 
-        helper.changeSearch = () => {
+        helper.triggerPageReloadByChangingUrlSearch = () => {
             const search = getSearch();
             const currentFlag = search[akm.reload];
             const newFlag = currentFlag ? 0 : 1;

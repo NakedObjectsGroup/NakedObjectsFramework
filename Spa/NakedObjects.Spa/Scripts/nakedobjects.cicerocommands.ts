@@ -465,13 +465,13 @@ module NakedObjects {
         protected setFieldValueInContextAndUrl(field: Parameter, urlVal: Value) {
             this.context.setFieldValue(this.routeData().dialogId, field.id(), urlVal);
             //this.urlManager.setFieldValue(this.routeData().dialogId, field, urlVal); //TODO: do this everywhere, combine into one method
-            this.urlManager.changeSearch();
+            this.urlManager.triggerPageReloadByChangingUrlSearch();
         }
 
         protected setPropertyValueinContextAndUrl(obj : DomainObjectRepresentation, property : PropertyMember, urlVal: Value) {
             this.context.setPropertyValue(obj, property, urlVal);
             //this.urlManager.setPropertyValue(obj, property, urlVal);
-            this.urlManager.changeSearch();
+            this.urlManager.triggerPageReloadByChangingUrlSearch();
         }
     }
 
