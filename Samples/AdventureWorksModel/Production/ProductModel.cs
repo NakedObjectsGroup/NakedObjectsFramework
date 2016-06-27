@@ -62,7 +62,7 @@ namespace AdventureWorksModel {
         [MemberOrder(30)]
         public virtual string Instructions { get; set; }
 
-        [TableView(true, "Name", "Number", "Color")]
+        [TableView(true, "Name", "Number", "Color", "ProductInventory")]
         public virtual ICollection<Product> ProductVariants {
             get { return _productVariants; }
             set { _productVariants = value; }
