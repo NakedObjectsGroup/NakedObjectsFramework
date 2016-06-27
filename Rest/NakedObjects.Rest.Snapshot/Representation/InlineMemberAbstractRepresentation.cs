@@ -34,7 +34,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             SetEtag(target);
         }
 
-        public static InlineMemberAbstractRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags) {
+        public static InlineMemberAbstractRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags, bool asTableColumn) {
             IConsentFacade consent = propertyContext.Property.IsUsable(propertyContext.Target);
             var optionals = new List<OptionalProperty>();
             if (consent.IsVetoed) {
@@ -42,7 +42,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             }
 
             if (propertyContext.Property.IsCollection) {
-                return InlineCollectionRepresentation.Create(oidStrategy, req, propertyContext, optionals, flags);
+                return InlineCollectionRepresentation.Create(oidStrategy, req, propertyContext, optionals, flags, asTableColumn);
             }
 
             return InlinePropertyRepresentation.Create(oidStrategy, req, propertyContext, optionals, flags);

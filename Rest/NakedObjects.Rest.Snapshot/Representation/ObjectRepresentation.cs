@@ -129,7 +129,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                 tempLinks.Add(persistLink);
             }
 
-            InlineMemberAbstractRepresentation[] properties = visiblePropertiesAndCollections.Select(p => InlineMemberAbstractRepresentation.Create(OidStrategy, req, p, Flags)).ToArray();
+            InlineMemberAbstractRepresentation[] properties = visiblePropertiesAndCollections.Select(p => InlineMemberAbstractRepresentation.Create(OidStrategy, req, p, Flags, false)).ToArray();
 
             ActionContextFacade[] visibleActions;
 

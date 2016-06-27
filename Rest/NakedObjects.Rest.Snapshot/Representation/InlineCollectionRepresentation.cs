@@ -26,8 +26,8 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             SetHeader(strategy.GetTarget());
         }
 
-        public static InlineCollectionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
-            var collectionRepresentationStrategy = AbstractCollectionRepresentationStrategy.GetStrategy(true, oidStrategy, req, propertyContext, flags);
+        public static InlineCollectionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags, bool asTableColumn) {
+            var collectionRepresentationStrategy = AbstractCollectionRepresentationStrategy.GetStrategy(asTableColumn, true, oidStrategy, req, propertyContext, flags);
 
             int? size = collectionRepresentationStrategy.GetSize();
 

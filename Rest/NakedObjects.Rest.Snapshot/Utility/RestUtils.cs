@@ -415,7 +415,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
             var properties = columns.Select( c => no.Specification.Properties.SingleOrDefault(p => p.Id == c)).Where(p => p != null && p.IsVisible(no)).Select(p => new PropertyContextFacade { Property = p, Target = no });
 
-            var propertyReps = properties.Select(p => InlineMemberAbstractRepresentation.Create(oidStrategy, req, p, flags)).ToArray();
+            var propertyReps = properties.Select(p => InlineMemberAbstractRepresentation.Create(oidStrategy, req, p, flags, true)).ToArray();
             var members = CreateMap(propertyReps.ToDictionary(m => m.Id, m => (object)m));
 
             optionals.Add(new OptionalProperty(JsonPropertyNames.Members, members));

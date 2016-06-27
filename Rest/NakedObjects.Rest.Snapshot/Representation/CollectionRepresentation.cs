@@ -23,7 +23,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         } 
 
         public static CollectionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
-            var collectionRepresentationStrategy = AbstractCollectionRepresentationStrategy.GetStrategy(false, oidStrategy, req, propertyContext, flags);
+            var collectionRepresentationStrategy = AbstractCollectionRepresentationStrategy.GetStrategy(false, false, oidStrategy, req, propertyContext, flags);
 
             var value = collectionRepresentationStrategy.GetValue();
 

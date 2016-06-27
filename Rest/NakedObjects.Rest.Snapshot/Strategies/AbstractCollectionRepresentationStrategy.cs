@@ -83,7 +83,16 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             return propertyContext.Property.DoNotCount && !propertyContext.Property.RenderEagerly;
         }
 
-        public static AbstractCollectionRepresentationStrategy GetStrategy(bool inline, IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags) {
+        public static AbstractCollectionRepresentationStrategy GetStrategy(bool asTableColumn,  bool inline, IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags) {
+         
+            if (asTableColumn) {
+                if (propertyContext.Property.DoNotCount) {
+                     return new CollectionMemberNotCountedRepresentationStrategy(oidStrategy, req, propertyContext, flags);
+                }
+
+                return new CollectionMemberRepresentationStrategy(oidStrategy, req, propertyContext, flags);
+            }
+
             if (inline && DoNotCount(propertyContext)) {
                 return new CollectionMemberNotCountedRepresentationStrategy(oidStrategy, req, propertyContext, flags);
             }
