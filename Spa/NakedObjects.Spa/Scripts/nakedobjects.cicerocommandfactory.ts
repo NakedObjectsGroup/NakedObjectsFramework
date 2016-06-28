@@ -101,8 +101,8 @@ module NakedObjects {
                     argString = input.substr(index + 1);
                 }
                 command.execute(argString, chained);
-            } catch (Error) {
-                cvm.output = Error.message;
+            } catch (e) {
+                cvm.output = e.message;
                 cvm.input = "";
             }
         };
@@ -122,32 +122,27 @@ module NakedObjects {
                 const command = commandFactory.getCommand(lastInChain);
                 const earlierChain = input.substr(0, input.length - charsTyped);
                 cvm.input = earlierChain + command.fullCommand + " ";
-            } catch (Error) {
-                cvm.output = Error.message;
+            } catch (e) {
+                cvm.output = e.message;
             }
         };
 
         commandFactory.getCommand = (commandWord: string) => {
             if (commandWord.length < 2) {
-                throw new Error("Command word must have at least 2 characters");
+                throw new Error(tooShortCommand);
             }
             const abbr = commandWord.substr(0, 2);
             const command = commands[abbr];
             if (command == null) {
-                throw new Error(`No command begins with ${abbr}`);
+                throw new Error(`${noCommandMatch} ${abbr}`);
             }
             command.checkMatch(commandWord);
             return command;
         };
+
         commandFactory.allCommandsForCurrentContext = () => {
-            var result = "Commands available in current context:\n";
-            for (let key in commands) {
-                const c = commands[key];
-                if (c.isAvailableInCurrentContext()) {
-                    result = result + c.fullCommand + "\n";
-                }
-            }
-            return result;
+            const commandsInContext = _.filter(commands, c => c.isAvailableInCurrentContext());
+            return _.reduce(commandsInContext, (r, c) => r + c.fullCommand + "\n" , commandsAvailable);
         };
     });
 }

@@ -74,22 +74,22 @@ module NakedObjects {
 
         execute(argString: string, chained: boolean): void {
             if (!this.isAvailableInCurrentContext()) {
-                this.clearInputAndSetMessage(`The command: ${this.fullCommand} is not available in the current context`);
+                this.clearInputAndSetMessage(commandNotAvailable(this.fullCommand));
                 return;
             }
             //TODO: This could be moved into a pre-parse method as it does not depend on context
             if (argString == null) {
                 if (this.minArguments > 0) {
-                    this.clearInputAndSetMessage("No arguments provided");
+                    this.clearInputAndSetMessage(noArguments);
                     return;
                 }
             } else {
                 const args = argString.split(",");
                 if (args.length < this.minArguments) {
-                    this.clearInputAndSetMessage("Too few arguments provided");
+                    this.clearInputAndSetMessage(tooFewArguments);
                     return;
                 } else if (args.length > this.maxArguments) {
-                    this.clearInputAndSetMessage("Too many arguments provided");
+                    this.clearInputAndSetMessage(tooManyArguments);
                     return;
                 }
             }

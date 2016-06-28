@@ -185,4 +185,14 @@ module NakedObjects {
     export const whereCommand = "where";
     export const whereHelp = "Display a reminder of the current context.\n" +
         "The same can also be achieved by hitting the Return key on the empty input field.";
+
+    export const tooShortCommand = "Command word must have at least 2 characters";
+    export const noCommandMatch = "No command begins with";
+    export const commandsAvailable = "Commands available in current context:\n";
+
+    export const noArguments = "No arguments provided";
+    export const tooFewArguments = "Too few arguments provided";
+    export const tooManyArguments = "Too many arguments provided";
+
+    export const commandNotAvailable = (c: string) => `The command: ${c} is not available in the current context`;
 }
