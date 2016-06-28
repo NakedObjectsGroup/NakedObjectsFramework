@@ -995,6 +995,9 @@ type ANof4Tests() =
         member x.GetCollectionProperty() = ObjectCollection17.GetCollectionProperty x.api
         
         [<Test>]
+        member x.GetCollectionPropertyWithInlineFlag() = ObjectCollection17.GetCollectionPropertyWithInlineFlag x.api
+
+        [<Test>]
         member x.GetCollectionPropertyViewModel() = ObjectCollection17.GetCollectionPropertyViewModel x.api
         
         [<Test>]
