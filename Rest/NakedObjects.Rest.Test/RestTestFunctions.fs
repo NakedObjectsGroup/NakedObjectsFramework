@@ -875,7 +875,23 @@ let makePropertyMemberFull oType mName  (oName : string) fName desc opt (oValue 
       else
         props;
 
-
+let makeTablePropertyMember (mName : string) (oValue : TObject) =
+     
+    
+      let extArray = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(mName));
+                      TProperty(JsonPropertyNames.Description, TObjectVal(""));
+                      TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"));
+                      TProperty(JsonPropertyNames.Format, TObjectVal("int"));
+                      TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0));
+                      TProperty(JsonPropertyNames.Optional, TObjectVal(false))];
+     
+      let exts = TObjectJson(extArray);
+      
+      [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Property) );
+        TProperty(JsonPropertyNames.Id, TObjectVal(mName));
+        TProperty(JsonPropertyNames.Value, oValue);
+        TProperty(JsonPropertyNames.Extensions, exts);
+        TProperty(JsonPropertyNames.Links, TArray([  ]))]
 
 let makePropertyMemberFullNoDetails oType (mName : string) (oTypeName : string) fName desc opt (oValue : TObject) =
       let order = if desc = "" then 0 else 2 

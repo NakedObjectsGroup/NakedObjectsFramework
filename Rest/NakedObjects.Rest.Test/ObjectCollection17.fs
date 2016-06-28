@@ -16,6 +16,7 @@ open NakedObjects.Rest.Snapshot.Constants
 open System.Web.Http
 open System.Linq
 open RestTestFunctions
+open NakedObjects.Rest.Snapshot.Utility
 
 let GetCollectionProperty(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithCollection"
@@ -64,6 +65,67 @@ let GetCollectionProperty(api : RestfulObjectsControllerBase) =
     assertTransactionalCache result
     //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
+
+let GetCollectionPropertyWithInlineFlag(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithCollection"
+    let oid = ktc "1"
+    let oid2 = ktc "2"
+    let pid = "ACollection"
+    let ourl = sprintf "objects/%s/%s" oType oid
+    let purl = sprintf "%s/collections/%s" ourl pid
+    let argS = RestControlFlags.InlineCollectionItemsReserved + "=true"
+    let url = sprintf "%s?%s" purl argS
+    let args = CreateReservedArgs argS
+    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
+    let result = api.GetCollection(oType, oid, pid, args)
+    let jsonResult = readSnapshotToJson result
+    let parsedResult = JObject.Parse(jsonResult)
+    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
+    let valueRel = RelValues.Value + makeParm RelParamValues.Collection pid
+    let roid1 = roType + "/" + ktc "1"
+    let roid2 = roType + "/" + ktc "2"
+    
+    let m1 = TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeTablePropertyMember "Id" (TObjectVal(1)))) ]))
+    let m2 = TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeTablePropertyMember "Id" (TObjectVal(2)))) ]))
+
+    let obj1 =
+        m1 :: 
+        TProperty(JsonPropertyNames.Title, TObjectVal("1")) ::
+        makeGetLinkProp valueRel (sprintf "objects/%s/%s" roType oid) RepresentationTypes.Object roType
+    let obj2 = 
+        m2 :: 
+        TProperty(JsonPropertyNames.Title, TObjectVal("2")) ::
+        makeGetLinkProp valueRel (sprintf "objects/%s/%s" roType oid2) RepresentationTypes.Object roType
+    
+    let expected = 
+        [ TProperty(JsonPropertyNames.Id, TObjectVal(pid))
+          TProperty(JsonPropertyNames.Extensions, 
+                    TObjectJson([ TProperty(JsonPropertyNames.ReturnType, TObjectVal(ResultTypes.List))
+                                  TProperty(JsonPropertyNames.FriendlyName, TObjectVal("A Collection"))
+                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
+                                  TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
+                                  TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class7 class8"))
+                                  TProperty(JsonPropertyNames.ElementType, TObjectVal(roType)) ]))
+          TProperty(JsonPropertyNames.Value, 
+                    TArray([ TObjectJson(obj1)
+                             TObjectJson(obj2) ]))
+          TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable"))
+          
+          TProperty
+              (JsonPropertyNames.Links, 
+               
+               TArray
+                   ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object (oType))
+                      TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Self purl RepresentationTypes.ObjectCollection "" roType true)
+                      
+                      ])) ]
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+    Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), result.Content.Headers.ContentType)
+    assertTransactionalCache result
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    compareObject expected parsedResult
+
 
 let GetCollectionPropertyViewModel(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithCollectionViewModel"
