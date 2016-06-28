@@ -215,14 +215,24 @@ html, #main, body, .background, .single, .split {
         height: auto;
     }
 
-    /*Don't let IE render the 'x' clear within input as it doesn't work well*/
-input::-ms-clear {
-    display: none;
-}
-
 .input-control input:not([type='checkbox']), textarea {
     width: 245px;
 }
+/* clear button on non-empty input field*/
+    /*Clear button in input fields*/
+.clearable{
+  background-image: url(data:image/gif;base64,R0lGODlhBwAHAIAAAP///5KSkiH5BAAAAAAALAAAAAAHAAcAAAIMTICmsGrIXnLxuDMLADs=);
+  background-repeat: no-repeat;
+  background-position: right -10px;
+  /*border: 1px solid #999;
+  /*padding: 3px 18px 3px 4px;  Use the same right padding (18) in jQ! */
+  transition: background 0.4s;
+}
+.clearable.x  { background-position: right 5px center; }
+.clearable.onX{ cursor: pointer; }
+.clearable::-ms-clear {display: none; width:0; height:0;}
+
+
 /* date fields*/
 .input-control input.hasDatepicker,
 .input-control input.ui-timepicker-input {
