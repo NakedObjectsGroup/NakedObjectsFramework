@@ -184,7 +184,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             CancelDialog();
         }
     }
-
     public abstract class CopyAndPasteTests : CopyAndPasteTestsRoot {
         [TestMethod]
         public override void CopyTitleOrPropertyIntoClipboard() {
@@ -238,7 +237,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     }
 
     #region browsers specific subclasses
-
     public class CopyAndPasteTestsIe : CopyAndPasteTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -302,7 +300,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     #endregion
 
     #region Mega tests
-
     public abstract class MegaCopyAndPasteTestsRoot : CopyAndPasteTestsRoot {
         [TestMethod] //Mega
         public void MegaCopyAndPasteTest() {
@@ -340,7 +337,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-   // [TestClass]
+    [TestClass]
     public class MegaCopyAndPasteTestsChrome : MegaCopyAndPasteTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
