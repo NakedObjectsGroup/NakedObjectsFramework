@@ -1495,7 +1495,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class MegaCiceroTestsFirefox : MegaCiceroTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -1525,6 +1525,26 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestInitialize]
         public virtual void InitializeTest() {
             InitIeDriver();
+            Url(BaseUrl);
+        }
+
+        [TestCleanup]
+        public virtual void CleanupTest() {
+            base.CleanUpTest();
+        }
+    }
+
+    [TestClass] 
+    public class MegaCiceroTestsChrome : MegaCiceroTestsRoot {
+        [ClassInitialize]
+        public new static void InitialiseClass(TestContext context) {
+            FilePath(@"drivers.chromedriver.exe");
+            AWTest.InitialiseClass(context);
+        }
+
+        [TestInitialize]
+        public virtual void InitializeTest() {
+            InitChromeDriver();
             Url(BaseUrl);
         }
 

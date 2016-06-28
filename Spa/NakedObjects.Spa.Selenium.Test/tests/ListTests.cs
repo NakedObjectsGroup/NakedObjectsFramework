@@ -360,7 +360,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class MegaListTestsFirefox : MegaListTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

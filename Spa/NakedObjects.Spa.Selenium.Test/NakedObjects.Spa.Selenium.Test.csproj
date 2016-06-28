@@ -91,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="drivers\IEDriverServer.exe" />
+    <EmbeddedResource Include="drivers\chromedriver.exe" />
     <Content Include="tests\Tests_still_to_be_written.txt" />
   </ItemGroup>
   <ItemGroup>

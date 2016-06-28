@@ -261,7 +261,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class CCAtestsFirefox : CCAtestsServer {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -279,6 +279,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
+    [TestClass]
     public class CCAtestsChrome : CCAtestsServer {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

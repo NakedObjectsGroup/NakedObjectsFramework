@@ -272,7 +272,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class MegaFooterTestsFirefox : MegaFooterTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -302,6 +302,26 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestInitialize]
         public virtual void InitializeTest() {
             InitIeDriver();
+            Url(BaseUrl);
+        }
+
+        [TestCleanup]
+        public virtual void CleanupTest() {
+            base.CleanUpTest();
+        }
+    }
+
+    [TestClass]
+    public class MegaFooterTestsChrome : MegaFooterTestsRoot {
+        [ClassInitialize]
+        public new static void InitialiseClass(TestContext context) {
+            FilePath(@"drivers.chromedriver.exe");
+            AWTest.InitialiseClass(context);
+        }
+
+        [TestInitialize]
+        public virtual void InitializeTest() {
+            InitChromeDriver();
             Url(BaseUrl);
         }
 

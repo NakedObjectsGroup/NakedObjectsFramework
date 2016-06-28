@@ -42,6 +42,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     }
     #region browsers specific subclasses
 
+    [TestClass]
     public class PerformanceTestsIe : PerformanceTests
     {
         [ClassInitialize]
@@ -65,7 +66,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class PerformanceTestsFirefox : PerformanceTests
     {
         [ClassInitialize]
@@ -92,6 +93,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             ((IJavaScriptExecutor)br).ExecuteScript(script);
         }
     }
+
 
     public class PerformanceTestsChrome : PerformanceTests
     {
