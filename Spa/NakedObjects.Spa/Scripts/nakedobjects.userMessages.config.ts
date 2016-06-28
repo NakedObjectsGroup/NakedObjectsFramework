@@ -254,7 +254,7 @@ module NakedObjects {
 
     export const matchingActions = "Matching actions:\n";
     export const actionsMessage = "Actions:\n";
-    export const actionPrefix = "Action: ";
+    export const actionPrefix = "Action:";
     export const disabledPrefix = "disabled:";
 
     export const isDisabled = "is disabled.";
@@ -300,6 +300,4 @@ module NakedObjects {
     export const typePrefix = "Type:";
 
     export const unModifiablePrefix = "Unmodifiable:";
-
-    export const isNotValidNumber = " is not a valid number";
 }

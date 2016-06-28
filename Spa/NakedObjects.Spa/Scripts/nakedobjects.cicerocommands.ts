@@ -156,7 +156,7 @@ module NakedObjects {
             }
             const number = parseInt(input);
             if (isNaN(number)) {
-                throw new Error( `${input} + ${isNotANumber}`);
+                throw new Error( `${input} ${isNotANumber}`);
             }
             return number;
         }
@@ -982,9 +982,11 @@ module NakedObjects {
         doExecute(args: string, chained: boolean): void {
             const arg0 = this.argumentAsString(args, 0);
             if (this.isList()) {
-                const itemNo = parseInt(arg0);
-                if (isNaN(itemNo)) {
-                    this.clearInputAndSetMessage( `${arg0} ${isNotValidNumber}`);
+                let itemNo: number;
+                try {
+                    itemNo = this.parseInt(arg0);
+                } catch(e) {
+                    this.clearInputAndSetMessage(e.message);
                     return;
                 }
                 this.getList().then((list: ListRepresentation) => {

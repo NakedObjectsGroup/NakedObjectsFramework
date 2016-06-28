@@ -482,7 +482,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             EnterCommand("go 17");
             WaitForOutput("17 is out of range for displayed items");
             EnterCommand("go x");
-            WaitForOutput("x is not a valid number");
+            WaitForOutput("x is not a number");
             EnterCommand("go 1x"); //Because of behaviour of tryParse
             WaitForOutput("Special Offer: No Discount");
             //Wrong context
@@ -1534,7 +1534,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    //[TestClass] 
+    [TestClass] 
     public class MegaCiceroTestsChrome : MegaCiceroTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
