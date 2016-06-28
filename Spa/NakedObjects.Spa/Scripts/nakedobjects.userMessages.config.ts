@@ -20,6 +20,8 @@ module NakedObjects {
     export const notAnInteger = "Not an integer";
     export const notANumber = "Not a number";
     export const mandatory = "Mandatory";
+    export const optional = "Optional";
+    export const choices = "Choices";
     export const pendingAutoComplete = "Pending auto-complete...";
     export const noPatternMatch = "Invalid entry";
     export const closeActions = "Close actions";
@@ -275,7 +277,7 @@ module NakedObjects {
 
     export const doesNotMatchDialog = "does not match any fields in the dialog";
 
-    export const multipleMatches = "Multiple fields match";
+    export const multipleFieldMatches = "Multiple fields match";
 
     export const isNotModifiable = "is not modifiable";
 
@@ -286,4 +288,18 @@ module NakedObjects {
     export const emptyClipboard = "Cannot use Clipboard as it is empty";
 
     export const incompatibleClipboard = "Contents of Clipboard are not compatible with the field";
+
+    export const noMatch = "None of the choices matches";
+
+    export const multipleMatches = "Multiple matches:\n";
+
+    export const fieldPrefix = "Field name:";
+
+    export const descriptionFieldPrefix = "Description:";
+
+    export const typePrefix = "Type:";
+
+    export const unModifiablePrefix = "Unmodifiable:";
+
+    export const isNotValidNumber = " is not a valid number";
 }

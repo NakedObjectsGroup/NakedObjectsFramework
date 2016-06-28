@@ -753,7 +753,7 @@ module NakedObjects {
                         }
                         break;
                     default:
-                        this.clearInputAndSetMessage(`${multipleMatches} ${fieldName}`); //TODO: list them
+                        this.clearInputAndSetMessage(`${multipleFieldMatches} ${fieldName}`); //TODO: list them
                         break;
                 }
             });
@@ -880,13 +880,13 @@ module NakedObjects {
         private switchOnMatches(field: IField, fieldEntry: string, matches: Value[]) {
             switch (matches.length) {
                 case 0:
-                    this.clearInputAndSetMessage(`None of the choices matches ${fieldEntry}`);
+                    this.clearInputAndSetMessage(`${noMatch} ${fieldEntry}`);
                     break;
                 case 1:
                     this.setFieldValue(field, matches[0]);
                     break;
                 default:
-                    let msg = "Multiple matches:\n";
+                    let msg = multipleMatches;
                     _.forEach(matches, m => msg += m.toString() + "\n");
                     this.clearInputAndSetMessage(msg);
                     break;
@@ -917,19 +917,17 @@ module NakedObjects {
         }
 
         private renderFieldDetails(field: IField, value: Value): string {
-            let s = `Field name: ${field.extensions().friendlyName() }`;
+            let s = `${fieldPrefix} ${field.extensions().friendlyName()}`;
             const desc = field.extensions().description();
-            s += desc ? `\nDescription: ${desc}` : "";
-            s += `\nType: ${FriendlyTypeName(field.extensions().returnType()) }`;
+            s += desc ? `\n${descriptionFieldPrefix} ${desc}` : "";
+            s += `\n${typePrefix} ${FriendlyTypeName(field.extensions().returnType())}`;
             if (field instanceof PropertyMember && field.disabledReason()) {
-                s += `\nUnmodifiable: ${field.disabledReason() }`;
+                s += `\n${unModifiablePrefix} ${field.disabledReason()}`;
             } else {
-                s += field.extensions().optional() ? "\nOptional" : "\nMandatory";
+                s += field.extensions().optional() ? `\n${optional}` : `\n${mandatory}`;
                 if (field.choices()) {
-                    const label = "\nChoices: ";
-                    s += _.reduce(field.choices(), (s, cho) => {
-                        return s + cho + " ";
-                    }, label);
+                    const label = `\n${choices}: `;
+                    s += _.reduce(field.choices(), (s, cho) =>  s + cho + " ", label);
                 }
             }
             return s;
@@ -986,7 +984,7 @@ module NakedObjects {
             if (this.isList()) {
                 const itemNo = parseInt(arg0);
                 if (isNaN(itemNo)) {
-                    this.clearInputAndSetMessage(arg0 + " is not a valid number");
+                    this.clearInputAndSetMessage( `${arg0} ${isNotValidNumber}`);
                     return;
                 }
                 this.getList().then((list: ListRepresentation) => {
