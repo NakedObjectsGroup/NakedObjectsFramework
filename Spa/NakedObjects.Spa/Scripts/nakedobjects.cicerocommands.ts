@@ -117,7 +117,7 @@ module NakedObjects {
 
         checkMatch(matchText: string): void {
             if (this.fullCommand.indexOf(matchText) !== 0) {
-                throw new Error(`No such command: ${matchText}`);
+                throw new Error(`${noSuchCommand} ${matchText}`);
             }
         }
 
@@ -126,14 +126,14 @@ module NakedObjects {
         protected argumentAsString(argString: string, argNo: number, optional: boolean = false, toLower: boolean = true): string {
             if (!argString) return undefined;
             if (!optional && argString.split(",").length < argNo + 1) {
-                throw new Error("Too few arguments provided");
+                throw new Error(tooFewArguments);
             }
             const args = argString.split(",");
             if (args.length < argNo + 1) {
                 if (optional) {
                     return undefined;
                 } else {
-                    throw new Error(`Required argument number ${(argNo + 1).toString} is missing`);
+                    throw new Error(missingArgument(argNo + 1));
                 }
             }
             return toLower ? args[argNo].trim().toLowerCase() : args[argNo].trim(); // which may be "" if argString ends in a ','
@@ -145,7 +145,7 @@ module NakedObjects {
             if (!arg && optional) return null;
             const number = parseInt(arg);
             if (isNaN(number)) {
-                throw new Error(`Argument number ${(argNo + 1).toString() } must be a number`);
+                throw new Error(wrongTypeArgument(argNo + 1));
             }
             return number;
         }
@@ -156,7 +156,7 @@ module NakedObjects {
             }
             const number = parseInt(input);
             if (isNaN(number)) {
-                throw new Error(input + " is not a number");
+                throw new Error( `${input} + ${isNotANumber}`);
             }
             return number;
         }
@@ -178,10 +178,10 @@ module NakedObjects {
                     range.end = this.parseInt(clauses[1]);
                     break;
                 default:
-                    throw new Error("Cannot have more than one dash in argument");
+                    throw new Error(tooManyDashes);
             }
             if ((range.start != null && range.start < 1) || (range.end != null && range.end < 1)) {
-                throw new Error("Item number or range values must be greater than zero");
+                throw new Error(mustBeGreaterThanZero);
             }
             return range;
         }
@@ -357,7 +357,7 @@ module NakedObjects {
                 this.clearInputAndSetMessage(err.invalidReason());
                 return;
             }
-            let msg = "Please complete or correct these fields:\n";
+            let msg = pleaseCompleteOrCorrect;
             _.each(err.valuesMap(), (errorValue, fieldId) => {
                 msg += this.fieldValidationMessage(errorValue, () => getFriendlyName(fieldId));
             });
@@ -369,11 +369,11 @@ module NakedObjects {
             const reason = errorValue.invalidReason;
             const value = errorValue.value;
             if (reason) {
-                msg += fieldFriendlyName() + ": ";
-                if (reason === "Mandatory") {
-                    msg += "required";
+                msg +=  `${fieldFriendlyName()}: `;
+                if (reason === mandatory) {
+                    msg += required;
                 } else {
-                    msg += value + " " + reason;
+                    msg += `${value} ${reason}`;
                 }
                 msg += "\n";
             }
@@ -464,13 +464,11 @@ module NakedObjects {
 
         protected setFieldValueInContextAndUrl(field: Parameter, urlVal: Value) {
             this.context.setFieldValue(this.routeData().dialogId, field.id(), urlVal);
-            //this.urlManager.setFieldValue(this.routeData().dialogId, field, urlVal); //TODO: do this everywhere, combine into one method
             this.urlManager.triggerPageReloadByChangingUrlSearch();
         }
 
         protected setPropertyValueinContextAndUrl(obj : DomainObjectRepresentation, property : PropertyMember, urlVal: Value) {
             this.context.setPropertyValue(obj, property, urlVal);
-            //this.urlManager.setPropertyValue(obj, property, urlVal);
             this.urlManager.triggerPageReloadByChangingUrlSearch();
         }
     }
@@ -489,8 +487,8 @@ module NakedObjects {
         doExecute(args: string, chained: boolean): void {
             const match = this.argumentAsString(args, 0);
             const details = this.argumentAsString(args, 1, true);
-            if (details && details != "?") {
-                this.clearInputAndSetMessage("Second argument may only be a question mark -  to get action details");
+            if (details && details !== "?") {
+                this.clearInputAndSetMessage(mustbeQuestionMark);
                 return;
             }
             if (this.isObject()) {
@@ -510,7 +508,7 @@ module NakedObjects {
         private processActions(match: string, actionsMap: _.Dictionary<ActionMember>, details: string) {
             let actions = _.map(actionsMap, action => action);
             if (actions.length === 0) {
-                this.clearInputAndSetMessage("No actions available");
+                this.clearInputAndSetMessage(noActionsAvailable);
                 return;
             }
             if (match) {
@@ -518,7 +516,7 @@ module NakedObjects {
             }
             switch (actions.length) {
                 case 0:
-                    this.clearInputAndSetMessage(match + " does not match any actions");
+                    this.clearInputAndSetMessage(`${match} ${doesNotMatchActions}`);
                     break;
                 case 1:
                     const action = actions[0];
@@ -531,23 +529,21 @@ module NakedObjects {
                     }
                     break;
                 default:
-                    let output = match ? "Matching actions:\n" : "Actions:\n";
+                    let output = match ? matchingActions : actionsMessage;
                     output += this.listActions(actions);
                     this.clearInputAndSetMessage(output);
             }
         }
 
         private disabledAction(action: ActionMember) {
-            let output = "Action: ";
-            output += action.extensions().friendlyName() + " is disabled. ";
-            output += action.disabledReason();
+            const output = `${actionPrefix} ${action.extensions().friendlyName()} ${isDisabled} ${action.disabledReason()}`;       
             this.clearInputAndSetMessage(output);
         }
 
         private listActions(actions: ActionMember[]): string {
             return _.reduce(actions, (s, t) => {
-                const menupath = t.extensions().menuPath() ? t.extensions().menuPath() + " - " : "";
-                const disabled = t.disabledReason() ? ` (disabled: ${t.disabledReason() })` : "";
+                const menupath = t.extensions().menuPath() ? `${t.extensions().menuPath()} - ` : "";
+                const disabled = t.disabledReason() ? ` (${disabledPrefix} ${t.disabledReason()})` : "";
                 return s + menupath + t.extensions().friendlyName() + disabled + "\n";
             }, "");
         }
@@ -564,8 +560,7 @@ module NakedObjects {
         }
 
         private renderActionDetails(action: ActionMember) {
-            let s = `Description for action: ${action.extensions().friendlyName() }`;
-            s += `\n${action.extensions().description() || "No description provided"}`;
+            const s = `${descriptionPrefix} ${action.extensions().friendlyName()}\n${action.extensions().description() || noDescription}`;
             this.clearInputAndSetMessage(s);
         }
     }
@@ -630,13 +625,13 @@ module NakedObjects {
             } else if ("discard".indexOf(sub) === 0) {
                 this.discard();
             } else {
-                this.clearInputAndSetMessage("Clipboard command may only be followed by copy, show, go, or discard");
+                this.clearInputAndSetMessage(clipboardError);
             }
         };
 
         private copy(): void {
             if (!this.isObject()) {
-                this.clearInputAndSetMessage("Clipboard copy may only be used in the context of viewing an object");
+                this.clearInputAndSetMessage(clipboardContextError);
                 return;
             }
             this.getObject().then((obj: DomainObjectRepresentation) => {
@@ -648,9 +643,9 @@ module NakedObjects {
         private show(): void {
             if (this.vm.clipboard) {
                 const label = TypePlusTitle(this.vm.clipboard);
-                this.clearInputAndSetMessage(`Clipboard contains: ${label}`);
+                this.clearInputAndSetMessage(`${clipboardPrefix} ${label}`);
             } else {
-                this.clearInputAndSetMessage("Clipboard is empty");
+                this.clearInputAndSetMessage(clipboardEmpty);
             }
         }
 
@@ -718,7 +713,7 @@ module NakedObjects {
                     let s: string;
                     switch (fields.length) {
                         case 0:
-                            s = fieldName + " does not match any properties";
+                            s = `${fieldName} ${doesNotMatchProperties}`;
                             break;
                         case 1:
                             const field = fields[0];
@@ -731,10 +726,8 @@ module NakedObjects {
                             }
                             break;
                         default:
-                            s = fieldName + " matches multiple fields:\n";
-                            s += _.reduce(fields, (s, prop) => {
-                                return s + prop.extensions().friendlyName() + "\n";
-                            }, "");
+                            s = `${fieldName} ${matchesMultiple}`;
+                            s += _.reduce(fields, (s, prop) =>  s + prop.extensions().friendlyName() + "\n", "");
                     }
                     this.clearInputAndSetMessage(s);
                 });
@@ -747,7 +740,7 @@ module NakedObjects {
                 params = this.matchFriendlyNameAndOrMenuPath(params, fieldName);
                 switch (params.length) {
                     case 0:
-                        this.clearInputAndSetMessage(fieldName + " does not match any fields in the dialog");
+                        this.clearInputAndSetMessage(`${fieldName} ${doesNotMatchDialog}`);
                         break;
                     case 1:
                         if (fieldEntry === "?") {
@@ -760,7 +753,7 @@ module NakedObjects {
                         }
                         break;
                     default:
-                        this.clearInputAndSetMessage(`Multiple fields match ${fieldName}`); //TODO: list them
+                        this.clearInputAndSetMessage(`${multipleMatches} ${fieldName}`); //TODO: list them
                         break;
                 }
             });
@@ -768,7 +761,7 @@ module NakedObjects {
 
         private setField(field: IField, fieldEntry: string): void {
             if (field instanceof PropertyMember && field.disabledReason()) {
-                this.clearInputAndSetMessage(field.extensions().friendlyName() + " is not modifiable");
+                this.clearInputAndSetMessage(`${field.extensions().friendlyName()} ${isNotModifiable}`);
                 return;
             }
             const entryType = field.entryType();
@@ -792,7 +785,7 @@ module NakedObjects {
                     this.handleConditionalChoices(field, fieldEntry);
                     return;
                 default:
-                    throw new Error("Invalid case");
+                    throw new Error(invalidCase);
             }
         }
 
@@ -830,7 +823,7 @@ module NakedObjects {
             if (this.isPaste(fieldEntry)) {
                 this.handleClipboard(field);
             } else {
-                this.clearInputAndSetMessage("Invalid entry for a reference field. Use clipboard or clip");
+                this.clearInputAndSetMessage(invalidRefEntry);
             }
         }
 
@@ -841,7 +834,7 @@ module NakedObjects {
         private handleClipboard(field: IField): void {
             const ref = this.vm.clipboard;
             if (!ref) {
-                this.clearInputAndSetMessage("Cannot use Clipboard as it is empty");
+                this.clearInputAndSetMessage(emptyClipboard);
                 return;
             }
             const paramType = field.extensions().returnType();
@@ -856,7 +849,7 @@ module NakedObjects {
                         const value = new Value(selfLink);
                         this.setFieldValue(field, value);
                     } else {
-                        this.clearInputAndSetMessage("Contents of Clipboard are not compatible with the field");
+                        this.clearInputAndSetMessage(incompatibleClipboard);
                     }
                 });
         }

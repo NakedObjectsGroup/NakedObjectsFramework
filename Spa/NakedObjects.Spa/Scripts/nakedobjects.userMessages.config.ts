@@ -224,7 +224,66 @@ module NakedObjects {
 
     export const pageNumberWrong = "Specified page number must be between 1 and";
 
-    export const mayNotbeChainedMessage =  (c : string, r : string) =>  `${c} command may not be chained${r}. Use Where command to see where execution stopped.`;
+    export const mayNotbeChainedMessage = (c: string, r: string) => `${c} command may not be chained${r}. Use Where command to see where execution stopped.`;
 
     export const queryOnlyRider = " unless the action is query-only";
+
+    export const noSuchCommand = "No such command:";
+
+    export const missingArgument = (i: number) => `Required argument number ${i} is missing`;
+
+    export const wrongTypeArgument = (i: number) => `Argument number ${i} must be a number`;
+
+    export const isNotANumber = "is not a number";
+
+    export const tooManyDashes = "Cannot have more than one dash in argument";
+
+    export const mustBeGreaterThanZero = "Item number or range values must be greater than zero";
+
+    export const pleaseCompleteOrCorrect = "Please complete or correct these fields:\n";
+
+    export const required = "required";
+
+    export const mustbeQuestionMark = "Second argument may only be a question mark -  to get action details";
+
+    export const noActionsAvailable = "No actions available";
+
+    export const doesNotMatchActions = "does not match any actions";
+
+    export const matchingActions = "Matching actions:\n";
+    export const actionsMessage = "Actions:\n";
+    export const actionPrefix = "Action: ";
+    export const disabledPrefix = "disabled:";
+
+    export const isDisabled = "is disabled.";
+
+    export const noDescription = "No description provided";
+
+    export const descriptionPrefix = "Description for action:";
+
+    export const clipboardError = "Clipboard command may only be followed by copy, show, go, or discard";
+
+    export const clipboardContextError = "Clipboard copy may only be used in the context of viewing an object";
+
+    export const clipboardPrefix = "Clipboard contains:";
+
+    export const clipboardEmpty = "Clipboard is empty";
+
+    export const doesNotMatchProperties = "does not match any properties";
+
+    export const matchesMultiple = "matches multiple fields:\n";
+
+    export const doesNotMatchDialog = "does not match any fields in the dialog";
+
+    export const multipleMatches = "Multiple fields match";
+
+    export const isNotModifiable = "is not modifiable";
+
+    export const invalidCase = "Invalid case";
+
+    export const invalidRefEntry = "Invalid entry for a reference field. Use clipboard or clip";
+
+    export const emptyClipboard = "Cannot use Clipboard as it is empty";
+
+    export const incompatibleClipboard = "Contents of Clipboard are not compatible with the field";
 }
