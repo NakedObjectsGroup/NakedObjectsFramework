@@ -464,12 +464,12 @@ module NakedObjects {
 
         protected setFieldValueInContextAndUrl(field: Parameter, urlVal: Value) {
             this.context.setFieldValue(this.routeData().dialogId, field.id(), urlVal);
-            this.urlManager.triggerPageReloadByChangingUrlSearch();
+            this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
         }
 
         protected setPropertyValueinContextAndUrl(obj : DomainObjectRepresentation, property : PropertyMember, urlVal: Value) {
             this.context.setPropertyValue(obj, property, urlVal);
-            this.urlManager.triggerPageReloadByChangingUrlSearch();
+            this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
         }
     }
 

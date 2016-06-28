@@ -70,7 +70,9 @@ module NakedObjects {
         reload(): void;
         applicationProperties(): void;
 
-        triggerPageReloadByChangingUrlSearch() : void;
+        //Flips the reload parameter in the Url between 0 and 1
+        //which serves only to alert Angular and reload the page as needed.
+        triggerPageReloadByFlippingReloadFlagInUrl() : void;
     }
 
     app.service("urlManager", function ($routeParams: ng.route.IRouteParamsService, $location: ng.ILocationService, $window: ng.IWindowService) {
@@ -767,7 +769,7 @@ module NakedObjects {
             return segments[paneId + 1] === homePath; // e.g. segments 0=~/1=cicero/2=home/3=home
         };
 
-        helper.triggerPageReloadByChangingUrlSearch = () => {
+        helper.triggerPageReloadByFlippingReloadFlagInUrl = () => {
             const search = getSearch();
             const currentFlag = search[akm.reload];
             const newFlag = currentFlag ? 0 : 1;
