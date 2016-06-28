@@ -42,7 +42,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     }
     #region browsers specific subclasses
 
-    [TestClass]
+    //[TestClass]
     public class PerformanceTestsIe : PerformanceTests
     {
         [ClassInitialize]
