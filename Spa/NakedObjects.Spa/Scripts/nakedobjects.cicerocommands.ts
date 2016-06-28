@@ -108,7 +108,7 @@ module NakedObjects {
         }
 
         protected mayNotBeChained(rider: string = ""): void {
-            this.clearInputAndSetMessage(this.fullCommand + " command may not be chained" + rider + ". Use Where command to see where execution stopped.");
+            this.clearInputAndSetMessage(mayNotbeChainedMessage(this.fullCommand , rider));
         }
 
         protected appendAsNewLineToOutput(text: string): void {
@@ -1149,7 +1149,7 @@ module NakedObjects {
             this.getActionForCurrentDialog().then((action: IInvokableAction) => {
 
                 if (chained && action.invokeLink().method() !== "GET") {
-                    this.mayNotBeChained(" unless the action is query-only");
+                    this.mayNotBeChained(queryOnlyRider);
                     return;
                 }
                 let fieldMap: _.Dictionary<Value>;
@@ -1206,13 +1206,13 @@ module NakedObjects {
                     return;
                 } else if ("previous".indexOf(arg) === 0) {
                     if (page === 1) {
-                        this.clearInputAndSetMessage("List is already showing the first page");
+                        this.clearInputAndSetMessage(alreadyOnFirst);
                     } else {
                         this.setPage(page - 1);
                     }
                 } else if ("next".indexOf(arg) === 0) {
                     if (page === numPages) {
-                        this.clearInputAndSetMessage("List is already showing the last page");
+                        this.clearInputAndSetMessage(alreadyOnLast);
                     } else {
                         this.setPage(page + 1);
                     }
@@ -1221,11 +1221,11 @@ module NakedObjects {
                 } else {
                     const number = parseInt(arg);
                     if (isNaN(number)) {
-                        this.clearInputAndSetMessage("The argument must match: first, previous, next, last, or a single number");
+                        this.clearInputAndSetMessage(pageArgumentWrong);
                         return;
                     }
                     if (number < 1 || number > numPages) {
-                        this.clearInputAndSetMessage(`Specified page number must be between 1 and ${numPages}`);
+                        this.clearInputAndSetMessage(`${pageNumberWrong} ${numPages}`);
                         return;
                     }
                     this.setPage(number);
@@ -1397,9 +1397,9 @@ module NakedObjects {
                         switch (props.length + colls.length) {
                             case 0:
                                 if (!fieldName) {
-                                    s = "No visible properties";
+                                    s = noVisible;
                                 } else {
-                                    s = fieldName + " does not match any properties";
+                                    s = `${fieldName} ${doesNotMatch}`;
                                 }
                                 break;
                             case 1:
@@ -1410,12 +1410,8 @@ module NakedObjects {
                                 }
                                 break;
                             default:
-                                s = _.reduce(props, (s, prop) => {
-                                    return s + this.renderPropNameAndValue(prop);
-                                }, "");
-                                s += _.reduce(colls, (s, coll) => {
-                                    return s + this.renderCollection(coll);
-                                }, "");
+                                s = _.reduce(props, (s, prop) => s + this.renderPropNameAndValue(prop), "");
+                                s += _.reduce(colls, (s, coll) => s + this.renderCollection(coll), "");
                         }
                         this.clearInputAndSetMessage(s);
                     });
@@ -1429,26 +1425,26 @@ module NakedObjects {
             const props = this.context.getCurrentObjectValues(parent.id());
             const modifiedValue = props[pm.id()];
             if (this.isEdit() && !pm.disabledReason() && modifiedValue) {
-                value = renderFieldValue(pm, modifiedValue, this.mask) + " (modified)";
+                value = renderFieldValue(pm, modifiedValue, this.mask) + modified;
             } else {
                 value = renderFieldValue(pm, pm.value(), this.mask);
             }
-            return name + ": " + value + "\n";
+            return `${name}: ${value}\n`;
         }
 
         private renderCollection(coll: CollectionMember): string {
-            let output = coll.extensions().friendlyName() + " (collection): ";
+            let output = coll.extensions().friendlyName() + collection;
             switch (coll.size()) {
                 case 0:
-                    output += "empty";
+                    output += empty;
                     break;
                 case 1:
-                    output += "1 item";
+                    output += oneItem;
                     break;
                 default:
-                    output += `${coll.size()} items`;
+                    output += `${coll.size()} ${multipleItems}`;
             }
-            return output + "\n";
+            return `${output}\n`;
         }
 
         private renderCollectionItems(coll: CollectionMember, startNo: number, endNo: number) {
@@ -1471,18 +1467,18 @@ module NakedObjects {
                 endNo = max;
             }
             if (startNo > max || endNo > max) {
-                this.clearInputAndSetMessage(`The highest numbered item is ${source.value().length}`);
+                this.clearInputAndSetMessage(`${highestItem} ${source.value().length}`);
                 return;
             }
             if (startNo > endNo) {
-                this.clearInputAndSetMessage("Starting item number cannot be greater than the ending item number");
+                this.clearInputAndSetMessage(startHigherEnd);
                 return;
             }
             let output = "";
             let i: number;
             const links = source.value();
             for (i = startNo; i <= endNo; i++) {
-                output += `Item ${i}: ${links[i - 1].title() }\n`;
+                output += `${item} ${i}: ${links[i - 1].title() }\n`;
             }
             this.clearInputAndSetMessage(output);
         }

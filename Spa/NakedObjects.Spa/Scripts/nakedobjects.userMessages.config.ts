@@ -195,4 +195,36 @@ module NakedObjects {
     export const tooManyArguments = "Too many arguments provided";
 
     export const commandNotAvailable = (c: string) => `The command: ${c} is not available in the current context`;
+
+    export const startHigherEnd = "Starting item number cannot be greater than the ending item number";
+
+    export const highestItem = "The highest numbered item is";
+
+    export const item = "Item";
+
+    export const empty = "empty";
+
+    export const oneItem = "1 item";
+
+    export const multipleItems = "items";
+
+    export const collection = " (collection): ";
+
+    export const modified = " (modified)";
+
+    export const noVisible = "No visible properties";
+
+    export const doesNotMatch = "does not match any properties";
+
+    export const alreadyOnFirst = "List is already showing the first page";
+
+    export const alreadyOnLast = "List is already showing the last page";
+
+    export const pageArgumentWrong = "The argument must match: first, previous, next, last, or a single number";
+
+    export const pageNumberWrong = "Specified page number must be between 1 and";
+
+    export const mayNotbeChainedMessage =  (c : string, r : string) =>  `${c} command may not be chained${r}. Use Where command to see where execution stopped.`;
+
+    export const queryOnlyRider = " unless the action is query-only";
 }
