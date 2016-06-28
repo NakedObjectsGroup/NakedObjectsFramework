@@ -9,7 +9,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Web.UnitTests.Selenium {
+namespace NakedObjects.Selenium {
     public abstract class ViewModelTestsRoot : AWTest {
         public virtual void CreateVM() {
             GeminiUrl("object?i1=View&o1=___1.CustomerDashboard--20071&as1=open");

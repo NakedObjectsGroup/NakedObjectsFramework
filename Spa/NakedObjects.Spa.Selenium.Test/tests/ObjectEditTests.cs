@@ -12,7 +12,7 @@ using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Web.UnitTests.Selenium {
+namespace NakedObjects.Selenium {
     public abstract class ObjectEditTestsRoot : AWTest {
         public virtual void ObjectEditChangeScalar() {
             var rand = new Random();

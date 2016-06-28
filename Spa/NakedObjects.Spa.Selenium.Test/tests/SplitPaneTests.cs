@@ -9,7 +9,7 @@ using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Web.UnitTests.Selenium {
+namespace NakedObjects.Selenium {
     public abstract class SplitPaneTestsRoot : AWTest {
         public virtual void ListInSplitPaneUpdatesWhenSearchParamsChange() {
             GeminiUrl("home?m1=ProductRepository&d1=FindProductByName");

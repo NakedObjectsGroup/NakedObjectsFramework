@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using System.Diagnostics;
 
-namespace NakedObjects.Web.UnitTests.Selenium
+namespace NakedObjects.Selenium
 {
     public abstract class PerformanceTestsRoot : AWTest
     {

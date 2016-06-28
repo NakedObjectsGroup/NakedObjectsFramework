@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using System.Threading;
 
-namespace NakedObjects.Web.UnitTests.Selenium {
+namespace NakedObjects.Selenium {
     /// <summary>
     /// Tests content and operations within from Home representation
     /// </summary>

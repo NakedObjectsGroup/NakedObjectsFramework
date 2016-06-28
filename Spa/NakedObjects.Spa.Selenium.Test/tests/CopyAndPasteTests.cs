@@ -10,7 +10,7 @@ using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Web.UnitTests.Selenium {
+namespace NakedObjects.Selenium {
     public abstract class CopyAndPasteTestsRoot : AWTest {
         public virtual void CopyTitleOrPropertyIntoClipboard() {
             GeminiUrl("object/object?o1=___1.Product--990&o2=___1.Customer--13179");

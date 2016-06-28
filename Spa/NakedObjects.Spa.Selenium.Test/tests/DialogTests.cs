@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
-namespace NakedObjects.Web.UnitTests.Selenium {
+namespace NakedObjects.Selenium {
     /// <summary>
     /// Tests for the detailed operation of dialogs, including parameter rendering,
     /// choices, auto-complete, default values, formatting, and validation

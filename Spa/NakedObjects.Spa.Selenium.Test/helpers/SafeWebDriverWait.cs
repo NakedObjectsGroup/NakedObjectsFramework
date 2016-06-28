@@ -9,7 +9,7 @@ using System;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
-namespace NakedObjects.Web.UnitTests.Selenium {
+namespace NakedObjects.Selenium {
     public class SafeWebDriverWait : IWait<IWebDriver> {
         private readonly WebDriverWait wait;
 

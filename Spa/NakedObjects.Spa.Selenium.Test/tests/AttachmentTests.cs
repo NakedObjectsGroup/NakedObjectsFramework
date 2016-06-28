@@ -8,7 +8,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Web.UnitTests.Selenium {
+namespace NakedObjects.Selenium {
     public abstract class AttachmentTestsRoot : AWTest {
         public virtual void ImageAsProperty() {
             GeminiUrl("object?o1=___1.Product--968");

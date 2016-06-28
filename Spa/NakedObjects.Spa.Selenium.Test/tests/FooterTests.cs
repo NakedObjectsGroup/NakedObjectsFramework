@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Web.UnitTests.Selenium {
+namespace NakedObjects.Selenium {
     public abstract class FooterTestsRoot : AWTest {
         #region WarningsAndInfo
         public virtual void ExplicitWarningsAndInfo()

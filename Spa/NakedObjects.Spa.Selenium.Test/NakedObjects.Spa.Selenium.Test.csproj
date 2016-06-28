@@ -6,7 +6,7 @@
     <ProjectGuid>{DD9EC819-7275-42B3-9C7A-F9F467A52644}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NakedObjects.Spa.Selenium.Test</RootNamespace>
+    <RootNamespace>NakedObjects.Selenium</RootNamespace>
     <AssemblyName>NakedObjects.Spa.Selenium.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

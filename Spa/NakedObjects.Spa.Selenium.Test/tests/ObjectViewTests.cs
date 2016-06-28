@@ -11,7 +11,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Web.UnitTests.Selenium {
+namespace NakedObjects.Selenium {
     public abstract class ObjectViewTestsRoot : AWTest {
         public virtual void ActionsAlreadyOpen() {
             GeminiUrl("object?o1=___1.Customer--555&as1=open");

@@ -10,7 +10,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Web.UnitTests.Selenium {
+namespace NakedObjects.Selenium {
     public abstract class TransientObjectTestsRoot : AWTest {
         public virtual void CreateAndSaveTransientObject() {
             GeminiUrl("object?o1=___1.Person--12043&as1=open");
