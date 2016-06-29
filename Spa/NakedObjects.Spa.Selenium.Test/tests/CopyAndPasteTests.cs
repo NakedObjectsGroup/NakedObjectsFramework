@@ -237,7 +237,7 @@ namespace NakedObjects.Selenium {
     }
 
     #region browsers specific subclasses
-    [TestClass]
+    //[TestClass]
     public class CopyAndPasteTestsIe : CopyAndPasteTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -279,7 +279,7 @@ namespace NakedObjects.Selenium {
             ((IJavaScriptExecutor) br).ExecuteScript(script);
         }
     }
-    [TestClass]
+    //[TestClass]
     public class CopyAndPasteTestsChrome : CopyAndPasteTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
