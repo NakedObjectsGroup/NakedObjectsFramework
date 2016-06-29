@@ -61,12 +61,14 @@ namespace AdventureWorksModel {
             set { times = value; }
         }
 
+        [Mask("T")]
         [MemberOrder(3), NotMapped]
         public virtual TimeSpan StartTime
         {
             get { return Times.StartTime; }
         }
 
+        [Mask("T")]
         [MemberOrder(4), NotMapped]
         public virtual TimeSpan EndTime
         {
