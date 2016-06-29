@@ -305,6 +305,9 @@ type ANof4Tests() =
         member x.GetMostSimpleObject() = DomainObject14.GetMostSimpleObject x.api
         
         [<Test>]
+        member x.GetMostSimpleObjectWithDetailsFlag() = DomainObject14.GetMostSimpleObjectWithDetailsFlag x.api
+
+        [<Test>]
         member x.GetWithAttachmentsObject() = DomainObject14.GetWithAttachmentsObject x.api
         
         [<Test>]
@@ -597,6 +600,8 @@ type ANof4Tests() =
         [<Test>]
         member x.GetValueProperty() = ObjectProperty16.GetValueProperty x.api
         
+      
+
         [<Test>]
         member x.GetRepeatedValueProperty() = ObjectProperty16.GetRepeatedValueProperty x.api
         

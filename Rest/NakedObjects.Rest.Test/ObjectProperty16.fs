@@ -18,6 +18,7 @@ open System.Web.Http
 open System.Linq
 open RestTestFunctions
 open System.Security.Principal
+open NakedObjects.Rest.Snapshot.Utility
 
 let GetValueProperty(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithValue"
@@ -61,6 +62,8 @@ let GetValueProperty(api : RestfulObjectsControllerBase) =
     assertTransactionalCache result
     //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
+
+
 
 let GetRepeatedValueProperty(api : RestfulObjectsControllerBase) = 
     for i in [1 .. 100] do

@@ -315,6 +315,9 @@ type CNof4TestsDomainType() =
         member x.GetMostSimpleObject() = DomainObject14.GetMostSimpleObject x.api
         
         [<Test>]
+        member x.GetMostSimpleObjectWithDetailsFlag() = DomainObject14.GetMostSimpleObjectWithDetailsFlag x.api
+
+        [<Test>]
         member x.GetWithAttachmentsObject() = DomainObject14.GetWithAttachmentsObject x.api
         
         [<Test>]
@@ -614,6 +617,8 @@ type CNof4TestsDomainType() =
         //f
         [<Test>]
         member x.GetValueProperty() = ObjectProperty16.GetValueProperty x.api
+
+      
         
         [<Test>]
         member x.GetFileAttachmentProperty() = ObjectProperty16.GetFileAttachmentProperty x.api

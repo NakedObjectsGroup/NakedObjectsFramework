@@ -54,6 +54,42 @@ let GetMostSimpleObject(api : RestfulObjectsControllerBase) =
     //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
+let GetMostSimpleObjectWithDetailsFlag(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.MostSimple"
+    let oid = oType + "/" + ktc "1"
+    let url = sprintf "http://localhost/objects/%s" oid
+    let argS = RestControlFlags.InlinePropertyDetailsReserved + "=false"
+    let url = sprintf "%s?%s" url argS
+    let args = CreateReservedArgs argS
+    api.Request <- jsonGetMsg (url)
+    let result = api.GetObject(oType, ktc "1", args)
+    let jsonResult = readSnapshotToJson result
+    let parsedResult = JObject.Parse(jsonResult)
+    let args = TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
+    
+    let expected = 
+        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1"))
+          TProperty(JsonPropertyNames.Title, TObjectVal("1"))
+          TProperty(JsonPropertyNames.Links, 
+                    TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType) 
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))                           
+                             TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
+          TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeNoDetailsPropertyMember "Id" oid (TObjectVal(1)))) ]))
+          TProperty(JsonPropertyNames.Extensions, 
+                    TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+                                  TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
+                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
+                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
+                                  TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), result.Content.Headers.ContentType)
+    assertTransactionalCache result
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    compareObject expected parsedResult
+
+
 let GetWithAttachmentsObject(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithAttachments"
     let oid = oType + "/" + ktc "1"
