@@ -1,5 +1,5 @@
 ﻿
-namespace NakedObjects.Web.UnitTests.Selenium
+namespace NakedObjects.Selenium
 {
     public static class TestConfig
     {
