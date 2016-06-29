@@ -117,7 +117,7 @@ module NakedObjects {
 
         checkMatch(matchText: string): void {
             if (this.fullCommand.indexOf(matchText) !== 0) {
-                throw new Error(`${noSuchCommand} ${matchText}`);
+                throw new Error(noSuchCommand(matchText));
             }
         }
 
@@ -156,7 +156,7 @@ module NakedObjects {
             }
             const number = parseInt(input);
             if (isNaN(number)) {
-                throw new Error( `${input} ${isNotANumber}`);
+                throw new Error(isNotANumber(input));
             }
             return number;
         }
@@ -516,7 +516,7 @@ module NakedObjects {
             }
             switch (actions.length) {
                 case 0:
-                    this.clearInputAndSetMessage(`${match} ${doesNotMatchActions}`);
+                    this.clearInputAndSetMessage(doesNotMatchActions(match));
                     break;
                 case 1:
                     const action = actions[0];
@@ -616,13 +616,13 @@ module NakedObjects {
 
         doExecute(args: string, chained: boolean): void {
             const sub = this.argumentAsString(args, 0);
-            if ("copy".indexOf(sub) === 0) {
+            if (clipboardCopy.indexOf(sub) === 0) {
                 this.copy();
-            } else if ("show".indexOf(sub) === 0) {
+            } else if (clipboardShow.indexOf(sub) === 0) {
                 this.show();
-            } else if ("go".indexOf(sub) === 0) {
+            } else if (clipboardGo.indexOf(sub) === 0) {
                 this.go();
-            } else if ("discard".indexOf(sub) === 0) {
+            } else if (clipboardDiscard.indexOf(sub) === 0) {
                 this.discard();
             } else {
                 this.clearInputAndSetMessage(clipboardError);
@@ -643,7 +643,7 @@ module NakedObjects {
         private show(): void {
             if (this.vm.clipboard) {
                 const label = TypePlusTitle(this.vm.clipboard);
-                this.clearInputAndSetMessage(`${clipboardPrefix} ${label}`);
+                this.clearInputAndSetMessage(clipboardContents(label));
             } else {
                 this.clearInputAndSetMessage(clipboardEmpty);
             }
@@ -713,7 +713,7 @@ module NakedObjects {
                     let s: string;
                     switch (fields.length) {
                         case 0:
-                            s = `${fieldName} ${doesNotMatchProperties}`;
+                            s = doesNotMatchProperties(fieldName);
                             break;
                         case 1:
                             const field = fields[0];
@@ -740,7 +740,7 @@ module NakedObjects {
                 params = this.matchFriendlyNameAndOrMenuPath(params, fieldName);
                 switch (params.length) {
                     case 0:
-                        this.clearInputAndSetMessage(`${fieldName} ${doesNotMatchDialog}`);
+                        this.clearInputAndSetMessage(doesNotMatchDialog(fieldName));
                         break;
                     case 1:
                         if (fieldEntry === "?") {
@@ -880,7 +880,7 @@ module NakedObjects {
         private switchOnMatches(field: IField, fieldEntry: string, matches: Value[]) {
             switch (matches.length) {
                 case 0:
-                    this.clearInputAndSetMessage(`${noMatch} ${fieldEntry}`);
+                    this.clearInputAndSetMessage(noMatch(fieldEntry));
                     break;
                 case 1:
                     this.setFieldValue(field, matches[0]);
@@ -917,12 +917,12 @@ module NakedObjects {
         }
 
         private renderFieldDetails(field: IField, value: Value): string {
-            let s = `${fieldPrefix} ${field.extensions().friendlyName()}`;
+            let s = fieldName(field.extensions().friendlyName());
             const desc = field.extensions().description();
             s += desc ? `\n${descriptionFieldPrefix} ${desc}` : "";
             s += `\n${typePrefix} ${FriendlyTypeName(field.extensions().returnType())}`;
             if (field instanceof PropertyMember && field.disabledReason()) {
-                s += `\n${unModifiablePrefix} ${field.disabledReason()}`;
+                s += `\n${unModifiablePrefix(field.disabledReason())}`;
             } else {
                 s += field.extensions().optional() ? `\n${optional}` : `\n${mandatory}`;
                 if (field.choices()) {
@@ -1014,7 +1014,7 @@ module NakedObjects {
                             let s = "";
                             switch (matchingRefProps.length + matchingColls.length) {
                                 case 0:
-                                    s = arg0 + " does not match any reference fields or collections";
+                                    s = noRefFieldMatch(arg0);
                                     break;
                                 case 1:
                                     //TODO: Check for any empty reference
@@ -1042,7 +1042,7 @@ module NakedObjects {
 
         private attemptGotoLinkNumber(itemNo: number, links: Models.Link[]): void {
             if (itemNo < 1 || itemNo > links.length) {
-                this.clearInputAndSetMessage(itemNo.toString() + " is out of range for displayed items");
+                this.clearInputAndSetMessage(outOfItemRange(itemNo));
             } else {
                 const link = links[itemNo - 1]; // On UI, first item is '1'
                 this.urlManager.setItem(link);
@@ -1109,7 +1109,7 @@ module NakedObjects {
                     }
                     switch (links.length) {
                         case 0:
-                            this.clearInputAndSetMessage(name + " does not match any menu");
+                            this.clearInputAndSetMessage(doesNotMatchMenu(name));
                             break;
                         case 1:
                             const menuId = links[0].rel().parms[0].value;
@@ -1118,7 +1118,7 @@ module NakedObjects {
                             this.urlManager.setMenu(menuId);
                             break;
                         default:
-                            const label = name ? "Matching menus:\n" : "Menus:\n";
+                            const label = name ? `${matchingMenus}\n` : `${allMenus}\n`;
                             const s = _.reduce(links, (s, t) => { return s + t.title() + "\n"; }, label);
                             this.clearInputAndSetMessage(s);
                     }
@@ -1194,22 +1194,22 @@ module NakedObjects {
                 const numPages = listRep.pagination().numPages;
                 const page = this.routeData().page;
                 const pageSize = this.routeData().pageSize;
-                if ("first".indexOf(arg) === 0) {
+                if (pageFirst.indexOf(arg) === 0) {
                     this.setPage(1);
                     return;
-                } else if ("previous".indexOf(arg) === 0) {
+                } else if (pagePrevious.indexOf(arg) === 0) {
                     if (page === 1) {
                         this.clearInputAndSetMessage(alreadyOnFirst);
                     } else {
                         this.setPage(page - 1);
                     }
-                } else if ("next".indexOf(arg) === 0) {
+                } else if (pageNext.indexOf(arg) === 0) {
                     if (page === numPages) {
                         this.clearInputAndSetMessage(alreadyOnLast);
                     } else {
                         this.setPage(page + 1);
                     }
-                } else if ("last".indexOf(arg) === 0) {
+                } else if (pageLast.indexOf(arg) === 0) {
                     this.setPage(numPages);
                 } else {
                     const number = parseInt(arg);
@@ -1218,7 +1218,7 @@ module NakedObjects {
                         return;
                     }
                     if (number < 1 || number > numPages) {
-                        this.clearInputAndSetMessage(`${pageNumberWrong} ${numPages}`);
+                        this.clearInputAndSetMessage(pageNumberWrong(numPages));
                         return;
                     }
                     this.setPage(number);
@@ -1300,9 +1300,9 @@ module NakedObjects {
                     }
                 });
                 const propMap = _.zipObject(propIds, values) as _.Dictionary<Value>;
-                const mode = obj.extensions().interactionMode();
-
-                const saveOrUpdate = (mode === "form" || mode === "transient") ? this.context.saveObject : this.context.updateObject;
+                const mode  = obj.extensions().interactionMode();
+                const toSave = mode === "form" || mode === "transient";
+                const saveOrUpdate = toSave ? this.context.saveObject : this.context.updateObject;
 
                 saveOrUpdate(obj, propMap, 1, true).
                     catch((reject: ErrorWrapper) => {
@@ -1392,19 +1392,19 @@ module NakedObjects {
                                 if (!fieldName) {
                                     s = noVisible;
                                 } else {
-                                    s = `${fieldName} ${doesNotMatch}`;
+                                    s = doesNotMatch(fieldName);
                                 }
                                 break;
                             case 1:
                                 if (props.length > 0) {
                                     s = this.renderPropNameAndValue(props[0]);
                                 } else {
-                                    s = this.renderCollection(colls[0]);
+                                    s = renderCollectionNameAndSize(colls[0]);
                                 }
                                 break;
                             default:
                                 s = _.reduce(props, (s, prop) => s + this.renderPropNameAndValue(prop), "");
-                                s += _.reduce(colls, (s, coll) => s + this.renderCollection(coll), "");
+                                s += _.reduce(colls, (s, coll) => s + renderCollectionNameAndSize(coll), "");
                         }
                         this.clearInputAndSetMessage(s);
                     });
@@ -1418,26 +1418,11 @@ module NakedObjects {
             const props = this.context.getCurrentObjectValues(parent.id());
             const modifiedValue = props[pm.id()];
             if (this.isEdit() && !pm.disabledReason() && modifiedValue) {
-                value = renderFieldValue(pm, modifiedValue, this.mask) + modified;
+                value = renderFieldValue(pm, modifiedValue, this.mask) + ` (${modified})`;
             } else {
                 value = renderFieldValue(pm, pm.value(), this.mask);
             }
             return `${name}: ${value}\n`;
-        }
-
-        private renderCollection(coll: CollectionMember): string {
-            let output = coll.extensions().friendlyName() + collection;
-            switch (coll.size()) {
-                case 0:
-                    output += empty;
-                    break;
-                case 1:
-                    output += oneItem;
-                    break;
-                default:
-                    output += `${coll.size()} ${multipleItems}`;
-            }
-            return `${output}\n`;
         }
 
         private renderCollectionItems(coll: CollectionMember, startNo: number, endNo: number) {
@@ -1460,7 +1445,7 @@ module NakedObjects {
                 endNo = max;
             }
             if (startNo > max || endNo > max) {
-                this.clearInputAndSetMessage(`${highestItem} ${source.value().length}`);
+                this.clearInputAndSetMessage(highestItem(source.value().length));
                 return;
             }
             if (startNo > endNo) {

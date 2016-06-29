@@ -22,6 +22,7 @@ module NakedObjects {
     import EntryType = Models.EntryType;
     import toUtcDate = Models.toUtcDate;
     import isDateOrDateTime = Models.isDateOrDateTime;
+    import CollectionMember = Models.CollectionMember;
 
     export interface ICiceroRenderer {
 
@@ -68,8 +69,9 @@ module NakedObjects {
                             renderObjectTitleAndDialogIfOpen(routeData, obj, cvm);
                         }
                     }).catch((reject: ErrorWrapper) => {
+                        //TODO: Is the first test necessary or would this be rendered OK by generic error handling?
                         if (reject.category === ErrorCategory.ClientError && reject.clientErrorCode === ClientErrorCode.ExpiredTransient) {
-                            cvm.output = "The requested view of unsaved object details has expired";
+                            cvm.output = errorExpiredTransient;
                         } else {
                             error.handleError(reject);
                         }
@@ -117,29 +119,20 @@ module NakedObjects {
 
         function renderOpenCollection(collId: string, obj: DomainObjectRepresentation, cvm: ICiceroViewModel) {
             const coll = obj.collectionMember(collId);
-            var output = `Collection: ${coll.extensions().friendlyName()} on ${TypePlusTitle(obj)}\n`;
-            switch (coll.size()) {
-                case 0:
-                    output += "empty";
-                    break;
-                case 1:
-                    output += "1 item";
-                    break;
-                default:
-                    output += `${coll.size()} items`;
-            }
+            let output = renderCollectionNameAndSize(coll);
+             output += `(${collection} ${on} ${TypePlusTitle(obj)})`;
             cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
         }
-
+        
         function renderTransientObject(routeData: PaneRouteData, obj: DomainObjectRepresentation, cvm: ICiceroViewModel) {
-            var output = "Unsaved ";
+            var output = `${unsaved} `;
             output += obj.extensions().friendlyName() + "\n";
             output += renderModifiedProperties(obj, routeData, mask);
             cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
         }
 
         function renderForm(routeData: PaneRouteData, obj: DomainObjectRepresentation, cvm: ICiceroViewModel) {
-            let output = "Editing ";
+            let output = `${editing} `;
             output += PlusTitle(obj) + "\n";
             if (routeData.dialogId) {
                 context.getInvokableAction(obj.actionMember(routeData.dialogId))
@@ -170,11 +163,11 @@ module NakedObjects {
             var output = "";
             context.getMenu(routeData.menuId)
                 .then((menu: MenuRepresentation) => {
-                    output += menu.title() + " menu" + "\n";
+                    output += menuTitle(menu.title());
                     return routeData.dialogId ? context.getInvokableAction(menu.actionMember(routeData.dialogId)) : $q.when(null);
                 }).then((details: IInvokableAction) => {
                     if (details) {
-                        output += renderActionDialog(details, routeData, mask);
+                        output += "\n" + renderActionDialog(details, routeData, mask);
                     }
                 }).finally(() => {
                     cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
@@ -200,7 +193,7 @@ module NakedObjects {
             let output = "";
             const props = context.getCurrentObjectValues(obj.id());
             if (_.keys(props).length > 0) {
-                output += "Modified properties:\n";
+                output += modifiedProperties + ":\n";
                 _.each(props, (value, propId) => {
                     output += FriendlyNameForProperty(obj, propId) + ": ";
                     const pm = obj.propertyMember(propId);
@@ -220,7 +213,7 @@ module NakedObjects {
     //Handles empty values, and also enum conversion
     export function renderFieldValue(field: IField, value: Value, mask: IMask): string {
         if (!field.isScalar()) { //i.e. a reference
-            return value.isNull() ? "empty" : value.toString();
+            return value.isNull() ? empty : value.toString();
         }
         //Rest is for scalar fields only:
         if (value.toString()) { //i.e. not empty        
@@ -237,7 +230,7 @@ module NakedObjects {
             properScalarValue = value.scalar();
         }
         if (properScalarValue === "" || properScalarValue == null) {
-            return "empty";
+            return empty;
         } else {
             const remoteMask = field.extensions().mask();
             const format = field.extensions().format();
@@ -246,7 +239,7 @@ module NakedObjects {
     }
 
     function renderSingleChoice(field: IField, value: Value) {
-       //This is to handle an enum: render it as text, not a number:  
+        //This is to handle an enum: render it as text, not a number:  
         const inverted = _.invert(field.choices());
         return (<any>inverted)[value.toValueString()];
     }
@@ -260,5 +253,20 @@ module NakedObjects {
             output += (<any>inverted)[v.toValueString()] + ",";
         });
         return output;
+    }
+
+    export function renderCollectionNameAndSize(coll: CollectionMember): string {
+        let output: string = coll.extensions().friendlyName() + ": ";
+        switch (coll.size()) {
+            case 0:
+                output += empty;
+                break;
+            case 1:
+                output += `1 ${item}`;
+                break;
+            default:
+                output += numberOfItems(coll.size());
+        }
+        return output + "\n";
     }
 }

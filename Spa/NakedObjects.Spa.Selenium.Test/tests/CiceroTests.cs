@@ -501,7 +501,7 @@ namespace NakedObjects.Selenium {
 
             //Simple case
             EnterCommand("goto details");
-            WaitForOutput("Collection: Details on Sales Order: SO60485\r\n3 items");
+            WaitForOutput("Details: 3 items\r\n(Collection on Sales Order: SO60485)");
 
             //Multiple matches
             CiceroUrl("object?o1=___1.Product--901");
@@ -511,7 +511,7 @@ namespace NakedObjects.Selenium {
 
             //Multi-clause match
             EnterCommand("goto v ory");
-            WaitForOutput("Collection: Product Inventory on Product: LL Touring Frame - Yellow, 54\r\nempty");
+            WaitForOutput("Product Inventory: empty\r\n(Collection on Product: LL Touring Frame - Yellow, 54)");
 
             //No matches
             CiceroUrl("object?o1=___1.SalesOrderHeader--60485");
@@ -525,7 +525,7 @@ namespace NakedObjects.Selenium {
 
             //Goto applied to collection lines
             EnterCommand("go details");
-            WaitForOutputStarting("Collection: Details");
+            WaitForOutputStarting("Details:");
 
             EnterCommand("go 4");
             WaitForOutput("4 is out of range for displayed items");
@@ -743,7 +743,7 @@ namespace NakedObjects.Selenium {
 
         public virtual void Root() {
             CiceroUrl("object?o1=___1.Product--459&c1_ProductInventory=List");
-            WaitForOutput("Collection: Product Inventory on Product: Lock Nut 19\r\n3 items");
+            WaitForOutputStarting("Product Inventory: 3 items\r\n(Collection on Product: Lock Nut 19)");
             EnterCommand("root");
             WaitForOutput("Product: Lock Nut 19");
 
@@ -760,7 +760,7 @@ namespace NakedObjects.Selenium {
 
             //Argument added
             CiceroUrl("object?o1=___1.Product--459&c1_ProductInventory=List");
-            WaitForOutput("Collection: Product Inventory on Product: Lock Nut 19\r\n3 items");
+            WaitForOutputStarting("Product Inventory: 3 items\r\n(Collection on Product: Lock Nut 19)");
             EnterCommand("root x");
             WaitForOutput("Too many arguments provided");
         }
@@ -823,7 +823,7 @@ namespace NakedObjects.Selenium {
             var actual = WaitForCss(".output").Text;
             //Note that spacing of Road-450 and  Line: R is different to how it appears on screen!
             //Name: Road-450 Red, 52
-            var expected = "Product Number: BK-R68R-52\r\nProduct Model: Road-450\r\nProduct Category: Bikes\r\nProduct Subcategory: Road Bikes\r\nProduct Line: R \r\nProduct Inventory (collection): 2 items\r\nProduct Reviews (collection): empty";
+            var expected = "Product Number: BK-R68R-52\r\nProduct Model: Road-450\r\nProduct Category: Bikes\r\nProduct Subcategory: Road Bikes\r\nProduct Line: R \r\nProduct Inventory: 2 items\r\nProduct Reviews: empty";
             Assert.AreEqual(expected, actual);
 
             //No argument
@@ -844,7 +844,7 @@ namespace NakedObjects.Selenium {
             EnterCommand("sh sales a");
             WaitForOutput("Sales Territory: Northwest\r\nSales Quota: £300,000.00\r\nSales YTD: £1,576,562.20\r\nSales Last Year: £0.00");
             EnterCommand("sh ter ory");
-            WaitForOutput("Sales Territory: Northwest\r\nTerritory History (collection): 1 item");
+            WaitForOutputStarting("Sales Territory: Northwest\r\nTerritory History: 1 item");
             EnterCommand("sh sales z");
             WaitForOutput("sales z does not match any properties");
 
@@ -894,17 +894,17 @@ namespace NakedObjects.Selenium {
             CiceroUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers");
             WaitForOutput("Result from Current Special Offers:\r\n16 items");
             EnterCommand("show 1");
-            WaitForOutput("Item 1: No Discount");
+            WaitForOutput("item 1: No Discount");
             EnterCommand("show 16");
-            WaitForOutput("Item 16: Mountain-500 Silver Clearance Sale");
+            WaitForOutput("item 16: Mountain-500 Silver Clearance Sale");
             EnterCommand("show 2-4");
-            WaitForOutput("Item 2: Volume Discount 11 to 14\r\nItem 3: Volume Discount 15 to 24\r\nItem 4: Volume Discount 25 to 40");
+            WaitForOutput("item 2: Volume Discount 11 to 14\r\nitem 3: Volume Discount 15 to 24\r\nitem 4: Volume Discount 25 to 40");
             EnterCommand("show 5-5");
-            WaitForOutput("Item 5: Volume Discount 41 to 60");
+            WaitForOutput("item 5: Volume Discount 41 to 60");
             EnterCommand("show -3");
-            WaitForOutput("Item 1: No Discount\r\nItem 2: Volume Discount 11 to 14\r\nItem 3: Volume Discount 15 to 24");
+            WaitForOutput("item 1: No Discount\r\nitem 2: Volume Discount 11 to 14\r\nitem 3: Volume Discount 15 to 24");
             EnterCommand("show 15-");
-            WaitForOutput("Item 15: Half-Price Pedal Sale\r\nItem 16: Mountain-500 Silver Clearance Sale");
+            WaitForOutput("item 15: Half-Price Pedal Sale\r\nitem 16: Mountain-500 Silver Clearance Sale");
 
             //Invalid numbers
             EnterCommand("show 17");
@@ -920,15 +920,15 @@ namespace NakedObjects.Selenium {
             #endregion
             #region In a collection
             CiceroUrl("object?o1=___1.SalesOrderHeader--44518&c1_Details=List");
-            WaitForOutput("Collection: Details on Sales Order: SO44518\r\n20 items");
+            WaitForOutput("Details: 20 items\r\n(Collection on Sales Order: SO44518)");
             EnterCommand("show 1");
-            WaitForOutput("Item 1: 5 x Mountain-100 Black, 44");
+            WaitForOutput("item 1: 5 x Mountain-100 Black, 44");
             EnterCommand("show 20");
-            WaitForOutput("Item 20: 2 x HL Mountain Frame - Black, 38");
+            WaitForOutput("item 20: 2 x HL Mountain Frame - Black, 38");
 
             //No number
             EnterCommand("show");
-            WaitForOutputStarting("Item 1: 5 x Mountain-100 Black, 44\r\nItem 2: 3 x Sport-100 Helmet, Black\r\nItem 3:");
+            WaitForOutputStarting("item 1: 5 x Mountain-100 Black, 44\r\nitem 2: 3 x Sport-100 Helmet, Black\r\nitem 3:");
 
             //Too many parms
             EnterCommand("show 4,5");

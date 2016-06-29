@@ -41,7 +41,6 @@ module NakedObjects {
 
         let commandsInitialised = false;
 
-
         const commands: _.Dictionary<Command> = {
             "ac": new Action(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
             "ba": new Back(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
@@ -129,12 +128,12 @@ module NakedObjects {
 
         commandFactory.getCommand = (commandWord: string) => {
             if (commandWord.length < 2) {
-                throw new Error(tooShortCommand);
+                throw new Error(commandTooShort);
             }
             const abbr = commandWord.substr(0, 2);
             const command = commands[abbr];
             if (command == null) {
-                throw new Error(`${noCommandMatch} ${abbr}`);
+                throw new Error(noCommandMatch(abbr));
             }
             command.checkMatch(commandWord);
             return command;

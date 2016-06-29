@@ -41,7 +41,7 @@ module NakedObjects {
 
     export const outOfRange = (val: any, min: any, max: any, filter: ILocalFilter) => `Value is outside the range ${filter.filter(min) || "unlimited"} to ${filter.filter(max) || "unlimited"}`;
 
-    export const pageMessage = (p : number, tp : number, c : number, tc : number) => `Page ${p} of ${tp}; viewing ${c} of ${tc} items`;
+    export const pageMessage = (p: number, tp: number, c: number, tc: number) => `Page ${p} of ${tp}; viewing ${c} of ${tc} items`;
 
     export const logOffMessage = (u: string) => `Please confirm logoff of user: ${u}`;
 
@@ -95,6 +95,10 @@ module NakedObjects {
     export const cancelCommand = "cancel";
     export const cancelHelp = "Leave the current activity (action dialog, or object edit), incomplete.";
     export const clipboardCommand = "clipboard";
+    export const clipboardCopy = "copy";
+    export const clipboardShow = "show";
+    export const clipboardGo = "go";
+    export const clipboardDiscard = "discard";
     export const clipboardHelp = "The clipboard command is used for temporarily\n" +
         "holding a reference to an object, so that it may be used later\n" +
         "to enter into a field.\n" +
@@ -149,6 +153,10 @@ module NakedObjects {
     export const okHelp = "Invoke the action currently open as a dialog.\n" +
         "Fields in the dialog should be completed before this.";
     export const pageCommand = "page";
+    export const pageFirst = "first";
+    export const pagePrevious = "previous";
+    export const pageNext = "next";
+    export const pageLast = "last";
     export const pageHelp = "Supports paging of returned lists.\n" +
         "The page command takes a single argument, which may be one of these four words:\n" +
         "first, previous, next, or last, \n" +
@@ -178,7 +186,7 @@ module NakedObjects {
         "one or more of the properties.\n" +
         "May take 1 argument: the partial field name.\n" +
         "If this matches more than one property, a list of matches is returned.\n" +
-        "If no argument is provided, the full list of properties is returned.\n"+
+        "If no argument is provided, the full list of properties is returned.\n" +
         "In the context of an opened object collection, or a list,\n" +
         "shows one or more items from that collection or list.\n" +
         "If no arguments are specified, show will list all of the the items in the collection,\n" +
@@ -188,8 +196,9 @@ module NakedObjects {
     export const whereHelp = "Display a reminder of the current context.\n" +
         "The same can also be achieved by hitting the Return key on the empty input field.";
 
-    export const tooShortCommand = "Command word must have at least 2 characters";
-    export const noCommandMatch = "No command begins with";
+    //Cicero feedback messages
+    export const commandTooShort = "Command word must have at least 2 characters";
+    export const noCommandMatch = (a: string) => `No command begins with ${a}`;
     export const commandsAvailable = "Commands available in current context:\n";
 
     export const noArguments = "No arguments provided";
@@ -200,23 +209,20 @@ module NakedObjects {
 
     export const startHigherEnd = "Starting item number cannot be greater than the ending item number";
 
-    export const highestItem = "The highest numbered item is";
+    export const highestItem = (n: number) => `The highest numbered item is ${n}`;
 
-    export const item = "Item";
-
+    export const item = "item";
     export const empty = "empty";
-
-    export const oneItem = "1 item";
-
-    export const multipleItems = "items";
-
-    export const collection = " (collection): ";
-
-    export const modified = " (modified)";
+    export const numberOfItems = (n: number) => `${n} items`;
+    export const on = "on";
+    export const collection = "Collection";
+    export const modified = "modified";
+    export const properties = "properties";
+    export const modifiedProperties = "Modified " + properties;
 
     export const noVisible = "No visible properties";
 
-    export const doesNotMatch = "does not match any properties";
+    export const doesNotMatch = (name: string) => `${name} does not match any properties`;
 
     export const alreadyOnFirst = "List is already showing the first page";
 
@@ -224,19 +230,19 @@ module NakedObjects {
 
     export const pageArgumentWrong = "The argument must match: first, previous, next, last, or a single number";
 
-    export const pageNumberWrong = "Specified page number must be between 1 and";
+    export const pageNumberWrong = (max: number) => `Specified page number must be between 1 and ${max}`;
 
     export const mayNotbeChainedMessage = (c: string, r: string) => `${c} command may not be chained${r}. Use Where command to see where execution stopped.`;
 
     export const queryOnlyRider = " unless the action is query-only";
 
-    export const noSuchCommand = "No such command:";
+    export const noSuchCommand = (c: string) => `No such command: ${c}`;
 
     export const missingArgument = (i: number) => `Required argument number ${i} is missing`;
 
     export const wrongTypeArgument = (i: number) => `Argument number ${i} must be a number`;
 
-    export const isNotANumber = "is not a number";
+    export const isNotANumber = (s: string) => `${s} is not a number`;
 
     export const tooManyDashes = "Cannot have more than one dash in argument";
 
@@ -250,7 +256,7 @@ module NakedObjects {
 
     export const noActionsAvailable = "No actions available";
 
-    export const doesNotMatchActions = "does not match any actions";
+    export const doesNotMatchActions = (a: string) => `${a} does not match any actions`;
 
     export const matchingActions = "Matching actions:\n";
     export const actionsMessage = "Actions:\n";
@@ -267,15 +273,15 @@ module NakedObjects {
 
     export const clipboardContextError = "Clipboard copy may only be used in the context of viewing an object";
 
-    export const clipboardPrefix = "Clipboard contains:";
+    export const clipboardContents = (contents: string) => `Clipboard contains: ${contents}`;
 
     export const clipboardEmpty = "Clipboard is empty";
 
-    export const doesNotMatchProperties = "does not match any properties";
+    export const doesNotMatchProperties = (name: string) => `${name} does not match any properties`;
 
     export const matchesMultiple = "matches multiple fields:\n";
 
-    export const doesNotMatchDialog = "does not match any fields in the dialog";
+    export const doesNotMatchDialog = (name: string) => `${name} does not match any fields in the dialog`;
 
     export const multipleFieldMatches = "Multiple fields match";
 
@@ -286,18 +292,29 @@ module NakedObjects {
     export const invalidRefEntry = "Invalid entry for a reference field. Use clipboard or clip";
 
     export const emptyClipboard = "Cannot use Clipboard as it is empty";
-
     export const incompatibleClipboard = "Contents of Clipboard are not compatible with the field";
-
-    export const noMatch = "None of the choices matches";
-
+    export const noMatch = (s: string) => `None of the choices matches ${s}`;
     export const multipleMatches = "Multiple matches:\n";
-
-    export const fieldPrefix = "Field name:";
-
+    export const fieldName = (name: string) => `Field name: ${name}`;
     export const descriptionFieldPrefix = "Description:";
-
     export const typePrefix = "Type:";
 
-    export const unModifiablePrefix = "Unmodifiable:";
+    export const unModifiablePrefix = (reason: string) => `Unmodifiable: ${reason}`;
+    export const outOfItemRange = (n: number) =>  `${n} is out of range for displayed items`;
+    export const doesNotMatchMenu = (name: string) => `${name} does not match any menu`;
+    export const matchingMenus = "Matching menus:";
+    export const menuTitle = (title: string) => `${title} menu`;
+    export const allMenus = "Menus:";
+    export const noRefFieldMatch = (s: string) => `${s} does not match any reference fields or collections`;
+    export const unsaved = "Unsaved";
+    export const editing = "Editing";
+
+    //Error messages
+    export const errorUnknown = "Unknown software error";
+    export const errorExpiredTransient = "The requested view of unsaved object details has expired";
+    export const errorWrongType = "An unexpected type of result was returned";
+    export const errorNotImplemented = "The requested software feature is not implemented";
+    export const errorSoftware = "A software error occurred";
+    export const errorConnection = "The client failed to connect to the server";
+    export const errorClient = "Client Error";
 }

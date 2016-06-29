@@ -139,28 +139,28 @@ module NakedObjects.Models {
             if (rc === ErrorCategory.ClientError) {
                 this.clientErrorCode = code as ClientErrorCode;
                 this.errorCode = ClientErrorCode[this.clientErrorCode];
-                let description = "Unknown software error";
+                let description = errorUnknown;
 
                 switch (this.clientErrorCode) {
                     case ClientErrorCode.ExpiredTransient:
-                        description = "The requested view of unsaved object details has expired";
+                        description = errorExpiredTransient;
                         break;
                     case ClientErrorCode.WrongType:
-                        description = "An unexpected type of result was returned";
+                        description = errorWrongType;
                         break;
                     case ClientErrorCode.NotImplemented:
-                        description = "The requested software feature is not implemented";
+                        description = errorNotImplemented;
                         break;
                     case ClientErrorCode.SoftwareError:
-                        description = "A software error occurred";
+                        description = errorSoftware;
                         break;
                     case ClientErrorCode.ConnectionProblem:
-                        description = "The client failed to connect to the server";
+                        description = errorConnection;
                         break;
                 }
 
                 this.description = description;
-                this.title = "Client Error";
+                this.title = errorClient;
             }
 
             if (rc === ErrorCategory.HttpClientError || rc === ErrorCategory.HttpServerError) {
