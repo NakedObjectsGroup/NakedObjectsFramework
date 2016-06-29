@@ -237,6 +237,7 @@ namespace NakedObjects.Selenium {
     }
 
     #region browsers specific subclasses
+    [TestClass]
     public class CopyAndPasteTestsIe : CopyAndPasteTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -278,7 +279,7 @@ namespace NakedObjects.Selenium {
             ((IJavaScriptExecutor) br).ExecuteScript(script);
         }
     }
-
+    [TestClass]
     public class CopyAndPasteTestsChrome : CopyAndPasteTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -303,7 +304,7 @@ namespace NakedObjects.Selenium {
     public abstract class MegaCopyAndPasteTestsRoot : CopyAndPasteTestsRoot {
         [TestMethod] //Mega
         public void MegaCopyAndPasteTest() {
-            CopyTitleOrPropertyIntoClipboard();
+            CopyTitleOrPropertyIntoClipboard(); //TODO
             CopyListItemIntoClipboard();
             PasteIntoReferenceField();
             PasteIntoReferenceFieldThatAlsoHasAutoCompleteAndFindMenu();
@@ -337,7 +338,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class MegaCopyAndPasteTestsChrome : MegaCopyAndPasteTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
