@@ -907,19 +907,47 @@ module NakedObjects {
         }
     }));
 
+    app.directive("geminiClear", (): ng.IDirective => {
+        return {
+            // Enforce the angularJS default of restricting the directive to
+            // attributes only
+            restrict: "A",
+            // Always use along with an ng-model
+            require: "?ngModel",
+            link: (scope: ISelectScope, elm: ng.IAugmentedJQuery, attrs: ng.IAttributes, ngModel: ng.INgModelController) => {
+                if (!ngModel) {
+                    return;
+                }
+
+                elm.on("input", function () {
+                    $(this).addClass("ng-clearable");
+                    if (this.value) {
+                        $(this).addClass("ng-x");
+                    } else {
+                        $(this).removeClass("ng-x");
+                    }
+                }).on("mousemove", function (e) {
+                    if (elm.hasClass("ng-x")) {
+
+                        const onX = this.offsetWidth - 18 < e.clientX - this.getBoundingClientRect().left;
+
+                        if (onX) {
+                            $(this).addClass("ng-onX");
+                        } else {
+                            $(this).removeClass("ng-onX");
+                        }
+                    }
+                }).on("touchstart click", function (ev) {
+                    if ($(this).hasClass("ng-onX")) {
+                        ev.preventDefault();
+                        $(this).removeClass("ng-x ng-onX");
+                        $(this).val("");
+                        ngModel.$parsers.push(() => null);
+                        ngModel.$setViewValue("");            
+                    }
+                });
+            }
+        };
+    });
 
 }
-
-//new code for clear fields icon
-//jQuery(function ($) {
-
-//    function tog(v) { return v ? 'addClass' : 'removeClass'; }
-//    $(document).on('input', '.clearable', function () {
-//        $(this)[tog(this.value)]('x');
-//    }).on('mousemove', '.x', function (e) {
-//        $(this)[tog(this.offsetWidth - 18 < e.clientX - this.getBoundingClientRect().left)]('onX');
-//    }).on('touchstart click', '.onX', function (ev) {
-//        ev.preventDefault();
-//        $(this).removeClass('x onX').val('').change();
-//    });
-//});
