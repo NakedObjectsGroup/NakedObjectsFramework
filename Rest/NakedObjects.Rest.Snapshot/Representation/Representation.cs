@@ -19,6 +19,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Common.Logging;
 using NakedObjects.Facade;
+using NakedObjects.Facade.Translation;
 using NakedObjects.Rest.Snapshot.Constants;
 using NakedObjects.Rest.Snapshot.Utility;
 
@@ -128,8 +129,36 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             m.Content.Headers.Expires = new DateTimeOffset(now).Add(new TimeSpan(0, 0, 0, cacheTime));
         }
 
+        protected string GetPropertyValueForEtag(IAssociationFacade property, IObjectFacade target) {
+            IObjectFacade valueNakedObject = property.GetValue(target);
+           
+            if (valueNakedObject == null) {
+                return "";
+            }
+
+            if (property.Specification.IsParseable) {
+                return valueNakedObject.Object.ToString();
+            }
+
+            return OidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(target).Encode();
+        }
+
+
+        protected string GetTransientEtag(IObjectFacade target) {
+            //var allProperties = target.Specification.Properties.Where(p => !p.IsCollection && !p.IsInline);
+            //var unusableProperties = allProperties.Where(p => p.IsUsable(target).IsVetoed && !p.IsVisible(target));
+
+            //var propertyValues = unusableProperties.ToDictionary(p => p.Id, p => GetPropertyValueForEtag(p, target));
+
+            //return propertyValues.Aggregate("", (s, kvp) => s + kvp.Key + ":" + kvp.Value);
+            return "";
+        }
+
         protected void SetEtag(IObjectFacade target) {
-            if (!target.Specification.IsService && !target.Specification.IsImmutable(target)) {
+            if (target.IsTransient) {
+                Etag = GetTransientEtag(target);
+            }
+            else if (!target.Specification.IsService && !target.Specification.IsImmutable(target)) {
                 string digest = target.Version.Digest;
                 if (digest != null) {
                     Etag = digest;
