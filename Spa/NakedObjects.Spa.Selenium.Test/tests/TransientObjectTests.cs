@@ -165,6 +165,22 @@ namespace NakedObjects.Selenium {
             Click(OKButton());
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[1].Text == "Reasons:\r\n1 Item");
         }
+
+        public virtual void TransientCreatedFromDialogClosesDialog()
+        {
+            GeminiUrl("object?i1=View&o1=___1.Customer--30108&as1=open");
+            OpenSubMenu("Orders");
+            OpenActionDialog("Create New Order");
+            Click(OKButton());
+            WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Sales Order");
+            SaveObject();
+            ClickBackButton();
+            WaitForTextEquals(".title", "The requested view of unsaved object details has expired.");
+            ClickBackButton();
+            WaitForView(Pane.Single, PaneType.Object, "Mercantile Outlet, AW00030108");
+            OpenSubMenu("Orders"); //Would fail if already open
+        }
+
     }
 
     public abstract class TransientObjectTests : TransientObjectTestsRoot {
@@ -231,6 +247,11 @@ namespace NakedObjects.Selenium {
         [TestMethod]
         public override void CanInvokeActionOnASavedTransient() {
             base.CanInvokeActionOnASavedTransient();
+        }
+        [TestMethod]
+        public override void TransientCreatedFromDialogClosesDialog()
+        {
+            base.TransientCreatedFromDialogClosesDialog();
         }
     }
 
@@ -316,6 +337,7 @@ namespace NakedObjects.Selenium {
             ConditionalChoicesOnTransient();
             TransientWithHiddenNonOptionalFields();
             CanInvokeActionOnASavedTransient();
+            TransientCreatedFromDialogClosesDialog();
         }
     }
 
