@@ -129,12 +129,6 @@
     <Content Include="images\summary.png" />
     <Content Include="images\table.png" />
     <Content Include="karma.conf.js" />
-    <Content Include="Scripts\angular-mocks.js" />
-    <Content Include="Scripts\angular-route.js" />
-    <Content Include="Scripts\angular-route.min.js" />
-    <Content Include="Scripts\angular-touch.js" />
-    <Content Include="Scripts\angular-touch.min.js" />
-    <Content Include="Scripts\angular.min.js" />
     <Content Include="Content\partials\home.html" />
     <Content Include="Content\partials\splitHomeHome.html" />
     <Content Include="Content\partials\actions.html" />
@@ -144,6 +138,16 @@
     <Content Include="fonts\iconFont.svg" />
     <Content Include="fonts\license.txt" />
     <Content Include="index.html" />
+    <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular-route.js" />
+    <Content Include="Scripts\angular-route.min.js" />
+    <Content Include="Scripts\angular-touch.js" />
+    <Content Include="Scripts\angular-touch.min.js" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="Scripts\angular-route.min.js.map" />
+    <Content Include="Scripts\angular-touch.min.js.map" />
     <None Include="Scripts\nakedobjects.config.ts.pp" />
     <None Include="Scripts\nakedobjects.services.color.config.ts.pp" />
     <TypeScriptCompile Include="Scripts\custom.controllers.ts" />
@@ -182,7 +186,6 @@
     <TypeScriptCompile Include="Scripts\nakedobjects.viewmodels.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.models.helpers.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.models.ts" />
-    <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\jasmine-html.js" />
     <Content Include="bower.json" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
@@ -191,6 +194,7 @@
     <TypeScriptCompile Include="Scripts\nakedobjects.rointerfaces.custom.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.rointerfaces.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-component-router.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-resource.d.ts" />
