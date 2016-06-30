@@ -1008,7 +1008,7 @@ module NakedObjects {
             a.execute = (pps: IParameterViewModel[], right?: boolean) => {
                 this.setProperties();
                 const pairs = _.map(this.editProperties(), p => [p.id, p.getValue()]);
-                const prps = (<any>_).fromPairs(pairs) as _.Dictionary<Value>;
+                const prps = _.fromPairs(pairs) as _.Dictionary<Value>;
 
                 const parmValueMap = _.mapValues(a.invokableActionRep.parameters(), p => ({ parm: p, value: prps[p.id()] }));
                 const allpps = _.map(parmValueMap, o => this.viewModelFactory.parameterViewModel(o.parm, o.value, this.onPaneId));

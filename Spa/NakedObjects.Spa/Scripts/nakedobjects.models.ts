@@ -907,8 +907,7 @@ module NakedObjects.Models {
 
             if (this.wrapped().choices) {
                 const values = _.map(this.wrapped().choices, item => new Value(item));
-                // fromPairs definition faulty
-                return (<any>_).fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
+                return _.fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
             }
             return null;
         }
@@ -1123,8 +1122,7 @@ module NakedObjects.Models {
             const ch = this.wrapped().choices;
             if (ch) {
                 const values = _.map(ch, item => new Value(item));
-                // from pairs Definition faulty
-                return (<any>_).fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
+                return _.fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
             }
             return null;
         }
@@ -1289,8 +1287,7 @@ module NakedObjects.Models {
             const ch = this.wrapped().choices;
             if (ch) {
                 const values = _.map(ch, item => new Value(item));
-                // fromPairs definition faulty
-                return (<any>_).fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
+                return _.fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
             }
             return null;
         }
@@ -1455,8 +1452,7 @@ module NakedObjects.Models {
             const ch = this.wrapped().choices;
             if (ch) {
                 const values = _.map(ch, (item) => new Value(item));
-                // fromPairs definition faulty
-                return (<any>_).fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
+                return _.fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
             }
             return null;
         }

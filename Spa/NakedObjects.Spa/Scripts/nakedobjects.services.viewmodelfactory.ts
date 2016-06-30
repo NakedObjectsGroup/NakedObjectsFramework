@@ -434,8 +434,7 @@ module NakedObjects {
                 const createcvm = _.partial(createChoiceViewModels, propertyViewModel.id, null);
                 return context.conditionalChoices(propertyRep, propertyViewModel.id, () => <_.Dictionary<Value>>{}, args).then(createcvm);
             };
-            // fromPairs definition faulty
-            propertyViewModel.promptArguments = (<any>_).fromPairs(_.map(propertyRep.promptLink().arguments(), (v: any, key: string) => [key, new Value(v.value)]));
+            propertyViewModel.promptArguments = _.fromPairs(_.map(propertyRep.promptLink().arguments(), (v: any, key: string) => [key, new Value(v.value)]));
         }
 
         function callIfChanged(propertyViewModel: IPropertyViewModel, newValue: Value, doRefresh: (newValue: Value) => void) {
@@ -539,8 +538,7 @@ module NakedObjects {
                 return context.conditionalChoices(parmRep, parmViewModel.id, () => <_.Dictionary<Value>>{}, args).
                     then(createcvm);
             };
-            // fromPairs definition faulty
-            parmViewModel.promptArguments = (<any>_).fromPairs(_.map(parmRep.promptLink().arguments(), (v: any, key: string) => [key, new Value(v.value)]));
+            parmViewModel.promptArguments = _.fromPairs(_.map(parmRep.promptLink().arguments(), (v: any, key: string) => [key, new Value(v.value)]));
         }
 
         function setupParameterSelectedChoices(parmViewModel: IParameterViewModel, previousValue: Value) {
