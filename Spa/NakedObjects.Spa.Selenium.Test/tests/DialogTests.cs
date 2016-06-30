@@ -174,10 +174,10 @@ namespace NakedObjects.Selenium {
             SelectDropDownOnField("#category1", "Clothing");
             var x = new SelectElement(WaitForCss("#subcategory1")).Options;
 
-            wait.Until(d => new SelectElement(WaitForCss("#subcategory1")).Options.ElementAt(1).Text == "Bib-Shorts");
+            wait.Until(d => new SelectElement(WaitForCss("#subcategory1")).Options.ElementAt(0).Text == "Bib-Shorts");
 
             SelectDropDownOnField("#category1", "Accessories");
-            wait.Until(d => new SelectElement(WaitForCss("#subcategory1")).Options.ElementAt(1).Text == "Bike Racks");
+            wait.Until(d => new SelectElement(WaitForCss("#subcategory1")).Options.ElementAt(0).Text == "Bike Racks");
 
             var msg = OKButton().AssertIsDisabled().GetAttribute("title");
             Assert.AreEqual("Missing mandatory fields: Sub Category; ", msg);
@@ -743,7 +743,7 @@ public virtual void AutoCompleteOptionalParamNotSelected()
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class MegaDialogTestsFirefox : MegaDialogTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
