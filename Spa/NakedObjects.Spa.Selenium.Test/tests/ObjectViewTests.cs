@@ -273,7 +273,7 @@ namespace NakedObjects.Selenium {
         }
         public virtual void TimeSpanProperty() {
             GeminiUrl("object?i1=View&o1=___1.Shift--2");
-            WaitForTextEquals(".property", 2, "Start Time:\r\n15:00"); //TODO value not correct
+            WaitForTextEquals(".property", 2, "Start Time:\r\n15:00");
         }
 
         #region Actions
