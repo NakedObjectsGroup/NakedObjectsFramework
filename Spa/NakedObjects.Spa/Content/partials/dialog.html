@@ -101,10 +101,10 @@
                         <div ng-switch="parameter.returnType">
                             <div ng-switch-when="string" ng-switch="parameter.format">
                                 <div ng-switch-when="date">
-                                    <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="date" placeholder="{{parameter.description}}" ng-model="$parent.parameter.value" gemini-datepicker gemini-fieldvalidate/>
+                                    <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="date" placeholder="{{parameter.description}}" ng-model="$parent.parameter.value" gemini-datepicker gemini-fieldvalidate gemini-clear/>
                                 </div>
                                 <div ng-switch-when="time">
-                                    <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="time" placeholder="{{parameter.description}}" ng-model="$parent.parameter.value" gemini-timepicker gemini-fieldvalidate/>
+                                    <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="time" placeholder="{{parameter.description}}" ng-model="$parent.parameter.value" gemini-timepicker gemini-fieldvalidate gemini-clear/>
                                 </div>
                                 <div ng-switch-default ng-switch="parameter.multipleLines">
                                     <input ng-switch-when="1" id="{{parameter.paneArgId}}" class="{{parameter.status}}" placeholder="{{parameter.description}}" type="{{parameter.password ? 'password' : 'text'}}" ng-model="parameter.value" gemini-fieldvalidate gemini-clear/>

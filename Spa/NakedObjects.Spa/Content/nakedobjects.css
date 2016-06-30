@@ -9,6 +9,10 @@
     margin: 0px;
 }
 
+input, select {
+        border-style: none;
+}
+
 pre {
     white-space: pre-wrap; /* CSS 3 */
     white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
@@ -217,6 +221,7 @@ html, #main, body, .background, .single, .split {
 
 .input-control input:not([type='checkbox']), textarea {
     width: 245px;
+    height: 20px;
 }
 /* clear button on non-empty input field*/
     /*Clear button in input fields*/
