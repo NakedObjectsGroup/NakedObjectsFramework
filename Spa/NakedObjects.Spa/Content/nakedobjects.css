@@ -9,10 +9,6 @@
     margin: 0px;
 }
 
-input, select {
-        border-style: none;
-}
-
 pre {
     white-space: pre-wrap; /* CSS 3 */
     white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
@@ -223,6 +219,14 @@ html, #main, body, .background, .single, .split {
     width: 245px;
     height: 20px;
 }
+input, select {
+    border-style: none;
+}
+.dialog input, .dialog select {
+    border-style:solid;
+    border-color: grey;
+    border-width: 1px;
+}
 /* clear button on non-empty input field*/
     /*Clear button in input fields*/
 .ng-clearable{
@@ -323,11 +327,10 @@ select {
     padding-left: 4px;
 }
 
-    .dialog input[type='text']:hover, .dialog input[type='text']:focus {
+     input:hover,  input:focus,
+     select:hover, select:focus {
         border: solid;
         border-width: 1px;
-        padding: 2px;
-        padding-left: 5px;
         border-color: black;
     }
 
