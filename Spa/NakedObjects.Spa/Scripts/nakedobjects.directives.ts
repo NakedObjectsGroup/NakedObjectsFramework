@@ -80,6 +80,7 @@ module NakedObjects {
                             // update the two way binding
 
                             ngModel.$setViewValue(dateTxt);
+                            element.change(); // do this to trigger gemini-clear directive otherwise  
                         });
                     };
 
@@ -907,7 +908,7 @@ module NakedObjects {
         }
     }));
 
-    app.directive("geminiClear", (): ng.IDirective => {
+    app.directive("geminiClear", ($timeout : ng.ITimeoutService): ng.IDirective => {
         return {
             // Enforce the angularJS default of restricting the directive to
             // attributes only
@@ -919,7 +920,17 @@ module NakedObjects {
                     return;
                 }
 
-                elm.on("input", function () {
+                $timeout(() => {
+                    $(elm).addClass("ng-clearable");
+
+                    if (elm.val()) {
+                        $(elm).addClass("ng-x");
+                    } else {
+                        $(elm).removeClass("ng-x");
+                    }
+                });
+     
+                elm.on("input change", function () {
                     $(this).addClass("ng-clearable");
                     if (this.value) {
                         $(this).addClass("ng-x");
