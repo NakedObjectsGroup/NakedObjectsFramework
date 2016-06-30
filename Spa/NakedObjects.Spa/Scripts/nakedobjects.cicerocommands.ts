@@ -900,8 +900,7 @@ module NakedObjects {
                 ? getParametersAndCurrentValue(field.parent, this.context)
                 : {} as _.Dictionary<Value>;
 
-            // fromPairs definition is faulty
-            const args = (<any>_).fromPairs(_.map(field.promptLink().arguments(), (v: any, key : string) => [key, new Value(v.value)])) as _.Dictionary<Value>;
+            const args = _.fromPairs(_.map(field.promptLink().arguments(), (v: any, key : string) => [key, new Value(v.value)])) as _.Dictionary<Value>;
             _.forEach(_.keys(args), key => {
                 args[key] = enteredFields[key];
             });
