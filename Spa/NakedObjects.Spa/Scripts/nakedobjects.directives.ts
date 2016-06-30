@@ -80,7 +80,7 @@ module NakedObjects {
                             // update the two way binding
 
                             ngModel.$setViewValue(dateTxt);
-                            element.change(); // do this to trigger gemini-clear directive otherwise  
+                            element.change(); // do this to trigger gemini-clear directive  
                         });
                     };
 
@@ -135,6 +135,7 @@ module NakedObjects {
                             // update the two way binding
 
                             ngModel.$setViewValue(element.val());
+                            element.change(); // do this to trigger gemini-clear directive 
                         });
                         return true;
                     };
@@ -259,6 +260,9 @@ module NakedObjects {
 
     app.directive("geminiConditionalchoices", (): ng.IDirective => {
         return {
+            // up the priority of this directive to that viewmodel is set before ng-options - 
+            // then angular doesn't add an empty entry on dropdown
+            priority : 10,
             // Enforce the angularJS default of restricting the directive to
             // attributes only
             restrict: "A",
@@ -920,6 +924,7 @@ module NakedObjects {
                     return;
                 }
 
+                // wrap in timeout or we won't see initial value 
                 $timeout(() => {
                     $(elm).addClass("ng-clearable");
 
