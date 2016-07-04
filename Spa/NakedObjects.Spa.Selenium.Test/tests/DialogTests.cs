@@ -743,7 +743,7 @@ public virtual void AutoCompleteOptionalParamNotSelected()
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class MegaDialogTestsFirefox : MegaDialogTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

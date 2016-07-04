@@ -379,7 +379,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class MegaListTestsIe : MegaListTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -399,6 +399,28 @@ namespace NakedObjects.Selenium {
         }
     }
 
+    [TestClass]
+    public class MegaListTestsChrome : MegaListTestsRoot
+    {
+        [ClassInitialize]
+        public new static void InitialiseClass(TestContext context)
+        {
+            FilePath(@"drivers.chromedriver.exe");
+            AWTest.InitialiseClass(context);
+        }
 
+        [TestInitialize]
+        public virtual void InitializeTest()
+        {
+            InitChromeDriver();
+            Url(BaseUrl);
+        }
+
+        [TestCleanup]
+        public virtual void CleanupTest()
+        {
+            base.CleanUpTest();
+        }
+    }
     #endregion
 }
