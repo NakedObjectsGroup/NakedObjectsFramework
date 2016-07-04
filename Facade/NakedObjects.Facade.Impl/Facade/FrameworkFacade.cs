@@ -395,23 +395,21 @@ namespace NakedObjects.Facade.Impl {
                 return valueNakedObject.Object.ToString();
             }
 
-            var tt = ObjectFacade.Wrap(valueNakedObject, this, Framework);
-
-            return OidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(tt).Encode();
+            var objectFacade = ObjectFacade.Wrap(valueNakedObject, this, Framework);
+            return OidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectFacade).Encode();
         }
 
 
         protected string GetTransientSecurityHash(ObjectContext target) {
             IObjectSpec spec = target.Specification as IObjectSpec;
-            string propertiesValue = Framework.Session.Principal.Identity.Name ?? "";
+            string propertiesValue = "UserName:" + (Framework.Session.Principal.Identity.Name ?? "");
 
             if (spec != null) {
                 var nakedObject = target.Target;
 
                 var allProperties = spec.Properties.OfType<IOneToOneAssociationSpec>().Where(p => !p.IsInline);
-                var unusableProperties = allProperties.Where(p => p.IsUsable(nakedObject).IsVetoed && !p.IsVisible(nakedObject));
-
-                var propertyValues = unusableProperties.ToDictionary(p => p.Id, p => GetPropertyValueForEtag(p, nakedObject));
+                var userUnsettableProperties = allProperties.Where(p => p.IsUsable(nakedObject).IsVetoed || !p.IsVisible(nakedObject));
+                var propertyValues = userUnsettableProperties.ToDictionary(p => p.Id, p => GetPropertyValueForEtag(p, nakedObject));
 
                 propertiesValue +=  propertyValues.Aggregate("", (s, kvp) => s + kvp.Key + ":" + kvp.Value);
             }
