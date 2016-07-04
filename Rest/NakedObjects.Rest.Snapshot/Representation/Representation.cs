@@ -153,15 +153,17 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             return propertyValues.Aggregate("", (s, kvp) => s + kvp.Key + ":" + kvp.Value);
         }
 
-        protected void SetEtag(IObjectFacade target) {
-            if (target.IsTransient) {
-                Etag = GetTransientEtag(target);
+        protected void SetEtag(string digest) {
+            if (digest != null) {
+                Etag = digest;
             }
-            else if (!target.Specification.IsService && !target.Specification.IsImmutable(target)) {
+        }
+
+
+        protected void SetEtag(IObjectFacade target) {
+            if (!target.Specification.IsService && !target.Specification.IsImmutable(target)) {
                 string digest = target.Version.Digest;
-                if (digest != null) {
-                    Etag = digest;
-                }
+                SetEtag(digest);
             }
         }
 

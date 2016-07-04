@@ -36,11 +36,14 @@ namespace NakedObjects.Facade.Impl.Contexts {
 
         public override ITypeSpec Specification => ActionContext.Action.ReturnSpec;
 
+        public string TransientSecurityHash { get; set; }
+
         public ActionResultContextFacade ToActionResultContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework) {
             var ac = new ActionResultContextFacade {
                 Result = Result == null ? null : Result.ToObjectContextFacade(facade, framework),
                 ActionContext = ActionContext.ToActionContextFacade(facade, framework),
-                HasResult = HasResult
+                HasResult = HasResult,
+                TransientSecurityHash = TransientSecurityHash
             };
 
             if (Reason == null) {

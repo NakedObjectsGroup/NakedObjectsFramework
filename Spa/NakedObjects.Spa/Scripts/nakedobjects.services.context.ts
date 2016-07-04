@@ -729,6 +729,9 @@ module NakedObjects {
 
                         resultObject.hateoasUrl = `/${domainType}/${nextTransientId}`;
 
+                        // copy the etag down into the object
+                        resultObject.etagDigest = result.etagDigest;
+
                         context.setObject(toPaneId, resultObject);
                         transientCache.add(toPaneId, resultObject);
                         urlManager.pushUrlState(toPaneId);
@@ -862,7 +865,7 @@ module NakedObjects {
 
             _.each(props, (v, k) => persist.setMember(k, v));
 
-            return repLoader.retrieve(persist, DomainObjectRepresentation).
+            return repLoader.retrieve(persist, DomainObjectRepresentation, object.etagDigest).
                 then((updatedObject: DomainObjectRepresentation) => {
                     transientCache.remove(paneId, object.domainType(), object.id());
                     setNewObject(updatedObject, paneId, viewSavedObject);
@@ -882,7 +885,7 @@ module NakedObjects {
             const persist = object.getPersistMap();
             persist.setValidateOnly();
             _.each(props, (v, k) => persist.setMember(k, v));
-            return repLoader.validate(persist);
+            return repLoader.validate(persist, object.etagDigest);
         };
 
 

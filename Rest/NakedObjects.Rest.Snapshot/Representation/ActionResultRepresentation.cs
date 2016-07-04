@@ -38,8 +38,14 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         private void SetHeader(ActionResultContextFacade actionResult) {
             Caching = CacheType.Transactional;
+    
             if (actionResult.Specification.IsObject && actionResult.Result != null) {
-                SetEtag(actionResult.Result.Target);
+                if (actionResult.Result.Target.IsTransient) {
+                    SetEtag(actionResult.TransientSecurityHash);
+                }
+                else {
+                    SetEtag(actionResult.Result.Target);
+                }
             }
         }
 

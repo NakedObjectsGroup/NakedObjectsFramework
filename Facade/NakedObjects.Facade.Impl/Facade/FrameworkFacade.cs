@@ -380,6 +380,49 @@ namespace NakedObjects.Facade.Impl {
             }
         }
 
+        protected string GetPropertyValueForEtag(IOneToOneAssociationSpec property, INakedObjectAdapter target) {
+            var valueNakedObject = property.GetNakedObject(target);
+
+            if (valueNakedObject == null) {
+                return "";
+            }
+
+            if (property.ReturnSpec.IsParseable) {
+                return valueNakedObject.Object.ToString();
+            }
+
+            var tt = ObjectFacade.Wrap(valueNakedObject, this, Framework);
+
+            return OidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(tt).Encode();
+        }
+
+
+        protected string GetTransientSecurityHash(ObjectContext target) {
+            IObjectSpec spec = target.Specification as IObjectSpec;
+
+            if (spec != null) {
+                var nakedObject = target.Target;
+
+                var allProperties = spec.Properties.OfType<IOneToOneAssociationSpec>().Where(p => !p.IsInline);
+                var unusableProperties = allProperties.Where(p => p.IsUsable(nakedObject).IsVetoed && !p.IsVisible(nakedObject));
+
+                var propertyValues = unusableProperties.ToDictionary(p => p.Id, p => GetPropertyValueForEtag(p, nakedObject));
+
+                return propertyValues.Aggregate("", (s, kvp) => s + kvp.Key + ":" + kvp.Value);
+            }
+
+            return "";
+        }
+
+
+        private void ValidateTransientIntegrity(ObjectContext nakedObject, string digest) {
+            var transientHash = GetTransientSecurityHash(nakedObject);
+
+            if (transientHash != digest) {
+                throw new NotAllowedNOSException("Transient read-only fields have been modified");
+            }
+        }
+
         private ObjectContext ChangeObject(INakedObjectAdapter nakedObject, ArgumentsContextFacade arguments) {
             ValidateConcurrency(nakedObject, arguments.Digest);
 
@@ -431,6 +474,8 @@ namespace NakedObjects.Facade.Impl {
             }
             Dictionary<string, PropertyContext> contexts = arguments.Values.ToDictionary(kvp => kvp.Key, kvp => CanSetProperty(nakedObject, kvp.Key, kvp.Value));
             var objectContext = new ObjectContext(contexts.First().Value.Target) {VisibleProperties = contexts.Values.ToArray()};
+
+            ValidateTransientIntegrity(objectContext, arguments.Digest);
 
             // if we fail we need to display all - if OK only those that are visible 
             PropertyContext[] propertiesToDisplay = objectContext.VisibleProperties;
@@ -592,7 +637,14 @@ namespace NakedObjects.Facade.Impl {
                 if (ConsentHandler(actionContext.Action.IsUsable(actionContext.Target), actionResultContext, Cause.Disabled)) {
                     if (ValidateParameters(actionContext, arguments.Values) && !arguments.ValidateOnly) {
                         INakedObjectAdapter result = actionContext.Action.Execute(actionContext.Target, actionContext.VisibleParameters.Select(p => p.ProposedNakedObject).ToArray());
-                        actionResultContext.Result = GetObjectContext(result);
+                        var oc  = GetObjectContext(result);
+
+                        if (result.ResolveState.IsTransient()) {
+                            var securityHash = GetTransientSecurityHash(oc);
+                            actionResultContext.TransientSecurityHash = securityHash;
+                        }
+
+                        actionResultContext.Result = oc;
                     }
                 }
             }
@@ -881,13 +933,15 @@ namespace NakedObjects.Facade.Impl {
                 MenuPath = a.mp
             });
 
-            return new ObjectContext(nakedObject) {
+            var oc = new ObjectContext(nakedObject) {
                 VisibleActions = actionContexts.Union(ccaContexts).ToArray(),
                 VisibleProperties = properties.Select(p => new PropertyContext {
                     Property = p,
                     Target = nakedObject
                 }).ToArray()
             };
+
+            return oc;
         }
 
         private ObjectContext GetObjectInternal(IOidTranslation oid) {

@@ -9,6 +9,9 @@ namespace NakedObjects.Facade.Contexts {
     public class ActionResultContextFacade : ContextFacade {
         public ObjectContextFacade Result { get; set; }
         public bool HasResult { get; set; }
+
+        public string TransientSecurityHash { get; set; }
+
         public ActionContextFacade ActionContext { get; set; }
 
         public override IObjectFacade Target => ActionContext.Target;
