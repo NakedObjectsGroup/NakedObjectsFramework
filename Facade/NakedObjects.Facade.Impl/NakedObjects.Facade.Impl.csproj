@@ -180,6 +180,7 @@
     <Compile Include="Facade\OidFacade.cs" />
     <Compile Include="Facade\ObjectFacade.cs" />
     <Compile Include="Facade\VersionFacade.cs" />
+    <Compile Include="Utility\SimpleStringHasher.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NakedObjects.Facade\NakedObjects.Facade.csproj">

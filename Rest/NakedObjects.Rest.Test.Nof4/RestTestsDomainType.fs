@@ -28,6 +28,7 @@ open NakedObjects.Persistor.Entity
 open NakedObjects.Facade
 open NakedObjects.Facade.Translation
 open NakedObjects.Facade.Impl
+open NakedObjects.Facade.Interface
 open NakedObjects.Architecture.Menu
 open NakedObjects.Menu
 
@@ -46,6 +47,8 @@ type CNof4TestsDomainType() =
             |> ignore
             container.RegisterType
                 (typeof<IOidStrategy>, typeof<EntityOidStrategy>, null, (new PerResolveLifetimeManager())) |> ignore
+            container.RegisterType
+                (typeof<IStringHasher>, typeof<NullStringHasher>, null, (new PerResolveLifetimeManager())) |> ignore
             container.RegisterType
                 (typeof<IFrameworkFacade>, typeof<FrameworkFacade>, null, (new PerResolveLifetimeManager())) |> ignore
             container.RegisterType

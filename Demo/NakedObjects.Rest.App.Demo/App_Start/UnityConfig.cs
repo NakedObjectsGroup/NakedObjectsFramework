@@ -15,6 +15,7 @@ using NakedObjects.Facade;
 using NakedObjects.Facade.Impl;
 using NakedObjects.Facade.Impl.Implementation;
 using NakedObjects.Facade.Impl.Utility;
+using NakedObjects.Facade.Interface;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Unity;
@@ -66,6 +67,7 @@ namespace NakedObjects.Rest.App.Demo {
             container.RegisterType<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>(new HierarchicalLifetimeManager());
 
             container.RegisterType<IOidStrategy, EntityOidStrategy>(new HierarchicalLifetimeManager());
+            container.RegisterType<IStringHasher, SimpleStringHasher>(new PerResolveLifetimeManager());
             container.RegisterType<IFrameworkFacade, FrameworkFacade>(new HierarchicalLifetimeManager());
 
             //Externals

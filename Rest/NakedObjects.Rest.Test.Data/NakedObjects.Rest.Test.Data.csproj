@@ -164,6 +164,7 @@
     <Compile Include="CodeFirstContext.cs" />
     <Compile Include="CodeFirstContextLocal.cs" />
     <Compile Include="ContributerService.cs" />
+    <Compile Include="NullStringHasher.cs" />
     <Compile Include="SwitchableViewModel.cs" />
     <Compile Include="FormViewModel.cs" />
     <Compile Include="WithAttachments.cs" />

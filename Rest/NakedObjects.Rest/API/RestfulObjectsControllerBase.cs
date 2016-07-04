@@ -922,7 +922,7 @@ namespace NakedObjects.Rest {
             Tuple<IDictionary<string, object>, RestControlFlags> tuple = ExtractValuesAndFlags(persistArgumentMap, true);
 
             return new Tuple<ArgumentsContextFacade, RestControlFlags>(new ArgumentsContextFacade {
-                Digest = null,
+                Digest = GetIfMatchTag(),
                 Values = tuple.Item1,
                 ValidateOnly = tuple.Item2.ValidateOnly
             }, tuple.Item2);

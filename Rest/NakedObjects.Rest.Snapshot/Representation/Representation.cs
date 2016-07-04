@@ -19,7 +19,6 @@ using System.Security.Cryptography;
 using System.Text;
 using Common.Logging;
 using NakedObjects.Facade;
-using NakedObjects.Facade.Translation;
 using NakedObjects.Rest.Snapshot.Constants;
 using NakedObjects.Rest.Snapshot.Utility;
 

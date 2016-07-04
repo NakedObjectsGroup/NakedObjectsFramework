@@ -26,13 +26,17 @@ using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Facade;
 using NakedObjects.Facade.Impl.Contexts;
 using NakedObjects.Facade.Impl.Utility;
+using NakedObjects.Facade.Interface;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Facade.Utility;
 using NakedObjects.Util;
 
 namespace NakedObjects.Facade.Impl {
     public class FrameworkFacade : IFrameworkFacade {
-        public FrameworkFacade(IOidStrategy oidStrategy, IOidTranslator oidTranslator, INakedObjectsFramework framework) {
+        private readonly IStringHasher stringHasher;
+
+        public FrameworkFacade(IOidStrategy oidStrategy, IOidTranslator oidTranslator, INakedObjectsFramework framework, IStringHasher stringHasher) {
+            this.stringHasher = stringHasher;
             oidStrategy.FrameworkFacade = this;
             OidStrategy = oidStrategy;
             OidTranslator = oidTranslator;
@@ -399,6 +403,7 @@ namespace NakedObjects.Facade.Impl {
 
         protected string GetTransientSecurityHash(ObjectContext target) {
             IObjectSpec spec = target.Specification as IObjectSpec;
+            string propertiesValue = Framework.Session.Principal.Identity.Name ?? "";
 
             if (spec != null) {
                 var nakedObject = target.Target;
@@ -408,10 +413,10 @@ namespace NakedObjects.Facade.Impl {
 
                 var propertyValues = unusableProperties.ToDictionary(p => p.Id, p => GetPropertyValueForEtag(p, nakedObject));
 
-                return propertyValues.Aggregate("", (s, kvp) => s + kvp.Key + ":" + kvp.Value);
+                propertiesValue +=  propertyValues.Aggregate("", (s, kvp) => s + kvp.Key + ":" + kvp.Value);
             }
 
-            return "";
+            return stringHasher.GetHash(propertiesValue);
         }
 
 
@@ -639,7 +644,7 @@ namespace NakedObjects.Facade.Impl {
                         INakedObjectAdapter result = actionContext.Action.Execute(actionContext.Target, actionContext.VisibleParameters.Select(p => p.ProposedNakedObject).ToArray());
                         var oc  = GetObjectContext(result);
 
-                        if (result.ResolveState.IsTransient()) {
+                        if (result != null && result.ResolveState.IsTransient()) {
                             var securityHash = GetTransientSecurityHash(oc);
                             actionResultContext.TransientSecurityHash = securityHash;
                         }
