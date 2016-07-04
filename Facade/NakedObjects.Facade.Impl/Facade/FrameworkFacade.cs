@@ -424,7 +424,7 @@ namespace NakedObjects.Facade.Impl {
             var transientHash = GetTransientSecurityHash(nakedObject);
 
             if (transientHash != digest) {
-                throw new NotAllowedNOSException("Transient read-only fields have been modified");
+                throw new BadRequestNOSException("Values provided may not be persisted as an object");
             }
         }
 
