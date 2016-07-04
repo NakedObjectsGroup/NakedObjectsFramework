@@ -145,13 +145,12 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
 
         protected string GetTransientEtag(IObjectFacade target) {
-            //var allProperties = target.Specification.Properties.Where(p => !p.IsCollection && !p.IsInline);
-            //var unusableProperties = allProperties.Where(p => p.IsUsable(target).IsVetoed && !p.IsVisible(target));
+            var allProperties = target.Specification.Properties.Where(p => !p.IsCollection && !p.IsInline);
+            var unusableProperties = allProperties.Where(p => p.IsUsable(target).IsVetoed && !p.IsVisible(target));
 
-            //var propertyValues = unusableProperties.ToDictionary(p => p.Id, p => GetPropertyValueForEtag(p, target));
+            var propertyValues = unusableProperties.ToDictionary(p => p.Id, p => GetPropertyValueForEtag(p, target));
 
-            //return propertyValues.Aggregate("", (s, kvp) => s + kvp.Key + ":" + kvp.Value);
-            return "";
+            return propertyValues.Aggregate("", (s, kvp) => s + kvp.Key + ":" + kvp.Value);
         }
 
         protected void SetEtag(IObjectFacade target) {
