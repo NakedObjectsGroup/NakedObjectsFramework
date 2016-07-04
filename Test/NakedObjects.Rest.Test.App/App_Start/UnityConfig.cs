@@ -15,6 +15,7 @@ using NakedObjects.Facade.Impl;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Facade.Impl.Implementation;
 using NakedObjects.Facade.Impl.Utility;
+using NakedObjects.Facade.Interface;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Unity;
 
