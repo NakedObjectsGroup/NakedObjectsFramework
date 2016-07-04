@@ -145,6 +145,7 @@ namespace NakedObjects.Selenium {
             ClickLogOffButton();
             IAlert alert = br.SwitchTo().Alert();
             Assert.IsTrue(alert.Text.StartsWith("Please confirm logoff of user:"));
+            alert.Dismiss();
         }
     }
 
