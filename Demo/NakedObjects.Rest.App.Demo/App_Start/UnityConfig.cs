@@ -67,7 +67,7 @@ namespace NakedObjects.Rest.App.Demo {
             container.RegisterType<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>(new HierarchicalLifetimeManager());
 
             container.RegisterType<IOidStrategy, EntityOidStrategy>(new HierarchicalLifetimeManager());
-            container.RegisterType<IStringHasher, SimpleStringHasher>(new PerResolveLifetimeManager());
+            container.RegisterType<IStringHasher, SimpleStringHasher>(new HierarchicalLifetimeManager());
             container.RegisterType<IFrameworkFacade, FrameworkFacade>(new HierarchicalLifetimeManager());
 
             //Externals
