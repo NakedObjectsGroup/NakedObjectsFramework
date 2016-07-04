@@ -82,21 +82,23 @@ html, #main, body, .background, .single, .split {
     overflow: hidden; /*Expands the div to size of all contents*/
 }
 
-    .header .title, .header .type {
-        position: relative;
-        font-weight: 200;
-        font-size: 24pt;
-        line-height: 38pt;
-        margin-left: 1px; /*Make room for focus outline*/
-        padding-left: 5px;
-        margin-right: 20px;
-        margin-top: 2px;
-    }
+.header .title, .header .type {
+    position: relative;
+    font-weight: 200;
+    font-size: 24pt;
+    line-height: 38pt;
+    margin-left: 1px; /*Make room for focus outline*/
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-right: 20px;
+    margin-top: 2px;
+    display: inline-block; /*Otherwise focus outline takes full width*/
+}
 
-    .header .type {
-        float: left;
-        margin-right: 20px;
-    }
+.header .type {
+    float: left;
+    margin-right: 20px;
+}
 
 .type {
     display: none; /*Change this to display type (e.g. for accessibility)*/
@@ -363,12 +365,10 @@ div.hover, div.focus,
 
 /*TODO: review focus on title*/
 .title:focus {
-    outline: none;
+    outline: solid;
     outline-width: 1px;
     outline-color: white;
 }
-
-
 
 /*Collections */
 .collection:not(:last-child) {
