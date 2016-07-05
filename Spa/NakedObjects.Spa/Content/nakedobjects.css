@@ -94,7 +94,7 @@ html, #main, body, .background, .single, .split {
     margin-top: 2px;
 }
 
-.object .header .title {
+.object.view .header .title {
     display: inline-block; /*Otherwise focus outline takes full width*/
 }
 
