@@ -48,7 +48,7 @@ namespace AdventureWorksModel {
         [NakedObjectsIgnore]
         public virtual int BusinessEntityID { get; set; }
 
-         [MemberOrder(1)]
+         [MemberOrder(1), Disabled]
         public virtual Person PersonDetails { get; set; }
 
         [MemberOrder(10)]
