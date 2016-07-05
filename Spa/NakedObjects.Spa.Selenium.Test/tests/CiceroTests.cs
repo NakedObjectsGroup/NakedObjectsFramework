@@ -819,12 +819,9 @@ namespace NakedObjects.Selenium {
             EnterCommand("show num");
             WaitForOutput("Product Number: BK-R68R-52");
             EnterCommand("sh product");
-            WaitForOutputStarting("Product Number: BK-R68R-52");
-            var actual = WaitForCss(".output").Text;
+            WaitForOutput("Product Number: BK-R68R-52\r\nProduct Model: Road-450\r\nProduct Category: Bikes\r\nProduct Subcategory: Road Bikes\r\nProduct Line: R \r\nProduct Inventory: 2 items\r\nProduct Reviews: empty");
             //Note that spacing of Road-450 and  Line: R is different to how it appears on screen!
             //Name: Road-450 Red, 52
-            var expected = "Product Number: BK-R68R-52\r\nProduct Model: Road-450\r\nProduct Category: Bikes\r\nProduct Subcategory: Road Bikes\r\nProduct Line: R \r\nProduct Inventory: 2 items\r\nProduct Reviews: empty";
-            Assert.AreEqual(expected, actual);
 
             //No argument
             EnterCommand("sh ");
@@ -1435,7 +1432,7 @@ namespace NakedObjects.Selenium {
             base.CleanUpTest();
         }
     }
-
+    //[TestClass]
     public class CiceroTestsChrome : CiceroTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
