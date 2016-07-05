@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NakedObjects.Spa</id>
-    <version>8.0.0-rc</version>
+    <version>8.0.0-rc2</version>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -35,8 +35,7 @@
     <file src="..\..\Spa\NakedObjects.Spa\fonts\*.*" target="Content\fonts" />
     <file src="..\..\Spa\NakedObjects.Spa\images\*.*" target="Content\images" />
     <file src="..\..\Spa\NakedObjects.Spa\Scripts\jquery.timepicker.js" target="Content\Scripts" />
-    <file src="..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects*.ts" target="Content\Scripts" 
-          exclude="..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects.config.ts;..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects.services.color.config.ts;..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects.services.template.config.ts..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects.services.error.config.ts" />
+    <file src="..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects*.ts" target="Content\Scripts" exclude="..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects.config.ts;..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects.services.color.config.ts;..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects.services.template.config.ts..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects.services.error.config.ts" />
     <file src="..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects*.pp" target="Content\Scripts" />
     <file src="..\..\Spa\NakedObjects.Spa\index.html" target="Content" />
   </files>
