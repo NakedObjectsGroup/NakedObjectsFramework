@@ -80,9 +80,6 @@ html, #main, body, .background, .single, .split {
 .header {
     margin-bottom: 20px;
     overflow: hidden; /*Expands the div to size of all contents*/
-}
-
-.header .title, .header .type {
     position: relative;
     font-weight: 200;
     font-size: 24pt;
@@ -92,6 +89,13 @@ html, #main, body, .background, .single, .split {
     padding-right: 5px;
     margin-right: 20px;
     margin-top: 2px;
+}
+
+.header .appName {
+    padding-left: 5px;
+}
+
+.header .title {
     display: inline-block; /*Otherwise focus outline takes full width*/
 }
 
