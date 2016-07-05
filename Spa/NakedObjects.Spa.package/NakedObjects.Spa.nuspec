@@ -17,7 +17,7 @@
       <dependency id="AngularJS.Core" version="[1.5.7, 2)" />
       <dependency id="AngularJS.Route" version="[1.5.7, 2)" />
       <dependency id="AngularJS.Touch" version="[1.5.7, 2)" />
-      <dependency id="angularjs.TypeScript.DefinitelyTyped" version="[6.2.9, 5)" />
+      <dependency id="angularjs.TypeScript.DefinitelyTyped" version="[6.2.9, 7)" />
       <dependency id="jQuery" version="[2.1.4, 3)" />
       <dependency id="jquery.TypeScript.DefinitelyTyped" version="[2.2.8, 3)" />
       <dependency id="jQuery.UI.Combined" version="[1.11.4, 2)" />
@@ -35,7 +35,7 @@
     <file src="..\..\Spa\NakedObjects.Spa\fonts\*.*" target="Content\fonts" />
     <file src="..\..\Spa\NakedObjects.Spa\images\*.*" target="Content\images" />
     <file src="..\..\Spa\NakedObjects.Spa\Scripts\jquery.timepicker.js" target="Content\Scripts" />
-    <file src="..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects*.ts" target="Content\Scripts" exclude="..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects.config.ts;..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects.services.color.config.ts;..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects.services.template.config.ts..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects.services.error.config.ts" />
+    <file src="..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects*.ts" target="Content\Scripts" exclude="..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects.config.ts;..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects.services.color.config.ts;..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects.services.template.config.ts;..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects.services.error.config.ts" />
     <file src="..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects*.pp" target="Content\Scripts" />
     <file src="..\..\Spa\NakedObjects.Spa\index.html" target="Content" />
   </files>
