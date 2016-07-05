@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Principal;
+using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -34,6 +35,7 @@ using NakedObjects.Util;
 namespace NakedObjects.Facade.Impl {
     public class FrameworkFacade : IFrameworkFacade {
         private readonly IStringHasher stringHasher;
+        private static readonly ILog Log = LogManager.GetLogger(typeof(FrameworkFacade));
 
         public FrameworkFacade(IOidStrategy oidStrategy, IOidTranslator oidTranslator, INakedObjectsFramework framework, IStringHasher stringHasher) {
             this.stringHasher = stringHasher;
@@ -400,7 +402,7 @@ namespace NakedObjects.Facade.Impl {
         }
 
 
-        protected string GetTransientSecurityHash(ObjectContext target) {
+        protected string GetTransientSecurityHash(ObjectContext target, out string rawValue) {
             IObjectSpec spec = target.Specification as IObjectSpec;
             string propertiesValue = "UserName:" + (Framework.Session.Principal.Identity.Name ?? "");
 
@@ -413,15 +415,17 @@ namespace NakedObjects.Facade.Impl {
 
                 propertiesValue +=  propertyValues.Aggregate("", (s, kvp) => s + kvp.Key + ":" + kvp.Value);
             }
-
+            rawValue = propertiesValue;
             return stringHasher.GetHash(propertiesValue);
         }
 
 
         private void ValidateTransientIntegrity(ObjectContext nakedObject, string digest) {
-            var transientHash = GetTransientSecurityHash(nakedObject);
+            string rawValue;
+            var transientHash = GetTransientSecurityHash(nakedObject, out rawValue);
 
             if (transientHash != digest) {
+                Log.Error($"Transient Integrity failed for: {nakedObject.Id} bad values: {rawValue} old hash: {digest} new hash {transientHash}");
                 throw new BadRequestNOSException("Values provided may not be persisted as an object");
             }
         }
@@ -478,8 +482,6 @@ namespace NakedObjects.Facade.Impl {
             Dictionary<string, PropertyContext> contexts = arguments.Values.ToDictionary(kvp => kvp.Key, kvp => CanSetProperty(nakedObject, kvp.Key, kvp.Value));
             var objectContext = new ObjectContext(contexts.First().Value.Target) {VisibleProperties = contexts.Values.ToArray()};
 
-            ValidateTransientIntegrity(objectContext, arguments.Digest);
-
             // if we fail we need to display all - if OK only those that are visible 
             PropertyContext[] propertiesToDisplay = objectContext.VisibleProperties;
 
@@ -487,6 +489,8 @@ namespace NakedObjects.Facade.Impl {
                 if (ConsentHandler(CrossValidate(objectContext), objectContext, Cause.Other)) {
                     if (!arguments.ValidateOnly) {
                         Array.ForEach(objectContext.VisibleProperties, SetProperty);
+
+                        ValidateTransientIntegrity(objectContext, arguments.Digest);
 
                         if (save) {
                             if (nakedObject.Spec.Persistable == PersistableType.UserPersistable) {
@@ -643,8 +647,10 @@ namespace NakedObjects.Facade.Impl {
                         var oc  = GetObjectContext(result);
 
                         if (result != null && result.ResolveState.IsTransient()) {
-                            var securityHash = GetTransientSecurityHash(oc);
+                            string rawValue;
+                            var securityHash = GetTransientSecurityHash(oc, out rawValue);
                             actionResultContext.TransientSecurityHash = securityHash;
+                            Log.Info($"Creating hash for: {oc.Id} raw values: {rawValue} hash: {securityHash}");
                         }
 
                         actionResultContext.Result = oc;
