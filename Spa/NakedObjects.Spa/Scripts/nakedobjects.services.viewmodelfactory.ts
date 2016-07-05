@@ -418,11 +418,24 @@ module NakedObjects {
             return tableRowColumnViewModel;
         };
 
+        function getDigest(propertyRep: PropertyMember) {
+            const parent = propertyRep.parent;
+            if (parent instanceof DomainObjectRepresentation) {
+                if (parent.isTransient()) {
+                    return parent.etagDigest;
+                }
+            }
+            return null;
+        }
+
+
         function setupPropertyAutocomplete(propertyViewModel: IPropertyViewModel, parentValues: () => _.Dictionary<Value>) {
             const propertyRep = propertyViewModel.propertyRep;
             propertyViewModel.prompt = (searchTerm: string) => {
                 const createcvm = _.partial(createChoiceViewModels, propertyViewModel.id, searchTerm);
-                return context.autoComplete(propertyRep, propertyViewModel.id, parentValues, searchTerm).then(createcvm);
+                const digest = getDigest(propertyRep);
+
+                return context.autoComplete(propertyRep, propertyViewModel.id, parentValues, searchTerm, digest).then(createcvm);
             };
             propertyViewModel.minLength = propertyRep.promptLink().extensions().minLength();
             propertyViewModel.description = propertyViewModel.description || autoCompletePrompt;
@@ -432,7 +445,8 @@ module NakedObjects {
             const propertyRep = propertyViewModel.propertyRep;
             propertyViewModel.conditionalChoices = (args: _.Dictionary<Value>) => {
                 const createcvm = _.partial(createChoiceViewModels, propertyViewModel.id, null);
-                return context.conditionalChoices(propertyRep, propertyViewModel.id, () => <_.Dictionary<Value>>{}, args).then(createcvm);
+                const digest = getDigest(propertyRep);
+                return context.conditionalChoices(propertyRep, propertyViewModel.id, () => <_.Dictionary<Value>>{}, args, digest).then(createcvm);
             };
             propertyViewModel.promptArguments = _.fromPairs(_.map(propertyRep.promptLink().arguments(), (v: any, key: string) => [key, new Value(v.value)]));
         }

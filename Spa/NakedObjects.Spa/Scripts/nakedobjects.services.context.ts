@@ -63,13 +63,18 @@ module NakedObjects {
         mustReload: (oid: ObjectIdWrapper) => boolean;
 
         //The object values are only needed on a transient object / editable view model
-        autoComplete(field: IField, id: string, objectValues: () => _.Dictionary<Value>, searchTerm: string): ng.
-        IPromise<_.Dictionary<Value>>;
+        autoComplete(field: IField,
+                     id: string,
+                     objectValues: () => _.Dictionary<Value>,
+                     searchTerm: string,
+                     digest? : string): ng.IPromise<_.Dictionary<Value>>;
+
         //The object values are only needed on a transient object / editable view model
         conditionalChoices(field: IField,
-            id: string,
-            objectValues: () => _.Dictionary<Value>,
-            args: _.Dictionary<Value>): ng.IPromise<_.Dictionary<Value>>;
+                           id: string,
+                           objectValues: () => _.Dictionary<Value>,
+                           args: _.Dictionary<Value>,
+                           digest? : string): ng.IPromise<_.Dictionary<Value>>;
 
         invokeAction(action: IInvokableAction, parms: _.Dictionary<Value>, fromPaneId? : number, toPaneId?: number): ng. IPromise<ActionResultRepresentation>;
 
@@ -77,6 +82,7 @@ module NakedObjects {
             props: _.Dictionary<Value>,
             paneId: number,
             viewSavedObject: boolean): ng.IPromise<DomainObjectRepresentation>;
+
         saveObject(object: DomainObjectRepresentation,
             props: _.Dictionary<Value>,
             paneId: number,
@@ -693,18 +699,18 @@ module NakedObjects {
 
         context.setPreviousUrl = (url: string) => previousUrl = url;
 
-        const doPrompt = (field: IField, id: string, searchTerm: string, setupPrompt: (map: PromptMap) => void, objectValues: () => _.Dictionary<Value>) => {
+        const doPrompt = (field: IField, id: string, searchTerm: string, setupPrompt: (map: PromptMap) => void, objectValues: () => _.Dictionary<Value>, digest? : string) => {
             const map = field.getPromptMap();
             map.setMembers(objectValues);
             setupPrompt(map);
-            return repLoader.retrieve(map, PromptRepresentation).then((p: PromptRepresentation) => p.choices());
+            return repLoader.retrieve(map, PromptRepresentation, digest).then((p: PromptRepresentation) => p.choices());
         };
 
-        context.autoComplete = (field: IField, id: string, objectValues: () => _.Dictionary<Value>, searchTerm: string) =>
-            doPrompt(field, id, searchTerm, (map: PromptMap) => map.setSearchTerm(searchTerm), objectValues);
+        context.autoComplete = (field: IField, id: string, objectValues: () => _.Dictionary<Value>, searchTerm: string, digest? : string) =>
+            doPrompt(field, id, searchTerm, (map: PromptMap) => map.setSearchTerm(searchTerm), objectValues, digest);
 
-        context.conditionalChoices = (field: IField, id: string, objectValues: () => _.Dictionary<Value>, args: _.Dictionary<Value>) =>
-            doPrompt(field, id, null, (map: PromptMap) => map.setArguments(args), objectValues);
+        context.conditionalChoices = (field: IField, id: string, objectValues: () => _.Dictionary<Value>, args: _.Dictionary<Value>, digest? : string) =>
+            doPrompt(field, id, null, (map: PromptMap) => map.setArguments(args), objectValues, digest);
 
         let nextTransientId = 0;
 
