@@ -25,7 +25,6 @@ var NakedObjects;
             collection: "c",
             dialog: "d",
             errorCat: "et",
-            field: "f",
             interactionMode: "i",
             menu: "m",
             object: "o",
@@ -33,6 +32,7 @@ var NakedObjects;
             pageSize: "ps",
             parm: "pm",
             prop: "pp",
+            reload: "r",
             selected: "s"
         };
         var capturedPanes = [];
@@ -121,10 +121,6 @@ var NakedObjects;
             paneRouteData.collections = _.mapValues(collKeyMap, function (v) { return NakedObjects.CollectionViewState[v]; });
             var parmKeyMap = getAndMapIds(akm.parm, paneId);
             paneRouteData.actionParams = getMappedValues(parmKeyMap);
-            var fieldKeyMap = getAndMapIds(akm.field, paneId);
-            paneRouteData.dialogFields = getMappedValues(fieldKeyMap);
-            var propKeyMap = getAndMapIds(akm.prop, paneId);
-            paneRouteData.props = getMappedValues(propKeyMap);
             paneRouteData.page = parseInt(getId(akm.page + paneId, $routeParams));
             paneRouteData.pageSize = parseInt(getId(akm.pageSize + paneId, $routeParams));
             paneRouteData.selectedItems = arrayFromMask(getId(akm.selected + paneId, $routeParams));
@@ -149,18 +145,6 @@ var NakedObjects;
         function clearSearchKeys(search, paneId, keys) {
             var toClear = searchKeysForPane(search, paneId, keys);
             return _.omit(search, toClear);
-        }
-        function clearFieldKeys(search, paneId) {
-            var ids = _.filter(_.keys(search), function (k) { return k.indexOf("" + akm.field + paneId) === 0; });
-            return _.omit(search, ids);
-        }
-        function clearParmKeys(search, paneId) {
-            var ids = _.filter(_.keys(search), function (k) { return k.indexOf("" + akm.parm + paneId) === 0; });
-            return _.omit(search, ids);
-        }
-        function clearPropKeys(search, paneId) {
-            var ids = _.filter(_.keys(search), function (k) { return k.indexOf("" + akm.prop + paneId) === 0; });
-            return _.omit(search, ids);
         }
         function setupPaneNumberAndTypes(pane, newPaneType, newMode) {
             var path = $location.path();
@@ -215,12 +199,6 @@ var NakedObjects;
         function setParameter(paneId, search, p, pv) {
             setValue(paneId, search, p, pv, akm.parm);
         }
-        function setField(paneId, search, p, pv) {
-            setValue(paneId, search, p, pv, akm.field);
-        }
-        function setProperty(paneId, search, p, pv) {
-            setValue(paneId, search, p, pv, akm.prop);
-        }
         var Transition;
         (function (Transition) {
             Transition[Transition["Null"] = 0] = "Null";
@@ -246,22 +224,6 @@ var NakedObjects;
         function clearId(key, search) {
             delete search[key];
         }
-        function setFieldsToParms(paneId, newValues) {
-            var ids = _.filter(_.keys(newValues), function (k) { return k.indexOf("" + akm.field + paneId) === 0; });
-            var fields = _.pick(newValues, ids);
-            var parms = _.mapKeys(fields, function (v, k) { return k.replace(akm.field, akm.parm); });
-            newValues = _.omit(newValues, ids);
-            newValues = _.merge(newValues, parms);
-            return newValues;
-        }
-        function copyFieldsIntoValues(fromPaneId, toPaneId, newValues) {
-            var search = getSearch();
-            var ids = _.filter(_.keys(search), function (k) { return k.indexOf("" + akm.field + fromPaneId) === 0; });
-            var fromPaneFields = _.pick(search, ids);
-            var toPaneFields = _.mapKeys(fromPaneFields, function (v, k) { return k.replace("" + akm.field + fromPaneId, "" + akm.field + toPaneId); });
-            newValues = _.merge(newValues, toPaneFields);
-            return newValues;
-        }
         function handleTransition(paneId, search, transition) {
             var replace = true;
             switch (transition) {
@@ -273,12 +235,10 @@ var NakedObjects;
                     search = clearPane(search, paneId);
                     break;
                 case (Transition.FromDialog):
-                    search = clearFieldKeys(search, paneId);
                     replace = true;
                     break;
                 case (Transition.ToDialog):
                 case (Transition.FromDialogKeepHistory):
-                    search = clearFieldKeys(search, paneId);
                     replace = false;
                     break;
                 case (Transition.ToObjectView):
@@ -373,7 +333,7 @@ var NakedObjects;
             var newValues = _.zipObject([key], [oid]);
             executeTransition(newValues, paneId, Transition.ToObjectView, function () { return true; });
         };
-        helper.setList = function (actionMember, fromPaneId, toPaneId) {
+        helper.setList = function (actionMember, parms, fromPaneId, toPaneId) {
             if (fromPaneId === void 0) { fromPaneId = 1; }
             if (toPaneId === void 0) { toPaneId = 1; }
             var newValues = {};
@@ -394,8 +354,9 @@ var NakedObjects;
             newValues[("" + akm.collection + toPaneId)] = newState;
             // This will also swap the panes of the field values if we are 
             // right clicking into the other pane.
-            newValues = copyFieldsIntoValues(fromPaneId, toPaneId, newValues);
-            newValues = setFieldsToParms(toPaneId, newValues);
+            //newValues = copyFieldsIntoValues(fromPaneId, toPaneId, newValues);
+            //newValues = setFieldsToParms(toPaneId, newValues);
+            _.forEach(parms, function (p, id) { return setId("" + akm.parm + toPaneId + "_" + id, p.toJsonString(), newValues); });
             executeTransition(newValues, toPaneId, Transition.ToList, function () { return true; });
         };
         helper.setProperty = function (propertyMember, paneId) {
@@ -441,24 +402,9 @@ var NakedObjects;
                 $location.replace();
             }
         }
-        helper.setFieldValue = function (dialogId, p, pv, paneId) {
-            if (paneId === void 0) { paneId = 1; }
-            return checkAndSetValue(paneId, function (search) { return getId("" + akm.dialog + paneId, search) === dialogId; }, function (search) { return setField(paneId, search, p, pv); });
-        };
         helper.setParameterValue = function (actionId, p, pv, paneId) {
             if (paneId === void 0) { paneId = 1; }
             return checkAndSetValue(paneId, function (search) { return getId("" + akm.action + paneId, search) === actionId; }, function (search) { return setParameter(paneId, search, p, pv); });
-        };
-        helper.setPropertyValue = function (obj, p, pv, paneId) {
-            if (paneId === void 0) { paneId = 1; }
-            return checkAndSetValue(paneId, function (search) {
-                // only add value if matching object (to catch case when swapping panes) 
-                // and only add to edit url
-                var oid = obj.id();
-                var currentOid = getId("" + akm.object + paneId, search);
-                var currentMode = getInteractionMode(getId("" + akm.interactionMode + paneId, search));
-                return currentOid === oid && currentMode !== NakedObjects.InteractionMode.View;
-            }, function (search) { return setProperty(paneId, search, p, pv); });
         };
         helper.setCollectionMemberState = function (collectionMemberId, state, paneId) {
             if (paneId === void 0) { paneId = 1; }
@@ -540,6 +486,8 @@ var NakedObjects;
             var segments = path.split("/");
             var paneType = segments[paneId + 1] || NakedObjects.homePath;
             var paneSearch = capturePane(paneId);
+            // clear any dialogs so we don't return  to a dialog
+            paneSearch = _.omit(paneSearch, "" + akm.dialog + paneId);
             return { paneType: paneType, search: paneSearch };
         };
         helper.getListCacheIndex = function (paneId, newPage, newPageSize, format) {
@@ -633,6 +581,14 @@ var NakedObjects;
             var path = $location.path();
             var segments = path.split("/");
             return segments[paneId + 1] === NakedObjects.homePath; // e.g. segments 0=~/1=cicero/2=home/3=home
+        };
+        helper.triggerPageReloadByFlippingReloadFlagInUrl = function () {
+            var search = getSearch();
+            var currentFlag = search[akm.reload];
+            var newFlag = currentFlag ? 0 : 1;
+            search[akm.reload] = newFlag;
+            setNewSearch(search);
+            $location.replace();
         };
     });
 })(NakedObjects || (NakedObjects = {}));

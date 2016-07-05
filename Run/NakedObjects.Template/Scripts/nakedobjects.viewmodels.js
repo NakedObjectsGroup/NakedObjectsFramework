@@ -21,7 +21,7 @@ var NakedObjects;
         if (onWhat.clientValid()) {
             return "";
         }
-        var missingMandatoryFields = _.filter(fields, function (p) { return !p.clientValid && !p.message; });
+        var missingMandatoryFields = _.filter(fields, function (p) { return !p.clientValid && !p.getMessage(); });
         if (missingMandatoryFields.length > 0) {
             return _.reduce(missingMandatoryFields, function (s, t) { return s + t.title + "; "; }, NakedObjects.mandatoryFieldsPrefix);
         }
@@ -59,9 +59,9 @@ var NakedObjects;
         return menu || "";
     }
     function removeDuplicateMenus(menus) {
-        return _.uniqWith(menus, function (a, b) {
-            if (a.name && b.name) {
-                return a.name === b.name;
+        return _.uniqWith(menus, function (m1, m2) {
+            if (m1.name && m2.name) {
+                return m1.name === m2.name;
             }
             return false;
         });
@@ -69,12 +69,10 @@ var NakedObjects;
     function createSubmenuItems(avms, menu, level) {
         // if not root menu aggregate all actions with same name
         if (menu.name) {
-            var actions = _.filter(avms, function (a) { return getMenuForLevel(a.menuPath, level) === menu.name &&
-                !getMenuForLevel(a.menuPath, level + 1); });
+            var actions = _.filter(avms, function (a) { return getMenuForLevel(a.menuPath, level) === menu.name && !getMenuForLevel(a.menuPath, level + 1); });
             menu.actions = actions;
             //then collate submenus 
-            var submenuActions_1 = _.filter(avms, function (a) { return getMenuForLevel(a.menuPath, level) === menu.name &&
-                getMenuForLevel(a.menuPath, level + 1); });
+            var submenuActions_1 = _.filter(avms, function (a) { return getMenuForLevel(a.menuPath, level) === menu.name && getMenuForLevel(a.menuPath, level + 1); });
             var menus = _
                 .chain(submenuActions_1)
                 .map(function (a) { return new MenuItemViewModel(getMenuForLevel(a.menuPath, level + 1), null, null); })
@@ -133,21 +131,27 @@ var NakedObjects;
             choiceViewModel.name = name || value.toString();
             choiceViewModel.search = searchTerm || choiceViewModel.name;
             choiceViewModel.isEnum = !value.isReference() && (choiceViewModel.name !== choiceViewModel.getValue().toValueString());
-            choiceViewModel.isReference = value.isReference();
             return choiceViewModel;
         };
         ChoiceViewModel.prototype.getValue = function () {
             return this.wrapped;
         };
         ChoiceViewModel.prototype.equals = function (other) {
-            return this.id === other.id &&
+            return other instanceof ChoiceViewModel &&
+                this.id === other.id &&
                 this.name === other.name &&
                 this.wrapped.toValueString() === other.wrapped.toValueString();
         };
-        ChoiceViewModel.prototype.match = function (other) {
-            var thisValue = this.isEnum ? this.wrapped.toValueString().trim() : this.search.trim();
-            var otherValue = this.isEnum ? other.wrapped.toValueString().trim() : other.search.trim();
-            return thisValue === otherValue;
+        ChoiceViewModel.prototype.valuesEqual = function (other) {
+            if (other instanceof ChoiceViewModel) {
+                var thisValue = this.isEnum ? this.wrapped.toValueString().trim() : this.search.trim();
+                var otherValue = this.isEnum ? other.wrapped.toValueString().trim() : other.search.trim();
+                return thisValue === otherValue;
+            }
+            return false;
+        };
+        ChoiceViewModel.prototype.toString = function () {
+            return this.name;
         };
         return ChoiceViewModel;
     }());
@@ -178,53 +182,80 @@ var NakedObjects;
             _super.apply(this, arguments);
         }
         return RecentItemViewModel;
-    }(ItemViewModel));
+    }(LinkViewModel));
     NakedObjects.RecentItemViewModel = RecentItemViewModel;
     var MessageViewModel = (function () {
         function MessageViewModel() {
+            var _this = this;
             this.previousMessage = "";
             this.message = "";
+            this.clearMessage = function () {
+                if (_this.message === _this.previousMessage) {
+                    _this.resetMessage();
+                }
+                else {
+                    _this.previousMessage = _this.message;
+                }
+            };
+            this.resetMessage = function () { return _this.message = _this.previousMessage = ""; };
+            this.setMessage = function (msg) { return _this.message = msg; };
+            this.getMessage = function () { return _this.message; };
         }
-        MessageViewModel.prototype.clearMessage = function () {
-            if (this.message === this.previousMessage) {
-                this.resetMessage();
-            }
-            else {
-                this.previousMessage = this.message;
-            }
-        };
-        MessageViewModel.prototype.resetMessage = function () {
-            this.message = this.previousMessage = "";
-        };
-        MessageViewModel.prototype.setMessage = function (msg) {
-            this.message = msg;
-        };
         return MessageViewModel;
     }());
-    NakedObjects.MessageViewModel = MessageViewModel;
     var ValueViewModel = (function (_super) {
         __extends(ValueViewModel, _super);
-        function ValueViewModel() {
-            _super.apply(this, arguments);
-            this.isDirty = function () { return false; };
+        function ValueViewModel(ext, color) {
+            _super.call(this);
+            this.clientValid = true;
+            this.reference = "";
+            this.choices = [];
+            this.optional = ext.optional();
+            this.description = ext.description();
+            this.presentationHint = ext.presentationHint();
+            this.mask = ext.mask();
+            this.title = ext.friendlyName();
+            this.returnType = ext.returnType();
+            this.format = ext.format();
+            this.multipleLines = ext.multipleLines() || 1;
+            this.password = ext.dataType() === "password";
+            this.updateColor = _.partial(this.setColor, color);
         }
-        ValueViewModel.prototype.prompt = function (searchTerm) {
-            return null;
-        };
-        ValueViewModel.prototype.conditionalChoices = function (args) {
-            return null;
-        };
+        Object.defineProperty(ValueViewModel.prototype, "choice", {
+            get: function () {
+                return this.currentChoice;
+            },
+            set: function (newChoice) {
+                // type guard becauase angular pushes string value here until directive finds 
+                // choice
+                if (newChoice instanceof ChoiceViewModel || newChoice == null) {
+                    this.currentChoice = newChoice;
+                    this.updateColor();
+                }
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(ValueViewModel.prototype, "value", {
+            get: function () {
+                return this.currentRawValue;
+            },
+            set: function (newValue) {
+                this.currentRawValue = newValue;
+                this.updateColor();
+            },
+            enumerable: true,
+            configurable: true
+        });
         ValueViewModel.prototype.setNewValue = function (newValue) {
+            this.choice = newValue.choice;
             this.value = newValue.value;
             this.reference = newValue.reference;
-            this.choice = newValue.choice;
-            this.color = newValue.color;
         };
         ValueViewModel.prototype.clear = function () {
+            this.choice = null;
             this.value = null;
             this.reference = "";
-            this.choice = null;
-            this.color = "";
         };
         ValueViewModel.prototype.setColor = function (color) {
             var _this = this;
@@ -255,11 +286,12 @@ var NakedObjects;
                     var selRefs = _.map(selections, function (cvm) { return ({ href: cvm.getValue().href(), title: cvm.name }); }); // reference 
                     return new Value(selRefs);
                 }
+                var choiceValue = this.choice ? this.choice.getValue() : null;
                 if (this.type === "scalar") {
-                    return new Value(this.choice && this.choice.getValue().scalar() != null ? this.choice.getValue().scalar() : "");
+                    return new Value(choiceValue && choiceValue.scalar() != null ? choiceValue.scalar() : "");
                 }
                 // reference 
-                return new Value(this.choice && this.choice.isReference ? { href: this.choice.getValue().href(), title: this.choice.name } : null);
+                return new Value(choiceValue && choiceValue.isReference() ? { href: choiceValue.href(), title: this.choice.name } : null);
             }
             if (this.type === "scalar") {
                 if (this.value == null) {
@@ -284,11 +316,19 @@ var NakedObjects;
         };
         return ValueViewModel;
     }(MessageViewModel));
-    NakedObjects.ValueViewModel = ValueViewModel;
     var ParameterViewModel = (function (_super) {
         __extends(ParameterViewModel, _super);
-        function ParameterViewModel() {
-            _super.apply(this, arguments);
+        function ParameterViewModel(parmRep, paneId, color) {
+            _super.call(this, parmRep.extensions(), color);
+            this.parameterRep = parmRep;
+            this.onPaneId = paneId;
+            this.type = parmRep.isScalar() ? "scalar" : "ref";
+            this.dflt = parmRep.default().toString();
+            this.id = parmRep.id();
+            this.argId = "" + this.id.toLowerCase();
+            this.paneArgId = "" + this.argId + this.onPaneId;
+            this.isCollectionContributed = parmRep.isCollectionContributed();
+            this.entryType = parmRep.entryType();
         }
         return ParameterViewModel;
     }(ValueViewModel));
@@ -296,7 +336,6 @@ var NakedObjects;
     var ActionViewModel = (function () {
         function ActionViewModel() {
         }
-        ActionViewModel.prototype.disabled = function () { return false; };
         return ActionViewModel;
     }());
     NakedObjects.ActionViewModel = ActionViewModel;
@@ -322,17 +361,16 @@ var NakedObjects;
             this.error = error;
             this.$rootScope = $rootScope;
             this.actionMember = function () { return _this.actionViewModel.actionRep; };
+            this.execute = function (right) {
+                var pps = _this.parameters;
+                _this.context.updateValues();
+                return _this.actionViewModel.execute(pps, right);
+            };
             this.clientValid = function () { return _.every(_this.parameters, function (p) { return p.clientValid; }); };
             this.tooltip = function () { return tooltip(_this, _this.parameters); };
             this.setParms = function () { return _.forEach(_this.parameters, function (p) { return _this.context.setFieldValue(_this.actionMember().actionId(), p.parameterRep.id(), p.getValue(), _this.onPaneId); }); };
-            this.executeInvoke = function (right) {
-                var pps = _this.parameters;
-                _.forEach(pps, function (p) { return _this.urlManager.setFieldValue(_this.actionMember().actionId(), p.parameterRep, p.getValue(), _this.onPaneId); });
-                _this.context.updateParms();
-                return _this.actionViewModel.executeInvoke(pps, right);
-            };
             this.doInvoke = function (right) {
-                return _this.executeInvoke(right).
+                return _this.execute(right).
                     then(function (actionResult) {
                     if (actionResult.shouldExpectResult()) {
                         _this.setMessage(actionResult.warningsOrMessages() || NakedObjects.noResultMessage);
@@ -381,7 +419,6 @@ var NakedObjects;
             this.isQueryOnly = actionViewModel.invokableActionRep.invokeLink().method() === "GET";
             this.resetMessage();
             this.id = actionViewModel.actionRep.actionId();
-            return this;
         };
         DialogViewModel.prototype.refresh = function () {
             var fields = this.context.getCurrentDialogValues(this.actionMember().actionId(), this.onPaneId);
@@ -392,10 +429,14 @@ var NakedObjects;
     NakedObjects.DialogViewModel = DialogViewModel;
     var PropertyViewModel = (function (_super) {
         __extends(PropertyViewModel, _super);
-        function PropertyViewModel() {
-            _super.apply(this, arguments);
+        function PropertyViewModel(propertyRep, color) {
+            _super.call(this, propertyRep.extensions(), color);
+            this.draggableType = propertyRep.extensions().returnType();
+            this.propertyRep = propertyRep;
+            this.entryType = propertyRep.entryType();
+            this.isEditable = !propertyRep.disabledReason();
+            this.entryType = propertyRep.entryType();
         }
-        PropertyViewModel.prototype.doClick = function (right) { };
         return PropertyViewModel;
     }(ValueViewModel));
     NakedObjects.PropertyViewModel = PropertyViewModel;
@@ -417,14 +458,6 @@ var NakedObjects;
             this.focusManager = focusManager;
             this.error = error;
             this.$q = $q;
-            this.hasTableData = function () {
-                var valueLinks = _this.listRep.value();
-                return valueLinks && _.some(valueLinks, function (i) { return i.members(); });
-            };
-            this.toggleActionMenu = function () {
-                _this.focusManager.focusOverrideOff();
-                _this.urlManager.toggleObjectMenu(_this.onPaneId);
-            };
             this.recreate = function (page, pageSize) {
                 return _this.routeData.objectId ?
                     _this.context.getListFromObject(_this.routeData.paneId, _this.routeData, page, pageSize) :
@@ -443,29 +476,38 @@ var NakedObjects;
                 });
             };
             this.setPage = function (newPage, newState) {
+                _this.context.updateValues();
                 _this.focusManager.focusOverrideOff();
                 _this.pageOrRecreate(newPage, _this.pageSize, newState);
             };
-            this.pageNext = function () { return _this.setPage(_this.page < _this.numPages ? _this.page + 1 : _this.page, _this.state); };
-            this.pagePrevious = function () { return _this.setPage(_this.page > 1 ? _this.page - 1 : _this.page, _this.state); };
-            this.pageFirst = function () { return _this.setPage(1, _this.state); };
-            this.pageLast = function () { return _this.setPage(_this.numPages, _this.state); };
             this.earlierDisabled = function () { return _this.page === 1 || _this.numPages === 1; };
             this.laterDisabled = function () { return _this.page === _this.numPages || _this.numPages === 1; };
             this.pageFirstDisabled = this.earlierDisabled;
             this.pageLastDisabled = this.laterDisabled;
             this.pageNextDisabled = this.laterDisabled;
             this.pagePreviousDisabled = this.earlierDisabled;
+            this.hasTableData = function () {
+                var valueLinks = _this.listRep.value();
+                return valueLinks && _.some(valueLinks, function (i) { return i.members(); });
+            };
+            this.toggleActionMenu = function () {
+                _this.focusManager.focusOverrideOff();
+                _this.urlManager.toggleObjectMenu(_this.onPaneId);
+            };
+            this.pageNext = function () { return _this.setPage(_this.page < _this.numPages ? _this.page + 1 : _this.page, _this.state); };
+            this.pagePrevious = function () { return _this.setPage(_this.page > 1 ? _this.page - 1 : _this.page, _this.state); };
+            this.pageFirst = function () { return _this.setPage(1, _this.state); };
+            this.pageLast = function () { return _this.setPage(_this.numPages, _this.state); };
             this.doSummary = function () {
-                _this.context.updateParms();
+                _this.context.updateValues();
                 _this.urlManager.setListState(NakedObjects.CollectionViewState.Summary, _this.onPaneId);
             };
             this.doList = function () {
-                _this.context.updateParms();
+                _this.context.updateValues();
                 _this.urlManager.setListState(NakedObjects.CollectionViewState.List, _this.onPaneId);
             };
             this.doTable = function () {
-                _this.context.updateParms();
+                _this.context.updateValues();
                 _this.urlManager.setListState(NakedObjects.CollectionViewState.Table, _this.onPaneId);
             };
             this.reload = function () {
@@ -474,8 +516,9 @@ var NakedObjects;
             };
             this.selectAll = function () { return _.each(_this.items, function (item, i) {
                 item.selected = _this.allSelected;
-                item.checkboxChange(i);
+                item.selectionChange(i);
             }); };
+            this.disableActions = function () { return !_this.actions || _this.actions.length === 0 || !_this.items || _this.items.length === 0; };
             this.actionsTooltip = function () { return actionsTooltip(_this, !!_this.routeData.actionsOpen); };
             this.actionMember = function (id) {
                 var actionViewModel = _.find(_this.actions, function (a) { return a.actionRep.actionId() === id; });
@@ -496,30 +539,10 @@ var NakedObjects;
                 this.description = function () { return NakedObjects.noItemsFound; };
             }
         };
-        ListViewModel.prototype.refresh = function (routeData) {
-            var _this = this;
-            this.routeData = routeData;
-            if (this.state !== routeData.state) {
-                this.state = routeData.state;
-                if (this.state === NakedObjects.CollectionViewState.Table && !this.hasTableData()) {
-                    this.recreate(this.page, this.pageSize).
-                        then(function (list) {
-                        _this.listRep = list;
-                        _this.updateItems(list.value());
-                    }).
-                        catch(function (reject) {
-                        _this.error.handleError(reject);
-                    });
-                }
-                else {
-                    this.updateItems(this.listRep.value());
-                }
-            }
-        };
         ListViewModel.prototype.collectionContributedActionDecorator = function (actionViewModel) {
             var _this = this;
-            var wrappedInvoke = actionViewModel.executeInvoke;
-            actionViewModel.executeInvoke = function (pps, right) {
+            var wrappedInvoke = actionViewModel.execute;
+            actionViewModel.execute = function (pps, right) {
                 var selected = _.filter(_this.items, function (i) { return i.selected; });
                 if (selected.length === 0) {
                     var em = new ErrorMap({}, 0, NakedObjects.noItemsSelected);
@@ -550,12 +573,12 @@ var NakedObjects;
             showDialog().
                 then(function (show) { return actionViewModel.doInvoke = show ?
                 function (right) {
-                    _this.context.clearDialog(_this.onPaneId);
+                    _this.context.clearDialogValues(_this.onPaneId);
                     _this.focusManager.focusOverrideOff();
                     _this.urlManager.setDialog(actionViewModel.actionRep.actionId(), _this.onPaneId);
                 } :
                 function (right) {
-                    actionViewModel.executeInvoke([], right).
+                    actionViewModel.execute([], right).
                         then(function (result) { return _this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || NakedObjects.noResultMessage : ""); }).
                         catch(function (reject) {
                         var display = function (em) { return _this.setMessage(em.invalidReason() || em.warningMessage); };
@@ -566,6 +589,26 @@ var NakedObjects;
         ListViewModel.prototype.decorate = function (actionViewModel) {
             this.collectionContributedActionDecorator(actionViewModel);
             this.collectionContributedInvokeDecorator(actionViewModel);
+        };
+        ListViewModel.prototype.refresh = function (routeData) {
+            var _this = this;
+            this.routeData = routeData;
+            if (this.state !== routeData.state) {
+                this.state = routeData.state;
+                if (this.state === NakedObjects.CollectionViewState.Table && !this.hasTableData()) {
+                    this.recreate(this.page, this.pageSize).
+                        then(function (list) {
+                        _this.listRep = list;
+                        _this.updateItems(list.value());
+                    }).
+                        catch(function (reject) {
+                        _this.error.handleError(reject);
+                    });
+                }
+                else {
+                    this.updateItems(this.listRep.value());
+                }
+            }
         };
         ListViewModel.prototype.reset = function (list, routeData) {
             var _this = this;
@@ -583,31 +626,18 @@ var NakedObjects;
             this.actions = _.map(actions, function (action) { return _this.viewModelFactory.actionViewModel(action, _this, routeData); });
             this.menuItems = createMenuItems(this.actions);
             _.forEach(this.actions, function (a) { return _this.decorate(a); });
-            return this;
-        };
-        ListViewModel.prototype.description = function () { return null; };
-        ListViewModel.prototype.disableActions = function () {
-            return !this.actions || this.actions.length === 0 || !this.items || this.items.length === 0;
         };
         return ListViewModel;
     }(MessageViewModel));
     NakedObjects.ListViewModel = ListViewModel;
     var CollectionViewModel = (function () {
         function CollectionViewModel() {
+            var _this = this;
+            this.description = function () { return _this.details.toString(); };
         }
-        CollectionViewModel.prototype.doSummary = function () { };
-        CollectionViewModel.prototype.doTable = function () { };
-        CollectionViewModel.prototype.doList = function () { };
-        CollectionViewModel.prototype.description = function () { return this.details.toString(); };
         return CollectionViewModel;
     }());
     NakedObjects.CollectionViewModel = CollectionViewModel;
-    var ServicesViewModel = (function () {
-        function ServicesViewModel() {
-        }
-        return ServicesViewModel;
-    }());
-    NakedObjects.ServicesViewModel = ServicesViewModel;
     var MenusViewModel = (function () {
         function MenusViewModel(viewModelFactory) {
             this.viewModelFactory = viewModelFactory;
@@ -616,22 +646,12 @@ var NakedObjects;
             var _this = this;
             this.menusRep = menusRep;
             this.onPaneId = routeData.paneId;
-            this.title = "Menus";
-            this.color = "bg-color-darkBlue";
             this.items = _.map(this.menusRep.value(), function (link) { return _this.viewModelFactory.linkViewModel(link, _this.onPaneId); });
             return this;
         };
         return MenusViewModel;
     }());
     NakedObjects.MenusViewModel = MenusViewModel;
-    var ServiceViewModel = (function (_super) {
-        __extends(ServiceViewModel, _super);
-        function ServiceViewModel() {
-            _super.apply(this, arguments);
-        }
-        return ServiceViewModel;
-    }(MessageViewModel));
-    NakedObjects.ServiceViewModel = ServiceViewModel;
     var MenuViewModel = (function (_super) {
         __extends(MenuViewModel, _super);
         function MenuViewModel() {
@@ -652,6 +672,24 @@ var NakedObjects;
         return TableRowViewModel;
     }());
     NakedObjects.TableRowViewModel = TableRowViewModel;
+    var ApplicationPropertiesViewModel = (function () {
+        function ApplicationPropertiesViewModel() {
+        }
+        return ApplicationPropertiesViewModel;
+    }());
+    NakedObjects.ApplicationPropertiesViewModel = ApplicationPropertiesViewModel;
+    var ToolBarViewModel = (function () {
+        function ToolBarViewModel() {
+        }
+        return ToolBarViewModel;
+    }());
+    NakedObjects.ToolBarViewModel = ToolBarViewModel;
+    var RecentItemsViewModel = (function () {
+        function RecentItemsViewModel() {
+        }
+        return RecentItemsViewModel;
+    }());
+    NakedObjects.RecentItemsViewModel = RecentItemsViewModel;
     var DomainObjectViewModel = (function (_super) {
         __extends(DomainObjectViewModel, _super);
         function DomainObjectViewModel(colorService, contextService, viewModelFactory, urlManager, focusManager, error, $q) {
@@ -664,44 +702,45 @@ var NakedObjects;
             this.focusManager = focusManager;
             this.error = error;
             this.$q = $q;
-            this.propertyMap = function () {
-                var pps = _.filter(_this.properties, function (property) { return property.isEditable; });
-                return _.zipObject(_.map(pps, function (p) { return p.id; }), _.map(pps, function (p) { return p.getValue(); }));
-            };
-            this.clientValid = function () { return _.every(_this.properties, function (p) { return p.clientValid; }); };
-            this.tooltip = function () { return tooltip(_this, _this.properties); };
-            this.actionsTooltip = function () { return actionsTooltip(_this, !!_this.routeData.actionsOpen); };
-            this.toggleActionMenu = function () {
-                _this.focusManager.focusOverrideOff();
-                _this.urlManager.toggleObjectMenu(_this.onPaneId);
-            };
             this.editProperties = function () { return _.filter(_this.properties, function (p) { return p.isEditable && p.isDirty(); }); };
-            this.setProperties = function () {
-                return _.forEach(_this.editProperties(), function (p) { return _this.urlManager.setPropertyValue(_this.domainObject, p.propertyRep, p.getValue(), _this.onPaneId); });
-            };
-            this.cancelHandler = function () { return _this.domainObject.extensions().interactionMode() === "form" || _this.domainObject.extensions().interactionMode() === "transient" ?
+            this.isFormOrTransient = function () { return _this.domainObject.extensions().interactionMode() === "form" || _this.domainObject.extensions().interactionMode() === "transient"; };
+            this.cancelHandler = function () { return _this.isFormOrTransient() ?
                 function () { return _this.urlManager.popUrlState(_this.onPaneId); } :
                 function () { return _this.urlManager.setInteractionMode(NakedObjects.InteractionMode.View, _this.onPaneId); }; };
-            this.editComplete = function () {
-                _this.setProperties();
-            };
-            this.doEditCancel = function () {
-                _this.editComplete();
-                _this.cancelHandler()();
-            };
-            this.clearCachedFiles = function () {
-                _.forEach(_this.properties, function (p) { return p.attachment ? p.attachment.clearCachedFile() : null; });
-            };
             this.saveHandler = function () { return _this.domainObject.isTransient() ? _this.contextService.saveObject : _this.contextService.updateObject; };
             this.validateHandler = function () { return _this.domainObject.isTransient() ? _this.contextService.validateSaveObject : _this.contextService.validateUpdateObject; };
             this.handleWrappedError = function (reject) {
                 var display = function (em) { return _this.viewModelFactory.handleErrorResponse(em, _this, _this.properties); };
                 _this.error.handleErrorAndDisplayMessages(reject, display);
             };
+            this.propertyMap = function () {
+                var pps = _.filter(_this.properties, function (property) { return property.isEditable; });
+                return _.zipObject(_.map(pps, function (p) { return p.id; }), _.map(pps, function (p) { return p.getValue(); }));
+            };
+            this.editComplete = function () {
+                _this.contextService.updateValues();
+                _this.contextService.clearObjectUpdater(_this.onPaneId);
+            };
+            this.clientValid = function () { return _.every(_this.properties, function (p) { return p.clientValid; }); };
+            this.tooltip = function () { return tooltip(_this, _this.properties); };
+            this.actionsTooltip = function () { return actionsTooltip(_this, !!_this.routeData.actionsOpen); };
+            this.toggleActionMenu = function () {
+                _this.focusManager.focusOverrideOff();
+                _this.contextService.updateValues();
+                _this.urlManager.toggleObjectMenu(_this.onPaneId);
+            };
+            this.setProperties = function () { return _.forEach(_this.editProperties(), function (p) { return _this.contextService.setPropertyValue(_this.domainObject, p.propertyRep, p.getValue(), _this.onPaneId); }); };
+            this.doEditCancel = function () {
+                _this.editComplete();
+                _this.contextService.clearObjectValues(_this.onPaneId);
+                _this.cancelHandler()();
+            };
+            this.clearCachedFiles = function () { return _.forEach(_this.properties, function (p) { return p.attachment ? p.attachment.clearCachedFile() : null; }); };
             this.doSave = function (viewObject) {
                 _this.clearCachedFiles();
-                _this.setProperties();
+                _this.contextService.updateValues();
                 var propMap = _this.propertyMap();
+                _this.contextService.clearObjectUpdater(_this.onPaneId);
                 _this.saveHandler()(_this.domainObject, propMap, _this.onPaneId, viewObject).
                     then(function (obj) { return _this.reset(obj, _this.urlManager.getRouteData().pane()[_this.onPaneId]); }).
                     catch(function (reject) { return _this.handleWrappedError(reject); });
@@ -719,7 +758,9 @@ var NakedObjects;
                 });
             };
             this.doEdit = function () {
+                _this.contextService.updateValues(); // for other panes
                 _this.clearCachedFiles();
+                _this.contextService.clearObjectValues(_this.onPaneId);
                 _this.contextService.getObjectForEdit(_this.onPaneId, _this.domainObject).
                     then(function (updatedObject) {
                     _this.reset(updatedObject, _this.urlManager.getRouteData().pane()[_this.onPaneId]);
@@ -729,22 +770,20 @@ var NakedObjects;
                     catch(function (reject) { return _this.handleWrappedError(reject); });
             };
             this.doReload = function () {
+                _this.contextService.updateValues();
                 _this.clearCachedFiles();
                 _this.contextService.reloadObject(_this.onPaneId, _this.domainObject)
-                    .then(function (updatedObject) {
-                    _this.reset(updatedObject, _this.urlManager.getRouteData().pane()[_this.onPaneId]);
-                })
+                    .then(function (updatedObject) { return _this.reset(updatedObject, _this.urlManager.getRouteData().pane()[_this.onPaneId]); })
                     .catch(function (reject) { return _this.handleWrappedError(reject); });
             };
-            this.hideEdit = function () { return _this.domainObject.extensions().interactionMode() === "form" ||
-                _this.domainObject.extensions().interactionMode() === "transient" ||
-                _.every(_this.properties, function (p) { return !p.isEditable; }); };
+            this.hideEdit = function () { return _this.isFormOrTransient() || _.every(_this.properties, function (p) { return !p.isEditable; }); };
+            this.disableActions = function () { return !_this.actions || _this.actions.length === 0; };
             this.canDropOn = function (targetType) { return _this.contextService.isSubTypeOf(_this.domainType, targetType); };
         }
         DomainObjectViewModel.prototype.wrapAction = function (a) {
             var _this = this;
-            var wrappedInvoke = a.executeInvoke;
-            a.executeInvoke = function (pps, right) {
+            var wrappedInvoke = a.execute;
+            a.execute = function (pps, right) {
                 _this.setProperties();
                 var pairs = _.map(_this.editProperties(), function (p) { return [p.id, p.getValue()]; });
                 var prps = _.fromPairs(pairs);
@@ -765,7 +804,7 @@ var NakedObjects;
             this.routeData = routeData;
             var iMode = this.domainObject.extensions().interactionMode();
             this.isInEdit = routeData.interactionMode !== NakedObjects.InteractionMode.View || iMode === "form" || iMode === "transient";
-            this.props = routeData.interactionMode !== NakedObjects.InteractionMode.View ? routeData.props : {};
+            this.props = routeData.interactionMode !== NakedObjects.InteractionMode.View ? this.contextService.getCurrentObjectValues(this.domainObject.id(), routeData.paneId) : {};
             _.forEach(this.properties, function (p) { return p.refresh(_this.props[p.id]); });
             _.forEach(this.collections, function (c) { return c.refresh(_this.routeData, false); });
             this.unsaved = routeData.interactionMode === NakedObjects.InteractionMode.Transient;
@@ -776,7 +815,6 @@ var NakedObjects;
             }
             // leave message from previous refresh 
             this.clearMessage();
-            return this;
         };
         DomainObjectViewModel.prototype.reset = function (obj, routeData) {
             var _this = this;
@@ -785,7 +823,7 @@ var NakedObjects;
             this.routeData = routeData;
             var iMode = this.domainObject.extensions().interactionMode();
             this.isInEdit = routeData.interactionMode !== NakedObjects.InteractionMode.View || iMode === "form" || iMode === "transient";
-            this.props = routeData.interactionMode !== NakedObjects.InteractionMode.View ? routeData.props : {};
+            this.props = routeData.interactionMode !== NakedObjects.InteractionMode.View ? this.contextService.getCurrentObjectValues(this.domainObject.id(), routeData.paneId) : {};
             var actions = _.values(this.domainObject.actionMembers());
             this.actions = _.map(actions, function (action) { return _this.viewModelFactory.actionViewModel(action, _this, _this.routeData); });
             this.menuItems = createMenuItems(this.actions);
@@ -812,9 +850,7 @@ var NakedObjects;
             this.value = sav ? sav.toString() : "";
             this.reference = sav ? sav.toValueString() : "";
             this.choice = sav ? ChoiceViewModel.create(sav, "") : null;
-            this.colorService.toColorNumberFromType(this.domainObject.domainType()).then(function (c) {
-                _this.color = "" + NakedObjects.objectColor + c;
-            });
+            this.colorService.toColorNumberFromType(this.domainObject.domainType()).then(function (c) { return _this.color = "" + NakedObjects.objectColor + c; });
             this.resetMessage();
             if (routeData.interactionMode === NakedObjects.InteractionMode.Form) {
                 _.forEach(this.actions, function (a) { return _this.wrapAction(a); });
@@ -827,6 +863,8 @@ var NakedObjects;
                 _this.routeData = _this.urlManager.getRouteData().pane()[_this.onPaneId];
                 _this.contextService.getObject(_this.onPaneId, _this.domainObject.getOid(), _this.routeData.interactionMode)
                     .then(function (obj) {
+                    // cleared cached values so all values are from reloaded representation 
+                    _this.contextService.clearObjectValues(_this.onPaneId);
                     _this.contextService.reloadObject(_this.onPaneId, obj)
                         .then(function (reloadedObj) {
                         if (_this.routeData.dialogId) {
@@ -838,40 +876,20 @@ var NakedObjects;
                 });
             };
         };
-        DomainObjectViewModel.prototype.disableActions = function () {
-            return !this.actions || this.actions.length === 0;
-        };
         return DomainObjectViewModel;
     }(MessageViewModel));
     NakedObjects.DomainObjectViewModel = DomainObjectViewModel;
-    var ApplicationPropertiesViewModel = (function () {
-        function ApplicationPropertiesViewModel() {
-        }
-        return ApplicationPropertiesViewModel;
-    }());
-    NakedObjects.ApplicationPropertiesViewModel = ApplicationPropertiesViewModel;
-    var ToolBarViewModel = (function () {
-        function ToolBarViewModel() {
-        }
-        return ToolBarViewModel;
-    }());
-    NakedObjects.ToolBarViewModel = ToolBarViewModel;
-    var RecentItemsViewModel = (function () {
-        function RecentItemsViewModel() {
-        }
-        return RecentItemsViewModel;
-    }());
-    NakedObjects.RecentItemsViewModel = RecentItemsViewModel;
     var CiceroViewModel = (function () {
         function CiceroViewModel() {
+            var _this = this;
             this.alert = ""; //Alert is appended before the output
+            this.selectPreviousInput = function () {
+                _this.input = _this.previousInput;
+            };
+            this.clearInput = function () {
+                _this.input = null;
+            };
         }
-        CiceroViewModel.prototype.selectPreviousInput = function () {
-            this.input = this.previousInput;
-        };
-        CiceroViewModel.prototype.clearInput = function () {
-            this.input = null;
-        };
         CiceroViewModel.prototype.outputMessageThenClearIt = function () {
             this.output = this.message;
             this.message = null;

@@ -77,6 +77,11 @@ var NakedObjects;
         TransientCache.prototype.clear = function () {
             this.transientCache = [, [], []];
         };
+        TransientCache.prototype.swap = function () {
+            var _a = this.transientCache, t1 = _a[1], t2 = _a[2];
+            this.transientCache[1] = t2;
+            this.transientCache[2] = t1;
+        };
         return TransientCache;
     }());
     var RecentCache = (function () {
@@ -102,45 +107,45 @@ var NakedObjects;
         };
         return RecentCache;
     }());
-    var ParameterCache = (function () {
-        function ParameterCache() {
+    var ValueCache = (function () {
+        function ValueCache() {
             this.currentValues = [, {}, {}];
-            this.currentDialogId = [, "", ""];
+            this.currentId = [, "", ""];
         }
-        ParameterCache.prototype.addValue = function (dialogId, parmId, value, paneId) {
-            if (this.currentDialogId[paneId] !== dialogId) {
-                this.currentDialogId[paneId] = dialogId;
+        ValueCache.prototype.addValue = function (id, valueId, value, paneId) {
+            if (this.currentId[paneId] !== id) {
+                this.currentId[paneId] = id;
                 this.currentValues[paneId] = {};
             }
-            this.currentValues[paneId][parmId] = value;
+            this.currentValues[paneId][valueId] = value;
         };
-        ParameterCache.prototype.getValue = function (dialogId, parmId, paneId) {
-            if (this.currentDialogId[paneId] !== dialogId) {
-                this.currentDialogId[paneId] = dialogId;
+        ValueCache.prototype.getValue = function (id, valueId, paneId) {
+            if (this.currentId[paneId] !== id) {
+                this.currentId[paneId] = id;
                 this.currentValues[paneId] = {};
             }
-            return this.currentValues[paneId][parmId];
+            return this.currentValues[paneId][valueId];
         };
-        ParameterCache.prototype.getValues = function (dialogId, paneId) {
-            if (dialogId && this.currentDialogId[paneId] !== dialogId) {
-                this.currentDialogId[paneId] = dialogId;
+        ValueCache.prototype.getValues = function (id, paneId) {
+            if (id && this.currentId[paneId] !== id) {
+                this.currentId[paneId] = id;
                 this.currentValues[paneId] = {};
             }
             return this.currentValues[paneId];
         };
-        ParameterCache.prototype.clearDialog = function (paneId) {
-            this.currentDialogId[paneId] = "";
+        ValueCache.prototype.clear = function (paneId) {
+            this.currentId[paneId] = "";
             this.currentValues[paneId] = {};
         };
-        ParameterCache.prototype.swap = function () {
-            var _a = this.currentDialogId, d1 = _a[1], d2 = _a[2];
-            this.currentDialogId[1] = d2;
-            this.currentDialogId[2] = d1;
+        ValueCache.prototype.swap = function () {
+            var _a = this.currentId, i1 = _a[1], i2 = _a[2];
+            this.currentId[1] = i2;
+            this.currentId[2] = i1;
             var _b = this.currentValues, v1 = _b[1], v2 = _b[2];
             this.currentValues[1] = v2;
             this.currentValues[2] = v1;
         };
-        return ParameterCache;
+        return ValueCache;
     }());
     NakedObjects.app.service("context", function ($q, repLoader, urlManager, focusManager, $cacheFactory, $rootScope) {
         var context = this;
@@ -155,19 +160,37 @@ var NakedObjects;
         var recentcache = new RecentCache();
         var dirtyList = new DirtyList();
         var currentLists = {};
-        var parameterCache = new ParameterCache();
+        var parameterCache = new ValueCache();
+        var objectEditCache = new ValueCache();
         var parmUpdaters = [, function () { }, function () { }];
+        var objectUpdaters = [, function () { }, function () { }];
         context.setParmUpdater = function (updater, paneId) {
             if (paneId === void 0) { paneId = 1; }
             parmUpdaters[paneId] = updater;
+        };
+        context.setObjectUpdater = function (updater, paneId) {
+            if (paneId === void 0) { paneId = 1; }
+            objectUpdaters[paneId] = updater;
         };
         context.clearParmUpdater = function (paneId) {
             if (paneId === void 0) { paneId = 1; }
             parmUpdaters[paneId] = function () { };
         };
-        context.updateParms = function () {
+        context.clearObjectUpdater = function (paneId) {
+            if (paneId === void 0) { paneId = 1; }
+            objectUpdaters[paneId] = function () { };
+        };
+        var updateParmValues = function () {
             parmUpdaters[1]();
             parmUpdaters[2]();
+        };
+        var updateObjectValues = function () {
+            objectUpdaters[1]();
+            objectUpdaters[2]();
+        };
+        context.updateValues = function () {
+            updateObjectValues();
+            updateParmValues();
         };
         context.getFile = function (object, url, mt) {
             var isDirty = context.getIsDirty(object.getOid());
@@ -336,7 +359,6 @@ var NakedObjects;
             });
         };
         context.getObject = function (paneId, oid, interactionMode) {
-            context.updateParms();
             return oid.isService ? context.getService(paneId, oid.domainType) : context.getDomainObject(paneId, oid, interactionMode);
         };
         context.getCachedList = function (paneId, page, pageSize) {
@@ -421,6 +443,8 @@ var NakedObjects;
         context.setObject = function (paneId, co) { return currentObjects[paneId] = co; };
         context.swapCurrentObjects = function () {
             parameterCache.swap();
+            objectEditCache.swap();
+            transientCache.swap();
             var p1 = currentObjects[1], p2 = currentObjects[2];
             currentObjects[1] = p2;
             currentObjects[2] = p1;
@@ -431,17 +455,17 @@ var NakedObjects;
         var previousUrl = null;
         context.getPreviousUrl = function () { return previousUrl; };
         context.setPreviousUrl = function (url) { return previousUrl = url; };
-        var doPrompt = function (field, id, searchTerm, setupPrompt, objectValues) {
+        var doPrompt = function (field, id, searchTerm, setupPrompt, objectValues, digest) {
             var map = field.getPromptMap();
             map.setMembers(objectValues);
             setupPrompt(map);
-            return repLoader.retrieve(map, PromptRepresentation).then(function (p) { return p.choices(); });
+            return repLoader.retrieve(map, PromptRepresentation, digest).then(function (p) { return p.choices(); });
         };
-        context.autoComplete = function (field, id, objectValues, searchTerm) {
-            return doPrompt(field, id, searchTerm, function (map) { return map.setSearchTerm(searchTerm); }, objectValues);
+        context.autoComplete = function (field, id, objectValues, searchTerm, digest) {
+            return doPrompt(field, id, searchTerm, function (map) { return map.setSearchTerm(searchTerm); }, objectValues, digest);
         };
-        context.conditionalChoices = function (field, id, objectValues, args) {
-            return doPrompt(field, id, null, function (map) { return map.setArguments(args); }, objectValues);
+        context.conditionalChoices = function (field, id, objectValues, args, digest) {
+            return doPrompt(field, id, null, function (map) { return map.setArguments(args); }, objectValues, digest);
         };
         var nextTransientId = 0;
         context.setResult = function (action, result, fromPaneId, toPaneId, page, pageSize) {
@@ -458,6 +482,8 @@ var NakedObjects;
                         resultObject.wrapped().domainType = domainType;
                         resultObject.wrapped().instanceId = (nextTransientId++).toString();
                         resultObject.hateoasUrl = "/" + domainType + "/" + nextTransientId;
+                        // copy the etag down into the object
+                        resultObject.etagDigest = result.etagDigest;
                         context.setObject(toPaneId, resultObject);
                         transientCache.add(toPaneId, resultObject);
                         urlManager.pushUrlState(toPaneId);
@@ -487,7 +513,8 @@ var NakedObjects;
                 }
                 else if (result.resultType() === "list") {
                     var resultList = result.result().list();
-                    urlManager.setList(action, fromPaneId, toPaneId);
+                    var parms = parameterCache.getValues(action.actionId(), fromPaneId);
+                    urlManager.setList(action, parms, fromPaneId, toPaneId);
                     var index = urlManager.getListCacheIndex(toPaneId, page, pageSize);
                     cacheList(resultList, index);
                 }
@@ -566,7 +593,7 @@ var NakedObjects;
         context.saveObject = function (object, props, paneId, viewSavedObject) {
             var persist = object.getPersistMap();
             _.each(props, function (v, k) { return persist.setMember(k, v); });
-            return repLoader.retrieve(persist, DomainObjectRepresentation).
+            return repLoader.retrieve(persist, DomainObjectRepresentation, object.etagDigest).
                 then(function (updatedObject) {
                 transientCache.remove(paneId, object.domainType(), object.id());
                 setNewObject(updatedObject, paneId, viewSavedObject);
@@ -583,7 +610,7 @@ var NakedObjects;
             var persist = object.getPersistMap();
             persist.setValidateOnly();
             _.each(props, function (v, k) { return persist.setMember(k, v); });
-            return repLoader.validate(persist);
+            return repLoader.validate(persist, object.etagDigest);
         };
         var subTypeCache = {};
         context.isSubTypeOf = function (toCheckType, againstType) {
@@ -631,9 +658,22 @@ var NakedObjects;
             if (paneId === void 0) { paneId = 1; }
             return parameterCache.getValues(dialogId, paneId);
         };
-        context.clearDialog = function (paneId) {
+        context.getCurrentObjectValues = function (objectId, paneId) {
+            if (objectId === void 0) { objectId = null; }
             if (paneId === void 0) { paneId = 1; }
-            parameterCache.clearDialog(paneId);
+            return objectEditCache.getValues(objectId, paneId);
+        };
+        context.clearDialogValues = function (paneId) {
+            if (paneId === void 0) { paneId = 1; }
+            parameterCache.clear(paneId);
+        };
+        context.clearObjectValues = function (paneId) {
+            if (paneId === void 0) { paneId = 1; }
+            objectEditCache.clear(paneId);
+        };
+        context.setPropertyValue = function (obj, p, pv, paneId) {
+            if (paneId === void 0) { paneId = 1; }
+            objectEditCache.addValue(obj.id(), p.id(), pv, paneId);
         };
     });
 })(NakedObjects || (NakedObjects = {}));

@@ -16,7 +16,6 @@ module NakedObjects {
     import IField = Models.IField;
     import ActionResultRepresentation = Models.ActionResultRepresentation;
     import Extensions = Models.Extensions;
-    import ErrorMap = Models.ErrorMap;
     import ClientErrorCode = Models.ClientErrorCode;
     import HomePageRepresentation = Models.HomePageRepresentation;
     import DomainServicesRepresentation = Models.DomainServicesRepresentation;
@@ -25,7 +24,6 @@ module NakedObjects {
     import PromptRepresentation = Models.PromptRepresentation;
     import InvokeMap = Models.InvokeMap;
     import DomainTypeActionInvokeRepresentation = Models.DomainTypeActionInvokeRepresentation;
-    import HttpStatusCode = Models.HttpStatusCode;
     import ActionRepresentation = Models.ActionRepresentation;
     import IInvokableAction = Models.IInvokableAction;
     import CollectionMember = Models.CollectionMember;
@@ -33,7 +31,7 @@ module NakedObjects {
     import ObjectIdWrapper = Models.ObjectIdWrapper;
     import InvokableActionMember = Models.InvokableActionMember;
     import UserRepresentation = Models.UserRepresentation;
-
+    import PropertyMember = Models.PropertyMember;
 
     export interface IContext {
 
@@ -65,13 +63,18 @@ module NakedObjects {
         mustReload: (oid: ObjectIdWrapper) => boolean;
 
         //The object values are only needed on a transient object / editable view model
-        autoComplete(field: IField, id: string, objectValues: () => _.Dictionary<Value>, searchTerm: string): ng.
-        IPromise<_.Dictionary<Value>>;
+        autoComplete(field: IField,
+                     id: string,
+                     objectValues: () => _.Dictionary<Value>,
+                     searchTerm: string,
+                     digest? : string): ng.IPromise<_.Dictionary<Value>>;
+
         //The object values are only needed on a transient object / editable view model
         conditionalChoices(field: IField,
-            id: string,
-            objectValues: () => _.Dictionary<Value>,
-            args: _.Dictionary<Value>): ng.IPromise<_.Dictionary<Value>>;
+                           id: string,
+                           objectValues: () => _.Dictionary<Value>,
+                           args: _.Dictionary<Value>,
+                           digest? : string): ng.IPromise<_.Dictionary<Value>>;
 
         invokeAction(action: IInvokableAction, parms: _.Dictionary<Value>, fromPaneId? : number, toPaneId?: number): ng. IPromise<ActionResultRepresentation>;
 
@@ -79,6 +82,7 @@ module NakedObjects {
             props: _.Dictionary<Value>,
             paneId: number,
             viewSavedObject: boolean): ng.IPromise<DomainObjectRepresentation>;
+
         saveObject(object: DomainObjectRepresentation,
             props: _.Dictionary<Value>,
             paneId: number,
@@ -106,8 +110,6 @@ module NakedObjects {
         clearMessages(): void;
         clearWarnings(): void;
 
-     
-
         getRecentlyViewed(): DomainObjectRepresentation[];
 
         getFile: (object: DomainObjectRepresentation, url: string, mt: string) => angular.IPromise<Blob>;
@@ -118,16 +120,22 @@ module NakedObjects {
 
         setFieldValue: (dialogId: string, pid: string, pv: Value, paneId?: number) => void;
 
-       
+        setPropertyValue: (obj: DomainObjectRepresentation, p: PropertyMember, pv: Value, paneId?: number) => void;
 
-        clearDialog: (paneId?: number) => void;
+        clearDialogValues: (paneId?: number) => void;
+        clearObjectValues: (paneId?: number) => void;
 
         getCurrentDialogValues: (dialogId?: string, paneId?: number) => _.Dictionary<Value>;
+
+        getCurrentObjectValues: (objectId?: string, paneId?: number) => _.Dictionary<Value>;
 
         setParmUpdater: (updater: () => void, paneId?: number) => void;
         clearParmUpdater : (paneId?: number) => void;
 
-        updateParms : () => void;
+        setObjectUpdater: (updater: () => void, paneId?: number) => void;
+        clearObjectUpdater: (paneId?: number) => void;
+
+        updateValues: () => void;
     }
 
     interface IContextInternal extends IContext {
@@ -211,6 +219,14 @@ module NakedObjects {
             this.transientCache = [, [], []];
         }
 
+        swap() {
+            const [, t1, t2] = this.transientCache;
+
+            this.transientCache[1] = t2;
+            this.transientCache[2] = t1;
+        }
+
+
     }
 
     class RecentCache {
@@ -241,48 +257,48 @@ module NakedObjects {
         }
     }
 
-    class ParameterCache {
+    class ValueCache {
 
         private currentValues: _.Dictionary<Value>[] = [, {}, {}];
-        private currentDialogId: string[] = [, "", ""];
+        private currentId: string[] = [, "", ""];
 
-        addValue(dialogId: string, parmId : string,  value: Value, paneId: number) {
-            if (this.currentDialogId[paneId] !== dialogId) {
-                this.currentDialogId[paneId] = dialogId;
+        addValue(id: string, valueId : string,  value: Value, paneId: number) {
+            if (this.currentId[paneId] !== id) {
+                this.currentId[paneId] = id;
                 this.currentValues[paneId] = {};
             }
 
-            this.currentValues[paneId][parmId] = value;
+            this.currentValues[paneId][valueId] = value;
         }
 
-        getValue(dialogId: string, parmId: string, paneId: number) {
-            if (this.currentDialogId[paneId] !== dialogId) {
-                this.currentDialogId[paneId] = dialogId;
+        getValue(id: string, valueId: string, paneId: number) {
+            if (this.currentId[paneId] !== id) {
+                this.currentId[paneId] = id;
                 this.currentValues[paneId] = {};
             }
 
-            return this.currentValues[paneId][parmId];
+            return this.currentValues[paneId][valueId];
         }
 
-        getValues(dialogId: string, paneId: number) {
-            if (dialogId && this.currentDialogId[paneId] !== dialogId) {
-                this.currentDialogId[paneId] = dialogId;
+        getValues(id: string, paneId: number) {
+            if (id && this.currentId[paneId] !== id) {
+                this.currentId[paneId] = id;
                 this.currentValues[paneId] = {};
             }
 
             return this.currentValues[paneId];
         }
 
-        clearDialog(paneId: number) {
-            this.currentDialogId[paneId] = "";
+        clear(paneId: number) {
+            this.currentId[paneId] = "";
             this.currentValues[paneId] = {};
         }
 
         swap() {
-            const [, d1, d2] = this.currentDialogId;
+            const [, i1, i2] = this.currentId;
 
-            this.currentDialogId[1] = d2;
-            this.currentDialogId[2] = d1;
+            this.currentId[1] = i2;
+            this.currentId[2] = i1;
 
             const [, v1, v2] = this.currentValues;
 
@@ -315,22 +331,43 @@ module NakedObjects {
         const recentcache = new RecentCache();
         const dirtyList = new DirtyList();
         const currentLists: _.Dictionary<{ list: ListRepresentation; added: number }> = {};
-        const parameterCache = new ParameterCache();
+        const parameterCache = new ValueCache();
+        const objectEditCache = new ValueCache();
 
-        const parmUpdaters =  [, () => {}, () => {}];
+        const parmUpdaters = [, () => { }, () => { }];
+        const objectUpdaters = [, () => { }, () => { }];
 
         context.setParmUpdater = (updater: () => void, paneId = 1) => {
             parmUpdaters[paneId] = updater;
+        }
+
+        context.setObjectUpdater = (updater: () => void, paneId = 1) => {
+            objectUpdaters[paneId] = updater;
         }
 
         context.clearParmUpdater = (paneId = 1) => {
             parmUpdaters[paneId] = () => {};
         }
 
-        context.updateParms = () => {
+        context.clearObjectUpdater = (paneId = 1) => {
+            objectUpdaters[paneId] = () => { };
+        }  
+
+        const updateParmValues = () => {
             parmUpdaters[1]();
             parmUpdaters[2]();
         }
+
+        const updateObjectValues = () => {
+            objectUpdaters[1]();
+            objectUpdaters[2]();
+        }
+
+        context.updateValues = () => {
+            updateObjectValues();
+            updateParmValues();
+        }
+
 
         context.getFile = (object: DomainObjectRepresentation, url: string, mt: string) => {
             const isDirty = context.getIsDirty(object.getOid());
@@ -542,7 +579,6 @@ module NakedObjects {
         };
 
         context.getObject = (paneId: number, oid: ObjectIdWrapper, interactionMode: InteractionMode) => {
-            context.updateParms();
             return oid.isService ? context.getService(paneId, oid.domainType) : context.getDomainObject(paneId, oid, interactionMode);
         };
 
@@ -642,12 +678,13 @@ module NakedObjects {
         context.setObject = (paneId: number, co: DomainObjectRepresentation) => currentObjects[paneId] = co;
 
         context.swapCurrentObjects = () => {
-            parameterCache.swap();
+            parameterCache.swap();    
+            objectEditCache.swap();
+            transientCache.swap();
             const [, p1, p2] = currentObjects;
             currentObjects[1] = p2;
             currentObjects[2] = p1;
-
-
+        
         };
 
         let currentError: ErrorWrapper = null;
@@ -662,18 +699,18 @@ module NakedObjects {
 
         context.setPreviousUrl = (url: string) => previousUrl = url;
 
-        const doPrompt = (field: IField, id: string, searchTerm: string, setupPrompt: (map: PromptMap) => void, objectValues: () => _.Dictionary<Value>) => {
+        const doPrompt = (field: IField, id: string, searchTerm: string, setupPrompt: (map: PromptMap) => void, objectValues: () => _.Dictionary<Value>, digest? : string) => {
             const map = field.getPromptMap();
             map.setMembers(objectValues);
             setupPrompt(map);
-            return repLoader.retrieve(map, PromptRepresentation).then((p: PromptRepresentation) => p.choices());
+            return repLoader.retrieve(map, PromptRepresentation, digest).then((p: PromptRepresentation) => p.choices());
         };
 
-        context.autoComplete = (field: IField, id: string, objectValues: () => _.Dictionary<Value>, searchTerm: string) =>
-            doPrompt(field, id, searchTerm, (map: PromptMap) => map.setSearchTerm(searchTerm), objectValues);
+        context.autoComplete = (field: IField, id: string, objectValues: () => _.Dictionary<Value>, searchTerm: string, digest? : string) =>
+            doPrompt(field, id, searchTerm, (map: PromptMap) => map.setSearchTerm(searchTerm), objectValues, digest);
 
-        context.conditionalChoices = (field: IField, id: string, objectValues: () => _.Dictionary<Value>, args: _.Dictionary<Value>) =>
-            doPrompt(field, id, null, (map: PromptMap) => map.setArguments(args), objectValues);
+        context.conditionalChoices = (field: IField, id: string, objectValues: () => _.Dictionary<Value>, args: _.Dictionary<Value>, digest? : string) =>
+            doPrompt(field, id, null, (map: PromptMap) => map.setArguments(args), objectValues, digest);
 
         let nextTransientId = 0;
 
@@ -697,6 +734,9 @@ module NakedObjects {
                         resultObject.wrapped().instanceId = (nextTransientId++).toString();
 
                         resultObject.hateoasUrl = `/${domainType}/${nextTransientId}`;
+
+                        // copy the etag down into the object
+                        resultObject.etagDigest = result.etagDigest;
 
                         context.setObject(toPaneId, resultObject);
                         transientCache.add(toPaneId, resultObject);
@@ -731,7 +771,8 @@ module NakedObjects {
 
                     const resultList = result.result().list();
 
-                    urlManager.setList(action, fromPaneId, toPaneId);
+                    const parms = parameterCache.getValues(action.actionId(), fromPaneId);
+                    urlManager.setList(action, parms, fromPaneId, toPaneId);
 
                     const index = urlManager.getListCacheIndex(toPaneId, page, pageSize);
                     cacheList(resultList, index);
@@ -830,7 +871,7 @@ module NakedObjects {
 
             _.each(props, (v, k) => persist.setMember(k, v));
 
-            return repLoader.retrieve(persist, DomainObjectRepresentation).
+            return repLoader.retrieve(persist, DomainObjectRepresentation, object.etagDigest).
                 then((updatedObject: DomainObjectRepresentation) => {
                     transientCache.remove(paneId, object.domainType(), object.id());
                     setNewObject(updatedObject, paneId, viewSavedObject);
@@ -850,7 +891,7 @@ module NakedObjects {
             const persist = object.getPersistMap();
             persist.setValidateOnly();
             _.each(props, (v, k) => persist.setMember(k, v));
-            return repLoader.validate(persist);
+            return repLoader.validate(persist, object.etagDigest);
         };
 
 
@@ -916,9 +957,22 @@ module NakedObjects {
             return parameterCache.getValues(dialogId, paneId);
         }
 
-        context.clearDialog = (paneId = 1) => {
-            parameterCache.clearDialog(paneId);
+        context.getCurrentObjectValues = (objectId: string = null, paneId = 1) => {
+            return objectEditCache.getValues(objectId, paneId);
         }
+
+        context.clearDialogValues = (paneId = 1) => {
+            parameterCache.clear(paneId);
+        }
+
+        context.clearObjectValues = (paneId = 1) => {
+            objectEditCache.clear(paneId);
+        }
+
+        context.setPropertyValue = (obj: DomainObjectRepresentation, p: PropertyMember, pv: Value, paneId = 1) => {
+            objectEditCache.addValue(obj.id(), p.id(), pv, paneId);
+        }
+
 
     });
 

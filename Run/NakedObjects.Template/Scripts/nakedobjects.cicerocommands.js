@@ -55,24 +55,24 @@ var NakedObjects;
         };
         Command.prototype.execute = function (argString, chained) {
             if (!this.isAvailableInCurrentContext()) {
-                this.clearInputAndSetMessage("The command: " + this.fullCommand + " is not available in the current context");
+                this.clearInputAndSetMessage(NakedObjects.commandNotAvailable(this.fullCommand));
                 return;
             }
             //TODO: This could be moved into a pre-parse method as it does not depend on context
             if (argString == null) {
                 if (this.minArguments > 0) {
-                    this.clearInputAndSetMessage("No arguments provided");
+                    this.clearInputAndSetMessage(NakedObjects.noArguments);
                     return;
                 }
             }
             else {
                 var args = argString.split(",");
                 if (args.length < this.minArguments) {
-                    this.clearInputAndSetMessage("Too few arguments provided");
+                    this.clearInputAndSetMessage(NakedObjects.tooFewArguments);
                     return;
                 }
                 else if (args.length > this.maxArguments) {
-                    this.clearInputAndSetMessage("Too many arguments provided");
+                    this.clearInputAndSetMessage(NakedObjects.tooManyArguments);
                     return;
                 }
             }
@@ -86,14 +86,14 @@ var NakedObjects;
         };
         Command.prototype.mayNotBeChained = function (rider) {
             if (rider === void 0) { rider = ""; }
-            this.clearInputAndSetMessage(this.fullCommand + " command may not be chained" + rider + ". Use Where command to see where execution stopped.");
+            this.clearInputAndSetMessage(NakedObjects.mayNotbeChainedMessage(this.fullCommand, rider));
         };
         Command.prototype.appendAsNewLineToOutput = function (text) {
             this.vm.output.concat("/n" + text);
         };
         Command.prototype.checkMatch = function (matchText) {
             if (this.fullCommand.indexOf(matchText) !== 0) {
-                throw new Error("No such command: " + matchText);
+                throw new Error(NakedObjects.noSuchCommand(matchText));
             }
         };
         //argNo starts from 0.
@@ -104,7 +104,7 @@ var NakedObjects;
             if (!argString)
                 return undefined;
             if (!optional && argString.split(",").length < argNo + 1) {
-                throw new Error("Too few arguments provided");
+                throw new Error(NakedObjects.tooFewArguments);
             }
             var args = argString.split(",");
             if (args.length < argNo + 1) {
@@ -112,7 +112,7 @@ var NakedObjects;
                     return undefined;
                 }
                 else {
-                    throw new Error("Required argument number " + (argNo + 1).toString + " is missing");
+                    throw new Error(NakedObjects.missingArgument(argNo + 1));
                 }
             }
             return toLower ? args[argNo].trim().toLowerCase() : args[argNo].trim(); // which may be "" if argString ends in a ','
@@ -125,7 +125,7 @@ var NakedObjects;
                 return null;
             var number = parseInt(arg);
             if (isNaN(number)) {
-                throw new Error("Argument number " + (argNo + 1).toString() + " must be a number");
+                throw new Error(NakedObjects.wrongTypeArgument(argNo + 1));
             }
             return number;
         };
@@ -135,7 +135,7 @@ var NakedObjects;
             }
             var number = parseInt(input);
             if (isNaN(number)) {
-                throw new Error(input + " is not a number");
+                throw new Error(NakedObjects.isNotANumber(input));
             }
             return number;
         };
@@ -156,10 +156,10 @@ var NakedObjects;
                     range.end = this.parseInt(clauses[1]);
                     break;
                 default:
-                    throw new Error("Cannot have more than one dash in argument");
+                    throw new Error(NakedObjects.tooManyDashes);
             }
             if ((range.start != null && range.start < 1) || (range.end != null && range.end < 1)) {
-                throw new Error("Item number or range values must be greater than zero");
+                throw new Error(NakedObjects.mustBeGreaterThanZero);
             }
             return range;
         };
@@ -313,7 +313,7 @@ var NakedObjects;
                 this.clearInputAndSetMessage(err.invalidReason());
                 return;
             }
-            var msg = "Please complete or correct these fields:\n";
+            var msg = NakedObjects.pleaseCompleteOrCorrect;
             _.each(err.valuesMap(), function (errorValue, fieldId) {
                 msg += _this.fieldValidationMessage(errorValue, function () { return getFriendlyName(fieldId); });
             });
@@ -325,8 +325,8 @@ var NakedObjects;
             var value = errorValue.value;
             if (reason) {
                 msg += fieldFriendlyName() + ": ";
-                if (reason === "Mandatory") {
-                    msg += "required";
+                if (reason === NakedObjects.mandatory) {
+                    msg += NakedObjects.required;
                 }
                 else {
                     msg += value + " " + reason;
@@ -349,7 +349,9 @@ var NakedObjects;
                             valuesFromRouteData_1 = rd.list(); //TODO: what if only one?
                     }
                     else if (field instanceof PropertyMember) {
-                        var rd = this.routeData().props[field.id()];
+                        var obj = field.parent;
+                        var props = this.context.getCurrentObjectValues(obj.id());
+                        var rd = props[field.id()];
                         if (rd)
                             valuesFromRouteData_1 = rd.list(); //TODO: what if only one?
                     }
@@ -412,7 +414,11 @@ var NakedObjects;
         };
         Command.prototype.setFieldValueInContextAndUrl = function (field, urlVal) {
             this.context.setFieldValue(this.routeData().dialogId, field.id(), urlVal);
-            this.urlManager.setFieldValue(this.routeData().dialogId, field, urlVal); //TODO: do this everywhere, combine into one method
+            this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
+        };
+        Command.prototype.setPropertyValueinContextAndUrl = function (obj, property, urlVal) {
+            this.context.setPropertyValue(obj, property, urlVal);
+            this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
         };
         return Command;
     }());
@@ -433,8 +439,8 @@ var NakedObjects;
             var _this = this;
             var match = this.argumentAsString(args, 0);
             var details = this.argumentAsString(args, 1, true);
-            if (details && details != "?") {
-                this.clearInputAndSetMessage("Second argument may only be a question mark -  to get action details");
+            if (details && details !== "?") {
+                this.clearInputAndSetMessage(NakedObjects.mustbeQuestionMark);
                 return;
             }
             if (this.isObject()) {
@@ -454,7 +460,7 @@ var NakedObjects;
         Action.prototype.processActions = function (match, actionsMap, details) {
             var actions = _.map(actionsMap, function (action) { return action; });
             if (actions.length === 0) {
-                this.clearInputAndSetMessage("No actions available");
+                this.clearInputAndSetMessage(NakedObjects.noActionsAvailable);
                 return;
             }
             if (match) {
@@ -462,7 +468,7 @@ var NakedObjects;
             }
             switch (actions.length) {
                 case 0:
-                    this.clearInputAndSetMessage(match + " does not match any actions");
+                    this.clearInputAndSetMessage(NakedObjects.doesNotMatchActions(match));
                     break;
                 case 1:
                     var action = actions[0];
@@ -477,27 +483,25 @@ var NakedObjects;
                     }
                     break;
                 default:
-                    var output = match ? "Matching actions:\n" : "Actions:\n";
+                    var output = match ? NakedObjects.matchingActions : NakedObjects.actionsMessage;
                     output += this.listActions(actions);
                     this.clearInputAndSetMessage(output);
             }
         };
         Action.prototype.disabledAction = function (action) {
-            var output = "Action: ";
-            output += action.extensions().friendlyName() + " is disabled. ";
-            output += action.disabledReason();
+            var output = NakedObjects.actionPrefix + " " + action.extensions().friendlyName() + " " + NakedObjects.isDisabled + " " + action.disabledReason();
             this.clearInputAndSetMessage(output);
         };
         Action.prototype.listActions = function (actions) {
             return _.reduce(actions, function (s, t) {
                 var menupath = t.extensions().menuPath() ? t.extensions().menuPath() + " - " : "";
-                var disabled = t.disabledReason() ? " (disabled: " + t.disabledReason() + ")" : "";
+                var disabled = t.disabledReason() ? " (" + NakedObjects.disabledPrefix + " " + t.disabledReason() + ")" : "";
                 return s + menupath + t.extensions().friendlyName() + disabled + "\n";
             }, "");
         };
         Action.prototype.openActionDialog = function (action) {
             var _this = this;
-            this.context.clearDialog();
+            this.context.clearDialogValues();
             this.urlManager.setDialog(action.actionId());
             this.context.getInvokableAction(action).then(function (invokable) {
                 _.forEach(invokable.parameters(), function (p) {
@@ -507,8 +511,7 @@ var NakedObjects;
             });
         };
         Action.prototype.renderActionDetails = function (action) {
-            var s = "Description for action: " + action.extensions().friendlyName();
-            s += "\n" + (action.extensions().description() || "No description provided");
+            var s = NakedObjects.descriptionPrefix + " " + action.extensions().friendlyName() + "\n" + (action.extensions().description() || NakedObjects.noDescription);
             this.clearInputAndSetMessage(s);
         };
         return Action;
@@ -571,27 +574,27 @@ var NakedObjects;
         };
         Clipboard.prototype.doExecute = function (args, chained) {
             var sub = this.argumentAsString(args, 0);
-            if ("copy".indexOf(sub) === 0) {
+            if (NakedObjects.clipboardCopy.indexOf(sub) === 0) {
                 this.copy();
             }
-            else if ("show".indexOf(sub) === 0) {
+            else if (NakedObjects.clipboardShow.indexOf(sub) === 0) {
                 this.show();
             }
-            else if ("go".indexOf(sub) === 0) {
+            else if (NakedObjects.clipboardGo.indexOf(sub) === 0) {
                 this.go();
             }
-            else if ("discard".indexOf(sub) === 0) {
+            else if (NakedObjects.clipboardDiscard.indexOf(sub) === 0) {
                 this.discard();
             }
             else {
-                this.clearInputAndSetMessage("Clipboard command may only be followed by copy, show, go, or discard");
+                this.clearInputAndSetMessage(NakedObjects.clipboardError);
             }
         };
         ;
         Clipboard.prototype.copy = function () {
             var _this = this;
             if (!this.isObject()) {
-                this.clearInputAndSetMessage("Clipboard copy may only be used in the context of viewing an object");
+                this.clearInputAndSetMessage(NakedObjects.clipboardContextError);
                 return;
             }
             this.getObject().then(function (obj) {
@@ -602,10 +605,10 @@ var NakedObjects;
         Clipboard.prototype.show = function () {
             if (this.vm.clipboard) {
                 var label = TypePlusTitle(this.vm.clipboard);
-                this.clearInputAndSetMessage("Clipboard contains: " + label);
+                this.clearInputAndSetMessage(NakedObjects.clipboardContents(label));
             }
             else {
-                this.clearInputAndSetMessage("Clipboard is empty");
+                this.clearInputAndSetMessage(NakedObjects.clipboardEmpty);
             }
         };
         Clipboard.prototype.go = function () {
@@ -641,6 +644,7 @@ var NakedObjects;
                 this.mayNotBeChained();
                 return;
             }
+            this.context.clearObjectValues();
             this.urlManager.setInteractionMode(NakedObjects.InteractionMode.Edit);
         };
         ;
@@ -678,7 +682,7 @@ var NakedObjects;
                 var s;
                 switch (fields.length) {
                     case 0:
-                        s = fieldName + " does not match any properties";
+                        s = NakedObjects.doesNotMatchProperties(fieldName);
                         break;
                     case 1:
                         var field = fields[0];
@@ -692,10 +696,8 @@ var NakedObjects;
                         }
                         break;
                     default:
-                        s = fieldName + " matches multiple fields:\n";
-                        s += _.reduce(fields, function (s, prop) {
-                            return s + prop.extensions().friendlyName() + "\n";
-                        }, "");
+                        s = fieldName + " " + NakedObjects.matchesMultiple;
+                        s += _.reduce(fields, function (s, prop) { return s + prop.extensions().friendlyName() + "\n"; }, "");
                 }
                 _this.clearInputAndSetMessage(s);
             });
@@ -708,7 +710,7 @@ var NakedObjects;
                 params = _this.matchFriendlyNameAndOrMenuPath(params, fieldName);
                 switch (params.length) {
                     case 0:
-                        _this.clearInputAndSetMessage(fieldName + " does not match any fields in the dialog");
+                        _this.clearInputAndSetMessage(NakedObjects.doesNotMatchDialog(fieldName));
                         break;
                     case 1:
                         if (fieldEntry === "?") {
@@ -722,14 +724,14 @@ var NakedObjects;
                         }
                         break;
                     default:
-                        _this.clearInputAndSetMessage("Multiple fields match " + fieldName); //TODO: list them
+                        _this.clearInputAndSetMessage(NakedObjects.multipleFieldMatches + " " + fieldName); //TODO: list them
                         break;
                 }
             });
         };
         Enter.prototype.setField = function (field, fieldEntry) {
             if (field instanceof PropertyMember && field.disabledReason()) {
-                this.clearInputAndSetMessage(field.extensions().friendlyName() + " is not modifiable");
+                this.clearInputAndSetMessage(field.extensions().friendlyName() + " " + NakedObjects.isNotModifiable);
                 return;
             }
             var entryType = field.entryType();
@@ -753,7 +755,7 @@ var NakedObjects;
                     this.handleConditionalChoices(field, fieldEntry);
                     return;
                 default:
-                    throw new Error("Invalid case");
+                    throw new Error(NakedObjects.invalidCase);
             }
         };
         Enter.prototype.handleFreeForm = function (field, fieldEntry) {
@@ -781,7 +783,7 @@ var NakedObjects;
             else if (field instanceof PropertyMember) {
                 var parent_1 = field.parent;
                 if (parent_1 instanceof DomainObjectRepresentation) {
-                    this.urlManager.setPropertyValue(parent_1, field, urlVal);
+                    this.setPropertyValueinContextAndUrl(parent_1, field, urlVal);
                 }
             }
         };
@@ -790,7 +792,7 @@ var NakedObjects;
                 this.handleClipboard(field);
             }
             else {
-                this.clearInputAndSetMessage("Invalid entry for a reference field. Use clipboard or clip");
+                this.clearInputAndSetMessage(NakedObjects.invalidRefEntry);
             }
         };
         Enter.prototype.isPaste = function (fieldEntry) {
@@ -800,7 +802,7 @@ var NakedObjects;
             var _this = this;
             var ref = this.vm.clipboard;
             if (!ref) {
-                this.clearInputAndSetMessage("Cannot use Clipboard as it is empty");
+                this.clearInputAndSetMessage(NakedObjects.emptyClipboard);
                 return;
             }
             var paramType = field.extensions().returnType();
@@ -816,7 +818,7 @@ var NakedObjects;
                     _this.setFieldValue(field, value);
                 }
                 else {
-                    _this.clearInputAndSetMessage("Contents of Clipboard are not compatible with the field");
+                    _this.clearInputAndSetMessage(NakedObjects.incompatibleClipboard);
                 }
             });
         };
@@ -846,13 +848,13 @@ var NakedObjects;
         Enter.prototype.switchOnMatches = function (field, fieldEntry, matches) {
             switch (matches.length) {
                 case 0:
-                    this.clearInputAndSetMessage("None of the choices matches " + fieldEntry);
+                    this.clearInputAndSetMessage(NakedObjects.noMatch(fieldEntry));
                     break;
                 case 1:
                     this.setFieldValue(field, matches[0]);
                     break;
                 default:
-                    var msg_1 = "Multiple matches:\n";
+                    var msg_1 = NakedObjects.multipleMatches;
                     _.forEach(matches, function (m) { return msg_1 += m.toString() + "\n"; });
                     this.clearInputAndSetMessage(msg_1);
                     break;
@@ -864,7 +866,6 @@ var NakedObjects;
             var enteredFields = field instanceof Parameter
                 ? getParametersAndCurrentValue(field.parent, this.context)
                 : {};
-            // fromPairs definition is faulty
             var args = _.fromPairs(_.map(field.promptLink().arguments(), function (v, key) { return [key, new Value(v.value)]; }));
             _.forEach(_.keys(args), function (key) {
                 args[key] = enteredFields[key];
@@ -877,20 +878,18 @@ var NakedObjects;
             });
         };
         Enter.prototype.renderFieldDetails = function (field, value) {
-            var s = "Field name: " + field.extensions().friendlyName();
+            var s = NakedObjects.fieldName(field.extensions().friendlyName());
             var desc = field.extensions().description();
-            s += desc ? "\nDescription: " + desc : "";
-            s += "\nType: " + FriendlyTypeName(field.extensions().returnType());
+            s += desc ? "\n" + NakedObjects.descriptionFieldPrefix + " " + desc : "";
+            s += "\n" + NakedObjects.typePrefix + " " + FriendlyTypeName(field.extensions().returnType());
             if (field instanceof PropertyMember && field.disabledReason()) {
-                s += "\nUnmodifiable: " + field.disabledReason();
+                s += "\n" + NakedObjects.unModifiablePrefix(field.disabledReason());
             }
             else {
-                s += field.extensions().optional() ? "\nOptional" : "\nMandatory";
+                s += field.extensions().optional() ? "\n" + NakedObjects.optional : "\n" + NakedObjects.mandatory;
                 if (field.choices()) {
-                    var label = "\nChoices: ";
-                    s += _.reduce(field.choices(), function (s, cho) {
-                        return s + cho + " ";
-                    }, label);
+                    var label = "\n" + NakedObjects.choices + ": ";
+                    s += _.reduce(field.choices(), function (s, cho) { return s + cho + " "; }, label);
                 }
             }
             return s;
@@ -954,9 +953,12 @@ var NakedObjects;
             var _this = this;
             var arg0 = this.argumentAsString(args, 0);
             if (this.isList()) {
-                var itemNo_1 = parseInt(arg0);
-                if (isNaN(itemNo_1)) {
-                    this.clearInputAndSetMessage(arg0 + " is not a valid number");
+                var itemNo_1;
+                try {
+                    itemNo_1 = this.parseInt(arg0);
+                }
+                catch (e) {
+                    this.clearInputAndSetMessage(e.message);
                     return;
                 }
                 this.getList().then(function (list) {
@@ -985,7 +987,7 @@ var NakedObjects;
                         var s = "";
                         switch (matchingRefProps.length + matchingColls.length) {
                             case 0:
-                                s = arg0 + " does not match any reference fields or collections";
+                                s = NakedObjects.noRefFieldMatch(arg0);
                                 break;
                             case 1:
                                 //TODO: Check for any empty reference
@@ -1014,7 +1016,7 @@ var NakedObjects;
         ;
         Goto.prototype.attemptGotoLinkNumber = function (itemNo, links) {
             if (itemNo < 1 || itemNo > links.length) {
-                this.clearInputAndSetMessage(itemNo.toString() + " is out of range for displayed items");
+                this.clearInputAndSetMessage(NakedObjects.outOfItemRange(itemNo));
             }
             else {
                 var link = links[itemNo - 1]; // On UI, first item is '1'
@@ -1046,7 +1048,7 @@ var NakedObjects;
             if (!arg) {
                 this.clearInputAndSetMessage(NakedObjects.basicHelp);
             }
-            else if (arg == "?") {
+            else if (arg === "?") {
                 var commands = this.commandFactory.allCommandsForCurrentContext();
                 this.clearInputAndSetMessage(commands);
             }
@@ -1055,8 +1057,8 @@ var NakedObjects;
                     var c = this.commandFactory.getCommand(arg);
                     this.clearInputAndSetMessage(c.fullCommand + " command:\n" + c.helpText);
                 }
-                catch (Error) {
-                    this.clearInputAndSetMessage(Error.message);
+                catch (e) {
+                    this.clearInputAndSetMessage(e.message);
                 }
             }
         };
@@ -1090,7 +1092,7 @@ var NakedObjects;
                 }
                 switch (links.length) {
                     case 0:
-                        _this.clearInputAndSetMessage(name + " does not match any menu");
+                        _this.clearInputAndSetMessage(NakedObjects.doesNotMatchMenu(name));
                         break;
                     case 1:
                         var menuId = links[0].rel().parms[0].value;
@@ -1099,7 +1101,7 @@ var NakedObjects;
                         _this.urlManager.setMenu(menuId);
                         break;
                     default:
-                        var label = name ? "Matching menus:\n" : "Menus:\n";
+                        var label = name ? NakedObjects.matchingMenus + "\n" : NakedObjects.allMenus + "\n";
                         var s = _.reduce(links, function (s, t) { return s + t.title() + "\n"; }, label);
                         _this.clearInputAndSetMessage(s);
                 }
@@ -1124,12 +1126,13 @@ var NakedObjects;
             var _this = this;
             this.getActionForCurrentDialog().then(function (action) {
                 if (chained && action.invokeLink().method() !== "GET") {
-                    _this.mayNotBeChained(" unless the action is query-only");
+                    _this.mayNotBeChained(NakedObjects.queryOnlyRider);
                     return;
                 }
                 var fieldMap;
                 if (_this.isForm()) {
-                    fieldMap = _this.routeData().props; //Props passed in as pseudo-params to action
+                    var obj = action.parent;
+                    fieldMap = _this.context.getCurrentObjectValues(obj.id()); //Props passed in as pseudo-params to action
                 }
                 else {
                     fieldMap = getParametersAndCurrentValue(action, _this.context);
@@ -1179,37 +1182,37 @@ var NakedObjects;
                 var numPages = listRep.pagination().numPages;
                 var page = _this.routeData().page;
                 var pageSize = _this.routeData().pageSize;
-                if ("first".indexOf(arg) === 0) {
+                if (NakedObjects.pageFirst.indexOf(arg) === 0) {
                     _this.setPage(1);
                     return;
                 }
-                else if ("previous".indexOf(arg) === 0) {
+                else if (NakedObjects.pagePrevious.indexOf(arg) === 0) {
                     if (page === 1) {
-                        _this.clearInputAndSetMessage("List is already showing the first page");
+                        _this.clearInputAndSetMessage(NakedObjects.alreadyOnFirst);
                     }
                     else {
                         _this.setPage(page - 1);
                     }
                 }
-                else if ("next".indexOf(arg) === 0) {
+                else if (NakedObjects.pageNext.indexOf(arg) === 0) {
                     if (page === numPages) {
-                        _this.clearInputAndSetMessage("List is already showing the last page");
+                        _this.clearInputAndSetMessage(NakedObjects.alreadyOnLast);
                     }
                     else {
                         _this.setPage(page + 1);
                     }
                 }
-                else if ("last".indexOf(arg) === 0) {
+                else if (NakedObjects.pageLast.indexOf(arg) === 0) {
                     _this.setPage(numPages);
                 }
                 else {
                     var number = parseInt(arg);
                     if (isNaN(number)) {
-                        _this.clearInputAndSetMessage("The argument must match: first, previous, next, last, or a single number");
+                        _this.clearInputAndSetMessage(NakedObjects.pageArgumentWrong);
                         return;
                     }
                     if (number < 1 || number > numPages) {
-                        _this.clearInputAndSetMessage("Specified page number must be between 1 and " + numPages);
+                        _this.clearInputAndSetMessage(NakedObjects.pageNumberWrong(numPages));
                         return;
                     }
                     _this.setPage(number);
@@ -1281,7 +1284,7 @@ var NakedObjects;
             }
             this.getObject().then(function (obj) {
                 var props = obj.propertyMembers();
-                var newValsFromUrl = _this.routeData().props;
+                var newValsFromUrl = _this.context.getCurrentObjectValues(obj.id());
                 var propIds = new Array();
                 var values = new Array();
                 _.forEach(props, function (propMember, propId) {
@@ -1302,7 +1305,8 @@ var NakedObjects;
                 });
                 var propMap = _.zipObject(propIds, values);
                 var mode = obj.extensions().interactionMode();
-                var saveOrUpdate = (mode === "form" || mode === "transient") ? _this.context.saveObject : _this.context.updateObject;
+                var toSave = mode === "form" || mode === "transient";
+                var saveOrUpdate = toSave ? _this.context.saveObject : _this.context.updateObject;
                 saveOrUpdate(obj, propMap, 1, true).
                     catch(function (reject) {
                     var display = function (em) { return _this.handleError(em, obj); };
@@ -1396,10 +1400,10 @@ var NakedObjects;
                     switch (props.length + colls.length) {
                         case 0:
                             if (!fieldName_1) {
-                                s = "No visible properties";
+                                s = NakedObjects.noVisible;
                             }
                             else {
-                                s = fieldName_1 + " does not match any properties";
+                                s = NakedObjects.doesNotMatch(fieldName_1);
                             }
                             break;
                         case 1:
@@ -1407,16 +1411,12 @@ var NakedObjects;
                                 s = _this.renderPropNameAndValue(props[0]);
                             }
                             else {
-                                s = _this.renderColl(colls[0]);
+                                s = NakedObjects.renderCollectionNameAndSize(colls[0]);
                             }
                             break;
                         default:
-                            s = _.reduce(props, function (s, prop) {
-                                return s + _this.renderPropNameAndValue(prop);
-                            }, "");
-                            s += _.reduce(colls, function (s, coll) {
-                                return s + _this.renderColl(coll);
-                            }, "");
+                            s = _.reduce(props, function (s, prop) { return s + _this.renderPropNameAndValue(prop); }, "");
+                            s += _.reduce(colls, function (s, coll) { return s + NakedObjects.renderCollectionNameAndSize(coll); }, "");
                     }
                     _this.clearInputAndSetMessage(s);
                 });
@@ -1426,28 +1426,16 @@ var NakedObjects;
         Show.prototype.renderPropNameAndValue = function (pm) {
             var name = pm.extensions().friendlyName();
             var value;
-            var propInUrl = this.routeData().props[pm.id()];
-            if (this.isEdit() && !pm.disabledReason() && propInUrl) {
-                value = propInUrl.toString() + " (modified)";
+            var parent = pm.parent;
+            var props = this.context.getCurrentObjectValues(parent.id());
+            var modifiedValue = props[pm.id()];
+            if (this.isEdit() && !pm.disabledReason() && modifiedValue) {
+                value = NakedObjects.renderFieldValue(pm, modifiedValue, this.mask) + (" (" + NakedObjects.modified + ")");
             }
             else {
                 value = NakedObjects.renderFieldValue(pm, pm.value(), this.mask);
             }
             return name + ": " + value + "\n";
-        };
-        Show.prototype.renderColl = function (coll) {
-            var output = coll.extensions().friendlyName() + " (collection): ";
-            switch (coll.size()) {
-                case 0:
-                    output += "empty";
-                    break;
-                case 1:
-                    output += "1 item";
-                    break;
-                default:
-                    output += coll.size() + " items";
-            }
-            return output + "\n";
         };
         Show.prototype.renderCollectionItems = function (coll, startNo, endNo) {
             var _this = this;
@@ -1470,18 +1458,18 @@ var NakedObjects;
                 endNo = max;
             }
             if (startNo > max || endNo > max) {
-                this.clearInputAndSetMessage("The highest numbered item is " + source.value().length);
+                this.clearInputAndSetMessage(NakedObjects.highestItem(source.value().length));
                 return;
             }
             if (startNo > endNo) {
-                this.clearInputAndSetMessage("Starting item number cannot be greater than the ending item number");
+                this.clearInputAndSetMessage(NakedObjects.startHigherEnd);
                 return;
             }
             var output = "";
             var i;
             var links = source.value();
             for (i = startNo; i <= endNo; i++) {
-                output += "Item " + i + ": " + links[i - 1].title() + "\n";
+                output += NakedObjects.item + " " + i + ": " + links[i - 1].title() + "\n";
             }
             this.clearInputAndSetMessage(output);
         };

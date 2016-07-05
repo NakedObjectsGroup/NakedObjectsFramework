@@ -54,6 +54,7 @@ var NakedObjects;
                             // Call the internal AngularJS helper to
                             // update the two way binding
                             ngModel.$setViewValue(dateTxt);
+                            element.change(); // do this to trigger gemini-clear directive  
                         });
                     };
                     var onSelect = function (dateTxt) { return updateModel(dateTxt); };
@@ -99,6 +100,7 @@ var NakedObjects;
                             // Call the internal AngularJS helper to
                             // update the two way binding
                             ngModel.$setViewValue(element.val());
+                            element.change(); // do this to trigger gemini-clear directive 
                         });
                         return true;
                     };
@@ -149,7 +151,6 @@ var NakedObjects;
                         ngModel.$parsers.push(function () { return cvm; });
                         ngModel.$setViewValue(cvm.name);
                         element.val(cvm.name);
-                        viewModel.setColor(color);
                     });
                 };
                 optionsObj.source = function (request, response) {
@@ -175,11 +176,40 @@ var NakedObjects;
                 element.keyup(clearHandler);
                 element.autocomplete(optionsObj);
                 render(viewModel.choice);
+                ngModel.$validators.geminiAutocomplete = function (modelValue, viewValue) {
+                    // return OK if no value or value is of correct type.
+                    if (viewModel.optional && !viewValue) {
+                        // optional with no value
+                        viewModel.resetMessage();
+                        viewModel.clientValid = true;
+                    }
+                    else if (!viewModel.optional && !viewValue) {
+                        // mandatory with no value
+                        viewModel.resetMessage();
+                        viewModel.clientValid = false;
+                    }
+                    else if (modelValue instanceof NakedObjects.ChoiceViewModel) {
+                        // has view model check if it's valid                       
+                        if (!modelValue.name) {
+                            viewModel.setMessage(NakedObjects.pendingAutoComplete);
+                            viewModel.clientValid = false;
+                        }
+                    }
+                    else {
+                        // has value but not ChoiceViewModel so must be invalid 
+                        viewModel.setMessage(NakedObjects.pendingAutoComplete);
+                        viewModel.clientValid = false;
+                    }
+                    return viewModel.clientValid;
+                };
             }
         };
     });
     NakedObjects.app.directive("geminiConditionalchoices", function () {
         return {
+            // up the priority of this directive to that viewmodel is set before ng-options - 
+            // then angular doesn't add an empty entry on dropdown
+            priority: 10,
             // Enforce the angularJS default of restricting the directive to
             // attributes only
             restrict: "A",
@@ -195,7 +225,7 @@ var NakedObjects;
                     return;
                 var parent = scope.$parent;
                 var viewModel = parent.parameter || parent.property;
-                var pArgs = _.omit(viewModel.arguments, "x-ro-nof-members");
+                var pArgs = _.omit(viewModel.promptArguments, "x-ro-nof-members");
                 var paneId = viewModel.onPaneId;
                 var currentOptions = [];
                 function isDomainObjectViewModel(object) {
@@ -713,5 +743,56 @@ var NakedObjects;
             el.bind("click", viewModel.optional ? triStateClick : twoStateClick);
         }
     }); });
+    NakedObjects.app.directive("geminiClear", function ($timeout) {
+        return {
+            // Enforce the angularJS default of restricting the directive to
+            // attributes only
+            restrict: "A",
+            // Always use along with an ng-model
+            require: "?ngModel",
+            link: function (scope, elm, attrs, ngModel) {
+                if (!ngModel) {
+                    return;
+                }
+                // wrap in timeout or we won't see initial value 
+                $timeout(function () {
+                    $(elm).addClass("ng-clearable");
+                    if (elm.val()) {
+                        $(elm).addClass("ng-x");
+                    }
+                    else {
+                        $(elm).removeClass("ng-x");
+                    }
+                });
+                elm.on("input change", function () {
+                    $(this).addClass("ng-clearable");
+                    if (this.value) {
+                        $(this).addClass("ng-x");
+                    }
+                    else {
+                        $(this).removeClass("ng-x");
+                    }
+                }).on("mousemove", function (e) {
+                    if (elm.hasClass("ng-x")) {
+                        var onX = this.offsetWidth - 18 < e.clientX - this.getBoundingClientRect().left;
+                        if (onX) {
+                            $(this).addClass("ng-onX");
+                        }
+                        else {
+                            $(this).removeClass("ng-onX");
+                        }
+                    }
+                }).on("touchstart click", function (ev) {
+                    if ($(this).hasClass("ng-onX")) {
+                        ev.preventDefault();
+                        $(this).removeClass("ng-x ng-onX");
+                        $(this).val("");
+                        ngModel.$parsers.push(function () { return null; });
+                        ngModel.$setViewValue("");
+                    }
+                });
+            }
+        };
+    });
 })(NakedObjects || (NakedObjects = {}));
 //# sourceMappingURL=nakedobjects.directives.js.map

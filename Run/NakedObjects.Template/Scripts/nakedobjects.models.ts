@@ -60,6 +60,10 @@ module NakedObjects.Models {
         return object && object instanceof Object && "value" in object;
     }
 
+    export function isIDomainObjectRepresentation(object: any): object is RoInterfaces.IDomainObjectRepresentation {
+        return object && object instanceof Object && "domainType" in object && "instanceId" in object && "members" in object;
+    }
+
     export function isIInvokableAction(object: any): object is IInvokableAction {
         return object && "parameters" in object && "extensions" in object;
     }
@@ -135,28 +139,28 @@ module NakedObjects.Models {
             if (rc === ErrorCategory.ClientError) {
                 this.clientErrorCode = code as ClientErrorCode;
                 this.errorCode = ClientErrorCode[this.clientErrorCode];
-                let description = "Unknown software error";
+                let description = errorUnknown;
 
                 switch (this.clientErrorCode) {
                     case ClientErrorCode.ExpiredTransient:
-                        description = "The requested view of unsaved object details has expired";
+                        description = errorExpiredTransient;
                         break;
                     case ClientErrorCode.WrongType:
-                        description = "An unexpected type of result was returned";
+                        description = errorWrongType;
                         break;
                     case ClientErrorCode.NotImplemented:
-                        description = "The requested software feature is not implemented";
+                        description = errorNotImplemented;
                         break;
                     case ClientErrorCode.SoftwareError:
-                        description = "A software error occurred";
+                        description = errorSoftware;
                         break;
                     case ClientErrorCode.ConnectionProblem:
-                        description = "The client failed to connect to the server";
+                        description = errorConnection;
                         break;
                 }
 
                 this.description = description;
-                this.title = "Client Error";
+                this.title = errorClient;
             }
 
             if (rc === ErrorCategory.HttpClientError || rc === ErrorCategory.HttpServerError) {
@@ -903,8 +907,7 @@ module NakedObjects.Models {
 
             if (this.wrapped().choices) {
                 const values = _.map(this.wrapped().choices, item => new Value(item));
-                // fromPairs definition faulty
-                return (<any>_).fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
+                return _.fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
             }
             return null;
         }
@@ -1119,8 +1122,7 @@ module NakedObjects.Models {
             const ch = this.wrapped().choices;
             if (ch) {
                 const values = _.map(ch, item => new Value(item));
-                // from pairs Definition faulty
-                return (<any>_).fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
+                return _.fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
             }
             return null;
         }
@@ -1285,8 +1287,7 @@ module NakedObjects.Models {
             const ch = this.wrapped().choices;
             if (ch) {
                 const values = _.map(ch, item => new Value(item));
-                // fromPairs definition faulty
-                return (<any>_).fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
+                return _.fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
             }
             return null;
         }
@@ -1451,8 +1452,7 @@ module NakedObjects.Models {
             const ch = this.wrapped().choices;
             if (ch) {
                 const values = _.map(ch, (item) => new Value(item));
-                // fromPairs definition faulty
-                return (<any>_).fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
+                return _.fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
             }
             return null;
         }

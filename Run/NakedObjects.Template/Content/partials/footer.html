@@ -7,10 +7,10 @@
 <a class="icon-recent" title="Recent objects (Alt-r)" tabindex="0" gemini-enter="toolBar.recent()" ng-click="toolBar.recent()" gemini-rightclick="toolBar.recent(true)" accesskey="r"></a>
 <a class="icon-speech" title="Cicero - Speech Interface (Alt-c)" gemini-enter="toolBar.cicero()" ng-click="toolBar.cicero()" tabindex="0" accesskey="c"></a>
 <a class="icon-properties" title="Application Properties (Alt-p)" gemini-enter="toolBar.applicationProperties()" ng-click="toolBar.applicationProperties()" tabindex="0" accesskey="p"></a>
-<a class="icon-logoff" title="LogOff (Alt-l)" gemini-enter="toolBar.logOff()" ng-click="toolBar.logOff()" tabindex="0" accesskey="l"></a>
+<a class="icon-logoff" title="Log off (Alt-l)" gemini-enter="toolBar.logOff()" ng-click="toolBar.logOff()" tabindex="0" accesskey="l"></a>
 
 
-<span>{{toolBar.loading}}</span>
+<span class="loading">{{toolBar.loading}}</span>
 
 <div class="warnings" ng-repeat="warning in toolBar.warnings track by $index">
     <div>{{warning}}</div>

@@ -42,6 +42,10 @@ var NakedObjects;
         function isIValue(object) {
             return object && object instanceof Object && "value" in object;
         }
+        function isIDomainObjectRepresentation(object) {
+            return object && object instanceof Object && "domainType" in object && "instanceId" in object && "members" in object;
+        }
+        Models.isIDomainObjectRepresentation = isIDomainObjectRepresentation;
         function isIInvokableAction(object) {
             return object && "parameters" in object && "extensions" in object;
         }
@@ -101,26 +105,26 @@ var NakedObjects;
                 if (rc === ErrorCategory.ClientError) {
                     this.clientErrorCode = code;
                     this.errorCode = ClientErrorCode[this.clientErrorCode];
-                    var description = "Unknown software error";
+                    var description = NakedObjects.errorUnknown;
                     switch (this.clientErrorCode) {
                         case ClientErrorCode.ExpiredTransient:
-                            description = "The requested view of unsaved object details has expired";
+                            description = NakedObjects.errorExpiredTransient;
                             break;
                         case ClientErrorCode.WrongType:
-                            description = "An unexpected type of result was returned";
+                            description = NakedObjects.errorWrongType;
                             break;
                         case ClientErrorCode.NotImplemented:
-                            description = "The requested software feature is not implemented";
+                            description = NakedObjects.errorNotImplemented;
                             break;
                         case ClientErrorCode.SoftwareError:
-                            description = "A software error occurred";
+                            description = NakedObjects.errorSoftware;
                             break;
                         case ClientErrorCode.ConnectionProblem:
-                            description = "The client failed to connect to the server";
+                            description = NakedObjects.errorConnection;
                             break;
                     }
                     this.description = description;
-                    this.title = "Client Error";
+                    this.title = NakedObjects.errorClient;
                 }
                 if (rc === ErrorCategory.HttpClientError || rc === ErrorCategory.HttpServerError) {
                     this.httpErrorCode = code;
@@ -756,7 +760,6 @@ var NakedObjects;
                 }
                 if (this.wrapped().choices) {
                     var values = _.map(this.wrapped().choices, function (item) { return new Value(item); });
-                    // fromPairs definition faulty
                     return _.fromPairs(_.map(values, function (v) { return [v.toString(), v]; }));
                 }
                 return null;
@@ -928,7 +931,6 @@ var NakedObjects;
                 var ch = this.wrapped().choices;
                 if (ch) {
                     var values = _.map(ch, function (item) { return new Value(item); });
-                    // from pairs Definition faulty
                     return _.fromPairs(_.map(values, function (v) { return [v.toString(), v]; }));
                 }
                 return null;
@@ -1068,7 +1070,6 @@ var NakedObjects;
                 var ch = this.wrapped().choices;
                 if (ch) {
                     var values = _.map(ch, function (item) { return new Value(item); });
-                    // fromPairs definition faulty
                     return _.fromPairs(_.map(values, function (v) { return [v.toString(), v]; }));
                 }
                 return null;
@@ -1203,7 +1204,6 @@ var NakedObjects;
                 var ch = this.wrapped().choices;
                 if (ch) {
                     var values = _.map(ch, function (item) { return new Value(item); });
-                    // fromPairs definition faulty
                     return _.fromPairs(_.map(values, function (v) { return [v.toString(), v]; }));
                 }
                 return null;

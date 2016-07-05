@@ -8,13 +8,13 @@ module NakedObjects {
 
     export interface ICommandFactory {
 
-        initialiseCommands(cvm: CiceroViewModel): void;
+        initialiseCommands(cvm: ICiceroViewModel): void;
 
-        parseInput(input: string, cvm: CiceroViewModel): void;
+        parseInput(input: string, cvm: ICiceroViewModel): void;
 
-        processSingleCommand(command: string, cvm: CiceroViewModel, chained: boolean): void;
+        processSingleCommand(command: string, cvm: ICiceroViewModel, chained: boolean): void;
 
-        autoComplete(partialCommand: string, cvm: CiceroViewModel): void;
+        autoComplete(partialCommand: string, cvm: ICiceroViewModel): void;
 
         //Returns all commands that may be invoked in the current context
         allCommandsForCurrentContext(): string;
@@ -41,7 +41,6 @@ module NakedObjects {
 
         let commandsInitialised = false;
 
-
         const commands: _.Dictionary<Command> = {
             "ac": new Action(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
             "ba": new Back(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
@@ -63,14 +62,14 @@ module NakedObjects {
             "sh": new Show(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error),
             "wh": new Where(urlManager, $location, commandFactory, context, navigation, $q, $route, mask, error)
         };
-        commandFactory.initialiseCommands = (cvm: CiceroViewModel) => {
+        commandFactory.initialiseCommands = (cvm: ICiceroViewModel) => {
             if (!commandsInitialised) {
                 _.forEach(commands, command => command.initialiseWithViewModel(cvm));
                 commandsInitialised = true;
             }
         };
 
-        commandFactory.parseInput = (input: string, cvm: CiceroViewModel) => {
+        commandFactory.parseInput = (input: string, cvm: ICiceroViewModel) => {
             cvm.chainedCommands = null; //TODO: Maybe not needed if unexecuted commands are cleared down upon error?
             if (!input) { //Special case for hitting Enter with no input
                 commandFactory.getCommand("wh").execute(null, false);
@@ -90,7 +89,7 @@ module NakedObjects {
             }
         };
 
-        commandFactory.processSingleCommand = (input: string, cvm: CiceroViewModel, chained: boolean) => {
+        commandFactory.processSingleCommand = (input: string, cvm: ICiceroViewModel, chained: boolean) => {
             try {
                 input = input.trim();
                 const firstWord = input.split(" ")[0].toLowerCase();
@@ -101,15 +100,15 @@ module NakedObjects {
                     argString = input.substr(index + 1);
                 }
                 command.execute(argString, chained);
-            } catch (Error) {
-                cvm.output = Error.message;
+            } catch (e) {
+                cvm.output = e.message;
                 cvm.input = "";
             }
         };
 
         //TODO: change the name & functionality to pre-parse or somesuch as could do more than auto
         //complete e.g. reject unrecognised action or one not available in context.
-        commandFactory.autoComplete = (input: string, cvm: CiceroViewModel) => {
+        commandFactory.autoComplete = (input: string, cvm: ICiceroViewModel) => {
             if (!input) return;
             let lastInChain = _.last(input.split(";")).toLowerCase();
             const charsTyped = lastInChain.length;
@@ -122,32 +121,27 @@ module NakedObjects {
                 const command = commandFactory.getCommand(lastInChain);
                 const earlierChain = input.substr(0, input.length - charsTyped);
                 cvm.input = earlierChain + command.fullCommand + " ";
-            } catch (Error) {
-                cvm.output = Error.message;
+            } catch (e) {
+                cvm.output = e.message;
             }
         };
 
         commandFactory.getCommand = (commandWord: string) => {
             if (commandWord.length < 2) {
-                throw new Error("Command word must have at least 2 characters");
+                throw new Error(commandTooShort);
             }
             const abbr = commandWord.substr(0, 2);
             const command = commands[abbr];
             if (command == null) {
-                throw new Error(`No command begins with ${abbr}`);
+                throw new Error(noCommandMatch(abbr));
             }
             command.checkMatch(commandWord);
             return command;
         };
+
         commandFactory.allCommandsForCurrentContext = () => {
-            var result = "Commands available in current context:\n";
-            for (let key in commands) {
-                const c = commands[key];
-                if (c.isAvailableInCurrentContext()) {
-                    result = result + c.fullCommand + "\n";
-                }
-            }
-            return result;
+            const commandsInContext = _.filter(commands, c => c.isAvailableInCurrentContext());
+            return _.reduce(commandsInContext, (r, c) => r + c.fullCommand + "\n" , commandsAvailable);
         };
     });
 }

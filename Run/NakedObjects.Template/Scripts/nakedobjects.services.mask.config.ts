@@ -14,5 +14,6 @@ module NakedObjects {
         mask.setCurrencyMaskMapping("c", "decimal", pound, 2);
         mask.setDateMaskMapping("d", "date-time", "d MMM yyyy", "+0000");
         mask.setDateMaskMapping("D", "date", "d MMM yyyy hh:mm:ss");
+        mask.setDateMaskMapping("T", "time", "HH:mm", "+0000");
     });
 }

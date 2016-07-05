@@ -10,6 +10,7 @@ var NakedObjects;
     var ErrorMap = NakedObjects.Models.ErrorMap;
     var HttpStatusCode = NakedObjects.Models.HttpStatusCode;
     var ErrorWrapper = NakedObjects.Models.ErrorWrapper;
+    var isIDomainObjectRepresentation = NakedObjects.Models.isIDomainObjectRepresentation;
     NakedObjects.app.service("repLoader", function ($http, $q, $rootScope, $cacheFactory) {
         var _this = this;
         var repLoader = this;
@@ -65,6 +66,20 @@ var NakedObjects;
                 $rootScope.$broadcast(NakedObjects.geminiAjaxChangeEvent, --loadingCount);
             });
         }
+        // special handler for case whwre we recice a redirected object back from server 
+        // instead of an actionresult. Wrap the object in an actionresult and then handle normally
+        function handleRedirectedObject(response, data) {
+            if (response instanceof ActionResultRepresentation && isIDomainObjectRepresentation(data)) {
+                var actionResult = {
+                    resultType: "object",
+                    result: data,
+                    links: [],
+                    extensions: {}
+                };
+                return actionResult;
+            }
+            return data;
+        }
         function httpPopulate(config, ignoreCache, response) {
             $rootScope.$broadcast(NakedObjects.geminiAjaxChangeEvent, ++loadingCount);
             if (ignoreCache) {
@@ -73,7 +88,8 @@ var NakedObjects;
             }
             return $http(config)
                 .then(function (promiseCallback) {
-                response.populate(promiseCallback.data);
+                var representation = handleRedirectedObject(response, promiseCallback.data);
+                response.populate(representation);
                 response.etagDigest = promiseCallback.headers("ETag");
                 return $q.when(response);
             })

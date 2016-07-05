@@ -66,8 +66,8 @@ var NakedObjects;
                 }
                 command.execute(argString, chained);
             }
-            catch (Error) {
-                cvm.output = Error.message;
+            catch (e) {
+                cvm.output = e.message;
                 cvm.input = "";
             }
         };
@@ -88,31 +88,25 @@ var NakedObjects;
                 var earlierChain = input.substr(0, input.length - charsTyped);
                 cvm.input = earlierChain + command.fullCommand + " ";
             }
-            catch (Error) {
-                cvm.output = Error.message;
+            catch (e) {
+                cvm.output = e.message;
             }
         };
         commandFactory.getCommand = function (commandWord) {
             if (commandWord.length < 2) {
-                throw new Error("Command word must have at least 2 characters");
+                throw new Error(NakedObjects.commandTooShort);
             }
             var abbr = commandWord.substr(0, 2);
             var command = commands[abbr];
             if (command == null) {
-                throw new Error("No command begins with " + abbr);
+                throw new Error(NakedObjects.noCommandMatch(abbr));
             }
             command.checkMatch(commandWord);
             return command;
         };
         commandFactory.allCommandsForCurrentContext = function () {
-            var result = "Commands available in current context:\n";
-            for (var key in commands) {
-                var c = commands[key];
-                if (c.isAvailableInCurrentContext()) {
-                    result = result + c.fullCommand + "\n";
-                }
-            }
-            return result;
+            var commandsInContext = _.filter(commands, function (c) { return c.isAvailableInCurrentContext(); });
+            return _.reduce(commandsInContext, function (r, c) { return r + c.fullCommand + "\n"; }, NakedObjects.commandsAvailable);
         };
     });
 })(NakedObjects || (NakedObjects = {}));

@@ -22,13 +22,14 @@ module NakedObjects {
     import EntryType = Models.EntryType;
     import toUtcDate = Models.toUtcDate;
     import isDateOrDateTime = Models.isDateOrDateTime;
+    import CollectionMember = Models.CollectionMember;
 
     export interface ICiceroRenderer {
 
-        renderHome(cvm: CiceroViewModel, routeData: PaneRouteData): void;
-        renderObject(cvm: CiceroViewModel, routeData: PaneRouteData): void;
-        renderList(cvm: CiceroViewModel, routeData: PaneRouteData): void;
-        renderError(cvm: CiceroViewModel): void;
+        renderHome(cvm: ICiceroViewModel, routeData: PaneRouteData): void;
+        renderObject(cvm: ICiceroViewModel, routeData: PaneRouteData): void;
+        renderList(cvm: ICiceroViewModel, routeData: PaneRouteData): void;
+        renderError(cvm: ICiceroViewModel): void;
     }
 
     app.service("ciceroRenderer", function ($q: ng.IQService,
@@ -36,98 +37,48 @@ module NakedObjects {
         mask: IMask,
         error: IError) {
         const renderer = <ICiceroRenderer>this;
-        renderer.renderHome = (cvm: CiceroViewModel, routeData: PaneRouteData) => {
+        renderer.renderHome = (cvm: ICiceroViewModel, routeData: PaneRouteData) => {
             if (cvm.message) {
                 cvm.outputMessageThenClearIt();
             } else {
-                let output = "";
                 if (routeData.menuId) {
-                    context.getMenu(routeData.menuId)
-                        .then((menu: MenuRepresentation) => {
-                            output += menu.title() + " menu" + "\n";
-                            return routeData.dialogId ? context.getInvokableAction(menu.actionMember(routeData.dialogId)) : $q.when(null);
-                        }).then((details: IInvokableAction) => {
-                            if (details) {
-                                output += renderActionDialog(details, routeData, mask);
-                            }
-                        }).finally(() => {
-                            cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-                        });
+                    renderOpenMenu(routeData, cvm);
                 } else {
                     cvm.clearInput();
                     cvm.output = welcomeMessage;
                 }
             }
         };
-        renderer.renderObject = (cvm: CiceroViewModel, routeData: PaneRouteData) => {
+        renderer.renderObject = (cvm: ICiceroViewModel, routeData: PaneRouteData) => {
             if (cvm.message) {
                 cvm.outputMessageThenClearIt();
             } else {
                 const oid = ObjectIdWrapper.fromObjectId(routeData.objectId);
-
                 context.getObject(1, oid, routeData.interactionMode) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
                     .then((obj: DomainObjectRepresentation) => {
                         let output = "";
                         const openCollIds = openCollectionIds(routeData);
                         if (_.some(openCollIds)) {
-                            const id = openCollIds[0];
-                            const coll = obj.collectionMember(id);
-                            output += `Collection: ${coll.extensions().friendlyName()} on ${TypePlusTitle(obj)}\n`;
-                            switch (coll.size()) {
-                                case 0:
-                                    output += "empty";
-                                    break;
-                                case 1:
-                                    output += "1 item";
-                                    break;
-                                default:
-                                    output += `${coll.size()} items`;
-                            }
-                            cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+                            renderOpenCollection(openCollIds[0], obj, cvm);
+                        } else if (obj.isTransient()) {
+                            renderTransientObject(routeData, obj, cvm);
+                        } else if (routeData.interactionMode === InteractionMode.Edit ||
+                            routeData.interactionMode === InteractionMode.Form) {
+                            renderForm(routeData, obj, cvm);
                         } else {
-                            if (obj.isTransient()) {
-                                output += "Unsaved ";
-                                output += obj.extensions().friendlyName() + "\n";
-                                output += renderModifiedProperties(obj, routeData, mask);
-                                cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-                            } else if (routeData.interactionMode === InteractionMode.Edit ||
-                                routeData.interactionMode === InteractionMode.Form) {
-                                let output = "Editing ";
-                                output += PlusTitle(obj) + "\n";
-                                if (routeData.dialogId) {
-                                    context.getInvokableAction(obj.actionMember(routeData.dialogId))
-                                        .then((details: IInvokableAction) => {
-                                            output += renderActionDialog(details, routeData, mask);
-                                            cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-                                        });
-                                } else {
-                                    output += renderModifiedProperties(obj, routeData, mask);
-                                    cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-                                }
-                            } else {
-                                let output = Title(obj) + "\n";
-                                if (routeData.dialogId) {
-                                    context.getInvokableAction(obj.actionMember(routeData.dialogId))
-                                        .then((details: IInvokableAction) => {
-                                            output += renderActionDialog(details, routeData, mask);
-                                            cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-                                        });
-                                } else {
-                                    cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-                                }
-
-                            }
+                            renderObjectTitleAndDialogIfOpen(routeData, obj, cvm);
                         }
                     }).catch((reject: ErrorWrapper) => {
+                        //TODO: Is the first test necessary or would this be rendered OK by generic error handling?
                         if (reject.category === ErrorCategory.ClientError && reject.clientErrorCode === ClientErrorCode.ExpiredTransient) {
-                            cvm.output = "The requested view of unsaved object details has expired";
+                            cvm.output = errorExpiredTransient;
                         } else {
                             error.handleError(reject);
                         }
                     });
             }
         };
-        renderer.renderList = (cvm: CiceroViewModel, routeData: PaneRouteData) => {
+        renderer.renderList = (cvm: ICiceroViewModel, routeData: PaneRouteData) => {
             if (cvm.message) {
                 cvm.outputMessageThenClearIt();
             } else {
@@ -136,14 +87,7 @@ module NakedObjects {
                     context.getMenu(routeData.menuId).then((menu: MenuRepresentation) => {
                         const count = list.value().length;
                         const numPages = list.pagination().numPages;
-                        let description: string;
-                        if (numPages > 1) {
-                            const page = list.pagination().page;
-                            const totalCount = list.pagination().totalCount;
-                            description = `Page ${page} of ${numPages} containing ${count} of ${totalCount} items`;
-                        } else {
-                            description = `${count} items`;
-                        }
+                        const description = getListDescription(numPages, list, count);
                         const actionMember = menu.actionMember(routeData.actionId);
                         const actionName = actionMember.extensions().friendlyName();
                         const output = `Result from ${actionName}:\n${description}`;
@@ -152,15 +96,82 @@ module NakedObjects {
                 });
             }
         };
-        renderer.renderError = (cvm: CiceroViewModel) => {
+        renderer.renderError = (cvm: ICiceroViewModel) => {
             const err = context.getError().error as ErrorRepresentation;
             cvm.clearInput();
             cvm.output = `Sorry, an application error has occurred. ${err.message()}`;
         };
 
+        function getListDescription(numPages: number, list: ListRepresentation, count: number) {
+            if (numPages > 1) {
+                const page = list.pagination().page;
+                const totalCount = list.pagination().totalCount;
+                return `Page ${page} of ${numPages} containing ${count} of ${totalCount} items`;
+            } else {
+                return `${count} items`;
+            }
+        }
+
         //Returns collection Ids for any collections on an object that are currently in List or Table mode
         function openCollectionIds(routeData: PaneRouteData): string[] {
             return _.filter(_.keys(routeData.collections), k => routeData.collections[k] != CollectionViewState.Summary);
+        }
+
+        function renderOpenCollection(collId: string, obj: DomainObjectRepresentation, cvm: ICiceroViewModel) {
+            const coll = obj.collectionMember(collId);
+            let output = renderCollectionNameAndSize(coll);
+             output += `(${collection} ${on} ${TypePlusTitle(obj)})`;
+            cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+        }
+        
+        function renderTransientObject(routeData: PaneRouteData, obj: DomainObjectRepresentation, cvm: ICiceroViewModel) {
+            var output = `${unsaved} `;
+            output += obj.extensions().friendlyName() + "\n";
+            output += renderModifiedProperties(obj, routeData, mask);
+            cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+        }
+
+        function renderForm(routeData: PaneRouteData, obj: DomainObjectRepresentation, cvm: ICiceroViewModel) {
+            let output = `${editing} `;
+            output += PlusTitle(obj) + "\n";
+            if (routeData.dialogId) {
+                context.getInvokableAction(obj.actionMember(routeData.dialogId))
+                    .then((details: IInvokableAction) => {
+                        output += renderActionDialog(details, routeData, mask);
+                        cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+                    });
+            } else {
+                output += renderModifiedProperties(obj, routeData, mask);
+                cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+            }
+        }
+
+        function renderObjectTitleAndDialogIfOpen(routeData: PaneRouteData, obj: DomainObjectRepresentation, cvm: ICiceroViewModel) {
+            let output = Title(obj) + "\n";
+            if (routeData.dialogId) {
+                context.getInvokableAction(obj.actionMember(routeData.dialogId))
+                    .then((details: IInvokableAction) => {
+                        output += renderActionDialog(details, routeData, mask);
+                        cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+                    });
+            } else {
+                cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+            }
+        }
+
+        function renderOpenMenu(routeData: PaneRouteData, cvm: ICiceroViewModel) {
+            var output = "";
+            context.getMenu(routeData.menuId)
+                .then((menu: MenuRepresentation) => {
+                    output += menuTitle(menu.title());
+                    return routeData.dialogId ? context.getInvokableAction(menu.actionMember(routeData.dialogId)) : $q.when(null);
+                }).then((details: IInvokableAction) => {
+                    if (details) {
+                        output += "\n" + renderActionDialog(details, routeData, mask);
+                    }
+                }).finally(() => {
+                    cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+                });
         }
 
         function renderActionDialog(
@@ -180,9 +191,10 @@ module NakedObjects {
 
         function renderModifiedProperties(obj: DomainObjectRepresentation, routeData: PaneRouteData, mask: IMask): string {
             let output = "";
-            if (_.keys(routeData.props).length > 0) {
-                output += "Modified properties:\n";
-                _.each(routeData.props, (value, propId) => {
+            const props = context.getCurrentObjectValues(obj.id());
+            if (_.keys(props).length > 0) {
+                output += modifiedProperties + ":\n";
+                _.each(props, (value, propId) => {
                     output += FriendlyNameForProperty(obj, propId) + ": ";
                     const pm = obj.propertyMember(propId);
                     output += renderFieldValue(pm, value, mask);
@@ -201,22 +213,14 @@ module NakedObjects {
     //Handles empty values, and also enum conversion
     export function renderFieldValue(field: IField, value: Value, mask: IMask): string {
         if (!field.isScalar()) { //i.e. a reference
-            return value.isNull() ? "empty" : value.toString();
+            return value.isNull() ? empty : value.toString();
         }
         //Rest is for scalar fields only:
-        if (value.toString()) { //i.e. not empty
-            //This is to handle an enum: render it as text, not a number:           
+        if (value.toString()) { //i.e. not empty        
             if (field.entryType() === EntryType.Choices) {
-                const inverted = _.invert(field.choices());
-                return (<any>inverted)[value.toValueString()];
+                return renderSingleChoice(field, value);
             } else if (field.entryType() === EntryType.MultipleChoices && value.isList()) {
-                const inverted = _.invert(field.choices());
-                let output = "";
-                const values = value.list();
-                _.forEach(values, v => {
-                    output += (<any>inverted)[v.toValueString()] + ",";
-                });
-                return output;
+                return renderMultipleChoicesCommaSeparated(field, value);
             }
         }
         let properScalarValue: number | string | boolean | Date;
@@ -226,11 +230,43 @@ module NakedObjects {
             properScalarValue = value.scalar();
         }
         if (properScalarValue === "" || properScalarValue == null) {
-            return "empty";
+            return empty;
         } else {
             const remoteMask = field.extensions().mask();
             const format = field.extensions().format();
             return mask.toLocalFilter(remoteMask, format).filter(properScalarValue);
         }
+    }
+
+    function renderSingleChoice(field: IField, value: Value) {
+        //This is to handle an enum: render it as text, not a number:  
+        const inverted = _.invert(field.choices());
+        return (<any>inverted)[value.toValueString()];
+    }
+
+    function renderMultipleChoicesCommaSeparated(field: IField, value: Value) {
+        //This is to handle an enum: render it as text, not a number: 
+        const inverted = _.invert(field.choices());
+        let output = "";
+        const values = value.list();
+        _.forEach(values, v => {
+            output += (<any>inverted)[v.toValueString()] + ",";
+        });
+        return output;
+    }
+
+    export function renderCollectionNameAndSize(coll: CollectionMember): string {
+        let output: string = coll.extensions().friendlyName() + ": ";
+        switch (coll.size()) {
+            case 0:
+                output += empty;
+                break;
+            case 1:
+                output += `1 ${item}`;
+                break;
+            default:
+                output += numberOfItems(coll.size());
+        }
+        return output + "\n";
     }
 }

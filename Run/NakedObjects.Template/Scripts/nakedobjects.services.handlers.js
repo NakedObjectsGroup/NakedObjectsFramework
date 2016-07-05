@@ -42,7 +42,6 @@ var NakedObjects;
             };
             return DeReg;
         }());
-        //const deRegDialog = [, new DeReg(), new DeReg()];
         var deRegObject = [, new DeReg(), new DeReg()];
         function clearDialog($scope, paneId) {
             $scope.dialogTemplate = null;
@@ -118,6 +117,7 @@ var NakedObjects;
         function logoff() {
             for (var pane = 1; pane <= 2; pane++) {
                 context.clearParmUpdater(pane);
+                context.clearObjectUpdater(pane);
                 perPaneListViews[pane] = new NakedObjects.ListViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $q);
                 perPaneObjectViews[pane] = new NakedObjects.DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $q);
                 perPaneDialogViews[pane] = new NakedObjects.DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $rootScope);
@@ -271,6 +271,7 @@ var NakedObjects;
                 focusTarget = NakedObjects.FocusTarget.SubAction;
             }
             else if (ovm.isInEdit) {
+                context.setObjectUpdater(ovm.setProperties, routeData.paneId);
                 focusTarget = NakedObjects.FocusTarget.Property;
             }
             else {
@@ -294,6 +295,7 @@ var NakedObjects;
             $scope.actionsTemplate = NakedObjects.nullTemplate;
             color.toColorNumberFromType(oid.domainType).then(function (c) { return $scope.backgroundColor = "" + NakedObjects.objectColor + c; });
             deRegObject[routeData.paneId].deReg();
+            context.clearObjectUpdater(routeData.paneId);
             var wasDirty = context.getIsDirty(oid);
             context.getObject(routeData.paneId, oid, routeData.interactionMode).
                 then(function (object) {
@@ -304,9 +306,6 @@ var NakedObjects;
                 $scope.object = ovm;
                 $scope.collectionsTemplate = NakedObjects.collectionsTemplate;
                 handleNewObjectSearch($scope, routeData);
-                deRegObject[routeData.paneId].add($scope.$on("$locationChangeStart", ovm.setProperties));
-                deRegObject[routeData.paneId].add($scope.$watch(function () { return $location.search(); }, ovm.setProperties, true));
-                deRegObject[routeData.paneId].add($scope.$on(NakedObjects.geminiPaneSwapEvent, ovm.setProperties));
                 deRegObject[routeData.paneId].add($scope.$on(NakedObjects.geminiConcurrencyEvent, ovm.concurrency()));
             }).catch(function (reject) {
                 if (reject.category === ErrorCategory.ClientError && reject.clientErrorCode === ClientErrorCode.ExpiredTransient) {

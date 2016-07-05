@@ -1,1 +1,1 @@
-{"version":3,"file":"nakedobjects.version.js","sourceRoot":"","sources":["nakedobjects.version.ts"],"names":[],"mappings":"AAAA,IAAO,YAAY,CAAyC;AAA5D,WAAO,YAAY,EAAC,CAAC;IAAc,oBAAO,GAAG,aAAa,CAAA;AAAC,CAAC,EAArD,YAAY,KAAZ,YAAY,QAAyC"}
+{"version":3,"file":"nakedobjects.version.js","sourceRoot":"","sources":["nakedobjects.version.ts"],"names":[],"mappings":"AAAA,IAAO,YAAY,CAAsC;AAAzD,WAAO,YAAY,EAAC,CAAC;IAAc,oBAAO,GAAG,UAAU,CAAA;AAAC,CAAC,EAAlD,YAAY,KAAZ,YAAY,QAAsC"}

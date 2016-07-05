@@ -16,6 +16,8 @@ module NakedObjects {
     import ErrorWrapper = Models.ErrorWrapper;
     import IInvokableAction = Models.IInvokableAction;
     import IResourceRepresentation = RoInterfaces.IResourceRepresentation;
+    import ActionInvokeRepresentation = RoInterfaces.IActionInvokeRepresentation;
+    import isIDomainObjectRepresentation = Models.isIDomainObjectRepresentation;
 
     export interface IRepLoader {
         validate: (map: IHateoasModel, digest?: string) => ng.IPromise<boolean>;
@@ -100,6 +102,22 @@ module NakedObjects {
                     });
             }
 
+            // special handler for case whwre we recice a redirected object back from server 
+            // instead of an actionresult. Wrap the object in an actionresult and then handle normally
+            function handleRedirectedObject(response : IHateoasModel,  data: RoInterfaces.IRepresentation) {
+
+                if (response instanceof ActionResultRepresentation && isIDomainObjectRepresentation(data)) {
+                    const actionResult: ActionInvokeRepresentation = {
+                        resultType: "object",
+                        result: data,
+                        links: [],
+                        extensions: {}
+                    }
+                    return actionResult;
+                }
+
+                return data;
+            }
 
             function httpPopulate(config: ng.IRequestConfig, ignoreCache: boolean, response: IHateoasModel): ng.IPromise<IHateoasModel> {
                 $rootScope.$broadcast(geminiAjaxChangeEvent, ++loadingCount);
@@ -111,7 +129,8 @@ module NakedObjects {
 
                 return $http(config)
                     .then((promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IResourceRepresentation>) => {
-                        response.populate(promiseCallback.data);
+                        const representation = handleRedirectedObject(response, promiseCallback.data);
+                        response.populate(representation);
                         response.etagDigest = promiseCallback.headers("ETag");
                         return $q.when(response);
                     })

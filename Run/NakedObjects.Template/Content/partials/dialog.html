@@ -13,7 +13,7 @@
 
                     <!--"EntryType.AutoComplete"-->
                     <div ng-switch-when="5">
-                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" ng-class="parameter.color" placeholder="{{parameter.description}}" type="text" ng-model="$parent.parameter.choice" select="parameter.prompt(request)" gemini-drop gemini-autocomplete gemini-fieldmandatorycheck/>
+                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" ng-class="parameter.color" placeholder="{{parameter.description}}" type="text" ng-model="$parent.parameter.choice" select="parameter.prompt(request)" gemini-drop gemini-autocomplete gemini-fieldmandatorycheck gemini-clear/>
                     </div>
 
                     <!--"EntryType.MultipleConditionalChoices"-->
@@ -46,7 +46,7 @@
 
                     <!--"EntryType.FreeForm"-->
                     <div ng-switch-when="0">
-                        <div tabindex="0" class="value droppable" ng-model="parameter.choice" ng-class="parameter.color" gemini-drop gemini-fieldmandatorycheck>
+                        <div tabindex="0" class="value droppable" ng-model="parameter.choice" ng-class="parameter.color" gemini-drop gemini-fieldmandatorycheck  gemini-clear>
                             {{parameter.value || parameter.description}}
                         </div>
                     </div>
@@ -64,7 +64,7 @@
 
                     <!--"EntryType.AutoComplete"-->
                     <div ng-switch-when="5">
-                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" ng-model="$parent.parameter.choice" select="parameter.prompt(request)" placeholder="{{parameter.description}}" gemini-autocomplete gemini-fieldmandatorycheck/>
+                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" ng-model="$parent.parameter.choice" select="parameter.prompt(request)" placeholder="{{parameter.description}}" gemini-autocomplete gemini-fieldmandatorycheck  gemini-clear/>
                     </div>
 
                     <!--"EntryType.MultipleConditionalChoices"-->
@@ -101,13 +101,13 @@
                         <div ng-switch="parameter.returnType">
                             <div ng-switch-when="string" ng-switch="parameter.format">
                                 <div ng-switch-when="date">
-                                    <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="date" placeholder="{{parameter.description}}" ng-model="$parent.parameter.value" gemini-datepicker gemini-fieldvalidate/>
+                                    <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="date" placeholder="{{parameter.description}}" ng-model="$parent.parameter.value" gemini-datepicker gemini-fieldvalidate gemini-clear/>
                                 </div>
                                 <div ng-switch-when="time">
-                                    <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="time" placeholder="{{parameter.description}}" ng-model="$parent.parameter.value" gemini-timepicker gemini-fieldvalidate/>
+                                    <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="time" placeholder="{{parameter.description}}" ng-model="$parent.parameter.value" gemini-timepicker gemini-fieldvalidate gemini-clear/>
                                 </div>
                                 <div ng-switch-default ng-switch="parameter.multipleLines">
-                                    <input ng-switch-when="1" id="{{parameter.paneArgId}}" class="{{parameter.status}}" placeholder="{{parameter.description}}" type="{{parameter.password ? 'password' : 'text'}}" ng-model="parameter.value" gemini-fieldvalidate/>
+                                    <input ng-switch-when="1" id="{{parameter.paneArgId}}" class="{{parameter.status}}" placeholder="{{parameter.description}}" type="{{parameter.password ? 'password' : 'text'}}" ng-model="parameter.value" gemini-fieldvalidate gemini-clear/>
                                     <textarea ng-switch-default rows="{{$parent.parameter.multipleLines}}" id="{{$parent.parameter.paneArgId}}" class="{{$parent.parameter.status}}" ng-model="$parent.parameter.value" gemini-fieldvalidate gemini-placeholder="$parent.parameter.description"></textarea>
                                 </div>
                             </div>
@@ -115,7 +115,7 @@
                                 <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="checkbox" ng-model="parameter.value" gemini-boolean/>{{parameter.description}}
                             </div>
                             <div ng-switch-default>
-                                <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="text" placeholder="{{parameter.description}}" ng-model="parameter.value" gemini-fieldvalidate/>
+                                <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="text" placeholder="{{parameter.description}}" ng-model="parameter.value" gemini-fieldvalidate  gemini-clear/>
                             </div>
                         </div>
 

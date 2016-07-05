@@ -19,19 +19,8 @@ var NakedObjects;
                 cvm.outputMessageThenClearIt();
             }
             else {
-                var output_1 = "";
                 if (routeData.menuId) {
-                    context.getMenu(routeData.menuId)
-                        .then(function (menu) {
-                        output_1 += menu.title() + " menu" + "\n";
-                        return routeData.dialogId ? context.getInvokableAction(menu.actionMember(routeData.dialogId)) : $q.when(null);
-                    }).then(function (details) {
-                        if (details) {
-                            output_1 += renderActionDialog(details, routeData, mask);
-                        }
-                    }).finally(function () {
-                        cvm.clearInputRenderOutputAndAppendAlertIfAny(output_1);
-                    });
+                    renderOpenMenu(routeData, cvm);
                 }
                 else {
                     cvm.clearInput();
@@ -50,61 +39,22 @@ var NakedObjects;
                     var output = "";
                     var openCollIds = openCollectionIds(routeData);
                     if (_.some(openCollIds)) {
-                        var id = openCollIds[0];
-                        var coll = obj.collectionMember(id);
-                        output += "Collection: " + coll.extensions().friendlyName() + " on " + TypePlusTitle(obj) + "\n";
-                        switch (coll.size()) {
-                            case 0:
-                                output += "empty";
-                                break;
-                            case 1:
-                                output += "1 item";
-                                break;
-                            default:
-                                output += coll.size() + " items";
-                        }
-                        cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+                        renderOpenCollection(openCollIds[0], obj, cvm);
+                    }
+                    else if (obj.isTransient()) {
+                        renderTransientObject(routeData, obj, cvm);
+                    }
+                    else if (routeData.interactionMode === NakedObjects.InteractionMode.Edit ||
+                        routeData.interactionMode === NakedObjects.InteractionMode.Form) {
+                        renderForm(routeData, obj, cvm);
                     }
                     else {
-                        if (obj.isTransient()) {
-                            output += "Unsaved ";
-                            output += obj.extensions().friendlyName() + "\n";
-                            output += renderModifiedProperties(obj, routeData, mask);
-                            cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-                        }
-                        else if (routeData.interactionMode === NakedObjects.InteractionMode.Edit ||
-                            routeData.interactionMode === NakedObjects.InteractionMode.Form) {
-                            var output_2 = "Editing ";
-                            output_2 += PlusTitle(obj) + "\n";
-                            if (routeData.dialogId) {
-                                context.getInvokableAction(obj.actionMember(routeData.dialogId))
-                                    .then(function (details) {
-                                    output_2 += renderActionDialog(details, routeData, mask);
-                                    cvm.clearInputRenderOutputAndAppendAlertIfAny(output_2);
-                                });
-                            }
-                            else {
-                                output_2 += renderModifiedProperties(obj, routeData, mask);
-                                cvm.clearInputRenderOutputAndAppendAlertIfAny(output_2);
-                            }
-                        }
-                        else {
-                            var output_3 = Title(obj) + "\n";
-                            if (routeData.dialogId) {
-                                context.getInvokableAction(obj.actionMember(routeData.dialogId))
-                                    .then(function (details) {
-                                    output_3 += renderActionDialog(details, routeData, mask);
-                                    cvm.clearInputRenderOutputAndAppendAlertIfAny(output_3);
-                                });
-                            }
-                            else {
-                                cvm.clearInputRenderOutputAndAppendAlertIfAny(output_3);
-                            }
-                        }
+                        renderObjectTitleAndDialogIfOpen(routeData, obj, cvm);
                     }
                 }).catch(function (reject) {
+                    //TODO: Is the first test necessary or would this be rendered OK by generic error handling?
                     if (reject.category === ErrorCategory.ClientError && reject.clientErrorCode === ClientErrorCode.ExpiredTransient) {
-                        cvm.output = "The requested view of unsaved object details has expired";
+                        cvm.output = NakedObjects.errorExpiredTransient;
                     }
                     else {
                         error.handleError(reject);
@@ -122,15 +72,7 @@ var NakedObjects;
                     context.getMenu(routeData.menuId).then(function (menu) {
                         var count = list.value().length;
                         var numPages = list.pagination().numPages;
-                        var description;
-                        if (numPages > 1) {
-                            var page = list.pagination().page;
-                            var totalCount = list.pagination().totalCount;
-                            description = "Page " + page + " of " + numPages + " containing " + count + " of " + totalCount + " items";
-                        }
-                        else {
-                            description = count + " items";
-                        }
+                        var description = getListDescription(numPages, list, count);
                         var actionMember = menu.actionMember(routeData.actionId);
                         var actionName = actionMember.extensions().friendlyName();
                         var output = "Result from " + actionName + ":\n" + description;
@@ -144,9 +86,73 @@ var NakedObjects;
             cvm.clearInput();
             cvm.output = "Sorry, an application error has occurred. " + err.message();
         };
+        function getListDescription(numPages, list, count) {
+            if (numPages > 1) {
+                var page = list.pagination().page;
+                var totalCount = list.pagination().totalCount;
+                return "Page " + page + " of " + numPages + " containing " + count + " of " + totalCount + " items";
+            }
+            else {
+                return count + " items";
+            }
+        }
         //Returns collection Ids for any collections on an object that are currently in List or Table mode
         function openCollectionIds(routeData) {
             return _.filter(_.keys(routeData.collections), function (k) { return routeData.collections[k] != NakedObjects.CollectionViewState.Summary; });
+        }
+        function renderOpenCollection(collId, obj, cvm) {
+            var coll = obj.collectionMember(collId);
+            var output = renderCollectionNameAndSize(coll);
+            output += "(" + NakedObjects.collection + " " + NakedObjects.on + " " + TypePlusTitle(obj) + ")";
+            cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+        }
+        function renderTransientObject(routeData, obj, cvm) {
+            var output = NakedObjects.unsaved + " ";
+            output += obj.extensions().friendlyName() + "\n";
+            output += renderModifiedProperties(obj, routeData, mask);
+            cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+        }
+        function renderForm(routeData, obj, cvm) {
+            var output = NakedObjects.editing + " ";
+            output += PlusTitle(obj) + "\n";
+            if (routeData.dialogId) {
+                context.getInvokableAction(obj.actionMember(routeData.dialogId))
+                    .then(function (details) {
+                    output += renderActionDialog(details, routeData, mask);
+                    cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+                });
+            }
+            else {
+                output += renderModifiedProperties(obj, routeData, mask);
+                cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+            }
+        }
+        function renderObjectTitleAndDialogIfOpen(routeData, obj, cvm) {
+            var output = Title(obj) + "\n";
+            if (routeData.dialogId) {
+                context.getInvokableAction(obj.actionMember(routeData.dialogId))
+                    .then(function (details) {
+                    output += renderActionDialog(details, routeData, mask);
+                    cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+                });
+            }
+            else {
+                cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+            }
+        }
+        function renderOpenMenu(routeData, cvm) {
+            var output = "";
+            context.getMenu(routeData.menuId)
+                .then(function (menu) {
+                output += NakedObjects.menuTitle(menu.title());
+                return routeData.dialogId ? context.getInvokableAction(menu.actionMember(routeData.dialogId)) : $q.when(null);
+            }).then(function (details) {
+                if (details) {
+                    output += "\n" + renderActionDialog(details, routeData, mask);
+                }
+            }).finally(function () {
+                cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+            });
         }
         function renderActionDialog(invokable, routeData, mask) {
             var actionName = invokable.extensions().friendlyName();
@@ -161,9 +167,10 @@ var NakedObjects;
         }
         function renderModifiedProperties(obj, routeData, mask) {
             var output = "";
-            if (_.keys(routeData.props).length > 0) {
-                output += "Modified properties:\n";
-                _.each(routeData.props, function (value, propId) {
+            var props = context.getCurrentObjectValues(obj.id());
+            if (_.keys(props).length > 0) {
+                output += NakedObjects.modifiedProperties + ":\n";
+                _.each(props, function (value, propId) {
                     output += FriendlyNameForProperty(obj, propId) + ": ";
                     var pm = obj.propertyMember(propId);
                     output += renderFieldValue(pm, value, mask);
@@ -181,23 +188,15 @@ var NakedObjects;
     //Handles empty values, and also enum conversion
     function renderFieldValue(field, value, mask) {
         if (!field.isScalar()) {
-            return value.isNull() ? "empty" : value.toString();
+            return value.isNull() ? NakedObjects.empty : value.toString();
         }
         //Rest is for scalar fields only:
         if (value.toString()) {
-            //This is to handle an enum: render it as text, not a number:           
             if (field.entryType() === EntryType.Choices) {
-                var inverted = _.invert(field.choices());
-                return inverted[value.toValueString()];
+                return renderSingleChoice(field, value);
             }
             else if (field.entryType() === EntryType.MultipleChoices && value.isList()) {
-                var inverted_1 = _.invert(field.choices());
-                var output_4 = "";
-                var values = value.list();
-                _.forEach(values, function (v) {
-                    output_4 += inverted_1[v.toValueString()] + ",";
-                });
-                return output_4;
+                return renderMultipleChoicesCommaSeparated(field, value);
             }
         }
         var properScalarValue;
@@ -208,7 +207,7 @@ var NakedObjects;
             properScalarValue = value.scalar();
         }
         if (properScalarValue === "" || properScalarValue == null) {
-            return "empty";
+            return NakedObjects.empty;
         }
         else {
             var remoteMask = field.extensions().mask();
@@ -217,5 +216,35 @@ var NakedObjects;
         }
     }
     NakedObjects.renderFieldValue = renderFieldValue;
+    function renderSingleChoice(field, value) {
+        //This is to handle an enum: render it as text, not a number:  
+        var inverted = _.invert(field.choices());
+        return inverted[value.toValueString()];
+    }
+    function renderMultipleChoicesCommaSeparated(field, value) {
+        //This is to handle an enum: render it as text, not a number: 
+        var inverted = _.invert(field.choices());
+        var output = "";
+        var values = value.list();
+        _.forEach(values, function (v) {
+            output += inverted[v.toValueString()] + ",";
+        });
+        return output;
+    }
+    function renderCollectionNameAndSize(coll) {
+        var output = coll.extensions().friendlyName() + ": ";
+        switch (coll.size()) {
+            case 0:
+                output += NakedObjects.empty;
+                break;
+            case 1:
+                output += "1 " + NakedObjects.item;
+                break;
+            default:
+                output += NakedObjects.numberOfItems(coll.size());
+        }
+        return output + "\n";
+    }
+    NakedObjects.renderCollectionNameAndSize = renderCollectionNameAndSize;
 })(NakedObjects || (NakedObjects = {}));
 //# sourceMappingURL=nakedobjects.cicerorenderer.js.map

@@ -9,7 +9,7 @@ module NakedObjects {
         $exceptionHandler() {
 
 
-            this.$get = ($injector : any) => (exception : any) => {
+            this.$get = ($injector: any) => (exception: { message: string, stack: string }) => {
                 const ulrManager: IUrlManager = $injector.get("urlManager");
                 const context: IContext = $injector.get("context");
 

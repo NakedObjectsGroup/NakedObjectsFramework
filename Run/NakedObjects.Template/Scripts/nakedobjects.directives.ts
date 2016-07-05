@@ -21,8 +21,8 @@ module NakedObjects {
     }
 
     interface IPropertyOrParameterScope extends INakedObjectsScope {
-        property?: ValueViewModel;
-        parameter?: ValueViewModel;
+        property?: IFieldViewModel;
+        parameter?: IFieldViewModel;
     }
 
     app.directive("geminiDatepicker", (mask: IMask, $timeout: ng.ITimeoutService): ng.IDirective => {
@@ -80,6 +80,7 @@ module NakedObjects {
                             // update the two way binding
 
                             ngModel.$setViewValue(dateTxt);
+                            element.change(); // do this to trigger gemini-clear directive  
                         });
                     };
 
@@ -134,6 +135,7 @@ module NakedObjects {
                             // update the two way binding
 
                             ngModel.$setViewValue(element.val());
+                            element.change(); // do this to trigger gemini-clear directive 
                         });
                         return true;
                     };
@@ -176,8 +178,8 @@ module NakedObjects {
                 const parent = scope.$parent as IPropertyOrParameterScope;
                 const viewModel = parent.parameter || parent.property;
 
-                function render(initialChoice?: ChoiceViewModel) {
-                    const cvm = ngModel.$modelValue as ChoiceViewModel || initialChoice;
+                function render(initialChoice?: IChoiceViewModel) {
+                    const cvm = ngModel.$modelValue as IChoiceViewModel || initialChoice;
 
                     if (cvm) {
                         ngModel.$parsers.push(() => cvm);
@@ -188,14 +190,13 @@ module NakedObjects {
 
                 ngModel.$render = render;
 
-                const updateModel = (cvm: ChoiceViewModel) => {
+                const updateModel = (cvm: IChoiceViewModel) => {
 
                     scope.$apply(() => {
                         viewModel.clear();                        
                         ngModel.$parsers.push(() => cvm);
                         ngModel.$setViewValue(cvm.name);
                         element.val(cvm.name);      
-                        viewModel.setColor(color);               
                     });
                 };
 
@@ -225,12 +226,43 @@ module NakedObjects {
                 element.keyup(clearHandler);
                 (element as any).autocomplete(optionsObj);
                 render(viewModel.choice);
+
+                (ngModel as any).$validators.geminiAutocomplete = (modelValue: any, viewValue: string) => {
+                    // return OK if no value or value is of correct type.
+                    if (viewModel.optional && !viewValue) {
+                        // optional with no value
+                        viewModel.resetMessage();
+                        viewModel.clientValid = true;
+                    }
+                    else if (!viewModel.optional && !viewValue) {
+                        // mandatory with no value
+                        viewModel.resetMessage();
+                        viewModel.clientValid = false;
+                    }
+                    else if (modelValue instanceof ChoiceViewModel) {
+                        // has view model check if it's valid                       
+                        if (!modelValue.name) {
+                            viewModel.setMessage(pendingAutoComplete);
+                            viewModel.clientValid = false;
+                        }
+                    }
+                    else { 
+                        // has value but not ChoiceViewModel so must be invalid 
+                        viewModel.setMessage(pendingAutoComplete);
+                        viewModel.clientValid = false;
+                    }
+
+                    return viewModel.clientValid;
+                };
             }
         };
     });
 
     app.directive("geminiConditionalchoices", (): ng.IDirective => {
         return {
+            // up the priority of this directive to that viewmodel is set before ng-options - 
+            // then angular doesn't add an empty entry on dropdown
+            priority : 10,
             // Enforce the angularJS default of restricting the directive to
             // attributes only
             restrict: "A",
@@ -246,7 +278,7 @@ module NakedObjects {
 
                 const parent = scope.$parent as IPropertyOrParameterScope;
                 const viewModel = parent.parameter || parent.property;
-                const pArgs = _.omit(viewModel.arguments, "x-ro-nof-members") as _.Dictionary<Value>;
+                const pArgs = _.omit(viewModel.promptArguments, "x-ro-nof-members") as _.Dictionary<Value>;
                 const paneId = viewModel.onPaneId;
                 let currentOptions: ChoiceViewModel[] = [];
 
@@ -547,7 +579,7 @@ module NakedObjects {
         const parameterScope = () => scope.$parent.$parent;
 
         const accept = (draggable: any) => {
-            const droppableVm: ValueViewModel = propertyScope().property || parameterScope().parameter;
+            const droppableVm: IFieldViewModel = propertyScope().property || parameterScope().parameter;
             const draggableVm: IDraggableViewModel = draggable.data(draggableVmKey);
 
             if (draggableVm) {
@@ -575,7 +607,7 @@ module NakedObjects {
             if (element.hasClass("candrop")) {
 
                 const droppableScope = propertyScope().property ? propertyScope() : parameterScope();
-                const droppableVm: ValueViewModel = droppableScope.property || droppableScope.parameter;
+                const droppableVm: IFieldViewModel = droppableScope.property || droppableScope.parameter;
                 const draggableVm = <IDraggableViewModel>ui.draggable.data(draggableVmKey);
 
                 droppableScope.$apply(() => {
@@ -592,7 +624,7 @@ module NakedObjects {
              
 
                 const droppableScope = propertyScope().property ? propertyScope() : parameterScope();
-                const droppableVm: ValueViewModel = droppableScope.property || droppableScope.parameter;
+                const droppableVm: IFieldViewModel = droppableScope.property || droppableScope.parameter;
                 const draggableVm = <IDraggableViewModel>($("div.footer div.currentcopy .reference").data(draggableVmKey) as any);
 
                 if (draggableVm) {
@@ -603,7 +635,7 @@ module NakedObjects {
             }
             if (event.keyCode === deleteKeyCode) {
                 const droppableScope = propertyScope().property ? propertyScope() : parameterScope();
-                const droppableVm: ValueViewModel = droppableScope.property || droppableScope.parameter;
+                const droppableVm: IFieldViewModel = droppableScope.property || droppableScope.parameter;
 
                 scope.$apply(droppableVm.clear());
             }
@@ -623,7 +655,7 @@ module NakedObjects {
                 }
 
                 ngModel.$render = () => {
-                    const attachment: AttachmentViewModel = ngModel.$modelValue;
+                    const attachment: IAttachmentViewModel = ngModel.$modelValue;
 
                     if (attachment) {
                         const title = attachment.title;
@@ -880,5 +912,58 @@ module NakedObjects {
         }
     }));
 
+    app.directive("geminiClear", ($timeout : ng.ITimeoutService): ng.IDirective => {
+        return {
+            // Enforce the angularJS default of restricting the directive to
+            // attributes only
+            restrict: "A",
+            // Always use along with an ng-model
+            require: "?ngModel",
+            link: (scope: ISelectScope, elm: ng.IAugmentedJQuery, attrs: ng.IAttributes, ngModel: ng.INgModelController) => {
+                if (!ngModel) {
+                    return;
+                }
+
+                // wrap in timeout or we won't see initial value 
+                $timeout(() => {
+                    $(elm).addClass("ng-clearable");
+
+                    if (elm.val()) {
+                        $(elm).addClass("ng-x");
+                    } else {
+                        $(elm).removeClass("ng-x");
+                    }
+                });
+     
+                elm.on("input change", function () {
+                    $(this).addClass("ng-clearable");
+                    if (this.value) {
+                        $(this).addClass("ng-x");
+                    } else {
+                        $(this).removeClass("ng-x");
+                    }
+                }).on("mousemove", function (e) {
+                    if (elm.hasClass("ng-x")) {
+
+                        const onX = this.offsetWidth - 18 < e.clientX - this.getBoundingClientRect().left;
+
+                        if (onX) {
+                            $(this).addClass("ng-onX");
+                        } else {
+                            $(this).removeClass("ng-onX");
+                        }
+                    }
+                }).on("touchstart click", function (ev) {
+                    if ($(this).hasClass("ng-onX")) {
+                        ev.preventDefault();
+                        $(this).removeClass("ng-x ng-onX");
+                        $(this).val("");
+                        ngModel.$parsers.push(() => null);
+                        ngModel.$setViewValue("");            
+                    }
+                });
+            }
+        };
+    });
 
 }

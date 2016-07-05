@@ -17,6 +17,9 @@ var NakedObjects;
     NakedObjects.notAnInteger = "Not an integer";
     NakedObjects.notANumber = "Not a number";
     NakedObjects.mandatory = "Mandatory";
+    NakedObjects.optional = "Optional";
+    NakedObjects.choices = "Choices";
+    NakedObjects.pendingAutoComplete = "Pending auto-complete...";
     NakedObjects.noPatternMatch = "Invalid entry";
     NakedObjects.closeActions = "Close actions";
     NakedObjects.noActions = "No actions available";
@@ -30,7 +33,7 @@ var NakedObjects;
     NakedObjects.noItemsSelected = "Must select items for collection contributed action";
     NakedObjects.dropPrompt = "(drop here)";
     NakedObjects.autoCompletePrompt = "(auto-complete or drop)";
-    NakedObjects.concurrencyMessage = "Object has been updated by another user\n. Object has been reloaded.";
+    NakedObjects.concurrencyMessage = "The object has been reloaded to pick up changes by another user. Please review, and re-enter any changes you still require.";
     NakedObjects.loadingMessage = "Loading...";
     NakedObjects.outOfRange = function (val, min, max, filter) { return ("Value is outside the range " + (filter.filter(min) || "unlimited") + " to " + (filter.filter(max) || "unlimited")); };
     NakedObjects.pageMessage = function (p, tp, c, tc) { return ("Page " + p + " of " + tp + "; viewing " + c + " of " + tc + " items"); };
@@ -84,6 +87,10 @@ var NakedObjects;
     NakedObjects.cancelCommand = "cancel";
     NakedObjects.cancelHelp = "Leave the current activity (action dialog, or object edit), incomplete.";
     NakedObjects.clipboardCommand = "clipboard";
+    NakedObjects.clipboardCopy = "copy";
+    NakedObjects.clipboardShow = "show";
+    NakedObjects.clipboardGo = "go";
+    NakedObjects.clipboardDiscard = "discard";
     NakedObjects.clipboardHelp = "The clipboard command is used for temporarily\n" +
         "holding a reference to an object, so that it may be used later\n" +
         "to enter into a field.\n" +
@@ -138,6 +145,10 @@ var NakedObjects;
     NakedObjects.okHelp = "Invoke the action currently open as a dialog.\n" +
         "Fields in the dialog should be completed before this.";
     NakedObjects.pageCommand = "page";
+    NakedObjects.pageFirst = "first";
+    NakedObjects.pagePrevious = "previous";
+    NakedObjects.pageNext = "next";
+    NakedObjects.pageLast = "last";
     NakedObjects.pageHelp = "Supports paging of returned lists.\n" +
         "The page command takes a single argument, which may be one of these four words:\n" +
         "first, previous, next, or last, \n" +
@@ -168,13 +179,92 @@ var NakedObjects;
         "May take 1 argument: the partial field name.\n" +
         "If this matches more than one property, a list of matches is returned.\n" +
         "If no argument is provided, the full list of properties is returned.\n" +
-        "In the context of an opened object collection, or a list,\n";
-    "shows one or more items from that collection or list.\n" +
+        "In the context of an opened object collection, or a list,\n" +
+        "shows one or more items from that collection or list.\n" +
         "If no arguments are specified, show will list all of the the items in the collection,\n" +
         "or the first page of items if in a list view.\n" +
         "Alternatively, the command may be specified with an item number, or a range such as 3- 5.";
     NakedObjects.whereCommand = "where";
     NakedObjects.whereHelp = "Display a reminder of the current context.\n" +
         "The same can also be achieved by hitting the Return key on the empty input field.";
+    //Cicero feedback messages
+    NakedObjects.commandTooShort = "Command word must have at least 2 characters";
+    NakedObjects.noCommandMatch = function (a) { return ("No command begins with " + a); };
+    NakedObjects.commandsAvailable = "Commands available in current context:\n";
+    NakedObjects.noArguments = "No arguments provided";
+    NakedObjects.tooFewArguments = "Too few arguments provided";
+    NakedObjects.tooManyArguments = "Too many arguments provided";
+    NakedObjects.commandNotAvailable = function (c) { return ("The command: " + c + " is not available in the current context"); };
+    NakedObjects.startHigherEnd = "Starting item number cannot be greater than the ending item number";
+    NakedObjects.highestItem = function (n) { return ("The highest numbered item is " + n); };
+    NakedObjects.item = "item";
+    NakedObjects.empty = "empty";
+    NakedObjects.numberOfItems = function (n) { return (n + " items"); };
+    NakedObjects.on = "on";
+    NakedObjects.collection = "Collection";
+    NakedObjects.modified = "modified";
+    NakedObjects.properties = "properties";
+    NakedObjects.modifiedProperties = "Modified " + NakedObjects.properties;
+    NakedObjects.noVisible = "No visible properties";
+    NakedObjects.doesNotMatch = function (name) { return (name + " does not match any properties"); };
+    NakedObjects.alreadyOnFirst = "List is already showing the first page";
+    NakedObjects.alreadyOnLast = "List is already showing the last page";
+    NakedObjects.pageArgumentWrong = "The argument must match: first, previous, next, last, or a single number";
+    NakedObjects.pageNumberWrong = function (max) { return ("Specified page number must be between 1 and " + max); };
+    NakedObjects.mayNotbeChainedMessage = function (c, r) { return (c + " command may not be chained" + r + ". Use Where command to see where execution stopped."); };
+    NakedObjects.queryOnlyRider = " unless the action is query-only";
+    NakedObjects.noSuchCommand = function (c) { return ("No such command: " + c); };
+    NakedObjects.missingArgument = function (i) { return ("Required argument number " + i + " is missing"); };
+    NakedObjects.wrongTypeArgument = function (i) { return ("Argument number " + i + " must be a number"); };
+    NakedObjects.isNotANumber = function (s) { return (s + " is not a number"); };
+    NakedObjects.tooManyDashes = "Cannot have more than one dash in argument";
+    NakedObjects.mustBeGreaterThanZero = "Item number or range values must be greater than zero";
+    NakedObjects.pleaseCompleteOrCorrect = "Please complete or correct these fields:\n";
+    NakedObjects.required = "required";
+    NakedObjects.mustbeQuestionMark = "Second argument may only be a question mark -  to get action details";
+    NakedObjects.noActionsAvailable = "No actions available";
+    NakedObjects.doesNotMatchActions = function (a) { return (a + " does not match any actions"); };
+    NakedObjects.matchingActions = "Matching actions:\n";
+    NakedObjects.actionsMessage = "Actions:\n";
+    NakedObjects.actionPrefix = "Action:";
+    NakedObjects.disabledPrefix = "disabled:";
+    NakedObjects.isDisabled = "is disabled.";
+    NakedObjects.noDescription = "No description provided";
+    NakedObjects.descriptionPrefix = "Description for action:";
+    NakedObjects.clipboardError = "Clipboard command may only be followed by copy, show, go, or discard";
+    NakedObjects.clipboardContextError = "Clipboard copy may only be used in the context of viewing an object";
+    NakedObjects.clipboardContents = function (contents) { return ("Clipboard contains: " + contents); };
+    NakedObjects.clipboardEmpty = "Clipboard is empty";
+    NakedObjects.doesNotMatchProperties = function (name) { return (name + " does not match any properties"); };
+    NakedObjects.matchesMultiple = "matches multiple fields:\n";
+    NakedObjects.doesNotMatchDialog = function (name) { return (name + " does not match any fields in the dialog"); };
+    NakedObjects.multipleFieldMatches = "Multiple fields match";
+    NakedObjects.isNotModifiable = "is not modifiable";
+    NakedObjects.invalidCase = "Invalid case";
+    NakedObjects.invalidRefEntry = "Invalid entry for a reference field. Use clipboard or clip";
+    NakedObjects.emptyClipboard = "Cannot use Clipboard as it is empty";
+    NakedObjects.incompatibleClipboard = "Contents of Clipboard are not compatible with the field";
+    NakedObjects.noMatch = function (s) { return ("None of the choices matches " + s); };
+    NakedObjects.multipleMatches = "Multiple matches:\n";
+    NakedObjects.fieldName = function (name) { return ("Field name: " + name); };
+    NakedObjects.descriptionFieldPrefix = "Description:";
+    NakedObjects.typePrefix = "Type:";
+    NakedObjects.unModifiablePrefix = function (reason) { return ("Unmodifiable: " + reason); };
+    NakedObjects.outOfItemRange = function (n) { return (n + " is out of range for displayed items"); };
+    NakedObjects.doesNotMatchMenu = function (name) { return (name + " does not match any menu"); };
+    NakedObjects.matchingMenus = "Matching menus:";
+    NakedObjects.menuTitle = function (title) { return (title + " menu"); };
+    NakedObjects.allMenus = "Menus:";
+    NakedObjects.noRefFieldMatch = function (s) { return (s + " does not match any reference fields or collections"); };
+    NakedObjects.unsaved = "Unsaved";
+    NakedObjects.editing = "Editing";
+    //Error messages
+    NakedObjects.errorUnknown = "Unknown software error";
+    NakedObjects.errorExpiredTransient = "The requested view of unsaved object details has expired";
+    NakedObjects.errorWrongType = "An unexpected type of result was returned";
+    NakedObjects.errorNotImplemented = "The requested software feature is not implemented";
+    NakedObjects.errorSoftware = "A software error occurred";
+    NakedObjects.errorConnection = "The client failed to connect to the server";
+    NakedObjects.errorClient = "Client Error";
 })(NakedObjects || (NakedObjects = {}));
 //# sourceMappingURL=nakedobjects.userMessages.config.js.map

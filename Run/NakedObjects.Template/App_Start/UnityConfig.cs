@@ -18,6 +18,7 @@ using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Unity;
 using Common.Logging;
+using NakedObjects.Facade.Interface;
 
 namespace NakedObjects.Template
 {
@@ -77,6 +78,7 @@ namespace NakedObjects.Template
                 container.RegisterType<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>(new PerResolveLifetimeManager());
 
                 container.RegisterType<IOidStrategy, EntityOidStrategy>(new PerResolveLifetimeManager());
+                container.RegisterType<IStringHasher, ConstantStringHasher>(new PerResolveLifetimeManager());
                 container.RegisterType<IFrameworkFacade, FrameworkFacade>(new PerResolveLifetimeManager());
 
                 //Externals

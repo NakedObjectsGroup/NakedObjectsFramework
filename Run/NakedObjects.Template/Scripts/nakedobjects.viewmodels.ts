@@ -29,22 +29,14 @@ module NakedObjects {
     import toTimeString = Models.toTimeString;
     import IVersionRepresentation = RoInterfaces.IVersionRepresentation;
     import IUserRepresentation = RoInterfaces.IUserRepresentation;
+    import Extensions = Models.Extensions;
 
-    export interface IDraggableViewModel {
-        canDropOn: (targetType: string) => ng.IPromise<boolean>;
-        value: scalarValueType | Date;
-        reference: string;
-        choice: ChoiceViewModel;
-        color: string;
-        draggableType: string;
-    }
-
-    function tooltip(onWhat: { clientValid: () => boolean }, fields: ValueViewModel[]): string {
+    function tooltip(onWhat: { clientValid: () => boolean }, fields: IFieldViewModel[]): string {
         if (onWhat.clientValid()) {
             return "";
         }
 
-        const missingMandatoryFields = _.filter(fields, p => !p.clientValid && !p.message);
+        const missingMandatoryFields = _.filter(fields, p => !p.clientValid && !p.getMessage());
 
         if (missingMandatoryFields.length > 0) {
             return _.reduce(missingMandatoryFields, (s, t) => s + t.title + "; ", mandatoryFieldsPrefix);
@@ -92,26 +84,24 @@ module NakedObjects {
         return menu || "";
     }
 
-    function removeDuplicateMenus(menus: MenuItemViewModel[]) {
-        return _.uniqWith(menus, (a: MenuItemViewModel, b: MenuItemViewModel) => {
-            if (a.name && b.name) {
-                return a.name === b.name;
+    function removeDuplicateMenus(menus: IMenuItemViewModel[]) {
+        return _.uniqWith(menus, (m1: IMenuItemViewModel, m2: IMenuItemViewModel) => {
+            if (m1.name && m2.name) {
+                return m1.name === m2.name;
             }
             return false;
         });
     }
 
-    export function createSubmenuItems(avms: ActionViewModel[], menu: MenuItemViewModel, level: number) {
+    export function createSubmenuItems(avms: IActionViewModel[], menu: IMenuItemViewModel, level: number) {
         // if not root menu aggregate all actions with same name
         if (menu.name) {
-            const actions = _.filter(avms, a => getMenuForLevel(a.menuPath, level) === menu.name &&
-                !getMenuForLevel(a.menuPath, level + 1));
+            const actions = _.filter(avms, a => getMenuForLevel(a.menuPath, level) === menu.name && !getMenuForLevel(a.menuPath, level + 1));
             menu.actions = actions;
 
             //then collate submenus 
 
-            const submenuActions = _.filter(avms, a => getMenuForLevel(a.menuPath, level) === menu.name &&
-                getMenuForLevel(a.menuPath, level + 1));
+            const submenuActions = _.filter(avms, (a : IActionViewModel) => getMenuForLevel(a.menuPath, level) === menu.name && getMenuForLevel(a.menuPath, level + 1));
             let menus = _
                 .chain(submenuActions)
                 .map(a => new MenuItemViewModel(getMenuForLevel(a.menuPath, level + 1), null, null))
@@ -124,7 +114,7 @@ module NakedObjects {
         return menu;
     }
 
-    export function createMenuItems(avms: ActionViewModel[]) {
+    export function createMenuItems(avms: IActionViewModel[]) {
 
         // first create a top level menu for each action 
         // note at top level we leave 'un-menued' actions
@@ -140,7 +130,7 @@ module NakedObjects {
         return _.map(menus, m => createSubmenuItems(avms, m, 0));
     }
 
-    export class AttachmentViewModel {
+    export class AttachmentViewModel implements IAttachmentViewModel {
         href: string;
         mimeType: string;
         title: string;
@@ -159,7 +149,7 @@ module NakedObjects {
             attachmentViewModel.parent = parent;
             attachmentViewModel.context = context;
             attachmentViewModel.onPaneId = paneId;
-            return attachmentViewModel;
+            return attachmentViewModel as IAttachmentViewModel;
         }
 
         downloadFile = () => this.context.getFile(this.parent, this.href, this.mimeType);
@@ -173,13 +163,13 @@ module NakedObjects {
         doClick: (right?: boolean) => void;
     }
 
-    export class ChoiceViewModel {
-        id: string;
+    export class ChoiceViewModel implements IChoiceViewModel {
         name: string;
-        search: string;
-        isEnum: boolean;
-        isReference: boolean;
-        wrapped: Value;
+
+        private id: string;
+        private search: string;
+        private isEnum: boolean;
+        private wrapped: Value;
 
         static create(value: Value, id: string, name?: string, searchTerm?: string) {
             const choiceViewModel = new ChoiceViewModel();
@@ -189,68 +179,77 @@ module NakedObjects {
             choiceViewModel.search = searchTerm || choiceViewModel.name;
 
             choiceViewModel.isEnum = !value.isReference() && (choiceViewModel.name !== choiceViewModel.getValue().toValueString());
-            choiceViewModel.isReference = value.isReference();
-            return choiceViewModel;
+            return choiceViewModel as IChoiceViewModel;
         }
 
         getValue() {
             return this.wrapped;
         }
 
-        equals(other: ChoiceViewModel) {
-            return this.id === other.id &&
+        equals(other: IChoiceViewModel) : boolean {
+            return other instanceof ChoiceViewModel &&
+                this.id === other.id &&
                 this.name === other.name &&
                 this.wrapped.toValueString() === other.wrapped.toValueString();
         }
 
-        match(other: ChoiceViewModel) {
-            const thisValue = this.isEnum ? this.wrapped.toValueString().trim() : this.search.trim();
-            const otherValue = this.isEnum ? other.wrapped.toValueString().trim() : other.search.trim();
-            return thisValue === otherValue;
+        valuesEqual(other: IChoiceViewModel) : boolean {
+           
+            if (other instanceof ChoiceViewModel) {
+                const thisValue = this.isEnum ? this.wrapped.toValueString().trim() : this.search.trim();
+                const otherValue = this.isEnum ? other.wrapped.toValueString().trim() : other.search.trim();
+                return thisValue === otherValue;
+            }
+            return false;
+        }
+
+        toString() {
+            return this.name;
         }
     }
 
-    export class ErrorViewModel {
+    export class ErrorViewModel implements IErrorViewModel{
         originalError : ErrorWrapper;
         title: string;
         message: string;
         stackTrace: string[];
-        code: string;
+        errorCode: string;
         description: string;
         isConcurrencyError: boolean;
     }
 
-
-
-    export class LinkViewModel implements IDraggableViewModel {
+    export class LinkViewModel implements ILinkViewModel, IDraggableViewModel {
+        // ILinkViewModel
         title: string;
-        color: string;
+        domainType: string;
+        link: Link;
+
         doClick: (right?: boolean) => void;
 
-        canDropOn: (targetType: string) => ng.IPromise<boolean>;
-
+        // IDraggableViewModel 
+        color: string;
         value: scalarValueType;
         reference: string;
-        choice: ChoiceViewModel;
-        domainType: string;
+        choice: IChoiceViewModel;
         draggableType: string;
-        link: Link;
+        canDropOn: (targetType: string) => ng.IPromise<boolean>;
     }
 
-    export class ItemViewModel extends LinkViewModel {
-        target: TableRowViewModel;
+    export class ItemViewModel extends LinkViewModel implements IItemViewModel, IDraggableViewModel {
+        tableRowViewModel: ITableRowViewModel;
         selected: boolean;
-        checkboxChange: (index: number) => void;
+        selectionChange: (index: number) => void;
     }
 
-    export class RecentItemViewModel extends ItemViewModel {
+    export class RecentItemViewModel extends LinkViewModel implements IRecentItemViewModel, IDraggableViewModel {
         friendlyName: string;
     }
 
-    export class MessageViewModel {
-        previousMessage: string = "";
-        message: string = "";
-        clearMessage() {
+    abstract class MessageViewModel implements IMessageViewModel {
+        private previousMessage = "";
+        private message = "";
+        
+        clearMessage = () => {
             if (this.message === this.previousMessage) {
                 this.resetMessage();
             } else {
@@ -258,86 +257,119 @@ module NakedObjects {
             }
         }
 
-        resetMessage() {
-            this.message = this.previousMessage = "";
-        }
-
-        setMessage(msg: string) {
-            this.message = msg;
-        }
+        resetMessage = () => this.message = this.previousMessage = "";
+        setMessage = (msg: string) => this.message = msg;
+        getMessage = () => this.message; 
     }
 
-    export class ValueViewModel extends MessageViewModel {
+    abstract class ValueViewModel extends MessageViewModel implements IFieldViewModel {
 
-        validate: (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
-        clientValid: boolean;
+        constructor(ext: Extensions, color : IColor) {
+            super();
+            this.optional = ext.optional();
+            this.description = ext.description();
+            this.presentationHint = ext.presentationHint();
+            this.mask = ext.mask();
+            this.title = ext.friendlyName();
+            this.returnType = ext.returnType();
+            this.format = ext.format();
+            this.multipleLines = ext.multipleLines() || 1;
+            this.password = ext.dataType() === "password";
+            this.updateColor = _.partial(this.setColor, color);                                         
+        }
 
-        isDirty = () => false;
+        id: string;
+        argId: string;
+        paneArgId: string;
+        onPaneId: number;
 
+        optional: boolean;
+        description: string;
+        presentationHint: string;
+        mask: string;
+        title: string;
+        returnType: string;
+        format: formatType;
+        multipleLines: number;
+        password: boolean;
+
+        clientValid = true;
+      
+        type: "scalar" | "ref";
+        reference: string = "";
+        minLength: number;
+
+        color: string;
+        
+        isCollectionContributed: boolean;
+          
+        promptArguments: _.Dictionary<Value>;
+         
         currentValue: Value;
         originalValue: Value;
 
         localFilter: ILocalFilter;
-        formattedValue: string;
-        value: scalarValueType | Date;
-        id: string;
-        argId: string;
-        paneArgId: string;
-        choices: ChoiceViewModel[];
+        formattedValue: string;    
+      
+        choices: IChoiceViewModel[] = [];  
 
-        type: "scalar" | "ref";
-        reference: string;
-        choice: ChoiceViewModel;
-        multiChoices: ChoiceViewModel[];
-        file: Link;
+        private currentChoice: IChoiceViewModel;
 
-        returnType: string;
-        title: string;
-        format: formatType;
-        arguments: _.Dictionary<Value>;
-        mask: string;
-        password: boolean;
+        get choice(): IChoiceViewModel {
+            return this.currentChoice;
+        }
 
-        minLength: number;
+        set choice(newChoice: IChoiceViewModel) {
+            // type guard becauase angular pushes string value here until directive finds 
+            // choice
+            if (newChoice instanceof ChoiceViewModel || newChoice == null) {
+                this.currentChoice = newChoice;
+                this.updateColor();
+            }
+        }
 
-        color: string;
-        description: string;
-        presentationHint: string;
-        optional: boolean;
-        isCollectionContributed: boolean;
-        onPaneId: number;
+        private currentRawValue: scalarValueType | Date;
 
-        multipleLines: number;
+        get value(): scalarValueType | Date {
+            return this.currentRawValue;
+        }
+
+        set value(newValue: scalarValueType | Date) {
+            this.currentRawValue = newValue;
+            this.updateColor();
+        }
+
+        multiChoices: IChoiceViewModel[];
+
+        private file: Link;     
 
         entryType: EntryType;
 
+        validate: (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
+
         refresh: (newValue: Value) => void;
 
-        prompt(searchTerm: string): ng.IPromise<ChoiceViewModel[]> {
-            return null;
-        }
+        prompt : (searchTerm: string)=> ng.IPromise<ChoiceViewModel[]>;
 
-        conditionalChoices(args: _.Dictionary<Value>): ng.IPromise<ChoiceViewModel[]> {
-            return null;
-        }
+        conditionalChoices : (args: _.Dictionary<Value>) => ng.IPromise<ChoiceViewModel[]>;
 
         setNewValue(newValue: IDraggableViewModel) {
-            this.value = newValue.value;
-            this.reference = newValue.reference;
             this.choice = newValue.choice;
-            this.color = newValue.color;
+            this.value = newValue.value;
+            this.reference = newValue.reference;         
         }
 
         drop: (newValue: IDraggableViewModel) => void;
 
         clear() {
-            this.value = null;
-            this.reference = "";
             this.choice = null;
-            this.color = "";
+            this.value = null;
+            this.reference = "";          
         }
 
-        setColor(color: IColor) {
+        private updateColor : () => void ; 
+
+        private setColor(color: IColor) {
 
             if (this.entryType === EntryType.AutoComplete && this.choice && this.type === "ref") {
                 const href = this.choice.getValue().href();
@@ -353,7 +385,6 @@ module NakedObjects {
 
             this.color = "";
         }
-
 
         getValue(): Value {
 
@@ -373,13 +404,13 @@ module NakedObjects {
                     return new Value(selRefs);
                 }
 
-
-                if (this.type === "scalar") {
-                    return new Value(this.choice && this.choice.getValue().scalar() != null ? this.choice.getValue().scalar() : "");
+                const choiceValue = this.choice ? this.choice.getValue() : null;
+                if (this.type === "scalar") {                
+                    return new Value(choiceValue && choiceValue.scalar() != null ? choiceValue.scalar() : "");
                 }
 
                 // reference 
-                return new Value(this.choice && this.choice.isReference ? { href: this.choice.getValue().href(), title: this.choice.name } : null);
+                return new Value(choiceValue && choiceValue.isReference() ? { href: choiceValue.href(), title: this.choice.name } : null);
             }
 
             if (this.type === "scalar") {
@@ -411,11 +442,25 @@ module NakedObjects {
     }
 
     export class ParameterViewModel extends ValueViewModel {
+
+        constructor(parmRep: Parameter, paneId : number, color : IColor) {
+            super(parmRep.extensions(), color);
+            this.parameterRep = parmRep;
+            this.onPaneId = paneId;
+            this.type = parmRep.isScalar() ? "scalar" : "ref";
+            this.dflt = parmRep.default().toString();
+            this.id = parmRep.id();
+            this.argId = `${this.id.toLowerCase()}`;
+            this.paneArgId = `${this.argId}${this.onPaneId}`;
+            this.isCollectionContributed = parmRep.isCollectionContributed();
+            this.entryType = parmRep.entryType();
+        }
+
         parameterRep: Parameter;
         dflt: string;
     }
 
-    export class ActionViewModel {
+    export class ActionViewModel implements IActionViewModel {
         actionRep: ActionMember | ActionRepresentation;
         invokableActionRep: IInvokableAction;
 
@@ -424,27 +469,20 @@ module NakedObjects {
         description: string;
         presentationHint : string;
 
-        // todo - confusing name better 
         doInvoke: (right?: boolean) => void;
-        executeInvoke: (pps: ParameterViewModel[], right?: boolean) => ng.IPromise<ActionResultRepresentation>;
-
-        disabled(): boolean { return false; }
-
-        parameters: () => ParameterViewModel[];
-        stopWatchingParms: () => void;
-
+        execute: (pps: IParameterViewModel[], right?: boolean) => ng.IPromise<ActionResultRepresentation>;
+        disabled : () => boolean;
+        parameters: () => IParameterViewModel[];
         makeInvokable: (details: IInvokableAction) => void;
     }
 
-    export class MenuItemViewModel {
-
+    export class MenuItemViewModel implements IMenuItemViewModel {
         constructor(public name: string,
-            public actions: ActionViewModel[],
-            public menuItems: MenuItemViewModel[]) { }
-
+                    public actions: IActionViewModel[],
+                    public menuItems: IMenuItemViewModel[]) { }
     }
 
-    export class DialogViewModel extends MessageViewModel {
+    export class DialogViewModel extends MessageViewModel implements IDialogViewModel {
         constructor(private color: IColor,
             private context: IContext,
             private viewModelFactory: IViewModelFactory,
@@ -454,8 +492,25 @@ module NakedObjects {
             private $rootScope: ng.IRootScopeService) {
             super();
         }
+             
+        private onPaneId: number;
+        private isQueryOnly: boolean; 
 
-        reset(actionViewModel: ActionViewModel, routeData: PaneRouteData) {
+        private actionMember = () => this.actionViewModel.actionRep;
+
+        private execute = (right?: boolean) => {
+
+            const pps = this.parameters;
+            this.context.updateValues();
+            return this.actionViewModel.execute(pps, right);
+        };
+
+        actionViewModel: IActionViewModel;
+        title: string;           
+        id: string;
+        parameters: IParameterViewModel[];
+
+        reset(actionViewModel: IActionViewModel, routeData: PaneRouteData) {
             this.actionViewModel = actionViewModel;
             this.onPaneId = routeData.paneId;
 
@@ -468,7 +523,6 @@ module NakedObjects {
             this.isQueryOnly = actionViewModel.invokableActionRep.invokeLink().method() === "GET";
             this.resetMessage();
             this.id = actionViewModel.actionRep.actionId();
-            return this;
         }
 
         refresh() {
@@ -476,17 +530,7 @@ module NakedObjects {
             _.forEach(this.parameters, p => p.refresh(fields[p.id]));
         }
 
-
-        private actionMember = () => this.actionViewModel.actionRep;
-        title: string;
-        message: string;
-        isQueryOnly: boolean;
-        onPaneId: number;
-        id: string;
-
-        deregister: () => void;
-
-        actionViewModel: ActionViewModel;
+        deregister: () => void;    
 
         clientValid = () => _.every(this.parameters, p => p.clientValid);
 
@@ -494,16 +538,9 @@ module NakedObjects {
 
         setParms = () => _.forEach(this.parameters, p => this.context.setFieldValue(this.actionMember().actionId(), p.parameterRep.id(), p.getValue(), this.onPaneId));
 
-        private executeInvoke = (right?: boolean) => {
-
-            const pps = this.parameters;
-            _.forEach(pps, p => this.urlManager.setFieldValue(this.actionMember().actionId(), p.parameterRep, p.getValue(), this.onPaneId));
-            this.context.updateParms();
-            return this.actionViewModel.executeInvoke(pps, right);
-        };
-
+      
         doInvoke = (right?: boolean) =>
-            this.executeInvoke(right).
+            this.execute(right).
                 then((actionResult: ActionResultRepresentation) => {
                     if (actionResult.shouldExpectResult()) {
                         this.setMessage(actionResult.warningsOrMessages() || noResultMessage);
@@ -540,31 +577,40 @@ module NakedObjects {
         clearMessages = () => {
             this.resetMessage();
             _.each(this.actionViewModel.parameters, parm => parm.clearMessage());
-        };
-
-        parameters: ParameterViewModel[];
+        };        
     }
 
-    export class PropertyViewModel extends ValueViewModel implements IDraggableViewModel {
+    export class PropertyViewModel extends ValueViewModel implements IPropertyViewModel,  IDraggableViewModel {
+
+        constructor(propertyRep: PropertyMember, color : IColor) {
+            super(propertyRep.extensions(), color);
+            this.draggableType = propertyRep.extensions().returnType();
+
+            this.propertyRep = propertyRep;
+            this.entryType = propertyRep.entryType();
+            this.isEditable = !propertyRep.disabledReason();
+            this.entryType = propertyRep.entryType();
+        }
+
 
         propertyRep: PropertyMember;
-        target: string;
         isEditable: boolean;
-        attachment: AttachmentViewModel;
-        draggableType: string;
+        attachment: IAttachmentViewModel;
         refType: "null" | "navigable" | "notNavigable";
+        isDirty: () => boolean;
+        doClick: (right?: boolean) => void;
 
-        doClick(right?: boolean): void { }
+        // IDraggableViewModel
+        draggableType: string;
+        canDropOn: (targetType: string) => ng.IPromise<boolean>;  
+   }
 
-        canDropOn: (targetType: string) => ng.IPromise<boolean>;
-    }
-
-    export class CollectionPlaceholderViewModel {
+    export class CollectionPlaceholderViewModel implements ICollectionPlaceholderViewModel {
         description: () => string;
         reload: () => void;
     }
 
-    export class ListViewModel extends MessageViewModel {
+    export class ListViewModel extends MessageViewModel implements IListViewModel {
 
         constructor(private colorService: IColor,
             private context: IContext,
@@ -576,7 +622,62 @@ module NakedObjects {
             super();
         }
 
-        updateItems(value: Link[]) {
+        private routeData: PaneRouteData;
+        private onPaneId: number;
+        private page: number;
+        private pageSize: number;
+        private numPages: number;
+        private state: CollectionViewState;
+        private allSelected: boolean;
+
+        id: string;
+        listRep: ListRepresentation;
+        size: number;
+        pluralName: string;    
+        header: string[];        
+        items: IItemViewModel[];
+        actions: IActionViewModel[];
+        menuItems: IMenuItemViewModel[];
+        description: () => string;
+
+        private recreate = (page: number, pageSize: number) => {
+            return this.routeData.objectId ?
+                this.context.getListFromObject(this.routeData.paneId, this.routeData, page, pageSize) :
+                this.context.getListFromMenu(this.routeData.paneId, this.routeData, page, pageSize);
+        };
+
+        private pageOrRecreate = (newPage: number, newPageSize: number, newState?: CollectionViewState) => {
+            this.recreate(newPage, newPageSize).
+                then((list: ListRepresentation) => {
+                    this.urlManager.setListPaging(newPage, newPageSize, newState || this.routeData.state, this.onPaneId);
+                    this.routeData = this.urlManager.getRouteData().pane()[this.onPaneId];
+                    this.reset(list, this.routeData);
+                }).
+                catch((reject: ErrorWrapper) => {
+                    const display = (em: ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
+                    this.error.handleErrorAndDisplayMessages(reject, display);
+                });
+        };
+
+        private setPage = (newPage: number, newState: CollectionViewState) => {
+            this.context.updateValues();
+            this.focusManager.focusOverrideOff();
+            this.pageOrRecreate(newPage, this.pageSize, newState);
+        };
+
+        private earlierDisabled = () => this.page === 1 || this.numPages === 1;
+
+        private laterDisabled = () => this.page === this.numPages || this.numPages === 1;
+
+        private pageFirstDisabled = this.earlierDisabled;
+
+        private pageLastDisabled = this.laterDisabled;
+
+        private pageNextDisabled = this.laterDisabled;
+
+        private pagePreviousDisabled = this.earlierDisabled;
+
+        private updateItems(value: Link[]) {
             this.items = this.viewModelFactory.getItems(value,
                 this.state === CollectionViewState.Table,
                 this.routeData,
@@ -593,34 +694,14 @@ module NakedObjects {
             }
         }
 
-        hasTableData = () => {
+        private hasTableData = () => {
             const valueLinks = this.listRep.value();
             return valueLinks && _.some(valueLinks, (i: Link) => i.members());
         }
 
-        refresh(routeData: PaneRouteData) {
-
-            this.routeData = routeData;
-            if (this.state !== routeData.state) {
-                this.state = routeData.state;
-                if (this.state === CollectionViewState.Table && !this.hasTableData()) {
-                    this.recreate(this.page, this.pageSize).
-                        then(list => {
-                            this.listRep = list;
-                            this.updateItems(list.value());
-                        }).
-                        catch((reject: ErrorWrapper) => {
-                            this.error.handleError(reject);
-                        });
-                } else {
-                    this.updateItems(this.listRep.value());
-                }
-            }
-        }
-
-        collectionContributedActionDecorator(actionViewModel: ActionViewModel) {
-            const wrappedInvoke = actionViewModel.executeInvoke;
-            actionViewModel.executeInvoke = (pps: ParameterViewModel[], right?: boolean) => {
+        private collectionContributedActionDecorator(actionViewModel: IActionViewModel) {
+            const wrappedInvoke = actionViewModel.execute;
+            actionViewModel.execute = (pps: IParameterViewModel[], right?: boolean) => {
                 const selected = _.filter(this.items, i => i.selected);
 
                 if (selected.length === 0) {
@@ -652,7 +733,7 @@ module NakedObjects {
             }
         }
 
-        collectionContributedInvokeDecorator(actionViewModel: ActionViewModel) {
+        private collectionContributedInvokeDecorator(actionViewModel: IActionViewModel) {
             const showDialog = () => this.context.getInvokableAction(actionViewModel.actionRep as ActionMember).
                 then((ia: IInvokableAction) => _.keys(ia.parameters()).length > 1);
 
@@ -660,12 +741,12 @@ module NakedObjects {
             showDialog().
                 then((show: boolean) => actionViewModel.doInvoke = show ?
                     (right?: boolean) => {
-                        this.context.clearDialog(this.onPaneId);
+                        this.context.clearDialogValues(this.onPaneId);
                         this.focusManager.focusOverrideOff();
                         this.urlManager.setDialog(actionViewModel.actionRep.actionId(), this.onPaneId);
                     } :
                     (right?: boolean) => {
-                        actionViewModel.executeInvoke([], right).
+                        actionViewModel.execute([], right).
                             then(result => this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || noResultMessage : "")).
                             catch((reject: ErrorWrapper) => {
                                 const display = (em: ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
@@ -674,9 +755,29 @@ module NakedObjects {
                     });
         }
 
-        decorate(actionViewModel: ActionViewModel) {
+        private decorate(actionViewModel: IActionViewModel) {
             this.collectionContributedActionDecorator(actionViewModel);
             this.collectionContributedInvokeDecorator(actionViewModel);
+        }
+
+        refresh(routeData: PaneRouteData) {
+
+            this.routeData = routeData;
+            if (this.state !== routeData.state) {
+                this.state = routeData.state;
+                if (this.state === CollectionViewState.Table && !this.hasTableData()) {
+                    this.recreate(this.page, this.pageSize).
+                        then(list => {
+                            this.listRep = list;
+                            this.updateItems(list.value());
+                        }).
+                        catch((reject: ErrorWrapper) => {
+                            this.error.handleError(reject);
+                        });
+                } else {
+                    this.updateItems(this.listRep.value());
+                }
+            }
         }
 
         reset(list: ListRepresentation, routeData: PaneRouteData) {
@@ -700,8 +801,6 @@ module NakedObjects {
             this.menuItems = createMenuItems(this.actions);
 
             _.forEach(this.actions, a => this.decorate(a));
-
-            return this;
         }
 
         toggleActionMenu = () => {
@@ -709,70 +808,23 @@ module NakedObjects {
             this.urlManager.toggleObjectMenu(this.onPaneId);
         };
 
-        private recreate = (page: number, pageSize: number) => {
-            return this.routeData.objectId ?
-                this.context.getListFromObject(this.routeData.paneId, this.routeData, page, pageSize) :
-                this.context.getListFromMenu(this.routeData.paneId, this.routeData, page, pageSize);
-        };
-
-        private pageOrRecreate = (newPage: number, newPageSize: number, newState?: CollectionViewState) => {
-            this.recreate(newPage, newPageSize).
-                then((list: ListRepresentation) => {
-                    this.urlManager.setListPaging(newPage, newPageSize, newState || this.routeData.state, this.onPaneId);
-                    this.routeData = this.urlManager.getRouteData().pane()[this.onPaneId];
-                    this.reset(list, this.routeData);
-                }).
-                catch((reject: ErrorWrapper) => {
-                    const display = (em: ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
-                    this.error.handleErrorAndDisplayMessages(reject, display);
-                });
-        };
-
-        listRep: ListRepresentation;
-        routeData: PaneRouteData;
-
-        size: number;
-        pluralName: string;
-        color: string;
-        items: ItemViewModel[];
-        header: string[];
-        onPaneId: number;
-        page: number;
-        pageSize: number;
-        numPages: number;
-        state: CollectionViewState;
-
-        allSelected: boolean;
-
-        id: string;
-
-        private setPage = (newPage: number, newState: CollectionViewState) => {
-            this.focusManager.focusOverrideOff();
-            this.pageOrRecreate(newPage, this.pageSize, newState);
-        };
         pageNext = () => this.setPage(this.page < this.numPages ? this.page + 1 : this.page, this.state);
         pagePrevious = () => this.setPage(this.page > 1 ? this.page - 1 : this.page, this.state);
         pageFirst = () => this.setPage(1, this.state);
         pageLast = () => this.setPage(this.numPages, this.state);
 
-        private earlierDisabled = () => this.page === 1 || this.numPages === 1;
-        private laterDisabled = () => this.page === this.numPages || this.numPages === 1;
-
-        private pageFirstDisabled = this.earlierDisabled;
-        private pageLastDisabled = this.laterDisabled;
-        private pageNextDisabled = this.laterDisabled;
-        private pagePreviousDisabled = this.earlierDisabled;
-
         doSummary = () => {
-            this.context.updateParms();
-            this.urlManager.setListState(CollectionViewState.Summary, this.onPaneId)
+            this.context.updateValues();
+            this.urlManager.setListState(CollectionViewState.Summary, this.onPaneId);
         };
+
         doList = () => {
-            this.context.updateParms();
+            this.context.updateValues();
             this.urlManager.setListState(CollectionViewState.List, this.onPaneId);
         };
+
         doTable = () => {
-            this.context.updateParms();
+            this.context.updateValues();
             this.urlManager.setListState(CollectionViewState.Table, this.onPaneId);
         };
 
@@ -783,21 +835,12 @@ module NakedObjects {
 
         selectAll = () => _.each(this.items, (item, i) => {
             item.selected = this.allSelected;
-            item.checkboxChange(i);
+            item.selectionChange(i);
         });
 
-        description(): string { return null; } 
-
-        template: string;
-
-        disableActions(): boolean {
-            return !this.actions || this.actions.length === 0 || !this.items || this.items.length === 0;
-        }
-
+        disableActions = () => !this.actions || this.actions.length === 0 || !this.items || this.items.length === 0;
+        
         actionsTooltip = () => actionsTooltip(this, !!this.routeData.actionsOpen);
-
-        actions: ActionViewModel[];
-        menuItems: MenuItemViewModel[];
 
         actionMember = (id: string) => {
             const actionViewModel = _.find(this.actions, a => a.actionRep.actionId() === id);
@@ -805,83 +848,56 @@ module NakedObjects {
         }
     }
 
-    export class CollectionViewModel {
+    export class CollectionViewModel implements ICollectionViewModel  {
 
         title: string;
         details: string;
         pluralName: string;
         color: string;
         mayHaveItems: boolean;
-        items: ItemViewModel[];
+        items: IItemViewModel[];
         header: string[];
         onPaneId: number;
         currentState: CollectionViewState;
         presentationHint: string;
-
-        id: string;
-
-        doSummary(): void { }
-        doTable(): void { }
-        doList(): void { }
-
-        description(): string { return this.details.toString() }
-
         template: string;
-
-        actions: ActionViewModel[];
-        menuItems: MenuItemViewModel[];
+        actions: IActionViewModel[];
+        menuItems: IMenuItemViewModel[];
         messages: string;
-
         collectionRep: CollectionMember | CollectionRepresentation;
+
+        doSummary: () => void;
+        doTable: () => void;
+        doList: () => void;
+
+        description = () => this.details.toString();      
         refresh: (routeData: PaneRouteData, resetting: boolean) => void;
     }
 
-    export class ServicesViewModel {
-        title: string;
-        color: string;
-        items: LinkViewModel[];
-    }
-
-    export class MenusViewModel {
-        constructor(private viewModelFactory: IViewModelFactory) {
-
-        }
+    export class MenusViewModel implements IMenusViewModel {
+        constructor(private viewModelFactory: IViewModelFactory) {}
 
         reset(menusRep: MenusRepresentation, routeData: PaneRouteData) {
             this.menusRep = menusRep;
             this.onPaneId = routeData.paneId;
-
-            this.title = "Menus";
-            this.color = "bg-color-darkBlue";
             this.items = _.map(this.menusRep.value(), link => this.viewModelFactory.linkViewModel(link, this.onPaneId));
             return this;
         }
 
         menusRep: MenusRepresentation;
         onPaneId: number;
-        title: string;
-        color: string;
-        items: LinkViewModel[];
+        items: ILinkViewModel[];
     }
 
-    export class ServiceViewModel extends MessageViewModel {
-        title: string;
-        serviceId: string;
-        actions: ActionViewModel[];
-        menuItems: MenuItemViewModel[];
-        color: string;
-    }
-
-    export class MenuViewModel extends MessageViewModel {
+    export class MenuViewModel extends MessageViewModel implements IMenuViewModel {
         id: string;
         title: string;
-        actions: ActionViewModel[];
-        menuItems: MenuItemViewModel[];
-        color: string;
+        actions: IActionViewModel[];
+        menuItems: IMenuItemViewModel[];
         menuRep: Models.MenuRepresentation;
     }
 
-    export class TableRowColumnViewModel {
+    export class TableRowColumnViewModel implements ITableRowColumnViewModel {
         type: "ref" | "scalar";
         returnType: string;
         value: scalarValueType | Date;
@@ -889,13 +905,44 @@ module NakedObjects {
         title: string;
     }
 
-    export class TableRowViewModel {
+    export class TableRowViewModel implements ITableRowViewModel{
         title: string;
         hasTitle: boolean;
-        properties: TableRowColumnViewModel[];
+        properties: ITableRowColumnViewModel[];
     }
 
-    export class DomainObjectViewModel extends MessageViewModel implements IDraggableViewModel {
+    export class ApplicationPropertiesViewModel implements IApplicationPropertiesViewModel {
+        serverVersion: IVersionRepresentation;
+        user: IUserRepresentation;
+        serverUrl: string;
+        clientVersion: string;
+    }
+
+    export class ToolBarViewModel implements IToolBarViewModel{
+        loading: string;
+        template: string;
+        footerTemplate: string;
+        goHome: (right?: boolean) => void;
+        goBack: () => void;
+        goForward: () => void;
+        swapPanes: () => void;
+        logOff: () => void;
+        singlePane: (right?: boolean) => void;
+        recent: (right?: boolean) => void;
+        cicero: () => void;
+        userName: string;
+        applicationProperties: () => void;
+
+        warnings: string[];
+        messages: string[];
+    }
+
+    export class RecentItemsViewModel implements IRecentItemsViewModel{
+        onPaneId: number;
+        items: IRecentItemViewModel[];
+    }
+
+    export class DomainObjectViewModel extends MessageViewModel implements IDomainObjectViewModel, IDraggableViewModel {
 
         constructor(private colorService: IColor,
             private contextService: IContext,
@@ -907,17 +954,61 @@ module NakedObjects {
             super();
         }
 
-        propertyMap = () => {
+        private routeData: PaneRouteData;
+        private props: _.Dictionary<Value>;
+        private instanceId: string;
+        private unsaved: boolean;
+
+        // IDraggableViewModel
+        value: string;
+        reference: string;
+        choice: IChoiceViewModel;
+        color: string;
+        draggableType: string;
+
+        domainObject: DomainObjectRepresentation;
+        onPaneId: number;
+        
+        title: string;
+        friendlyName: string;
+        presentationHint: string;
+        domainType: string;
+        
+        isInEdit: boolean;
+                   
+        actions: IActionViewModel[];
+        menuItems: IMenuItemViewModel[];
+        properties: IPropertyViewModel[];
+        collections: ICollectionViewModel[];
+        
+        private editProperties = () => _.filter(this.properties, p => p.isEditable && p.isDirty());
+
+        private isFormOrTransient = () => this.domainObject.extensions().interactionMode() === "form" || this.domainObject.extensions().interactionMode() === "transient";
+
+        private cancelHandler = () => this.isFormOrTransient() ?
+            () => this.urlManager.popUrlState(this.onPaneId) :
+            () => this.urlManager.setInteractionMode(InteractionMode.View, this.onPaneId);
+
+        private saveHandler = () => this.domainObject.isTransient() ? this.contextService.saveObject : this.contextService.updateObject;
+
+        private validateHandler = () => this.domainObject.isTransient() ? this.contextService.validateSaveObject : this.contextService.validateUpdateObject;
+
+        private handleWrappedError = (reject: ErrorWrapper) => {
+            const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.properties);
+            this.error.handleErrorAndDisplayMessages(reject, display);
+        };
+
+        private propertyMap = () => {
             const pps = _.filter(this.properties, property => property.isEditable);
             return _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
         };
 
-        wrapAction(a: ActionViewModel) {
-            const wrappedInvoke = a.executeInvoke;
-            a.executeInvoke = (pps: ParameterViewModel[], right?: boolean) => {
+        private wrapAction(a: IActionViewModel) {
+            const wrappedInvoke = a.execute;
+            a.execute = (pps: IParameterViewModel[], right?: boolean) => {
                 this.setProperties();
                 const pairs = _.map(this.editProperties(), p => [p.id, p.getValue()]);
-                const prps = (<any>_).fromPairs(pairs) as _.Dictionary<Value>;
+                const prps = _.fromPairs(pairs) as _.Dictionary<Value>;
 
                 const parmValueMap = _.mapValues(a.invokableActionRep.parameters(), p => ({ parm: p, value: prps[p.id()] }));
                 const allpps = _.map(parmValueMap, o => this.viewModelFactory.parameterViewModel(o.parm, o.value, this.onPaneId));
@@ -929,6 +1020,12 @@ module NakedObjects {
             };
         }
 
+        private editComplete = () => {
+            this.contextService.updateValues();
+            this.contextService.clearObjectUpdater(this.onPaneId);
+        };
+
+
         // must be careful with this - OK for changes on client but after server updates should use  reset
         // because parameters may have appeared or disappeared etc and refesh just updates existing views. 
         // So OK for view state changes but not eg for a parameter that disappears after saving
@@ -938,7 +1035,7 @@ module NakedObjects {
             this.routeData = routeData;
             const iMode = this.domainObject.extensions().interactionMode();
             this.isInEdit = routeData.interactionMode !== InteractionMode.View || iMode === "form" || iMode === "transient";
-            this.props = routeData.interactionMode !== InteractionMode.View ? routeData.props : {};
+            this.props = routeData.interactionMode !== InteractionMode.View ? this.contextService.getCurrentObjectValues(this.domainObject.id(), routeData.paneId) : {};
 
             _.forEach(this.properties, p => p.refresh(this.props[p.id]));
             _.forEach(this.collections, c => c.refresh(this.routeData, false));
@@ -955,17 +1052,15 @@ module NakedObjects {
 
             // leave message from previous refresh 
             this.clearMessage();
-
-            return this;
         }
 
-        reset(obj: DomainObjectRepresentation, routeData: PaneRouteData) {
+        reset(obj: DomainObjectRepresentation, routeData: PaneRouteData) : IDomainObjectViewModel {
             this.domainObject = obj;
             this.onPaneId = routeData.paneId;
             this.routeData = routeData;
             const iMode = this.domainObject.extensions().interactionMode();
             this.isInEdit = routeData.interactionMode !== InteractionMode.View || iMode === "form" || iMode === "transient";
-            this.props = routeData.interactionMode !== InteractionMode.View ? routeData.props : {};
+            this.props = routeData.interactionMode !== InteractionMode.View ? this.contextService.getCurrentObjectValues(this.domainObject.id(), routeData.paneId) : {};
 
             const actions = _.values(this.domainObject.actionMembers()) as ActionMember[];
             this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, this.routeData));
@@ -1002,17 +1097,14 @@ module NakedObjects {
             this.reference = sav ? sav.toValueString() : "";
             this.choice = sav ? ChoiceViewModel.create(sav, "") : null;
 
-            this.colorService.toColorNumberFromType(this.domainObject.domainType()).then((c: number) => {
-                this.color = `${objectColor}${c}`;
-            });
+            this.colorService.toColorNumberFromType(this.domainObject.domainType()).then(c => this.color = `${objectColor}${c}`);
 
             this.resetMessage();
 
             if (routeData.interactionMode === InteractionMode.Form) {
                 _.forEach(this.actions, a => this.wrapAction(a));
             }
-
-            return this;
+            return this as IDomainObjectViewModel;
         }
 
         concurrency() {
@@ -1020,6 +1112,8 @@ module NakedObjects {
                 this.routeData = this.urlManager.getRouteData().pane()[this.onPaneId];
                 this.contextService.getObject(this.onPaneId, this.domainObject.getOid(), this.routeData.interactionMode)
                     .then(obj => {
+                        // cleared cached values so all values are from reloaded representation 
+                        this.contextService.clearObjectValues(this.onPaneId);
                         this.contextService.reloadObject(this.onPaneId, obj)
                             .then(reloadedObj => {
                                 if (this.routeData.dialogId) {
@@ -1032,28 +1126,6 @@ module NakedObjects {
             }
         }
 
-        routeData: PaneRouteData;
-        domainObject: DomainObjectRepresentation;
-        onPaneId: number;
-        props: _.Dictionary<Value>;
-
-        title: string;
-        friendlyName: string;
-        presentationHint: string;
-        domainType: string;
-        instanceId: string;
-        draggableType: string;
-        isInEdit: boolean;
-        value: string;
-        reference: string;
-        choice: ChoiceViewModel;
-        color: string;
-        actions: ActionViewModel[];
-        menuItems: MenuItemViewModel[];
-        properties: PropertyViewModel[];
-        collections: CollectionViewModel[];
-        unsaved: boolean;
-
         clientValid = () => _.every(this.properties, p => p.clientValid);
 
         tooltip = () => tooltip(this, this.properties);
@@ -1062,43 +1134,26 @@ module NakedObjects {
 
         toggleActionMenu = () => {
             this.focusManager.focusOverrideOff();
+            this.contextService.updateValues();
             this.urlManager.toggleObjectMenu(this.onPaneId);
         };
 
-        private editProperties = () => _.filter(this.properties, p => p.isEditable && p.isDirty());
-        setProperties = () =>
-            _.forEach(this.editProperties(), p => this.urlManager.setPropertyValue(this.domainObject, p.propertyRep, p.getValue(), this.onPaneId));
-
-        private cancelHandler = () => this.domainObject.extensions().interactionMode() === "form" || this.domainObject.extensions().interactionMode() === "transient" ?
-            () => this.urlManager.popUrlState(this.onPaneId) :
-            () => this.urlManager.setInteractionMode(InteractionMode.View, this.onPaneId);
-
-        editComplete = () => {
-            this.setProperties();
-        };
-
+        setProperties = () => _.forEach(this.editProperties(),
+            p => this.contextService.setPropertyValue(this.domainObject, p.propertyRep, p.getValue(), this.onPaneId));
+      
         doEditCancel = () => {
             this.editComplete();
+            this.contextService.clearObjectValues(this.onPaneId);
             this.cancelHandler()();
         };
 
-        clearCachedFiles = () => {
-            _.forEach(this.properties, p => p.attachment ? p.attachment.clearCachedFile() : null);
-        }
-
-        private saveHandler = () => this.domainObject.isTransient() ? this.contextService.saveObject : this.contextService.updateObject;
-
-        private validateHandler = () => this.domainObject.isTransient() ? this.contextService.validateSaveObject : this.contextService.validateUpdateObject;
-
-        private handleWrappedError = (reject: ErrorWrapper) => {
-            const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.properties);
-            this.error.handleErrorAndDisplayMessages(reject, display);
-        };
+        clearCachedFiles = () => _.forEach(this.properties, p => p.attachment ? p.attachment.clearCachedFile() : null);
 
         doSave = (viewObject: boolean) => {
             this.clearCachedFiles();
-            this.setProperties();
+            this.contextService.updateValues();
             const propMap = this.propertyMap();
+            this.contextService.clearObjectUpdater(this.onPaneId);
             this.saveHandler()(this.domainObject, propMap, this.onPaneId, viewObject).
                 then(obj => this.reset(obj, this.urlManager.getRouteData().pane()[this.onPaneId])).
                 catch((reject: ErrorWrapper) => this.handleWrappedError(reject));
@@ -1119,9 +1174,11 @@ module NakedObjects {
         };
 
         doEdit = () => {
+            this.contextService.updateValues(); // for other panes
             this.clearCachedFiles();
+            this.contextService.clearObjectValues(this.onPaneId);
             this.contextService.getObjectForEdit(this.onPaneId, this.domainObject).
-                then((updatedObject: DomainObjectRepresentation) => {
+                then(updatedObject => {
                     this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
                     this.urlManager.pushUrlState(this.onPaneId);
                     this.urlManager.setInteractionMode(InteractionMode.Edit, this.onPaneId);
@@ -1130,56 +1187,18 @@ module NakedObjects {
         };
 
         doReload = () => {
+            this.contextService.updateValues();
             this.clearCachedFiles();
             this.contextService.reloadObject(this.onPaneId, this.domainObject)
-                .then((updatedObject: DomainObjectRepresentation) => {
-                    this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
-                })
+                .then(updatedObject => this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]))
                 .catch((reject: ErrorWrapper) => this.handleWrappedError(reject));
         }
 
+        hideEdit = () => this.isFormOrTransient() || _.every(this.properties, p => !p.isEditable);
 
-        hideEdit = () => this.domainObject.extensions().interactionMode() === "form" ||
-            this.domainObject.extensions().interactionMode() === "transient" ||
-            _.every(this.properties, p => !p.isEditable);
-
-        disableActions(): boolean {
-            return !this.actions || this.actions.length === 0;
-        }
+        disableActions = () => !this.actions || this.actions.length === 0;
 
         canDropOn = (targetType: string) => this.contextService.isSubTypeOf(this.domainType, targetType);
-    }
-
-
-    export class ApplicationPropertiesViewModel {
-        serverVersion: IVersionRepresentation;
-        user: IUserRepresentation;
-        serverUrl: string;
-        clientVersion: string;
-    }
-
-    export class ToolBarViewModel {
-        loading: string;
-        template: string;
-        footerTemplate: string;
-        goHome: (right?: boolean) => void;
-        goBack: () => void;
-        goForward: () => void;
-        swapPanes: () => void;
-        logOff: () => void;
-        singlePane: (right?: boolean) => void;
-        recent: (right?: boolean) => void;
-        cicero: () => void;
-        userName: string;
-        applicationProperties: () => void;
-
-        warnings: string[];
-        messages: string[];
-    }
-
-    export class RecentItemsViewModel {
-        onPaneId: number;
-        items: RecentItemViewModel[];
     }
 
     export interface INakedObjectsScope extends ng.IScope {
@@ -1197,21 +1216,21 @@ module NakedObjects {
         attachmentTemplate: string;
         applicationPropertiesTemplate: string;
 
-        menus: MenusViewModel;
-        object: DomainObjectViewModel;
-        menu: MenuViewModel;
-        dialog: DialogViewModel;
-        error: ErrorViewModel;
-        recent: RecentItemsViewModel;
-        collection: ListViewModel;
-        collectionPlaceholder: CollectionPlaceholderViewModel;
-        toolBar: ToolBarViewModel;
-        cicero: CiceroViewModel;
-        attachment: AttachmentViewModel;
-        applicationProperties: ApplicationPropertiesViewModel;
+        menus: IMenusViewModel;
+        object: IDomainObjectViewModel;
+        menu: IMenuViewModel;
+        dialog: IDialogViewModel;
+        error: IErrorViewModel;
+        recent: IRecentItemsViewModel;
+        collection: IListViewModel;
+        collectionPlaceholder: ICollectionPlaceholderViewModel;
+        toolBar: IToolBarViewModel;
+        cicero: ICiceroViewModel;
+        attachment: IAttachmentViewModel;
+        applicationProperties: IApplicationPropertiesViewModel;
     }
 
-    export class CiceroViewModel {
+    export class CiceroViewModel implements ICiceroViewModel {
         message: string;
         output: string;
         alert = ""; //Alert is appended before the output
@@ -1220,11 +1239,11 @@ module NakedObjects {
         previousInput: string;
         chainedCommands: string[];
 
-        selectPreviousInput(): void {
+        selectPreviousInput = () => {
             this.input = this.previousInput;
         }
 
-        clearInput(): void {
+        clearInput = () => {
             this.input = null;
         }
 
