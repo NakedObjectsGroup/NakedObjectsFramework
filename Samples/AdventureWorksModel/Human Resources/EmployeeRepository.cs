@@ -5,21 +5,24 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedObjects;
 using NakedObjects.Services;
-using System;
 
 namespace AdventureWorksModel {
     [DisplayName("Employees")]
     public class EmployeeRepository : AbstractFactoryAndRepository {
         #region Injected Services
+
         public PersonRepository ContactRepository { set; protected get; }
+
         #endregion
 
         #region FindRecentHires
+
         //This method exists for test purposes only, to test that a hidden Finder Action does not
         //show up in the Find Menu
         [Hidden(WhenTo.Always)]
@@ -27,12 +30,13 @@ namespace AdventureWorksModel {
         public IQueryable<Employee> FindRecentHires() {
             throw new NotImplementedException(); //Deliberately not implemented
         }
+
         #endregion
 
         #region FindEmployeeByName
 
         [FinderAction]
-        [TableView(true, 
+        [TableView(true,
             nameof(Employee.Current),
             nameof(Employee.JobTitle),
             nameof(Employee.Manager))]
@@ -51,6 +55,7 @@ namespace AdventureWorksModel {
         #endregion
 
         #region FindEmployeeByNationalIDNumber
+
         [FinderAction]
         [QueryOnly]
         public Employee FindEmployeeByNationalIDNumber(string nationalIDNumber) {
@@ -97,15 +102,13 @@ namespace AdventureWorksModel {
             return CurrentUserAsEmployee();
         }
 
-        public IQueryable<Employee> MyDepartmentalColleagues()
-        {
+        public IQueryable<Employee> MyDepartmentalColleagues() {
             var me = CurrentUserAsEmployee();
-            if (me == null)
-            {
+            if (me == null) {
                 Container.WarnUser("Current user unknown");
                 return null;
-            } else
-            {
+            }
+            else {
                 return me.ColleaguesInSameDept();
             }
         }
@@ -120,43 +123,62 @@ namespace AdventureWorksModel {
 
         #endregion
 
-
         #region
+
         //This method is to test use of nullable booleans
-        public IQueryable<Employee> ListEmployees(
-             bool? current, //mandatory
-            [Optionally]  bool? married, 
-            [DefaultValue(false)] bool? salaried,
-            [Optionally][DefaultValue(true)] bool?  olderThan50
-  )
-        {
+        public IQueryable<Employee> ListEmployees(bool? current, //mandatory
+                                                  [Optionally] bool? married,
+                                                  [DefaultValue(false)] bool? salaried,
+                                                  [Optionally] [DefaultValue(true)] bool? olderThan50
+            ) {
             var emps = Container.Instances<Employee>();
             emps = emps.Where(e => e.Current == current.Value);
-            if (married != null)
-            {
+            if (married != null) {
                 string value = married.Value ? "M" : "S";
                 emps = emps.Where(e => e.MaritalStatus == value);
             }
             emps = emps.Where(e => e.Salaried == salaried.Value);
-            if (olderThan50 != null)
-            {
-                var date = DateTime.Today.AddYears(-50);  //Not an exact calculation!
-                if (olderThan50.Value)
-                {
+            if (olderThan50 != null) {
+                var date = DateTime.Today.AddYears(-50); //Not an exact calculation!
+                if (olderThan50.Value) {
                     emps = emps.Where(e => e.DateOfBirth != null && e.DateOfBirth < date);
-                } else
-                {
+                }
+                else {
                     emps = emps.Where(e => e.DateOfBirth != null && e.DateOfBirth > date);
                 }
             }
             return emps;
         }
-        #endregion
 
-        public IQueryable<Shift> Shifts()
-        {
-            return Container.Instances<Shift>();
+        //This method is to test use of booleans
+        public IQueryable<Employee> ListEmployees2(bool current, //mandatory
+                                                   [Optionally] bool married,
+                                                   [DefaultValue(false)] bool salaried,
+                                                   [Optionally] [DefaultValue(true)] bool olderThan50) {
+            var emps = Container.Instances<Employee>();
+            emps = emps.Where(e => e.Current == current);
+
+            string value = married ? "M" : "S";
+            emps = emps.Where(e => e.MaritalStatus == value);
+
+            emps = emps.Where(e => e.Salaried == salaried);
+
+            var date = DateTime.Today.AddYears(-50); //Not an exact calculation!
+            if (olderThan50) {
+                emps = emps.Where(e => e.DateOfBirth != null && e.DateOfBirth < date);
+            }
+            else {
+                emps = emps.Where(e => e.DateOfBirth != null && e.DateOfBirth > date);
+            }
+
+            return emps;
         }
 
+
+        #endregion
+
+        public IQueryable<Shift> Shifts() {
+            return Container.Instances<Shift>();
+        }
     }
 }
