@@ -137,11 +137,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Rest, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NakedObjects.Rest.8.0.0-rc\lib\net452\NakedObjects.Rest.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Rest.8.0.0-rc2\lib\net452\NakedObjects.Rest.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Rest.Snapshot, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NakedObjects.Rest.8.0.0-rc\lib\net452\NakedObjects.Rest.Snapshot.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Rest.8.0.0-rc2\lib\net452\NakedObjects.Rest.Snapshot.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Snapshot.Xml, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
