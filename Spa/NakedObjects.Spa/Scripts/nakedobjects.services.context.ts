@@ -742,7 +742,9 @@ module NakedObjects {
                         transientCache.add(toPaneId, resultObject);
                         urlManager.pushUrlState(toPaneId);
                         urlManager.setObject(resultObject, toPaneId);
-                        urlManager.setInteractionMode(InteractionMode.Transient, toPaneId);
+
+                        const interactionMode = resultObject.extensions().interactionMode() === "transient" ? InteractionMode.Transient : InteractionMode.NotPersistent; 
+                        urlManager.setInteractionMode(interactionMode, toPaneId);
                     } else {
 
                         // persistent object

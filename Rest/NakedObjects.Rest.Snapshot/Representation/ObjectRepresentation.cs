@@ -154,7 +154,10 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
             InteractionMode mode;
 
-            if (objectFacade.IsTransient) {
+            if (objectFacade.IsNotPersistent) {
+                mode = InteractionMode.NotPersistent;
+            }
+            else if (objectFacade.IsTransient) {
                 mode = InteractionMode.Transient;
             }
             else if (objectFacade.IsViewModelEditView) {

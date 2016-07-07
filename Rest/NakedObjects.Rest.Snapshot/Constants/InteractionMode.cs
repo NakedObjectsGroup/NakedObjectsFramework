@@ -9,6 +9,7 @@ namespace NakedObjects.Rest.Snapshot.Constants {
     public enum InteractionMode {
         Persistent,
         Transient,
-        Form
+        Form,
+        NotPersistent
     }
 }

@@ -26,7 +26,8 @@ module NakedObjects {
         View,
         Edit,
         Transient,
-        Form
+        Form,
+        NotPersistent
     }
 
     export class RouteData {
