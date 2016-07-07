@@ -573,10 +573,10 @@ module NakedObjects {
         });
     });
 
-    app.directive("geminiDrop", () => (scope: any, element: any) => {
+    app.directive("geminiDrop", ($timeout: ng.ITimeoutService) => (scope: ng.IScope, element: ng.IAugmentedJQuery) => {
 
-        const propertyScope = () => scope.$parent.$parent.$parent;
-        const parameterScope = () => scope.$parent.$parent;
+        const propertyScope = () => scope.$parent.$parent.$parent as IPropertyOrParameterScope;
+        const parameterScope = () => scope.$parent.$parent as IPropertyOrParameterScope;
 
         const accept = (draggable: any) => {
             const droppableVm: IFieldViewModel = propertyScope().property || parameterScope().parameter;
@@ -596,7 +596,8 @@ module NakedObjects {
             }
             return false;
         };
-        element.droppable({
+
+        (element as any).droppable({
             tolerance: "touch",
             hoverClass: "dropping",
             accept: accept
@@ -612,7 +613,7 @@ module NakedObjects {
 
                 droppableScope.$apply(() => {
                     droppableVm.drop(draggableVm);
-                    $(element).change();
+                    $timeout(() => $(element).change());
                 });
             }
         });
@@ -637,7 +638,7 @@ module NakedObjects {
                 const droppableScope = propertyScope().property ? propertyScope() : parameterScope();
                 const droppableVm: IFieldViewModel = droppableScope.property || droppableScope.parameter;
 
-                scope.$apply(droppableVm.clear());
+                scope.$apply(droppableVm.clear);
             }
         });
     });
