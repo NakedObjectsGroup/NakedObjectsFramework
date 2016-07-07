@@ -54,6 +54,7 @@ namespace AdventureWorksModel {
         [Hidden(WhenTo.UntilPersisted)]
         [MemberOrder(2)]
         [DisplayName("Card No.")]
+        [NotPersisted]
         public virtual string ObfuscatedNumber {
             get {
                 if (_ObfuscatedNumber == null && CardNumber != null && CardNumber.Length > 4) {

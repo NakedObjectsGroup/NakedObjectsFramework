@@ -409,7 +409,7 @@ namespace NakedObjects.Facade.Impl {
             if (spec != null) {
                 var nakedObject = target.Target;
 
-                var allProperties = spec.Properties.OfType<IOneToOneAssociationSpec>().Where(p => !p.IsInline);
+                var allProperties = spec.Properties.OfType<IOneToOneAssociationSpec>().Where(p => !p.IsInline && p.IsPersisted);
                 var userUnsettableProperties = allProperties.Where(p => p.IsUsable(nakedObject).IsVetoed || !p.IsVisible(nakedObject));
                 var propertyValues = userUnsettableProperties.ToDictionary(p => p.Id, p => GetPropertyValueForEtag(p, nakedObject));
 
@@ -426,7 +426,7 @@ namespace NakedObjects.Facade.Impl {
 
             if (transientHash != digest) {
                 Log.Error($"Transient Integrity failed for: {nakedObject.Id} bad values: {rawValue} old hash: {digest} new hash {transientHash}");
-                throw new BadRequestNOSException("Values provided may not be persisted as an object");
+                throw new BadRequestNOSException("Values provided may not be persisted as an object (ensure any derived properties are annotated NotPersisted");
             }
         }
 

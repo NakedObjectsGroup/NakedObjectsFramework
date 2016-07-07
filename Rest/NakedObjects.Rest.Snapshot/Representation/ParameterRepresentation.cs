@@ -156,7 +156,8 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
             var adapter = new FieldFacadeAdapter(parameter);
 
-            if (parameter.DefaultTypeIsExplicit(objectFacade)) {
+            // include default value for for nonnullable boolean so we can distinguish from nullable on client 
+            if (parameter.DefaultTypeIsExplicit(objectFacade) || (parameter.Specification.IsBoolean && !parameter.IsNullable)) {
                 IObjectFacade defaultNakedObject = parameter.GetDefault(objectFacade);
                 if (defaultNakedObject != null) {
                     string title = defaultNakedObject.TitleString;

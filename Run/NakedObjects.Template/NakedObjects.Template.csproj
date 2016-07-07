@@ -108,7 +108,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Facade.Impl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\NakedObjects.Facade.Impl.8.0.0-rc\lib\net451\NakedObjects.Facade.Impl.dll</HintPath>
+      <HintPath>packages\NakedObjects.Facade.Impl.8.0.0-rc2\lib\net451\NakedObjects.Facade.Impl.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.FWResources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -136,11 +136,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Rest, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\NakedObjects.Rest.8.0.0-rc\lib\net452\NakedObjects.Rest.dll</HintPath>
+      <HintPath>packages\NakedObjects.Rest.8.0.0-rc2\lib\net452\NakedObjects.Rest.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Rest.Snapshot, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\NakedObjects.Rest.8.0.0-rc\lib\net452\NakedObjects.Rest.Snapshot.dll</HintPath>
+      <HintPath>packages\NakedObjects.Rest.8.0.0-rc2\lib\net452\NakedObjects.Rest.Snapshot.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Snapshot.Xml, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -296,6 +296,9 @@
     <Content Include="Scripts\angular-touch.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="Scripts\angular-route.min.js.map" />
+    <Content Include="Scripts\angular-touch.min.js.map" />
     <Content Include="fonts\iconFont.woff" />
     <Content Include="fonts\iconFont.ttf" />
     <Content Include="fonts\iconFont.eot" />
@@ -309,16 +312,9 @@
     <Content Include="Scripts\lodash.core.min.js" />
     <Content Include="Scripts\lodash.js" />
     <Content Include="Scripts\lodash.min.js" />
-    <Content Include="Scripts\moment-with-locales.js" />
-    <Content Include="Scripts\moment-with-locales.min.js" />
-    <Content Include="Scripts\moment.js" />
-    <Content Include="Scripts\moment.min.js" />
-    <Content Include="Scripts\angular.min.js.map" />
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Scripts\angular-route.min.js.map" />
-    <Content Include="Scripts\angular-touch.min.js.map" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -328,6 +324,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -387,6 +387,7 @@
     <TypeScriptCompile Include="Scripts\nakedobjects.viewmodels.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.vminterfaces.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-component-router.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-resource.d.ts" />
