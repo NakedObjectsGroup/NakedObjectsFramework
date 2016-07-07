@@ -924,8 +924,16 @@ module NakedObjects {
 
         private getPropertiesAndCurrentValue(obj : DomainObjectRepresentation) : _.Dictionary<Value> {
             const props = obj.propertyMembers();
-            const map = _.mapValues(props, p => p.value());
-            return _.mapKeys(map, (v, k) => k.toLowerCase());
+            const values = _.mapValues(props, p => p.value());
+            const modifiedProps = this.context.getCurrentObjectValues(obj.id());
+
+            _.forEach(values, (v, k) => {
+                const newValue = modifiedProps[k];
+                if (newValue) {
+                    values[k] = newValue;
+                }
+            });
+            return _.mapKeys(values, (v, k) => k.toLowerCase());
         }
 
         private handleConditionalChoices(field: IField, fieldEntry: string): void {
