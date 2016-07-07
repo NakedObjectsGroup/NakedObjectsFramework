@@ -231,6 +231,28 @@ namespace NakedObjects.Selenium {
             var name = WaitForCss("input#name1");
             Assert.AreEqual("* partial match", name.GetAttribute("placeholder"));
         }
+        public virtual void BooleanParams()
+        {
+            GeminiUrl("home?m1=EmployeeRepository&d1=ListEmployees2");
+            //None of the fields should have a mandatory indicator
+            var prams = WaitForCss(".parameter .value", 4);
+            Assert.AreEqual("", prams[0].Text);
+            Assert.AreEqual("", prams[1].Text);
+            Assert.AreEqual("", prams[2].Text);
+            Assert.AreEqual("", prams[3].Text);
+
+            var current = WaitForCss("#current1");
+            var married = WaitForCss("#married1");
+            var salaried = WaitForCss("#salaried1");
+            var older = WaitForCss("#olderthan501");
+
+            Assert.AreEqual(null, current.GetAttribute("checked"));
+            Assert.AreEqual(null, married.GetAttribute("checked"));
+            Assert.AreEqual(null, salaried.GetAttribute("checked"));
+            Assert.AreEqual("true", older.GetAttribute("checked"));
+
+            OKButton().AssertIsEnabled();
+        }
         public virtual void NullableBooleanParams() {
             GeminiUrl("home?m1=EmployeeRepository&d1=ListEmployees");
 
@@ -543,6 +565,12 @@ public virtual void AutoCompleteOptionalParamNotSelected()
         public override void ParameterDescriptionRenderedAsPlaceholder() {
             base.ParameterDescriptionRenderedAsPlaceholder();
         }
+        [TestMethod]
+        public override void BooleanParams()
+        {
+            base.BooleanParams();
+        }
+
 
         [TestMethod]
         public override void NullableBooleanParams() {
@@ -639,7 +667,7 @@ public virtual void AutoCompleteOptionalParamNotSelected()
     }
 
     #region browsers specific subclasses
-
+    //[TestClass]
     public class DialogTestsIe : DialogTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -734,6 +762,7 @@ public virtual void AutoCompleteOptionalParamNotSelected()
             ValidateSingleRefParamFromChoices();
             CoValidationOfMultipleParameters();
             ParameterDescriptionRenderedAsPlaceholder();
+            BooleanParams();
             NullableBooleanParams();
             WarningShownWithinDialogAndInFooter();
             DefaultReferenceParamRendersCorrectly();

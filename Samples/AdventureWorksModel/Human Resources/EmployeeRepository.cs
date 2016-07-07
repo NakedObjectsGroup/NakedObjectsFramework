@@ -150,28 +150,12 @@ namespace AdventureWorksModel {
             return emps;
         }
 
-        //This method is to test use of booleans
-        public IQueryable<Employee> ListEmployees2(bool current, //mandatory
+        //This method is to test use of non-nullable booleans
+        public IQueryable<Employee> ListEmployees2(bool current,
                                                    [Optionally] bool married,
                                                    [DefaultValue(false)] bool salaried,
-                                                   [Optionally] [DefaultValue(true)] bool olderThan50) {
-            var emps = Container.Instances<Employee>();
-            emps = emps.Where(e => e.Current == current);
-
-            string value = married ? "M" : "S";
-            emps = emps.Where(e => e.MaritalStatus == value);
-
-            emps = emps.Where(e => e.Salaried == salaried);
-
-            var date = DateTime.Today.AddYears(-50); //Not an exact calculation!
-            if (olderThan50) {
-                emps = emps.Where(e => e.DateOfBirth != null && e.DateOfBirth < date);
-            }
-            else {
-                emps = emps.Where(e => e.DateOfBirth != null && e.DateOfBirth > date);
-            }
-
-            return emps;
+                                                   [DefaultValue(true)] bool olderThan50) {
+            return ListEmployees(current, married, salaried, olderThan50);
         }
 
 
