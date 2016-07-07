@@ -721,6 +721,7 @@ module NakedObjects {
                                 //TODO: does this work in edit mode i.e. show entered value
                                 s = this.renderFieldDetails(field, field.value());
                             } else {
+                                this.findAndClearAnyDependentFields(field.id(), obj.propertyMembers());
                                 this.setField(field, fieldEntry);
                                 return;
                             }
@@ -730,6 +731,22 @@ module NakedObjects {
                             s += _.reduce(fields, (s, prop) =>  s + prop.extensions().friendlyName() + "\n", "");
                     }
                     this.clearInputAndSetMessage(s);
+                });
+        }
+
+        private findAndClearAnyDependentFields(changingField: string, allFields: _.Dictionary<IField>) {
+
+            _.forEach(allFields, field => {
+                    const promptLink = field.promptLink();
+
+                    if (promptLink) {
+                        const pArgs = promptLink.arguments();
+                        const argNames = _.keys(pArgs);
+
+                        if (argNames.indexOf(changingField.toLowerCase()) >= 0) {
+                            this.clearField(field);
+                        }
+                    }
                 });
         }
 
@@ -749,6 +766,7 @@ module NakedObjects {
                             const s = this.renderFieldDetails(p, value);
                             this.clearInputAndSetMessage(s);
                         } else {
+                            this.findAndClearAnyDependentFields(fieldName, action.parameters());
                             this.setField(params[0], fieldEntry);
                         }
                         break;
@@ -757,6 +775,17 @@ module NakedObjects {
                         break;
                 }
             });
+        }
+
+        private clearField(field: IField): void { 
+            this.context.setFieldValue(this.routeData().dialogId, field.id(), new Value(null));
+
+            if (field instanceof Parameter) {
+                this.context.setFieldValue(this.routeData().dialogId, field.id(), new Value(null));
+            } else if (field instanceof PropertyMember) {
+                const parent = field.parent as DomainObjectRepresentation;
+                this.context.setPropertyValue(parent, field, new Value(null));             
+            }
         }
 
         private setField(field: IField, fieldEntry: string): void {
@@ -893,12 +922,23 @@ module NakedObjects {
             }
         }
 
+        private getPropertiesAndCurrentValue(obj : DomainObjectRepresentation) : _.Dictionary<Value> {
+            const props = obj.propertyMembers();
+            const map = _.mapValues(props, p => p.value());
+            return _.mapKeys(map, (v, k) => k.toLowerCase());
+        }
+
         private handleConditionalChoices(field: IField, fieldEntry: string): void {
             //TODO: need to cover both dialog fields and editable properties!
+            let enteredFields: _.Dictionary<Value>;
 
-            const enteredFields = field instanceof Parameter
-                ? getParametersAndCurrentValue(field.parent, this.context)
-                : {} as _.Dictionary<Value>;
+            if (field instanceof Parameter) {
+                enteredFields = getParametersAndCurrentValue(field.parent, this.context);
+            }
+
+            if (field instanceof PropertyMember) {
+                enteredFields = this.getPropertiesAndCurrentValue(field.parent as DomainObjectRepresentation);
+            }
 
             const args = _.fromPairs(_.map(field.promptLink().arguments(), (v: any, key : string) => [key, new Value(v.value)])) as _.Dictionary<Value>;
             _.forEach(_.keys(args), key => {
@@ -908,11 +948,9 @@ module NakedObjects {
                 .then((choices: _.Dictionary<Value>) => {
                     const matches = this.findMatchingChoicesForRef(choices, fieldEntry);
                     this.switchOnMatches(field, fieldEntry, matches);
-                }).catch(
-                reject => {
+                }).catch(reject => {
                     
-                }
-            );
+                });
         }
 
         private renderFieldDetails(field: IField, value: Value): string {
