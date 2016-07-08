@@ -394,22 +394,22 @@ namespace NakedObjects.Selenium {
             WaitForOutputContaining("Multiple matches:\r\nMountain Bikes");
 
             //Conditional choices on editing an object
-            CiceroUrl("object?r=0&o1=___1.Product--840");
-            WaitForOutput("Product: HL Road Frame - Black, 52");
-            EnterCommand("edit");
-            WaitForOutput("Editing Product: HL Road Frame - Black, 52");
-            EnterCommand("enter product category,cloth");
-            WaitForOutputContaining("Modified properties:");
-            WaitForOutputContaining("Product Subcategory: empty");
-            WaitForOutputContaining("Product Category: Clothing");
-            EnterCommand("enter sub, glove");
-            WaitForOutputContaining("Product Subcategory: Gloves");
-            EnterCommand("enter sub, bike");
-            WaitForOutput("None of the choices matches bike");
-            EnterCommand("enter product category,bike");
-            WaitForOutputContaining("Product Category: Bikes");
-            EnterCommand("enter sub, bike");
-            WaitForOutputContaining("Multiple matches:\r\nMountain Bikes");
+            //CiceroUrl("object?r=0&o1=___1.Product--840");
+            //WaitForOutput("Product: HL Road Frame - Black, 52");
+            //EnterCommand("edit");
+            //WaitForOutput("Editing Product: HL Road Frame - Black, 52");
+            //EnterCommand("enter product category,cloth");
+            //WaitForOutputContaining("Modified properties:");
+            //WaitForOutputContaining("Product Subcategory: empty");
+            //WaitForOutputContaining("Product Category: Clothing");
+            //EnterCommand("enter sub, glove");
+            //WaitForOutputContaining("Product Subcategory: Gloves");
+            //EnterCommand("enter sub, bike");
+            //WaitForOutput("None of the choices matches bike");
+            //EnterCommand("enter product category,bike");
+            //WaitForOutputContaining("Product Category: Bikes");
+            //EnterCommand("enter sub, bike");
+            //WaitForOutputContaining("Multiple matches:\r\nMountain Bikes");
 
             //Multiple choices
             //CiceroUrl("home?m1=ProductRepository&d1=ListProductsBySubCategories&f1_subCategories=%5B%7B%22href%22:%22http:%2F%2Flocalhost:61546%2Fobjects%2F___1.ProductSubcategory%2F1%22,%22title%22:%22Mountain%20Bikes%22%7D,%7B%22href%22:%22http:%2F%2Flocalhost:61546%2Fobjects%2F___1.ProductSubcategory%2F3%22,%22title%22:%22Touring%20Bikes%22%7D%5D");
@@ -1430,7 +1430,7 @@ namespace NakedObjects.Selenium {
             base.CleanUpTest();
         }
     }
-    [TestClass]
+    //[TestClass]
     public class CiceroTestsChrome : CiceroTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
