@@ -122,11 +122,9 @@ module NakedObjects {
             let versionValidated = false;
 
             handlers.handleBackground = ($scope: INakedObjectsScope) => {
-                // todo no catch !
-                color.toColorNumberFromHref($location.absUrl())
-                    .then((c: number) => {
-                        $scope.backgroundColor = `${objectColor}${c}`;
-                    });
+                color.toColorNumberFromHref($location.absUrl()).
+                    then(c => $scope.backgroundColor = `${objectColor}${c}`).
+                    catch((reject: ErrorWrapper) => error.handleError(reject));
 
                 navigation.push();
 
@@ -136,9 +134,8 @@ module NakedObjects {
                     return;
                 }
 
-                // todo no catch !
-                context.getVersion()
-                    .then((v: VersionRepresentation) => {
+                context.getVersion().
+                    then(v => {
                         const specVersion = parseFloat(v.specVersion());
                         const domainModel = v.optionalCapabilities().domainModel;
 
@@ -149,7 +146,8 @@ module NakedObjects {
                         } else {
                             versionValidated = true;
                         }
-                    });
+                    }).
+                    catch((reject: ErrorWrapper) => error.handleError(reject));
             };
 
             function setNewMenu($scope: INakedObjectsScope, newMenuId: string, routeData: PaneRouteData) {
@@ -173,23 +171,20 @@ module NakedObjects {
                                   actionViewModel?: IActionViewModel) {
                 if (newDialogId) {
                     const action = holder.actionMember(routeData.dialogId);
-                    // todo no catch !
-                    context.getInvokableAction(action)
-                        .then(details => {
+                    context.getInvokableAction(action).
+                        then(details => {
                             if (actionViewModel) {
                                 actionViewModel.makeInvokable(details);
                             }
                             setDialog($scope, actionViewModel || details, routeData);
                             focusManager.focusOn(FocusTarget.Dialog, 0, routeData.paneId);
-                        });
+                        }).
+                        catch((reject: ErrorWrapper) => error.handleError(reject));
                     return;
                 }
                 clearDialog($scope, routeData.paneId);      
                 focusManager.focusOn(focusTarget, 0, routeData.paneId);
             }
-
-
-
 
             function logoff() {
                 for (let pane = 1; pane <= 2; pane++) {
@@ -315,20 +310,22 @@ module NakedObjects {
 
                 const cachedList = context.getCachedList(routeData.paneId, routeData.page, routeData.pageSize);
 
+                const setFriendlyName = () =>
+                    getActionExtensions(routeData).
+                        then(ext => $scope.title = ext.friendlyName()).
+                        catch((reject: ErrorWrapper) => error.handleError(reject));
+
                 if (cachedList) {
                     const listViewModel = perPaneListViews[routeData.paneId];
                     $scope.listTemplate = template.getTemplateName(cachedList.extensions().elementType(), TemplateType.List, routeData.state);
                     listViewModel.reset(cachedList, routeData);
                     $scope.collection = listViewModel;
-                    // todo no catch !
-                    getActionExtensions(routeData).then((ext: Extensions) => $scope.title = ext.friendlyName());
-
+                    setFriendlyName();
                     handleListActionsAndDialog($scope, routeData);
                 } else {
                     $scope.listTemplate = listPlaceholderTemplate;
                     $scope.collectionPlaceholder = viewModelFactory.listPlaceholderViewModel(routeData);
-                    // todo no catch !
-                    getActionExtensions(routeData).then((ext: Extensions) => $scope.title = ext.friendlyName());
+                    setFriendlyName();
                     focusManager.focusOn(FocusTarget.Action, 0, routeData.paneId);
                 }
             };
@@ -409,8 +406,9 @@ module NakedObjects {
                 $scope.objectTemplate = blankTemplate;
                 $scope.actionsTemplate = nullTemplate;
 
-                // todo no catch !
-                color.toColorNumberFromType(oid.domainType).then(c => $scope.backgroundColor = `${objectColor}${c}`);
+                color.toColorNumberFromType(oid.domainType).
+                    then(c => $scope.backgroundColor = `${objectColor}${c}`).
+                    catch((reject: ErrorWrapper) => error.handleError(reject));
 
                 deRegObject[routeData.paneId].deReg();
                 context.clearObjectUpdater(routeData.paneId);
@@ -431,9 +429,8 @@ module NakedObjects {
                         handleNewObjectSearch($scope, routeData);
 
                         deRegObject[routeData.paneId].add($scope.$on(geminiConcurrencyEvent, ovm.concurrency()) as () => void);
-
-                    }).catch((reject: ErrorWrapper) => {
-
+                    }).
+                    catch((reject: ErrorWrapper) => {
                         if (reject.category === ErrorCategory.ClientError && reject.clientErrorCode === ClientErrorCode.ExpiredTransient) {
                             context.setError(reject);
                             $scope.objectTemplate = expiredTransientTemplate;
@@ -473,9 +470,8 @@ module NakedObjects {
                 const oid = ObjectIdWrapper.fromObjectId(routeData.objectId);
                 $scope.attachmentTemplate = attachmentTemplate;
 
-                // todo no catch !
-                context.getObject(routeData.paneId, oid, routeData.interactionMode)
-                    .then((object: DomainObjectRepresentation) => {
+                context.getObject(routeData.paneId, oid, routeData.interactionMode).
+                    then((object: DomainObjectRepresentation) => {
 
                         const attachmentId = routeData.attachmentId;
                         const attachment = object.propertyMember(attachmentId);
@@ -484,7 +480,8 @@ module NakedObjects {
                             const avm = viewModelFactory.attachmentViewModel(attachment, routeData.paneId);
                             $scope.attachment = avm;
                         }
-                    });
+                    }).
+                    catch((reject: ErrorWrapper) => error.handleError(reject));
             }
 
             handlers.handleApplicationProperties = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
@@ -496,17 +493,17 @@ module NakedObjects {
                 const apvm = new ApplicationPropertiesViewModel();
                 $scope.applicationProperties = apvm;
 
-                // todo no catch !
-                context.getUser().then(u => apvm.user = u.wrapped());
-                // todo no catch !
-                context.getVersion().then(v => apvm.serverVersion = v.wrapped());
+                context.getUser().
+                    then(u => apvm.user = u.wrapped()).
+                    catch((reject: ErrorWrapper) => error.handleError(reject));
+
+                context.getVersion().
+                    then(v => apvm.serverVersion = v.wrapped()).
+                    catch((reject: ErrorWrapper) => error.handleError(reject));
 
                 apvm.serverUrl = getAppPath();
 
-                apvm.clientVersion =  (NakedObjects as any)["version"] || "Failed to write version";
-
+                apvm.clientVersion = (NakedObjects as any)["version"] || "Failed to write version";
             }
-
-
         });
 }

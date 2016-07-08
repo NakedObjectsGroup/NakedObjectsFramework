@@ -120,8 +120,11 @@ module NakedObjects {
             linkViewModel.reference = value.toValueString();
             linkViewModel.choice = ChoiceViewModel.create(value, "");
             linkViewModel.draggableType = linkViewModel.domainType;
-            // todo no catch !
-            color.toColorNumberFromHref(linkRep.href()).then(c => linkViewModel.color = `${linkColor}${c}`);
+
+            color.toColorNumberFromHref(linkRep.href()).
+                then(c => linkViewModel.color = `${linkColor}${c}`).
+                catch((reject: ErrorWrapper) => error.handleError(reject));
+
             linkViewModel.canDropOn = (targetType: string) => context.isSubTypeOf(linkViewModel.domainType, targetType);
         }
 
@@ -282,13 +285,13 @@ module NakedObjects {
         };
 
         function drop(vm: IFieldViewModel, newValue: IDraggableViewModel) {
-            // todo add catch
             context.isSubTypeOf(newValue.draggableType, vm.returnType).
                 then((canDrop: boolean) => {
                     if (canDrop) {
                         vm.setNewValue(newValue);
                     }
-                });
+                }).
+                catch((reject: ErrorWrapper) => error.handleError(reject));
         };
 
         function validate(rep: IHasExtensions, vm: IFieldViewModel, modelValue: any, viewValue: string, mandatoryOnly: boolean) {
@@ -472,7 +475,7 @@ module NakedObjects {
         }
 
         viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number, parentValues: () => _.Dictionary<Value>) => {
-            const propertyViewModel = new PropertyViewModel(propertyRep, color);
+            const propertyViewModel = new PropertyViewModel(propertyRep, color, error);
 
             propertyViewModel.id = id;
             propertyViewModel.onPaneId = paneId;
@@ -628,7 +631,7 @@ module NakedObjects {
         }
 
         viewModelFactory.parameterViewModel = (parmRep: Parameter, previousValue: Value, paneId: number) => {
-            const parmViewModel = new ParameterViewModel(parmRep, paneId, color);
+            const parmViewModel = new ParameterViewModel(parmRep, paneId, color, error);
 
             const fieldEntryType = parmViewModel.entryType;
           
@@ -687,25 +690,24 @@ module NakedObjects {
                 listViewModel.header = null;
 
                 if (items.length > 0) {
+                    getExtensions().
+                        then((ext: Extensions) => {
+                            _.forEach(items, itemViewModel => {
+                                itemViewModel.tableRowViewModel.hasTitle = ext.tableViewTitle();
+                                itemViewModel.tableRowViewModel.title = itemViewModel.title;
+                            });
 
-                    // todo add catch
-                    getExtensions().then((ext: Extensions) => {
-                        _.forEach(items, itemViewModel => {
-                            itemViewModel.tableRowViewModel.hasTitle = ext.tableViewTitle();
-                            itemViewModel.tableRowViewModel.title = itemViewModel.title;
-                        });
+                            if (!listViewModel.header) {
+                                const firstItem = items[0].tableRowViewModel;
+                                const propertiesHeader = _.map(firstItem.properties, property => property.title);
 
-                        if (!listViewModel.header) {
-                            const firstItem = items[0].tableRowViewModel;
-                            const propertiesHeader = _.map(firstItem.properties, property => property.title);
+                                listViewModel.header = firstItem.hasTitle ? [""].concat(propertiesHeader) : propertiesHeader;
 
-                            listViewModel.header = firstItem.hasTitle ? [""].concat(propertiesHeader) : propertiesHeader;
-
-                            focusManager.focusOverrideOff();
-                            focusManager.focusOn(FocusTarget.TableItem, 0, routeData.paneId);
-                        }
-
-                    });
+                                focusManager.focusOverrideOff();
+                                focusManager.focusOn(FocusTarget.TableItem, 0, routeData.paneId);
+                            }
+                        }).
+                        catch((reject: ErrorWrapper) => error.handleError(reject));
                 }
             }
 
@@ -745,8 +747,10 @@ module NakedObjects {
             collectionViewModel.title = collectionRep.extensions().friendlyName();
             collectionViewModel.presentationHint = collectionRep.extensions().presentationHint();
             collectionViewModel.pluralName = collectionRep.extensions().pluralName();
-            // todo add catch
-            color.toColorNumberFromType(collectionRep.extensions().elementType()).then((c: number) => collectionViewModel.color = `${linkColor}${c}`);
+
+            color.toColorNumberFromType(collectionRep.extensions().elementType()).
+                then(c => collectionViewModel.color = `${linkColor}${c}`).
+                catch((reject: ErrorWrapper) => error.handleError(reject));
 
             collectionViewModel.refresh = (routeData: PaneRouteData, resetting: boolean) => {
 
@@ -767,19 +771,15 @@ module NakedObjects {
                     if (state === CollectionViewState.Summary) {
                         collectionViewModel.items = [];
                     } else if (getDetails) {
-                        // TODO - there was a missing catch here make sure all top level promises have a catch !
-
-                        context.getCollectionDetails(collectionRep, state, resetting)
-                            .then((details: CollectionRepresentation) => {
+                        context.getCollectionDetails(collectionRep, state, resetting).
+                            then(details => {
                                 collectionViewModel.items = viewModelFactory.getItems(details.value(),
                                     state === CollectionViewState.Table,
                                     routeData,
                                     collectionViewModel);
                                 collectionViewModel.details = getCollectionDetails(collectionViewModel.items.length);
-                            })
-                            .catch((reject: ErrorWrapper) => {
-                                error.handleError(reject);
-                            });
+                            }).
+                            catch((reject: ErrorWrapper) => error.handleError(reject));
                     } else {
                         collectionViewModel.items = viewModelFactory.getItems(itemLinks, state === CollectionViewState.Table, routeData, collectionViewModel);
                     }
@@ -910,9 +910,8 @@ module NakedObjects {
                 };
 
                 tvm.logOff = () => {
-                    // todo add catch
-                    context.getUser()
-                        .then(u => {
+                    context.getUser().
+                        then(u => {
                             if (window.confirm(logOffMessage(u.userName() || "Unknown"))) {
                                 const config = {
                                     withCredentials: true,
@@ -928,7 +927,8 @@ module NakedObjects {
                                 $rootScope.$broadcast(geminiLogoffEvent);
                                 $timeout(() => window.location.href = postLogoffUrl);
                             }
-                        });
+                        }).
+                        catch((reject: ErrorWrapper) => error.handleError(reject));
                 };
 
                 tvm.applicationProperties = () => {
@@ -949,8 +949,9 @@ module NakedObjects {
                 $rootScope.$on(geminiMessageEvent, (event, messages) =>
                     tvm.messages = messages);
 
-                // todo add catch
-                context.getUser().then(user => tvm.userName = user.userName());
+                context.getUser().
+                    then(user => tvm.userName = user.userName()).
+                    catch((reject: ErrorWrapper) => error.handleError(reject));
 
                 cachedToolBarViewModel = tvm;
             }
