@@ -164,5 +164,16 @@ namespace AdventureWorksModel {
         public IQueryable<Shift> Shifts() {
             return Container.Instances<Shift>();
         }
+
+        [QueryOnly]
+        public StaffSummary CreateStaffSummary()
+        {
+            var emps = Container.Instances<Employee>();
+            var sum = Container.NewTransientInstance<StaffSummary>();
+            sum.TotalStaff = emps.Count();
+            sum.Male = emps.Count(e => e.Gender == "M");
+            sum.Female = emps.Count(e => e.Gender == "F");
+            return sum;
+        }
     }
 }

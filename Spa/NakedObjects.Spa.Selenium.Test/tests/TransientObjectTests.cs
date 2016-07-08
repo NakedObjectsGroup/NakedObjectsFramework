@@ -181,6 +181,13 @@ namespace NakedObjects.Selenium {
             OpenSubMenu("Orders"); //Would fail if already open
         }
 
+        public virtual void CreateAndSaveNotPersistedObject()
+        {
+            GeminiUrl("home?m1=EmployeeRepository");
+            Click(GetObjectAction("Create Staff Summary"));
+            WaitForView(Pane.Single, PaneType.Object, "Staff Summary");
+            WaitForTextStarting(".object", "Staff Summary\r\nFemale"); //i.e. no buttons in the header
+        }
     }
 
     public abstract class TransientObjectTests : TransientObjectTestsRoot {
@@ -253,10 +260,15 @@ namespace NakedObjects.Selenium {
         {
             base.TransientCreatedFromDialogClosesDialog();
         }
+        [TestMethod]
+        public override void CreateAndSaveNotPersistedObject()
+        {
+            base.CreateAndSaveNotPersistedObject();
+        }
     }
 
     #region browsers specific subclasses
-
+    //[TestClass]
     public class TransientObjectTestsIe : TransientObjectTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -298,7 +310,7 @@ namespace NakedObjects.Selenium {
             ((IJavaScriptExecutor) br).ExecuteScript(script);
         }
     }
-
+    //[TestClass]
     public class TransientObjectTestsChrome : TransientObjectTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -316,7 +328,6 @@ namespace NakedObjects.Selenium {
             base.CleanUpTest();
         }
     }
-
     #endregion
 
     #region Mega tests
@@ -338,6 +349,7 @@ namespace NakedObjects.Selenium {
             TransientWithHiddenNonOptionalFields();
             CanInvokeActionOnASavedTransient();
             TransientCreatedFromDialogClosesDialog();
+            CreateAndSaveNotPersistedObject();
         }
     }
 

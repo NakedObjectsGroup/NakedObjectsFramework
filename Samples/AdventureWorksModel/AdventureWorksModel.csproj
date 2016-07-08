@@ -74,6 +74,7 @@
     <Compile Include="AdventureWorksContext.cs" />
     <Compile Include="AssemblyHook.cs" />
     <Compile Include="AWNotCounted.cs" />
+    <Compile Include="Human Resources\StaffSummary.cs" />
     <Compile Include="Human Resources\TimePeriod.cs">
       <SubType>Code</SubType>
     </Compile>
