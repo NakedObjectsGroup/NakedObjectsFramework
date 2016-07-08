@@ -120,6 +120,7 @@ module NakedObjects {
             linkViewModel.reference = value.toValueString();
             linkViewModel.choice = ChoiceViewModel.create(value, "");
             linkViewModel.draggableType = linkViewModel.domainType;
+            // todo no catch !
             color.toColorNumberFromHref(linkRep.href()).then(c => linkViewModel.color = `${linkColor}${c}`);
             linkViewModel.canDropOn = (targetType: string) => context.isSubTypeOf(linkViewModel.domainType, targetType);
         }
@@ -281,6 +282,7 @@ module NakedObjects {
         };
 
         function drop(vm: IFieldViewModel, newValue: IDraggableViewModel) {
+            // todo add catch
             context.isSubTypeOf(newValue.draggableType, vm.returnType).
                 then((canDrop: boolean) => {
                     if (canDrop) {
@@ -686,6 +688,7 @@ module NakedObjects {
 
                 if (items.length > 0) {
 
+                    // todo add catch
                     getExtensions().then((ext: Extensions) => {
                         _.forEach(items, itemViewModel => {
                             itemViewModel.tableRowViewModel.hasTitle = ext.tableViewTitle();
@@ -742,6 +745,7 @@ module NakedObjects {
             collectionViewModel.title = collectionRep.extensions().friendlyName();
             collectionViewModel.presentationHint = collectionRep.extensions().presentationHint();
             collectionViewModel.pluralName = collectionRep.extensions().pluralName();
+            // todo add catch
             color.toColorNumberFromType(collectionRep.extensions().elementType()).then((c: number) => collectionViewModel.color = `${linkColor}${c}`);
 
             collectionViewModel.refresh = (routeData: PaneRouteData, resetting: boolean) => {
@@ -906,6 +910,7 @@ module NakedObjects {
                 };
 
                 tvm.logOff = () => {
+                    // todo add catch
                     context.getUser()
                         .then(u => {
                             if (window.confirm(logOffMessage(u.userName() || "Unknown"))) {
@@ -944,6 +949,7 @@ module NakedObjects {
                 $rootScope.$on(geminiMessageEvent, (event, messages) =>
                     tvm.messages = messages);
 
+                // todo add catch
                 context.getUser().then(user => tvm.userName = user.userName());
 
                 cachedToolBarViewModel = tvm;

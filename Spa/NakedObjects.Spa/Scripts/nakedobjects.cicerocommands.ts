@@ -492,15 +492,15 @@ module NakedObjects {
                 return;
             }
             if (this.isObject()) {
-                this.getObject()
-                    .then((obj: DomainObjectRepresentation) => {
-                        this.processActions(match, obj.actionMembers(), details);
-                    });
+                // todo no catch !
+                this.getObject().then((obj: DomainObjectRepresentation) => {
+                    this.processActions(match, obj.actionMembers(), details);
+                });
             } else if (this.isMenu()) {
-                this.getMenu()
-                    .then((menu: MenuRepresentation) => {
-                        this.processActions(match, menu.actionMembers(), details);
-                    });
+                // todo no catch !
+                this.getMenu().then((menu: MenuRepresentation) => {
+                    this.processActions(match, menu.actionMembers(), details);
+                });
             }
             //TODO: handle list - CCAs
         }
@@ -551,6 +551,7 @@ module NakedObjects {
         private openActionDialog(action: ActionMember) {
             this.context.clearDialogValues();
             this.urlManager.setDialog(action.actionId());
+            // todo no catch !
             this.context.getInvokableAction(action).then((invokable: Models.IInvokableAction) => {
                 _.forEach(invokable.parameters(), (p) => {
                     const pVal = p.default();
@@ -634,6 +635,7 @@ module NakedObjects {
                 this.clearInputAndSetMessage(clipboardContextError);
                 return;
             }
+            // todo no catch !
             this.getObject().then((obj: DomainObjectRepresentation) => {
                 this.vm.clipboard = obj;
                 this.show();
@@ -707,8 +709,8 @@ module NakedObjects {
         };
 
         private fieldEntryForEdit(fieldName: string, fieldEntry: string) {
-            this.getObject()
-                .then((obj: DomainObjectRepresentation) => {
+            // todo no catch !
+            this.getObject().then((obj: DomainObjectRepresentation) => {
                     const fields = this.matchingProperties(obj, fieldName);
                     let s: string;
                     switch (fields.length) {
@@ -751,6 +753,7 @@ module NakedObjects {
         }
 
         private fieldEntryForDialog(fieldName: string, fieldEntry: string) {
+            // todo no catch !
             this.getActionForCurrentDialog().then((action: Models.IInvokableAction) => {
                 //TODO: error -  need to get invokable action to get the params.
                 let params = _.map(action.parameters(), param => param);
@@ -868,8 +871,8 @@ module NakedObjects {
             }
             const paramType = field.extensions().returnType();
             const refType = ref.domainType();
-            this.context.isSubTypeOf(refType, paramType)
-                .then((isSubType: boolean) => {
+            // todo no catch !
+            this.context.isSubTypeOf(refType, paramType).then((isSubType: boolean) => {
                     if (isSubType) {
                         const obj = this.vm.clipboard;
                         const selfLink = obj.selfLink();
@@ -888,6 +891,7 @@ module NakedObjects {
             if (!field.isScalar() && this.isPaste(fieldEntry)) {
                 this.handleClipboard(field);
             } else {
+                // todo no catch !
                 this.context.autoComplete(field, field.id(), null, fieldEntry).then(
                     (choices: _.Dictionary<Value>) => {
                         const matches = this.findMatchingChoicesForRef(choices, fieldEntry);
@@ -952,6 +956,8 @@ module NakedObjects {
             _.forEach(_.keys(args), key => {
                 args[key] = enteredFields[key];
             });
+
+            // todo empty catch !
             this.context.conditionalChoices(field, field.id(), null, args)
                 .then((choices: _.Dictionary<Value>) => {
                     const matches = this.findMatchingChoicesForRef(choices, fieldEntry);
@@ -1041,6 +1047,8 @@ module NakedObjects {
                 return;
             }
             if (this.isObject) {
+
+                // todo no catch !
                 this.getObject()
                     .then((obj: DomainObjectRepresentation) => {
                         if (this.isCollection()) {
@@ -1048,6 +1056,7 @@ module NakedObjects {
                             const openCollIds = openCollectionIds(this.routeData());
                             const coll = obj.collectionMember(openCollIds[0]);
                             //Safe to assume always a List (Cicero doesn't support tables as such & must be open)
+                            // todo no catch !
                             this.context.getCollectionDetails(coll, CollectionViewState.List, false).then((coll: CollectionRepresentation) => {
                                 this.attemptGotoLinkNumber(itemNo, coll.value());
                                 return;
@@ -1184,6 +1193,7 @@ module NakedObjects {
 
         doExecute(args: string, chained: boolean): void {
 
+            // todo no catch !
             this.getActionForCurrentDialog().then((action: IInvokableAction) => {
 
                 if (chained && action.invokeLink().method() !== "GET") {
@@ -1235,6 +1245,7 @@ module NakedObjects {
 
         doExecute(args: string, chained: boolean): void {
             const arg = this.argumentAsString(args, 0);
+            // todo no catch !
             this.getList().then((listRep: ListRepresentation) => {
                 const numPages = listRep.pagination().numPages;
                 const page = this.routeData().page;
@@ -1325,6 +1336,7 @@ module NakedObjects {
                 this.mayNotBeChained();
                 return;
             }
+            // todo no catch !
             this.getObject().then((obj: DomainObjectRepresentation) => {
                 const props = obj.propertyMembers();
                 const newValsFromUrl = this.context.getCurrentObjectValues(obj.id());
@@ -1382,6 +1394,7 @@ module NakedObjects {
             //TODO: Add in sub-commands: Add, Remove, All, Clear & Show
             const arg = this.argumentAsString(args, 0);
             const { start, end } = this.parseRange(arg); //'destructuring'
+            // todo no catch !
             this.getList().then((list: ListRepresentation) => {
                 this.selectItems(list, start, end);
             });
@@ -1410,6 +1423,7 @@ module NakedObjects {
             if (this.isCollection()) {
                 const arg = this.argumentAsString(args, 0, true);
                 const { start, end } = this.parseRange(arg);
+                // todo no catch !
                 this.getObject().then((obj: DomainObjectRepresentation) => {
                     const openCollIds = openCollectionIds(this.routeData());
                     const coll = obj.collectionMember(openCollIds[0]);
@@ -1420,6 +1434,7 @@ module NakedObjects {
             else if (this.isList()) {
                 const arg = this.argumentAsString(args, 0, true);
                 const { start, end } = this.parseRange(arg);
+                // todo no catch !
                 this.getList().then((list: ListRepresentation) => {
                     this.renderItems(list, start, end);
                 });
@@ -1474,6 +1489,7 @@ module NakedObjects {
             if (coll.value()) {
                 this.renderItems(coll, startNo, endNo);
             } else {
+                // todo no catch !
                 this.context.getCollectionDetails(coll, CollectionViewState.List, false).then((details: CollectionRepresentation) => {
                     this.renderItems(details, startNo, endNo);
                 });

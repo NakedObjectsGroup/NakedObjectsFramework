@@ -625,6 +625,7 @@ module NakedObjects {
                 return $q.reject(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.WrongType, "expect list"));
             }
         };
+
         const getList = (paneId: number, resultPromise: () => ng.IPromise<ActionResultRepresentation>, page: number, pageSize: number) => {
             return resultPromise().then(result => handleResult(paneId, result, page, pageSize));
         };

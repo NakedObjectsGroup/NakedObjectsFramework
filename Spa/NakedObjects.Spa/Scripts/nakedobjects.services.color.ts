@@ -38,6 +38,7 @@ module NakedObjects {
             }
 
             const entry = subtypeCache[index];
+            // todo no catch !
             return context.isSubTypeOf(subtype, entry.type).then(b => b ? $q.when(entry.color) : isSubtypeOf(subtype, index + 1, count));
         }
 

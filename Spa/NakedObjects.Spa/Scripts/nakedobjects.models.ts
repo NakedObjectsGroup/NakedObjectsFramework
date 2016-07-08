@@ -944,8 +944,6 @@ module NakedObjects.Models {
             const myparent = this.parent;
             const isOnList = (myparent instanceof ActionMember || myparent instanceof ActionRepresentation) && myparent.parent instanceof ListRepresentation;
             const isList = this.isList();
-            // todo also need to check element types and ordering perhaps ?
-
             return isList && isOnList;
         }
 

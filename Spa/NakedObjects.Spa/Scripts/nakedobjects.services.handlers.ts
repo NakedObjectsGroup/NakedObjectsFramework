@@ -122,6 +122,7 @@ module NakedObjects {
             let versionValidated = false;
 
             handlers.handleBackground = ($scope: INakedObjectsScope) => {
+                // todo no catch !
                 color.toColorNumberFromHref($location.absUrl())
                     .then((c: number) => {
                         $scope.backgroundColor = `${objectColor}${c}`;
@@ -135,6 +136,7 @@ module NakedObjects {
                     return;
                 }
 
+                // todo no catch !
                 context.getVersion()
                     .then((v: VersionRepresentation) => {
                         const specVersion = parseFloat(v.specVersion());
@@ -151,6 +153,7 @@ module NakedObjects {
             };
 
             function setNewMenu($scope: INakedObjectsScope, newMenuId: string, routeData: PaneRouteData) {
+            
                 context.getMenu(newMenuId)
                     .then((menu: MenuRepresentation) => {
                         $scope.actionsTemplate = actionsTemplate;
@@ -170,6 +173,7 @@ module NakedObjects {
                                   actionViewModel?: IActionViewModel) {
                 if (newDialogId) {
                     const action = holder.actionMember(routeData.dialogId);
+                    // todo no catch !
                     context.getInvokableAction(action)
                         .then(details => {
                             if (actionViewModel) {
@@ -316,12 +320,14 @@ module NakedObjects {
                     $scope.listTemplate = template.getTemplateName(cachedList.extensions().elementType(), TemplateType.List, routeData.state);
                     listViewModel.reset(cachedList, routeData);
                     $scope.collection = listViewModel;
+                    // todo no catch !
                     getActionExtensions(routeData).then((ext: Extensions) => $scope.title = ext.friendlyName());
 
                     handleListActionsAndDialog($scope, routeData);
                 } else {
                     $scope.listTemplate = listPlaceholderTemplate;
                     $scope.collectionPlaceholder = viewModelFactory.listPlaceholderViewModel(routeData);
+                    // todo no catch !
                     getActionExtensions(routeData).then((ext: Extensions) => $scope.title = ext.friendlyName());
                     focusManager.focusOn(FocusTarget.Action, 0, routeData.paneId);
                 }
@@ -403,6 +409,7 @@ module NakedObjects {
                 $scope.objectTemplate = blankTemplate;
                 $scope.actionsTemplate = nullTemplate;
 
+                // todo no catch !
                 color.toColorNumberFromType(oid.domainType).then(c => $scope.backgroundColor = `${objectColor}${c}`);
 
                 deRegObject[routeData.paneId].deReg();
@@ -466,6 +473,7 @@ module NakedObjects {
                 const oid = ObjectIdWrapper.fromObjectId(routeData.objectId);
                 $scope.attachmentTemplate = attachmentTemplate;
 
+                // todo no catch !
                 context.getObject(routeData.paneId, oid, routeData.interactionMode)
                     .then((object: DomainObjectRepresentation) => {
 
@@ -488,7 +496,9 @@ module NakedObjects {
                 const apvm = new ApplicationPropertiesViewModel();
                 $scope.applicationProperties = apvm;
 
+                // todo no catch !
                 context.getUser().then(u => apvm.user = u.wrapped());
+                // todo no catch !
                 context.getVersion().then(v => apvm.serverVersion = v.wrapped());
 
                 apvm.serverUrl = getAppPath();

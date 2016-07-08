@@ -83,7 +83,9 @@ module NakedObjects {
                 cvm.outputMessageThenClearIt();
             } else {
                 const listPromise = context.getListFromMenu(1, routeData, routeData.page, routeData.pageSize);
+                // todo no catch !
                 listPromise.then((list: ListRepresentation) => {
+                    // todo no catch !
                     context.getMenu(routeData.menuId).then((menu: MenuRepresentation) => {
                         const count = list.value().length;
                         const numPages = list.pagination().numPages;
@@ -135,6 +137,7 @@ module NakedObjects {
             let output = `${editing} `;
             output += PlusTitle(obj) + "\n";
             if (routeData.dialogId) {
+                // todo no catch !
                 context.getInvokableAction(obj.actionMember(routeData.dialogId))
                     .then((details: IInvokableAction) => {
                         output += renderActionDialog(details, routeData, mask);
@@ -149,6 +152,7 @@ module NakedObjects {
         function renderObjectTitleAndDialogIfOpen(routeData: PaneRouteData, obj: DomainObjectRepresentation, cvm: ICiceroViewModel) {
             let output = Title(obj) + "\n";
             if (routeData.dialogId) {
+                // todo no catch !
                 context.getInvokableAction(obj.actionMember(routeData.dialogId))
                     .then((details: IInvokableAction) => {
                         output += renderActionDialog(details, routeData, mask);
@@ -161,13 +165,14 @@ module NakedObjects {
 
         function renderOpenMenu(routeData: PaneRouteData, cvm: ICiceroViewModel) {
             var output = "";
+            // todo no catch !
             context.getMenu(routeData.menuId)
                 .then((menu: MenuRepresentation) => {
                     output += menuTitle(menu.title());
-                    return routeData.dialogId ? context.getInvokableAction(menu.actionMember(routeData.dialogId)) : $q.when(null);
+                    return routeData.dialogId ? context.getInvokableAction(menu.actionMember(routeData.dialogId)) : $q.when(null) as ng.IPromise<IInvokableAction>;
                 }).then((details: IInvokableAction) => {
                     if (details) {
-                        output += "\n" + renderActionDialog(details, routeData, mask);
+                        output += `\n${renderActionDialog(details, routeData, mask)}`;
                     }
                 }).finally(() => {
                     cvm.clearInputRenderOutputAndAppendAlertIfAny(output);

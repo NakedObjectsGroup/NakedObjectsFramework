@@ -661,6 +661,7 @@ module NakedObjects {
                     if (attachment) {
                         const title = attachment.title;
                         element.empty();
+                        // todo no catch !
                         attachment.downloadFile().then(blob => {
                             const reader = new FileReader();
                             reader.onloadend = () => element.html(`<img src='${reader.result}' alt='${title}' />`);
@@ -720,8 +721,8 @@ module NakedObjects {
                     const attachment: AttachmentViewModel = ngModel.$modelValue;
 
                     if (!attachment.displayInline()) {
-                        attachment.downloadFile()
-                            .then(blob => {
+                        // todo no catch !
+                        attachment.downloadFile().then(blob => {
                                 if (window.navigator.msSaveBlob) {
                                     // internet explorer 
                                     window.navigator.msSaveBlob(blob, attachment.title);
@@ -746,6 +747,7 @@ module NakedObjects {
                        
                         const anchor = element.find("div");
                         if (attachment.displayInline()) {
+                            // todo no catch !
                             attachment.downloadFile().then(blob => {
                                 const reader = new FileReader();
                                 reader.onloadend = () => {

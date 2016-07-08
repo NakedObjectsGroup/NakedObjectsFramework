@@ -374,11 +374,13 @@ module NakedObjects {
             if (this.entryType === EntryType.AutoComplete && this.choice && this.type === "ref") {
                 const href = this.choice.getValue().href();
                 if (href) {
+                    // todo add catch
                     color.toColorNumberFromHref(href).then((c: number) => this.color = `${linkColor}${c}`);
                     return;
                 }
             }
             else if (this.entryType !== EntryType.AutoComplete && this.value) {
+                // todo add catch
                 color.toColorNumberFromType(this.returnType).then((c: number) => this.color = `${linkColor}${c}`);
                 return;
             }
@@ -734,10 +736,12 @@ module NakedObjects {
         }
 
         private collectionContributedInvokeDecorator(actionViewModel: IActionViewModel) {
+          
             const showDialog = () => this.context.getInvokableAction(actionViewModel.actionRep as ActionMember).
                 then((ia: IInvokableAction) => _.keys(ia.parameters()).length > 1);
 
             actionViewModel.doInvoke = () => { };
+            // todo add catch
             showDialog().
                 then((show: boolean) => actionViewModel.doInvoke = show ?
                     (right?: boolean) => {
@@ -1097,6 +1101,7 @@ module NakedObjects {
             this.reference = sav ? sav.toValueString() : "";
             this.choice = sav ? ChoiceViewModel.create(sav, "") : null;
 
+            // todo add catch
             this.colorService.toColorNumberFromType(this.domainObject.domainType()).then(c => this.color = `${objectColor}${c}`);
 
             this.resetMessage();
@@ -1110,10 +1115,12 @@ module NakedObjects {
         concurrency() {
             return (event: ng.IAngularEvent, em: ErrorMap) => {
                 this.routeData = this.urlManager.getRouteData().pane()[this.onPaneId];
+                // todo add catch
                 this.contextService.getObject(this.onPaneId, this.domainObject.getOid(), this.routeData.interactionMode)
                     .then(obj => {
                         // cleared cached values so all values are from reloaded representation 
                         this.contextService.clearObjectValues(this.onPaneId);
+                        // todo add catch
                         this.contextService.reloadObject(this.onPaneId, obj)
                             .then(reloadedObj => {
                                 if (this.routeData.dialogId) {
