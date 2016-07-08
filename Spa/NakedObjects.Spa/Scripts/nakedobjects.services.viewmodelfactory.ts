@@ -118,7 +118,7 @@ module NakedObjects {
 
             linkViewModel.value = value.toString();
             linkViewModel.reference = value.toValueString();
-            linkViewModel.choice = ChoiceViewModel.create(value, "");
+            linkViewModel.selectedChoice = ChoiceViewModel.create(value, "");
             linkViewModel.draggableType = linkViewModel.domainType;
 
             color.toColorNumberFromHref(linkRep.href()).
@@ -340,9 +340,9 @@ module NakedObjects {
                 propertyViewModel.choices = _.map(choices, (v, n) => ChoiceViewModel.create(v, propertyViewModel.id, n));
 
                 const currentChoice = ChoiceViewModel.create(newValue, propertyViewModel.id);
-                propertyViewModel.choice = _.find(propertyViewModel.choices, c => c.valuesEqual(currentChoice));
+                propertyViewModel.selectedChoice = _.find(propertyViewModel.choices, c => c.valuesEqual(currentChoice));
             } else {
-                propertyViewModel.choice = ChoiceViewModel.create(newValue, propertyViewModel.id);
+                propertyViewModel.selectedChoice = ChoiceViewModel.create(newValue, propertyViewModel.id);
             }
         }
 
@@ -361,9 +361,9 @@ module NakedObjects {
                 setScalarValueInView(propertyViewModel, propertyRep, value);
                 
                 if (propertyRep.entryType() === EntryType.Choices) {
-                    if (propertyViewModel.choice) {
-                        propertyViewModel.value = propertyViewModel.choice.name;
-                        propertyViewModel.formattedValue = propertyViewModel.choice.name;
+                    if (propertyViewModel.selectedChoice) {
+                        propertyViewModel.value = propertyViewModel.selectedChoice.name;
+                        propertyViewModel.formattedValue = propertyViewModel.selectedChoice.name;
                     }
                 } else if (propertyViewModel.password) {
                     propertyViewModel.formattedValue = obscuredText;
@@ -546,7 +546,7 @@ module NakedObjects {
 
             if (!val.isNull() && val.isReference()) {
                 parmViewModel.reference = val.link().href();
-                parmViewModel.choice = ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
+                parmViewModel.selectedChoice = ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
             }
         }
 
@@ -568,9 +568,9 @@ module NakedObjects {
                 const choicesToSet = _.map(vals.list(), val => ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null));
 
                 if (fieldEntryType === EntryType.MultipleChoices) {
-                    parmViewModel.multiChoices = _.filter(parmViewModel.choices, c => _.some(choicesToSet, choiceToSet => c.valuesEqual(choiceToSet)));
+                    parmViewModel.selectedMultiChoices = _.filter(parmViewModel.choices, c => _.some(choicesToSet, choiceToSet => c.valuesEqual(choiceToSet)));
                 } else {
-                    parmViewModel.multiChoices = choicesToSet;
+                    parmViewModel.selectedMultiChoices = choicesToSet;
                 }
             }
 
@@ -578,10 +578,10 @@ module NakedObjects {
                 const choiceToSet = ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
 
                 if (fieldEntryType === EntryType.Choices) {
-                    parmViewModel.choice = _.find(parmViewModel.choices, c => c.valuesEqual(choiceToSet));
+                    parmViewModel.selectedChoice = _.find(parmViewModel.choices, c => c.valuesEqual(choiceToSet));
                 } else {
-                    if (!parmViewModel.choice || parmViewModel.choice.getValue().toValueString() !== choiceToSet.getValue().toValueString()) {
-                        parmViewModel.choice = choiceToSet;
+                    if (!parmViewModel.selectedChoice || parmViewModel.selectedChoice.getValue().toValueString() !== choiceToSet.getValue().toValueString()) {
+                        parmViewModel.selectedChoice = choiceToSet;
                     }
                 }
             }

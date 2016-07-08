@@ -13,40 +13,40 @@
 
                     <!--"EntryType.AutoComplete"-->
                     <div ng-switch-when="5">
-                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" ng-class="parameter.color" placeholder="{{parameter.description}}" type="text" ng-model="$parent.parameter.choice" select="parameter.prompt(request)" gemini-drop gemini-autocomplete gemini-fieldmandatorycheck gemini-clear/>
+                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" ng-class="parameter.color" placeholder="{{parameter.description}}" type="text" ng-model="$parent.parameter.selectedChoice" select="parameter.prompt(request)" gemini-drop gemini-autocomplete gemini-fieldmandatorycheck gemini-clear/>
                     </div>
 
                     <!--"EntryType.MultipleConditionalChoices"-->
                     <div ng-switch-when="4">
-                        <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple ng-model="$parent.parameter.multiChoices" select="parameter.conditionalChoices(args)" gemini-conditionalchoices gemini-fieldmandatorycheck>
+                        <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple ng-model="$parent.parameter.selectedMultiChoices" select="parameter.conditionalChoices(args)" gemini-conditionalchoices gemini-fieldmandatorycheck>
                             <option value="" disabled selected>{{parameter.description}}</option>
                         </select>
                     </div>
 
                     <!--"EntryType.ConditionalChoices"-->
                     <div ng-switch-when="3">
-                        <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" ng-model="$parent.parameter.choice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices gemini-fieldmandatorycheck>
+                        <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" ng-model="$parent.parameter.selectedChoice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices gemini-fieldmandatorycheck>
                             <option value="" disabled selected>{{parameter.description}}</option>
                         </select>
                     </div>
 
                     <!--"EntryType.MultipleChoices"-->
                     <div ng-switch-when="2">
-                        <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple ng-model="parameter.multiChoices" ng-options="c as c.name for c in parameter.choices" gemini-fieldmandatorycheck>
+                        <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple ng-model="parameter.selectedMultiChoices" ng-options="c as c.name for c in parameter.choices" gemini-fieldmandatorycheck>
                             <option value="" disabled>{{parameter.description}}</option>
                         </select>
                     </div>
 
                     <!--"EntryType.Choices"-->
                     <div ng-switch-when="1">
-                        <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" ng-model="parameter.choice" ng-options="c as c.name for c in parameter.choices" gemini-fieldmandatorycheck>
+                        <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" ng-model="parameter.selectedChoice" ng-options="c as c.name for c in parameter.choices" gemini-fieldmandatorycheck>
                             <option value="" disabled>{{parameter.description}}</option>
                         </select>
                     </div>
 
                     <!--"EntryType.FreeForm"-->
                     <div ng-switch-when="0">
-                        <div tabindex="0" class="value droppable" ng-model="parameter.choice" ng-class="parameter.color" gemini-drop gemini-fieldmandatorycheck  gemini-clear>
+                        <div tabindex="0" class="value droppable" ng-model="parameter.selectedChoice" ng-class="parameter.color" gemini-drop gemini-fieldmandatorycheck  gemini-clear>
                             {{parameter.value || parameter.description}}
                         </div>
                     </div>
@@ -64,19 +64,19 @@
 
                     <!--"EntryType.AutoComplete"-->
                     <div ng-switch-when="5">
-                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" ng-model="$parent.parameter.choice" select="parameter.prompt(request)" placeholder="{{parameter.description}}" gemini-autocomplete gemini-fieldmandatorycheck  gemini-clear/>
+                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" ng-model="$parent.parameter.selectedChoice" select="parameter.prompt(request)" placeholder="{{parameter.description}}" gemini-autocomplete gemini-fieldmandatorycheck  gemini-clear/>
                     </div>
 
                     <!--"EntryType.MultipleConditionalChoices"-->
                     <div ng-switch-when="4">
-                        <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple ng-model="$parent.parameter.multiChoices" select="parameter.conditionalChoices(args)" gemini-conditionalchoices gemini-fieldmandatorycheck>
+                        <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple ng-model="$parent.parameter.selectedMultiChoices" select="parameter.conditionalChoices(args)" gemini-conditionalchoices gemini-fieldmandatorycheck>
                             <option value="" disabled selected>{{parameter.description}}</option>
                         </select>
                     </div>
 
                     <!--"EntryType.ConditionalChoices"-->
                     <div ng-switch-when="3">
-                        <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" ng-model="$parent.parameter.choice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices gemini-fieldmandatorycheck>
+                        <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" ng-model="$parent.parameter.selectedChoice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices gemini-fieldmandatorycheck>
                             <option value="" disabled selected>{{parameter.description}}</option>
                         </select>
                     </div>
@@ -84,14 +84,14 @@
 
                     <!--"EntryType.MultipleChoices"-->
                     <div ng-switch-when="2">
-                        <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple ng-model="parameter.multiChoices" ng-options="c as c.name for c in parameter.choices" gemini-fieldmandatorycheck>
+                        <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple ng-model="parameter.selectedMultiChoices" ng-options="c as c.name for c in parameter.choices" gemini-fieldmandatorycheck>
                             <option value="" disabled>{{parameter.description}}</option>
                         </select>
                     </div>
 
                     <!--"EntryType.Choices"-->
                     <div ng-switch-when="1">
-                        <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" ng-model="parameter.choice" ng-options="c as c.name for c in parameter.choices" gemini-fieldmandatorycheck>
+                        <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" ng-model="parameter.selectedChoice" ng-options="c as c.name for c in parameter.choices" gemini-fieldmandatorycheck>
                             <option value="" disabled>{{parameter.description}}</option>
                         </select>
                     </div>
