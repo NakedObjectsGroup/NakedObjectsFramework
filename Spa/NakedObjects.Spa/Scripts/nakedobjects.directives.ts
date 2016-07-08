@@ -9,6 +9,7 @@ module NakedObjects {
     import Value = Models.Value;
     import toDateString = Models.toDateString;
     import EntryType = Models.EntryType;
+    import ErrorWrapper = Models.ErrorWrapper;
 
     interface ISelectObj {
         request?: string;
@@ -643,7 +644,7 @@ module NakedObjects {
         });
     });
 
-    app.directive("geminiViewattachment", (): ng.IDirective => {
+    app.directive("geminiViewattachment", (error : IError): ng.IDirective => {
         return {
             // Enforce the angularJS default of restricting the directive to
             // attributes only
@@ -657,16 +658,16 @@ module NakedObjects {
 
                 ngModel.$render = () => {
                     const attachment: IAttachmentViewModel = ngModel.$modelValue;
-
                     if (attachment) {
                         const title = attachment.title;
                         element.empty();
-                        // todo no catch !
-                        attachment.downloadFile().then(blob => {
-                            const reader = new FileReader();
-                            reader.onloadend = () => element.html(`<img src='${reader.result}' alt='${title}' />`);
-                            reader.readAsDataURL(blob);
-                        });
+                        attachment.downloadFile().
+                            then(blob => {
+                                const reader = new FileReader();
+                                reader.onloadend = () => element.html(`<img src='${reader.result}' alt='${title}' />`);
+                                reader.readAsDataURL(blob);
+                            }).
+                            catch((reject: ErrorWrapper) => error.handleError(reject));
                     }
                 };
             }
@@ -705,7 +706,7 @@ module NakedObjects {
         };
     });
 
-    app.directive("geminiAttachment", ($compile : any, $window: ng.IWindowService): ng.IDirective => {
+    app.directive("geminiAttachment", ($compile : ng.ICompileService, $window: ng.IWindowService, error : IError): ng.IDirective => {
         return {
             // Enforce the angularJS default of restricting the directive to
             // attributes only
@@ -721,8 +722,8 @@ module NakedObjects {
                     const attachment: AttachmentViewModel = ngModel.$modelValue;
 
                     if (!attachment.displayInline()) {
-                        // todo no catch !
-                        attachment.downloadFile().then(blob => {
+                        attachment.downloadFile().
+                            then(blob => {
                                 if (window.navigator.msSaveBlob) {
                                     // internet explorer 
                                     window.navigator.msSaveBlob(blob, attachment.title);
@@ -730,7 +731,8 @@ module NakedObjects {
                                     const burl = URL.createObjectURL(blob);
                                     $window.location.href = burl;
                                 }
-                            });
+                            }).
+                            catch((reject: ErrorWrapper) => error.handleError(reject));
                     }
 
                     return false;
@@ -740,23 +742,24 @@ module NakedObjects {
                     const attachment: AttachmentViewModel = ngModel.$modelValue;
 
                     if (attachment) {
-                       
+
                         const title = attachment.title;
-                     
+
                         element.empty();
-                       
+
                         const anchor = element.find("div");
                         if (attachment.displayInline()) {
-                            // todo no catch !
-                            attachment.downloadFile().then(blob => {
-                                const reader = new FileReader();
-                                reader.onloadend = () => {
-                                    if (reader.result) {
-                                        element.html(`<img src='${reader.result}' alt='${title}' />`);
+                            attachment.downloadFile().
+                                then(blob => {
+                                    const reader = new FileReader();
+                                    reader.onloadend = () => {
+                                        if (reader.result) {
+                                            element.html(`<img src='${reader.result}' alt='${title}' />`);
+                                        }
                                     }
-                                }
-                                reader.readAsDataURL(blob);
-                            });
+                                    reader.readAsDataURL(blob);
+                                }).
+                                catch((reject: ErrorWrapper) => error.handleError(reject));
                         } else {
                             anchor.html(title);
                             attachment.doClick = clickHandler;
