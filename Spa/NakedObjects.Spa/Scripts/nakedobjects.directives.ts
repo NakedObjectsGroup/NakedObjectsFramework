@@ -72,6 +72,11 @@ module NakedObjects {
                 const localFilter = viewModel && viewModel.localFilter ? viewModel.localFilter : mask.defaultLocalFilter("date");
                 ngModel.$formatters.push(val => localFilter.filter(val));
 
+                // put on viewmodel for error message formatting
+                if (viewModel && !viewModel.localFilter) {
+                    viewModel.localFilter = localFilter;
+                }
+
                 // also for dynamic ids - need to wrap link in timeout. 
                 $timeout(() => {
 

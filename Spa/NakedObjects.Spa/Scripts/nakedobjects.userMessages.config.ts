@@ -39,9 +39,14 @@ module NakedObjects {
     export const concurrencyMessage = "The object has been reloaded to pick up changes by another user. Please review, and re-enter any changes you still require.";
     export const loadingMessage = "Loading...";
 
-    export const outOfRange = (val: any, min: any, max: any, filter: ILocalFilter) => `Value is outside the range ${filter.filter(min) || "unlimited"} to ${filter.filter(max) || "unlimited"}`;
+    export const outOfRange = (val: any, min: any, max: any, filter: ILocalFilter) => {
+        const minVal = filter ? filter.filter(min) : min;
+        const maxVal = filter ? filter.filter(max) : max;
 
-    export const pageMessage = (p: number, tp: number, c: number, tc: number) => `Page ${p} of ${tp}; viewing ${c} of ${tc} items`;
+        return `Value is outside the range ${minVal || "unlimited"} to ${maxVal || "unlimited"}`;
+    }
+
+export const pageMessage = (p: number, tp: number, c: number, tc: number) => `Page ${p} of ${tp}; viewing ${c} of ${tc} items`;
 
     export const logOffMessage = (u: string) => `Please confirm logoff of user: ${u}`;
 

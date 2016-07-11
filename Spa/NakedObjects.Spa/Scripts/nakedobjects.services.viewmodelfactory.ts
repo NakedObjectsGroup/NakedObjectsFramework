@@ -299,6 +299,8 @@ module NakedObjects {
 
             if (message !== mandatory) {
                 vm.setMessage(message);
+            } else {
+                vm.resetMessage();
             }
 
             vm.clientValid = !message;
