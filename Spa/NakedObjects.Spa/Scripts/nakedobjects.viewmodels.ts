@@ -230,7 +230,7 @@ module NakedObjects {
         color: string;
         value: scalarValueType;
         reference: string;
-        choice: IChoiceViewModel;
+        selectedChoice: IChoiceViewModel;
         draggableType: string;
         canDropOn: (targetType: string) => ng.IPromise<boolean>;
     }
@@ -318,11 +318,11 @@ module NakedObjects {
 
         private error : IError;
 
-        get choice(): IChoiceViewModel {
+        get selectedChoice(): IChoiceViewModel {
             return this.currentChoice;
         }
 
-        set choice(newChoice: IChoiceViewModel) {
+        set selectedChoice(newChoice: IChoiceViewModel) {
             // type guard becauase angular pushes string value here until directive finds 
             // choice
             if (newChoice instanceof ChoiceViewModel || newChoice == null) {
@@ -342,7 +342,7 @@ module NakedObjects {
             this.updateColor();
         }
 
-        multiChoices: IChoiceViewModel[];
+        selectedMultiChoices: IChoiceViewModel[];
 
         private file: Link;     
 
@@ -357,7 +357,7 @@ module NakedObjects {
         conditionalChoices : (args: _.Dictionary<Value>) => ng.IPromise<ChoiceViewModel[]>;
 
         setNewValue(newValue: IDraggableViewModel) {
-            this.choice = newValue.choice;
+            this.selectedChoice = newValue.selectedChoice;
             this.value = newValue.value;
             this.reference = newValue.reference;         
         }
@@ -365,7 +365,7 @@ module NakedObjects {
         drop: (newValue: IDraggableViewModel) => void;
 
         clear() {
-            this.choice = null;
+            this.selectedChoice = null;
             this.value = null;
             this.reference = "";          
         }
@@ -374,8 +374,8 @@ module NakedObjects {
 
         private setColor(color: IColor) {
 
-            if (this.entryType === EntryType.AutoComplete && this.choice && this.type === "ref") {
-                const href = this.choice.getValue().href();
+            if (this.entryType === EntryType.AutoComplete && this.selectedChoice && this.type === "ref") {
+                const href = this.selectedChoice.getValue().href();
                 if (href) {
                     color.toColorNumberFromHref(href).
                         then(c => this.color = `${linkColor}${c}`).
@@ -402,7 +402,7 @@ module NakedObjects {
             if (this.entryType !== EntryType.FreeForm || this.isCollectionContributed) {
 
                 if (this.entryType === EntryType.MultipleChoices || this.entryType === EntryType.MultipleConditionalChoices || this.isCollectionContributed) {
-                    const selections = this.multiChoices || [];
+                    const selections = this.selectedMultiChoices || [];
                     if (this.type === "scalar") {
                         const selValues = _.map(selections, cvm => cvm.getValue().scalar());
                         return new Value(selValues);
@@ -411,13 +411,13 @@ module NakedObjects {
                     return new Value(selRefs);
                 }
 
-                const choiceValue = this.choice ? this.choice.getValue() : null;
+                const choiceValue = this.selectedChoice ? this.selectedChoice.getValue() : null;
                 if (this.type === "scalar") {                
                     return new Value(choiceValue && choiceValue.scalar() != null ? choiceValue.scalar() : "");
                 }
 
                 // reference 
-                return new Value(choiceValue && choiceValue.isReference() ? { href: choiceValue.href(), title: this.choice.name } : null);
+                return new Value(choiceValue && choiceValue.isReference() ? { href: choiceValue.href(), title: this.selectedChoice.name } : null);
             }
 
             if (this.type === "scalar") {
@@ -975,7 +975,7 @@ module NakedObjects {
         // IDraggableViewModel
         value: string;
         reference: string;
-        choice: IChoiceViewModel;
+        selectedChoice: IChoiceViewModel;
         color: string;
         draggableType: string;
 
@@ -1108,7 +1108,7 @@ module NakedObjects {
 
             this.value = sav ? sav.toString() : "";
             this.reference = sav ? sav.toValueString() : "";
-            this.choice = sav ? ChoiceViewModel.create(sav, "") : null;
+            this.selectedChoice = sav ? ChoiceViewModel.create(sav, "") : null;
 
             this.colorService.toColorNumberFromType(this.domainObject.domainType()).
                 then(c => this.color = `${objectColor}${c}`).

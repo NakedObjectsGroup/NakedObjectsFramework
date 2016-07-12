@@ -1186,7 +1186,7 @@ namespace NakedObjects.Selenium {
             WaitForOutput("Clipboard contains: Product: Mountain-400-W Silver, 38");
             EnterCommand("menu emp");
             WaitForOutput("Employees menu");
-            EnterCommand("ac create");
+            EnterCommand("ac create new");
             WaitForOutput("Employees menu\r\nAction dialog: Create New Employee From Contact\r\nContact Details: empty");
             EnterCommand("enter details, paste");
             WaitForOutput("Contents of Clipboard are not compatible with the field");

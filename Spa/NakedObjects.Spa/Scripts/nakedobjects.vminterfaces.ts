@@ -39,7 +39,7 @@ module NakedObjects {
     export interface IDraggableViewModel {
         value: scalarValueType | Date;
         reference: string;
-        choice: IChoiceViewModel;
+        selectedChoice: IChoiceViewModel;
         color: string;
         draggableType: string;
 
@@ -113,14 +113,12 @@ module NakedObjects {
         localFilter: ILocalFilter;
         formattedValue: string;
 
-        // todo this is current choice options - rename for clarity - careful used in templates !
         choices: IChoiceViewModel[];  
 
         value : scalarValueType | Date;
 
-        // todo this is really selected choice/selected choices - rename for clarity - careful used in templates !
-        choice: IChoiceViewModel;
-        multiChoices: IChoiceViewModel[];
+        selectedChoice: IChoiceViewModel;
+        selectedMultiChoices: IChoiceViewModel[];
 
         entryType: EntryType;
 

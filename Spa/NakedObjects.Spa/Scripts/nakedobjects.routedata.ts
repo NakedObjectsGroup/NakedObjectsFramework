@@ -139,12 +139,7 @@ module NakedObjects {
             if (this.doValidation) {
 
                 this.assertMustBeNullInContext("objectId", "menuId");
-
                 this.assertMustBeNullInContext("menuId", "objectId");
-
-                //this.assertMustBeEmptyOutsideContext("dialogId", "dialogFields");
-                //this.assertMustBeEmptyOutsideContext("actionId", "actionParams");
-                //this.assertMustBeEmptyOutsideContext("objectId", "props");
             }
         }
     }
