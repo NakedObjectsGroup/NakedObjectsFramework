@@ -224,19 +224,29 @@ module NakedObjects.Models {
         return "";
     }
 
+    function getDate(val : string) {
+        const dt1 = moment(val, "YYYY-MM-DD", "en-GB", true);
+
+        if (dt1.isValid()) {
+            return  dt1.toDate();
+        }
+        return null;
+    }
+
+
     function validateDateFormat(model: IHasExtensions, newValue: Date, filter: ILocalFilter): string {
         const range = model.extensions().range();
 
         if (range && newValue) {
-            const min = range.min ? getUtcDate(range.min as string) : null;
-            const max = range.max ? getUtcDate(range.max as string) : null;
+            const min = range.min ? getDate(range.min as string) : null;
+            const max = range.max ? getDate(range.max as string) : null;
 
             if (min && newValue < min) {
-                return outOfRange(toDateString(newValue), min, max, filter);
+                return outOfRange(toDateString(newValue), getUtcDate(range.min as string), getUtcDate(range.max as string), filter);
             }
 
             if (max && newValue > max) {
-                return outOfRange(toDateString(newValue), min, max, filter);
+                return outOfRange(toDateString(newValue), getUtcDate(range.min as string), getUtcDate(range.max as string), filter);
             }
         }
 

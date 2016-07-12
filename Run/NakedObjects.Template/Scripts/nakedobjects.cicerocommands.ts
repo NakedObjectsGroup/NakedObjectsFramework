@@ -26,7 +26,6 @@ module NakedObjects {
     import FriendlyNameForProperty = Models.friendlyNameForProperty;
     import isDateOrDateTime = Models.isDateOrDateTime;
     import toDateString = Models.toDateString;
-    import CollectionRepresentation = Models.CollectionRepresentation;
     import ObjectIdWrapper = Models.ObjectIdWrapper;
     import InvokableActionMember = Models.InvokableActionMember;
     import IInvokableAction = Models.IInvokableAction;
@@ -319,11 +318,10 @@ module NakedObjects {
                     _.every(clauses, clause => name === clause || (!!path && path.toLowerCase() === clause));
             });
             if (exactMatches.length > 0) return exactMatches;
-            return _.filter(reps, (rep) => {
+            return _.filter(reps, rep => {
                 const path = rep.extensions().menuPath();
                 const name = rep.extensions().friendlyName().toLowerCase();
-                return _.every(clauses, clause => name.indexOf(clause) >= 0 ||
-                    (!!path && path.toLowerCase().indexOf(clause) >= 0));
+                return _.every(clauses, clause => name.indexOf(clause) >= 0 ||  (!!path && path.toLowerCase().indexOf(clause) >= 0));
             });
         }
 
@@ -493,14 +491,12 @@ module NakedObjects {
             }
             if (this.isObject()) {
                 this.getObject()
-                    .then((obj: DomainObjectRepresentation) => {
-                        this.processActions(match, obj.actionMembers(), details);
-                    });
+                    .then((obj: DomainObjectRepresentation) => this.processActions(match, obj.actionMembers(), details))
+                    .catch((reject: ErrorWrapper) => this.error.handleError(reject));
             } else if (this.isMenu()) {
                 this.getMenu()
-                    .then((menu: MenuRepresentation) => {
-                        this.processActions(match, menu.actionMembers(), details);
-                    });
+                    .then((menu: MenuRepresentation) => this.processActions(match, menu.actionMembers(), details))
+                    .catch((reject: ErrorWrapper) => this.error.handleError(reject));
             }
             //TODO: handle list - CCAs
         }
@@ -551,12 +547,9 @@ module NakedObjects {
         private openActionDialog(action: ActionMember) {
             this.context.clearDialogValues();
             this.urlManager.setDialog(action.actionId());
-            this.context.getInvokableAction(action).then((invokable: Models.IInvokableAction) => {
-                _.forEach(invokable.parameters(), (p) => {
-                    const pVal = p.default();
-                    this.setFieldValueInContextAndUrl(p, pVal);
-                });
-            });
+            this.context.getInvokableAction(action).
+                then(invokable => _.forEach(invokable.parameters(), p => this.setFieldValueInContextAndUrl(p, p.default()))).
+                catch((reject: ErrorWrapper) => this.error.handleError(reject));
         }
 
         private renderActionDetails(action: ActionMember) {
@@ -634,10 +627,12 @@ module NakedObjects {
                 this.clearInputAndSetMessage(clipboardContextError);
                 return;
             }
-            this.getObject().then((obj: DomainObjectRepresentation) => {
-                this.vm.clipboard = obj;
-                this.show();
-            });
+            this.getObject().
+                then(obj => {
+                    this.vm.clipboard = obj;
+                    this.show();
+                }).
+                catch((reject: ErrorWrapper) => this.error.handleError(reject));
         }
 
         private show(): void {
@@ -707,8 +702,8 @@ module NakedObjects {
         };
 
         private fieldEntryForEdit(fieldName: string, fieldEntry: string) {
-            this.getObject()
-                .then((obj: DomainObjectRepresentation) => {
+            this.getObject().
+                then(obj => {
                     const fields = this.matchingProperties(obj, fieldName);
                     let s: string;
                     switch (fields.length) {
@@ -721,42 +716,74 @@ module NakedObjects {
                                 //TODO: does this work in edit mode i.e. show entered value
                                 s = this.renderFieldDetails(field, field.value());
                             } else {
+                                this.findAndClearAnyDependentFields(field.id(), obj.propertyMembers());
                                 this.setField(field, fieldEntry);
                                 return;
                             }
                             break;
                         default:
                             s = `${fieldName} ${matchesMultiple}`;
-                            s += _.reduce(fields, (s, prop) =>  s + prop.extensions().friendlyName() + "\n", "");
+                            s += _.reduce(fields, (s, prop) => s + prop.extensions().friendlyName() + "\n", "");
                     }
                     this.clearInputAndSetMessage(s);
-                });
+                }).
+                catch((reject: ErrorWrapper) => this.error.handleError(reject));
+        }
+
+        private findAndClearAnyDependentFields(changingField: string, allFields: _.Dictionary<IField>) {
+
+            _.forEach(allFields, field => {
+                const promptLink = field.promptLink();
+
+                if (promptLink) {
+                    const pArgs = promptLink.arguments();
+                    const argNames = _.keys(pArgs);
+
+                    if (argNames.indexOf(changingField.toLowerCase()) >= 0) {
+                        this.clearField(field);
+                    }
+                }
+            });
         }
 
         private fieldEntryForDialog(fieldName: string, fieldEntry: string) {
-            this.getActionForCurrentDialog().then((action: Models.IInvokableAction) => {
-                //TODO: error -  need to get invokable action to get the params.
-                let params = _.map(action.parameters(), param => param);
-                params = this.matchFriendlyNameAndOrMenuPath(params, fieldName);
-                switch (params.length) {
-                    case 0:
-                        this.clearInputAndSetMessage(doesNotMatchDialog(fieldName));
-                        break;
-                    case 1:
-                        if (fieldEntry === "?") {
-                            const p = params[0];
-                            const value = getParametersAndCurrentValue(p.parent, this.context)[p.id()];
-                            const s = this.renderFieldDetails(p, value);
-                            this.clearInputAndSetMessage(s);
-                        } else {
-                            this.setField(params[0], fieldEntry);
-                        }
-                        break;
-                    default:
-                        this.clearInputAndSetMessage(`${multipleFieldMatches} ${fieldName}`); //TODO: list them
-                        break;
-                }
-            });
+            this.getActionForCurrentDialog().
+                then(action => {
+                    //TODO: error -  need to get invokable action to get the params.
+                    let params = _.map(action.parameters(), param => param);
+                    params = this.matchFriendlyNameAndOrMenuPath(params, fieldName);
+                    switch (params.length) {
+                        case 0:
+                            this.clearInputAndSetMessage(doesNotMatchDialog(fieldName));
+                            break;
+                        case 1:
+                            if (fieldEntry === "?") {
+                                const p = params[0];
+                                const value = getParametersAndCurrentValue(p.parent, this.context)[p.id()];
+                                const s = this.renderFieldDetails(p, value);
+                                this.clearInputAndSetMessage(s);
+                            } else {
+                                this.findAndClearAnyDependentFields(fieldName, action.parameters());
+                                this.setField(params[0], fieldEntry);
+                            }
+                            break;
+                        default:
+                            this.clearInputAndSetMessage(`${multipleFieldMatches} ${fieldName}`); //TODO: list them
+                            break;
+                    }
+                }).
+                catch((reject: ErrorWrapper) => this.error.handleError(reject));
+        }
+
+        private clearField(field: IField): void { 
+            this.context.setFieldValue(this.routeData().dialogId, field.id(), new Value(null));
+
+            if (field instanceof Parameter) {
+                this.context.setFieldValue(this.routeData().dialogId, field.id(), new Value(null));
+            } else if (field instanceof PropertyMember) {
+                const parent = field.parent as DomainObjectRepresentation;
+                this.context.setPropertyValue(parent, field, new Value(null));             
+            }
         }
 
         private setField(field: IField, fieldEntry: string): void {
@@ -839,8 +866,8 @@ module NakedObjects {
             }
             const paramType = field.extensions().returnType();
             const refType = ref.domainType();
-            this.context.isSubTypeOf(refType, paramType)
-                .then((isSubType: boolean) => {
+            this.context.isSubTypeOf(refType, paramType).
+                then(isSubType => {
                     if (isSubType) {
                         const obj = this.vm.clipboard;
                         const selfLink = obj.selfLink();
@@ -851,7 +878,8 @@ module NakedObjects {
                     } else {
                         this.clearInputAndSetMessage(incompatibleClipboard);
                     }
-                });
+                }).
+                catch((reject: ErrorWrapper) => this.error.handleError(reject));
         }
 
         private handleAutoComplete(field: IField, fieldEntry: string): void {
@@ -859,11 +887,12 @@ module NakedObjects {
             if (!field.isScalar() && this.isPaste(fieldEntry)) {
                 this.handleClipboard(field);
             } else {
-                this.context.autoComplete(field, field.id(), null, fieldEntry).then(
-                    (choices: _.Dictionary<Value>) => {
+                this.context.autoComplete(field, field.id(), null, fieldEntry).
+                    then(choices => {
                         const matches = this.findMatchingChoicesForRef(choices, fieldEntry);
                         this.switchOnMatches(field, fieldEntry, matches);
-                    });
+                    }).
+                    catch((reject: ErrorWrapper) => this.error.handleError(reject));
             }
         }
 
@@ -893,26 +922,40 @@ module NakedObjects {
             }
         }
 
-        private handleConditionalChoices(field: IField, fieldEntry: string): void {
-            //TODO: need to cover both dialog fields and editable properties!
+        private getPropertiesAndCurrentValue(obj : DomainObjectRepresentation) : _.Dictionary<Value> {
+            const props = obj.propertyMembers();
+            const values = _.mapValues(props, p => p.value());
+            const modifiedProps = this.context.getCurrentObjectValues(obj.id());
 
-            const enteredFields = field instanceof Parameter
-                ? getParametersAndCurrentValue(field.parent, this.context)
-                : {} as _.Dictionary<Value>;
-
-            const args = _.fromPairs(_.map(field.promptLink().arguments(), (v: any, key : string) => [key, new Value(v.value)])) as _.Dictionary<Value>;
-            _.forEach(_.keys(args), key => {
-                args[key] = enteredFields[key];
+            _.forEach(values, (v, k) => {
+                const newValue = modifiedProps[k];
+                if (newValue) {
+                    values[k] = newValue;
+                }
             });
-            this.context.conditionalChoices(field, field.id(), null, args)
-                .then((choices: _.Dictionary<Value>) => {
+            return _.mapKeys(values, (v, k) => k.toLowerCase());
+        }
+
+        private handleConditionalChoices(field: IField, fieldEntry: string): void {
+            let enteredFields: _.Dictionary<Value>;
+
+            if (field instanceof Parameter) {
+                enteredFields = getParametersAndCurrentValue(field.parent, this.context);
+            }
+
+            if (field instanceof PropertyMember) {
+                enteredFields = this.getPropertiesAndCurrentValue(field.parent as DomainObjectRepresentation);
+            }
+
+            const args = _.fromPairs(_.map(field.promptLink().arguments(), (v: any, key: string) => [key, new Value(v.value)])) as _.Dictionary<Value>;
+            _.forEach(_.keys(args), key => args[key] = enteredFields[key]);
+
+            this.context.conditionalChoices(field, field.id(), null, args).
+                then(choices => {
                     const matches = this.findMatchingChoicesForRef(choices, fieldEntry);
                     this.switchOnMatches(field, fieldEntry, matches);
-                }).catch(
-                reject => {
-                    
-                }
-            );
+                }).
+                catch((reject: ErrorWrapper) => this.error.handleError(reject));
         }
 
         private renderFieldDetails(field: IField, value: Value): string {
@@ -995,17 +1038,17 @@ module NakedObjects {
                 return;
             }
             if (this.isObject) {
-                this.getObject()
-                    .then((obj: DomainObjectRepresentation) => {
+
+                this.getObject().
+                    then((obj: DomainObjectRepresentation) => {
                         if (this.isCollection()) {
                             const itemNo = this.argumentAsNumber(args, 0);
                             const openCollIds = openCollectionIds(this.routeData());
                             const coll = obj.collectionMember(openCollIds[0]);
                             //Safe to assume always a List (Cicero doesn't support tables as such & must be open)
-                            this.context.getCollectionDetails(coll, CollectionViewState.List, false).then((coll: CollectionRepresentation) => {
-                                this.attemptGotoLinkNumber(itemNo, coll.value());
-                                return;
-                        });
+                            this.context.getCollectionDetails(coll, CollectionViewState.List, false).
+                                then(details => this.attemptGotoLinkNumber(itemNo, details.value())).
+                                catch((reject: ErrorWrapper) => this.error.handleError(reject));
                         } else {
                             const matchingProps = this.matchingProperties(obj, arg0);
                             const matchingRefProps = _.filter(matchingProps, (p) => { return !p.isScalar() });
@@ -1035,7 +1078,8 @@ module NakedObjects {
                             }
                             this.clearInputAndSetMessage(s);
                         }
-                    });
+                    }).
+                    catch((reject: ErrorWrapper) => this.error.handleError(reject));
             }
         };
 
@@ -1138,42 +1182,44 @@ module NakedObjects {
 
         doExecute(args: string, chained: boolean): void {
 
-            this.getActionForCurrentDialog().then((action: IInvokableAction) => {
+            this.getActionForCurrentDialog().
+                then((action: IInvokableAction) => {
 
-                if (chained && action.invokeLink().method() !== "GET") {
-                    this.mayNotBeChained(queryOnlyRider);
-                    return;
-                }
-                let fieldMap: _.Dictionary<Value>;
-                if (this.isForm()) {
-                    const obj = action.parent as DomainObjectRepresentation; 
-                    fieldMap = this.context.getCurrentObjectValues(obj.id()); //Props passed in as pseudo-params to action
-                } else {
-                    fieldMap = getParametersAndCurrentValue(action, this.context);
-                }
-                this.context.invokeAction(action, fieldMap)
-                    .then((result: ActionResultRepresentation) => {
-                        // todo handle case where result is empty - this is no longer handled 
-                        // by reject below
-                        const warnings = result.extensions().warnings();
-                        if (warnings) {
-                            _.forEach(warnings, w => this.vm.alert += `\nWarning: ${w}`);
-                        }
-                        const messages = result.extensions().messages();
-                        if (messages) {
-                            _.forEach(messages, m => this.vm.alert += `\n${m}`);
-                        }
-                        this.urlManager.closeDialogReplaceHistory();
-                    }).
-                    catch((reject: ErrorWrapper) => {
+                    if (chained && action.invokeLink().method() !== "GET") {
+                        this.mayNotBeChained(queryOnlyRider);
+                        return;
+                    }
+                    let fieldMap: _.Dictionary<Value>;
+                    if (this.isForm()) {
+                        const obj = action.parent as DomainObjectRepresentation;
+                        fieldMap = this.context.getCurrentObjectValues(obj.id()); //Props passed in as pseudo-params to action
+                    } else {
+                        fieldMap = getParametersAndCurrentValue(action, this.context);
+                    }
+                    this.context.invokeAction(action, fieldMap).
+                        then((result: ActionResultRepresentation) => {
+                            // todo handle case where result is empty - this is no longer handled 
+                            // by reject below
+                            const warnings = result.extensions().warnings();
+                            if (warnings) {
+                                _.forEach(warnings, w => this.vm.alert += `\nWarning: ${w}`);
+                            }
+                            const messages = result.extensions().messages();
+                            if (messages) {
+                                _.forEach(messages, m => this.vm.alert += `\n${m}`);
+                            }
+                            this.urlManager.closeDialogReplaceHistory();
+                        }).
+                        catch((reject: ErrorWrapper) => {
 
-                        const display = (em: ErrorMap) => {
-                            const paramFriendlyName = (paramId: string) => FriendlyNameForParam(action, paramId);
-                            this.handleErrorResponse(em, paramFriendlyName);
-                        };
-                        this.error.handleErrorAndDisplayMessages(reject, display);
-                    });
-            });
+                            const display = (em: ErrorMap) => {
+                                const paramFriendlyName = (paramId: string) => FriendlyNameForParam(action, paramId);
+                                this.handleErrorResponse(em, paramFriendlyName);
+                            };
+                            this.error.handleErrorAndDisplayMessages(reject, display);
+                        });
+                }).
+                catch((reject: ErrorWrapper) => this.error.handleError(reject));
         }
     }
 
@@ -1189,40 +1235,42 @@ module NakedObjects {
 
         doExecute(args: string, chained: boolean): void {
             const arg = this.argumentAsString(args, 0);
-            this.getList().then((listRep: ListRepresentation) => {
-                const numPages = listRep.pagination().numPages;
-                const page = this.routeData().page;
-                const pageSize = this.routeData().pageSize;
-                if (pageFirst.indexOf(arg) === 0) {
-                    this.setPage(1);
-                    return;
-                } else if (pagePrevious.indexOf(arg) === 0) {
-                    if (page === 1) {
-                        this.clearInputAndSetMessage(alreadyOnFirst);
-                    } else {
-                        this.setPage(page - 1);
-                    }
-                } else if (pageNext.indexOf(arg) === 0) {
-                    if (page === numPages) {
-                        this.clearInputAndSetMessage(alreadyOnLast);
-                    } else {
-                        this.setPage(page + 1);
-                    }
-                } else if (pageLast.indexOf(arg) === 0) {
-                    this.setPage(numPages);
-                } else {
-                    const number = parseInt(arg);
-                    if (isNaN(number)) {
-                        this.clearInputAndSetMessage(pageArgumentWrong);
+            this.getList().
+                then(listRep => {
+                    const numPages = listRep.pagination().numPages;
+                    const page = this.routeData().page;
+                    const pageSize = this.routeData().pageSize;
+                    if (pageFirst.indexOf(arg) === 0) {
+                        this.setPage(1);
                         return;
+                    } else if (pagePrevious.indexOf(arg) === 0) {
+                        if (page === 1) {
+                            this.clearInputAndSetMessage(alreadyOnFirst);
+                        } else {
+                            this.setPage(page - 1);
+                        }
+                    } else if (pageNext.indexOf(arg) === 0) {
+                        if (page === numPages) {
+                            this.clearInputAndSetMessage(alreadyOnLast);
+                        } else {
+                            this.setPage(page + 1);
+                        }
+                    } else if (pageLast.indexOf(arg) === 0) {
+                        this.setPage(numPages);
+                    } else {
+                        const number = parseInt(arg);
+                        if (isNaN(number)) {
+                            this.clearInputAndSetMessage(pageArgumentWrong);
+                            return;
+                        }
+                        if (number < 1 || number > numPages) {
+                            this.clearInputAndSetMessage(pageNumberWrong(numPages));
+                            return;
+                        }
+                        this.setPage(number);
                     }
-                    if (number < 1 || number > numPages) {
-                        this.clearInputAndSetMessage(pageNumberWrong(numPages));
-                        return;
-                    }
-                    this.setPage(number);
-                }
-            });
+                }).
+                catch((reject: ErrorWrapper) => this.error.handleError(reject));
         }
 
         private setPage(page : number) {
@@ -1279,36 +1327,38 @@ module NakedObjects {
                 this.mayNotBeChained();
                 return;
             }
-            this.getObject().then((obj: DomainObjectRepresentation) => {
-                const props = obj.propertyMembers();
-                const newValsFromUrl = this.context.getCurrentObjectValues(obj.id());
-                const propIds = new Array<string>();
-                const values = new Array<Value>();
-                _.forEach(props, (propMember, propId) => {
-                    if (!propMember.disabledReason()) {
-                        propIds.push(propId);
-                        const newVal = newValsFromUrl[propId];
-                        if (newVal) {
-                            values.push(newVal);
-                        } else if (propMember.value().isNull() &&
-                            propMember.isScalar()) {
-                            values.push(new Value(""));
-                        } else {
-                            values.push(propMember.value());
+            this.getObject().
+                then((obj: DomainObjectRepresentation) => {
+                    const props = obj.propertyMembers();
+                    const newValsFromUrl = this.context.getCurrentObjectValues(obj.id());
+                    const propIds = new Array<string>();
+                    const values = new Array<Value>();
+                    _.forEach(props, (propMember, propId) => {
+                        if (!propMember.disabledReason()) {
+                            propIds.push(propId);
+                            const newVal = newValsFromUrl[propId];
+                            if (newVal) {
+                                values.push(newVal);
+                            } else if (propMember.value().isNull() &&
+                                propMember.isScalar()) {
+                                values.push(new Value(""));
+                            } else {
+                                values.push(propMember.value());
+                            }
                         }
-                    }
-                });
-                const propMap = _.zipObject(propIds, values) as _.Dictionary<Value>;
-                const mode  = obj.extensions().interactionMode();
-                const toSave = mode === "form" || mode === "transient";
-                const saveOrUpdate = toSave ? this.context.saveObject : this.context.updateObject;
-
-                saveOrUpdate(obj, propMap, 1, true).
-                    catch((reject: ErrorWrapper) => {
-                        const display = (em: ErrorMap) => this.handleError(em, obj);
-                        this.error.handleErrorAndDisplayMessages(reject, display);
                     });
-            });
+                    const propMap = _.zipObject(propIds, values) as _.Dictionary<Value>;
+                    const mode = obj.extensions().interactionMode();
+                    const toSave = mode === "form" || mode === "transient";
+                    const saveOrUpdate = toSave ? this.context.saveObject : this.context.updateObject;
+
+                    saveOrUpdate(obj, propMap, 1, true).
+                        catch((reject: ErrorWrapper) => {
+                            const display = (em: ErrorMap) => this.handleError(em, obj);
+                            this.error.handleErrorAndDisplayMessages(reject, display);
+                        });
+                }).
+                catch((reject: ErrorWrapper) => this.error.handleError(reject));
         };
 
         private handleError(err: ErrorMap, obj: DomainObjectRepresentation) {
@@ -1336,9 +1386,9 @@ module NakedObjects {
             //TODO: Add in sub-commands: Add, Remove, All, Clear & Show
             const arg = this.argumentAsString(args, 0);
             const { start, end } = this.parseRange(arg); //'destructuring'
-            this.getList().then((list: ListRepresentation) => {
-                this.selectItems(list, start, end);
-            });
+            this.getList().
+                then(list => this.selectItems(list, start, end)).
+                catch((reject: ErrorWrapper) => this.error.handleError(reject));
         };
 
         private selectItems(list: ListRepresentation, startNo: number, endNo: number): void {
@@ -1364,49 +1414,44 @@ module NakedObjects {
             if (this.isCollection()) {
                 const arg = this.argumentAsString(args, 0, true);
                 const { start, end } = this.parseRange(arg);
-                this.getObject().then((obj: DomainObjectRepresentation) => {
-                    const openCollIds = openCollectionIds(this.routeData());
-                    const coll = obj.collectionMember(openCollIds[0]);
-                    this.renderCollectionItems(coll, start, end);
-                });
+                this.getObject().
+                    then(obj => {
+                        const openCollIds = openCollectionIds(this.routeData());
+                        const coll = obj.collectionMember(openCollIds[0]);
+                        this.renderCollectionItems(coll, start, end);
+                    }).
+                    catch((reject: ErrorWrapper) => this.error.handleError(reject));
                 return;
             }
             else if (this.isList()) {
                 const arg = this.argumentAsString(args, 0, true);
                 const { start, end } = this.parseRange(arg);
-                this.getList().then((list: ListRepresentation) => {
-                    this.renderItems(list, start, end);
-                });
+                this.getList().
+                    then(list => this.renderItems(list, start, end)).
+                    catch((reject: ErrorWrapper) => this.error.handleError(reject));
             }
             else if (this.isObject()) {
                 const fieldName = this.argumentAsString(args, 0);
-                this.getObject()
-                    .then((obj: DomainObjectRepresentation) => {
+                this.getObject().
+                    then((obj: DomainObjectRepresentation) => {
                         const props = this.matchingProperties(obj, fieldName);
                         const colls = this.matchingCollections(obj, fieldName);
                         //TODO -  include these
                         let s: string;
                         switch (props.length + colls.length) {
                             case 0:
-                                if (!fieldName) {
-                                    s = noVisible;
-                                } else {
-                                    s = doesNotMatch(fieldName);
-                                }
+                                s = fieldName ? doesNotMatch(fieldName) : noVisible;
                                 break;
                             case 1:
-                                if (props.length > 0) {
-                                    s = this.renderPropNameAndValue(props[0]);
-                                } else {
-                                    s = renderCollectionNameAndSize(colls[0]);
-                                }
+                                s = props.length > 0 ? this.renderPropNameAndValue(props[0]) : renderCollectionNameAndSize(colls[0]);
                                 break;
                             default:
                                 s = _.reduce(props, (s, prop) => s + this.renderPropNameAndValue(prop), "");
                                 s += _.reduce(colls, (s, coll) => s + renderCollectionNameAndSize(coll), "");
                         }
                         this.clearInputAndSetMessage(s);
-                    });
+                    }).
+                    catch((reject: ErrorWrapper) => this.error.handleError(reject));
             }
         };
 
@@ -1428,9 +1473,9 @@ module NakedObjects {
             if (coll.value()) {
                 this.renderItems(coll, startNo, endNo);
             } else {
-                this.context.getCollectionDetails(coll, CollectionViewState.List, false).then((details: CollectionRepresentation) => {
-                    this.renderItems(details, startNo, endNo);
-                });
+                this.context.getCollectionDetails(coll, CollectionViewState.List, false).
+                    then(details => this.renderItems(details, startNo, endNo)).
+                    catch((reject: ErrorWrapper) => this.error.handleError(reject));
             }
         }
 

@@ -581,14 +581,12 @@ module NakedObjects.Models {
         }
 
         toJsonString(): string {
-            
-            this.compress();
-            const value = this.wrapped;
+
+            const cloneThis = _.cloneDeep(this) as Value;          
+            cloneThis.compress();
+            const value = cloneThis.wrapped;
             const raw = (value instanceof Link) ? value.wrapped : value;
-            const asJson = JSON.stringify(raw);
-            // TODO temp hack to avoid changing value - better to not change in first place !
-            this.decompress();
-            return asJson;
+            return JSON.stringify(raw);
         }
 
         setValue(target: IValue) {
@@ -944,8 +942,6 @@ module NakedObjects.Models {
             const myparent = this.parent;
             const isOnList = (myparent instanceof ActionMember || myparent instanceof ActionRepresentation) && myparent.parent instanceof ListRepresentation;
             const isList = this.isList();
-            // todo also need to check element types and ordering perhaps ?
-
             return isList && isOnList;
         }
 

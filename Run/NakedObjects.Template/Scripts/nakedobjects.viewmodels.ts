@@ -230,7 +230,7 @@ module NakedObjects {
         color: string;
         value: scalarValueType;
         reference: string;
-        choice: IChoiceViewModel;
+        selectedChoice: IChoiceViewModel;
         draggableType: string;
         canDropOn: (targetType: string) => ng.IPromise<boolean>;
     }
@@ -264,7 +264,7 @@ module NakedObjects {
 
     abstract class ValueViewModel extends MessageViewModel implements IFieldViewModel {
 
-        constructor(ext: Extensions, color : IColor) {
+        constructor(ext: Extensions, color : IColor, error : IError) {
             super();
             this.optional = ext.optional();
             this.description = ext.description();
@@ -275,7 +275,8 @@ module NakedObjects {
             this.format = ext.format();
             this.multipleLines = ext.multipleLines() || 1;
             this.password = ext.dataType() === "password";
-            this.updateColor = _.partial(this.setColor, color);                                         
+            this.updateColor = _.partial(this.setColor, color);
+            this.error = error;
         }
 
         id: string;
@@ -315,11 +316,13 @@ module NakedObjects {
 
         private currentChoice: IChoiceViewModel;
 
-        get choice(): IChoiceViewModel {
+        private error : IError;
+
+        get selectedChoice(): IChoiceViewModel {
             return this.currentChoice;
         }
 
-        set choice(newChoice: IChoiceViewModel) {
+        set selectedChoice(newChoice: IChoiceViewModel) {
             // type guard becauase angular pushes string value here until directive finds 
             // choice
             if (newChoice instanceof ChoiceViewModel || newChoice == null) {
@@ -339,7 +342,7 @@ module NakedObjects {
             this.updateColor();
         }
 
-        multiChoices: IChoiceViewModel[];
+        selectedMultiChoices: IChoiceViewModel[];
 
         private file: Link;     
 
@@ -354,7 +357,7 @@ module NakedObjects {
         conditionalChoices : (args: _.Dictionary<Value>) => ng.IPromise<ChoiceViewModel[]>;
 
         setNewValue(newValue: IDraggableViewModel) {
-            this.choice = newValue.choice;
+            this.selectedChoice = newValue.selectedChoice;
             this.value = newValue.value;
             this.reference = newValue.reference;         
         }
@@ -362,7 +365,7 @@ module NakedObjects {
         drop: (newValue: IDraggableViewModel) => void;
 
         clear() {
-            this.choice = null;
+            this.selectedChoice = null;
             this.value = null;
             this.reference = "";          
         }
@@ -371,15 +374,19 @@ module NakedObjects {
 
         private setColor(color: IColor) {
 
-            if (this.entryType === EntryType.AutoComplete && this.choice && this.type === "ref") {
-                const href = this.choice.getValue().href();
+            if (this.entryType === EntryType.AutoComplete && this.selectedChoice && this.type === "ref") {
+                const href = this.selectedChoice.getValue().href();
                 if (href) {
-                    color.toColorNumberFromHref(href).then((c: number) => this.color = `${linkColor}${c}`);
+                    color.toColorNumberFromHref(href).
+                        then(c => this.color = `${linkColor}${c}`).
+                        catch((reject: ErrorWrapper) => this.error.handleError(reject));
                     return;
                 }
             }
             else if (this.entryType !== EntryType.AutoComplete && this.value) {
-                color.toColorNumberFromType(this.returnType).then((c: number) => this.color = `${linkColor}${c}`);
+                color.toColorNumberFromType(this.returnType).
+                    then(c => this.color = `${linkColor}${c}`).
+                    catch((reject: ErrorWrapper) => this.error.handleError(reject));
                 return;
             }
 
@@ -395,7 +402,7 @@ module NakedObjects {
             if (this.entryType !== EntryType.FreeForm || this.isCollectionContributed) {
 
                 if (this.entryType === EntryType.MultipleChoices || this.entryType === EntryType.MultipleConditionalChoices || this.isCollectionContributed) {
-                    const selections = this.multiChoices || [];
+                    const selections = this.selectedMultiChoices || [];
                     if (this.type === "scalar") {
                         const selValues = _.map(selections, cvm => cvm.getValue().scalar());
                         return new Value(selValues);
@@ -404,13 +411,13 @@ module NakedObjects {
                     return new Value(selRefs);
                 }
 
-                const choiceValue = this.choice ? this.choice.getValue() : null;
+                const choiceValue = this.selectedChoice ? this.selectedChoice.getValue() : null;
                 if (this.type === "scalar") {                
                     return new Value(choiceValue && choiceValue.scalar() != null ? choiceValue.scalar() : "");
                 }
 
                 // reference 
-                return new Value(choiceValue && choiceValue.isReference() ? { href: choiceValue.href(), title: this.choice.name } : null);
+                return new Value(choiceValue && choiceValue.isReference() ? { href: choiceValue.href(), title: this.selectedChoice.name } : null);
             }
 
             if (this.type === "scalar") {
@@ -443,8 +450,8 @@ module NakedObjects {
 
     export class ParameterViewModel extends ValueViewModel {
 
-        constructor(parmRep: Parameter, paneId : number, color : IColor) {
-            super(parmRep.extensions(), color);
+        constructor(parmRep: Parameter, paneId : number, color : IColor, error : IError) {
+            super(parmRep.extensions(), color, error);
             this.parameterRep = parmRep;
             this.onPaneId = paneId;
             this.type = parmRep.isScalar() ? "scalar" : "ref";
@@ -582,8 +589,8 @@ module NakedObjects {
 
     export class PropertyViewModel extends ValueViewModel implements IPropertyViewModel,  IDraggableViewModel {
 
-        constructor(propertyRep: PropertyMember, color : IColor) {
-            super(propertyRep.extensions(), color);
+        constructor(propertyRep: PropertyMember, color : IColor, error : IError) {
+            super(propertyRep.extensions(), color, error);
             this.draggableType = propertyRep.extensions().returnType();
 
             this.propertyRep = propertyRep;
@@ -734,25 +741,31 @@ module NakedObjects {
         }
 
         private collectionContributedInvokeDecorator(actionViewModel: IActionViewModel) {
-            const showDialog = () => this.context.getInvokableAction(actionViewModel.actionRep as ActionMember).
-                then((ia: IInvokableAction) => _.keys(ia.parameters()).length > 1);
+          
+            const showDialog = () =>
+                this.context.getInvokableAction(actionViewModel.actionRep as ActionMember).
+                    then(invokableAction => _.keys(invokableAction.parameters()).length > 1);
 
+            // make sure not null while waiting for promise to assign correct function 
             actionViewModel.doInvoke = () => { };
-            showDialog().
-                then((show: boolean) => actionViewModel.doInvoke = show ?
-                    (right?: boolean) => {
-                        this.context.clearDialogValues(this.onPaneId);
-                        this.focusManager.focusOverrideOff();
-                        this.urlManager.setDialog(actionViewModel.actionRep.actionId(), this.onPaneId);
-                    } :
-                    (right?: boolean) => {
-                        actionViewModel.execute([], right).
-                            then(result => this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || noResultMessage : "")).
-                            catch((reject: ErrorWrapper) => {
-                                const display = (em: ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
-                                this.error.handleErrorAndDisplayMessages(reject,  display);
-                            });
+
+            const invokeWithDialog = (right?: boolean) => {
+                this.context.clearDialogValues(this.onPaneId);
+                this.focusManager.focusOverrideOff();
+                this.urlManager.setDialog(actionViewModel.actionRep.actionId(), this.onPaneId);
+            };
+
+            const invokeWithoutDialog = (right?: boolean) =>
+                actionViewModel.execute([], right).
+                    then(result => this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || noResultMessage : "")).
+                    catch((reject: ErrorWrapper) => {
+                        const display = (em: ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
+                        this.error.handleErrorAndDisplayMessages(reject, display);
                     });
+          
+            showDialog().
+                then(show => actionViewModel.doInvoke = show ? invokeWithDialog : invokeWithoutDialog).
+                catch((reject: ErrorWrapper) => this.error.handleError(reject));
         }
 
         private decorate(actionViewModel: IActionViewModel) {
@@ -962,7 +975,7 @@ module NakedObjects {
         // IDraggableViewModel
         value: string;
         reference: string;
-        choice: IChoiceViewModel;
+        selectedChoice: IChoiceViewModel;
         color: string;
         draggableType: string;
 
@@ -1095,9 +1108,11 @@ module NakedObjects {
 
             this.value = sav ? sav.toString() : "";
             this.reference = sav ? sav.toValueString() : "";
-            this.choice = sav ? ChoiceViewModel.create(sav, "") : null;
+            this.selectedChoice = sav ? ChoiceViewModel.create(sav, "") : null;
 
-            this.colorService.toColorNumberFromType(this.domainObject.domainType()).then(c => this.color = `${objectColor}${c}`);
+            this.colorService.toColorNumberFromType(this.domainObject.domainType()).
+                then(c => this.color = `${objectColor}${c}`).
+                catch((reject: ErrorWrapper) => this.error.handleError(reject));
 
             this.resetMessage();
 
@@ -1110,19 +1125,20 @@ module NakedObjects {
         concurrency() {
             return (event: ng.IAngularEvent, em: ErrorMap) => {
                 this.routeData = this.urlManager.getRouteData().pane()[this.onPaneId];
-                this.contextService.getObject(this.onPaneId, this.domainObject.getOid(), this.routeData.interactionMode)
-                    .then(obj => {
+                this.contextService.getObject(this.onPaneId, this.domainObject.getOid(), this.routeData.interactionMode).
+                    then(obj => {
                         // cleared cached values so all values are from reloaded representation 
                         this.contextService.clearObjectValues(this.onPaneId);
-                        this.contextService.reloadObject(this.onPaneId, obj)
-                            .then(reloadedObj => {
-                                if (this.routeData.dialogId) {
-                                    this.urlManager.closeDialogReplaceHistory(this.onPaneId);
-                                }
-                                this.reset(reloadedObj, this.routeData);
-                                this.viewModelFactory.handleErrorResponse(em, this, this.properties);
-                            });
-                    });
+                        return this.contextService.reloadObject(this.onPaneId, obj);
+                    }).
+                    then(reloadedObj => {
+                        if (this.routeData.dialogId) {
+                            this.urlManager.closeDialogReplaceHistory(this.onPaneId);
+                        }
+                        this.reset(reloadedObj, this.routeData);
+                        this.viewModelFactory.handleErrorResponse(em, this, this.properties);
+                    }).
+                    catch((reject: ErrorWrapper) => this.error.handleError(reject));
             }
         }
 

@@ -33,6 +33,7 @@ module NakedObjects {
     export const homePlaceholderTemplate = getSvrPath() + "Content/partials/homePlaceholder.html";
     export const objectTemplate = getSvrPath() + "Content/partials/object.html";
     export const objectViewTemplate = getSvrPath() + "Content/partials/objectView.html";
+    export const objectNotpersistentTemplate = getSvrPath() + "Content/partials/objectNotpersistent.html";
     export const objectEditTemplate = getSvrPath() + "Content/partials/objectEdit.html";
     export const formTemplate = getSvrPath() + "Content/partials/form.html";
     export const expiredTransientTemplate = getSvrPath() + "Content/partials/expiredTransient.html";

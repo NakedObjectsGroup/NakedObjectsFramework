@@ -118,9 +118,13 @@ module NakedObjects {
 
             linkViewModel.value = value.toString();
             linkViewModel.reference = value.toValueString();
-            linkViewModel.choice = ChoiceViewModel.create(value, "");
+            linkViewModel.selectedChoice = ChoiceViewModel.create(value, "");
             linkViewModel.draggableType = linkViewModel.domainType;
-            color.toColorNumberFromHref(linkRep.href()).then(c => linkViewModel.color = `${linkColor}${c}`);
+
+            color.toColorNumberFromHref(linkRep.href()).
+                then(c => linkViewModel.color = `${linkColor}${c}`).
+                catch((reject: ErrorWrapper) => error.handleError(reject));
+
             linkViewModel.canDropOn = (targetType: string) => context.isSubTypeOf(linkViewModel.domainType, targetType);
         }
 
@@ -286,7 +290,8 @@ module NakedObjects {
                     if (canDrop) {
                         vm.setNewValue(newValue);
                     }
-                });
+                }).
+                catch((reject: ErrorWrapper) => error.handleError(reject));
         };
 
         function validate(rep: IHasExtensions, vm: IFieldViewModel, modelValue: any, viewValue: string, mandatoryOnly: boolean) {
@@ -294,6 +299,8 @@ module NakedObjects {
 
             if (message !== mandatory) {
                 vm.setMessage(message);
+            } else {
+                vm.resetMessage();
             }
 
             vm.clientValid = !message;
@@ -335,9 +342,9 @@ module NakedObjects {
                 propertyViewModel.choices = _.map(choices, (v, n) => ChoiceViewModel.create(v, propertyViewModel.id, n));
 
                 const currentChoice = ChoiceViewModel.create(newValue, propertyViewModel.id);
-                propertyViewModel.choice = _.find(propertyViewModel.choices, c => c.valuesEqual(currentChoice));
+                propertyViewModel.selectedChoice = _.find(propertyViewModel.choices, c => c.valuesEqual(currentChoice));
             } else {
-                propertyViewModel.choice = ChoiceViewModel.create(newValue, propertyViewModel.id);
+                propertyViewModel.selectedChoice = ChoiceViewModel.create(newValue, propertyViewModel.id);
             }
         }
 
@@ -356,9 +363,9 @@ module NakedObjects {
                 setScalarValueInView(propertyViewModel, propertyRep, value);
                 
                 if (propertyRep.entryType() === EntryType.Choices) {
-                    if (propertyViewModel.choice) {
-                        propertyViewModel.value = propertyViewModel.choice.name;
-                        propertyViewModel.formattedValue = propertyViewModel.choice.name;
+                    if (propertyViewModel.selectedChoice) {
+                        propertyViewModel.value = propertyViewModel.selectedChoice.name;
+                        propertyViewModel.formattedValue = propertyViewModel.selectedChoice.name;
                     }
                 } else if (propertyViewModel.password) {
                     propertyViewModel.formattedValue = obscuredText;
@@ -470,7 +477,7 @@ module NakedObjects {
         }
 
         viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number, parentValues: () => _.Dictionary<Value>) => {
-            const propertyViewModel = new PropertyViewModel(propertyRep, color);
+            const propertyViewModel = new PropertyViewModel(propertyRep, color, error);
 
             propertyViewModel.id = id;
             propertyViewModel.onPaneId = paneId;
@@ -541,7 +548,7 @@ module NakedObjects {
 
             if (!val.isNull() && val.isReference()) {
                 parmViewModel.reference = val.link().href();
-                parmViewModel.choice = ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
+                parmViewModel.selectedChoice = ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
             }
         }
 
@@ -563,9 +570,9 @@ module NakedObjects {
                 const choicesToSet = _.map(vals.list(), val => ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null));
 
                 if (fieldEntryType === EntryType.MultipleChoices) {
-                    parmViewModel.multiChoices = _.filter(parmViewModel.choices, c => _.some(choicesToSet, choiceToSet => c.valuesEqual(choiceToSet)));
+                    parmViewModel.selectedMultiChoices = _.filter(parmViewModel.choices, c => _.some(choicesToSet, choiceToSet => c.valuesEqual(choiceToSet)));
                 } else {
-                    parmViewModel.multiChoices = choicesToSet;
+                    parmViewModel.selectedMultiChoices = choicesToSet;
                 }
             }
 
@@ -573,10 +580,10 @@ module NakedObjects {
                 const choiceToSet = ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
 
                 if (fieldEntryType === EntryType.Choices) {
-                    parmViewModel.choice = _.find(parmViewModel.choices, c => c.valuesEqual(choiceToSet));
+                    parmViewModel.selectedChoice = _.find(parmViewModel.choices, c => c.valuesEqual(choiceToSet));
                 } else {
-                    if (!parmViewModel.choice || parmViewModel.choice.getValue().toValueString() !== choiceToSet.getValue().toValueString()) {
-                        parmViewModel.choice = choiceToSet;
+                    if (!parmViewModel.selectedChoice || parmViewModel.selectedChoice.getValue().toValueString() !== choiceToSet.getValue().toValueString()) {
+                        parmViewModel.selectedChoice = choiceToSet;
                     }
                 }
             }
@@ -626,7 +633,7 @@ module NakedObjects {
         }
 
         viewModelFactory.parameterViewModel = (parmRep: Parameter, previousValue: Value, paneId: number) => {
-            const parmViewModel = new ParameterViewModel(parmRep, paneId, color);
+            const parmViewModel = new ParameterViewModel(parmRep, paneId, color, error);
 
             const fieldEntryType = parmViewModel.entryType;
           
@@ -685,24 +692,24 @@ module NakedObjects {
                 listViewModel.header = null;
 
                 if (items.length > 0) {
+                    getExtensions().
+                        then((ext: Extensions) => {
+                            _.forEach(items, itemViewModel => {
+                                itemViewModel.tableRowViewModel.hasTitle = ext.tableViewTitle();
+                                itemViewModel.tableRowViewModel.title = itemViewModel.title;
+                            });
 
-                    getExtensions().then((ext: Extensions) => {
-                        _.forEach(items, itemViewModel => {
-                            itemViewModel.tableRowViewModel.hasTitle = ext.tableViewTitle();
-                            itemViewModel.tableRowViewModel.title = itemViewModel.title;
-                        });
+                            if (!listViewModel.header) {
+                                const firstItem = items[0].tableRowViewModel;
+                                const propertiesHeader = _.map(firstItem.properties, property => property.title);
 
-                        if (!listViewModel.header) {
-                            const firstItem = items[0].tableRowViewModel;
-                            const propertiesHeader = _.map(firstItem.properties, property => property.title);
+                                listViewModel.header = firstItem.hasTitle ? [""].concat(propertiesHeader) : propertiesHeader;
 
-                            listViewModel.header = firstItem.hasTitle ? [""].concat(propertiesHeader) : propertiesHeader;
-
-                            focusManager.focusOverrideOff();
-                            focusManager.focusOn(FocusTarget.TableItem, 0, routeData.paneId);
-                        }
-
-                    });
+                                focusManager.focusOverrideOff();
+                                focusManager.focusOn(FocusTarget.TableItem, 0, routeData.paneId);
+                            }
+                        }).
+                        catch((reject: ErrorWrapper) => error.handleError(reject));
                 }
             }
 
@@ -742,7 +749,10 @@ module NakedObjects {
             collectionViewModel.title = collectionRep.extensions().friendlyName();
             collectionViewModel.presentationHint = collectionRep.extensions().presentationHint();
             collectionViewModel.pluralName = collectionRep.extensions().pluralName();
-            color.toColorNumberFromType(collectionRep.extensions().elementType()).then((c: number) => collectionViewModel.color = `${linkColor}${c}`);
+
+            color.toColorNumberFromType(collectionRep.extensions().elementType()).
+                then(c => collectionViewModel.color = `${linkColor}${c}`).
+                catch((reject: ErrorWrapper) => error.handleError(reject));
 
             collectionViewModel.refresh = (routeData: PaneRouteData, resetting: boolean) => {
 
@@ -763,19 +773,15 @@ module NakedObjects {
                     if (state === CollectionViewState.Summary) {
                         collectionViewModel.items = [];
                     } else if (getDetails) {
-                        // TODO - there was a missing catch here make sure all top level promises have a catch !
-
-                        context.getCollectionDetails(collectionRep, state, resetting)
-                            .then((details: CollectionRepresentation) => {
+                        context.getCollectionDetails(collectionRep, state, resetting).
+                            then(details => {
                                 collectionViewModel.items = viewModelFactory.getItems(details.value(),
                                     state === CollectionViewState.Table,
                                     routeData,
                                     collectionViewModel);
                                 collectionViewModel.details = getCollectionDetails(collectionViewModel.items.length);
-                            })
-                            .catch((reject: ErrorWrapper) => {
-                                error.handleError(reject);
-                            });
+                            }).
+                            catch((reject: ErrorWrapper) => error.handleError(reject));
                     } else {
                         collectionViewModel.items = viewModelFactory.getItems(itemLinks, state === CollectionViewState.Table, routeData, collectionViewModel);
                     }
@@ -906,8 +912,8 @@ module NakedObjects {
                 };
 
                 tvm.logOff = () => {
-                    context.getUser()
-                        .then(u => {
+                    context.getUser().
+                        then(u => {
                             if (window.confirm(logOffMessage(u.userName() || "Unknown"))) {
                                 const config = {
                                     withCredentials: true,
@@ -923,7 +929,8 @@ module NakedObjects {
                                 $rootScope.$broadcast(geminiLogoffEvent);
                                 $timeout(() => window.location.href = postLogoffUrl);
                             }
-                        });
+                        }).
+                        catch((reject: ErrorWrapper) => error.handleError(reject));
                 };
 
                 tvm.applicationProperties = () => {
@@ -944,7 +951,9 @@ module NakedObjects {
                 $rootScope.$on(geminiMessageEvent, (event, messages) =>
                     tvm.messages = messages);
 
-                context.getUser().then(user => tvm.userName = user.userName());
+                context.getUser().
+                    then(user => tvm.userName = user.userName()).
+                    catch((reject: ErrorWrapper) => error.handleError(reject));
 
                 cachedToolBarViewModel = tvm;
             }

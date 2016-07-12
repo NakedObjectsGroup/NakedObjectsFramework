@@ -26,7 +26,8 @@ module NakedObjects {
         View,
         Edit,
         Transient,
-        Form
+        Form,
+        NotPersistent
     }
 
     export class RouteData {
@@ -138,12 +139,7 @@ module NakedObjects {
             if (this.doValidation) {
 
                 this.assertMustBeNullInContext("objectId", "menuId");
-
                 this.assertMustBeNullInContext("menuId", "objectId");
-
-                //this.assertMustBeEmptyOutsideContext("dialogId", "dialogFields");
-                //this.assertMustBeEmptyOutsideContext("actionId", "actionParams");
-                //this.assertMustBeEmptyOutsideContext("objectId", "props");
             }
         }
     }

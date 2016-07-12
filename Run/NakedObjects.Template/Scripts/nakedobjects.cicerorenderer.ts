@@ -5,12 +5,10 @@ module NakedObjects {
     import DomainObjectRepresentation = Models.DomainObjectRepresentation;
     import ListRepresentation = Models.ListRepresentation;
     import ErrorRepresentation = Models.ErrorRepresentation;
-    import IHasActions = Models.IHasActions;
     import TypePlusTitle = Models.typePlusTitle;
     import PlusTitle = Models.typePlusTitle;
     import FriendlyNameForParam = Models.friendlyNameForParam;
     import ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
-    import InvokableActionMember = NakedObjects.Models.InvokableActionMember;
     import IInvokableAction = Models.IInvokableAction;
     import Title = Models.typePlusTitle;
     import ErrorWrapper = Models.ErrorWrapper;
@@ -56,7 +54,6 @@ module NakedObjects {
                 const oid = ObjectIdWrapper.fromObjectId(routeData.objectId);
                 context.getObject(1, oid, routeData.interactionMode) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
                     .then((obj: DomainObjectRepresentation) => {
-                        let output = "";
                         const openCollIds = openCollectionIds(routeData);
                         if (_.some(openCollIds)) {
                             renderOpenCollection(openCollIds[0], obj, cvm);
@@ -78,24 +75,30 @@ module NakedObjects {
                     });
             }
         };
+
         renderer.renderList = (cvm: ICiceroViewModel, routeData: PaneRouteData) => {
             if (cvm.message) {
                 cvm.outputMessageThenClearIt();
             } else {
                 const listPromise = context.getListFromMenu(1, routeData, routeData.page, routeData.pageSize);
-                listPromise.then((list: ListRepresentation) => {
-                    context.getMenu(routeData.menuId).then((menu: MenuRepresentation) => {
-                        const count = list.value().length;
-                        const numPages = list.pagination().numPages;
-                        const description = getListDescription(numPages, list, count);
-                        const actionMember = menu.actionMember(routeData.actionId);
-                        const actionName = actionMember.extensions().friendlyName();
-                        const output = `Result from ${actionName}:\n${description}`;
-                        cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-                    });
-                });
+                listPromise.
+                    then((list: ListRepresentation) => {
+                        context.getMenu(routeData.menuId).
+                            then(menu => {
+                                const count = list.value().length;
+                                const numPages = list.pagination().numPages;
+                                const description = getListDescription(numPages, list, count);
+                                const actionMember = menu.actionMember(routeData.actionId);
+                                const actionName = actionMember.extensions().friendlyName();
+                                const output = `Result from ${actionName}:\n${description}`;
+                                cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+                            }).
+                            catch((reject: ErrorWrapper) => this.error.handleError(reject));
+                    }).
+                    catch((reject: ErrorWrapper) => this.error.handleError(reject));
             }
         };
+
         renderer.renderError = (cvm: ICiceroViewModel) => {
             const err = context.getError().error as ErrorRepresentation;
             cvm.clearInput();
@@ -135,11 +138,12 @@ module NakedObjects {
             let output = `${editing} `;
             output += PlusTitle(obj) + "\n";
             if (routeData.dialogId) {
-                context.getInvokableAction(obj.actionMember(routeData.dialogId))
-                    .then((details: IInvokableAction) => {
-                        output += renderActionDialog(details, routeData, mask);
+                context.getInvokableAction(obj.actionMember(routeData.dialogId)).
+                    then(invokableAction => {
+                        output += renderActionDialog(invokableAction, routeData, mask);
                         cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-                    });
+                    }).
+                    catch((reject: ErrorWrapper) => this.error.handleError(reject));
             } else {
                 output += renderModifiedProperties(obj, routeData, mask);
                 cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
@@ -149,11 +153,12 @@ module NakedObjects {
         function renderObjectTitleAndDialogIfOpen(routeData: PaneRouteData, obj: DomainObjectRepresentation, cvm: ICiceroViewModel) {
             let output = Title(obj) + "\n";
             if (routeData.dialogId) {
-                context.getInvokableAction(obj.actionMember(routeData.dialogId))
-                    .then((details: IInvokableAction) => {
-                        output += renderActionDialog(details, routeData, mask);
+                context.getInvokableAction(obj.actionMember(routeData.dialogId)).
+                    then(invokableAction => {
+                        output += renderActionDialog(invokableAction, routeData, mask);
                         cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-                    });
+                    }).
+                    catch((reject: ErrorWrapper) => this.error.handleError(reject));
             } else {
                 cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
             }
@@ -161,23 +166,23 @@ module NakedObjects {
 
         function renderOpenMenu(routeData: PaneRouteData, cvm: ICiceroViewModel) {
             var output = "";
-            context.getMenu(routeData.menuId)
-                .then((menu: MenuRepresentation) => {
+            context.getMenu(routeData.menuId).
+                then(menu => {
                     output += menuTitle(menu.title());
-                    return routeData.dialogId ? context.getInvokableAction(menu.actionMember(routeData.dialogId)) : $q.when(null);
-                }).then((details: IInvokableAction) => {
-                    if (details) {
-                        output += "\n" + renderActionDialog(details, routeData, mask);
+                    return routeData.dialogId ? context.getInvokableAction(menu.actionMember(routeData.dialogId)) : $q.when(null) as ng.IPromise<IInvokableAction>;
+                }).
+                then(invokableAction => {
+                    if (invokableAction) {
+                        output += `\n${renderActionDialog(invokableAction, routeData, mask)}`;
                     }
-                }).finally(() => {
-                    cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-                });
+                }).
+                catch((reject: ErrorWrapper) => this.error.handleError(reject)).
+                finally(() => cvm.clearInputRenderOutputAndAppendAlertIfAny(output));
         }
 
-        function renderActionDialog(
-            invokable: Models.IInvokableAction,
-            routeData: PaneRouteData,
-            mask: IMask): string {
+        function renderActionDialog(invokable: Models.IInvokableAction,
+                                    routeData: PaneRouteData,
+                                    mask: IMask): string {
             const actionName = invokable.extensions().friendlyName();
             let output = `Action dialog: ${actionName}\n`;
             _.forEach(getParametersAndCurrentValue(invokable, context), (value, paramId) => {

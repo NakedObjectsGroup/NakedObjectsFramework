@@ -18,7 +18,7 @@ module NakedObjects {
             const templateService = <ITemplate>this;
 
             const templates: _.Dictionary<string[]>[] = [{}, {}];
-            const objectDefaults = [objectViewTemplate, objectEditTemplate, objectEditTemplate, formTemplate];
+            const objectDefaults = [objectViewTemplate, objectEditTemplate, objectEditTemplate, formTemplate, objectNotpersistentTemplate];
             const listDefaults = ["", listTemplate, listAsTableTemplate];
 
             const defaults = [objectDefaults, listDefaults];

@@ -51,7 +51,7 @@ module NakedObjects {
                 }
             }
 
-            function handleError(promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IRepresentation>) {
+            function handleError(promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IRepresentation>)   {
                 let category: ErrorCategory;
                 let error: ErrorRepresentation | ErrorMap | string;
 

@@ -9,6 +9,7 @@ module NakedObjects {
     import Value = Models.Value;
     import toDateString = Models.toDateString;
     import EntryType = Models.EntryType;
+    import ErrorWrapper = Models.ErrorWrapper;
 
     interface ISelectObj {
         request?: string;
@@ -70,6 +71,11 @@ module NakedObjects {
                 // use viewmodel filter if we've been given one 
                 const localFilter = viewModel && viewModel.localFilter ? viewModel.localFilter : mask.defaultLocalFilter("date");
                 ngModel.$formatters.push(val => localFilter.filter(val));
+
+                // put on viewmodel for error message formatting
+                if (viewModel && !viewModel.localFilter) {
+                    viewModel.localFilter = localFilter;
+                }
 
                 // also for dynamic ids - need to wrap link in timeout. 
                 $timeout(() => {
@@ -225,7 +231,7 @@ module NakedObjects {
 
                 element.keyup(clearHandler);
                 (element as any).autocomplete(optionsObj);
-                render(viewModel.choice);
+                render(viewModel.selectedChoice);
 
                 (ngModel as any).$validators.geminiAutocomplete = (modelValue: any, viewValue: string) => {
                     // return OK if no value or value is of correct type.
@@ -344,10 +350,10 @@ module NakedObjects {
                         currentOptions = cvms;
 
                         if (viewModel.entryType === EntryType.MultipleConditionalChoices) {
-                            const vals = _.map(viewModel.multiChoices, c => c.getValue().toValueString());
+                            const vals = _.map(viewModel.selectedMultiChoices, c => c.getValue().toValueString());
                             $(element).val(vals);
-                        } else if (viewModel.choice) {
-                            $(element).val(viewModel.choice.getValue().toValueString());
+                        } else if (viewModel.selectedChoice) {
+                            $(element).val(viewModel.selectedChoice.getValue().toValueString());
                         }
                         else {
                             $(element).val("");
@@ -361,7 +367,7 @@ module NakedObjects {
                     }).catch(() => {
                         // error clear everything 
                         element.find("option").remove();
-                        viewModel.choice = null;
+                        viewModel.selectedChoice = null;
                         currentOptions = [];
                     });
                 }
@@ -381,14 +387,14 @@ module NakedObjects {
 
                         options.each((n, e) => kvps.push({ key: $(e).text(), value: $(e).val() }));
                         const cvms = _.map(kvps, o => ChoiceViewModel.create(new Value(wrapReferences(o.value)), viewModel.id, o.key));
-                        viewModel.multiChoices = cvms;
+                        viewModel.selectedMultiChoices = cvms;
 
                     } else {
                         const option = $(element).find("option:selected");
                         const val = option.val();
                         const key = option.text();
                         const cvm = ChoiceViewModel.create(new Value(wrapReferences(val)), viewModel.id, key);
-                        viewModel.choice = cvm;
+                        viewModel.selectedChoice = cvm;
                         scope.$apply(() => {
                             ngModel.$parsers.push(() => cvm);
                             ngModel.$setViewValue(cvm.name);
@@ -573,10 +579,10 @@ module NakedObjects {
         });
     });
 
-    app.directive("geminiDrop", () => (scope: any, element: any) => {
+    app.directive("geminiDrop", ($timeout: ng.ITimeoutService) => (scope: ng.IScope, element: ng.IAugmentedJQuery) => {
 
-        const propertyScope = () => scope.$parent.$parent.$parent;
-        const parameterScope = () => scope.$parent.$parent;
+        const propertyScope = () => scope.$parent.$parent.$parent as IPropertyOrParameterScope;
+        const parameterScope = () => scope.$parent.$parent as IPropertyOrParameterScope;
 
         const accept = (draggable: any) => {
             const droppableVm: IFieldViewModel = propertyScope().property || parameterScope().parameter;
@@ -596,7 +602,8 @@ module NakedObjects {
             }
             return false;
         };
-        element.droppable({
+
+        (element as any).droppable({
             tolerance: "touch",
             hoverClass: "dropping",
             accept: accept
@@ -612,7 +619,7 @@ module NakedObjects {
 
                 droppableScope.$apply(() => {
                     droppableVm.drop(draggableVm);
-                    $(element).change();
+                    $timeout(() => $(element).change());
                 });
             }
         });
@@ -637,12 +644,12 @@ module NakedObjects {
                 const droppableScope = propertyScope().property ? propertyScope() : parameterScope();
                 const droppableVm: IFieldViewModel = droppableScope.property || droppableScope.parameter;
 
-                scope.$apply(droppableVm.clear());
+                scope.$apply(droppableVm.clear);
             }
         });
     });
 
-    app.directive("geminiViewattachment", (): ng.IDirective => {
+    app.directive("geminiViewattachment", (error : IError): ng.IDirective => {
         return {
             // Enforce the angularJS default of restricting the directive to
             // attributes only
@@ -656,15 +663,16 @@ module NakedObjects {
 
                 ngModel.$render = () => {
                     const attachment: IAttachmentViewModel = ngModel.$modelValue;
-
                     if (attachment) {
                         const title = attachment.title;
                         element.empty();
-                        attachment.downloadFile().then(blob => {
-                            const reader = new FileReader();
-                            reader.onloadend = () => element.html(`<img src='${reader.result}' alt='${title}' />`);
-                            reader.readAsDataURL(blob);
-                        });
+                        attachment.downloadFile().
+                            then(blob => {
+                                const reader = new FileReader();
+                                reader.onloadend = () => element.html(`<img src='${reader.result}' alt='${title}' />`);
+                                reader.readAsDataURL(blob);
+                            }).
+                            catch((reject: ErrorWrapper) => error.handleError(reject));
                     }
                 };
             }
@@ -703,7 +711,7 @@ module NakedObjects {
         };
     });
 
-    app.directive("geminiAttachment", ($compile : any, $window: ng.IWindowService): ng.IDirective => {
+    app.directive("geminiAttachment", ($compile : ng.ICompileService, $window: ng.IWindowService, error : IError): ng.IDirective => {
         return {
             // Enforce the angularJS default of restricting the directive to
             // attributes only
@@ -719,8 +727,8 @@ module NakedObjects {
                     const attachment: AttachmentViewModel = ngModel.$modelValue;
 
                     if (!attachment.displayInline()) {
-                        attachment.downloadFile()
-                            .then(blob => {
+                        attachment.downloadFile().
+                            then(blob => {
                                 if (window.navigator.msSaveBlob) {
                                     // internet explorer 
                                     window.navigator.msSaveBlob(blob, attachment.title);
@@ -728,7 +736,8 @@ module NakedObjects {
                                     const burl = URL.createObjectURL(blob);
                                     $window.location.href = burl;
                                 }
-                            });
+                            }).
+                            catch((reject: ErrorWrapper) => error.handleError(reject));
                     }
 
                     return false;
@@ -738,22 +747,24 @@ module NakedObjects {
                     const attachment: AttachmentViewModel = ngModel.$modelValue;
 
                     if (attachment) {
-                       
+
                         const title = attachment.title;
-                     
+
                         element.empty();
-                       
+
                         const anchor = element.find("div");
                         if (attachment.displayInline()) {
-                            attachment.downloadFile().then(blob => {
-                                const reader = new FileReader();
-                                reader.onloadend = () => {
-                                    if (reader.result) {
-                                        element.html(`<img src='${reader.result}' alt='${title}' />`);
+                            attachment.downloadFile().
+                                then(blob => {
+                                    const reader = new FileReader();
+                                    reader.onloadend = () => {
+                                        if (reader.result) {
+                                            element.html(`<img src='${reader.result}' alt='${title}' />`);
+                                        }
                                     }
-                                }
-                                reader.readAsDataURL(blob);
-                            });
+                                    reader.readAsDataURL(blob);
+                                }).
+                                catch((reject: ErrorWrapper) => error.handleError(reject));
                         } else {
                             anchor.html(title);
                             attachment.doClick = clickHandler;

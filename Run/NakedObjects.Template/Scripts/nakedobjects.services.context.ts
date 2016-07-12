@@ -625,6 +625,7 @@ module NakedObjects {
                 return $q.reject(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.WrongType, "expect list"));
             }
         };
+
         const getList = (paneId: number, resultPromise: () => ng.IPromise<ActionResultRepresentation>, page: number, pageSize: number) => {
             return resultPromise().then(result => handleResult(paneId, result, page, pageSize));
         };
@@ -742,7 +743,9 @@ module NakedObjects {
                         transientCache.add(toPaneId, resultObject);
                         urlManager.pushUrlState(toPaneId);
                         urlManager.setObject(resultObject, toPaneId);
-                        urlManager.setInteractionMode(InteractionMode.Transient, toPaneId);
+
+                        const interactionMode = resultObject.extensions().interactionMode() === "transient" ? InteractionMode.Transient : InteractionMode.NotPersistent; 
+                        urlManager.setInteractionMode(interactionMode, toPaneId);
                     } else {
 
                         // persistent object

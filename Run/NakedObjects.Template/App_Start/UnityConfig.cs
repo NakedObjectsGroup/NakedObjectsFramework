@@ -78,7 +78,7 @@ namespace NakedObjects.Template
                 container.RegisterType<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>(new PerResolveLifetimeManager());
 
                 container.RegisterType<IOidStrategy, EntityOidStrategy>(new PerResolveLifetimeManager());
-                container.RegisterType<IStringHasher, ConstantStringHasher>(new PerResolveLifetimeManager());
+                container.RegisterType<IStringHasher, SimpleStringHasher>(new PerResolveLifetimeManager());
                 container.RegisterType<IFrameworkFacade, FrameworkFacade>(new PerResolveLifetimeManager());
 
                 //Externals
