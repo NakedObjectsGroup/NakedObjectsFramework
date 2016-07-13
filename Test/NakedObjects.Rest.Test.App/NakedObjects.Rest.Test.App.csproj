@@ -86,11 +86,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Facade, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NakedObjects.Facade.8.0.0-rc\lib\net451\NakedObjects.Facade.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Facade.8.0.0-rc4\lib\net451\NakedObjects.Facade.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Facade.Impl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NakedObjects.Facade.Impl.8.0.0-rc3\lib\net451\NakedObjects.Facade.Impl.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Facade.Impl.8.0.0-rc4\lib\net451\NakedObjects.Facade.Impl.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.FWResources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -118,11 +118,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Rest, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NakedObjects.Rest.8.0.0-rc3\lib\net452\NakedObjects.Rest.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Rest.8.0.0-rc4\lib\net452\NakedObjects.Rest.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Rest.Snapshot, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NakedObjects.Rest.8.0.0-rc3\lib\net452\NakedObjects.Rest.Snapshot.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Rest.8.0.0-rc4\lib\net452\NakedObjects.Rest.Snapshot.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Snapshot.Xml, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
