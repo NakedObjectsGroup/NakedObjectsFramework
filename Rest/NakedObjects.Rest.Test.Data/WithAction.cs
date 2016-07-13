@@ -171,6 +171,7 @@ namespace RestfulObjects.Test.Data {
 
         public virtual void AnActionReturnsVoid() {}
 
+        [PageSize(0)]
         [Eagerly(EagerlyAttribute.Do.Rendering)]
         [TableView(true, nameof(MostSimple.Id))]
         public virtual IQueryable<MostSimple> AnActionReturnsQueryable() {

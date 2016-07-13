@@ -20,7 +20,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
     public class PagedListRepresentation : ListRepresentation {
         protected PagedListRepresentation(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequestMessage req, RestControlFlags flags, ActionContextFacade actionContext)
             : base(oidStrategy, Page(objectContext, flags), req, flags, actionContext) {
-            SetPagination(objectContext.Target, flags);
+            SetPagination(objectContext.Target, flags, actionContext);
             SetActions(oidStrategy, objectContext, req, flags);
         }
 
@@ -35,11 +35,11 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
         // custom extension for pagination 
-        private void SetPagination(IObjectFacade list, RestControlFlags flags) {
+        private void SetPagination(IObjectFacade list, RestControlFlags flags, ActionContextFacade actionContext) {
             Pagination = new MapRepresentation();
 
             var totalCount = list.Count();
-            var pageSize = flags.PageSize;
+            var pageSize = actionContext.Action.PageSize > 0 ? actionContext.Action.PageSize : flags.PageSize;
             var page = flags.Page;
             var numPages = (int) Math.Round(totalCount/(decimal) pageSize + 0.5m);
             numPages = numPages == 0 ? 1 : numPages;
