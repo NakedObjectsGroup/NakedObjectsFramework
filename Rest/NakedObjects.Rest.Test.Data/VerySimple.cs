@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using NakedObjects;
@@ -15,7 +16,7 @@ namespace RestfulObjects.Test.Data {
         private ICollection<MostSimple> aSetAsCollection = new List<MostSimple>();
 
 
-        [Key, Hidden(WhenTo.Always), ConcurrencyCheck]
+        [Key, Hidden(WhenTo.Always), ConcurrencyCheck, DefaultValue(0)]
         public virtual int Id { get; set; }
 
         [Optionally, Title]
