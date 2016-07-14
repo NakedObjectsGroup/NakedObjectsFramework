@@ -184,6 +184,22 @@ namespace NakedObjects.Selenium {
             var field = WaitForCss("#orderqty1");
             Assert.AreEqual("", field.GetAttribute("value"));
         }
+        //Test written against a specific failure scenario
+        public virtual void InvalidPropOnTransientClearedAndReentered()
+        {
+            GeminiUrl("object?i1=View&o1=___1.Product--497&as1=open");
+            OpenSubMenu("Work Orders");
+            Click(GetObjectAction("Create New Work Order"));
+            WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Work Order");
+            ClearFieldThenType("#scrappedqty1", "0");
+            ClearFieldThenType("#orderqty1", "0");
+            Click(SaveButton());
+            wait.Until(dr => dr.FindElements(By.CssSelector(".validation"))
+                .Any(el => el.Text == "Order Quantity must be > 0"));
+            ClearFieldThenType("#orderqty1", "1");
+            Click(SaveButton());
+            WaitForTextStarting(".title", "Pinch Bolt");
+        }
     }
 
     public abstract class TransientObjectTests : TransientObjectTestsRoot {
@@ -253,6 +269,11 @@ namespace NakedObjects.Selenium {
         public override void ValuePropOnTransientEmptyIfNoDefault()
         {
             base.ValuePropOnTransientEmptyIfNoDefault();
+        }
+        [TestMethod]
+        public override void InvalidPropOnTransientClearedAndReentered()
+        {
+            base.InvalidPropOnTransientClearedAndReentered();
         }
     }
 
@@ -340,6 +361,7 @@ namespace NakedObjects.Selenium {
             TransientCreatedFromDialogClosesDialog();
             CreateAndSaveNotPersistedObject();
             ValuePropOnTransientEmptyIfNoDefault();
+            InvalidPropOnTransientClearedAndReentered();
         }
     }
 
