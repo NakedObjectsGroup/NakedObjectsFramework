@@ -392,6 +392,11 @@ namespace AdventureWorksModel {
         [Description("Free-form text")]
         public virtual string Comment { get; set; }
 
+        public void ClearComment()
+        {
+            this.Comment = null;
+        }
+
         public void AddStandardComments(IEnumerable<string> comments) {
             foreach (string comment in comments) {
                 Comment += comment + "\n";
