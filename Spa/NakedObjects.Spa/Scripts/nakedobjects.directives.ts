@@ -966,11 +966,22 @@ module NakedObjects {
                     }
                 }).on("touchstart click", function (ev) {
                     if ($(this).hasClass("ng-onX")) {
+
                         ev.preventDefault();
                         $(this).removeClass("ng-x ng-onX");
-                        $(this).val("");
-                        ngModel.$parsers.push(() => null);
-                        ngModel.$setViewValue("");            
+
+                        scope.$apply(() => {
+                            const parent = scope.$parent as IPropertyOrParameterScope;
+                            const viewModel = parent.parameter || parent.property;
+                            viewModel.clear();
+                            
+                            ngModel.$parsers.push(() => null);
+                            ngModel.$setViewValue("");
+                            $(this).val("");
+
+                            // ick but only way I can get color to clear on freeform droppable fields
+                            $timeout(() => viewModel.color = "");                        
+                        });
                     }
                 });
             }

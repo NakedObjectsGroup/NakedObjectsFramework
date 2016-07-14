@@ -42,9 +42,7 @@
                         </select>
 
                         <!--"EntryType.FreeForm"-->
-                        <div ng-switch-when="0" tabindex="0" class="value droppable" ng-model="$parent.property.selectedChoice" ng-class="property.color" placeholder="{{property.description}}" gemini-drop gemini-fieldmandatorycheck gemini-clear>
-                            {{property.value || property.description}}
-                        </div>
+                        <input id="{{property.paneArgId}}" class="{{property.status}} value droppable" ng-class="property.color" placeholder="{{property.description}}" ng-switch-when="0" type="text" ng-model="$parent.property.selectedChoice"  gemini-drop gemini-fieldmandatorycheck gemini-clear />
                     </div>
                 </div>
 
