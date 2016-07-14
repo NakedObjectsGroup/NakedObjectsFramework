@@ -975,7 +975,6 @@ module NakedObjects {
                             const viewModel = parent.parameter || parent.property;
                             viewModel.clear();
                             
-                            ngModel.$parsers.push(() => null);
                             ngModel.$setViewValue("");
                             $(this).val("");
 
