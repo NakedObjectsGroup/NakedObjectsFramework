@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using NakedObjects;
@@ -17,7 +18,7 @@ namespace RestfulObjects.Test.Data {
         private DateTime aDateTimeValue = new DateTime(2012, 2, 10);
         private TimeSpan aTimeSpanValue = new TimeSpan(1, 2, 3, 4, 5);
 
-        [Key, Title, ConcurrencyCheck]
+        [Key, Title, ConcurrencyCheck, DefaultValue(0)]
         public virtual int Id { get; set; }
 
         [PresentationHint("class3 class4")]

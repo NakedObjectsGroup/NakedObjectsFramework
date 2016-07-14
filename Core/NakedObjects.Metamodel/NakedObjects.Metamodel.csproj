@@ -127,7 +127,6 @@
     <Compile Include="Facet\CreatedCallbackFacetViaMethod.cs" />
     <Compile Include="Facet\DefaultedFacetUsingDefaultsProvider.cs" />
     <Compile Include="Facet\ElementTypeFacet.cs" />
-    <Compile Include="Facet\PropertyClearFacetAbstract.cs" />
     <Compile Include="Facet\ValidateObjectFacet.cs" />
     <Compile Include="Component\Metamodel.cs" />
     <Compile Include="I18N\DescribedAsFacetI18N.cs" />
@@ -220,7 +219,6 @@
     <Compile Include="Facet\ProgramPersistableOnly.cs" />
     <Compile Include="Facet\PropertyAccessorFacet.cs" />
     <Compile Include="Facet\PropertyChoicesFacet.cs" />
-    <Compile Include="Facet\PropertyClearFacetViaClearMethod.cs" />
     <Compile Include="Facet\PropertyDefaultFacetAnnotation.cs" />
     <Compile Include="Facet\PropertyDefaultFacetViaMethod.cs" />
     <Compile Include="Facet\PropertyInitializationFacet.cs" />

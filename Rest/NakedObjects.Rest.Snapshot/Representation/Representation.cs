@@ -292,11 +292,15 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         public static object GetPropertyValue(IOidStrategy oidStrategy, HttpRequestMessage req, IAssociationFacade property, IObjectFacade target, RestControlFlags flags, bool valueOnly, bool useDateOverDateTime) {
             IObjectFacade valueNakedObject = property.GetValue(target);
-            string title = RestUtils.SafeGetTitle(property, valueNakedObject);
-
+            
             if (valueNakedObject == null) {
                 return null;
             }
+
+            if (target.IsTransient && property.IsUsable(target).IsAllowed && property.IsVisible(target) && property.IsSetToImplicitDefault(target)) {
+                return null;
+            }
+
             if (property.Specification.IsParseable || property.Specification.IsCollection) {
                 return RestUtils.ObjectToPredefinedType(valueNakedObject.Object, useDateOverDateTime);
             }
@@ -305,6 +309,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                 return RefValueRepresentation.Create(oidStrategy, new ValueRelType(property, new UriMtHelper(oidStrategy, req, valueNakedObject)), flags);
             }
 
+            string title = RestUtils.SafeGetTitle(property, valueNakedObject);
             var helper = new UriMtHelper(oidStrategy, req, property.IsInline ? target : valueNakedObject);
             var optionals = new List<OptionalProperty> {new OptionalProperty(JsonPropertyNames.Title, title)};
 

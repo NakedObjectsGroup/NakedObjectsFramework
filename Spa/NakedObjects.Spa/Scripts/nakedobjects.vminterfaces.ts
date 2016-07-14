@@ -135,7 +135,7 @@ module NakedObjects {
 
         drop: (newValue: IDraggableViewModel) => void;
 
-        clear : () => void ; 
+        clear : () => void; 
 
         getValue: () => Value;   
     }

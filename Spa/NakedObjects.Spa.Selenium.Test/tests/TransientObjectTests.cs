@@ -149,6 +149,7 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.Object, "Hex Nut 8");
             Click(GetObjectAction("Create New Work Order", Pane.Single, "Work Orders"));
             WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Work Order");
+            ClearFieldThenType("#scrappedqty1", "1");
             ClearFieldThenType("#orderqty1", "1");
             SaveObject();
         }

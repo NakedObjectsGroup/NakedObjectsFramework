@@ -9,7 +9,6 @@ module NakedObjects {
     import ErrorWrapper = Models.ErrorWrapper;
     import ActionMember = Models.ActionMember;
     import CollectionMember = Models.CollectionMember;
-    import DomainServicesRepresentation = Models.DomainServicesRepresentation;
     import DomainObjectRepresentation = Models.DomainObjectRepresentation;
     import MenuRepresentation = Models.MenuRepresentation;
     import Parameter = Models.Parameter;
@@ -25,14 +24,13 @@ module NakedObjects {
     import isDateOrDateTime = Models.isDateOrDateTime;
     import ActionRepresentation = Models.ActionRepresentation;
     import IInvokableAction = Models.IInvokableAction;
-    import CollectionRepresentation = Models.CollectionRepresentation;
     import IHasExtensions = Models.IHasExtensions;
     import dirtyMarker = Models.dirtyMarker;
     import ObjectIdWrapper = Models.ObjectIdWrapper;
     import InvokableActionMember = Models.InvokableActionMember;
     import isTime = Models.isTime;
     import toTime = Models.toTime;
-    import ActionResultRepresentation = NakedObjects.Models.ActionResultRepresentation;
+    import ActionResultRepresentation = Models.ActionResultRepresentation;
 
     export interface IViewModelFactory {
         toolBarViewModel(): IToolBarViewModel;

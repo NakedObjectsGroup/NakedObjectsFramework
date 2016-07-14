@@ -36,5 +36,7 @@ namespace NakedObjects.Facade {
 
         string GetTitle(IObjectFacade objectFacade);
         int Count(IObjectFacade target);
+
+        bool IsSetToImplicitDefault(IObjectFacade objectFacade);
     }
 }

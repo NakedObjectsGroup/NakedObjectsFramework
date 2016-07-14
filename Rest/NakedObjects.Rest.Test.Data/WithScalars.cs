@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using NakedObjects;
@@ -31,7 +32,7 @@ namespace RestfulObjects.Test.Data {
             DateTime = DateTime.UtcNow;
         }
 
-        [Key, Title, ConcurrencyCheck]
+        [Key, Title, ConcurrencyCheck, DefaultValue(0)]
         public virtual int Id { get; set; }
 
         [NotMapped]

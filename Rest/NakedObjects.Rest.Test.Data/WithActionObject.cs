@@ -5,12 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
 namespace RestfulObjects.Test.Data {
     public class WithActionObject : WithAction {
-        [Key, Title, ConcurrencyCheck]
+        [Key, Title, ConcurrencyCheck, DefaultValue(0)]
         public virtual int Id { get; set; }
     }
 }

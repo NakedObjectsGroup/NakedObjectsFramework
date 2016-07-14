@@ -145,15 +145,10 @@ namespace NakedObjects.Core.Spec {
         public void SetAssociation(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter associate) {
             INakedObjectAdapter currentValue = GetAssociation(inObjectAdapter);
             if (currentValue != associate) {
-                if (associate == null && ContainsFacet<IPropertyClearFacet>()) {
-                    GetFacet<IPropertyClearFacet>().ClearProperty(inObjectAdapter, transactionManager);
-                }
-                else {
-                    var setterFacet = GetFacet<IPropertySetterFacet>();
-                    if (setterFacet != null) {
-                        inObjectAdapter.ResolveState.CheckCanAssociate(associate);
-                        setterFacet.SetProperty(inObjectAdapter, associate, transactionManager, Session, LifecycleManager);
-                    }
+                var setterFacet = GetFacet<IPropertySetterFacet>();
+                if (setterFacet != null) {
+                    inObjectAdapter.ResolveState.CheckCanAssociate(associate);
+                    setterFacet.SetProperty(inObjectAdapter, associate, transactionManager, Session, LifecycleManager);
                 }
             }
         }

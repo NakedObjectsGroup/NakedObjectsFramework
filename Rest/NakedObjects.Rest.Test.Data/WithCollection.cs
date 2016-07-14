@@ -8,6 +8,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using NakedObjects;
@@ -141,7 +142,7 @@ namespace RestfulObjects.Test.Data {
             protected get { return container; }
         }
 
-        [Key, Title, ConcurrencyCheck]
+        [Key, Title, ConcurrencyCheck, DefaultValue(0)]
         public virtual int Id { get; set; }
 
         [PresentationHint("class7 class8")]

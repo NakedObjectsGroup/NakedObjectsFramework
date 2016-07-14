@@ -26,7 +26,6 @@ namespace NakedObjects.Reflect.FacetFactory {
         private static readonly string[] PropertyPrefixes = {
             RecognisedMethodsAndPrefixes.AutoCompletePrefix,
             RecognisedMethodsAndPrefixes.ModifyPrefix,
-            RecognisedMethodsAndPrefixes.ClearPrefix,
             RecognisedMethodsAndPrefixes.ChoicesPrefix,
             RecognisedMethodsAndPrefixes.DefaultPrefix,
             RecognisedMethodsAndPrefixes.ValidatePrefix,

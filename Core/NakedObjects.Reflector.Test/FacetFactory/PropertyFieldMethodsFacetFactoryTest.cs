@@ -32,7 +32,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                     typeof (IPropertyDefaultFacet),
                     typeof (IPropertyChoicesFacet),
                     typeof (IPropertySetterFacet),
-                    typeof (IPropertyClearFacet),
                     typeof (INotPersistedFacet),
                     typeof (IDisabledFacet)
                 };
@@ -641,27 +640,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             AssertMethodRemoved(propertyChoicesMethod);
             IFacet facetExecuted = Specification.GetFacet(typeof (IExecutedControlMethodFacet));
             Assert.IsNull(facetExecuted);
-        }
-
-        [TestMethod]
-        public void TestClearFacet() {
-            PropertyInfo property = FindProperty(typeof (Customer8), "FirstName");
-            MethodInfo propertyClearMethod = FindMethod(typeof (Customer8), "ClearFirstName");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IPropertyClearFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PropertyClearFacetViaClearMethod);
-            var propertyClearFacet = (PropertyClearFacetViaClearMethod) facet;
-            Assert.AreEqual(propertyClearMethod, propertyClearFacet.GetMethod());
-            AssertMethodRemoved(propertyClearMethod);
-        }
-
-        [TestMethod]
-        public void TestClearFacetViaSetterIfNoExplicitClearMethod() {
-            PropertyInfo property = FindProperty(typeof (Customer9), "FirstName");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IPropertyClearFacet));
-            Assert.IsNull(facet);
         }
 
         [TestMethod]

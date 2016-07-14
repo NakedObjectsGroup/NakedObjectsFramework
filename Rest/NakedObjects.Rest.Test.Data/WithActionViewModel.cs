@@ -139,6 +139,7 @@ namespace RestfulObjects.Test.Data {
 
         public override void AnActionReturnsVoid() {}
 
+        [PageSize(0)]
         public override IQueryable<MostSimple> AnActionReturnsQueryable() {
             return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2);
         }

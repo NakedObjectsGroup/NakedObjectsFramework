@@ -21,7 +21,6 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class CollectionFieldMethodsFacetFactory : PropertyOrCollectionIdentifyingFacetFactoryAbstract {
         private static readonly string[] FixedPrefixes = {
-            RecognisedMethodsAndPrefixes.ClearPrefix,
             RecognisedMethodsAndPrefixes.ModifyPrefix
         };
 

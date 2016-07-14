@@ -47,7 +47,6 @@ namespace NakedObjects.Reflect.FacetFactory
         {
             ParameterDefaultPrefix = RecognisedMethodsAndPrefixes.ParameterDefaultPrefix;
             ParameterChoicesPrefix = RecognisedMethodsAndPrefixes.ParameterChoicesPrefix;
-            ClearPrefix = RecognisedMethodsAndPrefixes.ClearPrefix;
             ModifyPrefix = RecognisedMethodsAndPrefixes.ModifyPrefix;
             ValidatePrefix = RecognisedMethodsAndPrefixes.ValidatePrefix;
             ChoicesPrefix = RecognisedMethodsAndPrefixes.ChoicesPrefix;
