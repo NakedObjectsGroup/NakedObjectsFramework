@@ -33,7 +33,6 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("List Price:\r\n" + currency, properties[5].Text);
             Assert.AreEqual("Days To Manufacture:\r\n" + newDays, properties[17].Text);
         }
-
         public virtual void LocalValidationOfMandatoryFields() {
             GeminiUrl("object?i1=Edit&o1=___1.SpecialOffer--11");
             SaveButton().AssertIsEnabled();
@@ -46,7 +45,6 @@ namespace NakedObjects.Selenium {
             ClearFieldThenType("#minqty1", "1");
             SaveButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Description; Start Date; ");
         }
-
         public virtual void LocalValidationOfMaxLength() {
             GeminiUrl("object?i1=Edit&o1=___1.Person--12125&c1_Addresses=List&c1_EmailAddresses=List");
             ClearFieldThenType("#title1", "Generalis");
@@ -57,7 +55,6 @@ namespace NakedObjects.Selenium {
             wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Too long").Count() == 0);
             SaveButton().AssertIsEnabled();
         }
-
         public virtual void LocalValidationOfRegex() {
             GeminiUrl("object?i1=Edit&o1=___1.EmailAddress--12043--11238");
             ClearFieldThenType("#emailaddress11", "arthur44@adventure-works");
@@ -68,8 +65,7 @@ namespace NakedObjects.Selenium {
             wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Invalid entry").Count() == 0);
             SaveButton().AssertIsEnabled();
         }
-
-        public virtual void LocalValidationOfRange() {
+        public virtual void RangeValidationOnNumber() {
             GeminiUrl("object?i1=Edit&o1=___1.Product--817");
             WaitForView(Pane.Single, PaneType.Object, "Editing - HL Mountain Front Wheel");
             wait.Until(dr => dr.FindElement(By.CssSelector("#daystomanufacture1")).GetAttribute("value") == "1");
@@ -92,7 +88,28 @@ namespace NakedObjects.Selenium {
             //Confirm that the save button is disabled & has helper tooltip
             SaveButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Days To Manufacture; ");
         }
+        public virtual void RangeValidationOnDate()
+        {
+            GeminiUrl("object?i1=Edit&o1=___1.Product--448");
+            WaitForView(Pane.Single, PaneType.Object, "Editing - Lock Nut 13");
+            string mask = "d MMM yyyy";
+            var today = DateTime.Today.ToString(mask);
+            var yesterday = DateTime.Today.AddDays(-1).ToString(mask);
+            var d10 = DateTime.Today.AddDays(10).ToString(mask);
+            var d11 = DateTime.Today.AddDays(11).ToString(mask);
+            var message = String.Format("Value is outside the range {0} to {1}", today, d10);
+            ClearFieldThenType("#discontinueddate1", yesterday);
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation")).Count == 23);
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[17].Text == message);
+            ClearFieldThenType("#discontinueddate1", today);
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[17].Text == "");
+            ClearFieldThenType("#discontinueddate1", d11);
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation")).Count == 23);
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[17].Text == message);
+            ClearFieldThenType("#discontinueddate1", d10);
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[17].Text == "");
 
+        }
         public virtual void ObjectEditChangeEnum() {
             GeminiUrl("object?i1=View&o1=___1.Person--6748");
             wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[6].Text == "Email Promotion:\r\nNo Promotions");
@@ -105,7 +122,6 @@ namespace NakedObjects.Selenium {
             SaveObject();
             wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[6].Text == "Email Promotion:\r\nNo Promotions");
         }
-
         public virtual void ObjectEditChangeDateTime() {
             GeminiUrl("object?o1=___1.Product--870");
             EditObject();
@@ -126,7 +142,6 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("Sell Start Date:\r\n" + sellStart.ToString("d MMM yyyy"), properties[18].Text);
             Assert.AreEqual("Sell End Date:\r\n" + sellEnd.ToString("d MMM yyyy"), properties[19].Text); //...but output format standardised.
         }
-
         public virtual void CanSetAndClearAnOptionalDropDown() {
             GeminiUrl("object?o1=___1.WorkOrder--54064");
             WaitForView(Pane.Single, PaneType.Object);
@@ -141,7 +156,6 @@ namespace NakedObjects.Selenium {
             prop = WaitForCssNo(".property", 4);
             Assert.AreEqual("Scrap Reason:", prop.Text);
         }
-
         public virtual void ObjectEditPicksUpLatestServerVersion() {
             GeminiUrl("object?o1=___1.Person--8410&as1=open");
             WaitForView(Pane.Single, PaneType.Object);
@@ -158,7 +172,6 @@ namespace NakedObjects.Selenium {
             Click(GetCancelEditButton()); //but can't read the value, so go back to view
             Assert.AreEqual(newValue, WaitForCss(".property:nth-child(6) .value").Text);
         }
-
         public virtual void ViewModelEditOpensInEditMode() {
             GeminiUrl("object?o1=___1.EmailTemplate--1&i1=Form");
             WaitForCss("input#to1");
@@ -166,7 +179,6 @@ namespace NakedObjects.Selenium {
             //TODO: Check that actions are rendered e.g. Send
             //as individual buttons, and NO generic Save button
         }
-
         public virtual void MultiLineText() {
             GeminiUrl("object?i1=Edit&o1=___1.SalesOrderHeader--44440");
             var ta = WaitForCss("textarea#comment1");
@@ -204,8 +216,14 @@ namespace NakedObjects.Selenium {
         }
 
         [TestMethod]
-        public override void LocalValidationOfRange() {
-            base.LocalValidationOfRange();
+        public override void RangeValidationOnNumber() {
+            base.RangeValidationOnNumber();
+        }
+
+        [TestMethod]
+        public override void RangeValidationOnDate()
+        {
+            base.RangeValidationOnDate();
         }
 
         [TestMethod]
@@ -240,7 +258,7 @@ namespace NakedObjects.Selenium {
     }
 
     #region browsers specific subclasses
-
+    //[TestClass]
     public class ObjectEditPageTestsIe : ObjectEditTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -282,7 +300,7 @@ namespace NakedObjects.Selenium {
             ((IJavaScriptExecutor) br).ExecuteScript(script);
         }
     }
-
+    //[TestClass]
     public class ObjectEditPageTestsChrome : ObjectEditTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -312,7 +330,8 @@ namespace NakedObjects.Selenium {
             LocalValidationOfMandatoryFields();
             LocalValidationOfMaxLength();
             LocalValidationOfRegex();
-            LocalValidationOfRange();
+            RangeValidationOnNumber();
+            RangeValidationOnDate();
             ObjectEditChangeEnum();
             ObjectEditChangeDateTime();
             CanSetAndClearAnOptionalDropDown();
