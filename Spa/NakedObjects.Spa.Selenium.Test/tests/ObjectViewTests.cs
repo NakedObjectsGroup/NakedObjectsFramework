@@ -540,7 +540,7 @@ namespace NakedObjects.Selenium {
             ((IJavaScriptExecutor) br).ExecuteScript(script);
         }
     }
-    [TestClass]
+    //[TestClass]
     public class ObjectViewTestsChrome : ObjectViewTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

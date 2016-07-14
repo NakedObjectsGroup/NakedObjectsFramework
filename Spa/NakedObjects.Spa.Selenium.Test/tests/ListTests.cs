@@ -148,6 +148,22 @@ namespace NakedObjects.Selenium {
                 .Text.StartsWith("Page 1 of 45"));
         }
 
+        public virtual void PageSizeRecognised()
+        {
+            //Method marked with PageSize(2)
+            GeminiUrl("home?m1=CustomerRepository&d1=FindStoreByName");
+            ClearFieldThenType("#name1","bike");
+            Click(OKButton());
+            WaitForView(Pane.Single, PaneType.List, "Find Store By Name");
+            var summary = WaitForCss(".collection .summary .details");
+             Assert.AreEqual("Page 1 of 177; viewing 2 of 353 items", summary.Text);
+            var next = GetButton("Next").AssertIsEnabled();
+            Click(next);
+            wait.Until(dr => dr.FindElement(
+                By.CssSelector(".collection .summary .details"))
+                .Text == "Page 2 of 177; viewing 2 of 353 items");
+        }
+
         public virtual void ListDoesNotRefreshWithoutReload() {
             GeminiUrl("list?m1=SpecialOfferRepository&a1=SpecialOffersWithNoMinimumQty&p1=1&ps1=20");
             Reload();
@@ -261,6 +277,11 @@ namespace NakedObjects.Selenium {
         public override void Paging() {
             base.Paging();
         }
+        [TestMethod]
+        public override void PageSizeRecognised()
+        {
+            base.PageSizeRecognised();
+        }
 
         [TestMethod]
         public override void ListDoesNotRefreshWithoutReload() {
@@ -316,6 +337,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
+    //[TestClass]
     public class ListTestsChrome : ListTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -354,6 +376,7 @@ namespace NakedObjects.Selenium {
             NavigateToItemFromListView();
             NavigateToItemFromTableView();
             Paging();
+            //PageSizeRecognised(); //TODO: pending bug fix
             ListDoesNotRefreshWithoutReload();
             ReloadingListGetsUpdatedObject();
             EagerlyRenderTableViewFromAction();
