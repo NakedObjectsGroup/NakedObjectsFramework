@@ -100,16 +100,16 @@ namespace NakedObjects.Selenium {
             var message = String.Format("Value is outside the range {0} to {1}", today, d10);
             ClearFieldThenType("#discontinueddate1", yesterday);
             wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation")).Count == 23);
-            Assert.AreEqual(message, br.FindElements(By.CssSelector(".property .validation"))[17].Text);
+            Assert.AreEqual(message, br.FindElements(By.CssSelector(".property .validation"))[20].Text);
 
             //wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[17].Text == message);
             ClearFieldThenType("#discontinueddate1", today);
-            wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[17].Text == "");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[20].Text == "");
             ClearFieldThenType("#discontinueddate1", d11);
             wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation")).Count == 23);
-            wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[17].Text == message);
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[20].Text == message);
             ClearFieldThenType("#discontinueddate1", d10);
-            wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[17].Text == "");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[20].Text == "");
 
         }
         public virtual void ObjectEditChangeEnum() {
