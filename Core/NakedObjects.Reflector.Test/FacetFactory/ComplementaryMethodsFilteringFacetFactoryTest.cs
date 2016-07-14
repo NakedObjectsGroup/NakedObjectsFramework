@@ -452,12 +452,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         [TestMethod]
-        public void TestFiltersClear() {
-            MethodInfo actionMethod = FindMethodIgnoreParms(typeof (PropertyClass), "ClearAProperty");
-            Assert.IsTrue(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
-        }
-
-        [TestMethod]
         public void TestFiltersDefault() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (PropertyClass), "DefaultAProperty");
             Assert.IsTrue(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));

@@ -298,7 +298,6 @@
     <Compile Include="Facet\IPropertyAccessorFacet.cs" />
     <Compile Include="Facet\IPropertyChoicesFacet.cs" />
     <Compile Include="Facet\IPropertyDefaultFacet.cs" />
-    <Compile Include="Facet\IPropertyClearFacet.cs" />
     <Compile Include="Facet\IPropertyInitializationFacet.cs" />
     <Compile Include="Facet\INullableFacet.cs" />
     <Compile Include="Facet\IPropertySetterFacet.cs" />

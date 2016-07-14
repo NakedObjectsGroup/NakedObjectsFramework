@@ -28,7 +28,6 @@ namespace NakedObjects.Reflect.FacetFactory {
         private static readonly ILog Log = LogManager.GetLogger(typeof (PropertyMethodsFacetFactory));
 
         private static readonly string[] FixedPrefixes = {
-            RecognisedMethodsAndPrefixes.ClearPrefix,
             RecognisedMethodsAndPrefixes.ModifyPrefix
         };
 
@@ -63,7 +62,6 @@ namespace NakedObjects.Reflect.FacetFactory {
                 facets.Add(new DisabledFacetAlways(specification));
             }
             FindAndRemoveModifyMethod(reflector, facets, methodRemover, property.DeclaringType, capitalizedName, paramTypes, specification);
-            FindAndRemoveClearMethod(reflector, facets, methodRemover, property.DeclaringType, capitalizedName, specification);
 
             FindAndRemoveAutoCompleteMethod(reflector, facets, methodRemover, property.DeclaringType, capitalizedName, property.PropertyType, specification);
             FindAndRemoveChoicesMethod(reflector, facets, methodRemover, property.DeclaringType, capitalizedName, property.PropertyType, specification);
@@ -91,15 +89,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             RemoveMethod(methodRemover, method);
             if (method != null) {
                 propertyFacets.Add(new PropertySetterFacetViaModifyMethod(method, capitalizedName, property));
-            }
-        }
-
-        private void FindAndRemoveClearMethod(IReflector reflector, ICollection<IFacet> propertyFacets, IMethodRemover methodRemover, Type type, string capitalizedName, ISpecification property) {
-            MethodInfo method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ClearPrefix + capitalizedName, typeof (void), Type.EmptyTypes);
-            RemoveMethod(methodRemover, method);
-            if (method != null) {
-                Log.WarnFormat(@"'Clear' method '{0}' has been found on '{1}' : The 'Clear' method is considered obsolete, use 'Modify' instead", RecognisedMethodsAndPrefixes.ClearPrefix + capitalizedName, type.FullName);
-                propertyFacets.Add(new PropertyClearFacetViaClearMethod(method, property));
             }
         }
 

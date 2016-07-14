@@ -33,7 +33,6 @@
         #region Complementary methods for actions or properties
         public static readonly string AutoCompletePrefix;
         public static readonly string ChoicesPrefix;
-        public static readonly string ClearPrefix;
         public static readonly string DefaultPrefix;
         public static readonly string DisablePrefix;
         public static readonly string HidePrefix;
@@ -72,7 +71,6 @@
         public static string[] RecognisedPrefixes = new string[] {
                 AutoCompletePrefix,
                 ChoicesPrefix,
-                ClearPrefix,
                 DefaultPrefix,
                 DisablePrefix,
                 HidePrefix,
@@ -94,7 +92,6 @@
         {
             ParameterDefaultPrefix = "Default";
             ParameterChoicesPrefix = "Choices";
-            ClearPrefix = "Clear";
             ModifyPrefix = "Modify";
             ValidatePrefix = "Validate";
             ChoicesPrefix = "Choices";
