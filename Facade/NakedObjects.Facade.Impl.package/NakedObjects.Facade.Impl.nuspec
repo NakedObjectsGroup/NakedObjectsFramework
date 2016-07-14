@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Implementation of the Facade API for current version of the Naked Objects Framework</description>
     <dependencies>
-      <dependency id="NakedObjects.Core" version="[8.0.0-rc, 9)" />
+      <dependency id="NakedObjects.Core" version="[8.0.0-rc4, 9)" />
       <dependency id="NakedObjects.Facade" version="[8.0.0-rc4, 9)" />
     </dependencies>
   </metadata>
