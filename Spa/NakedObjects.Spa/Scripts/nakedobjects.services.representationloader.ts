@@ -18,6 +18,9 @@ module NakedObjects {
     import IResourceRepresentation = RoInterfaces.IResourceRepresentation;
     import ActionInvokeRepresentation = RoInterfaces.IActionInvokeRepresentation;
     import isIDomainObjectRepresentation = Models.isIDomainObjectRepresentation;
+    import isResourceRepresentation = Models.isResourceRepresentation;
+    import ClientErrorCode = NakedObjects.Models.ClientErrorCode;
+    import isErrorRepresentation = Models.isErrorRepresentation;
 
     export interface IRepLoader {
         validate: (map: IHateoasModel, digest?: string) => ng.IPromise<boolean>;
@@ -51,16 +54,28 @@ module NakedObjects {
                 }
             }
 
+            function handleInvalidResponse(rc : ErrorCategory) {
+                const rr = new ErrorWrapper(rc,
+                                            ClientErrorCode.ConnectionProblem,
+                                            "The response from the client was not parseable as a RestfulObject json Representation ");
+
+                return $q.reject(rr);
+            }
+
             function handleError(promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IRepresentation>)   {
                 let category: ErrorCategory;
                 let error: ErrorRepresentation | ErrorMap | string;
 
                 if (promiseCallback.status === HttpStatusCode.InternalServerError) {
-                    // this error contains an error representatation 
-                    const errorRep = new ErrorRepresentation();
-                    errorRep.populate(promiseCallback.data as RoInterfaces.IErrorRepresentation);
-                    category = ErrorCategory.HttpServerError;
-                    error = errorRep;
+                    // this error should contain an error representatation 
+                    if (isErrorRepresentation(promiseCallback.data)) {
+                        const errorRep = new ErrorRepresentation();
+                        errorRep.populate(promiseCallback.data as RoInterfaces.IErrorRepresentation);
+                        category = ErrorCategory.HttpServerError;
+                        error = errorRep;
+                    } else {
+                        return handleInvalidResponse(ErrorCategory.HttpServerError);
+                    }
                 } else if (promiseCallback.status === -1) {
                     // failed to connect
                     category = ErrorCategory.ClientError;
@@ -71,9 +86,8 @@ module NakedObjects {
 
                     if (promiseCallback.status === HttpStatusCode.BadRequest ||
                         promiseCallback.status === HttpStatusCode.UnprocessableEntity) {
-                        // these errors should contain a map                            
-                        error = new ErrorMap(promiseCallback
-                            .data as RoInterfaces.IValueMap | RoInterfaces.IObjectOfType,
+                        // these errors should contain a map          
+                        error = new ErrorMap(promiseCallback.data as RoInterfaces.IValueMap | RoInterfaces.IObjectOfType,
                             promiseCallback.status,
                             message);
                     } else {
@@ -102,7 +116,7 @@ module NakedObjects {
                     });
             }
 
-            // special handler for case whwre we recice a redirected object back from server 
+            // special handler for case whwre we reciece a redirected object back from server 
             // instead of an actionresult. Wrap the object in an actionresult and then handle normally
             function handleRedirectedObject(response : IHateoasModel,  data: RoInterfaces.IRepresentation) {
 
@@ -119,6 +133,12 @@ module NakedObjects {
                 return data;
             }
 
+            function isValidResponse(data: any) {
+                return isResourceRepresentation(data);
+            }
+
+
+
             function httpPopulate(config: ng.IRequestConfig, ignoreCache: boolean, response: IHateoasModel): ng.IPromise<IHateoasModel> {
                 $rootScope.$broadcast(geminiAjaxChangeEvent, ++loadingCount);
 
@@ -127,8 +147,18 @@ module NakedObjects {
                     cache.remove(config.url);
                 }
 
+
+                if ((<any>config).doesnotexist) {
+                    config.url = "http://www.google.co.uk";
+                }
+
+
                 return $http(config)
                     .then((promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IResourceRepresentation>) => {
+                        if (!isValidResponse(promiseCallback.data)) {
+                            return handleInvalidResponse(ErrorCategory.ClientError);
+                        }
+
                         const representation = handleRedirectedObject(response, promiseCallback.data);
                         response.populate(representation);
                         response.etagDigest = promiseCallback.headers("ETag");
