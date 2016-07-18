@@ -19,7 +19,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class PagedListRepresentation : ListRepresentation {
         protected PagedListRepresentation(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequestMessage req, RestControlFlags flags, ActionContextFacade actionContext)
-            : base(oidStrategy, Page(objectContext, flags), req, flags, actionContext) {
+            : base(oidStrategy, Page(objectContext, flags, actionContext), req, flags, actionContext) {
             SetPagination(objectContext.Target, flags, actionContext);
             SetActions(oidStrategy, objectContext, req, flags);
         }
@@ -30,8 +30,12 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Members)]
         public MapRepresentation Members { get; set; }
 
-        private static IObjectFacade Page(ObjectContextFacade objectContext, RestControlFlags flags) {
-            return objectContext.Target.Page(flags.Page, flags.PageSize, true);
+        private static IObjectFacade Page(ObjectContextFacade objectContext, RestControlFlags flags, ActionContextFacade actionContext) {
+            return objectContext.Target.Page(flags.Page, PageSize(flags, actionContext), true);
+        }
+
+        private static int PageSize(RestControlFlags flags, ActionContextFacade actionContext) {
+            return actionContext.Action.PageSize > 0 ? actionContext.Action.PageSize : flags.PageSize;
         }
 
         // custom extension for pagination 
@@ -39,7 +43,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Pagination = new MapRepresentation();
 
             var totalCount = list.Count();
-            var pageSize = actionContext.Action.PageSize > 0 ? actionContext.Action.PageSize : flags.PageSize;
+            var pageSize = PageSize(flags, actionContext);
             var page = flags.Page;
             var numPages = (int) Math.Round(totalCount/(decimal) pageSize + 0.5m);
             numPages = numPages == 0 ? 1 : numPages;
