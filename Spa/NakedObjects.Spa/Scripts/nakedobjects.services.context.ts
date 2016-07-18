@@ -780,7 +780,7 @@ module NakedObjects {
                     const index = urlManager.getListCacheIndex(toPaneId, page, pageSize);
                     cacheList(resultList, index);
                 }
-            } else {
+            } else if (result.resultType() === "void") {
                 urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
             }
         };
