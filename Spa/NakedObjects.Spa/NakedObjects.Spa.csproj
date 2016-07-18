@@ -26,6 +26,7 @@
     <Content Include="Content\customTemplates\customObjectView.html" />
     <Content Include="Content\customTemplates\internalServerError.html" />
     <Content Include="Content\customTemplates\groupedProperties.html" />
+    <Content Include="Content\customTemplates\calendarList.html" />
     <Content Include="Content\customTemplates\locationList.html" />
     <Content Include="Content\customTemplates\locationView.html" />
     <Content Include="Content\customTemplates\workOrderRoutingEdit.html" />
@@ -100,6 +101,7 @@
     <Content Include="Content\themes\base\datepicker.css" />
     <Content Include="Content\themes\base\dialog.css" />
     <Content Include="Content\themes\base\draggable.css" />
+    <Content Include="Content\themes\base\fullcalendar.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -150,6 +152,7 @@
     <None Include="Scripts\nakedobjects.services.color.config.ts.pp" />
     <TypeScriptCompile Include="Scripts\custom.controllers.ts" />
     <None Include="Scripts\nakedobjects.services.error.config.ts.pp" />
+    <TypeScriptCompile Include="Scripts\custom.directives.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.error.config.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.error.ts" />
     <None Include="Scripts\nakedobjects.services.template.config.ts.pp" />
@@ -184,6 +187,7 @@
     <TypeScriptCompile Include="Scripts\nakedobjects.viewmodels.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.models.helpers.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.models.ts" />
+    <Content Include="Scripts\fullcalendar.js" />
     <Content Include="Scripts\jasmine-html.js" />
     <Content Include="bower.json" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
