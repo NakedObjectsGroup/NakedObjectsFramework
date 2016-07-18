@@ -744,7 +744,7 @@ module NakedObjects {
                         urlManager.pushUrlState(toPaneId);
                         urlManager.setObject(resultObject, toPaneId);
 
-                        const interactionMode = resultObject.extensions().interactionMode() === "transient" ? InteractionMode.Transient : InteractionMode.NotPersistent; 
+                        const interactionMode = resultObject.extensions().interactionMode() === "transient" ? InteractionMode.Transient : InteractionMode.NotPersistent;
                         urlManager.setInteractionMode(interactionMode, toPaneId);
                     } else {
 
@@ -780,6 +780,8 @@ module NakedObjects {
                     const index = urlManager.getListCacheIndex(toPaneId, page, pageSize);
                     cacheList(resultList, index);
                 }
+            } else {
+                urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
             }
         };
 

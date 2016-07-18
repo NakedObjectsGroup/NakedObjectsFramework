@@ -367,6 +367,7 @@ module NakedObjects {
                     setupPaneNumberAndTypes(paneId, objectPath);
                     search = clearPane(search, paneId);
                     setId(akm.interactionMode + paneId, InteractionMode[InteractionMode.View], search);
+                    search = toggleReloadFlag(search);
                     break;
                 case (Transition.ToList):
                     replace = setupPaneNumberAndTypes(paneId, listPath);
@@ -769,12 +770,16 @@ module NakedObjects {
             return segments[paneId + 1] === homePath; // e.g. segments 0=~/1=cicero/2=home/3=home
         };
 
-        helper.triggerPageReloadByFlippingReloadFlagInUrl = () => {
-            const search = getSearch();
+        function toggleReloadFlag(search: any) {
             const currentFlag = search[akm.reload];
             const newFlag = currentFlag ? 0 : 1;
             search[akm.reload] = newFlag;
-            setNewSearch(search);
+            return search;
+        }
+
+        helper.triggerPageReloadByFlippingReloadFlagInUrl = () => {
+            const search = getSearch();
+            setNewSearch(toggleReloadFlag(search));
             $location.replace();
         }
     });
