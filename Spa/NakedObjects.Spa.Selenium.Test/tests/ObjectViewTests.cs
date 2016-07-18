@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using System.Threading;
 
 namespace NakedObjects.Selenium {
     public abstract class ObjectViewTestsRoot : AWTest {
@@ -336,6 +337,21 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("true", actions.GetAttribute("disabled"));
         }
 
+        //This test exists because in previous versions of NOF
+        //Clear<propName> was a recognised method; now it is treated as an action.
+        public virtual void ClearPropNameNowRecognisedAsAnAction()
+        {
+            GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--72079&as1=open");
+            //First set up some comments
+            OpenActionDialog("Add Standard Comments");
+            Click(OKButton());
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Payment on delivery"));
+            //Now clear them
+            Click(GetObjectAction("Clear Comment"));
+            Reload(); Thread.Sleep(2000); //TODO: remove when bug fixed
+            //wait.Until(dr => dr.FindElements(By.CssSelector(".property")).Count == 23);
+            Assert.AreEqual("Comment:", br.FindElements(By.CssSelector(".property"))[20].Text);
+        }
         #endregion
     }
     public abstract class ObjectViewTests : ObjectViewTestsRoot {
@@ -473,6 +489,12 @@ namespace NakedObjects.Selenium {
         public override void TimeSpanProperty() {
             base.TimeSpanProperty();
         }
+
+        [TestMethod]
+        public override void ClearPropNameNowRecognisedAsAnAction()
+        {
+            base.ClearPropNameNowRecognisedAsAnAction();
+        }
     }
 
     #region browsers specific subclasses
@@ -518,7 +540,7 @@ namespace NakedObjects.Selenium {
             ((IJavaScriptExecutor) br).ExecuteScript(script);
         }
     }
-
+    //[TestClass]
     public class ObjectViewTestsChrome : ObjectViewTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -571,6 +593,7 @@ namespace NakedObjects.Selenium {
             ZeroIntValues();
             AddingObjectToCollectionUpdatesTableView();
             TimeSpanProperty();
+            ClearPropNameNowRecognisedAsAnAction();
         }
     }
 

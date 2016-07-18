@@ -42,7 +42,6 @@ namespace NakedObjects.Selenium {
             Click(br.FindElement(By.CssSelector(".icon-home")));
             WaitForView(Pane.Single, PaneType.Home, "Home");
         }
-
         public virtual void BackAndForward() {
             Url(BaseUrl);
             GoToMenuFromHomePage("Orders");

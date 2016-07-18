@@ -24,7 +24,6 @@ namespace NakedObjects.Selenium {
             Click(SaveButton());
             WaitForView(Pane.Single, PaneType.Object, obfuscated);
         }
-
         public virtual void SaveAndClose() {
             GeminiUrl("object?o1=___1.Person--12043&as1=open");
             Click(GetObjectAction("Create New Credit Card"));
@@ -41,7 +40,6 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.List, "Recent Credit Cards");
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection table tbody tr td.reference")).First().Text == obfuscated);
         }
-
         public virtual void MissingMandatoryFieldsNotified() {
             GeminiUrl("object?o1=___1.Person--12043&as1=open");
             Click(GetObjectAction("Create New Credit Card"));
@@ -49,7 +47,6 @@ namespace NakedObjects.Selenium {
             SelectDropDownOnField("#expyear1", "2020");
             SaveButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Card Number; Exp Month; ");
         }
-
         public virtual void IndividualFieldValidation() {
             GeminiUrl("object?o1=___1.Person--12043&as1=open");
             Click(GetObjectAction("Create New Credit Card"));
@@ -62,7 +59,6 @@ namespace NakedObjects.Selenium {
                 By.CssSelector(".validation")).Any(el => el.Text == "card number too short"));
             WaitForMessage("See field validation message(s).");
         }
-
         public virtual void MultiFieldValidation() {
             GeminiUrl("object?o1=___1.Person--12043&as1=open");
             Click(GetObjectAction("Create New Credit Card"));
@@ -73,14 +69,12 @@ namespace NakedObjects.Selenium {
             Click(SaveButton());
             WaitForMessage("Expiry date must be in the future");
         }
-
         public virtual void PropertyDescriptionAndRequiredRenderedAsPlaceholder() {
             GeminiUrl("object?o1=___1.Person--12043&as1=open");
             Click(GetObjectAction("Create New Credit Card"));
             var name = WaitForCss("input#cardnumber1");
             Assert.AreEqual("* Without spaces", name.GetAttribute("placeholder"));
         }
-
         public virtual void CancelTransientObject() {
             GeminiUrl("object?o1=___1.Person--12043&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
@@ -88,7 +82,6 @@ namespace NakedObjects.Selenium {
             Click(GetCancelEditButton());
             WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
         }
-
         public virtual void SwapPanesWithTransients() {
             GeminiUrl("object/object?o1=___1.Product--738&as1=open&o2=___1.Person--20774&as2=open");
             WaitForView(Pane.Left, PaneType.Object, "LL Road Frame - Black, 52");
@@ -109,7 +102,6 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Right, PaneType.Object, "Editing - Unsaved Work Order");
             wait.Until(dr => dr.FindElement(By.CssSelector("#orderqty2")).GetAttribute("value") == "4");
         }
-
         public virtual void BackAndForwardOverTransient() {
             GeminiUrl("object?o1=___1.Person--12043&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
@@ -120,12 +112,10 @@ namespace NakedObjects.Selenium {
             Click(br.FindElement(By.CssSelector(".icon-forward")));
             WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Credit Card");
         }
-
         public virtual void RequestForExpiredTransient() {
             GeminiUrl("object?i1=Transient&o1=___1.CreditCard--100");
             wait.Until(dr => dr.FindElement(By.CssSelector(".title")).Text == "The requested view of unsaved object details has expired.");
         }
-
         public virtual void ConditionalChoicesOnTransient() {
             GeminiUrl("home?m1=ProductRepository");
             Click(GetObjectAction("New Product"));
@@ -143,7 +133,6 @@ namespace NakedObjects.Selenium {
 
             SelectDropDownOnField("#productsubcategory1", "Mountain Bikes");
         }
-
         public virtual void TransientWithHiddenNonOptionalFields() {
             GeminiUrl("object?i1=View&o1=___1.Product--380&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Hex Nut 8");
@@ -153,7 +142,6 @@ namespace NakedObjects.Selenium {
             ClearFieldThenType("#orderqty1", "1");
             SaveObject();
         }
-
         //Test for a previous bug  -  where Etag error was resulting
         public virtual void CanInvokeActionOnASavedTransient() {
             GeminiUrl("object?i1=View&o1=___1.Customer--11784&as1=open&d1=CreateNewOrder&f1_copyHeaderFromLastOrder=true");
@@ -166,7 +154,6 @@ namespace NakedObjects.Selenium {
             Click(OKButton());
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[1].Text == "Reasons:\r\n1 Item");
         }
-
         public virtual void TransientCreatedFromDialogClosesDialog()
         {
             GeminiUrl("object?i1=View&o1=___1.Customer--30108&as1=open");
@@ -181,13 +168,37 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.Object, "Mercantile Outlet, AW00030108");
             OpenSubMenu("Orders"); //Would fail if already open
         }
-
         public virtual void CreateAndSaveNotPersistedObject()
         {
             GeminiUrl("home?m1=EmployeeRepository");
             Click(GetObjectAction("Create Staff Summary"));
             WaitForView(Pane.Single, PaneType.Object, "Staff Summary");
             WaitForTextStarting(".object", "Staff Summary\r\nFemale"); //i.e. no buttons in the header
+        }
+        public virtual void ValuePropOnTransientEmptyIfNoDefault()
+        {
+            GeminiUrl("object?i1=View&o1=___1.Product--497&as1=open");
+            OpenSubMenu("Work Orders");
+            Click(GetObjectAction("Create New Work Order"));
+            WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Work Order");
+            var field = WaitForCss("#orderqty1");
+            Assert.AreEqual("", field.GetAttribute("value"));
+        }
+        //Test written against a specific failure scenario
+        public virtual void InvalidPropOnTransientClearedAndReentered()
+        {
+            GeminiUrl("object?i1=View&o1=___1.Product--497&as1=open");
+            OpenSubMenu("Work Orders");
+            Click(GetObjectAction("Create New Work Order"));
+            WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Work Order");
+            ClearFieldThenType("#scrappedqty1", "0");
+            ClearFieldThenType("#orderqty1", "0");
+            Click(SaveButton());
+            wait.Until(dr => dr.FindElements(By.CssSelector(".validation"))
+                .Any(el => el.Text == "Order Quantity must be > 0"));
+            ClearFieldThenType("#orderqty1", "1");
+            Click(SaveButton());
+            WaitForTextStarting(".title", "Pinch Bolt");
         }
     }
 
@@ -196,62 +207,50 @@ namespace NakedObjects.Selenium {
         public override void CreateAndSaveTransientObject() {
             base.CreateAndSaveTransientObject();
         }
-
         [TestMethod]
         public override void SaveAndClose() {
             base.SaveAndClose();
         }
-
         [TestMethod]
         public override void MissingMandatoryFieldsNotified() {
             base.MissingMandatoryFieldsNotified();
         }
-
         [TestMethod]
         public override void IndividualFieldValidation() {
             base.IndividualFieldValidation();
         }
-
         [TestMethod]
         public override void MultiFieldValidation() {
             base.MultiFieldValidation();
         }
-
         [TestMethod]
         public override void PropertyDescriptionAndRequiredRenderedAsPlaceholder() {
             base.PropertyDescriptionAndRequiredRenderedAsPlaceholder();
         }
-
         [TestMethod]
         public override void CancelTransientObject() {
             base.CancelTransientObject();
         }
-
         [TestMethod]
         public override void SwapPanesWithTransients() {
             base.SwapPanesWithTransients();
         }
-
         [TestMethod]
         public override void BackAndForwardOverTransient() {
             base.BackAndForwardOverTransient();
         }
-
         [TestMethod]
         public override void RequestForExpiredTransient() {
             base.RequestForExpiredTransient();
         }
-
         [TestMethod]
         public override void ConditionalChoicesOnTransient() {
             base.ConditionalChoicesOnTransient();
         }
-
         [TestMethod]
         public override void TransientWithHiddenNonOptionalFields() {
             base.TransientWithHiddenNonOptionalFields();
         }
-
         [TestMethod]
         public override void CanInvokeActionOnASavedTransient() {
             base.CanInvokeActionOnASavedTransient();
@@ -264,7 +263,17 @@ namespace NakedObjects.Selenium {
         [TestMethod]
         public override void CreateAndSaveNotPersistedObject()
         {
-            base.CreateAndSaveNotPersistedObject();
+            base.CreateAndSaveNotPersistedObject();       
+        }
+        [TestMethod]
+        public override void ValuePropOnTransientEmptyIfNoDefault()
+        {
+            base.ValuePropOnTransientEmptyIfNoDefault();
+        }
+        [TestMethod]
+        public override void InvalidPropOnTransientClearedAndReentered()
+        {
+            base.InvalidPropOnTransientClearedAndReentered();
         }
     }
 
@@ -351,6 +360,8 @@ namespace NakedObjects.Selenium {
             CanInvokeActionOnASavedTransient();
             TransientCreatedFromDialogClosesDialog();
             CreateAndSaveNotPersistedObject();
+            ValuePropOnTransientEmptyIfNoDefault();
+            InvalidPropOnTransientClearedAndReentered();
         }
     }
 
