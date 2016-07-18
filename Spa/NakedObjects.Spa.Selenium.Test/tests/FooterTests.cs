@@ -81,22 +81,6 @@ namespace NakedObjects.Selenium {
             ClickBackButton();
             WaitForView(Pane.Single, PaneType.Object, orderTitle);
         }
-        public virtual void Cicero() {
-            GeminiUrl("object?o1=___1.Product--968");
-            WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
-            Click(WaitForCss(".icon-speech"));
-            WaitForOutput("Product: Touring-1000 Blue, 54"); //Cicero
-            GeminiUrl("object/list?o1=___1.Store--350&m2=OrderRepository&a2=HighestValueOrders");
-            WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
-            Click(WaitForCss(".icon-speech"));
-            WaitForOutput("Store: Twin Cycles"); //Cicero
-
-            GeminiUrl("object?o1=___1.Product--968&as1=open&d1=BestSpecialOffer&f1_quantity=%22%22");
-            WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
-            WaitForCss("#quantity1"); //i.e. dialog open
-            Click(WaitForCss(".icon-speech"));
-            WaitForOutput("Product: Touring-1000 Blue, 54\r\nAction dialog: Best Special Offer\r\nQuantity: empty");
-        }
         public virtual void RecentObjects() {
             GeminiUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber&f1_accountNumber=%22AW%22");
             ClearFieldThenType("#accountnumber1", "AW00000042");
@@ -170,11 +154,6 @@ namespace NakedObjects.Selenium {
         [TestMethod]
         public override void BackAndForward() {
             base.BackAndForward();
-        }
-
-        [TestMethod]
-        public override void Cicero() {
-            base.Cicero();
         }
 
         [TestMethod]
@@ -265,7 +244,6 @@ namespace NakedObjects.Selenium {
             ZeroParamActionReturningNullGeneratesGenericWarning();
             Home();
             BackAndForward();
-            Cicero();
             RecentObjects();
             ApplicationProperties();
             LogOff();
@@ -311,7 +289,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class MegaFooterTestsChrome : MegaFooterTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

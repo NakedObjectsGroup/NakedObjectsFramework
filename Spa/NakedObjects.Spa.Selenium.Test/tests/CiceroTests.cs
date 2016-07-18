@@ -13,6 +13,23 @@ using OpenQA.Selenium;
 
 namespace NakedObjects.Selenium {
     public abstract class CiceroTestRoot : AWTest {
+        public virtual void LaunchCiceroFromIcon()
+        {
+            GeminiUrl("object?o1=___1.Product--968");
+            WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
+            Click(WaitForCss(".icon-speech"));
+            WaitForOutput("Product: Touring-1000 Blue, 54"); //Cicero
+            GeminiUrl("object/list?o1=___1.Store--350&m2=OrderRepository&a2=HighestValueOrders");
+            WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
+            Click(WaitForCss(".icon-speech"));
+            WaitForOutput("Store: Twin Cycles"); //Cicero
+
+            GeminiUrl("object?o1=___1.Product--968&as1=open&d1=BestSpecialOffer&f1_quantity=%22%22");
+            WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
+            WaitForCss("#quantity1"); //i.e. dialog open
+            Click(WaitForCss(".icon-speech"));
+            WaitForOutput("Product: Touring-1000 Blue, 54\r\nAction dialog: Best Special Offer\r\nQuantity: empty");
+        }
         public virtual void Action() {
             //Test from home menu
             CiceroUrl("home?m1=ProductRepository");
@@ -1266,6 +1283,11 @@ namespace NakedObjects.Selenium {
 
     public abstract class CiceroTests : CiceroTestRoot {
         [TestMethod]
+        public override void LaunchCiceroFromIcon()
+        {
+            base.LaunchCiceroFromIcon();
+        }
+        [TestMethod]
         public override void Action() {
             base.Action();
         }
@@ -1462,6 +1484,7 @@ namespace NakedObjects.Selenium {
     public abstract class MegaCiceroTestsRoot : CiceroTestRoot {
         [TestMethod] //Mega
         public void MegaCiceroTests() {
+            LaunchCiceroFromIcon();
             Action();
             BackAndForward();
             Cancel();
