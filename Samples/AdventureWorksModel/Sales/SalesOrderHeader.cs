@@ -712,8 +712,10 @@ namespace AdventureWorksModel {
 
         #region CancelOrder
 
-        public void CancelOrder() {
+        // return this for testing purposes
+        public SalesOrderHeader CancelOrder() {
             Status = (byte) OrderStatus.Cancelled;
+            return this;
         }
 
         public virtual bool HideCancelOrder() {
