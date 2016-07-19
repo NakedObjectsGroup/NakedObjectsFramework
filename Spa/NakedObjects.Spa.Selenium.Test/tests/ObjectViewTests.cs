@@ -337,9 +337,7 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("true", actions.GetAttribute("disabled"));
         }
 
-        //This test exists because in previous versions of NOF
-        //Clear<propName> was a recognised method; now it is treated as an action.
-        public virtual void ClearPropNameNowRecognisedAsAnAction()
+         public virtual void ZeroParamActionCausesObjectToReload()
         {
             GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--72079&as1=open");
             //First set up some comments
@@ -348,9 +346,7 @@ namespace NakedObjects.Selenium {
             wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Payment on delivery"));
             //Now clear them
             Click(GetObjectAction("Clear Comment"));
-            Reload(); Thread.Sleep(2000); //TODO: remove when bug fixed
-            //wait.Until(dr => dr.FindElements(By.CssSelector(".property")).Count == 23);
-            Assert.AreEqual("Comment:", br.FindElements(By.CssSelector(".property"))[20].Text);
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text == "Comment:");
         }
         #endregion
     }
@@ -491,9 +487,9 @@ namespace NakedObjects.Selenium {
         }
 
         [TestMethod]
-        public override void ClearPropNameNowRecognisedAsAnAction()
+        public override void ZeroParamActionCausesObjectToReload()
         {
-            base.ClearPropNameNowRecognisedAsAnAction();
+            base.ZeroParamActionCausesObjectToReload();
         }
     }
 
@@ -593,7 +589,7 @@ namespace NakedObjects.Selenium {
             ZeroIntValues();
             AddingObjectToCollectionUpdatesTableView();
             TimeSpanProperty();
-            ClearPropNameNowRecognisedAsAnAction();
+            ZeroParamActionCausesObjectToReload();
         }
     }
 
