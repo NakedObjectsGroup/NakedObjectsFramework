@@ -50,9 +50,6 @@ module NakedObjects {
     export class PaneRouteData {
         constructor(public paneId: number) {}
 
-        // probably turn this off in live 
-        private doValidation = true;
-
         objectId: string;
         menuId: string;
         collections: _.Dictionary<CollectionViewState>;
@@ -63,8 +60,7 @@ module NakedObjects {
         // created the current list and the the parms for the contributed action
 
         actionParams: _.Dictionary<Value>;
-        state: CollectionViewState;
-        //props: _.Dictionary<Value>;
+        state: CollectionViewState;       
         dialogId: string;
         dialogFields: _.Dictionary<Value>;
         page: number;
@@ -134,10 +130,9 @@ module NakedObjects {
         validate(url: string) {
 
             this.validatingUrl = url;
-
-            // todo add more conditions !
-            if (this.doValidation) {
-
+         
+            if (doUrlValidation) {
+                // Can add more conditions here 
                 this.assertMustBeNullInContext("objectId", "menuId");
                 this.assertMustBeNullInContext("menuId", "objectId");
             }

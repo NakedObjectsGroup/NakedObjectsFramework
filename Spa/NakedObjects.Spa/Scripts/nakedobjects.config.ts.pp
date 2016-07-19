@@ -45,4 +45,7 @@ module NakedObjects {
     export const httpCacheDepth = 50;
     export const transientCacheDepth = 4;
     export const recentCacheDepth = 20;
+
+	// checks for inconsistencies in url
+    export const doUrlValidation = false;
 }
