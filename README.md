@@ -1,14 +1,14 @@
 NakedObjectsFramework
 =====================
 
-The Master branch of this repository contains source for version 8 of the Naked Objects Framework (NOF8). Though this is currently at Beta stage, it is very usable, and, if you are new to Naked Objects we recommend starting with NOF8 rather than the older, stable, NOF7.
+The Master branch of this repository contains source for version 8 of the Naked Objects Framework (NOF8). This is currently at Release Candidate stage and will shortly move to full release.  Therefore, if you are new to Naked Objects we recommend starting with NOF8 rather than the older, 'official stable release' of  NOF7.
 
 Note that both NOF7 and NOF8 can be used as packages from the NuGet public gallery.  There is no need to clone this repository.  Indeed, building the framework from source code is quite complex and not recommended for newcomers.  (If you really want to know how to do it, see the section 'How to build the framework from source code' in the Developer Manual.)
 
 NOF8
 ====
 
-NOF8, currently at Beta stage, introduces a radically different user interface based on the Single Page Application (SPA) architecture. It uses identical domain model programming conventions as NOF7; indeed it is possible to run the NOF8 client and the NOF7 client alongside each other, as two different 'run' projects talking to the same domain model project(s).
+NOF8, currently at Release Candidate stage, introduces a radically different user interface based on the Single Page Application (SPA) architecture. It uses identical domain model programming conventions as NOF7; indeed it is possible to run the NOF8 client and the NOF7 client alongside each other, as two different 'run' projects talking to the same domain model project(s).
 
 The best way to try NOF8 is to run the NakedObjects.Template application, which may be downloaded as a .zip file from: https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Run/NakedObjects.Template.zip?raw=true 
 
@@ -17,7 +17,7 @@ The best way to try NOF8 is to run the NakedObjects.Template application, which 
 The developer manual for NOF 8 is available here: .
 https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/DeveloperManual.docx?raw=true
 
-When searching the NuGet package gallery for new releases of NOF8 (which are quite frequent at present) please ensure you have the 'include pre-releases' checkbox selected.
+When searching the NuGet package gallery for NOF8 please ensure you have the 'include pre-releases' checkbox selected.
 
 NOF8 source code is held in the master branch of this repository.
 
