@@ -4,7 +4,6 @@
 /// <reference path="nakedobjects.viewmodels.ts" />
 /// <reference path="nakedobjects.app.ts" />
 
-// tested 
 module NakedObjects {
 
     let pane1Dereg = () => {};

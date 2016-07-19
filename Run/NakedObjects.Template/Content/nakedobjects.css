@@ -787,3 +787,8 @@ input[type=submit] {
         margin: 20px;
         width: 95%;
     }
+
+    /*Hide Cicero icon*/
+    .icon-speech {
+        display: none;
+    }

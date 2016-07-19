@@ -60,8 +60,16 @@ module NakedObjects.Models {
         return object && object instanceof Object && "value" in object;
     }
 
+    export function isResourceRepresentation(object: any): object is RoInterfaces.IResourceRepresentation {
+        return object && object instanceof Object && "links" in object && "extensions" in object;
+    }
+
+    export function isErrorRepresentation(object: any): object is RoInterfaces.IErrorRepresentation {
+        return isResourceRepresentation(object) && "message" in object;
+    }
+
     export function isIDomainObjectRepresentation(object: any): object is RoInterfaces.IDomainObjectRepresentation {
-        return object && object instanceof Object && "domainType" in object && "instanceId" in object && "members" in object;
+        return isResourceRepresentation(object) && "domainType" in object && "instanceId" in object && "members" in object;
     }
 
     export function isIInvokableAction(object: any): object is IInvokableAction {
