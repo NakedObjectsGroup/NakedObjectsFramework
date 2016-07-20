@@ -1,5 +1,5 @@
 
-module NakedObjects {
+namespace NakedObjects {
     import Link = Models.Link;
     import Value = Models.Value;
     import scalarValueType = RoInterfaces.scalarValueType;
@@ -12,8 +12,8 @@ module NakedObjects {
     import MenusRepresentation = Models.MenusRepresentation;
     import IVersionRepresentation = RoInterfaces.IVersionRepresentation;
     import IUserRepresentation = RoInterfaces.IUserRepresentation;
-    import DomainObjectRepresentation = NakedObjects.Models.DomainObjectRepresentation;
-    import ErrorMap = NakedObjects.Models.ErrorMap;
+    import DomainObjectRepresentation = Models.DomainObjectRepresentation;
+    import ErrorMap = Models.ErrorMap;
 
     export interface IAttachmentViewModel {
         href: string;

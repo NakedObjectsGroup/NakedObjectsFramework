@@ -1,7 +1,7 @@
 /// <reference path="../../Scripts/typings/jasmine/jasmine.d.ts" />
 
 
-module NakedObjects.Test.Masks {
+namespace NakedObjects.Test.Masks {
     describe("nakedobjects.gemini.tests.moment", () => {
 
         beforeEach(angular.mock.module("app"));

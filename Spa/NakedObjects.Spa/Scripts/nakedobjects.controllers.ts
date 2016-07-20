@@ -2,9 +2,8 @@
 /// <reference path="nakedobjects.models.ts" />
 /// <reference path="nakedobjects.services.handlers.ts" />
 /// <reference path="nakedobjects.viewmodels.ts" />
-/// <reference path="nakedobjects.app.ts" />
 
-module NakedObjects {
+namespace NakedObjects {
 
     let pane1Dereg = () => {};
     let pane2Dereg = () => {};

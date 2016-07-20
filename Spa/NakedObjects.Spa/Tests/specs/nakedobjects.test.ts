@@ -5,7 +5,7 @@
 // todo make sure tests are enhanced to validate contents of view models and urls
 // todo tests for invalid url combinations ? 
 
-module NakedObjects.Test {
+namespace NakedObjects.Test {
    
     describe("nakedobjects.gemini.tests", () => {
 

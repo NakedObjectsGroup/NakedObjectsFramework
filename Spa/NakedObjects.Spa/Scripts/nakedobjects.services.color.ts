@@ -2,7 +2,7 @@
 /// <reference path="nakedobjects.models.ts" />
 /// <reference path="nakedobjects.app.ts" />
 
-module NakedObjects {
+namespace NakedObjects {
     import ObjectIdWrapper = Models.ObjectIdWrapper;
 
     export interface IColor {

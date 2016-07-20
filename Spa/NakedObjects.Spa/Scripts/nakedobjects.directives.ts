@@ -4,7 +4,7 @@
 /// <reference path="nakedobjects.viewmodels.ts" />
 /// <reference path="typings/moment/moment.d.ts"/>
 
-module NakedObjects {
+namespace NakedObjects {
     import Link = Models.Link;
     import Value = Models.Value;
     import toDateString = Models.toDateString;

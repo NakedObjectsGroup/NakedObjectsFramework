@@ -2,7 +2,7 @@
 /// <reference path="typings/angularjs/angular-route.d.ts" />
 
 
-module NakedObjects {
+namespace NakedObjects {
 
     export const app = angular.module("app", ["ngRoute"]);
 

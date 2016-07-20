@@ -2,7 +2,7 @@
 /// <reference path="nakedobjects.models.ts" />
 /// <reference path="nakedobjects.app.ts" />
 
-module NakedObjects {
+namespace NakedObjects {
 
     app.run((color: IColor) => {
         //Note: colour is determined by the FIRST matching rule

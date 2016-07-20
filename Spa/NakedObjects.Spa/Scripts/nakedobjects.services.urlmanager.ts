@@ -4,7 +4,7 @@
 /// <reference path="nakedobjects.app.ts" />
 
 
-module NakedObjects {
+namespace NakedObjects {
 
     import Decompress = Models.decompress;
     import Compress = Models.compress;

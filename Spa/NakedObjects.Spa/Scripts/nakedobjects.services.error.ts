@@ -1,7 +1,7 @@
 /// <reference path="typings/lodash/lodash.d.ts" />
 
 
-module NakedObjects {
+namespace NakedObjects {
     import ErrorWrapper = Models.ErrorWrapper;
     import ErrorCategory = Models.ErrorCategory;
     import ErrorMap = Models.ErrorMap;

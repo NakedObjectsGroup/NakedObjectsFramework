@@ -9,7 +9,7 @@
 // limitations under the License.
 
 
-module NakedObjects {
+namespace NakedObjects {
 
     // user message constants
 

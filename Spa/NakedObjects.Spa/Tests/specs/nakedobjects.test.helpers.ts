@@ -1,6 +1,6 @@
 ﻿/// <reference path="../../Scripts/typings/jasmine/jasmine.d.ts" />
 
-module NakedObjects.Test.Helpers {
+namespace NakedObjects.Test.Helpers {
     import HomePageRepresentation = NakedObjects.RoInterfaces.IHomePageRepresentation;
     import ListRepresentation = NakedObjects.RoInterfaces.IListRepresentation;
     import MenuRepresentation = NakedObjects.RoInterfaces.Custom.IMenuRepresentation;

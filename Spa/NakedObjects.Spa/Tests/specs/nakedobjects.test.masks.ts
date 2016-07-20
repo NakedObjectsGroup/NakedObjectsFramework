@@ -5,7 +5,7 @@
 // todo make sure tests are enhanced to validate contents of view models and urls
 // todo tests for invalid url combinations ? 
 
-module NakedObjects.Test.Masks {
+namespace NakedObjects.Test.Masks {
     describe("nakedobjects.gemini.tests.masks", () => {
 
         beforeEach(angular.mock.module("app"));

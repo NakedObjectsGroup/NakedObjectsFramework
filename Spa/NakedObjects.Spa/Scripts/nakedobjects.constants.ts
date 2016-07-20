@@ -2,7 +2,7 @@
 /// <reference path="typings/angularjs/angular-route.d.ts" />
 /// <reference path="nakedobjects.config.ts" />
 
-module NakedObjects {
+namespace NakedObjects {
 
     // code constants - not for config
     let path: string = null;

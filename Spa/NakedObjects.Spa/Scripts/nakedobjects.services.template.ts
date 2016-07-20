@@ -1,7 +1,7 @@
 /// <reference path="typings/lodash/lodash.d.ts" />
 
 
-module NakedObjects {
+namespace NakedObjects {
 
     export interface ITemplate {
         getTemplateName(type: string, tType: TemplateType, iType: InteractionMode | CollectionViewState): string;

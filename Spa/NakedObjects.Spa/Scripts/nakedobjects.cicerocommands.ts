@@ -1,6 +1,6 @@
 ﻿/// <reference path="nakedobjects.models.ts" />
 
-module NakedObjects {
+namespace NakedObjects {
     import IHasExtensions = Models.IHasExtensions;
     import DomainObjectRepresentation = Models.DomainObjectRepresentation;
     import ListRepresentation = Models.ListRepresentation;

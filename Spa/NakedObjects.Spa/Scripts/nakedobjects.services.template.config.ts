@@ -1,7 +1,7 @@
 /// <reference path="typings/lodash/lodash.d.ts" />
 
 
-module NakedObjects {
+namespace NakedObjects {
     app.run((template: ITemplate) => {
         template.setTemplateName("AdventureWorksModel.Location", TemplateType.Object, InteractionMode.View, "Content/customTemplates/locationView.html");
         template.setTemplateName("AdventureWorksModel.WorkOrderRouting", TemplateType.Object, InteractionMode.Edit, "Content/customTemplates/workOrderRoutingEdit.html");

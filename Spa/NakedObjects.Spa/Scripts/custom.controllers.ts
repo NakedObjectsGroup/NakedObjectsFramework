@@ -1,4 +1,4 @@
-﻿module NakedObjects {
+﻿namespace NakedObjects {
     import ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
 
     app.controller("DialogController", ($scope: INakedObjectsScope, urlManager: IUrlManager) => {

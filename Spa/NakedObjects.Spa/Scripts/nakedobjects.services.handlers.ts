@@ -3,16 +3,14 @@
 /// <reference path="nakedobjects.models.ts" />
 /// <reference path="nakedobjects.services.viewmodelfactory.ts" />
 
-module NakedObjects {
+namespace NakedObjects {
     import ErrorWrapper = Models.ErrorWrapper;
     import ErrorCategory = Models.ErrorCategory;
     import ClientErrorCode = Models.ClientErrorCode;
     import DomainObjectRepresentation = Models.DomainObjectRepresentation;
     import ActionMember = Models.ActionMember;
-    import VersionRepresentation = Models.VersionRepresentation;
     import MenusRepresentation = Models.MenusRepresentation;
     import MenuRepresentation = Models.MenuRepresentation;
-    import Extensions = Models.Extensions;
     import ActionRepresentation = Models.ActionRepresentation;
     import ObjectIdWrapper = Models.ObjectIdWrapper;
 

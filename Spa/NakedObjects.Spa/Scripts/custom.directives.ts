@@ -4,7 +4,7 @@
 /// <reference path="nakedobjects.viewmodels.ts" />
 /// <reference path="typings/moment/moment.d.ts"/>
 
-module NakedObjects {
+namespace NakedObjects {
     import Scope = angular.IScope;
 
     app.directive("customFullcalendar", (mask: IMask, $timeout: ng.ITimeoutService): ng.IDirective => {

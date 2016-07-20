@@ -1,14 +1,13 @@
 ﻿/// <reference path="nakedobjects.app.ts" />
 
-module NakedObjects {
-    import MenuRepresentation = Models.MenuRepresentation;
+namespace NakedObjects {
     import DomainObjectRepresentation = Models.DomainObjectRepresentation;
     import ListRepresentation = Models.ListRepresentation;
     import ErrorRepresentation = Models.ErrorRepresentation;
     import TypePlusTitle = Models.typePlusTitle;
     import PlusTitle = Models.typePlusTitle;
     import FriendlyNameForParam = Models.friendlyNameForParam;
-    import ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
+    import ObjectIdWrapper = Models.ObjectIdWrapper;
     import IInvokableAction = Models.IInvokableAction;
     import Title = Models.typePlusTitle;
     import ErrorWrapper = Models.ErrorWrapper;

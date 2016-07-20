@@ -4,7 +4,7 @@
 /// <reference path="nakedobjects.app.ts" />
 
 
-module NakedObjects {
+namespace NakedObjects {
     import ListRepresentation = Models.ListRepresentation;
     import VersionRepresentation = Models.VersionRepresentation;
     import MenusRepresentation = Models.MenusRepresentation;
