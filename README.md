@@ -3,6 +3,9 @@ NakedObjectsFramework
 
 The Naked Objects Framework is now on version 8.0 ('NOF8').  It may be used entirely as packages from the NuGet public gallery - there is no need to clone this repository.  Indeed, building the framework from source code is quite complex and not recommended for newcomers.  (If you really want to know how to do it, see the section 'How to build the framework from source code' in the Developer Manual.)
 
+NOF8
+====
+
 NOF8  introduces a radically different user interface based on the Single Page Application (SPA) architecture. It uses identical domain model programming conventions as NOF7; indeed it is possible to run the NOF8 client and the NOF7 client alongside each other, as two different 'run' projects talking to the same domain model project(s).
 
 The best way to try NOF8 is to run the NakedObjects.Template application, which may be downloaded as a .zip file from: https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Run/NakedObjects.Template.zip?raw=true 
