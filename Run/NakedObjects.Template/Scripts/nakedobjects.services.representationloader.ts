@@ -4,7 +4,7 @@
 /// <reference path="nakedobjects.app.ts" />
 
 
-module NakedObjects {
+namespace NakedObjects {
     import IHateoasModel = Models.IHateoasModel;
     import Link = Models.Link;
     import Value = Models.Value;
@@ -19,7 +19,7 @@ module NakedObjects {
     import ActionInvokeRepresentation = RoInterfaces.IActionInvokeRepresentation;
     import isIDomainObjectRepresentation = Models.isIDomainObjectRepresentation;
     import isResourceRepresentation = Models.isResourceRepresentation;
-    import ClientErrorCode = NakedObjects.Models.ClientErrorCode;
+    import ClientErrorCode = Models.ClientErrorCode;
     import isErrorRepresentation = Models.isErrorRepresentation;
 
     export interface IRepLoader {

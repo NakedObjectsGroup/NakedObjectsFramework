@@ -1,4 +1,4 @@
-﻿module NakedObjects.RoInterfaces.Custom {
+﻿namespace NakedObjects.RoInterfaces.Custom {
 
     //NOF custom RO constants
 

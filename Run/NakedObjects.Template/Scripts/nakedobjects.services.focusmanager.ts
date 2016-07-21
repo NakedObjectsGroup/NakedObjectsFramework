@@ -4,7 +4,7 @@
 /// <reference path="nakedobjects.app.ts" />
 
 
-module NakedObjects {
+namespace NakedObjects {
 
     export enum FocusTarget {
         Menu,

@@ -1,4 +1,4 @@
-﻿module NakedObjects.RoInterfaces {
+﻿namespace NakedObjects.RoInterfaces {
     import ICustomListRepresentation = RoInterfaces.Custom.ICustomListRepresentation;
 
     export type httpMethodsType = "POST" | "PUT" | "GET" | "DELETE";

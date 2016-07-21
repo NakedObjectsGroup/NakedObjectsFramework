@@ -1,7 +1,7 @@
 /// <reference path="typings/lodash/lodash.d.ts" />
 
 
-module NakedObjects {
+namespace NakedObjects {
 
     app.run((error: IError) => {
 

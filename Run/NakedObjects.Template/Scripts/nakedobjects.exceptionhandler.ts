@@ -1,6 +1,6 @@
 ﻿/// <reference path="nakedobjects.app.ts" />
 
-module NakedObjects {
+namespace NakedObjects {
     import ErrorWrapper = Models.ErrorWrapper;
     import ErrorCategory = Models.ErrorCategory;
     import ClientErrorCode = Models.ClientErrorCode;

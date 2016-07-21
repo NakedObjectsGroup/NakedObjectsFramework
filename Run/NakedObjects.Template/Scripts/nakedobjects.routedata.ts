@@ -1,7 +1,7 @@
 ﻿/// <reference path="typings/angularjs/angular.d.ts" />
 /// <reference path="nakedobjects.models.ts" />
 
-module NakedObjects {
+namespace NakedObjects {
     import Value = Models.Value;
     import ErrorCategory = Models.ErrorCategory;
 

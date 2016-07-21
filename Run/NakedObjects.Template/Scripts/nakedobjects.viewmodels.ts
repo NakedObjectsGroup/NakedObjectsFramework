@@ -3,7 +3,7 @@
 /// <reference path="nakedobjects.userMessages.config.ts" />
 
 
-module NakedObjects {
+namespace NakedObjects {
 
     import Value = Models.Value;
     import Link = Models.Link;

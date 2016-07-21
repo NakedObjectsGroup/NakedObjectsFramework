@@ -10,7 +10,7 @@
 
 // helpers for common tasks with nakedobjects.models 
 
-module NakedObjects.Models {
+namespace NakedObjects.Models {
 
     export function dirtyMarker(context: IContext, oid : ObjectIdWrapper) {
         return (showDirtyFlag && context.getIsDirty(oid)) ? "*" : "";

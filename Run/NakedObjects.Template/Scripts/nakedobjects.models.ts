@@ -17,7 +17,7 @@
 /// <reference path="nakedobjects.config.ts" />
 /// <reference path="nakedobjects.rointerfaces.ts" />
 
-module NakedObjects.Models {
+namespace NakedObjects.Models {
     import ICustomExtensions = RoInterfaces.Custom.ICustomExtensions;
     import ILink = RoInterfaces.ILink;
     import IMenuRepresentation = RoInterfaces.Custom.IMenuRepresentation;
