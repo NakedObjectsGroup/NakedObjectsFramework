@@ -31,7 +31,7 @@ namespace NakedObjects.Rest {
 
         static RestfulObjectsControllerBase() {
             // defaults 
-            CacheSettings = new Tuple<int, int, int>(0, 3600, 86400);
+            CacheSettings = new Tuple<int, int, int>(0, 0, 0);
             DefaultPageSize = 20;
             InlineDetailsInActionMemberRepresentations = true;
             InlineDetailsInCollectionMemberRepresentations = true;
