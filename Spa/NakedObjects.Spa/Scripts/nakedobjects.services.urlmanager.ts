@@ -65,6 +65,13 @@ namespace NakedObjects {
         getListCacheIndex: (paneId: number, newPage: number, newPageSize: number, format?: CollectionViewState) => string;
 
         isHome(paneId?: number): boolean;
+        isObject(paneId?: number): boolean;
+        isList(paneId?: number): boolean;
+        isError(paneId?: number): boolean;
+        isRecent(paneId?: number): boolean;
+        isAttachment(paneId?: number): boolean;
+        isApplicationProperties(paneId?: number): boolean;
+
         cicero(): void;
 
         reload(): void;
@@ -764,11 +771,19 @@ namespace NakedObjects {
             $window.location.reload(true);
         }
 
-        helper.isHome = (paneId = 1) => {
+        function isLocation(paneId: number, location: string) {
             const path = $location.path();
             const segments = path.split("/");
-            return segments[paneId + 1] === homePath; // e.g. segments 0=~/1=cicero/2=home/3=home
+            return segments[paneId + 1] === location; // e.g. segments 0=~/1=cicero/2=home/3=home
         };
+
+        helper.isHome = (paneId = 1) => isLocation(paneId, homePath);
+        helper.isObject = (paneId = 1) => isLocation(paneId, objectPath);
+        helper.isList = (paneId = 1) => isLocation(paneId, listPath);
+        helper.isError = (paneId = 1) => isLocation(paneId, errorPath);
+        helper.isRecent = (paneId = 1) => isLocation(paneId, recentPath);
+        helper.isAttachment = (paneId = 1) => isLocation(paneId, attachmentPath);
+        helper.isApplicationProperties = (paneId = 1) => isLocation(paneId, applicationPropertiesPath);
 
         function toggleReloadFlag(search: any) {
             const currentFlag = search[akm.reload];
