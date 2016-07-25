@@ -26,7 +26,7 @@
     <Content Include="Content\customTemplates\customObjectView.html" />
     <Content Include="Content\customTemplates\internalServerError.html" />
     <Content Include="Content\customTemplates\groupedProperties.html" />
-    <Content Include="Content\customTemplates\calendarList.html" />
+    <Content Include="Content\customTemplates\workOrderCalendarView.html" />
     <Content Include="Content\customTemplates\locationList.html" />
     <Content Include="Content\customTemplates\locationView.html" />
     <Content Include="Content\customTemplates\workOrderRoutingEdit.html" />
@@ -303,6 +303,7 @@
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
   <PropertyGroup>
-    <PreBuildEvent>powershell.exe -file  $(ProjectDir)version.ps1</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
 </Project>
