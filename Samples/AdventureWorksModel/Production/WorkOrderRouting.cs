@@ -37,11 +37,13 @@ namespace AdventureWorksModel {
         public virtual short OperationSequence { get; set; }
 
         [MemberOrder(20)]
-        [Mask("d")]
+        [Disabled]
+        [DataType(DataType.DateTime)]
         public virtual DateTime? ScheduledStartDate { get; set; }
 
         [MemberOrder(22)]
-        [Mask("d")]
+        [Disabled]
+        [DataType(DataType.DateTime)]
         public virtual DateTime? ScheduledEndDate { get; set; }
 
         [Optionally]
@@ -104,5 +106,18 @@ namespace AdventureWorksModel {
             }
             return rb.Reason;
         }
+
+        [MemberOrder(1)]
+        public void SetScheduledStartDate(DateTime date, int hour, int minutes)
+        {
+            ScheduledStartDate = date.AddHours(hour).AddMinutes(minutes);
+        }
+
+        [MemberOrder(2)]
+        public void SetScheduledEndDate(DateTime date, [Optionally] int hour, [Optionally] int minutes)
+        {
+                ScheduledEndDate = date.AddHours(hour).AddMinutes(minutes);
+        }
+
     }
 }

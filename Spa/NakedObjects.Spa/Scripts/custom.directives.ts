@@ -81,7 +81,7 @@ namespace NakedObjects {
             link(scope: Scope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes, ngModel: ng.INgModelController) {
 
                 const object = (scope.$parent as INakedObjectsScope).object;
-                const collection = object.collections[0];
+                const collection = _.find(object.collections, c => c.title == 'Work Order Routings');
                 collection.doTable();
                 collection.refresh(urlManager.getRouteData().pane()[object.onPaneId], true);
 
@@ -102,16 +102,17 @@ namespace NakedObjects {
                         }
 
                         const events = _.map(collection.items, i => {
-                            const date = i.tableRowViewModel.properties[2].value as Date;
-
-                            if (!lastDate || date > lastDate) {
-                                lastDate = date;
+                            const props = i.tableRowViewModel.properties;
+                            const start = _.find(props, p => p.title == 'Scheduled Start Date').value as Date;
+                            const end = _.find(props, p => p.title == 'Scheduled End Date').value as Date;
+                            if (!lastDate || start > lastDate) {
+                                lastDate = start;
                             }
 
                             return {
                                 title: i.title,
-                                start: date.toISOString(),
-                                allDay: true,
+                                start: start.toISOString(),
+                                end: end.toISOString(),
                                 color: (<any>i).color,
                                 vm: i,
                                 url: "empty"
@@ -119,6 +120,8 @@ namespace NakedObjects {
                         });
 
                         content.fullCalendar({
+                            header: { center: 'month agendaWeek agendaDay' },
+                            defaultView: 'agendaDay',
                             events: events,
                             eventClick: (evt: any) => {
                                 $timeout(() => evt.vm.doClick(false));
