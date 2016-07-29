@@ -79,6 +79,7 @@ namespace NakedObjects {
                         start: startDate.toISOString(),
                         end: endDate.toISOString(),
                         allDay: allDay,
+                        color: '#1b4787', //Or other default 'link-color' as defined in nakedobjects.css
                         vm: item,
                         url: "empty" //Because NOF manages the navigation -  see below
                     };
