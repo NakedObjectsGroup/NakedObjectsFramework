@@ -22,11 +22,12 @@
     <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Content\custom.css" />
     <Content Include="Content\customTemplates\accordionCollections.html" />
     <Content Include="Content\customTemplates\customObjectView.html" />
     <Content Include="Content\customTemplates\internalServerError.html" />
     <Content Include="Content\customTemplates\groupedProperties.html" />
-    <Content Include="Content\customTemplates\workOrderCalendarView.html" />
+    <Content Include="Content\customTemplates\workOrderObjectView.html" />
     <Content Include="Content\customTemplates\locationList.html" />
     <Content Include="Content\customTemplates\locationView.html" />
     <Content Include="Content\customTemplates\workOrderRoutingEdit.html" />

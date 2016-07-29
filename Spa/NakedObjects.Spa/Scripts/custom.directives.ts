@@ -7,80 +7,50 @@
 namespace NakedObjects {
     import Scope = angular.IScope;
 
-    app.directive("customFullcalendar", (mask: IMask, $timeout: ng.ITimeoutService): ng.IDirective => {
+    //Renders a calendar view of a named collection within an object using the fullCalendar.js library, which must
+    //be referenced (along with its standard styling)
+    //The directive must be called passing an object with these properties:
+    //nameOfCollection -  the (formatted) name of the collection within the object that is to be rendered as a calendar
+    //startPropertyId -  the Id for the property (i.e. column if it was a table) within the collection representing the start DateTime
+    //endPropertyId -  the Id for the property (i.e. column if it was a table) within the collection representing the end DateTime
+    //allDay - true if all events are all-day (in which case the endPropertyId is ignored)
+    //defaultView  -  one of 'month agendaWeek agendaDay' (views defined in fullCalendar.js).
+    app.directive("customCalendar", (mask: IMask, $timeout: ng.ITimeoutService, urlManager: IUrlManager, context: IContext, error: IError, color: IColor, $parse: any): ng.IDirective => {
         return {
-            // Enforce the angularJS default of restricting the directive to
-            // attributes only
+            // Enforce the angularJS default of restricting the directive to attributes only
             restrict: "A",
 
             // to make sure dynamic ids on element get picked up
             transclude: true,
-            // This method needs to be defined and passed in from the
-            // passed in to the directive from the view controller
 
             link(scope: Scope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes, ngModel: ng.INgModelController) {
 
-                const collection = (scope.$parent as INakedObjectsScope).collection;
+                const fn = $parse((attrs as any).customCalendar); // '.customCalendar' here must match the name of the directive, defined above
 
+                const config: {nameOfCollection: string, startPropertyId: string, endPropertyId: string, allDay: boolean, defaultView: string} = fn();
+
+                const object = (scope.$parent as INakedObjectsScope).object;
+                const collection :ICollectionViewModel = _.find(object.collections, c => c.title === config.nameOfCollection);
                 const content: any = element.append("<div class='content'></div>");
 
-                let id: number = null;
+                const collectionRep = collection.collectionRep as Models.CollectionMember;
 
-
-
-
-
-                function setup() {
-
-                    if (_.every(collection.items, i => i.tableRowViewModel)) {
-                        clearInterval(id);
-
-                        let lastDate: Date;
-
-                        const events = _.map(collection.items, i => {
-                                const date = i.tableRowViewModel.properties[2].value as Date;
-
-                                if (!lastDate || date > lastDate) {
-                                    lastDate = date;
-                                }
-
-                                return {
-                                    title: i.title,
-                                    start: date.toISOString(),
-                                    allDay: true,
-                                    color: (<any>i).color,
-                                    vm: i,
-                                    url: "empty"
-                                };
-                            });
-
-                        content.fullCalendar({
-                            events: events,
-                            eventClick: (evt: any) => {
-                                $timeout(() => evt.vm.doClick(false));
-                                return false;
-                            }
-                        });
-
-                        content.fullCalendar("gotoDate", lastDate.toISOString());                       
-                    }
-                }
-
-                id = setInterval(setup, 100);
+                showCalendar(collectionRep, config.startPropertyId, config.endPropertyId, config.allDay, config.defaultView, $timeout, urlManager, context, error, color, content);
             }
         };
     });
 
-
     function showCalendar(collectionRep: Models.CollectionMember,
-                            startDateId: string,
-                            endDateId: string,
-                            $timeout: ng.ITimeoutService,
-                            urlManager: IUrlManager,
-                            context: IContext,
-                            error: IError,
-                            color: IColor,
-                            content : any) {
+        startDateId: string,
+        endDateId: string,
+        allDay: boolean,
+        defaultView: string,
+        $timeout: ng.ITimeoutService,
+        urlManager: IUrlManager,
+        context: IContext,
+        error: IError,
+        color: IColor,
+        content: any) {
 
         context.getCollectionDetails(collectionRep, CollectionViewState.Table, false).
             then(details => {
@@ -92,8 +62,8 @@ namespace NakedObjects {
                     showDate = new Date(Date.now());
                 }
 
-                const events = _.map(items, (i: Models.Link) => {
-                    const props = i.members();
+                const events = _.map(items, (item: Models.Link) => {
+                    const props = item.members();
                     const start = props[startDateId].value();
                     const end = props[endDateId].value();
 
@@ -105,20 +75,20 @@ namespace NakedObjects {
                     }
 
                     return {
-                        title: i.title(),
+                        title: item.title(),
                         start: startDate.toISOString(),
                         end: endDate.toISOString(),
-                        color: color.toColorNumberFromHref(i.href()),
-                        vm: i,
-                        url: "empty"
+                        allDay: allDay,
+                        vm: item,
+                        url: "empty" //Because NOF manages the navigation -  see below
                     };
                 });
 
                 content.fullCalendar({
                     header: { center: 'month agendaWeek agendaDay' },
-                    defaultView: 'agendaDay',
+                    defaultView: defaultView,
                     events: events,
-                    eventClick: (evt: any) => {
+                    eventClick: (evt: any) => { //Standard NOF navigation. FullCalendar does not handle right-click :-(
                         $timeout(() => urlManager.setItem(evt.vm, 1));
                         return false;
                     }
@@ -128,35 +98,4 @@ namespace NakedObjects {
             }).
             catch((reject: Models.ErrorWrapper) => error.handleError(reject));
     }
-
-
-
-    app.directive("customWorkordercalendar", (mask: IMask, $timeout: ng.ITimeoutService, urlManager : IUrlManager, context : IContext, error : IError, color : IColor, $parse ): ng.IDirective => {
-        return {
-            // Enforce the angularJS default of restricting the directive to
-            // attributes only
-            restrict: "A",
-
-            // to make sure dynamic ids on element get picked up
-            transclude: true,
-            // This method needs to be defined and passed in from the
-            // passed in to the directive from the view controller
-    
-            link(scope: Scope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes, ngModel: ng.INgModelController) {
-
-                const fn = $parse((attrs as any).customWorkordercalendar);
-                const config = fn();
-
-                const object = (scope.$parent as INakedObjectsScope).object;
-                const collection = _.find(object.collections, c => c.title === config.title);
-                const content: any = element.append("<div class='content'></div>");
-              
-                const collectionRep = collection.collectionRep as Models.CollectionMember; 
-
-                showCalendar(collectionRep, config.startDateId, config.endDateId, $timeout, urlManager, context, error, color, content);
-            }
-        };
-    });
-
-
 }
