@@ -26,6 +26,10 @@ namespace NakedObjects {
 
                 let id: number = null;
 
+
+
+
+
                 function setup() {
 
                     if (_.every(collection.items, i => i.tableRowViewModel)) {
@@ -67,7 +71,67 @@ namespace NakedObjects {
         };
     });
 
-    app.directive("customWorkordercalendar", (mask: IMask, $timeout: ng.ITimeoutService, urlManager : IUrlManager): ng.IDirective => {
+
+    function showCalendar(collectionRep: Models.CollectionMember,
+                            startDateId: string,
+                            endDateId: string,
+                            $timeout: ng.ITimeoutService,
+                            urlManager: IUrlManager,
+                            context: IContext,
+                            error: IError,
+                            color: IColor,
+                            content : any) {
+
+        context.getCollectionDetails(collectionRep, CollectionViewState.Table, false).
+            then(details => {
+                const items: Models.Link[] = details.value();
+
+                let showDate: Date;
+
+                if (items.length === 0) {
+                    showDate = new Date(Date.now());
+                }
+
+                const events = _.map(items, (i: Models.Link) => {
+                    const props = i.members();
+                    const start = props[startDateId].value();
+                    const end = props[endDateId].value();
+
+                    const startDate = Models.toUtcDate(start);
+                    const endDate = Models.toUtcDate(end);
+
+                    if (!showDate || startDate > showDate) {
+                        showDate = startDate;
+                    }
+
+                    return {
+                        title: i.title(),
+                        start: startDate.toISOString(),
+                        end: endDate.toISOString(),
+                        color: color.toColorNumberFromHref(i.href()),
+                        vm: i,
+                        url: "empty"
+                    };
+                });
+
+                content.fullCalendar({
+                    header: { center: 'month agendaWeek agendaDay' },
+                    defaultView: 'agendaDay',
+                    events: events,
+                    eventClick: (evt: any) => {
+                        $timeout(() => urlManager.setItem(evt.vm, 1));
+                        return false;
+                    }
+                });
+                content.fullCalendar("gotoDate", showDate.toISOString());
+
+            }).
+            catch((reject: Models.ErrorWrapper) => error.handleError(reject));
+    }
+
+
+
+    app.directive("customWorkordercalendar", (mask: IMask, $timeout: ng.ITimeoutService, urlManager : IUrlManager, context : IContext, error : IError, color : IColor, $parse ): ng.IDirective => {
         return {
             // Enforce the angularJS default of restricting the directive to
             // attributes only
@@ -77,62 +141,19 @@ namespace NakedObjects {
             transclude: true,
             // This method needs to be defined and passed in from the
             // passed in to the directive from the view controller
-
+    
             link(scope: Scope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes, ngModel: ng.INgModelController) {
 
+                const fn = $parse((attrs as any).customWorkordercalendar);
+                const config = fn();
+
                 const object = (scope.$parent as INakedObjectsScope).object;
-                const collection = _.find(object.collections, c => c.title == 'Work Order Routings');
-                collection.doTable();
-                collection.refresh(urlManager.getRouteData().pane()[object.onPaneId], true);
-
-
+                const collection = _.find(object.collections, c => c.title === config.title);
                 const content: any = element.append("<div class='content'></div>");
+              
+                const collectionRep = collection.collectionRep as Models.CollectionMember; 
 
-                let id: number = null;
-
-                function setup() {
-
-                    if (collection.items && _.every(collection.items, i => i.tableRowViewModel)) {
-                        clearInterval(id);
-
-                        let lastDate: Date;
-
-                        if (collection.items.length === 0) {
-                            lastDate = new Date(Date.now());
-                        }
-
-                        const events = _.map(collection.items, i => {
-                            const props = i.tableRowViewModel.properties;
-                            const start = _.find(props, p => p.title == 'Scheduled Start Date').value as Date;
-                            const end = _.find(props, p => p.title == 'Scheduled End Date').value as Date;
-                            if (!lastDate || start > lastDate) {
-                                lastDate = start;
-                            }
-
-                            return {
-                                title: i.title,
-                                start: start.toISOString(),
-                                end: end.toISOString(),
-                                color: (<any>i).color,
-                                vm: i,
-                                url: "empty"
-                            };
-                        });
-
-                        content.fullCalendar({
-                            header: { center: 'month agendaWeek agendaDay' },
-                            defaultView: 'agendaDay',
-                            events: events,
-                            eventClick: (evt: any) => {
-                                $timeout(() => evt.vm.doClick(false));
-                                return false;
-                            }
-                        });
-                        content.fullCalendar("gotoDate", lastDate.toISOString());
-                    }
-                }
-
-                id = setInterval(setup, 100);
+                showCalendar(collectionRep, config.startDateId, config.endDateId, $timeout, urlManager, context, error, color, content);
             }
         };
     });
