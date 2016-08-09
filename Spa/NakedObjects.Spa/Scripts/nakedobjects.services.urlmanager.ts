@@ -36,7 +36,7 @@ namespace NakedObjects {
         closeDialogReplaceHistory(paneId?: number): void;
 
         setObject(resultObject: DomainObjectRepresentation, paneId?: number): void;
-        setList(action: IAction, parms: _.Dictionary<Value>, fromPaneId?: number, paneId?: number): void;
+        setList(action: IAction, parms : _.Dictionary<Value>,  fromPaneId? : number, paneId?: number): void;
         setProperty(propertyMember: PropertyMember, paneId?: number): void;
         setItem(link: Link, paneId?: number): void;
 
@@ -65,6 +65,13 @@ namespace NakedObjects {
         getListCacheIndex: (paneId: number, newPage: number, newPageSize: number, format?: CollectionViewState) => string;
 
         isHome(paneId?: number): boolean;
+        isObject(paneId?: number): boolean;
+        isList(paneId?: number): boolean;
+        isError(paneId?: number): boolean;
+        isRecent(paneId?: number): boolean;
+        isAttachment(paneId?: number): boolean;
+        isApplicationProperties(paneId?: number): boolean;
+
         cicero(): void;
 
         reload(): void;
@@ -72,7 +79,7 @@ namespace NakedObjects {
 
         //Flips the reload parameter in the Url between 0 and 1
         //which serves only to alert Angular and reload the page as needed.
-        triggerPageReloadByFlippingReloadFlagInUrl(): void;
+        triggerPageReloadByFlippingReloadFlagInUrl() : void;
     }
 
     app.service("urlManager", function ($routeParams: ng.route.IRouteParamsService, $location: ng.ILocationService, $window: ng.IWindowService) {
@@ -488,7 +495,7 @@ namespace NakedObjects {
 
             // This will also swap the panes of the field values if we are 
             // right clicking into the other pane.
-
+          
             //newValues = copyFieldsIntoValues(fromPaneId, toPaneId, newValues);
             //newValues = setFieldsToParms(toPaneId, newValues);
 
@@ -764,11 +771,19 @@ namespace NakedObjects {
             $window.location.reload(true);
         }
 
-        helper.isHome = (paneId = 1) => {
+        function isLocation(paneId: number, location: string) {
             const path = $location.path();
             const segments = path.split("/");
-            return segments[paneId + 1] === homePath; // e.g. segments 0=~/1=cicero/2=home/3=home
+            return segments[paneId + 1] === location; // e.g. segments 0=~/1=cicero/2=home/3=home
         };
+
+        helper.isHome = (paneId = 1) => isLocation(paneId, homePath);
+        helper.isObject = (paneId = 1) => isLocation(paneId, objectPath);
+        helper.isList = (paneId = 1) => isLocation(paneId, listPath);
+        helper.isError = (paneId = 1) => isLocation(paneId, errorPath);
+        helper.isRecent = (paneId = 1) => isLocation(paneId, recentPath);
+        helper.isAttachment = (paneId = 1) => isLocation(paneId, attachmentPath);
+        helper.isApplicationProperties = (paneId = 1) => isLocation(paneId, applicationPropertiesPath);
 
         function toggleReloadFlag(search: any) {
             const currentFlag = search[akm.reload];
