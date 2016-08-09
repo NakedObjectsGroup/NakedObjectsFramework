@@ -32,7 +32,7 @@ namespace AdventureWorksModel
             Property(t => t.Name).HasColumnName("Name");
             Property(t => t.TerritoryID).HasColumnName("TerritoryID");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             HasRequired(t => t.CountryRegion).WithMany().HasForeignKey(t => t.CountryRegionCode);

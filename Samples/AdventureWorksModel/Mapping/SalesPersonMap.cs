@@ -24,7 +24,7 @@ namespace AdventureWorksModel
             Property(t => t.SalesYTD).HasColumnName("SalesYTD");
             Property(t => t.SalesLastYear).HasColumnName("SalesLastYear");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             HasRequired(t => t.EmployeeDetails).WithOptional(t => t.SalesPerson);

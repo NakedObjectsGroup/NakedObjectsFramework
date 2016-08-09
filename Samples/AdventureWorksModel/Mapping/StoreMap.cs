@@ -20,7 +20,7 @@ namespace AdventureWorksModel
             Property(t => t.SalesPersonID).HasColumnName("SalesPersonID");
             Property(t => t.Demographics).HasColumnName("Demographics");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             HasOptional(t => t.SalesPerson).WithMany().HasForeignKey(t => t.SalesPersonID);

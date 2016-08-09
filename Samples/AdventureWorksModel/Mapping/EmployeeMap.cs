@@ -48,7 +48,7 @@ namespace AdventureWorksModel
             Property(t => t.SickLeaveHours).HasColumnName("SickLeaveHours");
             Property(t => t.Current).HasColumnName("CurrentFlag");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             Ignore(t => t.Manager);

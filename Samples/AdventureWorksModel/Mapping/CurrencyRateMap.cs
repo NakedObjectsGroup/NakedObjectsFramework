@@ -28,7 +28,7 @@ namespace AdventureWorksModel
             Property(t => t.ToCurrencyCode).HasColumnName("ToCurrencyCode");
             Property(t => t.AverageRate).HasColumnName("AverageRate");
             Property(t => t.EndOfDayRate).HasColumnName("EndOfDayRate");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             HasRequired(t => t.Currency).WithMany().HasForeignKey(t => t.FromCurrencyCode);

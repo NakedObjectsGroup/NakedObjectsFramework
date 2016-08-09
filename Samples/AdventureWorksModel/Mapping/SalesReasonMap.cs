@@ -23,7 +23,7 @@ namespace AdventureWorksModel
             Property(t => t.SalesReasonID).HasColumnName("SalesReasonID");
             Property(t => t.Name).HasColumnName("Name");
             Property(t => t.ReasonType).HasColumnName("ReasonType");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
         }
     }
 }

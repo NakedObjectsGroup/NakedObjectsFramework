@@ -21,7 +21,7 @@ namespace AdventureWorksModel
             ToTable("SalesOrderHeaderSalesReason", "Sales");
             Property(t => t.SalesOrderID).HasColumnName("SalesOrderID");
             Property(t => t.SalesReasonID).HasColumnName("SalesReasonID");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             HasRequired(t => t.SalesOrderHeader)

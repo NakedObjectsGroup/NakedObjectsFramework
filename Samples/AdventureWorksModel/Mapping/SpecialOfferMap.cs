@@ -34,7 +34,7 @@ namespace AdventureWorksModel
             Property(t => t.MinQty).HasColumnName("MinQty");
             Property(t => t.MaxQty).HasColumnName("MaxQty");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
         }
     }
 }

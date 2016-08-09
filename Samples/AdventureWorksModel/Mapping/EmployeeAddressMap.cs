@@ -22,7 +22,7 @@ namespace AdventureWorksModel
             Property(t => t.EmployeeID).HasColumnName("BusinessEntityID");
             Property(t => t.AddressID).HasColumnName("AddressID");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             HasRequired(t => t.Employee);

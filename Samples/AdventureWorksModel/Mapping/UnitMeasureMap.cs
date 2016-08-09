@@ -23,7 +23,7 @@ namespace AdventureWorksModel
             ToTable("UnitMeasure", "Production");
             Property(t => t.UnitMeasureCode).HasColumnName("UnitMeasureCode");
             Property(t => t.Name).HasColumnName("Name");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
         }
     }
 }
