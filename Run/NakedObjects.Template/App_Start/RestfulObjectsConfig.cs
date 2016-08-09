@@ -9,6 +9,7 @@ using System.Web.Http;
 using System.Web.Routing;
 using NakedObjects.Rest;
 using NakedObjects.Rest.Media;
+using System;
 
 namespace NakedObjects.Template {
     public class RestfulObjectsConfig {
@@ -37,7 +38,7 @@ namespace NakedObjects.Template {
                 //RestfulObjectsControllerBase.DomainModel = RestControlFlags.DomainModelType.Selectable; //or Simple, Formal, None
 
                 // to change cache settings (transactional, user, non-expiring) where 0 = no-cache
-                // 0, 3600, 86400 are the defaults 
+                // 0, 0, 0 are the defaults (see manual for more explanation)
                 //RestfulObjectsControllerBase.CacheSettings = new Tuple<int, int, int>(0, 3600, 86400);
 
                 // to set KeySeparator (for multi-part keys) defaults to "--"
