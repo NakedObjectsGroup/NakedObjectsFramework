@@ -123,7 +123,7 @@ namespace NakedObjects.Selenium {
     public abstract class MegaCustomTemplateTestsRoot : CustomTemplateTestsRoot
     {
         [TestMethod] //Mega
-        public void MegaViewModelTest() {
+        public void MegaCustomTemplateTests() {
             base.CustomViewTemplate();
             base.CustomEditTemplate();
             base.CustomListTemplate();
@@ -152,6 +152,7 @@ namespace NakedObjects.Selenium {
     }
 
     [TestClass]
+    [Ignore] // temp ignore
     public class MegaCustomTemplateTestsIe : MegaCustomTemplateTestsRoot
     {
         [ClassInitialize]
