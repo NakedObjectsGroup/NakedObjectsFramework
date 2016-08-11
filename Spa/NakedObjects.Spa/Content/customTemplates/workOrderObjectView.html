@@ -14,16 +14,8 @@
  <div class="messages">{{object.message}}</div>
 </div>
 <div class="main-column">
- <div class="properties">
-  <div class="property" ng-repeat="property in object.properties">
-   <div ng-if="property.title == 'Product'" ng-include="'Content/partials/readOnlyProperty.html'"></div>
-  </div>
-  <div class="property" ng-repeat="property in object.properties">
-   <div ng-if="property.title == 'Order Qty'" ng-include="'Content/partials/readOnlyProperty.html'"></div>
-  </div>
+ <div class="properties" ng-include="'Content/partials/properties.html'"></div>
+ <div class="collections">
+  <div class="calendar" custom-calendar="{nameOfCollection: 'Work Order Routings', startPropertyId:'ScheduledStartDate', endPropertyId: 'ScheduledEndDate', allDay: false, defaultView: 'month'}"></div>
  </div>
 </div>
-<div class="collections">
- <div class="calendar" custom-calendar="{nameOfCollection: 'Work Order Routings', startPropertyId:'ScheduledStartDate', endPropertyId: 'ScheduledEndDate', allDay: false, defaultView: 'month'}"></div>
-</div>
-
