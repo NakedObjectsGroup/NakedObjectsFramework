@@ -152,7 +152,6 @@ namespace NakedObjects.Selenium {
     }
 
     [TestClass]
-    [Ignore] // temp ignore
     public class MegaCustomTemplateTestsIe : MegaCustomTemplateTestsRoot
     {
         [ClassInitialize]
