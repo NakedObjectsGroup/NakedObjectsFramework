@@ -83,13 +83,14 @@ namespace NakedObjects.Selenium {
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[2].Text.StartsWith("Special Offers:\r\n1 Item"));
         }
         public virtual void CollectionEagerlyRendered() {
-            GeminiUrl("object?i1=View&o1=___1.WorkOrder--35410");
-            wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text.StartsWith("Work Order Routings:\r\n1 Item"));
-            var cols = WaitForCss("th", 6).ToArray();
-            Assert.AreEqual("", cols[0].Text); //Title
-            Assert.AreEqual("Operation Sequence", cols[1].Text);
-            Assert.AreEqual("Planned Cost", cols[5].Text);
-            WaitForCss("tbody tr", 1);
+            GeminiUrl("object?r=0&i1=View&o1=___1.Product--464");
+            wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text.StartsWith("Product Inventory:\r\n3 Items"));
+            var cols = WaitForCss("th", 4).ToArray();
+            Assert.AreEqual("Quantity", cols[0].Text);
+            Assert.AreEqual("Location", cols[1].Text);
+            Assert.AreEqual("Shelf", cols[2].Text);
+            Assert.AreEqual("Bin", cols[3].Text);
+            WaitForCss("tbody tr", 3);
         }
         public virtual void NonNavigableReferenceProperty() {
             //Tests properties of types that have had the NonNavigable Facet added to them 
