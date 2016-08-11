@@ -23,7 +23,7 @@ namespace AdventureWorksModel
             Property(t => t.ThumbnailPhotoFileName).HasColumnName("ThumbnailPhotoFileName");
             Property(t => t.LargePhoto).HasColumnName("LargePhoto");
             Property(t => t.LargePhotoFileName).HasColumnName("LargePhotoFileName");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
         }
     }
 }

@@ -30,7 +30,7 @@ namespace AdventureWorksModel
             Property(t => t.EmailAddress).HasColumnName("EmailAddress");
             Property(t => t.Rating).HasColumnName("Rating");
             Property(t => t.Comments).HasColumnName("Comments");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             HasRequired(t => t.Product)

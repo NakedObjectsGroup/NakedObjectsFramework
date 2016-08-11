@@ -18,7 +18,7 @@ namespace AdventureWorksModel
             ToTable("ScrapReason", "Production");
             Property(t => t.ScrapReasonID).HasColumnName("ScrapReasonID");
             Property(t => t.Name).HasColumnName("Name");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
         }
     }
 }

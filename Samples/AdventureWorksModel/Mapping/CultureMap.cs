@@ -23,7 +23,7 @@ namespace AdventureWorksModel
             ToTable("Culture", "Production");
             Property(t => t.CultureID).HasColumnName("CultureID");
             Property(t => t.Name).HasColumnName("Name");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
         }
     }
 }

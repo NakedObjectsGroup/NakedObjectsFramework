@@ -23,7 +23,7 @@ namespace AdventureWorksModel
             ToTable("CountryRegionCurrency", "Sales");
             Property(t => t.CountryRegionCode).HasColumnName("CountryRegionCode");
             Property(t => t.CurrencyCode).HasColumnName("CurrencyCode");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             HasRequired(t => t.CountryRegion).WithMany().HasForeignKey(t => t.CountryRegionCode);;

@@ -20,7 +20,7 @@ namespace AdventureWorksModel
             Property(t => t.RateChangeDate).HasColumnName("RateChangeDate");
             Property(t => t.Rate).HasColumnName("Rate");
             Property(t => t.PayFrequency).HasColumnName("PayFrequency");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             HasRequired(t => t.Employee)

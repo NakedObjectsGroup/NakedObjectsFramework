@@ -20,7 +20,7 @@ namespace AdventureWorksModel
             Property(t => t.ProductCategoryID).HasColumnName("ProductCategoryID");
             Property(t => t.Name).HasColumnName("Name");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             HasRequired(t => t.ProductCategory)
