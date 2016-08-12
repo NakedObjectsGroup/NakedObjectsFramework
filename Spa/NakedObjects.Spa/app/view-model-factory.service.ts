@@ -400,7 +400,7 @@ export class ViewModelFactory {
             const digest = this.getDigest(propertyRep);
             return this.context.conditionalChoices(propertyRep, propertyViewModel.id, () => <_.Dictionary<Models.Value>>{}, args, digest).then(createcvm);
         };
-        propertyViewModel.promptArguments = _.fromPairs(_.map(propertyRep.promptLink().arguments(), (v: any, key: string) => [key, new Models.Value(v.value)]));
+        propertyViewModel.promptArguments = (<any>_.fromPairs)(_.map(propertyRep.promptLink().arguments(), (v: any, key: string) => [key, new Models.Value(v.value)]));
     }
 
     private callIfChanged(propertyViewModel: Nakedobjectsviewmodels.IPropertyViewModel, newValue: Models.Value, doRefresh: (newValue: Models.Value) => void) {
@@ -504,7 +504,7 @@ export class ViewModelFactory {
             return this.context.conditionalChoices(parmRep, parmViewModel.id, () => <_.Dictionary<Models.Value>>{}, args).
                 then(createcvm);
         };
-        parmViewModel.promptArguments = _.fromPairs(_.map(parmRep.promptLink().arguments(), (v: any, key: string) => [key, new Models.Value(v.value)]));
+        parmViewModel.promptArguments = (<any>_.fromPairs)(_.map(parmRep.promptLink().arguments(), (v: any, key: string) => [key, new Models.Value(v.value)]));
     }
 
     private setupParameterSelectedChoices(parmViewModel: Nakedobjectsviewmodels.IParameterViewModel, previousValue: Models.Value) {

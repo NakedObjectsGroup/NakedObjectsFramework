@@ -1196,7 +1196,7 @@ export class Parameter
 
         if (this.wrapped().choices) {
             const values = _.map(this.wrapped().choices, item => new Value(item));
-            return _.fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
+            return (<any>_.fromPairs)(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
         }
         return null;
     }
@@ -1409,7 +1409,7 @@ export class PromptRepresentation extends ResourceRepresentation<Nakedobjectsroi
         const ch = this.wrapped().choices;
         if (ch) {
             const values = _.map(ch, item => new Value(item));
-            return _.fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
+            return (<any>_.fromPairs)(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
         }
         return null;
     }
@@ -1574,7 +1574,7 @@ export class PropertyRepresentation extends ResourceRepresentation<Nakedobjectsr
         const ch = this.wrapped().choices;
         if (ch) {
             const values = _.map(ch, item => new Value(item));
-            return _.fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
+            return (<any>_.fromPairs)(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
         }
         return null;
     }
@@ -1739,7 +1739,7 @@ export class PropertyMember extends Member<Nakedobjectsrointerfaces.IPropertyMem
         const ch = this.wrapped().choices;
         if (ch) {
             const values = _.map(ch, (item) => new Value(item));
-            return _.fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
+            return (<any>_.fromPairs)(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
         }
         return null;
     }
