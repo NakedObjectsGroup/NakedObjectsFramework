@@ -12,6 +12,7 @@ import * as Clickhandlerservice from "./click-handler.service";
 import * as Errorservice from "./error.service";
 import * as Maskservice from "./mask.service";
 import { Injectable } from '@angular/core';
+import * as _ from "lodash";
 
 @Injectable()
 export class ViewModelFactory {

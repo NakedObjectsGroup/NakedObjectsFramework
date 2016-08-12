@@ -9,6 +9,7 @@ import "./rxjs-extensions";
 import * as Models from "./models";
 import * as Nakedobjectsconstants from "./nakedobjects.constants";
 import * as RoInterfaces from "./nakedobjects.rointerfaces";
+import * as _ from "lodash";
 
 @Injectable()
 export class RepLoader {
