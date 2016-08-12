@@ -1,8 +1,9 @@
 ﻿import { provideRouter, RouterConfig } from '@angular/router';
 import { SingleHomeComponent } from './single-home.component';
 import { SplitHomeComponent } from "./split-home.component";
-import * as Singleobjectcomponent from "./single-object.component";
-import * as Singlelistcomponent from "./single-list.component";
+import { SingleObjectComponent } from "./single-object.component";
+import { SingleListComponent } from "./single-list.component";
+
 const routes: RouterConfig = [
     {
         path: '',
@@ -23,11 +24,11 @@ const routes: RouterConfig = [
     },
     {
         path: 'gemini/object',
-        component: Singleobjectcomponent.SingleObjectComponent
+        component: SingleObjectComponent
     },
     {
         path: 'gemini/list',
-        component: Singlelistcomponent.SingleListComponent
+        component: SingleListComponent
     }
 ];
 

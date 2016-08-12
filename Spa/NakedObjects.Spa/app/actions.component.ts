@@ -3,9 +3,9 @@ import * as Models from "./models";
 import { Observable } from 'rxjs/Observable';
 import * as _ from "lodash";
 import { ActionComponent } from "./action.component";
-import * as Viewmodelfactoryservice from "./view-model-factory.service";
-import * as Nakedobjectsviewmodels from "./nakedobjects.viewmodels";
-import * as Urlmanagerservice from "./urlmanager.service";
+import { ViewModelFactory } from "./view-model-factory.service";
+import * as ViewModels from "./nakedobjects.viewmodels";
+import { UrlManager } from "./urlmanager.service";
 
 
 @Component({
@@ -13,11 +13,10 @@ import * as Urlmanagerservice from "./urlmanager.service";
     templateUrl: 'app/actions.component.html',
     directives: [ActionsComponent, ActionComponent]
 })
-
 export class ActionsComponent {
 
-    constructor(private viewModelFactory: Viewmodelfactoryservice.ViewModelFactory, private urlManager : Urlmanagerservice.UrlManager) {   }
+    constructor(private viewModelFactory: ViewModelFactory, private urlManager: UrlManager) {}
 
     @Input()
-    menuVm : {menuItems : Nakedobjectsviewmodels.IMenuItemViewModel[]};
+    menuVm: { menuItems: ViewModels.IMenuItemViewModel[] };
 }
