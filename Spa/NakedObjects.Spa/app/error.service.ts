@@ -1,8 +1,7 @@
-﻿import * as Models from "./models";
-import * as Nakedobjectsroutedata from "./nakedobjects.routedata";
-import * as Nakedobjectsconstants from "./nakedobjects.constants";
-import * as Urlmanagerservice from "./urlmanager.service";
-import * as Contextservice from "./context.service";
+﻿import { UrlManager } from "./urlmanager.service";
+import { Context } from "./context.service";
+import * as Models from "./models";
+
 export type errorPreprocessor = (reject: Models.ErrorWrapper) => void;
 //export type errorDisplayHandler = ($scope: INakedObjectsScope) => void;
 import { Injectable } from '@angular/core';
@@ -10,7 +9,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class Error {
 
-    constructor(private urlManager: Urlmanagerservice.UrlManager, private context : Contextservice.Context) { }
+    constructor(private urlManager: UrlManager, private context : Context) { }
 
     private preProcessors: errorPreprocessor[] = [];
     //const displayHandlers: errorDisplayHandler[] = [];

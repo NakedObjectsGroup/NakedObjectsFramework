@@ -1,24 +1,20 @@
 ﻿import { Component, Input } from '@angular/core';
-import * as Models from "./models";
 import { Observable } from 'rxjs/Observable';
-import {NgClass} from '@angular/common';
-import * as _ from "lodash";
 import { ActionComponent } from "./action.component";
-import * as Viewmodelfactoryservice from "./view-model-factory.service";
-import * as Nakedobjectsviewmodels from "./nakedobjects.viewmodels";
-import * as Urlmanagerservice from "./urlmanager.service";
-
+import { ViewModelFactory } from "./view-model-factory.service";
+import { UrlManager } from "./urlmanager.service";
+import * as _ from "lodash";
+import * as Models from "./models";
+import * as ViewModels from "./nakedobjects.viewmodels";
 
 @Component({
     selector: 'dialog',
-    templateUrl: 'app/dialog.component.html',
-    directives: [NgClass]
+    templateUrl: 'app/dialog.component.html'
 })
-
 export class DialogComponent {
 
-    constructor(private viewModelFactory: Viewmodelfactoryservice.ViewModelFactory, private urlManager: Urlmanagerservice.UrlManager) { }
+    constructor(private viewModelFactory: ViewModelFactory, private urlManager: UrlManager) {}
 
     @Input()
-    dialog: Nakedobjectsviewmodels.DialogViewModel;
+    dialog: ViewModels.DialogViewModel;
 }

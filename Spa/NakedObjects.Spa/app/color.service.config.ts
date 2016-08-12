@@ -1,13 +1,13 @@
 ﻿import * as Models from "./models";
 import * as _ from "lodash";
 import { Injectable } from '@angular/core';
-import {Context} from './context.service';
-import * as Colorservice from "./color.service";
+import { Context } from './context.service';
+import { Color } from "./color.service";
 
 @Injectable()
 export class ColorServiceConfig {
 
-    configure(color : Colorservice.Color) {
+    configure(color: Color) {
         //Note: colour is determined by the FIRST matching rule
         const awm = "AdventureWorksModel.";
         //Match specific class

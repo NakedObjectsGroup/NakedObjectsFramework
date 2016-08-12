@@ -1,6 +1,4 @@
-﻿
-
-import * as Nakedobjectsconstants from "./nakedobjects.constants";
+﻿import * as Constants from "./nakedobjects.constants";
 
 export enum FocusTarget {
     Menu,
@@ -36,7 +34,7 @@ export class FocusManager {
             }
 
             //$timeout(() => {
-            //    $rootScope.$broadcast(Nakedobjectsconstants.geminiFocusEvent, currentTarget, currentIndex, paneId, ++count);
+            //    $rootScope.$broadcast(Constants.geminiFocusEvent, currentTarget, currentIndex, paneId, ++count);
             //}, 100, false);
         }
     };

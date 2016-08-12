@@ -1,8 +1,8 @@
 ﻿import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { GeminiClickDirective } from "./gemini-click.directive";
-import {UrlManager} from "./urlmanager.service";
-import * as Clickhandlerservice from "./click-handler.service";
+import { UrlManager} from "./urlmanager.service";
+import { ClickHandlerService } from "./click-handler.service";
 
 @Component({
     selector: 'footer',
@@ -13,7 +13,7 @@ export class FooterComponent {
 
     constructor(private router: Router,
         private urlManager: UrlManager,
-        private clickHandler : Clickhandlerservice.ClickHandlerService) { }
+        private clickHandler : ClickHandlerService) { }
 
 
     loading: string;

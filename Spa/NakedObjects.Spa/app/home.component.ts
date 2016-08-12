@@ -21,25 +21,24 @@ import * as ViewModels from "./nakedobjects.viewmodels";
     templateUrl: 'app/home.component.html',
     directives: [ActionsComponent, DialogComponent]
 })
-
 export class HomeComponent implements OnInit {
 
     constructor(private representationsService: RepresentationsService,
-                private viewModelFactory: ViewModelFactory,
-                private context: Context,
-                private error: Error,
-                private urlManager: UrlManager,
-                private router: Router,
-                private color: Color,
-                private focusManager: FocusManager) {
+        private viewModelFactory: ViewModelFactory,
+        private context: Context,
+        private error: Error,
+        private urlManager: UrlManager,
+        private router: Router,
+        private color: Color,
+        private focusManager: FocusManager) {
     }
 
     @Input()
-    paneId : number; 
+    paneId: number;
 
     menus: ViewModels.MenusViewModel;
     selectedMenu: ViewModels.MenuViewModel;
-    selectedDialog : ViewModels.DialogViewModel;
+    selectedDialog: ViewModels.DialogViewModel;
 
     getMenus() {
         this.context.getMenus()
@@ -53,13 +52,13 @@ export class HomeComponent implements OnInit {
             });
     }
 
-    getDialog(routeData : PaneRouteData) {
+    getDialog(routeData: PaneRouteData) {
         const dialogId = routeData.dialogId;
 
         if (dialogId && this.selectedMenu) {
-            const action   = this.selectedMenu.menuRep.actionMember(dialogId);
-            this.context.getInvokableAction(action).
-                then(details => {
+            const action = this.selectedMenu.menuRep.actionMember(dialogId);
+            this.context.getInvokableAction(action)
+                .then(details => {
                     //if (actionViewModel) {
                     //    actionViewModel.makeInvokable(details);
                     //}
@@ -80,7 +79,7 @@ export class HomeComponent implements OnInit {
                         this.viewModelFactory.actionViewModel(action as Models.ActionMember | Models.ActionRepresentation,
                             dialogViewModel,
                             routeData);
-                        //: action as Nakedobjectsviewmodels.IActionViewModel;
+                    //: action as Nakedobjectsviewmodels.IActionViewModel;
 
                     actionViewModel.makeInvokable(details);
                     dialogViewModel.reset(actionViewModel, routeData);
@@ -90,8 +89,8 @@ export class HomeComponent implements OnInit {
                     dialogViewModel.deregister = () => this.context.clearParmUpdater(routeData.paneId);
 
                     this.selectedDialog = dialogViewModel;
-                }).
-                catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+                })
+                .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
         }
     }
@@ -113,8 +112,9 @@ export class HomeComponent implements OnInit {
 
     ngOnInit(): any {
         this.getMenus();
-        this.urlManager.getRouteDataObservable().subscribe((rd) => {
-            this.getDialog(rd.pane()[this.paneId]);
-        });
+        this.urlManager.getRouteDataObservable()
+            .subscribe((rd: any) => {
+                this.getDialog(rd.pane()[this.paneId]);
+            });
     }
 }

@@ -1,16 +1,15 @@
-﻿import * as Nakedobjectsconfig from "./nakedobjects.config";
-import * as Nakedobjectsrointerfaces from "./nakedobjects.rointerfaces";
-import * as Nakedobjectsconstants from "./nakedobjects.constants";
-import * as Nakedobjectsrointerfacescustom from "./nakedobjects.rointerfaces.custom";
-import * as Usermessagesconfig from "./user-messages.config";
-
+﻿import * as Config from "./nakedobjects.config";
+import * as Ro from "./nakedobjects.rointerfaces";
+import * as Constants from "./nakedobjects.constants";
+import * as RoCustom from "./nakedobjects.rointerfaces.custom";
+import * as Msg from "./user-messages.config";
 import * as _ from "lodash";
-import * as Maskservice from "./mask.service";
-import * as Nakedobjectsviewmodels from "./nakedobjects.viewmodels";
-import * as Contextservice from "./context.service";
+import { Mask, ILocalFilter } from "./mask.service";
+import * as ViewModels from "./nakedobjects.viewmodels";
+import { Context } from "./context.service";
 
-export function dirtyMarker(context: Contextservice.Context, oid: ObjectIdWrapper) {
-    return (Nakedobjectsconfig.showDirtyFlag && context.getIsDirty(oid)) ? "*" : "";
+export function dirtyMarker(context: Context, oid: ObjectIdWrapper) {
+    return (Config.showDirtyFlag && context.getIsDirty(oid)) ? "*" : "";
 }
 
 export function getOtherPane(paneId: number) {
@@ -109,14 +108,14 @@ export function toTime(value: Value) {
 
 export function compress(toCompress: string) {
     if (toCompress) {
-        _.forEach(Nakedobjectsconfig.urlShortCuts, (sc, i) => toCompress = toCompress.replace(sc, `${Nakedobjectsconfig.shortCutMarker}${i}`));
+        _.forEach(Config.urlShortCuts, (sc, i) => toCompress = toCompress.replace(sc, `${Config.shortCutMarker}${i}`));
     }
     return toCompress;
 }
 
 export function decompress(toDecompress: string) {
     if (toDecompress) {
-        _.forEach(Nakedobjectsconfig.urlShortCuts, (sc, i) => toDecompress = toDecompress.replace(`${Nakedobjectsconfig.shortCutMarker}${i}`, sc));
+        _.forEach(Config.urlShortCuts, (sc, i) => toDecompress = toDecompress.replace(`${Config.shortCutMarker}${i}`, sc));
     }
     return toDecompress;
 }
@@ -172,7 +171,7 @@ function isInteger(value: number) {
 }
 
 
-function validateNumber(model: IHasExtensions, newValue: number, filter: Maskservice.ILocalFilter): string {
+function validateNumber(model: IHasExtensions, newValue: number, filter: ILocalFilter): string {
     const format = model.extensions().format();
 
     switch (format) {
@@ -189,11 +188,11 @@ function validateNumber(model: IHasExtensions, newValue: number, filter: Maskser
         const max = range.max;
 
         if (min && newValue < min) {
-            return Usermessagesconfig.outOfRange(newValue, min, max, filter);
+            return Msg.outOfRange(newValue, min, max, filter);
         }
 
         if (max && newValue > max) {
-            return Usermessagesconfig.outOfRange(newValue, min, max, filter);
+            return Msg.outOfRange(newValue, min, max, filter);
         }
     }
 
@@ -207,12 +206,12 @@ function validateStringFormat(model: IHasExtensions, newValue: string): string {
     const len = newValue ? newValue.length : 0;
 
     if (maxLength && len > maxLength) {
-        return Usermessagesconfig.tooLong;
+        return Msg.tooLong;
     }
 
     if (pattern) {
         const regex = new RegExp(pattern);
-        return regex.test(newValue) ? "" : Usermessagesconfig.noPatternMatch;
+        return regex.test(newValue) ? "" : Msg.noPatternMatch;
     }
     return "";
 }
@@ -231,7 +230,7 @@ function getDate(val: string) : Date {
 }
 
 
-function validateDateFormat(model: IHasExtensions, newValue: Date, filter: Maskservice.ILocalFilter): string {
+function validateDateFormat(model: IHasExtensions, newValue: Date, filter: ILocalFilter): string {
     const range = model.extensions().range();
 
     if (range && newValue) {
@@ -239,11 +238,11 @@ function validateDateFormat(model: IHasExtensions, newValue: Date, filter: Masks
         const max = range.max ? getDate(range.max as string) : null;
 
         if (min && newValue < min) {
-            return Usermessagesconfig.outOfRange(toDateString(newValue), getUtcDate(range.min as string), getUtcDate(range.max as string), filter);
+            return Msg.outOfRange(toDateString(newValue), getUtcDate(range.min as string), getUtcDate(range.max as string), filter);
         }
 
         if (max && newValue > max) {
-            return Usermessagesconfig.outOfRange(toDateString(newValue), getUtcDate(range.min as string), getUtcDate(range.max as string), filter);
+            return Msg.outOfRange(toDateString(newValue), getUtcDate(range.min as string), getUtcDate(range.max as string), filter);
         }
     }
 
@@ -254,7 +253,7 @@ function validateTimeFormat(model: IHasExtensions, newValue: Date): string {
     return "";
 }
 
-function validateString(model: IHasExtensions, newValue: any, filter: Maskservice.ILocalFilter): string {
+function validateString(model: IHasExtensions, newValue: any, filter: ILocalFilter): string {
     const format = model.extensions().format();
 
     switch (format) {
@@ -272,19 +271,19 @@ function validateString(model: IHasExtensions, newValue: any, filter: Maskservic
 }
 
 
-export function validateMandatory(model: IHasExtensions, viewValue: string | Nakedobjectsviewmodels.ChoiceViewModel): string {
+export function validateMandatory(model: IHasExtensions, viewValue: string | ViewModels.ChoiceViewModel): string {
     // first check 
     const isMandatory = !model.extensions().optional();
 
     if (isMandatory && (viewValue === "" || viewValue == null)) {
-        return Usermessagesconfig.mandatory;
+        return Msg.mandatory;
     }
 
     return "";
 }
 
 
-export function validate(model: IHasExtensions, modelValue: any, viewValue: string, filter: Maskservice.ILocalFilter): string {
+export function validate(model: IHasExtensions, modelValue: any, viewValue: string, filter: ILocalFilter): string {
     // first check 
 
     const mandatory = validateMandatory(model, viewValue);
@@ -327,31 +326,31 @@ function isListType(typeName: string) {
     return typeName === "list";
 }
 
-function emptyResource(): Nakedobjectsrointerfaces.IResourceRepresentation {
-    return { links: [] as Nakedobjectsrointerfaces.ILink[], extensions: {} };
+function emptyResource(): Ro.IResourceRepresentation {
+    return { links: [] as Ro.ILink[], extensions: {} };
 }
 
-function isILink(object: any): object is Nakedobjectsrointerfaces.ILink {
+function isILink(object: any): object is Ro.ILink {
     return object && object instanceof Object && "href" in object;
 }
 
-function isIObjectOfType(object: any): object is Nakedobjectsrointerfaces.IObjectOfType {
+function isIObjectOfType(object: any): object is Ro.IObjectOfType {
     return object && object instanceof Object && "members" in object;
 }
 
-function isIValue(object: any): object is Nakedobjectsrointerfaces.IValue {
+function isIValue(object: any): object is Ro.IValue {
     return object && object instanceof Object && "value" in object;
 }
 
-export function isResourceRepresentation(object: any): object is Nakedobjectsrointerfaces.IResourceRepresentation {
+export function isResourceRepresentation(object: any): object is Ro.IResourceRepresentation {
     return object && object instanceof Object && "links" in object && "extensions" in object;
 }
 
-export function isErrorRepresentation(object: any): object is Nakedobjectsrointerfaces.IErrorRepresentation {
+export function isErrorRepresentation(object: any): object is Ro.IErrorRepresentation {
     return isResourceRepresentation(object) && "message" in object;
 }
 
-export function isIDomainObjectRepresentation(object: any): object is Nakedobjectsrointerfaces.IDomainObjectRepresentation {
+export function isIDomainObjectRepresentation(object: any): object is Ro.IDomainObjectRepresentation {
     return isResourceRepresentation(object) && "domainType" in object && "instanceId" in object && "members" in object;
 }
 
@@ -367,7 +366,7 @@ function getId(prop: PropertyRepresentation | PropertyMember) {
     }
 }
 
-function wrapLinks(links: Nakedobjectsrointerfaces.ILink[]) {
+function wrapLinks(links: Ro.ILink[]) {
     return _.map(links, l => new Link(l));
 }
 
@@ -389,9 +388,9 @@ function linkByNamespacedRel(links: Link[], rel: string) {
 export interface IHateoasModel {
     etagDigest: string;
     hateoasUrl: string;
-    method: Nakedobjectsrointerfaces.httpMethodsType;
-    populate(wrapped: Nakedobjectsrointerfaces.IRepresentation): void;
-    getBody(): Nakedobjectsrointerfaces.IRepresentation;
+    method: Ro.httpMethodsType;
+    populate(wrapped: Ro.IRepresentation): void;
+    getBody(): Ro.IRepresentation;
     getUrl(): string;
 }
 
@@ -430,28 +429,28 @@ export class ErrorWrapper {
         if (rc === ErrorCategory.ClientError) {
             this.clientErrorCode = code as ClientErrorCode;
             this.errorCode = ClientErrorCode[this.clientErrorCode];
-            let description = Usermessagesconfig.errorUnknown;
+            let description = Msg.errorUnknown;
 
             switch (this.clientErrorCode) {
                 case ClientErrorCode.ExpiredTransient:
-                    description = Usermessagesconfig.errorExpiredTransient;
+                    description = Msg.errorExpiredTransient;
                     break;
                 case ClientErrorCode.WrongType:
-                    description = Usermessagesconfig.errorWrongType;
+                    description = Msg.errorWrongType;
                     break;
                 case ClientErrorCode.NotImplemented:
-                    description = Usermessagesconfig.errorNotImplemented;
+                    description = Msg.errorNotImplemented;
                     break;
                 case ClientErrorCode.SoftwareError:
-                    description = Usermessagesconfig.errorSoftware;
+                    description = Msg.errorSoftware;
                     break;
                 case ClientErrorCode.ConnectionProblem:
-                    description = Usermessagesconfig.errorConnection;
+                    description = Msg.errorConnection;
                     break;
             }
 
             this.description = description;
-            this.title = Usermessagesconfig.errorClient;
+            this.title = Msg.errorClient;
         }
 
         if (rc === ErrorCategory.HttpClientError || rc === ErrorCategory.HttpServerError) {
@@ -501,7 +500,7 @@ export class ErrorWrapper {
 // abstract classes 
 
 function toOid(id: string[]) {
-    return _.reduce(id, (a, v) => `${a}${a ? Nakedobjectsconfig.keySeparator : ""}${v}`, "");
+    return _.reduce(id, (a, v) => `${a}${a ? Config.keySeparator : ""}${v}`, "");
 }
 
 export class ObjectIdWrapper {
@@ -512,12 +511,12 @@ export class ObjectIdWrapper {
     isService: boolean;
 
     getKey() {
-        return this.domainType + Nakedobjectsconfig.keySeparator + this.instanceId;
+        return this.domainType + Config.keySeparator + this.instanceId;
     }
 
     static safeSplit(id: string) {
         if (id) {
-            return id.split(Nakedobjectsconfig.keySeparator);
+            return id.split(Config.keySeparator);
         }
         return [];
     }
@@ -547,7 +546,7 @@ export class ObjectIdWrapper {
 
     static fromObjectId(objectId: string) {
         const oid = new ObjectIdWrapper();
-        const [dt, ...id] = objectId.split(Nakedobjectsconfig.keySeparator);
+        const [dt, ...id] = objectId.split(Config.keySeparator);
         oid.domainType = dt;
         oid.splitInstanceId = id;
         oid.instanceId = toOid(id);
@@ -584,17 +583,17 @@ export abstract class HateosModel implements IHateoasModel {
 
     etagDigest: string;
     hateoasUrl = "";
-    method: Nakedobjectsrointerfaces.httpMethodsType = "GET";
+    method: Ro.httpMethodsType = "GET";
     urlParms: _.Dictionary<Object>;
 
-    constructor(protected model?: Nakedobjectsrointerfaces.IRepresentation) {
+    constructor(protected model?: Ro.IRepresentation) {
     }
 
-    populate(model: Nakedobjectsrointerfaces.IRepresentation) {
+    populate(model: Ro.IRepresentation) {
         this.model = model;
     }
 
-    getBody(): Nakedobjectsrointerfaces.IRepresentation {
+    getBody(): Ro.IRepresentation {
         if (this.method === "POST" || this.method === "PUT") {
             const m = _.clone(this.model);
             const up = _.clone(this.urlParms);
@@ -641,16 +640,16 @@ export abstract class HateosModel implements IHateoasModel {
 
 export abstract class ArgumentMap extends HateosModel {
 
-    constructor(public map: Nakedobjectsrointerfaces.IValueMap, public id: string) {
+    constructor(public map: Ro.IValueMap, public id: string) {
         super(map);
     }
 
-    populate(wrapped: Nakedobjectsrointerfaces.IValueMap) {
+    populate(wrapped: Ro.IValueMap) {
         super.populate(wrapped);
     }
 }
 
-export abstract class NestedRepresentation<T extends Nakedobjectsrointerfaces.IResourceRepresentation> {
+export abstract class NestedRepresentation<T extends Ro.IResourceRepresentation> {
 
     protected resource = () => this.model as T;
 
@@ -748,7 +747,7 @@ export class MediaType {
                 const profileValue = (this.profile.split("=")[1].replace(/\"/g, "")).trim();
                 this.representationType = (profileValue.split("/")[1]).trim();
             }
-            if (parms[i].trim().substring(0, 16) === Nakedobjectsconstants.roDomainType) {
+            if (parms[i].trim().substring(0, 16) === Constants.roDomainType) {
                 this.xRoDomainType = (parms[i]).trim();
                 this.domainType = (this.xRoDomainType.split("=")[1].replace(/\"/g, "")).trim();
             }
@@ -759,13 +758,13 @@ export class MediaType {
 export class Value {
 
     // note this is different from constructor parm as we wrap ILink
-    private wrapped: Link | Array<Link | Nakedobjectsrointerfaces.valueType> | Nakedobjectsrointerfaces.scalarValueType | Blob;
+    private wrapped: Link | Array<Link | Ro.valueType> | Ro.scalarValueType | Blob;
 
-    constructor(raw: Link | Array<Link | Nakedobjectsrointerfaces.valueType> | Nakedobjectsrointerfaces.valueType | Blob) {
+    constructor(raw: Link | Array<Link | Ro.valueType> | Ro.valueType | Blob) {
         // can only be Link, number, boolean, string or null    
 
         if (raw instanceof Array) {
-            this.wrapped = raw as Array<Link | Nakedobjectsrointerfaces.valueType>;
+            this.wrapped = raw as Array<Link | Ro.valueType>;
         } else if (raw instanceof Link) {
             this.wrapped = raw;
         } else if (isILink(raw)) {
@@ -811,12 +810,12 @@ export class Value {
         return this.link() ? this.link().href() : null;
     }
 
-    scalar(): Nakedobjectsrointerfaces.scalarValueType {
-        return this.isScalar() ? this.wrapped as Nakedobjectsrointerfaces.scalarValueType : null;
+    scalar(): Ro.scalarValueType {
+        return this.isScalar() ? this.wrapped as Ro.scalarValueType : null;
     }
 
     list(): Value[] {
-        return this.isList() ? _.map(this.wrapped as Array<Link | Nakedobjectsrointerfaces.valueType>, i => new Value(i)) : null;
+        return this.isList() ? _.map(this.wrapped as Array<Link | Ro.valueType>, i => new Value(i)) : null;
     }
 
     toString(): string {
@@ -880,7 +879,7 @@ export class Value {
         return JSON.stringify(raw);
     }
 
-    setValue(target: Nakedobjectsrointerfaces.IValue) {
+    setValue(target: Ro.IValue) {
         if (this.isFileReference()) {
             target.value = this.link().wrapped;
         }
@@ -897,8 +896,8 @@ export class Value {
         }
     }
 
-    set(target: _.Dictionary<Nakedobjectsrointerfaces.IValue | string>, name: string) {
-        const t = target[name] = <Nakedobjectsrointerfaces.IValue>{ value: null };
+    set(target: _.Dictionary<Ro.IValue | string>, name: string) {
+        const t = target[name] = <Ro.IValue>{ value: null };
         this.setValue(t);
     }
 }
@@ -908,12 +907,12 @@ export class ErrorValue {
 }
 
 export class Result {
-    constructor(public wrapped: Nakedobjectsrointerfaces.IDomainObjectRepresentation | Nakedobjectsrointerfacescustom.ICustomListRepresentation | Nakedobjectsrointerfaces.IScalarValueRepresentation, private resultType: Nakedobjectsrointerfaces.resultTypeType) { }
+    constructor(public wrapped: Ro.IDomainObjectRepresentation | RoCustom.ICustomListRepresentation | Ro.IScalarValueRepresentation, private resultType: Ro.resultTypeType) { }
 
     object(): DomainObjectRepresentation {
         if (!this.isNull() && this.resultType === "object") {
             const dor = new DomainObjectRepresentation();
-            dor.populate(this.wrapped as Nakedobjectsrointerfaces.IDomainObjectRepresentation);
+            dor.populate(this.wrapped as Ro.IDomainObjectRepresentation);
             return dor;
         }
         return null;
@@ -922,7 +921,7 @@ export class Result {
     list(): ListRepresentation {
         if (!this.isNull() && this.resultType === "list") {
             const lr = new ListRepresentation();
-            lr.populate(this.wrapped as Nakedobjectsrointerfacescustom.ICustomListRepresentation);
+            lr.populate(this.wrapped as RoCustom.ICustomListRepresentation);
             return lr;
         }
         return null;
@@ -930,7 +929,7 @@ export class Result {
 
     scalar(): ScalarValueRepresentation {
         if (!this.isNull() && this.resultType === "scalar") {
-            return new ScalarValueRepresentation(this.wrapped as Nakedobjectsrointerfaces.IScalarValueRepresentation);
+            return new ScalarValueRepresentation(this.wrapped as Ro.IScalarValueRepresentation);
         }
         return null;
     }
@@ -955,13 +954,13 @@ export class ErrorMap {
         }
     };
 
-    constructor(private map: Nakedobjectsrointerfaces.IValueMap | Nakedobjectsrointerfaces.IObjectOfType, public statusCode: number, public warningMessage: string) {
+    constructor(private map: Ro.IValueMap | Ro.IObjectOfType, public statusCode: number, public warningMessage: string) {
 
     }
 
     valuesMap(): _.Dictionary<ErrorValue> {
 
-        const values = _.pickBy(this.wrapped(), i => isIValue(i)) as _.Dictionary<Nakedobjectsrointerfaces.IValue>;
+        const values = _.pickBy(this.wrapped(), i => isIValue(i)) as _.Dictionary<Ro.IValue>;
         return _.mapValues(values, v => new ErrorValue(new Value(v.value), v.invalidReason));
     }
 
@@ -969,10 +968,10 @@ export class ErrorMap {
 
         const temp = this.map;
         if (isIObjectOfType(temp)) {
-            return (<any>temp)[Nakedobjectsconstants.roInvalidReason] as string;
+            return (<any>temp)[Constants.roInvalidReason] as string;
         }
 
-        return this.wrapped()[Nakedobjectsconstants.roInvalidReason] as string;
+        return this.wrapped()[Constants.roInvalidReason] as string;
     }
 
     containsError() {
@@ -982,7 +981,7 @@ export class ErrorMap {
 }
 
 export class UpdateMap extends ArgumentMap implements IHateoasModel {
-    constructor(private domainObject: DomainObjectRepresentation, map: Nakedobjectsrointerfaces.IValueMap) {
+    constructor(private domainObject: DomainObjectRepresentation, map: Ro.IValueMap) {
         super(map, domainObject.instanceId());
 
         domainObject.updateLink().copyToHateoasModel(this);
@@ -1001,12 +1000,12 @@ export class UpdateMap extends ArgumentMap implements IHateoasModel {
     }
 
     setValidateOnly() {
-        (<any>this.map)[Nakedobjectsconstants.roValidateOnly] = true;
+        (<any>this.map)[Constants.roValidateOnly] = true;
     }
 }
 
 export class AddToRemoveFromMap extends ArgumentMap implements IHateoasModel {
-    constructor(private collectionResource: CollectionRepresentation, map: Nakedobjectsrointerfaces.IValueMap, add: boolean) {
+    constructor(private collectionResource: CollectionRepresentation, map: Ro.IValueMap, add: boolean) {
         super(map, collectionResource.collectionId());
         const link = add ? collectionResource.addToLink() : collectionResource.removeFromLink();
         link.copyToHateoasModel(this);
@@ -1015,7 +1014,7 @@ export class AddToRemoveFromMap extends ArgumentMap implements IHateoasModel {
 }
 
 export class ModifyMap extends ArgumentMap implements IHateoasModel {
-    constructor(private propertyResource: PropertyRepresentation | PropertyMember, map: Nakedobjectsrointerfaces.IValueMap) {
+    constructor(private propertyResource: PropertyRepresentation | PropertyMember, map: Ro.IValueMap) {
         super(map, getId(propertyResource));
         propertyResource.modifyLink().copyToHateoasModel(this);
         propertyResource.value().set(this.map, this.id);
@@ -1033,7 +1032,7 @@ export class ClearMap extends ArgumentMap implements IHateoasModel {
 
 // REPRESENTATIONS
 
-export abstract class ResourceRepresentation<T extends Nakedobjectsrointerfaces.IResourceRepresentation> extends HateosModel {
+export abstract class ResourceRepresentation<T extends Ro.IResourceRepresentation> extends HateosModel {
 
     protected resource = () => this.model as T;
 
@@ -1058,7 +1057,7 @@ export abstract class ResourceRepresentation<T extends Nakedobjectsrointerfaces.
 
 export class Extensions {
 
-    constructor(private wrapped: Nakedobjectsrointerfacescustom.ICustomExtensions) { }
+    constructor(private wrapped: RoCustom.ICustomExtensions) { }
 
     //Standard RO:
     friendlyName = () => this.wrapped.friendlyName;
@@ -1077,7 +1076,7 @@ export class Extensions {
     pattern = () => this.wrapped.pattern;
 
     //Nof custom:
-    choices = () => this.wrapped["x-ro-nof-choices"] as { [index: string]: Nakedobjectsrointerfaces.valueType[]; };
+    choices = () => this.wrapped["x-ro-nof-choices"] as { [index: string]: Ro.valueType[]; };
     menuPath = () => this.wrapped["x-ro-nof-menuPath"] as string;
     mask = () => this.wrapped["x-ro-nof-mask"] as string;
     tableViewTitle = () => this.wrapped["x-ro-nof-tableViewTitle"] as boolean;
@@ -1087,7 +1086,7 @@ export class Extensions {
     messages = () => this.wrapped["x-ro-nof-messages"] as string[];
     interactionMode = () => this.wrapped["x-ro-nof-interactionMode"] as string;
     dataType = () => this.wrapped["x-ro-nof-dataType"] as string;
-    range = () => this.wrapped["x-ro-nof-range"] as Nakedobjectsrointerfacescustom.IRange;
+    range = () => this.wrapped["x-ro-nof-range"] as RoCustom.IRange;
     notNavigable = () => this.wrapped["x-ro-nof-notNavigable"] as boolean;
     renderEagerly = () => this.wrapped["x-ro-nof-renderEagerly"] as boolean;
     presentationHint = () => this.wrapped["x-ro-nof-presentationHint"] as string;
@@ -1097,7 +1096,7 @@ export class Extensions {
 
 export class InvokeMap extends ArgumentMap implements IHateoasModel {
     constructor(private link: Link) {
-        super(link.arguments() as Nakedobjectsrointerfaces.IValueMap, "");
+        super(link.arguments() as Ro.IValueMap, "");
         link.copyToHateoasModel(this);
     }
 
@@ -1108,9 +1107,9 @@ export class InvokeMap extends ArgumentMap implements IHateoasModel {
 
 }
 
-export class ActionResultRepresentation extends ResourceRepresentation<Nakedobjectsrointerfaces.IActionInvokeRepresentation> {
+export class ActionResultRepresentation extends ResourceRepresentation<Ro.IActionInvokeRepresentation> {
 
-    wrapped = () => this.resource() as Nakedobjectsrointerfaces.IActionInvokeRepresentation;
+    wrapped = () => this.resource() as Ro.IActionInvokeRepresentation;
 
     constructor() {
         super();
@@ -1127,7 +1126,7 @@ export class ActionResultRepresentation extends ResourceRepresentation<Nakedobje
     }
 
     // properties 
-    resultType(): Nakedobjectsrointerfaces.resultTypeType {
+    resultType(): Ro.resultTypeType {
         return this.wrapped().resultType;
     }
 
@@ -1172,13 +1171,13 @@ export interface IField extends IHasExtensions {
 
 // matches 18.2.1
 export class Parameter
-    extends NestedRepresentation<Nakedobjectsrointerfaces.IParameterRepresentation>
+    extends NestedRepresentation<Ro.IParameterRepresentation>
     implements IField {
 
-    wrapped = () => this.resource() as Nakedobjectsrointerfaces.IParameterRepresentation;
+    wrapped = () => this.resource() as Ro.IParameterRepresentation;
 
     // fix parent type
-    constructor(wrapped: Nakedobjectsrointerfaces.IParameterRepresentation, public parent: ActionMember | ActionRepresentation, private paramId: string) {
+    constructor(wrapped: Ro.IParameterRepresentation, public parent: ActionMember | ActionRepresentation, private paramId: string) {
         super(wrapped);
     }
 
@@ -1242,7 +1241,7 @@ export class Parameter
         if (this.hasPrompt()) {
             // ConditionalChoices, ConditionalMultipleChoices, AutoComplete 
 
-            if (!!(<any>this.promptLink().arguments())[Nakedobjectsconstants.roSearchTerm]) {
+            if (!!(<any>this.promptLink().arguments())[Constants.roSearchTerm]) {
                 // autocomplete 
                 return EntryType.AutoComplete;
             }
@@ -1280,9 +1279,9 @@ export interface IInvokableAction extends IHasExtensions {
     disabledReason(): string;
 }
 
-export class ActionRepresentation extends ResourceRepresentation<Nakedobjectsrointerfaces.IActionRepresentation> implements IInvokableAction {
+export class ActionRepresentation extends ResourceRepresentation<Ro.IActionRepresentation> implements IInvokableAction {
 
-    wrapped = () => this.resource() as Nakedobjectsrointerfaces.IActionRepresentation;
+    wrapped = () => this.resource() as Ro.IActionRepresentation;
 
     parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation;
 
@@ -1342,16 +1341,16 @@ export class ActionRepresentation extends ResourceRepresentation<Nakedobjectsroi
 
 export class PromptMap extends ArgumentMap implements IHateoasModel {
     constructor(private link: Link, private promptId: string) {
-        super(link.arguments() as Nakedobjectsrointerfaces.IValueMap, promptId);
+        super(link.arguments() as Ro.IValueMap, promptId);
         link.copyToHateoasModel(this);
     }
 
     private promptMap() {
-        return this.map as Nakedobjectsrointerfaces.IPromptMap;
+        return this.map as Ro.IPromptMap;
     }
 
     setSearchTerm(term: string) {
-        this.setArgument(Nakedobjectsconstants.roSearchTerm, new Value(term));
+        this.setArgument(Constants.roSearchTerm, new Value(term));
     }
 
     setArgument(name: string, val: Value) {
@@ -1363,7 +1362,7 @@ export class PromptMap extends ArgumentMap implements IHateoasModel {
     }
 
     setMember(name: string, value: Value) {
-        value.set(this.promptMap()["x-ro-nof-members"] as Nakedobjectsrointerfaces.IValueMap, name);
+        value.set(this.promptMap()["x-ro-nof-members"] as Ro.IValueMap, name);
     }
 
     setMembers(objectValues: () => _.Dictionary<Value>) {
@@ -1373,9 +1372,9 @@ export class PromptMap extends ArgumentMap implements IHateoasModel {
     }
 }
 
-export class PromptRepresentation extends ResourceRepresentation<Nakedobjectsrointerfaces.IPromptRepresentation> {
+export class PromptRepresentation extends ResourceRepresentation<Ro.IPromptRepresentation> {
 
-    wrapped = () => this.resource() as Nakedobjectsrointerfaces.IPromptRepresentation;
+    wrapped = () => this.resource() as Ro.IPromptRepresentation;
 
     constructor() {
         super(emptyResource());
@@ -1416,9 +1415,9 @@ export class PromptRepresentation extends ResourceRepresentation<Nakedobjectsroi
 }
 
 // matches a collection representation 17.0 
-export class CollectionRepresentation extends ResourceRepresentation<Nakedobjectsrointerfaces.ICollectionRepresentation> {
+export class CollectionRepresentation extends ResourceRepresentation<Ro.ICollectionRepresentation> {
 
-    wrapped = () => this.resource() as Nakedobjectsrointerfaces.ICollectionRepresentation;
+    wrapped = () => this.resource() as Ro.ICollectionRepresentation;
 
     // links 
     selfLink(): Link {
@@ -1452,7 +1451,7 @@ export class CollectionRepresentation extends ResourceRepresentation<Nakedobject
     }
 
     private addToMap() {
-        return this.addToLink().arguments() as Nakedobjectsrointerfaces.IValueMap;
+        return this.addToLink().arguments() as Ro.IValueMap;
     }
 
     getAddToMap(): AddToRemoveFromMap {
@@ -1463,7 +1462,7 @@ export class CollectionRepresentation extends ResourceRepresentation<Nakedobject
     }
 
     private removeFromMap() {
-        return this.removeFromLink().arguments() as Nakedobjectsrointerfaces.IValueMap;
+        return this.removeFromLink().arguments() as Ro.IValueMap;
     }
 
     getRemoveFromMap(): AddToRemoveFromMap {
@@ -1496,9 +1495,9 @@ export class CollectionRepresentation extends ResourceRepresentation<Nakedobject
 }
 
 // matches a property representation 16.0 
-export class PropertyRepresentation extends ResourceRepresentation<Nakedobjectsrointerfaces.IPropertyRepresentation> {
+export class PropertyRepresentation extends ResourceRepresentation<Ro.IPropertyRepresentation> {
 
-    wrapped = () => this.resource() as Nakedobjectsrointerfaces.IPropertyRepresentation;
+    wrapped = () => this.resource() as Ro.IPropertyRepresentation;
 
 
     // links 
@@ -1523,7 +1522,7 @@ export class PropertyRepresentation extends ResourceRepresentation<Nakedobjectsr
     }
 
     private modifyMap() {
-        return this.modifyLink().arguments() as Nakedobjectsrointerfaces.IValueMap;
+        return this.modifyLink().arguments() as Ro.IValueMap;
     }
 
     // linked representations 
@@ -1596,19 +1595,19 @@ export class PropertyRepresentation extends ResourceRepresentation<Nakedobjectsr
 // matches a domain object representation 14.0 
 
 // base class for 14.4.1/2/3
-export class Member<T extends Nakedobjectsrointerfaces.IMember> extends NestedRepresentation<Nakedobjectsrointerfaces.IMember> {
+export class Member<T extends Ro.IMember> extends NestedRepresentation<Ro.IMember> {
 
-    wrapped = () => this.resource() as Nakedobjectsrointerfaces.IMember;
+    wrapped = () => this.resource() as Ro.IMember;
 
     constructor(wrapped: T) {
         super(wrapped);
     }
 
-    update(newValue: Nakedobjectsrointerfaces.IMember) {
+    update(newValue: Ro.IMember) {
         super.update(newValue);
     }
 
-    memberType(): Nakedobjectsrointerfaces.memberTypeType {
+    memberType(): Ro.memberTypeType {
         return this.wrapped().memberType;
     }
 
@@ -1624,21 +1623,21 @@ export class Member<T extends Nakedobjectsrointerfaces.IMember> extends NestedRe
         return isScalarType(this.extensions().returnType());
     }
 
-    static wrapMember(toWrap: Nakedobjectsrointerfaces.IPropertyMember | Nakedobjectsrointerfaces.ICollectionMember | Nakedobjectsrointerfaces.IActionMember, parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation | Link, id: string): Member<Nakedobjectsrointerfaces.IMember> {
+    static wrapMember(toWrap: Ro.IPropertyMember | Ro.ICollectionMember | Ro.IActionMember, parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation | Link, id: string): Member<Ro.IMember> {
 
         if (toWrap.memberType === "property") {
-            return new PropertyMember(toWrap as Nakedobjectsrointerfaces.IPropertyMember, parent as DomainObjectRepresentation | Link, id);
+            return new PropertyMember(toWrap as Ro.IPropertyMember, parent as DomainObjectRepresentation | Link, id);
         }
 
         if (toWrap.memberType === "collection") {
-            return new CollectionMember(toWrap as Nakedobjectsrointerfaces.ICollectionMember, parent as DomainObjectRepresentation, id);
+            return new CollectionMember(toWrap as Ro.ICollectionMember, parent as DomainObjectRepresentation, id);
         }
 
         if (toWrap.memberType === "action") {
-            const member = new ActionMember(toWrap as Nakedobjectsrointerfaces.IActionMember, parent as DomainObjectRepresentation | MenuRepresentation | ListRepresentation, id);
+            const member = new ActionMember(toWrap as Ro.IActionMember, parent as DomainObjectRepresentation | MenuRepresentation | ListRepresentation, id);
 
             if (member.invokeLink()) {
-                return new InvokableActionMember(toWrap as Nakedobjectsrointerfaces.IActionMember, parent as DomainObjectRepresentation | MenuRepresentation | ListRepresentation, id);
+                return new InvokableActionMember(toWrap as Ro.IActionMember, parent as DomainObjectRepresentation | MenuRepresentation | ListRepresentation, id);
             }
 
             return member;
@@ -1649,11 +1648,11 @@ export class Member<T extends Nakedobjectsrointerfaces.IMember> extends NestedRe
 }
 
 // matches 14.4.1
-export class PropertyMember extends Member<Nakedobjectsrointerfaces.IPropertyMember> implements IField {
+export class PropertyMember extends Member<Ro.IPropertyMember> implements IField {
 
-    wrapped = () => this.resource() as Nakedobjectsrointerfaces.IPropertyMember;
+    wrapped = () => this.resource() as Ro.IPropertyMember;
 
-    constructor(wrapped: Nakedobjectsrointerfaces.IPropertyMember, public parent: DomainObjectRepresentation | Link, private propId: string) {
+    constructor(wrapped: Ro.IPropertyMember, public parent: DomainObjectRepresentation | Link, private propId: string) {
         super(wrapped);
     }
 
@@ -1672,7 +1671,7 @@ export class PropertyMember extends Member<Nakedobjectsrointerfaces.IPropertyMem
     }
 
     private modifyMap() {
-        return this.modifyLink().arguments() as Nakedobjectsrointerfaces.IValueMap;
+        return this.modifyLink().arguments() as Ro.IValueMap;
     }
 
     setFromModifyMap(map: ModifyMap) {
@@ -1758,7 +1757,7 @@ export class PropertyMember extends Member<Nakedobjectsrointerfaces.IPropertyMem
         if (this.hasPrompt()) {
             // ConditionalChoices, ConditionalMultipleChoices, AutoComplete 
 
-            if (!!(<any>this.promptLink().arguments())[Nakedobjectsconstants.roSearchTerm]) {
+            if (!!(<any>this.promptLink().arguments())[Constants.roSearchTerm]) {
                 // autocomplete 
                 return EntryType.AutoComplete;
             }
@@ -1775,12 +1774,12 @@ export class PropertyMember extends Member<Nakedobjectsrointerfaces.IPropertyMem
 
 // matches 14.4.2 
 export class CollectionMember
-    extends Member<Nakedobjectsrointerfaces.ICollectionMember>
+    extends Member<Ro.ICollectionMember>
     implements IHasLinksAsValue {
 
-    wrapped = () => this.resource() as Nakedobjectsrointerfaces.ICollectionMember;
+    wrapped = () => this.resource() as Ro.ICollectionMember;
 
-    constructor(wrapped: Nakedobjectsrointerfaces.ICollectionMember, public parent: DomainObjectRepresentation, private id: string) {
+    constructor(wrapped: Ro.ICollectionMember, public parent: DomainObjectRepresentation, private id: string) {
         super(wrapped);
     }
 
@@ -1805,11 +1804,11 @@ export class CollectionMember
 }
 
 // matches 14.4.3 
-export class ActionMember extends Member<Nakedobjectsrointerfaces.IActionMember> {
+export class ActionMember extends Member<Ro.IActionMember> {
 
-    wrapped = () => this.resource() as Nakedobjectsrointerfaces.IActionMember;
+    wrapped = () => this.resource() as Ro.IActionMember;
 
-    constructor(wrapped: Nakedobjectsrointerfaces.IActionMember, public parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation, private id: string) {
+    constructor(wrapped: Ro.IActionMember, public parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation, private id: string) {
         super(wrapped);
     }
 
@@ -1837,7 +1836,7 @@ export class ActionMember extends Member<Nakedobjectsrointerfaces.IActionMember>
 export class InvokableActionMember extends ActionMember {
 
 
-    constructor(wrapped: Nakedobjectsrointerfaces.IActionMember, parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation, id: string) {
+    constructor(wrapped: Ro.IActionMember, parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation, id: string) {
         super(wrapped, parent, id);
     }
 
@@ -1869,16 +1868,16 @@ export class InvokableActionMember extends ActionMember {
 }
 
 
-export class DomainObjectRepresentation extends ResourceRepresentation<Nakedobjectsrointerfaces.IDomainObjectRepresentation> implements IHasActions {
+export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomainObjectRepresentation> implements IHasActions {
 
-    wrapped = () => this.resource() as Nakedobjectsrointerfaces.IDomainObjectRepresentation;
+    wrapped = () => this.resource() as Ro.IDomainObjectRepresentation;
 
     constructor() {
         super();
     }
 
     id(): string {
-        return `${this.domainType() || this.serviceId()}${this.instanceId() ? `${Nakedobjectsconfig.keySeparator}${this.instanceId()}` : ""}`;
+        return `${this.domainType() || this.serviceId()}${this.instanceId() ? `${Config.keySeparator}${this.instanceId()}` : ""}`;
     }
 
     title(): string {
@@ -1897,7 +1896,7 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Nakedobje
         return this.wrapped().instanceId;
     }
 
-    private memberMap: _.Dictionary<Member<Nakedobjectsrointerfaces.IMember>>;
+    private memberMap: _.Dictionary<Member<Ro.IMember>>;
     private propertyMemberMap: _.Dictionary<PropertyMember>;
     private collectionMemberMap: _.Dictionary<CollectionMember>;
     private actionMemberMap: _.Dictionary<ActionMember>;
@@ -1905,9 +1904,9 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Nakedobje
     private resetMemberMaps() {
         const members = this.wrapped().members;
         this.memberMap = _.mapValues(members, (m, id) => Member.wrapMember(m, this, id));
-        this.propertyMemberMap = _.pickBy(this.memberMap, (m: Member<Nakedobjectsrointerfaces.IMember>) => m.memberType() === "property") as _.Dictionary<PropertyMember>;
-        this.collectionMemberMap = _.pickBy(this.memberMap, (m: Member<Nakedobjectsrointerfaces.IMember>) => m.memberType() === "collection") as _.Dictionary<CollectionMember>;
-        this.actionMemberMap = _.pickBy(this.memberMap, (m: Member<Nakedobjectsrointerfaces.IMember>) => m.memberType() === "action") as _.Dictionary<ActionMember>;
+        this.propertyMemberMap = _.pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === "property") as _.Dictionary<PropertyMember>;
+        this.collectionMemberMap = _.pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === "collection") as _.Dictionary<CollectionMember>;
+        this.actionMemberMap = _.pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === "action") as _.Dictionary<ActionMember>;
     }
 
     private initMemberMaps() {
@@ -1916,7 +1915,7 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Nakedobje
         }
     }
 
-    members(): _.Dictionary<Member<Nakedobjectsrointerfaces.IMember>> {
+    members(): _.Dictionary<Member<Ro.IMember>> {
         this.initMemberMaps();
         return this.memberMap;
     }
@@ -1936,7 +1935,7 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Nakedobje
         return this.actionMemberMap;
     }
 
-    member(id: string): Member<Nakedobjectsrointerfaces.IMember> {
+    member(id: string): Member<Ro.IMember> {
         return this.members()[id];
     }
 
@@ -1969,11 +1968,11 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Nakedobje
     }
 
     private updateMap() {
-        return this.updateLink().arguments() as Nakedobjectsrointerfaces.IValueMap;
+        return this.updateLink().arguments() as Ro.IValueMap;
     }
 
     private persistMap() {
-        return this.persistLink().arguments() as Nakedobjectsrointerfaces.IObjectOfType;
+        return this.persistLink().arguments() as Ro.IObjectOfType;
     }
 
     // linked representations 
@@ -1990,7 +1989,7 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Nakedobje
     }
 
     setInlinePropertyDetails(flag: boolean) {
-        this.setUrlParameter(Nakedobjectsconstants.roInlinePropertyDetails, flag);
+        this.setUrlParameter(Constants.roInlinePropertyDetails, flag);
     }
 
     private oid: ObjectIdWrapper;
@@ -2003,9 +2002,9 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Nakedobje
     }
 }
 
-export class MenuRepresentation extends ResourceRepresentation<Nakedobjectsrointerfacescustom.IMenuRepresentation> implements IHasActions {
+export class MenuRepresentation extends ResourceRepresentation<RoCustom.IMenuRepresentation> implements IHasActions {
 
-    wrapped = () => this.resource() as Nakedobjectsrointerfacescustom.IMenuRepresentation;
+    wrapped = () => this.resource() as RoCustom.IMenuRepresentation;
 
     constructor() {
         super();
@@ -2019,7 +2018,7 @@ export class MenuRepresentation extends ResourceRepresentation<Nakedobjectsroint
         return this.wrapped().menuId;
     }
 
-    private memberMap: _.Dictionary<Member<Nakedobjectsrointerfaces.IMember>>;
+    private memberMap: _.Dictionary<Member<Ro.IMember>>;
 
     private actionMemberMap: _.Dictionary<ActionMember>;
 
@@ -2035,7 +2034,7 @@ export class MenuRepresentation extends ResourceRepresentation<Nakedobjectsroint
         }
     }
 
-    members(): _.Dictionary<Member<Nakedobjectsrointerfaces.IMember>> {
+    members(): _.Dictionary<Member<Ro.IMember>> {
         this.initMemberMaps();
         return this.memberMap;
     }
@@ -2045,7 +2044,7 @@ export class MenuRepresentation extends ResourceRepresentation<Nakedobjectsroint
         return this.actionMemberMap;
     }
 
-    member(id: string): Member<Nakedobjectsrointerfaces.IMember> {
+    member(id: string): Member<Ro.IMember> {
         return this.members()[id];
     }
 
@@ -2065,11 +2064,11 @@ export class MenuRepresentation extends ResourceRepresentation<Nakedobjectsroint
 }
 
 // matches scalar representation 12.0 
-export class ScalarValueRepresentation extends NestedRepresentation<Nakedobjectsrointerfaces.IScalarValueRepresentation> {
+export class ScalarValueRepresentation extends NestedRepresentation<Ro.IScalarValueRepresentation> {
 
-    wrapped = () => this.resource() as Nakedobjectsrointerfaces.IScalarValueRepresentation;
+    wrapped = () => this.resource() as Ro.IScalarValueRepresentation;
 
-    constructor(wrapped: Nakedobjectsrointerfaces.IScalarValueRepresentation) {
+    constructor(wrapped: Ro.IScalarValueRepresentation) {
         super(wrapped);
     }
 
@@ -2080,10 +2079,10 @@ export class ScalarValueRepresentation extends NestedRepresentation<Nakedobjects
 
 // matches List Representation 11.0
 export class ListRepresentation
-    extends ResourceRepresentation<Nakedobjectsrointerfacescustom.ICustomListRepresentation>
+    extends ResourceRepresentation<RoCustom.ICustomListRepresentation>
     implements IHasLinksAsValue {
 
-    wrapped = () => this.resource() as Nakedobjectsrointerfacescustom.ICustomListRepresentation;
+    wrapped = () => this.resource() as RoCustom.ICustomListRepresentation;
 
     // links
     selfLink(): Link {
@@ -2102,7 +2101,7 @@ export class ListRepresentation
         return this.lazyValue;
     }
 
-    pagination(): Nakedobjectsrointerfacescustom.IPagination {
+    pagination(): RoCustom.IPagination {
         return this.wrapped().pagination;
     }
 
@@ -2124,11 +2123,11 @@ export interface IErrorDetails {
 }
 
 // matches the error representation 10.0 
-export class ErrorRepresentation extends ResourceRepresentation<Nakedobjectsrointerfaces.IErrorRepresentation> implements IErrorDetails {
+export class ErrorRepresentation extends ResourceRepresentation<Ro.IErrorRepresentation> implements IErrorDetails {
 
-    wrapped = () => this.resource() as Nakedobjectsrointerfaces.IErrorRepresentation;
+    wrapped = () => this.resource() as Ro.IErrorRepresentation;
 
-    static create(message: string, stackTrace?: string[], causedBy?: Nakedobjectsrointerfaces.IErrorDetailsRepresentation) {
+    static create(message: string, stackTrace?: string[], causedBy?: Ro.IErrorDetailsRepresentation) {
         const rawError = {
             links: [] as any[],
             extensions: {},
@@ -2163,7 +2162,7 @@ export class ErrorRepresentation extends ResourceRepresentation<Nakedobjectsroin
 // matches Objects of Type Resource 9.0 
 export class PersistMap extends HateosModel implements IHateoasModel {
 
-    constructor(private domainObject: DomainObjectRepresentation, private map: Nakedobjectsrointerfaces.IObjectOfType) {
+    constructor(private domainObject: DomainObjectRepresentation, private map: Ro.IObjectOfType) {
         super(map);
         domainObject.persistLink().copyToHateoasModel(this);
     }
@@ -2173,14 +2172,14 @@ export class PersistMap extends HateosModel implements IHateoasModel {
     }
 
     setValidateOnly() {
-        (<any>this.map)[Nakedobjectsconstants.roValidateOnly] = true;
+        (<any>this.map)[Constants.roValidateOnly] = true;
     }
 }
 
 // matches the version representation 8.0 
-export class VersionRepresentation extends ResourceRepresentation<Nakedobjectsrointerfaces.IVersionRepresentation> {
+export class VersionRepresentation extends ResourceRepresentation<Ro.IVersionRepresentation> {
 
-    wrapped = () => this.resource() as Nakedobjectsrointerfaces.IVersionRepresentation;
+    wrapped = () => this.resource() as Ro.IVersionRepresentation;
 
     // links 
     selfLink(): Link {
@@ -2209,7 +2208,7 @@ export class VersionRepresentation extends ResourceRepresentation<Nakedobjectsro
         return this.wrapped().implVersion;
     }
 
-    optionalCapabilities(): Nakedobjectsrointerfaces.IOptionalCapabilities {
+    optionalCapabilities(): Ro.IOptionalCapabilities {
         return this.wrapped().optionalCapabilities;
     }
 }
@@ -2217,7 +2216,7 @@ export class VersionRepresentation extends ResourceRepresentation<Nakedobjectsro
 // matches Domain Services Representation 7.0
 export class DomainServicesRepresentation extends ListRepresentation {
 
-    wrapped = () => this.resource() as Nakedobjectsrointerfacescustom.ICustomListRepresentation;
+    wrapped = () => this.resource() as RoCustom.ICustomListRepresentation;
 
     // links
     upLink(): Link {
@@ -2242,7 +2241,7 @@ export class DomainServicesRepresentation extends ListRepresentation {
 // custom
 export class MenusRepresentation extends ListRepresentation {
 
-    wrapped = () => this.resource() as Nakedobjectsrointerfacescustom.ICustomListRepresentation;
+    wrapped = () => this.resource() as RoCustom.ICustomListRepresentation;
 
     // links
     upLink(): Link {
@@ -2265,9 +2264,9 @@ export class MenusRepresentation extends ListRepresentation {
 }
 
 // matches the user representation 6.0
-export class UserRepresentation extends ResourceRepresentation<Nakedobjectsrointerfaces.IUserRepresentation> {
+export class UserRepresentation extends ResourceRepresentation<Ro.IUserRepresentation> {
 
-    wrapped = () => this.resource() as Nakedobjectsrointerfaces.IUserRepresentation;
+    wrapped = () => this.resource() as Ro.IUserRepresentation;
 
     // links 
     selfLink(): Link {
@@ -2305,13 +2304,13 @@ export class UserRepresentation extends ResourceRepresentation<Nakedobjectsroint
     }
 }
 
-export class DomainTypeActionInvokeRepresentation extends ResourceRepresentation<Nakedobjectsrointerfaces.IDomainTypeActionInvokeRepresentation> {
+export class DomainTypeActionInvokeRepresentation extends ResourceRepresentation<Ro.IDomainTypeActionInvokeRepresentation> {
 
-    wrapped = () => this.resource() as Nakedobjectsrointerfaces.IDomainTypeActionInvokeRepresentation;
+    wrapped = () => this.resource() as Ro.IDomainTypeActionInvokeRepresentation;
 
     constructor(againstType: string, toCheckType: string) {
         super();
-        this.hateoasUrl = `${Nakedobjectsconfig.getAppPath()}/domain-types/${toCheckType}/type-actions/isSubtypeOf/invoke`;
+        this.hateoasUrl = `${Config.getAppPath()}/domain-types/${toCheckType}/type-actions/isSubtypeOf/invoke`;
         this.urlParms = {};
         this.urlParms["supertype"] = againstType;
     }
@@ -2335,14 +2334,14 @@ export class DomainTypeActionInvokeRepresentation extends ResourceRepresentation
 }
 
 // matches the home page representation  5.0 
-export class HomePageRepresentation extends ResourceRepresentation<Nakedobjectsrointerfaces.IHomePageRepresentation> {
+export class HomePageRepresentation extends ResourceRepresentation<Ro.IHomePageRepresentation> {
 
-    constructor(rep: Nakedobjectsrointerfaces.IRepresentation) {
+    constructor(rep: Ro.IRepresentation) {
         super(rep);
-        this.hateoasUrl = Nakedobjectsconfig.getAppPath();
+        this.hateoasUrl = Config.getAppPath();
     }
 
-    wrapped = () => this.resource() as Nakedobjectsrointerfaces.IHomePageRepresentation;
+    wrapped = () => this.resource() as Ro.IHomePageRepresentation;
 
     // links 
     serviceLink(): Link {
@@ -2401,7 +2400,7 @@ export class HomePageRepresentation extends ResourceRepresentation<Nakedobjectsr
 // matches the Link representation 2.7
 export class Link {
 
-    constructor(public wrapped: Nakedobjectsrointerfaces.ILink) { }
+    constructor(public wrapped: Ro.ILink) { }
 
     compress() {
         this.wrapped.href = compress(this.wrapped.href);
@@ -2415,7 +2414,7 @@ export class Link {
         return decodeURIComponent(this.wrapped.href);
     }
 
-    method(): Nakedobjectsrointerfaces.httpMethodsType {
+    method(): Ro.httpMethodsType {
         return this.wrapped.method;
     }
 
@@ -2436,12 +2435,12 @@ export class Link {
         this.wrapped.title = title;
     }
 
-    arguments(): Nakedobjectsrointerfaces.IValue | Nakedobjectsrointerfaces.IValueMap | Nakedobjectsrointerfaces.IObjectOfType | Nakedobjectsrointerfaces.IPromptMap {
+    arguments(): Ro.IValue | Ro.IValueMap | Ro.IObjectOfType | Ro.IPromptMap {
         return this.wrapped.arguments;
     }
 
     members(): _.Dictionary<PropertyMember> {
-        const members = (this.wrapped as Nakedobjectsrointerfacescustom.ICustomLink).members;
+        const members = (this.wrapped as RoCustom.ICustomLink).members;
         return members ? _.mapValues(members, (m, id) => Member.wrapMember(m, this, id) as PropertyMember) : null;
     }
 

@@ -4,52 +4,50 @@ import { FooterComponent } from "./footer.component";
 import { RepresentationsService } from "./representations.service";
 import { UrlManager } from "./urlmanager.service";
 import { ClickHandlerService } from "./click-handler.service";
-import {Context} from "./context.service";
-import {RepLoader} from "./reploader.service";
+import { Context} from "./context.service";
+import { RepLoader} from "./reploader.service";
 import { ActivatedRoute, Router, UrlPathWithParams} from '@angular/router';
+import { Color } from "./color.service";
+import { Error } from "./error.service";
+import { PaneRouteData } from "./nakedobjects.routedata";
+import { ViewModelFactory } from "./view-model-factory.service";
+import { FocusManager, FocusTarget } from "./focus-manager.service";
+import { ActionsComponent } from "./actions.component";
+import { GeminiClickDirective } from "./gemini-click.directive";
 import * as Models from "./models";
-import * as Nakedobjectsconstants from "./nakedobjects.constants";
-import * as Nakedobjectsconfig from "./nakedobjects.config";
-import * as Colorservice from "./color.service";
-import * as Errorservice from "./error.service";
-import * as Nakedobjectsroutedata from "./nakedobjects.routedata";
-import * as Nakedobjectsviewmodels from "./nakedobjects.viewmodels";
-import * as Viewmodelfactoryservice from "./view-model-factory.service";
-import * as Focusmanagerservice from "./focus-manager.service";
-import * as Actionscomponent from "./actions.component";
-import * as Geminiclickdirective from "./gemini-click.directive";
-import {NgClass} from '@angular/common';
+import * as Constants from "./nakedobjects.constants";
+import * as Config from "./nakedobjects.config";
+import * as ViewModels from "./nakedobjects.viewmodels";
 
 @Component({
     selector: 'list',
     templateUrl: `app/list.component.html`,
-    directives: [ROUTER_DIRECTIVES, FooterComponent, Actionscomponent.ActionsComponent, Geminiclickdirective.GeminiClickDirective, NgClass]
+    directives: [ROUTER_DIRECTIVES, FooterComponent, ActionsComponent, GeminiClickDirective]
 })
 
 export class ListComponent {
 
     constructor(private urlManager: UrlManager,
         private context: Context,
-        private color: Colorservice.Color,
-        private viewModelFactory: Viewmodelfactoryservice.ViewModelFactory,
-        private focusManager: Focusmanagerservice.FocusManager,
-        private error: Errorservice.Error,
+        private color: Color,
+        private viewModelFactory: ViewModelFactory,
+        private focusManager: FocusManager,
+        private error: Error,
         private activatedRoute: ActivatedRoute) {
-
     }
 
-    collection: Nakedobjectsviewmodels.ListViewModel;
+    collection: ViewModels.ListViewModel;
 
     title = "";
 
-    getActionExtensions(routeData: Nakedobjectsroutedata.PaneRouteData) {
+    getActionExtensions(routeData: PaneRouteData) {
         return routeData.objectId ?
             this.context.getActionExtensionsFromObject(routeData.paneId, Models.ObjectIdWrapper.fromObjectId(routeData.objectId), routeData.actionId) :
             this.context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
     }
 
 
-    setupList(routeData : Nakedobjectsroutedata.PaneRouteData) {
+    setupList(routeData : PaneRouteData) {
         const cachedList = this.context.getCachedList(routeData.paneId, routeData.page, routeData.pageSize);
 
      
@@ -59,7 +57,7 @@ export class ListComponent {
                 catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
         if (cachedList) {
-            const listViewModel = new Nakedobjectsviewmodels.ListViewModel(
+            const listViewModel = new ViewModels.ListViewModel(
                 this.color,
                 this.context,
                 this.viewModelFactory,
@@ -77,7 +75,7 @@ export class ListComponent {
             //$scope.listTemplate = Nakedobjectsconstants.listPlaceholderTemplate;
             //$scope.collectionPlaceholder = viewModelFactory.listPlaceholderViewModel(routeData);
             
-            this.focusManager.focusOn(Focusmanagerservice.FocusTarget.Action, 0, routeData.paneId);
+            this.focusManager.focusOn(FocusTarget.Action, 0, routeData.paneId);
         }
     }
 

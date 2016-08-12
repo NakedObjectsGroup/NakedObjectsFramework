@@ -1,13 +1,13 @@
 ﻿import * as Models from "./models";
 import * as _ from "lodash";
 import { Injectable } from '@angular/core';
-import {Context} from './context.service';
-import * as Colorserviceconfig from "./color.service.config";
+import { Context } from './context.service';
+import { ColorServiceConfig } from "./color.service.config";
 
 @Injectable()
 export class Color {
 
-    constructor(private context: Context, private config: Colorserviceconfig.ColorServiceConfig) {
+    constructor(private context: Context, private config: ColorServiceConfig) {
         config.configure(this);
     }
 
@@ -42,11 +42,11 @@ export class Color {
         const subtypeChecks = this.subtypeCache.length;
 
         if (subtypeChecks > 0) {
-            return this.isSubtypeOf(subtype, 0, subtypeChecks).
-                then((c: number) => {
+            return this.isSubtypeOf(subtype, 0, subtypeChecks)
+                .then((c: number) => {
                     return this.cacheAndReturn(subtype, c);
-                }).
-                catch(() => {
+                })
+                .catch(() => {
                     return this.cacheAndReturn(subtype, this.defaultColor);
                 });
         }
@@ -91,17 +91,14 @@ export class Color {
 
     addType = (type: string, color: number) => {
         this.colorCache[type] = color;
-    }
-
+    };
     addMatch = (matcher: RegExp, color: number) => {
         this.regexCache.push({ regex: matcher, color: color });
-    }
-
+    };
     addSubtype = (type: string, color: number) => {
         this.subtypeCache.push({ type: type, color: color });
-    }
-
+    };
     setDefault = (def: number) => {
         this.defaultColor = def;
-    }
+    };
 }

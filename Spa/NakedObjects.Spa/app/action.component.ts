@@ -1,11 +1,11 @@
 ﻿import { Component, Input } from '@angular/core';
-import * as Models from "./models";
 import { Observable } from 'rxjs/Observable';
 import { formatType, scalarValueType } from './nakedobjects.rointerfaces'
-import * as _ from "lodash";
 import { Context } from "./context.service";
-import * as ViewModels from "./nakedobjects.viewmodels";
 import { GeminiClickDirective } from "./gemini-click.directive";
+import * as Models from "./models";
+import * as ViewModels from "./nakedobjects.viewmodels";
+import * as _ from "lodash";
 
 @Component({
     selector: 'action',

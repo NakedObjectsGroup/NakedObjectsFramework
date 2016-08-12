@@ -1,12 +1,11 @@
-﻿import * as Models from "./models";
-import * as Nakedobjectsconfig from "./nakedobjects.config";
-import * as Nakedobjectsroutedata from "./nakedobjects.routedata";
-import * as Nakedobjectsconstants from "./nakedobjects.constants";
-import {UrlManager} from "./urlmanager.service";
-
-import * as _ from "lodash";
-import {RepLoader} from "./reploader.service";
+﻿import { InteractionMode, RouteData, PaneRouteData, CollectionViewState } from "./nakedobjects.routedata";
+import { UrlManager } from "./urlmanager.service";
+import { RepLoader } from "./reploader.service";
 import { Injectable } from '@angular/core';
+import * as Config from "./nakedobjects.config";
+import * as Constants from "./nakedobjects.constants";
+import * as Models from "./models";
+import * as _ from "lodash";
 
 enum DirtyState {
     DirtyMustReload,
@@ -52,7 +51,7 @@ function isSameObject(object: Models.DomainObjectRepresentation, type: string, i
 class TransientCache {
     private transientCache: Models.DomainObjectRepresentation[][] = [, [], []]; // per pane 
 
-    private depth = Nakedobjectsconfig.transientCacheDepth;
+    private depth = Config.transientCacheDepth;
 
     add(paneId: number, obj: Models.DomainObjectRepresentation) {
         let paneObjects = this.transientCache[paneId];
@@ -84,14 +83,12 @@ class TransientCache {
         this.transientCache[1] = t2;
         this.transientCache[2] = t1;
     }
-
-
 }
 
 class RecentCache {
     private recentCache: Models.DomainObjectRepresentation[] = [];
 
-    private depth = Nakedobjectsconfig.recentCacheDepth;
+    private depth = Config.recentCacheDepth;
 
     add(obj: Models.DomainObjectRepresentation) {
 
@@ -235,27 +232,27 @@ export class Context {
     clearCachedFile = (url: string) => this.repLoader.clearCache(url);
 
     // exposed for test mocking
-    getDomainObject = (paneId: number, oid: Models.ObjectIdWrapper, interactionMode: Nakedobjectsroutedata.InteractionMode): Promise<Models.DomainObjectRepresentation> => {
+    getDomainObject = (paneId: number, oid: Models.ObjectIdWrapper, interactionMode: InteractionMode): Promise<Models.DomainObjectRepresentation> => {
         const type = oid.domainType;
         const id = oid.instanceId;
 
         const dirtyState = this.dirtyList.getDirty(oid);
-        const forceReload = (dirtyState === DirtyState.DirtyMustReload) || ((dirtyState === DirtyState.DirtyMayReload) && Nakedobjectsconfig.autoLoadDirty);
+        const forceReload = (dirtyState === DirtyState.DirtyMustReload) || ((dirtyState === DirtyState.DirtyMayReload) && Config.autoLoadDirty);
 
         if (!forceReload && isSameObject(this.currentObjects[paneId], type, id)) {
             return Promise.resolve(this.currentObjects[paneId]);
         }
 
         // deeper cache for transients
-        if (interactionMode === Nakedobjectsroutedata.InteractionMode.Transient) {
+        if (interactionMode === InteractionMode.Transient) {
             const transientObj = this.transientCache.get(paneId, type, id);
             const p: Promise<Models.DomainObjectRepresentation> = transientObj ? Promise.resolve(transientObj) : <any> Promise.reject(new Models.ErrorWrapper(Models.ErrorCategory.ClientError, Models.ClientErrorCode.ExpiredTransient, ""));
             return p;
         }
 
         const object = new Models.DomainObjectRepresentation();
-        object.hateoasUrl = Nakedobjectsconfig.getAppPath() + "/objects/" + type + "/" + id;
-        object.setInlinePropertyDetails(interactionMode === Nakedobjectsroutedata.InteractionMode.Edit);
+        object.hateoasUrl = Config.getAppPath() + "/objects/" + type + "/" + id;
+        object.setInlinePropertyDetails(interactionMode === InteractionMode.Edit);
 
         return this.repLoader.populate<Models.DomainObjectRepresentation>(object, forceReload)
             .then((obj: Models.DomainObjectRepresentation) => {
@@ -270,7 +267,7 @@ export class Context {
 
     private editOrReloadObject(paneId: number, object: Models.DomainObjectRepresentation, inlineDetails: boolean) {
         const parms: _.Dictionary<Object> = {};
-        parms[Nakedobjectsconstants.roInlinePropertyDetails] = inlineDetails;
+        parms[Constants.roInlinePropertyDetails] = inlineDetails;
 
         return this.repLoader.retrieveFromLink<Models.DomainObjectRepresentation>(object.selfLink(), parms)
             .then(obj => {
@@ -285,7 +282,7 @@ export class Context {
 
     mustReload = (oid: Models.ObjectIdWrapper) => {
         const dirtyState = this.dirtyList.getDirty(oid);
-        return (dirtyState === DirtyState.DirtyMustReload) || ((dirtyState === DirtyState.DirtyMayReload) && Nakedobjectsconfig.autoLoadDirty);
+        return (dirtyState === DirtyState.DirtyMustReload) || ((dirtyState === DirtyState.DirtyMayReload) && Config.autoLoadDirty);
     };
 
     getObjectForEdit = (paneId: number, object: Models.DomainObjectRepresentation) => this.editOrReloadObject(paneId, object, true);
@@ -314,11 +311,11 @@ export class Context {
         return this.repLoader.populate(details, true);
     };
 
-    getCollectionDetails = (collectionMember: Models.CollectionMember, state: Nakedobjectsroutedata.CollectionViewState, ignoreCache: boolean): Promise<Models.CollectionRepresentation> => {
+    getCollectionDetails = (collectionMember: Models.CollectionMember, state: CollectionViewState, ignoreCache: boolean): Promise<Models.CollectionRepresentation> => {
         const details = collectionMember.getDetails();
 
-        if (state === Nakedobjectsroutedata.CollectionViewState.Table) {
-            details.setUrlParameter(Nakedobjectsconstants.roInlineCollectionItems, true);
+        if (state === CollectionViewState.Table) {
+            details.setUrlParameter(Constants.roInlineCollectionItems, true);
         }
         const parent = collectionMember.parent;
         const oid = parent.getOid();
@@ -435,7 +432,7 @@ export class Context {
             });
     };
 
-    getObject = (paneId: number, oid: Models.ObjectIdWrapper, interactionMode: Nakedobjectsroutedata.InteractionMode) => {
+    getObject = (paneId: number, oid: Models.ObjectIdWrapper, interactionMode: InteractionMode) => {
         return oid.isService ? this.getService(paneId, oid.domainType) : this.getDomainObject(paneId, oid, interactionMode);
     };
 
@@ -458,7 +455,7 @@ export class Context {
             entry.added = Date.now();
         } else {
 
-            if (_.keys(this.currentLists).length >= Nakedobjectsconfig.listCacheSize) {
+            if (_.keys(this.currentLists).length >= Config.listCacheSize) {
                 //delete oldest;
                 const oldest = _.first(_.sortBy(this.currentLists, "e.added")).added;
                 const oldestIndex = _.findKey(this.currentLists, (e: { added: number }) => e.added === oldest);
@@ -491,28 +488,28 @@ export class Context {
         this.getMenu(menuId).then(menu => Promise.resolve(menu.actionMember(actionId).extensions()));
 
     getActionExtensionsFromObject = (paneId: number, oid: Models.ObjectIdWrapper, actionId: string) =>
-        this.getObject(paneId, oid, Nakedobjectsroutedata.InteractionMode.View).then(object => Promise.resolve(object.actionMember(actionId).extensions()));
+        this.getObject(paneId, oid, InteractionMode.View).then(object => Promise.resolve(object.actionMember(actionId).extensions()));
 
     private getPagingParms(page: number, pageSize: number): _.Dictionary<Object> {
         return (page && pageSize) ? { "x-ro-page": page, "x-ro-pageSize": pageSize } : {};
     }
 
-    getListFromMenu = (paneId: number, routeData: Nakedobjectsroutedata.PaneRouteData, page?: number, pageSize?: number) => {
+    getListFromMenu = (paneId: number, routeData: PaneRouteData, page?: number, pageSize?: number) => {
         const menuId = routeData.menuId;
         const actionId = routeData.actionId;
         const parms = routeData.actionParams;
         const state = routeData.state;
         const urlParms = this.getPagingParms(page, pageSize);
 
-        if (state === Nakedobjectsroutedata.CollectionViewState.Table) {
-            urlParms[Nakedobjectsconstants.roInlineCollectionItems] = true;
+        if (state === CollectionViewState.Table) {
+            urlParms[Constants.roInlineCollectionItems] = true;
         }
 
         const promise = () => this.getMenu(menuId).then(menu => this.getInvokableAction(menu.actionMember(actionId))).then(details => this.repLoader.invoke(details, parms, urlParms));
         return this.getList(paneId, promise, page, pageSize);
     };
 
-    getListFromObject = (paneId: number, routeData: Nakedobjectsroutedata.PaneRouteData, page?: number, pageSize?: number) => {
+    getListFromObject = (paneId: number, routeData: PaneRouteData, page?: number, pageSize?: number) => {
         const objectId = routeData.objectId;
         const actionId = routeData.actionId;
         const parms = routeData.actionParams;
@@ -520,11 +517,11 @@ export class Context {
         const oid = Models.ObjectIdWrapper.fromObjectId(objectId);
         const urlParms = this.getPagingParms(page, pageSize);
 
-        if (state === Nakedobjectsroutedata.CollectionViewState.Table) {
-            urlParms[Nakedobjectsconstants.roInlineCollectionItems] = true;
+        if (state === CollectionViewState.Table) {
+            urlParms[Constants.roInlineCollectionItems] = true;
         }
 
-        const promise = () => this.getObject(paneId, oid, Nakedobjectsroutedata.InteractionMode.View)
+        const promise = () => this.getObject(paneId, oid, InteractionMode.View)
             .then(object => this.getInvokableAction(object.actionMember(actionId)))
             .then(details => this.repLoader.invoke(details, parms, urlParms));
 
@@ -600,8 +597,8 @@ export class Context {
                     this.urlManager.setObject(resultObject, toPaneId);
 
                     const interactionMode = resultObject.extensions().interactionMode() === "transient"
-                        ? Nakedobjectsroutedata.InteractionMode.Transient
-                        : Nakedobjectsroutedata.InteractionMode.NotPersistent;
+                        ? InteractionMode.Transient
+                        : InteractionMode.NotPersistent;
                     this.urlManager.setInteractionMode(interactionMode, toPaneId);
                 } else {
 
@@ -616,13 +613,13 @@ export class Context {
                     this.urlManager.setObject(resultObject, toPaneId);
 
                     // update angular cache 
-                    const url = resultObject.selfLink().href() + `?${Nakedobjectsconstants.roInlinePropertyDetails}=false`;
+                    const url = resultObject.selfLink().href() + `?${Constants.roInlinePropertyDetails}=false`;
                     this.repLoader.addToCache(url, resultObject.wrapped());
 
                     // if render in edit must be  a form 
                     if (resultObject.extensions().interactionMode() === "form") {
                         this.urlManager.pushUrlState(toPaneId);
-                        this.urlManager.setInteractionMode(Nakedobjectsroutedata.InteractionMode.Form, toPaneId);
+                        this.urlManager.setInteractionMode(InteractionMode.Form, toPaneId);
                     } else {
                         this.addRecentlyViewed(resultObject);
                     }
@@ -646,16 +643,16 @@ export class Context {
 
         //this.focusManager.setCurrentPane(toPaneId);
 
-        invokeMap.setUrlParameter(Nakedobjectsconstants.roInlinePropertyDetails, false);
+        invokeMap.setUrlParameter(Constants.roInlinePropertyDetails, false);
 
         if (action.extensions().returnType() === "list" && action.extensions().renderEagerly()) {
-            invokeMap.setUrlParameter(Nakedobjectsconstants.roInlineCollectionItems, true);
+            invokeMap.setUrlParameter(Constants.roInlineCollectionItems, true);
         }
 
         return this.repLoader.retrieve(invokeMap, Models.ActionResultRepresentation, action.parent.etagDigest)
             .then((result: Models.ActionResultRepresentation) => {
                 setDirty();
-                this.setResult(action, result, fromPaneId, toPaneId, 1, Nakedobjectsconfig.defaultPageSize);
+                this.setResult(action, result, fromPaneId, toPaneId, 1, Config.defaultPageSize);
                 return Promise.resolve(result);
             });
     }

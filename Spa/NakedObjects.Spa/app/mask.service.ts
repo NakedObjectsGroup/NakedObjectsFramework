@@ -1,5 +1,5 @@
 ﻿import * as _ from "lodash";
-import {formatType} from './nakedobjects.rointerfaces';
+import { formatType } from './nakedobjects.rointerfaces';
 
 
 export interface ILocalFilter {
