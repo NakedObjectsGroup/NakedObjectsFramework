@@ -41,7 +41,7 @@
 
         "angular2-in-memory-web-api": "0.0.14",
         "bootstrap": "^3.3.6",
-        "lodash-es": "^4.0.0"
+        "lodash": "^4.11.1"
     },
   "devDependencies": {
     "concurrently": "^2.2.0",
