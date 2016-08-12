@@ -26,7 +26,7 @@ When searching the NuGet package gallery for NOF8 please ensure you have the 'in
 
 NOF8 source code is held in the 8.0 branch of this repository.
 
-NOF7
+NOF7 (superseded - 7.0 branch)
 ====
 
 NOF7 has now been superseded and we advise all users to upgrade to NOF8.
