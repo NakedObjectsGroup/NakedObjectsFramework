@@ -59,6 +59,10 @@ namespace NakedObjects.Template {
                 RestfulObjectsControllerBase.InlineDetailsInCollectionMemberRepresentations = false;
 
                 RestfulObjectsControllerBase.InlineDetailsInPropertyMemberRepresentations = false;
+
+                // If set to 'true' this will include the etag on immutable objects so that mutating actions 
+                // can be invoked on the object without a missing If-Match header error.  
+                RestfulObjectsControllerBase.AllowMutatingActionOnImmutableObject = false;
             }
         }
     }
