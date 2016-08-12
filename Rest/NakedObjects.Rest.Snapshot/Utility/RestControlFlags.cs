@@ -51,6 +51,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public bool InlineDetailsInCollectionMemberRepresentations { get; set; }
         public bool InlineDetailsInPropertyMemberRepresentations { get; set; }
         public bool InlineCollectionItems { get; set; }
+        public bool AllowMutatingActionsOnImmutableObject { get; set; }
 
         private static bool GetBool(object value) {
             if (value == null) { return false; }
@@ -106,7 +107,8 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                                                           bool inlineDetailsInActionMemberRepresentations,
                                                           bool inlineDetailsInCollectionMemberRepresentations,
                                                           bool inlineDetailsInPropertyMemberRepresentations,
-                                                          bool inlineCollectionItems) {
+                                                          bool inlineCollectionItems,
+                                                          bool allowMutatingActionsOnImmutableObjects) {
             // validate domainModel 
             if (domainModel != null && domainModel != DomainModelType.Simple.ToString().ToLower() && domainModel != DomainModelType.Formal.ToString().ToLower()) {
                 throw new BadRequestNOSException("Invalid domainModel: " + domainModel);
@@ -122,7 +124,8 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 InlineDetailsInActionMemberRepresentations = inlineDetailsInActionMemberRepresentations,
                 InlineDetailsInCollectionMemberRepresentations = inlineDetailsInCollectionMemberRepresentations,
                 InlineDetailsInPropertyMemberRepresentations = inlineDetailsInPropertyMemberRepresentations,
-                InlineCollectionItems = inlineCollectionItems
+                InlineCollectionItems = inlineCollectionItems,
+                AllowMutatingActionsOnImmutableObject = allowMutatingActionsOnImmutableObjects
             };
 
             return controlFlags;

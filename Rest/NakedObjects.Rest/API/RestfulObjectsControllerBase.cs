@@ -36,6 +36,7 @@ namespace NakedObjects.Rest {
             InlineDetailsInActionMemberRepresentations = true;
             InlineDetailsInCollectionMemberRepresentations = true;
             InlineDetailsInPropertyMemberRepresentations = true;
+            AllowMutatingActionOnImmutableObject = false;
         }
 
         protected RestfulObjectsControllerBase(IFrameworkFacade frameworkFacade) {
@@ -66,6 +67,7 @@ namespace NakedObjects.Rest {
 
         protected IFrameworkFacade FrameworkFacade { get; set; }
         public IOidStrategy OidStrategy { get; set; }
+        public static bool AllowMutatingActionOnImmutableObject { get; set; }
 
         private static string PrefixRoute(string segment, string prefix) {
             return string.IsNullOrWhiteSpace(prefix) ? segment : prefix + "/" + segment;
@@ -699,7 +701,8 @@ namespace NakedObjects.Rest {
                 InlineDetailsInActionMemberRepresentations,
                 InlineDetailsInCollectionMemberRepresentations,
                 arguments.InlinePropertyDetails.HasValue ? arguments.InlinePropertyDetails.Value : InlineDetailsInPropertyMemberRepresentations,
-                arguments.InlineCollectionItems.HasValue && arguments.InlineCollectionItems.Value);
+                arguments.InlineCollectionItems.HasValue && arguments.InlineCollectionItems.Value,
+                AllowMutatingActionOnImmutableObject);
         }
 
         private string GetIfMatchTag() {

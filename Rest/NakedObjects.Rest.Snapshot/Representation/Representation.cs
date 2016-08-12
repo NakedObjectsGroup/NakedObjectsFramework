@@ -158,9 +158,13 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             }
         }
 
+        private bool IsMutable(IObjectFacade target) {
+            return Flags.AllowMutatingActionsOnImmutableObject || !target.Specification.IsImmutable(target);
+        }
+
 
         protected void SetEtag(IObjectFacade target) {
-            if (!target.Specification.IsService && !target.Specification.IsImmutable(target)) {
+            if (!target.Specification.IsService && IsMutable(target)) {
                 string digest = target.Version.Digest;
                 SetEtag(digest);
             }

@@ -55,6 +55,12 @@ namespace MvcTestApp {
                 RestfulObjectsControllerBase.InlineDetailsInCollectionMemberRepresentations = false;
 
                 RestfulObjectsControllerBase.InlineDetailsInPropertyMemberRepresentations = false;
+
+                // This will include the etag on immutable objects so that mutating actions 
+                // can be invoked on the object without a missing If-Match header error.  
+                // defaults to false
+
+                // RestfulObjectsControllerBase.AllowMutatingActionOnImmutableObject = true;
             }
         }
     }
