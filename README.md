@@ -3,12 +3,14 @@ NakedObjectsFramework
 
 The Naked Objects Framework is now on version 8.0 ('NOF8').  It may be used entirely as packages from the NuGet public gallery - there is no need to clone this repository.  Indeed, building the framework from source code is quite complex and not recommended for newcomers.  (If you really want to know how to do it, see the section 'How to build the framework from source code' in the Developer Manual.)
 
-NOF9 (under development)
+NOF9 (under development - master branch)
 ====
 
 The code in the Master branch of this repository is main development line.  We are currently at an early stage in the development of NOF9, which will be based on the Angular 2 framework (which has not yet gone to full release).  This involves a major re-write of the client (Spa) logic. From both a user viewpoint NOF9 will be identical to NOF8, and the upgrade should have zero impact on domain model or run project coding.  The only exception will be any custom views that you have written for NOF8  -  which will need to be upgraded to use the Angular 2 structures and code.
 
-NOF8 (stable release)
+NOF9 is not yet usable, and we do not recommend attempting to build it yourself from source.
+
+NOF8 (stable release - 8.0 branch)
 ====
 
 NOF8  introduces a radically different user interface based on the Single Page Application (SPA) architecture. It uses identical domain model programming conventions as NOF7; indeed it is possible to run the NOF8 client and the NOF7 client alongside each other, as two different 'run' projects talking to the same domain model project(s).
