@@ -1,0 +1,5 @@
+﻿<div  *ngIf="properties"  class="property">
+    <div *ngFor="let prop of properties">
+        <property [property]="prop"></property>
+    </div>
+</div>

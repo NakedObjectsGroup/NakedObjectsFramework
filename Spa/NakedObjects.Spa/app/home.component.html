@@ -1,0 +1,15 @@
+﻿<div class="home">
+    <div class="header">
+        <div class="title">Home</div>
+        <div *ngIf="menus">
+            <div class="menu clickable-area" tabindex="0" *ngFor="let menu of menus.items" (click)="doClick(menu)">
+                {{menu.title}}
+            </div>
+        </div>
+        <div class="messages"></div>
+    </div>
+    <actions *ngIf="selectedMenu" [menuVm]="selectedMenu"></actions>
+    <div class="main-column">
+        <dialog *ngIf="selectedDialog" [dialog]="selectedDialog"></dialog>
+    </div>
+</div>
