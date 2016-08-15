@@ -6,6 +6,7 @@
                 {{menu.title}}
             </div>
         </div>
+        <div *ngIf="!menus">Loading menus..</div>
         <div class="messages"></div>
     </div>
     <actions *ngIf="selectedMenu" [menuVm]="selectedMenu"></actions>

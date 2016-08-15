@@ -822,11 +822,7 @@ export class ViewModelFactory {
     private getToolBarViewModel() {
         if (!this.cachedToolBarViewModel) {
             const tvm = new ViewModels.ToolBarViewModel();
-            tvm.goHome = (right?: boolean) => {
-                this.focusManager.focusOverrideOff();
-                this.context.updateValues();
-                this.urlManager.setHome(this.clickHandler.pane(1, right));
-            };
+         
             tvm.goBack = () => {
                 this.focusManager.focusOverrideOff();
                 this.context.updateValues();

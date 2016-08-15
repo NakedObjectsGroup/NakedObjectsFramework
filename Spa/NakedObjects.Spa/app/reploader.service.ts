@@ -6,14 +6,18 @@ import * as Models from "./models";
 import * as Constants from "./nakedobjects.constants";
 import * as Ro from "./nakedobjects.rointerfaces";
 import * as _ from "lodash";
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class RepLoader {
 
     constructor(private http: Http) { }
 
-
     private loadingCount = 0;
+
+    private loadingCountSource = new Subject<number>();
+  
+    loadingCount$ = this.loadingCountSource.asObservable();
 
 // use our own LRU cache 
 //private cache = $cacheFactory("nof-cache", { capacity: httpCacheDepth });
@@ -73,13 +77,16 @@ export class RepLoader {
 
     private httpValidate(config: RequestOptions): Promise<boolean> {
         //$rootScope.$broadcast(Nakedobjectsconstants.geminiAjaxChangeEvent, ++loadingCount);
+        this.loadingCountSource.next(++(this.loadingCount));
 
         return this.http.request(new Request(config))
             .toPromise()
             .then(() => {
+                this.loadingCountSource.next(--(this.loadingCount));
                 return Promise.resolve(true);
             })
             .catch((r: Response) => {
+                this.loadingCountSource.next(--(this.loadingCount));
                 return <any>this.handleError(r);
             });
             //.finally(() => {
@@ -111,6 +118,7 @@ export class RepLoader {
 
     private httpPopulate(config: RequestOptions, ignoreCache: boolean, response: Models.IHateoasModel): Promise<Models.IHateoasModel> {
         //$rootScope.$broadcast(Nakedobjectsconstants.geminiAjaxChangeEvent, ++loadingCount);
+        this.loadingCountSource.next(++(this.loadingCount));
 
         if (ignoreCache) {
             // clear cache of existing values
@@ -120,6 +128,7 @@ export class RepLoader {
         return this.http.request(new Request(config))
             .toPromise()
             .then((r: Response) => {
+                this.loadingCountSource.next(--(this.loadingCount));
                 if (!this.isValidResponse(r.json())) {
                     return this.handleInvalidResponse(Models.ErrorCategory.ClientError);
                 }
@@ -130,6 +139,7 @@ export class RepLoader {
                 return <any>Promise.resolve(response);
             })
             .catch((r: Response) => {
+                this.loadingCountSource.next(--(this.loadingCount));
                 return <any>this.handleError(r);
             });
             //.finally(() => {
