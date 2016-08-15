@@ -8,6 +8,8 @@ import { Mask, ILocalFilter } from "./mask.service";
 import * as ViewModels from "./nakedobjects.viewmodels";
 import { Context } from "./context.service";
 
+import * as moment from "moment";
+
 export function dirtyMarker(context: Context, oid: ObjectIdWrapper) {
     return (Config.showDirtyFlag && context.getIsDirty(oid)) ? "*" : "";
 }
@@ -221,14 +223,12 @@ function validateDateTimeFormat(model: IHasExtensions, newValue: Date): string {
 }
 
 function getDate(val: string) : Date {
-    //const dt1 = moment(val, "YYYY-MM-DD", "en-GB", true);
+    const dt1 = moment(val, "YYYY-MM-DD", "en-GB", true);
 
-    //if (dt1.isValid()) {
-    //    return dt1.toDate();
-    //}
-    return null;
+    if (dt1.isValid()) {
+        return dt1.toDate();
+    }
 }
-
 
 function validateDateFormat(model: IHasExtensions, newValue: Date, filter: ILocalFilter): string {
     const range = model.extensions().range();
