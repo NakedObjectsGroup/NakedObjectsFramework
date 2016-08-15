@@ -109,7 +109,7 @@ html, #main, body, .background, .single, .split {
 
 /*Menus & actions*/
 .menu, .header .action {
-    float: left;
+    display: inline-block;
     padding: 5px;
     margin-left: 1px; /*Else hover outline is hidden on the left-most menu*/
     margin-right: 10px;
