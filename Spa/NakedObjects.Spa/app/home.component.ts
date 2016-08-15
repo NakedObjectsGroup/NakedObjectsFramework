@@ -11,7 +11,7 @@ import { FocusManager } from "./focus-manager.service";
 import { ViewModelFactory } from "./view-model-factory.service";
 import { Color } from "./color.service";
 import { DialogComponent } from "./dialog.component";
-import { PaneRouteData } from "./nakedobjects.routedata";
+import { RouteData, PaneRouteData } from "./nakedobjects.routedata";
 import * as Models from "./models";
 import * as ViewModels from "./nakedobjects.viewmodels";
 
@@ -92,29 +92,40 @@ export class HomeComponent implements OnInit {
                 })
                 .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
+        } else {
+            this.selectedDialog = null;
         }
     }
 
+    getMenu(paneRouteData: PaneRouteData) {
+        const menuId = paneRouteData.menuId;
+        if (menuId) {
+            this.context.getMenu(menuId)
+                .then((menu: Models.MenuRepresentation) => {
+                    const rd = this.urlManager.getRouteData().pane()[this.paneId];
+                    this.selectedMenu = this.viewModelFactory.menuViewModel(menu, rd);
+                    this.getDialog(paneRouteData);
+                })
+                .catch((reject: Models.ErrorWrapper) => {
+                    this.error.handleError(reject);
+                });
+        }
+        else {
+            this.selectedMenu = null;
+        }
+    }
 
     doClick(linkViewModel: ViewModels.ILinkViewModel) {
-
         const menuId = linkViewModel.link.rel().parms[0].value;
-        this.urlManager.setMenu(menuId);
-        this.context.getMenu(menuId)
-            .then((menu: Models.MenuRepresentation) => {
-                const rd = this.urlManager.getRouteData().pane()[this.paneId];
-                this.selectedMenu = this.viewModelFactory.menuViewModel(menu, rd);
-            })
-            .catch((reject: Models.ErrorWrapper) => {
-                this.error.handleError(reject);
-            });
+        this.urlManager.setMenu(menuId, this.paneId);
     }
 
     ngOnInit(): any {
         this.getMenus();
         this.urlManager.getRouteDataObservable()
-            .subscribe((rd: any) => {
-                this.getDialog(rd.pane()[this.paneId]);
+            .subscribe((rd: RouteData) => {
+                const paneRouteData = rd.pane()[this.paneId];
+                this.getMenu(paneRouteData);
             });
     }
 }
