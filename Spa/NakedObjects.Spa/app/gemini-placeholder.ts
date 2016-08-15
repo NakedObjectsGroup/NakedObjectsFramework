@@ -6,4 +6,8 @@ export class GeminiPlaceholderDirective {
     constructor(el: ElementRef) {
         this.el = el.nativeElement;
     }
+
+    //const fn = $parse(attrs.geminiPlaceholder);
+    //element.attr("placeholder", fn(scope));
+
 }
