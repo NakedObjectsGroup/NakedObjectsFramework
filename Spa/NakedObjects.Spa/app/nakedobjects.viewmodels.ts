@@ -1,16 +1,16 @@
-﻿import * as Usermessagesconfig from "./user-messages.config";
+﻿import * as Msg from "./user-messages.config";
 import * as Models from "./models";
-import * as Nakedobjectsconfig from "./nakedobjects.config";
-import * as Nakedobjectsroutedata from "./nakedobjects.routedata";
-import * as Nakedobjectsrointerfaces from "./nakedobjects.rointerfaces";
-import * as Contextservice from "./context.service";
-import * as Colorservice from "./color.service";
-import * as Urlmanagerservice from "./urlmanager.service";
+import * as Config from "./nakedobjects.config";
+import { PaneRouteData, CollectionViewState, ViewType, InteractionMode } from "./nakedobjects.routedata";
+import * as Ro from "./nakedobjects.rointerfaces";
+import { Context } from "./context.service";
+import { Color } from "./color.service";
+import { UrlManager } from "./urlmanager.service";
 import * as _ from "lodash";
-import {Error} from "./error.service";
-import * as Viewmodelfactoryservice from "./view-model-factory.service";
-import * as Focusmanagerservice from "./focus-manager.service";
-import * as Maskservice from "./mask.service";
+import { Error } from "./error.service";
+import { ViewModelFactory } from "./view-model-factory.service";
+import { FocusManager } from "./focus-manager.service";
+import { ILocalFilter } from "./mask.service";
 
 export interface IAttachmentViewModel {
     href: string;
@@ -34,7 +34,7 @@ export interface IChoiceViewModel {
 }
 
 export interface IDraggableViewModel {
-    value: Nakedobjectsrointerfaces.scalarValueType | Date;
+    value: Ro.scalarValueType | Date;
     reference: string;
     selectedChoice: IChoiceViewModel;
     color: string;
@@ -91,7 +91,7 @@ export interface IFieldViewModel extends IMessageViewModel {
     mask: string;
     title: string;
     returnType: string;
-    format: Nakedobjectsrointerfaces.formatType;
+    format: Ro.formatType;
     multipleLines: number;
     password: boolean;
     clientValid: boolean;
@@ -107,12 +107,12 @@ export interface IFieldViewModel extends IMessageViewModel {
     currentValue: Models.Value;
     originalValue: Models.Value;
 
-    localFilter: Maskservice.ILocalFilter;
+    localFilter: ILocalFilter;
     formattedValue: string;
 
     choices: IChoiceViewModel[];
 
-    value: Nakedobjectsrointerfaces.scalarValueType | Date;
+    value: Ro.scalarValueType | Date;
 
     selectedChoice: IChoiceViewModel;
     selectedMultiChoices: IChoiceViewModel[];
@@ -180,7 +180,7 @@ export interface IDialogViewModel extends IMessageViewModel {
     id: string;
     parameters: IParameterViewModel[];
 
-    reset: (actionViewModel: IActionViewModel, routeData: Nakedobjectsroutedata.PaneRouteData) => void;
+    reset: (actionViewModel: IActionViewModel, routeData: PaneRouteData) => void;
     refresh: () => void;
     deregister: () => void;
     clientValid: () => boolean;
@@ -208,8 +208,8 @@ export interface IListViewModel extends IMessageViewModel {
     menuItems: IMenuItemViewModel[];
 
     description: () => string;
-    refresh: (routeData: Nakedobjectsroutedata.PaneRouteData) => void;
-    reset: (list: Models.ListRepresentation, routeData: Nakedobjectsroutedata.PaneRouteData) => void;
+    refresh: (routeData: PaneRouteData) => void;
+    reset: (list: Models.ListRepresentation, routeData: PaneRouteData) => void;
     toggleActionMenu: () => void;
     pageNext: () => void;
     pagePrevious: () => void;
@@ -234,7 +234,7 @@ export interface ICollectionViewModel {
     items: IItemViewModel[];
     header: string[];
     onPaneId: number;
-    currentState: Nakedobjectsroutedata.CollectionViewState;
+    currentState: CollectionViewState;
     presentationHint: string;
     template: string;
     actions: IActionViewModel[];
@@ -247,11 +247,11 @@ export interface ICollectionViewModel {
     doList: () => void;
 
     description: () => string;
-    refresh: (routeData: Nakedobjectsroutedata.PaneRouteData, resetting: boolean) => void;
+    refresh: (routeData: PaneRouteData, resetting: boolean) => void;
 }
 
 export interface IMenusViewModel {
-    reset: (menusRep: Models.MenusRepresentation, routeData: Nakedobjectsroutedata.PaneRouteData) => IMenusViewModel;
+    reset: (menusRep: Models.MenusRepresentation, routeData: PaneRouteData) => IMenusViewModel;
     menusRep: Models.MenusRepresentation;
     onPaneId: number;
     items: ILinkViewModel[];
@@ -268,7 +268,7 @@ export interface IMenuViewModel extends IMessageViewModel {
 export interface ITableRowColumnViewModel {
     type: "ref" | "scalar";
     returnType: string;
-    value: Nakedobjectsrointerfaces.scalarValueType | Date;
+    value: Ro.scalarValueType | Date;
     formattedValue: string;
     title: string;
 }
@@ -280,8 +280,8 @@ export interface ITableRowViewModel {
 }
 
 export interface IApplicationPropertiesViewModel {
-    serverVersion: Nakedobjectsrointerfaces.IVersionRepresentation;
-    user: Nakedobjectsrointerfaces.IUserRepresentation;
+    serverVersion: Ro.IVersionRepresentation;
+    user: Ro.IUserRepresentation;
     serverUrl: string;
     clientVersion: string;
 }
@@ -326,8 +326,8 @@ export interface IDomainObjectViewModel extends IMessageViewModel {
     properties: IPropertyViewModel[];
     collections: ICollectionViewModel[];
 
-    refresh: (routeData: Nakedobjectsroutedata.PaneRouteData) => void;
-    reset: (obj: Models.DomainObjectRepresentation, routeData: Nakedobjectsroutedata.PaneRouteData) => IDomainObjectViewModel;
+    refresh: (routeData: PaneRouteData) => void;
+    reset: (obj: Models.DomainObjectRepresentation, routeData: PaneRouteData) => IDomainObjectViewModel;
     concurrency: () => (event: any, em: Models.ErrorMap) => void; // event: ng.IAngularEvent
     clientValid: () => boolean;
     tooltip: () => string;
@@ -361,11 +361,11 @@ export interface ICiceroViewModel {
 
     outputMessageThenClearIt: () => void;
 
-    renderHome: (routeData: Nakedobjectsroutedata.PaneRouteData) => void;
-    renderObject: (routeData: Nakedobjectsroutedata.PaneRouteData) => void;
-    renderList: (routeData: Nakedobjectsroutedata.PaneRouteData) => void;
+    renderHome: (routeData: PaneRouteData) => void;
+    renderObject: (routeData: PaneRouteData) => void;
+    renderList: (routeData: PaneRouteData) => void;
     renderError: () => void;
-    viewType: Nakedobjectsroutedata.ViewType;
+    viewType: ViewType;
     clipboard: Models.DomainObjectRepresentation;
 
     executeNextChainedCommandIfAny: () => void;
@@ -384,13 +384,13 @@ function tooltip(onWhat: { clientValid: () => boolean }, fields: IFieldViewModel
     const missingMandatoryFields = _.filter(fields, p => !p.clientValid && !p.getMessage());
 
     if (missingMandatoryFields.length > 0) {
-        return _.reduce(missingMandatoryFields, (s, t) => s + t.title + "; ", Usermessagesconfig.mandatoryFieldsPrefix);
+        return _.reduce(missingMandatoryFields, (s, t) => s + t.title + "; ", Msg.mandatoryFieldsPrefix);
     }
 
     const invalidFields = _.filter(fields, p => !p.clientValid);
 
     if (invalidFields.length > 0) {
-        return _.reduce(invalidFields, (s, t) => s + t.title + "; ", Usermessagesconfig.invalidFieldsPrefix);
+        return _.reduce(invalidFields, (s, t) => s + t.title + "; ", Msg.invalidFieldsPrefix);
     }
 
     return "";
@@ -398,9 +398,9 @@ function tooltip(onWhat: { clientValid: () => boolean }, fields: IFieldViewModel
 
 function actionsTooltip(onWhat: { disableActions: () => boolean }, actionsOpen: boolean) {
     if (actionsOpen) {
-        return Usermessagesconfig.closeActions;
+        return Msg.closeActions;
     }
-    return onWhat.disableActions() ? Usermessagesconfig.noActions : Usermessagesconfig.openActions;
+    return onWhat.disableActions() ? Msg.noActions : Msg.openActions;
 }
 
 export function toTriStateBoolean(valueToSet: string | boolean | number) {
@@ -483,14 +483,14 @@ export class AttachmentViewModel implements IAttachmentViewModel {
     onPaneId: number;
 
     private parent: Models.DomainObjectRepresentation;
-    private context: Contextservice.Context;
+    private context: Context;
 
-    static create(attachmentLink: Models.Link, parent: Models.DomainObjectRepresentation, context: Contextservice.Context, paneId: number) {
+    static create(attachmentLink: Models.Link, parent: Models.DomainObjectRepresentation, context: Context, paneId: number) {
         const attachmentViewModel = new AttachmentViewModel();
         attachmentViewModel.link = attachmentLink;
         attachmentViewModel.href = attachmentLink.href();
         attachmentViewModel.mimeType = attachmentLink.type().asString;
-        attachmentViewModel.title = attachmentLink.title() || Usermessagesconfig.unknownFileTitle;
+        attachmentViewModel.title = attachmentLink.title() || Msg.unknownFileTitle;
         attachmentViewModel.parent = parent;
         attachmentViewModel.context = context;
         attachmentViewModel.onPaneId = paneId;
@@ -573,7 +573,7 @@ export class LinkViewModel implements ILinkViewModel, IDraggableViewModel {
 
     // IDraggableViewModel 
     color: string;
-    value: Nakedobjectsrointerfaces.scalarValueType;
+    value: Ro.scalarValueType;
     reference: string;
     selectedChoice: IChoiceViewModel;
     draggableType: string;
@@ -609,7 +609,7 @@ abstract class MessageViewModel implements IMessageViewModel {
 
 abstract class ValueViewModel extends MessageViewModel implements IFieldViewModel {
 
-    constructor(ext: Models.Extensions, color: Colorservice.Color, error: Error) {
+    constructor(ext: Models.Extensions, color: Color, error: Error) {
         super();
         this.optional = ext.optional();
         this.description = ext.description();
@@ -635,7 +635,7 @@ abstract class ValueViewModel extends MessageViewModel implements IFieldViewMode
     mask: string;
     title: string;
     returnType: string;
-    format: Nakedobjectsrointerfaces.formatType;
+    format: Ro.formatType;
     multipleLines: number;
     password: boolean;
 
@@ -654,7 +654,7 @@ abstract class ValueViewModel extends MessageViewModel implements IFieldViewMode
     currentValue: Models.Value;
     originalValue: Models.Value;
 
-    localFilter: Maskservice.ILocalFilter;
+    localFilter: ILocalFilter;
     formattedValue: string;
 
     choices: IChoiceViewModel[] = [];
@@ -676,13 +676,13 @@ abstract class ValueViewModel extends MessageViewModel implements IFieldViewMode
         }
     }
 
-    private currentRawValue: Nakedobjectsrointerfaces.scalarValueType | Date;
+    private currentRawValue: Ro.scalarValueType | Date;
 
-    get value(): Nakedobjectsrointerfaces.scalarValueType | Date {
+    get value(): Ro.scalarValueType | Date {
         return this.currentRawValue;
     }
 
-    set value(newValue: Nakedobjectsrointerfaces.scalarValueType | Date) {
+    set value(newValue: Ro.scalarValueType | Date) {
         this.currentRawValue = newValue;
         this.updateColor();
     }
@@ -717,20 +717,20 @@ abstract class ValueViewModel extends MessageViewModel implements IFieldViewMode
 
     private updateColor: () => void;
 
-    private setColor(color: Colorservice.Color) {
+    private setColor(color: Color) {
 
         if (this.entryType === Models.EntryType.AutoComplete && this.selectedChoice && this.type === "ref") {
             const href = this.selectedChoice.getValue().href();
             if (href) {
                 color.toColorNumberFromHref(href).
-                    then(c => this.color = `${Nakedobjectsconfig.linkColor}${c}`).
+                    then(c => this.color = `${Config.linkColor}${c}`).
                     catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
                 return;
             }
         }
         else if (this.entryType !== Models.EntryType.AutoComplete && this.value) {
             color.toColorNumberFromType(this.returnType).
-                then(c => this.color = `${Nakedobjectsconfig.linkColor}${c}`).
+                then(c => this.color = `${Config.linkColor}${c}`).
                 catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
             return;
         }
@@ -785,7 +785,7 @@ abstract class ValueViewModel extends MessageViewModel implements IFieldViewMode
                 return new Models.Value((this.value as Date).toISOString());
             }
 
-            return new Models.Value(this.value as Nakedobjectsrointerfaces.scalarValueType);
+            return new Models.Value(this.value as Ro.scalarValueType);
         }
 
         // reference
@@ -795,7 +795,7 @@ abstract class ValueViewModel extends MessageViewModel implements IFieldViewMode
 
 export class ParameterViewModel extends ValueViewModel {
 
-    constructor(parmRep: Models.Parameter, paneId: number, color: Colorservice.Color, error: Error) {
+    constructor(parmRep: Models.Parameter, paneId: number, color: Color, error: Error) {
         super(parmRep.extensions(), color, error);
         this.parameterRep = parmRep;
         this.onPaneId = paneId;
@@ -842,11 +842,11 @@ export class MenuItemViewModel implements IMenuItemViewModel {
 }
 
 export class DialogViewModel extends MessageViewModel implements IDialogViewModel {
-    constructor(private color: Colorservice.Color,
-        private context: Contextservice.Context,
-        private viewModelFactory: Viewmodelfactoryservice.ViewModelFactory,
-        private urlManager: Urlmanagerservice.UrlManager,
-        private focusManager: Focusmanagerservice.FocusManager,
+    constructor(private color: Color,
+        private context: Context,
+        private viewModelFactory: ViewModelFactory,
+        private urlManager: UrlManager,
+        private focusManager: FocusManager,
         private error: Error) {
         super();
     }
@@ -868,7 +868,7 @@ export class DialogViewModel extends MessageViewModel implements IDialogViewMode
     id: string;
     parameters: IParameterViewModel[];
 
-    reset(actionViewModel: IActionViewModel, routeData: Nakedobjectsroutedata.PaneRouteData) {
+    reset(actionViewModel: IActionViewModel, routeData: PaneRouteData) {
         this.actionViewModel = actionViewModel;
         this.onPaneId = routeData.paneId;
 
@@ -901,7 +901,7 @@ export class DialogViewModel extends MessageViewModel implements IDialogViewMode
         this.execute(right).
             then((actionResult: Models.ActionResultRepresentation) => {
                 if (actionResult.shouldExpectResult()) {
-                    this.setMessage(actionResult.warningsOrMessages() || Usermessagesconfig.noResultMessage);
+                    this.setMessage(actionResult.warningsOrMessages() || Msg.noResultMessage);
                 } else if (actionResult.resultType() === "void") {
                     // dialog staying on same page so treat as cancel 
                     // for url replacing purposes
@@ -940,7 +940,7 @@ export class DialogViewModel extends MessageViewModel implements IDialogViewMode
 
 export class PropertyViewModel extends ValueViewModel implements IPropertyViewModel, IDraggableViewModel {
 
-    constructor(propertyRep: Models.PropertyMember, color: Colorservice.Color, error: Error) {
+    constructor(propertyRep: Models.PropertyMember, color: Color, error: Error) {
         super(propertyRep.extensions(), color, error);
         this.draggableType = propertyRep.extensions().returnType();
 
@@ -970,21 +970,21 @@ export class CollectionPlaceholderViewModel implements ICollectionPlaceholderVie
 
 export class ListViewModel extends MessageViewModel implements IListViewModel {
 
-    constructor(private colorService: Colorservice.Color,
-                private context: Contextservice.Context,
-                private viewModelFactory: Viewmodelfactoryservice.ViewModelFactory,
-                private urlManager: Urlmanagerservice.UrlManager,
-                private focusManager: Focusmanagerservice.FocusManager,
+    constructor(private colorService: Color,
+                private context: Context,
+                private viewModelFactory: ViewModelFactory,
+                private urlManager: UrlManager,
+                private focusManager: FocusManager,
                 private error: Error) {
         super();
     }
 
-    private routeData: Nakedobjectsroutedata.PaneRouteData;
+    private routeData: PaneRouteData;
     private onPaneId: number;
     private page: number;
     private pageSize: number;
     private numPages: number;
-    private state: Nakedobjectsroutedata.CollectionViewState;
+    private state: CollectionViewState;
     private allSelected: boolean;
 
     id: string;
@@ -1003,7 +1003,7 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
             this.context.getListFromMenu(this.routeData.paneId, this.routeData, page, pageSize);
     };
 
-    private pageOrRecreate = (newPage: number, newPageSize: number, newState?: Nakedobjectsroutedata.CollectionViewState) => {
+    private pageOrRecreate = (newPage: number, newPageSize: number, newState?: CollectionViewState) => {
         this.recreate(newPage, newPageSize).
             then((list: Models.ListRepresentation) => {
                 this.urlManager.setListPaging(newPage, newPageSize, newState || this.routeData.state, this.onPaneId);
@@ -1016,7 +1016,7 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
             });
     };
 
-    private setPage = (newPage: number, newState: Nakedobjectsroutedata.CollectionViewState) => {
+    private setPage = (newPage: number, newState: CollectionViewState) => {
         this.context.updateValues();
         this.focusManager.focusOverrideOff();
         this.pageOrRecreate(newPage, this.pageSize, newState);
@@ -1036,7 +1036,7 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
 
     private updateItems(value: Models.Link[]) {
         this.items = this.viewModelFactory.getItems(value,
-            this.state === Nakedobjectsroutedata.CollectionViewState.Table,
+            this.state === CollectionViewState.Table,
             this.routeData,
             this);
 
@@ -1045,9 +1045,9 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
         const count = this.items.length;
         this.size = count;
         if (count > 0) {
-            this.description = () => Usermessagesconfig.pageMessage(this.page, this.numPages, count, totalCount);
+            this.description = () => Msg.pageMessage(this.page, this.numPages, count, totalCount);
         } else {
-            this.description = () => Usermessagesconfig.noItemsFound;
+            this.description = () => Msg.noItemsFound;
         }
     }
 
@@ -1063,7 +1063,7 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
 
             if (selected.length === 0) {
 
-                const em = new Models.ErrorMap({}, 0, Usermessagesconfig.noItemsSelected);
+                const em = new Models.ErrorMap({}, 0, Msg.noItemsSelected);
                 const rp = new Models.ErrorWrapper(Models.ErrorCategory.HttpClientError, Models.HttpStatusCode.UnprocessableEntity, em);
 
                 return <any>Promise.reject(rp);
@@ -1107,7 +1107,7 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
 
         const invokeWithoutDialog = (right?: boolean) =>
             actionViewModel.execute([], right).
-                then(result => this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || Usermessagesconfig.noResultMessage : "")).
+                then(result => this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || Msg.noResultMessage : "")).
                 catch((reject: Models.ErrorWrapper) => {
                     const display = (em: Models.ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
                     this.error.handleErrorAndDisplayMessages(reject, display);
@@ -1123,12 +1123,12 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
         this.collectionContributedInvokeDecorator(actionViewModel);
     }
 
-    refresh(routeData: Nakedobjectsroutedata.PaneRouteData) {
+    refresh(routeData: PaneRouteData) {
 
         this.routeData = routeData;
         if (this.state !== routeData.state) {
             this.state = routeData.state;
-            if (this.state === Nakedobjectsroutedata.CollectionViewState.Table && !this.hasTableData()) {
+            if (this.state === CollectionViewState.Table && !this.hasTableData()) {
                 this.recreate(this.page, this.pageSize).
                     then(list => {
                         this.listRep = list;
@@ -1143,7 +1143,7 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
         }
     }
 
-    reset(list: Models.ListRepresentation, routeData: Nakedobjectsroutedata.PaneRouteData) {
+    reset(list: Models.ListRepresentation, routeData: PaneRouteData) {
         this.listRep = list;
         this.routeData = routeData;
 
@@ -1178,17 +1178,17 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
 
     doSummary = () => {
         this.context.updateValues();
-        this.urlManager.setListState(Nakedobjectsroutedata.CollectionViewState.Summary, this.onPaneId);
+        this.urlManager.setListState(CollectionViewState.Summary, this.onPaneId);
     };
 
     doList = () => {
         this.context.updateValues();
-        this.urlManager.setListState(Nakedobjectsroutedata.CollectionViewState.List, this.onPaneId);
+        this.urlManager.setListState(CollectionViewState.List, this.onPaneId);
     };
 
     doTable = () => {
         this.context.updateValues();
-        this.urlManager.setListState(Nakedobjectsroutedata.CollectionViewState.Table, this.onPaneId);
+        this.urlManager.setListState(CollectionViewState.Table, this.onPaneId);
     };
 
     reload = () => {
@@ -1225,7 +1225,7 @@ export class CollectionViewModel implements ICollectionViewModel {
     items: IItemViewModel[];
     header: string[];
     onPaneId: number;
-    currentState: Nakedobjectsroutedata.CollectionViewState;
+    currentState: CollectionViewState;
     presentationHint: string;
     template: string;
     actions: IActionViewModel[];
@@ -1238,13 +1238,13 @@ export class CollectionViewModel implements ICollectionViewModel {
     doList: () => void;
 
     description = () => this.details.toString();
-    refresh: (routeData: Nakedobjectsroutedata.PaneRouteData, resetting: boolean) => void;
+    refresh: (routeData: PaneRouteData, resetting: boolean) => void;
 }
 
 export class MenusViewModel implements IMenusViewModel {
-    constructor(private viewModelFactory: Viewmodelfactoryservice.ViewModelFactory) { }
+    constructor(private viewModelFactory: ViewModelFactory) { }
 
-    reset(menusRep: Models.MenusRepresentation, routeData: Nakedobjectsroutedata.PaneRouteData) {
+    reset(menusRep: Models.MenusRepresentation, routeData: PaneRouteData) {
         this.menusRep = menusRep;
         this.onPaneId = routeData.paneId;
         this.items = _.map(this.menusRep.value(), link => this.viewModelFactory.linkViewModel(link, this.onPaneId));
@@ -1267,7 +1267,7 @@ export class MenuViewModel extends MessageViewModel implements IMenuViewModel {
 export class TableRowColumnViewModel implements ITableRowColumnViewModel {
     type: "ref" | "scalar";
     returnType: string;
-    value: Nakedobjectsrointerfaces.scalarValueType | Date;
+    value: Ro.scalarValueType | Date;
     formattedValue: string;
     title: string;
 }
@@ -1279,8 +1279,8 @@ export class TableRowViewModel implements ITableRowViewModel {
 }
 
 export class ApplicationPropertiesViewModel implements IApplicationPropertiesViewModel {
-    serverVersion: Nakedobjectsrointerfaces.IVersionRepresentation;
-    user: Nakedobjectsrointerfaces.IUserRepresentation;
+    serverVersion: Ro.IVersionRepresentation;
+    user: Ro.IUserRepresentation;
     serverUrl: string;
     clientVersion: string;
 }
@@ -1311,16 +1311,16 @@ export class RecentItemsViewModel implements IRecentItemsViewModel {
 
 export class DomainObjectViewModel extends MessageViewModel implements IDomainObjectViewModel, IDraggableViewModel {
 
-    constructor(private colorService: Colorservice.Color,
-        private contextService: Contextservice.Context,
-        private viewModelFactory: Viewmodelfactoryservice.ViewModelFactory,
-        private urlManager: Urlmanagerservice.UrlManager,
-        private focusManager: Focusmanagerservice.FocusManager,
+    constructor(private colorService: Color,
+        private contextService: Context,
+        private viewModelFactory: ViewModelFactory,
+        private urlManager: UrlManager,
+        private focusManager: FocusManager,
         private error: Error) {
         super();
     }
 
-    private routeData: Nakedobjectsroutedata.PaneRouteData;
+    private routeData: PaneRouteData;
     private props: _.Dictionary<Models.Value>;
     private instanceId: string;
     private unsaved: boolean;
@@ -1353,7 +1353,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IDomainOb
 
     private cancelHandler = () => this.isFormOrTransient() ?
         () => this.urlManager.popUrlState(this.onPaneId) :
-        () => this.urlManager.setInteractionMode(Nakedobjectsroutedata.InteractionMode.View, this.onPaneId);
+        () => this.urlManager.setInteractionMode(InteractionMode.View, this.onPaneId);
 
     private saveHandler = () => this.domainObject.isTransient() ? this.contextService.saveObject : this.contextService.updateObject;
 
@@ -1396,23 +1396,23 @@ export class DomainObjectViewModel extends MessageViewModel implements IDomainOb
     // because parameters may have appeared or disappeared etc and refesh just updates existing views. 
     // So OK for view state changes but not eg for a parameter that disappears after saving
 
-    refresh(routeData: Nakedobjectsroutedata.PaneRouteData) {
+    refresh(routeData: PaneRouteData) {
 
         this.routeData = routeData;
         const iMode = this.domainObject.extensions().interactionMode();
-        this.isInEdit = routeData.interactionMode !== Nakedobjectsroutedata.InteractionMode.View || iMode === "form" || iMode === "transient";
-        this.props = routeData.interactionMode !== Nakedobjectsroutedata.InteractionMode.View ? this.contextService.getCurrentObjectValues(this.domainObject.id(), routeData.paneId) : {};
+        this.isInEdit = routeData.interactionMode !== InteractionMode.View || iMode === "form" || iMode === "transient";
+        this.props = routeData.interactionMode !== InteractionMode.View ? this.contextService.getCurrentObjectValues(this.domainObject.id(), routeData.paneId) : {};
 
         _.forEach(this.properties, p => p.refresh(this.props[p.id]));
         _.forEach(this.collections, c => c.refresh(this.routeData, false));
 
-        this.unsaved = routeData.interactionMode === Nakedobjectsroutedata.InteractionMode.Transient;
+        this.unsaved = routeData.interactionMode === InteractionMode.Transient;
 
         this.title = this.unsaved ? `Unsaved ${this.domainObject.extensions().friendlyName()}` : this.domainObject.title();
 
         this.title = this.title + Models.dirtyMarker(this.contextService, this.domainObject.getOid());
 
-        if (routeData.interactionMode === Nakedobjectsroutedata.InteractionMode.Form) {
+        if (routeData.interactionMode === InteractionMode.Form) {
             _.forEach(this.actions, a => this.wrapAction(a));
         }
 
@@ -1420,13 +1420,13 @@ export class DomainObjectViewModel extends MessageViewModel implements IDomainOb
         this.clearMessage();
     }
 
-    reset(obj: Models.DomainObjectRepresentation, routeData: Nakedobjectsroutedata.PaneRouteData): IDomainObjectViewModel {
+    reset(obj: Models.DomainObjectRepresentation, routeData: PaneRouteData): IDomainObjectViewModel {
         this.domainObject = obj;
         this.onPaneId = routeData.paneId;
         this.routeData = routeData;
         const iMode = this.domainObject.extensions().interactionMode();
-        this.isInEdit = routeData.interactionMode !== Nakedobjectsroutedata.InteractionMode.View || iMode === "form" || iMode === "transient";
-        this.props = routeData.interactionMode !== Nakedobjectsroutedata.InteractionMode.View ? this.contextService.getCurrentObjectValues(this.domainObject.id(), routeData.paneId) : {};
+        this.isInEdit = routeData.interactionMode !== InteractionMode.View || iMode === "form" || iMode === "transient";
+        this.props = routeData.interactionMode !== InteractionMode.View ? this.contextService.getCurrentObjectValues(this.domainObject.id(), routeData.paneId) : {};
 
         const actions = _.values(this.domainObject.actionMembers()) as Models.ActionMember[];
         this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, this.routeData));
@@ -1436,7 +1436,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IDomainOb
         this.properties = _.map(this.domainObject.propertyMembers(), (property, id) => this.viewModelFactory.propertyViewModel(property, id, this.props[id], this.onPaneId, this.propertyMap));
         this.collections = _.map(this.domainObject.collectionMembers(), collection => this.viewModelFactory.collectionViewModel(collection, this.routeData));
 
-        this.unsaved = routeData.interactionMode === Nakedobjectsroutedata.InteractionMode.Transient;
+        this.unsaved = routeData.interactionMode === InteractionMode.Transient;
 
         this.title = this.unsaved ? `Unsaved ${this.domainObject.extensions().friendlyName()}` : this.domainObject.title();
 
@@ -1464,12 +1464,12 @@ export class DomainObjectViewModel extends MessageViewModel implements IDomainOb
         this.selectedChoice = sav ? ChoiceViewModel.create(sav, "") : null;
 
         this.colorService.toColorNumberFromType(this.domainObject.domainType()).
-            then(c => this.color = `${Nakedobjectsconfig.objectColor}${c}`).
+            then(c => this.color = `${Config.objectColor}${c}`).
             catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
         this.resetMessage();
 
-        if (routeData.interactionMode === Nakedobjectsroutedata.InteractionMode.Form) {
+        if (routeData.interactionMode === InteractionMode.Form) {
             _.forEach(this.actions, a => this.wrapAction(a));
         }
 
@@ -1552,7 +1552,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IDomainOb
             then(updatedObject => {
                 this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
                 this.urlManager.pushUrlState(this.onPaneId);
-                this.urlManager.setInteractionMode(Nakedobjectsroutedata.InteractionMode.Edit, this.onPaneId);
+                this.urlManager.setInteractionMode(InteractionMode.Edit, this.onPaneId);
             }).
             catch((reject: Models.ErrorWrapper) => this.handleWrappedError(reject));
     };
@@ -1605,11 +1605,11 @@ export class CiceroViewModel implements ICiceroViewModel {
         this.message = null;
     }
 
-    renderHome: (routeData: Nakedobjectsroutedata.PaneRouteData) => void;
-    renderObject: (routeData: Nakedobjectsroutedata.PaneRouteData) => void;
-    renderList: (routeData: Nakedobjectsroutedata.PaneRouteData) => void;
+    renderHome: (routeData: PaneRouteData) => void;
+    renderObject: (routeData: PaneRouteData) => void;
+    renderList: (routeData: PaneRouteData) => void;
     renderError: () => void;
-    viewType: Nakedobjectsroutedata.ViewType;
+    viewType: ViewType;
     clipboard: Models.DomainObjectRepresentation;
 
     executeNextChainedCommandIfAny: () => void;

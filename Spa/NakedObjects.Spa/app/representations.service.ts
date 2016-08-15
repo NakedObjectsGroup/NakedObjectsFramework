@@ -2,8 +2,8 @@
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import "./rxjs-extensions";
-import {IRepresentation} from "./nakedobjects.rointerfaces";
-import {getAppPath} from "./nakedobjects.config";
+import { IRepresentation } from "./nakedobjects.rointerfaces";
+import { getAppPath } from "./nakedobjects.config";
 import * as Models from "./models";
 
 @Injectable()

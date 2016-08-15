@@ -1,34 +1,34 @@
 ﻿import * as Models from "./models";
-import * as Nakedobjectsviewmodels from "./nakedobjects.viewmodels";
-import * as Nakedobjectsconfig from "./nakedobjects.config";
-import * as Focusmanagerservice from "./focus-manager.service";
-import * as Nakedobjectsroutedata from "./nakedobjects.routedata";
-import * as Nakedobjectsconstants from "./nakedobjects.constants";
-import * as Usermessagesconfig from "./user-messages.config";
-import * as Contextservice from "./context.service";
-import * as Urlmanagerservice from "./urlmanager.service";
-import * as Colorservice from "./color.service";
-import * as Clickhandlerservice from "./click-handler.service";
-import * as Errorservice from "./error.service";
-import * as Maskservice from "./mask.service";
+import * as ViewModels from "./nakedobjects.viewmodels";
+import * as Config from "./nakedobjects.config";
+import { FocusManager, FocusTarget } from "./focus-manager.service";
+import { PaneRouteData, CollectionViewState, InteractionMode } from "./nakedobjects.routedata";
+import * as Constants from "./nakedobjects.constants";
+import * as Msg from "./user-messages.config";
+import { Context } from "./context.service";
+import { UrlManager } from "./urlmanager.service";
+import { Color } from "./color.service";
+import { ClickHandlerService } from "./click-handler.service";
+import { Error } from "./error.service";
+import { Mask } from "./mask.service";
 import { Injectable } from '@angular/core';
 import * as _ from "lodash";
 
 @Injectable()
 export class ViewModelFactory {
 
-    constructor(private context: Contextservice.Context,
-        private urlManager: Urlmanagerservice.UrlManager,
-        private color: Colorservice.Color,
-        private error: Errorservice.Error,
-        private clickHandler: Clickhandlerservice.ClickHandlerService,
-        private focusManager: Focusmanagerservice.FocusManager,
-        private mask : Maskservice.Mask
+    constructor(private context: Context,
+        private urlManager: UrlManager,
+        private color: Color,
+        private error: Error,
+        private clickHandler: ClickHandlerService,
+        private focusManager: FocusManager,
+        private mask : Mask
     ) { }
 
 
     errorViewModel = (error: Models.ErrorWrapper) => {
-        const errorViewModel = new Nakedobjectsviewmodels.ErrorViewModel();
+        const errorViewModel = new ViewModels.ErrorViewModel();
 
         errorViewModel.originalError = error;
         if (error) {
@@ -53,7 +53,7 @@ export class ViewModelFactory {
         return errorViewModel;
     };
 
-    private initLinkViewModel(linkViewModel: Nakedobjectsviewmodels.LinkViewModel, linkRep: Models.Link) {
+    private initLinkViewModel(linkViewModel: ViewModels.LinkViewModel, linkRep: Models.Link) {
         linkViewModel.title = linkRep.title() + Models.dirtyMarker(this.context, linkRep.getOid());
         linkViewModel.link = linkRep;
         linkViewModel.domainType = linkRep.type().domainType;
@@ -63,29 +63,29 @@ export class ViewModelFactory {
 
         linkViewModel.value = value.toString();
         linkViewModel.reference = value.toValueString();
-        linkViewModel.selectedChoice = Nakedobjectsviewmodels.ChoiceViewModel.create(value, "");
+        linkViewModel.selectedChoice = ViewModels.ChoiceViewModel.create(value, "");
         linkViewModel.draggableType = linkViewModel.domainType;
 
         this.color.toColorNumberFromHref(linkRep.href()).
-            then(c => linkViewModel.color = `${Nakedobjectsconfig.linkColor}${c}`).
+            then(c => linkViewModel.color = `${Config.linkColor}${c}`).
             catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
         linkViewModel.canDropOn = (targetType: string) => this.context.isSubTypeOf(linkViewModel.domainType, targetType);
     }
 
     private createChoiceViewModels = (id: string, searchTerm: string, choices: _.Dictionary<Models.Value>) =>
-        Promise.resolve(_.map(choices, (v, k) => Nakedobjectsviewmodels.ChoiceViewModel.create(v, id, k, searchTerm)));
+        Promise.resolve(_.map(choices, (v, k) => ViewModels.ChoiceViewModel.create(v, id, k, searchTerm)));
 
     attachmentViewModel = (propertyRep: Models.PropertyMember, paneId: number) => {
         const parent = propertyRep.parent as Models.DomainObjectRepresentation;
-        const avm = Nakedobjectsviewmodels.AttachmentViewModel.create(propertyRep.attachmentLink(), parent, this.context, paneId);
+        const avm = ViewModels.AttachmentViewModel.create(propertyRep.attachmentLink(), parent, this.context, paneId);
         avm.doClick = (right?: boolean) => this.urlManager.setAttachment(avm.link, this.clickHandler.pane(paneId, right));
 
         return avm;
     };
 
     linkViewModel = (linkRep: Models.Link, paneId: number) => {
-        const linkViewModel = new Nakedobjectsviewmodels.LinkViewModel();
+        const linkViewModel = new ViewModels.LinkViewModel();
         this.initLinkViewModel(linkViewModel, linkRep);
 
         linkViewModel.doClick = () => {
@@ -93,14 +93,14 @@ export class ViewModelFactory {
             this.urlManager.setMenu(linkRep.rel().parms[0].value, paneId);
             this.focusManager.setCurrentPane(paneId);
             this.focusManager.focusOverrideOff();
-            this.focusManager.focusOn(Focusmanagerservice.FocusTarget.SubAction, 0, paneId);
+            this.focusManager.focusOn(FocusTarget.SubAction, 0, paneId);
         };
 
-        return linkViewModel as Nakedobjectsviewmodels.ILinkViewModel;
+        return linkViewModel as ViewModels.ILinkViewModel;
     };
 
     itemViewModel = (linkRep: Models.Link, paneId: number, selected: boolean) => {
-        const itemViewModel = new Nakedobjectsviewmodels.ItemViewModel();
+        const itemViewModel = new ViewModels.ItemViewModel();
         this.initLinkViewModel(itemViewModel, linkRep);
 
         itemViewModel.selected = selected;
@@ -108,7 +108,7 @@ export class ViewModelFactory {
         itemViewModel.selectionChange = (index) => {
             this.context.updateValues();
             this.urlManager.setListItem(index, itemViewModel.selected, paneId);
-            this.focusManager.focusOverrideOn(Focusmanagerservice.FocusTarget.CheckBox, index + 1, paneId);
+            this.focusManager.focusOverrideOn(FocusTarget.CheckBox, index + 1, paneId);
         };
 
         itemViewModel.doClick = (right?: boolean) => {
@@ -128,13 +128,13 @@ export class ViewModelFactory {
     };
 
     recentItemViewModel = (obj: Models.DomainObjectRepresentation, linkRep: Models.Link, paneId: number, selected: boolean) => {
-        const recentItemViewModel = this.itemViewModel(linkRep, paneId, selected) as Nakedobjectsviewmodels.ILinkViewModel;
-        (recentItemViewModel as Nakedobjectsviewmodels.IRecentItemViewModel).friendlyName = obj.extensions().friendlyName();
-        return recentItemViewModel as Nakedobjectsviewmodels.IRecentItemViewModel;
+        const recentItemViewModel = this.itemViewModel(linkRep, paneId, selected) as ViewModels.ILinkViewModel;
+        (recentItemViewModel as ViewModels.IRecentItemViewModel).friendlyName = obj.extensions().friendlyName();
+        return recentItemViewModel as ViewModels.IRecentItemViewModel;
     };
 
-    actionViewModel = (actionRep: Models.ActionMember | Models.ActionRepresentation, vm: Nakedobjectsviewmodels.IMessageViewModel, routeData: Nakedobjectsroutedata.PaneRouteData) => {
-        const actionViewModel = new Nakedobjectsviewmodels.ActionViewModel();
+    actionViewModel = (actionRep: Models.ActionMember | Models.ActionRepresentation, vm: ViewModels.IMessageViewModel, routeData: PaneRouteData) => {
+        const actionViewModel = new ViewModels.ActionViewModel();
 
         const parms = routeData.actionParams;
         const paneId = routeData.paneId;
@@ -157,14 +157,14 @@ export class ViewModelFactory {
             return _.map(parameters, parm => this.parameterViewModel(parm, parms[parm.id()], paneId));
         };
 
-        actionViewModel.execute = (pps: Nakedobjectsviewmodels.ParameterViewModel[], right?: boolean) => {
+        actionViewModel.execute = (pps: ViewModels.ParameterViewModel[], right?: boolean) => {
             const parmMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Models.Value>;
             _.forEach(pps, p => this.urlManager.setParameterValue(actionRep.actionId(), p.parameterRep, p.getValue(), paneId));
             return this.context.getInvokableAction(actionViewModel.actionRep).then(details => this.context.invokeAction(details, parmMap, paneId, this.clickHandler.pane(paneId, right)));
         };
 
         // form actions should never show dialogs
-        const showDialog = () => actionRep.extensions().hasParams() && (routeData.interactionMode !== Nakedobjectsroutedata.InteractionMode.Form);
+        const showDialog = () => actionRep.extensions().hasParams() && (routeData.interactionMode !== InteractionMode.Form);
 
         // open dialog on current pane always - invoke action goes to pane indicated by click
         actionViewModel.doInvoke = showDialog() ?
@@ -174,7 +174,7 @@ export class ViewModelFactory {
                 // clear any previous dialog so we don't pick up values from it
                 this.context.clearDialogValues(paneId);
                 this.urlManager.setDialog(actionRep.actionId(), paneId);
-                this.focusManager.focusOn(Focusmanagerservice.FocusTarget.Dialog, 0, paneId); // in case dialog is already open
+                this.focusManager.focusOn(FocusTarget.Dialog, 0, paneId); // in case dialog is already open
             } :
             (right?: boolean) => {
                 this.focusManager.focusOverrideOff();
@@ -194,11 +194,11 @@ export class ViewModelFactory {
 
         actionViewModel.makeInvokable = (details: Models.IInvokableAction) => actionViewModel.invokableActionRep = details;
 
-        return actionViewModel as Nakedobjectsviewmodels.IActionViewModel;
+        return actionViewModel as ViewModels.IActionViewModel;
     };
 
 
-    handleErrorResponse = (err: Models.ErrorMap, messageViewModel: Nakedobjectsviewmodels.IMessageViewModel, valueViewModels: Nakedobjectsviewmodels.IFieldViewModel[]) => {
+    handleErrorResponse = (err: Models.ErrorMap, messageViewModel: ViewModels.IMessageViewModel, valueViewModels: ViewModels.IFieldViewModel[]) => {
 
         let requiredFieldsMissing = false; // only show warning message if we have nothing else 
         let fieldValidationErrors = false;
@@ -229,7 +229,7 @@ export class ViewModelFactory {
         messageViewModel.setMessage(msg);
     };
 
-    private drop(vm: Nakedobjectsviewmodels.IFieldViewModel, newValue: Nakedobjectsviewmodels.IDraggableViewModel) {
+    private drop(vm: ViewModels.IFieldViewModel, newValue: ViewModels.IDraggableViewModel) {
         this.context.isSubTypeOf(newValue.draggableType, vm.returnType).
             then((canDrop: boolean) => {
                 if (canDrop) {
@@ -239,10 +239,10 @@ export class ViewModelFactory {
             catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
     };
 
-    private validate(rep: Models.IHasExtensions, vm: Nakedobjectsviewmodels.IFieldViewModel, modelValue: any, viewValue: string, mandatoryOnly: boolean) {
+    private validate(rep: Models.IHasExtensions, vm: ViewModels.IFieldViewModel, modelValue: any, viewValue: string, mandatoryOnly: boolean) {
         const message = mandatoryOnly ? Models.validateMandatory(rep, viewValue) : Models.validate(rep, modelValue, viewValue, vm.localFilter);
 
-        if (message !== Usermessagesconfig.mandatory) {
+        if (message !== Msg.mandatory) {
             vm.setMessage(message);
         } else {
             vm.resetMessage();
@@ -252,7 +252,7 @@ export class ViewModelFactory {
         return vm.clientValid;
     };
 
-    private setupReference(vm: Nakedobjectsviewmodels.IPropertyViewModel, value: Models.Value, rep: Models.IHasExtensions) {
+    private setupReference(vm: ViewModels.IPropertyViewModel, value: Models.Value, rep: Models.IHasExtensions) {
         vm.type = "ref";
         if (value.isNull()) {
             vm.reference = "";
@@ -266,7 +266,7 @@ export class ViewModelFactory {
             vm.refType = rep.extensions().notNavigable() ? "notNavigable" : "navigable";
         }
         if (vm.entryType === Models.EntryType.FreeForm) {
-            vm.description = vm.description || Usermessagesconfig.dropPrompt;
+            vm.description = vm.description || Msg.dropPrompt;
         }
     }
 
@@ -280,20 +280,20 @@ export class ViewModelFactory {
         }
     }
 
-    private setupChoice(propertyViewModel: Nakedobjectsviewmodels.IPropertyViewModel, newValue: Models.Value) {
+    private setupChoice(propertyViewModel: ViewModels.IPropertyViewModel, newValue: Models.Value) {
         if (propertyViewModel.entryType === Models.EntryType.Choices) {
             const propertyRep = propertyViewModel.propertyRep;
             const choices = propertyRep.choices();
-            propertyViewModel.choices = _.map(choices, (v, n) => Nakedobjectsviewmodels.ChoiceViewModel.create(v, propertyViewModel.id, n));
+            propertyViewModel.choices = _.map(choices, (v, n) => ViewModels.ChoiceViewModel.create(v, propertyViewModel.id, n));
 
-            const currentChoice = Nakedobjectsviewmodels.ChoiceViewModel.create(newValue, propertyViewModel.id);
+            const currentChoice = ViewModels.ChoiceViewModel.create(newValue, propertyViewModel.id);
             propertyViewModel.selectedChoice = _.find(propertyViewModel.choices, c => c.valuesEqual(currentChoice));
         } else {
-            propertyViewModel.selectedChoice = Nakedobjectsviewmodels.ChoiceViewModel.create(newValue, propertyViewModel.id);
+            propertyViewModel.selectedChoice = ViewModels.ChoiceViewModel.create(newValue, propertyViewModel.id);
         }
     }
 
-    private setupScalarPropertyValue(propertyViewModel: Nakedobjectsviewmodels.IPropertyViewModel) {
+    private setupScalarPropertyValue(propertyViewModel: ViewModels.IPropertyViewModel) {
         const propertyRep = propertyViewModel.propertyRep;
         propertyViewModel.type = "scalar";
 
@@ -313,7 +313,7 @@ export class ViewModelFactory {
                     propertyViewModel.formattedValue = propertyViewModel.selectedChoice.name;
                 }
             } else if (propertyViewModel.password) {
-                propertyViewModel.formattedValue = Usermessagesconfig.obscuredText;
+                propertyViewModel.formattedValue = Msg.obscuredText;
             } else {
                 propertyViewModel.formattedValue = localFilter.filter(propertyViewModel.value);
             }
@@ -321,7 +321,7 @@ export class ViewModelFactory {
     }
 
     propertyTableViewModel = (propertyRep: Models.PropertyMember | Models.CollectionMember, id: string, paneId: number) => {
-        const tableRowColumnViewModel = new Nakedobjectsviewmodels.TableRowColumnViewModel();
+        const tableRowColumnViewModel = new ViewModels.TableRowColumnViewModel();
 
         tableRowColumnViewModel.title = propertyRep.extensions().friendlyName();
 
@@ -347,8 +347,8 @@ export class ViewModelFactory {
                 const localFilter = this.mask.toLocalFilter(remoteMask, propertyRep.extensions().format());
 
                 if (propertyRep.entryType() === Models.EntryType.Choices) {
-                    const currentChoice = Nakedobjectsviewmodels.ChoiceViewModel.create(value, id);
-                    const choices = _.map(propertyRep.choices(), (v, n) => Nakedobjectsviewmodels.ChoiceViewModel.create(v, id, n));
+                    const currentChoice = ViewModels.ChoiceViewModel.create(value, id);
+                    const choices = _.map(propertyRep.choices(), (v, n) => ViewModels.ChoiceViewModel.create(v, id, n));
                     const choice = _.find(choices, c => c.valuesEqual(currentChoice));
 
                     if (choice) {
@@ -356,7 +356,7 @@ export class ViewModelFactory {
                         tableRowColumnViewModel.formattedValue = choice.name;
                     }
                 } else if (isPassword) {
-                    tableRowColumnViewModel.formattedValue = Usermessagesconfig.obscuredText;
+                    tableRowColumnViewModel.formattedValue = Msg.obscuredText;
                 } else {
                     tableRowColumnViewModel.formattedValue = localFilter.filter(tableRowColumnViewModel.value);
                 }
@@ -381,7 +381,7 @@ export class ViewModelFactory {
     }
 
 
-    private setupPropertyAutocomplete(propertyViewModel: Nakedobjectsviewmodels.IPropertyViewModel, parentValues: () => _.Dictionary<Models.Value>) {
+    private setupPropertyAutocomplete(propertyViewModel: ViewModels.IPropertyViewModel, parentValues: () => _.Dictionary<Models.Value>) {
         const propertyRep = propertyViewModel.propertyRep;
         propertyViewModel.prompt = (searchTerm: string) => {
             const createcvm = _.partial(this.createChoiceViewModels, propertyViewModel.id, searchTerm);
@@ -390,10 +390,10 @@ export class ViewModelFactory {
             return this.context.autoComplete(propertyRep, propertyViewModel.id, parentValues, searchTerm, digest).then(createcvm);
         };
         propertyViewModel.minLength = propertyRep.promptLink().extensions().minLength();
-        propertyViewModel.description = propertyViewModel.description || Usermessagesconfig.autoCompletePrompt;
+        propertyViewModel.description = propertyViewModel.description || Msg.autoCompletePrompt;
     }
 
-    private setupPropertyConditionalChoices(propertyViewModel: Nakedobjectsviewmodels.IPropertyViewModel) {
+    private setupPropertyConditionalChoices(propertyViewModel: ViewModels.IPropertyViewModel) {
         const propertyRep = propertyViewModel.propertyRep;
         propertyViewModel.conditionalChoices = (args: _.Dictionary<Models.Value>) => {
             const createcvm = _.partial(this.createChoiceViewModels, propertyViewModel.id, null);
@@ -403,7 +403,7 @@ export class ViewModelFactory {
         propertyViewModel.promptArguments = (<any>_.fromPairs)(_.map(propertyRep.promptLink().arguments(), (v: any, key: string) => [key, new Models.Value(v.value)]));
     }
 
-    private callIfChanged(propertyViewModel: Nakedobjectsviewmodels.IPropertyViewModel, newValue: Models.Value, doRefresh: (newValue: Models.Value) => void) {
+    private callIfChanged(propertyViewModel: ViewModels.IPropertyViewModel, newValue: Models.Value, doRefresh: (newValue: Models.Value) => void) {
         const propertyRep = propertyViewModel.propertyRep;
         const value = newValue || propertyRep.value();
 
@@ -413,7 +413,7 @@ export class ViewModelFactory {
         }
     }
 
-    private setupReferencePropertyValue(propertyViewModel: Nakedobjectsviewmodels.IPropertyViewModel) {
+    private setupReferencePropertyValue(propertyViewModel: ViewModels.IPropertyViewModel) {
         const propertyRep = propertyViewModel.propertyRep;
         propertyViewModel.refresh = (newValue: Models.Value) => this.callIfChanged(propertyViewModel, newValue, (value: Models.Value) => {
             this.setupChoice(propertyViewModel, value);
@@ -422,7 +422,7 @@ export class ViewModelFactory {
     }
 
     propertyViewModel = (propertyRep: Models.PropertyMember, id: string, previousValue: Models.Value, paneId: number, parentValues: () => _.Dictionary<Models.Value>) => {
-        const propertyViewModel = new Nakedobjectsviewmodels.PropertyViewModel(propertyRep, this.color, this.error);
+        const propertyViewModel = new ViewModels.PropertyViewModel(propertyRep, this.color, this.error);
 
         propertyViewModel.id = id;
         propertyViewModel.onPaneId = paneId;
@@ -466,15 +466,15 @@ export class ViewModelFactory {
         propertyViewModel.drop = _.partial(this.drop, propertyViewModel);
         propertyViewModel.doClick = (right?: boolean) => this.urlManager.setProperty(propertyRep, this.clickHandler.pane(paneId, right));
 
-        return propertyViewModel as Nakedobjectsviewmodels.IPropertyViewModel;
+        return propertyViewModel as ViewModels.IPropertyViewModel;
     };
 
-    private setupParameterChoices(parmViewModel: Nakedobjectsviewmodels.IParameterViewModel) {
+    private setupParameterChoices(parmViewModel: ViewModels.IParameterViewModel) {
         const parmRep = parmViewModel.parameterRep;
-        parmViewModel.choices = _.map(parmRep.choices(), (v, n) => Nakedobjectsviewmodels.ChoiceViewModel.create(v, parmRep.id(), n));
+        parmViewModel.choices = _.map(parmRep.choices(), (v, n) => ViewModels.ChoiceViewModel.create(v, parmRep.id(), n));
     }
 
-    private setupParameterAutocomplete(parmViewModel: Nakedobjectsviewmodels.IParameterViewModel) {
+    private setupParameterAutocomplete(parmViewModel: ViewModels.IParameterViewModel) {
         const parmRep = parmViewModel.parameterRep;
         parmViewModel.prompt = (searchTerm: string) => {
             const createcvm = _.partial(this.createChoiceViewModels, parmViewModel.id, searchTerm);
@@ -482,22 +482,22 @@ export class ViewModelFactory {
                 then(createcvm);
         };
         parmViewModel.minLength = parmRep.promptLink().extensions().minLength();
-        parmViewModel.description = parmViewModel.description || Usermessagesconfig.autoCompletePrompt;
+        parmViewModel.description = parmViewModel.description || Msg.autoCompletePrompt;
     }
 
-    private setupParameterFreeformReference(parmViewModel: Nakedobjectsviewmodels.IParameterViewModel, previousValue: Models.Value) {
+    private setupParameterFreeformReference(parmViewModel: ViewModels.IParameterViewModel, previousValue: Models.Value) {
         const parmRep = parmViewModel.parameterRep;
-        parmViewModel.description = parmViewModel.description || Usermessagesconfig.dropPrompt;
+        parmViewModel.description = parmViewModel.description || Msg.dropPrompt;
 
         const val = previousValue && !previousValue.isNull() ? previousValue : parmRep.default();
 
         if (!val.isNull() && val.isReference()) {
             parmViewModel.reference = val.link().href();
-            parmViewModel.selectedChoice = Nakedobjectsviewmodels.ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
+            parmViewModel.selectedChoice = ViewModels.ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
         }
     }
 
-    private setupParameterConditionalChoices(parmViewModel: Nakedobjectsviewmodels.IParameterViewModel) {
+    private setupParameterConditionalChoices(parmViewModel: ViewModels.IParameterViewModel) {
         const parmRep = parmViewModel.parameterRep;
         parmViewModel.conditionalChoices = (args: _.Dictionary<Models.Value>) => {
             const createcvm = _.partial(this.createChoiceViewModels, parmViewModel.id, null);
@@ -507,12 +507,12 @@ export class ViewModelFactory {
         parmViewModel.promptArguments = (<any>_.fromPairs)(_.map(parmRep.promptLink().arguments(), (v: any, key: string) => [key, new Models.Value(v.value)]));
     }
 
-    private setupParameterSelectedChoices(parmViewModel: Nakedobjectsviewmodels.IParameterViewModel, previousValue: Models.Value) {
+    private setupParameterSelectedChoices(parmViewModel: ViewModels.IParameterViewModel, previousValue: Models.Value) {
         const parmRep = parmViewModel.parameterRep;
         const fieldEntryType = parmViewModel.entryType;
         function setCurrentChoices(vals: Models.Value) {
 
-            const choicesToSet = _.map(vals.list(), val => Nakedobjectsviewmodels.ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null));
+            const choicesToSet = _.map(vals.list(), val => ViewModels.ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null));
 
             if (fieldEntryType === Models.EntryType.MultipleChoices) {
                 parmViewModel.selectedMultiChoices = _.filter(parmViewModel.choices, c => _.some(choicesToSet, choiceToSet => c.valuesEqual(choiceToSet)));
@@ -522,7 +522,7 @@ export class ViewModelFactory {
         }
 
         function setCurrentChoice(val: Models.Value) {
-            const choiceToSet = Nakedobjectsviewmodels.ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
+            const choiceToSet = ViewModels.ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
 
             if (fieldEntryType === Models.EntryType.Choices) {
                 parmViewModel.selectedChoice = _.find(parmViewModel.choices, c => c.valuesEqual(choiceToSet));
@@ -550,7 +550,7 @@ export class ViewModelFactory {
 
     }
 
-    private setupParameterSelectedValue(parmViewModel: Nakedobjectsviewmodels.IParameterViewModel, previousValue: Models.Value) {
+    private setupParameterSelectedValue(parmViewModel: ViewModels.IParameterViewModel, previousValue: Models.Value) {
         const parmRep = parmViewModel.parameterRep;
         const returnType = parmRep.extensions().returnType();
 
@@ -558,7 +558,7 @@ export class ViewModelFactory {
 
             if (returnType === "boolean") {
                 const valueToSet = (newValue ? newValue.toValueString() : null) || parmRep.default().scalar();
-                const bValueToSet = Nakedobjectsviewmodels.toTriStateBoolean(valueToSet);
+                const bValueToSet = ViewModels.toTriStateBoolean(valueToSet);
 
                 parmViewModel.value = bValueToSet;
             } else if (Models.isDateOrDateTime(parmRep)) {
@@ -573,12 +573,12 @@ export class ViewModelFactory {
         parmViewModel.refresh(previousValue);
     }
 
-    private getRequiredIndicator(parmViewModel: Nakedobjectsviewmodels.IParameterViewModel) {
+    private getRequiredIndicator(parmViewModel: ViewModels.IParameterViewModel) {
         return parmViewModel.optional || typeof parmViewModel.value === "boolean" ? "" : "* ";
     }
 
     parameterViewModel = (parmRep: Models.Parameter, previousValue: Models.Value, paneId: number) => {
-        const parmViewModel = new Nakedobjectsviewmodels.ParameterViewModel(parmRep, paneId, this.color, this.error);
+        const parmViewModel = new ViewModels.ParameterViewModel(parmRep, paneId, this.color, this.error);
 
         const fieldEntryType = parmViewModel.entryType;
 
@@ -617,11 +617,11 @@ export class ViewModelFactory {
         parmViewModel.validate = <any>_.partial(Models.validate, parmRep, parmViewModel) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
         parmViewModel.drop = _.partial(this.drop, parmViewModel);
 
-        return parmViewModel as Nakedobjectsviewmodels.IParameterViewModel;
+        return parmViewModel as ViewModels.IParameterViewModel;
     };
 
-    getItems = (links: Models.Link[], tableView: boolean, routeData: Nakedobjectsroutedata.PaneRouteData, listViewModel: Nakedobjectsviewmodels.IListViewModel |
-        Nakedobjectsviewmodels.
+    getItems = (links: Models.Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: ViewModels.IListViewModel |
+        ViewModels.
         ICollectionViewModel) => {
         const selectedItems = routeData.selectedItems;
 
@@ -633,7 +633,7 @@ export class ViewModelFactory {
                 () => this.context.getActionExtensionsFromObject(routeData.paneId, Models.ObjectIdWrapper.fromObjectId(routeData.objectId), routeData.actionId) :
                 () => this.context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
 
-            const getExtensions = listViewModel instanceof Nakedobjectsviewmodels.CollectionViewModel ? () => Promise.resolve(listViewModel.collectionRep.extensions()) : getActionExtensions;
+            const getExtensions = listViewModel instanceof ViewModels.CollectionViewModel ? () => Promise.resolve(listViewModel.collectionRep.extensions()) : getActionExtensions;
 
             // clear existing header 
             listViewModel.header = null;
@@ -653,7 +653,7 @@ export class ViewModelFactory {
                             listViewModel.header = firstItem.hasTitle ? [""].concat(propertiesHeader) : propertiesHeader;
 
                             this.focusManager.focusOverrideOff();
-                            this.focusManager.focusOn(Focusmanagerservice.FocusTarget.TableItem, 0, routeData.paneId);
+                            this.focusManager.focusOn(FocusTarget.TableItem, 0, routeData.paneId);
                         }
                     }).
                     catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
@@ -665,11 +665,11 @@ export class ViewModelFactory {
 
     private getCollectionDetails(count: number) {
         if (count == null) {
-            return Usermessagesconfig.unknownCollectionSize;
+            return Msg.unknownCollectionSize;
         }
 
         if (count === 0) {
-            return Usermessagesconfig.emptyCollectionSize;
+            return Msg.emptyCollectionSize;
         }
 
         const postfix = count === 1 ? "Item" : "Items";
@@ -679,13 +679,13 @@ export class ViewModelFactory {
 
     private getDefaultTableState(exts: Models.Extensions) {
         if (exts.renderEagerly()) {
-            return exts.tableViewColumns() || exts.tableViewTitle() ? Nakedobjectsroutedata.CollectionViewState.Table : Nakedobjectsroutedata.CollectionViewState.List;
+            return exts.tableViewColumns() || exts.tableViewTitle() ? CollectionViewState.Table : CollectionViewState.List;
         }
-        return Nakedobjectsroutedata.CollectionViewState.Summary;
+        return CollectionViewState.Summary;
     }
 
-    collectionViewModel = (collectionRep: Models.CollectionMember, routeData: Nakedobjectsroutedata.PaneRouteData) => {
-        const collectionViewModel = new Nakedobjectsviewmodels.CollectionViewModel();
+    collectionViewModel = (collectionRep: Models.CollectionMember, routeData: PaneRouteData) => {
+        const collectionViewModel = new ViewModels.CollectionViewModel();
 
         const itemLinks = collectionRep.value();
         const paneId = routeData.paneId;
@@ -698,12 +698,12 @@ export class ViewModelFactory {
         collectionViewModel.pluralName = collectionRep.extensions().pluralName();
 
         this.color.toColorNumberFromType(collectionRep.extensions().elementType()).
-            then(c => collectionViewModel.color = `${Nakedobjectsconfig.linkColor}${c}`).
+            then(c => collectionViewModel.color = `${Config.linkColor}${c}`).
             catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
-        collectionViewModel.refresh = (routeData: Nakedobjectsroutedata.PaneRouteData, resetting: boolean) => {
+        collectionViewModel.refresh = (routeData: PaneRouteData, resetting: boolean) => {
 
-            let state = size === 0 ? Nakedobjectsroutedata.CollectionViewState.Summary : routeData.collections[collectionRep.collectionId()];
+            let state = size === 0 ? CollectionViewState.Summary : routeData.collections[collectionRep.collectionId()];
 
             if (state == null) {
                 state = this.getDefaultTableState(collectionRep.extensions());
@@ -715,33 +715,33 @@ export class ViewModelFactory {
                     collectionViewModel.mayHaveItems = true;
                 }
                 collectionViewModel.details = this.getCollectionDetails(size);
-                const getDetails = itemLinks == null || state === Nakedobjectsroutedata.CollectionViewState.Table;
+                const getDetails = itemLinks == null || state === CollectionViewState.Table;
 
-                if (state === Nakedobjectsroutedata.CollectionViewState.Summary) {
+                if (state === CollectionViewState.Summary) {
                     collectionViewModel.items = [];
                 } else if (getDetails) {
                     this.context.getCollectionDetails(collectionRep, state, resetting).
                         then(details => {
                             collectionViewModel.items = this.getItems(details.value(),
-                                state === Nakedobjectsroutedata.CollectionViewState.Table,
+                                state === CollectionViewState.Table,
                                 routeData,
                                 collectionViewModel);
                             collectionViewModel.details = this.getCollectionDetails(collectionViewModel.items.length);
                         }).
                         catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
                 } else {
-                    collectionViewModel.items = this.getItems(itemLinks, state === Nakedobjectsroutedata.CollectionViewState.Table, routeData, collectionViewModel);
+                    collectionViewModel.items = this.getItems(itemLinks, state === CollectionViewState.Table, routeData, collectionViewModel);
                 }
 
                 switch (state) {
-                    case Nakedobjectsroutedata.CollectionViewState.List:
-                        collectionViewModel.template = Nakedobjectsconstants.collectionListTemplate;
+                    case CollectionViewState.List:
+                        //collectionViewModel.template = Constants.collectionListTemplate;
                         break;
-                    case Nakedobjectsroutedata.CollectionViewState.Table:
-                        collectionViewModel.template = Nakedobjectsconstants.collectionTableTemplate;
+                    case CollectionViewState.Table:
+                        //collectionViewModel.template = Constants.collectionTableTemplate;
                         break;
                     default:
-                        collectionViewModel.template = Nakedobjectsconstants.collectionSummaryTemplate;
+                        //collectionViewModel.template = Constants.collectionSummaryTemplate;
                 }
                 collectionViewModel.currentState = state;
             }
@@ -749,16 +749,16 @@ export class ViewModelFactory {
 
         collectionViewModel.refresh(routeData, true);
 
-        collectionViewModel.doSummary = () => this.urlManager.setCollectionMemberState(collectionRep.collectionId(), Nakedobjectsroutedata.CollectionViewState.Summary, paneId);
-        collectionViewModel.doList = () => this.urlManager.setCollectionMemberState(collectionRep.collectionId(), Nakedobjectsroutedata.CollectionViewState.List, paneId);
-        collectionViewModel.doTable = () => this.urlManager.setCollectionMemberState(collectionRep.collectionId(), Nakedobjectsroutedata.CollectionViewState.Table, paneId);
+        collectionViewModel.doSummary = () => this.urlManager.setCollectionMemberState(collectionRep.collectionId(), CollectionViewState.Summary, paneId);
+        collectionViewModel.doList = () => this.urlManager.setCollectionMemberState(collectionRep.collectionId(), CollectionViewState.List, paneId);
+        collectionViewModel.doTable = () => this.urlManager.setCollectionMemberState(collectionRep.collectionId(), CollectionViewState.Table, paneId);
 
         return collectionViewModel;
     };
 
 
-    listPlaceholderViewModel = (routeData: Nakedobjectsroutedata.PaneRouteData) => {
-        const collectionPlaceholderViewModel = new Nakedobjectsviewmodels.CollectionPlaceholderViewModel();
+    listPlaceholderViewModel = (routeData: PaneRouteData) => {
+        const collectionPlaceholderViewModel = new ViewModels.CollectionPlaceholderViewModel();
 
         collectionPlaceholderViewModel.description = () => `Page ${routeData.page}`;
 
@@ -777,11 +777,11 @@ export class ViewModelFactory {
                     this.error.handleError(reject);
                 });
 
-        return collectionPlaceholderViewModel as Nakedobjectsviewmodels.ICollectionPlaceholderViewModel;
+        return collectionPlaceholderViewModel as ViewModels.ICollectionPlaceholderViewModel;
     };
 
-    menuViewModel = (menuRep: Models.MenuRepresentation, routeData: Nakedobjectsroutedata.PaneRouteData) => {
-        const menuViewModel = new Nakedobjectsviewmodels.MenuViewModel();
+    menuViewModel = (menuRep: Models.MenuRepresentation, routeData: PaneRouteData) => {
+        const menuViewModel = new ViewModels.MenuViewModel();
 
         menuViewModel.id = menuRep.menuId();
         menuViewModel.menuRep = menuRep;
@@ -790,7 +790,7 @@ export class ViewModelFactory {
         menuViewModel.title = menuRep.title();
         menuViewModel.actions = _.map(actions, action => this.actionViewModel(action, menuViewModel, routeData));
 
-        menuViewModel.menuItems = Nakedobjectsviewmodels.createMenuItems(menuViewModel.actions);
+        menuViewModel.menuItems = ViewModels.createMenuItems(menuViewModel.actions);
 
 
         return menuViewModel;
@@ -803,25 +803,25 @@ export class ViewModelFactory {
     }
 
     recentItemsViewModel = (paneId: number) => {
-        const recentItemsViewModel = new Nakedobjectsviewmodels.RecentItemsViewModel();
+        const recentItemsViewModel = new ViewModels.RecentItemsViewModel();
         recentItemsViewModel.onPaneId = paneId;
         const items = _.map(this.context.getRecentlyViewed(), o => ({ obj: o, link: this.selfLinkWithTitle(o) }));
         recentItemsViewModel.items = _.map(items, i => this.recentItemViewModel(i.obj, i.link, paneId, false));
         return recentItemsViewModel;
     };
 
-    tableRowViewModel = (properties: _.Dictionary<Models.PropertyMember>, paneId: number): Nakedobjectsviewmodels.ITableRowViewModel => {
-        const tableRowViewModel = new Nakedobjectsviewmodels.TableRowViewModel();
+    tableRowViewModel = (properties: _.Dictionary<Models.PropertyMember>, paneId: number): ViewModels.ITableRowViewModel => {
+        const tableRowViewModel = new ViewModels.TableRowViewModel();
         tableRowViewModel.properties = _.map(properties, (property, id) => this.propertyTableViewModel(property, id, paneId));
         return tableRowViewModel;
     };
 
 
-    private cachedToolBarViewModel: Nakedobjectsviewmodels.IToolBarViewModel;
+    private cachedToolBarViewModel: ViewModels.IToolBarViewModel;
 
     private getToolBarViewModel() {
         if (!this.cachedToolBarViewModel) {
-            const tvm = new Nakedobjectsviewmodels.ToolBarViewModel();
+            const tvm = new ViewModels.ToolBarViewModel();
             tvm.goHome = (right?: boolean) => {
                 this.focusManager.focusOverrideOff();
                 this.context.updateValues();
@@ -863,10 +863,10 @@ export class ViewModelFactory {
             tvm.logOff = () => {
                 this.context.getUser().
                     then(u => {
-                        if (window.confirm(Usermessagesconfig.logOffMessage(u.userName() || "Unknown"))) {
+                        if (window.confirm(Msg.logOffMessage(u.userName() || "Unknown"))) {
                             const config = {
                                 withCredentials: true,
-                                url: Nakedobjectsconfig.logoffUrl,
+                                url: Config.logoffUrl,
                                 method: "POST",
                                 cache: false
                             };
@@ -888,8 +888,8 @@ export class ViewModelFactory {
             };
 
 
-            tvm.template = Nakedobjectsconstants.appBarTemplate;
-            tvm.footerTemplate = Nakedobjectsconstants.footerTemplate;
+            //tvm.template = Constants.appBarTemplate;
+            //tvm.footerTemplate = Constants.footerTemplate;
 
             //$rootScope.$on(Nakedobjectsconstants.geminiAjaxChangeEvent, (event, count) =>
             //    tvm.loading = count > 0 ? Usermessagesconfig.loadingMessage : "");
@@ -911,7 +911,7 @@ export class ViewModelFactory {
 
     toolBarViewModel = () => this.getToolBarViewModel();
 
-    private cvm: Nakedobjectsviewmodels.ICiceroViewModel = null;
+    private cvm: ViewModels.ICiceroViewModel = null;
 
     //ciceroViewModel = () => {
     //    if (cvm == null) {
@@ -929,9 +929,9 @@ export class ViewModelFactory {
     //        cvm.autoComplete = (input: string) => {
     //            commandFactory.autoComplete(input, cvm);
     //        };
-    //        cvm.renderHome = _.partial(ciceroRenderer.renderHome, cvm) as (routeData: Nakedobjectsroutedata.PaneRouteData) => void;
-    //        cvm.renderObject = _.partial(ciceroRenderer.renderObject, cvm) as (routeData: Nakedobjectsroutedata.PaneRouteData) => void;
-    //        cvm.renderList = _.partial(ciceroRenderer.renderList, cvm) as (routeData: Nakedobjectsroutedata.PaneRouteData) => void;
+    //        cvm.renderHome = _.partial(ciceroRenderer.renderHome, cvm) as (routeData: PaneRouteData) => void;
+    //        cvm.renderObject = _.partial(ciceroRenderer.renderObject, cvm) as (routeData: PaneRouteData) => void;
+    //        cvm.renderList = _.partial(ciceroRenderer.renderList, cvm) as (routeData: PaneRouteData) => void;
     //        cvm.renderError = _.partial(ciceroRenderer.renderError, cvm);
     //    }
     //    return cvm;

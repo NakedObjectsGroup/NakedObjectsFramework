@@ -1,5 +1,5 @@
 ﻿import * as _ from "lodash";
-import { formatType } from './nakedobjects.rointerfaces';
+import * as Ro from './nakedobjects.rointerfaces';
 
 
 export interface ILocalFilter {
@@ -64,7 +64,7 @@ export class Mask {
     };
 
 
-    defaultLocalFilter(format: formatType): ILocalFilter {
+    defaultLocalFilter(format: Ro.formatType): ILocalFilter {
         switch (format) {
         case ("string"):
             return new LocalStringFilter();
@@ -93,26 +93,26 @@ export class Mask {
         }
     };
 
-    private customFilter(format: formatType, remoteMask: string) {
+    private customFilter(format: Ro.formatType, remoteMask: string) {
         if (this.maskMap[format as string] && remoteMask) {
             return this.maskMap[format as string][remoteMask];
         }
         return undefined;
     }
 
-    toLocalFilter(remoteMask: string, format: formatType) {
+    toLocalFilter(remoteMask: string, format: Ro.formatType) {
         return this.customFilter(format, remoteMask) || this.defaultLocalFilter(format);
     };
 
-    setNumberMaskMapping(customMask: string, format: formatType, fractionSize?: number) {
+    setNumberMaskMapping(customMask: string, format: Ro.formatType, fractionSize?: number) {
         this.maskMap[format as string][customMask] = new LocalNumberFilter(fractionSize);
     };
 
-    setDateMaskMapping(customMask: string, format: formatType, mask: string, tz: string) {
+    setDateMaskMapping(customMask: string, format: Ro.formatType, mask: string, tz: string) {
         this.maskMap[format as string][customMask] = new LocalDateFilter(mask, tz);
     };
 
-    setCurrencyMaskMapping(customMask: string, format: formatType, symbol?: string, fractionSize?: number) {
+    setCurrencyMaskMapping(customMask: string, format: Ro.formatType, symbol?: string, fractionSize?: number) {
         this.maskMap[format as string][customMask] = new LocalCurrencyFilter(symbol, fractionSize);
     };
 }

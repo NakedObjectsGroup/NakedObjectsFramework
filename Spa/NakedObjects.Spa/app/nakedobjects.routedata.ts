@@ -1,5 +1,5 @@
 ﻿import * as Models from "./models";
-import * as Nakedobjectsconfig from "./nakedobjects.config";
+import * as Config from "./nakedobjects.config";
 import * as _ from "lodash";
 
 export enum ViewType {
@@ -128,7 +128,7 @@ export class PaneRouteData {
 
         this.validatingUrl = url;
 
-        if (Nakedobjectsconfig.doUrlValidation) {
+        if (Config.doUrlValidation) {
             // Can add more conditions here 
             this.assertMustBeNullInContext("objectId", "menuId");
             this.assertMustBeNullInContext("menuId", "objectId");

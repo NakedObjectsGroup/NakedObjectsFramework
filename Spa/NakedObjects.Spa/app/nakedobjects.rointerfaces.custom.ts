@@ -1,9 +1,9 @@
-﻿import {IExtensions, IListRepresentation, IActionMember, IPropertyMember, IResourceRepresentation, ILink, valueType } from './nakedobjects.rointerfaces';
+﻿import* as Ro from './nakedobjects.rointerfaces';
 
 //NOF custom RO constants
 
-export interface ICustomExtensions extends IExtensions {
-    "x-ro-nof-choices"?: { [index: string]: valueType[]; };
+export interface ICustomExtensions extends Ro.IExtensions {
+    "x-ro-nof-choices"?: { [index: string]: Ro.valueType[]; };
     "x-ro-nof-menuPath"?: string;
     "x-ro-nof-mask"?: string;
     "x-ro-nof-interactionMode"?: string;
@@ -31,17 +31,17 @@ export interface IPagination {
     totalCount: number;
 }
 
-export interface ICustomListRepresentation extends IListRepresentation {
+export interface ICustomListRepresentation extends Ro.IListRepresentation {
     pagination?: IPagination;
-    members: { [index: string]: IActionMember };
+    members: { [index: string]: Ro.IActionMember };
 }
 
-export interface ICustomLink extends ILink {
-    members: { [index: string]: IPropertyMember };
+export interface ICustomLink extends Ro.ILink {
+    members: { [index: string]: Ro.IPropertyMember };
 }
 
-export interface IMenuRepresentation extends IResourceRepresentation {
-    members: { [index: string]: IActionMember };
+export interface IMenuRepresentation extends Ro.IResourceRepresentation {
+    members: { [index: string]: Ro.IActionMember };
     title: string;
     menuId: string;
 }

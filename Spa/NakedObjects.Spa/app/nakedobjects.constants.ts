@@ -17,40 +17,6 @@ export function getSvrPath() {
     return path;
 }
 
-export const dialogTemplate = getSvrPath() + "Content/partials/dialog.html";
-export const serviceTemplate = getSvrPath() + "Content/partials/service.html";
-export const errorTemplate = getSvrPath() + "Content/partials/error.html";
-export const concurrencyTemplate = getSvrPath() + "Content/partials/concurrencyError.html";
-export const httpErrorTemplate = getSvrPath() + "Content/partials/httpError.html";
-export const appBarTemplate = getSvrPath() + "Content/partials/appbar.html";
-export const nullTemplate = getSvrPath() + "Content/partials/null.html";
-export const blankTemplate = getSvrPath() + "Content/partials/blank.html";
-export const homeTemplate = getSvrPath() + "Content/partials/home.html";
-export const homePlaceholderTemplate = getSvrPath() + "Content/partials/homePlaceholder.html";
-export const objectTemplate = getSvrPath() + "Content/partials/object.html";
-export const objectViewTemplate = getSvrPath() + "Content/partials/objectView.html";
-export const objectNotpersistentTemplate = getSvrPath() + "Content/partials/objectNotpersistent.html";
-export const objectEditTemplate = getSvrPath() + "Content/partials/objectEdit.html";
-export const formTemplate = getSvrPath() + "Content/partials/form.html";
-export const expiredTransientTemplate = getSvrPath() + "Content/partials/expiredTransient.html";
-
-export const listPlaceholderTemplate = getSvrPath() + "Content/partials/ListPlaceholder.html";
-export const listTemplate = getSvrPath() + "Content/partials/List.html";
-export const listAsTableTemplate = getSvrPath() + "Content/partials/ListAsTable.html";
-
-export const footerTemplate = getSvrPath() + "Content/partials/footer.html";
-export const actionsTemplate = getSvrPath() + "Content/partials/actions.html";
-export const formActionsTemplate = getSvrPath() + "Content/partials/formActions.html";
-export const collectionsTemplate = getSvrPath() + "Content/partials/collections.html";
-export const collectionSummaryTemplate = getSvrPath() + "Content/partials/collectionSummary.html";
-export const collectionListTemplate = getSvrPath() + "Content/partials/collectionList.html";
-export const collectionTableTemplate = getSvrPath() + "Content/partials/collectionTable.html";
-
-export const recentTemplate = getSvrPath() + "Content/partials/recent.html";
-export const attachmentTemplate = getSvrPath() + "Content/partials/attachment.html";
-export const ciceroTemplate = getSvrPath() + "Content/partials/cicero.html";
-export const applicationPropertiesTemplate = getSvrPath() + "Content/partials/applicationProperties.html";
-
 // routing constants 
 
 export const geminiPath = "gemini";

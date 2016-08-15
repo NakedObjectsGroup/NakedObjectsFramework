@@ -1,14 +1,10 @@
-﻿/// <reference path="../node_modules/rxjs/add/operator/toPromise.d.ts"/>;
-
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Http, Response, Request, RequestOptions, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import "./rxjs-extensions";
-
-
 import * as Models from "./models";
-import * as Nakedobjectsconstants from "./nakedobjects.constants";
-import * as RoInterfaces from "./nakedobjects.rointerfaces";
+import * as Constants from "./nakedobjects.constants";
+import * as Ro from "./nakedobjects.rointerfaces";
 import * as _ from "lodash";
 
 @Injectable()
@@ -44,7 +40,7 @@ export class RepLoader {
             // this error should contain an error representatation 
             if (Models.isErrorRepresentation(response.json())) {
                 const errorRep = new Models.ErrorRepresentation();
-                errorRep.populate(response.json() as RoInterfaces.IErrorRepresentation);
+                errorRep.populate(response.json() as Ro.IErrorRepresentation);
                 category = Models.ErrorCategory.HttpServerError;
                 error = errorRep;
             } else {
@@ -61,7 +57,7 @@ export class RepLoader {
             if (response.status === Models.HttpStatusCode.BadRequest ||
                 response.status === Models.HttpStatusCode.UnprocessableEntity) {
                 // these errors should contain a map          
-                error = new Models.ErrorMap(response.json() as RoInterfaces.IValueMap | RoInterfaces.IObjectOfType,
+                error = new Models.ErrorMap(response.json() as Ro.IValueMap | Ro.IObjectOfType,
                     response.status,
                     message);
             } else {
@@ -93,7 +89,7 @@ export class RepLoader {
 
 // special handler for case whwre we reciece a redirected object back from server 
 // instead of an actionresult. Wrap the object in an actionresult and then handle normally
-    private handleRedirectedObject(response: Models.IHateoasModel, data: RoInterfaces.IRepresentation) {
+    private handleRedirectedObject(response: Models.IHateoasModel, data: Ro.IRepresentation) {
 
         //if (response instanceof Models.ActionResultRepresentation && Models.isIDomainObjectRepresentation(data)) {
         //    const actionResult: Models.ActionResultRepresentation = {
@@ -244,7 +240,7 @@ export class RepLoader {
         //cache.remove(url);
     };
 
-    addToCache = (url: string, m: RoInterfaces.IResourceRepresentation) => {
+    addToCache = (url: string, m: Ro.IResourceRepresentation) => {
         //cache.put(url, m);
     };
 

@@ -1,8 +1,6 @@
-﻿
+﻿import { ILocalFilter } from "./mask.service";
 
 // user message constants
-
-import * as Maskservice from "./mask.service";
 export const noResultMessage = "no result found";
 export const obscuredText = "*****";
 export const tooShort = "Too short";
@@ -29,7 +27,7 @@ export const autoCompletePrompt = "(auto-complete or drop)";
 export const concurrencyMessage = "The object has been reloaded to pick up changes by another user. Please review, and re-enter any changes you still require.";
 export const loadingMessage = "Loading...";
 
-export const outOfRange = (val: any, min: any, max: any, filter: Maskservice.ILocalFilter) => {
+export const outOfRange = (val: any, min: any, max: any, filter: ILocalFilter) => {
     const minVal = filter ? filter.filter(min) : min;
     const maxVal = filter ? filter.filter(max) : max;
 

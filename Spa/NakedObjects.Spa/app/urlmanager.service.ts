@@ -1,12 +1,11 @@
 ﻿import * as _ from "lodash";
 import * as Models from "./models";
-import * as Nakedobjectsconstants from "./nakedobjects.constants";
-import * as Nakedobjectsconfig from "./nakedobjects.config";
-import * as Nakedobjectsroutedata from "./nakedobjects.routedata";
+import * as Constants from "./nakedobjects.constants";
+import * as Config from "./nakedobjects.config";
+import { RouteData, PaneRouteData, InteractionMode, CollectionViewState, ApplicationMode } from "./nakedobjects.routedata";
 import { Injectable } from '@angular/core';
 import "./rxjs-extensions";
 import { Observable } from 'rxjs/Observable';
-
 import {Router, UrlPathWithParams, ActivatedRoute} from '@angular/router';
 
 enum Transition {
@@ -154,11 +153,11 @@ export class UrlManager {
         return _.mapValues(mappedIds, v => Models.Value.fromJsonString(v));
     }
 
-    private getInteractionMode(rawInteractionMode: string): Nakedobjectsroutedata.InteractionMode {
-        return rawInteractionMode ? (<any>Nakedobjectsroutedata.InteractionMode)[rawInteractionMode] : Nakedobjectsroutedata.InteractionMode.View;
+    private getInteractionMode(rawInteractionMode: string): InteractionMode {
+        return rawInteractionMode ? (<any>InteractionMode)[rawInteractionMode] : InteractionMode.View;
     }
 
-    private setPaneRouteDataFromParms(paneRouteData: Nakedobjectsroutedata.PaneRouteData, paneId: number, routeParams : {[key:string]: string}) {
+    private setPaneRouteDataFromParms(paneRouteData: PaneRouteData, paneId: number, routeParams : {[key:string]: string}) {
          paneRouteData.menuId = this.getId(akm.menu + paneId, routeParams);
         paneRouteData.actionId = this.getId(akm.action + paneId, routeParams);
         paneRouteData.dialogId = this.getId(akm.dialog + paneId, routeParams);
@@ -170,13 +169,13 @@ export class UrlManager {
         paneRouteData.actionsOpen = this.getId(akm.actions + paneId, routeParams);
 
         const rawCollectionState = this.getId(akm.collection + paneId, routeParams);
-        paneRouteData.state = rawCollectionState ? (<any>Nakedobjectsroutedata.CollectionViewState)[rawCollectionState] : Nakedobjectsroutedata.CollectionViewState.List;
+        paneRouteData.state = rawCollectionState ? (<any>CollectionViewState)[rawCollectionState] : CollectionViewState.List;
 
         const rawInteractionMode = this.getId(akm.interactionMode + paneId, routeParams);
         paneRouteData.interactionMode = this.getInteractionMode(rawInteractionMode);
 
         const collKeyMap = this.getAndMapIds(akm.collection, paneId);
-        paneRouteData.collections = _.mapValues(collKeyMap, v => (<any>Nakedobjectsroutedata.CollectionViewState)[v]);
+        paneRouteData.collections = _.mapValues(collKeyMap, v => (<any>CollectionViewState)[v]);
 
         const parmKeyMap = this.getAndMapIds(akm.parm, paneId);
         paneRouteData.actionParams = this.getMappedValues(parmKeyMap);
@@ -190,7 +189,7 @@ export class UrlManager {
     }
 
 
-    private setPaneRouteData(paneRouteData: Nakedobjectsroutedata.PaneRouteData, paneId: number) {
+    private setPaneRouteData(paneRouteData: PaneRouteData, paneId: number) {
 
         const routeParams = this.getSearch();
 
@@ -223,7 +222,7 @@ export class UrlManager {
         return _.omit(search, toClear);
     }
 
-    private setupPaneNumberAndTypes(pane: number, newPaneType: string, newMode?: Nakedobjectsroutedata.ApplicationMode) : {path : string, replace : boolean} {
+    private setupPaneNumberAndTypes(pane: number, newPaneType: string, newMode?: ApplicationMode) : {path : string, replace : boolean} {
 
         const path = this.getPath();
         const segments = path.split("/");
@@ -314,7 +313,7 @@ export class UrlManager {
 
         switch (transition) {
         case (Transition.ToHome):
-            ({path, replace} = this.setupPaneNumberAndTypes(paneId, Nakedobjectsconstants.homePath));
+            ({path, replace} = this.setupPaneNumberAndTypes(paneId, Constants.homePath));
             search = this.clearPane(search, paneId);
             break;
         case (Transition.ToMenu):
@@ -329,14 +328,14 @@ export class UrlManager {
             break;
         case (Transition.ToObjectView):
            
-           ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Nakedobjectsconstants.objectPath));
+           ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Constants.objectPath));
             replace = false;
             search = this.clearPane(search, paneId);
-            this.setId(akm.interactionMode + paneId, Nakedobjectsroutedata.InteractionMode[Nakedobjectsroutedata.InteractionMode.View], search);
+            this.setId(akm.interactionMode + paneId, InteractionMode[InteractionMode.View], search);
             search = this.toggleReloadFlag(search);
             break;
         case (Transition.ToList):
-            ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Nakedobjectsconstants.listPath));
+            ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Constants.listPath));
             this.clearId(akm.menu + paneId, search);
             this.clearId(akm.object + paneId, search);
             this.clearId(akm.dialog + paneId, search);
@@ -351,11 +350,11 @@ export class UrlManager {
             replace = false;
             break;
         case (Transition.ToRecent):
-            ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Nakedobjectsconstants.recentPath));
+            ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Constants.recentPath));
             search = this.clearPane(search, paneId);
             break;
         case (Transition.ToAttachment):
-            ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Nakedobjectsconstants.attachmentPath));
+            ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Constants.attachmentPath));
             search = this.clearPane(search, paneId);
             break;
         default:
@@ -446,10 +445,10 @@ export class UrlManager {
 
         newValues[`${akm.action}${toPaneId}`] = actionMember.actionId();
         newValues[`${akm.page}${toPaneId}`] = "1";
-        newValues[`${akm.pageSize}${toPaneId}`] = Nakedobjectsconfig.defaultPageSize.toString();
+        newValues[`${akm.pageSize}${toPaneId}`] = Config.defaultPageSize.toString();
         newValues[`${akm.selected}${toPaneId}`] = "0";
 
-        const newState = actionMember.extensions().renderEagerly() ? Nakedobjectsroutedata.CollectionViewState[Nakedobjectsroutedata.CollectionViewState.Table] : Nakedobjectsroutedata.CollectionViewState[Nakedobjectsroutedata.CollectionViewState.List];
+        const newState = actionMember.extensions().renderEagerly() ? CollectionViewState[CollectionViewState.Table] : CollectionViewState[CollectionViewState.List];
 
         newValues[`${akm.collection}${toPaneId}`] = newState;
 
@@ -519,33 +518,33 @@ export class UrlManager {
             search => this.setParameter(paneId, search, p, pv));
 
 
-    setCollectionMemberState = (collectionMemberId: string, state: Nakedobjectsroutedata.CollectionViewState, paneId = 1) => {
+    setCollectionMemberState = (collectionMemberId: string, state: CollectionViewState, paneId = 1) => {
         const key = `${akm.collection}${paneId}_${collectionMemberId}`;
-        const newValues = _.zipObject([key], [Nakedobjectsroutedata.CollectionViewState[state]]) as _.Dictionary<string>;
+        const newValues = _.zipObject([key], [CollectionViewState[state]]) as _.Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.Null, () => true);
     };
 
-    setListState = (state: Nakedobjectsroutedata.CollectionViewState, paneId = 1) => {
+    setListState = (state: CollectionViewState, paneId = 1) => {
         const key = `${akm.collection}${paneId}`;
-        const newValues = _.zipObject([key], [Nakedobjectsroutedata.CollectionViewState[state]]) as _.Dictionary<string>;
+        const newValues = _.zipObject([key], [CollectionViewState[state]]) as _.Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.Null, () => true);
     };
 
-    setInteractionMode = (newMode: Nakedobjectsroutedata.InteractionMode, paneId = 1) => {
+    setInteractionMode = (newMode: InteractionMode, paneId = 1) => {
         const key = `${akm.interactionMode}${paneId}`;
         const routeParams = this.getSearch();
         const currentMode = this.getInteractionMode(this.getId(key, routeParams));
         let transition: Transition;
 
-        if (currentMode === Nakedobjectsroutedata.InteractionMode.Edit && newMode !== Nakedobjectsroutedata.InteractionMode.Edit) {
+        if (currentMode === InteractionMode.Edit && newMode !== InteractionMode.Edit) {
             transition = Transition.LeaveEdit;
-        } else if (newMode === Nakedobjectsroutedata.InteractionMode.Transient) {
+        } else if (newMode === InteractionMode.Transient) {
             transition = Transition.ToTransient;
         } else {
             transition = Transition.Null;
         }
 
-        const newValues = _.zipObject([key], [Nakedobjectsroutedata.InteractionMode[newMode]]) as _.Dictionary<string>;
+        const newValues = _.zipObject([key], [InteractionMode[newMode]]) as _.Dictionary<string>;
         this.executeTransition(newValues, paneId, transition, () => true);
     };
 
@@ -560,12 +559,12 @@ export class UrlManager {
         const newValues = _.zipObject([key], [currentSelectedAsString]) as _.Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.Null, () => true);
     };
-    setListPaging = (newPage: number, newPageSize: number, state: Nakedobjectsroutedata.CollectionViewState, paneId = 1) => {
+    setListPaging = (newPage: number, newPageSize: number, state: CollectionViewState, paneId = 1) => {
         const pageValues = {} as _.Dictionary<string>;
 
         pageValues[`${akm.page}${paneId}`] = newPage.toString();
         pageValues[`${akm.pageSize}${paneId}`] = newPageSize.toString();
-        pageValues[`${akm.collection}${paneId}`] = Nakedobjectsroutedata.CollectionViewState[state];
+        pageValues[`${akm.collection}${paneId}`] = CollectionViewState[state];
         pageValues[`${akm.selected}${paneId}`] = "0"; // clear selection 
 
         this.executeTransition(pageValues, paneId, Transition.Page, () => true);
@@ -593,7 +592,7 @@ export class UrlManager {
 
 
     getRouteData = () => {
-        const routeData = new Nakedobjectsroutedata.RouteData();
+        const routeData = new RouteData();
 
         this.setPaneRouteData(routeData.pane1, 1);
         this.setPaneRouteData(routeData.pane2, 2);
@@ -605,14 +604,14 @@ export class UrlManager {
 
         return this.router.routerState.queryParams.map((ps: { [key: string]: string }) => {
 
-            const routeData = new Nakedobjectsroutedata.RouteData();
+            const routeData = new RouteData();
 
             this.setPaneRouteDataFromParms(routeData.pane1, 1, ps);
             this.setPaneRouteDataFromParms(routeData.pane2, 2, ps);
 
             return routeData;
 
-        }) as Observable<Nakedobjectsroutedata.RouteData>;
+        }) as Observable<RouteData>;
     }
 
     pushUrlState = (paneId = 1) => {
@@ -625,7 +624,7 @@ export class UrlManager {
         const path = this.getPath();
         const segments = path.split("/");
 
-        const paneType = segments[paneId + 1] || Nakedobjectsconstants.homePath;
+        const paneType = segments[paneId + 1] || Constants.homePath;
         let paneSearch = this.capturePane(paneId);
 
         // clear any dialogs so we don't return  to a dialog
@@ -635,7 +634,7 @@ export class UrlManager {
         return { paneType: paneType, search: paneSearch };
     };
 
-    getListCacheIndexFromSearch = (search : _.Dictionary<string>, paneId: number, newPage: number, newPageSize: number, format?: Nakedobjectsroutedata.CollectionViewState) => {
+    getListCacheIndexFromSearch = (search : _.Dictionary<string>, paneId: number, newPage: number, newPageSize: number, format?: CollectionViewState) => {
        
 
         const s1 = this.getId(`${akm.menu}${paneId}`, search) || "";
@@ -645,7 +644,7 @@ export class UrlManager {
         const parms = <_.Dictionary<string>>_.pickBy(search, (v, k) => k.indexOf(akm.parm + paneId) === 0);
         const mappedParms = _.mapValues(parms, v => decodeURIComponent(Models.decompress(v)));
 
-        const s4 = _.reduce(mappedParms, (r, n, k) => r + (k + "=" + n + Nakedobjectsconfig.keySeparator), "");
+        const s4 = _.reduce(mappedParms, (r, n, k) => r + (k + "=" + n + Config.keySeparator), "");
 
         const s5 = `${newPage}`;
         const s6 = `${newPageSize}`;
@@ -654,11 +653,11 @@ export class UrlManager {
 
         const ss = [s1, s2, s3, s4, s5, s6, s7] as string[];
 
-        return _.reduce(ss, (r, n) => r + Nakedobjectsconfig.keySeparator + n, "");
+        return _.reduce(ss, (r, n) => r + Config.keySeparator + n, "");
     };
 
 
-    getListCacheIndex = (paneId: number, newPage: number, newPageSize: number, format?: Nakedobjectsroutedata.CollectionViewState) => {
+    getListCacheIndex = (paneId: number, newPage: number, newPageSize: number, format?: CollectionViewState) => {
         const search = this.getSearch();
         return this.getListCacheIndexFromSearch(search, paneId, newPage, newPageSize, format);
     };
@@ -701,7 +700,7 @@ export class UrlManager {
     swapPanes = () => {
         const path = this.getPath();
         const segments = path.split("/");
-        const [, mode, oldPane1, oldPane2 = Nakedobjectsconstants.homePath] = segments;
+        const [, mode, oldPane1, oldPane2 = Constants.homePath] = segments;
         const newPath = `/${mode}/${oldPane2}/${oldPane1}`;
         const search = this.swapSearchIds(this.getSearch());
         this.currentPaneId = Models.getOtherPane(this.currentPaneId);
@@ -713,13 +712,13 @@ export class UrlManager {
     };
 
     cicero = () => {
-        const newPath = `/${Nakedobjectsconstants.ciceroPath}/${this.getPath().split("/")[2]}`;
+        const newPath = `/${Constants.ciceroPath}/${this.getPath().split("/")[2]}`;
         //$location.path(newPath);
         this.router.navigateByUrl(newPath);
     };
 
     applicationProperties = () => {
-        const newPath = `/${Nakedobjectsconstants.geminiPath}/${Nakedobjectsconstants.applicationPropertiesPath}`
+        const newPath = `/${Constants.geminiPath}/${Constants.applicationPropertiesPath}`
         //$location.path(newPath);
         this.router.navigateByUrl(newPath);
     };
@@ -769,13 +768,13 @@ export class UrlManager {
         return segments[paneId + 1] === location; // e.g. segments 0=~/1=cicero/2=home/3=home
     };
 
-    isHome = (paneId = 1) => this.isLocation(paneId, Nakedobjectsconstants.homePath);
-    isObject = (paneId = 1) => this.isLocation(paneId, Nakedobjectsconstants.objectPath);
-    isList = (paneId = 1) => this.isLocation(paneId, Nakedobjectsconstants.listPath);
-    isError = (paneId = 1) => this.isLocation(paneId, Nakedobjectsconstants.errorPath);
-    isRecent = (paneId = 1) => this.isLocation(paneId, Nakedobjectsconstants.recentPath);
-    isAttachment = (paneId = 1) => this.isLocation(paneId, Nakedobjectsconstants.attachmentPath);
-    isApplicationProperties = (paneId = 1) => this.isLocation(paneId, Nakedobjectsconstants.applicationPropertiesPath);
+    isHome = (paneId = 1) => this.isLocation(paneId, Constants.homePath);
+    isObject = (paneId = 1) => this.isLocation(paneId, Constants.objectPath);
+    isList = (paneId = 1) => this.isLocation(paneId, Constants.listPath);
+    isError = (paneId = 1) => this.isLocation(paneId, Constants.errorPath);
+    isRecent = (paneId = 1) => this.isLocation(paneId, Constants.recentPath);
+    isAttachment = (paneId = 1) => this.isLocation(paneId, Constants.attachmentPath);
+    isApplicationProperties = (paneId = 1) => this.isLocation(paneId, Constants.applicationPropertiesPath);
 
     private toggleReloadFlag(search: any) {
         const currentFlag = search[akm.reload];
