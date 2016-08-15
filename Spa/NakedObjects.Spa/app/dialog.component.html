@@ -15,7 +15,7 @@
 
                         <!--"EntryType.AutoComplete"-->
                         <div *ngSwitchCase="5">
-                            <input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" [ngClass]="parameter.color" placeholder="{{parameter.description}}" type="text" [ngModel]="$parent.parameter.selectedChoice" select="parameter.prompt(request)" gemini-drop gemini-autocomplete gemini-fieldmandatorycheck gemini-clear />
+                            <input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" [ngClass]="parameter.color" placeholder="{{parameter.description}}" type="text" [ngModel]="$parent.parameter.selectedChoice" select="parameter.prompt(request)" [geminiDrop]="parameter" gemini-autocomplete gemini-fieldmandatorycheck gemini-clear />
                         </div>
 
                         <!--"EntryType.MultipleConditionalChoices"-->

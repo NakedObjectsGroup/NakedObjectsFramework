@@ -1,79 +1,78 @@
-﻿import { Directive, ElementRef, HostListener, Output, EventEmitter } from '@angular/core';
+﻿import { Directive, ElementRef, HostListener, Output, EventEmitter, Input } from '@angular/core';
+import * as ViewModels from "./nakedobjects.viewmodels";
+
+const draggableVmKey = "dvmk";
 
 @Directive({ selector: '[geminiDrop]' })
 export class GeminiDropDirective {
     private el: HTMLElement;
     constructor(el: ElementRef) {
         this.el = el.nativeElement;
+
+        (this.el as any).droppable({
+            tolerance: "touch",
+            hoverClass: "dropping",
+            accept: this.accept
+        });
     }
 
-//    const propertyScope = () => scope.$parent.$parent.$parent as IPropertyOrParameterScope;
-//    const parameterScope = () => scope.$parent.$parent as IPropertyOrParameterScope;
+    accept = (draggable: any) => {
+      
+        const draggableVm: ViewModels.IDraggableViewModel = draggable.data(draggableVmKey);
 
-//    const accept = (draggable: any) => {
-//        const droppableVm: IFieldViewModel = propertyScope().property || parameterScope().parameter;
-//        const draggableVm: IDraggableViewModel = draggable.data(draggableVmKey);
+        if (draggableVm) {
+            draggableVm.canDropOn(this.target.returnType).
+                then((canDrop: boolean) => {
+                    if (canDrop) {
+                        this.el.classList.add("candrop");
+                    } else {
+                        this.el.classList.remove("candrop");
+                    }
+                }).
+                catch(() => this.el.classList.remove("candrop"));
+            return true;
+        }
+        return false;
+    };
+    
 
-//        if (draggableVm) {
-//            draggableVm.canDropOn(droppableVm.returnType).
-//                then((canDrop: boolean) => {
-//                    if (canDrop) {
-//                        element.addClass("candrop");
-//                    } else {
-//                        element.removeClass("candrop");
-//                    }
-//                }).
-//                catch(() => element.removeClass("candrop"));
-//            return true;
-//        }
-//        return false;
-//    };
+    @HostListener('drop', ['$event']) onDrop(event: KeyboardEvent, ui : any) {
+        if (this.el.classList.contains("candrop")) {
 
-//        (element as any).droppable({
-//    tolerance: "touch",
-//    hoverClass: "dropping",
-//    accept: accept
-//});
+            const draggableVm = <ViewModels.IDraggableViewModel>ui.draggable.data(draggableVmKey);
+       
+            this.target.drop(draggableVm);
+            const evt = new Event("change");
+            this.el.dispatchEvent(evt);
+        }
+    }
 
-//element.on("drop", (event: any, ui: any) => {
+    @Input('geminiDrop')
+    target: ViewModels.IFieldViewModel;
 
-//    if (element.hasClass("candrop")) {
+    handle(event: KeyboardEvent) {
+        const vKeyCode = 86;
+        const deleteKeyCode = 46;
+        if (event.keyCode === vKeyCode && event.ctrlKey) {
 
-//        const droppableScope = propertyScope().property ? propertyScope() : parameterScope();
-//        const droppableVm: IFieldViewModel = droppableScope.property || droppableScope.parameter;
-//        const draggableVm = <IDraggableViewModel>ui.draggable.data(draggableVmKey);
+            const draggableVm = <ViewModels.IDraggableViewModel> (<any>document.querySelector("div.footer div.currentcopy .reference")).data(draggableVmKey) as any;
 
-//        droppableScope.$apply(() => {
-//            droppableVm.drop(draggableVm);
-//            $timeout(() => $(element).change());
-//        });
-//    }
-//});
+            if (draggableVm) {
+                // only consume event if we are actually dropping on a field
+                event.preventDefault();
+                this.target.drop(draggableVm);
+            }
+        }
+        if (event.keyCode === deleteKeyCode) {
+            this.target.clear();
+        }
+    }
 
-//element.on("keydown keypress", (event: any) => {
-//    const vKeyCode = 86;
-//    const deleteKeyCode = 46;
-//    if (event.keyCode === vKeyCode && event.ctrlKey) {
+    @HostListener('keypress', ['$event']) onKeyPress(event: KeyboardEvent) {
+        return this.handle(event);
+    }
 
-
-//        const droppableScope = propertyScope().property ? propertyScope() : parameterScope();
-//        const droppableVm: IFieldViewModel = droppableScope.property || droppableScope.parameter;
-//        const draggableVm = <IDraggableViewModel>($("div.footer div.currentcopy .reference").data(draggableVmKey) as any);
-
-//        if (draggableVm) {
-//            // only consume event if we are actually dropping on a field
-//            event.preventDefault();
-//            droppableScope.$apply(() => droppableVm.drop(draggableVm));
-//        }
-//    }
-//    if (event.keyCode === deleteKeyCode) {
-//        const droppableScope = propertyScope().property ? propertyScope() : parameterScope();
-//        const droppableVm: IFieldViewModel = droppableScope.property || droppableScope.parameter;
-
-//        scope.$apply(droppableVm.clear);
-//    }
-//});
-
-
-
+    @HostListener('keydown', ['$event']) onKeyDown(event: KeyboardEvent) {
+        return this.handle(event);
+    }
 }

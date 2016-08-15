@@ -6,10 +6,12 @@ import { UrlManager } from "./urlmanager.service";
 import * as _ from "lodash";
 import * as Models from "./models";
 import * as ViewModels from "./nakedobjects.viewmodels";
+import { GeminiDropDirective } from "./gemini-drop.directive";
 
 @Component({
     selector: 'dialog',
-    templateUrl: 'app/dialog.component.html'
+    templateUrl: 'app/dialog.component.html',
+    directives : [GeminiDropDirective]
 })
 export class DialogComponent {
 
