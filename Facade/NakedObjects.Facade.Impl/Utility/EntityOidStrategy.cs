@@ -159,7 +159,10 @@ namespace NakedObjects.Facade.Impl.Utility {
                 long ticks = long.Parse(value);
                 return new DateTime(ticks);
             }
-
+            if (type == typeof(Guid))
+            {
+                return new Guid(value);
+            }
             return Convert.ChangeType(value, type);
         }
 
