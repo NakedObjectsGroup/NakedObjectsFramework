@@ -61,7 +61,11 @@ namespace NakedObjects.Facade.Impl.Implementation {
             if (obj is DateTime) {
                 obj = ((DateTime) obj).Ticks;
             }
-            return (string) Convert.ChangeType(obj, typeof(string)); // better ? 
+            if (obj is Guid)
+            {
+                obj = obj.ToString();
+            }
+            return (string) Convert.ChangeType(obj, typeof(string)); 
         }
 
         protected string GetKeyValues(IObjectFacade nakedObjectForKey) {
