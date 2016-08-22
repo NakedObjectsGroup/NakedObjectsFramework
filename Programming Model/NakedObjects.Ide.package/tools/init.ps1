@@ -145,6 +145,13 @@ param($rootPath, $toolsPath, $package, $project)
 		build build.facade.proj 
 		build build.ro.proj /t:RestfulObjectsPackageNoTest
 		build build.batch.proj
+
+		cd Spa\NakedObjects.Spa
+		npm install
+		npm run typings install
+		npm run typings install lodash --global --save
+		cd ..\..
+
 		build build.spa.proj
 	}
 

@@ -85,13 +85,13 @@
 
   <Target Name="SpaPackage" DependsOnTargets="Spa" >
    
-    <Exec WorkingDirectory="$(SpaPath)\$(Spa).package" Command="..\$(Nuget) pack $(Spa).nuspec" />
+    <!--<Exec WorkingDirectory="$(SpaPath)\$(Spa).package" Command="..\$(Nuget) pack $(Spa).nuspec" />
     <ItemGroup>
       <SpaPackage Include="$(SpaPath)\$(Spa).package\*.nupkg"/>
     </ItemGroup>
 
     <Copy SourceFiles="@(SpaPackage)" DestinationFolder="$(BuiltPackagesPath)" />
-    <Copy SourceFiles="@(SpaPackage)" DestinationFolder="$(PackageSourcePath)" />
+    <Copy SourceFiles="@(SpaPackage)" DestinationFolder="$(PackageSourcePath)" />-->
   </Target>
   <Target Name="SpaBuild" >
     <MSBuild Projects="$(MSBuildProjectFile)" Targets="SpaPackage"/>
