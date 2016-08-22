@@ -176,6 +176,7 @@
     <Compile Include="VerySimpleEager.cs" />
     <Compile Include="WithActionViewModel.cs" />
     <Compile Include="WithCollectionViewModel.cs" />
+    <Compile Include="WithGuidKey.cs" />
     <Compile Include="WithDateTimeKey.cs" />
     <Compile Include="VerySimple.cs" />
     <Compile Include="WithNestedViewModel.cs" />

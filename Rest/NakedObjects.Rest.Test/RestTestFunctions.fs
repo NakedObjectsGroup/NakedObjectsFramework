@@ -938,6 +938,29 @@ let makePropertyMemberFullNoDetails oType (mName : string) (oTypeName : string) 
         TProperty(JsonPropertyNames.Extensions, exts);
         TProperty(JsonPropertyNames.Links, TArray([  ]))]
 
+let makePropertyMemberGuid oType (oName : string) (mName : string) (oValue : TObject) tName =
+     
+            
+      let detailsRelValue = RelValues.Details + makeParm RelParamValues.Property mName
+      let modifyRel = RelValues.Modify + makeParm RelParamValues.Property mName
+
+      let links = [ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "");
+                     ]
+
+      let links =  (Seq.append links [(TObjectJson(TProperty(JsonPropertyNames.Arguments, TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))])) :: makePutLinkProp modifyRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty ""))]).ToList()               
+
+      [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Property) );
+        TProperty(JsonPropertyNames.Id, TObjectVal("Id"));
+        TProperty(JsonPropertyNames.Value, oValue);
+        TProperty(JsonPropertyNames.HasChoices, TObjectVal(false));
+      
+        TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Id"));
+                                                             TProperty(JsonPropertyNames.Description, TObjectVal(""));
+                                                             TProperty(JsonPropertyNames.ReturnType, TObjectVal(tName));
+                                                             TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0));                                                   
+                                                             TProperty(JsonPropertyNames.Optional, TObjectVal(false))]));
+        TProperty(JsonPropertyNames.Links, TArray(links))]
+
 let makePropertyMemberDateTime oType (mName : string) (oName : string) fName desc opt (oValue : TObject) format =
       let oTypeName = oName.Substring(0, oName.IndexOf("/"))
       let order = if desc = "" then 0 else 4

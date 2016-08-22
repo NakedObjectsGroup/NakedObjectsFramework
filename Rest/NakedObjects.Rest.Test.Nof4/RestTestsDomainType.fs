@@ -69,6 +69,7 @@ type CNof4TestsDomainType() =
                    typeof<WithAttachments>
                    typeof<WithCollection>
                    typeof<WithDateTimeKey>
+                   typeof<WithGuidKey>
                    typeof<WithError>
                    typeof<WithGetError>
                    typeof<WithNestedViewModel>
@@ -340,6 +341,9 @@ type CNof4TestsDomainType() =
         [<Test>]
         member x.GetWithDateTimeKeyObject() = DomainObject14.GetWithDateTimeKeyObject x.api
         
+        [<Test>]
+        member x.GetWithGuidKeyObject() = DomainObject14.GetWithGuidKeyObject x.api
+
         [<Test>]
         member x.GetVerySimpleEagerObject() = DomainObject14.GetVerySimpleEagerObject x.api
         

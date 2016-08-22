@@ -32,7 +32,7 @@ let links =
 let expected = 
     [ TProperty(JsonPropertyNames.Links, links)
       TProperty(JsonPropertyNames.SpecVersion, TObjectVal("1.1"))
-      TProperty(JsonPropertyNames.ImplVersion, TObjectVal("8.0.0-beta9\r\n"))
+      TProperty(JsonPropertyNames.ImplVersion, TObjectVal("8.0.1\r\n"))
       TProperty(JsonPropertyNames.OptionalCapabilities, capabilities)
       TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 
