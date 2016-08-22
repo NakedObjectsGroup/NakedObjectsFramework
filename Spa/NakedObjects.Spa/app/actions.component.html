@@ -1,5 +1,4 @@
-﻿<div class="actions">
-    <div *ngFor="let menu of menuVm.menuItems">
+﻿    <div *ngFor="let menu of menuVm.menuItems">
         <div *ngIf="menu.name"  (click)="menu.toggleCollapsed()" class="submenu clickable-area" [ngSwitch]="menu.navCollapsed">
             {{menu.name}}
             <div *ngSwitchCase="true" class="icon-expand"></div>
@@ -16,4 +15,3 @@
             </div>
         </div>
     </div>
-</div>

@@ -10,7 +10,8 @@ import * as _ from "lodash";
 @Component({
     selector: 'action',
     templateUrl: 'app/action.component.html',
-    directives: [GeminiClickDirective]
+    directives: [GeminiClickDirective],
+    styleUrls: ['app/action.component.css']
 })
 export class ActionComponent {
 

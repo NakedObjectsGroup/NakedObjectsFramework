@@ -8,7 +8,8 @@ import * as ViewModels from "./nakedobjects.viewmodels";
 
 @Component({
     selector: 'property',
-    templateUrl: 'app/property.component.html'
+    templateUrl: 'app/property.component.html',
+    styleUrls: ['app/property.component.css']
 })
 export class PropertyComponent {
 

@@ -10,7 +10,8 @@ import * as _ from "lodash";
 @Component({
     selector: 'actions',
     templateUrl: 'app/actions.component.html',
-    directives: [ActionsComponent, ActionComponent]
+    directives: [ActionsComponent, ActionComponent],
+    styleUrls: ['app/actions.component.css']
 })
 export class ActionsComponent {
 

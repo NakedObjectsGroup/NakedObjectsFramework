@@ -22,7 +22,8 @@ import { PropertiesComponent } from "./properties.component";
 @Component({
     selector: 'object',
     templateUrl: `app/object.component.html`,
-    directives: [ROUTER_DIRECTIVES, FooterComponent, ActionsComponent, GeminiClickDirective, PropertiesComponent]
+    directives: [ROUTER_DIRECTIVES, FooterComponent, ActionsComponent, GeminiClickDirective, PropertiesComponent],
+    styleUrls: ['app/object.component.css']
 })
 
 export class ObjectComponent {

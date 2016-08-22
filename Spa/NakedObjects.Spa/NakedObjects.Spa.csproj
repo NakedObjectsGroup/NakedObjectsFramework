@@ -68,15 +68,22 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\action.component.css" />
     <Content Include="app\action.component.html" />
+    <Content Include="app\actions.component.css" />
     <Content Include="app\actions.component.html" />
     <Content Include="app\app.component.html" />
+    <Content Include="app\dialog.component.css" />
     <Content Include="app\dialog.component.html" />
+    <Content Include="app\footer.component.css" />
     <Content Include="app\footer.component.html" />
     <Content Include="app\home.component.html" />
     <Content Include="app\list.component.html" />
+    <Content Include="app\object.component.css" />
     <Content Include="app\object.component.html" />
+    <Content Include="app\properties.component.css" />
     <Content Include="app\properties.component.html" />
+    <Content Include="app\property.component.css" />
     <Content Include="app\property.component.html" />
     <Content Include="fonts\iconFont.svg" />
     <Content Include="fonts\license.txt" />

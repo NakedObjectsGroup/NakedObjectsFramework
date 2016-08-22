@@ -11,7 +11,8 @@ import { GeminiDropDirective } from "./gemini-drop.directive";
 @Component({
     selector: 'dialog',
     templateUrl: 'app/dialog.component.html',
-    directives : [GeminiDropDirective]
+    directives: [GeminiDropDirective],
+    styleUrls: ['app/dialog.component.css']
 })
 export class DialogComponent {
 

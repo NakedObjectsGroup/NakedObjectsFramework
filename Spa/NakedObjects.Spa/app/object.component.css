@@ -1,0 +1,19 @@
+﻿:host {
+    padding-left: 20px;
+    height: 100%;
+    overflow-y: auto;
+    display: block;
+}
+
+.view .header .title {
+    display: inline-block; /*Otherwise focus outline takes full width*/
+}
+
+.header .type {
+    float: left;
+    margin-right: 20px;
+}
+
+.type {
+    display: none; /*Change this to display type (e.g. for accessibility)*/
+}

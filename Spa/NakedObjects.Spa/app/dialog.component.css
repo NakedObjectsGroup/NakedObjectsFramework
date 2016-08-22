@@ -1,0 +1,29 @@
+﻿
+:host {
+    width: 410px;
+    padding: 5px;
+    margin-bottom: 20px;
+    overflow: hidden; /*Needed to force the floated divs inside this to expand the containing div in height*/
+    background-color: white;
+    color: black;
+    font-weight: bolder;
+}
+
+.title {
+        font-size: 12pt;
+        margin-bottom: 10px;
+    }
+
+.icon-cancel {
+        color: black;
+        float: right;
+    }
+
+.parameter .name {
+    width: 145px; /*To align input box with reference fields*/
+}
+
+ .parameter {
+    overflow: hidden; /*To cope with long param/prop names*/
+    display: block;
+}

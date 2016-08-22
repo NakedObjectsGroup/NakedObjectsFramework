@@ -56,7 +56,7 @@ html, #main, body, .background, .single, .split {
     float: left;
 }
 /*Main roots*/
-.home, .object, .list, .recent, .error {
+.home, .list, .recent, .error {
     padding-left: 20px;
     height: 100%;
     overflow-y: auto;
@@ -64,19 +64,19 @@ html, #main, body, .background, .single, .split {
 }
 
 /*Sub-panes - layout */
-.actions, .main-column, .collections {
+.main-column, .collections {
     float: left;
     margin-bottom: 20px;
     display: block;
 }
 
-properties, .dialog {
+.dialog {
     width: 410px;
     padding: 5px;
     margin-bottom: 20px;
 }
 
-.action, .main-column, .collections {
+.main-column, .collections {
     margin-right: 20px;
 }
 
@@ -100,19 +100,6 @@ properties, .dialog {
     display: block;
 }
 
-.object.view .header .title {
-    display: inline-block; /*Otherwise focus outline takes full width*/
-}
-
-.header .type {
-    float: left;
-    margin-right: 20px;
-}
-
-.type {
-    display: none; /*Change this to display type (e.g. for accessibility)*/
-}
-
 /*Menus & actions*/
 .menus {
     display: block;
@@ -126,7 +113,7 @@ properties, .dialog {
     font-size: 16pt;
 }
 
-    .action[disabled="disabled"], .menu[disabled="disabled"], .ok[disabled="disabled"] {
+     .menu[disabled="disabled"], .ok[disabled="disabled"] {
         color: grey;
     }
 
@@ -135,39 +122,7 @@ properties, .dialog {
     cursor: pointer;
 }
 
-/*Sub-menus*/
 
-/*Actions*/
-.actions .action, .actions .submenu {
-    width: 150px;
-    margin-bottom: 5px;
-    font-weight: bolder; /*Because black on white light looks too faint*/
-    display: block;
-}
-
-.actions .action {
-    padding: 2px 5px;
-}
-
-.collapsed {
-    display: none;
-}
-
-.open {
-    margin-left: 10px;
-}
-
-    .open.rootMenu {
-        margin-left: 0px;
-    }
-
-.submenu {
-    padding: 5px;
-}
-
-    .submenu .icon-expand, .submenu .icon-collapse {
-        font-size: 8pt;
-    }
 
 /*Dialog*/
 .dialog {
@@ -191,13 +146,12 @@ properties, .dialog {
     width: 145px; /*To align input box with reference fields*/
 }
 
-property, .parameter {
+ .parameter {
     overflow: hidden; /*To cope with long param/prop names*/
     display: block;
 }
 
-    /*Properties*/
-    property:not(:last-child), .list .reference:not(:last-child) {
+     .list .reference:not(:last-child) {
         margin-bottom: 5px;
     }
 
@@ -213,10 +167,6 @@ property, .parameter {
     margin: 1px;
 }
 
-property .reference img {
-    max-width: 245px;
-    max-height: 100px;
-}
 
 /*Handling freestanding images*/
 .attachment {
@@ -368,15 +318,13 @@ property .validation {
 .reference:hover, .reference:focus,
 tbody tr:hover, tr:focus,
 .clickable-row:hover, .clickable-row:focus,
-div.hover, div.focus,
-.action:hover, .action:focus,
-.footer a:hover, .footer a:focus {
+div.hover, div.focus
+{
     outline: solid;
     outline-width: 1px;
     outline-color: white;
 }
 
-.action[disabled="disabled"]:hover,
 .menu[disabled="disabled"]:hover {
     outline: none;
 }
@@ -446,48 +394,6 @@ tbody .number {
         font-size: 12pt;
         color: white;
     }
-
-/*footer*/
-.footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: black;
-}
-
-    .footer a {
-        color: white;
-        font-size: 36pt;
-        padding: 5px;
-        margin-left: 10px;
-    }
-
-        .footer a.disabled {
-            display: none;
-        }
-
-        .footer a:hover {
-            outline-style: solid;
-            outline-width: 1px;
-            outline-color: white;
-        }
-
-        .footer a:active {
-            outline-style: solid;
-            outline-width: 2px;
-            outline-color: white;
-        }
-
-    .footer a, .footer .currentcopy {
-        float: left;
-    }
-
-    .footer .currentcopy {
-        display: inline-block;
-        margin-left: 20px;
-    }
-
 
 .messages {
     font-size: 16pt;
@@ -656,27 +562,7 @@ tbody .number {
     font-style: normal;
 }
 
-/*Icons -specific*/
-.icon-home:before {
-    content: "\e000";
-}
-
-.icon-arrow-left-3:before {
-    content: "\e09f";
-}
-
-.icon-arrow-right-3:before {
-    content: "\e09d";
-}
-
-.icon-loop:before {
-    content: "\e08f";
-}
-
-.icon-help:before {
-    content: "\e085";
-}
-
+/*Icons*/
 .icon-cancel:before {
     content: "\e088";
 }
@@ -706,29 +592,9 @@ tbody .number {
     content: "\e098";
 }
 
-.icon-swap:before {
-    content: "\e0a4";
-}
 
-.icon-full:before {
-    content: "\e08e";
-}
 
-.icon-recent:before {
-    content: "\e06b";
-}
 
-.icon-speech:before {
-    content: "\e036";
-}
-
-.icon-properties:before {
-    content: "\e048";
-}
-
-.icon-logoff:before {
-    content: "\e03b";
-}
 
 /*Buttons*/
 input[type=button],
@@ -761,16 +627,6 @@ input[type=submit] {
         font-family: 'Segoe UI';
         font-size: 10pt;
     }
-/*Warnings & Messages in footer*/
-.footer .messages, .footer .warnings {
-    background-color: black;
-    font-size: 11pt;
-    color: white;
-}
-
-.footer .warnings {
-    color: red;
-}
 
 /*Cicero*/
 .cicero, .cicero input, .cicero pre {

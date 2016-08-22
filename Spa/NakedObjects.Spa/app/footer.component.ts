@@ -15,7 +15,8 @@ import { RepLoader } from "./reploader.service";
 @Component({
     selector: 'footer',
     templateUrl: 'app/footer.component.html',
-    directives: [GeminiClickDirective]
+    directives: [GeminiClickDirective],
+    styleUrls: ['app/footer.component.css']
 })
 export class FooterComponent implements OnInit {
 
