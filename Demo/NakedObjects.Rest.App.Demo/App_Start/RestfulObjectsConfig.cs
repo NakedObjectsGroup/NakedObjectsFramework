@@ -18,6 +18,83 @@ namespace NakedObjects.Rest.App.Demo {
         public static void RegisterRestfulObjectsRoutes(RouteCollection routes) {
             if (RestRoot != null) {
                 RestfulObjectsControllerBase.AddRestRoutes(routes, RestRoot);
+
+                routes.MapHttpRoute("Spa",
+                    routeTemplate: "gemini",
+                    defaults: new {controller = "RestfulObjects", action = "GetHome"},
+                    constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                    );
+
+                routes.MapHttpRoute("Spa1",
+                    routeTemplate: "gemini/home",
+                    defaults: new {controller = "RestfulObjects", action = "GetHome"},
+                    constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                    );
+
+                routes.MapHttpRoute("Spa2",
+                    routeTemplate: "gemini/home/home",
+                    defaults: new {controller = "RestfulObjects", action = "GetHome"},
+                    constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                    );
+
+                routes.MapHttpRoute("Spa3",
+                    routeTemplate: "gemini/home/object",
+                    defaults: new {controller = "RestfulObjects", action = "GetHome"},
+                    constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                    );
+
+                routes.MapHttpRoute("Spa4",
+                    routeTemplate: "gemini/home/list",
+                    defaults: new {controller = "RestfulObjects", action = "GetHome"},
+                    constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                    );
+                routes.MapHttpRoute("Spa5",
+                    routeTemplate: "gemini/object",
+                    defaults: new {controller = "RestfulObjects", action = "GetHome"},
+                    constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                    );
+
+                routes.MapHttpRoute("Spa6",
+                    routeTemplate: "gemini/object/home",
+                    defaults: new {controller = "RestfulObjects", action = "GetHome"},
+                    constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                    );
+
+                routes.MapHttpRoute("Spa7",
+                    routeTemplate: "gemini/object/object",
+                    defaults: new {controller = "RestfulObjects", action = "GetHome"},
+                    constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                    );
+
+                routes.MapHttpRoute("Spa8",
+                    routeTemplate: "gemini/object/list",
+                    defaults: new {controller = "RestfulObjects", action = "GetHome"},
+                    constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                    );
+
+                routes.MapHttpRoute("Spa9",
+                    routeTemplate: "gemini/list",
+                    defaults: new {controller = "RestfulObjects", action = "GetHome"},
+                    constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                    );
+
+                routes.MapHttpRoute("Spa10",
+                    routeTemplate: "gemini/list/home",
+                    defaults: new {controller = "RestfulObjects", action = "GetHome"},
+                    constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                    );
+
+                routes.MapHttpRoute("Spa11",
+                    routeTemplate: "gemini/list/object",
+                    defaults: new {controller = "RestfulObjects", action = "GetHome"},
+                    constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                    );
+
+                routes.MapHttpRoute("Spa12",
+                    routeTemplate: "gemini/list/list",
+                    defaults: new {controller = "RestfulObjects", action = "GetHome"},
+                    constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                    );
             }
         }
 
