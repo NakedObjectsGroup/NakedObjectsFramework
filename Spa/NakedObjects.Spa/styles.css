@@ -1,5 +1,7 @@
 /*Global*/
-
+div {
+    display: initial; /*This is to override the agent style sheet setting of display-block*/
+}
 .gemini, table, a, pre, textarea { /*Need to override browser defaults*/
     font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
     color: white;
@@ -58,15 +60,17 @@ html, #main, body, .background, .single, .split {
     padding-left: 20px;
     height: 100%;
     overflow-y: auto;
+    display: block;
 }
 
 /*Sub-panes - layout */
 .actions, .main-column, .collections {
     float: left;
     margin-bottom: 20px;
+    display: block;
 }
 
-.properties, .dialog {
+properties, .dialog {
     width: 410px;
     padding: 5px;
     margin-bottom: 20px;
@@ -80,6 +84,7 @@ html, #main, body, .background, .single, .split {
 .header {
     margin-bottom: 20px;
     overflow: hidden; /*Expands the div to size of all contents*/
+    display: block;
     }
 
 .header .title, .header .type {
@@ -92,6 +97,7 @@ html, #main, body, .background, .single, .split {
     padding-right: 5px;
     margin-right: 20px;
     margin-top: 2px;
+    display: block;
 }
 
 .object.view .header .title {
@@ -108,8 +114,11 @@ html, #main, body, .background, .single, .split {
 }
 
 /*Menus & actions*/
+.menus {
+    display: block;
+}
 .menu, .header .action {
-    display: inline-block;
+    display: inline;
     padding: 5px;
     margin-left: 1px; /*Else hover outline is hidden on the left-most menu*/
     margin-right: 10px;
@@ -133,6 +142,7 @@ html, #main, body, .background, .single, .split {
     width: 150px;
     margin-bottom: 5px;
     font-weight: bolder; /*Because black on white light looks too faint*/
+    display: block;
 }
 
 .actions .action {
@@ -181,12 +191,13 @@ html, #main, body, .background, .single, .split {
     width: 145px; /*To align input box with reference fields*/
 }
 
-.property, .parameter {
+property, .parameter {
     overflow: hidden; /*To cope with long param/prop names*/
+    display: block;
 }
 
     /*Properties*/
-    .property:not(:last-child), .list .reference:not(:last-child) {
+    property:not(:last-child), .list .reference:not(:last-child) {
         margin-bottom: 5px;
     }
 
@@ -202,7 +213,7 @@ html, #main, body, .background, .single, .split {
     margin: 1px;
 }
 
-.property .reference img {
+property .reference img {
     max-width: 245px;
     max-height: 100px;
 }
@@ -283,7 +294,7 @@ select {
         height: 68px; /*Issue with IE if just inherit the default height*/
     }
 
-.name, .value, .property .reference {
+.name, .value, property .reference {
     float: left;
 }
 
@@ -294,7 +305,7 @@ select {
     font-size: 11pt;
 }
 
-.property .validation {
+property .validation {
     color: white;
 }
 
@@ -314,7 +325,7 @@ select {
     height: 20px;
 }
 
-/*.property .value.droppable {
+/*property .value.droppable {
         border-color: red;
     }*/
 
