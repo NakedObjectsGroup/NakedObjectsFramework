@@ -31,7 +31,8 @@ namespace MvcTestApp {
                     typeof (RestDataRepository),
                     typeof (WithActionService),
                     typeof (ContributorService),
-                    typeof (TestTypeCodeMapper)
+                    typeof (TestTypeCodeMapper),
+                    typeof(WithGuidKey)
                 };
             }
         }
@@ -52,6 +53,8 @@ namespace MvcTestApp {
                    typeof(WithAttachments),
                    typeof(WithCollection),
                    typeof(WithDateTimeKey),
+                   typeof(Guid),
+                   typeof(WithGuidKey),
                    typeof(WithError),
                    typeof(WithGetError),
                    typeof(WithNestedViewModel),

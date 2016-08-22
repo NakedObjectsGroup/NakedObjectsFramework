@@ -318,6 +318,53 @@ let GetWithDateTimeKeyObject(api : RestfulObjectsControllerBase) =
     //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
+let GetWithGuidKeyObject(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithGuidKey"
+    let key = "CA761232-ED42-11CE-BACD-00AA0057B223".ToLower()
+    let id = ktc (key)
+    let oid = oType + "/" + id
+    let url = sprintf "http://localhost/objects/%s" oid
+    let args = CreateReservedArgs ""
+    api.Request <- jsonGetMsg (url)
+    let result = api.GetObject(oType, id, args)
+    let jsonResult = readSnapshotToJson result
+    let parsedResult = JObject.Parse(jsonResult)
+    let args = TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
+   
+    let title = key
+    
+    let expected = 
+        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+          TProperty(JsonPropertyNames.InstanceId, TObjectVal(id))
+          TProperty(JsonPropertyNames.Title, TObjectVal(title))
+          TProperty(JsonPropertyNames.Links, 
+                    TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
+                             TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
+          
+          TProperty
+              (JsonPropertyNames.Members, 
+               
+               TObjectJson
+                   ([ TProperty
+                          ("Id", 
+                           
+                           TObjectJson
+                               (makePropertyMemberGuid "objects" oid "Id" (TObjectVal(key)) (ttc "System.Guid") )) ]))
+          TProperty(JsonPropertyNames.Extensions, 
+                    TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+                                  TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Guid Key"))
+                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("With Guid Keies"))
+                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
+                                  TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), result.Content.Headers.ContentType)
+    assertTransactionalCache result
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    compareObject expected parsedResult
+
+
 let GetVerySimpleEagerObject(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.VerySimpleEager"
     let oid = oType + "/" + ktc "1"
