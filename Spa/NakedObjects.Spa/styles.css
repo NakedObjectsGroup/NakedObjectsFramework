@@ -70,11 +70,6 @@ html, #main, body, .background, .single, .split {
     display: block;
 }
 
-.dialog {
-    width: 410px;
-    padding: 5px;
-    margin-bottom: 20px;
-}
 
 .main-column, .collections {
     margin-right: 20px;
@@ -122,39 +117,6 @@ html, #main, body, .background, .single, .split {
     cursor: pointer;
 }
 
-
-
-/*Dialog*/
-.dialog {
-    overflow: hidden; /*Needed to force the floated divs inside this to expand the containing div in height*/
-    background-color: white;
-    color: black;
-    font-weight: bolder;
-}
-
-    .dialog .title {
-        font-size: 12pt;
-        margin-bottom: 10px;
-    }
-
-    .dialog .icon-cancel {
-        color: black;
-        float: right;
-    }
-
-.parameter .name {
-    width: 145px; /*To align input box with reference fields*/
-}
-
- .parameter {
-    overflow: hidden; /*To cope with long param/prop names*/
-    display: block;
-}
-
-     .list .reference:not(:last-child) {
-        margin-bottom: 5px;
-    }
-
 .name {
     width: 150px;
     padding-right: 5px;
@@ -167,6 +129,9 @@ html, #main, body, .background, .single, .split {
     margin: 1px;
 }
 
+     .list .reference:not(:last-child) {
+        margin-bottom: 5px;
+    }
 
 /*Handling freestanding images*/
 .attachment {
@@ -653,9 +618,4 @@ input[type=submit] {
         padding: 5px;
         margin: 20px;
         width: 95%;
-    }
-
-    /*Hide Cicero icon*/
-    .icon-speech {
-        display: none;
     }
