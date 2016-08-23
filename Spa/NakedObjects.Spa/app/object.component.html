@@ -1,24 +1,28 @@
-﻿<div *ngIf="object" class="object view" [ngClass]="object.color">
-    <div  class="header">
-        <div class="title" gemini-drag tabindex="0"><span class="type">{{object.friendlyName}}</span>{{object.title}}</div>
-        <!--<div>{{object.isDirty() ? "*" : ""}} </div>-->
-     <div class="menus">
-      <div class="menu clickable-area" tabindex="0" geminiClick (leftClick)="object.toggleActionMenu()" ng-disabled="object.disableActions()" title={{object.actionsTooltip()}} accesskey="a">
-       Actions
-      </div>
-      <div class="action clickable-area" tabindex="0" geminiClick (leftClick)="object.doEdit()" ng-hide="object.hideEdit()">
-       Edit
-      </div>
-      <div class="action clickable-area" tabindex="0" geminiClick (leftClick)="object.doReload()">
-       Reload
-      </div>
-     </div>
-        <div class="messages">{{object.message}}</div>
+﻿<div [ngClass]="class">
+    <div *ngIf="object" class="object view" [ngClass]="object.color">
+        <div class="header">
+            <div class="title" gemini-drag tabindex="0"><span class="type">{{object.friendlyName}}</span>{{object.title}}
+            </div>
+            <!--<div>{{object.isDirty() ? "*" : ""}} </div>-->
+            <div class="menus">
+                <div class="menu clickable-area" tabindex="0" geminiClick (leftClick)="object.toggleActionMenu()" ng-disabled="object.disableActions()" title={{object.actionsTooltip()}} accesskey="a">
+                    Actions
+                </div>
+                <div class="action clickable-area" tabindex="0" geminiClick (leftClick)="object.doEdit()" ng-hide="object.hideEdit()">
+                    Edit
+                </div>
+                <div class="action clickable-area" tabindex="0" geminiClick (leftClick)="object.doReload()">
+                    Reload
+                </div>
+            </div>
+            <div class="messages">{{object.message}}</div>
+        </div>
+        <actions *ngIf="object.showActions()" [menuVm]="object"></actions>
+        <div class="main-column">
+            <!--<dialog *ngIf="selectedDialog" [dialog]="selectedDialog"></dialog>-->
+            <properties [properties]="object.properties"></properties>
+        </div>
+        <!--<div class="collections" ng-include="collectionsTemplate"></div>-->
     </div>
-    <actions *ngIf="object.showActions()" [menuVm]="object"></actions>
-    <div class="main-column">
-        <dialog></dialog>
-        <properties [properties]="object.properties"></properties>
-    </div>
-    <!--<div class="collections" ng-include="collectionsTemplate"></div>-->
 </div>
+<router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>

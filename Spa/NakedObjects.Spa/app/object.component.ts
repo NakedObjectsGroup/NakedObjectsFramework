@@ -1,8 +1,8 @@
-﻿import { Component, Input } from '@angular/core';
+﻿import { Component, Input, OnInit } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { FooterComponent } from "./footer.component";
 import { RepresentationsService } from "./representations.service";
-import { ActivatedRoute, Router, UrlPathWithParams} from '@angular/router';
+import { ActivatedRoute, Router} from '@angular/router';
 import * as Models from "./models";
 import { UrlManager } from "./urlmanager.service";
 import { ClickHandlerService } from "./click-handler.service";
@@ -26,7 +26,7 @@ import { PropertiesComponent } from "./properties.component";
     styleUrls: ['app/object.component.css']
 })
 
-export class ObjectComponent {
+export class ObjectComponent implements OnInit {
 
     constructor(private urlManager: UrlManager,
         private context: Context,
@@ -85,13 +85,25 @@ export class ObjectComponent {
             });
     }
 
-
-    @Input()
-    set paneId(id: number) {
-
-        const routeData = this.urlManager.getRouteData().pane()[id];
-        this.setupObject(routeData);
-
-     
+    class: string;
+    onChild() {
+        this.class = "split";
     }
+
+    onChildless() {
+        this.class = "single";
+    }
+
+    ngOnInit(): void {
+
+        this.activatedRoute.data.subscribe(data => {
+            this.paneId = data["pane"];
+            this.class = data["class"];
+
+            const routeData = this.urlManager.getRouteData().pane()[this.paneId];
+            this.setupObject(routeData);
+        });
+    }
+
+    paneId: number;
 }

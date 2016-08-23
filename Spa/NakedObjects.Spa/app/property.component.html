@@ -21,7 +21,7 @@
         <div [ngSwitch]="property.returnType">
             <div *ngSwitchCase="'string'">
                 <div [ngSwitch]="property.format">
-                    <div *ngSwitchCase="'blob'" class="reference clickable-area" [ngModel]="$parent.property.attachment" (leftClick)='property.attachment.doClick()' (rightClick)='property.attachment.doClick(true)' gemini-attachment tabindex="0">
+                    <div *ngSwitchCase="'blob'" class="reference clickable-area"  (leftClick)='property.attachment.doClick()' (rightClick)='property.attachment.doClick(true)' gemini-attachment tabindex="0">
                     </div>
                     <div *ngSwitchDefault>
                         <div [ngSwitch]="property.multipleLines">

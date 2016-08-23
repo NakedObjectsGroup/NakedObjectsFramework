@@ -1,4 +1,4 @@
-﻿import { Component, Input } from '@angular/core';
+﻿import { Component, Input, OnInit } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { FooterComponent } from "./footer.component";
 import { RepresentationsService } from "./representations.service";
@@ -6,7 +6,7 @@ import { UrlManager } from "./urlmanager.service";
 import { ClickHandlerService } from "./click-handler.service";
 import { Context} from "./context.service";
 import { RepLoader} from "./reploader.service";
-import { ActivatedRoute, Router, UrlPathWithParams} from '@angular/router';
+import { ActivatedRoute, Router} from '@angular/router';
 import { Color } from "./color.service";
 import { Error } from "./error.service";
 import { PaneRouteData } from "./nakedobjects.routedata";
@@ -25,7 +25,7 @@ import * as ViewModels from "./nakedobjects.viewmodels";
     directives: [ROUTER_DIRECTIVES, FooterComponent, ActionsComponent, GeminiClickDirective]
 })
 
-export class ListComponent {
+export class ListComponent implements OnInit {
 
     constructor(private urlManager: UrlManager,
         private context: Context,
@@ -79,13 +79,25 @@ export class ListComponent {
         }
     }
 
+    class: string;
+    onChild() {
+        this.class = "split";
+    }
 
-    @Input()
-    set paneId(id: number) {
+    onChildless() {
+        this.class = "single";
+    }
 
-        const routeData = this.urlManager.getRouteData().pane()[id];
-        this.setupList(routeData);
+    paneId : number;
 
+    ngOnInit(): void {
 
+        this.activatedRoute.data.subscribe(data => {
+            this.paneId = data["pane"];
+            this.class = data["class"];
+
+            const routeData = this.urlManager.getRouteData().pane()[this.paneId];
+            this.setupList(routeData);
+        });
     }
 }

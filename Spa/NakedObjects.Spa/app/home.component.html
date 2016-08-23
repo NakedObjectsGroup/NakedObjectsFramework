@@ -1,4 +1,4 @@
-﻿<div class="home">
+﻿<div class="home" [ngClass]="class">
     <div class="header">
         <div class="title">Home</div>
         <div *ngIf="menus">
@@ -14,3 +14,4 @@
         <dialog *ngIf="selectedDialog" [dialog]="selectedDialog"></dialog>
     </div>
 </div>
+<router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>

@@ -160,10 +160,6 @@
     <TypeScriptCompile Include="app\reploader.service.ts" />
     <TypeScriptCompile Include="app\representations.service.ts" />
     <TypeScriptCompile Include="app\rxjs-extensions.ts" />
-    <TypeScriptCompile Include="app\single-list.component.ts" />
-    <TypeScriptCompile Include="app\single-object.component.ts" />
-    <TypeScriptCompile Include="app\single-home.component.ts" />
-    <TypeScriptCompile Include="app\split-home.component.ts" />
     <TypeScriptCompile Include="app\urlmanager.service.ts" />
     <TypeScriptCompile Include="app\user-messages.config.ts" />
     <TypeScriptCompile Include="app\view-model-factory.service.ts" />

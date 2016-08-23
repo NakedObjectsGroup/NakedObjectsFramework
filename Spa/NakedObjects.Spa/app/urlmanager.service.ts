@@ -6,7 +6,7 @@ import { RouteData, PaneRouteData, InteractionMode, CollectionViewState, Applica
 import { Injectable } from '@angular/core';
 import "./rxjs-extensions";
 import { Observable } from 'rxjs/Observable';
-import {Router, UrlPathWithParams, ActivatedRoute} from '@angular/router';
+import {Router, ActivatedRoute, UrlSegment } from '@angular/router';
 
 enum Transition {
     Null,
@@ -702,13 +702,17 @@ export class UrlManager {
         const segments = path.split("/");
         const [, mode, oldPane1, oldPane2 = Constants.homePath] = segments;
         const newPath = `/${mode}/${oldPane2}/${oldPane1}`;
-        const search = this.swapSearchIds(this.getSearch());
+        const search = this.swapSearchIds(this.getSearch()) as any;
         this.currentPaneId = Models.getOtherPane(this.currentPaneId);
 
         //$location.path(newPath).search(search);
 
-        const p = new UrlPathWithParams(newPath, search as any);
-        this.router.navigateByUrl(p.toString());
+        //const p = new UrlSegment(newPath, search as any);
+        //this.router.navigateByUrl(p.toString());
+
+        const tree = this.router.createUrlTree([newPath], { queryParams: search });
+
+        this.router.navigateByUrl(tree);  
     };
 
     cicero = () => {
@@ -753,8 +757,12 @@ export class UrlManager {
             }
 
             //$location.path(newPath).search(search);
-            const p = new UrlPathWithParams(newPath, search as any);
-            this.router.navigateByUrl(p.toString());
+            //const p = new UrlSegment(newPath, search as any);
+            //this.router.navigateByUrl(p.toString());
+
+            const tree = this.router.createUrlTree([newPath], { queryParams: search });
+
+            this.router.navigateByUrl(tree);  
         }
     };
 

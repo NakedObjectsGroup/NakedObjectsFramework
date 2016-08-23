@@ -3,7 +3,7 @@ import { RepresentationsService } from './representations.service'
 import { getAppPath } from "./nakedobjects.config";
 import { Observable } from 'rxjs/Observable';
 import { ActionsComponent } from "./actions.component";
-import { ActivatedRoute, Router, UrlPathWithParams } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UrlManager } from "./urlmanager.service";
 import { Context } from "./context.service";
 import { Error } from './error.service';
@@ -12,6 +12,7 @@ import { ViewModelFactory } from "./view-model-factory.service";
 import { Color } from "./color.service";
 import { DialogComponent } from "./dialog.component";
 import { RouteData, PaneRouteData } from "./nakedobjects.routedata";
+import { ROUTER_DIRECTIVES } from '@angular/router';
 import * as Models from "./models";
 import * as ViewModels from "./nakedobjects.viewmodels";
 
@@ -19,7 +20,7 @@ import * as ViewModels from "./nakedobjects.viewmodels";
 @Component({
     selector: 'home',
     templateUrl: 'app/home.component.html',
-    directives: [ActionsComponent, DialogComponent]
+    directives: [ActionsComponent, DialogComponent, ROUTER_DIRECTIVES]
 })
 export class HomeComponent implements OnInit {
 
@@ -29,16 +30,27 @@ export class HomeComponent implements OnInit {
         private error: Error,
         private urlManager: UrlManager,
         private router: Router,
+        private activatedRoute : ActivatedRoute,
         private color: Color,
         private focusManager: FocusManager) {
+     
     }
 
-    @Input()
     paneId: number;
 
     menus: ViewModels.MenusViewModel;
     selectedMenu: ViewModels.MenuViewModel;
     selectedDialog: ViewModels.DialogViewModel;
+
+    class: string; 
+  
+    onChild() {
+        this.class = "split";
+    }
+
+    onChildless() {
+        this.class = "single";
+    }
 
     getMenus() {
         this.context.getMenus()
@@ -120,12 +132,18 @@ export class HomeComponent implements OnInit {
         this.urlManager.setMenu(menuId, this.paneId);
     }
 
-    ngOnInit(): any {
-        this.getMenus();
-        this.urlManager.getRouteDataObservable()
-            .subscribe((rd: RouteData) => {
-                const paneRouteData = rd.pane()[this.paneId];
-                this.getMenu(paneRouteData);
-            });
+    ngOnInit(): void {
+
+        this.activatedRoute.data.subscribe(data => {
+            this.paneId = data["pane"];
+            this.class = data["class"];
+
+            this.getMenus();
+            this.urlManager.getRouteDataObservable()
+                .subscribe((rd: RouteData) => {
+                    const paneRouteData = rd.pane()[this.paneId];
+                    this.getMenu(paneRouteData);
+                });
+        });     
     }
 }

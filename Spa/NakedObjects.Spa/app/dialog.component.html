@@ -11,46 +11,46 @@
                 <div *ngSwitchCase="'ref'">
 
                     <div class="value input-control text" [ngSwitch]="parameter.entryType">
-                        <input type="hidden" value="{{parameter.reference}}" [ngModel]="parameter.reference" />
+                        <!--<input type="hidden" value="{{parameter.reference}}" [(ngModel)]="parameter.reference" />-->
 
                         <!--"EntryType.AutoComplete"-->
                         <div *ngSwitchCase="5">
-                            <input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" [ngClass]="parameter.color" placeholder="{{parameter.description}}" type="text" [ngModel]="$parent.parameter.selectedChoice" select="parameter.prompt(request)" [geminiDrop]="parameter" gemini-autocomplete gemini-fieldmandatorycheck gemini-clear />
+                            <!--<input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" [ngClass]="parameter.color" placeholder="{{parameter.description}}" type="text" [(ngModel)]="$parent.parameter.selectedChoice" select="parameter.prompt(request)" [geminiDrop]="parameter" gemini-autocomplete gemini-fieldmandatorycheck gemini-clear />-->
                         </div>
 
                         <!--"EntryType.MultipleConditionalChoices"-->
                         <div *ngSwitchCase="4">
-                            <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [ngModel]="$parent.parameter.selectedMultiChoices" select="parameter.conditionalChoices(args)" gemini-conditionalchoices gemini-fieldmandatorycheck>
+                            <!--<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [(ngModel)]="$parent.parameter.selectedMultiChoices" select="parameter.conditionalChoices(args)" gemini-conditionalchoices gemini-fieldmandatorycheck>
                                 <option value="" disabled selected>{{parameter.description}}</option>
-                            </select>
+                            </select>-->
                         </div>
 
                         <!--"EntryType.ConditionalChoices"-->
                         <div *ngSwitchCase="3">
-                            <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [ngModel]="$parent.parameter.selectedChoice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices gemini-fieldmandatorycheck>
+                            <!--<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [(ngModel)]="$parent.parameter.selectedChoice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices gemini-fieldmandatorycheck>
                                 <option value="" disabled selected>{{parameter.description}}</option>
-                            </select>
+                            </select>-->
                         </div>
 
                         <!--"EntryType.MultipleChoices"-->
                         <div *ngSwitchCase="2">
-                            <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [ngModel]="parameter.selectedMultiChoices" ng-options="c as c.name for c in parameter.choices" gemini-fieldmandatorycheck>
+                            <!--<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [(ngModel)]="parameter.selectedMultiChoices" ng-options="c as c.name for c in parameter.choices" gemini-fieldmandatorycheck>
                                 <option value="" disabled>{{parameter.description}}</option>
-                            </select>
+                            </select>-->
                         </div>
 
                         <!--"EntryType.Choices"-->
                         <div *ngSwitchCase="1">
-                            <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [ngModel]="parameter.selectedChoice" ng-options="c as c.name for c in parameter.choices" gemini-fieldmandatorycheck>
+                            <!--<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [(ngModel)]="parameter.selectedChoice" ng-options="c as c.name for c in parameter.choices" gemini-fieldmandatorycheck>
                                 <option value="" disabled>{{parameter.description}}</option>
-                            </select>
+                            </select>-->
                         </div>
 
                         <!--"EntryType.FreeForm"-->
                         <div *ngSwitchCase="0">
-                            <div tabindex="0" class="value droppable" [ngModel]="parameter.selectedChoice" [ngClass]="parameter.color" gemini-drop gemini-fieldmandatorycheck gemini-clear>
+                            <!--<div tabindex="0" class="value droppable" [(ngModel)]="parameter.selectedChoice" [ngClass]="parameter.color" gemini-drop gemini-fieldmandatorycheck gemini-clear>
                                 {{parameter.value || parameter.description}}
-                            </div>
+                            </div>-->
                         </div>
 
                     </div>
@@ -61,65 +61,65 @@
 
                         <!--"EntryType.File"-->
                         <div *ngSwitchCase="6">
-                            <input id="{{parameter.paneArgId}}" type="file" class="{{parameter.status}}" [ngModel]="$parent.parameter.file" placeholder="{{parameter.description}}" gemini-fileupload />
+                        <!--    <input id="{{parameter.paneArgId}}" type="file" class="{{parameter.status}}" [(ngModel)]="$parent.parameter.file" placeholder="{{parameter.description}}" gemini-fileupload />-->
                         </div>
 
                         <!--"EntryType.AutoComplete"-->
                         <div *ngSwitchCase="5">
-                            <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" [ngModel]="$parent.parameter.selectedChoice" select="parameter.prompt(request)" placeholder="{{parameter.description}}" gemini-autocomplete gemini-fieldmandatorycheck gemini-clear />
+                          <!--  <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" [(ngModel)]="$parent.parameter.selectedChoice" select="parameter.prompt(request)" placeholder="{{parameter.description}}" gemini-autocomplete gemini-fieldmandatorycheck gemini-clear />-->
                         </div>
 
                         <!--"EntryType.MultipleConditionalChoices"-->
                         <div *ngSwitchCase="4">
-                            <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [ngModel]="$parent.parameter.selectedMultiChoices" select="parameter.conditionalChoices(args)" gemini-conditionalchoices gemini-fieldmandatorycheck>
+                            <!--<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [(ngModel)]="$parent.parameter.selectedMultiChoices" select="parameter.conditionalChoices(args)" gemini-conditionalchoices gemini-fieldmandatorycheck>
                                 <option value="" disabled selected>{{parameter.description}}</option>
-                            </select>
+                            </select>-->
                         </div>
 
                         <!--"EntryType.ConditionalChoices"-->
                         <div *ngSwitchCase="3">
-                            <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [ngModel]="$parent.parameter.selectedChoice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices gemini-fieldmandatorycheck>
+                            <!--<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [(ngModel)]="$parent.parameter.selectedChoice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices gemini-fieldmandatorycheck>
                                 <option value="" disabled selected>{{parameter.description}}</option>
-                            </select>
+                            </select>-->
                         </div>
 
 
                         <!--"EntryType.MultipleChoices"-->
                         <div *ngSwitchCase="2">
-                            <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [ngModel]="parameter.selectedMultiChoices" ng-options="c as c.name for c in parameter.choices" gemini-fieldmandatorycheck>
+                            <!--<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [(ngModel)]="parameter.selectedMultiChoices" ng-options="c as c.name for c in parameter.choices" gemini-fieldmandatorycheck>
                                 <option value="" disabled>{{parameter.description}}</option>
-                            </select>
+                            </select>-->
                         </div>
 
                         <!--"EntryType.Choices"-->
                         <div *ngSwitchCase="1">
-                            <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [ngModel]="parameter.selectedChoice" ng-options="c as c.name for c in parameter.choices" gemini-fieldmandatorycheck>
+                            <!--<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [(ngModel)]="parameter.selectedChoice" ng-options="c as c.name for c in parameter.choices" gemini-fieldmandatorycheck>
                                 <option value="" disabled>{{parameter.description}}</option>
-                            </select>
+                            </select>-->
                         </div>
 
                         <!--"EntryType.FreeForm"-->
                         <div *ngSwitchCase="0">
-                            <div [ngSwitch]="parameter.returnType">
+                            <!--<div [ngSwitch]="parameter.returnType">
                                 <div *ngSwitchCase="'string'" [ngSwitch]="parameter.format">
                                     <div *ngSwitchCase="'date'">
-                                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="date" placeholder="{{parameter.description}}" [ngModel]="$parent.parameter.value" gemini-datepicker gemini-fieldvalidate gemini-clear />
+                                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="date" placeholder="{{parameter.description}}" [(ngModel)]="$parent.parameter.value" gemini-datepicker gemini-fieldvalidate gemini-clear />
                                     </div>
                                     <div *ngSwitchCase="'time'">
-                                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="time" placeholder="{{parameter.description}}" [ngModel]="$parent.parameter.value" gemini-timepicker gemini-fieldvalidate gemini-clear />
+                                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="time" placeholder="{{parameter.description}}" [(ngModel)]="$parent.parameter.value" gemini-timepicker gemini-fieldvalidate gemini-clear />
                                     </div>
                                     <div *ngSwitchDefault [ngSwitch]="parameter.multipleLines">
-                                        <input *ngSwitchCase="1" id="{{parameter.paneArgId}}" class="{{parameter.status}}" placeholder="{{parameter.description}}" type="{{parameter.password ? 'password' : 'text'}}" [ngModel]="parameter.value" gemini-fieldvalidate gemini-clear />
-                                        <textarea *ngSwitchDefault rows="{{$parent.parameter.multipleLines}}" id="{{$parent.parameter.paneArgId}}" class="{{$parent.parameter.status}}" [ngModel]="$parent.parameter.value" gemini-fieldvalidate gemini-placeholder="$parent.parameter.description"></textarea>
+                                        <input *ngSwitchCase="1" id="{{parameter.paneArgId}}" class="{{parameter.status}}" placeholder="{{parameter.description}}" type="{{parameter.password ? 'password' : 'text'}}" [(ngModel)]="parameter.value" gemini-fieldvalidate gemini-clear />
+                                        <textarea *ngSwitchDefault rows="{{$parent.parameter.multipleLines}}" id="{{$parent.parameter.paneArgId}}" class="{{$parent.parameter.status}}" [(ngModel)]="$parent.parameter.value" gemini-fieldvalidate gemini-placeholder="$parent.parameter.description"></textarea>
                                     </div>
                                 </div>
                                 <div *ngSwitchCase="'boolean'">
-                                    <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="checkbox" [ngModel]="parameter.value" gemini-boolean />{{parameter.description}}
+                                    <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="checkbox" [(ngModel)]="parameter.value" gemini-boolean />{{parameter.description}}
                                 </div>
                                 <div *ngSwitchDefault>
-                                    <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="text" placeholder="{{parameter.description}}" [ngModel]="parameter.value" gemini-fieldvalidate gemini-clear />
+                                    <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="text" placeholder="{{parameter.description}}" [(ngModel)]="parameter.value" gemini-fieldvalidate gemini-clear />
                                 </div>
-                            </div>
+                            </div>-->
 
                         </div>
                     </div>

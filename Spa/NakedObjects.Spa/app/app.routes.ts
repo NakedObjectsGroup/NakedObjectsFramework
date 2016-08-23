@@ -1,9 +1,7 @@
 ﻿import { provideRouter, RouterConfig } from '@angular/router';
-import { SingleHomeComponent } from './single-home.component';
-import { SplitHomeComponent } from "./split-home.component";
-import { SingleObjectComponent } from "./single-object.component";
-import { SingleListComponent } from "./single-list.component";
-
+import { HomeComponent } from "./home.component";
+import { ObjectComponent} from "./object.component";
+import { ListComponent} from "./list.component";
 const routes: RouterConfig = [
     {
         path: '',
@@ -12,23 +10,36 @@ const routes: RouterConfig = [
     },
     {
         path: 'gemini/home',
-        component: SingleHomeComponent
-    },
-    {
-        path: 'gemini/home/home',
-        component: SplitHomeComponent
-    },
-    {
-        path: 'gemini/home/object',
-        component: SplitHomeComponent
+        component: HomeComponent,
+        data: { pane: 1, class : "single" },
+        children: [
+            { path: "" },
+            { path: "home", component: HomeComponent, data: { pane: 2, class: "split" } },
+            { path: "object", component: ObjectComponent, data: { pane: 2, class: "split" } },
+            { path: "list", component: ListComponent, data: { pane: 2, class: "split" } }       
+        ]
     },
     {
         path: 'gemini/object',
-        component: SingleObjectComponent
+        component: ObjectComponent,
+        data: { pane: 1, class: "single" },
+        children: [
+            { path: "" },
+            { path: "home", component: HomeComponent, data: { pane: 2, class: "split" } },
+            { path: "object", component: ObjectComponent, data: { pane: 2, class: "split" } },
+            { path: "list", component: ListComponent, data: { pane: 2, class: "split" } }
+        ]
     },
     {
         path: 'gemini/list',
-        component: SingleListComponent
+        component: ListComponent,
+        data: { pane: 1, class: "single" },
+        children: [
+            { path: "" },
+            { path: "home", component: HomeComponent, data: { pane: 2, class: "split" } },
+            { path: "object", component: ObjectComponent, data: { pane: 2, class: "split" } },
+            { path: "list", component: ListComponent, data: { pane: 2, class: "split" } }
+        ]
     }
 ];
 
