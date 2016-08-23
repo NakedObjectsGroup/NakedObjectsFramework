@@ -13,7 +13,7 @@ import { Color } from "./color.service";
 import { Error } from "./error.service";
 import { FocusManager } from "./focus-manager.service";
 import { Mask } from "./mask.service";
-import { PaneRouteData } from "./nakedobjects.routedata";
+import { PaneRouteData, RouteData } from "./nakedobjects.routedata";
 import * as ViewModels from "./nakedobjects.viewmodels";
 import { ActionsComponent } from "./actions.component";
 import { GeminiClickDirective } from "./gemini-click.directive";
@@ -100,8 +100,12 @@ export class ObjectComponent implements OnInit {
             this.paneId = data["pane"];
             this.class = data["class"];
 
-            const routeData = this.urlManager.getRouteData().pane()[this.paneId];
-            this.setupObject(routeData);
+            this.urlManager.getRouteDataObservable()
+                .subscribe((rd: RouteData) => {
+                    const paneRouteData = rd.pane()[this.paneId];
+                    this.setupObject(paneRouteData);
+                });
+
         });
     }
 

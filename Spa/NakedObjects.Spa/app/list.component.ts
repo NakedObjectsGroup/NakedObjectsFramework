@@ -9,7 +9,7 @@ import { RepLoader} from "./reploader.service";
 import { ActivatedRoute, Router} from '@angular/router';
 import { Color } from "./color.service";
 import { Error } from "./error.service";
-import { PaneRouteData } from "./nakedobjects.routedata";
+import { PaneRouteData, RouteData } from "./nakedobjects.routedata";
 import { ViewModelFactory } from "./view-model-factory.service";
 import { FocusManager, FocusTarget } from "./focus-manager.service";
 import { ActionsComponent } from "./actions.component";
@@ -96,8 +96,15 @@ export class ListComponent implements OnInit {
             this.paneId = data["pane"];
             this.class = data["class"];
 
-            const routeData = this.urlManager.getRouteData().pane()[this.paneId];
-            this.setupList(routeData);
+       
+
+            this.urlManager.getRouteDataObservable()
+                .subscribe((rd: RouteData) => {
+                    const paneRouteData = rd.pane()[this.paneId];
+                    this.setupList(paneRouteData);
+                });
+
+
         });
     }
 }

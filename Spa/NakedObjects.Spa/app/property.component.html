@@ -11,7 +11,7 @@
                     {{property.formattedValue}}
                 </div>
             </div>
-            <div *ngSwitchDefault class="reference clickable-area" [ngClass]="property.color" (leftClick)="property.doClick()" (rightClick)="property.doClick(true)" gemini-drag tabindex="0">
+            <div *ngSwitchDefault class="reference clickable-area" [ngClass]="property.color" geminiClick (leftClick)="property.doClick()" (rightClick)="property.doClick(true)" gemini-drag tabindex="0">
                 {{property.formattedValue}}
             </div>
         </div>
@@ -21,7 +21,7 @@
         <div [ngSwitch]="property.returnType">
             <div *ngSwitchCase="'string'">
                 <div [ngSwitch]="property.format">
-                    <div *ngSwitchCase="'blob'" class="reference clickable-area"  (leftClick)='property.attachment.doClick()' (rightClick)='property.attachment.doClick(true)' gemini-attachment tabindex="0">
+                    <div *ngSwitchCase="'blob'" class="reference clickable-area"  geminiClick (leftClick)='property.attachment.doClick()' (rightClick)='property.attachment.doClick(true)' gemini-attachment tabindex="0">
                     </div>
                     <div *ngSwitchDefault>
                         <div [ngSwitch]="property.multipleLines">
