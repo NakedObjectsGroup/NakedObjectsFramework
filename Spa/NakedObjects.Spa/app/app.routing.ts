@@ -2,6 +2,8 @@
 import { HomeComponent } from "./home.component";
 import { ObjectComponent} from "./object.component";
 import { ListComponent} from "./list.component";
+import { Routes, RouterModule } from '@angular/router';
+
 const routes: RouterConfig = [
     {
         path: '',
@@ -43,6 +45,4 @@ const routes: RouterConfig = [
     }
 ];
 
-export const appRouterProviders = [
-    provideRouter(routes)
-];
+export const routing = RouterModule.forRoot(routes);

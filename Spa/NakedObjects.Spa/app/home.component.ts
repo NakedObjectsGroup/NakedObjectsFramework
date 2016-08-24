@@ -1,9 +1,10 @@
-﻿import { Component, OnInit, Input } from '@angular/core';
+﻿import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { RepresentationsService } from './representations.service'
 import { getAppPath } from "./nakedobjects.config";
 import { Observable } from 'rxjs/Observable';
+import { ISubscription } from 'rxjs/Subscription';
 import { ActionsComponent } from "./actions.component";
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, Data } from '@angular/router';
 import { UrlManager } from "./urlmanager.service";
 import { Context } from "./context.service";
 import { Error } from './error.service';
@@ -22,7 +23,7 @@ import * as ViewModels from "./nakedobjects.viewmodels";
     templateUrl: 'app/home.component.html',
     directives: [ActionsComponent, DialogComponent, ROUTER_DIRECTIVES]
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
     constructor(private representationsService: RepresentationsService,
         private viewModelFactory: ViewModelFactory,
@@ -132,18 +133,31 @@ export class HomeComponent implements OnInit {
         this.urlManager.setMenu(menuId, this.paneId);
     }
 
+    private activatedRouteDataSub : ISubscription;
+    private paneRouteDataSub: ISubscription;
+
     ngOnInit(): void {
 
-        this.activatedRoute.data.subscribe(data => {
+        
+        this.activatedRouteDataSub = this.activatedRoute.data.subscribe(data => {
             this.paneId = data["pane"];
             this.class = data["class"];
-
+        
             this.getMenus();
-            this.urlManager.getRouteDataObservable()
+            this.paneRouteDataSub = this.urlManager.getRouteDataObservable()
                 .subscribe((rd: RouteData) => {
                     const paneRouteData = rd.pane()[this.paneId];
                     this.getMenu(paneRouteData);
                 });
         });     
+    }
+
+    ngOnDestroy(): void {
+        if (this.activatedRouteDataSub) {
+            this.activatedRouteDataSub.unsubscribe();
+        }
+        if (this.paneRouteDataSub) {
+            this.paneRouteDataSub.unsubscribe();
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿import { Component, Input, OnInit } from '@angular/core';
+﻿import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { FooterComponent } from "./footer.component";
 import { RepresentationsService } from "./representations.service";
@@ -18,6 +18,8 @@ import * as ViewModels from "./nakedobjects.viewmodels";
 import { ActionsComponent } from "./actions.component";
 import { GeminiClickDirective } from "./gemini-click.directive";
 import { PropertiesComponent } from "./properties.component";
+import { ISubscription } from 'rxjs/Subscription';
+
 
 @Component({
     selector: 'object',
@@ -26,7 +28,7 @@ import { PropertiesComponent } from "./properties.component";
     styleUrls: ['app/object.component.css']
 })
 
-export class ObjectComponent implements OnInit {
+export class ObjectComponent implements OnInit,  OnDestroy {
 
     constructor(private urlManager: UrlManager,
         private context: Context,
@@ -94,19 +96,31 @@ export class ObjectComponent implements OnInit {
         this.class = "single";
     }
 
+    private activatedRouteDataSub: ISubscription;
+    private paneRouteDataSub: ISubscription;
+
     ngOnInit(): void {
 
-        this.activatedRoute.data.subscribe(data => {
+        this.activatedRouteDataSub = this.activatedRoute.data.subscribe(data => {
             this.paneId = data["pane"];
             this.class = data["class"];
 
-            this.urlManager.getRouteDataObservable()
+            this.paneRouteDataSub = this.urlManager.getRouteDataObservable()
                 .subscribe((rd: RouteData) => {
                     const paneRouteData = rd.pane()[this.paneId];
                     this.setupObject(paneRouteData);
                 });
 
         });
+    }
+
+    ngOnDestroy(): void {
+        if (this.activatedRouteDataSub) {
+            this.activatedRouteDataSub.unsubscribe();
+        }
+        if (this.paneRouteDataSub) {
+            this.paneRouteDataSub.unsubscribe();
+        }
     }
 
     paneId: number;

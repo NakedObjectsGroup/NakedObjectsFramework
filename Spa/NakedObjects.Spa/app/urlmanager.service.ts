@@ -40,7 +40,7 @@ enum Transition {
     pageSize: "ps",
     parm: "pm",
     prop: "pp",
-    reload: "r",
+    //reload: "r",
     selected: "s"
 };
 
@@ -332,7 +332,7 @@ export class UrlManager {
             replace = false;
             search = this.clearPane(search, paneId);
             this.setId(akm.interactionMode + paneId, InteractionMode[InteractionMode.View], search);
-            search = this.toggleReloadFlag(search);
+            //search = this.toggleReloadFlag(search);
             break;
         case (Transition.ToList):
             ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Constants.listPath));
@@ -784,16 +784,16 @@ export class UrlManager {
     isAttachment = (paneId = 1) => this.isLocation(paneId, Constants.attachmentPath);
     isApplicationProperties = (paneId = 1) => this.isLocation(paneId, Constants.applicationPropertiesPath);
 
-    private toggleReloadFlag(search: any) {
-        const currentFlag = search[akm.reload];
-        const newFlag = currentFlag ? 0 : 1;
-        search[akm.reload] = newFlag;
-        return search;
-    }
+    //private toggleReloadFlag(search: any) {
+    //    const currentFlag = search[akm.reload];
+    //    const newFlag = currentFlag ? 0 : 1;
+    //    search[akm.reload] = newFlag;
+    //    return search;
+    //}
 
-    triggerPageReloadByFlippingReloadFlagInUrl = () => {
-        const search = this.getSearch();
-        this.setNewSearch(this.getPath(),  this.toggleReloadFlag(search));
-        //$location.replace();
-    }
+    //triggerPageReloadByFlippingReloadFlagInUrl = () => {
+    //    const search = this.getSearch();
+    //    this.setNewSearch(this.getPath(),  this.toggleReloadFlag(search));
+    //    //$location.replace();
+    //}
 }

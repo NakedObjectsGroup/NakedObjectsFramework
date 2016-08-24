@@ -28,7 +28,7 @@
                             <div *ngSwitchCase="1" class="value">
                                 {{property.formattedValue}}
                             </div>
-                            <div *ngSwitchDefault class="value multiline" [ngStyle]="{height: $parent.property.multipleLines * 20+'px'}">
+                            <div *ngSwitchDefault class="value multiline" [ngStyle]="{height: property.multipleLines * 20+'px'}">
                                 <pre>{{property.formattedValue}}</pre>
                             </div>
                         </div>

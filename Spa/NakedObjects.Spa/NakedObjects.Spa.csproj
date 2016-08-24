@@ -118,7 +118,8 @@
     <TypeScriptCompile Include="app\action.component.ts" />
     <TypeScriptCompile Include="app\actions.component.ts" />
     <TypeScriptCompile Include="app\app.component.ts" />
-    <TypeScriptCompile Include="app\app.routes.ts" />
+    <TypeScriptCompile Include="app\app.module.ts" />
+    <TypeScriptCompile Include="app\app.routing.ts" />
     <TypeScriptCompile Include="app\click-handler.service.ts" />
     <TypeScriptCompile Include="app\color.service.config.ts" />
     <TypeScriptCompile Include="app\color.service.ts" />

@@ -1,4 +1,4 @@
-﻿import { Component, Input, OnInit } from '@angular/core';
+﻿import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { FooterComponent } from "./footer.component";
 import { RepresentationsService } from "./representations.service";
@@ -14,6 +14,7 @@ import { ViewModelFactory } from "./view-model-factory.service";
 import { FocusManager, FocusTarget } from "./focus-manager.service";
 import { ActionsComponent } from "./actions.component";
 import { GeminiClickDirective } from "./gemini-click.directive";
+import { ISubscription } from 'rxjs/Subscription';
 import * as Models from "./models";
 import * as Constants from "./nakedobjects.constants";
 import * as Config from "./nakedobjects.config";
@@ -25,7 +26,7 @@ import * as ViewModels from "./nakedobjects.viewmodels";
     directives: [ROUTER_DIRECTIVES, FooterComponent, ActionsComponent, GeminiClickDirective]
 })
 
-export class ListComponent implements OnInit {
+export class ListComponent implements OnInit, OnDestroy {
 
     constructor(private urlManager: UrlManager,
         private context: Context,
@@ -90,6 +91,9 @@ export class ListComponent implements OnInit {
 
     paneId : number;
 
+    private activatedRouteDataSub: ISubscription;
+    private paneRouteDataSub: ISubscription;
+
     ngOnInit(): void {
 
         this.activatedRoute.data.subscribe(data => {
@@ -106,5 +110,14 @@ export class ListComponent implements OnInit {
 
 
         });
+    }
+
+    ngOnDestroy(): void {
+        if (this.activatedRouteDataSub) {
+            this.activatedRouteDataSub.unsubscribe();
+        }
+        if (this.paneRouteDataSub) {
+            this.paneRouteDataSub.unsubscribe();
+        }
     }
 }

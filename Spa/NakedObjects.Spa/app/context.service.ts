@@ -635,7 +635,7 @@ export class Context {
                 this.cacheList(resultList, index);
             }
         } else if (result.resultType() === "void") {
-            this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
+            //this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
         }
     };
 
