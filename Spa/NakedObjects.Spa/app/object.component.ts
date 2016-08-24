@@ -41,7 +41,12 @@ export class ObjectComponent implements OnInit,  OnDestroy {
 
     object : ViewModels.DomainObjectViewModel;
 
-    setupObject(routeData : PaneRouteData) {
+    setupObject(routeData: PaneRouteData) {
+        // subscription means may get with no oid 
+
+        if (!routeData.objectId) {
+            return;
+        }
 
         const oid = Models.ObjectIdWrapper.fromObjectId(routeData.objectId);
 
