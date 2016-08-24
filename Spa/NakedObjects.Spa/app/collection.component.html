@@ -15,30 +15,30 @@
         </th>
     </tr>
     </thead>
-    <tbody>
-    <tr *ngFor="let item of collection.items" [ngClass]="item.color" class="clickable-area" geminiClick (leftClick)="item.doClick()" (rightClick)="item.doClick(true)" gemini-drag tabindex="0">
-        <td *ngIf="item.tableRowViewModel.hasTitle" class="cell">
-            {{item.tableRowViewModel.title}}
-        </td>     
-        <td *ngIf="item.tableRowViewModel" (click)="item.doClick()" [ngClass]="item.color" class="cell">
-            <div *ngFor="let property of item.tableRowViewModel.properties" [ngSwitch]="property.type">
-                <div *ngSwitchCase="'ref'" class="clickable-area">
-                    {{property.formattedValue}}
+    <tbody *ngIf="collection.hasTableData()">
+        <tr *ngFor="let item of collection.items" [ngClass]="item.color" class="clickable-area" geminiClick (leftClick)="item.doClick()" (rightClick)="item.doClick(true)" gemini-drag tabindex="0">
+            <td *ngIf="item.tableRowViewModel.hasTitle" class="cell">
+                {{item.tableRowViewModel.title}}
+            </td>
+            <td *ngFor="let property of item.tableRowViewModel.properties" (click)="item.doClick()" [ngClass]="item.color" class="cell">
+                <div  [ngSwitch]="property.type">
+                    <div *ngSwitchCase="'ref'" class="clickable-area">
+                        {{property.formattedValue}}
+                    </div>
+                    <div *ngSwitchCase="'scalar'" [ngSwitch]="property.returnType">
+                        <div *ngSwitchCase="'boolean'" class="clickable-area">
+                            <input type="checkbox" [checked]="property.value" disabled="disabled" />
+                        </div>
+                        <div *ngSwitchCase="'number'" class="clickable-area">
+                            <div class="clickable-area number">{{property.formattedValue}}</div>
+                        </div>
+                        <div *ngSwitchDefault class="clickable-area">
+                            <div class="clickable-area">{{property.formattedValue}}</div>
+                        </div>
+                    </div>
                 </div>
-                <div *ngSwitchCase="'scalar'" [ngSwitch]="property.returnType">
-                    <div *ngSwitchCase="'boolean'" class="clickable-area">
-                        <input type="checkbox" [checked]="property.value" disabled="disabled" />
-                    </div>
-                    <div *ngSwitchCase="'number'" class="clickable-area">
-                        <div class="clickable-area number">{{property.formattedValue}}</div>
-                    </div>
-                    <div *ngSwitchDefault class="clickable-area">
-                        <div class="clickable-area">{{property.formattedValue}}</div>
-                    </div>
-                </div>
-            </div>
-        </td>
-    </tr>
+            </td>
+        </tr>
     </tbody>
 </table>
 <table *ngIf="state == 'list'">

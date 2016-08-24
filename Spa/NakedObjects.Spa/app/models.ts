@@ -1492,6 +1492,11 @@ export class CollectionRepresentation extends ResourceRepresentation<Ro.ICollect
     disabledReason(): string {
         return this.wrapped().disabledReason;
     }
+
+    hasTableData = () => {
+        const valueLinks = this.value();
+        return valueLinks && _.some(valueLinks, (i: Link) => i.members());
+    }
 }
 
 // matches a property representation 16.0 
@@ -1800,6 +1805,11 @@ export class CollectionMember
 
     getDetails(): CollectionRepresentation {
         return <CollectionRepresentation>this.detailsLink().getTarget();
+    }
+
+    hasTableData = () => {
+        const valueLinks = this.value();
+        return valueLinks && _.some(valueLinks, (i: Link) => i.members());
     }
 }
 

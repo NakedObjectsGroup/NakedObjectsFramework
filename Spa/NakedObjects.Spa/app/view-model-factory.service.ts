@@ -753,6 +753,8 @@ export class ViewModelFactory {
         collectionViewModel.doList = () => this.urlManager.setCollectionMemberState(collectionRep.collectionId(), CollectionViewState.List, paneId);
         collectionViewModel.doTable = () => this.urlManager.setCollectionMemberState(collectionRep.collectionId(), CollectionViewState.Table, paneId);
 
+        collectionViewModel.hasTableData = () => collectionRep.hasTableData();
+
         return collectionViewModel;
     };
 

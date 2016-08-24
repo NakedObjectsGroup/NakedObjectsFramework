@@ -1051,7 +1051,7 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
         }
     }
 
-    private hasTableData = () =>  this.listRep.hasTableData();
+    hasTableData = () =>  this.listRep.hasTableData();
     
     private collectionContributedActionDecorator(actionViewModel: IActionViewModel) {
         const wrappedInvoke = actionViewModel.execute;
@@ -1233,6 +1233,7 @@ export class CollectionViewModel implements ICollectionViewModel {
     doSummary: () => void;
     doTable: () => void;
     doList: () => void;
+    hasTableData: () => boolean;
 
     description = () => this.details.toString();
     refresh: (routeData: PaneRouteData, resetting: boolean) => void;
