@@ -19,6 +19,7 @@ import * as Models from "./models";
 import * as Constants from "./nakedobjects.constants";
 import * as Config from "./nakedobjects.config";
 import * as ViewModels from "./nakedobjects.viewmodels";
+import * as Nakedobjectsroutedata from './nakedobjects.routedata';
 
 @Component({
     selector: 'list',
@@ -38,8 +39,10 @@ export class ListComponent implements OnInit, OnDestroy {
     }
 
     collection: ViewModels.ListViewModel;
-
     title = "";
+    class: string;
+    paneId: number;
+    state = "list";
 
     getActionExtensions(routeData: PaneRouteData) {
         return routeData.objectId ?
@@ -58,6 +61,9 @@ export class ListComponent implements OnInit, OnDestroy {
                 catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
         if (cachedList) {
+
+            //if (routeData.state === cachedList.state)
+
             const listViewModel = new ViewModels.ListViewModel(
                 this.color,
                 this.context,
@@ -70,7 +76,10 @@ export class ListComponent implements OnInit, OnDestroy {
             listViewModel.reset(cachedList, routeData);
             //$scope.collection = listViewModel;
             this.collection = listViewModel;
-         
+            this.state = Nakedobjectsroutedata.CollectionViewState[routeData.state].toString().toLowerCase();
+
+            listViewModel.refresh(routeData);
+
             //handleListActionsAndDialog($scope, routeData);
         } else {
             //$scope.listTemplate = Nakedobjectsconstants.listPlaceholderTemplate;
@@ -80,7 +89,7 @@ export class ListComponent implements OnInit, OnDestroy {
         }
     }
 
-    class: string;
+  
     onChild() {
         this.class = "split";
     }
@@ -89,7 +98,7 @@ export class ListComponent implements OnInit, OnDestroy {
         this.class = "single";
     }
 
-    paneId : number;
+   
 
     private activatedRouteDataSub: ISubscription;
     private paneRouteDataSub: ISubscription;

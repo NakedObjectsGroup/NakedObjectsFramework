@@ -28,7 +28,7 @@
         <actions *ngIf="collection.showActions()" [menuVm]="collection"></actions>
         <div class="collection">
             <!--<dialog></dialog>-->
-            <div class="summary">
+            <div *ngIf="state == 'list'"  class="summary">
                 <div class="details">{{collection.description()}}</div>
                 <img class="icon-table clickable-area" (click)="collection.doTable()" src="images/table.png" title="View as Table"/>
                 <table>
@@ -49,6 +49,49 @@
                     </tbody>
                 </table>
             </div>
+            <div *ngIf="state == 'table'" class="summary">
+                <div class="details">{{collection.description()}}</div>
+                <img class="icon-list clickable-area" (click)="collection.doList()" src="images/list.png" title="View as List" />
+            </div>
+            <table *ngIf="state == 'table'">
+                <thead>
+                <tr>
+                    <th *ngIf="!(collection.disableActions() || collection.items.length === 0)"><input type="checkbox" id="all">All</th>
+                    <th *ngFor="let heading of collection.header" scope="col">
+                        {{heading}}
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr  tabindex="0" *ngFor="let item of collection.items" class="clickable-area" gemini-drag  geminiClick (leftClick)="item.doClick()" (rightClick)="item.doClick(true)">
+                        <td *ngIf="item.tableRowViewModel && !collection.disableActions()" class="checkbox">
+                            <input type="checkbox" id="{{'item'+collection.onPaneId+'-'+ $index}}" >
+                        </td>
+                        <td *ngIf="item.tableRowViewModel && item.tableRowViewModel.hasTitle" (click)="item.doClick()"  [ngClass]="item.color" class="cell">
+                            {{item.tableRowViewModel.title}}
+                        </td>
+                        <td *ngIf="item.tableRowViewModel" (click)="item.doClick()" [ngClass]="item.color" class="cell"  >
+                            <div *ngFor="let property of item.tableRowViewModel.properties" [ngSwitch]="property.type">
+                                <div *ngSwitchCase="'ref'" class="clickable-area">
+                                    {{property.formattedValue}}
+                                </div>
+                                <div *ngSwitchCase="'scalar'" [ngSwitch]="property.returnType">
+                                    <div *ngSwitchCase="'boolean'" class="clickable-area">
+                                        <input type="checkbox" [checked]="property.value" disabled="disabled" />
+                                    </div>
+                                    <div *ngSwitchCase="'number'" class="clickable-area">
+                                        <div class="clickable-area number">{{property.formattedValue}}</div>
+                                    </div>
+                                    <div *ngSwitchDefault class="clickable-area">
+                                        <div class="clickable-area">{{property.formattedValue}}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

@@ -1051,11 +1051,8 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
         }
     }
 
-    private hasTableData = () => {
-        const valueLinks = this.listRep.value();
-        return valueLinks && _.some(valueLinks, (i: Models.Link) => i.members());
-    }
-
+    private hasTableData = () =>  this.listRep.hasTableData();
+    
     private collectionContributedActionDecorator(actionViewModel: IActionViewModel) {
         const wrappedInvoke = actionViewModel.execute;
         actionViewModel.execute = (pps: IParameterViewModel[], right?: boolean) => {
@@ -1127,10 +1124,10 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
 
         this.routeData = routeData;
         if (this.state !== routeData.state) {
-            this.state = routeData.state;
-            if (this.state === CollectionViewState.Table && !this.hasTableData()) {
+            if (routeData.state === CollectionViewState.Table && !this.hasTableData()) {
                 this.recreate(this.page, this.pageSize).
                     then(list => {
+                        this.state = list.hasTableData() ? CollectionViewState.Table : CollectionViewState.List;
                         this.listRep = list;
                         this.updateItems(list.value());
                     }).
@@ -1156,7 +1153,7 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
         this.pageSize = this.listRep.pagination().pageSize;
         this.numPages = this.listRep.pagination().numPages;
 
-        this.state = routeData.state;
+        this.state = this.listRep.hasTableData() ? CollectionViewState.Table : CollectionViewState.List;
         this.updateItems(list.value());
 
         const actions = this.listRep.actionMembers();

@@ -2115,6 +2115,11 @@ export class ListRepresentation
     actionMember(id: string): ActionMember {
         return this.actionMembers()[id];
     }
+
+    hasTableData = () => {
+        const valueLinks = this.value();
+        return valueLinks && _.some(valueLinks, (i: Link) => i.members());
+    }
 }
 
 export interface IErrorDetails {
