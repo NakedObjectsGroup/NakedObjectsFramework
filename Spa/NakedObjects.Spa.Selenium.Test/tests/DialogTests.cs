@@ -441,7 +441,6 @@ public virtual void AutoCompleteOptionalParamNotSelected()
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "No Discount");
         }
-
         public virtual void ValidateSingleRefParamFromChoices() {
             GeminiUrl("object?o1=___1.SalesOrderHeader--71742&c1_SalesOrderHeaderSalesReason=List&as1=open&d1=AddNewSalesReason");
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection")).Count == 2);
@@ -452,7 +451,6 @@ public virtual void AutoCompleteOptionalParamNotSelected()
             var validation = WaitForCss(".parameter .validation");
             Assert.AreEqual("Price already exists in Sales Reasons", validation.Text);
         }
-
         public virtual void CoValidationOfMultipleParameters() {
             GeminiUrl("object?o1=___1.PurchaseOrderDetail--1632--3660&as1=open&d1=ReceiveGoods");
             wait.Until(dr => dr.FindElement(By.CssSelector("#qtyreceived1")).GetAttribute("value") == "550");
@@ -464,13 +462,20 @@ public virtual void AutoCompleteOptionalParamNotSelected()
             wait.Until(dr => dr.FindElement(By.CssSelector(".parameters .co-validation")).Text ==
                              "Qty Into Stock + Qty Rejected must add up to Qty Received");
         }
-
         public virtual void OptionalReferenceParamCanBeNull()
         {
             //Test written against specific bug in 8.0Beta9
             GeminiUrl("home?m1=OrderRepository&d1=FindOrders");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Find Orders");
+        }
+        public virtual void ValidationOfContributeeParameter()
+        {
+            GeminiUrl("object?r=0&i1=View&o1=___1.Customer--10&as1=open&d1=CreateNewOrder");
+            Click(OKButton());
+            //Test written against #37 where message is preceded by '199 Restful Objects'
+            wait.Until(dr => dr.FindElement(By.CssSelector(".parameters .co-validation")).Text ==
+                 "Customers in Canada may not place orders directly.");
         }
         #endregion
     }
@@ -480,87 +485,70 @@ public virtual void AutoCompleteOptionalParamNotSelected()
         public override void PasswordParam() {
             base.PasswordParam();
         }
-
         [TestMethod]
         public override void ScalarChoicesParm() {
             base.ScalarChoicesParm();
         }
-
         [TestMethod]
         public override void TestCancelDialog() {
             base.TestCancelDialog();
         }
-
         [TestMethod]
         public override void FieldsRetainedWhenNavigatingAwayAndBack() {
             base.FieldsRetainedWhenNavigatingAwayAndBack();
         }
-
         [TestMethod]
         public override void ReopeningADialogThatWasntCancelledDoesNotRetainFields() {
             base.ReopeningADialogThatWasntCancelledDoesNotRetainFields();
         }
-
         [TestMethod]
         public override void ScalarParmShowsDefaultValue() {
             base.ScalarParmShowsDefaultValue();
         }
-
         [TestMethod]
         public override void DateTimeParmKeepsValue() {
             base.DateTimeParmKeepsValue();
         }
-
         [TestMethod]
         public override void TimeSpanParm() {
             base.TimeSpanParm();
         }
-
         [TestMethod]
         public override void RefChoicesParmKeepsValue() {
             base.RefChoicesParmKeepsValue();
         }
-
         [TestMethod]
         public override void MultipleRefChoicesDefaults() {
             base.MultipleRefChoicesDefaults();
         }
-
         [TestMethod]
         public override void MultipleRefChoicesChangeDefaults() {
             base.MultipleRefChoicesChangeDefaults();
         }
-
         [TestMethod]
         public override void ChoicesDefaults() {
             base.ChoicesDefaults();
         }
-
         [TestMethod]
         public override void ChoicesOptional() {
             base.ChoicesOptional();
         }
-
         [TestMethod]
         public override void ChoicesChangeDefaults() {
             base.ChoicesChangeDefaults();
         }
-
         [TestMethod]
         public override void ConditionalChoices() {
             base.ConditionalChoices();
         }
-
         [TestMethod]
         public override void ConditionalChoicesDefaults() {
             base.ConditionalChoicesDefaults();
         }
-
         [TestMethod]
         public override void ConditionalChoicesMultiple() {
             base.ConditionalChoicesMultiple();
         }
-
         [TestMethod]
         public override void ParameterDescriptionRenderedAsPlaceholder() {
             base.ParameterDescriptionRenderedAsPlaceholder();
@@ -570,55 +558,43 @@ public virtual void AutoCompleteOptionalParamNotSelected()
         {
             base.BooleanParams();
         }
-
-
         [TestMethod]
         public override void NullableBooleanParams() {
             base.NullableBooleanParams();
         }
-
         [TestMethod]
         public override void WarningShownWithinDialogAndInFooter() {
             base.WarningShownWithinDialogAndInFooter();
         }
-
         [TestMethod]
         public override void DefaultReferenceParamRendersCorrectly() {
             base.DefaultReferenceParamRendersCorrectly();
         }
-
         [TestMethod]
         public override void QueryOnlyActionDialogPersists() {
             base.QueryOnlyActionDialogPersists();
         }
-
         [TestMethod]
         public override void PotentActionDialogDisappearsAndFieldsNotRemembered() {
             base.PotentActionDialogDisappearsAndFieldsNotRemembered();
         }
-
         #region Auto Complete
-
         [TestMethod]
         public override void AutoCompleteParm() {
             base.AutoCompleteParm();
         }
-
         [TestMethod]
         public override void AutoCompleteParmDefault() {
             base.AutoCompleteParmDefault();
         }
-
         [TestMethod]
         public override void ClearingAutoCompleteTextClearsUnderlyingReference() {
             base.ClearingAutoCompleteTextClearsUnderlyingReference();
         }
-
         [TestMethod]
         public override void AutoCompleteParmShowSingleItem() {
             base.AutoCompleteParmShowSingleItem();
         }
-
         [TestMethod]
         public override void AutoCompleteScalarField() {
             base.AutoCompleteScalarField();
@@ -631,38 +607,38 @@ public virtual void AutoCompleteOptionalParamNotSelected()
         #endregion
 
         #region Parameter validation
-
         [TestMethod]
         public override void MandatoryParameterEnforced() {
             base.MandatoryParameterEnforced();
         }
-
         [TestMethod]
         public override void AutoCompleteMandatoryParmWithoutSelectionFails()
         {
             base.AutoCompleteMandatoryParmWithoutSelectionFails();
         }
-
         [TestMethod]
         public override void ValidateSingleValueParameter() {
             base.ValidateSingleValueParameter();
         }
-
         [TestMethod]
         public override void ValidateSingleRefParamFromChoices() {
             base.ValidateSingleRefParamFromChoices();
         }
-
         [TestMethod]
         public override void CoValidationOfMultipleParameters() {
             base.CoValidationOfMultipleParameters();
         }
-
         [TestMethod]
         public override void OptionalReferenceParamCanBeNull()
         {
             base.OptionalReferenceParamCanBeNull();
         }
+        [TestMethod]
+        public override void ValidationOfContributeeParameter()
+        {
+            base.ValidationOfContributeeParameter();
+        }
+
         #endregion
     }
 
@@ -769,6 +745,7 @@ public virtual void AutoCompleteOptionalParamNotSelected()
             QueryOnlyActionDialogPersists();
             PotentActionDialogDisappearsAndFieldsNotRemembered();
             OptionalReferenceParamCanBeNull();
+            //ValidationOfContributeeParameter(); TODO: Currently failing: #34
         }
     }
 

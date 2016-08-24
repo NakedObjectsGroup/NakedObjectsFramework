@@ -43,7 +43,8 @@ namespace AdventureWorksModel {
 
             return SingleObjectWarnIfNoMatch(query);
         }
-        #endregion
+
+       #endregion
 
         #region OpenOrders
         [MemberOrder(21)]
@@ -186,6 +187,13 @@ namespace AdventureWorksModel {
                 newOrder.ShippingAddress = PersonRepository.AddressesFor(customer.BusinessEntity(), "Shipping").FirstOrDefault();
             }
             return newOrder;
+        }
+
+        public string ValidateCreateNewOrder(Customer customer)
+        {
+            if (customer.SalesTerritoryID == 6 )
+                return "Customers in Canada may not place orders directly.";
+            return null;
         }
 
         [MemberOrder(1)]
