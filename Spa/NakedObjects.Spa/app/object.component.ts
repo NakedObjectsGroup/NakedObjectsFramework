@@ -19,12 +19,12 @@ import { ActionsComponent } from "./actions.component";
 import { GeminiClickDirective } from "./gemini-click.directive";
 import { PropertiesComponent } from "./properties.component";
 import { ISubscription } from 'rxjs/Subscription';
-
+import * as Collectionscomponent from './collections.component';
 
 @Component({
     selector: 'object',
     templateUrl: `app/object.component.html`,
-    directives: [ROUTER_DIRECTIVES, FooterComponent, ActionsComponent, GeminiClickDirective, PropertiesComponent],
+    directives: [ROUTER_DIRECTIVES, FooterComponent, ActionsComponent, GeminiClickDirective, PropertiesComponent, Collectionscomponent.CollectionsComponent],
     styleUrls: ['app/object.component.css']
 })
 

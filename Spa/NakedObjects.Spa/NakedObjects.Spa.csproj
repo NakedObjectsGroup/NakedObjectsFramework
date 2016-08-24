@@ -73,6 +73,9 @@
     <Content Include="app\actions.component.css" />
     <Content Include="app\actions.component.html" />
     <Content Include="app\app.component.html" />
+    <Content Include="app\collection.component.css" />
+    <Content Include="app\collection.component.html" />
+    <Content Include="app\collections.component.css" />
     <Content Include="app\dialog.component.css" />
     <Content Include="app\dialog.component.html" />
     <Content Include="app\footer.component.css" />
@@ -99,6 +102,7 @@
     <Content Include="fonts\iconFont.ttf" />
     <Content Include="fonts\iconFont.woff" />
     <Content Include="packages.config" />
+    <Content Include="app\collections.component.html" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -121,6 +125,8 @@
     <TypeScriptCompile Include="app\app.module.ts" />
     <TypeScriptCompile Include="app\app.routing.ts" />
     <TypeScriptCompile Include="app\click-handler.service.ts" />
+    <TypeScriptCompile Include="app\collection.component.ts" />
+    <TypeScriptCompile Include="app\collections.component.ts" />
     <TypeScriptCompile Include="app\color.service.config.ts" />
     <TypeScriptCompile Include="app\color.service.ts" />
     <TypeScriptCompile Include="app\context.service.ts" />

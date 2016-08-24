@@ -22,7 +22,7 @@
             <!--<dialog *ngIf="selectedDialog" [dialog]="selectedDialog"></dialog>-->
             <properties [properties]="object.properties"></properties>
         </div>
-        <!--<div class="collections" ng-include="collectionsTemplate"></div>-->
+        <collections [collections]="object.collections"></collections>
     </div>
 </div>
 <router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>
