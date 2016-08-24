@@ -152,11 +152,22 @@ namespace NakedObjects.Selenium {
             WaitUntilElementDoesNotExist(".dialog");
         }
 
+        public virtual void ReloadingAQueryableClearsSelection()
+        {
+            GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=20&ps1=5&s1=0&as1=open");
+            Reload();
+            wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count > 30);
+            SelectCheckBox("#item1-4");
+            SelectCheckBox("#item1-7");
+            Reload();
+            wait.Until(dr => dr.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type") == "checkbox") == 0);
+        }
+
         public virtual void ZeroParamAction() {
             GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=20&ps1=5&s1=0&as1=open&c1=Table");
             Reload();
             wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count > 30);
-            //Wait for no checkboxes selected
+
             SelectCheckBox("#all"); //To clear
             Click(GetObjectAction("Clear Comments"));
             Thread.Sleep(1000);
@@ -174,7 +185,10 @@ namespace NakedObjects.Selenium {
             Thread.Sleep(1000); //Because there is no visible change to wait for
             Reload();
             wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) == 3);
-            //Confirm three checkboxes still selected:
+
+            //Confirm that the three checkboxes have now been cleared
+            wait.Until(dr => dr.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type")=="checkbox") == 0);
+
             SelectCheckBox("#all"); //To clear
             Click(GetObjectAction("Clear Comments"));
             Thread.Sleep(1000);
@@ -411,6 +425,11 @@ namespace NakedObjects.Selenium {
         [TestMethod]
         public override void TableViewWithParmDialogAlreadyOpen() {
             base.TableViewWithParmDialogAlreadyOpen();
+        }
+        [TestMethod]
+        public override void ReloadingAQueryableClearsSelection()
+        {
+            base.ReloadingAQueryableClearsSelection();
         }
 
         [TestMethod]
