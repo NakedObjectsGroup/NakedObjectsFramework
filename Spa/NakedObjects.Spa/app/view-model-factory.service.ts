@@ -701,49 +701,56 @@ export class ViewModelFactory {
             then(c => collectionViewModel.color = `${Config.linkColor}${c}`).
             catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
+        function setCurrentState(collectionViewModel: ViewModels.CollectionViewModel)
+        {
+            if (size === 0) {
+                collectionViewModel.currentState = CollectionViewState.Summary;
+            }
+            else if (collectionRep.hasTableData()) {
+                collectionViewModel.currentState = CollectionViewState.Table;
+            } else {
+                collectionViewModel.currentState = CollectionViewState.List;
+            }
+        }
+
+
         collectionViewModel.refresh = (routeData: PaneRouteData, resetting: boolean) => {
 
-            let state = size === 0 ? CollectionViewState.Summary : routeData.collections[collectionRep.collectionId()];
+            setCurrentState(collectionViewModel);
+            
 
-            if (state == null) {
-                state = this.getDefaultTableState(collectionRep.extensions());
+            collectionViewModel.requestedState = routeData.collections[collectionRep.collectionId()] as CollectionViewState;
+
+            if (collectionViewModel.requestedState == null) {
+                collectionViewModel.requestedState = this.getDefaultTableState(collectionRep.extensions());
             }
 
-            if (resetting || state !== collectionViewModel.currentState) {
+            if (resetting || collectionViewModel.requestedState !== collectionViewModel.currentState) {
 
                 if (size > 0 || size == null) {
                     collectionViewModel.mayHaveItems = true;
                 }
                 collectionViewModel.details = this.getCollectionDetails(size);
-                const getDetails = itemLinks == null || state === CollectionViewState.Table;
+                const getDetails = itemLinks == null || collectionViewModel.requestedState === CollectionViewState.Table && collectionViewModel.currentState !== CollectionViewState.Table;
 
-                if (state === CollectionViewState.Summary) {
+                if (collectionViewModel.requestedState === CollectionViewState.Summary) {
                     collectionViewModel.items = [];
+                    setCurrentState(collectionViewModel);
                 } else if (getDetails) {
-                    this.context.getCollectionDetails(collectionRep, state, resetting).
+                    this.context.getCollectionDetails(collectionRep, collectionViewModel.requestedState, resetting).
                         then(details => {
                             collectionViewModel.items = this.getItems(details.value(),
-                                state === CollectionViewState.Table,
+                                collectionViewModel.requestedState === CollectionViewState.Table,
                                 routeData,
                                 collectionViewModel);
                             collectionViewModel.details = this.getCollectionDetails(collectionViewModel.items.length);
+                            setCurrentState(collectionViewModel);
                         }).
                         catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
                 } else {
-                    collectionViewModel.items = this.getItems(itemLinks, state === CollectionViewState.Table, routeData, collectionViewModel);
+                    collectionViewModel.items = this.getItems(itemLinks, collectionViewModel.currentState === CollectionViewState.Table, routeData, collectionViewModel);
+                    setCurrentState(collectionViewModel);
                 }
-
-                switch (state) {
-                    case CollectionViewState.List:
-                        //collectionViewModel.template = Constants.collectionListTemplate;
-                        break;
-                    case CollectionViewState.Table:
-                        //collectionViewModel.template = Constants.collectionTableTemplate;
-                        break;
-                    default:
-                        //collectionViewModel.template = Constants.collectionSummaryTemplate;
-                }
-                collectionViewModel.currentState = state;
             }
         }
 
@@ -753,7 +760,7 @@ export class ViewModelFactory {
         collectionViewModel.doList = () => this.urlManager.setCollectionMemberState(collectionRep.collectionId(), CollectionViewState.List, paneId);
         collectionViewModel.doTable = () => this.urlManager.setCollectionMemberState(collectionRep.collectionId(), CollectionViewState.Table, paneId);
 
-        collectionViewModel.hasTableData = () => collectionRep.hasTableData();
+        collectionViewModel.hasTableData = () => collectionViewModel.items && _.some(collectionViewModel.items, i => i.tableRowViewModel);
 
         return collectionViewModel;
     };

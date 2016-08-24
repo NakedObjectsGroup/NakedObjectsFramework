@@ -5,7 +5,7 @@ import { ViewModelFactory } from "./view-model-factory.service";
 import { UrlManager } from "./urlmanager.service";
 import * as Models from "./models";
 import * as ViewModels from "./nakedobjects.viewmodels";
-import * as Nakedobjectsroutedata from './nakedobjects.routedata';
+import {CollectionViewState} from './nakedobjects.routedata';
 
 @Component({
     selector: 'collection',
@@ -22,7 +22,7 @@ export class CollectionComponent {
     @Input()
     set collection(value: ViewModels.CollectionViewModel) {
         this.coll = value;
-        this.state = Nakedobjectsroutedata.CollectionViewState[this.coll.currentState].toString().toLowerCase();
+        this.state = CollectionViewState[this.coll.requestedState].toString().toLowerCase();
 
     }
 

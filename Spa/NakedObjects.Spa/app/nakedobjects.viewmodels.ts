@@ -1223,6 +1223,7 @@ export class CollectionViewModel implements ICollectionViewModel {
     header: string[];
     onPaneId: number;
     currentState: CollectionViewState;
+    requestedState: CollectionViewState;
     presentationHint: string;
     template: string;
     actions: IActionViewModel[];
