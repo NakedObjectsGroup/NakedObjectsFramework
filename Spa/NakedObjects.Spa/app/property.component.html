@@ -17,7 +17,7 @@
 
     <div *ngSwitchCase="'scalar'">
         <div [ngSwitch]="property.returnType">
-            <div *ngSwitchCase="'string'">
+            <div *ngSwitchCase="'string'"   ><!--*ngIf="property.returnType = 'string'"-->
                 <div [ngSwitch]="property.format">
                     <div *ngSwitchCase="'blob'" class="reference clickable-area"  geminiClick (leftClick)='property.attachment.doClick()' (rightClick)='property.attachment.doClick(true)' gemini-attachment tabindex="0">
                     </div>

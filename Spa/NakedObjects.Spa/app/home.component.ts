@@ -43,6 +43,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     selectedMenu: ViewModels.MenuViewModel;
     selectedDialog: ViewModels.DialogViewModel;
 
+    // todo rename to single or split
     class: string; 
   
     onChild() {
