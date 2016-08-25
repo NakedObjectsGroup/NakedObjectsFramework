@@ -92,6 +92,10 @@ export class ObjectComponent implements OnInit,  OnDestroy {
             });
     }
 
+    getClass() {
+        return this.class + " " + this.object.color;
+    }
+
     class: string;
     onChild() {
         this.class = "split";
