@@ -19,8 +19,8 @@
     <actions *ngIf="object.showActions()" [menuVm]="object"></actions>
     <div class="main-column">
         <!--<dialog *ngIf="selectedDialog" [dialog]="selectedDialog"></dialog>-->
-        <properties [properties]="object.properties"></properties>
+        <properties *ngIf="object.properties" [properties]="object.properties"></properties>
     </div>
-    <collections [collections]="object.collections"></collections>
+    <collections *ngIf="object.collections"  [collections]="object.collections"></collections>
 </div>
 <router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>

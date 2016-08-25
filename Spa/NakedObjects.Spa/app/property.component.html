@@ -3,9 +3,7 @@
 
     <div *ngSwitchCase="'ref'">
         <div [ngSwitch]="property.refType">
-            <div *ngSwitchCase="null">
-
-            </div>
+            <div *ngSwitchCase="null"></div>
             <div *ngSwitchCase="'notNavigable'">
                 <div class="value">
                     {{property.formattedValue}}
