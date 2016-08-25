@@ -19,7 +19,7 @@ import * as Models from "./models";
 import * as Constants from "./nakedobjects.constants";
 import * as Config from "./nakedobjects.config";
 import * as ViewModels from "./nakedobjects.viewmodels";
-import * as Nakedobjectsroutedata from './nakedobjects.routedata';
+import { CollectionViewState } from './nakedobjects.routedata';
 
 @Component({
     selector: 'list',
@@ -76,7 +76,7 @@ export class ListComponent implements OnInit, OnDestroy {
             listViewModel.reset(cachedList, routeData);
             //$scope.collection = listViewModel;
             this.collection = listViewModel;
-            this.state = Nakedobjectsroutedata.CollectionViewState[routeData.state].toString().toLowerCase();
+            this.state = CollectionViewState[routeData.state].toString().toLowerCase();
 
             listViewModel.refresh(routeData);
 
