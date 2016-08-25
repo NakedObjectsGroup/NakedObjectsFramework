@@ -1,6 +1,8 @@
 ﻿import * as _ from "lodash";
 import * as Ro from './nakedobjects.rointerfaces';
-
+import { DatePipe, CurrencyPipe, DecimalPipe } from '@angular/common';
+import { MaskServiceConfig } from './mask.service.config';
+import { Injectable } from '@angular/core';
 
 export interface ILocalFilter {
     filter(val: any): string;
@@ -22,8 +24,9 @@ class LocalCurrencyFilter implements ILocalFilter {
     constructor(private symbol?: string, private fractionSize?: number) {}
 
     filter(val: any): string {
+        const pipe = new CurrencyPipe();
         // return $filter("currency")(val, this.symbol, this.fractionSize);
-        return "";
+        return pipe.transform(val);
     }
 }
 
@@ -32,8 +35,9 @@ class LocalDateFilter implements ILocalFilter {
     constructor(private mask?: string, private tz?: string) {}
 
     filter(val: any): string {
+        const pipe = new DatePipe();
         //   return $filter("date")(val, this.mask, this.tz);
-        return "";
+        return pipe.transform(val, this.mask);
     }
 }
 
@@ -43,10 +47,14 @@ class LocalNumberFilter implements ILocalFilter {
 
     filter(val: any): string {
         //  return $filter("number")(val, this.fractionSize);
-        return "";
+     
+        const pipe = new DecimalPipe();
+        // return $filter("currency")(val, this.symbol, this.fractionSize);
+        return pipe.transform(val);
     }
 }
 
+@Injectable()
 export class Mask {
 
     private maskMap: IMaskMap = {
@@ -62,6 +70,11 @@ export class Mask {
         decimal: {},
         int: {}
     };
+
+    constructor(private config: MaskServiceConfig) {
+        config.configure(this);
+    }
+
 
 
     defaultLocalFilter(format: Ro.formatType): ILocalFilter {
@@ -108,7 +121,7 @@ export class Mask {
         this.maskMap[format as string][customMask] = new LocalNumberFilter(fractionSize);
     };
 
-    setDateMaskMapping(customMask: string, format: Ro.formatType, mask: string, tz: string) {
+    setDateMaskMapping(customMask: string, format: Ro.formatType, mask: string, tz?: string) {
         this.maskMap[format as string][customMask] = new LocalDateFilter(mask, tz);
     };
 

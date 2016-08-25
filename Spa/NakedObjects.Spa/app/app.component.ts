@@ -12,6 +12,7 @@ import { Error } from "./error.service";
 import { FocusManager } from "./focus-manager.service";
 import { Mask} from "./mask.service";
 import { ColorServiceConfig } from "./color.service.config";
+import { MaskServiceConfig } from "./mask.service.config";
 
 @Component({
     selector: 'my-app',
@@ -28,7 +29,8 @@ import { ColorServiceConfig } from "./color.service.config";
         Error,
         FocusManager,
         Mask,
-        ColorServiceConfig
+        ColorServiceConfig,
+        MaskServiceConfig
     ]
 })
 export class AppComponent implements OnInit {

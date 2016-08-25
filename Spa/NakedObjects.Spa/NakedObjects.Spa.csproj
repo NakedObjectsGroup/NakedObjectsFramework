@@ -152,6 +152,7 @@
     <TypeScriptCompile Include="app\home.component.ts" />
     <TypeScriptCompile Include="app\list.component.ts" />
     <TypeScriptCompile Include="app\main.ts" />
+    <TypeScriptCompile Include="app\mask.service.config.ts" />
     <TypeScriptCompile Include="app\mask.service.ts" />
     <TypeScriptCompile Include="app\models.ts" />
     <TypeScriptCompile Include="app\nakedobjects.routedata.ts" />
