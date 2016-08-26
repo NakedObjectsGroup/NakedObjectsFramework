@@ -17,3 +17,27 @@
 .type {
     display: none; /*Change this to display type (e.g. for accessibility)*/
 }
+
+/*Collections */
+
+.collections {
+    display: block; /*TODO: Display: Inline ?*/
+    float: left;
+    margin-bottom: 20px;
+    margin-right: 20px;
+}
+
+.collection .name, .collection .details {
+    padding-left: 0px; /*Because it is a heading, so outdented*/
+    float: left;
+}
+
+.collection:not(:last-child) {
+    margin-bottom: 20px;
+}
+
+.collection .summary {
+    font-size: 12pt;
+    margin-bottom: 10px;
+    overflow: hidden; /*To make div same depth as its floating children*/
+}

@@ -56,7 +56,7 @@ html, #main, body, .background, .single, .split {
     float: left;
 }
 /*Main roots*/
-.home, .list, .recent, .error {
+.recent, .error {
     padding-left: 20px;
     height: 100%;
     overflow-y: auto;
@@ -64,14 +64,10 @@ html, #main, body, .background, .single, .split {
 }
 
 /*Sub-panes - layout */
-.main-column, .collections {
+.main-column {
+    display: block;
     float: left;
     margin-bottom: 20px;
-    display: block;
-}
-
-
-.main-column, .collections {
     margin-right: 20px;
 }
 
@@ -129,9 +125,6 @@ html, #main, body, .background, .single, .split {
     margin: 1px;
 }
 
-     .list .reference:not(:last-child) {
-        margin-bottom: 5px;
-    }
 
 /*Handling freestanding images*/
 .attachment {
@@ -299,33 +292,6 @@ div.hover, div.focus
     outline: solid;
     outline-width: 1px;
     outline-color: white;
-}
-
-/*Collections */
-.collection:not(:last-child) {
-    margin-bottom: 20px;
-}
-
-.collection .summary {
-    font-size: 12pt;
-    margin-bottom: 10px;
-    overflow: hidden; /*To make div same depth as its floating children*/
-}
-/*Collections within object*/
-.object .collection .name, .object .collection .details {
-    padding-left: 0px; /*Because it is a heading, so outdented*/
-    float: left;
-}
-/*Collections within list*/
-.list .collection .details {
-    padding-left: 40px; /*To align with first column text, allowing for checkbox*/
-    width: 400px;
-    float: left;
-}
-
-/*List*/
-.list .reference {
-    width: 390px;
 }
 
 td.reference {
