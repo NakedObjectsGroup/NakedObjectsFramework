@@ -1,5 +1,4 @@
-﻿
-:host {
+﻿:host {
     width: 410px;
     padding: 5px;
     margin-bottom: 20px;
@@ -7,6 +6,29 @@
     background-color: white;
     color: black;
     font-weight: bolder;
+}
+
+input, select {
+    border-style:solid;
+    border-color: grey;
+    border-width: 1px;
+}
+
+input {
+    padding-right: 10px; /*To avoid text running over the 'x' (clear button)*/
+}
+
+input[type='text'] {
+    padding-left: 4px;
+}
+
+input[type='button']:focus,
+input[type='button']:hover,
+input[type='submit']:focus,
+input[type='submit']:hover {
+    outline: solid;
+    outline-width: 1px;
+    outline-color: black;
 }
 
 .title {

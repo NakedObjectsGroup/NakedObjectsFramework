@@ -9,8 +9,6 @@
         <messages><span *ngIf="!menus">Loading menus..</span></messages>
     </header>
     <actions *ngIf="selectedMenu" [menuVm]="selectedMenu"></actions>
-    <div class="main-column">
-        <dialog *ngIf="selectedDialog" [dialog]="selectedDialog"></dialog>
-    </div>
+    <dialog *ngIf="selectedDialog" [dialog]="selectedDialog"></dialog>
 </div>
 <router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>

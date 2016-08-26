@@ -63,14 +63,6 @@ html, #main, body, .background, .single, .split {
     display: block;
 }
 
-/*Sub-panes - layout */
-.main-column {
-    display: block;
-    float: left;
-    margin-bottom: 20px;
-    margin-right: 20px;
-}
-
 /*Header*/
 header {
     margin-bottom: 20px;
@@ -146,15 +138,7 @@ menu, header .action {
 input, select {
     border-style: none;
 }
-.dialog input, .dialog select {
-    border-style:solid;
-    border-color: grey;
-    border-width: 1px;
-}
 
-.dialog input {
-    padding-right: 10px; /*To avoid text running over the 'x' (clear button)*/
-}
 /* clear button on non-empty input field*/
     /*Clear button in input fields*/
 .ng-clearable{
@@ -251,26 +235,12 @@ property .validation {
 }
 
 /*Hover & Focus*/
-.dialog input[type='text'] {
-    padding-left: 4px;
-}
-
      input:hover,  input:focus,
      select:hover, select:focus {
         border: solid;
         border-width: 1px;
         border-color: black;
     }
-
-
-.dialog input[type='button']:focus,
-.dialog input[type='button']:hover,
-.dialog input[type='submit']:focus,
-.dialog input[type='submit']:hover {
-    outline: solid;
-    outline-width: 1px;
-    outline-color: black;
-}
 
 menu:hover, menu:focus,
 .reference:hover, .reference:focus,

@@ -18,6 +18,14 @@ header .type {
     display: none; /*Change this to display type (e.g. for accessibility)*/
 }
 
+/*Sub-panes - layout */
+mainColumn {
+    display: block;
+    float: left;
+    margin-bottom: 20px;
+    margin-right: 20px;
+}
+
 /*Collections */
 
 .collections {

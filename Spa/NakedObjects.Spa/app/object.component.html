@@ -19,10 +19,10 @@
         <messages>{{object.message}}</messages>
     </header>
     <actions *ngIf="object.showActions()" [menuVm]="object"></actions>
-    <div class="main-column">
-        <!--<dialog *ngIf="selectedDialog" [dialog]="selectedDialog"></dialog>-->
+    <mainColumn>
+        <dialog *ngIf="selectedDialog" [dialog]="selectedDialog"></dialog>
         <properties *ngIf="object.properties" [properties]="object.properties"></properties>
-    </div>
+    </mainColumn>
     <collections *ngIf="object.collections"  [collections]="object.collections"></collections>
 </div>
 <router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>
