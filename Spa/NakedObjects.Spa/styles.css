@@ -72,13 +72,13 @@ html, #main, body, .background, .single, .split {
 }
 
 /*Header*/
-.header {
+header {
     margin-bottom: 20px;
     overflow: hidden; /*Expands the div to size of all contents*/
     display: block;
     }
 
-.header .title, .header .type {
+viewtitle, header .type {
     position: relative;
     font-weight: 200;
     font-size: 24pt;
@@ -92,10 +92,10 @@ html, #main, body, .background, .single, .split {
 }
 
 /*Menus & actions*/
-.menus {
+menus {
     display: block;
 }
-.menu, .header .action {
+menu, header .action {
     display: inline;
     padding: 5px;
     margin-left: 1px; /*Else hover outline is hidden on the left-most menu*/
@@ -104,7 +104,7 @@ html, #main, body, .background, .single, .split {
     font-size: 16pt;
 }
 
-     .menu[disabled="disabled"], .ok[disabled="disabled"] {
+     menu[disabled="disabled"], .ok[disabled="disabled"] {
         color: grey;
     }
 
@@ -272,7 +272,7 @@ property .validation {
     outline-color: black;
 }
 
-.menu:hover, .menu:focus,
+menu:hover, menu:focus,
 .reference:hover, .reference:focus,
 tbody tr:hover, tr:focus,
 .clickable-row:hover, .clickable-row:focus,
@@ -283,12 +283,12 @@ div.hover, div.focus
     outline-color: white;
 }
 
-.menu[disabled="disabled"]:hover {
+menu[disabled="disabled"]:hover {
     outline: none;
 }
 
 /*TODO: review focus on title*/
-.title:focus {
+viewtitle:focus {
     outline: solid;
     outline-width: 1px;
     outline-color: white;
@@ -326,7 +326,7 @@ tbody .number {
         color: white;
     }
 
-.messages {
+messages {
     font-size: 16pt;
     background-color: white;
     color: red;

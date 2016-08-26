@@ -5,11 +5,11 @@
     display: block;
 }
 
-.view .header .title {
+viewTitle {
     display: inline-block; /*Otherwise focus outline takes full width*/
 }
 
-.header .type {
+header .type {
     float: left;
     margin-right: 20px;
 }

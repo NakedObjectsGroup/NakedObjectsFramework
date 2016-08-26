@@ -1,14 +1,13 @@
 ﻿<div [ngClass]="class"> <!--TODO: This is the Single/Split definition-->
-    <div class="header">
-        <div class="title">Home</div>
-        <div *ngIf="menus">
-            <div class="menu clickable-area" tabindex="0" *ngFor="let menu of menus.items" (click)="doClick(menu)">
+    <header>
+        <viewTitle>Home</viewTitle>
+        <menus *ngIf="menus">
+            <menu class="clickable-area" tabindex="0" *ngFor="let menu of menus.items" (click)="doClick(menu)">
                 {{menu.title}}
-            </div>
-        </div>
-        <div *ngIf="!menus">Loading menus..</div>
-        <div class="messages"></div>
-    </div>
+            </menu>
+        </menus>
+        <messages><span *ngIf="!menus">Loading menus..</span></messages>
+    </header>
     <actions *ngIf="selectedMenu" [menuVm]="selectedMenu"></actions>
     <div class="main-column">
         <dialog *ngIf="selectedDialog" [dialog]="selectedDialog"></dialog>

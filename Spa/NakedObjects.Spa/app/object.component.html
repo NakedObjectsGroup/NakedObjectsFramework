@@ -1,21 +1,23 @@
 ﻿<div *ngIf="object" class="view" [ngClass]="getClass()">
-    <div class="header">
-        <div class="title" gemini-drag tabindex="0"><span class="type">{{object.friendlyName}}</span>{{object.title}}
-        </div>
+    <header >
+        <viewTitle gemini-drag tabindex="0">
+         <span class="type">{{object.friendlyName}}</span>
+         {{object.title}}
+        </viewTitle>
         <!--<div>{{object.isDirty() ? "*" : ""}} </div>-->
-        <div class="menus">
-            <div class="menu clickable-area" tabindex="0" geminiClick (leftClick)="object.toggleActionMenu()" ng-disabled="object.disableActions()" title={{object.actionsTooltip()}} accesskey="a">
+        <menus>
+            <menu class="menu clickable-area" tabindex="0" geminiClick (leftClick)="object.toggleActionMenu()" ng-disabled="object.disableActions()" title={{object.actionsTooltip()}} accesskey="a">
                 Actions
-            </div>
-            <div class="action clickable-area" tabindex="0" geminiClick (leftClick)="object.doEdit()" ng-hide="object.hideEdit()">
+            </menu>
+            <menu class="action clickable-area" tabindex="0" geminiClick (leftClick)="object.doEdit()" ng-hide="object.hideEdit()">
                 Edit
-            </div>
-            <div class="action clickable-area" tabindex="0" geminiClick (leftClick)="object.doReload()">
+            </menu>
+            <menu class="action clickable-area" tabindex="0" geminiClick (leftClick)="object.doReload()">
                 Reload
-            </div>
-        </div>
-        <div class="messages">{{object.message}}</div>
-    </div>
+            </menu>
+        </menus>
+        <messages>{{object.message}}</messages>
+    </header>
     <actions *ngIf="object.showActions()" [menuVm]="object"></actions>
     <div class="main-column">
         <!--<dialog *ngIf="selectedDialog" [dialog]="selectedDialog"></dialog>-->
