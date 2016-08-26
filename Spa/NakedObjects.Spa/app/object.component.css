@@ -44,7 +44,7 @@ mainColumn {
     margin-bottom: 20px;
 }
 
-.collection .summary {
+collectionSummary {
     font-size: 12pt;
     margin-bottom: 10px;
     overflow: hidden; /*To make div same depth as its floating children*/
