@@ -35,7 +35,7 @@ mainColumn {
     margin-right: 20px;
 }
 
-.collection .name, .collection .details {
+.collection .name, collectionDetails {
     padding-left: 0px; /*Because it is a heading, so outdented*/
     float: left;
 }

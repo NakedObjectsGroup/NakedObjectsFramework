@@ -110,7 +110,7 @@ menu, header .action {
     padding-right: 5px;
 }
 
-.reference, .value, .details {
+.reference, .value, collectionDetails {
     width: 245px;
     padding-left: 5px;
     padding-right: 5px;

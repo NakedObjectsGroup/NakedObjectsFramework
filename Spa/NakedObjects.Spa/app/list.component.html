@@ -23,13 +23,13 @@
   </menus>
   <messages>{{collection.message}}</messages>
  </header>
- <div class="details" *ngIf="collection.size == 0">{{collection.description()}}</div>
+ <collectionDetails *ngIf="collection.size == 0">{{collection.description()}}</collectionDetails>
  <div *ngIf="collection.size > 0">
   <actions *ngIf="collection.showActions()" [menuVm]="collection"></actions>
   <div class="collection">
    <!--<dialog></dialog>-->
    <div *ngIf="state == 'list'" class="summary">
-    <div class="details">{{collection.description()}}</div>
+    <collectionDetails>{{collection.description()}}</collectionDetails>
     <img class="icon-table clickable-area" (click)="collection.doTable()" src="images/table.png" title="View as Table" />
     <table>
      <thead>
@@ -50,7 +50,7 @@
     </table>
    </div>
    <div *ngIf="state == 'table'" class="summary">
-    <div class="details">{{collection.description()}}</div>
+    <collectionDetails>{{collection.description()}}</collectionDetails>
     <img class="icon-list clickable-area" (click)="collection.doList()" src="images/list.png" title="View as List" />
    </div>
    <table *ngIf="state == 'table'">
