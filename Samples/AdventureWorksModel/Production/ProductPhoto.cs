@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
+using NakedObjects.Value;
 
 namespace AdventureWorksModel {
     public class ProductPhoto  {
@@ -22,6 +23,12 @@ namespace AdventureWorksModel {
             ModifiedDate = DateTime.Now;
         }
         #endregion
+
+        public string Title()
+        {
+            return "Product Photo";
+        }
+
         private byte[] _LargePhoto = new byte[0];
         private ICollection<ProductProductPhoto> _ProductProductPhoto = new List<ProductProductPhoto>();
         private byte[] _ThumbNailPhoto = new byte[0];
@@ -35,13 +42,19 @@ namespace AdventureWorksModel {
         }
 
         public virtual string ThumbnailPhotoFileName { get; set; }
-
         public virtual byte[] LargePhoto {
             get { return _LargePhoto; }
             set { _LargePhoto = value; }
         }
 
         public virtual string LargePhotoFileName { get; set; }
+        public virtual FileAttachment LargePhotoAsAttachment
+        {
+            get
+            {
+                return new FileAttachment(LargePhoto, LargePhotoFileName){ DispositionType = "inline" };
+            }
+        }
 
         [NakedObjectsIgnore]
         public virtual ICollection<ProductProductPhoto> ProductProductPhoto {
