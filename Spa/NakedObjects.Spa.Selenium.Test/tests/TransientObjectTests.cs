@@ -144,7 +144,7 @@ namespace NakedObjects.Selenium {
         }
         //Test for a previous bug  -  where Etag error was resulting
         public virtual void CanInvokeActionOnASavedTransient() {
-            GeminiUrl("object?i1=View&o1=___1.Customer--11784&as1=open&d1=CreateNewOrder&f1_copyHeaderFromLastOrder=true");
+            GeminiUrl("object?i1=View&o1=___1.Customer--11783&as1=open&d1=CreateNewOrder&f1_copyHeaderFromLastOrder=true");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Sales Order");
             Click(SaveButton());
