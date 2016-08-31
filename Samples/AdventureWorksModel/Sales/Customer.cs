@@ -68,7 +68,7 @@ namespace AdventureWorksModel {
         [NakedObjectsIgnore]
         public virtual int? StoreID { get; set; }
 
-        [DisplayName("Details"), Disabled, MemberOrder(20)]
+        [Disabled, MemberOrder(20)]
         public virtual Store Store { get; set; }
 
         public bool HideStore() {
@@ -78,7 +78,7 @@ namespace AdventureWorksModel {
         [NakedObjectsIgnore]
         public virtual int? PersonID { get; set; }
 
-        [DisplayName("Details"), Disabled, MemberOrder(20)]
+        [Disabled, MemberOrder(20)]
         public virtual Person Person { get; set; }
 
         public bool HidePerson() {

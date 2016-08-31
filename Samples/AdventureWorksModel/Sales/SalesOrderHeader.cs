@@ -392,6 +392,12 @@ namespace AdventureWorksModel {
         [Description("Free-form text")]
         public virtual string Comment { get; set; }
 
+
+        public bool HideComment()
+        {
+            return Comment == null || Comment == "";
+        }
+
         public void ClearComment()
         {
             this.Comment = null;
