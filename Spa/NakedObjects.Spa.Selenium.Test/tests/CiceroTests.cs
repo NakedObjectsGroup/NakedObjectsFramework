@@ -118,7 +118,7 @@ namespace NakedObjects.Selenium {
             WaitForOutput("Customers menu\r\nAction dialog: Random Store");
             EnterCommand("OK");
             WaitForOutputContaining("Customer:");
-            EnterCommand("Go details");
+            EnterCommand("Go store");
             WaitForOutputContaining("Store:");
             EnterCommand("back");
             WaitForOutputContaining("Customer:");
@@ -455,7 +455,7 @@ namespace NakedObjects.Selenium {
             CiceroUrl("object?o1=___1.Customer--577");
             WaitForOutput("Customer: Synthetic Materials Manufacturing, AW00000577");
             //Full match
-            EnterCommand("go Details");
+            EnterCommand("go Store");
             WaitForOutput("Store: Synthetic Materials Manufacturing");
             //Partial match (on Sales Person)
             EnterCommand("go pers");
