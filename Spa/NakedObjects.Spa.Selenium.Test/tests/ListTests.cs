@@ -46,27 +46,28 @@ namespace NakedObjects.Selenium {
             var cols = WaitForCss("th", 5).ToArray();
             Assert.AreEqual("All", cols[0].Text);
             Assert.AreEqual("Description", cols[1].Text);
-            Assert.AreEqual("X No Matching Column", cols[2].Text);
+            Assert.AreEqual("XNoMatchingColumn", cols[2].Text);
             Assert.AreEqual("Category", cols[3].Text);
             Assert.AreEqual("Discount Pct", cols[4].Text);
             cols = WaitForCss("tbody tr:first-child td", 5).ToArray();
-            Assert.AreEqual("No Discount", cols[1]);
-            Assert.AreEqual("", cols[2]); //As no such column
-            Assert.AreEqual("", cols[3]); //Happens to be empty
-            Assert.AreEqual("0", cols[4]);
+            Assert.AreEqual("No Discount", cols[1].Text);
+            Assert.AreEqual("", cols[2].Text); //As no such column
+            Assert.AreEqual("", cols[3].Text); //Happens to be empty
+            Assert.AreEqual("0", cols[4].Text);
         }
 
         public virtual void TableViewWorksWithSubTypes()
         {
             GeminiUrl("list?m1=CustomerRepository&a1=RandomCustomers&pg1=1&ps1=20&s1=0&c1=Table");
             WaitForView(Pane.Single, PaneType.List, "Random Customers");
+            Reload();
             var cols = WaitForCss("th", 4).ToArray();
-            Assert.AreEqual("Account Number", cols[0].Text);
-            Assert.AreEqual("Store", cols[1].Text);
-            Assert.AreEqual("Person", cols[2].Text);
-            Assert.AreEqual("Sales Territory", cols[3].Text);
+            Assert.AreEqual("Account Number", cols[1].Text);
+            Assert.AreEqual("Store", cols[2].Text);
+            Assert.AreEqual("Person", cols[3].Text);
+            Assert.AreEqual("Sales Territory", cols[4].Text);
             cols = WaitForCss("tbody tr:first-child td", 4).ToArray();
-            Assert.AreEqual("", cols[1]); //As no such column
+            Assert.AreEqual("", cols[2].Text); //As no such column
         }
 
         public virtual void TableViewCanIncludeCollectionSummaries() {
