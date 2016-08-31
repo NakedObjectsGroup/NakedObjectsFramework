@@ -165,7 +165,7 @@ namespace NakedObjects.Selenium {
             ClickBackButton();
             WaitForTextEquals(".title", "The requested view of unsaved object details has expired.");
             ClickBackButton();
-            WaitForView(Pane.Single, PaneType.Object, "Mercantile Outlet, AW00030108");
+            WaitForView(Pane.Single, PaneType.Object, "Permanent Finish Products, AW00030107");
             OpenSubMenu("Orders"); //Would fail if already open
         }
         public virtual void CreateAndSaveNotPersistedObject()
