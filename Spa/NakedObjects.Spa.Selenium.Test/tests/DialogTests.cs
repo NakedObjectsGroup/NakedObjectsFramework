@@ -745,7 +745,7 @@ public virtual void AutoCompleteOptionalParamNotSelected()
             QueryOnlyActionDialogPersists();
             PotentActionDialogDisappearsAndFieldsNotRemembered();
             OptionalReferenceParamCanBeNull();
-            //ValidationOfContributeeParameter(); TODO: Currently failing: #34
+            ValidationOfContributeeParameter();
         }
     }
 

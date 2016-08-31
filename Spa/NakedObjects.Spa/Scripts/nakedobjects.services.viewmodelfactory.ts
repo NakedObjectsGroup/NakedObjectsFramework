@@ -255,11 +255,13 @@ namespace NakedObjects {
 
             let requiredFieldsMissing = false; // only show warning message if we have nothing else 
             let fieldValidationErrors = false;
+            let contributedParameterErrorMsg = "";
+        
+            _.each(err.valuesMap(), (errorValue, k) => {
+             
+                const valueViewModel = _.find(valueViewModels, vvm => vvm.id === k);
 
-            _.each(valueViewModels, valueViewModel => {
-                const errorValue = err.valuesMap()[valueViewModel.id];
-
-                if (errorValue) {
+                if (valueViewModel) {
                     const reason = errorValue.invalidReason;
                     if (reason) {
                         if (reason === "Mandatory") {
@@ -271,13 +273,17 @@ namespace NakedObjects {
                             fieldValidationErrors = true;
                         }
                     }
+                } else {
+                    // no matching parm for message - this can happen in contributed actions 
+                    // make the message a dialog level warning.                               
+                    contributedParameterErrorMsg = errorValue.invalidReason;                    
                 }
             });
 
-            let msg = err.invalidReason() || "";
+            let msg = contributedParameterErrorMsg || err.invalidReason() || "";
             if (requiredFieldsMissing) msg = `${msg} Please complete REQUIRED fields. `;
             if (fieldValidationErrors) msg = `${msg} See field validation message(s). `;
-
+            
             if (!msg) msg = err.warningMessage;
             messageViewModel.setMessage(msg);
         };
