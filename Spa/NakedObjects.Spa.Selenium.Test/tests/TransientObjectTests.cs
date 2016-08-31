@@ -156,7 +156,7 @@ namespace NakedObjects.Selenium {
         }
         public virtual void TransientCreatedFromDialogClosesDialog()
         {
-            GeminiUrl("object?i1=View&o1=___1.Customer--30108&as1=open");
+            GeminiUrl("object?i1=View&o1=___1.Customer--30107&as1=open");
             OpenSubMenu("Orders");
             OpenActionDialog("Create New Order");
             Click(OKButton());

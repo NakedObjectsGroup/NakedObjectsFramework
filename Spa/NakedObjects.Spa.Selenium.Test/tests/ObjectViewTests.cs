@@ -118,8 +118,8 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("Order Date:\r\n16 Apr 2008", properties[8].Text);
 
             //If marked with ConcurrencyCheck, rendered as date time
-            Assert.IsTrue(properties[23].Text.StartsWith("Modified Date:\r\n23 Apr 2008"));
-            Assert.IsTrue(properties[23].Text.EndsWith(":00:00")); //Only check mm:ss to avoid TimeZone difference server vs. client
+            Assert.IsTrue(properties[22].Text.StartsWith("Modified Date:\r\n23 Apr 2008"));
+            Assert.IsTrue(properties[22].Text.EndsWith(":00:00")); //Only check mm:ss to avoid TimeZone difference server vs. client
 
             //Currency properties formatted to 2 places & with default currency symbok (£)
             Assert.AreEqual("Sub Total:\r\n£819.31", properties[11].Text);
@@ -347,7 +347,7 @@ namespace NakedObjects.Selenium {
             wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Payment on delivery"));
             //Now clear them
             Click(GetObjectAction("Clear Comment"));
-            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text == "Comment:");
+           // wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text == "Comment:");
         }
         #endregion
     }
