@@ -706,6 +706,13 @@ namespace NakedObjects {
             return valueLinks && _.some(valueLinks, (i: Link) => i.members());
         }
 
+        private clearSelected(result : ActionResultRepresentation) {
+            if (result.resultType() === "void") {
+                this.allSelected = false;
+                this.selectAll();
+            }
+        }
+
         private collectionContributedActionDecorator(actionViewModel: IActionViewModel) {
             const wrappedInvoke = actionViewModel.execute;
             actionViewModel.execute = (pps: IParameterViewModel[], right?: boolean) => {
@@ -732,11 +739,21 @@ namespace NakedObjects {
                 }
 
                 if (actionViewModel.invokableActionRep) {
-                    return wrappedInvoke(getParms(actionViewModel.invokableActionRep), right);
+                    return wrappedInvoke(getParms(actionViewModel.invokableActionRep), right).then(result => {
+                        // clear selected items on void actions 
+                        this.clearSelected(result);
+                        return result;
+                    });
                 }
 
                 return this.context.getActionDetails(actionViewModel.actionRep as ActionMember)
-                    .then((details: ActionRepresentation) => wrappedInvoke(getParms(details), right));
+                    .then((details: ActionRepresentation) =>
+                        wrappedInvoke(getParms(details), right))
+                    .then(result => {
+                        // clear selected items on void actions 
+                        this.clearSelected(result);
+                        return result;
+                    });
             }
         }
 
@@ -757,7 +774,11 @@ namespace NakedObjects {
 
             const invokeWithoutDialog = (right?: boolean) =>
                 actionViewModel.execute([], right).
-                    then(result => this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || noResultMessage : "")).
+                    then(result => {
+                        this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || noResultMessage : "");
+                        // clear selected items on void actions 
+                        this.clearSelected(result);
+                    }).
                     catch((reject: ErrorWrapper) => {
                         const display = (em: ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
                         this.error.handleErrorAndDisplayMessages(reject, display);
@@ -842,6 +863,8 @@ namespace NakedObjects {
         };
 
         reload = () => {
+            this.allSelected = false;
+            this.selectAll();
             this.context.clearCachedList(this.onPaneId, this.routeData.page, this.routeData.pageSize);
             this.setPage(this.page, this.state);
         };
