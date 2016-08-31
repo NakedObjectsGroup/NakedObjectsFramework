@@ -383,6 +383,7 @@ namespace NakedObjects {
             const tableRowColumnViewModel = new TableRowColumnViewModel();
 
             tableRowColumnViewModel.title = propertyRep.extensions().friendlyName();
+            tableRowColumnViewModel.id = id;
 
             if (propertyRep instanceof CollectionMember) {
                 const size = propertyRep.size();
@@ -701,12 +702,15 @@ namespace NakedObjects {
                             _.forEach(items, itemViewModel => {
                                 itemViewModel.tableRowViewModel.hasTitle = ext.tableViewTitle();
                                 itemViewModel.tableRowViewModel.title = itemViewModel.title;
+                                itemViewModel.tableRowViewModel.conformColumns(ext.tableViewColumns());
                             });
 
                             if (!listViewModel.header) {
                                 const firstItem = items[0].tableRowViewModel;
-                                const propertiesHeader = _.map(firstItem.properties, property => property.title);
 
+                                const propertiesHeader =
+                                    _.map(firstItem.properties, (p, i) => _.find(items, item => item.tableRowViewModel.properties[i].title).tableRowViewModel.properties[i].title );
+                    
                                 listViewModel.header = firstItem.hasTitle ? [""].concat(propertiesHeader) : propertiesHeader;
 
                                 focusManager.focusOverrideOff();

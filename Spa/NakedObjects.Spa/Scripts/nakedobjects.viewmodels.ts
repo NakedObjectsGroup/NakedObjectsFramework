@@ -239,6 +239,7 @@ namespace NakedObjects {
         tableRowViewModel: ITableRowViewModel;
         selected: boolean;
         selectionChange: (index: number) => void;
+
     }
 
     export class RecentItemViewModel extends LinkViewModel implements IRecentItemViewModel, IDraggableViewModel {
@@ -939,12 +940,32 @@ namespace NakedObjects {
         value: scalarValueType | Date;
         formattedValue: string;
         title: string;
+        id: string;
     }
 
-    export class TableRowViewModel implements ITableRowViewModel{
+    export class PlaceHolderTableRowColumnViewModel implements ITableRowColumnViewModel {
+
+        constructor(public id: string) { }
+
+        type: "scalar";
+        returnType: "string";
+        value: "";
+        formattedValue: "";
+        title: "";
+    }
+
+
+    export class TableRowViewModel implements ITableRowViewModel {
         title: string;
         hasTitle: boolean;
         properties: ITableRowColumnViewModel[];
+
+        conformColumns(columns: string[]) {
+            if (columns) {
+                this.properties =
+                    _.map(columns, c => _.find(this.properties, tp => tp.id === c) || new PlaceHolderTableRowColumnViewModel(c));
+            }
+        }
     }
 
     export class ApplicationPropertiesViewModel implements IApplicationPropertiesViewModel {

@@ -274,12 +274,14 @@ namespace NakedObjects {
         value: scalarValueType | Date;
         formattedValue: string;
         title: string;
+        id : string;
     }
 
     export interface ITableRowViewModel {
         title: string;
         hasTitle: boolean;
         properties: ITableRowColumnViewModel[];
+        conformColumns: (columns: string[]) => void;
     }
 
     export interface  IApplicationPropertiesViewModel {
