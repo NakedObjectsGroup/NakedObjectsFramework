@@ -111,7 +111,7 @@ namespace NakedObjects.Selenium {
         }
         public virtual void DateAndCurrencyProperties() {
             GeminiUrl("object?o1=___1.SalesOrderHeader--68389");
-            wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 24);
+            wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 23);
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
 
             //By default a DateTime property is rendered as date only:
