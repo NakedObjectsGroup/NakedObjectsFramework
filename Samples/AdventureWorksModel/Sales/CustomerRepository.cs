@@ -12,6 +12,7 @@ using NakedObjects;
 using NakedObjects.Menu;
 using NakedObjects.Services;
 using System;
+using System.Collections.Generic;
 
 namespace AdventureWorksModel {
     [DisplayName("Customers")]
@@ -126,8 +127,6 @@ namespace AdventureWorksModel {
             return stores;
         }
 
-       
-
         #endregion
 
         #region Individuals Menu
@@ -174,5 +173,16 @@ namespace AdventureWorksModel {
         }
 
         #endregion
+
+
+        [TableView(false, "AccountNumber","Store","Person","SalesTerritory")]
+        [QueryOnly]
+        public List<Customer> RandomCustomers()
+        {
+            var list = new List<Customer>();
+            list.Add(this.RandomIndividual());
+            list.Add(this.RandomStore());
+            return list;
+        }
     }
 }
