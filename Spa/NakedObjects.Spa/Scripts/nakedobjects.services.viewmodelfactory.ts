@@ -709,7 +709,10 @@ namespace NakedObjects {
                                 const firstItem = items[0].tableRowViewModel;
 
                                 const propertiesHeader =
-                                    _.map(firstItem.properties, (p, i) => _.find(items, item => item.tableRowViewModel.properties[i].title).tableRowViewModel.properties[i].title );
+                                    _.map(firstItem.properties, (p, i) => {
+                                        const match = _.find(items, item => item.tableRowViewModel.properties[i].title);
+                                        return match ? match.tableRowViewModel.properties[i].title : firstItem.properties[i].id;
+                                    });
                     
                                 listViewModel.header = firstItem.hasTitle ? [""].concat(propertiesHeader) : propertiesHeader;
 
