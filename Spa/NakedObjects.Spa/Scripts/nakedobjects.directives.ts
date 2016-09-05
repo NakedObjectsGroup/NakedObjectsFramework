@@ -752,7 +752,7 @@ namespace NakedObjects {
 
                         element.empty();
 
-                        const anchor = element.find("div");
+                     
                         if (attachment.displayInline()) {
                             attachment.downloadFile().
                                 then(blob => {
@@ -766,7 +766,7 @@ namespace NakedObjects {
                                 }).
                                 catch((reject: ErrorWrapper) => error.handleError(reject));
                         } else {
-                            anchor.html(title);
+                            element.html(`<div>${title}</div>`);
                             attachment.doClick = clickHandler;
                         }
 

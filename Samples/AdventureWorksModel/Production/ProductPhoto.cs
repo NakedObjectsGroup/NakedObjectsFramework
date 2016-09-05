@@ -52,7 +52,8 @@ namespace AdventureWorksModel {
         {
             get
             {
-                return new FileAttachment(LargePhoto, LargePhotoFileName){ DispositionType = "inline" };
+                // fake minetype
+                return new FileAttachment(LargePhoto, LargePhotoFileName, "text/plain") { DispositionType = "inline" };
             }
         }
 

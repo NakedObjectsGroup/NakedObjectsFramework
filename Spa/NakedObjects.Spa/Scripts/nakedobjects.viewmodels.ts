@@ -157,7 +157,7 @@ namespace NakedObjects {
 
         displayInline = () =>
             this.mimeType === "image/jpeg" ||
-            this.mimeType === "image/gif" ||
+            //this.mimeType === "image/gif" ||
             this.mimeType === "application/octet-stream";
 
         doClick: (right?: boolean) => void;
