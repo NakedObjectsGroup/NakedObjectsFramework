@@ -182,7 +182,8 @@ namespace NakedObjects.Selenium {
             //as individual buttons, and NO generic Save button
         }
         public virtual void MultiLineText() {
-            GeminiUrl("object?o1=___1.SalesOrderHeader--44440");
+            GeminiUrl("object?o1=___1.SalesOrderHeader--44440&as1=open");
+            WaitForView(Pane.Single, PaneType.Object);
             var dialog = OpenActionDialog("Add Multi Line Comment");
 
             GetInputNumber(dialog, 0).SendKeys("comment");
