@@ -185,8 +185,8 @@ namespace NakedObjects.Selenium {
             GeminiUrl("object?o1=___1.SalesOrderHeader--44440&as1=open");
             WaitForView(Pane.Single, PaneType.Object);
             var dialog = OpenActionDialog("Add Multi Line Comment");
-
-            GetInputNumber(dialog, 0).SendKeys("comment");
+            var field1 = WaitForCss(".parameter:nth-child(1) input");
+            ClearFieldThenType(".parameter:nth-child(1) input", "comment");
             Click(OKButton());
 
             GeminiUrl("object?i1=Edit&o1=___1.SalesOrderHeader--44440");
