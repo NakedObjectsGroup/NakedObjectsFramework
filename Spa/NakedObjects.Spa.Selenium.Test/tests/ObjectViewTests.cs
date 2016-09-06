@@ -341,6 +341,8 @@ namespace NakedObjects.Selenium {
          public virtual void ZeroParamActionCausesObjectToReload()
         {
             GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--72079&as1=open");
+            // clear any existing comments to make test more robust
+            Click(GetObjectAction("Clear Comment"));
             //First set up some comments
             OpenActionDialog("Add Standard Comments");
             Click(OKButton());
