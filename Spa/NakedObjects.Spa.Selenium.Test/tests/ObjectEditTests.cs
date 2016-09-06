@@ -182,7 +182,18 @@ namespace NakedObjects.Selenium {
             //as individual buttons, and NO generic Save button
         }
         public virtual void MultiLineText() {
-            GeminiUrl("object?i1=Edit&o1=___1.SalesOrderHeader--44440");
+            GeminiUrl("object?o1=___1.SalesOrderHeader--44440&as1=open");
+            WaitForView(Pane.Single, PaneType.Object);
+            Click(GetObjectAction("Clear Comment"));
+
+            var dialog = OpenActionDialog("Add Multi Line Comment");
+            var field1 = WaitForCss(".parameter:nth-child(1) textarea");
+            ClearFieldThenType(".parameter:nth-child(1) textarea", "comment");
+            Click(OKButton());
+            wait.Until(d => br.FindElements(By.CssSelector(".property"))[20].Text == "Comment:\r\ncomment");
+
+            
+            EditObject();
             var ta = WaitForCss("textarea#comment1");
             Assert.AreEqual("Free-form text", ta.GetAttribute("placeholder"));
             var rand = new Random();

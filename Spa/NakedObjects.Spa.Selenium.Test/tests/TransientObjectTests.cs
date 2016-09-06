@@ -144,7 +144,7 @@ namespace NakedObjects.Selenium {
         }
         //Test for a previous bug  -  where Etag error was resulting
         public virtual void CanInvokeActionOnASavedTransient() {
-            GeminiUrl("object?i1=View&o1=___1.Customer--11784&as1=open&d1=CreateNewOrder&f1_copyHeaderFromLastOrder=true");
+            GeminiUrl("object?i1=View&o1=___1.Customer--11783&as1=open&d1=CreateNewOrder&f1_copyHeaderFromLastOrder=true");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Sales Order");
             Click(SaveButton());
@@ -156,7 +156,7 @@ namespace NakedObjects.Selenium {
         }
         public virtual void TransientCreatedFromDialogClosesDialog()
         {
-            GeminiUrl("object?i1=View&o1=___1.Customer--30108&as1=open");
+            GeminiUrl("object?i1=View&o1=___1.Customer--30107&as1=open");
             OpenSubMenu("Orders");
             OpenActionDialog("Create New Order");
             Click(OKButton());
@@ -165,7 +165,7 @@ namespace NakedObjects.Selenium {
             ClickBackButton();
             WaitForTextEquals(".title", "The requested view of unsaved object details has expired.");
             ClickBackButton();
-            WaitForView(Pane.Single, PaneType.Object, "Mercantile Outlet, AW00030108");
+            WaitForView(Pane.Single, PaneType.Object, "Permanent Finish Products, AW00030107");
             OpenSubMenu("Orders"); //Would fail if already open
         }
         public virtual void CreateAndSaveNotPersistedObject()
