@@ -1,11 +1,38 @@
-﻿import { Directive, ElementRef, HostListener, Output, EventEmitter } from '@angular/core';
+﻿import { Directive, ElementRef, HostListener, Output, EventEmitter, Input, OnInit } from '@angular/core';
+import * as ViewModels  from './nakedobjects.viewmodels';
+import * as Models from './models';
+import * as _ from "lodash";
+import * as Ro from './nakedobjects.rointerfaces';
+import { Observable } from 'rxjs/Observable';
+import "./rxjs-extensions";
+import { Subject } from 'rxjs/Subject';
 
 @Directive({ selector: '[geminiConditionalChoices]' })
-export class GeminiConditionalChoicesDirective {
+export class GeminiConditionalChoicesDirective implements OnInit {
     private el: HTMLElement;
     constructor(el: ElementRef) {
         this.el = el.nativeElement;
     }
+
+    model: ViewModels.ParameterViewModel;
+    currentOptions: ViewModels.ChoiceViewModel[] = [];
+    pArgs: _.Dictionary<Models.Value>;
+
+    paneId : number;
+
+    @Input('geminiConditionalChoices')
+    set viewModel(vm: ViewModels.ParameterViewModel) {
+        this.model = vm;
+        this.pArgs = _.omit(this.model.promptArguments, "x-ro-nof-members") as _.Dictionary<Models.Value>;
+        this.paneId = this.model.onPaneId;
+    }
+
+    @Input('parent')
+    parent : ViewModels.DialogViewModel | ViewModels.DomainObjectViewModel;
+
+    @Input('parameterChanged')
+    parameterChanged: Observable<boolean>;
+
 
 //    // up the priority of this directive to that viewmodel is set before ng-options - 
 //    // then angular doesn't add an empty entry on dropdown
@@ -29,125 +56,145 @@ export class GeminiConditionalChoicesDirective {
 //    const paneId = viewModel.onPaneId;
 //                let currentOptions: ChoiceViewModel[] = [];
 
-//function isDomainObjectViewModel(object: any): object is DomainObjectViewModel {
-//    return object && "properties" in object;
-//}
+ isDomainObjectViewModel(object: any): object is ViewModels.DomainObjectViewModel {
+    return object && "properties" in object;
+}
 
-//function mapValues(args: _.Dictionary<Value>, parmsOrProps: { argId: string, getValue: () => Value }[]) {
-//    return _.mapValues(pArgs, (v, n) => {
-//        const pop = _.find(parmsOrProps, p => p.argId === n);
-//        return pop.getValue();
-//    });
-//}
+ mapValues(args: _.Dictionary<Models.Value>, parmsOrProps: { argId: string, getValue: () => Models.Value }[]) {
+    return _.mapValues(this.pArgs, (v, n) => {
+        const pop = _.find(parmsOrProps, p => p.argId === n);
+        return pop.getValue();
+    });
+}
 
+ populateArguments() {
 
-//function populateArguments() {
+     const dialog = this.parent as ViewModels.DialogViewModel;
+     const object = this.parent as ViewModels.DomainObjectViewModel;
 
-//    const dialog = parent.dialog;
-//    const object = parent.object;
+    if (!dialog && !object) {
+        throw { message: "Expect dialog or object in geminiConditionalchoices", stack: "" };
+    }
 
-//    if (!dialog && !object) {
-//        throw { message: "Expect dialog or object in geminiConditionalchoices", stack: "" };
-//    }
+    let parmsOrProps: { argId: string, getValue: () => Models.Value }[] = [];
 
-//    let parmsOrProps: { argId: string, getValue: () => Value }[] = [];
+     if (this.isDomainObjectViewModel(object)) {
+         parmsOrProps = object.properties;
+     } else {
+        parmsOrProps = dialog.parameters;
+     }
 
-//    if (dialog) {
-//        parmsOrProps = dialog.parameters;
-//    }
+     return this.mapValues(this.pArgs, parmsOrProps);
+}
 
-//    if (isDomainObjectViewModel(object)) {
-//        parmsOrProps = object.properties;
-//    }
+ populateDropdown() {
+    const nArgs = this.populateArguments();
+    const prompts = this.model.conditionalChoices(nArgs);//  scope.select({ args: nArgs });
+    prompts.then((cvms: ViewModels.ChoiceViewModel[]) => {
+        // if unchanged return 
+        if (cvms.length === this.currentOptions.length && _.every(cvms, (c, i) => c.equals(this.currentOptions[i]))) {
+            return;
+        }
+        this.model.choices = cvms;
 
-//    return mapValues(pArgs, parmsOrProps);
-//}
+        //element.find("option").remove();
 
-//function populateDropdown() {
-//    const nArgs = populateArguments();
-//    const prompts = scope.select({ args: nArgs });
-//    prompts.then((cvms: ChoiceViewModel[]) => {
-//        // if unchanged return 
-//        if (cvms.length === currentOptions.length && _.every(cvms, (c, i) => c.equals(currentOptions[i]))) {
-//            return;
-//        }
+        //if (viewModel.optional) {
+        //    const emptyOpt = $("<option></option>");
+        //    element.append(emptyOpt);
+        //}
 
-//        element.find("option").remove();
+        //_.forEach(cvms, cvm => {
 
-//        if (viewModel.optional) {
-//            const emptyOpt = $("<option></option>");
-//            element.append(emptyOpt);
-//        }
+        //    const opt = $("<option></option>");
+        //    opt.val(cvm.getValue().toValueString());
+        //    opt.text(cvm.name);
 
-//        _.forEach(cvms, cvm => {
+        //    element.append(opt);
+        //});
 
-//            const opt = $("<option></option>");
-//            opt.val(cvm.getValue().toValueString());
-//            opt.text(cvm.name);
+        this.currentOptions = cvms;
 
-//            element.append(opt);
-//        });
+        if (this.model.entryType === Models.EntryType.MultipleConditionalChoices) {
+            const vals = _.map(this.model.selectedMultiChoices, c => c.getValue().toValueString());
+            //$(element).val(vals);
+        } else if (this.model.selectedChoice) {
+            //$(element).val(this.model.selectedChoice.getValue().toValueString());
+        }
+        else {
+            //$(element).val("");
+        }
 
-//        currentOptions = cvms;
-
-//        if (viewModel.entryType === EntryType.MultipleConditionalChoices) {
-//            const vals = _.map(viewModel.selectedMultiChoices, c => c.getValue().toValueString());
-//            $(element).val(vals);
-//        } else if (viewModel.selectedChoice) {
-//            $(element).val(viewModel.selectedChoice.getValue().toValueString());
-//        }
-//        else {
-//            $(element).val("");
-//        }
-
-//        setTimeout(() => {
-//            $(element).change();
-//        }, 1);
+        //setTimeout(() => {
+        //    $(element).change();
+        //}, 1);
 
 
-//    }).catch(() => {
-//        // error clear everything 
-//        element.find("option").remove();
-//        viewModel.selectedChoice = null;
-//        currentOptions = [];
-//    });
-//}
+    }).catch(() => {
+        // error clear everything 
+        //element.find("option").remove();
+        this.model.selectedChoice = null;
+        this.currentOptions = [];
+    });
+}
 
-//function wrapReferences(val: string): string | RoInterfaces.ILink {
-//    if (val && viewModel.type === "ref") {
-//        return { href: val };
-//    }
-//    return val;
-//}
+wrapReferences(val: string): string | Ro.ILink {
+    if (val && this.model.type === "ref") {
+        return { href: val };
+    }
+    return val;
+ }
 
-//function optionChanged() {
+ optionChanged() {
 
-//    if (viewModel.entryType === EntryType.MultipleConditionalChoices) {
-//        const options = $(element).find("option:selected");
-//        const kvps = [] as any[];
+    // if (this.model.entryType === Models.EntryType.MultipleConditionalChoices) {
+    //    //const options = $(element).find("option:selected");
+    //    const kvps = [] as any[];
 
-//        options.each((n, e) => kvps.push({ key: $(e).text(), value: $(e).val() }));
-//        const cvms = _.map(kvps, o => ChoiceViewModel.create(new Value(wrapReferences(o.value)), viewModel.id, o.key));
-//        viewModel.selectedMultiChoices = cvms;
+    //    options.each((n, e) => kvps.push({ key: $(e).text(), value: $(e).val() }));
+    //    const cvms = _.map(kvps, o => ViewModels.ChoiceViewModel.create(new Models.Value(this.wrapReferences(o.value)), this.model.id, o.key));
+    //    this.model.selectedMultiChoices = cvms;
 
-//    } else {
-//        const option = $(element).find("option:selected");
-//        const val = option.val();
-//        const key = option.text();
-//        const cvm = ChoiceViewModel.create(new Value(wrapReferences(val)), viewModel.id, key);
-//        viewModel.selectedChoice = cvm;
-//        scope.$apply(() => {
-//            ngModel.$parsers.push(() => cvm);
-//            ngModel.$setViewValue(cvm.name);
-//        });
-//    }
-//}
+    //} else {
+    //    //const option = $(element).find("option:selected");
+    //    const val = option.val();
+    //    const key = option.text();
+    //    const cvm = ViewModels.ChoiceViewModel.create(new Models.Value(this.wrapReferences(val)), this.model.id, key);
+    //    this.model.selectedChoice = cvm;
+    //    scope.$apply(() => {
+    //        ngModel.$parsers.push(() => cvm);
+    //        ngModel.$setViewValue(cvm.name);
+    //    });
+    //}
+}
+
+ ngOnInit(): void {
+     //this.setListeners();
+     this.populateDropdown();
+
+     this.parameterChanged.subscribe((change) => {
+
+         if (change) {
+             this.populateDropdown();
+         }
+
+     });
+
+ }
 
 
-//function setListeners() {
-//    _.forEach(pArgs, (v, n) => $(`#${n}${paneId}`).on("change", () => populateDropdown()));
-//    $(element).on("change", optionChanged);
-//}
+setListeners() {
+    _.forEach(this.pArgs, (v, n) => document.getElementById(`${n}${this.paneId}`).addEventListener("change", () =>
+
+       this.populateDropdown()));
+    //$(element).on("change", optionChanged);
+}
+
+@HostListener('change')
+onChange() {
+   this.optionChanged();
+}
+
 
 //ngModel.$render = () => { }; // do on the next event loop,
 

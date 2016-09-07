@@ -30,27 +30,33 @@
                             <!--<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [(ngModel)]="$parent.parameter.selectedChoice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices gemini-fieldmandatorycheck>
                                 <option value="" disabled selected>{{parameter.description}}</option>
                             </select>-->
+                            <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [(ngModel)]="parameter.selectedChoice" name="parameter.id"  [geminiConditionalChoices]="parameter" [parent]="dialog" [parameterChanged]="parameterChanged$" gemini-fieldmandatorycheck>
+                                <option value="" disabled>{{parameter.description}}</option>
+                                <option *ngFor="let choice of parameter.choices">{{choice.name}}</option>
+                            </select>
                         </div>
 
                         <!--"EntryType.MultipleChoices"-->
                         <div *ngSwitchCase="2">
-                            <!--<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [(ngModel)]="parameter.selectedMultiChoices" ng-options="c as c.name for c in parameter.choices" gemini-fieldmandatorycheck>
+                            <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [(ngModel)]="parameter.selectedMultiChoices"  name="parameter.id"  gemini-fieldmandatorycheck>
                                 <option value="" disabled>{{parameter.description}}</option>
-                            </select>-->
+                                <option *ngFor="let choice of parameter.choices">{{choice.name}}</option>
+                            </select>
                         </div>
 
                         <!--"EntryType.Choices"-->
                         <div *ngSwitchCase="1">
-                            <!--<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [(ngModel)]="parameter.selectedChoice" ng-options="c as c.name for c in parameter.choices" gemini-fieldmandatorycheck>
+                            <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [(ngModel)]="parameter.selectedChoice"  name="parameter.id" (ngModelChange)="parameterChanged()" gemini-fieldmandatorycheck>
                                 <option value="" disabled>{{parameter.description}}</option>
-                            </select>-->
+                                <option *ngFor="let choice of parameter.choices" [ngValue]="choice">{{choice.name}}</option>
+                            </select>
                         </div>
 
                         <!--"EntryType.FreeForm"-->
                         <div *ngSwitchCase="0">
-                            <!--<div tabindex="0" class="value droppable" [(ngModel)]="parameter.selectedChoice" [ngClass]="parameter.color" gemini-drop gemini-fieldmandatorycheck gemini-clear>
+                            <div tabindex="0" class="value droppable" [(ngModel)]="parameter.selectedChoice"  name="parameter.id" [ngClass]="parameter.color" (ngModelChange)="parameterChanged()" gemini-drop gemini-fieldmandatorycheck gemini-clear>
                                 {{parameter.value || parameter.description}}
-                            </div>-->
+                            </div>
                         </div>
 
                     </div>
@@ -61,24 +67,24 @@
 
                         <!--"EntryType.File"-->
                         <div *ngSwitchCase="6">
-                        <!--    <input id="{{parameter.paneArgId}}" type="file" class="{{parameter.status}}" [(ngModel)]="$parent.parameter.file" placeholder="{{parameter.description}}" gemini-fileupload />-->
+                        <!--    <input id="{{parameter.paneArgId}}" type="file" class="{{parameter.status}}" [(ngModel)]="$parent.parameter.file"  name="parameter.id"  placeholder="{{parameter.description}}" gemini-fileupload />-->
                         </div>
 
                         <!--"EntryType.AutoComplete"-->
                         <div *ngSwitchCase="5">
-                          <!--  <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" [(ngModel)]="$parent.parameter.selectedChoice" select="parameter.prompt(request)" placeholder="{{parameter.description}}" gemini-autocomplete gemini-fieldmandatorycheck gemini-clear />-->
+                          <!--  <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" [(ngModel)]="$parent.parameter.selectedChoice" select="parameter.prompt(request)"  name="parameter.id"  placeholder="{{parameter.description}}" gemini-autocomplete gemini-fieldmandatorycheck gemini-clear />-->
                         </div>
 
                         <!--"EntryType.MultipleConditionalChoices"-->
                         <div *ngSwitchCase="4">
-                            <!--<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [(ngModel)]="$parent.parameter.selectedMultiChoices" select="parameter.conditionalChoices(args)" gemini-conditionalchoices gemini-fieldmandatorycheck>
+                            <!--<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [(ngModel)]="$parent.parameter.selectedMultiChoices"  name="parameter.id" select="parameter.conditionalChoices(args)" gemini-conditionalchoices gemini-fieldmandatorycheck>
                                 <option value="" disabled selected>{{parameter.description}}</option>
                             </select>-->
                         </div>
 
                         <!--"EntryType.ConditionalChoices"-->
                         <div *ngSwitchCase="3">
-                            <!--<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [(ngModel)]="$parent.parameter.selectedChoice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices gemini-fieldmandatorycheck>
+                            <!--<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [(ngModel)]="$parent.parameter.selectedChoice"  name="parameter.id"  select="parameter.conditionalChoices(args)" gemini-conditionalchoices gemini-fieldmandatorycheck>
                                 <option value="" disabled selected>{{parameter.description}}</option>
                             </select>-->
                         </div>
@@ -86,16 +92,18 @@
 
                         <!--"EntryType.MultipleChoices"-->
                         <div *ngSwitchCase="2">
-                            <!--<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [(ngModel)]="parameter.selectedMultiChoices" ng-options="c as c.name for c in parameter.choices" gemini-fieldmandatorycheck>
+                            <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [(ngModel)]="parameter.selectedMultiChoices"   name="parameter.id"  gemini-fieldmandatorycheck>
                                 <option value="" disabled>{{parameter.description}}</option>
-                            </select>-->
+                                <option *ngFor="let choice of parameter.choices">{{choice.name}}</option>
+                            </select>
                         </div>
 
                         <!--"EntryType.Choices"-->
                         <div *ngSwitchCase="1">
-                            <!--<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [(ngModel)]="parameter.selectedChoice" ng-options="c as c.name for c in parameter.choices" gemini-fieldmandatorycheck>
+                            <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [(ngModel)]="parameter.selectedChoice"  name="parameter.id" (change)="parameterChanged()" gemini-fieldmandatorycheck>
                                 <option value="" disabled>{{parameter.description}}</option>
-                            </select>-->
+                                <option *ngFor="let choice of parameter.choices">{{choice.name}}</option>
+                            </select>
                         </div>
 
                         <!--"EntryType.FreeForm"-->

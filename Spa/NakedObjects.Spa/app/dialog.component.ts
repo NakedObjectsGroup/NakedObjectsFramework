@@ -8,11 +8,16 @@ import * as Models from "./models";
 import * as ViewModels from "./nakedobjects.viewmodels";
 import { GeminiDropDirective } from "./gemini-drop.directive";
 import { GeminiBooleanDirective } from './gemini-boolean.directive';
+import {GeminiConditionalChoicesDirective} from './gemini-conditional-choices.directive';
+
+
+import "./rxjs-extensions";
+import { Subject } from 'rxjs/Subject';
 
 @Component({
     selector: 'dialog',
     templateUrl: 'app/dialog.component.html',
-    directives: [GeminiDropDirective, GeminiBooleanDirective],
+    directives: [GeminiDropDirective, GeminiBooleanDirective, GeminiConditionalChoicesDirective],
     styleUrls: ['app/dialog.component.css']
 })
 export class DialogComponent {
@@ -21,4 +26,13 @@ export class DialogComponent {
 
     @Input()
     dialog: ViewModels.DialogViewModel;
+
+    parameterChanged() {
+        this.parameterChangedSource.next(true);
+        this.parameterChangedSource.next(false);
+    }
+
+    private parameterChangedSource = new Subject<boolean>();
+
+    parameterChanged$ = this.parameterChangedSource.asObservable();
 }

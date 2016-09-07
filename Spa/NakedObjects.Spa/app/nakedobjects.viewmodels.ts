@@ -910,11 +910,11 @@ export class DialogViewModel extends MessageViewModel implements IDialogViewMode
                 }
                 else if (!this.isQueryOnly) {
                     // not query only - always close
-                    this.doCloseReplaceHistory();
+                    //this.doCloseReplaceHistory();
                 }
                 else if (!right) {
                     // query only going to new page close dialog and keep history
-                    this.doCloseKeepHistory();
+                    //this.doCloseKeepHistory();
                 }
                 // else query only going to other tab leave dialog open
             }).
@@ -925,18 +925,19 @@ export class DialogViewModel extends MessageViewModel implements IDialogViewMode
 
     doCloseKeepHistory = () => {
         //this.deregister();
-        //this.urlManager.closeDialogKeepHistory(this.onPaneId);
+        this.urlManager.closeDialogKeepHistory(this.onPaneId);
     }
 
     doCloseReplaceHistory = () => {
         //this.deregister();
-        //this.urlManager.closeDialogReplaceHistory(this.onPaneId);
+        this.urlManager.closeDialogReplaceHistory(this.onPaneId);
     }
 
     clearMessages = () => {
         this.resetMessage();
         _.each(this.actionViewModel.parameters, parm => parm.clearMessage());
     };
+
 }
 
 export class PropertyViewModel extends ValueViewModel implements IPropertyViewModel, IDraggableViewModel {
