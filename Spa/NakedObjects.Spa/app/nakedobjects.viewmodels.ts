@@ -806,6 +806,7 @@ export class ParameterViewModel extends ValueViewModel {
         this.paneArgId = `${this.argId}${this.onPaneId}`;
         this.isCollectionContributed = parmRep.isCollectionContributed();
         this.entryType = parmRep.entryType();
+        this.value = null;
     }
 
     parameterRep: Models.Parameter;
@@ -923,13 +924,13 @@ export class DialogViewModel extends MessageViewModel implements IDialogViewMode
             });
 
     doCloseKeepHistory = () => {
-        this.deregister();
-        this.urlManager.closeDialogKeepHistory(this.onPaneId);
+        //this.deregister();
+        //this.urlManager.closeDialogKeepHistory(this.onPaneId);
     }
 
     doCloseReplaceHistory = () => {
-        this.deregister();
-        this.urlManager.closeDialogReplaceHistory(this.onPaneId);
+        //this.deregister();
+        //this.urlManager.closeDialogReplaceHistory(this.onPaneId);
     }
 
     clearMessages = () => {

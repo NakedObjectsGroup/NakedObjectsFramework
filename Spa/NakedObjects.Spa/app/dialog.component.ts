@@ -7,11 +7,12 @@ import * as _ from "lodash";
 import * as Models from "./models";
 import * as ViewModels from "./nakedobjects.viewmodels";
 import { GeminiDropDirective } from "./gemini-drop.directive";
+import { GeminiBooleanDirective } from './gemini-boolean.directive';
 
 @Component({
     selector: 'dialog',
     templateUrl: 'app/dialog.component.html',
-    directives: [GeminiDropDirective],
+    directives: [GeminiDropDirective, GeminiBooleanDirective],
     styleUrls: ['app/dialog.component.css']
 })
 export class DialogComponent {

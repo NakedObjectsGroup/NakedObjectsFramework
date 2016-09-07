@@ -100,26 +100,26 @@
 
                         <!--"EntryType.FreeForm"-->
                         <div *ngSwitchCase="0">
-                            <!--<div [ngSwitch]="parameter.returnType">
+                            <div [ngSwitch]="parameter.returnType">
                                 <div *ngSwitchCase="'string'" [ngSwitch]="parameter.format">
                                     <div *ngSwitchCase="'date'">
-                                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="date" placeholder="{{parameter.description}}" [(ngModel)]="$parent.parameter.value" gemini-datepicker gemini-fieldvalidate gemini-clear />
+                                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="date" placeholder="{{parameter.description}}" [(ngModel)]="parameter.value" name="parameter.id"  gemini-datepicker gemini-fieldvalidate gemini-clear />
                                     </div>
                                     <div *ngSwitchCase="'time'">
-                                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="time" placeholder="{{parameter.description}}" [(ngModel)]="$parent.parameter.value" gemini-timepicker gemini-fieldvalidate gemini-clear />
+                                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="time" placeholder="{{parameter.description}}" [(ngModel)]="parameter.value" name="parameter.id"  gemini-timepicker gemini-fieldvalidate gemini-clear />
                                     </div>
                                     <div *ngSwitchDefault [ngSwitch]="parameter.multipleLines">
-                                        <input *ngSwitchCase="1" id="{{parameter.paneArgId}}" class="{{parameter.status}}" placeholder="{{parameter.description}}" type="{{parameter.password ? 'password' : 'text'}}" [(ngModel)]="parameter.value" gemini-fieldvalidate gemini-clear />
-                                        <textarea *ngSwitchDefault rows="{{$parent.parameter.multipleLines}}" id="{{$parent.parameter.paneArgId}}" class="{{$parent.parameter.status}}" [(ngModel)]="$parent.parameter.value" gemini-fieldvalidate gemini-placeholder="$parent.parameter.description"></textarea>
+                                        <input *ngSwitchCase="1" id="{{parameter.paneArgId}}" class="{{parameter.status}}" placeholder="{{parameter.description}}" type="{{parameter.password ? 'password' : 'text'}}" [(ngModel)]="parameter.value" name="parameter.id"  gemini-fieldvalidate gemini-clear />
+                                        <textarea *ngSwitchDefault rows="{{$parent.parameter.multipleLines}}" id="{{$parent.parameter.paneArgId}}" class="{{$parent.parameter.status}}" [(ngModel)]="parameter.value" name="parameter.id"  gemini-fieldvalidate placeholder="{{parameter.description}}"></textarea>
                                     </div>
                                 </div>
                                 <div *ngSwitchCase="'boolean'">
-                                    <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="checkbox" [(ngModel)]="parameter.value" gemini-boolean />{{parameter.description}}
+                                    <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="checkbox" name="parameter.id" [geminiBoolean]="parameter" />{{parameter.description}}
                                 </div>
                                 <div *ngSwitchDefault>
-                                    <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="text" placeholder="{{parameter.description}}" [(ngModel)]="parameter.value" gemini-fieldvalidate gemini-clear />
+                                    <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="text" placeholder="{{parameter.description}}" [(ngModel)]="parameter.value" name="parameter.id"   gemini-fieldvalidate gemini-clear />
                                 </div>
-                            </div>-->
+                            </div>
 
                         </div>
                     </div>

@@ -138,7 +138,7 @@
     <TypeScriptCompile Include="app\footer.component.ts" />
     <TypeScriptCompile Include="app\gemini-attachment.ts" />
     <TypeScriptCompile Include="app\gemini-autocomplete.ts" />
-    <TypeScriptCompile Include="app\gemini-boolean.ts" />
+    <TypeScriptCompile Include="app\gemini-boolean.directive.ts" />
     <TypeScriptCompile Include="app\gemini-clear.directive.ts" />
     <TypeScriptCompile Include="app\gemini-conditional-choices.directive.ts" />
     <TypeScriptCompile Include="app\gemini-datepicker.directive.ts" />
