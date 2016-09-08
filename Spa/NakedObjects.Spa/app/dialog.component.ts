@@ -38,8 +38,12 @@ export class DialogComponent implements OnInit, OnDestroy {
         private focusManager: Focusmanagerservice.FocusManager,
         private context: Contextservice.Context) { }
 
-  
-    paneId : number;
+
+    paneId: number;
+
+    @Input()
+    parent : ViewModels.MenuViewModel | ViewModels.DomainObjectViewModel;
+
 
     dialog: ViewModels.DialogViewModel;
 
@@ -52,11 +56,22 @@ export class DialogComponent implements OnInit, OnDestroy {
 
     parameterChanged$ = this.parameterChangedSource.asObservable();
 
-    getDialog(routeData: Nakedobjectsroutedata.PaneRouteData, selectedMenu : ViewModels.MenuViewModel) {
-        const dialogId = routeData.dialogId;
+   
 
-        if (dialogId && selectedMenu) {
-            const action = selectedMenu.menuRep.actionMember(dialogId);
+    getDialog(routeData: Nakedobjectsroutedata.PaneRouteData) {
+        const dialogId = routeData.dialogId;
+        if (this.parent && dialogId) {
+            const p = this.parent;
+            let action: Models.ActionMember = null;
+
+            if (p instanceof ViewModels.MenuViewModel) {
+                action = p.menuRep.actionMember(dialogId);
+            }
+
+            if (p instanceof ViewModels.DomainObjectViewModel) {
+                action = p.domainObject.actionMember(dialogId);
+            }
+
             this.context.getInvokableAction(action)
                 .then(details => {
                     //if (actionViewModel) {
@@ -97,25 +112,6 @@ export class DialogComponent implements OnInit, OnDestroy {
         }
     }
 
-    getMenu(paneRouteData: Nakedobjectsroutedata.PaneRouteData) {
-        const menuId = paneRouteData.menuId;
-        if (menuId) {
-            this.context.getMenu(menuId)
-                .then((menu: Models.MenuRepresentation) => {
-                    const rd = this.urlManager.getRouteData().pane()[this.paneId];
-                    const selectedMenu = this.viewModelFactory.menuViewModel(menu, rd);
-                    this.getDialog(paneRouteData, selectedMenu);
-                })
-                .catch((reject: Models.ErrorWrapper) => {
-                    this.error.handleError(reject);
-                });
-        } else {
-            // clear
-
-        }
-    }
-
-
     private activatedRouteDataSub: ISubscription;
     private paneRouteDataSub: ISubscription;
 
@@ -123,13 +119,13 @@ export class DialogComponent implements OnInit, OnDestroy {
 
 
         this.activatedRouteDataSub = this.activatedRoute.data.subscribe(data => {
-       
+
             this.paneId = data["pane"];
 
             this.paneRouteDataSub = this.urlManager.getRouteDataObservable()
                 .subscribe((rd: Nakedobjectsroutedata.RouteData) => {
                     const paneRouteData = rd.pane()[this.paneId];
-                    this.getMenu(paneRouteData);
+                    this.getDialog(paneRouteData);
                 });
         });
     }
@@ -143,5 +139,5 @@ export class DialogComponent implements OnInit, OnDestroy {
         }
     }
 
-   
+
 }

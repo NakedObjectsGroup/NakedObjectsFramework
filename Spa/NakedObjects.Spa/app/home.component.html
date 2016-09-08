@@ -10,6 +10,6 @@
         <messages></messages>
     </header>
     <actions *ngIf="selectedMenu" [menuVm]="selectedMenu"></actions>
-    <dialog></dialog>
+    <dialog *ngIf="selectedMenu"  [parent]="selectedMenu"></dialog>
 </div>
 <router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>
