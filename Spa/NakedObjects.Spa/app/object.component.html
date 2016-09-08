@@ -1,8 +1,8 @@
-﻿<div *ngIf="object" class="view" [ngClass]="getClass()">
+﻿<div *ngIf="object && mode === 0" class="view" [ngClass]="getClass()">
     <header >
         <viewTitle gemini-drag tabindex="0">
-         <span class="type">{{object.friendlyName}}</span>
-         {{object.title}}
+            <span class="type">{{object.friendlyName}}</span>
+            {{object.title}}
         </viewTitle>
         <!--<div>{{object.isDirty() ? "*" : ""}} </div>-->
         <menus>
@@ -24,5 +24,29 @@
         <properties *ngIf="object.properties" [properties]="object.properties"></properties>
     </mainColumn>
     <collections *ngIf="object.collections"  [collections]="object.collections"></collections>
+</div>
+<div *ngIf="object && mode === 1" class="object edit" [ngClass]="getClass()">
+    <header>
+        <viewTitle tabindex="0">
+            <span class="type">{{object.friendlyName}}</span>
+            Editing - {{object.title}}
+        </viewTitle>
+        <menus>
+            <menu class="action clickable-area" tabindex="0" ng-disabled="!object.clientValid()" geminiClick (leftClick)="object.doSave(true)" title="{{object.tooltip()}}">
+                Save
+            </menu>
+            <menu *ngIf="object.unsaved" class="action clickable-area" ng-disabled="!object.clientValid()" tabindex="0" geminiClick (leftClick)="object.doSave(false)">
+                Save & Close
+            </menu>
+            <menu class="action clickable-area" tabindex="0" geminiClick (leftClick)="object.doEditCancel()">
+                Cancel
+            </menu>
+        </menus>
+        <messages>{{object.message}}</messages>
+    </header>
+    <mainColumn>      
+        <properties *ngIf="object.properties" [properties]="object.properties" [edit]="true"></properties>
+    </mainColumn>
+    <collections *ngIf="object.collections" [collections]="object.collections"></collections>
 </div>
 <router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>

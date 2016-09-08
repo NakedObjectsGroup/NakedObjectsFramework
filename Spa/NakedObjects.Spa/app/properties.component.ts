@@ -17,8 +17,12 @@ export class PropertiesComponent {
 
     constructor(private viewModelFactory: ViewModelFactory, private urlManager: UrlManager) { }
 
-    props : any;
-   
+    props: ViewModels.PropertyViewModel[];
+
+    @Input()
+    edit : boolean;
+
+
     @Input()
     set properties(value: ViewModels.PropertyViewModel[]) {
         this.props = value;

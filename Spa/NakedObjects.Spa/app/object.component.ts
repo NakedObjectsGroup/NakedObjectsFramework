@@ -20,6 +20,7 @@ import { GeminiClickDirective } from "./gemini-click.directive";
 import { PropertiesComponent } from "./properties.component";
 import { ISubscription } from 'rxjs/Subscription';
 import * as Collectionscomponent from './collections.component';
+import * as Nakedobjectsroutedata from './nakedobjects.routedata';
 
 @Component({
     selector: 'object',
@@ -41,12 +42,17 @@ export class ObjectComponent implements OnInit,  OnDestroy {
 
     object : ViewModels.DomainObjectViewModel;
 
+    mode : Nakedobjectsroutedata.InteractionMode;
+
     setupObject(routeData: PaneRouteData) {
         // subscription means may get with no oid 
 
         if (!routeData.objectId) {
+            this.mode = null;
             return;
         }
+
+        this.mode = routeData.interactionMode;
 
         const oid = Models.ObjectIdWrapper.fromObjectId(routeData.objectId);
 

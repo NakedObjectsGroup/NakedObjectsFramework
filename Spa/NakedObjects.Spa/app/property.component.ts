@@ -15,7 +15,10 @@ export class PropertyComponent {
 
     constructor(private viewModelFactory: ViewModelFactory, private urlManager: UrlManager) {}
 
-    prop: any;
+    prop: ViewModels.PropertyViewModel;
+
+    @Input()
+    edit: boolean;
 
     @Input()
     set property(value: ViewModels.PropertyViewModel) {
