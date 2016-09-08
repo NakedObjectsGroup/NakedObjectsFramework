@@ -20,7 +20,7 @@
     </header>
     <actions *ngIf="object.showActions()" [menuVm]="object"></actions>
     <mainColumn>
-        <dialog *ngIf="selectedDialog" [dialog]="selectedDialog"></dialog>
+        <dialog></dialog>
         <properties *ngIf="object.properties" [properties]="object.properties"></properties>
     </mainColumn>
     <collections *ngIf="object.collections"  [collections]="object.collections"></collections>

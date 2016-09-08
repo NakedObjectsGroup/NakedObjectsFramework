@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     menus: ViewModels.MenusViewModel;
     selectedMenu: ViewModels.MenuViewModel;
-    selectedDialog: ViewModels.DialogViewModel;
+    //selectedDialog: ViewModels.DialogViewModel;
 
     // todo rename to single or split
     class: string; 
@@ -66,50 +66,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             });
     }
 
-    getDialog(routeData: PaneRouteData) {
-        const dialogId = routeData.dialogId;
-
-        if (dialogId && this.selectedMenu) {
-            const action = this.selectedMenu.menuRep.actionMember(dialogId);
-            this.context.getInvokableAction(action)
-                .then(details => {
-                    //if (actionViewModel) {
-                    //    actionViewModel.makeInvokable(details);
-                    //}
-                    //setDialog($scope, actionViewModel || details, routeData);
-                    //this.focusManager.focusOn(Focusmanagerservice.FocusTarget.Dialog, 0, routeData.paneId);
-
-                    this.context.clearParmUpdater(routeData.paneId);
-
-                    //$scope.dialogTemplate = dialogTemplate;
-                    const dialogViewModel = new ViewModels.DialogViewModel(this.color,
-                        this.context,
-                        this.viewModelFactory,
-                        this.urlManager,
-                        this.focusManager,
-                        this.error);
-                    //const isAlreadyViewModel = action instanceof Nakedobjectsviewmodels.ActionViewModel;
-                    const actionViewModel = //!isAlreadyViewModel ?
-                        this.viewModelFactory.actionViewModel(action as Models.ActionMember | Models.ActionRepresentation,
-                            dialogViewModel,
-                            routeData);
-                    //: action as Nakedobjectsviewmodels.IActionViewModel;
-
-                    actionViewModel.makeInvokable(details);
-                    dialogViewModel.reset(actionViewModel, routeData);
-                    //$scope.dialog = dialogViewModel;
-
-                    this.context.setParmUpdater(dialogViewModel.setParms, routeData.paneId);
-                    dialogViewModel.deregister = () => this.context.clearParmUpdater(routeData.paneId);
-
-                    this.selectedDialog = dialogViewModel;
-                })
-                .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
-
-        } else {
-            this.selectedDialog = null;
-        }
-    }
+   
 
     getMenu(paneRouteData: PaneRouteData) {
         const menuId = paneRouteData.menuId;
@@ -118,7 +75,7 @@ export class HomeComponent implements OnInit, OnDestroy {
                 .then((menu: Models.MenuRepresentation) => {
                     const rd = this.urlManager.getRouteData().pane()[this.paneId];
                     this.selectedMenu = this.viewModelFactory.menuViewModel(menu, rd);
-                    this.getDialog(paneRouteData);
+                    //this.getDialog(paneRouteData);
                 })
                 .catch((reject: Models.ErrorWrapper) => {
                     this.error.handleError(reject);
@@ -138,8 +95,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private paneRouteDataSub: ISubscription;
 
     ngOnInit(): void {
-
-        
+       
         this.activatedRouteDataSub = this.activatedRoute.data.subscribe(data => {
             this.paneId = data["pane"];
             this.class = data["class"];
