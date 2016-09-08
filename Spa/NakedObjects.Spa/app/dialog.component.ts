@@ -9,7 +9,7 @@ import * as ViewModels from "./nakedobjects.viewmodels";
 import { GeminiDropDirective } from "./gemini-drop.directive";
 import { GeminiBooleanDirective } from './gemini-boolean.directive';
 import {GeminiConditionalChoicesDirective} from './gemini-conditional-choices.directive';
-
+import {GeminiAutocompleteDirective} from './gemini-autocomplete.directive';
 
 import "./rxjs-extensions";
 import { Subject } from 'rxjs/Subject';
@@ -17,7 +17,7 @@ import { Subject } from 'rxjs/Subject';
 @Component({
     selector: 'dialog',
     templateUrl: 'app/dialog.component.html',
-    directives: [GeminiDropDirective, GeminiBooleanDirective, GeminiConditionalChoicesDirective],
+    directives: [GeminiDropDirective, GeminiBooleanDirective, GeminiConditionalChoicesDirective, GeminiAutocompleteDirective],
     styleUrls: ['app/dialog.component.css']
 })
 export class DialogComponent {

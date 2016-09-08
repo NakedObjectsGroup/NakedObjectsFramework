@@ -1,11 +1,43 @@
-﻿import { Directive, ElementRef, HostListener, Output, EventEmitter } from '@angular/core';
+﻿import { Directive, ElementRef, HostListener, Output, EventEmitter, Renderer, Input, OnInit } from '@angular/core';
+import * as ViewModels from './nakedobjects.viewmodels';
+import * as Models from './models';
+import * as _ from "lodash";
 
 @Directive({ selector: '[geminiAutocomplete]' })
-export class GeminiAutocompleteDirective {
+export class GeminiAutocompleteDirective implements OnInit {
     private el: HTMLElement;
-    constructor(el: ElementRef) {
+    constructor(el: ElementRef, renderer : Renderer) {
         this.el = el.nativeElement;
     }
+
+    model: ViewModels.ParameterViewModel;
+    currentOptions: ViewModels.ChoiceViewModel[] = [];
+    pArgs: _.Dictionary<Models.Value>;
+
+    paneId: number;
+
+    @Input('geminiAutocomplete')
+    set viewModel(vm: ViewModels.ParameterViewModel) {
+        this.model = vm;
+        //this.pArgs = _.omit(this.model.promptArguments, "x-ro-nof-members") as _.Dictionary<Models.Value>;
+        this.paneId = this.model.onPaneId;
+    }
+
+    @Input('parent')
+    parent: ViewModels.DialogViewModel | ViewModels.DomainObjectViewModel;
+
+    ngOnInit(): void {
+   
+    }
+
+
+    @HostListener('change')
+    onChange(evt : any) {
+        if (this.model.minLength) {
+
+        }
+    }
+
 
 //    // Enforce the angularJS default of restricting the directive to
 //    // attributes only
@@ -47,12 +79,12 @@ export class GeminiAutocompleteDirective {
 //    });
 //};
 
-//optionsObj.source = (request: any, response: any) => {
-//    scope.$apply(() =>
-//        scope.select({ request: request.term }).
-//            then((cvms: ChoiceViewModel[]) => response(_.map(cvms, cvm => ({ "label": cvm.name, "value": cvm })))).
-//            catch(() => response([])));
-//};
+source = (request: any, response: any) => {
+
+      this.model.prompt(request.term).
+            then((cvms: ViewModels.ChoiceViewModel[]) => response(_.map(cvms, cvm => ({ "label": cvm.name, "value": cvm })))).
+            catch(() => response([]));
+};
 
 //optionsObj.select = (event: any, ui: any) => {
 //    updateModel(ui.item.value);

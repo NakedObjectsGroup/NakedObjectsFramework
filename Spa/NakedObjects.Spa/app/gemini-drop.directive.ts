@@ -9,11 +9,11 @@ export class GeminiDropDirective {
     constructor(el: ElementRef) {
         this.el = el.nativeElement;
 
-        (this.el as any).droppable({
-            tolerance: "touch",
-            hoverClass: "dropping",
-            accept: this.accept
-        });
+        //(this.el as any).droppable({
+        //    tolerance: "touch",
+        //    hoverClass: "dropping",
+        //    accept: this.accept
+        //});
     }
 
     accept = (draggable: any) => {
@@ -51,21 +51,21 @@ export class GeminiDropDirective {
     target: ViewModels.IFieldViewModel;
 
     handle(event: KeyboardEvent) {
-        const vKeyCode = 86;
-        const deleteKeyCode = 46;
-        if (event.keyCode === vKeyCode && event.ctrlKey) {
+        //const vKeyCode = 86;
+        //const deleteKeyCode = 46;
+        //if (event.keyCode === vKeyCode && event.ctrlKey) {
 
-            const draggableVm = <ViewModels.IDraggableViewModel> (<any>document.querySelector("div.footer div.currentcopy .reference")).data(draggableVmKey) as any;
+        //    const draggableVm = <ViewModels.IDraggableViewModel> (<any>document.querySelector("div.footer div.currentcopy .reference")).data(draggableVmKey) as any;
 
-            if (draggableVm) {
-                // only consume event if we are actually dropping on a field
-                event.preventDefault();
-                this.target.drop(draggableVm);
-            }
-        }
-        if (event.keyCode === deleteKeyCode) {
-            this.target.clear();
-        }
+        //    if (draggableVm) {
+        //        // only consume event if we are actually dropping on a field
+        //        event.preventDefault();
+        //        this.target.drop(draggableVm);
+        //    }
+        //}
+        //if (event.keyCode === deleteKeyCode) {
+        //    this.target.clear();
+        //}
     }
 
     @HostListener('keypress', ['$event']) onKeyPress(event: KeyboardEvent) {
