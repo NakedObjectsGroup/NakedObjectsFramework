@@ -14,14 +14,14 @@ export class GeminiConditionalChoicesDirective implements OnInit {
         this.el = el.nativeElement;
     }
 
-    model: ViewModels.ParameterViewModel;
+    model: ViewModels.ParameterViewModel | ViewModels.PropertyViewModel;
     currentOptions: ViewModels.ChoiceViewModel[] = [];
     pArgs: _.Dictionary<Models.Value>;
 
     paneId: number;
 
     @Input('geminiConditionalChoices')
-    set viewModel(vm: ViewModels.ParameterViewModel) {
+    set viewModel(vm: ViewModels.ParameterViewModel | ViewModels.PropertyViewModel) {
         this.model = vm;
         this.pArgs = _.omit(this.model.promptArguments, "x-ro-nof-members") as _.Dictionary<Models.Value>;
         this.paneId = this.model.onPaneId;
@@ -30,8 +30,8 @@ export class GeminiConditionalChoicesDirective implements OnInit {
     @Input('parent')
     parent: ViewModels.DialogViewModel | ViewModels.DomainObjectViewModel;
 
-    @Input('parameterChanged')
-    parameterChanged: Observable<boolean>;
+    @Input('fieldChanged')
+    fieldChanged: Observable<boolean>;
 
     isDomainObjectViewModel(object: any): object is ViewModels.DomainObjectViewModel {
         return object && "properties" in object;
@@ -90,7 +90,7 @@ export class GeminiConditionalChoicesDirective implements OnInit {
 
     ngOnInit(): void {
         this.populateDropdown();
-        this.parameterChanged.subscribe((change) => {
+        this.fieldChanged.subscribe((change) => {
             if (change) {
                 this.populateDropdown();
             }

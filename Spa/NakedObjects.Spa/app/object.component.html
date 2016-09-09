@@ -21,7 +21,7 @@
     <actions *ngIf="object.showActions()" [menuVm]="object"></actions>
     <mainColumn>
         <dialog [parent]="object"></dialog>
-        <properties *ngIf="object.properties" [properties]="object.properties"></properties>
+        <properties *ngIf="object.properties" [properties]="object.properties" [parent]="object" [edit]="false"></properties>
     </mainColumn>
     <collections *ngIf="object.collections"  [collections]="object.collections"></collections>
 </div>
@@ -45,7 +45,7 @@
         <messages>{{object.message}}</messages>
     </header>
     <mainColumn>      
-        <properties *ngIf="object.properties" [properties]="object.properties" [edit]="true"></properties>
+        <properties *ngIf="object.properties" [properties]="object.properties" [parent]="object" [edit]="true"></properties>
     </mainColumn>
     <collections *ngIf="object.collections" [collections]="object.collections"></collections>
 </div>

@@ -5,6 +5,7 @@ import { ViewModelFactory } from "./view-model-factory.service";
 import { UrlManager } from "./urlmanager.service";
 import * as Models from "./models";
 import * as ViewModels from "./nakedobjects.viewmodels";
+import * as Objectcomponent from './object.component';
 
 @Component({
     selector: 'property',
@@ -19,6 +20,9 @@ export class PropertyComponent {
 
     @Input()
     edit: boolean;
+
+    @Input()
+    parent: ViewModels.DomainObjectViewModel;
 
     @Input()
     set property(value: ViewModels.PropertyViewModel) {

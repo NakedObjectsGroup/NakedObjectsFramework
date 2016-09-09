@@ -21,7 +21,7 @@
 
                         <!--"EntryType.MultipleConditionalChoices"-->
                         <div *ngSwitchCase="4">
-                            <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [(ngModel)]="parameter.selectedMultiChoices" name="parameter.id" [geminiConditionalChoices]="parameter" [parent]="dialog" [parameterChanged]="parameterChanged$" (ngModelChange)="parameterChanged()" gemini-fieldmandatorycheck>
+                            <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [(ngModel)]="parameter.selectedMultiChoices" name="parameter.id" [geminiConditionalChoices]="parameter" [parent]="dialog" [fieldChanged]="parameterChanged$" (ngModelChange)="parameterChanged()" gemini-fieldmandatorycheck>
                                 <option value="" disabled>{{parameter.description}}</option>
                                 <option *ngFor="let choice of parameter.choices" [ngValue]="choice">{{choice.name}}</option>
                             </select>
@@ -29,7 +29,7 @@
 
                         <!--"EntryType.ConditionalChoices"-->
                         <div *ngSwitchCase="3">
-                            <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [(ngModel)]="parameter.selectedChoice" name="parameter.id" [geminiConditionalChoices]="parameter" [parent]="dialog" [parameterChanged]="parameterChanged$" (ngModelChange)="parameterChanged()" gemini-fieldmandatorycheck>
+                            <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [(ngModel)]="parameter.selectedChoice" name="parameter.id" [geminiConditionalChoices]="parameter" [parent]="dialog" [fieldChanged]="parameterChanged$" (ngModelChange)="parameterChanged()" gemini-fieldmandatorycheck>
                                 <option value="" disabled>{{parameter.description}}</option>
                                 <option *ngFor="let choice of parameter.choices" [ngValue]="choice">{{choice.name}}</option>
                             </select>
@@ -79,7 +79,7 @@
                         <!--"EntryType.MultipleConditionalChoices"-->
                         <div *ngSwitchCase="4">
 
-                            <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [(ngModel)]="parameter.selectedMultiChoices" name="parameter.id" [geminiConditionalChoices]="parameter" [parent]="dialog" [parameterChanged]="parameterChanged$" (ngModelChange)="parameterChanged()" gemini-fieldmandatorycheck>
+                            <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [(ngModel)]="parameter.selectedMultiChoices" name="parameter.id" [geminiConditionalChoices]="parameter" [parent]="dialog" [fieldChanged]="parameterChanged$" (ngModelChange)="parameterChanged()" gemini-fieldmandatorycheck>
                                 <option value="" disabled>{{parameter.description}}</option>
                                 <option *ngFor="let choice of parameter.choices" [ngValue]="choice">{{choice.name}}</option>
                             </select>
@@ -87,7 +87,7 @@
 
                         <!--"EntryType.ConditionalChoices"-->
                         <div *ngSwitchCase="3">
-                            <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [(ngModel)]="parameter.selectedChoice" name="parameter.id" [geminiConditionalChoices]="parameter" [parent]="dialog" [parameterChanged]="parameterChanged$" (ngModelChange)="parameterChanged()" gemini-fieldmandatorycheck>
+                            <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [(ngModel)]="parameter.selectedChoice" name="parameter.id" [geminiConditionalChoices]="parameter" [parent]="dialog" [fieldChanged]="parameterChanged$" (ngModelChange)="parameterChanged()" gemini-fieldmandatorycheck>
                                 <option value="" disabled>{{parameter.description}}</option>
                                 <option *ngFor="let choice of parameter.choices" [ngValue]="choice">{{choice.name}}</option>
                             </select>

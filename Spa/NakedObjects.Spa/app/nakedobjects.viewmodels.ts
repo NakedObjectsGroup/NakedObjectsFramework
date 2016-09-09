@@ -11,6 +11,7 @@ import { Error } from "./error.service";
 import { ViewModelFactory } from "./view-model-factory.service";
 import { FocusManager } from "./focus-manager.service";
 import { ILocalFilter } from "./mask.service";
+import { Subject } from 'rxjs/Subject';
 
 export interface IAttachmentViewModel {
     href: string;
@@ -1577,6 +1578,16 @@ export class DomainObjectViewModel extends MessageViewModel implements IDomainOb
     showActions() {
         return !!this.urlManager.getRouteData().pane()[this.onPaneId].actionsOpen;
     }
+
+    propertyChanged() {
+        this.propertyChangedSource.next(true);
+        this.propertyChangedSource.next(false);
+    }
+
+    private propertyChangedSource = new Subject<boolean>();
+
+    propertyChanged$ = this.propertyChangedSource.asObservable();
+
 
 }
 

@@ -44,9 +44,11 @@ export class DialogComponent implements OnInit, OnDestroy {
     @Input()
     parent : ViewModels.MenuViewModel | ViewModels.DomainObjectViewModel;
 
-
     dialog: ViewModels.DialogViewModel;
 
+    // todo introduce parameters/parameter components 
+
+    // todo move this to DialogViewModel cf ObjectViewModel
     parameterChanged() {
         this.parameterChangedSource.next(true);
         this.parameterChangedSource.next(false);
@@ -56,8 +58,7 @@ export class DialogComponent implements OnInit, OnDestroy {
 
     parameterChanged$ = this.parameterChangedSource.asObservable();
 
-   
-
+  
     getDialog(routeData: Nakedobjectsroutedata.PaneRouteData) {
         const dialogId = routeData.dialogId;
         if (this.parent && dialogId) {

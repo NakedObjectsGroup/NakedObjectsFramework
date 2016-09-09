@@ -21,6 +21,7 @@ import { PropertiesComponent } from "./properties.component";
 import { ISubscription } from 'rxjs/Subscription';
 import * as Collectionscomponent from './collections.component';
 import * as Nakedobjectsroutedata from './nakedobjects.routedata';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
     selector: 'object',
@@ -43,6 +44,7 @@ export class ObjectComponent implements OnInit,  OnDestroy {
     object : ViewModels.DomainObjectViewModel;
 
     mode : Nakedobjectsroutedata.InteractionMode;
+
 
     setupObject(routeData: PaneRouteData) {
         // subscription means may get with no oid 
