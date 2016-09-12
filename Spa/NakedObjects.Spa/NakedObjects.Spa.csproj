@@ -78,6 +78,7 @@
     <Content Include="app\collections.component.css" />
     <Content Include="app\dialog.component.css" />
     <Content Include="app\dialog.component.html" />
+    <Content Include="app\error.component.html" />
     <Content Include="app\footer.component.css" />
     <Content Include="app\footer.component.html" />
     <Content Include="app\home.component.css" />
@@ -134,6 +135,7 @@
     <TypeScriptCompile Include="app\color.service.ts" />
     <TypeScriptCompile Include="app\context.service.ts" />
     <TypeScriptCompile Include="app\dialog.component.ts" />
+    <TypeScriptCompile Include="app\error.component.ts" />
     <TypeScriptCompile Include="app\error.service.ts" />
     <TypeScriptCompile Include="app\focus-manager.service.ts" />
     <TypeScriptCompile Include="app\footer.component.ts" />

@@ -3,7 +3,7 @@ import { HomeComponent } from "./home.component";
 import { ObjectComponent} from "./object.component";
 import { ListComponent} from "./list.component";
 import { Routes, RouterModule } from '@angular/router';
-
+import { ErrorComponent } from './error.component';
 const routes: RouterConfig = [
     {
         path: '',
@@ -42,6 +42,11 @@ const routes: RouterConfig = [
             { path: "object", component: ObjectComponent, data: { pane: 2, class: "split" } },
             { path: "list", component: ListComponent, data: { pane: 2, class: "split" } }
         ]
+    },
+    {
+        path: 'gemini/error',
+        component: ErrorComponent,
+        data: { pane: 1, class: "single" }
     }
 ];
 
