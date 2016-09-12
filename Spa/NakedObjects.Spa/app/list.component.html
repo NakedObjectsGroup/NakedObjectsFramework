@@ -62,14 +62,14 @@
                 </tr>
             </thead>
             <tbody *ngIf="collection.hasTableData()">
-                <tr tabindex="0" *ngFor="let item of collection.items; let i = index" class="clickable-area" gemini-drag geminiClick (leftClick)="item.doClick()" (rightClick)="item.doClick(true)">
+                <tr tabindex="0" *ngFor="let item of collection.items; let i = index" class="clickable-area" gemini-drag>
                     <td *ngIf="!collection.disableActions()" class="checkbox">
                         <input type="checkbox" id="{{'item'+collection.onPaneId+'-'+ i}}" [(ngModel)]="item.selected" >
                     </td>
                     <td *ngIf="item.tableRowViewModel.hasTitle" (click)="item.doClick()" [ngClass]="item.color" class="cell">
                         {{item.tableRowViewModel.title}}
                     </td>
-                    <td *ngFor="let property of item.tableRowViewModel.properties" (click)="item.doClick()" [ngClass]="item.color" class="cell">
+                    <td *ngFor="let property of item.tableRowViewModel.properties" geminiClick (leftClick)="item.doClick()" (rightClick)="item.doClick(true)" [ngClass]="item.color" class="cell">
                         <div [ngSwitch]="property.type">
                             <div *ngSwitchCase="'ref'" class="clickable-area">
                                 {{property.formattedValue}}

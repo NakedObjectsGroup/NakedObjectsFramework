@@ -62,6 +62,7 @@ export class ListComponent implements OnInit, OnDestroy {
         const listKey = this.urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize);
 
         if (this.collection && this.collection.id === listKey) {
+            this.state = CollectionViewState[routeData.state].toString().toLowerCase();
             this.collection.refresh(routeData);
         }
         else if (cachedList) {
