@@ -988,7 +988,7 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
     private pageSize: number;
     private numPages: number;
     private state: CollectionViewState;
-    private allSelected: boolean;
+    private allSelected = () => _.every(this.items, item => item.selected);
 
     id: string;
     listRep: Models.ListRepresentation;
@@ -1044,7 +1044,7 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
             this);
 
         const totalCount = this.listRep.pagination().totalCount;
-        this.allSelected = _.every(this.items, item => item.selected);
+        //this.allSelected = _.every(this.items, item => item.selected);
         const count = this.items.length;
         this.size = count;
         if (count > 0) {
@@ -1196,10 +1196,14 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
         this.setPage(this.page, this.state);
     };
 
-    selectAll = () => _.each(this.items, (item, i) => {
-        item.selected = this.allSelected;
-        item.selectionChange(i);
-    });
+    temp = false;
+
+    selectAll = () => {
+        this.temp = !this.temp;
+        _.each(this.items, (item, i) => {
+            item.selected = this.temp;
+            item.selectionChange(i);
+    })};
 
     disableActions = () => !this.actions || this.actions.length === 0 || !this.items || this.items.length === 0;
 

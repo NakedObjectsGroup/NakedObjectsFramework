@@ -106,6 +106,7 @@ export class ViewModelFactory {
         itemViewModel.selected = selected;
 
         itemViewModel.selectionChange = (index) => {
+            //itemViewModel.selected = !itemViewModel.selected;
             this.context.updateValues();
             this.urlManager.setListItem(index, itemViewModel.selected, paneId);
             this.focusManager.focusOverrideOn(FocusTarget.CheckBox, index + 1, paneId);
