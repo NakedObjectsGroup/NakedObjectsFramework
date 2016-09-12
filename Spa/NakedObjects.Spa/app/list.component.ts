@@ -53,14 +53,18 @@ export class ListComponent implements OnInit, OnDestroy {
 
     setupList(routeData : PaneRouteData) {
         const cachedList = this.context.getCachedList(routeData.paneId, routeData.page, routeData.pageSize);
-
-     
+    
         this.getActionExtensions(routeData).
                 then(ext =>
                     this.title = ext.friendlyName()).
                 catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
-        if (cachedList) {
+        const listKey = this.urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize);
+
+        if (this.collection && this.collection.id === listKey) {
+            this.collection.refresh(routeData);
+        }
+        else if (cachedList) {
 
             //if (routeData.state === cachedList.state)
 

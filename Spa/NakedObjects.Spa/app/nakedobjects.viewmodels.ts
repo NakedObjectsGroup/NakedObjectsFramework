@@ -66,7 +66,7 @@ export interface IItemViewModel extends ILinkViewModel {
     tableRowViewModel: ITableRowViewModel;
     selected: boolean;
 
-    selectionChange: (index: number) => void;
+    selectionChange: () => void;
 }
 
 export interface IRecentItemViewModel extends ILinkViewModel {
@@ -583,8 +583,19 @@ export class LinkViewModel implements ILinkViewModel, IDraggableViewModel {
 
 export class ItemViewModel extends LinkViewModel implements IItemViewModel, IDraggableViewModel {
     tableRowViewModel: ITableRowViewModel;
-    selected: boolean;
-    selectionChange: (index: number) => void;
+
+    _selected: boolean;
+  
+    set selected(v: boolean) {
+        this._selected = v;
+        this.selectionChange();
+    }
+
+    get selected() {
+        return this._selected;
+    }
+
+    selectionChange: () => void;
 }
 
 export class RecentItemViewModel extends LinkViewModel implements IRecentItemViewModel, IDraggableViewModel {
@@ -988,7 +999,8 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
     private pageSize: number;
     private numPages: number;
     private state: CollectionViewState;
-    private allSelected = () => _.every(this.items, item => item.selected);
+
+    allSelected = () => _.every(this.items, item => item.selected);
 
     id: string;
     listRep: Models.ListRepresentation;
@@ -1196,14 +1208,19 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
         this.setPage(this.page, this.state);
     };
 
-    temp = false;
-
     selectAll = () => {
-        this.temp = !this.temp;
-        _.each(this.items, (item, i) => {
-            item.selected = this.temp;
-            item.selectionChange(i);
-    })};
+        const newState = !this.allSelected();
+
+        _.each(this.items, (item) => {
+            item.selected = newState;
+            //item.selectionChange();
+        });
+
+        //_.each(this.items, (item) => {
+        //    //item.selected = newState;
+        //    item.selectionChange();
+        //});
+    };
 
     disableActions = () => !this.actions || this.actions.length === 0 || !this.items || this.items.length === 0;
 

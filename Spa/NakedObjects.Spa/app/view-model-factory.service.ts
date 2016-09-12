@@ -99,18 +99,17 @@ export class ViewModelFactory {
         return linkViewModel as ViewModels.ILinkViewModel;
     };
 
-    itemViewModel = (linkRep: Models.Link, paneId: number, selected: boolean) => {
+    itemViewModel = (linkRep: Models.Link, paneId: number, selected: boolean, index : number) => {
         const itemViewModel = new ViewModels.ItemViewModel();
         this.initLinkViewModel(itemViewModel, linkRep);
 
-        itemViewModel.selected = selected;
-
-        itemViewModel.selectionChange = (index) => {
-            //itemViewModel.selected = !itemViewModel.selected;
+        itemViewModel.selectionChange = () => {
             this.context.updateValues();
             this.urlManager.setListItem(index, itemViewModel.selected, paneId);
             this.focusManager.focusOverrideOn(FocusTarget.CheckBox, index + 1, paneId);
         };
+
+        itemViewModel.selected = selected;
 
         itemViewModel.doClick = (right?: boolean) => {
             const currentPane = this.clickHandler.pane(paneId, right);
@@ -128,8 +127,8 @@ export class ViewModelFactory {
         return itemViewModel;
     };
 
-    recentItemViewModel = (obj: Models.DomainObjectRepresentation, linkRep: Models.Link, paneId: number, selected: boolean) => {
-        const recentItemViewModel = this.itemViewModel(linkRep, paneId, selected) as ViewModels.ILinkViewModel;
+    recentItemViewModel = (obj: Models.DomainObjectRepresentation, linkRep: Models.Link, paneId: number, selected: boolean, index : number) => {
+        const recentItemViewModel = this.itemViewModel(linkRep, paneId, selected, index) as ViewModels.ILinkViewModel;
         (recentItemViewModel as ViewModels.IRecentItemViewModel).friendlyName = obj.extensions().friendlyName();
         return recentItemViewModel as ViewModels.IRecentItemViewModel;
     };
@@ -626,7 +625,7 @@ export class ViewModelFactory {
         ICollectionViewModel) => {
         const selectedItems = routeData.selectedItems;
 
-        const items = _.map(links, (link, i) => this.itemViewModel(link, routeData.paneId, selectedItems[i]));
+        const items = _.map(links, (link, i) => this.itemViewModel(link, routeData.paneId, selectedItems[i], i));
 
         if (tableView) {
 
@@ -815,8 +814,8 @@ export class ViewModelFactory {
     recentItemsViewModel = (paneId: number) => {
         const recentItemsViewModel = new ViewModels.RecentItemsViewModel();
         recentItemsViewModel.onPaneId = paneId;
-        const items = _.map(this.context.getRecentlyViewed(), o => ({ obj: o, link: this.selfLinkWithTitle(o) }));
-        recentItemsViewModel.items = _.map(items, i => this.recentItemViewModel(i.obj, i.link, paneId, false));
+        const items = _.map(this.context.getRecentlyViewed(), (o, i) => ({ obj: o, link: this.selfLinkWithTitle(o), index : i }));
+        recentItemsViewModel.items = _.map(items, i => this.recentItemViewModel(i.obj, i.link, paneId, false, i.index));
         return recentItemsViewModel;
     };
 
