@@ -42,7 +42,7 @@ export class DialogComponent implements OnInit, OnDestroy {
     paneId: number;
 
     @Input()
-    parent : ViewModels.MenuViewModel | ViewModels.DomainObjectViewModel;
+    parent : ViewModels.MenuViewModel | ViewModels.DomainObjectViewModel | ViewModels.ListViewModel;
 
     dialog: ViewModels.DialogViewModel;
 
@@ -63,7 +63,7 @@ export class DialogComponent implements OnInit, OnDestroy {
         const dialogId = routeData.dialogId;
         if (this.parent && dialogId) {
             const p = this.parent;
-            let action: Models.ActionMember = null;
+            let action: Models.ActionMember | Models.ActionRepresentation = null;
 
             if (p instanceof ViewModels.MenuViewModel) {
                 action = p.menuRep.actionMember(dialogId);
@@ -71,6 +71,10 @@ export class DialogComponent implements OnInit, OnDestroy {
 
             if (p instanceof ViewModels.DomainObjectViewModel) {
                 action = p.domainObject.actionMember(dialogId);
+            }
+
+            if (p instanceof ViewModels.ListViewModel) {
+                action = p.actionMember(dialogId);
             }
 
             this.context.getInvokableAction(action)
