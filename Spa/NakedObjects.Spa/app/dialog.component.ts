@@ -64,6 +64,7 @@ export class DialogComponent implements OnInit, OnDestroy {
         if (this.parent && dialogId) {
             const p = this.parent;
             let action: Models.ActionMember | Models.ActionRepresentation = null;
+            let actionViewModel: ViewModels.ActionViewModel = null;
 
             if (p instanceof ViewModels.MenuViewModel) {
                 action = p.menuRep.actionMember(dialogId);
@@ -75,6 +76,7 @@ export class DialogComponent implements OnInit, OnDestroy {
 
             if (p instanceof ViewModels.ListViewModel) {
                 action = p.actionMember(dialogId);
+                actionViewModel = _.find(p.actions, a => a.actionRep.actionId() === dialogId);
             }
 
             this.context.getInvokableAction(action)
@@ -95,7 +97,7 @@ export class DialogComponent implements OnInit, OnDestroy {
                         this.focusManager,
                         this.error);
                     //const isAlreadyViewModel = action instanceof Nakedobjectsviewmodels.ActionViewModel;
-                    const actionViewModel = //!isAlreadyViewModel ?
+                    actionViewModel = actionViewModel || 
                         this.viewModelFactory.actionViewModel(action as Models.ActionMember | Models.ActionRepresentation,
                             dialogViewModel,
                             routeData);
