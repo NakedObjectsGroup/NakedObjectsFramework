@@ -2,22 +2,22 @@
     <header>
         <viewTitle>{{title}}</viewTitle>
         <menus>
-            <menu class="menu clickable-area" tabindex="0" (click)="collection.toggleActionMenu()" attr.disabled="collection.disableActions()" title={{collection.actionsTooltip()}}>
+            <menu class="menu clickable-area" tabindex="0" (click)="collection.toggleActionMenu()" [ngClass]="{disabled : collection.disableActions()}" title={{collection.actionsTooltip()}}>
                 Actions
             </menu>
             <menu class="action clickable-area" tabindex="0" (click)="collection.reload()">
                 Reload
             </menu>
-            <menu class="action clickable-area" tabindex="0" (click)="collection.pageFirst()" attr.disabled="collection.pageFirstDisabled()">
+            <menu class="action clickable-area" tabindex="0" (click)="collection.pageFirst()" [ngClass]="{disabled : collection.pageFirstDisabled()}">
                 First
             </menu>
-            <menu class="action clickable-area" tabindex="0" (click)="collection.pagePrevious()" attr.disabled="collection.pagePreviousDisabled()">
+            <menu class="action clickable-area" tabindex="0" (click)="collection.pagePrevious()" [ngClass]="{disabled : collection.pagePreviousDisabled()}">
                 Previous
             </menu>
-            <menu class="action clickable-area" tabindex="0" (click)="collection.pageNext()" attr.disabled="collection.pageNextDisabled()">
+            <menu class="action clickable-area" tabindex="0" (click)="collection.pageNext()" [ngClass]="{disabled : collection.pageNextDisabled()}">
                 Next
             </menu>
-            <menu class="action clickable-area" tabindex="0" (click)="collection.pageLast()" attr.disabled="collection.pageLastDisabled()">
+            <menu class="action clickable-area" tabindex="0" (click)="collection.pageLast()" [ngClass]="{disabled : collection.pageLastDisabled()}">
                 Last
             </menu>
         </menus>

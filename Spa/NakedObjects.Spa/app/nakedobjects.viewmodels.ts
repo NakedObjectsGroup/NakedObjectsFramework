@@ -1179,14 +1179,27 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
     }
 
     toggleActionMenu = () => {
+        if (this.disableActions()) return;
         this.focusManager.focusOverrideOff();
         this.urlManager.toggleObjectMenu(this.onPaneId);
     };
 
-    pageNext = () => this.setPage(this.page < this.numPages ? this.page + 1 : this.page, this.state);
-    pagePrevious = () => this.setPage(this.page > 1 ? this.page - 1 : this.page, this.state);
-    pageFirst = () => this.setPage(1, this.state);
-    pageLast = () => this.setPage(this.numPages, this.state);
+    pageNext = () => {
+        if (this.pageNextDisabled()) return;
+        this.setPage(this.page < this.numPages ? this.page + 1 : this.page, this.state);
+    };
+    pagePrevious = () => {
+        if (this.pagePreviousDisabled()) return;
+        this.setPage(this.page > 1 ? this.page - 1 : this.page, this.state);
+    };
+    pageFirst = () => {
+        if (this.pageFirstDisabled()) return;
+        this.setPage(1, this.state);
+    };
+    pageLast = () => {
+        if (this.pageLastDisabled()) return;
+        this.setPage(this.numPages, this.state);
+    };
 
     doSummary = () => {
         this.context.updateValues();
