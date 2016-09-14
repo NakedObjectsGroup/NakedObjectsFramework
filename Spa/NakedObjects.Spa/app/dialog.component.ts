@@ -13,7 +13,7 @@ import { ActivatedRoute, Router, Data } from '@angular/router';
 
 import "./rxjs-extensions";
 import { Subject } from 'rxjs/Subject';
-import {AutocompleteComponent} from './autocomplete.component';
+import {AutoCompleteComponent as AutocompleteComponent} from './autocomplete.component';
 import * as Nakedobjectsroutedata from './nakedobjects.routedata';
 
 import { ISubscription } from 'rxjs/Subscription';

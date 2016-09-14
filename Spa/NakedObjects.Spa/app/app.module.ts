@@ -11,6 +11,7 @@ import { GeminiExceptionHandler } from './gemini.exception-handler';
 import { Context } from './context.service';
 import { UrlManager } from './urlmanager.service';
 import { RepLoader } from './reploader.service';
+import { ErrorComponent } from './error.component';
 
 @NgModule({
     imports: [
@@ -24,6 +25,7 @@ import { RepLoader } from './reploader.service';
         HomeComponent,
         ObjectComponent,
         ListComponent,
+        ErrorComponent
     ],
     providers: [
         //{ provide: ExceptionHandler, useClass: GeminiExceptionHandler }

@@ -9,7 +9,7 @@
                     {{property.formattedValue}}
                 </div>
             </div>
-            <div *ngSwitchDefault class="reference clickable-area" [ngClass]="property.color" geminiClick (leftClick)="property.doClick()" (rightClick)="property.doClick(true)" dnd-draggable [dragEnabled]="true" tabindex="0">
+            <div *ngSwitchDefault class="reference clickable-area" [ngClass]="classes()" geminiClick (leftClick)="property.doClick()" (rightClick)="property.doClick(true)" dnd-draggable [dragEnabled]="true" tabindex="0">
                 {{property.formattedValue}}
             </div>
         </div>
@@ -17,7 +17,7 @@
 
     <div *ngIf="property.type === 'ref' && edit">
 
-        <div *ngIf="!property.isEditable" class="value" [ngClass]="property.color">
+        <div *ngIf="!property.isEditable" class="value" [ngClass]="classes()">
             {{property.formattedValue}}
         </div>
 
@@ -52,7 +52,7 @@
             <!-- <input id="{{property.paneArgId}}" class="{{property.status}} value droppable" ng-class="property.color" placeholder="{{property.description}}" ng-switch-when="0" type="text" ng-model="$parent.property.selectedChoice" gemini-drop gemini-fieldmandatorycheck gemini-clear />-->
 
             <div *ngSwitchCase="0">
-                <div tabindex="0" class="value droppable" [ngClass]="property.color" dnd-droppable (onDropSuccess)="parameter.drop($event.dragData)" gemini-fieldmandatorycheck gemini-clear>
+                <div tabindex="0" class="value droppable" [ngClass]="classes()" dnd-droppable (onDropSuccess)="parameter.drop($event.dragData)" gemini-fieldmandatorycheck gemini-clear>
                     {{property.value || property.description}}
                 </div>
             </div>

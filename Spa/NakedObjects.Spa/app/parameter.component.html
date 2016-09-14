@@ -8,7 +8,7 @@
         <!--<input type="hidden" value="{{parameter.reference}}" [(ngModel)]="parameter.reference" />-->
         <!--"EntryType.AutoComplete"-->
         <div *ngSwitchCase="5">
-            <!--<input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" [ngClass]="parameter.color" placeholder="{{parameter.description}}" type="text" [(ngModel)]="parameter.selectedChoice" name="parameter.id" [geminiDrop]="parameter" [geminiAutocomplete]="parameter" [parent]="dialog" gemini-fieldmandatorycheck gemini-clear />-->
+            <!--<input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" [ngClass]="classes()" placeholder="{{parameter.description}}" type="text" [(ngModel)]="parameter.selectedChoice" name="parameter.id" [geminiDrop]="parameter" [geminiAutocomplete]="parameter" [parent]="dialog" gemini-fieldmandatorycheck gemini-clear />-->
             <autocomplete [viewModel]="parameter" [parent]="parent"></autocomplete>
 
         </div>
@@ -47,7 +47,7 @@
 
         <!--"EntryType.FreeForm"-->
         <div *ngSwitchCase="0">
-            <div tabindex="0" class="value droppable" [ngClass]="parameter.color" dnd-droppable (onDropSuccess)="parameter.drop($event.dragData)" gemini-fieldmandatorycheck gemini-clear>
+            <div tabindex="0" class="value droppable" [ngClass]="classes()" dnd-droppable [allowDrop]="accept"  (onDropSuccess)="drop($event.dragData)" gemini-fieldmandatorycheck gemini-clear>
                 {{parameter.value || parameter.description}}
             </div>
         </div>

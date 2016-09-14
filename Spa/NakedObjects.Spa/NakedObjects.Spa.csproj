@@ -126,6 +126,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="app\abstract-droppable.component.ts" />
     <TypeScriptCompile Include="app\action.component.ts" />
     <TypeScriptCompile Include="app\actions.component.ts" />
     <TypeScriptCompile Include="app\app.component.ts" />

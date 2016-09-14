@@ -6,15 +6,18 @@ import { UrlManager } from "./urlmanager.service";
 import * as Models from "./models";
 import * as ViewModels from "./nakedobjects.viewmodels";
 import * as Objectcomponent from './object.component';
+import * as Abstractdroppablecomponent from './abstract-droppable.component';
 
 @Component({
     selector: 'property',
     templateUrl: 'app/property.component.html',
     styleUrls: ['app/property.component.css']
 })
-export class PropertyComponent {
+export class PropertyComponent extends Abstractdroppablecomponent.AbstractDroppableComponent {
 
-    constructor(private viewModelFactory: ViewModelFactory, private urlManager: UrlManager) {}
+    constructor(private viewModelFactory: ViewModelFactory, private urlManager: UrlManager) {
+        super();
+    }
 
     prop: ViewModels.PropertyViewModel;
 
@@ -27,9 +30,15 @@ export class PropertyComponent {
     @Input()
     set property(value: ViewModels.PropertyViewModel) {
         this.prop = value;
+        this.droppable = value as ViewModels.IFieldViewModel;
     }
 
     get property() {
         return this.prop;
     }
+
+    classes(): string {
+        return `${this.prop.color}${this.canDrop ? " candrop" : ""}`;
+    }
+
 }

@@ -8,8 +8,8 @@ import * as Models from "./models";
 import * as ViewModels from "./nakedobjects.viewmodels";
 import { GeminiDropDirective } from "./gemini-drop.directive";
 import { GeminiBooleanDirective } from './gemini-boolean.directive';
-import {GeminiConditionalChoicesDirective} from './gemini-conditional-choices.directive';
-
+import { GeminiConditionalChoicesDirective } from './gemini-conditional-choices.directive';
+import { AbstractDroppableComponent } from './abstract-droppable.component';
 
 import "./rxjs-extensions";
 import { Subject } from 'rxjs/Subject';
@@ -21,7 +21,7 @@ import { Subject } from 'rxjs/Subject';
         '(document:click)': 'handleClick($event)'
     },
     template: `     
-           <input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" dnd-droppable (onDropSuccess)="parameter.drop($event.dragData)" [ngClass]="parameter.color" placeholder="{{parameter.description}}" type="text" [(ngModel)]="parameter.selectedChoice" name="parameter.id" (keyup)="filter($event)" />   
+           <input id="{{field.paneArgId}}" class="{{field.status}} value droppable" dnd-droppable [allowDrop]="accept"  (onDropSuccess)="drop($event.dragData)" [ngClass]="classes()" placeholder="{{field.description}}" type="text" [(ngModel)]="field.selectedChoice" name="field.id" (keyup)="filter($event)" />   
             <div class="suggestions" *ngIf="filteredList.length > 0">
                 <ul *ngFor="let item of filteredList" >
                     <li >
@@ -32,43 +32,40 @@ import { Subject } from 'rxjs/Subject';
         `
 })
 
-export class AutocompleteComponent {
+export class AutoCompleteComponent extends AbstractDroppableComponent {
     
   
-
     public filteredList: ViewModels.ChoiceViewModel[] = [];
     public elementRef : ElementRef;
 
     constructor(myElement: ElementRef) {
+        super();
         this.elementRef = myElement;
     }
 
-    parameter: ViewModels.ParameterViewModel;
+    field: ViewModels.IFieldViewModel;
     currentOptions: ViewModels.ChoiceViewModel[] = [];
     pArgs: _.Dictionary<Models.Value>;
 
     paneId: number;
 
     @Input('viewModel')
-    set viewModel(vm: ViewModels.ParameterViewModel) {
-        this.parameter = vm;
+    set viewModel(vm: ViewModels.IFieldViewModel) {
+        this.field = vm;
+        this.droppable = vm;
         //this.pArgs = _.omit(this.model.promptArguments, "x-ro-nof-members") as _.Dictionary<Models.Value>;
-        this.paneId = this.parameter.onPaneId;
+        this.paneId = this.field.onPaneId;
     }
 
     @Input('parent')
     parent: ViewModels.DialogViewModel | ViewModels.DomainObjectViewModel;
 
-    //ngOnInit(): void {
-
-    //}
-
 
     filter($event : any) {
         const input = $event.target.value as string;
 
-        if (input.length >= this.parameter.minLength) {
-            this.parameter.prompt(input).
+        if (input.length >= this.field.minLength) {
+            this.field.prompt(input).
                 then((cvms: ViewModels.ChoiceViewModel[]) => {
                     //response(_.map(cvms, cvm => ({ "label": cvm.name, "value": cvm })));
                     this.filteredList = cvms;
@@ -80,7 +77,7 @@ export class AutocompleteComponent {
     select(item : ViewModels.ChoiceViewModel) {
         //this.query = item;
         this.filteredList = [];
-        this.parameter.selectedChoice = item;
+        this.field.selectedChoice = item;
     }
 
     handleClick(event : any) {
@@ -95,5 +92,10 @@ export class AutocompleteComponent {
         if (!inside) {
             this.filteredList = [];
         }
+    }
+
+
+    classes(): string {
+        return `${this.field.color}${this.canDrop ? " candrop" : ""}`;
     }
 }
