@@ -53,7 +53,7 @@
 
                         <!--"EntryType.FreeForm"-->
                         <div *ngSwitchCase="0">
-                            <div tabindex="0" class="value droppable" [ngClass]="parameter.color" gemini-drop gemini-fieldmandatorycheck gemini-clear>
+                            <div tabindex="0" class="value droppable" [ngClass]="parameter.color" dnd-droppable (onDropSuccess)="parameter.drop($event.dragData)"   gemini-fieldmandatorycheck gemini-clear>
                                 {{parameter.value || parameter.description}}
                             </div>
                         </div>

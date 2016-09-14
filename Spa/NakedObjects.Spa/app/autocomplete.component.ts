@@ -21,7 +21,7 @@ import { Subject } from 'rxjs/Subject';
         '(document:click)': 'handleClick($event)'
     },
     template: `     
-           <input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" [ngClass]="parameter.color" placeholder="{{parameter.description}}" type="text" [(ngModel)]="parameter.selectedChoice" name="parameter.id" (keyup)="filter($event)" />   
+           <input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" dnd-droppable (onDropSuccess)="parameter.drop($event.dragData)" [ngClass]="parameter.color" placeholder="{{parameter.description}}" type="text" [(ngModel)]="parameter.selectedChoice" name="parameter.id" (keyup)="filter($event)" />   
             <div class="suggestions" *ngIf="filteredList.length > 0">
                 <ul *ngFor="let item of filteredList" >
                     <li >

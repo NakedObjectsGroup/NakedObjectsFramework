@@ -229,14 +229,14 @@ export class ViewModelFactory {
         messageViewModel.setMessage(msg);
     };
 
-    private drop(vm: ViewModels.IFieldViewModel, newValue: ViewModels.IDraggableViewModel) {
-        this.context.isSubTypeOf(newValue.draggableType, vm.returnType).
+    private drop(context : Context, error : Error, vm: ViewModels.IFieldViewModel, newValue:  ViewModels.IDraggableViewModel) {
+        context.isSubTypeOf(newValue.draggableType, vm.returnType).
             then((canDrop: boolean) => {
                 if (canDrop) {
                     vm.setNewValue(newValue);
                 }
             }).
-            catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+            catch((reject: Models.ErrorWrapper) => error.handleError(reject));
     };
 
     private validate(rep: Models.IHasExtensions, vm: ViewModels.IFieldViewModel, modelValue: any, viewValue: string, mandatoryOnly: boolean) {
@@ -463,7 +463,7 @@ export class ViewModelFactory {
         propertyViewModel.isDirty = () => !!previousValue || propertyViewModel.getValue().toValueString() !== propertyViewModel.originalValue.toValueString();
         propertyViewModel.validate = <any> _.partial(Models.validate, propertyRep, propertyViewModel) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
         propertyViewModel.canDropOn = (targetType: string) => this.context.isSubTypeOf(propertyViewModel.returnType, targetType) as Promise<boolean>;
-        propertyViewModel.drop = _.partial(this.drop, propertyViewModel);
+        propertyViewModel.drop = _.partial(this.drop, this.context, this.error, propertyViewModel);
         propertyViewModel.doClick = (right?: boolean) => this.urlManager.setProperty(propertyRep, this.clickHandler.pane(paneId, right));
 
         return propertyViewModel as ViewModels.IPropertyViewModel;
@@ -615,7 +615,7 @@ export class ViewModelFactory {
 
         parmViewModel.description = this.getRequiredIndicator(parmViewModel) + parmViewModel.description;
         parmViewModel.validate = <any>_.partial(Models.validate, parmRep, parmViewModel) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
-        parmViewModel.drop = _.partial(this.drop, parmViewModel);
+        parmViewModel.drop = _.partial(this.drop, this.context, this.error, parmViewModel);
 
         return parmViewModel as ViewModels.IParameterViewModel;
     };

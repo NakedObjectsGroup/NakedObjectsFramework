@@ -131,7 +131,7 @@ export interface IFieldViewModel extends IMessageViewModel {
 
     setNewValue: (newValue: IDraggableViewModel) => void;
 
-    drop: (newValue: IDraggableViewModel) => void;
+    drop: ( newValue:  IDraggableViewModel) => void;
 
     clear: () => void;
 
@@ -719,7 +719,7 @@ abstract class ValueViewModel extends MessageViewModel implements IFieldViewMode
         this.reference = newValue.reference;
     }
 
-    drop: (newValue: IDraggableViewModel) => void;
+    drop: (newValue:  IDraggableViewModel) => void;
 
     clear() {
         this.selectedChoice = null;

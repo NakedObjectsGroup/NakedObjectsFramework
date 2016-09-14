@@ -13,11 +13,12 @@ import { FocusManager } from "./focus-manager.service";
 import { Mask} from "./mask.service";
 import { ColorServiceConfig } from "./color.service.config";
 import { MaskServiceConfig } from "./mask.service.config";
+import {DND_PROVIDERS, DND_DIRECTIVES} from 'ng2-dnd';
 
 @Component({
     selector: 'my-app',
     templateUrl: 'app/app.component.html',
-    directives: [ROUTER_DIRECTIVES, FooterComponent],
+    directives: [ROUTER_DIRECTIVES, FooterComponent, DND_DIRECTIVES],
     providers: [
         RepresentationsService,
         UrlManager,
@@ -30,7 +31,8 @@ import { MaskServiceConfig } from "./mask.service.config";
         FocusManager,
         Mask,
         ColorServiceConfig,
-        MaskServiceConfig
+        MaskServiceConfig,
+        DND_PROVIDERS
     ]
 })
 export class AppComponent implements OnInit {

@@ -1,15 +1,15 @@
 ﻿<div *ngIf="object && mode === 0" class="view" [ngClass]="getClass()">
     <header >
-        <viewTitle gemini-drag tabindex="0">
+        <viewTitle dnd-draggable [dragEnabled]="true" [dragData]="object" tabindex="0">
             <span class="type">{{object.friendlyName}}</span>
             {{object.title}}
         </viewTitle>
         <!--<div>{{object.isDirty() ? "*" : ""}} </div>-->
         <menus>
-            <menu class="menu clickable-area" tabindex="0" geminiClick (leftClick)="object.toggleActionMenu()" ng-disabled="object.disableActions()" title={{object.actionsTooltip()}} accesskey="a">
+            <menu class="menu clickable-area" tabindex="0" geminiClick (leftClick)="object.toggleActionMenu()" [ngClass]="{disabled : object.disableActions()}" title={{object.actionsTooltip()}} accesskey="a">
                 Actions
             </menu>
-            <menu class="action clickable-area" tabindex="0" geminiClick (leftClick)="object.doEdit()" ng-hide="object.hideEdit()">
+            <menu class="action clickable-area" tabindex="0" geminiClick (leftClick)="object.doEdit()" *ngIf="!object.hideEdit()">
                 Edit
             </menu>
             <menu class="action clickable-area" tabindex="0" geminiClick (leftClick)="object.doReload()">
@@ -32,10 +32,10 @@
             Editing - {{object.title}}
         </viewTitle>
         <menus>
-            <menu class="action clickable-area" tabindex="0" ng-disabled="!object.clientValid()" geminiClick (leftClick)="object.doSave(true)" title="{{object.tooltip()}}">
+            <menu class="action clickable-area" tabindex="0" [ngClass]="{disabled : !object.clientValid()}" geminiClick (leftClick)="object.doSave(true)" title="{{object.tooltip()}}">
                 Save
             </menu>
-            <menu *ngIf="object.unsaved" class="action clickable-area" ng-disabled="!object.clientValid()" tabindex="0" geminiClick (leftClick)="object.doSave(false)">
+            <menu *ngIf="object.unsaved" class="action clickable-area" [ngClass]="{disabled : !object.clientValid()}" tabindex="0" geminiClick (leftClick)="object.doSave(false)">
                 Save & Close
             </menu>
             <menu class="action clickable-area" tabindex="0" geminiClick (leftClick)="object.doEditCancel()">
