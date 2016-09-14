@@ -7,10 +7,12 @@ import * as Models from "./models";
 import * as ViewModels from "./nakedobjects.viewmodels";
 import * as Objectcomponent from './object.component';
 import * as Abstractdroppablecomponent from './abstract-droppable.component';
+import * as Geminicleardirective from './gemini-clear.directive';
 
 @Component({
     selector: 'property',
     templateUrl: 'app/property.component.html',
+    directives: [Geminicleardirective.GeminiClearDirective],
     styleUrls: ['app/property.component.css']
 })
 export class PropertyComponent extends Abstractdroppablecomponent.AbstractDroppableComponent {

@@ -6,7 +6,6 @@ import { UrlManager } from "./urlmanager.service";
 import * as _ from "lodash";
 import * as Models from "./models";
 import * as ViewModels from "./nakedobjects.viewmodels";
-import { GeminiDropDirective } from "./gemini-drop.directive";
 import { GeminiBooleanDirective } from './gemini-boolean.directive';
 import {GeminiConditionalChoicesDirective} from './gemini-conditional-choices.directive';
 import { ActivatedRoute, Router, Data } from '@angular/router';
@@ -21,12 +20,12 @@ import * as Contextservice from './context.service';
 import * as Colorservice from './color.service';
 import * as Focusmanagerservice from './focus-manager.service';
 import { Error } from './error.service';
-import * as Parameterscomponent from './parameters.component';
+import {ParametersComponent} from './parameters.component';
 
 @Component({
     selector: 'dialog',
     templateUrl: 'app/dialog.component.html',
-    directives: [GeminiDropDirective, GeminiBooleanDirective, GeminiConditionalChoicesDirective, AutocompleteComponent, Parameterscomponent.ParametersComponent],
+    directives: [GeminiBooleanDirective, GeminiConditionalChoicesDirective, AutocompleteComponent, ParametersComponent],
     styleUrls: ['app/dialog.component.css']
 })
 export class DialogComponent implements OnInit, OnDestroy {

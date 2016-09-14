@@ -6,22 +6,22 @@ import { UrlManager } from "./urlmanager.service";
 import * as _ from "lodash";
 import * as Models from "./models";
 import * as ViewModels from "./nakedobjects.viewmodels";
-import { GeminiDropDirective } from "./gemini-drop.directive";
 import { GeminiBooleanDirective } from './gemini-boolean.directive';
 import { GeminiConditionalChoicesDirective } from './gemini-conditional-choices.directive';
 import { AbstractDroppableComponent } from './abstract-droppable.component';
 
 import "./rxjs-extensions";
 import { Subject } from 'rxjs/Subject';
-
+import * as Geminicleardirective from './gemini-clear.directive';
 
 @Component({
     selector: 'autocomplete',
     host: {
         '(document:click)': 'handleClick($event)'
     },
+    directives: [Geminicleardirective.GeminiClearDirective],
     template: `     
-           <input id="{{field.paneArgId}}" class="{{field.status}} value droppable" dnd-droppable [allowDrop]="accept"  (onDropSuccess)="drop($event.dragData)" [ngClass]="classes()" placeholder="{{field.description}}" type="text" [(ngModel)]="field.selectedChoice" name="field.id" (keyup)="filter($event)" />   
+           <input id="{{field.paneArgId}}" class="{{field.status}} value droppable" dnd-droppable [allowDrop]="accept"  (onDropSuccess)="drop($event.dragData)" [ngClass]="classes()" placeholder="{{field.description}}" type="text" [(ngModel)]="field.selectedChoice" name="field.id" (keyup)="filter($event)" [geminiClear]="field" />   
             <div class="suggestions" *ngIf="filteredList.length > 0">
                 <ul *ngFor="let item of filteredList" >
                     <li >
@@ -67,7 +67,6 @@ export class AutoCompleteComponent extends AbstractDroppableComponent {
         if (input.length >= this.field.minLength) {
             this.field.prompt(input).
                 then((cvms: ViewModels.ChoiceViewModel[]) => {
-                    //response(_.map(cvms, cvm => ({ "label": cvm.name, "value": cvm })));
                     this.filteredList = cvms;
                 }).
                 catch(() => { });
@@ -75,25 +74,23 @@ export class AutoCompleteComponent extends AbstractDroppableComponent {
     }
 
     select(item : ViewModels.ChoiceViewModel) {
-        //this.query = item;
         this.filteredList = [];
         this.field.selectedChoice = item;
     }
 
+    private isInside(clickedComponent: any) : boolean {
+        if (clickedComponent) {
+            return clickedComponent === this.elementRef.nativeElement || this.isInside(clickedComponent.parentNode);
+        }
+        return false;
+    }
+
+
     handleClick(event : any) {
-        var clickedComponent = event.target;
-        var inside = false;
-        do {
-            if (clickedComponent === this.elementRef.nativeElement) {
-                inside = true;
-            }
-            clickedComponent = clickedComponent.parentNode;
-        } while (clickedComponent);
-        if (!inside) {
+        if (!this.isInside(event.target)) {
             this.filteredList = [];
         }
     }
-
 
     classes(): string {
         return `${this.field.color}${this.canDrop ? " candrop" : ""}`;

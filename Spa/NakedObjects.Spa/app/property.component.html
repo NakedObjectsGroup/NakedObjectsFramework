@@ -24,7 +24,7 @@
         <div *ngIf="property.isEditable" class="input-control text" [ngSwitch]="property.entryType">
             <!--<input type="hidden" value="{{property.reference}}" [(ngModel)]="property.reference" />-->
             <!--"EntryType.AutoComplete"-->
-            <!--<input id="{{property.paneArgId}}" class="{{property.status}} value droppable" ng-class="property.color" placeholder="{{property.description}}" ng-switch-when="5" type="text" ng-model="$parent.property.selectedChoice" select="property.prompt(request)" gemini-autocomplete gemini-drop gemini-fieldmandatorycheck gemini-clear />-->
+            <!--<input id="{{property.paneArgId}}" class="{{property.status}} value droppable" ng-class="property.color" placeholder="{{property.description}}" ng-switch-when="5" type="text" ng-model="$parent.property.selectedChoice" select="property.prompt(request)" gemini-autocomplete gemini-drop gemini-fieldmandatorycheck [geminiClear]="property" />-->
 
             <div *ngSwitchCase="5">
                 <autocomplete [viewModel]="property" [parent]="parent"></autocomplete>
@@ -49,10 +49,10 @@
 
 
             <!--"EntryType.FreeForm"-->
-            <!-- <input id="{{property.paneArgId}}" class="{{property.status}} value droppable" ng-class="property.color" placeholder="{{property.description}}" ng-switch-when="0" type="text" ng-model="$parent.property.selectedChoice" gemini-drop gemini-fieldmandatorycheck gemini-clear />-->
+            <!-- <input id="{{property.paneArgId}}" class="{{property.status}} value droppable" ng-class="property.color" placeholder="{{property.description}}" ng-switch-when="0" type="text" ng-model="$parent.property.selectedChoice" gemini-drop gemini-fieldmandatorycheck [geminiClear]="property" />-->
 
             <div *ngSwitchCase="0">
-                <div tabindex="0" class="value droppable" [ngClass]="classes()" dnd-droppable (onDropSuccess)="parameter.drop($event.dragData)" gemini-fieldmandatorycheck gemini-clear>
+                <div tabindex="0" class="value droppable" [ngClass]="classes()" dnd-droppable (onDropSuccess)="parameter.drop($event.dragData)" gemini-fieldmandatorycheck [geminiClear]="property">
                     {{property.value || property.description}}
                 </div>
             </div>
@@ -128,7 +128,7 @@
             <div [ngSwitch]="property.entryType">
                 <!--"EntryType.AutoComplete"-->
                 <!--<div ng-switch-when="5">
-                    <input id="{{property.paneArgId}}" class="{{property.status}}" placeholder="{{property.description}}" type="text" ng-model="$parent.property.selectedChoice" select="property.prompt(request)" gemini-autocomplete gemini-fieldmandatorycheck gemini-clear />
+                    <input id="{{property.paneArgId}}" class="{{property.status}}" placeholder="{{property.description}}" type="text" ng-model="$parent.property.selectedChoice" select="property.prompt(request)" gemini-autocomplete gemini-fieldmandatorycheck [geminiClear]="property" />
                 </div>-->
                 <div *ngSwitchCase="5">
                     <autocomplete [viewModel]="property" [parent]="parent"></autocomplete>
@@ -160,13 +160,13 @@
                     <div [ngSwitch]="property.returnType">
                         <div *ngSwitchCase="'string'" [ngSwitch]="property.format">
                             <div *ngSwitchCase="'date'">
-                                <input id="{{property.paneArgId}}" class="{{property.status}}" type="date" placeholder="{{property.description}}" [(ngModel)]="property.value" name="property.id" (ngModelChange)="propertyChanged()" gemini-datepicker gemini-fieldvalidate gemini-clear />
+                                <input id="{{property.paneArgId}}" class="{{property.status}}" type="date" placeholder="{{property.description}}" [(ngModel)]="property.value" name="property.id" (ngModelChange)="propertyChanged()" gemini-datepicker gemini-fieldvalidate [geminiClear]="property" />
                             </div>
                             <div *ngSwitchCase="'time'">
-                                <input id="{{property.paneArgId}}" class="{{property.status}}" type="time" placeholder="{{property.description}}" [(ngModel)]="property.value" name="property.id" (ngModelChange)="propertyChanged()" gemini-timepicker gemini-fieldvalidate gemini-clear />
+                                <input id="{{property.paneArgId}}" class="{{property.status}}" type="time" placeholder="{{property.description}}" [(ngModel)]="property.value" name="property.id" (ngModelChange)="propertyChanged()" gemini-timepicker gemini-fieldvalidate [geminiClear]="property" />
                             </div>
                             <div *ngSwitchDefault [ngSwitch]="property.multipleLines">
-                                <input *ngSwitchCase="1" id="{{property.paneArgId}}" class="{{property.status}}" placeholder="{{property.description}}" type="{{property.password ? 'password' : 'text'}}" [(ngModel)]="property.value" name="property.id" (ngModelChange)="propertyChanged()" gemini-fieldvalidate gemini-clear />
+                                <input *ngSwitchCase="1" id="{{property.paneArgId}}" class="{{property.status}}" placeholder="{{property.description}}" type="{{property.password ? 'password' : 'text'}}" [(ngModel)]="property.value" name="property.id" (ngModelChange)="propertyChanged()" gemini-fieldvalidate [geminiClear]="property" />
                                 <textarea *ngSwitchDefault rows="{{$parent.property.multipleLines}}" id="{{$parent.property.paneArgId}}" class="{{$parent.property.status}}" [(ngModel)]="property.value" name="property.id" (ngModelChange)="propertyChanged()" gemini-fieldvalidate placeholder="{{property.description}}"></textarea>
                             </div>
                         </div>
@@ -174,7 +174,7 @@
                             <input id="{{property.paneArgId}}" class="{{property.status}}" type="checkbox" [geminiBoolean]="property" (ngModelChange)="propertyChanged()" />{{property.description}}
                         </div>
                         <div *ngSwitchDefault>
-                            <input id="{{property.paneArgId}}" class="{{property.status}}" type="text" placeholder="{{property.description}}" [(ngModel)]="property.value" name="property.id" (ngModelChange)="propertyChanged()" gemini-fieldvalidate gemini-clear />
+                            <input id="{{property.paneArgId}}" class="{{property.status}}" type="text" placeholder="{{property.description}}" [(ngModel)]="property.value" name="property.id" (ngModelChange)="propertyChanged()" gemini-fieldvalidate [geminiClear]="property" />
                         </div>
                     </div>
 

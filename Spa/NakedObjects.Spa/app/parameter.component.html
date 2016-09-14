@@ -8,7 +8,7 @@
         <!--<input type="hidden" value="{{parameter.reference}}" [(ngModel)]="parameter.reference" />-->
         <!--"EntryType.AutoComplete"-->
         <div *ngSwitchCase="5">
-            <!--<input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" [ngClass]="classes()" placeholder="{{parameter.description}}" type="text" [(ngModel)]="parameter.selectedChoice" name="parameter.id" [geminiDrop]="parameter" [geminiAutocomplete]="parameter" [parent]="dialog" gemini-fieldmandatorycheck gemini-clear />-->
+            <!--<input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" [ngClass]="classes()" placeholder="{{parameter.description}}" type="text" [(ngModel)]="parameter.selectedChoice" name="parameter.id" [geminiDrop]="parameter" [geminiAutocomplete]="parameter" [parent]="dialog" gemini-fieldmandatorycheck [geminiClear]="parameter" />-->
             <autocomplete [viewModel]="parameter" [parent]="parent"></autocomplete>
 
         </div>
@@ -47,7 +47,7 @@
 
         <!--"EntryType.FreeForm"-->
         <div *ngSwitchCase="0">
-            <div tabindex="0" class="value droppable" [ngClass]="classes()" dnd-droppable [allowDrop]="accept"  (onDropSuccess)="drop($event.dragData)" gemini-fieldmandatorycheck gemini-clear>
+            <div tabindex="0" class="value droppable" [ngClass]="classes()" dnd-droppable [allowDrop]="accept"  (onDropSuccess)="drop($event.dragData)" gemini-fieldmandatorycheck [geminiClear]="parameter">
                 {{parameter.value || parameter.description}}
             </div>
         </div>
@@ -65,7 +65,7 @@
 
         <!--"EntryType.AutoComplete"-->
         <div *ngSwitchCase="5">
-            <!--<input id="{{parameter.paneArgId}}" class="{{parameter.status}}" placeholder="{{parameter.description}}" type="text" [(ngModel)]="parameter.selectedChoice" [geminiAutocomplete]="parameter" [parent]="dialog" gemini-fieldmandatorycheck gemini-clear />-->
+            <!--<input id="{{parameter.paneArgId}}" class="{{parameter.status}}" placeholder="{{parameter.description}}" type="text" [(ngModel)]="parameter.selectedChoice" [geminiAutocomplete]="parameter" [parent]="dialog" gemini-fieldmandatorycheck [geminiClear]="parameter" />-->
             <autocomplete [viewModel]="parameter" [parent]="parent"></autocomplete>
 
         </div>
@@ -109,13 +109,13 @@
             <div [ngSwitch]="parameter.returnType">
                 <div *ngSwitchCase="'string'" [ngSwitch]="parameter.format">
                     <div *ngSwitchCase="'date'">
-                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="date" placeholder="{{parameter.description}}" [(ngModel)]="parameter.value" name="parameter.id" (ngModelChange)="parent.parameterChanged()" gemini-datepicker gemini-fieldvalidate gemini-clear />
+                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="date" placeholder="{{parameter.description}}" [(ngModel)]="parameter.value" name="parameter.id" (ngModelChange)="parent.parameterChanged()" gemini-datepicker gemini-fieldvalidate [geminiClear]="parameter" />
                     </div>
                     <div *ngSwitchCase="'time'">
-                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="time" placeholder="{{parameter.description}}" [(ngModel)]="parameter.value" name="parameter.id" (ngModelChange)="parent.parameterChanged()" gemini-timepicker gemini-fieldvalidate gemini-clear />
+                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="time" placeholder="{{parameter.description}}" [(ngModel)]="parameter.value" name="parameter.id" (ngModelChange)="parent.parameterChanged()" gemini-timepicker gemini-fieldvalidate [geminiClear]="parameter" />
                     </div>
                     <div *ngSwitchDefault [ngSwitch]="parameter.multipleLines">
-                        <input *ngSwitchCase="1" id="{{parameter.paneArgId}}" class="{{parameter.status}}" placeholder="{{parameter.description}}" type="{{parameter.password ? 'password' : 'text'}}" [(ngModel)]="parameter.value" name="parameter.id" (ngModelChange)="parent.parameterChanged()" gemini-fieldvalidate gemini-clear />
+                        <input *ngSwitchCase="1" id="{{parameter.paneArgId}}" class="{{parameter.status}}" placeholder="{{parameter.description}}" type="{{parameter.password ? 'password' : 'text'}}" [(ngModel)]="parameter.value" name="parameter.id" (ngModelChange)="parent.parameterChanged()" gemini-fieldvalidate [geminiClear]="parameter" />
                         <textarea *ngSwitchDefault rows="{{$parent.parameter.multipleLines}}" id="{{$parent.parameter.paneArgId}}" class="{{$parent.parameter.status}}" [(ngModel)]="parameter.value" name="parameter.id" (ngModelChange)="parent.parameterChanged()" gemini-fieldvalidate placeholder="{{parameter.description}}"></textarea>
                     </div>
                 </div>
@@ -123,7 +123,7 @@
                     <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="checkbox" [geminiBoolean]="parameter" (ngModelChange)="parent.parameterChanged()" />{{parameter.description}}
                 </div>
                 <div *ngSwitchDefault>
-                    <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="text" placeholder="{{parameter.description}}" [(ngModel)]="parameter.value" name="parameter.id" (ngModelChange)="parent.parameterChanged()" gemini-fieldvalidate gemini-clear />
+                    <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="text" placeholder="{{parameter.description}}" [(ngModel)]="parameter.value" name="parameter.id" (ngModelChange)="parent.parameterChanged()" gemini-fieldvalidate [geminiClear]="parameter" />
                 </div>
             </div>
 

@@ -5,14 +5,16 @@ import { ViewModelFactory } from "./view-model-factory.service";
 import { UrlManager } from "./urlmanager.service";
 import * as Models from "./models";
 import * as ViewModels from "./nakedobjects.viewmodels";
-import * as Abstractdroppablecomponent from './abstract-droppable.component';
+import { AbstractDroppableComponent } from './abstract-droppable.component';
+import * as Geminicleardirective from './gemini-clear.directive';
 
 @Component({
     selector: 'parameter',
     templateUrl: 'app/parameter.component.html',
+    directives: [Geminicleardirective.GeminiClearDirective],
     styleUrls: ['app/parameter.component.css']
 })
-export class ParameterComponent extends Abstractdroppablecomponent.AbstractDroppableComponent {
+export class ParameterComponent extends AbstractDroppableComponent {
 
     constructor(private viewModelFactory: ViewModelFactory, private urlManager: UrlManager) {
         super();
