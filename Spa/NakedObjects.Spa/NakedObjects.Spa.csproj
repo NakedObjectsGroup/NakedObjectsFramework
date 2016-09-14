@@ -87,8 +87,12 @@
     <Content Include="app\list.component.html" />
     <Content Include="app\object.component.css" />
     <Content Include="app\object.component.html" />
+    <Content Include="app\parameters.component.css" />
+    <Content Include="app\parameters.component.html" />
     <Content Include="app\properties.component.css" />
     <Content Include="app\properties.component.html" />
+    <Content Include="app\parameter.component.css" />
+    <Content Include="app\parameter.component.html" />
     <Content Include="app\property.component.css" />
     <Content Include="app\property.component.html" />
     <Content Include="fonts\iconFont.svg" />
@@ -167,7 +171,9 @@
     <TypeScriptCompile Include="app\gemini-click.directive.ts" />
     <TypeScriptCompile Include="app\nakedobjects.viewmodels.ts" />
     <TypeScriptCompile Include="app\object.component.ts" />
+    <TypeScriptCompile Include="app\parameters.component.ts" />
     <TypeScriptCompile Include="app\properties.component.ts" />
+    <TypeScriptCompile Include="app\parameter.component.ts" />
     <TypeScriptCompile Include="app\property.component.ts" />
     <TypeScriptCompile Include="app\reploader.service.ts" />
     <TypeScriptCompile Include="app\representations.service.ts" />

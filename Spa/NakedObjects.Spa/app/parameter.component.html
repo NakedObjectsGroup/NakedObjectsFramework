@@ -1,0 +1,187 @@
+﻿<div>
+    <div class="name">{{property.title}}:</div>
+
+    <div *ngIf="property.type === 'ref' && !edit">
+        <div [ngSwitch]="property.refType">
+            <div *ngSwitchCase="null"></div>
+            <div *ngSwitchCase="'notNavigable'">
+                <div class="value">
+                    {{property.formattedValue}}
+                </div>
+            </div>
+            <div *ngSwitchDefault class="reference clickable-area" [ngClass]="property.color" geminiClick (leftClick)="property.doClick()" (rightClick)="property.doClick(true)" dnd-draggable [dragEnabled]="true" tabindex="0">
+                {{property.formattedValue}}
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="property.type === 'ref' && edit">
+
+        <div *ngIf="!property.isEditable" class="value" [ngClass]="property.color">
+            {{property.formattedValue}}
+        </div>
+
+        <div *ngIf="property.isEditable" class="input-control text" [ngSwitch]="property.entryType">
+            <!--<input type="hidden" value="{{property.reference}}" [(ngModel)]="property.reference" />-->
+            <!--"EntryType.AutoComplete"-->
+            <!--<input id="{{property.paneArgId}}" class="{{property.status}} value droppable" ng-class="property.color" placeholder="{{property.description}}" ng-switch-when="5" type="text" ng-model="$parent.property.selectedChoice" select="property.prompt(request)" gemini-autocomplete gemini-drop gemini-fieldmandatorycheck gemini-clear />-->
+
+            <div *ngSwitchCase="5">
+                <autocomplete [viewModel]="property" [parent]="parent"></autocomplete>
+            </div>
+
+
+            <!--"EntryType.ConditionalChoices"-->
+            <div *ngSwitchCase="3">
+                <select id="{{property.paneArgId}}" class="{{property.status}}" [(ngModel)]="property.selectedChoice" name="property.id" [geminiConditionalChoices]="property" [fieldChanged]="parent.propertyChanged$" (ngModelChange)="parent.propertyChanged()" [parent]="parent" gemini-fieldmandatorycheck>
+                    <option value="" disabled>{{property.description}}</option>
+                    <option *ngFor="let choice of property.choices" [ngValue]="choice">{{choice.name}}</option>
+                </select>
+            </div>
+
+            <!--"EntryType.Choices"-->
+            <div *ngSwitchCase="1">
+                <select id="{{property.paneArgId}}" class="{{property.status}}" [(ngModel)]="property.selectedChoice" name="property.id" (ngModelChange)="parent.propertyChanged()" gemini-fieldmandatorycheck>
+                    <option value="" disabled>{{property.description}}</option>
+                    <option *ngFor="let choice of property.choices" [ngValue]="choice">{{choice.name}}</option>
+                </select>
+            </div>
+
+
+            <!--"EntryType.FreeForm"-->
+            <!-- <input id="{{property.paneArgId}}" class="{{property.status}} value droppable" ng-class="property.color" placeholder="{{property.description}}" ng-switch-when="0" type="text" ng-model="$parent.property.selectedChoice" gemini-drop gemini-fieldmandatorycheck gemini-clear />-->
+
+            <div *ngSwitchCase="0">
+                <div tabindex="0" class="value droppable" [ngClass]="property.color" dnd-droppable (onDropSuccess)="parameter.drop($event.dragData)" gemini-fieldmandatorycheck gemini-clear>
+                    {{property.value || property.description}}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div *ngIf="property.type === 'scalar' && !edit">
+        <div [ngSwitch]="property.returnType">
+            <div *ngSwitchCase="'string'">
+                <!--*ngIf="property.returnType = 'string'"-->
+                <div [ngSwitch]="property.format">
+                    <div *ngSwitchCase="'blob'" class="reference clickable-area" geminiClick (leftClick)='property.attachment.doClick()' (rightClick)='property.attachment.doClick(true)' gemini-attachment tabindex="0">
+                    </div>
+                    <div *ngSwitchDefault>
+                        <div [ngSwitch]="property.multipleLines">
+                            <div *ngSwitchCase="1" class="value">
+                                {{property.formattedValue}}
+                            </div>
+                            <div *ngSwitchDefault class="value multiline" [ngStyle]="{height: property.multipleLines * 20+'px'}">
+                                <pre>{{property.formattedValue}}</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngSwitchCase="'boolean'">
+                    <input type="checkbox" onclick="return false" [checked]="property.value" disabled="disabled" />
+                </div>
+
+                <div *ngSwitchDefault>
+                    <div class="value">
+                        {{property.formattedValue}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="property.type === 'scalar' && edit">
+
+        <div *ngIf="!property.isEditable">
+            <div [ngSwitch]="property.returnType">
+                <div *ngSwitchCase="'string'">
+                    <!--*ngIf="property.returnType = 'string'"-->
+                    <div [ngSwitch]="property.format">
+                        <div *ngSwitchCase="'blob'" class="reference clickable-area" geminiClick (leftClick)='property.attachment.doClick()' (rightClick)='property.attachment.doClick(true)' gemini-attachment tabindex="0">
+                        </div>
+                        <div *ngSwitchDefault>
+                            <div [ngSwitch]="property.multipleLines">
+                                <div *ngSwitchCase="1" class="value">
+                                    {{property.formattedValue}}
+                                </div>
+                                <div *ngSwitchDefault class="value multiline" [ngStyle]="{height: property.multipleLines * 20+'px'}">
+                                    <pre>{{property.formattedValue}}</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngSwitchCase="'boolean'">
+                        <input type="checkbox" onclick="return false" [checked]="property.value" disabled="disabled" />
+                    </div>
+
+                    <div *ngSwitchDefault>
+                        <div class="value">
+                            {{property.formattedValue}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="property.isEditable" class="input-control text" >
+            <div [ngSwitch]="property.entryType">
+                <!--"EntryType.AutoComplete"-->
+                <!--<div ng-switch-when="5">
+                    <input id="{{property.paneArgId}}" class="{{property.status}}" placeholder="{{property.description}}" type="text" ng-model="$parent.property.selectedChoice" select="property.prompt(request)" gemini-autocomplete gemini-fieldmandatorycheck gemini-clear />
+                </div>-->
+                <div *ngSwitchCase="5">
+                    <autocomplete [viewModel]="property" [parent]="parent"></autocomplete>
+
+                </div>
+
+                <!--"EntryType.ConditionalChoices"-->
+             
+                <div *ngSwitchCase="3">
+                    <select id="{{property.paneArgId}}" class="{{property.status}}" [(ngModel)]="property.selectedChoice" name="property.id" [geminiConditionalChoices]="property" [parent]="parent" [fieldChanged]="propertyChanged$" (ngModelChange)="propertyChanged()" gemini-fieldmandatorycheck>
+                        <option value="" disabled>{{property.description}}</option>
+                        <option *ngFor="let choice of property.choices" [ngValue]="choice">{{choice.name}}</option>
+                    </select>
+                </div>
+
+                <!--"EntryType.Choices"-->
+           
+                <div *ngSwitchCase="1">
+                    <select id="{{property.paneArgId}}" class="{{property.status}}" [(ngModel)]="property.selectedChoice" name="property.id" (change)="propertyChanged()" (ngModelChange)="propertyChanged()" gemini-fieldmandatorycheck>
+                        <option value="" disabled>{{property.description}}</option>
+                        <option *ngFor="let choice of property.choices" [ngValue]="choice">{{choice.name}}</option>
+                    </select>
+                </div>
+
+                <!--"EntryType.FreeForm"-->
+               
+                
+                <div *ngSwitchCase="0">
+                    <div [ngSwitch]="property.returnType">
+                        <div *ngSwitchCase="'string'" [ngSwitch]="property.format">
+                            <div *ngSwitchCase="'date'">
+                                <input id="{{property.paneArgId}}" class="{{property.status}}" type="date" placeholder="{{property.description}}" [(ngModel)]="property.value" name="property.id" (ngModelChange)="propertyChanged()" gemini-datepicker gemini-fieldvalidate gemini-clear />
+                            </div>
+                            <div *ngSwitchCase="'time'">
+                                <input id="{{property.paneArgId}}" class="{{property.status}}" type="time" placeholder="{{property.description}}" [(ngModel)]="property.value" name="property.id" (ngModelChange)="propertyChanged()" gemini-timepicker gemini-fieldvalidate gemini-clear />
+                            </div>
+                            <div *ngSwitchDefault [ngSwitch]="property.multipleLines">
+                                <input *ngSwitchCase="1" id="{{property.paneArgId}}" class="{{property.status}}" placeholder="{{property.description}}" type="{{property.password ? 'password' : 'text'}}" [(ngModel)]="property.value" name="property.id" (ngModelChange)="propertyChanged()" gemini-fieldvalidate gemini-clear />
+                                <textarea *ngSwitchDefault rows="{{$parent.property.multipleLines}}" id="{{$parent.property.paneArgId}}" class="{{$parent.property.status}}" [(ngModel)]="property.value" name="property.id" (ngModelChange)="propertyChanged()" gemini-fieldvalidate placeholder="{{property.description}}"></textarea>
+                            </div>
+                        </div>
+                        <div *ngSwitchCase="'boolean'">
+                            <input id="{{property.paneArgId}}" class="{{property.status}}" type="checkbox" [geminiBoolean]="property" (ngModelChange)="propertyChanged()" />{{property.description}}
+                        </div>
+                        <div *ngSwitchDefault>
+                            <input id="{{property.paneArgId}}" class="{{property.status}}" type="text" placeholder="{{property.description}}" [(ngModel)]="property.value" name="property.id" (ngModelChange)="propertyChanged()" gemini-fieldvalidate gemini-clear />
+                        </div>
+                    </div>
+
+                </div>
+                
+
+            </div>
+        </div>
+    </div>
+</div>
