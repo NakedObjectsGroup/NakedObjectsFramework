@@ -950,6 +950,16 @@ export class DialogViewModel extends MessageViewModel implements IDialogViewMode
         _.each(this.actionViewModel.parameters, parm => parm.clearMessage());
     };
 
+    parameterChanged() {
+        this.parameterChangedSource.next(true);
+        this.parameterChangedSource.next(false);
+    }
+
+    private parameterChangedSource = new Subject<boolean>();
+
+    parameterChanged$ = this.parameterChangedSource.asObservable();
+
+
 }
 
 export class PropertyViewModel extends ValueViewModel implements IPropertyViewModel, IDraggableViewModel {

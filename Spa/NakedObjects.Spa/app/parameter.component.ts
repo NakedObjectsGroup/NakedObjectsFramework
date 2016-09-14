@@ -5,7 +5,6 @@ import { ViewModelFactory } from "./view-model-factory.service";
 import { UrlManager } from "./urlmanager.service";
 import * as Models from "./models";
 import * as ViewModels from "./nakedobjects.viewmodels";
-import * as Objectcomponent from './object.component';
 
 @Component({
     selector: 'parameter',
@@ -17,9 +16,6 @@ export class ParameterComponent {
     constructor(private viewModelFactory: ViewModelFactory, private urlManager: UrlManager) {}
 
     parm: ViewModels.ParameterViewModel;
-
-    @Input()
-    edit: boolean;
 
     @Input()
     parent: ViewModels.DialogViewModel;

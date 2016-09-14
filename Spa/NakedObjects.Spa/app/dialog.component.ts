@@ -21,11 +21,12 @@ import * as Contextservice from './context.service';
 import * as Colorservice from './color.service';
 import * as Focusmanagerservice from './focus-manager.service';
 import { Error } from './error.service';
+import * as Parameterscomponent from './parameters.component';
 
 @Component({
     selector: 'dialog',
     templateUrl: 'app/dialog.component.html',
-    directives: [GeminiDropDirective, GeminiBooleanDirective, GeminiConditionalChoicesDirective, AutocompleteComponent],
+    directives: [GeminiDropDirective, GeminiBooleanDirective, GeminiConditionalChoicesDirective, AutocompleteComponent, Parameterscomponent.ParametersComponent],
     styleUrls: ['app/dialog.component.css']
 })
 export class DialogComponent implements OnInit, OnDestroy {
@@ -45,19 +46,6 @@ export class DialogComponent implements OnInit, OnDestroy {
     parent : ViewModels.MenuViewModel | ViewModels.DomainObjectViewModel | ViewModels.ListViewModel;
 
     dialog: ViewModels.DialogViewModel;
-
-    // todo introduce parameters/parameter components 
-
-    // todo move this to DialogViewModel cf ObjectViewModel
-    parameterChanged() {
-        this.parameterChangedSource.next(true);
-        this.parameterChangedSource.next(false);
-    }
-
-    private parameterChangedSource = new Subject<boolean>();
-
-    parameterChanged$ = this.parameterChangedSource.asObservable();
-
   
     getDialog(routeData: Nakedobjectsroutedata.PaneRouteData) {
         const dialogId = routeData.dialogId;

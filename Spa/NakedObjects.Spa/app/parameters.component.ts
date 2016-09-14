@@ -5,12 +5,12 @@ import { UrlManager } from "./urlmanager.service";
 import { PropertyComponent } from "./property.component";
 import * as Models from "./models";
 import * as ViewModels from "./nakedobjects.viewmodels";
-import * as Objectcomponent from './object.component';
+import * as Parametercomponent from './parameter.component';
 
 @Component({
     selector: 'parameters',
     templateUrl: 'app/parameters.component.html',
-    directives: [PropertyComponent],
+    directives: [Parametercomponent.ParameterComponent],
     styleUrls: ['app/parameters.component.css']
 })
 
@@ -19,9 +19,6 @@ export class ParametersComponent {
     constructor(private viewModelFactory: ViewModelFactory, private urlManager: UrlManager) { }
 
     parms: ViewModels.ParameterViewModel[];
-
-    @Input()
-    edit: boolean;
 
     @Input()
     parent: ViewModels.DialogViewModel;
