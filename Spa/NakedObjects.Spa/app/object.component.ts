@@ -1,5 +1,4 @@
 ﻿import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
 import { FooterComponent } from "./footer.component";
 import { RepresentationsService } from "./representations.service";
 import { ActivatedRoute, Router} from '@angular/router';
@@ -26,7 +25,6 @@ import { Subject } from 'rxjs/Subject';
 @Component({
     selector: 'object',
     templateUrl: `app/object.component.html`,
-    directives: [ROUTER_DIRECTIVES, FooterComponent, ActionsComponent, GeminiClickDirective, PropertiesComponent, Collectionscomponent.CollectionsComponent],
     styleUrls: ['app/object.component.css']
 })
 

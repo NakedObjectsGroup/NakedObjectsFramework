@@ -1,34 +1,34 @@
 ﻿<div *ngIf="collection" [ngClass]="class">
     <header>
-        <viewTitle>{{title}}</viewTitle>
-        <menus>
-            <menu class="menu clickable-area" tabindex="0" (click)="collection.toggleActionMenu()" [ngClass]="{disabled : collection.disableActions()}" title={{collection.actionsTooltip()}}>
+        <div class="viewTitle">{{title}}</div>
+        <div class="menus">
+            <div class="menu clickable-area" tabindex="0" (click)="collection.toggleActionMenu()" [ngClass]="{disabled : collection.disableActions()}" title={{collection.actionsTooltip()}}>
                 Actions
-            </menu>
-            <menu class="action clickable-area" tabindex="0" (click)="collection.reload()">
+            </div>
+            <div class="action clickable-area" tabindex="0" (click)="collection.reload()">
                 Reload
-            </menu>
-            <menu class="action clickable-area" tabindex="0" (click)="collection.pageFirst()" [ngClass]="{disabled : collection.pageFirstDisabled()}">
+            </div>
+            <div class="action clickable-area" tabindex="0" (click)="collection.pageFirst()" [ngClass]="{disabled : collection.pageFirstDisabled()}">
                 First
-            </menu>
-            <menu class="action clickable-area" tabindex="0" (click)="collection.pagePrevious()" [ngClass]="{disabled : collection.pagePreviousDisabled()}">
+            </div>
+            <div class="action clickable-area" tabindex="0" (click)="collection.pagePrevious()" [ngClass]="{disabled : collection.pagePreviousDisabled()}">
                 Previous
-            </menu>
-            <menu class="action clickable-area" tabindex="0" (click)="collection.pageNext()" [ngClass]="{disabled : collection.pageNextDisabled()}">
+            </div>
+            <div class="action clickable-area" tabindex="0" (click)="collection.pageNext()" [ngClass]="{disabled : collection.pageNextDisabled()}">
                 Next
-            </menu>
-            <menu class="action clickable-area" tabindex="0" (click)="collection.pageLast()" [ngClass]="{disabled : collection.pageLastDisabled()}">
+            </div>
+            <div class="action clickable-area" tabindex="0" (click)="collection.pageLast()" [ngClass]="{disabled : collection.pageLastDisabled()}">
                 Last
-            </menu>
-        </menus>
-        <messages>{{collection.message}}</messages>
+            </div>
+        </div>
+        <div class="messages">{{collection.message}}</div>
     </header>
-    <collectionDetails *ngIf="collection.size == 0">{{collection.description()}}</collectionDetails>
+    <div class="collectionDetails" *ngIf="collection.size == 0">{{collection.description()}}</div>
     <div *ngIf="collection.size > 0">
         <actions *ngIf="collection.showActions()" [menuVm]="collection"></actions>
         <dialog [parent]="collection"></dialog>
-        <collectionSummary *ngIf="state == 'list'">
-            <collectionDetails>{{collection.description()}}</collectionDetails>
+        <div class="collectionSummary" *ngIf="state == 'list'">
+            <div class="collectionDetails">{{collection.description()}}</div>
             <img class="icon-table clickable-area" (click)="collection.doTable()" src="images/table.png" title="View as Table" />
             <table>
                 <thead>
@@ -47,11 +47,11 @@
                     </tr>
                 </tbody>
             </table>
-        </collectionSummary>
-        <collectionSummary *ngIf="state == 'table'">
-            <collectionDetails>{{collection.description()}}</collectionDetails>
+        </div>
+        <div class="collectionSummary" *ngIf="state == 'table'">
+            <div class="collectionDetails">{{collection.description()}}</div>
             <img class="icon-list clickable-area" (click)="collection.doList()" src="images/list.png" title="View as List" />
-        </collectionSummary>
+        </div>
         <table *ngIf="state == 'table'">
             <thead>
                 <tr>

@@ -10,7 +10,6 @@ import * as Parametercomponent from './parameter.component';
 @Component({
     selector: 'parameters',
     templateUrl: 'app/parameters.component.html',
-    directives: [Parametercomponent.ParameterComponent],
     styleUrls: ['app/parameters.component.css']
 })
 

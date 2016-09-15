@@ -602,7 +602,7 @@ export class UrlManager {
 
     getRouteDataObservable  = () => {
 
-        return this.router.routerState.queryParams.map((ps: { [key: string]: string }) => {
+        return this.router.routerState.root.queryParams.map((ps: { [key: string]: string }) => {
 
             const routeData = new RouteData();
 

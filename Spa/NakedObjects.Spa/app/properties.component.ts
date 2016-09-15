@@ -10,7 +10,6 @@ import * as Objectcomponent from './object.component';
 @Component({
     selector: 'properties',
     templateUrl: 'app/properties.component.html',
-    directives: [PropertyComponent],
     styleUrls: ['app/properties.component.css']
 })
 

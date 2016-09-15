@@ -26,7 +26,6 @@ import * as Geminifieldmandatorycheckdirective from './gemini-field-mandatory-ch
 @Component({
     selector: 'dialog',
     templateUrl: 'app/dialog.component.html',
-    directives: [GeminiBooleanDirective, GeminiConditionalChoicesDirective, AutocompleteComponent, ParametersComponent, Geminifieldmandatorycheckdirective.GeminiFieldMandatoryCheckDirective],
     styleUrls: ['app/dialog.component.css']
 })
 export class DialogComponent implements OnInit, OnDestroy {

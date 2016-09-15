@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+﻿import { Component, OnInit, Input, OnDestroy, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RepresentationsService } from './representations.service'
 import { getAppPath } from "./nakedobjects.config";
 import { Observable } from 'rxjs/Observable';
@@ -13,15 +13,13 @@ import { ViewModelFactory } from "./view-model-factory.service";
 import { Color } from "./color.service";
 import { DialogComponent } from "./dialog.component";
 import { RouteData, PaneRouteData } from "./nakedobjects.routedata";
-import { ROUTER_DIRECTIVES } from '@angular/router';
 import * as Models from "./models";
 import * as ViewModels from "./nakedobjects.viewmodels";
 
 
 @Component({
     selector: 'home',
-    templateUrl: 'app/home.component.html',
-    directives: [ActionsComponent, DialogComponent, ROUTER_DIRECTIVES]
+    templateUrl: 'app/home.component.html'
 })
 export class HomeComponent implements OnInit, OnDestroy {
 

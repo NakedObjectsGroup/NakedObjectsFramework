@@ -1,52 +1,52 @@
 ﻿<div *ngIf="object && mode === 0" class="view" [ngClass]="getClass()">
     <header >
-        <viewTitle dnd-draggable [dragEnabled]="true" [dragData]="object" tabindex="0">
+        <div class="viewTitle" dnd-draggable [dragEnabled]="true" [dragData]="object" tabindex="0">
             <span class="type">{{object.friendlyName}}</span>
             {{object.title}}
-        </viewTitle>
+        </div>
         <!--<div>{{object.isDirty() ? "*" : ""}} </div>-->
-        <menus>
-            <menu class="menu clickable-area" tabindex="0" geminiClick (leftClick)="object.toggleActionMenu()" [ngClass]="{disabled : object.disableActions()}" title={{object.actionsTooltip()}} accesskey="a">
+        <div class="menus">
+            <div  class="menu clickable-area" tabindex="0" geminiClick (leftClick)="object.toggleActionMenu()" [ngClass]="{disabled : object.disableActions()}" title={{object.actionsTooltip()}} accesskey="a">
                 Actions
-            </menu>
-            <menu class="action clickable-area" tabindex="0" geminiClick (leftClick)="object.doEdit()" *ngIf="!object.hideEdit()">
+            </div>
+            <div class="menu action clickable-area" tabindex="0" geminiClick (leftClick)="object.doEdit()" *ngIf="!object.hideEdit()">
                 Edit
-            </menu>
-            <menu class="action clickable-area" tabindex="0" geminiClick (leftClick)="object.doReload()">
+            </div>
+            <div class="menu action clickable-area" tabindex="0" geminiClick (leftClick)="object.doReload()">
                 Reload
-            </menu>
-        </menus>
-        <messages>{{object.message}}</messages>
+            </div>
+        </div>
+        <div class="messages">{{object.message}}</div>
     </header>
     <actions *ngIf="object.showActions()" [menuVm]="object"></actions>
-    <mainColumn>
+    <div class="mainColumn">
         <dialog [parent]="object"></dialog>
         <properties *ngIf="object.properties" [properties]="object.properties" [parent]="object" [edit]="false"></properties>
-    </mainColumn>
+    </div>
     <collections *ngIf="object.collections"  [collections]="object.collections"></collections>
 </div>
 <div *ngIf="object && mode === 1" class="object edit" [ngClass]="getClass()">
     <header>
-        <viewTitle tabindex="0">
+        <div class="viewTitle" tabindex="0">
             <span class="type">{{object.friendlyName}}</span>
             Editing - {{object.title}}
-        </viewTitle>
-        <menus>
-            <menu class="action clickable-area" tabindex="0" [ngClass]="{disabled : !object.clientValid()}" geminiClick (leftClick)="object.doSave(true)" title="{{object.tooltip()}}">
+        </div>
+        <div class="menus">
+            <div class="menu action clickable-area" tabindex="0" [ngClass]="{disabled : !object.clientValid()}" geminiClick (leftClick)="object.doSave(true)" title="{{object.tooltip()}}">
                 Save
-            </menu>
-            <menu *ngIf="object.unsaved" class="action clickable-area" [ngClass]="{disabled : !object.clientValid()}" tabindex="0" geminiClick (leftClick)="object.doSave(false)">
+            </div>
+            <div *ngIf="object.unsaved" class="menu action clickable-area" [ngClass]="{disabled : !object.clientValid()}" tabindex="0" geminiClick (leftClick)="object.doSave(false)">
                 Save & Close
-            </menu>
-            <menu class="action clickable-area" tabindex="0" geminiClick (leftClick)="object.doEditCancel()">
+            </div>
+            <div class="menu action clickable-area" tabindex="0" geminiClick (leftClick)="object.doEditCancel()">
                 Cancel
-            </menu>
-        </menus>
-        <messages>{{object.message}}</messages>
+            </div>
+        </div>
+        <div class="messages">{{object.message}}</div>
     </header>
-    <mainColumn>      
+    <div class="mainColumn">      
         <properties *ngIf="object.properties" [properties]="object.properties" [parent]="object" [edit]="true"></properties>
-    </mainColumn>
+    </div>
     <collections *ngIf="object.collections" [collections]="object.collections"></collections>
 </div>
 <router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>

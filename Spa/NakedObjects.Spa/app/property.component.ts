@@ -14,7 +14,6 @@ import {GeminiFieldMandatoryCheckDirective} from './gemini-field-mandatory-check
 @Component({
     selector: 'property',
     templateUrl: 'app/property.component.html',
-    directives: [GeminiClearDirective, GeminiFieldValidateDirective, GeminiFieldMandatoryCheckDirective  ],
     styleUrls: ['app/property.component.css']
 })
 export class PropertyComponent extends AbstractDroppableComponent {

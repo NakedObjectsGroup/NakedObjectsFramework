@@ -13,7 +13,6 @@ import {GeminiFieldMandatoryCheckDirective} from './gemini-field-mandatory-check
 @Component({
     selector: 'parameter',
     templateUrl: 'app/parameter.component.html',
-    directives: [GeminiClearDirective, GeminiFieldValidateDirective, GeminiFieldMandatoryCheckDirective],
     styleUrls: ['app/parameter.component.css']
 })
 export class ParameterComponent extends AbstractDroppableComponent {

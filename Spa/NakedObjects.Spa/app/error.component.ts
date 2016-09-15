@@ -13,15 +13,13 @@ import { ViewModelFactory } from "./view-model-factory.service";
 import { Color } from "./color.service";
 import { DialogComponent } from "./dialog.component";
 import { RouteData, PaneRouteData } from "./nakedobjects.routedata";
-import { ROUTER_DIRECTIVES } from '@angular/router';
 import * as Models from "./models";
 import * as ViewModels from "./nakedobjects.viewmodels";
 
 
 @Component({
     selector: 'error',
-    templateUrl: 'app/error.component.html',
-    directives: []
+    templateUrl: 'app/error.component.html'
 })
 export class ErrorComponent {
 

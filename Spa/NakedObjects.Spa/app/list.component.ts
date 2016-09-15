@@ -1,5 +1,4 @@
 ﻿import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
 import { FooterComponent } from "./footer.component";
 import { RepresentationsService } from "./representations.service";
 import { UrlManager } from "./urlmanager.service";
@@ -23,8 +22,7 @@ import { CollectionViewState } from './nakedobjects.routedata';
 
 @Component({
     selector: 'list',
-    templateUrl: `app/list.component.html`,
-    directives: [ROUTER_DIRECTIVES, FooterComponent, ActionsComponent, GeminiClickDirective]
+    templateUrl: `app/list.component.html`
 })
 
 export class ListComponent implements OnInit, OnDestroy {

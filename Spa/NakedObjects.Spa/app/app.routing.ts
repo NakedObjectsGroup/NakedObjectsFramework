@@ -1,10 +1,10 @@
-﻿import { provideRouter, RouterConfig } from '@angular/router';
+﻿import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from "./home.component";
 import { ObjectComponent} from "./object.component";
 import { ListComponent} from "./list.component";
-import { Routes, RouterModule } from '@angular/router';
 import { ErrorComponent } from './error.component';
-const routes: RouterConfig = [
+
+const routes: Routes = [
     {
         path: '',
         redirectTo: '/gemini/home',

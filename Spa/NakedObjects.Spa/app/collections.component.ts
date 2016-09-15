@@ -10,7 +10,6 @@ import * as Collectioncomponent from './collection.component';
 @Component({
     selector: 'collections',
     templateUrl: 'app/collections.component.html',
-    directives: [Collectioncomponent.CollectionComponent],
     styleUrls: ['app/collections.component.css']
 })
 

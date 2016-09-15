@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
 import { FooterComponent } from "./footer.component";
 import { RepresentationsService } from "./representations.service";
 import { UrlManager } from "./urlmanager.service";
@@ -17,23 +16,7 @@ import {DND_PROVIDERS, DND_DIRECTIVES} from 'ng2-dnd';
 
 @Component({
     selector: 'my-app',
-    templateUrl: 'app/app.component.html',
-    directives: [ROUTER_DIRECTIVES, FooterComponent, DND_DIRECTIVES],
-    providers: [
-        RepresentationsService,
-        UrlManager,
-        ClickHandlerService,
-        Context,
-        RepLoader,
-        ViewModelFactory,
-        Color,
-        Error,
-        FocusManager,
-        Mask,
-        ColorServiceConfig,
-        MaskServiceConfig,
-        DND_PROVIDERS
-    ]
+    templateUrl: 'app/app.component.html'
 })
 export class AppComponent implements OnInit {
 

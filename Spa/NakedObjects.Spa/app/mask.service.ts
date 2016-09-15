@@ -24,7 +24,7 @@ class LocalCurrencyFilter implements ILocalFilter {
     constructor(private symbol?: string, private fractionSize?: number) {}
 
     filter(val: any): string {
-        const pipe = new CurrencyPipe();
+        const pipe = new CurrencyPipe("en-GB");
         // return $filter("currency")(val, this.symbol, this.fractionSize);
         return pipe.transform(val);
     }
@@ -35,7 +35,7 @@ class LocalDateFilter implements ILocalFilter {
     constructor(private mask?: string, private tz?: string) {}
 
     filter(val: any): string {
-        const pipe = new DatePipe();
+        const pipe = new DatePipe("en-GB");
         //   return $filter("date")(val, this.mask, this.tz);
         return pipe.transform(val, this.mask);
     }
@@ -48,7 +48,7 @@ class LocalNumberFilter implements ILocalFilter {
     filter(val: any): string {
         //  return $filter("number")(val, this.fractionSize);
      
-        const pipe = new DecimalPipe();
+        const pipe = new DecimalPipe("en-GB");
         // return $filter("currency")(val, this.symbol, this.fractionSize);
         return pipe.transform(val);
     }

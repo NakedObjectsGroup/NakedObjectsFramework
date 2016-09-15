@@ -21,7 +21,6 @@ import {GeminiFieldMandatoryCheckDirective} from './gemini-field-mandatory-check
     host: {
         '(document:click)': 'handleClick($event)'
     },
-    directives: [GeminiClearDirective, GeminiFieldValidateDirective, GeminiFieldMandatoryCheckDirective],
     template: `     
            <input id="{{field.paneArgId}}" class="{{field.status}} value droppable" dnd-droppable [allowDrop]="accept"  (onDropSuccess)="drop($event.dragData)" [ngClass]="classes()" placeholder="{{field.description}}" type="text" [(ngModel)]="field.selectedChoice" name="field.id" (keyup)="filter($event)" [geminiClear]="field" />   
             <div class="suggestions" *ngIf="filteredList.length > 0">
