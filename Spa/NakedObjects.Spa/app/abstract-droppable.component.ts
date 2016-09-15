@@ -1,10 +1,4 @@
-﻿import { Component, Input } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { ActionComponent } from "./action.component";
-import { ViewModelFactory } from "./view-model-factory.service";
-import { UrlManager } from "./urlmanager.service";
-import * as Models from "./models";
-import * as ViewModels from "./nakedobjects.viewmodels";
+﻿import * as ViewModels from "./nakedobjects.viewmodels";
 
 export class AbstractDroppableComponent {
 
@@ -26,8 +20,6 @@ export class AbstractDroppableComponent {
     drop(draggableVm: ViewModels.IDraggableViewModel) {
         if (this.canDrop) {
             this.droppable.drop(draggableVm);
-            //const evt = new Event("change");
-            //this.el.dispatchEvent(evt);
         }
     }
 }

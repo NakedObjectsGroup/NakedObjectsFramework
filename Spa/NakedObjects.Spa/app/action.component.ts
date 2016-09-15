@@ -1,11 +1,5 @@
 ﻿import { Component, Input } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { formatType, scalarValueType } from './nakedobjects.rointerfaces'
-import { Context } from "./context.service";
-import { GeminiClickDirective } from "./gemini-click.directive";
-import * as Models from "./models";
 import * as ViewModels from "./nakedobjects.viewmodels";
-import * as _ from "lodash";
 
 @Component({
     selector: 'action',
@@ -13,8 +7,6 @@ import * as _ from "lodash";
     styleUrls: ['app/action.component.css']
 })
 export class ActionComponent {
-
-    constructor(private context: Context) {}
 
     private actionVm: ViewModels.ActionViewModel;
 
