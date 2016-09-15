@@ -12,14 +12,16 @@ import { AbstractDroppableComponent } from './abstract-droppable.component';
 
 import "./rxjs-extensions";
 import { Subject } from 'rxjs/Subject';
-import * as Geminicleardirective from './gemini-clear.directive';
+import {GeminiClearDirective} from './gemini-clear.directive';
+import {GeminiFieldValidateDirective} from './gemini-field-validate.directive';
+import {GeminiFieldMandatoryCheckDirective} from './gemini-field-mandatory-check.directive';
 
 @Component({
     selector: 'autocomplete',
     host: {
         '(document:click)': 'handleClick($event)'
     },
-    directives: [Geminicleardirective.GeminiClearDirective],
+    directives: [GeminiClearDirective, GeminiFieldValidateDirective, GeminiFieldMandatoryCheckDirective],
     template: `     
            <input id="{{field.paneArgId}}" class="{{field.status}} value droppable" dnd-droppable [allowDrop]="accept"  (onDropSuccess)="drop($event.dragData)" [ngClass]="classes()" placeholder="{{field.description}}" type="text" [(ngModel)]="field.selectedChoice" name="field.id" (keyup)="filter($event)" [geminiClear]="field" />   
             <div class="suggestions" *ngIf="filteredList.length > 0">

@@ -6,16 +6,18 @@ import { UrlManager } from "./urlmanager.service";
 import * as Models from "./models";
 import * as ViewModels from "./nakedobjects.viewmodels";
 import * as Objectcomponent from './object.component';
-import * as Abstractdroppablecomponent from './abstract-droppable.component';
-import * as Geminicleardirective from './gemini-clear.directive';
+import {AbstractDroppableComponent} from './abstract-droppable.component';
+import {GeminiClearDirective} from './gemini-clear.directive';
+import {GeminiFieldValidateDirective} from './gemini-field-validate.directive';
+import {GeminiFieldMandatoryCheckDirective} from './gemini-field-mandatory-check.directive';
 
 @Component({
     selector: 'property',
     templateUrl: 'app/property.component.html',
-    directives: [Geminicleardirective.GeminiClearDirective],
+    directives: [GeminiClearDirective, GeminiFieldValidateDirective, GeminiFieldMandatoryCheckDirective  ],
     styleUrls: ['app/property.component.css']
 })
-export class PropertyComponent extends Abstractdroppablecomponent.AbstractDroppableComponent {
+export class PropertyComponent extends AbstractDroppableComponent {
 
     constructor(private viewModelFactory: ViewModelFactory, private urlManager: UrlManager) {
         super();

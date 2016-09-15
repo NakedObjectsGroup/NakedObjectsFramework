@@ -9,10 +9,10 @@ export class GeminiBooleanDirective {
         this.el = el.nativeElement;
     }
 
-    model: ViewModels.ParameterViewModel;
+    model: ViewModels.IFieldViewModel;
 
     @Input('geminiBoolean')
-    set viewModel(vm: ViewModels.ParameterViewModel) {
+    set viewModel(vm: ViewModels.IFieldViewModel) {
         this.model = vm;
         this.render();
     }

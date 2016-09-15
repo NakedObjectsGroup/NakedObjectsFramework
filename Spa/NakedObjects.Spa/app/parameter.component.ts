@@ -6,12 +6,14 @@ import { UrlManager } from "./urlmanager.service";
 import * as Models from "./models";
 import * as ViewModels from "./nakedobjects.viewmodels";
 import { AbstractDroppableComponent } from './abstract-droppable.component';
-import * as Geminicleardirective from './gemini-clear.directive';
+import {GeminiClearDirective} from './gemini-clear.directive';
+import {GeminiFieldValidateDirective} from './gemini-field-validate.directive';
+import {GeminiFieldMandatoryCheckDirective} from './gemini-field-mandatory-check.directive';
 
 @Component({
     selector: 'parameter',
     templateUrl: 'app/parameter.component.html',
-    directives: [Geminicleardirective.GeminiClearDirective],
+    directives: [GeminiClearDirective, GeminiFieldValidateDirective, GeminiFieldMandatoryCheckDirective],
     styleUrls: ['app/parameter.component.css']
 })
 export class ParameterComponent extends AbstractDroppableComponent {

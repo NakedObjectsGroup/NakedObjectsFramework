@@ -21,11 +21,12 @@ import * as Colorservice from './color.service';
 import * as Focusmanagerservice from './focus-manager.service';
 import { Error } from './error.service';
 import {ParametersComponent} from './parameters.component';
+import * as Geminifieldmandatorycheckdirective from './gemini-field-mandatory-check.directive';
 
 @Component({
     selector: 'dialog',
     templateUrl: 'app/dialog.component.html',
-    directives: [GeminiBooleanDirective, GeminiConditionalChoicesDirective, AutocompleteComponent, ParametersComponent],
+    directives: [GeminiBooleanDirective, GeminiConditionalChoicesDirective, AutocompleteComponent, ParametersComponent, Geminifieldmandatorycheckdirective.GeminiFieldMandatoryCheckDirective],
     styleUrls: ['app/dialog.component.css']
 })
 export class DialogComponent implements OnInit, OnDestroy {
