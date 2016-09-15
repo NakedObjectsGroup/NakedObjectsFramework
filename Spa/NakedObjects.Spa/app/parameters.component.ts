@@ -1,11 +1,6 @@
 ﻿import { Component, Input } from '@angular/core';
-import { ActionComponent } from "./action.component";
-import { ViewModelFactory } from "./view-model-factory.service";
-import { UrlManager } from "./urlmanager.service";
-import { PropertyComponent } from "./property.component";
 import * as Models from "./models";
 import * as ViewModels from "./nakedobjects.viewmodels";
-import * as Parametercomponent from './parameter.component';
 
 @Component({
     selector: 'parameters',
@@ -14,8 +9,6 @@ import * as Parametercomponent from './parameter.component';
 })
 
 export class ParametersComponent {
-
-    constructor(private viewModelFactory: ViewModelFactory, private urlManager: UrlManager) { }
 
     parms: ViewModels.ParameterViewModel[];
 

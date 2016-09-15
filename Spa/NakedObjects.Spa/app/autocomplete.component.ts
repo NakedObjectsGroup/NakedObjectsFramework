@@ -1,20 +1,9 @@
 ﻿import { Component, Input, ElementRef } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { ActionComponent } from "./action.component";
-import { ViewModelFactory } from "./view-model-factory.service";
-import { UrlManager } from "./urlmanager.service";
 import * as _ from "lodash";
 import * as Models from "./models";
 import * as ViewModels from "./nakedobjects.viewmodels";
-import { GeminiBooleanDirective } from './gemini-boolean.directive';
-import { GeminiConditionalChoicesDirective } from './gemini-conditional-choices.directive';
 import { AbstractDroppableComponent } from './abstract-droppable.component';
 
-import "./rxjs-extensions";
-import { Subject } from 'rxjs/Subject';
-import {GeminiClearDirective} from './gemini-clear.directive';
-import {GeminiFieldValidateDirective} from './gemini-field-validate.directive';
-import {GeminiFieldMandatoryCheckDirective} from './gemini-field-mandatory-check.directive';
 
 @Component({
     selector: 'autocomplete',
@@ -34,10 +23,10 @@ import {GeminiFieldMandatoryCheckDirective} from './gemini-field-mandatory-check
 })
 
 export class AutoCompleteComponent extends AbstractDroppableComponent {
-    
-  
-    public filteredList: ViewModels.ChoiceViewModel[] = [];
-    public elementRef : ElementRef;
+
+
+    filteredList: ViewModels.ChoiceViewModel[] = [];
+    elementRef: ElementRef;
 
     constructor(myElement: ElementRef) {
         super();
@@ -54,7 +43,6 @@ export class AutoCompleteComponent extends AbstractDroppableComponent {
     set viewModel(vm: ViewModels.IFieldViewModel) {
         this.field = vm;
         this.droppable = vm;
-        //this.pArgs = _.omit(this.model.promptArguments, "x-ro-nof-members") as _.Dictionary<Models.Value>;
         this.paneId = this.field.onPaneId;
     }
 
@@ -62,7 +50,7 @@ export class AutoCompleteComponent extends AbstractDroppableComponent {
     parent: ViewModels.DialogViewModel | ViewModels.DomainObjectViewModel;
 
 
-    filter($event : any) {
+    filter($event: any) {
         const input = $event.target.value as string;
 
         if (input.length >= this.field.minLength) {
@@ -74,12 +62,12 @@ export class AutoCompleteComponent extends AbstractDroppableComponent {
         }
     }
 
-    select(item : ViewModels.ChoiceViewModel) {
+    select(item: ViewModels.ChoiceViewModel) {
         this.filteredList = [];
         this.field.selectedChoice = item;
     }
 
-    private isInside(clickedComponent: any) : boolean {
+    private isInside(clickedComponent: any): boolean {
         if (clickedComponent) {
             return clickedComponent === this.elementRef.nativeElement || this.isInside(clickedComponent.parentNode);
         }
@@ -87,7 +75,7 @@ export class AutoCompleteComponent extends AbstractDroppableComponent {
     }
 
 
-    handleClick(event : any) {
+    handleClick(event: any) {
         if (!this.isInside(event.target)) {
             this.filteredList = [];
         }

@@ -1,5 +1,5 @@
 ﻿import { Directive, ElementRef, HostListener, Output, EventEmitter, Renderer, Input, OnInit } from '@angular/core';
-import * as Nakedobjectsviewmodels from './nakedobjects.viewmodels';
+import * as ViewModels from './nakedobjects.viewmodels';
 
 @Directive({ selector: '[geminiClear]' })
 export class GeminiClearDirective implements OnInit {
@@ -9,10 +9,10 @@ export class GeminiClearDirective implements OnInit {
         this.el = el.nativeElement;
     }
 
-    model: Nakedobjectsviewmodels.IFieldViewModel;
+    model: ViewModels.IFieldViewModel;
 
     @Input('geminiClear')
-    set viewModel(vm: Nakedobjectsviewmodels.IFieldViewModel) {
+    set viewModel(vm: ViewModels.IFieldViewModel) {
         this.model = vm;
     }
 
@@ -32,11 +32,7 @@ export class GeminiClearDirective implements OnInit {
 
     onMouseMove(event: MouseEvent) {
         if (this.el.classList.contains("ng-x")) {
-
             const onX = this.el.offsetWidth - 18 < event.clientX - this.el.getBoundingClientRect().left;
-
-
-
             if (onX) {
                 this.el.classList.add("ng-onX");
             } else {

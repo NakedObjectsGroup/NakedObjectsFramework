@@ -1,9 +1,4 @@
 ﻿import { Component, Input } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { ActionComponent } from "./action.component";
-import { ViewModelFactory } from "./view-model-factory.service";
-import { UrlManager } from "./urlmanager.service";
-import * as Models from "./models";
 import * as ViewModels from "./nakedobjects.viewmodels";
 import {CollectionViewState} from './nakedobjects.routedata';
 
@@ -14,16 +9,12 @@ import {CollectionViewState} from './nakedobjects.routedata';
 })
 export class CollectionComponent {
 
-    constructor(private viewModelFactory: ViewModelFactory, private urlManager: UrlManager) { }
-
     coll: ViewModels.CollectionViewModel;
-
 
     @Input()
     set collection(value: ViewModels.CollectionViewModel) {
         this.coll = value;
         this.state = CollectionViewState[this.coll.requestedState].toString().toLowerCase();
-
     }
 
     get collection() {

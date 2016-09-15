@@ -1,4 +1,4 @@
-﻿import { NgModule, CUSTOM_ELEMENTS_SCHEMA }       from '@angular/core';
+﻿import { NgModule }       from '@angular/core';
 import { BrowserModule }  from '@angular/platform-browser';
 import { FormsModule }    from '@angular/forms';
 import { HttpModule }     from '@angular/http';
@@ -11,34 +11,33 @@ import { Context } from './context.service';
 import { UrlManager } from './urlmanager.service';
 import { RepLoader } from './reploader.service';
 import { ErrorComponent } from './error.component';
-import * as Actionscomponent from './actions.component';
-import * as Propertiescomponent from './properties.component';
-import * as Dialogcomponent from './dialog.component';
-import * as Parameterscomponent from './parameters.component';
-import * as Propertycomponent from './property.component';
-import * as Parametercomponent from './parameter.component';
-import * as Autocompletecomponent from './autocomplete.component';
+import { ActionsComponent} from './actions.component';
+import { PropertiesComponent} from './properties.component';
+import { DialogComponent} from './dialog.component';
+import { ParametersComponent} from './parameters.component';
+import { PropertyComponent} from './property.component';
+import { ParameterComponent} from './parameter.component';
+import { AutoCompleteComponent} from './autocomplete.component';
+import { CollectionsComponent} from './collections.component';
+import { ActionComponent }from './action.component';
+import { CollectionComponent }from './collection.component';
+import { GeminiConditionalChoicesDirective }from './gemini-conditional-choices.directive';
+import { GeminiClearDirective }from './gemini-clear.directive';
+import { GeminiFieldMandatoryCheckDirective }from './gemini-field-mandatory-check.directive';
+import { GeminiFieldValidateDirective }from './gemini-field-validate.directive';
+import { GeminiBooleanDirective }from './gemini-boolean.directive';
+import { RepresentationsService }from './representations.service';
+import { ClickHandlerService }from './click-handler.service';
+import { ViewModelFactory }from './view-model-factory.service';
+import { Color }from './color.service';
+import { Error }from './error.service';
+import { FocusManager }from './focus-manager.service';
+import { Mask }from './mask.service';
+import { ColorServiceConfig }from './color.service.config';
+import { MaskServiceConfig }from './mask.service.config';
+import { FooterComponent }from './footer.component';
+import { GeminiClickDirective }from './gemini-click.directive';
 import {DND_PROVIDERS, DND_DIRECTIVES} from 'ng2-dnd';
-import * as Collectionscomponent from './collections.component';
-import * as Actioncomponent from './action.component';
-import * as Collectioncomponent from './collection.component';
-import * as Geminiconditionalchoicesdirective from './gemini-conditional-choices.directive';
-import * as Geminicleardirective from './gemini-clear.directive';
-import * as Geminifieldmandatorycheckdirective from './gemini-field-mandatory-check.directive';
-import * as Geminifieldvalidatedirective from './gemini-field-validate.directive';
-import * as Geminibooleandirective from './gemini-boolean.directive';
-import * as Representationsservice from './representations.service';
-import * as Clickhandlerservice from './click-handler.service';
-import * as Viewmodelfactoryservice from './view-model-factory.service';
-import * as Colorservice from './color.service';
-import * as Errorservice from './error.service';
-import * as Focusmanagerservice from './focus-manager.service';
-import * as Maskservice from './mask.service';
-import * as Colorserviceconfig from './color.service.config';
-import * as Maskserviceconfig from './mask.service.config';
-import * as Footercomponent from './footer.component';
-import * as Geminiclickdirective from './gemini-click.directive';
-
 @NgModule({
     imports: [
         BrowserModule,
@@ -48,42 +47,42 @@ import * as Geminiclickdirective from './gemini-click.directive';
     ],
     declarations: [
         AppComponent,
-        Footercomponent.FooterComponent, 
+        FooterComponent, 
         HomeComponent,
         ObjectComponent,
         ListComponent,
         ErrorComponent,
-        Actionscomponent.ActionsComponent,
-        Actioncomponent.ActionComponent,
-        Propertiescomponent.PropertiesComponent,
-        Collectionscomponent.CollectionsComponent,
-        Collectioncomponent.CollectionComponent,
-        Dialogcomponent.DialogComponent, 
-        Parameterscomponent.ParametersComponent,
-        Propertycomponent.PropertyComponent, 
-        Parametercomponent.ParameterComponent, 
-        Autocompletecomponent.AutoCompleteComponent,
-        Geminiconditionalchoicesdirective.GeminiConditionalChoicesDirective,
-        Geminiclickdirective.GeminiClickDirective,
-        Geminibooleandirective.GeminiBooleanDirective,
-        Geminicleardirective.GeminiClearDirective,
-        Geminifieldmandatorycheckdirective.GeminiFieldMandatoryCheckDirective,
-        Geminifieldvalidatedirective.GeminiFieldValidateDirective,
+        ActionsComponent,
+        ActionComponent,
+        PropertiesComponent,
+        CollectionsComponent,
+        CollectionComponent,
+        DialogComponent, 
+        ParametersComponent,
+        PropertyComponent, 
+        ParameterComponent, 
+        AutoCompleteComponent,
+        GeminiConditionalChoicesDirective,
+        GeminiClickDirective,
+        GeminiBooleanDirective,
+        GeminiClearDirective,
+        GeminiFieldMandatoryCheckDirective,
+        GeminiFieldValidateDirective,
         DND_DIRECTIVES
     ],
     providers: [
-        Representationsservice.RepresentationsService,
+        RepresentationsService,
         UrlManager,
-        Clickhandlerservice.ClickHandlerService,
+        ClickHandlerService,
         Context,
         RepLoader,
-        Viewmodelfactoryservice.ViewModelFactory,
-        Colorservice.Color,
-        Errorservice.Error,
-        Focusmanagerservice.FocusManager,
-        Maskservice.Mask,
-        Colorserviceconfig.ColorServiceConfig,
-        Maskserviceconfig.MaskServiceConfig,
+        ViewModelFactory,
+        Color,
+        Error,
+        FocusManager,
+        Mask,
+        ColorServiceConfig,
+        MaskServiceConfig,
         DND_PROVIDERS
     ],
     bootstrap: [AppComponent]

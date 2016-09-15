@@ -1,27 +1,19 @@
 ﻿import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { ActionComponent } from "./action.component";
 import { ViewModelFactory } from "./view-model-factory.service";
 import { UrlManager } from "./urlmanager.service";
 import * as _ from "lodash";
 import * as Models from "./models";
 import * as ViewModels from "./nakedobjects.viewmodels";
-import { GeminiBooleanDirective } from './gemini-boolean.directive';
-import {GeminiConditionalChoicesDirective} from './gemini-conditional-choices.directive';
 import { ActivatedRoute, Router, Data } from '@angular/router';
-
 import "./rxjs-extensions";
 import { Subject } from 'rxjs/Subject';
-import {AutoCompleteComponent as AutocompleteComponent} from './autocomplete.component';
-import * as Nakedobjectsroutedata from './nakedobjects.routedata';
-
+import { PaneRouteData, RouteData } from './nakedobjects.routedata';
 import { ISubscription } from 'rxjs/Subscription';
-import * as Contextservice from './context.service';
-import * as Colorservice from './color.service';
-import * as Focusmanagerservice from './focus-manager.service';
+import { Context } from './context.service';
+import { Color } from './color.service';
+import { FocusManager } from './focus-manager.service';
 import { Error } from './error.service';
-import {ParametersComponent} from './parameters.component';
-import * as Geminifieldmandatorycheckdirective from './gemini-field-mandatory-check.directive';
 
 @Component({
     selector: 'dialog',
@@ -34,9 +26,9 @@ export class DialogComponent implements OnInit, OnDestroy {
         private urlManager: UrlManager,
         private activatedRoute: ActivatedRoute,
         private error: Error,
-        private color: Colorservice.Color,
-        private focusManager: Focusmanagerservice.FocusManager,
-        private context: Contextservice.Context) { }
+        private color: Color,
+        private focusManager: FocusManager,
+        private context: Context) { }
 
 
     paneId: number;
@@ -46,7 +38,7 @@ export class DialogComponent implements OnInit, OnDestroy {
 
     dialog: ViewModels.DialogViewModel;
   
-    getDialog(routeData: Nakedobjectsroutedata.PaneRouteData) {
+    getDialog(routeData: PaneRouteData) {
         const dialogId = routeData.dialogId;
         if (this.parent && dialogId) {
             const p = this.parent;
@@ -117,7 +109,7 @@ export class DialogComponent implements OnInit, OnDestroy {
             this.paneId = data["pane"];
 
             this.paneRouteDataSub = this.urlManager.getRouteDataObservable()
-                .subscribe((rd: Nakedobjectsroutedata.RouteData) => {
+                .subscribe((rd: RouteData) => {
                     const paneRouteData = rd.pane()[this.paneId];
                     this.getDialog(paneRouteData);
                 });

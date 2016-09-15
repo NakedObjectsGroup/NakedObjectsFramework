@@ -1,5 +1,4 @@
 ﻿import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { FooterComponent } from "./footer.component";
 import { RepresentationsService } from "./representations.service";
 import { ActivatedRoute, Router} from '@angular/router';
 import * as Models from "./models";
@@ -12,14 +11,9 @@ import { Color } from "./color.service";
 import { Error } from "./error.service";
 import { FocusManager } from "./focus-manager.service";
 import { Mask } from "./mask.service";
-import { PaneRouteData, RouteData } from "./nakedobjects.routedata";
+import { PaneRouteData, RouteData, InteractionMode } from "./nakedobjects.routedata";
 import * as ViewModels from "./nakedobjects.viewmodels";
-import { ActionsComponent } from "./actions.component";
-import { GeminiClickDirective } from "./gemini-click.directive";
-import { PropertiesComponent } from "./properties.component";
 import { ISubscription } from 'rxjs/Subscription';
-import * as Collectionscomponent from './collections.component';
-import * as Nakedobjectsroutedata from './nakedobjects.routedata';
 import { Subject } from 'rxjs/Subject';
 
 @Component({
@@ -41,7 +35,7 @@ export class ObjectComponent implements OnInit,  OnDestroy {
 
     object : ViewModels.DomainObjectViewModel;
 
-    mode : Nakedobjectsroutedata.InteractionMode;
+    mode : InteractionMode;
 
 
     setupObject(routeData: PaneRouteData) {

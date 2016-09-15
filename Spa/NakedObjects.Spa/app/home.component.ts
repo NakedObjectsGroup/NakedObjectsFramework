@@ -3,7 +3,6 @@ import { RepresentationsService } from './representations.service'
 import { getAppPath } from "./nakedobjects.config";
 import { Observable } from 'rxjs/Observable';
 import { ISubscription } from 'rxjs/Subscription';
-import { ActionsComponent } from "./actions.component";
 import { ActivatedRoute, Router, Data } from '@angular/router';
 import { UrlManager } from "./urlmanager.service";
 import { Context } from "./context.service";
@@ -11,7 +10,6 @@ import { Error } from './error.service';
 import { FocusManager } from "./focus-manager.service";
 import { ViewModelFactory } from "./view-model-factory.service";
 import { Color } from "./color.service";
-import { DialogComponent } from "./dialog.component";
 import { RouteData, PaneRouteData } from "./nakedobjects.routedata";
 import * as Models from "./models";
 import * as ViewModels from "./nakedobjects.viewmodels";
@@ -29,21 +27,19 @@ export class HomeComponent implements OnInit, OnDestroy {
         private error: Error,
         private urlManager: UrlManager,
         private router: Router,
-        private activatedRoute : ActivatedRoute,
+        private activatedRoute: ActivatedRoute,
         private color: Color,
         private focusManager: FocusManager) {
-     
     }
 
     paneId: number;
 
     menus: ViewModels.MenusViewModel;
     selectedMenu: ViewModels.MenuViewModel;
-    //selectedDialog: ViewModels.DialogViewModel;
 
     // todo rename to single or split
-    class: string; 
-  
+    class: string;
+
     onChild() {
         this.class = "split";
     }
@@ -64,8 +60,6 @@ export class HomeComponent implements OnInit, OnDestroy {
             });
     }
 
-   
-
     getMenu(paneRouteData: PaneRouteData) {
         const menuId = paneRouteData.menuId;
         if (menuId) {
@@ -73,7 +67,6 @@ export class HomeComponent implements OnInit, OnDestroy {
                 .then((menu: Models.MenuRepresentation) => {
                     const rd = this.urlManager.getRouteData().pane()[this.paneId];
                     this.selectedMenu = this.viewModelFactory.menuViewModel(menu, rd);
-                    //this.getDialog(paneRouteData);
                 })
                 .catch((reject: Models.ErrorWrapper) => {
                     this.error.handleError(reject);
@@ -89,22 +82,22 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.urlManager.setMenu(menuId, this.paneId);
     }
 
-    private activatedRouteDataSub : ISubscription;
+    private activatedRouteDataSub: ISubscription;
     private paneRouteDataSub: ISubscription;
 
     ngOnInit(): void {
-       
+
         this.activatedRouteDataSub = this.activatedRoute.data.subscribe(data => {
             this.paneId = data["pane"];
             this.class = data["class"];
-        
+
             this.getMenus();
             this.paneRouteDataSub = this.urlManager.getRouteDataObservable()
                 .subscribe((rd: RouteData) => {
                     const paneRouteData = rd.pane()[this.paneId];
                     this.getMenu(paneRouteData);
                 });
-        });     
+        });
     }
 
     ngOnDestroy(): void {

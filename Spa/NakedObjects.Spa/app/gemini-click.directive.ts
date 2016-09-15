@@ -4,7 +4,7 @@
 export class GeminiClickDirective {
     private el: HTMLElement;
     constructor(el: ElementRef) {
-         this.el = el.nativeElement;
+        this.el = el.nativeElement;
     }
 
     @Output() leftClick = new EventEmitter();
@@ -22,7 +22,7 @@ export class GeminiClickDirective {
             trigger.emit("event");
             return false;
         }
-     
+
         return true;
     }
 
@@ -37,5 +37,5 @@ export class GeminiClickDirective {
     @HostListener('contextmenu') onContextMenu() {
         this.rightClick.emit("event");
         return false;
-    } 
+    }
 }

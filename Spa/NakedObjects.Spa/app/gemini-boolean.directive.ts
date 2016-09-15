@@ -1,11 +1,11 @@
-﻿import { Directive, ElementRef, HostListener, Output, EventEmitter, Input, Renderer } from '@angular/core';
+﻿import { Directive, ElementRef, HostListener,  Input, Renderer } from '@angular/core';
 import * as ViewModels from "./nakedobjects.viewmodels";
 
 @Directive({ selector: '[geminiBoolean]' })
 export class GeminiBooleanDirective {
     private el: HTMLElement;
 
-    constructor(el: ElementRef, private renderer : Renderer) {
+    constructor(el: ElementRef, private renderer: Renderer) {
         this.el = el.nativeElement;
     }
 
@@ -17,31 +17,18 @@ export class GeminiBooleanDirective {
         this.render();
     }
 
-//require: "?ngModel",
-    //link(scope: ng.IScope, el: ng.IAugmentedJQuery, attrs: ng.IAttributes, ctrl: any) {
-
-    //    const parent = scope.$parent as IPropertyOrParameterScope;
-    //    const viewModel = parent.parameter || parent.property;
-
-    //    ctrl.$formatters = [];
-    //    ctrl.$parsers = [];
-
-    //    ctrl.$validators.geminiBoolean = (modelValue: any, viewValue: string) => {
-    //        return viewModel.validate(modelValue, viewValue, true);
-    //    }; 
-
     render = () => {
 
         switch (this.model.value) {
             case true:
                 this.renderer.setElementProperty(this.el, "indeterminate", false);
                 this.renderer.setElementProperty(this.el, "checked", true);
-               
+
                 break;
             case false:
                 this.renderer.setElementProperty(this.el, "indeterminate", false);
                 this.renderer.setElementProperty(this.el, "checked", false);
-               
+
                 break;
             default: // null
                 this.renderer.setElementProperty(this.el, "indeterminate", true);
@@ -52,14 +39,14 @@ export class GeminiBooleanDirective {
     triStateClick = () => {
 
         switch (this.model.value) {
-        case false:
-            this.model.value = true;
-            break;
-        case true:
-            this.model.value = null;
-            break;
-        default: // null
-            this.model.value = false;
+            case false:
+                this.model.value = true;
+                break;
+            case true:
+                this.model.value = null;
+                break;
+            default: // null
+                this.model.value = false;
         }
 
         this.render();

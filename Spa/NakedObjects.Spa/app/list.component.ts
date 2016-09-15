@@ -1,5 +1,4 @@
 ﻿import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { FooterComponent } from "./footer.component";
 import { RepresentationsService } from "./representations.service";
 import { UrlManager } from "./urlmanager.service";
 import { ClickHandlerService } from "./click-handler.service";
@@ -11,8 +10,6 @@ import { Error } from "./error.service";
 import { PaneRouteData, RouteData } from "./nakedobjects.routedata";
 import { ViewModelFactory } from "./view-model-factory.service";
 import { FocusManager, FocusTarget } from "./focus-manager.service";
-import { ActionsComponent } from "./actions.component";
-import { GeminiClickDirective } from "./gemini-click.directive";
 import { ISubscription } from 'rxjs/Subscription';
 import * as Models from "./models";
 import * as Constants from "./nakedobjects.constants";
