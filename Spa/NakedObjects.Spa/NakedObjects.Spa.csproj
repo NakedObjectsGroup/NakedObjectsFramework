@@ -149,8 +149,7 @@
     <TypeScriptCompile Include="app\gemini-clear.directive.ts" />
     <TypeScriptCompile Include="app\gemini-conditional-choices.directive.ts" />
     <TypeScriptCompile Include="app\gemini-datepicker.directive.ts" />
-    <TypeScriptCompile Include="app\gemini-field-mandatory-check.directive.ts" />
-    <TypeScriptCompile Include="app\gemini-field-validate.directive.ts" />
+    <TypeScriptCompile Include="app\gemini-validate.directive.ts" />
     <TypeScriptCompile Include="app\gemini-file-upload.directive.ts" />
     <TypeScriptCompile Include="app\gemini-focus-on.directive.ts" />
     <TypeScriptCompile Include="app\gemini-placeholder.ts" />

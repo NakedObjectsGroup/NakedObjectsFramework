@@ -1,4 +1,5 @@
 ﻿import { Component, Input } from '@angular/core';
+import {NG_VALIDATORS } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { ViewModelFactory } from "./view-model-factory.service";
 import { UrlManager } from "./urlmanager.service";

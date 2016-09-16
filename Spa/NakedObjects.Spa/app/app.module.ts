@@ -23,8 +23,7 @@ import { ActionComponent }from './action.component';
 import { CollectionComponent }from './collection.component';
 import { GeminiConditionalChoicesDirective }from './gemini-conditional-choices.directive';
 import { GeminiClearDirective }from './gemini-clear.directive';
-import { GeminiFieldMandatoryCheckDirective }from './gemini-field-mandatory-check.directive';
-import { GeminiFieldValidateDirective }from './gemini-field-validate.directive';
+import { GeminiValidateDirective }from './gemini-validate.directive';
 import { GeminiBooleanDirective }from './gemini-boolean.directive';
 import { RepresentationsService }from './representations.service';
 import { ClickHandlerService }from './click-handler.service';
@@ -66,8 +65,7 @@ import {DND_PROVIDERS, DND_DIRECTIVES} from 'ng2-dnd';
         GeminiClickDirective,
         GeminiBooleanDirective,
         GeminiClearDirective,
-        GeminiFieldMandatoryCheckDirective,
-        GeminiFieldValidateDirective,
+        GeminiValidateDirective,
         DND_DIRECTIVES
     ],
     providers: [

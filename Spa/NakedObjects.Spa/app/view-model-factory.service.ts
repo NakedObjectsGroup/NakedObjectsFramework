@@ -461,7 +461,7 @@ export class ViewModelFactory {
         propertyViewModel.description = required + propertyViewModel.description;
 
         propertyViewModel.isDirty = () => !!previousValue || propertyViewModel.getValue().toValueString() !== propertyViewModel.originalValue.toValueString();
-        propertyViewModel.validate = <any> _.partial(Models.validate, propertyRep, propertyViewModel) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
+        propertyViewModel.validate =  _.partial(this.validate, propertyRep, propertyViewModel) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
         propertyViewModel.canDropOn = (targetType: string) => this.context.isSubTypeOf(propertyViewModel.returnType, targetType) as Promise<boolean>;
         propertyViewModel.drop = _.partial(this.drop, this.context, this.error, propertyViewModel);
         propertyViewModel.doClick = (right?: boolean) => this.urlManager.setProperty(propertyRep, this.clickHandler.pane(paneId, right));

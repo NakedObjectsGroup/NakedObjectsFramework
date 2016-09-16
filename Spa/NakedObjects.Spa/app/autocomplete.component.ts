@@ -11,7 +11,7 @@ import { AbstractDroppableComponent } from './abstract-droppable.component';
         '(document:click)': 'handleClick($event)'
     },
     template: `     
-           <input id="{{field.paneArgId}}" class="{{field.status}} value droppable" dnd-droppable [allowDrop]="accept"  (onDropSuccess)="drop($event.dragData)" [ngClass]="classes()" placeholder="{{field.description}}" type="text" [(ngModel)]="field.selectedChoice" name="field.id" (keyup)="filter($event)" [geminiClear]="field" />   
+           <input id="{{field.paneArgId}}" class="{{field.status}} value droppable" dnd-droppable [allowDrop]="accept"  (onDropSuccess)="drop($event.dragData)" [ngClass]="classes()" placeholder="{{field.description}}" type="text" [(ngModel)]="field.selectedChoice" name="field.id" (keyup)="filter($event)" [geminiClear]="field" [geminiValidate]="field" [mandatoryOnly]="true" />   
             <div class="suggestions" *ngIf="filteredList.length > 0">
                 <ul *ngFor="let item of filteredList" >
                     <li >
