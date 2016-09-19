@@ -361,7 +361,7 @@ namespace NakedObjects {
         }
 
         function validKeysForList() {
-            return [akm.reload, akm.actions, akm.dialog, akm.menu, akm.action, akm.page, akm.pageSize, akm.selected, akm.collection, akm.parm];
+            return [akm.reload, akm.actions, akm.dialog, akm.menu, akm.action, akm.page, akm.pageSize, akm.selected, akm.collection, akm.parm, akm.object];
         }
 
         function validKeys(path: string) {
