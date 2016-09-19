@@ -142,13 +142,6 @@
     <Content Include="fonts\iconFont.svg" />
     <Content Include="fonts\license.txt" />
     <Content Include="index.html" />
-    <Content Include="Scripts\angular-mocks.js" />
-    <Content Include="Scripts\angular-route.js" />
-    <Content Include="Scripts\angular-route.min.js" />
-    <Content Include="Scripts\angular-touch.js" />
-    <Content Include="Scripts\angular-touch.min.js" />
-    <Content Include="Scripts\angular.js" />
-    <Content Include="Scripts\angular.min.js" />
     <None Include="Scripts\nakedobjects.config.ts.pp" />
     <None Include="Scripts\nakedobjects.services.color.config.ts.pp" />
     <TypeScriptCompile Include="Scripts\custom.controllers.ts" />
@@ -188,6 +181,13 @@
     <TypeScriptCompile Include="Scripts\nakedobjects.viewmodels.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.models.helpers.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.models.ts" />
+    <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular-route.js" />
+    <Content Include="Scripts\angular-route.min.js" />
+    <Content Include="Scripts\angular-touch.js" />
+    <Content Include="Scripts\angular-touch.min.js" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\fullcalendar.js" />
     <Content Include="Scripts\jasmine-html.js" />
     <Content Include="bower.json" />
@@ -207,7 +207,6 @@
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\karma-jasmine\karma-jasmine.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\lodash\lodash.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\moment\moment-node.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\moment\moment.d.ts" />
     <TypeScriptCompile Include="Tests\specs\nakedobjects.test.moment.ts" />
     <TypeScriptCompile Include="Tests\specs\nakedobjects.test.masks.ts" />
