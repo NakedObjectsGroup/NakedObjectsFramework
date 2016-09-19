@@ -43,7 +43,7 @@ namespace NakedObjects {
 
         function cacheAndReturn(type: string, color: number) {
             colorCache[type] = color;
-            return $q.when(color);
+            return color;
         }
 
         function isSubtype(subtype: string): angular.IPromise<any> {
@@ -60,7 +60,7 @@ namespace NakedObjects {
                     });
             }
 
-            return cacheAndReturn(subtype, defaultColor);
+            return $q.when(cacheAndReturn(subtype, defaultColor));
         }
 
 
@@ -83,7 +83,7 @@ namespace NakedObjects {
 
             for (const entry of regexCache) {
                 if (entry.regex.test(type)) {
-                    return cacheAndReturn(type, entry.color);
+                    return $q.when(cacheAndReturn(type, entry.color));
                 }
             }
 

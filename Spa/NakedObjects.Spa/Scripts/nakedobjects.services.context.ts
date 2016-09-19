@@ -407,7 +407,7 @@ namespace NakedObjects {
                         dirtyList.clearDirty(oid);
                     }
                     addRecentlyViewed(obj);
-                    return $q.when(obj);
+                    return obj;
                 });
         };
 
@@ -420,7 +420,7 @@ namespace NakedObjects {
                     currentObjects[paneId] = obj;
                     const oid = obj.getOid();
                     dirtyList.clearDirty(oid);
-                    return $q.when(obj);
+                    return obj;
                 });
         }
 
@@ -448,7 +448,7 @@ namespace NakedObjects {
                 }).
                 then((service: DomainObjectRepresentation) => {
                     currentObjects[paneId] = service;
-                    return $q.when(service);
+                    return service;
                 });
         };
 
@@ -492,7 +492,7 @@ namespace NakedObjects {
                 }).
                 then((menu: MenuRepresentation) => {
                     currentMenuList[menuId] = menu;
-                    return $q.when(menu);
+                    return menu;
                 });
         };
 
@@ -524,7 +524,7 @@ namespace NakedObjects {
                 }).
                 then((services: DomainServicesRepresentation) => {
                     currentServices = services;
-                    return $q.when(services);
+                    return services;
                 });
         };
 
@@ -540,7 +540,7 @@ namespace NakedObjects {
                 }).
                 then((menus: MenusRepresentation) => {
                     currentMenus = menus;
-                    return $q.when(currentMenus);
+                    return currentMenus;
                 });
         };
 
@@ -557,7 +557,7 @@ namespace NakedObjects {
                 }).
                 then((version: VersionRepresentation) => {
                     currentVersion = version;
-                    return $q.when(version);
+                    return version;
                 });
         };
 
@@ -574,7 +574,7 @@ namespace NakedObjects {
                 }).
                 then((user: UserRepresentation) => {
                     currentUser = user;
-                    return $q.when(user);
+                    return user;
                 });
         };
 
@@ -631,10 +631,10 @@ namespace NakedObjects {
         };
 
         context.getActionExtensionsFromMenu = (menuId: string, actionId: string) =>
-            context.getMenu(menuId).then(menu => $q.when(menu.actionMember(actionId).extensions()));
+            context.getMenu(menuId).then(menu => menu.actionMember(actionId).extensions());
 
         context.getActionExtensionsFromObject = (paneId: number, oid: ObjectIdWrapper, actionId: string) =>
-            context.getObject(paneId, oid, InteractionMode.View).then(object => $q.when(object.actionMember(actionId).extensions()));
+            context.getObject(paneId, oid, InteractionMode.View).then(object => object.actionMember(actionId).extensions());
 
         function getPagingParms(page: number, pageSize: number): _.Dictionary<Object> {
             return (page && pageSize) ? { "x-ro-page": page, "x-ro-pageSize": pageSize } : {};
@@ -799,7 +799,7 @@ namespace NakedObjects {
                 then((result: ActionResultRepresentation) => {
                     setDirty();
                     context.setResult(action, result, fromPaneId, toPaneId, 1, defaultPageSize);
-                    return $q.when(result);
+                    return result;
                 });
         }
 
@@ -867,7 +867,7 @@ namespace NakedObjects {
                     const rawLinks = object.wrapped().links;
                     updatedObject.wrapped().links = rawLinks;
                     setNewObject(updatedObject, paneId, viewSavedObject);
-                    return $q.when(updatedObject);
+                    return updatedObject;
                 });
         };
 
@@ -880,7 +880,7 @@ namespace NakedObjects {
                 then((updatedObject: DomainObjectRepresentation) => {
                     transientCache.remove(paneId, object.domainType(), object.id());
                     setNewObject(updatedObject, paneId, viewSavedObject);
-                    return $q.when(updatedObject);
+                    return updatedObject;
                 });
         };
 

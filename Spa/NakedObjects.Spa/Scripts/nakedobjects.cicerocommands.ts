@@ -211,7 +211,7 @@ namespace NakedObjects {
                 if (this.routeData().interactionMode === InteractionMode.Edit) {
                     return this.context.getObjectForEdit(1, obj);
                 } else {
-                    return this.$q.when(obj); //To wrap a known object as a promise
+                    return obj; //To wrap a known object as a promise
                 }
             });
         }
