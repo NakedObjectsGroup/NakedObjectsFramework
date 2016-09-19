@@ -245,8 +245,10 @@ namespace NakedObjects {
             return searchKeysForPane(search, paneId, raw);
         }
 
-        function clearPane(search: any, paneId: number) {
+        function clearPane(search: any, paneId: number) {           
             const toClear = allSearchKeysForPane(search, paneId);
+             // always add reload flag 
+            toClear.push(akm.reload);
             return _.omit(search, toClear);
         }
 
@@ -350,6 +352,42 @@ namespace NakedObjects {
             delete search[key];
         }
 
+        function validKeysForHome() {
+            return [akm.menu, akm.dialog, akm.reload];
+        }
+
+        function validKeysForObject() {
+            return [akm.object, akm.interactionMode, akm.reload, akm.actions, akm.dialog, akm.collection];
+        }
+
+        function validKeysForList() {
+            return [akm.reload, akm.actions, akm.dialog, akm.menu, akm.action, akm.page, akm.pageSize, akm.selected, akm.collection];
+        }
+
+        function validKeys(path: string) {
+
+            switch (path) {
+                case homePath:
+                    return validKeysForHome();
+                case objectPath:
+                    return validKeysForObject();
+                case listPath:
+                    return validKeysForList();
+            }
+
+            return [];
+        }
+
+    
+        function clearInvalidParmsFromSearch(paneId: number, search: any, path: string) {
+            if (path) {
+                const vks = validKeys(path);
+                const ivks = _.without(_.values(akm), ...vks) as string[];
+                return clearSearchKeys(search, paneId, ivks);
+            }
+            return search;
+        }
+
         function handleTransition(paneId: number, search: any, transition: Transition) {
 
             let replace = true;
@@ -407,6 +445,13 @@ namespace NakedObjects {
             if (replace) {
                 $location.replace();
             }
+
+            const path = $location.path();
+            const segments = path.split("/");
+            const [, , pane1Type, pane2Type] = segments;
+
+            search = clearInvalidParmsFromSearch(1, search, pane1Type);
+            search = clearInvalidParmsFromSearch(2, search, pane2Type);
 
             return search;
         }
@@ -495,9 +540,6 @@ namespace NakedObjects {
 
             // This will also swap the panes of the field values if we are 
             // right clicking into the other pane.
-          
-            //newValues = copyFieldsIntoValues(fromPaneId, toPaneId, newValues);
-            //newValues = setFieldsToParms(toPaneId, newValues);
 
             _.forEach(parms, (p, id) => setId(`${akm.parm}${toPaneId}_${id}`, p.toJsonString(), newValues));
 
