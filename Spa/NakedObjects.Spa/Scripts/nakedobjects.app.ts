@@ -45,6 +45,8 @@ namespace NakedObjects {
 
         const singleApplicationPropertiesTemplate = getSvrPath() + "Content/partials/singleApplicationProperties.html";
 
+        const singleMultiLineDialogTemplate = getSvrPath() + "Content/partials/singleMultiLineDialog.html";
+
         const singleErrorTemplate = getSvrPath() + "Content/partials/singleError.html";
 
         $routeProvider.
@@ -202,6 +204,10 @@ namespace NakedObjects {
             }).
             when(`/${geminiPath}/${applicationPropertiesPath}`, {
                 templateUrl: singleApplicationPropertiesTemplate,
+                controller: "BackgroundController"
+            }).
+            when(`/${geminiPath}/${multiLineDialogPath}`, {
+                templateUrl: singleMultiLineDialogTemplate,
                 controller: "BackgroundController"
             }).
             when(`/${geminiPath}/${errorPath}`, {

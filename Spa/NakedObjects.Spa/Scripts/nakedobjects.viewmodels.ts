@@ -588,6 +588,10 @@ namespace NakedObjects {
         };        
     }
 
+    export class MultiLineDialogViewModel implements IMultiLineDialogViewModel {
+        dialogs : IDialogViewModel[];
+    }
+
     export class PropertyViewModel extends ValueViewModel implements IPropertyViewModel,  IDraggableViewModel {
 
         constructor(propertyRep: PropertyMember, color : IColor, error : IError) {
@@ -1280,7 +1284,6 @@ namespace NakedObjects {
         parametersTemplate: string;
         propertyTemplate: string;
         parameterTemplate: string;
-
 
         menus: IMenusViewModel;
         object: IDomainObjectViewModel;

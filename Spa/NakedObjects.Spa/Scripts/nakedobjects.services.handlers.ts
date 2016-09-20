@@ -28,6 +28,7 @@ namespace NakedObjects {
         handleRecent($scope: INakedObjectsScope, routeData: PaneRouteData): void;
         handleAttachment(nakedObjectsScope: INakedObjectsScope, paneRouteData: PaneRouteData): void;
         handleApplicationProperties(nakedObjectsScope: INakedObjectsScope, paneRouteData: PaneRouteData): void;
+        handleMultiLineDialog(nakedObjectsScope: INakedObjectsScope, paneRouteData: PaneRouteData): void;
     }
 
     app.service("handlers",
@@ -511,6 +512,10 @@ namespace NakedObjects {
                 apvm.serverUrl = getAppPath();
 
                 apvm.clientVersion = (NakedObjects as any)["version"] || "Failed to write version";
+            }
+
+            handlers.handleMultiLineDialog = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
+             
             }
         });
 }

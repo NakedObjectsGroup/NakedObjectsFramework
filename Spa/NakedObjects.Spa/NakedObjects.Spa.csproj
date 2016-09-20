@@ -38,6 +38,7 @@
     <Content Include="Content\customTemplates\withActionButtonObjectView.html" />
     <Content Include="Content\customTemplates\withGroupedPropertiesObjectView.html" />
     <Content Include="Content\customTemplates\productList.html" />
+    <Content Include="Content\partials\multiLineDialog.html" />
     <Content Include="Content\partials\objectNotpersistent.html" />
     <Content Include="Content\partials\parameters.html" />
     <Content Include="Content\partials\properties.html" />
@@ -45,6 +46,7 @@
     <Content Include="Content\partials\readOnlyProperty.html" />
     <Content Include="Content\partials\attachment.html" />
     <Content Include="Content\partials\applicationProperties.html" />
+    <Content Include="Content\partials\singleMultiLineDialog.html" />
     <Content Include="Content\partials\singleApplicationProperties.html" />
     <Content Include="Content\partials\formActions.html" />
     <Content Include="Content\partials\collectionList.html" />

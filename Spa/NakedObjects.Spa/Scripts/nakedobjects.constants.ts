@@ -73,6 +73,8 @@ namespace NakedObjects {
     export const attachmentPath = "attachment";
     export const applicationPropertiesPath = "applicationProperties";
 
+    export const multiLineDialogPath = "multiLineDialog";
+
     //Restful Objects constants
     export const roDomainType = "x-ro-domain-type";
     export const roInvalidReason = "x-ro-invalidReason";

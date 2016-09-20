@@ -195,6 +195,10 @@ namespace NakedObjects {
         clearMessages: () => void;
     }
 
+    export interface IMultiLineDialogViewModel {
+        dialogs : IDialogViewModel[];
+    }
+
     export interface ICollectionPlaceholderViewModel {
         description: () => string;
         reload: () => void;
