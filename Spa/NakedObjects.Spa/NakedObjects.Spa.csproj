@@ -39,7 +39,9 @@
     <Content Include="Content\customTemplates\withGroupedPropertiesObjectView.html" />
     <Content Include="Content\customTemplates\productList.html" />
     <Content Include="Content\partials\objectNotpersistent.html" />
+    <Content Include="Content\partials\parameters.html" />
     <Content Include="Content\partials\properties.html" />
+    <Content Include="Content\partials\parameter.html" />
     <Content Include="Content\partials\readOnlyProperty.html" />
     <Content Include="Content\partials\attachment.html" />
     <Content Include="Content\partials\applicationProperties.html" />
