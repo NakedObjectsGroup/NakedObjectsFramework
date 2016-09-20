@@ -55,6 +55,12 @@ namespace NakedObjects {
     export const ciceroTemplate = getSvrPath() + "Content/partials/cicero.html";
     export const applicationPropertiesTemplate = getSvrPath() + "Content/partials/applicationProperties.html";
 
+    export const propertiesTemplate = getSvrPath() + "Content/partials/properties.html";
+    export const parametersTemplate = getSvrPath() + "Content/partials/parameters.html";
+    export const propertyTemplate = getSvrPath() + "Content/partials/readOnlyProperty.html";
+    export const parameterTemplate = getSvrPath() + "Content/partials/parameter.html";
+
+
     // routing constants 
 
     export const geminiPath = "gemini";

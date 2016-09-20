@@ -1276,6 +1276,12 @@ namespace NakedObjects {
         attachmentTemplate: string;
         applicationPropertiesTemplate: string;
 
+        propertiesTemplate: string;
+        parametersTemplate: string;
+        propertyTemplate: string;
+        parameterTemplate: string;
+
+
         menus: IMenusViewModel;
         object: IDomainObjectViewModel;
         menu: IMenuViewModel;

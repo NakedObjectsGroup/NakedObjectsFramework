@@ -102,6 +102,9 @@ namespace NakedObjects {
                 context.clearParmUpdater(routeData.paneId);
 
                 $scope.dialogTemplate = dialogTemplate;
+                $scope.parametersTemplate = parametersTemplate;
+                $scope.parameterTemplate = parameterTemplate;
+
                 const dialogViewModel = perPaneDialogViews[routeData.paneId];
                 const isAlreadyViewModel = action instanceof ActionViewModel;
                 const actionViewModel = !isAlreadyViewModel
@@ -367,6 +370,12 @@ namespace NakedObjects {
                 }
                 if ($scope.actionsTemplate !== newActionsTemplate) {
                     $scope.actionsTemplate = newActionsTemplate;
+                }
+                if ($scope.propertiesTemplate !== propertiesTemplate) {
+                    $scope.propertiesTemplate = propertiesTemplate;
+                }
+                if ($scope.propertyTemplate !== propertyTemplate) {
+                    $scope.propertyTemplate = propertyTemplate;
                 }
 
                 let focusTarget: FocusTarget;
