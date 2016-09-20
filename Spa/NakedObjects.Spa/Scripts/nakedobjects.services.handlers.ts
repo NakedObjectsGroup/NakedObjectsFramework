@@ -98,8 +98,8 @@ namespace NakedObjects {
             }
 
             function setDialog($scope: INakedObjectsScope,
-                action: ActionMember | ActionRepresentation | IActionViewModel,
-                routeData: PaneRouteData) {
+                                action: ActionMember | ActionRepresentation | IActionViewModel,
+                                routeData: PaneRouteData) {
                 context.clearParmUpdater(routeData.paneId);
 
                 $scope.dialogTemplate = dialogTemplate;
@@ -179,6 +179,7 @@ namespace NakedObjects {
                                 actionViewModel.makeInvokable(details);
                             }
                             setDialog($scope, actionViewModel || details, routeData);
+
                             focusManager.focusOn(FocusTarget.Dialog, 0, routeData.paneId);
                         }).
                         catch((reject: ErrorWrapper) => error.handleError(reject));
@@ -514,7 +515,44 @@ namespace NakedObjects {
                 apvm.clientVersion = (NakedObjects as any)["version"] || "Failed to write version";
             }
 
+
+            function setMultiLineDialog($scope: INakedObjectsScope,
+                                        holder: MenuRepresentation | DomainObjectRepresentation | IListViewModel,
+                                        newDialogId: string,
+                                        routeData: PaneRouteData,
+                                        focusTarget: FocusTarget,
+                                        actionViewModel?: IActionViewModel) {
+
+                const action = holder.actionMember(routeData.dialogId);
+                context.getInvokableAction(action).
+                    then(details => {
+                       
+                        $scope.multiLineDialogTemplate = multiLineDialogTemplate;
+                        $scope.parametersTemplate = parametersTemplate;
+                        $scope.parameterTemplate = parameterTemplate;
+
+                        const dialogViewModel = new MultiLineDialogViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $rootScope, routeData, details, 1 );
+
+                        $scope.multiLineDialog = dialogViewModel;
+                    }).
+                    catch((reject: ErrorWrapper) => error.handleError(reject));
+
+            }
+
             handlers.handleMultiLineDialog = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
+                if (routeData.menuId) {
+
+                    context.getMenu(routeData.menuId)
+                        .then((menu: MenuRepresentation) => {                        
+                            setMultiLineDialog($scope, menu, routeData.dialogId, routeData, FocusTarget.SubAction);
+
+                        })
+                        .catch((reject: ErrorWrapper) => {
+                            error.handleError(reject);
+                        });
+                } 
+
+
              
             }
         });

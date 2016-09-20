@@ -31,6 +31,8 @@ namespace NakedObjects {
         setMenu(menuId: string, paneId?: number): void;
         setDialog(dialogId: string, paneId?: number): void;
 
+        setMultiLineDialog(dialogId: string, paneId?: number): void;
+
         closeDialogKeepHistory(paneId?: number): void;
 
         closeDialogReplaceHistory(paneId?: number): void;
@@ -337,7 +339,8 @@ namespace NakedObjects {
             Page,
             ToTransient,
             ToRecent,
-            ToAttachment
+            ToAttachment,
+            ToMultiLineDialog,
         }
 
         function getId(key: string, search: any) {
@@ -360,6 +363,10 @@ namespace NakedObjects {
             return [akm.object, akm.interactionMode, akm.reload, akm.actions, akm.dialog, akm.collection, akm.prop];
         }
 
+        function validKeysForMultiLineDialog() {
+            return [akm.object,  akm.dialog,  akm.menu];
+        }
+
         function validKeysForList() {
             return [akm.reload, akm.actions, akm.dialog, akm.menu, akm.action, akm.page, akm.pageSize, akm.selected, akm.collection, akm.parm, akm.object];
         }
@@ -373,6 +380,8 @@ namespace NakedObjects {
                     return validKeysForObject();
                 case listPath:
                     return validKeysForList();
+                case multiLineDialogPath:
+                    return validKeysForMultiLineDialog();
             }
 
             return [];
@@ -437,6 +446,9 @@ namespace NakedObjects {
                     replace = setupPaneNumberAndTypes(paneId, attachmentPath);
                     search = clearPane(search, paneId);
                     break;
+                case (Transition.ToMultiLineDialog):
+                    replace = setupPaneNumberAndTypes(paneId, multiLineDialogPath);
+                    break;
                 default:
                     // null transition 
                     break;
@@ -492,6 +504,13 @@ namespace NakedObjects {
             const newValues = _.zipObject([key], [dialogId]) as _.Dictionary<string>;
             executeTransition(newValues, paneId, Transition.ToDialog, search => getId(key, search) !== dialogId);
         };
+
+        helper.setMultiLineDialog = (dialogId: string, paneId = 1) => {
+            const key = `${akm.dialog}${paneId}`;
+            const newValues = _.zipObject([key], [dialogId]) as _.Dictionary<string>;
+            executeTransition(newValues, paneId, Transition.ToMultiLineDialog, search => getId(key, search) !== dialogId);
+        };
+
 
         function closeOrCancelDialog(paneId: number, transition: Transition) {
             const key = `${akm.dialog}${paneId}`;
