@@ -162,6 +162,7 @@ namespace NakedObjects {
         title: string;
         description: string;
         presentationHint: string;
+        gotoResult: boolean;
 
         // doInvoke is called from template 
         doInvoke: (right?: boolean) => void;
@@ -183,7 +184,7 @@ namespace NakedObjects {
         id: string;
         parameters: IParameterViewModel[];
 
-        reset: (actionViewModel: IActionViewModel, routeData: PaneRouteData) => void;
+        reset: (actionViewModel: IActionViewModel, paneId : number) => void;
         refresh: () => void;
         deregister: () => void;
         clientValid: () => boolean;

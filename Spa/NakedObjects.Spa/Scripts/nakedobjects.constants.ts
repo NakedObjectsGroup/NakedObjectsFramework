@@ -60,7 +60,7 @@ namespace NakedObjects {
     export const parametersTemplate = getSvrPath() + "Content/partials/parameters.html";
     export const propertyTemplate = getSvrPath() + "Content/partials/readOnlyProperty.html";
     export const parameterTemplate = getSvrPath() + "Content/partials/parameter.html";
-
+    export const readOnlyParameterTemplate = getSvrPath() + "Content/partials/readOnlyParameter.html";
 
     // routing constants 
 

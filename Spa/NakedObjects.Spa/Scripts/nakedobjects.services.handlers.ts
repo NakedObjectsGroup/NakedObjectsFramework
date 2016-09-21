@@ -68,6 +68,11 @@ namespace NakedObjects {
                 new MenusViewModel(viewModelFactory)
             ];
 
+            const perPaneMultiLineDialogViews = [,
+                new MultiLineDialogViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $rootScope),
+                
+            ];
+
 
             function setVersionError(error: string) {
                 context.setError(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.SoftwareError, error));
@@ -114,7 +119,7 @@ namespace NakedObjects {
                         routeData)
                     : action as IActionViewModel;
 
-                dialogViewModel.reset(actionViewModel, routeData);
+                dialogViewModel.reset(actionViewModel, routeData.paneId);
                 $scope.dialog = dialogViewModel;
 
                 context.setParmUpdater(dialogViewModel.setParms, routeData.paneId);
@@ -520,8 +525,7 @@ namespace NakedObjects {
                                         holder: MenuRepresentation | DomainObjectRepresentation | IListViewModel,
                                         newDialogId: string,
                                         routeData: PaneRouteData,
-                                        focusTarget: FocusTarget,
-                                        actionViewModel?: IActionViewModel) {
+                                        focusTarget: FocusTarget) {
 
                 const action = holder.actionMember(routeData.dialogId);
                 context.getInvokableAction(action).
@@ -530,8 +534,13 @@ namespace NakedObjects {
                         $scope.multiLineDialogTemplate = multiLineDialogTemplate;
                         $scope.parametersTemplate = parametersTemplate;
                         $scope.parameterTemplate = parameterTemplate;
+                        $scope.readOnlyParameterTemplate = readOnlyParameterTemplate;
 
-                        const dialogViewModel = new MultiLineDialogViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $rootScope, routeData, details, 1 );
+                        const dialogViewModel = perPaneMultiLineDialogViews[routeData.paneId];
+
+                        if (!dialogViewModel.action || dialogViewModel.action.actionId() !== details.actionId()) {
+                            dialogViewModel.reset(routeData, details, 1);
+                        }
 
                         $scope.multiLineDialog = dialogViewModel;
                     }).
@@ -545,7 +554,6 @@ namespace NakedObjects {
                     context.getMenu(routeData.menuId)
                         .then((menu: MenuRepresentation) => {                        
                             setMultiLineDialog($scope, menu, routeData.dialogId, routeData, FocusTarget.SubAction);
-
                         })
                         .catch((reject: ErrorWrapper) => {
                             error.handleError(reject);

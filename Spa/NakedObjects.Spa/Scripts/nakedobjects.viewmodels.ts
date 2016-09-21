@@ -475,7 +475,8 @@ namespace NakedObjects {
         menuPath: string;
         title: string;
         description: string;
-        presentationHint : string;
+        presentationHint: string;
+        gotoResult = true;
 
         doInvoke: (right?: boolean) => void;
         execute: (pps: IParameterViewModel[], right?: boolean) => ng.IPromise<ActionResultRepresentation>;
@@ -518,9 +519,9 @@ namespace NakedObjects {
         id: string;
         parameters: IParameterViewModel[];
 
-        reset(actionViewModel: IActionViewModel, routeData: PaneRouteData) {
+        reset(actionViewModel: IActionViewModel, paneId : number) {
             this.actionViewModel = actionViewModel;
-            this.onPaneId = routeData.paneId;
+            this.onPaneId = paneId;
 
             const fields = this.context.getCurrentDialogValues(this.actionMember().actionId(), this.onPaneId);
 
@@ -531,6 +532,10 @@ namespace NakedObjects {
             this.isQueryOnly = actionViewModel.invokableActionRep.invokeLink().method() === "GET";
             this.resetMessage();
             this.id = actionViewModel.actionRep.actionId();
+        }
+
+        clear() {
+            this.reset(this.actionViewModel, this.onPaneId);
         }
 
         refresh() {
@@ -550,6 +555,7 @@ namespace NakedObjects {
         doInvoke = (right?: boolean) =>
             this.execute(right).
                 then((actionResult: ActionResultRepresentation) => {
+                    this.submitted = true;
                     if (actionResult.shouldExpectResult()) {
                         this.setMessage(actionResult.warningsOrMessages() || noResultMessage);
                     } else if (actionResult.resultType() === "void") {
@@ -585,7 +591,9 @@ namespace NakedObjects {
         clearMessages = () => {
             this.resetMessage();
             _.each(this.actionViewModel.parameters, parm => parm.clearMessage());
-        };        
+        };      
+
+        submitted : boolean = false;
     }
 
     export class MultiLineDialogViewModel implements IMultiLineDialogViewModel {
@@ -593,11 +601,23 @@ namespace NakedObjects {
         private createRow() {
             const dialogViewModel = new DialogViewModel(this.color, this.context, this.viewModelFactory, this.urlManager, this.focusManager, this.error, this.$rootScope);
             const actionViewModel = this.viewModelFactory.actionViewModel(this.action, dialogViewModel, this.routeData);
-            dialogViewModel.reset(actionViewModel, this.routeData);
+            actionViewModel.gotoResult = false;
+
+            dialogViewModel.reset(actionViewModel, 1);
+
+            dialogViewModel.doCloseKeepHistory = () => {
+                this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
+            };
+            dialogViewModel.doCloseReplaceHistory = () => {
+                this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
+            };
+
             return dialogViewModel;
         }
 
-        title : string;
+        title: string = "";
+        action: ActionMember | ActionRepresentation;
+        routeData: PaneRouteData;
 
         constructor(private color: IColor,
             private context: IContext,
@@ -605,18 +625,25 @@ namespace NakedObjects {
             private urlManager: IUrlManager,
             private focusManager: IFocusManager,
             private error: IError,
-            private $rootScope: ng.IRootScopeService,
-            private routeData: PaneRouteData,
-            private action: ActionMember | ActionRepresentation,
+            private $rootScope: ng.IRootScopeService) {
+
+        }
+
+        reset(routeData: PaneRouteData,
+            action: ActionMember | ActionRepresentation,
             initialCount: number) {
+
+            this.action = action;
+            this.routeData = routeData;
 
             initialCount = initialCount || 1;
 
             this.dialogs = _.map(_.range(initialCount), () => this.createRow());
             this.title = this.dialogs[0].title;
+            return this;
         }
 
-        dialogs: IDialogViewModel[];
+        dialogs: IDialogViewModel[] = [];
 
         add() {
             this.dialogs.push(this.createRow());
@@ -805,9 +832,7 @@ namespace NakedObjects {
             const invokeWithDialog = (right?: boolean) => {
                 this.context.clearDialogValues(this.onPaneId);
                 this.focusManager.focusOverrideOff();
-                // temp while implementing
                 this.urlManager.setDialog(actionViewModel.actionRep.actionId(), this.onPaneId);
-                //this.urlManager.setMultiLineDialog(actionViewModel.actionRep.actionId(), this.onPaneId);
             };
 
             const invokeWithoutDialog = (right?: boolean) =>
@@ -1316,6 +1341,7 @@ namespace NakedObjects {
 
         propertiesTemplate: string;
         parametersTemplate: string;
+        readOnlyParameterTemplate: string;
         propertyTemplate: string;
         parameterTemplate: string;
 

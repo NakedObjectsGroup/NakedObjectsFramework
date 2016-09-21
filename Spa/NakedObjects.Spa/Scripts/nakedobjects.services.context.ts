@@ -76,7 +76,7 @@ namespace NakedObjects {
                            args: _.Dictionary<Value>,
                            digest? : string): ng.IPromise<_.Dictionary<Value>>;
 
-        invokeAction(action: IInvokableAction, parms: _.Dictionary<Value>, fromPaneId? : number, toPaneId?: number): ng. IPromise<ActionResultRepresentation>;
+        invokeAction(action: IInvokableAction, parms: _.Dictionary<Value>, fromPaneId? : number, toPaneId?: number, gotoResult? : boolean): ng. IPromise<ActionResultRepresentation>;
 
         updateObject(object: DomainObjectRepresentation,
             props: _.Dictionary<Value>,
@@ -715,13 +715,15 @@ namespace NakedObjects {
 
         let nextTransientId = 0;
 
-        context.setResult = (action: IInvokableAction, result: ActionResultRepresentation, fromPaneId : number, toPaneId: number, page: number, pageSize: number) => {
-
+        function setMessages(result: ActionResultRepresentation) {
             const warnings = result.extensions().warnings() || [];
             const messages = result.extensions().messages() || [];
 
             $rootScope.$broadcast(geminiWarningEvent, warnings);
             $rootScope.$broadcast(geminiMessageEvent, messages);
+        }
+
+        context.setResult = (action: IInvokableAction, result: ActionResultRepresentation, fromPaneId : number, toPaneId: number, page: number, pageSize: number) => {
 
             if (!result.result().isNull()) {
                 if (result.resultType() === "object") {
@@ -785,7 +787,7 @@ namespace NakedObjects {
             }
         };
 
-        function invokeActionInternal(invokeMap: InvokeMap, action: IInvokableAction, fromPaneId: number, toPaneId: number, setDirty: () => void) {
+        function invokeActionInternal(invokeMap: InvokeMap, action: IInvokableAction, fromPaneId: number, toPaneId: number, setDirty: () => void, gotoResult = false) {
 
             focusManager.setCurrentPane(toPaneId);
 
@@ -798,7 +800,10 @@ namespace NakedObjects {
             return repLoader.retrieve(invokeMap, ActionResultRepresentation, action.parent.etagDigest).
                 then((result: ActionResultRepresentation) => {
                     setDirty();
-                    context.setResult(action, result, fromPaneId, toPaneId, 1, defaultPageSize);
+                    setMessages(result);
+                    if (gotoResult) {
+                        context.setResult(action, result, fromPaneId, toPaneId, 1, defaultPageSize);
+                    }
                     return result;
                 });
         }
@@ -833,13 +838,13 @@ namespace NakedObjects {
             return () => { };
         }
 
-        context.invokeAction = (action: IInvokableAction, parms: _.Dictionary<Value>, fromPaneId = 1, toPaneId = 1) => {
+        context.invokeAction = (action: IInvokableAction, parms: _.Dictionary<Value>, fromPaneId = 1, toPaneId = 1, gotoResult = false) => {
 
             const invokeOnMap = (iAction: IInvokableAction) => {
                 const im = iAction.getInvokeMap();
                 _.each(parms, (parm, k) => im.setParameter(k, parm));
                 const setDirty = getSetDirtyFunction(iAction, parms);
-                return invokeActionInternal(im, iAction, fromPaneId, toPaneId, setDirty);
+                return invokeActionInternal(im, iAction, fromPaneId, toPaneId, setDirty, gotoResult);
             }
 
             return invokeOnMap(action);
@@ -884,7 +889,6 @@ namespace NakedObjects {
                 });
         };
 
-
         context.validateUpdateObject = (object: DomainObjectRepresentation, props: _.Dictionary<Value>) => {
             const update = object.getUpdateMap();
             update.setValidateOnly();
@@ -898,7 +902,6 @@ namespace NakedObjects {
             _.each(props, (v, k) => persist.setMember(k, v));
             return repLoader.validate(persist, object.etagDigest);
         };
-
 
         const subTypeCache: _.Dictionary<_.Dictionary<ng.IPromise<boolean>>> = {};
 
