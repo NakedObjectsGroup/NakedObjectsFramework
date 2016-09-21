@@ -539,7 +539,7 @@ namespace NakedObjects {
                         const dialogViewModel = perPaneMultiLineDialogViews[routeData.paneId];
 
                         if (!dialogViewModel.action || dialogViewModel.action.actionId() !== details.actionId()) {
-                            dialogViewModel.reset(routeData, details, 1);
+                            dialogViewModel.reset(routeData, details);
                         }
 
                         $scope.multiLineDialog = dialogViewModel;

@@ -629,14 +629,12 @@ namespace NakedObjects {
 
         }
 
-        reset(routeData: PaneRouteData,
-            action: ActionMember | ActionRepresentation,
-            initialCount: number) {
+        reset(routeData: PaneRouteData, action: ActionMember | ActionRepresentation) {
 
             this.action = action;
             this.routeData = routeData;
 
-            initialCount = initialCount || 1;
+            const initialCount = action.extensions().multipleLines() || 1;
 
             this.dialogs = _.map(_.range(initialCount), () => this.createRow());
             this.title = this.dialogs[0].title;

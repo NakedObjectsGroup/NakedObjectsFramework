@@ -227,9 +227,11 @@ namespace NakedObjects {
                     // clear any previous dialog so we don't pick up values from it
                     context.clearDialogValues(paneId);
 
-                    // temp while implementing
-                    urlManager.setDialog(actionRep.actionId(), paneId);
-                    //urlManager.setMultiLineDialog(actionRep.actionId(), paneId);
+                    if (actionRep.extensions().multipleLines()) {
+                        urlManager.setMultiLineDialog(actionRep.actionId(), paneId);
+                    } else {
+                        urlManager.setDialog(actionRep.actionId(), paneId);
+                    }
 
                     focusManager.focusOn(FocusTarget.Dialog, 0, paneId); // in case dialog is already open
                 } :
