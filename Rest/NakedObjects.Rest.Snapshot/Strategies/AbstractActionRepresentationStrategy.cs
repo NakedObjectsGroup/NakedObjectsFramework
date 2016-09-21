@@ -121,6 +121,13 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
                 ext[JsonPropertyNames.CustomRenderEagerly] = true;
             }
 
+            var multipleLines = ActionContext.Action.NumberOfLines;
+
+            if (multipleLines.HasValue) {
+                ext = ext ?? new Dictionary<string, object>();
+                ext[JsonPropertyNames.CustomMultipleLines] = multipleLines.Value;
+            }
+
             return ext;
         }
 

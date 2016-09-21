@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
@@ -78,13 +79,18 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             public void SomeAction([MultiLine(NumberOfLines = 8, Width = 24)] int foo) {}
         }
 
+        private class Customer7 {
+            [MultiLine(NumberOfLines = 1)]
+            public void SomeAction() { }
+        }
+
         [TestMethod]
         public override void TestFeatureTypes() {
             FeatureType featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
+            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameters));
         }
 
@@ -145,6 +151,17 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             var multiLineFacetAnnotation = (MultiLineFacetAnnotation) facet;
             Assert.AreEqual(12, multiLineFacetAnnotation.NumberOfLines);
             Assert.AreEqual(36, multiLineFacetAnnotation.Width);
+        }
+
+        [TestMethod]
+        public void TestMultiLineAnnotationPickedUpOnAction() {
+            MethodInfo method = FindMethodIgnoreParms(typeof(Customer7), nameof(Customer7.SomeAction));
+            facetFactory.Process(Reflector, method, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IMultiLineFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is MultiLineFacetAnnotation);
+            var multiLineFacetAnnotation = (MultiLineFacetAnnotation)facet;
+            Assert.AreEqual(1, multiLineFacetAnnotation.NumberOfLines);
         }
     }
 

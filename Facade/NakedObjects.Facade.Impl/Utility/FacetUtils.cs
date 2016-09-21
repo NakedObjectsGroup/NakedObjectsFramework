@@ -63,9 +63,14 @@ namespace NakedObjects.Facade.Impl.Utility {
             return facet == null ? null : new Tuple<bool, string[]>(facet.Title, facet.Columns);
         }
 
-        public static int GetNumberOfLines(this ISpecification spec) {
+        public static int GetNumberOfLinesWithDefault(this ISpecification spec) {
             var multiline = spec.GetFacet<IMultiLineFacet>();
             return multiline == null ? 1 : multiline.NumberOfLines;
+        }
+
+        public static int? GetNumberOfLines(this ISpecification spec) {
+            var multiline = spec.GetFacet<IMultiLineFacet>();
+            return multiline == null ? (int?)null : multiline.NumberOfLines;
         }
 
         public static int GetTypicalLength(this ISpecification spec) {

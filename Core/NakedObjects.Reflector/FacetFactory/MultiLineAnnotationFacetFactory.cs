@@ -19,7 +19,7 @@ using NakedObjects.Util;
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class MultiLineAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public MultiLineAnnotationFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.ObjectsInterfacesPropertiesAndActionParameters) { }
+            : base(numericOrder, FeatureType.EverythingButCollections) { }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttribute<MultiLineAttribute>();
@@ -32,9 +32,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            if (TypeUtils.IsString(method.ReturnType)) {
-                Process(method, specification);
-            }
+            Process(method, specification);
         }
 
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {

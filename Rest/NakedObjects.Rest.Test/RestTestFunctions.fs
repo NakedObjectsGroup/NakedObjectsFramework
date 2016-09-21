@@ -361,6 +361,7 @@ let makeActionMember oType  mName (oName : string) fName desc rType parms  =
 
         let hParms = Seq.length parms > 0    
         let presHint = mName = "AnAction"
+        let multiLine = mName = "AnActionReturnsNull"
 
         let extArray = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
                         TProperty(JsonPropertyNames.Description, TObjectVal(desc));
@@ -369,6 +370,8 @@ let makeActionMember oType  mName (oName : string) fName desc rType parms  =
                         TProperty(JsonPropertyNames.HasParams, TObjectVal(hParms))]
 
         let extArray = if presHint then  TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class5 class6")) :: extArray else extArray
+
+        let extArray = if multiLine then  TProperty(JsonPropertyNames.CustomMultipleLines, TObjectVal(1)) :: extArray else extArray
 
         [ TProperty(JsonPropertyNames.Parameters, TObjectJson(parms));
           TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Action) );
@@ -390,6 +393,7 @@ let makeActionMemberSimple oType  mName (oName : string) fName desc rType parms 
 
         let hParms = Seq.length parms > 0     
         let presHint = mName = "AnAction"
+        let multiLine = mName = "AnActionReturnsNull"
 
         let extArray = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
                         TProperty(JsonPropertyNames.Description, TObjectVal(desc));
@@ -399,6 +403,7 @@ let makeActionMemberSimple oType  mName (oName : string) fName desc rType parms 
 
         let extArray = if presHint then  TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class5 class6")) :: extArray else extArray
 
+        let extArray = if multiLine then  TProperty(JsonPropertyNames.CustomMultipleLines, TObjectVal(1)) :: extArray else extArray
 
 
         [ TProperty(JsonPropertyNames.Parameters, TObjectJson(parms));

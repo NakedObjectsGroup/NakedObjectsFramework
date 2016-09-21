@@ -26,5 +26,6 @@ namespace NakedObjects.Facade {
         bool RenderEagerly { get; }
         bool IsVisible(IObjectFacade objectFacade);
         IConsentFacade IsUsable(IObjectFacade objectFacade);
+        int? NumberOfLines { get; }
     }
 }

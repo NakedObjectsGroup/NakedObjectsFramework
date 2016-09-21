@@ -33,6 +33,7 @@ namespace NakedObjects.Architecture.Reflect {
         PropertiesCollectionsAndActions = Properties | Collections | Actions,
         Everything = Objects | Properties | Collections | Actions | ActionParameters | Interfaces,
         EverythingButActionParameters = Objects | Properties | Collections | Actions | Interfaces,
+        EverythingButCollections = Objects | Properties | Actions | ActionParameters | Interfaces,
         ObjectsAndInterfaces = Objects | Interfaces
     }
 }

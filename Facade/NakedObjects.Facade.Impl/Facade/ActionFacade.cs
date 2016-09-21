@@ -83,6 +83,8 @@ namespace NakedObjects.Facade.Impl {
 
         public string PresentationHint => WrappedSpec.GetPresentationHint();
 
+        public int? NumberOfLines => WrappedSpec.GetNumberOfLines();
+
         #endregion
 
         public override bool Equals(object obj) {
