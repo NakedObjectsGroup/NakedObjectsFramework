@@ -156,7 +156,7 @@ namespace NakedObjects.Facade.Impl {
 
         public string PresentationHint => WrappedSpec.GetPresentationHint();
 
-        public int NumberOfLines => WrappedSpec.GetNumberOfLines();
+        public int NumberOfLines => WrappedSpec.GetNumberOfLinesWithDefault();
 
         #endregion
 

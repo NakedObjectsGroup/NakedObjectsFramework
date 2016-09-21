@@ -88,6 +88,7 @@ namespace RestfulObjects.Test.Data {
             return Container.Instances<MostSimple>().Single(x => x.Id == 1);
         }
 
+        [MultiLine(NumberOfLines = 1)]
         public virtual MostSimple AnActionReturnsNull() {
             return null;
         }

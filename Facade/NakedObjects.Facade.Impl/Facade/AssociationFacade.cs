@@ -211,7 +211,7 @@ namespace NakedObjects.Facade.Impl {
 
         public int TypicalLength => WrappedSpec.GetTypicalLength();
 
-        public int NumberOfLines => WrappedSpec.GetNumberOfLines();
+        public int NumberOfLines => WrappedSpec.GetNumberOfLinesWithDefault();
 
         public Tuple<bool, string[]> TableViewData => WrappedSpec.GetTableViewData();
 
