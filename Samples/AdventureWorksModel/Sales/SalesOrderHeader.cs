@@ -531,7 +531,7 @@ namespace AdventureWorksModel {
 
         #region Actions
 
-        #region CreateNewOrderDetail
+        #region Add New Detail
 
         [Description("Add a new line item to the order")]
         [MemberOrder(1)]
@@ -564,6 +564,29 @@ namespace AdventureWorksModel {
         public IQueryable<Product> AutoComplete0AddNewDetail([MinLength(2)] string name) {
             return ProductRepository.FindProductByName(name);
         }
+        #endregion
+
+        #region Add New Details
+        [Description("Add multiple line items to the order")]
+        [MemberOrder(2)]
+        [MultiLine(NumberOfLines = 2)]
+        public SalesOrderDetail AddNewDetails(Product product,
+                                     [DefaultValue((short)1), Range(1, 999)] short quantity)
+        {
+            return AddNewDetail(product, quantity);
+        }
+        public virtual string DisableAddNewDetails()
+        {
+            return DisableAddNewDetail();
+        }
+        [PageSize(20)]
+        public IQueryable<Product> AutoComplete0AddNewDetails([MinLength(2)] string name)
+        {
+            return AutoComplete0AddNewDetail(name);
+        }
+        #endregion
+
+        #region Remove Detail
 
         public void RemoveDetail(SalesOrderDetail detailToRemove) {
             if (Details.Contains(detailToRemove)) {
@@ -579,22 +602,13 @@ namespace AdventureWorksModel {
             return Details.FirstOrDefault();
         }
 
-        public void RemoveDetails(IEnumerable<SalesOrderDetail> detailsToRemove) {
+        public void RemoveDetails([ContributedAction] IEnumerable<SalesOrderDetail> detailsToRemove) {
             foreach (SalesOrderDetail salesOrderDetail in detailsToRemove) {
                 if (Details.Contains(salesOrderDetail)) {
                     Details.Remove(salesOrderDetail);
                 }
             }
         }
-
-        public IEnumerable<SalesOrderDetail> Choices0RemoveDetails() {
-            return Details;
-        }
-
-        public IEnumerable<SalesOrderDetail> Default0RemoveDetails() {
-            return Details;
-        }
-
         #endregion
 
         #region CreateNewCreditCard

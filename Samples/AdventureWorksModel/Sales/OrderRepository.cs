@@ -30,6 +30,7 @@ namespace AdventureWorksModel {
 
         [FinderAction]
         [MemberOrder(99)]
+        [QueryOnly]
         public SalesOrderHeader RandomOrder() {
             return Random<SalesOrderHeader>();
         }
