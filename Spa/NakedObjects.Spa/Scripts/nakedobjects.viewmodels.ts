@@ -588,6 +588,41 @@ namespace NakedObjects {
         };        
     }
 
+    export class MultiLineDialogViewModel implements IMultiLineDialogViewModel {
+
+        private createRow() {
+            const dialogViewModel = new DialogViewModel(this.color, this.context, this.viewModelFactory, this.urlManager, this.focusManager, this.error, this.$rootScope);
+            const actionViewModel = this.viewModelFactory.actionViewModel(this.action, dialogViewModel, this.routeData);
+            dialogViewModel.reset(actionViewModel, this.routeData);
+            return dialogViewModel;
+        }
+
+        title : string;
+
+        constructor(private color: IColor,
+            private context: IContext,
+            private viewModelFactory: IViewModelFactory,
+            private urlManager: IUrlManager,
+            private focusManager: IFocusManager,
+            private error: IError,
+            private $rootScope: ng.IRootScopeService,
+            private routeData: PaneRouteData,
+            private action: ActionMember | ActionRepresentation,
+            initialCount: number) {
+
+            initialCount = initialCount || 1;
+
+            this.dialogs = _.map(_.range(initialCount), () => this.createRow());
+            this.title = this.dialogs[0].title;
+        }
+
+        dialogs: IDialogViewModel[];
+
+        add() {
+            this.dialogs.push(this.createRow());
+        }
+    }
+
     export class PropertyViewModel extends ValueViewModel implements IPropertyViewModel,  IDraggableViewModel {
 
         constructor(propertyRep: PropertyMember, color : IColor, error : IError) {
@@ -770,7 +805,9 @@ namespace NakedObjects {
             const invokeWithDialog = (right?: boolean) => {
                 this.context.clearDialogValues(this.onPaneId);
                 this.focusManager.focusOverrideOff();
+                // temp while implementing
                 this.urlManager.setDialog(actionViewModel.actionRep.actionId(), this.onPaneId);
+                //this.urlManager.setMultiLineDialog(actionViewModel.actionRep.actionId(), this.onPaneId);
             };
 
             const invokeWithoutDialog = (right?: boolean) =>
@@ -1275,6 +1312,12 @@ namespace NakedObjects {
         collectionsTemplate: string;
         attachmentTemplate: string;
         applicationPropertiesTemplate: string;
+        multiLineDialogTemplate: string;
+
+        propertiesTemplate: string;
+        parametersTemplate: string;
+        propertyTemplate: string;
+        parameterTemplate: string;
 
         menus: IMenusViewModel;
         object: IDomainObjectViewModel;
@@ -1288,6 +1331,7 @@ namespace NakedObjects {
         cicero: ICiceroViewModel;
         attachment: IAttachmentViewModel;
         applicationProperties: IApplicationPropertiesViewModel;
+        multiLineDialog : IMultiLineDialogViewModel;
     }
 
     export class CiceroViewModel implements ICiceroViewModel {

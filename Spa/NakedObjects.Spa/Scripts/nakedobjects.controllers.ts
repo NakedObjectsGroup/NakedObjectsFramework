@@ -127,6 +127,13 @@ namespace NakedObjects {
         handlers.handleApplicationProperties($scope, routeData.pane1);
     });
 
+    app.controller("MultiLineDialogController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
+        pane1Dereg();
+        pane2Dereg();
+
+        const routeData = urlManager.getRouteData();
+        handlers.handleMultiLineDialog($scope, routeData.pane1);
+    });
 
     app.controller("BackgroundController", ($scope: INakedObjectsScope, handlers: IHandlers) => {
         handlers.handleBackground($scope);

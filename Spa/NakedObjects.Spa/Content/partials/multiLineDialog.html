@@ -1,0 +1,15 @@
+﻿<div class="title">
+    {{multiLineDialog.title}}
+</div>
+
+<div class="multiLineDialog" ng-repeat="dialog in multiLineDialog.dialogs">
+    
+    <form>
+        <div class="parameters" ng-include="parametersTemplate"></div>
+        <div class="co-validation">{{dialog.message}}</div>
+        <input class="ok" tabindex="0" type="submit" value="Submit" title="{{dialog.tooltip()}}" ng-disabled="!dialog.clientValid()" gemini-enter="dialog.doInvoke()" ng-click="dialog.doInvoke()" gemini-rightclick="dialog.doInvoke(true)" />       
+    </form>
+
+</div>
+<input class="ok" tabindex="0" type="submit" value="Add" title="{{dialog.tooltip()}}"  gemini-enter="multiLineDialog.add()" ng-click="multiLineDialog.add()" />
+<input class="ok" tabindex="0" type="submit" value="Submit All" title="{{dialog.tooltip()}}" ng-disabled="!dialog.clientValid()" gemini-enter="dialog.doInvoke()" ng-click="dialog.doInvoke()" gemini-rightclick="dialog.doInvoke(true)" />
