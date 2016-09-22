@@ -25,7 +25,7 @@ namespace NakedObjects.Facade.Impl.Utility {
         }
 
         public string CodeFromKey(string[] key, Type type) {
-            return key.Aggregate((s, t) => s + keySeparator + t);
+            return key.Length == 0 ? "" : key.Aggregate((s, t) => s + keySeparator + t);
         }
 
         #endregion
