@@ -11,6 +11,11 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Core.Util {
     public static class SpecificationFacets {
+
+        public static bool IsNeverPersisted(this ITypeSpec spec) {
+            return spec.IsViewModel;
+        }
+
         public static bool IsAlwaysImmutable(this ITypeSpec spec) {
             var immutableFacet = spec.GetFacet<IImmutableFacet>();
             if (immutableFacet == null) {

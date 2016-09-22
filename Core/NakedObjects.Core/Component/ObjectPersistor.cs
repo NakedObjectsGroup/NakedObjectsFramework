@@ -147,7 +147,10 @@ namespace NakedObjects.Core.Component {
                         throw new NotPersistableException(Log.LogAndReturn("cannot change immutable object"));
                     }
                     nakedObjectAdapter.Updating();
-                    objectStore.ExecuteSaveObjectCommand(nakedObjectAdapter);
+
+                    if (!spec.IsNeverPersisted()) {
+                        objectStore.ExecuteSaveObjectCommand(nakedObjectAdapter);
+                    }
                     nakedObjectAdapter.Updated();
                 }
             }
