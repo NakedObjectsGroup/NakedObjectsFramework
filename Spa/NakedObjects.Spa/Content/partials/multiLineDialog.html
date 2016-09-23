@@ -6,16 +6,17 @@
  </div>
 
  <div class="lineDialog" ng-repeat="dialog in multiLineDialog.dialogs">
-
   <form>
    <div class="parameters" ng-include="parametersTemplate"></div>
-   <div class="co-validation">{{dialog.message}}</div>
-   <input class="ok" tabindex="0" type="submit" value="Submit" title="{{dialog.tooltip()}}" ng-disabled="!dialog.clientValid() || dialog.submitted" gemini-enter="dialog.doInvoke()" ng-click="dialog.doInvoke()" gemini-rightclick="dialog.doInvoke(true)" />
-   <input class="clear" tabindex="0" type="submit" value="Clear" title="" ng-disabled="dialog.submitted" gemini-enter="dialog.clear()" ng-click="dialog.clear()" />
+    <div class="co-validation">{{dialog.message}}</div>
+    <input class="button" tabindex="0" type="submit" value="Submit" title="{{dialog.tooltip()}}" ng-disabled="!dialog.clientValid() || dialog.submitted" gemini-enter="dialog.doInvoke()" ng-click="dialog.doInvoke()" gemini-rightclick="dialog.doInvoke(true)" />
+   <input class="button" tabindex="0" type="submit" value="Remove" title="Remove line without submitting" ng-disabled="dialog.submitted" gemini-enter="multiLineDialog.clear($index)" ng-click="multiLineDialog.clear($index)" />
+   <input class="button" tabindex="0" type="submit" value="Add" title="Add another line below this one" gemini-enter="multiLineDialog.add($index)" ng-click="multiLineDialog.add($index)" />
   </form>
-
  </div>
-    <input class="ok" tabindex="0" type="submit" value="Add" title="Add another row" gemini-enter="multiLineDialog.add()" ng-click="multiLineDialog.add()" />
-    <input class="ok" tabindex="0" type="submit" value="Submit All" title="{{multiLineDialog.tooltip()}}" ng-disabled="!multiLineDialog.clientValid()" gemini-enter="multiLineDialog.submitAll()" ng-click="multiLineDialog.submitAll()" />
-    <input class="ok" tabindex="0" type="submit" value="Close" title="" gemini-enter="multiLineDialog.close()" ng-click="multiLineDialog.close()" />
+
+ <div class="endForm">
+  <input class="button" tabindex="0" type="submit" value="Submit All" title="{{multiLineDialog.tooltip()}}" ng-disabled="!multiLineDialog.clientValid()" gemini-enter="multiLineDialog.submitAll()" ng-click="multiLineDialog.submitAll()" />
+  <input class="button" tabindex="0" type="submit" value="Close" title="" gemini-enter="multiLineDialog.close()" ng-click="multiLineDialog.close()" />
+ </div>
 </div>
