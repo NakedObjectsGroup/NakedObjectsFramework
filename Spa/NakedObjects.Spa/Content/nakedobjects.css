@@ -762,6 +762,10 @@ input[type=submit] {
 }
 
 /*MultiLine dialog*/
+
+.multiLineDialog {
+    padding-left: 20px;
+}
 .lineDialog .parameters, .lineDialog .parameter, .lineDialog .co-validation {
     display: inline-block;
 }
@@ -769,7 +773,9 @@ input[type=submit] {
 .lineDialog input.ok, .lineDialog input.clear, .multiLineDialog input.ok {
     float: none;
 }
-
+.lineDialog .name {
+    padding-left: 10px;
+}
 .lineDialog:nth-child(n+3) .name { /*TODO: why does this not work unless n+3!*/
     display: none;
 }
