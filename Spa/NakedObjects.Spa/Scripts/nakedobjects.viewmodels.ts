@@ -655,8 +655,15 @@ namespace NakedObjects {
             return _.reduce(tooltips, (s, t) => `${s}\n${t}`);
         }
 
-        add() {
-            this.dialogs.push(this.createRow());
+        add(index : number) {
+            const front = _.slice(this.dialogs, 0, index + 1);
+            const back = _.slice(this.dialogs, index + 1, this.dialogs.length); 
+            // duff typings
+            this.dialogs = (<any>_).concat(front, this.createRow(), back);
+        }
+
+        clear(index : number) {
+            _.pullAt(this.dialogs, [index]);
         }
 
         submitAll() {
