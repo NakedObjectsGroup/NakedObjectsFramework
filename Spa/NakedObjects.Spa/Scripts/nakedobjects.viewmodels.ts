@@ -652,6 +652,14 @@ namespace NakedObjects {
             return _.reduce(tooltips, (s, t) => `${s}\n${t}`);
         }
 
+        invokeAndAdd(index: number) {
+            this.dialogs[index].doInvoke();
+            const front = _.slice(this.dialogs, 0, index + 1);
+            const back = _.slice(this.dialogs, index + 1, this.dialogs.length);
+            // duff typings
+            this.dialogs = (<any>_).concat(front, this.createRow(), back);
+        }
+
         add(index : number) {
             const front = _.slice(this.dialogs, 0, index + 1);
             const back = _.slice(this.dialogs, index + 1, this.dialogs.length); 
