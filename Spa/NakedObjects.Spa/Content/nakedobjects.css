@@ -223,6 +223,7 @@ html, #main, body, .background, .single, .split {
 .input-control input:not([type='checkbox']), textarea {
     width: 245px;
     height: 20px;
+    padding-left: 2px;
 }
 input, select {
     border-style: none;
@@ -790,6 +791,10 @@ input[type=submit] {
 }
 .lineDialog .parameter {
     width: 180px;
+}
+.multiLineDialog .endForm {
+    margin-top: 10px;
+    margin-left: 4px;
 }
 
 /*Cicero*/
