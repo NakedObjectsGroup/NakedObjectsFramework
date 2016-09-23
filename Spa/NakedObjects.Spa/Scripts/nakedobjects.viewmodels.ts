@@ -500,7 +500,6 @@ namespace NakedObjects {
             private error: IError,
             private $rootScope: ng.IRootScopeService) {
             super();
-            this.template = parameterTemplate;
         }
              
         private onPaneId: number;
@@ -520,7 +519,10 @@ namespace NakedObjects {
         id: string;
         parameters: IParameterViewModel[];
         submitted = false;
-        template : string; 
+
+        getParameters() {
+            return this.parameters;
+        }
 
         reset(actionViewModel: IActionViewModel, paneId : number) {
             this.actionViewModel = actionViewModel;
@@ -554,7 +556,6 @@ namespace NakedObjects {
             this.execute(right).
                 then((actionResult: ActionResultRepresentation) => {
                     this.submitted = true;
-                    this.template = readOnlyParameterTemplate;
                     if (actionResult.shouldExpectResult()) {
                         this.setMessage(actionResult.warningsOrMessages() || noResultMessage);
                     } else if (actionResult.resultType() === "void") {
@@ -603,10 +604,8 @@ namespace NakedObjects {
             dialogViewModel.reset(actionViewModel, 1);
 
             dialogViewModel.doCloseKeepHistory = () => {
-               // this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
             };
             dialogViewModel.doCloseReplaceHistory = () => {
-               // this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
             };
 
             return dialogViewModel;
@@ -653,6 +652,14 @@ namespace NakedObjects {
             return _.reduce(tooltips, (s, t) => `${s}\n${t}`);
         }
 
+        invokeAndAdd(index: number) {
+            this.dialogs[index].doInvoke();
+            const front = _.slice(this.dialogs, 0, index + 1);
+            const back = _.slice(this.dialogs, index + 1, this.dialogs.length);
+            // duff typings
+            this.dialogs = (<any>_).concat(front, this.createRow(), back);
+        }
+
         add(index : number) {
             const front = _.slice(this.dialogs, 0, index + 1);
             const back = _.slice(this.dialogs, index + 1, this.dialogs.length); 
@@ -666,7 +673,12 @@ namespace NakedObjects {
 
         submitAll() {
             if (this.clientValid()) {
-                _.each(this.dialogs, d => d.doInvoke());
+                _.each(this.dialogs, d => {
+                    if (!d.submitted) {
+
+                        d.doInvoke();
+                    }
+                });
             }
         }
 

@@ -183,6 +183,7 @@ namespace NakedObjects {
         title: string;
         id: string;
         parameters: IParameterViewModel[];
+        submitted : boolean;
 
         reset: (actionViewModel: IActionViewModel, paneId : number) => void;
         refresh: () => void;
