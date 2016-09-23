@@ -642,8 +642,22 @@ namespace NakedObjects {
 
         dialogs: IDialogViewModel[] = [];
 
+        clientValid() {
+            return _.every(this.dialogs, d => d.clientValid);
+        }
+
         add() {
             this.dialogs.push(this.createRow());
+        }
+
+        submitAll() {
+            if (this.clientValid()) {
+                _.each(this.dialogs, d => d.doInvoke());
+            }
+        }
+
+        close() {
+            this.urlManager.popUrlState();
         }
     }
 
