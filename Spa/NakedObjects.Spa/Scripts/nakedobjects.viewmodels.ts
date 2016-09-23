@@ -500,6 +500,7 @@ namespace NakedObjects {
             private error: IError,
             private $rootScope: ng.IRootScopeService) {
             super();
+            this.template = parameterTemplate;
         }
              
         private onPaneId: number;
@@ -519,6 +520,7 @@ namespace NakedObjects {
         id: string;
         parameters: IParameterViewModel[];
         submitted = false;
+        template : string; 
 
         reset(actionViewModel: IActionViewModel, paneId : number) {
             this.actionViewModel = actionViewModel;
@@ -547,12 +549,12 @@ namespace NakedObjects {
         tooltip = () => tooltip(this, this.parameters);
 
         setParms = () => _.forEach(this.parameters, p => this.context.setFieldValue(this.actionMember().actionId(), p.parameterRep.id(), p.getValue(), this.onPaneId));
-
       
         doInvoke = (right?: boolean) =>
             this.execute(right).
                 then((actionResult: ActionResultRepresentation) => {
                     this.submitted = true;
+                    this.template = readOnlyParameterTemplate;
                     if (actionResult.shouldExpectResult()) {
                         this.setMessage(actionResult.warningsOrMessages() || noResultMessage);
                     } else if (actionResult.resultType() === "void") {
@@ -601,10 +603,10 @@ namespace NakedObjects {
             dialogViewModel.reset(actionViewModel, 1);
 
             dialogViewModel.doCloseKeepHistory = () => {
-                this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
+               // this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
             };
             dialogViewModel.doCloseReplaceHistory = () => {
-                this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
+               // this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
             };
 
             return dialogViewModel;
