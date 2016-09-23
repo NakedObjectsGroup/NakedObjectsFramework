@@ -559,9 +559,17 @@ namespace NakedObjects {
                             error.handleError(reject);
                         });
                 } 
+                else if (routeData.objectId) {
+                    const oid = ObjectIdWrapper.fromObjectId(routeData.objectId);
+                    context.getObject(routeData.paneId, oid, routeData.interactionMode).
+                        then((object: DomainObjectRepresentation) => {
+                            setMultiLineDialog($scope, object, routeData.dialogId, routeData, FocusTarget.SubAction);
+                        }).
+                        catch((reject: ErrorWrapper) => {
+                            error.handleError(reject);
+                        });
+                }
 
-
-             
             }
         });
 }
