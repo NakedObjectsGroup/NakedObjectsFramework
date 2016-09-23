@@ -9,9 +9,9 @@
   <form>
    <div class="parameters" ng-include="parametersTemplate"></div>
     <div class="co-validation">{{dialog.message}}</div>
-    <input class="button" tabindex="0" type="submit" value="Submit" title="{{dialog.tooltip()}}" ng-disabled="!dialog.clientValid() || dialog.submitted" gemini-enter="dialog.doInvoke()" ng-click="dialog.doInvoke()" gemini-rightclick="dialog.doInvoke(true)" />
+    <input class="button" tabindex="0" type="submit" value="Submit" title="{{dialog.tooltip()}}" ng-disabled="!dialog.clientValid() || dialog.submitted" gemini-enter="dialog.doInvoke()" ng-click="dialog.doInvoke()"/>
    <input class="button" tabindex="0" type="submit" value="Remove" title="Remove line without submitting" ng-disabled="dialog.submitted" gemini-enter="multiLineDialog.clear($index)" ng-click="multiLineDialog.clear($index)" />
-   <input class="button" tabindex="0" type="submit" value="Add" title="Add another line below this one" gemini-enter="multiLineDialog.add($index)" ng-click="multiLineDialog.add($index)" />
+   <input class="button" tabindex="0" type="submit" value="New" title="Add a new line below this one" gemini-enter="multiLineDialog.add($index)" ng-click="multiLineDialog.add($index)" />
   </form>
  </div>
 
