@@ -500,7 +500,6 @@ namespace NakedObjects {
             private error: IError,
             private $rootScope: ng.IRootScopeService) {
             super();
-            this.template = parameterTemplate;
         }
              
         private onPaneId: number;
@@ -520,7 +519,7 @@ namespace NakedObjects {
         id: string;
         parameters: IParameterViewModel[];
         submitted = false;
-        template : string; 
+        
 
         reset(actionViewModel: IActionViewModel, paneId : number) {
             this.actionViewModel = actionViewModel;
@@ -554,7 +553,6 @@ namespace NakedObjects {
             this.execute(right).
                 then((actionResult: ActionResultRepresentation) => {
                     this.submitted = true;
-                    this.template = readOnlyParameterTemplate;
                     if (actionResult.shouldExpectResult()) {
                         this.setMessage(actionResult.warningsOrMessages() || noResultMessage);
                     } else if (actionResult.resultType() === "void") {
@@ -603,10 +601,8 @@ namespace NakedObjects {
             dialogViewModel.reset(actionViewModel, 1);
 
             dialogViewModel.doCloseKeepHistory = () => {
-               // this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
             };
             dialogViewModel.doCloseReplaceHistory = () => {
-               // this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
             };
 
             return dialogViewModel;
@@ -666,7 +662,12 @@ namespace NakedObjects {
 
         submitAll() {
             if (this.clientValid()) {
-                _.each(this.dialogs, d => d.doInvoke());
+                _.each(this.dialogs, d => {
+                    if (!d.submitted) {
+
+                        d.doInvoke();
+                    }
+                });
             }
         }
 
