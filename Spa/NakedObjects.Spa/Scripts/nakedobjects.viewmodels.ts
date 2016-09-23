@@ -643,7 +643,12 @@ namespace NakedObjects {
         dialogs: IDialogViewModel[] = [];
 
         clientValid() {
-            return _.every(this.dialogs, d => d.clientValid);
+            return _.every(this.dialogs, d => d.clientValid());
+        }
+
+        tooltip() {
+            const tooltips =   _.map(this.dialogs, (d, i) =>  `row: ${i} ${d.tooltip() || "OK"}`);
+            return _.reduce(tooltips, (s, t) => `${s}\n${t}`);
         }
 
         add() {
