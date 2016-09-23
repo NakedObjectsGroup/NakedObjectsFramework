@@ -535,10 +535,6 @@ namespace NakedObjects {
             this.id = actionViewModel.actionRep.actionId();
         }
 
-        clear() {
-            this.reset(this.actionViewModel, this.onPaneId);
-        }
-
         refresh() {
             const fields = this.context.getCurrentDialogValues(this.actionMember().actionId(), this.onPaneId);
             _.forEach(this.parameters, p => p.refresh(fields[p.id]));
