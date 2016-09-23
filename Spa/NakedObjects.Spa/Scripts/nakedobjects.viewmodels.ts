@@ -518,6 +518,7 @@ namespace NakedObjects {
         title: string;           
         id: string;
         parameters: IParameterViewModel[];
+        submitted = false;
 
         reset(actionViewModel: IActionViewModel, paneId : number) {
             this.actionViewModel = actionViewModel;
@@ -592,8 +593,6 @@ namespace NakedObjects {
             this.resetMessage();
             _.each(this.actionViewModel.parameters, parm => parm.clearMessage());
         };      
-
-        submitted : boolean = false;
     }
 
     export class MultiLineDialogViewModel implements IMultiLineDialogViewModel {

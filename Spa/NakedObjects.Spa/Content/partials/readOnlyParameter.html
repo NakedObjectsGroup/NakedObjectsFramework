@@ -3,7 +3,7 @@
         <label for="{{parameter.paneArgId}}">{{parameter.title}}</label>
     </div>
     <div ng-switch-when="ref" >
-        <div class="value">{{parameter.value || parameter.description}}</div>     
+        <div class="value">{{parameter.selectedChoice.toString()}}</div>     
     </div>
 
     <div ng-switch-when="scalar" ng-switch="parameter.returnType">
