@@ -134,6 +134,8 @@
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="images\calendar.png" />
+    <Content Include="images\minus.png" />
+    <Content Include="images\plus.png" />
     <Content Include="images\list.png" />
     <Content Include="images\summary.png" />
     <Content Include="images\table.png" />

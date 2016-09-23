@@ -767,18 +767,19 @@ input[type=submit] {
 .multiLineDialog {
     padding-left: 20px;
 }
-.lineDialog .parameters, .lineDialog .parameter, .lineDialog .co-validation {
+.lineDialog .parameters, .lineDialog .parameter, .lineDialog .co-validation, .lineDialog .buttons {
     display: inline-block;
 }
 
 .lineDialog input.button, .multiLineDialog input.button {
-    margin-top: 0px;
+    margin-top: -4px;
     margin-right: 0px;
-    padding-top: 0px;
+    padding-top: 2px;
     padding-bottom: 0px;
     padding-left: 2px;
     padding-right: 2px;
     float: none;
+    vertical-align: text-top;
 }
 .lineDialog .name {
     padding-left: 10px;
@@ -795,6 +796,12 @@ input[type=submit] {
 .multiLineDialog .endForm {
     margin-top: 10px;
     margin-left: 4px;
+}
+.lineDialog img {
+    width: 20px;
+}
+.lineDialog .ng-submitted input.button {
+    display: none;
 }
 
 /*Cicero*/
