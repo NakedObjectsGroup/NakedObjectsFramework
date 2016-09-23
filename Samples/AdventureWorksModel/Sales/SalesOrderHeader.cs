@@ -569,7 +569,7 @@ namespace AdventureWorksModel {
         #region Add New Details
         [Description("Add multiple line items to the order")]
         [MemberOrder(2)]
-        [MultiLine(NumberOfLines = 2)]
+        [MultiLine()]
         public SalesOrderDetail AddNewDetails(Product product,
                                      [DefaultValue((short)1), Range(1, 999)] short quantity)
         {
