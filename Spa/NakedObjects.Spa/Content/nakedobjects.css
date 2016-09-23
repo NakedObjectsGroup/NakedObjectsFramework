@@ -761,6 +761,19 @@ input[type=submit] {
     color: red;
 }
 
+/*MultiLine dialog*/
+.lineDialog .parameters, .lineDialog .parameter, .lineDialog .co-validation {
+    display: inline-block;
+}
+
+.lineDialog input.ok, .lineDialog input.clear, .multiLineDialog input.ok {
+    float: none;
+}
+
+.lineDialog:nth-child(n+3) .name { /*TODO: why does this not work unless n+3!*/
+    display: none;
+}
+
 /*Cicero*/
 .cicero, .cicero input, .cicero pre {
     background-color: black;
