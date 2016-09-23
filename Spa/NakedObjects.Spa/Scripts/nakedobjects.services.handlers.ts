@@ -550,7 +550,6 @@ namespace NakedObjects {
 
             handlers.handleMultiLineDialog = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
                 if (routeData.menuId) {
-
                     context.getMenu(routeData.menuId)
                         .then((menu: MenuRepresentation) => {                        
                             setMultiLineDialog($scope, menu, routeData.dialogId, routeData, FocusTarget.SubAction);

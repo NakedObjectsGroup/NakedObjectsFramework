@@ -340,7 +340,7 @@ namespace NakedObjects {
             ToTransient,
             ToRecent,
             ToAttachment,
-            ToMultiLineDialog,
+            ToMultiLineDialog
         }
 
         function getId(key: string, search: any) {
@@ -506,6 +506,7 @@ namespace NakedObjects {
         };
 
         helper.setMultiLineDialog = (dialogId: string, paneId = 1) => {
+            helper.pushUrlState();
             const key = `${akm.dialog}${paneId}`;
             const newValues = _.zipObject([key], [dialogId]) as _.Dictionary<string>;
             executeTransition(newValues, paneId, Transition.ToMultiLineDialog, search => getId(key, search) !== dialogId);

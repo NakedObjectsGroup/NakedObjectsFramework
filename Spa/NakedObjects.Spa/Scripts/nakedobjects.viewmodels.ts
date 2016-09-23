@@ -518,6 +518,7 @@ namespace NakedObjects {
         title: string;           
         id: string;
         parameters: IParameterViewModel[];
+        submitted = false;
 
         reset(actionViewModel: IActionViewModel, paneId : number) {
             this.actionViewModel = actionViewModel;
@@ -592,8 +593,6 @@ namespace NakedObjects {
             this.resetMessage();
             _.each(this.actionViewModel.parameters, parm => parm.clearMessage());
         };      
-
-        submitted : boolean = false;
     }
 
     export class MultiLineDialogViewModel implements IMultiLineDialogViewModel {
@@ -643,8 +642,27 @@ namespace NakedObjects {
 
         dialogs: IDialogViewModel[] = [];
 
+        clientValid() {
+            return _.every(this.dialogs, d => d.clientValid());
+        }
+
+        tooltip() {
+            const tooltips =   _.map(this.dialogs, (d, i) =>  `row: ${i} ${d.tooltip() || "OK"}`);
+            return _.reduce(tooltips, (s, t) => `${s}\n${t}`);
+        }
+
         add() {
             this.dialogs.push(this.createRow());
+        }
+
+        submitAll() {
+            if (this.clientValid()) {
+                _.each(this.dialogs, d => d.doInvoke());
+            }
+        }
+
+        close() {
+            this.urlManager.popUrlState();
         }
     }
 
