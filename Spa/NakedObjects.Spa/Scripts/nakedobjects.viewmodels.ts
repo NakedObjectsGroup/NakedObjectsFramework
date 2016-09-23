@@ -519,7 +519,10 @@ namespace NakedObjects {
         id: string;
         parameters: IParameterViewModel[];
         submitted = false;
-        
+
+        getParameters() {
+            return this.parameters;
+        }
 
         reset(actionViewModel: IActionViewModel, paneId : number) {
             this.actionViewModel = actionViewModel;
