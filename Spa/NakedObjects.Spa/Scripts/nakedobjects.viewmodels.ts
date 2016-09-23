@@ -642,6 +642,10 @@ namespace NakedObjects {
 
         dialogs: IDialogViewModel[] = [];
 
+        header() {
+            return this.dialogs.length === 0 ? [] : _.map(this.dialogs[0].parameters, p => p.title);
+        }
+
         clientValid() {
             return _.every(this.dialogs, d => d.clientValid());
         }
