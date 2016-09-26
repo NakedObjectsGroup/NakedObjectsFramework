@@ -10,8 +10,8 @@
  <div class="lineDialog" ng-repeat="dialog in multiLineDialog.dialogs">
   <form>
    <div class="parameters" ng-include="parametersTemplate"></div>
-    <div class="co-validation">{{dialog.message}}</div>
-    <input class="button" tabindex="0" type="submit" value="OK" title="{{dialog.tooltip()}}" ng-disabled="!dialog.clientValid() || dialog.submitted" gemini-enter="multiLineDialog.invokeAndAdd($index)" ng-click="multiLineDialog.invokeAndAdd($index)" />
+    <div class="co-validation">{{dialog.submitted ? 'Success' :dialog.message}}</div>
+    <input ng-if="!dialog.submitted" class="ok" tabindex="0" type="submit" value="OK" title="{{dialog.tooltip()}}" ng-disabled="!dialog.clientValid() || dialog.submitted" gemini-enter="multiLineDialog.invokeAndAdd($index)" ng-click="multiLineDialog.invokeAndAdd($index)" />
   </form>
  </div>
   <!--<input class="button" tabindex="0" type="submit" value="OK All" title="{{multiLineDialog.tooltip()}}" ng-disabled="!multiLineDialog.clientValid()" gemini-enter="multiLineDialog.submitAll()" ng-click="multiLineDialog.submitAll()" />-->

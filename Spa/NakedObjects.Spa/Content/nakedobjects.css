@@ -310,7 +310,7 @@ select {
 /* Drag and drop*/
 .value.droppable {
     border: solid;
-    border-width: 0px;
+    border-width: 1px;
     width: 245px;
     height: 20px;
 }
@@ -771,8 +771,8 @@ input[type=submit] {
     display: inline-block;
 }
 
-.lineDialog input.button, .multiLineDialog input.button {
-    margin-top: -4px;
+.lineDialog input.ok, .multiLineDialog input.button {
+    margin-top: 4px;
     margin-right: 0px;
     margin-left: 0px;
     padding-top: 1px;
@@ -780,7 +780,7 @@ input[type=submit] {
     padding-left: 2px;
     padding-right: 2px;
     float: none;
-    vertical-align: text-top;
+    vertical-align: top;
 }
 .lineDialog:nth-child(n+3) .name { /*TODO: why does this not work unless n+3!*/
     display: none;
@@ -801,6 +801,11 @@ input[type=submit] {
 }
 .lineDialog .ng-submitted input.button {
     display: none;
+}
+.lineDialog .co-validation {
+    vertical-align: top;
+    margin-top: 2px;
+    margin-left: 2px;
 }
 
 
