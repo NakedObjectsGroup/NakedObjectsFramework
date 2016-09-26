@@ -607,6 +607,9 @@ namespace NakedObjects {
             return dialogViewModel;
         }
 
+        objectFriendlyName: string; 
+        objectTitle : string; 
+
         title: string = "";
         action: ActionMember | ActionRepresentation;
         routeData: PaneRouteData;
@@ -671,7 +674,6 @@ namespace NakedObjects {
             if (this.clientValid()) {
                 _.each(this.dialogs, d => {
                     if (!d.submitted) {
-
                         d.doInvoke();
                     }
                 });
