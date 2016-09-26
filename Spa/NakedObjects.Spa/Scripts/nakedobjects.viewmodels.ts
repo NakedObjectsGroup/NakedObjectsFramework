@@ -533,6 +533,7 @@ namespace NakedObjects {
             this.isQueryOnly = actionViewModel.invokableActionRep.invokeLink().method() === "GET";
             this.resetMessage();
             this.id = actionViewModel.actionRep.actionId();
+            this.submitted = false;
         }
 
         refresh() {
@@ -599,10 +600,8 @@ namespace NakedObjects {
 
             dialogViewModel.reset(actionViewModel, 1);
 
-            dialogViewModel.doCloseKeepHistory = () => {
-            };
-            dialogViewModel.doCloseReplaceHistory = () => {
-            };
+            dialogViewModel.doCloseKeepHistory = () => { };
+            dialogViewModel.doCloseReplaceHistory = () => {  };
 
             return dialogViewModel;
         }
@@ -653,17 +652,18 @@ namespace NakedObjects {
 
         invokeAndAdd(index: number) {
             this.dialogs[index].doInvoke();
-            const front = _.slice(this.dialogs, 0, index + 1);
-            const back = _.slice(this.dialogs, index + 1, this.dialogs.length);
-            // duff typings
-            this.dialogs = (<any>_).concat(front, this.createRow(), back);
+            this.add(index);
         }
 
         add(index : number) {
-            const front = _.slice(this.dialogs, 0, index + 1);
-            const back = _.slice(this.dialogs, index + 1, this.dialogs.length); 
-            // duff typings
-            this.dialogs = (<any>_).concat(front, this.createRow(), back);
+            if (index === this.dialogs.length - 1) {
+                // if this is last dialog always add another
+                this.dialogs.push(this.createRow());
+            }
+            else if (_.takeRight(this.dialogs)[0].submitted) {
+                // if the last dialog is submitted add another 
+                this.dialogs.push(this.createRow());
+            }
         }
 
         clear(index : number) {
@@ -678,6 +678,10 @@ namespace NakedObjects {
                     }
                 });
             }
+        }
+
+        submittedCount() {
+            return (_.filter(this.dialogs, d => d.submitted)).length;
         }
 
         close() {
