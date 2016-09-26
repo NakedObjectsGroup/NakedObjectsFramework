@@ -599,10 +599,8 @@ namespace NakedObjects {
 
             dialogViewModel.reset(actionViewModel, 1);
 
-            dialogViewModel.doCloseKeepHistory = () => {
-            };
-            dialogViewModel.doCloseReplaceHistory = () => {
-            };
+            dialogViewModel.doCloseKeepHistory = () => { };
+            dialogViewModel.doCloseReplaceHistory = () => {  };
 
             return dialogViewModel;
         }
@@ -678,6 +676,10 @@ namespace NakedObjects {
                     }
                 });
             }
+        }
+
+        submittedCount() {
+            return (_.filter(this.dialogs, d => d.submitted)).length;
         }
 
         close() {
