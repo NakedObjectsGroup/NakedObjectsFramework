@@ -56,7 +56,7 @@ namespace AdventureWorksModel {
         #endregion
 
         #region LineTotal
-
+        [NotPersisted]
         [Disabled]
         [MemberOrder(40)]
         [Mask("C")]

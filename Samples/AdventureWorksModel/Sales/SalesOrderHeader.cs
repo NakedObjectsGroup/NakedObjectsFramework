@@ -570,10 +570,11 @@ namespace AdventureWorksModel {
         [Description("Add multiple line items to the order")]
         [MemberOrder(2)]
         [MultiLine()]
-        public SalesOrderDetail AddNewDetails(Product product,
+        public void AddNewDetails(Product product,
                                      [DefaultValue((short)1), Range(1, 999)] short quantity)
         {
-            return AddNewDetail(product, quantity);
+            var detail = AddNewDetail(product, quantity);
+            Container.Persist(ref detail);
         }
         public virtual string DisableAddNewDetails()
         {
