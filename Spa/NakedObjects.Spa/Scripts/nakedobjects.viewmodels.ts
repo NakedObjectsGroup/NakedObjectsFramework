@@ -533,6 +533,7 @@ namespace NakedObjects {
             this.isQueryOnly = actionViewModel.invokableActionRep.invokeLink().method() === "GET";
             this.resetMessage();
             this.id = actionViewModel.actionRep.actionId();
+            this.submitted = false;
         }
 
         refresh() {
