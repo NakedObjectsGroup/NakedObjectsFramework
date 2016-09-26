@@ -571,7 +571,7 @@ namespace AdventureWorksModel {
         [MemberOrder(2)]
         [MultiLine()]
         public void AddNewDetails(Product product,
-                                     [DefaultValue((short)1), Range(1, 999)] short quantity)
+                                     [DefaultValue((short)1)] short quantity)
         {
             var detail = AddNewDetail(product, quantity);
             Container.Persist(ref detail);
@@ -585,6 +585,14 @@ namespace AdventureWorksModel {
         {
             return AutoComplete0AddNewDetail(name);
         }
+
+        public string ValidateAddNewDetails(short quantity)
+        {
+            var rb = new ReasonBuilder();
+            rb.AppendOnCondition(quantity <= 0, "Must be > 0");
+            return rb.Reason;
+        }
+
         #endregion
 
         #region Remove Detail

@@ -769,6 +769,7 @@ input[type=submit] {
 }
 .multiLineDialog .columnHeader, .lineDialog .parameters, .lineDialog .parameter, .lineDialog .co-validation, .lineDialog .buttons {
     display: inline-block;
+    vertical-align: top;
 }
 
 .lineDialog input.ok {
@@ -801,6 +802,8 @@ input[type=submit] {
 }
 .lineDialog .input-control input:not([type='checkbox']){
     width: 170px;
+    height: 20px;
+    padding-top: 2px;
 }
 .multiLineDialog .done {
     float: none;
@@ -812,8 +815,13 @@ input[type=submit] {
     margin-top: 2px;
     margin-left: 2px;
 }
-
-
+.lineDialog .validation {
+    color: white;
+    margin-left: 5px;
+}
+.multiLineDialog .count {
+    margin-top: 8px;
+}
 /*Cicero*/
 .cicero, .cicero input, .cicero pre {
     background-color: black;
