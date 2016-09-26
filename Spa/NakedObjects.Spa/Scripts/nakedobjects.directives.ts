@@ -562,7 +562,9 @@ namespace NakedObjects {
                     case FocusTarget.CheckBox:
                         focusElements = $(elem).find(`#pane${paneId}.split div.collection td.checkbox input, div.single div.collection td.checkbox input`);
                         break;
-
+                    case FocusTarget.MultiLineDialogRow:
+                        focusElements = $(elem).find(`div.parameters div.parameter > div > div > div > div > :input:first-child, div.parameters div.parameter > div > div > div > div > div.value:first-child`);
+                        break;
                 }
 
                 if (focusElements) {
