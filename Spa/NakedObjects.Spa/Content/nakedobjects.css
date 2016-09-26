@@ -771,7 +771,7 @@ input[type=submit] {
     display: inline-block;
 }
 
-.lineDialog input.ok, .multiLineDialog input.button {
+.lineDialog input.ok {
     margin-top: 4px;
     margin-right: 0px;
     margin-left: 0px;
@@ -781,6 +781,14 @@ input[type=submit] {
     padding-right: 2px;
     float: none;
     vertical-align: top;
+    outline-color: lightgray;
+}
+.multiLineDialog input[type="submit"]:focus,.multiLineDialog input[type="submit"]:hover  {
+    outline-style: dashed;
+}
+.multiLineDialog input.close {
+    float: left;
+    margin: 7px;
 }
 .lineDialog:nth-child(n+3) .name { /*TODO: why does this not work unless n+3!*/
     display: none;
@@ -798,9 +806,6 @@ input[type=submit] {
     float: none;
     margin-top: 10px;
     margin-left: 7px;
-}
-.lineDialog .ng-submitted input.button {
-    display: none;
 }
 .lineDialog .co-validation {
     vertical-align: top;
