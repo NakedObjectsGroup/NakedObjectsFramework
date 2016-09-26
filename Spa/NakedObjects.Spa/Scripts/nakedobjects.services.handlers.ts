@@ -69,8 +69,7 @@ namespace NakedObjects {
             ];
 
             const perPaneMultiLineDialogViews = [,
-                new MultiLineDialogViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $rootScope),
-                
+                new MultiLineDialogViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $rootScope),                
             ];
 
 
@@ -541,6 +540,14 @@ namespace NakedObjects {
                         //if (!dialogViewModel.action || dialogViewModel.action.actionId() !== details.actionId()) {
                             dialogViewModel.reset(routeData, details);
                         //}
+
+                        if (holder instanceof DomainObjectRepresentation) {
+                            dialogViewModel.objectTitle = holder.title();
+                            dialogViewModel.objectFriendlyName = holder.extensions().friendlyName();        
+                        } else {
+                            dialogViewModel.objectFriendlyName = "";
+                            dialogViewModel.objectTitle = "";
+                        }
 
                         $scope.multiLineDialog = dialogViewModel;
                     }).
