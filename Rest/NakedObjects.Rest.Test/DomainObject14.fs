@@ -3072,6 +3072,44 @@ let GetWithCollectionObject(api : RestfulObjectsControllerBase) =
     let arguments = 
         TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
     
+    let makeListParm pmid pid fid rt = 
+      
+        
+        let p = 
+            TObjectJson([ TProperty
+                              (JsonPropertyNames.Links, 
+                               TArray([  ]))
+                          TProperty(JsonPropertyNames.Extensions, 
+                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
+                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal("list"))
+                                                  TProperty(JsonPropertyNames.ElementType, TObjectVal(rt))
+                                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
+                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
+        TProperty(pmid, p)
+
+    let makeStringParm pmid pid fid rt = 
+      
+        
+        let p = 
+            TObjectJson([ TProperty
+                              (JsonPropertyNames.Links, 
+                               TArray([  ]))
+                          TProperty(JsonPropertyNames.Extensions, 
+                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
+                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
+                                                  TProperty(JsonPropertyNames.MaxLength, TObjectVal(0))
+                                                  TProperty(JsonPropertyNames.Pattern, TObjectVal(""))
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("string"))
+                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
+        TProperty(pmid, p)
+
+    let p1 = makeListParm "ms" "LocallyContributedAction" "Ms" (ttc "RestfulObjects.Test.Data.MostSimple")
+    let p2 = makeListParm "ms" "LocallyContributedActionWithParm" "Ms" (ttc "RestfulObjects.Test.Data.MostSimple")
+    let p3 = makeStringParm "p1" "LocallyContributedActionWithParm" "P1" (ttc "string")
+   
+
     let expected = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
           TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1"))
@@ -3081,7 +3119,14 @@ let GetWithCollectionObject(api : RestfulObjectsControllerBase) =
                              TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(arguments :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, 
-                    TObjectJson([ TProperty("ACollection", TObjectJson(makeCollectionMember "ACollection" oid "A Collection" "" "list" 2 value))
+                    TObjectJson([ 
+                                  TProperty ("LocallyContributedAction", 
+                                    TObjectJson(makeObjectActionCollectionMember "LocallyContributedAction" oid mst [ p1 ]))
+
+                                  TProperty ("LocallyContributedActionWithParm", 
+                                    TObjectJson(makeObjectActionCollectionMember "LocallyContributedActionWithParm" oid mst [ p2; p3 ]))
+                    
+                                  TProperty("ACollection", TObjectJson(makeCollectionMember "ACollection" oid "A Collection" "" "list" 2 value))
                                   
                                   TProperty
                                       ("ACollectionViewModels", 
@@ -3226,6 +3271,44 @@ let GetWithCollectionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
     let arguments = 
         TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
     
+
+    let makeListParm pmid pid fid rt = 
+      
+        
+        let p = 
+            TObjectJson([ TProperty
+                              (JsonPropertyNames.Links, 
+                               TArray([  ]))
+                          TProperty(JsonPropertyNames.Extensions, 
+                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
+                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal("list"))
+                                                  TProperty(JsonPropertyNames.ElementType, TObjectVal(rt))
+                                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
+                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
+        TProperty(pmid, p)
+
+    let makeStringParm pmid pid fid rt = 
+      
+        
+        let p = 
+            TObjectJson([ TProperty
+                              (JsonPropertyNames.Links, 
+                               TArray([  ]))
+                          TProperty(JsonPropertyNames.Extensions, 
+                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
+                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
+                                                  TProperty(JsonPropertyNames.MaxLength, TObjectVal(0))
+                                                  TProperty(JsonPropertyNames.Pattern, TObjectVal(""))
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("string"))
+                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
+        TProperty(pmid, p)
+
+    let p1 = makeListParm "ms" "LocallyContributedAction" "Ms" (ttc "RestfulObjects.Test.Data.MostSimple")
+    let p2 = makeListParm "ms" "LocallyContributedActionWithParm" "Ms" (ttc "RestfulObjects.Test.Data.MostSimple")
+    let p3 = makeStringParm "p1" "LocallyContributedActionWithParm" "P1" (ttc "string")
+
     let expected = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
           TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1"))
@@ -3235,7 +3318,15 @@ let GetWithCollectionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                              TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(arguments :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, 
-                    TObjectJson([ TProperty("ACollection", TObjectJson(makeCollectionMemberSimple "ACollection" oid "A Collection" "" ResultTypes.List 2 value))
+                    TObjectJson([ 
+                                  TProperty ("LocallyContributedAction", 
+                                    TObjectJson(makeObjectActionCollectionMember "LocallyContributedAction" oid mst [ p1 ]))
+
+                                  TProperty ("LocallyContributedActionWithParm", 
+                                    TObjectJson(makeObjectActionCollectionMember "LocallyContributedActionWithParm" oid mst [ p2; p3 ]))
+                    
+                    
+                                  TProperty("ACollection", TObjectJson(makeCollectionMemberSimple "ACollection" oid "A Collection" "" ResultTypes.List 2 value))
                                   
                                   TProperty
                                       ("ACollectionViewModels", 

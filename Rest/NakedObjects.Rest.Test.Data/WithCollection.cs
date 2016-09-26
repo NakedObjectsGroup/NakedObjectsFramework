@@ -206,5 +206,14 @@ namespace RestfulObjects.Test.Data {
             get { return anEagerCollection; }
             set { anEagerCollection = value; }
         }
+
+        public IList<MostSimple> LocallyContributedAction([ContributedAction] IList<MostSimple> ms) {
+            return ms;
+        }
+
+        public IList<MostSimple> LocallyContributedActionWithParm([ContributedAction] IList<MostSimple> ms, string p1) {
+            return ms;
+        }
+
     }
 }
