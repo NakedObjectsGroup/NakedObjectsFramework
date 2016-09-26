@@ -653,6 +653,7 @@ namespace NakedObjects {
         invokeAndAdd(index: number) {
             this.dialogs[index].doInvoke();
             this.add(index);
+            this.focusManager.focusOn(FocusTarget.MultiLineDialogRow, index + 1, 1);
         }
 
         add(index : number) {

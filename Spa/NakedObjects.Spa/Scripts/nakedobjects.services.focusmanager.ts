@@ -17,6 +17,7 @@ namespace NakedObjects {
         TableItem,
         Input,
         CheckBox,
+        MultiLineDialogRow
     }
 
     export interface IFocusManager {
