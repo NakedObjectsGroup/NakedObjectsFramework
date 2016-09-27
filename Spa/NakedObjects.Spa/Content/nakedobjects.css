@@ -195,11 +195,12 @@ html, #main, body, .background, .single, .split {
     padding-right: 5px;
 }
 
-.reference, .value, .details {
+.reference, .value, .details, select {
     width: 245px;
     padding-left: 5px;
     padding-right: 5px;
-    margin: 1px;
+    margin-top: 1px;
+    margin-bottom: 1px;
 }
 
 .property .reference img {
@@ -784,24 +785,25 @@ input[type=submit] {
     vertical-align: top;
     outline-color: lightgray;
 }
-.multiLineDialog input[type="submit"]:focus,.multiLineDialog input[type="submit"]:hover  {
+.multiLineDialog input:focus,.multiLineDialog input:hover  {
+    outline-width: 1px;
     outline-style: dashed;
 }
 .multiLineDialog input.close {
     float: left;
-    margin: 7px;
+    margin: 9px;
 }
 .lineDialog:nth-child(n+3) .name { /*TODO: why does this not work unless n+3!*/
     display: none;
 }
-.multiLineDialog .columnHeader,.lineDialog .parameter {
-    width: 180px;
+.multiLineDialog .columnHeader {
+    width: 245px;
+    padding-left: 10px;
 }
 .multiLineDialog .columnHeader {
     padding-left: 5px;
 }
 .lineDialog .input-control input:not([type='checkbox']){
-    width: 170px;
     height: 20px;
     padding-top: 2px;
 }
