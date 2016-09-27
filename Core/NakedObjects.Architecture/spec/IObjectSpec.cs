@@ -36,6 +36,11 @@ namespace NakedObjects.Architecture.Spec {
         /// </summary>
         IActionSpec[] GetFinderActions();
 
+        /// <summary>
+        ///     Returns an array of actions that are contributed to a collection of type
+        /// </summary>
+        IActionSpec[] GetLocallyContributedActions(ITypeSpec typeSpec);
+
         #endregion
     }
 

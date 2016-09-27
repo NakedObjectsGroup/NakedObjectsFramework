@@ -41,30 +41,45 @@ namespace NakedObjects.Reflect.FacetFactory {
                     if (type.IsParseable) {
                         Log.WarnFormat("ContributedAction attribute added to a value parameter type: {0}", member.Name);
                     }
-                    else {
-                        if (type.IsCollection) {
-                            if (!type.IsQueryable) {
-                                Log.WarnFormat("ContributedAction attribute added to a collection parameter type other than IQueryable: {0}", member.Name);
-                            }
-                            else {
-                                var returnType = reflector.LoadSpecification<IObjectSpecImmutable>(member.ReturnType);
-                                if (returnType.IsCollection) {
-                                    Log.WarnFormat("ContributedAction attribute added to an action that returns a collection: {0}", member.Name);
-                                }
-                                else {
-                                    Type elementType = p.ParameterType.GetGenericArguments()[0];
-                                    type = reflector.LoadSpecification<IObjectSpecImmutable>(elementType);
-                                    facet.AddCollectionContributee(type, attribute.SubMenu, attribute.Id);
-                                }
-                            }
+                    else if (type.IsCollection) {
+                        var parent = reflector.LoadSpecification(member.DeclaringType);
+
+                        if (parent is IObjectSpecBuilder) {
+                            AddLocalCollectionContributedAction(reflector,  p, facet);
                         }
                         else {
-                            facet.AddObjectContributee(type, attribute.SubMenu, attribute.Id);
+                            AddCollectionContributedAction(reflector, member, type, p, facet, attribute);
                         }
+                    }
+                    else {
+                        facet.AddObjectContributee(type, attribute.SubMenu, attribute.Id);
                     }
                 }
             }
             FacetUtils.AddFacet(facet);
+        }
+
+        private static void AddCollectionContributedAction(IReflector reflector, MethodInfo member, IObjectSpecImmutable type, ParameterInfo p, ContributedActionFacet facet, ContributedActionAttribute attribute) {
+            if (!type.IsQueryable) {
+                Log.WarnFormat("ContributedAction attribute added to a collection parameter type other than IQueryable: {0}", member.Name);
+            }
+            else {
+                var returnType = reflector.LoadSpecification<IObjectSpecImmutable>(member.ReturnType);
+                if (returnType.IsCollection) {
+                    Log.WarnFormat("ContributedAction attribute added to an action that returns a collection: {0}", member.Name);
+                }
+                else {
+                    Type elementType = p.ParameterType.GetGenericArguments()[0];
+                    type = reflector.LoadSpecification<IObjectSpecImmutable>(elementType);
+                    facet.AddCollectionContributee(type, attribute.SubMenu, attribute.Id);
+                }
+            }
+        }
+
+        private static void AddLocalCollectionContributedAction(IReflector reflector,  ParameterInfo p, ContributedActionFacet facet) {
+            Type elementType = p.ParameterType.GetGenericArguments()[0];
+            var type = reflector.LoadSpecification<IObjectSpecImmutable>(elementType);
+            facet.AddLocalCollectionContributee(type, p.Name);
         }
 
         public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {

@@ -103,5 +103,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
 
             return new CollectionWithDetailsRepresentationStrategy(oidStrategy, req, propertyContext, flags);
         }
+
+        public abstract InlineActionRepresentation[] GetActions();
     }
 }

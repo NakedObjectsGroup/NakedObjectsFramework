@@ -19,6 +19,7 @@ namespace NakedObjects.Meta.Facet {
     public sealed class ContributedActionFacet : FacetAbstract, IContributedActionFacet {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ContributedActionFacet));
 
+        private readonly List<Tuple<IObjectSpecImmutable, string>> localCollectionContributees = new List<Tuple<IObjectSpecImmutable, string>>();
         private readonly List<Tuple<IObjectSpecImmutable, string, string>> collectionContributees = new List<Tuple<IObjectSpecImmutable, string, string>>();
         private readonly List<Tuple<IObjectSpecImmutable, string, string>> objectContributees = new List<Tuple<IObjectSpecImmutable, string, string>>();
 
@@ -33,6 +34,10 @@ namespace NakedObjects.Meta.Facet {
 
         public bool IsContributedToCollectionOf(IObjectSpecImmutable spec) {
             return collectionContributees.Select(t => t.Item1).Any(spec.IsOfType);
+        }
+
+        public bool IsContributedToLocalCollectionOf(IObjectSpecImmutable spec) {
+            return localCollectionContributees.Select(t => t.Item1).Any(spec.IsOfType);
         }
 
         public string SubMenuWhenContributedTo(IObjectSpecImmutable spec) {
@@ -52,6 +57,10 @@ namespace NakedObjects.Meta.Facet {
         //Here the type is the ElementType of the collection, not the type of collection.
         public void AddCollectionContributee(IObjectSpecImmutable type, string subMenu, string id) {
             collectionContributees.Add(new Tuple<IObjectSpecImmutable, string, string>(type, subMenu, id));
+        }
+
+        public void AddLocalCollectionContributee(IObjectSpecImmutable type, string id) {
+            localCollectionContributees.Add(new Tuple<IObjectSpecImmutable, string>(type, id));
         }
 
         private Tuple<IObjectSpecImmutable, string, string> FindContributee(IObjectSpecImmutable spec) {

@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Runtime.Serialization;
 using NakedObjects.Facade;
@@ -40,6 +41,15 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             if (value != null) {
                 optionals.Add(new OptionalProperty(JsonPropertyNames.Value, value));
             }
+
+
+            var actions = collectionRepresentationStrategy.GetActions();
+
+            if (actions.Length > 0) {
+                var members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object)m));
+                optionals.Add(new OptionalProperty(JsonPropertyNames.Members, members));
+            }
+
 
             if (optionals.Count == 0) {
                 return new InlineCollectionRepresentation(oidStrategy, collectionRepresentationStrategy);
