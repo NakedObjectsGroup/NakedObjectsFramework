@@ -63,6 +63,13 @@ namespace NakedObjects.Meta.SpecImmutable {
             });
         }
 
+        public bool IsContributedToLocalCollectionOf(IObjectSpecImmutable objectSpecImmutable) {
+            return Parameters.Any(parm => {
+                var facet = GetFacet<IContributedActionFacet>();
+                return facet != null && facet.IsContributedToLocalCollectionOf(objectSpecImmutable);
+            });
+        }
+
         #endregion
 
         private bool HasReturn() {

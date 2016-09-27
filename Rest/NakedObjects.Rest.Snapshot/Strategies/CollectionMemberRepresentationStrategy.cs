@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Linq;
 using System.Net.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
@@ -22,6 +23,10 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
 
         public override int? GetSize() {
             return PropertyContext.Property.Count(PropertyContext.Target);
+        }
+
+        public override InlineActionRepresentation[] GetActions() {
+            return new InlineActionRepresentation[] {};
         }
     }
 }

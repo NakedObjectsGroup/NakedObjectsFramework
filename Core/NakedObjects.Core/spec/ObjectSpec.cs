@@ -64,6 +64,10 @@ namespace NakedObjects.Core.Spec {
             return finderActions ?? (finderActions = MemberFactory.CreateActionSpecs(InnerSpec.FinderActions));
         }
 
+        public IActionSpec[] GetLocallyContributedActions(ITypeSpec typeSpec) {
+            return ObjectActions.Where(oa => oa.IsLocallyContributedTo(typeSpec)).ToArray();
+        }
+
         #endregion
 
         protected override PersistableType GetPersistable() {
