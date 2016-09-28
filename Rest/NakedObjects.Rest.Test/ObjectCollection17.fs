@@ -52,6 +52,8 @@ let GetCollectionProperty(api : RestfulObjectsControllerBase) =
                              TObjectJson(obj2) ]))
           TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable"))
           
+          membersProp((sprintf "%s/%s" oType oid), roType)
+
           TProperty
               (JsonPropertyNames.Links, 
                
@@ -110,6 +112,7 @@ let GetCollectionPropertyWithInlineFlag(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Value, 
                     TArray([ TObjectJson(obj1)
                              TObjectJson(obj2) ]))
+          membersProp((sprintf "%s/%s" oType oid), roType)
           TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable"))
           
           TProperty
@@ -211,6 +214,7 @@ let GetCollectionPropertySimpleOnly(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Value, 
                     TArray([ TObjectJson(obj1)
                              TObjectJson(obj2) ]))
+          membersProp((sprintf "%s/%s" oType oid), roType)
           TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object (oType))
@@ -252,6 +256,7 @@ let GetCollectionSetProperty(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Value, 
                     TArray([ TObjectJson(obj1)
                              TObjectJson(obj2) ]))
+          membersProp((sprintf "%s/%s" oType oid), roType)
           TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable"))
           
           TProperty
@@ -303,6 +308,7 @@ let GetCollectionSetPropertySimpleOnly(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Value, 
                     TArray([ TObjectJson(obj1)
                              TObjectJson(obj2) ]))
+          membersProp((sprintf "%s/%s" oType oid), roType)
           TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object (oType))
@@ -347,6 +353,7 @@ let GetCollectionPropertyWithMediaType(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Value, 
                     TArray([ TObjectJson(obj1)
                              TObjectJson(obj2) ]))
+          membersProp((sprintf "%s/%s" oType oid), roType)
           TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable"))
           
           TProperty
@@ -395,6 +402,7 @@ let GetDisabledCollectionProperty(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Value, 
                     TArray([ TObjectJson(obj1)
                              TObjectJson(obj2) ]))
+          membersProp((sprintf "%s/%s" oType oid), roType)
           TProperty(JsonPropertyNames.DisabledReason, TObjectVal(msg))
           
           TProperty

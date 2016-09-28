@@ -348,6 +348,45 @@ let makeArgs parms =
     let getArg pmid = TProperty(pmid, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]));
     let argVals = parms |> Seq.map (fun i -> match i with | TProperty(s, _) -> s ) |> Seq.map (fun s -> getArg s)
     TObjectJson(argVals) 
+  
+let makeListParm pmid pid fid rt = 
+      
+        
+        let p = 
+            TObjectJson([ TProperty
+                              (JsonPropertyNames.Links, 
+                               TArray([  ]))
+                          TProperty(JsonPropertyNames.Extensions, 
+                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
+                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal("list"))
+                                                  TProperty(JsonPropertyNames.ElementType, TObjectVal(rt))
+                                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
+                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
+        TProperty(pmid, p)
+
+let makeStringParm pmid pid fid rt = 
+      
+        
+        let p = 
+            TObjectJson([ TProperty
+                              (JsonPropertyNames.Links, 
+                               TArray([  ]))
+                          TProperty(JsonPropertyNames.Extensions, 
+                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
+                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
+                                                  TProperty(JsonPropertyNames.MaxLength, TObjectVal(0))
+                                                  TProperty(JsonPropertyNames.Pattern, TObjectVal(""))
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("string"))
+                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
+        TProperty(pmid, p)
+
+
+let p1 ms = makeListParm "ms" "LocallyContributedAction" "Ms" ms
+let p2 ms = makeListParm "ms" "LocallyContributedActionWithParm" "Ms" ms
+let p3 = makeStringParm "p1" "LocallyContributedActionWithParm" "P1" (ttc "string")
+  
     
 let makeActionMember oType  mName (oName : string) fName desc rType parms  =
         let index = oName.IndexOf("/")
@@ -1340,6 +1379,13 @@ let makeObjectActionCollectionMemberNoParms mName oName eType  = makeActionMembe
 
 let makeObjectActionCollectionMemberNoParmsSimple mName oName eType  = makeActionMemberCollectionSimple "objects" mName oName (makeFriendly(mName)) "" ResultTypes.List eType []
 
+let membersProp (oName : string, oType : string) = 
+          TProperty(JsonPropertyNames.Members, 
+                    TObjectJson([ TProperty("LocallyContributedAction", TObjectJson(makeObjectActionCollectionMember "LocallyContributedAction" oName oType [ p1 oType ]))
+                                  TProperty("LocallyContributedActionWithParm", TObjectJson(makeObjectActionCollectionMember "LocallyContributedActionWithParm" oName oType [ p2 oType; p3 ])) ]))
+
+
+
 let makeCollectionMemberTypeValue mName (oName : string) fName desc rType size cType cName cValue (dValue : TProp list) =
       let oTypeName = oName.Substring(0, oName.IndexOf("/"))
       let order = if desc = "" then 0 else 2
@@ -1357,50 +1403,6 @@ let makeCollectionMemberTypeValue mName (oName : string) fName desc rType size c
 
       let extArray = if renderEagerly then  TProperty(JsonPropertyNames.CustomRenderEagerly, TObjectVal(true)) :: extArray else extArray
 
-      let makeListParm pmid pid fid rt = 
-            
-        let p = 
-            TObjectJson([ TProperty
-                              (JsonPropertyNames.Links, 
-                               TArray([  ]))
-                          TProperty(JsonPropertyNames.Extensions, 
-                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
-                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal("list"))
-                                                  TProperty(JsonPropertyNames.ElementType, TObjectVal(rt))
-                                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
-                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
-        TProperty(pmid, p)
-
-      let makeStringParm pmid pid fid rt = 
-      
-        
-        let p = 
-            TObjectJson([ TProperty
-                              (JsonPropertyNames.Links, 
-                               TArray([  ]))
-                          TProperty(JsonPropertyNames.Extensions, 
-                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
-                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
-                                                  TProperty(JsonPropertyNames.MaxLength, TObjectVal(0))
-                                                  TProperty(JsonPropertyNames.Pattern, TObjectVal(""))
-                                                  TProperty(JsonPropertyNames.Format, TObjectVal("string"))
-                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
-        TProperty(pmid, p)
-
-
-      let p1 = makeListParm "ms" "LocallyContributedAction" "Ms" (ttc "RestfulObjects.Test.Data.MostSimple")
-      let p2 = makeListParm "ms" "LocallyContributedActionWithParm" "Ms" (ttc "RestfulObjects.Test.Data.MostSimple")
-      let p3 = makeStringParm "p1" "LocallyContributedActionWithParm" "P1" (ttc "string")
-    
-
-      let membersProp = 
-          TProperty(JsonPropertyNames.Members, 
-                    TObjectJson([ TProperty("LocallyContributedAction", TObjectJson(makeObjectActionCollectionMember "LocallyContributedAction" oName (ttc "RestfulObjects.Test.Data.MostSimple") [ p1 ]))
-                                  TProperty("LocallyContributedActionWithParm", TObjectJson(makeObjectActionCollectionMember "LocallyContributedActionWithParm" oName (ttc "RestfulObjects.Test.Data.MostSimple") [ p2; p3 ])) ]))
-
-
       let members = mName = "AnEagerCollection"
 
       let props = [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Collection) );
@@ -1412,7 +1414,7 @@ let makeCollectionMemberTypeValue mName (oName : string) fName desc rType size c
                     TProperty(JsonPropertyNames.Links, TArray ([ TObjectJson( detailsLink);
                                                                   ]))]
 
-      let props = if members then membersProp :: props else props
+      let props = if members then membersProp(oName, cType) :: props else props
       props
 let makeCollectionMemberWithValue mName (oName : string) fName desc rType values size cType cText =
       let oTypeName = oName.Substring(0, oName.IndexOf("/"))
@@ -1431,49 +1433,10 @@ let makeCollectionMemberWithValue mName (oName : string) fName desc rType values
       let extArray = if presHint then  TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class7 class8")) :: extArray else extArray
       let extArray = if renderEagerly then  TProperty(JsonPropertyNames.CustomRenderEagerly, TObjectVal(true)) :: extArray else extArray
 
-      let makeListParm pmid pid fid rt = 
-            
-        let p = 
-            TObjectJson([ TProperty
-                              (JsonPropertyNames.Links, 
-                               TArray([  ]))
-                          TProperty(JsonPropertyNames.Extensions, 
-                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
-                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal("list"))
-                                                  TProperty(JsonPropertyNames.ElementType, TObjectVal(rt))
-                                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
-                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
-        TProperty(pmid, p)
-
-      let makeStringParm pmid pid fid rt = 
-      
-        
-        let p = 
-            TObjectJson([ TProperty
-                              (JsonPropertyNames.Links, 
-                               TArray([  ]))
-                          TProperty(JsonPropertyNames.Extensions, 
-                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
-                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
-                                                  TProperty(JsonPropertyNames.MaxLength, TObjectVal(0))
-                                                  TProperty(JsonPropertyNames.Pattern, TObjectVal(""))
-                                                  TProperty(JsonPropertyNames.Format, TObjectVal("string"))
-                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
-        TProperty(pmid, p)
-
-
-      let p1 = makeListParm "ms" "LocallyContributedAction" "Ms" (ttc "RestfulObjects.Test.Data.MostSimple")
-      let p2 = makeListParm "ms" "LocallyContributedActionWithParm" "Ms" (ttc "RestfulObjects.Test.Data.MostSimple")
-      let p3 = makeStringParm "p1" "LocallyContributedActionWithParm" "P1" (ttc "string")
+     
     
       
-      let membersProp = 
-          TProperty(JsonPropertyNames.Members, 
-                    TObjectJson([ TProperty("LocallyContributedAction", TObjectJson(makeObjectActionCollectionMember "LocallyContributedAction" oName (ttc "RestfulObjects.Test.Data.MostSimple") [ p1 ]))
-                                  TProperty("LocallyContributedActionWithParm", TObjectJson(makeObjectActionCollectionMember "LocallyContributedActionWithParm" oName (ttc "RestfulObjects.Test.Data.MostSimple") [ p2; p3 ])) ]))
-
+    
 
       let props = [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Collection) );
                     TProperty(JsonPropertyNames.Id, TObjectVal( mName) );
@@ -1508,49 +1471,9 @@ let makeCollectionMemberSimpleType mName (oName : string) fName desc rType size 
       let extArray = if presHint then  TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class7 class8")) :: extArray else extArray
       let extArray = if renderEagerly then  TProperty(JsonPropertyNames.CustomRenderEagerly, TObjectVal(true)) :: extArray else extArray
 
-      let makeListParm pmid pid fid rt = 
-            
-        let p = 
-            TObjectJson([ TProperty
-                              (JsonPropertyNames.Links, 
-                               TArray([  ]))
-                          TProperty(JsonPropertyNames.Extensions, 
-                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
-                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal("list"))
-                                                  TProperty(JsonPropertyNames.ElementType, TObjectVal(rt))
-                                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
-                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
-        TProperty(pmid, p)
+     
 
-      let makeStringParm pmid pid fid rt = 
-      
-        
-        let p = 
-            TObjectJson([ TProperty
-                              (JsonPropertyNames.Links, 
-                               TArray([  ]))
-                          TProperty(JsonPropertyNames.Extensions, 
-                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
-                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
-                                                  TProperty(JsonPropertyNames.MaxLength, TObjectVal(0))
-                                                  TProperty(JsonPropertyNames.Pattern, TObjectVal(""))
-                                                  TProperty(JsonPropertyNames.Format, TObjectVal("string"))
-                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
-        TProperty(pmid, p)
-
-
-      let p1 = makeListParm "ms" "LocallyContributedAction" "Ms" (ttc "RestfulObjects.Test.Data.MostSimple")
-      let p2 = makeListParm "ms" "LocallyContributedActionWithParm" "Ms" (ttc "RestfulObjects.Test.Data.MostSimple")
-      let p3 = makeStringParm "p1" "LocallyContributedActionWithParm" "P1" (ttc "string")
-    
-
-      let membersProp = 
-          TProperty(JsonPropertyNames.Members, 
-                    TObjectJson([ TProperty("LocallyContributedAction", TObjectJson(makeObjectActionCollectionMember "LocallyContributedAction" oName (ttc "RestfulObjects.Test.Data.MostSimple") [ p1 ]))
-                                  TProperty("LocallyContributedActionWithParm", TObjectJson(makeObjectActionCollectionMember "LocallyContributedActionWithParm" oName (ttc "RestfulObjects.Test.Data.MostSimple") [ p2; p3 ])) ]))
-
+     
 
       let props =  [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Collection) );
                      TProperty(JsonPropertyNames.Id, TObjectVal( mName) );
@@ -1562,7 +1485,7 @@ let makeCollectionMemberSimpleType mName (oName : string) fName desc rType size 
                                                                      TObjectJson( makeLinkPropWithMethodAndTypes "GET" detailsRelValue (sprintf "objects/%s/collections/%s" oName mName) RepresentationTypes.ObjectCollection "" cType true) ]))]
       let nomembers = mName.Contains("ViewModels")
       
-      let props = if nomembers then props else membersProp :: props
+      let props = if nomembers then props else membersProp(oName, cType) :: props
       props 
 
 let makeCollectionMemberSimpleTypeValue mName (oName : string) fName desc rType size cType cName cValue (dValue : TProp list) =
@@ -1582,42 +1505,7 @@ let makeCollectionMemberSimpleTypeValue mName (oName : string) fName desc rType 
 
       let extArray = if renderEagerly then  TProperty(JsonPropertyNames.CustomRenderEagerly, TObjectVal(true)) :: extArray else extArray
 
-      let makeListParm pmid pid fid rt = 
-            
-        let p = 
-            TObjectJson([ TProperty
-                              (JsonPropertyNames.Links, 
-                               TArray([  ]))
-                          TProperty(JsonPropertyNames.Extensions, 
-                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
-                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal("list"))
-                                                  TProperty(JsonPropertyNames.ElementType, TObjectVal(rt))
-                                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
-                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
-        TProperty(pmid, p)
-
-      let makeStringParm pmid pid fid rt = 
-      
-        
-        let p = 
-            TObjectJson([ TProperty
-                              (JsonPropertyNames.Links, 
-                               TArray([  ]))
-                          TProperty(JsonPropertyNames.Extensions, 
-                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
-                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
-                                                  TProperty(JsonPropertyNames.MaxLength, TObjectVal(0))
-                                                  TProperty(JsonPropertyNames.Pattern, TObjectVal(""))
-                                                  TProperty(JsonPropertyNames.Format, TObjectVal("string"))
-                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
-        TProperty(pmid, p)
-
-
-      let p1 = makeListParm "ms" "LocallyContributedAction" "Ms" (ttc "RestfulObjects.Test.Data.MostSimple")
-      let p2 = makeListParm "ms" "LocallyContributedActionWithParm" "Ms" (ttc "RestfulObjects.Test.Data.MostSimple")
-      let p3 = makeStringParm "p1" "LocallyContributedActionWithParm" "P1" (ttc "string")
+  
 
 
       let props = [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Collection) );
@@ -1628,15 +1516,11 @@ let makeCollectionMemberSimpleTypeValue mName (oName : string) fName desc rType 
                     TProperty(JsonPropertyNames.Extensions, TObjectJson(extArray));
                     TProperty(JsonPropertyNames.Links, TArray ([ TObjectJson(detailsLink) ]))]
 
-      let membersProp = 
-          TProperty(JsonPropertyNames.Members, 
-                    TObjectJson([ TProperty("LocallyContributedAction", TObjectJson(makeObjectActionCollectionMember "LocallyContributedAction" oName (ttc "RestfulObjects.Test.Data.MostSimple") [ p1 ]))
-                                  TProperty("LocallyContributedActionWithParm", TObjectJson(makeObjectActionCollectionMember "LocallyContributedActionWithParm" oName (ttc "RestfulObjects.Test.Data.MostSimple") [ p2; p3 ])) ]))
-
+     
 
       let members = mName = "AnEagerCollection"
 
-      let props = if members then membersProp :: props else props
+      let props = if members then membersProp(oName, cType) :: props else props
       props
 
 let makeCollectionMemberSimple mName (oName : string) fName desc rType size value = makeCollectionMemberSimpleType mName oName fName desc rType size (ttc "RestfulObjects.Test.Data.MostSimple") "Most Simples" value
@@ -1657,51 +1541,6 @@ let makeCollectionMemberType mName (oName : string) fName desc rType size cType 
 
       let extArray = if presHint then  TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class7 class8")) :: extArray else extArray
 
-      let makeListParm pmid pid fid rt = 
-      
-        
-        let p = 
-            TObjectJson([ TProperty
-                              (JsonPropertyNames.Links, 
-                               TArray([  ]))
-                          TProperty(JsonPropertyNames.Extensions, 
-                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
-                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal("list"))
-                                                  TProperty(JsonPropertyNames.ElementType, TObjectVal(rt))
-                                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
-                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
-        TProperty(pmid, p)
-
-      let makeStringParm pmid pid fid rt = 
-      
-        
-        let p = 
-            TObjectJson([ TProperty
-                              (JsonPropertyNames.Links, 
-                               TArray([  ]))
-                          TProperty(JsonPropertyNames.Extensions, 
-                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
-                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
-                                                  TProperty(JsonPropertyNames.MaxLength, TObjectVal(0))
-                                                  TProperty(JsonPropertyNames.Pattern, TObjectVal(""))
-                                                  TProperty(JsonPropertyNames.Format, TObjectVal("string"))
-                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
-        TProperty(pmid, p)
-
-
-      let p1 = makeListParm "ms" "LocallyContributedAction" "Ms" (ttc "RestfulObjects.Test.Data.MostSimple")
-      let p2 = makeListParm "ms" "LocallyContributedActionWithParm" "Ms" (ttc "RestfulObjects.Test.Data.MostSimple")
-      let p3 = makeStringParm "p1" "LocallyContributedActionWithParm" "P1" (ttc "string")
-    
-
-      let membersProp = 
-          TProperty(JsonPropertyNames.Members, 
-                    TObjectJson([ TProperty("LocallyContributedAction", TObjectJson(makeObjectActionCollectionMember "LocallyContributedAction" oName (ttc "RestfulObjects.Test.Data.MostSimple") [ p1 ]))
-                                  TProperty("LocallyContributedActionWithParm", TObjectJson(makeObjectActionCollectionMember "LocallyContributedActionWithParm" oName (ttc "RestfulObjects.Test.Data.MostSimple") [ p2; p3 ])) ]))
-
-
       let props = [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Collection) );
                     TProperty(JsonPropertyNames.Id, TObjectVal( mName) );
                     TProperty(JsonPropertyNames.Size, TObjectVal( size) );
@@ -1714,7 +1553,7 @@ let makeCollectionMemberType mName (oName : string) fName desc rType size cType 
                                                                   ]))]
       let nomembers = mName.Contains("ViewModels") || mName.Contains("List") || mName = "Set"
       
-      let props = if nomembers then props else membersProp :: props
+      let props = if nomembers then props else membersProp(oName, cType) :: props
 
       props
 

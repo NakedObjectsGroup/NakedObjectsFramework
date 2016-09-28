@@ -1804,7 +1804,6 @@ let VerifyGetInvokeActionReturnQueryable refType oType oid f (api : RestfulObjec
                                                                      TObjectJson(makeServiceActionMember "ACollectionContributedActionParm" contribName roType [ p2; p3 ]))]))
 
 
-
     let expected = 
         [ TProperty(JsonPropertyNames.Links, links)
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
@@ -2515,7 +2514,6 @@ let VerifyPostInvokeActionWithScalarParmsReturnQuery refType oType oid f (api : 
                                                                      TObjectJson(makeServiceActionMember "ACollectionContributedActionNoParms" contribName roType [ p1 ]))
                                                            TProperty("ACollectionContributedActionParm", 
                                                                      TObjectJson(makeServiceActionMember "ACollectionContributedActionParm" contribName roType [ p2; p3 ]))]))
-
 
 
     let expected = 
