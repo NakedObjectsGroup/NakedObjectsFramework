@@ -1024,6 +1024,8 @@ namespace NakedObjects {
         menuItems: IMenuItemViewModel[];
         messages: string;
         collectionRep: CollectionMember | CollectionRepresentation;
+        allSelected: boolean;
+
 
         doSummary: () => void;
         doTable: () => void;
@@ -1031,6 +1033,27 @@ namespace NakedObjects {
 
         description = () => this.details.toString();      
         refresh: (routeData: PaneRouteData, resetting: boolean) => void;
+
+        selectAll = () => _.each(this.items, (item, i) => {
+            item.selected = this.allSelected;
+            item.selectionChange(i);
+        });
+
+        private clearSelected(result: ActionResultRepresentation) {
+            if (result.resultType() === "void") {
+                this.allSelected = false;
+                this.selectAll();
+            }
+        }
+
+        disableActions = () => !this.actions || this.actions.length === 0 || !this.items || this.items.length === 0;
+
+        //actionsTooltip = () => actionsTooltip(this, !!this.routeData.actionsOpen);
+
+        actionMember = (id: string) => {
+            const actionViewModel = _.find(this.actions, a => a.actionRep.actionId() === id);
+            return actionViewModel.actionRep;
+        }
     }
 
     export class MenusViewModel implements IMenusViewModel {

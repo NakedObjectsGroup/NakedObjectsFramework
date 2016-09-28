@@ -802,10 +802,15 @@ namespace NakedObjects {
                                     routeData,
                                     collectionViewModel);
                                 collectionViewModel.details = getCollectionDetails(collectionViewModel.items.length);
+                                const actions = details.actionMembers();
+                                collectionViewModel.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
                             }).
                             catch((reject: ErrorWrapper) => error.handleError(reject));
                     } else {
                         collectionViewModel.items = viewModelFactory.getItems(itemLinks, state === CollectionViewState.Table, routeData, collectionViewModel);
+                        // todo fix 
+                        const actions = (<any>collectionRep).actionMembers();
+                        collectionViewModel.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
                     }
 
                     switch (state) {
@@ -818,7 +823,7 @@ namespace NakedObjects {
                         default:
                             collectionViewModel.template = collectionSummaryTemplate;
                     }
-                    collectionViewModel.currentState = state;
+                    collectionViewModel.currentState = state;            
                 }
             }
 
