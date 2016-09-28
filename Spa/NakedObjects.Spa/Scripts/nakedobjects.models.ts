@@ -218,7 +218,7 @@ namespace NakedObjects.Models {
     // abstract classes 
 
     function toOid(id: string[]) {
-        return _.reduce(id, (a, v) => `${a}${a ? keySeparator : ""}${v}`, "");
+        return _.reduce(id, (a, v) => `${a}${keySeparator}${v}`) as string;
     }
 
     export class ObjectIdWrapper {
