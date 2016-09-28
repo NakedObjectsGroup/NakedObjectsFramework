@@ -1,4 +1,4 @@
-﻿<div ng-repeat="menu in (menu.menuItems || object.menuItems || collection.menuItems)">
+﻿<div ng-repeat="menu in (collection.menuItems || menu.menuItems || object.menuItems)">
     <div ng-hide="!menu.name" ng-init="navCollapsed = !!menu.name" ng-click="navCollapsed = !navCollapsed" class="submenu clickable-area" ng-switch="navCollapsed">
         {{menu.name}}
         <div ng-switch-when="true" class="icon-expand"></div>

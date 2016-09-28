@@ -804,6 +804,7 @@ namespace NakedObjects {
                                 collectionViewModel.details = getCollectionDetails(collectionViewModel.items.length);
                                 const actions = details.actionMembers();
                                 collectionViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, this, routeData));
+                                collectionViewModel.menuItems = createMenuItems(collectionViewModel.actions);
                             }).
                             catch((reject: ErrorWrapper) => error.handleError(reject));
                     } else {
@@ -811,6 +812,7 @@ namespace NakedObjects {
                         // todo fix 
                         const actions = (<any>collectionRep).actionMembers();
                         collectionViewModel.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
+                        collectionViewModel.menuItems = createMenuItems(collectionViewModel.actions);
                     }
 
                     switch (state) {
