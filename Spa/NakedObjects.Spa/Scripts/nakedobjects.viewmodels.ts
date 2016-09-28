@@ -328,7 +328,7 @@ namespace NakedObjects {
             // choice
             if (newChoice instanceof ChoiceViewModel || newChoice == null) {
                 this.currentChoice = newChoice;
-                this.updateColor();
+                this.update();
             }
         }
 
@@ -340,7 +340,7 @@ namespace NakedObjects {
 
         set value(newValue: scalarValueType | Date) {
             this.currentRawValue = newValue;
-            this.updateColor();
+            this.update();
         }
 
         selectedMultiChoices: IChoiceViewModel[];
@@ -371,7 +371,11 @@ namespace NakedObjects {
             this.reference = "";          
         }
 
-        private updateColor : () => void ; 
+        private updateColor: () => void;
+
+        protected update() {
+            this.updateColor();
+        }
 
         private setColor(color: IColor) {
 
@@ -451,7 +455,7 @@ namespace NakedObjects {
 
     export class ParameterViewModel extends ValueViewModel {
 
-        constructor(parmRep: Parameter, paneId : number, color : IColor, error : IError) {
+        constructor(private parmRep: Parameter, paneId : number, color : IColor, error : IError) {
             super(parmRep.extensions(), color, error);
             this.parameterRep = parmRep;
             this.onPaneId = paneId;
@@ -466,6 +470,21 @@ namespace NakedObjects {
 
         parameterRep: Parameter;
         dflt: string;
+
+        protected update() {
+            super.update();
+
+            if (this.localFilter) {
+
+                // formatting also happens in in directive - at least for dates - value is now date in that case
+                this.formattedValue = this.value ? this.localFilter.filter(this.value) : "";
+            } else if (this.parmRep.isScalar()) {
+                this.formattedValue = this.value ? this.value.toString() : "";
+            }
+            else {
+                this.formattedValue = this.selectedChoice ? this.selectedChoice.toString() : "";
+            }
+        }
     }
 
     export class ActionViewModel implements IActionViewModel {
