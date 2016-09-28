@@ -803,7 +803,7 @@ namespace NakedObjects {
                                     collectionViewModel);
                                 collectionViewModel.details = getCollectionDetails(collectionViewModel.items.length);
                                 const actions = details.actionMembers();
-                                collectionViewModel.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
+                                collectionViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, this, routeData));
                             }).
                             catch((reject: ErrorWrapper) => error.handleError(reject));
                     } else {
