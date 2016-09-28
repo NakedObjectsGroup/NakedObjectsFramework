@@ -646,6 +646,7 @@ namespace NakedObjects {
 
             this.action = action;
             this.routeData = routeData;
+            this.action.parent.etagDigest = "*";
 
             const initialCount = action.extensions().multipleLines() || 1;
 
