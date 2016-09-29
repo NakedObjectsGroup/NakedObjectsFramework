@@ -6,6 +6,7 @@
         <img class="icon-table clickable-area" ng-click="collection.doTable()" src="images/table.png" title="View as Table" />
     </div>
 </div>
+<div class="messages">{{collection.message}}</div>
 <div ng-hide="collection.disableActions()" class="actions" ng-include="'Content/partials/actions.html'"></div>
 <table>
     <thead>
