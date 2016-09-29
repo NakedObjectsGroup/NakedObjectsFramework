@@ -809,8 +809,7 @@ namespace NakedObjects {
                             catch((reject: ErrorWrapper) => error.handleError(reject));
                     } else {
                         collectionViewModel.items = viewModelFactory.getItems(itemLinks, state === CollectionViewState.Table, routeData, collectionViewModel);
-                        // todo fix 
-                        const actions = (<any>collectionRep).actionMembers();
+                        const actions = collectionRep.actionMembers();
                         collectionViewModel.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
                         collectionViewModel.menuItems = createMenuItems(collectionViewModel.actions);
                     }

@@ -1352,7 +1352,7 @@ namespace NakedObjects.Models {
             return isScalarType(this.extensions().returnType());
         }
 
-        static wrapMember(toWrap: RoInterfaces.IPropertyMember | RoInterfaces.ICollectionMember | RoInterfaces.IActionMember, parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation | Link | CollectionRepresentation, id: string): Member<RoInterfaces.IMember> {
+        static wrapMember(toWrap: RoInterfaces.IPropertyMember | RoInterfaces.ICollectionMember | RoInterfaces.IActionMember, parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation | Link | CollectionRepresentation | CollectionMember, id: string): Member<RoInterfaces.IMember> {
 
             if (toWrap.memberType === "property") {
                 return new PropertyMember(toWrap as RoInterfaces.IPropertyMember, parent as DomainObjectRepresentation | Link, id);
@@ -1503,13 +1503,14 @@ namespace NakedObjects.Models {
 
     // matches 14.4.2 
     export class CollectionMember
-    extends Member<RoInterfaces.ICollectionMember>
-    implements IHasLinksAsValue {
+    extends Member<RoInterfaces.Custom.ICustomCollectionMember>
+    implements IHasLinksAsValue, IHasActions {
 
-        wrapped = () => this.resource() as RoInterfaces.ICollectionMember;
+        wrapped = () => this.resource() as RoInterfaces.Custom.ICustomCollectionMember;
 
         constructor(wrapped: RoInterfaces.ICollectionMember, public parent: DomainObjectRepresentation, private id: string) {
             super(wrapped);
+            this.etagDigest = parent.etagDigest;
         }
 
         collectionId(): string {
@@ -1530,6 +1531,22 @@ namespace NakedObjects.Models {
         getDetails(): CollectionRepresentation {
             return <CollectionRepresentation> this.detailsLink().getTarget();
         }
+
+        private actionMemberMap: _.Dictionary<ActionMember>;
+
+        actionMembers(): _.Dictionary<ActionMember> {
+            if (this.wrapped().members) {
+                this.actionMemberMap = this.actionMemberMap || _.mapValues(this.wrapped().members, (m, id) => Member.wrapMember(m, this, id)) as _.Dictionary<ActionMember>;
+                return this.actionMemberMap;
+            }
+            return {};
+        }
+
+        actionMember(id: string): ActionMember {
+            return this.actionMembers()[id];
+        }
+
+        etagDigest: string;
     }
 
     // matches 14.4.3 
