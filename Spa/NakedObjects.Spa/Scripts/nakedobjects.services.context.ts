@@ -815,8 +815,15 @@ namespace NakedObjects {
             if (actionIsNotQueryOnly) {
                 if (parent instanceof DomainObjectRepresentation) {
                     return () => dirtyList.setDirty(parent.getOid());
-                } else if (parent instanceof ListRepresentation && parms) {
-
+                }
+                if (parent instanceof CollectionRepresentation) {
+                    return () => {
+                        const selfLink = parent.selfLink();
+                        const oid = ObjectIdWrapper.fromLink(selfLink);
+                        dirtyList.setDirty(oid);
+                    };
+                } 
+                else if (parent instanceof ListRepresentation && parms) {
                     const ccaParm = _.find(action.parameters(), p => p.isCollectionContributed());
                     const ccaId = ccaParm ? ccaParm.id() : null;
                     const ccaValue = ccaId ? parms[ccaId] : null;
