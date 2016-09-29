@@ -752,7 +752,7 @@ namespace NakedObjects {
         }
 
         onPaneId : number;
-        protected allSelected: boolean;
+        allSelected: boolean;
         items: IItemViewModel[];
 
         protected collectionContributedActionDecorator(actionViewModel: IActionViewModel) {

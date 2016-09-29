@@ -795,8 +795,8 @@ namespace NakedObjects {
                     if (state === CollectionViewState.Summary) {
                         collectionViewModel.items = [];
                     } else if (getDetails) {
-                        context.getCollectionDetails(collectionRep, state, resetting).
-                            then(details => {
+                        context.getCollectionDetails(collectionRep, state, resetting)
+                            .then(details => {
                                 collectionViewModel.items = viewModelFactory.getItems(details.value(),
                                     state === CollectionViewState.Table,
                                     routeData,
@@ -804,25 +804,29 @@ namespace NakedObjects {
                                 collectionViewModel.details = getCollectionDetails(collectionViewModel.items.length);
                                 const actions = details.actionMembers();
                                 collectionViewModel.setActions(actions, routeData);
-                            }).
-                            catch((reject: ErrorWrapper) => error.handleError(reject));
+                                collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);
+                            })
+                            .catch((reject: ErrorWrapper) => error.handleError(reject));
                     } else {
                         collectionViewModel.items = viewModelFactory.getItems(itemLinks, state === CollectionViewState.Table, routeData, collectionViewModel);
+                        collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);
                         const actions = collectionRep.actionMembers();
                         collectionViewModel.setActions(actions, routeData);
                     }
 
                     switch (state) {
-                        case CollectionViewState.List:
-                            collectionViewModel.template = collectionListTemplate;
-                            break;
-                        case CollectionViewState.Table:
-                            collectionViewModel.template = collectionTableTemplate;
-                            break;
-                        default:
-                            collectionViewModel.template = collectionSummaryTemplate;
+                    case CollectionViewState.List:
+                        collectionViewModel.template = collectionListTemplate;
+                        break;
+                    case CollectionViewState.Table:
+                        collectionViewModel.template = collectionTableTemplate;
+                        break;
+                    default:
+                        collectionViewModel.template = collectionSummaryTemplate;
                     }
-                    collectionViewModel.currentState = state;            
+                    collectionViewModel.currentState = state;
+                } else {
+                    collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);
                 }
             }
 
