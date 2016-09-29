@@ -751,7 +751,7 @@ namespace NakedObjects {
             super();
         }
 
-        protected onPaneId : number;
+        onPaneId : number;
         protected allSelected: boolean;
         items: IItemViewModel[];
 
@@ -1024,16 +1024,16 @@ namespace NakedObjects {
         }
     }
 
-    export class CollectionViewModel implements ICollectionViewModel  {
+    export class CollectionViewModel extends ContributedActionParentViewModel implements ICollectionViewModel  {
 
         title: string;
         details: string;
         pluralName: string;
         color: string;
         mayHaveItems: boolean;
-        items: IItemViewModel[];
+        
         header: string[];
-        onPaneId: number;
+     
         currentState: CollectionViewState;
         presentationHint: string;
         template: string;
@@ -1041,28 +1041,14 @@ namespace NakedObjects {
         menuItems: IMenuItemViewModel[];
         messages: string;
         collectionRep: CollectionMember | CollectionRepresentation;
-        allSelected: boolean;
-
-
+       
         doSummary: () => void;
         doTable: () => void;
         doList: () => void;
 
         description = () => this.details.toString();      
         refresh: (routeData: PaneRouteData, resetting: boolean) => void;
-
-        selectAll = () => _.each(this.items, (item, i) => {
-            item.selected = this.allSelected;
-            item.selectionChange(i);
-        });
-
-        private clearSelected(result: ActionResultRepresentation) {
-            if (result.resultType() === "void") {
-                this.allSelected = false;
-                this.selectAll();
-            }
-        }
-
+        
         disableActions = () => !this.actions || this.actions.length === 0 || !this.items || this.items.length === 0;
 
         //actionsTooltip = () => actionsTooltip(this, !!this.routeData.actionsOpen);
@@ -1071,6 +1057,13 @@ namespace NakedObjects {
             const actionViewModel = _.find(this.actions, a => a.actionRep.actionId() === id);
             return actionViewModel.actionRep;
         }
+
+        setActions(actions: _.Dictionary<ActionMember>, routeData : PaneRouteData) {
+            this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
+            this.menuItems = createMenuItems(this.actions);
+            _.forEach(this.actions, a => this.decorate(a));
+        }
+
     }
 
     export class MenusViewModel implements IMenusViewModel {

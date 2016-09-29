@@ -760,7 +760,7 @@ namespace NakedObjects {
         }
 
         viewModelFactory.collectionViewModel = (collectionRep: CollectionMember, routeData: PaneRouteData) => {
-            const collectionViewModel = new CollectionViewModel();
+            const collectionViewModel = new CollectionViewModel(context, viewModelFactory, urlManager, focusManager, error, $q );
 
             const itemLinks = collectionRep.value();
             const paneId = routeData.paneId;
@@ -803,15 +803,13 @@ namespace NakedObjects {
                                     collectionViewModel);
                                 collectionViewModel.details = getCollectionDetails(collectionViewModel.items.length);
                                 const actions = details.actionMembers();
-                                collectionViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, this, routeData));
-                                collectionViewModel.menuItems = createMenuItems(collectionViewModel.actions);
+                                collectionViewModel.setActions(actions, routeData);
                             }).
                             catch((reject: ErrorWrapper) => error.handleError(reject));
                     } else {
                         collectionViewModel.items = viewModelFactory.getItems(itemLinks, state === CollectionViewState.Table, routeData, collectionViewModel);
                         const actions = collectionRep.actionMembers();
-                        collectionViewModel.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
-                        collectionViewModel.menuItems = createMenuItems(collectionViewModel.actions);
+                        collectionViewModel.setActions(actions, routeData);
                     }
 
                     switch (state) {
