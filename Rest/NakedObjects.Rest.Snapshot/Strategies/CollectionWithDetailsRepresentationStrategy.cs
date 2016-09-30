@@ -39,7 +39,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         public override InlineActionRepresentation[] GetActions() {
 
             if (!PropertyContext.Target.IsTransient) {
-                var lcas = PropertyContext.Target.Specification.GetLocallyContributedActions(PropertyContext.Property.ElementSpecification);
+                var lcas = PropertyContext.Target.Specification.GetLocallyContributedActions(PropertyContext.Property.ElementSpecification, PropertyContext.Property.Id);
 
                 if (lcas.Length > 0) {
                     return lcas.Select(a => InlineActionRepresentation.Create(OidStrategy, Req, ActionContext(a, PropertyContext.Target), Flags)).ToArray();

@@ -1188,7 +1188,6 @@ let PersistWithCollectionTransientObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.ElementType, TObjectVal(roType))
                                   TProperty(JsonPropertyNames.CustomRenderEagerly, TObjectVal(true)) ]))
-          membersProp(oid, roType)
           TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable"))
           TProperty(JsonPropertyNames.Value, TArray([  ]))
           

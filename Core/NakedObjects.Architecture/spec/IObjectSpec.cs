@@ -39,7 +39,7 @@ namespace NakedObjects.Architecture.Spec {
         /// <summary>
         ///     Returns an array of actions that are contributed to a collection of type
         /// </summary>
-        IActionSpec[] GetLocallyContributedActions(ITypeSpec typeSpec);
+        IActionSpec[] GetLocallyContributedActions(ITypeSpec typeSpec, string id);
 
         #endregion
     }

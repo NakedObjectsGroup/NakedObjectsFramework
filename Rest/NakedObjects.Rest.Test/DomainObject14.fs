@@ -3057,7 +3057,6 @@ let GetWithCollectionObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.ElementType, TObjectVal(mst))
                                   TProperty(JsonPropertyNames.CustomRenderEagerly, TObjectVal(true))]))
-          membersProp(oid, mst)
           TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable"))
           TProperty(JsonPropertyNames.Value, valuee)
           
@@ -3230,7 +3229,6 @@ let GetWithCollectionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.ElementType, TObjectVal(mst))
                                   TProperty(JsonPropertyNames.CustomRenderEagerly, TObjectVal(true))]))
           TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable"))
-          membersProp(oid, mst)
           TProperty(JsonPropertyNames.Value, valuee)
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object (oType))

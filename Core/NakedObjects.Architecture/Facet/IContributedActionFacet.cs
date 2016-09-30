@@ -11,7 +11,7 @@ namespace NakedObjects.Architecture.Facet {
     public interface IContributedActionFacet : IFacet {
         bool IsContributedTo(IObjectSpecImmutable spec);
         bool IsContributedToCollectionOf(IObjectSpecImmutable spec);
-        bool IsContributedToLocalCollectionOf(IObjectSpecImmutable spec);
+        bool IsContributedToLocalCollectionOf(IObjectSpecImmutable spec, string id);
         //Returns null if the action is to be 'top-level'
         string SubMenuWhenContributedTo(IObjectSpecImmutable spec);
         //Id has been included for generating UI code that is backwards-compatible with NOF 6.

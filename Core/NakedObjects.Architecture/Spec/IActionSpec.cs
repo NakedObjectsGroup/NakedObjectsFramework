@@ -79,7 +79,7 @@ namespace NakedObjects.Architecture.Spec {
         /// <summary>
         ///     Return true if the action is run on a service object using the target object as a parameter
         /// </summary>
-        bool IsLocallyContributedTo(ITypeSpec typeSpec);
+        bool IsLocallyContributedTo(ITypeSpec typeSpec, string id);
     }
 
     // Copyright (c) Naked Objects Group Ltd.
