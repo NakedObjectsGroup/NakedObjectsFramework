@@ -275,15 +275,18 @@ namespace NakedObjects {
                 const currentDialogId = currentDialog ? currentDialog.id : null;
                 const newDialogId = routeData.dialogId;
 
-                if (currentDialogId !== newDialogId) {
+                // deliberate == to catch undefined == null 
+                if (!(currentDialogId == newDialogId)) {
                     const listViewModel = $scope.collection;
                     const actionViewModel = _.find(listViewModel.actions, a => a.actionRep.actionId() === newDialogId);
                     setNewDialog($scope, listViewModel, newDialogId, routeData, focusTarget, actionViewModel);
                 } else if ($scope.dialog) {
                     $scope.dialog.refresh();
+                    $scope.dialog.resetMessage();
                 }
-            }
 
+                $scope.collection.resetMessage();
+            }
 
             function handleListSearchChanged($scope: INakedObjectsScope, routeData: PaneRouteData) {
                 // only update templates if changed 
