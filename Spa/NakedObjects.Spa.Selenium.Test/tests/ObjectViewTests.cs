@@ -234,7 +234,7 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.Object, "SO59289");
             WaitForCss(".object.object-color2");
             WaitForCss("tr", 2);
-            wait.Until(dr => dr.FindElements(By.CssSelector("tr.link-color2")).Count == 2);
+            wait.Until(dr => dr.FindElements(By.CssSelector("td.link-color2")).Count == 2);
             GeminiUrl("object?i1=View&o1=___1.SalesOrderDetail--59289--71041");
             WaitForView(Pane.Single, PaneType.Object, "1 x Mountain-400-W Silver, 46");
             WaitForCss(".object.object-color2");
