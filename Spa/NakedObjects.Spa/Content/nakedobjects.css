@@ -870,3 +870,8 @@ input[type=submit] {
     border-width: 1px;
     margin-right: 10px;
 }
+
+.collection .messages {
+    float: none;
+    margin-bottom: 5px;
+}
