@@ -607,7 +607,9 @@ namespace NakedObjects {
         clearMessages = () => {
             this.resetMessage();
             _.each(this.actionViewModel.parameters, parm => parm.clearMessage());
-        };      
+        };
+
+        matchingCollectionId: string;
     }
 
     export class MultiLineDialogViewModel implements IMultiLineDialogViewModel {
@@ -1026,6 +1028,7 @@ namespace NakedObjects {
 
     export class CollectionViewModel extends ContributedActionParentViewModel implements ICollectionViewModel  {
 
+        id : string;
         title: string;
         details: string;
         pluralName: string;
@@ -1064,6 +1067,9 @@ namespace NakedObjects {
             _.forEach(this.actions, a => this.decorate(a));
         }
 
+        hasMatchingLocallyContributedAction(id: string) {
+            return id && this.actions && this.actions.length > 0 && !!this.actionMember(id);
+        }
     }
 
     export class MenusViewModel implements IMenusViewModel {
