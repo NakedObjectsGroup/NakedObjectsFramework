@@ -346,12 +346,21 @@ namespace AdventureWorksModel {
         #region 
         public string[] DeriveKeys()
         {
-            return new[] { Status.ToString() }; //We're not testing ViewModels here -  just their editability.
+            return new[] {
+                To,
+                From,
+                Subject,
+                Message,
+                Status.ToString() }; 
         }
 
         public void PopulateUsingKeys(string[] keys)
         {
-            this.Status =  (EmailStatus)Enum.Parse(typeof(EmailStatus), keys[0]);
+            this.To = keys[0];
+            this.From = keys[1];
+            this.Subject = keys[2];
+            this.Message = keys[3];
+            this.Status =  (EmailStatus)Enum.Parse(typeof(EmailStatus), keys[4]);
         }
         #endregion
 
@@ -363,16 +372,16 @@ namespace AdventureWorksModel {
             return t.ToString();
         }
 
-        [MemberOrder(10)]
+        [MemberOrder(10), Optionally]
         public virtual string To { get; set; }
 
-        [MemberOrder(20)]
+        [MemberOrder(20), Optionally]
         public virtual string From { get; set; }
 
-        [MemberOrder(30)]
+        [MemberOrder(30), Optionally]
         public virtual string Subject { get; set; }
 
-        [MemberOrder(40)]
+        [MemberOrder(40), Optionally]
         public virtual string Message { get; set; }
 
         [Disabled]
@@ -383,6 +392,7 @@ namespace AdventureWorksModel {
             this.Status = EmailStatus.Sent;
             return this;
         }
+
     }
     public enum EmailStatus
     {
