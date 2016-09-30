@@ -768,31 +768,11 @@ input[type=submit] {
 .multiLineDialog {
     padding-left: 20px;
 }
-.lineDialog .parameters, .lineDialog .parameter, .lineDialog .co-validation, .lineDialog .buttons {
-    /*display: inline-block;*/
+.multiLineDialog .columnHeader, .lineDialog .parameters, .lineDialog .parameter, .lineDialog .co-validation, .lineDialog .buttons {
+    display: inline-block;
     vertical-align: top;
 }
 
-.lineDialog input[type="checkbox"] {
-    width: 30px;
-}
-
-.lineDialog .value {
-    width: auto;
-}
-
-.multiLineDialog {
-    display: table;
-}
-.multiLineDialog .header {
-    display: table-row;
-}
-.lineDialog {
-    display: table-row;
-}
-.lineDialog .parameter, .lineDialog input.ok, .columnHeader {
-    display: table-cell;
-}
 .lineDialog .name {
     display: none;
 }

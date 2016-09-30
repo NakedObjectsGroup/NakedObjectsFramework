@@ -4,9 +4,7 @@
   <div class="title" gemini-drag tabindex="0">{{multiLineDialog.objectTitle}}</div>
   <div class="title" gemini-drag tabindex="0">{{multiLineDialog.title}}</div>
  </div>
- <div class="header">
  <div class="columnHeader"ng-repeat="column in multiLineDialog.header() track by $index">{{column}}</div>
- </div>
   <div class="lineDialog" ng-repeat="dialog in multiLineDialog.dialogs">
   <form>
    <div class="parameters" ng-include="parametersTemplate"></div>
