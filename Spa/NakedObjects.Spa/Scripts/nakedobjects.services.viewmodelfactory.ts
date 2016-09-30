@@ -784,6 +784,9 @@ namespace NakedObjects {
                     state = getDefaultTableState(collectionRep.extensions());
                 }
 
+                // clear any previous messages
+                collectionViewModel.resetMessage();
+
                 if (resetting || state !== collectionViewModel.currentState) {
 
                     if (size > 0 || size == null) {
