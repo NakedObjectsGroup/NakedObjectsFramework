@@ -35,6 +35,28 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("To:", WaitForCss(".property:nth-child(1)").Text);
             var title = WaitForCss(".title");
             Assert.AreEqual("Sent email", title.Text);
+            GeminiUrl("home");
+            WaitForView(Pane.Single, PaneType.Home);
+        }
+
+        //Test for #46
+        public virtual void EditableVMWithEmptyLeadingKeys()
+        {
+            GeminiUrl("object?i1=View&o1=___1.Person--9169&as1=open");
+            Click(GetObjectAction("Create Email"));
+            WaitForView(Pane.Single, PaneType.Object, "New email");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[4].Text == "Status:\r\nNew");
+
+            //leave 3/4 of the optional fields empty
+            ClearFieldThenType("#subject1", "Test2");
+
+            var action = wait.Until(d => d.FindElements(By.CssSelector(".action")).
+                Single(we => we.Text == "Send"));
+            Click(action);
+            wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(5)")).Text == "Status:\r\nSent");
+            Assert.AreEqual("To:", WaitForCss(".property:nth-child(1)").Text);
+            var title = WaitForCss(".title");
+            Assert.AreEqual("Sent email", title.Text);
         }
 
         public virtual void CreateSwitchableVM() {
@@ -58,6 +80,12 @@ namespace NakedObjects.Selenium {
         [TestMethod]
         public override void CreateEditableVM() {
             base.CreateEditableVM();
+        }
+
+        [TestMethod]
+        public override void EditableVMWithEmptyLeadingKeys()
+        {
+            base.EditableVMWithEmptyLeadingKeys();
         }
 
         [TestMethod]
@@ -137,6 +165,7 @@ namespace NakedObjects.Selenium {
         public void MegaViewModelTest() {
             CreateVM();
             CreateEditableVM();
+            EditableVMWithEmptyLeadingKeys();
             CreateSwitchableVM();
         }
     }
