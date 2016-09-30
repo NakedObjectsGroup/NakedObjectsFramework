@@ -383,8 +383,8 @@ let makeStringParm pmid pid fid rt =
         TProperty(pmid, p)
 
 
-let p1 ms = makeListParm "ms" "LocallyContributedAction" "Ms" ms
-let p2 ms = makeListParm "ms" "LocallyContributedActionWithParm" "Ms" ms
+let p1 ms = makeListParm "acollection" "LocallyContributedAction" "Acollection" ms
+let p2 ms = makeListParm "acollection" "LocallyContributedActionWithParm" "Acollection" ms
 let p3 = makeStringParm "p1" "LocallyContributedActionWithParm" "P1" (ttc "string")
   
     
@@ -1403,7 +1403,7 @@ let makeCollectionMemberTypeValue mName (oName : string) fName desc rType size c
 
       let extArray = if renderEagerly then  TProperty(JsonPropertyNames.CustomRenderEagerly, TObjectVal(true)) :: extArray else extArray
 
-      let members = mName = "AnEagerCollection"
+      let members = mName = "ACollection"
 
       let props = [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Collection) );
                     TProperty(JsonPropertyNames.Id, TObjectVal( mName) );
@@ -1446,9 +1446,7 @@ let makeCollectionMemberWithValue mName (oName : string) fName desc rType values
                     TProperty(JsonPropertyNames.Extensions, TObjectJson(extArray));
                     TProperty(JsonPropertyNames.Links, TArray ([  ]))]
 
-      let nomembers = mName.Contains("ViewModels")
       
-      //let props = if nomembers then props else membersProp :: props
       props 
 
 
@@ -1483,9 +1481,9 @@ let makeCollectionMemberSimpleType mName (oName : string) fName desc rType size 
                      TProperty(JsonPropertyNames.Extensions, TObjectJson(extArray));
                      TProperty(JsonPropertyNames.Links, TArray ([ TObjectJson( makeLinkPropWithMethodAndTypes "GET" valueRelValue (sprintf "objects/%s/collections/%s/value" oName mName) RepresentationTypes.CollectionValue "" "" true);
                                                                      TObjectJson( makeLinkPropWithMethodAndTypes "GET" detailsRelValue (sprintf "objects/%s/collections/%s" oName mName) RepresentationTypes.ObjectCollection "" cType true) ]))]
-      let nomembers = mName.Contains("ViewModels")
+      let members = mName = "ACollection"
       
-      let props = if nomembers then props else membersProp(oName, cType) :: props
+      let props = if members then membersProp(oName, cType) :: props else  props
       props 
 
 let makeCollectionMemberSimpleTypeValue mName (oName : string) fName desc rType size cType cName cValue (dValue : TProp list) =
@@ -1518,7 +1516,7 @@ let makeCollectionMemberSimpleTypeValue mName (oName : string) fName desc rType 
 
      
 
-      let members = mName = "AnEagerCollection"
+      let members = mName = "ACollection"
 
       let props = if members then membersProp(oName, cType) :: props else props
       props
@@ -1551,9 +1549,9 @@ let makeCollectionMemberType mName (oName : string) fName desc rType size cType 
                                                                  TObjectJson( makeLinkPropWithMethodAndTypes "GET" valueRelValue (sprintf "objects/%s/collections/%s/value" oName mName) RepresentationTypes.CollectionValue "" "" true);
                                                                  TObjectJson( makeLinkPropWithMethodAndTypes "GET" detailsRelValue (sprintf "objects/%s/collections/%s" oName mName) RepresentationTypes.ObjectCollection "" cType true);
                                                                   ]))]
-      let nomembers = mName.Contains("ViewModels") || mName.Contains("List") || mName = "Set"
+      let members = mName = "ACollection";
       
-      let props = if nomembers then props else membersProp(oName, cType) :: props
+      let props = if members then membersProp(oName, cType) :: props else  props
 
       props
 

@@ -36,8 +36,8 @@ namespace NakedObjects.Meta.Facet {
             return collectionContributees.Select(t => t.Item1).Any(spec.IsOfType);
         }
 
-        public bool IsContributedToLocalCollectionOf(IObjectSpecImmutable spec) {
-            return localCollectionContributees.Select(t => t.Item1).Any(spec.IsOfType);
+        public bool IsContributedToLocalCollectionOf(IObjectSpecImmutable spec, string id) {
+            return localCollectionContributees.Where(t => t.Item2 == id.ToLower()).Select(t => t.Item1).Any(spec.IsOfType);
         }
 
         public string SubMenuWhenContributedTo(IObjectSpecImmutable spec) {
@@ -60,7 +60,7 @@ namespace NakedObjects.Meta.Facet {
         }
 
         public void AddLocalCollectionContributee(IObjectSpecImmutable type, string id) {
-            localCollectionContributees.Add(new Tuple<IObjectSpecImmutable, string>(type, id));
+            localCollectionContributees.Add(new Tuple<IObjectSpecImmutable, string>(type, id.ToLower()));
         }
 
         private Tuple<IObjectSpecImmutable, string, string> FindContributee(IObjectSpecImmutable spec) {

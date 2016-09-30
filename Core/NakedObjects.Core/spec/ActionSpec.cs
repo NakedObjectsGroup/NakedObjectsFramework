@@ -198,9 +198,9 @@ namespace NakedObjects.Core.Spec {
             return parameterSet ?? (IsContributedMethod ? new[] {target} : new INakedObjectAdapter[0]);
         }
 
-        public bool IsLocallyContributedTo(ITypeSpec typeSpec) {
+        public bool IsLocallyContributedTo(ITypeSpec typeSpec, string id) {
             var spec = MetamodelManager.Metamodel.GetSpecification(typeSpec.FullName) as IObjectSpecImmutable;
-            return spec != null && actionSpecImmutable.IsContributedToLocalCollectionOf(spec);
+            return spec != null && actionSpecImmutable.IsContributedToLocalCollectionOf(spec, id);
         }
 
         #endregion

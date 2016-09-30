@@ -64,8 +64,8 @@ namespace NakedObjects.Core.Spec {
             return finderActions ?? (finderActions = MemberFactory.CreateActionSpecs(InnerSpec.FinderActions));
         }
 
-        public IActionSpec[] GetLocallyContributedActions(ITypeSpec typeSpec) {
-            return ObjectActions.Where(oa => oa.IsLocallyContributedTo(typeSpec)).ToArray();
+        public IActionSpec[] GetLocallyContributedActions(ITypeSpec typeSpec, string id) {
+            return ObjectActions.Where(oa => oa.IsLocallyContributedTo(typeSpec, id)).ToArray();
         }
 
         #endregion
