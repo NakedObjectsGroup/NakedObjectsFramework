@@ -4,10 +4,10 @@
   <div class="title" gemini-drag tabindex="0">{{multiLineDialog.objectTitle}}</div>
   <div class="title" gemini-drag tabindex="0">{{multiLineDialog.title}}</div>
  </div>
- <div class="columnHeader"ng-repeat="column in multiLineDialog.header() track by $index">
-  <div>{{column}}</div>
+ <div class="header">
+ <div class="columnHeader"ng-repeat="column in multiLineDialog.header() track by $index">{{column}}</div>
  </div>
- <div class="lineDialog" ng-repeat="dialog in multiLineDialog.dialogs">
+  <div class="lineDialog" ng-repeat="dialog in multiLineDialog.dialogs">
   <form>
    <div class="parameters" ng-include="parametersTemplate"></div>
     <input ng-if="!dialog.submitted" class="ok" tabindex="0" type="submit" value="OK" title="{{dialog.tooltip()}}" ng-disabled="!dialog.clientValid() || dialog.submitted" gemini-enter="multiLineDialog.invokeAndAdd($index)" ng-click="multiLineDialog.invokeAndAdd($index)" />

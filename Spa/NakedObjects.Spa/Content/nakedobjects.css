@@ -410,8 +410,8 @@ td.reference {
     width: 440px;
 }
 
-td.checkbox {
-    background-color: black; /*Because check-box only ever displayed on default background*/
+.list td.checkbox {
+    background-color: black; 
 }
 
 /*Tables*/
@@ -768,9 +768,33 @@ input[type=submit] {
 .multiLineDialog {
     padding-left: 20px;
 }
-.multiLineDialog .columnHeader, .lineDialog .parameters, .lineDialog .parameter, .lineDialog .co-validation, .lineDialog .buttons {
-    display: inline-block;
+.lineDialog .parameters, .lineDialog .parameter, .lineDialog .co-validation, .lineDialog .buttons {
+    /*display: inline-block;*/
     vertical-align: top;
+}
+
+.lineDialog input[type="checkbox"] {
+    width: 30px;
+}
+
+.lineDialog .value {
+    width: auto;
+}
+
+.multiLineDialog {
+    display: table;
+}
+.multiLineDialog .header {
+    display: table-row;
+}
+.lineDialog {
+    display: table-row;
+}
+.lineDialog .parameter, .lineDialog input.ok, .columnHeader {
+    display: table-cell;
+}
+.lineDialog .name {
+    display: none;
 }
 
 .lineDialog input.ok {
@@ -792,9 +816,6 @@ input[type=submit] {
 .multiLineDialog input.close {
     float: left;
     margin: 9px;
-}
-.lineDialog:nth-child(n+3) .name { /*TODO: why does this not work unless n+3!*/
-    display: none;
 }
 .multiLineDialog .columnHeader {
     width: 245px;
@@ -855,3 +876,17 @@ input[type=submit] {
     .icon-speech {
         display: none;
     }
+
+    /*Locally-contributed actions*/
+.collection .actions {
+    float: none;
+    margin-bottom: 50px;
+    width: 490px;
+}
+
+.collection .actions .action {
+    float: left;
+    border-style: solid;
+    border-width: 1px;
+    margin-right: 10px;
+}
