@@ -23,5 +23,9 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         public override int? GetSize() {
             return null;
         }
+
+        public override InlineActionRepresentation[] GetActions() {
+            return new InlineActionRepresentation[] {};
+        }
     }
 }

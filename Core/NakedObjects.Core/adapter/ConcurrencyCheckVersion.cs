@@ -16,6 +16,8 @@ namespace NakedObjects.Core.Adapter {
         private readonly string user;
         private readonly object version;
 
+        private const string Wildcard = "*";
+
         public ConcurrencyCheckVersion(string user, DateTime time, object version) {
             this.user = user;
             this.time = time;
@@ -51,24 +53,18 @@ namespace NakedObjects.Core.Adapter {
 
         #region IVersion Members
 
-        public string User {
-            get { return user; }
-        }
+        public string User => user;
 
-        public DateTime? Time {
-            get { return time; }
-        }
+        public DateTime? Time => time;
 
-        public string Digest {
-            get { return version != null ? IdentifierUtils.ComputeMD5HashAsString(version.ToString()) : null; }
-        }
+        public string Digest => version != null ? IdentifierUtils.ComputeMD5HashAsString(version.ToString()) : null;
 
         public bool IsDifferent(IVersion otherVersion) {
             return !Equals(otherVersion);
         }
 
         public bool IsDifferent(string digest) {
-            return Digest != digest;
+            return digest != Wildcard && Digest != digest;
         }
 
         public string AsSequence() {
@@ -92,7 +88,7 @@ namespace NakedObjects.Core.Adapter {
         }
 
         public override string ToString() {
-            return string.Format("Version: {0} (last read at : {1} by : {2})", version, Time, User);
+            return $"Version: {version} (last read at : {Time} by : {User})";
         }
     }
 }

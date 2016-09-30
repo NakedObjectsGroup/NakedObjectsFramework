@@ -218,7 +218,7 @@ namespace NakedObjects.Models {
     // abstract classes 
 
     function toOid(id: string[]) {
-        return _.reduce(id, (a, v) => `${a}${a ? keySeparator : ""}${v}`, "");
+        return _.reduce(id, (a, v) => `${a}${keySeparator}${v}`) as string;
     }
 
     export class ObjectIdWrapper {
@@ -948,7 +948,8 @@ namespace NakedObjects.Models {
 
         isCollectionContributed(): boolean {
             const myparent = this.parent;
-            const isOnList = (myparent instanceof ActionMember || myparent instanceof ActionRepresentation) && myparent.parent instanceof ListRepresentation;
+            const isOnList = (myparent instanceof ActionMember || myparent instanceof ActionRepresentation) &&
+                             (myparent.parent instanceof ListRepresentation || myparent.parent instanceof CollectionRepresentation);
             const isList = this.isList();
             return isList && isOnList;
         }
@@ -989,7 +990,7 @@ namespace NakedObjects.Models {
     // An ActionRepresentation is always invokable 
     // An ActionMember is not 
     export interface IInvokableAction extends IHasExtensions{
-        parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation;
+        parent: IHasActions;
         actionId(): string;
         invokeLink(): Link;
         getInvokeMap(): InvokeMap;
@@ -1001,7 +1002,7 @@ namespace NakedObjects.Models {
 
         wrapped = () => this.resource() as RoInterfaces.IActionRepresentation;
 
-        parent : DomainObjectRepresentation | MenuRepresentation | ListRepresentation;
+        parent: IHasActions;
 
         // links 
         selfLink(): Link {
@@ -1133,9 +1134,9 @@ namespace NakedObjects.Models {
     }
 
     // matches a collection representation 17.0 
-    export class CollectionRepresentation extends ResourceRepresentation<RoInterfaces.ICollectionRepresentation> {
+    export class CollectionRepresentation extends ResourceRepresentation<RoInterfaces.Custom.ICustomCollectionRepresentation> {
 
-        wrapped = () => this.resource() as RoInterfaces.ICollectionRepresentation;
+        wrapped = () => this.resource() as RoInterfaces.Custom.ICustomCollectionRepresentation;
 
         // links 
         selfLink(): Link {
@@ -1209,6 +1210,17 @@ namespace NakedObjects.Models {
 
         disabledReason(): string {
             return this.wrapped().disabledReason;
+        }
+
+        private actionMemberMap: _.Dictionary<ActionMember>;
+
+        actionMembers() {
+            this.actionMemberMap = this.actionMemberMap || _.mapValues(this.wrapped().members, (m, id) => Member.wrapMember(m, this, id)) as _.Dictionary<ActionMember>;
+            return this.actionMemberMap;
+        }
+
+        actionMember(id: string): ActionMember {
+            return this.actionMembers()[id];
         }
     }
 
@@ -1341,7 +1353,7 @@ namespace NakedObjects.Models {
             return isScalarType(this.extensions().returnType());
         }
 
-        static wrapMember(toWrap: RoInterfaces.IPropertyMember | RoInterfaces.ICollectionMember | RoInterfaces.IActionMember, parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation | Link, id: string): Member<RoInterfaces.IMember> {
+        static wrapMember(toWrap: RoInterfaces.IPropertyMember | RoInterfaces.ICollectionMember | RoInterfaces.IActionMember, parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation | Link | CollectionRepresentation | CollectionMember, id: string): Member<RoInterfaces.IMember> {
 
             if (toWrap.memberType === "property") {
                 return new PropertyMember(toWrap as RoInterfaces.IPropertyMember, parent as DomainObjectRepresentation | Link, id);
@@ -1351,11 +1363,11 @@ namespace NakedObjects.Models {
                 return new CollectionMember(toWrap as RoInterfaces.ICollectionMember, parent as DomainObjectRepresentation, id);
             }
 
-            if (toWrap.memberType === "action") { 
-                const member = new ActionMember(toWrap as RoInterfaces.IActionMember, parent as DomainObjectRepresentation | MenuRepresentation | ListRepresentation, id);
+            if (toWrap.memberType === "action" && !(parent instanceof Link)) { 
+                const member = new ActionMember(toWrap as RoInterfaces.IActionMember, parent as IHasActions, id);
 
                 if (member.invokeLink()) {
-                    return new InvokableActionMember(toWrap as RoInterfaces.IActionMember, parent as DomainObjectRepresentation | MenuRepresentation | ListRepresentation, id);
+                    return new InvokableActionMember(toWrap as RoInterfaces.IActionMember, parent as IHasActions, id);
                 }
 
                 return member;
@@ -1492,13 +1504,14 @@ namespace NakedObjects.Models {
 
     // matches 14.4.2 
     export class CollectionMember
-    extends Member<RoInterfaces.ICollectionMember>
-    implements IHasLinksAsValue {
+    extends Member<RoInterfaces.Custom.ICustomCollectionMember>
+    implements IHasLinksAsValue, IHasActions {
 
-        wrapped = () => this.resource() as RoInterfaces.ICollectionMember;
+        wrapped = () => this.resource() as RoInterfaces.Custom.ICustomCollectionMember;
 
         constructor(wrapped: RoInterfaces.ICollectionMember, public parent: DomainObjectRepresentation, private id: string) {
             super(wrapped);
+            this.etagDigest = parent.etagDigest;
         }
 
         collectionId(): string {
@@ -1519,6 +1532,22 @@ namespace NakedObjects.Models {
         getDetails(): CollectionRepresentation {
             return <CollectionRepresentation> this.detailsLink().getTarget();
         }
+
+        private actionMemberMap: _.Dictionary<ActionMember>;
+
+        actionMembers(): _.Dictionary<ActionMember> {
+            if (this.wrapped().members) {
+                this.actionMemberMap = this.actionMemberMap || _.mapValues(this.wrapped().members, (m, id) => Member.wrapMember(m, this, id)) as _.Dictionary<ActionMember>;
+                return this.actionMemberMap;
+            }
+            return {};
+        }
+
+        actionMember(id: string): ActionMember {
+            return this.actionMembers()[id];
+        }
+
+        etagDigest: string;
     }
 
     // matches 14.4.3 
@@ -1526,7 +1555,7 @@ namespace NakedObjects.Models {
 
         wrapped = () => this.resource() as RoInterfaces.IActionMember;
 
-        constructor(wrapped: RoInterfaces.IActionMember, public parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation, private id: string) {
+        constructor(wrapped: RoInterfaces.IActionMember, public parent: IHasActions, private id: string) {
             super(wrapped);
         }
 
@@ -1554,7 +1583,7 @@ namespace NakedObjects.Models {
     export class InvokableActionMember extends ActionMember {
 
         
-        constructor(wrapped: RoInterfaces.IActionMember,  parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation,  id: string) {
+        constructor(wrapped: RoInterfaces.IActionMember,  parent: IHasActions,  id: string) {
             super(wrapped, parent, id);
         }
 
@@ -1798,7 +1827,7 @@ namespace NakedObjects.Models {
     // matches List Representation 11.0
     export class ListRepresentation
     extends ResourceRepresentation<RoInterfaces.Custom.ICustomListRepresentation>
-    implements IHasLinksAsValue {
+    implements IHasLinksAsValue, IHasActions {
 
         wrapped = () => this.resource() as RoInterfaces.Custom.ICustomListRepresentation;
 
@@ -2218,6 +2247,7 @@ namespace NakedObjects.Models {
     export interface IHasActions extends IHasExtensions {
         actionMembers(): _.Dictionary<ActionMember>;
         actionMember(id: string): ActionMember;
+        etagDigest : string;
     }
 
     export interface IHasLinksAsValue {

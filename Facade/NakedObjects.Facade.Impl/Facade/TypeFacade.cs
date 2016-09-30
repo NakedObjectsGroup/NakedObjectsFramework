@@ -143,6 +143,15 @@ namespace NakedObjects.Facade.Impl {
             return new IActionFacade[] {};
         }
 
+        public IActionFacade[] GetLocallyContributedActions(ITypeFacade typeFacade) {
+            var objectSpec = WrappedValue as IObjectSpec;
+            if (objectSpec != null) {
+                return objectSpec.GetLocallyContributedActions(((TypeFacade)typeFacade).WrappedValue).Select(a => new ActionFacade(a, FrameworkFacade, framework, "")).Cast<IActionFacade>().ToArray();
+            }
+            return new IActionFacade[] { };
+        }
+
+
         public IFrameworkFacade FrameworkFacade { get; set; }
 
         public bool Equals(ITypeFacade other) {

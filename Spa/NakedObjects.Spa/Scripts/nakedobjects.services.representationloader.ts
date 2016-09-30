@@ -147,12 +147,6 @@ namespace NakedObjects {
                     cache.remove(config.url);
                 }
 
-
-                if ((<any>config).doesnotexist) {
-                    config.url = "http://www.google.co.uk";
-                }
-
-
                 return $http(config)
                     .then((promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IResourceRepresentation>) => {
                         if (!isValidResponse(promiseCallback.data)) {

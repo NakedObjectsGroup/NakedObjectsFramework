@@ -646,6 +646,18 @@ namespace NakedObjects {
         viewModelFactory.parameterViewModel = (parmRep: Parameter, previousValue: Value, paneId: number) => {
             const parmViewModel = new ParameterViewModel(parmRep, paneId, color, error);
 
+            const remoteMask = parmRep.extensions().mask();
+
+            if (parmRep.isScalar()) {
+                let lf: ILocalFilter;
+                if (remoteMask) {
+                    lf = mask.toLocalFilter(remoteMask, parmRep.extensions().format()) || mask.defaultLocalFilter(parmRep.extensions().format());
+                } else {
+                    lf = mask.defaultLocalFilter(parmRep.extensions().format());
+                }
+                parmViewModel.localFilter = lf;
+            } 
+
             const fieldEntryType = parmViewModel.entryType;
           
             if (fieldEntryType === EntryType.Choices || fieldEntryType === EntryType.MultipleChoices) {
@@ -670,14 +682,7 @@ namespace NakedObjects {
                 setupParameterSelectedValue(parmViewModel, previousValue);
             }
 
-            const remoteMask = parmRep.extensions().mask();
-
-            if (remoteMask && parmRep.isScalar()) {
-                const localFilter = mask.toLocalFilter(remoteMask, parmRep.extensions().format());
-                parmViewModel.localFilter = localFilter;
-                // formatting also happens in in directive - at least for dates - value is now date in that case
-                parmViewModel.formattedValue = parmViewModel.value ? localFilter.filter(parmViewModel.value.toString()) : "";
-            }
+           
 
             parmViewModel.description = getRequiredIndicator(parmViewModel) + parmViewModel.description;
             parmViewModel.validate = _.partial(validate, parmRep, parmViewModel) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
@@ -755,7 +760,7 @@ namespace NakedObjects {
         }
 
         viewModelFactory.collectionViewModel = (collectionRep: CollectionMember, routeData: PaneRouteData) => {
-            const collectionViewModel = new CollectionViewModel();
+            const collectionViewModel = new CollectionViewModel(context, viewModelFactory, urlManager, focusManager, error, $q );
 
             const itemLinks = collectionRep.value();
             const paneId = routeData.paneId;
@@ -790,30 +795,38 @@ namespace NakedObjects {
                     if (state === CollectionViewState.Summary) {
                         collectionViewModel.items = [];
                     } else if (getDetails) {
-                        context.getCollectionDetails(collectionRep, state, resetting).
-                            then(details => {
+                        context.getCollectionDetails(collectionRep, state, resetting)
+                            .then(details => {
                                 collectionViewModel.items = viewModelFactory.getItems(details.value(),
                                     state === CollectionViewState.Table,
                                     routeData,
                                     collectionViewModel);
                                 collectionViewModel.details = getCollectionDetails(collectionViewModel.items.length);
-                            }).
-                            catch((reject: ErrorWrapper) => error.handleError(reject));
+                                const actions = details.actionMembers();
+                                collectionViewModel.setActions(actions, routeData);
+                                collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);
+                            })
+                            .catch((reject: ErrorWrapper) => error.handleError(reject));
                     } else {
                         collectionViewModel.items = viewModelFactory.getItems(itemLinks, state === CollectionViewState.Table, routeData, collectionViewModel);
+                        collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);
+                        const actions = collectionRep.actionMembers();
+                        collectionViewModel.setActions(actions, routeData);
                     }
 
                     switch (state) {
-                        case CollectionViewState.List:
-                            collectionViewModel.template = collectionListTemplate;
-                            break;
-                        case CollectionViewState.Table:
-                            collectionViewModel.template = collectionTableTemplate;
-                            break;
-                        default:
-                            collectionViewModel.template = collectionSummaryTemplate;
+                    case CollectionViewState.List:
+                        collectionViewModel.template = collectionListTemplate;
+                        break;
+                    case CollectionViewState.Table:
+                        collectionViewModel.template = collectionTableTemplate;
+                        break;
+                    default:
+                        collectionViewModel.template = collectionSummaryTemplate;
                     }
                     collectionViewModel.currentState = state;
+                } else {
+                    collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);
                 }
             }
 

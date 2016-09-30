@@ -26,5 +26,27 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         public override int? GetSize() {
             return PropertyContext.Property.Count(PropertyContext.Target);
         }
+
+        private ActionContextFacade ActionContext(IActionFacade actionFacade, IObjectFacade target) {
+            return new ActionContextFacade {
+                MenuPath = "",
+                Target = target,
+                Action = actionFacade,
+                VisibleParameters = actionFacade.Parameters.Select(p => new ParameterContextFacade { Parameter = p, Action = actionFacade }).ToArray()
+            };
+        }
+
+        public override InlineActionRepresentation[] GetActions() {
+
+            if (!PropertyContext.Target.IsTransient) {
+                var lcas = PropertyContext.Target.Specification.GetLocallyContributedActions(PropertyContext.Property.ElementSpecification);
+
+                if (lcas.Length > 0) {
+                    return lcas.Select(a => InlineActionRepresentation.Create(OidStrategy, Req, ActionContext(a, PropertyContext.Target), Flags)).ToArray();
+                }
+            }
+
+            return new InlineActionRepresentation[] { };
+        }
     }
 }

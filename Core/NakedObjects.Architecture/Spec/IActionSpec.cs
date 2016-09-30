@@ -75,6 +75,11 @@ namespace NakedObjects.Architecture.Spec {
         IConsent IsParameterSetValid(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameterSet);
 
         INakedObjectAdapter[] RealParameters(INakedObjectAdapter target, INakedObjectAdapter[] parameterSet);
+
+        /// <summary>
+        ///     Return true if the action is run on a service object using the target object as a parameter
+        /// </summary>
+        bool IsLocallyContributedTo(ITypeSpec typeSpec);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -14,6 +14,7 @@ namespace NakedObjects.Architecture.SpecImmutable {
         bool IsFinderMethod { get; }
         bool IsContributedTo(IObjectSpecImmutable objectSpecImmutable);
         bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpecImmutable);
+        bool IsContributedToLocalCollectionOf(IObjectSpecImmutable objectSpecImmutable);
         bool IsFinderMethodFor(IObjectSpecImmutable spec);
     }
 
