@@ -43,6 +43,33 @@ namespace AdventureWorksModel {
             return obj;
         }
 
+        [MemberOrder(4)]
+        [MultiLine(NumberOfLines=2)]
+        public void CreateMultipleSpecialOffers(
+            string description,
+            [Mask("P")] decimal discountPct,
+            string type,
+            string category,
+            int minQty
+            )
+        {
+            var so = NewTransientInstance<SpecialOffer>();
+            so.Description = description;
+            so.DiscountPct = discountPct;
+            so.Type = type;
+            so.Category = category;
+            so.MinQty = minQty;
+            so.StartDate = DateTime.Today;
+            so.EndDate = DateTime.Today.AddDays(30);
+            //set up any parameters
+            Container.Persist(ref so);
+        }
+        public virtual string[] Choices3CreateMultipleSpecialOffers()
+        {
+            return new[] { "Reseller", "Customer" };
+        }
+
+
         #region NoDiscount
 
         private SpecialOffer _noDiscount;

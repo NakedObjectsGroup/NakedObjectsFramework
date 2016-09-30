@@ -602,13 +602,32 @@ namespace AdventureWorksModel {
             return Details.FirstOrDefault();
         }
 
-        public void RemoveDetails([ContributedAction] IEnumerable<SalesOrderDetail> detailsToRemove) {
-            foreach (SalesOrderDetail salesOrderDetail in detailsToRemove) {
-                if (Details.Contains(salesOrderDetail)) {
-                    Details.Remove(salesOrderDetail);
+        public void RemoveDetails([ContributedAction] IEnumerable<SalesOrderDetail> details) {
+            foreach (SalesOrderDetail detail in details) {
+                if (Details.Contains(detail)) {
+                    Details.Remove(detail);
                 }
             }
         }
+        #endregion
+
+        #region AdjustQuantities
+        public void AdjustQuantities([ContributedAction] IEnumerable<SalesOrderDetail> details, short newQuantity)
+        {
+            foreach (SalesOrderDetail detail in details)
+            {
+                detail.OrderQty = newQuantity;
+            }
+        }
+
+        public string ValidateAdjustQuantities(IEnumerable<SalesOrderDetail> details, short newQuantity)
+        {
+            var rb = new ReasonBuilder();
+            rb.AppendOnCondition(details.Count(d => d.OrderQty == newQuantity) == details.Count(),
+                "All selected details already have specified quantity");
+            return rb.Reason;
+        }
+
         #endregion
 
         #region CreateNewCreditCard
