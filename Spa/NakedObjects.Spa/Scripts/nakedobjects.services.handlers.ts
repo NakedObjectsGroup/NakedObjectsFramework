@@ -103,7 +103,8 @@ namespace NakedObjects {
 
             function setDialog($scope: INakedObjectsScope,
                                 action: ActionMember | ActionRepresentation | IActionViewModel,
-                                routeData: PaneRouteData) {
+                                routeData: PaneRouteData,
+                                matchingCollectionId : string) {
                 context.clearParmUpdater(routeData.paneId);
 
                 $scope.dialogTemplate = dialogTemplate;
@@ -117,6 +118,8 @@ namespace NakedObjects {
                         dialogViewModel,
                         routeData)
                     : action as IActionViewModel;
+
+                dialogViewModel.matchingCollectionId = matchingCollectionId;
 
                 dialogViewModel.reset(actionViewModel, routeData.paneId);
                 $scope.dialog = dialogViewModel;
@@ -170,7 +173,7 @@ namespace NakedObjects {
             }
 
             function setNewDialog($scope: INakedObjectsScope,
-                                  holder: MenuRepresentation | DomainObjectRepresentation | IListViewModel,
+                                  holder: MenuRepresentation | DomainObjectRepresentation | IListViewModel | ICollectionViewModel,
                                   newDialogId: string,
                                   routeData: PaneRouteData,
                                   focusTarget: FocusTarget,
@@ -182,7 +185,10 @@ namespace NakedObjects {
                             if (actionViewModel) {
                                 actionViewModel.makeInvokable(details);
                             }
-                            setDialog($scope, actionViewModel || details, routeData);
+
+                            const matchingCollectionId = holder instanceof CollectionViewModel ? holder.id : "";
+                        
+                            setDialog($scope, actionViewModel || details, routeData, matchingCollectionId);
 
                             focusManager.focusOn(FocusTarget.Dialog, 0, routeData.paneId);
                         }).
@@ -404,8 +410,19 @@ namespace NakedObjects {
                     focusTarget = FocusTarget.ObjectTitle;
                 }
 
-                if (currentDialogId !== newDialogId) {
-                    setNewDialog($scope, ovm.domainObject, newDialogId, routeData, focusTarget);
+                 // deliberate == to catch undefined == null 
+                if (!(currentDialogId == newDialogId)) {
+
+                    // need to match Locally Contributed Actions 
+
+                    const lcaCollection = _.find(ovm.collections, c => c.hasMatchingLocallyContributedAction(newDialogId));
+
+                    if (lcaCollection) {            
+                        const actionViewModel = _.find(lcaCollection.actions, a => a.actionRep.actionId() === newDialogId);
+                        setNewDialog($scope, lcaCollection, newDialogId, routeData, focusTarget, actionViewModel);
+                    } else {
+                        setNewDialog($scope, ovm.domainObject, newDialogId, routeData, focusTarget);
+                    }
                 } else {
                     if ($scope.dialog) {
                         $scope.dialog.refresh();

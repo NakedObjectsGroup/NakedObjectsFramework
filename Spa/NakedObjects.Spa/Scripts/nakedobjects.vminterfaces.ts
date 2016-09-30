@@ -235,6 +235,7 @@ namespace NakedObjects {
     }
 
     export interface ICollectionViewModel {
+        id : string;
         title: string;
         details: string;
         pluralName: string;
@@ -257,6 +258,8 @@ namespace NakedObjects {
 
         description: () => string;
         refresh: (routeData: PaneRouteData, resetting: boolean) => void;
+        hasMatchingLocallyContributedAction: (id: string) => boolean;
+        actionMember: (id: string) => ActionMember | ActionRepresentation;
     }
 
     export interface IMenusViewModel {
