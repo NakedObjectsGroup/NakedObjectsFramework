@@ -1065,7 +1065,7 @@ namespace NakedObjects {
 
         actionMember = (id: string) => {
             const actionViewModel = _.find(this.actions, a => a.actionRep.actionId() === id);
-            return actionViewModel.actionRep;
+            return actionViewModel ? actionViewModel.actionRep : null;
         }
 
         setActions(actions: _.Dictionary<ActionMember>, routeData : PaneRouteData) {
