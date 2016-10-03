@@ -471,6 +471,10 @@ namespace NakedObjects {
         parameterRep: Parameter;
         dflt: string;
 
+        setAsRow(i: number) {
+            this.paneArgId = `${this.argId}${i}`;
+        }
+
         protected update() {
             super.update();
 
@@ -614,7 +618,7 @@ namespace NakedObjects {
 
     export class MultiLineDialogViewModel implements IMultiLineDialogViewModel {
 
-        private createRow() {
+        private createRow(i : number) {
             const dialogViewModel = new DialogViewModel(this.color, this.context, this.viewModelFactory, this.urlManager, this.focusManager, this.error, this.$rootScope);
             const actionViewModel = this.viewModelFactory.actionViewModel(this.action, dialogViewModel, this.routeData);
             actionViewModel.gotoResult = false;
@@ -622,7 +626,10 @@ namespace NakedObjects {
             dialogViewModel.reset(actionViewModel, 1);
 
             dialogViewModel.doCloseKeepHistory = () => { };
-            dialogViewModel.doCloseReplaceHistory = () => {  };
+            dialogViewModel.doCloseReplaceHistory = () => { };
+
+            dialogViewModel.parameters.forEach(p => p.setAsRow(i));
+
 
             return dialogViewModel;
         }
@@ -652,7 +659,7 @@ namespace NakedObjects {
 
             const initialCount = action.extensions().multipleLines() || 1;
 
-            this.dialogs = _.map(_.range(initialCount), () => this.createRow());
+            this.dialogs = _.map(_.range(initialCount), (i) => this.createRow(i));
             this.title = this.dialogs[0].title;
             return this;
         }
@@ -681,11 +688,11 @@ namespace NakedObjects {
         add(index : number) {
             if (index === this.dialogs.length - 1) {
                 // if this is last dialog always add another
-                this.dialogs.push(this.createRow());
+                this.dialogs.push(this.createRow(this.dialogs.length));
             }
             else if (_.takeRight(this.dialogs)[0].submitted) {
                 // if the last dialog is submitted add another 
-                this.dialogs.push(this.createRow());
+                this.dialogs.push(this.createRow(this.dialogs.length));
             }
         }
 
