@@ -16,11 +16,113 @@ namespace NakedObjects.Selenium {
             GeminiUrl("home?m1=SpecialOfferRepository");
             Click(GetObjectAction("Create Multiple Special Offers"));
             WaitForView(Pane.Single, PaneType.MultiLineDialog, "Create Multiple Special Offers");
+            WaitForTextEquals(".count", "with 0 lines submitted.");
+            //line 0
+            OKButtonOnLine(0).AssertIsDisabled("Missing mandatory fields: Description; Discount Pct; Type; Category; Min Qty; ");
+            ClearFieldThenType("#description0", "x");
+            ClearFieldThenType("#discountpct0", ".03");
+            ClearFieldThenType("#type0", "Promotion");
+            SelectDropDownOnField("#category0", "Reseller");
+            ClearFieldThenType("#minqty0", "10");
+            OKButtonOnLine(0).AssertIsEnabled();
+            Click(OKButtonOnLine(0));
+            WaitForTextEquals(".co-validation", 0, "Submitted");
+            WaitForTextEquals(".count", "with 1 lines submitted.");
+            WaitUntilElementDoesNotExist("#description0");
+            //line 1
+            OKButtonOnLine(1).AssertIsDisabled("Missing mandatory fields: Description; Discount Pct; Type; Category; Min Qty; ");
+            ClearFieldThenType("#description1", "y");
+            ClearFieldThenType("#discountpct1", ".04");
+            ClearFieldThenType("#type1", "Promotion");
+            SelectDropDownOnField("#category1", "Reseller");
+            ClearFieldThenType("#minqty1", "5");
+            OKButtonOnLine(1).AssertIsEnabled();
+            Click(OKButtonOnLine(1));
+            WaitForTextEquals(".co-validation", 1, "Submitted");
+            WaitUntilElementDoesNotExist("#description1");
+            WaitForTextEquals(".count", "with 2 lines submitted.");
+
+            //Check that new empty line (2) has been created
+            WaitForCss("#description2");
+            OKButtonOnLine(2).AssertIsDisabled("Missing mandatory fields: Description; Discount Pct; Type; Category; Min Qty; ");
+
+            //Close the MLD
+            Click(WaitForCss(".close"));
+            WaitForView(Pane.Single, PaneType.Home);
+        }
+
+        public virtual void MultiLineObjectAction() {
+            GeminiUrl("object?i1=View&r=1&o1=___1.Customer--29562&as1=open&d1=CreateNewOrder");
+            Click(OKButton());
+            WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Sales Order");
+            SaveObject();
+            GetButton("Edit"); //Waiting for save
+            WaitForTextEquals(".summary .details", 0, "Empty");
+            OpenObjectActions();
+            Click(GetObjectAction("Add New Details"));
+            WaitForView(Pane.Single, PaneType.MultiLineDialog);
+            wait.Until(dr => dr.FindElement(By.CssSelector(".title")).Text.Contains("Add New Details"));
+            WaitForCss(".lineDialog", 6);
+            WaitForTextEquals(".count", "with 0 lines submitted.");
+
+            //line0
+            OKButtonOnLine(0).AssertIsDisabled("Missing mandatory fields: Product; ");
+            //Auto-complete
+            ClearFieldThenType("#product0", "Dissolver");
+            wait.Until(d => d.FindElements(By.CssSelector(".ui-menu-item")).Count > 0);
+            //As the match has not yet been selected,the field is invalid, so...
+            WaitForTextEquals(".validation",0, "Pending auto-complete...");
+            OKButtonOnLine(0).AssertIsDisabled().AssertHasTooltip("Invalid fields: Product; ");
+            Click(WaitForCss(".ui-menu-item"));
+            WaitForCss("#product0.link-color4");
+            //Other field with validation
+            ClearFieldThenType("#quantity0", "0");
+            OKButtonOnLine(0).AssertIsEnabled();
+            Click(OKButtonOnLine(0));
+            WaitForTextEquals(".co-validation", 0, "See field validation message(s).");
+            WaitForTextEquals(".validation", 1, "Must be > 0");
+            ClearFieldThenType("#quantity0", "3");
+            OKButtonOnLine(0).AssertIsEnabled();
+            Click(OKButtonOnLine(0));
+            //redo
+            WaitForTextEquals(".co-validation",0,"Submitted");
+            WaitForTextEquals(".count", "with 1 lines submitted.");
+            WaitUntilElementDoesNotExist("#description0");
+
+            //line1
+            OKButtonOnLine(1).AssertIsDisabled("Missing mandatory fields: Product; ");
+            //Auto-complete
+            ClearFieldThenType("#product1", "vest, S");
+            wait.Until(d => d.FindElements(By.CssSelector(".ui-menu-item")).Count > 0);
+            Click(WaitForCss(".ui-menu-item"));
+            WaitForCss("#product1.link-color4");
+            Click(OKButtonOnLine(1));
+            WaitForTextEquals(".co-validation", 1, "Submitted");
+            WaitForTextEquals(".count", "with 2 lines submitted.");
+            WaitUntilElementDoesNotExist("#product1");
+
+            WaitForCss("#product2");
+            OKButtonOnLine(2);
+
+            //Close
+            Click(WaitForCss(".close"));
+            WaitForTextStarting(".title", "SO"); //back to order
+            WaitForTextEquals(".summary .details", 0, "2 Items");
         }
     }
 
     public abstract class MultiLineDialogsTests : MultiLineDialogTestsRoot {
      
+        [TestMethod]
+        public override void MultiLineMenuAction()
+        {
+            base.MultiLineMenuAction();
+        }
+        [TestMethod]
+        public override void MultiLineObjectAction()
+        {
+            base.MultiLineObjectAction();
+        }
     }
 
     #region browsers specific subclasses
@@ -92,7 +194,8 @@ namespace NakedObjects.Selenium {
     public abstract class MegaMultiLineDialogTestsRoot : MultiLineDialogTestsRoot {
         [TestMethod] //Mega
         public void MegaMultiLineDialogTest() {
-
+            //MultiLineMenuAction();
+            MultiLineObjectAction();
         }
     }
 
@@ -115,7 +218,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass]
+
     public class MegaMultiLineDialogTestsIe : MegaMultiLineDialogTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -135,5 +238,28 @@ namespace NakedObjects.Selenium {
         }
     }
 
+    [TestClass]
+    public class MegaMultiLineDialogTestsChrome : MegaMultiLineDialogTestsRoot
+    {
+        [ClassInitialize]
+        public new static void InitialiseClass(TestContext context)
+        {
+            FilePath(@"drivers.chromedriver.exe");
+            AWTest.InitialiseClass(context);
+        }
+
+        [TestInitialize]
+        public virtual void InitializeTest()
+        {
+            InitChromeDriver();
+            Url(BaseUrl);
+        }
+
+        [TestCleanup]
+        public virtual void CleanupTest()
+        {
+            base.CleanUpTest();
+        }
+    }
     #endregion
 }
