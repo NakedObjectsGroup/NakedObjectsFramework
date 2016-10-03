@@ -1216,12 +1216,7 @@ let PersistWithCollectionTransientObject(api : RestfulObjectsControllerBase) =
                              TObjectJson(arguments :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ 
-                                  TProperty ("LocallyContributedAction", 
-                                    TObjectJson(makeObjectActionCollectionMember "LocallyContributedAction" oid roType [ p1 roType]))
-
-                                  TProperty ("LocallyContributedActionWithParm", 
-                                    TObjectJson(makeObjectActionCollectionMember "LocallyContributedActionWithParm" oid roType [ p2 roType; p3 ]))
-                    
+                                 
                     
                                   TProperty("ACollection", TObjectJson(makeCollectionMember "ACollection" oid "A Collection" "" ResultTypes.List 0 emptyValue))
                                   

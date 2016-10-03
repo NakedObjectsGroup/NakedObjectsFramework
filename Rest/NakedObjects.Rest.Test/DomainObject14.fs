@@ -3086,12 +3086,7 @@ let GetWithCollectionObject(api : RestfulObjectsControllerBase) =
                              TObjectJson(arguments :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ 
-                                  TProperty ("LocallyContributedAction", 
-                                    TObjectJson(makeObjectActionCollectionMember "LocallyContributedAction" oid mst [ p1 mst ]))
-
-                                  TProperty ("LocallyContributedActionWithParm", 
-                                    TObjectJson(makeObjectActionCollectionMember "LocallyContributedActionWithParm" oid mst [ p2 mst; p3 ]))
-                    
+                                                 
                                   TProperty("ACollection", TObjectJson(makeCollectionMember "ACollection" oid "A Collection" "" "list" 2 value))
                                   
                                   TProperty
@@ -3250,12 +3245,7 @@ let GetWithCollectionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                              TObjectJson(arguments :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ 
-                                  TProperty ("LocallyContributedAction", 
-                                    TObjectJson(makeObjectActionCollectionMember "LocallyContributedAction" oid mst [ p1 mst ]))
-
-                                  TProperty ("LocallyContributedActionWithParm", 
-                                    TObjectJson(makeObjectActionCollectionMember "LocallyContributedActionWithParm" oid mst [ p2 mst; p3 ]))
-                    
+                                 
                     
                                   TProperty("ACollection", TObjectJson(makeCollectionMemberSimple "ACollection" oid "A Collection" "" ResultTypes.List 2 value))
                                   

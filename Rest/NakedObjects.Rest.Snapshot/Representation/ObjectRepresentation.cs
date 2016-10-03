@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.Serialization;
@@ -140,7 +141,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                 visibleActions = objectContext.VisibleActions.Where(af => af.Action.ParameterCount == 0).ToArray();
             }
             else {
-                visibleActions = objectContext.VisibleActions;
+                visibleActions = FilterLocallyContributedActions(objectContext.VisibleActions, visiblePropertiesAndCollections.Where(p => p.Property.IsCollection).ToArray());
             }
 
             InlineActionRepresentation[] actions = visibleActions.Select(a => InlineActionRepresentation.Create(OidStrategy, req, a, Flags)).ToArray();
@@ -148,6 +149,11 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             IEnumerable<InlineMemberAbstractRepresentation> allMembers = properties.Union(actions);
 
             Members = RestUtils.CreateMap(allMembers.ToDictionary(m => m.Id, m => (object) m));
+        }
+
+        private ActionContextFacade[] FilterLocallyContributedActions(ActionContextFacade[] actions, PropertyContextFacade[] collections) {
+            var lcas = collections.SelectMany(c => c.Target.Specification.GetLocallyContributedActions(c.Property.ElementSpecification, c.Property.Id));
+            return actions.Where(a => !lcas.Select(lca => lca.Id).Contains(a.Id)).ToArray();
         }
 
         private IDictionary<string, object> GetCustomExtensions(IObjectFacade objectFacade) {
