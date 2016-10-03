@@ -774,6 +774,7 @@ namespace NakedObjects {
             collectionViewModel.id = collectionRep.collectionId();
 
 
+
             color.toColorNumberFromType(collectionRep.extensions().elementType()).
                 then(c => collectionViewModel.color = `${linkColor}${c}`).
                 catch((reject: ErrorWrapper) => error.handleError(reject));
@@ -785,6 +786,8 @@ namespace NakedObjects {
                 if (state == null) {
                     state = getDefaultTableState(collectionRep.extensions());
                 }
+
+                collectionViewModel.editing = routeData.interactionMode === InteractionMode.Edit;
 
                 // clear any previous messages
                 collectionViewModel.resetMessage();
