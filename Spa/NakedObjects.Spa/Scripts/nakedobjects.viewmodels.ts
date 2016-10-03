@@ -625,8 +625,13 @@ namespace NakedObjects {
 
             dialogViewModel.reset(actionViewModel, 1);
 
-            dialogViewModel.doCloseKeepHistory = () => { };
-            dialogViewModel.doCloseReplaceHistory = () => { };
+            dialogViewModel.doCloseKeepHistory = () => {
+               
+            };
+
+            dialogViewModel.doCloseReplaceHistory = () => {
+               
+            };
 
             dialogViewModel.parameters.forEach(p => p.setAsRow(i));
 
@@ -681,8 +686,8 @@ namespace NakedObjects {
 
         invokeAndAdd(index: number) {
             this.dialogs[index].doInvoke();
-            this.add(index);
-            this.focusManager.focusOn(FocusTarget.MultiLineDialogRow, index + 1, 1);
+            this.add(index);     
+            this.focusManager.focusOn(FocusTarget.MultiLineDialogRow, 1, 1); 
         }
 
         add(index : number) {
@@ -1041,6 +1046,7 @@ namespace NakedObjects {
         pluralName: string;
         color: string;
         mayHaveItems: boolean;
+        editing: boolean;
         
         header: string[];
      
@@ -1059,9 +1065,7 @@ namespace NakedObjects {
         description = () => this.details.toString();      
         refresh: (routeData: PaneRouteData, resetting: boolean) => void;
         
-        disableActions = () => !this.actions || this.actions.length === 0 || !this.items || this.items.length === 0;
-
-        //actionsTooltip = () => actionsTooltip(this, !!this.routeData.actionsOpen);
+        disableActions = () => this.editing || !this.actions || this.actions.length === 0 || !this.items || this.items.length === 0;
 
         actionMember = (id: string) => {
             const actionViewModel = _.find(this.actions, a => a.actionRep.actionId() === id);
@@ -1077,6 +1081,8 @@ namespace NakedObjects {
         hasMatchingLocallyContributedAction(id: string) {
             return id && this.actions && this.actions.length > 0 && !!this.actionMember(id);
         }
+
+       
     }
 
     export class MenusViewModel implements IMenusViewModel {
