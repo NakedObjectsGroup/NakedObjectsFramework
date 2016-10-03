@@ -20,6 +20,7 @@ namespace NakedObjects.Core.Spec {
     public sealed class ObjectSpec : TypeSpec, IObjectSpec {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ObjectSpec));
 
+        private IDictionary<string, IActionSpec[]> locallyContributedActions = new Dictionary<string, IActionSpec[]>();
         private IActionSpec[] collectionContributedActions;
         private IActionSpec[] combinedActions;
         private IActionSpec[] contributedActions;
@@ -65,7 +66,11 @@ namespace NakedObjects.Core.Spec {
         }
 
         public IActionSpec[] GetLocallyContributedActions(ITypeSpec typeSpec, string id) {
-            return ObjectActions.Where(oa => oa.IsLocallyContributedTo(typeSpec, id)).ToArray();
+            if (!locallyContributedActions.ContainsKey(id)) {
+                locallyContributedActions[id] = ObjectActions.Where(oa => oa.IsLocallyContributedTo(typeSpec, id)).ToArray();
+            }
+
+            return locallyContributedActions[id];
         }
 
         #endregion
