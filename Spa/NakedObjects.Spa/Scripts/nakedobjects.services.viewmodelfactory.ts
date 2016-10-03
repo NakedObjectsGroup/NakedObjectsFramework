@@ -771,9 +771,7 @@ namespace NakedObjects {
             collectionViewModel.title = collectionRep.extensions().friendlyName();
             collectionViewModel.presentationHint = collectionRep.extensions().presentationHint();
             collectionViewModel.pluralName = collectionRep.extensions().pluralName();
-            collectionViewModel.id = collectionRep.collectionId();
-
-
+            collectionViewModel.id = collectionRep.collectionId().toLowerCase();
 
             color.toColorNumberFromType(collectionRep.extensions().elementType()).
                 then(c => collectionViewModel.color = `${linkColor}${c}`).
