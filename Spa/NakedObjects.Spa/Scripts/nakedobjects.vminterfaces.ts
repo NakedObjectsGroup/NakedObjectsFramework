@@ -143,6 +143,7 @@ namespace NakedObjects {
     export interface IParameterViewModel extends IFieldViewModel {
         parameterRep: Parameter;
         dflt: string;
+        setAsRow: (i : number) => void;
     }
 
     export interface IPropertyViewModel extends IFieldViewModel {
