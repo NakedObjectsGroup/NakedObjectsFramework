@@ -659,6 +659,19 @@ namespace AdventureWorksModel {
             return SalesOrderHeaderSalesReason.Any(y => y.SalesReason == reason) ? string.Format("{0} already exists in Sales Reasons", reason.Name) : null;
         }
 
+        [MemberOrder(1)]
+        public void RemoveSalesReason(SalesOrderHeaderSalesReason reason)
+        {
+            this.SalesOrderHeaderSalesReason.Remove(reason);
+            Container.DisposeInstance(reason);
+        }
+
+
+        public IList<SalesOrderHeaderSalesReason> Choices0RemoveSalesReason()
+        {
+            return this.SalesOrderHeaderSalesReason.ToList();
+        }
+
         [MemberOrder(2)]
         public void AddNewSalesReasons(IEnumerable<SalesReason> reasons) {
             foreach (SalesReason r in reasons) {
@@ -668,6 +681,16 @@ namespace AdventureWorksModel {
 
         public string ValidateAddNewSalesReasons(IEnumerable<SalesReason> reasons) {
             return reasons.Select(ValidateAddNewSalesReason).Aggregate("", (s, t) => string.IsNullOrEmpty(s) ? t : s + ", " + t);
+        }
+
+        [MemberOrder(2)]
+        public void RemoveSalesReasons(
+            [ContributedAction] IEnumerable<SalesOrderHeaderSalesReason> salesOrderHeaderSalesReason)
+        {
+            foreach(var reason in salesOrderHeaderSalesReason)
+            {
+                this.RemoveSalesReason(reason);
+            }
         }
 
         // This is done with an enum in order to test enum parameter handling by the framework

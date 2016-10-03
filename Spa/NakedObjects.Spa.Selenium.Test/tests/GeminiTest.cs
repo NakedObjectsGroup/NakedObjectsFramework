@@ -575,7 +575,11 @@ namespace NakedObjects.Selenium
         {
             return WaitForCss(".dialog .ok");
         }
-
+        //For use with multi-line dialogs, lineNo starts from zero
+        protected IWebElement OKButtonOnLine(int lineNo)
+        {
+            return wait.Until(dr => dr.FindElements(By.CssSelector(".lineDialog"))[lineNo].FindElement(By.CssSelector(".ok")));
+        }
 
         protected void CancelDialog(Pane pane = Pane.Single)
         {
