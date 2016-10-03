@@ -352,6 +352,7 @@ namespace NakedObjects.Selenium
             Object,
             List,
             Recent,
+            MultiLineDialog,
             Attachment,
             Properties,
             Error
