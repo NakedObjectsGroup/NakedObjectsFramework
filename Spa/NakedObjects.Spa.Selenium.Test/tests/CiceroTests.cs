@@ -1243,7 +1243,7 @@ namespace NakedObjects.Selenium {
             WaitForOutputStarting("Product:");
 
             //Try to chain an action invocation on a non-query action
-            EnterCommand("menu special; ac create; ok");
+            EnterCommand("menu special; ac create new; ok");
             WaitForOutputStarting("ok command may not be chained unless the action is query-only. Use Where command to see where execution stopped.");
             EnterCommand("where");
             WaitForOutputStarting("Special Offers menu\r\nAction dialog: Create New Special Offer");

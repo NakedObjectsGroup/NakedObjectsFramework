@@ -175,11 +175,9 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual(newValue, WaitForCss(".property:nth-child(6) .value").Text);
         }
         public virtual void ViewModelEditOpensInEditMode() {
-            GeminiUrl("object?o1=___1.EmailTemplate--1&i1=Form");
+            GeminiUrl("object?i1=Form&r=1&o1=___1.EmailTemplate----------New");
             WaitForCss("input#to1");
             WaitForCss("input#from1");
-            //TODO: Check that actions are rendered e.g. Send
-            //as individual buttons, and NO generic Save button
         }
         public virtual void MultiLineText() {
             GeminiUrl("object?o1=___1.SalesOrderHeader--44440&as1=open");
