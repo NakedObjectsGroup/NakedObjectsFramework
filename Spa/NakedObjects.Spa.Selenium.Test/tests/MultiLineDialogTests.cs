@@ -11,6 +11,12 @@ using OpenQA.Selenium;
 
 namespace NakedObjects.Selenium {
     public abstract class MultiLineDialogTestsRoot : AWTest {
+        public virtual void MultiLineMenuAction()
+        {
+            GeminiUrl("home?m1=SpecialOfferRepository");
+            Click(GetObjectAction("Create Multiple Special Offers"));
+            WaitForView(Pane.Single, PaneType.MultiLineDialog, "Create Multiple Special Offers");
+        }
     }
 
     public abstract class MultiLineDialogsTests : MultiLineDialogTestsRoot {

@@ -11,12 +11,7 @@ using OpenQA.Selenium;
 
 namespace NakedObjects.Selenium {
     public abstract class LocalCollectionActionsTestsRoot : AWTest {
-        public virtual void MultiLineMenuAction()
-        {
-            GeminiUrl("home?m1=SpecialOfferRepository");
-            Click(GetObjectAction("Create Multiple Special Offers"));
-            WaitForView(Pane.Single, PaneType.MultiLineDialog, "Create Multiple Special Offers");
-        }
+
     }
 
     public abstract class LocalCollectionActionsTests : LocalCollectionActionsTestsRoot {
