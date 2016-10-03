@@ -385,6 +385,7 @@ div.hover, div.focus,
 }
 
 .collection .summary {
+    width: 450px;
     font-size: 12pt;
     margin-bottom: 10px;
     overflow: hidden; /*To make div same depth as its floating children*/
