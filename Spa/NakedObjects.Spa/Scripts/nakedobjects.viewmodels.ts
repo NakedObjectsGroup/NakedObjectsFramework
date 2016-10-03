@@ -625,8 +625,13 @@ namespace NakedObjects {
 
             dialogViewModel.reset(actionViewModel, 1);
 
-            dialogViewModel.doCloseKeepHistory = () => { };
-            dialogViewModel.doCloseReplaceHistory = () => { };
+            dialogViewModel.doCloseKeepHistory = () => {
+               
+            };
+
+            dialogViewModel.doCloseReplaceHistory = () => {
+               
+            };
 
             dialogViewModel.parameters.forEach(p => p.setAsRow(i));
 
@@ -681,8 +686,8 @@ namespace NakedObjects {
 
         invokeAndAdd(index: number) {
             this.dialogs[index].doInvoke();
-            this.add(index);
-            this.focusManager.focusOn(FocusTarget.MultiLineDialogRow, index + 1, 1);
+            this.add(index);     
+            this.focusManager.focusOn(FocusTarget.MultiLineDialogRow, 1, 1); 
         }
 
         add(index : number) {
