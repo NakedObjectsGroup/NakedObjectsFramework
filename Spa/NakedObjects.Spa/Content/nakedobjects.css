@@ -861,7 +861,7 @@ input[type=submit] {
     /*Locally-contributed actions*/
 .collection .actions {
     float: none;
-    margin-bottom: 50px;
+    margin-bottom: 55px;
     width: 490px;
 }
 

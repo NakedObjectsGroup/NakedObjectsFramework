@@ -1,8 +1,7 @@
 ﻿<div class="multilinedialog">
  <div class="header">
   <div class="type">{{multiLineDialog.objectFriendlyName}}</div>
-  <div class="title" gemini-drag tabindex="0">{{multiLineDialog.objectTitle}}</div>
-  <div class="title" gemini-drag tabindex="0">{{multiLineDialog.title}}</div>
+  <div class="title" gemini-drag tabindex="0"><div>{{multiLineDialog.objectTitle}}</div><div>{{multiLineDialog.title}}</div></div>
  </div>
  <div class="columnHeader"ng-repeat="column in multiLineDialog.header() track by $index">{{column}}</div>
   <div class="lineDialog" ng-repeat="dialog in multiLineDialog.dialogs">
