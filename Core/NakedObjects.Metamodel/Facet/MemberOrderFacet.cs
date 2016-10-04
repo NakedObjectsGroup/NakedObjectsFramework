@@ -12,16 +12,17 @@ using NakedObjects.Architecture.Spec;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class MemberOrderFacet : FacetAbstract, IMemberOrderFacet {
-        private readonly string sequence;
-
-        public MemberOrderFacet(string sequence, ISpecification holder)
-            : base(typeof (IMemberOrderFacet), holder) {
-            this.sequence = sequence;
+        public MemberOrderFacet(string name, string sequence, ISpecification holder)
+            : base(typeof(IMemberOrderFacet), holder) {
+            Sequence = sequence;
+            Name = name;
         }
 
         #region IMemberOrderFacet Members
 
-        public string Sequence => sequence;
+        public string Sequence { get; }
+
+        public string Name { get; }
 
         #endregion
     }

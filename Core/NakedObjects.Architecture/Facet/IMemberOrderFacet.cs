@@ -20,5 +20,7 @@ namespace NakedObjects.Architecture.Facet {
         ///     The sequence, in dewey-decimal notation
         /// </summary>
         string Sequence { get; }
+
+        string Name { get; }
     }
 }
