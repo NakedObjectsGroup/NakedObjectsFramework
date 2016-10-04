@@ -575,7 +575,7 @@ namespace NakedObjects {
         doInvoke = (right?: boolean) =>
             this.execute(right).
                 then((actionResult: ActionResultRepresentation) => {
-                    this.submitted = true;
+                   
                     if (actionResult.shouldExpectResult()) {
                         this.setMessage(actionResult.warningsOrMessages() || noResultMessage);
                     } else if (actionResult.resultType() === "void") {
@@ -592,6 +592,7 @@ namespace NakedObjects {
                         this.doCloseKeepHistory();
                     }
                     // else query only going to other tab leave dialog open
+                    this.doCompleteButLeaveOpen();
                 }).
                 catch((reject: ErrorWrapper) => {
                     const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.parameters);
@@ -606,6 +607,9 @@ namespace NakedObjects {
         doCloseReplaceHistory = () => {
             this.deregister();
             this.urlManager.closeDialogReplaceHistory(this.onPaneId);
+        }
+
+        doCompleteButLeaveOpen = () => {       
         }
 
         clearMessages = () => {
@@ -626,12 +630,17 @@ namespace NakedObjects {
             dialogViewModel.reset(actionViewModel, 1);
 
             dialogViewModel.doCloseKeepHistory = () => {
-               
+                dialogViewModel.submitted = true;
             };
 
             dialogViewModel.doCloseReplaceHistory = () => {
-               
+                dialogViewModel.submitted = true;
             };
+
+            dialogViewModel.doCompleteButLeaveOpen = () => {
+                dialogViewModel.submitted = true;
+            };
+
 
             dialogViewModel.parameters.forEach(p => p.setAsRow(i));
 
