@@ -478,6 +478,19 @@ public virtual void AutoCompleteOptionalParamNotSelected()
                  "Customers in Canada may not place orders directly.");
         }
         #endregion
+
+        //Test for #49
+        public virtual void NoResultFoundMessageLeavesDialogOpen()
+        {
+            GeminiUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber");
+            ClearFieldThenType("#accountnumber1", "AW66666");
+            Click(OKButton());
+            Thread.Sleep(1000);
+            WaitForTextEquals(".co-validation", "No matching object found");
+            ClearFieldThenType("#accountnumber1", "AW00000194");
+            Click(OKButton());
+            WaitForView(Pane.Single, PaneType.Object, "Mechanical Brake Manufacturers, AW00000194");
+        }
     }
 
     public abstract class DialogTests : DialogTestsRoot {
@@ -640,6 +653,12 @@ public virtual void AutoCompleteOptionalParamNotSelected()
         }
 
         #endregion
+
+        [TestMethod]
+        public override void NoResultFoundMessageLeavesDialogOpen()
+        {
+            base.NoResultFoundMessageLeavesDialogOpen();
+        }
     }
 
     #region browsers specific subclasses
@@ -680,6 +699,7 @@ public virtual void AutoCompleteOptionalParamNotSelected()
         }
     }
 
+    [TestClass]
     public class DialogTestsChrome : DialogTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -746,6 +766,7 @@ public virtual void AutoCompleteOptionalParamNotSelected()
             PotentActionDialogDisappearsAndFieldsNotRemembered();
             OptionalReferenceParamCanBeNull();
             ValidationOfContributeeParameter();
+            NoResultFoundMessageLeavesDialogOpen();
         }
     }
 
@@ -788,5 +809,28 @@ public virtual void AutoCompleteOptionalParamNotSelected()
         }
     }
 
+    //[TestClass]
+    public class MegaDialogTestsChrome : MegaDialogTestsRoot
+    {
+        [ClassInitialize]
+        public new static void InitialiseClass(TestContext context)
+        {
+            FilePath(@"drivers.chromedriver.exe");
+            AWTest.InitialiseClass(context);
+        }
+
+        [TestInitialize]
+        public virtual void InitializeTest()
+        {
+            InitChromeDriver();
+            Url(BaseUrl);
+        }
+
+        [TestCleanup]
+        public virtual void CleanupTest()
+        {
+            base.CleanUpTest();
+        }
+    }
     #endregion
 }
