@@ -358,7 +358,7 @@ namespace NakedObjects.Models {
 
     export abstract class ArgumentMap extends HateosModel {
 
-        constructor(public map: RoInterfaces.IValueMap, public id: string) {
+        protected constructor(public map: RoInterfaces.IValueMap, public id: string) {
             super(map);
         }
 
@@ -371,7 +371,7 @@ namespace NakedObjects.Models {
 
         protected resource = () => this.model as T;
 
-        constructor(private model: T) {}
+        protected constructor(private model: T) {}
 
         private lazyLinks: Link[];
 
@@ -625,7 +625,8 @@ namespace NakedObjects.Models {
     }
 
     export class Result {
-        constructor(public wrapped: RoInterfaces.IDomainObjectRepresentation | RoInterfaces.Custom.ICustomListRepresentation | RoInterfaces.IScalarValueRepresentation, private resultType: resultTypeType) {}
+        constructor(public readonly wrapped: RoInterfaces.IDomainObjectRepresentation | RoInterfaces.Custom.ICustomListRepresentation | RoInterfaces.IScalarValueRepresentation,
+                    private readonly resultType: resultTypeType) { }
 
         object(): DomainObjectRepresentation {
             if (!this.isNull() && this.resultType === "object") {
