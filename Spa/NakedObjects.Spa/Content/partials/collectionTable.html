@@ -12,7 +12,7 @@
 <table>
     <thead>
     <tr>
-        <th ng-hide="collection.disableActions() || collection.items.length === 0"><input type="checkbox" id="{{collection.id+'-all'}}" ng-model="collection.allSelected" ng-change="collection.selectAll()">All</th>
+        <th ng-hide="collection.disableActions() || collection.items.length === 0"><input type="checkbox" id="{{collection.id+collection.onPaneId+'-all'}}" ng-model="collection.allSelected" ng-change="collection.selectAll()">All</th>
         <th ng-repeat="heading in collection.header" scope="col">
             {{heading}}
         </th>
@@ -21,7 +21,7 @@
     <tbody>
         <tr ng-switch="item.tableRowViewModel.hasTitle" ng-repeat="item in collection.items" ng-class="item.color" class="clickable-area" gemini-enter="item.doClick()"  gemini-rightclick="item.doClick(true)" gemini-drag tabindex="0">
             <td class="checkbox" ng-hide="collection.disableActions()">
-                <input type="checkbox" id="{{collection.id+'-item'+collection.onPaneId+'-'+ $index}}" ng-model="item.selected" ng-change="item.selectionChange($index)">
+                <input type="checkbox" id="{{collection.id+collection.onPaneId+'-'+ $index}}" ng-model="item.selected" ng-change="item.selectionChange($index)">
             </td>
             <td ng-switch-when="true" class="cell">
                 {{item.tableRowViewModel.title}}
