@@ -641,7 +641,9 @@ namespace AdventureWorksModel {
 
         #region AddNewSalesReason
 
-        [MemberOrder(1)]
+#pragma warning disable 618
+        [MemberOrder(Name= "SalesOrderHeaderSalesReason", Sequence = "1")]
+#pragma warning restore 618
         public void AddNewSalesReason(SalesReason reason) {
             if (SalesOrderHeaderSalesReason.All(y => y.SalesReason != reason)) {
                 var link = Container.NewTransientInstance<SalesOrderHeaderSalesReason>();

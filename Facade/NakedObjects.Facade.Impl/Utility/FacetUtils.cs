@@ -33,29 +33,34 @@ namespace NakedObjects.Facade.Impl.Utility {
             return 0;
         }
 
+        public static string GetMemberOrderName(this ISpecification spec) {
+            var facet = spec.GetFacet<IMemberOrderFacet>();
+            return facet?.Name;
+        }
+
         public static string GetMask(this ISpecification spec) {
             var facet = spec.GetFacet<IMaskFacet>();
-            return facet != null ? facet.Value : null;
+            return facet?.Value;
         }
 
         public static int? GetMaxLength(this ISpecification spec) {
             var facet = spec.GetFacet<IMaxLengthFacet>();
-            return facet != null ? (int?) facet.Value : null;
+            return facet?.Value;
         }
 
         public static string GetPattern(this ISpecification spec) {
             var facet = spec.GetFacet<IRegExFacet>();
-            return facet != null ? facet.Pattern.ToString() : null;
+            return facet?.Pattern.ToString();
         }
 
         public static int GetAutoCompleteMinLength(this ISpecification spec) {
             var facet = spec.GetFacet<IAutoCompleteFacet>();
-            return facet != null ? facet.MinLength : 0;
+            return facet?.MinLength ?? 0;
         }
 
         public static bool GetRenderEagerly(this ISpecification spec) {
             IEagerlyFacet eagerlyFacet = spec.GetFacet<IEagerlyFacet>();
-            return eagerlyFacet != null && eagerlyFacet.What == EagerlyAttribute.Do.Rendering;
+            return eagerlyFacet?.What == EagerlyAttribute.Do.Rendering;
         }
 
         public static Tuple<bool, string[]> GetTableViewData(this ISpecification spec) {
@@ -65,27 +70,27 @@ namespace NakedObjects.Facade.Impl.Utility {
 
         public static int GetNumberOfLinesWithDefault(this ISpecification spec) {
             var multiline = spec.GetFacet<IMultiLineFacet>();
-            return multiline == null ? 1 : multiline.NumberOfLines;
+            return multiline?.NumberOfLines ?? 1;
         }
 
         public static int? GetNumberOfLines(this ISpecification spec) {
             var multiline = spec.GetFacet<IMultiLineFacet>();
-            return multiline == null ? (int?)null : multiline.NumberOfLines;
+            return multiline?.NumberOfLines;
         }
 
         public static int GetTypicalLength(this ISpecification spec) {
             var typicalLength = spec.GetFacet<ITypicalLengthFacet>();
-            return typicalLength == null ? 0 : typicalLength.Value;
+            return typicalLength?.Value ?? 0;
         }
 
         public static int GetWidth(this ISpecification spec) {
             var multiline = spec.GetFacet<IMultiLineFacet>();
-            return multiline == null ? 0 : multiline.Width;
+            return multiline?.Width ?? 0;
         }
 
         public static string GetPresentationHint(this ISpecification spec) {
             var hintFacet = spec.GetFacet<IPresentationHintFacet>();
-            return hintFacet == null ? null : hintFacet.Value;
+            return hintFacet?.Value;
         }
 
         public static Tuple<Regex, string> GetRegEx(this ISpecification spec) {

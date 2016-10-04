@@ -46,6 +46,8 @@ namespace NakedObjects.Facade.Impl {
 
         public int MemberOrder => WrappedSpec.GetMemberOrder();
 
+        public string MemberOrderName => WrappedSpec.GetMemberOrderName();
+
         public string Id => WrappedSpec.Id + overloadedUniqueId;
 
         public ITypeFacade ReturnType => new TypeFacade(WrappedSpec.ReturnSpec, FrameworkFacade, framework);
