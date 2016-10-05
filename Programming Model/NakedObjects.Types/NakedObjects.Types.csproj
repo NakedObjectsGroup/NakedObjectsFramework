@@ -53,7 +53,6 @@
     <Compile Include="Profile\IProfiler.cs" />
     <Compile Include="Profile\ProfileEvent.cs" />
     <Compile Include="RecognisedMethodsAndPrefixes.cs" />
-    <Compile Include="Redirect\IRedirected.cs" />
     <Compile Include="Title\ITitleBuilder.cs" />
     <Compile Include="ViewModel\IViewModelSwitchable.cs" />
     <Compile Include="ViewModel\IViewModel.cs" />

@@ -9,7 +9,6 @@ using System;
 
 namespace NakedObjects.Redirect {
     //Implemented by a 'stub' class that acts as a proxy for an object managed on another server
-    [Obsolete("Use IRedirected")]
     public interface IRedirectedObject {
         //This should be a logical server name, translated to/from a physical address elsewhere.
         string ServerName { get; set; }
