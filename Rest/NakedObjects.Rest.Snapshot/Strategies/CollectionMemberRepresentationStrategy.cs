@@ -25,8 +25,6 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             return PropertyContext.Property.Count(PropertyContext.Target);
         }
 
-        public override InlineActionRepresentation[] GetActions() {
-            return new InlineActionRepresentation[] {};
-        }
+      
     }
 }

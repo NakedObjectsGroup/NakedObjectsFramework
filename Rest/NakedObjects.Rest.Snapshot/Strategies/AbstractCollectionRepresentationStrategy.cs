@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
@@ -104,6 +105,26 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             return new CollectionWithDetailsRepresentationStrategy(oidStrategy, req, propertyContext, flags);
         }
 
-        public abstract InlineActionRepresentation[] GetActions();
+        private ActionContextFacade ActionContext(IActionFacade actionFacade, IObjectFacade target) {
+            return new ActionContextFacade {
+                MenuPath = "",
+                Target = target,
+                Action = actionFacade,
+                VisibleParameters = actionFacade.Parameters.Select(p => new ParameterContextFacade { Parameter = p, Action = actionFacade }).ToArray()
+            };
+        }
+
+        public virtual InlineActionRepresentation[] GetActions() {
+
+            if (!PropertyContext.Target.IsTransient) {
+                var lcas = PropertyContext.Target.Specification.GetLocallyContributedActions(PropertyContext.Property.ElementSpecification, PropertyContext.Property.Id);
+
+                if (lcas.Length > 0) {
+                    return lcas.Select(a => InlineActionRepresentation.Create(OidStrategy, Req, ActionContext(a, PropertyContext.Target), Flags)).ToArray();
+                }
+            }
+
+            return new InlineActionRepresentation[] { };
+        }
     }
 }
