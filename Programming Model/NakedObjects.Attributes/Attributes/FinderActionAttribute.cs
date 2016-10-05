@@ -14,5 +14,19 @@ namespace NakedObjects {
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
     public class FinderActionAttribute : Attribute {
+
+        /// <summary>
+        /// The specified prefix will be renderered in front of the action name for the user
+        /// </summary>
+        /// <param name="prefix"></param>
+                public FinderActionAttribute(string prefix) {
+            Prefix = prefix;
+        }
+
+        public FinderActionAttribute() {
+            Prefix = null;
+        }
+
+        public string Prefix { get; set; }
     }
 }
