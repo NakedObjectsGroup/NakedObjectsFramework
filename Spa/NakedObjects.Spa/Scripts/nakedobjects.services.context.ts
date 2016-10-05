@@ -823,7 +823,10 @@ namespace NakedObjects {
                         dirtyList.setDirty(oid);
                     };
                 } 
-                else if (parent instanceof ListRepresentation && parms) {
+                if (parent instanceof CollectionMember) {
+                    return () =>  dirtyList.setDirty(parent.parent.getOid());
+                } 
+                if (parent instanceof ListRepresentation && parms) {
                     const ccaParm = _.find(action.parameters(), p => p.isCollectionContributed());
                     const ccaId = ccaParm ? ccaParm.id() : null;
                     const ccaValue = ccaId ? parms[ccaId] : null;

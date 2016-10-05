@@ -950,7 +950,7 @@ namespace NakedObjects.Models {
         isCollectionContributed(): boolean {
             const myparent = this.parent;
             const isOnList = (myparent instanceof ActionMember || myparent instanceof ActionRepresentation) &&
-                             (myparent.parent instanceof ListRepresentation || myparent.parent instanceof CollectionRepresentation);
+                (myparent.parent instanceof ListRepresentation || myparent.parent instanceof CollectionRepresentation || myparent.parent instanceof CollectionMember);
             const isList = this.isList();
             return isList && isOnList;
         }

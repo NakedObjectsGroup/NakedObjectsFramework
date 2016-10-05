@@ -790,6 +790,8 @@ namespace NakedObjects {
                 // clear any previous messages
                 collectionViewModel.resetMessage();
 
+               
+
                 if (resetting || state !== collectionViewModel.currentState) {
 
                     if (size > 0 || size == null) {
@@ -810,8 +812,7 @@ namespace NakedObjects {
                                     state === CollectionViewState.Table,
                                     routeData,
                                     collectionViewModel);
-                                collectionViewModel.details = getCollectionDetails(collectionViewModel.items.length);
-                             
+                                collectionViewModel.details = getCollectionDetails(collectionViewModel.items.length);                             
                                 collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);
                             })
                             .catch((reject: ErrorWrapper) => error.handleError(reject));
