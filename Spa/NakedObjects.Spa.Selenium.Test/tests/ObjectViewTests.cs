@@ -328,7 +328,7 @@ namespace NakedObjects.Selenium {
             GetObjectAction("Add New Sales Reason").AssertIsEnabled();
 
             //Then the real test
-            GetObjectAction("Add New Detail").AssertIsDisabled("Can only add to 'In Process' order");
+            GetObjectAction("Recalculate").AssertIsDisabled("Can only recalculate an 'In Process' order");
         }
 
         public virtual void ActionsMenuDisabledOnObjectWithNoActions() {

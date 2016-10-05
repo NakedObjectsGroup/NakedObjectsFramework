@@ -15,11 +15,21 @@ namespace NakedObjects.Selenium {
         {
             GeminiUrl("object?i1=View&r=1&o1=___1.SalesOrderHeader--44284&c1_Details=List");
             //Test that first collection has two actions within it
-            wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector(".action")).Count == 2);
-            wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector(".action"))[0].Text == "Adjust Quantities");
-            wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector(".action"))[1].Text == "Remove Details");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector(".action")).Count >= 4);
+            wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector(".action"))[2].Text == "Adjust Quantities");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector(".action"))[3].Text == "Remove Details");
             //Confirm that checkboxes, including All are rendered
             WaitForCss("input[type='checkbox']",17);
+            GeminiUrl("home");
+            WaitForView(Pane.Single, PaneType.Home);
+        }
+
+        public virtual void CanAssociateOtherActionWithCollection()
+        {
+            GeminiUrl("object?i1=View&r=1&o1=___1.SalesOrderHeader--44284&c1_Details=List");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector(".action")).Count >= 2);
+            wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector(".action"))[0].Text == "Add New Detail");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector(".action"))[1].Text == "Add New Details");
         }
     }
 
