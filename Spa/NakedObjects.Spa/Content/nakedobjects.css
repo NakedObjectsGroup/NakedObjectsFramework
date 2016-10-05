@@ -199,6 +199,7 @@ html, #main, body, .background, .single, .split {
     width: 245px;
     padding-left: 5px;
     padding-right: 5px;
+    padding-top: 1px;
     margin-top: 1px;
     margin-bottom: 1px;
 }
@@ -781,7 +782,7 @@ input[type=submit] {
 .lineDialog input.ok {
     margin-top: 4px;
     margin-right: 0px;
-    margin-left: 0px;
+    margin-left: 2px;
     padding-top: 1px;
     padding-bottom: 0px;
     padding-left: 2px;
@@ -796,7 +797,7 @@ input[type=submit] {
 }
 .multilinedialog input.close {
     float: left;
-    margin: 9px;
+    margin-right: 10px;
 }
 .multilinedialog .columnHeader {
     width: 245px;
@@ -824,7 +825,7 @@ input[type=submit] {
     margin-left: 5px;
 }
 .multilinedialog .count {
-    margin-top: 8px;
+    margin-top: 11px;
 }
 /*Cicero*/
 .cicero, .cicero input, .cicero pre {
@@ -861,8 +862,9 @@ input[type=submit] {
     /*Locally-contributed actions*/
 .collection .actions {
     float: none;
-    margin-bottom: 65px;
+    margin-bottom: 5px;
     width: 490px;
+    overflow: hidden;
 }
 
 .collection .actions .action {
