@@ -778,43 +778,64 @@ namespace NakedObjects {
         allSelected: boolean;
         items: IItemViewModel[];
 
+        private isLocallyContributed(action: IInvokableAction) {
+            return _.some(action.parameters(), p => p.isCollectionContributed()); 
+        }
+
         protected collectionContributedActionDecorator(actionViewModel: IActionViewModel) {
             const wrappedInvoke = actionViewModel.execute;
             actionViewModel.execute = (pps: IParameterViewModel[], right?: boolean) => {
+
                 const selected = _.filter(this.items, i => i.selected);
+             
 
-                if (selected.length === 0) {
+                const rejectAsNeedSelection = (action: IInvokableAction) => {
+                    if (this.isLocallyContributed(action)) {
 
-                    const em = new ErrorMap({}, 0, noItemsSelected);
-                    const rp = new ErrorWrapper(ErrorCategory.HttpClientError, HttpStatusCode.UnprocessableEntity, em);
+                        if (selected.length === 0) {
 
-                    return this.$q.reject(rp);
+                            const em = new ErrorMap({}, 0, noItemsSelected);
+                            const rp = new ErrorWrapper(ErrorCategory.HttpClientError, HttpStatusCode.UnprocessableEntity, em);
+
+                            return rp;
+                        }
+                    }
+                    return null;
                 }
+
 
                 const getParms = (action: IInvokableAction) => {
 
                     const parms = _.values(action.parameters()) as Parameter[];
                     const contribParm = _.find(parms, p => p.isCollectionContributed());
-                    const parmValue = new Value(_.map(selected, i => i.link));
-                    const collectionParmVm = this.viewModelFactory.parameterViewModel(contribParm, parmValue, this.onPaneId);
 
-                    const allpps = _.clone(pps);
-                    allpps.push(collectionParmVm);
-                    return allpps;
+                    if (contribParm) {
+                        const parmValue = new Value(_.map(selected, i => i.link));
+                        const collectionParmVm = this.viewModelFactory.parameterViewModel(contribParm, parmValue, this.onPaneId);
+
+                        const allpps = _.clone(pps);
+                        allpps.push(collectionParmVm);
+                        return allpps;
+                    }
+                    return pps;
                 }
 
                 if (actionViewModel.invokableActionRep) {
-                    return wrappedInvoke(getParms(actionViewModel.invokableActionRep), right).then(result => {
-                        // clear selected items on void actions 
-                        this.clearSelected(result);
-                        return result;
-                    });
+                    const rp = rejectAsNeedSelection(actionViewModel.invokableActionRep);
+                    return rp ? this.$q.reject(rp) : wrappedInvoke(getParms(actionViewModel.invokableActionRep), right).
+                        then(result => {
+                            // clear selected items on void actions 
+                            this.clearSelected(result);
+                            return result;
+                        });
                 }
 
-                return this.context.getActionDetails(actionViewModel.actionRep as ActionMember)
-                    .then((details: ActionRepresentation) =>
-                        wrappedInvoke(getParms(details), right))
-                    .then(result => {
+                return this.context.getActionDetails(actionViewModel.actionRep as ActionMember).
+                    then((details: ActionRepresentation) => {
+                        const rp = rejectAsNeedSelection(details);
+                        return rp ? this.$q.reject(rp) : wrappedInvoke(getParms(details), right);
+                    }).
+                    then(result => {
                         // clear selected items on void actions 
                         this.clearSelected(result);
                         return result;
@@ -826,7 +847,10 @@ namespace NakedObjects {
 
             const showDialog = () =>
                 this.context.getInvokableAction(actionViewModel.actionRep as ActionMember).
-                    then(invokableAction => _.keys(invokableAction.parameters()).length > 1);
+                    then(invokableAction => {
+                    const keyCount = _.keys(invokableAction.parameters()).length;
+                    return keyCount > 1 || keyCount === 1 && !_.toArray(invokableAction.parameters())[0].isCollectionContributed();
+                });
 
             // make sure not null while waiting for promise to assign correct function 
             actionViewModel.doInvoke = () => { };
