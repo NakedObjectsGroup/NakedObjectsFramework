@@ -798,6 +798,9 @@ namespace NakedObjects {
                     collectionViewModel.details = getCollectionDetails(size);
                     const getDetails = itemLinks == null || state === CollectionViewState.Table;
 
+                    const actions = collectionRep.actionMembers();
+                    collectionViewModel.setActions(actions, routeData);
+
                     if (state === CollectionViewState.Summary) {
                         collectionViewModel.items = [];
                     } else if (getDetails) {
@@ -808,16 +811,13 @@ namespace NakedObjects {
                                     routeData,
                                     collectionViewModel);
                                 collectionViewModel.details = getCollectionDetails(collectionViewModel.items.length);
-                                const actions = details.actionMembers();
-                                collectionViewModel.setActions(actions, routeData);
+                             
                                 collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);
                             })
                             .catch((reject: ErrorWrapper) => error.handleError(reject));
                     } else {
                         collectionViewModel.items = viewModelFactory.getItems(itemLinks, state === CollectionViewState.Table, routeData, collectionViewModel);
-                        collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);
-                        const actions = collectionRep.actionMembers();
-                        collectionViewModel.setActions(actions, routeData);
+                        collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);                   
                     }
 
                     switch (state) {
