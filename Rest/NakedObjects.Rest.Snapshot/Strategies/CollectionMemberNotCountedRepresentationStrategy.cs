@@ -24,8 +24,6 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             return null;
         }
 
-        public override InlineActionRepresentation[] GetActions() {
-            return new InlineActionRepresentation[] {};
-        }
+    
     }
 }
