@@ -12,7 +12,7 @@ param($rootPath, $toolsPath, $package, $project)
 	$CSSnippets = "$toolsPath\C#\*.snippet"
 
 	$CSTemplates = "$toolsPath\C#\*.zip"
-	$vsVersions = @("2015","2013","2012","2010")
+	$vsVersions = @("2013","2012","2010")
 
 	Function copyFiles ($toParent, $toDir,  $files) {
 
@@ -57,15 +57,17 @@ param($rootPath, $toolsPath, $package, $project)
 	build.ide.proj /t:Clean
 	build.pm.proj /t:Clean
 	build.core.proj /t:Clean
-	build.facade.proj /t:Clean
+	build.sf.proj /t:Clean
 	build.ro.proj /t:Clean
+	build.mvc.proj /t:Clean
 	build.batch.proj /t:Clean
 	
 	build.ide.proj 
 	build.pm.proj 
 	build.core.proj 
-	build.facade.proj 
+	build.sf.proj 
 	build.ro.proj 
+	build.mvc.proj
 	build.batch.proj 
 
 	.EXAMPLE
@@ -75,24 +77,25 @@ param($rootPath, $toolsPath, $package, $project)
 	function global:New-NakedObjectsCleanBuildTest()
 	{		
 		Function build( $project, $target ){
-			& "C:\Program Files (x86)\MSBuild\14.0\Bin\MsBuild.exe" $project $target
+			& "C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" $project $target
 			if ($LastExitCode -eq 1) {exit $LastExitCode}
 		}
 
 		build build.ide.proj /t:Clean
 		build build.pm.proj /t:Clean
 		build build.core.proj /t:Clean
-		build build.facade.proj /t:Clean
+		build build.sf.proj /t:Clean
 		build build.ro.proj /t:Clean
+		build build.mvc.proj /t:Clean
 		build build.batch.proj /t:Clean
 		
 		build build.ide.proj 
 		build build.pm.proj 
 		build build.core.proj 
-		build build.facade.proj 
+		build build.sf.proj 
 		build build.ro.proj 
+		build build.mvc.proj 
 		build build.batch.proj
-		build build.spa.proj
 	}
 
 	<#
@@ -107,7 +110,7 @@ param($rootPath, $toolsPath, $package, $project)
 	build.ide.proj /t:Clean
 	build.pm.proj /t:Clean
 	build.core.proj /t:Clean
-	build.facade.proj /t:Clean
+	build.sf.proj /t:Clean
 	build.ro.proj /t:Clean
 	build.mvc.proj /t:Clean
 	build.batch.proj /t:Clean
@@ -115,7 +118,7 @@ param($rootPath, $toolsPath, $package, $project)
 	build.ide.proj 
 	build.pm.proj 
 	build.core.proj /t:FrameworkPackageNoTest
-	build.facade.proj 
+	build.sf.proj 
 	build.ro.proj /t:RestfulObjectsPackageNoTest
 	build.mvc.proj /t:MvcPackageNoTest
 	build.batch.proj
@@ -127,25 +130,26 @@ param($rootPath, $toolsPath, $package, $project)
 	function global:New-NakedObjectsCleanBuildNoTest()
 	{		
 		Function build( $project, $target ){
-			& "C:\Program Files (x86)\MSBuild\14.0\Bin\MsBuild.exe" $project $target
+			& "C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" $project $target
 			if ($LastExitCode -eq 1) {exit $LastExitCode}
 		}
 
 		build build.ide.proj /t:Clean
 		build build.pm.proj /t:Clean
 		build build.core.proj /t:Clean
-		build build.facade.proj /t:Clean
+		build build.sf.proj /t:Clean
 		build build.ro.proj /t:Clean
+		build build.mvc.proj /t:Clean
 		build build.batch.proj /t:Clean
 		
 
 		build build.ide.proj 
 		build build.pm.proj 
 		build build.core.proj /t:FrameworkPackageNoTest
-		build build.facade.proj 
+		build build.sf.proj 
 		build build.ro.proj /t:RestfulObjectsPackageNoTest
+		build build.mvc.proj /t:MvcPackageNoTest
 		build build.batch.proj
-		build build.spa.proj
 	}
 
 	<#
@@ -219,15 +223,19 @@ param($rootPath, $toolsPath, $package, $project)
 
 	Mandatory. The name of the package. The following are valid.   
 	nakedobjects.batch         
+	nakedobjects.authorisation.wif
 	nakedobjects.core    
 	nakedobjects.xat         
+	nakedobjects.mvc-assemblies
+	nakedobjects.mvc-filetemplates
 	nakedobjects.ide            
 	nakedobjects.programmingmodel
-	nakedobjects.rest            
-	nakedobjects.facade.impl 
-	nakedobjects.facade        
-	nakedobjects.spa
-	nakedobjects.run    
+	restfulobjects.mvc          
+	restfulobjects.server      
+	nakedobjects.sample.icons
+	nakedobjects.surface.nof4 
+	nakedobjects.surface        
+	nakedobjects.mvc.selenium   
 
 	.PARAMETER NewVersion
 
@@ -243,15 +251,19 @@ param($rootPath, $toolsPath, $package, $project)
 		# validate parms 
 
 		$supportedPackages = "nakedobjects.batch",           
+							 "nakedobjects.authorisation.wif",
 							 "nakedobjects.core",        
-							 "nakedobjects.xat",              							
+							 "nakedobjects.xat",              
+							 "nakedobjects.mvc-assemblies",   
+							 "nakedobjects.mvc-filetemplates",
 							 "nakedobjects.ide",              
 							 "nakedobjects.programmingmodel", 
-							 "nakedobjects.rest",                       
-							 "nakedobjects.facade.impl",     
-							 "nakedobjects.facade",          
-							 "nakedobjects.spa",
-					  		 "nakedobjects.run"   
+							 "restfulobjects.mvc",            
+							 "restfulobjects.server",         
+							 "nakedobjects.sample.icons",     
+							 "nakedobjects.surface.nof4",     
+							 "nakedobjects.surface",          
+							 "nakedobjects.mvc.selenium"     
 	
 		if (!($Package -is [string])){
 			return "package must be string";
