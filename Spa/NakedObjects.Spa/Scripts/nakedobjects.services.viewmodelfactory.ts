@@ -775,6 +775,11 @@ namespace NakedObjects {
 
                 let state = routeData.collections[collectionRep.collectionId()];
 
+                // collections are always shown as summary on transient 
+                if (routeData.interactionMode === InteractionMode.Transient) {
+                    state = CollectionViewState.Summary;
+                }
+
                 if (state == null) {
                     state = getDefaultTableState(collectionRep.extensions());
                 }
@@ -783,8 +788,6 @@ namespace NakedObjects {
 
                 // clear any previous messages
                 collectionViewModel.resetMessage();
-
-               
 
                 if (resetting || state !== collectionViewModel.currentState) {
 
