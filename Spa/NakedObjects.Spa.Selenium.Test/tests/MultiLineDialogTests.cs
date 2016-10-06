@@ -58,7 +58,12 @@ namespace NakedObjects.Selenium {
             SaveObject();
             GetButton("Edit"); //Waiting for save
             WaitForTextEquals(".summary .details", 0, "Empty");
-            OpenObjectActions();
+        
+
+            var iconList = WaitForCssNo(".collection .icon-list", 0);
+            Click(iconList);
+            WaitForCss("table");
+
             Click(GetObjectAction("Add New Details"));
             WaitForView(Pane.Single, PaneType.MultiLineDialog);
             wait.Until(dr => dr.FindElement(By.CssSelector(".title")).Text.Contains("Add New Details"));
@@ -195,7 +200,7 @@ namespace NakedObjects.Selenium {
         [TestMethod] //Mega
         public void MegaMultiLineDialogTest() {
             //MultiLineMenuAction();
-            //MultiLineObjectAction();
+            MultiLineObjectAction();
         }
     }
 
