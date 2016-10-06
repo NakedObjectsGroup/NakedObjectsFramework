@@ -195,7 +195,7 @@ namespace NakedObjects.Selenium {
         [TestMethod] //Mega
         public void MegaMultiLineDialogTest() {
             //MultiLineMenuAction();
-            MultiLineObjectAction();
+            //MultiLineObjectAction();
         }
     }
 

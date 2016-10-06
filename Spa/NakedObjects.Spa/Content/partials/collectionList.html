@@ -7,7 +7,7 @@
     </div>
 </div>
 <div class="messages">{{collection.message}}</div>
-<div ng-hide="collection.disableActions()" class="actions" ng-include="'Content/partials/actions.html'"></div>
+<div ng-if="!collection.disableActions()" class="actions" ng-include="'Content/partials/actions.html'"></div>
 <div ng-if="!collection.disableActions() && dialog.matchingCollectionId === collection.id" class="dialog" ng-include="dialogTemplate"></div>
 <table>
     <thead>
