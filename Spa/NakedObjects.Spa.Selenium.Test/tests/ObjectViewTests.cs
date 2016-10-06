@@ -325,7 +325,7 @@ namespace NakedObjects.Selenium {
         public virtual void DisabledAction() {
             GeminiUrl("object?o1=___1.SalesOrderHeader--43893&as1=open");
             //First the control test
-            GetObjectAction("Add New Sales Reason").AssertIsEnabled();
+            GetObjectAction("Add New Sales Reasons").AssertIsEnabled();
 
             //Then the real test
             GetObjectAction("Recalculate").AssertIsDisabled("Can only recalculate an 'In Process' order");
