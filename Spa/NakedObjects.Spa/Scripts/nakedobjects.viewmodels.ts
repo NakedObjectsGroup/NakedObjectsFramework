@@ -858,7 +858,7 @@ namespace NakedObjects {
             const invokeWithDialog = (right?: boolean) => {
                 this.context.clearDialogValues(this.onPaneId);
                 this.focusManager.focusOverrideOff();
-                this.urlManager.setDialog(actionViewModel.actionRep.actionId(), this.onPaneId);
+                this.urlManager.setDialogOrMultiLineDialog(actionViewModel.actionRep, this.onPaneId);
             };
 
             const invokeWithoutDialog = (right?: boolean) =>
@@ -1098,7 +1098,7 @@ namespace NakedObjects {
         description = () => this.details.toString();      
         refresh: (routeData: PaneRouteData, resetting: boolean) => void;
         
-        disableActions = () => this.editing || !this.actions || this.actions.length === 0 || !this.items || this.items.length === 0;
+        disableActions = () => this.editing || !this.actions || this.actions.length === 0;
 
         actionMember = (id: string) => {
             const actionViewModel = _.find(this.actions, a => a.actionRep.actionId() === id);

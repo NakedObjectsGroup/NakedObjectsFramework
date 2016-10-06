@@ -541,26 +541,27 @@ namespace NakedObjects {
 
 
             function setMultiLineDialog($scope: INakedObjectsScope,
-                                        holder: MenuRepresentation | DomainObjectRepresentation | IListViewModel,
+                                        holder: MenuRepresentation | DomainObjectRepresentation | ICollectionViewModel,
                                         newDialogId: string,
                                         routeData: PaneRouteData,
-                                        focusTarget: FocusTarget) {
+                                        actionViewModel? : IActionViewModel) {
 
-                const action = holder.actionMember(routeData.dialogId);
+                const action = holder.actionMember(newDialogId);
                 context.getInvokableAction(action).
                     then(details => {
-                       
+
+                        if (actionViewModel) {
+                            actionViewModel.makeInvokable(details);
+                        }
+                
                         $scope.multiLineDialogTemplate = multiLineDialogTemplate;
                         $scope.parametersTemplate = parametersTemplate;
                         $scope.parameterTemplate = parameterTemplate;
                         $scope.readOnlyParameterTemplate = readOnlyParameterTemplate;
 
-                        const dialogViewModel = perPaneMultiLineDialogViews[routeData.paneId];
-
-                        //if (!dialogViewModel.action || dialogViewModel.action.actionId() !== details.actionId()) {
-                            dialogViewModel.reset(routeData, details);
-                        //}
-
+                        const dialogViewModel = perPaneMultiLineDialogViews[routeData.paneId];                   
+                        dialogViewModel.reset(routeData, details);
+                       
                         if (holder instanceof DomainObjectRepresentation) {
                             dialogViewModel.objectTitle = holder.title();
                             dialogViewModel.objectFriendlyName = holder.extensions().friendlyName();        
@@ -572,14 +573,13 @@ namespace NakedObjects {
                         $scope.multiLineDialog = dialogViewModel;
                     }).
                     catch((reject: ErrorWrapper) => error.handleError(reject));
-
             }
 
             handlers.handleMultiLineDialog = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
                 if (routeData.menuId) {
                     context.getMenu(routeData.menuId)
                         .then((menu: MenuRepresentation) => {                        
-                            setMultiLineDialog($scope, menu, routeData.dialogId, routeData, FocusTarget.SubAction);
+                            setMultiLineDialog($scope, menu, routeData.dialogId, routeData);
                         })
                         .catch((reject: ErrorWrapper) => {
                             error.handleError(reject);
@@ -589,7 +589,19 @@ namespace NakedObjects {
                     const oid = ObjectIdWrapper.fromObjectId(routeData.objectId);
                     context.getObject(routeData.paneId, oid, routeData.interactionMode).
                         then((object: DomainObjectRepresentation) => {
-                            setMultiLineDialog($scope, object, routeData.dialogId, routeData, FocusTarget.SubAction);
+
+                            const ovm = perPaneObjectViews[routeData.paneId].reset(object, routeData);
+                            const newDialogId = routeData.dialogId;
+
+                            const lcaCollection = _.find(ovm.collections, c => c.hasMatchingLocallyContributedAction(newDialogId));
+
+                            if (lcaCollection) {
+                                const actionViewModel = _.find(lcaCollection.actions, a => a.actionRep.actionId() === newDialogId);
+                                setMultiLineDialog($scope, lcaCollection, newDialogId, routeData, actionViewModel);
+                            } else {
+                                setMultiLineDialog($scope, object, newDialogId, routeData);
+                            }
+                            
                         }).
                         catch((reject: ErrorWrapper) => {
                             error.handleError(reject);

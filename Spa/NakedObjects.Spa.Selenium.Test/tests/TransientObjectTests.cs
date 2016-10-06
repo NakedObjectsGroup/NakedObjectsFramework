@@ -149,8 +149,8 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Sales Order");
             Click(SaveButton());
             OpenObjectActions();
-            OpenActionDialog("Add New Sales Reason");
-            SelectDropDownOnField("#reason1", 1);
+            OpenActionDialog("Add New Sales Reasons");
+            SelectDropDownOnField("#reasons1", 1);
             Click(OKButton());
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[1].Text == "Reasons:\r\n1 Item");
         }

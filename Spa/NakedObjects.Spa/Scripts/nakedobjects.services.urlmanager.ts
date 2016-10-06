@@ -33,6 +33,8 @@ namespace NakedObjects {
 
         setMultiLineDialog(dialogId: string, paneId?: number): void;
 
+        setDialogOrMultiLineDialog(actionRep: Models.ActionMember | Models.ActionRepresentation, paneId? : number) : void;
+
         closeDialogKeepHistory(paneId?: number): void;
 
         closeDialogReplaceHistory(paneId?: number): void;
@@ -511,6 +513,15 @@ namespace NakedObjects {
             const newValues = _.zipObject([key], [dialogId]) as _.Dictionary<string>;
             executeTransition(newValues, paneId, Transition.ToMultiLineDialog, search => getId(key, search) !== dialogId);
         };
+
+        helper.setDialogOrMultiLineDialog = (actionRep : Models.ActionMember | Models.ActionRepresentation, paneId = 1) => {
+            if (actionRep.extensions().multipleLines()) {
+                helper.setMultiLineDialog(actionRep.actionId(), paneId);
+            } else {
+                helper.setDialog(actionRep.actionId(), paneId);
+            }
+        };
+
 
 
         function closeOrCancelDialog(paneId: number, transition: Transition) {

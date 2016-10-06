@@ -225,14 +225,8 @@ namespace NakedObjects {
                     focusManager.setCurrentPane(paneId);
                     focusManager.focusOverrideOff();
                     // clear any previous dialog so we don't pick up values from it
-                    context.clearDialogValues(paneId);
-
-                    if (actionRep.extensions().multipleLines()) {
-                        urlManager.setMultiLineDialog(actionRep.actionId(), paneId);
-                    } else {
-                        urlManager.setDialog(actionRep.actionId(), paneId);
-                    }
-
+                    context.clearDialogValues(paneId);               
+                    urlManager.setDialogOrMultiLineDialog(actionRep, paneId);              
                     focusManager.focusOn(FocusTarget.Dialog, 0, paneId); // in case dialog is already open
                 } :
                 (right?: boolean) => {
@@ -779,7 +773,7 @@ namespace NakedObjects {
 
             collectionViewModel.refresh = (routeData: PaneRouteData, resetting: boolean) => {
 
-                let state = size === 0 ? CollectionViewState.Summary : routeData.collections[collectionRep.collectionId()];
+                let state = routeData.collections[collectionRep.collectionId()];
 
                 if (state == null) {
                     state = getDefaultTableState(collectionRep.extensions());
