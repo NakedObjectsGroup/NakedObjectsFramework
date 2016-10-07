@@ -544,7 +544,7 @@ namespace AdventureWorksModel {
 
         [Description("Add a new line item to the order")]
 #pragma warning disable 612,618
-        [MemberOrder(Sequence="3", Name ="Details")]
+        [MemberOrder(Sequence="2", Name ="Details")]
 #pragma warning restore 612,618
         public SalesOrderDetail AddNewDetail(Product product,
                                              [DefaultValue((short) 1), Range(1, 999)] short quantity) {
@@ -581,7 +581,7 @@ namespace AdventureWorksModel {
         [Description("Add multiple line items to the order")]
         [MultiLine()]
 #pragma warning disable 612, 618
-        [MemberOrder(Sequence = "4", Name = "Details")]
+        [MemberOrder(Sequence = "1", Name = "Details")]
 #pragma warning restore 612,618
         public void AddNewDetails(Product product,
                                      [DefaultValue((short)1)] short quantity)
@@ -609,7 +609,6 @@ namespace AdventureWorksModel {
         #endregion
 
         #region Remove Detail
-
         public void RemoveDetail(SalesOrderDetail detailToRemove) {
             if (Details.Contains(detailToRemove)) {
                 Details.Remove(detailToRemove);
@@ -624,7 +623,7 @@ namespace AdventureWorksModel {
             return Details.FirstOrDefault();
         }
 
-        [MemberOrder(4)]
+        [MemberOrder(3)]
         public void RemoveDetails([ContributedAction] IEnumerable<SalesOrderDetail> details) {
             foreach (SalesOrderDetail detail in details) {
                 if (Details.Contains(detail)) {
@@ -635,7 +634,7 @@ namespace AdventureWorksModel {
         #endregion
 
         #region AdjustQuantities
-        [MemberOrder(3)]
+        [MemberOrder(4)]
         public void AdjustQuantities([ContributedAction] IEnumerable<SalesOrderDetail> details, short newQuantity)
         {
             foreach (SalesOrderDetail detail in details)
