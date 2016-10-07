@@ -13,7 +13,7 @@ export interface ILink {
     extensions?: IExtensions;
 }
 
-export type formatType = "string" | "date-time" | "date" | "time" | "utc-millsec" | "big-integer" | "big-decimal" | "blob" | "clob" | "decimal" | "int";
+export type formatType = "string" | "date-time" | "date" | "time" | "utc-millisec" | "big-integer" | "big-decimal" | "blob" | "clob" | "decimal" | "int";
 
 export interface IExtensions {
     friendlyName?: string;
