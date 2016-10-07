@@ -18,20 +18,31 @@ namespace NakedObjects.Selenium {
             Click(GetObjectAction("Create Multiple Special Offers"));
             WaitForView(Pane.Single, PaneType.MultiLineDialog, "Create Multiple Special Offers");
             WaitForTextEquals(".count", "with 0 lines submitted.");
-            //line 0
-            OKButtonOnLine(0).AssertIsDisabled("Missing mandatory fields: Description; Discount Pct; Type; Category; Min Qty; ");
+            //Enter line 0
+            OKButtonOnLine(0).AssertIsDisabled("Missing mandatory fields: Description; Discount Pct; Type; Category; Min Qty; Start Date; ");
             ClearFieldThenType("#description0", "x");
             ClearFieldThenType("#discountpct0", ".03");
             ClearFieldThenType("#type0", "Promotion");
             SelectDropDownOnField("#category0", "Reseller");
             ClearFieldThenType("#minqty0", "10");
+            ClearFieldThenType("#startdate0", "01/01/2002");
             OKButtonOnLine(0).AssertIsEnabled();
+            //Submit line 0
             Click(OKButtonOnLine(0));
             WaitForTextEquals(".co-validation", 0, "Submitted");
             WaitForTextEquals(".count", "with 1 lines submitted.");
+            //Check the read-only fields
+            WaitForOKButtonToDisappear(0);
             WaitUntilElementDoesNotExist("#description0");
+            WaitForReadOnlyEnteredParam(0, 0, "x");
+            WaitForReadOnlyEnteredParam(0, 1, "0.03");
+            WaitForReadOnlyEnteredParam(0, 2, "Promotion");
+            //WaitForReadOnlyEnteredParam(0, 3, "Reseller");
+            WaitForReadOnlyEnteredParam(0, 4, "10");
+            WaitForReadOnlyEnteredParam(0, 5, "1 Jan 2002");
+
             //line 1
-            OKButtonOnLine(1).AssertIsDisabled("Missing mandatory fields: Description; Discount Pct; Type; Category; Min Qty; ");
+            OKButtonOnLine(1).AssertIsDisabled("Missing mandatory fields: Description; Discount Pct; Type; Category; Min Qty; Start Date; ");
             var rand = new Random();
             var description = rand.Next(9999).ToString();
             ClearFieldThenType("#description1", description);
@@ -39,15 +50,19 @@ namespace NakedObjects.Selenium {
             ClearFieldThenType("#type1", "Promotion");
             SelectDropDownOnField("#category1", "Reseller");
             ClearFieldThenType("#minqty1", "5");
+            ClearFieldThenType("#startdate1", "01/01/2002");
             OKButtonOnLine(1).AssertIsEnabled();
             Click(OKButtonOnLine(1));
             WaitForTextEquals(".co-validation", 1, "Submitted");
-            WaitUntilElementDoesNotExist("#description1");
             WaitForTextEquals(".count", "with 2 lines submitted.");
+
+            WaitForOKButtonToDisappear(1);
+            WaitUntilElementDoesNotExist("#description1");
+
 
             //Check that new empty line (2) has been created
             WaitForCss("#description2");
-            OKButtonOnLine(2).AssertIsDisabled("Missing mandatory fields: Description; Discount Pct; Type; Category; Min Qty; ");
+            OKButtonOnLine(2).AssertIsDisabled("Missing mandatory fields: Description; Discount Pct; Type; Category; Min Qty; Start Date; ");
 
             //Close the MLD
             Click(WaitForCss(".close"));
@@ -255,9 +270,9 @@ namespace NakedObjects.Selenium {
     public abstract class MegaMultiLineDialogTestsRoot : MultiLineDialogTestsRoot {
         [TestMethod] //Mega
         public void MegaMultiLineDialogTest() {
+            MultiLineMenuAction();
             MultiLineObjectAction();
             MultiLineObjectActionInCollection();
-            MultiLineMenuAction();
         }
     }
 

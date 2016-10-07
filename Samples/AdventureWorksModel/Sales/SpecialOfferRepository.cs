@@ -63,7 +63,8 @@ namespace AdventureWorksModel {
             [Mask("P")] decimal discountPct,
             string type,
             string category,
-            int minQty
+            int minQty,
+            DateTime startDate
             )
         {
             var so = NewTransientInstance<SpecialOffer>();
@@ -74,7 +75,7 @@ namespace AdventureWorksModel {
             so.MinQty = minQty;
             //Deliberately created non-current so they don't show up
             //in Current Special Offers (but can be viewed via All Special Offers)
-            so.StartDate = new DateTime(2003, 1, 1);
+            so.StartDate = startDate;
             so.EndDate = new DateTime(2003, 12, 31);
             Container.Persist(ref so);
         }
@@ -82,6 +83,14 @@ namespace AdventureWorksModel {
         {
             return new[] { "Reseller", "Customer" };
         }
+
+        public string Validate5CreateMultipleSpecialOffers(DateTime startDate)
+        {
+            var rb = new ReasonBuilder();
+            rb.AppendOnCondition(startDate > new DateTime(2003,12,1), "Start Date must be before 1/12/2003");
+            return rb.Reason;
+        }
+
         #endregion
 
         #region AssociateSpecialOfferWithProduct
