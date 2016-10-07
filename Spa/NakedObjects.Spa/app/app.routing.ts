@@ -3,7 +3,8 @@ import { HomeComponent } from "./home.component";
 import { ObjectComponent} from "./object.component";
 import { ListComponent} from "./list.component";
 import { ErrorComponent } from './error.component';
-
+import { RecentComponent } from './recent.component';
+import { ApplicationPropertiesComponent } from './application-properties.component';
 const routes: Routes = [
     {
         path: '',
@@ -46,6 +47,16 @@ const routes: Routes = [
     {
         path: 'gemini/error',
         component: ErrorComponent,
+        data: { pane: 1, class: "single" }
+    },
+    {
+        path: 'gemini/recent',
+        component: RecentComponent,
+        data: { pane: 1, class: "single" }
+    },
+    {
+        path: 'gemini/applicationProperties',
+        component: ApplicationPropertiesComponent,
         data: { pane: 1, class: "single" }
     }
 ];
