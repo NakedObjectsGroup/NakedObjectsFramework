@@ -44,6 +44,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(24)]
         [Mask("C")]
+        [Disabled]
         public virtual decimal LineTotal { get; set; }
 
         [Mask("#")]
@@ -56,6 +57,7 @@ namespace AdventureWorksModel {
 
         [Mask("#")]
         [MemberOrder(34)]
+        [Disabled]
         public virtual decimal StockedQty { get; set; }
 
         #region ModifiedDate

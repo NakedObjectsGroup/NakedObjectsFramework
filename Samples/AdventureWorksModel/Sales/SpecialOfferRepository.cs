@@ -17,7 +17,6 @@ namespace AdventureWorksModel {
     public class SpecialOfferRepository : AbstractFactoryAndRepository {
         #region CurrentSpecialOffers
 
-        [FinderAction]
         [MemberOrder(1)]
         [TableView(false, "Description", "XNoMatchingColumn", "Category", "DiscountPct")] 
         public IQueryable<SpecialOffer> CurrentSpecialOffers() {
@@ -29,21 +28,35 @@ namespace AdventureWorksModel {
 
         #endregion
 
+        #region All Special Offers
+        //Returns most recently-modified first
+        [MemberOrder(2)]
+        public IQueryable<SpecialOffer> AllSpecialOffers()
+        {
+            return Container.Instances<SpecialOffer>().OrderByDescending(so => so.ModifiedDate);
+        }
+        #endregion
+
+        #region Special Offers With No Minimum Qty
+        [MemberOrder(3)]
         public IQueryable<SpecialOffer> SpecialOffersWithNoMinimumQty()
         {
             return CurrentSpecialOffers().Where(s => s.MinQty <= 1);
         }
+        #endregion
 
-        [FinderAction]
-        [MemberOrder(3)]
+        #region Create New Special Offer
+        [MemberOrder(4)]
         public SpecialOffer CreateNewSpecialOffer() {
             var obj = NewTransientInstance<SpecialOffer>();
             //set up any parameters
             //MakePersistent();
             return obj;
         }
+        #endregion
 
-        [MemberOrder(4)]
+        #region Create Multiple Special Offers
+        [MemberOrder(5)]
         [MultiLine(NumberOfLines=2)]
         public void CreateMultipleSpecialOffers(
             string description,
@@ -59,38 +72,21 @@ namespace AdventureWorksModel {
             so.Type = type;
             so.Category = category;
             so.MinQty = minQty;
-            so.StartDate = DateTime.Today;
-            so.EndDate = DateTime.Today.AddDays(30);
-            //set up any parameters
+            //Deliberately created non-current so they don't show up
+            //in Current Special Offers (but can be viewed via All Special Offers)
+            so.StartDate = new DateTime(2003, 1, 1);
+            so.EndDate = new DateTime(2003, 12, 31);
             Container.Persist(ref so);
         }
         public virtual string[] Choices3CreateMultipleSpecialOffers()
         {
             return new[] { "Reseller", "Customer" };
         }
-
-
-        #region NoDiscount
-
-        private SpecialOffer _noDiscount;
-
-        [NakedObjectsIgnore]
-        public SpecialOffer NoDiscount() {
-            if (_noDiscount == null) {
-                IQueryable<SpecialOffer> query = from obj in Instances<SpecialOffer>()
-                    where obj.SpecialOfferID == 1
-                    select obj;
-
-                _noDiscount = query.FirstOrDefault();
-            }
-            return _noDiscount;
-        }
-
         #endregion
 
         #region AssociateSpecialOfferWithProduct
 
-        [MemberOrder(2)]
+        [MemberOrder(6)]
         public SpecialOfferProduct AssociateSpecialOfferWithProduct([ContributedAction("Special Offers")] SpecialOffer offer, [ContributedAction("Special Offers")] Product product) {
             //First check if association already exists
             IQueryable<SpecialOfferProduct> query = from sop in Instances<SpecialOfferProduct>()
@@ -123,5 +119,26 @@ namespace AdventureWorksModel {
         }
 
         #endregion
+
+        #region Helper methods
+
+        private SpecialOffer _noDiscount;
+
+        [NakedObjectsIgnore]
+        public SpecialOffer NoDiscount()
+        {
+            if (_noDiscount == null)
+            {
+                IQueryable<SpecialOffer> query = from obj in Instances<SpecialOffer>()
+                                                 where obj.SpecialOfferID == 1
+                                                 select obj;
+
+                _noDiscount = query.FirstOrDefault();
+            }
+            return _noDiscount;
+        }
+
+        #endregion
+
     }
 }

@@ -582,6 +582,12 @@ namespace NakedObjects.Selenium
             return wait.Until(dr => dr.FindElements(By.CssSelector(".lineDialog"))[lineNo].FindElement(By.CssSelector(".ok")));
         }
 
+        protected void WaitForOKButtonToDisappear(int lineNo)
+        {
+            var line = WaitForCssNo(".lineDialog", lineNo);
+            wait.Until(dr => line.FindElements(By.CssSelector(".ok")).Count == 0);
+        }
+
         protected void CancelDialog(Pane pane = Pane.Single)
         {
             var selector = CssSelectorFor(pane) + ".dialog ";

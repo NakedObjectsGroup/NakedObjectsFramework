@@ -8,6 +8,7 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using System;
 
 namespace NakedObjects.Selenium {
     public abstract class MultiLineDialogTestsRoot : AWTest {
@@ -31,7 +32,9 @@ namespace NakedObjects.Selenium {
             WaitUntilElementDoesNotExist("#description0");
             //line 1
             OKButtonOnLine(1).AssertIsDisabled("Missing mandatory fields: Description; Discount Pct; Type; Category; Min Qty; ");
-            ClearFieldThenType("#description1", "y");
+            var rand = new Random();
+            var description = rand.Next(9999).ToString();
+            ClearFieldThenType("#description1", description);
             ClearFieldThenType("#discountpct1", ".04");
             ClearFieldThenType("#type1", "Promotion");
             SelectDropDownOnField("#category1", "Reseller");
@@ -49,9 +52,54 @@ namespace NakedObjects.Selenium {
             //Close the MLD
             Click(WaitForCss(".close"));
             WaitForView(Pane.Single, PaneType.Home);
+
+            //Check that both special offers were in fact created
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=AllSpecialOffers&pg1=1&ps1=20&s1=0&c1=List");
+            Reload();
+            WaitForView(Pane.Single, PaneType.List);
+            WaitForCss(".reference", 10);
+            var row1 = WaitForCssNo(".reference", 0);
+            Assert.AreEqual(description, row1.Text);
         }
 
-        public virtual void MultiLineObjectAction() {
+        public virtual void MultiLineObjectAction()
+        {
+            GeminiUrl("object?i1=View&r=1&o1=___1.Vendor--1504&as1=open");
+            OpenSubMenu("Purchase Orders");
+            Click(GetObjectAction("Create New Purchase Order"));
+            WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Purchase Order Header");
+            SaveObject();
+            OpenObjectActions();
+            Click(GetObjectAction("Add New Details"));
+            WaitForView(Pane.Single, PaneType.MultiLineDialog);
+
+            //Line 0
+            ClearFieldThenType("#prod0", "Dissolver");
+            wait.Until(d => d.FindElements(By.CssSelector(".ui-menu-item")).Count > 0);
+            Click(WaitForCss(".ui-menu-item"));
+            WaitForCss("#prod0.link-color4");
+            ClearFieldThenType("#qty0", "4");
+            ClearFieldThenType("#unitprice0", "2.54");
+            Click(OKButtonOnLine(0));
+            WaitForOKButtonToDisappear(0);
+
+            //line 1
+            ClearFieldThenType("#prod1", "bottle");
+            wait.Until(d => d.FindElements(By.CssSelector(".ui-menu-item")).Count > 0);
+            Click(WaitForCss(".ui-menu-item"));
+            WaitForCss("#prod1.link-color4");
+            ClearFieldThenType("#qty1", "5");
+            ClearFieldThenType("#unitprice1", "2.54");
+            Click(OKButtonOnLine(1));
+            WaitForOKButtonToDisappear(1);
+
+            //close
+            Click(WaitForCss(".close"));
+            WaitForView(Pane.Single, PaneType.Object);
+            WaitForTextEquals(".summary .details", 0, "2 Items");
+        }
+
+        public virtual void MultiLineObjectActionInCollection() {
             GeminiUrl("object?i1=View&r=1&o1=___1.Customer--29562&as1=open&d1=CreateNewOrder");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Sales Order");
@@ -59,12 +107,15 @@ namespace NakedObjects.Selenium {
             GetButton("Edit"); //Waiting for save
             WaitForTextEquals(".summary .details", 0, "Empty");
         
-
             var iconList = WaitForCssNo(".collection .icon-list", 0);
             Click(iconList);
             WaitForCss("table");
 
-            Click(GetObjectAction("Add New Details"));
+            var selector = ".collection .actions .action";
+            var action = wait.Until(d => d.FindElements(By.CssSelector(selector)).
+                     Single(we => we.Text == "Add New Details"));
+            Click(action);
+
             WaitForView(Pane.Single, PaneType.MultiLineDialog);
             wait.Until(dr => dr.FindElement(By.CssSelector(".title")).Text.Contains("Add New Details"));
             WaitForCss(".lineDialog", 6);
@@ -127,6 +178,11 @@ namespace NakedObjects.Selenium {
         public override void MultiLineObjectAction()
         {
             base.MultiLineObjectAction();
+        }
+        [TestMethod]
+        public override void MultiLineObjectActionInCollection()
+        {
+            base.MultiLineObjectActionInCollection();
         }
     }
 
@@ -199,8 +255,9 @@ namespace NakedObjects.Selenium {
     public abstract class MegaMultiLineDialogTestsRoot : MultiLineDialogTestsRoot {
         [TestMethod] //Mega
         public void MegaMultiLineDialogTest() {
-            //MultiLineMenuAction();
             MultiLineObjectAction();
+            MultiLineObjectActionInCollection();
+            MultiLineMenuAction();
         }
     }
 
