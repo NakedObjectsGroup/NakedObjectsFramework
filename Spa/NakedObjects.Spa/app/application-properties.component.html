@@ -1,8 +1,21 @@
-﻿<div class="title">{{error.title}}</div>
-<div class="message">Message: {{error.message}}</div>
-<div class="code">Code: {{error.errorCode}}</div>
-<div class="description">Description: {{error.description}}.</div>
-<div class="stacktrace">
-    Stack Trace :
-    <div class="line" *ngFor="let line of error.stackTrace">{{line}}</div>
+﻿<div class="properties">
+    <div class="header">
+        <div class="title">Application Properties</div>
+    </div>
+    <div class="main-column">
+        <div class="properties">
+            <div class="property">
+                User Name: {{userName}}
+            </div>
+            <div class="property">
+                Server Url: {{serverUrl}}
+            </div>
+            <div class="property">
+                Server version: {{implVersion}}
+            </div>
+            <div class="property">
+                Client version: {{clientVersion}}
+            </div>
+        </div>
+    </div>
 </div>

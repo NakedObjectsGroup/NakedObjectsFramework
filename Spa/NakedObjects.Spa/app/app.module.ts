@@ -37,6 +37,9 @@ import { MaskServiceConfig }from './mask.service.config';
 import { FooterComponent }from './footer.component';
 import { GeminiClickDirective }from './gemini-click.directive';
 import {DND_PROVIDERS, DND_DIRECTIVES} from 'ng2-dnd';
+import { RecentComponent } from './recent.component';
+import { ApplicationPropertiesComponent } from './application-properties.component';
+
 @NgModule({
     imports: [
         BrowserModule,
@@ -61,6 +64,8 @@ import {DND_PROVIDERS, DND_DIRECTIVES} from 'ng2-dnd';
         PropertyComponent, 
         ParameterComponent, 
         AutoCompleteComponent,
+        RecentComponent, 
+        ApplicationPropertiesComponent,
         GeminiConditionalChoicesDirective,
         GeminiClickDirective,
         GeminiBooleanDirective,
