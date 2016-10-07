@@ -1,20 +1,35 @@
-﻿import { Component } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { Context } from "./context.service";
 import { ViewModelFactory } from "./view-model-factory.service";
 import * as ViewModels from "./nakedobjects.viewmodels";
+import { ActivatedRoute } from '@angular/router';
+import { ISubscription } from 'rxjs/Subscription';
 
 @Component({
     selector: 'recent',
     templateUrl: 'app/recent.component.html'
 })
-export class RecentComponent {
+export class RecentComponent implements OnInit {
 
-    constructor(private context : Context, private viewModelFactory : ViewModelFactory) {  }
+    constructor(private activatedRoute: ActivatedRoute, private viewModelFactory: ViewModelFactory) {
 
-    error : ViewModels.ErrorViewModel;
+    }
+
+    paneId: number;
+    vm: ViewModels.RecentItemsViewModel;
+
+    private activatedRouteDataSub: ISubscription;
 
     ngOnInit(): void {
-        const errorWrapper = this.context.getError();
-        this.error = this.viewModelFactory.errorViewModel(errorWrapper);
+        this.activatedRouteDataSub = this.activatedRoute.data.subscribe(data => {
+            this.paneId = data["pane"];
+            this.vm = this.viewModelFactory.recentItemsViewModel(this.paneId);
+        });
+    }
+
+    ngOnDestroy(): void {
+        if (this.activatedRouteDataSub) {
+            this.activatedRouteDataSub.unsubscribe();
+        }
     }
 }
