@@ -282,10 +282,10 @@ namespace NakedObjects {
                 };
 
                 return $http(config)
-                    .then((promiseCallback) => {
+                    .then(() => {
                         return true;
                     })
-                    .catch((promiseCallback) => {
+                    .catch(() => {
                         return false;
                     });
             };

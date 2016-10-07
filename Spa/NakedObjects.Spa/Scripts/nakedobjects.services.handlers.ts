@@ -17,7 +17,7 @@ namespace NakedObjects {
 
     export interface IHandlers {
         handleBackground($scope: INakedObjectsScope): void;
-        handleError($scope: INakedObjectsScope, routeData: PaneRouteData): void;
+        handleError($scope: INakedObjectsScope): void;
         handleToolBar($scope: INakedObjectsScope): void;
         handleObject($scope: INakedObjectsScope, routeData: PaneRouteData): void;
         handleObjectSearch($scope: INakedObjectsScope, routeData: PaneRouteData): void;
@@ -69,7 +69,7 @@ namespace NakedObjects {
             ];
 
             const perPaneMultiLineDialogViews = [,
-                new MultiLineDialogViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $rootScope),                
+                new MultiLineDialogViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $rootScope)                
             ];
 
 
@@ -353,10 +353,10 @@ namespace NakedObjects {
                 $scope.recent = viewModelFactory.recentItemsViewModel(routeData.paneId);
             };
 
-            handlers.handleError = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
+            handlers.handleError = ($scope: INakedObjectsScope) => {
                 const evm = viewModelFactory.errorViewModel(context.getError());
                 $scope.error = evm;
-                error.displayError($scope, routeData);
+                error.displayError($scope);
             };
 
             handlers.handleToolBar = ($scope: INakedObjectsScope) => {
@@ -517,7 +517,7 @@ namespace NakedObjects {
                     catch((reject: ErrorWrapper) => error.handleError(reject));
             }
 
-            handlers.handleApplicationProperties = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
+            handlers.handleApplicationProperties = ($scope: INakedObjectsScope) => {
                 context.clearWarnings();
                 context.clearMessages();
 

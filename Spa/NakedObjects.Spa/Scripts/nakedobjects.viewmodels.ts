@@ -833,7 +833,10 @@ namespace NakedObjects {
                 return this.context.getActionDetails(actionViewModel.actionRep as ActionMember).
                     then((details: ActionRepresentation) => {
                         const rp = rejectAsNeedSelection(details);
-                        return rp ? this.$q.reject(rp) : wrappedInvoke(getParms(details), right);
+                        if (rp) {
+                            return this.$q.reject(rp);
+                        }
+                        return wrappedInvoke(getParms(details), right);
                     }).
                     then(result => {
                         // clear selected items on void actions 
