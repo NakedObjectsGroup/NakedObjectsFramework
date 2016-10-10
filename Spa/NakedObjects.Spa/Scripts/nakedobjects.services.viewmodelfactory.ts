@@ -642,7 +642,9 @@ namespace NakedObjects {
 
             const remoteMask = parmRep.extensions().mask();
 
-            if (parmRep.isScalar()) {
+            const fieldEntryType = parmViewModel.entryType;
+
+            if (fieldEntryType === EntryType.FreeForm && parmViewModel.type === "scalar") {
                 let lf: ILocalFilter;
                 if (remoteMask) {
                     lf = mask.toLocalFilter(remoteMask, parmRep.extensions().format()) || mask.defaultLocalFilter(parmRep.extensions().format());
@@ -650,10 +652,8 @@ namespace NakedObjects {
                     lf = mask.defaultLocalFilter(parmRep.extensions().format());
                 }
                 parmViewModel.localFilter = lf;
-            } 
+            }
 
-            const fieldEntryType = parmViewModel.entryType;
-          
             if (fieldEntryType === EntryType.Choices || fieldEntryType === EntryType.MultipleChoices) {
                 setupParameterChoices(parmViewModel);
             }

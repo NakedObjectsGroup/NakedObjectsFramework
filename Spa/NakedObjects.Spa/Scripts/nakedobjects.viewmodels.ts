@@ -316,6 +316,7 @@ namespace NakedObjects {
         choices: IChoiceViewModel[] = [];  
 
         private currentChoice: IChoiceViewModel;
+        private currentMultipleChoices: IChoiceViewModel[];
 
         private error : IError;
 
@@ -343,7 +344,14 @@ namespace NakedObjects {
             this.update();
         }
 
-        selectedMultiChoices: IChoiceViewModel[];
+        get selectedMultiChoices(): IChoiceViewModel[] {
+            return this.currentMultipleChoices;
+        }
+
+        set selectedMultiChoices(choices : IChoiceViewModel[]) {
+            this.currentMultipleChoices = choices; 
+            this.update();
+        }
 
         private file: Link;     
 
@@ -478,15 +486,29 @@ namespace NakedObjects {
         protected update() {
             super.update();
 
-            if (this.localFilter) {
-
-                // formatting also happens in in directive - at least for dates - value is now date in that case
-                this.formattedValue = this.value ? this.localFilter.filter(this.value) : "";
-            } else if (this.parmRep.isScalar()) {
-                this.formattedValue = this.value ? this.value.toString() : "";
-            }
-            else {
-                this.formattedValue = this.selectedChoice ? this.selectedChoice.toString() : "";
+            switch (this.entryType) {
+                case (EntryType.FreeForm):
+                    if (this.type === "scalar") {
+                        if (this.localFilter) {
+                            this.formattedValue = this.value ? this.localFilter.filter(this.value) : "";
+                        } else {
+                            this.formattedValue = this.value ? this.value.toString() : "";
+                        }
+                        break;
+                    }
+                    // fall through 
+                case (EntryType.AutoComplete):
+                case (EntryType.Choices):
+                case (EntryType.ConditionalChoices):
+                    this.formattedValue = this.selectedChoice ? this.selectedChoice.toString() : "";
+                    break;
+                case (EntryType.MultipleChoices):
+                case (EntryType.MultipleConditionalChoices):
+                    const count = !this.selectedMultiChoices ? 0 : this.selectedMultiChoices.length;
+                    this.formattedValue = `${count} selected`;
+                    break;
+                default:
+                    this.formattedValue = this.value ? this.value.toString() : "";
             }
         }
     }
