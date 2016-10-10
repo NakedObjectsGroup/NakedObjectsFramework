@@ -37,7 +37,7 @@ namespace NakedObjects.Selenium {
             WaitForReadOnlyEnteredParam(0, 0, "x");
             WaitForReadOnlyEnteredParam(0, 1, "0.03");
             WaitForReadOnlyEnteredParam(0, 2, "Promotion");
-            //WaitForReadOnlyEnteredParam(0, 3, "Reseller");
+            WaitForReadOnlyEnteredParam(0, 3, "Reseller");
             WaitForReadOnlyEnteredParam(0, 4, "10");
             WaitForReadOnlyEnteredParam(0, 5, "1 Jan 2002");
 
