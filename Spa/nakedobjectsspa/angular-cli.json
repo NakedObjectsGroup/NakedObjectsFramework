@@ -17,7 +17,7 @@
       "styles": [
         "styles.css"
       ],
-      "scripts": [],
+      "scripts": ["../node_modules/lodash/lodash.js", "../node_modules/moment/moment.js"],
       "environments": {
         "source": "environments/environment.ts",
         "dev": "environments/environment.ts",
