@@ -38,6 +38,8 @@ import { MaskService } from './mask.service';
 import { ColorConfigService } from './color-config.service';
 import { MaskConfigService } from './mask-config.service';
 import { FocusManagerService } from './focus-manager.service';
+import { CollectionComponent } from './collection/collection.component';
+import {DND_PROVIDERS, DND_DIRECTIVES} from 'ng2-dnd';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,8 @@ import { FocusManagerService } from './focus-manager.service';
     GeminiBooleanDirective,
     GeminiClearDirective,
     GeminiValidateDirective,
-    //AbstractDroppableComponent
+    CollectionComponent,
+    DND_DIRECTIVES
   ],
   imports: [
     BrowserModule,
@@ -83,7 +86,7 @@ import { FocusManagerService } from './focus-manager.service';
         MaskService,
         ColorConfigService,
         MaskConfigService,
-        //DND_PROVIDERS
+        DND_PROVIDERS
         ],
   bootstrap: [AppComponent]
 })
