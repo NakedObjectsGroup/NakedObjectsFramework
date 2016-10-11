@@ -1,15 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import * as ViewModels from "../view-models";
 
 @Component({
-  selector: 'app-action',
-  templateUrl: './action.component.html',
-  styleUrls: ['./action.component.css']
+    selector: 'action',
+    templateUrl: './action.component.html',
+    styleUrls: ['./action.component.css']
 })
-export class ActionComponent implements OnInit {
+export class ActionComponent {
 
-  constructor() { }
+    private actionVm: ViewModels.ActionViewModel;
 
-  ngOnInit() {
-  }
+    disabled() { return false; }
 
+    doInvoke(right?: boolean) {
+        this.actionVm.doInvoke(right);
+    }
+
+    @Input()
+    set action(value: ViewModels.ActionViewModel) {
+
+        this.actionVm = value;
+
+        this.description = this.actionVm.description;
+        this.friendlyName = this.actionVm.title;
+    }
+
+    description: string;
+    friendlyName: string;
 }

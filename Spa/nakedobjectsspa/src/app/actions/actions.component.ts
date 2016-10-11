@@ -1,15 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import * as ViewModels from "../view-models";
 
 @Component({
-  selector: 'app-actions',
-  templateUrl: './actions.component.html',
-  styleUrls: ['./actions.component.css']
+    selector: 'actions',
+    templateUrl: './actions.component.html',
+    styleUrls: ['./actions.component.css']
 })
-export class ActionsComponent implements OnInit {
+export class ActionsComponent {
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+    @Input()
+    menuVm: { menuItems: ViewModels.IMenuItemViewModel[] };
 }

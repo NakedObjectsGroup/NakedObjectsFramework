@@ -25,6 +25,19 @@ import { GeminiClickDirective } from './gemini-click.directive';
 import { GeminiBooleanDirective } from './gemini-boolean.directive';
 import { GeminiClearDirective } from './gemini-clear.directive';
 import { GeminiValidateDirective } from './gemini-validate.directive';
+import { AbstractDroppableComponent } from './abstract-droppable/abstract-droppable.component';
+
+import { ErrorService } from './error.service';
+import { ContextService } from './context.service';
+import { UrlManagerService } from './url-manager.service';
+import { ClickHandlerService } from './click-handler.service';
+import { RepLoaderService } from './rep-loader.service';
+import { ViewModelFactoryService } from './view-model-factory.service';
+import { ColorService } from './color.service';
+import { MaskService } from './mask.service';
+import { ColorConfigService } from './color-config.service';
+import { MaskConfigService } from './mask-config.service';
+import { FocusManagerService } from './focus-manager.service';
 
 @NgModule({
   declarations: [
@@ -49,7 +62,8 @@ import { GeminiValidateDirective } from './gemini-validate.directive';
     GeminiClickDirective,
     GeminiBooleanDirective,
     GeminiClearDirective,
-    GeminiValidateDirective
+    GeminiValidateDirective,
+    //AbstractDroppableComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +71,20 @@ import { GeminiValidateDirective } from './gemini-validate.directive';
     HttpModule,
     RoutingModule
   ],
-  providers: [],
+  providers: [ 
+        UrlManagerService,
+        ClickHandlerService,
+        ContextService,
+        RepLoaderService,
+        ViewModelFactoryService,
+        ColorService,
+        ErrorService,
+        FocusManagerService,
+        MaskService,
+        ColorConfigService,
+        MaskConfigService,
+        //DND_PROVIDERS
+        ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
