@@ -39,11 +39,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     class: string;
 
     onChild() {
-        this.class = "split";
+        this.class = "split object-color0";
     }
 
     onChildless() {
-        this.class = "single";
+        this.class = "single object-color0";
     }
 
     getMenus() {
@@ -87,7 +87,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
         this.activatedRouteDataSub = this.activatedRoute.data.subscribe(data => {
             this.paneId = data["pane"];
-            this.class = data["class"];
+            this.class = data["class"] + " object-color0";
 
             this.getMenus();
             this.paneRouteDataSub = this.urlManager.getRouteDataObservable()

@@ -72,7 +72,7 @@ header {
     display: block;
     }
 
-viewtitle, header .type {
+.viewtitle, header .type {
     position: relative;
     font-weight: 200;
     font-size: 24pt;
