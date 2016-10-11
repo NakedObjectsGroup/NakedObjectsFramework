@@ -1,3 +1,52 @@
-<p>
-  object works!
-</p>
+<div *ngIf="object && mode === 0" class="view" [ngClass]="getClass()">
+    <header >
+        <div class="viewTitle" dnd-draggable [dragEnabled]="true" [dragData]="object" tabindex="0">
+            <span class="type">{{object.friendlyName}}</span>
+            {{object.title}}
+        </div>
+        <!--<div>{{object.isDirty() ? "*" : ""}} </div>-->
+        <div class="menus">
+            <div  class="menu clickable-area" tabindex="0" geminiClick (leftClick)="object.toggleActionMenu()" [ngClass]="{disabled : object.disableActions()}" title={{object.actionsTooltip()}} accesskey="a">
+                Actions
+            </div>
+            <div class="menu action clickable-area" tabindex="0" geminiClick (leftClick)="object.doEdit()" *ngIf="!object.hideEdit()">
+                Edit
+            </div>
+            <div class="menu action clickable-area" tabindex="0" geminiClick (leftClick)="object.doReload()">
+                Reload
+            </div>
+        </div>
+        <div class="messages">{{object.message}}</div>
+    </header>
+    <actions *ngIf="object.showActions()" [menuVm]="object"></actions>
+    <div class="mainColumn">
+        <dialog [parent]="object"></dialog>
+        <properties *ngIf="object.properties" [properties]="object.properties" [parent]="object" [edit]="false"></properties>
+    </div>
+    <collections *ngIf="object.collections"  [collections]="object.collections"></collections>
+</div>
+<div *ngIf="object && mode === 1" class="object edit" [ngClass]="getClass()">
+    <header>
+        <div class="viewTitle" tabindex="0">
+            <span class="type">{{object.friendlyName}}</span>
+            Editing - {{object.title}}
+        </div>
+        <div class="menus">
+            <div class="menu action clickable-area" tabindex="0" [ngClass]="{disabled : !object.clientValid()}" geminiClick (leftClick)="object.doSave(true)" title="{{object.tooltip()}}">
+                Save
+            </div>
+            <div *ngIf="object.unsaved" class="menu action clickable-area" [ngClass]="{disabled : !object.clientValid()}" tabindex="0" geminiClick (leftClick)="object.doSave(false)">
+                Save & Close
+            </div>
+            <div class="menu action clickable-area" tabindex="0" geminiClick (leftClick)="object.doEditCancel()">
+                Cancel
+            </div>
+        </div>
+        <div class="messages">{{object.message}}</div>
+    </header>
+    <div class="mainColumn">      
+        <properties *ngIf="object.properties" [properties]="object.properties" [parent]="object" [edit]="true"></properties>
+    </div>
+    <collections *ngIf="object.collections" [collections]="object.collections"></collections>
+</div>
+<router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>

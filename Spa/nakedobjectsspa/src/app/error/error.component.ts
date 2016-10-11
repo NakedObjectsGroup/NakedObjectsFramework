@@ -1,15 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { ContextService } from "../context.service";
+import { ViewModelFactoryService } from "../view-model-factory.service";
+import * as ViewModels from "../view-models";
 
 @Component({
-  selector: 'app-error',
-  templateUrl: './error.component.html',
-  styleUrls: ['./error.component.css']
+    selector: 'error',
+    templateUrl: './error.component.html'
 })
-export class ErrorComponent implements OnInit {
+export class ErrorComponent {
 
-  constructor() { }
+    constructor(private context : ContextService, private viewModelFactory : ViewModelFactoryService) {  }
 
-  ngOnInit() {
-  }
+    error : ViewModels.ErrorViewModel;
 
+    ngOnInit(): void {
+        const errorWrapper = this.context.getError();
+        this.error = this.viewModelFactory.errorViewModel(errorWrapper);
+    }
 }

@@ -1,15 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import * as ViewModels from "../view-models";
 
 @Component({
-  selector: 'app-collections',
-  templateUrl: './collections.component.html',
-  styleUrls: ['./collections.component.css']
+    selector: 'collections',
+    templateUrl: './collections.component.html',
+    styleUrls: ['./collections.component.css']
 })
-export class CollectionsComponent implements OnInit {
 
-  constructor() { }
+export class CollectionsComponent {
 
-  ngOnInit() {
-  }
+    colls: any;
 
+    @Input()
+    set collections(value: ViewModels.CollectionViewModel[]) {
+        this.colls = value;
+    }
+
+    get collections() {
+        return this.colls;
+    }
 }

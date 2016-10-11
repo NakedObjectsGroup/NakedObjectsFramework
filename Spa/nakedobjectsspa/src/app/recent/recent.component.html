@@ -1,3 +1,21 @@
-<p>
-  recent works!
-</p>
+<div class="recent">
+    <div class="header">
+        <div class="title">
+            Recently Viewed Objects
+        </div>
+    </div>
+    <div *ngIf="vm" class="collection">
+        <table>
+            <tbody>
+                <tr *ngFor="let item of vm.items" class="clickable-area" dnd-draggable [dragEnabled]="true" geminiClick (leftClick)="item.doClick()" (rightclick)="item.doClick(true)">
+                    <td ngClass="item.color" ngClick="item.doClick()" tabindex="0" class="cell">
+                        {{item.title }}
+                    </td>
+                    <td ngClass="item.color" ngClick="item.doClick()" tabindex="0" class="cell">
+                        {{item.friendlyName}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
