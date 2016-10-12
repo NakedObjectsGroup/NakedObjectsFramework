@@ -1,6 +1,6 @@
 <div [ngClass]="class"> <!--TODO: This is the Single/Split definition-->
     <div class="header">
-        <div class="viewtitle" >Home</div>
+        <div class="title" >Home</div>
         <div class="menus" *ngIf="!menus"><div class="menu">Loading menus..</div></div>
         <div class="menus" *ngIf="menus">
             <menu class="menu clickable-area" tabindex="0" *ngFor="let menu of menus.items" (click)="doClick(menu)">

@@ -14,7 +14,7 @@ import * as Models from "../models";
 import * as ViewModels from "../view-models";
 
 @Component({
-  selector: 'app-home',
+  selector: 'home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
