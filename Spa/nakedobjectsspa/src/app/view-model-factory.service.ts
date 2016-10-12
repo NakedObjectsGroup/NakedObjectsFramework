@@ -183,7 +183,7 @@ export class ViewModelFactoryService {
                     then((actionResult: Models.ActionResultRepresentation) => {
                         // if expect result and no warning from server generate one here
                         if (actionResult.shouldExpectResult() && !actionResult.warningsOrMessages()) {
-                            //$rootScope.$broadcast(Nakedobjectsconstants.geminiWarningEvent, [Usermessagesconfig.noResultMessage]);
+                            this.context.broadcastWarning(Msg.noResultMessage);
                         }
                     }).
                     catch((reject: Models.ErrorWrapper) => {

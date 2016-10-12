@@ -351,16 +351,13 @@ export class ContextService {
             });
     };
 
-    clearMessages = () => {
-        //$rootScope.$broadcast(Nakedobjectsconstants.geminiMessageEvent, []);
-        this.messagesSource.next([]);
-    };  
+    clearMessages = () =>  this.messagesSource.next([]);
 
-    clearWarnings = () => {
-        //$rootScope.$broadcast(Nakedobjectsconstants.geminiWarningEvent, []);
-         this.warningsSource.next([]);
-    };
+    clearWarnings = () =>  this.warningsSource.next([]);
+  
+    broadcastMessage = (m : string) => this.messagesSource.next([m]);
 
+    broadcastWarning = (w : string) => this.warningsSource.next([w]);
 
     getHome = () => {
         // for moment don't bother caching only called on startup and for whatever resaon cache doesn't work. 
