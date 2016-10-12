@@ -240,12 +240,12 @@ namespace NakedObjects.Selenium {
     public abstract class MegaFooterTestsRoot : FooterTestsRoot {
         [TestMethod] //Mega
         public void MegaFooterTest() {
-            ExplicitWarningsAndInfo();
-            ZeroParamActionReturningNullGeneratesGenericWarning();
+            //ExplicitWarningsAndInfo();
+            //ZeroParamActionReturningNullGeneratesGenericWarning();
             Home();
-            BackAndForward();
-            RecentObjects();
-            ApplicationProperties();
+            //BackAndForward();
+            //RecentObjects();
+            //ApplicationProperties();
             LogOff();
         }
     }
@@ -269,7 +269,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class MegaFooterTestsIe : MegaFooterTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
