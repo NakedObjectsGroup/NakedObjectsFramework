@@ -6,6 +6,7 @@ import * as Config from "./config";
 import * as Constants from "./constants";
 import * as Models from "./models";
 import * as _ from "lodash";
+import { Subject } from 'rxjs/Subject';
 
 enum DirtyState {
     DirtyMustReload,
@@ -352,10 +353,12 @@ export class ContextService {
 
     clearMessages = () => {
         //$rootScope.$broadcast(Nakedobjectsconstants.geminiMessageEvent, []);
-    };
+        this.messagesSource.next([]);
+    };  
 
     clearWarnings = () => {
         //$rootScope.$broadcast(Nakedobjectsconstants.geminiWarningEvent, []);
+         this.warningsSource.next([]);
     };
 
 
@@ -639,6 +642,20 @@ export class ContextService {
         }
     };
 
+    private warningsSource = new Subject<string[]>();
+    private messagesSource = new Subject<string[]>();
+
+    warning$ = this.warningsSource.asObservable();
+    messages$ = this.messagesSource.asObservable();
+
+    private setMessages(result:  Models.ActionResultRepresentation) {
+        const warnings = result.extensions().warnings() || [];
+        const messages = result.extensions().messages() || [];
+
+        this.warningsSource.next(warnings);
+        this.messagesSource.next(messages);
+    }
+
     private invokeActionInternal(invokeMap: Models.InvokeMap, action: Models.IInvokableAction, fromPaneId: number, toPaneId: number, setDirty: () => void) {
 
         //this.focusManager.setCurrentPane(toPaneId);
@@ -652,6 +669,7 @@ export class ContextService {
         return this.repLoader.retrieve(invokeMap, Models.ActionResultRepresentation, action.parent.etagDigest)
             .then((result: Models.ActionResultRepresentation) => {
                 setDirty();
+                this.setMessages(result);
                 this.setResult(action, result, fromPaneId, toPaneId, 1, Config.defaultPageSize);
                 return Promise.resolve(result);
             });

@@ -240,7 +240,7 @@ namespace NakedObjects.Selenium {
     public abstract class MegaFooterTestsRoot : FooterTestsRoot {
         [TestMethod] //Mega
         public void MegaFooterTest() {
-            //ExplicitWarningsAndInfo();
+            ExplicitWarningsAndInfo();
             //ZeroParamActionReturningNullGeneratesGenericWarning();
             Home();
             //BackAndForward();

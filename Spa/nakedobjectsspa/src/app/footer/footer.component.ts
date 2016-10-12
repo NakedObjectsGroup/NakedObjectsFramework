@@ -114,5 +114,10 @@ export class FooterComponent implements OnInit {
             catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
         this.repLoader.loadingCount$.subscribe(count => this.loading = count > 0 ? Msg.loadingMessage : "");
+
+        this.context.warning$.subscribe(ws =>
+            this.warnings = ws);
+        this.context.messages$.subscribe(ms =>
+            this.messages = ms);
     }
 }

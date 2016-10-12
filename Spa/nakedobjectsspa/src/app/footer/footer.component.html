@@ -14,7 +14,7 @@
 	<div class="warnings" *ngFor="let warning of warnings">
 		<div>{{warning}}</div>
 	</div>
-	<div class="messages" ng-repeat="let message of messages">
+	<div class="messages" *ngFor="let message of messages">
 		<div>{{message}}</div>
 	</div>
 	<div class="currentcopy"></div>
