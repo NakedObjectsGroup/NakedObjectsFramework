@@ -292,7 +292,7 @@ namespace NakedObjects.Selenium {
             ZeroParamReturnsObject();
             ZeroParamReturnsCollection();
             ZeroParamReturnsEmptyCollection();
-            //DialogActionOK();
+            DialogActionOK();
         }
     }
 
