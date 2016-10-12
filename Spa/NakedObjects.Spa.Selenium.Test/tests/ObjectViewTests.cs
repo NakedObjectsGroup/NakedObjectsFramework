@@ -86,10 +86,10 @@ namespace NakedObjects.Selenium {
             GeminiUrl("object?r=0&i1=View&o1=___1.Product--464");
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text.StartsWith("Product Inventory:\r\n3 Items"));
             var cols = WaitForCss("th", 4).ToArray();
-            Assert.AreEqual("Quantity", cols[0].Text);
-            Assert.AreEqual("Location", cols[1].Text);
-            Assert.AreEqual("Shelf", cols[2].Text);
-            Assert.AreEqual("Bin", cols[3].Text);
+            Assert.AreEqual("Quantity", cols[1].Text);
+            Assert.AreEqual("Location", cols[2].Text);
+            Assert.AreEqual("Shelf", cols[3].Text);
+            Assert.AreEqual("Bin", cols[4].Text);
             WaitForCss("tbody tr", 3);
         }
         public virtual void NonNavigableReferenceProperty() {
@@ -128,15 +128,15 @@ namespace NakedObjects.Selenium {
             GeminiUrl("object?i1=View&o1=___1.Employee--83&c1_DepartmentHistory=Summary&c1_PayHistory=Table");
             var header = WaitForCss("thead");
             var cols = WaitForCss("th", 3).ToArray();
-            Assert.AreEqual(3, cols.Length);
-            Assert.AreEqual("", cols[0].Text); //Title
-            Assert.AreEqual("Rate Change Date", cols[1].Text);
-            Assert.AreEqual("Rate", cols[2].Text);
+            Assert.AreEqual(4, cols.Length);
+            Assert.AreEqual("", cols[1].Text); //Title
+            Assert.AreEqual("Rate Change Date", cols[2].Text);
+            Assert.AreEqual("Rate", cols[3].Text);
 
             //Dates formatted in table view
             GeminiUrl("object?i1=View&o1=___1.Product--775&c1_SpecialOffers=Table");
             WaitForCss("td", 15);
-            var cell = WaitForCss("td:nth-child(5)");
+            var cell = WaitForCss("td:nth-child(6)");
             Assert.AreEqual("31 Dec 2008", cell.Text);
         }
         public virtual void ClickReferenceProperty() {
@@ -234,7 +234,7 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.Object, "SO59289");
             WaitForCss(".object.object-color2");
             WaitForCss("tr", 2);
-            wait.Until(dr => dr.FindElements(By.CssSelector("tr.link-color2")).Count == 2);
+            wait.Until(dr => dr.FindElements(By.CssSelector("td.link-color2")).Count == 2);
             GeminiUrl("object?i1=View&o1=___1.SalesOrderDetail--59289--71041");
             WaitForView(Pane.Single, PaneType.Object, "1 x Mountain-400-W Silver, 46");
             WaitForCss(".object.object-color2");
@@ -325,7 +325,7 @@ namespace NakedObjects.Selenium {
         public virtual void DisabledAction() {
             GeminiUrl("object?o1=___1.SalesOrderHeader--43893&as1=open");
             //First the control test
-            GetObjectAction("Add New Sales Reason").AssertIsEnabled();
+            GetObjectAction("Add New Sales Reasons").AssertIsEnabled();
 
             //Then the real test
             GetObjectAction("Recalculate").AssertIsDisabled("Can only recalculate an 'In Process' order");

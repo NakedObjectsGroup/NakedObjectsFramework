@@ -459,7 +459,7 @@ public virtual void AutoCompleteOptionalParamNotSelected()
             ClearFieldThenType("#qtyrejected1", "50");
             ClearFieldThenType("#qtyintostock1", "49");
             Click(OKButton());
-            wait.Until(dr => dr.FindElement(By.CssSelector(".parameters .co-validation")).Text ==
+            wait.Until(dr => dr.FindElement(By.CssSelector(".co-validation")).Text ==
                              "Qty Into Stock + Qty Rejected must add up to Qty Received");
         }
         public virtual void OptionalReferenceParamCanBeNull()
@@ -474,7 +474,7 @@ public virtual void AutoCompleteOptionalParamNotSelected()
             GeminiUrl("object?r=0&i1=View&o1=___1.Customer--10&as1=open&d1=CreateNewOrder");
             Click(OKButton());
             //Test written against #37 where message is preceded by '199 Restful Objects'
-            wait.Until(dr => dr.FindElement(By.CssSelector(".parameters .co-validation")).Text ==
+            wait.Until(dr => dr.FindElement(By.CssSelector(".co-validation")).Text ==
                  "Customers in Canada may not place orders directly.");
         }
         #endregion
@@ -699,7 +699,7 @@ public virtual void AutoCompleteOptionalParamNotSelected()
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class DialogTestsChrome : DialogTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

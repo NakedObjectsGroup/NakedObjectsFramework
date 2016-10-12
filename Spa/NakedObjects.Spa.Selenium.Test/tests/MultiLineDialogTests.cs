@@ -8,6 +8,7 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using System;
 
 namespace NakedObjects.Selenium {
     public abstract class MultiLineDialogTestsRoot : AWTest {
@@ -17,49 +18,119 @@ namespace NakedObjects.Selenium {
             Click(GetObjectAction("Create Multiple Special Offers"));
             WaitForView(Pane.Single, PaneType.MultiLineDialog, "Create Multiple Special Offers");
             WaitForTextEquals(".count", "with 0 lines submitted.");
-            //line 0
-            OKButtonOnLine(0).AssertIsDisabled("Missing mandatory fields: Description; Discount Pct; Type; Category; Min Qty; ");
+            //Enter line 0
+            OKButtonOnLine(0).AssertIsDisabled("Missing mandatory fields: Description; Discount Pct; Type; Category; Min Qty; Start Date; ");
             ClearFieldThenType("#description0", "x");
             ClearFieldThenType("#discountpct0", ".03");
             ClearFieldThenType("#type0", "Promotion");
             SelectDropDownOnField("#category0", "Reseller");
             ClearFieldThenType("#minqty0", "10");
+            ClearFieldThenType("#startdate0", "01/01/2002");
             OKButtonOnLine(0).AssertIsEnabled();
+            //Submit line 0
             Click(OKButtonOnLine(0));
             WaitForTextEquals(".co-validation", 0, "Submitted");
             WaitForTextEquals(".count", "with 1 lines submitted.");
+            //Check the read-only fields
+            WaitForOKButtonToDisappear(0);
             WaitUntilElementDoesNotExist("#description0");
+            WaitForReadOnlyEnteredParam(0, 0, "x");
+            WaitForReadOnlyEnteredParam(0, 1, "0.03");
+            WaitForReadOnlyEnteredParam(0, 2, "Promotion");
+            WaitForReadOnlyEnteredParam(0, 3, "Reseller");
+            WaitForReadOnlyEnteredParam(0, 4, "10");
+            WaitForReadOnlyEnteredParam(0, 5, "1 Jan 2002");
+
             //line 1
-            OKButtonOnLine(1).AssertIsDisabled("Missing mandatory fields: Description; Discount Pct; Type; Category; Min Qty; ");
-            ClearFieldThenType("#description1", "y");
+            OKButtonOnLine(1).AssertIsDisabled("Missing mandatory fields: Description; Discount Pct; Type; Category; Min Qty; Start Date; ");
+            var rand = new Random();
+            var description = rand.Next(9999).ToString();
+            ClearFieldThenType("#description1", description);
             ClearFieldThenType("#discountpct1", ".04");
             ClearFieldThenType("#type1", "Promotion");
             SelectDropDownOnField("#category1", "Reseller");
             ClearFieldThenType("#minqty1", "5");
+            ClearFieldThenType("#startdate1", "01/01/2002");
             OKButtonOnLine(1).AssertIsEnabled();
             Click(OKButtonOnLine(1));
             WaitForTextEquals(".co-validation", 1, "Submitted");
-            WaitUntilElementDoesNotExist("#description1");
             WaitForTextEquals(".count", "with 2 lines submitted.");
+
+            WaitForOKButtonToDisappear(1);
+            WaitUntilElementDoesNotExist("#description1");
+
 
             //Check that new empty line (2) has been created
             WaitForCss("#description2");
-            OKButtonOnLine(2).AssertIsDisabled("Missing mandatory fields: Description; Discount Pct; Type; Category; Min Qty; ");
+            OKButtonOnLine(2).AssertIsDisabled("Missing mandatory fields: Description; Discount Pct; Type; Category; Min Qty; Start Date; ");
 
             //Close the MLD
             Click(WaitForCss(".close"));
             WaitForView(Pane.Single, PaneType.Home);
+
+            //Check that both special offers were in fact created
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=AllSpecialOffers&pg1=1&ps1=20&s1=0&c1=List");
+            Reload();
+            WaitForView(Pane.Single, PaneType.List);
+            WaitForCss(".reference", 10);
+            var row1 = WaitForCssNo(".reference", 0);
+            Assert.AreEqual(description, row1.Text);
         }
 
-        public virtual void MultiLineObjectAction() {
+        public virtual void MultiLineObjectAction()
+        {
+            GeminiUrl("object?i1=View&r=1&o1=___1.Vendor--1504&as1=open");
+            OpenSubMenu("Purchase Orders");
+            Click(GetObjectAction("Create New Purchase Order"));
+            WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Purchase Order Header");
+            SaveObject();
+            OpenObjectActions();
+            Click(GetObjectAction("Add New Details"));
+            WaitForView(Pane.Single, PaneType.MultiLineDialog);
+
+            //Line 0
+            ClearFieldThenType("#prod0", "Dissolver");
+            wait.Until(d => d.FindElements(By.CssSelector(".ui-menu-item")).Count > 0);
+            Click(WaitForCss(".ui-menu-item"));
+            WaitForCss("#prod0.link-color4");
+            ClearFieldThenType("#qty0", "4");
+            ClearFieldThenType("#unitprice0", "2.54");
+            Click(OKButtonOnLine(0));
+            WaitForOKButtonToDisappear(0);
+
+            //line 1
+            ClearFieldThenType("#prod1", "bottle");
+            wait.Until(d => d.FindElements(By.CssSelector(".ui-menu-item")).Count > 0);
+            Click(WaitForCss(".ui-menu-item"));
+            WaitForCss("#prod1.link-color4");
+            ClearFieldThenType("#qty1", "5");
+            ClearFieldThenType("#unitprice1", "2.54");
+            Click(OKButtonOnLine(1));
+            WaitForOKButtonToDisappear(1);
+
+            //close
+            Click(WaitForCss(".close"));
+            WaitForView(Pane.Single, PaneType.Object);
+            WaitForTextEquals(".summary .details", 0, "2 Items");
+        }
+
+        public virtual void MultiLineObjectActionInCollection() {
             GeminiUrl("object?i1=View&r=1&o1=___1.Customer--29562&as1=open&d1=CreateNewOrder");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Sales Order");
             SaveObject();
             GetButton("Edit"); //Waiting for save
             WaitForTextEquals(".summary .details", 0, "Empty");
-            OpenObjectActions();
-            Click(GetObjectAction("Add New Details"));
+        
+            var iconList = WaitForCssNo(".collection .icon-list", 0);
+            Click(iconList);
+            WaitForCss("table");
+
+            var selector = ".collection .actions .action";
+            var action = wait.Until(d => d.FindElements(By.CssSelector(selector)).
+                     Single(we => we.Text == "Add New Details"));
+            Click(action);
+
             WaitForView(Pane.Single, PaneType.MultiLineDialog);
             wait.Until(dr => dr.FindElement(By.CssSelector(".title")).Text.Contains("Add New Details"));
             WaitForCss(".lineDialog", 6);
@@ -122,6 +193,11 @@ namespace NakedObjects.Selenium {
         public override void MultiLineObjectAction()
         {
             base.MultiLineObjectAction();
+        }
+        [TestMethod]
+        public override void MultiLineObjectActionInCollection()
+        {
+            base.MultiLineObjectActionInCollection();
         }
     }
 
@@ -194,8 +270,9 @@ namespace NakedObjects.Selenium {
     public abstract class MegaMultiLineDialogTestsRoot : MultiLineDialogTestsRoot {
         [TestMethod] //Mega
         public void MegaMultiLineDialogTest() {
-            //MultiLineMenuAction();
+            MultiLineMenuAction();
             MultiLineObjectAction();
+            MultiLineObjectActionInCollection();
         }
     }
 

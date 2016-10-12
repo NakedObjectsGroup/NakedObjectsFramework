@@ -352,6 +352,7 @@ namespace NakedObjects.Selenium
             Object,
             List,
             Recent,
+            MultiLineDialog,
             Attachment,
             Properties,
             Error
@@ -579,6 +580,17 @@ namespace NakedObjects.Selenium
         protected IWebElement OKButtonOnLine(int lineNo)
         {
             return wait.Until(dr => dr.FindElements(By.CssSelector(".lineDialog"))[lineNo].FindElement(By.CssSelector(".ok")));
+        }
+
+        protected void WaitForOKButtonToDisappear(int lineNo)
+        {
+            var line = WaitForCssNo(".lineDialog", lineNo);
+            wait.Until(dr => line.FindElements(By.CssSelector(".ok")).Count == 0);
+        }
+        protected void WaitForReadOnlyEnteredParam(int lineNo, int paramNo, string value)
+        {
+            var line = WaitForCssNo(".lineDialog", lineNo);
+            wait.Until(dr => line.FindElements(By.CssSelector(".parameter"))[paramNo].Text == value);
         }
 
         protected void CancelDialog(Pane pane = Pane.Single)
