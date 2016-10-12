@@ -189,7 +189,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class MegaViewModelTestsIe : MegaViewModelTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

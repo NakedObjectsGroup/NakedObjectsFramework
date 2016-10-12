@@ -448,7 +448,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class MegaListTestsChrome : MegaListTestsRoot
     {
         [ClassInitialize]

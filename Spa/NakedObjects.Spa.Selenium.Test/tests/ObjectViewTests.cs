@@ -615,7 +615,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class MegaObjectViewTestIe : MegaObjectViewTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

@@ -279,7 +279,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class CCAtestsChrome : CCAtestsServer {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

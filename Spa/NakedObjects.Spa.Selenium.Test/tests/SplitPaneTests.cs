@@ -463,7 +463,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class MegaSplitPaneTestIe : SplitPaneTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

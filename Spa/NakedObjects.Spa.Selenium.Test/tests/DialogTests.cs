@@ -789,7 +789,7 @@ public virtual void AutoCompleteOptionalParamNotSelected()
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class MegaDialogTestsIe : MegaDialogTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
