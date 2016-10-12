@@ -400,9 +400,8 @@ namespace NakedObjects.Selenium
 
         protected virtual void WaitForView(Pane pane, PaneType type, string title = null)
         {
-            //var selector = CssSelectorFor(pane) + " ." + type.ToString().ToLower() ;
+            var selector = CssSelectorFor(pane) + " ." + type.ToString().ToLower() ;
 
-            var selector = type.ToString().ToLower() + CssSelectorFor(pane);
             if (title != null)
             {
                 selector += " .header .title";
