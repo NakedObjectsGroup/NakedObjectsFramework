@@ -289,9 +289,9 @@ namespace NakedObjects.Selenium {
             ClickOnVariousMenus();
             OpenAndCloseSubMenus();
             SelectSuccessiveDialogActionsThenCancel();
-            //ZeroParamReturnsObject();
-            //ZeroParamReturnsCollection();
-            //ZeroParamReturnsEmptyCollection();
+            ZeroParamReturnsObject();
+            ZeroParamReturnsCollection();
+            ZeroParamReturnsEmptyCollection();
             //DialogActionOK();
         }
     }

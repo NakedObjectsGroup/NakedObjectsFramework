@@ -18,7 +18,7 @@ import { Subject } from 'rxjs/Subject';
 
 @Component({
     selector: 'object',
-    templateUrl: `./object.component.html`,
+    templateUrl: './object.component.html',
     styleUrls: ['./object.component.css']
 })
 
