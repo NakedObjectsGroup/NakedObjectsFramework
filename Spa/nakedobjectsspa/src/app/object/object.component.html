@@ -19,10 +19,10 @@
 			</div>
 			<div class="messages">{{object.message}}</div>
 		</header>
-		<actions *ngIf="object.showActions()" [menuVm]="object"></actions>
+		<actions class="actions" *ngIf="object.showActions()" [menuVm]="object"></actions>
 		<div class="mainColumn">
 			<dialog [parent]="object"></dialog>
-			<properties *ngIf="object.properties" [properties]="object.properties" [parent]="object" [edit]="false"></properties>
+			<properties class="properties" *ngIf="object.properties" [properties]="object.properties" [parent]="object" [edit]="false"></properties>
 		</div>
 		<collections *ngIf="object.collections" [collections]="object.collections"></collections>
 	</div>
