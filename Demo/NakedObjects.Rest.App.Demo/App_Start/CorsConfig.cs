@@ -19,7 +19,7 @@ public class CorsConfig {
              ForOrigins("http://localhost:49998",
                         "http://localhost:8080",
                         "http://nakedobjectstest.azurewebsites.net",
-                        "http://nakedobjectsgroup.github.io",
+                        "http://nakedobjectstest2.azurewebsites.net",
                         "http://localhost").
             AllowAll().
             AllowResponseHeaders("Warning", "Set-Cookie", "ETag").
