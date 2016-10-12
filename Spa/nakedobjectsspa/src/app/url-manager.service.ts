@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
 import "./rxjs-extensions";
 import { Observable } from 'rxjs/Observable';
 import {Router, ActivatedRoute, UrlSegment } from '@angular/router';
+import { Location } from '@angular/common';
 
 enum Transition {
     Null,
@@ -44,12 +45,19 @@ enum Transition {
     selected: "s"
 };
 
+interface ITransitionResult {
+    path : string, 
+    search : any;
+    replace : boolean
+}
+
+
 @Injectable()
 export class UrlManagerService {
 
-
-    constructor(private router: Router, private activatedRoute : ActivatedRoute) {
-        
+    constructor(private router: Router,
+                private activatedRoute: ActivatedRoute,
+                private location: Location) {
     }
 
     private capturedPanes = [] as { paneType: string; search: Object }[];
@@ -129,11 +137,15 @@ export class UrlManagerService {
         return path;
     }
 
-    private setNewSearch(path : string, search: any) {
+    private setNewSearch(result : ITransitionResult) {
         //$location.search(search);
-        const tree = this.router.createUrlTree([path], { queryParams: search });
+        const tree = this.router.createUrlTree([result.path], { queryParams: result.search });
 
         this.router.navigateByUrl(tree);    
+        if (result.replace){
+            const u = this.router.serializeUrl(tree);
+            this.location.replaceState(u);
+        }
     }
 
     private getIds(typeOfId: string, paneId: number) {
@@ -306,7 +318,7 @@ export class UrlManagerService {
         delete search[key];
     }
 
-    private handleTransition(paneId: number, search: any, transition: Transition) : {path : string, search : any} {
+    private handleTransition(paneId: number, search: any, transition: Transition) : ITransitionResult {
 
         let replace = true;
         let path = this.getPath();
@@ -362,11 +374,12 @@ export class UrlManagerService {
             break;
         }
 
-        if (replace) {
-            //$location.replace();
-        }
+        // if (replace) {
+        //     //$location.replace();
+        //     //this.location.replaceState()
+        // }
 
-        return { path: path, search: search };
+        return { path: path, search: search, replace : replace };
     }
 
     private executeTransition(newValues: _.Dictionary<string>, paneId: number, transition: Transition, condition: (search: any) => boolean) {
@@ -374,7 +387,8 @@ export class UrlManagerService {
         let search = this.getSearch();
         if (condition(search)) {
             let path: string;
-            ({path, search} = this.handleTransition(paneId, search, transition));
+            const result = this.handleTransition(paneId, search, transition);
+            ({path, search} = result);
         
 
         _.forEach(newValues,
@@ -385,7 +399,7 @@ export class UrlManagerService {
                         this.clearId(k, search);
                 }
             );
-            this.setNewSearch(path, search);
+            this.setNewSearch(result);
         }
     }
 
@@ -507,7 +521,8 @@ export class UrlManagerService {
         // only add field if matching dialog or dialog (to catch case when swapping panes) 
         if (check(search)) {
             set(search);
-            this.setNewSearch(this.getPath(),  search);
+            const result =  {path : this.getPath(), search : search, replace : false };
+            this.setNewSearch(result);
             //$location.replace();
         }
     }
@@ -582,7 +597,8 @@ export class UrlManagerService {
 
         //$location.path(newPath);
         this.router.navigateByUrl(newPath);
-        this.setNewSearch(newPath, search);
+        const result =  {path : newPath, search : search, replace : false };
+        this.setNewSearch(result);
 
         if (errorCategory === Models.ErrorCategory.HttpClientError && ec === Models.HttpStatusCode.PreconditionFailed) {
             // on concurrency fail replace url so we can't just go back
@@ -673,17 +689,20 @@ export class UrlManagerService {
             let search = this.clearPane(this.getSearch(), paneId);
             search = _.merge(search, capturedPane.search);
             let path : string;
-            ({path, replace :mayReplace} = this.setupPaneNumberAndTypes(paneId, capturedPane.paneType));
-            this.setNewSearch(path, search);
+            let replace : boolean;
+            ({path, replace} = this.setupPaneNumberAndTypes(paneId, capturedPane.paneType));
+            
+            const result = {path : path, search : search, replace : replace};
+            this.setNewSearch(result);
         } else {
             // probably reloaded page so no state to pop. 
             // just go home 
             this.setHome(paneId);
         }
 
-        if (mayReplace) {
-            //$location.replace();
-        }
+        // if (mayReplace) {
+        //     //$location.replace();
+        // }
     };
 
     clearUrlState = (paneId: number) => {
