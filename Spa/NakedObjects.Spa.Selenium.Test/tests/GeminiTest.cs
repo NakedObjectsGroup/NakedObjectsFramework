@@ -27,7 +27,7 @@ namespace NakedObjects.Selenium
         #region overhead
 
         protected const string BaseUrl = TestConfig.BaseUrl;
-        protected const string GeminiBaseUrl = TestConfig.BaseUrl + "#/gemini/";
+        protected const string GeminiBaseUrl = TestConfig.BaseUrl + "/gemini/";
 
         protected IWebDriver br;
         protected SafeWebDriverWait wait;
