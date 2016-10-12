@@ -7,7 +7,7 @@
   <div class="" [ngClass]="{collapsed : menu.navCollapsed, open : !menu.navCollapsed, rootMenu : !menu.name }">
     <div *ngIf="menu.actions  && menu.actions.length > 0">
       <div *ngFor="let action of menu.actions">
-        <action [action]="action"></action>
+        <action class="action" [action]="action"></action>
       </div>
     </div>
     <div *ngIf="menu.menuItems && menu.menuItems.length > 0">

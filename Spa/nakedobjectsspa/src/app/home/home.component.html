@@ -13,8 +13,10 @@
 			</div>
 			<div class="messages"></div>
 		</div>
-		<actions *ngIf="selectedMenu" [menuVm]="selectedMenu"></actions>
+		<div class="main-column">
+		<actions class="actions" *ngIf="selectedMenu" [menuVm]="selectedMenu"></actions>
 		<dialog *ngIf="selectedMenu" [parent]="selectedMenu"></dialog>
+		</div>
 	</div>
 </div>
 <router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>
