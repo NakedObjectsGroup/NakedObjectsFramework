@@ -288,7 +288,7 @@ namespace NakedObjects.Selenium {
             WaitForSingleHome();
             ClickOnVariousMenus();
             OpenAndCloseSubMenus();
-            SelectSuccessiveDialogActionsThenCancel();
+            //SelectSuccessiveDialogActionsThenCancel();
             ZeroParamReturnsObject();
             ZeroParamReturnsCollection();
             ZeroParamReturnsEmptyCollection();
