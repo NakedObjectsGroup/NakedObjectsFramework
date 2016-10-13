@@ -285,7 +285,7 @@ namespace NakedObjects.Selenium {
     public class MegaHomeTestBase : HomeTestsRoot {
         [TestMethod] //Mega
         public virtual void MegaHomeTest() {
-            WaitForSingleHome();
+            //WaitForSingleHome();
             //ClickOnVariousMenus();
             //OpenAndCloseSubMenus();
             //SelectSuccessiveDialogActionsThenCancel();
