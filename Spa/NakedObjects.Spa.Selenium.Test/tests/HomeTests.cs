@@ -288,7 +288,7 @@ namespace NakedObjects.Selenium {
             WaitForSingleHome();
             ClickOnVariousMenus();
             OpenAndCloseSubMenus();
-            //SelectSuccessiveDialogActionsThenCancel();
+            SelectSuccessiveDialogActionsThenCancel();
             ZeroParamReturnsObject();
             ZeroParamReturnsCollection();
             ZeroParamReturnsEmptyCollection();
@@ -315,11 +315,31 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class MegaHomeTestIe : MegaHomeTestBase {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
+            AWTest.InitialiseClass(context);
+        }
+
+        [TestInitialize]
+        public virtual void InitializeTest() {
+            InitIeDriver();
+            Url(BaseUrl);
+        }
+
+        [TestCleanup]
+        public virtual void CleanupTest() {
+            base.CleanUpTest();
+        }
+    }
+
+    [TestClass]
+    public class MegaHomeTestChrome : MegaHomeTestBase {
+        [ClassInitialize]
+        public new static void InitialiseClass(TestContext context) {
+            FilePath(@"drivers.chromedriver.exe");
             AWTest.InitialiseClass(context);
         }
 
