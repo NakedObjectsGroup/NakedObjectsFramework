@@ -286,13 +286,13 @@ namespace NakedObjects.Selenium {
         [TestMethod] //Mega
         public virtual void MegaHomeTest() {
             WaitForSingleHome();
-            ClickOnVariousMenus();
-            OpenAndCloseSubMenus();
+            //ClickOnVariousMenus();
+            //OpenAndCloseSubMenus();
             //SelectSuccessiveDialogActionsThenCancel();
-            ZeroParamReturnsObject();
-            ZeroParamReturnsCollection();
-            ZeroParamReturnsEmptyCollection();
-            DialogActionOK();
+            //ZeroParamReturnsObject();
+            //ZeroParamReturnsCollection();
+            //ZeroParamReturnsEmptyCollection();
+            //DialogActionOK();
         }
     }
 
@@ -315,7 +315,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class MegaHomeTestIe : MegaHomeTestBase {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -335,7 +335,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class MegaHomeTestChrome : MegaHomeTestBase {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
