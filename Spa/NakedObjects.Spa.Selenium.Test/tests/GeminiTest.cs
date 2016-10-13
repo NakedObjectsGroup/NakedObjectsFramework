@@ -39,7 +39,7 @@ namespace NakedObjects.Selenium
             get
             {
                 if (timeOut != 0) { return timeOut; }
-                timeOut = 20;
+                timeOut = 40;
                 return 40;
             }
         }
