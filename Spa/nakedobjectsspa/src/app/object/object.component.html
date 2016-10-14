@@ -24,7 +24,7 @@
 			<dialog [parent]="object"></dialog>
 			<properties class="properties" *ngIf="object.properties" [properties]="object.properties" [parent]="object" [edit]="false"></properties>
 		</div>
-		<collections *ngIf="object.collections" [collections]="object.collections"></collections>
+		<collections class="collections" *ngIf="object.collections" [collections]="object.collections"></collections>
 	</div>
 	<div *ngIf="object && mode === 1" class="object edit">
 		<header class="header">
