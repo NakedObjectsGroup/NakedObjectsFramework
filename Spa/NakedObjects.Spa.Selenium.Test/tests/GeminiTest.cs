@@ -104,18 +104,6 @@ namespace NakedObjects.Selenium
         protected void Url(string url, bool trw = false)
         {
             br.Navigate().GoToUrl(url);
-            Thread.Sleep(10 * 1000);
-
-            br.Navigate().Refresh();
-
-            Thread.Sleep(10 * 1000);
-
-            if (trw) {
-                var u = br.Url;
-
-                throw new Exception(u);
-            }
-
         }
 
         protected void GeminiUrl(string url)
