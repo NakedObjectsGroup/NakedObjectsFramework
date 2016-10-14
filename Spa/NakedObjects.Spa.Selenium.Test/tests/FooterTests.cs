@@ -242,7 +242,7 @@ namespace NakedObjects.Selenium {
         public void MegaFooterTest() {
             //ExplicitWarningsAndInfo();
             //ZeroParamActionReturningNullGeneratesGenericWarning();
-            Home();
+            //Home();
             //BackAndForward();
             ////RecentObjects();
             ////ApplicationProperties();
@@ -269,7 +269,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class MegaFooterTestsIe : MegaFooterTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
