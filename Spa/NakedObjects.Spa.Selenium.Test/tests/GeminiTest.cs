@@ -101,10 +101,17 @@ namespace NakedObjects.Selenium
 
         #region Helpers
 
-        protected void Url(string url)
+        protected void Url(string url, bool trw = false)
         {
             br.Navigate().GoToUrl(url);
             Thread.Sleep(10 * 1000);
+
+            if (trw) {
+                var u = br.Url;
+
+                throw new Exception(u);
+            }
+
         }
 
         protected void GeminiUrl(string url)

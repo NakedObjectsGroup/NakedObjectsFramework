@@ -105,7 +105,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void SelectSuccessiveDialogActionsThenCancel() {
-            Url(CustomersMenuUrl);
+            Url(CustomersMenuUrl, true);
             WaitForCss(".actions .action", CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
             OpenActionDialog("Customer Dashboard");
