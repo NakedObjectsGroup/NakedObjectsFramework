@@ -66,7 +66,7 @@ html, #main, body, .background, .single, .split {
 }
 
 /*Header*/
-header {
+.header {
     margin-bottom: 20px;
     overflow: hidden; /*Expands the div to size of all contents*/
     display: block;
@@ -86,10 +86,10 @@ header {
 }
 
 /*Menus & actions*/
-menus {
+.menus {
     display: block;
 }
-menu, header .action {
+.menu, .header .action {
     display: inline;
     padding: 5px;
     margin-left: 1px; /*Else hover outline is hidden on the left-most menu*/
@@ -98,7 +98,7 @@ menu, header .action {
     font-size: 16pt;
 }
 
-     menu[disabled="disabled"], .ok[disabled="disabled"] {
+.menu[disabled="disabled"], .ok[disabled="disabled"] {
         color: grey;
     }
 
@@ -112,7 +112,7 @@ menu, header .action {
     padding-right: 5px;
 }
 
-.reference, .value, collectionDetails {
+.reference, .value, .collectionDetails {
     width: 245px;
     padding-left: 5px;
     padding-right: 5px;
@@ -199,7 +199,7 @@ select {
     font-size: 11pt;
 }
 
-property .validation {
+.property .validation {
     color: white;
 }
 
@@ -244,7 +244,7 @@ property .validation {
         border-color: black;
     }
 
-menu:hover, menu:focus,
+.menu:hover, .menu:focus,
 .reference:hover, .reference:focus,
 tbody tr:hover, tr:focus,
 .clickable-row:hover, .clickable-row:focus,
@@ -255,12 +255,12 @@ div.hover, div.focus
     outline-color: white;
 }
 
-menu[disabled="disabled"]:hover {
+.menu[disabled="disabled"]:hover {
     outline: none;
 }
 
 /*TODO: review focus on title*/
-viewtitle:focus {
+.title:focus {
     outline: solid;
     outline-width: 1px;
     outline-color: white;
@@ -298,7 +298,7 @@ tbody .number {
         color: white;
     }
 
-messages {
+.messages {
     font-size: 16pt;
     background-color: white;
     color: red;
@@ -557,3 +557,7 @@ input[type=submit] {
         margin: 20px;
         width: 95%;
     }
+    /*kludge*/
+dialog {
+    display: block;
+}
