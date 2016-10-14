@@ -69,11 +69,14 @@ namespace NakedObjects.Selenium {
             GeminiUrl("object?o1=___1.Store--350&as1=open");
             wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 4);
 
-            ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
-
+            var properties = br.FindElements(By.CssSelector(".property"));
+            // failing because of stale properties
             Assert.AreEqual("Store Name:\r\nTwin Cycles", properties[0].Text);
+            properties = br.FindElements(By.CssSelector(".property"));
             Assert.AreEqual("Demographics:\r\nAnnualSales: 800000\r\nAnnualRevenue: 80000\r\nBankName: International Security\r\nBusinessType: BM\r\nYearOpened: 1988\r\nSpecialty: Touring\r\nSquareFeet: 21000\r\nBrands: AW\r\nInternet: T1\r\nNumberEmployees: 11", properties[1].Text);
+            properties = br.FindElements(By.CssSelector(".property"));
             Assert.AreEqual("Sales Person:\r\nLynn Tsoflias", properties[2].Text);
+            properties = br.FindElements(By.CssSelector(".property"));
             Assert.IsTrue(properties[3].Text.StartsWith("Modified Date:\r\n13 Oct 2008"));
         }
         public virtual void Collections() {
@@ -569,30 +572,30 @@ namespace NakedObjects.Selenium {
             OpenActionsMenuNotAlreadyOpen();
             OpenAndCloseSubMenusTo3Levels();
             Properties();
-            Collections();
-            CollectionEagerlyRendered();
-            DateAndCurrencyProperties();
-            TableViewHonouredOnCollection();
-            ClickReferenceProperty();
-            OpenCollectionAsList();
-            NotCountedCollection();
-            ClickOnLineItemWithCollectionAsList();
-            ClickOnLineItemWithCollectionAsTable();
-            DialogAction();
-            DialogActionOk();
-            ObjectAction();
-            CollectionAction();
-            DescriptionRenderedAsTooltip();
-            DisabledAction();
-            ActionsMenuDisabledOnObjectWithNoActions();
-            QueryOnlyActionDoesNotReloadAutomatically();
-            PotentActionDoesReloadAutomatically();
-            NonNavigableReferenceProperty();
-            Colours();
-            ZeroIntValues();
-            AddingObjectToCollectionUpdatesTableView();
-            TimeSpanProperty();
-            ZeroParamActionCausesObjectToReload();
+            //Collections();
+            //CollectionEagerlyRendered();
+            //DateAndCurrencyProperties();
+            //TableViewHonouredOnCollection();
+            //ClickReferenceProperty();
+            //OpenCollectionAsList();
+            //NotCountedCollection();
+            //ClickOnLineItemWithCollectionAsList();
+            //ClickOnLineItemWithCollectionAsTable();
+            //DialogAction();
+            //DialogActionOk();
+            //ObjectAction();
+            //CollectionAction();
+            //DescriptionRenderedAsTooltip();
+            //DisabledAction();
+            //ActionsMenuDisabledOnObjectWithNoActions();
+            //QueryOnlyActionDoesNotReloadAutomatically();
+            //PotentActionDoesReloadAutomatically();
+            //NonNavigableReferenceProperty();
+            //Colours();
+            //ZeroIntValues();
+            //AddingObjectToCollectionUpdatesTableView();
+            //TimeSpanProperty();
+            //ZeroParamActionCausesObjectToReload();
         }
     }
 
@@ -626,6 +629,26 @@ namespace NakedObjects.Selenium {
         [TestInitialize]
         public virtual void InitializeTest() {
             InitIeDriver();
+            Url(BaseUrl);
+        }
+
+        [TestCleanup]
+        public virtual void CleanupTest() {
+            base.CleanUpTest();
+        }
+    }
+
+    [TestClass]
+    public class MegaObjectViewTestChrome : MegaObjectViewTestsRoot {
+        [ClassInitialize]
+        public new static void InitialiseClass(TestContext context) {
+            FilePath(@"drivers.chromedriver.exe");
+            AWTest.InitialiseClass(context);
+        }
+
+        [TestInitialize]
+        public virtual void InitializeTest() {
+            InitChromeDriver();
             Url(BaseUrl);
         }
 
