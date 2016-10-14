@@ -242,8 +242,8 @@ namespace NakedObjects.Selenium {
         public void MegaFooterTest() {
             ////ExplicitWarningsAndInfo();
             ////ZeroParamActionReturningNullGeneratesGenericWarning();
-            //Home();
-            //BackAndForward();
+            Home();
+            BackAndForward();
             ////RecentObjects();
             ////ApplicationProperties();
             //LogOff();
