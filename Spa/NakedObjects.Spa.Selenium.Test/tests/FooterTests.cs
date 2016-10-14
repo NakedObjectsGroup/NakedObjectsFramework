@@ -242,11 +242,11 @@ namespace NakedObjects.Selenium {
         public void MegaFooterTest() {
             //ExplicitWarningsAndInfo();
             //ZeroParamActionReturningNullGeneratesGenericWarning();
-            //Home();
-            //BackAndForward();
-            ////RecentObjects();
-            ////ApplicationProperties();
-            //LogOff();
+            Home();
+            BackAndForward();
+            //RecentObjects();
+            //ApplicationProperties();
+            LogOff();
         }
     }
 
@@ -289,7 +289,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class MegaFooterTestsChrome : MegaFooterTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

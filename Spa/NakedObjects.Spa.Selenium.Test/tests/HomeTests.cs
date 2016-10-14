@@ -287,13 +287,13 @@ namespace NakedObjects.Selenium {
         [TestMethod] //Mega
         public virtual void MegaHomeTest() {
             WaitForSingleHome();
-            //ClickOnVariousMenus();
-            //OpenAndCloseSubMenus();
+            ClickOnVariousMenus();
+            OpenAndCloseSubMenus();
             SelectSuccessiveDialogActionsThenCancel();
-            //ZeroParamReturnsObject();
-            //ZeroParamReturnsCollection();
-            //ZeroParamReturnsEmptyCollection();
-            //DialogActionOK();
+            ZeroParamReturnsObject();
+            ZeroParamReturnsCollection();
+            ZeroParamReturnsEmptyCollection();
+            DialogActionOK();
         }
     }
 
