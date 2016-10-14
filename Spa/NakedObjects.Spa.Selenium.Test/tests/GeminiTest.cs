@@ -256,6 +256,9 @@ namespace NakedObjects.Selenium
         protected virtual void GoToMenuFromHomePage(string menuName)
         {
             WaitForView(Pane.Single, PaneType.Home, "Home");
+
+            wait.Until(dr => dr.FindElements(By.CssSelector(".menu")).Count == 10);
+
             ReadOnlyCollection<IWebElement> menus = br.FindElements(By.CssSelector(".menu"));
             IWebElement menu = menus.FirstOrDefault(s => s.Text == menuName);
             if (menu != null)
