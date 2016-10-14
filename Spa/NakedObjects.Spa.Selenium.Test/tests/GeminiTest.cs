@@ -253,11 +253,15 @@ namespace NakedObjects.Selenium
             selected.SelectByIndex(index);
         }
 
+        protected virtual void WaitForMenus() {
+             wait.Until(dr => dr.FindElements(By.CssSelector(".menu")).Count == 10);
+        }
+
         protected virtual void GoToMenuFromHomePage(string menuName)
         {
             WaitForView(Pane.Single, PaneType.Home, "Home");
 
-            wait.Until(dr => dr.FindElements(By.CssSelector(".menu")).Count == 10);
+            WaitForMenus();
 
             ReadOnlyCollection<IWebElement> menus = br.FindElements(By.CssSelector(".menu"));
             IWebElement menu = menus.FirstOrDefault(s => s.Text == menuName);
@@ -541,7 +545,7 @@ namespace NakedObjects.Selenium
             {
                 OpenSubMenu(subMenuName);
             }
-            var selector = CssSelectorFor(pane) + ".actions .action";
+            var selector = CssSelectorFor(pane) + ".actions .action div";
             var action = wait.Until(d => d.FindElements(By.CssSelector(selector)).
                      Single(we => we.Text == actionName));
             return action;

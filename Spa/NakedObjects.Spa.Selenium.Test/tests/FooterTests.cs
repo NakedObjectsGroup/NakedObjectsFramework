@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.ObjectModel;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
@@ -240,12 +241,12 @@ namespace NakedObjects.Selenium {
     public abstract class MegaFooterTestsRoot : FooterTestsRoot {
         [TestMethod] //Mega
         public void MegaFooterTest() {
-            ////ExplicitWarningsAndInfo();
-            ////ZeroParamActionReturningNullGeneratesGenericWarning();
+            ExplicitWarningsAndInfo();
+            ZeroParamActionReturningNullGeneratesGenericWarning();
             Home();
             BackAndForward();
-            ////RecentObjects();
-            ////ApplicationProperties();
+            //RecentObjects();
+            //ApplicationProperties();
             //LogOff();
         }
     }
