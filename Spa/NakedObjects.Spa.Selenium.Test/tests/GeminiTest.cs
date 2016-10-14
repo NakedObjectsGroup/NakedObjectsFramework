@@ -104,11 +104,12 @@ namespace NakedObjects.Selenium
         protected void Url(string url)
         {
             br.Navigate().GoToUrl(url);
+            Thread.Sleep(10 * 1000);
         }
 
         protected void GeminiUrl(string url)
         {
-            br.Navigate().GoToUrl(GeminiBaseUrl + url);
+            Url(GeminiBaseUrl + url);
         }
 
         protected void WaitUntilGone<TResult>(Func<IWebDriver, TResult> condition)
