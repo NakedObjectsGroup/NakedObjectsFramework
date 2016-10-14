@@ -1285,6 +1285,8 @@ export class CollectionViewModel implements ICollectionViewModel {
 
     description = () => this.details.toString();
     refresh: (routeData: PaneRouteData, resetting: boolean) => void;
+
+    disableActions() { return true;}
 }
 
 export class MenusViewModel implements IMenusViewModel {
