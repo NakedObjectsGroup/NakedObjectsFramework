@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
@@ -285,7 +286,7 @@ namespace NakedObjects.Selenium {
     public class MegaHomeTestBase : HomeTestsRoot {
         [TestMethod] //Mega
         public virtual void MegaHomeTest() {
-            //WaitForSingleHome();
+            WaitForSingleHome();
             //ClickOnVariousMenus();
             //OpenAndCloseSubMenus();
             SelectSuccessiveDialogActionsThenCancel();
@@ -315,7 +316,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class MegaHomeTestIe : MegaHomeTestBase {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -335,7 +336,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class MegaHomeTestChrome : MegaHomeTestBase {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -345,7 +346,7 @@ namespace NakedObjects.Selenium {
 
         [TestInitialize]
         public virtual void InitializeTest() {
-            InitIeDriver();
+            InitChromeDriver();
             Url(BaseUrl);
         }
 
