@@ -121,7 +121,8 @@ namespace NakedObjects.Selenium {
             SaveObject();
             GetButton("Edit"); //Waiting for save
             WaitForTextEquals(".summary .details", 0, "Empty");
-        
+
+            WaitForCss(".collection .icon-list",2);
             var iconList = WaitForCssNo(".collection .icon-list", 0);
             Click(iconList);
             WaitForCss("table");
