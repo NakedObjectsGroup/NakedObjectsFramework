@@ -1,4 +1,4 @@
-1NakedObjectsFramework
+NakedObjectsFramework
 ======================
 
 The current stable release of the Naked Objects Framework (NOF) is version 8.1  -  see below for details.
