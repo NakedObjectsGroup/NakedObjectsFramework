@@ -1,6 +1,6 @@
-<div class="collectionSummary">
+<div class="summary">
     <div class='name'>{{collection.title}}:</div>
-    <div class="collectionDetails">{{collection.details}}</div>
+    <div class="details">{{collection.details}}</div>
     <div *ngIf="collection.mayHaveItems">
         <img *ngIf="state == 'table' || state == 'list'" class="icon-summary clickable-area" (click)="collection.doSummary()" src="../../images/summary.png" title="Close Collection" />
         <img *ngIf="state == 'table' || state == 'summary'" class="icon-list clickable-area" (click)="collection.doList()" src="../../images/list.png" title="View as List"/>

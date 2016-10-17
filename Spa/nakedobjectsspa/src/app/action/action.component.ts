@@ -10,7 +10,7 @@ export class ActionComponent {
 
     private actionVm: ViewModels.ActionViewModel;
 
-    disabled() { return false; }
+    disabled() { return this.actionVm.disabled(); }
 
     doInvoke(right?: boolean) {
         this.actionVm.doInvoke(right);

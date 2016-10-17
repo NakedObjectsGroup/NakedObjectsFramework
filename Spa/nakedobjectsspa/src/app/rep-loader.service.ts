@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Request, RequestOptions, Headers } from '@angular/http';
+import { Http, Response, Request, RequestOptions, Headers, RequestMethod} from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import "./rxjs-extensions";
 import * as Models from "./models";
@@ -7,6 +7,7 @@ import * as Constants from "./constants";
 import * as Ro from "./ro-interfaces";
 import * as _ from "lodash";
 import { Subject } from 'rxjs/Subject';
+
 
 @Injectable()
 export class RepLoaderService {
@@ -23,7 +24,7 @@ export class RepLoaderService {
 //private cache = $cacheFactory("nof-cache", { capacity: httpCacheDepth });
 
     private addIfMatchHeader(config: RequestOptions, digest: string) {
-        if (digest && (config.method === "POST" || config.method === "PUT" || config.method === "DELETE")) {
+        if (digest && (config.method === RequestMethod.Post || config.method === "PUT" || config.method === "DELETE")) {
             config.headers = new Headers ({ "If-Match": digest });
         }
     }
