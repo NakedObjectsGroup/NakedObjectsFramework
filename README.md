@@ -1,9 +1,10 @@
-NakedObjectsFramework
-=====================
+1NakedObjectsFramework
+======================
 
-The Naked Objects Framework is now on version 8.0 ('NOF8').  It may be used entirely as packages from the NuGet public gallery - there is no need to clone this repository.  Indeed, building the framework from source code is quite complex and not recommended for newcomers.  (If you really want to know how to do it, see the section 'How to build the framework from source code' in the Developer Manual.)
+The current stable release of the Naked Objects Framework (NOF) is version 8.1  -  see below for details.
 
-We will shortly be issuing version 8.1.
+The NOF may be used entirely as packages from the NuGet public gallery - there is no need to clone this repository.  Indeed, building the framework from source code is quite complex and not recommended for newcomers.  (If you really want to know how to do it, see the section 'How to build the framework from source code' in the Developer Manual.)
+
 
 NOF9 (under development - master branch)
 ====
