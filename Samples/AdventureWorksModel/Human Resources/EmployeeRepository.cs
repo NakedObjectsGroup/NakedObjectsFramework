@@ -40,6 +40,7 @@ namespace AdventureWorksModel {
             nameof(Employee.Current),
             nameof(Employee.JobTitle),
             nameof(Employee.Manager))]
+        [MultiLine]
         public IQueryable<Employee> FindEmployeeByName([Optionally] string firstName, string lastName) {
             IQueryable<Person> matchingContacts = ContactRepository.FindContactByName(firstName, lastName);
 

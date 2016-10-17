@@ -18,6 +18,8 @@ namespace AdventureWorksModel {
         #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }
         public EmployeeRepository EmployeeRepository { set; protected get; }
+
+        public ProductRepository ProductRepository { set; protected get; }
         #endregion
 
         #region Life Cycle Methods
@@ -70,6 +72,10 @@ namespace AdventureWorksModel {
         [MemberOrder(22)]
         public virtual ShipMethod ShipMethod { get; set; }
 
+        public ShipMethod DefaultShipMethod()
+        {
+            return Container.Instances<ShipMethod>().First();
+        }
         #endregion
 
         #region Vendor
@@ -149,7 +155,7 @@ namespace AdventureWorksModel {
         public virtual Employee OrderPlacedBy { get; set; }
 
         public Employee DefaultOrderPlacedBy() {
-            return EmployeeRepository.CurrentUserAsEmployee();
+            return EmployeeRepository.RandomEmployee();
         }
 
         #endregion
@@ -167,7 +173,7 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        #region CreateNewOrderDetail (Action)
+        #region Add New Detail
 
         [MemberOrder(1)]
         public PurchaseOrderDetail AddNewDetail(Product prod, short qty) {
@@ -187,6 +193,26 @@ namespace AdventureWorksModel {
 
         public List<Product> Choices0AddNewDetail() {
             return Vendor.Products.Select(n => n.Product).ToList();
+        }
+        #endregion
+
+        #region Add New Details
+        [MemberOrder(1)]
+        [MultiLine()]
+        public void AddNewDetails(Product prod, short qty, decimal unitPrice)
+        {
+            var det = AddNewDetail(prod, qty);
+            det.UnitPrice = unitPrice;
+            det.DueDate = DateTime.Today.AddDays(7);
+            det.ReceivedQty = 0;
+            det.RejectedQty = 0;
+            Container.Persist(ref det);
+        }
+
+        [PageSize(10)]
+        public IQueryable<Product> AutoComplete0AddNewDetails([MinLength(3)] string matching)
+        {
+            return ProductRepository.FindProductByName(matching);
         }
 
         #endregion

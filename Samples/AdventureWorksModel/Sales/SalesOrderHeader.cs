@@ -333,6 +333,15 @@ namespace AdventureWorksModel {
             TotalDue = SubTotal;
         }
 
+        public virtual string DisableRecalculate()
+        {
+            if (!IsInProcess())
+            {
+                return "Can only recalculate an 'In Process' order";
+            }
+            return null;
+        }
+
         #region CurrencyRate
 
         [NakedObjectsIgnore]
@@ -534,7 +543,9 @@ namespace AdventureWorksModel {
         #region Add New Detail
 
         [Description("Add a new line item to the order")]
-        [MemberOrder(1)]
+#pragma warning disable 612,618
+        [MemberOrder(Sequence="2", Name ="Details")]
+#pragma warning restore 612,618
         public SalesOrderDetail AddNewDetail(Product product,
                                              [DefaultValue((short) 1), Range(1, 999)] short quantity) {
             int stock = product.NumberInStock();
@@ -568,12 +579,15 @@ namespace AdventureWorksModel {
 
         #region Add New Details
         [Description("Add multiple line items to the order")]
-        [MemberOrder(2)]
-        [MultiLine(NumberOfLines = 2)]
-        public SalesOrderDetail AddNewDetails(Product product,
-                                     [DefaultValue((short)1), Range(1, 999)] short quantity)
+        [MultiLine()]
+#pragma warning disable 612, 618
+        [MemberOrder(Sequence = "1", Name = "Details")]
+#pragma warning restore 612,618
+        public void AddNewDetails(Product product,
+                                     [DefaultValue((short)1)] short quantity)
         {
-            return AddNewDetail(product, quantity);
+            var detail = AddNewDetail(product, quantity);
+            Container.Persist(ref detail);
         }
         public virtual string DisableAddNewDetails()
         {
@@ -584,10 +598,17 @@ namespace AdventureWorksModel {
         {
             return AutoComplete0AddNewDetail(name);
         }
+
+        public string ValidateAddNewDetails(short quantity)
+        {
+            var rb = new ReasonBuilder();
+            rb.AppendOnCondition(quantity <= 0, "Must be > 0");
+            return rb.Reason;
+        }
+
         #endregion
 
         #region Remove Detail
-
         public void RemoveDetail(SalesOrderDetail detailToRemove) {
             if (Details.Contains(detailToRemove)) {
                 Details.Remove(detailToRemove);
@@ -602,6 +623,7 @@ namespace AdventureWorksModel {
             return Details.FirstOrDefault();
         }
 
+        [MemberOrder(3)]
         public void RemoveDetails([ContributedAction] IEnumerable<SalesOrderDetail> details) {
             foreach (SalesOrderDetail detail in details) {
                 if (Details.Contains(detail)) {
@@ -612,6 +634,7 @@ namespace AdventureWorksModel {
         #endregion
 
         #region AdjustQuantities
+        [MemberOrder(4)]
         public void AdjustQuantities([ContributedAction] IEnumerable<SalesOrderDetail> details, short newQuantity)
         {
             foreach (SalesOrderDetail detail in details)

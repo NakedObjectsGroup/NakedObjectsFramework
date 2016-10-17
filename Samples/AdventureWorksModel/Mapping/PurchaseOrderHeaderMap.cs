@@ -23,7 +23,7 @@ namespace AdventureWorksModel
             Property(t => t.SubTotal).HasColumnName("SubTotal");
             Property(t => t.TaxAmt).HasColumnName("TaxAmt");
             Property(t => t.Freight).HasColumnName("Freight");
-            Property(t => t.TotalDue).HasColumnName("TotalDue");
+            Property(t => t.TotalDue).HasColumnName("TotalDue").HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Computed);
             Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships

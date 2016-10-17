@@ -25,10 +25,10 @@ namespace AdventureWorksModel
             Property(t => t.OrderQty).HasColumnName("OrderQty");
             Property(t => t.ProductID).HasColumnName("ProductID");
             Property(t => t.UnitPrice).HasColumnName("UnitPrice");
-            Property(t => t.LineTotal).HasColumnName("LineTotal");
+            Property(t => t.LineTotal).HasColumnName("LineTotal").HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
             Property(t => t.ReceivedQty).HasColumnName("ReceivedQty");
             Property(t => t.RejectedQty).HasColumnName("RejectedQty");
-            Property(t => t.StockedQty).HasColumnName("StockedQty");
+            Property(t => t.StockedQty).HasColumnName("StockedQty").HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
             Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
