@@ -46,4 +46,12 @@
         title: string;
         menuId: string;
     }
+
+    export interface ICustomCollectionRepresentation extends RoInterfaces.ICollectionRepresentation {
+        members: { [index: string]: IActionMember };
+    }
+
+    export interface ICustomCollectionMember extends ICollectionMember {
+        members? : { [index: string]: IActionMember };
+    }
 }

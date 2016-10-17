@@ -213,7 +213,7 @@ namespace NakedObjects {
             actionViewModel.execute = (pps: ParameterViewModel[], right?: boolean) => {
                 const parmMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
                 _.forEach(pps, p => urlManager.setParameterValue(actionRep.actionId(), p.parameterRep, p.getValue(), paneId));
-                return context.getInvokableAction(actionViewModel.actionRep).then(details => context.invokeAction(details, parmMap, paneId, clickHandler.pane(paneId, right)));
+                return context.getInvokableAction(actionViewModel.actionRep).then(details => context.invokeAction(details, parmMap, paneId, clickHandler.pane(paneId, right), actionViewModel.gotoResult));
             };
 
             // form actions should never show dialogs
@@ -225,8 +225,8 @@ namespace NakedObjects {
                     focusManager.setCurrentPane(paneId);
                     focusManager.focusOverrideOff();
                     // clear any previous dialog so we don't pick up values from it
-                    context.clearDialogValues(paneId);
-                    urlManager.setDialog(actionRep.actionId(), paneId);
+                    context.clearDialogValues(paneId);               
+                    urlManager.setDialogOrMultiLineDialog(actionRep, paneId);              
                     focusManager.focusOn(FocusTarget.Dialog, 0, paneId); // in case dialog is already open
                 } :
                 (right?: boolean) => {
@@ -255,11 +255,13 @@ namespace NakedObjects {
 
             let requiredFieldsMissing = false; // only show warning message if we have nothing else 
             let fieldValidationErrors = false;
+            let contributedParameterErrorMsg = "";
+        
+            _.each(err.valuesMap(), (errorValue, k) => {
+             
+                const valueViewModel = _.find(valueViewModels, vvm => vvm.id === k);
 
-            _.each(valueViewModels, valueViewModel => {
-                const errorValue = err.valuesMap()[valueViewModel.id];
-
-                if (errorValue) {
+                if (valueViewModel) {
                     const reason = errorValue.invalidReason;
                     if (reason) {
                         if (reason === "Mandatory") {
@@ -271,13 +273,17 @@ namespace NakedObjects {
                             fieldValidationErrors = true;
                         }
                     }
+                } else {
+                    // no matching parm for message - this can happen in contributed actions 
+                    // make the message a dialog level warning.                               
+                    contributedParameterErrorMsg = errorValue.invalidReason;                    
                 }
             });
 
-            let msg = err.invalidReason() || "";
+            let msg = contributedParameterErrorMsg || err.invalidReason() || "";
             if (requiredFieldsMissing) msg = `${msg} Please complete REQUIRED fields. `;
             if (fieldValidationErrors) msg = `${msg} See field validation message(s). `;
-
+            
             if (!msg) msg = err.warningMessage;
             messageViewModel.setMessage(msg);
         };
@@ -377,6 +383,7 @@ namespace NakedObjects {
             const tableRowColumnViewModel = new TableRowColumnViewModel();
 
             tableRowColumnViewModel.title = propertyRep.extensions().friendlyName();
+            tableRowColumnViewModel.id = id;
 
             if (propertyRep instanceof CollectionMember) {
                 const size = propertyRep.size();
@@ -633,8 +640,20 @@ namespace NakedObjects {
         viewModelFactory.parameterViewModel = (parmRep: Parameter, previousValue: Value, paneId: number) => {
             const parmViewModel = new ParameterViewModel(parmRep, paneId, color, error);
 
+            const remoteMask = parmRep.extensions().mask();
+
             const fieldEntryType = parmViewModel.entryType;
-          
+
+            if (fieldEntryType === EntryType.FreeForm && parmViewModel.type === "scalar") {
+                let lf: ILocalFilter;
+                if (remoteMask) {
+                    lf = mask.toLocalFilter(remoteMask, parmRep.extensions().format()) || mask.defaultLocalFilter(parmRep.extensions().format());
+                } else {
+                    lf = mask.defaultLocalFilter(parmRep.extensions().format());
+                }
+                parmViewModel.localFilter = lf;
+            }
+
             if (fieldEntryType === EntryType.Choices || fieldEntryType === EntryType.MultipleChoices) {
                 setupParameterChoices(parmViewModel);
             }
@@ -657,14 +676,7 @@ namespace NakedObjects {
                 setupParameterSelectedValue(parmViewModel, previousValue);
             }
 
-            const remoteMask = parmRep.extensions().mask();
-
-            if (remoteMask && parmRep.isScalar()) {
-                const localFilter = mask.toLocalFilter(remoteMask, parmRep.extensions().format());
-                parmViewModel.localFilter = localFilter;
-                // formatting also happens in in directive - at least for dates - value is now date in that case
-                parmViewModel.formattedValue = parmViewModel.value ? localFilter.filter(parmViewModel.value.toString()) : "";
-            }
+           
 
             parmViewModel.description = getRequiredIndicator(parmViewModel) + parmViewModel.description;
             parmViewModel.validate = _.partial(validate, parmRep, parmViewModel) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
@@ -695,12 +707,18 @@ namespace NakedObjects {
                             _.forEach(items, itemViewModel => {
                                 itemViewModel.tableRowViewModel.hasTitle = ext.tableViewTitle();
                                 itemViewModel.tableRowViewModel.title = itemViewModel.title;
+                                itemViewModel.tableRowViewModel.conformColumns(ext.tableViewColumns());
                             });
 
                             if (!listViewModel.header) {
                                 const firstItem = items[0].tableRowViewModel;
-                                const propertiesHeader = _.map(firstItem.properties, property => property.title);
 
+                                const propertiesHeader =
+                                    _.map(firstItem.properties, (p, i) => {
+                                        const match = _.find(items, item => item.tableRowViewModel.properties[i].title);
+                                        return match ? match.tableRowViewModel.properties[i].title : firstItem.properties[i].id;
+                                    });
+                    
                                 listViewModel.header = firstItem.hasTitle ? [""].concat(propertiesHeader) : propertiesHeader;
 
                                 focusManager.focusOverrideOff();
@@ -736,7 +754,7 @@ namespace NakedObjects {
         }
 
         viewModelFactory.collectionViewModel = (collectionRep: CollectionMember, routeData: PaneRouteData) => {
-            const collectionViewModel = new CollectionViewModel();
+            const collectionViewModel = new CollectionViewModel(context, viewModelFactory, urlManager, focusManager, error, $q );
 
             const itemLinks = collectionRep.value();
             const paneId = routeData.paneId;
@@ -747,6 +765,7 @@ namespace NakedObjects {
             collectionViewModel.title = collectionRep.extensions().friendlyName();
             collectionViewModel.presentationHint = collectionRep.extensions().presentationHint();
             collectionViewModel.pluralName = collectionRep.extensions().pluralName();
+            collectionViewModel.id = collectionRep.collectionId().toLowerCase();
 
             color.toColorNumberFromType(collectionRep.extensions().elementType()).
                 then(c => collectionViewModel.color = `${linkColor}${c}`).
@@ -754,11 +773,21 @@ namespace NakedObjects {
 
             collectionViewModel.refresh = (routeData: PaneRouteData, resetting: boolean) => {
 
-                let state = size === 0 ? CollectionViewState.Summary : routeData.collections[collectionRep.collectionId()];
+                let state = routeData.collections[collectionRep.collectionId()];
+
+                // collections are always shown as summary on transient 
+                if (routeData.interactionMode === InteractionMode.Transient) {
+                    state = CollectionViewState.Summary;
+                }
 
                 if (state == null) {
                     state = getDefaultTableState(collectionRep.extensions());
                 }
+
+                collectionViewModel.editing = routeData.interactionMode === InteractionMode.Edit;
+
+                // clear any previous messages
+                collectionViewModel.resetMessage();
 
                 if (resetting || state !== collectionViewModel.currentState) {
 
@@ -768,33 +797,40 @@ namespace NakedObjects {
                     collectionViewModel.details = getCollectionDetails(size);
                     const getDetails = itemLinks == null || state === CollectionViewState.Table;
 
+                    const actions = collectionRep.actionMembers();
+                    collectionViewModel.setActions(actions, routeData);
+
                     if (state === CollectionViewState.Summary) {
                         collectionViewModel.items = [];
                     } else if (getDetails) {
-                        context.getCollectionDetails(collectionRep, state, resetting).
-                            then(details => {
+                        context.getCollectionDetails(collectionRep, state, resetting)
+                            .then(details => {
                                 collectionViewModel.items = viewModelFactory.getItems(details.value(),
                                     state === CollectionViewState.Table,
                                     routeData,
                                     collectionViewModel);
-                                collectionViewModel.details = getCollectionDetails(collectionViewModel.items.length);
-                            }).
-                            catch((reject: ErrorWrapper) => error.handleError(reject));
+                                collectionViewModel.details = getCollectionDetails(collectionViewModel.items.length);                             
+                                collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);
+                            })
+                            .catch((reject: ErrorWrapper) => error.handleError(reject));
                     } else {
                         collectionViewModel.items = viewModelFactory.getItems(itemLinks, state === CollectionViewState.Table, routeData, collectionViewModel);
+                        collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);                   
                     }
 
                     switch (state) {
-                        case CollectionViewState.List:
-                            collectionViewModel.template = collectionListTemplate;
-                            break;
-                        case CollectionViewState.Table:
-                            collectionViewModel.template = collectionTableTemplate;
-                            break;
-                        default:
-                            collectionViewModel.template = collectionSummaryTemplate;
+                    case CollectionViewState.List:
+                        collectionViewModel.template = collectionListTemplate;
+                        break;
+                    case CollectionViewState.Table:
+                        collectionViewModel.template = collectionTableTemplate;
+                        break;
+                    default:
+                        collectionViewModel.template = collectionSummaryTemplate;
                     }
                     collectionViewModel.currentState = state;
+                } else {
+                    collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);
                 }
             }
 

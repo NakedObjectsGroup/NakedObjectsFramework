@@ -239,6 +239,7 @@ namespace NakedObjects {
         tableRowViewModel: ITableRowViewModel;
         selected: boolean;
         selectionChange: (index: number) => void;
+
     }
 
     export class RecentItemViewModel extends LinkViewModel implements IRecentItemViewModel, IDraggableViewModel {
@@ -315,6 +316,7 @@ namespace NakedObjects {
         choices: IChoiceViewModel[] = [];  
 
         private currentChoice: IChoiceViewModel;
+        private currentMultipleChoices: IChoiceViewModel[];
 
         private error : IError;
 
@@ -327,7 +329,7 @@ namespace NakedObjects {
             // choice
             if (newChoice instanceof ChoiceViewModel || newChoice == null) {
                 this.currentChoice = newChoice;
-                this.updateColor();
+                this.update();
             }
         }
 
@@ -339,10 +341,17 @@ namespace NakedObjects {
 
         set value(newValue: scalarValueType | Date) {
             this.currentRawValue = newValue;
-            this.updateColor();
+            this.update();
         }
 
-        selectedMultiChoices: IChoiceViewModel[];
+        get selectedMultiChoices(): IChoiceViewModel[] {
+            return this.currentMultipleChoices;
+        }
+
+        set selectedMultiChoices(choices : IChoiceViewModel[]) {
+            this.currentMultipleChoices = choices; 
+            this.update();
+        }
 
         private file: Link;     
 
@@ -370,7 +379,11 @@ namespace NakedObjects {
             this.reference = "";          
         }
 
-        private updateColor : () => void ; 
+        private updateColor: () => void;
+
+        protected update() {
+            this.updateColor();
+        }
 
         private setColor(color: IColor) {
 
@@ -450,7 +463,7 @@ namespace NakedObjects {
 
     export class ParameterViewModel extends ValueViewModel {
 
-        constructor(parmRep: Parameter, paneId : number, color : IColor, error : IError) {
+        constructor(private parmRep: Parameter, paneId : number, color : IColor, error : IError) {
             super(parmRep.extensions(), color, error);
             this.parameterRep = parmRep;
             this.onPaneId = paneId;
@@ -465,6 +478,39 @@ namespace NakedObjects {
 
         parameterRep: Parameter;
         dflt: string;
+
+        setAsRow(i: number) {
+            this.paneArgId = `${this.argId}${i}`;
+        }
+
+        protected update() {
+            super.update();
+
+            switch (this.entryType) {
+                case (EntryType.FreeForm):
+                    if (this.type === "scalar") {
+                        if (this.localFilter) {
+                            this.formattedValue = this.value ? this.localFilter.filter(this.value) : "";
+                        } else {
+                            this.formattedValue = this.value ? this.value.toString() : "";
+                        }
+                        break;
+                    }
+                    // fall through 
+                case (EntryType.AutoComplete):
+                case (EntryType.Choices):
+                case (EntryType.ConditionalChoices):
+                    this.formattedValue = this.selectedChoice ? this.selectedChoice.toString() : "";
+                    break;
+                case (EntryType.MultipleChoices):
+                case (EntryType.MultipleConditionalChoices):
+                    const count = !this.selectedMultiChoices ? 0 : this.selectedMultiChoices.length;
+                    this.formattedValue = `${count} selected`;
+                    break;
+                default:
+                    this.formattedValue = this.value ? this.value.toString() : "";
+            }
+        }
     }
 
     export class ActionViewModel implements IActionViewModel {
@@ -474,7 +520,8 @@ namespace NakedObjects {
         menuPath: string;
         title: string;
         description: string;
-        presentationHint : string;
+        presentationHint: string;
+        gotoResult = true;
 
         doInvoke: (right?: boolean) => void;
         execute: (pps: IParameterViewModel[], right?: boolean) => ng.IPromise<ActionResultRepresentation>;
@@ -515,11 +562,12 @@ namespace NakedObjects {
         actionViewModel: IActionViewModel;
         title: string;           
         id: string;
-        parameters: IParameterViewModel[];
+        parameters: IParameterViewModel[] = [];
+        submitted = false;
 
-        reset(actionViewModel: IActionViewModel, routeData: PaneRouteData) {
+        reset(actionViewModel: IActionViewModel, paneId : number) {
             this.actionViewModel = actionViewModel;
-            this.onPaneId = routeData.paneId;
+            this.onPaneId = paneId;
 
             const fields = this.context.getCurrentDialogValues(this.actionMember().actionId(), this.onPaneId);
 
@@ -530,6 +578,7 @@ namespace NakedObjects {
             this.isQueryOnly = actionViewModel.invokableActionRep.invokeLink().method() === "GET";
             this.resetMessage();
             this.id = actionViewModel.actionRep.actionId();
+            this.submitted = false;
         }
 
         refresh() {
@@ -544,11 +593,11 @@ namespace NakedObjects {
         tooltip = () => tooltip(this, this.parameters);
 
         setParms = () => _.forEach(this.parameters, p => this.context.setFieldValue(this.actionMember().actionId(), p.parameterRep.id(), p.getValue(), this.onPaneId));
-
       
         doInvoke = (right?: boolean) =>
             this.execute(right).
                 then((actionResult: ActionResultRepresentation) => {
+                   
                     if (actionResult.shouldExpectResult()) {
                         this.setMessage(actionResult.warningsOrMessages() || noResultMessage);
                     } else if (actionResult.resultType() === "void") {
@@ -565,6 +614,7 @@ namespace NakedObjects {
                         this.doCloseKeepHistory();
                     }
                     // else query only going to other tab leave dialog open
+                    this.doCompleteButLeaveOpen();
                 }).
                 catch((reject: ErrorWrapper) => {
                     const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.parameters);
@@ -581,10 +631,128 @@ namespace NakedObjects {
             this.urlManager.closeDialogReplaceHistory(this.onPaneId);
         }
 
+        doCompleteButLeaveOpen = () => {       
+        }
+
         clearMessages = () => {
             this.resetMessage();
             _.each(this.actionViewModel.parameters, parm => parm.clearMessage());
-        };        
+        };
+
+        matchingCollectionId: string;
+    }
+
+    export class MultiLineDialogViewModel implements IMultiLineDialogViewModel {
+
+        private createRow(i : number) {
+            const dialogViewModel = new DialogViewModel(this.color, this.context, this.viewModelFactory, this.urlManager, this.focusManager, this.error, this.$rootScope);
+            const actionViewModel = this.viewModelFactory.actionViewModel(this.action, dialogViewModel, this.routeData);
+            actionViewModel.gotoResult = false;
+
+            dialogViewModel.reset(actionViewModel, 1);
+
+            dialogViewModel.doCloseKeepHistory = () => {
+                dialogViewModel.submitted = true;
+            };
+
+            dialogViewModel.doCloseReplaceHistory = () => {
+                dialogViewModel.submitted = true;
+            };
+
+            dialogViewModel.doCompleteButLeaveOpen = () => {
+                dialogViewModel.submitted = true;
+            };
+
+
+            dialogViewModel.parameters.forEach(p => p.setAsRow(i));
+
+
+            return dialogViewModel;
+        }
+
+        objectFriendlyName: string; 
+        objectTitle : string; 
+
+        title: string = "";
+        action: ActionMember | ActionRepresentation;
+        routeData: PaneRouteData;
+
+        constructor(private color: IColor,
+            private context: IContext,
+            private viewModelFactory: IViewModelFactory,
+            private urlManager: IUrlManager,
+            private focusManager: IFocusManager,
+            private error: IError,
+            private $rootScope: ng.IRootScopeService) {
+
+        }
+
+        reset(routeData: PaneRouteData, action: ActionMember | ActionRepresentation) {
+
+            this.action = action;
+            this.routeData = routeData;
+            this.action.parent.etagDigest = "*";
+
+            const initialCount = action.extensions().multipleLines() || 1;
+
+            this.dialogs = _.map(_.range(initialCount), (i) => this.createRow(i));
+            this.title = this.dialogs[0].title;
+            return this;
+        }
+
+        dialogs: IDialogViewModel[] = [];
+
+        header() {
+            return this.dialogs.length === 0 ? [] : _.map(this.dialogs[0].parameters, p => p.title);
+        }
+
+        clientValid() {
+            return _.every(this.dialogs, d => d.clientValid());
+        }
+
+        tooltip() {
+            const tooltips =   _.map(this.dialogs, (d, i) =>  `row: ${i} ${d.tooltip() || "OK"}`);
+            return _.reduce(tooltips, (s, t) => `${s}\n${t}`);
+        }
+
+        invokeAndAdd(index: number) {
+            this.dialogs[index].doInvoke();
+            this.add(index);     
+            this.focusManager.focusOn(FocusTarget.MultiLineDialogRow, 1, 1); 
+        }
+
+        add(index : number) {
+            if (index === this.dialogs.length - 1) {
+                // if this is last dialog always add another
+                this.dialogs.push(this.createRow(this.dialogs.length));
+            }
+            else if (_.takeRight(this.dialogs)[0].submitted) {
+                // if the last dialog is submitted add another 
+                this.dialogs.push(this.createRow(this.dialogs.length));
+            }
+        }
+
+        clear(index : number) {
+            _.pullAt(this.dialogs, [index]);
+        }
+
+        submitAll() {
+            if (this.clientValid()) {
+                _.each(this.dialogs, d => {
+                    if (!d.submitted) {
+                        d.doInvoke();
+                    }
+                });
+            }
+        }
+
+        submittedCount() {
+            return (_.filter(this.dialogs, d => d.submitted)).length;
+        }
+
+        close() {
+            this.urlManager.popUrlState();
+        }
     }
 
     export class PropertyViewModel extends ValueViewModel implements IPropertyViewModel,  IDraggableViewModel {
@@ -617,32 +785,168 @@ namespace NakedObjects {
         reload: () => void;
     }
 
-    export class ListViewModel extends MessageViewModel implements IListViewModel {
+    abstract class ContributedActionParentViewModel extends MessageViewModel {
 
-        constructor(private colorService: IColor,
-            private context: IContext,
-            private viewModelFactory: IViewModelFactory,
-            private urlManager: IUrlManager,
-            private focusManager: IFocusManager,
-            private error: IError,
-            private $q: ng.IQService) {
+        constructor(protected context: IContext,
+            protected viewModelFactory: IViewModelFactory,
+            protected urlManager: IUrlManager,
+            protected focusManager: IFocusManager,
+            protected error: IError,
+            protected $q: ng.IQService) {
             super();
         }
 
+        onPaneId : number;
+        allSelected: boolean;
+        items: IItemViewModel[];
+
+        private isLocallyContributed(action: IInvokableAction) {
+            return _.some(action.parameters(), p => p.isCollectionContributed()); 
+        }
+
+        protected collectionContributedActionDecorator(actionViewModel: IActionViewModel) {
+            const wrappedInvoke = actionViewModel.execute;
+            actionViewModel.execute = (pps: IParameterViewModel[], right?: boolean) => {
+
+                const selected = _.filter(this.items, i => i.selected);
+             
+
+                const rejectAsNeedSelection = (action: IInvokableAction) => {
+                    if (this.isLocallyContributed(action)) {
+
+                        if (selected.length === 0) {
+
+                            const em = new ErrorMap({}, 0, noItemsSelected);
+                            const rp = new ErrorWrapper(ErrorCategory.HttpClientError, HttpStatusCode.UnprocessableEntity, em);
+
+                            return rp;
+                        }
+                    }
+                    return null;
+                }
+
+
+                const getParms = (action: IInvokableAction) => {
+
+                    const parms = _.values(action.parameters()) as Parameter[];
+                    const contribParm = _.find(parms, p => p.isCollectionContributed());
+
+                    if (contribParm) {
+                        const parmValue = new Value(_.map(selected, i => i.link));
+                        const collectionParmVm = this.viewModelFactory.parameterViewModel(contribParm, parmValue, this.onPaneId);
+
+                        const allpps = _.clone(pps);
+                        allpps.push(collectionParmVm);
+                        return allpps;
+                    }
+                    return pps;
+                }
+
+                if (actionViewModel.invokableActionRep) {
+                    const rp = rejectAsNeedSelection(actionViewModel.invokableActionRep);
+                    return rp ? this.$q.reject(rp) : wrappedInvoke(getParms(actionViewModel.invokableActionRep), right).
+                        then(result => {
+                            // clear selected items on void actions 
+                            this.clearSelected(result);
+                            return result;
+                        });
+                }
+
+                return this.context.getActionDetails(actionViewModel.actionRep as ActionMember).
+                    then((details: ActionRepresentation) => {
+                        const rp = rejectAsNeedSelection(details);
+                        if (rp) {
+                            return this.$q.reject(rp);
+                        }
+                        return wrappedInvoke(getParms(details), right);
+                    }).
+                    then(result => {
+                        // clear selected items on void actions 
+                        this.clearSelected(result);
+                        return result;
+                    });
+            }
+        }
+
+        protected collectionContributedInvokeDecorator(actionViewModel: IActionViewModel) {
+
+            const showDialog = () =>
+                this.context.getInvokableAction(actionViewModel.actionRep as ActionMember).
+                    then(invokableAction => {
+                    const keyCount = _.keys(invokableAction.parameters()).length;
+                    return keyCount > 1 || keyCount === 1 && !_.toArray(invokableAction.parameters())[0].isCollectionContributed();
+                });
+
+            // make sure not null while waiting for promise to assign correct function 
+            actionViewModel.doInvoke = () => { };
+
+            const invokeWithDialog = (right?: boolean) => {
+                this.context.clearDialogValues(this.onPaneId);
+                this.focusManager.focusOverrideOff();
+                this.urlManager.setDialogOrMultiLineDialog(actionViewModel.actionRep, this.onPaneId);
+            };
+
+            const invokeWithoutDialog = (right?: boolean) =>
+                actionViewModel.execute([], right).
+                    then(result => {
+                        this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || noResultMessage : "");
+                        // clear selected items on void actions 
+                        this.clearSelected(result);
+                    }).
+                    catch((reject: ErrorWrapper) => {
+                        const display = (em: ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
+                        this.error.handleErrorAndDisplayMessages(reject, display);
+                    });
+
+            showDialog().
+                then(show => actionViewModel.doInvoke = show ? invokeWithDialog : invokeWithoutDialog).
+                catch((reject: ErrorWrapper) => this.error.handleError(reject));
+        }
+
+        protected decorate(actionViewModel: IActionViewModel) {
+            this.collectionContributedActionDecorator(actionViewModel);
+            this.collectionContributedInvokeDecorator(actionViewModel);
+        }
+
+        protected clearSelected(result: ActionResultRepresentation) {
+            if (result.resultType() === "void") {
+                this.allSelected = false;
+                this.selectAll();
+            }
+        }
+
+        selectAll = () => _.each(this.items, (item, i) => {
+            item.selected = this.allSelected;
+            item.selectionChange(i);
+        });
+    }
+
+
+    export class ListViewModel extends ContributedActionParentViewModel implements IListViewModel {
+
+        constructor(private colorService: IColor,
+             context: IContext,
+             viewModelFactory: IViewModelFactory,
+             urlManager: IUrlManager,
+             focusManager: IFocusManager,
+             error: IError,
+             $q: ng.IQService) {
+            super(context, viewModelFactory, urlManager, focusManager, error, $q);
+        }
+
         private routeData: PaneRouteData;
-        private onPaneId: number;
+        
         private page: number;
         private pageSize: number;
         private numPages: number;
-        private state: CollectionViewState;
-        private allSelected: boolean;
+        private state: CollectionViewState;  
 
         id: string;
         listRep: ListRepresentation;
         size: number;
         pluralName: string;    
         header: string[];        
-        items: IItemViewModel[];
+       
         actions: IActionViewModel[];
         menuItems: IMenuItemViewModel[];
         description: () => string;
@@ -706,73 +1010,7 @@ namespace NakedObjects {
             return valueLinks && _.some(valueLinks, (i: Link) => i.members());
         }
 
-        private collectionContributedActionDecorator(actionViewModel: IActionViewModel) {
-            const wrappedInvoke = actionViewModel.execute;
-            actionViewModel.execute = (pps: IParameterViewModel[], right?: boolean) => {
-                const selected = _.filter(this.items, i => i.selected);
-
-                if (selected.length === 0) {
-
-                    const em = new ErrorMap({}, 0, noItemsSelected);
-                    const rp = new ErrorWrapper(ErrorCategory.HttpClientError, HttpStatusCode.UnprocessableEntity, em);
-
-                    return this.$q.reject(rp);
-                }
-
-                const getParms = (action: IInvokableAction) => {
-
-                    const parms = _.values(action.parameters()) as Parameter[];
-                    const contribParm = _.find(parms, p => p.isCollectionContributed());
-                    const parmValue = new Value(_.map(selected, i => i.link));
-                    const collectionParmVm = this.viewModelFactory.parameterViewModel(contribParm, parmValue, this.onPaneId);
-
-                    const allpps = _.clone(pps);
-                    allpps.push(collectionParmVm);
-                    return allpps;
-                }
-
-                if (actionViewModel.invokableActionRep) {
-                    return wrappedInvoke(getParms(actionViewModel.invokableActionRep), right);
-                }
-
-                return this.context.getActionDetails(actionViewModel.actionRep as ActionMember)
-                    .then((details: ActionRepresentation) => wrappedInvoke(getParms(details), right));
-            }
-        }
-
-        private collectionContributedInvokeDecorator(actionViewModel: IActionViewModel) {
-          
-            const showDialog = () =>
-                this.context.getInvokableAction(actionViewModel.actionRep as ActionMember).
-                    then(invokableAction => _.keys(invokableAction.parameters()).length > 1);
-
-            // make sure not null while waiting for promise to assign correct function 
-            actionViewModel.doInvoke = () => { };
-
-            const invokeWithDialog = (right?: boolean) => {
-                this.context.clearDialogValues(this.onPaneId);
-                this.focusManager.focusOverrideOff();
-                this.urlManager.setDialog(actionViewModel.actionRep.actionId(), this.onPaneId);
-            };
-
-            const invokeWithoutDialog = (right?: boolean) =>
-                actionViewModel.execute([], right).
-                    then(result => this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || noResultMessage : "")).
-                    catch((reject: ErrorWrapper) => {
-                        const display = (em: ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
-                        this.error.handleErrorAndDisplayMessages(reject, display);
-                    });
-          
-            showDialog().
-                then(show => actionViewModel.doInvoke = show ? invokeWithDialog : invokeWithoutDialog).
-                catch((reject: ErrorWrapper) => this.error.handleError(reject));
-        }
-
-        private decorate(actionViewModel: IActionViewModel) {
-            this.collectionContributedActionDecorator(actionViewModel);
-            this.collectionContributedInvokeDecorator(actionViewModel);
-        }
-
+      
         refresh(routeData: PaneRouteData) {
 
             this.routeData = routeData;
@@ -842,14 +1080,11 @@ namespace NakedObjects {
         };
 
         reload = () => {
+            this.allSelected = false;
+            this.selectAll();
             this.context.clearCachedList(this.onPaneId, this.routeData.page, this.routeData.pageSize);
             this.setPage(this.page, this.state);
         };
-
-        selectAll = () => _.each(this.items, (item, i) => {
-            item.selected = this.allSelected;
-            item.selectionChange(i);
-        });
 
         disableActions = () => !this.actions || this.actions.length === 0 || !this.items || this.items.length === 0;
         
@@ -861,16 +1096,18 @@ namespace NakedObjects {
         }
     }
 
-    export class CollectionViewModel implements ICollectionViewModel  {
+    export class CollectionViewModel extends ContributedActionParentViewModel implements ICollectionViewModel  {
 
+        id : string;
         title: string;
         details: string;
         pluralName: string;
         color: string;
         mayHaveItems: boolean;
-        items: IItemViewModel[];
+        editing: boolean;
+        
         header: string[];
-        onPaneId: number;
+     
         currentState: CollectionViewState;
         presentationHint: string;
         template: string;
@@ -878,13 +1115,32 @@ namespace NakedObjects {
         menuItems: IMenuItemViewModel[];
         messages: string;
         collectionRep: CollectionMember | CollectionRepresentation;
-
+       
         doSummary: () => void;
         doTable: () => void;
         doList: () => void;
 
         description = () => this.details.toString();      
         refresh: (routeData: PaneRouteData, resetting: boolean) => void;
+        
+        disableActions = () => this.editing || !this.actions || this.actions.length === 0;
+
+        actionMember = (id: string) => {
+            const actionViewModel = _.find(this.actions, a => a.actionRep.actionId() === id);
+            return actionViewModel ? actionViewModel.actionRep : null;
+        }
+
+        setActions(actions: _.Dictionary<ActionMember>, routeData : PaneRouteData) {
+            this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
+            this.menuItems = createMenuItems(this.actions);
+            _.forEach(this.actions, a => this.decorate(a));
+        }
+
+        hasMatchingLocallyContributedAction(id: string) {
+            return id && this.actions && this.actions.length > 0 && !!this.actionMember(id);
+        }
+
+       
     }
 
     export class MenusViewModel implements IMenusViewModel {
@@ -916,12 +1172,32 @@ namespace NakedObjects {
         value: scalarValueType | Date;
         formattedValue: string;
         title: string;
+        id: string;
     }
 
-    export class TableRowViewModel implements ITableRowViewModel{
+    export class PlaceHolderTableRowColumnViewModel implements ITableRowColumnViewModel {
+
+        constructor(public id: string) { }
+
+        type: "scalar";
+        returnType: "string";
+        value: "";
+        formattedValue: "";
+        title: "";
+    }
+
+
+    export class TableRowViewModel implements ITableRowViewModel {
         title: string;
         hasTitle: boolean;
         properties: ITableRowColumnViewModel[];
+
+        conformColumns(columns: string[]) {
+            if (columns) {
+                this.properties =
+                    _.map(columns, c => _.find(this.properties, tp => tp.id === c) || new PlaceHolderTableRowColumnViewModel(c));
+            }
+        }
     }
 
     export class ApplicationPropertiesViewModel implements IApplicationPropertiesViewModel {
@@ -1231,6 +1507,13 @@ namespace NakedObjects {
         collectionsTemplate: string;
         attachmentTemplate: string;
         applicationPropertiesTemplate: string;
+        multiLineDialogTemplate: string;
+
+        propertiesTemplate: string;
+        parametersTemplate: string;
+        readOnlyParameterTemplate: string;
+        propertyTemplate: string;
+        parameterTemplate: string;
 
         menus: IMenusViewModel;
         object: IDomainObjectViewModel;
@@ -1244,6 +1527,7 @@ namespace NakedObjects {
         cicero: ICiceroViewModel;
         attachment: IAttachmentViewModel;
         applicationProperties: IApplicationPropertiesViewModel;
+        multiLineDialog : IMultiLineDialogViewModel;
     }
 
     export class CiceroViewModel implements ICiceroViewModel {

@@ -16,8 +16,8 @@
     </div>
     <div class="actions" ng-include="actionsTemplate"></div>
     <div class="main-column">
-        <div class="dialog" ng-include="dialogTemplate"></div>
-        <div class="properties" ng-include="'Content/partials/properties.html'"></div>
+        <div ng-if="!dialog.matchingCollectionId"  class="dialog" ng-include="dialogTemplate"></div>
+        <div class="properties" ng-include="propertiesTemplate"></div>
     </div>
     <div class="collections" ng-include="collectionsTemplate"></div>
 </div>

@@ -195,11 +195,13 @@ html, #main, body, .background, .single, .split {
     padding-right: 5px;
 }
 
-.reference, .value, .details {
+.reference, .value, .details, select {
     width: 245px;
     padding-left: 5px;
     padding-right: 5px;
-    margin: 1px;
+    padding-top: 1px;
+    margin-top: 1px;
+    margin-bottom: 1px;
 }
 
 .property .reference img {
@@ -223,6 +225,7 @@ html, #main, body, .background, .single, .split {
 .input-control input:not([type='checkbox']), textarea {
     width: 245px;
     height: 20px;
+    padding-left: 2px;
 }
 input, select {
     border-style: none;
@@ -383,6 +386,7 @@ div.hover, div.focus,
 }
 
 .collection .summary {
+    width: 450px;
     font-size: 12pt;
     margin-bottom: 10px;
     overflow: hidden; /*To make div same depth as its floating children*/
@@ -408,8 +412,8 @@ td.reference {
     width: 440px;
 }
 
-td.checkbox {
-    background-color: black; /*Because check-box only ever displayed on default background*/
+.list td.checkbox {
+    background-color: black; 
 }
 
 /*Tables*/
@@ -761,6 +765,68 @@ input[type=submit] {
     color: red;
 }
 
+/*MultiLine dialog*/
+
+.multilinedialog {
+    padding-left: 20px;
+}
+.multilinedialog .columnHeader, .lineDialog .parameters, .lineDialog .parameter, .lineDialog .co-validation, .lineDialog .buttons {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.lineDialog .name {
+    display: none;
+}
+
+.lineDialog input.ok {
+    margin-top: 4px;
+    margin-right: 0px;
+    margin-left: 2px;
+    padding-top: 1px;
+    padding-bottom: 0px;
+    padding-left: 2px;
+    padding-right: 2px;
+    float: none;
+    vertical-align: top;
+    outline-color: lightgray;
+}
+.multilinedialog input:focus,.multilinedialog input:hover  {
+    outline-width: 1px;
+    outline-style: dashed;
+}
+.multilinedialog input.close {
+    float: left;
+    margin-right: 10px;
+}
+.multilinedialog .columnHeader {
+    width: 245px;
+    padding-left: 10px;
+}
+.multilinedialog .columnHeader {
+    padding-left: 5px;
+}
+.lineDialog .input-control input:not([type='checkbox']){
+    height: 20px;
+    padding-top: 2px;
+}
+.multilinedialog .done {
+    float: none;
+    margin-top: 10px;
+    margin-left: 7px;
+}
+.lineDialog .co-validation {
+    vertical-align: top;
+    margin-top: 2px;
+    margin-left: 2px;
+}
+.lineDialog .validation {
+    color: white;
+    margin-left: 5px;
+}
+.multilinedialog .count {
+    margin-top: 11px;
+}
 /*Cicero*/
 .cicero, .cicero input, .cicero pre {
     background-color: black;
@@ -792,3 +858,23 @@ input[type=submit] {
     .icon-speech {
         display: none;
     }
+
+    /*Locally-contributed actions*/
+.collection .actions {
+    float: none;
+    margin-bottom: 5px;
+    width: 490px;
+    overflow: hidden;
+}
+
+.collection .actions .action {
+    float: left;
+    border-style: solid;
+    border-width: 1px;
+    margin-right: 10px;
+}
+
+.collection .messages {
+    float: none;
+    margin-bottom: 5px;
+}

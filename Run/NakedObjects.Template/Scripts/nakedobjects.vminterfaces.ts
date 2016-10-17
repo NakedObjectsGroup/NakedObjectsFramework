@@ -143,6 +143,7 @@ namespace NakedObjects {
     export interface IParameterViewModel extends IFieldViewModel {
         parameterRep: Parameter;
         dflt: string;
+        setAsRow: (i : number) => void;
     }
 
     export interface IPropertyViewModel extends IFieldViewModel {
@@ -162,6 +163,7 @@ namespace NakedObjects {
         title: string;
         description: string;
         presentationHint: string;
+        gotoResult: boolean;
 
         // doInvoke is called from template 
         doInvoke: (right?: boolean) => void;
@@ -182,8 +184,9 @@ namespace NakedObjects {
         title: string;
         id: string;
         parameters: IParameterViewModel[];
+        submitted : boolean;
 
-        reset: (actionViewModel: IActionViewModel, routeData: PaneRouteData) => void;
+        reset: (actionViewModel: IActionViewModel, paneId : number) => void;
         refresh: () => void;
         deregister: () => void;
         clientValid: () => boolean;
@@ -193,6 +196,10 @@ namespace NakedObjects {
         doCloseKeepHistory: () => void;
         doCloseReplaceHistory: () => void;
         clearMessages: () => void;
+    }
+
+    export interface IMultiLineDialogViewModel {
+        dialogs : IDialogViewModel[];
     }
 
     export interface ICollectionPlaceholderViewModel {
@@ -229,6 +236,7 @@ namespace NakedObjects {
     }
 
     export interface ICollectionViewModel {
+        id : string;
         title: string;
         details: string;
         pluralName: string;
@@ -251,6 +259,8 @@ namespace NakedObjects {
 
         description: () => string;
         refresh: (routeData: PaneRouteData, resetting: boolean) => void;
+        hasMatchingLocallyContributedAction: (id: string) => boolean;
+        actionMember: (id: string) => ActionMember | ActionRepresentation;
     }
 
     export interface IMenusViewModel {
@@ -274,12 +284,14 @@ namespace NakedObjects {
         value: scalarValueType | Date;
         formattedValue: string;
         title: string;
+        id : string;
     }
 
     export interface ITableRowViewModel {
         title: string;
         hasTitle: boolean;
         properties: ITableRowColumnViewModel[];
+        conformColumns: (columns: string[]) => void;
     }
 
     export interface  IApplicationPropertiesViewModel {

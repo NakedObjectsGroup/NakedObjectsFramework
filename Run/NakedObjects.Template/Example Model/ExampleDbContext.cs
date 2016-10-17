@@ -7,7 +7,7 @@ namespace ExampleModel
     {
         public ExampleDbContext(string dbName) : base(dbName)
         {
-            Database.SetInitializer<DbContext>(new DropCreateDatabaseIfModelChanges<DbContext>());
+            Database.SetInitializer<ExampleDbContext>(new DropCreateDatabaseIfModelChanges<ExampleDbContext>());
         }
 
         public DbSet<Customer> Customers { get; set; }
