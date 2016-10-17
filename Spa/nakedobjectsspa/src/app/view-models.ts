@@ -1287,6 +1287,8 @@ export class CollectionViewModel implements ICollectionViewModel {
     refresh: (routeData: PaneRouteData, resetting: boolean) => void;
 
     disableActions() { return true;}
+    allSelected = () => _.every(this.items, item => item.selected);
+    selectAll() {}
 }
 
 export class MenusViewModel implements IMenusViewModel {

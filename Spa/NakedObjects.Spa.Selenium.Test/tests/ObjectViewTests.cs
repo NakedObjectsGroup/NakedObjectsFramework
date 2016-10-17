@@ -572,9 +572,9 @@ namespace NakedObjects.Selenium {
             OpenActionsMenuNotAlreadyOpen();
             OpenAndCloseSubMenusTo3Levels();
             Properties();
-            //Collections();
-            //CollectionEagerlyRendered();
-            //DateAndCurrencyProperties();
+            Collections();
+            CollectionEagerlyRendered();
+            DateAndCurrencyProperties();
             //TableViewHonouredOnCollection();
             //ClickReferenceProperty();
             //OpenCollectionAsList();

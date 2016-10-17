@@ -10,6 +10,7 @@
 <table *ngIf="state == 'table'">
     <thead>
     <tr>
+        <th [hidden]="(collection.disableActions() || collection.items.length === 0)"><input type="checkbox" id="all" [ngModel]="collection.allSelected()" (click)="collection.selectAll()">All</th>
         <th *ngFor="let heading of collection.header" scope="col">
             {{heading}}
         </th>

@@ -21,12 +21,12 @@ class LocalStringFilter implements ILocalFilter {
 
 class LocalCurrencyFilter implements ILocalFilter {
 
-    constructor(private symbol?: string, private fractionSize?: number) {}
+    constructor(private symbol?: string, private digits?: string) {}
 
     filter(val: any): string {
         const pipe = new CurrencyPipe("en-GB");
         // return $filter("currency")(val, this.symbol, this.fractionSize);
-        return pipe.transform(val);
+        return pipe.transform(val, this.symbol, true, this.digits);
     }
 }
 
@@ -125,7 +125,7 @@ export class MaskService {
         this.maskMap[format as string][customMask] = new LocalDateFilter(mask, tz);
     };
 
-    setCurrencyMaskMapping(customMask: string, format: Ro.formatType, symbol?: string, fractionSize?: number) {
-        this.maskMap[format as string][customMask] = new LocalCurrencyFilter(symbol, fractionSize);
+    setCurrencyMaskMapping(customMask: string, format: Ro.formatType, symbol?: string, digits?: string) {
+        this.maskMap[format as string][customMask] = new LocalCurrencyFilter(symbol, digits);
     };
 }

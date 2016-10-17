@@ -11,10 +11,10 @@ export class MaskConfigService {
 
         // map to convert from mask representation in RO extension to client represention.
 
-        const pound = "\u00A3";
+        const pound = "GBP";
 
-        mask.setCurrencyMaskMapping("C", "decimal", pound, 2);
-        mask.setCurrencyMaskMapping("c", "decimal", pound, 2);
+        mask.setCurrencyMaskMapping("C", "decimal", pound, "1.2-2");
+        mask.setCurrencyMaskMapping("c", "decimal", pound, "1.2-2");
         mask.setDateMaskMapping("d", "date-time", "d MMM yyyy", "+0000");
         //Note: "D" is the default mask for anything sent to the client as a date+time,
         //where no other mask is specified.
