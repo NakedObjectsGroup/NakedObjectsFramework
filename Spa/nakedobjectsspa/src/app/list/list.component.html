@@ -25,12 +25,12 @@
 			</div>
 			<div class="messages">{{collection.message}}</div>
 		</header>
-		<div class="collectionDetails" *ngIf="collection.size == 0">{{collection.description()}}</div>
+		<div class="details" *ngIf="collection.size == 0">{{collection.description()}}</div>
 		<div *ngIf="collection.size > 0">
 			<actions *ngIf="collection.showActions()" [menuVm]="collection"></actions>
 			<dialog [parent]="collection"></dialog>
-			<div class="collectionSummary" *ngIf="state == 'list'">
-				<div class="collectionDetails">{{collection.description()}}</div>
+			<div class="summary" *ngIf="state == 'list'">
+				<div class="details">{{collection.description()}}</div>
 				<img class="icon-table clickable-area" (click)="collection.doTable()" src="../../images/table.png" title="View as Table"
 				/>
 				<table>
@@ -52,8 +52,8 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="collectionSummary" *ngIf="state == 'table'">
-				<div class="collectionDetails">{{collection.description()}}</div>
+			<div class="summary" *ngIf="state == 'table'">
+				<div class="details">{{collection.description()}}</div>
 				<img class="icon-list clickable-area" (click)="collection.doList()" src="../../images/list.png" title="View as List" />
 			</div>
 			<table *ngIf="state == 'table'">
@@ -98,5 +98,17 @@
 			</table>
 		</div>
 	</div>
+</div>
+<div *ngIf="!collection" [ngClass]="class">
+	<div class="list">
+    <div class="header">
+        <div class="title">
+            {{title}}
+        </div>
+        <div class="action clickable-area" tabindex="0" (click)="reload()">
+            Reload
+        </div>
+    </div>
+</div>
 </div>
 <router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>

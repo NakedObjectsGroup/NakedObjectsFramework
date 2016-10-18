@@ -2,9 +2,9 @@ import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { RepresentationsService } from "../representations.service";
 import { UrlManagerService } from "../url-manager.service";
 import { ClickHandlerService } from "../click-handler.service";
-import { ContextService} from "../context.service";
-import { RepLoaderService} from "../rep-loader.service";
-import { ActivatedRoute, Router} from '@angular/router';
+import { ContextService } from "../context.service";
+import { RepLoaderService } from "../rep-loader.service";
+import { ActivatedRoute, Router } from '@angular/router';
 import { ColorService } from "../color.service";
 import { ErrorService } from "../error.service";
 import { PaneRouteData, RouteData, CollectionViewState } from "../route-data";
@@ -46,14 +46,16 @@ export class ListComponent implements OnInit, OnDestroy {
             this.context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
     }
 
+    private cachedRouteData: PaneRouteData;
 
-    setupList(routeData : PaneRouteData) {
+    setupList(routeData: PaneRouteData) {
+        this.cachedRouteData = routeData;
         const cachedList = this.context.getCachedList(routeData.paneId, routeData.page, routeData.pageSize);
-    
+
         this.getActionExtensions(routeData).
-                then(ext =>
-                    this.title = ext.friendlyName()).
-                catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+            then(ext =>
+                this.title = ext.friendlyName()).
+            catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
         const listKey = this.urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize);
 
@@ -85,12 +87,12 @@ export class ListComponent implements OnInit, OnDestroy {
         } else {
             //$scope.listTemplate = Nakedobjectsconstants.listPlaceholderTemplate;
             //$scope.collectionPlaceholder = viewModelFactory.listPlaceholderViewModel(routeData);
-            
+
             this.focusManager.focusOn(FocusTarget.Action, 0, routeData.paneId);
         }
     }
 
-  
+
     onChild() {
         this.class = "split";
     }
@@ -99,7 +101,18 @@ export class ListComponent implements OnInit, OnDestroy {
         this.class = "single";
     }
 
-   
+    reload() {
+
+        const recreate = () =>
+            this.cachedRouteData.objectId ?
+                this.context.getListFromObject(this.cachedRouteData.paneId, this.cachedRouteData, this.cachedRouteData.page, this.cachedRouteData.pageSize) :
+                this.context.getListFromMenu(this.cachedRouteData.paneId, this.cachedRouteData, this.cachedRouteData.page, this.cachedRouteData.pageSize);
+
+        recreate().then(() => this.setupList(this.cachedRouteData)).
+            catch((reject: Models.ErrorWrapper) => {
+                this.error.handleError(reject);
+            });
+    }
 
     private activatedRouteDataSub: ISubscription;
     private paneRouteDataSub: ISubscription;
@@ -110,7 +123,7 @@ export class ListComponent implements OnInit, OnDestroy {
             this.paneId = data["pane"];
             this.class = data["class"];
 
-       
+
 
             this.urlManager.getRouteDataObservable()
                 .subscribe((rd: RouteData) => {
