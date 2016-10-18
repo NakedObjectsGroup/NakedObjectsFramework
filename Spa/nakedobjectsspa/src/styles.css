@@ -45,7 +45,8 @@ html, #main, body, .background, .single, .split {
 }
 
 .single, .split {
-    padding-bottom: 60px; /*So bottom content doesn't get cut off by footer*/
+    /*changed from 60 to 20 as hack becuase it was cropping list*/
+    padding-bottom: 20px; /*So bottom content doesn't get cut off by footer*/
 }
 
 .single {

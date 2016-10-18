@@ -231,13 +231,13 @@ namespace NakedObjects.Selenium {
         protected virtual void RunMegaSplitPaneTest() {
             RightClickActionReturningObjectFromHomeSingle();
             RightClickActionReturningListFromHomeSingle();
-            //RightClickReferenceFromListSingle();
-            //RightClickReferencePropertyFromObjectSingle();
-            //RightClickActionFromObjectSingle();
-            //RightClickHomeIconFromObjectSingle();
-            //SwapPanesIconFromSingleOpensHomeOnLeft();
-            //ClickReferenceInLeftPaneObject();
-            //ClickReferenceInRightPaneObject();
+            RightClickReferenceFromListSingle();
+            RightClickReferencePropertyFromObjectSingle();
+            RightClickActionFromObjectSingle();
+            RightClickHomeIconFromObjectSingle();
+            SwapPanesIconFromSingleOpensHomeOnLeft();
+            ClickReferenceInLeftPaneObject();
+            ClickReferenceInRightPaneObject();
             //RightClickReferenceInRightPaneObject();
             //LeftClickHomeIconFromSplitObjectObject();
             //RightClickHomeIconFromSplitObjectObject();
