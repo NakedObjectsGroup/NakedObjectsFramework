@@ -21,12 +21,12 @@ namespace NakedObjects.Selenium {
             Click(GetObjectAction("Highest Value Orders"));
             WaitForView(Pane.Single, PaneType.List, "Highest Value Orders");
             //Test content of collection
-            Assert.IsTrue(WaitForCss(".collection .summary .details").Text.StartsWith("Page 1 of 1574; viewing 20 of"));
+            Assert.IsTrue(WaitForCss(".list .summary .details").Text.StartsWith("Page 1 of 1574; viewing 20 of"));
             WaitForCss(".icon-table");
             WaitUntilElementDoesNotExist(".icon-list");
             WaitUntilElementDoesNotExist(".icon-summary");
-            Assert.AreEqual(20, br.FindElements(By.CssSelector(".collection table tbody tr td.reference")).Count);
-            Assert.AreEqual(20, br.FindElements(By.CssSelector(".collection table tbody tr td.checkbox")).Count);
+            Assert.AreEqual(20, br.FindElements(By.CssSelector(".list table tbody tr td.reference")).Count);
+            Assert.AreEqual(20, br.FindElements(By.CssSelector(".list table tbody tr td.checkbox")).Count);
             Assert.AreEqual(0, br.FindElements(By.CssSelector(".cell")).Count); //Cells are in Table view only
         }
 
@@ -395,17 +395,17 @@ namespace NakedObjects.Selenium {
         public void MegaListTest() {
             ActionReturnsListView();
             ActionReturnsEmptyList();
-            TableViewAttributeHonoured();
-            TableViewWorksWithSubTypes();
-            TableViewCanIncludeCollectionSummaries();
-            SwitchToTableViewAndBackToList();
-            NavigateToItemFromListView();
-            NavigateToItemFromTableView();
-            Paging();
-            //PageSizeRecognised(); //TODO: pending bug fix
-            ListDoesNotRefreshWithoutReload();
-            ReloadingListGetsUpdatedObject();
-            EagerlyRenderTableViewFromAction();
+            //TableViewAttributeHonoured();
+            //TableViewWorksWithSubTypes();
+            //TableViewCanIncludeCollectionSummaries();
+            //SwitchToTableViewAndBackToList();
+            //NavigateToItemFromListView();
+            //NavigateToItemFromTableView();
+            //Paging();
+            ////PageSizeRecognised(); //TODO: pending bug fix
+            //ListDoesNotRefreshWithoutReload();
+            //ReloadingListGetsUpdatedObject();
+            //EagerlyRenderTableViewFromAction();
         }
     }
 
@@ -448,7 +448,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class MegaListTestsChrome : MegaListTestsRoot
     {
         [ClassInitialize]
