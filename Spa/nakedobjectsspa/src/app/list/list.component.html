@@ -99,16 +99,16 @@
 		</div>
 	</div>
 </div>
-<div *ngIf="!collection" [ngClass]="class">
+<div [attr.id]="paneIdName()"  *ngIf="!collection" [ngClass]="paneType">
 	<div class="list">
-    <div class="header">
-        <div class="title">
-            {{title}}
-        </div>
-        <div class="action clickable-area" tabindex="0" (click)="reload()">
-            Reload
-        </div>
-    </div>
-</div>
+		<div class="header">
+			<div class="title">
+				{{title}}
+			</div>
+			<div class="action clickable-area" tabindex="0" (click)="reload()">
+				Reload
+			</div>
+		</div>
+	</div>
 </div>
 <router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>
