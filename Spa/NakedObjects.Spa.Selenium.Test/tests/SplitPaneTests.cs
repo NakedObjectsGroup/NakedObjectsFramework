@@ -238,16 +238,16 @@ namespace NakedObjects.Selenium {
             SwapPanesIconFromSingleOpensHomeOnLeft();
             ClickReferenceInLeftPaneObject();
             ClickReferenceInRightPaneObject();
-            //RightClickReferenceInRightPaneObject();
-            //LeftClickHomeIconFromSplitObjectObject();
-            //RightClickHomeIconFromSplitObjectObject();
-            //ActionDialogOpensInCorrectPane();
-            //RightClickIsSameAsLeftClickForOpeningDialog();
-            //SwapPanes();
-            //FullPaneFromLeft();
-            //FullPaneFromRight();
-            //ListInSplitPaneUpdatesWhenSearchParamsChange();
-            //TwoListsCanBothBeReloaded();
+            RightClickReferenceInRightPaneObject();
+            LeftClickHomeIconFromSplitObjectObject();
+            RightClickHomeIconFromSplitObjectObject();
+            ActionDialogOpensInCorrectPane();
+            RightClickIsSameAsLeftClickForOpeningDialog();
+            SwapPanes();
+            FullPaneFromLeft();
+            FullPaneFromRight();
+            ListInSplitPaneUpdatesWhenSearchParamsChange();
+            TwoListsCanBothBeReloaded();
         }
 
         protected override void ScrollTo(IWebElement element) {

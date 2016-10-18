@@ -16,7 +16,7 @@ import { FocusManagerService } from '../focus-manager.service';
 import { ErrorService } from '../error.service';
 
 @Component({
-    selector: 'dialog',
+    selector: 'app-dialog',
     templateUrl: './dialog.component.html',
     styleUrls: ['./dialog.component.css']
 })

@@ -28,7 +28,7 @@
 		<div class="details" *ngIf="collection.size == 0">{{collection.description()}}</div>
 		<div *ngIf="collection.size > 0">
 			<actions *ngIf="collection.showActions()" [menuVm]="collection"></actions>
-			<dialog [parent]="collection"></dialog>
+			<app-dialog [parent]="collection"></app-dialog>
 			<div class="summary" *ngIf="state == 'list'">
 				<div class="details">{{collection.description()}}</div>
 				<img class="icon-table clickable-area" (click)="collection.doTable()" src="../../images/table.png" title="View as Table"

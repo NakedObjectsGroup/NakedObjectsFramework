@@ -21,7 +21,7 @@
 		</header>
 		<actions class="actions" *ngIf="object.showActions()" [menuVm]="object"></actions>
 		<div class="mainColumn">
-			<dialog [parent]="object"></dialog>
+			<app-dialog [parent]="object"></app-dialog>
 			<properties class="properties" *ngIf="object.properties" [properties]="object.properties" [parent]="object" [edit]="false"></properties>
 		</div>
 		<collections class="collections" *ngIf="object.collections" [collections]="object.collections"></collections>

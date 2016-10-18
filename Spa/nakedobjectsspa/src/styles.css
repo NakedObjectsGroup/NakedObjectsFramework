@@ -559,6 +559,6 @@ input[type=submit] {
         width: 95%;
     }
     /*kludge*/
-dialog {
+.dialog {
     display: block;
 }
