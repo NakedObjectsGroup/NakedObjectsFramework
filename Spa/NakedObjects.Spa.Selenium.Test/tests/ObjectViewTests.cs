@@ -102,8 +102,11 @@ namespace NakedObjects.Selenium {
             var props = WaitForCss(".property", 23);
             //First test a navigable reference
             var model = props[4];
-            Assert.AreEqual("Product Model:\r\nWomen's Mountain Shorts", model.Text);
-            var link = model.FindElement(By.CssSelector(".reference.clickable-area"));
+            Assert.AreEqual("Product Model:\r\nWomen's Mountain Shorts", props[4].Text);
+
+            // get again as goes stale
+            props = WaitForCss(".property", 23);
+            var link = props[4].FindElement(By.CssSelector(".reference.clickable-area"));
             Assert.IsNotNull(link);
 
             //Now a non-navigable one
@@ -344,8 +347,13 @@ namespace NakedObjects.Selenium {
          public virtual void ZeroParamActionCausesObjectToReload()
         {
             GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--72079&as1=open");
+            WaitForView(Pane.Single, PaneType.Object, "SO72079");
             // clear any existing comments to make test more robust
+
+            var rn = br.FindElements(By.CssSelector(".property"))[19].Text;
+
             Click(GetObjectAction("Clear Comment"));
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[19].Text !=  rn);
             //First set up some comments
             OpenActionDialog("Add Standard Comments");
             Click(OKButton());
@@ -590,12 +598,12 @@ namespace NakedObjects.Selenium {
             ActionsMenuDisabledOnObjectWithNoActions();
             QueryOnlyActionDoesNotReloadAutomatically();
             PotentActionDoesReloadAutomatically();
-            //NonNavigableReferenceProperty();
+            NonNavigableReferenceProperty();
             Colours();
             ZeroIntValues();
             AddingObjectToCollectionUpdatesTableView();
             //TimeSpanProperty();
-            //ZeroParamActionCausesObjectToReload();
+            ZeroParamActionCausesObjectToReload();
         }
     }
 

@@ -37,59 +37,65 @@ export class DialogComponent implements OnInit, OnDestroy {
     parent : ViewModels.MenuViewModel | ViewModels.DomainObjectViewModel | ViewModels.ListViewModel;
 
     dialog: ViewModels.DialogViewModel;
+
+    private currentDialogId : string;
   
     getDialog(routeData: PaneRouteData) {
-        const dialogId = routeData.dialogId;
-        if (this.parent && dialogId) {
+       
+        if (this.parent && this.currentDialogId) {
             const p = this.parent;
             let action: Models.ActionMember | Models.ActionRepresentation = null;
             let actionViewModel: ViewModels.ActionViewModel = null;
 
             if (p instanceof ViewModels.MenuViewModel) {
-                action = p.menuRep.actionMember(dialogId);
+                action = p.menuRep.actionMember(this.currentDialogId);
             }
 
             if (p instanceof ViewModels.DomainObjectViewModel) {
-                action = p.domainObject.actionMember(dialogId);
+                action = p.domainObject.actionMember(this.currentDialogId);
             }
 
             if (p instanceof ViewModels.ListViewModel) {
-                action = p.actionMember(dialogId);
-                actionViewModel = _.find(p.actions, a => a.actionRep.actionId() === dialogId);
+                action = p.actionMember(this.currentDialogId);
+                actionViewModel = _.find(p.actions, a => a.actionRep.actionId() === this.currentDialogId);
             }
 
             this.context.getInvokableAction(action)
                 .then(details => {
-                    //if (actionViewModel) {
-                    //    actionViewModel.makeInvokable(details);
-                    //}
-                    //setDialog($scope, actionViewModel || details, routeData);
-                    //this.focusManager.focusOn(Focusmanagerservice.FocusTarget.Dialog, 0, routeData.paneId);
+                    // only if we still have a dialog (may have beenn removed while getting invokable action)
+                    if (this.currentDialogId) {
 
-                    this.context.clearParmUpdater(routeData.paneId);
+                        //if (actionViewModel) {
+                        //    actionViewModel.makeInvokable(details);
+                        //}
+                        //setDialog($scope, actionViewModel || details, routeData);
+                        //this.focusManager.focusOn(Focusmanagerservice.FocusTarget.Dialog, 0, routeData.paneId);
 
-                    //$scope.dialogTemplate = dialogTemplate;
-                    const dialogViewModel = new ViewModels.DialogViewModel(this.color,
-                        this.context,
-                        this.viewModelFactory,
-                        this.urlManager,
-                        this.focusManager,
-                        this.error);
-                    //const isAlreadyViewModel = action instanceof Nakedobjectsviewmodels.ActionViewModel;
-                    actionViewModel = actionViewModel || 
-                        this.viewModelFactory.actionViewModel(action as Models.ActionMember | Models.ActionRepresentation,
-                            dialogViewModel,
-                            routeData);
-                    //: action as Nakedobjectsviewmodels.IActionViewModel;
+                        this.context.clearParmUpdater(routeData.paneId);
 
-                    actionViewModel.makeInvokable(details);
-                    dialogViewModel.reset(actionViewModel, routeData);
-                    //$scope.dialog = dialogViewModel;
+                        //$scope.dialogTemplate = dialogTemplate;
+                        const dialogViewModel = new ViewModels.DialogViewModel(this.color,
+                            this.context,
+                            this.viewModelFactory,
+                            this.urlManager,
+                            this.focusManager,
+                            this.error);
+                        //const isAlreadyViewModel = action instanceof Nakedobjectsviewmodels.ActionViewModel;
+                        actionViewModel = actionViewModel || 
+                            this.viewModelFactory.actionViewModel(action as Models.ActionMember | Models.ActionRepresentation,
+                                dialogViewModel,
+                                routeData);
+                        //: action as Nakedobjectsviewmodels.IActionViewModel;
 
-                    this.context.setParmUpdater(dialogViewModel.setParms, routeData.paneId);
-                    dialogViewModel.deregister = () => this.context.clearParmUpdater(routeData.paneId);
+                        actionViewModel.makeInvokable(details);
+                        dialogViewModel.reset(actionViewModel, routeData);
+                        //$scope.dialog = dialogViewModel;
 
-                    this.dialog = dialogViewModel;
+                        this.context.setParmUpdater(dialogViewModel.setParms, routeData.paneId);
+                        dialogViewModel.deregister = () => this.context.clearParmUpdater(routeData.paneId);
+
+                        this.dialog = dialogViewModel;
+                    }
                 })
                 .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
@@ -111,6 +117,7 @@ export class DialogComponent implements OnInit, OnDestroy {
             this.paneRouteDataSub = this.urlManager.getRouteDataObservable()
                 .subscribe((rd: RouteData) => {
                     const paneRouteData = rd.pane()[this.paneId];
+                    this.currentDialogId = paneRouteData.dialogId;
                     this.getDialog(paneRouteData);
                 });
         });

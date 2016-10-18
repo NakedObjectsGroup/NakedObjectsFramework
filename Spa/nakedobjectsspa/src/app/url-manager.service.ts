@@ -41,7 +41,7 @@ enum Transition {
     pageSize: "ps",
     parm: "pm",
     prop: "pp",
-    //reload: "r",
+    reload: "r",
     selected: "s"
 };
 
@@ -803,16 +803,17 @@ export class UrlManagerService {
     isAttachment = (paneId = 1) => this.isLocation(paneId, Constants.attachmentPath);
     isApplicationProperties = (paneId = 1) => this.isLocation(paneId, Constants.applicationPropertiesPath);
 
-    //private toggleReloadFlag(search: any) {
-    //    const currentFlag = search[akm.reload];
-    //    const newFlag = currentFlag ? 0 : 1;
-    //    search[akm.reload] = newFlag;
-    //    return search;
-    //}
+    private toggleReloadFlag(search: any) {
+       const currentFlag = search[akm.reload];
+       const newFlag = currentFlag === "1" ? 0 : 1;
+       search[akm.reload] = newFlag;
+       return search;
+    }
 
-    //triggerPageReloadByFlippingReloadFlagInUrl = () => {
-    //    const search = this.getSearch();
-    //    this.setNewSearch(this.getPath(),  this.toggleReloadFlag(search));
-    //    //$location.replace();
-    //}
+    triggerPageReloadByFlippingReloadFlagInUrl = () => {
+       const search = this.getSearch();
+       this.toggleReloadFlag(search);
+       const result =  {path : this.getPath(), search : search, replace : true };
+       this.setNewSearch(result);
+    }
 }
