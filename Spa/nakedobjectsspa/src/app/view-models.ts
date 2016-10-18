@@ -272,12 +272,14 @@ export interface ITableRowColumnViewModel {
     value: Ro.scalarValueType | Date;
     formattedValue: string;
     title: string;
+    id : string;
 }
 
 export interface ITableRowViewModel {
     title: string;
     hasTitle: boolean;
     properties: ITableRowColumnViewModel[];
+    conformColumns: (columns: string[]) => void;
 }
 
 export interface IApplicationPropertiesViewModel {
@@ -1320,12 +1322,31 @@ export class TableRowColumnViewModel implements ITableRowColumnViewModel {
     value: Ro.scalarValueType | Date;
     formattedValue: string;
     title: string;
+    id: string;
 }
+
+export class PlaceHolderTableRowColumnViewModel implements ITableRowColumnViewModel {
+
+        constructor(public id: string) { }
+
+        type: "scalar";
+        returnType: "string";
+        value: "";
+        formattedValue: "";
+        title: "";
+    }
 
 export class TableRowViewModel implements ITableRowViewModel {
     title: string;
     hasTitle: boolean;
     properties: ITableRowColumnViewModel[];
+
+    conformColumns(columns: string[]) {
+            if (columns) {
+                this.properties =
+                    _.map(columns, c => _.find(this.properties, tp => tp.id === c) || new PlaceHolderTableRowColumnViewModel(c));
+            }
+        }
 }
 
 export class ApplicationPropertiesViewModel implements IApplicationPropertiesViewModel {

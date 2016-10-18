@@ -324,6 +324,7 @@ export class ViewModelFactoryService {
         const tableRowColumnViewModel = new ViewModels.TableRowColumnViewModel();
 
         tableRowColumnViewModel.title = propertyRep.extensions().friendlyName();
+        tableRowColumnViewModel.id = id;
 
         if (propertyRep instanceof Models.CollectionMember) {
             const size = propertyRep.size();
@@ -644,11 +645,17 @@ export class ViewModelFactoryService {
                         _.forEach(items, itemViewModel => {
                             itemViewModel.tableRowViewModel.hasTitle = ext.tableViewTitle();
                             itemViewModel.tableRowViewModel.title = itemViewModel.title;
+                            itemViewModel.tableRowViewModel.conformColumns(ext.tableViewColumns());
                         });
 
                         if (!listViewModel.header) {
                             const firstItem = items[0].tableRowViewModel;
-                            const propertiesHeader = _.map(firstItem.properties, property => property.title);
+
+                            const propertiesHeader =
+                                _.map(firstItem.properties, (p, i) => {
+                                    const match = _.find(items, item => item.tableRowViewModel.properties[i].title);
+                                    return match ? match.tableRowViewModel.properties[i].title : firstItem.properties[i].id;
+                                });
 
                             listViewModel.header = firstItem.hasTitle ? [""].concat(propertiesHeader) : propertiesHeader;
 

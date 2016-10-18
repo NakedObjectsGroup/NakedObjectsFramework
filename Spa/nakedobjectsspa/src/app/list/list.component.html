@@ -3,23 +3,23 @@
 		<header class="header">
 			<div class="title">{{title}}</div>
 			<div class="menus">
-				<div class="menu clickable-area" tabindex="0" (click)="collection.toggleActionMenu()" [ngClass]="{disabled : collection.disableActions()}"
+				<div class="menu clickable-area" tabindex="0" (click)="collection.toggleActionMenu()" [attr.disabled]="collection.disableActions() ? true : null"
 					title={{collection.actionsTooltip()}}>
 					Actions
 				</div>
 				<div class="action clickable-area" tabindex="0" (click)="collection.reload()">
 					Reload
 				</div>
-				<div class="action clickable-area" tabindex="0" (click)="collection.pageFirst()" [ngClass]="{disabled : collection.pageFirstDisabled()}">
+				<div class="action clickable-area" tabindex="0" (click)="collection.pageFirst()" [attr.disabled]="collection.pageFirstDisabled() ? true : null">
 					First
 				</div>
-				<div class="action clickable-area" tabindex="0" (click)="collection.pagePrevious()" [ngClass]="{disabled : collection.pagePreviousDisabled()}">
+				<div class="action clickable-area" tabindex="0" (click)="collection.pagePrevious()"[attr.disabled]="collection.pagePreviousDisabled() ? true : null">
 					Previous
 				</div>
-				<div class="action clickable-area" tabindex="0" (click)="collection.pageNext()" [ngClass]="{disabled : collection.pageNextDisabled()}">
+				<div class="action clickable-area" tabindex="0" (click)="collection.pageNext()" [attr.disabled]="collection.pageNextDisabled() ? true : null">
 					Next
 				</div>
-				<div class="action clickable-area" tabindex="0" (click)="collection.pageLast()" [ngClass]="{disabled : collection.pageLastDisabled()}">
+				<div class="action clickable-area" tabindex="0" (click)="collection.pageLast()" [attr.disabled]="collection.pageLastDisabled() ? true : null">
 					Last
 				</div>
 			</div>
@@ -36,12 +36,12 @@
 				<table>
 					<thead>
 						<tr>
-							<th *ngIf="!(collection.disableActions() || collection.items.length === 0)"><input type="checkbox" id="all" [ngModel]="collection.allSelected()" (click)="collection.selectAll()">All</th>
+							<th [hidden]="(collection.disableActions() || collection.items.length === 0)"><input type="checkbox" id="all" [ngModel]="collection.allSelected()" (click)="collection.selectAll()">All</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr *ngFor="let item of collection.items; let i = index">
-							<td class="checkbox" *ngIf="!collection.disableActions()">
+							<td class="checkbox" [hidden]="collection.disableActions()">
 								<input type="checkbox" id="{{'item'+collection.onPaneId+'-'+ i}}" [(ngModel)]="item.selected">
 							</td>
 							<td class="reference clickable-area" [ngClass]="item.color" geminiClick (leftClick)="item.doClick()" (rightClick)="item.doClick(true)"
@@ -59,7 +59,7 @@
 			<table *ngIf="state == 'table'">
 				<thead>
 					<tr>
-						<th *ngIf="!(collection.disableActions() || collection.items.length === 0)"><input type="checkbox" id="all" [ngModel]="collection.allSelected()" (click)="collection.selectAll()">All</th>
+						<th [hidden]="(collection.disableActions() || collection.items.length === 0)"><input type="checkbox" id="all" [ngModel]="collection.allSelected()" (click)="collection.selectAll()">All</th>
 						<th *ngFor="let heading of collection.header" scope="col">
 							{{heading}}
 						</th>
@@ -67,7 +67,7 @@
 				</thead>
 				<tbody *ngIf="collection.hasTableData()">
 					<tr tabindex="0" *ngFor="let item of collection.items; let i = index" class="clickable-area" gemini-drag>
-						<td *ngIf="!collection.disableActions()" class="checkbox">
+						<td [hidden]="collection.disableActions()" class="checkbox">
 							<input type="checkbox" id="{{'item'+collection.onPaneId+'-'+ i}}" [(ngModel)]="item.selected">
 						</td>
 						<td *ngIf="item.tableRowViewModel.hasTitle" (click)="item.doClick()" [ngClass]="item.color" class="cell">
