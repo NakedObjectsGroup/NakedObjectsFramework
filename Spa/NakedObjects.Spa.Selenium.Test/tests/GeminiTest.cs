@@ -432,7 +432,7 @@ namespace NakedObjects.Selenium
 
         protected void AssertTopItemInListIs(string title)
         {
-            string topItem = WaitForCss(".collection tr td.reference").Text;
+            string topItem = WaitForCss(".list tr td.reference").Text;
 
             Assert.AreEqual(title, topItem);
         }

@@ -733,40 +733,40 @@ public virtual void AutoCompleteOptionalParamNotSelected()
             PasswordParam();
             ScalarChoicesParm();
             TestCancelDialog();
-            FieldsRetainedWhenNavigatingAwayAndBack();
-            ReopeningADialogThatWasntCancelledDoesNotRetainFields();
+            //FieldsRetainedWhenNavigatingAwayAndBack();
+            //ReopeningADialogThatWasntCancelledDoesNotRetainFields();
             ScalarParmShowsDefaultValue();
-            DateTimeParmKeepsValue();
-            TimeSpanParm();
+            //DateTimeParmKeepsValue();
+            //TimeSpanParm();
             RefChoicesParmKeepsValue();
             MultipleRefChoicesDefaults();
-            MultipleRefChoicesChangeDefaults();
-            ConditionalChoices();
-            ChoicesDefaults();
-            ChoicesOptional();
-            ChoicesChangeDefaults();
-            ConditionalChoicesDefaults();
-            ConditionalChoicesMultiple();
-            AutoCompleteParm();
-            AutoCompleteParmDefault();
-            ClearingAutoCompleteTextClearsUnderlyingReference();
-            AutoCompleteParmShowSingleItem();
-            AutoCompleteScalarField();
-            AutoCompleteOptionalParamNotSelected();
-            MandatoryParameterEnforced();
-            ValidateSingleValueParameter();
-            ValidateSingleRefParamFromChoices();
-            CoValidationOfMultipleParameters();
-            ParameterDescriptionRenderedAsPlaceholder();
-            BooleanParams();
-            NullableBooleanParams();
-            WarningShownWithinDialogAndInFooter();
-            DefaultReferenceParamRendersCorrectly();
-            QueryOnlyActionDialogPersists();
-            PotentActionDialogDisappearsAndFieldsNotRemembered();
-            OptionalReferenceParamCanBeNull();
-            ValidationOfContributeeParameter();
-            NoResultFoundMessageLeavesDialogOpen();
+            //MultipleRefChoicesChangeDefaults();
+            //ConditionalChoices();
+            //ChoicesDefaults();
+            //ChoicesOptional();
+            //ChoicesChangeDefaults();
+            //ConditionalChoicesDefaults();
+            //ConditionalChoicesMultiple();
+            //AutoCompleteParm();
+            //AutoCompleteParmDefault();
+            //ClearingAutoCompleteTextClearsUnderlyingReference();
+            //AutoCompleteParmShowSingleItem();
+            //AutoCompleteScalarField();
+            //AutoCompleteOptionalParamNotSelected();
+            //MandatoryParameterEnforced();
+            //ValidateSingleValueParameter();
+            //ValidateSingleRefParamFromChoices();
+            //CoValidationOfMultipleParameters();
+            //ParameterDescriptionRenderedAsPlaceholder();
+            //BooleanParams();
+            //NullableBooleanParams();
+            //WarningShownWithinDialogAndInFooter();
+            //DefaultReferenceParamRendersCorrectly();
+            //QueryOnlyActionDialogPersists();
+            //PotentActionDialogDisappearsAndFieldsNotRemembered();
+            //OptionalReferenceParamCanBeNull();
+            //ValidationOfContributeeParameter();
+            //NoResultFoundMessageLeavesDialogOpen();
         }
     }
 
@@ -809,7 +809,7 @@ public virtual void AutoCompleteOptionalParamNotSelected()
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class MegaDialogTestsChrome : MegaDialogTestsRoot
     {
         [ClassInitialize]
