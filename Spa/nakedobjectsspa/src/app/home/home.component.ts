@@ -36,15 +36,17 @@ export class HomeComponent implements OnInit, OnDestroy {
     selectedMenu: ViewModels.MenuViewModel;
 
     // todo rename to single or split
-    class: string;
+    paneType: string;
 
     onChild() {
-        this.class = "split object-color0";
+        this.paneType = "split";
     }
 
     onChildless() {
-        this.class = "single object-color0";
+        this.paneType = "single";
     }
+
+    paneIdName = () => this.paneId === 1 ? "pane1" : "pane2"
 
     getMenus() {
         this.context.getMenus()
@@ -87,7 +89,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
         this.activatedRouteDataSub = this.activatedRoute.data.subscribe(data => {
             this.paneId = data["pane"];
-            this.class = data["class"] + " object-color0";
+            this.paneType = data["class"];
 
             this.getMenus();
             this.paneRouteDataSub = this.urlManager.getRouteDataObservable()

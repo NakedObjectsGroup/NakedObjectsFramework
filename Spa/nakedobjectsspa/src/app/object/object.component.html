@@ -1,4 +1,4 @@
-<div *ngIf="object" [ngClass]="getClass()">
+<div [attr.id]="paneIdName()"   *ngIf="object" [ngClass]="getClass()">
 	<div *ngIf="object && mode === 0" class="object view" [ngClass]="getColor()">
 		<header class="header">
 			<div class="title" dnd-draggable [dragEnabled]="true" [dragData]="object" tabindex="0">

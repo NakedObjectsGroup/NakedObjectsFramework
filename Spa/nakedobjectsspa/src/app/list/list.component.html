@@ -1,4 +1,4 @@
-<div *ngIf="collection" [ngClass]="class">
+<div [attr.id]="paneIdName()"   *ngIf="collection" [ngClass]="paneType">
 	<div class="list">
 		<header class="header">
 			<div class="title">{{title}}</div>

@@ -231,23 +231,23 @@ namespace NakedObjects.Selenium {
         protected virtual void RunMegaSplitPaneTest() {
             RightClickActionReturningObjectFromHomeSingle();
             RightClickActionReturningListFromHomeSingle();
-            RightClickReferenceFromListSingle();
-            RightClickReferencePropertyFromObjectSingle();
-            RightClickActionFromObjectSingle();
-            RightClickHomeIconFromObjectSingle();
-            SwapPanesIconFromSingleOpensHomeOnLeft();
-            ClickReferenceInLeftPaneObject();
-            ClickReferenceInRightPaneObject();
-            RightClickReferenceInRightPaneObject();
-            LeftClickHomeIconFromSplitObjectObject();
-            RightClickHomeIconFromSplitObjectObject();
-            ActionDialogOpensInCorrectPane();
-            RightClickIsSameAsLeftClickForOpeningDialog();
-            SwapPanes();
-            FullPaneFromLeft();
-            FullPaneFromRight();
-            ListInSplitPaneUpdatesWhenSearchParamsChange();
-            TwoListsCanBothBeReloaded();
+            //RightClickReferenceFromListSingle();
+            //RightClickReferencePropertyFromObjectSingle();
+            //RightClickActionFromObjectSingle();
+            //RightClickHomeIconFromObjectSingle();
+            //SwapPanesIconFromSingleOpensHomeOnLeft();
+            //ClickReferenceInLeftPaneObject();
+            //ClickReferenceInRightPaneObject();
+            //RightClickReferenceInRightPaneObject();
+            //LeftClickHomeIconFromSplitObjectObject();
+            //RightClickHomeIconFromSplitObjectObject();
+            //ActionDialogOpensInCorrectPane();
+            //RightClickIsSameAsLeftClickForOpeningDialog();
+            //SwapPanes();
+            //FullPaneFromLeft();
+            //FullPaneFromRight();
+            //ListInSplitPaneUpdatesWhenSearchParamsChange();
+            //TwoListsCanBothBeReloaded();
         }
 
         protected override void ScrollTo(IWebElement element) {
@@ -474,6 +474,30 @@ namespace NakedObjects.Selenium {
         [TestInitialize]
         public virtual void InitializeTest() {
             InitIeDriver();
+        }
+
+        [TestCleanup]
+        public virtual void CleanupTest() {
+            CleanUpTest();
+        }
+
+        [TestMethod]
+        public void MegaSplitPaneTest() {
+            RunMegaSplitPaneTest();
+        }
+    }
+
+    [TestClass]
+    public class MegaSplitPaneTestChrome : SplitPaneTestsRoot {
+        [ClassInitialize]
+        public new static void InitialiseClass(TestContext context) {
+            FilePath(@"drivers.chromedriver.exe");
+            AWTest.InitialiseClass(context);
+        }
+
+        [TestInitialize]
+        public virtual void InitializeTest() {
+            InitChromeDriver();
         }
 
         [TestCleanup]

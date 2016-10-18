@@ -92,21 +92,23 @@ export class ObjectComponent implements OnInit,  OnDestroy {
             });
     }
 
+    paneIdName = () => this.paneId === 1 ? "pane1" : "pane2"
+
     getClass() {
-        return this.class + " " + this.object.color;
+        return this.paneType + " " + this.object.color;
     }
 
     getColor() {
         return this.object.color;
     }
 
-    class: string;
+    paneType: string;
     onChild() {
-        this.class = "split";
+        this.paneType = "split";
     }
 
     onChildless() {
-        this.class = "single";
+        this.paneType = "single";
     }
 
     private activatedRouteDataSub: ISubscription;
@@ -116,7 +118,7 @@ export class ObjectComponent implements OnInit,  OnDestroy {
 
         this.activatedRouteDataSub = this.activatedRoute.data.subscribe(data => {
             this.paneId = data["pane"];
-            this.class = data["class"];
+            this.paneType = data["class"];
 
             this.paneRouteDataSub = this.urlManager.getRouteDataObservable()
                 .subscribe((rd: RouteData) => {

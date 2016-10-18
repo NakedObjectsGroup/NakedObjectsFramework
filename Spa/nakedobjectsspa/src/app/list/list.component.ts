@@ -36,10 +36,12 @@ export class ListComponent implements OnInit, OnDestroy {
 
     collection: ViewModels.ListViewModel;
     title = "";
-    class: string;
+    paneType: string;
     paneId: number;
     state = "list";
 
+    paneIdName = () => this.paneId === 1 ? "pane1" : "pane2"
+    
     getActionExtensions(routeData: PaneRouteData) {
         return routeData.objectId ?
             this.context.getActionExtensionsFromObject(routeData.paneId, Models.ObjectIdWrapper.fromObjectId(routeData.objectId), routeData.actionId) :
@@ -94,11 +96,11 @@ export class ListComponent implements OnInit, OnDestroy {
 
 
     onChild() {
-        this.class = "split";
+        this.paneType = "split";
     }
 
     onChildless() {
-        this.class = "single";
+        this.paneType = "single";
     }
 
     reload() {
@@ -121,9 +123,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
         this.activatedRoute.data.subscribe(data => {
             this.paneId = data["pane"];
-            this.class = data["class"];
-
-
+            this.paneType = data["class"];
 
             this.urlManager.getRouteDataObservable()
                 .subscribe((rd: RouteData) => {
