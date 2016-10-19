@@ -740,7 +740,7 @@ public virtual void AutoCompleteOptionalParamNotSelected()
             //TimeSpanParm();
             RefChoicesParmKeepsValue();
             MultipleRefChoicesDefaults();
-            //MultipleRefChoicesChangeDefaults();
+            MultipleRefChoicesChangeDefaults();
             //ConditionalChoices();
             //ChoicesDefaults();
             //ChoicesOptional();
