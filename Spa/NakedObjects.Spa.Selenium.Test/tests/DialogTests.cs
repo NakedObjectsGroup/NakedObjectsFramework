@@ -342,11 +342,11 @@ namespace NakedObjects.Selenium {
             OpenActionDialog("List Accounts For Sales Person");
             wait.Until(dr => dr.FindElement(By.CssSelector("#sp1")).GetAttribute("placeholder") == "* (auto-complete or drop)");
             ClearFieldThenType("#sp1", "Valdez");
-            wait.Until(d => d.FindElements(By.CssSelector(".ui-menu-item")).Count > 0);
+            wait.Until(d => d.FindElements(By.CssSelector(".suggestions a")).Count > 0);
             //As the match has not yet been selected,the field is invalid, so...
             WaitForTextEquals(".validation", "Pending auto-complete...");
             OKButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Sp; ");
-            Click(WaitForCss(".ui-menu-item"));
+            Click(WaitForCss(".suggestions a"));
             WaitForCss("#sp1.link-color6");
             OKButton().AssertIsEnabled();
             Click(OKButton());
@@ -747,8 +747,8 @@ public virtual void AutoCompleteOptionalParamNotSelected()
             //ChoicesChangeDefaults();
             //ConditionalChoicesDefaults();
             //ConditionalChoicesMultiple();
-            //AutoCompleteParm();
-            //AutoCompleteParmDefault();
+            AutoCompleteParm();
+            AutoCompleteParmDefault();
             //ClearingAutoCompleteTextClearsUnderlyingReference();
             //AutoCompleteParmShowSingleItem();
             //AutoCompleteScalarField();

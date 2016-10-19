@@ -3,23 +3,15 @@ import * as _ from "lodash";
 import * as Models from "../models";
 import * as ViewModels from "../view-models";
 import { AbstractDroppableComponent } from '../abstract-droppable/abstract-droppable.component';
-
+import * as Msg from "../user-messages";
 
 @Component({
     selector: 'autocomplete',
     host: {
         '(document:click)': 'handleClick($event)'
     },
-    template: `     
-           <input id="{{field.paneArgId}}" class="{{field.status}} value droppable" dnd-droppable [allowDrop]="accept"  (onDropSuccess)="drop($event.dragData)" [ngClass]="classes()" placeholder="{{field.description}}" type="text" [(ngModel)]="field.selectedChoice" name="field.id" (keyup)="filter($event)" [geminiClear]="field" [geminiValidate]="field" [mandatoryOnly]="true" />   
-            <div class="suggestions" *ngIf="filteredList.length > 0">
-                <ul *ngFor="let item of filteredList" >
-                    <li >
-                        <a (click)="select(item)" >{{item.name}}</a>
-                    </li>
-                </ul>
-            </div>   
-        `
+    templateUrl: './auto-complete.component.html',
+    styleUrls: ['./auto-complete.component.css']
 })
 
 export class AutoCompleteComponent extends AbstractDroppableComponent {
@@ -60,11 +52,18 @@ export class AutoCompleteComponent extends AbstractDroppableComponent {
                 }).
                 catch(() => { });
         }
+
+        this.field.setMessage(Msg.pendingAutoComplete);
+        this.field.clientValid = false;
+
     }
 
     select(item: ViewModels.ChoiceViewModel) {
         this.filteredList = [];
         this.field.selectedChoice = item;
+
+        this.field.resetMessage();
+        this.field.clientValid = true;
     }
 
     private isInside(clickedComponent: any): boolean {
