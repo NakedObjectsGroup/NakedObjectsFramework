@@ -46,7 +46,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.paneType = "single";
     }
 
-    paneIdName = () => this.paneId === 1 ? "pane1" : "pane2"
+    paneIdName = () => this.paneId === 1 ? "pane1" : "pane2";
 
     getMenus() {
         this.context.getMenus()

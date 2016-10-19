@@ -497,6 +497,10 @@ namespace NakedObjects.Selenium
             return wait.Until(d => d.FindElements(By.CssSelector(p + ".header .action")).Single(el => el.Text == "Cancel"));
         }
 
+        protected void ClickHomeButton() {
+            Click(WaitForCss(".icon-home"));
+        }
+
         protected void ClickBackButton()
         {
             Click(WaitForCss(".icon-back"));

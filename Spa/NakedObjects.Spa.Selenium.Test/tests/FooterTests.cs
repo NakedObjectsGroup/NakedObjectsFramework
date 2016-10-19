@@ -87,15 +87,19 @@ namespace NakedObjects.Selenium {
             ClearFieldThenType("#accountnumber1", "AW00000042");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Healthy Activity Store, AW00000042");
-            GeminiUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber&f1_accountNumber=%22AW%22");
+            ClickHomeButton();
+            GoToMenuFromHomePage("Customers");
+            OpenActionDialog("Find Customer By Account Number");
             ClearFieldThenType("#accountnumber1", "AW00000359");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Mechanical Sports Center, AW00000359");
-            GeminiUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber&f1_accountNumber=%22AW%22");
+            ClickHomeButton();
+            GoToMenuFromHomePage("Customers");
+            OpenActionDialog("Find Customer By Account Number");     
             ClearFieldThenType("#accountnumber1", "AW00022262");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Marcus Collins, AW00022262");
-            GeminiUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber&f1_accountNumber=%22AW%22");
+            ClickHomeButton();
             GoToMenuFromHomePage("Products");
             Click(GetObjectAction("Find Product By Number"));
             ClearFieldThenType("#number1", "LJ-0192-S");
@@ -121,12 +125,13 @@ namespace NakedObjects.Selenium {
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
             Assert.IsTrue(properties[0].Text.StartsWith("User Name:"));
             Assert.IsTrue(properties[1].Text.StartsWith("Server Url: http:"));
-            Assert.IsTrue(properties[2].Text.StartsWith("Server version: 8.0.0"));
-            Assert.IsTrue(properties[3].Text.StartsWith("Client version: 8.0.0"));
+            Assert.IsTrue(properties[2].Text.StartsWith("Server version: 8.1.0"));
+            //Assert.IsTrue(properties[3].Text.StartsWith("Client version: 8.0.0"));
         }
         public virtual void LogOff() {
             GeminiUrl("home");
             ClickLogOffButton();
+            Thread.Sleep(1000);
             IAlert alert = br.SwitchTo().Alert();
             Assert.IsTrue(alert.Text.StartsWith("Please confirm logoff of user:"));
             alert.Dismiss();
@@ -241,13 +246,13 @@ namespace NakedObjects.Selenium {
     public abstract class MegaFooterTestsRoot : FooterTestsRoot {
         [TestMethod] //Mega
         public void MegaFooterTest() {
-            ExplicitWarningsAndInfo();
-            ZeroParamActionReturningNullGeneratesGenericWarning();
-            Home();
-            BackAndForward();
-            //RecentObjects();
-            //ApplicationProperties();
-            //LogOff();
+            //ExplicitWarningsAndInfo();
+            //ZeroParamActionReturningNullGeneratesGenericWarning();
+            //Home();
+            //BackAndForward();
+            RecentObjects();
+            ApplicationProperties();
+            LogOff();
         }
     }
 

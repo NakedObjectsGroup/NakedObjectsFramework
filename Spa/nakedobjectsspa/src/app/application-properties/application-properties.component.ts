@@ -7,7 +7,7 @@ import * as Nakedobjectsconfig from '../config';
 import { ErrorService } from "../error.service";
 
 @Component({
-    selector: 'recent',
+    selector: 'application-properties',
     templateUrl: './application-properties.component.html',
     styleUrls: ['./application-properties.component.css']
 })
