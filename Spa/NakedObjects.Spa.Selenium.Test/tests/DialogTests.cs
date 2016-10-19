@@ -733,8 +733,8 @@ public virtual void AutoCompleteOptionalParamNotSelected()
             PasswordParam();
             ScalarChoicesParm();
             TestCancelDialog();
-            //FieldsRetainedWhenNavigatingAwayAndBack();
-            //ReopeningADialogThatWasntCancelledDoesNotRetainFields();
+            FieldsRetainedWhenNavigatingAwayAndBack();
+            ReopeningADialogThatWasntCancelledDoesNotRetainFields();
             ScalarParmShowsDefaultValue();
             //DateTimeParmKeepsValue();
             //TimeSpanParm();
