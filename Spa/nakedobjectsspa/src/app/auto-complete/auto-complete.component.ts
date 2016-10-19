@@ -25,14 +25,14 @@ export class AutoCompleteComponent extends AbstractDroppableComponent {
         this.elementRef = myElement;
     }
 
-    field: ViewModels.IFieldViewModel;
+    field: ViewModels.ValueViewModel;
     currentOptions: ViewModels.ChoiceViewModel[] = [];
     pArgs: _.Dictionary<Models.Value>;
 
     paneId: number;
 
     @Input('viewModel')
-    set viewModel(vm: ViewModels.IFieldViewModel) {
+    set viewModel(vm: ViewModels.ValueViewModel) {
         this.field = vm;
         this.droppable = vm;
         this.paneId = this.field.onPaneId;

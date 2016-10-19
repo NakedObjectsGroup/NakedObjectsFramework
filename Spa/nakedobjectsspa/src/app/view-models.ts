@@ -621,7 +621,7 @@ abstract class MessageViewModel implements IMessageViewModel {
     getMessage = () => this.message;
 }
 
-abstract class ValueViewModel extends MessageViewModel implements IFieldViewModel {
+export abstract class ValueViewModel extends MessageViewModel implements IFieldViewModel {
 
     constructor(ext: Models.Extensions, color: ColorService, error: ErrorService) {
         super();

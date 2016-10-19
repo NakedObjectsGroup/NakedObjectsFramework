@@ -15,10 +15,10 @@ export class GeminiValidateDirective implements Validator {
         this.mandatoryOnly = false;
     }
 
-    model: ViewModels.IFieldViewModel;
+    model: ViewModels.ValueViewModel;
 
     @Input('geminiValidate')
-    set viewModel(vm: ViewModels.IFieldViewModel) {
+    set viewModel(vm: ViewModels.ValueViewModel) {
         this.model = vm;
     }
 
