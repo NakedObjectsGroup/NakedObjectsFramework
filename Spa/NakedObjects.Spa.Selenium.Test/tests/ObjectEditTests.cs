@@ -391,5 +391,25 @@ namespace NakedObjects.Selenium {
         }
     }
 
+    //[TestClass]
+    public class MegaObjectEditTestsChrome : MegaObjectEditTestsRoot {
+        [ClassInitialize]
+        public new static void InitialiseClass(TestContext context) {
+            FilePath(@"drivers.chromedriver.exe");
+            AWTest.InitialiseClass(context);
+        }
+
+        [TestInitialize]
+        public virtual void InitializeTest() {
+            InitChromeDriver();
+            Url(BaseUrl);
+        }
+
+        [TestCleanup]
+        public virtual void CleanupTest() {
+            base.CleanUpTest();
+        }
+    }
+
     #endregion
 }
