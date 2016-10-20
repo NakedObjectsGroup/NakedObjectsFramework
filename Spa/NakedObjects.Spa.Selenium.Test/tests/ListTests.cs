@@ -402,9 +402,9 @@ namespace NakedObjects.Selenium {
             NavigateToItemFromListView();
             NavigateToItemFromTableView();
             Paging();
-            ////PageSizeRecognised(); //TODO: pending bug fix
-            ////ListDoesNotRefreshWithoutReload();
-            ////ReloadingListGetsUpdatedObject();
+            PageSizeRecognised(); 
+            //ListDoesNotRefreshWithoutReload();
+            //ReloadingListGetsUpdatedObject();
             EagerlyRenderTableViewFromAction();
         }
     }
