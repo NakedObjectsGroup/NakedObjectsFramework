@@ -194,12 +194,12 @@ namespace NakedObjects.Selenium {
     }
 
     public abstract class CCAtestsServer : CCAtestsRoot {
-        //[TestMethod]
+        [TestMethod]
         public override void ListViewWithParmDialogAlreadyOpen() {
             base.ListViewWithParmDialogAlreadyOpen();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void ListViewWithParmDialogNotOpen() {
             base.ListViewWithParmDialogNotOpen();
         }
@@ -209,7 +209,7 @@ namespace NakedObjects.Selenium {
             base.DateParam();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void EmptyParam() {
             base.EmptyParam();
         }

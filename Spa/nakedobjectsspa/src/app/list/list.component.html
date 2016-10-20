@@ -27,7 +27,7 @@
 		</header>
 		<div class="details" *ngIf="collection.size == 0">{{collection.description()}}</div>
 		<div *ngIf="collection.size > 0">
-			<actions *ngIf="collection.showActions()" [menuVm]="collection"></actions>
+			<actions class="actions" *ngIf="collection.showActions()" [menuVm]="collection"></actions>
 			<app-dialog [parent]="collection"></app-dialog>
 			<div class="summary" *ngIf="state == 'list'">
 				<div class="details">{{collection.description()}}</div>
