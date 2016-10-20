@@ -32,8 +32,7 @@ export class ParameterComponent extends AbstractDroppableComponent {
     get parameter() {
         return this.parm;
     }
-
-   
+ 
     classes(): string {
         return `${this.parm.color}${this.canDrop ? " candrop" : ""}`;
     }

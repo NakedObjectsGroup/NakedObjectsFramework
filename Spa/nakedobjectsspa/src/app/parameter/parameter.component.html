@@ -24,7 +24,7 @@
         <!--"EntryType.ConditionalChoices"-->
         <div *ngSwitchCase="3">
             <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [(ngModel)]="parameter.selectedChoice" name="parameter.id" [geminiConditionalChoices]="parameter" [parent]="parent" [fieldChanged]="parent.parameterChanged$" (ngModelChange)="parent.parameterChanged()" [geminiValidate]="parameter" [mandatoryOnly]="true">
-                <option value="" disabled>{{parameter.description}}</option>
+                <!--<option value="" disabled>{{parameter.description}}</option>-->
                 <option *ngFor="let choice of parameter.choices" [label]="choice.name"  [ngValue]="choice">{{choice.name}}</option>
             </select>
         </div>
@@ -82,7 +82,7 @@
         <!--"EntryType.ConditionalChoices"-->
         <div *ngSwitchCase="3">
             <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [(ngModel)]="parameter.selectedChoice" name="parameter.id" [geminiConditionalChoices]="parameter" [parent]="parent" [fieldChanged]="parent.parameterChanged$" (ngModelChange)="parent.parameterChanged()" [geminiValidate]="parameter" [mandatoryOnly]="true">
-                <option value="" disabled>{{parameter.description}}</option>
+                <!--<option value="" disabled>{{parameter.description}}</option>-->
                 <option *ngFor="let choice of parameter.choices" [label]="choice.name" [ngValue]="choice">{{choice.name}}</option>
             </select>
         </div>

@@ -741,10 +741,10 @@ public virtual void AutoCompleteOptionalParamNotSelected()
             RefChoicesParmKeepsValue();
             MultipleRefChoicesDefaults();
             MultipleRefChoicesChangeDefaults();
-            //ConditionalChoices();
-            //ChoicesDefaults();
-            //ChoicesOptional();
-            //ChoicesChangeDefaults();
+            ConditionalChoices();
+            ChoicesDefaults();
+            ChoicesOptional();
+            ChoicesChangeDefaults();
             //ConditionalChoicesDefaults();
             //ConditionalChoicesMultiple();
             AutoCompleteParm();

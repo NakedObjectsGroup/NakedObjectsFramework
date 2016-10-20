@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ViewModelFactoryService } from "../view-model-factory.service";
 import { UrlManagerService } from "../url-manager.service";
@@ -28,7 +28,8 @@ export class DialogComponent implements OnInit, OnDestroy {
         private error: ErrorService,
         private color: ColorService,
         private focusManager: FocusManagerService,
-        private context: ContextService) { }
+        private context: ContextService,
+        private changeDetectorRef : ChangeDetectorRef) { }
 
 
     paneId: number;
@@ -95,6 +96,9 @@ export class DialogComponent implements OnInit, OnDestroy {
                         dialogViewModel.deregister = () => this.context.clearParmUpdater(routeData.paneId);
 
                         this.dialog = dialogViewModel;
+
+                        this.listenToDialog();
+
                     }
                 })
                 .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
@@ -106,9 +110,28 @@ export class DialogComponent implements OnInit, OnDestroy {
 
     private activatedRouteDataSub: ISubscription;
     private paneRouteDataSub: ISubscription;
+    private dialogSub : ISubscription;
+
+
+    private listenToDialog() {
+
+        if (this.dialogSub) {
+            this.dialogSub.unsubscribe();
+        }
+
+        this.dialogSub = this.dialog.validChanged$.subscribe(changed => {
+            if (changed) {
+                this.tooltip = this.dialog.tooltip();
+                this.disabled = !this.dialog.clientValid();
+                this.changeDetectorRef.detectChanges();
+            }
+
+        });
+
+    }
+
 
     ngOnInit(): void {
-
 
         this.activatedRouteDataSub = this.activatedRoute.data.subscribe(data => {
 
@@ -121,6 +144,7 @@ export class DialogComponent implements OnInit, OnDestroy {
                     this.getDialog(paneRouteData);
                 });
         });
+
     }
 
     ngOnDestroy(): void {
@@ -130,7 +154,15 @@ export class DialogComponent implements OnInit, OnDestroy {
         if (this.paneRouteDataSub) {
             this.paneRouteDataSub.unsubscribe();
         }
-    }
 
+        if (this.dialogSub) {
+            this.dialogSub.unsubscribe();
+        }
+    }
+    
+    tooltip : string;
+    disabled : boolean;
+
+   
 
 }

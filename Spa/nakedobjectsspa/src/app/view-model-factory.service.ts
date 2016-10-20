@@ -615,7 +615,7 @@ export class ViewModelFactoryService {
         }
 
         parmViewModel.description = this.getRequiredIndicator(parmViewModel) + parmViewModel.description;
-        parmViewModel.validate = <any>_.partial(Models.validate, parmRep, parmViewModel) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
+        parmViewModel.validate = <any>_.partial(this.validate, parmRep, parmViewModel) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
         parmViewModel.drop = _.partial(this.drop, this.context, this.error, parmViewModel);
 
         return parmViewModel as ViewModels.IParameterViewModel;

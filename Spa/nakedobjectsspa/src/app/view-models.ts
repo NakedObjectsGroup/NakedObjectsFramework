@@ -12,6 +12,8 @@ import { ViewModelFactoryService } from "./view-model-factory.service";
 import { FocusManagerService } from "./focus-manager.service";
 import { ILocalFilter } from "./mask.service";
 import { Subject } from 'rxjs/Subject';
+import { ISubscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 
 export interface IAttachmentViewModel {
     href: string;
@@ -96,6 +98,7 @@ export interface IFieldViewModel extends IMessageViewModel {
     multipleLines: number;
     password: boolean;
     clientValid: boolean;
+    validChanged$ : Observable<boolean>;
 
     type: "scalar" | "ref";
     reference: string;
@@ -653,7 +656,21 @@ export abstract class ValueViewModel extends MessageViewModel implements IFieldV
     multipleLines: number;
     password: boolean;
 
-    clientValid = true;
+    private _clientValid = true;
+
+    get clientValid() {
+        return this._clientValid;
+    }
+
+    set clientValid(val: boolean) {
+        this._clientValid = val;
+        this.validChangedSource.next(true);
+        this.validChangedSource.next(false);
+    }
+
+    private validChangedSource = new Subject<boolean>();
+
+    validChanged$ = this.validChangedSource.asObservable();
 
     type: "scalar" | "ref";
     reference: string = "";
@@ -891,6 +908,7 @@ export class DialogViewModel extends MessageViewModel implements IDialogViewMode
 
         const parameters = _.pickBy(actionViewModel.invokableActionRep.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Models.Parameter>;
         this.parameters = _.map(parameters, p => this.viewModelFactory.parameterViewModel(p, fields[p.id()], this.onPaneId));
+        this.listenToParameters();
 
         this.title = this.actionMember().extensions().friendlyName();
         this.isQueryOnly = actionViewModel.invokableActionRep.invokeLink().method() === "GET";
@@ -961,6 +979,22 @@ export class DialogViewModel extends MessageViewModel implements IDialogViewMode
 
     parameterChanged$ = this.parameterChangedSource.asObservable();
 
+    private validChangedSource = new Subject<boolean>();
+
+    validChanged$ = this.validChangedSource.asObservable();
+
+    private parmSubs : ISubscription[] = [];
+
+    private listenToParameters() {
+        _.forEach(this.parameters, p => {
+            this.parmSubs.push(p.validChanged$.subscribe(changed => {
+                if (changed) {
+                    this.validChangedSource.next(true);
+                    this.validChangedSource.next(false);
+                }
+            }))
+        });
+    }
 
 }
 
