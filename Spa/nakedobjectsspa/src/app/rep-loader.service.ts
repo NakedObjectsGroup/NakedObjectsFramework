@@ -24,7 +24,7 @@ export class RepLoaderService {
 //private cache = $cacheFactory("nof-cache", { capacity: httpCacheDepth });
 
     private addIfMatchHeader(config: RequestOptions, digest: string) {
-        if (digest && (config.method === RequestMethod.Post || config.method === "PUT" || config.method === "DELETE")) {
+        if (digest && (config.method === RequestMethod.Post || config.method === RequestMethod.Put || config.method === RequestMethod.Delete)) {
             config.headers = new Headers ({ "If-Match": digest });
         }
     }
