@@ -753,20 +753,20 @@ public virtual void AutoCompleteOptionalParamNotSelected()
             //AutoCompleteParmShowSingleItem();
             //AutoCompleteScalarField();
             //AutoCompleteOptionalParamNotSelected();
-            //MandatoryParameterEnforced();
-            //ValidateSingleValueParameter();
+            MandatoryParameterEnforced();
+            ValidateSingleValueParameter();
             //ValidateSingleRefParamFromChoices();
-            //CoValidationOfMultipleParameters();
-            //ParameterDescriptionRenderedAsPlaceholder();
-            //BooleanParams();
-            //NullableBooleanParams();
-            //WarningShownWithinDialogAndInFooter();
-            //DefaultReferenceParamRendersCorrectly();
+            CoValidationOfMultipleParameters();
+            ParameterDescriptionRenderedAsPlaceholder();
+            BooleanParams();
+            NullableBooleanParams();
+            WarningShownWithinDialogAndInFooter();
+            DefaultReferenceParamRendersCorrectly();
             //QueryOnlyActionDialogPersists();
             //PotentActionDialogDisappearsAndFieldsNotRemembered();
-            //OptionalReferenceParamCanBeNull();
+            OptionalReferenceParamCanBeNull();
             //ValidationOfContributeeParameter();
-            //NoResultFoundMessageLeavesDialogOpen();
+            NoResultFoundMessageLeavesDialogOpen();
         }
     }
 
