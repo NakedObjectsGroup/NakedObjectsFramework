@@ -72,11 +72,11 @@ namespace NakedObjects.Selenium {
             OpenSubMenu("Orders");
             OpenActionDialog("Search For Orders");
             var fromDate = WaitForCss("#fromdate1");
-            Assert.AreEqual("1 Jan 2000", fromDate.GetAttribute("value")); //Default field value
-            ClearFieldThenType("#fromdate1", "1 Sep 2007");
-            CancelDatePicker("#fromdate1");
-            ClearFieldThenType("#todate1", "1 Apr 2008");
-            CancelDatePicker("#todate1");
+            Assert.AreEqual("2000-01-01", fromDate.GetAttribute("value")); //Default field value
+            ClearFieldThenType("#fromdate1", "01 09 2007");
+            //CancelDatePicker("#fromdate1");
+            ClearFieldThenType("#todate1", "01 04 2008");
+            //CancelDatePicker("#todate1");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Search For Orders");
             var details = WaitForCss(".summary .details");
@@ -375,8 +375,8 @@ namespace NakedObjects.Selenium {
             Url(ProductServiceUrl);
             OpenActionDialog("Find Product");
             ClearFieldThenType("#product1", "BB");
-            wait.Until(dr => dr.FindElement(By.CssSelector(".ui-menu-item")).Text == "BB Ball Bearing");
-            var item = br.FindElement(By.CssSelector(".ui-menu-item"));
+            wait.Until(dr => dr.FindElement(By.CssSelector("ul li a")).Text == "BB Ball Bearing");
+            var item = br.FindElement(By.CssSelector("ul li a"));
             //As the match has not yet been selected,the field is invalid, so...
             WaitForTextEquals(".validation", "Pending auto-complete...");
             Click(item);
@@ -387,9 +387,10 @@ namespace NakedObjects.Selenium {
             GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--54461&as1=open&d1=AddComment&f1_comment=%22%22");
             WaitForView(Pane.Single, PaneType.Object, "SO54461");
             ClearFieldThenType("#comment1", "parc");
-            wait.Until(d => d.FindElements(By.CssSelector(".ui-menu-item")).Count == 2);
+            wait.Until(d => d.FindElements(By.CssSelector("ul li a")).Count == 2);
         }
-public virtual void AutoCompleteOptionalParamNotSelected()
+
+        public virtual void AutoCompleteOptionalParamNotSelected()
         {
             //Test written against a bug in 8.0.0-beta9
             GeminiUrl("home?m1=OrderRepository&d1=FindOrders");
@@ -399,8 +400,8 @@ public virtual void AutoCompleteOptionalParamNotSelected()
             //TODO: Message should change to Invalid fields
             OKButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Customer; ");
             ClearFieldThenType("#customer1", "AW00000456");
-            wait.Until(dr => dr.FindElement(By.CssSelector(".ui-menu-item")).Text == "Riding Excursions, AW00000456");
-            var item = br.FindElement(By.CssSelector(".ui-menu-item"));
+            wait.Until(dr => dr.FindElement(By.CssSelector("ul li a")).Text == "Riding Excursions, AW00000456");
+            var item = br.FindElement(By.CssSelector("ul li a"));
             Click(item);
             OKButton().AssertIsEnabled();
         }
@@ -423,7 +424,7 @@ public virtual void AutoCompleteOptionalParamNotSelected()
             //Assuming parm is mandatory, hitting Ok should give validation message
             GeminiUrl("home?m1=CustomerRepository&d1=FindCustomer");
             ClearFieldThenType("#customer1", "AW000");
-            wait.Until(d => d.FindElements(By.CssSelector(".ui-menu-item")).Count == 10);
+            wait.Until(d => d.FindElements(By.CssSelector("ul li a")).Count == 10);
             OKButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Customer; ");
         }
         public virtual void ValidateSingleValueParameter() {
@@ -736,7 +737,7 @@ public virtual void AutoCompleteOptionalParamNotSelected()
             FieldsRetainedWhenNavigatingAwayAndBack();
             ReopeningADialogThatWasntCancelledDoesNotRetainFields();
             ScalarParmShowsDefaultValue();
-            //DateTimeParmKeepsValue();
+            DateTimeParmKeepsValue();
             //TimeSpanParm();
             RefChoicesParmKeepsValue();
             MultipleRefChoicesDefaults();
@@ -750,9 +751,9 @@ public virtual void AutoCompleteOptionalParamNotSelected()
             AutoCompleteParm();
             AutoCompleteParmDefault();
             //ClearingAutoCompleteTextClearsUnderlyingReference();
-            //AutoCompleteParmShowSingleItem();
-            //AutoCompleteScalarField();
-            //AutoCompleteOptionalParamNotSelected();
+            AutoCompleteParmShowSingleItem();
+            AutoCompleteScalarField();
+            AutoCompleteOptionalParamNotSelected();
             MandatoryParameterEnforced();
             ValidateSingleValueParameter();
             //ValidateSingleRefParamFromChoices();
