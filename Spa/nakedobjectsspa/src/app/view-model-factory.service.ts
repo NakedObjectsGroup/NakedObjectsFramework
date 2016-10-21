@@ -563,7 +563,9 @@ export class ViewModelFactoryService {
 
                 parmViewModel.value = bValueToSet;
             } else if (Models.isDateOrDateTime(parmRep)) {
-                parmViewModel.value = Models.toUtcDate(newValue || new Models.Value(parmViewModel.dflt));
+                //parmViewModel.value = Models.toUtcDate(newValue || new Models.Value(parmViewModel.dflt));
+                const date = Models.toUtcDate(newValue || new Models.Value(parmViewModel.dflt));
+                parmViewModel.value = date ? Models.toDateString(date) : "";
             } else if (Models.isTime(parmRep)) {
                 parmViewModel.value = Models.toTime(newValue || new Models.Value(parmViewModel.dflt));
             } else {

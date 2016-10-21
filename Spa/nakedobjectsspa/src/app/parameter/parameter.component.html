@@ -109,7 +109,7 @@
             <div [ngSwitch]="parameter.returnType">
                 <div *ngSwitchCase="'string'" [ngSwitch]="parameter.format">
                     <div *ngSwitchCase="'date'">
-                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="date" placeholder="{{parameter.description}}" [(ngModel)]="parameter.value" name="parameter.id" (ngModelChange)="parent.parameterChanged()" gemini-datepicker [geminiValidate]="parameter" [geminiClear]="parameter" />
+                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="date" placeholder="{{parameter.description}}" [(ngModel)]="parameter.value" name="parameter.id" (ngModelChange)="parent.parameterChanged()"  [geminiValidate]="parameter" [geminiClear]="parameter" />
                     </div>
                     <div *ngSwitchCase="'time'">
                         <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="time" placeholder="{{parameter.description}}" [(ngModel)]="parameter.value" name="parameter.id" (ngModelChange)="parent.parameterChanged()" gemini-timepicker [geminiValidate]="parameter" [geminiClear]="parameter" />
