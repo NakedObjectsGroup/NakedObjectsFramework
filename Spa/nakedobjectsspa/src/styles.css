@@ -74,36 +74,6 @@ html, #main, body, .background, .single, .split {
     display: block;
     }
 
-/*.title, header .type {
-    position: relative;
-    font-weight: 200;
-    font-size: 24pt;
-    line-height: 38pt;
-    margin-left: 1px; /*Make room for focus outline
-    padding-left: 5px;
-    padding-right: 5px;
-    margin-right: 20px;
-    margin-top: 2px;
-    display: block;
-}*/
-
-/*Menus & actions
-.menus {
-    display: block;
-}
-.menu, .header .action {
-    display: inline;
-    padding: 5px;
-    margin-left: 1px; /*Else hover outline is hidden on the left-most menu
-    margin-right: 10px;
-    margin-bottom: 5px; /*Else hover outline is hidden on the bottom
-    font-size: 16pt;
-}
-
-.menu[disabled="disabled"], .ok[disabled="disabled"] {
-        color: grey;
-    }
-*/
 
 /*Fix to make menus/actions/reference properties clickable*/
 .clickable-area {
