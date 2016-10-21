@@ -25,3 +25,12 @@
     max-height: 100px;
 }
 
+input:not([type='checkbox']), textarea {
+    width: 245px;
+    height: 20px;
+    padding-right:10px;
+}
+
+input[type='text'] {
+    padding-left: 4px;
+}

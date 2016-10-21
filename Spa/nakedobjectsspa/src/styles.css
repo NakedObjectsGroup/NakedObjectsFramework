@@ -4,14 +4,15 @@
 div {
     display: initial; /*This is to override the agent style sheet setting of display-block*/
 }
-.gemini, table, a, pre, textarea { /*Need to override browser defaults*/
+
+/*.gemini, table, a, pre, textarea { 
     font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
     color: white;
-    font-size: 11pt; /*Default*/
+    font-size: 11pt; 
     font-weight: 100;
-    text-decoration: none; /*Override default underlining of links*/
+    text-decoration: none;
     margin: 0px;
-}
+}*/
 
 pre {
     white-space: pre-wrap; /* CSS 3 */
@@ -73,35 +74,36 @@ html, #main, body, .background, .single, .split {
     display: block;
     }
 
-.title, header .type {
+/*.title, header .type {
     position: relative;
     font-weight: 200;
     font-size: 24pt;
     line-height: 38pt;
-    margin-left: 1px; /*Make room for focus outline*/
+    margin-left: 1px; /*Make room for focus outline
     padding-left: 5px;
     padding-right: 5px;
     margin-right: 20px;
     margin-top: 2px;
     display: block;
-}
+}*/
 
-/*Menus & actions*/
+/*Menus & actions
 .menus {
     display: block;
 }
 .menu, .header .action {
     display: inline;
     padding: 5px;
-    margin-left: 1px; /*Else hover outline is hidden on the left-most menu*/
+    margin-left: 1px; /*Else hover outline is hidden on the left-most menu
     margin-right: 10px;
-    margin-bottom: 5px; /*Else hover outline is hidden on the bottom*/
+    margin-bottom: 5px; /*Else hover outline is hidden on the bottom
     font-size: 16pt;
 }
 
 .menu[disabled="disabled"], .ok[disabled="disabled"] {
         color: grey;
     }
+*/
 
 /*Fix to make menus/actions/reference properties clickable*/
 .clickable-area {
@@ -134,13 +136,13 @@ html, #main, body, .background, .single, .split {
         height: auto;
     }
 
-.input-control input:not([type='checkbox']), textarea {
+/*.input-control input:not([type='checkbox']), textarea {
     width: 245px;
     height: 20px;
-}
-input, select {
+}*/
+/*input, select {
     border-style: none;
-}
+}*/
 
 /* clear button on non-empty input field*/
     /*Clear button in input fields*/
