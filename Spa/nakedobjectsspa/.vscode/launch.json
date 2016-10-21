@@ -7,15 +7,21 @@
             "request": "launch",
             "url": "http://localhost:49998",
             "sourceMaps": true,
-            "webRoot": "${workspaceRoot}"
+            "webRoot": "${workspaceRoot}",
+             "sourceMapPathOverrides": {
+              "webpack:///E:/Users/scasc_000/Documents/GitHub/NakedObjectsFramework/Spa/nakedobjectsspa/*": "${workspaceRoot}/*"
+          }
         },
         {
             "name": "Attach to Chrome, with sourcemaps",
             "type": "chrome",
             "request": "attach",
-            "port": 4200,
+            "port": 49998,
             "sourceMaps": true,
-            "webRoot": "${workspaceRoot}"
+            "webRoot": "${workspaceRoot}",
+            "sourceMapPathOverrides": {
+              "webpack:///E:/Users/scasc_000/Documents/GitHub/NakedObjectsFramework/Spa/nakedobjectsspa/*": "${workspaceRoot}/*"
+          }
         }
     ]
 }

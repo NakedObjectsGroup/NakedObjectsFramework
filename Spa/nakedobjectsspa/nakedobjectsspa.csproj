@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <ProjectGuid>{2C7F9456-DC40-4EC2-8DEE-C8568348B20D}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <OutputPath>bin</OutputPath>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <TypeScriptToolsVersion>2.0</TypeScriptToolsVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="nakedobjects.css" />
+    <Content Include="src\app\actions\actions.component.css" />
+    <Content Include="src\app\actions\actions.component.html" />
+    <Content Include="src\app\action\action.component.css" />
+    <Content Include="src\app\action\action.component.html" />
+    <Content Include="src\app\app.component.css" />
+    <Content Include="src\app\app.component.html" />
+    <Content Include="src\app\application-properties\application-properties.component.css" />
+    <Content Include="src\app\application-properties\application-properties.component.html" />
+    <Content Include="src\app\auto-complete\auto-complete.component.css" />
+    <Content Include="src\app\auto-complete\auto-complete.component.html" />
+    <Content Include="src\app\collections\collections.component.css" />
+    <Content Include="src\app\collections\collections.component.html" />
+    <Content Include="src\app\collection\collection.component.css" />
+    <Content Include="src\app\collection\collection.component.html" />
+    <Content Include="src\app\dialog\dialog.component.css" />
+    <Content Include="src\app\dialog\dialog.component.html" />
+    <Content Include="src\app\error\error.component.css" />
+    <Content Include="src\app\error\error.component.html" />
+    <Content Include="src\app\footer\footer.component.css" />
+    <Content Include="src\app\footer\footer.component.html" />
+    <Content Include="src\app\home\home.component.css" />
+    <Content Include="src\app\home\home.component.html" />
+    <Content Include="src\app\list\list.component.css" />
+    <Content Include="src\app\list\list.component.html" />
+    <Content Include="src\app\object\object.component.css" />
+    <Content Include="src\app\object\object.component.html" />
+    <Content Include="src\app\parameters\parameters.component.css" />
+    <Content Include="src\app\parameters\parameters.component.html" />
+    <Content Include="src\app\parameter\parameter.component.css" />
+    <Content Include="src\app\parameter\parameter.component.html" />
+    <Content Include="src\app\properties\properties.component.css" />
+    <Content Include="src\app\properties\properties.component.html" />
+    <Content Include="src\app\property\property.component.css" />
+    <Content Include="src\app\property\property.component.html" />
+    <Content Include="src\app\recent\recent.component.css" />
+    <Content Include="src\app\recent\recent.component.html" />
+    <Content Include="src\favicon.ico" />
+    <Content Include="src\fonts\iconFont.svg" />
+    <Content Include="src\fonts\license.txt" />
+    <Content Include="src\images\calendar.png" />
+    <Content Include="src\images\list.png" />
+    <Content Include="src\images\summary.png" />
+    <Content Include="src\images\table.png" />
+    <Content Include="src\index.html" />
+    <Content Include="src\styles.css" />
+    <Content Include="web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="src\assets\.gitkeep" />
+    <Content Include="src\assets\.npmignore" />
+    <Content Include="src\fonts\iconFont.eot" />
+    <Content Include="src\fonts\iconFont.ttf" />
+    <Content Include="src\fonts\iconFont.woff" />
+    <Content Include="src\tsconfig.json" />
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="src\app\abstract-droppable\abstract-droppable.component.ts" />
+    <TypeScriptCompile Include="src\app\actions\actions.component.ts" />
+    <TypeScriptCompile Include="src\app\action\action.component.ts" />
+    <TypeScriptCompile Include="src\app\app-routing.module.ts" />
+    <TypeScriptCompile Include="src\app\app.component.ts" />
+    <TypeScriptCompile Include="src\app\app.module.ts" />
+    <TypeScriptCompile Include="src\app\application-properties\application-properties.component.ts" />
+    <TypeScriptCompile Include="src\app\auto-complete\auto-complete.component.ts" />
+    <TypeScriptCompile Include="src\app\click-handler.service.ts" />
+    <TypeScriptCompile Include="src\app\collections\collections.component.ts" />
+    <TypeScriptCompile Include="src\app\collection\collection.component.ts" />
+    <TypeScriptCompile Include="src\app\color-config.service.ts" />
+    <TypeScriptCompile Include="src\app\color.service.ts" />
+    <TypeScriptCompile Include="src\app\config.ts" />
+    <TypeScriptCompile Include="src\app\constants.ts" />
+    <TypeScriptCompile Include="src\app\context.service.ts" />
+    <TypeScriptCompile Include="src\app\dialog\dialog.component.ts" />
+    <TypeScriptCompile Include="src\app\error.service.ts" />
+    <TypeScriptCompile Include="src\app\error\error.component.ts" />
+    <TypeScriptCompile Include="src\app\focus-manager.service.ts" />
+    <TypeScriptCompile Include="src\app\footer\footer.component.ts" />
+    <TypeScriptCompile Include="src\app\gemini-boolean.directive.ts" />
+    <TypeScriptCompile Include="src\app\gemini-clear.directive.ts" />
+    <TypeScriptCompile Include="src\app\gemini-click.directive.ts" />
+    <TypeScriptCompile Include="src\app\gemini-conditional-choices.directive.ts" />
+    <TypeScriptCompile Include="src\app\gemini-validate.directive.ts" />
+    <TypeScriptCompile Include="src\app\home\home.component.ts" />
+    <TypeScriptCompile Include="src\app\index.ts" />
+    <TypeScriptCompile Include="src\app\list\list.component.ts" />
+    <TypeScriptCompile Include="src\app\mask-config.service.ts" />
+    <TypeScriptCompile Include="src\app\mask.service.ts" />
+    <TypeScriptCompile Include="src\app\models.ts" />
+    <TypeScriptCompile Include="src\app\object\object.component.ts" />
+    <TypeScriptCompile Include="src\app\parameters\parameters.component.ts" />
+    <TypeScriptCompile Include="src\app\parameter\parameter.component.ts" />
+    <TypeScriptCompile Include="src\app\properties\properties.component.ts" />
+    <TypeScriptCompile Include="src\app\property\property.component.ts" />
+    <TypeScriptCompile Include="src\app\recent\recent.component.ts" />
+    <TypeScriptCompile Include="src\app\rep-loader.service.ts" />
+    <TypeScriptCompile Include="src\app\representations.service.ts" />
+    <TypeScriptCompile Include="src\app\ro-interfaces-custom.ts" />
+    <TypeScriptCompile Include="src\app\ro-interfaces.ts" />
+    <TypeScriptCompile Include="src\app\route-data.ts" />
+    <TypeScriptCompile Include="src\app\rxjs-extensions.ts" />
+    <TypeScriptCompile Include="src\app\shared\index.ts" />
+    <TypeScriptCompile Include="src\app\url-manager.service.ts" />
+    <TypeScriptCompile Include="src\app\user-messages.ts" />
+    <TypeScriptCompile Include="src\app\view-model-factory.service.ts" />
+    <TypeScriptCompile Include="src\app\view-models.ts" />
+    <TypeScriptCompile Include="src\environments\environment.prod.ts" />
+    <TypeScriptCompile Include="src\environments\environment.ts" />
+    <TypeScriptCompile Include="src\main.ts" />
+    <TypeScriptCompile Include="src\polyfills.ts" />
+    <TypeScriptCompile Include="src\test.ts" />
+    <TypeScriptCompile Include="src\typings.d.ts" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>nakedobjectsspa1</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WebApplications\Microsoft.WebApplication.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WebApplications\Microsoft.WebApplication.targets')" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>51940</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:51940/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <TypeScriptRemoveComments>true</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>false</TypeScriptSourceMap>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+</Project>
