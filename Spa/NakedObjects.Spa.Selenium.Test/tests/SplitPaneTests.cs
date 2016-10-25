@@ -229,25 +229,25 @@ namespace NakedObjects.Selenium {
 
 
         protected virtual void RunMegaSplitPaneTest() {
-            RightClickActionReturningObjectFromHomeSingle();
-            RightClickActionReturningListFromHomeSingle();
-            RightClickReferenceFromListSingle();
-            RightClickReferencePropertyFromObjectSingle();
-            RightClickActionFromObjectSingle();
-            RightClickHomeIconFromObjectSingle();
-            SwapPanesIconFromSingleOpensHomeOnLeft();
-            ClickReferenceInLeftPaneObject();
-            ClickReferenceInRightPaneObject();
-            RightClickReferenceInRightPaneObject();
-            LeftClickHomeIconFromSplitObjectObject();
-            RightClickHomeIconFromSplitObjectObject();
-            ActionDialogOpensInCorrectPane();
-            RightClickIsSameAsLeftClickForOpeningDialog();
-            SwapPanes();
-            FullPaneFromLeft();
-            FullPaneFromRight();
-            ListInSplitPaneUpdatesWhenSearchParamsChange();
-            TwoListsCanBothBeReloaded();
+            //RightClickActionReturningObjectFromHomeSingle();
+            //RightClickActionReturningListFromHomeSingle();
+            //RightClickReferenceFromListSingle();
+            //RightClickReferencePropertyFromObjectSingle();
+            //RightClickActionFromObjectSingle();
+            //RightClickHomeIconFromObjectSingle();
+            //SwapPanesIconFromSingleOpensHomeOnLeft();
+            //ClickReferenceInLeftPaneObject();
+            //ClickReferenceInRightPaneObject();
+            //RightClickReferenceInRightPaneObject();
+            //LeftClickHomeIconFromSplitObjectObject();
+            //RightClickHomeIconFromSplitObjectObject();
+            //ActionDialogOpensInCorrectPane();
+            //RightClickIsSameAsLeftClickForOpeningDialog();
+            //SwapPanes();
+            //FullPaneFromLeft();
+            //FullPaneFromRight();
+            //ListInSplitPaneUpdatesWhenSearchParamsChange();
+            //TwoListsCanBothBeReloaded();
         }
 
         protected override void ScrollTo(IWebElement element) {

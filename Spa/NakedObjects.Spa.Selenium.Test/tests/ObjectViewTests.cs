@@ -603,7 +603,7 @@ namespace NakedObjects.Selenium {
             ZeroIntValues();
             AddingObjectToCollectionUpdatesTableView();
             //TimeSpanProperty();
-            ZeroParamActionCausesObjectToReload();
+            //ZeroParamActionCausesObjectToReload();
         }
     }
 

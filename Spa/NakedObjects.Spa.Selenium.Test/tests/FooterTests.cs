@@ -250,7 +250,7 @@ namespace NakedObjects.Selenium {
             ExplicitWarningsAndInfo();
             ZeroParamActionReturningNullGeneratesGenericWarning();
             Home();
-            BackAndForward();
+            //BackAndForward();
             RecentObjects();
             ApplicationProperties();
             LogOff();

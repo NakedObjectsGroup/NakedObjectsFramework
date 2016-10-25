@@ -16,7 +16,6 @@ import * as Msg from "../user-messages";
 
 export class AutoCompleteComponent extends AbstractDroppableComponent {
 
-
     filteredList: ViewModels.ChoiceViewModel[] = [];
     elementRef: ElementRef;
 

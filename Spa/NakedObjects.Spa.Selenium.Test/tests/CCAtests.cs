@@ -194,7 +194,7 @@ namespace NakedObjects.Selenium {
     }
 
     public abstract class CCAtestsServer : CCAtestsRoot {
-        [TestMethod]
+        //[TestMethod]
         public override void ListViewWithParmDialogAlreadyOpen() {
             base.ListViewWithParmDialogAlreadyOpen();
         }
