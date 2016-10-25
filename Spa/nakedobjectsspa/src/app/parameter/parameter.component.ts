@@ -6,6 +6,7 @@ import { UrlManagerService } from "../url-manager.service";
 import * as Models from "../models";
 import * as ViewModels from "../view-models";
 import { AbstractDroppableComponent } from '../abstract-droppable/abstract-droppable.component';
+import { FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'parameter',
@@ -19,6 +20,34 @@ export class ParameterComponent extends AbstractDroppableComponent {
     }
 
     parm: ViewModels.ParameterViewModel;
+
+    _form : FormGroup;
+
+    message : string;
+
+    onValueChanged(data?: any) {
+        // clear previous error message (if any)
+        this.message = '';
+
+        if (this.parm) {
+            const control = this._form.get(this.parm.id);
+            if (control && control.dirty && !control.valid) {
+                this.message = this.parm.getMessage();
+            }
+        }
+    }
+
+    @Input()
+    set form(fm: FormGroup) {
+        this._form = fm;
+        this.form.valueChanges.subscribe(data => this.onValueChanged(data));
+        this.onValueChanged(); // (re)set validation messages now
+    }
+
+    get form() {
+        return this._form;
+    }
+
 
     @Input()
     parent: ViewModels.DialogViewModel;

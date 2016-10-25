@@ -40,6 +40,8 @@ import { MaskConfigService } from './mask-config.service';
 import { FocusManagerService } from './focus-manager.service';
 import { CollectionComponent } from './collection/collection.component';
 import {DND_PROVIDERS, DND_DIRECTIVES} from 'ng2-dnd';
+import { ReactiveFormsModule }          from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -72,7 +74,8 @@ import {DND_PROVIDERS, DND_DIRECTIVES} from 'ng2-dnd';
     BrowserModule,
     FormsModule,
     HttpModule,
-    RoutingModule
+    RoutingModule,
+    ReactiveFormsModule
   ],
   providers: [ 
         UrlManagerService,

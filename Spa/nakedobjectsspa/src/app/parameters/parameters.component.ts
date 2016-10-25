@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import * as Models from "../models";
 import * as ViewModels from "../view-models";
+import { FormGroup }                 from '@angular/forms';
 
 @Component({
     selector: 'parameters',
@@ -14,6 +15,9 @@ export class ParametersComponent {
 
     @Input()
     parent: ViewModels.DialogViewModel;
+
+    @Input()
+    form: FormGroup;
 
     @Input()
     set parameters(value: ViewModels.ParameterViewModel[]) {

@@ -14,6 +14,7 @@ import { ContextService } from '../context.service';
 import { ColorService } from '../color.service';
 import { FocusManagerService } from '../focus-manager.service';
 import { ErrorService } from '../error.service';
+import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 
 @Component({
     selector: 'app-dialog',
@@ -29,7 +30,8 @@ export class DialogComponent implements OnInit, OnDestroy {
         private color: ColorService,
         private focusManager: FocusManagerService,
         private context: ContextService,
-        private changeDetectorRef : ChangeDetectorRef) { }
+        private changeDetectorRef : ChangeDetectorRef,
+        private formBuilder : FormBuilder) { }
 
 
     paneId: number;
@@ -39,8 +41,25 @@ export class DialogComponent implements OnInit, OnDestroy {
 
     dialog: ViewModels.DialogViewModel;
 
+    form : FormGroup;
+
+
     private currentDialogId : string;
-  
+
+    private parms : _.Dictionary<ViewModels.ParameterViewModel>;
+
+    private createForm(dialog : ViewModels.DialogViewModel) {
+        const pps = dialog.parameters;
+        this.parms = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<ViewModels.ParameterViewModel>
+
+        const controls = _.mapValues(this.parms, p  => [p.value, a => p.validator(a)]) as _.Dictionary<any>;
+        this.form = this.formBuilder.group(controls); 
+
+        // this.form.valueChanges.subscribe(data => this.onValueChanged(data));
+        // this.onValueChanged(); // (re)set validation messages now
+    }
+
+
     getDialog(routeData: PaneRouteData) {
        
         if (this.parent && this.currentDialogId) {
@@ -94,11 +113,10 @@ export class DialogComponent implements OnInit, OnDestroy {
 
                         this.context.setParmUpdater(dialogViewModel.setParms, routeData.paneId);
                         dialogViewModel.deregister = () => this.context.clearParmUpdater(routeData.paneId);
+                     
+                        this.createForm(dialogViewModel);      
 
-                        this.dialog = dialogViewModel;
-
-                        this.listenToDialog();
-
+                        this.dialog = dialogViewModel;       
                     }
                 })
                 .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
@@ -111,24 +129,6 @@ export class DialogComponent implements OnInit, OnDestroy {
     private activatedRouteDataSub: ISubscription;
     private paneRouteDataSub: ISubscription;
     private dialogSub : ISubscription;
-
-
-    private listenToDialog() {
-
-        if (this.dialogSub) {
-            this.dialogSub.unsubscribe();
-        }
-
-        this.dialogSub = this.dialog.validChanged$.subscribe(changed => {
-            if (changed) {
-                this.tooltip = this.dialog.tooltip();
-                this.disabled = !this.dialog.clientValid();
-                this.changeDetectorRef.detectChanges();
-            }
-
-        });
-
-    }
 
 
     ngOnInit(): void {
@@ -160,9 +160,16 @@ export class DialogComponent implements OnInit, OnDestroy {
         }
     }
     
-    tooltip : string;
-    disabled : boolean;
+    get tooltip() : string {
+        return this.dialog.tooltip();
+    }
 
-   
+    onSubmit() {
+        _.forEach(this.parms, (p, k) => {
+            const newValue = this.form.value[p.id];
+            p.setValueFromControl(newValue);
+        });
+        this.dialog.doInvoke();
+    }
 
 }

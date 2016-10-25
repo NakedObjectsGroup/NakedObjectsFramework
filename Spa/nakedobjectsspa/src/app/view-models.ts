@@ -14,6 +14,7 @@ import { ILocalFilter } from "./mask.service";
 import { Subject } from 'rxjs/Subject';
 import { ISubscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
+import { AbstractControl } from '@angular/forms';
 
 export interface IAttachmentViewModel {
     href: string;
@@ -718,13 +719,40 @@ export abstract class ValueViewModel extends MessageViewModel implements IFieldV
         this.updateColor();
     }
 
-    selectedMultiChoices: IChoiceViewModel[];
+    selectedMultiChoices: ChoiceViewModel[];
 
     private file: Models.Link;
 
     entryType: Models.EntryType;
 
     validate: (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
+
+    private isValid(viewValue : any): boolean {
+
+        let val: string;
+
+        if (viewValue instanceof ChoiceViewModel) {
+            val = viewValue.getValue().toValueString();
+        } else if (viewValue instanceof Array) {
+            if (viewValue.length) {
+                  return _.every(viewValue as (string | ChoiceViewModel)[], (v: any) => this.isValid(v));
+            }
+            val = "";
+        } else {
+            val = viewValue as string;
+        }
+
+        // only fully validate freeform scalar 
+        const fullValidate = this.entryType === Models.EntryType.FreeForm && this.type === "scalar";
+
+        return this.validate(viewValue, val, !fullValidate);
+    };
+
+    validator(c: AbstractControl): { [index: string]: any; } {
+        const viewValue = c.value;
+        const isvalid = this.isValid(viewValue);
+        return isvalid ? null : { invalid: "invalid entry" };
+    };
 
     refresh: (newValue: Models.Value) => void;
 
@@ -768,6 +796,22 @@ export abstract class ValueViewModel extends MessageViewModel implements IFieldV
 
         this.color = "";
     }
+
+    setValueFromControl(newValue : Ro.scalarValueType | Date | ChoiceViewModel | ChoiceViewModel[]) {
+
+        if (newValue instanceof Array) {
+            this.selectedMultiChoices = newValue;
+        }
+        else if (newValue instanceof ChoiceViewModel) {
+            this.selectedChoice = newValue;
+        }
+        else {
+            this.value = newValue;
+        }
+
+    } 
+
+
 
     getValue(): Models.Value {
 
