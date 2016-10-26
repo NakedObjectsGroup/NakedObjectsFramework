@@ -531,6 +531,7 @@ export class ContextService {
     setObject = (paneId: number, co: Models.DomainObjectRepresentation) => this.currentObjects[paneId] = co;
 
     swapCurrentObjects = () => {
+        
         this.parameterCache.swap();
         this.objectEditCache.swap();
         this.transientCache.swap();

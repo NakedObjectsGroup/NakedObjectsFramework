@@ -1,11 +1,11 @@
-import { Component, Input } from '@angular/core';
-import {NG_VALIDATORS } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { NG_VALIDATORS } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { ViewModelFactoryService } from "../view-model-factory.service";
 import { UrlManagerService } from "../url-manager.service";
 import * as Models from "../models";
 import * as ViewModels from "../view-models";
-import { AbstractDroppableComponent } from '../abstract-droppable/abstract-droppable.component';
+import { FieldComponent } from '../field/field.component';
 import { FormGroup } from '@angular/forms';
 
 @Component({
@@ -13,7 +13,7 @@ import { FormGroup } from '@angular/forms';
     templateUrl: './parameter.component.html',
     styleUrls: ['./parameter.component.css']
 })
-export class ParameterComponent extends AbstractDroppableComponent {
+export class ParameterComponent extends FieldComponent implements OnInit {
 
     constructor(private viewModelFactory: ViewModelFactoryService, private urlManager: UrlManagerService) {
         super();
@@ -21,9 +21,9 @@ export class ParameterComponent extends AbstractDroppableComponent {
 
     parm: ViewModels.ParameterViewModel;
 
-    _form : FormGroup;
+    _form: FormGroup;
 
-    message : string;
+    message: string;
 
     onValueChanged(data?: any) {
         // clear previous error message (if any)
@@ -34,6 +34,7 @@ export class ParameterComponent extends AbstractDroppableComponent {
             if (control && control.dirty && !control.valid) {
                 this.message = this.parm.getMessage();
             }
+            super.onChange();
         }
     }
 
@@ -61,9 +62,18 @@ export class ParameterComponent extends AbstractDroppableComponent {
     get parameter() {
         return this.parm;
     }
- 
+
     classes(): string {
         return `${this.parm.color}${this.canDrop ? " candrop" : ""}`;
+    }
+
+    ngOnInit(): void {
+        super.init(this.parent, this.parameter, this.form.controls[this.parm.id]);
+    }
+
+    isSelected(choice: ViewModels.ChoiceViewModel) {
+        return _.some(this.parameter.selectedMultiChoices,   c => c.equals(choice));
+        //return false;
     }
 
 }

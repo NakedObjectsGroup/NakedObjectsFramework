@@ -2,14 +2,14 @@ import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as Models from "../models";
 import * as ViewModels from "../view-models";
-import { AbstractDroppableComponent } from '../abstract-droppable/abstract-droppable.component';
+import { FieldComponent } from '../field/field.component';
 
 @Component({
     selector: 'property',
     templateUrl: './property.component.html',
     styleUrls: ['./property.component.css']
 })
-export class PropertyComponent extends AbstractDroppableComponent {
+export class PropertyComponent extends FieldComponent {
 
     constructor() {
         super();

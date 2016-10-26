@@ -30,38 +30,45 @@ export class DialogComponent implements OnInit, OnDestroy {
         private color: ColorService,
         private focusManager: FocusManagerService,
         private context: ContextService,
-        private changeDetectorRef : ChangeDetectorRef,
-        private formBuilder : FormBuilder) { }
+        private changeDetectorRef: ChangeDetectorRef,
+        private formBuilder: FormBuilder) { }
 
 
     paneId: number;
 
     @Input()
-    parent : ViewModels.MenuViewModel | ViewModels.DomainObjectViewModel | ViewModels.ListViewModel;
+    parent: ViewModels.MenuViewModel | ViewModels.DomainObjectViewModel | ViewModels.ListViewModel;
 
     dialog: ViewModels.DialogViewModel;
 
-    form : FormGroup;
+    form: FormGroup;
 
 
-    private currentDialogId : string;
+    private currentDialogId: string;
 
-    private parms : _.Dictionary<ViewModels.ParameterViewModel>;
+    private parms: _.Dictionary<ViewModels.ParameterViewModel>;
 
-    private createForm(dialog : ViewModels.DialogViewModel) {
+    private createForm(dialog: ViewModels.DialogViewModel) {
         const pps = dialog.parameters;
         this.parms = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<ViewModels.ParameterViewModel>
 
-        const controls = _.mapValues(this.parms, p  => [p.value, a => p.validator(a)]) as _.Dictionary<any>;
-        this.form = this.formBuilder.group(controls); 
+        const controls = _.mapValues(this.parms, p => [p.getValueForControl(), a => p.validator(a)]) as _.Dictionary<any>;
+        this.form = this.formBuilder.group(controls);
 
-        // this.form.valueChanges.subscribe(data => this.onValueChanged(data));
+        this.form.valueChanges.subscribe(data => {
+            // cache parm values
+            _.forEach(data, (v, k) => {
+                const parm = this.parms[k];
+                parm.setValueFromControl(v);
+            });
+            this.dialog.setParms();
+        });
         // this.onValueChanged(); // (re)set validation messages now
     }
 
 
     getDialog(routeData: PaneRouteData) {
-       
+
         if (this.parent && this.currentDialogId) {
             const p = this.parent;
             let action: Models.ActionMember | Models.ActionRepresentation = null;
@@ -101,7 +108,7 @@ export class DialogComponent implements OnInit, OnDestroy {
                             this.focusManager,
                             this.error);
                         //const isAlreadyViewModel = action instanceof Nakedobjectsviewmodels.ActionViewModel;
-                        actionViewModel = actionViewModel || 
+                        actionViewModel = actionViewModel ||
                             this.viewModelFactory.actionViewModel(action as Models.ActionMember | Models.ActionRepresentation,
                                 dialogViewModel,
                                 routeData);
@@ -113,10 +120,10 @@ export class DialogComponent implements OnInit, OnDestroy {
 
                         this.context.setParmUpdater(dialogViewModel.setParms, routeData.paneId);
                         dialogViewModel.deregister = () => this.context.clearParmUpdater(routeData.paneId);
-                     
-                        this.createForm(dialogViewModel);      
 
-                        this.dialog = dialogViewModel;       
+                        this.createForm(dialogViewModel);
+
+                        this.dialog = dialogViewModel;
                     }
                 })
                 .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
@@ -128,7 +135,7 @@ export class DialogComponent implements OnInit, OnDestroy {
 
     private activatedRouteDataSub: ISubscription;
     private paneRouteDataSub: ISubscription;
-    private dialogSub : ISubscription;
+    private dialogSub: ISubscription;
 
 
     ngOnInit(): void {
@@ -144,7 +151,7 @@ export class DialogComponent implements OnInit, OnDestroy {
                     this.getDialog(paneRouteData);
                 });
         });
-
+     
     }
 
     ngOnDestroy(): void {
@@ -158,9 +165,10 @@ export class DialogComponent implements OnInit, OnDestroy {
         if (this.dialogSub) {
             this.dialogSub.unsubscribe();
         }
+
     }
-    
-    get tooltip() : string {
+
+    get tooltip(): string {
         return this.dialog.tooltip();
     }
 

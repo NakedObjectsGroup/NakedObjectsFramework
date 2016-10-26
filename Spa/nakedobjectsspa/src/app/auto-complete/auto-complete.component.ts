@@ -2,7 +2,7 @@ import { Component, Input, ElementRef } from '@angular/core';
 import * as _ from "lodash";
 import * as Models from "../models";
 import * as ViewModels from "../view-models";
-import { AbstractDroppableComponent } from '../abstract-droppable/abstract-droppable.component';
+import { FieldComponent } from '../field/field.component';
 import * as Msg from "../user-messages";
 
 @Component({
@@ -14,7 +14,7 @@ import * as Msg from "../user-messages";
     styleUrls: ['./auto-complete.component.css']
 })
 
-export class AutoCompleteComponent extends AbstractDroppableComponent {
+export class AutoCompleteComponent extends FieldComponent {
 
     filteredList: ViewModels.ChoiceViewModel[] = [];
     elementRef: ElementRef;

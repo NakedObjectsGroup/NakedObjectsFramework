@@ -811,6 +811,10 @@ export abstract class ValueViewModel extends MessageViewModel implements IFieldV
 
     } 
 
+    getValueForControl() {
+        return this.selectedMultiChoices || this.selectedChoice || this.value;
+    } 
+
 
 
     getValue(): Models.Value {

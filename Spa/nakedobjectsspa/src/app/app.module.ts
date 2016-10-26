@@ -25,8 +25,7 @@ import { GeminiClickDirective } from './gemini-click.directive';
 import { GeminiBooleanDirective } from './gemini-boolean.directive';
 import { GeminiClearDirective } from './gemini-clear.directive';
 import { GeminiValidateDirective } from './gemini-validate.directive';
-import { AbstractDroppableComponent } from './abstract-droppable/abstract-droppable.component';
-
+import { FieldComponent } from './field/field.component';
 import { ErrorService } from './error.service';
 import { ContextService } from './context.service';
 import { UrlManagerService } from './url-manager.service';
