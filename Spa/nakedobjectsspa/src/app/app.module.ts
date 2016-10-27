@@ -17,7 +17,6 @@ import { DialogComponent } from './dialog/dialog.component';
 import { ParametersComponent } from './parameters/parameters.component';
 import { PropertyComponent } from './property/property.component';
 import { ParameterComponent } from './parameter/parameter.component';
-import { AutoCompleteComponent } from './auto-complete/auto-complete.component';
 import { RecentComponent } from './recent/recent.component';
 import { ApplicationPropertiesComponent } from './application-properties/application-properties.component';
 import { GeminiConditionalChoicesDirective } from './gemini-conditional-choices.directive';
@@ -58,7 +57,6 @@ import { ReactiveFormsModule }          from '@angular/forms';
     ParametersComponent,
     PropertyComponent,
     ParameterComponent,
-    AutoCompleteComponent,
     RecentComponent,
     ApplicationPropertiesComponent,
     GeminiConditionalChoicesDirective,

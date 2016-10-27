@@ -2,12 +2,23 @@ import * as ViewModels from "../view-models";
 import * as Models from "../models"
 import * as Ro from '../ro-interfaces';
 import { AbstractControl } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
+import { ElementRef } from '@angular/core';
+import * as Msg from "../user-messages";
 
 export class FieldComponent {
+
+    //filteredList: ViewModels.ChoiceViewModel[] = [];
+    elementRef: ElementRef;
+
+    constructor(myElement: ElementRef) {
+        this.elementRef = myElement;
+    }
 
     private vmParent: ViewModels.DialogViewModel | ViewModels.DomainObjectViewModel;
     private model: ViewModels.ParameterViewModel | ViewModels.PropertyViewModel;
     private isConditionalChoices: boolean;
+    private isAutoComplete: boolean;
     private control: AbstractControl;
 
     protected init(vmParent: ViewModels.DialogViewModel | ViewModels.DomainObjectViewModel,
@@ -22,6 +33,8 @@ export class FieldComponent {
 
         this.isConditionalChoices = (this.model.entryType === Models.EntryType.ConditionalChoices ||
             this.model.entryType === Models.EntryType.MultipleConditionalChoices);
+
+        this.isAutoComplete = this.model.entryType === Models.EntryType.AutoComplete;
 
         if (this.isConditionalChoices) {
             this.pArgs = _.omit(this.model.promptArguments, "x-ro-nof-members") as _.Dictionary<Models.Value>;
@@ -121,6 +134,82 @@ export class FieldComponent {
     onChange() {
         if (this.isConditionalChoices) {
             this.populateDropdown();
+        }
+        else if (this.isAutoComplete) {
+            this.populateAutoComplete();
+        }
+    }
+
+    message: string;
+
+    _form: FormGroup;
+
+    onValueChanged(data?: any) {
+        // clear previous error message (if any)
+        this.message = '';
+
+        if (this.model) {
+            const control = this._form.get(this.model.id);
+            if (control && control.dirty && !control.valid) {
+                this.message = this.isAutoComplete ? Msg.pendingAutoComplete : this.model.getMessage();
+            }
+            this.onChange();
+        }
+    }
+
+    set formGroup(fm: FormGroup) {
+        this._form = fm;
+        this._form.valueChanges.subscribe(data => this.onValueChanged(data));
+        this.onValueChanged(); // (re)set validation messages now
+    }
+
+    get formGroup() {
+        return this._form;
+    }
+
+    populateAutoComplete() {
+        const input = this.control.value;
+
+        this.model.selectedChoice = null;
+        //this.model.clientValid = false;
+
+        if (input.length >= this.model.minLength) {
+            this.model.prompt(input).
+                then((cvms: ViewModels.ChoiceViewModel[]) => {
+                    this.model.choices = cvms;
+                }).
+                catch(() => { 
+                    this.model.choices = [];
+                });
+        }
+        else {            
+             this.model.choices = [];
+        }
+
+        // this.model.setMessage(Msg.pendingAutoComplete);
+        // this.model.clientValid = false;
+    }
+
+    select(item: ViewModels.ChoiceViewModel) {
+        this.model.choices = [];
+        this.model.selectedChoice = item;
+        this.control.reset(item);
+        // this.model.resetMessage();
+        // this.model.clientValid = true;
+    }
+
+    private isInside(clickedComponent: any): boolean {
+        if (clickedComponent) {
+            return clickedComponent === this.elementRef.nativeElement || this.isInside(clickedComponent.parentNode);
+        }
+        return false;
+    }
+
+    handleClick(event: any) {
+        if (this.isAutoComplete) {
+            if (!this.isInside(event.target)) {
+                this.model.choices = [];
+            }
         }
     }
 }

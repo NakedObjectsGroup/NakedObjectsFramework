@@ -748,8 +748,8 @@ namespace NakedObjects.Selenium {
             ChoicesChangeDefaults();
             ConditionalChoicesDefaults();
             ConditionalChoicesMultiple();
-            //AutoCompleteParm();
-            //AutoCompleteParmDefault();
+            AutoCompleteParm();
+            AutoCompleteParmDefault();
             ////ClearingAutoCompleteTextClearsUnderlyingReference();
             //AutoCompleteParmShowSingleItem();
             //AutoCompleteScalarField();

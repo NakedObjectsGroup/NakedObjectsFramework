@@ -747,6 +747,12 @@ export abstract class ValueViewModel extends MessageViewModel implements IFieldV
 
         let val: string;
 
+        if (this.entryType === Models.EntryType.AutoComplete && !(viewValue instanceof ChoiceViewModel)) {
+            this.clientValid = false;
+            this.setMessage(Msg.pendingAutoComplete);
+            return false;
+        }
+
         if (viewValue instanceof ChoiceViewModel) {
             val = viewValue.getValue().toValueString();
         } else if (viewValue instanceof Array) {

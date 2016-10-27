@@ -27,9 +27,9 @@
 			<!--"EntryType.AutoComplete"-->
 			<!--<input id="{{property.paneArgId}}" class="{{property.status}} value droppable" ng-class="property.color" placeholder="{{property.description}}" ng-switch-when="5" type="text" ng-model="$parent.property.selectedChoice" select="property.prompt(request)" gemini-autocomplete gemini-drop [geminiValidate]="property" [mandatoryOnly]="true" [geminiClear]="property" />-->
 
-			<div *ngSwitchCase="5">
+			<!--<div *ngSwitchCase="5">
 				<autocomplete [viewModel]="property" [parent]="parent"></autocomplete>
-			</div>
+			</div>-->
 
 
 			<!--"EntryType.ConditionalChoices"-->
@@ -138,10 +138,10 @@
 				<!--<div ng-switch-when="5">
                     <input id="{{property.paneArgId}}" class="{{property.status}}" placeholder="{{property.description}}" type="text" ng-model="$parent.property.selectedChoice" select="property.prompt(request)" gemini-autocomplete [geminiValidate]="property" [mandatoryOnly]="true" [geminiClear]="property" />
                 </div>-->
-				<div *ngSwitchCase="5">
+				<!--<div *ngSwitchCase="5">
 					<autocomplete [viewModel]="property" [parent]="parent"></autocomplete>
 
-				</div>
+				</div>-->
 
 				<!--"EntryType.ConditionalChoices"-->
 

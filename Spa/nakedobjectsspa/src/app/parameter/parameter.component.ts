@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ElementRef } from '@angular/core';
 import { NG_VALIDATORS } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { ViewModelFactoryService } from "../view-model-factory.service";
@@ -10,44 +10,21 @@ import { FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'parameter',
+    host: {
+        '(document:click)': 'handleClick($event)'
+    },
     templateUrl: './parameter.component.html',
     styleUrls: ['./parameter.component.css']
 })
 export class ParameterComponent extends FieldComponent implements OnInit {
 
-    constructor(private viewModelFactory: ViewModelFactoryService, private urlManager: UrlManagerService) {
-        super();
+    constructor(private viewModelFactory: ViewModelFactoryService,
+                private urlManager: UrlManagerService,
+                myElement: ElementRef) {
+        super(myElement);
     }
 
     parm: ViewModels.ParameterViewModel;
-
-    _form: FormGroup;
-
-    message: string;
-
-    onValueChanged(data?: any) {
-        // clear previous error message (if any)
-        this.message = '';
-
-        if (this.parm) {
-            const control = this._form.get(this.parm.id);
-            if (control && control.dirty && !control.valid) {
-                this.message = this.parm.getMessage();
-            }
-            super.onChange();
-        }
-    }
-
-    @Input()
-    set form(fm: FormGroup) {
-        this._form = fm;
-        this.form.valueChanges.subscribe(data => this.onValueChanged(data));
-        this.onValueChanged(); // (re)set validation messages now
-    }
-
-    get form() {
-        return this._form;
-    }
 
 
     @Input()
@@ -71,4 +48,12 @@ export class ParameterComponent extends FieldComponent implements OnInit {
         super.init(this.parent, this.parameter, this.form.controls[this.parm.id]);
     }
 
+    @Input()
+    set form(fm: FormGroup) {
+        this.formGroup = fm;
+    }
+
+    get form() {
+        return this.formGroup;
+    }
 }

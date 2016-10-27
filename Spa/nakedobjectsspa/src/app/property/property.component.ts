@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ElementRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as Models from "../models";
 import * as ViewModels from "../view-models";
@@ -11,8 +11,8 @@ import { FieldComponent } from '../field/field.component';
 })
 export class PropertyComponent extends FieldComponent {
 
-    constructor() {
-        super();
+    constructor(myElement: ElementRef) {
+        super(myElement);
     }
 
     prop: ViewModels.PropertyViewModel;
