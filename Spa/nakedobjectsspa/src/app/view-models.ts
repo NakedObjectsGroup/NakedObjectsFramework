@@ -689,7 +689,23 @@ export abstract class ValueViewModel extends MessageViewModel implements IFieldV
     localFilter: ILocalFilter;
     formattedValue: string;
 
-    choices: IChoiceViewModel[] = [];
+    private choiceOptions = [];
+
+    get choices() : IChoiceViewModel[] {
+        return this.choiceOptions;
+    }
+
+    set choices(options: IChoiceViewModel[]) {
+        this.choiceOptions = options;
+
+        if (this.entryType == Models.EntryType.MultipleConditionalChoices) {
+            const currentSelectedOptions = this.selectedMultiChoices;
+            this.selectedMultiChoices = _.filter(this.choiceOptions, c => _.some(currentSelectedOptions, choiceToSet => c.valuesEqual(choiceToSet)));
+        } else if (this.entryType === Models.EntryType.ConditionalChoices) {
+            const currentSelectedOption = this.selectedChoice;
+            this.selectedChoice = _.find(this.choiceOptions, c => c.valuesEqual(currentSelectedOption));
+        }
+    }
 
     private currentChoice: IChoiceViewModel;
 
@@ -719,7 +735,7 @@ export abstract class ValueViewModel extends MessageViewModel implements IFieldV
         this.updateColor();
     }
 
-    selectedMultiChoices: ChoiceViewModel[];
+    selectedMultiChoices: IChoiceViewModel[];
 
     private file: Models.Link;
 

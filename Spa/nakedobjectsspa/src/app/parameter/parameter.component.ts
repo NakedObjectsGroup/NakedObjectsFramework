@@ -71,9 +71,4 @@ export class ParameterComponent extends FieldComponent implements OnInit {
         super.init(this.parent, this.parameter, this.form.controls[this.parm.id]);
     }
 
-    isSelected(choice: ViewModels.ChoiceViewModel) {
-        return _.some(this.parameter.selectedMultiChoices,   c => c.equals(choice));
-        //return false;
-    }
-
 }

@@ -8,7 +8,7 @@ export class FieldComponent {
     private vmParent: ViewModels.DialogViewModel | ViewModels.DomainObjectViewModel;
     private model: ViewModels.ParameterViewModel | ViewModels.PropertyViewModel;
     private isConditionalChoices: boolean;
-    private control: AbstractControl
+    private control: AbstractControl;
 
     protected init(vmParent: ViewModels.DialogViewModel | ViewModels.DomainObjectViewModel,
         vm: ViewModels.ParameterViewModel | ViewModels.PropertyViewModel,
@@ -95,12 +95,15 @@ export class FieldComponent {
             }
             this.model.choices = cvms;
             this.currentOptions = cvms;
-           
-            //this.control.reset(this.model.getValueForControl());
 
-
-
-
+            if (this.isConditionalChoices) {
+                // need to reset control to find the selected options 
+                if (this.model.entryType === Models.EntryType.MultipleConditionalChoices) {
+                    this.control.reset(this.model.selectedMultiChoices);
+                } else {
+                    this.control.reset(this.model.selectedChoice);
+                }
+            }
         }).catch(() => {
             // error clear everything 
             this.model.selectedChoice = null;
@@ -120,5 +123,4 @@ export class FieldComponent {
             this.populateDropdown();
         }
     }
-
 }
