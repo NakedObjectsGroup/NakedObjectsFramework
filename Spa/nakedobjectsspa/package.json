@@ -25,7 +25,8 @@
     "ts-helpers": "^1.1.1",
     "zone.js": "^0.6.23",
     "lodash": "^4.16.4",
-    "moment": "^2.15.2"
+    "moment": "^2.15.2",
+    "ng2-dnd": "^2.0.1"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.37",
