@@ -274,7 +274,7 @@ export class UrlManagerService {
         if (changeMode) {
             newPath = `/${mode}/${pane1Type}/${pane2Type}`;
             //$location.path(newPath);
-            this.router.navigateByUrl(newPath);
+            //this.router.navigateByUrl(newPath);
             mayReplace = false;
         }
 
@@ -388,10 +388,10 @@ export class UrlManagerService {
         if (condition(search)) {
             let path: string;
             const result = this.handleTransition(paneId, search, transition);
-            ({path, search} = result);
-        
+            ({ path, search } = result);
 
-        _.forEach(newValues,
+
+            _.forEach(newValues,
                 (v, k) => {
                     if (v)
                         this.setId(k, v, search);

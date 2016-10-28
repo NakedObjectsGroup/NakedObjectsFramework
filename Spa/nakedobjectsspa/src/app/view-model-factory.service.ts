@@ -109,7 +109,8 @@ export class ViewModelFactoryService {
             this.focusManager.focusOverrideOn(FocusTarget.CheckBox, index + 1, paneId);
         };
 
-        itemViewModel.selected = selected;
+        // avoid setter to avoid selectionChanged
+        itemViewModel._selected = selected;
 
         itemViewModel.doClick = (right?: boolean) => {
             const currentPane = this.clickHandler.pane(paneId, right);
@@ -623,9 +624,7 @@ export class ViewModelFactoryService {
         return parmViewModel as ViewModels.IParameterViewModel;
     };
 
-    getItems = (links: Models.Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: ViewModels.IListViewModel |
-        ViewModels.
-        ICollectionViewModel) => {
+    getItems = (links: Models.Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: ViewModels.IListViewModel | ViewModels.ICollectionViewModel) => {
         const selectedItems = routeData.selectedItems;
 
         const items = _.map(links, (link, i) => this.itemViewModel(link, routeData.paneId, selectedItems[i], i));
