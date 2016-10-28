@@ -759,16 +759,17 @@ export abstract class ValueViewModel extends MessageViewModel implements IFieldV
         }
 
         if (this.entryType === Models.EntryType.AutoComplete && !(viewValue instanceof ChoiceViewModel)) {
-            this.clientValid = false;
-
+            
             if (val) {
                 this.setMessage(Msg.pendingAutoComplete);
+                this.clientValid = false;
+                return false;
             }
-            else {
+            else if (!this.optional)  {
                 this.resetMessage();
+                this.clientValid = false;
+                return false;
             }
-
-            return false;
         }
 
         // only fully validate freeform scalar 

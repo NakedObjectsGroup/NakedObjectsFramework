@@ -374,7 +374,8 @@ namespace NakedObjects.Selenium {
         public virtual void AutoCompleteParmShowSingleItem() {
             Url(ProductServiceUrl);
             OpenActionDialog("Find Product");
-            ClearFieldThenType("#product1", "BB");
+            // for some reason "BB" doesn't work in test - works OK manually - "BB " seems to work
+            ClearFieldThenType("#product1", "BB ");
             wait.Until(dr => dr.FindElement(By.CssSelector("ul li a")).Text == "BB Ball Bearing");
             var item = br.FindElement(By.CssSelector("ul li a"));
             //As the match has not yet been selected,the field is invalid, so...
@@ -386,7 +387,9 @@ namespace NakedObjects.Selenium {
         public virtual void AutoCompleteScalarField() {
             GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--54461&as1=open&d1=AddComment&f1_comment=%22%22");
             WaitForView(Pane.Single, PaneType.Object, "SO54461");
-            ClearFieldThenType("#comment1", "parc");
+
+            // "parc" doesn't work in test (ok manually) "parcel" works
+            ClearFieldThenType("#comment1", "parcel");
             wait.Until(d => d.FindElements(By.CssSelector("ul li a")).Count == 2);
         }
 
@@ -751,9 +754,9 @@ namespace NakedObjects.Selenium {
             AutoCompleteParm();
             AutoCompleteParmDefault();
             ClearingAutoCompleteTextClearsUnderlyingReference();
-            //AutoCompleteParmShowSingleItem();
-            //AutoCompleteScalarField();
-            //AutoCompleteOptionalParamNotSelected();
+            AutoCompleteParmShowSingleItem();
+            AutoCompleteScalarField();
+            AutoCompleteOptionalParamNotSelected();
             //MandatoryParameterEnforced();
             //ValidateSingleValueParameter();
             ////ValidateSingleRefParamFromChoices();
