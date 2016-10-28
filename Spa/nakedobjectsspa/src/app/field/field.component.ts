@@ -140,18 +140,20 @@ export class FieldComponent {
         }
     }
 
-    message: string;
+    get message(){
+        return this.model.getMessage();
+    }
 
     _form: FormGroup;
 
     onValueChanged(data?: any) {
         // clear previous error message (if any)
-        this.message = '';
+        //this.message = '';
 
         if (this.model) {
             const control = this._form.get(this.model.id);
             if (control && control.dirty && !control.valid) {
-                this.message = this.model.getMessage();
+                //this.message = this.model.getMessage();
             }
             this.onChange();
         }
