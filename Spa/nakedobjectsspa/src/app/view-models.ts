@@ -99,7 +99,7 @@ export interface IFieldViewModel extends IMessageViewModel {
     multipleLines: number;
     password: boolean;
     clientValid: boolean;
-    validChanged$ : Observable<boolean>;
+    validChanged$: Observable<boolean>;
 
     type: "scalar" | "ref";
     reference: string;
@@ -135,7 +135,7 @@ export interface IFieldViewModel extends IMessageViewModel {
 
     setNewValue: (newValue: IDraggableViewModel) => void;
 
-    drop: ( newValue:  IDraggableViewModel) => void;
+    drop: (newValue: IDraggableViewModel) => void;
 
     clear: () => void;
 
@@ -276,7 +276,7 @@ export interface ITableRowColumnViewModel {
     value: Ro.scalarValueType | Date;
     formattedValue: string;
     title: string;
-    id : string;
+    id: string;
 }
 
 export interface ITableRowViewModel {
@@ -591,7 +591,7 @@ export class ItemViewModel extends LinkViewModel implements IItemViewModel, IDra
     tableRowViewModel: ITableRowViewModel;
 
     _selected: boolean;
-  
+
     set selected(v: boolean) {
         this._selected = v;
         this.selectionChange();
@@ -691,7 +691,7 @@ export abstract class ValueViewModel extends MessageViewModel implements IFieldV
 
     private choiceOptions = [];
 
-    get choices() : IChoiceViewModel[] {
+    get choices(): IChoiceViewModel[] {
         return this.choiceOptions;
     }
 
@@ -743,25 +743,32 @@ export abstract class ValueViewModel extends MessageViewModel implements IFieldV
 
     validate: (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
 
-    private isValid(viewValue : any): boolean {
+    private isValid(viewValue: any): boolean {
 
         let val: string;
-
-        if (this.entryType === Models.EntryType.AutoComplete && !(viewValue instanceof ChoiceViewModel)) {
-            this.clientValid = false;
-            this.setMessage(Msg.pendingAutoComplete);
-            return false;
-        }
 
         if (viewValue instanceof ChoiceViewModel) {
             val = viewValue.getValue().toValueString();
         } else if (viewValue instanceof Array) {
             if (viewValue.length) {
-                  return _.every(viewValue as (string | ChoiceViewModel)[], (v: any) => this.isValid(v));
+                return _.every(viewValue as (string | ChoiceViewModel)[], (v: any) => this.isValid(v));
             }
             val = "";
         } else {
             val = viewValue as string;
+        }
+
+        if (this.entryType === Models.EntryType.AutoComplete && !(viewValue instanceof ChoiceViewModel)) {
+            this.clientValid = false;
+
+            if (val) {
+                this.setMessage(Msg.pendingAutoComplete);
+            }
+            else {
+                this.resetMessage();
+            }
+
+            return false;
         }
 
         // only fully validate freeform scalar 
@@ -788,7 +795,7 @@ export abstract class ValueViewModel extends MessageViewModel implements IFieldV
         this.reference = newValue.reference;
     }
 
-    drop: (newValue:  IDraggableViewModel) => void;
+    drop: (newValue: IDraggableViewModel) => void;
 
     clear() {
         this.selectedChoice = null;
@@ -804,14 +811,24 @@ export abstract class ValueViewModel extends MessageViewModel implements IFieldV
             const href = this.selectedChoice.getValue().href();
             if (href) {
                 color.toColorNumberFromHref(href).
-                    then(c => this.color = `${Config.linkColor}${c}`).
+                    then(c => {
+                        // only if we still have a choice may have been cleared by a later call
+                        if (this.selectedChoice) {
+                            this.color = `${Config.linkColor}${c}`;
+                        }
+                    }).
                     catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
                 return;
             }
         }
         else if (this.entryType !== Models.EntryType.AutoComplete && this.value) {
             color.toColorNumberFromType(this.returnType).
-                then(c => this.color = `${Config.linkColor}${c}`).
+                then(c => {
+                    // only if we still have a value may have been cleared by a later call
+                    if (this.value) {
+                        this.color = `${Config.linkColor}${c}`;
+                    }
+                }).
                 catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
             return;
         }
@@ -819,7 +836,7 @@ export abstract class ValueViewModel extends MessageViewModel implements IFieldV
         this.color = "";
     }
 
-    setValueFromControl(newValue : Ro.scalarValueType | Date | ChoiceViewModel | ChoiceViewModel[]) {
+    setValueFromControl(newValue: Ro.scalarValueType | Date | ChoiceViewModel | ChoiceViewModel[]) {
 
         if (newValue instanceof Array) {
             this.selectedMultiChoices = newValue;
@@ -831,11 +848,11 @@ export abstract class ValueViewModel extends MessageViewModel implements IFieldV
             this.value = newValue;
         }
 
-    } 
+    }
 
     getValueForControl() {
         return this.selectedMultiChoices || this.selectedChoice || this.value;
-    } 
+    }
 
 
 
@@ -1053,7 +1070,7 @@ export class DialogViewModel extends MessageViewModel implements IDialogViewMode
 
     validChanged$ = this.validChangedSource.asObservable();
 
-    private parmSubs : ISubscription[] = [];
+    private parmSubs: ISubscription[] = [];
 
     private listenToParameters() {
         _.forEach(this.parameters, p => {
@@ -1101,11 +1118,11 @@ export class CollectionPlaceholderViewModel implements ICollectionPlaceholderVie
 export class ListViewModel extends MessageViewModel implements IListViewModel {
 
     constructor(private colorService: ColorService,
-                private context: ContextService,
-                private viewModelFactory: ViewModelFactoryService,
-                private urlManager: UrlManagerService,
-                private focusManager: FocusManagerService,
-                private error: ErrorService) {
+        private context: ContextService,
+        private viewModelFactory: ViewModelFactoryService,
+        private urlManager: UrlManagerService,
+        private focusManager: FocusManagerService,
+        private error: ErrorService) {
         super();
     }
 
@@ -1182,8 +1199,8 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
         }
     }
 
-    hasTableData = () =>  this.listRep.hasTableData();
-    
+    hasTableData = () => this.listRep.hasTableData();
+
     private collectionContributedActionDecorator(actionViewModel: IActionViewModel) {
         const wrappedInvoke = actionViewModel.execute;
         actionViewModel.execute = (pps: IParameterViewModel[], right?: boolean) => {
@@ -1392,9 +1409,9 @@ export class CollectionViewModel implements ICollectionViewModel {
     description = () => this.details.toString();
     refresh: (routeData: PaneRouteData, resetting: boolean) => void;
 
-    disableActions() { return true;}
+    disableActions() { return true; }
     allSelected = () => _.every(this.items, item => item.selected);
-    selectAll() {}
+    selectAll() { }
 }
 
 export class MenusViewModel implements IMenusViewModel {
@@ -1431,14 +1448,14 @@ export class TableRowColumnViewModel implements ITableRowColumnViewModel {
 
 export class PlaceHolderTableRowColumnViewModel implements ITableRowColumnViewModel {
 
-        constructor(public id: string) { }
+    constructor(public id: string) { }
 
-        type: "scalar";
-        returnType: "string";
-        value: "";
-        formattedValue: "";
-        title: "";
-    }
+    type: "scalar";
+    returnType: "string";
+    value: "";
+    formattedValue: "";
+    title: "";
+}
 
 export class TableRowViewModel implements ITableRowViewModel {
     title: string;
@@ -1446,11 +1463,11 @@ export class TableRowViewModel implements ITableRowViewModel {
     properties: ITableRowColumnViewModel[];
 
     conformColumns(columns: string[]) {
-            if (columns) {
-                this.properties =
-                    _.map(columns, c => _.find(this.properties, tp => tp.id === c) || new PlaceHolderTableRowColumnViewModel(c));
-            }
+        if (columns) {
+            this.properties =
+                _.map(columns, c => _.find(this.properties, tp => tp.id === c) || new PlaceHolderTableRowColumnViewModel(c));
         }
+    }
 }
 
 export class ApplicationPropertiesViewModel implements IApplicationPropertiesViewModel {

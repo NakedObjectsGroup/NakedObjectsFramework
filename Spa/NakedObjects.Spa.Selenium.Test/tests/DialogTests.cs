@@ -750,7 +750,7 @@ namespace NakedObjects.Selenium {
             ConditionalChoicesMultiple();
             AutoCompleteParm();
             AutoCompleteParmDefault();
-            ////ClearingAutoCompleteTextClearsUnderlyingReference();
+            ClearingAutoCompleteTextClearsUnderlyingReference();
             //AutoCompleteParmShowSingleItem();
             //AutoCompleteScalarField();
             //AutoCompleteOptionalParamNotSelected();

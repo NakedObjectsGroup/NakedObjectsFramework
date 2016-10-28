@@ -41,7 +41,7 @@ export class ParameterComponent extends FieldComponent implements OnInit {
     }
 
     classes(): string {
-        return `${this.parm.color}${this.canDrop ? " candrop" : ""}`;
+       return `${this.parm.color}${this.canDrop ? " candrop" : ""}`;
     }
 
     ngOnInit(): void {

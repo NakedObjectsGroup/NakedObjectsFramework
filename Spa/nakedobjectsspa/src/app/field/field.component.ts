@@ -4,7 +4,7 @@ import * as Ro from '../ro-interfaces';
 import { AbstractControl } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { ElementRef } from '@angular/core';
-import * as Msg from "../user-messages";
+
 
 export class FieldComponent {
 
@@ -151,7 +151,7 @@ export class FieldComponent {
         if (this.model) {
             const control = this._form.get(this.model.id);
             if (control && control.dirty && !control.valid) {
-                this.message = this.isAutoComplete ? Msg.pendingAutoComplete : this.model.getMessage();
+                this.message = this.model.getMessage();
             }
             this.onChange();
         }
@@ -170,32 +170,37 @@ export class FieldComponent {
     populateAutoComplete() {
         const input = this.control.value;
 
-        this.model.selectedChoice = null;
-        //this.model.clientValid = false;
+        if (input instanceof ViewModels.ChoiceViewModel){
+            return;
+        }
 
-        if (input.length >= this.model.minLength) {
+        if (input.length > 0 && input.length >= this.model.minLength) {
             this.model.prompt(input).
                 then((cvms: ViewModels.ChoiceViewModel[]) => {
+                    if (cvms.length === this.currentOptions.length && _.every(cvms, (c, i) => c.equals(this.currentOptions[i]))) {
+                        return;
+                    }
                     this.model.choices = cvms;
+                    this.currentOptions = cvms;
+                    this.model.selectedChoice = null;
                 }).
-                catch(() => { 
+                catch(() => {
                     this.model.choices = [];
+                    this.currentOptions = [];
+                    this.model.selectedChoice = null;
                 });
         }
-        else {            
-             this.model.choices = [];
+        else {
+            this.model.choices = [];
+            this.currentOptions = [];
+            this.model.selectedChoice = null;
         }
-
-        // this.model.setMessage(Msg.pendingAutoComplete);
-        // this.model.clientValid = false;
     }
 
     select(item: ViewModels.ChoiceViewModel) {
         this.model.choices = [];
         this.model.selectedChoice = item;
         this.control.reset(item);
-        // this.model.resetMessage();
-        // this.model.clientValid = true;
     }
 
     private isInside(clickedComponent: any): boolean {
