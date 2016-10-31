@@ -741,7 +741,7 @@ namespace NakedObjects.Selenium {
             ReopeningADialogThatWasntCancelledDoesNotRetainFields();
             ScalarParmShowsDefaultValue();
             DateTimeParmKeepsValue();
-            //TimeSpanParm();
+            //TimeSpanParm(); fails - maybe as a result of using chrome timepicker ? 
             RefChoicesParmKeepsValue();
             MultipleRefChoicesDefaults();
             MultipleRefChoicesChangeDefaults();
@@ -759,7 +759,7 @@ namespace NakedObjects.Selenium {
             AutoCompleteOptionalParamNotSelected();
             MandatoryParameterEnforced();
             ValidateSingleValueParameter();
-            //ValidateSingleRefParamFromChoices();
+            //ValidateSingleRefParamFromChoices(); don't yet support object collection actions 
             CoValidationOfMultipleParameters();
             ParameterDescriptionRenderedAsPlaceholder();
             BooleanParams();
