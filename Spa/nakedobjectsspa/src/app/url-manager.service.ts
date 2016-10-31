@@ -123,13 +123,13 @@ export class UrlManagerService {
     }
 
     private getSearch() {
-        //return $location.search();
+      
         const url = this.router.url;
         return this.router.parseUrl(url).queryParams;
     }
 
     private getPath() {
-        //return $location.search();
+      
         const url = this.router.url;
         let end = url.indexOf(";");
         end = end === -1 ? url.indexOf("?") : end;
@@ -138,7 +138,7 @@ export class UrlManagerService {
     }
 
     private setNewSearch(result : ITransitionResult) {
-        //$location.search(search);
+      
         const tree = this.router.createUrlTree([result.path], { queryParams: result.search });
 
         this.router.navigateByUrl(tree);    
@@ -170,7 +170,7 @@ export class UrlManagerService {
     }
 
     private setPaneRouteDataFromParms(paneRouteData: PaneRouteData, paneId: number, routeParams : {[key:string]: string}) {
-         paneRouteData.menuId = this.getId(akm.menu + paneId, routeParams);
+        paneRouteData.menuId = this.getId(akm.menu + paneId, routeParams);
         paneRouteData.actionId = this.getId(akm.action + paneId, routeParams);
         paneRouteData.dialogId = this.getId(akm.dialog + paneId, routeParams);
 
@@ -255,9 +255,7 @@ export class UrlManagerService {
             newPath = `/${mode}/${newPaneType}${this.isSinglePane() ? "" : `/${pane2Type}`}`;
             changeMode = false;
             mayReplace = false;
-            //$location.path(newPath);
-
-            //this.router.navigateByUrl(newPath);
+           
         }
 
         // changing item on pane 2
@@ -267,14 +265,12 @@ export class UrlManagerService {
             newPath = `/${mode}/${pane1Type}/${newPaneType}`;
             changeMode = false;
             mayReplace = false;
-            //$location.path(newPath);
-            //this.router.navigateByUrl(newPath);
+           
         }
 
         if (changeMode) {
             newPath = `/${mode}/${pane1Type}/${pane2Type}`;
-            //$location.path(newPath);
-            //this.router.navigateByUrl(newPath);
+          
             mayReplace = false;
         }
 
@@ -373,11 +369,6 @@ export class UrlManagerService {
             // null transition 
             break;
         }
-
-        // if (replace) {
-        //     //$location.replace();
-        //     //this.location.replaceState()
-        // }
 
         return { path: path, search: search, replace : replace };
     }
@@ -522,8 +513,7 @@ export class UrlManagerService {
         if (check(search)) {
             set(search);
             const result =  {path : this.getPath(), search : search, replace : false };
-            this.setNewSearch(result);
-            //$location.replace();
+            this.setNewSearch(result);        
         }
     }
 
@@ -595,15 +585,14 @@ export class UrlManagerService {
         // always on pane 1
         (<any>search)[akm.errorCat + 1] = Models.ErrorCategory[errorCategory];
 
-        //$location.path(newPath);
-        this.router.navigateByUrl(newPath);
-        const result =  {path : newPath, search : search, replace : false };
-        this.setNewSearch(result);
+        const result = { path: newPath, search: search, replace: false };
 
         if (errorCategory === Models.ErrorCategory.HttpClientError && ec === Models.HttpStatusCode.PreconditionFailed) {
-            // on concurrency fail replace url so we can't just go back
-            //$location.replace();
+            result.replace = true;
         }
+        this.setNewSearch(result);
+
+
     };
 
 
@@ -699,10 +688,6 @@ export class UrlManagerService {
             // just go home 
             this.setHome(paneId);
         }
-
-        // if (mayReplace) {
-        //     //$location.replace();
-        // }
     };
 
     clearUrlState = (paneId: number) => {
@@ -724,11 +709,6 @@ export class UrlManagerService {
         const search = this.swapSearchIds(this.getSearch()) as any;
         this.currentPaneId = Models.getOtherPane(this.currentPaneId);
 
-        //$location.path(newPath).search(search);
-
-        //const p = new UrlSegment(newPath, search as any);
-        //this.router.navigateByUrl(p.toString());
-
         const tree = this.router.createUrlTree([newPath], { queryParams: search });
 
         this.router.navigateByUrl(tree);  
@@ -736,13 +716,11 @@ export class UrlManagerService {
 
     cicero = () => {
         const newPath = `/${Constants.ciceroPath}/${this.getPath().split("/")[2]}`;
-        //$location.path(newPath);
         this.router.navigateByUrl(newPath);
     };
 
     applicationProperties = () => {
         const newPath = `/${Constants.geminiPath}/${Constants.applicationPropertiesPath}`
-        //$location.path(newPath);
         this.router.navigateByUrl(newPath);
     };
 
@@ -774,10 +752,6 @@ export class UrlManagerService {
                 search = this.swapSearchIds(search);
                 search = this.clearPane(search, 2);
             }
-
-            //$location.path(newPath).search(search);
-            //const p = new UrlSegment(newPath, search as any);
-            //this.router.navigateByUrl(p.toString());
 
             const tree = this.router.createUrlTree([newPath], { queryParams: search });
 
