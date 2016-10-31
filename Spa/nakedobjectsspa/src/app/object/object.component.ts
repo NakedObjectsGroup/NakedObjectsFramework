@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { RepresentationsService } from "../representations.service";
-import { ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute} from '@angular/router';
 import * as Models from "../models";
 import { UrlManagerService } from "../url-manager.service";
 import { ClickHandlerService } from "../click-handler.service";

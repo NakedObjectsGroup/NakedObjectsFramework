@@ -5,7 +5,7 @@ import { UrlManagerService } from "../url-manager.service";
 import * as _ from "lodash";
 import * as Models from "../models";
 import * as ViewModels from "../view-models";
-import { ActivatedRoute, Router, Data } from '@angular/router';
+import { ActivatedRoute, Data } from '@angular/router';
 import "../rxjs-extensions";
 import { Subject } from 'rxjs/Subject';
 import { PaneRouteData, RouteData } from '../route-data';
@@ -30,7 +30,6 @@ export class DialogComponent implements OnInit, OnDestroy {
         private color: ColorService,
         private focusManager: FocusManagerService,
         private context: ContextService,
-        private changeDetectorRef: ChangeDetectorRef,
         private formBuilder: FormBuilder) { }
 
 

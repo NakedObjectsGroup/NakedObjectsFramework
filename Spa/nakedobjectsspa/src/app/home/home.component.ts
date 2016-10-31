@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnDestroy, CUSTOM_ELEMENTS_SCHEMA } from '@an
 import { getAppPath } from "../config";
 import { Observable } from 'rxjs/Observable';
 import { ISubscription } from 'rxjs/Subscription';
-import { ActivatedRoute, Router, Data } from '@angular/router';
+import { ActivatedRoute, Data } from '@angular/router';
 import { UrlManagerService } from "../url-manager.service";
 import { ContextService } from "../context.service";
 import { ErrorService } from '../error.service';
@@ -24,7 +24,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         private context: ContextService,
         private error: ErrorService,
         private urlManager: UrlManagerService,
-        private router: Router,
         private activatedRoute: ActivatedRoute,
         private color: ColorService,
         private focusManager: FocusManagerService) {

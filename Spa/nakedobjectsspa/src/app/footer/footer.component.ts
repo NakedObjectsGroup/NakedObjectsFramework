@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { Router } from '@angular/router';
 import { GeminiClickDirective } from "../gemini-click.directive";
 import { UrlManagerService} from "../url-manager.service";
 import { ClickHandlerService } from "../click-handler.service";
@@ -19,8 +18,7 @@ import { RepLoaderService } from "../rep-loader.service";
 })
 export class FooterComponent implements OnInit {
 
-    constructor(private router: Router,
-        private urlManager: UrlManagerService,
+    constructor(private urlManager: UrlManagerService,
         private focusManager: FocusManagerService,
         private context : ContextService,
         private clickHandler: ClickHandlerService,

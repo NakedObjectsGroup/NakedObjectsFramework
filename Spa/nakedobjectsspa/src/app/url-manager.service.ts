@@ -6,7 +6,7 @@ import { RouteData, PaneRouteData, InteractionMode, CollectionViewState, Applica
 import { Injectable } from '@angular/core';
 import "./rxjs-extensions";
 import { Observable } from 'rxjs/Observable';
-import {Router, ActivatedRoute, UrlSegment } from '@angular/router';
+import {Router, UrlSegment } from '@angular/router';
 import { Location } from '@angular/common';
 
 enum Transition {
@@ -56,7 +56,6 @@ interface ITransitionResult {
 export class UrlManagerService {
 
     constructor(private router: Router,
-                private activatedRoute: ActivatedRoute,
                 private location: Location) {
     }
 
