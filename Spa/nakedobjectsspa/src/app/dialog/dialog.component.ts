@@ -192,12 +192,11 @@ export class DialogComponent implements OnInit, OnDestroy {
         return this.dialog.tooltip();
     }
 
-    onSubmit() {
+    onSubmit(right? : boolean) {
         _.forEach(this.parms, (p, k) => {
             const newValue = this.form.value[p.id];
             p.setValueFromControl(newValue);
         });
-        this.dialog.doInvoke();
+        this.dialog.doInvoke(right);
     }
-
 }

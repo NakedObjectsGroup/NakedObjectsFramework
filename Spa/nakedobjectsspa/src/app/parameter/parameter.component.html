@@ -113,7 +113,7 @@
 
 		<!--"EntryType.Choices"-->
 		<div *ngSwitchCase="1">
-			<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [formControlName]="parameter.id" (change)="parent.parameterChanged()">
+			<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [formControlName]="parameter.id">
                 <option value="" disabled>{{parameter.description}}</option>
                 <option *ngFor="let choice of parameter.choices" [label]="choice.name" [ngValue]="choice">{{choice.name}}</option>
             </select>
@@ -134,7 +134,7 @@
 					<div *ngSwitchDefault [ngSwitch]="parameter.multipleLines">
 						<input *ngSwitchCase="1" id="{{parameter.paneArgId}}" class="{{parameter.status}}" placeholder="{{parameter.description}}"
 							type="{{parameter.password ? 'password' : 'text'}}" [formControlName]="parameter.id" [geminiClear]="parameter" />
-						<textarea *ngSwitchDefault rows="{{$parent.parameter.multipleLines}}" id="{{$parent.parameter.paneArgId}}" class="{{$parent.parameter.status}}"
+						<textarea *ngSwitchDefault rows="{{parameter.multipleLines}}" id="{{parameter.paneArgId}}" class="{{parameter.status}}"
 							[formControlName]="parameter.id" placeholder="{{parameter.description}}"></textarea>
 					</div>
 				</div>
