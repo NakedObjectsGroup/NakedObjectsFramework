@@ -766,11 +766,11 @@ namespace NakedObjects.Selenium {
             NullableBooleanParams();
             WarningShownWithinDialogAndInFooter();
             DefaultReferenceParamRendersCorrectly();
-            //QueryOnlyActionDialogPersists();
-            ////PotentActionDialogDisappearsAndFieldsNotRemembered();
-            //OptionalReferenceParamCanBeNull();
-            ////ValidationOfContributeeParameter();
-            //NoResultFoundMessageLeavesDialogOpen();
+            QueryOnlyActionDialogPersists();
+            PotentActionDialogDisappearsAndFieldsNotRemembered();
+            OptionalReferenceParamCanBeNull();
+            ValidationOfContributeeParameter();
+            NoResultFoundMessageLeavesDialogOpen();
         }
     }
 
