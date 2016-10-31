@@ -2,7 +2,7 @@ import * as _ from "lodash";
 import * as Models from "./models";
 import * as Constants from "./constants";
 import * as Config from "./config";
-import { RouteData, PaneRouteData, InteractionMode, CollectionViewState, ApplicationMode } from "./route-data";
+import { RouteData, PaneRouteData, InteractionMode, CollectionViewState, ApplicationMode , ViewType} from "./route-data";
 import { Injectable } from '@angular/core';
 import "./rxjs-extensions";
 import { Observable } from 'rxjs/Observable';
@@ -604,6 +604,14 @@ export class UrlManagerService {
         return routeData;
     };
 
+    getViewType(view: string) {
+        switch (view) {
+            case Constants.homePath: return ViewType.Home;
+            case Constants.objectPath: return ViewType.Object;
+            case Constants.listPath: return ViewType.List;
+        }
+    }
+
     getRouteDataObservable  = () => {
 
         return this.router.routerState.root.queryParams.map((ps: { [key: string]: string }) => {
@@ -612,6 +620,9 @@ export class UrlManagerService {
 
             this.setPaneRouteDataFromParms(routeData.pane1, 1, ps);
             this.setPaneRouteDataFromParms(routeData.pane2, 2, ps);
+
+            routeData.pane1.location = this.getViewType(this.getLocation(1));
+            routeData.pane2.location = this.getViewType(this.getLocation(2));   
 
             return routeData;
 
@@ -762,10 +773,14 @@ export class UrlManagerService {
         //$window.location.reload(true);
     }
 
-    private isLocation(paneId: number, location: string) {
+    private getLocation(paneId: number) {
         const path = this.getPath();
         const segments = path.split("/");
-        return segments[paneId + 1] === location; // e.g. segments 0=~/1=cicero/2=home/3=home
+        return segments[paneId + 1]; // e.g. segments 0=~/1=cicero/2=home/3=home
+    }
+
+    private isLocation(paneId: number, location: string) {
+        return this.getLocation(paneId) === location; // e.g. segments 0=~/1=cicero/2=home/3=home
     };
 
     isHome = (paneId = 1) => this.isLocation(paneId, Constants.homePath);

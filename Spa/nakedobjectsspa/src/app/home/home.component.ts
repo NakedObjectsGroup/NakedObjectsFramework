@@ -89,14 +89,16 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.activatedRouteDataSub = this.activatedRoute.data.subscribe(data => {
             this.paneId = data["pane"];
             this.paneType = data["class"];
-
             this.getMenus();
-            this.paneRouteDataSub = this.urlManager.getRouteDataObservable()
-                .subscribe((rd: RouteData) => {
+        });
+
+        this.paneRouteDataSub = this.urlManager.getRouteDataObservable()
+            .subscribe((rd: RouteData) => {
+                if (this.paneId) {
                     const paneRouteData = rd.pane()[this.paneId];
                     this.getMenu(paneRouteData);
-                });
-        });
+                }
+            });
     }
 
     ngOnDestroy(): void {

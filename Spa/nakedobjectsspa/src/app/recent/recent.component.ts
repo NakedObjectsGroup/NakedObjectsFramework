@@ -44,12 +44,14 @@ export class RecentComponent implements OnInit {
 
             this.vm = this.viewModelFactory.recentItemsViewModel(this.paneId);
 
-            this.paneRouteDataSub = this.urlManager.getRouteDataObservable()
-                .subscribe((rd: RouteData) => {
-                    this.vm = this.viewModelFactory.recentItemsViewModel(this.paneId);
-                });
-
         });
+
+        this.paneRouteDataSub = this.urlManager.getRouteDataObservable()
+            .subscribe((rd: RouteData) => {
+                if (this.paneId) {
+                    this.vm = this.viewModelFactory.recentItemsViewModel(this.paneId);
+                }
+            });
     }
 
     ngOnDestroy(): void {

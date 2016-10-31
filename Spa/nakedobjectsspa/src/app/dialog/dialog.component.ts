@@ -8,7 +8,7 @@ import * as ViewModels from "../view-models";
 import { ActivatedRoute, Data } from '@angular/router';
 import "../rxjs-extensions";
 import { Subject } from 'rxjs/Subject';
-import { PaneRouteData, RouteData } from '../route-data';
+import { PaneRouteData, RouteData, ViewType } from '../route-data';
 import { ISubscription } from 'rxjs/Subscription';
 import { ContextService } from '../context.service';
 import { ColorService } from '../color.service';
@@ -41,7 +41,6 @@ export class DialogComponent implements OnInit, OnDestroy {
     dialog: ViewModels.DialogViewModel;
 
     form: FormGroup;
-
 
     private currentDialogId: string;
 
@@ -136,21 +135,43 @@ export class DialogComponent implements OnInit, OnDestroy {
     private paneRouteDataSub: ISubscription;
     private dialogSub: ISubscription;
 
+    private routeDataMatchesParent(rd : PaneRouteData) {
+        if (this.parent instanceof ViewModels.MenuViewModel) {
+            return rd.location === ViewType.Home;
+        }
+
+        if (this.parent instanceof ViewModels.DomainObjectViewModel) {
+           return rd.location === ViewType.Object;
+        }
+
+        if (this.parent instanceof ViewModels.ListViewModel){
+            return rd.location === ViewType.List;          
+        }
+        return false;
+    }
+    
 
     ngOnInit(): void {
 
         this.activatedRouteDataSub = this.activatedRoute.data.subscribe(data => {
-
             this.paneId = data["pane"];
-
-            this.paneRouteDataSub = this.urlManager.getRouteDataObservable()
-                .subscribe((rd: RouteData) => {
-                    const paneRouteData = rd.pane()[this.paneId];
-                    this.currentDialogId = paneRouteData.dialogId;
-                    this.getDialog(paneRouteData);
-                });
         });
-     
+
+
+
+        this.paneRouteDataSub = this.urlManager.getRouteDataObservable()
+            .subscribe((rd: RouteData) => {
+                if (this.paneId) {
+                    const paneRouteData = rd.pane()[this.paneId];
+                    // check that the paneRouteData is teh same as the parent otherwise 
+                    // we may get route data for a different page 
+                    if (this.routeDataMatchesParent(paneRouteData)){
+                        this.currentDialogId = paneRouteData.dialogId;
+                        this.getDialog(paneRouteData);
+                    }
+                }
+            });
+
     }
 
     ngOnDestroy(): void {

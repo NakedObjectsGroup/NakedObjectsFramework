@@ -374,8 +374,8 @@ namespace NakedObjects.Selenium {
         public virtual void AutoCompleteParmShowSingleItem() {
             Url(ProductServiceUrl);
             OpenActionDialog("Find Product");
-            // for some reason "BB" doesn't work in test - works OK manually - "BB " seems to work
-            ClearFieldThenType("#product1", "BB B");
+            // for some reason "BB" doesn't work in test - works OK manually - "BB Ball" seems to work
+            ClearFieldThenType("#product1", "BB Ball");
             wait.Until(dr => dr.FindElement(By.CssSelector("ul li a")).Text == "BB Ball Bearing");
             var item = br.FindElement(By.CssSelector("ul li a"));
             //As the match has not yet been selected,the field is invalid, so...
@@ -759,14 +759,14 @@ namespace NakedObjects.Selenium {
             AutoCompleteOptionalParamNotSelected();
             MandatoryParameterEnforced();
             ValidateSingleValueParameter();
-            ////ValidateSingleRefParamFromChoices();
-            //CoValidationOfMultipleParameters();
-            //ParameterDescriptionRenderedAsPlaceholder();
-            //BooleanParams();
-            //NullableBooleanParams();
-            //WarningShownWithinDialogAndInFooter();
-            //DefaultReferenceParamRendersCorrectly();
-            ////QueryOnlyActionDialogPersists();
+            //ValidateSingleRefParamFromChoices();
+            CoValidationOfMultipleParameters();
+            ParameterDescriptionRenderedAsPlaceholder();
+            BooleanParams();
+            NullableBooleanParams();
+            WarningShownWithinDialogAndInFooter();
+            DefaultReferenceParamRendersCorrectly();
+            //QueryOnlyActionDialogPersists();
             ////PotentActionDialogDisappearsAndFieldsNotRemembered();
             //OptionalReferenceParamCanBeNull();
             ////ValidationOfContributeeParameter();

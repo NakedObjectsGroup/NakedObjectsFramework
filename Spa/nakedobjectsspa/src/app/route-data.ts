@@ -47,6 +47,7 @@ interface ICondition {
 export class PaneRouteData {
     constructor(public paneId: number) { }
 
+    location : ViewType; 
     objectId: string;
     menuId: string;
     collections: _.Dictionary<CollectionViewState>;
@@ -134,5 +135,6 @@ export class PaneRouteData {
             this.assertMustBeNullInContext("menuId", "objectId");
         }
     }
+
 }
 

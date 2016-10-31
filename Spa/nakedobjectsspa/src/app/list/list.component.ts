@@ -124,15 +124,16 @@ export class ListComponent implements OnInit, OnDestroy {
         this.activatedRoute.data.subscribe(data => {
             this.paneId = data["pane"];
             this.paneType = data["class"];
+        });
 
-            this.urlManager.getRouteDataObservable()
-                .subscribe((rd: RouteData) => {
+
+        this.urlManager.getRouteDataObservable()
+            .subscribe((rd: RouteData) => {
+                if (this.paneId) {
                     const paneRouteData = rd.pane()[this.paneId];
                     this.setupList(paneRouteData);
-                });
-
-
-        });
+                }
+            });
     }
 
     ngOnDestroy(): void {

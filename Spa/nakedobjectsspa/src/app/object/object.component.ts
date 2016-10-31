@@ -119,14 +119,15 @@ export class ObjectComponent implements OnInit,  OnDestroy {
         this.activatedRouteDataSub = this.activatedRoute.data.subscribe(data => {
             this.paneId = data["pane"];
             this.paneType = data["class"];
+        });
 
-            this.paneRouteDataSub = this.urlManager.getRouteDataObservable()
-                .subscribe((rd: RouteData) => {
+        this.paneRouteDataSub = this.urlManager.getRouteDataObservable()
+            .subscribe((rd: RouteData) => {
+                if (this.paneId) {
                     const paneRouteData = rd.pane()[this.paneId];
                     this.setupObject(paneRouteData);
-                });
-
-        });
+                }
+            });
     }
 
     ngOnDestroy(): void {
