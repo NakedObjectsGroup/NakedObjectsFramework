@@ -476,6 +476,11 @@ namespace NakedObjects.Selenium
             return wait.Until(dr => dr.FindElements(By.CssSelector(selector)).Single(e => e.Text == text));
         }
 
+        protected IWebElement GetInputButton(string text, Pane pane = Pane.Single) {
+            string selector = CssSelectorFor(pane) + ".header .action";
+            return wait.Until(dr => dr.FindElements(By.CssSelector(selector)).Single(e => e.GetAttribute("value") == text));
+        }
+
         protected IWebElement EditButton(Pane pane = Pane.Single)
         {
             return GetButton("Edit", pane);
@@ -483,7 +488,7 @@ namespace NakedObjects.Selenium
 
         protected IWebElement SaveButton(Pane pane = Pane.Single)
         {
-            return GetButton("Save", pane);
+            return GetInputButton("Save", pane);        
         }
 
         protected IWebElement SaveAndCloseButton(Pane pane = Pane.Single)

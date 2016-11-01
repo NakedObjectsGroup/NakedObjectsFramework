@@ -338,17 +338,17 @@ namespace NakedObjects.Selenium {
         [TestMethod] //Mega
         public void MegaObjectEditTest() {
             ObjectEditChangeScalar();
-            LocalValidationOfMandatoryFields();
-            LocalValidationOfMaxLength();
-            LocalValidationOfRegex();
-            RangeValidationOnNumber();
-            RangeValidationOnDate();
-            ObjectEditChangeEnum();
-            ObjectEditChangeDateTime();
-            CanSetAndClearAnOptionalDropDown();
-            ObjectEditPicksUpLatestServerVersion();
-            ViewModelEditOpensInEditMode();
-            MultiLineText();
+            //LocalValidationOfMandatoryFields();
+            //LocalValidationOfMaxLength();
+            //LocalValidationOfRegex();
+            //RangeValidationOnNumber();
+            //RangeValidationOnDate();
+            //ObjectEditChangeEnum();
+            //ObjectEditChangeDateTime();
+            //CanSetAndClearAnOptionalDropDown();
+            //ObjectEditPicksUpLatestServerVersion();
+            //ViewModelEditOpensInEditMode();
+            //MultiLineText();
         }
     }
 
@@ -391,7 +391,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class MegaObjectEditTestsChrome : MegaObjectEditTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

@@ -35,13 +35,8 @@
 					<span class="type">{{object.friendlyName}}</span> Editing - {{object.title}}
 				</div>
 				<div class="menus">
-					<div class="menu action clickable-area" tabindex="0" [attr.disabled]="!form.valid" geminiClick (leftClick)="onSubmit(true)"
-						title="{{object.tooltip()}}">
-						Save
-					</div>
-					<div *ngIf="object.unsaved" class="menu action clickable-area" [attr.disabled]="!form.valid" tabindex="0" geminiClick (leftClick)="onSubmit(false)">
-						Save & Close
-					</div>
+					<input type="submit" class="menu action clickable-area" tabindex="0" [disabled]="!form.valid" geminiClick (leftClick)="onSubmit(true)" title="{{object.tooltip()}}" value="Save"/>				
+					<input *ngIf="object.unsaved" type="submit" class="menu action clickable-area" [disabled]="!form.valid" tabindex="0" geminiClick (leftClick)="onSubmit(false)" value="Save & Close"/>
 					<div class="menu action clickable-area" tabindex="0" geminiClick (leftClick)="object.doEditCancel()">
 						Cancel
 					</div>
