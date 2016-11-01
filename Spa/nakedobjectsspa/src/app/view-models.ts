@@ -779,9 +779,10 @@ export abstract class ValueViewModel extends MessageViewModel implements IFieldV
     };
 
     validator(c: AbstractControl): { [index: string]: any; } {
-        const viewValue = c.value;
-        const isvalid = this.isValid(viewValue);
-        return isvalid ? null : { invalid: "invalid entry" };
+        // const viewValue = c.value;
+        // const isvalid = this.isValid(viewValue);
+        // return isvalid ? null : { invalid: "invalid entry" };
+        return null;
     };
 
     refresh: (newValue: Models.Value) => void;

@@ -15,6 +15,7 @@ import { PaneRouteData, RouteData, InteractionMode } from "../route-data";
 import * as ViewModels from "../view-models";
 import { ISubscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
+import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 
 @Component({
     selector: 'object',
@@ -30,13 +31,13 @@ export class ObjectComponent implements OnInit,  OnDestroy {
         private viewModelFactory: ViewModelFactoryService,
         private focusManager: FocusManagerService,
         private error: ErrorService,
-        private activatedRoute :ActivatedRoute) {    
+        private activatedRoute :ActivatedRoute,
+        private formBuilder: FormBuilder) {    
     }
 
     object : ViewModels.DomainObjectViewModel;
 
     mode : InteractionMode;
-
 
     setupObject(routeData: PaneRouteData) {
         // subscription means may get with no oid 
@@ -73,7 +74,11 @@ export class ObjectComponent implements OnInit,  OnDestroy {
                     ovm.clearCachedFiles();
                 }
 
-                this.object = ovm;
+                //if (this.mode === InteractionMode.Edit) {
+                    this.createForm(ovm);
+                //}
+
+                 this.object = ovm;
 
                 //$scope.object = ovm;
                 //$scope.collectionsTemplate = Nakedobjectsconstants.collectionsTemplate;
@@ -87,7 +92,7 @@ export class ObjectComponent implements OnInit,  OnDestroy {
                     this.context.setError(reject);
                    // $scope.objectTemplate = Nakedobjectsconstants.expiredTransientTemplate;
                 } else {
-                    //this.error.handleError(reject);
+                    this.error.handleError(reject);
                 }
             });
     }
@@ -140,4 +145,31 @@ export class ObjectComponent implements OnInit,  OnDestroy {
     }
 
     paneId: number;
+
+    onSubmit(viewObject : boolean) {
+        this.object.doSave(viewObject)
+    }
+
+    props : _.Dictionary<ViewModels.PropertyViewModel>;
+    form: FormGroup;
+
+    private createForm(vm: ViewModels.DomainObjectViewModel) {
+        const pps = vm.properties;
+        this.props = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<ViewModels.PropertyViewModel>
+
+        const controls = _.mapValues(this.props, p => [p.getValueForControl(), a => p.validator(a)]) as _.Dictionary<any>;
+        this.form = this.formBuilder.group(controls);
+
+        this.form.valueChanges.subscribe(data => {
+            // cache parm values
+            _.forEach(data, (v, k) => {
+                const prop = this.props[k];
+                prop.setValueFromControl(v);
+            });
+            this.object.setProperties();
+        });
+
+        // this.onValueChanged(); // (re)set validation messages now
+    }
+
 }

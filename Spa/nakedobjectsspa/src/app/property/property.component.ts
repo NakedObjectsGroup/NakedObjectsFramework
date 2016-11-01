@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import * as Models from "../models";
 import * as ViewModels from "../view-models";
 import { FieldComponent } from '../field/field.component';
+import { FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'property',
@@ -37,4 +38,12 @@ export class PropertyComponent extends FieldComponent {
         return `${this.prop.color}${this.canDrop ? " candrop" : ""}`;
     }
 
+    @Input()
+    set form(fm: FormGroup) {
+        this.formGroup = fm;
+    }
+
+    get form() {
+        return this.formGroup;
+    }
 }

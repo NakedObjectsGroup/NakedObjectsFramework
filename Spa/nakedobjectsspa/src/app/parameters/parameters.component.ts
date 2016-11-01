@@ -17,7 +17,7 @@ export class ParametersComponent {
     parent: ViewModels.DialogViewModel;
 
     @Input()
-    form: FormGroup;
+    form: FormGroup = null;
 
     @Input()
     set parameters(value: ViewModels.ParameterViewModel[]) {
