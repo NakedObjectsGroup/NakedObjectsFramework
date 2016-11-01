@@ -146,6 +146,10 @@ export class ObjectComponent implements OnInit,  OnDestroy {
 
     paneId: number;
 
+    get tooltip(): string {
+        return this.object.tooltip();
+    }
+
     onSubmit(viewObject : boolean) {
         this.object.doSave(viewObject)
     }

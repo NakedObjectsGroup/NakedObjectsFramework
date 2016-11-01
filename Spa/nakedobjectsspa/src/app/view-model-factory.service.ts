@@ -288,14 +288,15 @@ export class ViewModelFactoryService {
     }
 
     private setupChoice(propertyViewModel: ViewModels.IPropertyViewModel, newValue: Models.Value) {
+        const propertyRep = propertyViewModel.propertyRep;
         if (propertyViewModel.entryType === Models.EntryType.Choices) {
-            const propertyRep = propertyViewModel.propertyRep;
+            
             const choices = propertyRep.choices();
             propertyViewModel.choices = _.map(choices, (v, n) => ViewModels.ChoiceViewModel.create(v, propertyViewModel.id, n));
 
             const currentChoice = ViewModels.ChoiceViewModel.create(newValue, propertyViewModel.id);
             propertyViewModel.selectedChoice = _.find(propertyViewModel.choices, c => c.valuesEqual(currentChoice));
-        } else {
+        } else if (!propertyRep.isScalar()) {
             propertyViewModel.selectedChoice = ViewModels.ChoiceViewModel.create(newValue, propertyViewModel.id);
         }
     }
