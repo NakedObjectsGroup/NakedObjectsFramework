@@ -1,0 +1,153 @@
+<div class="name">
+	<label attr.for="{{parameter.paneArgId}}">{{parameter.title}}</label>
+</div>
+<div [formGroup]="form">
+	<div *ngIf="parameter.type === 'ref'">
+
+		<div class="value input-control text" [ngSwitch]="parameter.entryType">
+			<!--<input type="hidden" value="{{parameter.reference}}"  />-->
+			<!--"EntryType.AutoComplete"-->
+			<div *ngSwitchCase="5">
+				<input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
+					[ngClass]="classes()" placeholder="{{parameter.description}}" type="text" [formControlName]="parameter.id" [geminiClear]="parameter"
+				/>
+				<div class="suggestions" *ngIf="parameter.choices.length > 0">
+					<ul *ngFor="let item of parameter.choices">
+						<li>
+							<a (click)="select(item)">{{item.name}}</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<!--"EntryType.MultipleConditionalChoices"-->
+			<div *ngSwitchCase="4">
+				<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [formControlName]="parameter.id">
+                <option value="" disabled>{{parameter.description}}</option>
+                <option *ngFor="let choice of parameter.choices" [label]="choice.name"  [ngValue]="choice" >{{choice.name}}</option>
+            </select>
+			</div>
+
+			<!--"EntryType.ConditionalChoices"-->
+			<div *ngSwitchCase="3">
+				<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [formControlName]="parameter.id">
+                <!--<option value="" disabled>{{parameter.description}}</option>-->
+                <option *ngFor="let choice of parameter.choices" [label]="choice.name"  [ngValue]="choice">{{choice.name}}</option>
+            </select>
+			</div>
+
+			<!--"EntryType.MultipleChoices"-->
+			<div *ngSwitchCase="2">
+				<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [formControlName]="parameter.id">
+                <option value="" disabled>{{parameter.description}}</option>
+                <option *ngFor="let choice of parameter.choices" [label]="choice.name"  [ngValue]="choice">{{choice.name}}</option>
+            </select>
+			</div>
+
+			<!--"EntryType.Choices"-->
+			<div *ngSwitchCase="1">
+				<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [formControlName]="parameter.id">
+                <option value="" disabled>{{parameter.description}}</option>
+                <option *ngFor="let choice of parameter.choices" [label]="choice.name"   [ngValue]="choice">{{choice.name}}</option>
+            </select>
+			</div>
+
+			<!--"EntryType.FreeForm"-->
+			<div *ngSwitchCase="0">
+				<div tabindex="0" class="value droppable" [ngClass]="classes()" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
+					[geminiClear]="parameter">
+					{{parameter.value || parameter.description}}
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div *ngIf="parameter.type === 'scalar'">
+		<div class="value input-control text" [ngSwitch]="parameter.entryType">
+
+			<!--"EntryType.File"-->
+			<div *ngSwitchCase="6">
+				<!--    <input id="{{parameter.paneArgId}}" type="file" class="{{parameter.status}}"   name="parameter.id"  placeholder="{{parameter.description}}" gemini-fileupload />-->
+			</div>
+
+			<!--"EntryType.AutoComplete"-->
+			<div *ngSwitchCase="5">
+				<input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
+					[ngClass]="classes()" placeholder="{{parameter.description}}" type="text" [formControlName]="parameter.id" [geminiClear]="parameter"
+				/>
+				<div class="suggestions" *ngIf="parameter.choices.length > 0">
+					<ul *ngFor="let item of parameter.choices">
+						<li>
+							<a (click)="select(item)">{{item.name}}</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<!--"EntryType.MultipleConditionalChoices"-->
+			<div *ngSwitchCase="4">
+
+				<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [formControlName]="parameter.id">
+                <option value="" disabled>{{parameter.description}}</option>
+                <option *ngFor="let choice of parameter.choices" [label]="choice.name"  [ngValue]="choice">{{choice.name}}</option>
+            </select>
+			</div>
+
+			<!--"EntryType.ConditionalChoices"-->
+			<div *ngSwitchCase="3">
+				<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [formControlName]="parameter.id">
+                <!--<option value="" disabled>{{parameter.description}}</option>-->
+                <option *ngFor="let choice of parameter.choices" [label]="choice.name" [ngValue]="choice">{{choice.name}}</option>
+            </select>
+			</div>
+
+
+			<!--"EntryType.MultipleChoices"-->
+			<div *ngSwitchCase="2">
+				<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [formControlName]="parameter.id">
+                <option value="" disabled>{{parameter.description}}</option>
+                <option *ngFor="let choice of parameter.choices" [label]="choice.name" [ngValue]="choice">{{choice.name}}</option>
+            </select>
+			</div>
+
+			<!--"EntryType.Choices"-->
+			<div *ngSwitchCase="1">
+				<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [formControlName]="parameter.id">
+                <option value="" disabled>{{parameter.description}}</option>
+                <option *ngFor="let choice of parameter.choices" [label]="choice.name" [ngValue]="choice">{{choice.name}}</option>
+            </select>
+			</div>
+
+			<!--"EntryType.FreeForm"-->
+			<div *ngSwitchCase="0">
+				<div [ngSwitch]="parameter.returnType">
+					<div *ngSwitchCase="'string'" [ngSwitch]="parameter.format">
+						<div *ngSwitchCase="'date'">
+							<input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="date" placeholder="{{parameter.description}}" [formControlName]="parameter.id"
+								[geminiClear]="parameter" />
+						</div>
+						<div *ngSwitchCase="'time'">
+							<input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="time" placeholder="{{parameter.description}}" [formControlName]="parameter.id"
+								gemini-timepicker [geminiClear]="parameter" />
+						</div>
+						<div *ngSwitchDefault [ngSwitch]="parameter.multipleLines">
+							<input *ngSwitchCase="1" id="{{parameter.paneArgId}}" class="{{parameter.status}}" placeholder="{{parameter.description}}"
+								type="{{parameter.password ? 'password' : 'text'}}" [formControlName]="parameter.id" [geminiClear]="parameter" />
+							<textarea *ngSwitchDefault rows="{{parameter.multipleLines}}" id="{{parameter.paneArgId}}" class="{{parameter.status}}" [formControlName]="parameter.id"
+								placeholder="{{parameter.description}}"></textarea>
+						</div>
+					</div>
+					<div *ngSwitchCase="'boolean'">
+						<input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="checkbox" [geminiBoolean]="parameter" />{{parameter.description}}
+					</div>
+					<div *ngSwitchDefault>
+						<input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="text" placeholder="{{parameter.description}}" [formControlName]="parameter.id"
+							[geminiClear]="parameter" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="validation">{{message}}</div>

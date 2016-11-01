@@ -1,0 +1,25 @@
+<div [attr.id]="paneIdName()" [ngClass]="paneType">
+	<div class="recent">
+		<div class="header">
+			<div class="title">
+				Recently Viewed Objects
+			</div>
+		</div>
+		<div *ngIf="vm" class="collection">
+			<table>
+				<tbody>
+					<tr [ngClass]="item.color" *ngFor="let item of vm.items" class="clickable-area" dnd-draggable [dragEnabled]="true" geminiClick
+						(leftClick)="item.doClick()" (rightclick)="item.doClick(true)">
+						<td tabindex="0" class="cell">
+							{{item.title }}
+						</td>
+						<td tabindex="0" class="cell">
+							{{item.friendlyName}}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>

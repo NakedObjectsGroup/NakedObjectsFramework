@@ -1,0 +1,85 @@
+:host {
+    height: 100%;
+    overflow-y: auto;
+    font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+    color: white;
+    font-size: 11pt; 
+    font-weight: 100;
+    display: block;
+    padding-left: 20px;
+}
+
+viewTitle {
+    display: inline-block; /*Otherwise focus outline takes full width*/
+}
+
+.title, header .type {
+    position: relative;
+    font-weight: 200;
+    font-size: 24pt;
+    line-height: 38pt;
+    margin-left: 1px; /*Make room for focus outline*/
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-right: 20px;
+    margin-top: 2px;
+    display: block;
+}
+
+header .type {
+    float: left;
+    margin-right: 20px;
+    display: none; /*Change this to display type (e.g. for accessibility)*/
+}
+
+/* Menus */
+
+.menus {
+    display: block;
+}
+.menu, .header .action {
+    display: block;
+    float: left;
+    padding: 5px;
+    margin-top: 0px;
+    margin-left: 1px; /*Else hover outline is hidden on the left-most menu */
+    margin-right: 10px;
+    margin-bottom: 5px; /*Else hover outline is hidden on the bottom */
+    font-size: 16pt;
+}
+
+.menu[disabled="disabled"], .ok[disabled="disabled"] {
+        color: grey;
+    }
+
+/*Sub-panes - layout */
+mainColumn {
+    display: block;
+    float: left;
+    margin-bottom: 20px;
+    margin-right: 20px;
+}
+
+/*Collections */
+
+.collections {
+    display: block; /*TODO: Display: Inline ?*/
+    float: left;
+    margin-bottom: 20px;
+    margin-right: 20px;
+}
+
+.collection .name, collectionDetails {
+    padding-left: 0px; /*Because it is a heading, so outdented*/
+    float: left;
+}
+
+.collection:not(:last-child) {
+    margin-bottom: 20px;
+}
+
+collectionSummary {
+    font-size: 12pt;
+    margin-bottom: 10px;
+    overflow: hidden; /*To make div same depth as its floating children*/
+}
