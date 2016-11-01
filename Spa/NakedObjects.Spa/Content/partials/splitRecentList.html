@@ -1,0 +1,5 @@
+﻿<div gemini-focuson class="background" ng-class="backgroundColor" ng-swipe-right="$broadcast('back')" ng-swipe-left="$broadcast('forward')">
+    <div id="pane1" class="split" ng-controller="Pane1RecentController" ng-include="recentTemplate">/div> </div>
+    <div id="pane2" class="split" ng-controller="Pane2ListController" ng-include="listTemplate"></div>
+    <div class="footer" ng-controller="ToolBarController" ng-include="toolBar.footerTemplate"></div>
+</div>

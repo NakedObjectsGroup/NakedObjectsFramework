@@ -164,9 +164,9 @@ namespace NakedObjects.Selenium {
         [TestMethod] //Mega
         public void MegaViewModelTest() {
             CreateVM();
-            //CreateEditableVM();
-            //EditableVMWithEmptyLeadingKeys();
-            //CreateSwitchableVM();
+            CreateEditableVM();
+            EditableVMWithEmptyLeadingKeys();
+            CreateSwitchableVM();
         }
     }
 
@@ -189,7 +189,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class MegaViewModelTestsIe : MegaViewModelTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -200,26 +200,6 @@ namespace NakedObjects.Selenium {
         [TestInitialize]
         public virtual void InitializeTest() {
             InitIeDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            base.CleanUpTest();
-        }
-    }
-
-    [TestClass]
-    public class MegaViewModelTestsChrome : MegaViewModelTestsRoot {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitChromeDriver();
             Url(BaseUrl);
         }
 

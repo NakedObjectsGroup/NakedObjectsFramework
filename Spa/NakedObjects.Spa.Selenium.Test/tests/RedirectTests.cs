@@ -137,7 +137,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class MegaRedirectTestIe : MegaRedirectTestBase {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
@@ -106,7 +105,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void SelectSuccessiveDialogActionsThenCancel() {
-            Url(CustomersMenuUrl, true);
+            Url(CustomersMenuUrl);
             WaitForCss(".actions .action", CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
             OpenActionDialog("Customer Dashboard");
@@ -316,7 +315,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class MegaHomeTestIe : MegaHomeTestBase {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -327,26 +326,6 @@ namespace NakedObjects.Selenium {
         [TestInitialize]
         public virtual void InitializeTest() {
             InitIeDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            base.CleanUpTest();
-        }
-    }
-
-    [TestClass]
-    public class MegaHomeTestChrome : MegaHomeTestBase {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitChromeDriver();
             Url(BaseUrl);
         }
 

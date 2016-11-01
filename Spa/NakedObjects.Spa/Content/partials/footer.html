@@ -1,0 +1,26 @@
+﻿
+<a class="icon-home" title="Home (Alt-h)" tabindex="0" gemini-enter="toolBar.goHome()" ng-click="toolBar.goHome()" gemini-rightclick="toolBar.goHome(true)" accesskey="h"></a>
+<a class="icon-back icon-arrow-left-3" title="Back (Alt-b)" tabindex="0" gemini-enter="toolBar.goBack()" ng-click="toolBar.goBack()"accesskey="b"></a>
+<a class="icon-forward icon-arrow-right-3" title="Forward (Alt-f)" tabindex="0" gemini-enter="toolBar.goForward()" ng-click="toolBar.goForward()" accesskey="f"></a>
+<a class="icon-full" title="Expand pane (Alt-e)" tabindex="0" gemini-enter="toolBar.singlePane()" ng-click="toolBar.singlePane()" gemini-rightclick="toolBar.singlePane(true)" accesskey="e"></a>
+<a class="icon-swap" title="Swap panes (Alt-s)" tabindex="0" gemini-enter="toolBar.swapPanes()" ng-click="toolBar.swapPanes()" accesskey="s"></a>
+<a class="icon-recent" title="Recent objects (Alt-r)" tabindex="0" gemini-enter="toolBar.recent()" ng-click="toolBar.recent()" gemini-rightclick="toolBar.recent(true)" accesskey="r"></a>
+<a class="icon-speech" title="Cicero - Speech Interface (Alt-c)" gemini-enter="toolBar.cicero()" ng-click="toolBar.cicero()" tabindex="0" accesskey="c"></a>
+<a class="icon-properties" title="Application Properties (Alt-p)" gemini-enter="toolBar.applicationProperties()" ng-click="toolBar.applicationProperties()" tabindex="0" accesskey="p"></a>
+<a class="icon-logoff" title="Log off (Alt-l)" gemini-enter="toolBar.logOff()" ng-click="toolBar.logOff()" tabindex="0" accesskey="l"></a>
+
+
+<span class="loading">{{toolBar.loading}}</span>
+
+<div class="warnings" ng-repeat="warning in toolBar.warnings track by $index">
+    <div>{{warning}}</div>
+</div>
+
+<div class="messages" ng-repeat="message in toolBar.messages track by $index">
+    <div>{{message}}</div>
+</div>
+
+<div class="currentcopy"></div>
+
+<!--<div class="user">{{toolBar.userName}}</div>
+<a style="display: none"></a>-->

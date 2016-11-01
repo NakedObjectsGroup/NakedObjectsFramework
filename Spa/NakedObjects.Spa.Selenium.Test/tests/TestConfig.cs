@@ -5,6 +5,6 @@ namespace NakedObjects.Selenium
     {
         //public const string BaseUrl = "http://localhost:49998/";
 
-        public const string BaseUrl = "http://nakedobjectstest2.azurewebsites.net/";
+        public const string BaseUrl = "http://nakedobjectstest.azurewebsites.net/";
     }
 }

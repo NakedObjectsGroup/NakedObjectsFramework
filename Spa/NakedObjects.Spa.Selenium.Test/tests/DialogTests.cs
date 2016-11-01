@@ -72,11 +72,11 @@ namespace NakedObjects.Selenium {
             OpenSubMenu("Orders");
             OpenActionDialog("Search For Orders");
             var fromDate = WaitForCss("#fromdate1");
-            Assert.AreEqual("2000-01-01", fromDate.GetAttribute("value")); //Default field value
-            ClearFieldThenType("#fromdate1", "01 09 2007");
-            //CancelDatePicker("#fromdate1");
-            ClearFieldThenType("#todate1", "01 04 2008");
-            //CancelDatePicker("#todate1");
+            Assert.AreEqual("1 Jan 2000", fromDate.GetAttribute("value")); //Default field value
+            ClearFieldThenType("#fromdate1", "1 Sep 2007");
+            CancelDatePicker("#fromdate1");
+            ClearFieldThenType("#todate1", "1 Apr 2008");
+            CancelDatePicker("#todate1");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Search For Orders");
             var details = WaitForCss(".summary .details");
@@ -342,11 +342,11 @@ namespace NakedObjects.Selenium {
             OpenActionDialog("List Accounts For Sales Person");
             wait.Until(dr => dr.FindElement(By.CssSelector("#sp1")).GetAttribute("placeholder") == "* (auto-complete or drop)");
             ClearFieldThenType("#sp1", "Valdez");
-            wait.Until(d => d.FindElements(By.CssSelector(".suggestions a")).Count > 0);
+            wait.Until(d => d.FindElements(By.CssSelector(".ui-menu-item")).Count > 0);
             //As the match has not yet been selected,the field is invalid, so...
             WaitForTextEquals(".validation", "Pending auto-complete...");
             OKButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Sp; ");
-            Click(WaitForCss(".suggestions a"));
+            Click(WaitForCss(".ui-menu-item"));
             WaitForCss("#sp1.link-color6");
             OKButton().AssertIsEnabled();
             Click(OKButton());
@@ -374,10 +374,9 @@ namespace NakedObjects.Selenium {
         public virtual void AutoCompleteParmShowSingleItem() {
             Url(ProductServiceUrl);
             OpenActionDialog("Find Product");
-            // for some reason "BB" doesn't work in test - works OK manually - "BB Ball" seems to work
-            ClearFieldThenType("#product1", "BB Ball");
-            wait.Until(dr => dr.FindElement(By.CssSelector("ul li a")).Text == "BB Ball Bearing");
-            var item = br.FindElement(By.CssSelector("ul li a"));
+            ClearFieldThenType("#product1", "BB");
+            wait.Until(dr => dr.FindElement(By.CssSelector(".ui-menu-item")).Text == "BB Ball Bearing");
+            var item = br.FindElement(By.CssSelector(".ui-menu-item"));
             //As the match has not yet been selected,the field is invalid, so...
             WaitForTextEquals(".validation", "Pending auto-complete...");
             Click(item);
@@ -387,13 +386,10 @@ namespace NakedObjects.Selenium {
         public virtual void AutoCompleteScalarField() {
             GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--54461&as1=open&d1=AddComment&f1_comment=%22%22");
             WaitForView(Pane.Single, PaneType.Object, "SO54461");
-
-            // "parc" doesn't work in test (ok manually) "parcel" works
-            ClearFieldThenType("#comment1", "parcel");
-            wait.Until(d => d.FindElements(By.CssSelector("ul li a")).Count == 2);
+            ClearFieldThenType("#comment1", "parc");
+            wait.Until(d => d.FindElements(By.CssSelector(".ui-menu-item")).Count == 2);
         }
-
-        public virtual void AutoCompleteOptionalParamNotSelected()
+public virtual void AutoCompleteOptionalParamNotSelected()
         {
             //Test written against a bug in 8.0.0-beta9
             GeminiUrl("home?m1=OrderRepository&d1=FindOrders");
@@ -403,8 +399,8 @@ namespace NakedObjects.Selenium {
             //TODO: Message should change to Invalid fields
             OKButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Customer; ");
             ClearFieldThenType("#customer1", "AW00000456");
-            wait.Until(dr => dr.FindElement(By.CssSelector("ul li a")).Text == "Riding Excursions, AW00000456");
-            var item = br.FindElement(By.CssSelector("ul li a"));
+            wait.Until(dr => dr.FindElement(By.CssSelector(".ui-menu-item")).Text == "Riding Excursions, AW00000456");
+            var item = br.FindElement(By.CssSelector(".ui-menu-item"));
             Click(item);
             OKButton().AssertIsEnabled();
         }
@@ -427,7 +423,7 @@ namespace NakedObjects.Selenium {
             //Assuming parm is mandatory, hitting Ok should give validation message
             GeminiUrl("home?m1=CustomerRepository&d1=FindCustomer");
             ClearFieldThenType("#customer1", "AW000");
-            wait.Until(d => d.FindElements(By.CssSelector("ul li a")).Count == 10);
+            wait.Until(d => d.FindElements(By.CssSelector(".ui-menu-item")).Count == 10);
             OKButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Customer; ");
         }
         public virtual void ValidateSingleValueParameter() {
@@ -741,7 +737,7 @@ namespace NakedObjects.Selenium {
             ReopeningADialogThatWasntCancelledDoesNotRetainFields();
             ScalarParmShowsDefaultValue();
             DateTimeParmKeepsValue();
-            //TimeSpanParm(); fails - maybe as a result of using chrome timepicker ? 
+            TimeSpanParm();
             RefChoicesParmKeepsValue();
             MultipleRefChoicesDefaults();
             MultipleRefChoicesChangeDefaults();
@@ -759,7 +755,7 @@ namespace NakedObjects.Selenium {
             AutoCompleteOptionalParamNotSelected();
             MandatoryParameterEnforced();
             ValidateSingleValueParameter();
-            //ValidateSingleRefParamFromChoices(); don't yet support object collection actions 
+            ValidateSingleRefParamFromChoices();
             CoValidationOfMultipleParameters();
             ParameterDescriptionRenderedAsPlaceholder();
             BooleanParams();
@@ -793,7 +789,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class MegaDialogTestsIe : MegaDialogTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -813,7 +809,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class MegaDialogTestsChrome : MegaDialogTestsRoot
     {
         [ClassInitialize]

@@ -1,0 +1,21 @@
+﻿<div class="recent">
+    <div class="header">
+        <div class="title">
+            Recently Viewed Objects
+        </div>
+    </div>
+    <div class="collection">
+        <table>
+            <tbody>
+                <tr ng-repeat="item in recent.items" class="clickable-area" gemini-drag gemini-enter="item.doClick()" gemini-rightclick="item.doClick(true)">
+                    <td ng-class="item.color" ng-click="item.doClick()" tabindex="0" class="cell">
+                        {{item.title }}
+                    </td>
+                    <td ng-class="item.color" ng-click="item.doClick()" tabindex="0" class="cell">
+                        {{item.friendlyName}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -155,7 +155,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class MegaAttachmentTestsIe : MegaAttachmentTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

@@ -396,7 +396,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class MegaUrlTestIe : MegaUrlTestRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

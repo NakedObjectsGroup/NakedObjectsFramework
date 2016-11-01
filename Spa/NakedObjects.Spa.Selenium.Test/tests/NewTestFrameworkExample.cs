@@ -24,7 +24,7 @@ namespace NakedObjects.Selenium {
     #region browsers specific subclasses 
 
 
-    //[TestClass]
+    [TestClass]
     public class NewTestFrameworkExampleFirefox : NewTestFrameworkExample
     {
         [ClassInitialize]

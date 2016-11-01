@@ -194,7 +194,7 @@ namespace NakedObjects.Selenium {
     }
 
     public abstract class CCAtestsServer : CCAtestsRoot {
-        //[TestMethod]
+        [TestMethod]
         public override void ListViewWithParmDialogAlreadyOpen() {
             base.ListViewWithParmDialogAlreadyOpen();
         }
@@ -234,7 +234,7 @@ namespace NakedObjects.Selenium {
             base.SelectionRetainedWhenNavigatingAwayAndBack();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void SelectionClearedWhenPageChanged() {
             base.SelectionClearedWhenPageChanged();
         }
@@ -280,7 +280,7 @@ namespace NakedObjects.Selenium {
     }
 
     [TestClass]
-    public class CCATestsChrome : CCAtestsServer {
+    public class CCAtestsChrome : CCAtestsServer {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");

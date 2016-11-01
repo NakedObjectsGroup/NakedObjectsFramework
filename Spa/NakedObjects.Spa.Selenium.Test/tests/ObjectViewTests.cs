@@ -69,14 +69,11 @@ namespace NakedObjects.Selenium {
             GeminiUrl("object?o1=___1.Store--350&as1=open");
             wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 4);
 
-            var properties = br.FindElements(By.CssSelector(".property"));
-            // failing because of stale properties
+            ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
+
             Assert.AreEqual("Store Name:\r\nTwin Cycles", properties[0].Text);
-            properties = br.FindElements(By.CssSelector(".property"));
             Assert.AreEqual("Demographics:\r\nAnnualSales: 800000\r\nAnnualRevenue: 80000\r\nBankName: International Security\r\nBusinessType: BM\r\nYearOpened: 1988\r\nSpecialty: Touring\r\nSquareFeet: 21000\r\nBrands: AW\r\nInternet: T1\r\nNumberEmployees: 11", properties[1].Text);
-            properties = br.FindElements(By.CssSelector(".property"));
             Assert.AreEqual("Sales Person:\r\nLynn Tsoflias", properties[2].Text);
-            properties = br.FindElements(By.CssSelector(".property"));
             Assert.IsTrue(properties[3].Text.StartsWith("Modified Date:\r\n13 Oct 2008"));
         }
         public virtual void Collections() {
@@ -102,11 +99,8 @@ namespace NakedObjects.Selenium {
             var props = WaitForCss(".property", 23);
             //First test a navigable reference
             var model = props[4];
-            Assert.AreEqual("Product Model:\r\nWomen's Mountain Shorts", props[4].Text);
-
-            // get again as goes stale
-            props = WaitForCss(".property", 23);
-            var link = props[4].FindElement(By.CssSelector(".reference.clickable-area"));
+            Assert.AreEqual("Product Model:\r\nWomen's Mountain Shorts", model.Text);
+            var link = model.FindElement(By.CssSelector(".reference.clickable-area"));
             Assert.IsNotNull(link);
 
             //Now a non-navigable one
@@ -206,8 +200,8 @@ namespace NakedObjects.Selenium {
             Click(OKButton()); //This will have updated server, but not client-cached object
             //Go and do something else, so screen changes, then back again
             wait.Until(dr => dr.FindElements(By.CssSelector(".dialog")).Count == 0);
-            Click(br.FindElement(By.CssSelector(".icon-home")));
-            WaitForView(Pane.Single, PaneType.Home, "Home");
+            GeminiUrl("");
+            WaitForView(Pane.Single, PaneType.Home);
             Click(br.FindElement(By.CssSelector(".icon-back")));
             WaitForView(Pane.Single, PaneType.Object);
             wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(6) .value")).Text == original);
@@ -240,7 +234,7 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.Object, "SO59289");
             WaitForCss(".object.object-color2");
             WaitForCss("tr", 2);
-            wait.Until(dr => dr.FindElements(By.CssSelector("tr.link-color2")).Count == 2);
+            wait.Until(dr => dr.FindElements(By.CssSelector("td.link-color2")).Count == 2);
             GeminiUrl("object?i1=View&o1=___1.SalesOrderDetail--59289--71041");
             WaitForView(Pane.Single, PaneType.Object, "1 x Mountain-400-W Silver, 46");
             WaitForCss(".object.object-color2");
@@ -347,13 +341,8 @@ namespace NakedObjects.Selenium {
          public virtual void ZeroParamActionCausesObjectToReload()
         {
             GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--72079&as1=open");
-            WaitForView(Pane.Single, PaneType.Object, "SO72079");
             // clear any existing comments to make test more robust
-
-            var rn = br.FindElements(By.CssSelector(".property"))[19].Text;
-
             Click(GetObjectAction("Clear Comment"));
-            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[19].Text !=  rn);
             //First set up some comments
             OpenActionDialog("Add Standard Comments");
             Click(OKButton());
@@ -590,7 +579,7 @@ namespace NakedObjects.Selenium {
             ClickOnLineItemWithCollectionAsList();
             ClickOnLineItemWithCollectionAsTable();
             DialogAction();
-            //DialogActionOk();
+            DialogActionOk();
             ObjectAction();
             CollectionAction();
             DescriptionRenderedAsTooltip();
@@ -602,8 +591,8 @@ namespace NakedObjects.Selenium {
             Colours();
             ZeroIntValues();
             AddingObjectToCollectionUpdatesTableView();
-            //TimeSpanProperty();
-            //ZeroParamActionCausesObjectToReload();
+            TimeSpanProperty();
+            ZeroParamActionCausesObjectToReload();
         }
     }
 
@@ -626,7 +615,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class MegaObjectViewTestIe : MegaObjectViewTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -637,26 +626,6 @@ namespace NakedObjects.Selenium {
         [TestInitialize]
         public virtual void InitializeTest() {
             InitIeDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            base.CleanUpTest();
-        }
-    }
-
-    [TestClass]
-    public class MegaObjectViewTestChrome : MegaObjectViewTestsRoot {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitChromeDriver();
             Url(BaseUrl);
         }
 

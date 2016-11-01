@@ -21,12 +21,12 @@ namespace NakedObjects.Selenium {
             Click(GetObjectAction("Highest Value Orders"));
             WaitForView(Pane.Single, PaneType.List, "Highest Value Orders");
             //Test content of collection
-            Assert.IsTrue(WaitForCss(".list .summary .details").Text.StartsWith("Page 1 of 1574; viewing 20 of"));
+            Assert.IsTrue(WaitForCss(".collection .summary .details").Text.StartsWith("Page 1 of 1574; viewing 20 of"));
             WaitForCss(".icon-table");
             WaitUntilElementDoesNotExist(".icon-list");
             WaitUntilElementDoesNotExist(".icon-summary");
-            Assert.AreEqual(20, br.FindElements(By.CssSelector(".list table tbody tr td.reference")).Count);
-            Assert.AreEqual(20, br.FindElements(By.CssSelector(".list table tbody tr td.checkbox")).Count);
+            Assert.AreEqual(20, br.FindElements(By.CssSelector(".collection table tbody tr td.reference")).Count);
+            Assert.AreEqual(20, br.FindElements(By.CssSelector(".collection table tbody tr td.checkbox")).Count);
             Assert.AreEqual(0, br.FindElements(By.CssSelector(".cell")).Count); //Cells are in Table view only
         }
 
@@ -95,7 +95,7 @@ namespace NakedObjects.Selenium {
             WaitUntilElementDoesNotExist(".icon-table");
             WaitUntilElementDoesNotExist(".icon-summary");
 
-            wait.Until(dr => dr.FindElements(By.CssSelector(".list table tbody tr")).Count > 1);
+            wait.Until(dr => dr.FindElements(By.CssSelector(".collection table tbody tr")).Count > 1);
 
             //Switch back to List view
             Click(iconList);
@@ -134,7 +134,7 @@ namespace NakedObjects.Selenium {
             Reload();
 
             //Test content of collection
-            wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
                 .Text.StartsWith("Page 1 of 45"));
             GetButton("First").AssertIsDisabled();
             GetButton("Previous").AssertIsDisabled();
@@ -142,28 +142,28 @@ namespace NakedObjects.Selenium {
             GetButton("Last").AssertIsEnabled();
             //Go to next page
             Click(next);
-            wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
                 .Text.StartsWith("Page 2 of 45"));
             GetButton("First").AssertIsEnabled();
             GetButton("Previous").AssertIsEnabled();
             GetButton("Next").AssertIsEnabled();
             var last = GetButton("Last").AssertIsEnabled();
             Click(last);
-            wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
                 .Text.StartsWith("Page 45 of 45"));
             GetButton("First").AssertIsEnabled();
             var prev = GetButton("Previous").AssertIsEnabled();
             GetButton("Next").AssertIsDisabled();
             GetButton("Last").AssertIsDisabled();
             Click(prev);
-            wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
                 .Text.StartsWith("Page 44 of 45"));
             var first = GetButton("First").AssertIsEnabled();
             GetButton("Previous").AssertIsEnabled();
             GetButton("Next").AssertIsEnabled();
             GetButton("Last").AssertIsEnabled();
             Click(first);
-            wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
                 .Text.StartsWith("Page 1 of 45"));
         }
 
@@ -174,19 +174,19 @@ namespace NakedObjects.Selenium {
             ClearFieldThenType("#name1","bike");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Find Store By Name");
-            var summary = WaitForCss(".list .summary .details");
+            var summary = WaitForCss(".collection .summary .details");
              Assert.AreEqual("Page 1 of 177; viewing 2 of 353 items", summary.Text);
             var next = GetButton("Next").AssertIsEnabled();
             Click(next);
             wait.Until(dr => dr.FindElement(
-                By.CssSelector(".list .summary .details"))
+                By.CssSelector(".collection .summary .details"))
                 .Text == "Page 2 of 177; viewing 2 of 353 items");
         }
 
         public virtual void ListDoesNotRefreshWithoutReload() {
             GeminiUrl("list?m1=SpecialOfferRepository&a1=SpecialOffersWithNoMinimumQty&p1=1&ps1=20");
             Reload();
-            wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details")).Text
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
                 .StartsWith("Page 1 of 1;"));
             GeminiUrl("object?o1=___1.SpecialOffer--7");
             EditObject();
@@ -194,10 +194,10 @@ namespace NakedObjects.Selenium {
             SaveObject();
             GeminiUrl("list?m1=SpecialOfferRepository&a1=SpecialOffersWithNoMinimumQty&p1=1&ps1=20");
             WaitForView(Pane.Single, PaneType.List, "Special Offers With No Minimum Qty");
-            wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details")).Text
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
                              == "Page 1 of 1; viewing 11 of 11 items");
             Reload();
-            wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details")).Text
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
                              == "Page 1 of 1; viewing 10 of 10 items");
 
             //Undo to leave in original state
@@ -208,7 +208,7 @@ namespace NakedObjects.Selenium {
             GeminiUrl("list?m1=SpecialOfferRepository&a1=SpecialOffersWithNoMinimumQty&p1=1&ps1=20");
             WaitForView(Pane.Single, PaneType.List, "Special Offers With No Minimum Qty");
             Reload();
-            wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details")).Text
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
                              == "Page 1 of 1; viewing 11 of 11 items");
         }
 
@@ -402,9 +402,9 @@ namespace NakedObjects.Selenium {
             NavigateToItemFromListView();
             NavigateToItemFromTableView();
             Paging();
-            PageSizeRecognised(); 
-            //ListDoesNotRefreshWithoutReload();
-            //ReloadingListGetsUpdatedObject();
+            //PageSizeRecognised(); //TODO: pending bug fix
+            ListDoesNotRefreshWithoutReload();
+            ReloadingListGetsUpdatedObject();
             EagerlyRenderTableViewFromAction();
         }
     }

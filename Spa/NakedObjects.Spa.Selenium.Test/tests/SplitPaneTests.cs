@@ -238,7 +238,7 @@ namespace NakedObjects.Selenium {
             SwapPanesIconFromSingleOpensHomeOnLeft();
             ClickReferenceInLeftPaneObject();
             ClickReferenceInRightPaneObject();
-            //RightClickReferenceInRightPaneObject(); fails due to styling 
+            RightClickReferenceInRightPaneObject();
             LeftClickHomeIconFromSplitObjectObject();
             RightClickHomeIconFromSplitObjectObject();
             ActionDialogOpensInCorrectPane();
@@ -463,7 +463,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class MegaSplitPaneTestIe : SplitPaneTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -474,30 +474,6 @@ namespace NakedObjects.Selenium {
         [TestInitialize]
         public virtual void InitializeTest() {
             InitIeDriver();
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-
-        [TestMethod]
-        public void MegaSplitPaneTest() {
-            RunMegaSplitPaneTest();
-        }
-    }
-
-    [TestClass]
-    public class MegaSplitPaneTestChrome : SplitPaneTestsRoot {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitChromeDriver();
         }
 
         [TestCleanup]

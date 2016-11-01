@@ -1529,7 +1529,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    //[TestClass] 
+    [TestClass] 
     public class MegaCiceroTestsChrome : MegaCiceroTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

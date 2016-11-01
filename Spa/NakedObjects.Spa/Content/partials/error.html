@@ -1,0 +1,7 @@
+﻿<div class="title">{{error.title}}</div>
+<div class="message">Message: {{error.message}}</div>
+<div class="code">Code: {{error.errorCode}}</div>
+<div class="description">Description: {{error.description}}.</div>
+ <div class="stacktrace">Stack Trace :
+     <div class="line" ng-repeat="line in error.stackTrace track by $index">{{line}}</div>
+ </div>

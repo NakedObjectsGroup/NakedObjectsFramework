@@ -337,18 +337,18 @@ namespace NakedObjects.Selenium {
     public abstract class MegaObjectEditTestsRoot : ObjectEditTestsRoot {
         [TestMethod] //Mega
         public void MegaObjectEditTest() {
-            //ObjectEditChangeScalar();
-            //LocalValidationOfMandatoryFields();
-            //LocalValidationOfMaxLength();
-            //LocalValidationOfRegex();
-            //RangeValidationOnNumber();
-            //RangeValidationOnDate();
-            //ObjectEditChangeEnum();
-            //ObjectEditChangeDateTime();
-            //CanSetAndClearAnOptionalDropDown();
-            //ObjectEditPicksUpLatestServerVersion();
-            //ViewModelEditOpensInEditMode();
-            //MultiLineText();
+            ObjectEditChangeScalar();
+            LocalValidationOfMandatoryFields();
+            LocalValidationOfMaxLength();
+            LocalValidationOfRegex();
+            RangeValidationOnNumber();
+            RangeValidationOnDate();
+            ObjectEditChangeEnum();
+            ObjectEditChangeDateTime();
+            CanSetAndClearAnOptionalDropDown();
+            ObjectEditPicksUpLatestServerVersion();
+            ViewModelEditOpensInEditMode();
+            MultiLineText();
         }
     }
 
@@ -371,7 +371,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class MegaObjectEditTestsIe : MegaObjectEditTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -382,26 +382,6 @@ namespace NakedObjects.Selenium {
         [TestInitialize]
         public virtual void InitializeTest() {
             InitIeDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            base.CleanUpTest();
-        }
-    }
-
-    [TestClass]
-    public class MegaObjectEditTestsChrome : MegaObjectEditTestsRoot {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitChromeDriver();
             Url(BaseUrl);
         }
 

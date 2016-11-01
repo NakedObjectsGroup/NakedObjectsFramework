@@ -27,7 +27,7 @@ namespace NakedObjects.Selenium
         #region overhead
 
         protected const string BaseUrl = TestConfig.BaseUrl;
-        protected const string GeminiBaseUrl = TestConfig.BaseUrl + "gemini/";
+        protected const string GeminiBaseUrl = TestConfig.BaseUrl + "#/gemini/";
 
         protected IWebDriver br;
         protected SafeWebDriverWait wait;
@@ -85,23 +85,30 @@ namespace NakedObjects.Selenium
 
         protected void InitChromeDriver()
         {
-            br = new ChromeDriver();
+            const string cacheDir = @"C:\SeleniumTestFolder";
+
+            var crOptions = new ChromeOptions();
+            crOptions.AddArgument(@"--user-data-dir=" + cacheDir);
+            br = new ChromeDriver(crOptions);
             wait = new SafeWebDriverWait(br, TimeSpan.FromSeconds(TimeOut));
             br.Manage().Window.Maximize();
+
+            // test workaround for chromedriver problem https://groups.google.com/forum/#!topic/selenium-users/nJ0NF1UJ3WU
+            Thread.Sleep(5000);
         }
 
         #endregion
 
         #region Helpers
 
-        protected void Url(string url, bool trw = false)
+        protected void Url(string url)
         {
             br.Navigate().GoToUrl(url);
         }
 
         protected void GeminiUrl(string url)
         {
-            Url(GeminiBaseUrl + url);
+            br.Navigate().GoToUrl(GeminiBaseUrl + url);
         }
 
         protected void WaitUntilGone<TResult>(Func<IWebDriver, TResult> condition)
@@ -253,16 +260,9 @@ namespace NakedObjects.Selenium
             selected.SelectByIndex(index);
         }
 
-        protected virtual void WaitForMenus() {
-             wait.Until(dr => dr.FindElements(By.CssSelector(".menu")).Count == 10);
-        }
-
         protected virtual void GoToMenuFromHomePage(string menuName)
         {
             WaitForView(Pane.Single, PaneType.Home, "Home");
-
-            WaitForMenus();
-
             ReadOnlyCollection<IWebElement> menus = br.FindElements(By.CssSelector(".menu"));
             IWebElement menu = menus.FirstOrDefault(s => s.Text == menuName);
             if (menu != null)
@@ -401,7 +401,6 @@ namespace NakedObjects.Selenium
         protected virtual void WaitForView(Pane pane, PaneType type, string title = null)
         {
             var selector = CssSelectorFor(pane) + " ." + type.ToString().ToLower() ;
-
             if (title != null)
             {
                 selector += " .header .title";
@@ -432,7 +431,7 @@ namespace NakedObjects.Selenium
 
         protected void AssertTopItemInListIs(string title)
         {
-            string topItem = WaitForCss(".list tr td.reference").Text;
+            string topItem = WaitForCss(".collection tr td.reference").Text;
 
             Assert.AreEqual(title, topItem);
         }
@@ -476,11 +475,6 @@ namespace NakedObjects.Selenium
             return wait.Until(dr => dr.FindElements(By.CssSelector(selector)).Single(e => e.Text == text));
         }
 
-        protected IWebElement GetInputButton(string text, Pane pane = Pane.Single) {
-            string selector = CssSelectorFor(pane) + ".header .action";
-            return wait.Until(dr => dr.FindElements(By.CssSelector(selector)).Single(e => e.GetAttribute("value") == text));
-        }
-
         protected IWebElement EditButton(Pane pane = Pane.Single)
         {
             return GetButton("Edit", pane);
@@ -488,7 +482,7 @@ namespace NakedObjects.Selenium
 
         protected IWebElement SaveButton(Pane pane = Pane.Single)
         {
-            return GetInputButton("Save", pane);        
+            return GetButton("Save", pane);
         }
 
         protected IWebElement SaveAndCloseButton(Pane pane = Pane.Single)
@@ -500,10 +494,6 @@ namespace NakedObjects.Selenium
         {
             string p = CssSelectorFor(pane);
             return wait.Until(d => d.FindElements(By.CssSelector(p + ".header .action")).Single(el => el.Text == "Cancel"));
-        }
-
-        protected void ClickHomeButton() {
-            Click(WaitForCss(".icon-home"));
         }
 
         protected void ClickBackButton()
@@ -554,7 +544,7 @@ namespace NakedObjects.Selenium
             {
                 OpenSubMenu(subMenuName);
             }
-            var selector = CssSelectorFor(pane) + ".actions .action div";
+            var selector = CssSelectorFor(pane) + ".actions .action";
             var action = wait.Until(d => d.FindElements(By.CssSelector(selector)).
                      Single(we => we.Text == actionName));
             return action;
