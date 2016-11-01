@@ -16,6 +16,7 @@ import * as ViewModels from "../view-models";
 import { ISubscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/forms';
+import * as _ from "lodash";
 
 @Component({
     selector: 'object',
