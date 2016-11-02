@@ -75,6 +75,7 @@ namespace NakedObjects {
         isRecent(paneId?: number): boolean;
         isAttachment(paneId?: number): boolean;
         isApplicationProperties(paneId?: number): boolean;
+        isMultiLineDialog(paneId?: number): boolean;
 
         cicero(): void;
 
@@ -261,6 +262,11 @@ namespace NakedObjects {
             return _.omit(search, toClear);
         }
 
+        function paneIsAlwaysSingle(paneType : string) {
+            return paneType === multiLineDialogPath;
+        }
+
+
         function setupPaneNumberAndTypes(pane: number, newPaneType: string, newMode?: ApplicationMode) {
 
             const path = $location.path();
@@ -278,7 +284,8 @@ namespace NakedObjects {
             // changing item on pane 1
             // make sure pane is of correct type
             if (pane === 1 && pane1Type !== newPaneType) {
-                const newPath = `/${mode}/${newPaneType}${singlePane() ? "" : `/${pane2Type}`}`;
+                const single = singlePane() || paneIsAlwaysSingle(newPaneType);
+                const newPath = `/${mode}/${newPaneType}${single ? "" : `/${pane2Type}`}`;
                 changeMode = false;
                 mayReplace = false;
                 $location.path(newPath);
@@ -449,7 +456,12 @@ namespace NakedObjects {
                     search = clearPane(search, paneId);
                     break;
                 case (Transition.ToMultiLineDialog):
-                    replace = setupPaneNumberAndTypes(paneId, multiLineDialogPath);
+                    replace = setupPaneNumberAndTypes(1, multiLineDialogPath); // always on 1
+                    if (paneId === 2) {
+                        // came from 2 
+                        search = swapSearchIds(search);
+                    }
+                    search = clearPane(search, 2); // always on pane 1
                     break;
                 default:
                     // null transition 
@@ -507,9 +519,9 @@ namespace NakedObjects {
             executeTransition(newValues, paneId, Transition.ToDialog, search => getId(key, search) !== dialogId);
         };
 
-        helper.setMultiLineDialog = (dialogId: string, paneId = 1) => {
-            helper.pushUrlState();
-            const key = `${akm.dialog}${paneId}`;
+        helper.setMultiLineDialog = (dialogId: string, paneId? : number) => {        
+            helper.pushUrlState();     
+            const key = `${akm.dialog}${1}`; // always on 1
             const newValues = _.zipObject([key], [dialogId]) as _.Dictionary<string>;
             executeTransition(newValues, paneId, Transition.ToMultiLineDialog, search => getId(key, search) !== dialogId);
         };
@@ -857,6 +869,7 @@ namespace NakedObjects {
         helper.isRecent = (paneId = 1) => isLocation(paneId, recentPath);
         helper.isAttachment = (paneId = 1) => isLocation(paneId, attachmentPath);
         helper.isApplicationProperties = (paneId = 1) => isLocation(paneId, applicationPropertiesPath);
+        helper.isMultiLineDialog = (paneId = 1) => isLocation(paneId, multiLineDialogPath);
 
         function toggleReloadFlag(search: any) {
             const currentFlag = search[akm.reload];

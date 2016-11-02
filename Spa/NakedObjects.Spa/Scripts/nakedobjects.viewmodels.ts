@@ -1221,6 +1221,7 @@ namespace NakedObjects {
         cicero: () => void;
         userName: string;
         applicationProperties: () => void;
+        swapDisabled : () => boolean;
 
         warnings: string[];
         messages: string[];

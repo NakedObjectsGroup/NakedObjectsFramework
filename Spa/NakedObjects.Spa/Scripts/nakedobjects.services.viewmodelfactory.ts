@@ -923,10 +923,12 @@ namespace NakedObjects {
                     navigation.forward();
                 };
                 tvm.swapPanes = () => {
-                    $rootScope.$broadcast(geminiPaneSwapEvent);
-                    context.updateValues();
-                    context.swapCurrentObjects();
-                    urlManager.swapPanes();
+                    if (!tvm.swapDisabled()) {
+                        $rootScope.$broadcast(geminiPaneSwapEvent);
+                        context.updateValues();
+                        context.swapCurrentObjects();
+                        urlManager.swapPanes();
+                    }
                 };
                 tvm.singlePane = (right?: boolean) => {
                     context.updateValues();
@@ -943,6 +945,10 @@ namespace NakedObjects {
                     context.updateValues();
                     focusManager.focusOverrideOff();
                     urlManager.setRecent(clickHandler.pane(1, right));
+                };
+
+                tvm.swapDisabled = () => {
+                    return urlManager.isMultiLineDialog(); 
                 };
 
                 tvm.logOff = () => {
