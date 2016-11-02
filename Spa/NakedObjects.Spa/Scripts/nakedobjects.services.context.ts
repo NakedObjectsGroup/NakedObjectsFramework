@@ -111,6 +111,7 @@ namespace NakedObjects {
         clearWarnings(): void;
 
         getRecentlyViewed(): DomainObjectRepresentation[];
+        clearRecentlyViewed() : void;
 
         getFile: (object: DomainObjectRepresentation, url: string, mt: string) => angular.IPromise<Blob>;
 
@@ -945,6 +946,8 @@ namespace NakedObjects {
         }
 
         context.getRecentlyViewed = () => recentcache.items();
+
+        context.clearRecentlyViewed = () => recentcache.clear();
 
         function logoff() {
             for (let pane = 1; pane <= 2; pane++) {

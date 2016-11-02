@@ -892,6 +892,13 @@ namespace NakedObjects {
             recentItemsViewModel.onPaneId = paneId;
             const items = _.map(context.getRecentlyViewed(), o => ({ obj: o, link: selfLinkWithTitle(o) }));
             recentItemsViewModel.items = _.map(items, i => viewModelFactory.recentItemViewModel(i.obj, i.link, paneId, false));
+
+            recentItemsViewModel.clear = () => {
+                context.clearRecentlyViewed();
+                urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
+            }
+
+
             return recentItemsViewModel;
         };
 

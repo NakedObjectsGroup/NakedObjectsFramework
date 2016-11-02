@@ -324,6 +324,7 @@ namespace NakedObjects {
     export interface IRecentItemsViewModel {
         onPaneId: number;
         items: IRecentItemViewModel[];
+        clear: () => void;
     }
 
     export interface IDomainObjectViewModel extends IMessageViewModel {

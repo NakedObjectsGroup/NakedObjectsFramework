@@ -1227,10 +1227,12 @@ namespace NakedObjects {
         messages: string[];
     }
 
-    export class RecentItemsViewModel implements IRecentItemsViewModel{
+    export class RecentItemsViewModel implements IRecentItemsViewModel {
         onPaneId: number;
         items: IRecentItemViewModel[];
+        clear : () => void;
     }
+
 
     export class DomainObjectViewModel extends MessageViewModel implements IDomainObjectViewModel, IDraggableViewModel {
 
