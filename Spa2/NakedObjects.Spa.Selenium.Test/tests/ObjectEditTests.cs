@@ -337,7 +337,7 @@ namespace NakedObjects.Selenium {
     public abstract class MegaObjectEditTestsRoot : ObjectEditTestsRoot {
         [TestMethod] //Mega
         public void MegaObjectEditTest() {
-            //ObjectEditChangeScalar();
+            ObjectEditChangeScalar();
             //LocalValidationOfMandatoryFields();
             //LocalValidationOfMaxLength();
             //LocalValidationOfRegex();
