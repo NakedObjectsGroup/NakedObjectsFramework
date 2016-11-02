@@ -85,16 +85,9 @@ namespace NakedObjects.Selenium
 
         protected void InitChromeDriver()
         {
-            const string cacheDir = @"C:\SeleniumTestFolder";
-
-            var crOptions = new ChromeOptions();
-            crOptions.AddArgument(@"--user-data-dir=" + cacheDir);
-            br = new ChromeDriver(crOptions);
+            br = new ChromeDriver();
             wait = new SafeWebDriverWait(br, TimeSpan.FromSeconds(TimeOut));
             br.Manage().Window.Maximize();
-
-            // test workaround for chromedriver problem https://groups.google.com/forum/#!topic/selenium-users/nJ0NF1UJ3WU
-            Thread.Sleep(5000);
         }
 
         #endregion
