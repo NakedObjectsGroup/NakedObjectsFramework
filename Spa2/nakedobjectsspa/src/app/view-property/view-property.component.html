@@ -1,0 +1,49 @@
+<div class="name">
+	{{property.title}}:</div>
+
+<div *ngIf="property.type === 'ref' && !edit">
+	<div [ngSwitch]="property.refType">
+		<div *ngSwitchCase="null"></div>
+		<div *ngSwitchCase="'notNavigable'">
+			<div class="value">
+				{{property.formattedValue}}
+			</div>
+		</div>
+		<div *ngSwitchDefault class="reference clickable-area" [ngClass]="classes()" geminiClick (leftClick)="property.doClick()"
+			(rightClick)="property.doClick(true)" dnd-draggable [dragEnabled]="true" tabindex="0">
+			{{property.formattedValue}}
+		</div>
+	</div>
+</div>
+
+<div *ngIf="property.type === 'scalar' && !edit">
+	<div [ngSwitch]="property.returnType">
+		<div *ngSwitchCase="'string'">
+			<!--*ngIf="property.returnType = 'string'"-->
+			<div [ngSwitch]="property.format">
+				<div *ngSwitchCase="'blob'" class="reference clickable-area" geminiClick (leftClick)='property.attachment.doClick()' (rightClick)='property.attachment.doClick(true)'
+					gemini-attachment tabindex="0">
+				</div>
+				<div *ngSwitchDefault>
+					<div [ngSwitch]="property.multipleLines">
+						<div *ngSwitchCase="1" class="value">
+							{{property.formattedValue}}
+						</div>
+						<div *ngSwitchDefault class="value multiline" [ngStyle]="{height: property.multipleLines * 20+'px'}">
+							<pre>{{property.formattedValue}}</pre>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div *ngSwitchCase="'boolean'">
+			<input type="checkbox" onclick="return false" [checked]="property.value" disabled="disabled" />
+		</div>
+
+		<div *ngSwitchDefault>
+			<div class="value">
+				{{property.formattedValue}}
+			</div>
+		</div>
+	</div>
+</div>

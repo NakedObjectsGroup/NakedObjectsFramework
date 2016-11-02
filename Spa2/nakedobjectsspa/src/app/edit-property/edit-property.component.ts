@@ -9,20 +9,17 @@ import { FormGroup } from '@angular/forms';
     host: {
         '(document:click)': 'handleClick($event)'
     },
-    selector: 'property',
-    templateUrl: './property.component.html',
-    styleUrls: ['./property.component.css']
+    selector: 'edit-property',
+    templateUrl: './edit-property.component.html',
+    styleUrls: ['./edit-property.component.css']
 })
-export class PropertyComponent extends FieldComponent implements OnInit {
+export class EditPropertyComponent extends FieldComponent implements OnInit {
 
     constructor(myElement: ElementRef) {
         super(myElement);
     }
 
     prop: ViewModels.PropertyViewModel;
-
-    @Input()
-    edit: boolean;
 
     @Input()
     parent: ViewModels.DomainObjectViewModel;

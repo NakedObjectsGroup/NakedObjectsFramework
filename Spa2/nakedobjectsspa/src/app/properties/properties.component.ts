@@ -14,9 +14,6 @@ export class PropertiesComponent {
     props: ViewModels.PropertyViewModel[];
 
     @Input()
-    edit: boolean;
-
-    @Input()
     parent: ViewModels.DomainObjectViewModel;
 
     @Input()

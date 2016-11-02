@@ -1,42 +1,43 @@
 <div [attr.id]="paneIdName()" *ngIf="object" [ngClass]="getClass()">
-	<form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
-		<div *ngIf="object && mode === 0" class="object view" [ngClass]="getColor()">
-			<header class="header">
-				<div class="title" dnd-draggable [dragEnabled]="true" [dragData]="object" tabindex="0">
-					<span class="type">{{object.friendlyName}}</span> {{object.title}}
-				</div>
-				<!--<div>{{object.isDirty() ? "*" : ""}} </div>-->
-				<div class="menus">
-					<div class="menu clickable-area" tabindex="0" geminiClick (leftClick)="object.toggleActionMenu()" [attr.disabled]="object.disableActions() ? true : null"
-						title={{object.actionsTooltip()}} accesskey="a">
-						Actions
-					</div>
-					<div class="menu action clickable-area" tabindex="0" geminiClick (leftClick)="object.doEdit()" *ngIf="!object.hideEdit()">
-						Edit
-					</div>
-					<div class="menu action clickable-area" tabindex="0" geminiClick (leftClick)="object.doReload()">
-						Reload
-					</div>
-				</div>
-				<div class="messages">{{object.message}}</div>
-			</header>
-			<actions class="actions" *ngIf="object.showActions()" [menuVm]="object"></actions>
-			<div class="mainColumn">
-				<app-dialog [parent]="object"></app-dialog>
-				<properties class="properties" *ngIf="object.properties" [properties]="object.properties" [parent]="object" [form]="form"
-					[edit]="false"></properties>
-			</div>
-			<collections class="collections" *ngIf="object.collections" [collections]="object.collections"></collections>
-		</div>
-		<div *ngIf="object && mode === 1" class="object edit" [ngClass]="getColor()">
 
+	<div *ngIf="object && mode === 0" class="object view" [ngClass]="getColor()">
+		<header class="header">
+			<div class="title" dnd-draggable [dragEnabled]="true" [dragData]="object" tabindex="0">
+				<span class="type">{{object.friendlyName}}</span> {{object.title}}
+			</div>
+			<!--<div>{{object.isDirty() ? "*" : ""}} </div>-->
+			<div class="menus">
+				<div class="menu clickable-area" tabindex="0" geminiClick (leftClick)="object.toggleActionMenu()" [attr.disabled]="object.disableActions() ? true : null"
+					title={{object.actionsTooltip()}} accesskey="a">
+					Actions
+				</div>
+				<div class="menu action clickable-area" tabindex="0" geminiClick (leftClick)="object.doEdit()" *ngIf="!object.hideEdit()">
+					Edit
+				</div>
+				<div class="menu action clickable-area" tabindex="0" geminiClick (leftClick)="object.doReload()">
+					Reload
+				</div>
+			</div>
+			<div class="messages">{{object.message}}</div>
+		</header>
+		<actions class="actions" *ngIf="object.showActions()" [menuVm]="object"></actions>
+		<div class="mainColumn">
+			<app-dialog [parent]="object"></app-dialog>
+			<properties class="properties" *ngIf="object.properties" [properties]="object.properties"></properties>
+		</div>
+		<collections class="collections" *ngIf="object.collections" [collections]="object.collections"></collections>
+	</div>
+	<div *ngIf="object && mode === 1" class="object edit" [ngClass]="getColor()">
+		<form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
 			<header class="header">
 				<div class="title" tabindex="0">
 					<span class="type">{{object.friendlyName}}</span> Editing - {{object.title}}
 				</div>
 				<div class="menus">
-					<input type="submit" class="menu action clickable-area" tabindex="0" [disabled]="!form.valid" geminiClick (leftClick)="onSubmit(true)" title="{{tooltip}}" value="Save"/>				
-					<input *ngIf="object.unsaved" type="submit" class="menu action clickable-area" [disabled]="!form.valid" tabindex="0" geminiClick (leftClick)="onSubmit(false)" title="{{tooltip}}" value="Save & Close"/>
+					<input type="submit" class="menu action clickable-area" tabindex="0" [disabled]="!form.valid" geminiClick (leftClick)="onSubmit(true)"
+						title="{{tooltip}}" value="Save" />
+					<input *ngIf="object.unsaved" type="submit" class="menu action clickable-area" [disabled]="!form.valid" tabindex="0" geminiClick
+						(leftClick)="onSubmit(false)" title="{{tooltip}}" value="Save & Close" />
 					<div class="menu action clickable-area" tabindex="0" geminiClick (leftClick)="object.doEditCancel()">
 						Cancel
 					</div>
@@ -44,11 +45,10 @@
 				<div class="messages">{{object.message}}</div>
 			</header>
 			<div class="mainColumn">
-				<properties *ngIf="object.properties" [properties]="object.properties" [parent]="object" [form]="form" [edit]="true"></properties>
+				<properties *ngIf="object.properties" [properties]="object.properties" [parent]="object" [form]="form"></properties>
 			</div>
-
-			<collections *ngIf="object.collections" [collections]="object.collections"></collections>
-		</div>
-	</form>
+		</form>
+		<collections *ngIf="object.collections" [collections]="object.collections"></collections>
+	</div>
 </div>
 <router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>

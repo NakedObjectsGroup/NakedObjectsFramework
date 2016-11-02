@@ -15,7 +15,8 @@ import { PropertiesComponent } from './properties/properties.component';
 import { CollectionsComponent } from './collections/collections.component';
 import { DialogComponent } from './dialog/dialog.component';
 import { ParametersComponent } from './parameters/parameters.component';
-import { PropertyComponent } from './property/property.component';
+import { EditPropertyComponent } from './edit-property/edit-property.component';
+import { ViewPropertyComponent } from './view-property/view-property.component';
 import { ParameterComponent } from './parameter/parameter.component';
 import { RecentComponent } from './recent/recent.component';
 import { ApplicationPropertiesComponent } from './application-properties/application-properties.component';
@@ -40,7 +41,6 @@ import { CollectionComponent } from './collection/collection.component';
 import {DND_PROVIDERS, DND_DIRECTIVES} from 'ng2-dnd';
 import { ReactiveFormsModule }          from '@angular/forms';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,7 +55,8 @@ import { ReactiveFormsModule }          from '@angular/forms';
     CollectionsComponent,
     DialogComponent,
     ParametersComponent,
-    PropertyComponent,
+    EditPropertyComponent,
+    ViewPropertyComponent,
     ParameterComponent,
     RecentComponent,
     ApplicationPropertiesComponent,
