@@ -75,9 +75,9 @@ export class ObjectComponent implements OnInit,  OnDestroy {
                     ovm.clearCachedFiles();
                 }
 
-                //if (this.mode === InteractionMode.Edit) {
+                if (this.mode === InteractionMode.Edit) {
                     this.createForm(ovm);
-                //}
+                }
 
                  this.object = ovm;
 
@@ -162,13 +162,16 @@ export class ObjectComponent implements OnInit,  OnDestroy {
         const pps = vm.properties;
         this.props = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<ViewModels.PropertyViewModel>
 
-        const controls = _.mapValues(this.props, p => [p.getValueForControl(), a => p.validator(a)]) as _.Dictionary<any>;
+        const editableProps = _.filter(this.props, p => p.isEditable); 
+        const editablePropsMap = _.zipObject(_.map(editableProps, p => p.id), _.map(editableProps, p => p)); 
+
+        const controls = _.mapValues(editablePropsMap, p => [p.getValueForControl(), a => p.validator(a)]) as _.Dictionary<any>;
         this.form = this.formBuilder.group(controls);
 
         this.form.valueChanges.subscribe(data => {
             // cache parm values
             _.forEach(data, (v, k) => {
-                const prop = this.props[k];
+                const prop = editablePropsMap[k];
                 prop.setValueFromControl(v);
             });
             this.object.setProperties();
