@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using NakedObjects.Services;
 
 namespace NakedObjects.Util {
     /// <summary>

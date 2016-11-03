@@ -8,9 +8,14 @@
 using System;
 
 namespace NakedObjects {
-    /// <summary>
-    ///     Tell Nakedobjects to ignore this class, property or action. It will not be introspected.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
-    public class NakedObjectsIgnoreAttribute : Attribute {}
+
+    [Obsolete("This attribute is no longer recognised, as of NOF 7.  Use MemberOrder and/or the Menu method to specify object menus.")]
+    [AttributeUsage(AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
+    public class ActionOrderAttribute : Attribute {
+        public ActionOrderAttribute(string s) {
+            Value = s;
+        }
+
+        public string Value { get; private set; }
+    }
 }
