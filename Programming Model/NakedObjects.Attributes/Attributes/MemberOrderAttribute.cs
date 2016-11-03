@@ -7,38 +7,26 @@
 
 using System;
 
-namespace NakedObjects
-{
+namespace NakedObjects {
     /// <summary>
     ///     The recommended mechanism for specifying the order in which fields and/or actions are presented to
-    ///     the user. The Name parameter can be used to associate an object with a particular collection.
+    ///     the user. (<see cref="ActionOrderAttribute" /> and <see cref="FieldOrderAttribute" /> provide alternative
+    ///     mechanisms)
     /// </summary>
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
-    public class MemberOrderAttribute : Attribute
-    {
-        public MemberOrderAttribute()
-        {
+    public class MemberOrderAttribute : Attribute {
+        public MemberOrderAttribute() {
             Sequence = "";
         }
 
-        public MemberOrderAttribute(string sequence)
-        {
+        public MemberOrderAttribute(string sequence) {
             Sequence = sequence;
         }
 
-        public MemberOrderAttribute(double sequence)
-        {
+        public MemberOrderAttribute(double sequence) {
             Sequence = "" + sequence;
-        }
-
-        public MemberOrderAttribute(double sequence, string name)
-        {
-            Sequence = "" + sequence;
-            Name = name;
         }
 
         public string Sequence { get; set; }
-
-        public string Name { get; set; }
     }
 }
