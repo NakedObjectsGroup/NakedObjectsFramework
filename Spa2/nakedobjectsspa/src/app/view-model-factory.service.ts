@@ -279,7 +279,9 @@ export class ViewModelFactoryService {
 
     private setScalarValueInView(vm: { value: string | number | boolean | Date }, propertyRep: Models.PropertyMember, value: Models.Value) {
         if (Models.isDateOrDateTime(propertyRep)) {
-            vm.value = Models.toUtcDate(value);
+            //vm.value = Models.toUtcDate(value);
+            const date = Models.toUtcDate(value);
+            vm.value = date ? Models.toDateString(date) : "";
         } else if (Models.isTime(propertyRep)) {
             vm.value = Models.toTime(value);
         } else {
@@ -323,7 +325,7 @@ export class ViewModelFactoryService {
             } else if (propertyViewModel.password) {
                 propertyViewModel.formattedValue = Msg.obscuredText;
             } else {
-                propertyViewModel.formattedValue = localFilter.filter(propertyViewModel.value);
+                propertyViewModel.formattedValue =  localFilter.filter(propertyViewModel.value);
             }
         });
     }
@@ -367,7 +369,7 @@ export class ViewModelFactoryService {
                 } else if (isPassword) {
                     tableRowColumnViewModel.formattedValue = Msg.obscuredText;
                 } else {
-                    tableRowColumnViewModel.formattedValue = localFilter.filter(tableRowColumnViewModel.value);
+                    tableRowColumnViewModel.formattedValue =  localFilter.filter(tableRowColumnViewModel.value);
                 }
             } else {
                 // is reference   
@@ -621,7 +623,7 @@ export class ViewModelFactoryService {
             const localFilter = this.mask.toLocalFilter(remoteMask, parmRep.extensions().format());
             parmViewModel.localFilter = localFilter;
             // formatting also happens in in directive - at least for dates - value is now date in that case
-            parmViewModel.formattedValue = parmViewModel.value ? localFilter.filter(parmViewModel.value.toString()) : "";
+            parmViewModel.formattedValue =  localFilter.filter(parmViewModel.value.toString());
         }
 
         parmViewModel.description = this.getRequiredIndicator(parmViewModel) + parmViewModel.description;
