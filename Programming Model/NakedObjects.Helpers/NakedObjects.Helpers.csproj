@@ -53,6 +53,7 @@
     <Compile Include="Interfaces\IPolymorphicLink.cs" />
     <Compile Include="Interfaces\IPolymorphicLinkWithOid.cs" />
     <Compile Include="Interfaces\IPolymorphicNavigatorWithOid.cs" />
+    <Compile Include="RecognisedMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AbstractFactoryAndRepository.cs" />
     <Compile Include="Services\IKeyCodeMapper.cs" />

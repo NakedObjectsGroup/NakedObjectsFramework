@@ -9,8 +9,15 @@ using System;
 
 namespace NakedObjects {
     /// <summary>
-    ///     Tell Nakedobjects to ignore this class, property or action. It will not be introspected.
+    ///     Never allow this action to be contributed to an object menu.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
-    public class NakedObjectsIgnoreAttribute : Attribute {}
+    [AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
+    [Obsolete("This attribute is no longer recognised as of NOF 7. Contributed Actions must be explicitly annotated with the ContributedAction attribute.")]
+    public class NotContributedActionAttribute : Attribute {
+        public NotContributedActionAttribute(params Type[] notContributedToTypes) {
+            NotContributedToTypes = notContributedToTypes ?? new Type[] {};
+        }
+
+        public Type[] NotContributedToTypes { get; private set; }
+    }
 }

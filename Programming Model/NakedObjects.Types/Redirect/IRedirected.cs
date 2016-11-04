@@ -5,12 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-
-namespace NakedObjects {
-    /// <summary>
-    ///     Tell Nakedobjects to ignore this class, property or action. It will not be introspected.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
-    public class NakedObjectsIgnoreAttribute : Attribute {}
+namespace NakedObjects.Redirect {
+    public interface IRedirected {
+        string GetUrl();
+    }
 }

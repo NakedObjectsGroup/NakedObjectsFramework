@@ -9,8 +9,9 @@ using System;
 
 namespace NakedObjects {
     /// <summary>
-    ///     Tell Nakedobjects to ignore this class, property or action. It will not be introspected.
+    ///     Never allow this method to be used in a 'Find' menu
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
-    public class NakedObjectsIgnoreAttribute : Attribute {}
+    [AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
+    [Obsolete("This attribute is no longer recognised as of NOF 7. Finder Actions must be explicitly annotated with the FinderAction attribute.")]
+    public class ExcludeFromFindMenuAttribute : Attribute {}
 }

@@ -56,13 +56,13 @@ namespace NakedObjects.Menu {
         IMenu GetSubMenu(string menuName);
 
         /// <summary>
-        /// Adds all native actions from the Type not previously added directly or to a sub-menu.
+        /// Adds all native actions from the Default Type not previously added directly or to a sub-menu.
         /// </summary>
         /// <returns>This menu (for fluent programming)</returns>
         IMenu AddRemainingNativeActions();
 
         /// <summary>
-        /// Adds all actions contributed to the Type.
+        /// Adds all actions contributed to the Default Type.
         /// Where a sub-menu exists of the correct name, actions will be added to that.
         /// Will throw an exception if SetDefaultType has not been called.
         /// </summary>

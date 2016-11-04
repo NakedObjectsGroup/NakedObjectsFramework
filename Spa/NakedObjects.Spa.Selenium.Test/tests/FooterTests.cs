@@ -102,6 +102,7 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.Object, "Long-Sleeve Logo Jersey, S");
             ClickRecentButton();
             WaitForView(Pane.Single, PaneType.Recent);
+            WaitForCss("tr td:nth-child(1)", 6);
             var el = WaitForCssNo("tr td:nth-child(1)", 0);
             Assert.AreEqual("Long-Sleeve Logo Jersey, S", el.Text);
             el = WaitForCssNo("tr td:nth-child(1)", 1);
@@ -110,6 +111,12 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("Mechanical Sports Center, AW00000359", el.Text);
             el = WaitForCssNo("tr td:nth-child(1)", 3);
             Assert.AreEqual("Healthy Activity Store, AW00000042", el.Text);
+
+            //Test that clear button works
+            var clear = GetButton("Clear").AssertIsEnabled();
+            Click(clear);
+            GetButton("Clear").AssertIsDisabled();
+            WaitForCss("tr td", 0);
         }
         public virtual void ApplicationProperties() {
             GeminiUrl("home");
@@ -120,8 +127,8 @@ namespace NakedObjects.Selenium {
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
             Assert.IsTrue(properties[0].Text.StartsWith("User Name:"));
             Assert.IsTrue(properties[1].Text.StartsWith("Server Url: http:"));
-            Assert.IsTrue(properties[2].Text.StartsWith("Server version: 8.0.0"));
-            Assert.IsTrue(properties[3].Text.StartsWith("Client version: 8.0.0"));
+            Assert.IsTrue(properties[2].Text.StartsWith("Server version: 8.1.0"));
+            Assert.IsTrue(properties[3].Text.StartsWith("Client version: 8.2.0"));
         }
         public virtual void LogOff() {
             GeminiUrl("home");
@@ -240,7 +247,7 @@ namespace NakedObjects.Selenium {
     public abstract class MegaFooterTestsRoot : FooterTestsRoot {
         [TestMethod] //Mega
         public void MegaFooterTest() {
-            ExplicitWarningsAndInfo();
+            //ExplicitWarningsAndInfo();
             ZeroParamActionReturningNullGeneratesGenericWarning();
             Home();
             BackAndForward();
@@ -289,7 +296,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass, Ignore]
+    [TestClass]
     public class MegaFooterTestsChrome : MegaFooterTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
