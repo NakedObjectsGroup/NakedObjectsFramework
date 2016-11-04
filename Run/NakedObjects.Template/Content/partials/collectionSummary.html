@@ -1,8 +1,8 @@
 ﻿<div class="summary">
     <div class='name'>{{collection.title}}:</div>
     <div class="details">{{collection.details}}</div>
-    <div ng-if="collection.mayHaveItems">
-        <img class="icon-list clickable-area" ng-click="collection.doList()" src="images/list.png" title="View as List" />
-        <img class="icon-table clickable-area" ng-click="collection.doTable()" src="images/table.png" title="View as Table" />
+    <div>
+        <img ng-if="collection.mayHaveItems || !collection.disableActions()"  class="icon-list clickable-area" ng-click="collection.doList()" src="images/list.png" title="View as List" />
+        <img ng-if="collection.mayHaveItems" class="icon-table clickable-area" ng-click="collection.doTable()" src="images/table.png" title="View as Table" />
     </div>
 </div>

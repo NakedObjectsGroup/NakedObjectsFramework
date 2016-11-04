@@ -31,6 +31,10 @@ namespace NakedObjects {
         setMenu(menuId: string, paneId?: number): void;
         setDialog(dialogId: string, paneId?: number): void;
 
+        setMultiLineDialog(dialogId: string, paneId?: number): void;
+
+        setDialogOrMultiLineDialog(actionRep: Models.ActionMember | Models.ActionRepresentation, paneId? : number) : void;
+
         closeDialogKeepHistory(paneId?: number): void;
 
         closeDialogReplaceHistory(paneId?: number): void;
@@ -71,6 +75,7 @@ namespace NakedObjects {
         isRecent(paneId?: number): boolean;
         isAttachment(paneId?: number): boolean;
         isApplicationProperties(paneId?: number): boolean;
+        isMultiLineDialog(paneId?: number): boolean;
 
         cicero(): void;
 
@@ -245,8 +250,10 @@ namespace NakedObjects {
             return searchKeysForPane(search, paneId, raw);
         }
 
-        function clearPane(search: any, paneId: number) {
+        function clearPane(search: any, paneId: number) {           
             const toClear = allSearchKeysForPane(search, paneId);
+             // always add reload flag 
+            toClear.push(akm.reload);
             return _.omit(search, toClear);
         }
 
@@ -254,6 +261,11 @@ namespace NakedObjects {
             const toClear = searchKeysForPane(search, paneId, keys);
             return _.omit(search, toClear);
         }
+
+        function paneIsAlwaysSingle(paneType : string) {
+            return paneType === multiLineDialogPath;
+        }
+
 
         function setupPaneNumberAndTypes(pane: number, newPaneType: string, newMode?: ApplicationMode) {
 
@@ -272,7 +284,8 @@ namespace NakedObjects {
             // changing item on pane 1
             // make sure pane is of correct type
             if (pane === 1 && pane1Type !== newPaneType) {
-                const newPath = `/${mode}/${newPaneType}${singlePane() ? "" : `/${pane2Type}`}`;
+                const single = singlePane() || paneIsAlwaysSingle(newPaneType);
+                const newPath = `/${mode}/${newPaneType}${single ? "" : `/${pane2Type}`}`;
                 changeMode = false;
                 mayReplace = false;
                 $location.path(newPath);
@@ -335,7 +348,8 @@ namespace NakedObjects {
             Page,
             ToTransient,
             ToRecent,
-            ToAttachment
+            ToAttachment,
+            ToMultiLineDialog
         }
 
         function getId(key: string, search: any) {
@@ -348,6 +362,48 @@ namespace NakedObjects {
 
         function clearId(key: string, search: any) {
             delete search[key];
+        }
+
+        function validKeysForHome() {
+            return [akm.menu, akm.dialog, akm.reload];
+        }
+
+        function validKeysForObject() {
+            return [akm.object, akm.interactionMode, akm.reload, akm.actions, akm.dialog, akm.collection, akm.prop];
+        }
+
+        function validKeysForMultiLineDialog() {
+            return [akm.object,  akm.dialog,  akm.menu];
+        }
+
+        function validKeysForList() {
+            return [akm.reload, akm.actions, akm.dialog, akm.menu, akm.action, akm.page, akm.pageSize, akm.selected, akm.collection, akm.parm, akm.object];
+        }
+
+        function validKeys(path: string) {
+
+            switch (path) {
+                case homePath:
+                    return validKeysForHome();
+                case objectPath:
+                    return validKeysForObject();
+                case listPath:
+                    return validKeysForList();
+                case multiLineDialogPath:
+                    return validKeysForMultiLineDialog();
+            }
+
+            return [];
+        }
+
+    
+        function clearInvalidParmsFromSearch(paneId: number, search: any, path: string) {
+            if (path) {
+                const vks = validKeys(path);
+                const ivks = _.without(_.values(akm), ...vks) as string[];
+                return clearSearchKeys(search, paneId, ivks);
+            }
+            return search;
         }
 
         function handleTransition(paneId: number, search: any, transition: Transition) {
@@ -399,6 +455,14 @@ namespace NakedObjects {
                     replace = setupPaneNumberAndTypes(paneId, attachmentPath);
                     search = clearPane(search, paneId);
                     break;
+                case (Transition.ToMultiLineDialog):
+                    replace = setupPaneNumberAndTypes(1, multiLineDialogPath); // always on 1
+                    if (paneId === 2) {
+                        // came from 2 
+                        search = swapSearchIds(search);
+                    }
+                    search = clearPane(search, 2); // always on pane 1
+                    break;
                 default:
                     // null transition 
                     break;
@@ -407,6 +471,13 @@ namespace NakedObjects {
             if (replace) {
                 $location.replace();
             }
+
+            const path = $location.path();
+            const segments = path.split("/");
+            const [, , pane1Type, pane2Type] = segments;
+
+            search = clearInvalidParmsFromSearch(1, search, pane1Type);
+            search = clearInvalidParmsFromSearch(2, search, pane2Type);
 
             return search;
         }
@@ -447,6 +518,23 @@ namespace NakedObjects {
             const newValues = _.zipObject([key], [dialogId]) as _.Dictionary<string>;
             executeTransition(newValues, paneId, Transition.ToDialog, search => getId(key, search) !== dialogId);
         };
+
+        helper.setMultiLineDialog = (dialogId: string, paneId? : number) => {        
+            helper.pushUrlState();     
+            const key = `${akm.dialog}${1}`; // always on 1
+            const newValues = _.zipObject([key], [dialogId]) as _.Dictionary<string>;
+            executeTransition(newValues, paneId, Transition.ToMultiLineDialog, search => getId(key, search) !== dialogId);
+        };
+
+        helper.setDialogOrMultiLineDialog = (actionRep : Models.ActionMember | Models.ActionRepresentation, paneId = 1) => {
+            if (actionRep.extensions().multipleLines()) {
+                helper.setMultiLineDialog(actionRep.actionId(), paneId);
+            } else {
+                helper.setDialog(actionRep.actionId(), paneId);
+            }
+        };
+
+
 
         function closeOrCancelDialog(paneId: number, transition: Transition) {
             const key = `${akm.dialog}${paneId}`;
@@ -495,9 +583,6 @@ namespace NakedObjects {
 
             // This will also swap the panes of the field values if we are 
             // right clicking into the other pane.
-          
-            //newValues = copyFieldsIntoValues(fromPaneId, toPaneId, newValues);
-            //newValues = setFieldsToParms(toPaneId, newValues);
 
             _.forEach(parms, (p, id) => setId(`${akm.parm}${toPaneId}_${id}`, p.toJsonString(), newValues));
 
@@ -784,6 +869,7 @@ namespace NakedObjects {
         helper.isRecent = (paneId = 1) => isLocation(paneId, recentPath);
         helper.isAttachment = (paneId = 1) => isLocation(paneId, attachmentPath);
         helper.isApplicationProperties = (paneId = 1) => isLocation(paneId, applicationPropertiesPath);
+        helper.isMultiLineDialog = (paneId = 1) => isLocation(paneId, multiLineDialogPath);
 
         function toggleReloadFlag(search: any) {
             const currentFlag = search[akm.reload];

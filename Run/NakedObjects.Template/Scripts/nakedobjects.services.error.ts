@@ -14,7 +14,7 @@ namespace NakedObjects {
 
         handleError(reject: Models.ErrorWrapper): void;
         handleErrorAndDisplayMessages(reject: Models.ErrorWrapper, displayMessages: (em: Models.ErrorMap) => void): void;
-        displayError($scope: INakedObjectsScope, routeData: PaneRouteData): void;
+        displayError($scope: INakedObjectsScope): void;
 
         setErrorPreprocessor(handler: errorPreprocessor): void;
         setErrorDisplayHandler(handler: errorDisplayHandler): void;
@@ -27,7 +27,7 @@ namespace NakedObjects {
             const preProcessors: errorPreprocessor[] = [];
             const displayHandlers: errorDisplayHandler[] = [];
 
-            function handleHttpServerError(reject: ErrorWrapper) {
+            function handleHttpServerError() {
                 urlManager.setError(ErrorCategory.HttpServerError);
             }
 
@@ -61,7 +61,7 @@ namespace NakedObjects {
                 context.setError(reject);
                 switch (reject.category) {
                 case (ErrorCategory.HttpServerError):
-                    handleHttpServerError(reject);
+                    handleHttpServerError();
                     break;
                 case (ErrorCategory.HttpClientError):
                     handleHttpClientError(reject, displayMessages);
@@ -80,7 +80,7 @@ namespace NakedObjects {
                 displayHandlers.push(handler);
             };
 
-            errorService.displayError = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
+            errorService.displayError = ($scope: INakedObjectsScope) => {
                 // first allow handlers to set error template, if none does then default 
                 displayHandlers.forEach(h => h($scope));
 

@@ -76,7 +76,7 @@ namespace NakedObjects {
                            args: _.Dictionary<Value>,
                            digest? : string): ng.IPromise<_.Dictionary<Value>>;
 
-        invokeAction(action: IInvokableAction, parms: _.Dictionary<Value>, fromPaneId? : number, toPaneId?: number): ng. IPromise<ActionResultRepresentation>;
+        invokeAction(action: IInvokableAction, parms: _.Dictionary<Value>, fromPaneId? : number, toPaneId?: number, gotoResult? : boolean): ng. IPromise<ActionResultRepresentation>;
 
         updateObject(object: DomainObjectRepresentation,
             props: _.Dictionary<Value>,
@@ -111,6 +111,7 @@ namespace NakedObjects {
         clearWarnings(): void;
 
         getRecentlyViewed(): DomainObjectRepresentation[];
+        clearRecentlyViewed() : void;
 
         getFile: (object: DomainObjectRepresentation, url: string, mt: string) => angular.IPromise<Blob>;
 
@@ -407,7 +408,7 @@ namespace NakedObjects {
                         dirtyList.clearDirty(oid);
                     }
                     addRecentlyViewed(obj);
-                    return $q.when(obj);
+                    return obj;
                 });
         };
 
@@ -420,7 +421,7 @@ namespace NakedObjects {
                     currentObjects[paneId] = obj;
                     const oid = obj.getOid();
                     dirtyList.clearDirty(oid);
-                    return $q.when(obj);
+                    return obj;
                 });
         }
 
@@ -448,7 +449,7 @@ namespace NakedObjects {
                 }).
                 then((service: DomainObjectRepresentation) => {
                     currentObjects[paneId] = service;
-                    return $q.when(service);
+                    return service;
                 });
         };
 
@@ -492,7 +493,7 @@ namespace NakedObjects {
                 }).
                 then((menu: MenuRepresentation) => {
                     currentMenuList[menuId] = menu;
-                    return $q.when(menu);
+                    return menu;
                 });
         };
 
@@ -524,7 +525,7 @@ namespace NakedObjects {
                 }).
                 then((services: DomainServicesRepresentation) => {
                     currentServices = services;
-                    return $q.when(services);
+                    return services;
                 });
         };
 
@@ -540,7 +541,7 @@ namespace NakedObjects {
                 }).
                 then((menus: MenusRepresentation) => {
                     currentMenus = menus;
-                    return $q.when(currentMenus);
+                    return currentMenus;
                 });
         };
 
@@ -557,7 +558,7 @@ namespace NakedObjects {
                 }).
                 then((version: VersionRepresentation) => {
                     currentVersion = version;
-                    return $q.when(version);
+                    return version;
                 });
         };
 
@@ -574,7 +575,7 @@ namespace NakedObjects {
                 }).
                 then((user: UserRepresentation) => {
                     currentUser = user;
-                    return $q.when(user);
+                    return user;
                 });
         };
 
@@ -631,10 +632,10 @@ namespace NakedObjects {
         };
 
         context.getActionExtensionsFromMenu = (menuId: string, actionId: string) =>
-            context.getMenu(menuId).then(menu => $q.when(menu.actionMember(actionId).extensions()));
+            context.getMenu(menuId).then(menu => menu.actionMember(actionId).extensions());
 
         context.getActionExtensionsFromObject = (paneId: number, oid: ObjectIdWrapper, actionId: string) =>
-            context.getObject(paneId, oid, InteractionMode.View).then(object => $q.when(object.actionMember(actionId).extensions()));
+            context.getObject(paneId, oid, InteractionMode.View).then(object => object.actionMember(actionId).extensions());
 
         function getPagingParms(page: number, pageSize: number): _.Dictionary<Object> {
             return (page && pageSize) ? { "x-ro-page": page, "x-ro-pageSize": pageSize } : {};
@@ -715,13 +716,15 @@ namespace NakedObjects {
 
         let nextTransientId = 0;
 
-        context.setResult = (action: IInvokableAction, result: ActionResultRepresentation, fromPaneId : number, toPaneId: number, page: number, pageSize: number) => {
-
+        function setMessages(result: ActionResultRepresentation) {
             const warnings = result.extensions().warnings() || [];
             const messages = result.extensions().messages() || [];
 
             $rootScope.$broadcast(geminiWarningEvent, warnings);
             $rootScope.$broadcast(geminiMessageEvent, messages);
+        }
+
+        context.setResult = (action: IInvokableAction, result: ActionResultRepresentation, fromPaneId : number, toPaneId: number, page: number, pageSize: number) => {
 
             if (!result.result().isNull()) {
                 if (result.resultType() === "object") {
@@ -785,7 +788,7 @@ namespace NakedObjects {
             }
         };
 
-        function invokeActionInternal(invokeMap: InvokeMap, action: IInvokableAction, fromPaneId: number, toPaneId: number, setDirty: () => void) {
+        function invokeActionInternal(invokeMap: InvokeMap, action: IInvokableAction, fromPaneId: number, toPaneId: number, setDirty: () => void, gotoResult = false) {
 
             focusManager.setCurrentPane(toPaneId);
 
@@ -798,8 +801,11 @@ namespace NakedObjects {
             return repLoader.retrieve(invokeMap, ActionResultRepresentation, action.parent.etagDigest).
                 then((result: ActionResultRepresentation) => {
                     setDirty();
-                    context.setResult(action, result, fromPaneId, toPaneId, 1, defaultPageSize);
-                    return $q.when(result);
+                    setMessages(result);
+                    if (gotoResult) {
+                        context.setResult(action, result, fromPaneId, toPaneId, 1, defaultPageSize);
+                    }
+                    return result;
                 });
         }
 
@@ -810,8 +816,18 @@ namespace NakedObjects {
             if (actionIsNotQueryOnly) {
                 if (parent instanceof DomainObjectRepresentation) {
                     return () => dirtyList.setDirty(parent.getOid());
-                } else if (parent instanceof ListRepresentation && parms) {
-
+                }
+                if (parent instanceof CollectionRepresentation) {
+                    return () => {
+                        const selfLink = parent.selfLink();
+                        const oid = ObjectIdWrapper.fromLink(selfLink);
+                        dirtyList.setDirty(oid);
+                    };
+                } 
+                if (parent instanceof CollectionMember) {
+                    return () =>  dirtyList.setDirty(parent.parent.getOid());
+                } 
+                if (parent instanceof ListRepresentation && parms) {
                     const ccaParm = _.find(action.parameters(), p => p.isCollectionContributed());
                     const ccaId = ccaParm ? ccaParm.id() : null;
                     const ccaValue = ccaId ? parms[ccaId] : null;
@@ -833,13 +849,13 @@ namespace NakedObjects {
             return () => { };
         }
 
-        context.invokeAction = (action: IInvokableAction, parms: _.Dictionary<Value>, fromPaneId = 1, toPaneId = 1) => {
+        context.invokeAction = (action: IInvokableAction, parms: _.Dictionary<Value>, fromPaneId = 1, toPaneId = 1, gotoResult = true) => {
 
             const invokeOnMap = (iAction: IInvokableAction) => {
                 const im = iAction.getInvokeMap();
                 _.each(parms, (parm, k) => im.setParameter(k, parm));
                 const setDirty = getSetDirtyFunction(iAction, parms);
-                return invokeActionInternal(im, iAction, fromPaneId, toPaneId, setDirty);
+                return invokeActionInternal(im, iAction, fromPaneId, toPaneId, setDirty, gotoResult);
             }
 
             return invokeOnMap(action);
@@ -867,7 +883,7 @@ namespace NakedObjects {
                     const rawLinks = object.wrapped().links;
                     updatedObject.wrapped().links = rawLinks;
                     setNewObject(updatedObject, paneId, viewSavedObject);
-                    return $q.when(updatedObject);
+                    return updatedObject;
                 });
         };
 
@@ -880,10 +896,9 @@ namespace NakedObjects {
                 then((updatedObject: DomainObjectRepresentation) => {
                     transientCache.remove(paneId, object.domainType(), object.id());
                     setNewObject(updatedObject, paneId, viewSavedObject);
-                    return $q.when(updatedObject);
+                    return updatedObject;
                 });
         };
-
 
         context.validateUpdateObject = (object: DomainObjectRepresentation, props: _.Dictionary<Value>) => {
             const update = object.getUpdateMap();
@@ -898,7 +913,6 @@ namespace NakedObjects {
             _.each(props, (v, k) => persist.setMember(k, v));
             return repLoader.validate(persist, object.etagDigest);
         };
-
 
         const subTypeCache: _.Dictionary<_.Dictionary<ng.IPromise<boolean>>> = {};
 
@@ -932,6 +946,8 @@ namespace NakedObjects {
         }
 
         context.getRecentlyViewed = () => recentcache.items();
+
+        context.clearRecentlyViewed = () => recentcache.clear();
 
         function logoff() {
             for (let pane = 1; pane <= 2; pane++) {

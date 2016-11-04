@@ -106,7 +106,7 @@ namespace NakedObjects {
 
                 return $http(config)
                     .then(() => {
-                        return $q.when(true);
+                        return true;
                     })
                     .catch((promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IRepresentation>) => {
                         return handleError(promiseCallback);
@@ -147,12 +147,6 @@ namespace NakedObjects {
                     cache.remove(config.url);
                 }
 
-
-                if ((<any>config).doesnotexist) {
-                    config.url = "http://www.google.co.uk";
-                }
-
-
                 return $http(config)
                     .then((promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IResourceRepresentation>) => {
                         if (!isValidResponse(promiseCallback.data)) {
@@ -162,7 +156,7 @@ namespace NakedObjects {
                         const representation = handleRedirectedObject(response, promiseCallback.data);
                         response.populate(representation);
                         response.etagDigest = promiseCallback.headers("ETag");
-                        return $q.when(response);
+                        return response;
                     })
                     .catch((promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IRepresentation>) => {
                         return handleError(promiseCallback);
@@ -270,7 +264,7 @@ namespace NakedObjects {
 
                 return $http(config)
                     .then((promiseCallback: ng.IHttpPromiseCallbackArg<Blob>) => {
-                        return $q.when(promiseCallback.data);
+                        return promiseCallback.data;
                     })
                     .catch((promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IRepresentation>) => {
                         return handleError(promiseCallback);
@@ -288,11 +282,11 @@ namespace NakedObjects {
                 };
 
                 return $http(config)
-                    .then((promiseCallback) => {
-                        return $q.when(true);
+                    .then(() => {
+                        return true;
                     })
-                    .catch((promiseCallback) => {
-                        return $q.when(false);
+                    .catch(() => {
+                        return false;
                     });
             };
 
