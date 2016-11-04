@@ -54,10 +54,9 @@
 
 			<!--"EntryType.FreeForm"-->
 			<div *ngSwitchCase="0">
-				<div tabindex="0" class="value droppable" [ngClass]="classes()" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
-					[geminiClear]="parameter">
-					{{parameter.value || parameter.description}}
-				</div>
+				<input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
+					[ngClass]="classes()" placeholder="{{parameter.description}}" type="text" [formControlName]="parameter.id" [geminiClear]="parameter"
+				/>
 			</div>
 
 		</div>

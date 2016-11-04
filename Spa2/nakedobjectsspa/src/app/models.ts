@@ -235,19 +235,17 @@ function getDate(val: string, ms : MomentWrapperService) : Date {
 
 function validateDateFormat(model: IHasExtensions, newValue: Date | string, filter: ILocalFilter, ms : MomentWrapperService): string {
     const range = model.extensions().range();
+    const newDate = (newValue instanceof Date) ?  newValue : getDate(newValue, ms);
 
-    //const newDate = (newValue instanceof Date) ?  newValue : getDate(newValue);
-    const newDate = newValue as Date;
-
-    if (range && newValue) {
+    if (range && newDate) {
         const min = range.min ? getDate(range.min as string, ms) : null;
         const max = range.max ? getDate(range.max as string, ms) : null;
 
-        if (min && newValue < min) {
+        if (min && newDate < min) {
             return Msg.outOfRange(toDateString(newDate), getUtcDate(range.min as string), getUtcDate(range.max as string), filter);
         }
 
-        if (max && newValue > max) {
+        if (max && newDate > max) {
             return Msg.outOfRange(toDateString(newDate), getUtcDate(range.min as string), getUtcDate(range.max as string), filter);
         }
     }

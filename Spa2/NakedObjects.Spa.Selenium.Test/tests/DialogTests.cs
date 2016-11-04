@@ -304,7 +304,7 @@ namespace NakedObjects.Selenium {
             //To test a previous bug, where reference was beign rendered as a Url, not its title
             GeminiUrl("object?i1=View&o1=___1.Person--18542&as1=open");
             OpenActionDialog("Create Letter");
-            wait.Until(dr => dr.FindElement(By.CssSelector(".droppable")).Text.StartsWith("Zeiter Weg 9922"));
+            wait.Until(dr => dr.FindElement(By.CssSelector(".droppable")).GetAttribute("value").StartsWith("Zeiter Weg 9922"));
         }
         public virtual void QueryOnlyActionDialogPersists() {
             //To test:

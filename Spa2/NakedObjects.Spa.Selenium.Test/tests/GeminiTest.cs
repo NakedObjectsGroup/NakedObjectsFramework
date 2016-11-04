@@ -213,6 +213,26 @@ namespace NakedObjects.Selenium
             }
             input.SendKeys(characters);
         }
+
+        protected virtual void ClearDateFieldThenType(string cssFieldId, string characters) {
+            var input = WaitForCss(cssFieldId);
+            if (input.GetAttribute("value") != "") {
+                for (int i = 0; i < 3; i++) {
+                    input.SendKeys(Keys.Delete);
+                    Thread.Sleep(100);
+                    input.SendKeys(Keys.Tab);
+                    Thread.Sleep(100);
+                }
+                input.SendKeys(Keys.Shift + Keys.Tab);
+                input.SendKeys(Keys.Shift + Keys.Tab);
+                wait.Until(dr => dr.FindElement(By.CssSelector(cssFieldId)).GetAttribute("value") == "");
+            }
+            input.SendKeys(characters);
+        }
+
+
+        
+
         protected virtual void TypeIntoFieldWithoutClearing(string cssFieldId, string characters)
         {
             var input = WaitForCss(cssFieldId);

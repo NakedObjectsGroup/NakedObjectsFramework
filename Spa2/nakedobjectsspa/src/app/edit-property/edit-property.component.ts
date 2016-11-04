@@ -53,9 +53,7 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
 
     datePickerChanged(evt){
         const val = evt.currentTarget.value;
-
-       // this.formGroup.value[this.property.id] = val;
-        
+        this.formGroup.value[this.property.id] = val;
     } 
 
 }

@@ -11,8 +11,7 @@
 			<!--"EntryType.AutoComplete"-->
 			<div *ngSwitchCase="5">
 				<input id="{{property.paneArgId}}" class="{{property.status}} value droppable" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
-					[ngClass]="classes()" placeholder="{{property.description}}" type="text" [formControlName]="property.id" [geminiClear]="property"
-				/>
+					[ngClass]="classes()" placeholder="{{property.description}}" type="text" [formControlName]="property.id" [geminiClear]="property"/>
 				<div class="suggestions" *ngIf="property.choices.length > 0">
 					<ul *ngFor="let item of property.choices">
 						<li>
@@ -44,9 +43,8 @@
 			<!-- <input id="{{property.paneArgId}}" class="{{property.status}} value droppable" ng-class="property.color" placeholder="{{property.description}}" ng-switch-when="0" type="text" ng-model="$parent.property.selectedChoice" gemini-drop   [geminiClear]="property" />-->
 
 			<div *ngSwitchCase="0">
-				<div tabindex="0" [formControlName]="property.id" class="value droppable" [ngClass]="classes()" dnd-droppable (onDropSuccess)="property.drop($event.dragData)" [geminiClear]="property">
-					{{property.value || property.description}}
-				</div>
+				<input id="{{property.paneArgId}}" class="{{property.status}} value droppable" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
+					[ngClass]="classes()" placeholder="{{property.description}}" type="text" [formControlName]="property.id" [geminiClear]="property"/>
 			</div>
 
 		</div>

@@ -92,23 +92,26 @@ namespace NakedObjects.Selenium {
         {
             GeminiUrl("object?i1=Edit&o1=___1.Product--448");
             WaitForView(Pane.Single, PaneType.Object, "Editing - Lock Nut 13");
-            string mask = "d MMM yyyy";
-            var today = DateTime.Today.ToString(mask);
-            var yesterday = DateTime.Today.AddDays(-1).ToString(mask);
-            var d10 = DateTime.Today.AddDays(10).ToString(mask);
-            var d11 = DateTime.Today.AddDays(11).ToString(mask);
-            var message = String.Format("Value is outside the range {0} to {1}", today, d10);
-            ClearFieldThenType("#discontinueddate1", yesterday);
+            string outmask = "d MMM yyyy";
+            string inmask = "dd/MM/yyyy";
+            var intoday = DateTime.Today.ToString(inmask);
+            var outtoday = DateTime.Today.ToString(outmask);
+            var inyesterday = DateTime.Today.AddDays(-1).ToString(inmask);
+            var ind10 = DateTime.Today.AddDays(10).ToString(inmask);
+            var outd10 = DateTime.Today.AddDays(10).ToString(outmask);
+            var ind11 = DateTime.Today.AddDays(11).ToString(inmask);
+            var message = $"Value is outside the range {outtoday} to {outd10}";
+            ClearDateFieldThenType("#discontinueddate1", inyesterday);
             wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation")).Count == 23);
             Assert.AreEqual(message, br.FindElements(By.CssSelector(".property .validation"))[20].Text);
 
             //wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[17].Text == message);
-            ClearFieldThenType("#discontinueddate1", today);
+            ClearDateFieldThenType("#discontinueddate1", intoday);
             wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[20].Text == "");
-            ClearFieldThenType("#discontinueddate1", d11);
+            ClearDateFieldThenType("#discontinueddate1", ind11);
             wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation")).Count == 23);
             wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[20].Text == message);
-            ClearFieldThenType("#discontinueddate1", d10);
+            ClearDateFieldThenType("#discontinueddate1", ind10);
             wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[20].Text == "");
 
         }
@@ -133,8 +136,14 @@ namespace NakedObjects.Selenium {
             var sellStart = date.AddDays(rand.Next(2000));
             var sellEnd = date.AddDays(rand.Next(2000, 3000));
             Thread.Sleep(500);
-            ClearFieldThenType("#sellstartdate1", sellStart.ToString("d MMM yyyy"));
-            ClearFieldThenType("#sellenddate1", sellEnd.ToString("dd/MM/yy")); //Test different input format...
+
+            // todo chrome datepicker doesn't handle this
+            //ClearDateFieldThenType("#sellstartdate1", sellStart.ToString("d MMM yyyy"));
+            //ClearDateFieldThenType("#sellenddate1", sellEnd.ToString("dd/MM/yy")); //Test different input format...
+
+            ClearDateFieldThenType("#sellstartdate1", sellStart.ToString("dd/MM/yyyy"));
+            ClearDateFieldThenType("#sellenddate1", sellEnd.ToString("dd/MM/yyyy"));
+
             ClearFieldThenType("#daystomanufacture1", "1");
             SaveObject();
 
@@ -338,13 +347,13 @@ namespace NakedObjects.Selenium {
         [TestMethod] //Mega
         public void MegaObjectEditTest() {
             ObjectEditChangeScalar();
-            //LocalValidationOfMandatoryFields();
-            //LocalValidationOfMaxLength();
-            //LocalValidationOfRegex();
-            //RangeValidationOnNumber();
-            //RangeValidationOnDate();
-            //ObjectEditChangeEnum();
-            //ObjectEditChangeDateTime();
+            LocalValidationOfMandatoryFields();
+            LocalValidationOfMaxLength();
+            LocalValidationOfRegex();
+            RangeValidationOnNumber();
+            RangeValidationOnDate();
+            ObjectEditChangeEnum();
+            ObjectEditChangeDateTime();
             //CanSetAndClearAnOptionalDropDown();
             //ObjectEditPicksUpLatestServerVersion();
             //ViewModelEditOpensInEditMode();
