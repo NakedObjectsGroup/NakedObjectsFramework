@@ -1,19 +1,17 @@
 NakedObjectsFramework
 ======================
 
-The current stable release of the Naked Objects Framework (NOF) is version 8.1  -  see below for details.
+The current stable release of the Naked Objects Framework (NOF) is version 8.2  -  see below for details.
 
 The NOF may be used entirely as packages from the NuGet public gallery - there is no need to clone this repository.  Indeed, building the framework from source code is quite complex and not recommended for newcomers.  (If you really want to know how to do it, see the section 'How to build the framework from source code' in the Developer Manual.)
-
 
 NOF9 (under development - master branch)
 ====
 
-The code in the Master branch of this repository is main development line.  We are currently at an early stage in the development of NOF9, which will be based on the Angular 2 framework.  This involves a major re-write of the client (Spa) logic. The user interface for NOF 9 will be identical to that of NOF8.  And there should be no need to make any changes to domain model coding. However, any custom views that you have written for NOF8 will need to be  to use the Angular 2 structures and code.
+NOF9 will upgrade the Spa client to use Angular 2 instead of Angular 1.  The code for this new client is being developed in the 'Spa2' project within the master branch, so it does not interfere with the existing (NOF8) Spa project.  Ouor intention is that the Spa2 client will be identical to the NOF8 Spa from a user perspective, and there will be no change to the programming model  -  so the two clients can co-exist, talking to the same NOF8 server via the Restful Objects API. However, any custom views will need to be re-written to follow the Angular 2 patterns.
 
-NOF9 is not yet usable, and we do not recommend attempting to build it yourself from source.
 
-NOF8 (stable release - 8.0 branch)
+NOF8 (stable release - master branch)
 ====
 
 NOF8  introduces a radically different user interface based on the Single Page Application (SPA) architecture. It uses identical domain model programming conventions as NOF7; indeed it is possible to run the NOF8 client and the NOF7 client alongside each other, as two different 'run' projects talking to the same domain model project(s).
