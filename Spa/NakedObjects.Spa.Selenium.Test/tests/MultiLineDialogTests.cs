@@ -18,6 +18,7 @@ namespace NakedObjects.Selenium {
             Click(GetObjectAction("Create Multiple Special Offers"));
             WaitForView(Pane.Single, PaneType.MultiLineDialog, "Create Multiple Special Offers");
             WaitForTextEquals(".count", "with 0 lines submitted.");
+
             //Enter line 0
             OKButtonOnLine(0).AssertIsDisabled("Missing mandatory fields: Description; Discount Pct; Type; Category; Min Qty; Start Date; ");
             ClearFieldThenType("#description0", "x");
@@ -114,6 +115,19 @@ namespace NakedObjects.Selenium {
             WaitForTextEquals(".summary .details", 0, "2 Items");
         }
 
+        public virtual void MultiLineObjectActionOpenedFromRightPane()
+        {
+            GeminiUrl("home/object?i2=View&r=1&o2=___1.Vendor--1616&as2=open");
+            WaitForView(Pane.Right, PaneType.Object);
+            OpenSubMenu("Purchase Orders", Pane.Right);
+            Click(GetObjectAction("Create New Purchase Order", Pane.Right));
+            WaitForView(Pane.Right, PaneType.Object, "Editing - Unsaved Purchase Order Header");
+            SaveObject(Pane.Right);
+            OpenObjectActions(Pane.Right);
+            Click(GetObjectAction("Add New Details", Pane.Right));
+            WaitForView(Pane.Single, PaneType.MultiLineDialog);
+        }
+
         public virtual void MultiLineObjectActionInCollection() {
             GeminiUrl("object?i1=View&r=1&o1=___1.Customer--29562&as1=open&d1=CreateNewOrder");
             Click(OKButton());
@@ -196,6 +210,11 @@ namespace NakedObjects.Selenium {
             base.MultiLineObjectAction();
         }
         [TestMethod]
+        public override void MultiLineObjectActionOpenedFromRightPane()
+        {
+            base.MultiLineObjectActionOpenedFromRightPane();
+        }
+        [TestMethod]
         public override void MultiLineObjectActionInCollection()
         {
             base.MultiLineObjectActionInCollection();
@@ -273,6 +292,7 @@ namespace NakedObjects.Selenium {
         public void MegaMultiLineDialogTest() {
             MultiLineMenuAction();
             MultiLineObjectAction();
+            MultiLineObjectActionOpenedFromRightPane();
             MultiLineObjectActionInCollection();
         }
     }
