@@ -17,8 +17,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{736F43
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Template", "NakedObjects.Template.csproj", "{730972FC-9D78-44C1-91DB-BAB7774FC501}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeScriptHTMLApp1", "TypeScriptHTMLApp1\TypeScriptHTMLApp1.csproj", "{F6D7DBE2-6E28-42AD-9511-F5A3DD0953A2}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{730972FC-9D78-44C1-91DB-BAB7774FC501}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{730972FC-9D78-44C1-91DB-BAB7774FC501}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{730972FC-9D78-44C1-91DB-BAB7774FC501}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F6D7DBE2-6E28-42AD-9511-F5A3DD0953A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F6D7DBE2-6E28-42AD-9511-F5A3DD0953A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F6D7DBE2-6E28-42AD-9511-F5A3DD0953A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F6D7DBE2-6E28-42AD-9511-F5A3DD0953A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
