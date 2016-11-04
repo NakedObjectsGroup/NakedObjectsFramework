@@ -13,6 +13,7 @@ import { ErrorService } from "./error.service";
 import { MaskService } from "./mask.service";
 import { Injectable } from '@angular/core';
 import * as _ from "lodash";
+import {MomentWrapperService} from "./moment-wrapper.service";
 
 @Injectable()
 export class ViewModelFactoryService {
@@ -23,8 +24,11 @@ export class ViewModelFactoryService {
         private error: ErrorService,
         private clickHandler: ClickHandlerService,
         private focusManager: FocusManagerService,
-        private mask : MaskService
-    ) { }
+        private mask : MaskService,
+        private momentWrapperService : MomentWrapperService
+    ) {
+
+     }
 
 
     errorViewModel = (error: Models.ErrorWrapper) => {
@@ -246,8 +250,8 @@ export class ViewModelFactoryService {
             catch((reject: Models.ErrorWrapper) => error.handleError(reject));
     };
 
-    private validate(rep: Models.IHasExtensions, vm: ViewModels.IFieldViewModel, modelValue: any, viewValue: string, mandatoryOnly: boolean) {
-        const message = mandatoryOnly ? Models.validateMandatory(rep, viewValue) : Models.validate(rep, modelValue, viewValue, vm.localFilter);
+    private validate(rep: Models.IHasExtensions, vm: ViewModels.IFieldViewModel, ms : MomentWrapperService, modelValue: any, viewValue: string, mandatoryOnly: boolean) {
+        const message = mandatoryOnly ? Models.validateMandatory(rep, viewValue) : Models.validate(rep, modelValue, viewValue, vm.localFilter, ms);
 
         if (message !== Msg.mandatory) {
             vm.setMessage(message);
@@ -391,7 +395,6 @@ export class ViewModelFactoryService {
         return null;
     }
 
-
     private setupPropertyAutocomplete(propertyViewModel: ViewModels.IPropertyViewModel, parentValues: () => _.Dictionary<Models.Value>) {
         const propertyRep = propertyViewModel.propertyRep;
         propertyViewModel.prompt = (searchTerm: string) => {
@@ -472,7 +475,7 @@ export class ViewModelFactoryService {
         propertyViewModel.description = required + propertyViewModel.description;
 
         propertyViewModel.isDirty = () => !!previousValue || propertyViewModel.getValue().toValueString() !== propertyViewModel.originalValue.toValueString();
-        propertyViewModel.validate =  _.partial(this.validate, propertyRep, propertyViewModel) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
+        propertyViewModel.validate =  _.partial(this.validate, propertyRep, propertyViewModel, this.momentWrapperService) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
         propertyViewModel.canDropOn = (targetType: string) => this.context.isSubTypeOf(propertyViewModel.returnType, targetType) as Promise<boolean>;
         propertyViewModel.drop = _.partial(this.drop, this.context, this.error, propertyViewModel);
         propertyViewModel.doClick = (right?: boolean) => this.urlManager.setProperty(propertyRep, this.clickHandler.pane(paneId, right));
@@ -627,7 +630,7 @@ export class ViewModelFactoryService {
         }
 
         parmViewModel.description = this.getRequiredIndicator(parmViewModel) + parmViewModel.description;
-        parmViewModel.validate = <any>_.partial(this.validate, parmRep, parmViewModel) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
+        parmViewModel.validate = <any>_.partial(this.validate, parmRep, parmViewModel, this.momentWrapperService) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
         parmViewModel.drop = _.partial(this.drop, this.context, this.error, parmViewModel);
 
         return parmViewModel as ViewModels.IParameterViewModel;

@@ -50,4 +50,12 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
     ngOnInit(): void {
         super.init(this.parent, this.property, this.form.controls[this.prop.id]);
     }
+
+    datePickerChanged(evt){
+        const val = evt.currentTarget.value;
+
+       // this.formGroup.value[this.property.id] = val;
+        
+    } 
+
 }

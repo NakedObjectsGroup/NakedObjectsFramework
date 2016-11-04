@@ -38,6 +38,8 @@ import { ColorConfigService } from './color-config.service';
 import { MaskConfigService } from './mask-config.service';
 import { FocusManagerService } from './focus-manager.service';
 import { CollectionComponent } from './collection/collection.component';
+// temp hack todo fix
+import { MomentWrapperService } from './moment-wrapper.service';
 import {DND_PROVIDERS, DND_DIRECTIVES} from 'ng2-dnd';
 import { ReactiveFormsModule }          from '@angular/forms';
 
@@ -87,6 +89,7 @@ import { ReactiveFormsModule }          from '@angular/forms';
         MaskService,
         ColorConfigService,
         MaskConfigService,
+        MomentWrapperService,
         DND_PROVIDERS
         ],
   bootstrap: [AppComponent]
