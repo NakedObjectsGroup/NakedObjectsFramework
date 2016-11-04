@@ -12,7 +12,7 @@ namespace NakedObjects {
         [index: string]: { [index: string]: ILocalFilter };
     }
 
-    export type formatType = "string" | "date-time" | "date" | "time" | "utc-millsec" | "big-integer" | "big-decimal" | "blob"  | "clob" | "decimal" | "int";
+    export type formatType = "string" | "date-time" | "date" | "time" | "utc-millisec" | "big-integer" | "big-decimal" | "blob"  | "clob" | "decimal" | "int";
 
     export interface IMask {
         toLocalFilter(remoteMask: string, format: formatType): ILocalFilter;

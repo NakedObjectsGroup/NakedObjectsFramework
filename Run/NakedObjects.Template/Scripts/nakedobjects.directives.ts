@@ -562,7 +562,9 @@ namespace NakedObjects {
                     case FocusTarget.CheckBox:
                         focusElements = $(elem).find(`#pane${paneId}.split div.collection td.checkbox input, div.single div.collection td.checkbox input`);
                         break;
-
+                    case FocusTarget.MultiLineDialogRow:
+                        focusElements = $(elem).find(`div.parameters :input.value:first-child`);
+                        break;
                 }
 
                 if (focusElements) {
@@ -752,7 +754,7 @@ namespace NakedObjects {
 
                         element.empty();
 
-                        const anchor = element.find("div");
+                     
                         if (attachment.displayInline()) {
                             attachment.downloadFile().
                                 then(blob => {
@@ -766,7 +768,7 @@ namespace NakedObjects {
                                 }).
                                 catch((reject: ErrorWrapper) => error.handleError(reject));
                         } else {
-                            anchor.html(title);
+                            element.html(`<div>${title}</div>`);
                             attachment.doClick = clickHandler;
                         }
 

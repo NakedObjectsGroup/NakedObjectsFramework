@@ -3,6 +3,9 @@
         <div class="title">
             Recently Viewed Objects
         </div>
+        <div class="action clickable-area" tabindex="0" gemini-enter="recent.clear()" ng-click="recent.clear()" ng-disabled="recent.items.length === 0 " title="Clear history" accesskey="c">
+            Clear
+        </div>
     </div>
     <div class="collection">
         <table>

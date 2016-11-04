@@ -55,6 +55,13 @@ namespace NakedObjects {
     export const ciceroTemplate = getSvrPath() + "Content/partials/cicero.html";
     export const applicationPropertiesTemplate = getSvrPath() + "Content/partials/applicationProperties.html";
 
+    export const multiLineDialogTemplate = getSvrPath() + "Content/partials/multiLineDialog.html";
+    export const propertiesTemplate = getSvrPath() + "Content/partials/properties.html";
+    export const parametersTemplate = getSvrPath() + "Content/partials/parameters.html";
+    export const propertyTemplate = getSvrPath() + "Content/partials/readOnlyProperty.html";
+    export const parameterTemplate = getSvrPath() + "Content/partials/parameter.html";
+    export const readOnlyParameterTemplate = getSvrPath() + "Content/partials/readOnlyParameter.html";
+
     // routing constants 
 
     export const geminiPath = "gemini";
@@ -66,6 +73,8 @@ namespace NakedObjects {
     export const recentPath = "recent";
     export const attachmentPath = "attachment";
     export const applicationPropertiesPath = "applicationProperties";
+
+    export const multiLineDialogPath = "multiLineDialog";
 
     //Restful Objects constants
     export const roDomainType = "x-ro-domain-type";
