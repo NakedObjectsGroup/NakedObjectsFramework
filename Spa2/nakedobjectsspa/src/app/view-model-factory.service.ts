@@ -298,7 +298,13 @@ export class ViewModelFactoryService {
         if (propertyViewModel.entryType === Models.EntryType.Choices) {
             
             const choices = propertyRep.choices();
+
             propertyViewModel.choices = _.map(choices, (v, n) => ViewModels.ChoiceViewModel.create(v, propertyViewModel.id, n));
+
+            if (propertyViewModel.optional) {
+                const emptyChoice = ViewModels.ChoiceViewModel.create(new Models.Value(""), propertyViewModel.id);
+                propertyViewModel.choices = _.concat([emptyChoice], propertyViewModel.choices);
+            }
 
             const currentChoice = ViewModels.ChoiceViewModel.create(newValue, propertyViewModel.id);
             propertyViewModel.selectedChoice = _.find(propertyViewModel.choices, c => c.valuesEqual(currentChoice));

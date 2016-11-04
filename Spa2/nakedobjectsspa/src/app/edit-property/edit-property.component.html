@@ -21,11 +21,9 @@
 				</div>
 			</div>
 
-
 			<!--"EntryType.ConditionalChoices"-->
 			<div *ngSwitchCase="3">
-				<select id="{{property.paneArgId}}" class="{{property.status}}" [formControlName]="property.id" >
-                    <option value="" disabled>{{property.description}}</option>
+				<select id="{{property.paneArgId}}" class="{{property.status}}" [formControlName]="property.id" >                 
                     <option *ngFor="let choice of property.choices" [ngValue]="choice">{{choice.name}}</option>
                 </select>
 			</div>
@@ -33,15 +31,11 @@
 			<!--"EntryType.Choices"-->
 			<div *ngSwitchCase="1">
 				<select id="{{property.paneArgId}}" class="{{property.status}}"  [formControlName]="property.id">
-                    <option value="" disabled>{{property.description}}</option>
                     <option *ngFor="let choice of property.choices" [ngValue]="choice">{{choice.name}}</option>
                 </select>
 			</div>
 
-
 			<!--"EntryType.FreeForm"-->
-			<!-- <input id="{{property.paneArgId}}" class="{{property.status}} value droppable" ng-class="property.color" placeholder="{{property.description}}" ng-switch-when="0" type="text" ng-model="$parent.property.selectedChoice" gemini-drop   [geminiClear]="property" />-->
-
 			<div *ngSwitchCase="0">
 				<input id="{{property.paneArgId}}" class="{{property.status}} value droppable" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
 					[ngClass]="classes()" placeholder="{{property.description}}" type="text" [formControlName]="property.id" [geminiClear]="property"/>
@@ -101,25 +95,20 @@
 				</div>
 
 				<!--"EntryType.ConditionalChoices"-->
-
 				<div *ngSwitchCase="3">
 					<select id="{{property.paneArgId}}" class="{{property.status}}" [formControlName]="property.id" >
-                        <option value="" disabled>{{property.description}}</option>
                         <option *ngFor="let choice of property.choices" [ngValue]="choice">{{choice.name}}</option>
                     </select>
 				</div>
 
 				<!--"EntryType.Choices"-->
-
 				<div *ngSwitchCase="1">
 					<select id="{{property.paneArgId}}" class="{{property.status}}"  [formControlName]="property.id">
-                        <option value="" disabled>{{property.description}}</option>
                         <option *ngFor="let choice of property.choices" [ngValue]="choice">{{choice.name}}</option>
                     </select>
 				</div>
 
 				<!--"EntryType.FreeForm"-->
-
 				<div *ngSwitchCase="0">
 					<div [ngSwitch]="property.returnType">
 						<div *ngSwitchCase="'string'" [ngSwitch]="property.format">

@@ -354,8 +354,8 @@ namespace NakedObjects.Selenium {
             RangeValidationOnDate();
             ObjectEditChangeEnum();
             ObjectEditChangeDateTime();
-            //CanSetAndClearAnOptionalDropDown();
-            //ObjectEditPicksUpLatestServerVersion();
+            CanSetAndClearAnOptionalDropDown();
+            ObjectEditPicksUpLatestServerVersion();
             //ViewModelEditOpensInEditMode();
             //MultiLineText();
         }

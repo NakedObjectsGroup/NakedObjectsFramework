@@ -9,8 +9,7 @@
 			<!--"EntryType.AutoComplete"-->
 			<div *ngSwitchCase="5">
 				<input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
-					[ngClass]="classes()" placeholder="{{parameter.description}}" type="text" [formControlName]="parameter.id" [geminiClear]="parameter"
-				/>
+					[ngClass]="classes()" placeholder="{{parameter.description}}" type="text" [formControlName]="parameter.id" [geminiClear]="parameter"/>
 				<div class="suggestions" *ngIf="parameter.choices.length > 0">
 					<ul *ngFor="let item of parameter.choices">
 						<li>
@@ -23,7 +22,6 @@
 			<!--"EntryType.MultipleConditionalChoices"-->
 			<div *ngSwitchCase="4">
 				<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [formControlName]="parameter.id">
-                <option value="" disabled>{{parameter.description}}</option>
                 <option *ngFor="let choice of parameter.choices" [label]="choice.name"  [ngValue]="choice" >{{choice.name}}</option>
             </select>
 			</div>
@@ -31,7 +29,6 @@
 			<!--"EntryType.ConditionalChoices"-->
 			<div *ngSwitchCase="3">
 				<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [formControlName]="parameter.id">
-                <!--<option value="" disabled>{{parameter.description}}</option>-->
                 <option *ngFor="let choice of parameter.choices" [label]="choice.name"  [ngValue]="choice">{{choice.name}}</option>
             </select>
 			</div>
@@ -39,7 +36,6 @@
 			<!--"EntryType.MultipleChoices"-->
 			<div *ngSwitchCase="2">
 				<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [formControlName]="parameter.id">
-                <option value="" disabled>{{parameter.description}}</option>
                 <option *ngFor="let choice of parameter.choices" [label]="choice.name"  [ngValue]="choice">{{choice.name}}</option>
             </select>
 			</div>
@@ -47,7 +43,6 @@
 			<!--"EntryType.Choices"-->
 			<div *ngSwitchCase="1">
 				<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [formControlName]="parameter.id">
-                <option value="" disabled>{{parameter.description}}</option>
                 <option *ngFor="let choice of parameter.choices" [label]="choice.name"   [ngValue]="choice">{{choice.name}}</option>
             </select>
 			</div>
@@ -55,8 +50,7 @@
 			<!--"EntryType.FreeForm"-->
 			<div *ngSwitchCase="0">
 				<input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
-					[ngClass]="classes()" placeholder="{{parameter.description}}" type="text" [formControlName]="parameter.id" [geminiClear]="parameter"
-				/>
+					[ngClass]="classes()" placeholder="{{parameter.description}}" type="text" [formControlName]="parameter.id" [geminiClear]="parameter"/>
 			</div>
 
 		</div>
@@ -86,9 +80,7 @@
 
 			<!--"EntryType.MultipleConditionalChoices"-->
 			<div *ngSwitchCase="4">
-
 				<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [formControlName]="parameter.id">
-                <option value="" disabled>{{parameter.description}}</option>
                 <option *ngFor="let choice of parameter.choices" [label]="choice.name"  [ngValue]="choice">{{choice.name}}</option>
             </select>
 			</div>
@@ -96,16 +88,13 @@
 			<!--"EntryType.ConditionalChoices"-->
 			<div *ngSwitchCase="3">
 				<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [formControlName]="parameter.id">
-                <!--<option value="" disabled>{{parameter.description}}</option>-->
                 <option *ngFor="let choice of parameter.choices" [label]="choice.name" [ngValue]="choice">{{choice.name}}</option>
             </select>
 			</div>
 
-
 			<!--"EntryType.MultipleChoices"-->
 			<div *ngSwitchCase="2">
 				<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [formControlName]="parameter.id">
-                <option value="" disabled>{{parameter.description}}</option>
                 <option *ngFor="let choice of parameter.choices" [label]="choice.name" [ngValue]="choice">{{choice.name}}</option>
             </select>
 			</div>
@@ -113,7 +102,6 @@
 			<!--"EntryType.Choices"-->
 			<div *ngSwitchCase="1">
 				<select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [formControlName]="parameter.id">
-                <option value="" disabled>{{parameter.description}}</option>
                 <option *ngFor="let choice of parameter.choices" [label]="choice.name" [ngValue]="choice">{{choice.name}}</option>
             </select>
 			</div>
@@ -141,8 +129,7 @@
 						<input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="checkbox" [geminiBoolean]="parameter" />{{parameter.description}}
 					</div>
 					<div *ngSwitchDefault>
-						<input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="text" placeholder="{{parameter.description}}" [formControlName]="parameter.id"
-							[geminiClear]="parameter" />
+						<input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="text" placeholder="{{parameter.description}}" [formControlName]="parameter.id" [geminiClear]="parameter"/>
 					</div>
 				</div>
 			</div>
