@@ -13,7 +13,7 @@ import { ErrorService } from "./error.service";
 import { MaskService } from "./mask.service";
 import { Injectable } from '@angular/core';
 import * as _ from "lodash";
-import {MomentWrapperService} from "./moment-wrapper.service";
+import { MomentWrapperService } from "./moment-wrapper.service";
 
 @Injectable()
 export class ViewModelFactoryService {
@@ -24,11 +24,11 @@ export class ViewModelFactoryService {
         private error: ErrorService,
         private clickHandler: ClickHandlerService,
         private focusManager: FocusManagerService,
-        private mask : MaskService,
-        private momentWrapperService : MomentWrapperService
+        private mask: MaskService,
+        private momentWrapperService: MomentWrapperService
     ) {
 
-     }
+    }
 
 
     errorViewModel = (error: Models.ErrorWrapper) => {
@@ -103,7 +103,7 @@ export class ViewModelFactoryService {
         return linkViewModel as ViewModels.ILinkViewModel;
     };
 
-    itemViewModel = (linkRep: Models.Link, paneId: number, selected: boolean, index : number) => {
+    itemViewModel = (linkRep: Models.Link, paneId: number, selected: boolean, index: number) => {
         const itemViewModel = new ViewModels.ItemViewModel();
         this.initLinkViewModel(itemViewModel, linkRep);
 
@@ -132,7 +132,7 @@ export class ViewModelFactoryService {
         return itemViewModel;
     };
 
-    recentItemViewModel = (obj: Models.DomainObjectRepresentation, linkRep: Models.Link, paneId: number, selected: boolean, index : number) => {
+    recentItemViewModel = (obj: Models.DomainObjectRepresentation, linkRep: Models.Link, paneId: number, selected: boolean, index: number) => {
         const recentItemViewModel = this.itemViewModel(linkRep, paneId, selected, index) as ViewModels.ILinkViewModel;
         (recentItemViewModel as ViewModels.IRecentItemViewModel).friendlyName = obj.extensions().friendlyName();
         return recentItemViewModel as ViewModels.IRecentItemViewModel;
@@ -250,7 +250,7 @@ export class ViewModelFactoryService {
             catch((reject: Models.ErrorWrapper) => error.handleError(reject));
     };
 
-    private validate(rep: Models.IHasExtensions, vm: ViewModels.IFieldViewModel, ms : MomentWrapperService, modelValue: any, viewValue: string, mandatoryOnly: boolean) {
+    private validate(rep: Models.IHasExtensions, vm: ViewModels.IFieldViewModel, ms: MomentWrapperService, modelValue: any, viewValue: string, mandatoryOnly: boolean) {
         const message = mandatoryOnly ? Models.validateMandatory(rep, viewValue) : Models.validate(rep, modelValue, viewValue, vm.localFilter, ms);
 
         if (message !== Msg.mandatory) {
@@ -296,7 +296,7 @@ export class ViewModelFactoryService {
     private setupChoice(propertyViewModel: ViewModels.IPropertyViewModel, newValue: Models.Value) {
         const propertyRep = propertyViewModel.propertyRep;
         if (propertyViewModel.entryType === Models.EntryType.Choices) {
-            
+
             const choices = propertyRep.choices();
 
             propertyViewModel.choices = _.map(choices, (v, n) => ViewModels.ChoiceViewModel.create(v, propertyViewModel.id, n));
@@ -335,7 +335,7 @@ export class ViewModelFactoryService {
             } else if (propertyViewModel.password) {
                 propertyViewModel.formattedValue = Msg.obscuredText;
             } else {
-                propertyViewModel.formattedValue =  localFilter.filter(propertyViewModel.value);
+                propertyViewModel.formattedValue = localFilter.filter(propertyViewModel.value);
             }
         });
     }
@@ -379,7 +379,7 @@ export class ViewModelFactoryService {
                 } else if (isPassword) {
                     tableRowColumnViewModel.formattedValue = Msg.obscuredText;
                 } else {
-                    tableRowColumnViewModel.formattedValue =  localFilter.filter(tableRowColumnViewModel.value);
+                    tableRowColumnViewModel.formattedValue = localFilter.filter(tableRowColumnViewModel.value);
                 }
             } else {
                 // is reference   
@@ -481,7 +481,7 @@ export class ViewModelFactoryService {
         propertyViewModel.description = required + propertyViewModel.description;
 
         propertyViewModel.isDirty = () => !!previousValue || propertyViewModel.getValue().toValueString() !== propertyViewModel.originalValue.toValueString();
-        propertyViewModel.validate =  _.partial(this.validate, propertyRep, propertyViewModel, this.momentWrapperService) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
+        propertyViewModel.validate = _.partial(this.validate, propertyRep, propertyViewModel, this.momentWrapperService) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
         propertyViewModel.canDropOn = (targetType: string) => this.context.isSubTypeOf(propertyViewModel.returnType, targetType) as Promise<boolean>;
         propertyViewModel.drop = _.partial(this.drop, this.context, this.error, propertyViewModel);
         propertyViewModel.doClick = (right?: boolean) => this.urlManager.setProperty(propertyRep, this.clickHandler.pane(paneId, right));
@@ -632,7 +632,7 @@ export class ViewModelFactoryService {
             const localFilter = this.mask.toLocalFilter(remoteMask, parmRep.extensions().format());
             parmViewModel.localFilter = localFilter;
             // formatting also happens in in directive - at least for dates - value is now date in that case
-            parmViewModel.formattedValue =  localFilter.filter(parmViewModel.value.toString());
+            parmViewModel.formattedValue = localFilter.filter(parmViewModel.value.toString());
         }
 
         parmViewModel.description = this.getRequiredIndicator(parmViewModel) + parmViewModel.description;
@@ -727,8 +727,7 @@ export class ViewModelFactoryService {
             then(c => collectionViewModel.color = `${Config.linkColor}${c}`).
             catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
-        function setCurrentState(collectionViewModel: ViewModels.CollectionViewModel)
-        {
+        function setCurrentState(collectionViewModel: ViewModels.CollectionViewModel) {
             if (size === 0) {
                 collectionViewModel.currentState = CollectionViewState.Summary;
             }
@@ -742,41 +741,51 @@ export class ViewModelFactoryService {
 
         collectionViewModel.refresh = (routeData: PaneRouteData, resetting: boolean) => {
 
-            setCurrentState(collectionViewModel);
-            
+            let state = routeData.collections[collectionRep.collectionId()];
 
-            collectionViewModel.requestedState = routeData.collections[collectionRep.collectionId()] as CollectionViewState;
-
-            if (collectionViewModel.requestedState == null) {
-                collectionViewModel.requestedState = this.getDefaultTableState(collectionRep.extensions());
+            // collections are always shown as summary on transient 
+            if (routeData.interactionMode === InteractionMode.Transient) {
+                state = CollectionViewState.Summary;
             }
 
-            if (resetting || collectionViewModel.requestedState !== collectionViewModel.currentState) {
+            if (state == null) {
+                state = this.getDefaultTableState(collectionRep.extensions());
+            }
+
+            collectionViewModel.editing = routeData.interactionMode === InteractionMode.Edit;
+
+            // clear any previous messages
+            //this.resetMessage();
+
+            if (resetting || state !== collectionViewModel.currentState) {
 
                 if (size > 0 || size == null) {
                     collectionViewModel.mayHaveItems = true;
                 }
                 collectionViewModel.details = this.getCollectionDetails(size);
-                const getDetails = itemLinks == null || collectionViewModel.requestedState === CollectionViewState.Table && collectionViewModel.currentState !== CollectionViewState.Table;
+                const getDetails = itemLinks == null || state === CollectionViewState.Table;
 
-                if (collectionViewModel.requestedState === CollectionViewState.Summary) {
+                if (state === CollectionViewState.Summary) {
                     collectionViewModel.items = [];
-                    setCurrentState(collectionViewModel);
+
                 } else if (getDetails) {
-                    this.context.getCollectionDetails(collectionRep, collectionViewModel.requestedState, resetting).
+                    this.context.getCollectionDetails(collectionRep, state, resetting).
                         then(details => {
                             collectionViewModel.items = this.getItems(details.value(),
-                                collectionViewModel.requestedState === CollectionViewState.Table,
+                                state === CollectionViewState.Table,
                                 routeData,
                                 collectionViewModel);
                             collectionViewModel.details = this.getCollectionDetails(collectionViewModel.items.length);
-                            setCurrentState(collectionViewModel);
+                            //collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);
                         }).
                         catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
                 } else {
                     collectionViewModel.items = this.getItems(itemLinks, collectionViewModel.currentState === CollectionViewState.Table, routeData, collectionViewModel);
-                    setCurrentState(collectionViewModel);
+                    //collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);   
                 }
+                collectionViewModel.currentState = state;
+            } else {
+                //collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);
             }
         }
 
@@ -840,7 +849,7 @@ export class ViewModelFactoryService {
     recentItemsViewModel = (paneId: number) => {
         const recentItemsViewModel = new ViewModels.RecentItemsViewModel();
         recentItemsViewModel.onPaneId = paneId;
-        const items = _.map(this.context.getRecentlyViewed(), (o, i) => ({ obj: o, link: this.selfLinkWithTitle(o), index : i }));
+        const items = _.map(this.context.getRecentlyViewed(), (o, i) => ({ obj: o, link: this.selfLinkWithTitle(o), index: i }));
         recentItemsViewModel.items = _.map(items, i => this.recentItemViewModel(i.obj, i.link, paneId, false, i.index));
         return recentItemsViewModel;
     };
@@ -857,7 +866,7 @@ export class ViewModelFactoryService {
     private getToolBarViewModel() {
         if (!this.cachedToolBarViewModel) {
             const tvm = new ViewModels.ToolBarViewModel();
-         
+
             tvm.goBack = () => {
                 this.focusManager.focusOverrideOff();
                 this.context.updateValues();
@@ -869,7 +878,7 @@ export class ViewModelFactoryService {
                 //navigation.forward();
             };
             tvm.swapPanes = () => {
-               // $rootScope.$broadcast(Nakedobjectsconstants.geminiPaneSwapEvent);
+                // $rootScope.$broadcast(Nakedobjectsconstants.geminiPaneSwapEvent);
                 this.context.updateValues();
                 this.context.swapCurrentObjects();
                 this.urlManager.swapPanes();

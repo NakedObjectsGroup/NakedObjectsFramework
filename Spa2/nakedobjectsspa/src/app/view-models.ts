@@ -236,6 +236,7 @@ export interface ICollectionViewModel {
     pluralName: string;
     color: string;
     mayHaveItems: boolean;
+    editing: boolean;
     items: IItemViewModel[];
     header: string[];
     onPaneId: number;
@@ -1389,11 +1390,12 @@ export class CollectionViewModel implements ICollectionViewModel {
     pluralName: string;
     color: string;
     mayHaveItems: boolean;
+    editing: boolean;
     items: IItemViewModel[];
     header: string[];
     onPaneId: number;
     currentState: CollectionViewState;
-    requestedState: CollectionViewState;
+    //requestedState: CollectionViewState;
     presentationHint: string;
     template: string;
     actions: IActionViewModel[];
@@ -1409,7 +1411,7 @@ export class CollectionViewModel implements ICollectionViewModel {
     description = () => this.details.toString();
     refresh: (routeData: PaneRouteData, resetting: boolean) => void;
 
-    disableActions() { return true; }
+    disableActions = () => this.editing || !this.actions || this.actions.length === 0;
     allSelected = () => _.every(this.items, item => item.selected);
     selectAll() { }
 }

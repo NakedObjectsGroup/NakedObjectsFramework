@@ -14,7 +14,7 @@ export class CollectionComponent {
     @Input()
     set collection(value: ViewModels.CollectionViewModel) {
         this.coll = value;
-        this.state = CollectionViewState[this.coll.requestedState].toString().toLowerCase();
+        this.state = CollectionViewState[this.coll.currentState].toString().toLowerCase();
     }
 
     get collection() {
