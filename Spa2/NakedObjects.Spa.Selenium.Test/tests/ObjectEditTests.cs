@@ -356,7 +356,7 @@ namespace NakedObjects.Selenium {
             ObjectEditChangeDateTime();
             CanSetAndClearAnOptionalDropDown();
             ObjectEditPicksUpLatestServerVersion();
-            //ViewModelEditOpensInEditMode();
+            ViewModelEditOpensInEditMode();
             //MultiLineText();
         }
     }

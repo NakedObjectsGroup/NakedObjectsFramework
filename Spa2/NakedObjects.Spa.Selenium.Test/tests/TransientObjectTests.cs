@@ -38,7 +38,7 @@ namespace NakedObjects.Selenium {
             //But check that credit card was saved nonetheless
             GetObjectAction("Recent Credit Cards").Click();
             WaitForView(Pane.Single, PaneType.List, "Recent Credit Cards");
-            wait.Until(dr => dr.FindElements(By.CssSelector(".collection table tbody tr td.reference")).First().Text == obfuscated);
+            wait.Until(dr => dr.FindElements(By.CssSelector(".list table tbody tr td.reference")).First().Text == obfuscated);
         }
         public virtual void MissingMandatoryFieldsNotified() {
             GeminiUrl("object?o1=___1.Person--12043&as1=open");
@@ -352,16 +352,16 @@ namespace NakedObjects.Selenium {
             MultiFieldValidation();
             PropertyDescriptionAndRequiredRenderedAsPlaceholder();
             CancelTransientObject();
-            SwapPanesWithTransients();
-            BackAndForwardOverTransient();
-            RequestForExpiredTransient();
-            ConditionalChoicesOnTransient();
-            TransientWithHiddenNonOptionalFields();
-            CanInvokeActionOnASavedTransient();
-            TransientCreatedFromDialogClosesDialog();
-            CreateAndSaveNotPersistedObject();
-            ValuePropOnTransientEmptyIfNoDefault();
-            InvalidPropOnTransientClearedAndReentered();
+            //SwapPanesWithTransients();
+            //BackAndForwardOverTransient();
+            //RequestForExpiredTransient();
+            //ConditionalChoicesOnTransient();
+            //TransientWithHiddenNonOptionalFields();
+            //CanInvokeActionOnASavedTransient();
+            //TransientCreatedFromDialogClosesDialog();
+            //CreateAndSaveNotPersistedObject();
+            //ValuePropOnTransientEmptyIfNoDefault();
+            //InvalidPropOnTransientClearedAndReentered();
         }
     }
 
@@ -404,7 +404,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class MegaTransientObjectTestsChrome : MegaTransientObjectTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
