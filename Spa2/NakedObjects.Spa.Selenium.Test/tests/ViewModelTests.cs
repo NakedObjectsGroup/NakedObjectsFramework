@@ -65,7 +65,7 @@ namespace NakedObjects.Selenium {
             Click(GetObjectAction("Edit")); //Note: not same as the generic (object) Edit button
             WaitForView(Pane.Single, PaneType.Object, "Editing - Sales Info for: Fashionable Bikes and Accessories");
             SelectDropDownOnField("#salesterritory1", "Central");
-            Click(SaveButton()); //TODO: check if this works
+            Click(SaveVMButton()); //TODO: check if this works
             WaitForView(Pane.Single, PaneType.Object, "Sales Info for: Fashionable Bikes and Accessories");
             WaitForTextEquals(".property", 2, "Sales Territory:\r\nCentral");
         }
@@ -164,9 +164,9 @@ namespace NakedObjects.Selenium {
         [TestMethod] //Mega
         public void MegaViewModelTest() {
             CreateVM();
-            //CreateEditableVM();
-            //EditableVMWithEmptyLeadingKeys();
-            //CreateSwitchableVM();
+            CreateEditableVM();
+            EditableVMWithEmptyLeadingKeys();
+            CreateSwitchableVM();
         }
     }
 

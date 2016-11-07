@@ -3,7 +3,7 @@
 	<div *ngIf="mode === 0" class="object view" [ngClass]="getColor()">
 		<header class="header">
 			<div class="title" dnd-draggable [dragEnabled]="true" [dragData]="object" tabindex="0">
-				<span class="type">{{object.friendlyName}}</span> {{object.title}}
+				<span class="type">{{object.friendlyName}}</span> {{title()}}
 			</div>
 			<!--<div>{{object.isDirty() ? "*" : ""}} </div>-->
 			<div class="menus">
@@ -31,9 +31,19 @@
 		<form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
 			<header class="header">
 				<div class="title" tabindex="0">
-					<span class="type">{{object.friendlyName}}</span> Editing - {{object.title}}
+					<span class="type">{{object.friendlyName}}</span> {{title()}}
 				</div>
-				<div class="menus">
+				<div *ngIf="mode === 3">
+					<div *ngFor="let menu of  object.menuItems">
+						<div *ngFor="let action of menu.actions">
+							<div class="action clickable-area" title="{{action.description}}" tabindex="0" geminiClick (leftClick)="action.doInvoke()"
+								(rightClick)="action.doInvoke(true)" [attr.disabled]="action.disabled() ? true : null">
+								{{action.title}}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div *ngIf="mode === 1 || mode === 2" class="menus">
 					<input type="submit" class="menu action clickable-area" tabindex="0" [disabled]="!form.valid" geminiClick (leftClick)="onSubmit(true)"
 						title="{{tooltip}}" value="Save" />
 					<input *ngIf="object.unsaved" type="submit" class="menu action clickable-area" [disabled]="!form.valid" tabindex="0" geminiClick

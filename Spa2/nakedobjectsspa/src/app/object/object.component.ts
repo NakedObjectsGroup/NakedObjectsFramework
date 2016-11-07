@@ -188,4 +188,10 @@ export class ObjectComponent implements OnInit,  OnDestroy {
         // this.onValueChanged(); // (re)set validation messages now
     }
 
+    title() {
+        const prefix = this.mode === InteractionMode.Edit ? "Editing - " : "";
+        return  `${prefix}${this.object.title}`; 
+    }
+
+
 }
