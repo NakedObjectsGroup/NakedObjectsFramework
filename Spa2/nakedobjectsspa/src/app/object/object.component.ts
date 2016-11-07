@@ -47,10 +47,16 @@ export class ObjectComponent implements OnInit,  OnDestroy {
             this.mode = null;
             return;
         }
+        const oid = Models.ObjectIdWrapper.fromObjectId(routeData.objectId);
+
+        // todo this is a recurring pattern in anagular 2 code - generalise 
+        // across components 
+        if (this.object && !this.object.domainObject.getOid().isSame(oid)) {
+            // object has changed - clear existing 
+            this.object = null; 
+        }
 
         this.mode = routeData.interactionMode;
-
-        const oid = Models.ObjectIdWrapper.fromObjectId(routeData.objectId);
 
         // to ease transition 
         //$scope.objectTemplate = Nakedobjectsconstants.blankTemplate;
@@ -75,7 +81,9 @@ export class ObjectComponent implements OnInit,  OnDestroy {
                     ovm.clearCachedFiles();
                 }
 
-                if (this.mode === InteractionMode.Edit) {
+                if (this.mode === InteractionMode.Edit ||
+                    this.mode === InteractionMode.Form ||
+                    this.mode === InteractionMode.Transient)  {
                     this.createForm(ovm);
                 }
 

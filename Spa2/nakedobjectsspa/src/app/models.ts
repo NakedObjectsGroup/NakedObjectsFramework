@@ -8,7 +8,7 @@ import { MaskService, ILocalFilter } from "./mask.service";
 import * as ViewModels from "./view-models";
 import { ContextService } from "./context.service";
 //import * as moment  from "moment";
-import {MomentWrapperService} from "./moment-wrapper.service";
+import { MomentWrapperService } from "./moment-wrapper.service";
 
 
 export function dirtyMarker(context: ContextService, oid: ObjectIdWrapper) {
@@ -223,8 +223,8 @@ function validateDateTimeFormat(model: IHasExtensions, newValue: Date): string {
     return "";
 }
 
-function getDate(val: string, ms : MomentWrapperService) : Date {
- 
+function getDate(val: string, ms: MomentWrapperService): Date {
+
     const dt1 = ms.moment(val, "YYYY-MM-DD", "en-GB", true);
 
     if (dt1.isValid()) {
@@ -233,9 +233,9 @@ function getDate(val: string, ms : MomentWrapperService) : Date {
     return null;
 }
 
-function validateDateFormat(model: IHasExtensions, newValue: Date | string, filter: ILocalFilter, ms : MomentWrapperService): string {
+function validateDateFormat(model: IHasExtensions, newValue: Date | string, filter: ILocalFilter, ms: MomentWrapperService): string {
     const range = model.extensions().range();
-    const newDate = (newValue instanceof Date) ?  newValue : getDate(newValue, ms);
+    const newDate = (newValue instanceof Date) ? newValue : getDate(newValue, ms);
 
     if (range && newDate) {
         const min = range.min ? getDate(range.min as string, ms) : null;
@@ -257,7 +257,7 @@ function validateTimeFormat(model: IHasExtensions, newValue: Date): string {
     return "";
 }
 
-function validateString(model: IHasExtensions, newValue: any, filter: ILocalFilter, ms : MomentWrapperService): string {
+function validateString(model: IHasExtensions, newValue: any, filter: ILocalFilter, ms: MomentWrapperService): string {
     const format = model.extensions().format();
 
     switch (format) {
@@ -287,7 +287,7 @@ export function validateMandatory(model: IHasExtensions, viewValue: string | Vie
 }
 
 
-export function validate(model: IHasExtensions, modelValue: any, viewValue: string, filter: ILocalFilter, ms : MomentWrapperService): string {
+export function validate(model: IHasExtensions, modelValue: any, viewValue: string, filter: ILocalFilter, ms: MomentWrapperService): string {
     // first check 
 
     const mandatory = validateMandatory(model, viewValue);
@@ -504,7 +504,7 @@ export class ErrorWrapper {
 // abstract classes 
 
 function toOid(id: string[]) {
-    return _.reduce(id, (a, v) => `${a}${a ? Config.keySeparator : ""}${v}`, "");
+    return _.reduce(id, (a, v) => `${a}${Config.keySeparator}${v}`) as string;
 }
 
 export class ObjectIdWrapper {
@@ -607,7 +607,7 @@ export abstract class HateosModel implements IHateoasModel {
         return {};
     }
 
-    getUrl() : string {
+    getUrl(): string {
         const url = this.hateoasUrl;
         const attrAsJson = _.clone(this.model);
 

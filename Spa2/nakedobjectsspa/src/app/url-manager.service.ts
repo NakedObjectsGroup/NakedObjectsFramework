@@ -22,7 +22,8 @@ enum Transition {
     Page,
     ToTransient,
     ToRecent,
-    ToAttachment
+    ToAttachment,
+    ToObjectWithMode
 };
 
 // keep in alphabetic order to help avoid name collisions 
@@ -341,6 +342,13 @@ export class UrlManagerService {
             this.setId(akm.interactionMode + paneId, InteractionMode[InteractionMode.View], search);
             //search = this.toggleReloadFlag(search);
             break;
+        case (Transition.ToObjectWithMode):          
+           ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Constants.objectPath));
+            replace = false;
+            search = this.clearPane(search, paneId);
+            //this.setId(akm.interactionMode + paneId, InteractionMode[InteractionMode.Form], search);
+            //search = this.toggleReloadFlag(search);
+            break;
         case (Transition.ToList):
             ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Constants.listPath));
             this.clearId(akm.menu + paneId, search);
@@ -433,6 +441,15 @@ export class UrlManagerService {
         const key = `${akm.object}${paneId}`;
         const newValues = _.zipObject([key], [oid]) as _.Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
+    };
+
+    setObjectWithMode = (resultObject: Models.DomainObjectRepresentation, newMode: InteractionMode, paneId = 1) => {
+        const oid = resultObject.id();
+        const okey = `${akm.object}${paneId}`;
+        const mkey = `${akm.interactionMode}${paneId}`;
+        const newValues = _.zipObject([okey, mkey], [oid, InteractionMode[newMode]]) as _.Dictionary<string>;
+
+        this.executeTransition(newValues, paneId, Transition.ToObjectWithMode, () => true);
     };
 
     setList = (actionMember: Models.ActionMember, parms: _.Dictionary<Models.Value>, fromPaneId = 1, toPaneId = 1) => {

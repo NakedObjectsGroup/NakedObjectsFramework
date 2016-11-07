@@ -595,12 +595,12 @@ export class ContextService {
                     this.setObject(toPaneId, resultObject);
                     this.transientCache.add(toPaneId, resultObject);
                     this.urlManager.pushUrlState(toPaneId);
-                    this.urlManager.setObject(resultObject, toPaneId);
+                    //this.urlManager.setObject(resultObject, toPaneId);
 
                     const interactionMode = resultObject.extensions().interactionMode() === "transient"
                         ? InteractionMode.Transient
                         : InteractionMode.NotPersistent;
-                    this.urlManager.setInteractionMode(interactionMode, toPaneId);
+                    this.urlManager.setObjectWithMode(resultObject, interactionMode, toPaneId);
                 } else {
 
                     // persistent object
@@ -611,7 +611,7 @@ export class ContextService {
                     resultObject.etagDigest = result.etagDigest;
 
                     this.setObject(toPaneId, resultObject);
-                    this.urlManager.setObject(resultObject, toPaneId);
+                    //this.urlManager.setObject(resultObject, toPaneId);
 
                     // update angular cache 
                     const url = resultObject.selfLink().href() + `?${Constants.roInlinePropertyDetails}=false`;
@@ -620,9 +620,12 @@ export class ContextService {
                     // if render in edit must be  a form 
                     if (resultObject.extensions().interactionMode() === "form") {
                         this.urlManager.pushUrlState(toPaneId);
-                        this.urlManager.setInteractionMode(InteractionMode.Form, toPaneId);
+
+                        //this.urlManager.setInteractionMode(InteractionMode.Form, toPaneId);
+                        this.urlManager.setObjectWithMode(resultObject, InteractionMode.Form, toPaneId);
                     } else {
                         this.addRecentlyViewed(resultObject);
+                        this.urlManager.setObject(resultObject, toPaneId);
                     }
                 }
             } else if (result.resultType() === "list") {
