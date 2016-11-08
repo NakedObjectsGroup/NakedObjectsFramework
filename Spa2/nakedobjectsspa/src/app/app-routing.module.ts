@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from "./home/home.component";
-import { ObjectComponent} from "./object/object.component";
-import { ListComponent} from "./list/list.component";
+import { ObjectComponent } from "./object/object.component";
+import { ListComponent } from "./list/list.component";
 import { ErrorComponent } from './error/error.component';
 import { RecentComponent } from './recent/recent.component';
 import { ApplicationPropertiesComponent } from './application-properties/application-properties.component';
+import { AttachmentComponent } from './attachment/attachment.component';
+
 
 const routes: Routes = [
     {
@@ -16,13 +18,14 @@ const routes: Routes = [
     {
         path: 'gemini/home',
         component: HomeComponent,
-        data: { pane: 1, class : "single" },
+        data: { pane: 1, class: "single" },
         children: [
             { path: "" },
             { path: "home", component: HomeComponent, data: { pane: 2, class: "split" } },
             { path: "object", component: ObjectComponent, data: { pane: 2, class: "split" } },
             { path: "list", component: ListComponent, data: { pane: 2, class: "split" } },
-            { path: "recent", component: RecentComponent, data: { pane: 2, class: "split" } }       
+            { path: "attachment", component: AttachmentComponent, data: { pane: 2, class: "split" } },
+            { path: "recent", component: RecentComponent, data: { pane: 2, class: "split" } }
         ]
     },
     {
@@ -34,7 +37,8 @@ const routes: Routes = [
             { path: "home", component: HomeComponent, data: { pane: 2, class: "split" } },
             { path: "object", component: ObjectComponent, data: { pane: 2, class: "split" } },
             { path: "list", component: ListComponent, data: { pane: 2, class: "split" } },
-            { path: "recent", component: RecentComponent, data: { pane: 2, class: "split" } }       
+            { path: "attachment", component: AttachmentComponent, data: { pane: 2, class: "split" } },
+            { path: "recent", component: RecentComponent, data: { pane: 2, class: "split" } }
         ]
     },
     {
@@ -46,8 +50,21 @@ const routes: Routes = [
             { path: "home", component: HomeComponent, data: { pane: 2, class: "split" } },
             { path: "object", component: ObjectComponent, data: { pane: 2, class: "split" } },
             { path: "list", component: ListComponent, data: { pane: 2, class: "split" } },
-            { path: "recent", component: RecentComponent, data: { pane: 2, class: "split" } }       
-
+            { path: "attachment", component: AttachmentComponent, data: { pane: 2, class: "split" } },
+            { path: "recent", component: RecentComponent, data: { pane: 2, class: "split" } }
+        ]
+    },
+    {
+        path: 'gemini/attachment',
+        component: AttachmentComponent,
+        data: { pane: 1, class: "single" },
+        children: [
+            { path: "" },
+            { path: "home", component: HomeComponent, data: { pane: 2, class: "split" } },
+            { path: "object", component: ObjectComponent, data: { pane: 2, class: "split" } },
+            { path: "list", component: ListComponent, data: { pane: 2, class: "split" } },
+            { path: "attachment", component: AttachmentComponent, data: { pane: 2, class: "split" } },
+            { path: "recent", component: RecentComponent, data: { pane: 2, class: "split" } }
         ]
     },
     {
@@ -59,7 +76,8 @@ const routes: Routes = [
             { path: "home", component: HomeComponent, data: { pane: 2, class: "split" } },
             { path: "object", component: ObjectComponent, data: { pane: 2, class: "split" } },
             { path: "list", component: ListComponent, data: { pane: 2, class: "split" } },
-            { path: "recent", component: RecentComponent, data: { pane: 2, class: "split" } }       
+            { path: "attachment", component: AttachmentComponent, data: { pane: 2, class: "split" } },
+            { path: "recent", component: RecentComponent, data: { pane: 2, class: "split" } }
         ]
     },
     {
@@ -80,9 +98,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-  providers: []
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule],
+    providers: []
 })
 export class RoutingModule { }
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Request, RequestOptions, Headers, RequestMethod} from '@angular/http';
+import { Http, Response, Request, RequestOptions, Headers, RequestMethod, ResponseContentType} from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import "./rxjs-extensions";
 import * as Models from "./models";
@@ -273,6 +273,7 @@ export class RepLoaderService {
         const config = new RequestOptions({
             method: "GET",
             url: url,
+            responseType: ResponseContentType.Blob,
             headers: new Headers({ "Accept": mt })
         });
 

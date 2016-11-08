@@ -42,6 +42,7 @@ import { CollectionComponent } from './collection/collection.component';
 import { MomentWrapperService } from './moment-wrapper.service';
 import {DND_PROVIDERS, DND_DIRECTIVES} from 'ng2-dnd';
 import { ReactiveFormsModule }          from '@angular/forms';
+import { AttachmentComponent } from './attachment/attachment.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { ReactiveFormsModule }          from '@angular/forms';
     GeminiClearDirective,
     GeminiValidateDirective,
     CollectionComponent,
-    DND_DIRECTIVES
+    DND_DIRECTIVES,
+    AttachmentComponent
   ],
   imports: [
     BrowserModule,
