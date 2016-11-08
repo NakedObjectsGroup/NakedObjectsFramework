@@ -94,7 +94,7 @@ namespace NakedObjects.Selenium
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class PerformanceTestsChrome : PerformanceTests
     {
         [ClassInitialize]
