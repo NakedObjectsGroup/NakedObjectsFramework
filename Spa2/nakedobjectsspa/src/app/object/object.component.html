@@ -1,3 +1,4 @@
+<div *ngIf="expiredTransient" class="title">The requested view of unsaved object details has expired.</div>
 <div [attr.id]="paneIdName()" *ngIf="object" [ngClass]="getClass()">
 
 	<div *ngIf="mode === 0" class="object view" [ngClass]="getColor()">
@@ -59,6 +60,18 @@
 			</div>
 		</form>
 		<collections *ngIf="object.collections" [collections]="object.collections"></collections>
+	</div>
+	<div *ngIf="(mode === 4)" class="object view" [ngClass]="getColor()">
+		<header class="header">
+			<div class="title" dnd-draggable [dragEnabled]="true" [dragData]="object" tabindex="0">
+				<span class="type">{{object.friendlyName}}</span> {{title()}}
+			</div>
+			<div class="messages">{{object.message}}</div>
+		</header>
+		<div class="main-column">
+			<properties class="properties" *ngIf="object.properties" [properties]="object.properties"></properties>
+		</div>
+		<collections class="collections" *ngIf="object.collections" [collections]="object.collections"></collections>
 	</div>
 </div>
 <router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>

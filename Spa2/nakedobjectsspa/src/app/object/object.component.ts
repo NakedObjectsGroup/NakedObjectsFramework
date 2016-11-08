@@ -40,6 +40,8 @@ export class ObjectComponent implements OnInit,  OnDestroy {
 
     mode : InteractionMode;
 
+    expiredTransient = false; 
+
     setupObject(routeData: PaneRouteData) {
         // subscription means may get with no oid 
 
@@ -47,6 +49,9 @@ export class ObjectComponent implements OnInit,  OnDestroy {
             this.mode = null;
             return;
         }
+
+        this.expiredTransient = false;
+
         const oid = Models.ObjectIdWrapper.fromObjectId(routeData.objectId);
 
         // todo this is a recurring pattern in anagular 2 code - generalise 
@@ -99,6 +104,7 @@ export class ObjectComponent implements OnInit,  OnDestroy {
             catch((reject: Models.ErrorWrapper) => {
                 if (reject.category === Models.ErrorCategory.ClientError && reject.clientErrorCode === Models.ClientErrorCode.ExpiredTransient) {
                     this.context.setError(reject);
+                    this.expiredTransient = true;
                    // $scope.objectTemplate = Nakedobjectsconstants.expiredTransientTemplate;
                 } else {
                     this.error.handleError(reject);
@@ -189,7 +195,7 @@ export class ObjectComponent implements OnInit,  OnDestroy {
     }
 
     title() {
-        const prefix = this.mode === InteractionMode.Edit ? "Editing - " : "";
+        const prefix = this.mode === InteractionMode.Edit || this.mode === InteractionMode.Transient  ? "Editing - " : "";
         return  `${prefix}${this.object.title}`; 
     }
 

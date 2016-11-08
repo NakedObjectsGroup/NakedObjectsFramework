@@ -173,6 +173,7 @@ namespace NakedObjects.Selenium {
             GeminiUrl("home?m1=EmployeeRepository");
             Click(GetObjectAction("Create Staff Summary"));
             WaitForView(Pane.Single, PaneType.Object, "Staff Summary");
+            // todo fix once type is no longer displayed
             WaitForTextStarting(".object", "Staff Summary\r\nFemale"); //i.e. no buttons in the header
         }
         public virtual void ValuePropOnTransientEmptyIfNoDefault()
@@ -352,16 +353,16 @@ namespace NakedObjects.Selenium {
             MultiFieldValidation();
             PropertyDescriptionAndRequiredRenderedAsPlaceholder();
             CancelTransientObject();
-            //SwapPanesWithTransients();
-            //BackAndForwardOverTransient();
-            //RequestForExpiredTransient();
-            //ConditionalChoicesOnTransient();
-            //TransientWithHiddenNonOptionalFields();
-            //CanInvokeActionOnASavedTransient();
-            //TransientCreatedFromDialogClosesDialog();
-            //CreateAndSaveNotPersistedObject();
-            //ValuePropOnTransientEmptyIfNoDefault();
-            //InvalidPropOnTransientClearedAndReentered();
+            SwapPanesWithTransients();
+            BackAndForwardOverTransient();
+            RequestForExpiredTransient();
+            ConditionalChoicesOnTransient();
+            TransientWithHiddenNonOptionalFields();
+            CanInvokeActionOnASavedTransient();
+            TransientCreatedFromDialogClosesDialog();
+            CreateAndSaveNotPersistedObject();
+            ValuePropOnTransientEmptyIfNoDefault();
+            InvalidPropOnTransientClearedAndReentered();
         }
     }
 

@@ -557,7 +557,7 @@ export class ContextService {
         const map = field.getPromptMap();
         map.setMembers(objectValues);
         setupPrompt(map);
-        return this.repLoader.retrieve(map, Models.PromptRepresentation, digest).then((p: Models.PromptRepresentation) => p.choices());
+        return this.repLoader.retrieve(map, Models.PromptRepresentation, digest).then((p: Models.PromptRepresentation) => p.choices(field.extensions().optional()));
     };
 
     autoComplete = (field: Models.IField, id: string, objectValues: () => _.Dictionary<Models.Value>, searchTerm: string, digest?: string) =>
