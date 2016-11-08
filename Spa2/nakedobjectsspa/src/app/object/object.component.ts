@@ -54,7 +54,7 @@ export class ObjectComponent implements OnInit,  OnDestroy {
 
         const oid = Models.ObjectIdWrapper.fromObjectId(routeData.objectId);
 
-        // todo this is a recurring pattern in anagular 2 code - generalise 
+        // todo this is a recurring pattern in angular 2 code - generalise 
         // across components 
         if (this.object && !this.object.domainObject.getOid().isSame(oid)) {
             // object has changed - clear existing 

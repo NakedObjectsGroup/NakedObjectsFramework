@@ -5,7 +5,8 @@ import * as ViewModels from "../view-models";
 
 @Component({
     selector: 'error',
-    templateUrl: './error.component.html'
+    templateUrl: './error.component.html',
+    styleUrls: ['./error.component.css']
 })
 export class ErrorComponent {
 

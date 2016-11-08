@@ -71,7 +71,12 @@ const routes: Routes = [
         path: 'gemini/applicationProperties',
         component: ApplicationPropertiesComponent,
         data: { pane: 1, class: "single" }
-    }
+    },
+    {
+        path: '**',
+        redirectTo: '/gemini/home',
+        pathMatch: 'full'
+    },
 ];
 
 @NgModule({

@@ -22,7 +22,7 @@
 			<div class="messages">{{object.message}}</div>
 		</header>
 		<actions class="actions" *ngIf="object.showActions()" [menuVm]="object"></actions>
-		<div class="mainColumn">
+		<div class="main-column">
 			<app-dialog [parent]="object"></app-dialog>
 			<properties class="properties" *ngIf="object.properties" [properties]="object.properties"></properties>
 		</div>
@@ -55,7 +55,7 @@
 				</div>
 				<div class="messages">{{object.message}}</div>
 			</header>
-			<div class="mainColumn">
+			<div class="main-column">
 				<properties *ngIf="object.properties" [properties]="object.properties" [parent]="object" [form]="form"></properties>
 			</div>
 		</form>
