@@ -53,7 +53,7 @@ export const basicHelp = "Cicero is a user interface purpose-designed to work wi
     "Commands are not case sensitive.\n" +
     "Some commands take one or more arguments.\n" +
     "There must be a space between the command word and the first argument,\n" +
-    "and a comman between arguments.|n" +
+    "and a comma between arguments.\n" +
     "Arguments may contain spaces if needed.\n" +
     "The commands available to the user vary according to the context.\n" +
     "The command 'help ?' (note that there is a space between help and '?')\n" +
@@ -65,7 +65,7 @@ export const basicHelp = "Cicero is a user interface purpose-designed to work wi
     "If the user needs a reminder of the current context, the 'Where' command will read the context out again.\n" +
     "Hitting Enter on the empty input field has the same effect.\n" +
     "When the user enters a command and the output has been updated, the input field will  be cleared, \n" +
-    "ready for the next command. The user may recall the previous command, by hitting the up- arrow key.\n" +
+    "ready for the next command. The user may recall the previous command by hitting the up-arrow key.\n" +
     "The user might then edit or extend that previous command and hit Enter to run it again.\n" +
     "For advanced users: commands may be chained using a semi-colon between them,\n" +
     "however commands that do, or might, result in data updates cannot be chained.";
