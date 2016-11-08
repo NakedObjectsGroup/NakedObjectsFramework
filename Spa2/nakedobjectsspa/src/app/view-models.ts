@@ -738,7 +738,7 @@ export abstract class ValueViewModel extends MessageViewModel implements IFieldV
 
     selectedMultiChoices: IChoiceViewModel[];
 
-    private file: Models.Link;
+    file: Models.Link;
 
     entryType: Models.EntryType;
 

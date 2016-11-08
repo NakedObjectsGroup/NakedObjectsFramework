@@ -7,6 +7,7 @@ import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ErrorService } from "../error.service";
 
+
 @Component({
     selector: 'view-property',
     templateUrl: './view-property.component.html',

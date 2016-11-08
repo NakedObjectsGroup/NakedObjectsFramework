@@ -61,14 +61,13 @@
 
 			<!--"EntryType.File"-->
 			<div *ngSwitchCase="6">
-				<!--    <input id="{{parameter.paneArgId}}" type="file" class="{{parameter.status}}"   name="parameter.id"  placeholder="{{parameter.description}}" gemini-fileupload />-->
+				<input id="{{parameter.paneArgId}}" type="file" class="{{parameter.status}}"   name="parameter.id"  placeholder="{{parameter.description}}" (change)="fileUpload()" />
 			</div>
 
 			<!--"EntryType.AutoComplete"-->
 			<div *ngSwitchCase="5">
 				<input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
-					[ngClass]="classes()" placeholder="{{parameter.description}}" type="text" [formControlName]="parameter.id" [geminiClear]="parameter"
-				/>
+					[ngClass]="classes()" placeholder="{{parameter.description}}" type="text" [formControlName]="parameter.id" [geminiClear]="parameter"/>
 				<div class="suggestions" *ngIf="parameter.choices.length > 0">
 					<ul *ngFor="let item of parameter.choices">
 						<li>

@@ -141,7 +141,7 @@ export class FieldComponent {
         }
     }
 
-    get message(){
+    get message() {
         return this.model.getMessage();
     }
 
@@ -173,7 +173,7 @@ export class FieldComponent {
     populateAutoComplete() {
         const input = this.control.value;
 
-        if (input instanceof ViewModels.ChoiceViewModel){
+        if (input instanceof ViewModels.ChoiceViewModel) {
             return;
         }
 
@@ -219,5 +219,26 @@ export class FieldComponent {
                 this.model.choices = [];
             }
         }
+    }
+
+    fileUpload() {
+        //const file = (this.elementRef[0] as any).files[0] as File;
+
+        const element =  document.querySelector("input[type='file']");
+        const file = (element as any).files[0] as File;
+
+        const fileReader = new FileReader();
+        fileReader.onloadend = () => {
+            const link = new Models.Link({
+                href: fileReader.result,
+                type: file.type,
+                title: file.name
+            } as Ro.ILink);
+
+            this.control.reset(link);
+            this.model.file = link;
+        };
+
+        fileReader.readAsDataURL(file);
     }
 }
