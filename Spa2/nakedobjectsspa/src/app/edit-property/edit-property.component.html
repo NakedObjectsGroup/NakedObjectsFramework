@@ -12,7 +12,7 @@
             <div *ngSwitchCase="5">
                 <input id="{{property.paneArgId}}" class="{{property.status}} value droppable" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
                     [ngClass]="classes()" placeholder="{{property.description}}" type="text" [formControlName]="property.id"
-                    [geminiClear]="property" />
+                    [geminiClear]="property" [form]="form" />
                 <div class="suggestions" *ngIf="property.choices.length > 0">
                     <ul *ngFor="let item of property.choices">
                         <li>
@@ -40,7 +40,7 @@
             <div *ngSwitchCase="0">
                 <input id="{{property.paneArgId}}" class="{{property.status}} value droppable" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
                     [ngClass]="classes()" placeholder="{{property.description}}" type="text" [formControlName]="property.id"
-                    [geminiClear]="property" />
+                    [geminiClear]="property" [form]="form" />
             </div>
 
         </div>
@@ -90,7 +90,7 @@
                 <div *ngSwitchCase="5">
                     <input id="{{property.paneArgId}}" class="{{property.status}} value droppable" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
                         [ngClass]="classes()" placeholder="{{property.description}}" type="text" [formControlName]="property.id"
-                        [geminiClear]="property" />
+                        [geminiClear]="property" [form]="form" />
                     <div class="suggestions" *ngIf="property.choices.length > 0">
                         <ul *ngFor="let item of property.choices">
                             <li>
@@ -120,15 +120,15 @@
                         <div *ngSwitchCase="'string'" [ngSwitch]="property.format">
                             <div *ngSwitchCase="'date'">
                                 <input id="{{property.paneArgId}}" class="{{property.status}}" type="date" placeholder="{{property.description}}" [formControlName]="property.id"
-                                    (change)="datePickerChanged($event)" [geminiClear]="property" />
+                                    [ngClass]="" (change)="datePickerChanged($event)" [geminiClear]="property" [form]="form" />
                             </div>
                             <div *ngSwitchCase="'time'">
                                 <input id="{{property.paneArgId}}" class="{{property.status}}" type="time" placeholder="{{property.description}}" [formControlName]="property.id"
-                                    [geminiClear]="property" />
+                                    [ngClass]="classes()" [geminiClear]="property" [form]="form" />
                             </div>
                             <div *ngSwitchDefault [ngSwitch]="property.multipleLines">
                                 <input *ngSwitchCase="1" id="{{property.paneArgId}}" class="{{property.status}}" placeholder="{{property.description}}" type="{{property.password ? 'password' : 'text'}}"
-                                    [formControlName]="property.id" [geminiClear]="property" />
+                                    [ngClass]="" [formControlName]="property.id" [geminiClear]="property" [form]="form" />
                                 <textarea *ngSwitchDefault rows="{{property.multipleLines}}" id="{{property.paneArgId}}" class="{{property.status}}" [formControlName]="property.id"
                                     placeholder="{{property.description}}"></textarea>
                             </div>
@@ -138,7 +138,7 @@
                         </div>
                         <div *ngSwitchDefault>
                             <input id="{{property.paneArgId}}" class="{{property.status}}" type="text" placeholder="{{property.description}}" [formControlName]="property.id"
-                                [geminiClear]="property" />
+                                [ngClass]="" [geminiClear]="property" [form]="form" />
                         </div>
                     </div>
                 </div>

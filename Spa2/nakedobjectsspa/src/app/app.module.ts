@@ -20,11 +20,9 @@ import { ViewPropertyComponent } from './view-property/view-property.component';
 import { ParameterComponent } from './parameter/parameter.component';
 import { RecentComponent } from './recent/recent.component';
 import { ApplicationPropertiesComponent } from './application-properties/application-properties.component';
-import { GeminiConditionalChoicesDirective } from './gemini-conditional-choices.directive';
 import { GeminiClickDirective } from './gemini-click.directive';
 import { GeminiBooleanDirective } from './gemini-boolean.directive';
 import { GeminiClearDirective } from './gemini-clear.directive';
-import { GeminiValidateDirective } from './gemini-validate.directive';
 import { FieldComponent } from './field/field.component';
 import { ErrorService } from './error.service';
 import { ContextService } from './context.service';
@@ -63,11 +61,9 @@ import { AttachmentComponent } from './attachment/attachment.component';
     ParameterComponent,
     RecentComponent,
     ApplicationPropertiesComponent,
-    GeminiConditionalChoicesDirective,
     GeminiClickDirective,
     GeminiBooleanDirective,
     GeminiClearDirective,
-    GeminiValidateDirective,
     CollectionComponent,
     DND_DIRECTIVES,
     AttachmentComponent

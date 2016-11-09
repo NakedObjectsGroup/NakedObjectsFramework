@@ -9,7 +9,7 @@
 			<!--"EntryType.AutoComplete"-->
 			<div *ngSwitchCase="5">
 				<input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
-					[ngClass]="classes()" placeholder="{{parameter.description}}" type="text" [formControlName]="parameter.id" [geminiClear]="parameter"/>
+					[ngClass]="classes()" placeholder="{{parameter.description}}" type="text" [formControlName]="parameter.id" [geminiClear]="parameter" [form]="form"/>
 				<div class="suggestions" *ngIf="parameter.choices.length > 0">
 					<ul *ngFor="let item of parameter.choices">
 						<li>
@@ -50,7 +50,7 @@
 			<!--"EntryType.FreeForm"-->
 			<div *ngSwitchCase="0">
 				<input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
-					[ngClass]="classes()" placeholder="{{parameter.description}}" type="text" [formControlName]="parameter.id" [geminiClear]="parameter"/>
+					[ngClass]="classes()" placeholder="{{parameter.description}}" type="text" [formControlName]="parameter.id" [geminiClear]="parameter" [form]="form"/>
 			</div>
 
 		</div>
@@ -67,7 +67,7 @@
 			<!--"EntryType.AutoComplete"-->
 			<div *ngSwitchCase="5">
 				<input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
-					[ngClass]="classes()" placeholder="{{parameter.description}}" type="text" [formControlName]="parameter.id" [geminiClear]="parameter"/>
+					[ngClass]="classes()" placeholder="{{parameter.description}}" type="text" [formControlName]="parameter.id" [geminiClear]="parameter" [form]="form"/>
 				<div class="suggestions" *ngIf="parameter.choices.length > 0">
 					<ul *ngFor="let item of parameter.choices">
 						<li>
@@ -115,11 +115,11 @@
 						</div>
 						<div *ngSwitchCase="'time'">
 							<input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="time" placeholder="{{parameter.description}}" [formControlName]="parameter.id"
-								gemini-timepicker [geminiClear]="parameter" />
+								gemini-timepicker [geminiClear]="parameter" [form]="form" />
 						</div>
 						<div *ngSwitchDefault [ngSwitch]="parameter.multipleLines">
 							<input *ngSwitchCase="1" id="{{parameter.paneArgId}}" class="{{parameter.status}}" placeholder="{{parameter.description}}"
-								type="{{parameter.password ? 'password' : 'text'}}" [formControlName]="parameter.id" [geminiClear]="parameter" />
+								type="{{parameter.password ? 'password' : 'text'}}" [formControlName]="parameter.id" [geminiClear]="parameter" [form]="form"/>
 							<textarea *ngSwitchDefault rows="{{parameter.multipleLines}}" id="{{parameter.paneArgId}}" class="{{parameter.status}}" [formControlName]="parameter.id"
 								placeholder="{{parameter.description}}"></textarea>
 						</div>
@@ -128,7 +128,7 @@
 						<input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="checkbox" [geminiBoolean]="parameter" />{{parameter.description}}
 					</div>
 					<div *ngSwitchDefault>
-						<input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="text" placeholder="{{parameter.description}}" [formControlName]="parameter.id" [geminiClear]="parameter"/>
+						<input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="text" placeholder="{{parameter.description}}" [formControlName]="parameter.id" [geminiClear]="parameter" [form]="form"/>
 					</div>
 				</div>
 			</div>

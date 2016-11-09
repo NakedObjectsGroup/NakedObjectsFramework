@@ -115,7 +115,7 @@ export class ObjectComponent implements OnInit,  OnDestroy {
     paneIdName = () => this.paneId === 1 ? "pane1" : "pane2"
 
     getClass() {
-        return this.paneType + " " + this.object.color;
+        return this.paneType;
     }
 
     getColor() {

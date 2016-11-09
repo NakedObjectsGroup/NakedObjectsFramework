@@ -1,5 +1,6 @@
 import { Directive, ElementRef, HostListener, Output, EventEmitter, Renderer, Input, OnInit } from '@angular/core';
 import * as ViewModels from './view-models';
+import { FormGroup } from '@angular/forms';
 
 @Directive({ selector: '[geminiClear]' })
 export class GeminiClearDirective implements OnInit {
@@ -10,16 +11,24 @@ export class GeminiClearDirective implements OnInit {
     }
 
     model: ViewModels.ValueViewModel;
+    formGroup : FormGroup
 
     @Input('geminiClear')
     set viewModel(vm: ViewModels.ValueViewModel) {
         this.model = vm;
     }
 
+    @Input()
+    set form(fm: FormGroup) {
+        this.formGroup = fm;
+    }
+
     ngOnInit(): void {
         this.onChange();
     }
 
+    // not need the ngClass directive on element even though it doesn't do anything 
+    // otherwise we lose all the classes added here 
     onChange() {
         this.el.classList.add("ng-clearable");
 
@@ -35,6 +44,7 @@ export class GeminiClearDirective implements OnInit {
             const onX = this.el.offsetWidth - 18 < event.clientX - this.el.getBoundingClientRect().left;
             if (onX) {
                 this.el.classList.add("ng-onX");
+                
             } else {
                 this.el.classList.remove("ng-onX");
             }
@@ -49,6 +59,7 @@ export class GeminiClearDirective implements OnInit {
             this.el.classList.remove("ng-onX");
 
             this.model.clear();
+            this.formGroup.controls[this.model.id].reset("");
         }
     }
 
