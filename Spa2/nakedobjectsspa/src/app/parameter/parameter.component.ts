@@ -26,7 +26,6 @@ export class ParameterComponent extends FieldComponent implements OnInit {
 
     parm: ViewModels.ParameterViewModel;
 
-
     @Input()
     parent: ViewModels.DialogViewModel;
 
@@ -40,7 +39,7 @@ export class ParameterComponent extends FieldComponent implements OnInit {
         return this.parm;
     }
 
-    classes(): string {
+    droppableClasses(): string {
         return `${this.parm.color}${this.canDrop ? " candrop" : ""}`;
     }
 
@@ -55,6 +54,18 @@ export class ParameterComponent extends FieldComponent implements OnInit {
 
     get form() {
         return this.formGroup;
+    }
+
+    isChoices() {
+        return this.parm.entryType === Models.EntryType.Choices ||
+            this.parm.entryType === Models.EntryType.ConditionalChoices ||
+            this.parm.entryType === Models.EntryType.MultipleChoices ||
+            this.parm.entryType === Models.EntryType.MultipleConditionalChoices;
+    }
+
+    isMultiple() {
+        return this.parm.entryType === Models.EntryType.MultipleChoices ||
+            this.parm.entryType === Models.EntryType.MultipleConditionalChoices;
     }
 
 
