@@ -13,9 +13,9 @@ import { RouteData, PaneRouteData } from "../route-data";
 })
 export class RecentComponent implements OnInit {
 
-    constructor(private activatedRoute: ActivatedRoute, 
-                private viewModelFactory: ViewModelFactoryService,
-                private urlManager : UrlManagerService) {
+    constructor(private activatedRoute: ActivatedRoute,
+        private viewModelFactory: ViewModelFactoryService,
+        private urlManager: UrlManagerService) {
 
     }
 
@@ -55,7 +55,7 @@ export class RecentComponent implements OnInit {
     }
 
     ngOnDestroy(): void {
-         if (this.activatedRouteDataSub) {
+        if (this.activatedRouteDataSub) {
             this.activatedRouteDataSub.unsubscribe();
         }
         if (this.paneRouteDataSub) {

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import * as ViewModels from "../view-models";
-import {CollectionViewState} from '../route-data';
+import { CollectionViewState } from '../route-data';
 
 @Component({
     selector: 'collection',

@@ -227,7 +227,7 @@ export class FieldComponent {
     fileUpload() {
         //const file = (this.elementRef[0] as any).files[0] as File;
 
-        const element =  document.querySelector("input[type='file']");
+        const element = document.querySelector("input[type='file']");
         const file = (element as any).files[0] as File;
 
         const fileReader = new FileReader();

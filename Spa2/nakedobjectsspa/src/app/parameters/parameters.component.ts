@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import * as Models from "../models";
 import * as ViewModels from "../view-models";
-import { FormGroup }                 from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'parameters',

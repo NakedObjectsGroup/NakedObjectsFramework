@@ -19,8 +19,8 @@ import { FormGroup } from '@angular/forms';
 export class ParameterComponent extends FieldComponent implements OnInit {
 
     constructor(private viewModelFactory: ViewModelFactoryService,
-                private urlManager: UrlManagerService,
-                myElement: ElementRef) {
+        private urlManager: UrlManagerService,
+        myElement: ElementRef) {
         super(myElement);
     }
 
@@ -41,7 +41,7 @@ export class ParameterComponent extends FieldComponent implements OnInit {
     }
 
     classes(): string {
-       return `${this.parm.color}${this.canDrop ? " candrop" : ""}`;
+        return `${this.parm.color}${this.canDrop ? " candrop" : ""}`;
     }
 
     ngOnInit(): void {
@@ -57,5 +57,5 @@ export class ParameterComponent extends FieldComponent implements OnInit {
         return this.formGroup;
     }
 
-    
+
 }

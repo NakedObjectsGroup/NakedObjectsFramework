@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { GeminiClickDirective } from "../gemini-click.directive";
-import { UrlManagerService} from "../url-manager.service";
+import { UrlManagerService } from "../url-manager.service";
 import { ClickHandlerService } from "../click-handler.service";
 import { FocusManagerService } from "../focus-manager.service";
 import { ContextService } from "../context.service";
@@ -20,11 +20,11 @@ export class FooterComponent implements OnInit {
 
     constructor(private urlManager: UrlManagerService,
         private focusManager: FocusManagerService,
-        private context : ContextService,
+        private context: ContextService,
         private clickHandler: ClickHandlerService,
         private error: ErrorService,
-        private repLoader : RepLoaderService,
-        private location : Location) { }
+        private repLoader: RepLoaderService,
+        private location: Location) { }
 
 
     loading: string;
@@ -88,7 +88,7 @@ export class FooterComponent implements OnInit {
         this.context.updateValues();
         this.urlManager.applicationProperties();
     };
-   
+
     recent = (right?: boolean) => {
         this.context.updateValues();
         this.focusManager.focusOverrideOff();
@@ -102,7 +102,7 @@ export class FooterComponent implements OnInit {
     }
 
     userName: string;
-   
+
     warnings: string[];
     messages: string[];
 

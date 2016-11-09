@@ -31,14 +31,16 @@
     <Content Include="src\app\app.component.html" />
     <Content Include="src\app\application-properties\application-properties.component.css" />
     <Content Include="src\app\application-properties\application-properties.component.html" />
-    <Content Include="src\app\auto-complete\auto-complete.component.css" />
-    <Content Include="src\app\auto-complete\auto-complete.component.html" />
+    <Content Include="src\app\attachment\attachment.component.css" />
+    <Content Include="src\app\attachment\attachment.component.html" />
     <Content Include="src\app\collections\collections.component.css" />
     <Content Include="src\app\collections\collections.component.html" />
     <Content Include="src\app\collection\collection.component.css" />
     <Content Include="src\app\collection\collection.component.html" />
     <Content Include="src\app\dialog\dialog.component.css" />
     <Content Include="src\app\dialog\dialog.component.html" />
+    <Content Include="src\app\edit-property\edit-property.component.css" />
+    <Content Include="src\app\edit-property\edit-property.component.html" />
     <Content Include="src\app\error\error.component.css" />
     <Content Include="src\app\error\error.component.html" />
     <Content Include="src\app\footer\footer.component.css" />
@@ -55,10 +57,10 @@
     <Content Include="src\app\parameter\parameter.component.html" />
     <Content Include="src\app\properties\properties.component.css" />
     <Content Include="src\app\properties\properties.component.html" />
-    <Content Include="src\app\property\property.component.css" />
-    <Content Include="src\app\property\property.component.html" />
     <Content Include="src\app\recent\recent.component.css" />
     <Content Include="src\app\recent\recent.component.html" />
+    <Content Include="src\app\view-property\view-property.component.css" />
+    <Content Include="src\app\view-property\view-property.component.html" />
     <Content Include="src\favicon.ico" />
     <Content Include="src\fonts\iconFont.svg" />
     <Content Include="src\fonts\license.txt" />
@@ -85,14 +87,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="src\app\abstract-droppable\abstract-droppable.component.ts" />
     <TypeScriptCompile Include="src\app\actions\actions.component.ts" />
     <TypeScriptCompile Include="src\app\action\action.component.ts" />
     <TypeScriptCompile Include="src\app\app-routing.module.ts" />
     <TypeScriptCompile Include="src\app\app.component.ts" />
     <TypeScriptCompile Include="src\app\app.module.ts" />
     <TypeScriptCompile Include="src\app\application-properties\application-properties.component.ts" />
-    <TypeScriptCompile Include="src\app\auto-complete\auto-complete.component.ts" />
+    <TypeScriptCompile Include="src\app\attachment\attachment.component.ts" />
     <TypeScriptCompile Include="src\app\click-handler.service.ts" />
     <TypeScriptCompile Include="src\app\collections\collections.component.ts" />
     <TypeScriptCompile Include="src\app\collection\collection.component.ts" />
@@ -102,26 +103,26 @@
     <TypeScriptCompile Include="src\app\constants.ts" />
     <TypeScriptCompile Include="src\app\context.service.ts" />
     <TypeScriptCompile Include="src\app\dialog\dialog.component.ts" />
+    <TypeScriptCompile Include="src\app\edit-property\edit-property.component.ts" />
     <TypeScriptCompile Include="src\app\error.service.ts" />
     <TypeScriptCompile Include="src\app\error\error.component.ts" />
+    <TypeScriptCompile Include="src\app\field\field.component.ts" />
     <TypeScriptCompile Include="src\app\focus-manager.service.ts" />
     <TypeScriptCompile Include="src\app\footer\footer.component.ts" />
     <TypeScriptCompile Include="src\app\gemini-boolean.directive.ts" />
     <TypeScriptCompile Include="src\app\gemini-clear.directive.ts" />
     <TypeScriptCompile Include="src\app\gemini-click.directive.ts" />
-    <TypeScriptCompile Include="src\app\gemini-conditional-choices.directive.ts" />
-    <TypeScriptCompile Include="src\app\gemini-validate.directive.ts" />
     <TypeScriptCompile Include="src\app\home\home.component.ts" />
     <TypeScriptCompile Include="src\app\index.ts" />
     <TypeScriptCompile Include="src\app\list\list.component.ts" />
     <TypeScriptCompile Include="src\app\mask-config.service.ts" />
     <TypeScriptCompile Include="src\app\mask.service.ts" />
     <TypeScriptCompile Include="src\app\models.ts" />
+    <TypeScriptCompile Include="src\app\moment-wrapper.service.ts" />
     <TypeScriptCompile Include="src\app\object\object.component.ts" />
     <TypeScriptCompile Include="src\app\parameters\parameters.component.ts" />
     <TypeScriptCompile Include="src\app\parameter\parameter.component.ts" />
     <TypeScriptCompile Include="src\app\properties\properties.component.ts" />
-    <TypeScriptCompile Include="src\app\property\property.component.ts" />
     <TypeScriptCompile Include="src\app\recent\recent.component.ts" />
     <TypeScriptCompile Include="src\app\rep-loader.service.ts" />
     <TypeScriptCompile Include="src\app\representations.service.ts" />
@@ -134,6 +135,7 @@
     <TypeScriptCompile Include="src\app\user-messages.ts" />
     <TypeScriptCompile Include="src\app\view-model-factory.service.ts" />
     <TypeScriptCompile Include="src\app\view-models.ts" />
+    <TypeScriptCompile Include="src\app\view-property\view-property.component.ts" />
     <TypeScriptCompile Include="src\environments\environment.prod.ts" />
     <TypeScriptCompile Include="src\environments\environment.ts" />
     <TypeScriptCompile Include="src\main.ts" />

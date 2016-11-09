@@ -58,7 +58,7 @@ export class ViewPropertyComponent implements OnInit {
         if (this.property && this.property.attachment) {
             const attachment = this.property.attachment;
 
-            this.attachmentTitle  = attachment.title;
+            this.attachmentTitle = attachment.title;
 
             if (attachment.displayInline()) {
                 attachment.downloadFile().
@@ -82,5 +82,5 @@ export class ViewPropertyComponent implements OnInit {
     }
 
     attachmentTitle: string;
-    image : string; 
+    image: string;
 }

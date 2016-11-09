@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { RepresentationsService } from "../representations.service";
-import { ActivatedRoute} from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import * as Models from "../models";
 import { UrlManagerService } from "../url-manager.service";
 import { ClickHandlerService } from "../click-handler.service";
@@ -24,7 +24,7 @@ import * as _ from "lodash";
     styleUrls: ['./object.component.css']
 })
 
-export class ObjectComponent implements OnInit,  OnDestroy {
+export class ObjectComponent implements OnInit, OnDestroy {
 
     constructor(private urlManager: UrlManagerService,
         private context: ContextService,
@@ -32,15 +32,15 @@ export class ObjectComponent implements OnInit,  OnDestroy {
         private viewModelFactory: ViewModelFactoryService,
         private focusManager: FocusManagerService,
         private error: ErrorService,
-        private activatedRoute :ActivatedRoute,
-        private formBuilder: FormBuilder) {    
+        private activatedRoute: ActivatedRoute,
+        private formBuilder: FormBuilder) {
     }
 
-    object : ViewModels.DomainObjectViewModel;
+    object: ViewModels.DomainObjectViewModel;
 
-    mode : InteractionMode;
+    mode: InteractionMode;
 
-    expiredTransient = false; 
+    expiredTransient = false;
 
     setupObject(routeData: PaneRouteData) {
         // subscription means may get with no oid 
@@ -58,7 +58,7 @@ export class ObjectComponent implements OnInit,  OnDestroy {
         // across components 
         if (this.object && !this.object.domainObject.getOid().isSame(oid)) {
             // object has changed - clear existing 
-            this.object = null; 
+            this.object = null;
         }
 
         this.mode = routeData.interactionMode;
@@ -80,7 +80,7 @@ export class ObjectComponent implements OnInit,  OnDestroy {
         this.context.getObject(routeData.paneId, oid, routeData.interactionMode).
             then((object: Models.DomainObjectRepresentation) => {
 
-                const ovm = new ViewModels.DomainObjectViewModel(this.color, this.context, this.viewModelFactory, this.urlManager, this.focusManager, this.error  );
+                const ovm = new ViewModels.DomainObjectViewModel(this.color, this.context, this.viewModelFactory, this.urlManager, this.focusManager, this.error);
                 ovm.reset(object, routeData);
                 if (wasDirty) {
                     ovm.clearCachedFiles();
@@ -88,11 +88,11 @@ export class ObjectComponent implements OnInit,  OnDestroy {
 
                 if (this.mode === InteractionMode.Edit ||
                     this.mode === InteractionMode.Form ||
-                    this.mode === InteractionMode.Transient)  {
+                    this.mode === InteractionMode.Transient) {
                     this.createForm(ovm);
                 }
 
-                 this.object = ovm;
+                this.object = ovm;
 
                 //$scope.object = ovm;
                 //$scope.collectionsTemplate = Nakedobjectsconstants.collectionsTemplate;
@@ -105,7 +105,7 @@ export class ObjectComponent implements OnInit,  OnDestroy {
                 if (reject.category === Models.ErrorCategory.ClientError && reject.clientErrorCode === Models.ClientErrorCode.ExpiredTransient) {
                     this.context.setError(reject);
                     this.expiredTransient = true;
-                   // $scope.objectTemplate = Nakedobjectsconstants.expiredTransientTemplate;
+                    // $scope.objectTemplate = Nakedobjectsconstants.expiredTransientTemplate;
                 } else {
                     this.error.handleError(reject);
                 }
@@ -165,19 +165,19 @@ export class ObjectComponent implements OnInit,  OnDestroy {
         return this.object.tooltip();
     }
 
-    onSubmit(viewObject : boolean) {
+    onSubmit(viewObject: boolean) {
         this.object.doSave(viewObject)
     }
 
-    props : _.Dictionary<ViewModels.PropertyViewModel>;
+    props: _.Dictionary<ViewModels.PropertyViewModel>;
     form: FormGroup;
 
     private createForm(vm: ViewModels.DomainObjectViewModel) {
         const pps = vm.properties;
         this.props = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<ViewModels.PropertyViewModel>
 
-        const editableProps = _.filter(this.props, p => p.isEditable); 
-        const editablePropsMap = _.zipObject(_.map(editableProps, p => p.id), _.map(editableProps, p => p)); 
+        const editableProps = _.filter(this.props, p => p.isEditable);
+        const editablePropsMap = _.zipObject(_.map(editableProps, p => p.id), _.map(editableProps, p => p));
 
         const controls = _.mapValues(editablePropsMap, p => [p.getValueForControl(), a => p.validator(a)]) as _.Dictionary<any>;
         this.form = this.formBuilder.group(controls);
@@ -195,8 +195,8 @@ export class ObjectComponent implements OnInit,  OnDestroy {
     }
 
     title() {
-        const prefix = this.mode === InteractionMode.Edit || this.mode === InteractionMode.Transient  ? "Editing - " : "";
-        return  `${prefix}${this.object.title}`; 
+        const prefix = this.mode === InteractionMode.Edit || this.mode === InteractionMode.Transient ? "Editing - " : "";
+        return `${prefix}${this.object.title}`;
     }
 
 

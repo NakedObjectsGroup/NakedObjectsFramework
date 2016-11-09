@@ -135,21 +135,21 @@ export class DialogComponent implements OnInit, OnDestroy {
     private paneRouteDataSub: ISubscription;
     private dialogSub: ISubscription;
 
-    private routeDataMatchesParent(rd : PaneRouteData) {
+    private routeDataMatchesParent(rd: PaneRouteData) {
         if (this.parent instanceof ViewModels.MenuViewModel) {
             return rd.location === ViewType.Home;
         }
 
         if (this.parent instanceof ViewModels.DomainObjectViewModel) {
-           return rd.location === ViewType.Object;
+            return rd.location === ViewType.Object;
         }
 
-        if (this.parent instanceof ViewModels.ListViewModel){
-            return rd.location === ViewType.List;          
+        if (this.parent instanceof ViewModels.ListViewModel) {
+            return rd.location === ViewType.List;
         }
         return false;
     }
-    
+
 
     ngOnInit(): void {
 
@@ -165,7 +165,7 @@ export class DialogComponent implements OnInit, OnDestroy {
                     const paneRouteData = rd.pane()[this.paneId];
                     // check that the paneRouteData is teh same as the parent otherwise 
                     // we may get route data for a different page 
-                    if (this.routeDataMatchesParent(paneRouteData)){
+                    if (this.routeDataMatchesParent(paneRouteData)) {
                         this.currentDialogId = paneRouteData.dialogId;
                         this.getDialog(paneRouteData);
                     }
@@ -192,7 +192,7 @@ export class DialogComponent implements OnInit, OnDestroy {
         return this.dialog.tooltip();
     }
 
-    onSubmit(right? : boolean) {
+    onSubmit(right?: boolean) {
         _.forEach(this.parms, (p, k) => {
             const newValue = this.form.value[p.id];
             p.setValueFromControl(newValue);

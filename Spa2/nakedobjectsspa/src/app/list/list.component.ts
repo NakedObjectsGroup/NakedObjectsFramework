@@ -41,7 +41,7 @@ export class ListComponent implements OnInit, OnDestroy {
     state = "list";
 
     paneIdName = () => this.paneId === 1 ? "pane1" : "pane2"
-    
+
     getActionExtensions(routeData: PaneRouteData) {
         return routeData.objectId ?
             this.context.getActionExtensionsFromObject(routeData.paneId, Models.ObjectIdWrapper.fromObjectId(routeData.objectId), routeData.actionId) :
