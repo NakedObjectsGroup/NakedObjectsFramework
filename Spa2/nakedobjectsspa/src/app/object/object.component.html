@@ -31,7 +31,7 @@
 	<div *ngIf="(mode === 1 || mode === 2 || mode === 3)" class="object edit" [ngClass]="getColor()">
 		<form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
 			<header class="header">
-				<div class="title" tabindex="0">
+				<div class="title"  dnd-draggable [dragEnabled]="true" [dragData]="object" tabindex="0">
 					<span class="type">{{object.friendlyName}}</span> {{title()}}
 				</div>
 				<div *ngIf="mode === 3">

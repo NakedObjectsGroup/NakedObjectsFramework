@@ -64,7 +64,10 @@ export class FieldComponent {
 
     drop(draggableVm: ViewModels.IDraggableViewModel) {
         if (this.canDrop) {
-            this.droppable.drop(draggableVm);
+            this.droppable.drop(draggableVm).then((success) => {
+                //this.control.reset(this.model.selectedChoice);
+                this.control.setValue(this.model.selectedChoice);
+            });
         }
     }
 

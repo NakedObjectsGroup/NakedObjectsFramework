@@ -241,11 +241,13 @@ export class ViewModelFactoryService {
     };
 
     private drop(context: ContextService, error: ErrorService, vm: ViewModels.IFieldViewModel, newValue: ViewModels.IDraggableViewModel) {
-        context.isSubTypeOf(newValue.draggableType, vm.returnType).
+        return context.isSubTypeOf(newValue.draggableType, vm.returnType).
             then((canDrop: boolean) => {
                 if (canDrop) {
                     vm.setNewValue(newValue);
+                    return true;
                 }
+                return false;
             }).
             catch((reject: Models.ErrorWrapper) => error.handleError(reject));
     };

@@ -21,6 +21,8 @@ export class GeminiClearDirective implements OnInit {
     @Input()
     set form(fm: FormGroup) {
         this.formGroup = fm;
+
+        this.formGroup.controls[this.model.id].valueChanges.subscribe(data => this.onChange());     
     }
 
     ngOnInit(): void {

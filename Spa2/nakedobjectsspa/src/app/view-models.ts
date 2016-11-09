@@ -135,7 +135,7 @@ export interface IFieldViewModel extends IMessageViewModel {
 
     setNewValue: (newValue: IDraggableViewModel) => void;
 
-    drop: (newValue: IDraggableViewModel) => void;
+    drop: (newValue: IDraggableViewModel) => Promise<boolean>;
 
     clear: () => void;
 
@@ -798,7 +798,7 @@ export abstract class ValueViewModel extends MessageViewModel implements IFieldV
         this.reference = newValue.reference;
     }
 
-    drop: (newValue: IDraggableViewModel) => void;
+    drop: (newValue: IDraggableViewModel) => Promise<boolean>;
 
     clear() {
         this.selectedChoice = null;

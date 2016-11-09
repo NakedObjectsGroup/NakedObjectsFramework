@@ -1,7 +1,7 @@
 <div class="name">
 	{{property.title}}:</div>
 
-<div *ngIf="property.type === 'ref' && !edit">
+<div *ngIf="property.type === 'ref'">
 	<div [ngSwitch]="property.refType">
 		<div *ngSwitchCase="null"></div>
 		<div *ngSwitchCase="'notNavigable'">
@@ -10,13 +10,13 @@
 			</div>
 		</div>
 		<div *ngSwitchDefault class="reference clickable-area" [ngClass]="classes()" geminiClick (leftClick)="property.doClick()"
-			(rightClick)="property.doClick(true)" dnd-draggable [dragEnabled]="true" tabindex="0">
+			(rightClick)="property.doClick(true)" dnd-draggable [dragEnabled]="true" [dragData]="property" tabindex="0">
 			{{property.formattedValue}}
 		</div>
 	</div>
 </div>
 
-<div *ngIf="property.type === 'scalar' && !edit">
+<div *ngIf="property.type === 'scalar'">
 	<div [ngSwitch]="property.returnType">
 		<div *ngSwitchCase="'string'">
 			<!--*ngIf="property.returnType = 'string'"-->
