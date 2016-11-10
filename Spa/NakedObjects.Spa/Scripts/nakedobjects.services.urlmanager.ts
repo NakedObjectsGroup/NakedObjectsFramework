@@ -380,6 +380,10 @@ namespace NakedObjects {
             return [akm.reload, akm.actions, akm.dialog, akm.menu, akm.action, akm.page, akm.pageSize, akm.selected, akm.collection, akm.parm, akm.object];
         }
 
+        function validKeysForAttachment() {
+            return [akm.object, akm.attachment];
+        }
+
         function validKeys(path: string) {
 
             switch (path) {
@@ -391,6 +395,8 @@ namespace NakedObjects {
                     return validKeysForList();
                 case multiLineDialogPath:
                     return validKeysForMultiLineDialog();
+                case attachmentPath:
+                    return validKeysForAttachment();
             }
 
             return [];
