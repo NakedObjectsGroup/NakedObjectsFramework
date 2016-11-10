@@ -2,11 +2,11 @@ import * as _ from "lodash";
 import * as Models from "./models";
 import * as Constants from "./constants";
 import * as Config from "./config";
-import { RouteData, PaneRouteData, InteractionMode, CollectionViewState, ApplicationMode , ViewType} from "./route-data";
+import { RouteData, PaneRouteData, InteractionMode, CollectionViewState, ApplicationMode, ViewType } from "./route-data";
 import { Injectable } from '@angular/core';
 import "./rxjs-extensions";
 import { Observable } from 'rxjs/Observable';
-import {Router, UrlSegment } from '@angular/router';
+import { Router, UrlSegment } from '@angular/router';
 import { Location } from '@angular/common';
 
 enum Transition {
@@ -28,7 +28,7 @@ enum Transition {
 
 // keep in alphabetic order to help avoid name collisions 
 // all key map
- const akm = {
+const akm = {
     action: "a",
     actions: "as",
     attachment: "at",
@@ -47,9 +47,9 @@ enum Transition {
 };
 
 interface ITransitionResult {
-    path : string, 
-    search : any;
-    replace : boolean
+    path: string,
+    search: any;
+    replace: boolean
 }
 
 
@@ -57,7 +57,7 @@ interface ITransitionResult {
 export class UrlManagerService {
 
     constructor(private router: Router,
-                private location: Location) {
+        private location: Location) {
     }
 
     private capturedPanes = [] as { paneType: string; search: Object }[];
@@ -123,13 +123,13 @@ export class UrlManagerService {
     }
 
     private getSearch() {
-      
+
         const url = this.router.url;
         return this.router.parseUrl(url).queryParams;
     }
 
     private getPath() {
-      
+
         const url = this.router.url;
         let end = url.indexOf(";");
         end = end === -1 ? url.indexOf("?") : end;
@@ -137,12 +137,12 @@ export class UrlManagerService {
         return path;
     }
 
-    private setNewSearch(result : ITransitionResult) {
-      
+    private setNewSearch(result: ITransitionResult) {
+
         const tree = this.router.createUrlTree([result.path], { queryParams: result.search });
 
-        this.router.navigateByUrl(tree);    
-        if (result.replace){
+        this.router.navigateByUrl(tree);
+        if (result.replace) {
             const u = this.router.serializeUrl(tree);
             this.location.replaceState(u);
         }
@@ -169,7 +169,7 @@ export class UrlManagerService {
         return rawInteractionMode ? (<any>InteractionMode)[rawInteractionMode] : InteractionMode.View;
     }
 
-    private setPaneRouteDataFromParms(paneRouteData: PaneRouteData, paneId: number, routeParams : {[key:string]: string}) {
+    private setPaneRouteDataFromParms(paneRouteData: PaneRouteData, paneId: number, routeParams: { [key: string]: string }) {
         paneRouteData.menuId = this.getId(akm.menu + paneId, routeParams);
         paneRouteData.actionId = this.getId(akm.action + paneId, routeParams);
         paneRouteData.dialogId = this.getId(akm.dialog + paneId, routeParams);
@@ -206,7 +206,7 @@ export class UrlManagerService {
         const routeParams = this.getSearch();
 
         this.setPaneRouteDataFromParms(paneRouteData, paneId, routeParams);
-       
+
         //paneRouteData.validate($location.url());
     }
 
@@ -224,7 +224,7 @@ export class UrlManagerService {
         return this.searchKeysForPane(search, paneId, raw);
     }
 
-    private clearPane(search: any, paneId: number)   {
+    private clearPane(search: any, paneId: number) {
         const toClear = this.allSearchKeysForPane(search, paneId);
         return _.omit(search, toClear) as _.Dictionary<string>;
     }
@@ -234,7 +234,7 @@ export class UrlManagerService {
         return _.omit(search, toClear);
     }
 
-    private setupPaneNumberAndTypes(pane: number, newPaneType: string, newMode?: ApplicationMode) : {path : string, replace : boolean} {
+    private setupPaneNumberAndTypes(pane: number, newPaneType: string, newMode?: ApplicationMode): { path: string, replace: boolean } {
 
         const path = this.getPath();
         const segments = path.split("/");
@@ -255,7 +255,7 @@ export class UrlManagerService {
             newPath = `/${mode}/${newPaneType}${this.isSinglePane() ? "" : `/${pane2Type}`}`;
             changeMode = false;
             mayReplace = false;
-           
+
         }
 
         // changing item on pane 2
@@ -265,12 +265,12 @@ export class UrlManagerService {
             newPath = `/${mode}/${pane1Type}/${newPaneType}`;
             changeMode = false;
             mayReplace = false;
-           
+
         }
 
         if (changeMode) {
             newPath = `/${mode}/${pane1Type}/${pane2Type}`;
-          
+
             mayReplace = false;
         }
 
@@ -314,70 +314,123 @@ export class UrlManagerService {
         delete search[key];
     }
 
-    private handleTransition(paneId: number, search: any, transition: Transition) : ITransitionResult {
+    private validKeysForHome() {
+        return [akm.menu, akm.dialog, akm.reload];
+    }
+
+    private validKeysForObject() {
+        return [akm.object, akm.interactionMode, akm.reload, akm.actions, akm.dialog, akm.collection, akm.prop];
+    }
+
+    private validKeysForMultiLineDialog() {
+        return [akm.object, akm.dialog, akm.menu];
+    }
+
+    private validKeysForList() {
+        return [akm.reload, akm.actions, akm.dialog, akm.menu, akm.action, akm.page, akm.pageSize, akm.selected, akm.collection, akm.parm, akm.object];
+    }
+
+    private validKeysForAttachment() {
+        return [akm.object, akm.attachment];
+    }
+
+    private validKeys(path: string) {
+
+        switch (path) {
+            case Constants.homePath:
+                return this.validKeysForHome();
+            case Constants.objectPath:
+                return this.validKeysForObject();
+            case Constants.listPath:
+                return this.validKeysForList();
+            // case Constants.multiLineDialogPath:
+            //     return this.validKeysForMultiLineDialog();
+            case Constants.attachmentPath:
+                return this.validKeysForAttachment();
+        }
+
+        return [];
+    }
+
+    private clearInvalidParmsFromSearch(paneId: number, search: any, path: string) {
+        if (path) {
+            const vks = this.validKeys(path);
+            const ivks = _.without(_.values(akm), ...vks) as string[];
+            return this.clearSearchKeys(search, paneId, ivks);
+        }
+        return search;
+    }
+
+    private handleTransition(paneId: number, search: any, transition: Transition): ITransitionResult {
 
         let replace = true;
         let path = this.getPath();
 
         switch (transition) {
-        case (Transition.ToHome):
-            ({path, replace} = this.setupPaneNumberAndTypes(paneId, Constants.homePath));
-            search = this.clearPane(search, paneId);
-            break;
-        case (Transition.ToMenu):
-            search = this.clearPane(search, paneId);
-            break;
-        case (Transition.FromDialog):
-            replace = true;
-            break;
-        case (Transition.ToDialog):
-        case (Transition.FromDialogKeepHistory):
-            replace = false;
-            break;
-        case (Transition.ToObjectView):
-           
-           ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Constants.objectPath));
-            replace = false;
-            search = this.clearPane(search, paneId);
-            this.setId(akm.interactionMode + paneId, InteractionMode[InteractionMode.View], search);
-            //search = this.toggleReloadFlag(search);
-            break;
-        case (Transition.ToObjectWithMode):          
-           ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Constants.objectPath));
-            replace = false;
-            search = this.clearPane(search, paneId);
-            //this.setId(akm.interactionMode + paneId, InteractionMode[InteractionMode.Form], search);
-            //search = this.toggleReloadFlag(search);
-            break;
-        case (Transition.ToList):
-            ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Constants.listPath));
-            this.clearId(akm.menu + paneId, search);
-            this.clearId(akm.object + paneId, search);
-            this.clearId(akm.dialog + paneId, search);
-            break;
-        case (Transition.LeaveEdit):
-            search = this.clearSearchKeys(search, paneId, [akm.prop]);
-            break;
-        case (Transition.Page):
-            replace = false;
-            break;
-        case (Transition.ToTransient):
-            replace = false;
-            break;
-        case (Transition.ToRecent):
-            ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Constants.recentPath));
-            search = this.clearPane(search, paneId);
-            break;
-        case (Transition.ToAttachment):
-            ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Constants.attachmentPath));
-            search = this.clearPane(search, paneId);
-            break;
-        default:
-            // null transition 
-            break;
+            case (Transition.ToHome):
+                ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Constants.homePath));
+                search = this.clearPane(search, paneId);
+                break;
+            case (Transition.ToMenu):
+                search = this.clearPane(search, paneId);
+                break;
+            case (Transition.FromDialog):
+                replace = true;
+                break;
+            case (Transition.ToDialog):
+            case (Transition.FromDialogKeepHistory):
+                replace = false;
+                break;
+            case (Transition.ToObjectView):
+
+                ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Constants.objectPath));
+                replace = false;
+                search = this.clearPane(search, paneId);
+                this.setId(akm.interactionMode + paneId, InteractionMode[InteractionMode.View], search);
+                //search = this.toggleReloadFlag(search);
+                break;
+            case (Transition.ToObjectWithMode):
+                ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Constants.objectPath));
+                replace = false;
+                search = this.clearPane(search, paneId);
+                //this.setId(akm.interactionMode + paneId, InteractionMode[InteractionMode.Form], search);
+                //search = this.toggleReloadFlag(search);
+                break;
+            case (Transition.ToList):
+                ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Constants.listPath));
+                this.clearId(akm.menu + paneId, search);
+                this.clearId(akm.object + paneId, search);
+                this.clearId(akm.dialog + paneId, search);
+                break;
+            case (Transition.LeaveEdit):
+                search = this.clearSearchKeys(search, paneId, [akm.prop]);
+                break;
+            case (Transition.Page):
+                replace = false;
+                break;
+            case (Transition.ToTransient):
+                replace = false;
+                break;
+            case (Transition.ToRecent):
+                ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Constants.recentPath));
+                search = this.clearPane(search, paneId);
+                break;
+            case (Transition.ToAttachment):
+                ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Constants.attachmentPath));
+                search = this.clearPane(search, paneId);
+                break;
+            default:
+                // null transition 
+                break;
         }
 
-        return { path: path, search: search, replace : replace };
+        const segments = path.split("/");
+        const [, , pane1Type, pane2Type] = segments;
+
+        search = this.clearInvalidParmsFromSearch(1, search, pane1Type);
+        search = this.clearInvalidParmsFromSearch(2, search, pane2Type);
+
+        return { path: path, search: search, replace: replace };
     }
 
     private executeTransition(newValues: _.Dictionary<string>, paneId: number, transition: Transition, condition: (search: any) => boolean) {
@@ -528,8 +581,8 @@ export class UrlManagerService {
         // only add field if matching dialog or dialog (to catch case when swapping panes) 
         if (check(search)) {
             set(search);
-            const result =  {path : this.getPath(), search : search, replace : false };
-            this.setNewSearch(result);        
+            const result = { path: this.getPath(), search: search, replace: false };
+            this.setNewSearch(result);
         }
     }
 
@@ -629,7 +682,7 @@ export class UrlManagerService {
         }
     }
 
-    getRouteDataObservable  = () => {
+    getRouteDataObservable = () => {
 
         return this.router.routerState.root.queryParams.map((ps: { [key: string]: string }) => {
 
@@ -639,7 +692,7 @@ export class UrlManagerService {
             this.setPaneRouteDataFromParms(routeData.pane2, 2, ps);
 
             routeData.pane1.location = this.getViewType(this.getLocation(1));
-            routeData.pane2.location = this.getViewType(this.getLocation(2));   
+            routeData.pane2.location = this.getViewType(this.getLocation(2));
 
             return routeData;
 
@@ -666,8 +719,8 @@ export class UrlManagerService {
         return { paneType: paneType, search: paneSearch };
     };
 
-    getListCacheIndexFromSearch = (search : _.Dictionary<string>, paneId: number, newPage: number, newPageSize: number, format?: CollectionViewState) => {
-       
+    getListCacheIndexFromSearch = (search: _.Dictionary<string>, paneId: number, newPage: number, newPageSize: number, format?: CollectionViewState) => {
+
 
         const s1 = this.getId(`${akm.menu}${paneId}`, search) || "";
         const s2 = this.getId(`${akm.object}${paneId}`, search) || "";
@@ -704,11 +757,11 @@ export class UrlManagerService {
             this.capturedPanes[paneId] = null;
             let search = this.clearPane(this.getSearch(), paneId);
             search = _.merge(search, capturedPane.search);
-            let path : string;
-            let replace : boolean;
-            ({path, replace} = this.setupPaneNumberAndTypes(paneId, capturedPane.paneType));
-            
-            const result = {path : path, search : search, replace : replace};
+            let path: string;
+            let replace: boolean;
+            ({ path, replace } = this.setupPaneNumberAndTypes(paneId, capturedPane.paneType));
+
+            const result = { path: path, search: search, replace: replace };
             this.setNewSearch(result);
         } else {
             // probably reloaded page so no state to pop. 
@@ -724,7 +777,7 @@ export class UrlManagerService {
 
     private swapSearchIds(search: any) {
         return _.mapKeys(search,
-        (v: any, k: string) => k.replace(/(\D+)(\d{1})(\w*)/, (match, p1, p2, p3) => `${p1}${p2 === "1" ? "2" : "1"}${p3}`));
+            (v: any, k: string) => k.replace(/(\D+)(\d{1})(\w*)/, (match, p1, p2, p3) => `${p1}${p2 === "1" ? "2" : "1"}${p3}`));
     }
 
 
@@ -738,7 +791,7 @@ export class UrlManagerService {
 
         const tree = this.router.createUrlTree([newPath], { queryParams: search });
 
-        this.router.navigateByUrl(tree);  
+        this.router.navigateByUrl(tree);
     };
 
     cicero = () => {
@@ -782,7 +835,7 @@ export class UrlManagerService {
 
             const tree = this.router.createUrlTree([newPath], { queryParams: search });
 
-            this.router.navigateByUrl(tree);  
+            this.router.navigateByUrl(tree);
         }
     };
 
@@ -809,16 +862,16 @@ export class UrlManagerService {
     isApplicationProperties = (paneId = 1) => this.isLocation(paneId, Constants.applicationPropertiesPath);
 
     private toggleReloadFlag(search: any) {
-       const currentFlag = search[akm.reload];
-       const newFlag = currentFlag === "1" ? 0 : 1;
-       search[akm.reload] = newFlag;
-       return search;
+        const currentFlag = search[akm.reload];
+        const newFlag = currentFlag === "1" ? 0 : 1;
+        search[akm.reload] = newFlag;
+        return search;
     }
 
     triggerPageReloadByFlippingReloadFlagInUrl = () => {
-       const search = this.getSearch();
-       this.toggleReloadFlag(search);
-       const result =  {path : this.getPath(), search : search, replace : true };
-       this.setNewSearch(result);
+        const search = this.getSearch();
+        this.toggleReloadFlag(search);
+        const result = { path: this.getPath(), search: search, replace: true };
+        this.setNewSearch(result);
     }
 }
