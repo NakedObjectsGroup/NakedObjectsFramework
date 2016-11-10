@@ -19,7 +19,7 @@
 	</div>
 	<div *ngIf="cutViewModel"  class="currentcopy">
         <span>Copying...</span>
-        <div class="reference {{cutViewModel.color}" dnd-draggable [dragEnabled]="true" [dragData]="cutViewModel">{{cutViewModel.title}}</div>
+        <div class="reference {{cutViewModel.color}" dnd-draggable [dragEnabled]="true" [dragData]="cutViewModel">{{cutViewModel.draggableTitle()}}</div>
     </div>
 	<!--<div class="user">{{toolBar.userName}}</div>
     <a style="display: none"></a>-->

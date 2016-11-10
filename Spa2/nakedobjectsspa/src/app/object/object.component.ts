@@ -199,5 +199,13 @@ export class ObjectComponent implements OnInit, OnDestroy {
         return `${prefix}${this.object.title}`;
     }
 
+    // todo DRY this - and rename - copy not cut
+    cut (event: any) {
+        const cKeyCode = 67;
+        if (event && (event.keyCode === cKeyCode && event.ctrlKey)) {
+            this.context.setCutViewModel(this.object);
+            event.preventDefault();
+        }
+    }
 
 }

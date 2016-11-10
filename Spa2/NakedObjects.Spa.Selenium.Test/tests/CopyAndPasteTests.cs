@@ -61,7 +61,7 @@ namespace NakedObjects.Selenium {
         public virtual void PasteIntoReferenceField() {
             GeminiUrl("object/object?o1=___1.PurchaseOrderHeader--1372&i1=Edit&o2=___1.Employee--161");
             WaitForView(Pane.Left, PaneType.Object);
-            Assert.AreEqual("Annette Hill", WaitForCss("#pane1 .property:nth-child(4) .value.droppable").Text);
+            Assert.AreEqual("Annette Hill", WaitForCss("#pane1 .property:nth-child(4) .value.droppable").GetAttribute("value"));
             var title = WaitForCss("#pane2 .header .title");
             Assert.AreEqual("Kirk Koenigsbauer", title.Text);
             title.Click();
@@ -84,8 +84,9 @@ namespace NakedObjects.Selenium {
             //Now check that Auto-complete is working
             WaitForCss("input#salesperson1").Clear();
             ClearFieldThenType("input#salesperson1", "Ito");
-            wait.Until(d => d.FindElement(By.CssSelector(".ui-menu-item")));
-            Click(WaitForCss(".ui-menu-item"));
+            wait.Until(dr => dr.FindElement(By.CssSelector("div ul:nth-child(2) li a")).Text == "Shu Ito");
+            var item = br.FindElement(By.CssSelector("div ul:nth-child(2) li a"));
+            Click(item);
             wait.Until(dr => dr.FindElement(By.CssSelector("input#salesperson1")).GetAttribute("value") == "Shu Ito");
             //Finish somewhere else
             GeminiUrl("home");
@@ -98,9 +99,9 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("Stuart Munson", title.Text);
             title.Click();
             CopyToClipboard(title);
-            string selector = "#pane1 .parameter .value";
+            string selector = "#pane1 .parameter .value input";
             var target = WaitForCss(selector);
-            Assert.AreEqual("* (drop here)", target.Text);
+            Assert.AreEqual("* (drop here)", target.GetAttribute("placeholder"));
 
             PasteIntoReferenceField("#pane1 .parameter .value.droppable");
             //Test that color has changed
@@ -113,9 +114,9 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("Ken Myer", title.Text);
             title.Click();
             CopyToClipboard(title);
-            string selector = "#pane1 .parameter .value";
+            string selector = "#pane1 .parameter .value input";
             var target = WaitForCss(selector);
-            Assert.AreEqual("* (drop here)", target.Text);
+            Assert.AreEqual("* (drop here)", target.GetAttribute("placeholder"));
             PasteIntoReferenceField("#pane1 .parameter .value.droppable");
         }
 
@@ -134,10 +135,9 @@ namespace NakedObjects.Selenium {
             GeminiUrl("object?o1=___1.PurchaseOrderHeader--121");
             GetReferenceProperty("Order Placed By", "Sheela Word");
             EditObject();
-            CancelDatePicker("#orderdate1");
-            var prop = wait.Until(dr => dr.FindElements(By.CssSelector(".property"))
-                .Where(we => we.FindElement(By.CssSelector(".name")).Text == "Order Placed By" + ":" &&
-                             we.FindElement(By.CssSelector(".value.droppable")).Text == "Sheela Word").Single()
+            //CancelDatePicker("#orderdate1");
+            var prop = wait.Until(dr => dr.FindElements(By.CssSelector(".property")).Single(we => we.FindElement(By.CssSelector(".name")).Text == "Order Placed By" + ":" &&
+                             we.FindElement(By.CssSelector(".value.droppable")).GetAttribute("value") == "Sheela Word")
                 );
             //Finish somewhere else
             GeminiUrl("home");
@@ -147,9 +147,9 @@ namespace NakedObjects.Selenium {
         public virtual void CannotPasteWrongTypeIntoReferenceField() {
             GeminiUrl("object/object?o1=___1.PurchaseOrderHeader--1372&i1=Edit&o2=___1.Product--771");
             WaitForView(Pane.Left, PaneType.Object);
-            CancelDatePicker("#orderdate1");
+            //CancelDatePicker("#orderdate1");
             var fieldCss = "#pane1 .property:nth-child(4) .value.droppable";
-            Assert.AreEqual("Annette Hill", WaitForCss(fieldCss).Text);
+            Assert.AreEqual("Annette Hill", WaitForCss(fieldCss).GetAttribute("value"));
             var title = WaitForCss("#pane2 .header .title");
             Assert.AreEqual("Mountain-100 Silver, 38", title.Text);
             title.Click();
@@ -159,7 +159,7 @@ namespace NakedObjects.Selenium {
             var copying = WaitForCss(".footer .currentcopy .reference").Text;
             target.Click();
             target.SendKeys(Keys.Control + "v");
-            Assert.AreEqual("Annette Hill", WaitForCss(fieldCss).Text); //i.e. no change
+            Assert.AreEqual("Annette Hill", WaitForCss(fieldCss).GetAttribute("value")); //i.e. no change
             //Finish somewhere else
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
@@ -313,9 +313,9 @@ namespace NakedObjects.Selenium {
             PasteIntoAutoCompleteField();
             DroppableReferenceFieldWithoutAutoComplete();
             CannotPasteWrongTypeIntoReferenceField();
-            //CanClearADroppableReferenceField(); TODO: Works locally, but not on server
+            //CanClearADroppableReferenceField(); //TODO: Works locally, but not on server
             DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed();
-            //IfNoObjectInClipboardCtrlVRevertsToBrowserBehaviour(); TODO: Works locally, but not on server
+            //IfNoObjectInClipboardCtrlVRevertsToBrowserBehaviour(); //TODO: Works locally, but not on server
         }
     }
 
@@ -338,7 +338,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class MegaCopyAndPasteTestsChrome : MegaCopyAndPasteTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

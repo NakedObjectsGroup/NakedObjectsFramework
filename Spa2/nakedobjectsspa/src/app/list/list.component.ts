@@ -144,4 +144,13 @@ export class ListComponent implements OnInit, OnDestroy {
             this.paneRouteDataSub.unsubscribe();
         }
     }
+
+    // todo DRY this - and rename - copy not cut
+    cut (event: any, item : ViewModels.IDraggableViewModel) {
+        const cKeyCode = 67;
+        if (event && (event.keyCode === cKeyCode && event.ctrlKey)) {
+            this.context.setCutViewModel(item);
+            event.preventDefault();
+        }
+    }
 }

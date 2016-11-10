@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ElementRef } from '@angular/core';
+import { Component, Input, OnInit, ElementRef, HostListener } from '@angular/core';
 import { NG_VALIDATORS } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { ViewModelFactoryService } from "../view-model-factory.service";
@@ -67,5 +67,13 @@ export class ParameterComponent extends FieldComponent implements OnInit {
     isMultiple() {
         return this.parm.entryType === Models.EntryType.MultipleChoices ||
             this.parm.entryType === Models.EntryType.MultipleConditionalChoices;
+    }
+
+     @HostListener('keydown', ['$event']) onEnter(event: KeyboardEvent) {
+        this.paste(event)
+    }
+
+    @HostListener('keypress', ['$event']) onEnter1(event: KeyboardEvent) {
+        this.paste(event)
     }
 }

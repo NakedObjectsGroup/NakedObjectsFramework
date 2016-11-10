@@ -45,7 +45,7 @@
 								<input type="checkbox" id="{{'item'+collection.onPaneId+'-'+ i}}" [(ngModel)]="item.selected">
 							</td>
 							<td class="reference clickable-area" [ngClass]="item.color" geminiClick (leftClick)="item.doClick()" (rightClick)="item.doClick(true)"
-								gemini-drag tabindex="0">
+								dnd-draggable [dragEnabled]="true" [dragData]="item" (keydown)="cut($event, item)" (keypress)="cut($event, item)" tabindex="0">
 								<label attr.for="{{'item'+collection.onPaneId+'-'+ i}}">{{item.title}}</label>
 							</td>
 						</tr>

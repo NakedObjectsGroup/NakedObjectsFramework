@@ -44,6 +44,8 @@ export interface IDraggableViewModel {
     color: string;
     draggableType: string;
 
+    draggableTitle: () => string;
+
     canDropOn: (targetType: string) => Promise<boolean>;
 }
 
@@ -585,6 +587,9 @@ export class LinkViewModel implements ILinkViewModel, IDraggableViewModel {
     reference: string;
     selectedChoice: IChoiceViewModel;
     draggableType: string;
+
+    draggableTitle = () => this.title;
+
     canDropOn: (targetType: string) => Promise<boolean>;
 }
 
@@ -1108,6 +1113,8 @@ export class PropertyViewModel extends ValueViewModel implements IPropertyViewMo
 
     // IDraggableViewModel
     draggableType: string;
+    draggableTitle = () => this.formattedValue;
+
     canDropOn: (targetType: string) => Promise<boolean>;
 }
 
@@ -1525,6 +1532,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IDomainOb
     selectedChoice: IChoiceViewModel;
     color: string;
     draggableType: string;
+    draggableTitle = () => this.title;
 
     domainObject: Models.DomainObjectRepresentation;
     onPaneId: number;

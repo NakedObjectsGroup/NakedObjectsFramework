@@ -3,8 +3,8 @@
 
 	<div *ngIf="mode === 0" class="object view" [ngClass]="getColor()">
 		<header class="header">
-			<div class="title" dnd-draggable [dragEnabled]="true" [dragData]="object" tabindex="0">
-				<span class="type">{{object.friendlyName}}</span> {{title()}}
+			<div class="title" dnd-draggable [dragEnabled]="true" [dragData]="object" tabindex="0"(keydown)="cut($event)" (keypress)="cut($event)" >
+                 <span class="type">{{object.friendlyName}}</span> {{title()}}
 			</div>
 			<!--<div>{{object.isDirty() ? "*" : ""}} </div>-->
 			<div class="menus">
@@ -31,8 +31,8 @@
 	<div *ngIf="(mode === 1 || mode === 2 || mode === 3)" class="object edit" [ngClass]="getColor()">
 		<form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
 			<header class="header">
-				<div class="title"  dnd-draggable [dragEnabled]="true" [dragData]="object" tabindex="0">
-					<span class="type">{{object.friendlyName}}</span> {{title()}}
+				<div class="title"  dnd-draggable [dragEnabled]="true" [dragData]="object" tabindex="0"(keydown)="cut($event)" (keypress)="cut($event)" >
+					 <span class="type">{{object.friendlyName}}</span> {{title()}}
 				</div>
 				<div *ngIf="mode === 3">
 					<div *ngFor="let menu of  object.menuItems">
@@ -63,7 +63,7 @@
 	</div>
 	<div *ngIf="(mode === 4)" class="object view" [ngClass]="getColor()">
 		<header class="header">
-			<div class="title" dnd-draggable [dragEnabled]="true" [dragData]="object" tabindex="0">
+			<div class="title" dnd-draggable [dragEnabled]="true" [dragData]="object" tabindex="0" (keydown)="cut($event)" (keypress)="cut($event)" >
 				<span class="type">{{object.friendlyName}}</span> {{title()}}
 			</div>
 			<div class="messages">{{object.message}}</div>

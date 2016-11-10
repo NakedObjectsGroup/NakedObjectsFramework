@@ -736,7 +736,7 @@ namespace NakedObjects.Selenium
             var copying = WaitForCss(".footer .currentcopy .reference").Text;
             target.Click();
             target.SendKeys(Keys.Control + "v");
-            wait.Until(dr => dr.FindElement(By.CssSelector(cssSelector)).Text == copying);
+            wait.Until(dr => dr.FindElement(By.CssSelector(cssSelector)).GetAttribute("value") == copying);
             return WaitForCss(cssSelector);
         }
 
