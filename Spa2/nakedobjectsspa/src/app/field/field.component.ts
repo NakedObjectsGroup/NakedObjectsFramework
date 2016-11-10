@@ -3,8 +3,9 @@ import * as Models from "../models"
 import * as Ro from '../ro-interfaces';
 import { AbstractControl } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
-import { ElementRef } from '@angular/core';
+import { ElementRef, HostListener } from '@angular/core';
 import * as _ from "lodash";
+import { ContextService } from "../context.service";
 
 
 export class FieldComponent {
@@ -12,7 +13,8 @@ export class FieldComponent {
     //filteredList: ViewModels.ChoiceViewModel[] = [];
     elementRef: ElementRef;
 
-    constructor(myElement: ElementRef) {
+    constructor(myElement: ElementRef,
+        private context: ContextService) {
         this.elementRef = myElement;
     }
 
@@ -244,4 +246,27 @@ export class FieldComponent {
 
         fileReader.readAsDataURL(file);
     }
+
+
+    paste(event: any) {
+        const vKeyCode = 86;
+        const deleteKeyCode = 46;
+        if (event && (event.keyCode === vKeyCode && event.ctrlKey)) {
+            const cvm = this.context.getCutViewModel();
+
+            if (cvm) {
+                this.droppable.drop(cvm).then((success) => {
+                    //this.control.reset(this.model.selectedChoice);
+                    this.control.setValue(this.model.selectedChoice);
+                });
+            }
+
+            event.preventDefault();
+        }
+        if (event && event.keyCode === deleteKeyCode) {
+            this.context.setCutViewModel(null);
+        }
+    }
+
+
 }

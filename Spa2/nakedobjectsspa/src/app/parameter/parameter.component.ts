@@ -7,6 +7,7 @@ import * as Models from "../models";
 import * as ViewModels from "../view-models";
 import { FieldComponent } from '../field/field.component';
 import { FormGroup } from '@angular/forms';
+import { ContextService } from "../context.service";
 
 @Component({
     selector: 'parameter',
@@ -20,8 +21,8 @@ export class ParameterComponent extends FieldComponent implements OnInit {
 
     constructor(private viewModelFactory: ViewModelFactoryService,
         private urlManager: UrlManagerService,
-        myElement: ElementRef) {
-        super(myElement);
+        myElement: ElementRef, context : ContextService) {
+        super(myElement, context);
     }
 
     parm: ViewModels.ParameterViewModel;
@@ -67,6 +68,4 @@ export class ParameterComponent extends FieldComponent implements OnInit {
         return this.parm.entryType === Models.EntryType.MultipleChoices ||
             this.parm.entryType === Models.EntryType.MultipleConditionalChoices;
     }
-
-
 }

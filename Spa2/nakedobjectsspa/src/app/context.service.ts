@@ -7,6 +7,7 @@ import * as Constants from "./constants";
 import * as Models from "./models";
 import * as _ from "lodash";
 import { Subject } from 'rxjs/Subject';
+import { IDraggableViewModel} from './view-models';
 
 enum DirtyState {
     DirtyMustReload,
@@ -655,6 +656,21 @@ export class ContextService {
 
         this.warningsSource.next(warnings);
         this.messagesSource.next(messages);
+    }
+
+    private cutViewModelSource = new Subject<IDraggableViewModel>();
+
+    cutViewModel$ = this.cutViewModelSource.asObservable();
+
+    private cutViewModel : IDraggableViewModel;
+
+    setCutViewModel(dvm : IDraggableViewModel ){
+        this.cutViewModel = dvm;
+        this.cutViewModelSource.next(dvm);
+    }
+
+    getCutViewModel( ){
+        return this.cutViewModel;
     }
 
     private invokeActionInternal(invokeMap: Models.InvokeMap, action: Models.IInvokableAction, fromPaneId: number, toPaneId: number, setDirty: () => void) {

@@ -9,6 +9,7 @@ import { ErrorService } from "../error.service";
 import * as Msg from "../user-messages";
 import * as Config from "../config";
 import * as Models from "../models";
+import * as ViewModels from "../view-models";
 import { RepLoaderService } from "../rep-loader.service";
 
 @Component({
@@ -106,6 +107,8 @@ export class FooterComponent implements OnInit {
     warnings: string[];
     messages: string[];
 
+    cutViewModel : ViewModels.IDraggableViewModel;
+
     ngOnInit() {
         this.context.getUser().
             then(user => this.userName = user.userName()).
@@ -115,7 +118,11 @@ export class FooterComponent implements OnInit {
 
         this.context.warning$.subscribe(ws =>
             this.warnings = ws);
+            
         this.context.messages$.subscribe(ms =>
             this.messages = ms);
+
+        this.context.cutViewModel$.subscribe(cvm => 
+            this.cutViewModel = cvm);
     }
 }

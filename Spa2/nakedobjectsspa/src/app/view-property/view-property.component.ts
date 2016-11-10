@@ -1,4 +1,4 @@
-import { Component, Input, ElementRef, OnInit } from '@angular/core';
+import { Component, Input, ElementRef, OnInit, HostListener } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as Models from "../models";
 import * as ViewModels from "../view-models";
@@ -6,7 +6,7 @@ import { FieldComponent } from '../field/field.component';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ErrorService } from "../error.service";
-
+import { ContextService } from "../context.service";
 
 @Component({
     selector: 'view-property',
@@ -19,7 +19,8 @@ export class ViewPropertyComponent implements OnInit {
      *
      */
     constructor(private router: Router,
-        private error: ErrorService) {
+        private error: ErrorService,
+        private context : ContextService) {
 
     }
 
@@ -79,6 +80,22 @@ export class ViewPropertyComponent implements OnInit {
         } else {
             this.attachmentTitle = "Attachment not yet supported on transient";
         }
+    }
+
+    cut (event: any) {
+        const cKeyCode = 67;
+        if (event && (event.keyCode === cKeyCode && event.ctrlKey)) {
+            this.context.setCutViewModel(this.property);
+            event.preventDefault();
+        }
+    }
+
+    @HostListener('keydown', ['$event']) onEnter(event: KeyboardEvent) {
+        this.cut(event)
+    }
+
+    @HostListener('keypress', ['$event']) onEnter1(event: KeyboardEvent) {
+        this.cut(event)
     }
 
     attachmentTitle: string;

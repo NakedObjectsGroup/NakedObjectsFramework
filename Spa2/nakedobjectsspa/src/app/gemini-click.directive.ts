@@ -1,3 +1,4 @@
+
 import { Directive, ElementRef, HostListener, Output, EventEmitter } from '@angular/core';
 
 @Directive({ selector: '[geminiClick]' })
@@ -11,7 +12,8 @@ export class GeminiClickDirective {
     @Output() rightClick = new EventEmitter();
 
     @HostListener('click') onClick() {
-        this.leftClick.emit("event");
+
+            this.leftClick.emit("event");
         return false;
     }
 

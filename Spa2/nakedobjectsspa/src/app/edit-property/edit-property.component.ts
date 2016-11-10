@@ -1,4 +1,4 @@
-import { Component, Input, ElementRef, OnInit } from '@angular/core';
+import { Component, Input, ElementRef, OnInit, HostListener } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as Models from "../models";
 import * as ViewModels from "../view-models";
@@ -6,6 +6,7 @@ import { FieldComponent } from '../field/field.component';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ErrorService } from "../error.service";
+import { ContextService } from "../context.service";
 
 @Component({
     host: {
@@ -19,8 +20,9 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
 
     constructor(myElement: ElementRef,
         private router: Router,
-        private error: ErrorService) {
-        super(myElement);
+        private error: ErrorService,
+        context : ContextService) {
+        super(myElement, context);
     }
 
     prop: ViewModels.PropertyViewModel;
@@ -108,7 +110,15 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
         }
     };
 
-
     attachmentTitle: string;
     image: string;
+
+    @HostListener('keydown', ['$event']) onEnter(event: KeyboardEvent) {
+        this.paste(event)
+    }
+
+    @HostListener('keypress', ['$event']) onEnter1(event: KeyboardEvent) {
+        this.paste(event)
+    }
+   
 }

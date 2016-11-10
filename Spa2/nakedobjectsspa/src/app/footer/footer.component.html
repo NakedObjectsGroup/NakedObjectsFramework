@@ -17,7 +17,10 @@
 	<div class="messages" *ngFor="let message of messages">
 		<div>{{message}}</div>
 	</div>
-	<div class="currentcopy"></div>
+	<div *ngIf="cutViewModel"  class="currentcopy">
+        <span>Copying...</span>
+        <div class="reference {{cutViewModel.color}" dnd-draggable [dragEnabled]="true" [dragData]="cutViewModel">{{cutViewModel.title}}</div>
+    </div>
 	<!--<div class="user">{{toolBar.userName}}</div>
- <a style="display: none"></a>-->
+    <a style="display: none"></a>-->
 </div>

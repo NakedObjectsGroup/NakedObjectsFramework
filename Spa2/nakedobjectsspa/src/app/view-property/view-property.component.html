@@ -21,9 +21,9 @@
 		<div *ngSwitchCase="'string'">
 			<!--*ngIf="property.returnType = 'string'"-->
 			<div [ngSwitch]="property.format">
-				<div *ngSwitchCase="'blob'" class="reference clickable-area" geminiClick (leftClick)='property.attachment.doClick()' (rightClick)='property.attachment.doClick(true)' tabindex="0">
+				<div *ngSwitchCase="'blob'" class="reference clickable-area" geminiClick (leftClick)="property.attachment.doClick()" (rightClick)="property.attachment.doClick(true)" tabindex="0">
 					<div *ngIf="!image">{{attachmentTitle}}</div>
-					<img *ngIf="image" src='{{image}}' alt='{{title}}' />
+					<img *ngIf="image" src="{{image}}" alt="{{title}}" />
 				</div>
 				<div *ngSwitchDefault>
 					<div [ngSwitch]="property.multipleLines">
