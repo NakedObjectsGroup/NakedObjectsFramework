@@ -5,6 +5,13 @@ div {
     display: initial; /*This is to override the agent style sheet setting of display-block*/
 }
 
+.clickable-area {
+    /*Fix to make menus/actions/reference properties clickable*/
+    display: block;
+    cursor: pointer;
+}
+
+
 .gemini, table, a, pre, textarea { 
     font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
 }
@@ -70,11 +77,6 @@ html, #main, body, .background, .single, .split {
     display: block;
     }
 
-
-/*Fix to make menus/actions/reference properties clickable*/
-.clickable-area {
-    cursor: pointer;
-}
 
 .name {
     width: 150px;
