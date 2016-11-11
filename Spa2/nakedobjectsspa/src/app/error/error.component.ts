@@ -10,7 +10,7 @@ import * as ViewModels from "../view-models";
 })
 export class ErrorComponent {
 
-    constructor(private context: ContextService, private viewModelFactory: ViewModelFactoryService) { }
+    constructor(private context: ContextService, private viewModelFactory: ViewModelFactoryService) {}
 
     error: ViewModels.ErrorViewModel;
 

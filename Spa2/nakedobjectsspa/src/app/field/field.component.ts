@@ -56,9 +56,7 @@ export abstract class FieldComponent {
     accept = (draggableVm: ViewModels.IDraggableViewModel) => {
 
         if (draggableVm) {
-            draggableVm.canDropOn(this.droppable.returnType).
-                then((canDrop: boolean) => this.canDrop = canDrop).
-                catch(() => this.canDrop = false);
+            draggableVm.canDropOn(this.droppable.returnType).then((canDrop: boolean) => this.canDrop = canDrop).catch(() => this.canDrop = false);
             return true;
         }
         return false;
@@ -66,10 +64,11 @@ export abstract class FieldComponent {
 
     drop(draggableVm: ViewModels.IDraggableViewModel) {
         if (this.canDrop) {
-            this.droppable.drop(draggableVm).then((success) => {
-                //this.control.reset(this.model.selectedChoice);
-                this.control.setValue(this.model.selectedChoice);
-            });
+            this.droppable.drop(draggableVm)
+                .then((success) => {
+                    //this.control.reset(this.model.selectedChoice);
+                    this.control.setValue(this.model.selectedChoice);
+                });
         }
     }
 
@@ -78,10 +77,11 @@ export abstract class FieldComponent {
     }
 
     mapValues(args: _.Dictionary<Models.Value>, parmsOrProps: { argId: string, getValue: () => Models.Value }[]) {
-        return _.mapValues(this.pArgs, (v, n) => {
-            const pop = _.find(parmsOrProps, p => p.argId === n);
-            return pop.getValue();
-        });
+        return _.mapValues(this.pArgs,
+            (v, n) => {
+                const pop = _.find(parmsOrProps, p => p.argId === n);
+                return pop.getValue();
+            });
     }
 
     populateArguments() {
@@ -106,28 +106,29 @@ export abstract class FieldComponent {
 
     populateDropdown() {
         const nArgs = this.populateArguments();
-        const prompts = this.model.conditionalChoices(nArgs);//  scope.select({ args: nArgs });
+        const prompts = this.model.conditionalChoices(nArgs); //  scope.select({ args: nArgs });
         prompts.then((cvms: ViewModels.ChoiceViewModel[]) => {
-            // if unchanged return 
-            if (cvms.length === this.currentOptions.length && _.every(cvms, (c, i) => c.equals(this.currentOptions[i]))) {
-                return;
-            }
-            this.model.choices = cvms;
-            this.currentOptions = cvms;
-
-            if (this.isConditionalChoices) {
-                // need to reset control to find the selected options 
-                if (this.model.entryType === Models.EntryType.MultipleConditionalChoices) {
-                    this.control.reset(this.model.selectedMultiChoices);
-                } else {
-                    this.control.reset(this.model.selectedChoice);
+                // if unchanged return 
+                if (cvms.length === this.currentOptions.length && _.every(cvms, (c, i) => c.equals(this.currentOptions[i]))) {
+                    return;
                 }
-            }
-        }).catch(() => {
-            // error clear everything 
-            this.model.selectedChoice = null;
-            this.currentOptions = [];
-        });
+                this.model.choices = cvms;
+                this.currentOptions = cvms;
+
+                if (this.isConditionalChoices) {
+                    // need to reset control to find the selected options 
+                    if (this.model.entryType === Models.EntryType.MultipleConditionalChoices) {
+                        this.control.reset(this.model.selectedMultiChoices);
+                    } else {
+                        this.control.reset(this.model.selectedChoice);
+                    }
+                }
+            })
+            .catch(() => {
+                // error clear everything 
+                this.model.selectedChoice = null;
+                this.currentOptions = [];
+            });
     }
 
     wrapReferences(val: string): string | Ro.ILink {
@@ -140,8 +141,7 @@ export abstract class FieldComponent {
     onChange() {
         if (this.isConditionalChoices) {
             this.populateDropdown();
-        }
-        else if (this.isAutoComplete) {
+        } else if (this.isAutoComplete) {
             this.populateAutoComplete();
         }
     }
@@ -167,7 +167,7 @@ export abstract class FieldComponent {
 
     set formGroup(fm: FormGroup) {
         this._form = fm;
-        this._form.valueChanges.subscribe(data => this.onValueChanged(data));
+        this._form.valueChanges.subscribe((data: any) => this.onValueChanged(data));
         this.onValueChanged(); // (re)set validation messages now
     }
 
@@ -183,22 +183,21 @@ export abstract class FieldComponent {
         }
 
         if (input.length > 0 && input.length >= this.model.minLength) {
-            this.model.prompt(input).
-                then((cvms: ViewModels.ChoiceViewModel[]) => {
+            this.model.prompt(input)
+                .then((cvms: ViewModels.ChoiceViewModel[]) => {
                     if (cvms.length === this.currentOptions.length && _.every(cvms, (c, i) => c.equals(this.currentOptions[i]))) {
                         return;
                     }
                     this.model.choices = cvms;
                     this.currentOptions = cvms;
                     this.model.selectedChoice = null;
-                }).
-                catch(() => {
+                })
+                .catch(() => {
                     this.model.choices = [];
                     this.currentOptions = [];
                     this.model.selectedChoice = null;
                 });
-        }
-        else {
+        } else {
             this.model.choices = [];
             this.currentOptions = [];
             this.model.selectedChoice = null;
@@ -255,10 +254,11 @@ export abstract class FieldComponent {
             const cvm = this.context.getCutViewModel();
 
             if (cvm) {
-                this.droppable.drop(cvm).then((success) => {
-                    //this.control.reset(this.model.selectedChoice);
-                    this.control.setValue(this.model.selectedChoice);
-                });
+                this.droppable.drop(cvm)
+                    .then((success) => {
+                        //this.control.reset(this.model.selectedChoice);
+                        this.control.setValue(this.model.selectedChoice);
+                    });
             }
 
             event.preventDefault();
@@ -268,7 +268,7 @@ export abstract class FieldComponent {
         }
     }
 
-    abstract focusList: QueryList<ElementRef>; 
+    abstract focusList: QueryList<ElementRef>;
 
     focus() {
         this.focusList.first.nativeElement.focus();

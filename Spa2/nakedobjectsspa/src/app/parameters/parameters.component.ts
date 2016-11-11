@@ -9,7 +9,6 @@ import { ParameterComponent } from "../parameter/parameter.component";
     templateUrl: './parameters.component.html',
     styleUrls: ['./parameters.component.css']
 })
-
 export class ParametersComponent {
 
     parms: ViewModels.ParameterViewModel[];
@@ -29,7 +28,8 @@ export class ParametersComponent {
         return this.parms;
     }
 
-    @ViewChildren(ParameterComponent) parmComponents: QueryList<ParameterComponent>;
+    @ViewChildren(ParameterComponent)
+    parmComponents: QueryList<ParameterComponent>;
 
     focusOnFirstAction(parms: QueryList<ParameterComponent>) {
         if (parms && parms.first) {

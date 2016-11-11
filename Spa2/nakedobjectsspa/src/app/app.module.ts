@@ -34,7 +34,6 @@ import { ColorService } from './color.service';
 import { MaskService } from './mask.service';
 import { ColorConfigService } from './color-config.service';
 import { MaskConfigService } from './mask-config.service';
-import { FocusManagerService } from './focus-manager.service';
 import { CollectionComponent } from './collection/collection.component';
 // temp hack todo fix
 import { MomentWrapperService } from './moment-wrapper.service';
@@ -83,7 +82,6 @@ import { AttachmentComponent } from './attachment/attachment.component';
         ViewModelFactoryService,
         ColorService,
         ErrorService,
-        FocusManagerService,
         MaskService,
         ColorConfigService,
         MaskConfigService,

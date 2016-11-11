@@ -12,7 +12,6 @@ import { PaneRouteData, RouteData, ViewType } from '../route-data';
 import { ISubscription } from 'rxjs/Subscription';
 import { ContextService } from '../context.service';
 import { ColorService } from '../color.service';
-import { FocusManagerService } from '../focus-manager.service';
 import { ErrorService } from '../error.service';
 import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 
@@ -28,9 +27,9 @@ export class DialogComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private error: ErrorService,
         private color: ColorService,
-        private focusManager: FocusManagerService,
         private context: ContextService,
-        private formBuilder: FormBuilder) { }
+        private formBuilder: FormBuilder) {
+    }
 
 
     paneId: number;
@@ -48,17 +47,17 @@ export class DialogComponent implements OnInit, OnDestroy {
 
     private createForm(dialog: ViewModels.DialogViewModel) {
         const pps = dialog.parameters;
-        this.parms = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<ViewModels.ParameterViewModel>
-
+        this.parms = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<ViewModels.ParameterViewModel>;
         const controls = _.mapValues(this.parms, p => [p.getValueForControl(), a => p.validator(a)]) as _.Dictionary<any>;
         this.form = this.formBuilder.group(controls);
 
-        this.form.valueChanges.subscribe(data => {
+        this.form.valueChanges.subscribe((data: any) => {
             // cache parm values
-            _.forEach(data, (v, k) => {
-                const parm = this.parms[k];
-                parm.setValueFromControl(v);
-            });
+            _.forEach(data,
+                (v, k) => {
+                    const parm = this.parms[k];
+                    parm.setValueFromControl(v);
+                });
             this.dialog.setParms();
         });
         // this.onValueChanged(); // (re)set validation messages now
@@ -103,7 +102,6 @@ export class DialogComponent implements OnInit, OnDestroy {
                             this.context,
                             this.viewModelFactory,
                             this.urlManager,
-                            this.focusManager,
                             this.error);
                         //const isAlreadyViewModel = action instanceof Nakedobjectsviewmodels.ActionViewModel;
                         actionViewModel = actionViewModel ||
@@ -153,10 +151,9 @@ export class DialogComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
 
-        this.activatedRouteDataSub = this.activatedRoute.data.subscribe(data => {
+        this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: any) => {
             this.paneId = data["pane"];
         });
-
 
 
         this.paneRouteDataSub = this.urlManager.getRouteDataObservable()
@@ -193,10 +190,11 @@ export class DialogComponent implements OnInit, OnDestroy {
     }
 
     onSubmit(right?: boolean) {
-        _.forEach(this.parms, (p, k) => {
-            const newValue = this.form.value[p.id];
-            p.setValueFromControl(newValue);
-        });
+        _.forEach(this.parms,
+            (p, k) => {
+                const newValue = this.form.value[p.id];
+                p.setValueFromControl(newValue);
+            });
         this.dialog.doInvoke(right);
     }
 

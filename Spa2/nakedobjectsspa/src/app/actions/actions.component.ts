@@ -12,7 +12,8 @@ export class ActionsComponent {
     @Input()
     menuVm: { menuItems: ViewModels.IMenuItemViewModel[] };
 
-    @ViewChildren(ActionComponent) acts: QueryList<ActionComponent>;
+    @ViewChildren(ActionComponent)
+    acts: QueryList<ActionComponent>;
 
     focusOnFirstAction(actions: QueryList<ActionComponent>) {
         if (actions && actions.first) {

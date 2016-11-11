@@ -1,7 +1,6 @@
 import * as Models from "./models";
 import * as ViewModels from "./view-models";
 import * as Config from "./config";
-import { FocusManagerService, FocusTarget } from "./focus-manager.service";
 import { PaneRouteData, CollectionViewState, InteractionMode } from "./route-data";
 import * as Constants from "./constants";
 import * as Msg from "./user-messages";
@@ -23,7 +22,6 @@ export class ViewModelFactoryService {
         private color: ColorService,
         private error: ErrorService,
         private clickHandler: ClickHandlerService,
-        private focusManager: FocusManagerService,
         private mask: MaskService,
         private momentWrapperService: MomentWrapperService
     ) {
@@ -95,9 +93,7 @@ export class ViewModelFactoryService {
         linkViewModel.doClick = () => {
             // because may be clicking on menu already open so want to reset focus             
             this.urlManager.setMenu(linkRep.rel().parms[0].value, paneId);
-            this.focusManager.setCurrentPane(paneId);
-            this.focusManager.focusOverrideOff();
-            this.focusManager.focusOn(FocusTarget.SubAction, 0, paneId);
+           
         };
 
         return linkViewModel as ViewModels.ILinkViewModel;
@@ -110,7 +106,6 @@ export class ViewModelFactoryService {
         itemViewModel.selectionChange = () => {
             this.context.updateValues();
             this.urlManager.setListItem(index, itemViewModel.selected, paneId);
-            this.focusManager.focusOverrideOn(FocusTarget.CheckBox, index + 1, paneId);
         };
 
         // avoid setter to avoid selectionChanged
@@ -118,7 +113,6 @@ export class ViewModelFactoryService {
 
         itemViewModel.doClick = (right?: boolean) => {
             const currentPane = this.clickHandler.pane(paneId, right);
-            this.focusManager.setCurrentPane(currentPane);
             this.urlManager.setItem(linkRep, currentPane);
         };
 
@@ -174,15 +168,12 @@ export class ViewModelFactoryService {
         // open dialog on current pane always - invoke action goes to pane indicated by click
         actionViewModel.doInvoke = showDialog() ?
             (right?: boolean) => {
-                this.focusManager.setCurrentPane(paneId);
-                this.focusManager.focusOverrideOff();
+               
                 // clear any previous dialog so we don't pick up values from it
                 this.context.clearDialogValues(paneId);
                 this.urlManager.setDialog(actionRep.actionId(), paneId);
-                this.focusManager.focusOn(FocusTarget.Dialog, 0, paneId); // in case dialog is already open
             } :
             (right?: boolean) => {
-                this.focusManager.focusOverrideOff();
                 const pps = actionViewModel.parameters();
                 actionViewModel.execute(pps, right).
                     then((actionResult: Models.ActionResultRepresentation) => {
@@ -678,10 +669,7 @@ export class ViewModelFactoryService {
                                     return match ? match.tableRowViewModel.properties[i].title : firstItem.properties[i].id;
                                 });
 
-                            listViewModel.header = firstItem.hasTitle ? [""].concat(propertiesHeader) : propertiesHeader;
-
-                            this.focusManager.focusOverrideOff();
-                            this.focusManager.focusOn(FocusTarget.TableItem, 0, routeData.paneId);
+                            listViewModel.header = firstItem.hasTitle ? [""].concat(propertiesHeader) : propertiesHeader;                      
                         }
                     }).
                     catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
@@ -870,14 +858,12 @@ export class ViewModelFactoryService {
             const tvm = new ViewModels.ToolBarViewModel();
 
             tvm.goBack = () => {
-                this.focusManager.focusOverrideOff();
                 this.context.updateValues();
                 //navigation.back();
             };
             tvm.goForward = () => {
-                this.focusManager.focusOverrideOff();
                 this.context.updateValues();
-                //navigation.forward();
+               // navigation.forward();
             };
             tvm.swapPanes = () => {
                 // $rootScope.$broadcast(Nakedobjectsconstants.geminiPaneSwapEvent);
@@ -888,7 +874,6 @@ export class ViewModelFactoryService {
             tvm.singlePane = (right?: boolean) => {
                 this.context.updateValues();
                 this.urlManager.singlePane(this.clickHandler.pane(1, right));
-                this.focusManager.refresh(1);
             };
             tvm.cicero = () => {
                 this.context.updateValues();
@@ -898,7 +883,6 @@ export class ViewModelFactoryService {
 
             tvm.recent = (right?: boolean) => {
                 this.context.updateValues();
-                this.focusManager.focusOverrideOff();
                 this.urlManager.setRecent(this.clickHandler.pane(1, right));
             };
 
@@ -928,19 +912,6 @@ export class ViewModelFactoryService {
                 this.context.updateValues();
                 this.urlManager.applicationProperties();
             };
-
-
-            //tvm.template = Constants.appBarTemplate;
-            //tvm.footerTemplate = Constants.footerTemplate;
-
-            //$rootScope.$on(Nakedobjectsconstants.geminiAjaxChangeEvent, (event, count) =>
-            //    tvm.loading = count > 0 ? Usermessagesconfig.loadingMessage : "");
-
-            //$rootScope.$on(Nakedobjectsconstants.geminiWarningEvent, (event, warnings) =>
-            //    tvm.warnings = warnings);
-
-            //$rootScope.$on(Nakedobjectsconstants.geminiMessageEvent, (event, messages) =>
-            //    tvm.messages = messages);
 
             this.context.getUser().
                 then(user => tvm.userName = user.userName()).

@@ -8,13 +8,9 @@ import * as ViewModels from "../view-models";
 })
 export class ActionComponent {
 
-    /**
-     *
-     */
-    constructor(private myElement : ElementRef) {
-               
-    }
 
+    constructor(private myElement: ElementRef) {
+    }
 
     private actionVm: ViewModels.ActionViewModel;
 

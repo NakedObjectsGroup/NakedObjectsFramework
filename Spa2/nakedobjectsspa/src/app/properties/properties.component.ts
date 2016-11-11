@@ -9,7 +9,6 @@ import {EditPropertyComponent} from "../edit-property/edit-property.component"
     templateUrl: './properties.component.html',
     styleUrls: ['./properties.component.css']
 })
-
 export class PropertiesComponent implements AfterViewInit {
 
     props: ViewModels.PropertyViewModel[];
@@ -29,7 +28,8 @@ export class PropertiesComponent implements AfterViewInit {
         return this.props;
     }
 
-    @ViewChildren(EditPropertyComponent) propComponents: QueryList<EditPropertyComponent>;
+    @ViewChildren(EditPropertyComponent)
+    propComponents: QueryList<EditPropertyComponent>;
 
     focusOnFirstProperty(prop: QueryList<EditPropertyComponent>) {
         if (prop && prop.first) {

@@ -6,7 +6,6 @@ import * as ViewModels from "../view-models";
     templateUrl: './collections.component.html',
     styleUrls: ['./collections.component.css']
 })
-
 export class CollectionsComponent {
 
     colls: any;

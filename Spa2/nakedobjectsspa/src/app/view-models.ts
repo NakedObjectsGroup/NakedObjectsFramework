@@ -9,7 +9,6 @@ import { UrlManagerService } from "./url-manager.service";
 import * as _ from "lodash";
 import { ErrorService } from "./error.service";
 import { ViewModelFactoryService } from "./view-model-factory.service";
-import { FocusManagerService } from "./focus-manager.service";
 import { ILocalFilter } from "./mask.service";
 import { Subject } from 'rxjs/Subject';
 import { ISubscription } from 'rxjs/Subscription';
@@ -971,7 +970,6 @@ export class DialogViewModel extends MessageViewModel implements IDialogViewMode
         private context: ContextService,
         private viewModelFactory: ViewModelFactoryService,
         private urlManager: UrlManagerService,
-        private focusManager: FocusManagerService,
         private error: ErrorService) {
         super();
     }
@@ -1129,7 +1127,6 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
         private context: ContextService,
         private viewModelFactory: ViewModelFactoryService,
         private urlManager: UrlManagerService,
-        private focusManager: FocusManagerService,
         private error: ErrorService) {
         super();
     }
@@ -1174,7 +1171,6 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
 
     private setPage = (newPage: number, newState: CollectionViewState) => {
         this.context.updateValues();
-        this.focusManager.focusOverrideOff();
         this.pageOrRecreate(newPage, this.pageSize, newState);
     };
 
@@ -1254,7 +1250,6 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
 
         const invokeWithDialog = (right?: boolean) => {
             this.context.clearDialogValues(this.onPaneId);
-            this.focusManager.focusOverrideOff();
             this.urlManager.setDialog(actionViewModel.actionRep.actionId(), this.onPaneId);
         };
 
@@ -1321,7 +1316,6 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
 
     toggleActionMenu = () => {
         if (this.disableActions()) return;
-        this.focusManager.focusOverrideOff();
         this.urlManager.toggleObjectMenu(this.onPaneId);
     };
 
@@ -1516,7 +1510,6 @@ export class DomainObjectViewModel extends MessageViewModel implements IDomainOb
         private contextService: ContextService,
         private viewModelFactory: ViewModelFactoryService,
         private urlManager: UrlManagerService,
-        private focusManager: FocusManagerService,
         private error: ErrorService) {
         super();
     }
@@ -1706,7 +1699,6 @@ export class DomainObjectViewModel extends MessageViewModel implements IDomainOb
     actionsTooltip = () => actionsTooltip(this, !!this.routeData.actionsOpen);
 
     toggleActionMenu = () => {
-        this.focusManager.focusOverrideOff();
         this.contextService.updateValues();
         this.urlManager.toggleObjectMenu(this.onPaneId);
     };

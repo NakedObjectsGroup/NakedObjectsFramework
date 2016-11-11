@@ -22,7 +22,7 @@ export class ParameterComponent extends FieldComponent implements OnInit {
     constructor(private viewModelFactory: ViewModelFactoryService,
         private urlManager: UrlManagerService,
         myElement: ElementRef,
-        context : ContextService) {
+        context: ContextService) {
         super(myElement, context);
     }
 
@@ -70,14 +70,17 @@ export class ParameterComponent extends FieldComponent implements OnInit {
             this.parm.entryType === Models.EntryType.MultipleConditionalChoices;
     }
 
-     @HostListener('keydown', ['$event']) onEnter(event: KeyboardEvent) {
-        this.paste(event)
+    @HostListener('keydown', ['$event'])
+    onEnter(event: KeyboardEvent) {
+        this.paste(event);
     }
 
-    @HostListener('keypress', ['$event']) onEnter1(event: KeyboardEvent) {
-        this.paste(event)
+    @HostListener('keypress', ['$event'])
+    onEnter1(event: KeyboardEvent) {
+        this.paste(event);
     }
 
-    @ViewChildren("focus") focusList: QueryList<ElementRef>;
-  
+    @ViewChildren("focus")
+    focusList: QueryList<ElementRef>;
+
 }

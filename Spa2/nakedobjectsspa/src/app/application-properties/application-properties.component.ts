@@ -38,13 +38,9 @@ export class ApplicationPropertiesComponent implements OnInit {
 
         this.viewModel = new ViewModels.ApplicationPropertiesViewModel();
 
-        this.context.getUser().
-            then(u => this.viewModel.user = u.wrapped()).
-            catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+        this.context.getUser().then((u: Models.UserRepresentation) => this.viewModel.user = u.wrapped()).catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
-        this.context.getVersion().
-            then(v => this.viewModel.serverVersion = v.wrapped()).
-            catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+        this.context.getVersion().then((v: Models.VersionRepresentation) => this.viewModel.serverVersion = v.wrapped()).catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
         this.viewModel.serverUrl = Nakedobjectsconfig.getAppPath();
 

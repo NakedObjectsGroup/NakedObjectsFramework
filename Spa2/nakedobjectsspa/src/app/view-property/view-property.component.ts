@@ -15,18 +15,14 @@ import { ContextService } from "../context.service";
 })
 export class ViewPropertyComponent implements OnInit {
 
-    /**
-     *
-     */
     constructor(private router: Router,
         private error: ErrorService,
-        private context : ContextService) {
-
+        private context: ContextService) {
     }
 
 
     @Input()
-    property: ViewModels.PropertyViewModel
+    property: ViewModels.PropertyViewModel;
 
     classes(): string {
         return `${this.property.color}`;
@@ -37,8 +33,8 @@ export class ViewPropertyComponent implements OnInit {
         return () => {
 
             if (!attachment.displayInline()) {
-                attachment.downloadFile().
-                    then(blob => {
+                attachment.downloadFile()
+                    .then(blob => {
                         if (window.navigator.msSaveBlob) {
                             // internet explorer 
                             window.navigator.msSaveBlob(blob, attachment.title);
@@ -46,12 +42,12 @@ export class ViewPropertyComponent implements OnInit {
                             const burl = URL.createObjectURL(blob);
                             this.router.navigateByUrl(burl);
                         }
-                    }).
-                    catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+                    })
+                    .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
             }
 
             return false;
-        }
+        };
     };
 
     ngOnInit() {
@@ -62,17 +58,17 @@ export class ViewPropertyComponent implements OnInit {
             this.attachmentTitle = attachment.title;
 
             if (attachment.displayInline()) {
-                attachment.downloadFile().
-                    then(blob => {
+                attachment.downloadFile()
+                    .then(blob => {
                         const reader = new FileReader();
                         reader.onloadend = () => {
                             if (reader.result) {
                                 this.image = reader.result;
                             }
-                        }
+                        };
                         reader.readAsDataURL(blob);
-                    }).
-                    catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+                    })
+                    .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
             } else {
                 attachment.doClick = this.clickHandler(attachment);
             }
@@ -82,7 +78,7 @@ export class ViewPropertyComponent implements OnInit {
         }
     }
 
-    cut (event: any) {
+    cut(event: any) {
         const cKeyCode = 67;
         if (event && (event.keyCode === cKeyCode && event.ctrlKey)) {
             this.context.setCutViewModel(this.property);
@@ -90,12 +86,14 @@ export class ViewPropertyComponent implements OnInit {
         }
     }
 
-    @HostListener('keydown', ['$event']) onEnter(event: KeyboardEvent) {
-        this.cut(event)
+    @HostListener('keydown', ['$event'])
+    onEnter(event: KeyboardEvent) {
+        this.cut(event);
     }
 
-    @HostListener('keypress', ['$event']) onEnter1(event: KeyboardEvent) {
-        this.cut(event)
+    @HostListener('keypress', ['$event'])
+    onEnter1(event: KeyboardEvent) {
+        this.cut(event);
     }
 
     attachmentTitle: string;

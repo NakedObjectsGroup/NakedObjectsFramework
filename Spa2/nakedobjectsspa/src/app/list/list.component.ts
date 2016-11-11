@@ -9,7 +9,6 @@ import { ColorService } from "../color.service";
 import { ErrorService } from "../error.service";
 import { PaneRouteData, RouteData, CollectionViewState } from "../route-data";
 import { ViewModelFactoryService } from "../view-model-factory.service";
-import { FocusManagerService, FocusTarget } from "../focus-manager.service";
 import { ISubscription } from 'rxjs/Subscription';
 import * as Models from "../models";
 import * as Constants from "../constants";
@@ -22,14 +21,12 @@ import * as ViewModels from "../view-models";
     templateUrl: './list.component.html',
     styleUrls: ['./list.component.css']
 })
-
 export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
 
     constructor(private urlManager: UrlManagerService,
         private context: ContextService,
         private color: ColorService,
         private viewModelFactory: ViewModelFactoryService,
-        private focusManager: FocusManagerService,
         private error: ErrorService,
         private activatedRoute: ActivatedRoute) {
     }
@@ -40,12 +37,12 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
     paneId: number;
     state = "list";
 
-    paneIdName = () => this.paneId === 1 ? "pane1" : "pane2"
+    paneIdName = () => this.paneId === 1 ? "pane1" : "pane2";
 
-    getActionExtensions(routeData: PaneRouteData) {
-        return routeData.objectId ?
-            this.context.getActionExtensionsFromObject(routeData.paneId, Models.ObjectIdWrapper.fromObjectId(routeData.objectId), routeData.actionId) :
-            this.context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
+    getActionExtensions(routeData: PaneRouteData): Promise<Models.Extensions> {
+        return routeData.objectId
+            ? this.context.getActionExtensionsFromObject(routeData.paneId, Models.ObjectIdWrapper.fromObjectId(routeData.objectId), routeData.actionId)
+            : this.context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
     }
 
     private cachedRouteData: PaneRouteData;
@@ -54,18 +51,17 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
         this.cachedRouteData = routeData;
         const cachedList = this.context.getCachedList(routeData.paneId, routeData.page, routeData.pageSize);
 
-        this.getActionExtensions(routeData).
-            then(ext =>
-                this.title = ext.friendlyName()).
-            catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+        this.getActionExtensions(routeData)
+            .then((ext: Models.Extensions) =>
+                this.title = ext.friendlyName())
+            .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
         const listKey = this.urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize);
 
         if (this.collection && this.collection.id === listKey) {
             this.state = CollectionViewState[routeData.state].toString().toLowerCase();
             this.collection.refresh(routeData);
-        }
-        else if (cachedList) {
+        } else if (cachedList) {
 
             //if (routeData.state === cachedList.state)
 
@@ -74,7 +70,6 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.context,
                 this.viewModelFactory,
                 this.urlManager,
-                this.focusManager,
                 this.error
             );
             //$scope.listTemplate = template.getTemplateName(cachedList.extensions().elementType(), TemplateType.List, routeData.state);
@@ -86,11 +81,6 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
             listViewModel.refresh(routeData);
 
             //handleListActionsAndDialog($scope, routeData);
-        } else {
-            //$scope.listTemplate = Nakedobjectsconstants.listPlaceholderTemplate;
-            //$scope.collectionPlaceholder = viewModelFactory.listPlaceholderViewModel(routeData);
-
-            this.focusManager.focusOn(FocusTarget.Action, 0, routeData.paneId);
         }
     }
 
@@ -106,12 +96,13 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
     reload() {
 
         const recreate = () =>
-            this.cachedRouteData.objectId ?
-                this.context.getListFromObject(this.cachedRouteData.paneId, this.cachedRouteData, this.cachedRouteData.page, this.cachedRouteData.pageSize) :
-                this.context.getListFromMenu(this.cachedRouteData.paneId, this.cachedRouteData, this.cachedRouteData.page, this.cachedRouteData.pageSize);
+            this.cachedRouteData.objectId
+            ? this.context.getListFromObject(this.cachedRouteData.paneId, this.cachedRouteData, this.cachedRouteData.page, this.cachedRouteData.pageSize)
+            : this.context.getListFromMenu(this.cachedRouteData.paneId, this.cachedRouteData, this.cachedRouteData.page, this.cachedRouteData.pageSize);
 
-        recreate().then(() => this.setupList(this.cachedRouteData)).
-            catch((reject: Models.ErrorWrapper) => {
+        recreate()
+            .then(() => this.setupList(this.cachedRouteData))
+            .catch((reject: Models.ErrorWrapper) => {
                 this.error.handleError(reject);
             });
     }
@@ -121,11 +112,10 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngOnInit(): void {
 
-        this.activatedRoute.data.subscribe(data => {
+        this.activatedRoute.data.subscribe((data: any) => {
             this.paneId = data["pane"];
             this.paneType = data["class"];
         });
-
 
         this.urlManager.getRouteDataObservable()
             .subscribe((rd: RouteData) => {
@@ -146,7 +136,7 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // todo DRY this - and rename - copy not cut
-    cut (event: any, item : ViewModels.IDraggableViewModel) {
+    cut(event: any, item: ViewModels.IDraggableViewModel) {
         const cKeyCode = 67;
         if (event && (event.keyCode === cKeyCode && event.ctrlKey)) {
             this.context.setCutViewModel(item);
@@ -154,7 +144,8 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    @ViewChildren("rw") row: QueryList<ElementRef>;
+    @ViewChildren("rw")
+    row: QueryList<ElementRef>;
 
     focusOnRow(e: QueryList<ElementRef>) {
         if (e && e.first) {

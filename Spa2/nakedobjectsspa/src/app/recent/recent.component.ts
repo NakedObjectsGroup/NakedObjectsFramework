@@ -12,7 +12,6 @@ import { RouteData, PaneRouteData } from "../route-data";
     templateUrl: './recent.component.html',
     styleUrls: ['./recent.component.css']
 })
-
 export class RecentComponent implements OnInit {
 
     constructor(private activatedRoute: ActivatedRoute,
@@ -40,7 +39,7 @@ export class RecentComponent implements OnInit {
     private paneRouteDataSub: ISubscription;
 
     ngOnInit(): void {
-        this.activatedRouteDataSub = this.activatedRoute.data.subscribe(data => {
+        this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: any) => {
             this.paneId = data["pane"];
             this.paneType = data["class"];
 

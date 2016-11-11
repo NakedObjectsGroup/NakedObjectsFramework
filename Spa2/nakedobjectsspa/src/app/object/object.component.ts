@@ -9,7 +9,6 @@ import { RepLoaderService } from "../rep-loader.service";
 import { ViewModelFactoryService } from "../view-model-factory.service";
 import { ColorService } from "../color.service";
 import { ErrorService } from "../error.service";
-import { FocusManagerService } from "../focus-manager.service";
 import { MaskService } from "../mask.service";
 import { PaneRouteData, RouteData, InteractionMode } from "../route-data";
 import * as ViewModels from "../view-models";
@@ -23,14 +22,12 @@ import * as _ from "lodash";
     templateUrl: './object.component.html',
     styleUrls: ['./object.component.css']
 })
-
 export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
 
     constructor(private urlManager: UrlManagerService,
         private context: ContextService,
         private color: ColorService,
         private viewModelFactory: ViewModelFactoryService,
-        private focusManager: FocusManagerService,
         private error: ErrorService,
         private activatedRoute: ActivatedRoute,
         private formBuilder: FormBuilder) {
@@ -77,10 +74,10 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
 
         const wasDirty = this.context.getIsDirty(oid);
 
-        this.context.getObject(routeData.paneId, oid, routeData.interactionMode).
-            then((object: Models.DomainObjectRepresentation) => {
+        this.context.getObject(routeData.paneId, oid, routeData.interactionMode)
+            .then((object: Models.DomainObjectRepresentation) => {
 
-                const ovm = new ViewModels.DomainObjectViewModel(this.color, this.context, this.viewModelFactory, this.urlManager, this.focusManager, this.error);
+                const ovm = new ViewModels.DomainObjectViewModel(this.color, this.context, this.viewModelFactory, this.urlManager, this.error);
                 ovm.reset(object, routeData);
                 if (wasDirty) {
                     ovm.clearCachedFiles();
@@ -100,8 +97,8 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
                 //handleNewObjectSearch($scope, routeData);
 
                 //deRegObject[routeData.paneId].add($scope.$on(Nakedobjectsconstants.geminiConcurrencyEvent, ovm.concurrency()) as () => void);
-            }).
-            catch((reject: Models.ErrorWrapper) => {
+            })
+            .catch((reject: Models.ErrorWrapper) => {
                 if (reject.category === Models.ErrorCategory.ClientError && reject.clientErrorCode === Models.ClientErrorCode.ExpiredTransient) {
                     this.context.setError(reject);
                     this.expiredTransient = true;
@@ -112,7 +109,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
             });
     }
 
-    paneIdName = () => this.paneId === 1 ? "pane1" : "pane2"
+    paneIdName = () => this.paneId === 1 ? "pane1" : "pane2";
 
     getClass() {
         return this.paneType;
@@ -123,6 +120,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     paneType: string;
+
     onChild() {
         this.paneType = "split";
     }
@@ -136,7 +134,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngOnInit(): void {
 
-        this.activatedRouteDataSub = this.activatedRoute.data.subscribe(data => {
+        this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: any) => {
             this.paneId = data["pane"];
             this.paneType = data["class"];
         });
@@ -166,7 +164,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     onSubmit(viewObject: boolean) {
-        this.object.doSave(viewObject)
+        this.object.doSave(viewObject);
     }
 
     props: _.Dictionary<ViewModels.PropertyViewModel>;
@@ -174,20 +172,20 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private createForm(vm: ViewModels.DomainObjectViewModel) {
         const pps = vm.properties;
-        this.props = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<ViewModels.PropertyViewModel>
-
+        this.props = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<ViewModels.PropertyViewModel>;
         const editableProps = _.filter(this.props, p => p.isEditable);
         const editablePropsMap = _.zipObject(_.map(editableProps, p => p.id), _.map(editableProps, p => p));
 
         const controls = _.mapValues(editablePropsMap, p => [p.getValueForControl(), a => p.validator(a)]) as _.Dictionary<any>;
         this.form = this.formBuilder.group(controls);
 
-        this.form.valueChanges.subscribe(data => {
+        this.form.valueChanges.subscribe((data: any) => {
             // cache parm values
-            _.forEach(data, (v, k) => {
-                const prop = editablePropsMap[k];
-                prop.setValueFromControl(v);
-            });
+            _.forEach(data,
+                (v, k) => {
+                    const prop = editablePropsMap[k];
+                    prop.setValueFromControl(v);
+                });
             this.object.setProperties();
         });
 
@@ -208,7 +206,8 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    @ViewChildren("ttl") titleDiv: QueryList<ElementRef>;
+    @ViewChildren("ttl")
+    titleDiv: QueryList<ElementRef>;
 
     focusOnTitle(e: QueryList<ElementRef>) {
         if (this.mode === InteractionMode.View) {

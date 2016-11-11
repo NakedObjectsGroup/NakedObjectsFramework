@@ -21,7 +21,8 @@ export class AttachmentComponent implements OnInit {
         private urlManager: UrlManagerService,
         private context: ContextService,
         private error: ErrorService
-    ) { }
+    ) {
+    }
 
     paneId: number;
     vm: ViewModels.IAttachmentViewModel;
@@ -45,8 +46,8 @@ export class AttachmentComponent implements OnInit {
         const oid = Models.ObjectIdWrapper.fromObjectId(routeData.objectId);
 
 
-        this.context.getObject(routeData.paneId, oid, routeData.interactionMode).
-            then((object: Models.DomainObjectRepresentation) => {
+        this.context.getObject(routeData.paneId, oid, routeData.interactionMode)
+            .then((object: Models.DomainObjectRepresentation) => {
 
                 const attachmentId = routeData.attachmentId;
                 const attachment = object.propertyMember(attachmentId);
@@ -57,23 +58,23 @@ export class AttachmentComponent implements OnInit {
 
                     this.attachmentTitle = avm.title;
 
-                    avm.downloadFile().
-                        then(blob => {
+                    avm.downloadFile()
+                        .then(blob => {
                             const reader = new FileReader();
                             reader.onloadend = () => this.image = reader.result;
                             reader.readAsDataURL(blob);
-                        }).
-                        catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+                        })
+                        .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
                 }
-            }).
-            catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+            })
+            .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
     }
 
     private activatedRouteDataSub: ISubscription;
     private paneRouteDataSub: ISubscription;
 
     ngOnInit(): void {
-        this.activatedRouteDataSub = this.activatedRoute.data.subscribe(data => {
+        this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: any) => {
             this.paneId = data["pane"];
             this.paneType = data["class"];
         });
@@ -82,7 +83,7 @@ export class AttachmentComponent implements OnInit {
             .subscribe((rd: RouteData) => {
                 if (this.paneId) {
                     const paneRouteData = rd.pane()[this.paneId];
-                    this.getAttachment(paneRouteData)
+                    this.getAttachment(paneRouteData);
                 }
             });
     }

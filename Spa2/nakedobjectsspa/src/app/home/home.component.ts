@@ -6,7 +6,6 @@ import { ActivatedRoute, Data } from '@angular/router';
 import { UrlManagerService } from "../url-manager.service";
 import { ContextService } from "../context.service";
 import { ErrorService } from '../error.service';
-import { FocusManagerService } from "../focus-manager.service";
 import { ViewModelFactoryService } from "../view-model-factory.service";
 import { ColorService } from "../color.service";
 import { RouteData, PaneRouteData } from "../route-data";
@@ -26,7 +25,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         private urlManager: UrlManagerService,
         private activatedRoute: ActivatedRoute,
         private color: ColorService,
-        private focusManager: FocusManagerService,
         private renderer: Renderer,
         private myElement: ElementRef) {
     }
@@ -72,8 +70,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
                 .catch((reject: Models.ErrorWrapper) => {
                     this.error.handleError(reject);
                 });
-        }
-        else {
+        } else {
             this.selectedMenu = null;
         }
     }
@@ -88,7 +85,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngOnInit(): void {
 
-        this.activatedRouteDataSub = this.activatedRoute.data.subscribe(data => {
+        this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: any) => {
             this.paneId = data["pane"];
             this.paneType = data["class"];
             this.getMenus();
@@ -112,9 +109,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    @ViewChildren('mms') menusEl: QueryList<ElementRef>;
+    @ViewChildren('mms')
+    menusEl: QueryList<ElementRef>;
 
-    focusonFirstMenu(menus : QueryList<ElementRef>) {
+    focusonFirstMenu(menus: QueryList<ElementRef>) {
         if (menus && menus.first && menus.first.nativeElement.children[0]) {
             menus.first.nativeElement.children[0].focus();
         }
@@ -122,8 +120,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngAfterViewInit(): void {
         this.focusonFirstMenu(this.menusEl);
-        this.menusEl.changes.subscribe((e : QueryList<ElementRef>) => {
+        this.menusEl.changes.subscribe((e: QueryList<ElementRef>) => {
             this.focusonFirstMenu(e);
-        } );
-    }  
+        });
+    }
 }

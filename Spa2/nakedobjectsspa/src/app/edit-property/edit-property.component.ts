@@ -21,7 +21,7 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
     constructor(myElement: ElementRef,
         private router: Router,
         private error: ErrorService,
-        context : ContextService) {
+        context: ContextService) {
         super(myElement, context);
     }
 
@@ -63,17 +63,17 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
             this.attachmentTitle = attachment.title;
 
             if (attachment.displayInline()) {
-                attachment.downloadFile().
-                    then(blob => {
+                attachment.downloadFile()
+                    .then(blob => {
                         const reader = new FileReader();
                         reader.onloadend = () => {
                             if (reader.result) {
                                 this.image = reader.result;
                             }
-                        }
+                        };
                         reader.readAsDataURL(blob);
-                    }).
-                    catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+                    })
+                    .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
             } else {
                 attachment.doClick = this.clickHandler(attachment);
             }
@@ -83,7 +83,7 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
         }
     }
 
-    datePickerChanged(evt) {
+    datePickerChanged(evt: any) {
         const val = evt.currentTarget.value;
         this.formGroup.value[this.property.id] = val;
     }
@@ -93,8 +93,8 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
         return () => {
 
             if (!attachment.displayInline()) {
-                attachment.downloadFile().
-                    then(blob => {
+                attachment.downloadFile()
+                    .then(blob => {
                         if (window.navigator.msSaveBlob) {
                             // internet explorer 
                             window.navigator.msSaveBlob(blob, attachment.title);
@@ -102,24 +102,27 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
                             const burl = URL.createObjectURL(blob);
                             this.router.navigateByUrl(burl);
                         }
-                    }).
-                    catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+                    })
+                    .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
             }
 
             return false;
-        }
+        };
     };
 
     attachmentTitle: string;
     image: string;
 
-    @HostListener('keydown', ['$event']) onEnter(event: KeyboardEvent) {
-        this.paste(event)
+    @HostListener('keydown', ['$event'])
+    onEnter(event: KeyboardEvent) {
+        this.paste(event);
     }
 
-    @HostListener('keypress', ['$event']) onEnter1(event: KeyboardEvent) {
-        this.paste(event)
+    @HostListener('keypress', ['$event'])
+    onEnter1(event: KeyboardEvent) {
+        this.paste(event);
     }
-   
-    @ViewChildren("focus") focusList: QueryList<ElementRef>;
+
+    @ViewChildren("focus")
+    focusList: QueryList<ElementRef>;
 }

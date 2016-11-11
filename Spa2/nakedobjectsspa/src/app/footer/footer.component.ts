@@ -3,7 +3,6 @@ import { Location } from '@angular/common';
 import { GeminiClickDirective } from "../gemini-click.directive";
 import { UrlManagerService } from "../url-manager.service";
 import { ClickHandlerService } from "../click-handler.service";
-import { FocusManagerService } from "../focus-manager.service";
 import { ContextService } from "../context.service";
 import { ErrorService } from "../error.service";
 import * as Msg from "../user-messages";
@@ -20,12 +19,12 @@ import { RepLoaderService } from "../rep-loader.service";
 export class FooterComponent implements OnInit {
 
     constructor(private urlManager: UrlManagerService,
-        private focusManager: FocusManagerService,
         private context: ContextService,
         private clickHandler: ClickHandlerService,
         private error: ErrorService,
         private repLoader: RepLoaderService,
-        private location: Location) { }
+        private location: Location) {
+    }
 
 
     loading: string;
@@ -33,39 +32,30 @@ export class FooterComponent implements OnInit {
     footerTemplate: string;
 
     goHome = (right?: boolean) => {
-        this.focusManager.focusOverrideOff();
         this.context.updateValues();
         this.urlManager.setHome(this.clickHandler.pane(1, right));
-    }
-
+    };
     goBack = () => {
-        this.focusManager.focusOverrideOff();
         this.context.updateValues();
         this.location.back();
-    }
-
+    };
     goForward = () => {
-        this.focusManager.focusOverrideOff();
         this.context.updateValues();
         this.location.forward();
-    }
-
+    };
     swapPanes = () => {
         // $rootScope.$broadcast(Nakedobjectsconstants.geminiPaneSwapEvent);
         this.context.updateValues();
         this.context.swapCurrentObjects();
         this.urlManager.swapPanes();
-    }
-
+    };
     singlePane = (right?: boolean) => {
         this.context.updateValues();
         this.urlManager.singlePane(this.clickHandler.pane(1, right));
-        this.focusManager.refresh(1);
-    }
-
+    };
     logOff = () => {
-        this.context.getUser().
-            then(u => {
+        this.context.getUser()
+            .then((u: Models.UserRepresentation) => {
                 if (window.confirm(Msg.logOffMessage(u.userName() || "Unknown"))) {
                     const config = {
                         withCredentials: true,
@@ -81,8 +71,8 @@ export class FooterComponent implements OnInit {
                     //$rootScope.$broadcast(Nakedobjectsconstants.geminiLogoffEvent);
                     //$timeout(() => window.location.href = Nakedobjectsconfig.postLogoffUrl);
                 }
-            }).
-            catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+            })
+            .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
     };
 
     applicationProperties = () => {
@@ -92,7 +82,6 @@ export class FooterComponent implements OnInit {
 
     recent = (right?: boolean) => {
         this.context.updateValues();
-        this.focusManager.focusOverrideOff();
         this.urlManager.setRecent(this.clickHandler.pane(1, right));
     };
 
@@ -100,29 +89,26 @@ export class FooterComponent implements OnInit {
         this.context.updateValues();
         this.urlManager.singlePane(this.clickHandler.pane(1));
         this.urlManager.cicero();
-    }
-
+    };
     userName: string;
 
     warnings: string[];
     messages: string[];
 
-    cutViewModel : ViewModels.IDraggableViewModel;
+    cutViewModel: ViewModels.IDraggableViewModel;
 
     ngOnInit() {
-        this.context.getUser().
-            then(user => this.userName = user.userName()).
-            catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+        this.context.getUser().then((user: Models.UserRepresentation) => this.userName = user.userName()).catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
-        this.repLoader.loadingCount$.subscribe(count => this.loading = count > 0 ? Msg.loadingMessage : "");
+        this.repLoader.loadingCount$.subscribe((count: any) => this.loading = count > 0 ? Msg.loadingMessage : "");
 
-        this.context.warning$.subscribe(ws =>
+        this.context.warning$.subscribe((ws: any) =>
             this.warnings = ws);
-            
-        this.context.messages$.subscribe(ms =>
+
+        this.context.messages$.subscribe((ms: any) =>
             this.messages = ms);
 
-        this.context.cutViewModel$.subscribe(cvm => 
+        this.context.cutViewModel$.subscribe((cvm: any) =>
             this.cutViewModel = cvm);
     }
 }
