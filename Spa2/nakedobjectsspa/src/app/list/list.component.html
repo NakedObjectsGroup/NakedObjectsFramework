@@ -44,7 +44,7 @@
 							<td class="checkbox" [hidden]="collection.disableActions()">
 								<input type="checkbox" id="{{'item'+collection.onPaneId+'-'+ i}}" [(ngModel)]="item.selected">
 							</td>
-							<td class="reference clickable-area" [ngClass]="item.color" geminiClick (leftClick)="item.doClick()" (rightClick)="item.doClick(true)"
+							<td #rw class="reference clickable-area" [ngClass]="item.color" geminiClick (leftClick)="item.doClick()" (rightClick)="item.doClick(true)"
 								dnd-draggable [dragEnabled]="true" [dragData]="item" (keydown)="cut($event, item)" (keypress)="cut($event, item)" tabindex="0">
 								<label attr.for="{{'item'+collection.onPaneId+'-'+ i}}">{{item.title}}</label>
 							</td>
@@ -66,7 +66,7 @@
 					</tr>
 				</thead>
 				<tbody *ngIf="collection.hasTableData()">
-					<tr tabindex="0" *ngFor="let item of collection.items; let i = index" class="clickable-area" gemini-drag>
+					<tr #rw tabindex="0" *ngFor="let item of collection.items; let i = index" class="clickable-area" gemini-drag>
 						<td [hidden]="collection.disableActions()" class="checkbox">
 							<input type="checkbox" id="{{'item'+collection.onPaneId+'-'+ i}}" [(ngModel)]="item.selected">
 						</td>

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ViewChildren, QueryList, AfterViewInit, ElementRef } from '@angular/core';
 import { RepresentationsService } from "../representations.service";
 import { UrlManagerService } from "../url-manager.service";
 import { ClickHandlerService } from "../click-handler.service";
@@ -23,7 +23,7 @@ import * as ViewModels from "../view-models";
     styleUrls: ['./list.component.css']
 })
 
-export class ListComponent implements OnInit, OnDestroy {
+export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
 
     constructor(private urlManager: UrlManagerService,
         private context: ContextService,
@@ -152,5 +152,18 @@ export class ListComponent implements OnInit, OnDestroy {
             this.context.setCutViewModel(item);
             event.preventDefault();
         }
+    }
+
+    @ViewChildren("rw") row: QueryList<ElementRef>;
+
+    focusOnRow(e: QueryList<ElementRef>) {
+        if (e && e.first) {
+            e.first.nativeElement.focus();
+        }
+    }
+
+    ngAfterViewInit(): void {
+        this.focusOnRow(this.row);
+        this.row.changes.subscribe((ql: QueryList<ElementRef>) => this.focusOnRow(ql));
     }
 }
