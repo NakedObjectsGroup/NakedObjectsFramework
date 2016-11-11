@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ElementRef } from '@angular/core';
 import * as ViewModels from "../view-models";
 
 @Component({
@@ -7,6 +7,14 @@ import * as ViewModels from "../view-models";
     styleUrls: ['./action.component.css']
 })
 export class ActionComponent {
+
+    /**
+     *
+     */
+    constructor(private myElement : ElementRef) {
+               
+    }
+
 
     private actionVm: ViewModels.ActionViewModel;
 
@@ -27,4 +35,8 @@ export class ActionComponent {
 
     description: string;
     friendlyName: string;
+
+    focus() {
+        this.myElement.nativeElement.children[0].focus();
+    }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, CUSTOM_ELEMENTS_SCHEMA, AfterViewInit, ViewChildren, QueryList, ElementRef, Renderer, ViewChild } from '@angular/core';
 import { getAppPath } from "../config";
 import { Observable } from 'rxjs/Observable';
 import { ISubscription } from 'rxjs/Subscription';
@@ -18,7 +18,7 @@ import * as ViewModels from "../view-models";
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     constructor(private viewModelFactory: ViewModelFactoryService,
         private context: ContextService,
@@ -26,7 +26,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         private urlManager: UrlManagerService,
         private activatedRoute: ActivatedRoute,
         private color: ColorService,
-        private focusManager: FocusManagerService) {
+        private focusManager: FocusManagerService,
+        private renderer: Renderer,
+        private myElement: ElementRef) {
     }
 
     paneId: number;
@@ -109,4 +111,21 @@ export class HomeComponent implements OnInit, OnDestroy {
             this.paneRouteDataSub.unsubscribe();
         }
     }
+
+    @ViewChildren('mms') menusEl: QueryList<ElementRef>;
+
+    focusonFirstMenu(menus : QueryList<ElementRef>) {
+        if (menus && menus.first && menus.first.nativeElement.children[0]) {
+            menus.first.nativeElement.children[0].focus();
+        }
+    }
+
+    ngAfterViewInit(): void {
+        this.focusonFirstMenu(this.menusEl);
+        this.menusEl.changes.subscribe((e : QueryList<ElementRef>) => {
+            this.focusonFirstMenu(e);
+        } );
+    }
+
+    
 }
