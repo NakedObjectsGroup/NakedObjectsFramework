@@ -1,0 +1,16 @@
+:host {
+    display: block;
+    color: white;
+    margin-left: 20px;
+}
+
+.header {
+    display: block;
+    font-size: 24pt; 
+    font-weight: 200;
+}
+
+table {
+    font-size: 11pt; 
+    font-weight: 200;
+}

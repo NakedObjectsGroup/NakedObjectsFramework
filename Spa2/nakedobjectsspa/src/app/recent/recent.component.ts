@@ -9,8 +9,10 @@ import { RouteData, PaneRouteData } from "../route-data";
 
 @Component({
     selector: 'recent',
-    templateUrl: './recent.component.html'
+    templateUrl: './recent.component.html',
+    styleUrls: ['./recent.component.css']
 })
+
 export class RecentComponent implements OnInit {
 
     constructor(private activatedRoute: ActivatedRoute,

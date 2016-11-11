@@ -1,10 +1,15 @@
 :host {
-    height: 100%;
     overflow-y: auto;
     font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
     color: white;
     font-size: 11pt; 
     font-weight: 100;
+    display: block;
+        height: 100%;
+}
+
+.object {
+    height: 100%;
     display: block;
     padding-left: 20px;
 }
@@ -52,34 +57,11 @@ header .type {
         color: grey;
     }
 
-/*Sub-panes - layout */
-mainColumn {
-    display: block;
+
+.actions, .main-column{
     float: left;
     margin-bottom: 20px;
     margin-right: 20px;
 }
 
-/*Collections */
 
-.collections {
-    display: block; /*TODO: Display: Inline ?*/
-    float: left;
-    margin-bottom: 20px;
-    margin-right: 20px;
-}
-
-.collection .name, collectionDetails {
-    padding-left: 0px; /*Because it is a heading, so outdented*/
-    float: left;
-}
-
-.collection:not(:last-child) {
-    margin-bottom: 20px;
-}
-
-collectionSummary {
-    font-size: 12pt;
-    margin-bottom: 10px;
-    overflow: hidden; /*To make div same depth as its floating children*/
-}

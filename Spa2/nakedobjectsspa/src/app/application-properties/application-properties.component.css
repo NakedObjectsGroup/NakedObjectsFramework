@@ -1,0 +1,25 @@
+:host {
+    display: block;
+    margin-left: 20px;
+    color: white;
+}
+
+.header {
+    display: block;
+    font-size: 24pt; 
+    font-weight: 200;
+    margin-left: 5px;
+}
+
+.properties {
+    display: block;
+    font-size: 11pt; 
+    font-weight: 100;
+    width: 410px;
+    padding: 5px;
+    margin-bottom: 20px;
+}
+
+.property {
+    display: block;
+}

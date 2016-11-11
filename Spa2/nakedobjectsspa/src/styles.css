@@ -5,14 +5,14 @@ div {
     display: initial; /*This is to override the agent style sheet setting of display-block*/
 }
 
-/*.gemini, table, a, pre, textarea { 
+.gemini, table, a, pre, textarea { 
     font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
-    color: white;
+    /*color: white;
     font-size: 11pt; 
     font-weight: 100;
     text-decoration: none;
-    margin: 0px;
-}*/
+    margin: 0px;*/
+}
 
 pre {
     white-space: pre-wrap; /* CSS 3 */
@@ -455,11 +455,6 @@ tbody .number {
     content: "\e084";
 }
 
-.icon-list, .icon-table, .icon-summary {
-    width: 20px;
-    padding-top: 5px;
-}
-
 .icon-expand:before {
     content: "\e099";
 }
@@ -467,9 +462,6 @@ tbody .number {
 .icon-collapse:before {
     content: "\e098";
 }
-
-
-
 
 
 /*Buttons*/
