@@ -7,11 +7,10 @@ div {
 
 .gemini, table, a, pre, textarea { 
     font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
-    /*color: white;
-    font-size: 11pt; 
-    font-weight: 100;
-    text-decoration: none;
-    margin: 0px;*/
+}
+.gemini * {
+    /*Specifies that padding & border are added INSIDE the specified width*/
+    box-sizing: border-box;
 }
 
 pre {
@@ -28,11 +27,6 @@ textarea {
 
 .multiline {
     overflow: auto;
-}
-
-.gemini * {
-    /*Specifies that padding & border are added INSIDE the specified width*/
-    box-sizing: border-box;
 }
 
 html, #main, body, .background, .single, .split {
@@ -54,7 +48,7 @@ html, #main, body, .background, .single, .split {
     width: 100%;
 }
 
-.split#pane1 {
+.split#pane1 { /*pane1 only because pane2 is inside pane1, so want it 100% of 50%*/
     width: 50%;
     overflow-x: auto;
     float: left;
@@ -238,26 +232,6 @@ div.hover, div.focus
     outline-color: white;
 }
 
-td.reference {
-    width: 440px;
-}
-
-td.checkbox {
-    background-color: black; /*Because check-box only ever displayed on default background*/
-}
-
-/*Tables*/
-th, td {
-    font-weight: 100; /*Override browser default*/
-    text-align: left;
-    padding-left: 5px;
-    padding-right: 5px;
-    vertical-align: top;
-}
-
-tbody .number {
-    text-align:right;
-}
 
 /*Error*/
 .error {
