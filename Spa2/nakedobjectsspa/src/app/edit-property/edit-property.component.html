@@ -10,7 +10,7 @@
         <div *ngIf="property.isEditable" class="input-control text" [ngSwitch]="property.entryType">
             <!--"EntryType.AutoComplete"-->
             <div *ngSwitchCase="5">
-                <input id="{{property.paneArgId}}" class="{{property.status}} value droppable" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
+                <input #focus id="{{property.paneArgId}}" class="{{property.status}} value droppable" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
                     [ngClass]="classes()" placeholder="{{property.description}}" type="text" [formControlName]="property.id"
                     [geminiClear]="property" [form]="form" />
                 <div class="suggestions" *ngIf="property.choices.length > 0">
@@ -24,21 +24,21 @@
 
             <!--"EntryType.ConditionalChoices"-->
             <div *ngSwitchCase="3">
-                <select id="{{property.paneArgId}}" class="{{property.status}}" [formControlName]="property.id">                 
+                <select #focus id="{{property.paneArgId}}" class="{{property.status}}" [formControlName]="property.id">                 
                     <option *ngFor="let choice of property.choices" [ngValue]="choice">{{choice.name}}</option>
                 </select>
             </div>
 
             <!--"EntryType.Choices"-->
             <div *ngSwitchCase="1">
-                <select id="{{property.paneArgId}}" class="{{property.status}}" [formControlName]="property.id">
+                <select #focus id="{{property.paneArgId}}" class="{{property.status}}" [formControlName]="property.id">
                     <option *ngFor="let choice of property.choices" [ngValue]="choice">{{choice.name}}</option>
                 </select>
             </div>
 
             <!--"EntryType.FreeForm"-->
             <div *ngSwitchCase="0">
-                <input id="{{property.paneArgId}}" class="{{property.status}} value droppable" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
+                <input #focus id="{{property.paneArgId}}" class="{{property.status}} value droppable" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
                     [ngClass]="classes()" placeholder="{{property.description}}" type="text" [formControlName]="property.id"
                     [geminiClear]="property" [form]="form" />
             </div>
@@ -88,7 +88,7 @@
             <div [ngSwitch]="property.entryType">
                 <!--"EntryType.AutoComplete"-->
                 <div *ngSwitchCase="5">
-                    <input id="{{property.paneArgId}}" class="{{property.status}} value droppable" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
+                    <input #focus id="{{property.paneArgId}}" class="{{property.status}} value droppable" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
                         [ngClass]="classes()" placeholder="{{property.description}}" type="text" [formControlName]="property.id"
                         [geminiClear]="property" [form]="form" />
                     <div class="suggestions" *ngIf="property.choices.length > 0">
@@ -102,14 +102,14 @@
 
                 <!--"EntryType.ConditionalChoices"-->
                 <div *ngSwitchCase="3">
-                    <select id="{{property.paneArgId}}" class="{{property.status}}" [formControlName]="property.id">
+                    <select #focus id="{{property.paneArgId}}" class="{{property.status}}" [formControlName]="property.id">
                         <option *ngFor="let choice of property.choices" [ngValue]="choice">{{choice.name}}</option>
                     </select>
                 </div>
 
                 <!--"EntryType.Choices"-->
                 <div *ngSwitchCase="1">
-                    <select id="{{property.paneArgId}}" class="{{property.status}}" [formControlName]="property.id">
+                    <select #focus id="{{property.paneArgId}}" class="{{property.status}}" [formControlName]="property.id">
                         <option *ngFor="let choice of property.choices" [ngValue]="choice">{{choice.name}}</option>
                     </select>
                 </div>
@@ -119,25 +119,25 @@
                     <div [ngSwitch]="property.returnType">
                         <div *ngSwitchCase="'string'" [ngSwitch]="property.format">
                             <div *ngSwitchCase="'date'">
-                                <input id="{{property.paneArgId}}" class="{{property.status}}" type="date" placeholder="{{property.description}}" [formControlName]="property.id"
+                                <input #focus id="{{property.paneArgId}}" class="{{property.status}}" type="date" placeholder="{{property.description}}" [formControlName]="property.id"
                                     [ngClass]="" (change)="datePickerChanged($event)" [geminiClear]="property" [form]="form" />
                             </div>
                             <div *ngSwitchCase="'time'">
-                                <input id="{{property.paneArgId}}" class="{{property.status}}" type="time" placeholder="{{property.description}}" [formControlName]="property.id"
+                                <input #focus id="{{property.paneArgId}}" class="{{property.status}}" type="time" placeholder="{{property.description}}" [formControlName]="property.id"
                                     [ngClass]="classes()" [geminiClear]="property" [form]="form" />
                             </div>
                             <div *ngSwitchDefault [ngSwitch]="property.multipleLines">
-                                <input *ngSwitchCase="1" id="{{property.paneArgId}}" class="{{property.status}}" placeholder="{{property.description}}" type="{{property.password ? 'password' : 'text'}}"
+                                <input #focus *ngSwitchCase="1" id="{{property.paneArgId}}" class="{{property.status}}" placeholder="{{property.description}}" type="{{property.password ? 'password' : 'text'}}"
                                     [ngClass]="" [formControlName]="property.id" [geminiClear]="property" [form]="form" />
-                                <textarea *ngSwitchDefault rows="{{property.multipleLines}}" id="{{property.paneArgId}}" class="{{property.status}}" [formControlName]="property.id"
+                                <textarea #focus *ngSwitchDefault rows="{{property.multipleLines}}" id="{{property.paneArgId}}" class="{{property.status}}" [formControlName]="property.id"
                                     placeholder="{{property.description}}"></textarea>
                             </div>
                         </div>
                         <div *ngSwitchCase="'boolean'">
-                            <input id="{{property.paneArgId}}" class="{{property.status}}" type="checkbox" [geminiBoolean]="property" />{{property.description}}
+                            <input #focus id="{{property.paneArgId}}" class="{{property.status}}" type="checkbox" [geminiBoolean]="property" />{{property.description}}
                         </div>
                         <div *ngSwitchDefault>
-                            <input id="{{property.paneArgId}}" class="{{property.status}}" type="text" placeholder="{{property.description}}" [formControlName]="property.id"
+                            <input #focus id="{{property.paneArgId}}" class="{{property.status}}" type="text" placeholder="{{property.description}}" [formControlName]="property.id"
                                 [ngClass]="" [geminiClear]="property" [form]="form" />
                         </div>
                     </div>

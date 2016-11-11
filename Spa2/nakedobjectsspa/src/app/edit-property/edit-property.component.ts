@@ -1,4 +1,4 @@
-import { Component, Input, ElementRef, OnInit, HostListener } from '@angular/core';
+import { Component, Input, ElementRef, OnInit, HostListener, ViewChildren, QueryList } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as Models from "../models";
 import * as ViewModels from "../view-models";
@@ -121,4 +121,5 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
         this.paste(event)
     }
    
+    @ViewChildren("focus") focusList: QueryList<ElementRef>;
 }

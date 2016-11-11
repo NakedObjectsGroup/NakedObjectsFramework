@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import * as Models from "../models";
 import * as ViewModels from "../view-models";
 import { FormGroup } from '@angular/forms';
+import {EditPropertyComponent} from "../edit-property/edit-property.component"
 
 @Component({
     selector: 'properties',
@@ -9,7 +10,7 @@ import { FormGroup } from '@angular/forms';
     styleUrls: ['./properties.component.css']
 })
 
-export class PropertiesComponent {
+export class PropertiesComponent implements AfterViewInit {
 
     props: ViewModels.PropertyViewModel[];
 
@@ -26,5 +27,18 @@ export class PropertiesComponent {
 
     get properties() {
         return this.props;
+    }
+
+    @ViewChildren(EditPropertyComponent) propComponents: QueryList<EditPropertyComponent>;
+
+    focusOnFirstProperty(prop: QueryList<EditPropertyComponent>) {
+        if (prop && prop.first) {
+            prop.first.focus();
+        }
+    }
+
+    ngAfterViewInit(): void {
+        this.focusOnFirstProperty(this.propComponents);
+        this.propComponents.changes.subscribe((ql: QueryList<EditPropertyComponent>) => this.focusOnFirstProperty(ql));
     }
 }

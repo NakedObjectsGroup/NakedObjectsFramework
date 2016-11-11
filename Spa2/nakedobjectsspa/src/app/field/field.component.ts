@@ -3,12 +3,12 @@ import * as Models from "../models"
 import * as Ro from '../ro-interfaces';
 import { AbstractControl } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
-import { ElementRef, HostListener } from '@angular/core';
+import { ElementRef, HostListener, QueryList } from '@angular/core';
 import * as _ from "lodash";
 import { ContextService } from "../context.service";
 
 
-export class FieldComponent {
+export abstract class FieldComponent {
 
     //filteredList: ViewModels.ChoiceViewModel[] = [];
     elementRef: ElementRef;
@@ -268,35 +268,10 @@ export class FieldComponent {
         }
     }
 
-    findFirstInput(cOrE : HTMLCollection | Element) {
-
-        if (cOrE instanceof Element) {
-            const tag = cOrE.tagName.toLowerCase(); 
-            if (tag === "input" || tag === "select" || tag === "textarea") {
-                return cOrE;
-            }
-            else {
-                return this.findFirstInput(cOrE.children);
-            }
-        }
-
-        for (let i = 0; i < cOrE.length; i++) {
-            const inp = this.findFirstInput(cOrE[i]);
-
-            if (inp) {
-                return inp;
-            }
-        }
-
-        return null;
-    }
-
+    abstract focusList: QueryList<ElementRef>; 
 
     focus() {
-        const input = this.findFirstInput(this.elementRef.nativeElement) as any;
-        if (input) {
-            input.focus();
-        }
+        this.focusList.first.nativeElement.focus();
     }
 
 }

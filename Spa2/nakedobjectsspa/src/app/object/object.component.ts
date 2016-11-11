@@ -200,7 +200,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // todo DRY this - and rename - copy not cut
-    cut (event: any) {
+    cut(event: any) {
         const cKeyCode = 67;
         if (event && (event.keyCode === cKeyCode && event.ctrlKey)) {
             this.context.setCutViewModel(this.object);
@@ -211,8 +211,10 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChildren("ttl") titleDiv: QueryList<ElementRef>;
 
     focusOnTitle(e: QueryList<ElementRef>) {
-        if (e && e.first) {
-            e.first.nativeElement.focus();
+        if (this.mode === InteractionMode.View) {
+            if (e && e.first) {
+                e.first.nativeElement.focus();
+            }
         }
     }
 

@@ -7,7 +7,7 @@
         <div class="value input-control text">
             <!--"EntryType.AutoComplete"-->
             <div *ngIf="parameter.entryType === 5">
-                <input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
+                <input #focus id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
                        [ngClass]="droppableClasses()" placeholder="{{parameter.description}}" type="text" [formControlName]="parameter.id" [geminiClear]="parameter" [form]="form" />
                 <div class="suggestions" *ngIf="parameter.choices.length > 0">
                     <ul *ngFor="let item of parameter.choices">
@@ -19,20 +19,20 @@
             </div>
 
             <div *ngIf="isChoices() && !isMultiple()">
-                <select id="{{parameter.paneArgId}}" class="{{parameter.status}}"  [formControlName]="parameter.id">
+                <select #focus id="{{parameter.paneArgId}}" class="{{parameter.status}}"  [formControlName]="parameter.id">
                     <option *ngFor="let choice of parameter.choices" [label]="choice.name" [ngValue]="choice">{{choice.name}}</option>
                 </select>
             </div>
             
             <div *ngIf="isChoices() && isMultiple()">
-                <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [formControlName]="parameter.id">
+                <select #focus id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [formControlName]="parameter.id">
                     <option *ngFor="let choice of parameter.choices" [label]="choice.name" [ngValue]="choice">{{choice.name}}</option>
                 </select>
             </div>
 
             <!--"EntryType.FreeForm"-->
             <div *ngIf="parameter.entryType === 0">
-                <input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
+                <input #focus id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
                        [ngClass]="droppableClasses()" placeholder="{{parameter.description}}" type="text" [formControlName]="parameter.id" [geminiClear]="parameter" [form]="form" />
             </div>
 
@@ -44,12 +44,12 @@
 
             <!--"EntryType.File"-->
             <div *ngIf="parameter.entryType === 6">
-                <input id="{{parameter.paneArgId}}" type="file" class="{{parameter.status}}" name="parameter.id" placeholder="{{parameter.description}}" (change)="fileUpload()" />
+                <input #focus id="{{parameter.paneArgId}}" type="file" class="{{parameter.status}}" name="parameter.id" placeholder="{{parameter.description}}" (change)="fileUpload()" />
             </div>
 
             <!--"EntryType.AutoComplete"-->
             <div *ngIf="parameter.entryType === 5">
-                <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" [ngClass]="" placeholder="{{parameter.description}}" type="text" [formControlName]="parameter.id" [geminiClear]="parameter" [form]="form" />
+                <input #focus id="{{parameter.paneArgId}}" class="{{parameter.status}}" [ngClass]="" placeholder="{{parameter.description}}" type="text" [formControlName]="parameter.id" [geminiClear]="parameter" [form]="form" />
                 <div class="suggestions" *ngIf="parameter.choices.length > 0">
                     <ul *ngFor="let item of parameter.choices">
                         <li>
@@ -60,13 +60,13 @@
             </div>
 
             <div *ngIf="isChoices() && !isMultiple()">
-                <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [formControlName]="parameter.id">
+                <select #focus id="{{parameter.paneArgId}}" class="{{parameter.status}}" [formControlName]="parameter.id">
                     <option *ngFor="let choice of parameter.choices" [label]="choice.name" [ngValue]="choice">{{choice.name}}</option>
                 </select>
             </div>
             
             <div *ngIf="isChoices() && isMultiple()">
-                <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [formControlName]="parameter.id">
+                <select #focus id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [formControlName]="parameter.id">
                     <option *ngFor="let choice of parameter.choices" [label]="choice.name" [ngValue]="choice">{{choice.name}}</option>
                 </select>
             </div>
@@ -76,25 +76,25 @@
                 <div [ngSwitch]="parameter.returnType">
                     <div *ngSwitchCase="'string'" [ngSwitch]="parameter.format">
                         <div *ngSwitchCase="'date'">
-                            <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="date" placeholder="{{parameter.description}}" [formControlName]="parameter.id"
+                            <input #focus id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="date" placeholder="{{parameter.description}}" [formControlName]="parameter.id"
                                    [geminiClear]="parameter" />
                         </div>
                         <div *ngSwitchCase="'time'">
-                            <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="time" placeholder="{{parameter.description}}" [formControlName]="parameter.id"
+                            <input #focus id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="time" placeholder="{{parameter.description}}" [formControlName]="parameter.id"
                                    gemini-timepicker [geminiClear]="parameter" [form]="form" />
                         </div>
                         <div *ngSwitchDefault [ngSwitch]="parameter.multipleLines">
-                            <input *ngSwitchCase="1" id="{{parameter.paneArgId}}" class="{{parameter.status}}" placeholder="{{parameter.description}}"
+                            <input #focus *ngSwitchCase="1" id="{{parameter.paneArgId}}" class="{{parameter.status}}" placeholder="{{parameter.description}}"
                                    type="{{parameter.password ? 'password' : 'text'}}" [formControlName]="parameter.id" [geminiClear]="parameter" [form]="form" />
-                            <textarea *ngSwitchDefault rows="{{parameter.multipleLines}}" id="{{parameter.paneArgId}}" class="{{parameter.status}}" [formControlName]="parameter.id"
+                            <textarea #focus *ngSwitchDefault rows="{{parameter.multipleLines}}" id="{{parameter.paneArgId}}" class="{{parameter.status}}" [formControlName]="parameter.id"
                                       placeholder="{{parameter.description}}"></textarea>
                         </div>
                     </div>
                     <div *ngSwitchCase="'boolean'">
-                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="checkbox" [geminiBoolean]="parameter" />{{parameter.description}}
+                        <input #focus id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="checkbox" [geminiBoolean]="parameter" />{{parameter.description}}
                     </div>
                     <div *ngSwitchDefault>
-                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="text" placeholder="{{parameter.description}}" [formControlName]="parameter.id" [geminiClear]="parameter" [form]="form" />
+                        <input #focus id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="text" placeholder="{{parameter.description}}" [formControlName]="parameter.id" [geminiClear]="parameter" [form]="form" />
                     </div>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ElementRef, HostListener } from '@angular/core';
+import { Component, Input, OnInit, ElementRef, HostListener, ViewChildren, QueryList } from '@angular/core';
 import { NG_VALIDATORS } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { ViewModelFactoryService } from "../view-model-factory.service";
@@ -78,5 +78,6 @@ export class ParameterComponent extends FieldComponent implements OnInit {
         this.paste(event)
     }
 
+    @ViewChildren("focus") focusList: QueryList<ElementRef>;
   
 }
