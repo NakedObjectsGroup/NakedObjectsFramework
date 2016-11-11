@@ -23,6 +23,7 @@
 .icon-list, .icon-table, .icon-summary {
     float: right;
     width: 20px;
+    padding-left: 5px;
     padding-top: 5px;
 }
 
