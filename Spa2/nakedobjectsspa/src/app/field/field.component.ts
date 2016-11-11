@@ -271,7 +271,8 @@ export class FieldComponent {
     findFirstInput(cOrE : HTMLCollection | Element) {
 
         if (cOrE instanceof Element) {
-            if (cOrE.tagName.toLowerCase() === "input") {
+            const tag = cOrE.tagName.toLowerCase(); 
+            if (tag === "input" || tag === "select" || tag === "textarea") {
                 return cOrE;
             }
             else {
@@ -292,7 +293,7 @@ export class FieldComponent {
 
 
     focus() {
-        const input = this.findFirstInput(this.elementRef.nativeElement);
+        const input = this.findFirstInput(this.elementRef.nativeElement) as any;
         if (input) {
             input.focus();
         }

@@ -125,7 +125,5 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.menusEl.changes.subscribe((e : QueryList<ElementRef>) => {
             this.focusonFirstMenu(e);
         } );
-    }
-
-    
+    }  
 }

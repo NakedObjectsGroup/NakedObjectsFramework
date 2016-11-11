@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, AfterViewInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
 import { RepresentationsService } from "../representations.service";
 import { ActivatedRoute } from '@angular/router';
 import * as Models from "../models";
@@ -24,7 +24,7 @@ import * as _ from "lodash";
     styleUrls: ['./object.component.css']
 })
 
-export class ObjectComponent implements OnInit, OnDestroy {
+export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
 
     constructor(private urlManager: UrlManagerService,
         private context: ContextService,
@@ -208,4 +208,16 @@ export class ObjectComponent implements OnInit, OnDestroy {
         }
     }
 
+    @ViewChildren("ttl") titleDiv: QueryList<ElementRef>;
+
+    focusOnTitle(e: QueryList<ElementRef>) {
+        if (e && e.first) {
+            e.first.nativeElement.focus();
+        }
+    }
+
+    ngAfterViewInit(): void {
+        this.focusOnTitle(this.titleDiv);
+        this.titleDiv.changes.subscribe((ql: QueryList<ElementRef>) => this.focusOnTitle(ql));
+    }
 }
