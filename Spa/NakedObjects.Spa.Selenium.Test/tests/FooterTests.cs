@@ -127,8 +127,8 @@ namespace NakedObjects.Selenium {
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
             Assert.IsTrue(properties[0].Text.StartsWith("User Name:"));
             Assert.IsTrue(properties[1].Text.StartsWith("Server Url: http:"));
-            Assert.IsTrue(properties[2].Text.StartsWith("Server version: 8.1.0"));
-            Assert.IsTrue(properties[3].Text.StartsWith("Client version: 8.2.0"));
+            Assert.IsTrue(properties[2].Text.StartsWith("Server version: 8."));
+            Assert.IsTrue(properties[3].Text.StartsWith("Client version: 8."));
         }
         public virtual void LogOff() {
             GeminiUrl("home");
