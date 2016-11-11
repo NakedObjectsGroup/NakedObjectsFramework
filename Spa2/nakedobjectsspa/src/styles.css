@@ -163,9 +163,6 @@ select {
         height: 68px; /*Issue with IE if just inherit the default height*/
     }
 
-.name, .value, property .reference {
-    float: left;
-}
 
 /*Validation messages*/
 

@@ -9,7 +9,8 @@
 }
 
 .name {
-    width: 150px;
+    float: left;
+    width: 145px;
     padding-right: 5px;
 }
 
@@ -33,4 +34,8 @@ input:not([type='checkbox']), textarea {
 
 input[type='text'] {
     padding-left: 4px;
+}
+
+.validation {
+    display: block;
 }
