@@ -115,6 +115,22 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("Mechanical Sports Center, AW00000359", el.Text);
             el = WaitForCssNo("tr td:nth-child(1)", 3);
             Assert.AreEqual("Healthy Activity Store, AW00000042", el.Text);
+
+            //Test left- and right-click navigation from Recent
+            el = WaitForCssNo("tr td:nth-child(1)", 0);
+            Assert.AreEqual("Long-Sleeve Logo Jersey, S", el.Text);
+            RightClick(el);
+            WaitForView(Pane.Right, PaneType.Object, "Long-Sleeve Logo Jersey, S");
+            WaitForView(Pane.Left, PaneType.Recent);
+            el = WaitForCssNo("tr td:nth-child(1)", 1);
+            Assert.AreEqual("Marcus Collins, AW00022262", el.Text);
+            Click(el);
+            WaitForView(Pane.Left, PaneType.Object, "Marcus Collins, AW00022262");
+
+            //Test that clear button works
+            ClickRecentButton();
+            WaitForView(Pane.Left, PaneType.Recent);
+            WaitForCss("tr td:nth-child(1)", 6);
         }
         public virtual void ApplicationProperties() {
             GeminiUrl("home");
