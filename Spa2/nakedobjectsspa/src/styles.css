@@ -54,11 +54,13 @@ html, #main, body, .background, .single, .split {
     width: 100%;
 }
 
-.split {
+.split#pane1 {
     width: 50%;
     overflow-x: auto;
     float: left;
 }
+
+
 /*Main roots*/
 .recent, .error {
     padding-left: 20px;
