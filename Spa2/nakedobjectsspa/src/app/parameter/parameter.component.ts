@@ -21,7 +21,8 @@ export class ParameterComponent extends FieldComponent implements OnInit {
 
     constructor(private viewModelFactory: ViewModelFactoryService,
         private urlManager: UrlManagerService,
-        myElement: ElementRef, context : ContextService) {
+        myElement: ElementRef,
+        context : ContextService) {
         super(myElement, context);
     }
 
@@ -76,4 +77,6 @@ export class ParameterComponent extends FieldComponent implements OnInit {
     @HostListener('keypress', ['$event']) onEnter1(event: KeyboardEvent) {
         this.paste(event)
     }
+
+  
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ViewModelFactoryService } from "../view-model-factory.service";
 import { UrlManagerService } from "../url-manager.service";
@@ -199,4 +199,6 @@ export class DialogComponent implements OnInit, OnDestroy {
         });
         this.dialog.doInvoke(right);
     }
+
+
 }

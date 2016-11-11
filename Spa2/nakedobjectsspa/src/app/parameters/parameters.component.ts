@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChildren, QueryList } from '@angular/core';
 import * as Models from "../models";
 import * as ViewModels from "../view-models";
 import { FormGroup } from '@angular/forms';
+import { ParameterComponent } from "../parameter/parameter.component";
 
 @Component({
     selector: 'parameters',
@@ -26,5 +27,18 @@ export class ParametersComponent {
 
     get parameters() {
         return this.parms;
+    }
+
+    @ViewChildren(ParameterComponent) parmComponents: QueryList<ParameterComponent>;
+
+    focusOnFirstAction(parms: QueryList<ParameterComponent>) {
+        if (parms && parms.first) {
+            parms.first.focus();
+        }
+    }
+
+    ngAfterViewInit(): void {
+        this.focusOnFirstAction(this.parmComponents);
+        this.parmComponents.changes.subscribe((ql: QueryList<ParameterComponent>) => this.focusOnFirstAction(ql));
     }
 }

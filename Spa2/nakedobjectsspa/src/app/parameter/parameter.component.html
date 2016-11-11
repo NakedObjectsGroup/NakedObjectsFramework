@@ -59,13 +59,13 @@
                 </div>
             </div>
 
-            <div *ngIf="isChoices() && !isMultiple">
+            <div *ngIf="isChoices() && !isMultiple()">
                 <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" [formControlName]="parameter.id">
                     <option *ngFor="let choice of parameter.choices" [label]="choice.name" [ngValue]="choice">{{choice.name}}</option>
                 </select>
             </div>
             
-            <div *ngIf="isChoices() && isMultiple">
+            <div *ngIf="isChoices() && isMultiple()">
                 <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" multiple [formControlName]="parameter.id">
                     <option *ngFor="let choice of parameter.choices" [label]="choice.name" [ngValue]="choice">{{choice.name}}</option>
                 </select>

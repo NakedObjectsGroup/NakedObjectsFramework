@@ -268,5 +268,34 @@ export class FieldComponent {
         }
     }
 
+    findFirstInput(cOrE : HTMLCollection | Element) {
+
+        if (cOrE instanceof Element) {
+            if (cOrE.tagName.toLowerCase() === "input") {
+                return cOrE;
+            }
+            else {
+                return this.findFirstInput(cOrE.children);
+            }
+        }
+
+        for (let i = 0; i < cOrE.length; i++) {
+            const inp = this.findFirstInput(cOrE[i]);
+
+            if (inp) {
+                return inp;
+            }
+        }
+
+        return null;
+    }
+
+
+    focus() {
+        const input = this.findFirstInput(this.elementRef.nativeElement);
+        if (input) {
+            input.focus();
+        }
+    }
 
 }
