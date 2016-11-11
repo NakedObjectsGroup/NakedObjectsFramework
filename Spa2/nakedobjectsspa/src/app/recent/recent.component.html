@@ -9,7 +9,7 @@
 			<table>
 				<tbody>
 					<tr [ngClass]="item.color" *ngFor="let item of vm.items" class="clickable-area"  dnd-draggable [dragEnabled]="true" [dragData]="item" geminiClick
-						(leftClick)="item.doClick()" (rightclick)="item.doClick(true)">
+						(leftClick)="item.doClick()" (rightClick)="item.doClick(true)">
 						<td tabindex="0" class="cell">
 							{{item.title }}
 						</td>
