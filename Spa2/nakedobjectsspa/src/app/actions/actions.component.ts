@@ -1,4 +1,4 @@
-import { Component, Input, ViewChildren, QueryList, ElementRef } from '@angular/core';
+import { Component, Input, ViewChildren, QueryList, ElementRef, AfterViewInit } from '@angular/core';
 import * as ViewModels from "../view-models";
 import { ActionComponent } from "../action/action.component";
 
@@ -7,13 +7,13 @@ import { ActionComponent } from "../action/action.component";
     templateUrl: './actions.component.html',
     styleUrls: ['./actions.component.css']
 })
-export class ActionsComponent {
+export class ActionsComponent implements AfterViewInit {
 
     @Input()
     menuVm: { menuItems: ViewModels.IMenuItemViewModel[] };
 
     @ViewChildren(ActionComponent)
-    acts: QueryList<ActionComponent>;
+    actionChildren: QueryList<ActionComponent>;
 
     focusOnFirstAction(actions: QueryList<ActionComponent>) {
         if (actions && actions.first) {
@@ -22,7 +22,7 @@ export class ActionsComponent {
     }
 
     ngAfterViewInit(): void {
-        this.focusOnFirstAction(this.acts);
-        this.acts.changes.subscribe((ql: QueryList<ActionComponent>) => this.focusOnFirstAction(ql));
+        this.focusOnFirstAction(this.actionChildren);
+        this.actionChildren.changes.subscribe((ql: QueryList<ActionComponent>) => this.focusOnFirstAction(ql));
     }
 }

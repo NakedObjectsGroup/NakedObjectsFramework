@@ -271,7 +271,9 @@ export abstract class FieldComponent {
     abstract focusList: QueryList<ElementRef>;
 
     focus() {
-        this.focusList.first.nativeElement.focus();
+        if (this.focusList && this.focusList.first) {
+            this.focusList.first.nativeElement.focus();
+        }
     }
 
 }
