@@ -1408,12 +1408,12 @@ export class PromptRepresentation extends ResourceRepresentation<Ro.IPromptRepre
         return this.wrapped().id;
     }
 
-    choices(isOptional : boolean): _.Dictionary<Value> {
+    choices(addEmpty : boolean): _.Dictionary<Value> {
         const ch = this.wrapped().choices;
         if (ch) {
             let values = _.map(ch, item => new Value(item));
 
-            if (isOptional) {
+            if (addEmpty) {
                 const emptyValue = new Value("");
                 values = _.concat([emptyValue], values);
             }

@@ -21,7 +21,7 @@ namespace NakedObjects.Selenium {
             GeminiUrl("object?i1=View&o1=___1.Person--9169&as1=open");
             Click(GetObjectAction("Create Email"));
             WaitForView(Pane.Single, PaneType.Object, "New email");
-            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[4].Text == "Status:\r\nNew");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[4].Text == "Status: New");
 
             ClearFieldThenType("#to1", "Stef");
             ClearFieldThenType("#from1", "Richard");
@@ -31,7 +31,7 @@ namespace NakedObjects.Selenium {
             var action = wait.Until(d => d.FindElements(By.CssSelector(".action")).
                 Single(we => we.Text == "Send"));
             Click(action);
-            wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(5)")).Text == "Status:\r\nSent");
+            wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(5)")).Text == "Status: Sent");
             Assert.AreEqual("To:", WaitForCss(".property:nth-child(1)").Text);
             var title = WaitForCss(".title");
             Assert.AreEqual("Sent email", title.Text);
@@ -45,7 +45,7 @@ namespace NakedObjects.Selenium {
             GeminiUrl("object?i1=View&o1=___1.Person--9169&as1=open");
             Click(GetObjectAction("Create Email"));
             WaitForView(Pane.Single, PaneType.Object, "New email");
-            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[4].Text == "Status:\r\nNew");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[4].Text == "Status: New");
 
             //leave 3/4 of the optional fields empty
             ClearFieldThenType("#subject1", "Test2");
@@ -53,7 +53,7 @@ namespace NakedObjects.Selenium {
             var action = wait.Until(d => d.FindElements(By.CssSelector(".action")).
                 Single(we => we.Text == "Send"));
             Click(action);
-            wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(5)")).Text == "Status:\r\nSent");
+            wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(5)")).Text == "Status: Sent");
             Assert.AreEqual("To:", WaitForCss(".property:nth-child(1)").Text);
             var title = WaitForCss(".title");
             Assert.AreEqual("Sent email", title.Text);

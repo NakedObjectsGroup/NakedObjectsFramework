@@ -558,7 +558,8 @@ export class ContextService {
         const map = field.getPromptMap();
         map.setMembers(objectValues);
         setupPrompt(map);
-        return this.repLoader.retrieve(map, Models.PromptRepresentation, digest).then((p: Models.PromptRepresentation) => p.choices(field.extensions().optional()));
+        const addEmptyOption = field.entryType() !== Models.EntryType.AutoComplete && field.extensions().optional();
+        return this.repLoader.retrieve(map, Models.PromptRepresentation, digest).then((p: Models.PromptRepresentation) => p.choices(addEmptyOption));
     };
 
     autoComplete = (field: Models.IField, id: string, objectValues: () => _.Dictionary<Models.Value>, searchTerm: string, digest?: string) =>
