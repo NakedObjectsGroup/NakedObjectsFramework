@@ -150,6 +150,7 @@
     <TypeScriptCompile Include="src\app\view-models\menu-item-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\message-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\parameter-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\property-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\recent-item-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\recent-items-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\table-row-column-view-model.ts" />

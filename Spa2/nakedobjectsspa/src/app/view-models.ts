@@ -27,6 +27,7 @@ import * as Fieldviewmodel from './view-models/field-view-model';
 import * as Parameterviewmodel from './view-models/parameter-view-model';
 import * as Actionviewmodel from './view-models/action-view-model';
 import * as Menuitemviewmodel from './view-models/menu-item-view-model';
+import * as Propertyviewmodel from './view-models/property-view-model';
 
 function tooltip(onWhat: { clientValid: () => boolean }, fields: Fieldviewmodel.FieldViewModel[]): string {
     if (onWhat.clientValid()) {
@@ -129,32 +130,6 @@ export function createMenuItems(avms: Actionviewmodel.ActionViewModel[]) {
 
 
 
-export class PropertyViewModel extends Fieldviewmodel.FieldViewModel implements Idraggableviewmodel.IDraggableViewModel {
-
-    constructor(propertyRep: Models.PropertyMember, color: ColorService, error: ErrorService) {
-        super(propertyRep.extensions(), color, error);
-        this.draggableType = propertyRep.extensions().returnType();
-
-        this.propertyRep = propertyRep;
-        this.entryType = propertyRep.entryType();
-        this.isEditable = !propertyRep.disabledReason();
-        this.entryType = propertyRep.entryType();
-    }
-
-
-    propertyRep: Models.PropertyMember;
-    isEditable: boolean;
-    attachment: AttachmentViewModel;
-    refType: "null" | "navigable" | "notNavigable";
-    isDirty: () => boolean;
-    doClick: (right?: boolean) => void;
-
-    // IDraggableViewModel
-    draggableType: string;
-    draggableTitle = () => this.formattedValue;
-
-    canDropOn: (targetType: string) => Promise<boolean>;
-}
 
 
 
@@ -515,7 +490,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IDraggabl
 
     actions: Actionviewmodel.ActionViewModel[];
     menuItems: Menuitemviewmodel.MenuItemViewModel[];
-    properties: PropertyViewModel[];
+    properties: Propertyviewmodel.PropertyViewModel[];
     collections: CollectionViewModel[];
 
     private editProperties = () => _.filter(this.properties, p => p.isEditable && p.isDirty());

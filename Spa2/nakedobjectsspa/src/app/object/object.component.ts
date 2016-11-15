@@ -16,6 +16,7 @@ import { ISubscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import * as _ from "lodash";
+import { PropertyViewModel } from '../view-models/property-view-model';
 
 @Component({
     selector: 'object',
@@ -167,12 +168,12 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         this.object.doSave(viewObject);
     }
 
-    props: _.Dictionary<ViewModels.PropertyViewModel>;
+    props: _.Dictionary<PropertyViewModel>;
     form: FormGroup;
 
     private createForm(vm: ViewModels.DomainObjectViewModel) {
         const pps = vm.properties;
-        this.props = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<ViewModels.PropertyViewModel>;
+        this.props = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<PropertyViewModel>;
         const editableProps = _.filter(this.props, p => p.isEditable);
         const editablePropsMap = _.zipObject(_.map(editableProps, p => p.id), _.map(editableProps, p => p));
 

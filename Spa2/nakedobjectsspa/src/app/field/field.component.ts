@@ -11,6 +11,7 @@ import { IDraggableViewModel } from '../view-models/idraggable-view-model';
 import { FieldViewModel } from '../view-models/field-view-model';
 import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { DialogViewModel } from '../view-models/dialog-view-model';
+import { PropertyViewModel } from '../view-models/property-view-model';
 
 
 
@@ -25,13 +26,13 @@ export abstract class FieldComponent {
     }
 
     private vmParent: DialogViewModel | ViewModels.DomainObjectViewModel;
-    private model: ParameterViewModel | ViewModels.PropertyViewModel;
+    private model: ParameterViewModel | PropertyViewModel;
     private isConditionalChoices: boolean;
     private isAutoComplete: boolean;
     private control: AbstractControl;
 
     protected init(vmParent: DialogViewModel | ViewModels.DomainObjectViewModel,
-        vm: ParameterViewModel | ViewModels.PropertyViewModel,
+        vm: ParameterViewModel | PropertyViewModel,
         control: AbstractControl) {
 
         this.vmParent = vmParent;

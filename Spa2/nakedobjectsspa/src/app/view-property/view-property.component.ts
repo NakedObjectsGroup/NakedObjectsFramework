@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { ErrorService } from "../error.service";
 import { ContextService } from "../context.service";
 import { AttachmentViewModel } from '../view-models/attachment-view-model';
+import { PropertyViewModel } from '../view-models/property-view-model';
 
 
 @Component({
@@ -23,7 +24,7 @@ export class ViewPropertyComponent implements OnInit {
     }
 
     @Input()
-    property: ViewModels.PropertyViewModel;
+    property: PropertyViewModel;
 
     classes(): string {
         return `${this.property.color}`;

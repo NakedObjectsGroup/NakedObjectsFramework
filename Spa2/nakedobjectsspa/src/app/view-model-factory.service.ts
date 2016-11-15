@@ -31,6 +31,7 @@ import * as Ciceroviewmodel from './view-models/cicero-view-model';
 import { FieldViewModel } from './view-models/field-view-model';
 import { ParameterViewModel } from './view-models/parameter-view-model';
 import { ActionViewModel } from './view-models/action-view-model';
+import { PropertyViewModel } from './view-models/property-view-model';
 
 @Injectable()
 export class ViewModelFactoryService {
@@ -274,7 +275,7 @@ export class ViewModelFactoryService {
         return vm.clientValid;
     };
 
-    private setupReference(vm: ViewModels.PropertyViewModel, value: Models.Value, rep: Models.IHasExtensions) {
+    private setupReference(vm: PropertyViewModel, value: Models.Value, rep: Models.IHasExtensions) {
         vm.type = "ref";
         if (value.isNull()) {
             vm.reference = "";
@@ -304,7 +305,7 @@ export class ViewModelFactoryService {
         }
     }
 
-    private setupChoice(propertyViewModel: ViewModels.PropertyViewModel, newValue: Models.Value) {
+    private setupChoice(propertyViewModel: PropertyViewModel, newValue: Models.Value) {
         const propertyRep = propertyViewModel.propertyRep;
         if (propertyViewModel.entryType === Models.EntryType.Choices) {
 
@@ -324,7 +325,7 @@ export class ViewModelFactoryService {
         }
     }
 
-    private setupScalarPropertyValue(propertyViewModel: ViewModels.PropertyViewModel) {
+    private setupScalarPropertyValue(propertyViewModel: PropertyViewModel) {
         const propertyRep = propertyViewModel.propertyRep;
         propertyViewModel.type = "scalar";
 
@@ -412,7 +413,7 @@ export class ViewModelFactoryService {
         return null;
     }
 
-    private setupPropertyAutocomplete(propertyViewModel: ViewModels.PropertyViewModel, parentValues: () => _.Dictionary<Models.Value>) {
+    private setupPropertyAutocomplete(propertyViewModel: PropertyViewModel, parentValues: () => _.Dictionary<Models.Value>) {
         const propertyRep = propertyViewModel.propertyRep;
         propertyViewModel.prompt = (searchTerm: string) => {
             const createcvm = _.partial(this.createChoiceViewModels, propertyViewModel.id, searchTerm);
@@ -424,7 +425,7 @@ export class ViewModelFactoryService {
         propertyViewModel.description = propertyViewModel.description || Msg.autoCompletePrompt;
     }
 
-    private setupPropertyConditionalChoices(propertyViewModel: ViewModels.PropertyViewModel) {
+    private setupPropertyConditionalChoices(propertyViewModel: PropertyViewModel) {
         const propertyRep = propertyViewModel.propertyRep;
         propertyViewModel.conditionalChoices = (args: _.Dictionary<Models.Value>) => {
             const createcvm = _.partial(this.createChoiceViewModels, propertyViewModel.id, null);
@@ -434,7 +435,7 @@ export class ViewModelFactoryService {
         propertyViewModel.promptArguments = (<any>_.fromPairs)(_.map(propertyRep.promptLink().arguments(), (v: any, key: string) => [key, new Models.Value(v.value)]));
     }
 
-    private callIfChanged(propertyViewModel: ViewModels.PropertyViewModel, newValue: Models.Value, doRefresh: (newValue: Models.Value) => void) {
+    private callIfChanged(propertyViewModel: PropertyViewModel, newValue: Models.Value, doRefresh: (newValue: Models.Value) => void) {
         const propertyRep = propertyViewModel.propertyRep;
         const value = newValue || propertyRep.value();
 
@@ -444,7 +445,7 @@ export class ViewModelFactoryService {
         }
     }
 
-    private setupReferencePropertyValue(propertyViewModel: ViewModels.PropertyViewModel) {
+    private setupReferencePropertyValue(propertyViewModel: PropertyViewModel) {
         const propertyRep = propertyViewModel.propertyRep;
         propertyViewModel.refresh = (newValue: Models.Value) => this.callIfChanged(propertyViewModel, newValue, (value: Models.Value) => {
             this.setupChoice(propertyViewModel, value);
@@ -453,7 +454,7 @@ export class ViewModelFactoryService {
     }
 
     propertyViewModel = (propertyRep: Models.PropertyMember, id: string, previousValue: Models.Value, paneId: number, parentValues: () => _.Dictionary<Models.Value>) => {
-        const propertyViewModel = new ViewModels.PropertyViewModel(propertyRep, this.color, this.error);
+        const propertyViewModel = new PropertyViewModel(propertyRep, this.color, this.error);
 
         propertyViewModel.id = id;
         propertyViewModel.onPaneId = paneId;
@@ -497,7 +498,7 @@ export class ViewModelFactoryService {
         propertyViewModel.drop = _.partial(this.drop, this.context, this.error, propertyViewModel);
         propertyViewModel.doClick = (right?: boolean) => this.urlManager.setProperty(propertyRep, this.clickHandler.pane(paneId, right));
 
-        return propertyViewModel as ViewModels.PropertyViewModel;
+        return propertyViewModel as PropertyViewModel;
     };
 
     private setupParameterChoices(parmViewModel: ParameterViewModel) {

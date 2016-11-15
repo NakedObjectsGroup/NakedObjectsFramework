@@ -9,6 +9,8 @@ import { ErrorService } from "../error.service";
 import { ContextService } from "../context.service";
 import { AttachmentViewModel } from '../view-models/attachment-view-model';
 import * as Fieldviewmodel from '../view-models/field-view-model';
+import { PropertyViewModel } from '../view-models/property-view-model';
+
 
 @Component({
     host: {
@@ -27,13 +29,13 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
         super(myElement, context);
     }
 
-    prop: ViewModels.PropertyViewModel;
+    prop: PropertyViewModel;
 
     @Input()
     parent: ViewModels.DomainObjectViewModel;
 
     @Input()
-    set property(value: ViewModels.PropertyViewModel) {
+    set property(value: PropertyViewModel) {
         this.prop = value;
         this.droppable = value as Fieldviewmodel.FieldViewModel;
     }

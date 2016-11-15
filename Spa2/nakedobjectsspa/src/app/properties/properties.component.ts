@@ -3,6 +3,7 @@ import * as Models from "../models";
 import * as ViewModels from "../view-models";
 import { FormGroup } from '@angular/forms';
 import {EditPropertyComponent} from "../edit-property/edit-property.component"
+import { PropertyViewModel } from '../view-models/property-view-model';
 
 @Component({
     selector: 'properties',
@@ -11,7 +12,7 @@ import {EditPropertyComponent} from "../edit-property/edit-property.component"
 })
 export class PropertiesComponent implements AfterViewInit {
 
-    props: ViewModels.PropertyViewModel[];
+    props: PropertyViewModel[];
 
     @Input()
     parent: ViewModels.DomainObjectViewModel;
@@ -20,7 +21,7 @@ export class PropertiesComponent implements AfterViewInit {
     form: FormGroup;
 
     @Input()
-    set properties(value: ViewModels.PropertyViewModel[]) {
+    set properties(value: PropertyViewModel[]) {
         this.props = value;
     }
 
