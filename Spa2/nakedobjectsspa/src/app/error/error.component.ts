@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ContextService } from "../context.service";
 import { ViewModelFactoryService } from "../view-model-factory.service";
 import * as ViewModels from "../view-models";
+import { ErrorViewModel } from '../view-models/error-view-model';
+
 
 @Component({
     selector: 'error',
@@ -12,7 +14,7 @@ export class ErrorComponent {
 
     constructor(private context: ContextService, private viewModelFactory: ViewModelFactoryService) {}
 
-    error: ViewModels.ErrorViewModel;
+    error: ErrorViewModel;
 
     ngOnInit(): void {
         const errorWrapper = this.context.getError();

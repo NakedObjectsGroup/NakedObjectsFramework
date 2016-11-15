@@ -9,6 +9,7 @@ import * as ViewModels from "./view-models";
 import { ContextService } from "./context.service";
 //import * as moment  from "moment";
 import { MomentWrapperService } from "./moment-wrapper.service";
+import { ChoiceViewModel } from './view-models/choice-view-model';
 
 
 export function dirtyMarker(context: ContextService, oid: ObjectIdWrapper) {
@@ -275,7 +276,7 @@ function validateString(model: IHasExtensions, newValue: any, filter: ILocalFilt
 }
 
 
-export function validateMandatory(model: IHasExtensions, viewValue: string | ViewModels.ChoiceViewModel): string {
+export function validateMandatory(model: IHasExtensions, viewValue: string |ChoiceViewModel): string {
     // first check 
     const isMandatory = !model.extensions().optional();
 

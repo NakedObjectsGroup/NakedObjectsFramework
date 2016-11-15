@@ -6,6 +6,7 @@ import { FormGroup } from '@angular/forms';
 import { ElementRef, HostListener, QueryList } from '@angular/core';
 import * as _ from "lodash";
 import { ContextService } from "../context.service";
+import { ChoiceViewModel } from '../view-models/choice-view-model';
 
 
 export abstract class FieldComponent {
@@ -45,7 +46,7 @@ export abstract class FieldComponent {
         }
     }
 
-    currentOptions: ViewModels.ChoiceViewModel[] = [];
+    currentOptions: ChoiceViewModel[] = [];
     pArgs: _.Dictionary<Models.Value>;
 
     paneId: number;
@@ -107,7 +108,7 @@ export abstract class FieldComponent {
     populateDropdown() {
         const nArgs = this.populateArguments();
         const prompts = this.model.conditionalChoices(nArgs); //  scope.select({ args: nArgs });
-        prompts.then((cvms: ViewModels.ChoiceViewModel[]) => {
+        prompts.then((cvms: ChoiceViewModel[]) => {
                 // if unchanged return 
                 if (cvms.length === this.currentOptions.length && _.every(cvms, (c, i) => c.equals(this.currentOptions[i]))) {
                     return;
@@ -178,13 +179,13 @@ export abstract class FieldComponent {
     populateAutoComplete() {
         const input = this.control.value;
 
-        if (input instanceof ViewModels.ChoiceViewModel) {
+        if (input instanceof ChoiceViewModel) {
             return;
         }
 
         if (input.length > 0 && input.length >= this.model.minLength) {
             this.model.prompt(input)
-                .then((cvms: ViewModels.ChoiceViewModel[]) => {
+                .then((cvms: ChoiceViewModel[]) => {
                     if (cvms.length === this.currentOptions.length && _.every(cvms, (c, i) => c.equals(this.currentOptions[i]))) {
                         return;
                     }
@@ -204,7 +205,7 @@ export abstract class FieldComponent {
         }
     }
 
-    select(item: ViewModels.ChoiceViewModel) {
+    select(item: ChoiceViewModel) {
         this.model.choices = [];
         this.model.selectedChoice = item;
         this.control.reset(item);

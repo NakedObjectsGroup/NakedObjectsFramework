@@ -13,6 +13,9 @@ import { MaskService } from "./mask.service";
 import { Injectable } from '@angular/core';
 import * as _ from "lodash";
 import { MomentWrapperService } from "./moment-wrapper.service";
+import { ChoiceViewModel } from './view-models/choice-view-model';
+import { AttachmentViewModel } from './view-models/attachment-view-model';
+import { ErrorViewModel } from './view-models/error-view-model';
 
 @Injectable()
 export class ViewModelFactoryService {
@@ -30,7 +33,7 @@ export class ViewModelFactoryService {
 
 
     errorViewModel = (error: Models.ErrorWrapper) => {
-        const errorViewModel = new ViewModels.ErrorViewModel();
+        const errorViewModel = new ErrorViewModel();
 
         errorViewModel.originalError = error;
         if (error) {
@@ -65,7 +68,7 @@ export class ViewModelFactoryService {
 
         linkViewModel.value = value.toString();
         linkViewModel.reference = value.toValueString();
-        linkViewModel.selectedChoice = ViewModels.ChoiceViewModel.create(value, "");
+        linkViewModel.selectedChoice = ChoiceViewModel.create(value, "");
         linkViewModel.draggableType = linkViewModel.domainType;
 
         this.color.toColorNumberFromHref(linkRep.href()).
@@ -76,11 +79,11 @@ export class ViewModelFactoryService {
     }
 
     private createChoiceViewModels = (id: string, searchTerm: string, choices: _.Dictionary<Models.Value>) =>
-        Promise.resolve(_.map(choices, (v, k) => ViewModels.ChoiceViewModel.create(v, id, k, searchTerm)));
+        Promise.resolve(_.map(choices, (v, k) => ChoiceViewModel.create(v, id, k, searchTerm)));
 
     attachmentViewModel = (propertyRep: Models.PropertyMember, paneId: number) => {
         const parent = propertyRep.parent as Models.DomainObjectRepresentation;
-        const avm = ViewModels.AttachmentViewModel.create(propertyRep.attachmentLink(), parent, this.context, paneId);
+        const avm = AttachmentViewModel.create(propertyRep.attachmentLink(), parent, this.context, paneId);
         avm.doClick = (right?: boolean) => this.urlManager.setAttachment(avm.link, this.clickHandler.pane(paneId, right));
 
         return avm;
@@ -292,17 +295,17 @@ export class ViewModelFactoryService {
 
             const choices = propertyRep.choices();
 
-            propertyViewModel.choices = _.map(choices, (v, n) => ViewModels.ChoiceViewModel.create(v, propertyViewModel.id, n));
+            propertyViewModel.choices = _.map(choices, (v, n) => ChoiceViewModel.create(v, propertyViewModel.id, n));
 
             if (propertyViewModel.optional) {
-                const emptyChoice = ViewModels.ChoiceViewModel.create(new Models.Value(""), propertyViewModel.id);
+                const emptyChoice = ChoiceViewModel.create(new Models.Value(""), propertyViewModel.id);
                 propertyViewModel.choices = _.concat([emptyChoice], propertyViewModel.choices);
             }
 
-            const currentChoice = ViewModels.ChoiceViewModel.create(newValue, propertyViewModel.id);
+            const currentChoice = ChoiceViewModel.create(newValue, propertyViewModel.id);
             propertyViewModel.selectedChoice = _.find(propertyViewModel.choices, c => c.valuesEqual(currentChoice));
         } else if (!propertyRep.isScalar()) {
-            propertyViewModel.selectedChoice = ViewModels.ChoiceViewModel.create(newValue, propertyViewModel.id);
+            propertyViewModel.selectedChoice = ChoiceViewModel.create(newValue, propertyViewModel.id);
         }
     }
 
@@ -361,8 +364,8 @@ export class ViewModelFactoryService {
                 const localFilter = this.mask.toLocalFilter(remoteMask, propertyRep.extensions().format());
 
                 if (propertyRep.entryType() === Models.EntryType.Choices) {
-                    const currentChoice = ViewModels.ChoiceViewModel.create(value, id);
-                    const choices = _.map(propertyRep.choices(), (v, n) => ViewModels.ChoiceViewModel.create(v, id, n));
+                    const currentChoice = ChoiceViewModel.create(value, id);
+                    const choices = _.map(propertyRep.choices(), (v, n) => ChoiceViewModel.create(v, id, n));
                     const choice = _.find(choices, c => c.valuesEqual(currentChoice));
 
                     if (choice) {
@@ -484,7 +487,7 @@ export class ViewModelFactoryService {
 
     private setupParameterChoices(parmViewModel: ViewModels.ParameterViewModel) {
         const parmRep = parmViewModel.parameterRep;
-        parmViewModel.choices = _.map(parmRep.choices(), (v, n) => ViewModels.ChoiceViewModel.create(v, parmRep.id(), n));
+        parmViewModel.choices = _.map(parmRep.choices(), (v, n) => ChoiceViewModel.create(v, parmRep.id(), n));
     }
 
     private setupParameterAutocomplete(parmViewModel: ViewModels.ParameterViewModel) {
@@ -506,7 +509,7 @@ export class ViewModelFactoryService {
 
         if (!val.isNull() && val.isReference()) {
             parmViewModel.reference = val.link().href();
-            parmViewModel.selectedChoice = ViewModels.ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
+            parmViewModel.selectedChoice = ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
         }
     }
 
@@ -525,7 +528,7 @@ export class ViewModelFactoryService {
         const fieldEntryType = parmViewModel.entryType;
         function setCurrentChoices(vals: Models.Value) {
 
-            const choicesToSet = _.map(vals.list(), val => ViewModels.ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null));
+            const choicesToSet = _.map(vals.list(), val => ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null));
 
             if (fieldEntryType === Models.EntryType.MultipleChoices) {
                 parmViewModel.selectedMultiChoices = _.filter(parmViewModel.choices, c => _.some(choicesToSet, choiceToSet => c.valuesEqual(choiceToSet)));
@@ -535,7 +538,7 @@ export class ViewModelFactoryService {
         }
 
         function setCurrentChoice(val: Models.Value) {
-            const choiceToSet = ViewModels.ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
+            const choiceToSet = ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
 
             if (fieldEntryType === Models.EntryType.Choices) {
                 parmViewModel.selectedChoice = _.find(parmViewModel.choices, c => c.valuesEqual(choiceToSet));

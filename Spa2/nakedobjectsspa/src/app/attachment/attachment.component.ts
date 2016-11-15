@@ -8,6 +8,9 @@ import { UrlManagerService } from "../url-manager.service";
 import { RouteData, PaneRouteData } from "../route-data";
 import * as Models from "../models";
 import { ErrorService } from "../error.service";
+import { AttachmentViewModel } from '../view-models/attachment-view-model';
+
+
 
 @Component({
     selector: 'attachment',
@@ -25,7 +28,7 @@ export class AttachmentComponent implements OnInit {
     }
 
     paneId: number;
-    vm: ViewModels.AttachmentViewModel;
+    vm: AttachmentViewModel;
 
     paneType: string;
 

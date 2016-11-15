@@ -7,6 +7,8 @@ import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ErrorService } from "../error.service";
 import { ContextService } from "../context.service";
+import { AttachmentViewModel } from '../view-models/attachment-view-model';
+
 
 @Component({
     selector: 'view-property',
@@ -20,7 +22,6 @@ export class ViewPropertyComponent implements OnInit {
         private context: ContextService) {
     }
 
-
     @Input()
     property: ViewModels.PropertyViewModel;
 
@@ -28,7 +29,7 @@ export class ViewPropertyComponent implements OnInit {
         return `${this.property.color}`;
     }
 
-    clickHandler(attachment: ViewModels.AttachmentViewModel) {
+    clickHandler(attachment: AttachmentViewModel) {
 
         return () => {
 

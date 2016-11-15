@@ -7,6 +7,8 @@ import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ErrorService } from "../error.service";
 import { ContextService } from "../context.service";
+import { AttachmentViewModel } from '../view-models/attachment-view-model';
+
 
 @Component({
     host: {
@@ -88,7 +90,7 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
         this.formGroup.value[this.property.id] = val;
     }
 
-    clickHandler(attachment: ViewModels.AttachmentViewModel) {
+    clickHandler(attachment: AttachmentViewModel) {
 
         return () => {
 

@@ -14,12 +14,14 @@ import { Subject } from 'rxjs/Subject';
 import { ISubscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { AbstractControl } from '@angular/forms';
+import { ChoiceViewModel } from './view-models/choice-view-model';
+import { AttachmentViewModel } from './view-models/attachment-view-model';
 
 
 export interface IDraggableViewModel {
     value: Ro.scalarValueType | Date;
     reference: string;
-    selectedChoice: ChoiceViewModel;
+    selectedChoice:  ChoiceViewModel;
     color: string;
     draggableType: string;
 
@@ -34,9 +36,6 @@ export interface IMessageViewModel {
     setMessage: (msg: string) => void;
     getMessage: () => string;
 }
-
-
-
 
 function tooltip(onWhat: { clientValid: () => boolean }, fields: FieldViewModel[]): string {
     if (onWhat.clientValid()) {
@@ -137,96 +136,10 @@ export function createMenuItems(avms: ActionViewModel[]) {
     return _.map(menus, m => createSubmenuItems(avms, m, 0));
 }
 
-export class AttachmentViewModel {
-    href: string;
-    mimeType: string;
-    title: string;
-    link: Models.Link;
-    onPaneId: number;
 
-    private parent: Models.DomainObjectRepresentation;
-    private context: ContextService;
-
-    static create(attachmentLink: Models.Link, parent: Models.DomainObjectRepresentation, context: ContextService, paneId: number) {
-        const attachmentViewModel = new AttachmentViewModel();
-        attachmentViewModel.link = attachmentLink;
-        attachmentViewModel.href = attachmentLink.href();
-        attachmentViewModel.mimeType = attachmentLink.type().asString;
-        attachmentViewModel.title = attachmentLink.title() || Msg.unknownFileTitle;
-        attachmentViewModel.parent = parent;
-        attachmentViewModel.context = context;
-        attachmentViewModel.onPaneId = paneId;
-        return attachmentViewModel as AttachmentViewModel;
-    }
-
-    downloadFile = () => this.context.getFile(this.parent, this.href, this.mimeType);
-    clearCachedFile = () => this.context.clearCachedFile(this.href);
-
-    displayInline = () =>
-        this.mimeType === "image/jpeg" ||
-        this.mimeType === "image/gif" ||
-        this.mimeType === "application/octet-stream";
-
-    doClick: (right?: boolean) => void;
-}
-
-export class ChoiceViewModel  {
-    name: string;
-
-    private id: string;
-    private search: string;
-    private isEnum: boolean;
-    private wrapped: Models.Value;
-
-    static create(value: Models.Value, id: string, name?: string, searchTerm?: string) {
-        const choiceViewModel = new ChoiceViewModel();
-        choiceViewModel.wrapped = value;
-        choiceViewModel.id = id;
-        choiceViewModel.name = name || value.toString();
-        choiceViewModel.search = searchTerm || choiceViewModel.name;
-
-        choiceViewModel.isEnum = !value.isReference() && (choiceViewModel.name !== choiceViewModel.getValue().toValueString());
-        return choiceViewModel as ChoiceViewModel;
-    }
-
-    getValue() {
-        return this.wrapped;
-    }
-
-    equals(other: ChoiceViewModel): boolean {
-        return other instanceof ChoiceViewModel &&
-            this.id === other.id &&
-            this.name === other.name &&
-            this.wrapped.toValueString() === other.wrapped.toValueString();
-    }
-
-    valuesEqual(other: ChoiceViewModel): boolean {
-
-        if (other instanceof ChoiceViewModel) {
-            const thisValue = this.isEnum ? this.wrapped.toValueString().trim() : this.search.trim();
-            const otherValue = this.isEnum ? other.wrapped.toValueString().trim() : other.search.trim();
-            return thisValue === otherValue;
-        }
-        return false;
-    }
-
-    toString() {
-        return this.name;
-    }
-}
-
-export class ErrorViewModel {
-    originalError: Models.ErrorWrapper;
-    title: string;
-    message: string;
-    stackTrace: string[];
-    errorCode: string;
-    description: string;
-    isConcurrencyError: boolean;
-}
 
 export class LinkViewModel implements IDraggableViewModel {
-    // ILinkViewModel
+   
     title: string;
     domainType: string;
     link: Models.Link;
@@ -237,7 +150,7 @@ export class LinkViewModel implements IDraggableViewModel {
     color: string;
     value: Ro.scalarValueType;
     reference: string;
-    selectedChoice: ChoiceViewModel;
+    selectedChoice:  ChoiceViewModel;
     draggableType: string;
 
     draggableTitle = () => this.title;
@@ -245,7 +158,7 @@ export class LinkViewModel implements IDraggableViewModel {
     canDropOn: (targetType: string) => Promise<boolean>;
 }
 
-export class ItemViewModel extends LinkViewModel  implements IDraggableViewModel {
+export class ItemViewModel extends LinkViewModel {
     tableRowViewModel: TableRowViewModel;
 
     _selected: boolean;
@@ -262,7 +175,7 @@ export class ItemViewModel extends LinkViewModel  implements IDraggableViewModel
     selectionChange: () => void;
 }
 
-export class RecentItemViewModel extends LinkViewModel implements  IDraggableViewModel {
+export class RecentItemViewModel extends LinkViewModel {
     friendlyName: string;
 }
 
@@ -349,11 +262,11 @@ export abstract class FieldViewModel extends MessageViewModel implements FieldVi
 
     private choiceOptions = [];
 
-    get choices(): ChoiceViewModel[] {
+    get choices():  ChoiceViewModel[] {
         return this.choiceOptions;
     }
 
-    set choices(options: ChoiceViewModel[]) {
+    set choices(options:  ChoiceViewModel[]) {
         this.choiceOptions = options;
 
         if (this.entryType == Models.EntryType.MultipleConditionalChoices) {
@@ -365,18 +278,18 @@ export abstract class FieldViewModel extends MessageViewModel implements FieldVi
         }
     }
 
-    private currentChoice: ChoiceViewModel;
+    private currentChoice:  ChoiceViewModel;
 
     private error: ErrorService;
 
-    get selectedChoice(): ChoiceViewModel {
+    get selectedChoice():  ChoiceViewModel {
         return this.currentChoice;
     }
 
-    set selectedChoice(newChoice: ChoiceViewModel) {
+    set selectedChoice(newChoice:  ChoiceViewModel) {
         // type guard because angular pushes string value here until directive finds 
         // choice
-        if (newChoice instanceof ChoiceViewModel || newChoice == null) {
+        if (newChoice instanceof  ChoiceViewModel || newChoice == null) {
             this.currentChoice = newChoice;
             this.updateColor();
         }
@@ -393,7 +306,7 @@ export abstract class FieldViewModel extends MessageViewModel implements FieldVi
         this.updateColor();
     }
 
-    selectedMultiChoices: ChoiceViewModel[];
+    selectedMultiChoices:  ChoiceViewModel[];
 
     file: Models.Link;
 
@@ -405,18 +318,18 @@ export abstract class FieldViewModel extends MessageViewModel implements FieldVi
 
         let val: string;
 
-        if (viewValue instanceof ChoiceViewModel) {
+        if (viewValue instanceof  ChoiceViewModel) {
             val = viewValue.getValue().toValueString();
         } else if (viewValue instanceof Array) {
             if (viewValue.length) {
-                return _.every(viewValue as (string | ChoiceViewModel)[], (v: any) => this.isValid(v));
+                return _.every(viewValue as (string |  ChoiceViewModel)[], (v: any) => this.isValid(v));
             }
             val = "";
         } else {
             val = viewValue as string;
         }
 
-        if (this.entryType === Models.EntryType.AutoComplete && !(viewValue instanceof ChoiceViewModel)) {
+        if (this.entryType === Models.EntryType.AutoComplete && !(viewValue instanceof  ChoiceViewModel)) {
             
             if (val) {
                 this.setMessage(Msg.pendingAutoComplete);
@@ -445,9 +358,9 @@ export abstract class FieldViewModel extends MessageViewModel implements FieldVi
 
     refresh: (newValue: Models.Value) => void;
 
-    prompt: (searchTerm: string) => Promise<ChoiceViewModel[]>;
+    prompt: (searchTerm: string) => Promise< ChoiceViewModel[]>;
 
-    conditionalChoices: (args: _.Dictionary<Models.Value>) => Promise<ChoiceViewModel[]>;
+    conditionalChoices: (args: _.Dictionary<Models.Value>) => Promise< ChoiceViewModel[]>;
 
     setNewValue(newValue: IDraggableViewModel) {
         this.selectedChoice = newValue.selectedChoice;
@@ -496,12 +409,12 @@ export abstract class FieldViewModel extends MessageViewModel implements FieldVi
         this.color = "";
     }
 
-    setValueFromControl(newValue: Ro.scalarValueType | Date | ChoiceViewModel | ChoiceViewModel[]) {
+    setValueFromControl(newValue: Ro.scalarValueType | Date |  ChoiceViewModel |  ChoiceViewModel[]) {
 
         if (newValue instanceof Array) {
             this.selectedMultiChoices = newValue;
         }
-        else if (newValue instanceof ChoiceViewModel) {
+        else if (newValue instanceof  ChoiceViewModel) {
             this.selectedChoice = newValue;
         }
         else {
@@ -1175,7 +1088,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IDraggabl
     // IDraggableViewModel
     value: string;
     reference: string;
-    selectedChoice: ChoiceViewModel;
+    selectedChoice:  ChoiceViewModel;
     color: string;
     draggableType: string;
     draggableTitle = () => this.title;
@@ -1309,7 +1222,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IDraggabl
 
         this.value = sav ? sav.toString() : "";
         this.reference = sav ? sav.toValueString() : "";
-        this.selectedChoice = sav ? ChoiceViewModel.create(sav, "") : null;
+        this.selectedChoice = sav ?  ChoiceViewModel.create(sav, "") : null;
 
         this.colorService.toColorNumberFromType(this.domainObject.domainType()).
             then(c => this.color = `${Config.objectColor}${c}`).
