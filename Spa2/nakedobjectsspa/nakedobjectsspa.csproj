@@ -132,7 +132,6 @@
     <TypeScriptCompile Include="src\app\url-manager.service.ts" />
     <TypeScriptCompile Include="src\app\user-messages.ts" />
     <TypeScriptCompile Include="src\app\view-model-factory.service.ts" />
-    <TypeScriptCompile Include="src\app\view-models.ts" />
     <TypeScriptCompile Include="src\app\view-models\action-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\application-properties-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\attachment-view-model.ts" />
@@ -141,6 +140,7 @@
     <TypeScriptCompile Include="src\app\view-models\collection-placeholder-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\collection-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\dialog-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\domain-object-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\error-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\field-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\helpers-view-models.ts" />
@@ -150,6 +150,7 @@
     <TypeScriptCompile Include="src\app\view-models\item-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\list-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\menu-item-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\menu-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\menus-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\message-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\parameter-view-model.ts" />

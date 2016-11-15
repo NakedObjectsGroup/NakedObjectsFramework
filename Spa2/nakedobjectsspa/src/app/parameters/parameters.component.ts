@@ -1,6 +1,5 @@
 import { Component, Input, ViewChildren, QueryList } from '@angular/core';
 import * as Models from "../models";
-import * as ViewModels from "../view-models";
 import { FormGroup } from '@angular/forms';
 import { ParameterComponent } from "../parameter/parameter.component";
 import { ParameterViewModel } from '../view-models/parameter-view-model';

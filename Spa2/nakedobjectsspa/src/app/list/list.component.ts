@@ -13,7 +13,6 @@ import { ISubscription } from 'rxjs/Subscription';
 import * as Models from "../models";
 import * as Constants from "../constants";
 import * as Config from "../config";
-import * as ViewModels from "../view-models";
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
 import { IMessageViewModel } from '../view-models/imessage-view-model';
 import { ListViewModel } from '../view-models/list-view-model';

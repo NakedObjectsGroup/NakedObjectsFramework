@@ -1,5 +1,4 @@
 import { Directive, ElementRef, HostListener, Output, EventEmitter, Renderer, Input, OnInit } from '@angular/core';
-import * as ViewModels from './view-models';
 import { FormGroup } from '@angular/forms';
 import * as Fieldviewmodel from './view-models/field-view-model';
 

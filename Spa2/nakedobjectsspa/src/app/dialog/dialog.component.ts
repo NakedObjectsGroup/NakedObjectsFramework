@@ -4,7 +4,6 @@ import { ViewModelFactoryService } from "../view-model-factory.service";
 import { UrlManagerService } from "../url-manager.service";
 import * as _ from "lodash";
 import * as Models from "../models";
-import * as ViewModels from "../view-models";
 import { ActivatedRoute, Data } from '@angular/router';
 import "../rxjs-extensions";
 import { Subject } from 'rxjs/Subject';
@@ -18,6 +17,8 @@ import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { ActionViewModel } from '../view-models/action-view-model';
 import { DialogViewModel } from '../view-models/dialog-view-model';
 import { ListViewModel } from '../view-models/list-view-model';
+import { MenuViewModel } from '../view-models/menu-view-model';
+import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 
 @Component({
     selector: 'app-dialog',
@@ -39,7 +40,7 @@ export class DialogComponent implements OnInit, OnDestroy {
     paneId: number;
 
     @Input()
-    parent: ViewModels.MenuViewModel | ViewModels.DomainObjectViewModel | ListViewModel;
+    parent: MenuViewModel | DomainObjectViewModel | ListViewModel;
 
     dialog: DialogViewModel;
 
@@ -75,11 +76,11 @@ export class DialogComponent implements OnInit, OnDestroy {
             let action: Models.ActionMember | Models.ActionRepresentation = null;
             let actionViewModel: ActionViewModel = null;
 
-            if (p instanceof ViewModels.MenuViewModel) {
+            if (p instanceof MenuViewModel) {
                 action = p.menuRep.actionMember(this.currentDialogId);
             }
 
-            if (p instanceof ViewModels.DomainObjectViewModel) {
+            if (p instanceof DomainObjectViewModel) {
                 action = p.domainObject.actionMember(this.currentDialogId);
             }
 
@@ -138,11 +139,11 @@ export class DialogComponent implements OnInit, OnDestroy {
     private dialogSub: ISubscription;
 
     private routeDataMatchesParent(rd: PaneRouteData) {
-        if (this.parent instanceof ViewModels.MenuViewModel) {
+        if (this.parent instanceof MenuViewModel) {
             return rd.location === ViewType.Home;
         }
 
-        if (this.parent instanceof ViewModels.DomainObjectViewModel) {
+        if (this.parent instanceof DomainObjectViewModel) {
             return rd.location === ViewType.Object;
         }
 

@@ -11,12 +11,12 @@ import { ColorService } from "../color.service";
 import { ErrorService } from "../error.service";
 import { MaskService } from "../mask.service";
 import { PaneRouteData, RouteData, InteractionMode } from "../route-data";
-import * as ViewModels from "../view-models";
 import { ISubscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import * as _ from "lodash";
 import { PropertyViewModel } from '../view-models/property-view-model';
+import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 
 @Component({
     selector: 'object',
@@ -34,7 +34,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         private formBuilder: FormBuilder) {
     }
 
-    object: ViewModels.DomainObjectViewModel;
+    object: DomainObjectViewModel;
 
     mode: InteractionMode;
 
@@ -78,7 +78,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         this.context.getObject(routeData.paneId, oid, routeData.interactionMode)
             .then((object: Models.DomainObjectRepresentation) => {
 
-                const ovm = new ViewModels.DomainObjectViewModel(this.color, this.context, this.viewModelFactory, this.urlManager, this.error);
+                const ovm = new DomainObjectViewModel(this.color, this.context, this.viewModelFactory, this.urlManager, this.error);
                 ovm.reset(object, routeData);
                 if (wasDirty) {
                     ovm.clearCachedFiles();
@@ -171,7 +171,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
     props: _.Dictionary<PropertyViewModel>;
     form: FormGroup;
 
-    private createForm(vm: ViewModels.DomainObjectViewModel) {
+    private createForm(vm: DomainObjectViewModel) {
         const pps = vm.properties;
         this.props = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<PropertyViewModel>;
         const editableProps = _.filter(this.props, p => p.isEditable);

@@ -1,4 +1,3 @@
-import * as ViewModels from "../view-models";
 import * as Models from "../models"
 import * as Ro from '../ro-interfaces';
 import { AbstractControl } from '@angular/forms';
@@ -12,6 +11,7 @@ import { FieldViewModel } from '../view-models/field-view-model';
 import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { DialogViewModel } from '../view-models/dialog-view-model';
 import { PropertyViewModel } from '../view-models/property-view-model';
+import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 
 
 
@@ -25,13 +25,13 @@ export abstract class FieldComponent {
         this.elementRef = myElement;
     }
 
-    private vmParent: DialogViewModel | ViewModels.DomainObjectViewModel;
+    private vmParent: DialogViewModel | DomainObjectViewModel;
     private model: ParameterViewModel | PropertyViewModel;
     private isConditionalChoices: boolean;
     private isAutoComplete: boolean;
     private control: AbstractControl;
 
-    protected init(vmParent: DialogViewModel | ViewModels.DomainObjectViewModel,
+    protected init(vmParent: DialogViewModel | DomainObjectViewModel,
         vm: ParameterViewModel | PropertyViewModel,
         control: AbstractControl) {
 
@@ -79,7 +79,7 @@ export abstract class FieldComponent {
         }
     }
 
-    isDomainObjectViewModel(object: any): object is ViewModels.DomainObjectViewModel {
+    isDomainObjectViewModel(object: any): object is DomainObjectViewModel {
         return object && "properties" in object;
     }
 
@@ -94,7 +94,7 @@ export abstract class FieldComponent {
     populateArguments() {
 
         const dialog = this.vmParent as DialogViewModel;
-        const object = this.vmParent as ViewModels.DomainObjectViewModel;
+        const object = this.vmParent as DomainObjectViewModel;
 
         if (!dialog && !object) {
             throw { message: "Expect dialog or object in geminiConditionalchoices", stack: "" };

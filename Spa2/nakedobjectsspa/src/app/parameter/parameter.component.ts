@@ -4,7 +4,6 @@ import { Observable } from 'rxjs/Observable';
 import { ViewModelFactoryService } from "../view-model-factory.service";
 import { UrlManagerService } from "../url-manager.service";
 import * as Models from "../models";
-import * as ViewModels from "../view-models";
 import { FieldComponent } from '../field/field.component';
 import { FormGroup } from '@angular/forms';
 import { ContextService } from "../context.service";

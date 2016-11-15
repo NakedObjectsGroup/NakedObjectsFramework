@@ -8,7 +8,6 @@ import { ErrorService } from "../error.service";
 import * as Msg from "../user-messages";
 import * as Config from "../config";
 import * as Models from "../models";
-import * as ViewModels from "../view-models";
 import { RepLoaderService } from "../rep-loader.service";
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
 import { IMessageViewModel } from '../view-models/imessage-view-model';

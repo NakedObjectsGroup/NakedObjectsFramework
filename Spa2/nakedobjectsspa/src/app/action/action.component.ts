@@ -1,5 +1,4 @@
 import { Component, Input, ElementRef } from '@angular/core';
-import * as ViewModels from "../view-models";
 import { ActionViewModel } from '../view-models/action-view-model';
 
 @Component({

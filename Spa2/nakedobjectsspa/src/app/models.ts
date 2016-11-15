@@ -5,7 +5,6 @@ import * as RoCustom from "./ro-interfaces-custom";
 import * as Msg from "./user-messages";
 import * as _ from "lodash";
 import { MaskService, ILocalFilter } from "./mask.service";
-import * as ViewModels from "./view-models";
 import { ContextService } from "./context.service";
 //import * as moment  from "moment";
 import { MomentWrapperService } from "./moment-wrapper.service";

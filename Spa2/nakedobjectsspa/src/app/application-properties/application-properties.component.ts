@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ContextService } from "../context.service";
 import { ViewModelFactoryService } from "../view-model-factory.service";
-import * as ViewModels from "../view-models";
 import * as Models from '../models';
 import * as Nakedobjectsconfig from '../config';
 import { ErrorService } from "../error.service";

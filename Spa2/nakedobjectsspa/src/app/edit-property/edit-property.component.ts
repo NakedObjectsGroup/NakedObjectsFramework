@@ -1,7 +1,6 @@
 import { Component, Input, ElementRef, OnInit, HostListener, ViewChildren, QueryList } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as Models from "../models";
-import * as ViewModels from "../view-models";
 import { FieldComponent } from '../field/field.component';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -10,6 +9,7 @@ import { ContextService } from "../context.service";
 import { AttachmentViewModel } from '../view-models/attachment-view-model';
 import * as Fieldviewmodel from '../view-models/field-view-model';
 import { PropertyViewModel } from '../view-models/property-view-model';
+import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 
 
 @Component({
@@ -32,7 +32,7 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
     prop: PropertyViewModel;
 
     @Input()
-    parent: ViewModels.DomainObjectViewModel;
+    parent: DomainObjectViewModel;
 
     @Input()
     set property(value: PropertyViewModel) {

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ContextService } from "../context.service";
 import { ViewModelFactoryService } from "../view-model-factory.service";
-import * as ViewModels from "../view-models";
 import { ActivatedRoute } from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
 import { UrlManagerService } from "../url-manager.service";

@@ -1,5 +1,4 @@
 ﻿import { LinkViewModel} from './link-view-model';
-import * as Viewmodels from '../view-models';
 import { TableRowViewModel } from './table-row-view-model';
 
 export class ItemViewModel extends LinkViewModel {

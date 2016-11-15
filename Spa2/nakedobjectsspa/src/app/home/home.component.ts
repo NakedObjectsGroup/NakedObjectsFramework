@@ -10,9 +10,9 @@ import { ViewModelFactoryService } from "../view-model-factory.service";
 import { ColorService } from "../color.service";
 import { RouteData, PaneRouteData } from "../route-data";
 import * as Models from "../models";
-import * as ViewModels from "../view-models";
 import { LinkViewModel } from '../view-models/link-view-model';
 import { MenusViewModel } from '../view-models/menus-view-model';
+import { MenuViewModel } from '../view-models/menu-view-model';
 
 @Component({
     selector: 'home',
@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     paneId: number;
 
     menus: MenusViewModel;
-    selectedMenu: ViewModels.MenuViewModel;
+    selectedMenu: MenuViewModel;
 
     // todo rename to single or split
     paneType: string;

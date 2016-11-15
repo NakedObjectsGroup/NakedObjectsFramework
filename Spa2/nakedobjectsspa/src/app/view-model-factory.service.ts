@@ -1,5 +1,4 @@
 import * as Models from "./models";
-import * as ViewModels from "./view-models";
 import * as Config from "./config";
 import { PaneRouteData, CollectionViewState, InteractionMode } from "./route-data";
 import * as Constants from "./constants";
@@ -35,6 +34,7 @@ import { PropertyViewModel } from './view-models/property-view-model';
 import { CollectionViewModel } from './view-models/collection-view-model';
 import { ListViewModel } from './view-models/list-view-model';
 import * as Helpersviewmodels from './view-models/helpers-view-models';
+import { MenuViewModel } from './view-models/menu-view-model';
 
 @Injectable()
 export class ViewModelFactoryService {
@@ -585,6 +585,21 @@ export class ViewModelFactoryService {
 
     }
 
+
+
+    private toTriStateBoolean(valueToSet: string | boolean | number) {
+
+        // looks stupid but note type checking
+        if (valueToSet === true || valueToSet === "true") {
+            return true;
+        }
+        if (valueToSet === false || valueToSet === "false") {
+            return false;
+        }
+        return null;
+    }
+
+
     private setupParameterSelectedValue(parmViewModel: ParameterViewModel, previousValue: Models.Value) {
         const parmRep = parmViewModel.parameterRep;
         const returnType = parmRep.extensions().returnType();
@@ -593,7 +608,7 @@ export class ViewModelFactoryService {
 
             if (returnType === "boolean") {
                 const valueToSet = (newValue ? newValue.toValueString() : null) || parmRep.default().scalar();
-                const bValueToSet = ViewModels.toTriStateBoolean(valueToSet);
+                const bValueToSet = this.toTriStateBoolean(valueToSet);
 
                 parmViewModel.value = bValueToSet;
             } else if (Models.isDateOrDateTime(parmRep)) {
@@ -837,7 +852,7 @@ export class ViewModelFactoryService {
     };
 
     menuViewModel = (menuRep: Models.MenuRepresentation, routeData: PaneRouteData) => {
-        const menuViewModel = new ViewModels.MenuViewModel();
+        const menuViewModel = new MenuViewModel();
 
         menuViewModel.id = menuRep.menuId();
         menuViewModel.menuRep = menuRep;

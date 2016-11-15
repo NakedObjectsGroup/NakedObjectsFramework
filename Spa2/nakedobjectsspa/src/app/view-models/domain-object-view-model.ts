@@ -1,165 +1,38 @@
-import * as Msg from "./user-messages";
-import * as Models from "./models";
-import * as Config from "./config";
-import { PaneRouteData, CollectionViewState, ViewType, InteractionMode } from "./route-data";
-import * as Ro from "./ro-interfaces";
-import { ContextService } from "./context.service";
-import { ColorService } from "./color.service";
-import { UrlManagerService } from "./url-manager.service";
-import * as _ from "lodash";
-import { ErrorService } from "./error.service";
-import { ViewModelFactoryService } from "./view-model-factory.service";
-import { ILocalFilter } from "./mask.service";
+﻿
+
+
+
+import * as Messageviewmodel from './message-view-model';
+import * as Idraggableviewmodel from './idraggable-view-model';
+import * as Colorservice from '../color.service';
+import * as Contextservice from '../context.service';
+import * as Viewmodelfactoryservice from '../view-model-factory.service';
+import * as Urlmanagerservice from '../url-manager.service';
+import * as Errorservice from '../error.service';
+import * as Routedata from '../route-data';
+import * as Models from '../models';
+import * as Choiceviewmodel from './choice-view-model';
+import * as Actionviewmodel from './action-view-model';
+import * as Menuitemviewmodel from './menu-item-view-model';
+import * as Propertyviewmodel from './property-view-model';
+import * as Collectionviewmodel from './collection-view-model';
+import * as Parameterviewmodel from './parameter-view-model';
+import * as Helpersviewmodels from './helpers-view-models';
+import * as Config from '../config';
 import { Subject } from 'rxjs/Subject';
-import { ISubscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
-import { AbstractControl } from '@angular/forms';
-import { ChoiceViewModel } from './view-models/choice-view-model';
-import { AttachmentViewModel } from './view-models/attachment-view-model';
-import { IDraggableViewModel } from './view-models/idraggable-view-model';
-import { IMessageViewModel } from './view-models/imessage-view-model';
-import { RecentItemViewModel } from './view-models/recent-item-view-model';
-import { LinkViewModel } from './view-models/link-view-model';
-import { ItemViewModel } from './view-models/item-view-model';
-import * as Idraggableviewmodel from './view-models/idraggable-view-model';
-import { MessageViewModel } from './view-models/message-view-model';
-import * as Fieldviewmodel from './view-models/field-view-model';
-import * as Parameterviewmodel from './view-models/parameter-view-model';
-import * as Actionviewmodel from './view-models/action-view-model';
-import * as Menuitemviewmodel from './view-models/menu-item-view-model';
-import * as Propertyviewmodel from './view-models/property-view-model';
-import * as Collectionviewmodel from './view-models/collection-view-model';
-import * as Helpersviewmodels from './view-models/helpers-view-models';
+import * as _ from "lodash";
 
-function tooltip(onWhat: { clientValid: () => boolean }, fields: Fieldviewmodel.FieldViewModel[]): string {
-    if (onWhat.clientValid()) {
-        return "";
-    }
+export class DomainObjectViewModel extends Messageviewmodel.MessageViewModel implements Idraggableviewmodel.IDraggableViewModel {
 
-    const missingMandatoryFields = _.filter(fields, p => !p.clientValid && !p.getMessage());
-
-    if (missingMandatoryFields.length > 0) {
-        return _.reduce(missingMandatoryFields, (s, t) => s + t.title + "; ", Msg.mandatoryFieldsPrefix);
-    }
-
-    const invalidFields = _.filter(fields, p => !p.clientValid);
-
-    if (invalidFields.length > 0) {
-        return _.reduce(invalidFields, (s, t) => s + t.title + "; ", Msg.invalidFieldsPrefix);
-    }
-
-    return "";
-}
-
-function actionsTooltip(onWhat: { disableActions: () => boolean }, actionsOpen: boolean) {
-    if (actionsOpen) {
-        return Msg.closeActions;
-    }
-    return onWhat.disableActions() ? Msg.noActions : Msg.openActions;
-}
-
-export function toTriStateBoolean(valueToSet: string | boolean | number) {
-
-    // looks stupid but note type checking
-    if (valueToSet === true || valueToSet === "true") {
-        return true;
-    }
-    if (valueToSet === false || valueToSet === "false") {
-        return false;
-    }
-    return null;
-}
-
-//function getMenuForLevel(menupath: string, level: number) {
-//    let menu = "";
-
-//    if (menupath && menupath.length > 0) {
-//        const menus = menupath.split("_");
-
-//        if (menus.length > level) {
-//            menu = menus[level];
-//        }
-//    }
-
-//    return menu || "";
-//}
-
-//function removeDuplicateMenus(menus: Menuitemviewmodel.MenuItemViewModel[]) {
-//    return _.uniqWith(menus, (m1: Menuitemviewmodel.MenuItemViewModel, m2: Menuitemviewmodel.MenuItemViewModel) => {
-//        if (m1.name && m2.name) {
-//            return m1.name === m2.name;
-//        }
-//        return false;
-//    });
-//}
-
-//export function createSubmenuItems(avms: Actionviewmodel.ActionViewModel[], menu: Menuitemviewmodel.MenuItemViewModel, level: number) {
-//    // if not root menu aggregate all actions with same name
-//    if (menu.name) {
-//        const actions = _.filter(avms, a => getMenuForLevel(a.menuPath, level) === menu.name && !getMenuForLevel(a.menuPath, level + 1));
-//        menu.actions = actions;
-
-//        //then collate submenus 
-
-//        const submenuActions = _.filter(avms, (a: Actionviewmodel.ActionViewModel) => getMenuForLevel(a.menuPath, level) === menu.name && getMenuForLevel(a.menuPath, level + 1));
-//        let menus = _
-//            .chain(submenuActions)
-//            .map(a => new Menuitemviewmodel.MenuItemViewModel(getMenuForLevel(a.menuPath, level + 1), null, null))
-//            .value();
-
-//        menus = removeDuplicateMenus(menus);
-
-//        menu.menuItems = _.map(menus, m => createSubmenuItems(submenuActions, m, level + 1));
-//    }
-//    return menu;
-//}
-
-//export function createMenuItems(avms: Actionviewmodel.ActionViewModel[]) {
-
-//    // first create a top level menu for each action 
-//    // note at top level we leave 'un-menued' actions
-//    let menus = _
-//        .chain(avms)
-//        .map(a => new Menuitemviewmodel.MenuItemViewModel(getMenuForLevel(a.menuPath, 0), [a], null))
-//        .value();
-
-//    // remove non unique submenus 
-//    menus = removeDuplicateMenus(menus);
-
-//    // update submenus with all actions under same submenu
-//    return _.map(menus, m => createSubmenuItems(avms, m, 0));
-//}
-
-
-
-
-
-
-
-
-
-export class MenuViewModel extends MessageViewModel  {
-    id: string;
-    title: string;
-    actions: Actionviewmodel.ActionViewModel[];
-    menuItems: Menuitemviewmodel.MenuItemViewModel[];
-    menuRep: Models.MenuRepresentation;
-}
-
-
-
-
-export class DomainObjectViewModel extends MessageViewModel implements IDraggableViewModel {
-
-    constructor(private colorService: ColorService,
-        private contextService: ContextService,
-        private viewModelFactory: ViewModelFactoryService,
-        private urlManager: UrlManagerService,
-        private error: ErrorService) {
+    constructor(private colorService: Colorservice.ColorService,
+        private contextService: Contextservice.ContextService,
+        private viewModelFactory: Viewmodelfactoryservice.ViewModelFactoryService,
+        private urlManager: Urlmanagerservice.UrlManagerService,
+        private error: Errorservice.ErrorService) {
         super();
     }
 
-    private routeData: PaneRouteData;
+    private routeData: Routedata.PaneRouteData;
     private props: _.Dictionary<Models.Value>;
     private instanceId: string;
     private unsaved: boolean;
@@ -167,7 +40,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IDraggabl
     // IDraggableViewModel
     value: string;
     reference: string;
-    selectedChoice:  ChoiceViewModel;
+    selectedChoice: Choiceviewmodel.ChoiceViewModel;
     color: string;
     draggableType: string;
     draggableTitle = () => this.title;
@@ -193,7 +66,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IDraggabl
 
     private cancelHandler = () => this.isFormOrTransient() ?
         () => this.urlManager.popUrlState(this.onPaneId) :
-        () => this.urlManager.setInteractionMode(InteractionMode.View, this.onPaneId);
+        () => this.urlManager.setInteractionMode(Routedata.InteractionMode.View, this.onPaneId);
 
     private saveHandler = () => this.domainObject.isTransient() ? this.contextService.saveObject : this.contextService.updateObject;
 
@@ -236,23 +109,23 @@ export class DomainObjectViewModel extends MessageViewModel implements IDraggabl
     // because parameters may have appeared or disappeared etc and refesh just updates existing views. 
     // So OK for view state changes but not eg for a parameter that disappears after saving
 
-    refresh(routeData: PaneRouteData) {
+    refresh(routeData: Routedata.PaneRouteData) {
 
         this.routeData = routeData;
         const iMode = this.domainObject.extensions().interactionMode();
-        this.isInEdit = routeData.interactionMode !== InteractionMode.View || iMode === "form" || iMode === "transient";
-        this.props = routeData.interactionMode !== InteractionMode.View ? this.contextService.getCurrentObjectValues(this.domainObject.id(), routeData.paneId) : {};
+        this.isInEdit = routeData.interactionMode !== Routedata.InteractionMode.View || iMode === "form" || iMode === "transient";
+        this.props = routeData.interactionMode !== Routedata.InteractionMode.View ? this.contextService.getCurrentObjectValues(this.domainObject.id(), routeData.paneId) : {};
 
         _.forEach(this.properties, p => p.refresh(this.props[p.id]));
         _.forEach(this.collections, c => c.refresh(this.routeData, false));
 
-        this.unsaved = routeData.interactionMode === InteractionMode.Transient;
+        this.unsaved = routeData.interactionMode === Routedata.InteractionMode.Transient;
 
         this.title = this.unsaved ? `Unsaved ${this.domainObject.extensions().friendlyName()}` : this.domainObject.title();
 
         this.title = this.title + Models.dirtyMarker(this.contextService, this.domainObject.getOid());
 
-        if (routeData.interactionMode === InteractionMode.Form) {
+        if (routeData.interactionMode === Routedata.InteractionMode.Form) {
             _.forEach(this.actions, a => this.wrapAction(a));
         }
 
@@ -260,13 +133,13 @@ export class DomainObjectViewModel extends MessageViewModel implements IDraggabl
         this.clearMessage();
     }
 
-    reset(obj: Models.DomainObjectRepresentation, routeData: PaneRouteData): DomainObjectViewModel {
+    reset(obj: Models.DomainObjectRepresentation, routeData: Routedata.PaneRouteData): DomainObjectViewModel {
         this.domainObject = obj;
         this.onPaneId = routeData.paneId;
         this.routeData = routeData;
         const iMode = this.domainObject.extensions().interactionMode();
-        this.isInEdit = routeData.interactionMode !== InteractionMode.View || iMode === "form" || iMode === "transient";
-        this.props = routeData.interactionMode !== InteractionMode.View ? this.contextService.getCurrentObjectValues(this.domainObject.id(), routeData.paneId) : {};
+        this.isInEdit = routeData.interactionMode !== Routedata.InteractionMode.View || iMode === "form" || iMode === "transient";
+        this.props = routeData.interactionMode !== Routedata.InteractionMode.View ? this.contextService.getCurrentObjectValues(this.domainObject.id(), routeData.paneId) : {};
 
         const actions = _.values(this.domainObject.actionMembers()) as Models.ActionMember[];
         this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, this.routeData));
@@ -276,7 +149,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IDraggabl
         this.properties = _.map(this.domainObject.propertyMembers(), (property, id) => this.viewModelFactory.propertyViewModel(property, id, this.props[id], this.onPaneId, this.propertyMap));
         this.collections = _.map(this.domainObject.collectionMembers(), collection => this.viewModelFactory.collectionViewModel(collection, this.routeData));
 
-        this.unsaved = routeData.interactionMode === InteractionMode.Transient;
+        this.unsaved = routeData.interactionMode === Routedata.InteractionMode.Transient;
 
         this.title = this.unsaved ? `Unsaved ${this.domainObject.extensions().friendlyName()}` : this.domainObject.title();
 
@@ -301,7 +174,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IDraggabl
 
         this.value = sav ? sav.toString() : "";
         this.reference = sav ? sav.toValueString() : "";
-        this.selectedChoice = sav ?  ChoiceViewModel.create(sav, "") : null;
+        this.selectedChoice = sav ? Choiceviewmodel.ChoiceViewModel.create(sav, "") : null;
 
         this.colorService.toColorNumberFromType(this.domainObject.domainType()).
             then(c => this.color = `${Config.objectColor}${c}`).
@@ -309,7 +182,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IDraggabl
 
         this.resetMessage();
 
-        if (routeData.interactionMode === InteractionMode.Form) {
+        if (routeData.interactionMode === Routedata.InteractionMode.Form) {
             _.forEach(this.actions, a => this.wrapAction(a));
         }
 
@@ -339,9 +212,9 @@ export class DomainObjectViewModel extends MessageViewModel implements IDraggabl
 
     clientValid = () => _.every(this.properties, p => p.clientValid);
 
-    tooltip = () => tooltip(this, this.properties);
+    tooltip = () => Helpersviewmodels.tooltip(this, this.properties);
 
-    actionsTooltip = () => actionsTooltip(this, !!this.routeData.actionsOpen);
+    actionsTooltip = () => Helpersviewmodels.actionsTooltip(this, !!this.routeData.actionsOpen);
 
     toggleActionMenu = () => {
         this.contextService.updateValues();
@@ -391,7 +264,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IDraggabl
             then(updatedObject => {
                 this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
                 this.urlManager.pushUrlState(this.onPaneId);
-                this.urlManager.setInteractionMode(InteractionMode.Edit, this.onPaneId);
+                this.urlManager.setInteractionMode(Routedata.InteractionMode.Edit, this.onPaneId);
             }).
             catch((reject: Models.ErrorWrapper) => this.handleWrappedError(reject));
     };
@@ -427,4 +300,3 @@ export class DomainObjectViewModel extends MessageViewModel implements IDraggabl
 
 
 }
-

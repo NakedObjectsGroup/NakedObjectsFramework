@@ -1,5 +1,4 @@
 import { Directive, ElementRef, HostListener,  Input, Renderer } from '@angular/core';
-import * as ViewModels from "./view-models";
 import * as Fieldviewmodel from './view-models/field-view-model';
 
 @Directive({ selector: '[geminiBoolean]' })

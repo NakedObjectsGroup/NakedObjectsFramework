@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import * as ViewModels from "../view-models";
 import { CollectionViewState } from '../route-data';
 import { CollectionViewModel } from '../view-models/collection-view-model';
 
