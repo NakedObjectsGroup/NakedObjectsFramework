@@ -28,6 +28,8 @@ import * as Parameterviewmodel from './view-models/parameter-view-model';
 import * as Actionviewmodel from './view-models/action-view-model';
 import * as Menuitemviewmodel from './view-models/menu-item-view-model';
 import * as Propertyviewmodel from './view-models/property-view-model';
+import * as Collectionviewmodel from './view-models/collection-view-model';
+import * as Helpersviewmodels from './view-models/helpers-view-models';
 
 function tooltip(onWhat: { clientValid: () => boolean }, fields: Fieldviewmodel.FieldViewModel[]): string {
     if (onWhat.clientValid()) {
@@ -68,381 +70,73 @@ export function toTriStateBoolean(valueToSet: string | boolean | number) {
     return null;
 }
 
-function getMenuForLevel(menupath: string, level: number) {
-    let menu = "";
-
-    if (menupath && menupath.length > 0) {
-        const menus = menupath.split("_");
-
-        if (menus.length > level) {
-            menu = menus[level];
-        }
-    }
-
-    return menu || "";
-}
-
-function removeDuplicateMenus(menus: Menuitemviewmodel.MenuItemViewModel[]) {
-    return _.uniqWith(menus, (m1: Menuitemviewmodel.MenuItemViewModel, m2: Menuitemviewmodel.MenuItemViewModel) => {
-        if (m1.name && m2.name) {
-            return m1.name === m2.name;
-        }
-        return false;
-    });
-}
-
-export function createSubmenuItems(avms: Actionviewmodel.ActionViewModel[], menu: Menuitemviewmodel.MenuItemViewModel, level: number) {
-    // if not root menu aggregate all actions with same name
-    if (menu.name) {
-        const actions = _.filter(avms, a => getMenuForLevel(a.menuPath, level) === menu.name && !getMenuForLevel(a.menuPath, level + 1));
-        menu.actions = actions;
+//function getMenuForLevel(menupath: string, level: number) {
+//    let menu = "";
 
-        //then collate submenus 
+//    if (menupath && menupath.length > 0) {
+//        const menus = menupath.split("_");
 
-        const submenuActions = _.filter(avms, (a: Actionviewmodel.ActionViewModel) => getMenuForLevel(a.menuPath, level) === menu.name && getMenuForLevel(a.menuPath, level + 1));
-        let menus = _
-            .chain(submenuActions)
-            .map(a => new Menuitemviewmodel.MenuItemViewModel(getMenuForLevel(a.menuPath, level + 1), null, null))
-            .value();
+//        if (menus.length > level) {
+//            menu = menus[level];
+//        }
+//    }
 
-        menus = removeDuplicateMenus(menus);
-
-        menu.menuItems = _.map(menus, m => createSubmenuItems(submenuActions, m, level + 1));
-    }
-    return menu;
-}
-
-export function createMenuItems(avms: Actionviewmodel.ActionViewModel[]) {
-
-    // first create a top level menu for each action 
-    // note at top level we leave 'un-menued' actions
-    let menus = _
-        .chain(avms)
-        .map(a => new Menuitemviewmodel.MenuItemViewModel(getMenuForLevel(a.menuPath, 0), [a], null))
-        .value();
-
-    // remove non unique submenus 
-    menus = removeDuplicateMenus(menus);
-
-    // update submenus with all actions under same submenu
-    return _.map(menus, m => createSubmenuItems(avms, m, 0));
-}
-
-
-
-
-
+//    return menu || "";
+//}
 
-export class ListViewModel extends MessageViewModel {
-
-    constructor(private colorService: ColorService,
-        private context: ContextService,
-        private viewModelFactory: ViewModelFactoryService,
-        private urlManager: UrlManagerService,
-        private error: ErrorService) {
-        super();
-    }
-
-    private routeData: PaneRouteData;
-    private onPaneId: number;
-    private page: number;
-    private pageSize: number;
-    private numPages: number;
-    private state: CollectionViewState;
-
-    allSelected = () => _.every(this.items, item => item.selected);
-
-    id: string;
-    listRep: Models.ListRepresentation;
-    size: number;
-    pluralName: string;
-    header: string[];
-    items: ItemViewModel[];
-    actions: Actionviewmodel.ActionViewModel[];
-    menuItems: Menuitemviewmodel.MenuItemViewModel[];
-    description: () => string;
-
-    private recreate = (page: number, pageSize: number) => {
-        return this.routeData.objectId ?
-            this.context.getListFromObject(this.routeData.paneId, this.routeData, page, pageSize) :
-            this.context.getListFromMenu(this.routeData.paneId, this.routeData, page, pageSize);
-    };
-
-    private pageOrRecreate = (newPage: number, newPageSize: number, newState?: CollectionViewState) => {
-        this.recreate(newPage, newPageSize).
-            then((list: Models.ListRepresentation) => {
-                this.urlManager.setListPaging(newPage, newPageSize, newState || this.routeData.state, this.onPaneId);
-                this.routeData = this.urlManager.getRouteData().pane()[this.onPaneId];
-                this.reset(list, this.routeData);
-            }).
-            catch((reject: Models.ErrorWrapper) => {
-                const display = (em: Models.ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
-                this.error.handleErrorAndDisplayMessages(reject, display);
-            });
-    };
-
-    private setPage = (newPage: number, newState: CollectionViewState) => {
-        this.context.updateValues();
-        this.pageOrRecreate(newPage, this.pageSize, newState);
-    };
-
-    private earlierDisabled = () => this.page === 1 || this.numPages === 1;
-
-    private laterDisabled = () => this.page === this.numPages || this.numPages === 1;
-
-    private pageFirstDisabled = this.earlierDisabled;
-
-    private pageLastDisabled = this.laterDisabled;
-
-    private pageNextDisabled = this.laterDisabled;
-
-    private pagePreviousDisabled = this.earlierDisabled;
-
-    private updateItems(value: Models.Link[]) {
-        this.items = this.viewModelFactory.getItems(value,
-            this.state === CollectionViewState.Table,
-            this.routeData,
-            this);
-
-        const totalCount = this.listRep.pagination().totalCount;
-        //this.allSelected = _.every(this.items, item => item.selected);
-        const count = this.items.length;
-        this.size = count;
-        if (count > 0) {
-            this.description = () => Msg.pageMessage(this.page, this.numPages, count, totalCount);
-        } else {
-            this.description = () => Msg.noItemsFound;
-        }
-    }
-
-    hasTableData = () => this.listRep.hasTableData();
-
-    private collectionContributedActionDecorator(actionViewModel: Actionviewmodel.ActionViewModel) {
-        const wrappedInvoke = actionViewModel.execute;
-        actionViewModel.execute = (pps: Parameterviewmodel.ParameterViewModel[], right?: boolean) => {
-            const selected = _.filter(this.items, i => i.selected);
-
-            if (selected.length === 0) {
-
-                const em = new Models.ErrorMap({}, 0, Msg.noItemsSelected);
-                const rp = new Models.ErrorWrapper(Models.ErrorCategory.HttpClientError, Models.HttpStatusCode.UnprocessableEntity, em);
-
-                return <any>Promise.reject(rp);
-            }
-
-            const getParms = (action: Models.IInvokableAction) => {
-
-                const parms = _.values(action.parameters()) as Models.Parameter[];
-                const contribParm = _.find(parms, p => p.isCollectionContributed());
-                const parmValue = new Models.Value(_.map(selected, i => i.link));
-                const collectionParmVm = this.viewModelFactory.parameterViewModel(contribParm, parmValue, this.onPaneId);
-
-                const allpps = _.clone(pps);
-                allpps.push(collectionParmVm);
-                return allpps;
-            }
-
-            if (actionViewModel.invokableActionRep) {
-                return wrappedInvoke(getParms(actionViewModel.invokableActionRep), right);
-            }
-
-            return this.context.getActionDetails(actionViewModel.actionRep as Models.ActionMember)
-                .then((details: Models.ActionRepresentation) => wrappedInvoke(getParms(details), right));
-        }
-    }
-
-    private collectionContributedInvokeDecorator(actionViewModel: Actionviewmodel.ActionViewModel) {
-
-        const showDialog = () =>
-            this.context.getInvokableAction(actionViewModel.actionRep as Models.ActionMember).
-                then(invokableAction => _.keys(invokableAction.parameters()).length > 1);
-
-        // make sure not null while waiting for promise to assign correct function 
-        actionViewModel.doInvoke = () => { };
-
-        const invokeWithDialog = (right?: boolean) => {
-            this.context.clearDialogValues(this.onPaneId);
-            this.urlManager.setDialog(actionViewModel.actionRep.actionId(), this.onPaneId);
-        };
-
-        const invokeWithoutDialog = (right?: boolean) =>
-            actionViewModel.execute([], right).
-                then(result => this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || Msg.noResultMessage : "")).
-                catch((reject: Models.ErrorWrapper) => {
-                    const display = (em: Models.ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
-                    this.error.handleErrorAndDisplayMessages(reject, display);
-                });
-
-        showDialog().
-            then(show => actionViewModel.doInvoke = show ? invokeWithDialog : invokeWithoutDialog).
-            catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
-    }
-
-    private decorate(actionViewModel: Actionviewmodel.ActionViewModel) {
-        this.collectionContributedActionDecorator(actionViewModel);
-        this.collectionContributedInvokeDecorator(actionViewModel);
-    }
-
-    refresh(routeData: PaneRouteData) {
-
-        this.routeData = routeData;
-        if (this.state !== routeData.state) {
-            if (routeData.state === CollectionViewState.Table && !this.hasTableData()) {
-                this.recreate(this.page, this.pageSize).
-                    then(list => {
-                        this.state = list.hasTableData() ? CollectionViewState.Table : CollectionViewState.List;
-                        this.listRep = list;
-                        this.updateItems(list.value());
-                    }).
-                    catch((reject: Models.ErrorWrapper) => {
-                        this.error.handleError(reject);
-                    });
-            } else {
-                this.updateItems(this.listRep.value());
-            }
-        }
-    }
-
-    reset(list: Models.ListRepresentation, routeData: PaneRouteData) {
-        this.listRep = list;
-        this.routeData = routeData;
-
-        this.id = this.urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize);
-
-        this.onPaneId = routeData.paneId;
-
-        this.pluralName = "Objects";
-        this.page = this.listRep.pagination().page;
-        this.pageSize = this.listRep.pagination().pageSize;
-        this.numPages = this.listRep.pagination().numPages;
-
-        this.state = this.listRep.hasTableData() ? CollectionViewState.Table : CollectionViewState.List;
-        this.updateItems(list.value());
-
-        const actions = this.listRep.actionMembers();
-        this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
-        this.menuItems = createMenuItems(this.actions);
-
-        _.forEach(this.actions, a => this.decorate(a));
-    }
-
-    toggleActionMenu = () => {
-        if (this.disableActions()) return;
-        this.urlManager.toggleObjectMenu(this.onPaneId);
-    };
-
-    pageNext = () => {
-        if (this.pageNextDisabled()) return;
-        this.setPage(this.page < this.numPages ? this.page + 1 : this.page, this.state);
-    };
-    pagePrevious = () => {
-        if (this.pagePreviousDisabled()) return;
-        this.setPage(this.page > 1 ? this.page - 1 : this.page, this.state);
-    };
-    pageFirst = () => {
-        if (this.pageFirstDisabled()) return;
-        this.setPage(1, this.state);
-    };
-    pageLast = () => {
-        if (this.pageLastDisabled()) return;
-        this.setPage(this.numPages, this.state);
-    };
-
-    doSummary = () => {
-        this.context.updateValues();
-        this.urlManager.setListState(CollectionViewState.Summary, this.onPaneId);
-    };
-
-    doList = () => {
-        this.context.updateValues();
-        this.urlManager.setListState(CollectionViewState.List, this.onPaneId);
-    };
-
-    doTable = () => {
-        this.context.updateValues();
-        this.urlManager.setListState(CollectionViewState.Table, this.onPaneId);
-    };
-
-    reload = () => {
-        this.context.clearCachedList(this.onPaneId, this.routeData.page, this.routeData.pageSize);
-        this.setPage(this.page, this.state);
-    };
-
-    selectAll = () => {
-        const newState = !this.allSelected();
-
-        _.each(this.items, (item) => {
-            item.selected = newState;
-            //item.selectionChange();
-        });
-
-        //_.each(this.items, (item) => {
-        //    //item.selected = newState;
-        //    item.selectionChange();
-        //});
-    };
-
-    disableActions = () => !this.actions || this.actions.length === 0 || !this.items || this.items.length === 0;
-
-    actionsTooltip = () => actionsTooltip(this, !!this.routeData.actionsOpen);
-
-    actionMember = (id: string) => {
-        const actionViewModel = _.find(this.actions, a => a.actionRep.actionId() === id);
-        return actionViewModel.actionRep;
-    }
-
-    showActions() {
-        return !!this.urlManager.getRouteData().pane()[this.onPaneId].actionsOpen;
-    }
-}
-
-export class CollectionViewModel  {
-
-    title: string;
-    details: string;
-    pluralName: string;
-    color: string;
-    mayHaveItems: boolean;
-    editing: boolean;
-    items: ItemViewModel[];
-    header: string[];
-    onPaneId: number;
-    currentState: CollectionViewState;
-    //requestedState: CollectionViewState;
-    presentationHint: string;
-    template: string;
-    actions: Actionviewmodel.ActionViewModel[];
-    menuItems: Menuitemviewmodel.MenuItemViewModel[];
-    messages: string;
-    collectionRep: Models.CollectionMember | Models.CollectionRepresentation;
-
-    doSummary: () => void;
-    doTable: () => void;
-    doList: () => void;
-    hasTableData: () => boolean;
-
-    description = () => this.details.toString();
-    refresh: (routeData: PaneRouteData, resetting: boolean) => void;
-
-    disableActions = () => this.editing || !this.actions || this.actions.length === 0;
-    allSelected = () => _.every(this.items, item => item.selected);
-    selectAll() { }
-}
-
-export class MenusViewModel {
-    constructor(private viewModelFactory: ViewModelFactoryService) { }
-
-    reset(menusRep: Models.MenusRepresentation, routeData: PaneRouteData) {
-        this.menusRep = menusRep;
-        this.onPaneId = routeData.paneId;
-        this.items = _.map(this.menusRep.value(), link => this.viewModelFactory.linkViewModel(link, this.onPaneId));
-        return this;
-    }
-
-    menusRep: Models.MenusRepresentation;
-    onPaneId: number;
-    items: LinkViewModel[];
-}
+//function removeDuplicateMenus(menus: Menuitemviewmodel.MenuItemViewModel[]) {
+//    return _.uniqWith(menus, (m1: Menuitemviewmodel.MenuItemViewModel, m2: Menuitemviewmodel.MenuItemViewModel) => {
+//        if (m1.name && m2.name) {
+//            return m1.name === m2.name;
+//        }
+//        return false;
+//    });
+//}
+
+//export function createSubmenuItems(avms: Actionviewmodel.ActionViewModel[], menu: Menuitemviewmodel.MenuItemViewModel, level: number) {
+//    // if not root menu aggregate all actions with same name
+//    if (menu.name) {
+//        const actions = _.filter(avms, a => getMenuForLevel(a.menuPath, level) === menu.name && !getMenuForLevel(a.menuPath, level + 1));
+//        menu.actions = actions;
+
+//        //then collate submenus 
+
+//        const submenuActions = _.filter(avms, (a: Actionviewmodel.ActionViewModel) => getMenuForLevel(a.menuPath, level) === menu.name && getMenuForLevel(a.menuPath, level + 1));
+//        let menus = _
+//            .chain(submenuActions)
+//            .map(a => new Menuitemviewmodel.MenuItemViewModel(getMenuForLevel(a.menuPath, level + 1), null, null))
+//            .value();
+
+//        menus = removeDuplicateMenus(menus);
+
+//        menu.menuItems = _.map(menus, m => createSubmenuItems(submenuActions, m, level + 1));
+//    }
+//    return menu;
+//}
+
+//export function createMenuItems(avms: Actionviewmodel.ActionViewModel[]) {
+
+//    // first create a top level menu for each action 
+//    // note at top level we leave 'un-menued' actions
+//    let menus = _
+//        .chain(avms)
+//        .map(a => new Menuitemviewmodel.MenuItemViewModel(getMenuForLevel(a.menuPath, 0), [a], null))
+//        .value();
+
+//    // remove non unique submenus 
+//    menus = removeDuplicateMenus(menus);
+
+//    // update submenus with all actions under same submenu
+//    return _.map(menus, m => createSubmenuItems(avms, m, 0));
+//}
+
+
+
+
+
+
+
+
 
 export class MenuViewModel extends MessageViewModel  {
     id: string;
@@ -491,7 +185,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IDraggabl
     actions: Actionviewmodel.ActionViewModel[];
     menuItems: Menuitemviewmodel.MenuItemViewModel[];
     properties: Propertyviewmodel.PropertyViewModel[];
-    collections: CollectionViewModel[];
+    collections: Collectionviewmodel.CollectionViewModel[];
 
     private editProperties = () => _.filter(this.properties, p => p.isEditable && p.isDirty());
 
@@ -577,7 +271,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IDraggabl
         const actions = _.values(this.domainObject.actionMembers()) as Models.ActionMember[];
         this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, this.routeData));
 
-        this.menuItems = createMenuItems(this.actions);
+        this.menuItems = Helpersviewmodels.createMenuItems(this.actions);
 
         this.properties = _.map(this.domainObject.propertyMembers(), (property, id) => this.viewModelFactory.propertyViewModel(property, id, this.props[id], this.onPaneId, this.propertyMap));
         this.collections = _.map(this.domainObject.collectionMembers(), collection => this.viewModelFactory.collectionViewModel(collection, this.routeData));

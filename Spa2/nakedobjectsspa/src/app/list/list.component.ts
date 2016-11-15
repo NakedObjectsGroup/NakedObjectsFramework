@@ -16,6 +16,7 @@ import * as Config from "../config";
 import * as ViewModels from "../view-models";
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
 import { IMessageViewModel } from '../view-models/imessage-view-model';
+import { ListViewModel } from '../view-models/list-view-model';
 
 
 @Component({
@@ -33,7 +34,7 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
         private activatedRoute: ActivatedRoute) {
     }
 
-    collection: ViewModels.ListViewModel;
+    collection: ListViewModel;
     title = "";
     paneType: string;
     paneId: number;
@@ -67,7 +68,7 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
 
             //if (routeData.state === cachedList.state)
 
-            const listViewModel = new ViewModels.ListViewModel(
+            const listViewModel = new ListViewModel(
                 this.color,
                 this.context,
                 this.viewModelFactory,

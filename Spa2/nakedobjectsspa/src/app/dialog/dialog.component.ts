@@ -17,6 +17,7 @@ import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/f
 import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { ActionViewModel } from '../view-models/action-view-model';
 import { DialogViewModel } from '../view-models/dialog-view-model';
+import { ListViewModel } from '../view-models/list-view-model';
 
 @Component({
     selector: 'app-dialog',
@@ -38,7 +39,7 @@ export class DialogComponent implements OnInit, OnDestroy {
     paneId: number;
 
     @Input()
-    parent: ViewModels.MenuViewModel | ViewModels.DomainObjectViewModel | ViewModels.ListViewModel;
+    parent: ViewModels.MenuViewModel | ViewModels.DomainObjectViewModel | ListViewModel;
 
     dialog: DialogViewModel;
 
@@ -82,7 +83,7 @@ export class DialogComponent implements OnInit, OnDestroy {
                 action = p.domainObject.actionMember(this.currentDialogId);
             }
 
-            if (p instanceof ViewModels.ListViewModel) {
+            if (p instanceof ListViewModel) {
                 action = p.actionMember(this.currentDialogId);
                 actionViewModel = _.find(p.actions, a => a.actionRep.actionId() === this.currentDialogId);
             }
@@ -145,7 +146,7 @@ export class DialogComponent implements OnInit, OnDestroy {
             return rd.location === ViewType.Object;
         }
 
-        if (this.parent instanceof ViewModels.ListViewModel) {
+        if (this.parent instanceof ListViewModel) {
             return rd.location === ViewType.List;
         }
         return false;

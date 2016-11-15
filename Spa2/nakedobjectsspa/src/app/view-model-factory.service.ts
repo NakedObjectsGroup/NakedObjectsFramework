@@ -32,6 +32,9 @@ import { FieldViewModel } from './view-models/field-view-model';
 import { ParameterViewModel } from './view-models/parameter-view-model';
 import { ActionViewModel } from './view-models/action-view-model';
 import { PropertyViewModel } from './view-models/property-view-model';
+import { CollectionViewModel } from './view-models/collection-view-model';
+import { ListViewModel } from './view-models/list-view-model';
+import * as Helpersviewmodels from './view-models/helpers-view-models';
 
 @Injectable()
 export class ViewModelFactoryService {
@@ -654,7 +657,7 @@ export class ViewModelFactoryService {
         return parmViewModel;
     };
 
-    getItems = (links: Models.Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: ViewModels.ListViewModel | ViewModels.CollectionViewModel) => {
+    getItems = (links: Models.Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: ListViewModel | CollectionViewModel) => {
         const selectedItems = routeData.selectedItems;
 
         const items = _.map(links, (link, i) => this.itemViewModel(link, routeData.paneId, selectedItems[i], i));
@@ -665,7 +668,7 @@ export class ViewModelFactoryService {
                 () => this.context.getActionExtensionsFromObject(routeData.paneId, Models.ObjectIdWrapper.fromObjectId(routeData.objectId), routeData.actionId) :
                 () => this.context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
 
-            const getExtensions = listViewModel instanceof ViewModels.CollectionViewModel ? () => Promise.resolve(listViewModel.collectionRep.extensions()) : getActionExtensions;
+            const getExtensions = listViewModel instanceof CollectionViewModel ? () => Promise.resolve(listViewModel.collectionRep.extensions()) : getActionExtensions;
 
             // clear existing header 
             listViewModel.header = null;
@@ -720,7 +723,7 @@ export class ViewModelFactoryService {
     }
 
     collectionViewModel = (collectionRep: Models.CollectionMember, routeData: PaneRouteData) => {
-        const collectionViewModel = new ViewModels.CollectionViewModel();
+        const collectionViewModel = new CollectionViewModel();
 
         const itemLinks = collectionRep.value();
         const paneId = routeData.paneId;
@@ -736,7 +739,7 @@ export class ViewModelFactoryService {
             then(c => collectionViewModel.color = `${Config.linkColor}${c}`).
             catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
-        function setCurrentState(collectionViewModel: ViewModels.CollectionViewModel) {
+        function setCurrentState(collectionViewModel: CollectionViewModel) {
             if (size === 0) {
                 collectionViewModel.currentState = CollectionViewState.Summary;
             }
@@ -843,7 +846,7 @@ export class ViewModelFactoryService {
         menuViewModel.title = menuRep.title();
         menuViewModel.actions = _.map(actions, action => this.actionViewModel(action, menuViewModel, routeData));
 
-        menuViewModel.menuItems = ViewModels.createMenuItems(menuViewModel.actions);
+        menuViewModel.menuItems = Helpersviewmodels.createMenuItems(menuViewModel.actions);
 
 
         return menuViewModel;

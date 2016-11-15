@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import * as ViewModels from "../view-models";
 import { CollectionViewState } from '../route-data';
+import { CollectionViewModel } from '../view-models/collection-view-model';
+
 
 @Component({
     selector: 'collection',
@@ -9,10 +11,10 @@ import { CollectionViewState } from '../route-data';
 })
 export class CollectionComponent {
 
-    coll: ViewModels.CollectionViewModel;
+    coll: CollectionViewModel;
 
     @Input()
-    set collection(value: ViewModels.CollectionViewModel) {
+    set collection(value: CollectionViewModel) {
         this.coll = value;
         this.state = CollectionViewState[this.coll.currentState].toString().toLowerCase();
     }

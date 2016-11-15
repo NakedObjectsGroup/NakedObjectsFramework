@@ -12,6 +12,7 @@ import { RouteData, PaneRouteData } from "../route-data";
 import * as Models from "../models";
 import * as ViewModels from "../view-models";
 import { LinkViewModel } from '../view-models/link-view-model';
+import { MenusViewModel } from '../view-models/menus-view-model';
 
 @Component({
     selector: 'home',
@@ -32,7 +33,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     paneId: number;
 
-    menus: ViewModels.MenusViewModel;
+    menus: MenusViewModel;
     selectedMenu: ViewModels.MenuViewModel;
 
     // todo rename to single or split
@@ -51,7 +52,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     getMenus() {
         this.context.getMenus()
             .then((menus: Models.MenusRepresentation) => {
-                this.menus = new ViewModels.MenusViewModel(this.viewModelFactory);
+                this.menus = new MenusViewModel(this.viewModelFactory);
                 const rd = this.urlManager.getRouteData().pane()[this.paneId];
                 this.menus.reset(menus, rd);
             })
