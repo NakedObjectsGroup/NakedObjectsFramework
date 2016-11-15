@@ -14,6 +14,8 @@ import { ContextService } from '../context.service';
 import { ColorService } from '../color.service';
 import { ErrorService } from '../error.service';
 import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/forms';
+import { ParameterViewModel } from '../view-models/parameter-view-model';
+
 
 @Component({
     selector: 'app-dialog',
@@ -43,11 +45,11 @@ export class DialogComponent implements OnInit, OnDestroy {
 
     private currentDialogId: string;
 
-    private parms: _.Dictionary<ViewModels.ParameterViewModel>;
+    private parms: _.Dictionary<ParameterViewModel>;
 
     private createForm(dialog: ViewModels.DialogViewModel) {
         const pps = dialog.parameters;
-        this.parms = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<ViewModels.ParameterViewModel>;
+        this.parms = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<ParameterViewModel>;
         const controls = _.mapValues(this.parms, p => [p.getValueForControl(), a => p.validator(a)]) as _.Dictionary<any>;
         this.form = this.formBuilder.group(controls);
 

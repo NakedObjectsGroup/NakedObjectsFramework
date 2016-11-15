@@ -29,6 +29,7 @@ import { ToolBarViewModel } from './view-models/toolbar-view-model';
 import * as Recentitemsviewmodel from './view-models/recent-items-view-model';
 import * as Ciceroviewmodel from './view-models/cicero-view-model';
 import { FieldViewModel } from './view-models/field-view-model';
+import { ParameterViewModel } from './view-models/parameter-view-model';
 
 @Injectable()
 export class ViewModelFactoryService {
@@ -172,7 +173,7 @@ export class ViewModelFactoryService {
             return _.map(parameters, parm => this.parameterViewModel(parm, parms[parm.id()], paneId));
         };
 
-        actionViewModel.execute = (pps: ViewModels.ParameterViewModel[], right?: boolean) => {
+        actionViewModel.execute = (pps: ParameterViewModel[], right?: boolean) => {
             const parmMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Models.Value>;
             _.forEach(pps, p => this.urlManager.setParameterValue(actionRep.actionId(), p.parameterRep, p.getValue(), paneId));
             return this.context.getInvokableAction(actionViewModel.actionRep).then(details => this.context.invokeAction(details, parmMap, paneId, this.clickHandler.pane(paneId, right)));
@@ -498,12 +499,12 @@ export class ViewModelFactoryService {
         return propertyViewModel as ViewModels.PropertyViewModel;
     };
 
-    private setupParameterChoices(parmViewModel: ViewModels.ParameterViewModel) {
+    private setupParameterChoices(parmViewModel: ParameterViewModel) {
         const parmRep = parmViewModel.parameterRep;
         parmViewModel.choices = _.map(parmRep.choices(), (v, n) => ChoiceViewModel.create(v, parmRep.id(), n));
     }
 
-    private setupParameterAutocomplete(parmViewModel: ViewModels.ParameterViewModel) {
+    private setupParameterAutocomplete(parmViewModel: ParameterViewModel) {
         const parmRep = parmViewModel.parameterRep;
         parmViewModel.prompt = (searchTerm: string) => {
             const createcvm = _.partial(this.createChoiceViewModels, parmViewModel.id, searchTerm);
@@ -514,7 +515,7 @@ export class ViewModelFactoryService {
         parmViewModel.description = parmViewModel.description || Msg.autoCompletePrompt;
     }
 
-    private setupParameterFreeformReference(parmViewModel: ViewModels.ParameterViewModel, previousValue: Models.Value) {
+    private setupParameterFreeformReference(parmViewModel: ParameterViewModel, previousValue: Models.Value) {
         const parmRep = parmViewModel.parameterRep;
         parmViewModel.description = parmViewModel.description || Msg.dropPrompt;
 
@@ -526,7 +527,7 @@ export class ViewModelFactoryService {
         }
     }
 
-    private setupParameterConditionalChoices(parmViewModel: ViewModels.ParameterViewModel) {
+    private setupParameterConditionalChoices(parmViewModel: ParameterViewModel) {
         const parmRep = parmViewModel.parameterRep;
         parmViewModel.conditionalChoices = (args: _.Dictionary<Models.Value>) => {
             const createcvm = _.partial(this.createChoiceViewModels, parmViewModel.id, null);
@@ -536,7 +537,7 @@ export class ViewModelFactoryService {
         parmViewModel.promptArguments = (<any>_.fromPairs)(_.map(parmRep.promptLink().arguments(), (v: any, key: string) => [key, new Models.Value(v.value)]));
     }
 
-    private setupParameterSelectedChoices(parmViewModel: ViewModels.ParameterViewModel, previousValue: Models.Value) {
+    private setupParameterSelectedChoices(parmViewModel: ParameterViewModel, previousValue: Models.Value) {
         const parmRep = parmViewModel.parameterRep;
         const fieldEntryType = parmViewModel.entryType;
         function setCurrentChoices(vals: Models.Value) {
@@ -579,7 +580,7 @@ export class ViewModelFactoryService {
 
     }
 
-    private setupParameterSelectedValue(parmViewModel: ViewModels.ParameterViewModel, previousValue: Models.Value) {
+    private setupParameterSelectedValue(parmViewModel: ParameterViewModel, previousValue: Models.Value) {
         const parmRep = parmViewModel.parameterRep;
         const returnType = parmRep.extensions().returnType();
 
@@ -604,12 +605,12 @@ export class ViewModelFactoryService {
         parmViewModel.refresh(previousValue);
     }
 
-    private getRequiredIndicator(parmViewModel: ViewModels.ParameterViewModel) {
+    private getRequiredIndicator(parmViewModel: ParameterViewModel) {
         return parmViewModel.optional || typeof parmViewModel.value === "boolean" ? "" : "* ";
     }
 
     parameterViewModel = (parmRep: Models.Parameter, previousValue: Models.Value, paneId: number) => {
-        const parmViewModel = new ViewModels.ParameterViewModel(parmRep, paneId, this.color, this.error);
+        const parmViewModel = new ParameterViewModel(parmRep, paneId, this.color, this.error);
 
         const fieldEntryType = parmViewModel.entryType;
 
@@ -648,7 +649,7 @@ export class ViewModelFactoryService {
         parmViewModel.validate = <any>_.partial(this.validate, parmRep, parmViewModel, this.momentWrapperService) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
         parmViewModel.drop = _.partial(this.drop, this.context, this.error, parmViewModel);
 
-        return parmViewModel as ViewModels.ParameterViewModel;
+        return parmViewModel;
     };
 
     getItems = (links: Models.Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: ViewModels.ListViewModel | ViewModels.CollectionViewModel) => {

@@ -3,6 +3,8 @@ import * as Models from "../models";
 import * as ViewModels from "../view-models";
 import { FormGroup } from '@angular/forms';
 import { ParameterComponent } from "../parameter/parameter.component";
+import { ParameterViewModel } from '../view-models/parameter-view-model';
+
 
 @Component({
     selector: 'parameters',
@@ -11,7 +13,7 @@ import { ParameterComponent } from "../parameter/parameter.component";
 })
 export class ParametersComponent {
 
-    parms: ViewModels.ParameterViewModel[];
+    parms: ParameterViewModel[];
 
     @Input()
     parent: ViewModels.DialogViewModel;
@@ -20,7 +22,7 @@ export class ParametersComponent {
     form: FormGroup = null;
 
     @Input()
-    set parameters(value: ViewModels.ParameterViewModel[]) {
+    set parameters(value: ParameterViewModel[]) {
         this.parms = value;
     }
 

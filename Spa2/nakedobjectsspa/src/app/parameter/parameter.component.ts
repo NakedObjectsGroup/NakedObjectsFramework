@@ -9,6 +9,7 @@ import { FieldComponent } from '../field/field.component';
 import { FormGroup } from '@angular/forms';
 import { ContextService } from "../context.service";
 import { FieldViewModel } from '../view-models/field-view-model';
+import { ParameterViewModel } from '../view-models/parameter-view-model';
 
 
 @Component({
@@ -28,13 +29,13 @@ export class ParameterComponent extends FieldComponent implements OnInit {
         super(myElement, context);
     }
 
-    parm: ViewModels.ParameterViewModel;
+    parm: ParameterViewModel;
 
     @Input()
     parent: ViewModels.DialogViewModel;
 
     @Input()
-    set parameter(value: ViewModels.ParameterViewModel) {
+    set parameter(value: ParameterViewModel) {
         this.parm = value;
         this.droppable = value as FieldViewModel;
     }

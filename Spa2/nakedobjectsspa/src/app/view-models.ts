@@ -24,6 +24,7 @@ import { ItemViewModel } from './view-models/item-view-model';
 import * as Idraggableviewmodel from './view-models/idraggable-view-model';
 import { MessageViewModel } from './view-models/message-view-model';
 import * as Fieldviewmodel from './view-models/field-view-model';
+import * as Parameterviewmodel from './view-models/parameter-view-model';
 
 function tooltip(onWhat: { clientValid: () => boolean }, fields: Fieldviewmodel.FieldViewModel[]): string {
     if (onWhat.clientValid()) {
@@ -126,25 +127,7 @@ export function createMenuItems(avms: ActionViewModel[]) {
 
 
 
-export class ParameterViewModel extends Fieldviewmodel.FieldViewModel {
 
-    constructor(parmRep: Models.Parameter, paneId: number, color: ColorService, error: ErrorService) {
-        super(parmRep.extensions(), color, error);
-        this.parameterRep = parmRep;
-        this.onPaneId = paneId;
-        this.type = parmRep.isScalar() ? "scalar" : "ref";
-        this.dflt = parmRep.default().toString();
-        this.id = parmRep.id();
-        this.argId = `${this.id.toLowerCase()}`;
-        this.paneArgId = `${this.argId}${this.onPaneId}`;
-        this.isCollectionContributed = parmRep.isCollectionContributed();
-        this.entryType = parmRep.entryType();
-        this.value = null;
-    }
-
-    parameterRep: Models.Parameter;
-    dflt: string;
-}
 
 export class ActionViewModel  {
     actionRep: Models.ActionMember | Models.ActionRepresentation;
@@ -156,9 +139,9 @@ export class ActionViewModel  {
     presentationHint: string;
 
     doInvoke: (right?: boolean) => void;
-    execute: (pps: ParameterViewModel[], right?: boolean) => Promise<Models.ActionResultRepresentation>;
+    execute: (pps: Parameterviewmodel.ParameterViewModel[], right?: boolean) => Promise<Models.ActionResultRepresentation>;
     disabled: () => boolean;
-    parameters: () => ParameterViewModel[];
+    parameters: () => Parameterviewmodel.ParameterViewModel[];
     makeInvokable: (details: Models.IInvokableAction) => void;
 }
 
@@ -199,7 +182,7 @@ export class DialogViewModel extends MessageViewModel  {
     actionViewModel: ActionViewModel;
     title: string;
     id: string;
-    parameters: ParameterViewModel[];
+    parameters: Parameterviewmodel.ParameterViewModel[];
 
     reset(actionViewModel: ActionViewModel, routeData: PaneRouteData) {
         this.actionViewModel = actionViewModel;
@@ -414,7 +397,7 @@ export class ListViewModel extends MessageViewModel {
 
     private collectionContributedActionDecorator(actionViewModel: ActionViewModel) {
         const wrappedInvoke = actionViewModel.execute;
-        actionViewModel.execute = (pps: ParameterViewModel[], right?: boolean) => {
+        actionViewModel.execute = (pps: Parameterviewmodel.ParameterViewModel[], right?: boolean) => {
             const selected = _.filter(this.items, i => i.selected);
 
             if (selected.length === 0) {
@@ -712,7 +695,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IDraggabl
 
     private wrapAction(a: ActionViewModel) {
         const wrappedInvoke = a.execute;
-        a.execute = (pps: ParameterViewModel[], right?: boolean) => {
+        a.execute = (pps: Parameterviewmodel.ParameterViewModel[], right?: boolean) => {
             this.setProperties();
             const pairs = _.map(this.editProperties(), p => [p.id, p.getValue()]);
             const prps = (<any>_.fromPairs)(pairs) as _.Dictionary<Models.Value>;
