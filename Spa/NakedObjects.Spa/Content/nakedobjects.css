@@ -775,6 +775,10 @@ input[type=submit] {
     vertical-align: top;
 }
 
+.lineDialog .parameter {
+    width: 245px; /*To force (on IE) any validation message to be displayed underneath the field*/
+}
+
 .lineDialog .name {
     display: none;
 }
