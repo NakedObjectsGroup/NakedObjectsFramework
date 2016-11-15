@@ -1,8 +1,8 @@
-﻿import * as Rointerfaces from '../ro-interfaces';
+﻿import * as Ro from '../ro-interfaces';
 
 export class ApplicationPropertiesViewModel {
-    serverVersion: Rointerfaces.IVersionRepresentation;
-    user: Rointerfaces.IUserRepresentation;
+    serverVersion: Ro.IVersionRepresentation;
+    user: Ro.IUserRepresentation;
     serverUrl: string;
     clientVersion: string;
 }

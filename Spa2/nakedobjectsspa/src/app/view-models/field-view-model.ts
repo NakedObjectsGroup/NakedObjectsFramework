@@ -1,23 +1,20 @@
-﻿
-
-import * as Messageviewmodel from './message-view-model';
-import * as Models from '../models';
-import * as Colorservice from '../color.service';
-import * as Errorservice from '../error.service';
-import * as Rointerfaces from '../ro-interfaces';
-import * as Maskservice from '../mask.service';
-import * as Choiceviewmodel from './choice-view-model';
-import * as Usermessages from '../user-messages';
-import * as Idraggableviewmodel from './idraggable-view-model';
-import * as Config from '../config';
-
+﻿import { MessageViewModel } from './message-view-model';
+import { ColorService } from '../color.service';
+import { ErrorService } from '../error.service';
+import { ILocalFilter } from '../mask.service';
+import { ChoiceViewModel } from './choice-view-model';
+import { IDraggableViewModel } from './idraggable-view-model';
 import { AbstractControl } from '@angular/forms';
 import { Subject } from 'rxjs/Subject';
+import * as Models from '../models';
+import * as Ro from '../ro-interfaces';
+import * as Config from '../config';
+import * as Msg from '../user-messages';
 import * as _ from "lodash";
 
-export abstract class FieldViewModel extends Messageviewmodel.MessageViewModel {
+export abstract class FieldViewModel extends MessageViewModel {
 
-    constructor(ext: Models.Extensions, color: Colorservice.ColorService, error: Errorservice.ErrorService) {
+    constructor(ext: Models.Extensions, color: ColorService, error: ErrorService) {
         super();
         this.optional = ext.optional();
         this.description = ext.description();
@@ -43,7 +40,7 @@ export abstract class FieldViewModel extends Messageviewmodel.MessageViewModel {
     mask: string;
     title: string;
     returnType: string;
-    format: Rointerfaces.formatType;
+    format: Ro.formatType;
     multipleLines: number;
     password: boolean;
 
@@ -64,7 +61,7 @@ export abstract class FieldViewModel extends Messageviewmodel.MessageViewModel {
     validChanged$ = this.validChangedSource.asObservable();
 
     type: "scalar" | "ref";
-    reference: string = "";
+    reference = "";
     minLength: number;
 
     color: string;
@@ -76,56 +73,56 @@ export abstract class FieldViewModel extends Messageviewmodel.MessageViewModel {
     currentValue: Models.Value;
     originalValue: Models.Value;
 
-    localFilter: Maskservice.ILocalFilter;
+    localFilter: ILocalFilter;
     formattedValue: string;
 
-    private choiceOptions = [];
+    private choiceOptions: any[] = [];
 
-    get choices(): Choiceviewmodel.ChoiceViewModel[] {
+    get choices(): ChoiceViewModel[] {
         return this.choiceOptions;
     }
 
-    set choices(options: Choiceviewmodel.ChoiceViewModel[]) {
+    set choices(options: ChoiceViewModel[]) {
         this.choiceOptions = options;
 
-        if (this.entryType == Models.EntryType.MultipleConditionalChoices) {
+        if (this.entryType === Models.EntryType.MultipleConditionalChoices) {
             const currentSelectedOptions = this.selectedMultiChoices;
-            this.selectedMultiChoices = _.filter(this.choiceOptions, c => _.some(currentSelectedOptions, choiceToSet => c.valuesEqual(choiceToSet)));
+            this.selectedMultiChoices = _.filter(this.choiceOptions, c => _.some(currentSelectedOptions, (choiceToSet: any) => c.valuesEqual(choiceToSet)));
         } else if (this.entryType === Models.EntryType.ConditionalChoices) {
             const currentSelectedOption = this.selectedChoice;
-            this.selectedChoice = _.find(this.choiceOptions, c => c.valuesEqual(currentSelectedOption));
+            this.selectedChoice = _.find(this.choiceOptions, (c: any) => c.valuesEqual(currentSelectedOption));
         }
     }
 
-    private currentChoice: Choiceviewmodel.ChoiceViewModel;
+    private currentChoice: ChoiceViewModel;
 
-    private error: Errorservice.ErrorService;
+    private error: ErrorService;
 
-    get selectedChoice(): Choiceviewmodel.ChoiceViewModel {
+    get selectedChoice(): ChoiceViewModel {
         return this.currentChoice;
     }
 
-    set selectedChoice(newChoice: Choiceviewmodel.ChoiceViewModel) {
+    set selectedChoice(newChoice: ChoiceViewModel) {
         // type guard because angular pushes string value here until directive finds 
         // choice
-        if (newChoice instanceof Choiceviewmodel.ChoiceViewModel || newChoice == null) {
+        if (newChoice instanceof ChoiceViewModel || newChoice == null) {
             this.currentChoice = newChoice;
             this.updateColor();
         }
     }
 
-    private currentRawValue: Rointerfaces.scalarValueType | Date;
+    private currentRawValue: Ro.scalarValueType | Date;
 
-    get value(): Rointerfaces.scalarValueType | Date {
+    get value(): Ro.scalarValueType | Date {
         return this.currentRawValue;
     }
 
-    set value(newValue: Rointerfaces.scalarValueType | Date) {
+    set value(newValue: Ro.scalarValueType | Date) {
         this.currentRawValue = newValue;
         this.updateColor();
     }
 
-    selectedMultiChoices: Choiceviewmodel.ChoiceViewModel[];
+    selectedMultiChoices: ChoiceViewModel[];
 
     file: Models.Link;
 
@@ -137,25 +134,24 @@ export abstract class FieldViewModel extends Messageviewmodel.MessageViewModel {
 
         let val: string;
 
-        if (viewValue instanceof Choiceviewmodel.ChoiceViewModel) {
+        if (viewValue instanceof ChoiceViewModel) {
             val = viewValue.getValue().toValueString();
         } else if (viewValue instanceof Array) {
             if (viewValue.length) {
-                return _.every(viewValue as (string | Choiceviewmodel.ChoiceViewModel)[], (v: any) => this.isValid(v));
+                return _.every(viewValue as (string | ChoiceViewModel)[], (v: any) => this.isValid(v));
             }
             val = "";
         } else {
             val = viewValue as string;
         }
 
-        if (this.entryType === Models.EntryType.AutoComplete && !(viewValue instanceof Choiceviewmodel.ChoiceViewModel)) {
+        if (this.entryType === Models.EntryType.AutoComplete && !(viewValue instanceof ChoiceViewModel)) {
 
             if (val) {
-                this.setMessage(Usermessages.pendingAutoComplete);
+                this.setMessage(Msg.pendingAutoComplete);
                 this.clientValid = false;
                 return false;
-            }
-            else if (!this.optional) {
+            } else if (!this.optional) {
                 this.resetMessage();
                 this.clientValid = false;
                 return false;
@@ -177,17 +173,17 @@ export abstract class FieldViewModel extends Messageviewmodel.MessageViewModel {
 
     refresh: (newValue: Models.Value) => void;
 
-    prompt: (searchTerm: string) => Promise<Choiceviewmodel.ChoiceViewModel[]>;
+    prompt: (searchTerm: string) => Promise<ChoiceViewModel[]>;
 
-    conditionalChoices: (args: _.Dictionary<Models.Value>) => Promise<Choiceviewmodel.ChoiceViewModel[]>;
+    conditionalChoices: (args: _.Dictionary<Models.Value>) => Promise<ChoiceViewModel[]>;
 
-    setNewValue(newValue: Idraggableviewmodel.IDraggableViewModel) {
+    setNewValue(newValue: IDraggableViewModel) {
         this.selectedChoice = newValue.selectedChoice;
         this.value = newValue.value;
         this.reference = newValue.reference;
     }
 
-    drop: (newValue: Idraggableviewmodel.IDraggableViewModel) => Promise<boolean>;
+    drop: (newValue: IDraggableViewModel) => Promise<boolean>;
 
     clear() {
         this.selectedChoice = null;
@@ -197,46 +193,43 @@ export abstract class FieldViewModel extends Messageviewmodel.MessageViewModel {
 
     private updateColor: () => void;
 
-    private setColor(color: Colorservice.ColorService) {
+    private setColor(color: ColorService) {
 
         if (this.entryType === Models.EntryType.AutoComplete && this.selectedChoice && this.type === "ref") {
             const href = this.selectedChoice.getValue().href();
             if (href) {
-                color.toColorNumberFromHref(href).
-                    then(c => {
+                color.toColorNumberFromHref(href)
+                    .then(c => {
                         // only if we still have a choice may have been cleared by a later call
                         if (this.selectedChoice) {
                             this.color = `${Config.linkColor}${c}`;
                         }
-                    }).
-                    catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+                    })
+                    .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
                 return;
             }
-        }
-        else if (this.entryType !== Models.EntryType.AutoComplete && this.value) {
-            color.toColorNumberFromType(this.returnType).
-                then(c => {
+        } else if (this.entryType !== Models.EntryType.AutoComplete && this.value) {
+            color.toColorNumberFromType(this.returnType)
+                .then(c => {
                     // only if we still have a value may have been cleared by a later call
                     if (this.value) {
                         this.color = `${Config.linkColor}${c}`;
                     }
-                }).
-                catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+                })
+                .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
             return;
         }
 
         this.color = "";
     }
 
-    setValueFromControl(newValue: Rointerfaces.scalarValueType | Date | Choiceviewmodel.ChoiceViewModel | Choiceviewmodel.ChoiceViewModel[]) {
+    setValueFromControl(newValue: Ro.scalarValueType | Date | ChoiceViewModel | ChoiceViewModel[]) {
 
         if (newValue instanceof Array) {
             this.selectedMultiChoices = newValue;
-        }
-        else if (newValue instanceof Choiceviewmodel.ChoiceViewModel) {
+        } else if (newValue instanceof ChoiceViewModel) {
             this.selectedChoice = newValue;
-        }
-        else {
+        } else {
             this.value = newValue;
         }
 
@@ -293,7 +286,7 @@ export abstract class FieldViewModel extends Messageviewmodel.MessageViewModel {
                 return new Models.Value((this.value as Date).toISOString());
             }
 
-            return new Models.Value(this.value as Rointerfaces.scalarValueType);
+            return new Models.Value(this.value as Ro.scalarValueType);
         }
 
         // reference

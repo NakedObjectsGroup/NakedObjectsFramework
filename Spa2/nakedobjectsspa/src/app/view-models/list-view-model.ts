@@ -46,19 +46,19 @@ export class ListViewModel extends Messageviewmodel.MessageViewModel {
     description: () => string;
 
     private recreate = (page: number, pageSize: number) => {
-        return this.routeData.objectId ?
-            this.context.getListFromObject(this.routeData.paneId, this.routeData, page, pageSize) :
-            this.context.getListFromMenu(this.routeData.paneId, this.routeData, page, pageSize);
+        return this.routeData.objectId
+            ? this.context.getListFromObject(this.routeData.paneId, this.routeData, page, pageSize)
+            : this.context.getListFromMenu(this.routeData.paneId, this.routeData, page, pageSize);
     };
 
     private pageOrRecreate = (newPage: number, newPageSize: number, newState?: Routedata.CollectionViewState) => {
-        this.recreate(newPage, newPageSize).
-            then((list: Models.ListRepresentation) => {
+        this.recreate(newPage, newPageSize)
+            .then((list: Models.ListRepresentation) => {
                 this.urlManager.setListPaging(newPage, newPageSize, newState || this.routeData.state, this.onPaneId);
                 this.routeData = this.urlManager.getRouteData().pane()[this.onPaneId];
                 this.reset(list, this.routeData);
-            }).
-            catch((reject: Models.ErrorWrapper) => {
+            })
+            .catch((reject: Models.ErrorWrapper) => {
                 const display = (em: Models.ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
                 this.error.handleErrorAndDisplayMessages(reject, display);
             });
@@ -123,25 +123,23 @@ export class ListViewModel extends Messageviewmodel.MessageViewModel {
                 const allpps = _.clone(pps);
                 allpps.push(collectionParmVm);
                 return allpps;
-            }
-
+            };
             if (actionViewModel.invokableActionRep) {
                 return wrappedInvoke(getParms(actionViewModel.invokableActionRep), right);
             }
 
             return this.context.getActionDetails(actionViewModel.actionRep as Models.ActionMember)
                 .then((details: Models.ActionRepresentation) => wrappedInvoke(getParms(details), right));
-        }
+        };
     }
 
     private collectionContributedInvokeDecorator(actionViewModel: Actionviewmodel.ActionViewModel) {
 
         const showDialog = () =>
-            this.context.getInvokableAction(actionViewModel.actionRep as Models.ActionMember).
-                then(invokableAction => _.keys(invokableAction.parameters()).length > 1);
+            this.context.getInvokableAction(actionViewModel.actionRep as Models.ActionMember).then(invokableAction => _.keys(invokableAction.parameters()).length > 1);
 
         // make sure not null while waiting for promise to assign correct function 
-        actionViewModel.doInvoke = () => { };
+        actionViewModel.doInvoke = () => {};
 
         const invokeWithDialog = (right?: boolean) => {
             this.context.clearDialogValues(this.onPaneId);
@@ -149,16 +147,14 @@ export class ListViewModel extends Messageviewmodel.MessageViewModel {
         };
 
         const invokeWithoutDialog = (right?: boolean) =>
-            actionViewModel.execute([], right).
-                then(result => this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || Usermessages.noResultMessage : "")).
-                catch((reject: Models.ErrorWrapper) => {
-                    const display = (em: Models.ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
-                    this.error.handleErrorAndDisplayMessages(reject, display);
-                });
+            actionViewModel.execute([], right)
+            .then(result => this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || Usermessages.noResultMessage : ""))
+            .catch((reject: Models.ErrorWrapper) => {
+                const display = (em: Models.ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
+                this.error.handleErrorAndDisplayMessages(reject, display);
+            });
 
-        showDialog().
-            then(show => actionViewModel.doInvoke = show ? invokeWithDialog : invokeWithoutDialog).
-            catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+        showDialog().then(show => actionViewModel.doInvoke = show ? invokeWithDialog : invokeWithoutDialog).catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
     }
 
     private decorate(actionViewModel: Actionviewmodel.ActionViewModel) {
@@ -171,13 +167,13 @@ export class ListViewModel extends Messageviewmodel.MessageViewModel {
         this.routeData = routeData;
         if (this.state !== routeData.state) {
             if (routeData.state === Routedata.CollectionViewState.Table && !this.hasTableData()) {
-                this.recreate(this.page, this.pageSize).
-                    then(list => {
+                this.recreate(this.page, this.pageSize)
+                    .then(list => {
                         this.state = list.hasTableData() ? Routedata.CollectionViewState.Table : Routedata.CollectionViewState.List;
                         this.listRep = list;
                         this.updateItems(list.value());
-                    }).
-                    catch((reject: Models.ErrorWrapper) => {
+                    })
+                    .catch((reject: Models.ErrorWrapper) => {
                         this.error.handleError(reject);
                     });
             } else {
@@ -254,10 +250,11 @@ export class ListViewModel extends Messageviewmodel.MessageViewModel {
     selectAll = () => {
         const newState = !this.allSelected();
 
-        _.each(this.items, (item) => {
-            item.selected = newState;
-            //item.selectionChange();
-        });
+        _.each(this.items,
+            (item) => {
+                item.selected = newState;
+                //item.selectionChange();
+            });
 
         //_.each(this.items, (item) => {
         //    //item.selected = newState;
@@ -272,7 +269,7 @@ export class ListViewModel extends Messageviewmodel.MessageViewModel {
     actionMember = (id: string) => {
         const actionViewModel = _.find(this.actions, a => a.actionRep.actionId() === id);
         return actionViewModel.actionRep;
-    }
+    };
 
     showActions() {
         return !!this.urlManager.getRouteData().pane()[this.onPaneId].actionsOpen;

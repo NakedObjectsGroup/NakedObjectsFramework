@@ -1,7 +1,7 @@
-﻿import * as Itemviewmodel from './item-view-model';
-import * as Routedata from '../route-data';
-import * as Actionviewmodel from './action-view-model';
-import * as Menuitemviewmodel from './menu-item-view-model';
+﻿import { ItemViewModel } from './item-view-model';
+import { PaneRouteData, CollectionViewState } from '../route-data';
+import { ActionViewModel } from './action-view-model';
+import { MenuItemViewModel } from './menu-item-view-model';
 import * as Models from '../models';
 import * as _ from "lodash";
 
@@ -13,15 +13,15 @@ export class CollectionViewModel {
     color: string;
     mayHaveItems: boolean;
     editing: boolean;
-    items: Itemviewmodel.ItemViewModel[];
+    items: ItemViewModel[];
     header: string[];
     onPaneId: number;
-    currentState: Routedata.CollectionViewState;
+    currentState: CollectionViewState;
     //requestedState: CollectionViewState;
     presentationHint: string;
     template: string;
-    actions: Actionviewmodel.ActionViewModel[];
-    menuItems: Menuitemviewmodel.MenuItemViewModel[];
+    actions: ActionViewModel[];
+    menuItems: MenuItemViewModel[];
     messages: string;
     collectionRep: Models.CollectionMember | Models.CollectionRepresentation;
 
@@ -31,9 +31,10 @@ export class CollectionViewModel {
     hasTableData: () => boolean;
 
     description = () => this.details.toString();
-    refresh: (routeData: Routedata.PaneRouteData, resetting: boolean) => void;
+    refresh: (routeData: PaneRouteData, resetting: boolean) => void;
 
     disableActions = () => this.editing || !this.actions || this.actions.length === 0;
     allSelected = () => _.every(this.items, item => item.selected);
+
     selectAll() { }
 }

@@ -1,6 +1,5 @@
-﻿
+﻿import { ParameterViewModel } from './parameter-view-model';
 import * as Models from '../models';
-import * as Parameterviewmodel from './parameter-view-model';
 
 export class ActionViewModel {
     actionRep: Models.ActionMember | Models.ActionRepresentation;
@@ -12,8 +11,8 @@ export class ActionViewModel {
     presentationHint: string;
 
     doInvoke: (right?: boolean) => void;
-    execute: (pps: Parameterviewmodel.ParameterViewModel[], right?: boolean) => Promise<Models.ActionResultRepresentation>;
+    execute: (pps: ParameterViewModel[], right?: boolean) => Promise<Models.ActionResultRepresentation>;
     disabled: () => boolean;
-    parameters: () => Parameterviewmodel.ParameterViewModel[];
+    parameters: () => ParameterViewModel[];
     makeInvokable: (details: Models.IInvokableAction) => void;
 }

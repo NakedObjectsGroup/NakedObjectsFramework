@@ -12,4 +12,3 @@ export class MenuViewModel extends Messageviewmodel.MessageViewModel {
     menuItems: Menuitemviewmodel.MenuItemViewModel[];
     menuRep: Models.MenuRepresentation;
 }
-

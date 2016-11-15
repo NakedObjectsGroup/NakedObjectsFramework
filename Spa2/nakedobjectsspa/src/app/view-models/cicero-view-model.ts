@@ -1,6 +1,4 @@
-﻿
-
-import * as Routedata from '../route-data';
+﻿import { PaneRouteData, ViewType } from '../route-data';
 import * as Models from '../models';
 
 export class CiceroViewModel {
@@ -14,12 +12,10 @@ export class CiceroViewModel {
 
     selectPreviousInput = () => {
         this.input = this.previousInput;
-    }
-
+    };
     clearInput = () => {
         this.input = null;
-    }
-
+    };
     autoComplete: (input: string) => void;
 
     outputMessageThenClearIt() {
@@ -27,11 +23,11 @@ export class CiceroViewModel {
         this.message = null;
     }
 
-    renderHome: (routeData: Routedata.PaneRouteData) => void;
-    renderObject: (routeData: Routedata.PaneRouteData) => void;
-    renderList: (routeData: Routedata.PaneRouteData) => void;
+    renderHome: (routeData: PaneRouteData) => void;
+    renderObject: (routeData: PaneRouteData) => void;
+    renderList: (routeData: PaneRouteData) => void;
     renderError: () => void;
-    viewType: Routedata.ViewType;
+    viewType: ViewType;
     clipboard: Models.DomainObjectRepresentation;
 
     executeNextChainedCommandIfAny: () => void;

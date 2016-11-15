@@ -10,8 +10,7 @@ export abstract class MessageViewModel implements Imessageviewmodel.IMessageView
         } else {
             this.previousMessage = this.message;
         }
-    }
-
+    };
     resetMessage = () => this.message = this.previousMessage = "";
     setMessage = (msg: string) => this.message = msg;
     getMessage = () => this.message;

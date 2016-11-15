@@ -1,6 +1,6 @@
-﻿import * as Models from '../models';
-import * as Contextservice from '../context.service';
-import * as Usermessages from '../user-messages';
+﻿import { ContextService } from '../context.service';
+import * as Models from '../models';
+import * as Msg from '../user-messages';
 
 export class AttachmentViewModel {
     href: string;
@@ -10,18 +10,18 @@ export class AttachmentViewModel {
     onPaneId: number;
 
     private parent: Models.DomainObjectRepresentation;
-    private context: Contextservice.ContextService;
+    private context: ContextService;
 
-    static create(attachmentLink: Models.Link, parent: Models.DomainObjectRepresentation, context: Contextservice.ContextService, paneId: number) {
+    static create(attachmentLink: Models.Link, parent: Models.DomainObjectRepresentation, context: ContextService, paneId: number) {
         const attachmentViewModel = new AttachmentViewModel();
         attachmentViewModel.link = attachmentLink;
         attachmentViewModel.href = attachmentLink.href();
         attachmentViewModel.mimeType = attachmentLink.type().asString;
-        attachmentViewModel.title = attachmentLink.title() || Usermessages.unknownFileTitle;
+        attachmentViewModel.title = attachmentLink.title() || Msg.unknownFileTitle;
         attachmentViewModel.parent = parent;
         attachmentViewModel.context = context;
         attachmentViewModel.onPaneId = paneId;
-        return attachmentViewModel as AttachmentViewModel;
+        return attachmentViewModel;
     }
 
     downloadFile = () => this.context.getFile(this.parent, this.href, this.mimeType);

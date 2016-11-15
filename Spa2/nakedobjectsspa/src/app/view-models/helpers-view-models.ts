@@ -39,12 +39,13 @@ function getMenuForLevel(menupath: string, level: number) {
 }
 
 function removeDuplicateMenus(menus: Menuitemviewmodel.MenuItemViewModel[]) {
-    return _.uniqWith(menus, (m1: Menuitemviewmodel.MenuItemViewModel, m2: Menuitemviewmodel.MenuItemViewModel) => {
-        if (m1.name && m2.name) {
-            return m1.name === m2.name;
-        }
-        return false;
-    });
+    return _.uniqWith(menus,
+        (m1: Menuitemviewmodel.MenuItemViewModel, m2: Menuitemviewmodel.MenuItemViewModel) => {
+            if (m1.name && m2.name) {
+                return m1.name === m2.name;
+            }
+            return false;
+        });
 }
 
 export function createSubmenuItems(avms: Actionviewmodel.ActionViewModel[], menu: Menuitemviewmodel.MenuItemViewModel, level: number) {

@@ -5,7 +5,7 @@ import * as Linkviewmodel from './link-view-model';
 import * as _ from "lodash";
 
 export class MenusViewModel {
-    constructor(private viewModelFactory: Viewmodelfactoryservice.ViewModelFactoryService) { }
+    constructor(private viewModelFactory: Viewmodelfactoryservice.ViewModelFactoryService) {}
 
     reset(menusRep: Models.MenusRepresentation, routeData: Routedata.PaneRouteData) {
         this.menusRep = menusRep;

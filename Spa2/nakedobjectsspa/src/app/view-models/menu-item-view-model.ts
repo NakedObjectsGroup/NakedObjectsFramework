@@ -3,7 +3,8 @@
 export class MenuItemViewModel {
     constructor(public name: string,
         public actions: Actionviewmodel.ActionViewModel[],
-        public menuItems: MenuItemViewModel[]) { }
+        public menuItems: MenuItemViewModel[]) {
+    }
 
     toggleCollapsed() {
         this.navCollapsed = !this.navCollapsed;
