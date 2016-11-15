@@ -22,6 +22,13 @@ import { LinkViewModel } from './view-models/link-view-model';
 import { ItemViewModel } from './view-models/item-view-model';
 import { RecentItemViewModel } from './view-models/recent-item-view-model';
 
+import { TableRowColumnViewModel } from './view-models/table-row-column-view-model';
+import { TableRowViewModel } from './view-models/table-row-view-model';
+import { CollectionPlaceholderViewModel } from './view-models/collection-placeholder-view-model';
+import { ToolBarViewModel } from './view-models/toolbar-view-model';
+import * as Recentitemsviewmodel from './view-models/recent-items-view-model';
+import * as Ciceroviewmodel from './view-models/cicero-view-model';
+
 @Injectable()
 export class ViewModelFactoryService {
 
@@ -342,7 +349,7 @@ export class ViewModelFactoryService {
     }
 
     propertyTableViewModel = (propertyRep: Models.PropertyMember | Models.CollectionMember, id: string, paneId: number) => {
-        const tableRowColumnViewModel = new ViewModels.TableRowColumnViewModel();
+        const tableRowColumnViewModel = new TableRowColumnViewModel();
 
         tableRowColumnViewModel.title = propertyRep.extensions().friendlyName();
         tableRowColumnViewModel.id = id;
@@ -800,7 +807,7 @@ export class ViewModelFactoryService {
 
 
     listPlaceholderViewModel = (routeData: PaneRouteData) => {
-        const collectionPlaceholderViewModel = new ViewModels.CollectionPlaceholderViewModel();
+        const collectionPlaceholderViewModel = new CollectionPlaceholderViewModel();
 
         collectionPlaceholderViewModel.description = () => `Page ${routeData.page}`;
 
@@ -845,25 +852,25 @@ export class ViewModelFactoryService {
     }
 
     recentItemsViewModel = (paneId: number) => {
-        const recentItemsViewModel = new ViewModels.RecentItemsViewModel();
+        const recentItemsViewModel = new Recentitemsviewmodel.RecentItemsViewModel();
         recentItemsViewModel.onPaneId = paneId;
         const items = _.map(this.context.getRecentlyViewed(), (o, i) => ({ obj: o, link: this.selfLinkWithTitle(o), index: i }));
         recentItemsViewModel.items = _.map(items, i => this.recentItemViewModel(i.obj, i.link, paneId, false, i.index));
         return recentItemsViewModel;
     };
 
-    tableRowViewModel = (properties: _.Dictionary<Models.PropertyMember>, paneId: number): ViewModels.TableRowViewModel => {
-        const tableRowViewModel = new ViewModels.TableRowViewModel();
+    tableRowViewModel = (properties: _.Dictionary<Models.PropertyMember>, paneId: number): TableRowViewModel => {
+        const tableRowViewModel = new TableRowViewModel();
         tableRowViewModel.properties = _.map(properties, (property, id) => this.propertyTableViewModel(property, id, paneId));
         return tableRowViewModel;
     };
 
 
-    private cachedToolBarViewModel: ViewModels.ToolBarViewModel;
+    private cachedToolBarViewModel: ToolBarViewModel;
 
     private getToolBarViewModel() {
         if (!this.cachedToolBarViewModel) {
-            const tvm = new ViewModels.ToolBarViewModel();
+            const tvm = new ToolBarViewModel();
 
             tvm.goBack = () => {
                 this.context.updateValues();
@@ -932,7 +939,7 @@ export class ViewModelFactoryService {
 
     toolBarViewModel = () => this.getToolBarViewModel();
 
-    private cvm: ViewModels.CiceroViewModel = null;
+    private cvm: Ciceroviewmodel.CiceroViewModel = null;
 
     //ciceroViewModel = () => {
     //    if (cvm == null) {

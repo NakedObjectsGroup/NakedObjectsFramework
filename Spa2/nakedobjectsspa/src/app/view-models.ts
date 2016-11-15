@@ -625,10 +625,7 @@ export class PropertyViewModel extends FieldViewModel implements Idraggableviewm
     canDropOn: (targetType: string) => Promise<boolean>;
 }
 
-export class CollectionPlaceholderViewModel  {
-    description: () => string;
-    reload: () => void;
-}
+
 
 export class ListViewModel extends MessageViewModel {
 
@@ -949,69 +946,8 @@ export class MenuViewModel extends MessageViewModel  {
     menuRep: Models.MenuRepresentation;
 }
 
-export class TableRowColumnViewModel  {
-    type: "ref" | "scalar";
-    returnType: string;
-    value: Ro.scalarValueType | Date;
-    formattedValue: string;
-    title: string;
-    id: string;
-}
 
 
-export class TableRowViewModel {
-    title: string;
-    hasTitle: boolean;
-    properties: TableRowColumnViewModel[];
-
-    getPlaceHolderTableRowColumnViewModel(id: string) {
-        const ph = new TableRowColumnViewModel();
-        ph.id = id;
-        ph.type = "scalar";
-        ph.value =   "";
-        ph.formattedValue = "";
-        ph.title = "";
-        return ph;
-    }
-
-    conformColumns(columns: string[]) {
-        if (columns) {
-            this.properties =
-                _.map(columns, c => _.find(this.properties, tp => tp.id === c) || this.getPlaceHolderTableRowColumnViewModel(c));
-        }
-    }
-}
-
-export class ApplicationPropertiesViewModel  {
-    serverVersion: Ro.IVersionRepresentation;
-    user: Ro.IUserRepresentation;
-    serverUrl: string;
-    clientVersion: string;
-}
-
-export class ToolBarViewModel  {
-    loading: string;
-    template: string;
-    footerTemplate: string;
-    goHome: (right?: boolean) => void;
-    goBack: () => void;
-    goForward: () => void;
-    swapPanes: () => void;
-    logOff: () => void;
-    singlePane: (right?: boolean) => void;
-    recent: (right?: boolean) => void;
-    cicero: () => void;
-    userName: string;
-    applicationProperties: () => void;
-
-    warnings: string[];
-    messages: string[];
-}
-
-export class RecentItemsViewModel {
-    onPaneId: number;
-    items: RecentItemViewModel[];
-}
 
 export class DomainObjectViewModel extends MessageViewModel implements IDraggableViewModel {
 
@@ -1292,57 +1228,3 @@ export class DomainObjectViewModel extends MessageViewModel implements IDraggabl
 
 }
 
-
-
-export class CiceroViewModel  {
-    message: string;
-    output: string;
-    alert = ""; //Alert is appended before the output
-    input: string;
-    parseInput: (input: string) => void;
-    previousInput: string;
-    chainedCommands: string[];
-
-    selectPreviousInput = () => {
-        this.input = this.previousInput;
-    }
-
-    clearInput = () => {
-        this.input = null;
-    }
-
-    autoComplete: (input: string) => void;
-
-    outputMessageThenClearIt() {
-        this.output = this.message;
-        this.message = null;
-    }
-
-    renderHome: (routeData: PaneRouteData) => void;
-    renderObject: (routeData: PaneRouteData) => void;
-    renderList: (routeData: PaneRouteData) => void;
-    renderError: () => void;
-    viewType: ViewType;
-    clipboard: Models.DomainObjectRepresentation;
-
-    executeNextChainedCommandIfAny: () => void;
-
-    popNextCommand(): string {
-        if (this.chainedCommands) {
-            const next = this.chainedCommands[0];
-            this.chainedCommands.splice(0, 1);
-            return next;
-
-        }
-        return null;
-    }
-
-    clearInputRenderOutputAndAppendAlertIfAny(output: string): void {
-        this.clearInput();
-        this.output = output;
-        if (this.alert) {
-            this.output += this.alert;
-            this.alert = "";
-        }
-    }
-}

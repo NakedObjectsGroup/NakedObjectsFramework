@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
 import { UrlManagerService } from "../url-manager.service";
 import { RouteData, PaneRouteData } from "../route-data";
+import * as Recentitemsviewmodel from '../view-models/recent-items-view-model';
 
 @Component({
     selector: 'recent',
@@ -21,7 +22,7 @@ export class RecentComponent implements OnInit {
     }
 
     paneId: number;
-    vm: ViewModels.RecentItemsViewModel;
+    vm: Recentitemsviewmodel.RecentItemsViewModel;
 
     paneType: string;
 

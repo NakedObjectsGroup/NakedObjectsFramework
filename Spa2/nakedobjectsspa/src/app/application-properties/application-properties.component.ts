@@ -5,6 +5,7 @@ import * as ViewModels from "../view-models";
 import * as Models from '../models';
 import * as Nakedobjectsconfig from '../config';
 import { ErrorService } from "../error.service";
+import * as Applicationpropertiesviewmodel from '../view-models/application-properties-view-model';
 
 @Component({
     selector: 'application-properties',
@@ -32,11 +33,11 @@ export class ApplicationPropertiesComponent implements OnInit {
         return "todo";
     }
 
-    viewModel: ViewModels.ApplicationPropertiesViewModel;
+    viewModel: Applicationpropertiesviewmodel.ApplicationPropertiesViewModel;
 
     ngOnInit(): void {
 
-        this.viewModel = new ViewModels.ApplicationPropertiesViewModel();
+        this.viewModel = new Applicationpropertiesviewmodel.ApplicationPropertiesViewModel();
 
         this.context.getUser().then((u: Models.UserRepresentation) => this.viewModel.user = u.wrapped()).catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
