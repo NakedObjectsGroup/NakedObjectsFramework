@@ -1,6 +1,7 @@
 import { Component, Input, ViewChildren, QueryList, ElementRef, AfterViewInit } from '@angular/core';
 import * as ViewModels from "../view-models";
 import { ActionComponent } from "../action/action.component";
+import * as Menuitemviewmodel from '../view-models/menu-item-view-model';
 
 @Component({
     selector: 'actions',
@@ -10,7 +11,7 @@ import { ActionComponent } from "../action/action.component";
 export class ActionsComponent implements AfterViewInit {
 
     @Input()
-    menuVm: { menuItems: ViewModels.MenuItemViewModel[] };
+    menuVm: { menuItems: Menuitemviewmodel.MenuItemViewModel[] };
 
     @ViewChildren(ActionComponent)
     actionChildren: QueryList<ActionComponent>;

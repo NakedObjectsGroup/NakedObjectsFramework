@@ -1,5 +1,6 @@
 import { Component, Input, ElementRef } from '@angular/core';
 import * as ViewModels from "../view-models";
+import { ActionViewModel } from '../view-models/action-view-model';
 
 @Component({
     selector: 'action',
@@ -11,13 +12,13 @@ export class ActionComponent {
     constructor(private myElement: ElementRef) {
     }
 
-    private actionVm: ViewModels.ActionViewModel;
+    private actionVm: ActionViewModel;
 
     description: string;
     friendlyName: string;
 
     @Input()
-    set action(value: ViewModels.ActionViewModel) {
+    set action(value: ActionViewModel) {
         this.actionVm = value;
         this.description = this.actionVm.description;
         this.friendlyName = this.actionVm.title;

@@ -10,7 +10,7 @@ import { FormGroup } from '@angular/forms';
 import { ContextService } from "../context.service";
 import { FieldViewModel } from '../view-models/field-view-model';
 import { ParameterViewModel } from '../view-models/parameter-view-model';
-
+import { DialogViewModel } from '../view-models/dialog-view-model';
 
 @Component({
     selector: 'parameter',
@@ -32,7 +32,7 @@ export class ParameterComponent extends FieldComponent implements OnInit {
     parm: ParameterViewModel;
 
     @Input()
-    parent: ViewModels.DialogViewModel;
+    parent: DialogViewModel;
 
     @Input()
     set parameter(value: ParameterViewModel) {

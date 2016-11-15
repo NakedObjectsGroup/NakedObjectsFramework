@@ -10,7 +10,7 @@ import { ChoiceViewModel } from '../view-models/choice-view-model';
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
 import { FieldViewModel } from '../view-models/field-view-model';
 import { ParameterViewModel } from '../view-models/parameter-view-model';
-
+import { DialogViewModel } from '../view-models/dialog-view-model';
 
 
 
@@ -24,13 +24,13 @@ export abstract class FieldComponent {
         this.elementRef = myElement;
     }
 
-    private vmParent: ViewModels.DialogViewModel | ViewModels.DomainObjectViewModel;
+    private vmParent: DialogViewModel | ViewModels.DomainObjectViewModel;
     private model: ParameterViewModel | ViewModels.PropertyViewModel;
     private isConditionalChoices: boolean;
     private isAutoComplete: boolean;
     private control: AbstractControl;
 
-    protected init(vmParent: ViewModels.DialogViewModel | ViewModels.DomainObjectViewModel,
+    protected init(vmParent: DialogViewModel | ViewModels.DomainObjectViewModel,
         vm: ParameterViewModel | ViewModels.PropertyViewModel,
         control: AbstractControl) {
 
@@ -92,7 +92,7 @@ export abstract class FieldComponent {
 
     populateArguments() {
 
-        const dialog = this.vmParent as ViewModels.DialogViewModel;
+        const dialog = this.vmParent as DialogViewModel;
         const object = this.vmParent as ViewModels.DomainObjectViewModel;
 
         if (!dialog && !object) {

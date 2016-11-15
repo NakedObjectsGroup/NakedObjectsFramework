@@ -30,6 +30,7 @@ import * as Recentitemsviewmodel from './view-models/recent-items-view-model';
 import * as Ciceroviewmodel from './view-models/cicero-view-model';
 import { FieldViewModel } from './view-models/field-view-model';
 import { ParameterViewModel } from './view-models/parameter-view-model';
+import { ActionViewModel } from './view-models/action-view-model';
 
 @Injectable()
 export class ViewModelFactoryService {
@@ -150,7 +151,7 @@ export class ViewModelFactoryService {
     };
 
     actionViewModel = (actionRep: Models.ActionMember | Models.ActionRepresentation, vm: IMessageViewModel, routeData: PaneRouteData) => {
-        const actionViewModel = new ViewModels.ActionViewModel();
+        const actionViewModel = new ActionViewModel();
 
         const parms = routeData.actionParams;
         const paneId = routeData.paneId;
@@ -207,7 +208,7 @@ export class ViewModelFactoryService {
 
         actionViewModel.makeInvokable = (details: Models.IInvokableAction) => actionViewModel.invokableActionRep = details;
 
-        return actionViewModel as ViewModels.ActionViewModel;
+        return actionViewModel as ActionViewModel;
     };
 
 

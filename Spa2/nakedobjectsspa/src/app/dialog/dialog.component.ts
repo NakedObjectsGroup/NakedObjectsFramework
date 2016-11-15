@@ -15,7 +15,8 @@ import { ColorService } from '../color.service';
 import { ErrorService } from '../error.service';
 import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { ParameterViewModel } from '../view-models/parameter-view-model';
-
+import { ActionViewModel } from '../view-models/action-view-model';
+import { DialogViewModel } from '../view-models/dialog-view-model';
 
 @Component({
     selector: 'app-dialog',
@@ -39,7 +40,7 @@ export class DialogComponent implements OnInit, OnDestroy {
     @Input()
     parent: ViewModels.MenuViewModel | ViewModels.DomainObjectViewModel | ViewModels.ListViewModel;
 
-    dialog: ViewModels.DialogViewModel;
+    dialog: DialogViewModel;
 
     form: FormGroup;
 
@@ -47,7 +48,7 @@ export class DialogComponent implements OnInit, OnDestroy {
 
     private parms: _.Dictionary<ParameterViewModel>;
 
-    private createForm(dialog: ViewModels.DialogViewModel) {
+    private createForm(dialog: DialogViewModel) {
         const pps = dialog.parameters;
         this.parms = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<ParameterViewModel>;
         const controls = _.mapValues(this.parms, p => [p.getValueForControl(), a => p.validator(a)]) as _.Dictionary<any>;
@@ -71,7 +72,7 @@ export class DialogComponent implements OnInit, OnDestroy {
         if (this.parent && this.currentDialogId) {
             const p = this.parent;
             let action: Models.ActionMember | Models.ActionRepresentation = null;
-            let actionViewModel: ViewModels.ActionViewModel = null;
+            let actionViewModel: ActionViewModel = null;
 
             if (p instanceof ViewModels.MenuViewModel) {
                 action = p.menuRep.actionMember(this.currentDialogId);
@@ -100,7 +101,7 @@ export class DialogComponent implements OnInit, OnDestroy {
                         this.context.clearParmUpdater(routeData.paneId);
 
                         //$scope.dialogTemplate = dialogTemplate;
-                        const dialogViewModel = new ViewModels.DialogViewModel(this.color,
+                        const dialogViewModel = new DialogViewModel(this.color,
                             this.context,
                             this.viewModelFactory,
                             this.urlManager,

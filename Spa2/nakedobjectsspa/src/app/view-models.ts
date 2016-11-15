@@ -25,6 +25,8 @@ import * as Idraggableviewmodel from './view-models/idraggable-view-model';
 import { MessageViewModel } from './view-models/message-view-model';
 import * as Fieldviewmodel from './view-models/field-view-model';
 import * as Parameterviewmodel from './view-models/parameter-view-model';
+import * as Actionviewmodel from './view-models/action-view-model';
+import * as Menuitemviewmodel from './view-models/menu-item-view-model';
 
 function tooltip(onWhat: { clientValid: () => boolean }, fields: Fieldviewmodel.FieldViewModel[]): string {
     if (onWhat.clientValid()) {
@@ -79,8 +81,8 @@ function getMenuForLevel(menupath: string, level: number) {
     return menu || "";
 }
 
-function removeDuplicateMenus(menus: MenuItemViewModel[]) {
-    return _.uniqWith(menus, (m1: MenuItemViewModel, m2: MenuItemViewModel) => {
+function removeDuplicateMenus(menus: Menuitemviewmodel.MenuItemViewModel[]) {
+    return _.uniqWith(menus, (m1: Menuitemviewmodel.MenuItemViewModel, m2: Menuitemviewmodel.MenuItemViewModel) => {
         if (m1.name && m2.name) {
             return m1.name === m2.name;
         }
@@ -88,7 +90,7 @@ function removeDuplicateMenus(menus: MenuItemViewModel[]) {
     });
 }
 
-export function createSubmenuItems(avms: ActionViewModel[], menu: MenuItemViewModel, level: number) {
+export function createSubmenuItems(avms: Actionviewmodel.ActionViewModel[], menu: Menuitemviewmodel.MenuItemViewModel, level: number) {
     // if not root menu aggregate all actions with same name
     if (menu.name) {
         const actions = _.filter(avms, a => getMenuForLevel(a.menuPath, level) === menu.name && !getMenuForLevel(a.menuPath, level + 1));
@@ -96,10 +98,10 @@ export function createSubmenuItems(avms: ActionViewModel[], menu: MenuItemViewMo
 
         //then collate submenus 
 
-        const submenuActions = _.filter(avms, (a: ActionViewModel) => getMenuForLevel(a.menuPath, level) === menu.name && getMenuForLevel(a.menuPath, level + 1));
+        const submenuActions = _.filter(avms, (a: Actionviewmodel.ActionViewModel) => getMenuForLevel(a.menuPath, level) === menu.name && getMenuForLevel(a.menuPath, level + 1));
         let menus = _
             .chain(submenuActions)
-            .map(a => new MenuItemViewModel(getMenuForLevel(a.menuPath, level + 1), null, null))
+            .map(a => new Menuitemviewmodel.MenuItemViewModel(getMenuForLevel(a.menuPath, level + 1), null, null))
             .value();
 
         menus = removeDuplicateMenus(menus);
@@ -109,13 +111,13 @@ export function createSubmenuItems(avms: ActionViewModel[], menu: MenuItemViewMo
     return menu;
 }
 
-export function createMenuItems(avms: ActionViewModel[]) {
+export function createMenuItems(avms: Actionviewmodel.ActionViewModel[]) {
 
     // first create a top level menu for each action 
     // note at top level we leave 'un-menued' actions
     let menus = _
         .chain(avms)
-        .map(a => new MenuItemViewModel(getMenuForLevel(a.menuPath, 0), [a], null))
+        .map(a => new Menuitemviewmodel.MenuItemViewModel(getMenuForLevel(a.menuPath, 0), [a], null))
         .value();
 
     // remove non unique submenus 
@@ -126,161 +128,6 @@ export function createMenuItems(avms: ActionViewModel[]) {
 }
 
 
-
-
-
-export class ActionViewModel  {
-    actionRep: Models.ActionMember | Models.ActionRepresentation;
-    invokableActionRep: Models.IInvokableAction;
-
-    menuPath: string;
-    title: string;
-    description: string;
-    presentationHint: string;
-
-    doInvoke: (right?: boolean) => void;
-    execute: (pps: Parameterviewmodel.ParameterViewModel[], right?: boolean) => Promise<Models.ActionResultRepresentation>;
-    disabled: () => boolean;
-    parameters: () => Parameterviewmodel.ParameterViewModel[];
-    makeInvokable: (details: Models.IInvokableAction) => void;
-}
-
-export class MenuItemViewModel  {
-    constructor(public name: string,
-        public actions: ActionViewModel[],
-        public menuItems: MenuItemViewModel[]) { }
-
-    toggleCollapsed() {
-        this.navCollapsed = !this.navCollapsed;
-    }
-
-    navCollapsed = !!this.name;
-
-}
-
-export class DialogViewModel extends MessageViewModel  {
-    constructor(private color: ColorService,
-        private context: ContextService,
-        private viewModelFactory: ViewModelFactoryService,
-        private urlManager: UrlManagerService,
-        private error: ErrorService) {
-        super();
-    }
-
-    private onPaneId: number;
-    private isQueryOnly: boolean;
-
-    private actionMember = () => this.actionViewModel.actionRep;
-
-    private execute = (right?: boolean) => {
-
-        const pps = this.parameters;
-        this.context.updateValues();
-        return this.actionViewModel.execute(pps, right);
-    };
-
-    actionViewModel: ActionViewModel;
-    title: string;
-    id: string;
-    parameters: Parameterviewmodel.ParameterViewModel[];
-
-    reset(actionViewModel: ActionViewModel, routeData: PaneRouteData) {
-        this.actionViewModel = actionViewModel;
-        this.onPaneId = routeData.paneId;
-
-        const fields = this.context.getCurrentDialogValues(this.actionMember().actionId(), this.onPaneId);
-
-        const parameters = _.pickBy(actionViewModel.invokableActionRep.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Models.Parameter>;
-        this.parameters = _.map(parameters, p => this.viewModelFactory.parameterViewModel(p, fields[p.id()], this.onPaneId));
-        this.listenToParameters();
-
-        this.title = this.actionMember().extensions().friendlyName();
-        this.isQueryOnly = actionViewModel.invokableActionRep.invokeLink().method() === "GET";
-        this.resetMessage();
-        this.id = actionViewModel.actionRep.actionId();
-    }
-
-    refresh() {
-        const fields = this.context.getCurrentDialogValues(this.actionMember().actionId(), this.onPaneId);
-        _.forEach(this.parameters, p => p.refresh(fields[p.id]));
-    }
-
-    deregister: () => void;
-
-    clientValid = () => _.every(this.parameters, p => p.clientValid);
-
-    tooltip = () => tooltip(this, this.parameters);
-
-    setParms = () => _.forEach(this.parameters, p => this.context.setFieldValue(this.actionMember().actionId(), p.parameterRep.id(), p.getValue(), this.onPaneId));
-
-
-    doInvoke = (right?: boolean) =>
-        this.execute(right).
-            then((actionResult: Models.ActionResultRepresentation) => {
-                if (actionResult.shouldExpectResult()) {
-                    this.setMessage(actionResult.warningsOrMessages() || Msg.noResultMessage);
-                } else if (actionResult.resultType() === "void") {
-                    // dialog staying on same page so treat as cancel 
-                    // for url replacing purposes
-                    this.doCloseReplaceHistory();
-                }
-                else if (!this.isQueryOnly) {
-                    // not query only - always close
-                    //this.doCloseReplaceHistory();
-                }
-                else if (!right) {
-                    // query only going to new page close dialog and keep history
-                    //this.doCloseKeepHistory();
-                }
-                // else query only going to other tab leave dialog open
-            }).
-            catch((reject: Models.ErrorWrapper) => {
-                const display = (em: Models.ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.parameters);
-                this.error.handleErrorAndDisplayMessages(reject, display);
-            });
-
-    doCloseKeepHistory = () => {
-        //this.deregister();
-        this.urlManager.closeDialogKeepHistory(this.onPaneId);
-    }
-
-    doCloseReplaceHistory = () => {
-        //this.deregister();
-        this.urlManager.closeDialogReplaceHistory(this.onPaneId);
-    }
-
-    clearMessages = () => {
-        this.resetMessage();
-        _.each(this.actionViewModel.parameters, parm => parm.clearMessage());
-    };
-
-    parameterChanged() {
-        this.parameterChangedSource.next(true);
-        this.parameterChangedSource.next(false);
-    }
-
-    private parameterChangedSource = new Subject<boolean>();
-
-    parameterChanged$ = this.parameterChangedSource.asObservable();
-
-    private validChangedSource = new Subject<boolean>();
-
-    validChanged$ = this.validChangedSource.asObservable();
-
-    private parmSubs: ISubscription[] = [];
-
-    private listenToParameters() {
-        _.forEach(this.parameters, p => {
-            this.parmSubs.push(p.validChanged$.subscribe(changed => {
-                if (changed) {
-                    this.validChangedSource.next(true);
-                    this.validChangedSource.next(false);
-                }
-            }))
-        });
-    }
-
-}
 
 export class PropertyViewModel extends Fieldviewmodel.FieldViewModel implements Idraggableviewmodel.IDraggableViewModel {
 
@@ -336,8 +183,8 @@ export class ListViewModel extends MessageViewModel {
     pluralName: string;
     header: string[];
     items: ItemViewModel[];
-    actions: ActionViewModel[];
-    menuItems: MenuItemViewModel[];
+    actions: Actionviewmodel.ActionViewModel[];
+    menuItems: Menuitemviewmodel.MenuItemViewModel[];
     description: () => string;
 
     private recreate = (page: number, pageSize: number) => {
@@ -395,7 +242,7 @@ export class ListViewModel extends MessageViewModel {
 
     hasTableData = () => this.listRep.hasTableData();
 
-    private collectionContributedActionDecorator(actionViewModel: ActionViewModel) {
+    private collectionContributedActionDecorator(actionViewModel: Actionviewmodel.ActionViewModel) {
         const wrappedInvoke = actionViewModel.execute;
         actionViewModel.execute = (pps: Parameterviewmodel.ParameterViewModel[], right?: boolean) => {
             const selected = _.filter(this.items, i => i.selected);
@@ -429,7 +276,7 @@ export class ListViewModel extends MessageViewModel {
         }
     }
 
-    private collectionContributedInvokeDecorator(actionViewModel: ActionViewModel) {
+    private collectionContributedInvokeDecorator(actionViewModel: Actionviewmodel.ActionViewModel) {
 
         const showDialog = () =>
             this.context.getInvokableAction(actionViewModel.actionRep as Models.ActionMember).
@@ -456,7 +303,7 @@ export class ListViewModel extends MessageViewModel {
             catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
     }
 
-    private decorate(actionViewModel: ActionViewModel) {
+    private decorate(actionViewModel: Actionviewmodel.ActionViewModel) {
         this.collectionContributedActionDecorator(actionViewModel);
         this.collectionContributedInvokeDecorator(actionViewModel);
     }
@@ -589,8 +436,8 @@ export class CollectionViewModel  {
     //requestedState: CollectionViewState;
     presentationHint: string;
     template: string;
-    actions: ActionViewModel[];
-    menuItems: MenuItemViewModel[];
+    actions: Actionviewmodel.ActionViewModel[];
+    menuItems: Menuitemviewmodel.MenuItemViewModel[];
     messages: string;
     collectionRep: Models.CollectionMember | Models.CollectionRepresentation;
 
@@ -625,8 +472,8 @@ export class MenusViewModel {
 export class MenuViewModel extends MessageViewModel  {
     id: string;
     title: string;
-    actions: ActionViewModel[];
-    menuItems: MenuItemViewModel[];
+    actions: Actionviewmodel.ActionViewModel[];
+    menuItems: Menuitemviewmodel.MenuItemViewModel[];
     menuRep: Models.MenuRepresentation;
 }
 
@@ -666,8 +513,8 @@ export class DomainObjectViewModel extends MessageViewModel implements IDraggabl
 
     isInEdit: boolean;
 
-    actions: ActionViewModel[];
-    menuItems: MenuItemViewModel[];
+    actions: Actionviewmodel.ActionViewModel[];
+    menuItems: Menuitemviewmodel.MenuItemViewModel[];
     properties: PropertyViewModel[];
     collections: CollectionViewModel[];
 
@@ -693,7 +540,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IDraggabl
         return _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Models.Value>;
     };
 
-    private wrapAction(a: ActionViewModel) {
+    private wrapAction(a: Actionviewmodel.ActionViewModel) {
         const wrappedInvoke = a.execute;
         a.execute = (pps: Parameterviewmodel.ParameterViewModel[], right?: boolean) => {
             this.setProperties();
