@@ -33,7 +33,7 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
     @Input()
     set property(value: ViewModels.PropertyViewModel) {
         this.prop = value;
-        this.droppable = value as ViewModels.IFieldViewModel;
+        this.droppable = value as ViewModels.FieldViewModel;
     }
 
     get property() {
@@ -88,7 +88,7 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
         this.formGroup.value[this.property.id] = val;
     }
 
-    clickHandler(attachment: ViewModels.IAttachmentViewModel) {
+    clickHandler(attachment: ViewModels.AttachmentViewModel) {
 
         return () => {
 

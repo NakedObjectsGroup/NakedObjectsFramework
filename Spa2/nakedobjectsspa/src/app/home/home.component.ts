@@ -75,7 +75,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    doClick(linkViewModel: ViewModels.ILinkViewModel) {
+    doClick(linkViewModel: ViewModels.LinkViewModel) {
         const menuId = linkViewModel.link.rel().parms[0].value;
         this.urlManager.setMenu(menuId, this.paneId);
     }

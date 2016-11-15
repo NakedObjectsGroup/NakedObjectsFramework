@@ -10,7 +10,7 @@ import { ActionComponent } from "../action/action.component";
 export class ActionsComponent implements AfterViewInit {
 
     @Input()
-    menuVm: { menuItems: ViewModels.IMenuItemViewModel[] };
+    menuVm: { menuItems: ViewModels.MenuItemViewModel[] };
 
     @ViewChildren(ActionComponent)
     actionChildren: QueryList<ActionComponent>;

@@ -34,7 +34,7 @@ export class ParameterComponent extends FieldComponent implements OnInit {
     @Input()
     set parameter(value: ViewModels.ParameterViewModel) {
         this.parm = value;
-        this.droppable = value as ViewModels.IFieldViewModel;
+        this.droppable = value as ViewModels.FieldViewModel;
     }
 
     get parameter() {

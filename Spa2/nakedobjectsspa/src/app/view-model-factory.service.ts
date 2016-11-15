@@ -96,7 +96,7 @@ export class ViewModelFactoryService {
            
         };
 
-        return linkViewModel as ViewModels.ILinkViewModel;
+        return linkViewModel as ViewModels.LinkViewModel;
     };
 
     itemViewModel = (linkRep: Models.Link, paneId: number, selected: boolean, index: number) => {
@@ -127,9 +127,9 @@ export class ViewModelFactoryService {
     };
 
     recentItemViewModel = (obj: Models.DomainObjectRepresentation, linkRep: Models.Link, paneId: number, selected: boolean, index: number) => {
-        const recentItemViewModel = this.itemViewModel(linkRep, paneId, selected, index) as ViewModels.ILinkViewModel;
-        (recentItemViewModel as ViewModels.IRecentItemViewModel).friendlyName = obj.extensions().friendlyName();
-        return recentItemViewModel as ViewModels.IRecentItemViewModel;
+        const recentItemViewModel = <ViewModels.RecentItemViewModel>(this.itemViewModel(linkRep, paneId, selected, index) as any);
+        recentItemViewModel.friendlyName = obj.extensions().friendlyName();
+        return recentItemViewModel;
     };
 
     actionViewModel = (actionRep: Models.ActionMember | Models.ActionRepresentation, vm: ViewModels.IMessageViewModel, routeData: PaneRouteData) => {
@@ -190,11 +190,11 @@ export class ViewModelFactoryService {
 
         actionViewModel.makeInvokable = (details: Models.IInvokableAction) => actionViewModel.invokableActionRep = details;
 
-        return actionViewModel as ViewModels.IActionViewModel;
+        return actionViewModel as ViewModels.ActionViewModel;
     };
 
 
-    handleErrorResponse = (err: Models.ErrorMap, messageViewModel: ViewModels.IMessageViewModel, valueViewModels: ViewModels.IFieldViewModel[]) => {
+    handleErrorResponse = (err: Models.ErrorMap, messageViewModel: ViewModels.IMessageViewModel, valueViewModels: ViewModels.FieldViewModel[]) => {
 
         let requiredFieldsMissing = false; // only show warning message if we have nothing else 
         let fieldValidationErrors = false;
@@ -231,7 +231,7 @@ export class ViewModelFactoryService {
         messageViewModel.setMessage(msg);
     };
 
-    private drop(context: ContextService, error: ErrorService, vm: ViewModels.IFieldViewModel, newValue: ViewModels.IDraggableViewModel) {
+    private drop(context: ContextService, error: ErrorService, vm: ViewModels.FieldViewModel, newValue: ViewModels.IDraggableViewModel) {
         return context.isSubTypeOf(newValue.draggableType, vm.returnType).
             then((canDrop: boolean) => {
                 if (canDrop) {
@@ -243,7 +243,7 @@ export class ViewModelFactoryService {
             catch((reject: Models.ErrorWrapper) => error.handleError(reject));
     };
 
-    private validate(rep: Models.IHasExtensions, vm: ViewModels.IFieldViewModel, ms: MomentWrapperService, modelValue: any, viewValue: string, mandatoryOnly: boolean) {
+    private validate(rep: Models.IHasExtensions, vm: ViewModels.FieldViewModel, ms: MomentWrapperService, modelValue: any, viewValue: string, mandatoryOnly: boolean) {
         const message = mandatoryOnly ? Models.validateMandatory(rep, viewValue) : Models.validate(rep, modelValue, viewValue, vm.localFilter, ms);
 
         if (message !== Msg.mandatory) {
@@ -256,7 +256,7 @@ export class ViewModelFactoryService {
         return vm.clientValid;
     };
 
-    private setupReference(vm: ViewModels.IPropertyViewModel, value: Models.Value, rep: Models.IHasExtensions) {
+    private setupReference(vm: ViewModels.PropertyViewModel, value: Models.Value, rep: Models.IHasExtensions) {
         vm.type = "ref";
         if (value.isNull()) {
             vm.reference = "";
@@ -286,7 +286,7 @@ export class ViewModelFactoryService {
         }
     }
 
-    private setupChoice(propertyViewModel: ViewModels.IPropertyViewModel, newValue: Models.Value) {
+    private setupChoice(propertyViewModel: ViewModels.PropertyViewModel, newValue: Models.Value) {
         const propertyRep = propertyViewModel.propertyRep;
         if (propertyViewModel.entryType === Models.EntryType.Choices) {
 
@@ -306,7 +306,7 @@ export class ViewModelFactoryService {
         }
     }
 
-    private setupScalarPropertyValue(propertyViewModel: ViewModels.IPropertyViewModel) {
+    private setupScalarPropertyValue(propertyViewModel: ViewModels.PropertyViewModel) {
         const propertyRep = propertyViewModel.propertyRep;
         propertyViewModel.type = "scalar";
 
@@ -394,7 +394,7 @@ export class ViewModelFactoryService {
         return null;
     }
 
-    private setupPropertyAutocomplete(propertyViewModel: ViewModels.IPropertyViewModel, parentValues: () => _.Dictionary<Models.Value>) {
+    private setupPropertyAutocomplete(propertyViewModel: ViewModels.PropertyViewModel, parentValues: () => _.Dictionary<Models.Value>) {
         const propertyRep = propertyViewModel.propertyRep;
         propertyViewModel.prompt = (searchTerm: string) => {
             const createcvm = _.partial(this.createChoiceViewModels, propertyViewModel.id, searchTerm);
@@ -406,7 +406,7 @@ export class ViewModelFactoryService {
         propertyViewModel.description = propertyViewModel.description || Msg.autoCompletePrompt;
     }
 
-    private setupPropertyConditionalChoices(propertyViewModel: ViewModels.IPropertyViewModel) {
+    private setupPropertyConditionalChoices(propertyViewModel: ViewModels.PropertyViewModel) {
         const propertyRep = propertyViewModel.propertyRep;
         propertyViewModel.conditionalChoices = (args: _.Dictionary<Models.Value>) => {
             const createcvm = _.partial(this.createChoiceViewModels, propertyViewModel.id, null);
@@ -416,7 +416,7 @@ export class ViewModelFactoryService {
         propertyViewModel.promptArguments = (<any>_.fromPairs)(_.map(propertyRep.promptLink().arguments(), (v: any, key: string) => [key, new Models.Value(v.value)]));
     }
 
-    private callIfChanged(propertyViewModel: ViewModels.IPropertyViewModel, newValue: Models.Value, doRefresh: (newValue: Models.Value) => void) {
+    private callIfChanged(propertyViewModel: ViewModels.PropertyViewModel, newValue: Models.Value, doRefresh: (newValue: Models.Value) => void) {
         const propertyRep = propertyViewModel.propertyRep;
         const value = newValue || propertyRep.value();
 
@@ -426,7 +426,7 @@ export class ViewModelFactoryService {
         }
     }
 
-    private setupReferencePropertyValue(propertyViewModel: ViewModels.IPropertyViewModel) {
+    private setupReferencePropertyValue(propertyViewModel: ViewModels.PropertyViewModel) {
         const propertyRep = propertyViewModel.propertyRep;
         propertyViewModel.refresh = (newValue: Models.Value) => this.callIfChanged(propertyViewModel, newValue, (value: Models.Value) => {
             this.setupChoice(propertyViewModel, value);
@@ -479,15 +479,15 @@ export class ViewModelFactoryService {
         propertyViewModel.drop = _.partial(this.drop, this.context, this.error, propertyViewModel);
         propertyViewModel.doClick = (right?: boolean) => this.urlManager.setProperty(propertyRep, this.clickHandler.pane(paneId, right));
 
-        return propertyViewModel as ViewModels.IPropertyViewModel;
+        return propertyViewModel as ViewModels.PropertyViewModel;
     };
 
-    private setupParameterChoices(parmViewModel: ViewModels.IParameterViewModel) {
+    private setupParameterChoices(parmViewModel: ViewModels.ParameterViewModel) {
         const parmRep = parmViewModel.parameterRep;
         parmViewModel.choices = _.map(parmRep.choices(), (v, n) => ViewModels.ChoiceViewModel.create(v, parmRep.id(), n));
     }
 
-    private setupParameterAutocomplete(parmViewModel: ViewModels.IParameterViewModel) {
+    private setupParameterAutocomplete(parmViewModel: ViewModels.ParameterViewModel) {
         const parmRep = parmViewModel.parameterRep;
         parmViewModel.prompt = (searchTerm: string) => {
             const createcvm = _.partial(this.createChoiceViewModels, parmViewModel.id, searchTerm);
@@ -498,7 +498,7 @@ export class ViewModelFactoryService {
         parmViewModel.description = parmViewModel.description || Msg.autoCompletePrompt;
     }
 
-    private setupParameterFreeformReference(parmViewModel: ViewModels.IParameterViewModel, previousValue: Models.Value) {
+    private setupParameterFreeformReference(parmViewModel: ViewModels.ParameterViewModel, previousValue: Models.Value) {
         const parmRep = parmViewModel.parameterRep;
         parmViewModel.description = parmViewModel.description || Msg.dropPrompt;
 
@@ -510,7 +510,7 @@ export class ViewModelFactoryService {
         }
     }
 
-    private setupParameterConditionalChoices(parmViewModel: ViewModels.IParameterViewModel) {
+    private setupParameterConditionalChoices(parmViewModel: ViewModels.ParameterViewModel) {
         const parmRep = parmViewModel.parameterRep;
         parmViewModel.conditionalChoices = (args: _.Dictionary<Models.Value>) => {
             const createcvm = _.partial(this.createChoiceViewModels, parmViewModel.id, null);
@@ -520,7 +520,7 @@ export class ViewModelFactoryService {
         parmViewModel.promptArguments = (<any>_.fromPairs)(_.map(parmRep.promptLink().arguments(), (v: any, key: string) => [key, new Models.Value(v.value)]));
     }
 
-    private setupParameterSelectedChoices(parmViewModel: ViewModels.IParameterViewModel, previousValue: Models.Value) {
+    private setupParameterSelectedChoices(parmViewModel: ViewModels.ParameterViewModel, previousValue: Models.Value) {
         const parmRep = parmViewModel.parameterRep;
         const fieldEntryType = parmViewModel.entryType;
         function setCurrentChoices(vals: Models.Value) {
@@ -563,7 +563,7 @@ export class ViewModelFactoryService {
 
     }
 
-    private setupParameterSelectedValue(parmViewModel: ViewModels.IParameterViewModel, previousValue: Models.Value) {
+    private setupParameterSelectedValue(parmViewModel: ViewModels.ParameterViewModel, previousValue: Models.Value) {
         const parmRep = parmViewModel.parameterRep;
         const returnType = parmRep.extensions().returnType();
 
@@ -588,7 +588,7 @@ export class ViewModelFactoryService {
         parmViewModel.refresh(previousValue);
     }
 
-    private getRequiredIndicator(parmViewModel: ViewModels.IParameterViewModel) {
+    private getRequiredIndicator(parmViewModel: ViewModels.ParameterViewModel) {
         return parmViewModel.optional || typeof parmViewModel.value === "boolean" ? "" : "* ";
     }
 
@@ -632,10 +632,10 @@ export class ViewModelFactoryService {
         parmViewModel.validate = <any>_.partial(this.validate, parmRep, parmViewModel, this.momentWrapperService) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
         parmViewModel.drop = _.partial(this.drop, this.context, this.error, parmViewModel);
 
-        return parmViewModel as ViewModels.IParameterViewModel;
+        return parmViewModel as ViewModels.ParameterViewModel;
     };
 
-    getItems = (links: Models.Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: ViewModels.IListViewModel | ViewModels.ICollectionViewModel) => {
+    getItems = (links: Models.Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: ViewModels.ListViewModel | ViewModels.CollectionViewModel) => {
         const selectedItems = routeData.selectedItems;
 
         const items = _.map(links, (link, i) => this.itemViewModel(link, routeData.paneId, selectedItems[i], i));
@@ -811,7 +811,7 @@ export class ViewModelFactoryService {
                     this.error.handleError(reject);
                 });
 
-        return collectionPlaceholderViewModel as ViewModels.ICollectionPlaceholderViewModel;
+        return collectionPlaceholderViewModel;
     };
 
     menuViewModel = (menuRep: Models.MenuRepresentation, routeData: PaneRouteData) => {
@@ -844,14 +844,14 @@ export class ViewModelFactoryService {
         return recentItemsViewModel;
     };
 
-    tableRowViewModel = (properties: _.Dictionary<Models.PropertyMember>, paneId: number): ViewModels.ITableRowViewModel => {
+    tableRowViewModel = (properties: _.Dictionary<Models.PropertyMember>, paneId: number): ViewModels.TableRowViewModel => {
         const tableRowViewModel = new ViewModels.TableRowViewModel();
         tableRowViewModel.properties = _.map(properties, (property, id) => this.propertyTableViewModel(property, id, paneId));
         return tableRowViewModel;
     };
 
 
-    private cachedToolBarViewModel: ViewModels.IToolBarViewModel;
+    private cachedToolBarViewModel: ViewModels.ToolBarViewModel;
 
     private getToolBarViewModel() {
         if (!this.cachedToolBarViewModel) {
@@ -924,7 +924,7 @@ export class ViewModelFactoryService {
 
     toolBarViewModel = () => this.getToolBarViewModel();
 
-    private cvm: ViewModels.ICiceroViewModel = null;
+    private cvm: ViewModels.CiceroViewModel = null;
 
     //ciceroViewModel = () => {
     //    if (cvm == null) {

@@ -10,11 +10,11 @@ export class GeminiClearDirective implements OnInit {
         this.el = el.nativeElement;
     }
 
-    model: ViewModels.ValueViewModel;
+    model: ViewModels.FieldViewModel;
     formGroup : FormGroup
 
     @Input('geminiClear')
-    set viewModel(vm: ViewModels.ValueViewModel) {
+    set viewModel(vm: ViewModels.FieldViewModel) {
         this.model = vm;
     }
 

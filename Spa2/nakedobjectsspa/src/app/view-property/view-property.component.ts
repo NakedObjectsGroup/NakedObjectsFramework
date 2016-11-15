@@ -28,7 +28,7 @@ export class ViewPropertyComponent implements OnInit {
         return `${this.property.color}`;
     }
 
-    clickHandler(attachment: ViewModels.IAttachmentViewModel) {
+    clickHandler(attachment: ViewModels.AttachmentViewModel) {
 
         return () => {
 

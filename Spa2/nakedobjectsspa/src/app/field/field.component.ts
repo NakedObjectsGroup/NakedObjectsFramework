@@ -51,7 +51,7 @@ export abstract class FieldComponent {
     paneId: number;
     canDrop = false;
 
-    droppable: ViewModels.IFieldViewModel;
+    droppable: ViewModels.FieldViewModel;
 
     accept = (draggableVm: ViewModels.IDraggableViewModel) => {
 

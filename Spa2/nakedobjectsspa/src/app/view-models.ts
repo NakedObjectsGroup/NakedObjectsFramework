@@ -15,66 +15,17 @@ import { ISubscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { AbstractControl } from '@angular/forms';
 
-export interface IAttachmentViewModel {
-    href: string;
-    mimeType: string;
-    title: string;
-    link: Models.Link;
-    onPaneId: number;
-
-    downloadFile: () => Promise<Blob>;
-    clearCachedFile: () => void;
-    displayInline: () => boolean;
-    doClick: (right?: boolean) => void;
-}
-
-export interface IChoiceViewModel {
-    name: string;
-
-    getValue: () => Models.Value;
-    equals: (other: IChoiceViewModel) => boolean;
-    valuesEqual: (other: IChoiceViewModel) => boolean;
-}
 
 export interface IDraggableViewModel {
     value: Ro.scalarValueType | Date;
     reference: string;
-    selectedChoice: IChoiceViewModel;
+    selectedChoice: ChoiceViewModel;
     color: string;
     draggableType: string;
 
     draggableTitle: () => string;
 
     canDropOn: (targetType: string) => Promise<boolean>;
-}
-
-export interface IErrorViewModel {
-    originalError: Models.ErrorWrapper;
-    title: string;
-    message: string;
-    stackTrace: string[];
-    errorCode: string;
-    description: string;
-    isConcurrencyError: boolean;
-}
-
-export interface ILinkViewModel {
-    title: string;
-    domainType: string;
-    link: Models.Link;
-
-    doClick: (right?: boolean) => void;
-}
-
-export interface IItemViewModel extends ILinkViewModel {
-    tableRowViewModel: ITableRowViewModel;
-    selected: boolean;
-
-    selectionChange: () => void;
-}
-
-export interface IRecentItemViewModel extends ILinkViewModel {
-    friendlyName: string;
 }
 
 export interface IMessageViewModel {
@@ -84,308 +35,10 @@ export interface IMessageViewModel {
     getMessage: () => string;
 }
 
-export interface IFieldViewModel extends IMessageViewModel {
-    id: string;
-    argId: string;
-    paneArgId: string;
-    onPaneId: number;
-
-    optional: boolean;
-    description: string;
-    presentationHint: string;
-    mask: string;
-    title: string;
-    returnType: string;
-    format: Ro.formatType;
-    multipleLines: number;
-    password: boolean;
-    clientValid: boolean;
-    validChanged$: Observable<boolean>;
-
-    type: "scalar" | "ref";
-    reference: string;
-    minLength: number;
-
-    color: string;
-
-    isCollectionContributed: boolean;
-
-    currentValue: Models.Value;
-    originalValue: Models.Value;
-
-    localFilter: ILocalFilter;
-    formattedValue: string;
-
-    choices: IChoiceViewModel[];
-
-    value: Ro.scalarValueType | Date;
-
-    selectedChoice: IChoiceViewModel;
-    selectedMultiChoices: IChoiceViewModel[];
-
-    entryType: Models.EntryType;
-
-    validate: (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
-
-    refresh: (newValue: Models.Value) => void;
-
-    prompt: (searchTerm: string) => Promise<ChoiceViewModel[]>;
-    promptArguments: _.Dictionary<Models.Value>;
-
-    conditionalChoices: (args: _.Dictionary<Models.Value>) => Promise<ChoiceViewModel[]>;
-
-    setNewValue: (newValue: IDraggableViewModel) => void;
-
-    drop: (newValue: IDraggableViewModel) => Promise<boolean>;
-
-    clear: () => void;
-
-    getValue: () => Models.Value;
-}
-
-export interface IParameterViewModel extends IFieldViewModel {
-    parameterRep: Models.Parameter;
-    dflt: string;
-}
-
-export interface IPropertyViewModel extends IFieldViewModel {
-    propertyRep: Models.PropertyMember;
-    isEditable: boolean;
-    attachment: IAttachmentViewModel;
-    refType: "null" | "navigable" | "notNavigable";
-    isDirty: () => boolean;
-    doClick: (right?: boolean) => void;
-}
-
-export interface IActionViewModel {
-    actionRep: Models.ActionMember | Models.ActionRepresentation;
-    invokableActionRep: Models.IInvokableAction;
-
-    menuPath: string;
-    title: string;
-    description: string;
-    presentationHint: string;
-
-    // doInvoke is called from template 
-    doInvoke: (right?: boolean) => void;
-    execute: (pps: IParameterViewModel[], right?: boolean) => Promise<Models.ActionResultRepresentation>;
-    disabled: () => boolean;
-    parameters: () => IParameterViewModel[];
-    makeInvokable: (details: Models.IInvokableAction) => void;
-}
-
-export interface IMenuItemViewModel {
-    name: string;
-    actions: IActionViewModel[];
-    menuItems: IMenuItemViewModel[];
-}
-
-export interface IDialogViewModel extends IMessageViewModel {
-    actionViewModel: IActionViewModel;
-    title: string;
-    id: string;
-    parameters: IParameterViewModel[];
-
-    reset: (actionViewModel: IActionViewModel, routeData: PaneRouteData) => void;
-    refresh: () => void;
-    deregister: () => void;
-    clientValid: () => boolean;
-    tooltip: () => void;
-    setParms: () => void;
-    doInvoke: (right?: boolean) => void;
-    doCloseKeepHistory: () => void;
-    doCloseReplaceHistory: () => void;
-    clearMessages: () => void;
-}
-
-export interface ICollectionPlaceholderViewModel {
-    description: () => string;
-    reload: () => void;
-}
-
-export interface IListViewModel extends IMessageViewModel {
-    id: string;
-    listRep: Models.ListRepresentation;
-    size: number;
-    pluralName: string;
-    header: string[];
-    items: IItemViewModel[];
-    actions: IActionViewModel[];
-    menuItems: IMenuItemViewModel[];
-
-    description: () => string;
-    refresh: (routeData: PaneRouteData) => void;
-    reset: (list: Models.ListRepresentation, routeData: PaneRouteData) => void;
-    toggleActionMenu: () => void;
-    pageNext: () => void;
-    pagePrevious: () => void;
-    pageFirst: () => void;
-    pageLast: () => void;
-    doSummary: () => void;
-    doList: () => void;
-    doTable: () => void;
-    reload: () => void;
-    selectAll: () => void;
-    disableActions: () => void;
-    actionsTooltip: () => string;
-    actionMember: (id: string) => Models.ActionMember | Models.ActionRepresentation;
-}
-
-export interface ICollectionViewModel {
-    title: string;
-    details: string;
-    pluralName: string;
-    color: string;
-    mayHaveItems: boolean;
-    editing: boolean;
-    items: IItemViewModel[];
-    header: string[];
-    onPaneId: number;
-    currentState: CollectionViewState;
-    presentationHint: string;
-    template: string;
-    actions: IActionViewModel[];
-    menuItems: IMenuItemViewModel[];
-    messages: string;
-    collectionRep: Models.CollectionMember | Models.CollectionRepresentation;
-
-    doSummary: () => void;
-    doTable: () => void;
-    doList: () => void;
-
-    description: () => string;
-    refresh: (routeData: PaneRouteData, resetting: boolean) => void;
-}
-
-export interface IMenusViewModel {
-    reset: (menusRep: Models.MenusRepresentation, routeData: PaneRouteData) => IMenusViewModel;
-    menusRep: Models.MenusRepresentation;
-    onPaneId: number;
-    items: ILinkViewModel[];
-}
-
-export interface IMenuViewModel extends IMessageViewModel {
-    id: string;
-    title: string;
-    actions: IActionViewModel[];
-    menuItems: IMenuItemViewModel[];
-    menuRep: Models.MenuRepresentation;
-}
-
-export interface ITableRowColumnViewModel {
-    type: "ref" | "scalar";
-    returnType: string;
-    value: Ro.scalarValueType | Date;
-    formattedValue: string;
-    title: string;
-    id: string;
-}
-
-export interface ITableRowViewModel {
-    title: string;
-    hasTitle: boolean;
-    properties: ITableRowColumnViewModel[];
-    conformColumns: (columns: string[]) => void;
-}
-
-export interface IApplicationPropertiesViewModel {
-    serverVersion: Ro.IVersionRepresentation;
-    user: Ro.IUserRepresentation;
-    serverUrl: string;
-    clientVersion: string;
-}
-
-export interface IToolBarViewModel {
-    loading: string;
-    template: string;
-    footerTemplate: string;
-    goHome: (right?: boolean) => void;
-    goBack: () => void;
-    goForward: () => void;
-    swapPanes: () => void;
-    logOff: () => void;
-    singlePane: (right?: boolean) => void;
-    recent: (right?: boolean) => void;
-    cicero: () => void;
-    userName: string;
-    applicationProperties: () => void;
-
-    warnings: string[];
-    messages: string[];
-}
-
-export interface IRecentItemsViewModel {
-    onPaneId: number;
-    items: IRecentItemViewModel[];
-}
-
-export interface IDomainObjectViewModel extends IMessageViewModel {
-    domainObject: Models.DomainObjectRepresentation;
-    onPaneId: number;
-
-    title: string;
-    friendlyName: string;
-    presentationHint: string;
-    domainType: string;
-
-    isInEdit: boolean;
-
-    actions: IActionViewModel[];
-    menuItems: IMenuItemViewModel[];
-    properties: IPropertyViewModel[];
-    collections: ICollectionViewModel[];
-
-    refresh: (routeData: PaneRouteData) => void;
-    reset: (obj: Models.DomainObjectRepresentation, routeData: PaneRouteData) => IDomainObjectViewModel;
-    concurrency: () => (event: any, em: Models.ErrorMap) => void; // event: ng.IAngularEvent
-    clientValid: () => boolean;
-    tooltip: () => string;
-    actionsTooltip: () => string;
-    toggleActionMenu: () => void;
-    setProperties: () => void;
-    doEditCancel: () => void;
-    clearCachedFiles: () => void;
-    doSave: (viewObject: boolean) => void;
-    doSaveValidate: () => Promise<boolean>;
-    doEdit: () => void;
-    doReload: () => void;
-    hideEdit: () => boolean;
-    disableActions: () => boolean;
-}
-
-export interface ICiceroViewModel {
-    message: string;
-    output: string;
-    alert: string;
-    input: string;
-    parseInput: (input: string) => void;
-    previousInput: string;
-    chainedCommands: string[];
-
-    selectPreviousInput: () => void;
-
-    clearInput: () => void;
-
-    autoComplete: (input: string) => void;
-
-    outputMessageThenClearIt: () => void;
-
-    renderHome: (routeData: PaneRouteData) => void;
-    renderObject: (routeData: PaneRouteData) => void;
-    renderList: (routeData: PaneRouteData) => void;
-    renderError: () => void;
-    viewType: ViewType;
-    clipboard: Models.DomainObjectRepresentation;
-
-    executeNextChainedCommandIfAny: () => void;
-
-    popNextCommand: () => string;
-
-    clearInputRenderOutputAndAppendAlertIfAny: (output: string) => void;
-}
 
 
-function tooltip(onWhat: { clientValid: () => boolean }, fields: IFieldViewModel[]): string {
+
+function tooltip(onWhat: { clientValid: () => boolean }, fields: FieldViewModel[]): string {
     if (onWhat.clientValid()) {
         return "";
     }
@@ -438,8 +91,8 @@ function getMenuForLevel(menupath: string, level: number) {
     return menu || "";
 }
 
-function removeDuplicateMenus(menus: IMenuItemViewModel[]) {
-    return _.uniqWith(menus, (m1: IMenuItemViewModel, m2: IMenuItemViewModel) => {
+function removeDuplicateMenus(menus: MenuItemViewModel[]) {
+    return _.uniqWith(menus, (m1: MenuItemViewModel, m2: MenuItemViewModel) => {
         if (m1.name && m2.name) {
             return m1.name === m2.name;
         }
@@ -447,7 +100,7 @@ function removeDuplicateMenus(menus: IMenuItemViewModel[]) {
     });
 }
 
-export function createSubmenuItems(avms: IActionViewModel[], menu: IMenuItemViewModel, level: number) {
+export function createSubmenuItems(avms: ActionViewModel[], menu: MenuItemViewModel, level: number) {
     // if not root menu aggregate all actions with same name
     if (menu.name) {
         const actions = _.filter(avms, a => getMenuForLevel(a.menuPath, level) === menu.name && !getMenuForLevel(a.menuPath, level + 1));
@@ -455,7 +108,7 @@ export function createSubmenuItems(avms: IActionViewModel[], menu: IMenuItemView
 
         //then collate submenus 
 
-        const submenuActions = _.filter(avms, (a: IActionViewModel) => getMenuForLevel(a.menuPath, level) === menu.name && getMenuForLevel(a.menuPath, level + 1));
+        const submenuActions = _.filter(avms, (a: ActionViewModel) => getMenuForLevel(a.menuPath, level) === menu.name && getMenuForLevel(a.menuPath, level + 1));
         let menus = _
             .chain(submenuActions)
             .map(a => new MenuItemViewModel(getMenuForLevel(a.menuPath, level + 1), null, null))
@@ -468,7 +121,7 @@ export function createSubmenuItems(avms: IActionViewModel[], menu: IMenuItemView
     return menu;
 }
 
-export function createMenuItems(avms: IActionViewModel[]) {
+export function createMenuItems(avms: ActionViewModel[]) {
 
     // first create a top level menu for each action 
     // note at top level we leave 'un-menued' actions
@@ -484,7 +137,7 @@ export function createMenuItems(avms: IActionViewModel[]) {
     return _.map(menus, m => createSubmenuItems(avms, m, 0));
 }
 
-export class AttachmentViewModel implements IAttachmentViewModel {
+export class AttachmentViewModel {
     href: string;
     mimeType: string;
     title: string;
@@ -503,7 +156,7 @@ export class AttachmentViewModel implements IAttachmentViewModel {
         attachmentViewModel.parent = parent;
         attachmentViewModel.context = context;
         attachmentViewModel.onPaneId = paneId;
-        return attachmentViewModel as IAttachmentViewModel;
+        return attachmentViewModel as AttachmentViewModel;
     }
 
     downloadFile = () => this.context.getFile(this.parent, this.href, this.mimeType);
@@ -517,7 +170,7 @@ export class AttachmentViewModel implements IAttachmentViewModel {
     doClick: (right?: boolean) => void;
 }
 
-export class ChoiceViewModel implements IChoiceViewModel {
+export class ChoiceViewModel  {
     name: string;
 
     private id: string;
@@ -533,21 +186,21 @@ export class ChoiceViewModel implements IChoiceViewModel {
         choiceViewModel.search = searchTerm || choiceViewModel.name;
 
         choiceViewModel.isEnum = !value.isReference() && (choiceViewModel.name !== choiceViewModel.getValue().toValueString());
-        return choiceViewModel as IChoiceViewModel;
+        return choiceViewModel as ChoiceViewModel;
     }
 
     getValue() {
         return this.wrapped;
     }
 
-    equals(other: IChoiceViewModel): boolean {
+    equals(other: ChoiceViewModel): boolean {
         return other instanceof ChoiceViewModel &&
             this.id === other.id &&
             this.name === other.name &&
             this.wrapped.toValueString() === other.wrapped.toValueString();
     }
 
-    valuesEqual(other: IChoiceViewModel): boolean {
+    valuesEqual(other: ChoiceViewModel): boolean {
 
         if (other instanceof ChoiceViewModel) {
             const thisValue = this.isEnum ? this.wrapped.toValueString().trim() : this.search.trim();
@@ -562,7 +215,7 @@ export class ChoiceViewModel implements IChoiceViewModel {
     }
 }
 
-export class ErrorViewModel implements IErrorViewModel {
+export class ErrorViewModel {
     originalError: Models.ErrorWrapper;
     title: string;
     message: string;
@@ -572,7 +225,7 @@ export class ErrorViewModel implements IErrorViewModel {
     isConcurrencyError: boolean;
 }
 
-export class LinkViewModel implements ILinkViewModel, IDraggableViewModel {
+export class LinkViewModel implements IDraggableViewModel {
     // ILinkViewModel
     title: string;
     domainType: string;
@@ -584,7 +237,7 @@ export class LinkViewModel implements ILinkViewModel, IDraggableViewModel {
     color: string;
     value: Ro.scalarValueType;
     reference: string;
-    selectedChoice: IChoiceViewModel;
+    selectedChoice: ChoiceViewModel;
     draggableType: string;
 
     draggableTitle = () => this.title;
@@ -592,8 +245,8 @@ export class LinkViewModel implements ILinkViewModel, IDraggableViewModel {
     canDropOn: (targetType: string) => Promise<boolean>;
 }
 
-export class ItemViewModel extends LinkViewModel implements IItemViewModel, IDraggableViewModel {
-    tableRowViewModel: ITableRowViewModel;
+export class ItemViewModel extends LinkViewModel  implements IDraggableViewModel {
+    tableRowViewModel: TableRowViewModel;
 
     _selected: boolean;
 
@@ -609,7 +262,7 @@ export class ItemViewModel extends LinkViewModel implements IItemViewModel, IDra
     selectionChange: () => void;
 }
 
-export class RecentItemViewModel extends LinkViewModel implements IRecentItemViewModel, IDraggableViewModel {
+export class RecentItemViewModel extends LinkViewModel implements  IDraggableViewModel {
     friendlyName: string;
 }
 
@@ -630,7 +283,7 @@ abstract class MessageViewModel implements IMessageViewModel {
     getMessage = () => this.message;
 }
 
-export abstract class ValueViewModel extends MessageViewModel implements IFieldViewModel {
+export abstract class FieldViewModel extends MessageViewModel implements FieldViewModel {
 
     constructor(ext: Models.Extensions, color: ColorService, error: ErrorService) {
         super();
@@ -696,11 +349,11 @@ export abstract class ValueViewModel extends MessageViewModel implements IFieldV
 
     private choiceOptions = [];
 
-    get choices(): IChoiceViewModel[] {
+    get choices(): ChoiceViewModel[] {
         return this.choiceOptions;
     }
 
-    set choices(options: IChoiceViewModel[]) {
+    set choices(options: ChoiceViewModel[]) {
         this.choiceOptions = options;
 
         if (this.entryType == Models.EntryType.MultipleConditionalChoices) {
@@ -712,15 +365,15 @@ export abstract class ValueViewModel extends MessageViewModel implements IFieldV
         }
     }
 
-    private currentChoice: IChoiceViewModel;
+    private currentChoice: ChoiceViewModel;
 
     private error: ErrorService;
 
-    get selectedChoice(): IChoiceViewModel {
+    get selectedChoice(): ChoiceViewModel {
         return this.currentChoice;
     }
 
-    set selectedChoice(newChoice: IChoiceViewModel) {
+    set selectedChoice(newChoice: ChoiceViewModel) {
         // type guard because angular pushes string value here until directive finds 
         // choice
         if (newChoice instanceof ChoiceViewModel || newChoice == null) {
@@ -740,7 +393,7 @@ export abstract class ValueViewModel extends MessageViewModel implements IFieldV
         this.updateColor();
     }
 
-    selectedMultiChoices: IChoiceViewModel[];
+    selectedMultiChoices: ChoiceViewModel[];
 
     file: Models.Link;
 
@@ -916,7 +569,7 @@ export abstract class ValueViewModel extends MessageViewModel implements IFieldV
     }
 }
 
-export class ParameterViewModel extends ValueViewModel {
+export class ParameterViewModel extends FieldViewModel {
 
     constructor(parmRep: Models.Parameter, paneId: number, color: ColorService, error: ErrorService) {
         super(parmRep.extensions(), color, error);
@@ -936,7 +589,7 @@ export class ParameterViewModel extends ValueViewModel {
     dflt: string;
 }
 
-export class ActionViewModel implements IActionViewModel {
+export class ActionViewModel implements ActionViewModel {
     actionRep: Models.ActionMember | Models.ActionRepresentation;
     invokableActionRep: Models.IInvokableAction;
 
@@ -946,16 +599,16 @@ export class ActionViewModel implements IActionViewModel {
     presentationHint: string;
 
     doInvoke: (right?: boolean) => void;
-    execute: (pps: IParameterViewModel[], right?: boolean) => Promise<Models.ActionResultRepresentation>;
+    execute: (pps: ParameterViewModel[], right?: boolean) => Promise<Models.ActionResultRepresentation>;
     disabled: () => boolean;
-    parameters: () => IParameterViewModel[];
+    parameters: () => ParameterViewModel[];
     makeInvokable: (details: Models.IInvokableAction) => void;
 }
 
-export class MenuItemViewModel implements IMenuItemViewModel {
+export class MenuItemViewModel  {
     constructor(public name: string,
-        public actions: IActionViewModel[],
-        public menuItems: IMenuItemViewModel[]) { }
+        public actions: ActionViewModel[],
+        public menuItems: MenuItemViewModel[]) { }
 
     toggleCollapsed() {
         this.navCollapsed = !this.navCollapsed;
@@ -965,7 +618,7 @@ export class MenuItemViewModel implements IMenuItemViewModel {
 
 }
 
-export class DialogViewModel extends MessageViewModel implements IDialogViewModel {
+export class DialogViewModel extends MessageViewModel  {
     constructor(private color: ColorService,
         private context: ContextService,
         private viewModelFactory: ViewModelFactoryService,
@@ -986,12 +639,12 @@ export class DialogViewModel extends MessageViewModel implements IDialogViewMode
         return this.actionViewModel.execute(pps, right);
     };
 
-    actionViewModel: IActionViewModel;
+    actionViewModel: ActionViewModel;
     title: string;
     id: string;
-    parameters: IParameterViewModel[];
+    parameters: ParameterViewModel[];
 
-    reset(actionViewModel: IActionViewModel, routeData: PaneRouteData) {
+    reset(actionViewModel: ActionViewModel, routeData: PaneRouteData) {
         this.actionViewModel = actionViewModel;
         this.onPaneId = routeData.paneId;
 
@@ -1089,7 +742,7 @@ export class DialogViewModel extends MessageViewModel implements IDialogViewMode
 
 }
 
-export class PropertyViewModel extends ValueViewModel implements IPropertyViewModel, IDraggableViewModel {
+export class PropertyViewModel extends FieldViewModel implements PropertyViewModel, IDraggableViewModel {
 
     constructor(propertyRep: Models.PropertyMember, color: ColorService, error: ErrorService) {
         super(propertyRep.extensions(), color, error);
@@ -1104,7 +757,7 @@ export class PropertyViewModel extends ValueViewModel implements IPropertyViewMo
 
     propertyRep: Models.PropertyMember;
     isEditable: boolean;
-    attachment: IAttachmentViewModel;
+    attachment: AttachmentViewModel;
     refType: "null" | "navigable" | "notNavigable";
     isDirty: () => boolean;
     doClick: (right?: boolean) => void;
@@ -1116,12 +769,12 @@ export class PropertyViewModel extends ValueViewModel implements IPropertyViewMo
     canDropOn: (targetType: string) => Promise<boolean>;
 }
 
-export class CollectionPlaceholderViewModel implements ICollectionPlaceholderViewModel {
+export class CollectionPlaceholderViewModel  {
     description: () => string;
     reload: () => void;
 }
 
-export class ListViewModel extends MessageViewModel implements IListViewModel {
+export class ListViewModel extends MessageViewModel {
 
     constructor(private colorService: ColorService,
         private context: ContextService,
@@ -1145,9 +798,9 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
     size: number;
     pluralName: string;
     header: string[];
-    items: IItemViewModel[];
-    actions: IActionViewModel[];
-    menuItems: IMenuItemViewModel[];
+    items: ItemViewModel[];
+    actions: ActionViewModel[];
+    menuItems: MenuItemViewModel[];
     description: () => string;
 
     private recreate = (page: number, pageSize: number) => {
@@ -1205,9 +858,9 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
 
     hasTableData = () => this.listRep.hasTableData();
 
-    private collectionContributedActionDecorator(actionViewModel: IActionViewModel) {
+    private collectionContributedActionDecorator(actionViewModel: ActionViewModel) {
         const wrappedInvoke = actionViewModel.execute;
-        actionViewModel.execute = (pps: IParameterViewModel[], right?: boolean) => {
+        actionViewModel.execute = (pps: ParameterViewModel[], right?: boolean) => {
             const selected = _.filter(this.items, i => i.selected);
 
             if (selected.length === 0) {
@@ -1239,7 +892,7 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
         }
     }
 
-    private collectionContributedInvokeDecorator(actionViewModel: IActionViewModel) {
+    private collectionContributedInvokeDecorator(actionViewModel: ActionViewModel) {
 
         const showDialog = () =>
             this.context.getInvokableAction(actionViewModel.actionRep as Models.ActionMember).
@@ -1266,7 +919,7 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
             catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
     }
 
-    private decorate(actionViewModel: IActionViewModel) {
+    private decorate(actionViewModel: ActionViewModel) {
         this.collectionContributedActionDecorator(actionViewModel);
         this.collectionContributedInvokeDecorator(actionViewModel);
     }
@@ -1384,7 +1037,7 @@ export class ListViewModel extends MessageViewModel implements IListViewModel {
     }
 }
 
-export class CollectionViewModel implements ICollectionViewModel {
+export class CollectionViewModel  {
 
     title: string;
     details: string;
@@ -1392,15 +1045,15 @@ export class CollectionViewModel implements ICollectionViewModel {
     color: string;
     mayHaveItems: boolean;
     editing: boolean;
-    items: IItemViewModel[];
+    items: ItemViewModel[];
     header: string[];
     onPaneId: number;
     currentState: CollectionViewState;
     //requestedState: CollectionViewState;
     presentationHint: string;
     template: string;
-    actions: IActionViewModel[];
-    menuItems: IMenuItemViewModel[];
+    actions: ActionViewModel[];
+    menuItems: MenuItemViewModel[];
     messages: string;
     collectionRep: Models.CollectionMember | Models.CollectionRepresentation;
 
@@ -1417,7 +1070,7 @@ export class CollectionViewModel implements ICollectionViewModel {
     selectAll() { }
 }
 
-export class MenusViewModel implements IMenusViewModel {
+export class MenusViewModel {
     constructor(private viewModelFactory: ViewModelFactoryService) { }
 
     reset(menusRep: Models.MenusRepresentation, routeData: PaneRouteData) {
@@ -1429,18 +1082,18 @@ export class MenusViewModel implements IMenusViewModel {
 
     menusRep: Models.MenusRepresentation;
     onPaneId: number;
-    items: ILinkViewModel[];
+    items: LinkViewModel[];
 }
 
-export class MenuViewModel extends MessageViewModel implements IMenuViewModel {
+export class MenuViewModel extends MessageViewModel  {
     id: string;
     title: string;
-    actions: IActionViewModel[];
-    menuItems: IMenuItemViewModel[];
+    actions: ActionViewModel[];
+    menuItems: MenuItemViewModel[];
     menuRep: Models.MenuRepresentation;
 }
 
-export class TableRowColumnViewModel implements ITableRowColumnViewModel {
+export class TableRowColumnViewModel  {
     type: "ref" | "scalar";
     returnType: string;
     value: Ro.scalarValueType | Date;
@@ -1449,38 +1102,38 @@ export class TableRowColumnViewModel implements ITableRowColumnViewModel {
     id: string;
 }
 
-export class PlaceHolderTableRowColumnViewModel implements ITableRowColumnViewModel {
 
-    constructor(public id: string) { }
-
-    type: "scalar";
-    returnType: "string";
-    value: "";
-    formattedValue: "";
-    title: "";
-}
-
-export class TableRowViewModel implements ITableRowViewModel {
+export class TableRowViewModel {
     title: string;
     hasTitle: boolean;
-    properties: ITableRowColumnViewModel[];
+    properties: TableRowColumnViewModel[];
+
+    getPlaceHolderTableRowColumnViewModel(id: string) {
+        const ph = new TableRowColumnViewModel();
+        ph.id = id;
+        ph.type = "scalar";
+        ph.value =   "";
+        ph.formattedValue = "";
+        ph.title = "";
+        return ph;
+    }
 
     conformColumns(columns: string[]) {
         if (columns) {
             this.properties =
-                _.map(columns, c => _.find(this.properties, tp => tp.id === c) || new PlaceHolderTableRowColumnViewModel(c));
+                _.map(columns, c => _.find(this.properties, tp => tp.id === c) || this.getPlaceHolderTableRowColumnViewModel(c));
         }
     }
 }
 
-export class ApplicationPropertiesViewModel implements IApplicationPropertiesViewModel {
+export class ApplicationPropertiesViewModel  {
     serverVersion: Ro.IVersionRepresentation;
     user: Ro.IUserRepresentation;
     serverUrl: string;
     clientVersion: string;
 }
 
-export class ToolBarViewModel implements IToolBarViewModel {
+export class ToolBarViewModel  {
     loading: string;
     template: string;
     footerTemplate: string;
@@ -1499,12 +1152,12 @@ export class ToolBarViewModel implements IToolBarViewModel {
     messages: string[];
 }
 
-export class RecentItemsViewModel implements IRecentItemsViewModel {
+export class RecentItemsViewModel {
     onPaneId: number;
-    items: IRecentItemViewModel[];
+    items: RecentItemViewModel[];
 }
 
-export class DomainObjectViewModel extends MessageViewModel implements IDomainObjectViewModel, IDraggableViewModel {
+export class DomainObjectViewModel extends MessageViewModel implements IDraggableViewModel {
 
     constructor(private colorService: ColorService,
         private contextService: ContextService,
@@ -1522,7 +1175,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IDomainOb
     // IDraggableViewModel
     value: string;
     reference: string;
-    selectedChoice: IChoiceViewModel;
+    selectedChoice: ChoiceViewModel;
     color: string;
     draggableType: string;
     draggableTitle = () => this.title;
@@ -1537,10 +1190,10 @@ export class DomainObjectViewModel extends MessageViewModel implements IDomainOb
 
     isInEdit: boolean;
 
-    actions: IActionViewModel[];
-    menuItems: IMenuItemViewModel[];
-    properties: IPropertyViewModel[];
-    collections: ICollectionViewModel[];
+    actions: ActionViewModel[];
+    menuItems: MenuItemViewModel[];
+    properties: PropertyViewModel[];
+    collections: CollectionViewModel[];
 
     private editProperties = () => _.filter(this.properties, p => p.isEditable && p.isDirty());
 
@@ -1564,9 +1217,9 @@ export class DomainObjectViewModel extends MessageViewModel implements IDomainOb
         return _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Models.Value>;
     };
 
-    private wrapAction(a: IActionViewModel) {
+    private wrapAction(a: ActionViewModel) {
         const wrappedInvoke = a.execute;
-        a.execute = (pps: IParameterViewModel[], right?: boolean) => {
+        a.execute = (pps: ParameterViewModel[], right?: boolean) => {
             this.setProperties();
             const pairs = _.map(this.editProperties(), p => [p.id, p.getValue()]);
             const prps = (<any>_.fromPairs)(pairs) as _.Dictionary<Models.Value>;
@@ -1615,7 +1268,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IDomainOb
         this.clearMessage();
     }
 
-    reset(obj: Models.DomainObjectRepresentation, routeData: PaneRouteData): IDomainObjectViewModel {
+    reset(obj: Models.DomainObjectRepresentation, routeData: PaneRouteData): DomainObjectViewModel {
         this.domainObject = obj;
         this.onPaneId = routeData.paneId;
         this.routeData = routeData;
@@ -1669,7 +1322,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IDomainOb
         }
 
 
-        return this as IDomainObjectViewModel;
+        return this as DomainObjectViewModel;
     }
 
     concurrency() {
@@ -1785,7 +1438,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IDomainOb
 
 
 
-export class CiceroViewModel implements ICiceroViewModel {
+export class CiceroViewModel  {
     message: string;
     output: string;
     alert = ""; //Alert is appended before the output

@@ -25,7 +25,7 @@ export class AttachmentComponent implements OnInit {
     }
 
     paneId: number;
-    vm: ViewModels.IAttachmentViewModel;
+    vm: ViewModels.AttachmentViewModel;
 
     paneType: string;
 
