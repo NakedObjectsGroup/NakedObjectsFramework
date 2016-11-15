@@ -16,26 +16,12 @@ import { Observable } from 'rxjs/Observable';
 import { AbstractControl } from '@angular/forms';
 import { ChoiceViewModel } from './view-models/choice-view-model';
 import { AttachmentViewModel } from './view-models/attachment-view-model';
-
-
-export interface IDraggableViewModel {
-    value: Ro.scalarValueType | Date;
-    reference: string;
-    selectedChoice:  ChoiceViewModel;
-    color: string;
-    draggableType: string;
-
-    draggableTitle: () => string;
-
-    canDropOn: (targetType: string) => Promise<boolean>;
-}
-
-export interface IMessageViewModel {
-    clearMessage: () => void;
-    resetMessage: () => void;
-    setMessage: (msg: string) => void;
-    getMessage: () => string;
-}
+import { IDraggableViewModel } from './view-models/idraggable-view-model';
+import { IMessageViewModel } from './view-models/imessage-view-model';
+import { RecentItemViewModel } from './view-models/recent-item-view-model';
+import { LinkViewModel } from './view-models/link-view-model';
+import { ItemViewModel } from './view-models/item-view-model';
+import * as Idraggableviewmodel from './view-models/idraggable-view-model';
 
 function tooltip(onWhat: { clientValid: () => boolean }, fields: FieldViewModel[]): string {
     if (onWhat.clientValid()) {
@@ -136,49 +122,6 @@ export function createMenuItems(avms: ActionViewModel[]) {
     return _.map(menus, m => createSubmenuItems(avms, m, 0));
 }
 
-
-
-export class LinkViewModel implements IDraggableViewModel {
-   
-    title: string;
-    domainType: string;
-    link: Models.Link;
-
-    doClick: (right?: boolean) => void;
-
-    // IDraggableViewModel 
-    color: string;
-    value: Ro.scalarValueType;
-    reference: string;
-    selectedChoice:  ChoiceViewModel;
-    draggableType: string;
-
-    draggableTitle = () => this.title;
-
-    canDropOn: (targetType: string) => Promise<boolean>;
-}
-
-export class ItemViewModel extends LinkViewModel {
-    tableRowViewModel: TableRowViewModel;
-
-    _selected: boolean;
-
-    set selected(v: boolean) {
-        this._selected = v;
-        this.selectionChange();
-    }
-
-    get selected() {
-        return this._selected;
-    }
-
-    selectionChange: () => void;
-}
-
-export class RecentItemViewModel extends LinkViewModel {
-    friendlyName: string;
-}
-
 abstract class MessageViewModel implements IMessageViewModel {
     private previousMessage = "";
     private message = "";
@@ -196,7 +139,7 @@ abstract class MessageViewModel implements IMessageViewModel {
     getMessage = () => this.message;
 }
 
-export abstract class FieldViewModel extends MessageViewModel implements FieldViewModel {
+export abstract class FieldViewModel extends MessageViewModel {
 
     constructor(ext: Models.Extensions, color: ColorService, error: ErrorService) {
         super();
@@ -502,7 +445,7 @@ export class ParameterViewModel extends FieldViewModel {
     dflt: string;
 }
 
-export class ActionViewModel implements ActionViewModel {
+export class ActionViewModel  {
     actionRep: Models.ActionMember | Models.ActionRepresentation;
     invokableActionRep: Models.IInvokableAction;
 
@@ -655,7 +598,7 @@ export class DialogViewModel extends MessageViewModel  {
 
 }
 
-export class PropertyViewModel extends FieldViewModel implements PropertyViewModel, IDraggableViewModel {
+export class PropertyViewModel extends FieldViewModel implements Idraggableviewmodel.IDraggableViewModel {
 
     constructor(propertyRep: Models.PropertyMember, color: ColorService, error: ErrorService) {
         super(propertyRep.extensions(), color, error);

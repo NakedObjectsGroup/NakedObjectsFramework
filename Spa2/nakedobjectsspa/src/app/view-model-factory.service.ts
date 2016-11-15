@@ -16,6 +16,11 @@ import { MomentWrapperService } from "./moment-wrapper.service";
 import { ChoiceViewModel } from './view-models/choice-view-model';
 import { AttachmentViewModel } from './view-models/attachment-view-model';
 import { ErrorViewModel } from './view-models/error-view-model';
+import { IDraggableViewModel } from './view-models/idraggable-view-model';
+import { IMessageViewModel } from './view-models/imessage-view-model';
+import { LinkViewModel } from './view-models/link-view-model';
+import { ItemViewModel } from './view-models/item-view-model';
+import { RecentItemViewModel } from './view-models/recent-item-view-model';
 
 @Injectable()
 export class ViewModelFactoryService {
@@ -58,7 +63,7 @@ export class ViewModelFactoryService {
         return errorViewModel;
     };
 
-    private initLinkViewModel(linkViewModel: ViewModels.LinkViewModel, linkRep: Models.Link) {
+    private initLinkViewModel(linkViewModel: LinkViewModel, linkRep: Models.Link) {
         linkViewModel.title = linkRep.title() + Models.dirtyMarker(this.context, linkRep.getOid());
         linkViewModel.link = linkRep;
         linkViewModel.domainType = linkRep.type().domainType;
@@ -90,7 +95,7 @@ export class ViewModelFactoryService {
     };
 
     linkViewModel = (linkRep: Models.Link, paneId: number) => {
-        const linkViewModel = new ViewModels.LinkViewModel();
+        const linkViewModel = new LinkViewModel();
         this.initLinkViewModel(linkViewModel, linkRep);
 
         linkViewModel.doClick = () => {
@@ -99,11 +104,11 @@ export class ViewModelFactoryService {
            
         };
 
-        return linkViewModel as ViewModels.LinkViewModel;
+        return linkViewModel as LinkViewModel;
     };
 
     itemViewModel = (linkRep: Models.Link, paneId: number, selected: boolean, index: number) => {
-        const itemViewModel = new ViewModels.ItemViewModel();
+        const itemViewModel = new ItemViewModel();
         this.initLinkViewModel(itemViewModel, linkRep);
 
         itemViewModel.selectionChange = () => {
@@ -130,12 +135,12 @@ export class ViewModelFactoryService {
     };
 
     recentItemViewModel = (obj: Models.DomainObjectRepresentation, linkRep: Models.Link, paneId: number, selected: boolean, index: number) => {
-        const recentItemViewModel = <ViewModels.RecentItemViewModel>(this.itemViewModel(linkRep, paneId, selected, index) as any);
+        const recentItemViewModel = <RecentItemViewModel>(this.itemViewModel(linkRep, paneId, selected, index) as any);
         recentItemViewModel.friendlyName = obj.extensions().friendlyName();
         return recentItemViewModel;
     };
 
-    actionViewModel = (actionRep: Models.ActionMember | Models.ActionRepresentation, vm: ViewModels.IMessageViewModel, routeData: PaneRouteData) => {
+    actionViewModel = (actionRep: Models.ActionMember | Models.ActionRepresentation, vm: IMessageViewModel, routeData: PaneRouteData) => {
         const actionViewModel = new ViewModels.ActionViewModel();
 
         const parms = routeData.actionParams;
@@ -197,7 +202,7 @@ export class ViewModelFactoryService {
     };
 
 
-    handleErrorResponse = (err: Models.ErrorMap, messageViewModel: ViewModels.IMessageViewModel, valueViewModels: ViewModels.FieldViewModel[]) => {
+    handleErrorResponse = (err: Models.ErrorMap, messageViewModel: IMessageViewModel, valueViewModels: ViewModels.FieldViewModel[]) => {
 
         let requiredFieldsMissing = false; // only show warning message if we have nothing else 
         let fieldValidationErrors = false;
@@ -234,7 +239,7 @@ export class ViewModelFactoryService {
         messageViewModel.setMessage(msg);
     };
 
-    private drop(context: ContextService, error: ErrorService, vm: ViewModels.FieldViewModel, newValue: ViewModels.IDraggableViewModel) {
+    private drop(context: ContextService, error: ErrorService, vm: ViewModels.FieldViewModel, newValue: IDraggableViewModel) {
         return context.isSubTypeOf(newValue.draggableType, vm.returnType).
             then((canDrop: boolean) => {
                 if (canDrop) {

@@ -7,6 +7,8 @@ import { ElementRef, HostListener, QueryList } from '@angular/core';
 import * as _ from "lodash";
 import { ContextService } from "../context.service";
 import { ChoiceViewModel } from '../view-models/choice-view-model';
+import { IDraggableViewModel } from '../view-models/idraggable-view-model';
+
 
 
 export abstract class FieldComponent {
@@ -54,7 +56,7 @@ export abstract class FieldComponent {
 
     droppable: ViewModels.FieldViewModel;
 
-    accept = (draggableVm: ViewModels.IDraggableViewModel) => {
+    accept = (draggableVm: IDraggableViewModel) => {
 
         if (draggableVm) {
             draggableVm.canDropOn(this.droppable.returnType).then((canDrop: boolean) => this.canDrop = canDrop).catch(() => this.canDrop = false);
@@ -63,7 +65,7 @@ export abstract class FieldComponent {
         return false;
     };
 
-    drop(draggableVm: ViewModels.IDraggableViewModel) {
+    drop(draggableVm: IDraggableViewModel) {
         if (this.canDrop) {
             this.droppable.drop(draggableVm)
                 .then((success) => {
@@ -246,7 +248,6 @@ export abstract class FieldComponent {
 
         fileReader.readAsDataURL(file);
     }
-
 
     paste(event: any) {
         const vKeyCode = 86;

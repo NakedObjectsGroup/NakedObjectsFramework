@@ -11,6 +11,7 @@ import { ColorService } from "../color.service";
 import { RouteData, PaneRouteData } from "../route-data";
 import * as Models from "../models";
 import * as ViewModels from "../view-models";
+import { LinkViewModel } from '../view-models/link-view-model';
 
 @Component({
     selector: 'home',
@@ -75,7 +76,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    doClick(linkViewModel: ViewModels.LinkViewModel) {
+    doClick(linkViewModel: LinkViewModel) {
         const menuId = linkViewModel.link.rel().parms[0].value;
         this.urlManager.setMenu(menuId, this.paneId);
     }

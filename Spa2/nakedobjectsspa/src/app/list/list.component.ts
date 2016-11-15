@@ -14,6 +14,8 @@ import * as Models from "../models";
 import * as Constants from "../constants";
 import * as Config from "../config";
 import * as ViewModels from "../view-models";
+import { IDraggableViewModel } from '../view-models/idraggable-view-model';
+import { IMessageViewModel } from '../view-models/imessage-view-model';
 
 
 @Component({
@@ -136,7 +138,7 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // todo DRY this - and rename - copy not cut
-    cut(event: any, item: ViewModels.IDraggableViewModel) {
+    cut(event: any, item: IDraggableViewModel) {
         const cKeyCode = 67;
         if (event && (event.keyCode === cKeyCode && event.ctrlKey)) {
             this.context.setCutViewModel(item);

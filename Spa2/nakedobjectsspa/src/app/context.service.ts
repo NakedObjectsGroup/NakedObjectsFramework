@@ -7,7 +7,8 @@ import * as Constants from "./constants";
 import * as Models from "./models";
 import * as _ from "lodash";
 import { Subject } from 'rxjs/Subject';
-import { IDraggableViewModel} from './view-models';
+import { IDraggableViewModel } from './view-models/idraggable-view-model';
+
 
 enum DirtyState {
     DirtyMustReload,
