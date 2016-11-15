@@ -1,10 +1,10 @@
-﻿import * as Rointerfaces from '../ro-interfaces';
-import * as Choiceviewmodel from './choice-view-model';
+﻿import { ChoiceViewModel } from './choice-view-model';
+import * as Ro from '../ro-interfaces';
 
 export interface IDraggableViewModel {
-    value: Rointerfaces.scalarValueType | Date;
+    value: Ro.scalarValueType | Date;
     reference: string;
-    selectedChoice: Choiceviewmodel.ChoiceViewModel;
+    selectedChoice: ChoiceViewModel;
     color: string;
     draggableType: string;
 

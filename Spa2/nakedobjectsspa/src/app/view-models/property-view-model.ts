@@ -1,13 +1,12 @@
-﻿import * as Fieldviewmodel from './field-view-model';
-import * as Idraggableviewmodel from './idraggable-view-model';
+﻿import { FieldViewModel } from './field-view-model';
+import { ColorService } from '../color.service';
+import { ErrorService } from '../error.service';
+import { AttachmentViewModel } from './attachment-view-model';
 import * as Models from '../models';
-import * as Colorservice from '../color.service';
-import * as Errorservice from '../error.service';
-import * as Attachmentviewmodel from './attachment-view-model';
 
-export class PropertyViewModel extends Fieldviewmodel.FieldViewModel implements Idraggableviewmodel.IDraggableViewModel {
+export class PropertyViewModel extends FieldViewModel {
 
-    constructor(propertyRep: Models.PropertyMember, color: Colorservice.ColorService, error: Errorservice.ErrorService) {
+    constructor(propertyRep: Models.PropertyMember, color: ColorService, error: ErrorService) {
         super(propertyRep.extensions(), color, error);
         this.draggableType = propertyRep.extensions().returnType();
 
@@ -17,10 +16,9 @@ export class PropertyViewModel extends Fieldviewmodel.FieldViewModel implements 
         this.entryType = propertyRep.entryType();
     }
 
-
     propertyRep: Models.PropertyMember;
     isEditable: boolean;
-    attachment: Attachmentviewmodel.AttachmentViewModel;
+    attachment: AttachmentViewModel;
     refType: "null" | "navigable" | "notNavigable";
     isDirty: () => boolean;
     doClick: (right?: boolean) => void;

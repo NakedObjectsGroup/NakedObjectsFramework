@@ -1,11 +1,11 @@
-﻿import * as Fieldviewmodel from './field-view-model';
+﻿import { FieldViewModel } from './field-view-model';
+import { ColorService } from '../color.service';
+import { ErrorService } from '../error.service';
 import * as Models from '../models';
-import * as Colorservice from '../color.service';
-import * as Errorservice from '../error.service';
 
-export class ParameterViewModel extends Fieldviewmodel.FieldViewModel {
+export class ParameterViewModel extends FieldViewModel {
 
-    constructor(parmRep: Models.Parameter, paneId: number, color: Colorservice.ColorService, error: Errorservice.ErrorService) {
+    constructor(parmRep: Models.Parameter, paneId: number, color: ColorService, error: ErrorService) {
         super(parmRep.extensions(), color, error);
         this.parameterRep = parmRep;
         this.onPaneId = paneId;

@@ -1,8 +1,8 @@
-﻿import * as Actionviewmodel from './action-view-model';
+﻿import { ActionViewModel } from './action-view-model';
 
 export class MenuItemViewModel {
     constructor(public name: string,
-        public actions: Actionviewmodel.ActionViewModel[],
+        public actions: ActionViewModel[],
         public menuItems: MenuItemViewModel[]) {
     }
 

@@ -1,6 +1,6 @@
-﻿import * as Imessageviewmodel from './imessage-view-model';
+﻿import { IMessageViewModel } from './imessage-view-model';
 
-export abstract class MessageViewModel implements Imessageviewmodel.IMessageViewModel {
+export abstract class MessageViewModel implements IMessageViewModel {
     private previousMessage = "";
     private message = "";
 

@@ -1,37 +1,35 @@
-﻿
-
-import * as Messageviewmodel from './message-view-model';
-import * as Colorservice from '../color.service';
-import * as Contextservice from '../context.service';
-import * as Viewmodelfactoryservice from '../view-model-factory.service';
-import * as Urlmanagerservice from '../url-manager.service';
-import * as Errorservice from '../error.service';
-import * as Routedata from '../route-data';
-import * as Models from '../models';
-import * as Itemviewmodel from './item-view-model';
-import * as Actionviewmodel from './action-view-model';
-import * as Menuitemviewmodel from './menu-item-view-model';
-import * as Usermessages from '../user-messages';
-import * as Parameterviewmodel from './parameter-view-model';
+﻿import { MessageViewModel } from './message-view-model';
+import { ColorService } from '../color.service';
+import { ContextService } from '../context.service';
+import { ViewModelFactoryService } from '../view-model-factory.service';
+import { UrlManagerService } from '../url-manager.service';
+import { ErrorService } from '../error.service';
+import { PaneRouteData, CollectionViewState } from '../route-data';
+import { ItemViewModel } from './item-view-model';
+import { ActionViewModel } from './action-view-model';
+import { MenuItemViewModel } from './menu-item-view-model';
+import { ParameterViewModel } from './parameter-view-model';
 import * as _ from "lodash";
-import * as Helpersviewmodels from './helpers-view-models';
+import * as Helpers from './helpers-view-models';
+import * as Models from '../models';
+import * as Msg from '../user-messages';
 
-export class ListViewModel extends Messageviewmodel.MessageViewModel {
+export class ListViewModel extends MessageViewModel {
 
-    constructor(private colorService: Colorservice.ColorService,
-        private context: Contextservice.ContextService,
-        private viewModelFactory: Viewmodelfactoryservice.ViewModelFactoryService,
-        private urlManager: Urlmanagerservice.UrlManagerService,
-        private error: Errorservice.ErrorService) {
+    constructor(private colorService: ColorService,
+        private context: ContextService,
+        private viewModelFactory: ViewModelFactoryService,
+        private urlManager: UrlManagerService,
+        private error: ErrorService) {
         super();
     }
 
-    private routeData: Routedata.PaneRouteData;
+    private routeData: PaneRouteData;
     private onPaneId: number;
     private page: number;
     private pageSize: number;
     private numPages: number;
-    private state: Routedata.CollectionViewState;
+    private state: CollectionViewState;
 
     allSelected = () => _.every(this.items, item => item.selected);
 
@@ -40,9 +38,9 @@ export class ListViewModel extends Messageviewmodel.MessageViewModel {
     size: number;
     pluralName: string;
     header: string[];
-    items: Itemviewmodel.ItemViewModel[];
-    actions: Actionviewmodel.ActionViewModel[];
-    menuItems: Menuitemviewmodel.MenuItemViewModel[];
+    items: ItemViewModel[];
+    actions: ActionViewModel[];
+    menuItems: MenuItemViewModel[];
     description: () => string;
 
     private recreate = (page: number, pageSize: number) => {
@@ -51,7 +49,7 @@ export class ListViewModel extends Messageviewmodel.MessageViewModel {
             : this.context.getListFromMenu(this.routeData.paneId, this.routeData, page, pageSize);
     };
 
-    private pageOrRecreate = (newPage: number, newPageSize: number, newState?: Routedata.CollectionViewState) => {
+    private pageOrRecreate = (newPage: number, newPageSize: number, newState?: CollectionViewState) => {
         this.recreate(newPage, newPageSize)
             .then((list: Models.ListRepresentation) => {
                 this.urlManager.setListPaging(newPage, newPageSize, newState || this.routeData.state, this.onPaneId);
@@ -64,7 +62,7 @@ export class ListViewModel extends Messageviewmodel.MessageViewModel {
             });
     };
 
-    private setPage = (newPage: number, newState: Routedata.CollectionViewState) => {
+    private setPage = (newPage: number, newState: CollectionViewState) => {
         this.context.updateValues();
         this.pageOrRecreate(newPage, this.pageSize, newState);
     };
@@ -83,7 +81,7 @@ export class ListViewModel extends Messageviewmodel.MessageViewModel {
 
     private updateItems(value: Models.Link[]) {
         this.items = this.viewModelFactory.getItems(value,
-            this.state === Routedata.CollectionViewState.Table,
+            this.state === CollectionViewState.Table,
             this.routeData,
             this);
 
@@ -92,22 +90,22 @@ export class ListViewModel extends Messageviewmodel.MessageViewModel {
         const count = this.items.length;
         this.size = count;
         if (count > 0) {
-            this.description = () => Usermessages.pageMessage(this.page, this.numPages, count, totalCount);
+            this.description = () => Msg.pageMessage(this.page, this.numPages, count, totalCount);
         } else {
-            this.description = () => Usermessages.noItemsFound;
+            this.description = () => Msg.noItemsFound;
         }
     }
 
     hasTableData = () => this.listRep.hasTableData();
 
-    private collectionContributedActionDecorator(actionViewModel: Actionviewmodel.ActionViewModel) {
+    private collectionContributedActionDecorator(actionViewModel: ActionViewModel) {
         const wrappedInvoke = actionViewModel.execute;
-        actionViewModel.execute = (pps: Parameterviewmodel.ParameterViewModel[], right?: boolean) => {
+        actionViewModel.execute = (pps: ParameterViewModel[], right?: boolean) => {
             const selected = _.filter(this.items, i => i.selected);
 
             if (selected.length === 0) {
 
-                const em = new Models.ErrorMap({}, 0, Usermessages.noItemsSelected);
+                const em = new Models.ErrorMap({}, 0, Msg.noItemsSelected);
                 const rp = new Models.ErrorWrapper(Models.ErrorCategory.HttpClientError, Models.HttpStatusCode.UnprocessableEntity, em);
 
                 return <any>Promise.reject(rp);
@@ -133,13 +131,13 @@ export class ListViewModel extends Messageviewmodel.MessageViewModel {
         };
     }
 
-    private collectionContributedInvokeDecorator(actionViewModel: Actionviewmodel.ActionViewModel) {
+    private collectionContributedInvokeDecorator(actionViewModel: ActionViewModel) {
 
         const showDialog = () =>
             this.context.getInvokableAction(actionViewModel.actionRep as Models.ActionMember).then(invokableAction => _.keys(invokableAction.parameters()).length > 1);
 
         // make sure not null while waiting for promise to assign correct function 
-        actionViewModel.doInvoke = () => {};
+        actionViewModel.doInvoke = () => { };
 
         const invokeWithDialog = (right?: boolean) => {
             this.context.clearDialogValues(this.onPaneId);
@@ -148,28 +146,28 @@ export class ListViewModel extends Messageviewmodel.MessageViewModel {
 
         const invokeWithoutDialog = (right?: boolean) =>
             actionViewModel.execute([], right)
-            .then(result => this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || Usermessages.noResultMessage : ""))
-            .catch((reject: Models.ErrorWrapper) => {
-                const display = (em: Models.ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
-                this.error.handleErrorAndDisplayMessages(reject, display);
-            });
+                .then(result => this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || Msg.noResultMessage : ""))
+                .catch((reject: Models.ErrorWrapper) => {
+                    const display = (em: Models.ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
+                    this.error.handleErrorAndDisplayMessages(reject, display);
+                });
 
         showDialog().then(show => actionViewModel.doInvoke = show ? invokeWithDialog : invokeWithoutDialog).catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
     }
 
-    private decorate(actionViewModel: Actionviewmodel.ActionViewModel) {
+    private decorate(actionViewModel: ActionViewModel) {
         this.collectionContributedActionDecorator(actionViewModel);
         this.collectionContributedInvokeDecorator(actionViewModel);
     }
 
-    refresh(routeData: Routedata.PaneRouteData) {
+    refresh(routeData: PaneRouteData) {
 
         this.routeData = routeData;
         if (this.state !== routeData.state) {
-            if (routeData.state === Routedata.CollectionViewState.Table && !this.hasTableData()) {
+            if (routeData.state === CollectionViewState.Table && !this.hasTableData()) {
                 this.recreate(this.page, this.pageSize)
                     .then(list => {
-                        this.state = list.hasTableData() ? Routedata.CollectionViewState.Table : Routedata.CollectionViewState.List;
+                        this.state = list.hasTableData() ? CollectionViewState.Table : CollectionViewState.List;
                         this.listRep = list;
                         this.updateItems(list.value());
                     })
@@ -182,7 +180,7 @@ export class ListViewModel extends Messageviewmodel.MessageViewModel {
         }
     }
 
-    reset(list: Models.ListRepresentation, routeData: Routedata.PaneRouteData) {
+    reset(list: Models.ListRepresentation, routeData: PaneRouteData) {
         this.listRep = list;
         this.routeData = routeData;
 
@@ -195,12 +193,12 @@ export class ListViewModel extends Messageviewmodel.MessageViewModel {
         this.pageSize = this.listRep.pagination().pageSize;
         this.numPages = this.listRep.pagination().numPages;
 
-        this.state = this.listRep.hasTableData() ? Routedata.CollectionViewState.Table : Routedata.CollectionViewState.List;
+        this.state = this.listRep.hasTableData() ? CollectionViewState.Table : CollectionViewState.List;
         this.updateItems(list.value());
 
         const actions = this.listRep.actionMembers();
         this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
-        this.menuItems = Helpersviewmodels.createMenuItems(this.actions);
+        this.menuItems = Helpers.createMenuItems(this.actions);
 
         _.forEach(this.actions, a => this.decorate(a));
     }
@@ -229,17 +227,17 @@ export class ListViewModel extends Messageviewmodel.MessageViewModel {
 
     doSummary = () => {
         this.context.updateValues();
-        this.urlManager.setListState(Routedata.CollectionViewState.Summary, this.onPaneId);
+        this.urlManager.setListState(CollectionViewState.Summary, this.onPaneId);
     };
 
     doList = () => {
         this.context.updateValues();
-        this.urlManager.setListState(Routedata.CollectionViewState.List, this.onPaneId);
+        this.urlManager.setListState(CollectionViewState.List, this.onPaneId);
     };
 
     doTable = () => {
         this.context.updateValues();
-        this.urlManager.setListState(Routedata.CollectionViewState.Table, this.onPaneId);
+        this.urlManager.setListState(CollectionViewState.Table, this.onPaneId);
     };
 
     reload = () => {
@@ -264,7 +262,7 @@ export class ListViewModel extends Messageviewmodel.MessageViewModel {
 
     disableActions = () => !this.actions || this.actions.length === 0 || !this.items || this.items.length === 0;
 
-    actionsTooltip = () => Helpersviewmodels.actionsTooltip(this, !!this.routeData.actionsOpen);
+    actionsTooltip = () => Helpers.actionsTooltip(this, !!this.routeData.actionsOpen);
 
     actionMember = (id: string) => {
         const actionViewModel = _.find(this.actions, a => a.actionRep.actionId() === id);

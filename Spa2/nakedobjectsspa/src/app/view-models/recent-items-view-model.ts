@@ -1,8 +1,6 @@
-﻿
-
-import * as Recentitemviewmodel from './recent-item-view-model';
+﻿import { RecentItemViewModel } from './recent-item-view-model';
 
 export class RecentItemsViewModel {
     onPaneId: number;
-    items: Recentitemviewmodel.RecentItemViewModel[];
+    items: RecentItemViewModel[];
 }

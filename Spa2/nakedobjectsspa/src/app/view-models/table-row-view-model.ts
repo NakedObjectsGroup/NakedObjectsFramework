@@ -1,13 +1,13 @@
-﻿import * as Tablerowcolumnviewmodel from './table-row-column-view-model';
+﻿import { TableRowColumnViewModel } from './table-row-column-view-model';
 import * as _ from "lodash";
 
 export class TableRowViewModel {
     title: string;
     hasTitle: boolean;
-    properties: Tablerowcolumnviewmodel.TableRowColumnViewModel[];
+    properties: TableRowColumnViewModel[];
 
     getPlaceHolderTableRowColumnViewModel(id: string) {
-        const ph = new Tablerowcolumnviewmodel.TableRowColumnViewModel();
+        const ph = new TableRowColumnViewModel();
         ph.id = id;
         ph.type = "scalar";
         ph.value = "";
