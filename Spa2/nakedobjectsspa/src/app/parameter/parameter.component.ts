@@ -8,6 +8,8 @@ import * as ViewModels from "../view-models";
 import { FieldComponent } from '../field/field.component';
 import { FormGroup } from '@angular/forms';
 import { ContextService } from "../context.service";
+import { FieldViewModel } from '../view-models/field-view-model';
+
 
 @Component({
     selector: 'parameter',
@@ -34,7 +36,7 @@ export class ParameterComponent extends FieldComponent implements OnInit {
     @Input()
     set parameter(value: ViewModels.ParameterViewModel) {
         this.parm = value;
-        this.droppable = value as ViewModels.FieldViewModel;
+        this.droppable = value as FieldViewModel;
     }
 
     get parameter() {

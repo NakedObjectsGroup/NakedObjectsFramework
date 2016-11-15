@@ -28,6 +28,7 @@ import { CollectionPlaceholderViewModel } from './view-models/collection-placeho
 import { ToolBarViewModel } from './view-models/toolbar-view-model';
 import * as Recentitemsviewmodel from './view-models/recent-items-view-model';
 import * as Ciceroviewmodel from './view-models/cicero-view-model';
+import { FieldViewModel } from './view-models/field-view-model';
 
 @Injectable()
 export class ViewModelFactoryService {
@@ -209,7 +210,7 @@ export class ViewModelFactoryService {
     };
 
 
-    handleErrorResponse = (err: Models.ErrorMap, messageViewModel: IMessageViewModel, valueViewModels: ViewModels.FieldViewModel[]) => {
+    handleErrorResponse = (err: Models.ErrorMap, messageViewModel: IMessageViewModel, valueViewModels: FieldViewModel[]) => {
 
         let requiredFieldsMissing = false; // only show warning message if we have nothing else 
         let fieldValidationErrors = false;
@@ -246,7 +247,7 @@ export class ViewModelFactoryService {
         messageViewModel.setMessage(msg);
     };
 
-    private drop(context: ContextService, error: ErrorService, vm: ViewModels.FieldViewModel, newValue: IDraggableViewModel) {
+    private drop(context: ContextService, error: ErrorService, vm: FieldViewModel, newValue: IDraggableViewModel) {
         return context.isSubTypeOf(newValue.draggableType, vm.returnType).
             then((canDrop: boolean) => {
                 if (canDrop) {
@@ -258,7 +259,7 @@ export class ViewModelFactoryService {
             catch((reject: Models.ErrorWrapper) => error.handleError(reject));
     };
 
-    private validate(rep: Models.IHasExtensions, vm: ViewModels.FieldViewModel, ms: MomentWrapperService, modelValue: any, viewValue: string, mandatoryOnly: boolean) {
+    private validate(rep: Models.IHasExtensions, vm: FieldViewModel, ms: MomentWrapperService, modelValue: any, viewValue: string, mandatoryOnly: boolean) {
         const message = mandatoryOnly ? Models.validateMandatory(rep, viewValue) : Models.validate(rep, modelValue, viewValue, vm.localFilter, ms);
 
         if (message !== Msg.mandatory) {

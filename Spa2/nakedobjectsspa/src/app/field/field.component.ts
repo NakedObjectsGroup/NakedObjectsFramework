@@ -8,6 +8,7 @@ import * as _ from "lodash";
 import { ContextService } from "../context.service";
 import { ChoiceViewModel } from '../view-models/choice-view-model';
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
+import { FieldViewModel } from '../view-models/field-view-model';
 
 
 
@@ -54,7 +55,7 @@ export abstract class FieldComponent {
     paneId: number;
     canDrop = false;
 
-    droppable: ViewModels.FieldViewModel;
+    droppable: FieldViewModel;
 
     accept = (draggableVm: IDraggableViewModel) => {
 
