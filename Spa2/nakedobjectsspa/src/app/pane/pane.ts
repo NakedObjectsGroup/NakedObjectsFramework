@@ -4,6 +4,8 @@ import { ISubscription } from 'rxjs/Subscription';
 import { RouteData, PaneRouteData } from "../route-data";
 import { UrlManagerService } from "../url-manager.service";
 
+// todo make pane transitions smoother 
+
 export abstract class PaneComponent implements OnInit, OnDestroy {
 
     constructor(protected activatedRoute: ActivatedRoute,

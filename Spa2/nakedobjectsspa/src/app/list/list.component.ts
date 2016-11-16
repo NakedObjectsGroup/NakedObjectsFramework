@@ -16,6 +16,7 @@ import * as Config from "../config";
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
 import { IMessageViewModel } from '../view-models/imessage-view-model';
 import { ListViewModel } from '../view-models/list-view-model';
+import { PaneComponent } from '../pane/pane';
 
 
 @Component({
@@ -23,23 +24,21 @@ import { ListViewModel } from '../view-models/list-view-model';
     templateUrl: './list.component.html',
     styleUrls: ['./list.component.css']
 })
-export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ListComponent extends PaneComponent implements  AfterViewInit {
 
-    constructor(private urlManager: UrlManagerService,
-        private context: ContextService,
-        private color: ColorService,
-        private viewModelFactory: ViewModelFactoryService,
-        private error: ErrorService,
-        private activatedRoute: ActivatedRoute) {
+    constructor(activatedRoute: ActivatedRoute,
+                urlManager: UrlManagerService,
+                private context: ContextService,
+                private color: ColorService,
+                private viewModelFactory: ViewModelFactoryService,
+                private error: ErrorService) {
+        super(activatedRoute, urlManager);
     }
 
     collection: ListViewModel;
     title = "";
-    paneType: string;
-    paneId: number;
+   
     state = "list";
-
-    paneIdName = () => this.paneId === 1 ? "pane1" : "pane2";
 
     getActionExtensions(routeData: PaneRouteData): Promise<Models.Extensions> {
         return routeData.objectId
@@ -49,7 +48,7 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private cachedRouteData: PaneRouteData;
 
-    setupList(routeData: PaneRouteData) {
+    protected setup(routeData: PaneRouteData) {
         this.cachedRouteData = routeData;
         const cachedList = this.context.getCachedList(routeData.paneId, routeData.page, routeData.pageSize);
 
@@ -86,15 +85,6 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-
-    onChild() {
-        this.paneType = "split";
-    }
-
-    onChildless() {
-        this.paneType = "single";
-    }
-
     reload() {
 
         const recreate = () =>
@@ -103,38 +93,10 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
             : this.context.getListFromMenu(this.cachedRouteData.paneId, this.cachedRouteData, this.cachedRouteData.page, this.cachedRouteData.pageSize);
 
         recreate()
-            .then(() => this.setupList(this.cachedRouteData))
+            .then(() => this.setup(this.cachedRouteData))
             .catch((reject: Models.ErrorWrapper) => {
                 this.error.handleError(reject);
             });
-    }
-
-    private activatedRouteDataSub: ISubscription;
-    private paneRouteDataSub: ISubscription;
-
-    ngOnInit(): void {
-
-        this.activatedRoute.data.subscribe((data: any) => {
-            this.paneId = data["pane"];
-            this.paneType = data["class"];
-        });
-
-        this.urlManager.getRouteDataObservable()
-            .subscribe((rd: RouteData) => {
-                if (this.paneId) {
-                    const paneRouteData = rd.pane()[this.paneId];
-                    this.setupList(paneRouteData);
-                }
-            });
-    }
-
-    ngOnDestroy(): void {
-        if (this.activatedRouteDataSub) {
-            this.activatedRouteDataSub.unsubscribe();
-        }
-        if (this.paneRouteDataSub) {
-            this.paneRouteDataSub.unsubscribe();
-        }
     }
 
     // todo DRY this - and rename - copy not cut

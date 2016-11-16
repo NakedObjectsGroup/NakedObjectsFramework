@@ -5,62 +5,26 @@ import { ActivatedRoute } from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
 import { UrlManagerService } from "../url-manager.service";
 import { RouteData, PaneRouteData } from "../route-data";
-import * as Recentitemsviewmodel from '../view-models/recent-items-view-model';
+import { RecentItemsViewModel} from '../view-models/recent-items-view-model';
+import { PaneComponent } from '../pane/pane';
 
 @Component({
     selector: 'recent',
     templateUrl: './recent.component.html',
     styleUrls: ['./recent.component.css']
 })
-export class RecentComponent implements OnInit {
+export class RecentComponent extends PaneComponent {
 
-    constructor(private activatedRoute: ActivatedRoute,
-        private viewModelFactory: ViewModelFactoryService,
-        private urlManager: UrlManagerService) {
-
+    constructor(activatedRoute: ActivatedRoute,
+                urlManager: UrlManagerService,
+                private viewModelFactory: ViewModelFactoryService,
+    ) {
+        super(activatedRoute, urlManager);
     }
 
-    paneId: number;
-    vm: Recentitemsviewmodel.RecentItemsViewModel;
+    vm: RecentItemsViewModel;
 
-    paneType: string;
-
-    onChild() {
-        this.paneType = "split";
-    }
-
-    onChildless() {
-        this.paneType = "single";
-    }
-
-    paneIdName = () => this.paneId === 1 ? "pane1" : "pane2";
-
-    private activatedRouteDataSub: ISubscription;
-    private paneRouteDataSub: ISubscription;
-
-    ngOnInit(): void {
-        this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: any) => {
-            this.paneId = data["pane"];
-            this.paneType = data["class"];
-
-            this.vm = this.viewModelFactory.recentItemsViewModel(this.paneId);
-
-        });
-
-        this.paneRouteDataSub = this.urlManager.getRouteDataObservable()
-            .subscribe((rd: RouteData) => {
-                if (this.paneId) {
-                    this.vm = this.viewModelFactory.recentItemsViewModel(this.paneId);
-                }
-            });
-    }
-
-    ngOnDestroy(): void {
-        if (this.activatedRouteDataSub) {
-            this.activatedRouteDataSub.unsubscribe();
-        }
-        if (this.paneRouteDataSub) {
-            this.paneRouteDataSub.unsubscribe();
-        }
+    protected setup(routeData: PaneRouteData) {
+        this.vm = this.viewModelFactory.recentItemsViewModel(this.paneId);
     }
 }

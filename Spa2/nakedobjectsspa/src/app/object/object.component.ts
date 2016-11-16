@@ -47,6 +47,7 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
     mode: InteractionMode;
     form: FormGroup;
 
+    // must be properties as object may change - eg be reloaded 
     get friendlyName() {
         return this.object.friendlyName;
     }
@@ -148,7 +149,6 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
                 }
 
                 this.object = ovm;
-                this.friendlyName = ovm.friendlyName;
             })
             .catch((reject: Models.ErrorWrapper) => {
                 if (reject.category === Models.ErrorCategory.ClientError && reject.clientErrorCode === Models.ClientErrorCode.ExpiredTransient) {
