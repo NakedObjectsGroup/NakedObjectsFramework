@@ -46,35 +46,10 @@ export class ViewModelFactoryService {
         private clickHandler: ClickHandlerService,
         private mask: MaskService,
         private momentWrapperService: MomentWrapperService
-    ) {
-
-    }
-
+    ) {}
 
     errorViewModel = (error: Models.ErrorWrapper) => {
-        const errorViewModel = new ErrorViewModel();
-
-        errorViewModel.originalError = error;
-        if (error) {
-            errorViewModel.title = error.title;
-            errorViewModel.description = error.description;
-            errorViewModel.errorCode = error.errorCode;
-            errorViewModel.message = error.message;
-            const stackTrace = error.stackTrace;
-
-            errorViewModel.stackTrace = stackTrace && stackTrace.length !== 0 ? stackTrace : null;
-
-            errorViewModel.isConcurrencyError =
-                error.category === Models.ErrorCategory.HttpClientError &&
-                error.httpErrorCode === Models.HttpStatusCode.PreconditionFailed;
-        }
-
-        errorViewModel.description = errorViewModel.description || "No description available";
-        errorViewModel.errorCode = errorViewModel.errorCode || "No code available";
-        errorViewModel.message = errorViewModel.message || "No message available";
-        errorViewModel.stackTrace = errorViewModel.stackTrace || ["No stack trace available"];
-
-        return errorViewModel;
+        return new ErrorViewModel(error);
     };
 
     private initLinkViewModel(linkViewModel: LinkViewModel, linkRep: Models.Link) {
