@@ -118,6 +118,7 @@
     <TypeScriptCompile Include="src\app\models.ts" />
     <TypeScriptCompile Include="src\app\moment-wrapper.service.ts" />
     <TypeScriptCompile Include="src\app\object\object.component.ts" />
+    <TypeScriptCompile Include="src\app\pane\pane.ts" />
     <TypeScriptCompile Include="src\app\parameters\parameters.component.ts" />
     <TypeScriptCompile Include="src\app\parameter\parameter.component.ts" />
     <TypeScriptCompile Include="src\app\properties\properties.component.ts" />

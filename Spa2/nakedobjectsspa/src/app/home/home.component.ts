@@ -9,46 +9,47 @@ import { ErrorService } from '../error.service';
 import { ViewModelFactoryService } from "../view-model-factory.service";
 import { ColorService } from "../color.service";
 import { RouteData, PaneRouteData } from "../route-data";
-import * as Models from "../models";
 import { LinkViewModel } from '../view-models/link-view-model';
 import { MenusViewModel } from '../view-models/menus-view-model';
 import { MenuViewModel } from '../view-models/menu-view-model';
+import { PaneComponent } from '../pane/pane';
+import * as Models from "../models";
 
 @Component({
+    // todo rename all selectors 
     selector: 'home',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
+export class HomeComponent extends PaneComponent implements  AfterViewInit {
 
-    constructor(private viewModelFactory: ViewModelFactoryService,
-        private context: ContextService,
-        private error: ErrorService,
-        private urlManager: UrlManagerService,
-        private activatedRoute: ActivatedRoute,
-        private color: ColorService,
-        private renderer: Renderer,
-        private myElement: ElementRef) {
+    constructor(urlManager: UrlManagerService,
+                activatedRoute: ActivatedRoute,
+                private viewModelFactory: ViewModelFactoryService,
+                private context: ContextService,
+                private error: ErrorService,
+                private color: ColorService,
+                private renderer: Renderer,
+                private myElement: ElementRef) {
+        super(activatedRoute, urlManager);
     }
 
-    paneId: number;
+    // template API 
+    hasMenus = () => !!this.menus;
 
-    menus: MenusViewModel;
+    doClick(linkViewModel: LinkViewModel) {
+        const menuId = linkViewModel.link.rel().parms[0].value;
+        this.urlManager.setMenu(menuId, this.paneId);
+    }
+
+    title = (linkViewModel: LinkViewModel) => linkViewModel.title;
+
+    menuItems = () => this.menus.items;
+
     selectedMenu: MenuViewModel;
-
-    // todo rename to single or split
-    paneType: string;
-
-    onChild() {
-        this.paneType = "split";
-    }
-
-    onChildless() {
-        this.paneType = "single";
-    }
-
-    paneIdName = () => this.paneId === 1 ? "pane1" : "pane2";
-
+   
+    private menus: MenusViewModel;
+    
     getMenus() {
         this.context.getMenus()
             .then((menus: Models.MenusRepresentation) => {
@@ -66,6 +67,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         if (menuId) {
             this.context.getMenu(menuId)
                 .then((menu: Models.MenuRepresentation) => {
+                    // todo do we need to do this why can't we use passed in routeData ?
+                    // perhaps could have changed ? 
                     const rd = this.urlManager.getRouteData().pane()[this.paneId];
                     this.selectedMenu = this.viewModelFactory.menuViewModel(menu, rd);
                 })
@@ -77,40 +80,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    doClick(linkViewModel: LinkViewModel) {
-        const menuId = linkViewModel.link.rel().parms[0].value;
-        this.urlManager.setMenu(menuId, this.paneId);
+    protected setup(routeData: PaneRouteData) {
+        this.getMenus();
+        this.getMenu(routeData);  
     }
 
-    private activatedRouteDataSub: ISubscription;
-    private paneRouteDataSub: ISubscription;
-
-    ngOnInit(): void {
-
-        this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: any) => {
-            this.paneId = data["pane"];
-            this.paneType = data["class"];
-            this.getMenus();
-        });
-
-        this.paneRouteDataSub = this.urlManager.getRouteDataObservable()
-            .subscribe((rd: RouteData) => {
-                if (this.paneId) {
-                    const paneRouteData = rd.pane()[this.paneId];
-                    this.getMenu(paneRouteData);
-                }
-            });
-    }
-
-    ngOnDestroy(): void {
-        if (this.activatedRouteDataSub) {
-            this.activatedRouteDataSub.unsubscribe();
-        }
-        if (this.paneRouteDataSub) {
-            this.paneRouteDataSub.unsubscribe();
-        }
-    }
-
+    // todo give #mms a better name 
     @ViewChildren('mms')
     menusEl: QueryList<ElementRef>;
 
@@ -120,6 +95,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
+    // todo should this be on PaneComponent cf OnInit ? 
     ngAfterViewInit(): void {
         this.focusonFirstMenu(this.menusEl);
         this.menusEl.changes.subscribe((e: QueryList<ElementRef>) => {

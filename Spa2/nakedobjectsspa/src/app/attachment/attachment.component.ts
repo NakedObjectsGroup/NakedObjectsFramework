@@ -5,48 +5,34 @@ import { ActivatedRoute } from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
 import { UrlManagerService } from "../url-manager.service";
 import { RouteData, PaneRouteData } from "../route-data";
-import * as Models from "../models";
 import { ErrorService } from "../error.service";
 import { AttachmentViewModel } from '../view-models/attachment-view-model';
-
-
+import { PaneComponent } from '../pane/pane';
+import * as Models from "../models";
 
 @Component({
     selector: 'attachment',
     templateUrl: './attachment.component.html',
     styleUrls: ['./attachment.component.css']
 })
-export class AttachmentComponent implements OnInit {
+export class AttachmentComponent extends PaneComponent {
 
-    constructor(private activatedRoute: ActivatedRoute,
+    constructor(activatedRoute: ActivatedRoute,
+        urlManager: UrlManagerService,
         private viewModelFactory: ViewModelFactoryService,
-        private urlManager: UrlManagerService,
         private context: ContextService,
         private error: ErrorService
     ) {
+        super(activatedRoute, urlManager);
     }
 
-    paneId: number;
-    vm: AttachmentViewModel;
+    // template API 
+    image: string;
+    title: string;
 
-    paneType: string;
-
-    onChild() {
-        this.paneType = "split";
-    }
-
-    onChildless() {
-        this.paneType = "single";
-    }
-
-    paneIdName = () => this.paneId === 1 ? "pane1" : "pane2";
-
-    getAttachment(routeData: PaneRouteData) {
-        // context.clearWarnings();
-        // context.clearMessages();
+    protected setup(routeData: PaneRouteData) {
 
         const oid = Models.ObjectIdWrapper.fromObjectId(routeData.objectId);
-
 
         this.context.getObject(routeData.paneId, oid, routeData.interactionMode)
             .then((object: Models.DomainObjectRepresentation) => {
@@ -56,9 +42,8 @@ export class AttachmentComponent implements OnInit {
 
                 if (attachment && attachment.attachmentLink()) {
                     const avm = this.viewModelFactory.attachmentViewModel(attachment, routeData.paneId);
-                    this.vm = avm;
 
-                    this.attachmentTitle = avm.title;
+                    this.title = avm.title;
 
                     avm.downloadFile()
                         .then(blob => {
@@ -71,34 +56,4 @@ export class AttachmentComponent implements OnInit {
             })
             .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
     }
-
-    private activatedRouteDataSub: ISubscription;
-    private paneRouteDataSub: ISubscription;
-
-    ngOnInit(): void {
-        this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: any) => {
-            this.paneId = data["pane"];
-            this.paneType = data["class"];
-        });
-
-        this.paneRouteDataSub = this.urlManager.getRouteDataObservable()
-            .subscribe((rd: RouteData) => {
-                if (this.paneId) {
-                    const paneRouteData = rd.pane()[this.paneId];
-                    this.getAttachment(paneRouteData);
-                }
-            });
-    }
-
-    ngOnDestroy(): void {
-        if (this.activatedRouteDataSub) {
-            this.activatedRouteDataSub.unsubscribe();
-        }
-        if (this.paneRouteDataSub) {
-            this.paneRouteDataSub.unsubscribe();
-        }
-    }
-
-    attachmentTitle: string;
-    image: string;
 }

@@ -16,6 +16,9 @@ import { Subject } from 'rxjs/Subject';
 import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import * as _ from "lodash";
 import { PropertyViewModel } from '../view-models/property-view-model';
+import { CollectionViewModel } from '../view-models/collection-view-model';
+import { MenuItemViewModel } from '../view-models/menu-item-view-model';
+import { PaneComponent } from '../pane/pane';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 
 @Component({
@@ -23,24 +26,88 @@ import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
     templateUrl: './object.component.html',
     styleUrls: ['./object.component.css']
 })
-export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy, AfterViewInit {
 
-    constructor(private urlManager: UrlManagerService,
-        private context: ContextService,
-        private color: ColorService,
-        private viewModelFactory: ViewModelFactoryService,
-        private error: ErrorService,
-        private activatedRoute: ActivatedRoute,
-        private formBuilder: FormBuilder) {
+    constructor(activatedRoute: ActivatedRoute,
+                urlManager: UrlManagerService,
+                private context: ContextService,
+                private colorService: ColorService,
+                private viewModelFactory: ViewModelFactoryService,
+                private error: ErrorService,
+                private formBuilder: FormBuilder) {
+
+        super(activatedRoute, urlManager);
     }
 
-    object: DomainObjectViewModel;
-
-    mode: InteractionMode;
-
+    // template API 
     expiredTransient = false;
+    object: DomainObjectViewModel;  
+    
+    // todo add mode as string property for template to make easier to read and make this private 
+    mode: InteractionMode;
+    form: FormGroup;
 
-    setupObject(routeData: PaneRouteData) {
+    get friendlyName() {
+        return this.object.friendlyName;
+    }
+
+    get color() {
+        return this.object.color;
+    }
+
+    get properties() {
+        return this.object.properties;
+    }
+
+    get collections() {
+        return this.object.collections;
+    }
+
+    get tooltip(): string {
+        return this.object.tooltip();
+    }
+
+    onSubmit(viewObject: boolean) {
+        this.object.doSave(viewObject);
+    }
+
+    // todo DRY this - and rename - copy not cut
+    cut(event: any) {
+        const cKeyCode = 67;
+        if (event && (event.keyCode === cKeyCode && event.ctrlKey)) {
+            this.context.setCutViewModel(this.object);
+            event.preventDefault();
+        }
+    }
+
+    title() {
+        // todo add string consts to user messages !
+        const prefix = this.mode === InteractionMode.Edit || this.mode === InteractionMode.Transient ? "Editing - " : "";
+        return `${prefix}${this.object.title}`;
+    }
+
+    // todo investigate if logic in this would be better here rather than view model
+    toggleActionMenu = () => this.object.toggleActionMenu();
+
+    disableActions = () => this.object.disableActions() ? true : null;
+
+    actionsTooltip = () => this.object.actionsTooltip();
+    unsaved = () => this.object.unsaved;
+   
+    doEdit = () => this.object.doEdit();
+    doEditCancel = () => this.object.doEditCancel();
+    showEdit = () => !this.object.hideEdit();
+    doReload = () => this.object.doReload(); 
+    message = () => this.object.getMessage();
+    showActions = () => this.object.showActions();
+
+    menuItems = () => this.object.menuItems;
+
+    // todo that we access viewmodel directly in template from this I think is smell that we should have a 
+    // child component here 
+    actions = (item : MenuItemViewModel) => item.actions;
+
+    protected setup(routeData: PaneRouteData) {
         // subscription means may get with no oid 
 
         if (!routeData.objectId) {
@@ -61,16 +128,6 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.mode = routeData.interactionMode;
 
-        // to ease transition 
-        //$scope.objectTemplate = Nakedobjectsconstants.blankTemplate;
-        //$scope.actionsTemplate = Nakedobjectsconstants.nullTemplate;
-
-        //this.color.toColorNumberFromType(oid.domainType).
-        //    then(c =>
-        //        $scope.backgroundColor = `${Nakedobjectsconfig.objectColor}${c}`).
-        //    catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
-
-        //deRegObject[routeData.paneId].deReg();
         this.context.clearObjectUpdater(routeData.paneId);
 
         const wasDirty = this.context.getIsDirty(oid);
@@ -78,7 +135,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         this.context.getObject(routeData.paneId, oid, routeData.interactionMode)
             .then((object: Models.DomainObjectRepresentation) => {
 
-                const ovm = new DomainObjectViewModel(this.color, this.context, this.viewModelFactory, this.urlManager, this.error);
+                const ovm = new DomainObjectViewModel(this.colorService, this.context, this.viewModelFactory, this.urlManager, this.error);
                 ovm.reset(object, routeData);
                 if (wasDirty) {
                     ovm.clearCachedFiles();
@@ -91,90 +148,22 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
 
                 this.object = ovm;
-
-                //$scope.object = ovm;
-                //$scope.collectionsTemplate = Nakedobjectsconstants.collectionsTemplate;
-
-                //handleNewObjectSearch($scope, routeData);
-
-                //deRegObject[routeData.paneId].add($scope.$on(Nakedobjectsconstants.geminiConcurrencyEvent, ovm.concurrency()) as () => void);
+                this.friendlyName = ovm.friendlyName;
             })
             .catch((reject: Models.ErrorWrapper) => {
                 if (reject.category === Models.ErrorCategory.ClientError && reject.clientErrorCode === Models.ClientErrorCode.ExpiredTransient) {
                     this.context.setError(reject);
                     this.expiredTransient = true;
-                    // $scope.objectTemplate = Nakedobjectsconstants.expiredTransientTemplate;
                 } else {
                     this.error.handleError(reject);
                 }
             });
     }
-
-    paneIdName = () => this.paneId === 1 ? "pane1" : "pane2";
-
-    getClass() {
-        return this.paneType;
-    }
-
-    getColor() {
-        return this.object.color;
-    }
-
-    paneType: string;
-
-    onChild() {
-        this.paneType = "split";
-    }
-
-    onChildless() {
-        this.paneType = "single";
-    }
-
-    private activatedRouteDataSub: ISubscription;
-    private paneRouteDataSub: ISubscription;
-
-    ngOnInit(): void {
-
-        this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: any) => {
-            this.paneId = data["pane"];
-            this.paneType = data["class"];
-        });
-
-        this.paneRouteDataSub = this.urlManager.getRouteDataObservable()
-            .subscribe((rd: RouteData) => {
-                if (this.paneId) {
-                    const paneRouteData = rd.pane()[this.paneId];
-                    this.setupObject(paneRouteData);
-                }
-            });
-    }
-
-    ngOnDestroy(): void {
-        if (this.activatedRouteDataSub) {
-            this.activatedRouteDataSub.unsubscribe();
-        }
-        if (this.paneRouteDataSub) {
-            this.paneRouteDataSub.unsubscribe();
-        }
-    }
-
-    paneId: number;
-
-    get tooltip(): string {
-        return this.object.tooltip();
-    }
-
-    onSubmit(viewObject: boolean) {
-        this.object.doSave(viewObject);
-    }
-
-    props: _.Dictionary<PropertyViewModel>;
-    form: FormGroup;
-
+    
     private createForm(vm: DomainObjectViewModel) {
         const pps = vm.properties;
-        this.props = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<PropertyViewModel>;
-        const editableProps = _.filter(this.props, p => p.isEditable);
+        const props = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<PropertyViewModel>;
+        const editableProps = _.filter(props, p => p.isEditable);
         const editablePropsMap = _.zipObject(_.map(editableProps, p => p.id), _.map(editableProps, p => p));
 
         const controls = _.mapValues(editablePropsMap, p => [p.getValueForControl(), a => p.validator(a)]) as _.Dictionary<any>;
@@ -189,24 +178,9 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
                 });
             this.object.setProperties();
         });
-
-        // this.onValueChanged(); // (re)set validation messages now
     }
 
-    title() {
-        const prefix = this.mode === InteractionMode.Edit || this.mode === InteractionMode.Transient ? "Editing - " : "";
-        return `${prefix}${this.object.title}`;
-    }
-
-    // todo DRY this - and rename - copy not cut
-    cut(event: any) {
-        const cKeyCode = 67;
-        if (event && (event.keyCode === cKeyCode && event.ctrlKey)) {
-            this.context.setCutViewModel(this.object);
-            event.preventDefault();
-        }
-    }
-
+    // todo give #ttl a better name 
     @ViewChildren("ttl")
     titleDiv: QueryList<ElementRef>;
 

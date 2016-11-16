@@ -30,7 +30,7 @@ export class DomainObjectViewModel extends MessageViewModel {
     private routeData: PaneRouteData;
     private props: _.Dictionary<Models.Value>;
     private instanceId: string;
-    private unsaved: boolean;
+    unsaved: boolean;
 
     // IDraggableViewModel
     value: string;

@@ -77,10 +77,7 @@ export class ViewModelFactoryService {
 
     attachmentViewModel = (propertyRep: Models.PropertyMember, paneId: number) => {
         const parent = propertyRep.parent as Models.DomainObjectRepresentation;
-        const avm = AttachmentViewModel.create(propertyRep.attachmentLink(), parent, this.context, paneId);
-        avm.doClick = (right?: boolean) => this.urlManager.setAttachment(avm.link, this.clickHandler.pane(paneId, right));
-
-        return avm;
+        return new AttachmentViewModel(propertyRep.attachmentLink(), parent, this.context, this.urlManager, this.clickHandler, paneId);
     };
 
     linkViewModel = (linkRep: Models.Link, paneId: number) => {
