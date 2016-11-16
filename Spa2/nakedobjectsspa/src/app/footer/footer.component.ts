@@ -5,12 +5,12 @@ import { UrlManagerService } from "../url-manager.service";
 import { ClickHandlerService } from "../click-handler.service";
 import { ContextService } from "../context.service";
 import { ErrorService } from "../error.service";
-import * as Msg from "../user-messages";
-import * as Config from "../config";
-import * as Models from "../models";
 import { RepLoaderService } from "../rep-loader.service";
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
 import { IMessageViewModel } from '../view-models/imessage-view-model';
+import * as Msg from "../user-messages";
+import * as Config from "../config";
+import * as Models from "../models";
 
 @Component({
     selector: 'footer',
@@ -26,7 +26,6 @@ export class FooterComponent implements OnInit {
         private repLoader: RepLoaderService,
         private location: Location) {
     }
-
 
     loading: string;
     template: string;
@@ -45,7 +44,6 @@ export class FooterComponent implements OnInit {
         this.location.forward();
     };
     swapPanes = () => {
-        // $rootScope.$broadcast(Nakedobjectsconstants.geminiPaneSwapEvent);
         this.context.updateValues();
         this.context.swapCurrentObjects();
         this.urlManager.swapPanes();

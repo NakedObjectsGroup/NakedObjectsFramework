@@ -24,7 +24,6 @@ import { RecentItemViewModel } from './view-models/recent-item-view-model';
 import { TableRowColumnViewModel } from './view-models/table-row-column-view-model';
 import { TableRowViewModel } from './view-models/table-row-view-model';
 import { CollectionPlaceholderViewModel } from './view-models/collection-placeholder-view-model';
-import { ToolBarViewModel } from './view-models/toolbar-view-model';
 import * as Recentitemsviewmodel from './view-models/recent-items-view-model';
 import * as Ciceroviewmodel from './view-models/cicero-view-model';
 import { FieldViewModel } from './view-models/field-view-model';
@@ -52,26 +51,6 @@ export class ViewModelFactoryService {
         return new ErrorViewModel(error);
     };
 
-    private initLinkViewModel(linkViewModel: LinkViewModel, linkRep: Models.Link) {
-        linkViewModel.title = linkRep.title() + Models.dirtyMarker(this.context, linkRep.getOid());
-        linkViewModel.link = linkRep;
-        linkViewModel.domainType = linkRep.type().domainType;
-
-        // for dropping 
-        const value = new Models.Value(linkRep);
-
-        linkViewModel.value = value.toString();
-        linkViewModel.reference = value.toValueString();
-        linkViewModel.selectedChoice = ChoiceViewModel.create(value, "");
-        linkViewModel.draggableType = linkViewModel.domainType;
-
-        this.color.toColorNumberFromHref(linkRep.href()).
-            then(c => linkViewModel.color = `${Config.linkColor}${c}`).
-            catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
-
-        linkViewModel.canDropOn = (targetType: string) => this.context.isSubTypeOf(linkViewModel.domainType, targetType);
-    }
-
     private createChoiceViewModels = (id: string, searchTerm: string, choices: _.Dictionary<Models.Value>) =>
         Promise.resolve(_.map(choices, (v, k) => ChoiceViewModel.create(v, id, k, searchTerm)));
 
@@ -81,49 +60,15 @@ export class ViewModelFactoryService {
     };
 
     linkViewModel = (linkRep: Models.Link, paneId: number) => {
-        const linkViewModel = new LinkViewModel();
-        this.initLinkViewModel(linkViewModel, linkRep);
-
-        linkViewModel.doClick = () => {
-            // because may be clicking on menu already open so want to reset focus             
-            this.urlManager.setMenu(linkRep.rel().parms[0].value, paneId);
-           
-        };
-
-        return linkViewModel as LinkViewModel;
+        return new LinkViewModel(this.context, this.color, this.error, this.urlManager, linkRep, paneId);
     };
 
     itemViewModel = (linkRep: Models.Link, paneId: number, selected: boolean, index: number) => {
-        const itemViewModel = new ItemViewModel();
-        this.initLinkViewModel(itemViewModel, linkRep);
-
-        itemViewModel.selectionChange = () => {
-            this.context.updateValues();
-            this.urlManager.setListItem(index, itemViewModel.selected, paneId);
-        };
-
-        // avoid setter to avoid selectionChanged
-        itemViewModel._selected = selected;
-
-        itemViewModel.doClick = (right?: boolean) => {
-            const currentPane = this.clickHandler.pane(paneId, right);
-            this.urlManager.setItem(linkRep, currentPane);
-        };
-
-        const members = linkRep.members();
-
-        if (members) {
-            itemViewModel.tableRowViewModel = this.tableRowViewModel(members, paneId);
-            itemViewModel.tableRowViewModel.title = itemViewModel.title;
-        }
-
-        return itemViewModel;
+        return new ItemViewModel(this.context, this.color, this.error, this.urlManager, linkRep, paneId, this.clickHandler, this, index, selected);    
     };
 
     recentItemViewModel = (obj: Models.DomainObjectRepresentation, linkRep: Models.Link, paneId: number, selected: boolean, index: number) => {
-        const recentItemViewModel = <RecentItemViewModel>(this.itemViewModel(linkRep, paneId, selected, index) as any);
-        recentItemViewModel.friendlyName = obj.extensions().friendlyName();
-        return recentItemViewModel;
+        return new RecentItemViewModel(this.context, this.color, this.error, this.urlManager, linkRep, paneId, this.clickHandler, this, index, selected, obj.extensions().friendlyName());    
     };
 
     actionViewModel = (actionRep: Models.ActionMember | Models.ActionRepresentation, vm: IMessageViewModel, routeData: PaneRouteData) => {
@@ -854,84 +799,8 @@ export class ViewModelFactoryService {
     };
 
     tableRowViewModel = (properties: _.Dictionary<Models.PropertyMember>, paneId: number): TableRowViewModel => {
-        const tableRowViewModel = new TableRowViewModel();
-        tableRowViewModel.properties = _.map(properties, (property, id) => this.propertyTableViewModel(property, id, paneId));
-        return tableRowViewModel;
+        return new TableRowViewModel(this, properties, paneId);
     };
-
-
-    private cachedToolBarViewModel: ToolBarViewModel;
-
-    private getToolBarViewModel() {
-        if (!this.cachedToolBarViewModel) {
-            const tvm = new ToolBarViewModel();
-
-            tvm.goBack = () => {
-                this.context.updateValues();
-                //navigation.back();
-            };
-            tvm.goForward = () => {
-                this.context.updateValues();
-               // navigation.forward();
-            };
-            tvm.swapPanes = () => {
-                // $rootScope.$broadcast(Nakedobjectsconstants.geminiPaneSwapEvent);
-                this.context.updateValues();
-                this.context.swapCurrentObjects();
-                this.urlManager.swapPanes();
-            };
-            tvm.singlePane = (right?: boolean) => {
-                this.context.updateValues();
-                this.urlManager.singlePane(this.clickHandler.pane(1, right));
-            };
-            tvm.cicero = () => {
-                this.context.updateValues();
-                this.urlManager.singlePane(this.clickHandler.pane(1));
-                this.urlManager.cicero();
-            };
-
-            tvm.recent = (right?: boolean) => {
-                this.context.updateValues();
-                this.urlManager.setRecent(this.clickHandler.pane(1, right));
-            };
-
-            tvm.logOff = () => {
-                this.context.getUser().
-                    then(u => {
-                        if (window.confirm(Msg.logOffMessage(u.userName() || "Unknown"))) {
-                            const config = {
-                                withCredentials: true,
-                                url: Config.logoffUrl,
-                                method: "POST",
-                                cache: false
-                            };
-
-                            // logoff server
-                            //$http(config);
-
-                            // logoff client without waiting for server
-                            //$rootScope.$broadcast(Nakedobjectsconstants.geminiLogoffEvent);
-                            //$timeout(() => window.location.href = Nakedobjectsconfig.postLogoffUrl);
-                        }
-                    }).
-                    catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
-            };
-
-            tvm.applicationProperties = () => {
-                this.context.updateValues();
-                this.urlManager.applicationProperties();
-            };
-
-            this.context.getUser().
-                then(user => tvm.userName = user.userName()).
-                catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
-
-            this.cachedToolBarViewModel = tvm;
-        }
-        return this.cachedToolBarViewModel;
-    }
-
-    toolBarViewModel = () => this.getToolBarViewModel();
 
     private cvm: Ciceroviewmodel.CiceroViewModel = null;
 

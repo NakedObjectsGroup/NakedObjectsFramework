@@ -1,11 +1,20 @@
 ﻿import { TableRowColumnViewModel } from './table-row-column-view-model';
 import * as _ from "lodash";
+import * as Models from '../models';
+import { ViewModelFactoryService} from '../view-model-factory.service';
 
 export class TableRowViewModel {
-    title: string;
-    hasTitle: boolean;
+
+    constructor(private viewModelFactory : ViewModelFactoryService,  properties: _.Dictionary<Models.PropertyMember>, paneId: number) {
+        this.properties = _.map(properties, (property, id) => viewModelFactory.propertyTableViewModel(property, id, paneId));
+    }
+
     properties: TableRowColumnViewModel[];
 
+    // todo these currently initialised outside constructor - smell ?
+    title: string;
+    hasTitle: boolean;
+    
     getPlaceHolderTableRowColumnViewModel(id: string) {
         const ph = new TableRowColumnViewModel();
         ph.id = id;

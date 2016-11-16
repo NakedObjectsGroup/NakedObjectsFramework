@@ -1,9 +1,9 @@
 import { Component, Input, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
-import * as Models from "../models";
 import { FormGroup } from '@angular/forms';
-import {EditPropertyComponent} from "../edit-property/edit-property.component"
+import { EditPropertyComponent } from "../edit-property/edit-property.component"
 import { PropertyViewModel } from '../view-models/property-view-model';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
+import * as Models from "../models";
 
 @Component({
     selector: 'properties',
@@ -12,8 +12,6 @@ import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 })
 export class PropertiesComponent implements AfterViewInit {
 
-    props: PropertyViewModel[];
-
     @Input()
     parent: DomainObjectViewModel;
 
@@ -21,13 +19,7 @@ export class PropertiesComponent implements AfterViewInit {
     form: FormGroup;
 
     @Input()
-    set properties(value: PropertyViewModel[]) {
-        this.props = value;
-    }
-
-    get properties() {
-        return this.props;
-    }
+    properties: PropertyViewModel[];
 
     @ViewChildren(EditPropertyComponent)
     propComponents: QueryList<EditPropertyComponent>;
