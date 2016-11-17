@@ -317,219 +317,70 @@ export class ViewModelFactoryService {
     }
 
     propertyViewModel = (propertyRep: Models.PropertyMember, id: string, previousValue: Models.Value, paneId: number, parentValues: () => _.Dictionary<Models.Value>) => {
-        const propertyViewModel = new PropertyViewModel(propertyRep, this.color, this.error);
+        return  new PropertyViewModel(propertyRep,
+            this.color,
+            this.error,
+            this,
+            this.context,
+            this.mask,
+            this.urlManager,
+            this.clickHandler,
+            this.momentWrapperService,
+            id,
+            previousValue,
+            paneId,
+            parentValues);
 
-        propertyViewModel.id = id;
-        propertyViewModel.onPaneId = paneId;
-        propertyViewModel.argId = `${id.toLowerCase()}`;
-        propertyViewModel.paneArgId = `${propertyViewModel.argId}${paneId}`;
-
-
-        if (propertyRep.attachmentLink() != null) {
-            propertyViewModel.attachment = this.attachmentViewModel(propertyRep, paneId);
-        }
-
-        const fieldEntryType = propertyViewModel.entryType;
-
-        if (fieldEntryType === Models.EntryType.AutoComplete) {
-            this.setupPropertyAutocomplete(propertyViewModel, parentValues);
-        }
-
-        if (fieldEntryType === Models.EntryType.ConditionalChoices) {
-            this.setupPropertyConditionalChoices(propertyViewModel);
-        }
-
-        if (propertyRep.isScalar()) {
-            this.setupScalarPropertyValue(propertyViewModel);
-        } else {
-            // is reference
-            this.setupReferencePropertyValue(propertyViewModel);
-        }
-
-        propertyViewModel.refresh(previousValue);
-
-        if (!previousValue) {
-            propertyViewModel.originalValue = propertyViewModel.getValue();
-        }
-
-        const required = propertyViewModel.optional ? "" : "* ";
-        propertyViewModel.description = required + propertyViewModel.description;
-
-        propertyViewModel.isDirty = () => !!previousValue || propertyViewModel.getValue().toValueString() !== propertyViewModel.originalValue.toValueString();
-        propertyViewModel.validate = _.partial(this.validate, propertyRep, propertyViewModel, this.momentWrapperService) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
-        propertyViewModel.canDropOn = (targetType: string) => this.context.isSubTypeOf(propertyViewModel.returnType, targetType) as Promise<boolean>;
-        propertyViewModel.drop = _.partial(this.drop, this.context, this.error, propertyViewModel);
-        propertyViewModel.doClick = (right?: boolean) => this.urlManager.setProperty(propertyRep, this.clickHandler.pane(paneId, right));
-
-        return propertyViewModel as PropertyViewModel;
-    };
-
-    private setupParameterChoices(parmViewModel: ParameterViewModel) {
-        const parmRep = parmViewModel.parameterRep;
-        parmViewModel.choices = _.map(parmRep.choices(), (v, n) => ChoiceViewModel.create(v, parmRep.id(), n));
-    }
-
-    private setupParameterAutocomplete(parmViewModel: ParameterViewModel) {
-        const parmRep = parmViewModel.parameterRep;
-        parmViewModel.prompt = (searchTerm: string) => {
-            const createcvm = _.partial(this.createChoiceViewModels, parmViewModel.id, searchTerm);
-            return this.context.autoComplete(parmRep, parmViewModel.id, () => <_.Dictionary<Models.Value>>{}, searchTerm).
-                then(createcvm);
-        };
-        parmViewModel.minLength = parmRep.promptLink().extensions().minLength();
-        parmViewModel.description = parmViewModel.description || Msg.autoCompletePrompt;
-    }
-
-    private setupParameterFreeformReference(parmViewModel: ParameterViewModel, previousValue: Models.Value) {
-        const parmRep = parmViewModel.parameterRep;
-        parmViewModel.description = parmViewModel.description || Msg.dropPrompt;
-
-        const val = previousValue && !previousValue.isNull() ? previousValue : parmRep.default();
-
-        if (!val.isNull() && val.isReference()) {
-            parmViewModel.reference = val.link().href();
-            parmViewModel.selectedChoice = ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
-        }
-    }
-
-    private setupParameterConditionalChoices(parmViewModel: ParameterViewModel) {
-        const parmRep = parmViewModel.parameterRep;
-        parmViewModel.conditionalChoices = (args: _.Dictionary<Models.Value>) => {
-            const createcvm = _.partial(this.createChoiceViewModels, parmViewModel.id, null);
-            return this.context.conditionalChoices(parmRep, parmViewModel.id, () => <_.Dictionary<Models.Value>>{}, args).
-                then(createcvm);
-        };
-        parmViewModel.promptArguments = (<any>_.fromPairs)(_.map(parmRep.promptLink().arguments(), (v: any, key: string) => [key, new Models.Value(v.value)]));
-    }
-
-    private setupParameterSelectedChoices(parmViewModel: ParameterViewModel, previousValue: Models.Value) {
-        const parmRep = parmViewModel.parameterRep;
-        const fieldEntryType = parmViewModel.entryType;
-        function setCurrentChoices(vals: Models.Value) {
-
-            const choicesToSet = _.map(vals.list(), val => ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null));
-
-            if (fieldEntryType === Models.EntryType.MultipleChoices) {
-                parmViewModel.selectedMultiChoices = _.filter(parmViewModel.choices, c => _.some(choicesToSet, choiceToSet => c.valuesEqual(choiceToSet)));
-            } else {
-                parmViewModel.selectedMultiChoices = choicesToSet;
-            }
-        }
-
-        function setCurrentChoice(val: Models.Value) {
-            const choiceToSet = ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
-
-            if (fieldEntryType === Models.EntryType.Choices) {
-                parmViewModel.selectedChoice = _.find(parmViewModel.choices, c => c.valuesEqual(choiceToSet));
-            } else {
-                if (!parmViewModel.selectedChoice || parmViewModel.selectedChoice.getValue().toValueString() !== choiceToSet.getValue().toValueString()) {
-                    parmViewModel.selectedChoice = choiceToSet;
-                }
-            }
-        }
-
-        parmViewModel.refresh = (newValue: Models.Value) => {
-
-            if (newValue || parmViewModel.dflt) {
-                const toSet = newValue || parmRep.default();
-                if (fieldEntryType === Models.EntryType.MultipleChoices || fieldEntryType === Models.EntryType.MultipleConditionalChoices ||
-                    parmViewModel.isCollectionContributed) {
-                    setCurrentChoices(toSet);
-                } else {
-                    setCurrentChoice(toSet);
-                }
-            }
-        }
-
-        parmViewModel.refresh(previousValue);
-
-    }
+        //propertyViewModel.id = id;
+        //propertyViewModel.onPaneId = paneId;
+        //propertyViewModel.argId = `${id.toLowerCase()}`;
+        //propertyViewModel.paneArgId = `${propertyViewModel.argId}${paneId}`;
 
 
-
-    private toTriStateBoolean(valueToSet: string | boolean | number) {
-
-        // looks stupid but note type checking
-        if (valueToSet === true || valueToSet === "true") {
-            return true;
-        }
-        if (valueToSet === false || valueToSet === "false") {
-            return false;
-        }
-        return null;
-    }
-
-
-    private setupParameterSelectedValue(parmViewModel: ParameterViewModel, previousValue: Models.Value) {
-        const parmRep = parmViewModel.parameterRep;
-        const returnType = parmRep.extensions().returnType();
-
-        parmViewModel.refresh = (newValue: Models.Value) => {
-
-            if (returnType === "boolean") {
-                const valueToSet = (newValue ? newValue.toValueString() : null) || parmRep.default().scalar();
-                const bValueToSet = this.toTriStateBoolean(valueToSet);
-
-                parmViewModel.value = bValueToSet;
-            } else if (Models.isDateOrDateTime(parmRep)) {
-                //parmViewModel.value = Models.toUtcDate(newValue || new Models.Value(parmViewModel.dflt));
-                const date = Models.toUtcDate(newValue || new Models.Value(parmViewModel.dflt));
-                parmViewModel.value = date ? Models.toDateString(date) : "";
-            } else if (Models.isTime(parmRep)) {
-                parmViewModel.value = Models.toTime(newValue || new Models.Value(parmViewModel.dflt));
-            } else {
-                parmViewModel.value = (newValue ? newValue.toString() : null) || parmViewModel.dflt || "";
-            }
-        }
-
-        parmViewModel.refresh(previousValue);
-    }
-
-    private getRequiredIndicator(parmViewModel: ParameterViewModel) {
-        return parmViewModel.optional || typeof parmViewModel.value === "boolean" ? "" : "* ";
-    }
-
-    parameterViewModel = (parmRep: Models.Parameter, previousValue: Models.Value, paneId: number) => {
-        return new ParameterViewModel(parmRep, paneId, this.color, this.error, this.momentWrapperService, this.mask, previousValue, this, this.context);
-
-        //const fieldEntryType = parmViewModel.entryType;
-
-        //if (fieldEntryType === Models.EntryType.Choices || fieldEntryType === Models.EntryType.MultipleChoices) {
-        //    this.setupParameterChoices(parmViewModel);
+        //if (propertyRep.attachmentLink() != null) {
+        //    propertyViewModel.attachment = this.attachmentViewModel(propertyRep, paneId);
         //}
+
+        //const fieldEntryType = propertyViewModel.entryType;
 
         //if (fieldEntryType === Models.EntryType.AutoComplete) {
-        //    this.setupParameterAutocomplete(parmViewModel);
+        //    this.setupPropertyAutocomplete(propertyViewModel, parentValues);
         //}
 
-        //if (fieldEntryType === Models.EntryType.FreeForm && parmViewModel.type === "ref") {
-        //    this.setupParameterFreeformReference(parmViewModel, previousValue);
+        //if (fieldEntryType === Models.EntryType.ConditionalChoices) {
+        //    this.setupPropertyConditionalChoices(propertyViewModel);
         //}
 
-        //if (fieldEntryType === Models.EntryType.ConditionalChoices || fieldEntryType === Models.EntryType.MultipleConditionalChoices) {
-        //    this.setupParameterConditionalChoices(parmViewModel);
-        //}
-
-        //if (fieldEntryType !== Models.EntryType.FreeForm || parmViewModel.isCollectionContributed) {
-        //    this.setupParameterSelectedChoices(parmViewModel, previousValue);
+        //if (propertyRep.isScalar()) {
+        //    this.setupScalarPropertyValue(propertyViewModel);
         //} else {
-        //    this.setupParameterSelectedValue(parmViewModel, previousValue);
+        //    // is reference
+        //    this.setupReferencePropertyValue(propertyViewModel);
         //}
 
-        //const remoteMask = parmRep.extensions().mask();
+        //propertyViewModel.refresh(previousValue);
 
-        //if (remoteMask && parmRep.isScalar()) {
-        //    const localFilter = this.mask.toLocalFilter(remoteMask, parmRep.extensions().format());
-        //    parmViewModel.localFilter = localFilter;
-        //    // formatting also happens in in directive - at least for dates - value is now date in that case
-        //    parmViewModel.formattedValue = localFilter.filter(parmViewModel.value.toString());
+        //if (!previousValue) {
+        //    propertyViewModel.originalValue = propertyViewModel.getValue();
         //}
 
-        //parmViewModel.description = this.getRequiredIndicator(parmViewModel) + parmViewModel.description;
-        //parmViewModel.validate = <any>_.partial(this.validate, parmRep, parmViewModel, this.momentWrapperService) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
-        //parmViewModel.drop = _.partial(this.drop, this.context, this.error, parmViewModel);
+        //const required = propertyViewModel.optional ? "" : "* ";
+        //propertyViewModel.description = required + propertyViewModel.description;
 
-        //return parmViewModel;
+        //propertyViewModel.isDirty = () => !!previousValue || propertyViewModel.getValue().toValueString() !== propertyViewModel.originalValue.toValueString();
+        //propertyViewModel.validate = _.partial(this.validate, propertyRep, propertyViewModel, this.momentWrapperService) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
+        //propertyViewModel.canDropOn = (targetType: string) => this.context.isSubTypeOf(propertyViewModel.returnType, targetType) as Promise<boolean>;
+        //propertyViewModel.drop = _.partial(this.drop, this.context, this.error, propertyViewModel);
+        //propertyViewModel.doClick = (right?: boolean) => this.urlManager.setProperty(propertyRep, this.clickHandler.pane(paneId, right));
+
+        //return propertyViewModel as PropertyViewModel;
+    };
+
+   
+    
+
+    parameterViewModel = (parmRep: Models.Parameter, previousValue: Models.Value, paneId: number) => {
+        return new ParameterViewModel(parmRep, paneId, this.color, this.error, this.momentWrapperService, this.mask, previousValue, this, this.context);     
     };
 
     getItems = (links: Models.Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: ListViewModel | CollectionViewModel) => {
