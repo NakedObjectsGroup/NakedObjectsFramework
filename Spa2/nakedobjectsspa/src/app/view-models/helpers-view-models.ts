@@ -3,6 +3,11 @@ import { MenuItemViewModel } from './menu-item-view-model';
 import { ActionViewModel } from './action-view-model';
 import * as Msg from '../user-messages';
 import * as _ from "lodash";
+import * as Contextservice from '../context.service';
+import * as Errorservice from '../error.service';
+import * as Idraggableviewmodel from './idraggable-view-model';
+import * as Momentwrapperservice from '../moment-wrapper.service';
+import * as Models from "../models";
 
 export function tooltip(onWhat: { clientValid: () => boolean }, fields: FieldViewModel[]): string {
     if (onWhat.clientValid()) {
@@ -91,3 +96,42 @@ export function actionsTooltip(onWhat: { disableActions: () => boolean }, action
     }
     return onWhat.disableActions() ? Msg.noActions : Msg.openActions;
 }
+
+export function getCollectionDetails(count: number) {
+    if (count == null) {
+        return Msg.unknownCollectionSize;
+    }
+
+    if (count === 0) {
+        return Msg.emptyCollectionSize;
+    }
+
+    const postfix = count === 1 ? "Item" : "Items";
+
+    return `${count} ${postfix}`;
+}
+
+export function drop(context: Contextservice.ContextService, error: Errorservice.ErrorService, vm: FieldViewModel, newValue: Idraggableviewmodel.IDraggableViewModel) {
+    return context.isSubTypeOf(newValue.draggableType, vm.returnType).
+        then((canDrop: boolean) => {
+            if (canDrop) {
+                vm.setNewValue(newValue);
+                return true;
+            }
+            return false;
+        }).
+        catch((reject: Models.ErrorWrapper) => error.handleError(reject));
+};
+
+export function validate(rep: Models.IHasExtensions, vm: FieldViewModel, ms: Momentwrapperservice.MomentWrapperService, modelValue: any, viewValue: string, mandatoryOnly: boolean) {
+    const message = mandatoryOnly ? Models.validateMandatory(rep, viewValue) : Models.validate(rep, modelValue, viewValue, vm.localFilter, ms);
+
+    if (message !== Msg.mandatory) {
+        vm.setMessage(message);
+    } else {
+        vm.resetMessage();
+    }
+
+    vm.clientValid = !message;
+    return vm.clientValid;
+};

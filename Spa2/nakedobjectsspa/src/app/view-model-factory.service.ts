@@ -51,7 +51,8 @@ export class ViewModelFactoryService {
         return new ErrorViewModel(error);
     };
 
-    private createChoiceViewModels = (id: string, searchTerm: string, choices: _.Dictionary<Models.Value>) =>
+    // todo move to helpers
+    createChoiceViewModels = (id: string, searchTerm: string, choices: _.Dictionary<Models.Value>) =>
         Promise.resolve(_.map(choices, (v, k) => ChoiceViewModel.create(v, id, k, searchTerm)));
 
     attachmentViewModel = (propertyRep: Models.PropertyMember, paneId: number) => {
@@ -489,46 +490,46 @@ export class ViewModelFactoryService {
     }
 
     parameterViewModel = (parmRep: Models.Parameter, previousValue: Models.Value, paneId: number) => {
-        const parmViewModel = new ParameterViewModel(parmRep, paneId, this.color, this.error);
+        return new ParameterViewModel(parmRep, paneId, this.color, this.error, this.momentWrapperService, this.mask, previousValue, this, this.context);
 
-        const fieldEntryType = parmViewModel.entryType;
+        //const fieldEntryType = parmViewModel.entryType;
 
-        if (fieldEntryType === Models.EntryType.Choices || fieldEntryType === Models.EntryType.MultipleChoices) {
-            this.setupParameterChoices(parmViewModel);
-        }
+        //if (fieldEntryType === Models.EntryType.Choices || fieldEntryType === Models.EntryType.MultipleChoices) {
+        //    this.setupParameterChoices(parmViewModel);
+        //}
 
-        if (fieldEntryType === Models.EntryType.AutoComplete) {
-            this.setupParameterAutocomplete(parmViewModel);
-        }
+        //if (fieldEntryType === Models.EntryType.AutoComplete) {
+        //    this.setupParameterAutocomplete(parmViewModel);
+        //}
 
-        if (fieldEntryType === Models.EntryType.FreeForm && parmViewModel.type === "ref") {
-            this.setupParameterFreeformReference(parmViewModel, previousValue);
-        }
+        //if (fieldEntryType === Models.EntryType.FreeForm && parmViewModel.type === "ref") {
+        //    this.setupParameterFreeformReference(parmViewModel, previousValue);
+        //}
 
-        if (fieldEntryType === Models.EntryType.ConditionalChoices || fieldEntryType === Models.EntryType.MultipleConditionalChoices) {
-            this.setupParameterConditionalChoices(parmViewModel);
-        }
+        //if (fieldEntryType === Models.EntryType.ConditionalChoices || fieldEntryType === Models.EntryType.MultipleConditionalChoices) {
+        //    this.setupParameterConditionalChoices(parmViewModel);
+        //}
 
-        if (fieldEntryType !== Models.EntryType.FreeForm || parmViewModel.isCollectionContributed) {
-            this.setupParameterSelectedChoices(parmViewModel, previousValue);
-        } else {
-            this.setupParameterSelectedValue(parmViewModel, previousValue);
-        }
+        //if (fieldEntryType !== Models.EntryType.FreeForm || parmViewModel.isCollectionContributed) {
+        //    this.setupParameterSelectedChoices(parmViewModel, previousValue);
+        //} else {
+        //    this.setupParameterSelectedValue(parmViewModel, previousValue);
+        //}
 
-        const remoteMask = parmRep.extensions().mask();
+        //const remoteMask = parmRep.extensions().mask();
 
-        if (remoteMask && parmRep.isScalar()) {
-            const localFilter = this.mask.toLocalFilter(remoteMask, parmRep.extensions().format());
-            parmViewModel.localFilter = localFilter;
-            // formatting also happens in in directive - at least for dates - value is now date in that case
-            parmViewModel.formattedValue = localFilter.filter(parmViewModel.value.toString());
-        }
+        //if (remoteMask && parmRep.isScalar()) {
+        //    const localFilter = this.mask.toLocalFilter(remoteMask, parmRep.extensions().format());
+        //    parmViewModel.localFilter = localFilter;
+        //    // formatting also happens in in directive - at least for dates - value is now date in that case
+        //    parmViewModel.formattedValue = localFilter.filter(parmViewModel.value.toString());
+        //}
 
-        parmViewModel.description = this.getRequiredIndicator(parmViewModel) + parmViewModel.description;
-        parmViewModel.validate = <any>_.partial(this.validate, parmRep, parmViewModel, this.momentWrapperService) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
-        parmViewModel.drop = _.partial(this.drop, this.context, this.error, parmViewModel);
+        //parmViewModel.description = this.getRequiredIndicator(parmViewModel) + parmViewModel.description;
+        //parmViewModel.validate = <any>_.partial(this.validate, parmRep, parmViewModel, this.momentWrapperService) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
+        //parmViewModel.drop = _.partial(this.drop, this.context, this.error, parmViewModel);
 
-        return parmViewModel;
+        //return parmViewModel;
     };
 
     getItems = (links: Models.Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: ListViewModel | CollectionViewModel) => {
@@ -589,103 +590,9 @@ export class ViewModelFactoryService {
         return `${count} ${postfix}`;
     }
 
-    private getDefaultTableState(exts: Models.Extensions) {
-        if (exts.renderEagerly()) {
-            return exts.tableViewColumns() || exts.tableViewTitle() ? CollectionViewState.Table : CollectionViewState.List;
-        }
-        return CollectionViewState.Summary;
-    }
-
     collectionViewModel = (collectionRep: Models.CollectionMember, routeData: PaneRouteData) => {
-        const collectionViewModel = new CollectionViewModel();
-
-        const itemLinks = collectionRep.value();
-        const paneId = routeData.paneId;
-        const size = collectionRep.size();
-
-        collectionViewModel.collectionRep = collectionRep;
-        collectionViewModel.onPaneId = paneId;
-        collectionViewModel.title = collectionRep.extensions().friendlyName();
-        collectionViewModel.presentationHint = collectionRep.extensions().presentationHint();
-        collectionViewModel.pluralName = collectionRep.extensions().pluralName();
-
-        this.color.toColorNumberFromType(collectionRep.extensions().elementType()).
-            then(c => collectionViewModel.color = `${Config.linkColor}${c}`).
-            catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
-
-        function setCurrentState(collectionViewModel: CollectionViewModel) {
-            if (size === 0) {
-                collectionViewModel.currentState = CollectionViewState.Summary;
-            }
-            else if (collectionRep.hasTableData()) {
-                collectionViewModel.currentState = CollectionViewState.Table;
-            } else {
-                collectionViewModel.currentState = CollectionViewState.List;
-            }
-        }
-
-
-        collectionViewModel.refresh = (routeData: PaneRouteData, resetting: boolean) => {
-
-            let state = routeData.collections[collectionRep.collectionId()];
-
-            // collections are always shown as summary on transient 
-            if (routeData.interactionMode === InteractionMode.Transient) {
-                state = CollectionViewState.Summary;
-            }
-
-            if (state == null) {
-                state = this.getDefaultTableState(collectionRep.extensions());
-            }
-
-            collectionViewModel.editing = routeData.interactionMode === InteractionMode.Edit;
-
-            // clear any previous messages
-            //this.resetMessage();
-
-            if (resetting || state !== collectionViewModel.currentState) {
-
-                if (size > 0 || size == null) {
-                    collectionViewModel.mayHaveItems = true;
-                }
-                collectionViewModel.details = this.getCollectionDetails(size);
-                const getDetails = itemLinks == null || state === CollectionViewState.Table;
-
-                if (state === CollectionViewState.Summary) {
-                    collectionViewModel.items = [];
-
-                } else if (getDetails) {
-                    this.context.getCollectionDetails(collectionRep, state, resetting).
-                        then(details => {
-                            collectionViewModel.items = this.getItems(details.value(),
-                                state === CollectionViewState.Table,
-                                routeData,
-                                collectionViewModel);
-                            collectionViewModel.details = this.getCollectionDetails(collectionViewModel.items.length);
-                            //collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);
-                        }).
-                        catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
-                } else {
-                    collectionViewModel.items = this.getItems(itemLinks, collectionViewModel.currentState === CollectionViewState.Table, routeData, collectionViewModel);
-                    //collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);   
-                }
-                collectionViewModel.currentState = state;
-            } else {
-                //collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);
-            }
-        }
-
-        collectionViewModel.refresh(routeData, true);
-
-        collectionViewModel.doSummary = () => this.urlManager.setCollectionMemberState(collectionRep.collectionId(), CollectionViewState.Summary, paneId);
-        collectionViewModel.doList = () => this.urlManager.setCollectionMemberState(collectionRep.collectionId(), CollectionViewState.List, paneId);
-        collectionViewModel.doTable = () => this.urlManager.setCollectionMemberState(collectionRep.collectionId(), CollectionViewState.Table, paneId);
-
-        collectionViewModel.hasTableData = () => collectionViewModel.items && _.some(collectionViewModel.items, i => i.tableRowViewModel);
-
-        return collectionViewModel;
+        return new CollectionViewModel(this, this.color, this.error, this.context, this.urlManager, collectionRep, routeData );    
     };
-
 
     listPlaceholderViewModel = (routeData: PaneRouteData) => {
         return new CollectionPlaceholderViewModel(this.context, this.error, routeData);    

@@ -14,7 +14,7 @@ import * as _ from "lodash";
 
 export abstract class FieldViewModel extends MessageViewModel {
 
-    constructor(ext: Models.Extensions, color: ColorService, error: ErrorService) {
+    constructor(ext: Models.Extensions, protected colorService: ColorService, protected error: ErrorService) {
         super();
         this.optional = ext.optional();
         this.description = ext.description();
@@ -25,8 +25,7 @@ export abstract class FieldViewModel extends MessageViewModel {
         this.format = ext.format();
         this.multipleLines = ext.multipleLines() || 1;
         this.password = ext.dataType() === "password";
-        this.updateColor = _.partial(this.setColor, color);
-        this.error = error;
+        this.updateColor = _.partial(this.setColor, colorService);
     }
 
     id: string;
@@ -96,7 +95,6 @@ export abstract class FieldViewModel extends MessageViewModel {
 
     private currentChoice: ChoiceViewModel;
 
-    private error: ErrorService;
 
     get selectedChoice(): ChoiceViewModel {
         return this.currentChoice;
@@ -127,7 +125,7 @@ export abstract class FieldViewModel extends MessageViewModel {
     file: Models.Link;
 
     entryType: Models.EntryType;
-
+    
     validate: (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
 
     private isValid(viewValue: any): boolean {
