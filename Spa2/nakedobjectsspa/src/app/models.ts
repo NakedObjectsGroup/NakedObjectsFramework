@@ -2020,6 +2020,12 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
 
         return this.oid;
     }
+
+    updateSelfLinkWithTitle() {
+        const link = this.selfLink();
+        link.setTitle(this.title());
+        return link;
+    }
 }
 
 export class MenuRepresentation extends ResourceRepresentation<RoCustom.IMenuRepresentation> implements IHasActions {

@@ -24,7 +24,7 @@ import { RecentItemViewModel } from './view-models/recent-item-view-model';
 import { TableRowColumnViewModel } from './view-models/table-row-column-view-model';
 import { TableRowViewModel } from './view-models/table-row-view-model';
 import { CollectionPlaceholderViewModel } from './view-models/collection-placeholder-view-model';
-import * as Recentitemsviewmodel from './view-models/recent-items-view-model';
+import { RecentItemsViewModel} from './view-models/recent-items-view-model';
 import * as Ciceroviewmodel from './view-models/cicero-view-model';
 import { FieldViewModel } from './view-models/field-view-model';
 import { ParameterViewModel } from './view-models/parameter-view-model';
@@ -688,56 +688,15 @@ export class ViewModelFactoryService {
 
 
     listPlaceholderViewModel = (routeData: PaneRouteData) => {
-        const collectionPlaceholderViewModel = new CollectionPlaceholderViewModel();
-
-        collectionPlaceholderViewModel.description = () => `Page ${routeData.page}`;
-
-        const recreate = () =>
-            routeData.objectId ?
-                this.context.getListFromObject(routeData.paneId, routeData, routeData.page, routeData.pageSize) :
-                this.context.getListFromMenu(routeData.paneId, routeData, routeData.page, routeData.pageSize);
-
-
-        collectionPlaceholderViewModel.reload = () =>
-            recreate().
-                then(() => {
-                    //$route.reload()
-                }).
-                catch((reject: Models.ErrorWrapper) => {
-                    this.error.handleError(reject);
-                });
-
-        return collectionPlaceholderViewModel;
+        return new CollectionPlaceholderViewModel(this.context, this.error, routeData);    
     };
 
     menuViewModel = (menuRep: Models.MenuRepresentation, routeData: PaneRouteData) => {
-        const menuViewModel = new MenuViewModel();
-
-        menuViewModel.id = menuRep.menuId();
-        menuViewModel.menuRep = menuRep;
-
-        const actions = menuRep.actionMembers();
-        menuViewModel.title = menuRep.title();
-        menuViewModel.actions = _.map(actions, action => this.actionViewModel(action, menuViewModel, routeData));
-
-        menuViewModel.menuItems = Helpersviewmodels.createMenuItems(menuViewModel.actions);
-
-
-        return menuViewModel;
+        return new MenuViewModel(this, menuRep, routeData);    
     };
 
-    private selfLinkWithTitle(o: Models.DomainObjectRepresentation) {
-        const link = o.selfLink();
-        link.setTitle(o.title());
-        return link;
-    }
-
     recentItemsViewModel = (paneId: number) => {
-        const recentItemsViewModel = new Recentitemsviewmodel.RecentItemsViewModel();
-        recentItemsViewModel.onPaneId = paneId;
-        const items = _.map(this.context.getRecentlyViewed(), (o, i) => ({ obj: o, link: this.selfLinkWithTitle(o), index: i }));
-        recentItemsViewModel.items = _.map(items, i => this.recentItemViewModel(i.obj, i.link, paneId, false, i.index));
-        return recentItemsViewModel;
+        return new RecentItemsViewModel(this, this.context, paneId);
     };
 
     tableRowViewModel = (properties: _.Dictionary<Models.PropertyMember>, paneId: number): TableRowViewModel => {
