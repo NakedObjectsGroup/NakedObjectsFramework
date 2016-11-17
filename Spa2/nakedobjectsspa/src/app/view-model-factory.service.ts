@@ -72,66 +72,8 @@ export class ViewModelFactoryService {
     };
 
     actionViewModel = (actionRep: Models.ActionMember | Models.ActionRepresentation, vm: IMessageViewModel, routeData: PaneRouteData) => {
-        const actionViewModel = new ActionViewModel();
-
-        const parms = routeData.actionParams;
-        const paneId = routeData.paneId;
-
-        actionViewModel.actionRep = actionRep;
-
-        if (actionRep instanceof Models.ActionRepresentation || actionRep instanceof Models.InvokableActionMember) {
-            actionViewModel.invokableActionRep = actionRep;
-        }
-
-        actionViewModel.title = actionRep.extensions().friendlyName();
-        actionViewModel.presentationHint = actionRep.extensions().presentationHint();
-        actionViewModel.menuPath = actionRep.extensions().menuPath() || "";
-        actionViewModel.disabled = () => !!actionRep.disabledReason();
-        actionViewModel.description = actionViewModel.disabled() ? actionRep.disabledReason() : actionRep.extensions().description();
-
-        actionViewModel.parameters = () => {
-            // don't use actionRep directly as it may change and we've closed around the original value
-            const parameters = _.pickBy(actionViewModel.invokableActionRep.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Models.Parameter>;
-            return _.map(parameters, parm => this.parameterViewModel(parm, parms[parm.id()], paneId));
-        };
-
-        actionViewModel.execute = (pps: ParameterViewModel[], right?: boolean) => {
-            const parmMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Models.Value>;
-            _.forEach(pps, p => this.urlManager.setParameterValue(actionRep.actionId(), p.parameterRep, p.getValue(), paneId));
-            return this.context.getInvokableAction(actionViewModel.actionRep).then(details => this.context.invokeAction(details, parmMap, paneId, this.clickHandler.pane(paneId, right)));
-        };
-
-        // form actions should never show dialogs
-        const showDialog = () => actionRep.extensions().hasParams() && (routeData.interactionMode !== InteractionMode.Form);
-
-        // open dialog on current pane always - invoke action goes to pane indicated by click
-        actionViewModel.doInvoke = showDialog() ?
-            (right?: boolean) => {
-               
-                // clear any previous dialog so we don't pick up values from it
-                this.context.clearDialogValues(paneId);
-                this.urlManager.setDialog(actionRep.actionId(), paneId);
-            } :
-            (right?: boolean) => {
-                const pps = actionViewModel.parameters();
-                actionViewModel.execute(pps, right).
-                    then((actionResult: Models.ActionResultRepresentation) => {
-                        // if expect result and no warning from server generate one here
-                        if (actionResult.shouldExpectResult() && !actionResult.warningsOrMessages()) {
-                            this.context.broadcastWarning(Msg.noResultMessage);
-                        }
-                    }).
-                    catch((reject: Models.ErrorWrapper) => {
-                        const display = (em: Models.ErrorMap) => vm.setMessage(em.invalidReason() || em.warningMessage);
-                        this.error.handleErrorAndDisplayMessages(reject, display);
-                    });
-            };
-
-        actionViewModel.makeInvokable = (details: Models.IInvokableAction) => actionViewModel.invokableActionRep = details;
-
-        return actionViewModel as ActionViewModel;
+        return new ActionViewModel(this, this.context, this.urlManager, this.error, this.clickHandler, actionRep, vm, routeData);
     };
-
 
     handleErrorResponse = (err: Models.ErrorMap, messageViewModel: IMessageViewModel, valueViewModels: FieldViewModel[]) => {
 
