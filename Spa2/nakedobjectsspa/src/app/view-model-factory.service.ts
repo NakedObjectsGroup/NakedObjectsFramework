@@ -181,6 +181,4 @@ export class ViewModelFactoryService {
     //private logoff() {
     //    cvm = null;
     //}
-
-    //$rootScope.$on(geminiLogoffEvent, () => logoff());
 }

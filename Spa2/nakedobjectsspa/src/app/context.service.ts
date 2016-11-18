@@ -573,12 +573,7 @@ export class ContextService {
 
     setResult = (action: Models.IInvokableAction, result: Models.ActionResultRepresentation, fromPaneId: number, toPaneId: number, page: number, pageSize: number) => {
 
-        const warnings = result.extensions().warnings() || [];
-        const messages = result.extensions().messages() || [];
-
-        //$rootScope.$broadcast(Nakedobjectsconstants.geminiWarningEvent, warnings);
-        //$rootScope.$broadcast(Nakedobjectsconstants.geminiMessageEvent, messages);
-
+   
         if (!result.result().isNull()) {
             if (result.resultType() === "object") {
 
@@ -839,13 +834,6 @@ export class ContextService {
         _.forEach(this.currentLists, (k, v) => delete this.currentLists[v]);
 
     }
-
-    //$rootScope.
-
-    //$on(Nakedobjectsconstants.
-    //geminiLogoffEvent, () =>
-    //logoff());
-
 
     setFieldValue = (dialogId: string, pid: string, pv: Models.Value, paneId = 1) => {
         this.parameterCache.addValue(dialogId, pid, pv, paneId);

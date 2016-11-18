@@ -77,7 +77,6 @@ export class RepLoaderService {
 
 
     private httpValidate(config: RequestOptions): Promise<boolean> {
-        //$rootScope.$broadcast(Nakedobjectsconstants.geminiAjaxChangeEvent, ++loadingCount);
         this.loadingCountSource.next(++(this.loadingCount));
 
         return this.http.request(new Request(config))
@@ -90,9 +89,7 @@ export class RepLoaderService {
                 this.loadingCountSource.next(--(this.loadingCount));
                 return <any>this.handleError(r);
             });
-            //.finally(() => {
-            //    //$rootScope.$broadcast(Nakedobjectsconstants.geminiAjaxChangeEvent, --loadingCount);
-            //});
+          
     }
 
 // special handler for case whwre we reciece a redirected object back from server 
@@ -118,7 +115,6 @@ export class RepLoaderService {
 
 
     private httpPopulate(config: RequestOptions, ignoreCache: boolean, response: Models.IHateoasModel): Promise<Models.IHateoasModel> {
-        //$rootScope.$broadcast(Nakedobjectsconstants.geminiAjaxChangeEvent, ++loadingCount);
         this.loadingCountSource.next(++(this.loadingCount));
 
         if (ignoreCache) {
@@ -142,10 +138,7 @@ export class RepLoaderService {
             .catch((r: Response) => {
                 this.loadingCountSource.next(--(this.loadingCount));
                 return <any>this.handleError(r);
-            });
-            //.finally(() => {
-            //    //$rootScope.$broadcast(Nakedobjectsconstants.geminiAjaxChangeEvent, --loadingCount);
-            //});
+            });         
     }
 
     populate = <T extends Models.IHateoasModel>(model: Models.IHateoasModel, ignoreCache?: boolean): Promise<T> => {
@@ -317,6 +310,4 @@ export class RepLoaderService {
         //cache.removeAll();
     }
 }
-
-//$rootScope.$on(geminiLogoffEvent, () => logoff());
         
