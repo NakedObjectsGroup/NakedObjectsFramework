@@ -1,6 +1,21 @@
 ﻿import * as Models from '../models';
 
+// todo might simplify things if this were always the result of a input ? 
 export class ChoiceViewModel {
+
+    constructor(
+        value: Models.Value,
+        id: string,
+        name?: string,
+        searchTerm?: string
+    ) {
+        this.wrapped = value;
+        this.id = id;
+        this.name = name || value.toString();
+        this.search = searchTerm || this.name;
+        this.isEnum = !value.isReference() && (this.name !== this.getValue().toValueString());
+    }
+
     name: string;
 
     private id: string;
@@ -8,16 +23,6 @@ export class ChoiceViewModel {
     private isEnum: boolean;
     private wrapped: Models.Value;
 
-    static create(value: Models.Value, id: string, name?: string, searchTerm?: string) {
-        const choiceViewModel = new ChoiceViewModel();
-        choiceViewModel.wrapped = value;
-        choiceViewModel.id = id;
-        choiceViewModel.name = name || value.toString();
-        choiceViewModel.search = searchTerm || choiceViewModel.name;
-
-        choiceViewModel.isEnum = !value.isReference() && (choiceViewModel.name !== choiceViewModel.getValue().toValueString());
-        return choiceViewModel;
-    }
 
     getValue() {
         return this.wrapped;

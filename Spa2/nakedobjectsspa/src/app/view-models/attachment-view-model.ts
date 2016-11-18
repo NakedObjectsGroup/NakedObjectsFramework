@@ -6,13 +6,14 @@ import * as Msg from '../user-messages';
 
 export class AttachmentViewModel {
 
-    constructor(private link: Models.Link,
-                private parent: Models.DomainObjectRepresentation,
-                private context: ContextService,
-                private urlManager: UrlManagerService,
-                private clickHandler: ClickHandlerService,
-                private onPaneId: number) {
-
+    constructor(
+        private link: Models.Link,
+        private parent: Models.DomainObjectRepresentation,
+        private context: ContextService,
+        private urlManager: UrlManagerService,
+        private clickHandler: ClickHandlerService,
+        private onPaneId: number
+    ) {
         this.href = link.href();
         this.mimeType = link.type().asString;
         this.title = link.title() || Msg.unknownFileTitle;

@@ -17,8 +17,8 @@ import { RecentItemViewModel } from './view-models/recent-item-view-model';
 import { TableRowColumnViewModel } from './view-models/table-row-column-view-model';
 import { TableRowViewModel } from './view-models/table-row-view-model';
 import { CollectionPlaceholderViewModel } from './view-models/collection-placeholder-view-model';
-import { RecentItemsViewModel} from './view-models/recent-items-view-model';
-import * as Ciceroviewmodel from './view-models/cicero-view-model';
+import { RecentItemsViewModel } from './view-models/recent-items-view-model';
+import { CiceroViewModel } from './view-models/cicero-view-model';
 import { ParameterViewModel } from './view-models/parameter-view-model';
 import { ActionViewModel } from './view-models/action-view-model';
 import { PropertyViewModel } from './view-models/property-view-model';
@@ -37,7 +37,7 @@ export class ViewModelFactoryService {
         private clickHandler: ClickHandlerService,
         private mask: MaskService,
         private momentWrapperService: MomentWrapperService
-    ) {}
+    ) { }
 
     errorViewModel = (error: Models.ErrorWrapper) => {
         return new ErrorViewModel(error);
@@ -53,11 +53,11 @@ export class ViewModelFactoryService {
     };
 
     itemViewModel = (linkRep: Models.Link, paneId: number, selected: boolean, index: number) => {
-        return new ItemViewModel(this.context, this.color, this.error, this.urlManager, linkRep, paneId, this.clickHandler, this, index, selected);    
+        return new ItemViewModel(this.context, this.color, this.error, this.urlManager, linkRep, paneId, this.clickHandler, this, index, selected);
     };
 
     recentItemViewModel = (obj: Models.DomainObjectRepresentation, linkRep: Models.Link, paneId: number, selected: boolean, index: number) => {
-        return new RecentItemViewModel(this.context, this.color, this.error, this.urlManager, linkRep, paneId, this.clickHandler, this, index, selected, obj.extensions().friendlyName());    
+        return new RecentItemViewModel(this.context, this.color, this.error, this.urlManager, linkRep, paneId, this.clickHandler, this, index, selected, obj.extensions().friendlyName());
     };
 
     actionViewModel = (actionRep: Models.ActionMember | Models.ActionRepresentation, vm: IMessageViewModel, routeData: PaneRouteData) => {
@@ -69,7 +69,7 @@ export class ViewModelFactoryService {
     };
 
     propertyViewModel = (propertyRep: Models.PropertyMember, id: string, previousValue: Models.Value, paneId: number, parentValues: () => _.Dictionary<Models.Value>) => {
-        return  new PropertyViewModel(propertyRep,
+        return new PropertyViewModel(propertyRep,
             this.color,
             this.error,
             this,
@@ -81,23 +81,23 @@ export class ViewModelFactoryService {
             id,
             previousValue,
             paneId,
-            parentValues);        
+            parentValues);
     };
 
     parameterViewModel = (parmRep: Models.Parameter, previousValue: Models.Value, paneId: number) => {
-        return new ParameterViewModel(parmRep, paneId, this.color, this.error, this.momentWrapperService, this.mask, previousValue, this, this.context);     
+        return new ParameterViewModel(parmRep, paneId, this.color, this.error, this.momentWrapperService, this.mask, previousValue, this, this.context);
     };
 
     collectionViewModel = (collectionRep: Models.CollectionMember, routeData: PaneRouteData) => {
-        return new CollectionViewModel(this, this.color, this.error, this.context, this.urlManager, collectionRep, routeData );    
+        return new CollectionViewModel(this, this.color, this.error, this.context, this.urlManager, collectionRep, routeData);
     };
 
     listPlaceholderViewModel = (routeData: PaneRouteData) => {
-        return new CollectionPlaceholderViewModel(this.context, this.error, routeData);    
+        return new CollectionPlaceholderViewModel(this.context, this.error, routeData);
     };
 
     menuViewModel = (menuRep: Models.MenuRepresentation, routeData: PaneRouteData) => {
-        return new MenuViewModel(this, menuRep, routeData);    
+        return new MenuViewModel(this, menuRep, routeData);
     };
 
     recentItemsViewModel = (paneId: number) => {
@@ -116,8 +116,8 @@ export class ViewModelFactoryService {
         if (tableView) {
 
             const getActionExtensions = routeData.objectId ?
-                () => this.context.getActionExtensionsFromObject(routeData.paneId, Models.ObjectIdWrapper.fromObjectId(routeData.objectId), routeData.actionId) :
-                () => this.context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
+                (): Promise<Models.Extensions> => this.context.getActionExtensionsFromObject(routeData.paneId, Models.ObjectIdWrapper.fromObjectId(routeData.objectId), routeData.actionId) :
+                (): Promise<Models.Extensions> => this.context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
 
             const getExtensions = listViewModel instanceof CollectionViewModel ? () => Promise.resolve(listViewModel.collectionRep.extensions()) : getActionExtensions;
 
@@ -152,10 +152,7 @@ export class ViewModelFactoryService {
         return items;
     };
 
-
-
-
-    private cvm: Ciceroviewmodel.CiceroViewModel = null;
+    private cvm: CiceroViewModel = null;
 
     //ciceroViewModel = () => {
     //    if (cvm == null) {

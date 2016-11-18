@@ -1,50 +1,50 @@
 ﻿import { FieldViewModel } from './field-view-model';
 import { ColorService } from '../color.service';
 import { ErrorService } from '../error.service';
+import { ChoiceViewModel } from './choice-view-model';
+import { ContextService } from '../context.service';
+import { ViewModelFactoryService } from '../view-model-factory.service';
+import { MaskService } from '../mask.service';
+import { MomentWrapperService } from '../moment-wrapper.service';
+import * as Helpers from './helpers-view-models';
 import * as Models from '../models';
+import * as Msg from '../user-messages';
 import * as _ from "lodash";
-import * as Choiceviewmodel from './choice-view-model';
-import * as Usermessages from '../user-messages';
-import * as Contextservice from '../context.service';
-import * as Viewmodelfactoryservice from '../view-model-factory.service';
-import * as Maskservice from '../mask.service';
-import * as Momentwrapperservice from '../moment-wrapper.service';
-import * as Helpersviewmodels from './helpers-view-models';
 
 export class ParameterViewModel extends FieldViewModel {
 
     private setupParameterChoices() {
         const parmRep = this.parameterRep;
-        this.choices = _.map(parmRep.choices(), (v, n) => Choiceviewmodel.ChoiceViewModel.create(v, parmRep.id(), n));
+        this.choices = _.map(parmRep.choices(), (v, n) => new ChoiceViewModel(v, parmRep.id(), n));
     }
 
     private setupParameterAutocomplete() {
         const parmRep = this.parameterRep;
         this.prompt = (searchTerm: string) => {
-            const createcvm = _.partial(Helpersviewmodels.createChoiceViewModels, this.id, searchTerm);
+            const createcvm = _.partial(Helpers.createChoiceViewModels, this.id, searchTerm);
             return this.context.autoComplete(parmRep, this.id, () => <_.Dictionary<Models.Value>>{}, searchTerm).
                 then(createcvm);
         };
         this.minLength = parmRep.promptLink().extensions().minLength();
-        this.description = this.description || Usermessages.autoCompletePrompt;
+        this.description = this.description || Msg.autoCompletePrompt;
     }
 
     private setupParameterFreeformReference() {
         const parmRep = this.parameterRep;
-        this.description = this.description || Usermessages.dropPrompt;
+        this.description = this.description || Msg.dropPrompt;
 
         const val = this.previousValue && !this.previousValue.isNull() ? this.previousValue : parmRep.default();
 
         if (!val.isNull() && val.isReference()) {
             this.reference = val.link().href();
-            this.selectedChoice = Choiceviewmodel.ChoiceViewModel.create(val, this.id, val.link() ? val.link().title() : null);
+            this.selectedChoice = new ChoiceViewModel(val, this.id, val.link() ? val.link().title() : null);
         }
     }
 
     private setupParameterConditionalChoices() {
         const parmRep = this.parameterRep;
         this.conditionalChoices = (args: _.Dictionary<Models.Value>) => {
-            const createcvm = _.partial(Helpersviewmodels.createChoiceViewModels, this.id, null);
+            const createcvm = _.partial(Helpers.createChoiceViewModels, this.id, null);
             return this.context.conditionalChoices(parmRep, this.id, () => <_.Dictionary<Models.Value>>{}, args).
                 then(createcvm);
         };
@@ -57,7 +57,7 @@ export class ParameterViewModel extends FieldViewModel {
         const parmViewModel = this;
         function setCurrentChoices(vals: Models.Value) {
 
-            const choicesToSet = _.map(vals.list(), val => Choiceviewmodel.ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null));
+            const choicesToSet = _.map(vals.list(), val => new ChoiceViewModel(val, parmViewModel.id, val.link() ? val.link().title() : null));
 
             if (fieldEntryType === Models.EntryType.MultipleChoices) {
                 parmViewModel.selectedMultiChoices = _.filter(parmViewModel.choices, c => _.some(choicesToSet, choiceToSet => c.valuesEqual(choiceToSet)));
@@ -67,7 +67,7 @@ export class ParameterViewModel extends FieldViewModel {
         }
 
         function setCurrentChoice(val: Models.Value) {
-            const choiceToSet = Choiceviewmodel.ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
+            const choiceToSet = new ChoiceViewModel(val, parmViewModel.id, val.link() ? val.link().title() : null);
 
             if (fieldEntryType === Models.EntryType.Choices) {
                 parmViewModel.selectedChoice = _.find(parmViewModel.choices, c => c.valuesEqual(choiceToSet));
@@ -137,14 +137,14 @@ export class ParameterViewModel extends FieldViewModel {
     }
 
     constructor(parmRep: Models.Parameter,
-                paneId: number,     
-                color: ColorService,
-                error: ErrorService,
-                private momentWrapperService : Momentwrapperservice.MomentWrapperService, 
-                private maskService : Maskservice.MaskService,
-                private previousValue: Models.Value,
-                private viewModelFactory : Viewmodelfactoryservice.ViewModelFactoryService,
-                private context: Contextservice.ContextService) {
+        paneId: number,
+        color: ColorService,
+        error: ErrorService,
+        private momentWrapperService: MomentWrapperService,
+        private maskService: MaskService,
+        private previousValue: Models.Value,
+        private viewModelFactory: ViewModelFactoryService,
+        private context: ContextService) {
 
 
         super(parmRep.extensions(), color, error, paneId);
@@ -195,8 +195,8 @@ export class ParameterViewModel extends FieldViewModel {
         }
 
         this.description = this.getRequiredIndicator() + this.description;
-        this.validate = _.partial(Helpersviewmodels.validate, parmRep, this, this.momentWrapperService) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
-        this.drop = _.partial(Helpersviewmodels.drop, this.context, this.error, this);
+        this.validate = _.partial(Helpers.validate, parmRep, this, this.momentWrapperService) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
+        this.drop = _.partial(Helpers.drop, this.context, this.error, this);
     }
 
 

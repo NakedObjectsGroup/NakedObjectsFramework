@@ -1,21 +1,20 @@
 ﻿import { MessageViewModel } from './message-view-model';
 import { ActionViewModel } from './action-view-model';
 import { MenuItemViewModel } from './menu-item-view-model';
-import * as Models from '../models';
-import * as Viewmodelfactoryservice from '../view-model-factory.service';
-import * as Routedata from '../route-data';
-import * as _ from "lodash";
+import { ViewModelFactoryService } from '../view-model-factory.service';
+import { PaneRouteData } from '../route-data';
 import * as Helpers from './helpers-view-models';
+import * as Models from '../models';
+import * as _ from "lodash";
 
 export class MenuViewModel extends MessageViewModel {
 
-    constructor(private viewModelFactory: Viewmodelfactoryservice.ViewModelFactoryService,
-        public menuRep: Models.MenuRepresentation,
-        routeData: Routedata.PaneRouteData) {
+    constructor(private viewModelFactory: ViewModelFactoryService,
+                public menuRep: Models.MenuRepresentation,
+                routeData: PaneRouteData) {
         super();
 
         this.id = menuRep.menuId();
-
 
         const actions = menuRep.actionMembers();
         this.title = menuRep.title();
@@ -28,5 +27,4 @@ export class MenuViewModel extends MessageViewModel {
     title: string;
     actions: ActionViewModel[];
     menuItems: MenuItemViewModel[];
-
 }

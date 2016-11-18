@@ -1,11 +1,15 @@
 ﻿import { TableRowColumnViewModel } from './table-row-column-view-model';
+import { ViewModelFactoryService } from '../view-model-factory.service';
 import * as _ from "lodash";
 import * as Models from '../models';
-import { ViewModelFactoryService} from '../view-model-factory.service';
 
 export class TableRowViewModel {
 
-    constructor(private viewModelFactory : ViewModelFactoryService,  properties: _.Dictionary<Models.PropertyMember>, private paneId: number) {
+    constructor(
+        private viewModelFactory: ViewModelFactoryService,
+        properties: _.Dictionary<Models.PropertyMember>,
+        private paneId: number
+    ) {
         this.properties = _.map(properties, (property, id) => viewModelFactory.propertyTableViewModel(id, property));
     }
 
@@ -14,7 +18,7 @@ export class TableRowViewModel {
     // todo these currently initialised outside constructor - smell ?
     title: string;
     hasTitle: boolean;
-    
+
     getPlaceHolderTableRowColumnViewModel(id: string) {
         // no property so place holder for column 
         return this.viewModelFactory.propertyTableViewModel(id);

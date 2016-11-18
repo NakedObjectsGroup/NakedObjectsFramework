@@ -1,15 +1,15 @@
 ﻿import { FieldViewModel } from './field-view-model';
 import { MenuItemViewModel } from './menu-item-view-model';
 import { ActionViewModel } from './action-view-model';
+import { ContextService } from '../context.service';
+import { ErrorService } from '../error.service';
+import { IDraggableViewModel } from './idraggable-view-model';
+import { MomentWrapperService } from '../moment-wrapper.service';
+import { ChoiceViewModel } from './choice-view-model';
+import { IMessageViewModel } from './imessage-view-model';
+import * as Models from '../models';
 import * as Msg from '../user-messages';
 import * as _ from "lodash";
-import * as Contextservice from '../context.service';
-import * as Errorservice from '../error.service';
-import * as Idraggableviewmodel from './idraggable-view-model';
-import * as Momentwrapperservice from '../moment-wrapper.service';
-import * as Models from "../models";
-import * as Choiceviewmodel from './choice-view-model';
-import * as Imessageviewmodel from './imessage-view-model';
 
 export function tooltip(onWhat: { clientValid: () => boolean }, fields: FieldViewModel[]): string {
     if (onWhat.clientValid()) {
@@ -113,7 +113,7 @@ export function getCollectionDetails(count: number) {
     return `${count} ${postfix}`;
 }
 
-export function drop(context: Contextservice.ContextService, error: Errorservice.ErrorService, vm: FieldViewModel, newValue: Idraggableviewmodel.IDraggableViewModel) {
+export function drop(context: ContextService, error: ErrorService, vm: FieldViewModel, newValue: IDraggableViewModel) {
     return context.isSubTypeOf(newValue.draggableType, vm.returnType).
         then((canDrop: boolean) => {
             if (canDrop) {
@@ -125,7 +125,7 @@ export function drop(context: Contextservice.ContextService, error: Errorservice
         catch((reject: Models.ErrorWrapper) => error.handleError(reject));
 };
 
-export function validate(rep: Models.IHasExtensions, vm: FieldViewModel, ms: Momentwrapperservice.MomentWrapperService, modelValue: any, viewValue: string, mandatoryOnly: boolean) {
+export function validate(rep: Models.IHasExtensions, vm: FieldViewModel, ms: MomentWrapperService, modelValue: any, viewValue: string, mandatoryOnly: boolean) {
     const message = mandatoryOnly ? Models.validateMandatory(rep, viewValue) : Models.validate(rep, modelValue, viewValue, vm.localFilter, ms);
 
     if (message !== Msg.mandatory) {
@@ -138,7 +138,7 @@ export function validate(rep: Models.IHasExtensions, vm: FieldViewModel, ms: Mom
     return vm.clientValid;
 };
 
- export function  setScalarValueInView(vm: { value: string | number | boolean | Date }, propertyRep: Models.PropertyMember, value: Models.Value) {
+export function setScalarValueInView(vm: { value: string | number | boolean | Date }, propertyRep: Models.PropertyMember, value: Models.Value) {
     if (Models.isDateOrDateTime(propertyRep)) {
         //vm.value = Models.toUtcDate(value);
         const date = Models.toUtcDate(value);
@@ -151,10 +151,10 @@ export function validate(rep: Models.IHasExtensions, vm: FieldViewModel, ms: Mom
 }
 
 export function createChoiceViewModels(id: string, searchTerm: string, choices: _.Dictionary<Models.Value>) {
-    return Promise.resolve(_.map(choices, (v, k) => Choiceviewmodel.ChoiceViewModel.create(v, id, k, searchTerm)));
- }
+    return Promise.resolve(_.map(choices, (v, k) => new ChoiceViewModel(v, id, k, searchTerm)));
+}
 
-export function handleErrorResponse (err: Models.ErrorMap, messageViewModel: Imessageviewmodel.IMessageViewModel, valueViewModels: FieldViewModel[])  {
+export function handleErrorResponse(err: Models.ErrorMap, messageViewModel: IMessageViewModel, valueViewModels: FieldViewModel[]) {
 
     let requiredFieldsMissing = false; // only show warning message if we have nothing else 
     let fieldValidationErrors = false;
@@ -189,6 +189,4 @@ export function handleErrorResponse (err: Models.ErrorMap, messageViewModel: Ime
 
     if (!msg) msg = err.warningMessage;
     messageViewModel.setMessage(msg);
-};
-
-  
+}

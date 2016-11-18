@@ -1,16 +1,20 @@
-﻿import * as Ro from '../ro-interfaces';
-import * as Models from '../models';
-import * as Helpersviewmodels from './helpers-view-models';
-import * as Choiceviewmodel from './choice-view-model';
+﻿import { ChoiceViewModel } from './choice-view-model';
+import { MaskService } from '../mask.service';
 import * as Msg from "../user-messages";
-import * as Maskservice from '../mask.service';
+import * as Ro from '../ro-interfaces';
+import * as Models from '../models';
+import * as Helpers from './helpers-view-models';
 import * as _ from "lodash";
 
 export class TableRowColumnViewModel {
 
-  
-    constructor(id: string, propertyRep?: Models.PropertyMember | Models.CollectionMember, mask? : Maskservice.MaskService) {
-       
+
+    constructor(
+        id: string,
+        propertyRep?: Models.PropertyMember | Models.CollectionMember,
+        mask?: MaskService
+    ) {
+
         this.id = id;
 
         if (propertyRep && mask) {
@@ -20,7 +24,7 @@ export class TableRowColumnViewModel {
             if (propertyRep instanceof Models.CollectionMember) {
                 const size = propertyRep.size();
 
-                this.formattedValue = Helpersviewmodels.getCollectionDetails(size);
+                this.formattedValue = Helpers.getCollectionDetails(size);
                 this.value = "";
                 this.type = "scalar";
                 this.returnType = "string";
@@ -33,14 +37,14 @@ export class TableRowColumnViewModel {
 
                 if (propertyRep.isScalar()) {
                     this.type = "scalar";
-                    Helpersviewmodels.setScalarValueInView(this, propertyRep, value);
+                    Helpers.setScalarValueInView(this, propertyRep, value);
 
                     const remoteMask = propertyRep.extensions().mask();
                     const localFilter = mask.toLocalFilter(remoteMask, propertyRep.extensions().format());
 
                     if (propertyRep.entryType() === Models.EntryType.Choices) {
-                        const currentChoice = Choiceviewmodel.ChoiceViewModel.create(value, id);
-                        const choices = _.map(propertyRep.choices(), (v, n) => Choiceviewmodel.ChoiceViewModel.create(v, id, n));
+                        const currentChoice = new ChoiceViewModel(value, id);
+                        const choices = _.map(propertyRep.choices(), (v, n) => new ChoiceViewModel(v, id, n));
                         const choice = _.find(choices, c => c.valuesEqual(currentChoice));
 
                         if (choice) {

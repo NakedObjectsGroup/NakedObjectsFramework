@@ -1,28 +1,28 @@
 ﻿import { ItemViewModel } from './item-view-model';
-import { PaneRouteData, CollectionViewState } from '../route-data';
+import { PaneRouteData, CollectionViewState, InteractionMode } from '../route-data';
 import { ActionViewModel } from './action-view-model';
 import { MenuItemViewModel } from './menu-item-view-model';
+import { ViewModelFactoryService } from '../view-model-factory.service';
+import { ColorService } from '../color.service';
+import { ErrorService } from '../error.service';
+import { ContextService } from '../context.service';
+import { UrlManagerService } from '../url-manager.service';
+import * as Helpers from './helpers-view-models';
+import * as Config from "../config";
 import * as Models from '../models';
 import * as _ from "lodash";
-import * as Viewmodelfactoryservice from '../view-model-factory.service';
-import * as Routedata from '../route-data';
-import * as Colorservice from '../color.service';
-import * as Config from "../config";
-import * as Errorservice from '../error.service';
-import * as Contextservice from '../context.service';
-import * as Urlmanagerservice from '../url-manager.service';
-import * as Helpersviewmodels from './helpers-view-models';
 
 export class CollectionViewModel {
 
-    constructor(private viewModelFactory: Viewmodelfactoryservice.ViewModelFactoryService,
-                private colorService: Colorservice.ColorService,
-                private error: Errorservice.ErrorService,
-                private context: Contextservice.ContextService,
-                private urlManager: Urlmanagerservice.UrlManagerService,
-                public collectionRep: Models.CollectionMember | Models.CollectionRepresentation,
-                private routeData: PaneRouteData) {
-
+    constructor(
+        private viewModelFactory: ViewModelFactoryService,
+        private colorService: ColorService,
+        private error: ErrorService,
+        private context: ContextService,
+        private urlManager: UrlManagerService,
+        public collectionRep: Models.CollectionMember | Models.CollectionRepresentation,
+        private routeData: PaneRouteData
+    ) {
 
         this.onPaneId = routeData.paneId;
         this.title = collectionRep.extensions().friendlyName();
@@ -41,7 +41,7 @@ export class CollectionViewModel {
         let state = routeData.collections[this.collectionRep.collectionId()];
 
         // collections are always shown as summary on transient 
-        if (routeData.interactionMode === Routedata.InteractionMode.Transient) {
+        if (routeData.interactionMode === InteractionMode.Transient) {
             state = CollectionViewState.Summary;
         }
 
@@ -57,7 +57,7 @@ export class CollectionViewModel {
             state = getDefaultTableState(this.collectionRep.extensions());
         }
 
-        this.editing = routeData.interactionMode === Routedata.InteractionMode.Edit;
+        this.editing = routeData.interactionMode === InteractionMode.Edit;
 
         // clear any previous messages
         //this.resetMessage();
@@ -70,7 +70,7 @@ export class CollectionViewModel {
             if (size > 0 || size == null) {
                 this.mayHaveItems = true;
             }
-            this.details = Helpersviewmodels.getCollectionDetails(size);
+            this.details = Helpers.getCollectionDetails(size);
             const getDetails = itemLinks == null || state === CollectionViewState.Table;
 
             if (state === CollectionViewState.Summary) {
@@ -83,7 +83,7 @@ export class CollectionViewModel {
                             state === CollectionViewState.Table,
                             routeData,
                             this);
-                        this.details = Helpersviewmodels.getCollectionDetails(this.items.length);
+                        this.details = Helpers.getCollectionDetails(this.items.length);
                         //collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);
                     }).
                     catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
@@ -122,7 +122,7 @@ export class CollectionViewModel {
     messages: string;
 
     description = () => this.details.toString();
-  
+
     disableActions = () => this.editing || !this.actions || this.actions.length === 0;
     allSelected = () => _.every(this.items, item => item.selected);
 

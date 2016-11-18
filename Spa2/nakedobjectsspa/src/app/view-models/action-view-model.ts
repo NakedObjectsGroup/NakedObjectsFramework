@@ -1,26 +1,26 @@
 ﻿import { ParameterViewModel } from './parameter-view-model';
+import { ContextService } from '../context.service';
+import { PaneRouteData, InteractionMode } from '../route-data';
+import { UrlManagerService } from '../url-manager.service';
+import { ErrorService } from '../error.service';
+import { IMessageViewModel } from './imessage-view-model';
+import { ClickHandlerService } from '../click-handler.service';
+import { ViewModelFactoryService } from '../view-model-factory.service';
 import * as Models from '../models';
-import * as Contextservice from '../context.service';
-import * as Routedata from '../route-data';
-import * as Urlmanagerservice from '../url-manager.service';
-import * as Errorservice from '../error.service';
-import * as _ from "lodash";
 import * as Msg from "../user-messages";
-import * as Imessageviewmodel from './imessage-view-model';
-import * as Clickhandlerservice from '../click-handler.service';
-import * as Viewmodelfactoryservice from '../view-model-factory.service';
+import * as _ from "lodash";
 
 export class ActionViewModel {
 
     constructor(
-        private viewModelFactory: Viewmodelfactoryservice.ViewModelFactoryService,
-        private context: Contextservice.ContextService,
-        private urlManager: Urlmanagerservice.UrlManagerService,
-        private error: Errorservice.ErrorService,
-        private clickHandler: Clickhandlerservice.ClickHandlerService,
+        private viewModelFactory: ViewModelFactoryService,
+        private context: ContextService,
+        private urlManager: UrlManagerService,
+        private error: ErrorService,
+        private clickHandler: ClickHandlerService,
         public actionRep: Models.ActionMember | Models.ActionRepresentation,
-        private vm: Imessageviewmodel.IMessageViewModel,
-        private routeData: Routedata.PaneRouteData
+        private vm: IMessageViewModel,
+        private routeData: PaneRouteData
     ) {
 
         if (actionRep instanceof Models.ActionRepresentation || actionRep instanceof Models.InvokableActionMember) {
@@ -34,7 +34,7 @@ export class ActionViewModel {
         this.description = this.disabled() ? actionRep.disabledReason() : actionRep.extensions().description();
     }
 
-    private paneId : number;
+    private paneId: number;
     invokableActionRep: Models.IInvokableAction;
     menuPath: string;
     title: string;
@@ -42,7 +42,7 @@ export class ActionViewModel {
     presentationHint: string;
 
     // form actions should never show dialogs
-    private showDialog = () => this.actionRep.extensions().hasParams() && (this.routeData.interactionMode !== Routedata.InteractionMode.Form);
+    private showDialog = () => this.actionRep.extensions().hasParams() && (this.routeData.interactionMode !== InteractionMode.Form);
 
     // open dialog on current pane always - invoke action goes to pane indicated by click
     doInvoke = this.showDialog()
@@ -68,7 +68,7 @@ export class ActionViewModel {
         };
 
 
-    
+
     execute = (pps: ParameterViewModel[], right?: boolean): Promise<Models.ActionResultRepresentation> => {
         const parmMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Models.Value>;
         _.forEach(pps, p => this.urlManager.setParameterValue(this.actionRep.actionId(), p.parameterRep, p.getValue(), this.paneId));

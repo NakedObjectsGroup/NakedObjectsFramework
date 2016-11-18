@@ -168,7 +168,7 @@ export class DomainObjectViewModel extends MessageViewModel {
 
         this.value = sav ? sav.toString() : "";
         this.reference = sav ? sav.toValueString() : "";
-        this.selectedChoice = sav ? ChoiceViewModel.create(sav, "") : null;
+        this.selectedChoice = sav ? new ChoiceViewModel(sav, "") : null;
 
         this.colorService.toColorNumberFromType(this.domainObject.domainType())
             .then(c => this.color = `${Config.objectColor}${c}`)

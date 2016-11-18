@@ -25,7 +25,7 @@ export class LinkViewModel implements IDraggableViewModel {
 
         this.value = value.toString();
         this.reference = value.toValueString();
-        this.selectedChoice = ChoiceViewModel.create(value, "");
+        this.selectedChoice = new ChoiceViewModel(value, "");
         this.draggableType = this.domainType;
 
         this.colorService.toColorNumberFromHref(link.href()).
