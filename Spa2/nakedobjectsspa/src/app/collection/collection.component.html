@@ -19,7 +19,7 @@
     <tbody *ngIf="hasTableData()">
         <tr *ngFor="let item of items; let i = index" [ngClass]="itemColor(item)" class="clickable-area" geminiClick (leftClick)="doItemClick(item)" (rightClick)="doItemClick(item, true)" gemini-drag tabindex="0">
             <td [hidden]="disableActions()" class="checkbox">
-			        <input type="checkbox" [id]="itemId(i)" [(ngModel)]="item.selected">
+			     <input type="checkbox" [id]="itemId(i)" [(ngModel)]="item.selected">
 			</td>
             <td *ngIf="itemHasTableTitle(item)" class="cell">
                 {{itemTableTitle(item)}}

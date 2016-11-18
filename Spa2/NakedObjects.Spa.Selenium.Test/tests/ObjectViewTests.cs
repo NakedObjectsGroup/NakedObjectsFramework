@@ -140,7 +140,7 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("Rate", cols[3].Text);
 
             //Dates formatted in table view
-            GeminiUrl("object?i1=View&o1=___1.Product--775&c1_SpecialOffers=Table");
+            GeminiUrl("object?i1=View&o1=___1.Product--775&c1_SpecialOffers=Table&c1_ProductInventory=List");
             WaitForCss("td", 15);
             var cell = WaitForCss("td:nth-child(6)");
             Assert.AreEqual("31 Dec 2008", cell.Text);
@@ -185,7 +185,7 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.Object, "Main Office: 2253-217 Palmer Street ...");
         }
         public virtual void ClickOnLineItemWithCollectionAsTable() {
-            var testUrl = GeminiBaseUrl + "object?o1=___1.Store--350&as1=open" + "&c1_Addresses=Table";
+            var testUrl = GeminiBaseUrl + "object?o1=___1.Store--350&as1=open" + "&c1_Addresses=Table&c1_Contacts=Summary";
             Url(testUrl);
             var row = wait.Until(dr => dr.FindElement(By.CssSelector("table tbody tr")));
             wait.Until(dr => row.FindElements(By.CssSelector(".cell")).Count >= 2);

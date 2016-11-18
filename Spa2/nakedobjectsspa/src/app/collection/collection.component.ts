@@ -61,7 +61,7 @@ export class CollectionComponent {
     itemSelected = (item: ItemViewModel) => item.selected;
 
     itemTableTitle =  (item : ItemViewModel) => item.tableRowViewModel.title;
-    itemHasTableTitle = (item: ItemViewModel) => !!this.itemTableTitle(item);
+    itemHasTableTitle = (item: ItemViewModel) => item.tableRowViewModel.hasTitle;
     itemTableProperties = (item: ItemViewModel) => item.tableRowViewModel.properties;
 
 
