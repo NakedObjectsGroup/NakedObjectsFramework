@@ -1,43 +1,43 @@
 <div class="summary">
-    <div class='name'>{{collection.title}}:</div>
-    <div class="details">{{collection.details}}</div>
-    <div *ngIf="collection.mayHaveItems">
-        <img *ngIf="state == 'table' || state == 'list'" class="icon-summary clickable-area" (click)="collection.doSummary()" src="../../images/summary.png" title="Close Collection" />
-        <img *ngIf="state == 'table' || state == 'summary'" class="icon-list clickable-area" (click)="collection.doList()" src="../../images/list.png" title="View as List"/>
-        <img *ngIf="state == 'list'  || state == 'summary'" class="icon-table clickable-area" (click)="collection.doTable()" src="../../images/table.png" title="View as Table"/>
+    <div class="name">{{title}}:</div>
+    <div class="details">{{details}}</div>
+    <div *ngIf="mayHaveItems">
+        <img *ngIf="state == 'table' || state == 'list'" class="icon-summary clickable-area" (click)="doSummary()" src="../../images/summary.png" title="Close Collection" />
+        <img *ngIf="state == 'table' || state == 'summary'" class="icon-list clickable-area" (click)="doList()" src="../../images/list.png" title="View as List"/>
+        <img *ngIf="state == 'list'  || state == 'summary'" class="icon-table clickable-area" (click)="doTable()" src="../../images/table.png" title="View as Table"/>
     </div>
 </div>
 <table *ngIf="state == 'table'">
     <thead>
     <tr>
-        <th [hidden]="(collection.disableActions() || collection.items.length === 0)"><input type="checkbox" id="all" [ngModel]="collection.allSelected()" (click)="collection.selectAll()">All</th>
-        <th *ngFor="let heading of collection.header" scope="col">
+        <th [hidden]="(disableActions() || noItems())"><input type="checkbox" id="all" [ngModel]="allSelected()" (click)="selectAll()">All</th>
+        <th *ngFor="let heading of header" scope="col">
             {{heading}}
         </th>
     </tr>
     </thead>
-    <tbody *ngIf="collection.hasTableData()">
-        <tr *ngFor="let item of collection.items; let i = index" [ngClass]="item.color" class="clickable-area" geminiClick (leftClick)="item.doClick()" (rightClick)="item.doClick(true)" gemini-drag tabindex="0">
-            <td [hidden]="collection.disableActions()" class="checkbox">
-			        <input type="checkbox" id="{{'item'+collection.onPaneId+'-'+ i}}" [(ngModel)]="item.selected">
+    <tbody *ngIf="hasTableData()">
+        <tr *ngFor="let item of items; let i = index" [ngClass]="itemColor(item)" class="clickable-area" geminiClick (leftClick)="doItemClick(item)" (rightClick)="doItemClick(item, true)" gemini-drag tabindex="0">
+            <td [hidden]="disableActions()" class="checkbox">
+			        <input type="checkbox" [id]="itemId(i)" [(ngModel)]="item.selected">
 			</td>
-            <td *ngIf="item.tableRowViewModel.hasTitle" class="cell">
-                {{item.tableRowViewModel.title}}
+            <td *ngIf="itemHasTableTitle(item)" class="cell">
+                {{itemTableTitle(item)}}
             </td>
-            <td *ngFor="let property of item.tableRowViewModel.properties" (click)="item.doClick()" [ngClass]="item.color" class="cell">
-                <div  [ngSwitch]="property.type">
+            <td *ngFor="let property of itemTableProperties(item)" (click)="doItemClick()" [ngClass]="itemColor(item)" class="cell">
+                <div  [ngSwitch]="propertyType(property)">
                     <div *ngSwitchCase="'ref'" class="clickable-area">
-                        {{property.formattedValue}}
+                        {{propertyFormattedValue(property)}}
                     </div>
-                    <div *ngSwitchCase="'scalar'" [ngSwitch]="property.returnType">
+                    <div *ngSwitchCase="'scalar'" [ngSwitch]="propertyReturnType(property)">
                         <div *ngSwitchCase="'boolean'" class="clickable-area">
-                            <input type="checkbox" [checked]="property.value" disabled="disabled" />
+                            <input type="checkbox" [checked]="propertyValue(property)" disabled="disabled" />
                         </div>
                         <div *ngSwitchCase="'number'" class="clickable-area">
-                            <div class="clickable-area number">{{property.formattedValue}}</div>
+                            <div class="clickable-area number">{{propertyFormattedValue(property)}}</div>
                         </div>
                         <div *ngSwitchDefault class="clickable-area">
-                            <div class="clickable-area">{{property.formattedValue}}</div>
+                            <div class="clickable-area">{{propertyFormattedValue(property)}}</div>
                         </div>
                     </div>
                 </div>
@@ -47,12 +47,12 @@
 </table>
 <table *ngIf="state == 'list'">
     <tbody>
-        <tr *ngFor="let item of collection.items; let i = index" [ngClass]="item.color" geminiClick (leftClick)="item.doClick()" (rightClick)="item.doClick(true)">
-            <td class="checkbox" [hidden]="collection.disableActions()">
-				<input type="checkbox" id="{{'item'+collection.onPaneId+'-'+ i}}" [(ngModel)]="item.selected">
+        <tr *ngFor="let item of items; let i = index" [ngClass]="itemColor(item)" geminiClick (leftClick)="doItemClick(item)" (rightClick)="doItemClick(item, true)">
+            <td class="checkbox" [hidden]="disableActions()">
+				<input type="checkbox" [id]="itemId(i)" [(ngModel)]="item.selected">
 			</td>
             <td class="reference clickable-area" gemini-drag tabindex="0">
-                {{item.title}}
+                {{itemTitle(item)}}
             </td>
         </tr>
     </tbody>

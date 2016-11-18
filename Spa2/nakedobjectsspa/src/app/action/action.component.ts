@@ -23,7 +23,9 @@ export class ActionComponent {
         this.friendlyName = this.actionVm.title;
     }
 
-    disabled() { return this.actionVm.disabled(); }
+    disabled() {
+        return this.actionVm.disabled() ? true : null;
+    }
 
     doInvoke(right?: boolean) {
         this.actionVm.doInvoke(right);
