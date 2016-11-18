@@ -14,7 +14,7 @@ import * as _ from "lodash";
 
 export abstract class FieldViewModel extends MessageViewModel {
 
-    constructor(ext: Models.Extensions, protected colorService: ColorService, protected error: ErrorService) {
+    constructor(ext: Models.Extensions, protected colorService: ColorService, protected error: ErrorService, public onPaneId : number) {
         super();
         this.optional = ext.optional();
         this.description = ext.description();
@@ -31,8 +31,7 @@ export abstract class FieldViewModel extends MessageViewModel {
     id: string;
     argId: string;
     paneArgId: string;
-    onPaneId: number;
-
+  
     optional: boolean;
     description: string;
     presentationHint: string;

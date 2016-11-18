@@ -5,8 +5,8 @@ import { ViewModelFactoryService} from '../view-model-factory.service';
 
 export class TableRowViewModel {
 
-    constructor(private viewModelFactory : ViewModelFactoryService,  properties: _.Dictionary<Models.PropertyMember>, paneId: number) {
-        this.properties = _.map(properties, (property, id) => viewModelFactory.propertyTableViewModel(property, id, paneId));
+    constructor(private viewModelFactory : ViewModelFactoryService,  properties: _.Dictionary<Models.PropertyMember>, private paneId: number) {
+        this.properties = _.map(properties, (property, id) => viewModelFactory.propertyTableViewModel(id, property));
     }
 
     properties: TableRowColumnViewModel[];
@@ -16,13 +16,8 @@ export class TableRowViewModel {
     hasTitle: boolean;
     
     getPlaceHolderTableRowColumnViewModel(id: string) {
-        const ph = new TableRowColumnViewModel();
-        ph.id = id;
-        ph.type = "scalar";
-        ph.value = "";
-        ph.formattedValue = "";
-        ph.title = "";
-        return ph;
+        // no property so place holder for column 
+        return this.viewModelFactory.propertyTableViewModel(id);
     }
 
     conformColumns(columns: string[]) {

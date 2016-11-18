@@ -1,8 +1,5 @@
 import * as Models from "./models";
-import * as Config from "./config";
-import { PaneRouteData, CollectionViewState, InteractionMode } from "./route-data";
-import * as Constants from "./constants";
-import * as Msg from "./user-messages";
+import { PaneRouteData } from "./route-data";
 import { ContextService } from "./context.service";
 import { UrlManagerService } from "./url-manager.service";
 import { ColorService } from "./color.service";
@@ -10,30 +7,25 @@ import { ClickHandlerService } from "./click-handler.service";
 import { ErrorService } from "./error.service";
 import { MaskService } from "./mask.service";
 import { Injectable } from '@angular/core';
-import * as _ from "lodash";
 import { MomentWrapperService } from "./moment-wrapper.service";
-import { ChoiceViewModel } from './view-models/choice-view-model';
 import { AttachmentViewModel } from './view-models/attachment-view-model';
 import { ErrorViewModel } from './view-models/error-view-model';
-import { IDraggableViewModel } from './view-models/idraggable-view-model';
 import { IMessageViewModel } from './view-models/imessage-view-model';
 import { LinkViewModel } from './view-models/link-view-model';
 import { ItemViewModel } from './view-models/item-view-model';
 import { RecentItemViewModel } from './view-models/recent-item-view-model';
-
 import { TableRowColumnViewModel } from './view-models/table-row-column-view-model';
 import { TableRowViewModel } from './view-models/table-row-view-model';
 import { CollectionPlaceholderViewModel } from './view-models/collection-placeholder-view-model';
 import { RecentItemsViewModel} from './view-models/recent-items-view-model';
 import * as Ciceroviewmodel from './view-models/cicero-view-model';
-import { FieldViewModel } from './view-models/field-view-model';
 import { ParameterViewModel } from './view-models/parameter-view-model';
 import { ActionViewModel } from './view-models/action-view-model';
 import { PropertyViewModel } from './view-models/property-view-model';
 import { CollectionViewModel } from './view-models/collection-view-model';
-import { ListViewModel } from './view-models/list-view-model';
-import * as Helpersviewmodels from './view-models/helpers-view-models';
 import { MenuViewModel } from './view-models/menu-view-model';
+import * as _ from "lodash";
+import * as Listviewmodel from './view-models/list-view-model';
 
 @Injectable()
 export class ViewModelFactoryService {
@@ -50,10 +42,6 @@ export class ViewModelFactoryService {
     errorViewModel = (error: Models.ErrorWrapper) => {
         return new ErrorViewModel(error);
     };
-
-    // todo move to helpers
-    createChoiceViewModels = (id: string, searchTerm: string, choices: _.Dictionary<Models.Value>) =>
-        Promise.resolve(_.map(choices, (v, k) => ChoiceViewModel.create(v, id, k, searchTerm)));
 
     attachmentViewModel = (propertyRep: Models.PropertyMember, paneId: number) => {
         const parent = propertyRep.parent as Models.DomainObjectRepresentation;
@@ -76,245 +64,9 @@ export class ViewModelFactoryService {
         return new ActionViewModel(this, this.context, this.urlManager, this.error, this.clickHandler, actionRep, vm, routeData);
     };
 
-    handleErrorResponse = (err: Models.ErrorMap, messageViewModel: IMessageViewModel, valueViewModels: FieldViewModel[]) => {
-
-        let requiredFieldsMissing = false; // only show warning message if we have nothing else 
-        let fieldValidationErrors = false;
-        let contributedParameterErrorMsg = "";
-
-        _.each(err.valuesMap(), (errorValue, k) => {
-
-            const valueViewModel = _.find(valueViewModels, vvm => vvm.id === k);
-
-            if (valueViewModel) {
-                const reason = errorValue.invalidReason;
-                if (reason) {
-                    if (reason === "Mandatory") {
-                        const r = "REQUIRED";
-                        requiredFieldsMissing = true;
-                        valueViewModel.description = valueViewModel.description.indexOf(r) === 0 ? valueViewModel.description : `${r} ${valueViewModel.description}`;
-                    } else {
-                        valueViewModel.setMessage(reason);
-                        fieldValidationErrors = true;
-                    }
-                }
-            } else {
-                // no matching parm for message - this can happen in contributed actions 
-                // make the message a dialog level warning.                               
-                contributedParameterErrorMsg = errorValue.invalidReason;
-            }
-        });
-
-        let msg = contributedParameterErrorMsg || err.invalidReason() || "";
-        if (requiredFieldsMissing) msg = `${msg} Please complete REQUIRED fields. `;
-        if (fieldValidationErrors) msg = `${msg} See field validation message(s). `;
-
-        if (!msg) msg = err.warningMessage;
-        messageViewModel.setMessage(msg);
+    propertyTableViewModel = (id: string, propertyRep?: Models.PropertyMember | Models.CollectionMember) => {
+        return propertyRep ? new TableRowColumnViewModel(id, propertyRep, this.mask) : new TableRowColumnViewModel(id);
     };
-
-    private drop(context: ContextService, error: ErrorService, vm: FieldViewModel, newValue: IDraggableViewModel) {
-        return context.isSubTypeOf(newValue.draggableType, vm.returnType).
-            then((canDrop: boolean) => {
-                if (canDrop) {
-                    vm.setNewValue(newValue);
-                    return true;
-                }
-                return false;
-            }).
-            catch((reject: Models.ErrorWrapper) => error.handleError(reject));
-    };
-
-    private validate(rep: Models.IHasExtensions, vm: FieldViewModel, ms: MomentWrapperService, modelValue: any, viewValue: string, mandatoryOnly: boolean) {
-        const message = mandatoryOnly ? Models.validateMandatory(rep, viewValue) : Models.validate(rep, modelValue, viewValue, vm.localFilter, ms);
-
-        if (message !== Msg.mandatory) {
-            vm.setMessage(message);
-        } else {
-            vm.resetMessage();
-        }
-
-        vm.clientValid = !message;
-        return vm.clientValid;
-    };
-
-    private setupReference(vm: PropertyViewModel, value: Models.Value, rep: Models.IHasExtensions) {
-        vm.type = "ref";
-        if (value.isNull()) {
-            vm.reference = "";
-            vm.value = vm.description;
-            vm.formattedValue = "";
-            vm.refType = "null";
-        } else {
-            vm.reference = value.link().href();
-            vm.value = value.toString();
-            vm.formattedValue = value.toString();
-            vm.refType = rep.extensions().notNavigable() ? "notNavigable" : "navigable";
-        }
-        if (vm.entryType === Models.EntryType.FreeForm) {
-            vm.description = vm.description || Msg.dropPrompt;
-        }
-    }
-
-    private setScalarValueInView(vm: { value: string | number | boolean | Date }, propertyRep: Models.PropertyMember, value: Models.Value) {
-        if (Models.isDateOrDateTime(propertyRep)) {
-            //vm.value = Models.toUtcDate(value);
-            const date = Models.toUtcDate(value);
-            vm.value = date ? Models.toDateString(date) : "";
-        } else if (Models.isTime(propertyRep)) {
-            vm.value = Models.toTime(value);
-        } else {
-            vm.value = value.scalar();
-        }
-    }
-
-    private setupChoice(propertyViewModel: PropertyViewModel, newValue: Models.Value) {
-        const propertyRep = propertyViewModel.propertyRep;
-        if (propertyViewModel.entryType === Models.EntryType.Choices) {
-
-            const choices = propertyRep.choices();
-
-            propertyViewModel.choices = _.map(choices, (v, n) => ChoiceViewModel.create(v, propertyViewModel.id, n));
-
-            if (propertyViewModel.optional) {
-                const emptyChoice = ChoiceViewModel.create(new Models.Value(""), propertyViewModel.id);
-                propertyViewModel.choices = _.concat([emptyChoice], propertyViewModel.choices);
-            }
-
-            const currentChoice = ChoiceViewModel.create(newValue, propertyViewModel.id);
-            propertyViewModel.selectedChoice = _.find(propertyViewModel.choices, c => c.valuesEqual(currentChoice));
-        } else if (!propertyRep.isScalar()) {
-            propertyViewModel.selectedChoice = ChoiceViewModel.create(newValue, propertyViewModel.id);
-        }
-    }
-
-    private setupScalarPropertyValue(propertyViewModel: PropertyViewModel) {
-        const propertyRep = propertyViewModel.propertyRep;
-        propertyViewModel.type = "scalar";
-
-        const remoteMask = propertyRep.extensions().mask();
-        const localFilter = this.mask.toLocalFilter(remoteMask, propertyRep.extensions().format());
-        propertyViewModel.localFilter = localFilter;
-        // formatting also happens in in directive - at least for dates - value is now date in that case
-
-        propertyViewModel.refresh = (newValue: Models.Value) => this.callIfChanged(propertyViewModel, newValue, (value: Models.Value) => {
-
-            this.setupChoice(propertyViewModel, value);
-            this.setScalarValueInView(propertyViewModel, propertyRep, value);
-
-            if (propertyRep.entryType() === Models.EntryType.Choices) {
-                if (propertyViewModel.selectedChoice) {
-                    propertyViewModel.value = propertyViewModel.selectedChoice.name;
-                    propertyViewModel.formattedValue = propertyViewModel.selectedChoice.name;
-                }
-            } else if (propertyViewModel.password) {
-                propertyViewModel.formattedValue = Msg.obscuredText;
-            } else {
-                propertyViewModel.formattedValue = localFilter.filter(propertyViewModel.value);
-            }
-        });
-    }
-
-    propertyTableViewModel = (propertyRep: Models.PropertyMember | Models.CollectionMember, id: string, paneId: number) => {
-        const tableRowColumnViewModel = new TableRowColumnViewModel();
-
-        tableRowColumnViewModel.title = propertyRep.extensions().friendlyName();
-        tableRowColumnViewModel.id = id;
-
-        if (propertyRep instanceof Models.CollectionMember) {
-            const size = propertyRep.size();
-
-            tableRowColumnViewModel.formattedValue = this.getCollectionDetails(size);
-            tableRowColumnViewModel.value = "";
-            tableRowColumnViewModel.type = "scalar";
-            tableRowColumnViewModel.returnType = "string";
-        }
-
-        if (propertyRep instanceof Models.PropertyMember) {
-            const isPassword = propertyRep.extensions().dataType() === "password";
-            const value = propertyRep.value();
-            tableRowColumnViewModel.returnType = propertyRep.extensions().returnType();
-
-            if (propertyRep.isScalar()) {
-                tableRowColumnViewModel.type = "scalar";
-                this.setScalarValueInView(tableRowColumnViewModel, propertyRep, value);
-
-                const remoteMask = propertyRep.extensions().mask();
-                const localFilter = this.mask.toLocalFilter(remoteMask, propertyRep.extensions().format());
-
-                if (propertyRep.entryType() === Models.EntryType.Choices) {
-                    const currentChoice = ChoiceViewModel.create(value, id);
-                    const choices = _.map(propertyRep.choices(), (v, n) => ChoiceViewModel.create(v, id, n));
-                    const choice = _.find(choices, c => c.valuesEqual(currentChoice));
-
-                    if (choice) {
-                        tableRowColumnViewModel.value = choice.name;
-                        tableRowColumnViewModel.formattedValue = choice.name;
-                    }
-                } else if (isPassword) {
-                    tableRowColumnViewModel.formattedValue = Msg.obscuredText;
-                } else {
-                    tableRowColumnViewModel.formattedValue = localFilter.filter(tableRowColumnViewModel.value);
-                }
-            } else {
-                // is reference   
-                tableRowColumnViewModel.type = "ref";
-                tableRowColumnViewModel.formattedValue = value.isNull() ? "" : value.toString();
-            }
-        }
-
-        return tableRowColumnViewModel;
-    };
-
-    private getDigest(propertyRep: Models.PropertyMember) {
-        const parent = propertyRep.parent;
-        if (parent instanceof Models.DomainObjectRepresentation) {
-            if (parent.isTransient()) {
-                return parent.etagDigest;
-            }
-        }
-        return null;
-    }
-
-    private setupPropertyAutocomplete(propertyViewModel: PropertyViewModel, parentValues: () => _.Dictionary<Models.Value>) {
-        const propertyRep = propertyViewModel.propertyRep;
-        propertyViewModel.prompt = (searchTerm: string) => {
-            const createcvm = _.partial(this.createChoiceViewModels, propertyViewModel.id, searchTerm);
-            const digest = this.getDigest(propertyRep);
-
-            return this.context.autoComplete(propertyRep, propertyViewModel.id, parentValues, searchTerm, digest).then(createcvm);
-        };
-        propertyViewModel.minLength = propertyRep.promptLink().extensions().minLength();
-        propertyViewModel.description = propertyViewModel.description || Msg.autoCompletePrompt;
-    }
-
-    private setupPropertyConditionalChoices(propertyViewModel: PropertyViewModel) {
-        const propertyRep = propertyViewModel.propertyRep;
-        propertyViewModel.conditionalChoices = (args: _.Dictionary<Models.Value>) => {
-            const createcvm = _.partial(this.createChoiceViewModels, propertyViewModel.id, null);
-            const digest = this.getDigest(propertyRep);
-            return this.context.conditionalChoices(propertyRep, propertyViewModel.id, () => <_.Dictionary<Models.Value>>{}, args, digest).then(createcvm);
-        };
-        propertyViewModel.promptArguments = (<any>_.fromPairs)(_.map(propertyRep.promptLink().arguments(), (v: any, key: string) => [key, new Models.Value(v.value)]));
-    }
-
-    private callIfChanged(propertyViewModel: PropertyViewModel, newValue: Models.Value, doRefresh: (newValue: Models.Value) => void) {
-        const propertyRep = propertyViewModel.propertyRep;
-        const value = newValue || propertyRep.value();
-
-        if (propertyViewModel.currentValue == null || value.toValueString() !== propertyViewModel.currentValue.toValueString()) {
-            doRefresh(value);
-            propertyViewModel.currentValue = value;
-        }
-    }
-
-    private setupReferencePropertyValue(propertyViewModel: PropertyViewModel) {
-        const propertyRep = propertyViewModel.propertyRep;
-        propertyViewModel.refresh = (newValue: Models.Value) => this.callIfChanged(propertyViewModel, newValue, (value: Models.Value) => {
-            this.setupChoice(propertyViewModel, value);
-            this.setupReference(propertyViewModel, value, propertyRep);
-        });
-    }
 
     propertyViewModel = (propertyRep: Models.PropertyMember, id: string, previousValue: Models.Value, paneId: number, parentValues: () => _.Dictionary<Models.Value>) => {
         return  new PropertyViewModel(propertyRep,
@@ -329,61 +81,34 @@ export class ViewModelFactoryService {
             id,
             previousValue,
             paneId,
-            parentValues);
-
-        //propertyViewModel.id = id;
-        //propertyViewModel.onPaneId = paneId;
-        //propertyViewModel.argId = `${id.toLowerCase()}`;
-        //propertyViewModel.paneArgId = `${propertyViewModel.argId}${paneId}`;
-
-
-        //if (propertyRep.attachmentLink() != null) {
-        //    propertyViewModel.attachment = this.attachmentViewModel(propertyRep, paneId);
-        //}
-
-        //const fieldEntryType = propertyViewModel.entryType;
-
-        //if (fieldEntryType === Models.EntryType.AutoComplete) {
-        //    this.setupPropertyAutocomplete(propertyViewModel, parentValues);
-        //}
-
-        //if (fieldEntryType === Models.EntryType.ConditionalChoices) {
-        //    this.setupPropertyConditionalChoices(propertyViewModel);
-        //}
-
-        //if (propertyRep.isScalar()) {
-        //    this.setupScalarPropertyValue(propertyViewModel);
-        //} else {
-        //    // is reference
-        //    this.setupReferencePropertyValue(propertyViewModel);
-        //}
-
-        //propertyViewModel.refresh(previousValue);
-
-        //if (!previousValue) {
-        //    propertyViewModel.originalValue = propertyViewModel.getValue();
-        //}
-
-        //const required = propertyViewModel.optional ? "" : "* ";
-        //propertyViewModel.description = required + propertyViewModel.description;
-
-        //propertyViewModel.isDirty = () => !!previousValue || propertyViewModel.getValue().toValueString() !== propertyViewModel.originalValue.toValueString();
-        //propertyViewModel.validate = _.partial(this.validate, propertyRep, propertyViewModel, this.momentWrapperService) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
-        //propertyViewModel.canDropOn = (targetType: string) => this.context.isSubTypeOf(propertyViewModel.returnType, targetType) as Promise<boolean>;
-        //propertyViewModel.drop = _.partial(this.drop, this.context, this.error, propertyViewModel);
-        //propertyViewModel.doClick = (right?: boolean) => this.urlManager.setProperty(propertyRep, this.clickHandler.pane(paneId, right));
-
-        //return propertyViewModel as PropertyViewModel;
+            parentValues);        
     };
-
-   
-    
 
     parameterViewModel = (parmRep: Models.Parameter, previousValue: Models.Value, paneId: number) => {
         return new ParameterViewModel(parmRep, paneId, this.color, this.error, this.momentWrapperService, this.mask, previousValue, this, this.context);     
     };
 
-    getItems = (links: Models.Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: ListViewModel | CollectionViewModel) => {
+    collectionViewModel = (collectionRep: Models.CollectionMember, routeData: PaneRouteData) => {
+        return new CollectionViewModel(this, this.color, this.error, this.context, this.urlManager, collectionRep, routeData );    
+    };
+
+    listPlaceholderViewModel = (routeData: PaneRouteData) => {
+        return new CollectionPlaceholderViewModel(this.context, this.error, routeData);    
+    };
+
+    menuViewModel = (menuRep: Models.MenuRepresentation, routeData: PaneRouteData) => {
+        return new MenuViewModel(this, menuRep, routeData);    
+    };
+
+    recentItemsViewModel = (paneId: number) => {
+        return new RecentItemsViewModel(this, this.context, paneId);
+    };
+
+    tableRowViewModel = (properties: _.Dictionary<Models.PropertyMember>, paneId: number): TableRowViewModel => {
+        return new TableRowViewModel(this, properties, paneId);
+    };
+
+    getItems = (links: Models.Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: Listviewmodel.ListViewModel | CollectionViewModel) => {
         const selectedItems = routeData.selectedItems;
 
         const items = _.map(links, (link, i) => this.itemViewModel(link, routeData.paneId, selectedItems[i], i));
@@ -417,7 +142,7 @@ export class ViewModelFactoryService {
                                     return match ? match.tableRowViewModel.properties[i].title : firstItem.properties[i].id;
                                 });
 
-                            listViewModel.header = firstItem.hasTitle ? [""].concat(propertiesHeader) : propertiesHeader;                      
+                            listViewModel.header = firstItem.hasTitle ? [""].concat(propertiesHeader) : propertiesHeader;
                         }
                     }).
                     catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
@@ -427,39 +152,8 @@ export class ViewModelFactoryService {
         return items;
     };
 
-    private getCollectionDetails(count: number) {
-        if (count == null) {
-            return Msg.unknownCollectionSize;
-        }
 
-        if (count === 0) {
-            return Msg.emptyCollectionSize;
-        }
 
-        const postfix = count === 1 ? "Item" : "Items";
-
-        return `${count} ${postfix}`;
-    }
-
-    collectionViewModel = (collectionRep: Models.CollectionMember, routeData: PaneRouteData) => {
-        return new CollectionViewModel(this, this.color, this.error, this.context, this.urlManager, collectionRep, routeData );    
-    };
-
-    listPlaceholderViewModel = (routeData: PaneRouteData) => {
-        return new CollectionPlaceholderViewModel(this.context, this.error, routeData);    
-    };
-
-    menuViewModel = (menuRep: Models.MenuRepresentation, routeData: PaneRouteData) => {
-        return new MenuViewModel(this, menuRep, routeData);    
-    };
-
-    recentItemsViewModel = (paneId: number) => {
-        return new RecentItemsViewModel(this, this.context, paneId);
-    };
-
-    tableRowViewModel = (properties: _.Dictionary<Models.PropertyMember>, paneId: number): TableRowViewModel => {
-        return new TableRowViewModel(this, properties, paneId);
-    };
 
     private cvm: Ciceroviewmodel.CiceroViewModel = null;
 

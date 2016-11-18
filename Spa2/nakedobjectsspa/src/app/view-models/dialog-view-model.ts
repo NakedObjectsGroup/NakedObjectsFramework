@@ -89,7 +89,7 @@ export class DialogViewModel extends MessageViewModel {
                 // else query only going to other tab leave dialog open
             })
             .catch((reject: Models.ErrorWrapper) => {
-                const display = (em: Models.ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.parameters);
+                const display = (em: Models.ErrorMap) => Helpers.handleErrorResponse(em, this, this.parameters);
                 this.error.handleErrorAndDisplayMessages(reject, display);
             });
 

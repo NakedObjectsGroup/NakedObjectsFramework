@@ -67,7 +67,7 @@ export class DomainObjectViewModel extends MessageViewModel {
     private validateHandler = () => this.domainObject.isTransient() ? this.contextService.validateSaveObject : this.contextService.validateUpdateObject;
 
     private handleWrappedError = (reject: Models.ErrorWrapper) => {
-        const display = (em: Models.ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.properties);
+        const display = (em: Models.ErrorMap) => Helpers.handleErrorResponse(em, this, this.properties);
         this.error.handleErrorAndDisplayMessages(reject, display);
     };
 
@@ -198,7 +198,7 @@ export class DomainObjectViewModel extends MessageViewModel {
                         this.urlManager.closeDialogReplaceHistory(this.onPaneId);
                     }
                     this.reset(reloadedObj, this.routeData);
-                    this.viewModelFactory.handleErrorResponse(em, this, this.properties);
+                    Helpers.handleErrorResponse(em, this, this.properties);
                 })
                 .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
         };

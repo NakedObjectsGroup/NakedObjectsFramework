@@ -13,6 +13,7 @@ import * as Clickhandlerservice from '../click-handler.service';
 import * as Urlmanagerservice from '../url-manager.service';
 import * as Momentwrapperservice from '../moment-wrapper.service';
 import * as Helpersviewmodels from './helpers-view-models';
+import * as Idraggableviewmodel from './idraggable-view-model';
 
 export class PropertyViewModel extends FieldViewModel {
 
@@ -29,7 +30,7 @@ export class PropertyViewModel extends FieldViewModel {
     private setupPropertyAutocomplete(parentValues: () => _.Dictionary<Models.Value>) {
         const propertyRep = this.propertyRep;
         this.prompt = (searchTerm: string) => {
-            const createcvm = _.partial(this.viewModelfactory.createChoiceViewModels, this.id, searchTerm);
+            const createcvm = _.partial(Helpersviewmodels.createChoiceViewModels, this.id, searchTerm);
             const digest = this.getDigest(propertyRep);
 
             return this.context.autoComplete(propertyRep, this.id, parentValues, searchTerm, digest).then(createcvm);
@@ -41,7 +42,7 @@ export class PropertyViewModel extends FieldViewModel {
     private setupPropertyConditionalChoices() {
         const propertyRep = this.propertyRep;
         this.conditionalChoices = (args: _.Dictionary<Models.Value>) => {
-            const createcvm = _.partial(this.viewModelfactory.createChoiceViewModels, this.id, null);
+            const createcvm = _.partial(Helpersviewmodels.createChoiceViewModels, this.id, null);
             const digest = this.getDigest(propertyRep);
             return this.context.conditionalChoices(propertyRep, this.id, () => <_.Dictionary<Models.Value>>{}, args, digest).then(createcvm);
         };
@@ -58,7 +59,7 @@ export class PropertyViewModel extends FieldViewModel {
         }
     }
 
-    private setupChoice( newValue: Models.Value) {
+    private setupChoice(newValue: Models.Value) {
         const propertyRep = this.propertyRep;
         if (this.entryType === Models.EntryType.Choices) {
 
@@ -78,7 +79,7 @@ export class PropertyViewModel extends FieldViewModel {
         }
     }
 
-    private setupReference( value: Models.Value, rep: Models.IHasExtensions) {
+    private setupReference(value: Models.Value, rep: Models.IHasExtensions) {
         this.type = "ref";
         if (value.isNull()) {
             this.reference = "";
@@ -104,18 +105,6 @@ export class PropertyViewModel extends FieldViewModel {
         });
     }
 
-    private setScalarValueInView( value: Models.Value) {
-        if (Models.isDateOrDateTime(this.propertyRep)) {
-            //vm.value = Models.toUtcDate(value);
-            const date = Models.toUtcDate(value);
-            this.value = date ? Models.toDateString(date) : "";
-        } else if (Models.isTime(this.propertyRep)) {
-            this.value = Models.toTime(value);
-        } else {
-            this.value = value.scalar();
-        }
-    }
-
     private setupScalarPropertyValue() {
         const propertyRep = this.propertyRep;
         this.type = "scalar";
@@ -128,7 +117,7 @@ export class PropertyViewModel extends FieldViewModel {
         this.refresh = (newValue: Models.Value) => this.callIfChanged(newValue, (value: Models.Value) => {
 
             this.setupChoice(value);
-            this.setScalarValueInView(value);
+            Helpersviewmodels.setScalarValueInView(this, this.propertyRep, value);
 
             if (propertyRep.entryType() === Models.EntryType.Choices) {
                 if (this.selectedChoice) {
@@ -145,20 +134,21 @@ export class PropertyViewModel extends FieldViewModel {
 
 
 
-    constructor(propertyRep: Models.PropertyMember,
-            color: ColorService,
-            error: ErrorService,
-            private viewModelfactory: Viewmodelfactoryservice.ViewModelFactoryService, 
-            private context: Contextservice.ContextService, 
-            private maskService: Maskservice.MaskService, 
-            private urlManager: Urlmanagerservice.UrlManagerService, 
-            private clickHandler: Clickhandlerservice.ClickHandlerService, 
-            private momentWrapperService : Momentwrapperservice.MomentWrapperService, 
-            id: string,
-            previousValue: Models.Value,
-            paneId: number,
-            parentValues: () => _.Dictionary<Models.Value>) {
-        super(propertyRep.extensions(), color, error);
+    constructor(public propertyRep: Models.PropertyMember,
+                color: ColorService,
+                error: ErrorService,
+                private viewModelfactory: Viewmodelfactoryservice.ViewModelFactoryService,
+                private context: Contextservice.ContextService,
+                private maskService: Maskservice.MaskService,
+                private urlManager: Urlmanagerservice.UrlManagerService,
+                private clickHandler: Clickhandlerservice.ClickHandlerService,
+                private momentWrapperService: Momentwrapperservice.MomentWrapperService,
+                id: string,
+                private previousValue: Models.Value,
+                onPaneId: number,
+                parentValues: () => _.Dictionary<Models.Value>) {
+
+        super(propertyRep.extensions(), color, error, onPaneId);
         this.draggableType = propertyRep.extensions().returnType();
 
         this.propertyRep = propertyRep;
@@ -167,13 +157,11 @@ export class PropertyViewModel extends FieldViewModel {
         this.entryType = propertyRep.entryType();
 
         this.id = id;
-        this.onPaneId = paneId;
         this.argId = `${id.toLowerCase()}`;
-        this.paneArgId = `${this.argId}${paneId}`;
-
+        this.paneArgId = `${this.argId}${onPaneId}`;
 
         if (propertyRep.attachmentLink() != null) {
-            this.attachment = this.viewModelfactory.attachmentViewModel(propertyRep, paneId);
+            this.attachment = this.viewModelfactory.attachmentViewModel(propertyRep, onPaneId);
         }
 
         const fieldEntryType = this.entryType;
@@ -201,24 +189,19 @@ export class PropertyViewModel extends FieldViewModel {
 
         const required = this.optional ? "" : "* ";
         this.description = required + this.description;
-  
-        this.isDirty = () => !!previousValue || this.getValue().toValueString() !== this.originalValue.toValueString();
-        this.validate = _.partial(Helpersviewmodels.validate, propertyRep, this, this.momentWrapperService) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
-        this.canDropOn = (targetType: string) => this.context.isSubTypeOf(this.returnType, targetType) as Promise<boolean>;
-        this.drop = _.partial(Helpersviewmodels.drop, this.context, this.error, this);
-        this.doClick = (right?: boolean) => this.urlManager.setProperty(propertyRep, this.clickHandler.pane(paneId, right));
     }
 
-    propertyRep: Models.PropertyMember;
+
     isEditable: boolean;
     attachment: AttachmentViewModel;
     refType: "null" | "navigable" | "notNavigable";
-    isDirty: () => boolean;
-    doClick: (right?: boolean) => void;
-
     // IDraggableViewModel
     draggableType: string;
     draggableTitle = () => this.formattedValue;
 
-    canDropOn: (targetType: string) => Promise<boolean>;
+    isDirty = () => !!this.previousValue || this.getValue().toValueString() !== this.originalValue.toValueString();
+    validate = _.partial(Helpersviewmodels.validate, this.propertyRep, this, this.momentWrapperService) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
+    canDropOn = (targetType: string) => this.context.isSubTypeOf(this.returnType, targetType) as Promise<boolean>;
+    drop = _.partial(Helpersviewmodels.drop, this.context, this.error, this) as (newValue: Idraggableviewmodel.IDraggableViewModel) => Promise<boolean>;
+    doClick = (right?: boolean) => this.urlManager.setProperty(this.propertyRep, this.clickHandler.pane(this.onPaneId, right));
 }

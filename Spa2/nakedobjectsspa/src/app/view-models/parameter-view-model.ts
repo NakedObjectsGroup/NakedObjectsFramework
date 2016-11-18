@@ -21,7 +21,7 @@ export class ParameterViewModel extends FieldViewModel {
     private setupParameterAutocomplete() {
         const parmRep = this.parameterRep;
         this.prompt = (searchTerm: string) => {
-            const createcvm = _.partial(this.viewModelFactory.createChoiceViewModels, this.id, searchTerm);
+            const createcvm = _.partial(Helpersviewmodels.createChoiceViewModels, this.id, searchTerm);
             return this.context.autoComplete(parmRep, this.id, () => <_.Dictionary<Models.Value>>{}, searchTerm).
                 then(createcvm);
         };
@@ -44,7 +44,7 @@ export class ParameterViewModel extends FieldViewModel {
     private setupParameterConditionalChoices() {
         const parmRep = this.parameterRep;
         this.conditionalChoices = (args: _.Dictionary<Models.Value>) => {
-            const createcvm = _.partial(this.viewModelFactory.createChoiceViewModels, this.id, null);
+            const createcvm = _.partial(Helpersviewmodels.createChoiceViewModels, this.id, null);
             return this.context.conditionalChoices(parmRep, this.id, () => <_.Dictionary<Models.Value>>{}, args).
                 then(createcvm);
         };
@@ -137,18 +137,17 @@ export class ParameterViewModel extends FieldViewModel {
     }
 
     constructor(parmRep: Models.Parameter,
-        paneId: number,     
-        color: ColorService,
-        error: ErrorService,
-        private momentWrapperService : Momentwrapperservice.MomentWrapperService, 
-        private maskService : Maskservice.MaskService,
-        private previousValue: Models.Value,
-        private viewModelFactory : Viewmodelfactoryservice.ViewModelFactoryService,
-        private context: Contextservice.ContextService) {
+                paneId: number,     
+                color: ColorService,
+                error: ErrorService,
+                private momentWrapperService : Momentwrapperservice.MomentWrapperService, 
+                private maskService : Maskservice.MaskService,
+                private previousValue: Models.Value,
+                private viewModelFactory : Viewmodelfactoryservice.ViewModelFactoryService,
+                private context: Contextservice.ContextService) {
 
 
-
-        super(parmRep.extensions(), color, error);
+        super(parmRep.extensions(), color, error, paneId);
 
         this.parameterRep = parmRep;
         this.onPaneId = paneId;

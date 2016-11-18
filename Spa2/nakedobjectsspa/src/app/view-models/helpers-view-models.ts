@@ -8,6 +8,8 @@ import * as Errorservice from '../error.service';
 import * as Idraggableviewmodel from './idraggable-view-model';
 import * as Momentwrapperservice from '../moment-wrapper.service';
 import * as Models from "../models";
+import * as Choiceviewmodel from './choice-view-model';
+import * as Imessageviewmodel from './imessage-view-model';
 
 export function tooltip(onWhat: { clientValid: () => boolean }, fields: FieldViewModel[]): string {
     if (onWhat.clientValid()) {
@@ -135,3 +137,58 @@ export function validate(rep: Models.IHasExtensions, vm: FieldViewModel, ms: Mom
     vm.clientValid = !message;
     return vm.clientValid;
 };
+
+ export function  setScalarValueInView(vm: { value: string | number | boolean | Date }, propertyRep: Models.PropertyMember, value: Models.Value) {
+    if (Models.isDateOrDateTime(propertyRep)) {
+        //vm.value = Models.toUtcDate(value);
+        const date = Models.toUtcDate(value);
+        vm.value = date ? Models.toDateString(date) : "";
+    } else if (Models.isTime(propertyRep)) {
+        vm.value = Models.toTime(value);
+    } else {
+        vm.value = value.scalar();
+    }
+}
+
+export function createChoiceViewModels(id: string, searchTerm: string, choices: _.Dictionary<Models.Value>) {
+    return Promise.resolve(_.map(choices, (v, k) => Choiceviewmodel.ChoiceViewModel.create(v, id, k, searchTerm)));
+ }
+
+export function handleErrorResponse (err: Models.ErrorMap, messageViewModel: Imessageviewmodel.IMessageViewModel, valueViewModels: FieldViewModel[])  {
+
+    let requiredFieldsMissing = false; // only show warning message if we have nothing else 
+    let fieldValidationErrors = false;
+    let contributedParameterErrorMsg = "";
+
+    _.each(err.valuesMap(), (errorValue, k) => {
+
+        const valueViewModel = _.find(valueViewModels, vvm => vvm.id === k);
+
+        if (valueViewModel) {
+            const reason = errorValue.invalidReason;
+            if (reason) {
+                if (reason === "Mandatory") {
+                    const r = "REQUIRED";
+                    requiredFieldsMissing = true;
+                    valueViewModel.description = valueViewModel.description.indexOf(r) === 0 ? valueViewModel.description : `${r} ${valueViewModel.description}`;
+                } else {
+                    valueViewModel.setMessage(reason);
+                    fieldValidationErrors = true;
+                }
+            }
+        } else {
+            // no matching parm for message - this can happen in contributed actions 
+            // make the message a dialog level warning.                               
+            contributedParameterErrorMsg = errorValue.invalidReason;
+        }
+    });
+
+    let msg = contributedParameterErrorMsg || err.invalidReason() || "";
+    if (requiredFieldsMissing) msg = `${msg} Please complete REQUIRED fields. `;
+    if (fieldValidationErrors) msg = `${msg} See field validation message(s). `;
+
+    if (!msg) msg = err.warningMessage;
+    messageViewModel.setMessage(msg);
+};
+
+  
