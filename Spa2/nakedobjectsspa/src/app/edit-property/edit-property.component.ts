@@ -10,7 +10,7 @@ import { AttachmentViewModel } from '../view-models/attachment-view-model';
 import * as Fieldviewmodel from '../view-models/field-view-model';
 import { PropertyViewModel } from '../view-models/property-view-model';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
-
+import {ChoiceViewModel} from '../view-models/choice-view-model';
 
 @Component({
     host: {
@@ -44,6 +44,83 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
         return this.prop;
     }
 
+    get propertyPaneId() {
+        return this.property.paneArgId;
+    }
+
+    get propertyId() {
+        return this.property.id;
+    }
+
+    get propertyChoices() {
+        return this.property.choices;
+    }
+
+    get title() {
+        return this.property.title;
+    }
+
+    get propertyType() {
+        return this.property.type;
+    }
+
+    get propertyReturnType() {
+        return this.property.returnType;
+    }
+
+    get propertyEntryType() {
+        return this.property.entryType;
+    }
+
+    get isEditable() {
+        return this.property.isEditable;
+    }
+
+    get formattedValue() {
+        return this.property.formattedValue;
+    }
+
+    get value() {
+        return this.property.formattedValue;
+    }
+
+    get format() {
+        return this.property.format;
+    }
+
+    get isBlob() {
+        return this.property.format === "blob";
+    }
+
+    get isMultiline() {
+        return !(this.property.multipleLines === 1);
+    }
+
+    get isPassword() {
+        return this.property.password;
+    }
+
+    get multilineHeight() {
+        return `${this.property.multipleLines * 20}px`;
+    }
+
+    get rows() {
+        return this.property.multipleLines;
+    }
+
+    get propertyDescription() {
+        return this.property.description;
+    }
+
+    get message() {
+        return this.property.getMessage();
+    }
+
+    choiceName(choice: ChoiceViewModel) {
+        return choice.name;
+    }
+
+
     classes(): string {
         return `${this.prop.color}${this.canDrop ? " candrop" : ""}`;
     }
@@ -56,6 +133,9 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
     get form() {
         return this.formGroup;
     }
+
+    // todo delegated click here smell that we need another component 
+    doAttachmentClick = (right?: boolean) => this.property.attachment.doClick(right);
 
     ngOnInit(): void {
         super.init(this.parent, this.property, this.form.controls[this.prop.id]);
