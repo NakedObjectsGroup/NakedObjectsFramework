@@ -94,7 +94,16 @@ export class FooterComponent implements OnInit {
     warnings: string[];
     messages: string[];
 
-    cutViewModel: IDraggableViewModel;
+    copyViewModel: IDraggableViewModel;
+
+    get currentCopyColor() {
+        return this.copyViewModel.color;
+    }
+
+    get currentCopyTitle() {
+        return this.copyViewModel.draggableTitle();
+    }
+
 
     ngOnInit() {
         this.context.getUser().then((user: Models.UserRepresentation) => this.userName = user.userName()).catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
@@ -108,6 +117,6 @@ export class FooterComponent implements OnInit {
             this.messages = ms);
 
         this.context.cutViewModel$.subscribe((cvm: any) =>
-            this.cutViewModel = cvm);
+            this.copyViewModel = cvm);
     }
 }
