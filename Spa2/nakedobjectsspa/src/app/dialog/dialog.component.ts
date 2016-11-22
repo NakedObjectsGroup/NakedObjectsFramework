@@ -36,7 +36,6 @@ export class DialogComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder) {
     }
 
-
     paneId: number;
 
     @Input()
@@ -45,6 +44,34 @@ export class DialogComponent implements OnInit, OnDestroy {
     dialog: DialogViewModel;
 
     form: FormGroup;
+
+    get title() {
+        return this.dialog.title;
+    }
+
+    get message() {
+        return this.dialog.getMessage();
+    }
+
+    get parameters() {
+        return this.dialog.parameters;
+    }
+
+    get tooltip(): string {
+        return this.dialog.tooltip();
+    }
+
+    onSubmit(right?: boolean) {
+        _.forEach(this.parms,
+            (p, k) => {
+                const newValue = this.form.value[p.id];
+                p.setValueFromControl(newValue);
+            });
+        this.dialog.doInvoke(right);
+    }
+
+
+    close = () => this.dialog.doCloseReplaceHistory();
 
     private currentDialogId: string;
 
@@ -65,7 +92,6 @@ export class DialogComponent implements OnInit, OnDestroy {
                 });
             this.dialog.setParms();
         });
-        // this.onValueChanged(); // (re)set validation messages now
     }
 
 
@@ -94,30 +120,22 @@ export class DialogComponent implements OnInit, OnDestroy {
                     // only if we still have a dialog (may have beenn removed while getting invokable action)
                     if (this.currentDialogId) {
 
-                        //if (actionViewModel) {
-                        //    actionViewModel.makeInvokable(details);
-                        //}
-                        //setDialog($scope, actionViewModel || details, routeData);
-                        //this.focusManager.focusOn(Focusmanagerservice.FocusTarget.Dialog, 0, routeData.paneId);
-
                         this.context.clearParmUpdater(routeData.paneId);
 
-                        //$scope.dialogTemplate = dialogTemplate;
                         const dialogViewModel = new DialogViewModel(this.color,
                             this.context,
                             this.viewModelFactory,
                             this.urlManager,
                             this.error);
-                        //const isAlreadyViewModel = action instanceof Nakedobjectsviewmodels.ActionViewModel;
                         actionViewModel = actionViewModel ||
                             this.viewModelFactory.actionViewModel(action as Models.ActionMember | Models.ActionRepresentation,
                                 dialogViewModel,
                                 routeData);
-                        //: action as Nakedobjectsviewmodels.IActionViewModel;
+
 
                         actionViewModel.makeInvokable(details);
                         dialogViewModel.reset(actionViewModel, routeData);
-                        //$scope.dialog = dialogViewModel;
+
 
                         this.context.setParmUpdater(dialogViewModel.setParms, routeData.paneId);
                         dialogViewModel.deregister = () => this.context.clearParmUpdater(routeData.paneId);
@@ -136,7 +154,7 @@ export class DialogComponent implements OnInit, OnDestroy {
 
     private activatedRouteDataSub: ISubscription;
     private paneRouteDataSub: ISubscription;
-    private dialogSub: ISubscription;
+   
 
     private routeDataMatchesParent(rd: PaneRouteData) {
         if (this.parent instanceof MenuViewModel) {
@@ -160,7 +178,6 @@ export class DialogComponent implements OnInit, OnDestroy {
             this.paneId = data["pane"];
         });
 
-
         this.paneRouteDataSub = this.urlManager.getRouteDataObservable()
             .subscribe((rd: RouteData) => {
                 if (this.paneId) {
@@ -183,25 +200,5 @@ export class DialogComponent implements OnInit, OnDestroy {
         if (this.paneRouteDataSub) {
             this.paneRouteDataSub.unsubscribe();
         }
-
-        if (this.dialogSub) {
-            this.dialogSub.unsubscribe();
-        }
-
     }
-
-    get tooltip(): string {
-        return this.dialog.tooltip();
-    }
-
-    onSubmit(right?: boolean) {
-        _.forEach(this.parms,
-            (p, k) => {
-                const newValue = this.form.value[p.id];
-                p.setValueFromControl(newValue);
-            });
-        this.dialog.doInvoke(right);
-    }
-
-
 }
