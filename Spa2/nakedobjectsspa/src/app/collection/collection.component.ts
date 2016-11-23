@@ -58,12 +58,10 @@ export class CollectionComponent {
     doItemClick = (item: ItemViewModel, right?: boolean) => item.doClick(right);
 
     itemId = (i: number) => `item${this.collection.onPaneId}-${i}`;
-    itemSelected = (item: ItemViewModel) => item.selected;
 
     itemTableTitle =  (item : ItemViewModel) => item.tableRowViewModel.title;
     itemHasTableTitle = (item: ItemViewModel) => item.tableRowViewModel.hasTitle;
     itemTableProperties = (item: ItemViewModel) => item.tableRowViewModel.properties;
-
 
     propertyType = (property:PropertyViewModel) => property.type; 
     propertyValue = (property: PropertyViewModel) => property.value; 

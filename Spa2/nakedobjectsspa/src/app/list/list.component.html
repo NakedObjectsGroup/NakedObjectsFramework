@@ -26,7 +26,7 @@
 		</header>
 		<div class="details" *ngIf="size == 0">{{description}}</div>
 		<div *ngIf="size > 0">
-			<actions class="actions" *ngIf="showActions()" [menuVm]="collection"></actions>
+			<actions class="actions" *ngIf="showActions()" [menu]="collection"></actions>
 			<app-dialog [parent]="collection"></app-dialog>
 			<div class="summary" *ngIf="state == 'list'">
 				<div class="details">{{description}}</div>

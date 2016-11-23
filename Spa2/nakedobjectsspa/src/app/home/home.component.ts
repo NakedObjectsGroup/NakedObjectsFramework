@@ -35,7 +35,13 @@ export class HomeComponent extends PaneComponent implements  AfterViewInit {
     }
 
     // template API 
-    hasMenus = () => !!this.menus;
+    get hasMenus() {
+        return !!this.menus;
+    }
+
+    get menuItems() {
+        return this.menus.items;
+    }
 
     doClick(linkViewModel: LinkViewModel) {
         const menuId = linkViewModel.link.rel().parms[0].value;
@@ -44,7 +50,7 @@ export class HomeComponent extends PaneComponent implements  AfterViewInit {
 
     title = (linkViewModel: LinkViewModel) => linkViewModel.title;
 
-    menuItems = () => this.menus.items;
+    
 
     selectedMenu: MenuViewModel;
    

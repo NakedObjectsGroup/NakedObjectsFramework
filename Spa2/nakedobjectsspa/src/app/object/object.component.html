@@ -21,7 +21,7 @@
 			</div>
 			<div class="messages">{{message()}}</div>
 		</header>
-		<actions class="actions" *ngIf="showActions()" [menuVm]="object"></actions>
+		<actions class="actions" *ngIf="showActions()" [menu]="object"></actions>
 		<div class="main-column">
 			<app-dialog [parent]="object"></app-dialog>
 			<properties class="properties" *ngIf="properties" [properties]="properties"></properties>

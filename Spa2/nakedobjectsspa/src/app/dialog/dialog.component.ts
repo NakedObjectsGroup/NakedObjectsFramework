@@ -36,8 +36,6 @@ export class DialogComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder) {
     }
 
-    paneId: number;
-
     @Input()
     parent: MenuViewModel | DomainObjectViewModel | ListViewModel;
 
@@ -60,6 +58,8 @@ export class DialogComponent implements OnInit, OnDestroy {
     get tooltip(): string {
         return this.dialog.tooltip();
     }
+
+    paneId: number;
 
     onSubmit(right?: boolean) {
         _.forEach(this.parms,

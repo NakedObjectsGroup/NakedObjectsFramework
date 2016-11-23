@@ -10,24 +10,23 @@ import { MenuItemViewModel} from '../view-models/menu-item-view-model';
 export class ActionsComponent implements AfterViewInit {
 
     @Input()
-    menuVm: { menuItems: MenuItemViewModel[] };
+    menu: { menuItems: MenuItemViewModel[] };
 
     get items() {
-        return this.menuVm.menuItems;
+        return this.menu.menuItems;
     }
 
-    menuName = (menu: MenuItemViewModel) => menu.name;
+    menuName = (menuItem: MenuItemViewModel) => menuItem.name;
 
-    menuItems = (menu: MenuItemViewModel) => menu.menuItems;
+    menuItems = (menuItem: MenuItemViewModel) => menuItem.menuItems;
 
-    menuActions = (menu: MenuItemViewModel) => menu.actions;
+    menuActions = (menuItem: MenuItemViewModel) => menuItem.actions;
 
-    toggleCollapsed = (menu: MenuItemViewModel) => menu.toggleCollapsed();
+    toggleCollapsed = (menuItem: MenuItemViewModel) => menuItem.toggleCollapsed();
 
-    navCollapsed = (menu: MenuItemViewModel) => menu.navCollapsed;
+    navCollapsed = (menuItem: MenuItemViewModel) => menuItem.navCollapsed;
 
-    displayClass = (menu: MenuItemViewModel) =>  ({ collapsed: menu.navCollapsed, open: !menu.navCollapsed, rootMenu: !menu.name });  
-
+    displayClass = (menuItem: MenuItemViewModel) =>  ({ collapsed: menuItem.navCollapsed, open: !menuItem.navCollapsed, rootMenu: !menuItem.name });  
 
     @ViewChildren(ActionComponent)
     actionChildren: QueryList<ActionComponent>;

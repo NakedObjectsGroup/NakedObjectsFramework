@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ContextService } from "../context.service";
 import { ViewModelFactoryService } from "../view-model-factory.service";
 import * as Models from '../models';
-import * as Nakedobjectsconfig from '../config';
+import * as Config from '../config';
 import { ErrorService } from "../error.service";
-import * as Applicationpropertiesviewmodel from '../view-models/application-properties-view-model';
+import { ApplicationPropertiesViewModel} from '../view-models/application-properties-view-model';
 
 @Component({
     selector: 'application-properties',
@@ -13,36 +13,42 @@ import * as Applicationpropertiesviewmodel from '../view-models/application-prop
 })
 export class ApplicationPropertiesComponent implements OnInit {
 
-    constructor(private context: ContextService, private error: ErrorService) {
+    constructor(
+        private context: ContextService,
+        private error: ErrorService) {
     }
 
     get userName() {
-        return this.viewModel.user ? this.viewModel.user.userName : "";
+        return this.applicationProperties.user ? this.applicationProperties.user.userName : "";
     }
 
     get serverUrl() {
-        return this.viewModel.serverUrl;
+        return this.applicationProperties.serverUrl;
     }
 
     get implVersion() {
-        return this.viewModel.serverVersion ? this.viewModel.serverVersion.implVersion : "";
+        return this.applicationProperties.serverVersion ? this.applicationProperties.serverVersion.implVersion : "";
     }
 
     get clientVersion() {
         return "todo";
     }
 
-    viewModel: Applicationpropertiesviewmodel.ApplicationPropertiesViewModel;
+    applicationProperties: ApplicationPropertiesViewModel;
 
     ngOnInit(): void {
 
-        this.viewModel = new Applicationpropertiesviewmodel.ApplicationPropertiesViewModel();
+        this.applicationProperties = new ApplicationPropertiesViewModel();
 
-        this.context.getUser().then((u: Models.UserRepresentation) => this.viewModel.user = u.wrapped()).catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+        this.context.getUser().
+            then((u: Models.UserRepresentation) => this.applicationProperties.user = u.wrapped()).
+            catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
-        this.context.getVersion().then((v: Models.VersionRepresentation) => this.viewModel.serverVersion = v.wrapped()).catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+        this.context.getVersion().
+            then((v: Models.VersionRepresentation) => this.applicationProperties.serverVersion = v.wrapped()).
+            catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
-        this.viewModel.serverUrl = Nakedobjectsconfig.getAppPath();
+        this.applicationProperties.serverUrl = Config.getAppPath();
 
         // apvm.clientVersion = (NakedObjects as any)["version"] || "Failed to write version";
 

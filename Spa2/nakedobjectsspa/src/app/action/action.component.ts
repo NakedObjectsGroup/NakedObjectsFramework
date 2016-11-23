@@ -11,24 +11,23 @@ export class ActionComponent {
     constructor(private myElement: ElementRef) {
     }
 
-    private actionVm: ActionViewModel;
-
-    description: string;
-    friendlyName: string;
-
     @Input()
-    set action(value: ActionViewModel) {
-        this.actionVm = value;
-        this.description = this.actionVm.description;
-        this.friendlyName = this.actionVm.title;
+    action: ActionViewModel;
+
+    get description() {
+        return this.action.description;
+    }
+
+    get friendlyName() {
+        return this.action.title;
     }
 
     disabled() {
-        return this.actionVm.disabled() ? true : null;
+        return this.action.disabled() ? true : null;
     }
 
     doInvoke(right?: boolean) {
-        this.actionVm.doInvoke(right);
+        this.action.doInvoke(right);
     }
 
     focus() {

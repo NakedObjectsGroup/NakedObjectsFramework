@@ -137,7 +137,6 @@ export class ListComponent extends PaneComponent implements  AfterViewInit {
             this.collection.refresh(routeData);
         } else if (cachedList) {
 
-            //if (routeData.state === cachedList.state)
 
             const listViewModel = new ListViewModel(
                 this.color,
@@ -146,15 +145,12 @@ export class ListComponent extends PaneComponent implements  AfterViewInit {
                 this.urlManager,
                 this.error
             );
-            //$scope.listTemplate = template.getTemplateName(cachedList.extensions().elementType(), TemplateType.List, routeData.state);
             listViewModel.reset(cachedList, routeData);
-            //$scope.collection = listViewModel;
             this.collection = listViewModel;
             this.state = CollectionViewState[routeData.state].toString().toLowerCase();
 
             listViewModel.refresh(routeData);
 
-            //handleListActionsAndDialog($scope, routeData);
         }
     }
 

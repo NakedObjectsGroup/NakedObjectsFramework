@@ -18,10 +18,10 @@ import * as Models from "../models";
 export class AttachmentComponent extends PaneComponent {
 
     constructor(activatedRoute: ActivatedRoute,
-        urlManager: UrlManagerService,
-        private viewModelFactory: ViewModelFactoryService,
-        private context: ContextService,
-        private error: ErrorService
+                urlManager: UrlManagerService,
+                private viewModelFactory: ViewModelFactoryService,
+                private context: ContextService,
+                private error: ErrorService
     ) {
         super(activatedRoute, urlManager);
     }
