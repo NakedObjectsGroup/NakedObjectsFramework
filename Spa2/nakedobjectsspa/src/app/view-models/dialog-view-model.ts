@@ -7,19 +7,19 @@ import { ErrorService } from '../error.service';
 import { ActionViewModel } from './action-view-model';
 import { ParameterViewModel } from './parameter-view-model';
 import { PaneRouteData } from '../route-data';
-import { Subject } from 'rxjs/Subject';
-import { ISubscription } from 'rxjs/Subscription';
 import * as Models from '../models';
 import * as Msg from '../user-messages';
 import * as Helpers from './helpers-view-models';
 import * as _ from "lodash";
 
 export class DialogViewModel extends MessageViewModel {
-    constructor(private color: ColorService,
+    constructor(
+        private color: ColorService,
         private context: ContextService,
         private viewModelFactory: ViewModelFactoryService,
         private urlManager: UrlManagerService,
-        private error: ErrorService) {
+        private error: ErrorService
+    ) {
         super();
     }
 
@@ -48,12 +48,15 @@ export class DialogViewModel extends MessageViewModel {
 
         const parameters = _.pickBy(actionViewModel.invokableActionRep.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Models.Parameter>;
         this.parameters = _.map(parameters, p => this.viewModelFactory.parameterViewModel(p, fields[p.id()], this.onPaneId));
-        this.listenToParameters();
+       
 
         this.title = this.actionMember().extensions().friendlyName();
         this.isQueryOnly = actionViewModel.invokableActionRep.invokeLink().method() === "GET";
         this.resetMessage();
         this.id = actionViewModel.actionRep.actionId();
+
+        // todo use subscribe ? 
+        this.context.setParmUpdater(this.setParms, routeData.paneId);
     }
 
     refresh() {
@@ -61,14 +64,13 @@ export class DialogViewModel extends MessageViewModel {
         _.forEach(this.parameters, p => p.refresh(fields[p.id]));
     }
 
-    deregister: () => void;
+    deregister = () => this.context.clearParmUpdater(this.onPaneId);
 
     clientValid = () => _.every(this.parameters, p => p.clientValid);
 
     tooltip = () => Helpers.tooltip(this, this.parameters);
 
     setParms = () => _.forEach(this.parameters, p => this.context.setFieldValue(this.actionMember().actionId(), p.parameterRep.id(), p.getValue(), this.onPaneId));
-
 
     doInvoke = (right?: boolean) =>
         this.execute(right)
@@ -94,43 +96,15 @@ export class DialogViewModel extends MessageViewModel {
             });
 
     doCloseKeepHistory = () => {
-        //this.deregister();
+        this.deregister();
         this.urlManager.closeDialogKeepHistory(this.onPaneId);
     };
     doCloseReplaceHistory = () => {
-        //this.deregister();
+        this.deregister();
         this.urlManager.closeDialogReplaceHistory(this.onPaneId);
     };
     clearMessages = () => {
         this.resetMessage();
         _.each(this.actionViewModel.parameters, parm => parm.clearMessage());
     };
-
-    parameterChanged() {
-        this.parameterChangedSource.next(true);
-        this.parameterChangedSource.next(false);
-    }
-
-    private parameterChangedSource = new Subject<boolean>();
-
-    parameterChanged$ = this.parameterChangedSource.asObservable();
-
-    private validChangedSource = new Subject<boolean>();
-
-    validChanged$ = this.validChangedSource.asObservable();
-
-    private parmSubs: ISubscription[] = [];
-
-    private listenToParameters() {
-        _.forEach(this.parameters,
-            p => {
-                this.parmSubs.push(p.validChanged$.subscribe((changed: any) => {
-                    if (changed) {
-                        this.validChangedSource.next(true);
-                        this.validChangedSource.next(false);
-                    }
-                }));
-            });
-    }
-
 }

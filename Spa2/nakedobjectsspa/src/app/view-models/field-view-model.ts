@@ -5,7 +5,6 @@ import { ILocalFilter } from '../mask.service';
 import { ChoiceViewModel } from './choice-view-model';
 import { IDraggableViewModel } from './idraggable-view-model';
 import { AbstractControl } from '@angular/forms';
-import { Subject } from 'rxjs/Subject';
 import * as Models from '../models';
 import * as Ro from '../ro-interfaces';
 import * as Config from '../config';
@@ -42,22 +41,7 @@ export abstract class FieldViewModel extends MessageViewModel {
     multipleLines: number;
     password: boolean;
 
-    private _clientValid = true;
-
-    get clientValid() {
-        return this._clientValid;
-    }
-
-    set clientValid(val: boolean) {
-        this._clientValid = val;
-        this.validChangedSource.next(true);
-        this.validChangedSource.next(false);
-    }
-
-    private validChangedSource = new Subject<boolean>();
-
-    validChanged$ = this.validChangedSource.asObservable();
-
+    clientValid = true;
     type: "scalar" | "ref";
     reference = "";
     minLength: number;
@@ -165,7 +149,6 @@ export abstract class FieldViewModel extends MessageViewModel {
         const viewValue = c.value;
         const isvalid = this.isValid(viewValue);
         return isvalid ? null : { invalid: "invalid entry" };
-        //return null;
     };
 
     refresh: (newValue: Models.Value) => void;

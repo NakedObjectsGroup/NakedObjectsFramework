@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ContextService } from "../context.service";
 import { ViewModelFactoryService } from "../view-model-factory.service";
 import { ActivatedRoute } from '@angular/router';
-import { ISubscription } from 'rxjs/Subscription';
 import { UrlManagerService } from "../url-manager.service";
 import { RouteData, PaneRouteData } from "../route-data";
 import { RecentItemsViewModel } from '../view-models/recent-items-view-model';
@@ -16,9 +15,10 @@ import { PaneComponent } from '../pane/pane';
 })
 export class RecentComponent extends PaneComponent {
 
-    constructor(activatedRoute: ActivatedRoute,
-                urlManager: UrlManagerService,
-                private viewModelFactory: ViewModelFactoryService,
+    constructor(
+        activatedRoute: ActivatedRoute,
+        urlManager: UrlManagerService,
+        private viewModelFactory: ViewModelFactoryService,
     ) {
         super(activatedRoute, urlManager);
     }

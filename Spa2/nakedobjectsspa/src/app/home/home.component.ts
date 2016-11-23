@@ -1,7 +1,5 @@
-import { Component, OnInit, Input, OnDestroy, CUSTOM_ELEMENTS_SCHEMA, AfterViewInit, ViewChildren, QueryList, ElementRef, Renderer, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
 import { getAppPath } from "../config";
-import { Observable } from 'rxjs/Observable';
-import { ISubscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Data } from '@angular/router';
 import { UrlManagerService } from "../url-manager.service";
 import { ContextService } from "../context.service";
@@ -21,16 +19,16 @@ import * as Models from "../models";
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.css']
 })
-export class HomeComponent extends PaneComponent implements  AfterViewInit {
+export class HomeComponent extends PaneComponent implements AfterViewInit {
 
     constructor(urlManager: UrlManagerService,
-                activatedRoute: ActivatedRoute,
-                private viewModelFactory: ViewModelFactoryService,
-                private context: ContextService,
-                private error: ErrorService,
-                private color: ColorService,
-                private renderer: Renderer,
-                private myElement: ElementRef) {
+        activatedRoute: ActivatedRoute,
+        private viewModelFactory: ViewModelFactoryService,
+        private context: ContextService,
+        private error: ErrorService,
+        private color: ColorService,
+
+        private myElement: ElementRef) {
         super(activatedRoute, urlManager);
     }
 
@@ -50,12 +48,10 @@ export class HomeComponent extends PaneComponent implements  AfterViewInit {
 
     title = (linkViewModel: LinkViewModel) => linkViewModel.title;
 
-    
-
     selectedMenu: MenuViewModel;
-   
+
     private menus: MenusViewModel;
-    
+
     getMenus() {
         this.context.getMenus()
             .then((menus: Models.MenusRepresentation) => {
@@ -88,7 +84,7 @@ export class HomeComponent extends PaneComponent implements  AfterViewInit {
 
     protected setup(routeData: PaneRouteData) {
         this.getMenus();
-        this.getMenu(routeData);  
+        this.getMenu(routeData);
     }
 
     // todo give #mms a better name 

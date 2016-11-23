@@ -1,5 +1,4 @@
 import { Component, Input, ElementRef, OnInit, HostListener } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { FieldComponent } from '../field/field.component';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';

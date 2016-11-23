@@ -11,8 +11,6 @@ import { ColorService } from "../color.service";
 import { ErrorService } from "../error.service";
 import { MaskService } from "../mask.service";
 import { PaneRouteData, RouteData, InteractionMode } from "../route-data";
-import { ISubscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
 import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import * as _ from "lodash";
 import { PropertyViewModel } from '../view-models/property-view-model';

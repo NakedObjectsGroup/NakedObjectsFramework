@@ -1,5 +1,4 @@
 import { Component, Input, ElementRef, OnInit, HostListener, ViewChildren, QueryList } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import * as Models from "../models";
 import { FieldComponent } from '../field/field.component';
 import { FormGroup } from '@angular/forms';

@@ -1,12 +1,10 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { ViewModelFactoryService } from "../view-model-factory.service";
 import { UrlManagerService } from "../url-manager.service";
 import * as _ from "lodash";
 import * as Models from "../models";
 import { ActivatedRoute, Data } from '@angular/router';
 import "../rxjs-extensions";
-import { Subject } from 'rxjs/Subject';
 import { PaneRouteData, RouteData, ViewType } from '../route-data';
 import { ISubscription } from 'rxjs/Subscription';
 import { ContextService } from '../context.service';
@@ -27,11 +25,11 @@ import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 })
 export class DialogComponent implements OnInit, OnDestroy {
 
-    constructor(private viewModelFactory: ViewModelFactoryService,
+    constructor(
+        private viewModelFactory: ViewModelFactoryService,
         private urlManager: UrlManagerService,
         private activatedRoute: ActivatedRoute,
         private error: ErrorService,
-        private color: ColorService,
         private context: ContextService,
         private formBuilder: FormBuilder) {
     }
@@ -120,25 +118,19 @@ export class DialogComponent implements OnInit, OnDestroy {
                     // only if we still have a dialog (may have beenn removed while getting invokable action)
                     if (this.currentDialogId) {
 
+                        // todo fix this it's clunky
                         this.context.clearParmUpdater(routeData.paneId);
 
-                        const dialogViewModel = new DialogViewModel(this.color,
-                            this.context,
-                            this.viewModelFactory,
-                            this.urlManager,
-                            this.error);
+                        // todo refactor all this to be done in constructor
+                        const dialogViewModel = this.viewModelFactory.dialogViewModel();
+
                         actionViewModel = actionViewModel ||
                             this.viewModelFactory.actionViewModel(action as Models.ActionMember | Models.ActionRepresentation,
                                 dialogViewModel,
                                 routeData);
 
-
                         actionViewModel.makeInvokable(details);
                         dialogViewModel.reset(actionViewModel, routeData);
-
-
-                        this.context.setParmUpdater(dialogViewModel.setParms, routeData.paneId);
-                        dialogViewModel.deregister = () => this.context.clearParmUpdater(routeData.paneId);
 
                         this.createForm(dialogViewModel);
 
@@ -155,7 +147,6 @@ export class DialogComponent implements OnInit, OnDestroy {
     private activatedRouteDataSub: ISubscription;
     private paneRouteDataSub: ISubscription;
    
-
     private routeDataMatchesParent(rd: PaneRouteData) {
         if (this.parent instanceof MenuViewModel) {
             return rd.location === ViewType.Home;
@@ -190,7 +181,6 @@ export class DialogComponent implements OnInit, OnDestroy {
                     }
                 }
             });
-
     }
 
     ngOnDestroy(): void {

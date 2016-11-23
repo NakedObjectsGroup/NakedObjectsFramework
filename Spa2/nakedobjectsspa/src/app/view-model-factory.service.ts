@@ -26,6 +26,7 @@ import { CollectionViewModel } from './view-models/collection-view-model';
 import { MenuViewModel } from './view-models/menu-view-model';
 import * as _ from "lodash";
 import * as Listviewmodel from './view-models/list-view-model';
+import * as Dialogviewmodel from './view-models/dialog-view-model';
 
 @Injectable()
 export class ViewModelFactoryService {
@@ -83,6 +84,15 @@ export class ViewModelFactoryService {
             paneId,
             parentValues);
     };
+
+    dialogViewModel = () => {
+        return new Dialogviewmodel.DialogViewModel(this.color,
+            this.context,
+            this,
+            this.urlManager,
+            this.error);
+    }
+
 
     parameterViewModel = (parmRep: Models.Parameter, previousValue: Models.Value, paneId: number) => {
         return new ParameterViewModel(parmRep, paneId, this.color, this.error, this.momentWrapperService, this.mask, previousValue, this, this.context);

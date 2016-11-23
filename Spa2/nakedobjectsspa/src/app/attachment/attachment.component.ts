@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ContextService } from "../context.service";
 import { ViewModelFactoryService } from "../view-model-factory.service";
 import { ActivatedRoute } from '@angular/router';
-import { ISubscription } from 'rxjs/Subscription';
 import { UrlManagerService } from "../url-manager.service";
 import { RouteData, PaneRouteData } from "../route-data";
 import { ErrorService } from "../error.service";
@@ -17,11 +16,12 @@ import * as Models from "../models";
 })
 export class AttachmentComponent extends PaneComponent {
 
-    constructor(activatedRoute: ActivatedRoute,
-                urlManager: UrlManagerService,
-                private viewModelFactory: ViewModelFactoryService,
-                private context: ContextService,
-                private error: ErrorService
+    constructor(
+        activatedRoute: ActivatedRoute,
+        urlManager: UrlManagerService,
+        private viewModelFactory: ViewModelFactoryService,
+        private context: ContextService,
+        private error: ErrorService
     ) {
         super(activatedRoute, urlManager);
     }

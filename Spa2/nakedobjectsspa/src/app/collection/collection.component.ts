@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { CollectionViewState } from '../route-data';
 import { CollectionViewModel } from '../view-models/collection-view-model';
-import {ItemViewModel} from '../view-models/item-view-model';
-import { PropertyViewModel} from '../view-models/property-view-model';
+import { ItemViewModel } from '../view-models/item-view-model';
+import { PropertyViewModel } from '../view-models/property-view-model';
 
 @Component({
     selector: 'collection',
@@ -11,15 +11,15 @@ import { PropertyViewModel} from '../view-models/property-view-model';
 })
 export class CollectionComponent {
 
-   
+
     @Input()
-    collection : CollectionViewModel;
+    collection: CollectionViewModel;
 
     // todo why not genericise lazy ? 
-    private lazyState : string;
+    private lazyState: string;
     get state() {
         if (!this.lazyState) {
-           this.lazyState = CollectionViewState[this.collection.currentState].toString().toLowerCase();
+            this.lazyState = CollectionViewState[this.collection.currentState].toString().toLowerCase();
         }
         return this.lazyState;
     }
@@ -51,7 +51,7 @@ export class CollectionComponent {
     noItems = () => this.collection.items.length === 0;
     allSelected = () => this.collection.allSelected();
     selectAll = () => this.collection.selectAll();
-    hasTableData = () => this.collection.hasTableData(); 
+    hasTableData = () => this.collection.hasTableData();
 
     itemColor = (item: ItemViewModel) => item.color;
     itemTitle = (item: ItemViewModel) => item.title;
@@ -59,12 +59,12 @@ export class CollectionComponent {
 
     itemId = (i: number) => `item${this.collection.onPaneId}-${i}`;
 
-    itemTableTitle =  (item : ItemViewModel) => item.tableRowViewModel.title;
+    itemTableTitle = (item: ItemViewModel) => item.tableRowViewModel.title;
     itemHasTableTitle = (item: ItemViewModel) => item.tableRowViewModel.hasTitle;
     itemTableProperties = (item: ItemViewModel) => item.tableRowViewModel.properties;
 
-    propertyType = (property:PropertyViewModel) => property.type; 
-    propertyValue = (property: PropertyViewModel) => property.value; 
-    propertyFormattedValue = (property: PropertyViewModel) => property.formattedValue; 
-    propertyReturnType = (property: PropertyViewModel) => property.returnType; 
+    propertyType = (property: PropertyViewModel) => property.type;
+    propertyValue = (property: PropertyViewModel) => property.value;
+    propertyFormattedValue = (property: PropertyViewModel) => property.formattedValue;
+    propertyReturnType = (property: PropertyViewModel) => property.returnType;
 }

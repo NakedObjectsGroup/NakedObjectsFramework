@@ -11,7 +11,6 @@ import { MenuItemViewModel } from './menu-item-view-model';
 import { PropertyViewModel } from './property-view-model';
 import { CollectionViewModel } from './collection-view-model';
 import { ParameterViewModel } from './parameter-view-model';
-import { Subject } from 'rxjs/Subject';
 import * as Models from '../models';
 import * as Helpers from './helpers-view-models';
 import * as Config from '../config';
@@ -280,15 +279,5 @@ export class DomainObjectViewModel extends MessageViewModel {
     showActions() {
         return !!this.urlManager.getRouteData().pane()[this.onPaneId].actionsOpen;
     }
-
-    propertyChanged() {
-        this.propertyChangedSource.next(true);
-        this.propertyChangedSource.next(false);
-    }
-
-    private propertyChangedSource = new Subject<boolean>();
-
-    propertyChanged$ = this.propertyChangedSource.asObservable();
-
 
 }

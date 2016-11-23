@@ -1,6 +1,4 @@
 import { Component, Input, OnInit, ElementRef, HostListener, ViewChildren, QueryList } from '@angular/core';
-import { NG_VALIDATORS } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
 import { ViewModelFactoryService } from "../view-model-factory.service";
 import { UrlManagerService } from "../url-manager.service";
 import * as Models from "../models";
@@ -10,7 +8,7 @@ import { ContextService } from "../context.service";
 import { FieldViewModel } from '../view-models/field-view-model';
 import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { DialogViewModel } from '../view-models/dialog-view-model';
-import * as Choiceviewmodel from '../view-models/choice-view-model';
+import { ChoiceViewModel } from '../view-models/choice-view-model';
 
 @Component({
     selector: 'parameter',
@@ -96,7 +94,7 @@ export class ParameterComponent extends FieldComponent implements OnInit {
         return this.parameter.multipleLines;
     }
 
-    choiceName = (choice : Choiceviewmodel.ChoiceViewModel) => choice.name;
+    choiceName = (choice : ChoiceViewModel) => choice.name;
 
 
     droppableClasses(): string {

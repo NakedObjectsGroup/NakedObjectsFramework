@@ -4,7 +4,7 @@ import { ViewModelFactoryService } from "../view-model-factory.service";
 import * as Models from '../models';
 import * as Config from '../config';
 import { ErrorService } from "../error.service";
-import { ApplicationPropertiesViewModel} from '../view-models/application-properties-view-model';
+import { ApplicationPropertiesViewModel } from '../view-models/application-properties-view-model';
 
 @Component({
     selector: 'application-properties',

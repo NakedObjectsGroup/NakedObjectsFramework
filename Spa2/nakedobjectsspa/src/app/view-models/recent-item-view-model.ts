@@ -13,7 +13,8 @@ import * as Config from "../config";
 
 export class RecentItemViewModel extends ItemViewModel {
 
-    constructor(context: ContextService,
+    constructor(
+        context: ContextService,
         colorService: ColorService,
         error: ErrorService,
         urlManager: UrlManagerService,
@@ -23,7 +24,8 @@ export class RecentItemViewModel extends ItemViewModel {
         viewModelFactory: ViewModelFactoryService,
         index: number,
         isSelected: boolean,
-        public friendlyName: string) {
+        public friendlyName: string
+    ) {
         super(context, colorService, error, urlManager, link, paneId, clickHandler, viewModelFactory, index, isSelected);
     }
 }

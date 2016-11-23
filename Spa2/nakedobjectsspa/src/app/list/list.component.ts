@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy, ViewChildren, QueryList, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, Input, ViewChildren, QueryList, AfterViewInit, ElementRef } from '@angular/core';
 import { RepresentationsService } from "../representations.service";
 import { UrlManagerService } from "../url-manager.service";
 import { ClickHandlerService } from "../click-handler.service";
@@ -9,7 +9,6 @@ import { ColorService } from "../color.service";
 import { ErrorService } from "../error.service";
 import { PaneRouteData, RouteData, CollectionViewState } from "../route-data";
 import { ViewModelFactoryService } from "../view-model-factory.service";
-import { ISubscription } from 'rxjs/Subscription';
 import * as Models from "../models";
 import * as Constants from "../constants";
 import * as Config from "../config";
