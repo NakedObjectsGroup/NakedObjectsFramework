@@ -60,7 +60,7 @@ export abstract class FieldComponent {
 
     droppable: FieldViewModel;
 
-    accept = (draggableVm: IDraggableViewModel) => {
+    accept(draggableVm: IDraggableViewModel) {
 
         if (draggableVm) {
             draggableVm.canDropOn(this.droppable.returnType).then((canDrop: boolean) => this.canDrop = canDrop).catch(() => this.canDrop = false);
@@ -72,8 +72,7 @@ export abstract class FieldComponent {
     drop(draggableVm: IDraggableViewModel) {
         if (this.canDrop) {
             this.droppable.drop(draggableVm)
-                .then((success) => {
-                    //this.control.reset(this.model.selectedChoice);
+                .then((success) => {        
                     this.control.setValue(this.model.selectedChoice);
                 });
         }

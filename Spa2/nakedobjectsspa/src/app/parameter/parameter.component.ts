@@ -10,6 +10,7 @@ import { ContextService } from "../context.service";
 import { FieldViewModel } from '../view-models/field-view-model';
 import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { DialogViewModel } from '../view-models/dialog-view-model';
+import * as Choiceviewmodel from '../view-models/choice-view-model';
 
 @Component({
     selector: 'parameter',
@@ -42,6 +43,61 @@ export class ParameterComponent extends FieldComponent implements OnInit {
     get parameter() {
         return this.parm;
     }
+
+    get parameterPaneId() {
+        return this.parameter.paneArgId;
+    }
+
+    get title() {
+        return this.parameter.title;
+    }
+
+    get parameterType() {
+        return this.parameter.type;
+    }
+
+    get parameterEntryType() {
+        return this.parameter.entryType;
+    }
+
+    get parameterReturnType() {
+        return this.parameter.returnType;
+    }
+
+    get format() {
+        return this.parameter.format;
+    }
+
+    get description() {
+        return this.parameter.description;
+    }
+
+    get parameterId() {
+        return this.parameter.id;
+    }
+
+    get choices() {
+        return this.parameter.choices;
+    }
+
+    get isMultiline() {
+        return !(this.parameter.multipleLines === 1);
+    }
+
+    get isPassword() {
+        return this.parameter.password;
+    }
+
+    get multilineHeight() {
+        return `${this.parameter.multipleLines * 20}px`;
+    }
+
+    get rows() {
+        return this.parameter.multipleLines;
+    }
+
+    choiceName = (choice : Choiceviewmodel.ChoiceViewModel) => choice.name;
+
 
     droppableClasses(): string {
         return `${this.parm.color}${this.canDrop ? " candrop" : ""}`;

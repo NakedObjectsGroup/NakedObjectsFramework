@@ -7,10 +7,10 @@ import { Router } from '@angular/router';
 import { ErrorService } from "../error.service";
 import { ContextService } from "../context.service";
 import { AttachmentViewModel } from '../view-models/attachment-view-model';
-import * as Fieldviewmodel from '../view-models/field-view-model';
+import { FieldViewModel } from '../view-models/field-view-model';
 import { PropertyViewModel } from '../view-models/property-view-model';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
-import {ChoiceViewModel} from '../view-models/choice-view-model';
+import { ChoiceViewModel } from '../view-models/choice-view-model';
 
 @Component({
     host: {
@@ -37,7 +37,7 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
     @Input()
     set property(value: PropertyViewModel) {
         this.prop = value;
-        this.droppable = value as Fieldviewmodel.FieldViewModel;
+        this.droppable = value as FieldViewModel;
     }
 
     get property() {
