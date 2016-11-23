@@ -23,9 +23,9 @@ export class ListViewModel extends MessageViewModel {
         private error: ErrorService) {
         super();
     }
+    onPaneId: number;
 
     private routeData: PaneRouteData;
-    private onPaneId: number;
     private page: number;
     private pageSize: number;
     private numPages: number;
@@ -71,13 +71,13 @@ export class ListViewModel extends MessageViewModel {
 
     private laterDisabled = () => this.page === this.numPages || this.numPages === 1;
 
-    private pageFirstDisabled = this.earlierDisabled;
+    pageFirstDisabled = this.earlierDisabled;
 
-    private pageLastDisabled = this.laterDisabled;
+    pageLastDisabled = this.laterDisabled;
 
-    private pageNextDisabled = this.laterDisabled;
+    pageNextDisabled = this.laterDisabled;
 
-    private pagePreviousDisabled = this.earlierDisabled;
+    pagePreviousDisabled = this.earlierDisabled;
 
     private updateItems(value: Models.Link[]) {
         this.items = this.viewModelFactory.getItems(value,

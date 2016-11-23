@@ -17,7 +17,8 @@ import { IDraggableViewModel } from '../view-models/idraggable-view-model';
 import { IMessageViewModel } from '../view-models/imessage-view-model';
 import { ListViewModel } from '../view-models/list-view-model';
 import { PaneComponent } from '../pane/pane';
-
+import { ItemViewModel } from '../view-models/item-view-model';
+import { PropertyViewModel} from '../view-models/property-view-model';
 
 @Component({
     selector: 'list',
@@ -36,8 +37,80 @@ export class ListComponent extends PaneComponent implements  AfterViewInit {
     }
 
     collection: ListViewModel;
-    title = "";
    
+
+    toggleActionMenu = () => this.collection.toggleActionMenu();
+    reloadList = () => this.collection.reload();
+    pageFirst = () => this.collection.pageFirst();
+    pagePrevious = () => this.collection.pagePrevious();
+    pageNext = ()=> this.collection.pageNext();    
+    pageLast = () => this.collection.pageLast();
+
+    disableActions = () => this.collection.disableActions() ? true : null;
+    hideAllCheckbox = () => this.collection.disableActions() || this.collection.items.length === 0;
+
+
+    pageFirstDisabled = () => this.collection.pageFirstDisabled() ? true : null;
+    pagePreviousDisabled = () => this.collection.pagePreviousDisabled() ? true : null;
+    pageNextDisabled = () => this.collection.pageNextDisabled() ? true : null;
+    pageLastDisabled = () => this.collection.pageLastDisabled() ? true : null;
+
+    showActions = () => this.collection.showActions();
+
+    doTable = () => this.collection.doTable();
+    doList = () => this.collection.doList();
+    doSummary = () => this.collection.doSummary();
+
+    selectAll = () => this.collection.selectAll();
+    allSelected = () => this.collection.allSelected();
+    hasTableData = () => this.collection.hasTableData(); 
+
+    itemTableTitle = (item: ItemViewModel) => item.tableRowViewModel.title;
+    itemHasTableTitle = (item: ItemViewModel) => item.tableRowViewModel.hasTitle;
+    itemTableProperties = (item: ItemViewModel) => item.tableRowViewModel.properties;
+
+
+    propertyType = (property: PropertyViewModel) => property.type;
+    propertyValue = (property: PropertyViewModel) => property.value;
+    propertyFormattedValue = (property: PropertyViewModel) => property.formattedValue;
+    propertyReturnType = (property: PropertyViewModel) => property.returnType; 
+
+
+    get actionsTooltip() {
+        return this.collection.actionsTooltip();
+    }
+
+    get message() {
+        return this.collection.getMessage();
+    }
+
+    get description() {
+        return this.collection.description();
+    }
+
+    get size() {
+        return this.collection.size;
+    }
+
+    get items() {
+        return this.collection.items;
+    }
+
+    get header() {
+        return this.collection.header;
+    }
+
+    itemId = (i: number) => `item${this.collection.onPaneId}-${i}`;
+
+    itemColor = (item: ItemViewModel) => item.color;
+
+    itemSelected = (item: ItemViewModel) => item.selected;
+
+    itemTitle = (item: ItemViewModel) => item.title;
+
+    doItemClick = (item: ItemViewModel, right?: boolean) => item.doClick(right);
+
+    title = "";
     state = "list";
 
     getActionExtensions(routeData: PaneRouteData): Promise<Models.Extensions> {

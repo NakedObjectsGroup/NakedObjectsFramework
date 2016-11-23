@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CollectionViewState } from '../route-data';
 import { CollectionViewModel } from '../view-models/collection-view-model';
 import {ItemViewModel} from '../view-models/item-view-model';
-import * as Propertyviewmodel from '../view-models/property-view-model';
+import { PropertyViewModel} from '../view-models/property-view-model';
 
 @Component({
     selector: 'collection',
@@ -65,8 +65,8 @@ export class CollectionComponent {
     itemTableProperties = (item: ItemViewModel) => item.tableRowViewModel.properties;
 
 
-    propertyType = (property: Propertyviewmodel.PropertyViewModel) => property.type; 
-    propertyValue = (property: Propertyviewmodel.PropertyViewModel) => property.value; 
-    propertyFormattedValue = (property: Propertyviewmodel.PropertyViewModel) => property.formattedValue; 
-    propertyReturnType = (property: Propertyviewmodel.PropertyViewModel) => property.returnType; 
+    propertyType = (property:PropertyViewModel) => property.type; 
+    propertyValue = (property: PropertyViewModel) => property.value; 
+    propertyFormattedValue = (property: PropertyViewModel) => property.formattedValue; 
+    propertyReturnType = (property: PropertyViewModel) => property.returnType; 
 }
