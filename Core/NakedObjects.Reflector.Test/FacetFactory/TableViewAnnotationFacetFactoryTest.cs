@@ -39,6 +39,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             [TableView(false, "col3", "col4")]
             public ICollection<Order> Orders1 { get; set; }
 
+            [TableView(false, "col3", "col4", "col3", "col4")]
+            public ICollection<Order> Orders2 { get; set; }
+
             [TableView(false, "col5", "col6")]
             public Order[] OrdersAction() {
                 return null;
@@ -56,6 +59,11 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
             [TableView(true, "col7", "col8")]
             public IQueryable<Order> OrdersAction3() {
+                return null;
+            }
+
+            [TableView(true, "col7", "col8", "col7", "col8")]
+            public IQueryable<Order> OrdersAction4() {
                 return null;
             }
         }
@@ -225,6 +233,36 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
             Assert.AreEqual("col7", tableViewFacetFromAnnotation.Columns[0]);
             Assert.AreEqual("col8", tableViewFacetFromAnnotation.Columns[1]);
+            AssertNoMethodsRemoved();
+        }
+
+        [TestMethod]
+        public void TestTableViewFacetIgnoresDuplicatesOnAction() {
+            MethodInfo method = FindMethod(typeof(Customer1), "OrdersAction4");
+            facetFactory.Process(Reflector, method, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is TableViewFacet);
+            var tableViewFacetFromAnnotation = (TableViewFacet)facet;
+            Assert.AreEqual(true, tableViewFacetFromAnnotation.Title);
+            Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
+            Assert.AreEqual("col7", tableViewFacetFromAnnotation.Columns[0]);
+            Assert.AreEqual("col8", tableViewFacetFromAnnotation.Columns[1]);
+            AssertNoMethodsRemoved();
+        }
+
+        [TestMethod]
+        public void TestTableViewFacetIgnoresDuplicatesOnCollection() {
+            PropertyInfo property = FindProperty(typeof(Customer1), "Orders2");
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is TableViewFacet);
+            var tableViewFacetFromAnnotation = (TableViewFacet)facet;
+            Assert.AreEqual(false, tableViewFacetFromAnnotation.Title);
+            Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
+            Assert.AreEqual("col3", tableViewFacetFromAnnotation.Columns[0]);
+            Assert.AreEqual("col4", tableViewFacetFromAnnotation.Columns[1]);
             AssertNoMethodsRemoved();
         }
 
