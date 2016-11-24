@@ -154,6 +154,7 @@
     <TypeScriptCompile Include="src\app\view-models\menu-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\menus-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\message-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\multi-line-dialog-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\parameter-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\property-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\recent-item-view-model.ts" />

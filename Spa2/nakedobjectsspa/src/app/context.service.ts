@@ -676,7 +676,7 @@ export class ContextService {
         return this.cutViewModel;
     }
 
-    private invokeActionInternal(invokeMap: Models.InvokeMap, action: Models.IInvokableAction, fromPaneId: number, toPaneId: number, setDirty: () => void) {
+    private invokeActionInternal(invokeMap: Models.InvokeMap, action: Models.IInvokableAction, fromPaneId: number, toPaneId: number, setDirty: () => void, gotoResult = false) {
 
         //this.focusManager.setCurrentPane(toPaneId);
 
@@ -690,8 +690,10 @@ export class ContextService {
             .then((result: Models.ActionResultRepresentation) => {
                 setDirty();
                 this.setMessages(result);
-                this.setResult(action, result, fromPaneId, toPaneId, 1, Config.defaultPageSize);
-                return Promise.resolve(result);
+                if (gotoResult) {
+                    this.setResult(action, result, fromPaneId, toPaneId, 1, Config.defaultPageSize);
+                }
+                return result;
             });
     }
 
@@ -725,13 +727,13 @@ export class ContextService {
         return () => {};
     }
 
-    invokeAction = (action: Models.IInvokableAction, parms: _.Dictionary<Models.Value>, fromPaneId = 1, toPaneId = 1) => {
+    invokeAction = (action: Models.IInvokableAction, parms: _.Dictionary<Models.Value>, fromPaneId = 1, toPaneId = 1, gotoResult = true) => {
 
         const invokeOnMap = (iAction: Models.IInvokableAction) => {
             const im = iAction.getInvokeMap();
             _.each(parms, (parm, k) => im.setParameter(k, parm));
             const setDirty = this.getSetDirtyFunction(iAction, parms);
-            return this.invokeActionInternal(im, iAction, fromPaneId, toPaneId, setDirty);
+            return this.invokeActionInternal(im, iAction, fromPaneId, toPaneId, setDirty, gotoResult);
         }
 
         return invokeOnMap(action);

@@ -7,7 +7,7 @@ import { ErrorComponent } from './error/error.component';
 import { RecentComponent } from './recent/recent.component';
 import { ApplicationPropertiesComponent } from './application-properties/application-properties.component';
 import { AttachmentComponent } from './attachment/attachment.component';
-
+import { MultiLineDialogComponent } from './multi-line-dialog/multi-line-dialog.component';
 
 const routes: Routes = [
     {
@@ -88,6 +88,11 @@ const routes: Routes = [
     {
         path: 'gemini/applicationProperties',
         component: ApplicationPropertiesComponent,
+        data: { pane: 1, class: "single" }
+    },
+    {
+        path: 'gemini/multiLineDialog',
+        component: MultiLineDialogComponent,
         data: { pane: 1, class: "single" }
     },
     {

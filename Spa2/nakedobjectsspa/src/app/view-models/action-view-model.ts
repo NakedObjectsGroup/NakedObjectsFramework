@@ -40,6 +40,7 @@ export class ActionViewModel {
     title: string;
     description: string;
     presentationHint: string;
+    gotoResult = true;
 
     // form actions should never show dialogs
     private showDialog = () => this.actionRep.extensions().hasParams() && (this.routeData.interactionMode !== InteractionMode.Form);
@@ -50,7 +51,7 @@ export class ActionViewModel {
 
             // clear any previous dialog so we don't pick up values from it
             this.context.clearDialogValues(this.paneId);
-            this.urlManager.setDialog(this.actionRep.actionId(), this.paneId);
+            this.urlManager.setDialogOrMultiLineDialog(this.actionRep, this.paneId);    
         }
         : (right?: boolean) => {
             const pps = this.parameters();
@@ -73,7 +74,7 @@ export class ActionViewModel {
         const parmMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Models.Value>;
         _.forEach(pps, p => this.urlManager.setParameterValue(this.actionRep.actionId(), p.parameterRep, p.getValue(), this.paneId));
         return this.context.getInvokableAction(this.actionRep)
-            .then((details: Models.IInvokableAction) => this.context.invokeAction(details, parmMap, this.paneId, this.clickHandler.pane(this.paneId, right)));
+            .then((details: Models.IInvokableAction) => this.context.invokeAction(details, parmMap, this.paneId, this.clickHandler.pane(this.paneId, right), this.gotoResult));
     };
 
 

@@ -98,6 +98,18 @@ export class ViewModelFactoryService {
             actionViewModel);
     }
 
+    multiLineDialogViewModel = (routeData: PaneRouteData, action : Models.IInvokableAction, actionViewModel: ActionViewModel) => {
+
+        return new MultiLineDialogViewModel(this.color,
+            this.context,
+            this,
+            this.urlManager,
+            this.error,
+            routeData,
+            action,
+            actionViewModel);
+    }
+
     domainObjectViewModel = (obj: Models.DomainObjectRepresentation, routeData: PaneRouteData) => {
         return  new Domainobjectviewmodel.DomainObjectViewModel(this.color, this.context, this, this.urlManager, this.error, obj, routeData);
     }

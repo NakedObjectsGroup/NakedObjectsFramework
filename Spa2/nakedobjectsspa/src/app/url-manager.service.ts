@@ -23,7 +23,8 @@ enum Transition {
     ToTransient,
     ToRecent,
     ToAttachment,
-    ToObjectWithMode
+    ToObjectWithMode,
+    ToMultiLineDialog
 };
 
 // keep in alphabetic order to help avoid name collisions 
@@ -343,8 +344,8 @@ export class UrlManagerService {
                 return this.validKeysForObject();
             case Constants.listPath:
                 return this.validKeysForList();
-            // case Constants.multiLineDialogPath:
-            //     return this.validKeysForMultiLineDialog();
+            case Constants.multiLineDialogPath:
+                return this.validKeysForMultiLineDialog();
             case Constants.attachmentPath:
                 return this.validKeysForAttachment();
         }
@@ -419,6 +420,14 @@ export class UrlManagerService {
                 ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Constants.attachmentPath));
                 search = this.clearPane(search, paneId);
                 break;
+            case (Transition.ToMultiLineDialog):
+                ({ path, replace } = this.setupPaneNumberAndTypes(1, Constants.multiLineDialogPath)); // always on 1
+                if (paneId === 2) {
+                    // came from 2 
+                    search = this.swapSearchIds(search);
+                }
+                search = this.clearPane(search, 2); // always on pane 1
+                break;
             default:
                 // null transition 
                 break;
@@ -473,6 +482,27 @@ export class UrlManagerService {
         const newValues = _.zipObject([key], [dialogId]) as _.Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.ToDialog, search => this.getId(key, search) !== dialogId);
     };
+
+
+    setMultiLineDialog = (dialogId: string, paneId? : number) => {        
+            this.pushUrlState();     
+            const key = `${akm.dialog}${1}`; // always on 1
+            const newValues = _.zipObject([key], [dialogId]) as _.Dictionary<string>;
+            this.executeTransition(newValues, paneId, Transition.ToMultiLineDialog, search => this.getId(key, search) !== dialogId);
+        };
+
+    setDialogOrMultiLineDialog = (actionRep : Models.ActionMember | Models.ActionRepresentation, paneId = 1) => {
+            if (actionRep.extensions().multipleLines()) {
+                this.setMultiLineDialog(actionRep.actionId(), paneId);
+            } else {
+                this.setDialog(actionRep.actionId(), paneId);
+            }
+        };
+
+
+
+
+
 
     private closeOrCancelDialog(paneId: number, transition: Transition) {
         const key = `${akm.dialog}${paneId}`;

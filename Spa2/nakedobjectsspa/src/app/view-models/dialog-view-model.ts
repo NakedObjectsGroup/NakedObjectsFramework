@@ -66,6 +66,7 @@ export class DialogViewModel extends MessageViewModel {
     title: string;
     id: string;
     parameters: ParameterViewModel[];
+    submitted = false;
 
     reset(actionViewModel: ActionViewModel, routeData: PaneRouteData) {
         this.actionViewModel = actionViewModel;
@@ -131,6 +132,9 @@ export class DialogViewModel extends MessageViewModel {
         this.deregister();
         this.urlManager.closeDialogReplaceHistory(this.onPaneId);
     };
+
+      doCompleteButLeaveOpen = () => {       
+        }
 
     clearMessages = () => {
         this.resetMessage();

@@ -126,5 +126,11 @@ export class CollectionViewModel {
     disableActions = () => this.editing || !this.actions || this.actions.length === 0;
     allSelected = () => _.every(this.items, item => item.selected);
 
+    // todo
     selectAll() { }
+
+    actionMember(id: string): Models.ActionMember {
+        //return this.actionMembers()[id];
+        return null;
+    }
 }

@@ -142,7 +142,7 @@ export class ListViewModel extends MessageViewModel {
 
         const invokeWithDialog = (right?: boolean) => {
             this.context.clearDialogValues(this.onPaneId);
-            this.urlManager.setDialog(actionViewModel.actionRep.actionId(), this.onPaneId);
+            this.urlManager.setDialogOrMultiLineDialog(actionViewModel.actionRep, this.onPaneId);
         };
 
         const invokeWithoutDialog = (right?: boolean) =>

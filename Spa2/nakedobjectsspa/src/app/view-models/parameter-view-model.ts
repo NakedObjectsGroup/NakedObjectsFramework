@@ -199,6 +199,9 @@ export class ParameterViewModel extends FieldViewModel {
         this.drop = _.partial(Helpers.drop, this.context, this.error, this);
     }
 
+        setAsRow(i: number) {
+            this.paneArgId = `${this.argId}${i}`;
+        }
 
     parameterRep: Models.Parameter;
     dflt: string;
