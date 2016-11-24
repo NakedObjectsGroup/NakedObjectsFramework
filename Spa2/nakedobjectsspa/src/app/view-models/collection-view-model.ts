@@ -33,10 +33,10 @@ export class CollectionViewModel {
             then(c => this.color = `${Config.linkColor}${c}`).
             catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
-        this.refresh(routeData, true);
+        this.reset(routeData, true);
     }
 
-    refresh = (routeData: PaneRouteData, resetting: boolean) => {
+    private reset = (routeData: PaneRouteData, resetting: boolean) => {
 
         let state = routeData.collections[this.collectionRep.collectionId()];
 

@@ -22,8 +22,11 @@ export class DomainObjectViewModel extends MessageViewModel {
         private contextService: ContextService,
         private viewModelFactory: ViewModelFactoryService,
         private urlManager: UrlManagerService,
-        private error: ErrorService) {
+        private error: ErrorService,
+        obj: Models.DomainObjectRepresentation,
+        routeData: PaneRouteData) {
         super();
+        this.reset(obj, routeData);
     }
 
     private routeData: PaneRouteData;
@@ -97,36 +100,7 @@ export class DomainObjectViewModel extends MessageViewModel {
         this.contextService.clearObjectUpdater(this.onPaneId);
     };
 
-
-    // must be careful with this - OK for changes on client but after server updates should use  reset
-    // because parameters may have appeared or disappeared etc and refesh just updates existing views. 
-    // So OK for view state changes but not eg for a parameter that disappears after saving
-
-    refresh(routeData: PaneRouteData) {
-
-        this.routeData = routeData;
-        const iMode = this.domainObject.extensions().interactionMode();
-        this.isInEdit = routeData.interactionMode !== InteractionMode.View || iMode === "form" || iMode === "transient";
-        this.props = routeData.interactionMode !== InteractionMode.View ? this.contextService.getCurrentObjectValues(this.domainObject.id(), routeData.paneId) : {};
-
-        _.forEach(this.properties, p => p.refresh(this.props[p.id]));
-        _.forEach(this.collections, c => c.refresh(this.routeData, false));
-
-        this.unsaved = routeData.interactionMode === InteractionMode.Transient;
-
-        this.title = this.unsaved ? `Unsaved ${this.domainObject.extensions().friendlyName()}` : this.domainObject.title();
-
-        this.title = this.title + Models.dirtyMarker(this.contextService, this.domainObject.getOid());
-
-        if (routeData.interactionMode === InteractionMode.Form) {
-            _.forEach(this.actions, a => this.wrapAction(a));
-        }
-
-        // leave message from previous refresh 
-        this.clearMessage();
-    }
-
-    reset(obj: Models.DomainObjectRepresentation, routeData: PaneRouteData): DomainObjectViewModel {
+    private reset(obj: Models.DomainObjectRepresentation, routeData: PaneRouteData) {
         this.domainObject = obj;
         this.onPaneId = routeData.paneId;
         this.routeData = routeData;
@@ -178,9 +152,6 @@ export class DomainObjectViewModel extends MessageViewModel {
         if (routeData.interactionMode === InteractionMode.Form) {
             _.forEach(this.actions, a => this.wrapAction(a));
         }
-
-
-        return this as DomainObjectViewModel;
     }
 
     concurrency() {
@@ -274,7 +245,6 @@ export class DomainObjectViewModel extends MessageViewModel {
     disableActions = () => !this.actions || this.actions.length === 0;
 
     canDropOn = (targetType: string) => this.contextService.isSubTypeOf(this.domainType, targetType);
-
 
     showActions() {
         return !!this.urlManager.getRouteData().pane()[this.onPaneId].actionsOpen;

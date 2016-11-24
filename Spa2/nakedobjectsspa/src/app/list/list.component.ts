@@ -135,21 +135,9 @@ export class ListComponent extends PaneComponent implements  AfterViewInit {
             this.state = CollectionViewState[routeData.state].toString().toLowerCase();
             this.collection.refresh(routeData);
         } else if (cachedList) {
-
-
-            const listViewModel = new ListViewModel(
-                this.color,
-                this.context,
-                this.viewModelFactory,
-                this.urlManager,
-                this.error
-            );
-            listViewModel.reset(cachedList, routeData);
-            this.collection = listViewModel;
+            this.collection = this.viewModelFactory.listViewModel(cachedList, routeData);
             this.state = CollectionViewState[routeData.state].toString().toLowerCase();
-
-            listViewModel.refresh(routeData);
-
+            this.collection.refresh(routeData);
         }
     }
 

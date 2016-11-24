@@ -15,9 +15,7 @@ export class CollectionPlaceholderViewModel {
     description = () => `Page ${this.routeData.page}`;
 
     private recreate = () =>
-        this.routeData.objectId ?
-            this.context.getListFromObject(this.routeData) :
-            this.context.getListFromMenu(this.routeData);
+        this.routeData.objectId ? this.context.getListFromObject(this.routeData) : this.context.getListFromMenu(this.routeData);
 
     reload = () =>
         this.recreate().

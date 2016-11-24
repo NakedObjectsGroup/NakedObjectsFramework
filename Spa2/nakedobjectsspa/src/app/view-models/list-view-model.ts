@@ -20,8 +20,10 @@ export class ListViewModel extends MessageViewModel {
         private context: ContextService,
         private viewModelFactory: ViewModelFactoryService,
         private urlManager: UrlManagerService,
-        private error: ErrorService) {
+        private error: ErrorService, list: Models.ListRepresentation, routeData: PaneRouteData) {
         super();
+
+        this.reset(list, routeData);
     }
     onPaneId: number;
 
@@ -179,7 +181,7 @@ export class ListViewModel extends MessageViewModel {
         }
     }
 
-    reset(list: Models.ListRepresentation, routeData: PaneRouteData) {
+    private reset(list: Models.ListRepresentation, routeData: PaneRouteData) {
         this.listRep = list;
         this.routeData = routeData;
 

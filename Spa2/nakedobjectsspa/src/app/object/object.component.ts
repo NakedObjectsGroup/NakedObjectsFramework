@@ -7,7 +7,6 @@ import { ClickHandlerService } from "../click-handler.service";
 import { ContextService } from "../context.service";
 import { RepLoaderService } from "../rep-loader.service";
 import { ViewModelFactoryService } from "../view-model-factory.service";
-import { ColorService } from "../color.service";
 import { ErrorService } from "../error.service";
 import { MaskService } from "../mask.service";
 import { PaneRouteData, RouteData, InteractionMode } from "../route-data";
@@ -29,7 +28,6 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
     constructor(activatedRoute: ActivatedRoute,
                 urlManager: UrlManagerService,
                 private context: ContextService,
-                private colorService: ColorService,
                 private viewModelFactory: ViewModelFactoryService,
                 private error: ErrorService,
                 private formBuilder: FormBuilder) {
@@ -134,8 +132,8 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
         this.context.getObject(routeData.paneId, oid, routeData.interactionMode)
             .then((object: Models.DomainObjectRepresentation) => {
 
-                const ovm = new DomainObjectViewModel(this.colorService, this.context, this.viewModelFactory, this.urlManager, this.error);
-                ovm.reset(object, routeData);
+                const ovm = this.viewModelFactory.domainObjectViewModel(object, routeData);
+            
                 if (wasDirty) {
                     ovm.clearCachedFiles();
                 }

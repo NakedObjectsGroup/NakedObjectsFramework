@@ -27,6 +27,7 @@ import { MenuViewModel } from './view-models/menu-view-model';
 import * as _ from "lodash";
 import { ListViewModel } from './view-models/list-view-model';
 import { DialogViewModel } from './view-models/dialog-view-model';
+import * as Domainobjectviewmodel from './view-models/domain-object-view-model';
 
 @Injectable()
 export class ViewModelFactoryService {
@@ -97,6 +98,21 @@ export class ViewModelFactoryService {
             actionViewModel);
     }
 
+    domainObjectViewModel = (obj: Models.DomainObjectRepresentation, routeData: PaneRouteData) => {
+        return  new Domainobjectviewmodel.DomainObjectViewModel(this.color, this.context, this, this.urlManager, this.error, obj, routeData);
+    }
+
+    listViewModel = (list: Models.ListRepresentation, routeData: PaneRouteData) => {
+        return new ListViewModel(
+            this.color,
+            this.context,
+            this,
+            this.urlManager,
+            this.error,
+            list,
+            routeData
+        );
+    }
 
     parameterViewModel = (parmRep: Models.Parameter, previousValue: Models.Value, paneId: number) => {
         return new ParameterViewModel(parmRep, paneId, this.color, this.error, this.momentWrapperService, this.mask, previousValue, this, this.context);
@@ -143,7 +159,6 @@ export class ViewModelFactoryService {
                     then((ext: Models.Extensions) => {
                         _.forEach(items, itemViewModel => {
                             itemViewModel.tableRowViewModel.hasTitle = ext.tableViewTitle();
-                            itemViewModel.tableRowViewModel.title = itemViewModel.title;
                             itemViewModel.tableRowViewModel.conformColumns(ext.tableViewColumns());
                         });
 
