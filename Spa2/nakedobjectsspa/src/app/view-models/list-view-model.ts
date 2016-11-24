@@ -45,8 +45,8 @@ export class ListViewModel extends MessageViewModel {
 
     private recreate = (page: number, pageSize: number) => {
         return this.routeData.objectId
-            ? this.context.getListFromObject(this.routeData.paneId, this.routeData, page, pageSize)
-            : this.context.getListFromMenu(this.routeData.paneId, this.routeData, page, pageSize);
+            ? this.context.getListFromObject(this.routeData, page, pageSize)
+            : this.context.getListFromMenu(this.routeData, page, pageSize);
     };
 
     private pageOrRecreate = (newPage: number, newPageSize: number, newState?: CollectionViewState) => {
@@ -86,7 +86,6 @@ export class ListViewModel extends MessageViewModel {
             this);
 
         const totalCount = this.listRep.pagination().totalCount;
-        //this.allSelected = _.every(this.items, item => item.selected);
         const count = this.items.length;
         this.size = count;
         if (count > 0) {
@@ -212,14 +211,17 @@ export class ListViewModel extends MessageViewModel {
         if (this.pageNextDisabled()) return;
         this.setPage(this.page < this.numPages ? this.page + 1 : this.page, this.state);
     };
+
     pagePrevious = () => {
         if (this.pagePreviousDisabled()) return;
         this.setPage(this.page > 1 ? this.page - 1 : this.page, this.state);
     };
+
     pageFirst = () => {
         if (this.pageFirstDisabled()) return;
         this.setPage(1, this.state);
     };
+
     pageLast = () => {
         if (this.pageLastDisabled()) return;
         this.setPage(this.numPages, this.state);
@@ -251,13 +253,7 @@ export class ListViewModel extends MessageViewModel {
         _.each(this.items,
             (item) => {
                 item.selected = newState;
-                //item.selectionChange();
             });
-
-        //_.each(this.items, (item) => {
-        //    //item.selected = newState;
-        //    item.selectionChange();
-        //});
     };
 
     disableActions = () => !this.actions || this.actions.length === 0 || !this.items || this.items.length === 0;

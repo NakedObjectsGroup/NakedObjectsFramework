@@ -496,11 +496,14 @@ export class ContextService {
         return (page && pageSize) ? { "x-ro-page": page, "x-ro-pageSize": pageSize } : {};
     }
 
-    getListFromMenu = (paneId: number, routeData: PaneRouteData, page?: number, pageSize?: number) => {
+    getListFromMenu = (routeData: PaneRouteData, page?: number, pageSize?: number) => {
         const menuId = routeData.menuId;
         const actionId = routeData.actionId;
         const parms = routeData.actionParams;
         const state = routeData.state;
+        const paneId = routeData.paneId;
+        page = page || routeData.page;
+        pageSize = pageSize || routeData.pageSize;
         const urlParms = this.getPagingParms(page, pageSize);
 
         if (state === CollectionViewState.Table) {
@@ -511,12 +514,15 @@ export class ContextService {
         return this.getList(paneId, promise, page, pageSize);
     };
 
-    getListFromObject = (paneId: number, routeData: PaneRouteData, page?: number, pageSize?: number) => {
+    getListFromObject = (routeData: PaneRouteData, page?: number, pageSize?: number) => {
         const objectId = routeData.objectId;
         const actionId = routeData.actionId;
         const parms = routeData.actionParams;
         const state = routeData.state;
         const oid = Models.ObjectIdWrapper.fromObjectId(objectId);
+        const paneId = routeData.paneId;
+        page = page || routeData.page;
+        pageSize = pageSize || routeData.pageSize;
         const urlParms = this.getPagingParms(page, pageSize);
 
         if (state === CollectionViewState.Table) {

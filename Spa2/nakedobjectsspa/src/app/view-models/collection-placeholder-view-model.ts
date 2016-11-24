@@ -16,9 +16,8 @@ export class CollectionPlaceholderViewModel {
 
     private recreate = () =>
         this.routeData.objectId ?
-            // todo can't we just pass routeData ? !
-            this.context.getListFromObject(this.routeData.paneId, this.routeData, this.routeData.page, this.routeData.pageSize) :
-            this.context.getListFromMenu(this.routeData.paneId, this.routeData, this.routeData.page, this.routeData.pageSize);
+            this.context.getListFromObject(this.routeData) :
+            this.context.getListFromMenu(this.routeData);
 
     reload = () =>
         this.recreate().

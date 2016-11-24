@@ -157,8 +157,8 @@ export class ListComponent extends PaneComponent implements  AfterViewInit {
 
         const recreate = () =>
             this.cachedRouteData.objectId
-            ? this.context.getListFromObject(this.cachedRouteData.paneId, this.cachedRouteData, this.cachedRouteData.page, this.cachedRouteData.pageSize)
-            : this.context.getListFromMenu(this.cachedRouteData.paneId, this.cachedRouteData, this.cachedRouteData.page, this.cachedRouteData.pageSize);
+                ? this.context.getListFromObject(this.cachedRouteData)
+                : this.context.getListFromMenu(this.cachedRouteData);
 
         recreate()
             .then(() => this.setup(this.cachedRouteData))

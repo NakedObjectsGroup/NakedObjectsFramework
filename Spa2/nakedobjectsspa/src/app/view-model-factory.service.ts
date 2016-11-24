@@ -25,8 +25,8 @@ import { PropertyViewModel } from './view-models/property-view-model';
 import { CollectionViewModel } from './view-models/collection-view-model';
 import { MenuViewModel } from './view-models/menu-view-model';
 import * as _ from "lodash";
-import * as Listviewmodel from './view-models/list-view-model';
-import * as Dialogviewmodel from './view-models/dialog-view-model';
+import { ListViewModel } from './view-models/list-view-model';
+import { DialogViewModel } from './view-models/dialog-view-model';
 
 @Injectable()
 export class ViewModelFactoryService {
@@ -85,12 +85,16 @@ export class ViewModelFactoryService {
             parentValues);
     };
 
-    dialogViewModel = () => {
-        return new Dialogviewmodel.DialogViewModel(this.color,
+    dialogViewModel = (routeData: PaneRouteData, action : Models.IInvokableAction, actionViewModel: ActionViewModel) => {
+
+        return new DialogViewModel(this.color,
             this.context,
             this,
             this.urlManager,
-            this.error);
+            this.error,
+            routeData,
+            action,
+            actionViewModel);
     }
 
 
@@ -118,7 +122,7 @@ export class ViewModelFactoryService {
         return new TableRowViewModel(this, properties, paneId);
     };
 
-    getItems = (links: Models.Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: Listviewmodel.ListViewModel | CollectionViewModel) => {
+    getItems = (links: Models.Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: ListViewModel | CollectionViewModel) => {
         const selectedItems = routeData.selectedItems;
 
         const items = _.map(links, (link, i) => this.itemViewModel(link, routeData.paneId, selectedItems[i], i));

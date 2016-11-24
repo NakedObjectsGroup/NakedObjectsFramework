@@ -120,20 +120,9 @@ export class DialogComponent implements OnInit, OnDestroy {
 
                         // todo fix this it's clunky
                         this.context.clearParmUpdater(routeData.paneId);
-
-                        // todo refactor all this to be done in constructor
-                        const dialogViewModel = this.viewModelFactory.dialogViewModel();
-
-                        actionViewModel = actionViewModel ||
-                            this.viewModelFactory.actionViewModel(action as Models.ActionMember | Models.ActionRepresentation,
-                                dialogViewModel,
-                                routeData);
-
-                        actionViewModel.makeInvokable(details);
-                        dialogViewModel.reset(actionViewModel, routeData);
-
+        
+                        const dialogViewModel = this.viewModelFactory.dialogViewModel(routeData, details, actionViewModel);
                         this.createForm(dialogViewModel);
-
                         this.dialog = dialogViewModel;
                     }
                 })

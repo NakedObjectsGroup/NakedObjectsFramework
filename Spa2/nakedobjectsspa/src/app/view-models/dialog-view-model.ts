@@ -18,9 +18,36 @@ export class DialogViewModel extends MessageViewModel {
         private context: ContextService,
         private viewModelFactory: ViewModelFactoryService,
         private urlManager: UrlManagerService,
-        private error: ErrorService
+        private error: ErrorService,
+        private routeData: PaneRouteData,
+        action: Models.IInvokableAction,
+        public actionViewModel : ActionViewModel
     ) {
         super();
+
+        // todo not happy with the whole invokable action thing here casting is horrid.
+        this.actionViewModel = actionViewModel ||
+            this.viewModelFactory.actionViewModel(action as Models.ActionMember | Models.ActionRepresentation,
+                this,
+                routeData);
+
+        this.actionViewModel.makeInvokable(action);
+  
+        this.onPaneId = routeData.paneId;
+
+        const fields = this.context.getCurrentDialogValues(this.actionMember().actionId(), this.onPaneId);
+
+        const parameters = _.pickBy(this.actionViewModel.invokableActionRep.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Models.Parameter>;
+        this.parameters = _.map(parameters, p => this.viewModelFactory.parameterViewModel(p, fields[p.id()], this.onPaneId));
+
+
+        this.title = this.actionMember().extensions().friendlyName();
+        this.isQueryOnly = this.actionViewModel.invokableActionRep.invokeLink().method() === "GET";
+        this.resetMessage();
+        this.id = this.actionViewModel.actionRep.actionId();
+
+        // todo use subscribe ? 
+        this.context.setParmUpdater(this.setParms, routeData.paneId);
     }
 
     private onPaneId: number;
@@ -35,7 +62,7 @@ export class DialogViewModel extends MessageViewModel {
         return this.actionViewModel.execute(pps, right);
     };
 
-    actionViewModel: ActionViewModel;
+    //actionViewModel: ActionViewModel;
     title: string;
     id: string;
     parameters: ParameterViewModel[];
@@ -99,10 +126,12 @@ export class DialogViewModel extends MessageViewModel {
         this.deregister();
         this.urlManager.closeDialogKeepHistory(this.onPaneId);
     };
+
     doCloseReplaceHistory = () => {
         this.deregister();
         this.urlManager.closeDialogReplaceHistory(this.onPaneId);
     };
+
     clearMessages = () => {
         this.resetMessage();
         _.each(this.actionViewModel.parameters, parm => parm.clearMessage());
