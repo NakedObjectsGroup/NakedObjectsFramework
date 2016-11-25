@@ -1,0 +1,98 @@
+:host {
+    overflow-y: auto;
+    font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+    color: white;
+    font-size: 11pt; 
+    font-weight: 100;
+    display: block;
+        height: 100%;
+}
+viewTitle {
+    display: inline-block; /*Otherwise focus outline takes full width*/
+}
+
+.title, header .type {
+    position: relative;
+    font-weight: 200;
+    font-size: 24pt;
+    line-height: 38pt;
+    margin-left: 1px; /*Make room for focus outline*/
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-right: 20px;
+    margin-top: 2px;
+    display: block;
+}
+
+header .type {
+    float: left;
+    margin-right: 20px;
+    display: none; /*Change this to display type (e.g. for accessibility)*/
+}
+
+/*MultiLine dialog*/
+
+.multilinedialog {
+    padding-left: 20px;
+}
+.multilinedialog .columnHeader, .lineDialog .parameters, .lineDialog .parameter, .lineDialog .co-validation, .lineDialog .buttons {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.lineDialog .parameter {
+    width: 245px; /*To force (on IE) any validation message to be displayed underneath the field*/
+}
+
+.lineDialog .name {
+    display: none;
+}
+
+.lineDialog input.ok {
+    margin-top: 4px;
+    margin-right: 0px;
+    margin-left: 2px;
+    padding-top: 1px;
+    padding-bottom: 0px;
+    padding-left: 2px;
+    padding-right: 2px;
+    float: none;
+    vertical-align: top;
+    outline-color: lightgray;
+}
+.multilinedialog input:focus,.multilinedialog input:hover  {
+    outline-width: 1px;
+    outline-style: dashed;
+}
+.multilinedialog input.close {
+    float: left;
+    margin-right: 10px;
+}
+.multilinedialog .columnHeader {
+    width: 245px;
+    padding-left: 10px;
+}
+.multilinedialog .columnHeader {
+    padding-left: 5px;
+}
+.lineDialog .input-control input:not([type='checkbox']){
+    height: 20px;
+    padding-top: 2px;
+}
+.multilinedialog .done {
+    float: none;
+    margin-top: 10px;
+    margin-left: 7px;
+}
+.lineDialog .co-validation {
+    vertical-align: top;
+    margin-top: 2px;
+    margin-left: 2px;
+}
+.lineDialog .validation {
+    color: white;
+    margin-left: 5px;
+}
+.multilinedialog .count {
+    margin-top: 11px;
+}
