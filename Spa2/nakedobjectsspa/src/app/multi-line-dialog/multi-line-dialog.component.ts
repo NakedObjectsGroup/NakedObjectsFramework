@@ -10,6 +10,10 @@ import { ActionViewModel } from '../view-models/action-view-model';
 import { CollectionViewModel } from '../view-models/collection-view-model';
 import * as Models from "../models";
 import * as _ from "lodash";
+import { MultiLineDialogViewModel} from '../view-models/multi-line-dialog-view-model';
+import { DialogViewModel } from '../view-models/dialog-view-model';
+import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/forms';
+import * as Parameterviewmodel from '../view-models/parameter-view-model';
 
 @Component({
     selector: 'app-multi-line-dialog',
@@ -23,49 +27,91 @@ export class MultiLineDialogComponent extends PaneComponent {
         urlManager: UrlManagerService,
         private viewModelFactory: ViewModelFactoryService,
         private context: ContextService,
-        private error: ErrorService
+        private error: ErrorService,
+        private formBuilder : FormBuilder
     ) {
         super(activatedRoute, urlManager);
     }
 
+    dialog: MultiLineDialogViewModel;
+
+    forms: {form : FormGroup, parms : _.Dictionary<Parameterviewmodel.ParameterViewModel> }[];
+
+    form = (i : number) => this.forms[i].form;
+
     get objectFriendlyName() {
-        return "";
+        return this.dialog.objectFriendlyName;
     }
 
     get objectTitle() {
-        return "";
+        return this.dialog.objectTitle;
     }
 
     get dialogTitle() {
-        return "";
+        return this.dialog.title;
     }
 
     get header() {
-        return [];
+        return this.dialog.header();
     }
 
-    get dialogs() {
-        return [];
+    get rows() {
+        return this.dialog.dialogs;
     }
 
-    get submitted() {
-        return false;
+    parameters = (row : DialogViewModel) =>  row.parameters;
+
+    rowSubmitted = (row : DialogViewModel) =>  row.submitted;
+
+    rowTooltip = (row: DialogViewModel) => row.tooltip();
+
+    rowMessage = (row: DialogViewModel) => {
+        return row.submitted ? 'Submitted' : "this.dialog.message";
     }
 
-    get message() {
-        return this.submitted ? 'Submitted' : "this.dialog.message";
+    rowDisabled = (row: DialogViewModel) => {
+        return !row.clientValid() || row.submitted;
     }
 
     get count() {
-        return "' with '+multiLineDialog.submittedCount()+' lines submitted.'";
+        return ` with ${this.dialog.submittedCount()} lines submitted.`;
     }
 
-    get toolTip() {
-        return "";
+    invokeAndAdd(index: number) {
+        const parms = this.forms[index].parms;
+
+        _.forEach(parms,
+            (p, k) => {
+                const newValue = this.forms[index].form.value[p.id];
+                p.setValueFromControl(newValue);
+            });
+
+        this.dialog.invokeAndAdd(index);
     }
 
     close = () => {
 
+    }
+
+    // todo very similar to code in DialogComponent - DRY 
+    private createForm(dialog: DialogViewModel) {
+        const pps = dialog.parameters;
+        const parms = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<Parameterviewmodel.ParameterViewModel>;
+        // todo fix types - no any 
+        const controls = _.mapValues(parms, p => [p.getValueForControl(), a => p.validator(a)]) as _.Dictionary<any>;
+        const form = this.formBuilder.group(controls);
+
+        form.valueChanges.subscribe((data: any) => {
+            // cache parm values
+            _.forEach(data,
+                (v, k) => {
+                    const parm = parms[k];
+                    parm.setValueFromControl(v);
+                });
+            dialog.setParms();
+        });
+
+        return { form: form, parms: parms };
     }
 
     setMultiLineDialog(holder: Models.MenuRepresentation | Models.DomainObjectRepresentation | CollectionViewModel,
@@ -86,16 +132,18 @@ export class MultiLineDialogComponent extends PaneComponent {
                 // $scope.parameterTemplate = parameterTemplate;
                 // $scope.readOnlyParameterTemplate = readOnlyParameterTemplate;
 
-                // const dialogViewModel = perPaneMultiLineDialogViews[routeData.paneId];                   
-                // dialogViewModel.reset(routeData, details);
+                this.dialog = this.viewModelFactory.multiLineDialogViewModel(routeData, details);
 
-                // if (holder instanceof DomainObjectRepresentation) {
-                //     dialogViewModel.objectTitle = holder.title();
-                //     dialogViewModel.objectFriendlyName = holder.extensions().friendlyName();        
-                // } else {
-                //     dialogViewModel.objectFriendlyName = "";
-                //     dialogViewModel.objectTitle = "";
-                // }
+                // todo - do this in constructor and pass in holder
+                if (holder instanceof Models.DomainObjectRepresentation) {
+                    this.dialog.objectTitle = holder.title();
+                    this.dialog.objectFriendlyName = holder.extensions().friendlyName();
+                } else {
+                    this.dialog.objectFriendlyName = "";
+                    this.dialog.objectTitle = "";
+                }
+
+                this.forms = _.map(this.dialog.dialogs, d => this.createForm(d));
 
                 // $scope.multiLineDialog = dialogViewModel;
             }).

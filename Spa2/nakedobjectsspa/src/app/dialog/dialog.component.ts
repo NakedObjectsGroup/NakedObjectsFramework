@@ -78,6 +78,7 @@ export class DialogComponent implements OnInit, OnDestroy {
     private createForm(dialog: DialogViewModel) {
         const pps = dialog.parameters;
         this.parms = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<ParameterViewModel>;
+        // todo fix types - no any 
         const controls = _.mapValues(this.parms, p => [p.getValueForControl(), a => p.validator(a)]) as _.Dictionary<any>;
         this.form = this.formBuilder.group(controls);
 

@@ -1,5 +1,5 @@
 <div id="pane1" class="single">
-    <div class="multilinedialog">
+    <div  *ngIf="dialog" class="multilinedialog">
         <div class="header">
             <div class="type">{{objectFriendlyName}}</div>
             <div class="title" gemini-drag tabindex="0">
@@ -8,15 +8,14 @@
             </div>
         </div>
         <div class="columnHeader" *ngFor="let column of header">{{column}}</div>
-        <div class="lineDialog" *ngFor="let dialog of dialogs">
-            <form>
-                <parameters class="parameters" [parameters]="parameters" [parent]="dialog" [form]="form"></parameters>
-                <input *ngIf="!submitted" class="ok" tabindex="0" type="submit" value="OK" title="{{dialog.tooltip()}}" ng-disabled="!dialog.clientValid() || dialog.submitted"
-                    gemini-enter="multiLineDialog.invokeAndAdd($index)" ng-click="multiLineDialog.invokeAndAdd($index)" />
+        <div class="lineDialog" *ngFor="let row of rows; let i = index ">
+            <form (ngSubmit)="invokeAndAdd(i)" [formGroup]="form(i)" autocomplete="off">
+                <parameters class="parameters" [parameters]="parameters(row)" [parent]="row" [form]="form(i)"></parameters>
+                <input *ngIf="!rowSubmitted(row)" class="ok" tabindex="0" type="submit" value="OK" title="{{rowTooltip(row)}}" [disabled]="rowDisabled(row)" geminiClick (leftClick)="invokeAndAdd(i)" />
                 <div class="co-validation">{{message}}</div>
             </form>
         </div>
-        <input class="close" tabindex="0" type="submit" value="Close" title="" gemini-enter="close()" ng-click="close()" />
+        <input class="close" tabindex="0" type="submit" value="Close" title="" geminiClick (leftClick)="close()" />
         <div class="count">{{count}}</div>
     </div>
 </div>

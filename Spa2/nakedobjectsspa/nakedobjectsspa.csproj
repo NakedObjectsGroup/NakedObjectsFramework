@@ -48,6 +48,8 @@
     <Content Include="src\app\home\home.component.html" />
     <Content Include="src\app\list\list.component.css" />
     <Content Include="src\app\list\list.component.html" />
+    <Content Include="src\app\multi-line-dialog\multi-line-dialog.component.css" />
+    <Content Include="src\app\multi-line-dialog\multi-line-dialog.component.html" />
     <Content Include="src\app\object\object.component.css" />
     <Content Include="src\app\object\object.component.html" />
     <Content Include="src\app\parameters\parameters.component.css" />
@@ -117,6 +119,7 @@
     <TypeScriptCompile Include="src\app\mask.service.ts" />
     <TypeScriptCompile Include="src\app\models.ts" />
     <TypeScriptCompile Include="src\app\moment-wrapper.service.ts" />
+    <TypeScriptCompile Include="src\app\multi-line-dialog\multi-line-dialog.component.ts" />
     <TypeScriptCompile Include="src\app\object\object.component.ts" />
     <TypeScriptCompile Include="src\app\pane\pane.ts" />
     <TypeScriptCompile Include="src\app\parameters\parameters.component.ts" />

@@ -13,6 +13,19 @@ import * as _ from "lodash";
 
 export class MultiLineDialogViewModel {
 
+    constructor(
+        private color: Colorservice.ColorService,
+        private context: Contextservice.ContextService,
+        private viewModelFactory: Viewmodelfactoryservice.ViewModelFactoryService,
+        private urlManager: Urlmanagerservice.UrlManagerService,
+        private error: Errorservice.ErrorService,
+        routeData: Routedata.PaneRouteData,
+        action: Models.IInvokableAction
+    ) {
+        this.reset(routeData, action);
+    }
+
+
     private createRow(i: number) {
         const dialogViewModel = this.viewModelFactory.dialogViewModel(this.routeData, this.action as Models.IInvokableAction, null);
 
@@ -34,7 +47,6 @@ export class MultiLineDialogViewModel {
 
         dialogViewModel.parameters.forEach(p => p.setAsRow(i));
 
-
         return dialogViewModel;
     }
 
@@ -42,18 +54,10 @@ export class MultiLineDialogViewModel {
     objectTitle: string;
 
     title: string = "";
-    action: Models.ActionMember | Models.ActionRepresentation;
+    action: Models.IInvokableAction;
     routeData: Routedata.PaneRouteData;
 
-    constructor(private color: Colorservice.ColorService,
-        private context: Contextservice.ContextService,
-        private viewModelFactory: Viewmodelfactoryservice.ViewModelFactoryService,
-        private urlManager: Urlmanagerservice.UrlManagerService,
-        private error: Errorservice.ErrorService) {
-
-    }
-
-    reset(routeData: Routedata.PaneRouteData, action: Models.ActionMember | Models.ActionRepresentation) {
+    reset(routeData: Routedata.PaneRouteData, action: Models.IInvokableAction) {
 
         this.action = action;
         this.routeData = routeData;

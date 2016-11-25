@@ -28,6 +28,7 @@ import * as _ from "lodash";
 import { ListViewModel } from './view-models/list-view-model';
 import { DialogViewModel } from './view-models/dialog-view-model';
 import * as Domainobjectviewmodel from './view-models/domain-object-view-model';
+import * as Multilinedialogviewmodel from './view-models/multi-line-dialog-view-model';
 
 @Injectable()
 export class ViewModelFactoryService {
@@ -98,16 +99,15 @@ export class ViewModelFactoryService {
             actionViewModel);
     }
 
-    multiLineDialogViewModel = (routeData: PaneRouteData, action : Models.IInvokableAction, actionViewModel: ActionViewModel) => {
+    multiLineDialogViewModel = (routeData: PaneRouteData, action : Models.IInvokableAction) => {
 
-        return new MultiLineDialogViewModel(this.color,
+        return new Multilinedialogviewmodel.MultiLineDialogViewModel(this.color,
             this.context,
             this,
             this.urlManager,
             this.error,
             routeData,
-            action,
-            actionViewModel);
+            action);
     }
 
     domainObjectViewModel = (obj: Models.DomainObjectRepresentation, routeData: PaneRouteData) => {
