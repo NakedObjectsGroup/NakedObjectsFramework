@@ -118,6 +118,7 @@
     <TypeScriptCompile Include="src\app\models.ts" />
     <TypeScriptCompile Include="src\app\moment-wrapper.service.ts" />
     <TypeScriptCompile Include="src\app\object\object.component.ts" />
+    <TypeScriptCompile Include="src\app\pane\pane.ts" />
     <TypeScriptCompile Include="src\app\parameters\parameters.component.ts" />
     <TypeScriptCompile Include="src\app\parameter\parameter.component.ts" />
     <TypeScriptCompile Include="src\app\properties\properties.component.ts" />
@@ -132,7 +133,33 @@
     <TypeScriptCompile Include="src\app\url-manager.service.ts" />
     <TypeScriptCompile Include="src\app\user-messages.ts" />
     <TypeScriptCompile Include="src\app\view-model-factory.service.ts" />
-    <TypeScriptCompile Include="src\app\view-models.ts" />
+    <TypeScriptCompile Include="src\app\view-models\action-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\application-properties-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\attachment-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\choice-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\cicero-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\collection-placeholder-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\collection-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\dialog-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\domain-object-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\error-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\field-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\helpers-view-models.ts" />
+    <TypeScriptCompile Include="src\app\view-models\idraggable-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\imessage-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\link-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\item-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\list-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\menu-item-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\menu-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\menus-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\message-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\parameter-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\property-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\recent-item-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\recent-items-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\table-row-column-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\table-row-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-property\view-property.component.ts" />
     <TypeScriptCompile Include="src\environments\environment.prod.ts" />
     <TypeScriptCompile Include="src\environments\environment.ts" />
@@ -141,6 +168,7 @@
     <TypeScriptCompile Include="src\test.ts" />
     <TypeScriptCompile Include="src\typings.d.ts" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
   </PropertyGroup>

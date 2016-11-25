@@ -1,50 +1,42 @@
-<div class="name">
-	{{property.title}}:</div>
+<div class="name">{{title}}:</div>
 
-<div *ngIf="property.type === 'ref'">
-	<div [ngSwitch]="property.refType">
-		<div *ngSwitchCase="null"></div>
-		<div *ngSwitchCase="'notNavigable'">
-			<div class="value">
-				{{property.formattedValue}}
-			</div>
-		</div>
-		<div *ngSwitchDefault class="reference clickable-area" [ngClass]="classes()" geminiClick (leftClick)="property.doClick()"
-			(rightClick)="property.doClick(true)" dnd-draggable [dragEnabled]="true" [dragData]="property" tabindex="0">
-			{{property.formattedValue}}
-		</div>
-	</div>
+<div *ngIf="propertyType === 'ref'">
+    <div [ngSwitch]="propertyRefType">
+        <div *ngSwitchCase="null"></div>
+        <div *ngSwitchCase="'notNavigable'">
+            <div class="value">{{formattedValue}}</div>
+        </div>
+        <div *ngSwitchDefault class="reference clickable-area" [ngClass]="color" geminiClick (leftClick)="doClick()"
+             (rightClick)="doClick(true)" dnd-draggable [dragEnabled]="true" [dragData]="property" tabindex="0">
+            {{formattedValue}}
+        </div>
+    </div>
 </div>
 
-<div *ngIf="property.type === 'scalar'">
-	<div [ngSwitch]="property.returnType">
-		<div *ngSwitchCase="'string'">
-			<!--*ngIf="property.returnType = 'string'"-->
-			<div [ngSwitch]="property.format">
-				<div *ngSwitchCase="'blob'" class="reference clickable-area" geminiClick (leftClick)="property.attachment.doClick()" (rightClick)="property.attachment.doClick(true)" tabindex="0">
-					<div *ngIf="!image">{{attachmentTitle}}</div>
-					<img *ngIf="image" src="{{image}}" alt="{{title}}" />
-				</div>
-				<div *ngSwitchDefault>
-					<div [ngSwitch]="property.multipleLines">
-						<div *ngSwitchCase="1" class="value">
-							{{property.formattedValue}}
-						</div>
-						<div *ngSwitchDefault class="value multiline" [ngStyle]="{height: property.multipleLines * 20+'px'}">
-							<pre>{{property.formattedValue}}</pre>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div *ngSwitchCase="'boolean'">
-			<input type="checkbox" onclick="return false" [checked]="property.value" disabled="disabled" />
-		</div>
+<div *ngIf="propertyType === 'scalar'">
+    <div [ngSwitch]="propertyReturnType">
+        <div *ngSwitchCase="'string'">
 
-		<div *ngSwitchDefault>
-			<div class="value">
-				{{property.formattedValue}}
-			</div>
-		</div>
-	</div>
+            <div *ngIf="isBlob" class="reference clickable-area" geminiClick (leftClick)="doAttachmentClick()" (rightClick)="doAttachmentClick(true)" tabindex="0">
+                <div *ngIf="!image">{{attachmentTitle}}</div>
+                <img *ngIf="image" src="{{image}}" alt="{{attachmentTitle}}" />
+            </div>
+            <div *ngIf="!isBlob">
+                <div *ngIf="!isMultiline" class="value">
+                    {{formattedValue}}
+                </div>
+                <div *ngIf="isMultiline" class="value multiline" [ngStyle]="{height : multilineHeight}">
+                    <pre>{{formattedValue}}</pre>
+                </div>
+            </div>
+        </div>
+
+        <div *ngSwitchCase="'boolean'">
+            <input type="checkbox" [checked]="value" disabled="disabled" />
+        </div>
+
+        <div *ngSwitchDefault>
+            <div class="value">{{formattedValue}}</div>
+        </div>
+    </div>
 </div>

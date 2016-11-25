@@ -71,13 +71,13 @@ namespace NakedObjects.Selenium {
 
             var properties = br.FindElements(By.CssSelector(".property"));
             // failing because of stale properties
-            Assert.AreEqual("Store Name:\r\nTwin Cycles", properties[0].Text);
+            Assert.AreEqual("Store Name: Twin Cycles", properties[0].Text);
             properties = br.FindElements(By.CssSelector(".property"));
             Assert.AreEqual("Demographics:\r\nAnnualSales: 800000\r\nAnnualRevenue: 80000\r\nBankName: International Security\r\nBusinessType: BM\r\nYearOpened: 1988\r\nSpecialty: Touring\r\nSquareFeet: 21000\r\nBrands: AW\r\nInternet: T1\r\nNumberEmployees: 11", properties[1].Text);
             properties = br.FindElements(By.CssSelector(".property"));
             Assert.AreEqual("Sales Person:\r\nLynn Tsoflias", properties[2].Text);
             properties = br.FindElements(By.CssSelector(".property"));
-            Assert.IsTrue(properties[3].Text.StartsWith("Modified Date:\r\n13 Oct 2008"));
+            Assert.IsTrue(properties[3].Text.StartsWith("Modified Date: 13 Oct 2008"));
         }
         public virtual void Collections() {
             GeminiUrl("object?i1=View&o1=___1.Product--821");
@@ -111,7 +111,7 @@ namespace NakedObjects.Selenium {
 
             //Now a non-navigable one
             var cat = props[6];
-            Assert.AreEqual("Product Category:\r\nClothing", cat.Text);
+            Assert.AreEqual("Product Category: Clothing", cat.Text);
             var links = cat.FindElements(By.CssSelector(".reference.clickable-area"));
             Assert.AreEqual(0, links.Count());
         }
@@ -121,14 +121,14 @@ namespace NakedObjects.Selenium {
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
 
             //By default a DateTime property is rendered as date only:
-            Assert.AreEqual("Order Date:\r\n16 Apr 2008", properties[8].Text);
+            Assert.AreEqual("Order Date: 16 Apr 2008", properties[8].Text);
 
             //If marked with ConcurrencyCheck, rendered as date time
-            Assert.IsTrue(properties[22].Text.StartsWith("Modified Date:\r\n23 Apr 2008"));
+            Assert.IsTrue(properties[22].Text.StartsWith("Modified Date: 23 Apr 2008"));
             Assert.IsTrue(properties[22].Text.EndsWith(":00:00")); //Only check mm:ss to avoid TimeZone difference server vs. client
 
             //Currency properties formatted to 2 places & with default currency symbok (£)
-            Assert.AreEqual("Sub Total:\r\n£819.31", properties[11].Text);
+            Assert.AreEqual("Sub Total: £819.31", properties[11].Text);
         }
         public virtual void TableViewHonouredOnCollection() {
             GeminiUrl("object?i1=View&o1=___1.Employee--83&c1_DepartmentHistory=Summary&c1_PayHistory=Table");
@@ -140,7 +140,7 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("Rate", cols[3].Text);
 
             //Dates formatted in table view
-            GeminiUrl("object?i1=View&o1=___1.Product--775&c1_SpecialOffers=Table");
+            GeminiUrl("object?i1=View&o1=___1.Product--775&c1_SpecialOffers=Table&c1_ProductInventory=List");
             WaitForCss("td", 15);
             var cell = WaitForCss("td:nth-child(6)");
             Assert.AreEqual("31 Dec 2008", cell.Text);
@@ -185,7 +185,7 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.Object, "Main Office: 2253-217 Palmer Street ...");
         }
         public virtual void ClickOnLineItemWithCollectionAsTable() {
-            var testUrl = GeminiBaseUrl + "object?o1=___1.Store--350&as1=open" + "&c1_Addresses=Table";
+            var testUrl = GeminiBaseUrl + "object?o1=___1.Store--350&as1=open" + "&c1_Addresses=Table&c1_Contacts=Summary";
             Url(testUrl);
             var row = wait.Until(dr => dr.FindElement(By.CssSelector("table tbody tr")));
             wait.Until(dr => row.FindElements(By.CssSelector(".cell")).Count >= 2);
@@ -265,7 +265,7 @@ namespace NakedObjects.Selenium {
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
 
             Assert.AreEqual("Max Qty:", properties[7].Text);
-            Assert.AreEqual("Min Qty:\r\n0", properties[6].Text);
+            Assert.AreEqual("Min Qty: 0", properties[6].Text);
         }
         public virtual void AddingObjectToCollectionUpdatesTableView() {
             GeminiUrl("object?i1=View&o1=___1.SalesPerson--276&as1=open&c1_QuotaHistory=Table&d1=ChangeSalesQuota");

@@ -16,10 +16,14 @@ public class CorsConfig {
         // from the http://foo.com origin.
 
         corsConfig.ForResources("RestfulObjects").
-            ForOrigins("http://localhost:49998", "http://localhost:8080", "http://nakedobjectstest.azurewebsites.net", "http://localhost").
-            AllowAll().
-            AllowResponseHeaders("Warning", "Set-Cookie", "ETag").
-            AllowCookies();
+            ForOrigins("http://localhost:49998",
+                       "http://localhost:8080",
+                       "http://nakedobjectstest.azurewebsites.net",
+                       "http://nakedobjectstest2.azurewebsites.net",
+                       "http://localhost").
+           AllowAll().
+           AllowResponseHeaders("Warning", "Set-Cookie", "ETag").
+           AllowCookies();
 
     }
 }

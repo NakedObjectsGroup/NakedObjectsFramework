@@ -1,12 +1,12 @@
 import { Component, Input, ElementRef, OnInit, HostListener } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import * as Models from "../models";
-import * as ViewModels from "../view-models";
 import { FieldComponent } from '../field/field.component';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ErrorService } from "../error.service";
 import { ContextService } from "../context.service";
+import { AttachmentViewModel } from '../view-models/attachment-view-model';
+import { PropertyViewModel } from '../view-models/property-view-model';
+import * as Models from "../models";
 
 @Component({
     selector: 'view-property',
@@ -16,19 +16,84 @@ import { ContextService } from "../context.service";
 export class ViewPropertyComponent implements OnInit {
 
     constructor(private router: Router,
-        private error: ErrorService,
-        private context: ContextService) {
+                private error: ErrorService,
+                private context: ContextService) {
     }
 
+    // template inputs 
 
     @Input()
-    property: ViewModels.PropertyViewModel;
+    property: PropertyViewModel;
 
-    classes(): string {
-        return `${this.property.color}`;
+    // template listeners 
+
+    @HostListener('keydown', ['$event'])
+    onEnter(event: KeyboardEvent) {
+        this.cut(event);
     }
 
-    clickHandler(attachment: ViewModels.IAttachmentViewModel) {
+    @HostListener('keypress', ['$event'])
+    onEnter1(event: KeyboardEvent) {
+        this.cut(event);
+    }
+
+    // template API
+
+    get title() {
+        return this.property.title;
+    }
+
+    get propertyType() {
+        return this.property.type;
+    }
+
+    get propertyRefType() {
+        return this.property.refType;
+    }
+
+    get propertyReturnType() {
+        return this.property.returnType;
+    }
+
+    get formattedValue() {
+        return this.property.formattedValue;
+    }
+
+    get value() {
+        return this.property.value;
+    }
+
+    get format() {
+        return this.property.format;
+    }
+
+    get isBlob() {
+        return this.property.format === "blob";
+    }
+
+    get isMultiline() {
+        return !(this.property.multipleLines === 1);
+    }
+
+    get multilineHeight() {
+        return `${this.property.multipleLines * 20}px`;
+    }
+
+    get color() {
+        return this.property.color;
+    }
+
+    doClick = (right?: boolean) => this.property.doClick(right);
+
+    // todo delegated click here smell that we need another component 
+    doAttachmentClick = (right?: boolean) => this.property.attachment.doClick(right);
+
+    attachmentTitle: string;
+    image: string;
+
+
+    // todo maybe two different click handlers on attachment view model ? 
+    clickHandler(attachment: AttachmentViewModel) {
 
         return () => {
 
@@ -74,10 +139,12 @@ export class ViewPropertyComponent implements OnInit {
             }
 
         } else {
+            // todo use msg string 
             this.attachmentTitle = "Attachment not yet supported on transient";
         }
     }
 
+    // todo DRY and rename this !!
     cut(event: any) {
         const cKeyCode = 67;
         if (event && (event.keyCode === cKeyCode && event.ctrlKey)) {
@@ -85,17 +152,4 @@ export class ViewPropertyComponent implements OnInit {
             event.preventDefault();
         }
     }
-
-    @HostListener('keydown', ['$event'])
-    onEnter(event: KeyboardEvent) {
-        this.cut(event);
-    }
-
-    @HostListener('keypress', ['$event'])
-    onEnter1(event: KeyboardEvent) {
-        this.cut(event);
-    }
-
-    attachmentTitle: string;
-    image: string;
 }

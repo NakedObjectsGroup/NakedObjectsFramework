@@ -1,66 +1,43 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ContextService } from "../context.service";
 import { ViewModelFactoryService } from "../view-model-factory.service";
-import * as ViewModels from "../view-models";
 import { ActivatedRoute } from '@angular/router';
-import { ISubscription } from 'rxjs/Subscription';
 import { UrlManagerService } from "../url-manager.service";
 import { RouteData, PaneRouteData } from "../route-data";
+import { RecentItemsViewModel } from '../view-models/recent-items-view-model';
+import { RecentItemViewModel } from '../view-models/recent-item-view-model';
+import { PaneComponent } from '../pane/pane';
 
 @Component({
     selector: 'recent',
     templateUrl: './recent.component.html',
     styleUrls: ['./recent.component.css']
 })
-export class RecentComponent implements OnInit {
+export class RecentComponent extends PaneComponent {
 
-    constructor(private activatedRoute: ActivatedRoute,
+    constructor(
+        activatedRoute: ActivatedRoute,
+        urlManager: UrlManagerService,
         private viewModelFactory: ViewModelFactoryService,
-        private urlManager: UrlManagerService) {
-
+    ) {
+        super(activatedRoute, urlManager);
     }
 
-    paneId: number;
-    vm: ViewModels.RecentItemsViewModel;
+    // template API 
 
-    paneType: string;
+    title = "Recently Viewed Objects";
+    items = () => this.recent.items;
 
-    onChild() {
-        this.paneType = "split";
-    }
+    // todo again a smell - new child component ! 
+    itemColor = (item: RecentItemViewModel) => item.color;
+    itemTitle = (item: RecentItemViewModel) => item.title;
+    itemFriendlyName = (item: RecentItemViewModel) => item.friendlyName;
 
-    onChildless() {
-        this.paneType = "single";
-    }
+    doItemClick = (item: RecentItemViewModel, right?: boolean) => item.doClick(right);
 
-    paneIdName = () => this.paneId === 1 ? "pane1" : "pane2";
+    recent: RecentItemsViewModel;
 
-    private activatedRouteDataSub: ISubscription;
-    private paneRouteDataSub: ISubscription;
-
-    ngOnInit(): void {
-        this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: any) => {
-            this.paneId = data["pane"];
-            this.paneType = data["class"];
-
-            this.vm = this.viewModelFactory.recentItemsViewModel(this.paneId);
-
-        });
-
-        this.paneRouteDataSub = this.urlManager.getRouteDataObservable()
-            .subscribe((rd: RouteData) => {
-                if (this.paneId) {
-                    this.vm = this.viewModelFactory.recentItemsViewModel(this.paneId);
-                }
-            });
-    }
-
-    ngOnDestroy(): void {
-        if (this.activatedRouteDataSub) {
-            this.activatedRouteDataSub.unsubscribe();
-        }
-        if (this.paneRouteDataSub) {
-            this.paneRouteDataSub.unsubscribe();
-        }
+    protected setup(routeData: PaneRouteData) {
+        this.recent = this.viewModelFactory.recentItemsViewModel(this.paneId);
     }
 }

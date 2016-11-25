@@ -7,7 +7,8 @@ import * as Constants from "./constants";
 import * as Models from "./models";
 import * as _ from "lodash";
 import { Subject } from 'rxjs/Subject';
-import { IDraggableViewModel} from './view-models';
+import { IDraggableViewModel } from './view-models/idraggable-view-model';
+
 
 enum DirtyState {
     DirtyMustReload,
@@ -495,11 +496,14 @@ export class ContextService {
         return (page && pageSize) ? { "x-ro-page": page, "x-ro-pageSize": pageSize } : {};
     }
 
-    getListFromMenu = (paneId: number, routeData: PaneRouteData, page?: number, pageSize?: number) => {
+    getListFromMenu = (routeData: PaneRouteData, page?: number, pageSize?: number) => {
         const menuId = routeData.menuId;
         const actionId = routeData.actionId;
         const parms = routeData.actionParams;
         const state = routeData.state;
+        const paneId = routeData.paneId;
+        page = page || routeData.page;
+        pageSize = pageSize || routeData.pageSize;
         const urlParms = this.getPagingParms(page, pageSize);
 
         if (state === CollectionViewState.Table) {
@@ -510,12 +514,15 @@ export class ContextService {
         return this.getList(paneId, promise, page, pageSize);
     };
 
-    getListFromObject = (paneId: number, routeData: PaneRouteData, page?: number, pageSize?: number) => {
+    getListFromObject = (routeData: PaneRouteData, page?: number, pageSize?: number) => {
         const objectId = routeData.objectId;
         const actionId = routeData.actionId;
         const parms = routeData.actionParams;
         const state = routeData.state;
         const oid = Models.ObjectIdWrapper.fromObjectId(objectId);
+        const paneId = routeData.paneId;
+        page = page || routeData.page;
+        pageSize = pageSize || routeData.pageSize;
         const urlParms = this.getPagingParms(page, pageSize);
 
         if (state === CollectionViewState.Table) {
@@ -558,7 +565,8 @@ export class ContextService {
         const map = field.getPromptMap();
         map.setMembers(objectValues);
         setupPrompt(map);
-        return this.repLoader.retrieve(map, Models.PromptRepresentation, digest).then((p: Models.PromptRepresentation) => p.choices(field.extensions().optional()));
+        const addEmptyOption = field.entryType() !== Models.EntryType.AutoComplete && field.extensions().optional();
+        return this.repLoader.retrieve(map, Models.PromptRepresentation, digest).then((p: Models.PromptRepresentation) => p.choices(addEmptyOption));
     };
 
     autoComplete = (field: Models.IField, id: string, objectValues: () => _.Dictionary<Models.Value>, searchTerm: string, digest?: string) =>
@@ -571,12 +579,7 @@ export class ContextService {
 
     setResult = (action: Models.IInvokableAction, result: Models.ActionResultRepresentation, fromPaneId: number, toPaneId: number, page: number, pageSize: number) => {
 
-        const warnings = result.extensions().warnings() || [];
-        const messages = result.extensions().messages() || [];
-
-        //$rootScope.$broadcast(Nakedobjectsconstants.geminiWarningEvent, warnings);
-        //$rootScope.$broadcast(Nakedobjectsconstants.geminiMessageEvent, messages);
-
+   
         if (!result.result().isNull()) {
             if (result.resultType() === "object") {
 
@@ -837,13 +840,6 @@ export class ContextService {
         _.forEach(this.currentLists, (k, v) => delete this.currentLists[v]);
 
     }
-
-    //$rootScope.
-
-    //$on(Nakedobjectsconstants.
-    //geminiLogoffEvent, () =>
-    //logoff());
-
 
     setFieldValue = (dialogId: string, pid: string, pv: Models.Value, paneId = 1) => {
         this.parameterCache.addValue(dialogId, pid, pv, paneId);

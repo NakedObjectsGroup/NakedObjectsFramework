@@ -1,20 +1,18 @@
 <div [attr.id]="paneIdName()" [ngClass]="paneType">
 	<div class="recent">
 		<div class="header">
-			<div class="title">
-				Recently Viewed Objects
-			</div>
+			<div class="title">{{title}}</div>
 		</div>
-		<div *ngIf="vm" class="collection">
+		<div *ngIf="recent" class="collection">
 			<table>
 				<tbody>
-					<tr [ngClass]="item.color" *ngFor="let item of vm.items" class="clickable-area"  dnd-draggable [dragEnabled]="true" [dragData]="item" geminiClick
-						(leftClick)="item.doClick()" (rightClick)="item.doClick(true)">
+					<tr [ngClass]="itemColor(item)" *ngFor="let item of items()" class="clickable-area"  dnd-draggable [dragEnabled]="true" [dragData]="item" geminiClick
+						(leftClick)="doItemClick(item)" (rightClick)="doItemClick(item, true)">
 						<td tabindex="0" class="cell">
-							{{item.title }}
+							{{itemTitle(item)}}
 						</td>
 						<td tabindex="0" class="cell">
-							{{item.friendlyName}}
+							{{itemFriendlyName(item)}}
 						</td>
 					</tr>
 				</tbody>

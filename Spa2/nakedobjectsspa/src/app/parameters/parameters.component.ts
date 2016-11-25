@@ -1,8 +1,9 @@
 import { Component, Input, ViewChildren, QueryList } from '@angular/core';
-import * as Models from "../models";
-import * as ViewModels from "../view-models";
 import { FormGroup } from '@angular/forms';
 import { ParameterComponent } from "../parameter/parameter.component";
+import { ParameterViewModel } from '../view-models/parameter-view-model';
+import { DialogViewModel } from '../view-models/dialog-view-model';
+import * as Models from "../models";
 
 @Component({
     selector: 'parameters',
@@ -11,22 +12,14 @@ import { ParameterComponent } from "../parameter/parameter.component";
 })
 export class ParametersComponent {
 
-    parms: ViewModels.ParameterViewModel[];
+    @Input()
+    parent: DialogViewModel;
 
     @Input()
-    parent: ViewModels.DialogViewModel;
+    form: FormGroup;
 
     @Input()
-    form: FormGroup = null;
-
-    @Input()
-    set parameters(value: ViewModels.ParameterViewModel[]) {
-        this.parms = value;
-    }
-
-    get parameters() {
-        return this.parms;
-    }
+    parameters: ParameterViewModel[];
 
     @ViewChildren(ParameterComponent)
     parmComponents: QueryList<ParameterComponent>;

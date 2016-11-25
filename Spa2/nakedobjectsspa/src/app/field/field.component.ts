@@ -1,4 +1,3 @@
-import * as ViewModels from "../view-models";
 import * as Models from "../models"
 import * as Ro from '../ro-interfaces';
 import { AbstractControl } from '@angular/forms';
@@ -6,6 +5,14 @@ import { FormGroup } from '@angular/forms';
 import { ElementRef, HostListener, QueryList } from '@angular/core';
 import * as _ from "lodash";
 import { ContextService } from "../context.service";
+import { ChoiceViewModel } from '../view-models/choice-view-model';
+import { IDraggableViewModel } from '../view-models/idraggable-view-model';
+import { FieldViewModel } from '../view-models/field-view-model';
+import { ParameterViewModel } from '../view-models/parameter-view-model';
+import { DialogViewModel } from '../view-models/dialog-view-model';
+import { PropertyViewModel } from '../view-models/property-view-model';
+import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
+
 
 
 export abstract class FieldComponent {
@@ -18,14 +25,14 @@ export abstract class FieldComponent {
         this.elementRef = myElement;
     }
 
-    private vmParent: ViewModels.DialogViewModel | ViewModels.DomainObjectViewModel;
-    private model: ViewModels.ParameterViewModel | ViewModels.PropertyViewModel;
+    private vmParent: DialogViewModel | DomainObjectViewModel;
+    private model: ParameterViewModel | PropertyViewModel;
     private isConditionalChoices: boolean;
     private isAutoComplete: boolean;
     private control: AbstractControl;
 
-    protected init(vmParent: ViewModels.DialogViewModel | ViewModels.DomainObjectViewModel,
-        vm: ViewModels.ParameterViewModel | ViewModels.PropertyViewModel,
+    protected init(vmParent: DialogViewModel | DomainObjectViewModel,
+        vm: ParameterViewModel | PropertyViewModel,
         control: AbstractControl) {
 
         this.vmParent = vmParent;
@@ -45,15 +52,15 @@ export abstract class FieldComponent {
         }
     }
 
-    currentOptions: ViewModels.ChoiceViewModel[] = [];
+    currentOptions: ChoiceViewModel[] = [];
     pArgs: _.Dictionary<Models.Value>;
 
     paneId: number;
     canDrop = false;
 
-    droppable: ViewModels.IFieldViewModel;
+    droppable: FieldViewModel;
 
-    accept = (draggableVm: ViewModels.IDraggableViewModel) => {
+    accept(draggableVm: IDraggableViewModel) {
 
         if (draggableVm) {
             draggableVm.canDropOn(this.droppable.returnType).then((canDrop: boolean) => this.canDrop = canDrop).catch(() => this.canDrop = false);
@@ -62,17 +69,16 @@ export abstract class FieldComponent {
         return false;
     };
 
-    drop(draggableVm: ViewModels.IDraggableViewModel) {
+    drop(draggableVm: IDraggableViewModel) {
         if (this.canDrop) {
             this.droppable.drop(draggableVm)
-                .then((success) => {
-                    //this.control.reset(this.model.selectedChoice);
+                .then((success) => {        
                     this.control.setValue(this.model.selectedChoice);
                 });
         }
     }
 
-    isDomainObjectViewModel(object: any): object is ViewModels.DomainObjectViewModel {
+    isDomainObjectViewModel(object: any): object is DomainObjectViewModel {
         return object && "properties" in object;
     }
 
@@ -86,8 +92,8 @@ export abstract class FieldComponent {
 
     populateArguments() {
 
-        const dialog = this.vmParent as ViewModels.DialogViewModel;
-        const object = this.vmParent as ViewModels.DomainObjectViewModel;
+        const dialog = this.vmParent as DialogViewModel;
+        const object = this.vmParent as DomainObjectViewModel;
 
         if (!dialog && !object) {
             throw { message: "Expect dialog or object in geminiConditionalchoices", stack: "" };
@@ -107,7 +113,7 @@ export abstract class FieldComponent {
     populateDropdown() {
         const nArgs = this.populateArguments();
         const prompts = this.model.conditionalChoices(nArgs); //  scope.select({ args: nArgs });
-        prompts.then((cvms: ViewModels.ChoiceViewModel[]) => {
+        prompts.then((cvms: ChoiceViewModel[]) => {
                 // if unchanged return 
                 if (cvms.length === this.currentOptions.length && _.every(cvms, (c, i) => c.equals(this.currentOptions[i]))) {
                     return;
@@ -178,13 +184,13 @@ export abstract class FieldComponent {
     populateAutoComplete() {
         const input = this.control.value;
 
-        if (input instanceof ViewModels.ChoiceViewModel) {
+        if (input instanceof ChoiceViewModel) {
             return;
         }
 
         if (input.length > 0 && input.length >= this.model.minLength) {
             this.model.prompt(input)
-                .then((cvms: ViewModels.ChoiceViewModel[]) => {
+                .then((cvms: ChoiceViewModel[]) => {
                     if (cvms.length === this.currentOptions.length && _.every(cvms, (c, i) => c.equals(this.currentOptions[i]))) {
                         return;
                     }
@@ -204,7 +210,7 @@ export abstract class FieldComponent {
         }
     }
 
-    select(item: ViewModels.ChoiceViewModel) {
+    select(item: ChoiceViewModel) {
         this.model.choices = [];
         this.model.selectedChoice = item;
         this.control.reset(item);
@@ -246,7 +252,6 @@ export abstract class FieldComponent {
         fileReader.readAsDataURL(file);
     }
 
-
     paste(event: any) {
         const vKeyCode = 86;
         const deleteKeyCode = 46;
@@ -271,7 +276,9 @@ export abstract class FieldComponent {
     abstract focusList: QueryList<ElementRef>;
 
     focus() {
-        this.focusList.first.nativeElement.focus();
+        if (this.focusList && this.focusList.first) {
+            setTimeout(() => this.focusList.first.nativeElement.focus(), 0);
+        }
     }
 
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy, ViewChildren, QueryList, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, Input, ViewChildren, QueryList, AfterViewInit, ElementRef } from '@angular/core';
 import { RepresentationsService } from "../representations.service";
 import { UrlManagerService } from "../url-manager.service";
 import { ClickHandlerService } from "../click-handler.service";
@@ -9,35 +9,108 @@ import { ColorService } from "../color.service";
 import { ErrorService } from "../error.service";
 import { PaneRouteData, RouteData, CollectionViewState } from "../route-data";
 import { ViewModelFactoryService } from "../view-model-factory.service";
-import { ISubscription } from 'rxjs/Subscription';
 import * as Models from "../models";
 import * as Constants from "../constants";
 import * as Config from "../config";
-import * as ViewModels from "../view-models";
-
+import { IDraggableViewModel } from '../view-models/idraggable-view-model';
+import { IMessageViewModel } from '../view-models/imessage-view-model';
+import { ListViewModel } from '../view-models/list-view-model';
+import { PaneComponent } from '../pane/pane';
+import { ItemViewModel } from '../view-models/item-view-model';
+import { PropertyViewModel} from '../view-models/property-view-model';
 
 @Component({
     selector: 'list',
     templateUrl: './list.component.html',
     styleUrls: ['./list.component.css']
 })
-export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ListComponent extends PaneComponent implements  AfterViewInit {
 
-    constructor(private urlManager: UrlManagerService,
-        private context: ContextService,
-        private color: ColorService,
-        private viewModelFactory: ViewModelFactoryService,
-        private error: ErrorService,
-        private activatedRoute: ActivatedRoute) {
+    constructor(activatedRoute: ActivatedRoute,
+                urlManager: UrlManagerService,
+                private context: ContextService,
+                private color: ColorService,
+                private viewModelFactory: ViewModelFactoryService,
+                private error: ErrorService) {
+        super(activatedRoute, urlManager);
     }
 
-    collection: ViewModels.ListViewModel;
-    title = "";
-    paneType: string;
-    paneId: number;
-    state = "list";
+    collection: ListViewModel;
+   
 
-    paneIdName = () => this.paneId === 1 ? "pane1" : "pane2";
+    toggleActionMenu = () => this.collection.toggleActionMenu();
+    reloadList = () => this.collection.reload();
+    pageFirst = () => this.collection.pageFirst();
+    pagePrevious = () => this.collection.pagePrevious();
+    pageNext = ()=> this.collection.pageNext();    
+    pageLast = () => this.collection.pageLast();
+
+    disableActions = () => this.collection.disableActions() ? true : null;
+    hideAllCheckbox = () => this.collection.disableActions() || this.collection.items.length === 0;
+
+
+    pageFirstDisabled = () => this.collection.pageFirstDisabled() ? true : null;
+    pagePreviousDisabled = () => this.collection.pagePreviousDisabled() ? true : null;
+    pageNextDisabled = () => this.collection.pageNextDisabled() ? true : null;
+    pageLastDisabled = () => this.collection.pageLastDisabled() ? true : null;
+
+    showActions = () => this.collection.showActions();
+
+    doTable = () => this.collection.doTable();
+    doList = () => this.collection.doList();
+    doSummary = () => this.collection.doSummary();
+
+    selectAll = () => this.collection.selectAll();
+    allSelected = () => this.collection.allSelected();
+    hasTableData = () => this.collection.hasTableData(); 
+
+    itemTableTitle = (item: ItemViewModel) => item.tableRowViewModel.title;
+    itemHasTableTitle = (item: ItemViewModel) => item.tableRowViewModel.hasTitle;
+    itemTableProperties = (item: ItemViewModel) => item.tableRowViewModel.properties;
+
+
+    propertyType = (property: PropertyViewModel) => property.type;
+    propertyValue = (property: PropertyViewModel) => property.value;
+    propertyFormattedValue = (property: PropertyViewModel) => property.formattedValue;
+    propertyReturnType = (property: PropertyViewModel) => property.returnType; 
+
+
+    get actionsTooltip() {
+        return this.collection.actionsTooltip();
+    }
+
+    get message() {
+        return this.collection.getMessage();
+    }
+
+    get description() {
+        return this.collection.description();
+    }
+
+    get size() {
+        return this.collection.size;
+    }
+
+    get items() {
+        return this.collection.items;
+    }
+
+    get header() {
+        return this.collection.header;
+    }
+
+    itemId = (i: number) => `item${this.collection.onPaneId}-${i}`;
+
+    itemColor = (item: ItemViewModel) => item.color;
+
+    itemSelected = (item: ItemViewModel) => item.selected;
+
+    itemTitle = (item: ItemViewModel) => item.title;
+
+    doItemClick = (item: ItemViewModel, right?: boolean) => item.doClick(right);
+
+    title = "";
+    state = "list";
 
     getActionExtensions(routeData: PaneRouteData): Promise<Models.Extensions> {
         return routeData.objectId
@@ -47,7 +120,7 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private cachedRouteData: PaneRouteData;
 
-    setupList(routeData: PaneRouteData) {
+    protected setup(routeData: PaneRouteData) {
         this.cachedRouteData = routeData;
         const cachedList = this.context.getCachedList(routeData.paneId, routeData.page, routeData.pageSize);
 
@@ -62,81 +135,28 @@ export class ListComponent implements OnInit, OnDestroy, AfterViewInit {
             this.state = CollectionViewState[routeData.state].toString().toLowerCase();
             this.collection.refresh(routeData);
         } else if (cachedList) {
-
-            //if (routeData.state === cachedList.state)
-
-            const listViewModel = new ViewModels.ListViewModel(
-                this.color,
-                this.context,
-                this.viewModelFactory,
-                this.urlManager,
-                this.error
-            );
-            //$scope.listTemplate = template.getTemplateName(cachedList.extensions().elementType(), TemplateType.List, routeData.state);
-            listViewModel.reset(cachedList, routeData);
-            //$scope.collection = listViewModel;
-            this.collection = listViewModel;
+            this.collection = this.viewModelFactory.listViewModel(cachedList, routeData);
             this.state = CollectionViewState[routeData.state].toString().toLowerCase();
-
-            listViewModel.refresh(routeData);
-
-            //handleListActionsAndDialog($scope, routeData);
+            this.collection.refresh(routeData);
         }
-    }
-
-
-    onChild() {
-        this.paneType = "split";
-    }
-
-    onChildless() {
-        this.paneType = "single";
     }
 
     reload() {
 
         const recreate = () =>
             this.cachedRouteData.objectId
-            ? this.context.getListFromObject(this.cachedRouteData.paneId, this.cachedRouteData, this.cachedRouteData.page, this.cachedRouteData.pageSize)
-            : this.context.getListFromMenu(this.cachedRouteData.paneId, this.cachedRouteData, this.cachedRouteData.page, this.cachedRouteData.pageSize);
+                ? this.context.getListFromObject(this.cachedRouteData)
+                : this.context.getListFromMenu(this.cachedRouteData);
 
         recreate()
-            .then(() => this.setupList(this.cachedRouteData))
+            .then(() => this.setup(this.cachedRouteData))
             .catch((reject: Models.ErrorWrapper) => {
                 this.error.handleError(reject);
             });
     }
 
-    private activatedRouteDataSub: ISubscription;
-    private paneRouteDataSub: ISubscription;
-
-    ngOnInit(): void {
-
-        this.activatedRoute.data.subscribe((data: any) => {
-            this.paneId = data["pane"];
-            this.paneType = data["class"];
-        });
-
-        this.urlManager.getRouteDataObservable()
-            .subscribe((rd: RouteData) => {
-                if (this.paneId) {
-                    const paneRouteData = rd.pane()[this.paneId];
-                    this.setupList(paneRouteData);
-                }
-            });
-    }
-
-    ngOnDestroy(): void {
-        if (this.activatedRouteDataSub) {
-            this.activatedRouteDataSub.unsubscribe();
-        }
-        if (this.paneRouteDataSub) {
-            this.paneRouteDataSub.unsubscribe();
-        }
-    }
-
     // todo DRY this - and rename - copy not cut
-    cut(event: any, item: ViewModels.IDraggableViewModel) {
+    cut(event: any, item: IDraggableViewModel) {
         const cKeyCode = 67;
         if (event && (event.keyCode === cKeyCode && event.ctrlKey)) {
             this.context.setCutViewModel(item);

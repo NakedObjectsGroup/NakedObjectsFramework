@@ -1,17 +1,17 @@
-<div *ngFor="let menu of menuVm.menuItems">
-  <div *ngIf="menu.name" (click)="menu.toggleCollapsed()" class="submenu clickable-area" [ngSwitch]="menu.navCollapsed">
-    {{menu.name}}
+<div *ngFor="let menu of items">
+  <div *ngIf="menuName(menu)" (click)="toggleCollapsed(menu)" class="submenu clickable-area" [ngSwitch]="navCollapsed(menu)">
+    {{menuName(menu)}}
     <div *ngSwitchCase="true" class="icon-expand"></div>
     <div *ngSwitchCase="false" class="icon-collapse"></div>
   </div>
-  <div class="" [ngClass]="{collapsed : menu.navCollapsed, open : !menu.navCollapsed, rootMenu : !menu.name }">
-    <div *ngIf="menu.actions  && menu.actions.length > 0">
-      <div *ngFor="let action of menu.actions">
+  <div class="" [ngClass]="displayClass(menu)">
+    <div *ngIf="menuActions(menu)  && menuActions(menu).length > 0">
+      <div *ngFor="let action of menuActions(menu)">
         <action class="action" [action]="action"></action>
       </div>
     </div>
-    <div *ngIf="menu.menuItems && menu.menuItems.length > 0">
-      <actions [menuVm]="menu"></actions>
+    <div *ngIf="menuItems(menu) && menuItems(menu).length > 0">
+      <actions [menu]="menu"></actions>
     </div>
   </div>
 </div>

@@ -5,10 +5,10 @@ import * as RoCustom from "./ro-interfaces-custom";
 import * as Msg from "./user-messages";
 import * as _ from "lodash";
 import { MaskService, ILocalFilter } from "./mask.service";
-import * as ViewModels from "./view-models";
 import { ContextService } from "./context.service";
 //import * as moment  from "moment";
 import { MomentWrapperService } from "./moment-wrapper.service";
+import { ChoiceViewModel } from './view-models/choice-view-model';
 
 
 export function dirtyMarker(context: ContextService, oid: ObjectIdWrapper) {
@@ -275,7 +275,7 @@ function validateString(model: IHasExtensions, newValue: any, filter: ILocalFilt
 }
 
 
-export function validateMandatory(model: IHasExtensions, viewValue: string | ViewModels.ChoiceViewModel): string {
+export function validateMandatory(model: IHasExtensions, viewValue: string |ChoiceViewModel): string {
     // first check 
     const isMandatory = !model.extensions().optional();
 
@@ -1408,12 +1408,12 @@ export class PromptRepresentation extends ResourceRepresentation<Ro.IPromptRepre
         return this.wrapped().id;
     }
 
-    choices(isOptional : boolean): _.Dictionary<Value> {
+    choices(addEmpty : boolean): _.Dictionary<Value> {
         const ch = this.wrapped().choices;
         if (ch) {
             let values = _.map(ch, item => new Value(item));
 
-            if (isOptional) {
+            if (addEmpty) {
                 const emptyValue = new Value("");
                 values = _.concat([emptyValue], values);
             }
@@ -2019,6 +2019,12 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
         }
 
         return this.oid;
+    }
+
+    updateSelfLinkWithTitle() {
+        const link = this.selfLink();
+        link.setTitle(this.title());
+        return link;
     }
 }
 

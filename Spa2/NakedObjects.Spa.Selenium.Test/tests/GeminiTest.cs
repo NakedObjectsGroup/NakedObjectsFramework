@@ -671,7 +671,7 @@ namespace NakedObjects.Selenium
         protected void CheckIndividualItem(int itemNo, string label, string value, bool equal = true)
         {
             GeminiUrl("object?o1=___1.SpecialOffer--" + (itemNo + 1));
-            var html = label + "\r\n" + value;
+            var html = label + " " + value;
             if (equal)
             {
                 wait.Until(dr => dr.FindElements(By.CssSelector(".property")).First(p => p.Text.StartsWith(label)).Text == html);

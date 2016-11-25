@@ -1,5 +1,5 @@
 import { Component, Input, ElementRef } from '@angular/core';
-import * as ViewModels from "../view-models";
+import { ActionViewModel } from '../view-models/action-view-model';
 
 @Component({
     selector: 'action',
@@ -8,29 +8,27 @@ import * as ViewModels from "../view-models";
 })
 export class ActionComponent {
 
-
     constructor(private myElement: ElementRef) {
     }
 
-    private actionVm: ViewModels.ActionViewModel;
+    @Input()
+    action: ActionViewModel;
 
-    disabled() { return this.actionVm.disabled(); }
+    get description() {
+        return this.action.description;
+    }
+
+    get friendlyName() {
+        return this.action.title;
+    }
+
+    disabled() {
+        return this.action.disabled() ? true : null;
+    }
 
     doInvoke(right?: boolean) {
-        this.actionVm.doInvoke(right);
+        this.action.doInvoke(right);
     }
-
-    @Input()
-    set action(value: ViewModels.ActionViewModel) {
-
-        this.actionVm = value;
-
-        this.description = this.actionVm.description;
-        this.friendlyName = this.actionVm.title;
-    }
-
-    description: string;
-    friendlyName: string;
 
     focus() {
         this.myElement.nativeElement.children[0].focus();

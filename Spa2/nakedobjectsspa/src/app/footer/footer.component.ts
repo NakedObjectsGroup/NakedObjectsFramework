@@ -5,11 +5,12 @@ import { UrlManagerService } from "../url-manager.service";
 import { ClickHandlerService } from "../click-handler.service";
 import { ContextService } from "../context.service";
 import { ErrorService } from "../error.service";
+import { RepLoaderService } from "../rep-loader.service";
+import { IDraggableViewModel } from '../view-models/idraggable-view-model';
+import { IMessageViewModel } from '../view-models/imessage-view-model';
 import * as Msg from "../user-messages";
 import * as Config from "../config";
 import * as Models from "../models";
-import * as ViewModels from "../view-models";
-import { RepLoaderService } from "../rep-loader.service";
 
 @Component({
     selector: 'footer',
@@ -25,7 +26,6 @@ export class FooterComponent implements OnInit {
         private repLoader: RepLoaderService,
         private location: Location) {
     }
-
 
     loading: string;
     template: string;
@@ -44,7 +44,6 @@ export class FooterComponent implements OnInit {
         this.location.forward();
     };
     swapPanes = () => {
-        // $rootScope.$broadcast(Nakedobjectsconstants.geminiPaneSwapEvent);
         this.context.updateValues();
         this.context.swapCurrentObjects();
         this.urlManager.swapPanes();
@@ -95,7 +94,16 @@ export class FooterComponent implements OnInit {
     warnings: string[];
     messages: string[];
 
-    cutViewModel: ViewModels.IDraggableViewModel;
+    copyViewModel: IDraggableViewModel;
+
+    get currentCopyColor() {
+        return this.copyViewModel.color;
+    }
+
+    get currentCopyTitle() {
+        return this.copyViewModel.draggableTitle();
+    }
+
 
     ngOnInit() {
         this.context.getUser().then((user: Models.UserRepresentation) => this.userName = user.userName()).catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
@@ -109,6 +117,6 @@ export class FooterComponent implements OnInit {
             this.messages = ms);
 
         this.context.cutViewModel$.subscribe((cvm: any) =>
-            this.cutViewModel = cvm);
+            this.copyViewModel = cvm);
     }
 }

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import * as ViewModels from "../view-models";
+import { CollectionViewModel } from '../view-models/collection-view-model';
 
 @Component({
     selector: 'collections',
@@ -8,14 +8,6 @@ import * as ViewModels from "../view-models";
 })
 export class CollectionsComponent {
 
-    colls: any;
-
     @Input()
-    set collections(value: ViewModels.CollectionViewModel[]) {
-        this.colls = value;
-    }
-
-    get collections() {
-        return this.colls;
-    }
+    collections : CollectionViewModel[];
 }

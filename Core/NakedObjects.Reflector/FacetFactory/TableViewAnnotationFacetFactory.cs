@@ -6,7 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 using System.Reflection;
+using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -18,6 +20,8 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class TableViewAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(TableViewAnnotationFacetFactory));
+
         public TableViewAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.CollectionsAndActions) {}
 
@@ -28,8 +32,24 @@ namespace NakedObjects.Reflect.FacetFactory {
             }
         }
 
+        private static ITableViewFacet CreateTableViewFacet(TableViewAttribute attribute, ISpecification holder) {
+            var columns = attribute.Columns == null ? new string[] { } : attribute.Columns;
+            var distinctColumns = columns.Distinct().ToArray();
+
+            if (columns.Length != distinctColumns.Length) {
+                // we had duplicates - log 
+                var duplicates = columns.GroupBy(x => x).Where(g => g.Count() > 1).Select(g => g.Key).Aggregate("", (s, t) => s != "" ? s + ", " + t : t);
+                var name = holder.Identifier == null ? "Unknown" : holder.Identifier.ToString();
+                Log.WarnFormat("Table View on {0} had duplicate columns {1}", name, duplicates);
+                columns = distinctColumns;
+            }
+
+            return new TableViewFacet(attribute.Title, columns, holder);
+        }
+
+
         private static ITableViewFacet Create(TableViewAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new TableViewFacet(attribute.Title, attribute.Columns, holder);
+            return attribute == null ? null : CreateTableViewFacet(attribute, holder);
         }
 
         public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {

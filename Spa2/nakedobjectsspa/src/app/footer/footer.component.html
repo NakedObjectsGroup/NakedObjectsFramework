@@ -17,10 +17,10 @@
 	<div class="messages" *ngFor="let message of messages">
 		<div>{{message}}</div>
 	</div>
-	<div *ngIf="cutViewModel"  class="currentcopy">
+	<div *ngIf="copyViewModel" class="currentcopy">
         <span>Copying...</span>
-        <div class="reference {{cutViewModel.color}" dnd-draggable [dragEnabled]="true" [dragData]="cutViewModel">{{cutViewModel.draggableTitle()}}</div>
+        <div class="reference" [ngClass]="currentCopyColor" dnd-draggable [dragEnabled]="true" [dragData]="copyViewModel">{{currentCopyTitle}}</div>
     </div>
-	<!--<div class="user">{{toolBar.userName}}</div>
+	<!--<div class="user">{{userName}}</div>
     <a style="display: none"></a>-->
 </div>

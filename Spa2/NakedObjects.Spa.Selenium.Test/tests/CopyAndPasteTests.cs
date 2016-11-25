@@ -84,8 +84,8 @@ namespace NakedObjects.Selenium {
             //Now check that Auto-complete is working
             WaitForCss("input#salesperson1").Clear();
             ClearFieldThenType("input#salesperson1", "Ito");
-            wait.Until(dr => dr.FindElement(By.CssSelector("div ul:nth-child(2) li a")).Text == "Shu Ito");
-            var item = br.FindElement(By.CssSelector("div ul:nth-child(2) li a"));
+            wait.Until(dr => dr.FindElement(By.CssSelector("div ul:nth-child(1) li a")).Text == "Shu Ito");
+            var item = br.FindElement(By.CssSelector("div ul:nth-child(1) li a"));
             Click(item);
             wait.Until(dr => dr.FindElement(By.CssSelector("input#salesperson1")).GetAttribute("value") == "Shu Ito");
             //Finish somewhere else
