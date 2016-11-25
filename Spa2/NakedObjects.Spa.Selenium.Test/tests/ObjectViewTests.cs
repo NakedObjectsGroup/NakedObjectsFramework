@@ -145,6 +145,11 @@ namespace NakedObjects.Selenium {
             var cell = WaitForCss("td:nth-child(6)");
             Assert.AreEqual("31 Dec 2008", cell.Text);
         }
+        public virtual void TableViewIgnoresDuplicatedColumnName()
+        {
+            GeminiUrl("object?i1=View&r=1&o1=___1.SalesPerson--280&c1_QuotaHistory=Table");
+            WaitForView(Pane.Single, PaneType.Object); //i.e. not an error (c.f. bug #57)
+        }
         public virtual void ClickReferenceProperty() {
             GeminiUrl("object?o1=___1.Store--350&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Twin Cycles");
@@ -194,6 +199,17 @@ namespace NakedObjects.Selenium {
             var addr = row.FindElements(By.CssSelector(".cell"))[1].Text;
             Click(row);
             WaitForView(Pane.Single, PaneType.Object, type + ": " + addr);
+        }
+        public virtual void CanClickOnTitleInTableView()
+        {
+            GeminiUrl("object?i1=View&r=1&o1=___1.Employee--56&c1_DepartmentHistory=Summary&c1_PayHistory=Table");
+            WaitForView(Pane.Single, PaneType.Object, "Denise Smith");
+            var row = wait.Until(dr => dr.FindElement(By.CssSelector("table tbody tr")));
+            wait.Until(dr => row.FindElements(By.CssSelector(".cell")).Count >= 3);
+
+            var title = row.FindElements(By.CssSelector(".cell"))[0];
+            Click(title);
+            WaitForView(Pane.Single, PaneType.Object, "$11.00 from 3/9/2003");
         }
         public virtual void QueryOnlyActionDoesNotReloadAutomatically() {
             GeminiUrl("object?o1=___1.Person--8410&as1=open");
@@ -404,6 +420,12 @@ namespace NakedObjects.Selenium {
         public override void TableViewHonouredOnCollection() {
             base.TableViewHonouredOnCollection();
         }
+        
+        [TestMethod]
+        public override void TableViewIgnoresDuplicatedColumnName()
+        {
+            base.TableViewIgnoresDuplicatedColumnName();
+        }
 
         [TestMethod]
         public override void ClickReferenceProperty() {
@@ -428,6 +450,11 @@ namespace NakedObjects.Selenium {
         [TestMethod]
         public override void ClickOnLineItemWithCollectionAsTable() {
             base.ClickOnLineItemWithCollectionAsTable();
+        }
+        [TestMethod]
+        public override void CanClickOnTitleInTableView()
+        {
+            base.CanClickOnTitleInTableView();
         }
 
         [TestMethod]
@@ -584,11 +611,13 @@ namespace NakedObjects.Selenium {
             CollectionEagerlyRendered();
             DateAndCurrencyProperties();
             TableViewHonouredOnCollection();
+            TableViewIgnoresDuplicatedColumnName();
             ClickReferenceProperty();
             OpenCollectionAsList();
             NotCountedCollection();
             ClickOnLineItemWithCollectionAsList();
             ClickOnLineItemWithCollectionAsTable();
+            CanClickOnTitleInTableView();
             DialogAction();
             //DialogActionOk();
             ObjectAction();

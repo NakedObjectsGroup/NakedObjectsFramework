@@ -160,7 +160,6 @@
     <None Include="Scripts\nakedobjects.services.template.config.ts.pp" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.template.config.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.template.ts" />
-    <TypeScriptCompile Include="Scripts\nakedobjects.version.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.color.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.mask.config.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.color.config.ts" />
@@ -185,6 +184,7 @@
     <TypeScriptCompile Include="Scripts\nakedobjects.cicerocommandfactory.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.viewmodelfactory.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.exceptionhandler.ts" />
+    <TypeScriptCompile Include="Scripts\nakedobjects.version.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.vminterfaces.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.viewmodels.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.models.helpers.ts" />
