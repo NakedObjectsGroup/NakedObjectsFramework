@@ -117,6 +117,8 @@ export class DialogViewModel extends MessageViewModel {
                     //this.doCloseKeepHistory();
                 }
                 // else query only going to other tab leave dialog open
+                // else query only going to other tab leave dialog open
+                this.doCompleteButLeaveOpen();
             })
             .catch((reject: Models.ErrorWrapper) => {
                 const display = (em: Models.ErrorMap) => Helpers.handleErrorResponse(em, this, this.parameters);
@@ -133,8 +135,8 @@ export class DialogViewModel extends MessageViewModel {
         this.urlManager.closeDialogReplaceHistory(this.onPaneId);
     };
 
-      doCompleteButLeaveOpen = () => {       
-        }
+    doCompleteButLeaveOpen = () => {
+    }
 
     clearMessages = () => {
         this.resetMessage();

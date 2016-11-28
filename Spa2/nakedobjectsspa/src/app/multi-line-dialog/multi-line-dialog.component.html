@@ -9,11 +9,12 @@
         </div>
         <div class="columnHeader" *ngFor="let column of header">{{column}}</div>
         <div class="lineDialog" *ngFor="let row of rows; let i = index ">
-            <form (ngSubmit)="invokeAndAdd(i)" [formGroup]="form(i)" autocomplete="off">
-                <parameters class="parameters" [parameters]="parameters(row)" [parent]="row" [form]="form(i)"></parameters>
+            <form *ngIf="!rowSubmitted(row)" (ngSubmit)="invokeAndAdd(i)" [formGroup]="form(i)" autocomplete="off">
+                <parameters  class="parameters" [parameters]="parameters(row)" [parent]="row" [form]="form(i)"></parameters>               
                 <input *ngIf="!rowSubmitted(row)" class="ok" tabindex="0" type="submit" value="OK" title="{{rowTooltip(row)}}" [disabled]="rowDisabled(row)" geminiClick (leftClick)="invokeAndAdd(i)" />
                 <div class="co-validation">{{message}}</div>
             </form>
+            <parameters *ngIf="rowSubmitted(row)" class="parameters" [parameters]="parameters(row)" [parent]="row"></parameters>
         </div>
         <input class="close" tabindex="0" type="submit" value="Close" title="" geminiClick (leftClick)="close()" />
         <div class="count">{{count}}</div>

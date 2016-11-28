@@ -31,7 +31,6 @@ export class MultiLineDialogViewModel {
 
         dialogViewModel.actionViewModel.gotoResult = false;
 
-
         dialogViewModel.doCloseKeepHistory = () => {
             dialogViewModel.submitted = true;
         };
@@ -43,7 +42,6 @@ export class MultiLineDialogViewModel {
         dialogViewModel.doCompleteButLeaveOpen = () => {
             dialogViewModel.submitted = true;
         };
-
 
         dialogViewModel.parameters.forEach(p => p.setAsRow(i));
 
@@ -85,21 +83,23 @@ export class MultiLineDialogViewModel {
         return _.reduce(tooltips, (s, t) => `${s}\n${t}`);
     }
 
-    invokeAndAdd(index: number) {
+    invokeAndAdd(index: number) {      
         this.dialogs[index].doInvoke();
-        this.add(index);
+        this.context.clearDialogValues();
+        return this.add(index);
         //this.focusManager.focusOn(FocusTarget.MultiLineDialogRow, 1, 1); 
     }
 
     add(index: number) {
         if (index === this.dialogs.length - 1) {
             // if this is last dialog always add another
-            this.dialogs.push(this.createRow(this.dialogs.length));
+            return this.dialogs.push(this.createRow(this.dialogs.length)) - 1;
         }
         else if (_.takeRight(this.dialogs)[0].submitted) {
             // if the last dialog is submitted add another 
-            this.dialogs.push(this.createRow(this.dialogs.length));
+            return this.dialogs.push(this.createRow(this.dialogs.length)) - 1;
         }
+        return 0;
     }
 
     clear(index: number) {

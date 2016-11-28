@@ -1,0 +1,39 @@
+<div class="name">
+    <label attr.for="{{parameterPaneId}}">{{title}}</label>
+</div>
+
+<div *ngIf="parameterType === 'ref'">
+    <div class="value">{{formattedValue}}</div>
+</div>
+
+<div *ngIf="parameterType === 'scalar'" >
+    <div [ngSwitch]="parameterReturnType">
+        <div ng-switch-when="string" ng-switch="parameter.format">
+          
+            <div *ngIf="isBlob" class="reference clickable-area" geminiClick (leftClick)="doAttachmentClick()" (rightClick)="doAttachmentClick(true)" tabindex="0">
+                <div *ngIf="!image">{{attachmentTitle}}</div>
+                <img *ngIf="image" src="{{image}}" alt="{{attachmentTitle}}" />
+            </div>
+            <div *ngIf="!isBlob">
+                <div *ngIf="!isMultiline" class="value">
+                    {{formattedValue}}
+                </div>
+                <div *ngIf="isMultiline" class="value multiline" [ngStyle]="{height : multilineHeight}">
+                    <pre>{{formattedValue}}</pre>
+                </div>
+            </div>
+        </div>
+
+        <div *ngSwitchCase="'boolean'">
+            <input type="checkbox" [checked]="value" disabled="disabled" />
+        </div>
+
+        <div *ngSwitchDefault>
+            <div class="value">{{formattedValue}}</div>
+        </div>
+    </div>
+</div>
+
+
+
+

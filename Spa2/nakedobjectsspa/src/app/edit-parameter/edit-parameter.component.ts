@@ -11,7 +11,7 @@ import { DialogViewModel } from '../view-models/dialog-view-model';
 import { ChoiceViewModel } from '../view-models/choice-view-model';
 
 @Component({
-    selector: 'parameter',
+    selector: 'edit-parameter',
     host: {
         '(document:click)': 'handleClick($event)'
     },

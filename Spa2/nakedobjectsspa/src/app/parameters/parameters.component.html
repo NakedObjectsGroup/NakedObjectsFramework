@@ -1,1 +1,2 @@
-<parameter class="parameter" *ngFor="let parm of parameters" [parameter]="parm" [parent]="parent" [form]="form"></parameter>
+<div  *ngIf="form"><edit-parameter  class="parameter" *ngFor="let parm of parameters" [parameter]="parm" [parent]="parent" [form]="form"></edit-parameter></div>
+<div *ngIf="!form"><view-parameter class="parameter" *ngFor="let parm of parameters" [parameter]="parm" [parent]="parent"></view-parameter></div>

@@ -60,6 +60,8 @@
     <Content Include="src\app\properties\properties.component.html" />
     <Content Include="src\app\recent\recent.component.css" />
     <Content Include="src\app\recent\recent.component.html" />
+    <Content Include="src\app\view-parameter\view-parameter.component.css" />
+    <Content Include="src\app\view-parameter\view-parameter.component.html" />
     <Content Include="src\app\view-property\view-property.component.css" />
     <Content Include="src\app\view-property\view-property.component.html" />
     <Content Include="src\favicon.ico" />
@@ -164,6 +166,7 @@
     <TypeScriptCompile Include="src\app\view-models\recent-items-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\table-row-column-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\table-row-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-parameter\view-parameter.component.ts" />
     <TypeScriptCompile Include="src\app\view-property\view-property.component.ts" />
     <TypeScriptCompile Include="src\environments\environment.prod.ts" />
     <TypeScriptCompile Include="src\environments\environment.ts" />

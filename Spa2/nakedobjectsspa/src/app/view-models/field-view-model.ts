@@ -77,6 +77,7 @@ export abstract class FieldViewModel extends MessageViewModel {
     }
 
     private currentChoice: ChoiceViewModel;
+    private currentMultipleChoices: ChoiceViewModel[];
 
 
     get selectedChoice(): ChoiceViewModel {
@@ -88,7 +89,7 @@ export abstract class FieldViewModel extends MessageViewModel {
         // choice
         if (newChoice instanceof ChoiceViewModel || newChoice == null) {
             this.currentChoice = newChoice;
-            this.updateColor();
+            this.update();
         }
     }
 
@@ -100,10 +101,17 @@ export abstract class FieldViewModel extends MessageViewModel {
 
     set value(newValue: Ro.scalarValueType | Date) {
         this.currentRawValue = newValue;
-        this.updateColor();
+        this.update();
     }
 
-    selectedMultiChoices: ChoiceViewModel[];
+    get selectedMultiChoices(): ChoiceViewModel[] {
+        return this.currentMultipleChoices;
+    }
+
+    set selectedMultiChoices(choices: ChoiceViewModel[]) {
+        this.currentMultipleChoices = choices;
+        this.update();
+    }
 
     file: Models.Link;
 
@@ -172,6 +180,10 @@ export abstract class FieldViewModel extends MessageViewModel {
     }
 
     private updateColor: () => void;
+
+    protected update() {
+        this.updateColor();
+    }
 
     private setColor(color: ColorService) {
 

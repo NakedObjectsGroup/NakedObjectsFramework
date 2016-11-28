@@ -35,9 +35,12 @@ export class MultiLineDialogComponent extends PaneComponent {
 
     dialog: MultiLineDialogViewModel;
 
-    forms: {form : FormGroup, parms : _.Dictionary<Parameterviewmodel.ParameterViewModel> }[];
+    rowData: {form : FormGroup, dialog : DialogViewModel,  parms : _.Dictionary<Parameterviewmodel.ParameterViewModel> }[];
 
-    form = (i : number) => this.forms[i].form;
+    form = (i: number) => {
+        const rowData = this.rowData[i];
+        return rowData.form;
+    };
 
     get objectFriendlyName() {
         return this.dialog.objectFriendlyName;
@@ -78,19 +81,23 @@ export class MultiLineDialogComponent extends PaneComponent {
     }
 
     invokeAndAdd(index: number) {
-        const parms = this.forms[index].parms;
+        const parms = this.rowData[index].parms;
 
         _.forEach(parms,
             (p, k) => {
-                const newValue = this.forms[index].form.value[p.id];
+                const newValue = this.rowData[index].form.value[p.id];
                 p.setValueFromControl(newValue);
             });
 
-        this.dialog.invokeAndAdd(index);
+        const addedIndex = this.dialog.invokeAndAdd(index);
+
+        if (addedIndex) {
+            this.rowData.push(this.createForm(this.dialog.dialogs[addedIndex]));
+        }
     }
 
     close = () => {
-
+        this.urlManager.popUrlState();
     }
 
     // todo very similar to code in DialogComponent - DRY 
@@ -111,7 +118,7 @@ export class MultiLineDialogComponent extends PaneComponent {
             dialog.setParms();
         });
 
-        return { form: form, parms: parms };
+        return { form: form, dialog : dialog, parms: parms };
     }
 
     setMultiLineDialog(holder: Models.MenuRepresentation | Models.DomainObjectRepresentation | CollectionViewModel,
@@ -127,11 +134,6 @@ export class MultiLineDialogComponent extends PaneComponent {
                     actionViewModel.makeInvokable(details);
                 }
 
-                // $scope.multiLineDialogTemplate = multiLineDialogTemplate;
-                // $scope.parametersTemplate = parametersTemplate;
-                // $scope.parameterTemplate = parameterTemplate;
-                // $scope.readOnlyParameterTemplate = readOnlyParameterTemplate;
-
                 this.dialog = this.viewModelFactory.multiLineDialogViewModel(routeData, details);
 
                 // todo - do this in constructor and pass in holder
@@ -143,9 +145,7 @@ export class MultiLineDialogComponent extends PaneComponent {
                     this.dialog.objectTitle = "";
                 }
 
-                this.forms = _.map(this.dialog.dialogs, d => this.createForm(d));
-
-                // $scope.multiLineDialog = dialogViewModel;
+                this.rowData = _.map(this.dialog.dialogs, d => this.createForm(d));
             }).
             catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
     }

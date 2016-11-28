@@ -41,6 +41,7 @@ import {DND_PROVIDERS, DND_DIRECTIVES} from 'ng2-dnd';
 import { ReactiveFormsModule }          from '@angular/forms';
 import { AttachmentComponent } from './attachment/attachment.component';
 import { MultiLineDialogComponent } from './multi-line-dialog/multi-line-dialog.component';
+import { ViewParameterComponent } from './view-parameter/view-parameter.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { MultiLineDialogComponent } from './multi-line-dialog/multi-line-dialog.
     CollectionComponent,
     DND_DIRECTIVES,
     AttachmentComponent,
-    MultiLineDialogComponent
+    MultiLineDialogComponent,
+    ViewParameterComponent
   ],
   imports: [
     BrowserModule,

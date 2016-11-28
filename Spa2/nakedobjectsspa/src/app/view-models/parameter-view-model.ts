@@ -203,6 +203,36 @@ export class ParameterViewModel extends FieldViewModel {
             this.paneArgId = `${this.argId}${i}`;
         }
 
+        protected update() {
+            super.update();
+
+            switch (this.entryType) {
+                case (Models.EntryType.FreeForm):
+                    if (this.type === "scalar") {
+                        if (this.localFilter) {
+                            this.formattedValue = this.value ? this.localFilter.filter(this.value) : "";
+                        } else {
+                            this.formattedValue = this.value ? this.value.toString() : "";
+                        }
+                        break;
+                    }
+                // fall through 
+                case (Models.EntryType.AutoComplete):
+                case (Models.EntryType.Choices):
+                case (Models.EntryType.ConditionalChoices):
+                    this.formattedValue = this.selectedChoice ? this.selectedChoice.toString() : "";
+                    break;
+                case (Models.EntryType.MultipleChoices):
+                case (Models.EntryType.MultipleConditionalChoices):
+                    const count = !this.selectedMultiChoices ? 0 : this.selectedMultiChoices.length;
+                    this.formattedValue = `${count} selected`;
+                    break;
+                default:
+                    this.formattedValue = this.value ? this.value.toString() : "";
+            }
+        }
+
+
     parameterRep: Models.Parameter;
     dflt: string;
 }
