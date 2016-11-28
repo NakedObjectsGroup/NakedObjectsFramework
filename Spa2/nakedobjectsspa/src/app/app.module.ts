@@ -17,7 +17,7 @@ import { DialogComponent } from './dialog/dialog.component';
 import { ParametersComponent } from './parameters/parameters.component';
 import { EditPropertyComponent } from './edit-property/edit-property.component';
 import { ViewPropertyComponent } from './view-property/view-property.component';
-import { ParameterComponent } from './parameter/parameter.component';
+import { EditParameterComponent } from './edit-parameter/edit-parameter.component';
 import { RecentComponent } from './recent/recent.component';
 import { ApplicationPropertiesComponent } from './application-properties/application-properties.component';
 import { GeminiClickDirective } from './gemini-click.directive';
@@ -58,7 +58,7 @@ import { MultiLineDialogComponent } from './multi-line-dialog/multi-line-dialog.
     ParametersComponent,
     EditPropertyComponent,
     ViewPropertyComponent,
-    ParameterComponent,
+    EditParameterComponent,
     RecentComponent,
     ApplicationPropertiesComponent,
     GeminiClickDirective,

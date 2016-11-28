@@ -54,8 +54,8 @@
     <Content Include="src\app\object\object.component.html" />
     <Content Include="src\app\parameters\parameters.component.css" />
     <Content Include="src\app\parameters\parameters.component.html" />
-    <Content Include="src\app\parameter\parameter.component.css" />
-    <Content Include="src\app\parameter\parameter.component.html" />
+    <Content Include="src\app\edit-parameter\edit-parameter.component.css" />
+    <Content Include="src\app\edit-parameter\edit-parameter.component.html" />
     <Content Include="src\app\properties\properties.component.css" />
     <Content Include="src\app\properties\properties.component.html" />
     <Content Include="src\app\recent\recent.component.css" />
@@ -123,7 +123,7 @@
     <TypeScriptCompile Include="src\app\object\object.component.ts" />
     <TypeScriptCompile Include="src\app\pane\pane.ts" />
     <TypeScriptCompile Include="src\app\parameters\parameters.component.ts" />
-    <TypeScriptCompile Include="src\app\parameter\parameter.component.ts" />
+    <TypeScriptCompile Include="src\app\edit-parameter\edit-parameter.component.ts" />
     <TypeScriptCompile Include="src\app\properties\properties.component.ts" />
     <TypeScriptCompile Include="src\app\recent\recent.component.ts" />
     <TypeScriptCompile Include="src\app\rep-loader.service.ts" />

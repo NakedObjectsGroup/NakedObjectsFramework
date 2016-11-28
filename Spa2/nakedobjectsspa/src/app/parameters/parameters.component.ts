@@ -1,6 +1,6 @@
 import { Component, Input, ViewChildren, QueryList } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ParameterComponent } from "../parameter/parameter.component";
+import { EditParameterComponent } from "../edit-parameter/edit-parameter.component";
 import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { DialogViewModel } from '../view-models/dialog-view-model';
 import * as Models from "../models";
@@ -21,10 +21,10 @@ export class ParametersComponent {
     @Input()
     parameters: ParameterViewModel[];
 
-    @ViewChildren(ParameterComponent)
-    parmComponents: QueryList<ParameterComponent>;
+    @ViewChildren(EditParameterComponent)
+    parmComponents: QueryList<EditParameterComponent>;
 
-    focusOnFirstAction(parms: QueryList<ParameterComponent>) {
+    focusOnFirstAction(parms: QueryList<EditParameterComponent>) {
         if (parms && parms.first) {
             parms.first.focus();
         }
@@ -32,6 +32,6 @@ export class ParametersComponent {
 
     ngAfterViewInit(): void {
         this.focusOnFirstAction(this.parmComponents);
-        this.parmComponents.changes.subscribe((ql: QueryList<ParameterComponent>) => this.focusOnFirstAction(ql));
+        this.parmComponents.changes.subscribe((ql: QueryList<EditParameterComponent>) => this.focusOnFirstAction(ql));
     }
 }

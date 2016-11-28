@@ -15,10 +15,10 @@ import { ChoiceViewModel } from '../view-models/choice-view-model';
     host: {
         '(document:click)': 'handleClick($event)'
     },
-    templateUrl: './parameter.component.html',
-    styleUrls: ['./parameter.component.css']
+    templateUrl: './edit-parameter.component.html',
+    styleUrls: ['./edit-parameter.component.css']
 })
-export class ParameterComponent extends FieldComponent implements OnInit {
+export class EditParameterComponent extends FieldComponent implements OnInit {
 
     constructor(private viewModelFactory: ViewModelFactoryService,
         private urlManager: UrlManagerService,
