@@ -24,6 +24,10 @@ export class ParametersComponent {
     @ViewChildren(EditParameterComponent)
     parmComponents: QueryList<EditParameterComponent>;
 
+    classes = () => {
+        return `parameter${this.parent.isMultiLineDialogRow ? " multilinedialog" : ""}`;
+    }
+
     focusOnFirstAction(parms: QueryList<EditParameterComponent>) {
         if (parms && parms.first) {
             parms.first.focus();

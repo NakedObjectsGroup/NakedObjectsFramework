@@ -27,7 +27,7 @@ export class MultiLineDialogViewModel {
 
 
     private createRow(i: number) {
-        const dialogViewModel = this.viewModelFactory.dialogViewModel(this.routeData, this.action as Models.IInvokableAction, null);
+        const dialogViewModel = this.viewModelFactory.dialogViewModel(this.routeData, this.action as Models.IInvokableAction, null, true);
 
         dialogViewModel.actionViewModel.gotoResult = false;
 

@@ -21,7 +21,8 @@ export class DialogViewModel extends MessageViewModel {
         private error: ErrorService,
         private routeData: PaneRouteData,
         action: Models.IInvokableAction,
-        public actionViewModel : ActionViewModel
+        public actionViewModel: ActionViewModel,
+        public isMultiLineDialogRow : boolean
     ) {
         super();
 
@@ -62,11 +63,11 @@ export class DialogViewModel extends MessageViewModel {
         return this.actionViewModel.execute(pps, right);
     };
 
-    //actionViewModel: ActionViewModel;
     title: string;
     id: string;
     parameters: ParameterViewModel[];
     submitted = false;
+   
 
     reset(actionViewModel: ActionViewModel, routeData: PaneRouteData) {
         this.actionViewModel = actionViewModel;
