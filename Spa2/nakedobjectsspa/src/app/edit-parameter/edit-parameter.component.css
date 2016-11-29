@@ -8,6 +8,9 @@
     margin-bottom: 5px;
 }
 
+input {
+    border-style: none;
+}
 .name {
     float: left;
     width: 145px;
@@ -17,7 +20,6 @@
 .reference, .value, collectionDetails {
     width: 245px;
     padding-left: 5px;
-    padding-right: 5px;
     margin: 1px;
 }
 
@@ -38,4 +40,33 @@ input[type='text'] {
 
 .validation {
     display: block;
+}
+
+/*MultiLine dialog*/
+ :host.multilinedialog, :host.multilinedialog .co-validation, .multilinedialog .buttons {
+    display: inline-block;
+    vertical-align: top;
+}
+
+:host.multilinedialog .name {
+    display: none;
+}
+
+:host.multilinedialog .parameter {
+    width: 245px; /*To force (on IE) any validation message to be displayed underneath the field*/
+}
+
+:host.multilinedialog input:focus,.multilinedialog input:hover  {
+    outline-width: 1px;
+    outline-style: dashed;
+}
+
+:host.multilinedialog .input-control input:not([type='checkbox']){
+    height: 20px;
+    padding-top: 2px;
+}
+
+:host.multilinedialog .validation {
+    color: white;
+    margin-left: 5px;
 }

@@ -3,3 +3,22 @@ host {
     padding: 5px;
     margin-bottom: 20px;
 }
+
+:host.multilinedialog .co-validation {
+    vertical-align: top;
+    margin-top: 2px;
+    margin-left: 2px;
+}
+
+:host.multilinedialog input.ok {
+    margin-top: 4px;
+    margin-right: 0px;
+    margin-left: 2px;
+    padding-top: 1px;
+    padding-bottom: 0px;
+    padding-left: 2px;
+    padding-right: 2px;
+    float: none;
+    vertical-align: top;
+    outline-color: lightgray;
+}
