@@ -17,6 +17,7 @@ import { DialogViewModel } from '../view-models/dialog-view-model';
 import { ListViewModel } from '../view-models/list-view-model';
 import { MenuViewModel } from '../view-models/menu-view-model';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
+import * as Collectionviewmodel from '../view-models/collection-view-model';
 
 @Component({
     selector: 'app-dialog',
@@ -35,7 +36,7 @@ export class DialogComponent implements OnInit, OnDestroy {
     }
 
     @Input()
-    parent: MenuViewModel | DomainObjectViewModel | ListViewModel;
+    parent: MenuViewModel | DomainObjectViewModel | ListViewModel | Collectionviewmodel.CollectionViewModel;
 
     dialog: DialogViewModel;
 
@@ -114,20 +115,30 @@ export class DialogComponent implements OnInit, OnDestroy {
                 actionViewModel = _.find(p.actions, a => a.actionRep.actionId() === this.currentDialogId);
             }
 
-            this.context.getInvokableAction(action)
-                .then(details => {
-                    // only if we still have a dialog (may have beenn removed while getting invokable action)
-                    if (this.currentDialogId) {
+            if (p instanceof Collectionviewmodel.CollectionViewModel) {
+                action = p.actionMember(this.currentDialogId);
+                if (action) {
+                    actionViewModel = _.find(p.actions, a => a.actionRep.actionId() === this.currentDialogId);
+                }
+            }
+            if (action) {
+                this.context.getInvokableAction(action)
+                    .then(details => {
+                        // only if we still have a dialog (may have beenn removed while getting invokable action)
+                        if (this.currentDialogId) {
 
-                        // todo fix this it's clunky
-                        this.context.clearParmUpdater(routeData.paneId);
-        
-                        const dialogViewModel = this.viewModelFactory.dialogViewModel(routeData, details, actionViewModel, false);
-                        this.createForm(dialogViewModel);
-                        this.dialog = dialogViewModel;
-                    }
-                })
-                .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+                            // todo fix this it's clunky
+                            this.context.clearParmUpdater(routeData.paneId);
+
+                            const dialogViewModel = this.viewModelFactory.dialogViewModel(routeData, details, actionViewModel, false);
+                            this.createForm(dialogViewModel);
+                            this.dialog = dialogViewModel;
+                        }
+                    })
+                    .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+            } else {
+                this.dialog = null;
+            }
 
         } else {
             this.dialog = null;
@@ -149,6 +160,11 @@ export class DialogComponent implements OnInit, OnDestroy {
         if (this.parent instanceof ListViewModel) {
             return rd.location === ViewType.List;
         }
+
+        if (this.parent instanceof Collectionviewmodel.CollectionViewModel) {
+            return rd.location === ViewType.Object;
+        }
+
         return false;
     }
 

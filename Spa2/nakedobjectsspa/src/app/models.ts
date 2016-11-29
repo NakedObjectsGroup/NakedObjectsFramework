@@ -1232,9 +1232,11 @@ export class Parameter
         return !!this.promptLink();
     }
 
+
     isCollectionContributed(): boolean {
         const myparent = this.parent;
-        const isOnList = (myparent instanceof ActionMember || myparent instanceof ActionRepresentation) && myparent.parent instanceof ListRepresentation;
+        const isOnList = (myparent instanceof ActionMember || myparent instanceof ActionRepresentation) &&
+            (myparent.parent instanceof ListRepresentation || myparent.parent instanceof CollectionRepresentation || myparent.parent instanceof CollectionMember);
         const isList = this.isList();
         return isList && isOnList;
     }
@@ -1807,6 +1809,7 @@ export class CollectionMember
 
     constructor(wrapped: Ro.ICollectionMember, public parent: DomainObjectRepresentation, private id: string) {
         super(wrapped);
+        this.etagDigest = parent.etagDigest;
     }
 
     collectionId(): string {
