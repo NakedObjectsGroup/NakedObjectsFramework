@@ -23,22 +23,22 @@
             <td class="checkbox" ng-hide="collection.disableActions()">
                 <input type="checkbox" id="{{collection.id+collection.onPaneId+'-'+ $index}}" ng-model="item.selected" ng-change="item.selectionChange($index)">
             </td>
-            <td ng-switch-when="true" class="cell">
+            <td ng-switch-when="true" class="cell" ng-click="item.doClick()">
                 {{item.tableRowViewModel.title}}
             </td>
             <td class="cell" ng-click="item.doClick()"  ng-repeat="property in item.tableRowViewModel.properties" ng-switch="property.type">
-                <div ng-switch-when="ref" class="clickable-area">
+                <div ng-switch-when="ref">
                     {{property.formattedValue}}
                 </div>
                 <div ng-switch-when="scalar" ng-switch="property.returnType">
-                    <div ng-switch-when="boolean" class="clickable-area">
+                    <div ng-switch-when="boolean">
                         <input type="checkbox" ng-checked="property.value" disabled="disabled" />
                     </div>
-                    <div ng-switch-when="number" class="clickable-area">
-                        <div class="clickable-area number">{{property.formattedValue}}</div>
+                    <div ng-switch-when="number">
+                        <div class="number">{{property.formattedValue}}</div>
                     </div>
-                    <div ng-switch-default class="clickable-area">
-                        <div class="clickable-area">{{property.formattedValue}}</div>
+                    <div ng-switch-default>
+                        <div>{{property.formattedValue}}</div>
                     </div>
                 </div>
             </td>
