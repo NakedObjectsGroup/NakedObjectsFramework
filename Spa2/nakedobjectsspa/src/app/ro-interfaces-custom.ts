@@ -46,3 +46,10 @@ export interface IMenuRepresentation extends Ro.IResourceRepresentation {
     menuId: string;
 }
 
+export interface ICustomCollectionRepresentation extends Ro.ICollectionRepresentation {
+    members: { [index: string]: Ro.IActionMember };
+}
+
+export interface ICustomCollectionMember extends Ro.ICollectionMember {
+    members?: { [index: string]: Ro.IActionMember };
+}

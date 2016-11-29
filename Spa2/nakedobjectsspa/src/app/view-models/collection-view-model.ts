@@ -11,19 +11,20 @@ import * as Helpers from './helpers-view-models';
 import * as Config from "../config";
 import * as Models from '../models';
 import * as _ from "lodash";
+import { ContributedActionParentViewModel} from './contributed-action-parent-view-model';
 
-export class CollectionViewModel {
+export class CollectionViewModel extends ContributedActionParentViewModel{
 
     constructor(
-        private viewModelFactory: ViewModelFactoryService,
+         viewModelFactory: ViewModelFactoryService,
         private colorService: ColorService,
-        private error: ErrorService,
-        private context: ContextService,
-        private urlManager: UrlManagerService,
+         error: ErrorService,
+         context: ContextService,
+         urlManager: UrlManagerService,
         public collectionRep: Models.CollectionMember | Models.CollectionRepresentation,
         private routeData: PaneRouteData
     ) {
-
+        super(context, viewModelFactory, urlManager, error);
         this.onPaneId = routeData.paneId;
         this.title = collectionRep.extensions().friendlyName();
         this.presentationHint = collectionRep.extensions().presentationHint();
@@ -73,6 +74,10 @@ export class CollectionViewModel {
             this.details = Helpers.getCollectionDetails(size);
             const getDetails = itemLinks == null || state === CollectionViewState.Table;
 
+            const actions = this.collectionRep.actionMembers();
+            this.setActions(actions, routeData);
+
+
             if (state === CollectionViewState.Summary) {
                 this.items = [];
 
@@ -84,16 +89,16 @@ export class CollectionViewModel {
                             routeData,
                             this);
                         this.details = Helpers.getCollectionDetails(this.items.length);
-                        //collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);
+                        //this.allSelected = _.every(this.items, item => item.selected);
                     }).
                     catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
             } else {
                 this.items = this.viewModelFactory.getItems(itemLinks, this.currentState === CollectionViewState.Table, routeData, this);
-                //collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);   
+                //this.allSelected = _.every(this.items, item => item.selected);   
             }
             this.currentState = state;
         } else {
-            //collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);
+            //this.allSelected = _.every(this.items, item => item.selected);
         }
     }
 
@@ -110,9 +115,9 @@ export class CollectionViewModel {
     color: string;
     mayHaveItems: boolean;
     editing: boolean;
-    items: ItemViewModel[];
+   
     header: string[];
-    onPaneId: number;
+  
     currentState: CollectionViewState;
 
     presentationHint: string;
@@ -124,13 +129,19 @@ export class CollectionViewModel {
     description = () => this.details.toString();
 
     disableActions = () => this.editing || !this.actions || this.actions.length === 0;
-    allSelected = () => _.every(this.items, item => item.selected);
+  
+    actionMember = (id: string) => {
+        const actionViewModel = _.find(this.actions, a => a.actionRep.actionId() === id);
+        return actionViewModel ? actionViewModel.actionRep : null;
+    }
 
-    // todo
-    selectAll() { }
+    setActions(actions: _.Dictionary<Models.ActionMember>, routeData: PaneRouteData) {
+        this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
+        this.menuItems = Helpers.createMenuItems(this.actions);
+        _.forEach(this.actions, a => this.decorate(a));
+    }
 
-    actionMember(id: string): Models.ActionMember {
-        //return this.actionMembers()[id];
-        return null;
+    hasMatchingLocallyContributedAction(id: string) {
+        return id && this.actions && this.actions.length > 0 && !!this.actionMember(id);
     }
 }

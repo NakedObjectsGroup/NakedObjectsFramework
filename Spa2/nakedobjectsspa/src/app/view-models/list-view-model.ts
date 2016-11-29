@@ -13,19 +13,24 @@ import * as _ from "lodash";
 import * as Helpers from './helpers-view-models';
 import * as Models from '../models';
 import * as Msg from '../user-messages';
+import { ContributedActionParentViewModel} from './contributed-action-parent-view-model';
 
-export class ListViewModel extends MessageViewModel {
+export class ListViewModel extends ContributedActionParentViewModel {
 
-    constructor(private colorService: ColorService,
-        private context: ContextService,
-        private viewModelFactory: ViewModelFactoryService,
-        private urlManager: UrlManagerService,
-        private error: ErrorService, list: Models.ListRepresentation, routeData: PaneRouteData) {
-        super();
+    constructor(
+        private colorService: ColorService,
+        context: ContextService,
+        viewModelFactory: ViewModelFactoryService,
+        urlManager: UrlManagerService,
+        error: ErrorService,
+        list: Models.ListRepresentation,
+        routeData: PaneRouteData
+    ) {
+        super(context, viewModelFactory, urlManager, error);
 
         this.reset(list, routeData);
     }
-    onPaneId: number;
+    //onPaneId: number;
 
     private routeData: PaneRouteData;
     private page: number;
@@ -33,14 +38,14 @@ export class ListViewModel extends MessageViewModel {
     private numPages: number;
     private state: CollectionViewState;
 
-    allSelected = () => _.every(this.items, item => item.selected);
+    //allSelected = () => _.every(this.items, item => item.selected);
 
     id: string;
     listRep: Models.ListRepresentation;
     size: number;
     pluralName: string;
     header: string[];
-    items: ItemViewModel[];
+    //items: ItemViewModel[];
     actions: ActionViewModel[];
     menuItems: MenuItemViewModel[];
     description: () => string;
@@ -98,69 +103,7 @@ export class ListViewModel extends MessageViewModel {
     }
 
     hasTableData = () => this.listRep.hasTableData();
-
-    private collectionContributedActionDecorator(actionViewModel: ActionViewModel) {
-        const wrappedInvoke = actionViewModel.execute;
-        actionViewModel.execute = (pps: ParameterViewModel[], right?: boolean) => {
-            const selected = _.filter(this.items, i => i.selected);
-
-            if (selected.length === 0) {
-
-                const em = new Models.ErrorMap({}, 0, Msg.noItemsSelected);
-                const rp = new Models.ErrorWrapper(Models.ErrorCategory.HttpClientError, Models.HttpStatusCode.UnprocessableEntity, em);
-
-                return <any>Promise.reject(rp);
-            }
-
-            const getParms = (action: Models.IInvokableAction) => {
-
-                const parms = _.values(action.parameters()) as Models.Parameter[];
-                const contribParm = _.find(parms, p => p.isCollectionContributed());
-                const parmValue = new Models.Value(_.map(selected, i => i.link));
-                const collectionParmVm = this.viewModelFactory.parameterViewModel(contribParm, parmValue, this.onPaneId);
-
-                const allpps = _.clone(pps);
-                allpps.push(collectionParmVm);
-                return allpps;
-            };
-            if (actionViewModel.invokableActionRep) {
-                return wrappedInvoke(getParms(actionViewModel.invokableActionRep), right);
-            }
-
-            return this.context.getActionDetails(actionViewModel.actionRep as Models.ActionMember)
-                .then((details: Models.ActionRepresentation) => wrappedInvoke(getParms(details), right));
-        };
-    }
-
-    private collectionContributedInvokeDecorator(actionViewModel: ActionViewModel) {
-
-        const showDialog = () =>
-            this.context.getInvokableAction(actionViewModel.actionRep as Models.ActionMember).then(invokableAction => _.keys(invokableAction.parameters()).length > 1);
-
-        // make sure not null while waiting for promise to assign correct function 
-        actionViewModel.doInvoke = () => { };
-
-        const invokeWithDialog = (right?: boolean) => {
-            this.context.clearDialogValues(this.onPaneId);
-            this.urlManager.setDialogOrMultiLineDialog(actionViewModel.actionRep, this.onPaneId);
-        };
-
-        const invokeWithoutDialog = (right?: boolean) =>
-            actionViewModel.execute([], right)
-                .then(result => this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || Msg.noResultMessage : ""))
-                .catch((reject: Models.ErrorWrapper) => {
-                    const display = (em: Models.ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
-                    this.error.handleErrorAndDisplayMessages(reject, display);
-                });
-
-        showDialog().then(show => actionViewModel.doInvoke = show ? invokeWithDialog : invokeWithoutDialog).catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
-    }
-
-    private decorate(actionViewModel: ActionViewModel) {
-        this.collectionContributedActionDecorator(actionViewModel);
-        this.collectionContributedInvokeDecorator(actionViewModel);
-    }
-
+   
     refresh(routeData: PaneRouteData) {
 
         this.routeData = routeData;
@@ -247,15 +190,6 @@ export class ListViewModel extends MessageViewModel {
     reload = () => {
         this.context.clearCachedList(this.onPaneId, this.routeData.page, this.routeData.pageSize);
         this.setPage(this.page, this.state);
-    };
-
-    selectAll = () => {
-        const newState = !this.allSelected();
-
-        _.each(this.items,
-            (item) => {
-                item.selected = newState;
-            });
     };
 
     disableActions = () => !this.actions || this.actions.length === 0 || !this.items || this.items.length === 0;

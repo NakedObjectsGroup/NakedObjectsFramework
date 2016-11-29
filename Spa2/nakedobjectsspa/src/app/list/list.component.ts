@@ -68,7 +68,6 @@ export class ListComponent extends PaneComponent implements  AfterViewInit {
     itemHasTableTitle = (item: ItemViewModel) => item.tableRowViewModel.hasTitle;
     itemTableProperties = (item: ItemViewModel) => item.tableRowViewModel.properties;
 
-
     propertyType = (property: PropertyViewModel) => property.type;
     propertyValue = (property: PropertyViewModel) => property.value;
     propertyFormattedValue = (property: PropertyViewModel) => property.formattedValue;
