@@ -6,11 +6,15 @@
     color: white;
     font-size: 11pt; 
     font-weight: 100;
-    /*text-decoration: none;
-    margin: 0px;*/
 }
 
-.title, header .type {
+.header {
+    display: block;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.title, .type {
     display: block;
     position: relative;
     font-weight: 200;
@@ -25,7 +29,7 @@
 }
 
 .menus {
-    display: block;
+    display: inline-block;
 }
 .menu, .header .action {
     display: block;
@@ -41,3 +45,12 @@
 .menu[disabled="disabled"], .ok[disabled="disabled"] {
         color: grey;
     }
+
+/*Icons*/
+.icon-expand:before {
+    content: "\e099";
+}
+
+.icon-collapse:before {
+    content: "\e098";
+}

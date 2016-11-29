@@ -1,3 +1,13 @@
-div {
+::host-context() {
     display: block;
+    font-size: 16pt;
+    color: red;
+    padding-left: 20px;
+    height: 100%;
+    overflow-y: auto;
 }
+
+.stacktrace {
+        font-size: 12pt;
+        color: white;
+    }

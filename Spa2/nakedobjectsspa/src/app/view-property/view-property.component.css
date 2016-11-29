@@ -25,3 +25,6 @@
     max-height: 100px;
 }
 
+.multiline {
+    overflow: auto;
+}

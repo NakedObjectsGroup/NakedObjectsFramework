@@ -49,7 +49,6 @@ a, .currentcopy {
     color: red;
 }
 
-
 /*Icons -specific*/
 .icon-home:before {
     content: "\e000";
