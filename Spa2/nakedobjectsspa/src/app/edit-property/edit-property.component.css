@@ -9,11 +9,15 @@
 }
 
 .name {
+    display: block;
+    float: left;
     width: 150px;
     padding-right: 5px;
 }
 
 .reference, .value, collectionDetails {
+    display: block;
+    float: left;
     width: 245px;
     padding-left: 5px;
     padding-right: 5px;
@@ -21,6 +25,8 @@
 }
 
 .reference img {
+    display: block;
+    float: left;
     max-width: 245px;
     max-height: 100px;
 }
@@ -103,3 +109,8 @@ select {
     select[multiple] {
         height: 68px; /*Issue with IE if just inherit the default height*/
     }
+
+.validation {
+    margin-left: 155px;
+    font-size: 11pt;
+}

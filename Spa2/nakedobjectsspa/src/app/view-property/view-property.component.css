@@ -9,11 +9,15 @@
 }
 
 .name {
+    display: block;
+    float: left;
     width: 150px;
     padding-right: 5px;
 }
 
 .reference, .value, collectionDetails {
+    display: block;
+    float: left;
     width: 245px;
     padding-left: 5px;
     padding-right: 5px;

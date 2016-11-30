@@ -1,5 +1,5 @@
 /*Global fonts*/
-.gemini, table, a, pre, textarea { 
+.gemini, table, a, pre, textarea, input { 
     font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
 }
 
@@ -10,7 +10,6 @@
     font-weight: normal;
     font-style: normal;
 }
-
 
 div {
     display: initial; /*This is to override the agent style sheet setting of display-block*/
