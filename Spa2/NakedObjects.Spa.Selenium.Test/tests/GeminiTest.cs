@@ -309,7 +309,7 @@ namespace NakedObjects.Selenium
             string paneSelector = CssSelectorFor(pane);
             var sub = wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector +" .submenu")).Single(el => el.Text == menuName));
             var expand = sub.FindElement(By.CssSelector(".icon-expand"));
-                Click(expand);
+            Click(expand);
             Assert.IsNotNull(sub.FindElement(By.CssSelector(".icon-collapse")));
         }
 
@@ -503,7 +503,7 @@ namespace NakedObjects.Selenium
 
         protected IWebElement EditButton(Pane pane = Pane.Single)
         {
-            return GetButton("Edit", pane);
+            return GetInputButton("Edit", pane);
         }
 
         protected IWebElement SaveButton(Pane pane = Pane.Single)
@@ -522,8 +522,9 @@ namespace NakedObjects.Selenium
 
         protected IWebElement GetCancelEditButton(Pane pane = Pane.Single)
         {
-            string p = CssSelectorFor(pane);
-            return wait.Until(d => d.FindElements(By.CssSelector(p + ".header .action")).Single(el => el.Text == "Cancel"));
+            //string p = CssSelectorFor(pane);
+            //return wait.Until(d => d.FindElements(By.CssSelector(p + ".header .action")).Single(el => el.Text == "Cancel"));
+            return GetInputButton("Cancel", pane);
         }
 
         protected void ClickHomeButton() {
@@ -671,9 +672,13 @@ namespace NakedObjects.Selenium
         protected void CheckIndividualItem(int itemNo, string label, string value, bool equal = true)
         {
             GeminiUrl("object?o1=___1.SpecialOffer--" + (itemNo + 1));
-            var html = label + " " + value;
-            if (equal)
-            {
+            var html = label + "\r\n" + value;
+            if (equal) {
+                //Thread.Sleep(2000);
+
+                //var t = br.FindElements(By.CssSelector(".property")).First().Text;
+
+
                 wait.Until(dr => dr.FindElements(By.CssSelector(".property")).First(p => p.Text.StartsWith(label)).Text == html);
             }
             else

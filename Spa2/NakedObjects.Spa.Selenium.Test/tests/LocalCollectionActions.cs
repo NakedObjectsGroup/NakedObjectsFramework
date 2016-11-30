@@ -262,7 +262,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class MegaLocalCollectionActionsTestsChrome : MegaLocalCollectionActionsTestsRoot
     {
         [ClassInitialize]

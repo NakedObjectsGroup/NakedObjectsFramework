@@ -168,14 +168,14 @@ export class MultiLineDialogComponent extends PaneComponent {
                     const ovm = this.viewModelFactory.domainObjectViewModel(object, routeData);
                     const newDialogId = routeData.dialogId;
 
-                    //const lcaCollection = _.find(ovm.collections, c => c.hasMatchingLocallyContributedAction(newDialogId));
+                    const lcaCollection = _.find(ovm.collections, c => c.hasMatchingLocallyContributedAction(newDialogId));
 
-                    // if (lcaCollection) {
-                    //     const actionViewModel = _.find(lcaCollection.actions, a => a.actionRep.actionId() === newDialogId);
-                    //     setMultiLineDialog($scope, lcaCollection, newDialogId, routeData, actionViewModel);
-                    // } else {
-                    //     setMultiLineDialog($scope, object, newDialogId, routeData);
-                    // }
+                     if (lcaCollection) {
+                         const actionViewModel = _.find(lcaCollection.actions, a => a.actionRep.actionId() === newDialogId);
+                         this.setMultiLineDialog(lcaCollection, newDialogId, routeData, actionViewModel);
+                     } else {
+                         this.setMultiLineDialog(object, newDialogId, routeData);
+                     }
 
                 }).
                 catch((reject: Models.ErrorWrapper) => {

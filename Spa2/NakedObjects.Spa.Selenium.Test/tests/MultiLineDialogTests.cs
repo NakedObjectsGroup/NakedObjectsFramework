@@ -315,7 +315,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class MegaMultiLineDialogTestsChrome : MegaMultiLineDialogTestsRoot
     {
         [ClassInitialize]
