@@ -4,19 +4,24 @@
     display: block;
 }
 
-action {
+.submenu:focus, .submenu:hover, .action:hover, .action:focus   {
+    outline-color: white;
+    outline-style: solid;
+    outline-width: 1px;
     margin-right: 20px;
-}
-
-/*TODO: Move this down into action.component.css ?*/
-action, .submenu {
     width: 150px;
     margin-bottom: 5px;
     font-weight: bolder; /*Because black on white light looks too faint*/
     display: block;
+    padding: 2px 5px;
 }
 
-action {
+.submenu, .action   {
+    margin-right: 20px;
+    width: 150px;
+    margin-bottom: 5px;
+    font-weight: bolder; /*Because black on white light looks too faint*/
+    display: block;
     padding: 2px 5px;
 }
 
@@ -29,39 +34,18 @@ action {
     margin-left: 10px;
 }
 
-    .open.rootMenu {
-        margin-left: 0px;
-    }
-
-.submenu {
-    padding: 5px;
+.open.rootMenu {
+    margin-left: 0px;
 }
 
-    .submenu .icon-expand, .submenu .icon-collapse {
-        font-size: 8pt;
-    }
-
-/*Hovering*/
-action:hover, .action:focus {
-    outline: solid;
-    outline-width: 1px;
-    outline-color: white;
-}
-
-/*Disabled*/
-action[disabled="disabled"] {
-    color: grey;
-}
-
-    action[disabled="disabled"]:hover {
-        outline: none;
-    }
-
-    /*Icons*/
+/*Icons*/
 .icon-expand:before {
     content: "\e099";
 }
 
 .icon-collapse:before {
     content: "\e098";
+}
+.submenu .icon-expand, .submenu .icon-collapse {
+        font-size: 8pt;
 }

@@ -1,2 +1,9 @@
-body {
+
+/*Disabled*/
+:host[disabled="disabled"] {
+    color: grey;
+}
+
+:host[disabled="disabled"]:hover {
+        outline: none;
 }
