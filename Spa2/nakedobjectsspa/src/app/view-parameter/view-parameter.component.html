@@ -8,7 +8,7 @@
 
 <div *ngIf="parameterType === 'scalar'" >
     <div [ngSwitch]="parameterReturnType">
-        <div ng-switch-when="string" ng-switch="parameter.format">
+        <div *ngSwitchCase="string">
           
             <div *ngIf="isBlob" class="reference clickable-area" geminiClick (leftClick)="doAttachmentClick()" (rightClick)="doAttachmentClick(true)" tabindex="0">
                 <div *ngIf="!image">{{attachmentTitle}}</div>

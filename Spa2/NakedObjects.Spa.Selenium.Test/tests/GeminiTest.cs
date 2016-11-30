@@ -625,7 +625,8 @@ namespace NakedObjects.Selenium
         protected void WaitForReadOnlyEnteredParam(int lineNo, int paramNo, string value)
         {
             var line = WaitForCssNo(".lineDialog", lineNo);
-            wait.Until(dr => line.FindElements(By.CssSelector(".parameter"))[paramNo].Text == value);
+
+            wait.Until(dr => line.FindElements(By.CssSelector(".parameter .value"))[paramNo].Text == value);
         }
 
         protected void CancelDialog(Pane pane = Pane.Single)

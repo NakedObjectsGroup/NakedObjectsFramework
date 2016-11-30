@@ -69,7 +69,7 @@ export class MultiLineDialogComponent extends PaneComponent {
     rowTooltip = (row: DialogViewModel) => row.tooltip();
 
     rowMessage = (row: DialogViewModel) => {
-        return row.submitted ? 'Submitted' : "this.dialog.message";
+        return row.submitted ? 'Submitted' : row.getMessage();
     }
 
     rowDisabled = (row: DialogViewModel) => {

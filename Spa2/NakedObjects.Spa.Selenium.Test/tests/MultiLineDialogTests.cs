@@ -39,7 +39,7 @@ namespace NakedObjects.Selenium {
             WaitForReadOnlyEnteredParam(0, 2, "Promotion");
             WaitForReadOnlyEnteredParam(0, 3, "Reseller");
             WaitForReadOnlyEnteredParam(0, 4, "10");
-            WaitForReadOnlyEnteredParam(0, 5, "1 Jan 2002");
+            WaitForReadOnlyEnteredParam(0, 5, "2002-01-01");
 
             //line 1
             OKButtonOnLine(1).AssertIsDisabled("Missing mandatory fields: Description; Discount Pct; Type; Category; Min Qty; Start Date; ");
@@ -271,8 +271,8 @@ namespace NakedObjects.Selenium {
         [TestMethod] //Mega
         public void MegaMultiLineDialogTest() {
             MultiLineMenuAction();
-            MultiLineObjectAction();
-            MultiLineObjectActionInCollection();
+            //MultiLineObjectAction();
+            //MultiLineObjectActionInCollection();
         }
     }
 

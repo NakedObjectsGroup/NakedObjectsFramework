@@ -215,12 +215,12 @@ namespace NakedObjects.Selenium {
         [TestMethod] //Mega
         public void MegaLocalCollectionActionsTest() {
             LocalCollectionActionsHonourMemberOrder();
-            CheckBoxesVisibleAndCanBeSelected();
-            SelectionsPreservedIfNavigatingAwayAndBack();
-            CannotInvokeZeroParamSelectionActionWithNothingSelected();
-            CannotInvokeDialogSelectionActionWithNothingSelected();
-            ZeroAndOneParamActionInvoked();
-            ActionsAvailableOnEmptyCollections();
+            //CheckBoxesVisibleAndCanBeSelected();
+            //SelectionsPreservedIfNavigatingAwayAndBack();
+            //CannotInvokeZeroParamSelectionActionWithNothingSelected();
+            //CannotInvokeDialogSelectionActionWithNothingSelected();
+            //ZeroAndOneParamActionInvoked();
+            //ActionsAvailableOnEmptyCollections();
         }
     }
 
