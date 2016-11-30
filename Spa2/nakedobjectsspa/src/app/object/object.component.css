@@ -44,8 +44,6 @@ viewTitle {
 }
 
 /* Menus */
-
-
 .menus {
     display: block;
 }
@@ -62,10 +60,15 @@ viewTitle {
     color: white;
     background-color: inherit;
 }
-
-.menu[disabled="disabled"], .ok[disabled="disabled"] {
+.menu[disabled="disabled"] {
         color: grey;
-    }
+}
+
+.menu:hover, .menu:focus, .action:hover, .action:focus   {
+    outline-color: white;
+    outline-style: solid;
+    outline-width: 1px;
+}
 
 /*Icons*/
 .icon-expand:before {

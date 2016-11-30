@@ -11,9 +11,18 @@
     font-style: normal;
 }
 
+/* Override unwanted defaults */
 div {
     display: initial; /*This is to override the agent style sheet setting of display-block*/
 }
+
+input {
+    outline: none;
+    border: none;
+}
+
+
+
 
 .clickable-area {
     /*Fix to make menus/actions/reference properties clickable*/
@@ -75,12 +84,12 @@ html, #main, body, .background, .single, .split {
     }
 
 /*Hover & Focus*/
-     input:hover,  input:focus,
+/*     input:hover,  input:focus,
      select:hover, select:focus {
         border: solid;
         border-width: 1px;
         border-color: black;
-    }
+    } 
 
 .menu:hover, .menu:focus,
 .reference:hover, .reference:focus,
@@ -103,6 +112,7 @@ div.hover, div.focus
     outline-width: 1px;
     outline-color: white;
 }
+*/
 
 /*0. Black */
 .object-color0 {
@@ -257,28 +267,6 @@ div.hover, div.focus
 
 
 
-/*Buttons*/
-input[type=button],
-input[type=reset],
-input[type=submit] {
-    margin-left: 5px;
-    margin-top: 10px;
-    margin-right: 5px;
-    display: inline-block;
-    padding: 4px 12px;
-    text-align: center;
-    vertical-align: middle;
-    border: 1px transparent solid;
-    cursor: pointer;
-    width: auto;
-    *zoom: 1;
-    color: black;
-    background-color: white;
-    float: right;
-    outline: solid;
-    outline-color: lightgrey;
-    outline-width: 1px;
-}
 
 
 /*Cicero*/
