@@ -4,10 +4,8 @@
     display: block;
 }
 
-.submenu:focus, .submenu:hover, .action:hover, .action:focus   {
-    outline-color: white;
-    outline-style: solid;
-    outline-width: 1px;
+.submenu, .action   {
+    outline: none;
     margin-right: 20px;
     width: 150px;
     margin-bottom: 5px;
@@ -16,7 +14,10 @@
     padding: 2px 5px;
 }
 
-.submenu, .action   {
+.submenu:focus, .submenu:hover, .action:hover, .action:focus   {
+    outline-color: white;
+    outline-style: solid;
+    outline-width: 1px;
     margin-right: 20px;
     width: 150px;
     margin-bottom: 5px;
