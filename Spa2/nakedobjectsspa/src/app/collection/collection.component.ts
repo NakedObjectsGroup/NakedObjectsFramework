@@ -1,8 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { CollectionViewState } from '../route-data';
 import { CollectionViewModel } from '../view-models/collection-view-model';
 import { ItemViewModel } from '../view-models/item-view-model';
 import { PropertyViewModel } from '../view-models/property-view-model';
+import * as Routedata from '../route-data';
+import * as Urlmanagerservice from '../url-manager.service';
+import { ISubscription } from 'rxjs/Subscription';
 
 type state = "summary" | "list" | "table";
 
@@ -11,20 +14,15 @@ type state = "summary" | "list" | "table";
     templateUrl: './collection.component.html',
     styleUrls: ['./collection.component.css']
 })
-export class CollectionComponent {
+export class CollectionComponent implements OnInit, OnDestroy {
 
+    constructor(private urlManager : Urlmanagerservice.UrlManagerService) {  }
 
     @Input()
     collection: CollectionViewModel;
 
-    // todo why not genericise lazy ? 
-    private lazyState: state;
-
     get state() {
-        if (!this.lazyState) {
-            this.lazyState = CollectionViewState[this.collection.currentState].toString().toLowerCase() as state;
-        }
-        return this.lazyState;
+        return CollectionViewState[this.collection.currentState].toString().toLowerCase() as state;
     }
 
     get title() {
@@ -90,4 +88,25 @@ export class CollectionComponent {
     propertyValue = (property: PropertyViewModel) => property.value;
     propertyFormattedValue = (property: PropertyViewModel) => property.formattedValue;
     propertyReturnType = (property: PropertyViewModel) => property.returnType;
+
+    private paneRouteDataSub: ISubscription;
+
+    ngOnInit(): void {
+
+        // todo can we just listen for the pane we're interested in ?
+        this.paneRouteDataSub = this.urlManager.getRouteDataObservable()
+            .subscribe((rd: Routedata.RouteData) => {
+                const paneRouteData = rd.pane()[this.collection.onPaneId];
+                this.collection.reset(paneRouteData, false);
+            });
+    }
+
+    ngOnDestroy(): void {
+
+        if (this.paneRouteDataSub) {
+            this.paneRouteDataSub.unsubscribe();
+        }
+    }
+
+
 }

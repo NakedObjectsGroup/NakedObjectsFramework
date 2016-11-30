@@ -37,7 +37,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel{
         this.reset(routeData, true);
     }
 
-    private reset = (routeData: PaneRouteData, resetting: boolean) => {
+    reset = (routeData: PaneRouteData, resetting: boolean) => {
 
         let state = routeData.collections[this.collectionRep.collectionId()];
 

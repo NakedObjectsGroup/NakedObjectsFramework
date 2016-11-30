@@ -145,7 +145,10 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
     }
 
     private setItems(newValue: boolean) {
-        _.each(this.items, item => item.selected = newValue);
+        _.each(this.items, item => {
+            // debounce this - todo is there a cleaner way ?
+            setTimeout(() => item.selected = newValue, 0);
+        });
     }
 
     protected clearSelected(result: Models.ActionResultRepresentation) {
