@@ -704,7 +704,18 @@ export class ContextService {
         if (actionIsNotQueryOnly) {
             if (parent instanceof Models.DomainObjectRepresentation) {
                 return () => this.dirtyList.setDirty(parent.getOid());
-            } else if (parent instanceof Models.ListRepresentation && parms) {
+            }
+            if (parent instanceof Models.CollectionRepresentation) {
+                return () => {
+                    const selfLink = parent.selfLink();
+                    const oid = Models.ObjectIdWrapper.fromLink(selfLink);
+                    this.dirtyList.setDirty(oid);
+                };
+            }
+            if (parent instanceof Models.CollectionMember) {
+                return () => this.dirtyList.setDirty(parent.parent.getOid());
+            } 
+            if (parent instanceof Models.ListRepresentation && parms) {
 
                 const ccaParm = _.find(action.parameters(), p => p.isCollectionContributed());
                 const ccaId = ccaParm ? ccaParm.id() : null;
