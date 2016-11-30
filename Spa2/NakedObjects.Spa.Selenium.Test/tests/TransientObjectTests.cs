@@ -353,12 +353,12 @@ namespace NakedObjects.Selenium {
             MultiFieldValidation();
             PropertyDescriptionAndRequiredRenderedAsPlaceholder();
             CancelTransientObject();
-            SwapPanesWithTransients();
+            //SwapPanesWithTransients();
             BackAndForwardOverTransient();
             RequestForExpiredTransient();
             ConditionalChoicesOnTransient();
             TransientWithHiddenNonOptionalFields();
-            CanInvokeActionOnASavedTransient();
+            //CanInvokeActionOnASavedTransient();
             TransientCreatedFromDialogClosesDialog();
             CreateAndSaveNotPersistedObject();
             ValuePropOnTransientEmptyIfNoDefault();

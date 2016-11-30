@@ -298,7 +298,7 @@ namespace NakedObjects.Selenium
         protected virtual void OpenObjectActions(Pane pane = Pane.Single)
         {
             string paneSelector = CssSelectorFor(pane);
-            var actions = wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " .menu")).Single(el => el.Text == "Actions"));
+            var actions = wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " .menu")).Single(el => el.GetAttribute("value") == "Actions"));
             Click(actions);
             wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " .actions .action")).Count > 0);
         }

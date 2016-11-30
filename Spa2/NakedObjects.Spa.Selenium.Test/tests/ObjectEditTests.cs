@@ -30,8 +30,8 @@ namespace NakedObjects.Selenium {
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
             string currency = "£" + newPrice.ToString("c").Substring(1);
-            Assert.AreEqual("List Price: " + currency, properties[5].Text);
-            Assert.AreEqual("Days To Manufacture: " + newDays, properties[17].Text);
+            Assert.AreEqual("List Price:\r\n" + currency, properties[5].Text);
+            Assert.AreEqual("Days To Manufacture:\r\n" + newDays, properties[17].Text);
         }
         public virtual void LocalValidationOfMandatoryFields() {
             GeminiUrl("object?i1=Edit&o1=___1.SpecialOffer--11");
@@ -117,15 +117,15 @@ namespace NakedObjects.Selenium {
         }
         public virtual void ObjectEditChangeEnum() {
             GeminiUrl("object?i1=View&o1=___1.Person--6748");
-            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[6].Text == "Email Promotion: No Promotions");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[6].Text == "Email Promotion:\r\nNo Promotions");
             EditObject();
             SelectDropDownOnField("#emailpromotion1", "Adventureworks Only");
             SaveObject();
-            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[6].Text == "Email Promotion: Adventureworks Only");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[6].Text == "Email Promotion:\r\nAdventureworks Only");
             EditObject();
             SelectDropDownOnField("#emailpromotion1", "No Promotions");
             SaveObject();
-            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[6].Text == "Email Promotion: No Promotions");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[6].Text == "Email Promotion:\r\nNo Promotions");
         }
         public virtual void ObjectEditChangeDateTime() {
             GeminiUrl("object?o1=___1.Product--870");
@@ -149,9 +149,9 @@ namespace NakedObjects.Selenium {
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
 
-            Assert.AreEqual("Days To Manufacture: 1", properties[17].Text);
-            Assert.AreEqual("Sell Start Date: " + sellStart.ToString("d MMM yyyy"), properties[18].Text);
-            Assert.AreEqual("Sell End Date: " + sellEnd.ToString("d MMM yyyy"), properties[19].Text); //...but output format standardised.
+            Assert.AreEqual("Days To Manufacture:\r\n1", properties[17].Text);
+            Assert.AreEqual("Sell Start Date:\r\n" + sellStart.ToString("d MMM yyyy"), properties[18].Text);
+            Assert.AreEqual("Sell End Date:\r\n" + sellEnd.ToString("d MMM yyyy"), properties[19].Text); //...but output format standardised.
         }
         public virtual void CanSetAndClearAnOptionalDropDown() {
             GeminiUrl("object?o1=___1.WorkOrder--54064");
@@ -160,7 +160,7 @@ namespace NakedObjects.Selenium {
             SelectDropDownOnField("#scrapreason1", "Color incorrect");
             SaveObject();
             var prop = WaitForCssNo(".property", 4);
-            Assert.AreEqual("Scrap Reason: Color incorrect", prop.Text);
+            Assert.AreEqual("Scrap Reason:\r\nColor incorrect", prop.Text);
             EditObject();
             SelectDropDownOnField("#scrapreason1", "");
             SaveObject();

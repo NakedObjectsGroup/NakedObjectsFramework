@@ -59,7 +59,7 @@ namespace NakedObjects.Selenium {
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
             wait.Until(d => d.FindElement(By.CssSelector(".view")));
             wait.Until(d => d.FindElement(By.CssSelector(".header")));
-            wait.Until(d => d.FindElement(By.CssSelector(".menu")).Text == "Actions");
+            wait.Until(d => d.FindElement(By.CssSelector(".menu")).GetAttribute("value") == "Actions");
             wait.Until(d => d.FindElement(By.CssSelector(".main-column")));
             wait.Until(d => d.FindElement(By.CssSelector(".collections")));
 
