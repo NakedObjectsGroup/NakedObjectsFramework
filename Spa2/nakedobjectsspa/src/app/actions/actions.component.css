@@ -56,3 +56,12 @@ action[disabled="disabled"] {
     action[disabled="disabled"]:hover {
         outline: none;
     }
+
+    /*Icons*/
+.icon-expand:before {
+    content: "\e099";
+}
+
+.icon-collapse:before {
+    content: "\e098";
+}
