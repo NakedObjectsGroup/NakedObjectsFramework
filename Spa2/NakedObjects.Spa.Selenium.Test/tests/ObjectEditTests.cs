@@ -197,7 +197,9 @@ namespace NakedObjects.Selenium {
             var field1 = WaitForCss(".parameter:nth-child(1) textarea");
             ClearFieldThenType(".parameter:nth-child(1) textarea", "comment");
             Click(OKButton());
-            wait.Until(d => br.FindElements(By.CssSelector(".property"))[20].Text == "Comment:\r\ncomment");
+
+          
+            wait.Until(d => d.FindElement(By.CssSelector(".property .value.multiline")).Text == "comment");
 
             
             EditObject();
@@ -209,8 +211,11 @@ namespace NakedObjects.Selenium {
             var ran3 = rand.Next(10000);
             ClearFieldThenType("#comment1", ran1 + Keys.Enter + ran2 + Keys.Enter + ran3);
             Click(SaveButton());
-            wait.Until(d => br.FindElements(By.CssSelector(".property"))[20].Text ==
-                            "Comment:\r\n" + ran1 + "\r\n" + ran2 + "\r\n" + ran3);
+
+            var t = br.FindElement(By.CssSelector(".property .value.multiline")).Text;
+
+            wait.Until(d => br.FindElement(By.CssSelector(".property .value.multiline")).Text ==
+                            $"{ran1}\r\n{ran2}\r\n{ran3}");
         }
     }
 
