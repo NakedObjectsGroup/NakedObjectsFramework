@@ -31,17 +31,44 @@ namespace NakedObjects.Selenium {
             ClearFieldThenType("#searchstring1", "n");
             Click(OKButton());
             wait.Until(dr => dr.FindElements(By.CssSelector("#pane1 .reference"))[0].Text == "All-Purpose Bike Stand");
-            Reload(Pane.Left);
-            Reload(Pane.Right);
+            ReloadList(Pane.Left);
+            ReloadList(Pane.Right);
 
             //Try a reload from a new Url with params
             GeminiUrl("list/list?m2=ProductRepository&a2=FindProductByName&pg2=1&ps2=20&s2=0&c2=List&pm2_searchString=%22f%22&m1=ProductRepository&a1=FindProductByName&pg1=1&ps1=20&s1=0&c1=List&pm1_searchString=%22y%22");
             WaitForView(Pane.Left, PaneType.List);
             WaitForView(Pane.Right, PaneType.List);
-            Reload(Pane.Left);
+            ReloadList(Pane.Left);
             wait.Until(dr => dr.FindElements(By.CssSelector("#pane1 .reference"))[0].Text == "Chain Stays");
-            Reload(Pane.Right);
+            ReloadList(Pane.Right);
             wait.Until(dr => dr.FindElements(By.CssSelector("#pane2 .reference"))[0].Text == "Fender Set - Mountain");
+        }
+
+        protected virtual void RunMegaSplitPaneTest() {
+            RightClickActionReturningObjectFromHomeSingle();
+            RightClickActionReturningListFromHomeSingle();
+            RightClickReferenceFromListSingle();
+            RightClickReferencePropertyFromObjectSingle();
+            RightClickActionFromObjectSingle();
+            RightClickHomeIconFromObjectSingle();
+            SwapPanesIconFromSingleOpensHomeOnLeft();
+            ClickReferenceInLeftPaneObject();
+            ClickReferenceInRightPaneObject();
+            RightClickReferenceInRightPaneObject();
+            LeftClickHomeIconFromSplitObjectObject();
+            RightClickHomeIconFromSplitObjectObject();
+            ActionDialogOpensInCorrectPane();
+            RightClickIsSameAsLeftClickForOpeningDialog();
+            SwapPanes();
+            FullPaneFromLeft();
+            FullPaneFromRight();
+            ListInSplitPaneUpdatesWhenSearchParamsChange();
+            TwoListsCanBothBeReloaded();
+        }
+
+        protected override void ScrollTo(IWebElement element) {
+            string script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
+            ((IJavaScriptExecutor) br).ExecuteScript(script);
         }
 
         #region Actions that go from single to split panes
@@ -197,7 +224,7 @@ namespace NakedObjects.Selenium {
             OpenSubMenu("Orders", Pane.Left);
             RightClick(GetObjectAction("Create New Order", Pane.Left));
             var selector = CssSelectorFor(Pane.Left) + " .dialog ";
-            var dialog = wait.Until(d => d.FindElement(By.CssSelector(selector)));
+            wait.Until(d => d.FindElement(By.CssSelector(selector)));
         }
 
         public virtual void SwapPanes() {
@@ -226,34 +253,6 @@ namespace NakedObjects.Selenium {
         }
 
         #endregion
-
-
-        protected virtual void RunMegaSplitPaneTest() {
-            RightClickActionReturningObjectFromHomeSingle();
-            RightClickActionReturningListFromHomeSingle();
-            RightClickReferenceFromListSingle();
-            RightClickReferencePropertyFromObjectSingle();
-            RightClickActionFromObjectSingle();
-            RightClickHomeIconFromObjectSingle();
-            SwapPanesIconFromSingleOpensHomeOnLeft();
-            ClickReferenceInLeftPaneObject();
-            ClickReferenceInRightPaneObject();
-            //RightClickReferenceInRightPaneObject(); fails due to styling 
-            LeftClickHomeIconFromSplitObjectObject();
-            RightClickHomeIconFromSplitObjectObject();
-            ActionDialogOpensInCorrectPane();
-            RightClickIsSameAsLeftClickForOpeningDialog();
-            SwapPanes();
-            FullPaneFromLeft();
-            FullPaneFromRight();
-            ListInSplitPaneUpdatesWhenSearchParamsChange();
-            TwoListsCanBothBeReloaded();
-        }
-
-        protected override void ScrollTo(IWebElement element) {
-            string script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
-            ((IJavaScriptExecutor) br).ExecuteScript(script);
-        }
     }
 
     public abstract class SplitPaneTests : SplitPaneTestsRoot {
@@ -307,9 +306,6 @@ namespace NakedObjects.Selenium {
         #endregion
 
         #region Actions within split panes
-
-        private const string twoObjects = GeminiBaseUrl + "object/object?o1=___1.Customer--555&as1=open&o2=___1.SalesOrderHeader--71926&as2=open";
-        private const string twoObjectsB = GeminiBaseUrl + "object/object?o1=___1.Store--350&as1=open&o2=___1.SalesOrderHeader--71926&as2=open";
 
         [TestMethod]
         public override void RightClickReferenceInLeftPaneObject() {
@@ -408,7 +404,7 @@ namespace NakedObjects.Selenium {
         }
 
         protected override void ScrollTo(IWebElement element) {
-            string script = string.Format("window.scrollTo({0}, {1});return true;", element.Location.X, element.Location.Y);
+            string script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
             ((IJavaScriptExecutor) br).ExecuteScript(script);
         }
 
