@@ -656,7 +656,7 @@ namespace NakedObjects.Selenium
 
         protected void Reload(Pane pane = Pane.Single)
         {
-            Click(GetButton("Reload", pane));
+            Click(GetInputButton("Reload", pane));
         }
 
         protected void CancelDatePicker(string cssForInput)

@@ -10,7 +10,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using System.Threading;
 
 namespace NakedObjects.Selenium {
     public abstract class ObjectViewTestsRoot : AWTest {
@@ -101,7 +100,6 @@ namespace NakedObjects.Selenium {
             GeminiUrl("object?i1=View&o1=___1.Product--869");
             var props = WaitForCss(".property", 23);
             //First test a navigable reference
-            var model = props[4];
             Assert.AreEqual("Product Model:\r\nWomen's Mountain Shorts", props[4].Text);
 
             // get again as goes stale
@@ -113,7 +111,7 @@ namespace NakedObjects.Selenium {
             var cat = props[6];
             Assert.AreEqual("Product Category:\r\nClothing", cat.Text);
             var links = cat.FindElements(By.CssSelector(".reference.clickable-area"));
-            Assert.AreEqual(0, links.Count());
+            Assert.AreEqual(0, links.Count);
         }
         public virtual void DateAndCurrencyProperties() {
             GeminiUrl("object?o1=___1.SalesOrderHeader--68389");
@@ -132,7 +130,6 @@ namespace NakedObjects.Selenium {
         }
         public virtual void TableViewHonouredOnCollection() {
             GeminiUrl("object?i1=View&o1=___1.Employee--83&c1_DepartmentHistory=Summary&c1_PayHistory=Table");
-            var header = WaitForCss("thead");
             var cols = WaitForCss("th", 3).ToArray();
             Assert.AreEqual(4, cols.Length);
             Assert.AreEqual("", cols[1].Text); //Title
@@ -145,8 +142,7 @@ namespace NakedObjects.Selenium {
             var cell = WaitForCss("td:nth-child(6)");
             Assert.AreEqual("31 Dec 2008", cell.Text);
         }
-        public virtual void TableViewIgnoresDuplicatedColumnName()
-        {
+        public virtual void TableViewIgnoresDuplicatedColumnName() {
             GeminiUrl("object?i1=View&r=1&o1=___1.SalesPerson--280&c1_QuotaHistory=Table");
             WaitForView(Pane.Single, PaneType.Object); //i.e. not an error (c.f. bug #57)
         }
@@ -200,8 +196,7 @@ namespace NakedObjects.Selenium {
             Click(row);
             WaitForView(Pane.Single, PaneType.Object, type + ": " + addr);
         }
-        public virtual void CanClickOnTitleInTableView()
-        {
+        public virtual void CanClickOnTitleInTableView() {
             GeminiUrl("object?i1=View&r=1&o1=___1.Employee--56&c1_DepartmentHistory=Summary&c1_PayHistory=Table");
             WaitForView(Pane.Single, PaneType.Object, "Denise Smith");
             var row = wait.Until(dr => dr.FindElement(By.CssSelector("table tbody tr")));
@@ -215,8 +210,8 @@ namespace NakedObjects.Selenium {
             GeminiUrl("object?o1=___1.Person--8410&as1=open");
             WaitForView(Pane.Single, PaneType.Object);
             var original = WaitForCss(".property:nth-child(6) .value").Text;
-            var dialog = OpenActionDialog("Update Suffix"); //This is deliberately wrongly marked up as QueryOnly
-            var field1 = WaitForCss(".parameter:nth-child(1) input");
+            OpenActionDialog("Update Suffix"); //This is deliberately wrongly marked up as QueryOnly
+            WaitForCss(".parameter:nth-child(1) input");
             var newValue = DateTime.Now.Millisecond.ToString();
             ClearFieldThenType(".parameter:nth-child(1) input", newValue);
             Click(OKButton()); //This will have updated server, but not client-cached object
@@ -233,9 +228,9 @@ namespace NakedObjects.Selenium {
         public virtual void PotentActionDoesReloadAutomatically() {
             GeminiUrl("object?o1=___1.Person--8410&as1=open");
             WaitForView(Pane.Single, PaneType.Object);
-            var original = WaitForCss(".property:nth-child(3) .value").Text;
-            var dialog = OpenActionDialog("Update Middle Name");
-            var field1 = WaitForCss(".parameter:nth-child(1) input");
+            WaitForCss(".property:nth-child(3) .value");
+            OpenActionDialog("Update Middle Name");
+            WaitForCss(".parameter:nth-child(1) input");
             var newValue = DateTime.Now.Millisecond.ToString();
             ClearFieldThenType(".parameter:nth-child(1) input", newValue);
             Click(OKButton());
@@ -246,7 +241,6 @@ namespace NakedObjects.Selenium {
             GeminiUrl("object?i1=View&o1=___1.Customer--226");
             WaitForView(Pane.Single, PaneType.Object, "Leisure Activities, AW00000226");
             WaitForCss(".object.object-color1");
-            var terr = GetReferenceFromProperty("Sales Territory");
             GeminiUrl("object?i1=View&o1=___1.Product--404");
             WaitForView(Pane.Single, PaneType.Object, "External Lock Washer 4");
             WaitForCss(".object.object-color4");
@@ -316,8 +310,8 @@ namespace NakedObjects.Selenium {
             var dialog = OpenActionDialog("Search For Orders", Pane.Single, 2);
             GetInputNumber(dialog, 0).SendKeys("1 Jan 2003");
             GetInputNumber(dialog, 1).SendKeys("1 Dec 2003" + Keys.Escape);
-            dialog.FindElements(By.CssSelector(".parameter .value input"))[0].SendKeys("1 Jan 2003");
-            dialog.FindElements(By.CssSelector(".parameter .value input"))[1].SendKeys("1 Dec 2003" + Keys.Escape);
+            dialog.FindElements(By.CssSelector(".parameter .value input"))[0].SendKeys("01/01/2003");
+            dialog.FindElements(By.CssSelector(".parameter .value input"))[1].SendKeys("01/12/2003" + Keys.Escape);
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Search For Orders");
         }
@@ -360,8 +354,7 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("true", actions.GetAttribute("disabled"));
         }
 
-         public virtual void ZeroParamActionCausesObjectToReload()
-        {
+        public virtual void ZeroParamActionCausesObjectToReload() {
             GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--72079&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "SO72079");
             // clear any existing comments to make test more robust
@@ -369,14 +362,14 @@ namespace NakedObjects.Selenium {
             var rn = br.FindElements(By.CssSelector(".property"))[19].Text;
 
             Click(GetObjectAction("Clear Comment"));
-            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[19].Text !=  rn);
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[19].Text != rn);
             //First set up some comments
             OpenActionDialog("Add Standard Comments");
             Click(OKButton());
             wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Payment on delivery"));
             //Now clear them
             Click(GetObjectAction("Clear Comment"));
-           // wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text == "Comment:");
+            // wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text == "Comment:");
         }
         #endregion
     }
@@ -420,10 +413,9 @@ namespace NakedObjects.Selenium {
         public override void TableViewHonouredOnCollection() {
             base.TableViewHonouredOnCollection();
         }
-        
+
         [TestMethod]
-        public override void TableViewIgnoresDuplicatedColumnName()
-        {
+        public override void TableViewIgnoresDuplicatedColumnName() {
             base.TableViewIgnoresDuplicatedColumnName();
         }
 
@@ -452,8 +444,7 @@ namespace NakedObjects.Selenium {
             base.ClickOnLineItemWithCollectionAsTable();
         }
         [TestMethod]
-        public override void CanClickOnTitleInTableView()
-        {
+        public override void CanClickOnTitleInTableView() {
             base.CanClickOnTitleInTableView();
         }
 
@@ -528,8 +519,7 @@ namespace NakedObjects.Selenium {
         }
 
         [TestMethod]
-        public override void ZeroParamActionCausesObjectToReload()
-        {
+        public override void ZeroParamActionCausesObjectToReload() {
             base.ZeroParamActionCausesObjectToReload();
         }
     }
@@ -540,7 +530,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -551,7 +541,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -559,7 +549,7 @@ namespace NakedObjects.Selenium {
     public class ObjectViewTestsFirefox : ObjectViewTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -569,12 +559,12 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
 
         protected override void ScrollTo(IWebElement element) {
-            string script = string.Format("window.scrollTo({0}, {1});return true;", element.Location.X, element.Location.Y);
-            ((IJavaScriptExecutor) br).ExecuteScript(script);
+            string script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
+            ((IJavaScriptExecutor)br).ExecuteScript(script);
         }
     }
     //[TestClass]
@@ -582,7 +572,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -592,7 +582,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -619,20 +609,20 @@ namespace NakedObjects.Selenium {
             ClickOnLineItemWithCollectionAsTable();
             CanClickOnTitleInTableView();
             DialogAction();
-            //DialogActionOk();
+            DialogActionOk();
             ObjectAction();
             CollectionAction();
             DescriptionRenderedAsTooltip();
             DisabledAction();
             ActionsMenuDisabledOnObjectWithNoActions();
-            //QueryOnlyActionDoesNotReloadAutomatically();
-            //PotentActionDoesReloadAutomatically();
+            QueryOnlyActionDoesNotReloadAutomatically();
+            PotentActionDoesReloadAutomatically();
             NonNavigableReferenceProperty();
             Colours();
             ZeroIntValues();
-            //AddingObjectToCollectionUpdatesTableView();
+            AddingObjectToCollectionUpdatesTableView();
             //TimeSpanProperty();
-            //ZeroParamActionCausesObjectToReload();
+            ZeroParamActionCausesObjectToReload();
         }
     }
 
@@ -640,7 +630,7 @@ namespace NakedObjects.Selenium {
     public class MegaObjectViewTestFirefox : MegaObjectViewTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -651,7 +641,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -660,7 +650,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -671,7 +661,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -680,7 +670,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -691,7 +681,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 

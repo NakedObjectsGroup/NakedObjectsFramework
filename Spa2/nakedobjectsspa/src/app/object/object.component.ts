@@ -140,12 +140,12 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
 
         const wasDirty = this.context.getIsDirty(oid);
 
-        if (isChanging || modeChanging) {
+        if (isChanging || modeChanging || wasDirty) {
             this.context.getObject(routeData.paneId, oid, routeData.interactionMode)
                 .then((object: Models.DomainObjectRepresentation) => {
 
                     // only change the object if it has changed 
-                    if (isChanging) {
+                    if (isChanging || wasDirty) {
                         const ovm = this.viewModelFactory.domainObjectViewModel(object, routeData);
                         if (wasDirty) {
                             ovm.clearCachedFiles();
