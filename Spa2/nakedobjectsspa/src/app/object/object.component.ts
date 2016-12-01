@@ -128,6 +128,7 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
         if (this.object && !this.object.domainObject.getOid().isSame(oid)) {
             // object has changed - clear existing 
             this.object = null;
+            this.form = null;
         }
 
         const isChanging = !this.object; 
@@ -153,7 +154,7 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
                         this.object = ovm;
                     }
 
-                    if (modeChanging) {
+                    if (modeChanging || isChanging) {
                         if (this.mode === InteractionMode.Edit ||
                             this.mode === InteractionMode.Form ||
                             this.mode === InteractionMode.Transient) {
