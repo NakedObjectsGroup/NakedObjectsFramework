@@ -372,6 +372,51 @@ namespace NakedObjects.Selenium {
             // wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text == "Comment:");
         }
         #endregion
+
+        #region Interlocks on potent actions
+        //Context for these tests:
+        //To guard against, for example, accidentally double-clicking on a single
+        //potent action, or attempting to invoke another action before a slow one has completed.
+        //The UI should disable potent actions (zero param or OK on open dialog) until first action has
+        //completed.
+        public virtual void CanInvokeOneNonPotentActionBeforePreviousHasCompleted() {
+            GeminiUrl("object?i1=View&o1=___1.Customer--389&as1=open");
+            OpenSubMenu("Orders");
+            var open = GetObjectAction("Open Orders");
+            var recent = GetObjectAction("Recent Orders");
+            RightClick(open);
+            RightClick(recent); //i.e. in rapid succession
+            WaitForView(Pane.Right, PaneType.List, "Recent Orders");
+        }
+
+        public virtual void CannotInvokeAPotentActionUntilPriorOneHasCompleted()
+        {
+            GeminiUrl("object?r=0&i1=View&o1=___1.SalesOrderHeader--51863&as1=open");
+            WaitForView(Pane.Single, PaneType.Object, "SO51863");
+            //Set up a comment
+            OpenActionDialog("Add Standard Comments");
+            Click(OKButton());
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Payment on delivery"));
+            var clear = GetObjectAction("Clear Comment");
+            Click(clear);
+            Click(clear); //i.e. twice in rapid succession
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Sales Person")); //i.e. Comments property has disappeared
+        }
+        public virtual void UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed()
+        {
+            GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--69143&as1=open&r=0");
+            OpenActionDialog("Add Standard Comments");
+            Click(OKButton());
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Payment on delivery"));
+
+            OpenActionDialog("Add Standard Comments");
+            Click(GetObjectAction("Clear Comment"));
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Sales Person")); //i.e. Comments property has disappeared
+
+            Click(OKButton()); //On dialog that has remained open
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Payment on delivery"));
+        }
+        #endregion
     }
     public abstract class ObjectViewTests : ObjectViewTestsRoot {
         [TestMethod]
@@ -522,6 +567,24 @@ namespace NakedObjects.Selenium {
         public override void ZeroParamActionCausesObjectToReload() {
             base.ZeroParamActionCausesObjectToReload();
         }
+
+        [TestMethod]
+        public override void UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed()
+        {
+            base.UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed();
+        }
+
+        [TestMethod]
+        public override void CannotInvokeAPotentActionUntilPriorOneHasCompleted()
+        {
+            base.CannotInvokeAPotentActionUntilPriorOneHasCompleted();
+        }
+
+        [TestMethod]
+        public override void CanInvokeOneNonPotentActionBeforePreviousHasCompleted()
+        {
+            base.CanInvokeOneNonPotentActionBeforePreviousHasCompleted();
+        }
     }
 
     #region browsers specific subclasses
@@ -623,6 +686,9 @@ namespace NakedObjects.Selenium {
             AddingObjectToCollectionUpdatesTableView();
             //TimeSpanProperty();
             ZeroParamActionCausesObjectToReload();
+            CanInvokeOneNonPotentActionBeforePreviousHasCompleted();
+            UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed();
+            CannotInvokeAPotentActionUntilPriorOneHasCompleted();
         }
     }
 
