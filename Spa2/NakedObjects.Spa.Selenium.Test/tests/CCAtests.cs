@@ -207,7 +207,7 @@ namespace NakedObjects.Selenium {
             base.ListViewWithParmDialogNotOpen();
         }
 
-        [TestMethod] 
+        [TestMethod]
         public override void DateParam() {
             base.DateParam();
         }
@@ -260,7 +260,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -278,7 +278,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -297,12 +297,12 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
 
         protected override void ScrollTo(IWebElement element) {
-            string script = string.Format("window.scrollTo({0}, {1});return true;", element.Location.X, element.Location.Y);
-            ((IJavaScriptExecutor) br).ExecuteScript(script);
+            string script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
+            ((IJavaScriptExecutor)br).ExecuteScript(script);
         }
     }
 

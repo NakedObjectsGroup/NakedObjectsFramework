@@ -21,7 +21,7 @@ namespace NakedObjects.Selenium {
         public virtual void PasswordParam() {
             GeminiUrl("object?i1=View&o1=___1.Person--11656&as1=open&d1=ChangePassword&f1_oldPassword=%22%22&f1_newPassword=%22%22&f1_confirm=%22%22");
             //Check that params marked with DataType.Password show up as input type="password" for browser to obscure
-            wait.Until(dr => dr.FindElements(By.CssSelector("input")).Where(el => el.GetAttribute("type") == "password").Count() == 3);
+            wait.Until(dr => dr.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type") == "password") == 3);
         }
         public virtual void ScalarChoicesParm() {
             Url(OrdersMenuUrl);
@@ -126,7 +126,7 @@ namespace NakedObjects.Selenium {
             br.FindElement(By.CssSelector(".value  select option[label='Mountain Bikes']")).Click();
             wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.Count == 1);
 
-            IKeyboard kb = ((IHasInputDevices) br).Keyboard;
+            IKeyboard kb = ((IHasInputDevices)br).Keyboard;
             kb.PressKey(Keys.Control);
             br.FindElement(By.CssSelector(".value  select option[label='Road Bikes']")).Click();
             kb.ReleaseKey(Keys.Control);
@@ -172,7 +172,7 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.Home);
             OpenActionDialog("List Products");
             SelectDropDownOnField("#category1", "Clothing");
-            var x = new SelectElement(WaitForCss("#subcategory1")).Options;
+            WaitForCss("#subcategory1");
 
             wait.Until(d => new SelectElement(WaitForCss("#subcategory1")).Options.ElementAt(0).Text == "Bib-Shorts");
 
@@ -231,8 +231,7 @@ namespace NakedObjects.Selenium {
             var name = WaitForCss("input#name1");
             Assert.AreEqual("* partial match", name.GetAttribute("placeholder"));
         }
-        public virtual void BooleanParams()
-        {
+        public virtual void BooleanParams() {
             GeminiUrl("home?m1=EmployeeRepository&d1=ListEmployees2");
             //None of the fields should have a mandatory indicator
             var prams = WaitForCss(".parameter .value", 4);
@@ -394,8 +393,7 @@ namespace NakedObjects.Selenium {
             wait.Until(d => d.FindElements(By.CssSelector("ul li a")).Count == 2);
         }
 
-        public virtual void AutoCompleteOptionalParamNotSelected()
-        {
+        public virtual void AutoCompleteOptionalParamNotSelected() {
             //Test written against a bug in 8.0.0-beta9
             GeminiUrl("home?m1=OrderRepository&d1=FindOrders");
             OKButton().AssertIsEnabled();
@@ -422,8 +420,7 @@ namespace NakedObjects.Selenium {
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Find Sales Person By Name");
         }
-        public virtual void AutoCompleteMandatoryParmWithoutSelectionFails()
-        {
+        public virtual void AutoCompleteMandatoryParmWithoutSelectionFails() {
             //To test  -  enter valid text but don't select from drop-down
             //Assuming parm is mandatory, hitting Ok should give validation message
             GeminiUrl("home?m1=CustomerRepository&d1=FindCustomer");
@@ -467,15 +464,13 @@ namespace NakedObjects.Selenium {
             wait.Until(dr => dr.FindElement(By.CssSelector(".co-validation")).Text ==
                              "Qty Into Stock + Qty Rejected must add up to Qty Received");
         }
-        public virtual void OptionalReferenceParamCanBeNull()
-        {
+        public virtual void OptionalReferenceParamCanBeNull() {
             //Test written against specific bug in 8.0Beta9
             GeminiUrl("home?m1=OrderRepository&d1=FindOrders");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Find Orders");
         }
-        public virtual void ValidationOfContributeeParameter()
-        {
+        public virtual void ValidationOfContributeeParameter() {
             GeminiUrl("object?r=0&i1=View&o1=___1.Customer--10&as1=open&d1=CreateNewOrder");
             Click(OKButton());
             //Test written against #37 where message is preceded by '199 Restful Objects'
@@ -485,8 +480,7 @@ namespace NakedObjects.Selenium {
         #endregion
 
         //Test for #49
-        public virtual void NoResultFoundMessageLeavesDialogOpen()
-        {
+        public virtual void NoResultFoundMessageLeavesDialogOpen() {
             GeminiUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber");
             ClearFieldThenType("#accountnumber1", "AW66666");
             Click(OKButton());
@@ -572,8 +566,7 @@ namespace NakedObjects.Selenium {
             base.ParameterDescriptionRenderedAsPlaceholder();
         }
         [TestMethod]
-        public override void BooleanParams()
-        {
+        public override void BooleanParams() {
             base.BooleanParams();
         }
         [TestMethod]
@@ -618,8 +611,7 @@ namespace NakedObjects.Selenium {
             base.AutoCompleteScalarField();
         }
         [TestMethod]
-        public override void AutoCompleteOptionalParamNotSelected()
-        {
+        public override void AutoCompleteOptionalParamNotSelected() {
             base.AutoCompleteOptionalParamNotSelected();
         }
         #endregion
@@ -630,8 +622,7 @@ namespace NakedObjects.Selenium {
             base.MandatoryParameterEnforced();
         }
         [TestMethod]
-        public override void AutoCompleteMandatoryParmWithoutSelectionFails()
-        {
+        public override void AutoCompleteMandatoryParmWithoutSelectionFails() {
             base.AutoCompleteMandatoryParmWithoutSelectionFails();
         }
         [TestMethod]
@@ -647,21 +638,18 @@ namespace NakedObjects.Selenium {
             base.CoValidationOfMultipleParameters();
         }
         [TestMethod]
-        public override void OptionalReferenceParamCanBeNull()
-        {
+        public override void OptionalReferenceParamCanBeNull() {
             base.OptionalReferenceParamCanBeNull();
         }
         [TestMethod]
-        public override void ValidationOfContributeeParameter()
-        {
+        public override void ValidationOfContributeeParameter() {
             base.ValidationOfContributeeParameter();
         }
 
         #endregion
 
         [TestMethod]
-        public override void NoResultFoundMessageLeavesDialogOpen()
-        {
+        public override void NoResultFoundMessageLeavesDialogOpen() {
             base.NoResultFoundMessageLeavesDialogOpen();
         }
     }
@@ -682,7 +670,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -700,7 +688,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -719,12 +707,12 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
 
         protected override void ScrollTo(IWebElement element) {
-            string script = string.Format("window.scrollTo({0}, {1});return true;", element.Location.X, element.Location.Y);
-            ((IJavaScriptExecutor) br).ExecuteScript(script);
+            string script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
+            ((IJavaScriptExecutor)br).ExecuteScript(script);
         }
     }
 
@@ -760,7 +748,7 @@ namespace NakedObjects.Selenium {
             AutoCompleteOptionalParamNotSelected();
             MandatoryParameterEnforced();
             ValidateSingleValueParameter();
-            //ValidateSingleRefParamFromChoices(); don't yet support object collection actions 
+            ValidateSingleRefParamFromChoices();
             CoValidationOfMultipleParameters();
             ParameterDescriptionRenderedAsPlaceholder();
             BooleanParams();
@@ -790,7 +778,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -810,31 +798,27 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
     [TestClass]
-    public class MegaDialogTestsChrome : MegaDialogTestsRoot
-    {
+    public class MegaDialogTestsChrome : MegaDialogTestsRoot {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitChromeDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
-            base.CleanUpTest();
+        public virtual void CleanupTest() {
+            CleanUpTest();
         }
     }
     #endregion
