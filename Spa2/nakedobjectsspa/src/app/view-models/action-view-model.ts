@@ -9,6 +9,7 @@ import { ViewModelFactoryService } from '../view-model-factory.service';
 import * as Models from '../models';
 import * as Msg from "../user-messages";
 import * as _ from "lodash";
+import * as Helpers from './helpers-view-models';
 
 export class ActionViewModel {
 
@@ -46,21 +47,16 @@ export class ActionViewModel {
     private showDialog = () => this.actionRep.extensions().hasParams() && (this.routeData.interactionMode !== InteractionMode.Form);
 
     private incrementPendingPotentAction() {
-        if (this.invokableActionRep.isPotent()) {
-            this.context.incrementPendingPotentAction(this.paneId);
-        }
+        Helpers.incrementPendingPotentAction(this.context, this.invokableActionRep, this.paneId);    
     }
 
     private decrementPendingPotentAction() {
-        if (this.invokableActionRep.isPotent()) {
-            this.context.decrementPendingPotentAction(this.paneId);
-        }
+        Helpers.decrementPendingPotentAction(this.context, this.invokableActionRep, this.paneId);   
     }
 
     // open dialog on current pane always - invoke action goes to pane indicated by click
     doInvoke = this.showDialog()
         ? (right?: boolean) => {
-
             // clear any previous dialog so we don't pick up values from it
             this.context.clearDialogValues(this.paneId);
             this.urlManager.setDialogOrMultiLineDialog(this.actionRep, this.paneId);    

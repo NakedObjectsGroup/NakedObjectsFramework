@@ -165,7 +165,7 @@ export class DomainObjectViewModel extends MessageViewModel {
                 })
                 .then((reloadedObj: Models.DomainObjectRepresentation) => {
                     if (this.routeData.dialogId) {
-                        this.urlManager.closeDialogReplaceHistory(this.onPaneId);
+                        this.urlManager.closeDialogReplaceHistory(this.routeData.dialogId, this.onPaneId);
                     }
                     this.reset(reloadedObj, this.routeData);
                     Helpers.handleErrorResponse(em, this, this.properties);

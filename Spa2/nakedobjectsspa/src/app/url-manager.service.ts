@@ -499,24 +499,23 @@ export class UrlManagerService {
             }
         };
 
-
-
-
-
-
-    private closeOrCancelDialog(paneId: number, transition: Transition) {
+    private closeOrCancelDialog(id : string, paneId: number, transition: Transition) {
         const key = `${akm.dialog}${paneId}`;
-        const newValues = _.zipObject([key], [null]) as _.Dictionary<string>;
-        this.executeTransition(newValues, paneId, transition, () => true);
+        const existingValue = this.getSearch()[key];
+
+        if (existingValue === id) {
+            const newValues = _.zipObject([key], [null]) as _.Dictionary<string>;
+            this.executeTransition(newValues, paneId, transition, () => true);
+        }
     }
 
 
-    closeDialogKeepHistory = (paneId = 1) => {
-        this.closeOrCancelDialog(paneId, Transition.FromDialogKeepHistory);
+    closeDialogKeepHistory = (id : string, paneId = 1) => {
+        this.closeOrCancelDialog(id, paneId, Transition.FromDialogKeepHistory);
     };
 
-    closeDialogReplaceHistory = (paneId = 1) => {
-        this.closeOrCancelDialog(paneId, Transition.FromDialog);
+    closeDialogReplaceHistory = (id : string, paneId = 1) => {
+        this.closeOrCancelDialog(id, paneId, Transition.FromDialog);
     };
 
     setObject = (resultObject: Models.DomainObjectRepresentation, paneId = 1) => {

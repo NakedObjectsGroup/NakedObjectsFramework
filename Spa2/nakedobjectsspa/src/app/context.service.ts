@@ -261,7 +261,7 @@ export class ContextService {
         object.setInlinePropertyDetails(interactionMode === InteractionMode.Edit);
 
 
-        this.incrementPendingPotentAction(paneId);
+        this.incPendingPotentActionOrReload(paneId);
         return this.repLoader.populate<Models.DomainObjectRepresentation>(object, forceReload)
             .then((obj: Models.DomainObjectRepresentation) => {
                 this.currentObjects[paneId] = obj;
@@ -269,7 +269,7 @@ export class ContextService {
                     this.dirtyList.clearDirty(oid);
                 }
                 this.addRecentlyViewed(obj);
-                this.decrementPendingPotentAction(paneId);
+                this.decPendingPotentActionOrReload(paneId);
                 return Promise.resolve(obj);
             });
     };
@@ -652,19 +652,24 @@ export class ContextService {
             this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
         }
     };
-
    
     private pendingPotentActionCount = [, 0, 0];
 
-    incrementPendingPotentAction(paneId: number) {
+    incPendingPotentActionOrReload(paneId: number) {
         this.pendingPotentActionCount[paneId]++;
     }
 
-    decrementPendingPotentAction(paneId: number) {
-        this.pendingPotentActionCount[paneId]--;
+    decPendingPotentActionOrReload(paneId: number) {
+        const count = --(this.pendingPotentActionCount[paneId]);
+
+        if (count < 0) {
+            // todo proper error handling]
+            // should never happen
+            console.warn("count less than 0");
+        }
     }
 
-    isPendingPotentAction(paneId: number) {
+    isPendingPotentActionOrReload(paneId: number) {
         return this.pendingPotentActionCount[paneId] > 0;
     }
 

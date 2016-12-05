@@ -94,10 +94,24 @@ export class DialogComponent implements OnInit, OnDestroy {
         });
     }
 
+    closeExistingDialog() {
+        if (this.dialog) {
+            this.dialog.doCloseKeepHistory();
+            this.dialog = null;
+        }
+    }
+
 
     getDialog(routeData: PaneRouteData) {
 
+        // if it's the same dialog just return 
+
         if (this.parent && this.currentDialogId) {
+
+            if (this.dialog && this.dialog.id === this.currentDialogId) {
+                return;
+            }
+
             const p = this.parent;
             let action: Models.ActionMember | Models.ActionRepresentation = null;
             let actionViewModel: ActionViewModel = null;
@@ -125,6 +139,7 @@ export class DialogComponent implements OnInit, OnDestroy {
                 this.context.getInvokableAction(action)
                     .then(details => {
                         // only if we still have a dialog (may have beenn removed while getting invokable action)
+
                         if (this.currentDialogId) {
 
                             // todo fix this it's clunky
@@ -132,16 +147,19 @@ export class DialogComponent implements OnInit, OnDestroy {
 
                             const dialogViewModel = this.viewModelFactory.dialogViewModel(routeData, details, actionViewModel, false);
                             this.createForm(dialogViewModel);
+                          
+                            // must be a change 
+                            this.closeExistingDialog();
                             this.dialog = dialogViewModel;
                         }
                     })
                     .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
             } else {
-                this.dialog = null;
+                this.closeExistingDialog();
             }
 
         } else {
-            this.dialog = null;
+            this.closeExistingDialog();
         }
     }
 

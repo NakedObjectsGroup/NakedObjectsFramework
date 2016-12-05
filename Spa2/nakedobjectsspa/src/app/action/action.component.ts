@@ -30,7 +30,8 @@ export class ActionComponent {
     }
 
     tempDisabled(): boolean {
-        return this.context.isPendingPotentAction(this.action.paneId);
+        return this.action.invokableActionRep && this.action.invokableActionRep.isPotent() &&
+               this.context.isPendingPotentActionOrReload(this.action.paneId);
     }
 
     doInvoke(right?: boolean) {
