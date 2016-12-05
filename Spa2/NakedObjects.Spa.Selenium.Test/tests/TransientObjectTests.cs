@@ -7,6 +7,7 @@
 
 using System;
 using System.Linq;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
@@ -129,6 +130,7 @@ namespace NakedObjects.Selenium {
         public virtual void ConditionalChoicesOnTransient() {
             GeminiUrl("home?m1=ProductRepository");
             WaitForView(Pane.Single, PaneType.Home);
+            Thread.Sleep(1000); // no idea why this keeps failing on server 
             Click(GetObjectAction("New Product"));
             WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Product");
             // set product category and sub category
@@ -374,23 +376,23 @@ namespace NakedObjects.Selenium {
     public abstract class MegaTransientObjectTestsRoot : TransientObjectTestsRoot {
         [TestMethod] //Mega
         public void MegaTestTransientObjectTests() {
-            //CreateAndSaveTransientObject();
-            //SaveAndClose();
-            //MissingMandatoryFieldsNotified();
-            //IndividualFieldValidation();
-            //MultiFieldValidation();
-            //PropertyDescriptionAndRequiredRenderedAsPlaceholder();
-            //CancelTransientObject();
-            //SwapPanesWithTransients();
-            //BackAndForwardOverTransient();
-            //RequestForExpiredTransient();
+            CreateAndSaveTransientObject();
+            SaveAndClose();
+            MissingMandatoryFieldsNotified();
+            IndividualFieldValidation();
+            MultiFieldValidation();
+            PropertyDescriptionAndRequiredRenderedAsPlaceholder();
+            CancelTransientObject();
+            SwapPanesWithTransients();
+            BackAndForwardOverTransient();
+            RequestForExpiredTransient();
             ConditionalChoicesOnTransient();
-            //TransientWithHiddenNonOptionalFields();
-            //CanInvokeActionOnASavedTransient();
-            //TransientCreatedFromDialogClosesDialog();
-            //CreateAndSaveNotPersistedObject();
-            //ValuePropOnTransientEmptyIfNoDefault();
-            //InvalidPropOnTransientClearedAndReentered();
+            TransientWithHiddenNonOptionalFields();
+            CanInvokeActionOnASavedTransient();
+            TransientCreatedFromDialogClosesDialog();
+            CreateAndSaveNotPersistedObject();
+            ValuePropOnTransientEmptyIfNoDefault();
+            InvalidPropOnTransientClearedAndReentered();
         }
     }
 
