@@ -310,6 +310,7 @@ namespace NakedObjects.Selenium {
             //To test:
             //Query only action OK, left click & go back, right click & remains open
             GeminiUrl("home?m1=ProductRepository");
+            WaitForView(Pane.Single, PaneType.Home);
             OpenActionDialog("Find Product By Name");
             ClearFieldThenType("#searchstring1", "a");
             Click(OKButton());
