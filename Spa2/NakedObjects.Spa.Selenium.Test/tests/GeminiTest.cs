@@ -656,7 +656,7 @@ namespace NakedObjects.Selenium
 
         protected void Reload(Pane pane = Pane.Single)
         {
-            Click(GetInputButton("Reload", pane));
+            Click(GetButton("Reload", pane));
         }
 
         protected void ReloadList(Pane pane = Pane.Single) {
