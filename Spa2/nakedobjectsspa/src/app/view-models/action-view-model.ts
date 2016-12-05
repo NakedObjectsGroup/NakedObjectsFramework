@@ -34,7 +34,7 @@ export class ActionViewModel {
         this.description = this.disabled() ? actionRep.disabledReason() : actionRep.extensions().description();
     }
 
-    private paneId: number;
+    paneId: number;
     invokableActionRep: Models.IInvokableAction;
     menuPath: string;
     title: string;
@@ -44,6 +44,18 @@ export class ActionViewModel {
 
     // form actions should never show dialogs
     private showDialog = () => this.actionRep.extensions().hasParams() && (this.routeData.interactionMode !== InteractionMode.Form);
+
+    private incrementPendingPotentAction() {
+        if (this.invokableActionRep.isPotent()) {
+            this.context.incrementPendingPotentAction(this.paneId);
+        }
+    }
+
+    private decrementPendingPotentAction() {
+        if (this.invokableActionRep.isPotent()) {
+            this.context.decrementPendingPotentAction(this.paneId);
+        }
+    }
 
     // open dialog on current pane always - invoke action goes to pane indicated by click
     doInvoke = this.showDialog()
@@ -55,14 +67,17 @@ export class ActionViewModel {
         }
         : (right?: boolean) => {
             const pps = this.parameters();
+            this.incrementPendingPotentAction();
             this.execute(pps, right)
                 .then((actionResult: Models.ActionResultRepresentation) => {
+                    this.decrementPendingPotentAction();
                     // if expect result and no warning from server generate one here
                     if (actionResult.shouldExpectResult() && !actionResult.warningsOrMessages()) {
                         this.context.broadcastWarning(Msg.noResultMessage);
                     }
                 })
                 .catch((reject: Models.ErrorWrapper) => {
+                    this.decrementPendingPotentAction();
                     const display = (em: Models.ErrorMap) => this.vm.setMessage(em.invalidReason() || em.warningMessage);
                     this.error.handleErrorAndDisplayMessages(reject, display);
                 });
@@ -73,6 +88,7 @@ export class ActionViewModel {
     execute = (pps: ParameterViewModel[], right?: boolean): Promise<Models.ActionResultRepresentation> => {
         const parmMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Models.Value>;
         _.forEach(pps, p => this.urlManager.setParameterValue(this.actionRep.actionId(), p.parameterRep, p.getValue(), this.paneId));
+        // todo is this necessary - should we always be invokable by now ?
         return this.context.getInvokableAction(this.actionRep)
             .then((details: Models.IInvokableAction) => this.context.invokeAction(details, parmMap, this.paneId, this.clickHandler.pane(this.paneId, right), this.gotoResult));
     };

@@ -1283,6 +1283,10 @@ export interface IInvokableAction extends IHasExtensions {
     getInvokeMap(): InvokeMap;
     parameters(): _.Dictionary<Parameter>;
     disabledReason(): string;
+
+    isQueryOnly(): boolean;
+    isNotQueryOnly(): boolean;
+    isPotent() : boolean; 
 }
 
 export class ActionRepresentation extends ResourceRepresentation<Ro.IActionRepresentation> implements IInvokableAction {
@@ -1340,6 +1344,18 @@ export class ActionRepresentation extends ResourceRepresentation<Ro.IActionRepre
 
     disabledReason(): string {
         return this.wrapped().disabledReason;
+    }
+
+    isQueryOnly(): boolean {
+        return this.invokeLink().method() === "GET";
+    }
+
+    isNotQueryOnly(): boolean {
+        return this.invokeLink().method() !== "GET";
+    }
+
+    isPotent(): boolean {
+        return this.invokeLink().method() === "POST";
     }
 }
 
@@ -1899,6 +1915,21 @@ export class InvokableActionMember extends ActionMember {
         return null;
     }
 
+    isQueryOnly(): boolean {
+        const invokeLink = this.invokeLink();
+        return invokeLink && this.invokeLink().method() === "GET";
+    }
+
+    isNotQueryOnly(): boolean {
+        const invokeLink = this.invokeLink();
+        return invokeLink && this.invokeLink().method() !== "GET";
+    }
+
+    isPotent(): boolean {
+        const invokeLink = this.invokeLink();
+        return invokeLink && this.invokeLink().method() === "POST";
+    }
+
     // properties 
 
     private parameterMap: _.Dictionary<Parameter>;
@@ -1915,6 +1946,9 @@ export class InvokableActionMember extends ActionMember {
         this.initParameterMap();
         return this.parameterMap;
     }
+
+
+
 }
 
 

@@ -43,7 +43,7 @@ export class DialogViewModel extends MessageViewModel {
 
 
         this.title = this.actionMember().extensions().friendlyName();
-        this.isQueryOnly = this.actionViewModel.invokableActionRep.invokeLink().method() === "GET";
+        this.isQueryOnly = this.actionViewModel.invokableActionRep.isQueryOnly();
         this.resetMessage();
         this.id = this.actionViewModel.actionRep.actionId();
 
@@ -80,7 +80,7 @@ export class DialogViewModel extends MessageViewModel {
        
 
         this.title = this.actionMember().extensions().friendlyName();
-        this.isQueryOnly = actionViewModel.invokableActionRep.invokeLink().method() === "GET";
+        this.isQueryOnly = actionViewModel.invokableActionRep.isQueryOnly();
         this.resetMessage();
         this.id = actionViewModel.actionRep.actionId();
 
