@@ -193,6 +193,7 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.Object);
             Click(GetObjectAction("Clear Comment"));
 
+            WaitUntilElementDoesNotExist(".tempdisabled");
             var dialog = OpenActionDialog("Add Multi Line Comment");
             var field1 = WaitForCss(".parameter:nth-child(1) textarea");
             ClearFieldThenType(".parameter:nth-child(1) textarea", "comment");
@@ -211,8 +212,6 @@ namespace NakedObjects.Selenium {
             var ran3 = rand.Next(10000);
             ClearFieldThenType("#comment1", ran1 + Keys.Enter + ran2 + Keys.Enter + ran3);
             Click(SaveButton());
-
-            var t = br.FindElement(By.CssSelector(".property .value.multiline")).Text;
 
             wait.Until(d => br.FindElement(By.CssSelector(".property .value.multiline")).Text ==
                             $"{ran1}\r\n{ran2}\r\n{ran3}");
@@ -362,7 +361,7 @@ namespace NakedObjects.Selenium {
             CanSetAndClearAnOptionalDropDown();
             ObjectEditPicksUpLatestServerVersion();
             ViewModelEditOpensInEditMode();
-            //MultiLineText();
+            MultiLineText();
         }
     }
 
