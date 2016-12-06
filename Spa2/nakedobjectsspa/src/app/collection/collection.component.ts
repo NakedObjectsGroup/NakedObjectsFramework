@@ -78,7 +78,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
     itemTitle = (item: ItemViewModel) => item.title;
     doItemClick = (item: ItemViewModel, right?: boolean) => item.doClick(right);
 
-    itemId = (i: number) => `item${this.collection.onPaneId}-${i}`;
+    itemId = (i: number | string) => `details${this.collection.onPaneId}-${i}`;
 
     itemTableTitle = (item: ItemViewModel) => item.tableRowViewModel.title;
     itemHasTableTitle = (item: ItemViewModel) => item.tableRowViewModel.hasTitle;
