@@ -7,7 +7,7 @@
         <img *ngIf="showTable()" class="icon-table clickable-area" (click)="doTable()" src="../../images/table.png" title="View as Table"/>
     </div>
 </div>
-
+<div class="messages">{{message}}</div>
 <actions *ngIf="showActions()" class="actions" [menu]="collection"></actions>
 <app-dialog *ngIf="showActions()" [parent]="collection"></app-dialog>
 

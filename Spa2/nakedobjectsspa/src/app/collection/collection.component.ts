@@ -45,6 +45,10 @@ export class CollectionComponent implements OnInit, OnDestroy {
         return this.collection.items;
     }
 
+    get message() {
+        return this.collection.getMessage();
+    }
+
     matchingDialog = () => {
         //this.dialog.matchingCollectionId === this.collection.id;
     }
@@ -78,7 +82,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
     itemTitle = (item: ItemViewModel) => item.title;
     doItemClick = (item: ItemViewModel, right?: boolean) => item.doClick(right);
 
-    itemId = (i: number | string) => `details${this.collection.onPaneId}-${i}`;
+    itemId = (i: number | string) => `${this.collection.id}${this.collection.onPaneId}-${i}`;
 
     itemTableTitle = (item: ItemViewModel) => item.tableRowViewModel.title;
     itemHasTableTitle = (item: ItemViewModel) => item.tableRowViewModel.hasTitle;

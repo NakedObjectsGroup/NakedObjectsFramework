@@ -71,7 +71,7 @@ namespace NakedObjects.Selenium {
             GeminiUrl("object?i1=View&r=1&o1=___1.SalesOrderHeader--63023&c1_SalesOrderHeaderSalesReason=List");
             var action = wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[1].FindElements(By.CssSelector(".action"))[1].Text == "Remove Sales Reasons");
             Click(GetObjectAction("Remove Sales Reasons"));
-            WaitForTextEquals(".messages",1,"Must select items for collection contributed action");
+            WaitForTextEquals(".messages",2,"Must select items for collection contributed action");
         }
 
         public virtual void CannotInvokeDialogSelectionActionWithNothingSelected()
@@ -217,10 +217,10 @@ namespace NakedObjects.Selenium {
             LocalCollectionActionsHonourMemberOrder();
             CheckBoxesVisibleAndCanBeSelected();
             SelectionsPreservedIfNavigatingAwayAndBack();
-            //CannotInvokeZeroParamSelectionActionWithNothingSelected();
-            //CannotInvokeDialogSelectionActionWithNothingSelected();
-            //ZeroAndOneParamActionInvoked();
-            //ActionsAvailableOnEmptyCollections();
+            CannotInvokeZeroParamSelectionActionWithNothingSelected();
+            CannotInvokeDialogSelectionActionWithNothingSelected();
+            ZeroAndOneParamActionInvoked();
+            ActionsAvailableOnEmptyCollections();
         }
     }
 

@@ -29,6 +29,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel{
         this.title = collectionRep.extensions().friendlyName();
         this.presentationHint = collectionRep.extensions().presentationHint();
         this.pluralName = collectionRep.extensions().pluralName();
+        this.id = collectionRep.collectionId().toLowerCase();
 
         this.colorService.toColorNumberFromType(collectionRep.extensions().elementType()).
             then(c => this.color = `${Config.linkColor}${c}`).
@@ -114,6 +115,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel{
     color: string;
     mayHaveItems: boolean;
     editing: boolean;
+    id : string;
    
     header: string[];
   
