@@ -124,7 +124,7 @@ namespace NakedObjects.Selenium {
             Click(iconTable);
             Thread.Sleep(500);
             wait.Until(dr => dr.FindElement(By.CssSelector("tbody tr:nth-child(1) td:nth-child(2)")).Text == "No Discount");
-            var row = br.FindElement(By.CssSelector("tbody tr:nth-child(1)"));
+            var row = br.FindElement(By.CssSelector("tbody tr:nth-child(1) div"));
             Click(row);
             WaitForView(Pane.Single, PaneType.Object, "No Discount");
         }
@@ -188,12 +188,29 @@ namespace NakedObjects.Selenium {
             Reload();
             wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details")).Text
                 .StartsWith("Page 1 of 1;"));
-            GeminiUrl("object?o1=___1.SpecialOffer--7");
+            Click(HomeIcon());
+            WaitForView(Pane.Single, PaneType.Home, "Home");
+            GoToMenuFromHomePage("Special Offers");
+            Click(GetObjectAction("Special Offers With No Minimum Qty"));
+            WaitForView(Pane.Single, PaneType.List, "Special Offers With No Minimum Qty");
+
+            wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details")).Text
+                             == "Page 1 of 1; viewing 11 of 11 items");
+
+            WaitForCss("tbody tr:nth-child(2) td:nth-child(2)");
+
+            var row = br.FindElement(By.CssSelector("tbody tr:nth-child(2) td:nth-child(2)"));
+            Click(row);
+            WaitForView(Pane.Single, PaneType.Object, "Mountain-100 Clearance Sale");
+            //GeminiUrl("object?o1=___1.SpecialOffer--7");
             EditObject();
             ClearFieldThenType("#minqty1", "10");
             SaveObject();
-            GeminiUrl("list?m1=SpecialOfferRepository&a1=SpecialOffersWithNoMinimumQty&p1=1&ps1=20");
+            ClickBackButton();
+            ClickBackButton();
+            //ClickBackButton();
             WaitForView(Pane.Single, PaneType.List, "Special Offers With No Minimum Qty");
+           
             wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details")).Text
                              == "Page 1 of 1; viewing 11 of 11 items");
             Reload();
@@ -400,11 +417,11 @@ namespace NakedObjects.Selenium {
             TableViewCanIncludeCollectionSummaries();
             SwitchToTableViewAndBackToList();
             NavigateToItemFromListView();
-            //NavigateToItemFromTableView(); fails - styling ? row click fails
+            NavigateToItemFromTableView();
             Paging();
-            PageSizeRecognised(); 
-            //ListDoesNotRefreshWithoutReload();
-            //ReloadingListGetsUpdatedObject();
+            PageSizeRecognised();
+            ListDoesNotRefreshWithoutReload();
+            ReloadingListGetsUpdatedObject();
             EagerlyRenderTableViewFromAction();
         }
     }

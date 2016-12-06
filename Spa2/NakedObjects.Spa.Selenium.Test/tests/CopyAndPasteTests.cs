@@ -127,7 +127,7 @@ namespace NakedObjects.Selenium {
             title.Click();
             CopyToClipboard(title);
             string selector = "#pane1 .parameter .value";
-            var target = WaitForCss(selector);
+            WaitForCss(selector);
             PasteIntoInputField("#pane1 .parameter .value.droppable");
         }
 
@@ -135,10 +135,10 @@ namespace NakedObjects.Selenium {
             GeminiUrl("object?o1=___1.PurchaseOrderHeader--121");
             GetReferenceProperty("Order Placed By", "Sheela Word");
             EditObject();
-            //CancelDatePicker("#orderdate1");
-            var prop = wait.Until(dr => dr.FindElements(By.CssSelector(".property")).Single(we => we.FindElement(By.CssSelector(".name")).Text == "Order Placed By" + ":" &&
-                             we.FindElement(By.CssSelector(".value.droppable")).GetAttribute("value") == "Sheela Word")
-                );
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property")).
+            Single(we => we.FindElement(By.CssSelector(".name")).Text == "Order Placed By" + ":" &&
+                         we.FindElement(By.CssSelector(".value.droppable")).GetAttribute("value") == "Sheela Word")
+            );
             //Finish somewhere else
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
@@ -156,7 +156,7 @@ namespace NakedObjects.Selenium {
             CopyToClipboard(title);
 
             var target = WaitForCss(fieldCss);
-            var copying = WaitForCss(".footer .currentcopy .reference").Text;
+            WaitForCss(".footer .currentcopy .reference");
             target.Click();
             target.SendKeys(Keys.Control + "v");
             Assert.AreEqual("Annette Hill", WaitForCss(fieldCss).GetAttribute("value")); //i.e. no change
@@ -178,12 +178,13 @@ namespace NakedObjects.Selenium {
 
             PasteIntoInputField("#pane1 .parameter .value.droppable");
             Click(FullIcon());
-            WaitUntilGone(br => br.FindElement(By.CssSelector("#pane2")));
+            WaitUntilGone(d => d.FindElement(By.CssSelector("#pane2")));
             var input = WaitForCss("#contactdetails1.droppable");
             Assert.AreEqual("Arthur Kapoor", input.GetAttribute("value"));
             CancelDialog();
         }
     }
+
     public abstract class CopyAndPasteTests : CopyAndPasteTestsRoot {
         [TestMethod]
         public override void CopyTitleOrPropertyIntoClipboard() {
@@ -237,6 +238,7 @@ namespace NakedObjects.Selenium {
     }
 
     #region browsers specific subclasses
+
     //[TestClass]
     public class CopyAndPasteTestsIe : CopyAndPasteTests {
         [ClassInitialize]
@@ -253,7 +255,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -271,14 +273,15 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
 
         protected override void ScrollTo(IWebElement element) {
-            string script = string.Format("window.scrollTo({0}, {1});return true;", element.Location.X, element.Location.Y);
+            string script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
             ((IJavaScriptExecutor) br).ExecuteScript(script);
         }
     }
+
     //[TestClass]
     public class CopyAndPasteTestsChrome : CopyAndPasteTests {
         [ClassInitialize]
@@ -294,17 +297,18 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
     #endregion
 
     #region Mega tests
+
     public abstract class MegaCopyAndPasteTestsRoot : CopyAndPasteTestsRoot {
         [TestMethod] //Mega
         public void MegaCopyAndPasteTest() {
-            CopyTitleOrPropertyIntoClipboard(); //TODO
+            CopyTitleOrPropertyIntoClipboard();
             CopyListItemIntoClipboard();
             PasteIntoReferenceField();
             PasteIntoReferenceFieldThatAlsoHasAutoCompleteAndFindMenu();
@@ -313,9 +317,11 @@ namespace NakedObjects.Selenium {
             PasteIntoAutoCompleteField();
             DroppableReferenceFieldWithoutAutoComplete();
             CannotPasteWrongTypeIntoReferenceField();
-            //CanClearADroppableReferenceField(); //TODO: Works locally, but not on server
             DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed();
-            //IfNoObjectInClipboardCtrlVRevertsToBrowserBehaviour(); //TODO: Works locally, but not on server
+
+            // Moved to LocallRunTests as fail on server 
+            //CanClearADroppableReferenceField();
+            //IfNoObjectInClipboardCtrlVRevertsToBrowserBehaviour(); 
         }
     }
 
@@ -334,7 +340,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -354,11 +360,11 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
-    //[TestClass] todo fails
+    //[TestClass]
     public class MegaCopyAndPasteTestsIe : MegaCopyAndPasteTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -374,10 +380,9 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
-
 
     #endregion
 }
