@@ -264,7 +264,7 @@ namespace NakedObjects.Selenium
         {
             var selected = new SelectElement(WaitForCss(cssFieldId));
             selected.SelectByText(characters);
-            wait.Until(dr => new SelectElement(dr.FindElement(By.CssSelector(cssFieldId))).SelectedOption.Text == characters);
+            wait.Until(dr => selected.SelectedOption.Text == characters);
         }
 
         protected virtual void SelectDropDownOnField(string cssFieldId, int index)

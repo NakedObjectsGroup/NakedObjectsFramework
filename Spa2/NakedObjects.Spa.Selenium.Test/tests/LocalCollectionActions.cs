@@ -5,14 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
 namespace NakedObjects.Selenium {
     public abstract class LocalCollectionActionsTestsRoot : AWTest {
-        public virtual void LocalCollectionActionsHonourMemberOrder()
-        {
+        public virtual void LocalCollectionActionsHonourMemberOrder() {
             GeminiUrl("object?i1=View&r=1&o1=___1.SalesOrderHeader--71105&c1_Details=Table");
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector(".action")).Count >= 2);
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector(".action"))[0].Text == "Add New Details");
@@ -20,10 +18,10 @@ namespace NakedObjects.Selenium {
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector(".action"))[2].Text == "Remove Details");
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector(".action"))[3].Text == "Adjust Quantities");
         }
-        public virtual void CheckBoxesVisibleAndCanBeSelected()
-        {
-            GeminiUrl("object?i1=View&r=1&o1=___1.SalesOrderHeader--44284&c1_Details=List");         
-            WaitForCss("input[type='checkbox']",17); // 16 lines plus all
+
+        public virtual void CheckBoxesVisibleAndCanBeSelected() {
+            GeminiUrl("object?i1=View&r=1&o1=___1.SalesOrderHeader--44284&c1_Details=List");
+            WaitForCss("input[type='checkbox']", 17); // 16 lines plus all
             WaitForSelectedCheckboxes(0);
             SelectCheckBox("input[type = 'checkbox']#details1-0");
             SelectCheckBox("input[type = 'checkbox']#details1-2");
@@ -37,10 +35,9 @@ namespace NakedObjects.Selenium {
             WaitForSelectedCheckboxes(0);
         }
 
-        public virtual void SelectionsPreservedIfNavigatingAwayAndBack()
-        {
+        public virtual void SelectionsPreservedIfNavigatingAwayAndBack() {
             GeminiUrl("object?i1=View&r=1&o1=___1.SalesOrderHeader--67298&c1_Details=List");
-            WaitForCss("input[type='checkbox']", 28); 
+            WaitForCss("input[type='checkbox']", 28);
             WaitForSelectedCheckboxes(0);
             SelectCheckBox("input[type = 'checkbox']#details1-0");
             SelectCheckBox("input[type = 'checkbox']#details1-3");
@@ -53,10 +50,9 @@ namespace NakedObjects.Selenium {
             WaitForSelectedCheckboxes(3);
         }
 
-        public virtual void ActionsAvailableOnEmptyCollections()
-        {
+        public virtual void ActionsAvailableOnEmptyCollections() {
             GeminiUrl("object?i1=View&r=1&o1=___1.SalesOrderHeader--70589");
-            WaitForTextEquals(".collection", 1,"Reasons:\r\nEmpty");
+            WaitForTextEquals(".collection", 1, "Reasons:\r\nEmpty");
             Click(WaitForCssNo(".icon-list", 1));
 
             //Add new sales reason;  remove sales reasons
@@ -66,16 +62,14 @@ namespace NakedObjects.Selenium {
             WaitUntilElementDoesNotExist(".collection .actions");
         }
 
-        public virtual void CannotInvokeZeroParamSelectionActionWithNothingSelected()
-        {
+        public virtual void CannotInvokeZeroParamSelectionActionWithNothingSelected() {
             GeminiUrl("object?i1=View&r=1&o1=___1.SalesOrderHeader--63023&c1_SalesOrderHeaderSalesReason=List");
-            var action = wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[1].FindElements(By.CssSelector(".action"))[1].Text == "Remove Sales Reasons");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[1].FindElements(By.CssSelector(".action"))[1].Text == "Remove Sales Reasons");
             Click(GetObjectAction("Remove Sales Reasons"));
-            WaitForTextEquals(".messages",2,"Must select items for collection contributed action");
+            WaitForTextEquals(".messages", 2, "Must select items for collection contributed action");
         }
 
-        public virtual void CannotInvokeDialogSelectionActionWithNothingSelected()
-        {
+        public virtual void CannotInvokeDialogSelectionActionWithNothingSelected() {
             GeminiUrl("object?i1=View&r=1&o1=___1.SalesOrderHeader--63023&c1_SalesOrderHeaderSalesReason=Summary&c1_Details=List&d1=AdjustQuantities");
             WaitForTextEquals(".collection .dialog .title", "Adjust Quantities");
             TypeIntoFieldWithoutClearing("#newquantity1", "7");
@@ -83,8 +77,7 @@ namespace NakedObjects.Selenium {
             WaitForTextEquals(".collection .dialog .co-validation", "Must select items for collection contributed action");
         }
 
-        public virtual void ZeroAndOneParamActionInvoked()
-        {
+        public virtual void ZeroAndOneParamActionInvoked() {
             GeminiUrl("object?i1=View&r=1&o1=___1.SalesOrderHeader--70362&c1_SalesOrderHeaderSalesReason=List");
             WaitForTextEquals(".collection .summary", 1, "Reasons:\r\n1 Item");
             SelectCheckBox("#salesorderheadersalesreason1-0");
@@ -98,49 +91,41 @@ namespace NakedObjects.Selenium {
             Click(OKButton());
             WaitForTextEquals(".collection .summary", 1, "Reasons:\r\n1 Item");
         }
-
-
     }
 
     public abstract class LocalCollectionActionsTests : LocalCollectionActionsTestsRoot {
-
         [TestMethod]
-        public override void LocalCollectionActionsHonourMemberOrder()
-        {
+        public override void LocalCollectionActionsHonourMemberOrder() {
             base.LocalCollectionActionsHonourMemberOrder();
         }
 
         [TestMethod]
-        public override void CheckBoxesVisibleAndCanBeSelected()
-        {
-            base.CheckBoxesVisibleAndCanBeSelected();      
+        public override void CheckBoxesVisibleAndCanBeSelected() {
+            base.CheckBoxesVisibleAndCanBeSelected();
         }
 
         [TestMethod]
-        public override void SelectionsPreservedIfNavigatingAwayAndBack()
-        {
+        public override void SelectionsPreservedIfNavigatingAwayAndBack() {
             base.SelectionsPreservedIfNavigatingAwayAndBack();
         }
 
-
         [TestMethod]
-        public override void ActionsAvailableOnEmptyCollections()
-        {
+        public override void ActionsAvailableOnEmptyCollections() {
             base.ActionsAvailableOnEmptyCollections();
         }
+
         [TestMethod]
-        public override void CannotInvokeZeroParamSelectionActionWithNothingSelected()
-        {
+        public override void CannotInvokeZeroParamSelectionActionWithNothingSelected() {
             base.CannotInvokeZeroParamSelectionActionWithNothingSelected();
         }
+
         [TestMethod]
-        public override void CannotInvokeDialogSelectionActionWithNothingSelected()
-        {
+        public override void CannotInvokeDialogSelectionActionWithNothingSelected() {
             base.CannotInvokeDialogSelectionActionWithNothingSelected();
         }
+
         [TestMethod]
-        public override void ZeroAndOneParamActionInvoked()
-        {
+        public override void ZeroAndOneParamActionInvoked() {
             base.ZeroAndOneParamActionInvoked();
         }
     }
@@ -162,7 +147,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -180,11 +165,11 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
 
         protected override void ScrollTo(IWebElement element) {
-            string script = string.Format("window.scrollTo({0}, {1});return true;", element.Location.X, element.Location.Y);
+            string script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
             ((IJavaScriptExecutor) br).ExecuteScript(script);
         }
     }
@@ -203,7 +188,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -239,7 +224,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -258,31 +243,27 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
     [TestClass]
-    public class MegaLocalCollectionActionsTestsChrome : MegaLocalCollectionActionsTestsRoot
-    {
+    public class MegaLocalCollectionActionsTestsChrome : MegaLocalCollectionActionsTestsRoot {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitChromeDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
-            base.CleanUpTest();
+        public virtual void CleanupTest() {
+            CleanUpTest();
         }
     }
 
