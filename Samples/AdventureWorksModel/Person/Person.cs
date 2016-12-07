@@ -263,7 +263,7 @@ namespace AdventureWorksModel {
         #region PhoneNumbers (collection)
         private ICollection<PersonPhone> _PhoneNumbers = new List<PersonPhone>();
 
-        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [AWNotCounted]
         [TableView(false, 
             nameof(PersonPhone.PhoneNumberType),
             nameof(PersonPhone.PhoneNumber))] 
@@ -275,6 +275,21 @@ namespace AdventureWorksModel {
                 _PhoneNumbers = value;
             }
         }
+
+        public void CreateNewPhoneNumber(PhoneNumberType type, 
+            [RegularExpression(@"[0-9][0-9\s-]+")]string phoneNumber)
+        {
+            var pp = Container.NewTransientInstance<PersonPhone>();
+            pp.BusinessEntityID = this.BusinessEntityID;
+            pp.Person = this;
+            pp.PhoneNumberType = type;
+            pp.PhoneNumberTypeID = type.PhoneNumberTypeID;
+            pp.PhoneNumber = phoneNumber;
+            Container.Persist(ref pp);
+            this.PhoneNumbers.Add(pp);
+        }
+
+
         #endregion
 
 
@@ -336,7 +351,6 @@ namespace AdventureWorksModel {
         }
         #endregion
     }
-
     public class EmailTemplate : IViewModelEdit
     {
         #region Injected Services
