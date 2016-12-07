@@ -95,13 +95,20 @@ export class CollectionComponent implements OnInit, OnDestroy {
 
     private paneRouteDataSub: ISubscription;
 
+    private currentOid : string; 
+
     ngOnInit(): void {
 
         // todo can we just listen for the pane we're interested in ?
         this.paneRouteDataSub = this.urlManager.getRouteDataObservable()
             .subscribe((rd: Routedata.RouteData) => {
                 const paneRouteData = rd.pane()[this.collection.onPaneId];
-                this.collection.reset(paneRouteData, false);
+                this.currentOid = this.currentOid || paneRouteData.objectId;
+
+                // ignore if different object
+                if (this.currentOid === paneRouteData.objectId) {
+                    this.collection.reset(paneRouteData, false);
+                }
             });
     }
 
