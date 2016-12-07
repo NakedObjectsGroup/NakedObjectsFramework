@@ -222,7 +222,7 @@ namespace NakedObjects.Selenium {
             Click(br.FindElement(By.CssSelector(".icon-back")));
             WaitForView(Pane.Single, PaneType.Object);
             wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(6) .value")).Text == original);
-            Reload();
+            ReloadObject();
             wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(6) .value")).Text == newValue);
         }
         public virtual void PotentActionDoesReloadAutomatically() {
@@ -663,37 +663,37 @@ namespace NakedObjects.Selenium {
     public abstract class MegaObjectViewTestsRoot : ObjectViewTestsRoot {
         [TestMethod] //Mega
         public void MegaObjectViewTest() {
-            //ActionsAlreadyOpen();
-            //OpenActionsMenuNotAlreadyOpen();
-            //OpenAndCloseSubMenusTo3Levels();
-            //Properties();
-            //Collections();
-            //CollectionEagerlyRendered();
-            //DateAndCurrencyProperties();
-            //TableViewHonouredOnCollection();
-            //TableViewIgnoresDuplicatedColumnName();
-            //ClickReferenceProperty();
-            //OpenCollectionAsList();
-            //NotCountedCollection();
-            //ClickOnLineItemWithCollectionAsList();
-            //ClickOnLineItemWithCollectionAsTable();
-            //CanClickOnTitleInTableView();
-            //DialogAction();
-            //DialogActionOk();
-            //ObjectAction();
-            //CollectionAction();
-            //DescriptionRenderedAsTooltip();
-            //DisabledAction();
-            //ActionsMenuDisabledOnObjectWithNoActions();
-            //QueryOnlyActionDoesNotReloadAutomatically();
-            //PotentActionDoesReloadAutomatically();
-            //NonNavigableReferenceProperty();
-            //Colours();
-            //ZeroIntValues();
-            //AddingObjectToCollectionUpdatesTableView();
-            ////TimeSpanProperty();
-            //ZeroParamActionCausesObjectToReload();
-            //CanInvokeOneNonPotentActionBeforePreviousHasCompleted();
+            ActionsAlreadyOpen();
+            OpenActionsMenuNotAlreadyOpen();
+            OpenAndCloseSubMenusTo3Levels();
+            Properties();
+            Collections();
+            CollectionEagerlyRendered();
+            DateAndCurrencyProperties();
+            TableViewHonouredOnCollection();
+            TableViewIgnoresDuplicatedColumnName();
+            ClickReferenceProperty();
+            OpenCollectionAsList();
+            NotCountedCollection();
+            ClickOnLineItemWithCollectionAsList();
+            ClickOnLineItemWithCollectionAsTable();
+            CanClickOnTitleInTableView();
+            DialogAction();
+            DialogActionOk();
+            ObjectAction();
+            CollectionAction();
+            DescriptionRenderedAsTooltip();
+            DisabledAction();
+            ActionsMenuDisabledOnObjectWithNoActions();
+            QueryOnlyActionDoesNotReloadAutomatically();
+            PotentActionDoesReloadAutomatically();
+            NonNavigableReferenceProperty();
+            Colours();
+            ZeroIntValues();
+            AddingObjectToCollectionUpdatesTableView();
+            //TimeSpanProperty();
+            ZeroParamActionCausesObjectToReload();
+            CanInvokeOneNonPotentActionBeforePreviousHasCompleted();
             UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed();
             CannotInvokeAPotentActionUntilPriorOneHasCompleted();
         }
