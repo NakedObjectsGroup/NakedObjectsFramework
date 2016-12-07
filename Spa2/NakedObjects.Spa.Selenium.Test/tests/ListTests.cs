@@ -5,11 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using System;
 
 namespace NakedObjects.Selenium {
     /// <summary>
@@ -56,8 +56,7 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("0", cols[4].Text);
         }
 
-        public virtual void TableViewWorksWithSubTypes()
-        {
+        public virtual void TableViewWorksWithSubTypes() {
             GeminiUrl("list?m1=CustomerRepository&a1=RandomCustomers&pg1=1&ps1=20&s1=0&c1=Table");
             WaitForView(Pane.Single, PaneType.List, "Random Customers");
             Reload();
@@ -124,7 +123,7 @@ namespace NakedObjects.Selenium {
             Click(iconTable);
             Thread.Sleep(500);
             wait.Until(dr => dr.FindElement(By.CssSelector("tbody tr:nth-child(1) td:nth-child(2)")).Text == "No Discount");
-            var row = br.FindElement(By.CssSelector("tbody tr:nth-child(1)"));
+            var row = br.FindElement(By.CssSelector("tbody tr:nth-child(1) div"));
             Click(row);
             WaitForView(Pane.Single, PaneType.Object, "No Discount");
         }
@@ -167,20 +166,19 @@ namespace NakedObjects.Selenium {
                 .Text.StartsWith("Page 1 of 45"));
         }
 
-        public virtual void PageSizeRecognised()
-        {
+        public virtual void PageSizeRecognised() {
             //Method marked with PageSize(2)
             GeminiUrl("home?m1=CustomerRepository&d1=FindStoreByName");
-            ClearFieldThenType("#name1","bike");
+            ClearFieldThenType("#name1", "bike");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Find Store By Name");
             var summary = WaitForCss(".list .summary .details");
-             Assert.AreEqual("Page 1 of 177; viewing 2 of 353 items", summary.Text);
+            Assert.AreEqual("Page 1 of 177; viewing 2 of 353 items", summary.Text);
             var next = GetButton("Next").AssertIsEnabled();
             Click(next);
             wait.Until(dr => dr.FindElement(
-                By.CssSelector(".list .summary .details"))
-                .Text == "Page 2 of 177; viewing 2 of 353 items");
+                                     By.CssSelector(".list .summary .details"))
+                                 .Text == "Page 2 of 177; viewing 2 of 353 items");
         }
 
         public virtual void ListDoesNotRefreshWithoutReload() {
@@ -188,12 +186,29 @@ namespace NakedObjects.Selenium {
             Reload();
             wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details")).Text
                 .StartsWith("Page 1 of 1;"));
-            GeminiUrl("object?o1=___1.SpecialOffer--7");
+            Click(HomeIcon());
+            WaitForView(Pane.Single, PaneType.Home, "Home");
+            GoToMenuFromHomePage("Special Offers");
+            Click(GetObjectAction("Special Offers With No Minimum Qty"));
+            WaitForView(Pane.Single, PaneType.List, "Special Offers With No Minimum Qty");
+
+            wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details")).Text
+                             == "Page 1 of 1; viewing 11 of 11 items");
+
+            WaitForCss("tbody tr:nth-child(2) td:nth-child(2)");
+
+            var row = br.FindElement(By.CssSelector("tbody tr:nth-child(2) td:nth-child(2)"));
+            Click(row);
+            WaitForView(Pane.Single, PaneType.Object, "Mountain-100 Clearance Sale");
+            //GeminiUrl("object?o1=___1.SpecialOffer--7");
             EditObject();
             ClearFieldThenType("#minqty1", "10");
             SaveObject();
-            GeminiUrl("list?m1=SpecialOfferRepository&a1=SpecialOffersWithNoMinimumQty&p1=1&ps1=20");
+            ClickBackButton();
+            ClickBackButton();
+            //ClickBackButton();
             WaitForView(Pane.Single, PaneType.List, "Special Offers With No Minimum Qty");
+
             wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details")).Text
                              == "Page 1 of 1; viewing 11 of 11 items");
             Reload();
@@ -273,8 +288,7 @@ namespace NakedObjects.Selenium {
         }
 
         [TestMethod]
-        public override void TableViewWorksWithSubTypes()
-        {
+        public override void TableViewWorksWithSubTypes() {
             base.TableViewWorksWithSubTypes();
         }
 
@@ -302,9 +316,9 @@ namespace NakedObjects.Selenium {
         public override void Paging() {
             base.Paging();
         }
+
         [TestMethod]
-        public override void PageSizeRecognised()
-        {
+        public override void PageSizeRecognised() {
             base.PageSizeRecognised();
         }
 
@@ -340,7 +354,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -358,7 +372,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -377,11 +391,11 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
 
         protected override void ScrollTo(IWebElement element) {
-            string script = string.Format("window.scrollTo({0}, {1});return true;", element.Location.X, element.Location.Y);
+            string script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
             ((IJavaScriptExecutor) br).ExecuteScript(script);
         }
     }
@@ -400,11 +414,11 @@ namespace NakedObjects.Selenium {
             TableViewCanIncludeCollectionSummaries();
             SwitchToTableViewAndBackToList();
             NavigateToItemFromListView();
-            //NavigateToItemFromTableView(); fails - styling ? row click fails
+            NavigateToItemFromTableView();
             Paging();
-            PageSizeRecognised(); 
-            //ListDoesNotRefreshWithoutReload();
-            //ReloadingListGetsUpdatedObject();
+            PageSizeRecognised();
+            ListDoesNotRefreshWithoutReload();
+            ReloadingListGetsUpdatedObject();
             EagerlyRenderTableViewFromAction();
         }
     }
@@ -424,7 +438,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -444,32 +458,29 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
     [TestClass]
-    public class MegaListTestsChrome : MegaListTestsRoot
-    {
+    public class MegaListTestsChrome : MegaListTestsRoot {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitChromeDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
-            base.CleanUpTest();
+        public virtual void CleanupTest() {
+            CleanUpTest();
         }
     }
+
     #endregion
 }

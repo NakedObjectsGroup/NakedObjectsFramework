@@ -59,7 +59,7 @@ namespace NakedObjects.Selenium {
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
             wait.Until(d => d.FindElement(By.CssSelector(".view")));
             wait.Until(d => d.FindElement(By.CssSelector(".header")));
-            wait.Until(d => d.FindElement(By.CssSelector(".menu")).Text == "Actions");
+            wait.Until(d => d.FindElement(By.CssSelector(".menu")).GetAttribute("value") == "Actions");
             wait.Until(d => d.FindElement(By.CssSelector(".main-column")));
             wait.Until(d => d.FindElement(By.CssSelector(".collections")));
 
@@ -108,7 +108,7 @@ namespace NakedObjects.Selenium {
 
         public virtual void ListZeroParameterAction() {
             GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders");
-            Reload(Pane.Single);
+            Reload();
             wait.Until(d => d.FindElement(By.CssSelector(".list")));
             WaitForView(Pane.Single, PaneType.List, "Highest Value Orders");
         }
@@ -305,7 +305,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -324,7 +324,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -343,11 +343,11 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
 
         protected override void ScrollTo(IWebElement element) {
-            string script = string.Format("window.scrollTo(0, {0})", element.Location.Y);
+            string script = $"window.scrollTo(0, {element.Location.Y})";
             ((IJavaScriptExecutor) br).ExecuteScript(script);
         }
     }
@@ -392,7 +392,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -412,7 +412,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -432,7 +432,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 }

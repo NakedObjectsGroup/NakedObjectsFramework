@@ -171,7 +171,8 @@ class ValueCache {
 export class ContextService {
 
     constructor(private urlManager: UrlManagerService,
-                private repLoader: RepLoaderService) { }
+        private repLoader: RepLoaderService) {
+    }
 
     // cached values
 
@@ -249,7 +250,9 @@ export class ContextService {
         // deeper cache for transients
         if (interactionMode === InteractionMode.Transient) {
             const transientObj = this.transientCache.get(paneId, type, id);
-            const p: Promise<Models.DomainObjectRepresentation> = transientObj ? Promise.resolve(transientObj) : <any> Promise.reject(new Models.ErrorWrapper(Models.ErrorCategory.ClientError, Models.ClientErrorCode.ExpiredTransient, ""));
+            const p: Promise<Models.DomainObjectRepresentation> = transientObj
+                ? Promise.resolve(transientObj)
+                : <any> Promise.reject(new Models.ErrorWrapper(Models.ErrorCategory.ClientError, Models.ClientErrorCode.ExpiredTransient, ""));
             return p;
         }
 
@@ -257,6 +260,8 @@ export class ContextService {
         object.hateoasUrl = Config.getAppPath() + "/objects/" + type + "/" + id;
         object.setInlinePropertyDetails(interactionMode === InteractionMode.Edit);
 
+
+        this.incPendingPotentActionOrReload(paneId);
         return this.repLoader.populate<Models.DomainObjectRepresentation>(object, forceReload)
             .then((obj: Models.DomainObjectRepresentation) => {
                 this.currentObjects[paneId] = obj;
@@ -264,6 +269,7 @@ export class ContextService {
                     this.dirtyList.clearDirty(oid);
                 }
                 this.addRecentlyViewed(obj);
+                this.decPendingPotentActionOrReload(paneId);
                 return Promise.resolve(obj);
             });
     };
@@ -353,13 +359,13 @@ export class ContextService {
             });
     };
 
-    clearMessages = () =>  this.messagesSource.next([]);
+    clearMessages = () => this.messagesSource.next([]);
 
-    clearWarnings = () =>  this.warningsSource.next([]);
-  
-    broadcastMessage = (m : string) => this.messagesSource.next([m]);
+    clearWarnings = () => this.warningsSource.next([]);
 
-    broadcastWarning = (w : string) => this.warningsSource.next([w]);
+    broadcastMessage = (m: string) => this.messagesSource.next([m]);
+
+    broadcastWarning = (w: string) => this.warningsSource.next([w]);
 
     getHome = () => {
         // for moment don't bother caching only called on startup and for whatever resaon cache doesn't work. 
@@ -470,7 +476,7 @@ export class ContextService {
         }
     }
 
-    private handleResult = (paneId: number, result: Models.ActionResultRepresentation, page: number, pageSize: number) : Promise<Models.ListRepresentation>   => {
+    private handleResult = (paneId: number, result: Models.ActionResultRepresentation, page: number, pageSize: number): Promise<Models.ListRepresentation> => {
 
         if (result.resultType() === "list") {
             const resultList = result.result().list();
@@ -539,7 +545,7 @@ export class ContextService {
     setObject = (paneId: number, co: Models.DomainObjectRepresentation) => this.currentObjects[paneId] = co;
 
     swapCurrentObjects = () => {
-        
+
         this.parameterCache.swap();
         this.objectEditCache.swap();
         this.transientCache.swap();
@@ -579,7 +585,7 @@ export class ContextService {
 
     setResult = (action: Models.IInvokableAction, result: Models.ActionResultRepresentation, fromPaneId: number, toPaneId: number, page: number, pageSize: number) => {
 
-   
+
         if (!result.result().isNull()) {
             if (result.resultType() === "object") {
 
@@ -646,6 +652,26 @@ export class ContextService {
             this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
         }
     };
+   
+    private pendingPotentActionCount = [, 0, 0];
+
+    incPendingPotentActionOrReload(paneId: number) {
+        this.pendingPotentActionCount[paneId]++;
+    }
+
+    decPendingPotentActionOrReload(paneId: number) {
+        const count = --(this.pendingPotentActionCount[paneId]);
+
+        if (count < 0) {
+            // todo proper error handling]
+            // should never happen
+            console.warn("count less than 0");
+        }
+    }
+
+    isPendingPotentActionOrReload(paneId: number) {
+        return this.pendingPotentActionCount[paneId] > 0;
+    }
 
     private warningsSource = new Subject<string[]>();
     private messagesSource = new Subject<string[]>();
@@ -699,12 +725,22 @@ export class ContextService {
 
     private getSetDirtyFunction(action: Models.IInvokableAction, parms: _.Dictionary<Models.Value>) {
         const parent = action.parent;
-        const actionIsNotQueryOnly = action.invokeLink().method() !== "GET";
 
-        if (actionIsNotQueryOnly) {
+        if (action.isNotQueryOnly()) {
             if (parent instanceof Models.DomainObjectRepresentation) {
                 return () => this.dirtyList.setDirty(parent.getOid());
-            } else if (parent instanceof Models.ListRepresentation && parms) {
+            }
+            if (parent instanceof Models.CollectionRepresentation) {
+                return () => {
+                    const selfLink = parent.selfLink();
+                    const oid = Models.ObjectIdWrapper.fromLink(selfLink);
+                    this.dirtyList.setDirty(oid);
+                };
+            }
+            if (parent instanceof Models.CollectionMember) {
+                return () => this.dirtyList.setDirty(parent.parent.getOid());
+            } 
+            if (parent instanceof Models.ListRepresentation && parms) {
 
                 const ccaParm = _.find(action.parameters(), p => p.isCollectionContributed());
                 const ccaId = ccaParm ? ccaParm.id() : null;

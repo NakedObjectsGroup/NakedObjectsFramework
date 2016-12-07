@@ -190,3 +190,16 @@ export function handleErrorResponse(err: Models.ErrorMap, messageViewModel: IMes
     if (!msg) msg = err.warningMessage;
     messageViewModel.setMessage(msg);
 }
+
+
+export function incrementPendingPotentAction(context: ContextService, invokableaction: Models.IInvokableAction, paneId: number) {
+    if (invokableaction.isPotent()) {
+        context.incPendingPotentActionOrReload(paneId);
+    }
+}
+
+export function decrementPendingPotentAction(context: ContextService, invokableaction: Models.IInvokableAction, paneId: number) {
+    if (invokableaction.isPotent()) {
+        context.decPendingPotentActionOrReload(paneId);
+    }
+}

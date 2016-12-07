@@ -76,11 +76,14 @@ namespace NakedObjects.Selenium {
             SelectCheckBox("#item1-9");
             OpenActionDialog("Extend Offers");
             var rand = new Random();
-            var futureDate = DateTime.Today.AddDays(rand.Next(1000)).ToString("dd MMM yyyy");
-            if (futureDate.StartsWith("0")) {
-                futureDate = futureDate.Substring(1);
-            }
-            ClearFieldThenType("#todate1", futureDate + Keys.Escape);
+            var futureDate = DateTime.Today.AddDays(rand.Next(1000));
+
+            string outmask = "d MMM yyyy";
+            string inmask = "dd/MM/yyyy";
+            var inFutureDate = futureDate.ToString(inmask);
+            var outFutureDate = futureDate.ToString(outmask);
+
+            ClearFieldThenType("#todate1", inFutureDate + Keys.Escape);
             Click(OKButton());
             WaitUntilElementDoesNotExist(".dialog");
             Thread.Sleep(1000);
@@ -88,10 +91,10 @@ namespace NakedObjects.Selenium {
 
             //Check that exactly two rows were updated
             string endDate = "End Date:";
-            CheckIndividualItem(6, endDate, futureDate);
-            CheckIndividualItem(9, endDate, futureDate);
-            CheckIndividualItem(7, endDate, futureDate, false);
-            CheckIndividualItem(8, endDate, futureDate, false);
+            CheckIndividualItem(6, endDate, outFutureDate);
+            CheckIndividualItem(9, endDate, outFutureDate);
+            CheckIndividualItem(7, endDate, outFutureDate, false);
+            CheckIndividualItem(8, endDate, outFutureDate, false);
         }
 
         //To test an error that was previously being thrown by the RO server
@@ -194,7 +197,7 @@ namespace NakedObjects.Selenium {
     }
 
     public abstract class CCAtestsServer : CCAtestsRoot {
-        //[TestMethod]
+        [TestMethod]
         public override void ListViewWithParmDialogAlreadyOpen() {
             base.ListViewWithParmDialogAlreadyOpen();
         }
@@ -204,7 +207,7 @@ namespace NakedObjects.Selenium {
             base.ListViewWithParmDialogNotOpen();
         }
 
-        //[TestMethod] fails on IE TODO
+        [TestMethod]
         public override void DateParam() {
             base.DateParam();
         }
@@ -234,7 +237,7 @@ namespace NakedObjects.Selenium {
             base.SelectionRetainedWhenNavigatingAwayAndBack();
         }
 
-        //[TestMethod]
+        [TestMethod]
         public override void SelectionClearedWhenPageChanged() {
             base.SelectionClearedWhenPageChanged();
         }
@@ -257,7 +260,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -275,7 +278,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -294,12 +297,12 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
 
         protected override void ScrollTo(IWebElement element) {
-            string script = string.Format("window.scrollTo({0}, {1});return true;", element.Location.X, element.Location.Y);
-            ((IJavaScriptExecutor) br).ExecuteScript(script);
+            string script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
+            ((IJavaScriptExecutor)br).ExecuteScript(script);
         }
     }
 

@@ -24,6 +24,27 @@ input {
 input[type='text'] {
     padding-left: 4px;
 }
+input[type=button],
+input[type=reset],
+input[type=submit] {
+    margin-left: 5px;
+    margin-top: 10px;
+    margin-right: 5px;
+    display: inline-block;
+    padding: 4px 12px;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px transparent solid;
+    cursor: pointer;
+    width: auto;
+    *zoom: 1;
+    color: black;
+    background-color: white;
+    float: right;
+    outline: solid;
+    outline-color: lightgrey;
+    outline-width: 1px;
+}
 
 input[type='button']:focus,
 input[type='button']:hover,

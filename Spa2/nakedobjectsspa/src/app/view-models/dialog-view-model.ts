@@ -43,12 +43,27 @@ export class DialogViewModel extends MessageViewModel {
 
 
         this.title = this.actionMember().extensions().friendlyName();
-        this.isQueryOnly = this.actionViewModel.invokableActionRep.invokeLink().method() === "GET";
+        this.isQueryOnly = this.actionViewModel.invokableActionRep.isQueryOnly();
         this.resetMessage();
         this.id = this.actionViewModel.actionRep.actionId();
 
         // todo use subscribe ? 
         this.context.setParmUpdater(this.setParms, routeData.paneId);
+
+        this.incrementPendingPotentAction(); 
+    }
+
+    private incrementPendingPotentAction() {
+        if (!this.isMultiLineDialogRow) {
+            Helpers.incrementPendingPotentAction(this.context, this.actionViewModel.invokableActionRep, this.onPaneId);
+        }
+    }
+
+    private decrementPendingPotentAction() {     
+        if (!this.isMultiLineDialogRow && !this.closed) {
+            Helpers.decrementPendingPotentAction(this.context, this.actionViewModel.invokableActionRep, this.onPaneId);
+        }
+        this.closed = true;
     }
 
     private onPaneId: number;
@@ -67,27 +82,8 @@ export class DialogViewModel extends MessageViewModel {
     id: string;
     parameters: ParameterViewModel[];
     submitted = false;
+    closed = false; // make sure we never close more than once 
    
-
-    reset(actionViewModel: ActionViewModel, routeData: PaneRouteData) {
-        this.actionViewModel = actionViewModel;
-        this.onPaneId = routeData.paneId;
-
-        const fields = this.context.getCurrentDialogValues(this.actionMember().actionId(), this.onPaneId);
-
-        const parameters = _.pickBy(actionViewModel.invokableActionRep.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Models.Parameter>;
-        this.parameters = _.map(parameters, p => this.viewModelFactory.parameterViewModel(p, fields[p.id()], this.onPaneId));
-       
-
-        this.title = this.actionMember().extensions().friendlyName();
-        this.isQueryOnly = actionViewModel.invokableActionRep.invokeLink().method() === "GET";
-        this.resetMessage();
-        this.id = actionViewModel.actionRep.actionId();
-
-        // todo use subscribe ? 
-        this.context.setParmUpdater(this.setParms, routeData.paneId);
-    }
-
     refresh() {
         const fields = this.context.getCurrentDialogValues(this.actionMember().actionId(), this.onPaneId);
         _.forEach(this.parameters, p => p.refresh(fields[p.id]));
@@ -110,14 +106,16 @@ export class DialogViewModel extends MessageViewModel {
                     // dialog staying on same page so treat as cancel 
                     // for url replacing purposes
                     this.doCloseReplaceHistory();
+                   
                 } else if (!this.isQueryOnly) {
                     // not query only - always close
-                    //this.doCloseReplaceHistory();
+
+                    this.doClose();
                 } else if (!right) {
                     // query only going to new page close dialog and keep history
-                    //this.doCloseKeepHistory();
+
+                    this.doClose();
                 }
-                // else query only going to other tab leave dialog open
                 // else query only going to other tab leave dialog open
                 this.doCompleteButLeaveOpen();
             })
@@ -126,15 +124,23 @@ export class DialogViewModel extends MessageViewModel {
                 this.error.handleErrorAndDisplayMessages(reject, display);
             });
 
+    // todo tidy and rework these getting confusing 
     doCloseKeepHistory = () => {
+       
         this.deregister();
-        this.urlManager.closeDialogKeepHistory(this.onPaneId);
+        this.urlManager.closeDialogKeepHistory(this.id, this.onPaneId);
+        this.decrementPendingPotentAction();
     };
 
     doCloseReplaceHistory = () => {
         this.deregister();
-        this.urlManager.closeDialogReplaceHistory(this.onPaneId);
+        this.urlManager.closeDialogReplaceHistory(this.id, this.onPaneId);
+        this.decrementPendingPotentAction();
     };
+
+    doClose() {
+        this.decrementPendingPotentAction();
+    }
 
     doCompleteButLeaveOpen = () => {
     }

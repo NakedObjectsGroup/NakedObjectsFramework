@@ -30,12 +30,11 @@
 			<app-dialog [parent]="collection"></app-dialog>
 			<div class="summary" *ngIf="state == 'list'">
 				<div class="details">{{description}}</div>
-				<img class="icon-table clickable-area" (click)="doTable()" src="../../images/table.png" title="View as Table"
-				/>
+				<img class="icon-table clickable-area" (click)="doTable()" src="../../images/table.png" title="View as Table"/>
 				<table>
 					<thead>
 						<tr>
-							<th [hidden]="hideAllCheckbox()"><input type="checkbox" id="all" [ngModel]="allSelected()" (click)="selectAll()">All</th>
+							<th [hidden]="hideAllCheckbox()"><input type="checkbox" [id]="itemId('all')" [ngModel]="allSelected()" (click)="selectAll()">All</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -58,7 +57,7 @@
 			<table *ngIf="state == 'table'">
 				<thead>
 					<tr>
-						<th [hidden]="hideAllCheckbox()"><input type="checkbox" id="all" [ngModel]="allSelected()" (click)="selectAll()">All</th>
+						<th [hidden]="hideAllCheckbox()"><input type="checkbox" [id]="itemId('all')" [ngModel]="allSelected()" (click)="selectAll()">All</th>
 						<th *ngFor="let heading of header" scope="col">
 							{{heading}}
 						</th>

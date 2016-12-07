@@ -8,16 +8,10 @@
 			</div>
 			<!--<div>{{object.isDirty() ? "*" : ""}} </div>-->
 			<div class="menus">
-				<div class="menu clickable-area" tabindex="0" geminiClick (leftClick)="toggleActionMenu()" [attr.disabled]="disableActions()"
-					title={{actionsTooltip()}} accesskey="a">
-					Actions
-				</div>
-				<div class="menu action clickable-area" tabindex="0" geminiClick (leftClick)="doEdit()" *ngIf="showEdit()">
-					Edit
-				</div>
-				<div class="menu action clickable-area" tabindex="0" geminiClick (leftClick)="doReload()">
-					Reload
-				</div>
+				<input type="button" class="menu clickable-area" tabindex="0" geminiClick (leftClick)="toggleActionMenu()" [attr.disabled]="disableActions()"
+					title={{actionsTooltip()}} accesskey="a" value="Actions">					
+				<input type="button" class="menu action clickable-area" tabindex="0" geminiClick (leftClick)="doEdit()" *ngIf="showEdit()" value="Edit">
+				<input type="button" class="menu action clickable-area" tabindex="0" geminiClick (leftClick)="doReload()" value="Reload">
 			</div>
 			<div class="messages">{{message()}}</div>
 		</header>
@@ -49,9 +43,7 @@
 						title="{{tooltip}}" value="Save" />
 					<input *ngIf="unsaved()" type="submit" class="menu action clickable-area" [disabled]="!form.valid" tabindex="0" geminiClick
 						(leftClick)="onSubmit(false)" title="{{tooltip}}" value="Save & Close" />
-					<div class="menu action clickable-area" tabindex="0" geminiClick (leftClick)="doEditCancel()">
-						Cancel
-					</div>
+					<input type="button" class="menu action clickable-area" tabindex="0" geminiClick (leftClick)="doEditCancel()" value="Cancel">
 				</div>
 				<div class="messages">{{message()}}</div>
 			</header>

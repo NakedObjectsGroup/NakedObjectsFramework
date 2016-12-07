@@ -141,10 +141,7 @@ export class ListViewModel extends ContributedActionParentViewModel {
         this.updateItems(list.value());
 
         const actions = this.listRep.actionMembers();
-        this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
-        this.menuItems = Helpers.createMenuItems(this.actions);
-
-        _.forEach(this.actions, a => this.decorate(a));
+        this.setActions(actions, routeData);
     }
 
     toggleActionMenu = () => {

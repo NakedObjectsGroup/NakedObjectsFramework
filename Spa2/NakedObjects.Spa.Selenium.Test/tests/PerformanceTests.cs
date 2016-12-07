@@ -5,23 +5,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using System.Diagnostics;
 
-namespace NakedObjects.Selenium
-{
-    public abstract class PerformanceTestsRoot : AWTest
-    {
-        public virtual void RetrieveRandomEmployees()
-        {
+namespace NakedObjects.Selenium {
+    public abstract class PerformanceTestsRoot : AWTest {
+        public virtual void RetrieveRandomEmployees() {
             var stopWatch = new Stopwatch();
             stopWatch.Start();
             GeminiUrl("home?m1=EmployeeRepository");
-            for (int i = 0; i < 100; i++)
-            {
+            for (int i = 0; i < 100; i++) {
                 Click(GetObjectAction("Random Employee"));
                 WaitForView(Pane.Single, PaneType.Object);
                 ClickBackButton();
@@ -29,13 +23,12 @@ namespace NakedObjects.Selenium
             }
             stopWatch.Stop();
             var time = stopWatch.ElapsedMilliseconds;
-            Assert.IsTrue(time < 150000, string.Format("Elapsed time was {0} milliseconds",time));
+            Assert.IsTrue(time < 150000, $"Elapsed time was {time} milliseconds");
         }
 
     }
 
-    public abstract class PerformanceTests : PerformanceTestsRoot
-    {
+    public abstract class PerformanceTests : PerformanceTestsRoot {
         [TestMethod] //Mega
         public override void RetrieveRandomEmployees() { base.RetrieveRandomEmployees(); }
 
@@ -43,77 +36,64 @@ namespace NakedObjects.Selenium
     #region browsers specific subclasses
 
     //[TestClass]
-    public class PerformanceTestsIe : PerformanceTests
-    {
+    public class PerformanceTestsIe : PerformanceTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitIeDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
-            base.CleanUpTest();
+        public virtual void CleanupTest() {
+            CleanUpTest();
         }
     }
 
     //[TestClass]
-    public class PerformanceTestsFirefox : PerformanceTests
-    {
+    public class PerformanceTestsFirefox : PerformanceTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitFirefoxDriver();
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
-            base.CleanUpTest();
+        public virtual void CleanupTest() {
+            CleanUpTest();
         }
 
-        protected override void ScrollTo(IWebElement element)
-        {
-            string script = string.Format("window.scrollTo({0}, {1});return true;", element.Location.X, element.Location.Y);
+        protected override void ScrollTo(IWebElement element) {
+            string script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
             ((IJavaScriptExecutor)br).ExecuteScript(script);
         }
     }
 
     [TestClass]
-    public class PerformanceTestsChrome : PerformanceTests
-    {
+    public class PerformanceTestsChrome : PerformanceTests {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitChromeDriver();
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
-            base.CleanUpTest();
+        public virtual void CleanupTest() {
+            CleanUpTest();
         }
     }
 

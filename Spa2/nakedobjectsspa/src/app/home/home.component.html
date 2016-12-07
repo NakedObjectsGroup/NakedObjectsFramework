@@ -13,8 +13,8 @@
 			</div>
 			<div class="messages"></div>
 		</div>
-		<div class="main-column">
 		<actions class="actions" *ngIf="selectedMenu" [menu]="selectedMenu"></actions>
+		<div class="main-column">
 		<app-dialog *ngIf="selectedMenu" [parent]="selectedMenu"></app-dialog>
 		</div>
 	</div>

@@ -264,9 +264,10 @@ export abstract class FieldComponent {
                         //this.control.reset(this.model.selectedChoice);
                         this.control.setValue(this.model.selectedChoice);
                     });
+                event.preventDefault();
             }
 
-            event.preventDefault();
+           
         }
         if (event && event.keyCode === deleteKeyCode) {
             this.context.setCutViewModel(null);

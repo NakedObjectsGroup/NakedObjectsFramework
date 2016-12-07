@@ -10,6 +10,8 @@ import { ActionViewModel } from './action-view-model';
 import { ParameterViewModel } from './parameter-view-model';
 import * as _ from "lodash";
 import * as Helpers from './helpers-view-models';
+import * as Menuitemviewmodel from './menu-item-view-model';
+import * as Routedata from '../route-data';
 
 export abstract class ContributedActionParentViewModel extends MessageViewModel {
 
@@ -24,10 +26,19 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
     onPaneId: number;
     allSelected = () => _.every(this.items, item => item.selected);
     items: ItemViewModel[];
+    actions: ActionViewModel[];
+    menuItems: Menuitemviewmodel.MenuItemViewModel[];
 
     private isLocallyContributed(action: Models.IInvokableAction) {
         return _.some(action.parameters(), p => p.isCollectionContributed());
     }
+
+    setActions(actions: _.Dictionary<Models.ActionMember>, routeData: Routedata.PaneRouteData) {
+        this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
+        this.menuItems = Helpers.createMenuItems(this.actions);
+        _.forEach(this.actions, a => this.decorate(a));
+    }
+
 
     protected collectionContributedActionDecorator(actionViewModel: ActionViewModel) {
         const wrappedInvoke = actionViewModel.execute;
@@ -133,29 +144,22 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
         this.collectionContributedInvokeDecorator(actionViewModel);
     }
 
+    private setItems(newValue: boolean) {
+        _.each(this.items, item => {
+            // debounce this - todo is there a cleaner way ?
+            setTimeout(() => item.selected = newValue, 0);
+        });
+    }
+
     protected clearSelected(result: Models.ActionResultRepresentation) {
         if (result.resultType() === "void") {
-            //this.allSelected = false;
-            this.selectAll();
+           this.setItems(false);
         }
     }
 
-    //selectAll = () => {
-    //    const newState = !_.every(this.items, item => item.selected);
-
-    //    _.each(this.items,
-    //        (item) => {
-    //            item.selected = newState;
-    //        });
-    //};
-
     selectAll = () => {
         const newState = !this.allSelected();
-
-        _.each(this.items,
-            (item) => {
-                item.selected = newState;
-            });
+        this.setItems(newState);
     };
 
 }

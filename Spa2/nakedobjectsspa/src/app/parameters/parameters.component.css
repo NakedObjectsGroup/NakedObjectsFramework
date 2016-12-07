@@ -3,3 +3,13 @@ host {
     padding: 5px;
     margin-bottom: 20px;
 }
+
+.co-validation {
+    color: red;
+}
+
+:host.multilinedialog .co-validation {
+    vertical-align: top;
+    margin-top: 2px;
+    margin-left: 2px;
+}

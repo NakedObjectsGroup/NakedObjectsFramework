@@ -104,6 +104,11 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
     // child component here 
     actions = (item : MenuItemViewModel) => item.actions;
 
+
+    // todo each component should be looking out for it's own changes - make this generic - eg 
+    // component can register for changes it's wants to see rather  than this horrible filtering 
+    // I'm doing everywhere 
+
     protected setup(routeData: PaneRouteData) {
         // subscription means may get with no oid 
 
@@ -116,12 +121,19 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
 
         const oid = Models.ObjectIdWrapper.fromObjectId(routeData.objectId);
 
+
+
         // todo this is a recurring pattern in angular 2 code - generalise 
         // across components 
         if (this.object && !this.object.domainObject.getOid().isSame(oid)) {
             // object has changed - clear existing 
             this.object = null;
+            this.form = null;
         }
+
+        const isChanging = !this.object; 
+
+        const modeChanging = this.mode !== routeData.interactionMode;
 
         this.mode = routeData.interactionMode;
 
@@ -129,31 +141,36 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
 
         const wasDirty = this.context.getIsDirty(oid);
 
-        this.context.getObject(routeData.paneId, oid, routeData.interactionMode)
-            .then((object: Models.DomainObjectRepresentation) => {
+        if (isChanging || modeChanging || wasDirty) {
+            this.context.getObject(routeData.paneId, oid, routeData.interactionMode)
+                .then((object: Models.DomainObjectRepresentation) => {
 
-                const ovm = this.viewModelFactory.domainObjectViewModel(object, routeData);
-            
-                if (wasDirty) {
-                    ovm.clearCachedFiles();
-                }
+                    // only change the object if it has changed 
+                    if (isChanging || wasDirty) {
+                        const ovm = this.viewModelFactory.domainObjectViewModel(object, routeData);
+                        if (wasDirty) {
+                            ovm.clearCachedFiles();
+                        }
+                        this.object = ovm;
+                    }
 
-                if (this.mode === InteractionMode.Edit ||
-                    this.mode === InteractionMode.Form ||
-                    this.mode === InteractionMode.Transient) {
-                    this.createForm(ovm);
-                }
-
-                this.object = ovm;
-            })
-            .catch((reject: Models.ErrorWrapper) => {
-                if (reject.category === Models.ErrorCategory.ClientError && reject.clientErrorCode === Models.ClientErrorCode.ExpiredTransient) {
-                    this.context.setError(reject);
-                    this.expiredTransient = true;
-                } else {
-                    this.error.handleError(reject);
-                }
-            });
+                    if (modeChanging || isChanging) {
+                        if (this.mode === InteractionMode.Edit ||
+                            this.mode === InteractionMode.Form ||
+                            this.mode === InteractionMode.Transient) {
+                            this.createForm(this.object);
+                        }
+                    }
+                })
+                .catch((reject: Models.ErrorWrapper) => {
+                    if (reject.category === Models.ErrorCategory.ClientError && reject.clientErrorCode === Models.ClientErrorCode.ExpiredTransient) {
+                        this.context.setError(reject);
+                        this.expiredTransient = true;
+                    } else {
+                        this.error.handleError(reject);
+                    }
+                });
+        }
     }
     
     private createForm(vm: DomainObjectViewModel) {

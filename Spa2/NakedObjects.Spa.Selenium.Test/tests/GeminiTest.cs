@@ -264,7 +264,7 @@ namespace NakedObjects.Selenium
         {
             var selected = new SelectElement(WaitForCss(cssFieldId));
             selected.SelectByText(characters);
-            wait.Until(dr => new SelectElement(dr.FindElement(By.CssSelector(cssFieldId))).SelectedOption.Text == characters);
+            wait.Until(dr => selected.SelectedOption.Text == characters);
         }
 
         protected virtual void SelectDropDownOnField(string cssFieldId, int index)
@@ -298,7 +298,7 @@ namespace NakedObjects.Selenium
         protected virtual void OpenObjectActions(Pane pane = Pane.Single)
         {
             string paneSelector = CssSelectorFor(pane);
-            var actions = wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " .menu")).Single(el => el.Text == "Actions"));
+            var actions = wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " .menu")).Single(el => el.GetAttribute("value") == "Actions"));
             Click(actions);
             wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " .actions .action")).Count > 0);
         }
@@ -309,7 +309,7 @@ namespace NakedObjects.Selenium
             string paneSelector = CssSelectorFor(pane);
             var sub = wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector +" .submenu")).Single(el => el.Text == menuName));
             var expand = sub.FindElement(By.CssSelector(".icon-expand"));
-                Click(expand);
+            Click(expand);
             Assert.IsNotNull(sub.FindElement(By.CssSelector(".icon-collapse")));
         }
 
@@ -503,7 +503,7 @@ namespace NakedObjects.Selenium
 
         protected IWebElement EditButton(Pane pane = Pane.Single)
         {
-            return GetButton("Edit", pane);
+            return GetInputButton("Edit", pane);
         }
 
         protected IWebElement SaveButton(Pane pane = Pane.Single)
@@ -522,8 +522,9 @@ namespace NakedObjects.Selenium
 
         protected IWebElement GetCancelEditButton(Pane pane = Pane.Single)
         {
-            string p = CssSelectorFor(pane);
-            return wait.Until(d => d.FindElements(By.CssSelector(p + ".header .action")).Single(el => el.Text == "Cancel"));
+            //string p = CssSelectorFor(pane);
+            //return wait.Until(d => d.FindElements(By.CssSelector(p + ".header .action")).Single(el => el.Text == "Cancel"));
+            return GetInputButton("Cancel", pane);
         }
 
         protected void ClickHomeButton() {
@@ -624,7 +625,8 @@ namespace NakedObjects.Selenium
         protected void WaitForReadOnlyEnteredParam(int lineNo, int paramNo, string value)
         {
             var line = WaitForCssNo(".lineDialog", lineNo);
-            wait.Until(dr => line.FindElements(By.CssSelector(".parameter"))[paramNo].Text == value);
+
+            wait.Until(dr => line.FindElements(By.CssSelector(".parameter .value"))[paramNo].Text == value);
         }
 
         protected void CancelDialog(Pane pane = Pane.Single)
@@ -657,6 +659,11 @@ namespace NakedObjects.Selenium
             Click(GetButton("Reload", pane));
         }
 
+        protected void ReloadList(Pane pane = Pane.Single) {
+            Click(GetButton("Reload", pane));
+        }
+
+
         protected void CancelDatePicker(string cssForInput)
         {
             var dp = br.FindElement(By.CssSelector(".ui-datepicker"));
@@ -671,9 +678,13 @@ namespace NakedObjects.Selenium
         protected void CheckIndividualItem(int itemNo, string label, string value, bool equal = true)
         {
             GeminiUrl("object?o1=___1.SpecialOffer--" + (itemNo + 1));
-            var html = label + " " + value;
-            if (equal)
-            {
+            var html = label + "\r\n" + value;
+            if (equal) {
+                //Thread.Sleep(2000);
+
+                //var t = br.FindElements(By.CssSelector(".property")).First().Text;
+
+
                 wait.Until(dr => dr.FindElements(By.CssSelector(".property")).First(p => p.Text.StartsWith(label)).Text == html);
             }
             else

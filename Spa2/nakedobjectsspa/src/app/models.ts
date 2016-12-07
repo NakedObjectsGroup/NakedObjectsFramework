@@ -1232,9 +1232,11 @@ export class Parameter
         return !!this.promptLink();
     }
 
+
     isCollectionContributed(): boolean {
         const myparent = this.parent;
-        const isOnList = (myparent instanceof ActionMember || myparent instanceof ActionRepresentation) && myparent.parent instanceof ListRepresentation;
+        const isOnList = (myparent instanceof ActionMember || myparent instanceof ActionRepresentation) &&
+            (myparent.parent instanceof ListRepresentation || myparent.parent instanceof CollectionRepresentation || myparent.parent instanceof CollectionMember);
         const isList = this.isList();
         return isList && isOnList;
     }
@@ -1281,6 +1283,10 @@ export interface IInvokableAction extends IHasExtensions {
     getInvokeMap(): InvokeMap;
     parameters(): _.Dictionary<Parameter>;
     disabledReason(): string;
+
+    isQueryOnly(): boolean;
+    isNotQueryOnly(): boolean;
+    isPotent() : boolean; 
 }
 
 export class ActionRepresentation extends ResourceRepresentation<Ro.IActionRepresentation> implements IInvokableAction {
@@ -1338,6 +1344,18 @@ export class ActionRepresentation extends ResourceRepresentation<Ro.IActionRepre
 
     disabledReason(): string {
         return this.wrapped().disabledReason;
+    }
+
+    isQueryOnly(): boolean {
+        return this.invokeLink().method() === "GET";
+    }
+
+    isNotQueryOnly(): boolean {
+        return this.invokeLink().method() !== "GET";
+    }
+
+    isPotent(): boolean {
+        return this.invokeLink().method() === "POST";
     }
 }
 
@@ -1807,6 +1825,7 @@ export class CollectionMember
 
     constructor(wrapped: Ro.ICollectionMember, public parent: DomainObjectRepresentation, private id: string) {
         super(wrapped);
+        this.etagDigest = parent.etagDigest;
     }
 
     collectionId(): string {
@@ -1896,6 +1915,21 @@ export class InvokableActionMember extends ActionMember {
         return null;
     }
 
+    isQueryOnly(): boolean {
+        const invokeLink = this.invokeLink();
+        return invokeLink && this.invokeLink().method() === "GET";
+    }
+
+    isNotQueryOnly(): boolean {
+        const invokeLink = this.invokeLink();
+        return invokeLink && this.invokeLink().method() !== "GET";
+    }
+
+    isPotent(): boolean {
+        const invokeLink = this.invokeLink();
+        return invokeLink && this.invokeLink().method() === "POST";
+    }
+
     // properties 
 
     private parameterMap: _.Dictionary<Parameter>;
@@ -1912,6 +1946,9 @@ export class InvokableActionMember extends ActionMember {
         this.initParameterMap();
         return this.parameterMap;
     }
+
+
+
 }
 
 

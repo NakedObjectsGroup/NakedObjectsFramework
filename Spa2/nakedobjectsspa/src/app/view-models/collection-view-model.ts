@@ -29,6 +29,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel{
         this.title = collectionRep.extensions().friendlyName();
         this.presentationHint = collectionRep.extensions().presentationHint();
         this.pluralName = collectionRep.extensions().pluralName();
+        this.id = collectionRep.collectionId().toLowerCase();
 
         this.colorService.toColorNumberFromType(collectionRep.extensions().elementType()).
             then(c => this.color = `${Config.linkColor}${c}`).
@@ -37,7 +38,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel{
         this.reset(routeData, true);
     }
 
-    private reset = (routeData: PaneRouteData, resetting: boolean) => {
+    reset = (routeData: PaneRouteData, resetting: boolean) => {
 
         let state = routeData.collections[this.collectionRep.collectionId()];
 
@@ -77,7 +78,6 @@ export class CollectionViewModel extends ContributedActionParentViewModel{
             const actions = this.collectionRep.actionMembers();
             this.setActions(actions, routeData);
 
-
             if (state === CollectionViewState.Summary) {
                 this.items = [];
 
@@ -115,6 +115,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel{
     color: string;
     mayHaveItems: boolean;
     editing: boolean;
+    id : string;
    
     header: string[];
   
@@ -122,8 +123,8 @@ export class CollectionViewModel extends ContributedActionParentViewModel{
 
     presentationHint: string;
     template: string;
-    actions: ActionViewModel[];
-    menuItems: MenuItemViewModel[];
+    //actions: ActionViewModel[];
+    //menuItems: MenuItemViewModel[];
     messages: string;
 
     description = () => this.details.toString();
@@ -135,11 +136,11 @@ export class CollectionViewModel extends ContributedActionParentViewModel{
         return actionViewModel ? actionViewModel.actionRep : null;
     }
 
-    setActions(actions: _.Dictionary<Models.ActionMember>, routeData: PaneRouteData) {
-        this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
-        this.menuItems = Helpers.createMenuItems(this.actions);
-        _.forEach(this.actions, a => this.decorate(a));
-    }
+    //setActions(actions: _.Dictionary<Models.ActionMember>, routeData: PaneRouteData) {
+    //    this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
+    //    this.menuItems = Helpers.createMenuItems(this.actions);
+    //    _.forEach(this.actions, a => this.decorate(a));
+    //}
 
     hasMatchingLocallyContributedAction(id: string) {
         return id && this.actions && this.actions.length > 0 && !!this.actionMember(id);

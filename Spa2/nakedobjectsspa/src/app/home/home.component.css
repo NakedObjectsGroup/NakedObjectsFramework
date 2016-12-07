@@ -6,11 +6,15 @@
     color: white;
     font-size: 11pt; 
     font-weight: 100;
-    /*text-decoration: none;
-    margin: 0px;*/
 }
 
-.title, header .type {
+.header {
+    display: block;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.title {
     display: block;
     position: relative;
     font-weight: 200;
@@ -24,10 +28,7 @@
     display: block;
 }
 
-.menus {
-    display: block;
-}
-.menu, .header .action {
+.menu {
     display: block;
     float: left;
     padding: 5px;
@@ -36,8 +37,11 @@
     margin-right: 10px;
     margin-bottom: 5px; /*Else hover outline is hidden on the bottom */
     font-size: 16pt;
+    outline: none;
 }
 
-.menu[disabled="disabled"], .ok[disabled="disabled"] {
-        color: grey;
-    }
+.menu:hover, .menu:focus, .action:hover, .action:focus   {
+    outline-color: white;
+    outline-style: solid;
+    outline-width: 1px;
+}

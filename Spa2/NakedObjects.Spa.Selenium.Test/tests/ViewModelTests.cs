@@ -21,7 +21,7 @@ namespace NakedObjects.Selenium {
             GeminiUrl("object?i1=View&o1=___1.Person--9169&as1=open");
             Click(GetObjectAction("Create Email"));
             WaitForView(Pane.Single, PaneType.Object, "New email");
-            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[4].Text == "Status: New");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[4].Text == "Status:\r\nNew");
 
             ClearFieldThenType("#to1", "Stef");
             ClearFieldThenType("#from1", "Richard");
@@ -31,7 +31,7 @@ namespace NakedObjects.Selenium {
             var action = wait.Until(d => d.FindElements(By.CssSelector(".action")).
                 Single(we => we.Text == "Send"));
             Click(action);
-            wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(5)")).Text == "Status: Sent");
+            wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(5)")).Text == "Status:\r\nSent");
             Assert.AreEqual("To:", WaitForCss(".property:nth-child(1)").Text);
             var title = WaitForCss(".title");
             Assert.AreEqual("Sent email", title.Text);
@@ -40,12 +40,11 @@ namespace NakedObjects.Selenium {
         }
 
         //Test for #46
-        public virtual void EditableVMWithEmptyLeadingKeys()
-        {
+        public virtual void EditableVMWithEmptyLeadingKeys() {
             GeminiUrl("object?i1=View&o1=___1.Person--9169&as1=open");
             Click(GetObjectAction("Create Email"));
             WaitForView(Pane.Single, PaneType.Object, "New email");
-            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[4].Text == "Status: New");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[4].Text == "Status:\r\nNew");
 
             //leave 3/4 of the optional fields empty
             ClearFieldThenType("#subject1", "Test2");
@@ -53,7 +52,7 @@ namespace NakedObjects.Selenium {
             var action = wait.Until(d => d.FindElements(By.CssSelector(".action")).
                 Single(we => we.Text == "Send"));
             Click(action);
-            wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(5)")).Text == "Status: Sent");
+            wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(5)")).Text == "Status:\r\nSent");
             Assert.AreEqual("To:", WaitForCss(".property:nth-child(1)").Text);
             var title = WaitForCss(".title");
             Assert.AreEqual("Sent email", title.Text);
@@ -83,8 +82,7 @@ namespace NakedObjects.Selenium {
         }
 
         [TestMethod]
-        public override void EditableVMWithEmptyLeadingKeys()
-        {
+        public override void EditableVMWithEmptyLeadingKeys() {
             base.EditableVMWithEmptyLeadingKeys();
         }
 
@@ -111,7 +109,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -129,11 +127,11 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
 
         protected override void ScrollTo(IWebElement element) {
-            string script = string.Format("window.scrollTo({0}, {1});return true;", element.Location.X, element.Location.Y);
+            string script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
             ((IJavaScriptExecutor) br).ExecuteScript(script);
         }
     }
@@ -152,7 +150,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -185,7 +183,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -205,7 +203,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -225,7 +223,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
