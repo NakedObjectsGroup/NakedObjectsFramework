@@ -6,12 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OpenQA.Selenium;
 
 namespace NakedObjects.Selenium {
-
     public abstract class NewTestFrameworkExample : NewTestFramework {
-
         //[TestMethod]
         public virtual void Test1() {
             Home();
@@ -23,10 +20,8 @@ namespace NakedObjects.Selenium {
 
     #region browsers specific subclasses 
 
-
     //[TestClass]
-    public class NewTestFrameworkExampleFirefox : NewTestFrameworkExample
-    {
+    public class NewTestFrameworkExampleFirefox : NewTestFrameworkExample {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             AWTest.InitialiseClass(context);
@@ -42,5 +37,6 @@ namespace NakedObjects.Selenium {
             base.CleanUpTest();
         }
     }
+
     #endregion
 }

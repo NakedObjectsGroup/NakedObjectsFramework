@@ -82,9 +82,31 @@ namespace NakedObjects.Selenium {
 
         #endregion
 
+        #region Cicero
+
+        //Note: Requires the Cicero icon to be made visible
+        public virtual void LaunchCiceroFromIcon() {
+            GeminiUrl("object?o1=___1.Product--968");
+            WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
+            Click(WaitForCss(".icon-speech"));
+            WaitForOutput("Product: Touring-1000 Blue, 54"); //Cicero
+            GeminiUrl("object/list?o1=___1.Store--350&m2=OrderRepository&a2=HighestValueOrders");
+            WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
+            Click(WaitForCss(".icon-speech"));
+            WaitForOutput("Store: Twin Cycles"); //Cicero
+
+            GeminiUrl("object?o1=___1.Product--968&as1=open&d1=BestSpecialOffer&f1_quantity=%22%22");
+            WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
+            WaitForCss("#quantity1"); //i.e. dialog open
+            Click(WaitForCss(".icon-speech"));
+            WaitForOutput("Product: Touring-1000 Blue, 54\r\nAction dialog: Best Special Offer\r\nQuantity: empty");
+        }
+
+        #endregion
+
         #region CCAs
-        public virtual void TableViewWithParmDialogNotOpen()
-        {
+
+        public virtual void TableViewWithParmDialogNotOpen() {
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
             GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&as1=open&c1=Table");
@@ -152,8 +174,7 @@ namespace NakedObjects.Selenium {
             WaitUntilElementDoesNotExist(".dialog");
         }
 
-        public virtual void ReloadingAQueryableClearsSelection()
-        {
+        public virtual void ReloadingAQueryableClearsSelection() {
             GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=20&ps1=5&s1=0&as1=open");
             Reload();
             wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count > 30);
@@ -161,7 +182,7 @@ namespace NakedObjects.Selenium {
             SelectCheckBox("#item1-7");
             wait.Until(dr => dr.FindElements(By.CssSelector("input")).Where(el => el.GetAttribute("type") == "checkbox").Any(el => el.Selected));
             Reload();
-            wait.Until(dr => !dr.FindElements(By.CssSelector("input")).Where(el => el.GetAttribute("type") == "checkbox" ).Any(el => el.Selected));
+            wait.Until(dr => !dr.FindElements(By.CssSelector("input")).Where(el => el.GetAttribute("type") == "checkbox").Any(el => el.Selected));
         }
 
         public virtual void ZeroParamAction() {
@@ -336,8 +357,8 @@ namespace NakedObjects.Selenium {
         #endregion
 
         #region Keyboard navigation
-        public virtual void SelectFooterIconsWithAccessKeys()
-        {
+
+        public virtual void SelectFooterIconsWithAccessKeys() {
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
             WaitForCss(".header .title").Click();
@@ -380,8 +401,7 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("Log off (Alt-l)", element.GetAttribute("title"));
         }
 
-        public virtual void SelectObjectActionsWithAccessKey()
-        {
+        public virtual void SelectObjectActionsWithAccessKey() {
             GeminiUrl("object?i1=View&o1=___1.Person--15748");
             WaitForView(Pane.Single, PaneType.Object);
             var element = br.SwitchTo().ActiveElement();
@@ -390,27 +410,6 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("Open actions (Alt-a)", element.GetAttribute("title"));
         }
 
-        #endregion
-
-        #region Cicero
-        //Note: Requires the Cicero icon to be made visible
-        public virtual void LaunchCiceroFromIcon()
-        {
-            GeminiUrl("object?o1=___1.Product--968");
-            WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
-            Click(WaitForCss(".icon-speech"));
-            WaitForOutput("Product: Touring-1000 Blue, 54"); //Cicero
-            GeminiUrl("object/list?o1=___1.Store--350&m2=OrderRepository&a2=HighestValueOrders");
-            WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
-            Click(WaitForCss(".icon-speech"));
-            WaitForOutput("Store: Twin Cycles"); //Cicero
-
-            GeminiUrl("object?o1=___1.Product--968&as1=open&d1=BestSpecialOffer&f1_quantity=%22%22");
-            WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
-            WaitForCss("#quantity1"); //i.e. dialog open
-            Click(WaitForCss(".icon-speech"));
-            WaitForOutput("Product: Touring-1000 Blue, 54\r\nAction dialog: Best Special Offer\r\nQuantity: empty");
-        }
         #endregion
     }
 
@@ -424,10 +423,19 @@ namespace NakedObjects.Selenium {
 
         #endregion
 
+        #region Cicero
+
+        //Note: Requires the Cicero icon to be made visible
+        public override void LaunchCiceroFromIcon() {
+            base.LaunchCiceroFromIcon();
+        }
+
+        #endregion
+
         #region CCA Tests
+
         [TestMethod]
-        public override void TableViewWithParmDialogNotOpen()
-        {
+        public override void TableViewWithParmDialogNotOpen() {
             base.TableViewWithParmDialogNotOpen();
         }
 
@@ -435,9 +443,9 @@ namespace NakedObjects.Selenium {
         public override void TableViewWithParmDialogAlreadyOpen() {
             base.TableViewWithParmDialogAlreadyOpen();
         }
+
         [TestMethod]
-        public override void ReloadingAQueryableClearsSelection()
-        {
+        public override void ReloadingAQueryableClearsSelection() {
             base.ReloadingAQueryableClearsSelection();
         }
 
@@ -482,20 +490,17 @@ namespace NakedObjects.Selenium {
         #endregion
 
         #region Keyboard navigation
+
         [TestMethod, Ignore] //Doesn't work with Firefox or Chrome - behaviour is different
-        public override void SelectFooterIconsWithAccessKeys() { base.SelectFooterIconsWithAccessKeys(); }
+        public override void SelectFooterIconsWithAccessKeys() {
+            base.SelectFooterIconsWithAccessKeys();
+        }
 
         [TestMethod] //Doesn't work with Firefox?
-        public override void SelectObjectActionsWithAccessKey() { base.SelectObjectActionsWithAccessKey(); }
+        public override void SelectObjectActionsWithAccessKey() {
+            base.SelectObjectActionsWithAccessKey();
+        }
 
-        #endregion
-
-        #region Cicero
-        //Note: Requires the Cicero icon to be made visible
-        public override void LaunchCiceroFromIcon()
-        {
-            base.LaunchCiceroFromIcon();
-         }
         #endregion
     }
 

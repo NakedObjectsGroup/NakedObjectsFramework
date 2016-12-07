@@ -7,28 +7,26 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using System.Threading;
 
 namespace NakedObjects.Selenium {
     /// <summary>
     /// Tests content and operations within from Home representation
     /// </summary>
     public abstract class RedirectTestsRoot : AWTest {
-        public virtual void RedirectFromActionResult()
-        {
+        public virtual void RedirectFromActionResult() {
             GeminiUrl("home?m1=SalesRepository");
             Click(GetObjectAction("Random Sales Tax Rate"));
             WaitForView(Pane.Single, PaneType.Object);
             //Redirected from a SalesTaxRate to corresponding StateProvice
             wait.Until(dr => dr.FindElement(By.CssSelector(".properties")).Text.Contains("Is Only State Province"));
         }
-        public virtual void RedirectFromLink()
-        {
+
+        public virtual void RedirectFromLink() {
             GeminiUrl("home?m1=SalesRepository");
             Click(GetObjectAction("Sales Tax Rates"));
             WaitForView(Pane.Single, PaneType.List);
             WaitForCss(".reference", 20);
-            var row = WaitForCssNo(".reference",0);
+            var row = WaitForCssNo(".reference", 0);
             Assert.AreEqual("Tax Rate for: Alberta", row.Text);
             Click(row);
             //Redirected from a SalesTaxeRate to corresponding StateProvice
@@ -38,10 +36,14 @@ namespace NakedObjects.Selenium {
 
     public abstract class RedirectTests : RedirectTestsRoot {
         [TestMethod]
-        public override void RedirectFromActionResult() { base.RedirectFromActionResult(); }
-        [TestMethod]
-        public override void RedirectFromLink() { base.RedirectFromLink(); }
+        public override void RedirectFromActionResult() {
+            base.RedirectFromActionResult();
+        }
 
+        [TestMethod]
+        public override void RedirectFromLink() {
+            base.RedirectFromLink();
+        }
     }
 
     #region browsers specific subclasses 

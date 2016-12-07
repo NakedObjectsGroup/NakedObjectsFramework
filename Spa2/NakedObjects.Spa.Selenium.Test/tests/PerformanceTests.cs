@@ -5,9 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using System.Diagnostics;
 
 namespace NakedObjects.Selenium {
     public abstract class PerformanceTestsRoot : AWTest {
@@ -25,14 +25,15 @@ namespace NakedObjects.Selenium {
             var time = stopWatch.ElapsedMilliseconds;
             Assert.IsTrue(time < 150000, $"Elapsed time was {time} milliseconds");
         }
-
     }
 
     public abstract class PerformanceTests : PerformanceTestsRoot {
         [TestMethod] //Mega
-        public override void RetrieveRandomEmployees() { base.RetrieveRandomEmployees(); }
-
+        public override void RetrieveRandomEmployees() {
+            base.RetrieveRandomEmployees();
+        }
     }
+
     #region browsers specific subclasses
 
     //[TestClass]
@@ -74,7 +75,7 @@ namespace NakedObjects.Selenium {
 
         protected override void ScrollTo(IWebElement element) {
             string script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
-            ((IJavaScriptExecutor)br).ExecuteScript(script);
+            ((IJavaScriptExecutor) br).ExecuteScript(script);
         }
     }
 

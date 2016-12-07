@@ -5,31 +5,29 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
 namespace NakedObjects.Selenium {
     public abstract class CustomTemplateTestsRoot : AWTest {
-        public virtual void CustomViewTemplate()
-        {
+        public virtual void CustomViewTemplate() {
             GeminiUrl("object?i1=View&o1=___1.Location--60");
             WaitForView(Pane.Single, PaneType.Object, "Location - custom view");
             Assert.AreEqual("Topaz", WaitForCss(".presentationHint").Text);
         }
-        public virtual void CustomEditTemplate()
-        {
+
+        public virtual void CustomEditTemplate() {
             GeminiUrl("object?i1=Edit&o1=___1.WorkOrderRouting--43375--980--7");
             WaitForView(Pane.Single, PaneType.Object, "Work Order Routing - custom edit");
         }
-        public virtual void CustomListTemplate()
-        {
+
+        public virtual void CustomListTemplate() {
             GeminiUrl("list?m1=WorkOrderRepository&a1=AllLocations&pg1=1&ps1=20&s1=0&c1=List");
             Reload();
             WaitForView(Pane.Single, PaneType.List, "Location - custom list");
         }
-        public virtual void CustomErrorHandling()
-        {
+
+        public virtual void CustomErrorHandling() {
             Url(CustomersMenuUrl);
             WaitForCss(".actions .action", CustomerServiceActions);
             Click(GetObjectAction("Throw Domain Exception"));
@@ -39,22 +37,31 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    public abstract class CustomTemplateTests : CustomTemplateTestsRoot
-    {
+    public abstract class CustomTemplateTests : CustomTemplateTestsRoot {
         [TestMethod]
-        public override void CustomViewTemplate() { base.CustomViewTemplate();  }
+        public override void CustomViewTemplate() {
+            base.CustomViewTemplate();
+        }
+
         [TestMethod]
-        public override void CustomEditTemplate() { base.CustomEditTemplate(); }
+        public override void CustomEditTemplate() {
+            base.CustomEditTemplate();
+        }
+
         [TestMethod]
-        public override void CustomListTemplate() { base.CustomListTemplate(); }
+        public override void CustomListTemplate() {
+            base.CustomListTemplate();
+        }
+
         [TestMethod]
-        public override void CustomErrorHandling() { base.CustomErrorHandling(); }
+        public override void CustomErrorHandling() {
+            base.CustomErrorHandling();
+        }
     }
 
     #region browsers specific subclasses
 
-    public class CustomTemplateTestsIe : CustomTemplateTests
-    {
+    public class CustomTemplateTestsIe : CustomTemplateTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
@@ -74,8 +81,7 @@ namespace NakedObjects.Selenium {
     }
 
     //[TestClass] //Firefox Individual
-    public class CustomTemplateFirefox : CustomTemplateTests
-    {
+    public class CustomTemplateFirefox : CustomTemplateTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             AWTest.InitialiseClass(context);
@@ -97,8 +103,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    public class CustomTemplateTestsChrome : CustomTemplateTests
-    {
+    public class CustomTemplateTestsChrome : CustomTemplateTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
@@ -120,8 +125,7 @@ namespace NakedObjects.Selenium {
 
     #region Mega tests
 
-    public abstract class MegaCustomTemplateTestsRoot : CustomTemplateTestsRoot
-    {
+    public abstract class MegaCustomTemplateTestsRoot : CustomTemplateTestsRoot {
         [TestMethod] //Mega
         public void MegaCustomTemplateTests() {
             base.CustomViewTemplate();
@@ -132,8 +136,7 @@ namespace NakedObjects.Selenium {
     }
 
     //[TestClass]
-    public class MegaCustomTemplateTestsFirefox : MegaCustomTemplateTestsRoot
-    {
+    public class MegaCustomTemplateTestsFirefox : MegaCustomTemplateTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             AWTest.InitialiseClass(context);
@@ -152,8 +155,7 @@ namespace NakedObjects.Selenium {
     }
 
     //[TestClass]
-    public class MegaCustomTemplateTestsIe : MegaCustomTemplateTestsRoot
-    {
+    public class MegaCustomTemplateTestsIe : MegaCustomTemplateTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");

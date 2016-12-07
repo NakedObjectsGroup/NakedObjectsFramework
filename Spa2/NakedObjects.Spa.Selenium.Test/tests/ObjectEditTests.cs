@@ -33,6 +33,7 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("List Price:\r\n" + currency, properties[5].Text);
             Assert.AreEqual("Days To Manufacture:\r\n" + newDays, properties[17].Text);
         }
+
         public virtual void LocalValidationOfMandatoryFields() {
             GeminiUrl("object?i1=Edit&o1=___1.SpecialOffer--11");
             SaveButton().AssertIsEnabled();
@@ -45,6 +46,7 @@ namespace NakedObjects.Selenium {
             ClearFieldThenType("#minqty1", "1");
             SaveButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Description; Start Date; ");
         }
+
         public virtual void LocalValidationOfMaxLength() {
             GeminiUrl("object?i1=Edit&o1=___1.Person--12125&c1_Addresses=List&c1_EmailAddresses=List");
             ClearFieldThenType("#title1", "Generalis");
@@ -55,6 +57,7 @@ namespace NakedObjects.Selenium {
             wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Too long").Count() == 0);
             SaveButton().AssertIsEnabled();
         }
+
         public virtual void LocalValidationOfRegex() {
             GeminiUrl("object?i1=Edit&o1=___1.EmailAddress--12043--11238");
             ClearFieldThenType("#emailaddress11", "arthur44@adventure-works");
@@ -65,6 +68,7 @@ namespace NakedObjects.Selenium {
             wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Invalid entry").Count() == 0);
             SaveButton().AssertIsEnabled();
         }
+
         public virtual void RangeValidationOnNumber() {
             GeminiUrl("object?i1=Edit&o1=___1.Product--817");
             WaitForView(Pane.Single, PaneType.Object, "Editing - HL Mountain Front Wheel");
@@ -72,24 +76,24 @@ namespace NakedObjects.Selenium {
             Thread.Sleep(500);
             ClearFieldThenType("#daystomanufacture1", "0");
             wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))
-                .Where(el => el.Text == "Value is outside the range 1 to 90").Count() == 1);
+                                 .Where(el => el.Text == "Value is outside the range 1 to 90").Count() == 1);
             //Confirm that the save button is disabled & has helper tooltip
             SaveButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Days To Manufacture; ");
 
             ClearFieldThenType("#daystomanufacture1", "1");
             wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))
-                .Where(el => el.Text == "Value is outside the range 1 to 90").Count() == 0);
+                                 .Where(el => el.Text == "Value is outside the range 1 to 90").Count() == 0);
             //Confirm that the save button is disabled & has helper tooltip
             SaveButton().AssertIsEnabled();
 
             ClearFieldThenType("#daystomanufacture1", "91");
             wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))
-                .Where(el => el.Text == "Value is outside the range 1 to 90").Count() == 1);
+                                 .Where(el => el.Text == "Value is outside the range 1 to 90").Count() == 1);
             //Confirm that the save button is disabled & has helper tooltip
             SaveButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Days To Manufacture; ");
         }
-        public virtual void RangeValidationOnDate()
-        {
+
+        public virtual void RangeValidationOnDate() {
             GeminiUrl("object?i1=Edit&o1=___1.Product--448");
             WaitForView(Pane.Single, PaneType.Object, "Editing - Lock Nut 13");
             string outmask = "d MMM yyyy";
@@ -113,8 +117,8 @@ namespace NakedObjects.Selenium {
             wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[20].Text == message);
             ClearDateFieldThenType("#discontinueddate1", ind10);
             wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[20].Text == "");
-
         }
+
         public virtual void ObjectEditChangeEnum() {
             GeminiUrl("object?i1=View&o1=___1.Person--6748");
             wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[6].Text == "Email Promotion:\r\nNo Promotions");
@@ -127,6 +131,7 @@ namespace NakedObjects.Selenium {
             SaveObject();
             wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[6].Text == "Email Promotion:\r\nNo Promotions");
         }
+
         public virtual void ObjectEditChangeDateTime() {
             GeminiUrl("object?o1=___1.Product--870");
             EditObject();
@@ -153,6 +158,7 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("Sell Start Date:\r\n" + sellStart.ToString("d MMM yyyy"), properties[18].Text);
             Assert.AreEqual("Sell End Date:\r\n" + sellEnd.ToString("d MMM yyyy"), properties[19].Text); //...but output format standardised.
         }
+
         public virtual void CanSetAndClearAnOptionalDropDown() {
             GeminiUrl("object?o1=___1.WorkOrder--54064");
             WaitForView(Pane.Single, PaneType.Object);
@@ -167,6 +173,7 @@ namespace NakedObjects.Selenium {
             prop = WaitForCssNo(".property", 4);
             Assert.AreEqual("Scrap Reason:", prop.Text);
         }
+
         public virtual void ObjectEditPicksUpLatestServerVersion() {
             GeminiUrl("object?o1=___1.Person--8410&as1=open");
             WaitForView(Pane.Single, PaneType.Object);
@@ -183,11 +190,13 @@ namespace NakedObjects.Selenium {
             Click(GetCancelEditButton()); //but can't read the value, so go back to view
             Assert.AreEqual(newValue, WaitForCss(".property:nth-child(6) .value").Text);
         }
+
         public virtual void ViewModelEditOpensInEditMode() {
             GeminiUrl("object?i1=Form&r=1&o1=___1.EmailTemplate----------New");
             WaitForCss("input#to1");
             WaitForCss("input#from1");
         }
+
         public virtual void MultiLineText() {
             GeminiUrl("object?o1=___1.SalesOrderHeader--44440&as1=open");
             WaitForView(Pane.Single, PaneType.Object);
@@ -199,10 +208,8 @@ namespace NakedObjects.Selenium {
             ClearFieldThenType(".parameter:nth-child(1) textarea", "comment");
             Click(OKButton());
 
-          
             wait.Until(d => d.FindElement(By.CssSelector(".property .value.multiline")).Text == "comment");
 
-            
             EditObject();
             var ta = WaitForCss("textarea#comment1");
             Assert.AreEqual("Free-form text", ta.GetAttribute("placeholder"));
@@ -245,8 +252,7 @@ namespace NakedObjects.Selenium {
         }
 
         [TestMethod]
-        public override void RangeValidationOnDate()
-        {
+        public override void RangeValidationOnDate() {
             base.RangeValidationOnDate();
         }
 
@@ -282,6 +288,7 @@ namespace NakedObjects.Selenium {
     }
 
     #region browsers specific subclasses
+
     //[TestClass]
     public class ObjectEditPageTestsIe : ObjectEditTests {
         [ClassInitialize]
@@ -324,6 +331,7 @@ namespace NakedObjects.Selenium {
             ((IJavaScriptExecutor) br).ExecuteScript(script);
         }
     }
+
     //[TestClass]
     public class ObjectEditPageTestsChrome : ObjectEditTests {
         [ClassInitialize]

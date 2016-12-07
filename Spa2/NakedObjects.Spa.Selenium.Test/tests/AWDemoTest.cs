@@ -5,23 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium.IE;
-using OpenQA.Selenium.Support.UI;
-
 namespace NakedObjects.Selenium {
-
     public abstract class AWTest : GeminiTest {
-
         protected const string CustomersMenuUrl = GeminiBaseUrl + "home?m1=CustomerRepository";
         protected const string OrdersMenuUrl = GeminiBaseUrl + "home?m1=OrderRepository";
         protected const string SpecialOffersMenuUrl = GeminiBaseUrl + "home?m1=SpecialOfferRepository";

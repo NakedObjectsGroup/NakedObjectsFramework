@@ -23,6 +23,7 @@ namespace NakedObjects.Selenium {
             //Check that params marked with DataType.Password show up as input type="password" for browser to obscure
             wait.Until(dr => dr.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type") == "password") == 3);
         }
+
         public virtual void ScalarChoicesParm() {
             Url(OrdersMenuUrl);
             OpenActionDialog("Orders By Value");
@@ -31,12 +32,14 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.List, "Orders By Value");
             AssertTopItemInListIs("SO51131");
         }
+
         public virtual void TestCancelDialog() {
             Url(OrdersMenuUrl);
             OpenActionDialog("Orders By Value");
             CancelDialog();
             WaitUntilElementDoesNotExist(".dialog");
         }
+
         public virtual void FieldsRetainedWhenNavigatingAwayAndBack() {
             GeminiUrl("home?m1=CustomerRepository&d1=FindIndividualCustomerByName");
             ClearFieldThenType("#firstname1", "arthur");
@@ -49,6 +52,7 @@ namespace NakedObjects.Selenium {
             wait.Until(d => d.FindElement(By.CssSelector("#firstname1")).GetAttribute("value") == "arthur");
             wait.Until(d => d.FindElement(By.CssSelector("#lastname1")).GetAttribute("value") == "brent");
         }
+
         public virtual void ReopeningADialogThatWasntCancelledDoesNotRetainFields() {
             ClickRecentButton();
             WaitForView(Pane.Single, PaneType.Recent);
@@ -60,6 +64,7 @@ namespace NakedObjects.Selenium {
             wait.Until(d => d.FindElement(By.CssSelector("#firstname1")).GetAttribute("value") == "");
             wait.Until(d => d.FindElement(By.CssSelector("#lastname1")).GetAttribute("value") == "");
         }
+
         public virtual void ScalarParmShowsDefaultValue() {
             Url(CustomersMenuUrl);
             GetObjectActions(CustomerServiceActions);
@@ -67,6 +72,7 @@ namespace NakedObjects.Selenium {
             var input = WaitForCss(".value input");
             Assert.AreEqual("AW", input.GetAttribute("value"));
         }
+
         public virtual void DateTimeParmKeepsValue() {
             GeminiUrl("object?o1=___1.Customer--29923&as1=open");
             OpenSubMenu("Orders");
@@ -82,6 +88,7 @@ namespace NakedObjects.Selenium {
             var details = WaitForCss(".summary .details");
             Assert.AreEqual("Page 1 of 1; viewing 2 of 2 items", details.Text);
         }
+
         public virtual void TimeSpanParm() {
             GeminiUrl("object?i1=View&o1=___1.Shift--1&as1=open");
             OpenActionDialog("Change Times");
@@ -94,6 +101,7 @@ namespace NakedObjects.Selenium {
             WaitForTextEquals(".property", 2, "Start Time:\r\n" + start);
             WaitForTextEquals(".property", 3, "End Time:\r\n" + end);
         }
+
         public virtual void RefChoicesParmKeepsValue() {
             Url(ProductServiceUrl);
             OpenActionDialog("List Products By Sub Category");
@@ -103,6 +111,7 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.List, "List Products By Sub Category");
             wait.Until(dr => dr.FindElements(By.CssSelector("td.reference"))[0].Text == "HL Fork");
         }
+
         public virtual void MultipleRefChoicesDefaults() {
             Url(ProductServiceUrl);
             OpenActionDialog("List Products By Sub Categories");
@@ -114,6 +123,7 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.List, "List Products By Sub Categories");
             AssertTopItemInListIs("Mountain-100 Black, 38");
         }
+
         public virtual void MultipleRefChoicesChangeDefaults() {
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
@@ -126,7 +136,7 @@ namespace NakedObjects.Selenium {
             br.FindElement(By.CssSelector(".value  select option[label='Mountain Bikes']")).Click();
             wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.Count == 1);
 
-            IKeyboard kb = ((IHasInputDevices)br).Keyboard;
+            IKeyboard kb = ((IHasInputDevices) br).Keyboard;
             kb.PressKey(Keys.Control);
             br.FindElement(By.CssSelector(".value  select option[label='Road Bikes']")).Click();
             kb.ReleaseKey(Keys.Control);
@@ -136,6 +146,7 @@ namespace NakedObjects.Selenium {
             wait.Until(dr => dr.FindElement(By.CssSelector(".summary .details")).Text == "Page 1 of 4; viewing 20 of 65 items");
             AssertTopItemInListIs("Road-150 Red, 44");
         }
+
         public virtual void ChoicesDefaults() {
             Url(ProductServiceUrl);
             OpenActionDialog("Find By Product Line And Class");
@@ -150,12 +161,14 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.List, "Find By Product Line And Class");
             AssertTopItemInListIs("HL Mountain Frame - Silver, 42");
         }
+
         public virtual void ChoicesOptional() {
             //Test that a field with choices that is optional can be left blank
             GeminiUrl("home?m1=ProductRepository&d1=FindByOptionalProductLinesAndClasses&f1_productLine=%5B%5D&f1_productClass=%5B%5D");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Find By Optional Product Lines And Classes");
         }
+
         public virtual void ChoicesChangeDefaults() {
             Url(ProductServiceUrl);
             OpenActionDialog("Find By Product Line And Class");
@@ -167,6 +180,7 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.List, "Find By Product Line And Class");
             AssertTopItemInListIs("LL Road Frame - Black, 58");
         }
+
         public virtual void ConditionalChoices() {
             GeminiUrl("home?m1=ProductRepository");
             WaitForView(Pane.Single, PaneType.Home);
@@ -186,6 +200,7 @@ namespace NakedObjects.Selenium {
             msg = OKButton().AssertIsEnabled().GetAttribute("title");
             Assert.AreEqual("", msg);
         }
+
         public virtual void ConditionalChoicesDefaults() {
             Url(ProductServiceUrl);
             OpenActionDialog("Find Products By Category");
@@ -205,6 +220,7 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.List, "Find Products By Category");
             AssertTopItemInListIs("Mountain-100 Black, 38");
         }
+
         public virtual void ConditionalChoicesMultiple() {
             Url(ProductServiceUrl);
 
@@ -226,11 +242,13 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.List, "Find Products By Category");
             AssertTopItemInListIs("Mountain-100 Black, 38");
         }
+
         public virtual void ParameterDescriptionRenderedAsPlaceholder() {
             GeminiUrl("home?m1=CustomerRepository&d1=FindStoreByName");
             var name = WaitForCss("input#name1");
             Assert.AreEqual("* partial match", name.GetAttribute("placeholder"));
         }
+
         public virtual void BooleanParams() {
             GeminiUrl("home?m1=EmployeeRepository&d1=ListEmployees2");
             //None of the fields should have a mandatory indicator
@@ -252,6 +270,7 @@ namespace NakedObjects.Selenium {
 
             OKButton().AssertIsEnabled();
         }
+
         public virtual void NullableBooleanParams() {
             GeminiUrl("home?m1=EmployeeRepository&d1=ListEmployees");
 
@@ -292,6 +311,7 @@ namespace NakedObjects.Selenium {
             Click(current);
             Assert.AreEqual("true", current.GetAttribute("checked"));
         }
+
         public virtual void WarningShownWithinDialogAndInFooter() {
             GeminiUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber&f1_accountNumber=%22AW%22");
             ClearFieldThenType("#accountnumber1", "AW1");
@@ -299,12 +319,14 @@ namespace NakedObjects.Selenium {
             wait.Until(dr => dr.FindElement(By.CssSelector(".co-validation")).Text.Contains("No matching object found"));
             wait.Until(dr => dr.FindElement(By.CssSelector(".footer .warnings")).Text.Contains("No matching object found"));
         }
+
         public virtual void DefaultReferenceParamRendersCorrectly() {
             //To test a previous bug, where reference was beign rendered as a Url, not its title
             GeminiUrl("object?i1=View&o1=___1.Person--18542&as1=open");
             OpenActionDialog("Create Letter");
             wait.Until(dr => dr.FindElement(By.CssSelector(".droppable")).GetAttribute("value").StartsWith("Zeiter Weg 9922"));
         }
+
         public virtual void QueryOnlyActionDialogPersists() {
             //To test:
             //Query only action OK, left click & go back, right click & remains open
@@ -325,6 +347,7 @@ namespace NakedObjects.Selenium {
             field = WaitForCss("#searchstring1");
             Assert.AreEqual("b", field.GetAttribute("value"));
         }
+
         public virtual void PotentActionDialogDisappearsAndFieldsNotRemembered() {
             GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--57732&as1=open");
             OpenActionDialog("Add Multi Line Comment");
@@ -335,7 +358,20 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("", WaitForCss("#comment1").GetAttribute("value"));
         }
 
+        //Test for #49
+        public virtual void NoResultFoundMessageLeavesDialogOpen() {
+            GeminiUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber");
+            ClearFieldThenType("#accountnumber1", "AW66666");
+            Click(OKButton());
+            Thread.Sleep(1000);
+            WaitForTextEquals(".co-validation", "No matching object found");
+            ClearFieldThenType("#accountnumber1", "AW00000194");
+            Click(OKButton());
+            WaitForView(Pane.Single, PaneType.Object, "Mechanical Brake Manufacturers, AW00000194");
+        }
+
         #region Auto Complete
+
         public virtual void AutoCompleteParm() {
             Url(SalesServiceUrl);
             WaitForView(Pane.Single, PaneType.Home, "Home");
@@ -352,6 +388,7 @@ namespace NakedObjects.Selenium {
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "List Accounts For Sales Person");
         }
+
         public virtual void AutoCompleteParmDefault() {
             Url(ProductServiceUrl);
             WaitForView(Pane.Single, PaneType.Home, "Home");
@@ -360,6 +397,7 @@ namespace NakedObjects.Selenium {
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Adjustable Race");
         }
+
         public virtual void ClearingAutoCompleteTextClearsUnderlyingReference() {
             Url(ProductServiceUrl);
             OpenActionDialog("Find Product");
@@ -371,6 +409,7 @@ namespace NakedObjects.Selenium {
             WaitForTextEquals(".validation", "Pending auto-complete...");
             OKButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Product; ");
         }
+
         public virtual void AutoCompleteParmShowSingleItem() {
             Url(ProductServiceUrl);
             OpenActionDialog("Find Product");
@@ -384,6 +423,7 @@ namespace NakedObjects.Selenium {
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "BB Ball Bearing");
         }
+
         public virtual void AutoCompleteScalarField() {
             GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--54461&as1=open&d1=AddComment&f1_comment=%22%22");
             WaitForView(Pane.Single, PaneType.Object, "SO54461");
@@ -407,9 +447,11 @@ namespace NakedObjects.Selenium {
             Click(item);
             OKButton().AssertIsEnabled();
         }
+
         #endregion
 
         #region Parameter validation
+
         public virtual void MandatoryParameterEnforced() {
             GeminiUrl("home?m1=SalesRepository&d1=FindSalesPersonByName");
             wait.Until(dr => dr.FindElement(By.CssSelector("input#firstname1")).GetAttribute("placeholder") == "");
@@ -420,6 +462,7 @@ namespace NakedObjects.Selenium {
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Find Sales Person By Name");
         }
+
         public virtual void AutoCompleteMandatoryParmWithoutSelectionFails() {
             //To test  -  enter valid text but don't select from drop-down
             //Assuming parm is mandatory, hitting Ok should give validation message
@@ -428,6 +471,7 @@ namespace NakedObjects.Selenium {
             wait.Until(d => d.FindElements(By.CssSelector("ul li a")).Count == 10);
             OKButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Customer; ");
         }
+
         public virtual void ValidateSingleValueParameter() {
             GeminiUrl("object?o1=___1.Product--342&as1=open&d1=BestSpecialOffer");
             //var qty = WaitForCss("input#quantity1");
@@ -443,6 +487,7 @@ namespace NakedObjects.Selenium {
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "No Discount");
         }
+
         public virtual void ValidateSingleRefParamFromChoices() {
             GeminiUrl("object?o1=___1.SalesOrderHeader--71742&c1_SalesOrderHeaderSalesReason=List&as1=open&d1=AddNewSalesReason");
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection")).Count == 2);
@@ -453,6 +498,7 @@ namespace NakedObjects.Selenium {
             var validation = WaitForCss(".parameter .validation");
             Assert.AreEqual("Price already exists in Sales Reasons", validation.Text);
         }
+
         public virtual void CoValidationOfMultipleParameters() {
             GeminiUrl("object?o1=___1.PurchaseOrderDetail--1632--3660&as1=open&d1=ReceiveGoods");
             wait.Until(dr => dr.FindElement(By.CssSelector("#qtyreceived1")).GetAttribute("value") == "550");
@@ -464,32 +510,23 @@ namespace NakedObjects.Selenium {
             wait.Until(dr => dr.FindElement(By.CssSelector(".co-validation")).Text ==
                              "Qty Into Stock + Qty Rejected must add up to Qty Received");
         }
+
         public virtual void OptionalReferenceParamCanBeNull() {
             //Test written against specific bug in 8.0Beta9
             GeminiUrl("home?m1=OrderRepository&d1=FindOrders");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Find Orders");
         }
+
         public virtual void ValidationOfContributeeParameter() {
             GeminiUrl("object?r=0&i1=View&o1=___1.Customer--10&as1=open&d1=CreateNewOrder");
             Click(OKButton());
             //Test written against #37 where message is preceded by '199 Restful Objects'
             wait.Until(dr => dr.FindElement(By.CssSelector(".co-validation")).Text ==
-                 "Customers in Canada may not place orders directly.");
+                             "Customers in Canada may not place orders directly.");
         }
-        #endregion
 
-        //Test for #49
-        public virtual void NoResultFoundMessageLeavesDialogOpen() {
-            GeminiUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber");
-            ClearFieldThenType("#accountnumber1", "AW66666");
-            Click(OKButton());
-            Thread.Sleep(1000);
-            WaitForTextEquals(".co-validation", "No matching object found");
-            ClearFieldThenType("#accountnumber1", "AW00000194");
-            Click(OKButton());
-            WaitForView(Pane.Single, PaneType.Object, "Mechanical Brake Manufacturers, AW00000194");
-        }
+        #endregion
     }
 
     public abstract class DialogTests : DialogTestsRoot {
@@ -497,164 +534,203 @@ namespace NakedObjects.Selenium {
         public override void PasswordParam() {
             base.PasswordParam();
         }
+
         [TestMethod]
         public override void ScalarChoicesParm() {
             base.ScalarChoicesParm();
         }
+
         [TestMethod]
         public override void TestCancelDialog() {
             base.TestCancelDialog();
         }
+
         [TestMethod]
         public override void FieldsRetainedWhenNavigatingAwayAndBack() {
             base.FieldsRetainedWhenNavigatingAwayAndBack();
         }
+
         [TestMethod]
         public override void ReopeningADialogThatWasntCancelledDoesNotRetainFields() {
             base.ReopeningADialogThatWasntCancelledDoesNotRetainFields();
         }
+
         [TestMethod]
         public override void ScalarParmShowsDefaultValue() {
             base.ScalarParmShowsDefaultValue();
         }
+
         [TestMethod]
         public override void DateTimeParmKeepsValue() {
             base.DateTimeParmKeepsValue();
         }
+
         [TestMethod]
         public override void TimeSpanParm() {
             base.TimeSpanParm();
         }
+
         [TestMethod]
         public override void RefChoicesParmKeepsValue() {
             base.RefChoicesParmKeepsValue();
         }
+
         [TestMethod]
         public override void MultipleRefChoicesDefaults() {
             base.MultipleRefChoicesDefaults();
         }
+
         [TestMethod]
         public override void MultipleRefChoicesChangeDefaults() {
             base.MultipleRefChoicesChangeDefaults();
         }
+
         [TestMethod]
         public override void ChoicesDefaults() {
             base.ChoicesDefaults();
         }
+
         [TestMethod]
         public override void ChoicesOptional() {
             base.ChoicesOptional();
         }
+
         [TestMethod]
         public override void ChoicesChangeDefaults() {
             base.ChoicesChangeDefaults();
         }
+
         [TestMethod]
         public override void ConditionalChoices() {
             base.ConditionalChoices();
         }
+
         [TestMethod]
         public override void ConditionalChoicesDefaults() {
             base.ConditionalChoicesDefaults();
         }
+
         [TestMethod]
         public override void ConditionalChoicesMultiple() {
             base.ConditionalChoicesMultiple();
         }
+
         [TestMethod]
         public override void ParameterDescriptionRenderedAsPlaceholder() {
             base.ParameterDescriptionRenderedAsPlaceholder();
         }
+
         [TestMethod]
         public override void BooleanParams() {
             base.BooleanParams();
         }
+
         [TestMethod]
         public override void NullableBooleanParams() {
             base.NullableBooleanParams();
         }
+
         [TestMethod]
         public override void WarningShownWithinDialogAndInFooter() {
             base.WarningShownWithinDialogAndInFooter();
         }
+
         [TestMethod]
         public override void DefaultReferenceParamRendersCorrectly() {
             base.DefaultReferenceParamRendersCorrectly();
         }
+
         [TestMethod]
         public override void QueryOnlyActionDialogPersists() {
             base.QueryOnlyActionDialogPersists();
         }
+
         [TestMethod]
         public override void PotentActionDialogDisappearsAndFieldsNotRemembered() {
             base.PotentActionDialogDisappearsAndFieldsNotRemembered();
         }
+
+        [TestMethod]
+        public override void NoResultFoundMessageLeavesDialogOpen() {
+            base.NoResultFoundMessageLeavesDialogOpen();
+        }
+
         #region Auto Complete
+
         [TestMethod]
         public override void AutoCompleteParm() {
             base.AutoCompleteParm();
         }
+
         [TestMethod]
         public override void AutoCompleteParmDefault() {
             base.AutoCompleteParmDefault();
         }
+
         [TestMethod]
         public override void ClearingAutoCompleteTextClearsUnderlyingReference() {
             base.ClearingAutoCompleteTextClearsUnderlyingReference();
         }
+
         [TestMethod]
         public override void AutoCompleteParmShowSingleItem() {
             base.AutoCompleteParmShowSingleItem();
         }
+
         [TestMethod]
         public override void AutoCompleteScalarField() {
             base.AutoCompleteScalarField();
         }
+
         [TestMethod]
         public override void AutoCompleteOptionalParamNotSelected() {
             base.AutoCompleteOptionalParamNotSelected();
         }
+
         #endregion
 
         #region Parameter validation
+
         [TestMethod]
         public override void MandatoryParameterEnforced() {
             base.MandatoryParameterEnforced();
         }
+
         [TestMethod]
         public override void AutoCompleteMandatoryParmWithoutSelectionFails() {
             base.AutoCompleteMandatoryParmWithoutSelectionFails();
         }
+
         [TestMethod]
         public override void ValidateSingleValueParameter() {
             base.ValidateSingleValueParameter();
         }
+
         [TestMethod]
         public override void ValidateSingleRefParamFromChoices() {
             base.ValidateSingleRefParamFromChoices();
         }
+
         [TestMethod]
         public override void CoValidationOfMultipleParameters() {
             base.CoValidationOfMultipleParameters();
         }
+
         [TestMethod]
         public override void OptionalReferenceParamCanBeNull() {
             base.OptionalReferenceParamCanBeNull();
         }
+
         [TestMethod]
         public override void ValidationOfContributeeParameter() {
             base.ValidationOfContributeeParameter();
         }
 
         #endregion
-
-        [TestMethod]
-        public override void NoResultFoundMessageLeavesDialogOpen() {
-            base.NoResultFoundMessageLeavesDialogOpen();
-        }
     }
 
     #region browsers specific subclasses
+
     //[TestClass]
     public class DialogTestsIe : DialogTests {
         [ClassInitialize]
@@ -712,7 +788,7 @@ namespace NakedObjects.Selenium {
 
         protected override void ScrollTo(IWebElement element) {
             string script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
-            ((IJavaScriptExecutor)br).ExecuteScript(script);
+            ((IJavaScriptExecutor) br).ExecuteScript(script);
         }
     }
 
@@ -821,5 +897,6 @@ namespace NakedObjects.Selenium {
             CleanUpTest();
         }
     }
+
     #endregion
 }

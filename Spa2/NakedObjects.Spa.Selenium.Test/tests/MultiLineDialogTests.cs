@@ -5,15 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using System;
 
 namespace NakedObjects.Selenium {
     public abstract class MultiLineDialogTestsRoot : AWTest {
-        public virtual void MultiLineMenuAction()
-        {
+        public virtual void MultiLineMenuAction() {
             GeminiUrl("home?m1=SpecialOfferRepository");
             Click(GetObjectAction("Create Multiple Special Offers"));
             WaitForView(Pane.Single, PaneType.MultiLineDialog, "Create Multiple Special Offers");
@@ -59,7 +58,6 @@ namespace NakedObjects.Selenium {
             WaitForOKButtonToDisappear(1);
             WaitUntilElementDoesNotExist("#description1");
 
-
             //Check that new empty line (2) has been created
             WaitForCss("#description2");
             OKButtonOnLine(2).AssertIsDisabled("Missing mandatory fields: Description; Discount Pct; Type; Category; Min Qty; Start Date; ");
@@ -77,8 +75,7 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual(description, row1.Text);
         }
 
-        public virtual void MultiLineObjectAction()
-        {
+        public virtual void MultiLineObjectAction() {
             GeminiUrl("object?i1=View&r=1&o1=___1.Vendor--1504&as1=open");
             OpenSubMenu("Purchase Orders");
             Click(GetObjectAction("Create New Purchase Order"));
@@ -121,14 +118,14 @@ namespace NakedObjects.Selenium {
             SaveObject();
             GetInputButton("Edit"); //Waiting for save
             WaitForTextEquals(".summary .details", 0, "Empty");
-        
+
             var iconList = WaitForCssNo(".collection .icon-list", 0);
             Click(iconList);
             WaitForCss("table");
 
             var selector = ".collection .actions .action";
             var action = wait.Until(d => d.FindElements(By.CssSelector(selector)).
-                     Single(we => we.Text == "Add New Details"));
+                Single(we => we.Text == "Add New Details"));
             Click(action);
 
             WaitForView(Pane.Single, PaneType.MultiLineDialog);
@@ -142,7 +139,7 @@ namespace NakedObjects.Selenium {
             ClearFieldThenType("#product0", "Dissolver");
             wait.Until(d => d.FindElements(By.CssSelector(".suggestions a")).Count > 0);
             //As the match has not yet been selected,the field is invalid, so...
-            WaitForTextEquals(".validation",0, "Pending auto-complete...");
+            WaitForTextEquals(".validation", 0, "Pending auto-complete...");
             OKButtonOnLine(0).AssertIsDisabled().AssertHasTooltip("Invalid fields: Product; ");
             Click(WaitForCss(".suggestions a"));
             WaitForCss("#product0.link-color4");
@@ -156,7 +153,7 @@ namespace NakedObjects.Selenium {
             OKButtonOnLine(0).AssertIsEnabled();
             Click(OKButtonOnLine(0));
             //redo
-            WaitForTextEquals(".co-validation",0,"Submitted");
+            WaitForTextEquals(".co-validation", 0, "Submitted");
             WaitForTextEquals(".count", "with 1 lines submitted.");
             WaitUntilElementDoesNotExist("#description0");
 
@@ -183,20 +180,18 @@ namespace NakedObjects.Selenium {
     }
 
     public abstract class MultiLineDialogsTests : MultiLineDialogTestsRoot {
-     
         [TestMethod]
-        public override void MultiLineMenuAction()
-        {
+        public override void MultiLineMenuAction() {
             base.MultiLineMenuAction();
         }
+
         [TestMethod]
-        public override void MultiLineObjectAction()
-        {
+        public override void MultiLineObjectAction() {
             base.MultiLineObjectAction();
         }
+
         [TestMethod]
-        public override void MultiLineObjectActionInCollection()
-        {
+        public override void MultiLineObjectActionInCollection() {
             base.MultiLineObjectActionInCollection();
         }
     }
@@ -295,7 +290,6 @@ namespace NakedObjects.Selenium {
         }
     }
 
-
     public class MegaMultiLineDialogTestsIe : MegaMultiLineDialogTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -316,27 +310,24 @@ namespace NakedObjects.Selenium {
     }
 
     [TestClass]
-    public class MegaMultiLineDialogTestsChrome : MegaMultiLineDialogTestsRoot
-    {
+    public class MegaMultiLineDialogTestsChrome : MegaMultiLineDialogTestsRoot {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
+        public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest()
-        {
+        public virtual void InitializeTest() {
             InitChromeDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest()
-        {
+        public virtual void CleanupTest() {
             base.CleanUpTest();
         }
     }
+
     #endregion
 }

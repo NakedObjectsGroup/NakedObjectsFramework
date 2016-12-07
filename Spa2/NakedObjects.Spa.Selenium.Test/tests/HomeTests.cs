@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
@@ -162,6 +161,7 @@ namespace NakedObjects.Selenium {
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Marcus Collins, AW00022262");
         }
+
         #endregion
     }
 
@@ -211,8 +211,6 @@ namespace NakedObjects.Selenium {
         public override void DialogActionOK() {
             base.DialogActionOK();
         }
-
-
 
         #endregion
     }

@@ -13,7 +13,7 @@ using OpenQA.Selenium;
 
 namespace NakedObjects.Selenium {
     public abstract class CiceroTestRoot : AWTest {
-         public virtual void Action() {
+        public virtual void Action() {
             //Test from home menu
             CiceroUrl("home?m1=ProductRepository");
             WaitForOutput("Products menu");
@@ -109,6 +109,7 @@ namespace NakedObjects.Selenium {
             EnterCommand("ac random,x");
             WaitForOutput("Second argument may only be a question mark -  to get action details");
         }
+
         public virtual void BackAndForward() //Tested together for simplicity
         {
             CiceroUrl("home");
@@ -137,6 +138,7 @@ namespace NakedObjects.Selenium {
             EnterCommand("forward y");
             WaitForOutput("Too many arguments provided");
         }
+
         public virtual void Cancel() {
             //Menu dialog
             CiceroUrl("home?m1=ProductRepository&d1=FindProductByName");
@@ -185,6 +187,7 @@ namespace NakedObjects.Selenium {
             EnterCommand("cancel");
             WaitForOutput("The command: cancel is not available in the current context");
         }
+
         public virtual void Clipboard() {
             CiceroUrl("home");
             WaitForOutputStarting("Welcome to Cicero");
@@ -228,6 +231,7 @@ namespace NakedObjects.Selenium {
             EnterCommand("clipboard c");
             WaitForOutput("Clipboard copy may only be used in the context of viewing an object");
         }
+
         public virtual void Edit() {
             CiceroUrl("home");
             CiceroUrl("object?o1=___1.Customer--29688");
@@ -249,6 +253,7 @@ namespace NakedObjects.Selenium {
             EnterCommand("edit");
             WaitForOutput("The command: edit is not available in the current context");
         }
+
         public virtual void Enter() {
             //Entering fields (into dialogs)
             CiceroUrl("home?m1=CustomerRepository&d1=FindIndividualCustomerByName&f1_firstName=%22%22&f1_lastName=%22%22");
@@ -433,6 +438,7 @@ namespace NakedObjects.Selenium {
             EnterCommand("menu products");
             WaitForOutput("Products menu");
         }
+
         public virtual void Gemini() {
             //home
             CiceroUrl("home");
@@ -451,6 +457,7 @@ namespace NakedObjects.Selenium {
             EnterCommand("ge x");
             WaitForOutput("Too many arguments provided");
         }
+
         public virtual void Goto() {
             CiceroUrl("object?o1=___1.Customer--577");
             WaitForOutput("Customer: Synthetic Materials Manufacturing, AW00000577");
@@ -546,6 +553,7 @@ namespace NakedObjects.Selenium {
             EnterCommand("go 2");
             WaitForOutput("Sales Order Detail: 1 x ML Road Tire");
         }
+
         public virtual void Help() {
             //Help from home
             CiceroUrl("home");
@@ -574,6 +582,7 @@ namespace NakedObjects.Selenium {
             EnterCommand("help ?");
             WaitForOutput("Commands available in current context:\r\naction\r\nback\r\nclipboard\r\nforward\r\ngemini\r\ngoto\r\nhelp\r\nmenu\r\npage\r\nreload\r\nselection\r\nshow\r\nwhere");
         }
+
         public virtual void Menu() {
             //No argument
             CiceroUrl("home");
@@ -612,6 +621,7 @@ namespace NakedObjects.Selenium {
             EnterCommand("menu cus");
             WaitForOutput("Customers menu");
         }
+
         public virtual void OK() {
             CiceroUrl("home");
             //Open a zero-param action on main menu
@@ -707,6 +717,7 @@ namespace NakedObjects.Selenium {
             WaitForOutputContaining("Warning: Warn User of something else");
             WaitForOutputContaining("Inform User of something");
         }
+
         public virtual void Page() {
             CiceroUrl("list?m1=OrderRepository&a1=HighestValueOrders&p1=1&ps1=20&s1=0");
             WaitForOutputStarting("Result from Highest Value Orders:\r\nPage 1 of 1574");
@@ -749,6 +760,7 @@ namespace NakedObjects.Selenium {
             EnterCommand("page 1");
             WaitForOutput("The command: page is not available in the current context");
         }
+
         public virtual void Root() {
             CiceroUrl("object?o1=___1.Product--459&c1_ProductInventory=List");
             WaitForOutputStarting("Product Inventory: 3 items\r\n(Collection on Product: Lock Nut 19)");
@@ -772,6 +784,7 @@ namespace NakedObjects.Selenium {
             EnterCommand("root x");
             WaitForOutput("Too many arguments provided");
         }
+
         public virtual void Save() {
             //Happy case
             CiceroUrl("object?o1=___1.Product--839&i1=Edit");
@@ -818,8 +831,10 @@ namespace NakedObjects.Selenium {
             EnterCommand("save");
             WaitForOutput("StartDate must be before DueDate");
         }
+
         public virtual void Show() {
             #region In an object  -  to show properties
+
             CiceroUrl("object?o1=___1.Product--758");
             WaitForOutput("Product: Road-450 Red, 52");
             EnterCommand("show num");
@@ -850,7 +865,6 @@ namespace NakedObjects.Selenium {
             WaitForOutputStarting("Sales Territory: Northwest\r\nTerritory History: 1 item");
             EnterCommand("sh sales z");
             WaitForOutput("sales z does not match any properties");
-
 
             //No fields
             CiceroUrl("object?o1=___1.AddressType--2");
@@ -892,8 +906,11 @@ namespace NakedObjects.Selenium {
             EnterCommand("sh modified");
             WaitForOutputContaining("Modified Date: 30 Jun 2008");
             WaitForOutputContaining(":00:00");
+
             #endregion
+
             #region In a list
+
             CiceroUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers");
             WaitForOutput("Result from Current Special Offers:\r\n16 items");
             EnterCommand("show 1");
@@ -920,8 +937,11 @@ namespace NakedObjects.Selenium {
             WaitForOutput("Item number or range values must be greater than zero");
             EnterCommand("show 5-4");
             WaitForOutput("Starting item number cannot be greater than the ending item number");
+
             #endregion
+
             #region In a collection
+
             CiceroUrl("object?o1=___1.SalesOrderHeader--44518&c1_Details=List");
             WaitForOutput("Details: 20 items\r\n(Collection on Sales Order: SO44518)");
             EnterCommand("show 1");
@@ -940,8 +960,11 @@ namespace NakedObjects.Selenium {
             //Alpha parm
             EnterCommand("show one");
             WaitForOutput("one is not a number");
+
             #endregion
+
             #region Invalid context
+
             CiceroUrl("home");
             WaitForOutputStarting("Welcome to Cicero");
             EnterCommand("show 1");
@@ -950,8 +973,10 @@ namespace NakedObjects.Selenium {
             WaitForOutput("Customers menu");
             EnterCommand("show 1");
             WaitForOutput("The command: show is not available in the current context");
+
             #endregion
         }
+
         public virtual void Where() {
             CiceroUrl("home");
             CiceroUrl("object?o1=___1.Product--358");
@@ -972,6 +997,7 @@ namespace NakedObjects.Selenium {
             EnterCommand("where x");
             WaitForOutput("Too many arguments provided");
         }
+
         public virtual void SpaceBarAutoComplete() {
             CiceroUrl("home");
             WaitForOutputStarting("Welcome to Cicero");
@@ -1009,6 +1035,7 @@ namespace NakedObjects.Selenium {
             ClearFieldThenType("input", " me pr; ac rand; ok " + Keys.Space);
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "menu pr;action rand;ok ");
         }
+
         public virtual void UnrecognisedCommand() {
             CiceroUrl("home");
             WaitForOutputStarting("Welcome to Cicero");
@@ -1018,6 +1045,7 @@ namespace NakedObjects.Selenium {
             EnterCommand("hl");
             WaitForOutput("No command begins with hl");
         }
+
         public virtual void UpAndDownArrow() {
             CiceroUrl("home");
             EnterCommand("he");
@@ -1044,6 +1072,7 @@ namespace NakedObjects.Selenium {
             //wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value")
             //== "menu pr;action rand;ok;show 1");
         }
+
         public virtual void ScenarioEditAndSave() {
             //happy case -  edit one property
             CiceroUrl("object?o1=___1.Product--838");
@@ -1110,6 +1139,7 @@ namespace NakedObjects.Selenium {
             EnterCommand("save");
             WaitForOutputStarting("Work Order:");
         }
+
         public virtual void ScenarioMultiSelect() {
             //Multi-select and deselect - reference objects
             CiceroUrl("home?m1=ProductRepository");
@@ -1145,6 +1175,7 @@ namespace NakedObjects.Selenium {
             EnterCommand("enter line,");
             WaitForOutputContaining("Multiple matches:\r\nM\r\nR\r\nS\r\nT");
         }
+
         public virtual void ScenarioTransientObject() {
             //Happy case
             CiceroUrl("object?o1=___1.Person--12044");
@@ -1178,6 +1209,7 @@ namespace NakedObjects.Selenium {
             CiceroUrl("object?i1=Transient&o1=___1.CreditCard--37");
             WaitForOutput("The requested view of unsaved object details has expired");
         }
+
         public virtual void ScenarioUsingClipboard() {
             //Copy a Product to clipboard
             CiceroUrl("object?o1=___1.Product--980");
@@ -1207,6 +1239,7 @@ namespace NakedObjects.Selenium {
             EnterCommand("ok");
             WaitForOutput("Unsaved Employee");
         }
+
         public virtual void ScenarioTestEditableVM() {
             CiceroUrl("object?i1=View&o1=___1.Person--5968");
             WaitForOutput("Person: Nathan Diaz");
@@ -1227,6 +1260,7 @@ namespace NakedObjects.Selenium {
             EnterCommand("ok");
             WaitForOutput("Editing Email Template: Sent email");
         }
+
         public virtual void ChainedCommands() {
             //Happy case
             CiceroUrl("home");
@@ -1430,6 +1464,7 @@ namespace NakedObjects.Selenium {
             base.CleanUpTest();
         }
     }
+
     //[TestClass]
     public class CiceroTestsChrome : CiceroTests {
         [ClassInitialize]

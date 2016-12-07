@@ -26,6 +26,7 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("Open Orders", actions[5].Text);
             Assert.AreEqual("Recent Orders", actions[6].Text);
         }
+
         public virtual void OpenActionsMenuNotAlreadyOpen() {
             GeminiUrl("object?o1=___1.Customer--309");
             WaitForView(Pane.Single, PaneType.Object, "The Gear Store, AW00000309");
@@ -33,6 +34,7 @@ namespace NakedObjects.Selenium {
             OpenSubMenu("Orders");
             GetObjectActions(7);
         }
+
         public virtual void OpenAndCloseSubMenusTo3Levels() {
             GeminiUrl("object?i1=View&o1=___1.ProductInventory--320--1&as1=open");
             AssertActionNotDisplayed("Action1");
@@ -64,6 +66,7 @@ namespace NakedObjects.Selenium {
             AssertActionNotDisplayed("Action3");
             AssertActionNotDisplayed("Action4");
         }
+
         public virtual void Properties() {
             GeminiUrl("object?o1=___1.Store--350&as1=open");
             wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 4);
@@ -78,12 +81,14 @@ namespace NakedObjects.Selenium {
             properties = br.FindElements(By.CssSelector(".property"));
             Assert.IsTrue(properties[3].Text.StartsWith("Modified Date:\r\n13 Oct 2008"));
         }
+
         public virtual void Collections() {
             GeminiUrl("object?i1=View&o1=___1.Product--821");
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text.StartsWith("Product Inventory:\r\n2 Items"));
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[1].Text.StartsWith("Product Reviews:\r\nEmpty"));
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[2].Text.StartsWith("Special Offers:\r\n1 Item"));
         }
+
         public virtual void CollectionEagerlyRendered() {
             GeminiUrl("object?r=0&i1=View&o1=___1.Product--464");
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text.StartsWith("Product Inventory:\r\n3 Items"));
@@ -94,6 +99,7 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("Bin", cols[4].Text);
             WaitForCss("tbody tr", 3);
         }
+
         public virtual void NonNavigableReferenceProperty() {
             //Tests properties of types that have had the NonNavigable Facet added to them 
             //(in this case by the custom AdventureWorksNotNavigableFacetFactory)
@@ -113,6 +119,7 @@ namespace NakedObjects.Selenium {
             var links = cat.FindElements(By.CssSelector(".reference.clickable-area"));
             Assert.AreEqual(0, links.Count);
         }
+
         public virtual void DateAndCurrencyProperties() {
             GeminiUrl("object?o1=___1.SalesOrderHeader--68389");
             wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 23);
@@ -128,6 +135,7 @@ namespace NakedObjects.Selenium {
             //Currency properties formatted to 2 places & with default currency symbok (£)
             Assert.AreEqual("Sub Total:\r\n£819.31", properties[11].Text);
         }
+
         public virtual void TableViewHonouredOnCollection() {
             GeminiUrl("object?i1=View&o1=___1.Employee--83&c1_DepartmentHistory=Summary&c1_PayHistory=Table");
             var cols = WaitForCss("th", 3).ToArray();
@@ -142,10 +150,12 @@ namespace NakedObjects.Selenium {
             var cell = WaitForCss("td:nth-child(6)");
             Assert.AreEqual("31 Dec 2008", cell.Text);
         }
+
         public virtual void TableViewIgnoresDuplicatedColumnName() {
             GeminiUrl("object?i1=View&r=1&o1=___1.SalesPerson--280&c1_QuotaHistory=Table");
             WaitForView(Pane.Single, PaneType.Object); //i.e. not an error (c.f. bug #57)
         }
+
         public virtual void ClickReferenceProperty() {
             GeminiUrl("object?o1=___1.Store--350&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Twin Cycles");
@@ -153,6 +163,7 @@ namespace NakedObjects.Selenium {
             Click(reference);
             WaitForView(Pane.Single, PaneType.Object, "Lynn Tsoflias");
         }
+
         public virtual void OpenCollectionAsList() {
             GeminiUrl("object?i1=View&o1=___1.Employee--5");
             WaitForCss(".collection", 2);
@@ -163,6 +174,7 @@ namespace NakedObjects.Selenium {
             Click(WaitForCssNo(".icon-summary", 0));
             WaitUntilGone(d => d.FindElement(By.CssSelector(".table")));
         }
+
         public virtual void NotCountedCollection() {
             //Test NotCounted collection
             GeminiUrl("object?i1=View&o1=___1.Vendor--1662");
@@ -178,6 +190,7 @@ namespace NakedObjects.Selenium {
 
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection")).Text == "Product - Order Info:");
         }
+
         public virtual void ClickOnLineItemWithCollectionAsList() {
             var testUrl = GeminiBaseUrl + "object?o1=___1.Store--350&as1=open" + "&c1_Addresses=List";
             Url(testUrl);
@@ -185,6 +198,7 @@ namespace NakedObjects.Selenium {
             Click(row);
             WaitForView(Pane.Single, PaneType.Object, "Main Office: 2253-217 Palmer Street ...");
         }
+
         public virtual void ClickOnLineItemWithCollectionAsTable() {
             var testUrl = GeminiBaseUrl + "object?o1=___1.Store--350&as1=open" + "&c1_Addresses=Table&c1_Contacts=Summary";
             Url(testUrl);
@@ -196,6 +210,7 @@ namespace NakedObjects.Selenium {
             Click(row);
             WaitForView(Pane.Single, PaneType.Object, type + ": " + addr);
         }
+
         public virtual void CanClickOnTitleInTableView() {
             GeminiUrl("object?i1=View&r=1&o1=___1.Employee--56&c1_DepartmentHistory=Summary&c1_PayHistory=Table");
             WaitForView(Pane.Single, PaneType.Object, "Denise Smith");
@@ -206,6 +221,7 @@ namespace NakedObjects.Selenium {
             Click(title);
             WaitForView(Pane.Single, PaneType.Object, "$11.00 from 3/9/2003");
         }
+
         public virtual void QueryOnlyActionDoesNotReloadAutomatically() {
             GeminiUrl("object?o1=___1.Person--8410&as1=open");
             WaitForView(Pane.Single, PaneType.Object);
@@ -225,6 +241,7 @@ namespace NakedObjects.Selenium {
             ReloadObject();
             wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(6) .value")).Text == newValue);
         }
+
         public virtual void PotentActionDoesReloadAutomatically() {
             GeminiUrl("object?o1=___1.Person--8410&as1=open");
             WaitForView(Pane.Single, PaneType.Object);
@@ -236,6 +253,7 @@ namespace NakedObjects.Selenium {
             Click(OKButton());
             wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(3) .value")).Text == newValue);
         }
+
         public virtual void Colours() {
             //Specific type matches
             GeminiUrl("object?i1=View&o1=___1.Customer--226");
@@ -269,6 +287,7 @@ namespace NakedObjects.Selenium {
             var cc = GetReferenceFromProperty("Credit Card");
             Assert.IsTrue(cc.GetAttribute("class").Contains("link-color0"));
         }
+
         public virtual void ZeroIntValues() {
             GeminiUrl("object?i1=View&o1=___1.SpecialOffer--13");
             WaitForView(Pane.Single, PaneType.Object, "Touring-3000 Promotion");
@@ -277,6 +296,7 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("Max Qty:", properties[7].Text);
             Assert.AreEqual("Min Qty:\r\n0", properties[6].Text);
         }
+
         public virtual void AddingObjectToCollectionUpdatesTableView() {
             GeminiUrl("object?i1=View&o1=___1.SalesPerson--276&as1=open&c1_QuotaHistory=Table&d1=ChangeSalesQuota");
             var details = WaitForCssNo(".summary .details", 0).Text;
@@ -289,6 +309,7 @@ namespace NakedObjects.Selenium {
             wait.Until(dr => dr.FindElements(By.CssSelector("tbody"))[0].FindElements(By.CssSelector("tr")).Count >= rowCount + 1);
             Assert.AreEqual(rowCount + 1, br.FindElements(By.CssSelector("tbody"))[0].FindElements(By.CssSelector("tr")).Count);
         }
+
         public virtual void TimeSpanProperty() {
             GeminiUrl("object?i1=View&o1=___1.Shift--2");
             WaitForTextEquals(".property", 2, "Start Time:\r\n15:00");
@@ -371,9 +392,11 @@ namespace NakedObjects.Selenium {
             Click(GetObjectAction("Clear Comment"));
             // wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text == "Comment:");
         }
+
         #endregion
 
         #region Interlocks on potent actions
+
         //Context for these tests:
         //To guard against, for example, accidentally double-clicking on a single
         //potent action, or attempting to invoke another action before a slow one has completed.
@@ -389,8 +412,7 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Right, PaneType.List, "Recent Orders");
         }
 
-        public virtual void CannotInvokeAPotentActionUntilPriorOneHasCompleted()
-        {
+        public virtual void CannotInvokeAPotentActionUntilPriorOneHasCompleted() {
             GeminiUrl("object?r=0&i1=View&o1=___1.SalesOrderHeader--51863&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "SO51863");
             //Set up a comment
@@ -402,8 +424,8 @@ namespace NakedObjects.Selenium {
             Click(clear); //i.e. twice in rapid succession
             wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Sales Person")); //i.e. Comments property has disappeared
         }
-        public virtual void UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed()
-        {
+
+        public virtual void UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed() {
             GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--69143&as1=open&r=0");
             Click(GetObjectAction("Clear Comment"));
             WaitUntilElementDoesNotExist(".tempdisabled");
@@ -423,8 +445,10 @@ namespace NakedObjects.Selenium {
             // ie comment was not cleared 
             wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Payment on delivery"));
         }
+
         #endregion
     }
+
     public abstract class ObjectViewTests : ObjectViewTestsRoot {
         [TestMethod]
         public override void ActionsAlreadyOpen() {
@@ -495,6 +519,7 @@ namespace NakedObjects.Selenium {
         public override void ClickOnLineItemWithCollectionAsTable() {
             base.ClickOnLineItemWithCollectionAsTable();
         }
+
         [TestMethod]
         public override void CanClickOnTitleInTableView() {
             base.CanClickOnTitleInTableView();
@@ -576,20 +601,17 @@ namespace NakedObjects.Selenium {
         }
 
         [TestMethod]
-        public override void UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed()
-        {
+        public override void UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed() {
             base.UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed();
         }
 
         [TestMethod]
-        public override void CannotInvokeAPotentActionUntilPriorOneHasCompleted()
-        {
+        public override void CannotInvokeAPotentActionUntilPriorOneHasCompleted() {
             base.CannotInvokeAPotentActionUntilPriorOneHasCompleted();
         }
 
         [TestMethod]
-        public override void CanInvokeOneNonPotentActionBeforePreviousHasCompleted()
-        {
+        public override void CanInvokeOneNonPotentActionBeforePreviousHasCompleted() {
             base.CanInvokeOneNonPotentActionBeforePreviousHasCompleted();
         }
     }
@@ -634,9 +656,10 @@ namespace NakedObjects.Selenium {
 
         protected override void ScrollTo(IWebElement element) {
             string script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
-            ((IJavaScriptExecutor)br).ExecuteScript(script);
+            ((IJavaScriptExecutor) br).ExecuteScript(script);
         }
     }
+
     //[TestClass]
     public class ObjectViewTestsChrome : ObjectViewTests {
         [ClassInitialize]

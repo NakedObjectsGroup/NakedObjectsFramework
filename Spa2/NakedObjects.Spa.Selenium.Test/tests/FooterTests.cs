@@ -12,37 +12,13 @@ using OpenQA.Selenium;
 
 namespace NakedObjects.Selenium {
     public abstract class FooterTestsRoot : AWTest {
-        #region WarningsAndInfo
-        public virtual void ExplicitWarningsAndInfo()
-        {
-            GeminiUrl("home?m1=WorkOrderRepository");
-            Click(GetObjectAction("Generate Info And Warning"));
-            var warn = WaitForCss(".footer .warnings");
-            Assert.AreEqual("Warn User of something else", warn.Text);
-            var msg = WaitForCss(".footer .messages");
-            Assert.AreEqual("Inform User of something", msg.Text);
-
-            //Test that both are cleared by next action
-            Click(GetObjectAction("Random Work Order"));
-            WaitUntilElementDoesNotExist(".footer .warnings");
-            WaitUntilElementDoesNotExist(".footer .messages");
-        }
-
-        public virtual void ZeroParamActionReturningNullGeneratesGenericWarning()
-        {
-            GeminiUrl("home?m1=EmployeeRepository");
-            Click(GetObjectAction("Me"));
-            WaitForTextEquals(".footer .warnings", "no result found");
-            Click(GetObjectAction("My Departmental Colleagues"));
-            WaitForTextEquals(".footer .warnings", "Current user unknown");
-        }
-        #endregion
         public virtual void Home() {
             GeminiUrl("object?o1=___1.Product--968");
             WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
             Click(br.FindElement(By.CssSelector(".icon-home")));
             WaitForView(Pane.Single, PaneType.Home, "Home");
         }
+
         public virtual void BackAndForward() {
             Url(BaseUrl);
             GoToMenuFromHomePage("Orders");
@@ -82,6 +58,7 @@ namespace NakedObjects.Selenium {
             ClickBackButton();
             WaitForView(Pane.Single, PaneType.Object, orderTitle);
         }
+
         public virtual void RecentObjects() {
             GeminiUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber&f1_accountNumber=%22AW%22");
             ClearFieldThenType("#accountnumber1", "AW00000042");
@@ -95,7 +72,7 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.Object, "Mechanical Sports Center, AW00000359");
             ClickHomeButton();
             GoToMenuFromHomePage("Customers");
-            OpenActionDialog("Find Customer By Account Number");     
+            OpenActionDialog("Find Customer By Account Number");
             ClearFieldThenType("#accountnumber1", "AW00022262");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Marcus Collins, AW00022262");
@@ -132,6 +109,7 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Left, PaneType.Recent);
             WaitForCss("tr td:nth-child(1)", 6);
         }
+
         public virtual void ApplicationProperties() {
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
@@ -145,6 +123,7 @@ namespace NakedObjects.Selenium {
             Assert.IsTrue(properties[2].Text.StartsWith("Server version: 8.1.0"));
             //Assert.IsTrue(properties[3].Text.StartsWith("Client version: 8.0.0"));
         }
+
         public virtual void LogOff() {
             GeminiUrl("home");
             ClickLogOffButton();
@@ -153,22 +132,35 @@ namespace NakedObjects.Selenium {
             Assert.IsTrue(alert.Text.StartsWith("Please confirm logoff of user:"));
             alert.Dismiss();
         }
+
+        #region WarningsAndInfo
+
+        public virtual void ExplicitWarningsAndInfo() {
+            GeminiUrl("home?m1=WorkOrderRepository");
+            Click(GetObjectAction("Generate Info And Warning"));
+            var warn = WaitForCss(".footer .warnings");
+            Assert.AreEqual("Warn User of something else", warn.Text);
+            var msg = WaitForCss(".footer .messages");
+            Assert.AreEqual("Inform User of something", msg.Text);
+
+            //Test that both are cleared by next action
+            Click(GetObjectAction("Random Work Order"));
+            WaitUntilElementDoesNotExist(".footer .warnings");
+            WaitUntilElementDoesNotExist(".footer .messages");
+        }
+
+        public virtual void ZeroParamActionReturningNullGeneratesGenericWarning() {
+            GeminiUrl("home?m1=EmployeeRepository");
+            Click(GetObjectAction("Me"));
+            WaitForTextEquals(".footer .warnings", "no result found");
+            Click(GetObjectAction("My Departmental Colleagues"));
+            WaitForTextEquals(".footer .warnings", "Current user unknown");
+        }
+
+        #endregion
     }
 
     public abstract class FooterTests : FooterTestsRoot {
-
-        #region Warnings and Info
-        [TestMethod]
-        public override void ExplicitWarningsAndInfo()
-        {
-            base.ExplicitWarningsAndInfo();
-        }
-        [TestMethod]
-        public override void ZeroParamActionReturningNullGeneratesGenericWarning()
-        {
-            base.ZeroParamActionReturningNullGeneratesGenericWarning();
-        }
-        #endregion
         [TestMethod]
         public override void Home() {
             base.Home();
@@ -193,6 +185,20 @@ namespace NakedObjects.Selenium {
         public override void LogOff() {
             base.LogOff();
         }
+
+        #region Warnings and Info
+
+        [TestMethod]
+        public override void ExplicitWarningsAndInfo() {
+            base.ExplicitWarningsAndInfo();
+        }
+
+        [TestMethod]
+        public override void ZeroParamActionReturningNullGeneratesGenericWarning() {
+            base.ZeroParamActionReturningNullGeneratesGenericWarning();
+        }
+
+        #endregion
     }
 
     #region browsers specific subclasses 
@@ -331,7 +337,6 @@ namespace NakedObjects.Selenium {
             base.CleanUpTest();
         }
     }
-
 
     #endregion
 }

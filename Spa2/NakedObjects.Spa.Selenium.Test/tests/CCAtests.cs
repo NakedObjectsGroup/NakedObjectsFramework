@@ -302,7 +302,7 @@ namespace NakedObjects.Selenium {
 
         protected override void ScrollTo(IWebElement element) {
             string script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
-            ((IJavaScriptExecutor)br).ExecuteScript(script);
+            ((IJavaScriptExecutor) br).ExecuteScript(script);
         }
     }
 

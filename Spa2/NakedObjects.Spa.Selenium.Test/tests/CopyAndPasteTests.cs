@@ -136,8 +136,8 @@ namespace NakedObjects.Selenium {
             GetReferenceProperty("Order Placed By", "Sheela Word");
             EditObject();
             wait.Until(dr => dr.FindElements(By.CssSelector(".property")).
-            Single(we => we.FindElement(By.CssSelector(".name")).Text == "Order Placed By" + ":" &&
-                         we.FindElement(By.CssSelector(".value.droppable")).GetAttribute("value") == "Sheela Word")
+                    Single(we => we.FindElement(By.CssSelector(".name")).Text == "Order Placed By" + ":" &&
+                                 we.FindElement(By.CssSelector(".value.droppable")).GetAttribute("value") == "Sheela Word")
             );
             //Finish somewhere else
             GeminiUrl("home");
