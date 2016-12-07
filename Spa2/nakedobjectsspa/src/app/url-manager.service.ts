@@ -235,6 +235,10 @@ export class UrlManagerService {
         return _.omit(search, toClear);
     }
 
+    private paneIsAlwaysSingle(paneType: string) {
+        return paneType === Constants.multiLineDialogPath;
+    }
+
     private setupPaneNumberAndTypes(pane: number, newPaneType: string, newMode?: ApplicationMode): { path: string, replace: boolean } {
 
         const path = this.getPath();
@@ -253,10 +257,10 @@ export class UrlManagerService {
         // changing item on pane 1
         // make sure pane is of correct type
         if (pane === 1 && pane1Type !== newPaneType) {
-            newPath = `/${mode}/${newPaneType}${this.isSinglePane() ? "" : `/${pane2Type}`}`;
+            const single = this.isSinglePane() || this.paneIsAlwaysSingle(newPaneType);
+            newPath = `/${mode}/${newPaneType}${single ? "" : `/${pane2Type}`}`;
             changeMode = false;
             mayReplace = false;
-
         }
 
         // changing item on pane 2
@@ -266,12 +270,10 @@ export class UrlManagerService {
             newPath = `/${mode}/${pane1Type}/${newPaneType}`;
             changeMode = false;
             mayReplace = false;
-
         }
 
         if (changeMode) {
             newPath = `/${mode}/${pane1Type}/${pane2Type}`;
-
             mayReplace = false;
         }
 
@@ -889,6 +891,7 @@ export class UrlManagerService {
     isRecent = (paneId = 1) => this.isLocation(paneId, Constants.recentPath);
     isAttachment = (paneId = 1) => this.isLocation(paneId, Constants.attachmentPath);
     isApplicationProperties = (paneId = 1) => this.isLocation(paneId, Constants.applicationPropertiesPath);
+    isMultiLineDialog = (paneId = 1) => this.isLocation(paneId, Constants.multiLineDialogPath);
 
     private toggleReloadFlag(search: any) {
         const currentFlag = search[akm.reload];

@@ -43,11 +43,19 @@ export class FooterComponent implements OnInit {
         this.context.updateValues();
         this.location.forward();
     };
+
     swapPanes = () => {
-        this.context.updateValues();
-        this.context.swapCurrentObjects();
-        this.urlManager.swapPanes();
+        if (!this.swapDisabled()) {
+            this.context.updateValues();
+            this.context.swapCurrentObjects();
+            this.urlManager.swapPanes();
+        }
     };
+
+    swapDisabled = () => {
+        return this.urlManager.isMultiLineDialog();
+    }
+
     singlePane = (right?: boolean) => {
         this.context.updateValues();
         this.urlManager.singlePane(this.clickHandler.pane(1, right));
