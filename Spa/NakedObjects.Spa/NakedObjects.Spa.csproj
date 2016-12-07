@@ -39,6 +39,7 @@
     <Content Include="Content\customTemplates\withActionButtonObjectView.html" />
     <Content Include="Content\customTemplates\withGroupedPropertiesObjectView.html" />
     <Content Include="Content\customTemplates\productList.html" />
+    <Content Include="Content\sdm.css" />
     <Content Include="Content\partials\multiLineDialog.html" />
     <Content Include="Content\partials\objectNotpersistent.html" />
     <Content Include="Content\partials\readOnlyParameter.html" />
