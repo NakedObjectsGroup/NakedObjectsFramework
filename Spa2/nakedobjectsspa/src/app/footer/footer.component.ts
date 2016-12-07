@@ -53,7 +53,7 @@ export class FooterComponent implements OnInit {
     };
 
     swapDisabled = () => {
-        return this.urlManager.isMultiLineDialog();
+        return this.urlManager.isMultiLineDialog() ? true : null;
     }
 
     singlePane = (right?: boolean) => {

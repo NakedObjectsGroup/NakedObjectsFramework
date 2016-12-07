@@ -122,11 +122,11 @@ namespace NakedObjects.Selenium {
             WaitForSelectedCheckboxes(0);
 
             //Select all
-            SelectCheckBox("#all");
+            SelectCheckBox("#item1-all");
             WaitForSelectedCheckboxes(17);
 
             //Deslect all
-            SelectCheckBox("#all", true);
+            SelectCheckBox("#item1-all", true);
             WaitForSelectedCheckboxes(0);
         }
 
@@ -139,11 +139,11 @@ namespace NakedObjects.Selenium {
             Thread.Sleep(1000);
 
             //Select all
-            SelectCheckBox("#all");
+            SelectCheckBox("#item1-all");
             WaitForSelectedCheckboxes(17);
 
             //Deslect all
-            SelectCheckBox("#all", true);
+            SelectCheckBox("#item1-all", true);
             WaitForSelectedCheckboxes(0);
         }
 
