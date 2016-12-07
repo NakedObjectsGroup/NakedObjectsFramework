@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace AdventureWorksModel {
-    public partial class PhoneNumberType {
+    [Bounded]
+    public class PhoneNumberType {
         [NakedObjectsIgnore]
         public virtual int PhoneNumberTypeID { get; set; }
         [Title][Hidden(WhenTo.Always)]
