@@ -432,6 +432,10 @@ namespace NakedObjects.Selenium
         public virtual void UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed()
         {
             GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--69143&as1=open&r=0");
+            //Ensure scenario starts with clear comments
+            Click(GetObjectAction("Clear Comment"));
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Sales Person")); //i.e. Comments property has disappeared
+
             OpenActionDialog("Add Standard Comments");
             Click(OKButton());
             wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Payment on delivery"));
@@ -442,6 +446,10 @@ namespace NakedObjects.Selenium
 
             Click(OKButton()); //On dialog that has remained open
             wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Payment on delivery"));
+
+            //Reset to be a good test citizen
+            OpenActionDialog("Add Standard Comments");
+            Click(OKButton());
         }
         #endregion
     }

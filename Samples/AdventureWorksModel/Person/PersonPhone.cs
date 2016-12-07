@@ -9,9 +9,14 @@ namespace AdventureWorksModel
         #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }
         #endregion
-
+        #region Lifecycle methods
+        public void Persisting()
+        {
+            ModifiedDate = DateTime.Now;
+        }
+        #endregion
         #region Title
-        
+
         public override string ToString() {
             var t = Container.NewTitleBuilder();
             t.Append(PhoneNumberType).Append(":", PhoneNumber);
@@ -19,6 +24,7 @@ namespace AdventureWorksModel
         }
       
         #endregion
+
         [NakedObjectsIgnore]
         public virtual int BusinessEntityID { get; set; }
         public virtual string PhoneNumber { get; set; }

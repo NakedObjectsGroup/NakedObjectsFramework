@@ -55,12 +55,14 @@ html, #main, body, .background, .single, .split {
 }
 /*Main roots*/
 .home, .object, .list, .recent, .error {
-    padding-left: 20px;
     height: 100%;
     overflow-y: auto;
 }
 
 /*Sub-panes - layout */
+.header, .recent .collection {
+    padding-left: 20px;
+}
 .actions, .main-column, .collections {
     float: left;
     margin-bottom: 20px;
@@ -132,6 +134,12 @@ html, #main, body, .background, .single, .split {
 /*Sub-menus*/
 
 /*Actions*/
+.actions {
+    margin-left: 20px;
+    margin-right: 10px;
+    background-color: lightgrey;
+    padding-top: 10px;
+}
 .actions .action, .actions .submenu {
     width: 150px;
     margin-bottom: 5px;
@@ -139,6 +147,7 @@ html, #main, body, .background, .single, .split {
 }
 
 .actions .action {
+    margin-left: 5px;
     padding: 2px 5px;
 }
 
@@ -155,6 +164,7 @@ html, #main, body, .background, .single, .split {
     }
 
 .submenu {
+    margin-left: 5px;
     padding: 5px;
 }
 
@@ -202,9 +212,9 @@ html, #main, body, .background, .single, .split {
 
     .dialog .ok {
         color: white;
-        font-weight: 800;
         background-image: linear-gradient(to bottom, #11648a, #187ba9 100%);
     }
+
 
 .parameter .name {
     width: 145px; /*To align input box with reference fields*/
@@ -212,6 +222,10 @@ html, #main, body, .background, .single, .split {
 
 .property, .parameter {
     overflow: hidden; /*To cope with long param/prop names*/
+}
+
+    .dialog input[type='text'] {
+    padding-left: 4px;
 }
 
     /*Properties*/
@@ -222,6 +236,7 @@ html, #main, body, .background, .single, .split {
 .name {
     width: 150px;
     padding-right: 5px;
+    font-weight: bolder;
 }
 
 .reference, .value, .details, select {
@@ -376,8 +391,27 @@ select {
 }
 
 /*Hover & Focus*/
-.dialog input[type='text'] {
-    padding-left: 4px;
+/*header*/
+.header .title:hover, .header .title:focus, 
+.menu:hover, .menu:focus,
+.header .action:hover, .header .action:focus
+ {
+    outline: solid;
+    outline-width: 1px;
+    outline-color: white;
+}
+/* actions*/
+.actions .action:hover, .actions .action:focus, 
+ .submenu:hover,  .submenu:focus {
+    outline: solid;
+    outline-width: 1px;
+    outline-color: black;
+}
+
+
+.action[disabled="disabled"]:hover,
+.menu[disabled="disabled"]:hover {
+    outline: none;
 }
 
 input:hover, input:focus,
@@ -386,7 +420,6 @@ select:hover, select:focus {
     border-width: 1px;
     border-color: black;
 }
-
 
 .dialog input[type='button']:focus,
 .dialog input[type='button']:hover,
@@ -397,25 +430,11 @@ select:hover, select:focus {
     outline-color: black;
 }
 
-.menu:hover, .menu:focus,
-.reference:hover, .reference:focus,
-tbody tr:hover, tr:focus,
-.clickable-row:hover, .clickable-row:focus,
-div.hover, div.focus,
-.action:hover, .action:focus,
-.footer a:hover, .footer a:focus {
-    outline: solid;
-    outline-width: 1px;
-    outline-color: white;
-}
 
 
 .reference:hover, .reference:focus,
 tbody tr:hover, tr:focus,
-.clickable-row:hover, .clickable-row:focus,
-div.hover, div.focus,
-.action:hover, .action:focus,
-.footer a:hover, .footer a:focus {
+.clickable-row:hover, .clickable-row:focus {
     outline: solid;
     outline-width: 1px;
     outline-color: black;
@@ -427,10 +446,7 @@ div.hover, div.focus,
     outline-color: blue;
 }
 
-.action[disabled="disabled"]:hover,
-.menu[disabled="disabled"]:hover {
-    outline: none;
-}
+
 
 /*TODO: review focus on title*/
 .title:focus {
@@ -469,10 +485,6 @@ div.hover, div.focus,
 
 td.reference {
     width: 440px;
-}
-
-.list td.checkbox {
-    background-color: black;
 }
 
 /*Tables*/
@@ -808,6 +820,7 @@ input[type=submit] {
 /*Locally-contributed actions*/
 .collection .actions {
     float: none;
+    margin-left: 0px;
     margin-bottom: 5px;
     width: 490px;
     overflow: hidden;
