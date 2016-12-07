@@ -1,7 +1,10 @@
 <div [attr.id]="paneIdName()" [ngClass]="paneType">
 	<div class="recent">
 		<div class="header">
-			<div class="title">{{title}}</div>
+		    <div class="title">{{title}}</div>
+            <div class="menu clickable-area" title="Clear history" accesskey="c" geminiClick (leftClick)="clear()" [attr.disabled]="clearDisabled()">
+                Clear
+            </div>
 		</div>
 		<div *ngIf="recent" class="collection">
 			<table>

@@ -37,6 +37,14 @@ export class RecentComponent extends PaneComponent {
 
     recent: RecentItemsViewModel;
 
+    clear() {
+        this.recent.clear();
+    }
+
+    clearDisabled() {
+        return this.recent.items.length === 0; 
+    }
+
     protected setup(routeData: PaneRouteData) {
         this.recent = this.viewModelFactory.recentItemsViewModel(this.paneId);
     }

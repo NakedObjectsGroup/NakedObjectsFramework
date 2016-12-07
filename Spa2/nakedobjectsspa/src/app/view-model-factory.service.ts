@@ -144,7 +144,7 @@ export class ViewModelFactoryService {
     };
 
     recentItemsViewModel = (paneId: number) => {
-        return new RecentItemsViewModel(this, this.context, paneId);
+        return new RecentItemsViewModel(this, this.context, this.urlManager, paneId);
     };
 
     tableRowViewModel = (properties: _.Dictionary<Models.PropertyMember>, paneId: number): TableRowViewModel => {

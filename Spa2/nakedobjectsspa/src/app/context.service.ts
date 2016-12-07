@@ -861,6 +861,8 @@ export class ContextService {
 
     getRecentlyViewed = () => this.recentcache.items();
 
+    clearRecentlyViewed = () => this.recentcache.clear();
+
     private logoff() {
         for (let pane = 1; pane <= 2; pane++) {
             delete this.currentObjects[pane];
