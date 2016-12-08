@@ -53,6 +53,9 @@ namespace NakedObjects {
         objectId: string;
         menuId: string;
         collections: _.Dictionary<CollectionViewState>;
+
+        selectedCollectionItems: _.Dictionary<boolean[]>;
+
         actionsOpen: string;
         actionId: string;
         // Note that actionParams applies to executed actions. For dialogs see dialogFields

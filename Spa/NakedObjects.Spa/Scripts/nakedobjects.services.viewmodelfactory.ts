@@ -53,7 +53,7 @@ namespace NakedObjects {
     }
 
     interface IViewModelFactoryInternal extends IViewModelFactory {
-        itemViewModel(linkRep: Link, paneId: number, selected: boolean): IItemViewModel;
+        itemViewModel(linkRep: Link, paneId: number, selected: boolean, id : string): IItemViewModel;
         recentItemViewModel(obj: DomainObjectRepresentation, linkRep: Link, paneId: number, selected: boolean): IRecentItemViewModel;
         propertyTableViewModel(propertyRep: PropertyMember, id: string, paneId: number): ITableRowColumnViewModel;
     }
@@ -152,7 +152,7 @@ namespace NakedObjects {
             return linkViewModel as ILinkViewModel;
         };
 
-        viewModelFactory.itemViewModel = (linkRep: Link, paneId: number, selected: boolean) => {
+        viewModelFactory.itemViewModel = (linkRep: Link, paneId: number, selected: boolean, id : string) => {
             const itemViewModel = new ItemViewModel();    
             initLinkViewModel(itemViewModel, linkRep);
 
@@ -160,7 +160,7 @@ namespace NakedObjects {
 
             itemViewModel.selectionChange = (index) => {
                 context.updateValues();
-                urlManager.setListItem(index, itemViewModel.selected, paneId);
+                urlManager.setItemSelected(index, itemViewModel.selected, id, paneId);
                 focusManager.focusOverrideOn(FocusTarget.CheckBox, index + 1, paneId);
             };
 
@@ -181,7 +181,7 @@ namespace NakedObjects {
         };
 
         viewModelFactory.recentItemViewModel = (obj: DomainObjectRepresentation, linkRep: Link, paneId: number, selected: boolean) => {
-            const recentItemViewModel = viewModelFactory.itemViewModel(linkRep, paneId, selected) as ILinkViewModel;
+            const recentItemViewModel = viewModelFactory.itemViewModel(linkRep, paneId, selected, "") as ILinkViewModel;
             (recentItemViewModel as IRecentItemViewModel).friendlyName = obj.extensions().friendlyName();
             return recentItemViewModel as IRecentItemViewModel;
         };
@@ -686,9 +686,11 @@ namespace NakedObjects {
         };
 
         viewModelFactory.getItems = (links: Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: IListViewModel | ICollectionViewModel) => {
-            const selectedItems = routeData.selectedItems;
 
-            const items = _.map(links, (link, i) => viewModelFactory.itemViewModel(link, routeData.paneId, selectedItems[i]));
+            const collection : ICollectionViewModel = listViewModel instanceof CollectionViewModel ? listViewModel : null;
+            const id = collection ? collection.id : "";
+            const selectedItems = routeData.selectedCollectionItems[id];        
+            const items = _.map(links, (link, i) => viewModelFactory.itemViewModel(link, routeData.paneId, selectedItems && selectedItems[i], id));
 
             if (tableView) {
 

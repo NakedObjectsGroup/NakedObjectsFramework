@@ -1394,7 +1394,7 @@ namespace NakedObjects {
         private selectItems(list: ListRepresentation, startNo: number, endNo: number): void {
             let itemNo: number;
             for (itemNo = startNo; itemNo <= endNo; itemNo++) {
-                this.urlManager.setListItem(itemNo - 1, true);
+                this.urlManager.setItemSelected(itemNo - 1, true, "");
             }
         }
     }
