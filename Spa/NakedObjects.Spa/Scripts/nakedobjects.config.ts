@@ -49,4 +49,8 @@ namespace NakedObjects {
     // checks for inconsistencies in url 
     // deliberately off in .pp config file 
     export const doUrlValidation = true;
+
+    // flag for configurable home button behaviour
+
+    export const leftClickHomeGoesToSinglePane = false;
 }

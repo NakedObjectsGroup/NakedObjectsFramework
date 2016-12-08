@@ -919,7 +919,16 @@ namespace NakedObjects {
                 tvm.goHome = (right?: boolean) => {
                     focusManager.focusOverrideOff();
                     context.updateValues();
-                    urlManager.setHome(clickHandler.pane(1, right));
+
+                    const newPane = clickHandler.pane(1, right);
+
+                    if (leftClickHomeGoesToSinglePane && newPane === 1) {
+                        urlManager.setHome(1);
+                        urlManager.singlePane(1);
+                        focusManager.refresh(1);
+                    } else {
+                        urlManager.setHome(newPane);         
+                    }                
                 };
                 tvm.goBack = () => {
                     focusManager.focusOverrideOff();
