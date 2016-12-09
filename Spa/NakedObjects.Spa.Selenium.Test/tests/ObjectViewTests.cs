@@ -859,7 +859,7 @@ namespace NakedObjects.Selenium
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class MegaObjectViewTestIe : MegaObjectViewTestsRoot
     {
         [ClassInitialize]
@@ -883,7 +883,7 @@ namespace NakedObjects.Selenium
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class MegaObjectViewTestChrome : MegaObjectViewTestsRoot
     {
         [ClassInitialize]
