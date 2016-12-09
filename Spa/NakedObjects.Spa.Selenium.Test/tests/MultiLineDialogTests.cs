@@ -77,7 +77,6 @@ namespace NakedObjects.Selenium {
             var row1 = WaitForCssNo(".reference", 0);
             Assert.AreEqual(description, row1.Text);
         }
-
         public virtual void MultiLineObjectAction()
         {
             GeminiUrl("object?i1=View&r=1&o1=___1.Vendor--1504&as1=open");
@@ -195,6 +194,15 @@ namespace NakedObjects.Selenium {
             WaitForTextStarting(".title", "SO"); //back to order
             WaitForTextEquals(".summary .details", 0, "2 Items");
         }
+
+        //#53
+        public virtual void InvokeMLDFromObjectInRightPane()
+        {
+            GeminiUrl("home/object?i2=View&r=1&o2=___1.PurchaseOrderHeader--300&as2=open");
+            Click(GetObjectAction("Add New Details", Pane.Right));
+            WaitForView(Pane.Single, PaneType.MultiLineDialog);
+            SwapIcon().AssertIsDisabled();
+        }
     }
 
     public abstract class MultiLineDialogsTests : MultiLineDialogTestsRoot {
@@ -218,6 +226,11 @@ namespace NakedObjects.Selenium {
         public override void MultiLineObjectActionInCollection()
         {
             base.MultiLineObjectActionInCollection();
+        }
+        [TestMethod]
+        public override void InvokeMLDFromObjectInRightPane()
+        {
+            base.InvokeMLDFromObjectInRightPane();
         }
     }
 
@@ -294,6 +307,7 @@ namespace NakedObjects.Selenium {
             MultiLineObjectAction();
             MultiLineObjectActionOpenedFromRightPane();
             MultiLineObjectActionInCollection();
+            InvokeMLDFromObjectInRightPane();
         }
     }
 
