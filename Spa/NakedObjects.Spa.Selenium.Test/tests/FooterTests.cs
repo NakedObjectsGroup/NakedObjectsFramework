@@ -124,13 +124,13 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Left, PaneType.Object, "Marcus Collins, AW00022262");
 
             //Test that clear button works
-            //ClickRecentButton();
-            //WaitForView(Pane.Left, PaneType.Recent);
-            //WaitForCss("tr td:nth-child(1)", 6);
-            //var clear = GetButton("Clear").AssertIsEnabled();
-            //Click(clear);
-            //GetButton("Clear").AssertIsDisabled();
-            //WaitForCss("tr td", 0);
+            ClickRecentButton();
+            WaitForView(Pane.Left, PaneType.Recent);
+            WaitForCss("tr td:nth-child(1)", 6);
+            var clear = GetButton("Clear", Pane.Left).AssertIsEnabled();
+            Click(clear);
+            GetButton("Clear",Pane.Left).AssertIsDisabled();
+            WaitForCss("tr td", 0);
         }
         public virtual void ApplicationProperties() {
             GeminiUrl("home");
