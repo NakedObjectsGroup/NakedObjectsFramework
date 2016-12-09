@@ -56,7 +56,7 @@ namespace NakedObjects.Selenium {
         public virtual void SelectionsOnMultipleOpenCollectionsAreIndependent()
         {
             GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--53175&c1_SalesOrderHeaderSalesReason=List&c1_Details=List&s1_salesorderheadersalesreason=2&s1_details=5");
-            WaitForSelectedCheckboxes(3); //2 in the first collection, one in the second
+            WaitForSelectedCheckboxes(3); //2 in the first collection, one in the second 
         }
 
         public virtual void ActionsAvailableOnEmptyCollections()

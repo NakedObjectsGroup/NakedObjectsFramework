@@ -70,7 +70,7 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.Home);
 
             //Check that both special offers were in fact created
-            GeminiUrl("list?m1=SpecialOfferRepository&a1=AllSpecialOffers&pg1=1&ps1=20&s1=0&c1=List");
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=AllSpecialOffers&pg1=1&ps1=20&s1_=0&c1=List");
             Reload();
             WaitForView(Pane.Single, PaneType.List);
             WaitForCss(".reference", 10);

@@ -641,9 +641,10 @@ namespace NakedObjects.Selenium
             }
         }
 
-        protected void WaitForSelectedCheckboxes(int number)
-        {
-            wait.Until(dr => dr.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type") == "checkbox" && el.Selected) == number);
+        protected void WaitForSelectedCheckboxes(int number) {
+            var cnt = br.FindElements(By.CssSelector("input[type='checkbox']")).Count(el => el.Displayed && el.Enabled && el.Selected);
+
+            wait.Until(dr => dr.FindElements(By.CssSelector("input[type='checkbox']")).Count(el => el.Displayed && el.Enabled && el.Selected) == number);
         }
         #endregion 
         #region ToolBar icons

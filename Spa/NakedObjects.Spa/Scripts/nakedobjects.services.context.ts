@@ -596,10 +596,12 @@ namespace NakedObjects {
         };
 
         context.clearCachedCollection = (collectionRep : CollectionMember) => {
-            const details = collectionRep.getDetails();
-            repLoader.clearCache(details.getUrl());
-            details.setUrlParameter(roInlineCollectionItems, true);
-            repLoader.clearCache(details.getUrl());
+            const details = collectionRep.detailsLink() ? collectionRep.getDetails() : null;
+            if (details) {
+                repLoader.clearCache(details.getUrl());
+                details.setUrlParameter(roInlineCollectionItems, true);
+                repLoader.clearCache(details.getUrl());
+            }
         }
 
 

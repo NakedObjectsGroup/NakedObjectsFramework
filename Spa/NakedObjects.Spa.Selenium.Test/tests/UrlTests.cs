@@ -168,7 +168,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void SplitListList() {
-            GeminiUrl("list/list?m2=PersonRepository&pm2_firstName=%22a%22&pm2_lastName=%22a%22&a2=FindContactByName&p2=1&ps2=20&s2=0&m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0");
+            GeminiUrl("list/list?m2=PersonRepository&pm2_firstName=%22a%22&pm2_lastName=%22a%22&a2=FindContactByName&p2=1&ps2=20&s2_=0&m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0");
             WaitForView(Pane.Left, PaneType.List, "Current Special Offers");
             WaitForView(Pane.Right, PaneType.List, "Find Contact By Name");
         }
