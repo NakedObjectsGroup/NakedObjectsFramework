@@ -802,6 +802,12 @@ namespace NakedObjects {
                     const actions = collectionRep.actionMembers();
                     collectionViewModel.setActions(actions, routeData);
 
+                    if (resetting) {
+                        // need to clear the cache so that next time we get details 
+                        // we will get fresh 
+                        context.clearCachedCollection(collectionRep);
+                    }
+
                     if (state === CollectionViewState.Summary) {
                         collectionViewModel.items = [];
                     } else if (getDetails) {
@@ -811,13 +817,13 @@ namespace NakedObjects {
                                     state === CollectionViewState.Table,
                                     routeData,
                                     collectionViewModel);
-                                collectionViewModel.details = getCollectionDetails(collectionViewModel.items.length);                             
+                                collectionViewModel.details = getCollectionDetails(collectionViewModel.items.length);
                                 collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);
                             })
                             .catch((reject: ErrorWrapper) => error.handleError(reject));
                     } else {
                         collectionViewModel.items = viewModelFactory.getItems(itemLinks, state === CollectionViewState.Table, routeData, collectionViewModel);
-                        collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);                   
+                        collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);
                     }
 
                     switch (state) {

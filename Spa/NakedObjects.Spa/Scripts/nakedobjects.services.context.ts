@@ -137,7 +137,9 @@ namespace NakedObjects {
         clearObjectUpdater: (paneId?: number) => void;
 
         updateValues: () => void;
+        clearCachedCollection(collectionRep: CollectionMember): void;
     }
+
 
     interface IContextInternal extends IContext {
         getHome: () => ng.IPromise<HomePageRepresentation>;
@@ -145,9 +147,8 @@ namespace NakedObjects {
         getServices: () => ng.IPromise<DomainServicesRepresentation>;
         getService: (paneId: number, type: string) => ng.IPromise<DomainObjectRepresentation>;
         setObject: (paneId: number, object: DomainObjectRepresentation) => void;
-        setResult(action: IInvokableAction, result: ActionResultRepresentation, fromPaneId : number, toPaneId: number, page: number, pageSize: number): void;
+        setResult(action: IInvokableAction, result: ActionResultRepresentation, fromPaneId: number, toPaneId: number, page: number, pageSize: number): void;
         setPreviousUrl: (url: string) => void;
-        
     }
 
     enum DirtyState {
@@ -593,6 +594,14 @@ namespace NakedObjects {
             const index = urlManager.getListCacheIndex(paneId, page, pageSize);
             delete currentLists[index];
         };
+
+        context.clearCachedCollection = (collectionRep : CollectionMember) => {
+            const details = collectionRep.getDetails();
+            repLoader.clearCache(details.getUrl());
+            details.setUrlParameter(roInlineCollectionItems, true);
+            repLoader.clearCache(details.getUrl());
+        }
+
 
         function cacheList(list: ListRepresentation, index: string) {
 
