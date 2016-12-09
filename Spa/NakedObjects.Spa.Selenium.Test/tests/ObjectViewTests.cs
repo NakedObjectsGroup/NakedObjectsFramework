@@ -265,6 +265,12 @@ namespace NakedObjects.Selenium
             Click(WaitForCssNo(".collection .icon-table", 1));
             WaitForCss("thead tr th", 5);
             WaitForCss("tbody trow", 2);  //bug #60: only one row showed
+
+            //Attempt to leave object as we found it
+            OpenActionDialog("Remove Sales Reason");
+            br.FindElement(By.CssSelector(".value  select option[label='Review']")).Click();
+            Click(OKButton());
+            wait.Until(dr => dr.FindElements(By.CssSelector(".collection .summary .details"))[1].Text == "1 Item");
         }
         #endregion
 
