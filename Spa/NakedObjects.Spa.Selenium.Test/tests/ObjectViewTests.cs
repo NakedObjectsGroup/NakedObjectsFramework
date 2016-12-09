@@ -283,9 +283,11 @@ namespace NakedObjects.Selenium
             TypeIntoFieldWithoutClearing("#phonenumber1", num);
             Click(OKButton());
             Click(WaitForCssNo(".collection .icon-list", 2));
-            wait.Until(dr => dr.FindElements(By.CssSelector("table tbody trow")).Any(el => el.Text == title));
-            Click(WaitForCssNo(".collection .icon-table", 2));
-            wait.Until(dr => dr.FindElements(By.CssSelector("table tbody trow td")).Any(el => el.Text == num));
+
+            wait.Until(dr => dr.FindElements(By.CssSelector("table tbody tr td")).Any(el => el.Text == title));
+            Click(WaitForCssNo(".collection .icon-table", 0));
+
+            wait.Until(dr => dr.FindElements(By.CssSelector("table tbody tr td")).Any(el => el.Text == num));
         }
         #endregion
 
