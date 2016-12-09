@@ -177,6 +177,15 @@ namespace NakedObjects.Selenium {
             WaitForTextStarting(".title", "SO"); //back to order
             WaitForTextEquals(".summary .details", 0, "2 Items");
         }
+
+        //#53
+        public virtual void InvokeMLDFromObjectInRightPane()
+        {
+            GeminiUrl("home/object?i2=View&r=1&o2=___1.PurchaseOrderHeader--300&as2=open");
+            Click(GetObjectAction("Add New Details", Pane.Right));
+            WaitForView(Pane.Single, PaneType.MultiLineDialog);
+            SwapIcon().AssertIsDisabled();
+        }
     }
 
     public abstract class MultiLineDialogsTests : MultiLineDialogTestsRoot {
@@ -193,6 +202,11 @@ namespace NakedObjects.Selenium {
         [TestMethod]
         public override void MultiLineObjectActionInCollection() {
             base.MultiLineObjectActionInCollection();
+        }
+        [TestMethod]
+        public override void InvokeMLDFromObjectInRightPane()
+        {
+            base.InvokeMLDFromObjectInRightPane();
         }
     }
 
@@ -268,6 +282,7 @@ namespace NakedObjects.Selenium {
             MultiLineMenuAction();
             MultiLineObjectAction();
             MultiLineObjectActionInCollection();
+            InvokeMLDFromObjectInRightPane();
         }
     }
 

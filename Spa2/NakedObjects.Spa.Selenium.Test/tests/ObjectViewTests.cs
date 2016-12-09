@@ -190,7 +190,52 @@ namespace NakedObjects.Selenium {
 
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection")).Text == "Product - Order Info:");
         }
+        //#60 bug caused by cache
+        public virtual void CollectionsUpdateProperly()
+        {
+            //Open Reasons collection as  List 
+            GeminiUrl("object?i1=View&r=1&o1=___1.SalesOrderHeader--65709&c1_SalesOrderHeaderSalesReason=List&as1=open");
+            //Now open as table, to initiate the caching
+            Click(WaitForCssNo(".collection .icon-table", 1));
+            WaitForCss("thead tr th", 5);
 
+            // Go back to summary
+            Click(WaitForCssNo(".icon-summary", 0));
+            WaitUntilElementDoesNotExist("table");
+            //Add a new reason from menu action
+            OpenActionDialog("Add New Sales Reasons");
+            br.FindElement(By.CssSelector(".value  select option[label='Review']")).Click();
+            wait.Until(dr => new SelectElement(WaitForCss("select#reasons1")).AllSelectedOptions.Count == 1);
+            Click(OKButton());
+            wait.Until(dr => dr.FindElements(By.CssSelector(".collection .summary .details"))[1].Text == "2 Items");
+            //Open table view and confirm that there are indeed 2 rows
+            Click(WaitForCssNo(".collection .icon-table", 1));
+            WaitForCss("thead tr th", 5);
+            WaitForCss("tbody tr", 2);  //bug #60: only one row showed
+
+            //Attempt to leave object as we found it
+            OpenActionDialog("Remove Sales Reason");
+            br.FindElement(By.CssSelector(".value  select option[label='Review']")).Click();
+            Click(OKButton());
+            wait.Until(dr => dr.FindElements(By.CssSelector(".collection .summary .details"))[1].Text == "1 Item");
+        }
+        //#60 - test orginal version of bug involving NotCounted
+        public virtual void NotCountedCollectionUpdatesCorrectly()
+        {
+            GeminiUrl("object?i1=View&r=1&o1=___1.Person--7489&as1=open&d1=CreateNewPhoneNumber");
+            SelectDropDownOnField("#type1", "Cell");
+            var rnd = new Random();
+            var num = rnd.Next(1, 1000000).ToString();
+            var title = "Cell: " + num;
+            TypeIntoFieldWithoutClearing("#phonenumber1", num);
+            Click(OKButton());
+            Click(WaitForCssNo(".collection .icon-list", 2));
+
+            wait.Until(dr => dr.FindElements(By.CssSelector("table tbody tr td")).Any(el => el.Text == title));
+            Click(WaitForCssNo(".collection .icon-table", 0));
+
+            wait.Until(dr => dr.FindElements(By.CssSelector("table tbody tr td")).Any(el => el.Text == num));
+        }
         public virtual void ClickOnLineItemWithCollectionAsList() {
             var testUrl = GeminiBaseUrl + "object?o1=___1.Store--350&as1=open" + "&c1_Addresses=List";
             Url(testUrl);
@@ -511,6 +556,18 @@ namespace NakedObjects.Selenium {
         }
 
         [TestMethod]
+        public override void NotCountedCollectionUpdatesCorrectly()
+        {
+            base.NotCountedCollectionUpdatesCorrectly();
+        }
+
+        [TestMethod]
+        public override void CollectionsUpdateProperly()
+        {
+            base.CollectionsUpdateProperly();
+        }
+
+        [TestMethod]
         public override void ClickOnLineItemWithCollectionAsList() {
             base.ClickOnLineItemWithCollectionAsList();
         }
@@ -719,6 +776,8 @@ namespace NakedObjects.Selenium {
             CanInvokeOneNonPotentActionBeforePreviousHasCompleted();
             UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed();
             CannotInvokeAPotentActionUntilPriorOneHasCompleted();
+            CollectionsUpdateProperly();
+            NotCountedCollectionUpdatesCorrectly();
         }
     }
 
