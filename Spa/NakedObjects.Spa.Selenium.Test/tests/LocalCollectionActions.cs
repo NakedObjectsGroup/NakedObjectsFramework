@@ -53,6 +53,12 @@ namespace NakedObjects.Selenium {
             WaitForSelectedCheckboxes(3);
         }
 
+        public virtual void SelectionsOnMultipleOpenCollectionsAreIndependent()
+        {
+            GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--53175&c1_SalesOrderHeaderSalesReason=List&c1_Details=List&s1_salesorderheadersalesreason=2&s1_details=5");
+            WaitForSelectedCheckboxes(3); //2 in the first collection, one in the second
+        }
+
         public virtual void ActionsAvailableOnEmptyCollections()
         {
             GeminiUrl("object?i1=View&r=1&o1=___1.SalesOrderHeader--70589");
@@ -121,8 +127,11 @@ namespace NakedObjects.Selenium {
         {
             base.SelectionsPreservedIfNavigatingAwayAndBack();
         }
-
-
+        [TestMethod]
+        public override void SelectionsOnMultipleOpenCollectionsAreIndependent()
+        {
+            base.SelectionsOnMultipleOpenCollectionsAreIndependent();
+        }
         [TestMethod]
         public override void ActionsAvailableOnEmptyCollections()
         {
@@ -217,6 +226,7 @@ namespace NakedObjects.Selenium {
             LocalCollectionActionsHonourMemberOrder();
             CheckBoxesVisibleAndCanBeSelected();
             SelectionsPreservedIfNavigatingAwayAndBack();
+            SelectionsOnMultipleOpenCollectionsAreIndependent();
             CannotInvokeZeroParamSelectionActionWithNothingSelected();
             CannotInvokeDialogSelectionActionWithNothingSelected();
             ZeroAndOneParamActionInvoked();
