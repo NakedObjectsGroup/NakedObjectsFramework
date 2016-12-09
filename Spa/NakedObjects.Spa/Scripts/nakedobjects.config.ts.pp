@@ -48,4 +48,7 @@ namespace NakedObjects {
 
 	// checks for inconsistencies in url
     export const doUrlValidation = false;
+
+	// flag for configurable home button behaviour
+    export const leftClickHomeAalwaysGoesToSinglePane = true;
 }

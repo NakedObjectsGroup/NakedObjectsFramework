@@ -922,7 +922,7 @@ namespace NakedObjects {
 
                     const newPane = clickHandler.pane(1, right);
 
-                    if (leftClickHomeGoesToSinglePane && newPane === 1) {
+                    if (leftClickHomeAlwaysGoesToSinglePane && newPane === 1) {
                         urlManager.setHome(1);
                         urlManager.singlePane(1);
                         focusManager.refresh(1);

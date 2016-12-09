@@ -163,11 +163,11 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Left, PaneType.Object, "CARGO TRANSPORT 5");
         }
 
+        //Behaviour modified with #61 - assuming config option set to true
         public virtual void LeftClickHomeIconFromSplitObjectObject() {
             Url(TwoObjects);
             Click(HomeIcon());
-            WaitForView(Pane.Left, PaneType.Home, "Home");
-            WaitForView(Pane.Right, PaneType.Object, "SO71926");
+            WaitForView(Pane.Single, PaneType.Home);
         }
 
         public virtual void RightClickHomeIconFromSplitObjectObject() {
