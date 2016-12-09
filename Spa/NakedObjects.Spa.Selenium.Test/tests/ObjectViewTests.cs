@@ -272,6 +272,21 @@ namespace NakedObjects.Selenium
             Click(OKButton());
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection .summary .details"))[1].Text == "1 Item");
         }
+        //#60 - test orginal version of bug involving NotCounted
+        public virtual void NotCountedCollectionUpdatesCorrectly()
+        {
+            GeminiUrl("object?i1=View&r=1&o1=___1.Person--7489&as1=open&d1=CreateNewPhoneNumber");
+            SelectDropDownOnField("#type1", "Cell");
+            var rnd = new Random();
+            var num = rnd.Next(1, 1000000).ToString();
+            var title = "Cell: " + num;
+            TypeIntoFieldWithoutClearing("#phonenumber1", num);
+            Click(OKButton());
+            Click(WaitForCssNo(".collection .icon-list", 2));
+            wait.Until(dr => dr.FindElements(By.CssSelector("table tbody trow")).Any(el => el.Text == title));
+            Click(WaitForCssNo(".collection .icon-table", 2));
+            wait.Until(dr => dr.FindElements(By.CssSelector("table tbody trow td")).Any(el => el.Text == num));
+        }
         #endregion
 
         public virtual void Colours()
@@ -680,17 +695,20 @@ namespace NakedObjects.Selenium
         {
             base.CannotInvokeAPotentActionUntilPriorOneHasCompleted();
         }
-
         [TestMethod]
         public override void CanInvokeOneNonPotentActionBeforePreviousHasCompleted()
         {
             base.CanInvokeOneNonPotentActionBeforePreviousHasCompleted();
         }
-
         [TestMethod]
         public override void CollectionsUpdateProperly()
         {
             base.CollectionsUpdateProperly();
+        }
+        [TestMethod]
+        public override void NotCountedCollectionUpdatesCorrectly()
+        {
+            base.NotCountedCollectionUpdatesCorrectly();
         }
     }
 
@@ -777,6 +795,7 @@ namespace NakedObjects.Selenium
         [TestMethod] //Mega
         public void MegaObjectViewTest()
         {
+            NotCountedCollectionUpdatesCorrectly();
             CollectionsUpdateProperly();
             ActionsAlreadyOpen();
             OpenActionsMenuNotAlreadyOpen();
@@ -837,7 +856,7 @@ namespace NakedObjects.Selenium
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class MegaObjectViewTestIe : MegaObjectViewTestsRoot
     {
         [ClassInitialize]
@@ -861,7 +880,7 @@ namespace NakedObjects.Selenium
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class MegaObjectViewTestChrome : MegaObjectViewTestsRoot
     {
         [ClassInitialize]
