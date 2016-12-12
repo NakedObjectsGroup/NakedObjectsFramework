@@ -713,7 +713,7 @@ export class UrlManagerService {
             case Constants.objectPath: return ViewType.Object;
             case Constants.listPath: return ViewType.List;
         }
-    }
+    };
 
     getRouteDataObservable = () => {
 
@@ -838,6 +838,19 @@ export class UrlManagerService {
     };
 
     currentpane = () => this.currentPaneId;
+
+    setHomeSinglePane = () => {
+        this.currentPaneId = 1;
+
+        const path = this.getPath();
+        const segments = path.split("/");
+        const mode = segments[1];
+        const newPath = `/${mode}/${Constants.homePath}`;
+
+        const tree = this.router.createUrlTree([newPath]);
+
+        this.router.navigateByUrl(tree);
+    };
 
     singlePane = (paneId = 1) => {
         this.currentPaneId = 1;

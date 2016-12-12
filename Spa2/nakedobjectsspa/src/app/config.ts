@@ -38,3 +38,5 @@ export const recentCacheDepth = 20;
 // deliberately off in .pp config file 
 export const doUrlValidation = true;
 
+// flag for configurable home button behaviour
+export const leftClickHomeAlwaysGoesToSinglePane = true;

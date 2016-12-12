@@ -33,7 +33,14 @@ export class FooterComponent implements OnInit {
 
     goHome = (right?: boolean) => {
         this.context.updateValues();
-        this.urlManager.setHome(this.clickHandler.pane(1, right));
+
+        const newPane = this.clickHandler.pane(1, right);
+
+        if (Config.leftClickHomeAlwaysGoesToSinglePane && newPane === 1) {
+            this.urlManager.setHomeSinglePane();
+        } else {
+            this.urlManager.setHome(newPane);
+        }           
     };
     goBack = () => {
         this.context.updateValues();
