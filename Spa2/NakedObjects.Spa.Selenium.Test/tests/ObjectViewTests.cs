@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 
 namespace NakedObjects.Selenium {
     public abstract class ObjectViewTestsRoot : AWTest {

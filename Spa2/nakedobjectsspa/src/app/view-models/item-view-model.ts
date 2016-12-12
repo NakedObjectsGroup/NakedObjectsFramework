@@ -22,7 +22,8 @@ export class ItemViewModel extends LinkViewModel {
         private clickHandler: ClickHandlerService,
         private viewModelFactory: ViewModelFactoryService,
         private index: number,
-        private isSelected: boolean
+        private isSelected: boolean,
+        private id: string
     ) {
         super(context, colorService, error, urlManager, link, paneId);
 
@@ -36,7 +37,7 @@ export class ItemViewModel extends LinkViewModel {
 
     selectionChange = () => {
         this.context.updateValues();
-        this.urlManager.setListItem(this.index, this.selected, this.paneId);
+        this.urlManager.setItemSelected(this.index, this.selected, this.id, this.paneId);
     };
 
     doClick = (right?: boolean) => {

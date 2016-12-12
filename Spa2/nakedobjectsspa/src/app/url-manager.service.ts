@@ -190,13 +190,14 @@ export class UrlManagerService {
         const collKeyMap = this.getAndMapIds(akm.collection, paneId);
         paneRouteData.collections = _.mapValues(collKeyMap, v => (<any>CollectionViewState)[v]);
 
+        const collSelectedKeyMap = this.getAndMapIds(akm.selected, paneId);
+        paneRouteData.selectedCollectionItems = _.mapValues(collSelectedKeyMap, v => this.arrayFromMask(v));
+
         const parmKeyMap = this.getAndMapIds(akm.parm, paneId);
         paneRouteData.actionParams = this.getMappedValues(parmKeyMap);
 
         paneRouteData.page = parseInt(this.getId(akm.page + paneId, routeParams));
         paneRouteData.pageSize = parseInt(this.getId(akm.pageSize + paneId, routeParams));
-
-        paneRouteData.selectedItems = this.arrayFromMask(this.getId(akm.selected + paneId, routeParams));
 
         paneRouteData.attachmentId = this.getId(akm.attachment + paneId, routeParams);
     }
@@ -322,7 +323,7 @@ export class UrlManagerService {
     }
 
     private validKeysForObject() {
-        return [akm.object, akm.interactionMode, akm.reload, akm.actions, akm.dialog, akm.collection, akm.prop];
+        return [akm.object, akm.interactionMode, akm.reload, akm.actions, akm.dialog, akm.collection, akm.prop, akm.selected];
     }
 
     private validKeysForMultiLineDialog() {
@@ -551,7 +552,7 @@ export class UrlManagerService {
         newValues[`${akm.action}${toPaneId}`] = actionMember.actionId();
         newValues[`${akm.page}${toPaneId}`] = "1";
         newValues[`${akm.pageSize}${toPaneId}`] = Config.defaultPageSize.toString();
-        newValues[`${akm.selected}${toPaneId}`] = "0";
+        newValues[`${akm.selected}${toPaneId}_`] = "0";
 
         const newState = actionMember.extensions().renderEagerly() ? CollectionViewState[CollectionViewState.Table] : CollectionViewState[CollectionViewState.List];
 
@@ -654,9 +655,9 @@ export class UrlManagerService {
     };
 
 
-    setListItem = (item: number, isSelected: boolean, paneId = 1) => {
+    setItemSelected = (item: number, isSelected: boolean, collectionId: string, paneId = 1) => {
 
-        const key = `${akm.selected}${paneId}`;
+        const key = `${akm.selected}${paneId}_${collectionId}`;
         const currentSelected = this.getSearch()[key];
         const selectedArray: boolean[] = this.arrayFromMask(currentSelected);
         selectedArray[item] = isSelected;
@@ -664,13 +665,14 @@ export class UrlManagerService {
         const newValues = _.zipObject([key], [currentSelectedAsString]) as _.Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.Null, () => true);
     };
+
     setListPaging = (newPage: number, newPageSize: number, state: CollectionViewState, paneId = 1) => {
         const pageValues = {} as _.Dictionary<string>;
 
         pageValues[`${akm.page}${paneId}`] = newPage.toString();
         pageValues[`${akm.pageSize}${paneId}`] = newPageSize.toString();
         pageValues[`${akm.collection}${paneId}`] = CollectionViewState[state];
-        pageValues[`${akm.selected}${paneId}`] = "0"; // clear selection 
+        pageValues[`${akm.selected}${paneId}_`] = "0"; // clear selection 
 
         this.executeTransition(pageValues, paneId, Transition.Page, () => true);
     };

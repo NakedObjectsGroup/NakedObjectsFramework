@@ -55,8 +55,8 @@ export class ViewModelFactoryService {
         return new LinkViewModel(this.context, this.color, this.error, this.urlManager, linkRep, paneId);
     };
 
-    itemViewModel = (linkRep: Models.Link, paneId: number, selected: boolean, index: number) => {
-        return new ItemViewModel(this.context, this.color, this.error, this.urlManager, linkRep, paneId, this.clickHandler, this, index, selected);
+    itemViewModel = (linkRep: Models.Link, paneId: number, selected: boolean, index: number, id : string) => {
+        return new ItemViewModel(this.context, this.color, this.error, this.urlManager, linkRep, paneId, this.clickHandler, this, index, selected, id);
     };
 
     recentItemViewModel = (obj: Models.DomainObjectRepresentation, linkRep: Models.Link, paneId: number, selected: boolean, index: number) => {
@@ -152,9 +152,11 @@ export class ViewModelFactoryService {
     };
 
     getItems = (links: Models.Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: ListViewModel | CollectionViewModel) => {
-        const selectedItems = routeData.selectedItems;
-
-        const items = _.map(links, (link, i) => this.itemViewModel(link, routeData.paneId, selectedItems[i], i));
+       
+        const collection = listViewModel instanceof CollectionViewModel ? listViewModel : null;
+        const id = collection ? collection.id : "";
+        const selectedItems = routeData.selectedCollectionItems[id];
+        const items = _.map(links, (link, i) => this.itemViewModel(link, routeData.paneId, selectedItems && selectedItems[i], i, id));
 
         if (tableView) {
 

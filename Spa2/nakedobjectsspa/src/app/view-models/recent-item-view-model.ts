@@ -26,7 +26,7 @@ export class RecentItemViewModel extends ItemViewModel {
         isSelected: boolean,
         public friendlyName: string
     ) {
-        super(context, colorService, error, urlManager, link, paneId, clickHandler, viewModelFactory, index, isSelected);
+        super(context, colorService, error, urlManager, link, paneId, clickHandler, viewModelFactory, index, isSelected, "");
     }
 
     
