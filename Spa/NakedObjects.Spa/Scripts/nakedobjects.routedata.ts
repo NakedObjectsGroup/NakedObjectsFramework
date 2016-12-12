@@ -68,7 +68,6 @@ namespace NakedObjects {
         dialogFields: _.Dictionary<Value>;
         page: number;
         pageSize: number;
-        selectedItems: boolean[];
         interactionMode: InteractionMode;
         errorCategory: ErrorCategory;
         attachmentId : string;

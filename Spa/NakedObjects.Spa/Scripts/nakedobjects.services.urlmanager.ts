@@ -231,9 +231,7 @@ namespace NakedObjects {
             paneRouteData.actionParams = getMappedValues(parmKeyMap);
 
             paneRouteData.page = parseInt(getId(akm.page + paneId, $routeParams));
-            paneRouteData.pageSize = parseInt(getId(akm.pageSize + paneId, $routeParams));
-
-            paneRouteData.selectedItems = arrayFromMask(getId(akm.selected + paneId, $routeParams));
+            paneRouteData.pageSize = parseInt(getId(akm.pageSize + paneId, $routeParams));     
 
             paneRouteData.attachmentId = getId(akm.attachment + paneId, $routeParams);
 

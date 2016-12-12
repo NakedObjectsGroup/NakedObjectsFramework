@@ -326,7 +326,6 @@ namespace NakedObjects.Test {
                     testRouteData.page = 1;
                     testRouteData.pageSize = 20;
                     testRouteData.state = CollectionViewState.List;
-                    testRouteData.selectedItems = [false, false, false, false, false, false];
                 }));
 
                 describe("List placeholder", () => {
@@ -395,7 +394,6 @@ namespace NakedObjects.Test {
                     testRouteData.page = 1;
                     testRouteData.pageSize = 20;
                     testRouteData.state = CollectionViewState.List;
-                    testRouteData.selectedItems = [false, false, false, false, false, false, false, false, false, false, false];
                 }));
 
                 function verifySpecialOffersListPageState(ts: INakedObjectsScope) {
