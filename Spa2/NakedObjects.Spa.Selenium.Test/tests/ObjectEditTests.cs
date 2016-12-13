@@ -459,7 +459,7 @@ namespace NakedObjects.Selenium {
             LocalValidationOfMaxLength();
             LocalValidationOfRegex();
             RangeValidationOnNumber();
-            RangeValidationOnDate();
+            //RangeValidationOnDate();  move to LocallyRun 
             ObjectEditChangeEnum();
             ObjectEditChangeDateTime();
             CanSetAndClearAnOptionalDropDown();

@@ -469,7 +469,7 @@ namespace NakedObjects.Selenium {
     public abstract class MegaListTestsRoot : ListTestsRoot {
         [TestMethod] //Mega
         public void MegaListTest() {
-            ActionReturnsListView();
+            //ActionReturnsListView();  move to LocallyRun 
             ActionReturnsEmptyList();
             TableViewAttributeHonoured();
             TableViewWorksWithSubTypes();
