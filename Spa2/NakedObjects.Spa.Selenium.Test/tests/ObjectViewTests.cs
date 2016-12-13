@@ -754,7 +754,7 @@ namespace NakedObjects.Selenium {
             TableViewHonouredOnCollection();
             TableViewIgnoresDuplicatedColumnName();
             ClickReferenceProperty();
-            OpenCollectionAsList();
+            // OpenCollectionAsList();  move to LocallyRun 
             NotCountedCollection();
             ClickOnLineItemWithCollectionAsList();
             ClickOnLineItemWithCollectionAsTable();

@@ -53,7 +53,7 @@ namespace NakedObjects.Selenium {
             RightClickHomeIconFromObjectSingle();
             SwapPanesIconFromSingleOpensHomeOnLeft();
             ClickReferenceInLeftPaneObject();
-            ClickReferenceInRightPaneObject();
+            //ClickReferenceInRightPaneObject();  move to LocallyRun 
             RightClickReferenceInRightPaneObject();
             LeftClickHomeIconFromSplitObjectObject();
             RightClickHomeIconFromSplitObjectObject();

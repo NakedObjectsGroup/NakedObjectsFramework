@@ -386,7 +386,7 @@ namespace NakedObjects.Selenium {
             SwapPanesWithTransients();
             BackAndForwardOverTransient();
             RequestForExpiredTransient();
-            ConditionalChoicesOnTransient();
+            //ConditionalChoicesOnTransient();  move to LocallyRun 
             TransientWithHiddenNonOptionalFields();
             CanInvokeActionOnASavedTransient();
             TransientCreatedFromDialogClosesDialog();

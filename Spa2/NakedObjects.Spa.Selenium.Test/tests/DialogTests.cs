@@ -814,7 +814,7 @@ namespace NakedObjects.Selenium {
             ChoicesDefaults();
             ChoicesOptional();
             ChoicesChangeDefaults();
-            ConditionalChoicesDefaults();
+            //ConditionalChoicesDefaults();  move to LocallyRun 
             ConditionalChoicesMultiple();
             AutoCompleteParm();
             AutoCompleteParmDefault();

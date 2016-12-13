@@ -318,7 +318,7 @@ namespace NakedObjects.Selenium {
         public void MegaCCATest() {
             ListViewWithParmDialogAlreadyOpen();
             ListViewWithParmDialogNotOpen();
-            DateParam();
+            //DateParam();  move to LocallyRun 
             EmptyParam();
             TestSelectAll();
             SelectAllTableView();

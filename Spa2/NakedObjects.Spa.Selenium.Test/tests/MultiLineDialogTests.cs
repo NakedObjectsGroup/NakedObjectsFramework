@@ -281,7 +281,7 @@ namespace NakedObjects.Selenium {
         public void MegaMultiLineDialogTest() {
             MultiLineMenuAction();
             MultiLineObjectAction();
-            MultiLineObjectActionInCollection();
+            // MultiLineObjectActionInCollection();  move to LocallyRun 
             InvokeMLDFromObjectInRightPane();
         }
     }
