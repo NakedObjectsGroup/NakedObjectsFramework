@@ -64,13 +64,13 @@
     <Content Include="src\app\view-parameter\view-parameter.component.html" />
     <Content Include="src\app\view-property\view-property.component.css" />
     <Content Include="src\app\view-property\view-property.component.html" />
+    <Content Include="src\assets\calendar.png" />
+    <Content Include="src\assets\list.png" />
+    <Content Include="src\assets\summary.png" />
+    <Content Include="src\assets\table.png" />
     <Content Include="src\favicon.ico" />
     <Content Include="src\fonts\iconFont.svg" />
     <Content Include="src\fonts\license.txt" />
-    <Content Include="src\images\calendar.png" />
-    <Content Include="src\images\list.png" />
-    <Content Include="src\images\summary.png" />
-    <Content Include="src\images\table.png" />
     <Content Include="src\index.html" />
     <Content Include="src\styles.css" />
     <Content Include="web.config" />
