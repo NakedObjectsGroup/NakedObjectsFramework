@@ -68,7 +68,7 @@ namespace NakedObjects.Selenium {
             CopyToClipboard(title);
             PasteIntoReferenceField("#pane1 .property:nth-child(4) .value.droppable");
             Click(HomeIcon());
-            WaitForView(Pane.Left, PaneType.Home);
+            WaitForView(Pane.Single, PaneType.Home);
         }
 
         public virtual void PasteIntoReferenceFieldThatAlsoHasAutoCompleteAndFindMenu() {

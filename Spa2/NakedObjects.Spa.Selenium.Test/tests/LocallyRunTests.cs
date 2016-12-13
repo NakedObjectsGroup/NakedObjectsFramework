@@ -109,7 +109,7 @@ namespace NakedObjects.Selenium {
         public virtual void TableViewWithParmDialogNotOpen() {
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
-            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&as1=open&c1=Table");
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&as1=open&c1=Table");
             WaitForView(Pane.Single, PaneType.List);
             Reload();
             SelectCheckBox("#item1-2");
@@ -130,7 +130,7 @@ namespace NakedObjects.Selenium {
             CheckIndividualItem(5, "Discount Pct:", newPct, false);
 
             //Reset to below 50%
-            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&as1=open&c1=Table");
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&as1=open&c1=Table");
             WaitForView(Pane.Single, PaneType.List);
             Reload();
             WaitForCss("td", 64);
@@ -146,7 +146,7 @@ namespace NakedObjects.Selenium {
         public virtual void TableViewWithParmDialogAlreadyOpen() {
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
-            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&c1=Table&as1=open&d1=ChangeDiscount");
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&c1=Table&as1=open&d1=ChangeDiscount");
             Reload();
             var rand = new Random();
             var newPct = "0." + rand.Next(51, 59);
@@ -164,7 +164,7 @@ namespace NakedObjects.Selenium {
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
             //Reset to below 50%
-            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&c1=Table&as1=open&d1=ChangeDiscount");
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&c1=Table&as1=open&d1=ChangeDiscount");
             Reload();
             TypeIntoFieldWithoutClearing("#newdiscount1", "0.10");
             var cells = WaitForCss("td", 64);
@@ -175,7 +175,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void ReloadingAQueryableClearsSelection() {
-            GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=20&ps1=5&s1=0&as1=open");
+            GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=20&ps1=5&s1_=0&as1=open");
             Reload();
             wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count > 30);
             SelectCheckBox("#item1-4");
@@ -186,7 +186,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void ZeroParamAction() {
-            GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=20&ps1=5&s1=0&as1=open&c1=Table");
+            GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=20&ps1=5&s1_=0&as1=open&c1=Table");
             Reload();
             wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count > 30);
 

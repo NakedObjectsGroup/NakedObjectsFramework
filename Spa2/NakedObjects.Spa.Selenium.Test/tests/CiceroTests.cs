@@ -486,16 +486,16 @@ namespace NakedObjects.Selenium {
             EnterCommand("go x,y");
             WaitForOutput("Too many arguments provided");
             //Now try for a list context
-            CiceroUrl("list?m1=SpecialOfferRepository&d1=CurrentSpecialOffers&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0");
+            CiceroUrl("list?m1=SpecialOfferRepository&d1=CurrentSpecialOffers&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0");
             WaitForOutput("Result from Current Special Offers:\r\n16 items");
             EnterCommand("go 1");
             WaitForOutput("Special Offer: No Discount");
-            CiceroUrl("list?m1=SpecialOfferRepository&d1=CurrentSpecialOffers&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0");
+            CiceroUrl("list?m1=SpecialOfferRepository&d1=CurrentSpecialOffers&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0");
             WaitForOutput("Result from Current Special Offers:\r\n16 items");
             EnterCommand("go 16");
             WaitForOutput("Special Offer: Mountain-500 Silver Clearance Sale");
             //Try out of range
-            CiceroUrl("list?m1=SpecialOfferRepository&d1=CurrentSpecialOffers&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0");
+            CiceroUrl("list?m1=SpecialOfferRepository&d1=CurrentSpecialOffers&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0");
             WaitForOutput("Result from Current Special Offers:\r\n16 items");
             EnterCommand("go 0");
             WaitForOutput("0 is out of range for displayed items");
@@ -577,7 +577,7 @@ namespace NakedObjects.Selenium {
             EnterCommand("help menu, back");
             WaitForOutput("Too many arguments provided");
             //List context
-            CiceroUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0");
+            CiceroUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0");
             WaitForOutputStarting("Result from Current Special Offers:");
             EnterCommand("help ?");
             WaitForOutput("Commands available in current context:\r\naction\r\nback\r\nclipboard\r\nforward\r\ngemini\r\ngoto\r\nhelp\r\nmenu\r\npage\r\nreload\r\nselection\r\nshow\r\nwhere");
@@ -719,7 +719,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void Page() {
-            CiceroUrl("list?m1=OrderRepository&a1=HighestValueOrders&p1=1&ps1=20&s1=0");
+            CiceroUrl("list?m1=OrderRepository&a1=HighestValueOrders&p1=1&ps1=20&s1_=0");
             WaitForOutputStarting("Result from Highest Value Orders:\r\nPage 1 of 1574");
             EnterCommand("page 0");
             WaitForOutput("Specified page number must be between 1 and 1574");

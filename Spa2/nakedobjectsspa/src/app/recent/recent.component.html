@@ -1,26 +1,26 @@
 <div [attr.id]="paneIdName()" [ngClass]="paneType">
-	<div class="recent">
-		<div class="header">
-		    <div class="title">{{title}}</div>
-            <div class="menu clickable-area" title="Clear history" accesskey="c" geminiClick (leftClick)="clear()" [attr.disabled]="clearDisabled()">
+    <div class="recent">
+        <div class="header">
+            <div class="title">{{title}}</div>
+            <div class="menu action clickable-area" title="Clear history" accesskey="c" geminiClick (leftClick)="clear()" [attr.disabled]="clearDisabled()">
                 Clear
             </div>
-		</div>
-		<div *ngIf="recent" class="collection">
-			<table>
-				<tbody>
-					<tr [ngClass]="itemColor(item)" *ngFor="let item of items()" class="clickable-area"  dnd-draggable [dragEnabled]="true" [dragData]="item" geminiClick
-						(leftClick)="doItemClick(item)" (rightClick)="doItemClick(item, true)">
-						<td tabindex="0" class="cell">
-							{{itemTitle(item)}}
-						</td>
-						<td tabindex="0" class="cell">
-							{{itemFriendlyName(item)}}
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
+        </div>
+        <div *ngIf="recent" class="collection">
+            <table>
+                <tbody>
+                    <tr [ngClass]="itemColor(item)" *ngFor="let item of items()" class="clickable-area" dnd-draggable [dragEnabled]="true" [dragData]="item" geminiClick
+                        (leftClick)="doItemClick(item)" (rightClick)="doItemClick(item, true)">
+                        <td tabindex="0" class="cell">
+                            {{itemTitle(item)}}
+                        </td>
+                        <td tabindex="0" class="cell">
+                            {{itemFriendlyName(item)}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 <router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>

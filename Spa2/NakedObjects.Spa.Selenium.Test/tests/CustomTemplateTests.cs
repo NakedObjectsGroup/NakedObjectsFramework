@@ -22,7 +22,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void CustomListTemplate() {
-            GeminiUrl("list?m1=WorkOrderRepository&a1=AllLocations&pg1=1&ps1=20&s1=0&c1=List");
+            GeminiUrl("list?m1=WorkOrderRepository&a1=AllLocations&pg1=1&ps1=20&s1_=0&c1=List");
             Reload();
             WaitForView(Pane.Single, PaneType.List, "Location - custom list");
         }

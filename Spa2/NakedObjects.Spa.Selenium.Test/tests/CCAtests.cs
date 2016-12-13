@@ -19,7 +19,7 @@ namespace NakedObjects.Selenium {
         public virtual void ListViewWithParmDialogAlreadyOpen() {
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
-            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&as1=open&d1=ChangeMaxQuantity&f1_newMax=%22%22");
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&as1=open&d1=ChangeMaxQuantity&f1_newMax=%22%22");
             WaitForView(Pane.Single, PaneType.List);
             Reload();
             var rand = new Random();
@@ -44,7 +44,7 @@ namespace NakedObjects.Selenium {
         public virtual void ListViewWithParmDialogNotOpen() {
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
-            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&as1=open");
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&as1=open");
             Reload();
             wait.Until(dr => dr.FindElements(By.CssSelector("tbody tr .checkbox")).Count >= 16);
             SelectCheckBox("#item1-2");
@@ -69,7 +69,7 @@ namespace NakedObjects.Selenium {
         public virtual void DateParam() {
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
-            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&pg1=1&ps1=20&s1=0&as1=open&c1=Table");
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&pg1=1&ps1=20&s1_=0&as1=open&c1=Table");
             WaitForView(Pane.Single, PaneType.List);
             Reload();
             SelectCheckBox("#item1-6");
@@ -101,7 +101,7 @@ namespace NakedObjects.Selenium {
         public virtual void EmptyParam() {
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
-            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&pg1=1&ps1=20&s1=0&as1=open&c1=Table");
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&pg1=1&ps1=20&s1_=0&as1=open&c1=Table");
             WaitForView(Pane.Single, PaneType.List);
             Reload();
             SelectCheckBox("#item1-6");
@@ -115,7 +115,7 @@ namespace NakedObjects.Selenium {
         public virtual void TestSelectAll() {
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
-            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0");
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0");
             WaitForView(Pane.Single, PaneType.List);
             Reload();
             wait.Until(dr => dr.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type") == "checkbox") == 17);
@@ -131,7 +131,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void SelectAllTableView() {
-            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&c1=Table");
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&c1=Table");
             Reload();
             WaitForCss("td", 64);
             WaitForSelectedCheckboxes(0);
@@ -149,7 +149,7 @@ namespace NakedObjects.Selenium {
 
         public virtual void IfNoCCAs() {
             //test that Actions is disabled & no checkboxes appear
-            GeminiUrl("list?m1=PersonRepository&a1=RandomContacts&pg1=1&ps1=20&s1=0&c1=List");
+            GeminiUrl("list?m1=PersonRepository&a1=RandomContacts&pg1=1&ps1=20&s1_=0&c1=List");
             Reload();
             var actions = wait.Until(dr => dr.FindElements(By.CssSelector(".menu")).Single(el => el.Text == "Actions"));
             Assert.AreEqual("true", actions.GetAttribute("disabled"));
@@ -160,7 +160,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void SelectionRetainedWhenNavigatingAwayAndBack() {
-            GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=1&ps1=20&s1=152&c1=List");
+            GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=1&ps1=20&s1_=152&c1=List");
             Reload();
             WaitForSelectedCheckboxes(3);
             Click(HomeIcon());
@@ -171,7 +171,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void SelectionClearedWhenPageChanged() {
-            GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=1&ps1=20&s1=152&c1=List");
+            GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=1&ps1=20&s1_=152&c1=List");
             Reload();
             WaitForTextStarting(".details", "Page 1 of ");
             WaitForSelectedCheckboxes(3);

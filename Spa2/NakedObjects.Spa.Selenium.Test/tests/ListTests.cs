@@ -41,7 +41,7 @@ namespace NakedObjects.Selenium {
         public virtual void TableViewAttributeHonoured() {
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
-            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&pg1=1&ps1=20&s1=0&c1=Table");
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&pg1=1&ps1=20&s1_=0&c1=Table");
             Reload();
             var cols = WaitForCss("th", 5).ToArray();
             Assert.AreEqual("All", cols[0].Text);
@@ -57,7 +57,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void TableViewWorksWithSubTypes() {
-            GeminiUrl("list?m1=CustomerRepository&a1=RandomCustomers&pg1=1&ps1=20&s1=0&c1=Table");
+            GeminiUrl("list?m1=CustomerRepository&a1=RandomCustomers&pg1=1&ps1=20&s1_=0&c1=Table");
             WaitForView(Pane.Single, PaneType.List, "Random Customers");
             Reload();
             var cols = WaitForCss("th", 4).ToArray();
@@ -70,7 +70,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void TableViewCanIncludeCollectionSummaries() {
-            GeminiUrl("list?m1=OrderRepository&a1=OrdersWithMostLines&pg1=1&ps1=20&s1=0&c1=Table");
+            GeminiUrl("list?m1=OrderRepository&a1=OrdersWithMostLines&pg1=1&ps1=20&s1_=0&c1=Table");
             Reload();
             var header = WaitForCss("thead");
             var cols = header.FindElements(By.CssSelector("th")).ToArray();

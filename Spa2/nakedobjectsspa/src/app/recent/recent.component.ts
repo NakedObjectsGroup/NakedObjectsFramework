@@ -42,7 +42,7 @@ export class RecentComponent extends PaneComponent {
     }
 
     clearDisabled() {
-        return this.recent.items.length === 0; 
+        return this.recent.items.length === 0 ? true : null;
     }
 
     protected setup(routeData: PaneRouteData) {
