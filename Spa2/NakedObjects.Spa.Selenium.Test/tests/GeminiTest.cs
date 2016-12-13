@@ -602,7 +602,7 @@ namespace NakedObjects.Selenium {
         }
 
         protected void WaitForSelectedCheckboxes(int number) {
-            wait.Until(dr => dr.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type") == "checkbox" && el.Selected) == number);
+            wait.Until(dr => dr.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type") == "checkbox" && el.Selected && el.Enabled) == number);
         }
 
         #endregion
