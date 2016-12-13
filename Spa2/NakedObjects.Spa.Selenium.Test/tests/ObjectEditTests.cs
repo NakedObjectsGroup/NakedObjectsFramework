@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 
 namespace NakedObjects.Selenium {
     public abstract class ObjectEditTestsRoot : AWTest {
@@ -223,6 +224,101 @@ namespace NakedObjects.Selenium {
             wait.Until(d => br.FindElement(By.CssSelector(".property .value.multiline")).Text ==
                             $"{ran1}\r\n{ran2}\r\n{ran3}");
         }
+
+
+        public virtual void ObjectEditChangeChoices() {
+            GeminiUrl("object?o1=___1.Product--870");
+            EditObject();
+
+            // set product line 
+
+            SelectDropDownOnField("#productline1", "S "); // need space
+
+            ClearFieldThenType("#daystomanufacture1", "1");
+            SaveObject();
+
+            ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
+
+            Assert.AreEqual("Product Line:\r\nS", properties[8].Text);
+        }
+
+        public virtual void ObjectEditChangeConditionalChoices() {
+            GeminiUrl("object?o1=___1.Product--870");
+            EditObject();
+            // set product category and sub category
+            SelectDropDownOnField("#productcategory1", "Clothing");
+
+            wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory1 option")).Any(el => el.Text == "Bib-Shorts"));
+
+            SelectDropDownOnField("#productsubcategory1", "Bib-Shorts");
+
+            ClearFieldThenType("#daystomanufacture1", Keys.Backspace + "1");
+
+            SaveObject();
+
+            ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
+
+            Assert.AreEqual("Product Category:\r\nClothing", properties[6].Text);
+            Assert.AreEqual("Product Subcategory:\r\nBib-Shorts", properties[7].Text);
+
+            EditObject();
+
+            // set product category and sub category
+
+            var slctd = new SelectElement(br.FindElement(By.CssSelector("select#productcategory1")));
+
+            Assert.AreEqual("Clothing", slctd.SelectedOption.Text);
+
+            Assert.AreEqual(5, br.FindElements(By.CssSelector("select#productcategory1 option")).Count);
+
+            wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory1 option")).Count == 9);
+
+            Assert.AreEqual(9, br.FindElements(By.CssSelector("select#productsubcategory1 option")).Count);
+
+            SelectDropDownOnField("#productcategory1", "Bikes");
+
+            wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory1 option")).Count == 4);
+
+            SelectDropDownOnField("#productsubcategory1", "Mountain Bikes");
+
+            SaveObject();
+
+            properties = br.FindElements(By.CssSelector(".property"));
+
+            Assert.AreEqual("Product Category:\r\nBikes", properties[6].Text);
+            Assert.AreEqual("Product Subcategory:\r\nMountain Bikes", properties[7].Text);
+
+            // set values back
+            EditObject();
+
+            SelectDropDownOnField("#productcategory1", "Accessories");
+
+            var slpsc = new SelectElement(br.FindElement(By.CssSelector("select#productsubcategory1")));
+            wait.Until(d => slpsc.Options.Count == 13);
+
+            SelectDropDownOnField("#productsubcategory1", "Bottles and Cages");
+            SaveObject();
+
+            properties = br.FindElements(By.CssSelector(".property"));
+
+            Assert.AreEqual("Product Category:\r\nAccessories", properties[6].Text);
+            Assert.AreEqual("Product Subcategory:\r\nBottles and Cages", properties[7].Text);
+        }
+
+        public virtual void CoValidationOnSavingChanges() {
+            GeminiUrl("object?o1=___1.WorkOrder--43134&i1=Edit");
+            WaitForView(Pane.Single, PaneType.Object);
+            //ClearFieldThenType("input#startdate1", ""); //Seems to be necessary to clear the date fields fully
+            //ClearFieldThenType("input#startdate1", "");
+            ClearFieldThenType("input#startdate1", "17 Oct 2007");
+            //ClearFieldThenType("input#duedate1", ""); //Seems to be necessary to clear the date fields fully
+            //ClearFieldThenType("input#duedate1", "");
+            ClearFieldThenType("input#duedate1", "15 Oct 2007");
+            Click(SaveButton());
+            WaitForMessage("StartDate must be before DueDate");
+        }
+
+
     }
 
     public abstract class ObjectEditTests : ObjectEditTestsRoot {
@@ -370,6 +466,10 @@ namespace NakedObjects.Selenium {
             ObjectEditPicksUpLatestServerVersion();
             ViewModelEditOpensInEditMode();
             MultiLineText();
+
+            ObjectEditChangeChoices();
+            ObjectEditChangeConditionalChoices();
+            CoValidationOnSavingChanges();
         }
     }
 

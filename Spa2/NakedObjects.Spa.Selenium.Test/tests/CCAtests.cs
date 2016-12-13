@@ -15,7 +15,7 @@ namespace NakedObjects.Selenium {
     /// <summary>
     /// Tests for collection-contributedActions
     /// </summary>
-    public abstract class CCAtestsRoot : AWTest {
+    public abstract class CCATestsRoot : AWTest {
         public virtual void ListViewWithParmDialogAlreadyOpen() {
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
@@ -194,59 +194,149 @@ namespace NakedObjects.Selenium {
             WaitForTextStarting(".details", "Page 1 of ");
             WaitForSelectedCheckboxes(0);
         }
+
+        public virtual void TableViewWithParmDialogNotOpen() {
+            GeminiUrl("home");
+            WaitForView(Pane.Single, PaneType.Home);
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&as1=open&c1=Table");
+            WaitForView(Pane.Single, PaneType.List);
+            Reload();
+            SelectCheckBox("#item1-2");
+            SelectCheckBox("#item1-3");
+            SelectCheckBox("#item1-4");
+            OpenActionDialog("Change Discount");
+            var rand = new Random();
+            var newPct = "0." + rand.Next(51, 59);
+            TypeIntoFieldWithoutClearing("#newdiscount1", newPct);
+            Click(OKButton());
+            WaitUntilElementDoesNotExist(".dialog");
+            Reload();
+            //Check that exactly three rows were updated
+            CheckIndividualItem(1, "Discount Pct:", newPct, false);
+            CheckIndividualItem(2, "Discount Pct:", newPct);
+            CheckIndividualItem(3, "Discount Pct:", newPct);
+            CheckIndividualItem(4, "Discount Pct:", newPct);
+            CheckIndividualItem(5, "Discount Pct:", newPct, false);
+
+            //Reset to below 50%
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&as1=open&c1=Table");
+            WaitForView(Pane.Single, PaneType.List);
+            Reload();
+            WaitForCss("td", 64);
+            OpenActionDialog("Change Discount");
+            TypeIntoFieldWithoutClearing("#newdiscount1", "0.10");
+            SelectCheckBox("#item1-2");
+            SelectCheckBox("#item1-3");
+            SelectCheckBox("#item1-4");
+            Click(OKButton());
+            WaitUntilElementDoesNotExist(".dialog");
+        }
+
+        public virtual void TableViewWithParmDialogAlreadyOpen() {
+            GeminiUrl("home");
+            WaitForView(Pane.Single, PaneType.Home);
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&c1=Table&as1=open&d1=ChangeDiscount");
+            Reload();
+            var rand = new Random();
+            var newPct = "0." + rand.Next(51, 59);
+            TypeIntoFieldWithoutClearing("#newdiscount1", newPct);
+            WaitForCss("td", 64);
+            //Now select items
+            SelectCheckBox("#item1-6");
+            SelectCheckBox("#item1-8");
+            Click(OKButton());
+            WaitUntilElementDoesNotExist(".dialog");
+            CheckIndividualItem(6, "Discount Pct:", newPct);
+            CheckIndividualItem(7, "Discount Pct:", newPct, false);
+            CheckIndividualItem(8, "Discount Pct:", newPct);
+
+            GeminiUrl("home");
+            WaitForView(Pane.Single, PaneType.Home);
+            //Reset to below 50%
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&c1=Table&as1=open&d1=ChangeDiscount");
+            Reload();
+            TypeIntoFieldWithoutClearing("#newdiscount1", "0.10");
+            var cells = WaitForCss("td", 64);
+            SelectCheckBox("#item1-6");
+            SelectCheckBox("#item1-8");
+            Click(OKButton());
+            WaitUntilElementDoesNotExist(".dialog");
+        }
+
+        public virtual void ReloadingAQueryableClearsSelection() {
+            GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=20&ps1=5&s1_=0&as1=open");
+            Reload();
+            wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count > 30);
+            SelectCheckBox("#item1-4");
+            SelectCheckBox("#item1-7");
+            wait.Until(dr => dr.FindElements(By.CssSelector("input")).Where(el => el.GetAttribute("type") == "checkbox").Any(el => el.Selected));
+            Reload();
+            wait.Until(dr => !dr.FindElements(By.CssSelector("input")).Where(el => el.GetAttribute("type") == "checkbox").Any(el => el.Selected));
+        }
+
+        public virtual void ZeroParamAction() {
+            GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=20&ps1=5&s1_=0&as1=open&c1=Table");
+            Reload();
+            wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count > 30);
+
+            SelectCheckBox("#item1-all"); //To clear
+            Thread.Sleep(2000);
+            Click(GetObjectAction("Clear Comments"));
+            Thread.Sleep(2000);
+            Reload();
+            Thread.Sleep(4000);
+            //wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) == 0);
+
+            //SelectCheckBox("#item1-all", true); //To clear
+            //WaitForSelectedCheckboxes(0);
+
+            //Now add comments
+            SelectCheckBox("#item1-1");
+            SelectCheckBox("#item1-2");
+            SelectCheckBox("#item1-3");
+            Thread.Sleep(2000);
+            Click(GetObjectAction("Comment As Users Unhappy"));
+            Thread.Sleep(1000); //Because there is no visible change to wait for
+            Reload();
+            wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) == 3);
+
+            //Confirm that the three checkboxes have now been cleared
+            wait.Until(dr => !dr.FindElements(By.CssSelector("input")).Where(el => el.GetAttribute("type") == "checkbox").Any(el => el.Selected));
+
+            SelectCheckBox("#item1-all"); //To clear
+            Thread.Sleep(2000);
+            Click(GetObjectAction("Clear Comments"));
+            Thread.Sleep(2000);
+            Reload();
+            wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) == 0);
+        }
+
     }
 
-    public abstract class CCAtestsServer : CCAtestsRoot {
-        [TestMethod]
-        public override void ListViewWithParmDialogAlreadyOpen() {
-            base.ListViewWithParmDialogAlreadyOpen();
-        }
+    public abstract class MegaCCATests : CCATestsRoot {
+        [TestMethod] //Mega
+        public void MegaCCATest() {
+            ListViewWithParmDialogAlreadyOpen();
+            ListViewWithParmDialogNotOpen();
+            DateParam();
+            EmptyParam();
+            TestSelectAll();
+            SelectAllTableView();
+            IfNoCCAs();
+            SelectionRetainedWhenNavigatingAwayAndBack();
+            SelectionClearedWhenPageChanged();
 
-        [TestMethod]
-        public override void ListViewWithParmDialogNotOpen() {
-            base.ListViewWithParmDialogNotOpen();
-        }
-
-        [TestMethod]
-        public override void DateParam() {
-            base.DateParam();
-        }
-
-        [TestMethod]
-        public override void EmptyParam() {
-            base.EmptyParam();
-        }
-
-        [TestMethod]
-        public override void TestSelectAll() {
-            base.TestSelectAll();
-        }
-
-        [TestMethod]
-        public override void SelectAllTableView() {
-            base.SelectAllTableView();
-        }
-
-        [TestMethod]
-        public override void IfNoCCAs() {
-            base.IfNoCCAs();
-        }
-
-        [TestMethod]
-        public override void SelectionRetainedWhenNavigatingAwayAndBack() {
-            base.SelectionRetainedWhenNavigatingAwayAndBack();
-        }
-
-        [TestMethod]
-        public override void SelectionClearedWhenPageChanged() {
-            base.SelectionClearedWhenPageChanged();
+            TableViewWithParmDialogNotOpen();
+            TableViewWithParmDialogAlreadyOpen();
+            ReloadingAQueryableClearsSelection();
+            ZeroParamAction();
         }
     }
 
     #region browsers specific subclasses
 
     //[TestClass]
-    public class CCAtestsIe : CCAtestsServer {
+    public class CcaTestsIe : MegaCCATests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
@@ -265,7 +355,7 @@ namespace NakedObjects.Selenium {
     }
 
     //[TestClass]
-    public class CCAtestsFirefox : CCAtestsServer {
+    public class CcaTestsFirefox : MegaCCATests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             AWTest.InitialiseClass(context);
@@ -283,7 +373,7 @@ namespace NakedObjects.Selenium {
     }
 
     [TestClass]
-    public class CCATestsChrome : CCAtestsServer {
+    public class CCATestsChrome : MegaCCATests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");

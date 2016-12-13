@@ -19,68 +19,7 @@ namespace NakedObjects.Selenium {
     /// These are all tests that should pass when run locally, but are unreliable on the server
     /// </summary>
     public abstract class LocallyRunTestsRoot : AWTest {
-        #region List
-
-        public virtual void PagingTableView() {
-            GeminiUrl("list?m1=CustomerRepository&a1=FindIndividualCustomerByName&p1=1&ps1=20&pm1_firstName=%22%22&pm1_lastName=%22a%22&c1=Table");
-            Reload();
-            //Confirm in Table view
-            WaitForCss("thead tr th");
-            WaitForCss(".icon-list");
-            WaitUntilElementDoesNotExist(".icon-table");
-            //Test content of collection
-            wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
-                .Text.StartsWith("Page 1 of"));
-            GetButton("First").AssertIsDisabled();
-            GetButton("Previous").AssertIsDisabled();
-            var next = GetButton("Next").AssertIsEnabled();
-            GetButton("Last").AssertIsEnabled();
-            //Go to next page
-            Click(next);
-            wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
-                .Text.StartsWith("Page 2 of"));
-            //Confirm in Table view
-            WaitForCss("thead tr th");
-            WaitForCss(".icon-list");
-            WaitUntilElementDoesNotExist(".icon-table");
-
-            GetButton("First").AssertIsEnabled();
-            GetButton("Previous").AssertIsEnabled();
-            GetButton("Next").AssertIsEnabled();
-            var last = GetButton("Last").AssertIsEnabled();
-            Click(last);
-            wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
-                .Text.StartsWith("Page 45 of 45"));
-            //Confirm in Table view
-            WaitForCss("thead tr th");
-            var iconList = WaitForCss(".icon-list");
-            WaitUntilElementDoesNotExist(".icon-table");
-
-            GetButton("First").AssertIsEnabled();
-            var prev = GetButton("Previous").AssertIsEnabled();
-            GetButton("Next").AssertIsDisabled();
-            GetButton("Last").AssertIsDisabled();
-            Click(prev);
-            wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
-                .Text.StartsWith("Page 44 of 45"));
-            //Confirm in Table view
-            WaitForCss("thead tr th");
-            WaitForCss(".icon-list");
-            WaitUntilElementDoesNotExist(".icon-table");
-            var first = GetButton("First").AssertIsEnabled();
-            GetButton("Previous").AssertIsEnabled();
-            GetButton("Next").AssertIsEnabled();
-            GetButton("Last").AssertIsEnabled();
-            Click(first);
-            wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
-                .Text.StartsWith("Page 1 of 45"));
-            //Confirm in Table view
-            WaitForCss("thead tr th");
-            WaitForCss(".icon-list");
-            WaitUntilElementDoesNotExist(".icon-table");
-        }
-
-        #endregion
+      
 
         #region Cicero
 
@@ -104,125 +43,7 @@ namespace NakedObjects.Selenium {
 
         #endregion
 
-        #region CCAs
-
-        public virtual void TableViewWithParmDialogNotOpen() {
-            GeminiUrl("home");
-            WaitForView(Pane.Single, PaneType.Home);
-            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&as1=open&c1=Table");
-            WaitForView(Pane.Single, PaneType.List);
-            Reload();
-            SelectCheckBox("#item1-2");
-            SelectCheckBox("#item1-3");
-            SelectCheckBox("#item1-4");
-            OpenActionDialog("Change Discount");
-            var rand = new Random();
-            var newPct = "0." + rand.Next(51, 59);
-            TypeIntoFieldWithoutClearing("#newdiscount1", newPct);
-            Click(OKButton());
-            WaitUntilElementDoesNotExist(".dialog");
-            Reload();
-            //Check that exactly three rows were updated
-            CheckIndividualItem(1, "Discount Pct:", newPct, false);
-            CheckIndividualItem(2, "Discount Pct:", newPct);
-            CheckIndividualItem(3, "Discount Pct:", newPct);
-            CheckIndividualItem(4, "Discount Pct:", newPct);
-            CheckIndividualItem(5, "Discount Pct:", newPct, false);
-
-            //Reset to below 50%
-            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&as1=open&c1=Table");
-            WaitForView(Pane.Single, PaneType.List);
-            Reload();
-            WaitForCss("td", 64);
-            OpenActionDialog("Change Discount");
-            TypeIntoFieldWithoutClearing("#newdiscount1", "0.10");
-            SelectCheckBox("#item1-2");
-            SelectCheckBox("#item1-3");
-            SelectCheckBox("#item1-4");
-            Click(OKButton());
-            WaitUntilElementDoesNotExist(".dialog");
-        }
-
-        public virtual void TableViewWithParmDialogAlreadyOpen() {
-            GeminiUrl("home");
-            WaitForView(Pane.Single, PaneType.Home);
-            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&c1=Table&as1=open&d1=ChangeDiscount");
-            Reload();
-            var rand = new Random();
-            var newPct = "0." + rand.Next(51, 59);
-            TypeIntoFieldWithoutClearing("#newdiscount1", newPct);
-            WaitForCss("td", 64);
-            //Now select items
-            SelectCheckBox("#item1-6");
-            SelectCheckBox("#item1-8");
-            Click(OKButton());
-            WaitUntilElementDoesNotExist(".dialog");
-            CheckIndividualItem(6, "Discount Pct:", newPct);
-            CheckIndividualItem(7, "Discount Pct:", newPct, false);
-            CheckIndividualItem(8, "Discount Pct:", newPct);
-
-            GeminiUrl("home");
-            WaitForView(Pane.Single, PaneType.Home);
-            //Reset to below 50%
-            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&c1=Table&as1=open&d1=ChangeDiscount");
-            Reload();
-            TypeIntoFieldWithoutClearing("#newdiscount1", "0.10");
-            var cells = WaitForCss("td", 64);
-            SelectCheckBox("#item1-6");
-            SelectCheckBox("#item1-8");
-            Click(OKButton());
-            WaitUntilElementDoesNotExist(".dialog");
-        }
-
-        public virtual void ReloadingAQueryableClearsSelection() {
-            GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=20&ps1=5&s1_=0&as1=open");
-            Reload();
-            wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count > 30);
-            SelectCheckBox("#item1-4");
-            SelectCheckBox("#item1-7");
-            wait.Until(dr => dr.FindElements(By.CssSelector("input")).Where(el => el.GetAttribute("type") == "checkbox").Any(el => el.Selected));
-            Reload();
-            wait.Until(dr => !dr.FindElements(By.CssSelector("input")).Where(el => el.GetAttribute("type") == "checkbox").Any(el => el.Selected));
-        }
-
-        public virtual void ZeroParamAction() {
-            GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=20&ps1=5&s1_=0&as1=open&c1=Table");
-            Reload();
-            wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count > 30);
-
-            SelectCheckBox("#item1-all"); //To clear
-            Thread.Sleep(2000);
-            Click(GetObjectAction("Clear Comments"));
-            Thread.Sleep(2000);
-            Reload();
-            Thread.Sleep(4000);
-            //wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) == 0);
-
-            //SelectCheckBox("#item1-all", true); //To clear
-            //WaitForSelectedCheckboxes(0);
-
-            //Now add comments
-            SelectCheckBox("#item1-1");
-            SelectCheckBox("#item1-2");
-            SelectCheckBox("#item1-3");
-            Thread.Sleep(2000);
-            Click(GetObjectAction("Comment As Users Unhappy"));
-            Thread.Sleep(1000); //Because there is no visible change to wait for
-            Reload();
-            wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) == 3);
-
-            //Confirm that the three checkboxes have now been cleared
-            wait.Until(dr => !dr.FindElements(By.CssSelector("input")).Where(el => el.GetAttribute("type") == "checkbox").Any(el => el.Selected));
-
-            SelectCheckBox("#item1-all"); //To clear
-            Thread.Sleep(2000);
-            Click(GetObjectAction("Clear Comments"));
-            Thread.Sleep(2000);
-            Reload();
-            wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) == 0);
-        }
-
-        #endregion
+       
 
         #region Copy & Paste
 
@@ -262,97 +83,6 @@ namespace NakedObjects.Selenium {
 
         #region Object Edit
 
-        public virtual void ObjectEditChangeChoices() {
-            GeminiUrl("object?o1=___1.Product--870");
-            EditObject();
-
-            // set product line 
-
-            SelectDropDownOnField("#productline1", "S "); // need space
-
-            ClearFieldThenType("#daystomanufacture1", "1");
-            SaveObject();
-
-            ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
-
-            Assert.AreEqual("Product Line:\r\nS", properties[8].Text);
-        }
-
-        public virtual void ObjectEditChangeConditionalChoices() {
-            GeminiUrl("object?o1=___1.Product--870");
-            EditObject();
-            // set product category and sub category
-            SelectDropDownOnField("#productcategory1", "Clothing");
-
-            wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory1 option")).Any(el => el.Text == "Bib-Shorts"));
-
-            SelectDropDownOnField("#productsubcategory1", "Bib-Shorts");
-
-            ClearFieldThenType("#daystomanufacture1", Keys.Backspace + "1");
-
-            SaveObject();
-
-            ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
-
-            Assert.AreEqual("Product Category:\r\nClothing", properties[6].Text);
-            Assert.AreEqual("Product Subcategory:\r\nBib-Shorts", properties[7].Text);
-
-            EditObject();
-
-            // set product category and sub category
-
-            var slctd = new SelectElement(br.FindElement(By.CssSelector("select#productcategory1")));
-
-            Assert.AreEqual("Clothing", slctd.SelectedOption.Text);
-
-            Assert.AreEqual(5, br.FindElements(By.CssSelector("select#productcategory1 option")).Count);
-
-            wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory1 option")).Count == 9);
-
-            Assert.AreEqual(9, br.FindElements(By.CssSelector("select#productsubcategory1 option")).Count);
-
-            SelectDropDownOnField("#productcategory1", "Bikes");
-
-            wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory1 option")).Count == 4);
-
-            SelectDropDownOnField("#productsubcategory1", "Mountain Bikes");
-
-            SaveObject();
-
-            properties = br.FindElements(By.CssSelector(".property"));
-
-            Assert.AreEqual("Product Category:\r\nBikes", properties[6].Text);
-            Assert.AreEqual("Product Subcategory:\r\nMountain Bikes", properties[7].Text);
-
-            // set values back
-            EditObject();
-
-            SelectDropDownOnField("#productcategory1", "Accessories");
-
-            var slpsc = new SelectElement(br.FindElement(By.CssSelector("select#productsubcategory1")));
-            wait.Until(d => slpsc.Options.Count == 13);
-
-            SelectDropDownOnField("#productsubcategory1", "Bottles and Cages");
-            SaveObject();
-
-            properties = br.FindElements(By.CssSelector(".property"));
-
-            Assert.AreEqual("Product Category:\r\nAccessories", properties[6].Text);
-            Assert.AreEqual("Product Subcategory:\r\nBottles and Cages", properties[7].Text);
-        }
-
-        public virtual void CoValidationOnSavingChanges() {
-            GeminiUrl("object?o1=___1.WorkOrder--43134&i1=Edit");
-            WaitForView(Pane.Single, PaneType.Object);
-            //ClearFieldThenType("input#startdate1", ""); //Seems to be necessary to clear the date fields fully
-            //ClearFieldThenType("input#startdate1", "");
-            ClearFieldThenType("input#startdate1", "17 Oct 2007");
-            //ClearFieldThenType("input#duedate1", ""); //Seems to be necessary to clear the date fields fully
-            //ClearFieldThenType("input#duedate1", "");
-            ClearFieldThenType("input#duedate1", "15 Oct 2007");
-            Click(SaveButton());
-            WaitForMessage("StartDate must be before DueDate");
-        }
 
         #endregion
 
@@ -416,11 +146,6 @@ namespace NakedObjects.Selenium {
     public abstract class LocallyRunTests : LocallyRunTestsRoot {
         #region List tests
 
-        [TestMethod]
-        public override void PagingTableView() {
-            base.PagingTableView();
-        }
-
         #endregion
 
         #region Cicero
@@ -428,30 +153,6 @@ namespace NakedObjects.Selenium {
         //Note: Requires the Cicero icon to be made visible
         public override void LaunchCiceroFromIcon() {
             base.LaunchCiceroFromIcon();
-        }
-
-        #endregion
-
-        #region CCA Tests
-
-        [TestMethod]
-        public override void TableViewWithParmDialogNotOpen() {
-            base.TableViewWithParmDialogNotOpen();
-        }
-
-        [TestMethod]
-        public override void TableViewWithParmDialogAlreadyOpen() {
-            base.TableViewWithParmDialogAlreadyOpen();
-        }
-
-        [TestMethod]
-        public override void ReloadingAQueryableClearsSelection() {
-            base.ReloadingAQueryableClearsSelection();
-        }
-
-        [TestMethod]
-        public override void ZeroParamAction() {
-            base.ZeroParamAction();
         }
 
         #endregion
@@ -471,21 +172,6 @@ namespace NakedObjects.Selenium {
         #endregion
 
         #region Object Edit
-
-        [TestMethod]
-        public override void ObjectEditChangeChoices() {
-            base.ObjectEditChangeChoices();
-        }
-
-        [TestMethod]
-        public override void ObjectEditChangeConditionalChoices() {
-            base.ObjectEditChangeConditionalChoices();
-        }
-
-        [TestMethod]
-        public override void CoValidationOnSavingChanges() {
-            base.CoValidationOnSavingChanges();
-        }
 
         #endregion
 
