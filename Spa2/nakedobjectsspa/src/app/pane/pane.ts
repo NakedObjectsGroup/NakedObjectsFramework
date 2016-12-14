@@ -32,6 +32,7 @@ export abstract class PaneComponent implements OnInit, OnDestroy {
 
     private activatedRouteDataSub: ISubscription;
     private paneRouteDataSub: ISubscription;
+    private lastPaneRouteData : PaneRouteData; 
 
     protected abstract setup(routeData: PaneRouteData);
 
@@ -39,16 +40,18 @@ export abstract class PaneComponent implements OnInit, OnDestroy {
         this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: any) => {
             this.paneId = data["pane"];
             this.paneType = data["class"];
-        });
 
-        // todo can we just listen for the pane we're interested in ?
-        this.paneRouteDataSub = this.urlManager.getRouteDataObservable()
-            .subscribe((rd: RouteData) => {
-                if (this.paneId) {
-                    const paneRouteData = rd.pane()[this.paneId];
-                    this.setup(paneRouteData);
-                }
-            });
+            if (!this.paneRouteDataSub) {
+                this.paneRouteDataSub =
+                    this.urlManager.getPaneRouteDataObservable(this.paneId)
+                        .subscribe((paneRouteData: PaneRouteData) => {
+                            if (!paneRouteData.isEqual(this.lastPaneRouteData)){
+                                this.lastPaneRouteData = paneRouteData;
+                                this.setup(paneRouteData);
+                            }
+                        });
+            };
+        });
     }
 
     ngOnDestroy(): void {

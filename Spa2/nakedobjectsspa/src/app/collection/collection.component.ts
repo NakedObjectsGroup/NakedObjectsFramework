@@ -3,7 +3,7 @@ import { CollectionViewState } from '../route-data';
 import { CollectionViewModel } from '../view-models/collection-view-model';
 import { ItemViewModel } from '../view-models/item-view-model';
 import { PropertyViewModel } from '../view-models/property-view-model';
-import { RouteData } from '../route-data';
+import { PaneRouteData } from '../route-data';
 import { UrlManagerService } from '../url-manager.service';
 import { ISubscription } from 'rxjs/Subscription';
 
@@ -89,20 +89,22 @@ export class CollectionComponent implements OnInit, OnDestroy {
     propertyReturnType = (property: PropertyViewModel) => property.returnType;
 
     private paneRouteDataSub: ISubscription;
+    private lastPaneRouteData : PaneRouteData;
 
     private currentOid: string;
 
     ngOnInit(): void {
 
-        // todo can we just listen for the pane we're interested in ?
-        this.paneRouteDataSub = this.urlManager.getRouteDataObservable()
-            .subscribe((rd: RouteData) => {
-                const paneRouteData = rd.pane()[this.collection.onPaneId];
-                this.currentOid = this.currentOid || paneRouteData.objectId;
+        this.paneRouteDataSub = this.urlManager.getPaneRouteDataObservable(this.collection.onPaneId)
+            .subscribe((paneRouteData: PaneRouteData) => {
+                if (!paneRouteData.isEqual(this.lastPaneRouteData)) {
+                    this.lastPaneRouteData = paneRouteData;
+                    this.currentOid = this.currentOid || paneRouteData.objectId;
 
-                // ignore if different object
-                if (this.currentOid === paneRouteData.objectId) {
-                    this.collection.reset(paneRouteData, false);
+                    // ignore if different object
+                    if (this.currentOid === paneRouteData.objectId) {
+                        this.collection.reset(paneRouteData, false);
+                    }
                 }
             });
     }

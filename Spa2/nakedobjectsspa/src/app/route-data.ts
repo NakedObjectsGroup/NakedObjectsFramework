@@ -68,7 +68,6 @@ export class PaneRouteData {
     errorCategory: Models.ErrorCategory;
     attachmentId: string;
 
-
     private validatingUrl: string;
 
     isValid(name: string) {
@@ -136,5 +135,8 @@ export class PaneRouteData {
         }
     }
 
+    isEqual(other : PaneRouteData) {
+        return _.isEqual(this, other);
+    }
 }
 

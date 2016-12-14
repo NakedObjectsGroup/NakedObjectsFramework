@@ -165,6 +165,7 @@ export class DialogComponent implements OnInit, OnDestroy {
 
     private activatedRouteDataSub: ISubscription;
     private paneRouteDataSub: ISubscription;
+    private lastPaneRouteData : PaneRouteData;
 
     private routeDataMatchesParent(rd: PaneRouteData) {
         if (this.parent instanceof MenuViewModel) {
@@ -191,20 +192,20 @@ export class DialogComponent implements OnInit, OnDestroy {
 
         this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: any) => {
             this.paneId = data["pane"];
-        });
 
-        this.paneRouteDataSub = this.urlManager.getRouteDataObservable()
-            .subscribe((rd: RouteData) => {
-                if (this.paneId) {
-                    const paneRouteData = rd.pane()[this.paneId];
-                    // check that the paneRouteData is the same as the parent otherwise 
-                    // we may get route data for a different page 
-                    if (this.routeDataMatchesParent(paneRouteData)) {
-                        this.currentDialogId = paneRouteData.dialogId;
-                        this.getDialog(paneRouteData);
-                    }
-                }
-            });
+            if (!this.paneRouteDataSub) {
+                this.paneRouteDataSub =
+                    this.urlManager.getPaneRouteDataObservable(this.paneId)
+                        .subscribe((paneRouteData: PaneRouteData) => {
+                            if (!paneRouteData.isEqual(this.lastPaneRouteData)) {
+                                if (this.routeDataMatchesParent(paneRouteData)) {
+                                    this.currentDialogId = paneRouteData.dialogId;
+                                    this.getDialog(paneRouteData);
+                                }
+                            }
+                        });
+            };
+        });
     }
 
     ngOnDestroy(): void {

@@ -715,21 +715,15 @@ export class UrlManagerService {
         }
     };
 
-    getRouteDataObservable = () => {
+    getPaneRouteDataObservable = (paneId : number) => {
 
         return this.router.routerState.root.queryParams.map((ps: { [key: string]: string }) => {
-
             const routeData = new RouteData();
-
-            this.setPaneRouteDataFromParms(routeData.pane1, 1, ps);
-            this.setPaneRouteDataFromParms(routeData.pane2, 2, ps);
-
-            routeData.pane1.location = this.getViewType(this.getLocation(1));
-            routeData.pane2.location = this.getViewType(this.getLocation(2));
-
-            return routeData;
-
-        }) as Observable<RouteData>;
+            const paneRouteData = routeData.pane()[paneId];
+            this.setPaneRouteDataFromParms(paneRouteData, paneId, ps);
+            paneRouteData.location = this.getViewType(this.getLocation(paneId));
+            return paneRouteData;
+        }) as Observable<PaneRouteData>;
     }
 
     pushUrlState = (paneId = 1) => {
