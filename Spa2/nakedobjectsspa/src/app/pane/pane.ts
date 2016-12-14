@@ -9,7 +9,7 @@ import { UrlManagerService } from "../url-manager.service";
 export abstract class PaneComponent implements OnInit, OnDestroy {
 
     constructor(protected activatedRoute: ActivatedRoute,
-                protected urlManager: UrlManagerService) {
+        protected urlManager: UrlManagerService) {
     }
 
     // pane API
@@ -20,7 +20,7 @@ export abstract class PaneComponent implements OnInit, OnDestroy {
     paneIdName = () => this.paneId === 1 ? "pane1" : "pane2";
 
     // todo constants for strings ! 
-    backgroundColor = "object-color0"; 
+    backgroundColor = "object-color0";
 
     onChild() {
         this.paneType = "split";

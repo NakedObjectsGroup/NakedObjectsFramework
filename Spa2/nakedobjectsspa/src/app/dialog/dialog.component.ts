@@ -17,7 +17,7 @@ import { DialogViewModel } from '../view-models/dialog-view-model';
 import { ListViewModel } from '../view-models/list-view-model';
 import { MenuViewModel } from '../view-models/menu-view-model';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
-import * as Collectionviewmodel from '../view-models/collection-view-model';
+import { CollectionViewModel } from '../view-models/collection-view-model';
 
 @Component({
     selector: 'app-dialog',
@@ -36,7 +36,7 @@ export class DialogComponent implements OnInit, OnDestroy {
     }
 
     @Input()
-    parent: MenuViewModel | DomainObjectViewModel | ListViewModel | Collectionviewmodel.CollectionViewModel;
+    parent: MenuViewModel | DomainObjectViewModel | ListViewModel | CollectionViewModel;
 
     dialog: DialogViewModel;
 
@@ -129,7 +129,7 @@ export class DialogComponent implements OnInit, OnDestroy {
                 actionViewModel = _.find(p.actions, a => a.actionRep.actionId() === this.currentDialogId);
             }
 
-            if (p instanceof Collectionviewmodel.CollectionViewModel) {
+            if (p instanceof CollectionViewModel) {
                 action = p.actionMember(this.currentDialogId);
                 if (action) {
                     actionViewModel = _.find(p.actions, a => a.actionRep.actionId() === this.currentDialogId);
@@ -147,7 +147,7 @@ export class DialogComponent implements OnInit, OnDestroy {
 
                             const dialogViewModel = this.viewModelFactory.dialogViewModel(routeData, details, actionViewModel, false);
                             this.createForm(dialogViewModel);
-                          
+
                             // must be a change 
                             this.closeExistingDialog();
                             this.dialog = dialogViewModel;
@@ -165,7 +165,7 @@ export class DialogComponent implements OnInit, OnDestroy {
 
     private activatedRouteDataSub: ISubscription;
     private paneRouteDataSub: ISubscription;
-   
+
     private routeDataMatchesParent(rd: PaneRouteData) {
         if (this.parent instanceof MenuViewModel) {
             return rd.location === ViewType.Home;
@@ -179,7 +179,7 @@ export class DialogComponent implements OnInit, OnDestroy {
             return rd.location === ViewType.List;
         }
 
-        if (this.parent instanceof Collectionviewmodel.CollectionViewModel) {
+        if (this.parent instanceof CollectionViewModel) {
             return rd.location === ViewType.Object;
         }
 
@@ -197,7 +197,7 @@ export class DialogComponent implements OnInit, OnDestroy {
             .subscribe((rd: RouteData) => {
                 if (this.paneId) {
                     const paneRouteData = rd.pane()[this.paneId];
-                    // check that the paneRouteData is teh same as the parent otherwise 
+                    // check that the paneRouteData is the same as the parent otherwise 
                     // we may get route data for a different page 
                     if (this.routeDataMatchesParent(paneRouteData)) {
                         this.currentDialogId = paneRouteData.dialogId;

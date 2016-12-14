@@ -10,8 +10,8 @@ import { ActionViewModel } from './action-view-model';
 import { ParameterViewModel } from './parameter-view-model';
 import * as _ from "lodash";
 import * as Helpers from './helpers-view-models';
-import * as Menuitemviewmodel from './menu-item-view-model';
-import * as Routedata from '../route-data';
+import { MenuItemViewModel } from './menu-item-view-model';
+import { RouteData, PaneRouteData } from '../route-data';
 
 export abstract class ContributedActionParentViewModel extends MessageViewModel {
 
@@ -27,13 +27,13 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
     allSelected = () => _.every(this.items, item => item.selected);
     items: ItemViewModel[];
     actions: ActionViewModel[];
-    menuItems: Menuitemviewmodel.MenuItemViewModel[];
+    menuItems: MenuItemViewModel[];
 
     private isLocallyContributed(action: Models.IInvokableAction) {
         return _.some(action.parameters(), p => p.isCollectionContributed());
     }
 
-    setActions(actions: _.Dictionary<Models.ActionMember>, routeData: Routedata.PaneRouteData) {
+    setActions(actions: _.Dictionary<Models.ActionMember>, routeData: PaneRouteData) {
         this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
         this.menuItems = Helpers.createMenuItems(this.actions);
         _.forEach(this.actions, a => this.decorate(a));
@@ -153,7 +153,7 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
 
     protected clearSelected(result: Models.ActionResultRepresentation) {
         if (result.resultType() === "void") {
-           this.setItems(false);
+            this.setItems(false);
         }
     }
 

@@ -3,8 +3,8 @@ import { CollectionViewState } from '../route-data';
 import { CollectionViewModel } from '../view-models/collection-view-model';
 import { ItemViewModel } from '../view-models/item-view-model';
 import { PropertyViewModel } from '../view-models/property-view-model';
-import * as Routedata from '../route-data';
-import * as Urlmanagerservice from '../url-manager.service';
+import { RouteData } from '../route-data';
+import { UrlManagerService } from '../url-manager.service';
 import { ISubscription } from 'rxjs/Subscription';
 
 type state = "summary" | "list" | "table";
@@ -16,7 +16,7 @@ type state = "summary" | "list" | "table";
 })
 export class CollectionComponent implements OnInit, OnDestroy {
 
-    constructor(private urlManager : Urlmanagerservice.UrlManagerService) {  }
+    constructor(private urlManager: UrlManagerService) {}
 
     @Input()
     collection: CollectionViewModel;
@@ -51,24 +51,19 @@ export class CollectionComponent implements OnInit, OnDestroy {
 
     matchingDialog = () => {
         //this.dialog.matchingCollectionId === this.collection.id;
-    }
-
+    };
     showActions = () => {
         return !this.disableActions() && (this.state === "table" || this.state === "list");
-    }
-
+    };
     showSummary = () => {
         return (this.mayHaveItems || !this.disableActions()) && (this.state === "table" || this.state === "list");
-    }
-
+    };
     showList = () => {
         return (this.mayHaveItems || !this.disableActions()) && (this.state === 'table' || this.state === 'summary');
-    }
-
+    };
     showTable = () => {
-        return this.mayHaveItems &&  (this.state === 'list' || this.state === 'summary');
-    }
-
+        return this.mayHaveItems && (this.state === 'list' || this.state === 'summary');
+    };
     doSummary = () => this.collection.doSummary();
     doList = () => this.collection.doList();
     doTable = () => this.collection.doTable();
@@ -95,13 +90,13 @@ export class CollectionComponent implements OnInit, OnDestroy {
 
     private paneRouteDataSub: ISubscription;
 
-    private currentOid : string; 
+    private currentOid: string;
 
     ngOnInit(): void {
 
         // todo can we just listen for the pane we're interested in ?
         this.paneRouteDataSub = this.urlManager.getRouteDataObservable()
-            .subscribe((rd: Routedata.RouteData) => {
+            .subscribe((rd: RouteData) => {
                 const paneRouteData = rd.pane()[this.collection.onPaneId];
                 this.currentOid = this.currentOid || paneRouteData.objectId;
 

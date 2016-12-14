@@ -2,14 +2,14 @@
 import { ContextService } from '../context.service';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import * as _ from "lodash";
-import * as Urlmanagerservice from '../url-manager.service';
+import { UrlManagerService } from '../url-manager.service';
 
 export class RecentItemsViewModel {
 
     constructor(
         private viewModelFactory: ViewModelFactoryService,
         private context: ContextService,
-        private urlManager : Urlmanagerservice.UrlManagerService,
+        private urlManager: UrlManagerService,
         private onPaneId: number
     ) {
         const items = _.map(this.context.getRecentlyViewed(), (o, i) => ({ obj: o, link: o.updateSelfLinkWithTitle(), index: i }));

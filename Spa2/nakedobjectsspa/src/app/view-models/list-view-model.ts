@@ -13,7 +13,7 @@ import * as _ from "lodash";
 import * as Helpers from './helpers-view-models';
 import * as Models from '../models';
 import * as Msg from '../user-messages';
-import { ContributedActionParentViewModel} from './contributed-action-parent-view-model';
+import { ContributedActionParentViewModel } from './contributed-action-parent-view-model';
 
 export class ListViewModel extends ContributedActionParentViewModel {
 
@@ -103,7 +103,7 @@ export class ListViewModel extends ContributedActionParentViewModel {
     }
 
     hasTableData = () => this.listRep.hasTableData();
-   
+
     refresh(routeData: PaneRouteData) {
 
         this.routeData = routeData;

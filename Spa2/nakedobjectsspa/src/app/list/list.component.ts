@@ -17,32 +17,32 @@ import { IMessageViewModel } from '../view-models/imessage-view-model';
 import { ListViewModel } from '../view-models/list-view-model';
 import { PaneComponent } from '../pane/pane';
 import { ItemViewModel } from '../view-models/item-view-model';
-import { PropertyViewModel} from '../view-models/property-view-model';
+import { PropertyViewModel } from '../view-models/property-view-model';
 
 @Component({
     selector: 'list',
     templateUrl: './list.component.html',
     styleUrls: ['./list.component.css']
 })
-export class ListComponent extends PaneComponent implements  AfterViewInit {
+export class ListComponent extends PaneComponent implements AfterViewInit {
 
     constructor(activatedRoute: ActivatedRoute,
-                urlManager: UrlManagerService,
-                private context: ContextService,
-                private color: ColorService,
-                private viewModelFactory: ViewModelFactoryService,
-                private error: ErrorService) {
+        urlManager: UrlManagerService,
+        private context: ContextService,
+        private color: ColorService,
+        private viewModelFactory: ViewModelFactoryService,
+        private error: ErrorService) {
         super(activatedRoute, urlManager);
     }
 
     collection: ListViewModel;
-   
+
 
     toggleActionMenu = () => this.collection.toggleActionMenu();
     reloadList = () => this.collection.reload();
     pageFirst = () => this.collection.pageFirst();
     pagePrevious = () => this.collection.pagePrevious();
-    pageNext = ()=> this.collection.pageNext();    
+    pageNext = () => this.collection.pageNext();
     pageLast = () => this.collection.pageLast();
 
     disableActions = () => this.collection.disableActions() ? true : null;
@@ -62,7 +62,7 @@ export class ListComponent extends PaneComponent implements  AfterViewInit {
 
     selectAll = () => this.collection.selectAll();
     allSelected = () => this.collection.allSelected();
-    hasTableData = () => this.collection.hasTableData(); 
+    hasTableData = () => this.collection.hasTableData();
 
     itemTableTitle = (item: ItemViewModel) => item.tableRowViewModel.title;
     itemHasTableTitle = (item: ItemViewModel) => item.tableRowViewModel.hasTitle;
@@ -71,7 +71,7 @@ export class ListComponent extends PaneComponent implements  AfterViewInit {
     propertyType = (property: PropertyViewModel) => property.type;
     propertyValue = (property: PropertyViewModel) => property.value;
     propertyFormattedValue = (property: PropertyViewModel) => property.formattedValue;
-    propertyReturnType = (property: PropertyViewModel) => property.returnType; 
+    propertyReturnType = (property: PropertyViewModel) => property.returnType;
 
 
     get actionsTooltip() {

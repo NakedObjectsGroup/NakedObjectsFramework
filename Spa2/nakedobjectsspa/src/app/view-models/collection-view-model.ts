@@ -7,20 +7,20 @@ import { ColorService } from '../color.service';
 import { ErrorService } from '../error.service';
 import { ContextService } from '../context.service';
 import { UrlManagerService } from '../url-manager.service';
+import { ContributedActionParentViewModel } from './contributed-action-parent-view-model';
 import * as Helpers from './helpers-view-models';
 import * as Config from "../config";
 import * as Models from '../models';
 import * as _ from "lodash";
-import { ContributedActionParentViewModel} from './contributed-action-parent-view-model';
 
-export class CollectionViewModel extends ContributedActionParentViewModel{
+export class CollectionViewModel extends ContributedActionParentViewModel {
 
     constructor(
-         viewModelFactory: ViewModelFactoryService,
+        viewModelFactory: ViewModelFactoryService,
         private colorService: ColorService,
-         error: ErrorService,
-         context: ContextService,
-         urlManager: UrlManagerService,
+        error: ErrorService,
+        context: ContextService,
+        urlManager: UrlManagerService,
         public collectionRep: Models.CollectionMember | Models.CollectionRepresentation,
         private routeData: PaneRouteData
     ) {
@@ -115,10 +115,10 @@ export class CollectionViewModel extends ContributedActionParentViewModel{
     color: string;
     mayHaveItems: boolean;
     editing: boolean;
-    id : string;
-   
+    id: string;
+
     header: string[];
-  
+
     currentState: CollectionViewState;
 
     presentationHint: string;
@@ -130,7 +130,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel{
     description = () => this.details.toString();
 
     disableActions = () => this.editing || !this.actions || this.actions.length === 0;
-  
+
     actionMember = (id: string) => {
         const actionViewModel = _.find(this.actions, a => a.actionRep.actionId() === id);
         return actionViewModel ? actionViewModel.actionRep : null;

@@ -10,10 +10,10 @@ import { ActionViewModel } from '../view-models/action-view-model';
 import { CollectionViewModel } from '../view-models/collection-view-model';
 import * as Models from "../models";
 import * as _ from "lodash";
-import { MultiLineDialogViewModel} from '../view-models/multi-line-dialog-view-model';
+import { MultiLineDialogViewModel } from '../view-models/multi-line-dialog-view-model';
 import { DialogViewModel } from '../view-models/dialog-view-model';
 import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/forms';
-import * as Parameterviewmodel from '../view-models/parameter-view-model';
+import { ParameterViewModel } from '../view-models/parameter-view-model';
 
 @Component({
     selector: 'app-multi-line-dialog',
@@ -28,14 +28,14 @@ export class MultiLineDialogComponent extends PaneComponent {
         private viewModelFactory: ViewModelFactoryService,
         private context: ContextService,
         private error: ErrorService,
-        private formBuilder : FormBuilder
+        private formBuilder: FormBuilder
     ) {
         super(activatedRoute, urlManager);
     }
 
     dialog: MultiLineDialogViewModel;
 
-    rowData: {form : FormGroup, dialog : DialogViewModel,  parms : _.Dictionary<Parameterviewmodel.ParameterViewModel> }[];
+    rowData: { form: FormGroup, dialog: DialogViewModel, parms: _.Dictionary<ParameterViewModel> }[];
 
     form = (i: number) => {
         const rowData = this.rowData[i];
@@ -62,9 +62,9 @@ export class MultiLineDialogComponent extends PaneComponent {
         return this.dialog.dialogs;
     }
 
-    parameters = (row : DialogViewModel) =>  row.parameters;
+    parameters = (row: DialogViewModel) => row.parameters;
 
-    rowSubmitted = (row : DialogViewModel) =>  row.submitted;
+    rowSubmitted = (row: DialogViewModel) => row.submitted;
 
     rowTooltip = (row: DialogViewModel) => row.tooltip();
 
@@ -103,7 +103,7 @@ export class MultiLineDialogComponent extends PaneComponent {
     // todo very similar to code in DialogComponent - DRY 
     private createForm(dialog: DialogViewModel) {
         const pps = dialog.parameters;
-        const parms = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<Parameterviewmodel.ParameterViewModel>;
+        const parms = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<ParameterViewModel>;
         // todo fix types - no any 
         const controls = _.mapValues(parms, p => [p.getValueForControl(), a => p.validator(a)]) as _.Dictionary<any>;
         const form = this.formBuilder.group(controls);
@@ -118,7 +118,7 @@ export class MultiLineDialogComponent extends PaneComponent {
             dialog.setParms();
         });
 
-        return { form: form, dialog : dialog, parms: parms };
+        return { form: form, dialog: dialog, parms: parms };
     }
 
     setMultiLineDialog(holder: Models.MenuRepresentation | Models.DomainObjectRepresentation | CollectionViewModel,
@@ -170,12 +170,12 @@ export class MultiLineDialogComponent extends PaneComponent {
 
                     const lcaCollection = _.find(ovm.collections, c => c.hasMatchingLocallyContributedAction(newDialogId));
 
-                     if (lcaCollection) {
-                         const actionViewModel = _.find(lcaCollection.actions, a => a.actionRep.actionId() === newDialogId);
-                         this.setMultiLineDialog(lcaCollection, newDialogId, routeData, actionViewModel);
-                     } else {
-                         this.setMultiLineDialog(object, newDialogId, routeData);
-                     }
+                    if (lcaCollection) {
+                        const actionViewModel = _.find(lcaCollection.actions, a => a.actionRep.actionId() === newDialogId);
+                        this.setMultiLineDialog(lcaCollection, newDialogId, routeData, actionViewModel);
+                    } else {
+                        this.setMultiLineDialog(object, newDialogId, routeData);
+                    }
 
                 }).
                 catch((reject: Models.ErrorWrapper) => {

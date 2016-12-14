@@ -26,19 +26,19 @@ import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy, AfterViewInit {
 
     constructor(activatedRoute: ActivatedRoute,
-                urlManager: UrlManagerService,
-                private context: ContextService,
-                private viewModelFactory: ViewModelFactoryService,
-                private error: ErrorService,
-                private formBuilder: FormBuilder) {
+        urlManager: UrlManagerService,
+        private context: ContextService,
+        private viewModelFactory: ViewModelFactoryService,
+        private error: ErrorService,
+        private formBuilder: FormBuilder) {
 
         super(activatedRoute, urlManager);
     }
 
     // template API 
     expiredTransient = false;
-    object: DomainObjectViewModel;  
-    
+    object: DomainObjectViewModel;
+
     // todo add mode as string property for template to make easier to read and make this private 
     mode: InteractionMode;
     form: FormGroup;
@@ -90,11 +90,11 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
 
     actionsTooltip = () => this.object.actionsTooltip();
     unsaved = () => this.object.unsaved;
-   
+
     doEdit = () => this.object.doEdit();
     doEditCancel = () => this.object.doEditCancel();
     showEdit = () => !this.object.hideEdit();
-    doReload = () => this.object.doReload(); 
+    doReload = () => this.object.doReload();
     message = () => this.object.getMessage();
     showActions = () => this.object.showActions();
 
@@ -102,7 +102,7 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
 
     // todo that we access viewmodel directly in template from this I think is smell that we should have a 
     // child component here 
-    actions = (item : MenuItemViewModel) => item.actions;
+    actions = (item: MenuItemViewModel) => item.actions;
 
 
     // todo each component should be looking out for it's own changes - make this generic - eg 
@@ -129,7 +129,7 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
             this.form = null;
         }
 
-        const isChanging = !this.object; 
+        const isChanging = !this.object;
 
         const modeChanging = this.mode !== routeData.interactionMode;
 
@@ -170,7 +170,7 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
                 });
         }
     }
-    
+
     private createForm(vm: DomainObjectViewModel) {
         const pps = vm.properties;
         const props = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<PropertyViewModel>;

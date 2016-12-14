@@ -1,6 +1,6 @@
 import { Directive, ElementRef, HostListener, Output, EventEmitter, Renderer, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import * as Fieldviewmodel from './view-models/field-view-model';
+import {FieldViewModel} from './view-models/field-view-model';
 
 @Directive({ selector: '[geminiClear]' })
 export class GeminiClearDirective implements OnInit {
@@ -10,11 +10,11 @@ export class GeminiClearDirective implements OnInit {
         this.el = el.nativeElement;
     }
 
-    model: Fieldviewmodel.FieldViewModel;
-    formGroup : FormGroup
+    model: FieldViewModel;
+    formGroup : FormGroup;
 
     @Input('geminiClear')
-    set viewModel(vm: Fieldviewmodel.FieldViewModel) {
+    set viewModel(vm: FieldViewModel) {
         this.model = vm;
     }
 

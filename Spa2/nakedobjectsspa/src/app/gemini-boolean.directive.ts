@@ -1,5 +1,5 @@
-import { Directive, ElementRef, HostListener,  Input, Renderer } from '@angular/core';
-import * as Fieldviewmodel from './view-models/field-view-model';
+import { Directive, ElementRef, HostListener, Input, Renderer } from '@angular/core';
+import { FieldViewModel } from './view-models/field-view-model';
 
 @Directive({ selector: '[geminiBoolean]' })
 export class GeminiBooleanDirective {
@@ -9,10 +9,10 @@ export class GeminiBooleanDirective {
         this.el = el.nativeElement;
     }
 
-    model: Fieldviewmodel.FieldViewModel;
+    model: FieldViewModel;
 
     @Input('geminiBoolean')
-    set viewModel(vm: Fieldviewmodel.FieldViewModel) {
+    set viewModel(vm: FieldViewModel) {
         this.model = vm;
         this.render();
     }

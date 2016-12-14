@@ -22,7 +22,7 @@ export class DialogViewModel extends MessageViewModel {
         private routeData: PaneRouteData,
         action: Models.IInvokableAction,
         public actionViewModel: ActionViewModel,
-        public isMultiLineDialogRow : boolean
+        public isMultiLineDialogRow: boolean
     ) {
         super();
 
@@ -33,7 +33,7 @@ export class DialogViewModel extends MessageViewModel {
                 routeData);
 
         this.actionViewModel.makeInvokable(action);
-  
+
         this.onPaneId = routeData.paneId;
 
         const fields = this.context.getCurrentDialogValues(this.actionMember().actionId(), this.onPaneId);
@@ -50,7 +50,7 @@ export class DialogViewModel extends MessageViewModel {
         // todo use subscribe ? 
         this.context.setParmUpdater(this.setParms, routeData.paneId);
 
-        this.incrementPendingPotentAction(); 
+        this.incrementPendingPotentAction();
     }
 
     private incrementPendingPotentAction() {
@@ -59,7 +59,7 @@ export class DialogViewModel extends MessageViewModel {
         }
     }
 
-    private decrementPendingPotentAction() {     
+    private decrementPendingPotentAction() {
         if (!this.isMultiLineDialogRow && !this.closed) {
             Helpers.decrementPendingPotentAction(this.context, this.actionViewModel.invokableActionRep, this.onPaneId);
         }
@@ -83,7 +83,7 @@ export class DialogViewModel extends MessageViewModel {
     parameters: ParameterViewModel[];
     submitted = false;
     closed = false; // make sure we never close more than once 
-   
+
     refresh() {
         const fields = this.context.getCurrentDialogValues(this.actionMember().actionId(), this.onPaneId);
         _.forEach(this.parameters, p => p.refresh(fields[p.id]));
@@ -106,7 +106,7 @@ export class DialogViewModel extends MessageViewModel {
                     // dialog staying on same page so treat as cancel 
                     // for url replacing purposes
                     this.doCloseReplaceHistory();
-                   
+
                 } else if (!this.isQueryOnly) {
                     // not query only - always close
 
@@ -126,7 +126,7 @@ export class DialogViewModel extends MessageViewModel {
 
     // todo tidy and rework these getting confusing 
     doCloseKeepHistory = () => {
-       
+
         this.deregister();
         this.urlManager.closeDialogKeepHistory(this.id, this.onPaneId);
         this.decrementPendingPotentAction();

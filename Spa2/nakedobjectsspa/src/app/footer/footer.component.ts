@@ -40,7 +40,7 @@ export class FooterComponent implements OnInit {
             this.urlManager.setHomeSinglePane();
         } else {
             this.urlManager.setHome(newPane);
-        }           
+        }
     };
     goBack = () => {
         this.context.updateValues();

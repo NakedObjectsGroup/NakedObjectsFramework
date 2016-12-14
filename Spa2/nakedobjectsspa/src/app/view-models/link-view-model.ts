@@ -10,12 +10,14 @@ import { UrlManagerService } from '../url-manager.service';
 
 export class LinkViewModel implements IDraggableViewModel {
 
-    constructor(protected context: ContextService,
-                protected colorService: ColorService,
-                protected error: ErrorService,
-                protected urlManager: UrlManagerService,
-                public link: Models.Link,
-                protected paneId: number) {
+    constructor(
+        protected context: ContextService,
+        protected colorService: ColorService,
+        protected error: ErrorService,
+        protected urlManager: UrlManagerService,
+        public link: Models.Link,
+        protected paneId: number
+    ) {
 
         this.title = link.title() + Models.dirtyMarker(this.context, link.getOid());
         this.domainType = link.type().domainType;

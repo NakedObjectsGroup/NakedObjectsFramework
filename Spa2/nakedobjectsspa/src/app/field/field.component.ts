@@ -72,7 +72,7 @@ export abstract class FieldComponent {
     drop(draggableVm: IDraggableViewModel) {
         if (this.canDrop) {
             this.droppable.drop(draggableVm)
-                .then((success) => {        
+                .then((success) => {
                     this.control.setValue(this.model.selectedChoice);
                 });
         }
@@ -114,22 +114,22 @@ export abstract class FieldComponent {
         const nArgs = this.populateArguments();
         const prompts = this.model.conditionalChoices(nArgs); //  scope.select({ args: nArgs });
         prompts.then((cvms: ChoiceViewModel[]) => {
-                // if unchanged return 
-                if (cvms.length === this.currentOptions.length && _.every(cvms, (c, i) => c.equals(this.currentOptions[i]))) {
-                    return;
-                }
-                this.model.choices = cvms;
-                this.currentOptions = cvms;
+            // if unchanged return 
+            if (cvms.length === this.currentOptions.length && _.every(cvms, (c, i) => c.equals(this.currentOptions[i]))) {
+                return;
+            }
+            this.model.choices = cvms;
+            this.currentOptions = cvms;
 
-                if (this.isConditionalChoices) {
-                    // need to reset control to find the selected options 
-                    if (this.model.entryType === Models.EntryType.MultipleConditionalChoices) {
-                        this.control.reset(this.model.selectedMultiChoices);
-                    } else {
-                        this.control.reset(this.model.selectedChoice);
-                    }
+            if (this.isConditionalChoices) {
+                // need to reset control to find the selected options 
+                if (this.model.entryType === Models.EntryType.MultipleConditionalChoices) {
+                    this.control.reset(this.model.selectedMultiChoices);
+                } else {
+                    this.control.reset(this.model.selectedChoice);
                 }
-            })
+            }
+        })
             .catch(() => {
                 // error clear everything 
                 this.model.selectedChoice = null;
@@ -267,7 +267,7 @@ export abstract class FieldComponent {
                 event.preventDefault();
             }
 
-           
+
         }
         if (event && event.keyCode === deleteKeyCode) {
             this.context.setCutViewModel(null);

@@ -16,8 +16,8 @@ import * as Models from "../models";
 export class ViewPropertyComponent implements OnInit {
 
     constructor(private router: Router,
-                private error: ErrorService,
-                private context: ContextService) {
+        private error: ErrorService,
+        private context: ContextService) {
     }
 
     // template inputs 

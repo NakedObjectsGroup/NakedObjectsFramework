@@ -1,11 +1,11 @@
-import * as Dialogviewmodel from './dialog-view-model';
+import { DialogViewModel } from './dialog-view-model';
+import { RouteData, PaneRouteData } from '../route-data';
+import { ColorService } from '../color.service';
+import { ContextService } from '../context.service';
+import { ViewModelFactoryService } from '../view-model-factory.service';
+import { UrlManagerService } from '../url-manager.service';
+import { ErrorService } from '../error.service';
 import * as Models from '../models';
-import * as Routedata from '../route-data';
-import * as Colorservice from '../color.service';
-import * as Contextservice from '../context.service';
-import * as Viewmodelfactoryservice from '../view-model-factory.service';
-import * as Urlmanagerservice from '../url-manager.service';
-import * as Errorservice from '../error.service';
 import * as Ro from '../ro-interfaces';
 import * as Config from '../config';
 import * as Msg from '../user-messages';
@@ -14,12 +14,12 @@ import * as _ from "lodash";
 export class MultiLineDialogViewModel {
 
     constructor(
-        private color: Colorservice.ColorService,
-        private context: Contextservice.ContextService,
-        private viewModelFactory: Viewmodelfactoryservice.ViewModelFactoryService,
-        private urlManager: Urlmanagerservice.UrlManagerService,
-        private error: Errorservice.ErrorService,
-        routeData: Routedata.PaneRouteData,
+        private color: ColorService,
+        private context: ContextService,
+        private viewModelFactory: ViewModelFactoryService,
+        private urlManager: UrlManagerService,
+        private error: ErrorService,
+        routeData: PaneRouteData,
         action: Models.IInvokableAction
     ) {
         this.reset(routeData, action);
@@ -53,9 +53,9 @@ export class MultiLineDialogViewModel {
 
     title: string = "";
     action: Models.IInvokableAction;
-    routeData: Routedata.PaneRouteData;
+    routeData: PaneRouteData;
 
-    reset(routeData: Routedata.PaneRouteData, action: Models.IInvokableAction) {
+    reset(routeData: PaneRouteData, action: Models.IInvokableAction) {
 
         this.action = action;
         this.routeData = routeData;
@@ -68,7 +68,7 @@ export class MultiLineDialogViewModel {
         return this;
     }
 
-    dialogs: Dialogviewmodel.DialogViewModel[] = [];
+    dialogs: DialogViewModel[] = [];
 
     header() {
         return this.dialogs.length === 0 ? [] : _.map(this.dialogs[0].parameters, p => p.title);
@@ -83,7 +83,7 @@ export class MultiLineDialogViewModel {
         return _.reduce(tooltips, (s, t) => `${s}\n${t}`);
     }
 
-    invokeAndAdd(index: number) {      
+    invokeAndAdd(index: number) {
         this.dialogs[index].doInvoke();
         this.context.clearDialogValues();
         return this.add(index);

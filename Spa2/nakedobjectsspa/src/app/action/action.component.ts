@@ -1,6 +1,6 @@
 import { Component, Input, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import { ActionViewModel } from '../view-models/action-view-model';
-import * as Contextservice from '../context.service';
+import { ContextService} from '../context.service';
 import { ISubscription } from 'rxjs/Subscription';
 
 @Component({
@@ -11,7 +11,7 @@ import { ISubscription } from 'rxjs/Subscription';
 export class ActionComponent {
 
     constructor(private myElement: ElementRef,
-        private context: Contextservice.ContextService) {
+        private context: ContextService) {
     }
 
     @Input()
@@ -30,8 +30,9 @@ export class ActionComponent {
     }
 
     tempDisabled(): boolean {
-        return this.action.invokableActionRep && this.action.invokableActionRep.isPotent() &&
-               this.context.isPendingPotentActionOrReload(this.action.paneId);
+        return this.action.invokableActionRep &&
+            this.action.invokableActionRep.isPotent() &&
+            this.context.isPendingPotentActionOrReload(this.action.paneId);
     }
 
     doInvoke(right?: boolean) {

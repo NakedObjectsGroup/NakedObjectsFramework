@@ -13,7 +13,7 @@ import * as _ from "lodash";
 
 export abstract class FieldViewModel extends MessageViewModel {
 
-    constructor(ext: Models.Extensions, protected colorService: ColorService, protected error: ErrorService, public onPaneId : number) {
+    constructor(ext: Models.Extensions, protected colorService: ColorService, protected error: ErrorService, public onPaneId: number) {
         super();
         this.optional = ext.optional();
         this.description = ext.description();
@@ -30,7 +30,7 @@ export abstract class FieldViewModel extends MessageViewModel {
     id: string;
     argId: string;
     paneArgId: string;
-  
+
     optional: boolean;
     description: string;
     presentationHint: string;
@@ -116,7 +116,7 @@ export abstract class FieldViewModel extends MessageViewModel {
     file: Models.Link;
 
     entryType: Models.EntryType;
-    
+
     validate: (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
 
     private isValid(viewValue: any): boolean {

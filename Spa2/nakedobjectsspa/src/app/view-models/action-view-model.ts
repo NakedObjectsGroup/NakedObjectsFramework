@@ -47,11 +47,11 @@ export class ActionViewModel {
     private showDialog = () => this.actionRep.extensions().hasParams() && (this.routeData.interactionMode !== InteractionMode.Form);
 
     private incrementPendingPotentAction() {
-        Helpers.incrementPendingPotentAction(this.context, this.invokableActionRep, this.paneId);    
+        Helpers.incrementPendingPotentAction(this.context, this.invokableActionRep, this.paneId);
     }
 
     private decrementPendingPotentAction() {
-        Helpers.decrementPendingPotentAction(this.context, this.invokableActionRep, this.paneId);   
+        Helpers.decrementPendingPotentAction(this.context, this.invokableActionRep, this.paneId);
     }
 
     // open dialog on current pane always - invoke action goes to pane indicated by click
@@ -59,7 +59,7 @@ export class ActionViewModel {
         ? (right?: boolean) => {
             // clear any previous dialog so we don't pick up values from it
             this.context.clearDialogValues(this.paneId);
-            this.urlManager.setDialogOrMultiLineDialog(this.actionRep, this.paneId);    
+            this.urlManager.setDialogOrMultiLineDialog(this.actionRep, this.paneId);
         }
         : (right?: boolean) => {
             const pps = this.parameters();

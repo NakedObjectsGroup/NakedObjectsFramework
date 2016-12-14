@@ -9,9 +9,11 @@ import * as _ from "lodash";
 
 export class MenuViewModel extends MessageViewModel {
 
-    constructor(private viewModelFactory: ViewModelFactoryService,
-                public menuRep: Models.MenuRepresentation,
-                routeData: PaneRouteData) {
+    constructor(
+        private viewModelFactory: ViewModelFactoryService,
+        public menuRep: Models.MenuRepresentation,
+        routeData: PaneRouteData
+    ) {
         super();
 
         this.id = menuRep.menuId();

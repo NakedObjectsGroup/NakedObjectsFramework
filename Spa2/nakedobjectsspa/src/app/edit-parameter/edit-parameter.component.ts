@@ -94,7 +94,7 @@ export class EditParameterComponent extends FieldComponent implements OnInit {
         return this.parameter.multipleLines;
     }
 
-    choiceName = (choice : ChoiceViewModel) => choice.name;
+    choiceName = (choice: ChoiceViewModel) => choice.name;
 
 
     droppableClasses(): string {

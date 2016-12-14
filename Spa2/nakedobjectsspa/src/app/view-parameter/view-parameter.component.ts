@@ -1,22 +1,22 @@
 import { Component, Input } from '@angular/core';
-import * as Parameterviewmodel from '../view-models/parameter-view-model';
-import * as Dialogviewmodel from '../view-models/dialog-view-model';
+import { ParameterViewModel } from '../view-models/parameter-view-model';
+import { DialogViewModel } from '../view-models/dialog-view-model';
 
 @Component({
-  selector: 'view-parameter',
-  templateUrl: './view-parameter.component.html',
-  styleUrls: ['./view-parameter.component.css']
+    selector: 'view-parameter',
+    templateUrl: './view-parameter.component.html',
+    styleUrls: ['./view-parameter.component.css']
 })
-export class ViewParameterComponent  {
+export class ViewParameterComponent {
 
-   
 
-    @Input()
-    parent: Dialogviewmodel.DialogViewModel;
 
     @Input()
-    parameter : Parameterviewmodel.ParameterViewModel;
-       
+    parent: DialogViewModel;
+
+    @Input()
+    parameter: ParameterViewModel;
+
 
     get title() {
         return this.parameter.title;
@@ -64,7 +64,7 @@ export class ViewParameterComponent  {
 
 
     // todo delegated click here smell that we need another component 
-   // doAttachmentClick = (right?: boolean) => this.parameter.attachment.doClick(right);
+    // doAttachmentClick = (right?: boolean) => this.parameter.attachment.doClick(right);
 
     attachmentTitle: string;
     image: string;
