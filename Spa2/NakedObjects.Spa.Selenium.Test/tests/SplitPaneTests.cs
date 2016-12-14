@@ -62,7 +62,7 @@ namespace NakedObjects.Selenium {
             SwapPanes();
             FullPaneFromLeft();
             FullPaneFromRight();
-            ListInSplitPaneUpdatesWhenSearchParamsChange();
+            //ListInSplitPaneUpdatesWhenSearchParamsChange();move to LocallyRun 
             TwoListsCanBothBeReloaded();
         }
 

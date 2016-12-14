@@ -469,7 +469,7 @@ namespace NakedObjects.Selenium {
 
             ObjectEditChangeChoices();
             ObjectEditChangeConditionalChoices();
-            CoValidationOnSavingChanges();
+            //CoValidationOnSavingChanges(); move to LocallyRun 
         }
     }
 
