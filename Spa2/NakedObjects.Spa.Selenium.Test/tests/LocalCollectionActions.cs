@@ -83,7 +83,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void ZeroAndOneParamActionInvoked() {
-            GeminiUrl("object?i1=View&r=1&o1=___1.SalesOrderHeader--70362&c1_SalesOrderHeaderSalesReason=List");
+            GeminiUrl("object?i1=View&r=1&o1=___1.SalesOrderHeader--63074&c1_SalesOrderHeaderSalesReason=List");
             WaitForTextEquals(".collection .summary", 1, "Reasons:\r\n1 Item");
             SelectCheckBox("#salesorderheadersalesreason1-0");
             Click(GetObjectAction("Remove Sales Reasons"));
@@ -215,7 +215,7 @@ namespace NakedObjects.Selenium {
             SelectionsPreservedIfNavigatingAwayAndBack();
             // CannotInvokeZeroParamSelectionActionWithNothingSelected(); move to LocallyRun
             CannotInvokeDialogSelectionActionWithNothingSelected();
-            //ZeroAndOneParamActionInvoked();  move to LocallyRun 
+            ZeroAndOneParamActionInvoked();  
             ActionsAvailableOnEmptyCollections();
             SelectionsOnMultipleOpenCollectionsAreIndependent();
         }
