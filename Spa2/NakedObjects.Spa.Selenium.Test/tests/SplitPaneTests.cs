@@ -63,7 +63,7 @@ namespace NakedObjects.Selenium {
             FullPaneFromLeft();
             FullPaneFromRight();
             //ListInSplitPaneUpdatesWhenSearchParamsChange();move to LocallyRun 
-            TwoListsCanBothBeReloaded();
+            // TwoListsCanBothBeReloaded(); move to LocallyRun 
         }
 
         protected override void ScrollTo(IWebElement element) {
