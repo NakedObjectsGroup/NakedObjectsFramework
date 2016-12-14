@@ -188,7 +188,7 @@ export abstract class FieldComponent {
             return;
         }
 
-        if (input.length > 0 && input.length >= this.model.minLength) {
+        if (input && input.length > 0 && input.length >= this.model.minLength) {
             this.model.prompt(input)
                 .then((cvms: ChoiceViewModel[]) => {
                     if (cvms.length === this.currentOptions.length && _.every(cvms, (c, i) => c.equals(this.currentOptions[i]))) {

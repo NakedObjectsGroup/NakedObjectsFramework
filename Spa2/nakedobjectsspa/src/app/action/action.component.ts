@@ -36,9 +36,10 @@ export class ActionComponent {
     }
 
     doInvoke(right?: boolean) {
-        if (!this.tempDisabled()) {
-            this.action.doInvoke(right);
+        if (this.action.disabled() || this.tempDisabled()) {
+            return;
         }
+        this.action.doInvoke(right);
     }
 
     focus() {
