@@ -215,7 +215,7 @@ namespace NakedObjects.Selenium {
             SelectionsPreservedIfNavigatingAwayAndBack();
             // CannotInvokeZeroParamSelectionActionWithNothingSelected(); move to LocallyRun
             CannotInvokeDialogSelectionActionWithNothingSelected();
-            ZeroAndOneParamActionInvoked();  
+            //ZeroAndOneParamActionInvoked();   move to LocallyRun
             ActionsAvailableOnEmptyCollections();
             SelectionsOnMultipleOpenCollectionsAreIndependent();
         }
