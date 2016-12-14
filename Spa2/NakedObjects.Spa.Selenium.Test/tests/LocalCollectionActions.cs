@@ -213,9 +213,9 @@ namespace NakedObjects.Selenium {
             LocalCollectionActionsHonourMemberOrder();
             CheckBoxesVisibleAndCanBeSelected();
             SelectionsPreservedIfNavigatingAwayAndBack();
-            // CannotInvokeZeroParamSelectionActionWithNothingSelected(); move to LocallyRunTests 
+            // CannotInvokeZeroParamSelectionActionWithNothingSelected(); move to LocallyRun
             CannotInvokeDialogSelectionActionWithNothingSelected();
-            ZeroAndOneParamActionInvoked();
+            //ZeroAndOneParamActionInvoked();  move to LocallyRun 
             ActionsAvailableOnEmptyCollections();
             SelectionsOnMultipleOpenCollectionsAreIndependent();
         }

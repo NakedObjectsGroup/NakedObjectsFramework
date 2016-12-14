@@ -57,7 +57,7 @@ namespace NakedObjects.Selenium {
             //RightClickReferenceInRightPaneObject();  move to LocallyRun 
             LeftClickHomeIconFromSplitObjectObject();
             RightClickHomeIconFromSplitObjectObject();
-            ActionDialogOpensInCorrectPane();
+            //ActionDialogOpensInCorrectPane();  move to LocallyRun 
             RightClickIsSameAsLeftClickForOpeningDialog();
             SwapPanes();
             FullPaneFromLeft();

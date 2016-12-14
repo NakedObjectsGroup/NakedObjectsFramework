@@ -461,7 +461,7 @@ namespace NakedObjects.Selenium {
             RangeValidationOnNumber();
             //RangeValidationOnDate();  move to LocallyRun 
             ObjectEditChangeEnum();
-            ObjectEditChangeDateTime();
+            //ObjectEditChangeDateTime();  move to LocallyRun 
             CanSetAndClearAnOptionalDropDown();
             ObjectEditPicksUpLatestServerVersion();
             ViewModelEditOpensInEditMode();
