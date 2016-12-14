@@ -107,6 +107,7 @@
     <TypeScriptCompile Include="src\app\context.service.ts" />
     <TypeScriptCompile Include="src\app\dialog\dialog.component.ts" />
     <TypeScriptCompile Include="src\app\edit-property\edit-property.component.ts" />
+    <TypeScriptCompile Include="src\app\error.handler.ts" />
     <TypeScriptCompile Include="src\app\error.service.ts" />
     <TypeScriptCompile Include="src\app\error\error.component.ts" />
     <TypeScriptCompile Include="src\app\field\field.component.ts" />

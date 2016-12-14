@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RoutingModule } from './app-routing.module';
@@ -42,6 +42,7 @@ import { ReactiveFormsModule }          from '@angular/forms';
 import { AttachmentComponent } from './attachment/attachment.component';
 import { MultiLineDialogComponent } from './multi-line-dialog/multi-line-dialog.component';
 import { ViewParameterComponent } from './view-parameter/view-parameter.component';
+import { GeminiErrorHandler } from './error.handler'
 
 @NgModule({
   declarations: [
@@ -90,7 +91,8 @@ import { ViewParameterComponent } from './view-parameter/view-parameter.componen
         ColorConfigService,
         MaskConfigService,
         MomentWrapperService,
-        DND_PROVIDERS
+        DND_PROVIDERS,
+        { provide: ErrorHandler, useClass: GeminiErrorHandler }
         ],
   bootstrap: [AppComponent]
 })

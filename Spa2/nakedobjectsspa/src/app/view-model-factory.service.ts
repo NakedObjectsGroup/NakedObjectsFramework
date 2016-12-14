@@ -27,8 +27,8 @@ import { MenuViewModel } from './view-models/menu-view-model';
 import * as _ from "lodash";
 import { ListViewModel } from './view-models/list-view-model';
 import { DialogViewModel } from './view-models/dialog-view-model';
-import * as Domainobjectviewmodel from './view-models/domain-object-view-model';
-import * as Multilinedialogviewmodel from './view-models/multi-line-dialog-view-model';
+import { DomainObjectViewModel } from './view-models/domain-object-view-model';
+import { MultiLineDialogViewModel } from './view-models/multi-line-dialog-view-model';
 
 @Injectable()
 export class ViewModelFactoryService {
@@ -55,7 +55,7 @@ export class ViewModelFactoryService {
         return new LinkViewModel(this.context, this.color, this.error, this.urlManager, linkRep, paneId);
     };
 
-    itemViewModel = (linkRep: Models.Link, paneId: number, selected: boolean, index: number, id : string) => {
+    itemViewModel = (linkRep: Models.Link, paneId: number, selected: boolean, index: number, id: string) => {
         return new ItemViewModel(this.context, this.color, this.error, this.urlManager, linkRep, paneId, this.clickHandler, this, index, selected, id);
     };
 
@@ -87,7 +87,7 @@ export class ViewModelFactoryService {
             parentValues);
     };
 
-    dialogViewModel = (routeData: PaneRouteData, action : Models.IInvokableAction, actionViewModel: ActionViewModel, isRow : boolean) => {
+    dialogViewModel = (routeData: PaneRouteData, action: Models.IInvokableAction, actionViewModel: ActionViewModel, isRow: boolean) => {
 
         return new DialogViewModel(this.color,
             this.context,
@@ -100,9 +100,9 @@ export class ViewModelFactoryService {
             isRow);
     }
 
-    multiLineDialogViewModel = (routeData: PaneRouteData, action : Models.IInvokableAction) => {
+    multiLineDialogViewModel = (routeData: PaneRouteData, action: Models.IInvokableAction) => {
 
-        return new Multilinedialogviewmodel.MultiLineDialogViewModel(this.color,
+        return new MultiLineDialogViewModel(this.color,
             this.context,
             this,
             this.urlManager,
@@ -112,7 +112,7 @@ export class ViewModelFactoryService {
     }
 
     domainObjectViewModel = (obj: Models.DomainObjectRepresentation, routeData: PaneRouteData) => {
-        return  new Domainobjectviewmodel.DomainObjectViewModel(this.color, this.context, this, this.urlManager, this.error, obj, routeData);
+        return new DomainObjectViewModel(this.color, this.context, this, this.urlManager, this.error, obj, routeData);
     }
 
     listViewModel = (list: Models.ListRepresentation, routeData: PaneRouteData) => {
@@ -152,7 +152,7 @@ export class ViewModelFactoryService {
     };
 
     getItems = (links: Models.Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: ListViewModel | CollectionViewModel) => {
-       
+
         const collection = listViewModel instanceof CollectionViewModel ? listViewModel : null;
         const id = collection ? collection.id : "";
         const selectedItems = routeData.selectedCollectionItems[id];
