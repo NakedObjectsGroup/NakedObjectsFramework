@@ -5,16 +5,15 @@ import * as Models from '../models';
 import * as _ from "lodash";
 
 export class MenusViewModel {
-    constructor(private viewModelFactory: ViewModelFactoryService) { }
-
-    reset(menusRep: Models.MenusRepresentation, routeData: PaneRouteData) {
-        this.menusRep = menusRep;
+    constructor(
+        private viewModelFactory: ViewModelFactoryService,
+        private menusRep: Models.MenusRepresentation,
+        routeData: PaneRouteData
+    ) {
         this.onPaneId = routeData.paneId;
         this.items = _.map(this.menusRep.value(), link => this.viewModelFactory.linkViewModel(link, this.onPaneId));
-        return this;
     }
 
-    menusRep: Models.MenusRepresentation;
     onPaneId: number;
     items: LinkViewModel[];
 }

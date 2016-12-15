@@ -19,7 +19,7 @@ import * as Models from "../models";
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.css']
 })
-export class HomeComponent extends PaneComponent implements AfterViewInit {
+export class HomeComponent extends PaneComponent {
 
     constructor(urlManager: UrlManagerService,
         activatedRoute: ActivatedRoute,
@@ -41,23 +41,14 @@ export class HomeComponent extends PaneComponent implements AfterViewInit {
         return this.menus.items;
     }
 
-    doClick(linkViewModel: LinkViewModel) {
-        const menuId = linkViewModel.link.rel().parms[0].value;
-        this.urlManager.setMenu(menuId, this.paneId);
-    }
-
-    title = (linkViewModel: LinkViewModel) => linkViewModel.title;
-
     selectedMenu: MenuViewModel;
 
     private menus: MenusViewModel;
 
-    getMenus() {
+    getMenus(paneRouteData: PaneRouteData) {
         this.context.getMenus()
             .then((menus: Models.MenusRepresentation) => {
-                this.menus = new MenusViewModel(this.viewModelFactory);
-                const rd = this.urlManager.getRouteData().pane()[this.paneId];
-                this.menus.reset(menus, rd);
+                this.menus = this.viewModelFactory.menusViewModel(menus, paneRouteData);
             })
             .catch((reject: Models.ErrorWrapper) => {
                 this.error.handleError(reject);
@@ -69,10 +60,7 @@ export class HomeComponent extends PaneComponent implements AfterViewInit {
         if (menuId) {
             this.context.getMenu(menuId)
                 .then((menu: Models.MenuRepresentation) => {
-                    // todo do we need to do this why can't we use passed in routeData ?
-                    // perhaps could have changed ? 
-                    const rd = this.urlManager.getRouteData().pane()[this.paneId];
-                    this.selectedMenu = this.viewModelFactory.menuViewModel(menu, rd);
+                    this.selectedMenu = this.viewModelFactory.menuViewModel(menu, paneRouteData);
                 })
                 .catch((reject: Models.ErrorWrapper) => {
                     this.error.handleError(reject);
@@ -82,26 +70,9 @@ export class HomeComponent extends PaneComponent implements AfterViewInit {
         }
     }
 
-    protected setup(routeData: PaneRouteData) {
-        this.getMenus();
-        this.getMenu(routeData);
+    protected setup(paneRouteData: PaneRouteData) {
+        this.getMenus(paneRouteData);
+        this.getMenu(paneRouteData);
     }
 
-    // todo give #mms a better name 
-    @ViewChildren('mms')
-    menusEl: QueryList<ElementRef>;
-
-    focusonFirstMenu(menus: QueryList<ElementRef>) {
-        if (menus && menus.first && menus.first.nativeElement.children[0]) {
-            menus.first.nativeElement.children[0].focus();
-        }
-    }
-
-    // todo should this be on PaneComponent cf OnInit ? 
-    ngAfterViewInit(): void {
-        this.focusonFirstMenu(this.menusEl);
-        this.menusEl.changes.subscribe((e: QueryList<ElementRef>) => {
-            this.focusonFirstMenu(e);
-        });
-    }
 }

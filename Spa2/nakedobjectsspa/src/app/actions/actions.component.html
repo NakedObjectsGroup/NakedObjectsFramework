@@ -7,7 +7,7 @@
   <div class="" [ngClass]="displayClass(menu)">
     <div *ngIf="menuActions(menu)  && menuActions(menu).length > 0">
       <div *ngFor="let action of menuActions(menu)">
-        <action class="action" [action]="action" tabindex="0"></action>
+        <action class="action" [action]="action"></action>
       </div>
     </div>
     <div *ngIf="menuItems(menu) && menuItems(menu).length > 0">

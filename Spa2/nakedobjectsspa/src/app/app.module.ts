@@ -42,7 +42,9 @@ import { ReactiveFormsModule }          from '@angular/forms';
 import { AttachmentComponent } from './attachment/attachment.component';
 import { MultiLineDialogComponent } from './multi-line-dialog/multi-line-dialog.component';
 import { ViewParameterComponent } from './view-parameter/view-parameter.component';
-import { GeminiErrorHandler } from './error.handler'
+import { GeminiErrorHandler } from './error.handler';
+import { MenusComponent } from './menus/menus.component';
+import { MenuComponent } from './menu/menu.component'
 
 @NgModule({
   declarations: [
@@ -70,7 +72,9 @@ import { GeminiErrorHandler } from './error.handler'
     DND_DIRECTIVES,
     AttachmentComponent,
     MultiLineDialogComponent,
-    ViewParameterComponent
+    ViewParameterComponent,
+    MenusComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,

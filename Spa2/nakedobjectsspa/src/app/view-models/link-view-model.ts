@@ -16,7 +16,7 @@ export class LinkViewModel implements IDraggableViewModel {
         protected error: ErrorService,
         protected urlManager: UrlManagerService,
         public link: Models.Link,
-        protected paneId: number
+        public paneId: number
     ) {
 
         this.title = link.title() + Models.dirtyMarker(this.context, link.getOid());

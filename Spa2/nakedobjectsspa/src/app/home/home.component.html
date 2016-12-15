@@ -2,15 +2,8 @@
 	<!--TODO: This is the Single/Split definition-->
 	<div class="home">
 		<div class="header">
-			<div #ttl class="title">Home</div>
-			<div class="menus" *ngIf="!hasMenus">
-				<div class="menu">Loading menus..</div>
-			</div>
-			<div #mms class="menus" *ngIf="hasMenus">
-				<menu class="menu clickable-area" tabindex="0" *ngFor="let menu of menuItems" (click)="doClick(menu)">
-					{{title(menu)}}
-				</menu>
-			</div>
+			<div class="title">Home</div>
+            <menus class="menus" *ngIf="hasMenus" [menus]="menuItems"></menus> 
 			<div class="messages"></div>
 		</div>
 		<actions class="actions" *ngIf="selectedMenu" [menu]="selectedMenu"></actions>

@@ -24,6 +24,8 @@ import { ActionViewModel } from './view-models/action-view-model';
 import { PropertyViewModel } from './view-models/property-view-model';
 import { CollectionViewModel } from './view-models/collection-view-model';
 import { MenuViewModel } from './view-models/menu-view-model';
+import { MenusViewModel } from './view-models/menus-view-model';
+
 import * as _ from "lodash";
 import { ListViewModel } from './view-models/list-view-model';
 import { DialogViewModel } from './view-models/dialog-view-model';
@@ -141,6 +143,10 @@ export class ViewModelFactoryService {
 
     menuViewModel = (menuRep: Models.MenuRepresentation, routeData: PaneRouteData) => {
         return new MenuViewModel(this, menuRep, routeData);
+    };
+
+    menusViewModel = (menusRep: Models.MenusRepresentation, routeData: PaneRouteData) => {
+        return new MenusViewModel(this, menusRep, routeData);
     };
 
     recentItemsViewModel = (paneId: number) => {
