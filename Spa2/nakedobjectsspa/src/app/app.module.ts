@@ -44,7 +44,9 @@ import { MultiLineDialogComponent } from './multi-line-dialog/multi-line-dialog.
 import { ViewParameterComponent } from './view-parameter/view-parameter.component';
 import { GeminiErrorHandler } from './error.handler';
 import { MenusComponent } from './menus/menus.component';
-import { MenuComponent } from './menu/menu.component'
+import { MenuComponent } from './menu/menu.component';
+import { ButtonsComponent } from './buttons/buttons.component';
+import { ButtonComponent } from './button/button.component'
 
 @NgModule({
   declarations: [
@@ -74,7 +76,9 @@ import { MenuComponent } from './menu/menu.component'
     MultiLineDialogComponent,
     ViewParameterComponent,
     MenusComponent,
-    MenuComponent
+    MenuComponent,
+    ButtonsComponent,
+    ButtonComponent
   ],
   imports: [
     BrowserModule,
