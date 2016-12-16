@@ -135,32 +135,32 @@ namespace NakedObjects.Selenium {
             //Test content of collection
             wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
                 .Text.StartsWith("Page 1 of 45"));
-            GetButton("First").AssertIsDisabled();
-            GetButton("Previous").AssertIsDisabled();
-            var next = GetButton("Next").AssertIsEnabled();
-            GetButton("Last").AssertIsEnabled();
+            GetInputButton("First").AssertIsDisabled();
+            GetInputButton("Previous").AssertIsDisabled();
+            var next = GetInputButton("Next").AssertIsEnabled();
+            GetInputButton("Last").AssertIsEnabled();
             //Go to next page
             Click(next);
             wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
                 .Text.StartsWith("Page 2 of 45"));
-            GetButton("First").AssertIsEnabled();
-            GetButton("Previous").AssertIsEnabled();
-            GetButton("Next").AssertIsEnabled();
-            var last = GetButton("Last").AssertIsEnabled();
+            GetInputButton("First").AssertIsEnabled();
+            GetInputButton("Previous").AssertIsEnabled();
+            GetInputButton("Next").AssertIsEnabled();
+            var last = GetInputButton("Last").AssertIsEnabled();
             Click(last);
             wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
                 .Text.StartsWith("Page 45 of 45"));
-            GetButton("First").AssertIsEnabled();
-            var prev = GetButton("Previous").AssertIsEnabled();
-            GetButton("Next").AssertIsDisabled();
-            GetButton("Last").AssertIsDisabled();
+            GetInputButton("First").AssertIsEnabled();
+            var prev = GetInputButton("Previous").AssertIsEnabled();
+            GetInputButton("Next").AssertIsDisabled();
+            GetInputButton("Last").AssertIsDisabled();
             Click(prev);
             wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
                 .Text.StartsWith("Page 44 of 45"));
-            var first = GetButton("First").AssertIsEnabled();
-            GetButton("Previous").AssertIsEnabled();
-            GetButton("Next").AssertIsEnabled();
-            GetButton("Last").AssertIsEnabled();
+            var first = GetInputButton("First").AssertIsEnabled();
+            GetInputButton("Previous").AssertIsEnabled();
+            GetInputButton("Next").AssertIsEnabled();
+            GetInputButton("Last").AssertIsEnabled();
             Click(first);
             wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
                 .Text.StartsWith("Page 1 of 45"));
@@ -174,7 +174,7 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.List, "Find Store By Name");
             var summary = WaitForCss(".list .summary .details");
             Assert.AreEqual("Page 1 of 177; viewing 2 of 353 items", summary.Text);
-            var next = GetButton("Next").AssertIsEnabled();
+            var next = GetInputButton("Next").AssertIsEnabled();
             Click(next);
             wait.Until(dr => dr.FindElement(
                                      By.CssSelector(".list .summary .details"))
@@ -282,10 +282,10 @@ namespace NakedObjects.Selenium {
             //Test content of collection
             wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
                 .Text.StartsWith("Page 1 of"));
-            GetButton("First").AssertIsDisabled();
-            GetButton("Previous").AssertIsDisabled();
-            var next = GetButton("Next").AssertIsEnabled();
-            GetButton("Last").AssertIsEnabled();
+            GetInputButton("First").AssertIsDisabled();
+            GetInputButton("Previous").AssertIsDisabled();
+            var next = GetInputButton("Next").AssertIsEnabled();
+            GetInputButton("Last").AssertIsEnabled();
             //Go to next page
             Click(next);
             wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
@@ -295,10 +295,10 @@ namespace NakedObjects.Selenium {
             WaitForCss(".icon-list");
             WaitUntilElementDoesNotExist(".icon-table");
 
-            GetButton("First").AssertIsEnabled();
-            GetButton("Previous").AssertIsEnabled();
-            GetButton("Next").AssertIsEnabled();
-            var last = GetButton("Last").AssertIsEnabled();
+            GetInputButton("First").AssertIsEnabled();
+            GetInputButton("Previous").AssertIsEnabled();
+            GetInputButton("Next").AssertIsEnabled();
+            var last = GetInputButton("Last").AssertIsEnabled();
             Click(last);
             wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
                 .Text.StartsWith("Page 45 of 45"));
@@ -307,10 +307,10 @@ namespace NakedObjects.Selenium {
             var iconList = WaitForCss(".icon-list");
             WaitUntilElementDoesNotExist(".icon-table");
 
-            GetButton("First").AssertIsEnabled();
-            var prev = GetButton("Previous").AssertIsEnabled();
-            GetButton("Next").AssertIsDisabled();
-            GetButton("Last").AssertIsDisabled();
+            GetInputButton("First").AssertIsEnabled();
+            var prev = GetInputButton("Previous").AssertIsEnabled();
+            GetInputButton("Next").AssertIsDisabled();
+            GetInputButton("Last").AssertIsDisabled();
             Click(prev);
             wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
                 .Text.StartsWith("Page 44 of 45"));
@@ -318,10 +318,10 @@ namespace NakedObjects.Selenium {
             WaitForCss("thead tr th");
             WaitForCss(".icon-list");
             WaitUntilElementDoesNotExist(".icon-table");
-            var first = GetButton("First").AssertIsEnabled();
-            GetButton("Previous").AssertIsEnabled();
-            GetButton("Next").AssertIsEnabled();
-            GetButton("Last").AssertIsEnabled();
+            var first = GetInputButton("First").AssertIsEnabled();
+            GetInputButton("Previous").AssertIsEnabled();
+            GetInputButton("Next").AssertIsEnabled();
+            GetInputButton("Last").AssertIsEnabled();
             Click(first);
             wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
                 .Text.StartsWith("Page 1 of 45"));
