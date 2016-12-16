@@ -17,6 +17,7 @@ import { CollectionViewModel } from '../view-models/collection-view-model';
 import { MenuItemViewModel } from '../view-models/menu-item-view-model';
 import { PaneComponent } from '../pane/pane';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
+import { IButton } from '../button/button.component';
 
 @Component({
     selector: 'object',
@@ -100,10 +101,33 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
 
     menuItems = () => this.object.menuItems;
 
-    buttons = () => {
+    get buttons() {
+        const actionButton: IButton = {
+            value: "Actions",
+            doClick: () => this.toggleActionMenu(),
+            show: () => true,
+            disabled: () => this.disableActions(),
+            title: () => this.actionsTooltip(),
+            accesskey : "a"
+        };
+        const editButton: IButton = {
+            value: "Edit",
+            doClick: () => this.doEdit(),
+            show: () => this.showEdit(),
+            disabled: () => null,
+            title: () => "",
+            accesskey: null
+        };
+        const reloadButton: IButton = {
+            value: "Reload",
+            doClick: () => this.doReload(),
+            show: () => true,
+            disabled: () => null,
+            title: () => "",
+            accesskey: null
+        };
 
-
-
+        return [actionButton, editButton, reloadButton];
     }
 
     // todo that we access viewmodel directly in template from this I think is smell that we should have a 

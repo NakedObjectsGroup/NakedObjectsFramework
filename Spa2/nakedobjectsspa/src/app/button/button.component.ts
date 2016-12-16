@@ -3,39 +3,40 @@ import { Component, OnInit, Input } from '@angular/core';
 export interface IButton {
     doClick: () => void;
     show: () => boolean;
-    disable: () => boolean;
+    disabled: () => boolean;
     value: string;
+    title: () => string;
+    accesskey : string;
 }
 
 @Component({
-  selector: 'app-button',
-  templateUrl: './button.component.html',
-  styleUrls: ['./button.component.css']
+    selector: 'nof-button',
+    templateUrl: './button.component.html',
+    styleUrls: ['./button.component.css']
 })
-export class ButtonComponent implements OnInit {
+export class ButtonComponent {
 
-  constructor() { }
+    @Input()
+    button: IButton;
 
-  @Input()
-  button : IButton;
+    doClick() {
+        this.button.doClick();
+    }
 
-  doClick() {
-      this.button.doClick();
-  }
+    show() {
+        return this.button && this.button.show();
+    }
 
-  show() {
-      this.button.show();
-  }
+    disabled() {
+        return this.button.disabled();
+    }
 
-  disable() {
-      this.button.disable(); 
-  }
+    get value() {
+        return this.button.value;
+    }
 
-  get value() {
-      return this.button.value;
-  }
-
-  ngOnInit() {
-  }
+    get title() {
+        return this.button.title();
+    }
 
 }

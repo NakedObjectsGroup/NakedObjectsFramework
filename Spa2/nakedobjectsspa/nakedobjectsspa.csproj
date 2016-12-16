@@ -32,6 +32,10 @@
     <Content Include="src\app\application-properties\application-properties.component.html" />
     <Content Include="src\app\attachment\attachment.component.css" />
     <Content Include="src\app\attachment\attachment.component.html" />
+    <Content Include="src\app\buttons\buttons.component.css" />
+    <Content Include="src\app\buttons\buttons.component.html" />
+    <Content Include="src\app\button\button.component.css" />
+    <Content Include="src\app\button\button.component.html" />
     <Content Include="src\app\collections\collections.component.css" />
     <Content Include="src\app\collections\collections.component.html" />
     <Content Include="src\app\collection\collection.component.css" />
@@ -48,6 +52,10 @@
     <Content Include="src\app\home\home.component.html" />
     <Content Include="src\app\list\list.component.css" />
     <Content Include="src\app\list\list.component.html" />
+    <Content Include="src\app\menus\menus.component.css" />
+    <Content Include="src\app\menus\menus.component.html" />
+    <Content Include="src\app\menu\menu.component.css" />
+    <Content Include="src\app\menu\menu.component.html" />
     <Content Include="src\app\multi-line-dialog\multi-line-dialog.component.css" />
     <Content Include="src\app\multi-line-dialog\multi-line-dialog.component.html" />
     <Content Include="src\app\object\object.component.css" />
@@ -97,6 +105,8 @@
     <TypeScriptCompile Include="src\app\app.module.ts" />
     <TypeScriptCompile Include="src\app\application-properties\application-properties.component.ts" />
     <TypeScriptCompile Include="src\app\attachment\attachment.component.ts" />
+    <TypeScriptCompile Include="src\app\buttons\buttons.component.ts" />
+    <TypeScriptCompile Include="src\app\button\button.component.ts" />
     <TypeScriptCompile Include="src\app\click-handler.service.ts" />
     <TypeScriptCompile Include="src\app\collections\collections.component.ts" />
     <TypeScriptCompile Include="src\app\collection\collection.component.ts" />
@@ -120,6 +130,8 @@
     <TypeScriptCompile Include="src\app\list\list.component.ts" />
     <TypeScriptCompile Include="src\app\mask-config.service.ts" />
     <TypeScriptCompile Include="src\app\mask.service.ts" />
+    <TypeScriptCompile Include="src\app\menus\menus.component.ts" />
+    <TypeScriptCompile Include="src\app\menu\menu.component.ts" />
     <TypeScriptCompile Include="src\app\models.ts" />
     <TypeScriptCompile Include="src\app\moment-wrapper.service.ts" />
     <TypeScriptCompile Include="src\app\multi-line-dialog\multi-line-dialog.component.ts" />

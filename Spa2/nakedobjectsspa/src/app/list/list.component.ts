@@ -98,6 +98,10 @@ export class ListComponent extends PaneComponent implements AfterViewInit {
         return this.collection.header;
     }
 
+
+
+
+
     itemId = (i: number | string) => `item${this.collection.onPaneId}-${i}`;
 
     itemColor = (item: ItemViewModel) => item.color;

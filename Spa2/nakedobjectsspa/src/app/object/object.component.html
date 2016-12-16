@@ -7,12 +7,7 @@
                  <span class="type">{{friendlyName}}</span> {{title()}}
 			</div>
 			<!--<div>{{object.isDirty() ? "*" : ""}} </div>-->
-			<div class="menus">
-				<input type="button" class="menu clickable-area" tabindex="0" geminiClick (leftClick)="toggleActionMenu()" [attr.disabled]="disableActions()"
-					title={{actionsTooltip()}} accesskey="a" value="Actions">					
-				<input type="button" class="menu action clickable-area" tabindex="0" geminiClick (leftClick)="doEdit()" *ngIf="showEdit()" value="Edit">
-				<input type="button" class="menu action clickable-area" tabindex="0" geminiClick (leftClick)="doReload()" value="Reload">
-			</div>
+		    <nof-buttons [buttons]="buttons"></nof-buttons>
 			<div class="messages">{{message()}}</div>
 		</header>
 		<actions class="actions" *ngIf="showActions()" [menu]="object"></actions>
