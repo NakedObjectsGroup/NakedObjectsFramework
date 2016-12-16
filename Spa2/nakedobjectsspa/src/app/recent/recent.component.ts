@@ -7,6 +7,8 @@ import { RouteData, PaneRouteData } from "../route-data";
 import { RecentItemsViewModel } from '../view-models/recent-items-view-model';
 import { RecentItemViewModel } from '../view-models/recent-item-view-model';
 import { PaneComponent } from '../pane/pane';
+import * as Buttoncomponent from '../button/button.component';
+import * as Helpersviewmodels from '../view-models/helpers-view-models';
 
 @Component({
     selector: 'recent',
@@ -36,6 +38,19 @@ export class RecentComponent extends PaneComponent {
     doItemClick = (item: RecentItemViewModel, right?: boolean) => item.doClick(right);
 
     recent: RecentItemsViewModel;
+
+    private clearButton: Buttoncomponent.IButton = {
+        value: "Clear",
+        doClick: () => this.clear(),
+        show: () => true,
+        disabled: () => this.clearDisabled(),
+        title: () => "Clear history",
+        accesskey: "c"
+    };
+
+    get buttons() {
+        return [this.clearButton];
+    }
 
     clear() {
         this.recent.clear();

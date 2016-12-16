@@ -2,9 +2,7 @@
     <div class="recent">
         <div class="header">
             <div class="title">{{title}}</div>
-            <div class="menu action clickable-area" title="Clear history" accesskey="c" geminiClick (leftClick)="clear()" [attr.disabled]="clearDisabled()">
-                Clear
-            </div>
+            <nof-buttons [buttons]="buttons"></nof-buttons>
         </div>
         <div *ngIf="recent" class="collection">
             <table>

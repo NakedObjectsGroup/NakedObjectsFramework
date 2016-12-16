@@ -2,26 +2,7 @@
 	<div class="list">
 		<header class="header">
 			<div class="title">{{title}}</div>
-            <div class="menus">
-                <div class="menu clickable-area" tabindex="0" (click)="toggleActionMenu()" [attr.disabled]="disableActions()" title={{actionsTooltip}}>
-                    Actions
-                </div>
-                <div class="action clickable-area" tabindex="0" (click)="reloadList()">
-                    Reload
-                </div>
-                <div class="action clickable-area" tabindex="0" (click)="pageFirst()" [attr.disabled]="pageFirstDisabled()">
-                    First
-                </div>
-                <div class="action clickable-area" tabindex="0" (click)="pagePrevious()" [attr.disabled]="pagePreviousDisabled()">
-                    Previous
-                </div>
-                <div class="action clickable-area" tabindex="0" (click)="pageNext()" [attr.disabled]="pageNextDisabled()">
-                    Next
-                </div>
-                <div class="action clickable-area" tabindex="0" (click)="pageLast()" [attr.disabled]="pageLastDisabled()">
-                    Last
-                </div>
-            </div>
+		    <nof-buttons [buttons]="buttons"></nof-buttons>
 			<div class="messages">{{message}}</div>
 		</header>
 		<div class="details" *ngIf="size == 0">{{description}}</div>
@@ -89,7 +70,6 @@
 									</div>
 								</div>
 							</div>
-
 						</td>
 					</tr>
 				</tbody>

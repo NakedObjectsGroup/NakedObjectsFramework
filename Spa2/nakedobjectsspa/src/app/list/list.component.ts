@@ -18,6 +18,7 @@ import { ListViewModel } from '../view-models/list-view-model';
 import { PaneComponent } from '../pane/pane';
 import { ItemViewModel } from '../view-models/item-view-model';
 import { PropertyViewModel } from '../view-models/property-view-model';
+import {IButton} from '../button/button.component';
 
 @Component({
     selector: 'list',
@@ -98,9 +99,63 @@ export class ListComponent extends PaneComponent implements AfterViewInit {
         return this.collection.header;
     }
 
+    private actionButton: IButton = {
+        value: "Actions",
+        doClick: () => this.toggleActionMenu(),
+        show: () => true,
+        disabled: () => this.disableActions(),
+        title: () => this.actionsTooltip,
+        accesskey: "a"
+    };
 
+    private reloadButton: IButton = {
+        value: "Reload",
+        doClick: () => this.reloadList(),
+        show: () => true,
+        disabled: () => null,
+        title: () => "",
+        accesskey: null
+    };
 
+    private firstButton: IButton = {
+        value: "First",
+        doClick: () => this.pageFirst(),
+        show: () => true,
+        disabled: () => this.pageFirstDisabled(),
+        title: () => "",
+        accesskey: null
+    };
 
+    private previousButton: IButton = {
+        value: "Previous",
+        doClick: () => this.pagePrevious(),
+        show: () => true,
+        disabled: () => this.pagePreviousDisabled(),
+        title: () => "",
+        accesskey: null
+    };
+
+    private nextButton: IButton = {
+        value: "Next",
+        doClick: () => this.pageNext(),
+        show: () => true,
+        disabled: () => this.pageNextDisabled(),
+        title: () => "",
+        accesskey: null
+    };
+
+    private lastButton: IButton = {
+        value: "Last",
+        doClick: () => this.pageLast(),
+        show: () => true,
+        disabled: () => this.pageLastDisabled(),
+        title: () => "",
+        accesskey: null
+    };
+
+    get buttons() {
+        return [this.actionButton, this.reloadButton, this.firstButton, this.previousButton, this.nextButton, this.lastButton];
+    }
 
     itemId = (i: number | string) => `item${this.collection.onPaneId}-${i}`;
 

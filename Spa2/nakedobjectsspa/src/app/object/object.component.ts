@@ -101,33 +101,35 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
 
     menuItems = () => this.object.menuItems;
 
-    get buttons() {
-        const actionButton: IButton = {
-            value: "Actions",
-            doClick: () => this.toggleActionMenu(),
-            show: () => true,
-            disabled: () => this.disableActions(),
-            title: () => this.actionsTooltip(),
-            accesskey : "a"
-        };
-        const editButton: IButton = {
-            value: "Edit",
-            doClick: () => this.doEdit(),
-            show: () => this.showEdit(),
-            disabled: () => null,
-            title: () => "",
-            accesskey: null
-        };
-        const reloadButton: IButton = {
-            value: "Reload",
-            doClick: () => this.doReload(),
-            show: () => true,
-            disabled: () => null,
-            title: () => "",
-            accesskey: null
-        };
+    private actionButton: IButton = {
+        value: "Actions",
+        doClick: () => this.toggleActionMenu(),
+        show: () => true,
+        disabled: () => this.disableActions(),
+        title: () => this.actionsTooltip(),
+        accesskey: "a"
+    };
 
-        return [actionButton, editButton, reloadButton];
+    private editButton: IButton = {
+        value: "Edit",
+        doClick: () => this.doEdit(),
+        show: () => this.showEdit(),
+        disabled: () => null,
+        title: () => "",
+        accesskey: null
+    };
+
+    private reloadButton: IButton = {
+        value: "Reload",
+        doClick: () => this.doReload(),
+        show: () => true,
+        disabled: () => null,
+        title: () => "",
+        accesskey: null
+    };
+
+    get buttons() {
+        return [this.actionButton, this.editButton, this.reloadButton];
     }
 
     // todo that we access viewmodel directly in template from this I think is smell that we should have a 
