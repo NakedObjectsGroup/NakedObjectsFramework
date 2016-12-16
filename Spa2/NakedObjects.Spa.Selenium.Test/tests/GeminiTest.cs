@@ -17,6 +17,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 
 namespace NakedObjects.Selenium {
@@ -144,8 +145,15 @@ namespace NakedObjects.Selenium {
         }
 
         protected virtual void ScrollTo(IWebElement element) {
-            string script = string.Format("window.scrollTo({0}, {1});return true;", element.Location.X, element.Location.Y);
-            ((IJavaScriptExecutor) br).ExecuteScript(script);
+            //string script = string.Format("window.scrollTo({0}, {1});return true;", element.Location.X, element.Location.Y);
+            //((IJavaScriptExecutor) br).ExecuteScript(script);
+
+          
+            Actions actions = new Actions(br);
+            actions.MoveToElement(element);
+            // actions.click();
+            actions.Perform();
+
         }
 
         protected virtual void Click(IWebElement element) {
@@ -499,9 +507,9 @@ namespace NakedObjects.Selenium {
                 OpenSubMenu(subMenuName);
             }
             var selector = CssSelectorFor(pane) + ".actions .action div";
-            Func<IWebDriver, IWebElement> find = d => d.FindElements(By.CssSelector(selector)).Single(we => we.Text == actionName);
-            wait.Until(find);
-            return find(br);
+            var a = wait.Until(d => d.FindElements(By.CssSelector(selector)).Single(we => we.Text == actionName));
+            ScrollTo(a);
+            return a;
         }
 
         protected IWebElement OpenActionDialog(string actionName, Pane pane = Pane.Single, int? noOfParams = null) {
