@@ -563,16 +563,10 @@ namespace NakedObjects.Selenium {
         }
 
         protected void Reload(Pane pane = Pane.Single) {
-            Click(GetButton("Reload", pane));
-        }
-
-        protected void ReloadObject(Pane pane = Pane.Single) {
             Click(GetInputButton("Reload", pane));
         }
 
-        protected void ReloadList(Pane pane = Pane.Single) {
-            Click(GetButton("Reload", pane));
-        }
+      
 
         protected void CancelDatePicker(string cssForInput) {
             var dp = br.FindElement(By.CssSelector(".ui-datepicker"));

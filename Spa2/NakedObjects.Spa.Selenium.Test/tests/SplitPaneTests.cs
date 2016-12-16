@@ -31,16 +31,16 @@ namespace NakedObjects.Selenium {
             ClearFieldThenType("#searchstring1", "n");
             Click(OKButton());
             wait.Until(dr => dr.FindElements(By.CssSelector("#pane1 .reference"))[0].Text == "All-Purpose Bike Stand");
-            ReloadList(Pane.Left);
-            ReloadList(Pane.Right);
+            Reload(Pane.Left);
+            Reload(Pane.Right);
 
             //Try a reload from a new Url with params
             GeminiUrl("list/list?m2=ProductRepository&a2=FindProductByName&pg2=1&ps2=20&s2_=0&c2=List&pm2_searchString=%22f%22&m1=ProductRepository&a1=FindProductByName&pg1=1&ps1=20&s1_=0&c1=List&pm1_searchString=%22y%22");
             WaitForView(Pane.Left, PaneType.List);
             WaitForView(Pane.Right, PaneType.List);
-            ReloadList(Pane.Left);
+            Reload(Pane.Left);
             wait.Until(dr => dr.FindElements(By.CssSelector("#pane1 .reference"))[0].Text == "Chain Stays");
-            ReloadList(Pane.Right);
+            Reload(Pane.Right);
             wait.Until(dr => dr.FindElements(By.CssSelector("#pane2 .reference"))[0].Text == "Fender Set - Mountain");
         }
 

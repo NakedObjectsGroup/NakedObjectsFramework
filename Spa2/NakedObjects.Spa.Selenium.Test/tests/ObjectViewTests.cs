@@ -284,7 +284,7 @@ namespace NakedObjects.Selenium {
             Click(br.FindElement(By.CssSelector(".icon-back")));
             WaitForView(Pane.Single, PaneType.Object);
             wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(6) .value")).Text == original);
-            ReloadObject();
+            Reload();
             wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(6) .value")).Text == newValue);
         }
 

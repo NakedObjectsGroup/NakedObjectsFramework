@@ -108,6 +108,15 @@ export class ListComponent extends PaneComponent implements AfterViewInit {
         accesskey: "a"
     };
 
+    private reloadPlaceholderButton: IButton = {
+        value: "Reload",
+        doClick: () => this.reload(),
+        show: () => true,
+        disabled: () => null,
+        title: () => "",
+        accesskey: null
+    };
+
     private reloadButton: IButton = {
         value: "Reload",
         doClick: () => this.reloadList(),
@@ -154,6 +163,9 @@ export class ListComponent extends PaneComponent implements AfterViewInit {
     };
 
     get buttons() {
+        if (!this.collection) {
+            return [this.reloadPlaceholderButton];
+        }
         return [this.actionButton, this.reloadButton, this.firstButton, this.previousButton, this.nextButton, this.lastButton];
     }
 
