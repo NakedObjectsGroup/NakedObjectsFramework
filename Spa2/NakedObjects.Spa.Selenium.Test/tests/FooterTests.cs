@@ -108,9 +108,9 @@ namespace NakedObjects.Selenium {
             ClickRecentButton();
             WaitForView(Pane.Left, PaneType.Recent);
             WaitForCss("tr td:nth-child(1)", 6);
-            var clear = GetButton("Clear", Pane.Left).AssertIsEnabled();
+            var clear = GetInputButton("Clear", Pane.Left).AssertIsEnabled();
             Click(clear);
-            GetButton("Clear", Pane.Left).AssertIsDisabled();
+            GetInputButton("Clear", Pane.Left).AssertIsDisabled();
             WaitForCss("tr td", 0);
         }
 
