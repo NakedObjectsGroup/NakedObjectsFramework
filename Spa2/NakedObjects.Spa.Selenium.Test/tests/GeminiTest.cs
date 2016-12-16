@@ -499,9 +499,9 @@ namespace NakedObjects.Selenium {
                 OpenSubMenu(subMenuName);
             }
             var selector = CssSelectorFor(pane) + ".actions .action div";
-            var action = wait.Until(d => d.FindElements(By.CssSelector(selector)).
-                Single(we => we.Text == actionName));
-            return action;
+            Func<IWebDriver, IWebElement> find = d => d.FindElements(By.CssSelector(selector)).Single(we => we.Text == actionName);
+            wait.Until(find);
+            return find(br);
         }
 
         protected IWebElement OpenActionDialog(string actionName, Pane pane = Pane.Single, int? noOfParams = null) {
