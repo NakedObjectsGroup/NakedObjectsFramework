@@ -52,7 +52,8 @@ namespace NakedObjects {
         setCollectionMemberState(collectionMemberId: string, state: CollectionViewState, paneId?: number): void;
         setListState(state: CollectionViewState, paneId?: number): void;
         setListPaging(newPage: number, newPageSize: number, state: CollectionViewState, paneId?: number): void;
-        setListItem(item: number, selected: boolean, paneId?: number): void;
+
+        setItemSelected(item: number, selected: boolean, collectionMemberId: string, paneId?: number): void;
 
         pushUrlState(paneId?: number): void;
         clearUrlState(paneId?: number): void;
@@ -223,13 +224,14 @@ namespace NakedObjects {
             const collKeyMap = getAndMapIds(akm.collection, paneId);
             paneRouteData.collections = _.mapValues(collKeyMap, v => (<any>CollectionViewState)[v]);
 
+            const collSelectedKeyMap = getAndMapIds(akm.selected, paneId);
+            paneRouteData.selectedCollectionItems = _.mapValues(collSelectedKeyMap, v => arrayFromMask(v));
+
             const parmKeyMap = getAndMapIds(akm.parm, paneId);
             paneRouteData.actionParams = getMappedValues(parmKeyMap);
 
             paneRouteData.page = parseInt(getId(akm.page + paneId, $routeParams));
-            paneRouteData.pageSize = parseInt(getId(akm.pageSize + paneId, $routeParams));
-
-            paneRouteData.selectedItems = arrayFromMask(getId(akm.selected + paneId, $routeParams));
+            paneRouteData.pageSize = parseInt(getId(akm.pageSize + paneId, $routeParams));     
 
             paneRouteData.attachmentId = getId(akm.attachment + paneId, $routeParams);
 
@@ -369,7 +371,7 @@ namespace NakedObjects {
         }
 
         function validKeysForObject() {
-            return [akm.object, akm.interactionMode, akm.reload, akm.actions, akm.dialog, akm.collection, akm.prop];
+            return [akm.object, akm.interactionMode, akm.reload, akm.actions, akm.dialog, akm.collection, akm.prop, akm.selected];
         }
 
         function validKeysForMultiLineDialog() {
@@ -579,7 +581,7 @@ namespace NakedObjects {
             newValues[`${akm.action}${toPaneId}`] = actionMember.actionId();
             newValues[`${akm.page}${toPaneId}`] = "1";
             newValues[`${akm.pageSize}${toPaneId}`] = defaultPageSize.toString();
-            newValues[`${akm.selected}${toPaneId}`] = "0";
+            newValues[`${akm.selected}${toPaneId}_`] = "0";
 
             const newState = actionMember.extensions().renderEagerly() ?
                 CollectionViewState[CollectionViewState.Table] :
@@ -679,10 +681,9 @@ namespace NakedObjects {
             executeTransition(newValues, paneId, transition, () => true);
         };
 
+        helper.setItemSelected = (item: number, isSelected: boolean, collectionId: string, paneId = 1) => {
 
-        helper.setListItem = (item: number, isSelected: boolean, paneId = 1) => {
-
-            const key = `${akm.selected}${paneId}`;
+            const key = `${akm.selected}${paneId}_${collectionId}`;
             const currentSelected = getSearch()[key];
             const selectedArray: boolean[] = arrayFromMask(currentSelected);
             selectedArray[item] = isSelected;
@@ -690,13 +691,14 @@ namespace NakedObjects {
             const newValues = _.zipObject([key], [currentSelectedAsString]) as _.Dictionary<string>;
             executeTransition(newValues, paneId, Transition.Null, () => true);
         };
+
         helper.setListPaging = (newPage: number, newPageSize: number, state: CollectionViewState, paneId = 1) => {
             const pageValues = {} as _.Dictionary<string>;
 
             pageValues[`${akm.page}${paneId}`] = newPage.toString();
             pageValues[`${akm.pageSize}${paneId}`] = newPageSize.toString();
             pageValues[`${akm.collection}${paneId}`] = CollectionViewState[state];
-            pageValues[`${akm.selected}${paneId}`] = "0"; // clear selection 
+            pageValues[`${akm.selected}${paneId}_`] = "0"; // clear selection 
 
             executeTransition(pageValues, paneId, Transition.Page, () => true);
         };

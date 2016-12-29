@@ -47,5 +47,5 @@ namespace NakedObjects {
 
     // checks for inconsistencies in url
     export const doUrlValidation = false;
-
+    export const leftClickHomeAlwaysGoesToSinglePane = true;
 }

@@ -53,7 +53,7 @@ namespace NakedObjects {
     }
 
     interface IViewModelFactoryInternal extends IViewModelFactory {
-        itemViewModel(linkRep: Link, paneId: number, selected: boolean): IItemViewModel;
+        itemViewModel(linkRep: Link, paneId: number, selected: boolean, id : string): IItemViewModel;
         recentItemViewModel(obj: DomainObjectRepresentation, linkRep: Link, paneId: number, selected: boolean): IRecentItemViewModel;
         propertyTableViewModel(propertyRep: PropertyMember, id: string, paneId: number): ITableRowColumnViewModel;
     }
@@ -152,7 +152,7 @@ namespace NakedObjects {
             return linkViewModel as ILinkViewModel;
         };
 
-        viewModelFactory.itemViewModel = (linkRep: Link, paneId: number, selected: boolean) => {
+        viewModelFactory.itemViewModel = (linkRep: Link, paneId: number, selected: boolean, id : string) => {
             const itemViewModel = new ItemViewModel();    
             initLinkViewModel(itemViewModel, linkRep);
 
@@ -160,7 +160,7 @@ namespace NakedObjects {
 
             itemViewModel.selectionChange = (index) => {
                 context.updateValues();
-                urlManager.setListItem(index, itemViewModel.selected, paneId);
+                urlManager.setItemSelected(index, itemViewModel.selected, id, paneId);
                 focusManager.focusOverrideOn(FocusTarget.CheckBox, index + 1, paneId);
             };
 
@@ -181,7 +181,7 @@ namespace NakedObjects {
         };
 
         viewModelFactory.recentItemViewModel = (obj: DomainObjectRepresentation, linkRep: Link, paneId: number, selected: boolean) => {
-            const recentItemViewModel = viewModelFactory.itemViewModel(linkRep, paneId, selected) as ILinkViewModel;
+            const recentItemViewModel = viewModelFactory.itemViewModel(linkRep, paneId, selected, "") as ILinkViewModel;
             (recentItemViewModel as IRecentItemViewModel).friendlyName = obj.extensions().friendlyName();
             return recentItemViewModel as IRecentItemViewModel;
         };
@@ -686,9 +686,11 @@ namespace NakedObjects {
         };
 
         viewModelFactory.getItems = (links: Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: IListViewModel | ICollectionViewModel) => {
-            const selectedItems = routeData.selectedItems;
 
-            const items = _.map(links, (link, i) => viewModelFactory.itemViewModel(link, routeData.paneId, selectedItems[i]));
+            const collection : ICollectionViewModel = listViewModel instanceof CollectionViewModel ? listViewModel : null;
+            const id = collection ? collection.id : "";
+            const selectedItems = routeData.selectedCollectionItems[id];        
+            const items = _.map(links, (link, i) => viewModelFactory.itemViewModel(link, routeData.paneId, selectedItems && selectedItems[i], id));
 
             if (tableView) {
 
@@ -800,6 +802,12 @@ namespace NakedObjects {
                     const actions = collectionRep.actionMembers();
                     collectionViewModel.setActions(actions, routeData);
 
+                    if (resetting) {
+                        // need to clear the cache so that next time we get details 
+                        // we will get fresh 
+                        context.clearCachedCollection(collectionRep);
+                    }
+
                     if (state === CollectionViewState.Summary) {
                         collectionViewModel.items = [];
                     } else if (getDetails) {
@@ -809,13 +817,13 @@ namespace NakedObjects {
                                     state === CollectionViewState.Table,
                                     routeData,
                                     collectionViewModel);
-                                collectionViewModel.details = getCollectionDetails(collectionViewModel.items.length);                             
+                                collectionViewModel.details = getCollectionDetails(collectionViewModel.items.length);
                                 collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);
                             })
                             .catch((reject: ErrorWrapper) => error.handleError(reject));
                     } else {
                         collectionViewModel.items = viewModelFactory.getItems(itemLinks, state === CollectionViewState.Table, routeData, collectionViewModel);
-                        collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);                   
+                        collectionViewModel.allSelected = _.every(collectionViewModel.items, item => item.selected);
                     }
 
                     switch (state) {
@@ -917,7 +925,16 @@ namespace NakedObjects {
                 tvm.goHome = (right?: boolean) => {
                     focusManager.focusOverrideOff();
                     context.updateValues();
-                    urlManager.setHome(clickHandler.pane(1, right));
+
+                    const newPane = clickHandler.pane(1, right);
+
+                    if (leftClickHomeAlwaysGoesToSinglePane && newPane === 1) {
+                        urlManager.setHome(1);
+                        urlManager.singlePane(1);
+                        focusManager.refresh(1);
+                    } else {
+                        urlManager.setHome(newPane);         
+                    }                
                 };
                 tvm.goBack = () => {
                     focusManager.focusOverrideOff();
