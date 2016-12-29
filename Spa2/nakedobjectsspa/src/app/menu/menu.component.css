@@ -11,7 +11,7 @@
     outline: none;
 }
 
-:host:hover, :host:focus, .action:hover, .action:focus   {
+:host:hover, :host:focus  {
     outline-color: white;
     outline-style: solid;
     outline-width: 1px;

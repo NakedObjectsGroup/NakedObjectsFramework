@@ -27,21 +27,3 @@
     margin-top: 2px;
     display: block;
 }
-
-.menu {
-    display: block;
-    float: left;
-    padding: 5px;
-    margin-top: 0px;
-    margin-left: 1px; /*Else hover outline is hidden on the left-most menu */
-    margin-right: 10px;
-    margin-bottom: 5px; /*Else hover outline is hidden on the bottom */
-    font-size: 16pt;
-    outline: none;
-}
-
-.menu:hover, .menu:focus, .action:hover, .action:focus   {
-    outline-color: white;
-    outline-style: solid;
-    outline-width: 1px;
-}
