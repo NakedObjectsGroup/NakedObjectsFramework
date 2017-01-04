@@ -24,8 +24,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
         public readonly collectionRep: Models.CollectionMember | Models.CollectionRepresentation,
         private readonly routeData: PaneRouteData
     ) {
-        super(context, viewModelFactory, urlManager, error);
-        this.onPaneId = routeData.paneId;
+        super(context, viewModelFactory, urlManager, error, routeData.paneId);
         this.title = collectionRep.extensions().friendlyName();
         this.presentationHint = collectionRep.extensions().presentationHint();
         this.pluralName = collectionRep.extensions().pluralName();
@@ -37,6 +36,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
 
         this.reset(routeData, true);
     }
+
     private readonly presentationHint: string;
     private readonly template: string;
     private readonly messages: string;
@@ -115,8 +115,6 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
     readonly doList = () => this.urlManager.setCollectionMemberState(this.collectionRep.collectionId(), CollectionViewState.List, this.onPaneId);
     readonly doTable = () => this.urlManager.setCollectionMemberState(this.collectionRep.collectionId(), CollectionViewState.Table, this.onPaneId);
     readonly hasTableData = () => this.items && _.some(this.items, (i : ItemViewModel) => i.tableRowViewModel);
-
-   
 
     readonly description = () => this.details.toString();
 

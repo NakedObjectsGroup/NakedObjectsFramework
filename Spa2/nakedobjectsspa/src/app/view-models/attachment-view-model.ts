@@ -19,17 +19,17 @@ export class AttachmentViewModel {
         this.title = link.title() || Msg.unknownFileTitle;
     }
 
-    readonly href: string;
-    readonly mimeType: string;
+    private readonly href: string;
+    private readonly mimeType: string;
     readonly title: string;
+    readonly downloadFile = () => this.context.getFile(this.parent, this.href, this.mimeType);
+    readonly clearCachedFile = () => this.context.clearCachedFile(this.href);
 
-    downloadFile = () => this.context.getFile(this.parent, this.href, this.mimeType);
-    clearCachedFile = () => this.context.clearCachedFile(this.href);
-
-    displayInline = () =>
+    readonly displayInline = () =>
         this.mimeType === "image/jpeg" ||
         this.mimeType === "image/gif" ||
         this.mimeType === "application/octet-stream";
 
+    // todo modified investigate
     doClick = (right?: boolean) => this.urlManager.setAttachment(this.link, this.clickHandler.pane(this.onPaneId, right));
 }

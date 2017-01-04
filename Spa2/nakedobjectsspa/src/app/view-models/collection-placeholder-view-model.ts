@@ -12,15 +12,15 @@ export class CollectionPlaceholderViewModel {
     }
 
     // todo string constants in user messages !
-    description = () => `Page ${this.routeData.page}`;
+    private readonly description = () => `Page ${this.routeData.page}`;
 
-    private recreate = () =>
+    private readonly recreate = () =>
         this.routeData.objectId ? this.context.getListFromObject(this.routeData) : this.context.getListFromMenu(this.routeData);
 
-    reload = () =>
+    private readonly reload = () =>
         this.recreate().
             then(() => {
-                // do we need 'then' 
+                // todo do we need 'then' 
                 //$route.reload()
             }).
             catch((reject: Models.ErrorWrapper) => {

@@ -15,16 +15,17 @@ import { RouteData, PaneRouteData } from '../route-data';
 
 export abstract class ContributedActionParentViewModel extends MessageViewModel {
 
-    constructor(protected context: ContextService,
-        protected viewModelFactory: ViewModelFactoryService,
-        protected urlManager: UrlManagerService,
-        protected error: ErrorService
+    protected constructor(
+        protected context: ContextService,
+        protected readonly viewModelFactory: ViewModelFactoryService,
+        protected readonly urlManager: UrlManagerService,
+        protected readonly error: ErrorService,
+        public readonly onPaneId : number
     ) {
         super();
     }
 
-    onPaneId: number;
-    allSelected = () => _.every(this.items, item => item.selected);
+    readonly allSelected = () => _.every(this.items, item => item.selected);
     items: ItemViewModel[];
     actions: ActionViewModel[];
     menuItems: MenuItemViewModel[];

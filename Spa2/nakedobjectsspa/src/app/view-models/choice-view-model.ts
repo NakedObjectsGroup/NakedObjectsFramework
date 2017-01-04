@@ -4,7 +4,7 @@
 export class ChoiceViewModel {
 
     constructor(
-        private readonly wrapped : Models.Value,
+        private readonly wrapped: Models.Value,
         private readonly id: string,
         name?: string,
         searchTerm?: string
@@ -15,23 +15,18 @@ export class ChoiceViewModel {
     }
 
     readonly name: string;
-
     private readonly search: string;
     private readonly isEnum: boolean;
-   
-    getValue() {
-        return this.wrapped;
-    }
 
-    equals(other: ChoiceViewModel): boolean {
-        return other instanceof ChoiceViewModel &&
-            this.id === other.id &&
-            this.name === other.name &&
-            this.wrapped.toValueString() === other.wrapped.toValueString();
-    }
+    readonly getValue = () => this.wrapped;
 
-    valuesEqual(other: ChoiceViewModel): boolean {
+    readonly equals = (other: ChoiceViewModel): boolean =>
+        other instanceof ChoiceViewModel &&
+        this.id === other.id &&
+        this.name === other.name &&
+        this.wrapped.toValueString() === other.wrapped.toValueString();
 
+    readonly valuesEqual = (other: ChoiceViewModel): boolean => {
         if (other instanceof ChoiceViewModel) {
             const thisValue = this.isEnum ? this.wrapped.toValueString().trim() : this.search.trim();
             const otherValue = this.isEnum ? other.wrapped.toValueString().trim() : other.search.trim();
@@ -40,7 +35,5 @@ export class ChoiceViewModel {
         return false;
     }
 
-    toString() {
-        return this.name;
-    }
+    readonly toString = () => this.name;
 }
