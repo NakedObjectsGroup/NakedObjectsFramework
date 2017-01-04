@@ -23,12 +23,11 @@ export class HomeComponent extends PaneComponent {
 
     constructor(urlManager: UrlManagerService,
         activatedRoute: ActivatedRoute,
-        private viewModelFactory: ViewModelFactoryService,
-        private context: ContextService,
-        private error: ErrorService,
-        private color: ColorService,
-
-        private myElement: ElementRef) {
+        private readonly viewModelFactory: ViewModelFactoryService,
+        private readonly context: ContextService,
+        private readonly error: ErrorService,
+        private readonly color: ColorService,
+        private readonly myElement: ElementRef) {
         super(activatedRoute, urlManager);
     }
 

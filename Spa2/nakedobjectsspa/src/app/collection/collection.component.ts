@@ -16,7 +16,7 @@ type state = "summary" | "list" | "table";
 })
 export class CollectionComponent implements OnInit, OnDestroy {
 
-    constructor(private urlManager: UrlManagerService) {}
+    constructor(private readonly urlManager: UrlManagerService) {}
 
     @Input()
     collection: CollectionViewModel;

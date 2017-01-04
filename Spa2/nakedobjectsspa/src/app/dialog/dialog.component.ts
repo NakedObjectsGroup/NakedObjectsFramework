@@ -27,12 +27,12 @@ import { CollectionViewModel } from '../view-models/collection-view-model';
 export class DialogComponent implements OnInit, OnDestroy {
 
     constructor(
-        private viewModelFactory: ViewModelFactoryService,
-        private urlManager: UrlManagerService,
-        private activatedRoute: ActivatedRoute,
-        private error: ErrorService,
-        private context: ContextService,
-        private formBuilder: FormBuilder) {
+        private readonly viewModelFactory: ViewModelFactoryService,
+        private readonly urlManager: UrlManagerService,
+        private readonly activatedRoute: ActivatedRoute,
+        private readonly error: ErrorService,
+        private readonly context: ContextService,
+        private readonly formBuilder: FormBuilder) {
     }
 
     @Input()
@@ -80,7 +80,7 @@ export class DialogComponent implements OnInit, OnDestroy {
         const pps = dialog.parameters;
         this.parms = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<ParameterViewModel>;
         // todo fix types - no any 
-        const controls = _.mapValues(this.parms, p => [p.getValueForControl(), a => p.validator(a)]) as _.Dictionary<any>;
+        const controls = _.mapValues(this.parms, p => [p.getValueForControl(), (a : AbstractControl) => p.validator(a)]) as _.Dictionary<any>;
         this.form = this.formBuilder.group(controls);
 
         this.form.valueChanges.subscribe((data: any) => {

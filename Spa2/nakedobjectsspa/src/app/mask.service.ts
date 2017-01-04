@@ -30,7 +30,9 @@ function transform(tfm: () => string) {
 
 class LocalCurrencyFilter implements ILocalFilter {
 
-    constructor(private symbol?: string, private digits?: string) { }
+    constructor(
+        private readonly symbol?: string,
+        private readonly digits?: string) { }
 
     filter(val: any): string {
         if (!val) {
@@ -48,13 +50,15 @@ class LocalCurrencyFilter implements ILocalFilter {
 
 class LocalDateFilter implements ILocalFilter {
 
-    constructor(private mask?: string, private tz?: string) {}
+    constructor(
+        private readonly mask?: string,
+        private readonly tz?: string) { }
 
     filter(val: any): string {
         if (!val){
             return "";
         }
-
+        // todo fix this ! 
         const pipe = new DatePipe("en-GB");
         //   return $filter("date")(val, this.mask, this.tz);
         return transform(() =>pipe.transform(val, this.mask));
@@ -63,7 +67,7 @@ class LocalDateFilter implements ILocalFilter {
 
 class LocalNumberFilter implements ILocalFilter {
 
-    constructor(private fractionSize?: number) {}
+    constructor(private readonly fractionSize?: number) {}
 
     filter(val: any): string {
         if (val == null || val === ""){
@@ -71,7 +75,7 @@ class LocalNumberFilter implements ILocalFilter {
         }
 
         //  return $filter("number")(val, this.fractionSize);
-     
+        // todo fix this ! 
         const pipe = new DecimalPipe("en-GB");
         // return $filter("currency")(val, this.symbol, this.fractionSize);
         return transform(() =>pipe.transform(val));

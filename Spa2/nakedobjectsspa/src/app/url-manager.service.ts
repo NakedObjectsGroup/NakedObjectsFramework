@@ -50,7 +50,7 @@ const akm = {
 interface ITransitionResult {
     path: string,
     search: any;
-    replace: boolean
+    replace: boolean;
 }
 
 
@@ -713,6 +713,7 @@ export class UrlManagerService {
             case Constants.objectPath: return ViewType.Object;
             case Constants.listPath: return ViewType.List;
         }
+        return null;
     };
 
     getPaneRouteDataObservable = (paneId : number) => {
@@ -778,8 +779,7 @@ export class UrlManagerService {
         this.currentPaneId = paneId;
 
         const capturedPane = this.capturedPanes[paneId];
-        let mayReplace = true;
-
+   
         if (capturedPane) {
             this.capturedPanes[paneId] = null;
             let search = this.clearPane(this.getSearch(), paneId);
@@ -827,7 +827,7 @@ export class UrlManagerService {
     };
 
     applicationProperties = () => {
-        const newPath = `/${Constants.geminiPath}/${Constants.applicationPropertiesPath}`
+        const newPath = `/${Constants.geminiPath}/${Constants.applicationPropertiesPath}`;
         this.router.navigateByUrl(newPath);
     };
 

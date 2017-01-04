@@ -6,9 +6,9 @@ import * as Models from "../models";
 export class CollectionPlaceholderViewModel {
 
     constructor(
-        private context: ContextService,
-        private error: ErrorService,
-        private routeData: PaneRouteData) {
+        private readonly context: ContextService,
+        private readonly error: ErrorService,
+        private readonly routeData: PaneRouteData) {
     }
 
     // todo string constants in user messages !

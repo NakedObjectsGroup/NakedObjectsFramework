@@ -20,8 +20,9 @@ export abstract class FieldComponent {
     //filteredList: ViewModels.ChoiceViewModel[] = [];
     elementRef: ElementRef;
 
-    constructor(myElement: ElementRef,
-        private context: ContextService) {
+    protected constructor(myElement: ElementRef,
+        private readonly context: ContextService
+    ) {
         this.elementRef = myElement;
     }
 
@@ -101,7 +102,7 @@ export abstract class FieldComponent {
             throw { message: "Expect dialog or object in geminiConditionalchoices", stack: "" };
         }
 
-        let parmsOrProps: { argId: string, getValue: () => Models.Value }[] = [];
+        let parmsOrProps: { argId: string, getValue: () => Models.Value }[];
 
         if (this.isDomainObjectViewModel(object)) {
             parmsOrProps = object.properties;

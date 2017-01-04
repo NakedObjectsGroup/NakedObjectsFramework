@@ -3,10 +3,11 @@ import { FieldViewModel } from './view-models/field-view-model';
 
 @Directive({ selector: '[geminiBoolean]' })
 export class GeminiBooleanDirective {
-    private el: HTMLElement;
-
-    constructor(el: ElementRef, private renderer: Renderer) {
-        this.el = el.nativeElement;
+  
+    constructor(
+        private readonly el: ElementRef,
+        private readonly renderer: Renderer
+    ) {
     }
 
     model: FieldViewModel;
@@ -18,20 +19,19 @@ export class GeminiBooleanDirective {
     }
 
     render = () => {
+        const nativeEl = this.el.nativeElement;
 
         switch (this.model.value) {
             case true:
-                this.renderer.setElementProperty(this.el, "indeterminate", false);
-                this.renderer.setElementProperty(this.el, "checked", true);
-
+                this.renderer.setElementProperty(nativeEl, "indeterminate", false);
+                this.renderer.setElementProperty(nativeEl, "checked", true);
                 break;
             case false:
-                this.renderer.setElementProperty(this.el, "indeterminate", false);
-                this.renderer.setElementProperty(this.el, "checked", false);
-
+                this.renderer.setElementProperty(nativeEl, "indeterminate", false);
+                this.renderer.setElementProperty(nativeEl, "checked", false);
                 break;
             default: // null
-                this.renderer.setElementProperty(this.el, "indeterminate", true);
+                this.renderer.setElementProperty(nativeEl, "indeterminate", true);
         }
     };
 

@@ -11,7 +11,7 @@ import { Subject } from 'rxjs/Subject';
 @Injectable()
 export class RepLoaderService {
 
-    constructor(private http: Http) { }
+    constructor(private readonly http: Http) { }
 
     private loadingCount = 0;
 

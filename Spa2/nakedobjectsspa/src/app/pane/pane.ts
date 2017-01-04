@@ -8,8 +8,10 @@ import { UrlManagerService } from "../url-manager.service";
 
 export abstract class PaneComponent implements OnInit, OnDestroy {
 
-    constructor(protected activatedRoute: ActivatedRoute,
-        protected urlManager: UrlManagerService) {
+    protected constructor(
+        protected readonly activatedRoute: ActivatedRoute,
+        protected readonly  urlManager: UrlManagerService
+    ) {
     }
 
     // pane API

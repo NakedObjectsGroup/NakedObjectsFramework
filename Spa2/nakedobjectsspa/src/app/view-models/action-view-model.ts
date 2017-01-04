@@ -14,14 +14,14 @@ import * as Helpers from './helpers-view-models';
 export class ActionViewModel {
 
     constructor(
-        private viewModelFactory: ViewModelFactoryService,
-        private context: ContextService,
-        private urlManager: UrlManagerService,
-        private error: ErrorService,
-        private clickHandler: ClickHandlerService,
-        public actionRep: Models.ActionMember | Models.ActionRepresentation,
-        private vm: IMessageViewModel,
-        private routeData: PaneRouteData
+        private readonly viewModelFactory: ViewModelFactoryService,
+        private readonly context: ContextService,
+        private readonly urlManager: UrlManagerService,
+        private readonly error: ErrorService,
+        private readonly clickHandler: ClickHandlerService,
+        public  readonly actionRep: Models.ActionMember | Models.ActionRepresentation,
+        private readonly vm: IMessageViewModel,
+        private readonly routeData: PaneRouteData
     ) {
 
         if (actionRep instanceof Models.ActionRepresentation || actionRep instanceof Models.InvokableActionMember) {
@@ -35,26 +35,27 @@ export class ActionViewModel {
         this.description = this.disabled() ? actionRep.disabledReason() : actionRep.extensions().description();
     }
 
-    paneId: number;
-    invokableActionRep: Models.IInvokableAction;
-    menuPath: string;
-    title: string;
-    description: string;
-    presentationHint: string;
+    readonly paneId: number; 
+    readonly menuPath: string;
+    readonly title: string;
+    readonly description: string;
+    readonly presentationHint: string;
     gotoResult = true;
+    invokableActionRep: Models.IInvokableAction;
 
     // form actions should never show dialogs
-    private showDialog = () => this.actionRep.extensions().hasParams() && (this.routeData.interactionMode !== InteractionMode.Form);
+    private readonly showDialog = () => this.actionRep.extensions().hasParams() && (this.routeData.interactionMode !== InteractionMode.Form);
 
-    private incrementPendingPotentAction() {
+    private readonly incrementPendingPotentAction = () => {
         Helpers.incrementPendingPotentAction(this.context, this.invokableActionRep, this.paneId);
     }
 
-    private decrementPendingPotentAction() {
+    private readonly decrementPendingPotentAction = () => {
         Helpers.decrementPendingPotentAction(this.context, this.invokableActionRep, this.paneId);
     }
 
     // open dialog on current pane always - invoke action goes to pane indicated by click
+    // todo this is modified maybe better way of doing ?
     doInvoke = this.showDialog()
         ? (right?: boolean) => {
             // clear any previous dialog so we don't pick up values from it
@@ -80,7 +81,7 @@ export class ActionViewModel {
         };
 
 
-
+    // todo this is modified maybe better way of doing ?
     execute = (pps: ParameterViewModel[], right?: boolean): Promise<Models.ActionResultRepresentation> => {
         const parmMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Models.Value>;
         _.forEach(pps, p => this.urlManager.setParameterValue(this.actionRep.actionId(), p.parameterRep, p.getValue(), this.paneId));
@@ -90,14 +91,14 @@ export class ActionViewModel {
     };
 
 
-    disabled = () => !!this.actionRep.disabledReason();
+    readonly disabled = () => !!this.actionRep.disabledReason();
 
-    parameters = () => {
+    readonly parameters = () => {
         // don't use actionRep directly as it may change and we've closed around the original value
         const parameters = _.pickBy(this.invokableActionRep.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Models.Parameter>;
         const parms = this.routeData.actionParams;
         return _.map(parameters, parm => this.viewModelFactory.parameterViewModel(parm, parms[parm.id()], this.paneId));
     };
 
-    makeInvokable = (details: Models.IInvokableAction) => this.invokableActionRep = details;
+    readonly makeInvokable = (details: Models.IInvokableAction) => this.invokableActionRep = details;
 }

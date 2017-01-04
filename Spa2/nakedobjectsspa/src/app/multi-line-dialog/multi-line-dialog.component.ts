@@ -84,7 +84,7 @@ export class MultiLineDialogComponent extends PaneComponent {
         const parms = this.rowData[index].parms;
 
         _.forEach(parms,
-            (p, k) => {
+            p => {
                 const newValue = this.rowData[index].form.value[p.id];
                 p.setValueFromControl(newValue);
             });
@@ -105,7 +105,7 @@ export class MultiLineDialogComponent extends PaneComponent {
         const pps = dialog.parameters;
         const parms = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<ParameterViewModel>;
         // todo fix types - no any 
-        const controls = _.mapValues(parms, p => [p.getValueForControl(), a => p.validator(a)]) as _.Dictionary<any>;
+        const controls = _.mapValues(parms, p => [p.getValueForControl(), (a : AbstractControl) => p.validator(a)]) as _.Dictionary<any>;
         const form = this.formBuilder.group(controls);
 
         form.valueChanges.subscribe((data: any) => {

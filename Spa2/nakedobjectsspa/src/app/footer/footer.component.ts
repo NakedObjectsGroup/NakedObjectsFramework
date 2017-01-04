@@ -19,12 +19,13 @@ import * as Models from "../models";
 })
 export class FooterComponent implements OnInit {
 
-    constructor(private urlManager: UrlManagerService,
-        private context: ContextService,
-        private clickHandler: ClickHandlerService,
-        private error: ErrorService,
-        private repLoader: RepLoaderService,
-        private location: Location) {
+    constructor(
+        private readonly urlManager: UrlManagerService,
+        private readonly context: ContextService,
+        private readonly clickHandler: ClickHandlerService,
+        private readonly error: ErrorService,
+        private readonly repLoader: RepLoaderService,
+        private readonly location: Location) {
     }
 
     loading: string;

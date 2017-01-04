@@ -911,7 +911,10 @@ export class ErrorValue {
 }
 
 export class Result {
-    constructor(public wrapped: Ro.IDomainObjectRepresentation | RoCustom.ICustomListRepresentation | Ro.IScalarValueRepresentation, private resultType: Ro.resultTypeType) { }
+    constructor(
+        public readonly wrapped: Ro.IDomainObjectRepresentation | RoCustom.ICustomListRepresentation | Ro.IScalarValueRepresentation,
+        private readonly resultType: Ro.resultTypeType
+    ) { }
 
     object(): DomainObjectRepresentation {
         if (!this.isNull() && this.resultType === "object") {

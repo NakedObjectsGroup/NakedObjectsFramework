@@ -7,7 +7,10 @@ import { ColorConfigService } from "./color-config.service";
 @Injectable()
 export class ColorService {
 
-    constructor(private context: ContextService, private config: ColorConfigService) {
+    constructor(
+        private readonly context: ContextService,
+        private readonly config: ColorConfigService
+    ) {
         config.configure(this);
     }
 

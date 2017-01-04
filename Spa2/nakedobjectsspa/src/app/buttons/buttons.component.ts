@@ -8,10 +8,6 @@ import { IButton } from '../button/button.component';
 })
 export class ButtonsComponent {
 
-
-
     @Input()
     buttons: IButton[];
-
-
 }

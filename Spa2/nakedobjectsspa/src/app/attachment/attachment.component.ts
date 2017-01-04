@@ -19,9 +19,9 @@ export class AttachmentComponent extends PaneComponent {
     constructor(
         activatedRoute: ActivatedRoute,
         urlManager: UrlManagerService,
-        private viewModelFactory: ViewModelFactoryService,
-        private context: ContextService,
-        private error: ErrorService
+        private readonly viewModelFactory: ViewModelFactoryService,
+        private readonly context: ContextService,
+        private readonly error: ErrorService
     ) {
         super(activatedRoute, urlManager);
     }

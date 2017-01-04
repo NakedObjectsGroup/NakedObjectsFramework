@@ -29,10 +29,10 @@ export class ListComponent extends PaneComponent implements AfterViewInit {
 
     constructor(activatedRoute: ActivatedRoute,
         urlManager: UrlManagerService,
-        private context: ContextService,
-        private color: ColorService,
-        private viewModelFactory: ViewModelFactoryService,
-        private error: ErrorService) {
+        private readonly context: ContextService,
+        private readonly color: ColorService,
+        private readonly viewModelFactory: ViewModelFactoryService,
+        private readonly error: ErrorService) {
         super(activatedRoute, urlManager);
     }
 

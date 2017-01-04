@@ -17,12 +17,12 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
 
     constructor(
         viewModelFactory: ViewModelFactoryService,
-        private colorService: ColorService,
+        private readonly colorService: ColorService,
         error: ErrorService,
         context: ContextService,
         urlManager: UrlManagerService,
-        public collectionRep: Models.CollectionMember | Models.CollectionRepresentation,
-        private routeData: PaneRouteData
+        public readonly collectionRep: Models.CollectionMember | Models.CollectionRepresentation,
+        private readonly routeData: PaneRouteData
     ) {
         super(context, viewModelFactory, urlManager, error);
         this.onPaneId = routeData.paneId;
@@ -37,8 +37,23 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
 
         this.reset(routeData, true);
     }
+    private readonly presentationHint: string;
+    private readonly template: string;
+    private readonly messages: string;
+    private readonly pluralName: string;
 
-    reset = (routeData: PaneRouteData, resetting: boolean) => {
+    private color: string;
+    private editing: boolean;
+
+    readonly id: string;
+    readonly title: string;
+
+    details: string;
+    mayHaveItems: boolean;
+    header: string[];
+    currentState: CollectionViewState;
+   
+    readonly reset = (routeData: PaneRouteData, resetting: boolean) => {
 
         let state = routeData.collections[this.collectionRep.collectionId()];
 
@@ -60,9 +75,6 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
         }
 
         this.editing = routeData.interactionMode === InteractionMode.Edit;
-
-        // clear any previous messages
-        //this.resetMessage();
 
         if (resetting || state !== this.currentState) {
 
@@ -89,60 +101,33 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
                             routeData,
                             this);
                         this.details = Helpers.getCollectionDetails(this.items.length);
-                        //this.allSelected = _.every(this.items, item => item.selected);
                     }).
                     catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
             } else {
                 this.items = this.viewModelFactory.getItems(itemLinks, this.currentState === CollectionViewState.Table, routeData, this);
-                //this.allSelected = _.every(this.items, item => item.selected);   
             }
             this.currentState = state;
-        } else {
-            //this.allSelected = _.every(this.items, item => item.selected);
-        }
+        } 
     }
 
 
-    doSummary = () => this.urlManager.setCollectionMemberState(this.collectionRep.collectionId(), CollectionViewState.Summary, this.onPaneId);
-    doList = () => this.urlManager.setCollectionMemberState(this.collectionRep.collectionId(), CollectionViewState.List, this.onPaneId);
-    doTable = () => this.urlManager.setCollectionMemberState(this.collectionRep.collectionId(), CollectionViewState.Table, this.onPaneId);
+    readonly doSummary = () => this.urlManager.setCollectionMemberState(this.collectionRep.collectionId(), CollectionViewState.Summary, this.onPaneId);
+    readonly doList = () => this.urlManager.setCollectionMemberState(this.collectionRep.collectionId(), CollectionViewState.List, this.onPaneId);
+    readonly doTable = () => this.urlManager.setCollectionMemberState(this.collectionRep.collectionId(), CollectionViewState.Table, this.onPaneId);
+    readonly hasTableData = () => this.items && _.some(this.items, (i : ItemViewModel) => i.tableRowViewModel);
 
-    hasTableData = () => this.items && _.some(this.items, i => i.tableRowViewModel);
+   
 
-    title: string;
-    details: string;
-    pluralName: string;
-    color: string;
-    mayHaveItems: boolean;
-    editing: boolean;
-    id: string;
+    readonly description = () => this.details.toString();
 
-    header: string[];
+    readonly disableActions = () => this.editing || !this.actions || this.actions.length === 0;
 
-    currentState: CollectionViewState;
-
-    presentationHint: string;
-    template: string;
-    //actions: ActionViewModel[];
-    //menuItems: MenuItemViewModel[];
-    messages: string;
-
-    description = () => this.details.toString();
-
-    disableActions = () => this.editing || !this.actions || this.actions.length === 0;
-
-    actionMember = (id: string) => {
+    readonly actionMember = (id: string) => {
         const actionViewModel = _.find(this.actions, a => a.actionRep.actionId() === id);
         return actionViewModel ? actionViewModel.actionRep : null;
     }
 
-    //setActions(actions: _.Dictionary<Models.ActionMember>, routeData: PaneRouteData) {
-    //    this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
-    //    this.menuItems = Helpers.createMenuItems(this.actions);
-    //    _.forEach(this.actions, a => this.decorate(a));
-    //}
-
-    hasMatchingLocallyContributedAction(id: string) {
+    readonly hasMatchingLocallyContributedAction = (id: string) => {
         return id && this.actions && this.actions.length > 0 && !!this.actionMember(id);
     }
 }

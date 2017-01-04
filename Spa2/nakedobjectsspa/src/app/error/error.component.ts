@@ -10,7 +10,10 @@ import { ErrorViewModel } from '../view-models/error-view-model';
 })
 export class ErrorComponent {
 
-    constructor(private context: ContextService, private viewModelFactory: ViewModelFactoryService) { }
+    constructor(
+        private readonly context: ContextService,
+        private readonly viewModelFactory: ViewModelFactoryService
+    ) { }
 
     // template API 
 

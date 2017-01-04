@@ -20,10 +20,12 @@ import { ChoiceViewModel } from '../view-models/choice-view-model';
 })
 export class EditParameterComponent extends FieldComponent implements OnInit {
 
-    constructor(private viewModelFactory: ViewModelFactoryService,
-        private urlManager: UrlManagerService,
+    constructor(
+        private readonly viewModelFactory: ViewModelFactoryService,
+        private readonly urlManager: UrlManagerService,
         myElement: ElementRef,
-        context: ContextService) {
+        context: ContextService
+    ) {
         super(myElement, context);
     }
 

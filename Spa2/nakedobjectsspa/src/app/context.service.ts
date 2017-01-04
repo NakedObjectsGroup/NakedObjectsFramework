@@ -170,8 +170,10 @@ class ValueCache {
 @Injectable()
 export class ContextService {
 
-    constructor(private urlManager: UrlManagerService,
-        private repLoader: RepLoaderService) {
+    constructor(
+        private readonly urlManager: UrlManagerService,
+        private readonly repLoader: RepLoaderService
+    ) {
     }
 
     // cached values
@@ -660,7 +662,7 @@ export class ContextService {
     }
 
     decPendingPotentActionOrReload(paneId: number) {
-        const count = --(this.pendingPotentActionCount[paneId]);
+        const count = --this.pendingPotentActionCount[paneId];
 
         if (count < 0) {
             // todo proper error handling]

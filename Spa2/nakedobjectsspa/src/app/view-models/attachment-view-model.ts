@@ -7,21 +7,21 @@ import * as Msg from '../user-messages';
 export class AttachmentViewModel {
 
     constructor(
-        private link: Models.Link,
-        private parent: Models.DomainObjectRepresentation,
-        private context: ContextService,
-        private urlManager: UrlManagerService,
-        private clickHandler: ClickHandlerService,
-        private onPaneId: number
+        private readonly link: Models.Link,
+        private readonly parent: Models.DomainObjectRepresentation,
+        private readonly context: ContextService,
+        private readonly urlManager: UrlManagerService,
+        private readonly clickHandler: ClickHandlerService,
+        private readonly onPaneId: number
     ) {
         this.href = link.href();
         this.mimeType = link.type().asString;
         this.title = link.title() || Msg.unknownFileTitle;
     }
 
-    href: string;
-    mimeType: string;
-    title: string;
+    readonly href: string;
+    readonly mimeType: string;
+    readonly title: string;
 
     downloadFile = () => this.context.getFile(this.parent, this.href, this.mimeType);
     clearCachedFile = () => this.context.clearCachedFile(this.href);

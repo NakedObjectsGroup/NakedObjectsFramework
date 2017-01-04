@@ -10,8 +10,8 @@ import { ISubscription } from 'rxjs/Subscription';
 })
 export class ActionComponent {
 
-    constructor(private myElement: ElementRef,
-        private context: ContextService) {
+    constructor(private readonly myElement: ElementRef,
+                private readonly context: ContextService) {
     }
 
     @Input()

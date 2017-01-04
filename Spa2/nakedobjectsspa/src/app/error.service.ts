@@ -9,7 +9,10 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class ErrorService {
 
-    constructor(private urlManager: UrlManagerService, private context : ContextService) { }
+    constructor(
+        private readonly urlManager: UrlManagerService,
+        private readonly context: ContextService
+    ) { }
 
     private preProcessors: errorPreprocessor[] = [];
     //const displayHandlers: errorDisplayHandler[] = [];

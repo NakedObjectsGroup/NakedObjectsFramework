@@ -4,10 +4,14 @@ import {FieldViewModel} from './view-models/field-view-model';
 
 @Directive({ selector: '[geminiClear]' })
 export class GeminiClearDirective implements OnInit {
-    private el: HTMLInputElement;
 
-    constructor(el: ElementRef, private renderer: Renderer) {
-        this.el = el.nativeElement;
+    private readonly nativeEl: HTMLInputElement;
+
+    constructor(
+        private readonly el: ElementRef,
+        private readonly renderer: Renderer
+    ) {
+        this.nativeEl = this.el.nativeElement;
     }
 
     model: FieldViewModel;
@@ -32,33 +36,34 @@ export class GeminiClearDirective implements OnInit {
     // not need the ngClass directive on element even though it doesn't do anything 
     // otherwise we lose all the classes added here 
     onChange() {
-        this.el.classList.add("ng-clearable");
+       
+        this.nativeEl.classList.add("ng-clearable");
 
-        if (this.el.value) {
-            this.el.classList.add("ng-x");
+        if (this.nativeEl.value) {
+            this.nativeEl.classList.add("ng-x");
         } else {
-            this.el.classList.remove("ng-x");
+            this.nativeEl.classList.remove("ng-x");
         }
     }
 
     onMouseMove(event: MouseEvent) {
-        if (this.el.classList.contains("ng-x")) {
-            const onX = this.el.offsetWidth - 18 < event.clientX - this.el.getBoundingClientRect().left;
+        if (this.nativeEl.classList.contains("ng-x")) {
+            const onX = this.nativeEl.offsetWidth - 18 < event.clientX - this.nativeEl.getBoundingClientRect().left;
             if (onX) {
-                this.el.classList.add("ng-onX");
+                this.nativeEl.classList.add("ng-onX");
                 
             } else {
-                this.el.classList.remove("ng-onX");
+                this.nativeEl.classList.remove("ng-onX");
             }
         }
     }
 
     onClick(event: KeyboardEvent) {
-        if (this.el.classList.contains("ng-onX")) {
+        if (this.nativeEl.classList.contains("ng-onX")) {
 
             event.preventDefault();
-            this.el.classList.remove("ng-x");
-            this.el.classList.remove("ng-onX");
+            this.nativeEl.classList.remove("ng-x");
+            this.nativeEl.classList.remove("ng-onX");
 
             this.model.clear();
             this.formGroup.controls[this.model.id].reset("");

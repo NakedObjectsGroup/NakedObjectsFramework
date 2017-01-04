@@ -4,26 +4,21 @@
 export class ChoiceViewModel {
 
     constructor(
-        value: Models.Value,
-        id: string,
+        private readonly wrapped : Models.Value,
+        private readonly id: string,
         name?: string,
         searchTerm?: string
     ) {
-        this.wrapped = value;
-        this.id = id;
-        this.name = name || value.toString();
+        this.name = name || wrapped.toString();
         this.search = searchTerm || this.name;
-        this.isEnum = !value.isReference() && (this.name !== this.getValue().toValueString());
+        this.isEnum = !wrapped.isReference() && (this.name !== this.getValue().toValueString());
     }
 
-    name: string;
+    readonly name: string;
 
-    private id: string;
-    private search: string;
-    private isEnum: boolean;
-    private wrapped: Models.Value;
-
-
+    private readonly search: string;
+    private readonly isEnum: boolean;
+   
     getValue() {
         return this.wrapped;
     }

@@ -14,8 +14,8 @@ import { ApplicationPropertiesViewModel } from '../view-models/application-prope
 export class ApplicationPropertiesComponent implements OnInit {
 
     constructor(
-        private context: ContextService,
-        private error: ErrorService) {
+        private readonly context: ContextService,
+        private readonly error: ErrorService) {
     }
 
     get userName() {

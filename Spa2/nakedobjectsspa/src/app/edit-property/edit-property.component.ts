@@ -22,8 +22,8 @@ import { ChoiceViewModel } from '../view-models/choice-view-model';
 export class EditPropertyComponent extends FieldComponent implements OnInit {
 
     constructor(myElement: ElementRef,
-        private router: Router,
-        private error: ErrorService,
+        private readonly router: Router,
+        private readonly error: ErrorService,
         context: ContextService) {
         super(myElement, context);
     }

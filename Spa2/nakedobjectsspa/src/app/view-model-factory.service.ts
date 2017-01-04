@@ -35,7 +35,7 @@ import { MultiLineDialogViewModel } from './view-models/multi-line-dialog-view-m
 @Injectable()
 export class ViewModelFactoryService {
 
-    constructor(private context: ContextService,
+    constructor(private readonly context: ContextService,
         private urlManager: UrlManagerService,
         private color: ColorService,
         private error: ErrorService,
@@ -46,32 +46,32 @@ export class ViewModelFactoryService {
 
     errorViewModel = (error: Models.ErrorWrapper) => {
         return new ErrorViewModel(error);
-    };
+    }
 
     attachmentViewModel = (propertyRep: Models.PropertyMember, paneId: number) => {
         const parent = propertyRep.parent as Models.DomainObjectRepresentation;
         return new AttachmentViewModel(propertyRep.attachmentLink(), parent, this.context, this.urlManager, this.clickHandler, paneId);
-    };
+    }
 
     linkViewModel = (linkRep: Models.Link, paneId: number) => {
         return new LinkViewModel(this.context, this.color, this.error, this.urlManager, linkRep, paneId);
-    };
+    }
 
     itemViewModel = (linkRep: Models.Link, paneId: number, selected: boolean, index: number, id: string) => {
         return new ItemViewModel(this.context, this.color, this.error, this.urlManager, linkRep, paneId, this.clickHandler, this, index, selected, id);
-    };
+    }
 
     recentItemViewModel = (obj: Models.DomainObjectRepresentation, linkRep: Models.Link, paneId: number, selected: boolean, index: number) => {
         return new RecentItemViewModel(this.context, this.color, this.error, this.urlManager, linkRep, paneId, this.clickHandler, this, index, selected, obj.extensions().friendlyName());
-    };
+    }
 
     actionViewModel = (actionRep: Models.ActionMember | Models.ActionRepresentation, vm: IMessageViewModel, routeData: PaneRouteData) => {
         return new ActionViewModel(this, this.context, this.urlManager, this.error, this.clickHandler, actionRep, vm, routeData);
-    };
+    }
 
     propertyTableViewModel = (id: string, propertyRep?: Models.PropertyMember | Models.CollectionMember) => {
         return propertyRep ? new TableRowColumnViewModel(id, propertyRep, this.mask) : new TableRowColumnViewModel(id);
-    };
+    }
 
     propertyViewModel = (propertyRep: Models.PropertyMember, id: string, previousValue: Models.Value, paneId: number, parentValues: () => _.Dictionary<Models.Value>) => {
         return new PropertyViewModel(propertyRep,
@@ -87,7 +87,7 @@ export class ViewModelFactoryService {
             previousValue,
             paneId,
             parentValues);
-    };
+    }
 
     dialogViewModel = (routeData: PaneRouteData, action: Models.IInvokableAction, actionViewModel: ActionViewModel, isRow: boolean) => {
 
@@ -131,31 +131,31 @@ export class ViewModelFactoryService {
 
     parameterViewModel = (parmRep: Models.Parameter, previousValue: Models.Value, paneId: number) => {
         return new ParameterViewModel(parmRep, paneId, this.color, this.error, this.momentWrapperService, this.mask, previousValue, this, this.context);
-    };
+    }
 
     collectionViewModel = (collectionRep: Models.CollectionMember, routeData: PaneRouteData) => {
         return new CollectionViewModel(this, this.color, this.error, this.context, this.urlManager, collectionRep, routeData);
-    };
+    }
 
     listPlaceholderViewModel = (routeData: PaneRouteData) => {
         return new CollectionPlaceholderViewModel(this.context, this.error, routeData);
-    };
+    }
 
     menuViewModel = (menuRep: Models.MenuRepresentation, routeData: PaneRouteData) => {
         return new MenuViewModel(this, menuRep, routeData);
-    };
+    }
 
     menusViewModel = (menusRep: Models.MenusRepresentation, routeData: PaneRouteData) => {
         return new MenusViewModel(this, menusRep, routeData);
-    };
+    }
 
     recentItemsViewModel = (paneId: number) => {
         return new RecentItemsViewModel(this, this.context, this.urlManager, paneId);
-    };
+    }
 
     tableRowViewModel = (properties: _.Dictionary<Models.PropertyMember>, paneId: number): TableRowViewModel => {
         return new TableRowViewModel(this, properties, paneId);
-    };
+    }
 
     getItems = (links: Models.Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: ListViewModel | CollectionViewModel) => {
 
@@ -188,7 +188,7 @@ export class ViewModelFactoryService {
 
                             const propertiesHeader =
                                 _.map(firstItem.properties, (p, i) => {
-                                    const match = _.find(items, item => item.tableRowViewModel.properties[i].title);
+                                    const match = _.find(items, (item : ItemViewModel) => item.tableRowViewModel.properties[i].title);
                                     return match ? match.tableRowViewModel.properties[i].title : firstItem.properties[i].id;
                                 });
 
