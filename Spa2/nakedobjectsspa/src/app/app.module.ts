@@ -37,7 +37,7 @@ import { MaskConfigService } from './mask-config.service';
 import { CollectionComponent } from './collection/collection.component';
 // temp hack todo fix
 import { MomentWrapperService } from './moment-wrapper.service';
-import {DND_PROVIDERS, DND_DIRECTIVES} from 'ng2-dnd';
+import { DndModule } from 'ng2-dnd';
 import { ReactiveFormsModule }          from '@angular/forms';
 import { AttachmentComponent } from './attachment/attachment.component';
 import { MultiLineDialogComponent } from './multi-line-dialog/multi-line-dialog.component';
@@ -71,7 +71,6 @@ import { ButtonComponent } from './button/button.component'
     GeminiBooleanDirective,
     GeminiClearDirective,
     CollectionComponent,
-    DND_DIRECTIVES,
     AttachmentComponent,
     MultiLineDialogComponent,
     ViewParameterComponent,
@@ -82,6 +81,7 @@ import { ButtonComponent } from './button/button.component'
   ],
   imports: [
     BrowserModule,
+    DndModule.forRoot(),
     FormsModule,
     HttpModule,
     RoutingModule,
@@ -99,7 +99,6 @@ import { ButtonComponent } from './button/button.component'
         ColorConfigService,
         MaskConfigService,
         MomentWrapperService,
-        DND_PROVIDERS,
         { provide: ErrorHandler, useClass: GeminiErrorHandler }
         ],
   bootstrap: [AppComponent]
