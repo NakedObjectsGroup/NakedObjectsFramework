@@ -60,13 +60,15 @@ export abstract class FieldComponent {
 
     droppable: FieldViewModel;
 
-    accept(draggableVm: IDraggableViewModel) {
+    accept(droppableVm: FieldViewModel) {
 
-        if (draggableVm) {
-            draggableVm.canDropOn(this.droppable.returnType).then((canDrop: boolean) => this.canDrop = canDrop).catch(() => this.canDrop = false);
-            return true;
+        return (draggableVm: IDraggableViewModel) => {
+            if (draggableVm) {
+                draggableVm.canDropOn(droppableVm.returnType).then((canDrop: boolean) => this.canDrop = canDrop).catch(() => this.canDrop = false);
+                return true;
+            }
+            return false;
         }
-        return false;
     };
 
     drop(draggableVm: IDraggableViewModel) {

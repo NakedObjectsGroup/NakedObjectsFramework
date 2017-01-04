@@ -10,7 +10,7 @@
         <div *ngIf="isEditable" class="input-control text" [ngSwitch]="propertyEntryType">
             <!--"EntryType.AutoComplete"-->
             <div *ngSwitchCase="5">
-                <input #focus [id]="propertyPaneId" class="value droppable" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
+                <input #focus [id]="propertyPaneId" class="value droppable" dnd-droppable [allowDrop]="accept(property)" (onDropSuccess)="drop($event.dragData)"
                     [ngClass]="classes()" placeholder="{{propertyDescription}}" type="text" [formControlName]="propertyId"
                     [geminiClear]="property" [form]="form" />
                 <div class="suggestions" *ngIf="propertyChoices.length > 0">
@@ -38,7 +38,7 @@
 
             <!--"EntryType.FreeForm"-->
             <div *ngSwitchCase="0">
-                <input #focus [id]="propertyPaneId" class="value droppable" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
+                <input #focus [id]="propertyPaneId" class="value droppable" dnd-droppable [allowDrop]="accept(property)" (onDropSuccess)="drop($event.dragData)"
                     [ngClass]="classes()" placeholder="{{propertyDescription}}" type="text" [formControlName]="propertyId"
                     [geminiClear]="property" [form]="form" />
             </div>
@@ -83,7 +83,7 @@
             <div [ngSwitch]="propertyEntryType">
                 <!--"EntryType.AutoComplete"-->
                 <div *ngSwitchCase="5">
-                    <input #focus [id]="propertyPaneId" class="value droppable" dnd-droppable [allowDrop]="accept" (onDropSuccess)="drop($event.dragData)"
+                    <input #focus [id]="propertyPaneId" class="value droppable" dnd-droppable [allowDrop]="accept(property)" (onDropSuccess)="drop($event.dragData)"
                         [ngClass]="classes()" placeholder="{{propertyDescription}}" type="text" [formControlName]="propertyId"
                         [geminiClear]="property" [form]="form" />
                     <div class="suggestions" *ngIf="propertyChoices.length > 0">
