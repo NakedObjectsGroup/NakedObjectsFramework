@@ -1,7 +1,7 @@
 Naked Objects Framework
 ======================
 
-The current stable release of the Naked Objects Framework (NOF) is version 8.2  -  see below for details.
+The current stable release of the Naked Objects Framework (NOF) is version 8.3.1  -  see below for details.
 
 The NOF may be used entirely as packages from the NuGet public gallery - there is no need to clone this repository.  Indeed, building the framework from source code is quite complex and not recommended for newcomers.  (If you really want to know how to do it, see the section 'How to build the framework from source code' in the Developer Manual.)
 
