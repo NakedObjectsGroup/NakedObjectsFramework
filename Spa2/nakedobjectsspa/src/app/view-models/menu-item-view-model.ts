@@ -1,14 +1,14 @@
 ﻿import { ActionViewModel } from './action-view-model';
 
 export class MenuItemViewModel {
-    constructor(public name: string,
-        public actions: ActionViewModel[],
-        public menuItems: MenuItemViewModel[]) {
+    constructor(
+        public readonly name: string,
+        public actions: ActionViewModel[], // modified todo 
+        public menuItems: MenuItemViewModel[] // modified todo 
+    ) {
     }
 
-    toggleCollapsed() {
-        this.navCollapsed = !this.navCollapsed;
-    }
-
+    readonly toggleCollapsed : () => void = () => this.navCollapsed = !this.navCollapsed;
+    
     navCollapsed = !!this.name;
 }

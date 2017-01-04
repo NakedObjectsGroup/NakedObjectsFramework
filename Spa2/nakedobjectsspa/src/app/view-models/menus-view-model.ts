@@ -6,14 +6,12 @@ import * as _ from "lodash";
 
 export class MenusViewModel {
     constructor(
-        private viewModelFactory: ViewModelFactoryService,
-        private menusRep: Models.MenusRepresentation,
-        routeData: PaneRouteData
+        private readonly viewModelFactory: ViewModelFactoryService,
+        private readonly menusRep: Models.MenusRepresentation,
+        onPaneId : number
     ) {
-        this.onPaneId = routeData.paneId;
-        this.items = _.map(this.menusRep.value(), link => this.viewModelFactory.linkViewModel(link, this.onPaneId));
+        this.items = _.map(this.menusRep.value(), link => this.viewModelFactory.linkViewModel(link, onPaneId));
     }
 
-    onPaneId: number;
-    items: LinkViewModel[];
+    readonly items: LinkViewModel[];
 }

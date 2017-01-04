@@ -102,7 +102,7 @@ export class ViewModelFactoryService {
             isRow);
     }
 
-    multiLineDialogViewModel = (routeData: PaneRouteData, action: Models.IInvokableAction) => {
+    multiLineDialogViewModel = (routeData: PaneRouteData, action: Models.IInvokableAction, holder: Models.MenuRepresentation | Models.DomainObjectRepresentation | CollectionViewModel) => {
 
         return new MultiLineDialogViewModel(this.color,
             this.context,
@@ -110,7 +110,8 @@ export class ViewModelFactoryService {
             this.urlManager,
             this.error,
             routeData,
-            action);
+            action,
+            holder);
     }
 
     domainObjectViewModel = (obj: Models.DomainObjectRepresentation, routeData: PaneRouteData) => {
@@ -146,7 +147,7 @@ export class ViewModelFactoryService {
     }
 
     menusViewModel = (menusRep: Models.MenusRepresentation, routeData: PaneRouteData) => {
-        return new MenusViewModel(this, menusRep, routeData);
+        return new MenusViewModel(this, menusRep, routeData.paneId);
     }
 
     recentItemsViewModel = (paneId: number) => {

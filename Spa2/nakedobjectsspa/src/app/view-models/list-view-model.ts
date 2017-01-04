@@ -124,6 +124,7 @@ export class ListViewModel extends ContributedActionParentViewModel {
 
         this.id = this.urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize);
 
+        // todo fix constant string
         this.pluralName = "Objects";
         this.page = this.listRep.pagination().page;
         this.pageSize = this.listRep.pagination().pageSize;

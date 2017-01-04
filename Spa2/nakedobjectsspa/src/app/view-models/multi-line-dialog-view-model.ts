@@ -10,18 +10,26 @@ import * as Ro from '../ro-interfaces';
 import * as Config from '../config';
 import * as Msg from '../user-messages';
 import * as _ from "lodash";
+import {CollectionViewModel} from './collection-view-model';
 
 export class MultiLineDialogViewModel {
 
     constructor(
-        private color: ColorService,
-        private context: ContextService,
-        private viewModelFactory: ViewModelFactoryService,
-        private urlManager: UrlManagerService,
-        private error: ErrorService,
-        routeData: PaneRouteData,
-        action: Models.IInvokableAction
+        private readonly color: ColorService,
+        private readonly context: ContextService,
+        private readonly viewModelFactory: ViewModelFactoryService,
+        private readonly urlManager: UrlManagerService,
+        private readonly error: ErrorService,
+        private routeData: PaneRouteData,
+        private action: Models.IInvokableAction,
+        holder: Models.MenuRepresentation | Models.DomainObjectRepresentation | CollectionViewModel
     ) {
+
+        if (holder instanceof Models.DomainObjectRepresentation) {
+            this.objectTitle = holder.title();
+            this.objectFriendlyName = holder.extensions().friendlyName();
+        } 
+
         this.reset(routeData, action);
     }
 
@@ -48,12 +56,9 @@ export class MultiLineDialogViewModel {
         return dialogViewModel;
     }
 
-    objectFriendlyName: string;
-    objectTitle: string;
-
-    title: string = "";
-    action: Models.IInvokableAction;
-    routeData: PaneRouteData;
+    readonly objectFriendlyName = "";
+    readonly objectTitle = "";
+    title = "";
 
     reset(routeData: PaneRouteData, action: Models.IInvokableAction) {
 
@@ -87,7 +92,6 @@ export class MultiLineDialogViewModel {
         this.dialogs[index].doInvoke();
         this.context.clearDialogValues();
         return this.add(index);
-        //this.focusManager.focusOn(FocusTarget.MultiLineDialogRow, 1, 1); 
     }
 
     add(index: number) {
@@ -117,7 +121,7 @@ export class MultiLineDialogViewModel {
     }
 
     submittedCount() {
-        return (_.filter(this.dialogs, d => d.submitted)).length;
+        return _.filter(this.dialogs, d => d.submitted).length;
     }
 
     close() {

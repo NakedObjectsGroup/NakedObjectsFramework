@@ -10,8 +10,8 @@ import * as _ from "lodash";
 export class MenuViewModel extends MessageViewModel {
 
     constructor(
-        private viewModelFactory: ViewModelFactoryService,
-        public menuRep: Models.MenuRepresentation,
+        private readonly viewModelFactory: ViewModelFactoryService,
+        public readonly menuRep: Models.MenuRepresentation,
         routeData: PaneRouteData
     ) {
         super();
@@ -24,9 +24,8 @@ export class MenuViewModel extends MessageViewModel {
         this.menuItems = Helpers.createMenuItems(this.actions);
     }
 
-
-    id: string;
-    title: string;
-    actions: ActionViewModel[];
-    menuItems: MenuItemViewModel[];
+    private readonly id: string;
+    private readonly title: string;
+    private readonly actions: ActionViewModel[];
+    private readonly menuItems: MenuItemViewModel[];
 }

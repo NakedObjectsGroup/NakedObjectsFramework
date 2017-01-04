@@ -134,17 +134,7 @@ export class MultiLineDialogComponent extends PaneComponent {
                     actionViewModel.makeInvokable(details);
                 }
 
-                this.dialog = this.viewModelFactory.multiLineDialogViewModel(routeData, details);
-
-                // todo - do this in constructor and pass in holder
-                if (holder instanceof Models.DomainObjectRepresentation) {
-                    this.dialog.objectTitle = holder.title();
-                    this.dialog.objectFriendlyName = holder.extensions().friendlyName();
-                } else {
-                    this.dialog.objectFriendlyName = "";
-                    this.dialog.objectTitle = "";
-                }
-
+                this.dialog = this.viewModelFactory.multiLineDialogViewModel(routeData, details, holder);
                 this.rowData = _.map(this.dialog.dialogs, d => this.createForm(d));
             }).
             catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
