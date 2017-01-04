@@ -20,7 +20,6 @@ const routes: Routes = [
         component: HomeComponent,
         data: { pane: 1, class: "single" },
         children: [
-            { path: "" },
             { path: "home", component: HomeComponent, data: { pane: 2, class: "split" } },
             { path: "object", component: ObjectComponent, data: { pane: 2, class: "split" } },
             { path: "list", component: ListComponent, data: { pane: 2, class: "split" } },
@@ -33,7 +32,6 @@ const routes: Routes = [
         component: ObjectComponent,
         data: { pane: 1, class: "single" },
         children: [
-            { path: "" },
             { path: "home", component: HomeComponent, data: { pane: 2, class: "split" } },
             { path: "object", component: ObjectComponent, data: { pane: 2, class: "split" } },
             { path: "list", component: ListComponent, data: { pane: 2, class: "split" } },
@@ -46,7 +44,6 @@ const routes: Routes = [
         component: ListComponent,
         data: { pane: 1, class: "single" },
         children: [
-            { path: "" },
             { path: "home", component: HomeComponent, data: { pane: 2, class: "split" } },
             { path: "object", component: ObjectComponent, data: { pane: 2, class: "split" } },
             { path: "list", component: ListComponent, data: { pane: 2, class: "split" } },
@@ -59,7 +56,6 @@ const routes: Routes = [
         component: AttachmentComponent,
         data: { pane: 1, class: "single" },
         children: [
-            { path: "" },
             { path: "home", component: HomeComponent, data: { pane: 2, class: "split" } },
             { path: "object", component: ObjectComponent, data: { pane: 2, class: "split" } },
             { path: "list", component: ListComponent, data: { pane: 2, class: "split" } },
@@ -72,7 +68,6 @@ const routes: Routes = [
         component: RecentComponent,
         data: { pane: 1, class: "single" },
         children: [
-            { path: "" },
             { path: "home", component: HomeComponent, data: { pane: 2, class: "split" } },
             { path: "object", component: ObjectComponent, data: { pane: 2, class: "split" } },
             { path: "list", component: ListComponent, data: { pane: 2, class: "split" } },
