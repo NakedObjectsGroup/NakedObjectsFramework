@@ -185,8 +185,8 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
     // IDraggableViewModel
     readonly draggableType: string;
     readonly draggableTitle = () => this.formattedValue;
+    readonly canDropOn = (targetType: string) => this.context.isSubTypeOf(this.returnType, targetType) as Promise<boolean>;
 
     readonly doClick = (right?: boolean) => this.urlManager.setProperty(this.propertyRep, this.clickHandler.pane(this.onPaneId, right));
     readonly isDirty = () => !!this.previousValue || this.getValue().toValueString() !== this.originalValue.toValueString();
-    readonly canDropOn = (targetType: string) => this.context.isSubTypeOf(this.returnType, targetType) as Promise<boolean>;
 }

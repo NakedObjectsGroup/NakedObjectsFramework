@@ -18,15 +18,15 @@ export abstract class FieldViewModel extends MessageViewModel {
 
     protected constructor(
         private readonly rep : Models.IHasExtensions,
-        protected colorService: ColorService,
-        protected error: ErrorService,
-        protected context: ContextService,
-        protected momentWrapperService : MomentWrapperService,
-        public onPaneId: number,
-        public isScalar: boolean,
-        public id: string,
-        public isCollectionContributed: boolean,
-        public entryType : Models.EntryType
+        protected readonly colorService: ColorService,
+        protected readonly error: ErrorService,
+        protected readonly context: ContextService,
+        protected readonly momentWrapperService : MomentWrapperService,
+        public readonly onPaneId: number,
+        public readonly isScalar: boolean,
+        public readonly id: string,
+        public readonly isCollectionContributed: boolean,
+        public readonly entryType : Models.EntryType
     ) {
         super();
         const ext = rep.extensions();
@@ -42,34 +42,29 @@ export abstract class FieldViewModel extends MessageViewModel {
         this.type = isScalar ? "scalar" : "ref";
         this.argId = `${id.toLowerCase()}`;
         this.paneArgId = `${this.argId}${onPaneId}`;
-        this.updateColor = _.partial(this.setColor, colorService);
     }
 
-    argId: string;
+    readonly argId: string;
     paneArgId: string;
 
-    optional: boolean;
+    readonly optional: boolean;
     description: string;
-    presentationHint: string;
-    mask: string;
-    title: string;
-    returnType: string;
-    format: Ro.formatType;
-    multipleLines: number;
-    password: boolean;
+    readonly presentationHint: string;
+    readonly mask: string;
+    readonly title: string;
+    readonly returnType: string;
+    readonly format: Ro.formatType;
+    readonly multipleLines: number;
+    readonly password: boolean;
+    readonly type: "scalar" | "ref";
 
     clientValid = true;
-    readonly type: "scalar" | "ref";
     reference = "";
     minLength: number;
-
     color: string;
-
     promptArguments: _.Dictionary<Models.Value>;
-
     currentValue: Models.Value;
     originalValue: Models.Value;
-
     localFilter: ILocalFilter;
     formattedValue: string;
     private currentChoice: ChoiceViewModel;
@@ -83,13 +78,9 @@ export abstract class FieldViewModel extends MessageViewModel {
     prompt: (searchTerm: string) => Promise<ChoiceViewModel[]>;
     conditionalChoices: (args: _.Dictionary<Models.Value>) => Promise<ChoiceViewModel[]>;
 
-    drop = (newValue: IDraggableViewModel) =>  Helpers.drop(this.context, this.error, this, newValue);
+    drop = (newValue: IDraggableViewModel) => Helpers.drop(this.context, this.error, this, newValue);
 
-    validate = (modelValue: any, viewValue: string, mandatoryOnly: boolean) => {
-        return Helpers.validate(this.rep, this, this.momentWrapperService, modelValue, viewValue, mandatoryOnly);
-    }
-
-    private updateColor: () => void;
+    validate = (modelValue: any, viewValue: string, mandatoryOnly: boolean) => Helpers.validate(this.rep, this, this.momentWrapperService, modelValue, viewValue, mandatoryOnly);
 
     get choices(): ChoiceViewModel[] {
         return this.choiceOptions;
@@ -192,7 +183,7 @@ export abstract class FieldViewModel extends MessageViewModel {
     }
 
     protected update() {
-         this.updateColor();
+         this.setColor();
     };
 
     protected setupChoices(choices: _.Dictionary<Models.Value>) {
@@ -222,12 +213,12 @@ export abstract class FieldViewModel extends MessageViewModel {
         return this.optional || typeof this.value === "boolean" ? "" : "* ";
     }
 
-    private setColor(color: ColorService) {
+    private setColor() {
 
         if (this.entryType === Models.EntryType.AutoComplete && this.selectedChoice && this.type === "ref") {
             const href = this.selectedChoice.getValue().href();
             if (href) {
-                color.toColorNumberFromHref(href)
+                this.colorService.toColorNumberFromHref(href)
                     .then(c => {
                         // only if we still have a choice may have been cleared by a later call
                         if (this.selectedChoice) {
@@ -238,7 +229,7 @@ export abstract class FieldViewModel extends MessageViewModel {
                 return;
             }
         } else if (this.entryType !== Models.EntryType.AutoComplete && this.value) {
-            color.toColorNumberFromType(this.returnType)
+            this.colorService.toColorNumberFromType(this.returnType)
                 .then(c => {
                     // only if we still have a value may have been cleared by a later call
                     if (this.value) {
