@@ -22,7 +22,7 @@ export class PropertyViewModel extends FieldViewModel {
         color: ColorService,
         error: ErrorService,
         private viewModelfactory: ViewModelFactoryService,
-        private context: ContextService,
+        context: ContextService,
         private maskService: MaskService,
         private urlManager: UrlManagerService,
         private clickHandler: ClickHandlerService,
@@ -36,6 +36,7 @@ export class PropertyViewModel extends FieldViewModel {
         super(propertyRep.extensions(),
             color,
             error,
+            context,
             onPaneId,
             propertyRep.isScalar(),
             id,
@@ -89,24 +90,12 @@ export class PropertyViewModel extends FieldViewModel {
 
     private setupPropertyAutocomplete(parentValues: () => _.Dictionary<Models.Value>) {
         const propertyRep = this.propertyRep;
-        this.prompt = (searchTerm: string) => {
-            const createcvm = _.partial(Helpers.createChoiceViewModels, this.id, searchTerm);
-            const digest = this.getDigest(propertyRep);
-
-            return this.context.autoComplete(propertyRep, this.id, parentValues, searchTerm, digest).then(createcvm);
-        };
-        this.minLength = propertyRep.promptLink().extensions().minLength();
-        this.description = this.description || Msg.autoCompletePrompt;
+        this.setupAutocomplete(propertyRep, parentValues, this.getDigest(propertyRep));
     }
 
     private setupPropertyConditionalChoices() {
         const propertyRep = this.propertyRep;
-        this.conditionalChoices = (args: _.Dictionary<Models.Value>) => {
-            const createcvm = _.partial(Helpers.createChoiceViewModels, this.id, null);
-            const digest = this.getDigest(propertyRep);
-            return this.context.conditionalChoices(propertyRep, this.id, () => <_.Dictionary<Models.Value>>{}, args, digest).then(createcvm);
-        };
-        this.promptArguments = (<any>_.fromPairs)(_.map(propertyRep.promptLink().arguments(), (v: any, key: string) => [key, new Models.Value(v.value)]));
+        this.setupConditionalChoices(propertyRep, this.getDigest(propertyRep));
     }
 
     private callIfChanged(newValue: Models.Value, doRefresh: (newValue: Models.Value) => void) {
@@ -125,7 +114,7 @@ export class PropertyViewModel extends FieldViewModel {
 
             const choices = propertyRep.choices();
 
-            this.choices = _.map(choices, (v, n) => new ChoiceViewModel(v, this.id, n));
+            this.setupChoices(choices);
 
             if (this.optional) {
                 const emptyChoice = new ChoiceViewModel(new Models.Value(""), this.id);
@@ -190,16 +179,17 @@ export class PropertyViewModel extends FieldViewModel {
         });
     }
 
-    isEditable: boolean;
-    attachment: AttachmentViewModel;
+    readonly isEditable: boolean;
+    readonly attachment: AttachmentViewModel;
     refType: "null" | "navigable" | "notNavigable";
     // IDraggableViewModel
-    draggableType: string;
-    draggableTitle = () => this.formattedValue;
+    readonly draggableType: string;
+    readonly draggableTitle = () => this.formattedValue;
 
-    isDirty = () => !!this.previousValue || this.getValue().toValueString() !== this.originalValue.toValueString();
     validate = _.partial(Helpers.validate, this.propertyRep, this, this.momentWrapperService) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
-    canDropOn = (targetType: string) => this.context.isSubTypeOf(this.returnType, targetType) as Promise<boolean>;
     drop = _.partial(Helpers.drop, this.context, this.error, this) as (newValue: IDraggableViewModel) => Promise<boolean>;
-    doClick = (right?: boolean) => this.urlManager.setProperty(this.propertyRep, this.clickHandler.pane(this.onPaneId, right));
+
+    readonly doClick = (right?: boolean) => this.urlManager.setProperty(this.propertyRep, this.clickHandler.pane(this.onPaneId, right));
+    readonly isDirty = () => !!this.previousValue || this.getValue().toValueString() !== this.originalValue.toValueString();
+    readonly canDropOn = (targetType: string) => this.context.isSubTypeOf(this.returnType, targetType) as Promise<boolean>;
 }

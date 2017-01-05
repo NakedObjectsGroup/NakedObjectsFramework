@@ -22,12 +22,13 @@ export class ParameterViewModel extends FieldViewModel {
         private readonly maskService: MaskService,
         private readonly previousValue: Models.Value,
         private readonly viewModelFactory: ViewModelFactoryService,
-        private readonly context: ContextService
+        context: ContextService
     ) {
 
         super(parameterRep.extensions(),
             color,
             error,
+            context,
             onPaneId,
             parameterRep.isScalar(),
             parameterRep.id(),
@@ -77,19 +78,12 @@ export class ParameterViewModel extends FieldViewModel {
     readonly dflt: string;
 
     private setupParameterChoices() {
-        const parmRep = this.parameterRep;
-        this.choices = _.map(parmRep.choices(), (v, n) => new ChoiceViewModel(v, parmRep.id(), n));
+        this.setupChoices(this.parameterRep.choices());
     }
 
     private setupParameterAutocomplete() {
         const parmRep = this.parameterRep;
-        this.prompt = (searchTerm: string) => {
-            const createcvm = _.partial(Helpers.createChoiceViewModels, this.id, searchTerm);
-            return this.context.autoComplete(parmRep, this.id, () => <_.Dictionary<Models.Value>>{}, searchTerm).
-                then(createcvm);
-        };
-        this.minLength = parmRep.promptLink().extensions().minLength();
-        this.description = this.description || Msg.autoCompletePrompt;
+        this.setupAutocomplete(parmRep, () => <_.Dictionary<Models.Value>>{});
     }
 
     private setupParameterFreeformReference() {
@@ -106,12 +100,7 @@ export class ParameterViewModel extends FieldViewModel {
 
     private setupParameterConditionalChoices() {
         const parmRep = this.parameterRep;
-        this.conditionalChoices = (args: _.Dictionary<Models.Value>) => {
-            const createcvm = _.partial(Helpers.createChoiceViewModels, this.id, null);
-            return this.context.conditionalChoices(parmRep, this.id, () => <_.Dictionary<Models.Value>>{}, args).
-                then(createcvm);
-        };
-        this.promptArguments = (<any>_.fromPairs)(_.map(parmRep.promptLink().arguments(), (v: any, key: string) => [key, new Models.Value(v.value)]));
+        this.setupConditionalChoices(parmRep);
     }
 
     private setupParameterSelectedChoices() {
@@ -199,11 +188,8 @@ export class ParameterViewModel extends FieldViewModel {
         return this.optional || typeof this.value === "boolean" ? "" : "* ";
     }
 
-
-    setAsRow(i: number) {
-        this.paneArgId = `${this.argId}${i}`;
-    }
-
+    readonly setAsRow = (i: number) => this.paneArgId = `${this.argId}${i}`;
+    
     protected update() {
         super.update();
 

@@ -10,6 +10,8 @@ import * as Ro from '../ro-interfaces';
 import * as Config from '../config';
 import * as Msg from '../user-messages';
 import * as _ from "lodash";
+import * as Helpers from './helpers-view-models';
+import {ContextService} from '../context.service';
 
 export abstract class FieldViewModel extends MessageViewModel {
 
@@ -17,6 +19,7 @@ export abstract class FieldViewModel extends MessageViewModel {
         ext: Models.Extensions,
         protected colorService: ColorService,
         protected error: ErrorService,
+        protected context : ContextService,
         public onPaneId: number,
         public isScalar: boolean,
         public id: string,
@@ -71,6 +74,15 @@ export abstract class FieldViewModel extends MessageViewModel {
     private currentRawValue: Ro.scalarValueType | Date = null;
     private choiceOptions: any[] = [];
 
+    file: Models.Link;
+
+    validate: (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
+    refresh: (newValue: Models.Value) => void;
+    prompt: (searchTerm: string) => Promise<ChoiceViewModel[]>;
+    conditionalChoices: (args: _.Dictionary<Models.Value>) => Promise<ChoiceViewModel[]>;
+    drop: (newValue: IDraggableViewModel) => Promise<boolean>;
+    private updateColor: () => void;
+
     get choices(): ChoiceViewModel[] {
         return this.choiceOptions;
     }
@@ -100,8 +112,6 @@ export abstract class FieldViewModel extends MessageViewModel {
         }
     }
 
-    
-
     get value(): Ro.scalarValueType | Date {
         return this.currentRawValue;
     }
@@ -120,10 +130,7 @@ export abstract class FieldViewModel extends MessageViewModel {
         this.update();
     }
 
-    file: Models.Link;
-
-    validate: (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
-
+  
     private isValid(viewValue: any): boolean {
 
         let val: string;
@@ -158,37 +165,51 @@ export abstract class FieldViewModel extends MessageViewModel {
         return this.validate(viewValue, val, !fullValidate);
     };
 
-    validator(c: AbstractControl): { [index: string]: any; } {
+    readonly validator = (c: AbstractControl): { [index: string]: any; } => {
         const viewValue = c.value;
         const isvalid = this.isValid(viewValue);
         return isvalid ? null : { invalid: "invalid entry" };
     };
-
-    refresh: (newValue: Models.Value) => void;
-
-    prompt: (searchTerm: string) => Promise<ChoiceViewModel[]>;
-
-    conditionalChoices: (args: _.Dictionary<Models.Value>) => Promise<ChoiceViewModel[]>;
-
-    setNewValue(newValue: IDraggableViewModel) {
+   
+    readonly setNewValue = (newValue: IDraggableViewModel) => {
         this.selectedChoice = newValue.selectedChoice;
         this.value = newValue.value;
         this.reference = newValue.reference;
     }
-
-    drop: (newValue: IDraggableViewModel) => Promise<boolean>;
-
-    clear() {
+ 
+    readonly clear = () => {
         this.selectedChoice = null;
         this.value = null;
         this.reference = "";
     }
 
-    private updateColor: () => void;
-
     protected update() {
-        this.updateColor();
+         this.updateColor();
+    };
+
+    protected setupChoices(choices: _.Dictionary<Models.Value>) {
+        this.choices = _.map(choices, (v, n) => new ChoiceViewModel(v, this.id, n));
     }
+
+    protected setupAutocomplete(rep: Models.IField, parentValues: () => _.Dictionary<Models.Value>, digest?: string) {
+
+        this.prompt = (searchTerm: string) => {
+            const createcvm = _.partial(Helpers.createChoiceViewModels, this.id, searchTerm);
+            return this.context.autoComplete(rep, this.id, parentValues, searchTerm, digest).then(createcvm);
+        };
+        this.minLength = rep.promptLink().extensions().minLength();
+        this.description = this.description || Msg.autoCompletePrompt;
+    }
+
+    protected setupConditionalChoices(rep: Models.IField, digest?: string) {
+
+        this.conditionalChoices = (args: _.Dictionary<Models.Value>) => {
+            const createcvm = _.partial(Helpers.createChoiceViewModels, this.id, null);
+            return this.context.conditionalChoices(rep, this.id, () => <_.Dictionary<Models.Value>>{}, args, digest).then(createcvm);
+        };
+        this.promptArguments = (<any>_.fromPairs)(_.map(rep.promptLink().arguments(), (v: any, key: string) => [key, new Models.Value(v.value)]));
+    }
+
 
     private setColor(color: ColorService) {
 
@@ -220,7 +241,7 @@ export abstract class FieldViewModel extends MessageViewModel {
         this.color = "";
     }
 
-    setValueFromControl(newValue: Ro.scalarValueType | Date | ChoiceViewModel | ChoiceViewModel[]) {
+    readonly setValueFromControl = (newValue: Ro.scalarValueType | Date | ChoiceViewModel | ChoiceViewModel[]) => {
 
         if (newValue instanceof Array) {
             this.selectedMultiChoices = newValue;
@@ -229,14 +250,11 @@ export abstract class FieldViewModel extends MessageViewModel {
         } else {
             this.value = newValue;
         }
-
     }
 
-    getValueForControl() {
-        return this.selectedMultiChoices || this.selectedChoice || this.value;
-    }
+    readonly getValueForControl = () => this.selectedMultiChoices || this.selectedChoice || this.value;
 
-    getValue(): Models.Value {
+    readonly getValue = () => {
 
         if (this.entryType === Models.EntryType.File) {
             return new Models.Value(this.file);
