@@ -16,7 +16,7 @@ import { RouteData, PaneRouteData } from '../route-data';
 export abstract class ContributedActionParentViewModel extends MessageViewModel {
 
     protected constructor(
-        protected context: ContextService,
+        protected readonly context: ContextService,
         protected readonly viewModelFactory: ViewModelFactoryService,
         protected readonly urlManager: UrlManagerService,
         protected readonly error: ErrorService,
@@ -40,13 +40,11 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
         _.forEach(this.actions, a => this.decorate(a));
     }
 
-
     protected collectionContributedActionDecorator(actionViewModel: ActionViewModel) {
         const wrappedInvoke = actionViewModel.execute;
         actionViewModel.execute = (pps: ParameterViewModel[], right?: boolean) => {
 
             const selected = _.filter(this.items, i => i.selected);
-
 
             const rejectAsNeedSelection = (action: Models.IInvokableAction) : Models.ErrorWrapper => {
                 if (this.isLocallyContributed(action)) {
@@ -158,7 +156,7 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
         }
     }
 
-    selectAll = () => {
+    readonly selectAll = () => {
         const newState = !this.allSelected();
         this.setItems(newState);
     };

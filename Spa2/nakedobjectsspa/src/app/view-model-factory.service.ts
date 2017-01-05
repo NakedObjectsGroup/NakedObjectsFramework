@@ -154,8 +154,8 @@ export class ViewModelFactoryService {
         return new RecentItemsViewModel(this, this.context, this.urlManager, paneId);
     }
 
-    tableRowViewModel = (properties: _.Dictionary<Models.PropertyMember>, paneId: number): TableRowViewModel => {
-        return new TableRowViewModel(this, properties, paneId);
+    tableRowViewModel = (properties: _.Dictionary<Models.PropertyMember>, paneId: number, title : string): TableRowViewModel => {
+        return new TableRowViewModel(this, properties, paneId, title);
     }
 
     getItems = (links: Models.Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: ListViewModel | CollectionViewModel) => {
@@ -180,8 +180,7 @@ export class ViewModelFactoryService {
                 getExtensions().
                     then((ext: Models.Extensions) => {
                         _.forEach(items, itemViewModel => {
-                            itemViewModel.tableRowViewModel.hasTitle = ext.tableViewTitle();
-                            itemViewModel.tableRowViewModel.conformColumns(ext.tableViewColumns());
+                            itemViewModel.tableRowViewModel.conformColumns(ext.tableViewTitle(), ext.tableViewColumns());
                         });
 
                         if (!listViewModel.header) {
@@ -193,7 +192,7 @@ export class ViewModelFactoryService {
                                     return match ? match.tableRowViewModel.properties[i].title : firstItem.properties[i].id;
                                 });
 
-                            listViewModel.header = firstItem.hasTitle ? [""].concat(propertiesHeader) : propertiesHeader;
+                            listViewModel.header = firstItem.showTitle ? [""].concat(propertiesHeader) : propertiesHeader;
                         }
                     }).
                     catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));

@@ -78,9 +78,9 @@ export abstract class FieldViewModel extends MessageViewModel {
     prompt: (searchTerm: string) => Promise<ChoiceViewModel[]>;
     conditionalChoices: (args: _.Dictionary<Models.Value>) => Promise<ChoiceViewModel[]>;
 
-    drop = (newValue: IDraggableViewModel) => Helpers.drop(this.context, this.error, this, newValue);
+    readonly drop = (newValue: IDraggableViewModel) => Helpers.drop(this.context, this.error, this, newValue);
 
-    validate = (modelValue: any, viewValue: string, mandatoryOnly: boolean) => Helpers.validate(this.rep, this, this.momentWrapperService, modelValue, viewValue, mandatoryOnly);
+    readonly validate = (modelValue: any, viewValue: string, mandatoryOnly: boolean) => Helpers.validate(this.rep, this, this.momentWrapperService, modelValue, viewValue, mandatoryOnly);
 
     get choices(): ChoiceViewModel[] {
         return this.choiceOptions;

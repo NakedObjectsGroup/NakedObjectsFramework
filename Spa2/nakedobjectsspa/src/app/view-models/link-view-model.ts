@@ -11,12 +11,12 @@ import { UrlManagerService } from '../url-manager.service';
 export class LinkViewModel implements IDraggableViewModel {
 
     constructor(
-        protected context: ContextService,
-        protected colorService: ColorService,
-        protected error: ErrorService,
-        protected urlManager: UrlManagerService,
-        public link: Models.Link,
-        public paneId: number
+        protected readonly context: ContextService,
+        protected readonly colorService: ColorService,
+        protected readonly error: ErrorService,
+        protected readonly urlManager: UrlManagerService,
+        public readonly link: Models.Link,
+        public readonly paneId: number
     ) {
 
         this.title = link.title() + Models.dirtyMarker(this.context, link.getOid());
@@ -35,20 +35,20 @@ export class LinkViewModel implements IDraggableViewModel {
             catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
     }
 
-    title: string;
-    domainType: string;
+    readonly title: string;
+    private readonly domainType: string;
 
     // IDraggableViewModel 
     color: string;
-    value: Ro.scalarValueType;
-    reference: string;
-    selectedChoice: ChoiceViewModel;
-    draggableType: string;
+    readonly value: Ro.scalarValueType;
+    readonly reference: string;
+    readonly selectedChoice: ChoiceViewModel;
+    readonly draggableType: string;
 
-    draggableTitle = () => this.title;
+    readonly draggableTitle = () => this.title;
 
-    canDropOn = (targetType: string) => this.context.isSubTypeOf(this.domainType, targetType);
+    readonly canDropOn = (targetType: string) => this.context.isSubTypeOf(this.domainType, targetType);
 
     // because may be clicking on menu already open so want to reset focus
-    doClick = (right?: boolean) => this.urlManager.setMenu(this.link.rel().parms[0].value, this.paneId);
+    readonly doClick = (right?: boolean) => this.urlManager.setMenu(this.link.rel().parms[0].value, this.paneId);
 }

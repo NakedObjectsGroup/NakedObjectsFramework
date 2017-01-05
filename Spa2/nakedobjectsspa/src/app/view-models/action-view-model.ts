@@ -19,7 +19,7 @@ export class ActionViewModel {
         private readonly urlManager: UrlManagerService,
         private readonly error: ErrorService,
         private readonly clickHandler: ClickHandlerService,
-        public  readonly actionRep: Models.ActionMember | Models.ActionRepresentation,
+        public readonly actionRep: Models.ActionMember | Models.ActionRepresentation,
         private readonly vm: IMessageViewModel,
         private readonly routeData: PaneRouteData
     ) {
@@ -35,7 +35,7 @@ export class ActionViewModel {
         this.description = this.disabled() ? actionRep.disabledReason() : actionRep.extensions().description();
     }
 
-    readonly paneId: number; 
+    readonly paneId: number;
     readonly menuPath: string;
     readonly title: string;
     readonly description: string;

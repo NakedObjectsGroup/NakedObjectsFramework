@@ -18,13 +18,15 @@ import * as _ from "lodash";
 
 export class DomainObjectViewModel extends MessageViewModel {
 
-    constructor(private colorService: ColorService,
-        private contextService: ContextService,
-        private viewModelFactory: ViewModelFactoryService,
-        private urlManager: UrlManagerService,
-        private error: ErrorService,
+    constructor(
+        private readonly colorService: ColorService,
+        private readonly contextService: ContextService,
+        private readonly viewModelFactory: ViewModelFactoryService,
+        private readonly urlManager: UrlManagerService,
+        private readonly error: ErrorService,
         obj: Models.DomainObjectRepresentation,
-        routeData: PaneRouteData) {
+        routeData: PaneRouteData
+    ) {
         super();
         this.reset(obj, routeData);
     }
@@ -57,23 +59,23 @@ export class DomainObjectViewModel extends MessageViewModel {
     properties: PropertyViewModel[];
     collections: CollectionViewModel[];
 
-    private editProperties = () => _.filter(this.properties, p => p.isEditable && p.isDirty());
+    private readonly editProperties = () => _.filter(this.properties, p => p.isEditable && p.isDirty());
 
-    private isFormOrTransient = () => this.domainObject.extensions().interactionMode() === "form" || this.domainObject.extensions().interactionMode() === "transient";
+    private readonly isFormOrTransient = () => this.domainObject.extensions().interactionMode() === "form" || this.domainObject.extensions().interactionMode() === "transient";
 
-    private cancelHandler = () => this.isFormOrTransient() ? () => this.urlManager.popUrlState(this.onPaneId) : () => this.urlManager.setInteractionMode(InteractionMode.View, this.onPaneId);
+    private readonly cancelHandler = () => this.isFormOrTransient() ? () => this.urlManager.popUrlState(this.onPaneId) : () => this.urlManager.setInteractionMode(InteractionMode.View, this.onPaneId);
 
-    private saveHandler = (): (object: Models.DomainObjectRepresentation, props: Object, paneId: number, viewSavedObject: boolean) => Promise<Models.DomainObjectRepresentation> =>
+    private readonly saveHandler = (): (object: Models.DomainObjectRepresentation, props: Object, paneId: number, viewSavedObject: boolean) => Promise<Models.DomainObjectRepresentation> =>
         this.domainObject.isTransient() ? this.contextService.saveObject : this.contextService.updateObject;
 
-    private validateHandler = () => this.domainObject.isTransient() ? this.contextService.validateSaveObject : this.contextService.validateUpdateObject;
+    private readonly validateHandler = () => this.domainObject.isTransient() ? this.contextService.validateSaveObject : this.contextService.validateUpdateObject;
 
-    private handleWrappedError = (reject: Models.ErrorWrapper) => {
+    private handleWrappedError (reject: Models.ErrorWrapper)  {
         const display = (em: Models.ErrorMap) => Helpers.handleErrorResponse(em, this, this.properties);
         this.error.handleErrorAndDisplayMessages(reject, display);
     };
 
-    private propertyMap = () => {
+    private propertyMap() {
         const pps = _.filter(this.properties, property => property.isEditable);
         return _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Models.Value>;
     };
@@ -154,7 +156,7 @@ export class DomainObjectViewModel extends MessageViewModel {
         }
     }
 
-    concurrency() {
+    readonly concurrency = () => {
         return (event: any, em: Models.ErrorMap) => {
             this.routeData = this.urlManager.getRouteData().pane()[this.onPaneId];
             this.contextService.getObject(this.onPaneId, this.domainObject.getOid(), this.routeData.interactionMode)
@@ -174,29 +176,29 @@ export class DomainObjectViewModel extends MessageViewModel {
         };
     }
 
-    clientValid = () => _.every(this.properties, p => p.clientValid);
+    readonly clientValid = () => _.every(this.properties, p => p.clientValid);
 
-    tooltip = () => Helpers.tooltip(this, this.properties);
+    readonly tooltip = () => Helpers.tooltip(this, this.properties);
 
-    actionsTooltip = () => Helpers.actionsTooltip(this, !!this.routeData.actionsOpen);
+    readonly actionsTooltip = () => Helpers.actionsTooltip(this, !!this.routeData.actionsOpen);
 
-    toggleActionMenu = () => {
+    readonly toggleActionMenu = () => {
         this.contextService.updateValues();
         this.urlManager.toggleObjectMenu(this.onPaneId);
     };
 
-    setProperties = () => _.forEach(this.editProperties(),
+    readonly setProperties = () => _.forEach(this.editProperties(),
         p => this.contextService.setPropertyValue(this.domainObject, p.propertyRep, p.getValue(), this.onPaneId));
 
-    doEditCancel = () => {
+    readonly doEditCancel = () => {
         this.editComplete();
         this.contextService.clearObjectValues(this.onPaneId);
         this.cancelHandler()();
     };
 
-    clearCachedFiles = () => _.forEach(this.properties, p => p.attachment ? p.attachment.clearCachedFile() : null);
+    readonly clearCachedFiles = () => _.forEach(this.properties, p => p.attachment ? p.attachment.clearCachedFile() : null);
 
-    doSave = (viewObject: boolean) => {
+    readonly doSave = (viewObject: boolean) => {
         this.clearCachedFiles();
         this.contextService.updateValues();
         const propMap = this.propertyMap();
@@ -206,7 +208,7 @@ export class DomainObjectViewModel extends MessageViewModel {
             .catch((reject: Models.ErrorWrapper) => this.handleWrappedError(reject));
     };
 
-    doSaveValidate = () => {
+    readonly doSaveValidate = () => {
         const propMap = this.propertyMap();
 
         return this.validateHandler()(this.domainObject, propMap)
@@ -220,7 +222,7 @@ export class DomainObjectViewModel extends MessageViewModel {
             });
     };
 
-    doEdit = () => {
+    readonly doEdit = () => {
         this.contextService.updateValues(); // for other panes
         this.clearCachedFiles();
         this.contextService.clearObjectValues(this.onPaneId);
@@ -233,21 +235,20 @@ export class DomainObjectViewModel extends MessageViewModel {
             .catch((reject: Models.ErrorWrapper) => this.handleWrappedError(reject));
     };
 
-    doReload = () => {
+    readonly doReload = () => {
         this.contextService.updateValues();
         this.clearCachedFiles();
         this.contextService.reloadObject(this.onPaneId, this.domainObject)
             .then((updatedObject: Models.DomainObjectRepresentation) => this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]))
             .catch((reject: Models.ErrorWrapper) => this.handleWrappedError(reject));
     };
-    hideEdit = () => this.isFormOrTransient() || _.every(this.properties, p => !p.isEditable);
 
-    disableActions = () => !this.actions || this.actions.length === 0;
+    readonly hideEdit = () => this.isFormOrTransient() || _.every(this.properties, p => !p.isEditable);
 
-    canDropOn = (targetType: string) => this.contextService.isSubTypeOf(this.domainType, targetType);
+    readonly disableActions = () => !this.actions || this.actions.length === 0;
 
-    showActions() {
-        return !!this.urlManager.getRouteData().pane()[this.onPaneId].actionsOpen;
-    }
+    readonly canDropOn = (targetType: string) => this.contextService.isSubTypeOf(this.domainType, targetType);
 
+    readonly showActions = ()  =>  !!this.urlManager.getRouteData().pane()[this.onPaneId].actionsOpen;
+  
 }

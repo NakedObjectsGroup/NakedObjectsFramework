@@ -14,15 +14,15 @@ import * as _ from "lodash";
 
 export class DialogViewModel extends MessageViewModel {
     constructor(
-        private color: ColorService,
-        private context: ContextService,
-        private viewModelFactory: ViewModelFactoryService,
-        private urlManager: UrlManagerService,
-        private error: ErrorService,
-        private routeData: PaneRouteData,
+        private readonly color: ColorService,
+        private readonly context: ContextService,
+        private readonly viewModelFactory: ViewModelFactoryService,
+        private readonly urlManager: UrlManagerService,
+        private readonly error: ErrorService,
+        private readonly routeData: PaneRouteData,
         action: Models.IInvokableAction,
-        public actionViewModel: ActionViewModel,
-        public isMultiLineDialogRow: boolean
+        public readonly actionViewModel: ActionViewModel,
+        public readonly isMultiLineDialogRow: boolean
     ) {
         super();
 
@@ -66,38 +66,37 @@ export class DialogViewModel extends MessageViewModel {
         this.closed = true;
     }
 
-    private onPaneId: number;
-    private isQueryOnly: boolean;
+    private readonly onPaneId: number;
+    private readonly isQueryOnly: boolean;
 
-    private actionMember = () => this.actionViewModel.actionRep;
+    private readonly actionMember = () => this.actionViewModel.actionRep;
 
-    private execute = (right?: boolean) => {
-
+    private readonly execute = (right?: boolean) => {
         const pps = this.parameters;
         this.context.updateValues();
         return this.actionViewModel.execute(pps, right);
     };
 
-    title: string;
-    id: string;
-    parameters: ParameterViewModel[];
+    readonly title: string;
+    readonly id: string;
+    readonly parameters: ParameterViewModel[];
     submitted = false;
     closed = false; // make sure we never close more than once 
 
-    refresh() {
+    readonly refresh = () => {
         const fields = this.context.getCurrentDialogValues(this.actionMember().actionId(), this.onPaneId);
         _.forEach(this.parameters, p => p.refresh(fields[p.id]));
     }
 
-    deregister = () => this.context.clearParmUpdater(this.onPaneId);
+    readonly deregister = () => this.context.clearParmUpdater(this.onPaneId);
 
-    clientValid = () => _.every(this.parameters, p => p.clientValid);
+    readonly clientValid = () => _.every(this.parameters, p => p.clientValid);
 
-    tooltip = () => Helpers.tooltip(this, this.parameters);
+    readonly tooltip = () => Helpers.tooltip(this, this.parameters);
 
-    setParms = () => _.forEach(this.parameters, p => this.context.setFieldValue(this.actionMember().actionId(), p.parameterRep.id(), p.getValue(), this.onPaneId));
+    readonly setParms = () => _.forEach(this.parameters, p => this.context.setFieldValue(this.actionMember().actionId(), p.parameterRep.id(), p.getValue(), this.onPaneId));
 
-    doInvoke = (right?: boolean) =>
+    readonly doInvoke = (right?: boolean) =>
         this.execute(right)
             .then((actionResult: Models.ActionResultRepresentation) => {
                 if (actionResult.shouldExpectResult()) {
@@ -126,7 +125,6 @@ export class DialogViewModel extends MessageViewModel {
 
     // todo tidy and rework these getting confusing 
     doCloseKeepHistory = () => {
-
         this.deregister();
         this.urlManager.closeDialogKeepHistory(this.id, this.onPaneId);
         this.decrementPendingPotentAction();

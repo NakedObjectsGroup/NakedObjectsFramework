@@ -8,14 +8,11 @@ import * as _ from "lodash";
 
 export class TableRowColumnViewModel {
 
-
     constructor(
-        id: string,
+        public readonly id: string,
         propertyRep?: Models.PropertyMember | Models.CollectionMember,
         mask?: MaskService
     ) {
-
-        this.id = id;
 
         if (propertyRep && mask) {
 
@@ -70,10 +67,9 @@ export class TableRowColumnViewModel {
         }
     }
 
-    type: "ref" | "scalar";
-    returnType: string;
-    value: Ro.scalarValueType | Date;
-    formattedValue: string;
-    title: string;
-    id: string;
+    readonly type: "ref" | "scalar";
+    readonly returnType: string;
+    readonly value: Ro.scalarValueType | Date;
+    readonly formattedValue: string;
+    readonly title: string;
 }

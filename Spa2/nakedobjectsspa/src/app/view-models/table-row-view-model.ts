@@ -6,28 +6,24 @@ import * as Models from '../models';
 export class TableRowViewModel {
 
     constructor(
-        private viewModelFactory: ViewModelFactoryService,
+        private readonly viewModelFactory: ViewModelFactoryService,
         properties: _.Dictionary<Models.PropertyMember>,
-        private paneId: number
+        private readonly paneId: number,
+        public readonly title: string
     ) {
         this.properties = _.map(properties, (property, id) => viewModelFactory.propertyTableViewModel(id, property));
     }
 
     properties: TableRowColumnViewModel[];
 
-    // todo these currently initialised outside constructor - smell ?
-    title: string;
-    hasTitle: boolean;
+    showTitle = false;
 
-    getPlaceHolderTableRowColumnViewModel(id: string) {
-        // no property so place holder for column 
-        return this.viewModelFactory.propertyTableViewModel(id);
-    }
+    readonly getPlaceHolderTableRowColumnViewModel = (id: string) => this.viewModelFactory.propertyTableViewModel(id); // no property so place holder for column
 
-    conformColumns(columns: string[]) {
+    readonly conformColumns = (showTitle: boolean, columns: string[]) => {
+        this.showTitle = showTitle;
         if (columns) {
-            this.properties =
-                _.map(columns, c => _.find(this.properties, tp => tp.id === c) || this.getPlaceHolderTableRowColumnViewModel(c));
+            this.properties = _.map(columns, c => _.find(this.properties, tp => tp.id === c) || this.getPlaceHolderTableRowColumnViewModel(c));
         }
     }
 }

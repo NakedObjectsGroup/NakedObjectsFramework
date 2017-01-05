@@ -18,7 +18,7 @@ import * as Helpers from './helpers-view-models';
 export class PropertyViewModel extends FieldViewModel implements IDraggableViewModel {
 
     constructor(
-        public propertyRep: Models.PropertyMember,
+        public readonly propertyRep: Models.PropertyMember,
         color: ColorService,
         error: ErrorService,
         private readonly viewModelfactory: ViewModelFactoryService,

@@ -80,7 +80,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
     itemId = (i: number | string) => `${this.collection.id}${this.collection.onPaneId}-${i}`;
 
     itemTableTitle = (item: ItemViewModel) => item.tableRowViewModel.title;
-    itemHasTableTitle = (item: ItemViewModel) => item.tableRowViewModel.hasTitle;
+    itemHasTableTitle = (item: ItemViewModel) => item.tableRowViewModel.showTitle;
     itemTableProperties = (item: ItemViewModel) => item.tableRowViewModel.properties;
 
     propertyType = (property: PropertyViewModel) => property.type;

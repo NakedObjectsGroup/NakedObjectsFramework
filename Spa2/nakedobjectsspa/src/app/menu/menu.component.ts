@@ -9,8 +9,10 @@ import { UrlManagerService } from "../url-manager.service";
 })
 export class MenuComponent implements OnInit {
 
-    constructor(private urlManager: UrlManagerService,
-        private elementRef: ElementRef) { }
+    constructor(
+        private readonly urlManager: UrlManagerService,
+        private readonly elementRef: ElementRef
+    ) { }
 
     @Input()
     menu: LinkViewModel;

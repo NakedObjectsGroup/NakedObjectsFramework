@@ -19,33 +19,32 @@ export class ItemViewModel extends LinkViewModel {
         urlManager: UrlManagerService,
         link: Models.Link,
         paneId: number,
-        private clickHandler: ClickHandlerService,
-        private viewModelFactory: ViewModelFactoryService,
-        private index: number,
+        private readonly clickHandler: ClickHandlerService,
+        private readonly viewModelFactory: ViewModelFactoryService,
+        private readonly index: number,
         private isSelected: boolean,
-        private id: string
+        private readonly id: string
     ) {
         super(context, colorService, error, urlManager, link, paneId);
 
         const members = link.members();
 
         if (members) {
-            this.tableRowViewModel = this.viewModelFactory.tableRowViewModel(members, paneId);
-            this.tableRowViewModel.title = this.title;
+            this.tableRowViewModel = this.viewModelFactory.tableRowViewModel(members, paneId, this.title);
         }
     }
 
-    selectionChange = () => {
+    readonly selectionChange = () => {
         this.context.updateValues();
         this.urlManager.setItemSelected(this.index, this.selected, this.id, this.paneId);
     };
 
-    doClick = (right?: boolean) => {
+    readonly doClick = (right?: boolean) => {
         const currentPane = this.clickHandler.pane(this.paneId, right);
         this.urlManager.setItem(this.link, currentPane);
     };
 
-    tableRowViewModel: TableRowViewModel;
+    readonly tableRowViewModel: TableRowViewModel;
 
     set selected(v: boolean) {
         this.isSelected = v;

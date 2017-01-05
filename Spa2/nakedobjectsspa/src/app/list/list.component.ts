@@ -66,7 +66,7 @@ export class ListComponent extends PaneComponent implements AfterViewInit {
     hasTableData = () => this.collection.hasTableData();
 
     itemTableTitle = (item: ItemViewModel) => item.tableRowViewModel.title;
-    itemHasTableTitle = (item: ItemViewModel) => item.tableRowViewModel.hasTitle;
+    itemHasTableTitle = (item: ItemViewModel) => item.tableRowViewModel.showTitle;
     itemTableProperties = (item: ItemViewModel) => item.tableRowViewModel.properties;
 
     propertyType = (property: PropertyViewModel) => property.type;

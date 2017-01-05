@@ -24,11 +24,11 @@ export class ErrorViewModel {
         this.stackTrace = this.stackTrace || ["No stack trace available"];
     }
 
-    originalError: Models.ErrorWrapper;
-    title: string;
-    message: string;
-    stackTrace: string[];
-    errorCode: string;
-    description: string;
-    isConcurrencyError: boolean;
+    readonly originalError: Models.ErrorWrapper;
+    readonly title: string;
+    readonly message: string;
+    readonly stackTrace: string[];
+    readonly errorCode: string;
+    readonly description: string;
+    readonly isConcurrencyError: boolean;
 }

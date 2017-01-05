@@ -18,7 +18,7 @@ import { ContributedActionParentViewModel } from './contributed-action-parent-vi
 export class ListViewModel extends ContributedActionParentViewModel {
 
     constructor(
-        private colorService: ColorService,
+        private readonly colorService: ColorService,
         context: ContextService,
         viewModelFactory: ViewModelFactoryService,
         urlManager: UrlManagerService,
@@ -27,6 +27,7 @@ export class ListViewModel extends ContributedActionParentViewModel {
         private routeData: PaneRouteData
     ) {
         super(context, viewModelFactory, urlManager, error, routeData.paneId);
+        this.pluralName = "Objects";   // todo fix constant string
         this.reset(list, routeData);
     }
 
@@ -38,7 +39,7 @@ export class ListViewModel extends ContributedActionParentViewModel {
     id: string;
     listRep: Models.ListRepresentation;
     size: number;
-    pluralName: string;
+    readonly pluralName: string;
     header: string[];
     actions: ActionViewModel[];
     menuItems: MenuItemViewModel[];
@@ -123,9 +124,7 @@ export class ListViewModel extends ContributedActionParentViewModel {
         this.routeData = routeData;
 
         this.id = this.urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize);
-
-        // todo fix constant string
-        this.pluralName = "Objects";
+        
         this.page = this.listRep.pagination().page;
         this.pageSize = this.listRep.pagination().pageSize;
         this.numPages = this.listRep.pagination().numPages;

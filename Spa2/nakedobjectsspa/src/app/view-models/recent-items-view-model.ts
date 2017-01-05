@@ -7,18 +7,18 @@ import { UrlManagerService } from '../url-manager.service';
 export class RecentItemsViewModel {
 
     constructor(
-        private viewModelFactory: ViewModelFactoryService,
-        private context: ContextService,
-        private urlManager: UrlManagerService,
-        private onPaneId: number
+        viewModelFactory: ViewModelFactoryService,
+        private readonly context: ContextService,
+        private readonly urlManager: UrlManagerService,
+        onPaneId: number
     ) {
         const items = _.map(this.context.getRecentlyViewed(), (o, i) => ({ obj: o, link: o.updateSelfLinkWithTitle(), index: i }));
         this.items = _.map(items, i => viewModelFactory.recentItemViewModel(i.obj, i.link, onPaneId, false, i.index));
     }
 
-    items: RecentItemViewModel[];
+    readonly items: RecentItemViewModel[];
 
-    clear() {
+    readonly clear = () => {
         this.context.clearRecentlyViewed();
         this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
     }
