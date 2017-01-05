@@ -15,28 +15,29 @@ import * as Msg from "../user-messages";
 import * as Models from '../models';
 import * as Helpers from './helpers-view-models';
 
-export class PropertyViewModel extends FieldViewModel {
+export class PropertyViewModel extends FieldViewModel implements IDraggableViewModel {
 
     constructor(
         public propertyRep: Models.PropertyMember,
         color: ColorService,
         error: ErrorService,
-        private viewModelfactory: ViewModelFactoryService,
+        private readonly viewModelfactory: ViewModelFactoryService,
         context: ContextService,
-        private maskService: MaskService,
-        private urlManager: UrlManagerService,
-        private clickHandler: ClickHandlerService,
-        private momentWrapperService: MomentWrapperService,
+        private readonly maskService: MaskService,
+        private readonly urlManager: UrlManagerService,
+        private readonly clickHandler: ClickHandlerService,
+        momentWrapperService: MomentWrapperService,
         id: string,
-        private previousValue: Models.Value,
+        private readonly previousValue: Models.Value,
         onPaneId: number,
         parentValues: () => _.Dictionary<Models.Value>
     ) {
 
-        super(propertyRep.extensions(),
+        super(propertyRep,
             color,
             error,
             context,
+            momentWrapperService,
             onPaneId,
             propertyRep.isScalar(),
             id,
@@ -73,8 +74,7 @@ export class PropertyViewModel extends FieldViewModel {
             this.originalValue = this.getValue();
         }
 
-        const required = this.optional ? "" : "* ";
-        this.description = required + this.description;
+        this.description = this.getRequiredIndicator() + this.description;
     }
 
 
@@ -185,9 +185,6 @@ export class PropertyViewModel extends FieldViewModel {
     // IDraggableViewModel
     readonly draggableType: string;
     readonly draggableTitle = () => this.formattedValue;
-
-    validate = _.partial(Helpers.validate, this.propertyRep, this, this.momentWrapperService) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
-    drop = _.partial(Helpers.drop, this.context, this.error, this) as (newValue: IDraggableViewModel) => Promise<boolean>;
 
     readonly doClick = (right?: boolean) => this.urlManager.setProperty(this.propertyRep, this.clickHandler.pane(this.onPaneId, right));
     readonly isDirty = () => !!this.previousValue || this.getValue().toValueString() !== this.originalValue.toValueString();

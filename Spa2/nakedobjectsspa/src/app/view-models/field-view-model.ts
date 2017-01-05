@@ -11,15 +11,17 @@ import * as Config from '../config';
 import * as Msg from '../user-messages';
 import * as _ from "lodash";
 import * as Helpers from './helpers-view-models';
-import {ContextService} from '../context.service';
+import { ContextService } from '../context.service';
+import { MomentWrapperService } from '../moment-wrapper.service';
 
 export abstract class FieldViewModel extends MessageViewModel {
 
     protected constructor(
-        ext: Models.Extensions,
+        private readonly rep : Models.IHasExtensions,
         protected colorService: ColorService,
         protected error: ErrorService,
-        protected context : ContextService,
+        protected context: ContextService,
+        protected momentWrapperService : MomentWrapperService,
         public onPaneId: number,
         public isScalar: boolean,
         public id: string,
@@ -27,6 +29,7 @@ export abstract class FieldViewModel extends MessageViewModel {
         public entryType : Models.EntryType
     ) {
         super();
+        const ext = rep.extensions();
         this.optional = ext.optional();
         this.description = ext.description();
         this.presentationHint = ext.presentationHint();
@@ -76,11 +79,16 @@ export abstract class FieldViewModel extends MessageViewModel {
 
     file: Models.Link;
 
-    validate: (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
     refresh: (newValue: Models.Value) => void;
     prompt: (searchTerm: string) => Promise<ChoiceViewModel[]>;
     conditionalChoices: (args: _.Dictionary<Models.Value>) => Promise<ChoiceViewModel[]>;
-    drop: (newValue: IDraggableViewModel) => Promise<boolean>;
+
+    drop = (newValue: IDraggableViewModel) =>  Helpers.drop(this.context, this.error, this, newValue);
+
+    validate = (modelValue: any, viewValue: string, mandatoryOnly: boolean) => {
+        return Helpers.validate(this.rep, this, this.momentWrapperService, modelValue, viewValue, mandatoryOnly);
+    }
+
     private updateColor: () => void;
 
     get choices(): ChoiceViewModel[] {
@@ -210,6 +218,9 @@ export abstract class FieldViewModel extends MessageViewModel {
         this.promptArguments = (<any>_.fromPairs)(_.map(rep.promptLink().arguments(), (v: any, key: string) => [key, new Models.Value(v.value)]));
     }
 
+    protected getRequiredIndicator() {
+        return this.optional || typeof this.value === "boolean" ? "" : "* ";
+    }
 
     private setColor(color: ColorService) {
 

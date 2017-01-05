@@ -18,17 +18,18 @@ export class ParameterViewModel extends FieldViewModel {
         onPaneId: number,
         color: ColorService,
         error: ErrorService,
-        private readonly momentWrapperService: MomentWrapperService,
+        momentWrapperService: MomentWrapperService,
         private readonly maskService: MaskService,
         private readonly previousValue: Models.Value,
         private readonly viewModelFactory: ViewModelFactoryService,
         context: ContextService
     ) {
 
-        super(parameterRep.extensions(),
+        super(parameterRep,
             color,
             error,
             context,
+            momentWrapperService,
             onPaneId,
             parameterRep.isScalar(),
             parameterRep.id(),
@@ -71,11 +72,9 @@ export class ParameterViewModel extends FieldViewModel {
         }
 
         this.description = this.getRequiredIndicator() + this.description;
-        this.validate = _.partial(Helpers.validate, parameterRep, this, this.momentWrapperService) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
-        this.drop = _.partial(Helpers.drop, this.context, this.error, this);
     }
 
-    readonly dflt: string;
+    private readonly dflt: string;
 
     private setupParameterChoices() {
         this.setupChoices(this.parameterRep.choices());
@@ -171,7 +170,6 @@ export class ParameterViewModel extends FieldViewModel {
 
                 this.value = bValueToSet;
             } else if (Models.isDateOrDateTime(parmRep)) {
-                //parmViewModel.value = Models.toUtcDate(newValue || new Models.Value(parmViewModel.dflt));
                 const date = Models.toUtcDate(newValue || new Models.Value(this.dflt));
                 this.value = date ? Models.toDateString(date) : "";
             } else if (Models.isTime(parmRep)) {
@@ -182,10 +180,6 @@ export class ParameterViewModel extends FieldViewModel {
         }
 
         this.refresh(this.previousValue);
-    }
-
-    private getRequiredIndicator() {
-        return this.optional || typeof this.value === "boolean" ? "" : "* ";
     }
 
     readonly setAsRow = (i: number) => this.paneArgId = `${this.argId}${i}`;
