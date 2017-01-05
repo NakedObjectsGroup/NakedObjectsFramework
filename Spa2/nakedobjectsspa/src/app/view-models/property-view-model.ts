@@ -33,18 +33,18 @@ export class PropertyViewModel extends FieldViewModel {
         parentValues: () => _.Dictionary<Models.Value>
     ) {
 
-        super(propertyRep.extensions(), color, error, onPaneId);
+        super(propertyRep.extensions(),
+            color,
+            error,
+            onPaneId,
+            propertyRep.isScalar(),
+            id,
+            propertyRep.isCollectionContributed(),
+            propertyRep.entryType());
+
         this.draggableType = propertyRep.extensions().returnType();
-
-        this.propertyRep = propertyRep;
-        this.entryType = propertyRep.entryType();
         this.isEditable = !propertyRep.disabledReason();
-        this.entryType = propertyRep.entryType();
-
-        this.id = id;
-        this.argId = `${id.toLowerCase()}`;
-        this.paneArgId = `${this.argId}${onPaneId}`;
-
+   
         if (propertyRep.attachmentLink() != null) {
             this.attachment = this.viewModelfactory.attachmentViewModel(propertyRep, onPaneId);
         }
@@ -140,7 +140,6 @@ export class PropertyViewModel extends FieldViewModel {
     }
 
     private setupReference(value: Models.Value, rep: Models.IHasExtensions) {
-        this.type = "ref";
         if (value.isNull()) {
             this.reference = "";
             this.value = this.description;
@@ -167,7 +166,6 @@ export class PropertyViewModel extends FieldViewModel {
 
     private setupScalarPropertyValue() {
         const propertyRep = this.propertyRep;
-        this.type = "scalar";
 
         const remoteMask = propertyRep.extensions().mask();
         const localFilter = this.maskService.toLocalFilter(remoteMask, propertyRep.extensions().format());

@@ -13,6 +13,69 @@ import * as _ from "lodash";
 
 export class ParameterViewModel extends FieldViewModel {
 
+    constructor(
+        public readonly parameterRep: Models.Parameter,
+        onPaneId: number,
+        color: ColorService,
+        error: ErrorService,
+        private readonly momentWrapperService: MomentWrapperService,
+        private readonly maskService: MaskService,
+        private readonly previousValue: Models.Value,
+        private readonly viewModelFactory: ViewModelFactoryService,
+        private readonly context: ContextService
+    ) {
+
+        super(parameterRep.extensions(),
+            color,
+            error,
+            onPaneId,
+            parameterRep.isScalar(),
+            parameterRep.id(),
+            parameterRep.isCollectionContributed(),
+            parameterRep.entryType());
+    
+        this.dflt = parameterRep.default().toString();
+     
+        const fieldEntryType = this.entryType;
+
+        if (fieldEntryType === Models.EntryType.Choices || fieldEntryType === Models.EntryType.MultipleChoices) {
+            this.setupParameterChoices();
+        }
+
+        if (fieldEntryType === Models.EntryType.AutoComplete) {
+            this.setupParameterAutocomplete();
+        }
+
+        if (fieldEntryType === Models.EntryType.FreeForm && this.type === "ref") {
+            this.setupParameterFreeformReference();
+        }
+
+        if (fieldEntryType === Models.EntryType.ConditionalChoices || fieldEntryType === Models.EntryType.MultipleConditionalChoices) {
+            this.setupParameterConditionalChoices();
+        }
+
+        if (fieldEntryType !== Models.EntryType.FreeForm || this.isCollectionContributed) {
+            this.setupParameterSelectedChoices();
+        } else {
+            this.setupParameterSelectedValue();
+        }
+
+        const remoteMask = parameterRep.extensions().mask();
+
+        if (remoteMask && parameterRep.isScalar()) {
+            const localFilter = this.maskService.toLocalFilter(remoteMask, parameterRep.extensions().format());
+            this.localFilter = localFilter;
+            // formatting also happens in in directive - at least for dates - value is now date in that case
+            this.formattedValue = localFilter.filter(this.value.toString());
+        }
+
+        this.description = this.getRequiredIndicator() + this.description;
+        this.validate = _.partial(Helpers.validate, parameterRep, this, this.momentWrapperService) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
+        this.drop = _.partial(Helpers.drop, this.context, this.error, this);
+    }
+
+    readonly dflt: string;
+
     private setupParameterChoices() {
         const parmRep = this.parameterRep;
         this.choices = _.map(parmRep.choices(), (v, n) => new ChoiceViewModel(v, parmRep.id(), n));
@@ -136,103 +199,37 @@ export class ParameterViewModel extends FieldViewModel {
         return this.optional || typeof this.value === "boolean" ? "" : "* ";
     }
 
-    constructor(parmRep: Models.Parameter,
-        paneId: number,
-        color: ColorService,
-        error: ErrorService,
-        private momentWrapperService: MomentWrapperService,
-        private maskService: MaskService,
-        private previousValue: Models.Value,
-        private viewModelFactory: ViewModelFactoryService,
-        private context: ContextService) {
 
-
-        super(parmRep.extensions(), color, error, paneId);
-
-        this.parameterRep = parmRep;
-        this.onPaneId = paneId;
-        this.type = parmRep.isScalar() ? "scalar" : "ref";
-        this.dflt = parmRep.default().toString();
-        this.id = parmRep.id();
-        this.argId = `${this.id.toLowerCase()}`;
-        this.paneArgId = `${this.argId}${this.onPaneId}`;
-        this.isCollectionContributed = parmRep.isCollectionContributed();
-        this.entryType = parmRep.entryType();
-        this.value = null;
-
-
-        const fieldEntryType = this.entryType;
-
-        if (fieldEntryType === Models.EntryType.Choices || fieldEntryType === Models.EntryType.MultipleChoices) {
-            this.setupParameterChoices();
-        }
-
-        if (fieldEntryType === Models.EntryType.AutoComplete) {
-            this.setupParameterAutocomplete();
-        }
-
-        if (fieldEntryType === Models.EntryType.FreeForm && this.type === "ref") {
-            this.setupParameterFreeformReference();
-        }
-
-        if (fieldEntryType === Models.EntryType.ConditionalChoices || fieldEntryType === Models.EntryType.MultipleConditionalChoices) {
-            this.setupParameterConditionalChoices();
-        }
-
-        if (fieldEntryType !== Models.EntryType.FreeForm || this.isCollectionContributed) {
-            this.setupParameterSelectedChoices();
-        } else {
-            this.setupParameterSelectedValue();
-        }
-
-        const remoteMask = parmRep.extensions().mask();
-
-        if (remoteMask && parmRep.isScalar()) {
-            const localFilter = this.maskService.toLocalFilter(remoteMask, parmRep.extensions().format());
-            this.localFilter = localFilter;
-            // formatting also happens in in directive - at least for dates - value is now date in that case
-            this.formattedValue = localFilter.filter(this.value.toString());
-        }
-
-        this.description = this.getRequiredIndicator() + this.description;
-        this.validate = _.partial(Helpers.validate, parmRep, this, this.momentWrapperService) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
-        this.drop = _.partial(Helpers.drop, this.context, this.error, this);
+    setAsRow(i: number) {
+        this.paneArgId = `${this.argId}${i}`;
     }
 
-        setAsRow(i: number) {
-            this.paneArgId = `${this.argId}${i}`;
-        }
+    protected update() {
+        super.update();
 
-        protected update() {
-            super.update();
-
-            switch (this.entryType) {
-                case (Models.EntryType.FreeForm):
-                    if (this.type === "scalar") {
-                        if (this.localFilter) {
-                            this.formattedValue = this.value ? this.localFilter.filter(this.value) : "";
-                        } else {
-                            this.formattedValue = this.value ? this.value.toString() : "";
-                        }
-                        break;
+        switch (this.entryType) {
+            case (Models.EntryType.FreeForm):
+                if (this.type === "scalar") {
+                    if (this.localFilter) {
+                        this.formattedValue = this.value ? this.localFilter.filter(this.value) : "";
+                    } else {
+                        this.formattedValue = this.value ? this.value.toString() : "";
                     }
-                // fall through 
-                case (Models.EntryType.AutoComplete):
-                case (Models.EntryType.Choices):
-                case (Models.EntryType.ConditionalChoices):
-                    this.formattedValue = this.selectedChoice ? this.selectedChoice.toString() : "";
                     break;
-                case (Models.EntryType.MultipleChoices):
-                case (Models.EntryType.MultipleConditionalChoices):
-                    const count = !this.selectedMultiChoices ? 0 : this.selectedMultiChoices.length;
-                    this.formattedValue = `${count} selected`;
-                    break;
-                default:
-                    this.formattedValue = this.value ? this.value.toString() : "";
-            }
+                }
+            // fall through 
+            case (Models.EntryType.AutoComplete):
+            case (Models.EntryType.Choices):
+            case (Models.EntryType.ConditionalChoices):
+                this.formattedValue = this.selectedChoice ? this.selectedChoice.toString() : "";
+                break;
+            case (Models.EntryType.MultipleChoices):
+            case (Models.EntryType.MultipleConditionalChoices):
+                const count = !this.selectedMultiChoices ? 0 : this.selectedMultiChoices.length;
+                this.formattedValue = `${count} selected`;
+                break;
+            default:
+                this.formattedValue = this.value ? this.value.toString() : "";
         }
-
-
-    parameterRep: Models.Parameter;
-    dflt: string;
+    }
 }

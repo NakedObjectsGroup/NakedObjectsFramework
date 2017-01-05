@@ -13,7 +13,16 @@ import * as _ from "lodash";
 
 export abstract class FieldViewModel extends MessageViewModel {
 
-    constructor(ext: Models.Extensions, protected colorService: ColorService, protected error: ErrorService, public onPaneId: number) {
+    protected constructor(
+        ext: Models.Extensions,
+        protected colorService: ColorService,
+        protected error: ErrorService,
+        public onPaneId: number,
+        public isScalar: boolean,
+        public id: string,
+        public isCollectionContributed: boolean,
+        public entryType : Models.EntryType
+    ) {
         super();
         this.optional = ext.optional();
         this.description = ext.description();
@@ -24,10 +33,12 @@ export abstract class FieldViewModel extends MessageViewModel {
         this.format = ext.format();
         this.multipleLines = ext.multipleLines() || 1;
         this.password = ext.dataType() === "password";
+        this.type = isScalar ? "scalar" : "ref";
+        this.argId = `${id.toLowerCase()}`;
+        this.paneArgId = `${this.argId}${onPaneId}`;
         this.updateColor = _.partial(this.setColor, colorService);
     }
 
-    id: string;
     argId: string;
     paneArgId: string;
 
@@ -42,13 +53,11 @@ export abstract class FieldViewModel extends MessageViewModel {
     password: boolean;
 
     clientValid = true;
-    type: "scalar" | "ref";
+    readonly type: "scalar" | "ref";
     reference = "";
     minLength: number;
 
     color: string;
-
-    isCollectionContributed: boolean;
 
     promptArguments: _.Dictionary<Models.Value>;
 
@@ -57,7 +66,9 @@ export abstract class FieldViewModel extends MessageViewModel {
 
     localFilter: ILocalFilter;
     formattedValue: string;
-
+    private currentChoice: ChoiceViewModel;
+    private currentMultipleChoices: ChoiceViewModel[];
+    private currentRawValue: Ro.scalarValueType | Date = null;
     private choiceOptions: any[] = [];
 
     get choices(): ChoiceViewModel[] {
@@ -76,10 +87,6 @@ export abstract class FieldViewModel extends MessageViewModel {
         }
     }
 
-    private currentChoice: ChoiceViewModel;
-    private currentMultipleChoices: ChoiceViewModel[];
-
-
     get selectedChoice(): ChoiceViewModel {
         return this.currentChoice;
     }
@@ -93,7 +100,7 @@ export abstract class FieldViewModel extends MessageViewModel {
         }
     }
 
-    private currentRawValue: Ro.scalarValueType | Date;
+    
 
     get value(): Ro.scalarValueType | Date {
         return this.currentRawValue;
@@ -114,8 +121,6 @@ export abstract class FieldViewModel extends MessageViewModel {
     }
 
     file: Models.Link;
-
-    entryType: Models.EntryType;
 
     validate: (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
 
