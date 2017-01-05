@@ -99,7 +99,7 @@ export class MaskService {
         int: {}
     };
 
-    constructor(private config: MaskConfigService) {
+    constructor(private readonly config: MaskConfigService) {
         config.configure(this);
     }
 

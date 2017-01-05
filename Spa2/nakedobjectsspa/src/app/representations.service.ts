@@ -8,7 +8,7 @@ import * as Models from "./models";
 
 @Injectable()
 export class RepresentationsService {
-    constructor(private http: Http) {}
+    constructor(private readonly http: Http) {}
 
     getHomeRepresentation(): Observable<Models.HomePageRepresentation> {
         return this.http

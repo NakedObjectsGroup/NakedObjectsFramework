@@ -15,10 +15,11 @@ import * as Models from "../models";
 })
 export class ViewPropertyComponent implements OnInit {
 
-    constructor(private router: Router,
-        private error: ErrorService,
-        private context: ContextService) {
-    }
+    constructor(
+        private readonly router: Router,
+        private readonly error: ErrorService,
+        private readonly context: ContextService
+    ) { }
 
     // template inputs 
 
@@ -90,7 +91,6 @@ export class ViewPropertyComponent implements OnInit {
 
     attachmentTitle: string;
     image: string;
-
 
     // todo maybe two different click handlers on attachment view model ? 
     clickHandler(attachment: AttachmentViewModel) {

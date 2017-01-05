@@ -187,11 +187,11 @@ export class ContextService {
     private currentVersion: Models.VersionRepresentation = null;
     private currentUser: Models.UserRepresentation = null;
 
-    private recentcache = new RecentCache();
-    private dirtyList = new DirtyList();
+    private readonly recentcache = new RecentCache();
+    private readonly dirtyList = new DirtyList();
     private currentLists: _.Dictionary<{ list: Models.ListRepresentation; added: number }> = {};
-    private parameterCache = new ValueCache();
-    private objectEditCache = new ValueCache();
+    private readonly parameterCache = new ValueCache();
+    private readonly objectEditCache = new ValueCache();
 
     private parmUpdaters = [, () => {}, () => {}];
     private objectUpdaters = [, () => {}, () => {}];

@@ -35,13 +35,14 @@ import { MultiLineDialogViewModel } from './view-models/multi-line-dialog-view-m
 @Injectable()
 export class ViewModelFactoryService {
 
-    constructor(private readonly context: ContextService,
-        private urlManager: UrlManagerService,
-        private color: ColorService,
-        private error: ErrorService,
-        private clickHandler: ClickHandlerService,
-        private mask: MaskService,
-        private momentWrapperService: MomentWrapperService
+    constructor(
+        private readonly context: ContextService,
+        private readonly urlManager: UrlManagerService,
+        private readonly color: ColorService,
+        private readonly error: ErrorService,
+        private readonly clickHandler: ClickHandlerService,
+        private readonly mask: MaskService,
+        private readonly momentWrapperService: MomentWrapperService
     ) { }
 
     errorViewModel = (error: Models.ErrorWrapper) => {

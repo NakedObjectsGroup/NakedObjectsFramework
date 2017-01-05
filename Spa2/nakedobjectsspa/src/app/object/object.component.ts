@@ -28,10 +28,10 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
 
     constructor(activatedRoute: ActivatedRoute,
         urlManager: UrlManagerService,
-        private context: ContextService,
-        private viewModelFactory: ViewModelFactoryService,
-        private error: ErrorService,
-        private formBuilder: FormBuilder) {
+        private readonly context: ContextService,
+        private readonly viewModelFactory: ViewModelFactoryService,
+        private readonly error: ErrorService,
+        private readonly formBuilder: FormBuilder) {
 
         super(activatedRoute, urlManager);
     }

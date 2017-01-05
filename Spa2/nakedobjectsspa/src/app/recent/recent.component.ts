@@ -20,7 +20,7 @@ export class RecentComponent extends PaneComponent {
     constructor(
         activatedRoute: ActivatedRoute,
         urlManager: UrlManagerService,
-        private viewModelFactory: ViewModelFactoryService,
+        private readonly viewModelFactory: ViewModelFactoryService,
     ) {
         super(activatedRoute, urlManager);
     }

@@ -13,6 +13,5 @@ export class ClickHandlerService {
         return right ? Models.getOtherPane(currentPane) : currentPane;
     }
 
-
-    pane = this.sameOtherClickHandler;
+    readonly pane = this.sameOtherClickHandler;
 }

@@ -9,8 +9,6 @@ import { DialogViewModel } from '../view-models/dialog-view-model';
 })
 export class ViewParameterComponent {
 
-
-
     @Input()
     parent: DialogViewModel;
 

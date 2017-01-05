@@ -961,7 +961,7 @@ export class ErrorMap {
         }
     };
 
-    constructor(private map: Ro.IValueMap | Ro.IObjectOfType, public statusCode: number, public warningMessage: string) {
+    constructor(private readonly map: Ro.IValueMap | Ro.IObjectOfType, public statusCode: number, public warningMessage: string) {
 
     }
 
@@ -988,7 +988,7 @@ export class ErrorMap {
 }
 
 export class UpdateMap extends ArgumentMap implements IHateoasModel {
-    constructor(private domainObject: DomainObjectRepresentation, map: Ro.IValueMap) {
+    constructor(private readonly domainObject: DomainObjectRepresentation, map: Ro.IValueMap) {
         super(map, domainObject.instanceId());
 
         domainObject.updateLink().copyToHateoasModel(this);
@@ -1012,7 +1012,7 @@ export class UpdateMap extends ArgumentMap implements IHateoasModel {
 }
 
 export class AddToRemoveFromMap extends ArgumentMap implements IHateoasModel {
-    constructor(private collectionResource: CollectionRepresentation, map: Ro.IValueMap, add: boolean) {
+    constructor(private readonly collectionResource: CollectionRepresentation, map: Ro.IValueMap, add: boolean) {
         super(map, collectionResource.collectionId());
         const link = add ? collectionResource.addToLink() : collectionResource.removeFromLink();
         link.copyToHateoasModel(this);
@@ -1021,7 +1021,7 @@ export class AddToRemoveFromMap extends ArgumentMap implements IHateoasModel {
 }
 
 export class ModifyMap extends ArgumentMap implements IHateoasModel {
-    constructor(private propertyResource: PropertyRepresentation | PropertyMember, map: Ro.IValueMap) {
+    constructor(private readonly propertyResource: PropertyRepresentation | PropertyMember, map: Ro.IValueMap) {
         super(map, getId(propertyResource));
         propertyResource.modifyLink().copyToHateoasModel(this);
         propertyResource.value().set(this.map, this.id);
@@ -1102,7 +1102,7 @@ export class Extensions {
 // matches a action invoke resource 19.0 representation 
 
 export class InvokeMap extends ArgumentMap implements IHateoasModel {
-    constructor(private link: Link) {
+    constructor(private readonly link: Link) {
         super(link.arguments() as Ro.IValueMap, "");
         link.copyToHateoasModel(this);
     }
@@ -1184,7 +1184,7 @@ export class Parameter
     wrapped = () => this.resource() as Ro.IParameterRepresentation;
 
     // fix parent type
-    constructor(wrapped: Ro.IParameterRepresentation, public parent: ActionMember | ActionRepresentation, private paramId: string) {
+    constructor(wrapped: Ro.IParameterRepresentation, public parent: ActionMember | ActionRepresentation, private readonly paramId: string) {
         super(wrapped);
     }
 
@@ -1365,7 +1365,7 @@ export class ActionRepresentation extends ResourceRepresentation<Ro.IActionRepre
 // new in 1.1 15.0 in spec 
 
 export class PromptMap extends ArgumentMap implements IHateoasModel {
-    constructor(private link: Link, private promptId: string) {
+    constructor(private readonly link: Link, private readonly promptId: string) {
         super(link.arguments() as Ro.IValueMap, promptId);
         link.copyToHateoasModel(this);
     }
@@ -1699,7 +1699,7 @@ export class PropertyMember extends Member<Ro.IPropertyMember> implements IField
 
     wrapped = () => this.resource() as Ro.IPropertyMember;
 
-    constructor(wrapped: Ro.IPropertyMember, public parent: DomainObjectRepresentation | Link, private propId: string) {
+    constructor(wrapped: Ro.IPropertyMember, public parent: DomainObjectRepresentation | Link, private readonly propId: string) {
         super(wrapped);
     }
 
@@ -1826,7 +1826,7 @@ export class CollectionMember
 
     wrapped = () => this.resource() as RoCustom.ICustomCollectionMember;
 
-    constructor(wrapped: Ro.ICollectionMember, public parent: DomainObjectRepresentation, private id: string) {
+    constructor(wrapped: Ro.ICollectionMember, public parent: DomainObjectRepresentation, private readonly id: string) {
         super(wrapped);
         this.etagDigest = parent.etagDigest;
     }
@@ -1877,7 +1877,7 @@ export class ActionMember extends Member<Ro.IActionMember> {
 
     wrapped = () => this.resource() as Ro.IActionMember;
 
-    constructor(wrapped: Ro.IActionMember, public parent: IHasActions, private id: string) {
+    constructor(wrapped: Ro.IActionMember, public parent: IHasActions, private readonly id: string) {
         super(wrapped);
     }
 
@@ -2260,7 +2260,7 @@ export class ErrorRepresentation extends ResourceRepresentation<Ro.IErrorReprese
 // matches Objects of Type Resource 9.0 
 export class PersistMap extends HateosModel implements IHateoasModel {
 
-    constructor(private domainObject: DomainObjectRepresentation, private map: Ro.IObjectOfType) {
+    constructor(private readonly domainObject: DomainObjectRepresentation, private readonly map: Ro.IObjectOfType) {
         super(map);
         domainObject.persistLink().copyToHateoasModel(this);
     }

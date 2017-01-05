@@ -57,8 +57,10 @@ interface ITransitionResult {
 @Injectable()
 export class UrlManagerService {
 
-    constructor(private router: Router,
-        private location: Location) {
+    constructor(
+        private readonly router: Router,
+        private readonly location: Location
+    ) {
     }
 
     private capturedPanes = [] as { paneType: string; search: Object }[];

@@ -2,7 +2,7 @@ import { Directive, ElementRef, HostListener, Output, EventEmitter } from '@angu
 
 @Directive({ selector: '[geminiClick]' })
 export class GeminiClickDirective {
-    private el: HTMLElement;
+    private readonly el: HTMLElement;
     constructor(el: ElementRef) {
         this.el = el.nativeElement;
     }

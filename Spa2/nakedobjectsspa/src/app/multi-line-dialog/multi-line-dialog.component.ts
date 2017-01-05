@@ -25,10 +25,10 @@ export class MultiLineDialogComponent extends PaneComponent {
     constructor(
         activatedRoute: ActivatedRoute,
         urlManager: UrlManagerService,
-        private viewModelFactory: ViewModelFactoryService,
-        private context: ContextService,
-        private error: ErrorService,
-        private formBuilder: FormBuilder
+        private readonly viewModelFactory: ViewModelFactoryService,
+        private readonly context: ContextService,
+        private readonly error: ErrorService,
+        private readonly formBuilder: FormBuilder
     ) {
         super(activatedRoute, urlManager);
     }
