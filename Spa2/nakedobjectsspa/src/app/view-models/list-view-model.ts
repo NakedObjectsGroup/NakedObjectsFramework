@@ -40,7 +40,7 @@ export class ListViewModel extends ContributedActionParentViewModel {
     listRep: Models.ListRepresentation;
     size: number;
     readonly pluralName: string;
-    header: string[];
+    header: string[] | null;
     actions: ActionViewModel[];
     menuItems: MenuItemViewModel[];
     description: () => string;
@@ -55,7 +55,7 @@ export class ListViewModel extends ContributedActionParentViewModel {
         this.recreate(newPage, newPageSize)
             .then((list: Models.ListRepresentation) => {
                 this.urlManager.setListPaging(newPage, newPageSize, newState || this.routeData.state, this.onPaneId);
-                this.routeData = this.urlManager.getRouteData().pane()[this.onPaneId];
+                this.routeData = this.urlManager.getRouteData().pane(this.onPaneId);
                 this.reset(list, this.routeData);
             })
             .catch((reject: Models.ErrorWrapper) => {
@@ -191,6 +191,6 @@ export class ListViewModel extends ContributedActionParentViewModel {
     };
 
     readonly showActions = () => {
-        return !!this.urlManager.getRouteData().pane()[this.onPaneId].actionsOpen;
+        return !!this.urlManager.getRouteData().pane(this.onPaneId).actionsOpen;
     }
 }

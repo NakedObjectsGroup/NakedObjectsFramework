@@ -152,7 +152,7 @@ export class UrlManagerService {
     }
 
     private getIds(typeOfId: string, paneId: number) {
-        return <_.Dictionary<string>>_.pickBy(this.getSearch(), (v, k) => k.indexOf(typeOfId + paneId) === 0);
+        return <_.Dictionary<string>>_.pickBy(this.getSearch(), (v, k) => !!k && k.indexOf(typeOfId + paneId) === 0);
     }
 
     private mapIds(ids: _.Dictionary<string>): _.Dictionary<string> {
@@ -458,10 +458,11 @@ export class UrlManagerService {
 
             _.forEach(newValues,
                 (v, k) => {
+                    // k should always be non null
                     if (v)
-                        this.setId(k, v, search);
+                        this.setId(k as string, v, search);
                     else
-                        this.clearId(k, search);
+                        this.clearId(k as string, search);
                 }
             );
             this.setNewSearch(result);
@@ -489,7 +490,7 @@ export class UrlManagerService {
     };
 
 
-    setMultiLineDialog = (dialogId: string, paneId? : number) => {        
+    setMultiLineDialog = (dialogId: string, paneId : number) => {        
             this.pushUrlState();     
             const key = `${akm.dialog}${1}`; // always on 1
             const newValues = _.zipObject([key], [dialogId]) as _.Dictionary<string>;
@@ -722,7 +723,7 @@ export class UrlManagerService {
 
         return this.router.routerState.root.queryParams.map((ps: { [key: string]: string }) => {
             const routeData = new RouteData();
-            const paneRouteData = routeData.pane()[paneId];
+            const paneRouteData = routeData.pane(paneId);
             this.setPaneRouteDataFromParms(paneRouteData, paneId, ps);
             paneRouteData.location = this.getViewType(this.getLocation(paneId));
             return paneRouteData;

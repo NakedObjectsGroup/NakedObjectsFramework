@@ -158,7 +158,7 @@ export class DomainObjectViewModel extends MessageViewModel {
 
     readonly concurrency = () => {
         return (event: any, em: Models.ErrorMap) => {
-            this.routeData = this.urlManager.getRouteData().pane()[this.onPaneId];
+            this.routeData = this.urlManager.getRouteData().pane(this.onPaneId);
             this.contextService.getObject(this.onPaneId, this.domainObject.getOid(), this.routeData.interactionMode)
                 .then((obj: Models.DomainObjectRepresentation) => {
                     // cleared cached values so all values are from reloaded representation 
@@ -204,7 +204,7 @@ export class DomainObjectViewModel extends MessageViewModel {
         const propMap = this.propertyMap();
         this.contextService.clearObjectUpdater(this.onPaneId);
         this.saveHandler()(this.domainObject, propMap, this.onPaneId, viewObject)
-            .then((obj: Models.DomainObjectRepresentation) => this.reset(obj, this.urlManager.getRouteData().pane()[this.onPaneId]))
+            .then((obj: Models.DomainObjectRepresentation) => this.reset(obj, this.urlManager.getRouteData().pane(this.onPaneId)))
             .catch((reject: Models.ErrorWrapper) => this.handleWrappedError(reject));
     };
 
@@ -228,7 +228,7 @@ export class DomainObjectViewModel extends MessageViewModel {
         this.contextService.clearObjectValues(this.onPaneId);
         this.contextService.getObjectForEdit(this.onPaneId, this.domainObject)
             .then((updatedObject: Models.DomainObjectRepresentation) => {
-                this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
+                this.reset(updatedObject, this.urlManager.getRouteData().pane(this.onPaneId));
                 this.urlManager.pushUrlState(this.onPaneId);
                 this.urlManager.setInteractionMode(InteractionMode.Edit, this.onPaneId);
             })
@@ -239,7 +239,7 @@ export class DomainObjectViewModel extends MessageViewModel {
         this.contextService.updateValues();
         this.clearCachedFiles();
         this.contextService.reloadObject(this.onPaneId, this.domainObject)
-            .then((updatedObject: Models.DomainObjectRepresentation) => this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]))
+            .then((updatedObject: Models.DomainObjectRepresentation) => this.reset(updatedObject, this.urlManager.getRouteData().pane(this.onPaneId)))
             .catch((reject: Models.ErrorWrapper) => this.handleWrappedError(reject));
     };
 
@@ -249,6 +249,6 @@ export class DomainObjectViewModel extends MessageViewModel {
 
     readonly canDropOn = (targetType: string) => this.contextService.isSubTypeOf(this.domainType, targetType);
 
-    readonly showActions = ()  =>  !!this.urlManager.getRouteData().pane()[this.onPaneId].actionsOpen;
+    readonly showActions = () => !!this.urlManager.getRouteData().pane(this.onPaneId).actionsOpen;
   
 }

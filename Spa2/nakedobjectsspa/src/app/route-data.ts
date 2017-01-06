@@ -36,7 +36,11 @@ export class RouteData {
     pane1: PaneRouteData;
     pane2: PaneRouteData;
 
-    pane = () => [, this.pane1, this.pane2];
+    pane = (pane: number) => {
+        if (pane === 1) return this.pane1;
+        if (pane === 2) return this.pane2;
+        throw new Error(`${pane} is not a valid pane index on RouteData`);
+    };
 }
 
 interface ICondition {

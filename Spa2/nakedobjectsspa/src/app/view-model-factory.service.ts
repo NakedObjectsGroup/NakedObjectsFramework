@@ -203,7 +203,7 @@ export class ViewModelFactoryService {
         return items;
     };
 
-    private cvm: CiceroViewModel = null;
+    private cvm: CiceroViewModel | null = null;
 
     //ciceroViewModel = () => {
     //    if (cvm == null) {

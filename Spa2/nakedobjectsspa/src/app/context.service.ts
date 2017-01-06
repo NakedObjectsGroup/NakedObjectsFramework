@@ -52,7 +52,8 @@ function isSameObject(object: Models.DomainObjectRepresentation, type: string, i
 }
 
 class TransientCache {
-    private transientCache: Models.DomainObjectRepresentation[][] = [, [], []]; // per pane 
+    // todo investigate if we can use an enum for pane and not have empty array in index 0 ? 
+    private transientCache: Models.DomainObjectRepresentation[][] = [[], [], []]; // per pane 
 
     private depth = Config.transientCacheDepth;
 
@@ -65,9 +66,9 @@ class TransientCache {
         this.transientCache[paneId] = paneObjects;
     }
 
-    get(paneId: number, type: string, id: string): Models.DomainObjectRepresentation {
+    get(paneId: number, type: string, id: string): Models.DomainObjectRepresentation | null {
         const paneObjects = this.transientCache[paneId];
-        return _.find(paneObjects, o => isSameObject(o, type, id));
+        return _.find(paneObjects, o => isSameObject(o, type, id)) || null;
     }
 
     remove(paneId: number, type: string, id: string) {
@@ -77,7 +78,7 @@ class TransientCache {
     }
 
     clear() {
-        this.transientCache = [, [], []];
+        this.transientCache = [[], [], []];
     }
 
     swap() {
@@ -118,8 +119,8 @@ class RecentCache {
 
 class ValueCache {
 
-    private currentValues: _.Dictionary<Models.Value>[] = [, {}, {}];
-    private currentId: string[] = [, "", ""];
+    private currentValues: _.Dictionary<Models.Value>[] = [{}, {}, {}];
+    private currentId: string[] = ["", "", ""];
 
     addValue(id: string, valueId: string, value: Models.Value, paneId: number) {
         if (this.currentId[paneId] !== id) {
@@ -139,7 +140,7 @@ class ValueCache {
         return this.currentValues[paneId][valueId];
     }
 
-    getValues(id: string, paneId: number) {
+    getValues(id: string | null, paneId: number) {
         if (id && this.currentId[paneId] !== id) {
             this.currentId[paneId] = id;
             this.currentValues[paneId] = {};
@@ -182,10 +183,10 @@ export class ContextService {
     private transientCache = new TransientCache();
 
     private currentMenuList: _.Dictionary<Models.MenuRepresentation> = {};
-    private currentServices: Models.DomainServicesRepresentation = null;
-    private currentMenus: Models.MenusRepresentation = null;
-    private currentVersion: Models.VersionRepresentation = null;
-    private currentUser: Models.UserRepresentation = null;
+    private currentServices: Models.DomainServicesRepresentation | null = null;
+    private currentMenus: Models.MenusRepresentation | null = null;
+    private currentVersion: Models.VersionRepresentation | null = null;
+    private currentUser: Models.UserRepresentation | null = null;
 
     private readonly recentcache = new RecentCache();
     private readonly dirtyList = new DirtyList();
@@ -193,8 +194,8 @@ export class ContextService {
     private readonly parameterCache = new ValueCache();
     private readonly objectEditCache = new ValueCache();
 
-    private parmUpdaters = [, () => {}, () => {}];
-    private objectUpdaters = [, () => {}, () => {}];
+    private parmUpdaters = [() => { }, () => { }, () => { }];
+    private objectUpdaters = [() => { }, () => { }, () => { }];
 
     setParmUpdater = (updater: () => void, paneId = 1) => {
         this.parmUpdaters[paneId] = updater;
@@ -557,19 +558,19 @@ export class ContextService {
 
     };
 
-    private currentError: Models.ErrorWrapper = null;
+    private currentError: Models.ErrorWrapper | null = null;
 
     getError = () => this.currentError;
 
     setError = (e: Models.ErrorWrapper) => this.currentError = e;
 
-    private previousUrl: string = null;
+    private previousUrl: string | null = null;
 
     getPreviousUrl = () => this.previousUrl;
 
     setPreviousUrl = (url: string) => this.previousUrl = url;
 
-    private doPrompt = (field: Models.IField, id: string, searchTerm: string, setupPrompt: (map: Models.PromptMap) => void, objectValues: () => _.Dictionary<Models.Value>, digest?: string) => {
+    private doPrompt = (field: Models.IField, id: string, searchTerm: string | null, setupPrompt: (map: Models.PromptMap) => void, objectValues: () => _.Dictionary<Models.Value>, digest?: string) => {
         const map = field.getPromptMap();
         map.setMembers(objectValues);
         setupPrompt(map);
@@ -878,20 +879,20 @@ export class ContextService {
         this.recentcache.clear();
         this.dirtyList.clear();
 
-        _.forEach(this.currentMenuList, (k, v) => delete this.currentMenuList[v]);
-        _.forEach(this.currentLists, (k, v) => delete this.currentLists[v]);
-
+        // k will always be defined 
+        _.forEach(this.currentMenuList, (v, k) => delete this.currentMenuList[k as string]);
+        _.forEach(this.currentLists, (v, k) => delete this.currentLists[k as string]);
     }
 
     setFieldValue = (dialogId: string, pid: string, pv: Models.Value, paneId = 1) => {
         this.parameterCache.addValue(dialogId, pid, pv, paneId);
     }
 
-    getCurrentDialogValues = (dialogId: string = null, paneId = 1) => {
+    getCurrentDialogValues = (dialogId: string | null = null, paneId = 1) => {
         return this.parameterCache.getValues(dialogId, paneId);
     }
 
-    getCurrentObjectValues = (objectId: string = null, paneId = 1) => {
+    getCurrentObjectValues = (objectId: string | null = null, paneId = 1) => {
         return this.objectEditCache.getValues(objectId, paneId);
     }
 
