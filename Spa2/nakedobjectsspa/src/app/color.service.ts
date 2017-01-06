@@ -58,7 +58,7 @@ export class ColorService {
     }
 
 
-    private getColor(type: string) {
+    private getColor(type: string | null) {
         // 1 cache 
         // 2 match regex 
         // 3 match subtype 
@@ -90,7 +90,7 @@ export class ColorService {
         return this.toColorNumberFromType(type);
     };
 
-    toColorNumberFromType = (type: string) => this.getColor(type);
+    toColorNumberFromType = (type: string | null) => this.getColor(type);
 
     addType = (type: string, color: number) => {
         this.colorCache[type] = color;

@@ -2,10 +2,10 @@
 import * as Models from '../models';
 
 export class CiceroViewModel {
-    message: string;
-    output: string;
+    message: string | null;
+    output: string | null;
     alert = ""; //Alert is appended before the output
-    input: string;
+    input: string | null;
     parseInput: (input: string) => void;
     previousInput: string;
     chainedCommands: string[];
@@ -32,7 +32,7 @@ export class CiceroViewModel {
 
     executeNextChainedCommandIfAny: () => void;
 
-    popNextCommand(): string {
+    popNextCommand(): string | null {
         if (this.chainedCommands) {
             const next = this.chainedCommands[0];
             this.chainedCommands.splice(0, 1);

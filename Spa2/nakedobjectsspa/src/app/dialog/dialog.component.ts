@@ -38,7 +38,7 @@ export class DialogComponent implements OnInit, OnDestroy {
     @Input()
     parent: MenuViewModel | DomainObjectViewModel | ListViewModel | CollectionViewModel;
 
-    dialog: DialogViewModel;
+    dialog: DialogViewModel | null;
 
     form: FormGroup;
 
