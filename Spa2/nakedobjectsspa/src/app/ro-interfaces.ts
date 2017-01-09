@@ -32,6 +32,46 @@ export interface IExtensions {
     pattern?: string;
 }
 
+export interface IDomainObjectExtensions extends IExtensions {
+    friendlyName: string;
+    description: string;  
+    domainType: string;
+    pluralName: string; 
+    isService: boolean;
+}
+
+export interface IPropertyExtensions extends IExtensions {
+    friendlyName: string;
+    description: string;
+    returnType: string;
+    optional: boolean;  
+    memberOrder: number; 
+}
+
+export interface ICollectionExtensions extends IExtensions {
+    friendlyName: string;
+    description: string;
+    returnType: string;
+    elementType: string;
+    pluralName: string;
+    memberOrder: number;
+}
+
+export interface IActionExtensions extends IExtensions {
+    friendlyName: string;
+    description: string;
+    returnType: string;
+    hasParams: boolean;
+    memberOrder: number; 
+}
+
+export interface IParameterExtensions extends IExtensions {
+    friendlyName: string;
+    description: string;
+    returnType: string;
+    optional: boolean;
+}
+
 export interface IRepresentation {
 }
 
@@ -117,16 +157,19 @@ export interface IPropertyMember extends IMember {
     value?: valueType;
     choices?: valueType[];
     hasChoices: boolean;
+    extensions : IPropertyExtensions;
 }
 
 export interface ICollectionMember extends IMember {
     value?: ILink[];
     size?: number;
+    extensions: ICollectionExtensions;
 }
 
 export interface IActionMember extends IMember {
     id: string;
     parameters: { [index: string]: IParameterRepresentation };
+    extensions: IActionExtensions;
 }
 
 export interface IDomainObjectRepresentation extends IResourceRepresentation {
@@ -134,7 +177,8 @@ export interface IDomainObjectRepresentation extends IResourceRepresentation {
     instanceId?: string;
     serviceId?: string;
     title: string;
-    members: { [index: string]: IMember };
+    members: { [index: string]: IPropertyMember | IActionMember | ICollectionMember };
+    extensions : IDomainObjectExtensions;
 }
 
 export type resultTypeType = "object" | "list" | "scalar" | "void";
@@ -147,12 +191,14 @@ export interface IActionInvokeRepresentation extends IResourceRepresentation {
 export interface IParameterRepresentation extends IResourceRepresentation {
     choices?: valueType[];
     default?: valueType;
+    extensions: IParameterExtensions;
 }
 
 export interface IActionRepresentation extends IResourceRepresentation {
     id: string;
     parameters: { [index: string]: IParameterRepresentation };
     disabledReason?: string;
+    extensions: IActionExtensions;
 }
 
 export interface IPropertyRepresentation extends IResourceRepresentation {
@@ -160,12 +206,14 @@ export interface IPropertyRepresentation extends IResourceRepresentation {
     value?: valueType;
     choices?: valueType[];
     disabledReason?: string;
+    extensions: IPropertyExtensions;
 }
 
 export interface ICollectionRepresentation extends IResourceRepresentation {
     id: string;
     value?: ILink[];
     disabledReason?: string;
+    extensions: ICollectionExtensions;
 }
 
 export interface IDomainTypeRepresentation extends IResourceRepresentation {

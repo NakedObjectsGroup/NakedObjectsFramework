@@ -1067,8 +1067,8 @@ export class Extensions {
     constructor(private wrapped: RoCustom.ICustomExtensions) { }
 
     //Standard RO:
-    friendlyName = () => this.wrapped.friendlyName || "";
-    description = () => this.wrapped.description || "";
+    friendlyName = () => this.wrapped.friendlyName;
+    description = () => this.wrapped.description;
     returnType = () => this.wrapped.returnType;
     optional = () => this.wrapped.optional;
     hasParams = () => this.wrapped.hasParams;

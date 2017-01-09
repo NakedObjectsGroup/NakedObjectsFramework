@@ -63,7 +63,7 @@ export class UrlManagerService {
     ) {
     }
 
-    private capturedPanes = [] as { paneType: string; search: Object }[];
+    private capturedPanes = [] as ({ paneType: string; search: Object } | null)[];
 
     private currentPaneId = 1;
 
@@ -716,7 +716,7 @@ export class UrlManagerService {
             case Constants.objectPath: return ViewType.Object;
             case Constants.listPath: return ViewType.List;
         }
-        return null;
+        throw new Error(`${view} is not a valid ViewType`);
     };
 
     getPaneRouteDataObservable = (paneId : number) => {
@@ -757,7 +757,7 @@ export class UrlManagerService {
         const s2 = this.getId(`${akm.object}${paneId}`, search) || "";
         const s3 = this.getId(`${akm.action}${paneId}`, search) || "";
 
-        const parms = <_.Dictionary<string>>_.pickBy(search, (v, k) => k.indexOf(akm.parm + paneId) === 0);
+        const parms = <_.Dictionary<string>>_.pickBy(search, (v, k) => !!k && k.indexOf(akm.parm + paneId) === 0);
         const mappedParms = _.mapValues(parms, v => decodeURIComponent(Models.decompress(v)));
 
         const s4 = _.reduce(mappedParms, (r, n, k) => r + (k + "=" + n + Config.keySeparator), "");

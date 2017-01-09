@@ -103,8 +103,6 @@ export class MaskService {
         config.configure(this);
     }
 
-
-
     defaultLocalFilter(format: Ro.formatType): ILocalFilter {
         switch (format) {
         case ("string"):
@@ -134,8 +132,8 @@ export class MaskService {
         }
     };
 
-    private customFilter(format: Ro.formatType, remoteMask: string) {
-        if (this.maskMap[format as string] && remoteMask) {
+    private customFilter(format: Ro.formatType, remoteMask: string | null) {
+        if (remoteMask && this.maskMap[format as string]) {
             return this.maskMap[format as string][remoteMask];
         }
         return undefined;
