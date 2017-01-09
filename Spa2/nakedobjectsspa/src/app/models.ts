@@ -11,6 +11,11 @@ import { MomentWrapperService } from "./moment-wrapper.service";
 import { ChoiceViewModel } from './view-models/choice-view-model';
 
 
+// coerce undefined to null
+function withNull<T>(v: T | undefined | null) : T | null {
+    return v === undefined ? null : v;
+}
+
 export function dirtyMarker(context: ContextService, oid: ObjectIdWrapper) {
     return (Config.showDirtyFlag && context.getIsDirty(oid)) ? "*" : "";
 }
@@ -45,7 +50,7 @@ export function toTimeString(dt: Date) {
     return `${hours}:${minutes}:${seconds}`;
 }
 
-export function getUtcDate(rawDate: string) {
+export function getUtcDate(rawDate: string) : Date | null {
     if (!rawDate || rawDate.length === 0) {
         return null;
     }
@@ -69,7 +74,7 @@ export function getUtcDate(rawDate: string) {
     return null;
 }
 
-export function getTime(rawTime: string) {
+export function getTime(rawTime: string) : Date | null {
     if (!rawTime || rawTime.length === 0) {
         return null;
     }
@@ -155,7 +160,7 @@ export function friendlyTypeName(fullName: string) {
 
 export function friendlyNameForParam(action: IInvokableAction, parmId: string) {
     const param = _.find(action.parameters(), (p) => p.id() === parmId);
-    return param.extensions().friendlyName();
+    return param ? param.extensions().friendlyName() : "";
 }
 
 export function friendlyNameForProperty(obj: DomainObjectRepresentation, propId: string) {
@@ -223,7 +228,7 @@ function validateDateTimeFormat(model: IHasExtensions, newValue: Date): string {
     return "";
 }
 
-function getDate(val: string, ms: MomentWrapperService): Date {
+function getDate(val: string, ms: MomentWrapperService): Date | null {
 
     const dt1 = ms.moment(val, "YYYY-MM-DD", "en-GB", true);
 
@@ -322,11 +327,11 @@ export function validate(model: IHasExtensions, modelValue: any, viewValue: stri
 
 // helper functions 
 
-function isScalarType(typeName: string) {
+function isScalarType(typeName: string | null) {
     return typeName === "string" || typeName === "number" || typeName === "boolean" || typeName === "integer";
 }
 
-function isListType(typeName: string) {
+function isListType(typeName: string | null) {
     return typeName === "list";
 }
 
@@ -494,7 +499,7 @@ export class ErrorWrapper {
 
     category: ErrorCategory;
     message: string;
-    error: ErrorMap | ErrorRepresentation;
+    error: ErrorMap | ErrorRepresentation | null;
 
     stackTrace: string[];
 
@@ -518,7 +523,7 @@ export class ObjectIdWrapper {
         return this.domainType + Config.keySeparator + this.instanceId;
     }
 
-    static safeSplit(id: string) {
+    static safeSplit(id: string) : string[] {
         if (id) {
             return id.split(Config.keySeparator);
         }
@@ -590,7 +595,7 @@ export abstract class HateosModel implements IHateoasModel {
     method: Ro.httpMethodsType = "GET";
     urlParms: _.Dictionary<Object>;
 
-    constructor(protected model?: Ro.IRepresentation) {
+    protected constructor(protected model?: Ro.IRepresentation) {
     }
 
     populate(model: Ro.IRepresentation) {
@@ -644,7 +649,7 @@ export abstract class HateosModel implements IHateoasModel {
 
 export abstract class ArgumentMap extends HateosModel {
 
-    constructor(public map: Ro.IValueMap, public id: string) {
+    protected constructor(public map: Ro.IValueMap, public id: string) {
         super(map);
     }
 
@@ -657,13 +662,13 @@ export abstract class NestedRepresentation<T extends Ro.IResourceRepresentation>
 
     protected resource = () => this.model as T;
 
-    constructor(private model: T) { }
+    protected constructor(private model: T) { }
 
-    private lazyLinks: Link[];
+    private lazyLinks: Link[] | null;
 
     links(): Link[] {
         this.lazyLinks = this.lazyLinks || wrapLinks(this.resource().links);
-        return this.lazyLinks;
+        return this.lazyLinks as Link[];
     }
 
     protected update(newResource: T) {
@@ -683,8 +688,8 @@ export abstract class NestedRepresentation<T extends Ro.IResourceRepresentation>
 
 export class RelParm {
 
-    name: string;
-    value: string;
+    name: string | undefined;
+    value: string | undefined;
 
     constructor(public asString: string) {
         this.decomposeParm();
@@ -692,7 +697,7 @@ export class RelParm {
 
     private decomposeParm() {
         const regex = /(\w+)\W+(\w+)\W+/;
-        const result = regex.exec(this.asString);
+        const result = regex.exec(this.asString) || [];
         [, this.name, this.value] = result;
     }
 }
@@ -762,9 +767,9 @@ export class MediaType {
 export class Value {
 
     // note this is different from constructor parm as we wrap ILink
-    private wrapped: Link | Array<Link | Ro.valueType> | Ro.scalarValueType | Blob;
+    private wrapped: Link | Array<Link | Ro.valueType> | Ro.scalarValueType | Blob| null;
 
-    constructor(raw: Link | Array<Link | Ro.valueType> | Ro.valueType | Blob) {
+    constructor(raw: Link | Array<Link | Ro.valueType> | Ro.valueType | Blob | null) {
         // can only be Link, number, boolean, string or null    
 
         if (raw instanceof Array) {
@@ -791,7 +796,8 @@ export class Value {
     }
 
     isFileReference(): boolean {
-        return this.wrapped instanceof Link && this.link().href().indexOf("data") === 0;
+        const href = this.href();
+        return href ? href.indexOf("data") === 0 : false;
     }
 
     isList(): boolean {
@@ -802,33 +808,35 @@ export class Value {
         return this.wrapped == null;
     }
 
-    blob(): Blob {
+    blob(): Blob | null {
         return this.isBlob() ? <Blob>this.wrapped : null;
     }
 
-    link(): Link {
+    link(): Link | null {
         return this.isReference() ? <Link>this.wrapped : null;
     }
 
-    href(): string {
-        return this.link() ? this.link().href() : null;
+    href(): string | null {
+        const link = this.link();
+        return link ? link.href() : null;
     }
 
-    scalar(): Ro.scalarValueType {
+    scalar(): Ro.scalarValueType | null {
         return this.isScalar() ? this.wrapped as Ro.scalarValueType : null;
     }
 
-    list(): Value[] {
+    list(): Value[] | null {
         return this.isList() ? _.map(this.wrapped as Array<Link | Ro.valueType>, i => new Value(i)) : null;
     }
 
     toString(): string {
         if (this.isReference()) {
-            return this.link().title();
+            return (this.link() as Link).title(); // know true
         }
 
         if (this.isList()) {
-            const ss = _.map(this.list(), v => v.toString());
+            const list = this.list() as Value[]; // know true
+            const ss = _.map(list, v => v.toString());
             return ss.length === 0 ? "" : _.reduce(ss, (m, s) => m + "-" + s, "");
         }
 
@@ -837,10 +845,11 @@ export class Value {
 
     compress() {
         if (this.isReference()) {
-            this.link().compress();
+            (this.link() as Link).compress(); // know true
         }
         if (this.isList()) {
-            _.forEach(this.list(), i => i.compress());
+            const list = this.list() as Value[]; // know true
+            _.forEach(list, i => i.compress());
         };
 
         if (this.scalar() && this.wrapped instanceof String) {
@@ -850,10 +859,11 @@ export class Value {
 
     decompress() {
         if (this.isReference()) {
-            this.link().decompress();
+            (this.link() as Link).decompress();  // know true
         }
         if (this.isList()) {
-            _.forEach(this.list(), i => i.decompress());
+            const list = this.list() as Value[]; // know true
+            _.forEach(list, i => i.decompress());
         };
 
         if (this.scalar() && this.wrapped instanceof String) {
@@ -869,14 +879,14 @@ export class Value {
 
     toValueString(): string {
         if (this.isReference()) {
-            return this.link().href();
+            return (this.link() as Link).href();  // know true
         }
         return (this.wrapped == null) ? "" : this.wrapped.toString();
     }
 
     toJsonString(): string {
 
-        const cloneThis = _.cloneDeep(this) as Value;
+        const cloneThis = _.cloneDeep(this as Value);
         cloneThis.compress();
         const value = cloneThis.wrapped;
         const raw = (value instanceof Link) ? value.wrapped : value;
@@ -885,12 +895,14 @@ export class Value {
 
     setValue(target: Ro.IValue) {
         if (this.isFileReference()) {
-            target.value = this.link().wrapped;
+            target.value = (this.link() as Link).wrapped; // know true
         }
         else if (this.isReference()) {
-            target.value = { "href": this.link().href() };
+            
+            target.value = { "href": (this.link() as Link).href() }; // know true
         } else if (this.isList()) {
-            target.value = _.map(this.list(), (v) => v.isReference() ? { "href": v.link().href() } : v.scalar());
+            const list = this.list() as Value[]; // know true
+            target.value = _.map(list, (v) => v.isReference() ? <Ro.ILink>{ "href": (v.link() as Link).href() } : v.scalar());
         }
         else if (this.isBlob()) {
             target.value = this.blob();
@@ -912,29 +924,25 @@ export class ErrorValue {
 
 export class Result {
     constructor(
-        public readonly wrapped: Ro.IDomainObjectRepresentation | RoCustom.ICustomListRepresentation | Ro.IScalarValueRepresentation,
+        public readonly wrapped: Ro.IDomainObjectRepresentation | RoCustom.ICustomListRepresentation | Ro.IScalarValueRepresentation | null,
         private readonly resultType: Ro.resultTypeType
     ) { }
 
-    object(): DomainObjectRepresentation {
+    object(): DomainObjectRepresentation | null {
         if (!this.isNull() && this.resultType === "object") {
-            const dor = new DomainObjectRepresentation();
-            dor.populate(this.wrapped as Ro.IDomainObjectRepresentation);
-            return dor;
+            return new DomainObjectRepresentation(this.wrapped as Ro.IDomainObjectRepresentation);
         }
         return null;
     }
 
-    list(): ListRepresentation {
+    list(): ListRepresentation | null {
         if (!this.isNull() && this.resultType === "list") {
-            const lr = new ListRepresentation();
-            lr.populate(this.wrapped as RoCustom.ICustomListRepresentation);
-            return lr;
+            return new ListRepresentation(this.wrapped as RoCustom.ICustomListRepresentation);
         }
         return null;
     }
 
-    scalar(): ScalarValueRepresentation {
+    scalar(): ScalarValueRepresentation | null {
         if (!this.isNull() && this.resultType === "scalar") {
             return new ScalarValueRepresentation(this.wrapped as Ro.IScalarValueRepresentation);
         }
@@ -1067,17 +1075,17 @@ export class Extensions {
     constructor(private wrapped: RoCustom.ICustomExtensions) { }
 
     //Standard RO:
-    friendlyName = () => this.wrapped.friendlyName;
-    description = () => this.wrapped.description;
-    returnType = () => this.wrapped.returnType;
-    optional = () => this.wrapped.optional;
-    hasParams = () => this.wrapped.hasParams;
+    friendlyName = () => this.wrapped.friendlyName || "";
+    description = () => this.wrapped.description || "";
+    returnType = () => this.wrapped.returnType || null;
+    optional = () => this.wrapped.optional || false;
+    hasParams = () => this.wrapped.hasParams || false;
     elementType = () => this.wrapped.elementType || null;
-    domainType = () => this.wrapped.domainType;
+    domainType = () => this.wrapped.domainType || null;
     pluralName = () => this.wrapped.pluralName || "";
     format = () => this.wrapped.format;
     memberOrder = () => this.wrapped.memberOrder;
-    isService = () => this.wrapped.isService;
+    isService = () => this.wrapped.isService || false;
     minLength = () => this.wrapped.minLength;
     maxLength = () => this.wrapped.maxLength;
     pattern = () => this.wrapped.pattern;
@@ -1123,13 +1131,14 @@ export class ActionResultRepresentation extends ResourceRepresentation<Ro.IActio
     }
 
     // links 
-    selfLink(): Link {
-        return linkByRel(this.links(), "self");
+    selfLink(): Link | null {
+        return linkByRel(this.links(), "self") || null;
     }
 
     // link representations 
-    getSelf(): ActionResultRepresentation {
-        return <ActionResultRepresentation>this.selfLink().getTarget();
+    getSelf(): ActionResultRepresentation | null {
+        const self = this.selfLink();
+        return self ? self.getTargetAs<ActionResultRepresentation>() : null;
     }
 
     // properties 
@@ -1138,10 +1147,10 @@ export class ActionResultRepresentation extends ResourceRepresentation<Ro.IActio
     }
 
     result(): Result {
-        return new Result(this.wrapped().result, this.resultType());
+        return new Result(this.wrapped().result || null, this.resultType());
     }
 
-    warningsOrMessages(): string {
+    warningsOrMessages(): string | undefined {
 
         const has = (arr: string[]) => arr && arr.length > 0;
         const wOrM = has(this.extensions().warnings()) ? this.extensions().warnings() : this.extensions().messages();
@@ -1167,13 +1176,13 @@ export interface IHasExtensions {
 
 export interface IField extends IHasExtensions {
     id(): string;
-    choices(): _.Dictionary<Value>;
+    choices(): _.Dictionary<Value> | null;
     isScalar(): boolean;
     isCollectionContributed(): boolean;
 
     entryType(): EntryType;
-    getPromptMap(): PromptMap;
-    promptLink(): Link;
+    getPromptMap(): PromptMap | null;
+    promptLink(): Link | null;
 }
 
 // matches 18.2.1
@@ -1193,32 +1202,37 @@ export class Parameter
     }
 
     // properties 
-    choices(): _.Dictionary<Value> {
+    choices(): _.Dictionary<Value> | null {
         const customExtensions = this.extensions();
         // use custom choices extension by preference 
         if (customExtensions.choices()) {
             return _.mapValues(customExtensions.choices(), v => new Value(v));
         }
 
-        if (this.wrapped().choices) {
-            const values = _.map(this.wrapped().choices, item => new Value(item));
-            return (<any>_.fromPairs)(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
+        const choices = this.wrapped().choices;
+        if (choices) {
+            const values = _.map(choices, item => new Value(item));
+            return _.fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
         }
         return null;
     }
 
-    promptLink(): Link {
-        return linkByNamespacedRel(this.links(), "prompt");
+    promptLink(): Link | null {
+        return linkByNamespacedRel(this.links(), "prompt") || null;
     }
 
-    getPromptMap(): PromptMap {
-        const pr = <PromptRepresentation>this.promptLink().getTarget();
-        return new PromptMap(this.promptLink(), pr.instanceId());
+    getPromptMap(): PromptMap | null {
+        const promptLink = this.promptLink();
+        if (promptLink) {
+            const pr = promptLink.getTargetAs<PromptRepresentation>();
+            return new PromptMap(promptLink, pr.instanceId());
+        }
+        return null;
     }
 
     default(): Value {
         const dflt = this.wrapped().default == null ? (isScalarType(this.extensions().returnType()) ? "" : null) : this.wrapped().default;
-        return new Value(dflt);
+        return new Value(withNull(dflt));
     }
 
     // helper
@@ -1313,11 +1327,11 @@ export class ActionRepresentation extends ResourceRepresentation<Ro.IActionRepre
 
     // linked representations 
     getSelf(): ActionRepresentation {
-        return <ActionRepresentation>this.selfLink().getTarget();
+        return this.selfLink().getTargetAs<ActionRepresentation>();
     }
 
     getUp(): DomainObjectRepresentation {
-        return <DomainObjectRepresentation>this.upLink().getTarget();
+        return this.upLink().getTargetAs<DomainObjectRepresentation>();
     }
 
     getInvokeMap(): InvokeMap {
@@ -1416,11 +1430,11 @@ export class PromptRepresentation extends ResourceRepresentation<Ro.IPromptRepre
 
     // linked representations 
     getSelf(): PromptRepresentation {
-        return <PromptRepresentation>this.selfLink().getTarget();
+        return this.selfLink().getTargetAs<PromptRepresentation>();
     }
 
     getUp(): DomainObjectRepresentation {
-        return <DomainObjectRepresentation>this.upLink().getTarget();
+        return this.upLink().getTargetAs<DomainObjectRepresentation>();
     }
 
     // properties 
@@ -1469,11 +1483,11 @@ export class CollectionRepresentation extends ResourceRepresentation<RoCustom.IC
 
     // linked representations 
     getSelf(): CollectionRepresentation {
-        return <CollectionRepresentation>this.selfLink().getTarget();
+        return this.selfLink().getTargetAs<CollectionRepresentation>();
     }
 
     getUp(): DomainObjectRepresentation {
-        return <DomainObjectRepresentation>this.upLink().getTarget();
+        return this.upLink().getTargetAs<DomainObjectRepresentation>();
     }
 
     setFromMap(map: AddToRemoveFromMap) {
@@ -1574,11 +1588,11 @@ export class PropertyRepresentation extends ResourceRepresentation<Ro.IPropertyR
 
     // linked representations 
     getSelf(): PropertyRepresentation {
-        return <PropertyRepresentation>this.selfLink().getTarget();
+        return this.selfLink().getTargetAs<PropertyRepresentation>();
     }
 
     getUp(): DomainObjectRepresentation {
-        return <DomainObjectRepresentation>this.upLink().getTarget();
+        return this.upLink().getTargetAs<DomainObjectRepresentation>();
     }
 
     setFromModifyMap(map: ModifyMap) {
@@ -1743,7 +1757,7 @@ export class PropertyMember extends Member<Ro.IPropertyMember> implements IField
 
 
     getPromptMap(): PromptMap {
-        const pr = <PromptRepresentation>this.promptLink().getTarget();
+        const pr = this.promptLink().getTargetAs<PromptRepresentation>();
         return new PromptMap(this.promptLink(), pr.instanceId());
     }
 
@@ -1765,7 +1779,7 @@ export class PropertyMember extends Member<Ro.IPropertyMember> implements IField
     }
 
     getDetails(): PropertyRepresentation {
-        return <PropertyRepresentation>this.detailsLink().getTarget();
+        return this.detailsLink().getTargetAs<PropertyRepresentation>();
     }
 
     private hasChoices(): boolean {
@@ -1847,7 +1861,7 @@ export class CollectionMember
     }
 
     getDetails(): CollectionRepresentation {
-        return <CollectionRepresentation>this.detailsLink().getTarget();
+        return this.detailsLink().getTargetAs<CollectionRepresentation>();
     }
 
     hasTableData = () => {
@@ -1886,7 +1900,7 @@ export class ActionMember extends Member<Ro.IActionMember> {
     }
 
     getDetails(): ActionRepresentation {
-        const details = <ActionRepresentation>this.detailsLink().getTarget();
+        const details = this.detailsLink().getTargetAs<ActionRepresentation>();
         details.parent = this.parent;
         return details;
     }
@@ -1959,8 +1973,8 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
 
     wrapped = () => this.resource() as Ro.IDomainObjectRepresentation;
 
-    constructor() {
-        super();
+    constructor(model?: Ro.IRepresentation) {
+        super(model);
     }
 
     id(): string {
@@ -2064,7 +2078,7 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
 
     // linked representations 
     getSelf(): DomainObjectRepresentation {
-        return <DomainObjectRepresentation>this.selfLink().getTarget();
+        return this.selfLink().getTargetAs<DomainObjectRepresentation>();
     }
 
     getPersistMap(): PersistMap {
@@ -2151,7 +2165,7 @@ export class MenuRepresentation extends ResourceRepresentation<RoCustom.IMenuRep
 
     // linked representations 
     getSelf(): MenuRepresentation {
-        return <MenuRepresentation>this.selfLink().getTarget();
+        return this.selfLink().getTargetAs<MenuRepresentation>();
     }
 
 }
@@ -2172,8 +2186,11 @@ export class ScalarValueRepresentation extends NestedRepresentation<Ro.IScalarVa
 
 // matches List Representation 11.0
 export class ListRepresentation
-    extends ResourceRepresentation<RoCustom.ICustomListRepresentation>
-    implements IHasLinksAsValue {
+    extends ResourceRepresentation<RoCustom.ICustomListRepresentation> implements IHasLinksAsValue {
+
+    constructor(model?: Ro.IRepresentation) {
+        super(model);
+    }
 
     wrapped = () => this.resource() as RoCustom.ICustomListRepresentation;
 
@@ -2184,7 +2201,7 @@ export class ListRepresentation
 
     // linked representations 
     getSelf(): ListRepresentation {
-        return <ListRepresentation>this.selfLink().getTarget();
+        return this.selfLink().getTargetAs<ListRepresentation>();
     }
 
     private lazyValue: Link[];
@@ -2222,6 +2239,10 @@ export interface IErrorDetails {
 
 // matches the error representation 10.0 
 export class ErrorRepresentation extends ResourceRepresentation<Ro.IErrorRepresentation> implements IErrorDetails {
+
+    constructor() {
+        super();
+    }
 
     wrapped = () => this.resource() as Ro.IErrorRepresentation;
 
@@ -2290,11 +2311,11 @@ export class VersionRepresentation extends ResourceRepresentation<Ro.IVersionRep
 
     // linked representations 
     getSelf(): VersionRepresentation {
-        return <VersionRepresentation>this.selfLink().getTarget();
+        return this.selfLink().getTargetAs<VersionRepresentation>();
     }
 
     getUp(): HomePageRepresentation {
-        return <HomePageRepresentation>this.upLink().getTarget();
+        return this.upLink().getTargetAs<HomePageRepresentation>();
     }
 
     // scalar properties 
@@ -2323,16 +2344,16 @@ export class DomainServicesRepresentation extends ListRepresentation {
 
     // linked representations 
     getSelf(): DomainServicesRepresentation {
-        return <DomainServicesRepresentation>this.selfLink().getTarget();
+        return this.selfLink().getTargetAs<DomainServicesRepresentation>();
     }
 
     getUp(): HomePageRepresentation {
-        return <HomePageRepresentation>this.upLink().getTarget();
+        return this.upLink().getTargetAs<HomePageRepresentation>();
     }
 
     getService(serviceType: string): DomainObjectRepresentation {
         const serviceLink = _.find(this.value(), link => link.rel().parms[0].value === serviceType);
-        return <DomainObjectRepresentation>serviceLink.getTarget();
+        return serviceLink.getTargetAs<DomainObjectRepresentation>();
     }
 }
 
@@ -2348,16 +2369,16 @@ export class MenusRepresentation extends ListRepresentation {
 
     // linked representations 
     getSelf(): MenusRepresentation {
-        return <MenusRepresentation>this.selfLink().getTarget();
+        return this.selfLink().getTargetAs<MenusRepresentation>();
     }
 
     getUp(): HomePageRepresentation {
-        return <HomePageRepresentation>this.upLink().getTarget();
+        return this.upLink().getTargetAs<HomePageRepresentation>();
     }
 
     getMenu(menuId: string): MenuRepresentation {
         const menuLink = _.find(this.value(), link => link.rel().parms[0].value === menuId);
-        return <MenuRepresentation>menuLink.getTarget();
+        return menuLink.getTargetAs<MenuRepresentation>();
     }
 }
 
@@ -2377,11 +2398,11 @@ export class UserRepresentation extends ResourceRepresentation<Ro.IUserRepresent
 
     // linked representations 
     getSelf(): UserRepresentation {
-        return <UserRepresentation>this.selfLink().getTarget();
+        return this.selfLink().getTargetAs<UserRepresentation>();
     }
 
     getUp(): HomePageRepresentation {
-        return <HomePageRepresentation>this.upLink().getTarget();
+        return this.upLink().getTargetAs<HomePageRepresentation>();
     }
 
     // scalar properties 
@@ -2419,7 +2440,7 @@ export class DomainTypeActionInvokeRepresentation extends ResourceRepresentation
 
     // linked representations 
     getSelf(): DomainTypeActionInvokeRepresentation {
-        return <DomainTypeActionInvokeRepresentation>this.selfLink().getTarget();
+        return this.selfLink().getTargetAs<DomainTypeActionInvokeRepresentation>();
     }
 
     id(): string {
@@ -2465,11 +2486,11 @@ export class HomePageRepresentation extends ResourceRepresentation<Ro.IHomePageR
 
     // linked representations 
     getSelf(): HomePageRepresentation {
-        return <HomePageRepresentation>this.selfLink().getTarget();
+        return this.selfLink().getTargetAs<HomePageRepresentation>();
     }
 
     getUser(): UserRepresentation {
-        return <UserRepresentation>this.userLink().getTarget();
+        return this.userLink().getTargetAs<UserRepresentation>();
     }
 
     getDomainServices(): DomainServicesRepresentation {
@@ -2480,7 +2501,7 @@ export class HomePageRepresentation extends ResourceRepresentation<Ro.IHomePageR
     }
 
     getVersion(): VersionRepresentation {
-        return <VersionRepresentation>this.versionLink().getTarget();
+        return this.versionLink().getTargetAs<VersionRepresentation>();
     }
 
     //  custom 
@@ -2581,6 +2602,12 @@ export class Link {
         const target = this.getHateoasTarget(this.type().representationType);
         this.copyToHateoasModel(target);
         return target;
+    }
+
+    getTargetAs<T extends IHateoasModel>(): T {
+        const target = this.getHateoasTarget(this.type().representationType);
+        this.copyToHateoasModel(target);
+        return target as T;
     }
 
     // helper 

@@ -113,7 +113,7 @@ export type scalarValueType = string | number | boolean;
 export type valueType = scalarValueType | ILink;
 
 export interface IValue {
-    value: valueType | valueType[] | Blob;
+    value: valueType | valueType[] | Blob | null;
     invalidReason?: string;
 }
 
