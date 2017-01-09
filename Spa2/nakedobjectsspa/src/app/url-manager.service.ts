@@ -149,6 +149,16 @@ export class UrlManagerService {
             const u = this.router.serializeUrl(tree);
             this.location.replaceState(u);
         }
+
+        // todo - should we do this 
+        //this.router.navigateByUrl(tree).then(ok => {
+        //    if (ok && result.replace) {
+        //        const u = this.router.serializeUrl(tree);
+        //        this.location.replaceState(u);
+        //    }
+        //}).catch(() => {
+        //    this.setError(Models.ErrorCategory.ClientError);
+        //});
     }
 
     private getIds(typeOfId: string, paneId: number) {
@@ -715,6 +725,11 @@ export class UrlManagerService {
             case Constants.homePath: return ViewType.Home;
             case Constants.objectPath: return ViewType.Object;
             case Constants.listPath: return ViewType.List;
+            case Constants.errorPath: return ViewType.Error;
+            case Constants.recentPath: return ViewType.Recent;
+            case Constants.attachmentPath: return ViewType.Attachment;
+            case Constants.applicationPropertiesPath: return ViewType.ApplicationProperties;
+            case Constants.multiLineDialogPath: return ViewType.MultiLineDialog;
         }
         throw new Error(`${view} is not a valid ViewType`);
     };

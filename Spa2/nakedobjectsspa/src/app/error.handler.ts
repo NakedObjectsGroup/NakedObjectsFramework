@@ -5,14 +5,21 @@ import * as Models from './models';
 
 export class GeminiErrorHandler implements ErrorHandler {
     handleError(error: any) {
-       
-        const urlManager: UrlManagerService = error.context.injector.get(UrlManagerService);
-        const context: ContextService = error.context.injector.get(ContextService);
 
-        const rp = new Models.ErrorWrapper(Models.ErrorCategory.ClientError, Models.ClientErrorCode.SoftwareError, error.message);
-        rp.stackTrace = error.stack.split("\n");
+        const ec = error.context || error.rejection.context;
 
-        context.setError(rp);
-        urlManager.setError(Models.ErrorCategory.ClientError, Models.ClientErrorCode.SoftwareError);
+        if (ec) {
+
+            const urlManager: UrlManagerService = ec.injector.get(UrlManagerService);
+            const context: ContextService = ec.injector.get(ContextService);
+
+            const rp = new Models.ErrorWrapper(Models.ErrorCategory.ClientError, Models.ClientErrorCode.SoftwareError, error.message);
+            rp.stackTrace = error.stack.split("\n");
+
+            context.setError(rp);
+            urlManager.setError(Models.ErrorCategory.ClientError, Models.ClientErrorCode.SoftwareError);
+        } else {
+            throw error;
+        }
     }
 }

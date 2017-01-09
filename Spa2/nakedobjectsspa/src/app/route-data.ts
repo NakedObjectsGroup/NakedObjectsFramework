@@ -5,7 +5,12 @@ import * as _ from "lodash";
 export enum ViewType {
     Home,
     Object,
-    List
+    List,
+    Error,
+    Recent,
+    Attachment,
+    ApplicationProperties,
+    MultiLineDialog
 }
 
 export enum CollectionViewState {
