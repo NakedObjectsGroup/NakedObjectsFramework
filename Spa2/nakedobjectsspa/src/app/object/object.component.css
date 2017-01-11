@@ -34,7 +34,7 @@ viewTitle {
     padding-right: 5px;
     margin-right: 20px;
     margin-top: 2px;
-    display: block;
+    display: inline-block;
 }
 
 .type {
@@ -64,7 +64,7 @@ viewTitle {
         color: grey;
 }
 
-.menu:hover, .menu:focus, .action:hover, .action:focus   {
+.title:hover, .title:focus   {
     outline-color: white;
     outline-style: solid;
     outline-width: 1px;
