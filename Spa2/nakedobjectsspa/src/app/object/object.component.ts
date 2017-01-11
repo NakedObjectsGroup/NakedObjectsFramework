@@ -182,8 +182,58 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
         accesskey: null
     };
 
+    private saveButton: IButton = {
+        value: "Save",
+        doClick: () => this.onSubmit(true),
+        show: () => true,
+        disabled: () => !this.form.valid,
+        title: () => this.tooltip,
+        accesskey: null
+    };
+
+    private saveAndCloseButton: IButton = {
+        value: "Save & Close",
+        doClick: () => this.onSubmit(false),
+        show: () => this.unsaved(),
+        disabled: () => !this.form.valid,
+        title: () => this.tooltip,
+        accesskey: null
+    };
+
+    private cancelButton: IButton = {
+        value: "Cancel",
+        doClick: () => this.doEditCancel(),
+        show: () => true,
+        disabled: () => null,
+        title: () => "",
+        accesskey: null
+    };
+
     get buttons() {
-        return [this.actionButton, this.editButton, this.reloadButton];
+        if (this.mode === InteractionMode.View) {
+            return [this.actionButton, this.editButton, this.reloadButton];
+        }
+
+        if (this.mode === InteractionMode.Edit) {
+            return [this.saveButton, this.saveAndCloseButton, this.cancelButton];
+        }
+
+        if (this.mode === InteractionMode.Transient || this.mode === InteractionMode.Form) {
+
+            const actions = _.flatten(_.map(this.menuItems(), mi => mi.actions));
+
+            return _.map(actions, a => ({
+                value: a.title,
+                doClick: () => a.doInvoke(),
+                doRightClick: () => a.doInvoke(true),
+                show: () => true,
+                disabled: () => a.disabled() ? true : null,
+                title: () => a.description,
+                accesskey: null
+            })) as IButton[];
+        }
+
+        return [] as IButton[];
     }
 
     // todo that we access viewmodel directly in template from this I think is smell that we should have a 
