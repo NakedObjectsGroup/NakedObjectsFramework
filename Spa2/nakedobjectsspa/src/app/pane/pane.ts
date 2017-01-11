@@ -34,7 +34,7 @@ export abstract class PaneComponent implements OnInit, OnDestroy {
 
     private activatedRouteDataSub: ISubscription;
     private paneRouteDataSub: ISubscription;
-    private lastPaneRouteData : PaneRouteData; 
+    private lastPaneRouteData: PaneRouteData; 
 
     protected abstract setup(routeData: PaneRouteData);
 

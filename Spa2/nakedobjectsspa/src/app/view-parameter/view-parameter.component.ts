@@ -61,7 +61,7 @@ export class ViewParameterComponent {
     }
 
 
-    // todo delegated click here smell that we need another component 
+    // todo what's happening here can there be an attachment ? 
     // doAttachmentClick = (right?: boolean) => this.parameter.attachment.doClick(right);
 
     attachmentTitle: string;

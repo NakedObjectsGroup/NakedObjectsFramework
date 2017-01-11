@@ -76,7 +76,7 @@ export interface IRepresentation {
 }
 
 export interface IResourceRepresentation extends IRepresentation {
-    links: ILink[],
+    links: ILink[];
     extensions: IExtensions;
 }
 
@@ -85,9 +85,9 @@ export interface IHomePageRepresentation extends IResourceRepresentation {
 }
 
 export interface IUserRepresentation extends IResourceRepresentation {
-    userName: string,
-    friendlyName: string,
-    email: string,
+    userName: string;
+    friendlyName: string;
+    email: string;
     roles: string[];
 }
 
@@ -157,7 +157,7 @@ export interface IPropertyMember extends IMember {
     value?: valueType;
     choices?: valueType[];
     hasChoices: boolean;
-    extensions : IPropertyExtensions;
+    extensions: IPropertyExtensions;
 }
 
 export interface ICollectionMember extends IMember {

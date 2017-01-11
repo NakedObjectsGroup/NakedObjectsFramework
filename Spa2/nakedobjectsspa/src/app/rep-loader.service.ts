@@ -163,7 +163,7 @@ export class RepLoaderService {
         });
 
         return this.httpPopulate(config, !!ignoreCache, response);
-    };
+    }
 
     setConfigFromMap(map: Models.IHateoasModel, digest?: string | null) {
         //const config = {
@@ -193,12 +193,12 @@ export class RepLoaderService {
         const response = new rc();
         const config = this.setConfigFromMap(map, digest);
         return this.httpPopulate(config, true, response);
-    };
+    }
 
     validate = (map: Models.IHateoasModel, digest?: string): Promise<boolean> => {
         const config = this.setConfigFromMap(map, digest);
         return this.httpValidate(config);
-    };
+    }
 
     retrieveFromLink = <T extends Models.IHateoasModel>(link: Models.Link | null, parms?: _.Dictionary<Object>): Promise<T> => {
 
@@ -232,7 +232,7 @@ export class RepLoaderService {
             return this.httpPopulate(config, true, response);
         }
         return Promise.reject("link must not be null");
-    };
+    }
 
 
     invoke = (action: Models.IInvokableAction, parms: _.Dictionary<Models.Value>, urlParms: _.Dictionary<Object>): Promise<Models.ActionResultRepresentation> => {
@@ -243,11 +243,11 @@ export class RepLoaderService {
             return this.retrieve(invokeMap, Models.ActionResultRepresentation);
         }
         return Promise.reject(`attempting to invoke uninvokable action ${action.actionId()}`);
-    };
+    }
 
     clearCache = (url: string) => {
         //cache.remove(url);
-    };
+    }
 
     addToCache = (url: string, m: Ro.IResourceRepresentation) => {
         //cache.put(url, m);
@@ -286,7 +286,7 @@ export class RepLoaderService {
             .catch((r:Response) => {
                 return this.handleError(r);
             });
-    };
+    }
 
     uploadFile = (url: string, mt: string, file: Blob): Promise<boolean> => {
        
@@ -308,7 +308,7 @@ export class RepLoaderService {
             .catch(() => {
                 return Promise.resolve(false);
             });
-    };
+    }
 
 
     private logoff() {

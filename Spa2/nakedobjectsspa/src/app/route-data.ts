@@ -42,10 +42,10 @@ export class RouteData {
     pane2: PaneRouteData;
 
     pane = (pane: number) => {
-        if (pane === 1) return this.pane1;
-        if (pane === 2) return this.pane2;
+        if (pane === 1) { return this.pane1; }
+        if (pane === 2) { return this.pane2; }
         throw new Error(`${pane} is not a valid pane index on RouteData`);
-    };
+    }
 }
 
 interface ICondition {
