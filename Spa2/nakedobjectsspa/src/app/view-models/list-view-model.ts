@@ -49,7 +49,7 @@ export class ListViewModel extends ContributedActionParentViewModel {
         return this.routeData.objectId
             ? this.context.getListFromObject(this.routeData, page, pageSize)
             : this.context.getListFromMenu(this.routeData, page, pageSize);
-    }
+    };
 
     private readonly pageOrRecreate = (newPage: number, newPageSize: number, newState?: CollectionViewState) => {
         this.recreate(newPage, newPageSize)

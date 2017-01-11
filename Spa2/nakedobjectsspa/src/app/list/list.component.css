@@ -67,6 +67,7 @@
 }
 
 .reference {
+    cursor: pointer;
     font-size: 11pt; 
     padding-left: 5px;
     padding-right: 5px;
@@ -79,6 +80,7 @@
 }
 
 .icon-list, .icon-table {
+    cursor: pointer;
     float: right;
     width: 20px;
     padding-top: 5px;
@@ -103,4 +105,7 @@ tbody .number {
     text-align:right;
 }
 
+tbody tr {
+  cursor:pointer;
+}
 

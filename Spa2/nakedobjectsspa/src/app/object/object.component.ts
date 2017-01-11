@@ -95,21 +95,22 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
     }
 
     // todo investigate if logic in this would be better here rather than view model
+   
 
     disableActions = () => {
         const obj = this.object;
         return obj && obj.disableActions() ? true : null;
-    }
+    };
 
     actionsTooltip = () => {
         const obj = this.object;
         return  obj ? obj.actionsTooltip() : "";
-    }
+    };
 
     unsaved = () => {
         const obj = this.object;
         return !!obj && obj.unsaved;
-    }
+    };
 
     private do(f: (o : DomainObjectViewModel) => void) {
         const obj = this.object;
@@ -120,39 +121,39 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
 
     toggleActionMenu = () => {
         this.do((o) => o.toggleActionMenu());
-    }
+    };
 
     doEdit = () => {
         this.do((o) => o.doEdit());
-    }
+    };
 
     doEditCancel = () => {
         this.do((o) => o.doEditCancel());
-    }
+    };
 
     showEdit = () => {
         const obj = this.object;
         return !!obj && !obj.hideEdit();
-    }
+    };
 
     doReload = () => {
         this.do((o) => o.doReload());
-    }
+    };
 
     message = () => {
         const obj = this.object;
         return obj ? obj.getMessage() : "";
-    }
+    };
 
     showActions = () => {
         const obj = this.object;
         return !!obj && obj.showActions();
-    }
+    };
 
     menuItems = () => {
         const obj = this.object;
         return obj ? obj.menuItems : [];
-    }
+    };
 
     private actionButton: IButton = {
         value: "Actions",
@@ -161,7 +162,7 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
         disabled: () => this.disableActions(),
         title: () => this.actionsTooltip(),
         accesskey: "a"
-    }
+    };
 
     private editButton: IButton = {
         value: "Edit",
@@ -170,7 +171,7 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
         disabled: () => null,
         title: () => "",
         accesskey: null
-    }
+    };
 
     private reloadButton: IButton = {
         value: "Reload",
@@ -179,60 +180,10 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
         disabled: () => null,
         title: () => "",
         accesskey: null
-    }
-
-    private saveButton: IButton = {
-        value: "Save",
-        doClick: () => this.onSubmit(true),
-        show: () => true,
-        disabled: () => !this.form.valid,
-        title: () => this.tooltip,
-        accesskey: null
-    }
-
-    private saveAndCloseButton: IButton = {
-        value: "Save & Close",
-        doClick: () => this.onSubmit(false),
-        show: () => this.unsaved(),
-        disabled: () => !this.form.valid,
-        title: () => this.tooltip,
-        accesskey: null
-    }
-
-    private cancelButton: IButton = {
-        value: "Cancel",
-        doClick: () => this.doEditCancel(),
-        show: () => true,
-        disabled: () => null,
-        title: () => "",
-        accesskey: null
-    }
+    };
 
     get buttons() {
-        if (this.mode === InteractionMode.View) {
-            return [this.actionButton, this.editButton, this.reloadButton];
-        }
-
-        if (this.mode === InteractionMode.Edit) {
-            return [this.saveButton, this.saveAndCloseButton, this.cancelButton];
-        }
-
-        if (this.mode === InteractionMode.Transient || this.mode === InteractionMode.Form) {
-
-            const actions = _.flatten(_.map(this.menuItems(), mi => mi.actions));
-
-            return _.map(actions, a => ({
-                value: a.title,
-                doClick: () => a.doInvoke(),
-                doRightClick: () => a.doInvoke(true),
-                show: () => true,
-                disabled: () => a.disabled() ? true : null,
-                title: () => a.description,
-                accesskey: null
-            })) as IButton[];
-        }
-
-        return [] as IButton[];
+        return [this.actionButton, this.editButton, this.reloadButton];
     }
 
     // todo that we access viewmodel directly in template from this I think is smell that we should have a 

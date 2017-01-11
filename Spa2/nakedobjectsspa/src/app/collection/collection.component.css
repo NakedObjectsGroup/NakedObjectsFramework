@@ -21,6 +21,7 @@
 }
 
 .icon-list, .icon-table, .icon-summary {
+    cursor: pointer;
     float: right;
     width: 20px;
     padding-left: 5px;

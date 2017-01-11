@@ -1,7 +1,7 @@
  :host {
     display: block;
     float: left;
-    padding: 5px;
+    padding: 0px;
     margin-top: 0px;
     margin-left: 1px; /*Else hover outline is hidden on the left-most menu */
     margin-right: 10px;
@@ -10,16 +10,17 @@
     outline: none;
 }
 
- :host:hover, :host:focus  {
-    outline-color: white;
-    outline-style: solid;
-    outline-width: 1px;
-}
-
 input {  /*To override user agent style sheet defaults*/
+    cursor: pointer;
     color: white;
     font-weight: 100;
     font-size: 16pt;
     background-color: inherit;
-    padding: 0px;
+    padding: 5px;
+}
+
+ input:hover, input:focus  {
+    outline-color: white;
+    outline-style: solid;
+    outline-width: 1px;
 }

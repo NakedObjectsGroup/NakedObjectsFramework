@@ -7,7 +7,7 @@
         <div *ngIf="recent" class="collection">
             <table>
                 <tbody>
-                    <tr [ngClass]="itemColor(item)" *ngFor="let item of items()" class="clickable-area" dnd-draggable [dragEnabled]="true" [dragData]="item" geminiClick
+                    <tr [ngClass]="itemColor(item)" *ngFor="let item of items()" dnd-draggable [dragEnabled]="true" [dragData]="item" geminiClick
                         (leftClick)="doItemClick(item)" (rightClick)="doItemClick(item, true)">
                         <td tabindex="0" class="cell">
                             {{itemTitle(item)}}

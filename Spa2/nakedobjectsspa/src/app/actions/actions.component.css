@@ -4,17 +4,18 @@
     display: block;
 }
 
-.submenu, .action   {
+.submenu  {
+    display: block;
+    cursor: pointer;
     outline: none;
     margin-right: 20px;
     width: 150px;
     margin-bottom: 5px;
     font-weight: bolder; /*Because black on white light looks too faint*/
-    display: block;
     padding: 2px 5px;
 }
 
-.submenu:focus, .submenu:hover, .action:hover, .action:focus   {
+.submenu:focus, .submenu:hover   {
     outline-color: white;
     outline-style: solid;
     outline-width: 1px;
