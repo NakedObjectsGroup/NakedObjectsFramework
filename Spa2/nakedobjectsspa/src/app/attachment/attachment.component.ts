@@ -40,18 +40,20 @@ export class AttachmentComponent extends PaneComponent {
                 const attachmentId = routeData.attachmentId;
                 const attachment = object.propertyMember(attachmentId);
 
-                if (attachment && attachment.attachmentLink()) {
+                if (attachment) {
                     const avm = this.viewModelFactory.attachmentViewModel(attachment, routeData.paneId);
 
-                    this.title = avm.title;
+                    if (avm) {
+                        this.title = avm.title;
 
-                    avm.downloadFile()
-                        .then(blob => {
-                            const reader = new FileReader();
-                            reader.onloadend = () => this.image = reader.result;
-                            reader.readAsDataURL(blob);
-                        })
-                        .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+                        avm.downloadFile()
+                            .then(blob => {
+                                const reader = new FileReader();
+                                reader.onloadend = () => this.image = reader.result;
+                                reader.readAsDataURL(blob);
+                            })
+                            .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+                    }
                 }
             })
             .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));

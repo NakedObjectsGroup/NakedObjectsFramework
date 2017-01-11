@@ -99,7 +99,7 @@ export function actionsTooltip(onWhat: { disableActions: () => boolean }, action
     return onWhat.disableActions() ? Msg.noActions : Msg.openActions;
 }
 
-export function getCollectionDetails(count: number) {
+export function getCollectionDetails(count: number | null) {
     if (count == null) {
         return Msg.unknownCollectionSize;
     }
@@ -138,7 +138,7 @@ export function validate(rep: Models.IHasExtensions, vm: FieldViewModel, ms: Mom
     return vm.clientValid;
 };
 
-export function setScalarValueInView(vm: { value: string | number | boolean | Date }, propertyRep: Models.PropertyMember, value: Models.Value) {
+export function setScalarValueInView(vm: { value: string | number | boolean | Date | null }, propertyRep: Models.PropertyMember, value: Models.Value) {
     if (Models.isDateOrDateTime(propertyRep)) {
         //vm.value = Models.toUtcDate(value);
         const date = Models.toUtcDate(value);

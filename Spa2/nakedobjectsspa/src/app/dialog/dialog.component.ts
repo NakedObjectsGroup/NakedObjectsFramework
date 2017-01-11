@@ -43,34 +43,43 @@ export class DialogComponent implements OnInit, OnDestroy {
     form: FormGroup;
 
     get title() {
-        return this.dialog.title;
+        const dialog = this.dialog;
+        return dialog ? dialog.title : "";
     }
 
     get message() {
-        return this.dialog.getMessage();
+        const dialog = this.dialog;
+        return dialog ? dialog.getMessage() : "";
     }
 
     get parameters() {
-        return this.dialog.parameters;
+        const dialog = this.dialog;
+        return dialog ? dialog.parameters : "";
     }
 
     get tooltip(): string {
-        return this.dialog.tooltip();
+        const dialog = this.dialog;
+        return dialog ? dialog.tooltip() : "";
     }
 
     paneId: number;
 
     onSubmit(right?: boolean) {
-        _.forEach(this.parms,
-            (p, k) => {
-                const newValue = this.form.value[p.id];
-                p.setValueFromControl(newValue);
-            });
-        this.dialog.doInvoke(right);
+        if (this.dialog) {
+            _.forEach(this.parms,
+                (p, k) => {
+                    const newValue = this.form.value[p.id];
+                    p.setValueFromControl(newValue);
+                });
+            this.dialog.doInvoke(right);
+        }
     }
 
-
-    close = () => this.dialog.doCloseReplaceHistory();
+    close = () => {
+        if (this.dialog) {
+            this.dialog.doCloseReplaceHistory();
+        }
+    };
 
     private currentDialogId: string;
 
@@ -84,13 +93,15 @@ export class DialogComponent implements OnInit, OnDestroy {
         this.form = this.formBuilder.group(controls);
 
         this.form.valueChanges.subscribe((data: any) => {
-            // cache parm values
-            _.forEach(data,
-                (v, k) => {
-                    const parm = this.parms[k];
-                    parm.setValueFromControl(v);
-                });
-            this.dialog.setParms();
+            if (this.dialog) {
+                // cache parm values
+                _.forEach(data,
+                    (v, k) => {
+                        const parm = this.parms[k!];
+                        parm.setValueFromControl(v);
+                    });
+                this.dialog.setParms();
+            }
         });
     }
 
@@ -113,8 +124,8 @@ export class DialogComponent implements OnInit, OnDestroy {
             }
 
             const p = this.parent;
-            let action: Models.ActionMember | Models.ActionRepresentation = null;
-            let actionViewModel: ActionViewModel = null;
+            let action: Models.ActionMember | Models.ActionRepresentation | null = null;
+            let actionViewModel: ActionViewModel | null = null;
 
             if (p instanceof MenuViewModel) {
                 action = p.menuRep.actionMember(this.currentDialogId);
@@ -126,13 +137,13 @@ export class DialogComponent implements OnInit, OnDestroy {
 
             if (p instanceof ListViewModel) {
                 action = p.actionMember(this.currentDialogId);
-                actionViewModel = _.find(p.actions, a => a.actionRep.actionId() === this.currentDialogId);
+                actionViewModel = _.find(p.actions, a => a.actionRep.actionId() === this.currentDialogId) || null;
             }
 
             if (p instanceof CollectionViewModel) {
                 action = p.actionMember(this.currentDialogId);
                 if (action) {
-                    actionViewModel = _.find(p.actions, a => a.actionRep.actionId() === this.currentDialogId);
+                    actionViewModel = _.find(p.actions, a => a.actionRep.actionId() === this.currentDialogId) || null;
                 }
             }
             if (action) {

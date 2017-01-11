@@ -87,7 +87,12 @@ export class ViewPropertyComponent implements OnInit {
     doClick = (right?: boolean) => this.property.doClick(right);
 
     // todo delegated click here smell that we need another component 
-    doAttachmentClick = (right?: boolean) => this.property.attachment.doClick(right);
+    doAttachmentClick = (right?: boolean) => {
+        const attachment = this.property.attachment;
+        if (attachment) {
+            attachment.doClick(right);
+        };
+    }
 
     attachmentTitle: string;
     image: string;

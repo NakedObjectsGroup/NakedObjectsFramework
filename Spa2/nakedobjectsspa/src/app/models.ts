@@ -1396,7 +1396,7 @@ export class ActionRepresentation extends ResourceRepresentation<Ro.IActionRepre
 
         if (!this.parameterMap) {
             const parameters = this.wrapped().parameters;
-            this.parameterMap = _.mapValues(parameters, (p, id) => new Parameter(p, this, id as string));
+            this.parameterMap = _.mapValues(parameters, (p, id) => new Parameter(p, this, id!));
         }
     }
 
@@ -1446,7 +1446,7 @@ export class PromptMap extends ArgumentMap implements IHateoasModel {
     }
 
     setArguments(args: _.Dictionary<Value>) {
-        _.each(args, (arg, key) => this.setArgument(key as string, arg));
+        _.each(args, (arg, key) => this.setArgument(key!, arg));
     }
 
     setMember(name: string, value: Value) {
@@ -1455,7 +1455,7 @@ export class PromptMap extends ArgumentMap implements IHateoasModel {
 
     setMembers(objectValues: () => _.Dictionary<Value>) {
         if (this.map["x-ro-nof-members"]) {
-            _.forEach(objectValues(), (v, k) => this.setMember(k as string, v));
+            _.forEach(objectValues(), (v, k) => this.setMember(k!, v));
         }
     }
 }
@@ -1593,7 +1593,7 @@ export class CollectionRepresentation extends ResourceRepresentation<RoCustom.IC
     private actionMemberMap: _.Dictionary<ActionMember>;
 
     actionMembers() {
-        this.actionMemberMap = this.actionMemberMap || _.mapValues(this.wrapped().members, (m, id) => Member.wrapMember(m, this, id as string)) as _.Dictionary<ActionMember>;
+        this.actionMemberMap = this.actionMemberMap || _.mapValues(this.wrapped().members, (m, id) => Member.wrapMember(m, this, id!)) as _.Dictionary<ActionMember>;
         return this.actionMemberMap;
     }
 
@@ -1786,7 +1786,7 @@ export class PropertyMember extends Member<Ro.IPropertyMember> implements IField
 
     setFromModifyMap(map: ModifyMap) {
         _.forOwn(map.map, (v, k) => {
-            (<any>this.wrapped)[k as string] = v;
+            (<any>this.wrapped)[k!] = v;
         });
     }
 
@@ -1926,7 +1926,7 @@ export class CollectionMember
     actionMembers(): _.Dictionary<ActionMember> {
         const members = this.wrapped().members;
         if (members) {
-            return this.actionMemberMap || _.mapValues(members, (m, id) => Member.wrapMember(m, this, id as string)) as _.Dictionary<ActionMember>;
+            return this.actionMemberMap || _.mapValues(members, (m, id) => Member.wrapMember(m, this, id!)) as _.Dictionary<ActionMember>;
         }
         return {};
     }
@@ -2008,7 +2008,7 @@ export class InvokableActionMember extends ActionMember {
 
         if (!this.parameterMap) {
             const parameters = this.wrapped().parameters;
-            this.parameterMap = _.mapValues(parameters, (p, id) => new Parameter(p, this, id as string));
+            this.parameterMap = _.mapValues(parameters, (p, id) => new Parameter(p, this, id!));
         }
     }
 
@@ -2057,7 +2057,7 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
 
     private resetMemberMaps() {
         const members = this.wrapped().members;
-        this.memberMap = _.mapValues(members, (m, id) => Member.wrapMember(m, this, id as string));
+        this.memberMap = _.mapValues(members, (m, id) => Member.wrapMember(m, this, id!));
         this.propertyMemberMap = _.pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === "property") as _.Dictionary<PropertyMember>;
         this.collectionMemberMap = _.pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === "collection") as _.Dictionary<CollectionMember>;
         this.actionMemberMap = _.pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === "action") as _.Dictionary<ActionMember>;
@@ -2192,7 +2192,7 @@ export class MenuRepresentation extends ResourceRepresentation<RoCustom.IMenuRep
     private resetMemberMaps() {
         const members = this.wrapped().members;
         // todo know member won't be null because not link - not good code though 
-        this.memberMap = _.mapValues(members, (m, id) => Member.wrapMember(m, this, id as string) as Member<Ro.IMember>);
+        this.memberMap = _.mapValues(members, (m, id) => Member.wrapMember(m, this, id!) as Member<Ro.IMember>);
         this.actionMemberMap = _.pickBy(this.memberMap, m => m.memberType() === "action") as _.Dictionary<ActionMember>;
     }
 
@@ -2279,7 +2279,7 @@ export class ListRepresentation
     private actionMemberMap: _.Dictionary<ActionMember>;
 
     actionMembers() {
-        this.actionMemberMap = this.actionMemberMap || _.mapValues(this.wrapped().members, (m, id) => Member.wrapMember(m, this, id as string)) as _.Dictionary<ActionMember>;
+        this.actionMemberMap = this.actionMemberMap || _.mapValues(this.wrapped().members, (m, id) => Member.wrapMember(m, this, id!)) as _.Dictionary<ActionMember>;
         return this.actionMemberMap;
     }
 
@@ -2629,7 +2629,7 @@ export class Link {
 
     members(): _.Dictionary<PropertyMember> | null {
         const members = (this.wrapped as RoCustom.ICustomLink).members;
-        return members ? _.mapValues(members, (m, id) => Member.wrapMember(m, this, id as string) as PropertyMember) : null;
+        return members ? _.mapValues(members, (m, id) => Member.wrapMember(m, this, id!) as PropertyMember) : null;
     }
 
     private lazyExtensions: Extensions;

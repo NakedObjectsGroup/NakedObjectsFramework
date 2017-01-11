@@ -470,9 +470,9 @@ export class UrlManagerService {
                 (v, k) => {
                     // k should always be non null
                     if (v)
-                        this.setId(k as string, v, search);
+                        this.setId(k!, v, search);
                     else
-                        this.clearId(k as string, search);
+                        this.clearId(k!, search);
                 }
             );
             this.setNewSearch(result);

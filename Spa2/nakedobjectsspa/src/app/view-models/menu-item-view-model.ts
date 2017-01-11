@@ -3,8 +3,8 @@
 export class MenuItemViewModel {
     constructor(
         public readonly name: string,
-        public actions: ActionViewModel[], // modified todo 
-        public menuItems: MenuItemViewModel[] // modified todo 
+        public actions: ActionViewModel[] | null, // modified todo 
+        public menuItems: MenuItemViewModel[] | null // modified todo 
     ) {
     }
 

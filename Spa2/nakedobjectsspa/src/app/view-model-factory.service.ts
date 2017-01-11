@@ -49,9 +49,13 @@ export class ViewModelFactoryService {
         return new ErrorViewModel(error);
     }
 
-    attachmentViewModel = (propertyRep: Models.PropertyMember, paneId: number) => {
-        const parent = propertyRep.parent as Models.DomainObjectRepresentation;
-        return new AttachmentViewModel(propertyRep.attachmentLink(), parent, this.context, this.urlManager, this.clickHandler, paneId);
+    attachmentViewModel = (propertyRep: Models.PropertyMember, paneId: number): AttachmentViewModel | null => {
+        const link = propertyRep.attachmentLink();
+        if (link) {
+            const parent = propertyRep.parent as Models.DomainObjectRepresentation;
+            return new AttachmentViewModel(link, parent, this.context, this.urlManager, this.clickHandler, paneId);
+        }
+        return null;
     }
 
     linkViewModel = (linkRep: Models.Link, paneId: number) => {
@@ -90,7 +94,7 @@ export class ViewModelFactoryService {
             parentValues);
     }
 
-    dialogViewModel = (routeData: PaneRouteData, action: Models.IInvokableAction, actionViewModel: ActionViewModel, isRow: boolean) => {
+    dialogViewModel = (routeData: PaneRouteData, action: Models.IInvokableAction, actionViewModel: ActionViewModel | null, isRow: boolean) => {
 
         return new DialogViewModel(this.color,
             this.context,

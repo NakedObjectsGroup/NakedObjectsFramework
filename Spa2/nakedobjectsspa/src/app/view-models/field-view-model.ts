@@ -35,8 +35,8 @@ export abstract class FieldViewModel extends MessageViewModel {
         this.presentationHint = ext.presentationHint();
         this.mask = ext.mask();
         this.title = ext.friendlyName();
-        this.returnType = ext.returnType();
-        this.format = ext.format();
+        this.returnType = ext.returnType()!;
+        this.format =  Models.withNull(ext.format());
         this.multipleLines = ext.multipleLines() || 1;
         this.password = ext.dataType() === "password";
         this.type = isScalar ? "scalar" : "ref";
@@ -53,7 +53,7 @@ export abstract class FieldViewModel extends MessageViewModel {
     readonly mask: string;
     readonly title: string;
     readonly returnType: string;
-    readonly format: Ro.formatType;
+    readonly format: Ro.formatType | null;
     readonly multipleLines: number;
     readonly password: boolean;
     readonly type: "scalar" | "ref";
@@ -67,9 +67,9 @@ export abstract class FieldViewModel extends MessageViewModel {
     originalValue: Models.Value;
     localFilter: ILocalFilter;
     formattedValue: string;
-    private currentChoice: ChoiceViewModel;
+    private currentChoice: ChoiceViewModel | null;
     private currentMultipleChoices: ChoiceViewModel[];
-    private currentRawValue: Ro.scalarValueType | Date = null;
+    private currentRawValue: Ro.scalarValueType | Date | null = null;
     private choiceOptions: any[] = [];
 
     file: Models.Link;
@@ -98,11 +98,11 @@ export abstract class FieldViewModel extends MessageViewModel {
         }
     }
 
-    get selectedChoice(): ChoiceViewModel {
+    get selectedChoice(): ChoiceViewModel | null {
         return this.currentChoice;
     }
 
-    set selectedChoice(newChoice: ChoiceViewModel) {
+    set selectedChoice(newChoice: ChoiceViewModel | null) {
         // type guard because angular pushes string value here until directive finds 
         // choice
         if (newChoice instanceof ChoiceViewModel || newChoice == null) {
@@ -111,11 +111,11 @@ export abstract class FieldViewModel extends MessageViewModel {
         }
     }
 
-    get value(): Ro.scalarValueType | Date {
+    get value(): Ro.scalarValueType | Date | null {
         return this.currentRawValue;
     }
 
-    set value(newValue: Ro.scalarValueType | Date) {
+    set value(newValue: Ro.scalarValueType | Date | null) {
         this.currentRawValue = newValue;
         this.update();
     }
@@ -164,7 +164,7 @@ export abstract class FieldViewModel extends MessageViewModel {
         return this.validate(viewValue, val, !fullValidate);
     };
 
-    readonly validator = (c: AbstractControl): { [index: string]: any; } => {
+    readonly validator = (c: AbstractControl): { [index: string]: any; } | null => {
         const viewValue = c.value;
         const isvalid = this.isValid(viewValue);
         return isvalid ? null : { invalid: "invalid entry" };
@@ -190,13 +190,14 @@ export abstract class FieldViewModel extends MessageViewModel {
         this.choices = _.map(choices, (v, n) => new ChoiceViewModel(v, this.id, n));
     }
 
-    protected setupAutocomplete(rep: Models.IField, parentValues: () => _.Dictionary<Models.Value>, digest?: string) {
+    protected setupAutocomplete(rep: Models.IField, parentValues: () => _.Dictionary<Models.Value>, digest?: string | null) {
 
         this.prompt = (searchTerm: string) => {
             const createcvm = _.partial(Helpers.createChoiceViewModels, this.id, searchTerm);
             return this.context.autoComplete(rep, this.id, parentValues, searchTerm, digest).then(createcvm);
         };
-        this.minLength = rep.promptLink().extensions().minLength();
+        const promptLink = rep.promptLink() as Models.Link; // always
+        this.minLength = promptLink.extensions().minLength() as number; // always 
         this.description = this.description || Msg.autoCompletePrompt;
     }
 
@@ -206,7 +207,8 @@ export abstract class FieldViewModel extends MessageViewModel {
             const createcvm = _.partial(Helpers.createChoiceViewModels, this.id, null);
             return this.context.conditionalChoices(rep, this.id, () => <_.Dictionary<Models.Value>>{}, args, digest).then(createcvm);
         };
-        this.promptArguments = (<any>_.fromPairs)(_.map(rep.promptLink().arguments(), (v: any, key: string) => [key, new Models.Value(v.value)]));
+        const promptLink = rep.promptLink() as Models.Link;
+        this.promptArguments = _.fromPairs(_.map(promptLink.arguments(), (v: any, key: string) => [key, new Models.Value(v.value)]));
     }
 
     protected getRequiredIndicator() {
@@ -280,7 +282,7 @@ export abstract class FieldViewModel extends MessageViewModel {
             }
 
             // reference 
-            return new Models.Value(choiceValue && choiceValue.isReference() ? { href: choiceValue.href(), title: this.selectedChoice.name } : null);
+            return new Models.Value(choiceValue && choiceValue.isReference() && this.selectedChoice ? { href: choiceValue.href(), title: this.selectedChoice.name } : null);
         }
 
         if (this.type === "scalar") {

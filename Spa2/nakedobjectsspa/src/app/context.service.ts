@@ -582,7 +582,7 @@ export class ContextService {
 
     setPreviousUrl = (url: string) => this.previousUrl = url;
 
-    private doPrompt = (field: Models.IField, id: string, searchTerm: string | null, setupPrompt: (map: Models.PromptMap) => void, objectValues: () => _.Dictionary<Models.Value>, digest?: string) => {
+    private doPrompt = (field: Models.IField, id: string, searchTerm: string | null, setupPrompt: (map: Models.PromptMap) => void, objectValues: () => _.Dictionary<Models.Value>, digest?: string |null) => {
         const map = field.getPromptMap() as Models.PromptMap; // not null
         map.setMembers(objectValues);
         setupPrompt(map);
@@ -590,7 +590,7 @@ export class ContextService {
         return this.repLoader.retrieve(map, Models.PromptRepresentation, digest).then((p: Models.PromptRepresentation) => p.choices(addEmptyOption));
     };
 
-    autoComplete = (field: Models.IField, id: string, objectValues: () => _.Dictionary<Models.Value>, searchTerm: string, digest?: string) =>
+    autoComplete = (field: Models.IField, id: string, objectValues: () => _.Dictionary<Models.Value>, searchTerm: string, digest?: string | null) =>
         this.doPrompt(field, id, searchTerm, (map: Models.PromptMap) => map.setSearchTerm(searchTerm), objectValues, digest);
 
     conditionalChoices = (field: Models.IField, id: string, objectValues: () => _.Dictionary<Models.Value>, args: _.Dictionary<Models.Value>, digest?: string) =>
@@ -608,7 +608,7 @@ export class ContextService {
 
                 if (resultObject.persistLink()) {
                     // transient object
-                    const domainType = resultObject.extensions().domainType() as string;
+                    const domainType = resultObject.extensions().domainType()!;
                     resultObject.wrapped().domainType = domainType;
                     resultObject.wrapped().instanceId = (this.nextTransientId++).toString();
 
@@ -626,8 +626,9 @@ export class ContextService {
                         ? InteractionMode.Transient
                         : InteractionMode.NotPersistent;
                     this.urlManager.setObjectWithMode(resultObject, interactionMode, toPaneId);
-                } else {
+                } else if (resultObject.selfLink()) {
 
+                    const selfLink = resultObject.selfLink() as Models.Link;
                     // persistent object
                     // set the object here and then update the url. That should reload the page but pick up this object 
                     // so we don't hit the server again. 
@@ -639,7 +640,7 @@ export class ContextService {
                     //this.urlManager.setObject(resultObject, toPaneId);
 
                     // update angular cache 
-                    const url = resultObject.selfLink().href() + `?${Constants.roInlinePropertyDetails}=false`;
+                    const url = `${selfLink.href()}?${Constants.roInlinePropertyDetails}=false`;
                     this.repLoader.addToCache(url, resultObject.wrapped());
 
                     // if render in edit must be  a form 
@@ -650,6 +651,8 @@ export class ContextService {
                         this.addRecentlyViewed(resultObject);
                         this.urlManager.setObject(resultObject, toPaneId);
                     }
+                } else {
+                    throw new Error("result object without self or persist link");
                 }
             } else if (result.resultType() === "list") {
 
@@ -763,12 +766,12 @@ export class ContextService {
                 if (ccaValue && ccaValue.isList()) {
 
                     const links = _
-                        .chain(ccaValue.list())
-                        .filter(v => v.isReference())
-                        .map(v => v.link())
+                        .chain(ccaValue.list() as Models.Value[])
+                        .filter((v : Models.Value) => v.isReference())
+                        .map((v: Models.Value) => v.link())
                         .value();
 
-                    return () => _.forEach(links, l => this.dirtyList.setDirty(l.getOid()));
+                    return () => _.forEach(links, (l : Models.Link) => this.dirtyList.setDirty(l.getOid()));
                 }
             }
         }
@@ -780,7 +783,7 @@ export class ContextService {
 
         const invokeOnMap = (iAction: Models.IInvokableAction) => {
             const im = iAction.getInvokeMap() as Models.InvokeMap;
-            _.each(parms, (parm, k) => im.setParameter(k as string, parm));
+            _.each(parms, (parm, k) => im.setParameter(k!, parm));
             const setDirty = this.getSetDirtyFunction(iAction, parms);
             return this.invokeActionInternal(im, iAction, fromPaneId, toPaneId, setDirty, gotoResult);
         }
@@ -802,7 +805,7 @@ export class ContextService {
     updateObject = (object: Models.DomainObjectRepresentation, props: _.Dictionary<Models.Value>, paneId: number, viewSavedObject: boolean) => {
         const update = object.getUpdateMap();
 
-        _.each(props, (v, k) => update.setProperty(k as string, v));
+        _.each(props, (v, k) => update.setProperty(k!, v));
 
         return this.repLoader.retrieve(update, Models.DomainObjectRepresentation, object.etagDigest)
             .then((updatedObject: Models.DomainObjectRepresentation) => {
@@ -817,11 +820,11 @@ export class ContextService {
     saveObject = (object: Models.DomainObjectRepresentation, props: _.Dictionary<Models.Value>, paneId: number, viewSavedObject: boolean) => {
         const persist = object.getPersistMap();
 
-        _.each(props, (v, k) => persist.setMember(k as string, v));
+        _.each(props, (v, k) => persist.setMember(k!, v));
 
         return this.repLoader.retrieve(persist, Models.DomainObjectRepresentation, object.etagDigest)
             .then((updatedObject: Models.DomainObjectRepresentation) => {
-                this.transientCache.remove(paneId, object.domainType() as string, object.id());
+                this.transientCache.remove(paneId, object.domainType()!, object.id());
                 this.setNewObject(updatedObject, paneId, viewSavedObject);
                 return Promise.resolve(updatedObject);
             });
@@ -831,14 +834,14 @@ export class ContextService {
     validateUpdateObject = (object: Models.DomainObjectRepresentation, props: _.Dictionary<Models.Value>) => {
         const update = object.getUpdateMap();
         update.setValidateOnly();
-        _.each(props, (v, k) => update.setProperty(k as string, v));
+        _.each(props, (v, k) => update.setProperty(k!, v));
         return this.repLoader.validate(update, object.etagDigest);
     };
 
     validateSaveObject = (object: Models.DomainObjectRepresentation, props: _.Dictionary<Models.Value>) => {
         const persist = object.getPersistMap();
         persist.setValidateOnly();
-        _.each(props, (v, k) => persist.setMember(k as string, v));
+        _.each(props, (v, k) => persist.setMember(k!, v));
         return this.repLoader.validate(persist, object.etagDigest);
     };
 
@@ -890,8 +893,8 @@ export class ContextService {
         this.dirtyList.clear();
 
         // k will always be defined 
-        _.forEach(this.currentMenuList, (v, k) => delete this.currentMenuList[k as string]);
-        _.forEach(this.currentLists, (v, k) => delete this.currentLists[k as string]);
+        _.forEach(this.currentMenuList, (v, k) => delete this.currentMenuList[k!]);
+        _.forEach(this.currentLists, (v, k) => delete this.currentLists[k!]);
     }
 
     setFieldValue = (dialogId: string, pid: string, pv: Models.Value, paneId = 1) => {

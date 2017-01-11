@@ -95,12 +95,7 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
     }
 
     // todo investigate if logic in this would be better here rather than view model
-    toggleActionMenu = () => {
-        const obj = this.object;
-        if (obj) {
-            obj.toggleActionMenu();
-        }
-    };
+   
 
     disableActions = () => {
         const obj = this.object;
@@ -117,46 +112,47 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
         return !!obj && obj.unsaved;
     };
 
-    private do(f: (o) => void) {
+    private do(f: (o : DomainObjectViewModel) => void) {
         const obj = this.object;
         if (obj) {
             f(obj);
         }
     }
 
+    toggleActionMenu = () => {
+        this.do((o) => o.toggleActionMenu());
+    };
+
     doEdit = () => {
-        const obj = this.object;
-        obj.doEdit();
+        this.do((o) => o.doEdit());
     };
 
     doEditCancel = () => {
-        const obj = this.object;
-        obj.doEditCancel();
+        this.do((o) => o.doEditCancel());
     };
 
     showEdit = () => {
         const obj = this.object;
-        return !obj.hideEdit();
+        return !!obj && !obj.hideEdit();
     };
 
     doReload = () => {
-        const obj = this.object;
-        obj.doReload();
+        this.do((o) => o.doReload());
     };
 
     message = () => {
         const obj = this.object;
-        return obj.getMessage();
+        return obj ? obj.getMessage() : "";
     };
 
     showActions = () => {
         const obj = this.object;
-        return obj.showActions();
+        return !!obj && obj.showActions();
     };
 
     menuItems = () => {
         const obj = this.object;
-        return obj.menuItems;
+        return obj ? obj.menuItems : [];
     };
 
     private actionButton: IButton = {
@@ -245,7 +241,7 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
                         if (this.mode === InteractionMode.Edit ||
                             this.mode === InteractionMode.Form ||
                             this.mode === InteractionMode.Transient) {
-                            this.createForm(this.object);
+                            this.createForm(this.object as DomainObjectViewModel); // will never be null
                         }
                     }
                 })

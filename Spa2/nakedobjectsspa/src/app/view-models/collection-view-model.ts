@@ -104,7 +104,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
                     }).
                     catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
             } else {
-                this.items = this.viewModelFactory.getItems(itemLinks, this.currentState === CollectionViewState.Table, routeData, this);
+                this.items = this.viewModelFactory.getItems(itemLinks!, this.currentState === CollectionViewState.Table, routeData, this);
             }
             this.currentState = state;
         } 

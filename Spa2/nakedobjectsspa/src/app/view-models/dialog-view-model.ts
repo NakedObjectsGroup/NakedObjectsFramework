@@ -21,7 +21,7 @@ export class DialogViewModel extends MessageViewModel {
         private readonly error: ErrorService,
         private readonly routeData: PaneRouteData,
         action: Models.IInvokableAction,
-        public readonly actionViewModel: ActionViewModel,
+        actionViewModel: ActionViewModel | null,
         public readonly isMultiLineDialogRow: boolean
     ) {
         super();
@@ -52,6 +52,8 @@ export class DialogViewModel extends MessageViewModel {
 
         this.incrementPendingPotentAction();
     }
+
+    public readonly actionViewModel: ActionViewModel;
 
     private incrementPendingPotentAction() {
         if (!this.isMultiLineDialogRow) {

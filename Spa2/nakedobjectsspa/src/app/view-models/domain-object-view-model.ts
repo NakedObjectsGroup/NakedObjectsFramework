@@ -115,7 +115,7 @@ export class DomainObjectViewModel extends MessageViewModel {
 
         this.menuItems = Helpers.createMenuItems(this.actions);
 
-        this.properties = _.map(this.domainObject.propertyMembers(), (property, id) => this.viewModelFactory.propertyViewModel(property, id, this.props[id], this.onPaneId, this.propertyMap));
+        this.properties = _.map(this.domainObject.propertyMembers(), (property, id) => this.viewModelFactory.propertyViewModel(property, id!, this.props[id!], this.onPaneId, this.propertyMap));
         this.collections = _.map(this.domainObject.collectionMembers(), collection => this.viewModelFactory.collectionViewModel(collection, this.routeData));
 
         this.unsaved = routeData.interactionMode === InteractionMode.Transient;
@@ -130,7 +130,7 @@ export class DomainObjectViewModel extends MessageViewModel {
         this.instanceId = this.domainObject.instanceId();
         this.draggableType = this.domainObject.domainType();
 
-        const selfAsValue = () => {
+        const selfAsValue = () : Models.Value | null => {
             const link = this.domainObject.selfLink();
             if (link) {
                 // not transient - can't drag transients so no need to set up IDraggable members on transients

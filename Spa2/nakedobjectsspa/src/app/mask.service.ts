@@ -133,8 +133,8 @@ export class MaskService {
     };
 
     private customFilter(format: Ro.formatType, remoteMask: string | null) {
-        if (remoteMask && this.maskMap[format as string]) {
-            return this.maskMap[format as string][remoteMask];
+        if (remoteMask && this.maskMap[format!]) {
+            return this.maskMap[format!][remoteMask];
         }
         return undefined;
     }
@@ -144,14 +144,14 @@ export class MaskService {
     };
 
     setNumberMaskMapping(customMask: string, format: Ro.formatType, fractionSize?: number) {
-        this.maskMap[format as string][customMask] = new LocalNumberFilter(fractionSize);
+        this.maskMap[format!][customMask] = new LocalNumberFilter(fractionSize);
     };
 
     setDateMaskMapping(customMask: string, format: Ro.formatType, mask: string, tz?: string) {
-        this.maskMap[format as string][customMask] = new LocalDateFilter(mask, tz);
+        this.maskMap[format!][customMask] = new LocalDateFilter(mask, tz);
     };
 
     setCurrencyMaskMapping(customMask: string, format: Ro.formatType, symbol?: string, digits?: string) {
-        this.maskMap[format as string][customMask] = new LocalCurrencyFilter(symbol, digits);
+        this.maskMap[format!][customMask] = new LocalCurrencyFilter(symbol, digits);
     };
 }

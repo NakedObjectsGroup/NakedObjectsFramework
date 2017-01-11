@@ -11,7 +11,7 @@ export class TableRowViewModel {
         private readonly paneId: number,
         public readonly title: string
     ) {
-        this.properties = _.map(properties, (property, id) => viewModelFactory.propertyTableViewModel(id, property));
+        this.properties = _.map(properties, (property, id) => viewModelFactory.propertyTableViewModel(id as string, property));
     }
 
     properties: TableRowColumnViewModel[];

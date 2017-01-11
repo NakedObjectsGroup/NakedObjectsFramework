@@ -46,7 +46,7 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
 
             const selected = _.filter(this.items, i => i.selected);
 
-            const rejectAsNeedSelection = (action: Models.IInvokableAction) : Models.ErrorWrapper => {
+            const rejectAsNeedSelection = (action: Models.IInvokableAction) : Models.ErrorWrapper | null => {
                 if (this.isLocallyContributed(action)) {
 
                     if (selected.length === 0) {

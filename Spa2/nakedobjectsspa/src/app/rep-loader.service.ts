@@ -22,7 +22,7 @@ export class RepLoaderService {
 // use our own LRU cache 
 //private cache = $cacheFactory("nof-cache", { capacity: httpCacheDepth });
 
-    private addIfMatchHeader(config: RequestOptions, digest: string) {
+    private addIfMatchHeader(config: RequestOptions, digest?: string | null) {
         if (digest && (config.method === RequestMethod.Post || config.method === RequestMethod.Put || config.method === RequestMethod.Delete)) {
             config.headers = new Headers ({ "If-Match": digest });
         }
@@ -165,7 +165,7 @@ export class RepLoaderService {
         return this.httpPopulate(config, !!ignoreCache, response);
     };
 
-    setConfigFromMap(map: Models.IHateoasModel, digest?: string) {
+    setConfigFromMap(map: Models.IHateoasModel, digest?: string | null) {
         //const config = {
         //    withCredentials: true,
         //    url: map.getUrl(),
@@ -189,7 +189,7 @@ export class RepLoaderService {
 
     retrieve = <T extends Models.IHateoasModel>(map: Models.IHateoasModel,
                                                 rc: { new (): Models.IHateoasModel },
-                                                digest?: string): Promise<T> => {
+                                                digest?: string | null): Promise<T> => {
         const response = new rc();
         const config = this.setConfigFromMap(map, digest);
         return this.httpPopulate(config, true, response);
@@ -237,9 +237,12 @@ export class RepLoaderService {
 
     invoke = (action: Models.IInvokableAction, parms: _.Dictionary<Models.Value>, urlParms: _.Dictionary<Object>): Promise<Models.ActionResultRepresentation> => {
         const invokeMap = action.getInvokeMap();
-        _.each(urlParms, (v, k) => invokeMap.setUrlParameter(k, v));
-        _.each(parms, (v, k) => invokeMap.setParameter(k, v));
-        return this.retrieve(invokeMap, Models.ActionResultRepresentation);
+        if (invokeMap) {
+            _.each(urlParms, (v, k) => invokeMap.setUrlParameter(k!, v));
+            _.each(parms, (v, k) => invokeMap.setParameter(k!, v));
+            return this.retrieve(invokeMap, Models.ActionResultRepresentation);
+        }
+        return Promise.reject(`attempting to invoke uninvokable action ${action.actionId()}`);
     };
 
     clearCache = (url: string) => {

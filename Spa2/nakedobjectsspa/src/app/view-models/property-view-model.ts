@@ -44,13 +44,11 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
             propertyRep.isCollectionContributed(),
             propertyRep.entryType());
 
-        this.draggableType = propertyRep.extensions().returnType();
+        this.draggableType = propertyRep.extensions().returnType()!; // todo fix extensions 
         this.isEditable = !propertyRep.disabledReason();
-   
-        if (propertyRep.attachmentLink() != null) {
-            this.attachment = this.viewModelfactory.attachmentViewModel(propertyRep, onPaneId);
-        }
-
+    
+        this.attachment = this.viewModelfactory.attachmentViewModel(propertyRep, onPaneId);
+        
         const fieldEntryType = this.entryType;
 
         if (fieldEntryType === Models.EntryType.AutoComplete) {
@@ -78,7 +76,7 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
     }
 
 
-    private getDigest(propertyRep: Models.PropertyMember) {
+    private getDigest(propertyRep: Models.PropertyMember) : string | null {
         const parent = propertyRep.parent;
         if (parent instanceof Models.DomainObjectRepresentation) {
             if (parent.isTransient()) {
@@ -180,7 +178,7 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
     }
 
     readonly isEditable: boolean;
-    readonly attachment: AttachmentViewModel;
+    readonly attachment: AttachmentViewModel | null;
     refType: "null" | "navigable" | "notNavigable";
     // IDraggableViewModel
     readonly draggableType: string;
