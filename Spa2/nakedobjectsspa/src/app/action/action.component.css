@@ -1,3 +1,11 @@
+:host   {
+    outline: none;
+    margin-right: 20px;
+    width: 150px;
+    margin-bottom: 5px;
+    font-weight: bolder; /*Because black on white light looks too faint*/
+    display: block;
+}
 
 /*Disabled*/
 :host[disabled="disabled"] {
@@ -5,5 +13,20 @@
 }
 
 :host[disabled="disabled"]:hover {
-        outline: none;
+   outline: none;
+}
+
+.name {
+    display: block;
+    cursor: pointer;
+   padding: 2px 5px;
+}
+
+.name:hover, .name:focus   {
+    outline-color: white;
+    outline-style: solid;
+    outline-width: 1px;
+    margin-right: 20px;
+    width: 150px;
+    margin-bottom: 5px;
 }

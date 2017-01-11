@@ -1,3 +1,7 @@
 .multiline {
     overflow: auto;
 }
+
+.reference {
+    cursor: pointer;
+}

@@ -52,7 +52,7 @@
             <div [ngSwitch]="propertyReturnType">
                 <div *ngSwitchCase="'string'">
 
-                    <div *ngIf="isBlob" class="reference clickable-area" geminiClick (leftClick)="doAttachmentClick()" (rightClick)="doAttachmentClick(true)" tabindex="0">
+                    <div *ngIf="isBlob" class="reference" geminiClick (leftClick)="doAttachmentClick()" (rightClick)="doAttachmentClick(true)" tabindex="0">
                         <div *ngIf="!image">{{attachmentTitle}}</div>
                         <img *ngIf="image" src="{{image}}" alt="{{attachmentTitle}}" />
                     </div>

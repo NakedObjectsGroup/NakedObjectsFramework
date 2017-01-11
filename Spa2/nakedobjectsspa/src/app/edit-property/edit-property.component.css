@@ -26,6 +26,7 @@
 
 .reference img {
     display: block;
+    cursor: pointer;
     float: left;
     max-width: 245px;
     max-height: 100px;

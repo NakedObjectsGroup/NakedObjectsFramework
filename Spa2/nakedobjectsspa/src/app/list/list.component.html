@@ -11,7 +11,7 @@
 			<app-dialog [parent]="collection"></app-dialog>
 			<div class="summary" *ngIf="state == 'list'">
 				<div class="details">{{description}}</div>
-				<img class="icon-table clickable-area" (click)="doTable()" src="../../assets/table.png" title="View as Table"/>
+				<img class="icon-table" (click)="doTable()" src="../../assets/table.png" title="View as Table"/>
 				<table>
 					<thead>
 						<tr>
@@ -23,7 +23,7 @@
 							<td class="checkbox" [hidden]="disableActions()">
 								<input type="checkbox" [id]="itemId(i)" [(ngModel)]="item.selected">
 							</td>
-							<td #rw class="reference clickable-area" [ngClass]="itemColor(item)" geminiClick (leftClick)="doItemClick(item)" (rightClick)="doItemClick(item, true)"
+							<td #rw class="reference" [ngClass]="itemColor(item)" geminiClick (leftClick)="doItemClick(item)" (rightClick)="doItemClick(item, true)"
 								dnd-draggable [dragEnabled]="true" [dragData]="item" (keydown)="cut($event, item)" (keypress)="cut($event, item)" tabindex="0">
 								<label attr.for="{itemId(i)}}">{{itemTitle(item)}}</label>
 							</td>
@@ -33,7 +33,7 @@
 			</div>
 			<div class="summary" *ngIf="state == 'table'">
 				<div class="details">{{description}}</div>
-				<img class="icon-list clickable-area" (click)="doList()" src="../../assets/list.png" title="View as List" />
+				<img class="icon-list" (click)="doList()" src="../../assets/list.png" title="View as List" />
 			</div>
 			<table *ngIf="state == 'table'">
 				<thead>
@@ -45,7 +45,7 @@
 					</tr>
 				</thead>
 				<tbody *ngIf="hasTableData()">
-					<tr #rw tabindex="0" *ngFor="let item of items; let i = index" class="clickable-area" gemini-drag>
+					<tr #rw tabindex="0" *ngFor="let item of items; let i = index" gemini-drag>
 						<td [hidden]="disableActions()" class="checkbox">
 							<input type="checkbox" [id]="itemId(i)" [(ngModel)]="item.selected">
 						</td>
@@ -55,18 +55,18 @@
 						<td *ngFor="let property of itemTableProperties(item)" geminiClick (leftClick)="doItemClick(item)" (rightClick)="doItemClick(item, true)"
 							[ngClass]="itemColor(item)" class="cell">
 							<div [ngSwitch]="propertyType(property)">
-								<div *ngSwitchCase="'ref'" class="clickable-area">
+								<div *ngSwitchCase="'ref'">
 									{{propertyFormattedValue(property)}}
 								</div>
 								<div *ngSwitchCase="'scalar'" [ngSwitch]="propertyReturnType(property)">
-									<div *ngSwitchCase="'boolean'" class="clickable-area">
+									<div *ngSwitchCase="'boolean'">
 										<input type="checkbox" [checked]="propertyValue(property)" disabled="disabled" />
 									</div>
-									<div *ngSwitchCase="'number'" class="clickable-area">
-										<div class="clickable-area number">{{propertyFormattedValue(property)}}</div>
+									<div *ngSwitchCase="'number'">
+										<div class="number">{{propertyFormattedValue(property)}}</div>
 									</div>
-									<div *ngSwitchDefault class="clickable-area">
-										<div class="clickable-area">{{propertyFormattedValue(property)}}</div>
+									<div *ngSwitchDefault 
+										<div {{propertyFormattedValue(property)}}</div>
 									</div>
 								</div>
 							</div>
