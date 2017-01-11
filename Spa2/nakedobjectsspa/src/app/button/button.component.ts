@@ -3,10 +3,10 @@ import { Component, OnInit, Input } from '@angular/core';
 export interface IButton {
     doClick: () => void;
     show: () => boolean;
-    disabled: () => boolean;
+    disabled: () => boolean | null;
     value: string;
     title: () => string;
-    accesskey : string;
+    accesskey : string | null;
 }
 
 @Component({

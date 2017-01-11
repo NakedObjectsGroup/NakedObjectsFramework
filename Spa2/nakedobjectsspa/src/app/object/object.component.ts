@@ -38,68 +38,126 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
 
     // template API 
     expiredTransient = false;
-    object: DomainObjectViewModel;
+    object: DomainObjectViewModel | null;
 
     // todo add mode as string property for template to make easier to read and make this private 
-    mode: InteractionMode;
-    form: FormGroup;
+    mode: InteractionMode | null;
+    form: FormGroup | null;
 
     // must be properties as object may change - eg be reloaded 
     get friendlyName() {
-        return this.object.friendlyName;
+        const obj = this.object;
+        return obj ? obj.friendlyName : "";
     }
 
     get color() {
-        return this.object.color;
+        const obj = this.object;
+        return obj ?  obj.color : "";
     }
 
     get properties() {
-        return this.object.properties;
+        const obj = this.object;
+        return obj ? obj.properties : "";
     }
 
     get collections() {
-        return this.object.collections;
+        const obj = this.object;
+        return obj ? obj.collections : "";
     }
 
     get tooltip(): string {
-        return this.object.tooltip();
+        const obj = this.object;
+        return obj ? obj.tooltip() : "";
     }
 
     onSubmit(viewObject: boolean) {
-        this.object.doSave(viewObject);
+        const obj = this.object;
+        if (obj) {
+            obj.doSave(viewObject);
+        }
     }
 
     // todo DRY this - and rename - copy not cut
     cut(event: any) {
         const cKeyCode = 67;
-        if (event && (event.keyCode === cKeyCode && event.ctrlKey)) {
-            this.context.setCutViewModel(this.object);
+        const obj = this.object;
+        if (event && (event.keyCode === cKeyCode && event.ctrlKey) && obj) {
+            this.context.setCutViewModel(obj);
             event.preventDefault();
         }
     }
 
     title() {
         // todo add string consts to user messages !
+        const obj = this.object;
         const prefix = this.mode === InteractionMode.Edit || this.mode === InteractionMode.Transient ? "Editing - " : "";
-        return `${prefix}${this.object.title}`;
+        return obj ? `${prefix}${obj.title}` : "";
     }
 
     // todo investigate if logic in this would be better here rather than view model
-    toggleActionMenu = () => this.object.toggleActionMenu();
+    toggleActionMenu = () => {
+        const obj = this.object;
+        if (obj) {
+            obj.toggleActionMenu();
+        }
+    };
 
-    disableActions = () => this.object.disableActions() ? true : null;
+    disableActions = () => {
+        const obj = this.object;
+        return obj && obj.disableActions() ? true : null;
+    };
 
-    actionsTooltip = () => this.object.actionsTooltip();
-    unsaved = () => this.object.unsaved;
+    actionsTooltip = () => {
+        const obj = this.object;
+        return  obj ? obj.actionsTooltip() : "";
+    };
 
-    doEdit = () => this.object.doEdit();
-    doEditCancel = () => this.object.doEditCancel();
-    showEdit = () => !this.object.hideEdit();
-    doReload = () => this.object.doReload();
-    message = () => this.object.getMessage();
-    showActions = () => this.object.showActions();
+    unsaved = () => {
+        const obj = this.object;
+        return !!obj && obj.unsaved;
+    };
 
-    menuItems = () => this.object.menuItems;
+    private do(f: (o) => void) {
+        const obj = this.object;
+        if (obj) {
+            f(obj);
+        }
+    }
+
+    doEdit = () => {
+        const obj = this.object;
+        obj.doEdit();
+    };
+
+    doEditCancel = () => {
+        const obj = this.object;
+        obj.doEditCancel();
+    };
+
+    showEdit = () => {
+        const obj = this.object;
+        return !obj.hideEdit();
+    };
+
+    doReload = () => {
+        const obj = this.object;
+        obj.doReload();
+    };
+
+    message = () => {
+        const obj = this.object;
+        return obj.getMessage();
+    };
+
+    showActions = () => {
+        const obj = this.object;
+        return obj.showActions();
+    };
+
+    menuItems = () => {
+        const obj = this.object;
+        return obj.menuItems;
+    };
 
     private actionButton: IButton = {
         value: "Actions",

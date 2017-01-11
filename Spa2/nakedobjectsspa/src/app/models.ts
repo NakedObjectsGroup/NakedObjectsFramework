@@ -12,11 +12,23 @@ import { ChoiceViewModel } from './view-models/choice-view-model';
 
 
 // coerce undefined to null
-function withNull<T>(v: T | undefined | null) : T | null {
+export function withNull<T>(v: T | undefined | null) : T | null {
     return v === undefined ? null : v;
 }
 
-function checkNotNull<T>(v: T | undefined | null): T  {
+export function withUndefined<T>(v: T | undefined | null): T | undefined {
+    return v === null ? undefined : v;
+}
+
+function validateExists<T>(obj: T | null | undefined, name: string) : T {
+    if (!obj) {
+        throw new Error(`Expected ${name} does not exist`);
+    }
+    return obj;
+}
+
+
+export function checkNotNull<T>(v: T | undefined | null): T  {
     if (v == null) {
         throw new Error("Unexpected null");
     }
@@ -1172,11 +1184,12 @@ export class ActionResultRepresentation extends ResourceRepresentation<Ro.IActio
 
     // properties 
     resultType(): Ro.resultTypeType {
+        // todo validate the result against the type so we can guarantee  
         return this.wrapped().resultType;
     }
 
     result(): Result {
-        return new Result(this.wrapped().result || null, this.resultType());
+        return new Result(withNull(this.wrapped().result), this.resultType());
     }
 
     warningsOrMessages(): string | undefined {
@@ -2125,13 +2138,13 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
     }
 
     getPersistMap() {
-        const map = this.persistMap();
-        return map ? new PersistMap(this, map ) : null;
+        const map = validateExists(this.persistMap(), "PersistMap");
+        return new PersistMap(this, map);
     }
 
-    getUpdateMap() {
-        const map = this.updateMap();
-        return map ? new UpdateMap(this, map) : null;
+    getUpdateMap() {     
+        const map = validateExists(this.updateMap(), "UpdateMap");
+        return new UpdateMap(this, map);
     }
 
     setInlinePropertyDetails(flag: boolean) {
@@ -2431,7 +2444,10 @@ export class MenusRepresentation extends ListRepresentation {
 
     getMenu(menuId: string) {
         const menuLink = _.find(this.value(), link => link.rel().parms[0].value === menuId);
-        return menuLink ? menuLink.getTargetAs<MenuRepresentation>() : null;
+        if (menuLink) {
+            return menuLink.getTargetAs<MenuRepresentation>();
+        }
+        throw new Error(`Failed to find menu ${menuId}`);
     }
 }
 

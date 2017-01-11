@@ -162,7 +162,7 @@ export class RepLoaderService {
                 body: model.getBody()
         });
 
-        return this.httpPopulate(config, ignoreCache, response);
+        return this.httpPopulate(config, !!ignoreCache, response);
     };
 
     setConfigFromMap(map: Models.IHateoasModel, digest?: string) {
@@ -200,35 +200,38 @@ export class RepLoaderService {
         return this.httpValidate(config);
     };
 
-    retrieveFromLink = <T extends Models.IHateoasModel>(link: Models.Link, parms?: _.Dictionary<Object>): Promise<T> => {
+    retrieveFromLink = <T extends Models.IHateoasModel>(link: Models.Link | null, parms?: _.Dictionary<Object>): Promise<T> => {
 
-        const response = link.getTarget();
-        let urlParms = "";
+        if (link) {
+            const response = link.getTarget();
+            let urlParms = "";
 
-        if (parms) {
-            const urlParmString = _.reduce(parms,
-                (result, n, key) => (result === "" ? "" : result + "&") + key + "=" + n,
-                "");
-            urlParms = urlParmString !== "" ? `?${urlParmString}` : "";
+            if (parms) {
+                const urlParmString = _.reduce(parms,
+                    (result, n, key) => (result === "" ? "" : result + "&") + key + "=" + n,
+                    "");
+                urlParms = urlParmString !== "" ? `?${urlParmString}` : "";
+            }
+
+            //const config = {
+            //    withCredentials: true,
+            //    url: link.href() + urlParms,
+            //    method: link.method(),
+            //    cache: false
+            //};
+
+            const config = new RequestOptions({
+                method: link.method(),
+                url: link.href() + urlParms,
+                withCredentials: true
+                //headers: new Headers({ "Accept": mt })
+            });
+
+            const request = new Request(config);
+
+            return this.httpPopulate(config, true, response);
         }
-
-        //const config = {
-        //    withCredentials: true,
-        //    url: link.href() + urlParms,
-        //    method: link.method(),
-        //    cache: false
-        //};
-
-        const config = new RequestOptions({
-            method: link.method(),
-            url: link.href() + urlParms,
-            withCredentials : true
-            //headers: new Headers({ "Accept": mt })
-        });
-
-        const request = new Request(config);
-
-        return this.httpPopulate(config, true, response);
+        return Promise.reject("link must not be null");
     };
 
 
