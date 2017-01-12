@@ -276,7 +276,7 @@ namespace NakedObjects.Selenium {
         }
 
         protected virtual void WaitForMenus() {
-            wait.Until(dr => dr.FindElements(By.CssSelector(".menu")).Count == 10);
+            wait.Until(dr => dr.FindElements(By.CssSelector("menu")).Count == 10);
         }
 
         protected virtual void GoToMenuFromHomePage(string menuName) {
@@ -284,11 +284,11 @@ namespace NakedObjects.Selenium {
 
             WaitForMenus();
 
-            ReadOnlyCollection<IWebElement> menus = br.FindElements(By.CssSelector(".menu"));
+            ReadOnlyCollection<IWebElement> menus = br.FindElements(By.CssSelector("menu"));
             IWebElement menu = menus.FirstOrDefault(s => s.Text == menuName);
             if (menu != null) {
                 Click(menu);
-                wait.Until(d => d.FindElements(By.CssSelector(".actions .action")).Count > 0);
+                wait.Until(d => d.FindElements(By.CssSelector(".actions action")).Count > 0);
             }
             else {
                 throw new NotFoundException(string.Format("menu not found {0}", menuName));
@@ -495,11 +495,11 @@ namespace NakedObjects.Selenium {
         }
 
         protected void AssertAction(int number, string actionName) {
-            wait.Until(dr => dr.FindElements(By.CssSelector(".actions .action"))[number].Text == actionName);
+            wait.Until(dr => dr.FindElements(By.CssSelector(".actions action"))[number].Text == actionName);
         }
 
         protected virtual void AssertActionNotDisplayed(string action) {
-            wait.Until(dr => dr.FindElements(By.CssSelector(".actions .action")).FirstOrDefault(el => el.Text == action) == null);
+            wait.Until(dr => dr.FindElements(By.CssSelector(".actions action")).FirstOrDefault(el => el.Text == action) == null);
         }
 
         protected IWebElement GetObjectAction(string actionName, Pane pane = Pane.Single, string subMenuName = null) {

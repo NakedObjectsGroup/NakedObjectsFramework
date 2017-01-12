@@ -123,7 +123,7 @@ namespace NakedObjects.Selenium {
             Click(iconList);
             WaitForCss("table");
 
-            var selector = ".collection .actions .action";
+            var selector = ".collection .actions action";
             var action = wait.Until(d => d.FindElements(By.CssSelector(selector)).
                 Single(we => we.Text == "Add New Details"));
             Click(action);
