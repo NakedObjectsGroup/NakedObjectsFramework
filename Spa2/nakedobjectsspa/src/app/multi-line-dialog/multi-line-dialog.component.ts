@@ -112,7 +112,7 @@ export class MultiLineDialogComponent extends PaneComponent {
             // cache parm values
             _.forEach(data,
                 (v, k) => {
-                    const parm = parms[k];
+                    const parm = parms[k!];
                     parm.setValueFromControl(v);
                 });
             dialog.setParms();

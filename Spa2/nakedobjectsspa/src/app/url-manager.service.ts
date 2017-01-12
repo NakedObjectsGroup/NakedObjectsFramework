@@ -584,8 +584,8 @@ export class UrlManagerService {
         return newValues;
     }
 
-    setProperty = (propertyMember: Models.PropertyMember, paneId = 1) => {
-        const href = propertyMember.value().link().href();
+    setProperty = (href: string, paneId = 1) => {
+        //const href = propertyMember.value().link().href();
         const oid = this.getOidFromHref(href);
         const key = `${akm.object}${paneId}`;
         const newValues = _.zipObject([key], [oid]) as _.Dictionary<string>;

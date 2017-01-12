@@ -2,9 +2,9 @@
 import * as Ro from '../ro-interfaces';
 
 export interface IDraggableViewModel {
-    value: Ro.scalarValueType | Date;
+    value: Ro.scalarValueType | Date | null;
     reference: string;
-    selectedChoice: ChoiceViewModel;
+    selectedChoice: ChoiceViewModel | null;
     color: string;
     draggableType: string;
 

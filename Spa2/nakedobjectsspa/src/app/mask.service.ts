@@ -139,7 +139,7 @@ export class MaskService {
         return undefined;
     }
 
-    toLocalFilter(remoteMask: string, format: Ro.formatType) {
+    toLocalFilter(remoteMask: string | null, format: Ro.formatType) {
         return this.customFilter(format, remoteMask) || this.defaultLocalFilter(format);
     };
 

@@ -27,6 +27,12 @@ function validateExists<T>(obj: T | null | undefined, name: string) : T {
     return obj;
 }
 
+function getMember<T>(members: _.Dictionary<T>, id: string, owner: string) {
+    const member = members[id];
+    if (member) { return member; }
+    throw new Error(`no member ${id} on ${owner}`);
+}
+
 
 export function checkNotNull<T>(v: T | undefined | null): T  {
     if (v == null) {
@@ -938,7 +944,7 @@ export class Value {
 }
 
 export class ErrorValue {
-    constructor(public value: Value, public invalidReason: string) { }
+    constructor(public value: Value, public invalidReason: string | null) { }
 }
 
 export class Result {
@@ -995,7 +1001,7 @@ export class ErrorMap {
     valuesMap(): _.Dictionary<ErrorValue> {
 
         const values = _.pickBy(this.wrapped(), i => isIValue(i)) as _.Dictionary<Ro.IValue>;
-        return _.mapValues(values, v => new ErrorValue(new Value(v.value), v.invalidReason));
+        return _.mapValues(values, v => new ErrorValue(new Value(v.value), withNull(v.invalidReason)));
     }
 
     invalidReason(): string {
@@ -1577,8 +1583,8 @@ export class CollectionRepresentation extends ResourceRepresentation<RoCustom.IC
     private lazyValue: Link[] | null;
 
     value(): Link[] {
-        this.lazyValue = this.lazyValue || wrapLinks(this.wrapped().value);
-        return this.lazyValue as Link[];
+        this.lazyValue = this.lazyValue || wrapLinks(this.wrapped().value!);
+        return this.lazyValue!;
     }
 
     disabledReason(): string {
@@ -1598,7 +1604,7 @@ export class CollectionRepresentation extends ResourceRepresentation<RoCustom.IC
     }
 
     actionMember(id: string): ActionMember {
-        return this.actionMembers()[id];
+        return getMember(this.actionMembers(), id, this.collectionId());
     }
 }
 
@@ -1903,7 +1909,7 @@ export class CollectionMember
     private lazyValue: Link[] | null;
 
     value(): Link[]  | null {
-        this.lazyValue = this.lazyValue || (this.wrapped().value ? wrapLinks(this.wrapped().value) : null);
+        this.lazyValue = this.lazyValue || (this.wrapped().value ? wrapLinks(this.wrapped().value!) : null);
         return this.lazyValue;
     }
 
@@ -1932,7 +1938,7 @@ export class CollectionMember
     }
 
     actionMember(id: string): ActionMember {
-        return this.actionMembers()[id];
+        return getMember(this.actionMembers(), id, this.collectionId());
     }
 
     etagDigest: string;
@@ -2102,7 +2108,7 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
     }
 
     actionMember(id: string): ActionMember {
-        return this.actionMembers()[id];
+        return getMember(this.actionMembers(), id, this.id());
     }
 
     updateLink(): Link | null {
@@ -2217,7 +2223,7 @@ export class MenuRepresentation extends ResourceRepresentation<RoCustom.IMenuRep
     }
 
     actionMember(id: string): ActionMember {
-        return this.actionMembers()[id];
+        return getMember(this.actionMembers(), id, this.menuId());
     }
 
     selfLink(): Link {
@@ -2284,7 +2290,7 @@ export class ListRepresentation
     }
 
     actionMember(id: string): ActionMember {
-        return this.actionMembers()[id];
+        return getMember(this.actionMembers(), id, "list");
     }
 
     hasTableData = () => {
@@ -2614,8 +2620,8 @@ export class Link {
         return new MediaType(this.wrapped.type);
     }
 
-    title(): string {
-        return this.wrapped.title;
+    title(): string | null {
+        return withNull(this.wrapped.title);
     }
 
     //Typically used to set a title on a link that doesn't naturally have one e.g. Self link

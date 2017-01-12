@@ -152,8 +152,9 @@ export class ViewPropertyComponent implements OnInit {
     // todo DRY and rename this !!
     cut(event: any) {
         const cKeyCode = 67;
-        if (event && (event.keyCode === cKeyCode && event.ctrlKey)) {
-            this.context.setCutViewModel(this.property);
+        const prop = this.property;
+        if (event && (event.keyCode === cKeyCode && event.ctrlKey) && prop) {
+            this.context.setCutViewModel(prop);
             event.preventDefault();
         }
     }

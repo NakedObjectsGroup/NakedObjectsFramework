@@ -201,7 +201,7 @@ export abstract class FieldViewModel extends MessageViewModel {
         this.description = this.description || Msg.autoCompletePrompt;
     }
 
-    protected setupConditionalChoices(rep: Models.IField, digest?: string) {
+    protected setupConditionalChoices(rep: Models.IField, digest?: string | null) {
 
         this.conditionalChoices = (args: _.Dictionary<Models.Value>) => {
             const createcvm = _.partial(Helpers.createChoiceViewModels, this.id, null);

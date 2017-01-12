@@ -185,7 +185,7 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
         value: "Save",
         doClick: () => this.onSubmit(true),
         show: () => true,
-        disabled: () => !this.form.valid,
+        disabled: () => this.form ? !this.form.valid : true,
         title: () => this.tooltip,
         accesskey: null
     }
@@ -194,7 +194,7 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
         value: "Save & Close",
         doClick: () => this.onSubmit(false),
         show: () => this.unsaved(),
-        disabled: () => !this.form.valid,
+        disabled: () => this.form ? !this.form.valid : true,
         title: () => this.tooltip,
         accesskey: null
     }
@@ -219,7 +219,8 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
 
         if (this.mode === InteractionMode.Transient || this.mode === InteractionMode.Form) {
 
-            const actions = _.flatten(_.map(this.menuItems(), mi => mi.actions));
+            const menuItems = this.menuItems()!;
+            const actions = _.flatten(_.map(menuItems, (mi: MenuItemViewModel) => mi.actions!));
 
             return _.map(actions, a => ({
                 value: a.title,
@@ -314,14 +315,17 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
         const controls = _.mapValues(editablePropsMap, p => [p.getValueForControl(), a => p.validator(a)]) as _.Dictionary<any>;
         this.form = this.formBuilder.group(controls);
 
-        this.form.valueChanges.subscribe((data: any) => {
+        this.form!.valueChanges.subscribe((data: any) => {
             // cache parm values
-            _.forEach(data,
-                (v, k) => {
-                    const prop = editablePropsMap[k];
-                    prop.setValueFromControl(v);
-                });
-            this.object.setProperties();
+            const obj = this.object;
+            if (obj) {
+                _.forEach(data,
+                    (v, k) => {
+                        const prop = editablePropsMap[k!];
+                        prop.setValueFromControl(v);
+                    });
+                obj.setProperties();
+            }
         });
     }
 
