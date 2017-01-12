@@ -297,9 +297,9 @@ namespace NakedObjects.Selenium {
 
         protected virtual void OpenObjectActions(Pane pane = Pane.Single) {
             string paneSelector = CssSelectorFor(pane);
-            var actions = wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " .menu")).Single(el => el.GetAttribute("value") == "Actions"));
+            var actions = wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + "input")).Single(el => el.GetAttribute("value") == "Actions"));
             Click(actions);
-            wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " .actions .action")).Count > 0);
+            wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " .actions action")).Count > 0);
         }
 
         protected virtual void OpenSubMenu(string menuName, Pane pane = Pane.Single) {
@@ -434,7 +434,7 @@ namespace NakedObjects.Selenium {
         }
 
         protected IWebElement GetInputButton(string text, Pane pane = Pane.Single) {
-            string selector = CssSelectorFor(pane) + ".header .action";
+            string selector = CssSelectorFor(pane) + "input";
             return wait.Until(dr => dr.FindElements(By.CssSelector(selector)).Single(e => e.GetAttribute("value") == text));
         }
 
@@ -489,7 +489,7 @@ namespace NakedObjects.Selenium {
         #region Object Actions
 
         protected ReadOnlyCollection<IWebElement> GetObjectActions(int totalNumber, Pane pane = Pane.Single) {
-            var selector = CssSelectorFor(pane) + ".actions .action";
+            var selector = CssSelectorFor(pane) + ".actions action";
             wait.Until(d => d.FindElements(By.CssSelector(selector)).Count == totalNumber);
             return br.FindElements(By.CssSelector(selector));
         }
@@ -506,7 +506,7 @@ namespace NakedObjects.Selenium {
             if (subMenuName != null) {
                 OpenSubMenu(subMenuName);
             }
-            var selector = CssSelectorFor(pane) + ".actions .action div";
+            var selector = CssSelectorFor(pane) + ".actions .name";
             var a = wait.Until(d => d.FindElements(By.CssSelector(selector)).Single(we => we.Text == actionName));
             ScrollTo(a);
             return a;
