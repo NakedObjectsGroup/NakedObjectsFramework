@@ -40,7 +40,7 @@ export class HomeComponent extends PaneComponent {
         return this.menus.items;
     }
 
-    selectedMenu: MenuViewModel;
+    selectedMenu: MenuViewModel | null;
 
     private menus: MenusViewModel;
 

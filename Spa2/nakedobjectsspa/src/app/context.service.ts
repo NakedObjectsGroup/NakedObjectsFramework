@@ -593,7 +593,7 @@ export class ContextService {
     autoComplete = (field: Models.IField, id: string, objectValues: () => _.Dictionary<Models.Value>, searchTerm: string, digest?: string | null) =>
         this.doPrompt(field, id, searchTerm, (map: Models.PromptMap) => map.setSearchTerm(searchTerm), objectValues, digest);
 
-    conditionalChoices = (field: Models.IField, id: string, objectValues: () => _.Dictionary<Models.Value>, args: _.Dictionary<Models.Value>, digest?: string) =>
+    conditionalChoices = (field: Models.IField, id: string, objectValues: () => _.Dictionary<Models.Value>, args: _.Dictionary<Models.Value>, digest?: string | null) =>
         this.doPrompt(field, id, null, (map: Models.PromptMap) => map.setArguments(args), objectValues, digest);
 
     private nextTransientId = 0;
@@ -707,11 +707,11 @@ export class ContextService {
 
     cutViewModel$ = this.cutViewModelSource.asObservable();
 
-    private cutViewModel : IDraggableViewModel;
+    private cutViewModel : IDraggableViewModel | null;
 
-    setCutViewModel(dvm : IDraggableViewModel ){
+    setCutViewModel(dvm : IDraggableViewModel | null ){
         this.cutViewModel = dvm;
-        this.cutViewModelSource.next(dvm);
+        this.cutViewModelSource.next(Models.withUndefined(dvm));
     }
 
     getCutViewModel( ){

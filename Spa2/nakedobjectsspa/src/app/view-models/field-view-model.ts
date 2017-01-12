@@ -208,7 +208,7 @@ export abstract class FieldViewModel extends MessageViewModel {
             return this.context.conditionalChoices(rep, this.id, () => <_.Dictionary<Models.Value>>{}, args, digest).then(createcvm);
         };
         const promptLink = rep.promptLink() as Models.Link;
-        this.promptArguments = _.fromPairs(_.map(promptLink.arguments(), (v: any, key: string) => [key, new Models.Value(v.value)]));
+        this.promptArguments = _.fromPairs(_.map(promptLink!.arguments()!, (v: any, key: string) => [key, new Models.Value(v.value)]));
     }
 
     protected getRequiredIndicator() {

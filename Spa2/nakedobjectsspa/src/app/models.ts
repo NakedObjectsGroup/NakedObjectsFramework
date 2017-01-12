@@ -856,11 +856,11 @@ export class Value {
 
     toString(): string {
         if (this.isReference()) {
-            return (this.link() as Link).title(); // know true
+            return this.link()!.title() || ""; // know true
         }
 
         if (this.isList()) {
-            const list = this.list() as Value[]; // know true
+            const list = this.list()!; // know true
             const ss = _.map(list, v => v.toString());
             return ss.length === 0 ? "" : _.reduce(ss, (m, s) => m + "-" + s, "");
         }
@@ -870,10 +870,10 @@ export class Value {
 
     compress() {
         if (this.isReference()) {
-            (this.link() as Link).compress(); // know true
+            this.link()!.compress(); // know true
         }
         if (this.isList()) {
-            const list = this.list() as Value[]; // know true
+            const list = this.list()!; // know true
             _.forEach(list, i => i.compress());
         };
 
@@ -884,7 +884,7 @@ export class Value {
 
     decompress() {
         if (this.isReference()) {
-            (this.link() as Link).decompress();  // know true
+            this.link()!.decompress();  // know true
         }
         if (this.isList()) {
             const list = this.list() as Value[]; // know true
@@ -904,7 +904,7 @@ export class Value {
 
     toValueString(): string {
         if (this.isReference()) {
-            return (this.link() as Link).href();  // know true
+            return this.link()!.href();  // know true
         }
         return (this.wrapped == null) ? "" : this.wrapped.toString();
     }
@@ -920,7 +920,7 @@ export class Value {
 
     setValue(target: Ro.IValue) {
         if (this.isFileReference()) {
-            target.value = (this.link() as Link).wrapped; // know true
+            target.value = this.link()!.wrapped; // know true
         }
         else if (this.isReference()) {
             
@@ -1008,7 +1008,7 @@ export class ErrorMap {
 
         const temp = this.map;
         if (isIObjectOfType(temp)) {
-            return (<any>temp)[Constants.roInvalidReason] as string;
+            return temp[Constants.roInvalidReason] as string;
         }
 
         return this.wrapped()[Constants.roInvalidReason] as string;
@@ -1314,7 +1314,7 @@ export class Parameter
         if (promptLink) {
             // ConditionalChoices, ConditionalMultipleChoices, AutoComplete 
              
-            if (!!promptLink.arguments()[Constants.roSearchTerm]) {
+            if (!!promptLink.arguments()![Constants.roSearchTerm]) {
 
                 // autocomplete 
                 return EntryType.AutoComplete;
@@ -1875,7 +1875,7 @@ export class PropertyMember extends Member<Ro.IPropertyMember> implements IField
         if (link) {
             // ConditionalChoices, ConditionalMultipleChoices, AutoComplete 
 
-            if (!!link.arguments()[Constants.roSearchTerm]) {
+            if (!!link.arguments()![Constants.roSearchTerm]) {
                 // autocomplete 
                 return EntryType.AutoComplete;
             }
@@ -2063,7 +2063,7 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
 
     private resetMemberMaps() {
         const members = this.wrapped().members;
-        this.memberMap = _.mapValues(members, (m, id) => Member.wrapMember(m, this, id!));
+        this.memberMap = _.mapValues(members, (m, id) => Member.wrapMember(m, this, id!)!);
         this.propertyMemberMap = _.pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === "property") as _.Dictionary<PropertyMember>;
         this.collectionMemberMap = _.pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === "collection") as _.Dictionary<CollectionMember>;
         this.actionMemberMap = _.pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === "action") as _.Dictionary<ActionMember>;
@@ -2608,16 +2608,16 @@ export class Link {
         return decodeURIComponent(this.wrapped.href);
     }
 
-    method(): Ro.httpMethodsType {
-        return this.wrapped.method;
+    method(): Ro.httpMethodsType  {
+        return this.wrapped.method!;
     }
 
     rel(): Rel {
-        return new Rel(this.wrapped.rel);
+        return new Rel(this.wrapped.rel!);
     }
 
     type(): MediaType {
-        return new MediaType(this.wrapped.type);
+        return new MediaType(this.wrapped.type!);
     }
 
     title(): string | null {
@@ -2629,8 +2629,8 @@ export class Link {
         this.wrapped.title = title;
     }
 
-    arguments(): Ro.IValue | Ro.IValueMap | Ro.IObjectOfType | Ro.IPromptMap {
-        return this.wrapped.arguments;
+    arguments(): Ro.IValue | Ro.IValueMap | Ro.IObjectOfType | Ro.IPromptMap | null {
+        return withNull(this.wrapped.arguments);
     }
 
     members(): _.Dictionary<PropertyMember> | null {
@@ -2641,7 +2641,7 @@ export class Link {
     private lazyExtensions: Extensions;
 
     extensions(): Extensions {
-        this.lazyExtensions = this.lazyExtensions || new Extensions(this.wrapped.extensions);
+        this.lazyExtensions = this.lazyExtensions || new Extensions(this.wrapped.extensions!);
         return this.lazyExtensions;
     }
 

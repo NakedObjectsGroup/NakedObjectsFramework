@@ -87,7 +87,7 @@ export class ListViewModel extends ContributedActionParentViewModel {
             this.routeData,
             this);
 
-        const totalCount = this.listRep.pagination().totalCount;
+        const totalCount = this.listRep.pagination()!.totalCount;
         const count = this.items.length;
         this.size = count;
         if (count > 0) {
@@ -125,9 +125,9 @@ export class ListViewModel extends ContributedActionParentViewModel {
 
         this.id = this.urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize);
         
-        this.page = this.listRep.pagination().page;
-        this.pageSize = this.listRep.pagination().pageSize;
-        this.numPages = this.listRep.pagination().numPages;
+        this.page = this.listRep.pagination()!.page;
+        this.pageSize = this.listRep.pagination()!.pageSize;
+        this.numPages = this.listRep.pagination()!.numPages;
 
         this.state = this.listRep.hasTableData() ? CollectionViewState.Table : CollectionViewState.List;
         this.updateItems(list.value());
@@ -187,7 +187,11 @@ export class ListViewModel extends ContributedActionParentViewModel {
 
     readonly actionMember = (id: string) => {
         const actionViewModel = _.find(this.actions, a => a.actionRep.actionId() === id);
-        return actionViewModel.actionRep;
+
+        if (actionViewModel) {
+            return actionViewModel.actionRep;
+        }
+        throw new Error(`no actionviewmodel ${id} on ${this.id}`);
     };
 
     readonly showActions = () => {

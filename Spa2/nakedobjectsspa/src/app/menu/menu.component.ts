@@ -22,7 +22,7 @@ export class MenuComponent implements OnInit {
 
     doClick() {
         const menuId = this.menu.link.rel().parms[0].value;
-        this.urlManager.setMenu(menuId, this.menu.paneId);
+        this.urlManager.setMenu(menuId!, this.menu.paneId);
     }
 
     get title() {
