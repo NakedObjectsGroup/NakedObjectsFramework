@@ -122,7 +122,10 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
 
     readonly actionMember = (id: string) => {
         const actionViewModel = _.find(this.actions, a => a.actionRep.actionId() === id);
-        return actionViewModel ? actionViewModel.actionRep : null;
+        if (actionViewModel) {
+            return actionViewModel.actionRep;
+        }
+        throw new Error(`no member ${id} on ${this.id}`);
     }
 
     readonly hasMatchingLocallyContributedAction = (id: string) => {

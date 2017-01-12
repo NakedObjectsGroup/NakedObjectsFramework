@@ -6,7 +6,7 @@ export class ChoiceViewModel {
     constructor(
         private readonly wrapped: Models.Value,
         private readonly id: string,
-        name?: string,
+        name?: string | null,
         searchTerm?: string
     ) {
         this.name = name || wrapped.toString();

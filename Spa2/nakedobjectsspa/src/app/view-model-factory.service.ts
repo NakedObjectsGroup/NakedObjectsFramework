@@ -45,7 +45,7 @@ export class ViewModelFactoryService {
         private readonly momentWrapperService: MomentWrapperService
     ) { }
 
-    errorViewModel = (error: Models.ErrorWrapper) => {
+    errorViewModel = (error: Models.ErrorWrapper | null) => {
         return new ErrorViewModel(error);
     }
 

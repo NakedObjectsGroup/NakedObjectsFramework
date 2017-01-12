@@ -134,7 +134,7 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
     }
 
     // todo delegated click here smell that we need another component 
-    doAttachmentClick = (right?: boolean) => this.property.attachment.doClick(right);
+    doAttachmentClick = (right?: boolean) => this.property.attachment!.doClick(right);
 
     ngOnInit(): void {
         super.init(this.parent, this.property, this.form.controls[this.prop.id]);

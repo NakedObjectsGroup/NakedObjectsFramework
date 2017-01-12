@@ -21,7 +21,7 @@ export class ErrorComponent {
     message: string;
     errorCode: string;
     description: string;
-    stackTrace: string[];
+    stackTrace: string[] | null;
 
     ngOnInit(): void {
         // todo if no error perhaps just go home ? 

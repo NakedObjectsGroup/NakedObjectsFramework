@@ -2,7 +2,7 @@
 
 export class ErrorViewModel {
 
-    constructor(error: Models.ErrorWrapper) {
+    constructor(error: Models.ErrorWrapper | null) {
         this.originalError = error;
         if (error) {
             this.title = error.title;
@@ -24,10 +24,10 @@ export class ErrorViewModel {
         this.stackTrace = this.stackTrace || ["No stack trace available"];
     }
 
-    readonly originalError: Models.ErrorWrapper;
+    readonly originalError: Models.ErrorWrapper | null;
     readonly title: string;
     readonly message: string;
-    readonly stackTrace: string[];
+    readonly stackTrace: string[] | null;
     readonly errorCode: string;
     readonly description: string;
     readonly isConcurrencyError: boolean;
