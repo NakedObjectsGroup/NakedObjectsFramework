@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 
 export interface IButton {
     doClick: () => void;
+    doRightClick?: () => void;
     show: () => boolean;
     disabled: () => boolean | null;
     value: string;
@@ -21,6 +22,12 @@ export class ButtonComponent {
 
     doClick() {
         this.button.doClick();
+    }
+
+    doRightClick() {
+        if (this.button.doRightClick) {
+            this.button.doRightClick();
+        }
     }
 
     show() {
