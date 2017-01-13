@@ -39,7 +39,7 @@ export class DomainObjectViewModel extends MessageViewModel {
     // IDraggableViewModel
     value: string;
     reference: string;
-    selectedChoice: ChoiceViewModel;
+    selectedChoice: ChoiceViewModel | null;
     color: string;
     draggableType: string;
     draggableTitle = () => this.title;
@@ -126,9 +126,9 @@ export class DomainObjectViewModel extends MessageViewModel {
 
         this.friendlyName = this.domainObject.extensions().friendlyName();
         this.presentationHint = this.domainObject.extensions().presentationHint();
-        this.domainType = this.domainObject.domainType();
-        this.instanceId = this.domainObject.instanceId();
-        this.draggableType = this.domainObject.domainType();
+        this.domainType = this.domainObject.domainType()!;
+        this.instanceId = this.domainObject.instanceId()!;
+        this.draggableType = this.domainObject.domainType()!;
 
         const selfAsValue = () : Models.Value | null => {
             const link = this.domainObject.selfLink();

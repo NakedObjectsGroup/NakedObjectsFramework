@@ -109,7 +109,7 @@ export interface IVersionRepresentation extends IResourceRepresentation {
     optionalCapabilities: IOptionalCapabilities;
 }
 
-export type scalarValueType = string | number | boolean;
+export type scalarValueType = string | number | boolean | null;
 export type valueType = scalarValueType | ILink;
 
 export interface IValue {

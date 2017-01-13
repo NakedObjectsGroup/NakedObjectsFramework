@@ -269,10 +269,10 @@ export abstract class FieldViewModel extends MessageViewModel {
             if (this.entryType === Models.EntryType.MultipleChoices || this.entryType === Models.EntryType.MultipleConditionalChoices || this.isCollectionContributed) {
                 const selections = this.selectedMultiChoices || [];
                 if (this.type === "scalar") {
-                    const selValues = _.map(selections, cvm => cvm.getValue().scalar());
+                    const selValues = _.map(selections, (cvm: ChoiceViewModel)  => cvm.getValue().scalar());
                     return new Models.Value(selValues);
                 }
-                const selRefs = _.map(selections, cvm => ({ href: cvm.getValue().href(), title: cvm.name })); // reference 
+                const selRefs = _.map(selections, cvm => ({ href: cvm.getValue().href()!, title: cvm.name })); // reference 
                 return new Models.Value(selRefs);
             }
 
@@ -282,7 +282,7 @@ export abstract class FieldViewModel extends MessageViewModel {
             }
 
             // reference 
-            return new Models.Value(choiceValue && choiceValue.isReference() && this.selectedChoice ? { href: choiceValue.href(), title: this.selectedChoice.name } : null);
+            return new Models.Value(choiceValue && choiceValue.isReference() && this.selectedChoice ? { href: choiceValue.href()!, title: this.selectedChoice.name } : null);
         }
 
         if (this.type === "scalar") {
@@ -309,6 +309,6 @@ export abstract class FieldViewModel extends MessageViewModel {
         }
 
         // reference
-        return new Models.Value(this.reference ? { href: this.reference, title: this.value.toString() } : null);
+        return new Models.Value(this.reference ? { href: this.reference, title: this.value!.toString() } : null);
     }
 }

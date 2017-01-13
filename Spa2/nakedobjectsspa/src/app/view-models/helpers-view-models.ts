@@ -179,7 +179,7 @@ export function handleErrorResponse(err: Models.ErrorMap, messageViewModel: IMes
         } else {
             // no matching parm for message - this can happen in contributed actions 
             // make the message a dialog level warning.                               
-            contributedParameterErrorMsg = errorValue.invalidReason;
+            contributedParameterErrorMsg = errorValue.invalidReason || "";
         }
     });
 

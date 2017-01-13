@@ -792,13 +792,13 @@ export class MediaType {
 export class Value {
 
     // note this is different from constructor parm as we wrap ILink
-    private wrapped: Link | Array<Link | Ro.valueType> | Ro.scalarValueType | Blob| null;
+    private wrapped: Link | (Link | Ro.valueType)[] | Ro.scalarValueType | Blob;
 
-    constructor(raw: Link | Array<Link | Ro.valueType> | Ro.valueType | Blob | null) {
+    constructor(raw: Link | (Link | Ro.valueType)[] | Ro.valueType | Blob) {
         // can only be Link, number, boolean, string or null    
 
         if (raw instanceof Array) {
-            this.wrapped = raw as Array<Link | Ro.valueType>;
+            this.wrapped = raw as (Link | Ro.valueType)[];
         } else if (raw instanceof Link) {
             this.wrapped = raw;
         } else if (isILink(raw)) {
@@ -846,12 +846,12 @@ export class Value {
         return link ? link.href() : null;
     }
 
-    scalar(): Ro.scalarValueType | null {
+    scalar(): Ro.scalarValueType {
         return this.isScalar() ? this.wrapped as Ro.scalarValueType : null;
     }
 
     list(): Value[] | null {
-        return this.isList() ? _.map(this.wrapped as Array<Link | Ro.valueType>, i => new Value(i)) : null;
+        return this.isList() ? _.map(this.wrapped as (Link | Ro.valueType)[], i => new Value(i)) : null;
     }
 
     toString(): string {
