@@ -47,6 +47,7 @@ import { MenusComponent } from './menus/menus.component';
 import { MenuComponent } from './menu/menu.component';
 import { ButtonsComponent } from './buttons/buttons.component';
 import { ButtonComponent } from './button/button.component'
+import { MomentModule } from 'angular2-moment';
 
 @NgModule({
   declarations: [
@@ -85,7 +86,8 @@ import { ButtonComponent } from './button/button.component'
     FormsModule,
     HttpModule,
     RoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MomentModule
   ],
   providers: [ 
         UrlManagerService,
