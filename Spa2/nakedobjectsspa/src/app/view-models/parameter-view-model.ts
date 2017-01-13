@@ -5,7 +5,6 @@ import { ChoiceViewModel } from './choice-view-model';
 import { ContextService } from '../context.service';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { MaskService } from '../mask.service';
-import { MomentWrapperService } from '../moment-wrapper.service';
 import * as Helpers from './helpers-view-models';
 import * as Models from '../models';
 import * as Msg from '../user-messages';
@@ -18,7 +17,6 @@ export class ParameterViewModel extends FieldViewModel {
         onPaneId: number,
         color: ColorService,
         error: ErrorService,
-        momentWrapperService: MomentWrapperService,
         private readonly maskService: MaskService,
         private readonly previousValue: Models.Value,
         private readonly viewModelFactory: ViewModelFactoryService,
@@ -29,7 +27,6 @@ export class ParameterViewModel extends FieldViewModel {
             color,
             error,
             context,
-            momentWrapperService,
             onPaneId,
             parameterRep.isScalar(),
             parameterRep.id(),

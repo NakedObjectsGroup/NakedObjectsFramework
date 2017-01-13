@@ -36,7 +36,6 @@ import { ColorConfigService } from './color-config.service';
 import { MaskConfigService } from './mask-config.service';
 import { CollectionComponent } from './collection/collection.component';
 // temp hack todo fix
-import { MomentWrapperService } from './moment-wrapper.service';
 import { DndModule } from 'ng2-dnd';
 import { ReactiveFormsModule }          from '@angular/forms';
 import { AttachmentComponent } from './attachment/attachment.component';
@@ -100,7 +99,6 @@ import { MomentModule } from 'angular2-moment';
         MaskService,
         ColorConfigService,
         MaskConfigService,
-        MomentWrapperService,
         { provide: ErrorHandler, useClass: GeminiErrorHandler }
         ],
   bootstrap: [AppComponent]

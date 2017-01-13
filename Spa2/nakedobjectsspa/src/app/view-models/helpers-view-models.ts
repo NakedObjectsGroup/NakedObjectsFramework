@@ -4,7 +4,6 @@ import { ActionViewModel } from './action-view-model';
 import { ContextService } from '../context.service';
 import { ErrorService } from '../error.service';
 import { IDraggableViewModel } from './idraggable-view-model';
-import { MomentWrapperService } from '../moment-wrapper.service';
 import { ChoiceViewModel } from './choice-view-model';
 import { IMessageViewModel } from './imessage-view-model';
 import * as Models from '../models';
@@ -125,8 +124,8 @@ export function drop(context: ContextService, error: ErrorService, vm: FieldView
         catch((reject: Models.ErrorWrapper) => error.handleError(reject));
 };
 
-export function validate(rep: Models.IHasExtensions, vm: FieldViewModel, ms: MomentWrapperService, modelValue: any, viewValue: string, mandatoryOnly: boolean) {
-    const message = mandatoryOnly ? Models.validateMandatory(rep, viewValue) : Models.validate(rep, modelValue, viewValue, vm.localFilter, ms);
+export function validate(rep: Models.IHasExtensions, vm: FieldViewModel, modelValue: any, viewValue: string, mandatoryOnly: boolean) {
+    const message = mandatoryOnly ? Models.validateMandatory(rep, viewValue) : Models.validate(rep, modelValue, viewValue, vm.localFilter);
 
     if (message !== Msg.mandatory) {
         vm.setMessage(message);

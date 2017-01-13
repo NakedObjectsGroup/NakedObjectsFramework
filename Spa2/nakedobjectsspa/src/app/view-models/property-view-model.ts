@@ -8,7 +8,6 @@ import { ChoiceViewModel } from './choice-view-model';
 import { MaskService } from '../mask.service';
 import { ClickHandlerService } from '../click-handler.service';
 import { UrlManagerService } from '../url-manager.service';
-import { MomentWrapperService } from '../moment-wrapper.service';
 import { IDraggableViewModel } from './idraggable-view-model';
 import * as _ from "lodash";
 import * as Msg from "../user-messages";
@@ -26,7 +25,6 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         private readonly maskService: MaskService,
         private readonly urlManager: UrlManagerService,
         private readonly clickHandler: ClickHandlerService,
-        momentWrapperService: MomentWrapperService,
         id: string,
         private readonly previousValue: Models.Value,
         onPaneId: number,
@@ -37,7 +35,6 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
             color,
             error,
             context,
-            momentWrapperService,
             onPaneId,
             propertyRep.isScalar(),
             id,

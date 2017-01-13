@@ -7,7 +7,6 @@ import { ClickHandlerService } from "./click-handler.service";
 import { ErrorService } from "./error.service";
 import { MaskService } from "./mask.service";
 import { Injectable } from '@angular/core';
-import { MomentWrapperService } from "./moment-wrapper.service";
 import { AttachmentViewModel } from './view-models/attachment-view-model';
 import { ErrorViewModel } from './view-models/error-view-model';
 import { IMessageViewModel } from './view-models/imessage-view-model';
@@ -41,8 +40,7 @@ export class ViewModelFactoryService {
         private readonly color: ColorService,
         private readonly error: ErrorService,
         private readonly clickHandler: ClickHandlerService,
-        private readonly mask: MaskService,
-        private readonly momentWrapperService: MomentWrapperService
+        private readonly mask: MaskService
     ) { }
 
     errorViewModel = (error: Models.ErrorWrapper | null) => {
@@ -87,7 +85,6 @@ export class ViewModelFactoryService {
             this.mask,
             this.urlManager,
             this.clickHandler,
-            this.momentWrapperService,
             id,
             previousValue,
             paneId,
@@ -136,7 +133,7 @@ export class ViewModelFactoryService {
     }
 
     parameterViewModel = (parmRep: Models.Parameter, previousValue: Models.Value, paneId: number) => {
-        return new ParameterViewModel(parmRep, paneId, this.color, this.error, this.momentWrapperService, this.mask, previousValue, this, this.context);
+        return new ParameterViewModel(parmRep, paneId, this.color, this.error, this.mask, previousValue, this, this.context);
     }
 
     collectionViewModel = (collectionRep: Models.CollectionMember, routeData: PaneRouteData) => {

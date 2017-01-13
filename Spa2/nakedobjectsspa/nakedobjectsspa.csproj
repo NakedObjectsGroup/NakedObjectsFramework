@@ -133,7 +133,6 @@
     <TypeScriptCompile Include="src\app\menus\menus.component.ts" />
     <TypeScriptCompile Include="src\app\menu\menu.component.ts" />
     <TypeScriptCompile Include="src\app\models.ts" />
-    <TypeScriptCompile Include="src\app\moment-wrapper.service.ts" />
     <TypeScriptCompile Include="src\app\multi-line-dialog\multi-line-dialog.component.ts" />
     <TypeScriptCompile Include="src\app\object\object.component.ts" />
     <TypeScriptCompile Include="src\app\pane\pane.ts" />

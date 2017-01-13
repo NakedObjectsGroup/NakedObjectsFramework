@@ -12,7 +12,7 @@ import * as Msg from '../user-messages';
 import * as _ from "lodash";
 import * as Helpers from './helpers-view-models';
 import { ContextService } from '../context.service';
-import { MomentWrapperService } from '../moment-wrapper.service';
+
 
 export abstract class FieldViewModel extends MessageViewModel {
 
@@ -21,7 +21,6 @@ export abstract class FieldViewModel extends MessageViewModel {
         protected readonly colorService: ColorService,
         protected readonly error: ErrorService,
         protected readonly context: ContextService,
-        protected readonly momentWrapperService : MomentWrapperService,
         public readonly onPaneId: number,
         public readonly isScalar: boolean,
         public readonly id: string,
@@ -80,7 +79,7 @@ export abstract class FieldViewModel extends MessageViewModel {
 
     readonly drop = (newValue: IDraggableViewModel) => Helpers.drop(this.context, this.error, this, newValue);
 
-    readonly validate = (modelValue: any, viewValue: string, mandatoryOnly: boolean) => Helpers.validate(this.rep, this, this.momentWrapperService, modelValue, viewValue, mandatoryOnly);
+    readonly validate = (modelValue: any, viewValue: string, mandatoryOnly: boolean) => Helpers.validate(this.rep, this,  modelValue, viewValue, mandatoryOnly);
 
     get choices(): ChoiceViewModel[] {
         return this.choiceOptions;

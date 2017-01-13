@@ -6,8 +6,7 @@ import * as Msg from "./user-messages";
 import * as _ from "lodash";
 import { MaskService, ILocalFilter } from "./mask.service";
 import { ContextService } from "./context.service";
-//import * as moment  from "moment";
-import { MomentWrapperService } from "./moment-wrapper.service";
+import * as moment  from "moment";
 import { ChoiceViewModel } from './view-models/choice-view-model';
 
 
@@ -253,9 +252,9 @@ function validateDateTimeFormat(model: IHasExtensions, newValue: Date): string {
     return "";
 }
 
-function getDate(val: string, ms: MomentWrapperService): Date | null {
+function getDate(val: string): Date | null {
 
-    const dt1 = ms.moment(val, "YYYY-MM-DD", "en-GB", true);
+    const dt1 = moment(val, "YYYY-MM-DD", "en-GB", true);
 
     if (dt1.isValid()) {
         return dt1.toDate();
@@ -263,13 +262,13 @@ function getDate(val: string, ms: MomentWrapperService): Date | null {
     return null;
 }
 
-function validateDateFormat(model: IHasExtensions, newValue: Date | string, filter: ILocalFilter, ms: MomentWrapperService): string {
+function validateDateFormat(model: IHasExtensions, newValue: Date | string, filter: ILocalFilter): string {
     const range = model.extensions().range();
-    const newDate = (newValue instanceof Date) ? newValue : getDate(newValue, ms);
+    const newDate = (newValue instanceof Date) ? newValue : getDate(newValue);
 
     if (range && newDate) {
-        const min = range.min ? getDate(range.min as string, ms) : null;
-        const max = range.max ? getDate(range.max as string, ms) : null;
+        const min = range.min ? getDate(range.min as string) : null;
+        const max = range.max ? getDate(range.max as string) : null;
 
         if (min && newDate < min) {
             return Msg.outOfRange(toDateString(newDate), getUtcDate(range.min as string), getUtcDate(range.max as string), filter);
@@ -287,7 +286,7 @@ function validateTimeFormat(model: IHasExtensions, newValue: Date): string {
     return "";
 }
 
-function validateString(model: IHasExtensions, newValue: any, filter: ILocalFilter, ms: MomentWrapperService): string {
+function validateString(model: IHasExtensions, newValue: any, filter: ILocalFilter): string {
     const format = model.extensions().format();
 
     switch (format) {
@@ -296,7 +295,7 @@ function validateString(model: IHasExtensions, newValue: any, filter: ILocalFilt
         case ("date-time"):
             return validateDateTimeFormat(model, newValue as Date);
         case ("date"):
-            return validateDateFormat(model, newValue as Date | string, filter, ms);
+            return validateDateFormat(model, newValue as Date | string, filter);
         case ("time"):
             return validateTimeFormat(model, newValue as Date);
         default:
@@ -317,7 +316,7 @@ export function validateMandatory(model: IHasExtensions, viewValue: string |Choi
 }
 
 
-export function validate(model: IHasExtensions, modelValue: any, viewValue: string, filter: ILocalFilter, ms: MomentWrapperService): string {
+export function validate(model: IHasExtensions, modelValue: any, viewValue: string, filter: ILocalFilter): string {
     // first check 
 
     const mandatory = validateMandatory(model, viewValue);
@@ -341,7 +340,7 @@ export function validate(model: IHasExtensions, modelValue: any, viewValue: stri
             //}
             return validateNumber(model, parseFloat(modelValue), filter);
         case ("string"):
-            return validateString(model, modelValue, filter, ms);
+            return validateString(model, modelValue, filter);
         case ("boolean"):
             return "";
         default:
