@@ -128,7 +128,11 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
         throw new Error(`no member ${id} on ${this.id}`);
     }
 
+    private hasActionMember(id: string) {
+       return !!_.find(this.actions, a => a.actionRep.actionId() === id);
+    }
+
     readonly hasMatchingLocallyContributedAction = (id: string) => {
-        return id && this.actions && this.actions.length > 0 && !!this.actionMember(id);
+        return id && this.actions && this.actions.length > 0 && this.hasActionMember(id);
     }
 }

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import  * as moment  from 'moment';
 
 var hookCallback;
 
@@ -4229,6 +4230,9 @@ export class MomentWrapperService {
 
     moment(date: string, format?: any, language?: string, strict?: boolean) {
         return (<any>_moment)(date, format, language, strict);
+       
+
+        //return moment.utc(date, format, language, strict);
     }
 
 }

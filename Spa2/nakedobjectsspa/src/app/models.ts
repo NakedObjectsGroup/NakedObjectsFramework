@@ -1894,8 +1894,10 @@ export class PropertyMember extends Member<Ro.IPropertyMember> implements IField
 export class CollectionMember
     extends Member<RoCustom.ICustomCollectionMember>
     implements IHasLinksAsValue, IHasActions {
+    
+     
 
-    wrapped = () => this.resource() as RoCustom.ICustomCollectionMember;
+        wrapped = () => this.resource() as RoCustom.ICustomCollectionMember;
 
     constructor(wrapped: Ro.ICollectionMember, public parent: DomainObjectRepresentation, private readonly id: string) {
         super(wrapped);
@@ -1936,6 +1938,10 @@ export class CollectionMember
         }
         return {};
     }
+
+    hasActionMember(id: string): boolean {
+        return !!this.actionMembers()[id];
+    } 
 
     actionMember(id: string): ActionMember {
         return getMember(this.actionMembers(), id, this.collectionId());
@@ -2029,6 +2035,7 @@ export class InvokableActionMember extends ActionMember {
 
 
 export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomainObjectRepresentation> implements IHasActions {
+   
 
     wrapped = () => this.resource() as Ro.IDomainObjectRepresentation;
 
@@ -2105,6 +2112,10 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
 
     collectionMember(id: string): CollectionMember {
         return this.collectionMembers()[id];
+    }
+
+    hasActionMember(id: string): boolean {
+        return !!this.actionMembers()[id];
     }
 
     actionMember(id: string): ActionMember {
@@ -2221,6 +2232,10 @@ export class MenuRepresentation extends ResourceRepresentation<RoCustom.IMenuRep
     member(id: string): Member<Ro.IMember> {
         return this.members()[id];
     }
+
+    hasActionMember(id: string): boolean {
+        return !!this.actionMembers()[id];
+    } 
 
     actionMember(id: string): ActionMember {
         return getMember(this.actionMembers(), id, this.menuId());
@@ -2700,6 +2715,7 @@ export class Link {
 export interface IHasActions extends IHasExtensions {
     actionMembers(): _.Dictionary<ActionMember>;
     actionMember(id: string): ActionMember;
+    hasActionMember(id :string) : boolean;
     etagDigest: string;
 }
 
