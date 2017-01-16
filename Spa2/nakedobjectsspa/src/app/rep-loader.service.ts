@@ -8,6 +8,108 @@ import * as _ from "lodash";
 import { Subject } from 'rxjs/Subject';
 
 
+class LruNode {
+
+    constructor(public readonly key : string, public value : any) {  }
+
+    next: LruNode;
+    previous : LruNode;
+}
+
+
+class SimpleLruCache {
+
+    constructor(private readonly depth : number) {  }
+
+    private cache : _.Dictionary<LruNode> = {};
+    private count = 0;
+    private head : LruNode = null;
+    private tail : LruNode = null;
+
+    private unlinkNode(node: LruNode) {
+        const nodePrevious = node.previous;
+        const nodeNext = node.next;
+
+        if (nodePrevious) {
+            nodePrevious.next = nodeNext;
+        } else {
+            // was head
+            this.head = nodeNext; 
+        }
+
+        if (nodeNext) {
+            nodeNext.previous = nodePrevious;
+        } else {
+            //was tail
+            this.tail = nodePrevious;
+        }
+        this.count--; 
+    }
+
+    private moveNodeToHead(node: LruNode) {
+        const existingHead = this.head;
+        node.previous = null;
+        node.next = existingHead;
+
+        if (existingHead) {
+            existingHead.previous = node;
+        } else {
+            // no existing head so this is also tail
+            this.tail = node;
+        }
+        this.head = node;
+        this.count++; 
+    }
+
+    add(key: string, value: any) {
+
+        if (this.cache[key]) {
+            this.updateExistingEntry(key, value);
+        } else {
+            this.addNewEntry(key, value);
+        }
+    }
+
+    remove(key: string) {
+        const node = this.cache[key];
+
+        if (node) {
+            this.unlinkNode(node);
+            delete this.cache[key];
+        }
+    }
+
+    get(key: string) : any | null {
+        const node = this.cache[key];
+
+        if (node) {
+            this.unlinkNode(node);
+            this.moveNodeToHead(node);
+        }
+        return node;
+    }
+
+    private updateExistingEntry(key: string, value: any): any {
+        const node = this.get(key);
+        node.value = value; 
+    }
+
+    private addNewEntry(key: string, value: any): any {
+        const newNode = new LruNode(key, value);
+        this.cache[key] = newNode;
+        this.moveNodeToHead(newNode);
+    }
+
+    private trimCache() {
+        if (this.count > this.depth) {
+            const tail = this.tail;
+            this.unlinkNode(tail);
+            delete this.cache[tail.key];
+        }
+    }
+}
+
+
 @Injectable()
 export class RepLoaderService {
 
