@@ -16,7 +16,7 @@ class LruNode {
     constructor(public readonly key: string, public value: cachableTypes) {  }
 
     next: LruNode | null = null;
-    previous : LruNode | null = null;
+    previous: LruNode | null = null;
 }
 
 
@@ -24,10 +24,10 @@ class SimpleLruCache {
 
     constructor(private readonly depth : number) {  }
 
-    private cache : _.Dictionary<LruNode> = {};
+    private cache: _.Dictionary<LruNode> = {};
     private count = 0;
-    private head : LruNode | null = null;
-    private tail : LruNode | null = null;
+    private head: LruNode | null = null;
+    private tail: LruNode | null = null;
 
     private unlinkNode(node: LruNode) {
         const nodePrevious = node.previous;
@@ -37,7 +37,7 @@ class SimpleLruCache {
             nodePrevious.next = nodeNext;
         } else {
             // was head
-            this.head = nodeNext; 
+            this.head = nodeNext;
         }
 
         if (nodeNext) {
@@ -46,7 +46,7 @@ class SimpleLruCache {
             //was tail
             this.tail = nodePrevious;
         }
-        this.count--; 
+        this.count--;
     }
 
     private moveNodeToHead(node: LruNode) {
@@ -61,7 +61,7 @@ class SimpleLruCache {
             this.tail = node;
         }
         this.head = node;
-        this.count++; 
+        this.count++;
     }
 
     add(key: string, value: cachableTypes) {
@@ -85,7 +85,7 @@ class SimpleLruCache {
     removeAll() {
         this.head = this.tail = null;
         this.cache = {};
-        this.count = 0; 
+        this.count = 0;
     }
 
     private getNode(key: string): LruNode | null {
@@ -104,8 +104,8 @@ class SimpleLruCache {
     }
 
     private updateExistingEntry(key: string, value: cachableTypes): any {
-        const node = this.getNode(key);
-        node.value = value; 
+        const node = this.getNode(key)!;
+        node.value = value;
     }
 
     private addNewEntry(key: string, value: cachableTypes): any {
@@ -118,8 +118,10 @@ class SimpleLruCache {
     private trimCache() {
         while (this.count > this.depth) {
             const tail = this.tail;
-            this.unlinkNode(tail);
-            delete this.cache[tail.key];
+            if (tail) {
+                this.unlinkNode(tail);
+                delete this.cache[tail.key];
+            }
         }
     }
 }
@@ -133,7 +135,7 @@ export class RepLoaderService {
     private loadingCount = 0;
 
     private loadingCountSource = new Subject<number>();
-  
+
     loadingCount$ = this.loadingCountSource.asObservable();
 
     // use our own LRU cache 
@@ -205,22 +207,21 @@ export class RepLoaderService {
                 this.loadingCountSource.next(--(this.loadingCount));
                 return <any>this.handleError(r);
             });
-          
     }
 
-// special handler for case whwre we reciece a redirected object back from server 
-// instead of an actionresult. Wrap the object in an actionresult and then handle normally
+    // special handler for case whwre we reciece a redirected object back from server 
+    // instead of an actionresult. Wrap the object in an actionresult and then handle normally
     private handleRedirectedObject(response: Models.IHateoasModel, data: Ro.IRepresentation) {
 
-        //if (response instanceof Models.ActionResultRepresentation && Models.isIDomainObjectRepresentation(data)) {
-        //    const actionResult: Models.ActionResultRepresentation = {
-        //        resultType: "object",
-        //        result: data,
-        //        links: [],
-        //        extensions: {}
-        //    }
-        //    return actionResult;
-        //}
+        if (response instanceof Models.ActionResultRepresentation && Models.isIDomainObjectRepresentation(data)) {
+            const actionResult: Ro.IActionInvokeRepresentation = {
+                resultType: "object",
+                result: data,
+                links: [],
+                extensions: {}
+            }
+            return actionResult;
+        }
 
         return data;
     }
@@ -264,14 +265,14 @@ export class RepLoaderService {
             .catch((r: Response) => {
                 this.loadingCountSource.next(--(this.loadingCount));
                 return this.handleError(r);
-            });         
+            });
     }
 
     populate = <T extends Models.IHateoasModel>(model: Models.IHateoasModel, ignoreCache?: boolean): Promise<T> => {
 
         const response = model;
-       
-        const config = new RequestOptions({      
+
+        const config = new RequestOptions({
                 withCredentials: true,
                 url: model.getUrl(),
                 method: model.method,
@@ -378,13 +379,12 @@ export class RepLoaderService {
                 this.cache.add(config.url, blob);
                 return blob;
             })
-            .catch((r:Response) => {
+            .catch((r: Response) => {
                 return this.handleError(r);
             });
     }
 
     uploadFile = (url: string, mt: string, file: Blob): Promise<boolean> => {
-       
 
         const config = new RequestOptions({
             method: "POST",
@@ -410,4 +410,3 @@ export class RepLoaderService {
         this.cache.removeAll();
     }
 }
-        

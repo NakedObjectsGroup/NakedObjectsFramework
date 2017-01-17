@@ -28,7 +28,7 @@ export class DomainObjectViewModel extends MessageViewModel {
         routeData: PaneRouteData
     ) {
         super();
-        this.reset(obj, routeData);
+        this.reset(obj, routeData, false);
     }
 
     private routeData: PaneRouteData;
@@ -102,7 +102,7 @@ export class DomainObjectViewModel extends MessageViewModel {
         this.contextService.clearObjectUpdater(this.onPaneId);
     };
 
-    private reset(obj: Models.DomainObjectRepresentation, routeData: PaneRouteData) {
+    private reset(obj: Models.DomainObjectRepresentation, routeData: PaneRouteData, resetting : boolean) {
         this.domainObject = obj;
         this.onPaneId = routeData.paneId;
         this.routeData = routeData;
@@ -116,7 +116,7 @@ export class DomainObjectViewModel extends MessageViewModel {
         this.menuItems = Helpers.createMenuItems(this.actions);
 
         this.properties = _.map(this.domainObject.propertyMembers(), (property, id) => this.viewModelFactory.propertyViewModel(property, id!, this.props[id!], this.onPaneId, this.propertyMap));
-        this.collections = _.map(this.domainObject.collectionMembers(), collection => this.viewModelFactory.collectionViewModel(collection, this.routeData));
+        this.collections = _.map(this.domainObject.collectionMembers(), collection => this.viewModelFactory.collectionViewModel(collection, this.routeData, resetting));
 
         this.unsaved = routeData.interactionMode === InteractionMode.Transient;
 
@@ -169,7 +169,7 @@ export class DomainObjectViewModel extends MessageViewModel {
                     if (this.routeData.dialogId) {
                         this.urlManager.closeDialogReplaceHistory(this.routeData.dialogId, this.onPaneId);
                     }
-                    this.reset(reloadedObj, this.routeData);
+                    this.reset(reloadedObj, this.routeData, true);
                     Helpers.handleErrorResponse(em, this, this.properties);
                 })
                 .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
@@ -204,7 +204,7 @@ export class DomainObjectViewModel extends MessageViewModel {
         const propMap = this.propertyMap();
         this.contextService.clearObjectUpdater(this.onPaneId);
         this.saveHandler()(this.domainObject, propMap, this.onPaneId, viewObject)
-            .then((obj: Models.DomainObjectRepresentation) => this.reset(obj, this.urlManager.getRouteData().pane(this.onPaneId)))
+            .then((obj: Models.DomainObjectRepresentation) => this.reset(obj, this.urlManager.getRouteData().pane(this.onPaneId), true))
             .catch((reject: Models.ErrorWrapper) => this.handleWrappedError(reject));
     };
 
@@ -228,7 +228,7 @@ export class DomainObjectViewModel extends MessageViewModel {
         this.contextService.clearObjectValues(this.onPaneId);
         this.contextService.getObjectForEdit(this.onPaneId, this.domainObject)
             .then((updatedObject: Models.DomainObjectRepresentation) => {
-                this.reset(updatedObject, this.urlManager.getRouteData().pane(this.onPaneId));
+                this.reset(updatedObject, this.urlManager.getRouteData().pane(this.onPaneId), true);
                 this.urlManager.pushUrlState(this.onPaneId);
                 this.urlManager.setInteractionMode(InteractionMode.Edit, this.onPaneId);
             })
@@ -239,7 +239,7 @@ export class DomainObjectViewModel extends MessageViewModel {
         this.contextService.updateValues();
         this.clearCachedFiles();
         this.contextService.reloadObject(this.onPaneId, this.domainObject)
-            .then((updatedObject: Models.DomainObjectRepresentation) => this.reset(updatedObject, this.urlManager.getRouteData().pane(this.onPaneId)))
+            .then((updatedObject: Models.DomainObjectRepresentation) => this.reset(updatedObject, this.urlManager.getRouteData().pane(this.onPaneId), true))
             .catch((reject: Models.ErrorWrapper) => this.handleWrappedError(reject));
     };
 

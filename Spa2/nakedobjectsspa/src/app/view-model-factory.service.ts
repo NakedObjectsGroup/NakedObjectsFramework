@@ -136,8 +136,8 @@ export class ViewModelFactoryService {
         return new ParameterViewModel(parmRep, paneId, this.color, this.error, this.mask, previousValue, this, this.context);
     }
 
-    collectionViewModel = (collectionRep: Models.CollectionMember, routeData: PaneRouteData) => {
-        return new CollectionViewModel(this, this.color, this.error, this.context, this.urlManager, collectionRep, routeData);
+    collectionViewModel = (collectionRep: Models.CollectionMember, routeData: PaneRouteData, forceReload : boolean) => {
+        return new CollectionViewModel(this, this.color, this.error, this.context, this.urlManager, collectionRep, routeData, forceReload);
     }
 
     listPlaceholderViewModel = (routeData: PaneRouteData) => {

@@ -22,7 +22,8 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
         context: ContextService,
         urlManager: UrlManagerService,
         public readonly collectionRep: Models.CollectionMember | Models.CollectionRepresentation,
-        private readonly routeData: PaneRouteData
+        private readonly routeData: PaneRouteData,
+        forceReload : boolean
     ) {
         super(context, viewModelFactory, urlManager, error, routeData.paneId);
         this.title = collectionRep.extensions().friendlyName();
@@ -34,7 +35,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
             then(c => this.color = `${Config.linkColor}${c}`).
             catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
-        this.reset(routeData, true);
+        this.reset(routeData, forceReload);
     }
 
     private readonly presentationHint: string;
@@ -92,7 +93,6 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
 
             if (state === CollectionViewState.Summary) {
                 this.items = [];
-
             } else if (getDetails) {
                 this.context.getCollectionDetails(this.collectionRep as Models.CollectionMember, state, resetting).
                     then(details => {

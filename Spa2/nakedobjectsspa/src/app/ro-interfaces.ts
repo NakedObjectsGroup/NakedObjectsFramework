@@ -34,9 +34,9 @@ export interface IExtensions {
 
 export interface IDomainObjectExtensions extends IExtensions {
     friendlyName: string;
-    description: string;  
+    description: string;
     domainType: string;
-    pluralName: string; 
+    pluralName: string;
     isService: boolean;
 }
 
@@ -44,8 +44,8 @@ export interface IPropertyExtensions extends IExtensions {
     friendlyName: string;
     description: string;
     returnType: string;
-    optional: boolean;  
-    memberOrder: number; 
+    optional: boolean;
+    memberOrder: number;
 }
 
 export interface ICollectionExtensions extends IExtensions {
@@ -62,7 +62,7 @@ export interface IActionExtensions extends IExtensions {
     description: string;
     returnType: string;
     hasParams: boolean;
-    memberOrder: number; 
+    memberOrder: number;
 }
 
 export interface IParameterExtensions extends IExtensions {
