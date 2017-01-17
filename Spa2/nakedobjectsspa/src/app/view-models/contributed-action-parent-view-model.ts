@@ -103,6 +103,8 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
         }
     }
 
+
+
     protected collectionContributedInvokeDecorator(actionViewModel: ActionViewModel) {
 
         const showDialog = () =>

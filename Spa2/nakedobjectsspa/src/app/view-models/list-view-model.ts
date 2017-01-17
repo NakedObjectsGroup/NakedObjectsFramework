@@ -29,6 +29,8 @@ export class ListViewModel extends ContributedActionParentViewModel {
         super(context, viewModelFactory, urlManager, error, routeData.paneId);
         this.pluralName = "Objects";   // todo fix constant string
         this.reset(list, routeData);
+        const actions = this.listRep.actionMembers();
+        this.setActions(actions, routeData);
     }
 
     private page: number;
@@ -119,7 +121,7 @@ export class ListViewModel extends ContributedActionParentViewModel {
         }
     }
 
-    private readonly reset = (list: Models.ListRepresentation, routeData: PaneRouteData) => {
+    readonly reset = (list: Models.ListRepresentation, routeData: PaneRouteData) => {
         this.listRep = list;
         this.routeData = routeData;
 
@@ -131,9 +133,6 @@ export class ListViewModel extends ContributedActionParentViewModel {
 
         this.state = this.listRep.hasTableData() ? CollectionViewState.Table : CollectionViewState.List;
         this.updateItems(list.value());
-
-        const actions = this.listRep.actionMembers();
-        this.setActions(actions, routeData);
     }
 
     readonly toggleActionMenu = () => {
