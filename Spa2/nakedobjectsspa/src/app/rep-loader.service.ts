@@ -6,14 +6,17 @@ import * as Constants from "./constants";
 import * as Ro from "./ro-interfaces";
 import * as _ from "lodash";
 import { Subject } from 'rxjs/Subject';
+import * as Config from './config';
 
+
+type cachableTypes = Ro.IRepresentation | Blob;
 
 class LruNode {
 
-    constructor(public readonly key : string, public value : any) {  }
+    constructor(public readonly key: string, public value: cachableTypes) {  }
 
-    next: LruNode;
-    previous : LruNode;
+    next: LruNode | null = null;
+    previous : LruNode | null = null;
 }
 
 
@@ -23,8 +26,8 @@ class SimpleLruCache {
 
     private cache : _.Dictionary<LruNode> = {};
     private count = 0;
-    private head : LruNode = null;
-    private tail : LruNode = null;
+    private head : LruNode | null = null;
+    private tail : LruNode | null = null;
 
     private unlinkNode(node: LruNode) {
         const nodePrevious = node.previous;
@@ -61,7 +64,7 @@ class SimpleLruCache {
         this.count++; 
     }
 
-    add(key: string, value: any) {
+    add(key: string, value: cachableTypes) {
 
         if (this.cache[key]) {
             this.updateExistingEntry(key, value);
@@ -79,7 +82,13 @@ class SimpleLruCache {
         }
     }
 
-    get(key: string) : any | null {
+    removeAll() {
+        this.head = this.tail = null;
+        this.cache = {};
+        this.count = 0; 
+    }
+
+    private getNode(key: string): LruNode | null {
         const node = this.cache[key];
 
         if (node) {
@@ -89,19 +98,25 @@ class SimpleLruCache {
         return node;
     }
 
-    private updateExistingEntry(key: string, value: any): any {
-        const node = this.get(key);
+    get(key: string): cachableTypes | null {
+        const node = this.getNode(key);
+        return node ? node.value : null;
+    }
+
+    private updateExistingEntry(key: string, value: cachableTypes): any {
+        const node = this.getNode(key);
         node.value = value; 
     }
 
-    private addNewEntry(key: string, value: any): any {
+    private addNewEntry(key: string, value: cachableTypes): any {
         const newNode = new LruNode(key, value);
         this.cache[key] = newNode;
         this.moveNodeToHead(newNode);
+        this.trimCache();
     }
 
     private trimCache() {
-        if (this.count > this.depth) {
+        while (this.count > this.depth) {
             const tail = this.tail;
             this.unlinkNode(tail);
             delete this.cache[tail.key];
@@ -121,8 +136,8 @@ export class RepLoaderService {
   
     loadingCount$ = this.loadingCountSource.asObservable();
 
-// use our own LRU cache 
-//private cache = $cacheFactory("nof-cache", { capacity: httpCacheDepth });
+    // use our own LRU cache 
+    private cache = new SimpleLruCache(Config.httpCacheDepth);
 
     private addIfMatchHeader(config: RequestOptions, digest?: string | null) {
         if (digest && (config.method === RequestMethod.Post || config.method === RequestMethod.Put || config.method === RequestMethod.Delete)) {
@@ -220,47 +235,46 @@ export class RepLoaderService {
 
         if (ignoreCache) {
             // clear cache of existing values
-            //cache.remove(config.url);
+            this.cache.remove(config.url);
+        } else {
+            const cachedValue = this.cache.get(config.url);
+
+            if (cachedValue) {
+                response.populate(cachedValue);
+                //response.etagDigest = r.headers.get("ETag");
+                return Promise.resolve(response);
+            }
         }
 
         return this.http.request(new Request(config))
             .toPromise()
             .then((r: Response) => {
                 this.loadingCountSource.next(--(this.loadingCount));
-                if (!this.isValidResponse(r.json())) {
+                const asJson = r.json();
+                if (!this.isValidResponse(asJson)) {
                     return this.handleInvalidResponse(Models.ErrorCategory.ClientError);
                 }
 
-                const representation = this.handleRedirectedObject(response, r.json());
+                const representation = this.handleRedirectedObject(response, asJson);
+                this.cache.add(config.url, representation);
                 response.populate(representation);
                 response.etagDigest = r.headers.get("ETag");
-                return <any>Promise.resolve(response);
+                return Promise.resolve(response);
             })
             .catch((r: Response) => {
                 this.loadingCountSource.next(--(this.loadingCount));
-                return <any>this.handleError(r);
+                return this.handleError(r);
             });         
     }
 
     populate = <T extends Models.IHateoasModel>(model: Models.IHateoasModel, ignoreCache?: boolean): Promise<T> => {
 
         const response = model;
-        const useCache = !ignoreCache;
-
-        //const config = {
-        //    withCredentials: true,
-        //    url: model.getUrl(),
-        //    method: model.method,
-        //    cache: useCache ? cache : false,
-        //    data: model.getBody()
-        //};
-
-        const config = new RequestOptions({
-         
+       
+        const config = new RequestOptions({      
                 withCredentials: true,
                 url: model.getUrl(),
                 method: model.method,
-                //cache: useCache ? cache : false,
                 body: model.getBody()
         });
 
@@ -268,19 +282,11 @@ export class RepLoaderService {
     }
 
     setConfigFromMap(map: Models.IHateoasModel, digest?: string | null) {
-        //const config = {
-        //    withCredentials: true,
-        //    url: map.getUrl(),
-        //    method: map.method,
-        //    cache: false,
-        //    data: map.getBody()
-        //};
 
         const config = new RequestOptions({
             withCredentials: true,
             url: map.getUrl(),
             method: map.method,
-            //cache: false,
             body: map.getBody()
         });
 
@@ -309,18 +315,9 @@ export class RepLoaderService {
             let urlParms = "";
 
             if (parms) {
-                const urlParmString = _.reduce(parms,
-                    (result, n, key) => (result === "" ? "" : result + "&") + key + "=" + n,
-                    "");
+                const urlParmString = _.reduce(parms, (result, n, key) => (result === "" ? "" : result + "&") + key + "=" + n, "");
                 urlParms = urlParmString !== "" ? `?${urlParmString}` : "";
             }
-
-            //const config = {
-            //    withCredentials: true,
-            //    url: link.href() + urlParms,
-            //    method: link.method(),
-            //    cache: false
-            //};
 
             const config = new RequestOptions({
                 method: link.method(),
@@ -328,8 +325,6 @@ export class RepLoaderService {
                 withCredentials: true
                 //headers: new Headers({ "Accept": mt })
             });
-
-            const request = new Request(config);
 
             return this.httpPopulate(config, true, response);
         }
@@ -348,27 +343,24 @@ export class RepLoaderService {
     }
 
     clearCache = (url: string) => {
-        //cache.remove(url);
+        this.cache.remove(url);
     }
 
     addToCache = (url: string, m: Ro.IResourceRepresentation) => {
-        //cache.put(url, m);
+        this.cache.add(url, m);
     };
 
     getFile = (url: string, mt: string, ignoreCache: boolean): Promise<Blob> => {
 
         if (ignoreCache) {
             // clear cache of existing values
-            //cache.remove(url);
+            this.cache.remove(url);
+        } else {
+            const blob = this.cache.get(url);
+            if (blob) {
+                return Promise.resolve(blob);
+            }
         }
-
-        //const config: ng.IRequestConfig = {
-        //    method: "GET",
-        //    url: url,
-        //    responseType: "blob",
-        //    headers: { "Accept": mt },
-        //    //cache: cache
-        //};
 
         const config = new RequestOptions({
             method: "GET",
@@ -379,11 +371,12 @@ export class RepLoaderService {
 
         const request = new Request(config);
 
-
         return this.http.request(request)
             .toPromise()
             .then((r: Response) => {
-                return r.blob();
+                const blob = r.blob();
+                this.cache.add(config.url, blob);
+                return blob;
             })
             .catch((r:Response) => {
                 return this.handleError(r);
@@ -414,7 +407,7 @@ export class RepLoaderService {
 
 
     private logoff() {
-        //cache.removeAll();
+        this.cache.removeAll();
     }
 }
         
