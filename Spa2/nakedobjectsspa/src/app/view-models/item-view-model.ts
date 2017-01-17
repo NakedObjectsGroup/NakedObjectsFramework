@@ -23,7 +23,7 @@ export class ItemViewModel extends LinkViewModel {
         private readonly viewModelFactory: ViewModelFactoryService,
         private readonly index: number,
         private isSelected: boolean,
-        private readonly id: string
+        public readonly id: string
     ) {
         super(context, colorService, error, urlManager, link, paneId);
 
@@ -53,5 +53,9 @@ export class ItemViewModel extends LinkViewModel {
 
     get selected() {
         return this.isSelected;
+    }
+
+    silentSelect(v: boolean) {
+        this.isSelected = v;
     }
 }

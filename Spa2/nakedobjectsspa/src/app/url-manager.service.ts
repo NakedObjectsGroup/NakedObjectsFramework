@@ -678,6 +678,17 @@ export class UrlManagerService {
         this.executeTransition(newValues, paneId, Transition.Null, () => true);
     }
 
+    setAllItemsSelected = (isSelected: boolean, collectionId: string, paneId = 1) => {
+
+        const key = `${akm.selected}${paneId}_${collectionId}`;
+        const currentSelected = this.getSearch()[key];
+        const selectedArray: boolean[] = this.arrayFromMask(currentSelected);
+        _.fill(selectedArray, isSelected);
+        const currentSelectedAsString = (this.createMask(selectedArray)).toString();
+        const newValues = _.zipObject([key], [currentSelectedAsString]) as _.Dictionary<string>;
+        this.executeTransition(newValues, paneId, Transition.Null, () => true);
+    }
+
     setListPaging = (newPage: number, newPageSize: number, state: CollectionViewState, paneId = 1) => {
         const pageValues = {} as _.Dictionary<string>;
 
