@@ -154,7 +154,7 @@ export class MultiLineDialogComponent extends PaneComponent {
             this.context.getObject(routeData.paneId, oid, routeData.interactionMode).
                 then((object: Models.DomainObjectRepresentation) => {
 
-                    const ovm = this.viewModelFactory.domainObjectViewModel(object, routeData);
+                    const ovm = this.viewModelFactory.domainObjectViewModel(object, routeData, false);
                     const newDialogId = routeData.dialogId;
 
                     const lcaCollection = _.find(ovm.collections, c => c.hasMatchingLocallyContributedAction(newDialogId));

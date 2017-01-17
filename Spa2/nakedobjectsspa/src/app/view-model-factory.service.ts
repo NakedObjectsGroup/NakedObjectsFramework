@@ -116,8 +116,12 @@ export class ViewModelFactoryService {
             holder);
     }
 
-    domainObjectViewModel = (obj: Models.DomainObjectRepresentation, routeData: PaneRouteData) => {
-        return new DomainObjectViewModel(this.color, this.context, this, this.urlManager, this.error, obj, routeData);
+    domainObjectViewModel = (obj: Models.DomainObjectRepresentation, routeData: PaneRouteData, forceReload : boolean) => {
+        const ovm = new DomainObjectViewModel(this.color, this.context, this, this.urlManager, this.error, obj, routeData, forceReload);
+        if (forceReload) {
+            ovm.clearCachedFiles();
+        }
+        return ovm;
     }
 
     listViewModel = (list: Models.ListRepresentation, routeData: PaneRouteData) => {

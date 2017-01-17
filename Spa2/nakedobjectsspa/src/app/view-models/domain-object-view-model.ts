@@ -25,10 +25,11 @@ export class DomainObjectViewModel extends MessageViewModel {
         private readonly urlManager: UrlManagerService,
         private readonly error: ErrorService,
         obj: Models.DomainObjectRepresentation,
-        routeData: PaneRouteData
+        routeData: PaneRouteData,
+        forceReload : boolean
     ) {
         super();
-        this.reset(obj, routeData, false);
+        this.reset(obj, routeData, forceReload);
     }
 
     private routeData: PaneRouteData;
