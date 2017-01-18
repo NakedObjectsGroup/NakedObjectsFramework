@@ -116,6 +116,7 @@ export class ListViewModel extends ContributedActionParentViewModel {
                         this.error.handleError(reject);
                     });
             } else {
+                this.state = routeData.state;
                 this.updateItems(this.listRep.value());
             }
         }
