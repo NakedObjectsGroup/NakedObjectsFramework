@@ -316,20 +316,20 @@ namespace NakedObjects.Selenium {
     public abstract class MegaCCATests : CCATestsRoot {
         [TestMethod] //Mega
         public void MegaCCATest() {
-            //ListViewWithParmDialogAlreadyOpen();
-            //ListViewWithParmDialogNotOpen();
-            //DateParam();  move to LocallyRun 
+            ListViewWithParmDialogAlreadyOpen();
+            ListViewWithParmDialogNotOpen();
+            DateParam();  //move to LocallyRun 
             EmptyParam();
-            //TestSelectAll();
-            //SelectAllTableView();
+            TestSelectAll();
+            SelectAllTableView();
             //IfNoCCAs();
-            //SelectionRetainedWhenNavigatingAwayAndBack();
+            SelectionRetainedWhenNavigatingAwayAndBack();
             //SelectionClearedWhenPageChanged();
 
             //TableViewWithParmDialogNotOpen();
-            //TableViewWithParmDialogAlreadyOpen();
-            //ReloadingAQueryableClearsSelection();
-            //ZeroParamAction();
+            TableViewWithParmDialogAlreadyOpen();
+            ReloadingAQueryableClearsSelection();
+            ZeroParamAction();
         }
     }
 
