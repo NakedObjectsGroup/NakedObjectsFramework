@@ -7,7 +7,7 @@ import { ErrorService } from "../error.service";
 import { ApplicationPropertiesViewModel } from '../view-models/application-properties-view-model';
 
 @Component({
-    selector: 'application-properties',
+    selector: 'nof-application-properties',
     templateUrl: './application-properties.component.html',
     styleUrls: ['./application-properties.component.css']
 })

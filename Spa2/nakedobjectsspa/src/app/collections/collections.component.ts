@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CollectionViewModel } from '../view-models/collection-view-model';
 
 @Component({
-    selector: 'collections',
+    selector: 'nof-collections',
     templateUrl: './collections.component.html',
     styleUrls: ['./collections.component.css']
 })

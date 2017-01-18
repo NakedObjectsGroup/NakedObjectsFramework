@@ -18,10 +18,10 @@
 		</header>
 		<nof-actions class="actions" *ngIf="showActions()" [menu]="object"></nof-actions>
 		<div class="main-column">
-			<app-dialog [parent]="object"></app-dialog>
+			<nof-dialog [parent]="object"></nof-dialog>
 			<properties class="properties" *ngIf="properties" [properties]="properties"></properties>
 		</div>
-		<collections class="collections" *ngIf="collections" [collections]="collections"></collections>
+		<nof-collections class="collections" *ngIf="collections" [collections]="collections"></nof-collections>
 	</div>
 	<div *ngIf="(mode === 1 || mode === 2 || mode === 3)" class="object edit" [ngClass]="color">
 		<form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
@@ -52,7 +52,7 @@
 				<properties *ngIf="properties" [properties]="properties" [parent]="object" [form]="form"></properties>
 			</div>
 		</form>
-		<collections *ngIf="collections" [collections]="collections"></collections>
+		<nof-collections *ngIf="collections" [collections]="collections"></nof-collections>
 	</div>
 	<div *ngIf="(mode === 4)" class="object view" [ngClass]="color">
 		<header class="header">
@@ -64,7 +64,7 @@
 		<div class="main-column">
 			<properties class="properties" *ngIf="properties" [properties]="properties"></properties>
 		</div>
-		<collections class="collections" *ngIf="collections" [collections]="collections"></collections>
+		<nof-collections class="collections" *ngIf="collections" [collections]="collections"></nof-collections>
 	</div>
 </div>
 <router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>

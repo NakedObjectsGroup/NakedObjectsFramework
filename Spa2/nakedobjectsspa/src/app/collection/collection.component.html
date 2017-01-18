@@ -9,7 +9,7 @@
 </div>
 <div class="messages">{{message}}</div>
 <nof-actions *ngIf="showActions()" class="actions" [menu]="collection"></nof-actions>
-<app-dialog *ngIf="showActions()" [parent]="collection"></app-dialog>
+<nof-dialog *ngIf="showActions()" [parent]="collection"></nof-dialog>
 
 <table *ngIf="state == 'table'">
     <thead>

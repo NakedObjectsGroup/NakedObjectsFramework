@@ -20,7 +20,7 @@ import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 import { CollectionViewModel } from '../view-models/collection-view-model';
 
 @Component({
-    selector: 'app-dialog',
+    selector: 'nof-dialog',
     templateUrl: './dialog.component.html',
     styleUrls: ['./dialog.component.css']
 })
