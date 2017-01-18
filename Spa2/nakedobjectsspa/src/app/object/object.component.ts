@@ -22,7 +22,7 @@ import { ColorService } from '../color.service';
 import * as Config from '../config';
 
 @Component({
-    selector: 'object',
+    selector: 'nof-object',
     templateUrl: './object.component.html',
     styleUrls: ['./object.component.css']
 })

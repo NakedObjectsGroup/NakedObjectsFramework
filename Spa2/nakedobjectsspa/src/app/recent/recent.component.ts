@@ -11,7 +11,7 @@ import * as Buttoncomponent from '../button/button.component';
 import * as Helpersviewmodels from '../view-models/helpers-view-models';
 
 @Component({
-    selector: 'recent',
+    selector: 'nof-recent',
     templateUrl: './recent.component.html',
     styleUrls: ['./recent.component.css']
 })

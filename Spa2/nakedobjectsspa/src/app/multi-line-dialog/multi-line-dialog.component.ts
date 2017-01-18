@@ -16,7 +16,7 @@ import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/f
 import { ParameterViewModel } from '../view-models/parameter-view-model';
 
 @Component({
-    selector: 'app-multi-line-dialog',
+    selector: 'nof-multi-line-dialog',
     templateUrl: './multi-line-dialog.component.html',
     styleUrls: ['./multi-line-dialog.component.css']
 })

@@ -9,7 +9,7 @@ import { PropertyViewModel } from '../view-models/property-view-model';
 import * as Models from "../models";
 
 @Component({
-    selector: 'view-property',
+    selector: 'nof-view-property',
     templateUrl: './view-property.component.html',
     styleUrls: ['./view-property.component.css']
 })

@@ -6,7 +6,7 @@ import { DialogViewModel } from '../view-models/dialog-view-model';
 import * as Models from "../models";
 
 @Component({
-    selector: 'parameters',
+    selector: 'nof-parameters',
     templateUrl: './parameters.component.html',
     styleUrls: ['./parameters.component.css']
 })

@@ -3,7 +3,7 @@ import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { DialogViewModel } from '../view-models/dialog-view-model';
 
 @Component({
-    selector: 'view-parameter',
+    selector: 'nof-view-parameter',
     templateUrl: './view-parameter.component.html',
     styleUrls: ['./view-parameter.component.css']
 })

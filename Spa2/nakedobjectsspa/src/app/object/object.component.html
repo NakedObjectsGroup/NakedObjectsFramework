@@ -19,7 +19,7 @@
 		<nof-actions class="actions" *ngIf="showActions()" [menu]="object"></nof-actions>
 		<div class="main-column">
 			<nof-dialog [parent]="object"></nof-dialog>
-			<properties class="properties" *ngIf="properties" [properties]="properties"></properties>
+			<nof-properties class="properties" *ngIf="properties" [properties]="properties"></nof-properties>
 		</div>
 		<nof-collections class="collections" *ngIf="collections" [collections]="collections"></nof-collections>
 	</div>
@@ -49,7 +49,7 @@
 				<div class="messages">{{message()}}</div>
 			</header>
 			<div class="main-column">
-				<properties *ngIf="properties" [properties]="properties" [parent]="object" [form]="form"></properties>
+				<nof-properties *ngIf="properties" [properties]="properties" [parent]="object" [form]="form"></nof-properties>
 			</div>
 		</form>
 		<nof-collections *ngIf="collections" [collections]="collections"></nof-collections>
@@ -62,7 +62,7 @@
 			<div class="messages">{{message()}}</div>
 		</header>
 		<div class="main-column">
-			<properties class="properties" *ngIf="properties" [properties]="properties"></properties>
+			<nof-properties class="properties" *ngIf="properties" [properties]="properties"></nof-properties>
 		</div>
 		<nof-collections class="collections" *ngIf="collections" [collections]="collections"></nof-collections>
 	</div>
