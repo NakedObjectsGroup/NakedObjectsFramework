@@ -209,7 +209,7 @@ export class RepLoaderService {
             });
     }
 
-    // special handler for case whwre we reciece a redirected object back from server 
+    // special handler for case where we receive a redirected object back from server 
     // instead of an actionresult. Wrap the object in an actionresult and then handle normally
     private handleRedirectedObject(response: Models.IHateoasModel, data: Ro.IRepresentation) {
 
@@ -232,7 +232,6 @@ export class RepLoaderService {
 
 
     private httpPopulate(config: RequestOptions, ignoreCache: boolean, response: Models.IHateoasModel): Promise<Models.IHateoasModel> {
-        this.loadingCountSource.next(++(this.loadingCount));
 
         if (ignoreCache) {
             // clear cache of existing values
@@ -246,6 +245,8 @@ export class RepLoaderService {
                 return Promise.resolve(response);
             }
         }
+
+        this.loadingCountSource.next(++(this.loadingCount));
 
         return this.http.request(new Request(config))
             .toPromise()
