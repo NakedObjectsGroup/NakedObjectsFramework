@@ -412,7 +412,8 @@ public virtual void AutoCompleteOptionalParamNotSelected()
             wait.Until(dr => dr.FindElement(By.CssSelector("input#firstname1")).GetAttribute("placeholder") == "");
             wait.Until(dr => dr.FindElement(By.CssSelector("input#lastname1")).GetAttribute("placeholder") == "* ");
             OKButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Last Name; ");
-            ClearFieldThenType("input#lastname1", "a");
+            ClearFieldThenType("input#lastname1", "aa");
+            Thread.Sleep(1000);
             OKButton().AssertIsEnabled();
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Find Sales Person By Name");
