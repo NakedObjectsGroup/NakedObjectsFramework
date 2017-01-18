@@ -39,7 +39,7 @@ a, .currentcopy {
 }
 
 /*Warnings & Messages*/
-.messages, .warnings {
+.messages, .warnings, .loading {
     background-color: black;
     font-size: 11pt;
     color: white;
