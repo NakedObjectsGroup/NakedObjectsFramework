@@ -13,7 +13,7 @@ import * as Config from "../config";
 import * as Models from "../models";
 
 @Component({
-    selector: 'footer',
+    selector: 'nof-footer',
     templateUrl: './footer.component.html',
     styleUrls: ['./footer.component.css']
 })

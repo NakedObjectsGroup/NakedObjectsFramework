@@ -15,7 +15,7 @@ import * as Models from "../models";
 
 @Component({
     // todo rename all selectors 
-    selector: 'home',
+    selector: 'nof-home',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.css']
 })

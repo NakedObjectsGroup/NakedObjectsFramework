@@ -3,7 +3,7 @@ import { LinkViewModel } from '../view-models/link-view-model';
 import { UrlManagerService } from "../url-manager.service";
 
 @Component({
-    selector: 'menu',
+    selector: 'nof-menu',
     templateUrl: './menu.component.html',
     styleUrls: ['./menu.component.css']
 })

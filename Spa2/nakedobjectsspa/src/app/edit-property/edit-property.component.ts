@@ -15,7 +15,7 @@ import { ChoiceViewModel } from '../view-models/choice-view-model';
     host: {
         '(document:click)': 'handleClick($event)'
     },
-    selector: 'edit-property',
+    selector: 'nof-edit-property',
     templateUrl: './edit-property.component.html',
     styleUrls: ['./edit-property.component.css']
 })

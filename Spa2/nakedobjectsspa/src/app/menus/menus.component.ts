@@ -3,7 +3,7 @@ import { LinkViewModel } from '../view-models/link-view-model';
 import { MenuComponent } from '../menu/menu.component';
 
 @Component({
-    selector: 'menus',
+    selector: 'nof-menus',
     templateUrl: './menus.component.html',
     styleUrls: ['./menus.component.css']
 })

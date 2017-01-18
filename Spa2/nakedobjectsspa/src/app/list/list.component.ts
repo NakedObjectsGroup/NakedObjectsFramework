@@ -21,7 +21,7 @@ import { PropertyViewModel } from '../view-models/property-view-model';
 import {IButton} from '../button/button.component';
 
 @Component({
-    selector: 'list',
+    selector: 'nof-list',
     templateUrl: './list.component.html',
     styleUrls: ['./list.component.css']
 })
