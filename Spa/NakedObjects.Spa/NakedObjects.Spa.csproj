@@ -209,7 +209,6 @@
     <TypeScriptCompile Include="Scripts\nakedobjects.rointerfaces.custom.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.rointerfaces.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-component-router.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-resource.d.ts" />
