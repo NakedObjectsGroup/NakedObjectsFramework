@@ -88,20 +88,23 @@ export class ColorService {
     toColorNumberFromHref = (href: string) => {
         const type = Models.typeFromUrl(href);
         return this.toColorNumberFromType(type);
-    };
+    }
 
     toColorNumberFromType = (type: string | null) => this.getColor(type);
 
     addType = (type: string, color: number) => {
         this.colorCache[type] = color;
-    };
+    }
+
     addMatch = (matcher: RegExp, color: number) => {
         this.regexCache.push({ regex: matcher, color: color });
-    };
+    }
+
     addSubtype = (type: string, color: number) => {
         this.subtypeCache.push({ type: type, color: color });
-    };
+    }
+
     setDefault = (def: number) => {
         this.defaultColor = def;
-    };
+    }
 }

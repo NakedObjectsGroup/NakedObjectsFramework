@@ -7,7 +7,7 @@ export interface IButton {
     disabled: () => boolean | null;
     value: string;
     title: () => string;
-    accesskey : string | null;
+    accesskey: string | null;
 }
 
 @Component({
