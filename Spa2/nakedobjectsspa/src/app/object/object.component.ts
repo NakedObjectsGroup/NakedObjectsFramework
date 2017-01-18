@@ -18,6 +18,8 @@ import { MenuItemViewModel } from '../view-models/menu-item-view-model';
 import { PaneComponent } from '../pane/pane';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 import { IButton } from '../button/button.component';
+import { ColorService } from '../color.service';
+import * as Config from '../config';
 
 @Component({
     selector: 'object',
@@ -30,6 +32,7 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
         urlManager: UrlManagerService,
         private readonly context: ContextService,
         private readonly viewModelFactory: ViewModelFactoryService,
+        private readonly colorService : ColorService, 
         private readonly error: ErrorService,
         private readonly formBuilder: FormBuilder) {
 
@@ -52,7 +55,7 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
 
     get color() {
         const obj = this.object;
-        return obj ? obj.color : "";
+        return obj ? obj.color : this.backgroundColor;
     }
 
     get properties() {
@@ -275,6 +278,10 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
         const wasDirty = this.context.getIsDirty(oid);
 
         if (isChanging || modeChanging || wasDirty) {
+
+            // set background color at once to smooth transition
+            this.colorService.toColorNumberFromType(oid.domainType).then(c => this.backgroundColor = `${Config.objectColor}${c}`);
+
             this.context.getObject(routeData.paneId, oid, routeData.interactionMode)
                 .then((object: Models.DomainObjectRepresentation) => {
 
