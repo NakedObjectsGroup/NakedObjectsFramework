@@ -4,7 +4,7 @@ import { ContextService} from '../context.service';
 import { ISubscription } from 'rxjs/Subscription';
 
 @Component({
-    selector: 'action',
+    selector: 'nof-action',
     templateUrl: './action.component.html',
     styleUrls: ['./action.component.css']
 })

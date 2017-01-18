@@ -3,7 +3,7 @@ import { ActionComponent } from "../action/action.component";
 import { MenuItemViewModel} from '../view-models/menu-item-view-model';
 
 @Component({
-    selector: 'actions',
+    selector: 'nof-actions',
     templateUrl: './actions.component.html',
     styleUrls: ['./actions.component.css']
 })

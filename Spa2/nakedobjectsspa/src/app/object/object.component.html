@@ -16,7 +16,7 @@
 		    <nof-buttons [buttons]="buttons"></nof-buttons>
 			<div class="messages">{{message()}}</div>
 		</header>
-		<actions class="actions" *ngIf="showActions()" [menu]="object"></actions>
+		<nof-actions class="actions" *ngIf="showActions()" [menu]="object"></nof-actions>
 		<div class="main-column">
 			<app-dialog [parent]="object"></app-dialog>
 			<properties class="properties" *ngIf="properties" [properties]="properties"></properties>
