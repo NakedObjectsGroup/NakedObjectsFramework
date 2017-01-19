@@ -483,7 +483,7 @@ namespace NakedObjects.Selenium {
 
             Click(GetObjectAction("Clear Comment"));
 
-            WaitForCss("action .tempdisabled");
+            WaitForCss("nof-action .tempdisabled");
             //wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Sales Person")); //i.e. Comments property has disappeared
 
             Click(OKButton()); //On dialog that has remained open
