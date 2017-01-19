@@ -151,10 +151,10 @@ namespace NakedObjects.Selenium {
             //test that Actions is disabled & no checkboxes appear
             GeminiUrl("list?m1=PersonRepository&a1=RandomContacts&pg1=1&ps1=20&s1_=0&c1=List");
             Reload();
-            var actions = wait.Until(dr => dr.FindElements(By.CssSelector(".menu")).Single(el => el.Text == "Actions"));
+            var actions = wait.Until(dr => dr.FindElements(By.CssSelector("input")).Single(el => el.GetAttribute("value") == "Actions"));
             Assert.AreEqual("true", actions.GetAttribute("disabled"));
             actions.AssertHasTooltip("No actions available");
-            var checkboxes = WaitForCss("input", 3);
+            var checkboxes = WaitForCss("input[type='checkbox']", 3);
             Assert.AreEqual(0, checkboxes.Count(cb => cb.Displayed));
             //Check that actions menu is disabled and 
         }
@@ -179,7 +179,7 @@ namespace NakedObjects.Selenium {
             RightClick(row);
             WaitForView(Pane.Right, PaneType.Object);
             WaitForSelectedCheckboxes(3);
-            Click(GetButton("Next", Pane.Left));
+            Click(GetInputButton("Next", Pane.Left));
             WaitForTextStarting(".details", "Page 2 of ");
             WaitForSelectedCheckboxes(0);
             //Using back button retrieves original selection
@@ -187,10 +187,10 @@ namespace NakedObjects.Selenium {
             WaitForTextStarting(".details", "Page 1 of ");
             WaitForSelectedCheckboxes(3);
             //But going Next then Previous loses it
-            Click(GetButton("Next", Pane.Left));
+            Click(GetInputButton("Next", Pane.Left));
             WaitForTextStarting(".details", "Page 2 of ");
             WaitForSelectedCheckboxes(0);
-            Click(GetButton("Previous", Pane.Left));
+            Click(GetInputButton("Previous", Pane.Left));
             WaitForTextStarting(".details", "Page 1 of ");
             WaitForSelectedCheckboxes(0);
         }
@@ -318,18 +318,18 @@ namespace NakedObjects.Selenium {
         public void MegaCCATest() {
             ListViewWithParmDialogAlreadyOpen();
             ListViewWithParmDialogNotOpen();
-            DateParam();  //move to LocallyRun 
+            DateParam();
             EmptyParam();
             TestSelectAll();
             SelectAllTableView();
-            //IfNoCCAs();
             SelectionRetainedWhenNavigatingAwayAndBack();
-            //SelectionClearedWhenPageChanged();
-
-            //TableViewWithParmDialogNotOpen();
             TableViewWithParmDialogAlreadyOpen();
             ReloadingAQueryableClearsSelection();
             ZeroParamAction();
+
+            IfNoCCAs();
+            SelectionClearedWhenPageChanged();
+            TableViewWithParmDialogNotOpen();
         }
     }
 

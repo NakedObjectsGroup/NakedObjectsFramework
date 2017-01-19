@@ -604,7 +604,7 @@ namespace NakedObjects.Selenium {
         }
 
         protected void WaitForSelectedCheckboxes(int number) {
-            wait.Until(dr => dr.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type") == "checkbox" && el.Selected && el.Enabled) == number);
+            wait.Until(dr => dr.FindElements(By.CssSelector("input[type='checkbox']")).Count(el => el.Selected && el.Enabled) == number);
         }
 
         #endregion
