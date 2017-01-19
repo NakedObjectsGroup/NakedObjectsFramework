@@ -29,7 +29,7 @@ namespace NakedObjects.Selenium {
 
         public virtual void CustomErrorHandling() {
             Url(CustomersMenuUrl);
-            WaitForCss(".actions action", CustomerServiceActions);
+            WaitForCss(".actions nof-action", CustomerServiceActions);
             Click(GetObjectAction("Throw Domain Exception"));
             WaitForView(Pane.Single, PaneType.Error);
             Assert.AreEqual("Internal Server Error", WaitForCss(".title").Text);

@@ -495,11 +495,11 @@ namespace NakedObjects.Selenium {
         }
 
         protected void AssertAction(int number, string actionName) {
-            wait.Until(dr => dr.FindElements(By.CssSelector(".actions action"))[number].Text == actionName);
+            wait.Until(dr => dr.FindElements(By.CssSelector(".actions nof-action"))[number].Text == actionName);
         }
 
         protected virtual void AssertActionNotDisplayed(string action) {
-            wait.Until(dr => dr.FindElements(By.CssSelector(".actions action")).FirstOrDefault(el => el.Text == action) == null);
+            wait.Until(dr => dr.FindElements(By.CssSelector(".actions nof-action")).FirstOrDefault(el => el.Text == action) == null);
         }
 
         protected IWebElement GetObjectAction(string actionName, Pane pane = Pane.Single, string subMenuName = null) {
