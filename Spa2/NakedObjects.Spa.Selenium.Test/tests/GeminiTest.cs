@@ -276,7 +276,7 @@ namespace NakedObjects.Selenium {
         }
 
         protected virtual void WaitForMenus() {
-            wait.Until(dr => dr.FindElements(By.CssSelector("menu")).Count == 10);
+            wait.Until(dr => dr.FindElements(By.CssSelector("nof-menu")).Count == 10);
         }
 
         protected virtual void GoToMenuFromHomePage(string menuName) {
@@ -284,11 +284,11 @@ namespace NakedObjects.Selenium {
 
             WaitForMenus();
 
-            ReadOnlyCollection<IWebElement> menus = br.FindElements(By.CssSelector("menu"));
+            ReadOnlyCollection<IWebElement> menus = br.FindElements(By.CssSelector("nof-menu"));
             IWebElement menu = menus.FirstOrDefault(s => s.Text == menuName);
             if (menu != null) {
                 Click(menu);
-                wait.Until(d => d.FindElements(By.CssSelector(".actions action")).Count > 0);
+                wait.Until(d => d.FindElements(By.CssSelector(".actions nof-action")).Count > 0);
             }
             else {
                 throw new NotFoundException(string.Format("menu not found {0}", menuName));
