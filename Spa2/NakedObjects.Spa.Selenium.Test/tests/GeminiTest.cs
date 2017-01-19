@@ -299,7 +299,7 @@ namespace NakedObjects.Selenium {
             string paneSelector = CssSelectorFor(pane);
             var actions = wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + "input")).Single(el => el.GetAttribute("value") == "Actions"));
             Click(actions);
-            wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " .actions action")).Count > 0);
+            wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " .actions nof-action")).Count > 0);
         }
 
         protected virtual void OpenSubMenu(string menuName, Pane pane = Pane.Single) {
