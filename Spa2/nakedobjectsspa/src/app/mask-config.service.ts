@@ -2,12 +2,12 @@ import * as Models from "./models";
 import * as _ from "lodash";
 import { Injectable } from '@angular/core';
 import { ContextService } from './context.service';
-import { MaskService } from "./mask.service";
+import { IMaskServiceConfigurator } from "./mask.service";
 
 @Injectable()
 export class MaskConfigService {
 
-    configure(mask: MaskService) {
+    configure(mask: IMaskServiceConfigurator) {
 
         // map to convert from mask representation in RO extension to client represention.
 

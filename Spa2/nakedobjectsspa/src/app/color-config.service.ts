@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { ColorService } from "./color.service";
+import { IColorServiceConfigurator } from "./color.service";
 
 @Injectable()
 export class ColorConfigService {
 
-    configure(color: ColorService) {
+    configure(color: IColorServiceConfigurator) {
         //Note: colour is determined by the FIRST matching rule
         const awm = "AdventureWorksModel.";
         //Match specific class

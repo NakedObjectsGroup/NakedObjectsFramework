@@ -4,8 +4,19 @@ import { Injectable } from '@angular/core';
 import { ContextService } from './context.service';
 import { ColorConfigService } from "./color-config.service";
 
+export interface IColorServiceConfigurator {
+    addType: (type: string, color: number) => void;
+
+    addMatch: (matcher: RegExp, color: number) => void;
+
+    addSubtype: (type: string, color: number) => void;
+
+    setDefault: (def: number) => void;
+}
+
+
 @Injectable()
-export class ColorService {
+export class ColorService implements IColorServiceConfigurator{
 
     constructor(
         private readonly context: ContextService,

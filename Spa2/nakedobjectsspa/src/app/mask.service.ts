@@ -4,6 +4,15 @@ import { DatePipe, CurrencyPipe, DecimalPipe } from '@angular/common';
 import { MaskConfigService } from './mask-config.service';
 import { Injectable } from '@angular/core';
 
+export interface IMaskServiceConfigurator {
+    setNumberMaskMapping: (customMask: string, format: Ro.formatType, fractionSize?: number) => void;
+
+    setDateMaskMapping: (customMask: string, format: Ro.formatType, mask: string, tz?: string) => void;
+
+    setCurrencyMaskMapping: (customMask: string, format: Ro.formatType, symbol?: string, digits?: string) => void;
+}
+
+
 export interface ILocalFilter {
     filter(val: any): string;
 }
@@ -83,7 +92,7 @@ class LocalNumberFilter implements ILocalFilter {
 }
 
 @Injectable()
-export class MaskService {
+export class MaskService implements IMaskServiceConfigurator{
 
     private maskMap: IMaskMap = {
         string: {},
