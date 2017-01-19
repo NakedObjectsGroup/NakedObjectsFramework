@@ -489,7 +489,7 @@ namespace NakedObjects.Selenium {
         #region Object Actions
 
         protected ReadOnlyCollection<IWebElement> GetObjectActions(int totalNumber, Pane pane = Pane.Single) {
-            var selector = CssSelectorFor(pane) + ".actions action";
+            var selector = CssSelectorFor(pane) + ".actions nof-action";
             wait.Until(d => d.FindElements(By.CssSelector(selector)).Count == totalNumber);
             return br.FindElements(By.CssSelector(selector));
         }
