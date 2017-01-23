@@ -2,6 +2,12 @@ import * as Models from "./models";
 import * as Config from "./config";
 import * as _ from "lodash";
 
+export interface ICustomActivatedRouteData {
+    pane: number;
+    class: string;
+    dynamicType? : ViewType.Object | ViewType.List;
+}
+
 export enum ViewType {
     Home,
     Object,

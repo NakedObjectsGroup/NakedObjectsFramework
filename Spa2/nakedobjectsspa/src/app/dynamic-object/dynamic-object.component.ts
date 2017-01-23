@@ -3,17 +3,17 @@ import { ObjectComponent } from '../object/object.component';
 import { CustomComponentService } from '../custom-component.service';
 import { ActivatedRoute } from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
-import { RouteData, PaneRouteData } from "../route-data";
+import { RouteData, PaneRouteData, ViewType } from "../route-data";
 import { UrlManagerService } from "../url-manager.service";
 import * as Models from '../models';
-import * as Pane from '../pane/pane';
+import { PaneComponent } from '../pane/pane';
 
 @Component({
     selector: 'nof-dynamic-object',
     templateUrl: './dynamic-object.component.html',
     styleUrls: ['./dynamic-object.component.css']
 })
-export class DynamicObjectComponent extends  Pane.PaneComponent {
+export class DynamicObjectComponent extends PaneComponent {
 
     @ViewChild('parent', { read: ViewContainerRef })
     parent: ViewContainerRef;
@@ -26,8 +26,7 @@ export class DynamicObjectComponent extends  Pane.PaneComponent {
         super(activatedRoute, urlManager);
     }
 
-   
-    private lastOid : string;
+    private lastOid: string;
 
     protected setup(routeData: PaneRouteData) {
         if (!routeData.objectId) {
@@ -39,15 +38,15 @@ export class DynamicObjectComponent extends  Pane.PaneComponent {
             this.lastOid = oid.domainType;
             this.parent.clear();
 
-            this.customComponentService.getCustomObjectComponent(oid).then(c => {
+            this.customComponentService.getCustomObjectComponent(oid, ViewType.Object).then(c => {
                 const childComponent = this.componentFactoryResolver.resolveComponentFactory(c);
                 this.parent.createComponent(childComponent);
             });
         }
     }
-    
-    ngOnDestroy(): void {  
-       super.ngOnDestroy();
+
+    ngOnDestroy(): void {
+        super.ngOnDestroy();
         this.parent.clear();
     }
 }

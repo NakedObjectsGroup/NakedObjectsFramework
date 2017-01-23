@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
-import { RouteData, PaneRouteData } from "../route-data";
+import { RouteData, PaneRouteData, ICustomActivatedRouteData } from "../route-data";
 import { UrlManagerService } from "../url-manager.service";
 
 // todo make pane transitions smoother 
@@ -17,6 +17,7 @@ export abstract class PaneComponent implements OnInit, OnDestroy {
     // pane API
     paneId: number;
     paneType: string;
+    arData : ICustomActivatedRouteData;
 
     // todo init in ngOnInit and make property not function 
     paneIdName = () => this.paneId === 1 ? "pane1" : "pane2";
@@ -39,9 +40,10 @@ export abstract class PaneComponent implements OnInit, OnDestroy {
     protected abstract setup(routeData: PaneRouteData);
 
     ngOnInit(): void {
-        this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: any) => {
-            this.paneId = data["pane"];
-            this.paneType = data["class"];
+        this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: ICustomActivatedRouteData) => {
+            this.arData = data;
+            this.paneId = data.pane;
+            this.paneType = data.class;
 
             if (!this.paneRouteDataSub) {
                 this.paneRouteDataSub =
