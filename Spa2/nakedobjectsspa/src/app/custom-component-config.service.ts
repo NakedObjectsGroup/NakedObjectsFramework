@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
+import { CustomComponentService } from './custom-component.service';
 
 @Injectable()
 export class CustomComponentConfigService {
 
-    constructor() { }
+    configure(customComponent: CustomComponentService) {
 
 
-    configure(customComponent: any) {
-
-      
     }
 
 }

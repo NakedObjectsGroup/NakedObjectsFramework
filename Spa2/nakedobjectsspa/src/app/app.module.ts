@@ -82,6 +82,9 @@ import * as Customcomponentconfigservice from './custom-component-config.service
         ButtonComponent,
         DynamicObjectComponent
     ],
+    entryComponents: [
+        ObjectComponent
+    ],
     imports: [
         BrowserModule,
         DndModule.forRoot(),
