@@ -1,11 +1,11 @@
 <div *ngIf="expiredTransient" class="title">The requested view of unsaved object details has expired.</div>
 
 <!--place holder-->
-<div [attr.id]="paneIdName()" *ngIf="!object" [ngClass]="paneType">
+<div  *ngIf="!object" >
     <div class="object view" [ngClass]="color"></div>
 </div>
 
-<div [attr.id]="paneIdName()" *ngIf="object" [ngClass]="paneType">
+<div  *ngIf="object">
 
 	<div *ngIf="mode === 0" class="object view" [ngClass]="color">
 		<header class="header">
@@ -67,4 +67,3 @@
 		<nof-collections class="collections" *ngIf="collections" [collections]="collections"></nof-collections>
 	</div>
 </div>
-<router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>

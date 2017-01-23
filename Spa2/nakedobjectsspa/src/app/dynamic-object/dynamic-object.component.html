@@ -1,1 +1,4 @@
-<div #parent></div>
+<div [attr.id]="paneIdName()" [ngClass]="paneType">
+    <div #parent></div>
+</div>
+<router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>
