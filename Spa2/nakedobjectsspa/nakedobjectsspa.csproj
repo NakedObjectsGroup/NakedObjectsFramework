@@ -42,6 +42,8 @@
     <Content Include="src\app\collection\collection.component.html" />
     <Content Include="src\app\dialog\dialog.component.css" />
     <Content Include="src\app\dialog\dialog.component.html" />
+    <Content Include="src\app\dynamic-object\dynamic-object.component.css" />
+    <Content Include="src\app\dynamic-object\dynamic-object.component.html" />
     <Content Include="src\app\edit-property\edit-property.component.css" />
     <Content Include="src\app\edit-property\edit-property.component.html" />
     <Content Include="src\app\error\error.component.css" />
@@ -115,7 +117,10 @@
     <TypeScriptCompile Include="src\app\config.ts" />
     <TypeScriptCompile Include="src\app\constants.ts" />
     <TypeScriptCompile Include="src\app\context.service.ts" />
+    <TypeScriptCompile Include="src\app\custom-component-config.service.ts" />
+    <TypeScriptCompile Include="src\app\custom-component.service.ts" />
     <TypeScriptCompile Include="src\app\dialog\dialog.component.ts" />
+    <TypeScriptCompile Include="src\app\dynamic-object\dynamic-object.component.ts" />
     <TypeScriptCompile Include="src\app\edit-property\edit-property.component.ts" />
     <TypeScriptCompile Include="src\app\error.handler.ts" />
     <TypeScriptCompile Include="src\app\error.service.ts" />

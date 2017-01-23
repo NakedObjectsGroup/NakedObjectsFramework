@@ -8,7 +8,7 @@ import { RecentComponent } from './recent/recent.component';
 import { ApplicationPropertiesComponent } from './application-properties/application-properties.component';
 import { AttachmentComponent } from './attachment/attachment.component';
 import { MultiLineDialogComponent } from './multi-line-dialog/multi-line-dialog.component';
-
+import { DynamicObjectComponent } from './dynamic-object/dynamic-object.component';
 const routes: Routes = [
     {
         path: '',
@@ -29,11 +29,11 @@ const routes: Routes = [
     },
     {
         path: 'gemini/object',
-        component: ObjectComponent,
+        component: DynamicObjectComponent,
         data: { pane: 1, class: "single" },
         children: [
             { path: "home", component: HomeComponent, data: { pane: 2, class: "split" } },
-            { path: "object", component: ObjectComponent, data: { pane: 2, class: "split" } },
+            { path: "object", component: DynamicObjectComponent, data: { pane: 2, class: "split" } },
             { path: "list", component: ListComponent, data: { pane: 2, class: "split" } },
             { path: "attachment", component: AttachmentComponent, data: { pane: 2, class: "split" } },
             { path: "recent", component: RecentComponent, data: { pane: 2, class: "split" } }
