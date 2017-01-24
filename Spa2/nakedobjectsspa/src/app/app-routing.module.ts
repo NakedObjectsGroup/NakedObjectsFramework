@@ -9,6 +9,7 @@ import { AttachmentComponent } from './attachment/attachment.component';
 import { MultiLineDialogComponent } from './multi-line-dialog/multi-line-dialog.component';
 import { DynamicObjectComponent } from './dynamic-object/dynamic-object.component';
 import { ICustomActivatedRouteData, ViewType} from './route-data';
+
 const routes: Routes = [
     {
         path: '',
@@ -30,7 +31,7 @@ const routes: Routes = [
     {
         path: 'gemini/object',
         component: DynamicObjectComponent,
-        data: { pane: 1, class: "single", dynamicType : ViewType.Object } as ICustomActivatedRouteData,
+        data: { pane: 1, class: "single", dynamicType : ViewType.Object },
         children: [
             { path: "home", component: HomeComponent, data: { pane: 2, class: "split" } },
             { path: "object", component: DynamicObjectComponent, data: { pane: 2, class: "split" } },
@@ -94,7 +95,7 @@ const routes: Routes = [
         path: '**',
         redirectTo: '/gemini/home',
         pathMatch: 'full'
-    },
+    }
 ];
 
 @NgModule({
