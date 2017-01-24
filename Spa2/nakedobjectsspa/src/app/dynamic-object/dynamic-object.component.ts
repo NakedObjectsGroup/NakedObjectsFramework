@@ -7,6 +7,7 @@ import { RouteData, PaneRouteData, ViewType } from "../route-data";
 import { UrlManagerService } from "../url-manager.service";
 import * as Models from '../models';
 import { PaneComponent } from '../pane/pane';
+import { Type } from '@angular/core/src/type';
 
 @Component({
     selector: 'nof-dynamic-object',
@@ -38,7 +39,7 @@ export class DynamicObjectComponent extends PaneComponent {
             this.lastOid = oid.domainType;
             this.parent.clear();
 
-            this.customComponentService.getCustomObjectComponent(oid, ViewType.Object).then(c => {
+            this.customComponentService.getCustomComponent(oid, ViewType.Object).then((c : Type<any>) => {
                 const childComponent = this.componentFactoryResolver.resolveComponentFactory(c);
                 this.parent.createComponent(childComponent);
             });

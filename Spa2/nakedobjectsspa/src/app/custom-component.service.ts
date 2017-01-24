@@ -4,21 +4,33 @@ import { ObjectComponent } from './object/object.component';
 import * as Models from './models';
 import { ViewType } from './route-data';
 import { ListComponent } from './list/list.component';
+import { Type } from '@angular/core/src/type';
 
 @Injectable()
 export class CustomComponentService {
 
     constructor(private readonly config: CustomComponentConfigService) {
+
+        this.customComponents[ViewType.Object] = {};
+        this.customComponents[ViewType.List] = {};
+
         config.configure(this);
     }
 
-    setCustomObjectComponent(type : string, component : any) {
-        
+    private readonly customComponents: _.Dictionary<Type<any>>[];
+
+    setCustomComponent(domainType: string, component: Type<any>, viewType: ViewType.Object | ViewType.List) {
+
+        this.customComponents[viewType][domainType] = component;
     }
 
-    getCustomObjectComponent(oid: Models.ObjectIdWrapper, vType: ViewType.Object | ViewType.List) {
+    getCustomComponent(oid: Models.ObjectIdWrapper, viewType: ViewType.Object | ViewType.List) {
 
-        if (vType === ViewType.Object) {
+        const custom = this.customComponents[viewType][oid.domainType];
+
+        if (custom) {
+            return Promise.resolve(custom);
+        } else if (viewType === ViewType.Object) {
             return Promise.resolve(ObjectComponent);
         } else {
             return Promise.resolve(ListComponent);
