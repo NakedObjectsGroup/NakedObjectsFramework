@@ -1,10 +1,16 @@
 import { Injectable } from '@angular/core';
 import { CustomComponentService } from './custom-component.service';
+import { ICustomComponentConfigurator} from './custom-component.service';
 
 @Injectable()
 export class CustomComponentConfigService {
 
-    configure(customComponent: CustomComponentService) {
+    configureCustomObjects(custom: ICustomComponentConfigurator) {
+
+
+    }
+
+    configureCustomLists(custom: ICustomComponentConfigurator) {
 
 
     }

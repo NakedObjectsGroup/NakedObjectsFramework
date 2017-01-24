@@ -5,36 +5,44 @@ import * as Models from './models';
 import { ViewType } from './route-data';
 import { ListComponent } from './list/list.component';
 import { Type } from '@angular/core/src/type';
+import { TypeToResultCache } from './TypeToResultCache';
+import { ContextService } from './context.service';
+
+export interface ICustomComponentConfigurator {
+    addType: (type: string, result: Type<any>) => void;
+
+    addMatch: (matcher: RegExp, result: Type<any>) => void;
+
+    addSubtype: (type: string, result: Type<any>) => void;
+
+    setDefault: (def: Type<any>) => void;
+}
+
+class CustomComponentCache extends TypeToResultCache<Type<any>> implements ICustomComponentConfigurator {
+
+    constructor(context: ContextService, def: Type<any>) {
+        super(context);
+        this.setDefault(def);
+    }
+}
 
 @Injectable()
 export class CustomComponentService {
 
-    constructor(private readonly config: CustomComponentConfigService) {
+    constructor(context: ContextService,
+        private readonly config: CustomComponentConfigService) {
 
-        this.customComponents = [];
-        this.customComponents[ViewType.Object] = {};
-        this.customComponents[ViewType.List] = {};
+        this.customComponentCaches = [];
+        this.customComponentCaches[ViewType.Object] = new CustomComponentCache(context, ObjectComponent);
+        this.customComponentCaches[ViewType.List] = new CustomComponentCache(context, ListComponent);
 
-        config.configure(this);
+        config.configureCustomObjects(this.customComponentCaches[ViewType.Object]);
+        config.configureCustomLists(this.customComponentCaches[ViewType.List]);
     }
 
-    private readonly customComponents: _.Dictionary<Type<any>>[];
-
-    setCustomComponent(domainType: string, component: Type<any>, viewType: ViewType.Object | ViewType.List) {
-
-        this.customComponents[viewType][domainType] = component;
-    }
+    private readonly customComponentCaches: CustomComponentCache[] = [];
 
     getCustomComponent(domainType: string, viewType: ViewType.Object | ViewType.List) {
-
-        const custom = this.customComponents[viewType][domainType];
-
-        if (custom) {
-            return Promise.resolve(custom);
-        } else if (viewType === ViewType.Object) {
-            return Promise.resolve(ObjectComponent);
-        } else {
-            return Promise.resolve(ListComponent);
-        }
+        return this.customComponentCaches[viewType].getResult(domainType);
     }
 }
