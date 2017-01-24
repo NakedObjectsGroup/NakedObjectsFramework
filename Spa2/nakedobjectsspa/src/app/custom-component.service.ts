@@ -11,6 +11,7 @@ export class CustomComponentService {
 
     constructor(private readonly config: CustomComponentConfigService) {
 
+        this.customComponents = [];
         this.customComponents[ViewType.Object] = {};
         this.customComponents[ViewType.List] = {};
 
@@ -24,9 +25,9 @@ export class CustomComponentService {
         this.customComponents[viewType][domainType] = component;
     }
 
-    getCustomComponent(oid: Models.ObjectIdWrapper, viewType: ViewType.Object | ViewType.List) {
+    getCustomComponent(domainType: string, viewType: ViewType.Object | ViewType.List) {
 
-        const custom = this.customComponents[viewType][oid.domainType];
+        const custom = this.customComponents[viewType][domainType];
 
         if (custom) {
             return Promise.resolve(custom);

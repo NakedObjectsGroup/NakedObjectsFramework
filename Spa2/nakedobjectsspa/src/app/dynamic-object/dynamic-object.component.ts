@@ -39,7 +39,7 @@ export class DynamicObjectComponent extends PaneComponent {
             this.lastOid = oid.domainType;
             this.parent.clear();
 
-            this.customComponentService.getCustomComponent(oid, ViewType.Object).then((c : Type<any>) => {
+            this.customComponentService.getCustomComponent(this.lastOid, ViewType.Object).then((c : Type<any>) => {
                 const childComponent = this.componentFactoryResolver.resolveComponentFactory(c);
                 this.parent.createComponent(childComponent);
             });

@@ -47,8 +47,9 @@ import { MenuComponent } from './menu/menu.component';
 import { ButtonsComponent } from './buttons/buttons.component';
 import { ButtonComponent } from './button/button.component';
 import { DynamicObjectComponent } from './dynamic-object/dynamic-object.component'
-import * as Customcomponentservice from './custom-component.service';
-import * as Customcomponentconfigservice from './custom-component-config.service';
+import { CustomComponentService } from './custom-component.service';
+import { CustomComponentConfigService } from './custom-component-config.service';
+import { DynamicListComponent } from './dynamic-list/dynamic-list.component';
 
 @NgModule({
     declarations: [
@@ -80,10 +81,12 @@ import * as Customcomponentconfigservice from './custom-component-config.service
         MenuComponent,
         ButtonsComponent,
         ButtonComponent,
-        DynamicObjectComponent
+        DynamicObjectComponent,
+        DynamicListComponent
     ],
     entryComponents: [
-        ObjectComponent
+        ObjectComponent,
+        ListComponent
     ],
     imports: [
         BrowserModule,
@@ -104,8 +107,8 @@ import * as Customcomponentconfigservice from './custom-component-config.service
         MaskService,
         ColorConfigService,
         MaskConfigService,
-        Customcomponentservice.CustomComponentService,
-        Customcomponentconfigservice.CustomComponentConfigService,
+        CustomComponentService,
+        CustomComponentConfigService,
         { provide: ErrorHandler, useClass: GeminiErrorHandler }
     ],
     bootstrap: [AppComponent]

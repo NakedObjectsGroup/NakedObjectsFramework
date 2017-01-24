@@ -1,4 +1,4 @@
-<div [attr.id]="paneIdName()" *ngIf="collection" [ngClass]="paneType">
+<div *ngIf="collection">
 	<div class="list">
 		<header class="header">
 			<div class="title">{{title}}</div>
@@ -77,14 +77,3 @@
 		</div>
 	</div>
 </div>
-<div [attr.id]="paneIdName()"  *ngIf="!collection" [ngClass]="paneType">
-	<div class="list">
-		<div class="header">
-			<div class="title">
-				{{title}}
-			</div>
-            <nof-buttons [buttons]="buttons"></nof-buttons>
-		</div>
-	</div>
-</div>
-<router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>

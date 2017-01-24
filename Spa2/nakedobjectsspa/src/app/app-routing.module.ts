@@ -9,7 +9,7 @@ import { AttachmentComponent } from './attachment/attachment.component';
 import { MultiLineDialogComponent } from './multi-line-dialog/multi-line-dialog.component';
 import { DynamicObjectComponent } from './dynamic-object/dynamic-object.component';
 import { ICustomActivatedRouteData, ViewType} from './route-data';
-
+import { DynamicListComponent} from './dynamic-list/dynamic-list.component';
 const routes: Routes = [
     {
         path: '',
@@ -23,7 +23,7 @@ const routes: Routes = [
         children: [
             { path: "home", component: HomeComponent, data: { pane: 2, class: "split" } },
             { path: "object", component: DynamicObjectComponent, data: { pane: 2, class: "split" } },
-            { path: "list", component: ListComponent, data: { pane: 2, class: "split" } },
+            { path: "list", component: DynamicListComponent, data: { pane: 2, class: "split" } },
             { path: "attachment", component: AttachmentComponent, data: { pane: 2, class: "split" } },
             { path: "recent", component: RecentComponent, data: { pane: 2, class: "split" } }
         ]
@@ -35,19 +35,19 @@ const routes: Routes = [
         children: [
             { path: "home", component: HomeComponent, data: { pane: 2, class: "split" } },
             { path: "object", component: DynamicObjectComponent, data: { pane: 2, class: "split" } },
-            { path: "list", component: ListComponent, data: { pane: 2, class: "split" } },
+            { path: "list", component: DynamicListComponent, data: { pane: 2, class: "split" } },
             { path: "attachment", component: AttachmentComponent, data: { pane: 2, class: "split" } },
             { path: "recent", component: RecentComponent, data: { pane: 2, class: "split" } }
         ]
     },
     {
         path: 'gemini/list',
-        component: ListComponent,
+        component: DynamicListComponent,
         data: { pane: 1, class: "single" },
         children: [
             { path: "home", component: HomeComponent, data: { pane: 2, class: "split" } },
             { path: "object", component: DynamicObjectComponent, data: { pane: 2, class: "split" } },
-            { path: "list", component: ListComponent, data: { pane: 2, class: "split" } },
+            { path: "list", component: DynamicListComponent, data: { pane: 2, class: "split" } },
             { path: "attachment", component: AttachmentComponent, data: { pane: 2, class: "split" } },
             { path: "recent", component: RecentComponent, data: { pane: 2, class: "split" } }
         ]
@@ -59,7 +59,7 @@ const routes: Routes = [
         children: [
             { path: "home", component: HomeComponent, data: { pane: 2, class: "split" } },
             { path: "object", component: DynamicObjectComponent, data: { pane: 2, class: "split" } },
-            { path: "list", component: ListComponent, data: { pane: 2, class: "split" } },
+            { path: "list", component: DynamicListComponent, data: { pane: 2, class: "split" } },
             { path: "attachment", component: AttachmentComponent, data: { pane: 2, class: "split" } },
             { path: "recent", component: RecentComponent, data: { pane: 2, class: "split" } }
         ]
@@ -71,7 +71,7 @@ const routes: Routes = [
         children: [
             { path: "home", component: HomeComponent, data: { pane: 2, class: "split" } },
             { path: "object", component: DynamicObjectComponent, data: { pane: 2, class: "split" } },
-            { path: "list", component: ListComponent, data: { pane: 2, class: "split" } },
+            { path: "list", component: DynamicListComponent, data: { pane: 2, class: "split" } },
             { path: "attachment", component: AttachmentComponent, data: { pane: 2, class: "split" } },
             { path: "recent", component: RecentComponent, data: { pane: 2, class: "split" } }
         ]

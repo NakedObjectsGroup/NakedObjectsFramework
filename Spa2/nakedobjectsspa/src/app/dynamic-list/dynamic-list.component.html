@@ -1,0 +1,12 @@
+<div [attr.id]="paneIdName()" [ngClass]="paneType">
+    <div #parent></div>
+    <div *ngIf="showPlaceholder"class="list">
+        <div class="header">
+            <div class="title">
+                {{title}}
+            </div>
+            <nof-buttons [buttons]="buttons"></nof-buttons>
+        </div>
+    </div>
+</div>
+<router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>
