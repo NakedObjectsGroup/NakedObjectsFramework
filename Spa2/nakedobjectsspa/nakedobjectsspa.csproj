@@ -155,7 +155,7 @@
     <TypeScriptCompile Include="src\app\route-data.ts" />
     <TypeScriptCompile Include="src\app\rxjs-extensions.ts" />
     <TypeScriptCompile Include="src\app\shared\index.ts" />
-    <TypeScriptCompile Include="src\app\TypeToResultCache.ts" />
+    <TypeScriptCompile Include="src\app\type-result-cache.ts" />
     <TypeScriptCompile Include="src\app\url-manager.service.ts" />
     <TypeScriptCompile Include="src\app\user-messages.ts" />
     <TypeScriptCompile Include="src\app\view-model-factory.service.ts" />

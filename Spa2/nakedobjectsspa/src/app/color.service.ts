@@ -2,8 +2,8 @@ import * as Models from "./models";
 import * as _ from "lodash";
 import { Injectable } from '@angular/core';
 import { ContextService } from './context.service';
-import { ColorConfigService } from "./color-config.service";
-import { TypeToResultCache } from './TypeToResultCache';
+import { ColorConfigService } from './color-config.service';
+import { TypeResultCache } from './type-result-cache';
 
 export interface IColorServiceConfigurator {
     addType: (type: string, color: number) => void;
@@ -17,7 +17,7 @@ export interface IColorServiceConfigurator {
 
 
 @Injectable()
-export class ColorService extends TypeToResultCache<number> implements IColorServiceConfigurator {
+export class ColorService extends TypeResultCache<number> implements IColorServiceConfigurator {
 
     constructor(
         context: ContextService,

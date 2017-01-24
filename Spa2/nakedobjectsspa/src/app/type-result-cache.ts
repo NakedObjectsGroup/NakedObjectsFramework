@@ -1,12 +1,12 @@
 ﻿import { ContextService } from './context.service';
 
-export abstract class TypeToResultCache<T> {
+export abstract class TypeResultCache<T> {
 
     protected constructor(protected readonly context: ContextService) { }
 
-    private resultCache: _.Dictionary<T> = {};
-    private regexCache: { regex: RegExp, result: T }[] = [];
-    private subtypeCache: { type: string, result: T }[] = [];
+    private readonly resultCache: _.Dictionary<T> = {};
+    private readonly regexCache: { regex: RegExp, result: T }[] = [];
+    private readonly subtypeCache: { type: string, result: T }[] = [];
 
     private default: T;
 

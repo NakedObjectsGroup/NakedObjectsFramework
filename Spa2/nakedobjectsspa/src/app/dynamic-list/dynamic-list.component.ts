@@ -5,17 +5,17 @@ import { ActivatedRoute } from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
 import { RouteData, PaneRouteData, ViewType } from "../route-data";
 import { UrlManagerService } from "../url-manager.service";
-import * as Models from '../models';
 import { PaneComponent } from '../pane/pane';
 import { Type } from '@angular/core/src/type';
-import * as Contextservice from '../context.service';
-import * as Errorservice from '../error.service';
-import * as Buttoncomponent from '../button/button.component';
+import { ContextService } from '../context.service';
+import { ErrorService } from '../error.service';
+import { IButton } from '../button/button.component';
+import * as Models from '../models';
 
 @Component({
-  selector: 'nof-dynamic-list',
-  templateUrl: './dynamic-list.component.html',
-  styleUrls: ['./dynamic-list.component.css']
+    selector: 'nof-dynamic-list',
+    templateUrl: './dynamic-list.component.html',
+    styleUrls: ['./dynamic-list.component.css']
 })
 export class DynamicListComponent extends PaneComponent {
 
@@ -25,8 +25,8 @@ export class DynamicListComponent extends PaneComponent {
     constructor(
         activatedRoute: ActivatedRoute,
         urlManager: UrlManagerService,
-        private readonly context: Contextservice.ContextService, 
-        private readonly error : Errorservice.ErrorService,
+        private readonly context: ContextService,
+        private readonly error: ErrorService,
         private readonly componentFactoryResolver: ComponentFactoryResolver,
         private readonly customComponentService: CustomComponentService) {
         super(activatedRoute, urlManager);
@@ -34,7 +34,7 @@ export class DynamicListComponent extends PaneComponent {
 
     private lastOid: string;
     title: string = "";
-    showPlaceholder : boolean = true;
+    showPlaceholder: boolean = true;
     private cachedRouteData: PaneRouteData;
 
     getActionExtensions(routeData: PaneRouteData): Promise<Models.Extensions> {
@@ -57,7 +57,7 @@ export class DynamicListComponent extends PaneComponent {
             });
     }
 
-    private reloadPlaceholderButton: Buttoncomponent.IButton = {
+    private reloadPlaceholderButton: IButton = {
         value: "Reload",
         doClick: () => this.reload(),
         show: () => true,
@@ -80,11 +80,7 @@ export class DynamicListComponent extends PaneComponent {
 
             if (et !== this.lastOid) {
                 this.lastOid = et;
-
-                if (this.parent) {
-                    this.parent.clear();
-                }
-
+                this.parent.clear();
                 this.customComponentService.getCustomComponent(et, ViewType.List).then((c: Type<any>) => {
                     const childComponent = this.componentFactoryResolver.resolveComponentFactory(c);
                     this.parent.createComponent(childComponent);
@@ -104,9 +100,7 @@ export class DynamicListComponent extends PaneComponent {
 
     ngOnDestroy(): void {
         super.ngOnDestroy();
-        if (this.parent) {
-            this.parent.clear();
-        }
-    }  
+        this.parent.clear();
+    }
 }
 

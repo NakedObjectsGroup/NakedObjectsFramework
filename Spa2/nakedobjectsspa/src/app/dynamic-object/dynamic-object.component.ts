@@ -5,9 +5,9 @@ import { ActivatedRoute } from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
 import { RouteData, PaneRouteData, ViewType } from "../route-data";
 import { UrlManagerService } from "../url-manager.service";
-import * as Models from '../models';
 import { PaneComponent } from '../pane/pane';
 import { Type } from '@angular/core/src/type';
+import * as Models from '../models';
 
 @Component({
     selector: 'nof-dynamic-object',

@@ -5,7 +5,7 @@ import * as Models from './models';
 import { ViewType } from './route-data';
 import { ListComponent } from './list/list.component';
 import { Type } from '@angular/core/src/type';
-import { TypeToResultCache } from './TypeToResultCache';
+import { TypeResultCache } from './type-result-cache';
 import { ContextService } from './context.service';
 
 export interface ICustomComponentConfigurator {
@@ -18,7 +18,7 @@ export interface ICustomComponentConfigurator {
     setDefault: (def: Type<any>) => void;
 }
 
-class CustomComponentCache extends TypeToResultCache<Type<any>> implements ICustomComponentConfigurator {
+class CustomComponentCache extends TypeResultCache<Type<any>> implements ICustomComponentConfigurator {
 
     constructor(context: ContextService, def: Type<any>) {
         super(context);
