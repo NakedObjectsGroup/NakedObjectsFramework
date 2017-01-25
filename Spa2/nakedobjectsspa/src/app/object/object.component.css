@@ -12,6 +12,7 @@
     height: 100%;
     display: block;
     padding-left: 20px;
+    overflow-y: auto;
 }
 
 .header {
