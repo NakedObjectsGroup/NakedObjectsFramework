@@ -7,11 +7,11 @@
   <div class="" [ngClass]="displayClass(menu)">
     <div *ngIf="menuActions(menu)  && menuActions(menu).length > 0">
       <div *ngFor="let action of menuActions(menu)">
-        <action [action]="action"></action>
+        <nof-action [action]="action"></nof-action>
       </div>
     </div>
     <div *ngIf="menuItems(menu) && menuItems(menu).length > 0">
-      <actions [menu]="menu"></actions>
+      <nof-actions [menu]="menu"></nof-actions>
     </div>
   </div>
 </div>

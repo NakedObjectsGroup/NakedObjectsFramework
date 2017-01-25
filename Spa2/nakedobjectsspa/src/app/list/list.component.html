@@ -1,4 +1,4 @@
-<div [attr.id]="paneIdName()" *ngIf="collection" [ngClass]="paneType">
+<div *ngIf="collection">
 	<div class="list">
 		<header class="header">
 			<div class="title">{{title}}</div>
@@ -7,8 +7,8 @@
 		</header>
 		<div class="details" *ngIf="size == 0">{{description}}</div>
 		<div *ngIf="size > 0">
-			<actions class="actions" *ngIf="showActions()" [menu]="collection"></actions>
-			<app-dialog [parent]="collection"></app-dialog>
+			<nof-actions class="actions" *ngIf="showActions()" [menu]="collection"></nof-actions>
+			<nof-dialog [parent]="collection"></nof-dialog>
 			<div class="summary" *ngIf="state == 'list'">
 				<div class="details">{{description}}</div>
 				<img class="icon-table" (click)="doTable()" src="../../assets/table.png" title="View as Table"/>
@@ -65,8 +65,6 @@
 									<div *ngSwitchCase="'number'">
 										<div class="number">{{propertyFormattedValue(property)}}</div>
 									</div>
-									<div *ngSwitchDefault 
-										<div {{propertyFormattedValue(property)}}</div>
 									</div>
 								</div>
 							</div>
@@ -77,14 +75,3 @@
 		</div>
 	</div>
 </div>
-<div [attr.id]="paneIdName()"  *ngIf="!collection" [ngClass]="paneType">
-	<div class="list">
-		<div class="header">
-			<div class="title">
-				{{title}}
-			</div>
-            <nof-buttons [buttons]="buttons"></nof-buttons>
-		</div>
-	</div>
-</div>
-<router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>
