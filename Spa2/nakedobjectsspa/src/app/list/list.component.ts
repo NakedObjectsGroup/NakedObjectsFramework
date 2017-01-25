@@ -26,6 +26,8 @@ import {IButton} from '../button/button.component';
     styleUrls: ['./list.component.css']
 })
 export class ListComponent extends PaneComponent implements AfterViewInit {
+    // todo  this and ObjectComponent should not  extend PaneComponent they are no longer panes !
+
 
     constructor(activatedRoute: ActivatedRoute,
         urlManager: UrlManagerService,
@@ -108,15 +110,6 @@ export class ListComponent extends PaneComponent implements AfterViewInit {
         accesskey: "a"
     };
 
-    private reloadPlaceholderButton: IButton = {
-        value: "Reload",
-        doClick: () => this.reload(),
-        show: () => true,
-        disabled: () => null,
-        title: () => "",
-        accesskey: null
-    };
-
     private reloadButton: IButton = {
         value: "Reload",
         doClick: () => this.reloadList(),
@@ -163,9 +156,6 @@ export class ListComponent extends PaneComponent implements AfterViewInit {
     };
 
     get buttons() {
-        if (!this.collection) {
-            return [this.reloadPlaceholderButton];
-        }
         return [this.actionButton, this.reloadButton, this.firstButton, this.previousButton, this.nextButton, this.lastButton];
     }
 
@@ -214,21 +204,10 @@ export class ListComponent extends PaneComponent implements AfterViewInit {
             this.collection = this.viewModelFactory.listViewModel(cachedList, routeData);
             this.state = CollectionViewState[routeData.state].toString().toLowerCase();
             this.collection.refresh(routeData);
+        } else {
+            // should never get here 
+            throw new Error("Missing cachedList in listcomponent");
         }
-    }
-
-    reload() {
-
-        const recreate = () =>
-            this.cachedRouteData.objectId
-                ? this.context.getListFromObject(this.cachedRouteData)
-                : this.context.getListFromMenu(this.cachedRouteData);
-
-        recreate()
-            .then(() => this.setup(this.cachedRouteData))
-            .catch((reject: Models.ErrorWrapper) => {
-                this.error.handleError(reject);
-            });
     }
 
     // todo DRY this - and rename - copy not cut

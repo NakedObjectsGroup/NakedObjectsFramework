@@ -27,6 +27,7 @@ import * as Config from '../config';
     styleUrls: ['./object.component.css']
 })
 export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy, AfterViewInit {
+    // todo  this and ListComponent should not  extend PaneComponent they are no longer panes !
 
     constructor(activatedRoute: ActivatedRoute,
         urlManager: UrlManagerService,
