@@ -13,6 +13,11 @@
     font-weight: 200;
 }
 
+nof-buttons, nof-button {
+    overflow: hidden;
+    display: block;
+}
+
 table {
     font-size: 11pt; 
     font-weight: 200;

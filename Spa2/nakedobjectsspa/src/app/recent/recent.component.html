@@ -4,7 +4,7 @@
             <div class="title">{{title}}</div>
             <nof-buttons [buttons]="buttons"></nof-buttons>
         </div>
-        <div *ngIf="recent" class="collection">
+        <div *ngIf="recent">
             <table>
                 <tbody>
                     <tr [ngClass]="itemColor(item)" *ngFor="let item of items()" dnd-draggable [dragEnabled]="true" [dragData]="item" geminiClick
