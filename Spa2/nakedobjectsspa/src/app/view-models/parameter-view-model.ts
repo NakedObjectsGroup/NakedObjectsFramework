@@ -5,7 +5,6 @@ import { ChoiceViewModel } from './choice-view-model';
 import { ContextService } from '../context.service';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { MaskService } from '../mask.service';
-import { MomentWrapperService } from '../moment-wrapper.service';
 import * as Helpers from './helpers-view-models';
 import * as Models from '../models';
 import * as Msg from '../user-messages';
@@ -18,7 +17,6 @@ export class ParameterViewModel extends FieldViewModel {
         onPaneId: number,
         color: ColorService,
         error: ErrorService,
-        momentWrapperService: MomentWrapperService,
         private readonly maskService: MaskService,
         private readonly previousValue: Models.Value,
         private readonly viewModelFactory: ViewModelFactoryService,
@@ -29,7 +27,6 @@ export class ParameterViewModel extends FieldViewModel {
             color,
             error,
             context,
-            momentWrapperService,
             onPaneId,
             parameterRep.isScalar(),
             parameterRep.id(),
@@ -65,10 +62,10 @@ export class ParameterViewModel extends FieldViewModel {
         const remoteMask = parameterRep.extensions().mask();
 
         if (remoteMask && parameterRep.isScalar()) {
-            const localFilter = this.maskService.toLocalFilter(remoteMask, parameterRep.extensions().format());
+            const localFilter = this.maskService.toLocalFilter(remoteMask, parameterRep.extensions().format()!);
             this.localFilter = localFilter;
             // formatting also happens in in directive - at least for dates - value is now date in that case
-            this.formattedValue = localFilter.filter(this.value.toString());
+            this.formattedValue = localFilter.filter(this.value!.toString());
         }
 
         this.description = this.getRequiredIndicator() + this.description;
@@ -77,7 +74,7 @@ export class ParameterViewModel extends FieldViewModel {
     private readonly dflt: string;
 
     private setupParameterChoices() {
-        this.setupChoices(this.parameterRep.choices());
+        this.setupChoices(this.parameterRep.choices()!);
     }
 
     private setupParameterAutocomplete() {
@@ -92,8 +89,9 @@ export class ParameterViewModel extends FieldViewModel {
         const val = this.previousValue && !this.previousValue.isNull() ? this.previousValue : parmRep.default();
 
         if (!val.isNull() && val.isReference()) {
-            this.reference = val.link().href();
-            this.selectedChoice = new ChoiceViewModel(val, this.id, val.link() ? val.link().title() : null);
+            const link = val.link()!;
+            this.reference = link.href();
+            this.selectedChoice = new ChoiceViewModel(val, this.id, link.title());
         }
     }
 
@@ -107,8 +105,8 @@ export class ParameterViewModel extends FieldViewModel {
         const fieldEntryType = this.entryType;
         const parmViewModel = this;
         function setCurrentChoices(vals: Models.Value) {
-
-            const choicesToSet = _.map(vals.list(), val => new ChoiceViewModel(val, parmViewModel.id, val.link() ? val.link().title() : null));
+            const list = vals.list()!;
+            const choicesToSet = _.map(list, val => new ChoiceViewModel(val, parmViewModel.id, val.link() ? val.link()!.title() : undefined));
 
             if (fieldEntryType === Models.EntryType.MultipleChoices) {
                 parmViewModel.selectedMultiChoices = _.filter(parmViewModel.choices, c => _.some(choicesToSet, choiceToSet => c.valuesEqual(choiceToSet)));
@@ -118,10 +116,11 @@ export class ParameterViewModel extends FieldViewModel {
         }
 
         function setCurrentChoice(val: Models.Value) {
-            const choiceToSet = new ChoiceViewModel(val, parmViewModel.id, val.link() ? val.link().title() : null);
+            const choiceToSet = new ChoiceViewModel(val, parmViewModel.id, val.link() ? val.link()!.title() : undefined);
 
             if (fieldEntryType === Models.EntryType.Choices) {
-                parmViewModel.selectedChoice = _.find(parmViewModel.choices, c => c.valuesEqual(choiceToSet));
+                const choices = parmViewModel.choices!;
+                parmViewModel.selectedChoice = _.find(choices, c => c.valuesEqual(choiceToSet)) || null;
             } else {
                 if (!parmViewModel.selectedChoice || parmViewModel.selectedChoice.getValue().toValueString() !== choiceToSet.getValue().toValueString()) {
                     parmViewModel.selectedChoice = choiceToSet;
@@ -146,7 +145,7 @@ export class ParameterViewModel extends FieldViewModel {
 
     }
 
-    private toTriStateBoolean(valueToSet: string | boolean | number) {
+    private toTriStateBoolean(valueToSet: string | boolean | number | null) : boolean | null {
 
         // looks stupid but note type checking
         if (valueToSet === true || valueToSet === "true") {

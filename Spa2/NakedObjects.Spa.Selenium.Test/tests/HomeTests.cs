@@ -16,7 +16,7 @@ namespace NakedObjects.Selenium {
         public virtual void WaitForSingleHome() {
             WaitForView(Pane.Single, PaneType.Home, "Home");
             WaitForCss(".main-column");
-            var menus = WaitForCss(".menu", MainMenusCount);
+            var menus = WaitForCss("nof-menu", MainMenusCount);
             Assert.AreEqual("Customers", menus[0].Text);
             Assert.AreEqual("Orders", menus[1].Text);
             Assert.AreEqual("Products", menus[2].Text);
@@ -106,7 +106,7 @@ namespace NakedObjects.Selenium {
 
         public virtual void SelectSuccessiveDialogActionsThenCancel() {
             Url(CustomersMenuUrl, true);
-            WaitForCss(".actions .action", CustomerServiceActions);
+            WaitForCss(".actions nof-action", CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
             OpenActionDialog("Customer Dashboard");
             OpenActionDialog("Find Customer By Account Number");
@@ -129,7 +129,7 @@ namespace NakedObjects.Selenium {
 
         public virtual void ZeroParamReturnsCollection() {
             Url(OrdersMenuUrl);
-            WaitForCss(".actions .action", OrderServiceActions);
+            WaitForCss(".actions nof-action", OrderServiceActions);
             Click(GetObjectAction("Highest Value Orders"));
             WaitForView(Pane.Single, PaneType.List, "Highest Value Orders");
             WaitForCss(".reference", 20);
@@ -151,7 +151,7 @@ namespace NakedObjects.Selenium {
 
         public virtual void DialogActionOK() {
             Url(CustomersMenuUrl);
-            WaitForCss(".actions .action", CustomerServiceActions);
+            WaitForCss(".actions nof-action", CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
             var fieldCss = ".parameter:nth-child(1) input";
             //TODO: Test focus in separate tests; unreliable here

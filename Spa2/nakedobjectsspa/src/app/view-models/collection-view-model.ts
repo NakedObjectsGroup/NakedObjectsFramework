@@ -22,7 +22,8 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
         context: ContextService,
         urlManager: UrlManagerService,
         public readonly collectionRep: Models.CollectionMember | Models.CollectionRepresentation,
-        private readonly routeData: PaneRouteData
+        private readonly routeData: PaneRouteData,
+        forceReload : boolean
     ) {
         super(context, viewModelFactory, urlManager, error, routeData.paneId);
         this.title = collectionRep.extensions().friendlyName();
@@ -34,7 +35,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
             then(c => this.color = `${Config.linkColor}${c}`).
             catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
-        this.reset(routeData, true);
+        this.reset(routeData, forceReload);
     }
 
     private readonly presentationHint: string;
@@ -92,7 +93,6 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
 
             if (state === CollectionViewState.Summary) {
                 this.items = [];
-
             } else if (getDetails) {
                 this.context.getCollectionDetails(this.collectionRep as Models.CollectionMember, state, resetting).
                     then(details => {
@@ -122,10 +122,17 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
 
     readonly actionMember = (id: string) => {
         const actionViewModel = _.find(this.actions, a => a.actionRep.actionId() === id);
-        return actionViewModel ? actionViewModel.actionRep : null;
+        if (actionViewModel) {
+            return actionViewModel.actionRep;
+        }
+        throw new Error(`no member ${id} on ${this.id}`);
+    }
+
+    private hasActionMember(id: string) {
+       return !!_.find(this.actions, a => a.actionRep.actionId() === id);
     }
 
     readonly hasMatchingLocallyContributedAction = (id: string) => {
-        return id && this.actions && this.actions.length > 0 && !!this.actionMember(id);
+        return id && this.actions && this.actions.length > 0 && this.hasActionMember(id);
     }
 }

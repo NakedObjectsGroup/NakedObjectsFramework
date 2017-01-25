@@ -29,6 +29,8 @@ export class ListViewModel extends ContributedActionParentViewModel {
         super(context, viewModelFactory, urlManager, error, routeData.paneId);
         this.pluralName = "Objects";   // todo fix constant string
         this.reset(list, routeData);
+        const actions = this.listRep.actionMembers();
+        this.setActions(actions, routeData);
     }
 
     private page: number;
@@ -49,7 +51,7 @@ export class ListViewModel extends ContributedActionParentViewModel {
         return this.routeData.objectId
             ? this.context.getListFromObject(this.routeData, page, pageSize)
             : this.context.getListFromMenu(this.routeData, page, pageSize);
-    };
+    }
 
     private readonly pageOrRecreate = (newPage: number, newPageSize: number, newState?: CollectionViewState) => {
         this.recreate(newPage, newPageSize)
@@ -62,12 +64,12 @@ export class ListViewModel extends ContributedActionParentViewModel {
                 const display = (em: Models.ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
                 this.error.handleErrorAndDisplayMessages(reject, display);
             });
-    };
+    }
 
     private readonly setPage = (newPage: number, newState: CollectionViewState) => {
         this.context.updateValues();
         this.pageOrRecreate(newPage, this.pageSize, newState);
-    };
+    }
 
     private readonly earlierDisabled = () => this.page === 1 || this.numPages === 1;
 
@@ -87,7 +89,7 @@ export class ListViewModel extends ContributedActionParentViewModel {
             this.routeData,
             this);
 
-        const totalCount = this.listRep.pagination().totalCount;
+        const totalCount = this.listRep.pagination()!.totalCount;
         const count = this.items.length;
         this.size = count;
         if (count > 0) {
@@ -114,42 +116,40 @@ export class ListViewModel extends ContributedActionParentViewModel {
                         this.error.handleError(reject);
                     });
             } else {
+                this.state = routeData.state;
                 this.updateItems(this.listRep.value());
             }
         }
     }
 
-    private readonly reset = (list: Models.ListRepresentation, routeData: PaneRouteData) => {
+    readonly reset = (list: Models.ListRepresentation, routeData: PaneRouteData) => {
         this.listRep = list;
         this.routeData = routeData;
 
         this.id = this.urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize);
         
-        this.page = this.listRep.pagination().page;
-        this.pageSize = this.listRep.pagination().pageSize;
-        this.numPages = this.listRep.pagination().numPages;
+        this.page = this.listRep.pagination()!.page;
+        this.pageSize = this.listRep.pagination()!.pageSize;
+        this.numPages = this.listRep.pagination()!.numPages;
 
         this.state = this.listRep.hasTableData() ? CollectionViewState.Table : CollectionViewState.List;
         this.updateItems(list.value());
-
-        const actions = this.listRep.actionMembers();
-        this.setActions(actions, routeData);
     }
 
     readonly toggleActionMenu = () => {
         if (this.disableActions()) return;
         this.urlManager.toggleObjectMenu(this.onPaneId);
-    };
+    }
 
     readonly pageNext = () => {
         if (this.pageNextDisabled()) return;
         this.setPage(this.page < this.numPages ? this.page + 1 : this.page, this.state);
-    };
+    }
 
     readonly pagePrevious = () => {
         if (this.pagePreviousDisabled()) return;
         this.setPage(this.page > 1 ? this.page - 1 : this.page, this.state);
-    };
+    }
 
     readonly pageFirst = () => {
         if (this.pageFirstDisabled()) return;
@@ -159,27 +159,27 @@ export class ListViewModel extends ContributedActionParentViewModel {
     readonly pageLast = () => {
         if (this.pageLastDisabled()) return;
         this.setPage(this.numPages, this.state);
-    };
+    }
 
     readonly doSummary = () => {
         this.context.updateValues();
         this.urlManager.setListState(CollectionViewState.Summary, this.onPaneId);
-    };
+    }
 
     readonly doList = () => {
         this.context.updateValues();
         this.urlManager.setListState(CollectionViewState.List, this.onPaneId);
-    };
+    }
 
     readonly doTable = () => {
         this.context.updateValues();
         this.urlManager.setListState(CollectionViewState.Table, this.onPaneId);
-    };
+    }
 
     readonly reload = () => {
         this.context.clearCachedList(this.onPaneId, this.routeData.page, this.routeData.pageSize);
         this.setPage(this.page, this.state);
-    };
+    }
 
     readonly disableActions = () => !this.actions || this.actions.length === 0 || !this.items || this.items.length === 0;
 
@@ -187,7 +187,11 @@ export class ListViewModel extends ContributedActionParentViewModel {
 
     readonly actionMember = (id: string) => {
         const actionViewModel = _.find(this.actions, a => a.actionRep.actionId() === id);
-        return actionViewModel.actionRep;
+
+        if (actionViewModel) {
+            return actionViewModel.actionRep;
+        }
+        throw new Error(`no actionviewmodel ${id} on ${this.id}`);
     };
 
     readonly showActions = () => {

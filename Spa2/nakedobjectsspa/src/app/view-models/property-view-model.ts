@@ -8,7 +8,6 @@ import { ChoiceViewModel } from './choice-view-model';
 import { MaskService } from '../mask.service';
 import { ClickHandlerService } from '../click-handler.service';
 import { UrlManagerService } from '../url-manager.service';
-import { MomentWrapperService } from '../moment-wrapper.service';
 import { IDraggableViewModel } from './idraggable-view-model';
 import * as _ from "lodash";
 import * as Msg from "../user-messages";
@@ -26,7 +25,6 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         private readonly maskService: MaskService,
         private readonly urlManager: UrlManagerService,
         private readonly clickHandler: ClickHandlerService,
-        momentWrapperService: MomentWrapperService,
         id: string,
         private readonly previousValue: Models.Value,
         onPaneId: number,
@@ -37,7 +35,6 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
             color,
             error,
             context,
-            momentWrapperService,
             onPaneId,
             propertyRep.isScalar(),
             id,
@@ -110,17 +107,17 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         const propertyRep = this.propertyRep;
         if (this.entryType === Models.EntryType.Choices) {
 
-            const choices = propertyRep.choices();
+            const choices = propertyRep.choices()!;
 
             this.setupChoices(choices);
 
             if (this.optional) {
                 const emptyChoice = new ChoiceViewModel(new Models.Value(""), this.id);
-                this.choices = _.concat([emptyChoice], this.choices);
+                this.choices = _.concat<ChoiceViewModel>([emptyChoice], this.choices);
             }
 
             const currentChoice = new ChoiceViewModel(newValue, this.id);
-            this.selectedChoice = _.find(this.choices, c => c.valuesEqual(currentChoice));
+            this.selectedChoice = _.find(this.choices, c => c.valuesEqual(currentChoice)) || null;
         } else if (!propertyRep.isScalar()) {
             this.selectedChoice = new ChoiceViewModel(newValue, this.id);
         }
@@ -133,7 +130,7 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
             this.formattedValue = "";
             this.refType = "null";
         } else {
-            this.reference = value.link().href();
+            this.reference = value!.link()!.href();
             this.value = value.toString();
             this.formattedValue = value.toString();
             this.refType = rep.extensions().notNavigable() ? "notNavigable" : "navigable";
@@ -155,7 +152,7 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         const propertyRep = this.propertyRep;
 
         const remoteMask = propertyRep.extensions().mask();
-        const localFilter = this.maskService.toLocalFilter(remoteMask, propertyRep.extensions().format());
+        const localFilter = this.maskService.toLocalFilter(remoteMask, propertyRep.extensions().format()!);
         this.localFilter = localFilter;
         // formatting also happens in in directive - at least for dates - value is now date in that case
 
@@ -185,6 +182,7 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
     readonly draggableTitle = () => this.formattedValue;
     readonly canDropOn = (targetType: string) => this.context.isSubTypeOf(this.returnType, targetType) as Promise<boolean>;
 
-    readonly doClick = (right?: boolean) => this.urlManager.setProperty(this.propertyRep, this.clickHandler.pane(this.onPaneId, right));
+    readonly doClick = (right?: boolean) => this.urlManager.setProperty(this.reference, this.clickHandler.pane(this.onPaneId, right));
+
     readonly isDirty = () => !!this.previousValue || this.getValue().toValueString() !== this.originalValue.toValueString();
 }

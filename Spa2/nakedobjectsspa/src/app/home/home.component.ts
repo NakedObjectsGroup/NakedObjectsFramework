@@ -15,7 +15,7 @@ import * as Models from "../models";
 
 @Component({
     // todo rename all selectors 
-    selector: 'home',
+    selector: 'nof-home',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.css']
 })
@@ -40,7 +40,7 @@ export class HomeComponent extends PaneComponent {
         return this.menus.items;
     }
 
-    selectedMenu: MenuViewModel;
+    selectedMenu: MenuViewModel | null;
 
     private menus: MenusViewModel;
 

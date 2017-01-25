@@ -501,11 +501,11 @@ export class ContextService {
         } else {
             return Promise.reject(new Models.ErrorWrapper(Models.ErrorCategory.ClientError, Models.ClientErrorCode.WrongType, "expect list"));
         }
-    };
+    }
 
     private getList = (paneId: number, resultPromise: () => Promise<Models.ActionResultRepresentation>, page: number, pageSize: number) => {
         return resultPromise().then(result => this.handleResult(paneId, result, page, pageSize));
-    };
+    }
 
     getActionExtensionsFromMenu = (menuId: string, actionId: string) =>
         this.getMenu(menuId).then(menu => Promise.resolve(menu.actionMember(actionId).extensions()));
@@ -533,7 +533,7 @@ export class ContextService {
 
         const promise = () => this.getMenu(menuId).then(menu => this.getInvokableAction(menu.actionMember(actionId))).then(details => this.repLoader.invoke(details, parms, urlParms));
         return this.getList(paneId, promise, newPage, newPageSize);
-    };
+    }
 
     getListFromObject = (routeData: PaneRouteData, page?: number, pageSize?: number) => {
         const objectId = routeData.objectId;
@@ -555,7 +555,7 @@ export class ContextService {
             .then(details => this.repLoader.invoke(details, parms, urlParms));
 
         return this.getList(paneId, promise, newPage, newPageSize);
-    };
+    }
 
     setObject = (paneId: number, co: Models.DomainObjectRepresentation) => this.currentObjects[paneId] = co;
 
@@ -568,7 +568,7 @@ export class ContextService {
         this.currentObjects[1] = p2;
         this.currentObjects[2] = p1;
 
-    };
+    }
 
     private currentError: Models.ErrorWrapper | null = null;
 
@@ -588,12 +588,12 @@ export class ContextService {
         setupPrompt(map);
         const addEmptyOption = field.entryType() !== Models.EntryType.AutoComplete && field.extensions().optional();
         return this.repLoader.retrieve(map, Models.PromptRepresentation, digest).then((p: Models.PromptRepresentation) => p.choices(addEmptyOption));
-    };
+    }
 
     autoComplete = (field: Models.IField, id: string, objectValues: () => _.Dictionary<Models.Value>, searchTerm: string, digest?: string | null) =>
         this.doPrompt(field, id, searchTerm, (map: Models.PromptMap) => map.setSearchTerm(searchTerm), objectValues, digest);
 
-    conditionalChoices = (field: Models.IField, id: string, objectValues: () => _.Dictionary<Models.Value>, args: _.Dictionary<Models.Value>, digest?: string) =>
+    conditionalChoices = (field: Models.IField, id: string, objectValues: () => _.Dictionary<Models.Value>, args: _.Dictionary<Models.Value>, digest?: string | null) =>
         this.doPrompt(field, id, null, (map: Models.PromptMap) => map.setArguments(args), objectValues, digest);
 
     private nextTransientId = 0;
@@ -667,7 +667,7 @@ export class ContextService {
         } else if (result.resultType() === "void") {
             this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
         }
-    };
+    }
    
     private pendingPotentActionCount = [, 0, 0];
 
@@ -707,11 +707,11 @@ export class ContextService {
 
     cutViewModel$ = this.cutViewModelSource.asObservable();
 
-    private cutViewModel : IDraggableViewModel;
+    private cutViewModel : IDraggableViewModel | null;
 
-    setCutViewModel(dvm : IDraggableViewModel ){
+    setCutViewModel(dvm : IDraggableViewModel | null ){
         this.cutViewModel = dvm;
-        this.cutViewModelSource.next(dvm);
+        this.cutViewModelSource.next(Models.withUndefined(dvm));
     }
 
     getCutViewModel( ){
@@ -786,10 +786,10 @@ export class ContextService {
             _.each(parms, (parm, k) => im.setParameter(k!, parm));
             const setDirty = this.getSetDirtyFunction(iAction, parms);
             return this.invokeActionInternal(im, iAction, fromPaneId, toPaneId, setDirty, gotoResult);
-        }
+        };
 
         return invokeOnMap(action);
-    };
+    }
 
     private setNewObject(updatedObject: Models.DomainObjectRepresentation, paneId: number, viewSavedObject: Boolean) {
         this.setObject(paneId, updatedObject);
@@ -815,7 +815,7 @@ export class ContextService {
                 this.setNewObject(updatedObject, paneId, viewSavedObject);
                 return Promise.resolve(updatedObject);
             });
-    };
+    }
 
     saveObject = (object: Models.DomainObjectRepresentation, props: _.Dictionary<Models.Value>, paneId: number, viewSavedObject: boolean) => {
         const persist = object.getPersistMap();
@@ -828,7 +828,7 @@ export class ContextService {
                 this.setNewObject(updatedObject, paneId, viewSavedObject);
                 return Promise.resolve(updatedObject);
             });
-    };
+    }
 
 
     validateUpdateObject = (object: Models.DomainObjectRepresentation, props: _.Dictionary<Models.Value>) => {
@@ -836,7 +836,7 @@ export class ContextService {
         update.setValidateOnly();
         _.each(props, (v, k) => update.setProperty(k!, v));
         return this.repLoader.validate(update, object.etagDigest);
-    };
+    }
 
     validateSaveObject = (object: Models.DomainObjectRepresentation, props: _.Dictionary<Models.Value>) => {
         const persist = object.getPersistMap();

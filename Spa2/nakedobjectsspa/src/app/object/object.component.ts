@@ -18,18 +18,22 @@ import { MenuItemViewModel } from '../view-models/menu-item-view-model';
 import { PaneComponent } from '../pane/pane';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 import { IButton } from '../button/button.component';
+import { ColorService } from '../color.service';
+import * as Config from '../config';
 
 @Component({
-    selector: 'object',
+    selector: 'nof-object',
     templateUrl: './object.component.html',
     styleUrls: ['./object.component.css']
 })
 export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy, AfterViewInit {
+    // todo  this and ListComponent should not  extend PaneComponent they are no longer panes !
 
     constructor(activatedRoute: ActivatedRoute,
         urlManager: UrlManagerService,
         private readonly context: ContextService,
         private readonly viewModelFactory: ViewModelFactoryService,
+        private readonly colorService : ColorService, 
         private readonly error: ErrorService,
         private readonly formBuilder: FormBuilder) {
 
@@ -52,7 +56,7 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
 
     get color() {
         const obj = this.object;
-        return obj ?  obj.color : "";
+        return obj ? obj.color : this.backgroundColor;
     }
 
     get properties() {
@@ -95,24 +99,23 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
     }
 
     // todo investigate if logic in this would be better here rather than view model
-   
 
     disableActions = () => {
         const obj = this.object;
         return obj && obj.disableActions() ? true : null;
-    };
+    }
 
     actionsTooltip = () => {
         const obj = this.object;
-        return  obj ? obj.actionsTooltip() : "";
-    };
+        return obj ? obj.actionsTooltip() : "";
+    }
 
     unsaved = () => {
         const obj = this.object;
         return !!obj && obj.unsaved;
-    };
+    }
 
-    private do(f: (o : DomainObjectViewModel) => void) {
+    private do(f: (o: DomainObjectViewModel) => void) {
         const obj = this.object;
         if (obj) {
             f(obj);
@@ -121,39 +124,39 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
 
     toggleActionMenu = () => {
         this.do((o) => o.toggleActionMenu());
-    };
+    }
 
     doEdit = () => {
         this.do((o) => o.doEdit());
-    };
+    }
 
     doEditCancel = () => {
         this.do((o) => o.doEditCancel());
-    };
+    }
 
     showEdit = () => {
         const obj = this.object;
         return !!obj && !obj.hideEdit();
-    };
+    }
 
     doReload = () => {
         this.do((o) => o.doReload());
-    };
+    }
 
     message = () => {
         const obj = this.object;
         return obj ? obj.getMessage() : "";
-    };
+    }
 
     showActions = () => {
         const obj = this.object;
         return !!obj && obj.showActions();
-    };
+    }
 
     menuItems = () => {
         const obj = this.object;
         return obj ? obj.menuItems : [];
-    };
+    }
 
     private actionButton: IButton = {
         value: "Actions",
@@ -162,7 +165,7 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
         disabled: () => this.disableActions(),
         title: () => this.actionsTooltip(),
         accesskey: "a"
-    };
+    }
 
     private editButton: IButton = {
         value: "Edit",
@@ -171,7 +174,7 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
         disabled: () => null,
         title: () => "",
         accesskey: null
-    };
+    }
 
     private reloadButton: IButton = {
         value: "Reload",
@@ -180,10 +183,61 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
         disabled: () => null,
         title: () => "",
         accesskey: null
-    };
+    }
+
+    private saveButton: IButton = {
+        value: "Save",
+        doClick: () => this.onSubmit(true),
+        show: () => true,
+        disabled: () => this.form ? !this.form.valid : true,
+        title: () => this.tooltip,
+        accesskey: null
+    }
+
+    private saveAndCloseButton: IButton = {
+        value: "Save & Close",
+        doClick: () => this.onSubmit(false),
+        show: () => this.unsaved(),
+        disabled: () => this.form ? !this.form.valid : true,
+        title: () => this.tooltip,
+        accesskey: null
+    }
+
+    private cancelButton: IButton = {
+        value: "Cancel",
+        doClick: () => this.doEditCancel(),
+        show: () => true,
+        disabled: () => null,
+        title: () => "",
+        accesskey: null
+    }
 
     get buttons() {
-        return [this.actionButton, this.editButton, this.reloadButton];
+        if (this.mode === InteractionMode.View) {
+            return [this.actionButton, this.editButton, this.reloadButton];
+        }
+
+        if (this.mode === InteractionMode.Edit) {
+            return [this.saveButton, this.saveAndCloseButton, this.cancelButton];
+        }
+
+        if (this.mode === InteractionMode.Transient || this.mode === InteractionMode.Form) {
+
+            const menuItems = this.menuItems()!;
+            const actions = _.flatten(_.map(menuItems, (mi: MenuItemViewModel) => mi.actions!));
+
+            return _.map(actions, a => ({
+                value: a.title,
+                doClick: () => a.doInvoke(),
+                doRightClick: () => a.doInvoke(true),
+                show: () => true,
+                disabled: () => a.disabled() ? true : null,
+                title: () => a.description,
+                accesskey: null
+            })) as IButton[];
+        }
+
+        return [] as IButton[];
     }
 
     // todo that we access viewmodel directly in template from this I think is smell that we should have a 
@@ -225,16 +279,16 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
         const wasDirty = this.context.getIsDirty(oid);
 
         if (isChanging || modeChanging || wasDirty) {
+
+            // set background color at once to smooth transition
+            this.colorService.toColorNumberFromType(oid.domainType).then(c => this.backgroundColor = `${Config.objectColor}${c}`);
+
             this.context.getObject(routeData.paneId, oid, routeData.interactionMode)
                 .then((object: Models.DomainObjectRepresentation) => {
 
-                    // only change the object if it has changed 
+                    // only change the object property if the object has changed 
                     if (isChanging || wasDirty) {
-                        const ovm = this.viewModelFactory.domainObjectViewModel(object, routeData);
-                        if (wasDirty) {
-                            ovm.clearCachedFiles();
-                        }
-                        this.object = ovm;
+                        this.object = this.viewModelFactory.domainObjectViewModel(object, routeData, wasDirty);
                     }
 
                     if (modeChanging || isChanging) {
@@ -265,14 +319,17 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
         const controls = _.mapValues(editablePropsMap, p => [p.getValueForControl(), a => p.validator(a)]) as _.Dictionary<any>;
         this.form = this.formBuilder.group(controls);
 
-        this.form.valueChanges.subscribe((data: any) => {
+        this.form!.valueChanges.subscribe((data: any) => {
             // cache parm values
-            _.forEach(data,
-                (v, k) => {
-                    const prop = editablePropsMap[k];
-                    prop.setValueFromControl(v);
-                });
-            this.object.setProperties();
+            const obj = this.object;
+            if (obj) {
+                _.forEach(data,
+                    (v, k) => {
+                        const prop = editablePropsMap[k!];
+                        prop.setValueFromControl(v);
+                    });
+                obj.setProperties();
+            }
         });
     }
 

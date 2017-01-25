@@ -20,7 +20,7 @@ import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 import { CollectionViewModel } from '../view-models/collection-view-model';
 
 @Component({
-    selector: 'app-dialog',
+    selector: 'nof-dialog',
     templateUrl: './dialog.component.html',
     styleUrls: ['./dialog.component.css']
 })
@@ -131,7 +131,7 @@ export class DialogComponent implements OnInit, OnDestroy {
                 action = p.menuRep.actionMember(this.currentDialogId);
             }
 
-            if (p instanceof DomainObjectViewModel) {
+            if (p instanceof DomainObjectViewModel && p.domainObject.hasActionMember(this.currentDialogId)) {
                 action = p.domainObject.actionMember(this.currentDialogId);
             }
 
@@ -140,12 +140,11 @@ export class DialogComponent implements OnInit, OnDestroy {
                 actionViewModel = _.find(p.actions, a => a.actionRep.actionId() === this.currentDialogId) || null;
             }
 
-            if (p instanceof CollectionViewModel) {
+            if (p instanceof CollectionViewModel && p.hasMatchingLocallyContributedAction(this.currentDialogId)) {
                 action = p.actionMember(this.currentDialogId);
-                if (action) {
-                    actionViewModel = _.find(p.actions, a => a.actionRep.actionId() === this.currentDialogId) || null;
-                }
+                actionViewModel = _.find(p.actions, a => a.actionRep.actionId() === this.currentDialogId) || null;
             }
+
             if (action) {
                 this.context.getInvokableAction(action)
                     .then(details => {

@@ -6,8 +6,7 @@ import * as Msg from "./user-messages";
 import * as _ from "lodash";
 import { MaskService, ILocalFilter } from "./mask.service";
 import { ContextService } from "./context.service";
-//import * as moment  from "moment";
-import { MomentWrapperService } from "./moment-wrapper.service";
+import * as moment  from "moment";
 import { ChoiceViewModel } from './view-models/choice-view-model';
 
 
@@ -25,6 +24,12 @@ function validateExists<T>(obj: T | null | undefined, name: string) : T {
         throw new Error(`Expected ${name} does not exist`);
     }
     return obj;
+}
+
+function getMember<T>(members: _.Dictionary<T>, id: string, owner: string) {
+    const member = members[id];
+    if (member) { return member; }
+    throw new Error(`no member ${id} on ${owner}`);
 }
 
 
@@ -247,9 +252,9 @@ function validateDateTimeFormat(model: IHasExtensions, newValue: Date): string {
     return "";
 }
 
-function getDate(val: string, ms: MomentWrapperService): Date | null {
+function getDate(val: string): Date | null {
 
-    const dt1 = ms.moment(val, "YYYY-MM-DD", "en-GB", true);
+    const dt1 = moment(val, "YYYY-MM-DD", "en-GB", true);
 
     if (dt1.isValid()) {
         return dt1.toDate();
@@ -257,13 +262,13 @@ function getDate(val: string, ms: MomentWrapperService): Date | null {
     return null;
 }
 
-function validateDateFormat(model: IHasExtensions, newValue: Date | string, filter: ILocalFilter, ms: MomentWrapperService): string {
+function validateDateFormat(model: IHasExtensions, newValue: Date | string, filter: ILocalFilter): string {
     const range = model.extensions().range();
-    const newDate = (newValue instanceof Date) ? newValue : getDate(newValue, ms);
+    const newDate = (newValue instanceof Date) ? newValue : getDate(newValue);
 
     if (range && newDate) {
-        const min = range.min ? getDate(range.min as string, ms) : null;
-        const max = range.max ? getDate(range.max as string, ms) : null;
+        const min = range.min ? getDate(range.min as string) : null;
+        const max = range.max ? getDate(range.max as string) : null;
 
         if (min && newDate < min) {
             return Msg.outOfRange(toDateString(newDate), getUtcDate(range.min as string), getUtcDate(range.max as string), filter);
@@ -281,7 +286,7 @@ function validateTimeFormat(model: IHasExtensions, newValue: Date): string {
     return "";
 }
 
-function validateString(model: IHasExtensions, newValue: any, filter: ILocalFilter, ms: MomentWrapperService): string {
+function validateString(model: IHasExtensions, newValue: any, filter: ILocalFilter): string {
     const format = model.extensions().format();
 
     switch (format) {
@@ -290,7 +295,7 @@ function validateString(model: IHasExtensions, newValue: any, filter: ILocalFilt
         case ("date-time"):
             return validateDateTimeFormat(model, newValue as Date);
         case ("date"):
-            return validateDateFormat(model, newValue as Date | string, filter, ms);
+            return validateDateFormat(model, newValue as Date | string, filter);
         case ("time"):
             return validateTimeFormat(model, newValue as Date);
         default:
@@ -311,7 +316,7 @@ export function validateMandatory(model: IHasExtensions, viewValue: string |Choi
 }
 
 
-export function validate(model: IHasExtensions, modelValue: any, viewValue: string, filter: ILocalFilter, ms: MomentWrapperService): string {
+export function validate(model: IHasExtensions, modelValue: any, viewValue: string, filter: ILocalFilter): string {
     // first check 
 
     const mandatory = validateMandatory(model, viewValue);
@@ -335,7 +340,7 @@ export function validate(model: IHasExtensions, modelValue: any, viewValue: stri
             //}
             return validateNumber(model, parseFloat(modelValue), filter);
         case ("string"):
-            return validateString(model, modelValue, filter, ms);
+            return validateString(model, modelValue, filter);
         case ("boolean"):
             return "";
         default:
@@ -786,13 +791,13 @@ export class MediaType {
 export class Value {
 
     // note this is different from constructor parm as we wrap ILink
-    private wrapped: Link | Array<Link | Ro.valueType> | Ro.scalarValueType | Blob| null;
+    private wrapped: Link | (Link | Ro.valueType)[] | Ro.scalarValueType | Blob;
 
-    constructor(raw: Link | Array<Link | Ro.valueType> | Ro.valueType | Blob | null) {
+    constructor(raw: Link | (Link | Ro.valueType)[] | Ro.valueType | Blob) {
         // can only be Link, number, boolean, string or null    
 
         if (raw instanceof Array) {
-            this.wrapped = raw as Array<Link | Ro.valueType>;
+            this.wrapped = raw as (Link | Ro.valueType)[];
         } else if (raw instanceof Link) {
             this.wrapped = raw;
         } else if (isILink(raw)) {
@@ -840,21 +845,21 @@ export class Value {
         return link ? link.href() : null;
     }
 
-    scalar(): Ro.scalarValueType | null {
+    scalar(): Ro.scalarValueType {
         return this.isScalar() ? this.wrapped as Ro.scalarValueType : null;
     }
 
     list(): Value[] | null {
-        return this.isList() ? _.map(this.wrapped as Array<Link | Ro.valueType>, i => new Value(i)) : null;
+        return this.isList() ? _.map(this.wrapped as (Link | Ro.valueType)[], i => new Value(i)) : null;
     }
 
     toString(): string {
         if (this.isReference()) {
-            return (this.link() as Link).title(); // know true
+            return this.link()!.title() || ""; // know true
         }
 
         if (this.isList()) {
-            const list = this.list() as Value[]; // know true
+            const list = this.list()!; // know true
             const ss = _.map(list, v => v.toString());
             return ss.length === 0 ? "" : _.reduce(ss, (m, s) => m + "-" + s, "");
         }
@@ -864,10 +869,10 @@ export class Value {
 
     compress() {
         if (this.isReference()) {
-            (this.link() as Link).compress(); // know true
+            this.link()!.compress(); // know true
         }
         if (this.isList()) {
-            const list = this.list() as Value[]; // know true
+            const list = this.list()!; // know true
             _.forEach(list, i => i.compress());
         };
 
@@ -878,7 +883,7 @@ export class Value {
 
     decompress() {
         if (this.isReference()) {
-            (this.link() as Link).decompress();  // know true
+            this.link()!.decompress();  // know true
         }
         if (this.isList()) {
             const list = this.list() as Value[]; // know true
@@ -898,7 +903,7 @@ export class Value {
 
     toValueString(): string {
         if (this.isReference()) {
-            return (this.link() as Link).href();  // know true
+            return this.link()!.href();  // know true
         }
         return (this.wrapped == null) ? "" : this.wrapped.toString();
     }
@@ -914,7 +919,7 @@ export class Value {
 
     setValue(target: Ro.IValue) {
         if (this.isFileReference()) {
-            target.value = (this.link() as Link).wrapped; // know true
+            target.value = this.link()!.wrapped; // know true
         }
         else if (this.isReference()) {
             
@@ -938,7 +943,7 @@ export class Value {
 }
 
 export class ErrorValue {
-    constructor(public value: Value, public invalidReason: string) { }
+    constructor(public value: Value, public invalidReason: string | null) { }
 }
 
 export class Result {
@@ -995,14 +1000,14 @@ export class ErrorMap {
     valuesMap(): _.Dictionary<ErrorValue> {
 
         const values = _.pickBy(this.wrapped(), i => isIValue(i)) as _.Dictionary<Ro.IValue>;
-        return _.mapValues(values, v => new ErrorValue(new Value(v.value), v.invalidReason));
+        return _.mapValues(values, v => new ErrorValue(new Value(v.value), withNull(v.invalidReason)));
     }
 
     invalidReason(): string {
 
         const temp = this.map;
         if (isIObjectOfType(temp)) {
-            return (<any>temp)[Constants.roInvalidReason] as string;
+            return temp[Constants.roInvalidReason] as string;
         }
 
         return this.wrapped()[Constants.roInvalidReason] as string;
@@ -1308,7 +1313,7 @@ export class Parameter
         if (promptLink) {
             // ConditionalChoices, ConditionalMultipleChoices, AutoComplete 
              
-            if (!!promptLink.arguments()[Constants.roSearchTerm]) {
+            if (!!promptLink.arguments()![Constants.roSearchTerm]) {
 
                 // autocomplete 
                 return EntryType.AutoComplete;
@@ -1577,8 +1582,8 @@ export class CollectionRepresentation extends ResourceRepresentation<RoCustom.IC
     private lazyValue: Link[] | null;
 
     value(): Link[] {
-        this.lazyValue = this.lazyValue || wrapLinks(this.wrapped().value);
-        return this.lazyValue as Link[];
+        this.lazyValue = this.lazyValue || wrapLinks(this.wrapped().value!);
+        return this.lazyValue!;
     }
 
     disabledReason(): string {
@@ -1598,7 +1603,7 @@ export class CollectionRepresentation extends ResourceRepresentation<RoCustom.IC
     }
 
     actionMember(id: string): ActionMember {
-        return this.actionMembers()[id];
+        return getMember(this.actionMembers(), id, this.collectionId());
     }
 }
 
@@ -1869,7 +1874,7 @@ export class PropertyMember extends Member<Ro.IPropertyMember> implements IField
         if (link) {
             // ConditionalChoices, ConditionalMultipleChoices, AutoComplete 
 
-            if (!!link.arguments()[Constants.roSearchTerm]) {
+            if (!!link.arguments()![Constants.roSearchTerm]) {
                 // autocomplete 
                 return EntryType.AutoComplete;
             }
@@ -1888,8 +1893,10 @@ export class PropertyMember extends Member<Ro.IPropertyMember> implements IField
 export class CollectionMember
     extends Member<RoCustom.ICustomCollectionMember>
     implements IHasLinksAsValue, IHasActions {
+    
+     
 
-    wrapped = () => this.resource() as RoCustom.ICustomCollectionMember;
+        wrapped = () => this.resource() as RoCustom.ICustomCollectionMember;
 
     constructor(wrapped: Ro.ICollectionMember, public parent: DomainObjectRepresentation, private readonly id: string) {
         super(wrapped);
@@ -1903,7 +1910,7 @@ export class CollectionMember
     private lazyValue: Link[] | null;
 
     value(): Link[]  | null {
-        this.lazyValue = this.lazyValue || (this.wrapped().value ? wrapLinks(this.wrapped().value) : null);
+        this.lazyValue = this.lazyValue || (this.wrapped().value ? wrapLinks(this.wrapped().value!) : null);
         return this.lazyValue;
     }
 
@@ -1931,8 +1938,12 @@ export class CollectionMember
         return {};
     }
 
+    hasActionMember(id: string): boolean {
+        return !!this.actionMembers()[id];
+    } 
+
     actionMember(id: string): ActionMember {
-        return this.actionMembers()[id];
+        return getMember(this.actionMembers(), id, this.collectionId());
     }
 
     etagDigest: string;
@@ -2023,6 +2034,7 @@ export class InvokableActionMember extends ActionMember {
 
 
 export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomainObjectRepresentation> implements IHasActions {
+   
 
     wrapped = () => this.resource() as Ro.IDomainObjectRepresentation;
 
@@ -2057,7 +2069,7 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
 
     private resetMemberMaps() {
         const members = this.wrapped().members;
-        this.memberMap = _.mapValues(members, (m, id) => Member.wrapMember(m, this, id!));
+        this.memberMap = _.mapValues(members, (m, id) => Member.wrapMember(m, this, id!)!);
         this.propertyMemberMap = _.pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === "property") as _.Dictionary<PropertyMember>;
         this.collectionMemberMap = _.pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === "collection") as _.Dictionary<CollectionMember>;
         this.actionMemberMap = _.pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === "action") as _.Dictionary<ActionMember>;
@@ -2101,8 +2113,12 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
         return this.collectionMembers()[id];
     }
 
+    hasActionMember(id: string): boolean {
+        return !!this.actionMembers()[id];
+    }
+
     actionMember(id: string): ActionMember {
-        return this.actionMembers()[id];
+        return getMember(this.actionMembers(), id, this.id());
     }
 
     updateLink(): Link | null {
@@ -2216,8 +2232,12 @@ export class MenuRepresentation extends ResourceRepresentation<RoCustom.IMenuRep
         return this.members()[id];
     }
 
+    hasActionMember(id: string): boolean {
+        return !!this.actionMembers()[id];
+    } 
+
     actionMember(id: string): ActionMember {
-        return this.actionMembers()[id];
+        return getMember(this.actionMembers(), id, this.menuId());
     }
 
     selfLink(): Link {
@@ -2284,7 +2304,7 @@ export class ListRepresentation
     }
 
     actionMember(id: string): ActionMember {
-        return this.actionMembers()[id];
+        return getMember(this.actionMembers(), id, "list");
     }
 
     hasTableData = () => {
@@ -2602,20 +2622,20 @@ export class Link {
         return decodeURIComponent(this.wrapped.href);
     }
 
-    method(): Ro.httpMethodsType {
-        return this.wrapped.method;
+    method(): Ro.httpMethodsType  {
+        return this.wrapped.method!;
     }
 
     rel(): Rel {
-        return new Rel(this.wrapped.rel);
+        return new Rel(this.wrapped.rel!);
     }
 
     type(): MediaType {
-        return new MediaType(this.wrapped.type);
+        return new MediaType(this.wrapped.type!);
     }
 
-    title(): string {
-        return this.wrapped.title;
+    title(): string | null {
+        return withNull(this.wrapped.title);
     }
 
     //Typically used to set a title on a link that doesn't naturally have one e.g. Self link
@@ -2623,8 +2643,8 @@ export class Link {
         this.wrapped.title = title;
     }
 
-    arguments(): Ro.IValue | Ro.IValueMap | Ro.IObjectOfType | Ro.IPromptMap {
-        return this.wrapped.arguments;
+    arguments(): Ro.IValue | Ro.IValueMap | Ro.IObjectOfType | Ro.IPromptMap | null {
+        return withNull(this.wrapped.arguments);
     }
 
     members(): _.Dictionary<PropertyMember> | null {
@@ -2635,7 +2655,7 @@ export class Link {
     private lazyExtensions: Extensions;
 
     extensions(): Extensions {
-        this.lazyExtensions = this.lazyExtensions || new Extensions(this.wrapped.extensions);
+        this.lazyExtensions = this.lazyExtensions || new Extensions(this.wrapped.extensions!);
         return this.lazyExtensions;
     }
 
@@ -2694,6 +2714,7 @@ export class Link {
 export interface IHasActions extends IHasExtensions {
     actionMembers(): _.Dictionary<ActionMember>;
     actionMember(id: string): ActionMember;
+    hasActionMember(id :string) : boolean;
     etagDigest: string;
 }
 

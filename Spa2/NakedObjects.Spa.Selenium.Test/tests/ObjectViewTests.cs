@@ -111,7 +111,7 @@ namespace NakedObjects.Selenium {
 
             // get again as goes stale
             props = WaitForCss(".property", 23);
-            var link = props[4].FindElement(By.CssSelector(".reference.clickable-area"));
+            var link = props[4].FindElement(By.CssSelector(".reference"));
             Assert.IsNotNull(link);
 
             //Now a non-navigable one
@@ -417,7 +417,7 @@ namespace NakedObjects.Selenium {
         public virtual void ActionsMenuDisabledOnObjectWithNoActions() {
             GeminiUrl("object?o1=___1.Address--21467");
             WaitForView(Pane.Single, PaneType.Object, "3022 Terra Calitina ...");
-            var actions = wait.Until(dr => dr.FindElement(By.CssSelector(".header .menu")));
+            var actions = wait.Until(dr => dr.FindElement(By.CssSelector(".header input[value='Actions']")));
             Assert.AreEqual("true", actions.GetAttribute("disabled"));
         }
 
@@ -483,7 +483,7 @@ namespace NakedObjects.Selenium {
 
             Click(GetObjectAction("Clear Comment"));
 
-            WaitForCss(".action .tempdisabled");
+            WaitForCss("nof-action .tempdisabled");
             //wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Sales Person")); //i.e. Comments property has disappeared
 
             Click(OKButton()); //On dialog that has remained open

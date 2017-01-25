@@ -7,7 +7,6 @@ import { ClickHandlerService } from "./click-handler.service";
 import { ErrorService } from "./error.service";
 import { MaskService } from "./mask.service";
 import { Injectable } from '@angular/core';
-import { MomentWrapperService } from "./moment-wrapper.service";
 import { AttachmentViewModel } from './view-models/attachment-view-model';
 import { ErrorViewModel } from './view-models/error-view-model';
 import { IMessageViewModel } from './view-models/imessage-view-model';
@@ -41,11 +40,10 @@ export class ViewModelFactoryService {
         private readonly color: ColorService,
         private readonly error: ErrorService,
         private readonly clickHandler: ClickHandlerService,
-        private readonly mask: MaskService,
-        private readonly momentWrapperService: MomentWrapperService
+        private readonly mask: MaskService
     ) { }
 
-    errorViewModel = (error: Models.ErrorWrapper) => {
+    errorViewModel = (error: Models.ErrorWrapper | null) => {
         return new ErrorViewModel(error);
     }
 
@@ -87,7 +85,6 @@ export class ViewModelFactoryService {
             this.mask,
             this.urlManager,
             this.clickHandler,
-            this.momentWrapperService,
             id,
             previousValue,
             paneId,
@@ -119,8 +116,12 @@ export class ViewModelFactoryService {
             holder);
     }
 
-    domainObjectViewModel = (obj: Models.DomainObjectRepresentation, routeData: PaneRouteData) => {
-        return new DomainObjectViewModel(this.color, this.context, this, this.urlManager, this.error, obj, routeData);
+    domainObjectViewModel = (obj: Models.DomainObjectRepresentation, routeData: PaneRouteData, forceReload : boolean) => {
+        const ovm = new DomainObjectViewModel(this.color, this.context, this, this.urlManager, this.error, obj, routeData, forceReload);
+        if (forceReload) {
+            ovm.clearCachedFiles();
+        }
+        return ovm;
     }
 
     listViewModel = (list: Models.ListRepresentation, routeData: PaneRouteData) => {
@@ -136,11 +137,11 @@ export class ViewModelFactoryService {
     }
 
     parameterViewModel = (parmRep: Models.Parameter, previousValue: Models.Value, paneId: number) => {
-        return new ParameterViewModel(parmRep, paneId, this.color, this.error, this.momentWrapperService, this.mask, previousValue, this, this.context);
+        return new ParameterViewModel(parmRep, paneId, this.color, this.error, this.mask, previousValue, this, this.context);
     }
 
-    collectionViewModel = (collectionRep: Models.CollectionMember, routeData: PaneRouteData) => {
-        return new CollectionViewModel(this, this.color, this.error, this.context, this.urlManager, collectionRep, routeData);
+    collectionViewModel = (collectionRep: Models.CollectionMember, routeData: PaneRouteData, forceReload : boolean) => {
+        return new CollectionViewModel(this, this.color, this.error, this.context, this.urlManager, collectionRep, routeData, forceReload);
     }
 
     listPlaceholderViewModel = (routeData: PaneRouteData) => {

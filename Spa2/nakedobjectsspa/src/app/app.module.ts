@@ -36,9 +36,8 @@ import { ColorConfigService } from './color-config.service';
 import { MaskConfigService } from './mask-config.service';
 import { CollectionComponent } from './collection/collection.component';
 // temp hack todo fix
-import { MomentWrapperService } from './moment-wrapper.service';
 import { DndModule } from 'ng2-dnd';
-import { ReactiveFormsModule }          from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { AttachmentComponent } from './attachment/attachment.component';
 import { MultiLineDialogComponent } from './multi-line-dialog/multi-line-dialog.component';
 import { ViewParameterComponent } from './view-parameter/view-parameter.component';
@@ -46,48 +45,58 @@ import { GeminiErrorHandler } from './error.handler';
 import { MenusComponent } from './menus/menus.component';
 import { MenuComponent } from './menu/menu.component';
 import { ButtonsComponent } from './buttons/buttons.component';
-import { ButtonComponent } from './button/button.component'
+import { ButtonComponent } from './button/button.component';
+import { DynamicObjectComponent } from './dynamic-object/dynamic-object.component'
+import { CustomComponentService } from './custom-component.service';
+import { CustomComponentConfigService } from './custom-component-config.service';
+import { DynamicListComponent } from './dynamic-list/dynamic-list.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    FooterComponent,
-    HomeComponent,
-    ObjectComponent,
-    ListComponent,
-    ErrorComponent,
-    ActionsComponent,
-    ActionComponent,
-    PropertiesComponent,
-    CollectionsComponent,
-    DialogComponent,
-    ParametersComponent,
-    EditPropertyComponent,
-    ViewPropertyComponent,
-    EditParameterComponent,
-    RecentComponent,
-    ApplicationPropertiesComponent,
-    GeminiClickDirective,
-    GeminiBooleanDirective,
-    GeminiClearDirective,
-    CollectionComponent,
-    AttachmentComponent,
-    MultiLineDialogComponent,
-    ViewParameterComponent,
-    MenusComponent,
-    MenuComponent,
-    ButtonsComponent,
-    ButtonComponent
-  ],
-  imports: [
-    BrowserModule,
-    DndModule.forRoot(),
-    FormsModule,
-    HttpModule,
-    RoutingModule,
-    ReactiveFormsModule
-  ],
-  providers: [ 
+    declarations: [
+        AppComponent,
+        FooterComponent,
+        HomeComponent,
+        ObjectComponent,
+        ListComponent,
+        ErrorComponent,
+        ActionsComponent,
+        ActionComponent,
+        PropertiesComponent,
+        CollectionsComponent,
+        DialogComponent,
+        ParametersComponent,
+        EditPropertyComponent,
+        ViewPropertyComponent,
+        EditParameterComponent,
+        RecentComponent,
+        ApplicationPropertiesComponent,
+        GeminiClickDirective,
+        GeminiBooleanDirective,
+        GeminiClearDirective,
+        CollectionComponent,
+        AttachmentComponent,
+        MultiLineDialogComponent,
+        ViewParameterComponent,
+        MenusComponent,
+        MenuComponent,
+        ButtonsComponent,
+        ButtonComponent,
+        DynamicObjectComponent,
+        DynamicListComponent
+    ],
+    entryComponents: [
+        ObjectComponent,
+        ListComponent
+    ],
+    imports: [
+        BrowserModule,
+        DndModule.forRoot(),
+        FormsModule,
+        HttpModule,
+        RoutingModule,
+        ReactiveFormsModule
+    ],
+    providers: [
         UrlManagerService,
         ClickHandlerService,
         ContextService,
@@ -98,9 +107,10 @@ import { ButtonComponent } from './button/button.component'
         MaskService,
         ColorConfigService,
         MaskConfigService,
-        MomentWrapperService,
+        CustomComponentService,
+        CustomComponentConfigService,
         { provide: ErrorHandler, useClass: GeminiErrorHandler }
-        ],
-  bootstrap: [AppComponent]
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -16,7 +16,7 @@ import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/f
 import { ParameterViewModel } from '../view-models/parameter-view-model';
 
 @Component({
-    selector: 'app-multi-line-dialog',
+    selector: 'nof-multi-line-dialog',
     templateUrl: './multi-line-dialog.component.html',
     styleUrls: ['./multi-line-dialog.component.css']
 })
@@ -40,7 +40,7 @@ export class MultiLineDialogComponent extends PaneComponent {
     form = (i: number) => {
         const rowData = this.rowData[i];
         return rowData.form;
-    };
+    }
 
     get objectFriendlyName() {
         return this.dialog.objectFriendlyName;
@@ -105,14 +105,14 @@ export class MultiLineDialogComponent extends PaneComponent {
         const pps = dialog.parameters;
         const parms = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<ParameterViewModel>;
         // todo fix types - no any 
-        const controls = _.mapValues(parms, p => [p.getValueForControl(), (a : AbstractControl) => p.validator(a)]) as _.Dictionary<any>;
+        const controls = _.mapValues(parms, p => [p.getValueForControl(), (a: AbstractControl) => p.validator(a)]) as _.Dictionary<any>;
         const form = this.formBuilder.group(controls);
 
         form.valueChanges.subscribe((data: any) => {
             // cache parm values
             _.forEach(data,
                 (v, k) => {
-                    const parm = parms[k];
+                    const parm = parms[k!];
                     parm.setValueFromControl(v);
                 });
             dialog.setParms();
@@ -149,13 +149,12 @@ export class MultiLineDialogComponent extends PaneComponent {
                 .catch((reject: Models.ErrorWrapper) => {
                     this.error.handleError(reject);
                 });
-        }
-        else if (routeData.objectId) {
+        } else if (routeData.objectId) {
             const oid = Models.ObjectIdWrapper.fromObjectId(routeData.objectId);
             this.context.getObject(routeData.paneId, oid, routeData.interactionMode).
                 then((object: Models.DomainObjectRepresentation) => {
 
-                    const ovm = this.viewModelFactory.domainObjectViewModel(object, routeData);
+                    const ovm = this.viewModelFactory.domainObjectViewModel(object, routeData, false);
                     const newDialogId = routeData.dialogId;
 
                     const lcaCollection = _.find(ovm.collections, c => c.hasMatchingLocallyContributedAction(newDialogId));

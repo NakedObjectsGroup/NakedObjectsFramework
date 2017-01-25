@@ -3,7 +3,7 @@ import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { DialogViewModel } from '../view-models/dialog-view-model';
 
 @Component({
-    selector: 'view-parameter',
+    selector: 'nof-view-parameter',
     templateUrl: './view-parameter.component.html',
     styleUrls: ['./view-parameter.component.css']
 })
@@ -61,7 +61,7 @@ export class ViewParameterComponent {
     }
 
 
-    // todo delegated click here smell that we need another component 
+    // todo what's happening here can there be an attachment ? 
     // doAttachmentClick = (right?: boolean) => this.parameter.attachment.doClick(right);
 
     attachmentTitle: string;

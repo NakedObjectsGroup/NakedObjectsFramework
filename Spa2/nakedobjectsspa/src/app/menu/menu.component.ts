@@ -3,7 +3,7 @@ import { LinkViewModel } from '../view-models/link-view-model';
 import { UrlManagerService } from "../url-manager.service";
 
 @Component({
-    selector: 'menu',
+    selector: 'nof-menu',
     templateUrl: './menu.component.html',
     styleUrls: ['./menu.component.css']
 })
@@ -22,7 +22,7 @@ export class MenuComponent implements OnInit {
 
     doClick() {
         const menuId = this.menu.link.rel().parms[0].value;
-        this.urlManager.setMenu(menuId, this.menu.paneId);
+        this.urlManager.setMenu(menuId!, this.menu.paneId);
     }
 
     get title() {

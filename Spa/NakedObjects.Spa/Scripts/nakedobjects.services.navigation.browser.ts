@@ -10,11 +10,10 @@ namespace NakedObjects {
         push() : void;
     }
 
-    app.service("navigation", function() {
+    app.service("navigation", function () {
         const nav = <INavigation>this;
-        nav.back = () =>
-            parent.history.back(1);
-        nav.forward = () => parent.history.forward(1);
-        nav.push = () => {};
+        nav.back = () => parent.history.back();
+        nav.forward = () => parent.history.forward();
+        nav.push = () => { };
     });
 }

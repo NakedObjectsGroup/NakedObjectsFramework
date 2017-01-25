@@ -12,7 +12,7 @@ import * as Msg from '../user-messages';
 import * as _ from "lodash";
 import * as Helpers from './helpers-view-models';
 import { ContextService } from '../context.service';
-import { MomentWrapperService } from '../moment-wrapper.service';
+
 
 export abstract class FieldViewModel extends MessageViewModel {
 
@@ -21,7 +21,6 @@ export abstract class FieldViewModel extends MessageViewModel {
         protected readonly colorService: ColorService,
         protected readonly error: ErrorService,
         protected readonly context: ContextService,
-        protected readonly momentWrapperService : MomentWrapperService,
         public readonly onPaneId: number,
         public readonly isScalar: boolean,
         public readonly id: string,
@@ -80,7 +79,7 @@ export abstract class FieldViewModel extends MessageViewModel {
 
     readonly drop = (newValue: IDraggableViewModel) => Helpers.drop(this.context, this.error, this, newValue);
 
-    readonly validate = (modelValue: any, viewValue: string, mandatoryOnly: boolean) => Helpers.validate(this.rep, this, this.momentWrapperService, modelValue, viewValue, mandatoryOnly);
+    readonly validate = (modelValue: any, viewValue: string, mandatoryOnly: boolean) => Helpers.validate(this.rep, this,  modelValue, viewValue, mandatoryOnly);
 
     get choices(): ChoiceViewModel[] {
         return this.choiceOptions;
@@ -201,14 +200,14 @@ export abstract class FieldViewModel extends MessageViewModel {
         this.description = this.description || Msg.autoCompletePrompt;
     }
 
-    protected setupConditionalChoices(rep: Models.IField, digest?: string) {
+    protected setupConditionalChoices(rep: Models.IField, digest?: string | null) {
 
         this.conditionalChoices = (args: _.Dictionary<Models.Value>) => {
             const createcvm = _.partial(Helpers.createChoiceViewModels, this.id, null);
             return this.context.conditionalChoices(rep, this.id, () => <_.Dictionary<Models.Value>>{}, args, digest).then(createcvm);
         };
         const promptLink = rep.promptLink() as Models.Link;
-        this.promptArguments = _.fromPairs(_.map(promptLink.arguments(), (v: any, key: string) => [key, new Models.Value(v.value)]));
+        this.promptArguments = _.fromPairs(_.map(promptLink!.arguments()!, (v: any, key: string) => [key, new Models.Value(v.value)]));
     }
 
     protected getRequiredIndicator() {
@@ -269,10 +268,10 @@ export abstract class FieldViewModel extends MessageViewModel {
             if (this.entryType === Models.EntryType.MultipleChoices || this.entryType === Models.EntryType.MultipleConditionalChoices || this.isCollectionContributed) {
                 const selections = this.selectedMultiChoices || [];
                 if (this.type === "scalar") {
-                    const selValues = _.map(selections, cvm => cvm.getValue().scalar());
+                    const selValues = _.map(selections, (cvm: ChoiceViewModel)  => cvm.getValue().scalar());
                     return new Models.Value(selValues);
                 }
-                const selRefs = _.map(selections, cvm => ({ href: cvm.getValue().href(), title: cvm.name })); // reference 
+                const selRefs = _.map(selections, cvm => ({ href: cvm.getValue().href()!, title: cvm.name })); // reference 
                 return new Models.Value(selRefs);
             }
 
@@ -282,7 +281,7 @@ export abstract class FieldViewModel extends MessageViewModel {
             }
 
             // reference 
-            return new Models.Value(choiceValue && choiceValue.isReference() && this.selectedChoice ? { href: choiceValue.href(), title: this.selectedChoice.name } : null);
+            return new Models.Value(choiceValue && choiceValue.isReference() && this.selectedChoice ? { href: choiceValue.href()!, title: this.selectedChoice.name } : null);
         }
 
         if (this.type === "scalar") {
@@ -309,6 +308,6 @@ export abstract class FieldViewModel extends MessageViewModel {
         }
 
         // reference
-        return new Models.Value(this.reference ? { href: this.reference, title: this.value.toString() } : null);
+        return new Models.Value(this.reference ? { href: this.reference, title: this.value!.toString() } : null);
     }
 }

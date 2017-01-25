@@ -6,7 +6,7 @@ import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 import * as Models from "../models";
 
 @Component({
-    selector: 'properties',
+    selector: 'nof-properties',
     templateUrl: './properties.component.html',
     styleUrls: ['./properties.component.css']
 })

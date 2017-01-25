@@ -1,6 +1,6 @@
 {
   "project": {
-    "version": "1.0.0-beta.24",
+    "version": "1.0.0-beta.26",
     "name": "nakedobjectsspa"
   },
   "apps": [
@@ -20,7 +20,7 @@
       "styles": [
         "styles.css"
       ],
-      "scripts": ["../node_modules/lodash/index.js", "../node_modules/moment/moment.js"],
+      "scripts": [],
       "environments": {
         "source": "environments/environment.ts",
         "dev": "environments/environment.ts",
@@ -28,8 +28,6 @@
       }
     }
   ],
-  "addons": [],
-  "packages": [],
   "e2e": {
     "protractor": {
       "config": "./protractor.conf.js"

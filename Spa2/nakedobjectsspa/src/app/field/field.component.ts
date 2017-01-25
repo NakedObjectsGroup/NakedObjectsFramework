@@ -89,7 +89,7 @@ export abstract class FieldComponent {
         return _.mapValues(this.pArgs,
             (v, n) => {
                 const pop = _.find(parmsOrProps, p => p.argId === n);
-                return pop.getValue();
+                return pop!.getValue();
             });
     }
 

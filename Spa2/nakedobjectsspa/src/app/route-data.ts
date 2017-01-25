@@ -2,6 +2,12 @@ import * as Models from "./models";
 import * as Config from "./config";
 import * as _ from "lodash";
 
+export interface ICustomActivatedRouteData {
+    pane: number;
+    class: string;
+    dynamicType? : ViewType.Object | ViewType.List;
+}
+
 export enum ViewType {
     Home,
     Object,
@@ -42,10 +48,10 @@ export class RouteData {
     pane2: PaneRouteData;
 
     pane = (pane: number) => {
-        if (pane === 1) return this.pane1;
-        if (pane === 2) return this.pane2;
+        if (pane === 1) { return this.pane1; }
+        if (pane === 2) { return this.pane2; }
         throw new Error(`${pane} is not a valid pane index on RouteData`);
-    };
+    }
 }
 
 interface ICondition {

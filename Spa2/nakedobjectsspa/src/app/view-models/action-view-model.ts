@@ -63,9 +63,12 @@ export class ActionViewModel {
             this.urlManager.setDialogOrMultiLineDialog(this.actionRep, this.paneId);
         }
         : (right?: boolean) => {
-            const pps = this.parameters();
             this.incrementPendingPotentAction();
-            this.execute(pps, right)
+
+            this.parameters()
+                .then((pps: ParameterViewModel[]) => {
+                    return this.execute(pps, right);
+                })
                 .then((actionResult: Models.ActionResultRepresentation) => {
                     this.decrementPendingPotentAction();
                     // if expect result and no warning from server generate one here
@@ -80,24 +83,48 @@ export class ActionViewModel {
                 });
         };
 
+    private getInvokable() {
+        if (this.invokableActionRep) {
+            return Promise.resolve(this.invokableActionRep);
+        }
+
+        return this.context.getInvokableAction(this.actionRep)
+            .then((details: Models.IInvokableAction) => {
+                this.invokableActionRep = details;
+                return details;
+            });
+    }
+
 
     // todo this is modified maybe better way of doing ?
     execute = (pps: ParameterViewModel[], right?: boolean): Promise<Models.ActionResultRepresentation> => {
         const parmMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Models.Value>;
         _.forEach(pps, p => this.urlManager.setParameterValue(this.actionRep.actionId(), p.parameterRep, p.getValue(), this.paneId));
-        // todo is this necessary - should we always be invokable by now ?
-        return this.context.getInvokableAction(this.actionRep)
+        return this.getInvokable()
             .then((details: Models.IInvokableAction) => this.context.invokeAction(details, parmMap, this.paneId, this.clickHandler.pane(this.paneId, right), this.gotoResult));
     };
 
 
     readonly disabled = () => !!this.actionRep.disabledReason();
 
-    readonly parameters = () => {
-        // don't use actionRep directly as it may change and we've closed around the original value
-        const parameters = _.pickBy(this.invokableActionRep.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Models.Parameter>;
+    private getParameters(invokableAction: Models.IInvokableAction) {
+        const parameters = _.pickBy(invokableAction.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Models.Parameter>;
         const parms = this.routeData.actionParams;
         return _.map(parameters, parm => this.viewModelFactory.parameterViewModel(parm, parms[parm.id()], this.paneId));
+    }
+
+    readonly parameters = () => {
+
+        if (this.invokableActionRep) {
+            const pps = this.getParameters(this.invokableActionRep);
+            return Promise.resolve(pps);
+        }
+
+        return this.context.getInvokableAction(this.actionRep)
+            .then((details: Models.IInvokableAction) => {
+                this.invokableActionRep = details;
+                return this.getParameters(details);
+            });
     };
 
     readonly makeInvokable = (details: Models.IInvokableAction) => this.invokableActionRep = details;

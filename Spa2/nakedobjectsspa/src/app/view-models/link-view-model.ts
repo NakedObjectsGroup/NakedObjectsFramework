@@ -50,5 +50,5 @@ export class LinkViewModel implements IDraggableViewModel {
     readonly canDropOn = (targetType: string) => this.context.isSubTypeOf(this.domainType, targetType);
 
     // because may be clicking on menu already open so want to reset focus
-    readonly doClick = (right?: boolean) => this.urlManager.setMenu(this.link.rel().parms[0].value, this.paneId);
+    readonly doClick = (right?: boolean) => this.urlManager.setMenu(this.link.rel().parms[0].value!, this.paneId);
 }

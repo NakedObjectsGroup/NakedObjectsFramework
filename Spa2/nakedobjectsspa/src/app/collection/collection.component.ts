@@ -10,7 +10,7 @@ import { ISubscription } from 'rxjs/Subscription';
 type state = "summary" | "list" | "table";
 
 @Component({
-    selector: 'collection',
+    selector: 'nof-collection',
     templateUrl: './collection.component.html',
     styleUrls: ['./collection.component.css']
 })

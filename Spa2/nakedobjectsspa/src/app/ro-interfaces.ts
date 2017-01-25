@@ -5,7 +5,7 @@ export type httpMethodsType = "POST" | "PUT" | "GET" | "DELETE";
 export interface ILink {
     id?: string;
     rel?: string;
-    href: string;
+    href: string; // todo make a helper object rather than string cf Rel ? 
     type?: string;
     method?: httpMethodsType;
     title?: string;
@@ -34,9 +34,9 @@ export interface IExtensions {
 
 export interface IDomainObjectExtensions extends IExtensions {
     friendlyName: string;
-    description: string;  
+    description: string;
     domainType: string;
-    pluralName: string; 
+    pluralName: string;
     isService: boolean;
 }
 
@@ -44,8 +44,8 @@ export interface IPropertyExtensions extends IExtensions {
     friendlyName: string;
     description: string;
     returnType: string;
-    optional: boolean;  
-    memberOrder: number; 
+    optional: boolean;
+    memberOrder: number;
 }
 
 export interface ICollectionExtensions extends IExtensions {
@@ -62,7 +62,7 @@ export interface IActionExtensions extends IExtensions {
     description: string;
     returnType: string;
     hasParams: boolean;
-    memberOrder: number; 
+    memberOrder: number;
 }
 
 export interface IParameterExtensions extends IExtensions {
@@ -76,7 +76,7 @@ export interface IRepresentation {
 }
 
 export interface IResourceRepresentation extends IRepresentation {
-    links: ILink[],
+    links: ILink[];
     extensions: IExtensions;
 }
 
@@ -85,9 +85,9 @@ export interface IHomePageRepresentation extends IResourceRepresentation {
 }
 
 export interface IUserRepresentation extends IResourceRepresentation {
-    userName: string,
-    friendlyName: string,
-    email: string,
+    userName: string;
+    friendlyName: string;
+    email: string;
     roles: string[];
 }
 
@@ -109,7 +109,7 @@ export interface IVersionRepresentation extends IResourceRepresentation {
     optionalCapabilities: IOptionalCapabilities;
 }
 
-export type scalarValueType = string | number | boolean;
+export type scalarValueType = string | number | boolean | null;
 export type valueType = scalarValueType | ILink;
 
 export interface IValue {
@@ -157,7 +157,7 @@ export interface IPropertyMember extends IMember {
     value?: valueType;
     choices?: valueType[];
     hasChoices: boolean;
-    extensions : IPropertyExtensions;
+    extensions: IPropertyExtensions;
 }
 
 export interface ICollectionMember extends IMember {

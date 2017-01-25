@@ -13,7 +13,7 @@ export class RecentItemsViewModel {
         onPaneId: number
     ) {
         const items = _.map(this.context.getRecentlyViewed(), (o, i) => ({ obj: o, link: o.updateSelfLinkWithTitle(), index: i }));
-        this.items = _.map(items, i => viewModelFactory.recentItemViewModel(i.obj, i.link, onPaneId, false, i.index));
+        this.items = _.map(items, i => viewModelFactory.recentItemViewModel(i.obj, i.link!, onPaneId, false, i.index));
     }
 
     readonly items: RecentItemViewModel[];

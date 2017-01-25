@@ -6,7 +6,7 @@ import { DialogViewModel } from '../view-models/dialog-view-model';
 import * as Models from "../models";
 
 @Component({
-    selector: 'parameters',
+    selector: 'nof-parameters',
     templateUrl: './parameters.component.html',
     styleUrls: ['./parameters.component.css']
 })
@@ -24,9 +24,7 @@ export class ParametersComponent {
     @ViewChildren(EditParameterComponent)
     parmComponents: QueryList<EditParameterComponent>;
 
-    classes = () => {
-        return `parameter${this.parent.isMultiLineDialogRow ? " multilinedialog" : ""}`;
-    }
+    classes = () =>  `parameter${this.parent.isMultiLineDialogRow ? " multilinedialog" : ""}`;
 
     focusOnFirstAction(parms: QueryList<EditParameterComponent>) {
         if (parms && parms.first) {

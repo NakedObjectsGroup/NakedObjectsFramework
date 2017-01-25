@@ -9,7 +9,7 @@ import { PropertyViewModel } from '../view-models/property-view-model';
 import * as Models from "../models";
 
 @Component({
-    selector: 'view-property',
+    selector: 'nof-view-property',
     templateUrl: './view-property.component.html',
     styleUrls: ['./view-property.component.css']
 })
@@ -152,8 +152,9 @@ export class ViewPropertyComponent implements OnInit {
     // todo DRY and rename this !!
     cut(event: any) {
         const cKeyCode = 67;
-        if (event && (event.keyCode === cKeyCode && event.ctrlKey)) {
-            this.context.setCutViewModel(this.property);
+        const prop = this.property;
+        if (event && (event.keyCode === cKeyCode && event.ctrlKey) && prop) {
+            this.context.setCutViewModel(prop);
             event.preventDefault();
         }
     }

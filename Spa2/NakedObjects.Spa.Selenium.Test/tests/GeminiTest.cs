@@ -276,7 +276,7 @@ namespace NakedObjects.Selenium {
         }
 
         protected virtual void WaitForMenus() {
-            wait.Until(dr => dr.FindElements(By.CssSelector(".menu")).Count == 10);
+            wait.Until(dr => dr.FindElements(By.CssSelector("nof-menu")).Count == 10);
         }
 
         protected virtual void GoToMenuFromHomePage(string menuName) {
@@ -284,11 +284,11 @@ namespace NakedObjects.Selenium {
 
             WaitForMenus();
 
-            ReadOnlyCollection<IWebElement> menus = br.FindElements(By.CssSelector(".menu"));
+            ReadOnlyCollection<IWebElement> menus = br.FindElements(By.CssSelector("nof-menu"));
             IWebElement menu = menus.FirstOrDefault(s => s.Text == menuName);
             if (menu != null) {
                 Click(menu);
-                wait.Until(d => d.FindElements(By.CssSelector(".actions .action")).Count > 0);
+                wait.Until(d => d.FindElements(By.CssSelector(".actions nof-action")).Count > 0);
             }
             else {
                 throw new NotFoundException(string.Format("menu not found {0}", menuName));
@@ -297,9 +297,9 @@ namespace NakedObjects.Selenium {
 
         protected virtual void OpenObjectActions(Pane pane = Pane.Single) {
             string paneSelector = CssSelectorFor(pane);
-            var actions = wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " .menu")).Single(el => el.GetAttribute("value") == "Actions"));
+            var actions = wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + "input")).Single(el => el.GetAttribute("value") == "Actions"));
             Click(actions);
-            wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " .actions .action")).Count > 0);
+            wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " .actions nof-action")).Count > 0);
         }
 
         protected virtual void OpenSubMenu(string menuName, Pane pane = Pane.Single) {
@@ -434,7 +434,7 @@ namespace NakedObjects.Selenium {
         }
 
         protected IWebElement GetInputButton(string text, Pane pane = Pane.Single) {
-            string selector = CssSelectorFor(pane) + ".header .action";
+            string selector = CssSelectorFor(pane) + "input";
             return wait.Until(dr => dr.FindElements(By.CssSelector(selector)).Single(e => e.GetAttribute("value") == text));
         }
 
@@ -489,24 +489,24 @@ namespace NakedObjects.Selenium {
         #region Object Actions
 
         protected ReadOnlyCollection<IWebElement> GetObjectActions(int totalNumber, Pane pane = Pane.Single) {
-            var selector = CssSelectorFor(pane) + ".actions .action";
+            var selector = CssSelectorFor(pane) + ".actions nof-action";
             wait.Until(d => d.FindElements(By.CssSelector(selector)).Count == totalNumber);
             return br.FindElements(By.CssSelector(selector));
         }
 
         protected void AssertAction(int number, string actionName) {
-            wait.Until(dr => dr.FindElements(By.CssSelector(".actions .action"))[number].Text == actionName);
+            wait.Until(dr => dr.FindElements(By.CssSelector(".actions nof-action"))[number].Text == actionName);
         }
 
         protected virtual void AssertActionNotDisplayed(string action) {
-            wait.Until(dr => dr.FindElements(By.CssSelector(".actions .action")).FirstOrDefault(el => el.Text == action) == null);
+            wait.Until(dr => dr.FindElements(By.CssSelector(".actions nof-action")).FirstOrDefault(el => el.Text == action) == null);
         }
 
         protected IWebElement GetObjectAction(string actionName, Pane pane = Pane.Single, string subMenuName = null) {
             if (subMenuName != null) {
                 OpenSubMenu(subMenuName);
             }
-            var selector = CssSelectorFor(pane) + ".actions .action div";
+            var selector = CssSelectorFor(pane) + ".actions .name";
             var a = wait.Until(d => d.FindElements(By.CssSelector(selector)).Single(we => we.Text == actionName));
             ScrollTo(a);
             return a;
@@ -604,7 +604,7 @@ namespace NakedObjects.Selenium {
         }
 
         protected void WaitForSelectedCheckboxes(int number) {
-            wait.Until(dr => dr.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type") == "checkbox" && el.Selected && el.Enabled) == number);
+            wait.Until(dr => dr.FindElements(By.CssSelector("input[type='checkbox']")).Count(el => el.Selected && el.Enabled) == number);
         }
 
         #endregion

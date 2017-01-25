@@ -10,7 +10,7 @@ import { PaneComponent } from '../pane/pane';
 import * as Models from "../models";
 
 @Component({
-    selector: 'attachment',
+    selector: 'nof-attachment',
     templateUrl: './attachment.component.html',
     styleUrls: ['./attachment.component.css']
 })

@@ -34,7 +34,7 @@ namespace NakedObjects.Selenium {
             GeminiUrl("home?m1=CustomerRepository");
             WaitForView(Pane.Single, PaneType.Home, "Home");
             wait.Until(d => d.FindElement(By.CssSelector(".actions")));
-            ReadOnlyCollection<IWebElement> actions = br.FindElements(By.CssSelector(".action"));
+            ReadOnlyCollection<IWebElement> actions = br.FindElements(By.CssSelector("nof-action"));
             Assert.AreEqual(CustomerServiceActions, actions.Count);
             //Assert.AreEqual("Find Customer By Account Number", actions[0].Text);
             //Assert.AreEqual("Find Store By Name", actions[1].Text);
@@ -59,7 +59,7 @@ namespace NakedObjects.Selenium {
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
             wait.Until(d => d.FindElement(By.CssSelector(".view")));
             wait.Until(d => d.FindElement(By.CssSelector(".header")));
-            wait.Until(d => d.FindElement(By.CssSelector(".menu")).GetAttribute("value") == "Actions");
+            wait.Until(d => d.FindElement(By.CssSelector("input[value='Actions']")));
             wait.Until(d => d.FindElement(By.CssSelector(".main-column")));
             wait.Until(d => d.FindElement(By.CssSelector(".collections")));
 
