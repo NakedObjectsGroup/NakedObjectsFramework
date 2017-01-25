@@ -208,6 +208,7 @@ export class ListComponent extends PaneComponent implements AfterViewInit {
             // should never get here 
             throw new Error("Missing cachedList in listcomponent");
         }
+        this.selectedDialogId = routeData.dialogId;
     }
 
     // todo DRY this - and rename - copy not cut
@@ -232,4 +233,6 @@ export class ListComponent extends PaneComponent implements AfterViewInit {
         this.focusOnRow(this.row);
         this.row.changes.subscribe((ql: QueryList<ElementRef>) => this.focusOnRow(ql));
     }
+
+    selectedDialogId: string;
 }

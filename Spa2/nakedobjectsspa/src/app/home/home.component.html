@@ -8,7 +8,7 @@
 		</div>
 		<nof-actions class="actions" *ngIf="selectedMenu" [menu]="selectedMenu"></nof-actions>
 		<div class="main-column">
-		<nof-dialog *ngIf="selectedMenu" [parent]="selectedMenu"></nof-dialog>
+		<nof-dialog *ngIf="selectedMenu" [selectedDialogId]="selectedDialogId" [parent]="selectedMenu" ></nof-dialog>
 		</div>
 	</div>
 </div>

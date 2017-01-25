@@ -24,7 +24,7 @@ import { CollectionViewModel } from '../view-models/collection-view-model';
     templateUrl: './dialog.component.html',
     styleUrls: ['./dialog.component.css']
 })
-export class DialogComponent implements OnInit, OnDestroy {
+export class DialogComponent  {
 
     constructor(
         private readonly viewModelFactory: ViewModelFactoryService,
@@ -35,9 +35,29 @@ export class DialogComponent implements OnInit, OnDestroy {
         private readonly formBuilder: FormBuilder) {
     }
 
+    private parentViewModel: MenuViewModel | DomainObjectViewModel | ListViewModel | CollectionViewModel;
+  
     @Input()
-    parent: MenuViewModel | DomainObjectViewModel | ListViewModel | CollectionViewModel;
+    set parent(parent: MenuViewModel | DomainObjectViewModel | ListViewModel | CollectionViewModel) {
+        this.parentViewModel = parent;
+    }
 
+    get parent(): MenuViewModel | DomainObjectViewModel | ListViewModel | CollectionViewModel {
+        return this.parentViewModel;
+    }
+
+    private currentDialogId: string;
+
+    @Input()
+    set selectedDialogId(id: string) {
+        this.currentDialogId = id;
+        this.getDialog();
+    }
+
+    get selectedDialogId(): string {
+        return this.currentDialogId;
+    }
+  
     dialog: DialogViewModel | null;
 
     form: FormGroup;
@@ -62,8 +82,6 @@ export class DialogComponent implements OnInit, OnDestroy {
         return dialog ? dialog.tooltip() : "";
     }
 
-    paneId: number;
-
     onSubmit(right?: boolean) {
         if (this.dialog) {
             _.forEach(this.parms,
@@ -80,8 +98,6 @@ export class DialogComponent implements OnInit, OnDestroy {
             this.dialog.doCloseReplaceHistory();
         }
     };
-
-    private currentDialogId: string;
 
     private parms: _.Dictionary<ParameterViewModel>;
 
@@ -113,7 +129,7 @@ export class DialogComponent implements OnInit, OnDestroy {
     }
 
 
-    getDialog(routeData: PaneRouteData) {
+    getDialog() {
 
         // if it's the same dialog just return 
 
@@ -126,7 +142,7 @@ export class DialogComponent implements OnInit, OnDestroy {
             const p = this.parent;
             let action: Models.ActionMember | Models.ActionRepresentation | null = null;
             let actionViewModel: ActionViewModel | null = null;
-
+            
             if (p instanceof MenuViewModel) {
                 action = p.menuRep.actionMember(this.currentDialogId);
             }
@@ -152,7 +168,7 @@ export class DialogComponent implements OnInit, OnDestroy {
 
                         if (this.currentDialogId) {
 
-                            const dialogViewModel = this.viewModelFactory.dialogViewModel(routeData, details, actionViewModel, false);
+                            const dialogViewModel = this.viewModelFactory.dialogViewModel(this.parent.routeData, details, actionViewModel, false);
                             this.createForm(dialogViewModel);
 
                             // must be a change 
@@ -167,60 +183,6 @@ export class DialogComponent implements OnInit, OnDestroy {
 
         } else {
             this.closeExistingDialog();
-        }
-    }
-
-    private activatedRouteDataSub: ISubscription;
-    private paneRouteDataSub: ISubscription;
-    private lastPaneRouteData : PaneRouteData;
-
-    private routeDataMatchesParent(rd: PaneRouteData) {
-        if (this.parent instanceof MenuViewModel) {
-            return rd.location === ViewType.Home;
-        }
-
-        if (this.parent instanceof DomainObjectViewModel) {
-            return rd.location === ViewType.Object;
-        }
-
-        if (this.parent instanceof ListViewModel) {
-            return rd.location === ViewType.List;
-        }
-
-        if (this.parent instanceof CollectionViewModel) {
-            return rd.location === ViewType.Object;
-        }
-
-        return false;
-    }
-
-
-    ngOnInit(): void {
-
-        this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: any) => {
-            this.paneId = data["pane"];
-
-            if (!this.paneRouteDataSub) {
-                this.paneRouteDataSub =
-                    this.urlManager.getPaneRouteDataObservable(this.paneId)
-                        .subscribe((paneRouteData: PaneRouteData) => {
-                            if (!paneRouteData.isEqual(this.lastPaneRouteData)) {
-                                if (this.routeDataMatchesParent(paneRouteData)) {
-                                    this.currentDialogId = paneRouteData.dialogId;
-                                    this.getDialog(paneRouteData);
-                                }
-                            }
-                        });
-            };
-        });
-    }
-
-    ngOnDestroy(): void {
-        if (this.activatedRouteDataSub) {
-            this.activatedRouteDataSub.unsubscribe();
-        }
-        if (this.paneRouteDataSub) {
-            this.paneRouteDataSub.unsubscribe();
         }
     }
 }

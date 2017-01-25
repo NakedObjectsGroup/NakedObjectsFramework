@@ -8,7 +8,7 @@
 		<div class="details" *ngIf="size == 0">{{description}}</div>
 		<div *ngIf="size > 0">
 			<nof-actions class="actions" *ngIf="showActions()" [menu]="collection"></nof-actions>
-			<nof-dialog [parent]="collection"></nof-dialog>
+			<nof-dialog [parent]="collection" [selectedDialogId]="selectedDialogId"></nof-dialog>
 			<div class="summary" *ngIf="state == 'list'">
 				<div class="details">{{description}}</div>
 				<img class="icon-table" (click)="doTable()" src="../../assets/table.png" title="View as Table"/>
