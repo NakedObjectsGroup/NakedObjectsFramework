@@ -7,11 +7,6 @@
     display: block;
 }
 
-/*Disabled*/
-:host[disabled="disabled"] {
-    color: grey;
-}
-
 :host[disabled="disabled"]:hover {
    outline: none;
 }
@@ -20,6 +15,10 @@
     display: block;
     cursor: pointer;
    padding: 2px 5px;
+}
+
+.name[disabled="true"] {
+    color: grey;
 }
 
 .name:hover, .name:focus   {

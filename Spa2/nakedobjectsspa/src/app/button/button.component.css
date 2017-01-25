@@ -24,3 +24,7 @@ input {  /*To override user agent style sheet defaults*/
     outline-style: solid;
     outline-width: 1px;
 }
+
+input[disabled="true"] {
+    color: grey;
+}
