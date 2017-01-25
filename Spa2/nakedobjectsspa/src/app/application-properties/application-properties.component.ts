@@ -50,6 +50,7 @@ export class ApplicationPropertiesComponent implements OnInit {
 
         this.applicationProperties.serverUrl = Config.getAppPath();
 
+        // todo
         // apvm.clientVersion = (NakedObjects as any)["version"] || "Failed to write version";
 
     }

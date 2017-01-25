@@ -67,7 +67,6 @@ export class ListViewModel extends ContributedActionParentViewModel {
     }
 
     private readonly setPage = (newPage: number, newState: CollectionViewState) => {
-        this.context.updateValues();
         this.pageOrRecreate(newPage, this.pageSize, newState);
     }
 
@@ -162,17 +161,14 @@ export class ListViewModel extends ContributedActionParentViewModel {
     }
 
     readonly doSummary = () => {
-        this.context.updateValues();
         this.urlManager.setListState(CollectionViewState.Summary, this.onPaneId);
     }
 
     readonly doList = () => {
-        this.context.updateValues();
         this.urlManager.setListState(CollectionViewState.List, this.onPaneId);
     }
 
     readonly doTable = () => {
-        this.context.updateValues();
         this.urlManager.setListState(CollectionViewState.Table, this.onPaneId);
     }
 

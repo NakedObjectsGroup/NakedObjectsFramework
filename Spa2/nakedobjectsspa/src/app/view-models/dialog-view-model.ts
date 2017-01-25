@@ -47,9 +47,6 @@ export class DialogViewModel extends MessageViewModel {
         this.resetMessage();
         this.id = this.actionViewModel.actionRep.actionId();
 
-        // todo use subscribe ? 
-        this.context.setParmUpdater(this.setParms, routeData.paneId);
-
         this.incrementPendingPotentAction();
     }
 
@@ -75,7 +72,6 @@ export class DialogViewModel extends MessageViewModel {
 
     private readonly execute = (right?: boolean) => {
         const pps = this.parameters;
-        this.context.updateValues();
         return this.actionViewModel.execute(pps, right);
     };
 
@@ -89,8 +85,6 @@ export class DialogViewModel extends MessageViewModel {
         const fields = this.context.getCurrentDialogValues(this.actionMember().actionId(), this.onPaneId);
         _.forEach(this.parameters, p => p.refresh(fields[p.id]));
     }
-
-    readonly deregister = () => this.context.clearParmUpdater(this.onPaneId);
 
     readonly clientValid = () => _.every(this.parameters, p => p.clientValid);
 
@@ -127,13 +121,11 @@ export class DialogViewModel extends MessageViewModel {
 
     // todo tidy and rework these getting confusing 
     doCloseKeepHistory = () => {
-        this.deregister();
         this.urlManager.closeDialogKeepHistory(this.id, this.onPaneId);
         this.decrementPendingPotentAction();
     };
 
     doCloseReplaceHistory = () => {
-        this.deregister();
         this.urlManager.closeDialogReplaceHistory(this.id, this.onPaneId);
         this.decrementPendingPotentAction();
     };

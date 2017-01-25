@@ -48,7 +48,7 @@ class LocalCurrencyFilter implements ILocalFilter {
             return "";
         }
 
-
+        // todo fix locales !!
         const pipe = new CurrencyPipe("en-GB");
         // return $filter("currency")(val, this.symbol, this.fractionSize);
 

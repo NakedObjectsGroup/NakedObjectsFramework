@@ -152,9 +152,6 @@ export class DialogComponent implements OnInit, OnDestroy {
 
                         if (this.currentDialogId) {
 
-                            // todo fix this it's clunky
-                            this.context.clearParmUpdater(routeData.paneId);
-
                             const dialogViewModel = this.viewModelFactory.dialogViewModel(routeData, details, actionViewModel, false);
                             this.createForm(dialogViewModel);
 

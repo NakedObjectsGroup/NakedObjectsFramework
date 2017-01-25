@@ -194,41 +194,6 @@ export class ContextService {
     private readonly parameterCache = new ValueCache();
     private readonly objectEditCache = new ValueCache();
 
-    private parmUpdaters = [() => { }, () => { }, () => { }];
-    private objectUpdaters = [() => { }, () => { }, () => { }];
-
-    setParmUpdater = (updater: () => void, paneId = 1) => {
-        this.parmUpdaters[paneId] = updater;
-    }
-
-    setObjectUpdater = (updater: () => void, paneId = 1) => {
-        this.objectUpdaters[paneId] = updater;
-    }
-
-    clearParmUpdater = (paneId = 1) => {
-        this.parmUpdaters[paneId] = () => {};
-    }
-
-    clearObjectUpdater = (paneId = 1) => {
-        this.objectUpdaters[paneId] = () => {};
-    }
-
-    private updateParmValues = () => {
-        this.parmUpdaters[1]();
-        this.parmUpdaters[2]();
-    }
-
-    private updateObjectValues = () => {
-        this.objectUpdaters[1]();
-        this.objectUpdaters[2]();
-    }
-
-    updateValues = () => {
-        this.updateObjectValues();
-        this.updateParmValues();
-    }
-
-
     getFile = (object: Models.DomainObjectRepresentation, url: string, mt: string) => {
         const isDirty = this.getIsDirty(object.getOid());
         return this.repLoader.getFile(url, mt, isDirty);
@@ -917,9 +882,9 @@ export class ContextService {
         this.objectEditCache.clear(paneId);
     }
 
+    // todo rename confusing actually caches - see also parms
     setPropertyValue = (obj: Models.DomainObjectRepresentation, p: Models.PropertyMember, pv: Models.Value, paneId = 1) => {
+        this.dirtyList.setDirty(obj.getOid());
         this.objectEditCache.addValue(obj.id(), p.id(), pv, paneId);
     }
 }
-
-
