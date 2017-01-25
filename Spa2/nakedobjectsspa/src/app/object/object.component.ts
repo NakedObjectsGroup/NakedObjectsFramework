@@ -274,8 +274,6 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
 
         this.mode = routeData.interactionMode;
 
-        this.context.clearObjectUpdater(routeData.paneId);
-
         const wasDirty = this.context.getIsDirty(oid);
 
         if (isChanging || modeChanging || wasDirty) {

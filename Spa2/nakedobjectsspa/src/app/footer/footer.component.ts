@@ -33,8 +33,6 @@ export class FooterComponent implements OnInit {
     footerTemplate: string;
 
     goHome = (right?: boolean) => {
-        this.context.updateValues();
-
         const newPane = this.clickHandler.pane(1, right);
 
         if (Config.leftClickHomeAlwaysGoesToSinglePane && newPane === 1) {
@@ -44,17 +42,14 @@ export class FooterComponent implements OnInit {
         }
     };
     goBack = () => {
-        this.context.updateValues();
         this.location.back();
     };
     goForward = () => {
-        this.context.updateValues();
         this.location.forward();
     };
 
     swapPanes = () => {
         if (!this.swapDisabled()) {
-            this.context.updateValues();
             this.context.swapCurrentObjects();
             this.urlManager.swapPanes();
         }
@@ -65,7 +60,6 @@ export class FooterComponent implements OnInit {
     }
 
     singlePane = (right?: boolean) => {
-        this.context.updateValues();
         this.urlManager.singlePane(this.clickHandler.pane(1, right));
     };
     logOff = () => {
@@ -91,17 +85,14 @@ export class FooterComponent implements OnInit {
     };
 
     applicationProperties = () => {
-        this.context.updateValues();
         this.urlManager.applicationProperties();
     };
 
     recent = (right?: boolean) => {
-        this.context.updateValues();
         this.urlManager.setRecent(this.clickHandler.pane(1, right));
     };
 
     cicero = () => {
-        this.context.updateValues();
         this.urlManager.singlePane(this.clickHandler.pane(1));
         this.urlManager.cicero();
     };

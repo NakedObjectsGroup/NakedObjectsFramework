@@ -35,7 +35,6 @@ export class ItemViewModel extends LinkViewModel {
     }
 
     readonly selectionChange = () => {
-        this.context.updateValues();
         this.urlManager.setItemSelected(this.index, this.selected, this.id, this.paneId);
     };
 

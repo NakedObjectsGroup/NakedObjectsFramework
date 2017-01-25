@@ -428,6 +428,14 @@ namespace NakedObjects.Selenium {
             Assert.IsFalse(title.StartsWith("Editing"));
         }
 
+        protected void CancelObject(Pane pane = Pane.Single) {
+            Click(GetCancelEditButton(pane));
+            EditButton(pane); //To wait for cancel completed
+            var title = br.FindElement(By.CssSelector(".header .title")).Text;
+            Assert.IsFalse(title.StartsWith("Editing"));
+        }
+
+
         protected IWebElement GetButton(string text, Pane pane = Pane.Single) {
             string selector = CssSelectorFor(pane) + ".header .action";
             return wait.Until(dr => dr.FindElements(By.CssSelector(selector)).Single(e => e.Text == text));

@@ -35,6 +35,32 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("Days To Manufacture:\r\n" + newDays, properties[17].Text);
         }
 
+        public virtual void ObjectEditCancelLeavesUnchanged() {
+            var rand = new Random();
+            GeminiUrl("object?o1=___1.Product--870");
+            EditObject();
+            var oldPrice = WaitForCss("#listprice1").GetAttribute("value");
+            var newPrice = rand.Next(50, 150);
+            ClearFieldThenType("#listprice1", newPrice.ToString());
+
+            var oldDays = WaitForCss("#daystomanufacture1").GetAttribute("value");
+
+            var newDays = rand.Next(1, 49).ToString();
+            ClearFieldThenType("#daystomanufacture1", newDays);
+
+            // triggers caching of values 
+            ClickHomeButton();
+            ClickBackButton();
+
+            CancelObject();
+
+            string currency = "£" + int.Parse(oldPrice).ToString("c").Substring(1);
+        
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[5].Text == "List Price:\r\n" + currency);
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[17].Text == "Days To Manufacture:\r\n" + oldDays);
+        }
+
+
         public virtual void LocalValidationOfMandatoryFields() {
             GeminiUrl("object?i1=Edit&o1=___1.SpecialOffer--11");
             SaveButton().AssertIsEnabled();
@@ -455,6 +481,7 @@ namespace NakedObjects.Selenium {
         [TestMethod] //Mega
         public void MegaObjectEditTest() {
             ObjectEditChangeScalar();
+            ObjectEditCancelLeavesUnchanged();
             LocalValidationOfMandatoryFields();
             LocalValidationOfMaxLength();
             LocalValidationOfRegex();
