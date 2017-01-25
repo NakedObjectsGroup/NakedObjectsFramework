@@ -1,1 +1,1 @@
-module NakedObjects { export const version = "8.3.1" }
+module NakedObjects { export const version = "8.4.0" }

@@ -21,9 +21,6 @@ input {
     border: none;
 }
 
-
-
-
 .clickable-area {
     /*Fix to make menus/actions/reference properties clickable*/
     cursor: pointer;
