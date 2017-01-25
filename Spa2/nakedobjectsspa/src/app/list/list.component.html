@@ -62,9 +62,11 @@
 									<div *ngSwitchCase="'boolean'">
 										<input type="checkbox" [checked]="propertyValue(property)" disabled="disabled" />
 									</div>
-									<div *ngSwitchCase="'number'">
-										<div class="number">{{propertyFormattedValue(property)}}</div>
-									</div>
+								    <div *ngSwitchCase="'number'">
+								        <div class="number">{{propertyFormattedValue(property)}}</div>
+								    </div>
+								    <div *ngSwitchDefault>
+								        <div>{{propertyFormattedValue(property)}}</div>
 									</div>
 								</div>
 							</div>
