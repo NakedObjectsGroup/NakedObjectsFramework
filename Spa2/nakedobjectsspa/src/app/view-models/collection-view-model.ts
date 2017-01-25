@@ -22,7 +22,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
         context: ContextService,
         urlManager: UrlManagerService,
         public readonly collectionRep: Models.CollectionMember | Models.CollectionRepresentation,
-        private readonly routeData: PaneRouteData,
+        public readonly routeData: PaneRouteData,
         forceReload : boolean
     ) {
         super(context, viewModelFactory, urlManager, error, routeData.paneId);

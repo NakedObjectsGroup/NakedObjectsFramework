@@ -24,7 +24,7 @@ export class ListViewModel extends ContributedActionParentViewModel {
         urlManager: UrlManagerService,
         error: ErrorService,
         list: Models.ListRepresentation,
-        private routeData: PaneRouteData
+        public routeData: PaneRouteData
     ) {
         super(context, viewModelFactory, urlManager, error, routeData.paneId);
         this.pluralName = "Objects";   // todo fix constant string

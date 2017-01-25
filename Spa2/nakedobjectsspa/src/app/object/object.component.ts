@@ -276,6 +276,8 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
 
         const wasDirty = this.context.getIsDirty(oid);
 
+        this.selectedDialogId = routeData.dialogId;
+
         if (isChanging || modeChanging || wasDirty) {
 
             // set background color at once to smooth transition
@@ -347,4 +349,6 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
         this.focusOnTitle(this.titleDiv);
         this.titleDiv.changes.subscribe((ql: QueryList<ElementRef>) => this.focusOnTitle(ql));
     }
+
+    selectedDialogId: string;
 }

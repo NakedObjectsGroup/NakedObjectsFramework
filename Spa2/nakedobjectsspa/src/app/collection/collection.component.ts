@@ -105,6 +105,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
                     if (this.currentOid === paneRouteData.objectId) {
                         this.collection.reset(paneRouteData, false);
                     }
+                    this.selectedDialogId = paneRouteData.dialogId;
                 }
             });
     }
@@ -116,5 +117,5 @@ export class CollectionComponent implements OnInit, OnDestroy {
         }
     }
 
-
+    selectedDialogId: string;
 }

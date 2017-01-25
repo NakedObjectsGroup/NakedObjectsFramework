@@ -40,6 +40,7 @@ export class HomeComponent extends PaneComponent {
     }
 
     selectedMenu: MenuViewModel | null;
+    selectedDialogId : string | null;
 
     private menus: MenusViewModel;
 
@@ -59,12 +60,14 @@ export class HomeComponent extends PaneComponent {
             this.context.getMenu(menuId)
                 .then((menu: Models.MenuRepresentation) => {
                     this.selectedMenu = this.viewModelFactory.menuViewModel(menu, paneRouteData);
+                    this.selectedDialogId = paneRouteData.dialogId;
                 })
                 .catch((reject: Models.ErrorWrapper) => {
                     this.error.handleError(reject);
                 });
         } else {
             this.selectedMenu = null;
+            this.selectedDialogId = null;
         }
     }
 

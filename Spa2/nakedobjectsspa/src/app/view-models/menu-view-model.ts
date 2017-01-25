@@ -12,7 +12,7 @@ export class MenuViewModel extends MessageViewModel {
     constructor(
         private readonly viewModelFactory: ViewModelFactoryService,
         public readonly menuRep: Models.MenuRepresentation,
-        routeData: PaneRouteData
+        public readonly routeData: PaneRouteData
     ) {
         super();
 
