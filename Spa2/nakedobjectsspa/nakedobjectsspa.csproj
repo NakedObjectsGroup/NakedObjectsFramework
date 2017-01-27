@@ -94,6 +94,7 @@
     <Content Include="src\fonts\iconFont.ttf" />
     <Content Include="src\fonts\iconFont.woff" />
     <Content Include="src\tsconfig.json" />
+    <Content Include="src\config\config.json" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -117,6 +118,7 @@
     <TypeScriptCompile Include="src\app\color-config.service.ts" />
     <TypeScriptCompile Include="src\app\color.service.ts" />
     <TypeScriptCompile Include="src\app\config.ts" />
+    <TypeScriptCompile Include="src\app\app.config.ts" />
     <TypeScriptCompile Include="src\app\constants.ts" />
     <TypeScriptCompile Include="src\app\context.service.ts" />
     <TypeScriptCompile Include="src\app\custom-component-config.service.ts" />

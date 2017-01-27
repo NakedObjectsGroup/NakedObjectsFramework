@@ -8,7 +8,7 @@ import * as Models from "./models";
 import * as _ from "lodash";
 import { Subject } from 'rxjs/Subject';
 import { IDraggableViewModel } from './view-models/idraggable-view-model';
-
+import * as Appconfig from './app.config';
 
 enum DirtyState {
     DirtyMustReload,
@@ -173,7 +173,8 @@ export class ContextService {
 
     constructor(
         private readonly urlManager: UrlManagerService,
-        private readonly repLoader: RepLoaderService
+        private readonly repLoader: RepLoaderService,
+        private readonly appConfig : Appconfig.AppConfig
     ) {
     }
 
@@ -225,7 +226,7 @@ export class ContextService {
         }
 
         const object = new Models.DomainObjectRepresentation();
-        object.hateoasUrl = Config.getAppPath() + "/objects/" + type + "/" + id;
+        object.hateoasUrl = this.appConfig.config.appPath + "/objects/" + type + "/" + id;
         object.setInlinePropertyDetails(interactionMode === InteractionMode.Edit);
 
 
@@ -350,7 +351,7 @@ export class ContextService {
     getHome = () => {
         // for moment don't bother caching only called on startup and for whatever resaon cache doesn't work. 
         // once version cached no longer called.  
-        return this.repLoader.populate<Models.HomePageRepresentation>(new Models.HomePageRepresentation({}));
+        return this.repLoader.populate<Models.HomePageRepresentation>(new Models.HomePageRepresentation({}, this.appConfig.config.appPath));
     };
 
     getServices = () => {
@@ -819,7 +820,7 @@ export class ContextService {
             return this.subTypeCache[toCheckType][againstType];
         }
 
-        const isSubTypeOf = new Models.DomainTypeActionInvokeRepresentation(againstType, toCheckType);
+        const isSubTypeOf = new Models.DomainTypeActionInvokeRepresentation(againstType, toCheckType, this.appConfig.config.appPath);
 
         const promise = this.repLoader.populate(isSubTypeOf, true)
             .then((updatedObject: Models.DomainTypeActionInvokeRepresentation) => {

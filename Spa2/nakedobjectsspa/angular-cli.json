@@ -5,27 +5,28 @@
   },
   "apps": [
     {
-      "root": "src",
-      "outDir": "dist",
-      "assets": [
-        "assets",
-        "favicon.ico"
-      ],
-      "index": "index.html",
-      "main": "main.ts",
-      "test": "test.ts",
-      "tsconfig": "tsconfig.json",
-      "prefix": "app",
-      "mobile": false,
-      "styles": [
-        "styles.css"
-      ],
-      "scripts": [],
-      "environments": {
-        "source": "environments/environment.ts",
-        "dev": "environments/environment.ts",
-        "prod": "environments/environment.prod.ts"
-      }
+        "root": "src",
+        "outDir": "dist",
+        "assets": [
+            "assets",
+            "config", 
+            "favicon.ico"
+        ],
+        "index": "index.html",
+        "main": "main.ts",
+        "test": "test.ts",
+        "tsconfig": "tsconfig.json",
+        "prefix": "app",
+        "mobile": false,
+        "styles": [
+            "styles.css"
+        ],
+        "scripts": [],
+        "environments": {
+            "source": "environments/environment.ts",
+            "dev": "environments/environment.ts",
+            "prod": "environments/environment.prod.ts"
+        }
     }
   ],
   "e2e": {

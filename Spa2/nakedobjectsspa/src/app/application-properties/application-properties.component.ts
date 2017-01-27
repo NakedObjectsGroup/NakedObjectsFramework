@@ -5,6 +5,7 @@ import * as Models from '../models';
 import * as Config from '../config';
 import { ErrorService } from "../error.service";
 import { ApplicationPropertiesViewModel } from '../view-models/application-properties-view-model';
+import { AppConfig} from '../app.config';
 
 @Component({
     selector: 'nof-application-properties',
@@ -15,7 +16,8 @@ export class ApplicationPropertiesComponent implements OnInit {
 
     constructor(
         private readonly context: ContextService,
-        private readonly error: ErrorService) {
+        private readonly error: ErrorService,
+        private readonly appConfig : AppConfig) {
     }
 
     get userName() {
@@ -48,7 +50,7 @@ export class ApplicationPropertiesComponent implements OnInit {
             then((v: Models.VersionRepresentation) => this.applicationProperties.serverVersion = v.wrapped()).
             catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
-        this.applicationProperties.serverUrl = Config.getAppPath();
+        this.applicationProperties.serverUrl = this.appConfig.config.appPath;
 
         // todo
         // apvm.clientVersion = (NakedObjects as any)["version"] || "Failed to write version";

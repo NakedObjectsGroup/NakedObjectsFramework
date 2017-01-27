@@ -2516,9 +2516,9 @@ export class DomainTypeActionInvokeRepresentation extends ResourceRepresentation
 
     wrapped = () => this.resource() as Ro.IDomainTypeActionInvokeRepresentation;
 
-    constructor(againstType: string, toCheckType: string) {
+    constructor(againstType: string, toCheckType: string, appPath : string) {
         super();
-        this.hateoasUrl = `${Config.getAppPath()}/domain-types/${toCheckType}/type-actions/isSubtypeOf/invoke`;
+        this.hateoasUrl = `${appPath}/domain-types/${toCheckType}/type-actions/isSubtypeOf/invoke`;
         this.urlParms = {};
         this.urlParms["supertype"] = againstType;
     }
@@ -2544,9 +2544,9 @@ export class DomainTypeActionInvokeRepresentation extends ResourceRepresentation
 // matches the home page representation  5.0 
 export class HomePageRepresentation extends ResourceRepresentation<Ro.IHomePageRepresentation> {
 
-    constructor(rep: Ro.IRepresentation) {
+    constructor(rep: Ro.IRepresentation, appPath : string) {
         super(rep);
-        this.hateoasUrl = Config.getAppPath();
+        this.hateoasUrl = appPath;
     }
 
     wrapped = () => this.resource() as Ro.IHomePageRepresentation;

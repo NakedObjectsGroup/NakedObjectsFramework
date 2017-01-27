@@ -1,5 +1,5 @@
 import { Component, AfterViewInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
-import { getAppPath } from "../config";
+import { AppConfig } from "../app.config";
 import { ActivatedRoute, Data } from '@angular/router';
 import { UrlManagerService } from "../url-manager.service";
 import { ContextService } from "../context.service";

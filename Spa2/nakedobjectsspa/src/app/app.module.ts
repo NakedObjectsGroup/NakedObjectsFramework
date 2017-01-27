@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ErrorHandler } from '@angular/core';
+import { NgModule, ErrorHandler, APP_INITIALIZER } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RoutingModule } from './app-routing.module';
@@ -49,6 +49,7 @@ import { DynamicObjectComponent } from './dynamic-object/dynamic-object.componen
 import { CustomComponentService } from './custom-component.service';
 import { CustomComponentConfigService } from './custom-component-config.service';
 import { DynamicListComponent } from './dynamic-list/dynamic-list.component';
+import { AppConfig, configFactory} from './app.config';
 
 @NgModule({
     declarations: [
@@ -108,7 +109,9 @@ import { DynamicListComponent } from './dynamic-list/dynamic-list.component';
         MaskConfigService,
         CustomComponentService,
         CustomComponentConfigService,
-        { provide: ErrorHandler, useClass: GeminiErrorHandler }
+        { provide: ErrorHandler, useClass: GeminiErrorHandler },
+        AppConfig,
+        { provide: APP_INITIALIZER, useFactory: configFactory, deps: [AppConfig], multi: true }
     ],
     bootstrap: [AppComponent]
 })
