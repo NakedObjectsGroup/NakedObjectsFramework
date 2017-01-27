@@ -1,5 +1,5 @@
 ﻿import { Inject, Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http , RequestOptionsArgs, RequestOptions} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
 export interface IAppConfig {
@@ -38,15 +38,27 @@ export class AppConfig {
     }
 
     load() {
-        return this.http.get('config/config.json').map(res => res.json()).catch((error: any): any => {
-            console.log('Configuration file "config.json" could not be read');
-            return Observable.throw(error.json().error || 'Server error');
-        }).subscribe((envResponse) => {
-            this.appConfig = envResponse as IAppConfig;
-            this.checkAppPath();
-            return true;
-        });
 
+        const config = {
+            withCredentials: true
+        } as RequestOptionsArgs;
 
+        //return this.http.get('config.json', config).map(res => res.json()).catch((error: any): any => {
+        //    console.log('Configuration file "config.json" could not be read');
+        //    return Observable.throw(error.json().error || 'Server error');
+        //}).subscribe((envResponse) => {
+        //    this.appConfig = envResponse as IAppConfig;
+        //    this.checkAppPath();
+        //    
+        //    });
+
+        return this.http.get('config.json', config).
+            map(res => res.json()).
+            toPromise().
+            then(j => {
+                this.appConfig = j as IAppConfig;
+                this.checkAppPath();
+                return true;
+            });
     }
 }

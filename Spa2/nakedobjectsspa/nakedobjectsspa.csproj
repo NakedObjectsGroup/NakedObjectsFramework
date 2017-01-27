@@ -94,7 +94,8 @@
     <Content Include="src\fonts\iconFont.ttf" />
     <Content Include="src\fonts\iconFont.woff" />
     <Content Include="src\tsconfig.json" />
-    <Content Include="src\config\config.json" />
+    <Content Include="src\app\config\config.json" />
+    <Content Include="src\config.json" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
