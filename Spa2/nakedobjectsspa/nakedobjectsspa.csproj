@@ -119,7 +119,7 @@
     <TypeScriptCompile Include="src\app\color-config.service.ts" />
     <TypeScriptCompile Include="src\app\color.service.ts" />
     <TypeScriptCompile Include="src\app\config.ts" />
-    <TypeScriptCompile Include="src\app\app.config.ts" />
+    <TypeScriptCompile Include="src\app\config.service.ts" />
     <TypeScriptCompile Include="src\app\constants.ts" />
     <TypeScriptCompile Include="src\app\context.service.ts" />
     <TypeScriptCompile Include="src\app\custom-component-config.service.ts" />

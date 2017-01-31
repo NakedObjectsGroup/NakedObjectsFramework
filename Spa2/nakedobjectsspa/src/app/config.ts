@@ -1,7 +1,7 @@
 // custom configuration for a particular implementation 
 
 // todo fix
-export const logoffUrl = "" + "/Account/Logoff";
+//export const logoffUrl = "" + "/Account/Logoff";
 
 // this can be a full url eg http://www.google.com
 export const postLogoffUrl = "/#/gemini/home";
@@ -30,35 +30,3 @@ export const doUrlValidation = true;
 
 // flag for configurable home button behaviour
 export const leftClickHomeAlwaysGoesToSinglePane = true;
-
-class DefaultConfig {
-    logoffUrl: "/Account/Logoff"; //appPath + "/Account/Logoff";
-
-    // this can be a full url eg http://www.google.com
-    postLogoffUrl: "/#/gemini/home";
-
-    defaultPageSize: 20; // can be overridden by server 
-    listCacheSize: 5;
-
-    shortCutMarker: "___";
-    urlShortCuts: ["http://nakedobjectsrodemo.azurewebsites.net", "AdventureWorksModel"];
-
-    keySeparator: "--";
-    objectColor: "object-color";
-    linkColor: "link-color";
-
-    autoLoadDirty: true;
-    showDirtyFlag: false; // || !this.autoLoadDirty;
-
-    // caching constants: do not change unless you know what you're doing 
-    httpCacheDepth: 50;
-    transientCacheDepth: 4;
-    recentCacheDepth: 20;
-
-    // checks for inconsistencies in url 
-    // deliberately off in .pp config file 
-    doUrlValidation: true;
-
-    // flag for configurable home button behaviour
-    leftClickHomeAlwaysGoesToSinglePane: true;
-}

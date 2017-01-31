@@ -11,6 +11,7 @@ import { IMessageViewModel } from '../view-models/imessage-view-model';
 import * as Msg from "../user-messages";
 import * as Config from "../config";
 import * as Models from "../models";
+import { ConfigService } from '../config.service';
 
 @Component({
     selector: 'nof-footer',
@@ -25,7 +26,8 @@ export class FooterComponent implements OnInit {
         private readonly clickHandler: ClickHandlerService,
         private readonly error: ErrorService,
         private readonly repLoader: RepLoaderService,
-        private readonly location: Location) {
+        private readonly location: Location,
+        private readonly configService: ConfigService) {
     }
 
     loading: string;
@@ -68,7 +70,7 @@ export class FooterComponent implements OnInit {
                 if (window.confirm(Msg.logOffMessage(u.userName() || "Unknown"))) {
                     const config = {
                         withCredentials: true,
-                        url: Config.logoffUrl,
+                        url: this.configService.config.logoffUrl,
                         method: "POST",
                         cache: false
                     };

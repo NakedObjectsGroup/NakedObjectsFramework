@@ -1,3 +1,4 @@
 ﻿{
-    "appPath": "http://nakedobjectsrodemo.azurewebsites.net"
+    "appPath": "http://nakedobjectsrodemo.azurewebsites.net",
+    "logoffUrl": "http://nakedobjectsrodemo.azurewebsites.net/Account/Logoff"
 }

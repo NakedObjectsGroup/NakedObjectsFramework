@@ -3,18 +3,18 @@ import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import "./rxjs-extensions";
 import { IRepresentation } from "./ro-interfaces";
-import { AppConfig } from "./app.config";
+import { ConfigService } from "./config.service";
 import * as Models from "./models";
 
 @Injectable()
 export class RepresentationsService {
-    constructor(private readonly http: Http, private readonly appConfig : AppConfig) {}
+    constructor(private readonly http: Http, private readonly configService: ConfigService) {}
 
     getHomeRepresentation(): Observable<Models.HomePageRepresentation> {
         return this.http
-            .get(this.appConfig.config.appPath)
+            .get(this.configService.config.appPath)
             .map((r: Response) =>
-                new Models.HomePageRepresentation(r.json() as IRepresentation, this.appConfig.config.appPath));
+                new Models.HomePageRepresentation(r.json() as IRepresentation, this.configService.config.appPath));
     }
 
     getRepresentation<T extends Models.HateosModel>(url: string): Observable<T> {
