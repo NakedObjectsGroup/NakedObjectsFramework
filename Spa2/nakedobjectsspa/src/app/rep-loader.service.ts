@@ -184,7 +184,11 @@ export class RepLoaderService {
                 error = new Models.ErrorMap(response.json() as Ro.IValueMap | Ro.IObjectOfType,
                     response.status,
                     message);
-            } else {
+            } else if (response.status === Models.HttpStatusCode.NotFound) {
+                category = Models.ErrorCategory.ClientError;
+                error = `Failed to connect to server: ${response.url || "unknown"}`;
+            }
+            else {
                 error = message;
             }
         }
