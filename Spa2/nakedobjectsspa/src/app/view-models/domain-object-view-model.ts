@@ -13,8 +13,8 @@ import { CollectionViewModel } from './collection-view-model';
 import { ParameterViewModel } from './parameter-view-model';
 import * as Models from '../models';
 import * as Helpers from './helpers-view-models';
-import * as Config from '../config';
 import * as _ from "lodash";
+import { ConfigService } from '../config.service';
 
 export class DomainObjectViewModel extends MessageViewModel {
 
@@ -24,14 +24,17 @@ export class DomainObjectViewModel extends MessageViewModel {
         private readonly viewModelFactory: ViewModelFactoryService,
         private readonly urlManager: UrlManagerService,
         private readonly error: ErrorService,
+        private readonly configService: ConfigService,
         obj: Models.DomainObjectRepresentation,
-        public  routeData: PaneRouteData,
-        forceReload : boolean
+        public routeData: PaneRouteData,
+        forceReload: boolean
     ) {
         super();
+        this.keySeparator = configService.config.keySeparator;
         this.reset(obj, routeData, forceReload);
     }
 
+    private readonly keySeparator: string;
     private props: _.Dictionary<Models.Value>;
     private instanceId: string;
     unsaved: boolean;
@@ -70,7 +73,7 @@ export class DomainObjectViewModel extends MessageViewModel {
 
     private readonly validateHandler = () => this.domainObject.isTransient() ? this.contextService.validateSaveObject : this.contextService.validateUpdateObject;
 
-    private handleWrappedError (reject: Models.ErrorWrapper)  {
+    private handleWrappedError(reject: Models.ErrorWrapper) {
         const display = (em: Models.ErrorMap) => Helpers.handleErrorResponse(em, this, this.properties);
         this.error.handleErrorAndDisplayMessages(reject, display);
     };
@@ -97,13 +100,13 @@ export class DomainObjectViewModel extends MessageViewModel {
         };
     }
 
-    private reset(obj: Models.DomainObjectRepresentation, routeData: PaneRouteData, resetting : boolean) {
+    private reset(obj: Models.DomainObjectRepresentation, routeData: PaneRouteData, resetting: boolean) {
         this.domainObject = obj;
         this.onPaneId = routeData.paneId;
         this.routeData = routeData;
         const iMode = this.domainObject.extensions().interactionMode();
         this.isInEdit = routeData.interactionMode !== InteractionMode.View || iMode === "form" || iMode === "transient";
-        this.props = routeData.interactionMode !== InteractionMode.View ? this.contextService.getCurrentObjectValues(this.domainObject.id(), routeData.paneId) : {};
+        this.props = routeData.interactionMode !== InteractionMode.View ? this.contextService.getCurrentObjectValues(this.domainObject.id(this.keySeparator), routeData.paneId) : {};
 
         const actions = _.values(this.domainObject.actionMembers()) as Models.ActionMember[];
         this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, this.routeData));
@@ -117,15 +120,15 @@ export class DomainObjectViewModel extends MessageViewModel {
 
         this.title = this.unsaved ? `Unsaved ${this.domainObject.extensions().friendlyName()}` : this.domainObject.title();
 
-        this.title = this.title + Models.dirtyMarker(this.contextService, obj.getOid());
+        this.title = this.title + Models.dirtyMarker(this.contextService, this.configService, obj.getOid(this.keySeparator));
 
         this.friendlyName = this.domainObject.extensions().friendlyName();
         this.presentationHint = this.domainObject.extensions().presentationHint();
-        this.domainType = this.domainObject.domainType()!;
-        this.instanceId = this.domainObject.instanceId()!;
-        this.draggableType = this.domainObject.domainType()!;
+        this.domainType = this.domainObject.domainType() !;
+        this.instanceId = this.domainObject.instanceId() !;
+        this.draggableType = this.domainObject.domainType() !;
 
-        const selfAsValue = () : Models.Value | null => {
+        const selfAsValue = (): Models.Value | null => {
             const link = this.domainObject.selfLink();
             if (link) {
                 // not transient - can't drag transients so no need to set up IDraggable members on transients
@@ -141,7 +144,7 @@ export class DomainObjectViewModel extends MessageViewModel {
         this.selectedChoice = sav ? new ChoiceViewModel(sav, "") : null;
 
         this.colorService.toColorNumberFromType(this.domainObject.domainType())
-            .then(c => this.color = `${Config.objectColor}${c}`)
+            .then(c => this.color = `${this.configService.config.objectColor}${c}`)
             .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
         this.resetMessage();
@@ -154,7 +157,7 @@ export class DomainObjectViewModel extends MessageViewModel {
     readonly concurrency = () => {
         return (event: any, em: Models.ErrorMap) => {
             this.routeData = this.urlManager.getRouteData().pane(this.onPaneId);
-            this.contextService.getObject(this.onPaneId, this.domainObject.getOid(), this.routeData.interactionMode)
+            this.contextService.getObject(this.onPaneId, this.domainObject.getOid(this.keySeparator), this.routeData.interactionMode)
                 .then((obj: Models.DomainObjectRepresentation) => {
                     // cleared cached values so all values are from reloaded representation 
                     this.contextService.clearObjectValues(this.onPaneId);
@@ -185,7 +188,7 @@ export class DomainObjectViewModel extends MessageViewModel {
         p => this.contextService.setPropertyValue(this.domainObject, p.propertyRep, p.getValue(), this.onPaneId));
 
     readonly doEditCancel = () => {
-       
+
         this.contextService.clearObjectValues(this.onPaneId);
         this.cancelHandler()();
     };
@@ -240,5 +243,5 @@ export class DomainObjectViewModel extends MessageViewModel {
     readonly canDropOn = (targetType: string) => this.contextService.isSubTypeOf(this.domainType, targetType);
 
     readonly showActions = () => !!this.urlManager.getRouteData().pane(this.onPaneId).actionsOpen;
-  
+
 }

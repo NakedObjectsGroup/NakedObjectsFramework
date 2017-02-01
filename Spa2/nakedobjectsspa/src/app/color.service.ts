@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { ContextService } from './context.service';
 import { ColorConfigService } from './color-config.service';
 import { TypeResultCache } from './type-result-cache';
+import { ConfigService } from './config.service';
 
 export interface IColorServiceConfigurator {
     addType: (type: string, color: number) => void;
@@ -21,20 +22,21 @@ export class ColorService extends TypeResultCache<number> implements IColorServi
 
     constructor(
         context: ContextService,
-        private readonly config: ColorConfigService
+        private readonly colorConfig: ColorConfigService,
+        private readonly configService: ConfigService
     ) {
         super(context);
         this.setDefault(0);
-        config.configure(this);
+        colorConfig.configure(this);
     }
 
     private typeFromUrl(url: string): string {
-        const oid = Models.ObjectIdWrapper.fromHref(url);
+        const oid = Models.ObjectIdWrapper.fromHref(url, this.configService.config.keySeparator);
         return oid.domainType;
     }
 
     toColorNumberFromHref = (href: string) => {
-        const type = Models.typeFromUrl(href);
+        const type = this.typeFromUrl(href);
         return this.toColorNumberFromType(type);
     }
 

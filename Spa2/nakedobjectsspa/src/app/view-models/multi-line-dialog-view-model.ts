@@ -8,7 +8,6 @@ import { UrlManagerService } from '../url-manager.service';
 import { ErrorService } from '../error.service';
 import * as Models from '../models';
 import * as Ro from '../ro-interfaces';
-import * as Config from '../config';
 import * as Msg from '../user-messages';
 import * as _ from "lodash";
 
@@ -29,7 +28,7 @@ export class MultiLineDialogViewModel {
             this.objectTitle = holder.title();
             this.objectFriendlyName = holder.extensions().friendlyName();
         }
-            
+
         const initialCount = action.extensions().multipleLines() || 1;
 
         this.dialogs = _.map(_.range(initialCount), i => this.createRow(i));
@@ -50,7 +49,7 @@ export class MultiLineDialogViewModel {
 
     readonly objectFriendlyName = "";
     readonly objectTitle = "";
-    readonly title : string;
+    readonly title: string;
     readonly dialogs: DialogViewModel[];
 
     readonly header = () => this.dialogs.length === 0 ? [] : _.map(this.dialogs[0].parameters, p => p.title);

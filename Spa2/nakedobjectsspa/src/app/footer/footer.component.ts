@@ -9,7 +9,6 @@ import { RepLoaderService } from "../rep-loader.service";
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
 import { IMessageViewModel } from '../view-models/imessage-view-model';
 import * as Msg from "../user-messages";
-import * as Config from "../config";
 import * as Models from "../models";
 import { ConfigService } from '../config.service';
 
@@ -37,7 +36,7 @@ export class FooterComponent implements OnInit {
     goHome = (right?: boolean) => {
         const newPane = this.clickHandler.pane(1, right);
 
-        if (Config.leftClickHomeAlwaysGoesToSinglePane && newPane === 1) {
+        if (this.configService.config.leftClickHomeAlwaysGoesToSinglePane && newPane === 1) {
             this.urlManager.setHomeSinglePane();
         } else {
             this.urlManager.setHome(newPane);
@@ -64,6 +63,8 @@ export class FooterComponent implements OnInit {
     singlePane = (right?: boolean) => {
         this.urlManager.singlePane(this.clickHandler.pane(1, right));
     };
+
+    // todo fix logoff
     logOff = () => {
         this.context.getUser()
             .then((u: Models.UserRepresentation) => {
@@ -80,7 +81,7 @@ export class FooterComponent implements OnInit {
 
                     // logoff client without waiting for server
                     //$rootScope.$broadcast(Nakedobjectsconstants.geminiLogoffEvent);
-                    //$timeout(() => window.location.href = Nakedobjectsconfig.postLogoffUrl);
+                    //$timeout(() => window.location.href = configService.config.postLogoffUrl);
                 }
             })
             .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));

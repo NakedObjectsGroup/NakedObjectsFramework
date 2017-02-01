@@ -18,13 +18,14 @@ import { ListViewModel } from '../view-models/list-view-model';
 import { MenuViewModel } from '../view-models/menu-view-model';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 import { CollectionViewModel } from '../view-models/collection-view-model';
+import * as Configservice from '../config.service';
 
 @Component({
     selector: 'nof-dialog',
     templateUrl: './dialog.component.html',
     styleUrls: ['./dialog.component.css']
 })
-export class DialogComponent  {
+export class DialogComponent {
 
     constructor(
         private readonly viewModelFactory: ViewModelFactoryService,
@@ -32,11 +33,12 @@ export class DialogComponent  {
         private readonly activatedRoute: ActivatedRoute,
         private readonly error: ErrorService,
         private readonly context: ContextService,
+        private readonly configService: Configservice.ConfigService,
         private readonly formBuilder: FormBuilder) {
     }
 
     private parentViewModel: MenuViewModel | DomainObjectViewModel | ListViewModel | CollectionViewModel;
-  
+
     @Input()
     set parent(parent: MenuViewModel | DomainObjectViewModel | ListViewModel | CollectionViewModel) {
         this.parentViewModel = parent;
@@ -57,7 +59,7 @@ export class DialogComponent  {
     get selectedDialogId(): string {
         return this.currentDialogId;
     }
-  
+
     dialog: DialogViewModel | null;
 
     form: FormGroup;
@@ -105,7 +107,7 @@ export class DialogComponent  {
         const pps = dialog.parameters;
         this.parms = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<ParameterViewModel>;
         // todo fix types - no any 
-        const controls = _.mapValues(this.parms, p => [p.getValueForControl(), (a : AbstractControl) => p.validator(a)]) as _.Dictionary<any>;
+        const controls = _.mapValues(this.parms, p => [p.getValueForControl(), (a: AbstractControl) => p.validator(a)]) as _.Dictionary<any>;
         this.form = this.formBuilder.group(controls);
 
         this.form.valueChanges.subscribe((data: any) => {
@@ -142,13 +144,13 @@ export class DialogComponent  {
             const p = this.parent;
             let action: Models.ActionMember | Models.ActionRepresentation | null = null;
             let actionViewModel: ActionViewModel | null = null;
-            
+
             if (p instanceof MenuViewModel) {
-                action = p.menuRep.actionMember(this.currentDialogId);
+                action = p.menuRep.actionMember(this.currentDialogId, this.configService.config.keySeparator);
             }
 
             if (p instanceof DomainObjectViewModel && p.domainObject.hasActionMember(this.currentDialogId)) {
-                action = p.domainObject.actionMember(this.currentDialogId);
+                action = p.domainObject.actionMember(this.currentDialogId, this.configService.config.keySeparator);
             }
 
             if (p instanceof ListViewModel) {
@@ -157,7 +159,7 @@ export class DialogComponent  {
             }
 
             if (p instanceof CollectionViewModel && p.hasMatchingLocallyContributedAction(this.currentDialogId)) {
-                action = p.actionMember(this.currentDialogId);
+                action = p.actionMember(this.currentDialogId, this.configService.config.keySeparator);
                 actionViewModel = _.find(p.actions, a => a.actionRep.actionId() === this.currentDialogId) || null;
             }
 

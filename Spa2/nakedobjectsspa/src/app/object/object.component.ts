@@ -19,7 +19,7 @@ import { PaneComponent } from '../pane/pane';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 import { IButton } from '../button/button.component';
 import { ColorService } from '../color.service';
-import * as Config from '../config';
+import { ConfigService } from '../config.service';
 
 @Component({
     selector: 'nof-object',
@@ -29,14 +29,16 @@ import * as Config from '../config';
 export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy, AfterViewInit {
     // todo  this and ListComponent should not  extend PaneComponent they are no longer panes !
 
-    constructor(activatedRoute: ActivatedRoute,
+    constructor(
+        activatedRoute: ActivatedRoute,
         urlManager: UrlManagerService,
         private readonly context: ContextService,
         private readonly viewModelFactory: ViewModelFactoryService,
-        private readonly colorService : ColorService, 
+        private readonly colorService: ColorService,
         private readonly error: ErrorService,
-        private readonly formBuilder: FormBuilder) {
-
+        private readonly formBuilder: FormBuilder,
+        private readonly configService: ConfigService
+    ) {
         super(activatedRoute, urlManager);
     }
 
@@ -223,7 +225,7 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
 
         if (this.mode === InteractionMode.Transient || this.mode === InteractionMode.Form) {
 
-            const menuItems = this.menuItems()!;
+            const menuItems = this.menuItems() !;
             const actions = _.flatten(_.map(menuItems, (mi: MenuItemViewModel) => mi.actions!));
 
             return _.map(actions, a => ({
@@ -258,11 +260,11 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
 
         this.expiredTransient = false;
 
-        const oid = Models.ObjectIdWrapper.fromObjectId(routeData.objectId);
+        const oid = Models.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator);
 
         // todo this is a recurring pattern in angular 2 code - generalise 
         // across components 
-        if (this.object && !this.object.domainObject.getOid().isSame(oid)) {
+        if (this.object && !this.object.domainObject.getOid(this.configService.config.keySeparator).isSame(oid)) {
             // object has changed - clear existing 
             this.object = null;
             this.form = null;
@@ -281,7 +283,7 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
         if (isChanging || modeChanging || wasDirty) {
 
             // set background color at once to smooth transition
-            this.colorService.toColorNumberFromType(oid.domainType).then(c => this.backgroundColor = `${Config.objectColor}${c}`);
+            this.colorService.toColorNumberFromType(oid.domainType).then(c => this.backgroundColor = `${this.configService.config.objectColor}${c}`);
 
             this.context.getObject(routeData.paneId, oid, routeData.interactionMode)
                 .then((object: Models.DomainObjectRepresentation) => {

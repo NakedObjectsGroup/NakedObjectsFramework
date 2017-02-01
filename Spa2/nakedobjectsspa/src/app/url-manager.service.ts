@@ -1,13 +1,13 @@
 import * as _ from "lodash";
 import * as Models from "./models";
 import * as Constants from "./constants";
-import * as Config from "./config";
 import { RouteData, PaneRouteData, InteractionMode, CollectionViewState, ApplicationMode, ViewType } from "./route-data";
 import { Injectable } from '@angular/core';
 import "./rxjs-extensions";
 import { Observable } from 'rxjs/Observable';
 import { Router, UrlSegment } from '@angular/router';
 import { Location } from '@angular/common';
+import { ConfigService } from './config.service';
 
 enum Transition {
     Null,
@@ -59,9 +59,18 @@ export class UrlManagerService {
 
     constructor(
         private readonly router: Router,
-        private readonly location: Location
+        private readonly location: Location,
+        private readonly configService: ConfigService
     ) {
+        this.shortCutMarker = configService.config.shortCutMarker;
+        this.urlShortCuts = configService.config.urlShortCuts;
+        this.keySeparator = this.configService.config.keySeparator;
     }
+
+    // just for tidyness
+    private readonly shortCutMarker: string;
+    private readonly urlShortCuts: string[];
+    private readonly keySeparator: string;
 
     private capturedPanes = [] as ({ paneType: string; search: Object } | null)[];
 
@@ -175,7 +184,7 @@ export class UrlManagerService {
     }
 
     private getMappedValues(mappedIds: _.Dictionary<string>) {
-        return _.mapValues(mappedIds, v => Models.Value.fromJsonString(v));
+        return _.mapValues(mappedIds, v => Models.Value.fromJsonString(v, this.shortCutMarker, this.urlShortCuts));
     }
 
     private getInteractionMode(rawInteractionMode: string): InteractionMode {
@@ -301,7 +310,7 @@ export class UrlManagerService {
     }
 
     private getOidFromHref(href: string) {
-        const oid = Models.ObjectIdWrapper.fromHref(href);
+        const oid = Models.ObjectIdWrapper.fromHref(href, this.keySeparator);
         return oid.getKey();
     }
 
@@ -310,7 +319,7 @@ export class UrlManagerService {
     }
 
     private setValue(paneId: number, search: any, p: { id: () => string }, pv: Models.Value, valueType: string) {
-        this.setId(`${valueType}${paneId}_${p.id()}`, pv.toJsonString(), search);
+        this.setId(`${valueType}${paneId}_${p.id()}`, pv.toJsonString(this.shortCutMarker, this.urlShortCuts), search);
     }
 
     private setParameter(paneId: number, search: any, p: Models.Parameter, pv: Models.Value) {
@@ -319,11 +328,11 @@ export class UrlManagerService {
 
 
     private getId(key: string, search: any) {
-        return Models.decompress(search[key]);
+        return Models.decompress(search[key], this.shortCutMarker, this.urlShortCuts);
     }
 
     private setId(key: string, id: string, search: any) {
-        search[key] = Models.compress(id);
+        search[key] = Models.compress(id, this.shortCutMarker, this.urlShortCuts);
     }
 
     private clearId(key: string, search: any) {
@@ -500,20 +509,20 @@ export class UrlManagerService {
     }
 
 
-    setMultiLineDialog = (dialogId: string, paneId: number) => {        
-            this.pushUrlState();     
-            const key = `${akm.dialog}${1}`; // always on 1
-            const newValues = _.zipObject([key], [dialogId]) as _.Dictionary<string>;
-            this.executeTransition(newValues, paneId, Transition.ToMultiLineDialog, search => this.getId(key, search) !== dialogId);
-        }
+    setMultiLineDialog = (dialogId: string, paneId: number) => {
+        this.pushUrlState();
+        const key = `${akm.dialog}${1}`; // always on 1
+        const newValues = _.zipObject([key], [dialogId]) as _.Dictionary<string>;
+        this.executeTransition(newValues, paneId, Transition.ToMultiLineDialog, search => this.getId(key, search) !== dialogId);
+    }
 
     setDialogOrMultiLineDialog = (actionRep: Models.ActionMember | Models.ActionRepresentation, paneId = 1) => {
-            if (actionRep.extensions().multipleLines()) {
-                this.setMultiLineDialog(actionRep.actionId(), paneId);
-            } else {
-                this.setDialog(actionRep.actionId(), paneId);
-            }
+        if (actionRep.extensions().multipleLines()) {
+            this.setMultiLineDialog(actionRep.actionId(), paneId);
+        } else {
+            this.setDialog(actionRep.actionId(), paneId);
         }
+    }
 
     private closeOrCancelDialog(id: string, paneId: number, transition: Transition) {
         const key = `${akm.dialog}${paneId}`;
@@ -535,14 +544,14 @@ export class UrlManagerService {
     }
 
     setObject = (resultObject: Models.DomainObjectRepresentation, paneId = 1) => {
-        const oid = resultObject.id();
+        const oid = resultObject.id(this.keySeparator);
         const key = `${akm.object}${paneId}`;
         const newValues = _.zipObject([key], [oid]) as _.Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
     }
 
     setObjectWithMode = (resultObject: Models.DomainObjectRepresentation, newMode: InteractionMode, paneId = 1) => {
-        const oid = resultObject.id();
+        const oid = resultObject.id(this.keySeparator);
         const okey = `${akm.object}${paneId}`;
         const mkey = `${akm.interactionMode}${paneId}`;
         const newValues = _.zipObject([okey, mkey], [oid, InteractionMode[newMode]]) as _.Dictionary<string>;
@@ -555,7 +564,7 @@ export class UrlManagerService {
         const parent = actionMember.parent;
 
         if (parent instanceof Models.DomainObjectRepresentation) {
-            newValues[`${akm.object}${toPaneId}`] = parent.id();
+            newValues[`${akm.object}${toPaneId}`] = parent.id(this.keySeparator);
         }
 
         if (parent instanceof Models.MenuRepresentation) {
@@ -564,7 +573,7 @@ export class UrlManagerService {
 
         newValues[`${akm.action}${toPaneId}`] = actionMember.actionId();
         newValues[`${akm.page}${toPaneId}`] = "1";
-        newValues[`${akm.pageSize}${toPaneId}`] = Config.defaultPageSize.toString();
+        newValues[`${akm.pageSize}${toPaneId}`] = this.configService.config.defaultPageSize.toString();
         newValues[`${akm.selected}${toPaneId}_`] = "0";
 
         const newState = actionMember.extensions().renderEagerly() ? CollectionViewState[CollectionViewState.Table] : CollectionViewState[CollectionViewState.List];
@@ -577,7 +586,7 @@ export class UrlManagerService {
         //newValues = copyFieldsIntoValues(fromPaneId, toPaneId, newValues);
         //newValues = setFieldsToParms(toPaneId, newValues);
 
-        _.forEach(parms, (p, id) => this.setId(`${akm.parm}${toPaneId}_${id}`, p.toJsonString(), newValues));
+        _.forEach(parms, (p, id) => this.setId(`${akm.parm}${toPaneId}_${id}`, p.toJsonString(this.shortCutMarker, this.urlShortCuts), newValues));
 
 
         this.executeTransition(newValues, toPaneId, Transition.ToList, () => true);
@@ -719,7 +728,7 @@ export class UrlManagerService {
     }
 
     getRouteData = () => {
-        const routeData = new RouteData();
+        const routeData = new RouteData(this.configService);
 
         this.setPaneRouteData(routeData.pane1, 1);
         this.setPaneRouteData(routeData.pane2, 2);
@@ -744,7 +753,7 @@ export class UrlManagerService {
     getPaneRouteDataObservable = (paneId: number) => {
 
         return this.router.routerState.root.queryParams.map((ps: { [key: string]: string }) => {
-            const routeData = new RouteData();
+            const routeData = new RouteData(this.configService);
             const paneRouteData = routeData.pane(paneId);
             this.setPaneRouteDataFromParms(paneRouteData, paneId, ps);
             paneRouteData.location = this.getViewType(this.getLocation(paneId));
@@ -780,9 +789,9 @@ export class UrlManagerService {
         const s3 = this.getId(`${akm.action}${paneId}`, search) || "";
 
         const parms = <_.Dictionary<string>>_.pickBy(search, (v, k) => !!k && k.indexOf(akm.parm + paneId) === 0);
-        const mappedParms = _.mapValues(parms, v => decodeURIComponent(Models.decompress(v)));
+        const mappedParms = _.mapValues(parms, v => decodeURIComponent(Models.decompress(v, this.shortCutMarker, this.urlShortCuts)));
 
-        const s4 = _.reduce(mappedParms, (r, n, k) => r + (k + "=" + n + Config.keySeparator), "");
+        const s4 = _.reduce(mappedParms, (r, n, k) => r + (k + "=" + n + this.keySeparator), "");
 
         const s5 = `${newPage}`;
         const s6 = `${newPageSize}`;
@@ -791,7 +800,7 @@ export class UrlManagerService {
 
         const ss = [s1, s2, s3, s4, s5, s6, s7] as string[];
 
-        return _.reduce(ss, (r, n) => r + Config.keySeparator + n, "");
+        return _.reduce(ss, (r, n) => r + this.keySeparator + n, "");
     }
 
     getListCacheIndex = (paneId: number, newPage: number, newPageSize: number, format?: CollectionViewState) => {
@@ -803,7 +812,7 @@ export class UrlManagerService {
         this.currentPaneId = paneId;
 
         const capturedPane = this.capturedPanes[paneId];
-   
+
         if (capturedPane) {
             this.capturedPanes[paneId] = null;
             let search = this.clearPane(this.getSearch(), paneId);

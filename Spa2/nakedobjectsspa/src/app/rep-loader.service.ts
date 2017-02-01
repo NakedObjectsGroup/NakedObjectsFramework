@@ -1,19 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Request, RequestOptions, Headers, RequestMethod, ResponseContentType} from '@angular/http';
+import { Http, Response, Request, RequestOptions, Headers, RequestMethod, ResponseContentType } from '@angular/http';
 import "./rxjs-extensions";
 import * as Models from "./models";
 import * as Constants from "./constants";
 import * as Ro from "./ro-interfaces";
 import * as _ from "lodash";
 import { Subject } from 'rxjs/Subject';
-import * as Config from './config';
-
-
+import { ConfigService } from './config.service';
 type cachableTypes = Ro.IRepresentation | Blob;
 
 class LruNode {
 
-    constructor(public readonly key: string, public value: cachableTypes) {  }
+    constructor(public readonly key: string, public value: cachableTypes) { }
 
     next: LruNode | null = null;
     previous: LruNode | null = null;
@@ -22,7 +20,7 @@ class LruNode {
 
 class SimpleLruCache {
 
-    constructor(private readonly depth : number) {  }
+    constructor(private readonly depth: number) { }
 
     private cache: _.Dictionary<LruNode> = {};
     private count = 0;
@@ -104,7 +102,7 @@ class SimpleLruCache {
     }
 
     private updateExistingEntry(key: string, value: cachableTypes): any {
-        const node = this.getNode(key)!;
+        const node = this.getNode(key) !;
         node.value = value;
     }
 
@@ -130,7 +128,10 @@ class SimpleLruCache {
 @Injectable()
 export class RepLoaderService {
 
-    constructor(private readonly http: Http) { }
+    constructor(
+        private readonly http: Http,
+        private readonly configService: ConfigService
+    ) { }
 
     private loadingCount = 0;
 
@@ -139,11 +140,11 @@ export class RepLoaderService {
     loadingCount$ = this.loadingCountSource.asObservable();
 
     // use our own LRU cache 
-    private cache = new SimpleLruCache(Config.httpCacheDepth);
+    private cache = new SimpleLruCache(this.configService.config.httpCacheDepth);
 
     private addIfMatchHeader(config: RequestOptions, digest?: string | null) {
         if (digest && (config.method === RequestMethod.Post || config.method === RequestMethod.Put || config.method === RequestMethod.Delete)) {
-            config.headers = new Headers ({ "If-Match": digest });
+            config.headers = new Headers({ "If-Match": digest });
         }
     }
 
@@ -274,10 +275,10 @@ export class RepLoaderService {
         const response = model;
 
         const config = new RequestOptions({
-                withCredentials: true,
-                url: model.getUrl(),
-                method: model.method,
-                body: model.getBody()
+            withCredentials: true,
+            url: model.getUrl(),
+            method: model.method,
+            body: model.getBody()
         });
 
         return this.httpPopulate(config, !!ignoreCache, response);
@@ -298,8 +299,8 @@ export class RepLoaderService {
 
 
     retrieve = <T extends Models.IHateoasModel>(map: Models.IHateoasModel,
-                                                rc: { new (): Models.IHateoasModel },
-                                                digest?: string | null): Promise<T> => {
+        rc: { new (): Models.IHateoasModel },
+        digest?: string | null): Promise<T> => {
         const response = new rc();
         const config = this.setConfigFromMap(map, digest);
         return this.httpPopulate(config, true, response);

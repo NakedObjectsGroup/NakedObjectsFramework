@@ -11,6 +11,7 @@ import { ContextService } from '../context.service';
 import { ErrorService } from '../error.service';
 import { IButton } from '../button/button.component';
 import * as Models from '../models';
+import * as Configservice from '../config.service';
 
 @Component({
     selector: 'nof-dynamic-list',
@@ -28,7 +29,8 @@ export class DynamicListComponent extends PaneComponent {
         private readonly context: ContextService,
         private readonly error: ErrorService,
         private readonly componentFactoryResolver: ComponentFactoryResolver,
-        private readonly customComponentService: CustomComponentService) {
+        private readonly customComponentService: CustomComponentService,
+        private readonly configService: Configservice.ConfigService) {
         super(activatedRoute, urlManager);
     }
 
@@ -39,7 +41,7 @@ export class DynamicListComponent extends PaneComponent {
 
     getActionExtensions(routeData: PaneRouteData): Promise<Models.Extensions> {
         return routeData.objectId
-            ? this.context.getActionExtensionsFromObject(routeData.paneId, Models.ObjectIdWrapper.fromObjectId(routeData.objectId), routeData.actionId)
+            ? this.context.getActionExtensionsFromObject(routeData.paneId, Models.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator), routeData.actionId)
             : this.context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
     }
 

@@ -7,8 +7,7 @@ import { RouteData, PaneRouteData } from "../route-data";
 import { RecentItemsViewModel } from '../view-models/recent-items-view-model';
 import { RecentItemViewModel } from '../view-models/recent-item-view-model';
 import { PaneComponent } from '../pane/pane';
-import * as Buttoncomponent from '../button/button.component';
-import * as Helpersviewmodels from '../view-models/helpers-view-models';
+import { IButton } from '../button/button.component';
 
 @Component({
     selector: 'nof-recent',
@@ -39,7 +38,7 @@ export class RecentComponent extends PaneComponent {
 
     recent: RecentItemsViewModel;
 
-    private clearButton: Buttoncomponent.IButton = {
+    private clearButton: IButton = {
         value: "Clear",
         doClick: () => this.clear(),
         show: () => true,

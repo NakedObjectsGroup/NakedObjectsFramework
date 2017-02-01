@@ -10,6 +10,7 @@ import { FieldViewModel } from '../view-models/field-view-model';
 import { PropertyViewModel } from '../view-models/property-view-model';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 import { ChoiceViewModel } from '../view-models/choice-view-model';
+import { ConfigService } from '../config.service';
 
 @Component({
     host: {
@@ -21,11 +22,14 @@ import { ChoiceViewModel } from '../view-models/choice-view-model';
 })
 export class EditPropertyComponent extends FieldComponent implements OnInit {
 
-    constructor(myElement: ElementRef,
+    constructor(
+        myElement: ElementRef,
         private readonly router: Router,
         private readonly error: ErrorService,
-        context: ContextService) {
-        super(myElement, context);
+        context: ContextService,
+        configService: ConfigService
+    ) {
+        super(myElement, context, configService);
     }
 
     prop: PropertyViewModel;

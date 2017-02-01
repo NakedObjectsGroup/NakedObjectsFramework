@@ -30,6 +30,7 @@ import { ListViewModel } from './view-models/list-view-model';
 import { DialogViewModel } from './view-models/dialog-view-model';
 import { DomainObjectViewModel } from './view-models/domain-object-view-model';
 import { MultiLineDialogViewModel } from './view-models/multi-line-dialog-view-model';
+import { ConfigService } from './config.service';
 
 @Injectable()
 export class ViewModelFactoryService {
@@ -40,7 +41,8 @@ export class ViewModelFactoryService {
         private readonly color: ColorService,
         private readonly error: ErrorService,
         private readonly clickHandler: ClickHandlerService,
-        private readonly mask: MaskService
+        private readonly mask: MaskService,
+        private readonly configService: ConfigService
     ) { }
 
     errorViewModel = (error: Models.ErrorWrapper | null) => {
@@ -57,15 +59,15 @@ export class ViewModelFactoryService {
     }
 
     linkViewModel = (linkRep: Models.Link, paneId: number) => {
-        return new LinkViewModel(this.context, this.color, this.error, this.urlManager, linkRep, paneId);
+        return new LinkViewModel(this.context, this.color, this.error, this.urlManager, this.configService, linkRep, paneId);
     }
 
     itemViewModel = (linkRep: Models.Link, paneId: number, selected: boolean, index: number, id: string) => {
-        return new ItemViewModel(this.context, this.color, this.error, this.urlManager, linkRep, paneId, this.clickHandler, this, index, selected, id);
+        return new ItemViewModel(this.context, this.color, this.error, this.urlManager, this.configService, linkRep, paneId, this.clickHandler, this, index, selected, id);
     }
 
     recentItemViewModel = (obj: Models.DomainObjectRepresentation, linkRep: Models.Link, paneId: number, selected: boolean, index: number) => {
-        return new RecentItemViewModel(this.context, this.color, this.error, this.urlManager, linkRep, paneId, this.clickHandler, this, index, selected, obj.extensions().friendlyName());
+        return new RecentItemViewModel(this.context, this.color, this.error, this.urlManager, this.configService, linkRep, paneId, this.clickHandler, this, index, selected, obj.extensions().friendlyName());
     }
 
     actionViewModel = (actionRep: Models.ActionMember | Models.ActionRepresentation, vm: IMessageViewModel, routeData: PaneRouteData) => {
@@ -85,6 +87,7 @@ export class ViewModelFactoryService {
             this.mask,
             this.urlManager,
             this.clickHandler,
+            this.configService,
             id,
             previousValue,
             paneId,
@@ -116,8 +119,8 @@ export class ViewModelFactoryService {
             holder);
     }
 
-    domainObjectViewModel = (obj: Models.DomainObjectRepresentation, routeData: PaneRouteData, forceReload : boolean) => {
-        const ovm = new DomainObjectViewModel(this.color, this.context, this, this.urlManager, this.error, obj, routeData, forceReload);
+    domainObjectViewModel = (obj: Models.DomainObjectRepresentation, routeData: PaneRouteData, forceReload: boolean) => {
+        const ovm = new DomainObjectViewModel(this.color, this.context, this, this.urlManager, this.error, this.configService, obj, routeData, forceReload);
         if (forceReload) {
             ovm.clearCachedFiles();
         }
@@ -137,11 +140,11 @@ export class ViewModelFactoryService {
     }
 
     parameterViewModel = (parmRep: Models.Parameter, previousValue: Models.Value, paneId: number) => {
-        return new ParameterViewModel(parmRep, paneId, this.color, this.error, this.mask, previousValue, this, this.context);
+        return new ParameterViewModel(parmRep, paneId, this.color, this.error, this.mask, previousValue, this, this.context, this.configService);
     }
 
-    collectionViewModel = (collectionRep: Models.CollectionMember, routeData: PaneRouteData, forceReload : boolean) => {
-        return new CollectionViewModel(this, this.color, this.error, this.context, this.urlManager, collectionRep, routeData, forceReload);
+    collectionViewModel = (collectionRep: Models.CollectionMember, routeData: PaneRouteData, forceReload: boolean) => {
+        return new CollectionViewModel(this, this.color, this.error, this.context, this.urlManager, this.configService, collectionRep, routeData, forceReload);
     }
 
     listPlaceholderViewModel = (routeData: PaneRouteData) => {
@@ -160,7 +163,7 @@ export class ViewModelFactoryService {
         return new RecentItemsViewModel(this, this.context, this.urlManager, paneId);
     }
 
-    tableRowViewModel = (properties: _.Dictionary<Models.PropertyMember>, paneId: number, title : string): TableRowViewModel => {
+    tableRowViewModel = (properties: _.Dictionary<Models.PropertyMember>, paneId: number, title: string): TableRowViewModel => {
         return new TableRowViewModel(this, properties, paneId, title);
     }
 
@@ -174,7 +177,7 @@ export class ViewModelFactoryService {
         if (tableView) {
 
             const getActionExtensions = routeData.objectId ?
-                (): Promise<Models.Extensions> => this.context.getActionExtensionsFromObject(routeData.paneId, Models.ObjectIdWrapper.fromObjectId(routeData.objectId), routeData.actionId) :
+                (): Promise<Models.Extensions> => this.context.getActionExtensionsFromObject(routeData.paneId, Models.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator), routeData.actionId) :
                 (): Promise<Models.Extensions> => this.context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
 
             const getExtensions = listViewModel instanceof CollectionViewModel ? () => Promise.resolve(listViewModel.collectionRep.extensions()) : getActionExtensions;
@@ -194,7 +197,7 @@ export class ViewModelFactoryService {
 
                             const propertiesHeader =
                                 _.map(firstItem.properties, (p, i) => {
-                                    const match = _.find(items, (item : ItemViewModel) => item.tableRowViewModel.properties[i].title);
+                                    const match = _.find(items, (item: ItemViewModel) => item.tableRowViewModel.properties[i].title);
                                     return match ? match.tableRowViewModel.properties[i].title : firstItem.properties[i].id;
                                 });
 

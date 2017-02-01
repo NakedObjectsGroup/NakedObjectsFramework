@@ -14,6 +14,7 @@ import { MultiLineDialogViewModel } from '../view-models/multi-line-dialog-view-
 import { DialogViewModel } from '../view-models/dialog-view-model';
 import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { ParameterViewModel } from '../view-models/parameter-view-model';
+import { ConfigService } from '../config.service';
 
 @Component({
     selector: 'nof-multi-line-dialog',
@@ -28,7 +29,8 @@ export class MultiLineDialogComponent extends PaneComponent {
         private readonly viewModelFactory: ViewModelFactoryService,
         private readonly context: ContextService,
         private readonly error: ErrorService,
-        private readonly formBuilder: FormBuilder
+        private readonly formBuilder: FormBuilder,
+        private readonly configService: ConfigService
     ) {
         super(activatedRoute, urlManager);
     }
@@ -126,7 +128,7 @@ export class MultiLineDialogComponent extends PaneComponent {
         routeData: PaneRouteData,
         actionViewModel?: ActionViewModel) {
 
-        const action = holder.actionMember(newDialogId);
+        const action = holder.actionMember(newDialogId, this.configService.config.keySeparator);
         this.context.getInvokableAction(action).
             then(details => {
 
@@ -150,7 +152,7 @@ export class MultiLineDialogComponent extends PaneComponent {
                     this.error.handleError(reject);
                 });
         } else if (routeData.objectId) {
-            const oid = Models.ObjectIdWrapper.fromObjectId(routeData.objectId);
+            const oid = Models.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator);
             this.context.getObject(routeData.paneId, oid, routeData.interactionMode).
                 then((object: Models.DomainObjectRepresentation) => {
 

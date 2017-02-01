@@ -9,6 +9,7 @@ import * as Helpers from './helpers-view-models';
 import * as Models from '../models';
 import * as Msg from '../user-messages';
 import * as _ from "lodash";
+import * as Configservice from '../config.service';
 
 export class ParameterViewModel extends FieldViewModel {
 
@@ -20,21 +21,23 @@ export class ParameterViewModel extends FieldViewModel {
         private readonly maskService: MaskService,
         private readonly previousValue: Models.Value,
         private readonly viewModelFactory: ViewModelFactoryService,
-        context: ContextService
+        context: ContextService,
+        configService: Configservice.ConfigService
     ) {
 
         super(parameterRep,
             color,
             error,
             context,
+            configService,
             onPaneId,
             parameterRep.isScalar(),
             parameterRep.id(),
             parameterRep.isCollectionContributed(),
             parameterRep.entryType());
-    
+
         this.dflt = parameterRep.default().toString();
-     
+
         const fieldEntryType = this.entryType;
 
         if (fieldEntryType === Models.EntryType.Choices || fieldEntryType === Models.EntryType.MultipleChoices) {
@@ -62,7 +65,7 @@ export class ParameterViewModel extends FieldViewModel {
         const remoteMask = parameterRep.extensions().mask();
 
         if (remoteMask && parameterRep.isScalar()) {
-            const localFilter = this.maskService.toLocalFilter(remoteMask, parameterRep.extensions().format()!);
+            const localFilter = this.maskService.toLocalFilter(remoteMask, parameterRep.extensions().format() !);
             this.localFilter = localFilter;
             // formatting also happens in in directive - at least for dates - value is now date in that case
             this.formattedValue = localFilter.filter(this.value!.toString());
@@ -74,7 +77,7 @@ export class ParameterViewModel extends FieldViewModel {
     private readonly dflt: string;
 
     private setupParameterChoices() {
-        this.setupChoices(this.parameterRep.choices()!);
+        this.setupChoices(this.parameterRep.choices() !);
     }
 
     private setupParameterAutocomplete() {
@@ -89,7 +92,7 @@ export class ParameterViewModel extends FieldViewModel {
         const val = this.previousValue && !this.previousValue.isNull() ? this.previousValue : parmRep.default();
 
         if (!val.isNull() && val.isReference()) {
-            const link = val.link()!;
+            const link = val.link() !;
             this.reference = link.href();
             this.selectedChoice = new ChoiceViewModel(val, this.id, link.title());
         }
@@ -105,8 +108,8 @@ export class ParameterViewModel extends FieldViewModel {
         const fieldEntryType = this.entryType;
         const parmViewModel = this;
         function setCurrentChoices(vals: Models.Value) {
-            const list = vals.list()!;
-            const choicesToSet = _.map(list, val => new ChoiceViewModel(val, parmViewModel.id, val.link() ? val.link()!.title() : undefined));
+            const list = vals.list() !;
+            const choicesToSet = _.map(list, val => new ChoiceViewModel(val, parmViewModel.id, val.link() ? val.link() !.title() : undefined));
 
             if (fieldEntryType === Models.EntryType.MultipleChoices) {
                 parmViewModel.selectedMultiChoices = _.filter(parmViewModel.choices, c => _.some(choicesToSet, choiceToSet => c.valuesEqual(choiceToSet)));
@@ -116,7 +119,7 @@ export class ParameterViewModel extends FieldViewModel {
         }
 
         function setCurrentChoice(val: Models.Value) {
-            const choiceToSet = new ChoiceViewModel(val, parmViewModel.id, val.link() ? val.link()!.title() : undefined);
+            const choiceToSet = new ChoiceViewModel(val, parmViewModel.id, val.link() ? val.link() !.title() : undefined);
 
             if (fieldEntryType === Models.EntryType.Choices) {
                 const choices = parmViewModel.choices!;
@@ -145,7 +148,7 @@ export class ParameterViewModel extends FieldViewModel {
 
     }
 
-    private toTriStateBoolean(valueToSet: string | boolean | number | null) : boolean | null {
+    private toTriStateBoolean(valueToSet: string | boolean | number | null): boolean | null {
 
         // looks stupid but note type checking
         if (valueToSet === true || valueToSet === "true") {
@@ -182,7 +185,7 @@ export class ParameterViewModel extends FieldViewModel {
     }
 
     readonly setAsRow = (i: number) => this.paneArgId = `${this.argId}${i}`;
-    
+
     protected update() {
         super.update();
 

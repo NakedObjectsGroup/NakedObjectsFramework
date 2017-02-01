@@ -2,11 +2,11 @@
 import { ChoiceViewModel } from './choice-view-model';
 import * as Ro from "../ro-interfaces";
 import * as Models from "../models";
-import * as Config from "../config";
 import { ContextService } from '../context.service';
 import { ColorService } from '../color.service';
 import { ErrorService } from '../error.service';
 import { UrlManagerService } from '../url-manager.service';
+import { ConfigService } from '../config.service';
 
 export class LinkViewModel implements IDraggableViewModel {
 
@@ -15,11 +15,12 @@ export class LinkViewModel implements IDraggableViewModel {
         protected readonly colorService: ColorService,
         protected readonly error: ErrorService,
         protected readonly urlManager: UrlManagerService,
+        private readonly configService: ConfigService,
         public readonly link: Models.Link,
         public readonly paneId: number
     ) {
 
-        this.title = link.title() + Models.dirtyMarker(this.context, link.getOid());
+        this.title = link.title() + Models.dirtyMarker(this.context, this.configService, link.getOid(this.configService.config.keySeparator));
         this.domainType = link.type().domainType;
 
         // for dropping 
@@ -31,7 +32,7 @@ export class LinkViewModel implements IDraggableViewModel {
         this.draggableType = this.domainType;
 
         this.colorService.toColorNumberFromHref(link.href()).
-            then(c => this.color = `${Config.linkColor}${c}`).
+            then(c => this.color = `${this.configService.config.linkColor}${c}`).
             catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
     }
 

@@ -8,6 +8,7 @@ import { UrlManagerService } from "../url-manager.service";
 import { PaneComponent } from '../pane/pane';
 import { Type } from '@angular/core/src/type';
 import * as Models from '../models';
+import * as Configservice from '../config.service';
 
 @Component({
     selector: 'nof-dynamic-object',
@@ -23,7 +24,8 @@ export class DynamicObjectComponent extends PaneComponent {
         activatedRoute: ActivatedRoute,
         urlManager: UrlManagerService,
         private readonly componentFactoryResolver: ComponentFactoryResolver,
-        private readonly customComponentService: CustomComponentService) {
+        private readonly customComponentService: CustomComponentService,
+        private readonly configService: Configservice.ConfigService) {
         super(activatedRoute, urlManager);
     }
 
@@ -33,13 +35,13 @@ export class DynamicObjectComponent extends PaneComponent {
         if (!routeData.objectId) {
             return;
         }
-        const oid = Models.ObjectIdWrapper.fromObjectId(routeData.objectId);
+        const oid = Models.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator);
 
         if (oid.domainType !== this.lastOid) {
             this.lastOid = oid.domainType;
             this.parent.clear();
 
-            this.customComponentService.getCustomComponent(this.lastOid, ViewType.Object).then((c : Type<any>) => {
+            this.customComponentService.getCustomComponent(this.lastOid, ViewType.Object).then((c: Type<any>) => {
                 const childComponent = this.componentFactoryResolver.resolveComponentFactory(c);
                 this.parent.createComponent(childComponent);
             });

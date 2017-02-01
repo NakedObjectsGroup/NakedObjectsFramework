@@ -8,6 +8,7 @@ import { ErrorService } from "../error.service";
 import { AttachmentViewModel } from '../view-models/attachment-view-model';
 import { PaneComponent } from '../pane/pane';
 import * as Models from "../models";
+import * as Configservice from '../config.service';
 
 @Component({
     selector: 'nof-attachment',
@@ -21,7 +22,8 @@ export class AttachmentComponent extends PaneComponent {
         urlManager: UrlManagerService,
         private readonly viewModelFactory: ViewModelFactoryService,
         private readonly context: ContextService,
-        private readonly error: ErrorService
+        private readonly error: ErrorService,
+        private readonly configService: Configservice.ConfigService
     ) {
         super(activatedRoute, urlManager);
     }
@@ -32,7 +34,7 @@ export class AttachmentComponent extends PaneComponent {
 
     protected setup(routeData: PaneRouteData) {
 
-        const oid = Models.ObjectIdWrapper.fromObjectId(routeData.objectId);
+        const oid = Models.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator);
 
         this.context.getObject(routeData.paneId, oid, routeData.interactionMode)
             .then((object: Models.DomainObjectRepresentation) => {

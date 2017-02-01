@@ -9,9 +9,9 @@ import { ContextService } from '../context.service';
 import { UrlManagerService } from '../url-manager.service';
 import { ContributedActionParentViewModel } from './contributed-action-parent-view-model';
 import * as Helpers from './helpers-view-models';
-import * as Config from "../config";
 import * as Models from '../models';
 import * as _ from "lodash";
+import { ConfigService } from '../config.service';
 
 export class CollectionViewModel extends ContributedActionParentViewModel {
 
@@ -21,9 +21,10 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
         error: ErrorService,
         context: ContextService,
         urlManager: UrlManagerService,
+        private readonly configService: ConfigService,
         public readonly collectionRep: Models.CollectionMember | Models.CollectionRepresentation,
         public readonly routeData: PaneRouteData,
-        forceReload : boolean
+        forceReload: boolean
     ) {
         super(context, viewModelFactory, urlManager, error, routeData.paneId);
         this.title = collectionRep.extensions().friendlyName();
@@ -32,7 +33,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
         this.id = collectionRep.collectionId().toLowerCase();
 
         this.colorService.toColorNumberFromType(collectionRep.extensions().elementType()).
-            then(c => this.color = `${Config.linkColor}${c}`).
+            then(c => this.color = `${this.configService.config.linkColor}${c}`).
             catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
         this.reset(routeData, forceReload);
@@ -53,7 +54,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
     mayHaveItems: boolean;
     header: string[];
     currentState: CollectionViewState;
-   
+
     readonly reset = (routeData: PaneRouteData, resetting: boolean) => {
 
         let state = routeData.collections[this.collectionRep.collectionId()];
@@ -107,20 +108,20 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
                 this.items = this.viewModelFactory.getItems(itemLinks!, this.currentState === CollectionViewState.Table, routeData, this);
             }
             this.currentState = state;
-        } 
+        }
     }
 
 
     readonly doSummary = () => this.urlManager.setCollectionMemberState(this.collectionRep.collectionId(), CollectionViewState.Summary, this.onPaneId);
     readonly doList = () => this.urlManager.setCollectionMemberState(this.collectionRep.collectionId(), CollectionViewState.List, this.onPaneId);
     readonly doTable = () => this.urlManager.setCollectionMemberState(this.collectionRep.collectionId(), CollectionViewState.Table, this.onPaneId);
-    readonly hasTableData = () => this.items && _.some(this.items, (i : ItemViewModel) => i.tableRowViewModel);
+    readonly hasTableData = () => this.items && _.some(this.items, (i: ItemViewModel) => i.tableRowViewModel);
 
     readonly description = () => this.details.toString();
 
     readonly disableActions = () => this.editing || !this.actions || this.actions.length === 0;
 
-    readonly actionMember = (id: string) => {
+    readonly actionMember = (id: string, keySeparator: string) => {
         const actionViewModel = _.find(this.actions, a => a.actionRep.actionId() === id);
         if (actionViewModel) {
             return actionViewModel.actionRep;
@@ -129,7 +130,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
     }
 
     private hasActionMember(id: string) {
-       return !!_.find(this.actions, a => a.actionRep.actionId() === id);
+        return !!_.find(this.actions, a => a.actionRep.actionId() === id);
     }
 
     readonly hasMatchingLocallyContributedAction = (id: string) => {

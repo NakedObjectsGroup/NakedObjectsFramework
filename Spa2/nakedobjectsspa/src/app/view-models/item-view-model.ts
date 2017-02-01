@@ -8,7 +8,7 @@ import { ClickHandlerService } from '../click-handler.service';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import * as Ro from "../ro-interfaces";
 import * as Models from "../models";
-import * as Config from "../config";
+import { ConfigService } from '../config.service';
 
 export class ItemViewModel extends LinkViewModel {
 
@@ -17,6 +17,7 @@ export class ItemViewModel extends LinkViewModel {
         colorService: ColorService,
         error: ErrorService,
         urlManager: UrlManagerService,
+        configService: ConfigService,
         link: Models.Link,
         paneId: number,
         private readonly clickHandler: ClickHandlerService,
@@ -25,7 +26,7 @@ export class ItemViewModel extends LinkViewModel {
         private isSelected: boolean,
         public readonly id: string
     ) {
-        super(context, colorService, error, urlManager, link, paneId);
+        super(context, colorService, error, urlManager, configService, link, paneId);
 
         const members = link.members();
 

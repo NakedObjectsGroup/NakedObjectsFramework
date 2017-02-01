@@ -12,16 +12,17 @@ import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { DialogViewModel } from '../view-models/dialog-view-model';
 import { PropertyViewModel } from '../view-models/property-view-model';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
-
-
+import {ConfigService} from '../config.service';
 
 export abstract class FieldComponent {
 
     //filteredList: ViewModels.ChoiceViewModel[] = [];
     elementRef: ElementRef;
 
-    protected constructor(myElement: ElementRef,
-        private readonly context: ContextService
+    protected constructor(
+        myElement: ElementRef,
+        private readonly context: ContextService,
+        private readonly configService : ConfigService
     ) {
         this.elementRef = myElement;
     }
@@ -246,7 +247,7 @@ export abstract class FieldComponent {
                 href: fileReader.result,
                 type: file.type,
                 title: file.name
-            } as Ro.ILink);
+            });
 
             this.control.reset(link);
             this.model.file = link;

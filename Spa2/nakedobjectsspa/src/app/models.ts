@@ -1,4 +1,3 @@
-import * as Config from "./config";
 import * as Ro from "./ro-interfaces";
 import * as Constants from "./constants";
 import * as RoCustom from "./ro-interfaces-custom";
@@ -6,12 +5,13 @@ import * as Msg from "./user-messages";
 import * as _ from "lodash";
 import { MaskService, ILocalFilter } from "./mask.service";
 import { ContextService } from "./context.service";
-import * as moment  from "moment";
+import * as moment from "moment";
 import { ChoiceViewModel } from './view-models/choice-view-model';
+import * as Configservice from './config.service';
 
 
 // coerce undefined to null
-export function withNull<T>(v: T | undefined | null) : T | null {
+export function withNull<T>(v: T | undefined | null): T | null {
     return v === undefined ? null : v;
 }
 
@@ -19,7 +19,7 @@ export function withUndefined<T>(v: T | undefined | null): T | undefined {
     return v === null ? undefined : v;
 }
 
-function validateExists<T>(obj: T | null | undefined, name: string) : T {
+function validateExists<T>(obj: T | null | undefined, name: string): T {
     if (!obj) {
         throw new Error(`Expected ${name} does not exist`);
     }
@@ -33,15 +33,15 @@ function getMember<T>(members: _.Dictionary<T>, id: string, owner: string) {
 }
 
 
-export function checkNotNull<T>(v: T | undefined | null): T  {
+export function checkNotNull<T>(v: T | undefined | null): T {
     if (v == null) {
         throw new Error("Unexpected null");
     }
     return v;
 }
 
-export function dirtyMarker(context: ContextService, oid: ObjectIdWrapper) {
-    return (Config.showDirtyFlag && context.getIsDirty(oid)) ? "*" : "";
+export function dirtyMarker(context: ContextService, configService: Configservice.ConfigService, oid: ObjectIdWrapper) {
+    return (configService.config.showDirtyFlag && context.getIsDirty(oid)) ? "*" : "";
 }
 
 export function getOtherPane(paneId: number) {
@@ -74,7 +74,7 @@ export function toTimeString(dt: Date) {
     return `${hours}:${minutes}:${seconds}`;
 }
 
-export function getUtcDate(rawDate: string) : Date | null {
+export function getUtcDate(rawDate: string): Date | null {
     if (!rawDate || rawDate.length === 0) {
         return null;
     }
@@ -98,7 +98,7 @@ export function getUtcDate(rawDate: string) : Date | null {
     return null;
 }
 
-export function getTime(rawTime: string) : Date | null {
+export function getTime(rawTime: string): Date | null {
     if (!rawTime || rawTime.length === 0) {
         return null;
     }
@@ -138,16 +138,16 @@ export function toTime(value: Value) {
 }
 
 
-export function compress(toCompress: string) {
+export function compress(toCompress: string, shortCutMarker: string, urlShortCuts: string[]) {
     if (toCompress) {
-        _.forEach(Config.urlShortCuts, (sc, i) => toCompress = toCompress.replace(sc, `${Config.shortCutMarker}${i}`));
+        _.forEach(urlShortCuts, (sc, i) => toCompress = toCompress.replace(sc, `${shortCutMarker}${i}`));
     }
     return toCompress;
 }
 
-export function decompress(toDecompress: string) {
+export function decompress(toDecompress: string, shortCutMarker: string, urlShortCuts: string[]) {
     if (toDecompress) {
-        _.forEach(Config.urlShortCuts, (sc, i) => toDecompress = toDecompress.replace(`${Config.shortCutMarker}${i}`, sc));
+        _.forEach(urlShortCuts, (sc, i) => toDecompress = toDecompress.replace(`${shortCutMarker}${i}`, sc));
     }
     return toDecompress;
 }
@@ -304,7 +304,7 @@ function validateString(model: IHasExtensions, newValue: any, filter: ILocalFilt
 }
 
 
-export function validateMandatory(model: IHasExtensions, viewValue: string |ChoiceViewModel): string {
+export function validateMandatory(model: IHasExtensions, viewValue: string | ChoiceViewModel): string {
     // first check 
     const isMandatory = !model.extensions().optional();
 
@@ -532,11 +532,18 @@ export class ErrorWrapper {
 
 // abstract classes 
 
-function toOid(id: string[]) {
-    return _.reduce(id, (a, v) => `${a}${Config.keySeparator}${v}`) as string;
+function toOid(id: string[], keySeparator: string) {
+    return _.reduce(id, (a, v) => `${a}${keySeparator}${v}`) as string;
 }
 
 export class ObjectIdWrapper {
+
+    constructor(private readonly keySeparator: string) {
+        if (keySeparator == null) {
+            throw new Error("must have a keySeparator");
+        }
+    }
+
 
     domainType: string;
     instanceId: string;
@@ -544,63 +551,60 @@ export class ObjectIdWrapper {
     isService: boolean;
 
     getKey() {
-        return this.domainType + Config.keySeparator + this.instanceId;
+        return this.domainType + this.keySeparator + this.instanceId;
     }
 
-    static safeSplit(id: string) : string[] {
-        if (id) {
-            return id.split(Config.keySeparator);
-        }
-        return [];
+    static safeSplit(id: string, keySeparator: string): string[] {
+        return id ? id.split(keySeparator) : [];
     }
 
-    static fromObject(object: DomainObjectRepresentation) {
-        const oid = new ObjectIdWrapper();
+    static fromObject(object: DomainObjectRepresentation, keySeparator: string) {
+        const oid = new ObjectIdWrapper(keySeparator);
         oid.domainType = object.domainType() || "";
         oid.instanceId = object.instanceId() || "";
-        oid.splitInstanceId = this.safeSplit(oid.instanceId);
+        oid.splitInstanceId = this.safeSplit(oid.instanceId, keySeparator);
         oid.isService = !oid.instanceId;
         return oid;
     }
 
-    static fromLink(link: Link) {
+    static fromLink(link: Link, keySeparator: string) {
         const href = link.href();
-        return this.fromHref(href);
+        return this.fromHref(href, keySeparator);
     }
 
-    static fromHref(href: string) {
-        const oid = new ObjectIdWrapper();
+    static fromHref(href: string, keySeparator: string) {
+        const oid = new ObjectIdWrapper(keySeparator);
         oid.domainType = typeFromUrl(href);
         oid.instanceId = idFromUrl(href);
-        oid.splitInstanceId = this.safeSplit(oid.instanceId);
+        oid.splitInstanceId = this.safeSplit(oid.instanceId, keySeparator);
         oid.isService = !oid.instanceId;
         return oid;
     }
 
-    static fromObjectId(objectId: string) {
-        const oid = new ObjectIdWrapper();
-        const [dt, ...id] = objectId.split(Config.keySeparator);
+    static fromObjectId(objectId: string, keySeparator: string) {
+        const oid = new ObjectIdWrapper(keySeparator);
+        const [dt, ...id] = objectId.split(keySeparator);
         oid.domainType = dt;
         oid.splitInstanceId = id;
-        oid.instanceId = toOid(id);
+        oid.instanceId = toOid(id, keySeparator);
         oid.isService = !oid.instanceId;
         return oid;
     }
 
-    static fromRaw(dt: string, id: string) {
-        const oid = new ObjectIdWrapper();
+    static fromRaw(dt: string, id: string, keySeparator: string) {
+        const oid = new ObjectIdWrapper(keySeparator);
         oid.domainType = dt;
         oid.instanceId = id;
-        oid.splitInstanceId = this.safeSplit(oid.instanceId);
+        oid.splitInstanceId = this.safeSplit(oid.instanceId, keySeparator);
         oid.isService = !oid.instanceId;
         return oid;
     }
 
-    static fromSplitRaw(dt: string, id: string[]) {
-        const oid = new ObjectIdWrapper();
+    static fromSplitRaw(dt: string, id: string[], keySeparator: string) {
+        const oid = new ObjectIdWrapper(keySeparator);
         oid.domainType = dt;
         oid.splitInstanceId = id;
-        oid.instanceId = toOid(id);
+        oid.instanceId = toOid(id, keySeparator);
         oid.isService = !oid.instanceId;
         return oid;
     }
@@ -855,11 +859,11 @@ export class Value {
 
     toString(): string {
         if (this.isReference()) {
-            return this.link()!.title() || ""; // know true
+            return this.link() !.title() || ""; // know true
         }
 
         if (this.isList()) {
-            const list = this.list()!; // know true
+            const list = this.list() !; // know true
             const ss = _.map(list, v => v.toString());
             return ss.length === 0 ? "" : _.reduce(ss, (m, s) => m + "-" + s, "");
         }
@@ -867,51 +871,51 @@ export class Value {
         return (this.wrapped == null) ? "" : this.wrapped.toString();
     }
 
-    compress() {
+    compress(shortCutMarker: string, urlShortCuts: string[]) {
         if (this.isReference()) {
-            this.link()!.compress(); // know true
+            this.link() !.compress(shortCutMarker, urlShortCuts); // know true
         }
         if (this.isList()) {
-            const list = this.list()!; // know true
-            _.forEach(list, i => i.compress());
+            const list = this.list() !; // know true
+            _.forEach(list, i => i.compress(shortCutMarker, urlShortCuts));
         };
 
         if (this.scalar() && this.wrapped instanceof String) {
-            this.wrapped = compress(this.wrapped as string);
+            this.wrapped = compress(this.wrapped as string, shortCutMarker, urlShortCuts);
         }
     }
 
-    decompress() {
+    decompress(shortCutMarker: string, urlShortCuts: string[]) {
         if (this.isReference()) {
-            this.link()!.decompress();  // know true
+            this.link() !.decompress(shortCutMarker, urlShortCuts);  // know true
         }
         if (this.isList()) {
             const list = this.list() as Value[]; // know true
-            _.forEach(list, i => i.decompress());
+            _.forEach(list, i => i.decompress(shortCutMarker, urlShortCuts));
         };
 
         if (this.scalar() && this.wrapped instanceof String) {
-            this.wrapped = decompress(this.wrapped as string);
+            this.wrapped = decompress(this.wrapped as string, shortCutMarker, urlShortCuts);
         }
     }
 
-    static fromJsonString(jsonString: string): Value {
+    static fromJsonString(jsonString: string, shortCutMarker: string, urlShortCuts: string[]): Value {
         const value = new Value(JSON.parse(jsonString));
-        value.decompress();
+        value.decompress(shortCutMarker, urlShortCuts);
         return value;
     }
 
     toValueString(): string {
         if (this.isReference()) {
-            return this.link()!.href();  // know true
+            return this.link() !.href();  // know true
         }
         return (this.wrapped == null) ? "" : this.wrapped.toString();
     }
 
-    toJsonString(): string {
+    toJsonString(shortCutMarker: string, urlShortCuts: string[]): string {
 
         const cloneThis = _.cloneDeep(this as Value);
-        cloneThis.compress();
+        cloneThis.compress(shortCutMarker, urlShortCuts);
         const value = cloneThis.wrapped;
         const raw = (value instanceof Link) ? value.wrapped : value;
         return JSON.stringify(raw);
@@ -919,10 +923,10 @@ export class Value {
 
     setValue(target: Ro.IValue) {
         if (this.isFileReference()) {
-            target.value = this.link()!.wrapped; // know true
+            target.value = this.link() !.wrapped; // know true
         }
         else if (this.isReference()) {
-            
+
             target.value = { "href": (this.link() as Link).href() }; // know true
         } else if (this.isList()) {
             const list = this.list() as Value[]; // know true
@@ -1312,8 +1316,8 @@ export class Parameter
         const promptLink = this.promptLink() as Link;
         if (promptLink) {
             // ConditionalChoices, ConditionalMultipleChoices, AutoComplete 
-             
-            if (!!promptLink.arguments()![Constants.roSearchTerm]) {
+
+            if (!!promptLink.arguments() ![Constants.roSearchTerm]) {
 
                 // autocomplete 
                 return EntryType.AutoComplete;
@@ -1353,7 +1357,7 @@ export interface IInvokableAction extends IHasExtensions {
 
     isQueryOnly(): boolean;
     isNotQueryOnly(): boolean;
-    isPotent() : boolean; 
+    isPotent(): boolean;
 }
 
 export class ActionRepresentation extends ResourceRepresentation<Ro.IActionRepresentation> implements IInvokableAction {
@@ -1497,7 +1501,7 @@ export class PromptRepresentation extends ResourceRepresentation<Ro.IPromptRepre
         return this.wrapped().id;
     }
 
-    choices(addEmpty : boolean): _.Dictionary<Value> | null {
+    choices(addEmpty: boolean): _.Dictionary<Value> | null {
         const ch = this.wrapped().choices;
         if (ch) {
             let values = _.map(ch, item => new Value(item));
@@ -1551,7 +1555,7 @@ export class CollectionRepresentation extends ResourceRepresentation<RoCustom.IC
 
     private addToMap() {
         const link = this.addToLink();
-        return  link ?  link.arguments() as Ro.IValueMap : null;
+        return link ? link.arguments() as Ro.IValueMap : null;
     }
 
     getAddToMap(): AddToRemoveFromMap | null {
@@ -1636,7 +1640,7 @@ export class PropertyRepresentation extends ResourceRepresentation<Ro.IPropertyR
 
     private modifyMap() {
         const link = this.modifyLink();
-        return  link ? link.arguments() as Ro.IValueMap : null;
+        return link ? link.arguments() as Ro.IValueMap : null;
     }
 
     // linked representations 
@@ -1780,7 +1784,7 @@ export class PropertyMember extends Member<Ro.IPropertyMember> implements IField
         return linkByNamespacedRel(this.links(), "modify") || null;
     }
 
-    clearLink(): Link | null{
+    clearLink(): Link | null {
         return linkByNamespacedRel(this.links(), "clear") || null;
     }
 
@@ -1805,10 +1809,10 @@ export class PropertyMember extends Member<Ro.IPropertyMember> implements IField
     }
 
 
-    getPromptMap(): PromptMap | null{
+    getPromptMap(): PromptMap | null {
         const link = this.promptLink();
         if (link) {
-            const pr =  link.getTargetAs<PromptRepresentation>();
+            const pr = link.getTargetAs<PromptRepresentation>();
             return new PromptMap(link, pr.instanceId());
         }
         return null;
@@ -1874,7 +1878,7 @@ export class PropertyMember extends Member<Ro.IPropertyMember> implements IField
         if (link) {
             // ConditionalChoices, ConditionalMultipleChoices, AutoComplete 
 
-            if (!!link.arguments()![Constants.roSearchTerm]) {
+            if (!!link.arguments() ![Constants.roSearchTerm]) {
                 // autocomplete 
                 return EntryType.AutoComplete;
             }
@@ -1893,10 +1897,10 @@ export class PropertyMember extends Member<Ro.IPropertyMember> implements IField
 export class CollectionMember
     extends Member<RoCustom.ICustomCollectionMember>
     implements IHasLinksAsValue, IHasActions {
-    
-     
 
-        wrapped = () => this.resource() as RoCustom.ICustomCollectionMember;
+
+
+    wrapped = () => this.resource() as RoCustom.ICustomCollectionMember;
 
     constructor(wrapped: Ro.ICollectionMember, public parent: DomainObjectRepresentation, private readonly id: string) {
         super(wrapped);
@@ -1909,7 +1913,7 @@ export class CollectionMember
 
     private lazyValue: Link[] | null;
 
-    value(): Link[]  | null {
+    value(): Link[] | null {
         this.lazyValue = this.lazyValue || (this.wrapped().value ? wrapLinks(this.wrapped().value!) : null);
         return this.lazyValue;
     }
@@ -1940,9 +1944,9 @@ export class CollectionMember
 
     hasActionMember(id: string): boolean {
         return !!this.actionMembers()[id];
-    } 
+    }
 
-    actionMember(id: string): ActionMember {
+    actionMember(id: string, keySeparator: string): ActionMember {
         return getMember(this.actionMembers(), id, this.collectionId());
     }
 
@@ -1965,7 +1969,7 @@ export class ActionMember extends Member<Ro.IActionMember> {
     getDetails(): ActionRepresentation | null {
         const link = this.detailsLink();
         if (link) {
-            const details =  link.getTargetAs<ActionRepresentation>();
+            const details = link.getTargetAs<ActionRepresentation>();
             details.parent = this.parent;
             return details;
         }
@@ -2034,7 +2038,7 @@ export class InvokableActionMember extends ActionMember {
 
 
 export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomainObjectRepresentation> implements IHasActions {
-   
+
 
     wrapped = () => this.resource() as Ro.IDomainObjectRepresentation;
 
@@ -2042,8 +2046,9 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
         super(model);
     }
 
-    id(): string {
-        return `${this.domainType() || this.serviceId()}${this.instanceId() ? `${Config.keySeparator}${this.instanceId()}` : ""}`;
+    // todo change this to not be dependent of keySeparator 
+    id(keySeparator: string): string {
+        return `${this.domainType() || this.serviceId()}${this.instanceId() ? `${keySeparator}${this.instanceId()}` : ""}`;
     }
 
     title(): string {
@@ -2051,7 +2056,7 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
     }
 
     domainType(): string | null {
-        return withNull( this.wrapped().domainType);
+        return withNull(this.wrapped().domainType);
     }
 
     serviceId(): string | null {
@@ -2069,7 +2074,7 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
 
     private resetMemberMaps() {
         const members = this.wrapped().members;
-        this.memberMap = _.mapValues(members, (m, id) => Member.wrapMember(m, this, id!)!);
+        this.memberMap = _.mapValues(members, (m, id) => Member.wrapMember(m, this, id!) !);
         this.propertyMemberMap = _.pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === "property") as _.Dictionary<PropertyMember>;
         this.collectionMemberMap = _.pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === "collection") as _.Dictionary<CollectionMember>;
         this.actionMemberMap = _.pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === "action") as _.Dictionary<ActionMember>;
@@ -2117,8 +2122,9 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
         return !!this.actionMembers()[id];
     }
 
-    actionMember(id: string): ActionMember {
-        return getMember(this.actionMembers(), id, this.id());
+    // todo change to not be dependent on keySeparator
+    actionMember(id: string, keySeparator: string): ActionMember {
+        return getMember(this.actionMembers(), id, this.id(keySeparator));
     }
 
     updateLink(): Link | null {
@@ -2158,7 +2164,7 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
         return new PersistMap(this, map);
     }
 
-    getUpdateMap() {     
+    getUpdateMap() {
         const map = validateExists(this.updateMap(), "UpdateMap");
         return new UpdateMap(this, map);
     }
@@ -2168,9 +2174,9 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
     }
 
     private oid: ObjectIdWrapper;
-    getOid(): ObjectIdWrapper {
+    getOid(keySeparator: string): ObjectIdWrapper {
         if (!this.oid) {
-            this.oid = ObjectIdWrapper.fromObject(this);
+            this.oid = ObjectIdWrapper.fromObject(this, keySeparator);
         }
 
         return this.oid;
@@ -2234,9 +2240,9 @@ export class MenuRepresentation extends ResourceRepresentation<RoCustom.IMenuRep
 
     hasActionMember(id: string): boolean {
         return !!this.actionMembers()[id];
-    } 
+    }
 
-    actionMember(id: string): ActionMember {
+    actionMember(id: string, keySeparator: string): ActionMember {
         return getMember(this.actionMembers(), id, this.menuId());
     }
 
@@ -2292,7 +2298,7 @@ export class ListRepresentation
         return this.lazyValue;
     }
 
-    pagination(): RoCustom.IPagination | null{
+    pagination(): RoCustom.IPagination | null {
         return this.wrapped().pagination || null;
     }
 
@@ -2516,7 +2522,7 @@ export class DomainTypeActionInvokeRepresentation extends ResourceRepresentation
 
     wrapped = () => this.resource() as Ro.IDomainTypeActionInvokeRepresentation;
 
-    constructor(againstType: string, toCheckType: string, appPath : string) {
+    constructor(againstType: string, toCheckType: string, appPath: string) {
         super();
         this.hateoasUrl = `${appPath}/domain-types/${toCheckType}/type-actions/isSubtypeOf/invoke`;
         this.urlParms = {};
@@ -2544,7 +2550,7 @@ export class DomainTypeActionInvokeRepresentation extends ResourceRepresentation
 // matches the home page representation  5.0 
 export class HomePageRepresentation extends ResourceRepresentation<Ro.IHomePageRepresentation> {
 
-    constructor(rep: Ro.IRepresentation, appPath : string) {
+    constructor(rep: Ro.IRepresentation, appPath: string) {
         super(rep);
         this.hateoasUrl = appPath;
     }
@@ -2610,19 +2616,19 @@ export class Link {
 
     constructor(public wrapped: Ro.ILink) { }
 
-    compress() {
-        this.wrapped.href = compress(this.wrapped.href);
+    compress(shortCutMarker: string, urlShortCuts: string[]) {
+        this.wrapped.href = compress(this.wrapped.href, shortCutMarker, urlShortCuts);
     }
 
-    decompress() {
-        this.wrapped.href = decompress(this.wrapped.href);
+    decompress(shortCutMarker: string, urlShortCuts: string[]) {
+        this.wrapped.href = decompress(this.wrapped.href, shortCutMarker, urlShortCuts);
     }
 
     href(): string {
         return decodeURIComponent(this.wrapped.href);
     }
 
-    method(): Ro.httpMethodsType  {
+    method(): Ro.httpMethodsType {
         return this.wrapped.method!;
     }
 
@@ -2702,9 +2708,9 @@ export class Link {
     // helper 
 
     private oid: ObjectIdWrapper;
-    getOid(): ObjectIdWrapper {
+    getOid(keySeparator: string): ObjectIdWrapper {
         if (!this.oid) {
-            this.oid = ObjectIdWrapper.fromLink(this);
+            this.oid = ObjectIdWrapper.fromLink(this, keySeparator);
         }
 
         return this.oid;
@@ -2713,8 +2719,8 @@ export class Link {
 
 export interface IHasActions extends IHasExtensions {
     actionMembers(): _.Dictionary<ActionMember>;
-    actionMember(id: string): ActionMember;
-    hasActionMember(id :string) : boolean;
+    actionMember(id: string, keySeparator: string): ActionMember;
+    hasActionMember(id: string): boolean;
     etagDigest: string;
 }
 

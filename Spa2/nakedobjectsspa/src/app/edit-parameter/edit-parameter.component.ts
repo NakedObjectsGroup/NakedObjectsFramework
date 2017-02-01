@@ -9,6 +9,7 @@ import { FieldViewModel } from '../view-models/field-view-model';
 import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { DialogViewModel } from '../view-models/dialog-view-model';
 import { ChoiceViewModel } from '../view-models/choice-view-model';
+import { ConfigService } from '../config.service';
 
 @Component({
     selector: 'nof-edit-parameter',
@@ -24,9 +25,10 @@ export class EditParameterComponent extends FieldComponent implements OnInit {
         private readonly viewModelFactory: ViewModelFactoryService,
         private readonly urlManager: UrlManagerService,
         myElement: ElementRef,
-        context: ContextService
+        context: ContextService,
+        configService: ConfigService
     ) {
-        super(myElement, context);
+        super(myElement, context, configService);
     }
 
     parm: ParameterViewModel;

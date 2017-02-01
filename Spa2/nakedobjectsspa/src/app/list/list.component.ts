@@ -11,14 +11,14 @@ import { PaneRouteData, RouteData, CollectionViewState } from "../route-data";
 import { ViewModelFactoryService } from "../view-model-factory.service";
 import * as Models from "../models";
 import * as Constants from "../constants";
-import * as Config from "../config";
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
 import { IMessageViewModel } from '../view-models/imessage-view-model';
 import { ListViewModel } from '../view-models/list-view-model';
 import { PaneComponent } from '../pane/pane';
 import { ItemViewModel } from '../view-models/item-view-model';
 import { PropertyViewModel } from '../view-models/property-view-model';
-import {IButton} from '../button/button.component';
+import { IButton } from '../button/button.component';
+import { ConfigService } from '../config.service';
 
 @Component({
     selector: 'nof-list',
@@ -34,7 +34,8 @@ export class ListComponent extends PaneComponent implements AfterViewInit {
         private readonly context: ContextService,
         private readonly color: ColorService,
         private readonly viewModelFactory: ViewModelFactoryService,
-        private readonly error: ErrorService) {
+        private readonly error: ErrorService,
+        private readonly configService: ConfigService) {
         super(activatedRoute, urlManager);
     }
 
@@ -174,7 +175,7 @@ export class ListComponent extends PaneComponent implements AfterViewInit {
 
     getActionExtensions(routeData: PaneRouteData): Promise<Models.Extensions> {
         return routeData.objectId
-            ? this.context.getActionExtensionsFromObject(routeData.paneId, Models.ObjectIdWrapper.fromObjectId(routeData.objectId), routeData.actionId)
+            ? this.context.getActionExtensionsFromObject(routeData.paneId, Models.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator), routeData.actionId)
             : this.context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
     }
 

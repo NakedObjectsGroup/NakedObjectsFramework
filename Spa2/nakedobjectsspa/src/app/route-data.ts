@@ -1,11 +1,11 @@
 import * as Models from "./models";
-import * as Config from "./config";
 import * as _ from "lodash";
+import * as Configservice from './config.service';
 
 export interface ICustomActivatedRouteData {
     pane: number;
     class: string;
-    dynamicType? : ViewType.Object | ViewType.List;
+    dynamicType?: ViewType.Object | ViewType.List;
 }
 
 export enum ViewType {
@@ -39,9 +39,9 @@ export enum InteractionMode {
 }
 
 export class RouteData {
-    constructor() {
-        this.pane1 = new PaneRouteData(1);
-        this.pane2 = new PaneRouteData(2);
+    constructor(private readonly configService: Configservice.ConfigService) {
+        this.pane1 = new PaneRouteData(1, configService.config.doUrlValidation);
+        this.pane2 = new PaneRouteData(2, configService.config.doUrlValidation);
     }
 
     pane1: PaneRouteData;
@@ -60,9 +60,9 @@ interface ICondition {
 }
 
 export class PaneRouteData {
-    constructor(public paneId: number) { }
+    constructor(public paneId: number, private readonly doUrlValidation: boolean) { }
 
-    location : ViewType; 
+    location: ViewType;
     objectId: string;
     menuId: string;
     collections: _.Dictionary<CollectionViewState>;
@@ -143,14 +143,14 @@ export class PaneRouteData {
 
         this.validatingUrl = url;
 
-        if (Config.doUrlValidation) {
+        if (this.doUrlValidation) {
             // Can add more conditions here 
             this.assertMustBeNullInContext("objectId", "menuId");
             this.assertMustBeNullInContext("menuId", "objectId");
         }
     }
 
-    isEqual(other : PaneRouteData) {
+    isEqual(other: PaneRouteData) {
         return _.isEqual(this, other);
     }
 }

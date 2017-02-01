@@ -9,7 +9,7 @@ import { ViewModelFactoryService } from '../view-model-factory.service';
 import { ItemViewModel } from './item-view-model';
 import * as Ro from "../ro-interfaces";
 import * as Models from "../models";
-import * as Config from "../config";
+import { ConfigService } from '../config.service';
 
 export class RecentItemViewModel extends ItemViewModel {
 
@@ -18,6 +18,7 @@ export class RecentItemViewModel extends ItemViewModel {
         colorService: ColorService,
         error: ErrorService,
         urlManager: UrlManagerService,
+        configService: ConfigService,
         link: Models.Link,
         paneId: number,
         clickHandler: ClickHandlerService,
@@ -26,8 +27,8 @@ export class RecentItemViewModel extends ItemViewModel {
         isSelected: boolean,
         public readonly friendlyName: string
     ) {
-        super(context, colorService, error, urlManager, link, paneId, clickHandler, viewModelFactory, index, isSelected, "");
+        super(context, colorService, error, urlManager, configService, link, paneId, clickHandler, viewModelFactory, index, isSelected, "");
     }
 
-    
+
 }

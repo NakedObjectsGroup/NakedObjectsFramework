@@ -13,6 +13,7 @@ import * as _ from "lodash";
 import * as Msg from "../user-messages";
 import * as Models from '../models';
 import * as Helpers from './helpers-view-models';
+import * as Configservice from '../config.service';
 
 export class PropertyViewModel extends FieldViewModel implements IDraggableViewModel {
 
@@ -25,6 +26,7 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         private readonly maskService: MaskService,
         private readonly urlManager: UrlManagerService,
         private readonly clickHandler: ClickHandlerService,
+        configService: Configservice.ConfigService,
         id: string,
         private readonly previousValue: Models.Value,
         onPaneId: number,
@@ -35,17 +37,18 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
             color,
             error,
             context,
+            configService,
             onPaneId,
             propertyRep.isScalar(),
             id,
             propertyRep.isCollectionContributed(),
             propertyRep.entryType());
 
-        this.draggableType = propertyRep.extensions().returnType()!; // todo fix extensions 
+        this.draggableType = propertyRep.extensions().returnType() !; // todo fix extensions 
         this.isEditable = !propertyRep.disabledReason();
-    
+
         this.attachment = this.viewModelfactory.attachmentViewModel(propertyRep, onPaneId);
-        
+
         const fieldEntryType = this.entryType;
 
         if (fieldEntryType === Models.EntryType.AutoComplete) {
@@ -73,7 +76,7 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
     }
 
 
-    private getDigest(propertyRep: Models.PropertyMember) : string | null {
+    private getDigest(propertyRep: Models.PropertyMember): string | null {
         const parent = propertyRep.parent;
         if (parent instanceof Models.DomainObjectRepresentation) {
             if (parent.isTransient()) {
@@ -107,7 +110,7 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         const propertyRep = this.propertyRep;
         if (this.entryType === Models.EntryType.Choices) {
 
-            const choices = propertyRep.choices()!;
+            const choices = propertyRep.choices() !;
 
             this.setupChoices(choices);
 
@@ -130,7 +133,7 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
             this.formattedValue = "";
             this.refType = "null";
         } else {
-            this.reference = value!.link()!.href();
+            this.reference = value!.link() !.href();
             this.value = value.toString();
             this.formattedValue = value.toString();
             this.refType = rep.extensions().notNavigable() ? "notNavigable" : "navigable";
@@ -152,7 +155,7 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         const propertyRep = this.propertyRep;
 
         const remoteMask = propertyRep.extensions().mask();
-        const localFilter = this.maskService.toLocalFilter(remoteMask, propertyRep.extensions().format()!);
+        const localFilter = this.maskService.toLocalFilter(remoteMask, propertyRep.extensions().format() !);
         this.localFilter = localFilter;
         // formatting also happens in in directive - at least for dates - value is now date in that case
 
