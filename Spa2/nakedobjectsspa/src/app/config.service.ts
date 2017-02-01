@@ -33,8 +33,15 @@ export interface IAppConfig {
 
     // flag for configurable home button behaviour
     leftClickHomeAlwaysGoesToSinglePane: boolean;
-}
 
+    // optional colors for simple color config 
+    colors?: {
+        map : {
+            [index: string]: number;
+        },
+        default : number;
+    }
+}
 
 export function configFactory(config: ConfigService) {
     return () => config.load();

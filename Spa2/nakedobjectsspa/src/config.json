@@ -2,5 +2,14 @@
     "appPath": "http://nakedobjectsrodemo.azurewebsites.net",
     "logoffUrl": "http://nakedobjectsrodemo.azurewebsites.net/Account/Logoff",
     "urlShortCuts": [ "http://nakedobjectsrodemo.azurewebsites.net", "AdventureWorksModel" ],
-    "doUrlValidation": true
+    "doUrlValidation": true,
+    "colors": {
+        "map": {
+            "AdventureWorksModel.Customer": 1,
+            "AdventureWorksModel.Product": 4,
+            "AdventureWorksModel.Employee": 5,
+            "AdventureWorksModel.SalesPerson": 6
+        },
+        "default": 0
+    }
 }
