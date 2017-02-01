@@ -170,7 +170,7 @@ export class RepLoaderService {
             } else {
                 return this.handleInvalidResponse(Models.ErrorCategory.HttpServerError);
             }
-        } else if (response.status === -1) {
+        } else if (response.status <= 0) {
             // failed to connect
             category = Models.ErrorCategory.ClientError;
             error = `Failed to connect to server: ${response.url || "unknown"}`;
@@ -210,7 +210,8 @@ export class RepLoaderService {
             })
             .catch((r: Response) => {
                 this.loadingCountSource.next(--(this.loadingCount));
-                return <any>this.handleError(r);
+                r.url = r.url || config.url;
+                return this.handleError(r);
             });
     }
 
@@ -270,6 +271,7 @@ export class RepLoaderService {
             })
             .catch((r: Response) => {
                 this.loadingCountSource.next(--(this.loadingCount));
+                r.url = r.url || config.url;
                 return this.handleError(r);
             });
     }
@@ -386,6 +388,7 @@ export class RepLoaderService {
                 return blob;
             })
             .catch((r: Response) => {
+                r.url = r.url || config.url;
                 return this.handleError(r);
             });
     }

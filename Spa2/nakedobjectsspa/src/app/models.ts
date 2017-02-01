@@ -452,7 +452,7 @@ export enum ClientErrorCode {
     WrongType,
     NotImplemented,
     SoftwareError,
-    ConnectionProblem = -1
+    ConnectionProblem = 0
 }
 
 export class ErrorWrapper {
