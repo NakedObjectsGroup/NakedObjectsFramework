@@ -96,6 +96,7 @@
     <Content Include="src\tsconfig.json" />
     <Content Include="src\app\config\config.json" />
     <Content Include="src\config.json" />
+    <Content Include="src\empty_config.json" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

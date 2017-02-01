@@ -15,6 +15,6 @@
     <description>Single Page Application client for a Naked Objects application.</description>
   </metadata>
   <files>
-    <file src="..\nakedobjectsspa\dist\*" target="Content"/>
+    <file src=".\dist\*" target="Content"/>
   </files>
 </package>
