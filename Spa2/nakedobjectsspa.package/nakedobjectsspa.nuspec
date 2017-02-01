@@ -16,5 +16,6 @@
   </metadata>
   <files>
     <file src="..\nakedobjectsspa\pack\*" target="Content"/>
+    <file src="..\nakedobjectsspa\pack\assets\*" target="Content\assets"/>
   </files>
 </package>
