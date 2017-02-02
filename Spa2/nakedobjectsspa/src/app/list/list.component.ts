@@ -19,7 +19,7 @@ import { ItemViewModel } from '../view-models/item-view-model';
 import { PropertyViewModel } from '../view-models/property-view-model';
 import { IButton } from '../button/button.component';
 import { ConfigService } from '../config.service';
-import * as Loggerservice from '../logger.service';
+import { LoggerService} from '../logger.service';
 
 @Component({
     selector: 'nof-list',
@@ -37,7 +37,7 @@ export class ListComponent extends PaneComponent implements AfterViewInit {
         private readonly viewModelFactory: ViewModelFactoryService,
         private readonly error: ErrorService,
         private readonly configService: ConfigService,
-        private readonly loggerService: Loggerservice.LoggerService
+        private readonly loggerService: LoggerService
     ) {
         super(activatedRoute, urlManager);
     }
@@ -216,7 +216,7 @@ export class ListComponent extends PaneComponent implements AfterViewInit {
     }
 
     // todo DRY this - and rename - copy not cut
-    cut(event: any, item: IDraggableViewModel) {
+    copy(event: any, item: IDraggableViewModel) {
         const cKeyCode = 67;
         if (event && (event.keyCode === cKeyCode && event.ctrlKey)) {
             this.context.setCutViewModel(item);

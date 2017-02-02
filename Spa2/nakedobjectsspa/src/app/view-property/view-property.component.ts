@@ -30,12 +30,12 @@ export class ViewPropertyComponent {
 
     @HostListener('keydown', ['$event'])
     onEnter(event: KeyboardEvent) {
-        this.cut(event);
+        this.copy(event);
     }
 
     @HostListener('keypress', ['$event'])
     onEnter1(event: KeyboardEvent) {
-        this.cut(event);
+        this.copy(event);
     }
 
     // template API
@@ -91,7 +91,7 @@ export class ViewPropertyComponent {
     doClick = (right?: boolean) => this.property.doClick(right);
 
     // todo DRY and rename this !!
-    cut(event: any) {
+    copy(event: any) {
         const cKeyCode = 67;
         const prop = this.property;
         if (event && (event.keyCode === cKeyCode && event.ctrlKey) && prop) {

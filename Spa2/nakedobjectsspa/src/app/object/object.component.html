@@ -9,7 +9,7 @@
 
 	<div *ngIf="mode === 0" class="object view" [ngClass]="color">
 		<header class="header">
-			<div #ttl class="title" dnd-draggable [dragEnabled]="true" [dragData]="object" tabindex="0" (keydown)="cut($event)" (keypress)="cut($event)" >
+			<div #ttl class="title" dnd-draggable [dragEnabled]="true" [dragData]="object" tabindex="0" (keydown)="copy($event)" (keypress)="copy($event)" >
                  <span class="type">{{friendlyName}}</span> {{title()}}
 			</div>
 			<!--<div>{{object.isDirty() ? "*" : ""}} </div>-->
@@ -26,7 +26,7 @@
 	<div *ngIf="(mode === 1 || mode === 2 || mode === 3)" class="object edit" [ngClass]="color">
 		<form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
 			<header class="header">
-				<div #ttl class="title"  dnd-draggable [dragEnabled]="true" [dragData]="object" tabindex="0"(keydown)="cut($event)" (keypress)="cut($event)" >
+				<div #ttl class="title"  dnd-draggable [dragEnabled]="true" [dragData]="object" tabindex="0"(keydown)="copy($event)" (keypress)="copy($event)" >
 					 <span class="type">{{friendlyName}}</span> {{title()}}
 				</div>
 				<div *ngIf="mode === 3">
@@ -56,7 +56,7 @@
 	</div>
 	<div *ngIf="(mode === 4)" class="object view" [ngClass]="color">
 		<header class="header">
-			<div #ttl class="title" dnd-draggable [dragEnabled]="true" [dragData]="object" tabindex="0" (keydown)="cut($event)" (keypress)="cut($event)" >
+			<div #ttl class="title" dnd-draggable [dragEnabled]="true" [dragData]="object" tabindex="0" (keydown)="copy($event)" (keypress)="copy($event)" >
 				<span class="type">{{friendlyName}}</span> {{title()}}
 			</div>
 			<div class="messages">{{message()}}</div>

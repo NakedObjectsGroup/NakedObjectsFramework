@@ -84,7 +84,7 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
     }
 
     // todo DRY this - and rename - copy not cut
-    cut(event: any) {
+    copy(event: any) {
         const cKeyCode = 67;
         const obj = this.object;
         if (event && (event.keyCode === cKeyCode && event.ctrlKey) && obj) {

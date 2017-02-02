@@ -66,7 +66,6 @@ export class FooterComponent implements OnInit {
         this.urlManager.singlePane(this.clickHandler.pane(1, right));
     };
 
-    // todo fix logoff
     logOff = () => {
         this.context.getUser()
             .then((u: Models.UserRepresentation) => {
@@ -80,7 +79,7 @@ export class FooterComponent implements OnInit {
                     this.http.post(this.configService.config.logoffUrl, args);
 
                     // logoff client without waiting for server
-                    setTimeout(() => window.location.href = this.configService.config.postLogoffUrl, 0);
+                    window.location.href = this.configService.config.postLogoffUrl;
                 }
             })
             .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
