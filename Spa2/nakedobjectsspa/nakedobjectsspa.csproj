@@ -30,6 +30,8 @@
     <Content Include="src\app\app.component.html" />
     <Content Include="src\app\application-properties\application-properties.component.css" />
     <Content Include="src\app\application-properties\application-properties.component.html" />
+    <Content Include="src\app\attachment-property\attachment-property.component.css" />
+    <Content Include="src\app\attachment-property\attachment-property.component.html" />
     <Content Include="src\app\attachment\attachment.component.css" />
     <Content Include="src\app\attachment\attachment.component.html" />
     <Content Include="src\app\buttons\buttons.component.css" />
@@ -111,6 +113,7 @@
     <TypeScriptCompile Include="src\app\app.component.ts" />
     <TypeScriptCompile Include="src\app\app.module.ts" />
     <TypeScriptCompile Include="src\app\application-properties\application-properties.component.ts" />
+    <TypeScriptCompile Include="src\app\attachment-property\attachment-property.component.ts" />
     <TypeScriptCompile Include="src\app\attachment\attachment.component.ts" />
     <TypeScriptCompile Include="src\app\buttons\buttons.component.ts" />
     <TypeScriptCompile Include="src\app\button\button.component.ts" />

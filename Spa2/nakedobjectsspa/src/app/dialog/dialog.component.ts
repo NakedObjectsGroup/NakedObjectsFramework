@@ -106,18 +106,13 @@ export class DialogComponent {
     private createForm(dialog: DialogViewModel) {
         const pps = dialog.parameters;
         this.parms = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<ParameterViewModel>;
-        // todo fix types - no any 
-        const controls = _.mapValues(this.parms, p => [p.getValueForControl(), (a: AbstractControl) => p.validator(a)]) as _.Dictionary<any>;
+        const controls = _.mapValues(this.parms, p => [p.getValueForControl(), (a: AbstractControl) => p.validator(a)]);
         this.form = this.formBuilder.group(controls);
 
         this.form.valueChanges.subscribe((data: any) => {
             if (this.dialog) {
                 // cache parm values
-                _.forEach(data,
-                    (v, k) => {
-                        const parm = this.parms[k!];
-                        parm.setValueFromControl(v);
-                    });
+                _.forEach(data, (v, k) => this.parms[k!].setValueFromControl(v));
                 this.dialog.setParms();
             }
         });

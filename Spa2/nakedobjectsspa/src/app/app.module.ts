@@ -51,6 +51,7 @@ import { CustomComponentConfigService } from './custom-component-config.service'
 import { DynamicListComponent } from './dynamic-list/dynamic-list.component';
 import { ConfigService, configFactory } from './config.service';
 import { LoggerService } from './logger.service';
+import { AttachmentPropertyComponent } from './attachment-property/attachment-property.component';
 
 @NgModule({
     declarations: [
@@ -83,7 +84,8 @@ import { LoggerService } from './logger.service';
         ButtonsComponent,
         ButtonComponent,
         DynamicObjectComponent,
-        DynamicListComponent
+        DynamicListComponent,
+        AttachmentPropertyComponent
     ],
     entryComponents: [
         ObjectComponent,

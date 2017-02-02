@@ -52,7 +52,7 @@ function isSameObject(object: Models.DomainObjectRepresentation, type: string, i
 }
 
 class TransientCache {
-    // todo later - maybe ts 2.1 - investigate if we can use an enum for pane and not have empty array in index 0 ? 
+    // todo - later - maybe ts 2.1 - investigate if we can use an enum for pane and not have empty array in index 0 ? 
     private transientCache: Models.DomainObjectRepresentation[][] = [[], [], []]; // per pane 
 
     constructor(private readonly depth: number) { }
