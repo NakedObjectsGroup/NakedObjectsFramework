@@ -75,7 +75,7 @@ export class ColorService extends TypeResultCache<number> implements IColorServi
         const basicConfig = this.configService.config.colors;
 
         if (basicConfig) {
-            _.forEach(basicConfig.map, (v, k) => this.addType(k, v));
+            _.forEach(basicConfig.map, (v, k) => this.addType(k!, v));
             const dflt = basicConfig.default;
 
             if (dflt !== null) {

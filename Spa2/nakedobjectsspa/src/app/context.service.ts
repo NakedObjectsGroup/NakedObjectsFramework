@@ -224,7 +224,7 @@ export class ContextService {
             const transientObj = this.transientCache.get(paneId, type, id);
             const p: Promise<Models.DomainObjectRepresentation> = transientObj
                 ? Promise.resolve(transientObj)
-                : <any>Promise.reject(new Models.ErrorWrapper(Models.ErrorCategory.ClientError, Models.ClientErrorCode.ExpiredTransient, ""));
+                : Promise.reject(new Models.ErrorWrapper(Models.ErrorCategory.ClientError, Models.ClientErrorCode.ExpiredTransient, ""));
             return p;
         }
 

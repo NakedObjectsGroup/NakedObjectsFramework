@@ -34,7 +34,7 @@ export class DynamicListComponent extends PaneComponent {
         super(activatedRoute, urlManager);
     }
 
-    private lastOid: string;
+    private lastOid: string | null;
     title: string = "";
     showPlaceholder: boolean = true;
     private cachedRouteData: PaneRouteData;
@@ -80,7 +80,7 @@ export class DynamicListComponent extends PaneComponent {
             this.showPlaceholder = false;
             const et = cachedList.extensions().elementType();
 
-            if (et !== this.lastOid) {
+            if (et && et !== this.lastOid) {
                 this.lastOid = et;
                 this.parent.clear();
                 this.customComponentService.getCustomComponent(et, ViewType.List).then((c: Type<any>) => {
