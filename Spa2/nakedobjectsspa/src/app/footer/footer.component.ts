@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
+import { Http, RequestOptionsArgs } from '@angular/http';
 import { GeminiClickDirective } from "../gemini-click.directive";
 import { UrlManagerService } from "../url-manager.service";
 import { ClickHandlerService } from "../click-handler.service";
@@ -26,7 +27,8 @@ export class FooterComponent implements OnInit {
         private readonly error: ErrorService,
         private readonly repLoader: RepLoaderService,
         private readonly location: Location,
-        private readonly configService: ConfigService) {
+        private readonly configService: ConfigService,
+        private readonly http: Http,) {
     }
 
     loading: string;
@@ -69,19 +71,16 @@ export class FooterComponent implements OnInit {
         this.context.getUser()
             .then((u: Models.UserRepresentation) => {
                 if (window.confirm(Msg.logOffMessage(u.userName() || "Unknown"))) {
-                    const config = {
-                        withCredentials: true,
-                        url: this.configService.config.logoffUrl,
-                        method: "POST",
-                        cache: false
+
+                    const args: RequestOptionsArgs = {
+                        withCredentials: true               
                     };
 
                     // logoff server
-                    //$http(config);
+                    this.http.post(this.configService.config.logoffUrl, args);
 
                     // logoff client without waiting for server
-                    //$rootScope.$broadcast(Nakedobjectsconstants.geminiLogoffEvent);
-                    //$timeout(() => window.location.href = configService.config.postLogoffUrl);
+                    setTimeout(() => window.location.href = this.configService.config.postLogoffUrl, 0);
                 }
             })
             .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
