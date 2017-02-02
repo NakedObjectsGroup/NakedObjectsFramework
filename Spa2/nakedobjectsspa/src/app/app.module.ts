@@ -49,7 +49,8 @@ import { DynamicObjectComponent } from './dynamic-object/dynamic-object.componen
 import { CustomComponentService } from './custom-component.service';
 import { CustomComponentConfigService } from './custom-component-config.service';
 import { DynamicListComponent } from './dynamic-list/dynamic-list.component';
-import { ConfigService, configFactory} from './config.service';
+import { ConfigService, configFactory } from './config.service';
+import { LoggerService } from './logger.service';
 
 @NgModule({
     declarations: [
@@ -109,6 +110,7 @@ import { ConfigService, configFactory} from './config.service';
         MaskConfigService,
         CustomComponentService,
         CustomComponentConfigService,
+        LoggerService,
         { provide: ErrorHandler, useClass: GeminiErrorHandler },
         ConfigService,
         { provide: APP_INITIALIZER, useFactory: configFactory, deps: [ConfigService], multi: true }

@@ -11,5 +11,6 @@
             "AdventureWorksModel.SalesPerson": 6
         },
         "default": 0
-    }
+    },
+    "logLevel" :  "debug"
 }

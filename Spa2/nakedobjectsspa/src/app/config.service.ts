@@ -34,6 +34,8 @@ export interface IAppConfig {
     // flag for configurable home button behaviour
     leftClickHomeAlwaysGoesToSinglePane: boolean;
 
+    logLevel : "error" | "warn" | "info" | "debug" | "none";
+
     // optional colors for simple color config 
     colors?: {
         map : {
@@ -68,7 +70,8 @@ export class ConfigService {
         transientCacheDepth: 4,
         recentCacheDepth: 20, 
         doUrlValidation: false,
-        leftClickHomeAlwaysGoesToSinglePane: true
+        leftClickHomeAlwaysGoesToSinglePane: true,
+        logLevel : "error"
     }
 
     constructor(private readonly http: Http) {
