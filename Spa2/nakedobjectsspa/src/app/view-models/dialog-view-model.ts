@@ -36,7 +36,7 @@ export class DialogViewModel extends MessageViewModel {
 
         this.onPaneId = routeData.paneId;
 
-        const fields = this.context.getCurrentDialogValues(this.actionMember().actionId(), this.onPaneId);
+        const fields = this.context.getDialogCachedValues(this.actionMember().actionId(), this.onPaneId);
 
         const parameters = _.pickBy(this.actionViewModel.invokableActionRep.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Models.Parameter>;
         this.parameters = _.map(parameters, p => this.viewModelFactory.parameterViewModel(p, fields[p.id()], this.onPaneId));
@@ -82,7 +82,7 @@ export class DialogViewModel extends MessageViewModel {
     closed = false; // make sure we never close more than once 
 
     readonly refresh = () => {
-        const fields = this.context.getCurrentDialogValues(this.actionMember().actionId(), this.onPaneId);
+        const fields = this.context.getDialogCachedValues(this.actionMember().actionId(), this.onPaneId);
         _.forEach(this.parameters, p => p.refresh(fields[p.id]));
     }
 
@@ -90,7 +90,7 @@ export class DialogViewModel extends MessageViewModel {
 
     readonly tooltip = () => Helpers.tooltip(this, this.parameters);
 
-    readonly setParms = () => _.forEach(this.parameters, p => this.context.setFieldValue(this.actionMember().actionId(), p.parameterRep.id(), p.getValue(), this.onPaneId));
+    readonly setParms = () => _.forEach(this.parameters, p => this.context.cacheFieldValue(this.actionMember().actionId(), p.parameterRep.id(), p.getValue(), this.onPaneId));
 
     readonly doInvoke = (right?: boolean) =>
         this.execute(right)

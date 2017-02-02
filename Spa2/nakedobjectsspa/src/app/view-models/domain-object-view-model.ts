@@ -106,7 +106,7 @@ export class DomainObjectViewModel extends MessageViewModel {
         this.routeData = routeData;
         const iMode = this.domainObject.extensions().interactionMode();
         this.isInEdit = routeData.interactionMode !== InteractionMode.View || iMode === "form" || iMode === "transient";
-        this.props = routeData.interactionMode !== InteractionMode.View ? this.contextService.getCurrentObjectValues(this.domainObject.id(this.keySeparator), routeData.paneId) : {};
+        this.props = routeData.interactionMode !== InteractionMode.View ? this.contextService.getObjectCachedValues(this.domainObject.id(this.keySeparator), routeData.paneId) : {};
 
         const actions = _.values(this.domainObject.actionMembers()) as Models.ActionMember[];
         this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, this.routeData));
@@ -160,7 +160,7 @@ export class DomainObjectViewModel extends MessageViewModel {
             this.contextService.getObject(this.onPaneId, this.domainObject.getOid(this.keySeparator), this.routeData.interactionMode)
                 .then((obj: Models.DomainObjectRepresentation) => {
                     // cleared cached values so all values are from reloaded representation 
-                    this.contextService.clearObjectValues(this.onPaneId);
+                    this.contextService.clearObjectCachedValues(this.onPaneId);
                     return this.contextService.reloadObject(this.onPaneId, obj);
                 })
                 .then((reloadedObj: Models.DomainObjectRepresentation) => {
@@ -185,11 +185,11 @@ export class DomainObjectViewModel extends MessageViewModel {
     };
 
     readonly setProperties = () => _.forEach(this.editProperties(),
-        p => this.contextService.setPropertyValue(this.domainObject, p.propertyRep, p.getValue(), this.onPaneId));
+        p => this.contextService.cachePropertyValue(this.domainObject, p.propertyRep, p.getValue(), this.onPaneId));
 
     readonly doEditCancel = () => {
 
-        this.contextService.clearObjectValues(this.onPaneId);
+        this.contextService.clearObjectCachedValues(this.onPaneId);
         this.cancelHandler()();
     };
 
@@ -219,7 +219,7 @@ export class DomainObjectViewModel extends MessageViewModel {
 
     readonly doEdit = () => {
         this.clearCachedFiles();
-        this.contextService.clearObjectValues(this.onPaneId);
+        this.contextService.clearObjectCachedValues(this.onPaneId);
         this.contextService.getObjectForEdit(this.onPaneId, this.domainObject)
             .then((updatedObject: Models.DomainObjectRepresentation) => {
                 this.reset(updatedObject, this.urlManager.getRouteData().pane(this.onPaneId), true);

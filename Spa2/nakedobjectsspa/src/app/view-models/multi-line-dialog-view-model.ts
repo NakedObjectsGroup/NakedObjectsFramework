@@ -56,7 +56,7 @@ export class MultiLineDialogViewModel {
 
     readonly invokeAndAdd = (index: number) => {
         this.dialogs[index].doInvoke();
-        this.context.clearDialogValues();
+        this.context.clearDialogCachedValues();
         return this.add(index);
     }
 

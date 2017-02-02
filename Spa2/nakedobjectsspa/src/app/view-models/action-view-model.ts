@@ -59,7 +59,7 @@ export class ActionViewModel {
     doInvoke = this.showDialog()
         ? (right?: boolean) => {
             // clear any previous dialog so we don't pick up values from it
-            this.context.clearDialogValues(this.paneId);
+            this.context.clearDialogCachedValues(this.paneId);
             this.urlManager.setDialogOrMultiLineDialog(this.actionRep, this.paneId);
         }
         : (right?: boolean) => {

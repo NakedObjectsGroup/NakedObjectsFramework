@@ -52,7 +52,7 @@ function isSameObject(object: Models.DomainObjectRepresentation, type: string, i
 }
 
 class TransientCache {
-    // todo investigate if we can use an enum for pane and not have empty array in index 0 ? 
+    // todo later - maybe ts 2.1 - investigate if we can use an enum for pane and not have empty array in index 0 ? 
     private transientCache: Models.DomainObjectRepresentation[][] = [[], [], []]; // per pane 
 
     constructor(private readonly depth: number) { }
@@ -242,7 +242,7 @@ export class ContextService {
                 if (forceReload) {
                     this.dirtyList.clearDirty(oid);
                 }
-                this.addRecentlyViewed(obj);
+                this.cacheRecentlyViewed(obj);
                 this.decPendingPotentActionOrReload(paneId);
                 return Promise.resolve(obj);
             });
@@ -619,7 +619,7 @@ export class ContextService {
                         this.urlManager.pushUrlState(toPaneId);
                         this.urlManager.setObjectWithMode(resultObject, InteractionMode.Form, toPaneId);
                     } else {
-                        this.addRecentlyViewed(resultObject);
+                        this.cacheRecentlyViewed(resultObject);
                         this.urlManager.setObject(resultObject, toPaneId);
                     }
                 } else {
@@ -842,7 +842,7 @@ export class ContextService {
         return promise;
     };
 
-    private addRecentlyViewed(obj: Models.DomainObjectRepresentation) {
+    private cacheRecentlyViewed(obj: Models.DomainObjectRepresentation) {
         this.recentcache.add(obj);
     }
 
@@ -868,28 +868,27 @@ export class ContextService {
         _.forEach(this.currentLists, (v, k) => delete this.currentLists[k!]);
     }
 
-    setFieldValue = (dialogId: string, pid: string, pv: Models.Value, paneId = 1) => {
+    cacheFieldValue = (dialogId: string, pid: string, pv: Models.Value, paneId = 1) => {
         this.parameterCache.addValue(dialogId, pid, pv, paneId);
     }
 
-    getCurrentDialogValues = (dialogId: string | null = null, paneId = 1) => {
+    getDialogCachedValues = (dialogId: string | null = null, paneId = 1) => {
         return this.parameterCache.getValues(dialogId, paneId);
     }
 
-    getCurrentObjectValues = (objectId: string | null = null, paneId = 1) => {
+    getObjectCachedValues = (objectId: string | null = null, paneId = 1) => {
         return this.objectEditCache.getValues(objectId, paneId);
     }
 
-    clearDialogValues = (paneId = 1) => {
+    clearDialogCachedValues = (paneId = 1) => {
         this.parameterCache.clear(paneId);
     }
 
-    clearObjectValues = (paneId = 1) => {
+    clearObjectCachedValues = (paneId = 1) => {
         this.objectEditCache.clear(paneId);
     }
 
-    // todo rename confusing actually caches - see also parms
-    setPropertyValue = (obj: Models.DomainObjectRepresentation, p: Models.PropertyMember, pv: Models.Value, paneId = 1) => {
+    cachePropertyValue = (obj: Models.DomainObjectRepresentation, p: Models.PropertyMember, pv: Models.Value, paneId = 1) => {
         this.dirtyList.setDirty(obj.getOid(this.keySeparator));
         this.objectEditCache.addValue(obj.id(this.keySeparator), p.id(), pv, paneId);
     }

@@ -32,7 +32,7 @@ export class ApplicationPropertiesComponent implements OnInit {
     }
 
     get clientVersion() {
-        return "todo";
+        return "todo"; // - later as part of build work
     }
 
     applicationProperties: ApplicationPropertiesViewModel;
@@ -51,7 +51,7 @@ export class ApplicationPropertiesComponent implements OnInit {
 
         this.applicationProperties.serverUrl = this.configService.config.appPath;
 
-        // todo
+        // todo - later as part of build work
         // apvm.clientVersion = (NakedObjects as any)["version"] || "Failed to write version";
 
     }
