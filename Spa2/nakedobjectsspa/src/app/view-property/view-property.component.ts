@@ -1,4 +1,4 @@
-import { Component, Input, ElementRef, OnInit, HostListener } from '@angular/core';
+import { Component, Input, ElementRef, HostListener } from '@angular/core';
 import { FieldComponent } from '../field/field.component';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -13,7 +13,7 @@ import * as Models from "../models";
     templateUrl: './view-property.component.html',
     styleUrls: ['./view-property.component.css']
 })
-export class ViewPropertyComponent implements OnInit {
+export class ViewPropertyComponent {
 
     constructor(
         private readonly router: Router,
@@ -84,70 +84,11 @@ export class ViewPropertyComponent implements OnInit {
         return this.property.color;
     }
 
+    get attachment() {
+        return this.property.attachment;
+    }
+
     doClick = (right?: boolean) => this.property.doClick(right);
-
-    // todo delegated click here smell that we need another component 
-    doAttachmentClick = (right?: boolean) => {
-        const attachment = this.property.attachment;
-        if (attachment) {
-            attachment.doClick(right);
-        };
-    }
-
-    attachmentTitle: string;
-    image: string;
-
-    // todo maybe two different click handlers on attachment view model ? 
-    clickHandler(attachment: AttachmentViewModel) {
-
-        return () => {
-
-            if (!attachment.displayInline()) {
-                attachment.downloadFile()
-                    .then(blob => {
-                        if (window.navigator.msSaveBlob) {
-                            // internet explorer 
-                            window.navigator.msSaveBlob(blob, attachment.title);
-                        } else {
-                            const burl = URL.createObjectURL(blob);
-                            this.router.navigateByUrl(burl);
-                        }
-                    })
-                    .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
-            }
-
-            return false;
-        };
-    };
-
-    ngOnInit() {
-
-        if (this.property && this.property.attachment) {
-            const attachment = this.property.attachment;
-
-            this.attachmentTitle = attachment.title;
-
-            if (attachment.displayInline()) {
-                attachment.downloadFile()
-                    .then(blob => {
-                        const reader = new FileReader();
-                        reader.onloadend = () => {
-                            if (reader.result) {
-                                this.image = reader.result;
-                            }
-                        };
-                        reader.readAsDataURL(blob);
-                    })
-                    .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
-            } else {
-                attachment.doClick = this.clickHandler(attachment);
-            }
-
-        } else {
-            // todo use msg string 
-            this.attachmentTitle = "Attachment not yet supported on transient";
-        }
-    }
 
     // todo DRY and rename this !!
     cut(event: any) {

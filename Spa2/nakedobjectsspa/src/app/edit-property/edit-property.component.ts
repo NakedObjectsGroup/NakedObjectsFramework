@@ -29,7 +29,7 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
         private readonly error: ErrorService,
         context: ContextService,
         configService: ConfigService,
-        loggerService : LoggerService
+        loggerService: LoggerService
     ) {
         super(myElement, context, configService, loggerService);
     }
@@ -121,10 +121,13 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
         return this.property.getMessage();
     }
 
+    get attachment() {
+        return this.property.attachment;
+    }
+
     choiceName(choice: ChoiceViewModel) {
         return choice.name;
     }
-
 
     classes(): string {
         return `${this.prop.color}${this.canDrop ? " candrop" : ""}`;
@@ -139,68 +142,14 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
         return this.formGroup;
     }
 
-    // todo delegated click here smell that we need another component 
-    doAttachmentClick = (right?: boolean) => this.property.attachment!.doClick(right);
-
     ngOnInit(): void {
         super.init(this.parent, this.property, this.form.controls[this.prop.id]);
-
-        // todo this is cloned across view/edit property types - DRY it!!!!! 
-        if (this.property && this.property.attachment) {
-            const attachment = this.property.attachment;
-
-            this.attachmentTitle = attachment.title;
-
-            if (attachment.displayInline()) {
-                attachment.downloadFile()
-                    .then(blob => {
-                        const reader = new FileReader();
-                        reader.onloadend = () => {
-                            if (reader.result) {
-                                this.image = reader.result;
-                            }
-                        };
-                        reader.readAsDataURL(blob);
-                    })
-                    .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
-            } else {
-                attachment.doClick = this.clickHandler(attachment);
-            }
-
-        } else {
-            this.attachmentTitle = "Attachment not yet supported on transient";
-        }
     }
 
     datePickerChanged(evt: any) {
         const val = evt.currentTarget.value;
         this.formGroup.value[this.property.id] = val;
     }
-
-    clickHandler(attachment: AttachmentViewModel) {
-
-        return () => {
-
-            if (!attachment.displayInline()) {
-                attachment.downloadFile()
-                    .then(blob => {
-                        if (window.navigator.msSaveBlob) {
-                            // internet explorer 
-                            window.navigator.msSaveBlob(blob, attachment.title);
-                        } else {
-                            const burl = URL.createObjectURL(blob);
-                            this.router.navigateByUrl(burl);
-                        }
-                    })
-                    .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
-            }
-
-            return false;
-        };
-    };
-
-    attachmentTitle: string;
-    image: string;
 
     @HostListener('keydown', ['$event'])
     onEnter(event: KeyboardEvent) {

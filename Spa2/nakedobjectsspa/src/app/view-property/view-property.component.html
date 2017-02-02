@@ -17,10 +17,7 @@
     <div [ngSwitch]="propertyReturnType">
         <div *ngSwitchCase="'string'">
 
-            <div *ngIf="isBlob" class="reference" geminiClick (leftClick)="doAttachmentClick()" (rightClick)="doAttachmentClick(true)" tabindex="0">
-                <div *ngIf="!image">{{attachmentTitle}}</div>
-                <img *ngIf="image" src="{{image}}" alt="{{attachmentTitle}}" />
-            </div>
+            <nof-attachment-property *ngIf="isBlob" [attachment]="attachment"></nof-attachment-property>
             <div *ngIf="!isBlob">
                 <div *ngIf="!isMultiline" class="value">
                     {{formattedValue}}
