@@ -54,4 +54,9 @@ export class LoggerService {
         if (this.logDebug) return console.debug.bind(console);
         return this.noop;
     }
+
+    throw(message?: any, ...optionalParams: any[]) : never {
+        this.error(message, optionalParams);
+        throw new Error(message);
+    }
 }

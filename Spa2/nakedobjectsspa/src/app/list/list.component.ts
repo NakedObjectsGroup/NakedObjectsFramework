@@ -19,6 +19,7 @@ import { ItemViewModel } from '../view-models/item-view-model';
 import { PropertyViewModel } from '../view-models/property-view-model';
 import { IButton } from '../button/button.component';
 import { ConfigService } from '../config.service';
+import * as Loggerservice from '../logger.service';
 
 @Component({
     selector: 'nof-list',
@@ -35,7 +36,9 @@ export class ListComponent extends PaneComponent implements AfterViewInit {
         private readonly color: ColorService,
         private readonly viewModelFactory: ViewModelFactoryService,
         private readonly error: ErrorService,
-        private readonly configService: ConfigService) {
+        private readonly configService: ConfigService,
+        private readonly loggerService: Loggerservice.LoggerService
+    ) {
         super(activatedRoute, urlManager);
     }
 
@@ -207,7 +210,7 @@ export class ListComponent extends PaneComponent implements AfterViewInit {
             this.collection.refresh(routeData);
         } else {
             // should never get here 
-            throw new Error("Missing cachedList in listcomponent");
+            this.loggerService.throw("ListComponent:setup Missing cachedList");
         }
         this.selectedDialogId = routeData.dialogId;
     }

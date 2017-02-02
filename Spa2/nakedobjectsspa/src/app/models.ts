@@ -3,11 +3,19 @@ import * as Constants from "./constants";
 import * as RoCustom from "./ro-interfaces-custom";
 import * as Msg from "./user-messages";
 import * as _ from "lodash";
+import * as moment from "moment";
+
+// todo these couple back to angular - rework so no direct coupling 
+import { ConfigService } from './config.service';
 import { MaskService, ILocalFilter } from "./mask.service";
 import { ContextService } from "./context.service";
-import * as moment from "moment";
 import { ChoiceViewModel } from './view-models/choice-view-model';
-import * as Configservice from './config.service';
+
+// log directly to avoid coupleing back to angular  
+function error (message: string,) : never {
+    console.error(message);
+    throw new Error(message);
+}
 
 
 // coerce undefined to null
@@ -19,28 +27,24 @@ export function withUndefined<T>(v: T | undefined | null): T | undefined {
     return v === null ? undefined : v;
 }
 
-function validateExists<T>(obj: T | null | undefined, name: string): T {
-    if (!obj) {
-        throw new Error(`Expected ${name} does not exist`);
-    }
-    return obj;
+function validateExists<T>(obj: T | null | undefined, name: string): T  {
+    if (obj) { return obj; }
+    error(`validateExists - Expected ${name} does not exist`);
 }
 
 function getMember<T>(members: _.Dictionary<T>, id: string, owner: string) {
     const member = members[id];
     if (member) { return member; }
-    throw new Error(`no member ${id} on ${owner}`);
+    error(`getMember - no member ${id} on ${owner}`);
 }
 
 
 export function checkNotNull<T>(v: T | undefined | null): T {
-    if (v == null) {
-        throw new Error("Unexpected null");
-    }
-    return v;
+    if (v != null) { return v}
+    error("checkNotNull - Unexpected null");
 }
 
-export function dirtyMarker(context: ContextService, configService: Configservice.ConfigService, oid: ObjectIdWrapper) {
+export function dirtyMarker(context: ContextService, configService: ConfigService, oid: ObjectIdWrapper) {
     return (configService.config.showDirtyFlag && context.getIsDirty(oid)) ? "*" : "";
 }
 
@@ -540,7 +544,7 @@ export class ObjectIdWrapper {
 
     constructor(private readonly keySeparator: string) {
         if (keySeparator == null) {
-            throw new Error("must have a keySeparator");
+            error("ObjectIdWrapper must have a keySeparator");
         }
     }
 
@@ -1033,7 +1037,7 @@ export class UpdateMap extends ArgumentMap implements IHateoasModel {
         if (link) {
             link.copyToHateoasModel(this);
         } else {
-            throw new Error("attempting to create update map for object without update link");
+            error("UpdateMap - attempting to create update map for object without update link");
         }
 
         _.each(this.properties(), (value: Value, key: string) => {
@@ -1042,7 +1046,7 @@ export class UpdateMap extends ArgumentMap implements IHateoasModel {
     }
 
     properties(): _.Dictionary<Value> {
-        return _.mapValues(this.map, (v: any) => new Value(v.value));
+        return _.mapValues(this.map, (v : Ro.IValue) => new Value(v.value));
     }
 
     setProperty(name: string, value: Value) {
@@ -1062,7 +1066,7 @@ export class AddToRemoveFromMap extends ArgumentMap implements IHateoasModel {
             link.copyToHateoasModel(this);
         } else {
             const type = add ? "add" : "remove";
-            throw new Error(`attempting to create ${type} map for object without ${type} link`);
+            error(`AddToRemoveFromMap attempting to create ${type} map for object without ${type} link`);
         }
     }
 }
@@ -1075,7 +1079,7 @@ export class ModifyMap extends ArgumentMap implements IHateoasModel {
         if (link) {
             link.copyToHateoasModel(this);
         } else {
-            throw new Error("attempting to create modify map for object without modify link");
+            error("ModifyMap attempting to create modify map for object without modify link");
         }
         propertyResource.value().set(this.map, this.id);
     }
@@ -1089,7 +1093,7 @@ export class ClearMap extends ArgumentMap implements IHateoasModel {
         if (link) {
             link.copyToHateoasModel(this);
         } else {
-            throw new Error("attempting to create clear map for object without clear link");
+            error("ClearMap attempting to create clear map for object without clear link");
         }
     }
 }
@@ -1518,7 +1522,7 @@ export class PromptRepresentation extends ResourceRepresentation<Ro.IPromptRepre
 }
 
 // matches a collection representation 17.0 
-export class CollectionRepresentation extends ResourceRepresentation<RoCustom.ICustomCollectionRepresentation> {
+export class CollectionRepresentation extends ResourceRepresentation<RoCustom.ICustomCollectionRepresentation> implements IHasActions {
 
     wrapped = () => this.resource() as RoCustom.ICustomCollectionRepresentation;
 
@@ -1608,6 +1612,10 @@ export class CollectionRepresentation extends ResourceRepresentation<RoCustom.IC
 
     actionMember(id: string): ActionMember {
         return getMember(this.actionMembers(), id, this.collectionId());
+    }
+
+    hasActionMember(id: string): boolean {
+        return !!this.actionMembers()[id];
     }
 }
 
@@ -2273,7 +2281,7 @@ export class ScalarValueRepresentation extends NestedRepresentation<Ro.IScalarVa
 
 // matches List Representation 11.0
 export class ListRepresentation
-    extends ResourceRepresentation<RoCustom.ICustomListRepresentation> implements IHasLinksAsValue {
+    extends ResourceRepresentation<RoCustom.ICustomListRepresentation> implements IHasLinksAsValue, IHasActions {
 
     constructor(model?: Ro.IRepresentation) {
         super(model);
@@ -2311,6 +2319,10 @@ export class ListRepresentation
 
     actionMember(id: string): ActionMember {
         return getMember(this.actionMembers(), id, "list");
+    }
+
+    hasActionMember(id: string): boolean {
+        return !!this.actionMembers()[id];
     }
 
     hasTableData = () => {
@@ -2374,7 +2386,7 @@ export class PersistMap extends HateosModel implements IHateoasModel {
         if (link) {
             link.copyToHateoasModel(this);
         } else {
-            throw new Error("attempting to create persist map for object with no persist link");
+            error("PersistMap attempting to create persist map for object with no persist link");
         }
     }
 
@@ -2473,7 +2485,7 @@ export class MenusRepresentation extends ListRepresentation {
         if (menuLink) {
             return menuLink.getTargetAs<MenuRepresentation>();
         }
-        throw new Error(`Failed to find menu ${menuId}`);
+        error(`MenusRepresentation:getMenu Failed to find menu ${menuId}`);
     }
 }
 
@@ -2484,7 +2496,7 @@ export class UserRepresentation extends ResourceRepresentation<Ro.IUserRepresent
 
     // links 
     selfLink(): Link {
-        return linkByRel(this.links(), "self") as Link; // mandatory
+        return linkByRel(this.links(), "self"); // mandatory
     }
 
     upLink(): Link {

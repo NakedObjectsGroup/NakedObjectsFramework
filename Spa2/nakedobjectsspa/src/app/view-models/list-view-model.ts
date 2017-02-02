@@ -14,6 +14,7 @@ import * as Helpers from './helpers-view-models';
 import * as Models from '../models';
 import * as Msg from '../user-messages';
 import { ContributedActionParentViewModel } from './contributed-action-parent-view-model';
+import { LoggerService } from '../logger.service';
 
 export class ListViewModel extends ContributedActionParentViewModel {
 
@@ -23,6 +24,7 @@ export class ListViewModel extends ContributedActionParentViewModel {
         viewModelFactory: ViewModelFactoryService,
         urlManager: UrlManagerService,
         error: ErrorService,
+        private readonly loggerService : LoggerService, 
         list: Models.ListRepresentation,
         public routeData: PaneRouteData
     ) {
@@ -187,7 +189,7 @@ export class ListViewModel extends ContributedActionParentViewModel {
         if (actionViewModel) {
             return actionViewModel.actionRep;
         }
-        throw new Error(`no actionviewmodel ${id} on ${this.id}`);
+        this.loggerService.throw(`no actionviewmodel ${id} on ${this.id}`);
     };
 
     readonly showActions = () => {

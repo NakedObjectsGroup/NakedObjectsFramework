@@ -11,6 +11,7 @@ import { PropertyViewModel } from '../view-models/property-view-model';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 import { ChoiceViewModel } from '../view-models/choice-view-model';
 import { ConfigService } from '../config.service';
+import { LoggerService } from '../logger.service';
 
 @Component({
     host: {
@@ -27,9 +28,10 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
         private readonly router: Router,
         private readonly error: ErrorService,
         context: ContextService,
-        configService: ConfigService
+        configService: ConfigService,
+        loggerService : LoggerService
     ) {
-        super(myElement, context, configService);
+        super(myElement, context, configService, loggerService);
     }
 
     prop: PropertyViewModel;

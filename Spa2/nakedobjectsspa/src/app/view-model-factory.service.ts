@@ -31,6 +31,7 @@ import { DialogViewModel } from './view-models/dialog-view-model';
 import { DomainObjectViewModel } from './view-models/domain-object-view-model';
 import { MultiLineDialogViewModel } from './view-models/multi-line-dialog-view-model';
 import { ConfigService } from './config.service';
+import { LoggerService } from './logger.service';
 
 @Injectable()
 export class ViewModelFactoryService {
@@ -42,7 +43,8 @@ export class ViewModelFactoryService {
         private readonly error: ErrorService,
         private readonly clickHandler: ClickHandlerService,
         private readonly mask: MaskService,
-        private readonly configService: ConfigService
+        private readonly configService: ConfigService,
+        private readonly loggerService: LoggerService
     ) { }
 
     errorViewModel = (error: Models.ErrorWrapper | null) => {
@@ -134,6 +136,7 @@ export class ViewModelFactoryService {
             this,
             this.urlManager,
             this.error,
+            this.loggerService,
             list,
             routeData
         );
@@ -144,7 +147,7 @@ export class ViewModelFactoryService {
     }
 
     collectionViewModel = (collectionRep: Models.CollectionMember, routeData: PaneRouteData, forceReload: boolean) => {
-        return new CollectionViewModel(this, this.color, this.error, this.context, this.urlManager, this.configService, collectionRep, routeData, forceReload);
+        return new CollectionViewModel(this, this.color, this.error, this.context, this.urlManager, this.configService, this.loggerService, collectionRep, routeData, forceReload);
     }
 
     listPlaceholderViewModel = (routeData: PaneRouteData) => {

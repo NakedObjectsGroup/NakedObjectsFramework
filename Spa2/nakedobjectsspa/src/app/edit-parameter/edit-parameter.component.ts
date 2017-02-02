@@ -10,6 +10,7 @@ import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { DialogViewModel } from '../view-models/dialog-view-model';
 import { ChoiceViewModel } from '../view-models/choice-view-model';
 import { ConfigService } from '../config.service';
+import { LoggerService } from '../logger.service';
 
 @Component({
     selector: 'nof-edit-parameter',
@@ -26,9 +27,10 @@ export class EditParameterComponent extends FieldComponent implements OnInit {
         private readonly urlManager: UrlManagerService,
         myElement: ElementRef,
         context: ContextService,
-        configService: ConfigService
+        configService: ConfigService,
+        loggerService : LoggerService
     ) {
-        super(myElement, context, configService);
+        super(myElement, context, configService, loggerService);
     }
 
     parm: ParameterViewModel;

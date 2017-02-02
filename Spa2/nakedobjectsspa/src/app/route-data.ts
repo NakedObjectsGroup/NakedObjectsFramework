@@ -1,6 +1,7 @@
 import * as Models from "./models";
 import * as _ from "lodash";
-import * as Configservice from './config.service';
+import { ConfigService } from './config.service';
+import { LoggerService } from './logger.service';
 
 export interface ICustomActivatedRouteData {
     pane: number;
@@ -39,9 +40,12 @@ export enum InteractionMode {
 }
 
 export class RouteData {
-    constructor(private readonly configService: Configservice.ConfigService) {
-        this.pane1 = new PaneRouteData(1, configService.config.doUrlValidation);
-        this.pane2 = new PaneRouteData(2, configService.config.doUrlValidation);
+    constructor(
+        private readonly configService: ConfigService,
+        private readonly loggerService: LoggerService
+    ) {
+        this.pane1 = new PaneRouteData(1, configService.config.doUrlValidation, loggerService);
+        this.pane2 = new PaneRouteData(2, configService.config.doUrlValidation, loggerService);
     }
 
     pane1: PaneRouteData;
@@ -50,7 +54,7 @@ export class RouteData {
     pane = (pane: number) => {
         if (pane === 1) { return this.pane1; }
         if (pane === 2) { return this.pane2; }
-        throw new Error(`${pane} is not a valid pane index on RouteData`);
+        this.loggerService.throw('RouteData:pane ${pane} is not a valid pane index on RouteData');
     }
 }
 
@@ -60,7 +64,10 @@ interface ICondition {
 }
 
 export class PaneRouteData {
-    constructor(public paneId: number, private readonly doUrlValidation: boolean) { }
+    constructor(
+        public paneId: number,
+        private readonly doUrlValidation: boolean,
+        private readonly loggerService : LoggerService) { }
 
     location: ViewType;
     objectId: string;
@@ -87,7 +94,7 @@ export class PaneRouteData {
 
     isValid(name: string) {
         if (!this.hasOwnProperty(name)) {
-            throw new Error(`${name} is not a valid property on PaneRouteData`);
+            this.loggerService.throw(`PaneRouteData:isValid ${name} is not a valid property on PaneRouteData`);
         }
     }
 
@@ -118,7 +125,7 @@ export class PaneRouteData {
 
         if (contextCondition.condition((<any>this)[context])) {
             if (!valueCondition.condition((<any>this)[name])) {
-                throw new Error(`Expect that ${name} ${valueCondition.name} when ${context} ${contextCondition.name} within url "${this.validatingUrl}"`);
+                this.loggerService.throw(`PaneRouteData:assertMustBe Expect that ${name} ${valueCondition.name} when ${context} ${contextCondition.name} within url "${this.validatingUrl}"`);
             }
         }
     }

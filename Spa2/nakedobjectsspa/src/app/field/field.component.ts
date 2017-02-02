@@ -13,6 +13,7 @@ import { DialogViewModel } from '../view-models/dialog-view-model';
 import { PropertyViewModel } from '../view-models/property-view-model';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 import {ConfigService} from '../config.service';
+import * as Loggerservice from '../logger.service';
 
 export abstract class FieldComponent {
 
@@ -22,7 +23,8 @@ export abstract class FieldComponent {
     protected constructor(
         myElement: ElementRef,
         private readonly context: ContextService,
-        private readonly configService : ConfigService
+        private readonly configService: ConfigService,
+        private readonly loggerService : Loggerservice.LoggerService
     ) {
         this.elementRef = myElement;
     }
@@ -100,7 +102,7 @@ export abstract class FieldComponent {
         const object = this.vmParent as DomainObjectViewModel;
 
         if (!dialog && !object) {
-            throw { message: "Expect dialog or object in geminiConditionalchoices", stack: "" };
+            this.loggerService.throw("FieldComponent:populateArguments Expect dialog or object");
         }
 
         let parmsOrProps: { argId: string, getValue: () => Models.Value }[];
@@ -117,24 +119,25 @@ export abstract class FieldComponent {
     populateDropdown() {
         const nArgs = this.populateArguments();
         const prompts = this.model.conditionalChoices(nArgs); //  scope.select({ args: nArgs });
-        prompts.then((cvms: ChoiceViewModel[]) => {
-            // if unchanged return 
-            if (cvms.length === this.currentOptions.length && _.every(cvms, (c, i) => c.equals(this.currentOptions[i]))) {
-                return;
-            }
-            this.model.choices = cvms;
-            this.currentOptions = cvms;
-
-            if (this.isConditionalChoices) {
-                // need to reset control to find the selected options 
-                if (this.model.entryType === Models.EntryType.MultipleConditionalChoices) {
-                    this.control.reset(this.model.selectedMultiChoices);
-                } else {
-                    this.control.reset(this.model.selectedChoice);
+        prompts.
+            then((cvms: ChoiceViewModel[]) => {
+                // if unchanged return 
+                if (cvms.length === this.currentOptions.length && _.every(cvms, (c, i) => c.equals(this.currentOptions[i]))) {
+                    return;
                 }
-            }
-        })
-            .catch(() => {
+                this.model.choices = cvms;
+                this.currentOptions = cvms;
+
+                if (this.isConditionalChoices) {
+                    // need to reset control to find the selected options 
+                    if (this.model.entryType === Models.EntryType.MultipleConditionalChoices) {
+                        this.control.reset(this.model.selectedMultiChoices);
+                    } else {
+                        this.control.reset(this.model.selectedChoice);
+                    }
+                }
+            }).
+            catch(() => {
                 // error clear everything 
                 this.model.selectedChoice = null;
                 this.currentOptions = [];

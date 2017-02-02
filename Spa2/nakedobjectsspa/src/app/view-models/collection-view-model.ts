@@ -12,6 +12,7 @@ import * as Helpers from './helpers-view-models';
 import * as Models from '../models';
 import * as _ from "lodash";
 import { ConfigService } from '../config.service';
+import { LoggerService } from '../logger.service';
 
 export class CollectionViewModel extends ContributedActionParentViewModel {
 
@@ -22,6 +23,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
         context: ContextService,
         urlManager: UrlManagerService,
         private readonly configService: ConfigService,
+        private readonly loggerService : LoggerService,
         public readonly collectionRep: Models.CollectionMember | Models.CollectionRepresentation,
         public readonly routeData: PaneRouteData,
         forceReload: boolean
@@ -126,7 +128,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
         if (actionViewModel) {
             return actionViewModel.actionRep;
         }
-        throw new Error(`no member ${id} on ${this.id}`);
+        this.loggerService.throw(`CollectionViewModel:actionMember no member ${id} on ${this.id}`);
     }
 
     private hasActionMember(id: string) {

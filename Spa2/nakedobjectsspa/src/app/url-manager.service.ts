@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { Router, UrlSegment } from '@angular/router';
 import { Location } from '@angular/common';
 import { ConfigService } from './config.service';
+import { LoggerService } from './logger.service';
 
 enum Transition {
     Null,
@@ -60,7 +61,8 @@ export class UrlManagerService {
     constructor(
         private readonly router: Router,
         private readonly location: Location,
-        private readonly configService: ConfigService
+        private readonly configService: ConfigService,
+        private readonly loggerService : LoggerService
     ) {
         this.shortCutMarker = configService.config.shortCutMarker;
         this.urlShortCuts = configService.config.urlShortCuts;
@@ -81,7 +83,9 @@ export class UrlManagerService {
         let nFlag = 0;
 
         if (arr.length > 31) {
-            throw new TypeError("createSubMask - out of range");
+            const msg = `UrlManagerService:createSubMask Out of range ${arr.length}`;
+            this.loggerService.error(msg);
+            throw new TypeError(msg);
         }
 
         const nLen = arr.length;
@@ -119,7 +123,9 @@ export class UrlManagerService {
         const nMask = parseInt(sMask);
         // nMask must be between 0 and 2147483647 - to keep simple we stick to 31 bits 
         if (nMask > 0x7fffffff || nMask < -0x80000000) {
-            throw new TypeError("arrayFromMask - out of range");
+            const msg = `UrlManagerService:arrayFromSubMask Out of range ${nMask}`;
+            this.loggerService.error(msg);
+            throw new TypeError(msg);
         }
         const aFromMask = [] as boolean[];
         let len = 31; // make array always 31 bit long as we may concat another on end
@@ -728,7 +734,7 @@ export class UrlManagerService {
     }
 
     getRouteData = () => {
-        const routeData = new RouteData(this.configService);
+        const routeData = new RouteData(this.configService, this.loggerService);
 
         this.setPaneRouteData(routeData.pane1, 1);
         this.setPaneRouteData(routeData.pane2, 2);
@@ -747,13 +753,13 @@ export class UrlManagerService {
             case Constants.applicationPropertiesPath: return ViewType.ApplicationProperties;
             case Constants.multiLineDialogPath: return ViewType.MultiLineDialog;
         }
-        throw new Error(`${view} is not a valid ViewType`);
+        this.loggerService.throw(`UrlManagerService:getViewType ${view} is not a valid ViewType`);
     }
 
     getPaneRouteDataObservable = (paneId: number) => {
 
         return this.router.routerState.root.queryParams.map((ps: { [key: string]: string }) => {
-            const routeData = new RouteData(this.configService);
+            const routeData = new RouteData(this.configService, this.loggerService);
             const paneRouteData = routeData.pane(paneId);
             this.setPaneRouteDataFromParms(paneRouteData, paneId, ps);
             paneRouteData.location = this.getViewType(this.getLocation(paneId));

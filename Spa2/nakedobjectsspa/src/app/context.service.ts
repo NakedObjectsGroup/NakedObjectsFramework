@@ -623,7 +623,7 @@ export class ContextService {
                         this.urlManager.setObject(resultObject, toPaneId);
                     }
                 } else {
-                    throw new Error("result object without self or persist link");
+                    this.loggerService.throw("ContextService:setResult result object without self or persist link");
                 }
             } else if (result.resultType() === "list") {
 
