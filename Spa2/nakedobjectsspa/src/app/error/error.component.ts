@@ -25,10 +25,7 @@ export class ErrorComponent {
 
     ngOnInit(): void {
         // todo if no error perhaps just go home ? 
-        // this would happen on error page reload 
-
-        // todo - in case it gets missed - need to fix angular 2 error handling so it displays this page 
-        // rather than just logs to console. 
+        // this would happen on error page reload  
 
         const errorWrapper = this.context.getError();
         const error = this.viewModelFactory.errorViewModel(errorWrapper);

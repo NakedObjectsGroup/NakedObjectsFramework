@@ -8,6 +8,7 @@ import * as _ from "lodash";
 import { Subject } from 'rxjs/Subject';
 import { IDraggableViewModel } from './view-models/idraggable-view-model';
 import { ConfigService } from './config.service';
+import { LoggerService } from './logger.service';
 
 enum DirtyState {
     DirtyMustReload,
@@ -174,7 +175,8 @@ export class ContextService {
     constructor(
         private readonly urlManager: UrlManagerService,
         private readonly repLoader: RepLoaderService,
-        private readonly configService: ConfigService
+        private readonly configService: ConfigService,
+        private readonly loggerService : LoggerService
     ) {
         this.keySeparator = this.configService.config.keySeparator;
     }
@@ -648,9 +650,9 @@ export class ContextService {
         const count = --this.pendingPotentActionCount[paneId];
 
         if (count < 0) {
-            // todo proper error handling]
             // should never happen
-            console.warn("count less than 0");
+            this.pendingPotentActionCount[paneId] = 0;
+            this.loggerService.warn("ContextService:decPendingPotentActionOrReload count less than 0");
         }
     }
 
