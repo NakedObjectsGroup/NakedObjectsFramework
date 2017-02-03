@@ -9,7 +9,7 @@ import { RepLoaderService } from "../rep-loader.service";
 import { ViewModelFactoryService } from "../view-model-factory.service";
 import { ErrorService } from "../error.service";
 import { MaskService } from "../mask.service";
-import { PaneRouteData, RouteData, InteractionMode } from "../route-data";
+import { PaneRouteData, RouteData, InteractionMode, ICustomActivatedRouteData } from "../route-data";
 import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import * as _ from "lodash";
 import { PropertyViewModel } from '../view-models/property-view-model';
@@ -21,18 +21,18 @@ import { IButton } from '../button/button.component';
 import { ColorService } from '../color.service';
 import { ConfigService } from '../config.service';
 import { copy } from '../view-models/idraggable-view-model';
+import { ISubscription } from 'rxjs/Subscription';
 
 @Component({
     selector: 'nof-object',
     templateUrl: './object.component.html',
     styleUrls: ['./object.component.css']
 })
-export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy, AfterViewInit {
-    // todo  this and ListComponent should not  extend PaneComponent they are no longer panes !
-
+export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
+    
     constructor(
-        activatedRoute: ActivatedRoute,
-        urlManager: UrlManagerService,
+        private readonly activatedRoute: ActivatedRoute,
+        private readonly urlManager: UrlManagerService,
         private readonly context: ContextService,
         private readonly viewModelFactory: ViewModelFactoryService,
         private readonly colorService: ColorService,
@@ -40,7 +40,6 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
         private readonly formBuilder: FormBuilder,
         private readonly configService: ConfigService
     ) {
-        super(activatedRoute, urlManager);
     }
 
     // template API 
@@ -57,8 +56,12 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
         return obj ? obj.friendlyName : "";
     }
 
+    // todo move to config 
+    private backgroundColor = "object-color0";
+
     get color() {
         const obj = this.object;
+        
         return obj ? obj.color : this.backgroundColor;
     }
 
@@ -341,6 +344,39 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
             }
         }
     }
+
+    private activatedRouteDataSub: ISubscription;
+    private paneRouteDataSub: ISubscription;
+    private lastPaneRouteData: PaneRouteData;
+
+    // now this is a child investigate reworking so object is passed in from parent 
+    ngOnInit(): void {
+        this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: ICustomActivatedRouteData) => {
+
+            const paneId = data.pane;
+
+            if (!this.paneRouteDataSub) {
+                this.paneRouteDataSub =
+                    this.urlManager.getPaneRouteDataObservable(paneId)
+                        .subscribe((paneRouteData: PaneRouteData) => {
+                            if (!paneRouteData.isEqual(this.lastPaneRouteData)) {
+                                this.lastPaneRouteData = paneRouteData;
+                                this.setup(paneRouteData);
+                            }
+                        });
+            };
+        });
+    }
+
+    ngOnDestroy(): void {
+        if (this.activatedRouteDataSub) {
+            this.activatedRouteDataSub.unsubscribe();
+        }
+        if (this.paneRouteDataSub) {
+            this.paneRouteDataSub.unsubscribe();
+        }
+    }
+
 
     ngAfterViewInit(): void {
         this.focusOnTitle(this.titleDiv);

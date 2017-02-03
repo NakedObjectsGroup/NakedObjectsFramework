@@ -5,7 +5,6 @@ import { ContextService} from '../context.service';
 export function copy(event: KeyboardEvent, item: IDraggableViewModel, context : ContextService) {
     const cKeyCode = 67;
     if (event && (event.keyCode === cKeyCode && event.ctrlKey)) {
-        // todo rename
         context.setCopyViewModel(item);
         event.preventDefault();
     }
@@ -17,8 +16,6 @@ export interface IDraggableViewModel {
     selectedChoice: ChoiceViewModel | null;
     color: string;
     draggableType: string;
-
     draggableTitle: () => string;
-
     canDropOn: (targetType: string) => Promise<boolean>;
 }
