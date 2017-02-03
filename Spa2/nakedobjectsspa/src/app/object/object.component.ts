@@ -324,11 +324,7 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
             // cache parm values
             const obj = this.object;
             if (obj) {
-                _.forEach(data,
-                    (v, k) => {
-                        const prop = editablePropsMap[k!];
-                        prop.setValueFromControl(v);
-                    });
+                _.forEach(data, (v, k) => editablePropsMap[k!].setValueFromControl(v));
                 obj.setProperties();
             }
         });
