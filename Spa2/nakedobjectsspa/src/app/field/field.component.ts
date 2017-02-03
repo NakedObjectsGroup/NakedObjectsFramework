@@ -263,7 +263,7 @@ export abstract class FieldComponent {
         const vKeyCode = 86;
         const deleteKeyCode = 46;
         if (event && (event.keyCode === vKeyCode && event.ctrlKey)) {
-            const cvm = this.context.getCutViewModel();
+            const cvm = this.context.getCopyViewModel();
 
             if (cvm) {
                 this.droppable.drop(cvm)
@@ -277,7 +277,7 @@ export abstract class FieldComponent {
 
         }
         if (event && event.keyCode === deleteKeyCode) {
-            this.context.setCutViewModel(null);
+            this.context.setCopyViewModel(null);
         }
     }
 

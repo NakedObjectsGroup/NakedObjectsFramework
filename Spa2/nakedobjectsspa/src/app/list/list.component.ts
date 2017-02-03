@@ -11,7 +11,7 @@ import { PaneRouteData, RouteData, CollectionViewState } from "../route-data";
 import { ViewModelFactoryService } from "../view-model-factory.service";
 import * as Models from "../models";
 import * as Constants from "../constants";
-import { IDraggableViewModel } from '../view-models/idraggable-view-model';
+import { IDraggableViewModel, copy } from '../view-models/idraggable-view-model';
 import { IMessageViewModel } from '../view-models/imessage-view-model';
 import { ListViewModel } from '../view-models/list-view-model';
 import { PaneComponent } from '../pane/pane';
@@ -20,6 +20,7 @@ import { PropertyViewModel } from '../view-models/property-view-model';
 import { IButton } from '../button/button.component';
 import { ConfigService } from '../config.service';
 import { LoggerService} from '../logger.service';
+
 
 @Component({
     selector: 'nof-list',
@@ -215,13 +216,8 @@ export class ListComponent extends PaneComponent implements AfterViewInit {
         this.selectedDialogId = routeData.dialogId;
     }
 
-    // todo DRY this - and rename - copy not cut
-    copy(event: any, item: IDraggableViewModel) {
-        const cKeyCode = 67;
-        if (event && (event.keyCode === cKeyCode && event.ctrlKey)) {
-            this.context.setCutViewModel(item);
-            event.preventDefault();
-        }
+    copy(event: KeyboardEvent, item: IDraggableViewModel) {
+        copy(event, item, this.context);
     }
 
     @ViewChildren("rw")

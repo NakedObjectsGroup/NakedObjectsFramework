@@ -124,7 +124,7 @@ export class FooterComponent implements OnInit {
         this.context.messages$.subscribe((ms: any) =>
             this.messages = ms);
 
-        this.context.cutViewModel$.subscribe((cvm: any) =>
+        this.context.copiedViewModel$.subscribe((cvm: any) =>
             this.copyViewModel = cvm);
     }
 }

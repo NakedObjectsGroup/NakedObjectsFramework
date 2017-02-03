@@ -7,6 +7,7 @@ import { ContextService } from "../context.service";
 import { AttachmentViewModel } from '../view-models/attachment-view-model';
 import { PropertyViewModel } from '../view-models/property-view-model';
 import * as Models from "../models";
+import { copy } from '../view-models/idraggable-view-model';
 
 @Component({
     selector: 'nof-view-property',
@@ -90,13 +91,10 @@ export class ViewPropertyComponent {
 
     doClick = (right?: boolean) => this.property.doClick(right);
 
-    // todo DRY and rename this !!
-    copy(event: any) {
-        const cKeyCode = 67;
+    copy(event: KeyboardEvent) {
         const prop = this.property;
-        if (event && (event.keyCode === cKeyCode && event.ctrlKey) && prop) {
-            this.context.setCutViewModel(prop);
-            event.preventDefault();
+        if (prop) {
+            copy(event, prop, this.context);
         }
     }
 }

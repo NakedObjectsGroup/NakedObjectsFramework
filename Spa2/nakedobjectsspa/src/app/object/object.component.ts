@@ -20,6 +20,7 @@ import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 import { IButton } from '../button/button.component';
 import { ColorService } from '../color.service';
 import { ConfigService } from '../config.service';
+import { copy } from '../view-models/idraggable-view-model';
 
 @Component({
     selector: 'nof-object',
@@ -83,13 +84,11 @@ export class ObjectComponent extends PaneComponent implements OnInit, OnDestroy,
         }
     }
 
-    // todo DRY this - and rename - copy not cut
-    copy(event: any) {
-        const cKeyCode = 67;
+
+    copy(event: KeyboardEvent) {
         const obj = this.object;
-        if (event && (event.keyCode === cKeyCode && event.ctrlKey) && obj) {
-            this.context.setCutViewModel(obj);
-            event.preventDefault();
+        if (obj) {
+            copy(event, obj, this.context);
         }
     }
 

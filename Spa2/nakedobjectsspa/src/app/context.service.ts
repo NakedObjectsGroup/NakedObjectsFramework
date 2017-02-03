@@ -674,19 +674,19 @@ export class ContextService {
         this.messagesSource.next(messages);
     }
 
-    private cutViewModelSource = new Subject<IDraggableViewModel>();
+    private copiedViewModelSource = new Subject<IDraggableViewModel>();
 
-    cutViewModel$ = this.cutViewModelSource.asObservable();
+    copiedViewModel$ = this.copiedViewModelSource.asObservable();
 
-    private cutViewModel: IDraggableViewModel | null;
+    private copiedViewModel: IDraggableViewModel | null;
 
-    setCutViewModel(dvm: IDraggableViewModel | null) {
-        this.cutViewModel = dvm;
-        this.cutViewModelSource.next(Models.withUndefined(dvm));
+    setCopyViewModel(dvm: IDraggableViewModel | null) {
+        this.copiedViewModel = dvm;
+        this.copiedViewModelSource.next(Models.withUndefined(dvm));
     }
 
-    getCutViewModel() {
-        return this.cutViewModel;
+    getCopyViewModel() {
+        return this.copiedViewModel;
     }
 
     private invokeActionInternal(invokeMap: Models.InvokeMap, action: Models.IInvokableAction, fromPaneId: number, toPaneId: number, setDirty: () => void, gotoResult = false) {
