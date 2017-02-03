@@ -1,6 +1,6 @@
 import { Component, Input, ViewChildren, QueryList, ElementRef, AfterViewInit } from '@angular/core';
-import { ActionComponent } from "../action/action.component";
-import { MenuItemViewModel} from '../view-models/menu-item-view-model';
+import { ActionComponent } from '../action/action.component';
+import { MenuItemViewModel } from '../view-models/menu-item-view-model';
 
 @Component({
     selector: 'nof-actions',
@@ -26,7 +26,7 @@ export class ActionsComponent implements AfterViewInit {
 
     navCollapsed = (menuItem: MenuItemViewModel) => menuItem.navCollapsed;
 
-    displayClass = (menuItem: MenuItemViewModel) =>  ({ collapsed: menuItem.navCollapsed, open: !menuItem.navCollapsed, rootMenu: !menuItem.name });  
+    displayClass = (menuItem: MenuItemViewModel) => ({ collapsed: menuItem.navCollapsed, open: !menuItem.navCollapsed, rootMenu: !menuItem.name });
 
     @ViewChildren(ActionComponent)
     actionChildren: QueryList<ActionComponent>;

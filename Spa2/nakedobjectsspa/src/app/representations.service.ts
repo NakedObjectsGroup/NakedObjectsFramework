@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import "./rxjs-extensions";
-import { IRepresentation } from "./ro-interfaces";
-import { ConfigService } from "./config.service";
-import * as Models from "./models";
+import './rxjs-extensions';
+import { IRepresentation } from './ro-interfaces';
+import { ConfigService } from './config.service';
+import * as Models from './models';
 
 @Injectable()
 export class RepresentationsService {

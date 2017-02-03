@@ -5,7 +5,7 @@ import { ViewModelFactoryService } from '../view-model-factory.service';
 import { PaneRouteData } from '../route-data';
 import * as Helpers from './helpers-view-models';
 import * as Models from '../models';
-import * as _ from "lodash";
+import * as _ from 'lodash';
 
 export class MenuViewModel extends MessageViewModel {
 

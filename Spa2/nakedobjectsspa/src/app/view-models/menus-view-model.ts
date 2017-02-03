@@ -2,7 +2,7 @@
 import { PaneRouteData } from '../route-data';
 import { LinkViewModel } from './link-view-model';
 import * as Models from '../models';
-import * as _ from "lodash";
+import * as _ from 'lodash';
 
 export class MenusViewModel {
     constructor(

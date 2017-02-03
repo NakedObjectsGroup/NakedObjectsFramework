@@ -9,7 +9,7 @@ import { ErrorService } from '../error.service';
 import * as Models from '../models';
 import * as Ro from '../ro-interfaces';
 import * as Msg from '../user-messages';
-import * as _ from "lodash";
+import * as _ from 'lodash';
 
 export class MultiLineDialogViewModel {
 

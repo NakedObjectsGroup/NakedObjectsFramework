@@ -1,4 +1,4 @@
-import { ILocalFilter } from "./mask.service";
+import { ILocalFilter } from './mask.service';
 
 // user message constants
 export const noResultMessage = "no result found";

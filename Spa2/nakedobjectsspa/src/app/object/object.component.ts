@@ -1,17 +1,17 @@
 import { Component, Input, OnInit, OnDestroy, AfterViewInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
-import { RepresentationsService } from "../representations.service";
+import { RepresentationsService } from '../representations.service';
 import { ActivatedRoute } from '@angular/router';
-import * as Models from "../models";
-import { UrlManagerService } from "../url-manager.service";
-import { ClickHandlerService } from "../click-handler.service";
-import { ContextService } from "../context.service";
-import { RepLoaderService } from "../rep-loader.service";
-import { ViewModelFactoryService } from "../view-model-factory.service";
-import { ErrorService } from "../error.service";
-import { MaskService } from "../mask.service";
-import { PaneRouteData, RouteData, InteractionMode, ICustomActivatedRouteData } from "../route-data";
+import * as Models from '../models';
+import { UrlManagerService } from '../url-manager.service';
+import { ClickHandlerService } from '../click-handler.service';
+import { ContextService } from '../context.service';
+import { RepLoaderService } from '../rep-loader.service';
+import { ViewModelFactoryService } from '../view-model-factory.service';
+import { ErrorService } from '../error.service';
+import { MaskService } from '../mask.service';
+import { PaneRouteData, RouteData, InteractionMode, ICustomActivatedRouteData } from '../route-data';
 import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/forms';
-import * as _ from "lodash";
+import * as _ from 'lodash';
 import { PropertyViewModel } from '../view-models/property-view-model';
 import { CollectionViewModel } from '../view-models/collection-view-model';
 import { MenuItemViewModel } from '../view-models/menu-item-view-model';
@@ -20,8 +20,9 @@ import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 import { IButton } from '../button/button.component';
 import { ColorService } from '../color.service';
 import { ConfigService } from '../config.service';
-import { copy } from '../view-models/idraggable-view-model';
 import { ISubscription } from 'rxjs/Subscription';
+import * as Msg from '../user-messages';
+import * as Helpers from '../view-models/helpers-view-models';
 
 @Component({
     selector: 'nof-object',
@@ -95,14 +96,13 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
     copy(event: KeyboardEvent) {
         const obj = this.object;
         if (obj) {
-            copy(event, obj, this.context);
+            Helpers.copy(event, obj, this.context);
         }
     }
 
     title() {
-        // todo add string consts to user messages !
         const obj = this.object;
-        const prefix = this.mode === InteractionMode.Edit || this.mode === InteractionMode.Transient ? "Editing - " : "";
+        const prefix = this.mode === InteractionMode.Edit || this.mode === InteractionMode.Transient ? `${Msg.editing} - ` : "";
         return obj ? `${prefix}${obj.title}` : "";
     }
 
@@ -353,7 +353,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
     private paneRouteDataSub: ISubscription;
     private lastPaneRouteData: PaneRouteData;
 
-    // now this is a child investigate reworking so object is passed in from parent 
+    // todo now this is a child investigate reworking so object is passed in from parent 
     ngOnInit(): void {
         this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: ICustomActivatedRouteData) => {
 

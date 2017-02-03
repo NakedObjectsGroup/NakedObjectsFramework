@@ -1,10 +1,10 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { ViewModelFactoryService } from "../view-model-factory.service";
-import { UrlManagerService } from "../url-manager.service";
-import * as _ from "lodash";
-import * as Models from "../models";
+import { ViewModelFactoryService } from '../view-model-factory.service';
+import { UrlManagerService } from '../url-manager.service';
+import * as _ from 'lodash';
+import * as Models from '../models';
 import { ActivatedRoute, Data } from '@angular/router';
-import "../rxjs-extensions";
+import '../rxjs-extensions';
 import { PaneRouteData, RouteData, ViewType } from '../route-data';
 import { ISubscription } from 'rxjs/Subscription';
 import { ContextService } from '../context.service';
@@ -13,12 +13,13 @@ import { ErrorService } from '../error.service';
 import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { ActionViewModel } from '../view-models/action-view-model';
-import { DialogViewModel, createForm } from '../view-models/dialog-view-model';
+import { DialogViewModel } from '../view-models/dialog-view-model';
 import { ListViewModel } from '../view-models/list-view-model';
 import { MenuViewModel } from '../view-models/menu-view-model';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 import { CollectionViewModel } from '../view-models/collection-view-model';
-import * as Configservice from '../config.service';
+import { ConfigService } from '../config.service';
+import * as Helpers from '../view-models/helpers-view-models';
 
 @Component({
     selector: 'nof-dialog',
@@ -33,7 +34,7 @@ export class DialogComponent {
         private readonly activatedRoute: ActivatedRoute,
         private readonly error: ErrorService,
         private readonly context: ContextService,
-        private readonly configService: Configservice.ConfigService,
+        private readonly configService: ConfigService,
         private readonly formBuilder: FormBuilder) {
     }
 
@@ -104,7 +105,7 @@ export class DialogComponent {
     private parms: _.Dictionary<ParameterViewModel>;
 
     private createForm(dialog: DialogViewModel) {
-        ({ form: this.form, dialog: this.dialog, parms: this.parms } = createForm(dialog, this.formBuilder));
+        ({ form: this.form, dialog: this.dialog, parms: this.parms } = Helpers.createForm(dialog, this.formBuilder));
     }
 
     closeExistingDialog() {

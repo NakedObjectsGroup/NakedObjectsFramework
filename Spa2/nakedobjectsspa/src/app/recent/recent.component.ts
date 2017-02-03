@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { ContextService } from "../context.service";
-import { ViewModelFactoryService } from "../view-model-factory.service";
+import { ContextService } from '../context.service';
+import { ViewModelFactoryService } from '../view-model-factory.service';
 import { ActivatedRoute } from '@angular/router';
-import { UrlManagerService } from "../url-manager.service";
-import { RouteData, PaneRouteData } from "../route-data";
+import { UrlManagerService } from '../url-manager.service';
+import { RouteData, PaneRouteData } from '../route-data';
 import { RecentItemsViewModel } from '../view-models/recent-items-view-model';
 import { RecentItemViewModel } from '../view-models/recent-item-view-model';
 import { PaneComponent } from '../pane/pane';

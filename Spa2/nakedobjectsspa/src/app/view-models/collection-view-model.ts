@@ -10,7 +10,7 @@ import { UrlManagerService } from '../url-manager.service';
 import { ContributedActionParentViewModel } from './contributed-action-parent-view-model';
 import * as Helpers from './helpers-view-models';
 import * as Models from '../models';
-import * as _ from "lodash";
+import * as _ from 'lodash';
 import { ConfigService } from '../config.service';
 import { LoggerService } from '../logger.service';
 

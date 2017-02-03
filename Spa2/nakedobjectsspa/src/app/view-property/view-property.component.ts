@@ -2,12 +2,12 @@ import { Component, Input, ElementRef, HostListener } from '@angular/core';
 import { FieldComponent } from '../field/field.component';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ErrorService } from "../error.service";
-import { ContextService } from "../context.service";
+import { ErrorService } from '../error.service';
+import { ContextService } from '../context.service';
 import { AttachmentViewModel } from '../view-models/attachment-view-model';
 import { PropertyViewModel } from '../view-models/property-view-model';
-import * as Models from "../models";
-import { copy } from '../view-models/idraggable-view-model';
+import * as Models from '../models';
+import * as Helpers from '../view-models/helpers-view-models';
 
 @Component({
     selector: 'nof-view-property',
@@ -94,7 +94,7 @@ export class ViewPropertyComponent {
     copy(event: KeyboardEvent) {
         const prop = this.property;
         if (prop) {
-            copy(event, prop, this.context);
+            Helpers.copy(event, prop, this.context);
         }
     }
 }

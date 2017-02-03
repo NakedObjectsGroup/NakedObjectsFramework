@@ -3,15 +3,15 @@ import { ObjectComponent } from '../object/object.component';
 import { CustomComponentService } from '../custom-component.service';
 import { ActivatedRoute } from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
-import { RouteData, PaneRouteData, ViewType } from "../route-data";
-import { UrlManagerService } from "../url-manager.service";
+import { RouteData, PaneRouteData, ViewType } from '../route-data';
+import { UrlManagerService } from '../url-manager.service';
 import { PaneComponent } from '../pane/pane';
 import { Type } from '@angular/core/src/type';
 import { ContextService } from '../context.service';
 import { ErrorService } from '../error.service';
 import { IButton } from '../button/button.component';
 import * as Models from '../models';
-import * as Configservice from '../config.service';
+import { ConfigService } from '../config.service';
 
 @Component({
     selector: 'nof-dynamic-list',
@@ -30,7 +30,7 @@ export class DynamicListComponent extends PaneComponent {
         private readonly error: ErrorService,
         private readonly componentFactoryResolver: ComponentFactoryResolver,
         private readonly customComponentService: CustomComponentService,
-        private readonly configService: Configservice.ConfigService) {
+        private readonly configService: ConfigService) {
         super(activatedRoute, urlManager);
     }
 

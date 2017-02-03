@@ -1,4 +1,4 @@
-import * as Models from "./models";
+import * as Models from './models';
 import { Injectable } from '@angular/core';
 
 @Injectable()

@@ -1,8 +1,8 @@
 ﻿import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
-import { RouteData, PaneRouteData, ICustomActivatedRouteData } from "../route-data";
-import { UrlManagerService } from "../url-manager.service";
+import { RouteData, PaneRouteData, ICustomActivatedRouteData } from '../route-data';
+import { UrlManagerService } from '../url-manager.service';
 
 // todo make pane transitions smoother 
 

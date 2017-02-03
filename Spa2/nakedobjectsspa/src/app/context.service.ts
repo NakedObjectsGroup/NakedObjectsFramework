@@ -1,10 +1,10 @@
-import { InteractionMode, RouteData, PaneRouteData, CollectionViewState } from "./route-data";
-import { UrlManagerService } from "./url-manager.service";
-import { RepLoaderService } from "./rep-loader.service";
+import { InteractionMode, RouteData, PaneRouteData, CollectionViewState } from './route-data';
+import { UrlManagerService } from './url-manager.service';
+import { RepLoaderService } from './rep-loader.service';
 import { Injectable } from '@angular/core';
-import * as Constants from "./constants";
-import * as Models from "./models";
-import * as _ from "lodash";
+import * as Constants from './constants';
+import * as Models from './models';
+import * as _ from 'lodash';
 import { Subject } from 'rxjs/Subject';
 import { IDraggableViewModel } from './view-models/idraggable-view-model';
 import { ConfigService } from './config.service';

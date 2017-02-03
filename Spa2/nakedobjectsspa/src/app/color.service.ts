@@ -1,5 +1,5 @@
-import * as Models from "./models";
-import * as _ from "lodash";
+import * as Models from './models';
+import * as _ from 'lodash';
 import { Injectable } from '@angular/core';
 import { ContextService } from './context.service';
 import { ColorConfigService } from './color-config.service';

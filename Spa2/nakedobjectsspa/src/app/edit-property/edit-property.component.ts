@@ -1,10 +1,10 @@
 import { Component, Input, ElementRef, OnInit, HostListener, ViewChildren, QueryList } from '@angular/core';
-import * as Models from "../models";
+import * as Models from '../models';
 import { FieldComponent } from '../field/field.component';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ErrorService } from "../error.service";
-import { ContextService } from "../context.service";
+import { ErrorService } from '../error.service';
+import { ContextService } from '../context.service';
 import { AttachmentViewModel } from '../view-models/attachment-view-model';
 import { FieldViewModel } from '../view-models/field-view-model';
 import { PropertyViewModel } from '../view-models/property-view-model';

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { LinkViewModel } from '../view-models/link-view-model';
-import { UrlManagerService } from "../url-manager.service";
+import { UrlManagerService } from '../url-manager.service';
 
 @Component({
     selector: 'nof-menu',

@@ -1,9 +1,9 @@
-import * as _ from "lodash";
+import * as _ from 'lodash';
 import * as Models from "./models";
-import * as Constants from "./constants";
-import { RouteData, PaneRouteData, InteractionMode, CollectionViewState, ApplicationMode, ViewType } from "./route-data";
+import * as Constants from './constants';
+import { RouteData, PaneRouteData, InteractionMode, CollectionViewState, ApplicationMode, ViewType } from './route-data';
 import { Injectable } from '@angular/core';
-import "./rxjs-extensions";
+import './rxjs-extensions';
 import { Observable } from 'rxjs/Observable';
 import { Router, UrlSegment } from '@angular/router';
 import { Location } from '@angular/common';

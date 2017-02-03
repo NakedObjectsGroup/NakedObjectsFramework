@@ -1,6 +1,6 @@
-import { UrlManagerService } from "./url-manager.service";
-import { ContextService } from "./context.service";
-import * as Models from "./models";
+import { UrlManagerService } from './url-manager.service';
+import { ContextService } from './context.service';
+import * as Models from './models';
 
 export type errorPreprocessor = (reject: Models.ErrorWrapper) => void;
 //export type errorDisplayHandler = ($scope: INakedObjectsScope) => void;

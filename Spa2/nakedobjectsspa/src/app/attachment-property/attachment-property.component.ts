@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AttachmentViewModel} from '../view-models/attachment-view-model';
-import * as Models from "../models";
+import * as Models from '../models';
 import { ErrorService } from '../error.service';
 import { Router } from '@angular/router';
 

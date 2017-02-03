@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { ContextService } from "../context.service";
-import { ViewModelFactoryService } from "../view-model-factory.service";
+import { ContextService } from '../context.service';
+import { ViewModelFactoryService } from '../view-model-factory.service';
 import { ActivatedRoute } from '@angular/router';
-import { UrlManagerService } from "../url-manager.service";
-import { RouteData, PaneRouteData } from "../route-data";
-import { ErrorService } from "../error.service";
+import { UrlManagerService } from '../url-manager.service';
+import { RouteData, PaneRouteData } from '../route-data';
+import { ErrorService } from '../error.service';
 import { AttachmentViewModel } from '../view-models/attachment-view-model';
 import { PaneComponent } from '../pane/pane';
-import * as Models from "../models";
-import * as Configservice from '../config.service';
+import * as Models from '../models';
+import { ConfigService } from '../config.service';
 
 @Component({
     selector: 'nof-attachment',
@@ -23,7 +23,7 @@ export class AttachmentComponent extends PaneComponent {
         private readonly viewModelFactory: ViewModelFactoryService,
         private readonly context: ContextService,
         private readonly error: ErrorService,
-        private readonly configService: Configservice.ConfigService
+        private readonly configService: ConfigService
     ) {
         super(activatedRoute, urlManager);
     }

@@ -1,6 +1,6 @@
 ﻿import { TableRowColumnViewModel } from './table-row-column-view-model';
 import { ViewModelFactoryService } from '../view-model-factory.service';
-import * as _ from "lodash";
+import * as _ from 'lodash';
 import * as Models from '../models';
 
 export class TableRowViewModel {

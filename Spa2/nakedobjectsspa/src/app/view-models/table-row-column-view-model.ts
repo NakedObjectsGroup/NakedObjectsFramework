@@ -1,10 +1,10 @@
 ﻿import { ChoiceViewModel } from './choice-view-model';
 import { MaskService } from '../mask.service';
-import * as Msg from "../user-messages";
+import * as Msg from '../user-messages';
 import * as Ro from '../ro-interfaces';
 import * as Models from '../models';
 import * as Helpers from './helpers-view-models';
-import * as _ from "lodash";
+import * as _ from 'lodash';
 
 export class TableRowColumnViewModel {
 

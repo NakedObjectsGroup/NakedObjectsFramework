@@ -1,7 +1,7 @@
 ﻿import { PaneRouteData } from '../route-data';
 import { ContextService } from '../context.service';
 import { ErrorService } from '../error.service';
-import * as Models from "../models";
+import * as Models from '../models';
 
 export class CollectionPlaceholderViewModel {
 

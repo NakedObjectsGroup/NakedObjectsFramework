@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { ContextService } from "../context.service";
-import { ViewModelFactoryService } from "../view-model-factory.service";
+import { ContextService } from '../context.service';
+import { ViewModelFactoryService } from '../view-model-factory.service';
 import { ErrorViewModel } from '../view-models/error-view-model';
 
 @Component({

@@ -9,7 +9,7 @@ import { ItemViewModel } from './item-view-model';
 import { ActionViewModel } from './action-view-model';
 import { MenuItemViewModel } from './menu-item-view-model';
 import { ParameterViewModel } from './parameter-view-model';
-import * as _ from "lodash";
+import * as _ from 'lodash';
 import * as Helpers from './helpers-view-models';
 import * as Models from '../models';
 import * as Msg from '../user-messages';

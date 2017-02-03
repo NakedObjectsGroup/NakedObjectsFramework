@@ -1,7 +1,7 @@
 ﻿import { RecentItemViewModel } from './recent-item-view-model';
 import { ContextService } from '../context.service';
 import { ViewModelFactoryService } from '../view-model-factory.service';
-import * as _ from "lodash";
+import * as _ from 'lodash';
 import { UrlManagerService } from '../url-manager.service';
 
 export class RecentItemsViewModel {

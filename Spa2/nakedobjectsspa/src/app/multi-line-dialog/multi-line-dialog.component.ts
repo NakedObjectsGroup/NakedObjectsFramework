@@ -1,20 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { PaneComponent } from '../pane/pane';
-import { ViewModelFactoryService } from "../view-model-factory.service";
+import { ViewModelFactoryService } from '../view-model-factory.service';
 import { ActivatedRoute } from '@angular/router';
-import { UrlManagerService } from "../url-manager.service";
-import { ContextService } from "../context.service";
-import { ErrorService } from "../error.service";
-import { RouteData, PaneRouteData } from "../route-data";
+import { UrlManagerService } from '../url-manager.service';
+import { ContextService } from '../context.service';
+import { ErrorService } from '../error.service';
+import { RouteData, PaneRouteData } from '../route-data';
 import { ActionViewModel } from '../view-models/action-view-model';
 import { CollectionViewModel } from '../view-models/collection-view-model';
-import * as Models from "../models";
-import * as _ from "lodash";
+import * as Models from '../models';
+import * as _ from 'lodash';
 import { MultiLineDialogViewModel } from '../view-models/multi-line-dialog-view-model';
-import { DialogViewModel, createForm } from '../view-models/dialog-view-model';
+import { DialogViewModel } from '../view-models/dialog-view-model';
 import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { ConfigService } from '../config.service';
+import * as Helpers from '../view-models/helpers-view-models';
 
 @Component({
     selector: 'nof-multi-line-dialog',
@@ -103,7 +104,7 @@ export class MultiLineDialogComponent extends PaneComponent {
     }
 
     private createForm(dialog: DialogViewModel) {
-        return createForm(dialog, this.formBuilder);
+        return Helpers.createForm(dialog, this.formBuilder);
     }
 
     setMultiLineDialog(holder: Models.MenuRepresentation | Models.DomainObjectRepresentation | CollectionViewModel,

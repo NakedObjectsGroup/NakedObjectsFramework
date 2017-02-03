@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Http, RequestOptionsArgs } from '@angular/http';
-import { GeminiClickDirective } from "../gemini-click.directive";
-import { UrlManagerService } from "../url-manager.service";
-import { ClickHandlerService } from "../click-handler.service";
-import { ContextService } from "../context.service";
-import { ErrorService } from "../error.service";
-import { RepLoaderService } from "../rep-loader.service";
+import { GeminiClickDirective } from '../gemini-click.directive';
+import { UrlManagerService } from '../url-manager.service';
+import { ClickHandlerService } from '../click-handler.service';
+import { ContextService } from '../context.service';
+import { ErrorService } from '../error.service';
+import { RepLoaderService } from '../rep-loader.service';
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
 import { IMessageViewModel } from '../view-models/imessage-view-model';
-import * as Msg from "../user-messages";
-import * as Models from "../models";
+import * as Msg from '../user-messages';
+import * as Models from '../models';
 import { ConfigService } from '../config.service';
 
 @Component({

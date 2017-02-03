@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent } from "./home/home.component";
-import { ListComponent } from "./list/list.component";
+import { HomeComponent } from './home/home.component';
+import { ListComponent } from './list/list.component';
 import { ErrorComponent } from './error/error.component';
 import { RecentComponent } from './recent/recent.component';
 import { ApplicationPropertiesComponent } from './application-properties/application-properties.component';

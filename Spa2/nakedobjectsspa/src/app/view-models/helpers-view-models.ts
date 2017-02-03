@@ -8,7 +8,35 @@ import { ChoiceViewModel } from './choice-view-model';
 import { IMessageViewModel } from './imessage-view-model';
 import * as Models from '../models';
 import * as Msg from '../user-messages';
-import * as _ from "lodash";
+import * as _ from 'lodash';
+import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/forms';
+import { DialogViewModel } from './dialog-view-model';
+import { ParameterViewModel} from './parameter-view-model';
+
+export function createForm(dialog: DialogViewModel, formBuilder: FormBuilder) {
+    const pps = dialog.parameters;
+    const parms = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<ParameterViewModel>;
+    const controls = _.mapValues(parms, p => [p.getValueForControl(), (a: AbstractControl) => p.validator(a)]);
+    const form = formBuilder.group(controls);
+
+    form.valueChanges.subscribe((data: any) => {
+        // cache parm values
+        _.forEach(data, (v, k) => parms[k!].setValueFromControl(v));
+        dialog.setParms();
+    });
+
+    return { form: form, dialog: dialog, parms: parms };
+}
+
+
+
+export function copy(event: KeyboardEvent, item: IDraggableViewModel, context: ContextService) {
+    const cKeyCode = 67;
+    if (event && (event.keyCode === cKeyCode && event.ctrlKey)) {
+        context.setCopyViewModel(item);
+        event.preventDefault();
+    }
+}
 
 export function tooltip(onWhat: { clientValid: () => boolean }, fields: FieldViewModel[]): string {
     if (onWhat.clientValid()) {

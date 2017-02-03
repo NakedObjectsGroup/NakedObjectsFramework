@@ -7,8 +7,8 @@ import { IMessageViewModel } from './imessage-view-model';
 import { ClickHandlerService } from '../click-handler.service';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import * as Models from '../models';
-import * as Msg from "../user-messages";
-import * as _ from "lodash";
+import * as Msg from '../user-messages';
+import * as _ from 'lodash';
 import * as Helpers from './helpers-view-models';
 
 export class ActionViewModel {

@@ -8,8 +8,8 @@ import { MaskService } from '../mask.service';
 import * as Helpers from './helpers-view-models';
 import * as Models from '../models';
 import * as Msg from '../user-messages';
-import * as _ from "lodash";
-import * as Configservice from '../config.service';
+import * as _ from 'lodash';
+import { ConfigService } from '../config.service';
 
 export class ParameterViewModel extends FieldViewModel {
 
@@ -22,7 +22,7 @@ export class ParameterViewModel extends FieldViewModel {
         private readonly previousValue: Models.Value,
         private readonly viewModelFactory: ViewModelFactoryService,
         context: ContextService,
-        configService: Configservice.ConfigService
+        configService: ConfigService
     ) {
 
         super(parameterRep,

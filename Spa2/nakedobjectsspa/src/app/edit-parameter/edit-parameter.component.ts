@@ -1,10 +1,10 @@
 import { Component, Input, OnInit, ElementRef, HostListener, ViewChildren, QueryList } from '@angular/core';
-import { ViewModelFactoryService } from "../view-model-factory.service";
-import { UrlManagerService } from "../url-manager.service";
-import * as Models from "../models";
+import { ViewModelFactoryService } from '../view-model-factory.service';
+import { UrlManagerService } from '../url-manager.service';
+import * as Models from '../models';
 import { FieldComponent } from '../field/field.component';
 import { FormGroup } from '@angular/forms';
-import { ContextService } from "../context.service";
+import { ContextService } from '../context.service';
 import { FieldViewModel } from '../view-models/field-view-model';
 import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { DialogViewModel } from '../view-models/dialog-view-model';

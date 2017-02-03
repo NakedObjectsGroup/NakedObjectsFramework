@@ -1,4 +1,4 @@
-import * as _ from "lodash";
+import * as _ from 'lodash';
 import * as Ro from './ro-interfaces';
 import { DatePipe, CurrencyPipe, DecimalPipe } from '@angular/common';
 import { MaskConfigService } from './mask-config.service';

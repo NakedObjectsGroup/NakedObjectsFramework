@@ -13,7 +13,7 @@ import { CollectionViewModel } from './collection-view-model';
 import { ParameterViewModel } from './parameter-view-model';
 import * as Models from '../models';
 import * as Helpers from './helpers-view-models';
-import * as _ from "lodash";
+import * as _ from 'lodash';
 import { ConfigService } from '../config.service';
 
 export class DomainObjectViewModel extends MessageViewModel {

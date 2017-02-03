@@ -1,17 +1,17 @@
 import { Component, Input, ViewChildren, QueryList, AfterViewInit, ElementRef } from '@angular/core';
-import { RepresentationsService } from "../representations.service";
-import { UrlManagerService } from "../url-manager.service";
-import { ClickHandlerService } from "../click-handler.service";
-import { ContextService } from "../context.service";
-import { RepLoaderService } from "../rep-loader.service";
+import { RepresentationsService } from '../representations.service';
+import { UrlManagerService } from '../url-manager.service';
+import { ClickHandlerService } from '../click-handler.service';
+import { ContextService } from '../context.service';
+import { RepLoaderService } from '../rep-loader.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ColorService } from "../color.service";
-import { ErrorService } from "../error.service";
-import { PaneRouteData, RouteData, CollectionViewState, ICustomActivatedRouteData } from "../route-data";
-import { ViewModelFactoryService } from "../view-model-factory.service";
-import * as Models from "../models";
-import * as Constants from "../constants";
-import { IDraggableViewModel, copy } from '../view-models/idraggable-view-model';
+import { ColorService } from '../color.service';
+import { ErrorService } from '../error.service';
+import { PaneRouteData, RouteData, CollectionViewState, ICustomActivatedRouteData } from '../route-data';
+import { ViewModelFactoryService } from '../view-model-factory.service';
+import * as Models from '../models';
+import * as Constants from '../constants';
+import { IDraggableViewModel } from '../view-models/idraggable-view-model';
 import { IMessageViewModel } from '../view-models/imessage-view-model';
 import { ListViewModel } from '../view-models/list-view-model';
 import { PaneComponent } from '../pane/pane';
@@ -21,7 +21,7 @@ import { IButton } from '../button/button.component';
 import { ConfigService } from '../config.service';
 import { LoggerService } from '../logger.service';
 import { ISubscription } from 'rxjs/Subscription';
-
+import * as Helpers from '../view-models/helpers-view-models';
 
 @Component({
     selector: 'nof-list',
@@ -215,7 +215,7 @@ export class ListComponent implements AfterViewInit {
     }
 
     copy(event: KeyboardEvent, item: IDraggableViewModel) {
-        copy(event, item, this.context);
+        Helpers.copy(event, item, this.context);
     }
 
     @ViewChildren("rw")

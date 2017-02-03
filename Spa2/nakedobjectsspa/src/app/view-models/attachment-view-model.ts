@@ -1,5 +1,5 @@
 ﻿import { ContextService } from '../context.service';
-import { UrlManagerService } from "../url-manager.service";
+import { UrlManagerService } from '../url-manager.service';
 import { ClickHandlerService } from "../click-handler.service";
 import * as Models from '../models';
 import * as Msg from '../user-messages';

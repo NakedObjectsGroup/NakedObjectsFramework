@@ -1,10 +1,10 @@
-import * as Models from "../models"
+import * as Models from '../models'
 import * as Ro from '../ro-interfaces';
 import { AbstractControl } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { ElementRef, HostListener, QueryList } from '@angular/core';
-import * as _ from "lodash";
-import { ContextService } from "../context.service";
+import * as _ from 'lodash';
+import { ContextService } from '../context.service';
 import { ChoiceViewModel } from '../view-models/choice-view-model';
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
 import { FieldViewModel } from '../view-models/field-view-model';
@@ -12,8 +12,8 @@ import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { DialogViewModel } from '../view-models/dialog-view-model';
 import { PropertyViewModel } from '../view-models/property-view-model';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
-import {ConfigService} from '../config.service';
-import * as Loggerservice from '../logger.service';
+import { ConfigService } from '../config.service';
+import { LoggerService } from '../logger.service';
 
 export abstract class FieldComponent {
 
@@ -24,7 +24,7 @@ export abstract class FieldComponent {
         myElement: ElementRef,
         private readonly context: ContextService,
         private readonly configService: ConfigService,
-        private readonly loggerService : Loggerservice.LoggerService
+        private readonly loggerService: LoggerService
     ) {
         this.elementRef = myElement;
     }

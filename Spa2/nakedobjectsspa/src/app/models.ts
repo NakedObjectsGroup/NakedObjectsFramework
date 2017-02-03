@@ -1,9 +1,9 @@
-import * as Ro from "./ro-interfaces";
-import * as Constants from "./constants";
-import * as RoCustom from "./ro-interfaces-custom";
-import * as Msg from "./user-messages";
-import * as _ from "lodash";
-import * as moment from "moment";
+import * as Ro from './ro-interfaces';
+import * as Constants from './constants';
+import * as RoCustom from './ro-interfaces-custom';
+import * as Msg from './user-messages';
+import * as _ from 'lodash';
+import * as moment from 'moment';
 
 // todo later these couple back to angular - rework so no direct coupling 
 import { ConfigService } from './config.service';
@@ -11,12 +11,11 @@ import { MaskService, ILocalFilter } from "./mask.service";
 import { ContextService } from "./context.service";
 import { ChoiceViewModel } from './view-models/choice-view-model';
 
-// log directly to avoid coupleing back to angular  
+// log directly to avoid coupling back to angular  
 function error (message: string,) : never {
     console.error(message);
     throw new Error(message);
 }
-
 
 // coerce undefined to null
 export function withNull<T>(v: T | undefined | null): T | null {

@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Request, RequestOptions, Headers, RequestMethod, ResponseContentType } from '@angular/http';
-import "./rxjs-extensions";
-import * as Models from "./models";
-import * as Constants from "./constants";
-import * as Ro from "./ro-interfaces";
-import * as _ from "lodash";
+import './rxjs-extensions';
+import * as Models from './models';
+import * as Constants from './constants';
+import * as Ro from './ro-interfaces';
+import * as _ from 'lodash';
 import { Subject } from 'rxjs/Subject';
 import { ConfigService } from './config.service';
+
 type cachableTypes = Ro.IRepresentation | Blob;
 
 class LruNode {
