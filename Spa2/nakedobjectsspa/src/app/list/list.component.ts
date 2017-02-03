@@ -7,7 +7,7 @@ import { RepLoaderService } from "../rep-loader.service";
 import { ActivatedRoute, Router } from '@angular/router';
 import { ColorService } from "../color.service";
 import { ErrorService } from "../error.service";
-import { PaneRouteData, RouteData, CollectionViewState } from "../route-data";
+import { PaneRouteData, RouteData, CollectionViewState, ICustomActivatedRouteData } from "../route-data";
 import { ViewModelFactoryService } from "../view-model-factory.service";
 import * as Models from "../models";
 import * as Constants from "../constants";
@@ -19,7 +19,8 @@ import { ItemViewModel } from '../view-models/item-view-model';
 import { PropertyViewModel } from '../view-models/property-view-model';
 import { IButton } from '../button/button.component';
 import { ConfigService } from '../config.service';
-import { LoggerService} from '../logger.service';
+import { LoggerService } from '../logger.service';
+import { ISubscription } from 'rxjs/Subscription';
 
 
 @Component({
@@ -27,24 +28,21 @@ import { LoggerService} from '../logger.service';
     templateUrl: './list.component.html',
     styleUrls: ['./list.component.css']
 })
-export class ListComponent extends PaneComponent implements AfterViewInit {
-    // todo  this and ObjectComponent should not  extend PaneComponent they are no longer panes !
-
-
-    constructor(activatedRoute: ActivatedRoute,
-        urlManager: UrlManagerService,
+export class ListComponent implements AfterViewInit {
+  
+    constructor(
+        private readonly activatedRoute: ActivatedRoute,
+        private readonly urlManager: UrlManagerService,
         private readonly context: ContextService,
         private readonly color: ColorService,
         private readonly viewModelFactory: ViewModelFactoryService,
         private readonly error: ErrorService,
         private readonly configService: ConfigService,
         private readonly loggerService: LoggerService
-    ) {
-        super(activatedRoute, urlManager);
+    ) {     
     }
 
     collection: ListViewModel;
-
 
     toggleActionMenu = () => this.collection.toggleActionMenu();
     reloadList = () => this.collection.reload();
@@ -228,6 +226,39 @@ export class ListComponent extends PaneComponent implements AfterViewInit {
             e.first.nativeElement.focus();
         }
     }
+
+    private activatedRouteDataSub: ISubscription;
+    private paneRouteDataSub: ISubscription;
+    private lastPaneRouteData: PaneRouteData;
+
+    // now this is a child investigate reworking so object is passed in from parent 
+    ngOnInit(): void {
+        this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: ICustomActivatedRouteData) => {
+
+            const paneId = data.pane;
+
+            if (!this.paneRouteDataSub) {
+                this.paneRouteDataSub =
+                    this.urlManager.getPaneRouteDataObservable(paneId)
+                        .subscribe((paneRouteData: PaneRouteData) => {
+                            if (!paneRouteData.isEqual(this.lastPaneRouteData)) {
+                                this.lastPaneRouteData = paneRouteData;
+                                this.setup(paneRouteData);
+                            }
+                        });
+            };
+        });
+    }
+
+    ngOnDestroy(): void {
+        if (this.activatedRouteDataSub) {
+            this.activatedRouteDataSub.unsubscribe();
+        }
+        if (this.paneRouteDataSub) {
+            this.paneRouteDataSub.unsubscribe();
+        }
+    }
+
 
     ngAfterViewInit(): void {
         this.focusOnRow(this.row);
