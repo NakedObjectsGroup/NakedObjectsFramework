@@ -9,18 +9,11 @@
 <div *ngIf="parameterType === 'scalar'" >
     <div [ngSwitch]="parameterReturnType">
         <div *ngSwitchCase="string">
-          
-            <div *ngIf="isBlob" class="reference" geminiClick (leftClick)="doAttachmentClick()" (rightClick)="doAttachmentClick(true)" tabindex="0">
-                <div *ngIf="!image">{{attachmentTitle}}</div>
-                <img *ngIf="image" src="{{image}}" alt="{{attachmentTitle}}" />
+            <div *ngIf="!isMultiline" class="value">
+                {{formattedValue}}
             </div>
-            <div *ngIf="!isBlob">
-                <div *ngIf="!isMultiline" class="value">
-                    {{formattedValue}}
-                </div>
-                <div *ngIf="isMultiline" class="value multiline" [ngStyle]="{height : multilineHeight}">
-                    <pre>{{formattedValue}}</pre>
-                </div>
+            <div *ngIf="isMultiline" class="value multiline" [ngStyle]="{height : multilineHeight}">
+                <pre>{{formattedValue}}</pre>
             </div>
         </div>
 

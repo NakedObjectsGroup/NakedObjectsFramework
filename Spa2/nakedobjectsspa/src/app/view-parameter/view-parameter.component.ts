@@ -44,10 +44,6 @@ export class ViewParameterComponent {
         return this.parameter.format;
     }
 
-    get isBlob() {
-        return this.parameter.format === "blob";
-    }
-
     get isMultiline() {
         return !(this.parameter.multipleLines === 1);
     }
@@ -59,13 +55,4 @@ export class ViewParameterComponent {
     get color() {
         return this.parameter.color;
     }
-
-
-    // todo what's happening here can there be an attachment ? 
-    // doAttachmentClick = (right?: boolean) => this.parameter.attachment.doClick(right);
-
-    attachmentTitle: string;
-    image: string;
-
-
 }
