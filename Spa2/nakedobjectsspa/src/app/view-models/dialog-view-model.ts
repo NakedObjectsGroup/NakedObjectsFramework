@@ -11,6 +11,25 @@ import * as Models from '../models';
 import * as Msg from '../user-messages';
 import * as Helpers from './helpers-view-models';
 import * as _ from "lodash";
+import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/forms';
+
+// helper 
+export function createForm(dialog: DialogViewModel, formBuilder : FormBuilder) {
+    const pps = dialog.parameters;
+    const parms = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<ParameterViewModel>;
+    const controls = _.mapValues(parms, p => [p.getValueForControl(), (a: AbstractControl) => p.validator(a)]);
+    const form = formBuilder.group(controls);
+
+    form.valueChanges.subscribe((data: any) => {
+        // cache parm values
+        _.forEach(data, (v, k) => parms[k!].setValueFromControl(v));
+        dialog.setParms();
+    });
+
+    return { form: form, dialog: dialog, parms: parms };
+}
+
+
 
 export class DialogViewModel extends MessageViewModel {
     constructor(

@@ -13,7 +13,7 @@ import { ErrorService } from '../error.service';
 import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { ActionViewModel } from '../view-models/action-view-model';
-import { DialogViewModel } from '../view-models/dialog-view-model';
+import { DialogViewModel, createForm } from '../view-models/dialog-view-model';
 import { ListViewModel } from '../view-models/list-view-model';
 import { MenuViewModel } from '../view-models/menu-view-model';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
@@ -104,18 +104,7 @@ export class DialogComponent {
     private parms: _.Dictionary<ParameterViewModel>;
 
     private createForm(dialog: DialogViewModel) {
-        const pps = dialog.parameters;
-        this.parms = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<ParameterViewModel>;
-        const controls = _.mapValues(this.parms, p => [p.getValueForControl(), (a: AbstractControl) => p.validator(a)]);
-        this.form = this.formBuilder.group(controls);
-
-        this.form.valueChanges.subscribe((data: any) => {
-            if (this.dialog) {
-                // cache parm values
-                _.forEach(data, (v, k) => this.parms[k!].setValueFromControl(v));
-                this.dialog.setParms();
-            }
-        });
+        ({form: this.form, dialog :this.dialog, parms : this.parms } = createForm(dialog, this.formBuilder)); 
     }
 
     closeExistingDialog() {
@@ -124,7 +113,6 @@ export class DialogComponent {
             this.dialog = null;
         }
     }
-
 
     getDialog() {
 
@@ -164,13 +152,11 @@ export class DialogComponent {
                         // only if we still have a dialog (may have beenn removed while getting invokable action)
 
                         if (this.currentDialogId) {
+                            // must be a change 
+                            this.closeExistingDialog();
 
                             const dialogViewModel = this.viewModelFactory.dialogViewModel(this.parent.routeData, details, actionViewModel, false);
                             this.createForm(dialogViewModel);
-
-                            // must be a change 
-                            this.closeExistingDialog();
-                            this.dialog = dialogViewModel;
                         }
                     })
                     .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));

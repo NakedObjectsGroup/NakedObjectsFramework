@@ -11,7 +11,7 @@ import { CollectionViewModel } from '../view-models/collection-view-model';
 import * as Models from "../models";
 import * as _ from "lodash";
 import { MultiLineDialogViewModel } from '../view-models/multi-line-dialog-view-model';
-import { DialogViewModel } from '../view-models/dialog-view-model';
+import { DialogViewModel, createForm } from '../view-models/dialog-view-model';
 import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { ConfigService } from '../config.service';
@@ -102,25 +102,8 @@ export class MultiLineDialogComponent extends PaneComponent {
         this.urlManager.popUrlState();
     }
 
-    // todo very similar to code in DialogComponent - DRY 
     private createForm(dialog: DialogViewModel) {
-        const pps = dialog.parameters;
-        const parms = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<ParameterViewModel>;
-        // todo fix types - no any 
-        const controls = _.mapValues(parms, p => [p.getValueForControl(), (a: AbstractControl) => p.validator(a)]) as _.Dictionary<any>;
-        const form = this.formBuilder.group(controls);
-
-        form.valueChanges.subscribe((data: any) => {
-            // cache parm values
-            _.forEach(data,
-                (v, k) => {
-                    const parm = parms[k!];
-                    parm.setValueFromControl(v);
-                });
-            dialog.setParms();
-        });
-
-        return { form: form, dialog: dialog, parms: parms };
+        return createForm(dialog, this.formBuilder);
     }
 
     setMultiLineDialog(holder: Models.MenuRepresentation | Models.DomainObjectRepresentation | CollectionViewModel,

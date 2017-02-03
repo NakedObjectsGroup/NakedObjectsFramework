@@ -15,7 +15,7 @@ export class ErrorService {
     ) { }
 
     private preProcessors: errorPreprocessor[] = [];
-    // todo should we reimplement ?
+    // todo later should we reimplement ?
     //const displayHandlers: errorDisplayHandler[] = [];
 
     private handleHttpServerError(reject: Models.ErrorWrapper) {

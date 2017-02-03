@@ -24,7 +24,7 @@ export class ErrorComponent {
     stackTrace: string[] | null;
 
     ngOnInit(): void {
-        // todo if no error perhaps just go home ? 
+        // todo later if no error perhaps just go home ? 
         // this would happen on error page reload  
 
         const errorWrapper = this.context.getError();
