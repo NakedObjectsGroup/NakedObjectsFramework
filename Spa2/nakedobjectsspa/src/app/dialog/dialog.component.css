@@ -1,7 +1,6 @@
-.dialog {
+:host {
     display: block;
     width: 410px;
-    padding: 5px;  
     margin-bottom: 20px;
     overflow: hidden; /*Needed to force the floated divs inside this to expand the containing div in height*/
     background-color: white;
@@ -11,7 +10,12 @@
     font-weight: 400;
 }
 
-input, select {
+.dialog {
+    display: block;
+    padding: 5px;  
+}
+
+.dialog input, .dialog select {
     border-style:solid;
     border-color: grey;
     border-width: 1px;

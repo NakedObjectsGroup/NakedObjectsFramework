@@ -27,3 +27,9 @@
     margin-top: 2px;
     display: block;
 }
+
+.main-column{
+    float: left;
+    margin-bottom: 20px;
+    margin-right: 20px;
+}

@@ -66,50 +66,6 @@ html, #main, body, .background, .single, .split {
     float: left;
 }
 
-/*Handling freestanding images*/
-.attachment {
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    height: 100%;
-}
-
-    .attachment .reference img {
-        max-width: 100%;
-        height: auto;
-    }
-
-/*Hover & Focus*/
-/*     input:hover,  input:focus,
-     select:hover, select:focus {
-        border: solid;
-        border-width: 1px;
-        border-color: black;
-    } 
-
-.menu:hover, .menu:focus,
-.reference:hover, .reference:focus,
-tbody tr:hover, tr:focus,
-.clickable-row:hover, .clickable-row:focus,
-div.hover, div.focus
-{
-    outline: solid;
-    outline-width: 1px;
-    outline-color: white;
-}
-
-.menu[disabled="disabled"]:hover {
-    outline: none;
-}
-
-
-.title:focus {
-    outline: solid;
-    outline-width: 1px;
-    outline-color: white;
-}
-*/
-
 /*0. Black */
 .object-color0 {
     background-color: #000000;

@@ -27,11 +27,7 @@ input:hover, input:focus {
     width: 245px;
     padding-left: 5px;
     margin: 1px;
-}
-
-.reference img {
-    max-width: 245px;
-    max-height: 100px;
+    float: left;
 }
 
 input:not([type='checkbox']), textarea {
