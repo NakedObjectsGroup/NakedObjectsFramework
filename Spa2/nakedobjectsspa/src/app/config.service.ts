@@ -22,6 +22,8 @@ export interface IAppConfig {
     autoLoadDirty: boolean;
     showDirtyFlag: boolean;
 
+    defaultLocale : string;
+
     // caching constants: do not change unless you know what you're doing 
     httpCacheDepth: number;
     transientCacheDepth: number;
@@ -49,6 +51,10 @@ export function configFactory(config: ConfigService) {
     return () => config.load();
 }
 
+export function localeFactory(config: ConfigService) {
+    return config.config.defaultLocale;
+}
+
 @Injectable()
 export class ConfigService {
 
@@ -66,6 +72,7 @@ export class ConfigService {
         linkColor: "link-color",
         autoLoadDirty: true,
         showDirtyFlag: false,
+        defaultLocale: "en-GB",
         httpCacheDepth: 50,
         transientCacheDepth: 4,
         recentCacheDepth: 20, 

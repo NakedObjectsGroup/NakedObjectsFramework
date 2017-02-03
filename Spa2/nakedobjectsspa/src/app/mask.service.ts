@@ -3,13 +3,14 @@ import * as Ro from './ro-interfaces';
 import { DatePipe, CurrencyPipe, DecimalPipe } from '@angular/common';
 import { MaskConfigService } from './mask-config.service';
 import { Injectable } from '@angular/core';
+import * as Configservice from './config.service';
 
 export interface IMaskServiceConfigurator {
-    setNumberMaskMapping: (customMask: string, format: Ro.formatType, fractionSize?: number) => void;
+    setNumberMaskMapping: (customMask: string, format: Ro.formatType, fractionSize?: number, locale? : string) => void;
 
-    setDateMaskMapping: (customMask: string, format: Ro.formatType, mask: string, tz?: string) => void;
+    setDateMaskMapping: (customMask: string, format: Ro.formatType, mask: string, tz?: string, locale?: string) => void;
 
-    setCurrencyMaskMapping: (customMask: string, format: Ro.formatType, symbol?: string, digits?: string) => void;
+    setCurrencyMaskMapping: (customMask: string, format: Ro.formatType, symbol?: string, digits?: string, locale?: string) => void;
 }
 
 
@@ -40,53 +41,50 @@ function transform(tfm: () => string) {
 class LocalCurrencyFilter implements ILocalFilter {
 
     constructor(
+        private readonly locale: string,
         private readonly symbol?: string,
-        private readonly digits?: string) { }
+        private readonly digits?: string,
+    ) { }
 
     filter(val: any): string {
         if (!val) {
             return "";
         }
 
-        // todo fix locales !!
-        const pipe = new CurrencyPipe("en-GB");
-        // return $filter("currency")(val, this.symbol, this.fractionSize);
-
+        const pipe = new CurrencyPipe(this.locale);
         return transform(() => pipe.transform(val, this.symbol, true, this.digits));
-
     }
 }
 
 class LocalDateFilter implements ILocalFilter {
 
     constructor(
+        private readonly locale: string,
         private readonly mask?: string,
-        private readonly tz?: string) { }
+        private readonly tz?: string,
+        ) { }
 
     filter(val: any): string {
         if (!val){
             return "";
         }
-        // todo fix this ! 
-        const pipe = new DatePipe("en-GB");
-        //   return $filter("date")(val, this.mask, this.tz);
+        const pipe = new DatePipe(this.locale);
         return transform(() =>pipe.transform(val, this.mask));
     }
 }
 
 class LocalNumberFilter implements ILocalFilter {
 
-    constructor(private readonly fractionSize?: number) {}
+    constructor(
+        private readonly locale: string,
+        private readonly fractionSize?: number
+    ) { }
 
     filter(val: any): string {
         if (val == null || val === ""){
             return "";
         }
-
-        //  return $filter("number")(val, this.fractionSize);
-        // todo fix this ! 
-        const pipe = new DecimalPipe("en-GB");
-        // return $filter("currency")(val, this.symbol, this.fractionSize);
+        const pipe = new DecimalPipe(this.locale);      
         return transform(() =>pipe.transform(val));
     }
 }
@@ -108,36 +106,42 @@ export class MaskService implements IMaskServiceConfigurator{
         int: {}
     };
 
-    constructor(private readonly config: MaskConfigService) {
+    constructor(
+        private readonly config: MaskConfigService,
+        private readonly appConfig: Configservice.ConfigService
+    ) {
+        this.defaultLocale = appConfig.config.defaultLocale;
         config.configure(this);
     }
+
+    private readonly defaultLocale : string;
 
     defaultLocalFilter(format: Ro.formatType): ILocalFilter {
         switch (format) {
         case ("string"):
-            return new LocalStringFilter();
+                return new LocalStringFilter();
         case ("date-time"):
-            return new LocalDateFilter("d MMM yyyy HH:mm:ss");
+                return new LocalDateFilter(this.defaultLocale, "d MMM yyyy HH:mm:ss");
         case ("date"):
-            return new LocalDateFilter("d MMM yyyy", "+0000");
+                return new LocalDateFilter(this.defaultLocale, "d MMM yyyy", "+0000");
         case ("time"):
-            return new LocalDateFilter("HH:mm", "+0000");
+                return new LocalDateFilter(this.defaultLocale, "HH:mm", "+0000");
         case ("utc-millisec"):
-            return new LocalNumberFilter();
+                return new LocalNumberFilter(this.defaultLocale);
         case ("big-integer"):
-            return new LocalNumberFilter();
+                return new LocalNumberFilter(this.defaultLocale);
         case ("big-decimal"):
-            return new LocalNumberFilter();
+                return new LocalNumberFilter(this.defaultLocale);
         case ("blob"):
-            return new LocalStringFilter();
+                return new LocalStringFilter();
         case ("clob"):
-            return new LocalStringFilter();
+                return new LocalStringFilter();
         case ("decimal"):
-            return new LocalNumberFilter();
+                return new LocalNumberFilter(this.defaultLocale);
         case ("int"):
-            return new LocalNumberFilter();
+                return new LocalNumberFilter(this.defaultLocale);
         default:
-            return new LocalStringFilter();
+                return new LocalStringFilter();
         }
     };
 
@@ -152,15 +156,15 @@ export class MaskService implements IMaskServiceConfigurator{
         return this.customFilter(format, remoteMask) || this.defaultLocalFilter(format);
     };
 
-    setNumberMaskMapping(customMask: string, format: Ro.formatType, fractionSize?: number) {
-        this.maskMap[format!][customMask] = new LocalNumberFilter(fractionSize);
+    setNumberMaskMapping(customMask: string, format: Ro.formatType, fractionSize?: number, locale?: string) {
+        this.maskMap[format!][customMask] = new LocalNumberFilter(locale || this.defaultLocale, fractionSize, );
     };
 
-    setDateMaskMapping(customMask: string, format: Ro.formatType, mask: string, tz?: string) {
-        this.maskMap[format!][customMask] = new LocalDateFilter(mask, tz);
+    setDateMaskMapping(customMask: string, format: Ro.formatType, mask: string, tz?: string, locale?: string) {
+        this.maskMap[format!][customMask] = new LocalDateFilter(locale || this.defaultLocale, mask, tz);
     };
 
-    setCurrencyMaskMapping(customMask: string, format: Ro.formatType, symbol?: string, digits?: string) {
-        this.maskMap[format!][customMask] = new LocalCurrencyFilter(symbol, digits);
+    setCurrencyMaskMapping(customMask: string, format: Ro.formatType, symbol?: string, digits?: string, locale?: string) {
+        this.maskMap[format!][customMask] = new LocalCurrencyFilter(locale || this.defaultLocale, symbol, digits);
     };
 }

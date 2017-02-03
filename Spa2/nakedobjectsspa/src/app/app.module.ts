@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ErrorHandler, APP_INITIALIZER } from '@angular/core';
+import { NgModule, ErrorHandler, APP_INITIALIZER, LOCALE_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RoutingModule } from './app-routing.module';
@@ -49,7 +49,7 @@ import { DynamicObjectComponent } from './dynamic-object/dynamic-object.componen
 import { CustomComponentService } from './custom-component.service';
 import { CustomComponentConfigService } from './custom-component-config.service';
 import { DynamicListComponent } from './dynamic-list/dynamic-list.component';
-import { ConfigService, configFactory } from './config.service';
+import { ConfigService, configFactory, localeFactory } from './config.service';
 import { LoggerService } from './logger.service';
 import { AttachmentPropertyComponent } from './attachment-property/attachment-property.component';
 
@@ -113,9 +113,10 @@ import { AttachmentPropertyComponent } from './attachment-property/attachment-pr
         CustomComponentService,
         CustomComponentConfigService,
         LoggerService,
-        { provide: ErrorHandler, useClass: GeminiErrorHandler },
         ConfigService,
-        { provide: APP_INITIALIZER, useFactory: configFactory, deps: [ConfigService], multi: true }
+        { provide: ErrorHandler, useClass: GeminiErrorHandler },       
+        { provide: APP_INITIALIZER, useFactory: configFactory, deps: [ConfigService], multi: true },
+        { provide: LOCALE_ID, useFactory: localeFactory, deps: [ConfigService] }
     ],
     bootstrap: [AppComponent]
 })
