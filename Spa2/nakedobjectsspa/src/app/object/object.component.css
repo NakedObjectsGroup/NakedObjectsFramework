@@ -59,7 +59,7 @@ viewTitle {
     font:inherit;
     font-size: 16pt;
     color: white;
-    background-color: inherit;
+    background-color: transparent;
 }
 .menu[disabled="disabled"] {
         color: grey;

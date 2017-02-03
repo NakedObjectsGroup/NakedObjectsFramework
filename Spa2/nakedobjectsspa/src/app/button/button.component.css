@@ -15,7 +15,7 @@ input {  /*To override user agent style sheet defaults*/
     color: white;
     font-weight: 100;
     font-size: 16pt;
-    background-color: inherit;
+    background-color: transparent;
     padding: 5px;
 }
 
