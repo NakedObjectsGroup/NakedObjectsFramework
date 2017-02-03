@@ -119,7 +119,6 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
 
         const invokeWithDialog = (right?: boolean) => {
             this.context.clearDialogCachedValues(this.onPaneId);
-            //this.focusManager.focusOverrideOff();
             this.urlManager.setDialogOrMultiLineDialog(actionViewModel.actionRep, this.onPaneId);
         };
 

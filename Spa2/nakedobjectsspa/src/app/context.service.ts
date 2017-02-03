@@ -231,7 +231,7 @@ export class ContextService {
         }
 
         const object = new Models.DomainObjectRepresentation();
-        object.hateoasUrl = this.configService.config.appPath + "/objects/" + type + "/" + id;
+        object.hateoasUrl = `${this.configService.config.appPath}/objects/${type}/${id}`;
         object.setInlinePropertyDetails(interactionMode === InteractionMode.Edit);
 
 
@@ -690,8 +690,6 @@ export class ContextService {
     }
 
     private invokeActionInternal(invokeMap: Models.InvokeMap, action: Models.IInvokableAction, fromPaneId: number, toPaneId: number, setDirty: () => void, gotoResult = false) {
-
-        //this.focusManager.setCurrentPane(toPaneId);
 
         invokeMap.setUrlParameter(Constants.roInlinePropertyDetails, false);
 
