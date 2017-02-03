@@ -46,9 +46,13 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
     expiredTransient = false;
     object: DomainObjectViewModel | null;
 
-    // todo add mode as string property for template to make easier to read and make this private 
-    mode: InteractionMode | null;
+    
+    private mode: InteractionMode | null;
     form: FormGroup | null;
+
+    get viewMode() {
+        return this.mode == null ? "" : InteractionMode[this.mode];
+    }
 
     // must be properties as object may change - eg be reloaded 
     get friendlyName() {

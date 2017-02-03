@@ -1197,7 +1197,7 @@ export class ActionResultRepresentation extends ResourceRepresentation<Ro.IActio
 
     // properties 
     resultType(): Ro.resultTypeType {
-        // todo validate the result against the type so we can guarantee  
+        // todo later validate the result against the type so we can guarantee  
         return this.wrapped().resultType;
     }
 
@@ -2054,7 +2054,7 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
         super(model);
     }
 
-    // todo change this to not be dependent of keySeparator 
+    // todo later change this to not be dependent of keySeparator 
     id(keySeparator: string): string {
         return `${this.domainType() || this.serviceId()}${this.instanceId() ? `${keySeparator}${this.instanceId()}` : ""}`;
     }
@@ -2130,7 +2130,7 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
         return !!this.actionMembers()[id];
     }
 
-    // todo change to not be dependent on keySeparator
+    // todo later change to not be dependent on keySeparator
     actionMember(id: string, keySeparator: string): ActionMember {
         return getMember(this.actionMembers(), id, this.id(keySeparator));
     }

@@ -104,7 +104,7 @@ export class DialogComponent {
     private parms: _.Dictionary<ParameterViewModel>;
 
     private createForm(dialog: DialogViewModel) {
-        ({form: this.form, dialog :this.dialog, parms : this.parms } = createForm(dialog, this.formBuilder)); 
+        ({ form: this.form, dialog: this.dialog, parms: this.parms } = createForm(dialog, this.formBuilder));
     }
 
     closeExistingDialog() {
