@@ -7,7 +7,7 @@ import { ListComponent } from './list/list.component';
 import { Type } from '@angular/core/src/type';
 import { TypeResultCache } from './type-result-cache';
 import { ContextService } from './context.service';
-import {ErrorComponent} from './error/error.component';
+import { ErrorComponent } from './error/error.component';
 
 export interface ICustomComponentConfigurator {
     addType: (type: string, result: Type<any>) => void;
@@ -20,7 +20,7 @@ export interface ICustomComponentConfigurator {
 }
 
 export interface ICustomErrorComponentConfigurator {
-    addError(rc: Models.ErrorCategory, code: Models.HttpStatusCode | Models.ClientErrorCode, result: Type<any>) : void;
+    addError(rc: Models.ErrorCategory, code: Models.HttpStatusCode | Models.ClientErrorCode, result: Type<any>): void;
 }
 
 class CustomComponentCache extends TypeResultCache<Type<any>> implements ICustomComponentConfigurator {
@@ -32,9 +32,10 @@ class CustomComponentCache extends TypeResultCache<Type<any>> implements ICustom
 }
 
 @Injectable()
-export class CustomComponentService implements ICustomErrorComponentConfigurator{
+export class CustomComponentService implements ICustomErrorComponentConfigurator {
 
-    constructor(context: ContextService,
+    constructor(
+        private readonly context: ContextService,
         private readonly config: CustomComponentConfigService) {
 
         this.customComponentCaches = [];
@@ -63,7 +64,7 @@ export class CustomComponentService implements ICustomErrorComponentConfigurator
         return this.customComponentCaches[ViewType.Error].getResult(key);
     }
 
-    addError (rc: Models.ErrorCategory, code: Models.HttpStatusCode | Models.ClientErrorCode, result: Type<any>) {
+    addError(rc: Models.ErrorCategory, code: Models.HttpStatusCode | Models.ClientErrorCode, result: Type<any>) {
         const key = this.getErrorKey(rc, code);
         this.customComponentCaches[ViewType.Error].addType(key, result);
     }

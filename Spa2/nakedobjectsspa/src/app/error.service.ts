@@ -1,10 +1,10 @@
 import { UrlManagerService } from './url-manager.service';
 import { ContextService } from './context.service';
 import * as Models from './models';
-
-export type errorPreprocessor = (reject: Models.ErrorWrapper) => void;
-//export type errorDisplayHandler = ($scope: INakedObjectsScope) => void;
 import { Injectable } from '@angular/core';
+import * as Msg from './user-messages';
+
+type errorPreprocessor = (reject: Models.ErrorWrapper) => void;
 
 @Injectable()
 export class ErrorService {
@@ -12,12 +12,19 @@ export class ErrorService {
     constructor(
         private readonly urlManager: UrlManagerService,
         private readonly context: ContextService
-    ) { }
+    ) {
+
+        this.setErrorPreprocessor(reject => {
+            if (reject.category === Models.ErrorCategory.HttpClientError && reject.httpErrorCode === Models.HttpStatusCode.PreconditionFailed) {
+                // todo concurrency failure 
+                //$rootScope.$broadcast(geminiConcurrencyEvent, new Models.ErrorMap({}, 0, Msg.concurrencyMessage));
+                reject.handled = true;
+            }
+        });
+    }
 
     private preProcessors: errorPreprocessor[] = [];
-    // todo later should we reimplement ?
-    //const displayHandlers: errorDisplayHandler[] = [];
-
+    
     private handleHttpServerError(reject: Models.ErrorWrapper) {
         this.urlManager.setError(Models.ErrorCategory.HttpServerError);
     }
@@ -66,27 +73,4 @@ export class ErrorService {
     setErrorPreprocessor (handler: errorPreprocessor)  {
         this.preProcessors.push(handler);
     };
-
-    //setErrorDisplayHandler = (handler: errorDisplayHandler) => {
-    //    //this.displayHandlers.push(handler);
-    //};
-
-    //displayError = ($scope: INakedObjectsScope, routeData: Nakedobjectsroutedata.PaneRouteData) => {
-    //    // first allow handlers to set error template, if none does then default 
-    //    //displayHandlers.forEach(h => h($scope));
-
-    //    //if (!$scope.errorTemplate) {
-    //    //    $scope.errorTemplate = Nakedobjectsconstants.errorTemplate;
-    //    //}
-    //};
-
-    // initialise error preprocessor with some concurrency handling code
-    //setErrorPreprocessor((reject: Models.ErrorWrapper) : void {
-
-    //    //if (reject.category === ErrorCategory.HttpClientError &&
-    //    //    reject.httpErrorCode === HttpStatusCode.PreconditionFailed) {
-    //    //    $rootScope.$broadcast(geminiConcurrencyEvent, new Models.ErrorMap({}, 0, concurrencyMessage));
-    //    //    reject.handled = true;
-    //    //}
-    //}
 }

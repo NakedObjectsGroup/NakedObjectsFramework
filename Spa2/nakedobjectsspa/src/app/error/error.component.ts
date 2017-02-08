@@ -27,6 +27,8 @@ export class ErrorComponent {
         // todo later if no error perhaps just go home ? 
         // this would happen on error page reload  
 
+        // todo do we cover all the possible errors from Spa 1 ?
+
         const errorWrapper = this.context.getError();
         const error = this.viewModelFactory.errorViewModel(errorWrapper);
 
