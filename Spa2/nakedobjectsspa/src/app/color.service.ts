@@ -2,7 +2,6 @@ import * as Models from './models';
 import * as _ from 'lodash';
 import { Injectable } from '@angular/core';
 import { ContextService } from './context.service';
-import { ColorConfigService } from './color-config.service';
 import { TypeResultCache } from './type-result-cache';
 import { ConfigService } from './config.service';
 
@@ -22,19 +21,14 @@ export class ColorService extends TypeResultCache<number> implements IColorServi
 
     constructor(
         context: ContextService,
-        private readonly colorConfig: ColorConfigService,
         private readonly configService: ConfigService
     ) {
         super(context);
         super.setDefault(0);
-        colorConfig.configure(this);
-        if (!this.serviceConfigured) {
-            this.configureFromBasicConfig();
-        }
+        this.configureFromConfig();
     }
 
-    private serviceConfigured = false;
-
+  
     private typeFromUrl(url: string): string {
         const oid = Models.ObjectIdWrapper.fromHref(url, this.configService.config.keySeparator);
         return oid.domainType;
@@ -47,43 +41,50 @@ export class ColorService extends TypeResultCache<number> implements IColorServi
 
     toColorNumberFromType = (type: string | null) => this.getResult(type);
 
-    private setServiceConfigured() {
-        this.serviceConfigured = true;
-    }
-
+   
     addType(type: string, result: number) {
         super.addType(type, result);
-        this.setServiceConfigured();
     }
 
     addMatch(matcher: RegExp, result: number) {
         super.addMatch(matcher, result);
-        this.setServiceConfigured();
     }
 
     addSubtype(type: string, result: number) {
         super.addSubtype(type, result);
-        this.setServiceConfigured();
     }
 
     setDefault(def: number) {
         super.setDefault(def);
-        this.setServiceConfigured();
     }
 
     getDefault() : number {
         return this.default;
     }
 
-    configureFromBasicConfig(): void {
-        const basicConfig = this.configService.config.colors;
+    configureFromConfig(): void {
+        const colorConfig = this.configService.config.colors;
 
-        if (basicConfig) {
-            _.forEach(basicConfig.map, (v, k) => this.addType(k!, v));
-            const dflt = basicConfig.default;
+        if (colorConfig) {
+            const typeMap = colorConfig.typeMap;
+            const subtypeMap = colorConfig.subtypeMap;
+            const regexArray = colorConfig.regexArray;
+            const dflt = colorConfig.default;
+
+            if (typeMap) {
+                _.forEach(typeMap, (v, k) => this.addType(k!, v));
+            }
+
+            if (regexArray) {
+                _.forEach(regexArray, item => this.addMatch(new RegExp(item.regex), item.color));
+            }
+
+            if (subtypeMap) {
+                _.forEach(subtypeMap, (v, k) => this.addSubtype(k!, v));
+            }
 
             if (dflt !== null) {
-                this.setDefault(basicConfig.default);
+                this.setDefault(dflt);
             }
         }
     }

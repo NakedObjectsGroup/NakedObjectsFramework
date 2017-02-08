@@ -40,10 +40,14 @@ export interface IAppConfig {
 
     // optional colors for simple color config 
     colors?: {
-        map : {
+        typeMap? : {
             [index: string]: number;
         },
-        default: number;
+        regexArray?: {regex : RegExp, color : number}[],
+        subtypeMap?: {
+            [index: string]: number;
+        },
+        default?: number;
     }
 }
 

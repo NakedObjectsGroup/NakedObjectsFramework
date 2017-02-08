@@ -4,13 +4,29 @@
     "urlShortCuts": [ "http://nakedobjectsrodemo.azurewebsites.net", "AdventureWorksModel" ],
     "doUrlValidation": true,
     "colors": {
-        "map": {
+        "typeMap": {
             "AdventureWorksModel.Customer": 1,
             "AdventureWorksModel.Product": 4,
             "AdventureWorksModel.Employee": 5,
-            "AdventureWorksModel.SalesPerson": 6
+            "AdventureWorksModel.SalesPerson": 6,
+            "AdventureWorksModel.SpecialOffer": 7,
+            "AdventureWorksModel.Vendor": 9,
+            "AdventureWorksModel.WorkOrder": 12
+        },
+        "regexArray": [
+            {
+                "regex": ".*SalesOrder.*",
+                "color": 2
+            },
+            {
+                "regex": ".*SalesOrder.*",
+                "color": 10
+            }
+        ],
+        "subtypeMap": {
+            "AdventureWorksModel.BusinessEntity": 8
         },
         "default": 0
     },
-    "logLevel" :  "debug"
+    "logLevel": "debug"
 }
