@@ -50,6 +50,7 @@ import { DynamicListComponent } from './dynamic-list/dynamic-list.component';
 import { ConfigService, configFactory, localeFactory } from './config.service';
 import { LoggerService } from './logger.service';
 import { AttachmentPropertyComponent } from './attachment-property/attachment-property.component';
+import { DynamicErrorComponent } from './dynamic-error/dynamic-error.component';
 
 @NgModule({
     declarations: [
@@ -83,11 +84,13 @@ import { AttachmentPropertyComponent } from './attachment-property/attachment-pr
         ButtonComponent,
         DynamicObjectComponent,
         DynamicListComponent,
-        AttachmentPropertyComponent
+        AttachmentPropertyComponent,
+        DynamicErrorComponent
     ],
     entryComponents: [
         ObjectComponent,
-        ListComponent
+        ListComponent,
+        ErrorComponent
     ],
     imports: [
         BrowserModule,

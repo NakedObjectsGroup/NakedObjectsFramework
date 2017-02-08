@@ -7,6 +7,7 @@ import { ListComponent } from './list/list.component';
 import { Type } from '@angular/core/src/type';
 import { TypeResultCache } from './type-result-cache';
 import { ContextService } from './context.service';
+import {ErrorComponent} from './error/error.component';
 
 export interface ICustomComponentConfigurator {
     addType: (type: string, result: Type<any>) => void;
@@ -35,14 +36,16 @@ export class CustomComponentService {
         this.customComponentCaches = [];
         this.customComponentCaches[ViewType.Object] = new CustomComponentCache(context, ObjectComponent);
         this.customComponentCaches[ViewType.List] = new CustomComponentCache(context, ListComponent);
+        this.customComponentCaches[ViewType.Error] = new CustomComponentCache(context, ErrorComponent);
 
         config.configureCustomObjects(this.customComponentCaches[ViewType.Object]);
         config.configureCustomLists(this.customComponentCaches[ViewType.List]);
+        config.configureCustomErrors(this.customComponentCaches[ViewType.Error]);
     }
 
     private readonly customComponentCaches: CustomComponentCache[] = [];
 
-    getCustomComponent(domainType: string, viewType: ViewType.Object | ViewType.List) {
+    getCustomComponent(domainType: string, viewType: ViewType.Object | ViewType.List | ViewType.Error) {
         return this.customComponentCaches[viewType].getResult(domainType);
     }
 }

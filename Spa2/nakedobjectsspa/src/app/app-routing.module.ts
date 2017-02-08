@@ -8,8 +8,9 @@ import { ApplicationPropertiesComponent } from './application-properties/applica
 import { AttachmentComponent } from './attachment/attachment.component';
 import { MultiLineDialogComponent } from './multi-line-dialog/multi-line-dialog.component';
 import { DynamicObjectComponent } from './dynamic-object/dynamic-object.component';
-import { ICustomActivatedRouteData, ViewType} from './route-data';
-import { DynamicListComponent} from './dynamic-list/dynamic-list.component';
+import { ICustomActivatedRouteData, ViewType } from './route-data';
+import { DynamicListComponent } from './dynamic-list/dynamic-list.component';
+import { DynamicErrorComponent } from './dynamic-error/dynamic-error.component';
 const routes: Routes = [
     {
         path: '',
@@ -31,7 +32,7 @@ const routes: Routes = [
     {
         path: 'gemini/object',
         component: DynamicObjectComponent,
-        data: { pane: 1, paneType: "single", dynamicType : ViewType.Object },
+        data: { pane: 1, paneType: "single", dynamicType: ViewType.Object },
         children: [
             { path: "home", component: HomeComponent, data: { pane: 2, paneType: "split" } },
             { path: "object", component: DynamicObjectComponent, data: { pane: 2, paneType: "split" } },
@@ -78,7 +79,7 @@ const routes: Routes = [
     },
     {
         path: 'gemini/error',
-        component: ErrorComponent,
+        component: DynamicErrorComponent,
         data: { pane: 1, paneType: "single" }
     },
     {
