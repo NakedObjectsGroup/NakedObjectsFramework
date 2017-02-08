@@ -4,14 +4,12 @@ import { UrlManagerService } from '../url-manager.service';
 import { ContextService } from '../context.service';
 import { ErrorService } from '../error.service';
 import { ViewModelFactoryService } from '../view-model-factory.service';
-import { ColorService } from '../color.service';
 import { RouteData, PaneRouteData } from '../route-data';
 import { LinkViewModel } from '../view-models/link-view-model';
 import { MenusViewModel } from '../view-models/menus-view-model';
 import { MenuViewModel } from '../view-models/menu-view-model';
 import { PaneComponent } from '../pane/pane';
 import * as Models from '../models';
-import * as Configservice from '../config.service';
 
 @Component({
     selector: 'nof-home',
@@ -23,10 +21,8 @@ export class HomeComponent extends PaneComponent {
     constructor(urlManager: UrlManagerService,
         activatedRoute: ActivatedRoute,
         private readonly viewModelFactory: ViewModelFactoryService,
-        private readonly context: ContextService,
-        private readonly error: ErrorService,
-        private readonly colorService: ColorService,
-        private readonly configService : Configservice.ConfigService, 
+        private readonly contextService: ContextService,
+        private readonly errorService: ErrorService,
         private readonly myElement: ElementRef) {
         super(activatedRoute, urlManager);
     }
@@ -46,25 +42,25 @@ export class HomeComponent extends PaneComponent {
     private menus: MenusViewModel;
 
     getMenus(paneRouteData: PaneRouteData) {
-        this.context.getMenus()
+        this.contextService.getMenus()
             .then((menus: Models.MenusRepresentation) => {
                 this.menus = this.viewModelFactory.menusViewModel(menus, paneRouteData);
             })
             .catch((reject: Models.ErrorWrapper) => {
-                this.error.handleError(reject);
+                this.errorService.handleError(reject);
             });
     }
 
     getMenu(paneRouteData: PaneRouteData) {
         const menuId = paneRouteData.menuId;
         if (menuId) {
-            this.context.getMenu(menuId)
+            this.contextService.getMenu(menuId)
                 .then((menu: Models.MenuRepresentation) => {
                     this.selectedMenu = this.viewModelFactory.menuViewModel(menu, paneRouteData);
                     this.selectedDialogId = paneRouteData.dialogId;
                 })
                 .catch((reject: Models.ErrorWrapper) => {
-                    this.error.handleError(reject);
+                    this.errorService.handleError(reject);
                 });
         } else {
             this.selectedMenu = null;

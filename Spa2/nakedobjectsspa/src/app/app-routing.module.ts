@@ -19,77 +19,77 @@ const routes: Routes = [
     {
         path: 'gemini/home',
         component: HomeComponent,
-        data: { pane: 1, class: "single" },
+        data: { pane: 1, paneType: "single" },
         children: [
-            { path: "home", component: HomeComponent, data: { pane: 2, class: "split" } },
-            { path: "object", component: DynamicObjectComponent, data: { pane: 2, class: "split" } },
-            { path: "list", component: DynamicListComponent, data: { pane: 2, class: "split" } },
-            { path: "attachment", component: AttachmentComponent, data: { pane: 2, class: "split" } },
-            { path: "recent", component: RecentComponent, data: { pane: 2, class: "split" } }
+            { path: "home", component: HomeComponent, data: { pane: 2, paneType: "split" } },
+            { path: "object", component: DynamicObjectComponent, data: { pane: 2, paneType: "split" } },
+            { path: "list", component: DynamicListComponent, data: { pane: 2, paneType: "split" } },
+            { path: "attachment", component: AttachmentComponent, data: { pane: 2, paneType: "split" } },
+            { path: "recent", component: RecentComponent, data: { pane: 2, paneType: "split" } }
         ]
     },
     {
         path: 'gemini/object',
         component: DynamicObjectComponent,
-        data: { pane: 1, class: "single", dynamicType : ViewType.Object },
+        data: { pane: 1, paneType: "single", dynamicType : ViewType.Object },
         children: [
-            { path: "home", component: HomeComponent, data: { pane: 2, class: "split" } },
-            { path: "object", component: DynamicObjectComponent, data: { pane: 2, class: "split" } },
-            { path: "list", component: DynamicListComponent, data: { pane: 2, class: "split" } },
-            { path: "attachment", component: AttachmentComponent, data: { pane: 2, class: "split" } },
-            { path: "recent", component: RecentComponent, data: { pane: 2, class: "split" } }
+            { path: "home", component: HomeComponent, data: { pane: 2, paneType: "split" } },
+            { path: "object", component: DynamicObjectComponent, data: { pane: 2, paneType: "split" } },
+            { path: "list", component: DynamicListComponent, data: { pane: 2, paneType: "split" } },
+            { path: "attachment", component: AttachmentComponent, data: { pane: 2, paneType: "split" } },
+            { path: "recent", component: RecentComponent, data: { pane: 2, paneType: "split" } }
         ]
     },
     {
         path: 'gemini/list',
         component: DynamicListComponent,
-        data: { pane: 1, class: "single" },
+        data: { pane: 1, paneType: "single" },
         children: [
-            { path: "home", component: HomeComponent, data: { pane: 2, class: "split" } },
-            { path: "object", component: DynamicObjectComponent, data: { pane: 2, class: "split" } },
-            { path: "list", component: DynamicListComponent, data: { pane: 2, class: "split" } },
-            { path: "attachment", component: AttachmentComponent, data: { pane: 2, class: "split" } },
-            { path: "recent", component: RecentComponent, data: { pane: 2, class: "split" } }
+            { path: "home", component: HomeComponent, data: { pane: 2, paneType: "split" } },
+            { path: "object", component: DynamicObjectComponent, data: { pane: 2, paneType: "split" } },
+            { path: "list", component: DynamicListComponent, data: { pane: 2, paneType: "split" } },
+            { path: "attachment", component: AttachmentComponent, data: { pane: 2, paneType: "split" } },
+            { path: "recent", component: RecentComponent, data: { pane: 2, paneType: "split" } }
         ]
     },
     {
         path: 'gemini/attachment',
         component: AttachmentComponent,
-        data: { pane: 1, class: "single" },
+        data: { pane: 1, paneType: "single" },
         children: [
-            { path: "home", component: HomeComponent, data: { pane: 2, class: "split" } },
-            { path: "object", component: DynamicObjectComponent, data: { pane: 2, class: "split" } },
-            { path: "list", component: DynamicListComponent, data: { pane: 2, class: "split" } },
-            { path: "attachment", component: AttachmentComponent, data: { pane: 2, class: "split" } },
-            { path: "recent", component: RecentComponent, data: { pane: 2, class: "split" } }
+            { path: "home", component: HomeComponent, data: { pane: 2, paneType: "split" } },
+            { path: "object", component: DynamicObjectComponent, data: { pane: 2, paneType: "split" } },
+            { path: "list", component: DynamicListComponent, data: { pane: 2, paneType: "split" } },
+            { path: "attachment", component: AttachmentComponent, data: { pane: 2, paneType: "split" } },
+            { path: "recent", component: RecentComponent, data: { pane: 2, paneType: "split" } }
         ]
     },
     {
         path: 'gemini/recent',
         component: RecentComponent,
-        data: { pane: 1, class: "single" },
+        data: { pane: 1, paneType: "single" },
         children: [
-            { path: "home", component: HomeComponent, data: { pane: 2, class: "split" } },
-            { path: "object", component: DynamicObjectComponent, data: { pane: 2, class: "split" } },
-            { path: "list", component: DynamicListComponent, data: { pane: 2, class: "split" } },
-            { path: "attachment", component: AttachmentComponent, data: { pane: 2, class: "split" } },
-            { path: "recent", component: RecentComponent, data: { pane: 2, class: "split" } }
+            { path: "home", component: HomeComponent, data: { pane: 2, paneType: "split" } },
+            { path: "object", component: DynamicObjectComponent, data: { pane: 2, paneType: "split" } },
+            { path: "list", component: DynamicListComponent, data: { pane: 2, paneType: "split" } },
+            { path: "attachment", component: AttachmentComponent, data: { pane: 2, paneType: "split" } },
+            { path: "recent", component: RecentComponent, data: { pane: 2, paneType: "split" } }
         ]
     },
     {
         path: 'gemini/error',
         component: ErrorComponent,
-        data: { pane: 1, class: "single" }
+        data: { pane: 1, paneType: "single" }
     },
     {
         path: 'gemini/applicationProperties',
         component: ApplicationPropertiesComponent,
-        data: { pane: 1, class: "single" }
+        data: { pane: 1, paneType: "single" }
     },
     {
         path: 'gemini/multiLineDialog',
         component: MultiLineDialogComponent,
-        data: { pane: 1, class: "single" }
+        data: { pane: 1, paneType: "single" }
     },
     {
         path: '**',

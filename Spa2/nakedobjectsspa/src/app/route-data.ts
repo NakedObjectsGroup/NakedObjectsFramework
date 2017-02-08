@@ -3,9 +3,12 @@ import * as _ from 'lodash';
 import { ConfigService } from './config.service';
 import { LoggerService } from './logger.service';
 
+export type PaneName = "pane1" | "pane2";
+export type PaneType = "single" | "split";
+
 export interface ICustomActivatedRouteData {
     pane: number;
-    class: string;
+    paneType: PaneType;
     dynamicType?: ViewType.Object | ViewType.List;
 }
 

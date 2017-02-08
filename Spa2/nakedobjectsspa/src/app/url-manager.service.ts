@@ -74,7 +74,7 @@ export class UrlManagerService {
     private readonly urlShortCuts: string[];
     private readonly keySeparator: string;
 
-    private capturedPanes = [] as ({ paneType: string; search: Object } | null)[];
+    private capturedPanes = [] as ({ paneType: Constants.PathSegment; search: Object } | null)[];
 
     private currentPaneId = 1;
 
@@ -164,16 +164,6 @@ export class UrlManagerService {
             const u = this.router.serializeUrl(tree);
             this.location.replaceState(u);
         }
-
-        // todo - should we do this 
-        //this.router.navigateByUrl(tree).then(ok => {
-        //    if (ok && result.replace) {
-        //        const u = this.router.serializeUrl(tree);
-        //        this.location.replaceState(u);
-        //    }
-        //}).catch(() => {
-        //    this.setError(Models.ErrorCategory.ClientError);
-        //});
     }
 
     private getIds(typeOfId: string, paneId: number) {
@@ -267,7 +257,7 @@ export class UrlManagerService {
         return paneType === Constants.multiLineDialogPath;
     }
 
-    private setupPaneNumberAndTypes(pane: number, newPaneType: string, newMode?: ApplicationMode): { path: string, replace: boolean } {
+    private setupPaneNumberAndTypes(pane: number, newPaneType: Constants.PathSegment, newMode?: ApplicationMode): { path: string, replace: boolean } {
 
         const path = this.getPath();
         const segments = path.split("/");
@@ -777,7 +767,7 @@ export class UrlManagerService {
         const path = this.getPath();
         const segments = path.split("/");
 
-        const paneType = segments[paneId + 1] || Constants.homePath;
+        const paneType = <Constants.PathSegment>segments[paneId + 1] || Constants.homePath;
         let paneSearch = this.capturePane(paneId);
 
         // clear any dialogs so we don't return  to a dialog
@@ -918,6 +908,7 @@ export class UrlManagerService {
     }
 
     reload = () => {
+        // todo 
         //$window.location.reload(true);
     }
 

@@ -1,27 +1,21 @@
 ﻿import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
-import { RouteData, PaneRouteData, ICustomActivatedRouteData } from '../route-data';
+import { RouteData, PaneRouteData, ICustomActivatedRouteData, PaneType, PaneName } from '../route-data';
 import { UrlManagerService } from '../url-manager.service';
-
-// todo make pane transitions smoother 
 
 export abstract class PaneComponent implements OnInit, OnDestroy {
 
     protected constructor(
         protected readonly activatedRoute: ActivatedRoute,
         protected readonly  urlManager: UrlManagerService
-    ) {
-    }
+    ) { }
 
     // pane API
     paneId: number;
-    paneType: string;
+    paneType: PaneType;
+    paneIdName : PaneName; 
     arData : ICustomActivatedRouteData;
-
-    // todo make constants 
-    // todo init in ngOnInit and make property not function 
-    paneIdName = () => this.paneId === 1 ? "pane1" : "pane2";
 
     onChild() {
         this.paneType = "split";
@@ -41,7 +35,8 @@ export abstract class PaneComponent implements OnInit, OnDestroy {
         this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: ICustomActivatedRouteData) => {
             this.arData = data;
             this.paneId = data.pane;
-            this.paneType = data.class;
+            this.paneType = data.paneType;
+            this.paneIdName = this.paneId === 1 ? "pane1" : "pane2";
 
             if (!this.paneRouteDataSub) {
                 this.paneRouteDataSub =

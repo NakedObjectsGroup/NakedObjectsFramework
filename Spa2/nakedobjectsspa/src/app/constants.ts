@@ -17,16 +17,21 @@ export function getSvrPath() {
 
 // routing constants 
 
-export const geminiPath = "gemini";
-export const ciceroPath = "cicero";
-export const homePath = "home";
-export const objectPath = "object";
-export const listPath = "list";
-export const errorPath = "error";
-export const recentPath = "recent";
-export const attachmentPath = "attachment";
-export const applicationPropertiesPath = "applicationProperties";
-export const multiLineDialogPath = "multiLineDialog";
+export const geminiPath: ModePathSegment = "gemini";
+export const ciceroPath: ModePathSegment = "cicero";
+
+export type ModePathSegment = "gemini" | "cicero"
+
+export const homePath: PathSegment = "home";
+export const objectPath: PathSegment = "object";
+export const listPath: PathSegment = "list";
+export const errorPath: PathSegment = "error";
+export const recentPath: PathSegment = "recent";
+export const attachmentPath: PathSegment = "attachment";
+export const applicationPropertiesPath: PathSegment = "applicationProperties";
+export const multiLineDialogPath: PathSegment = "multiLineDialog";
+
+export type PathSegment = "home" | "object" | "list" | "error" | "recent" | "attachment" | "applicationProperties" | "multiLineDialog";
 
 //Restful Objects constants
 export const roDomainType = "x-ro-domain-type";
@@ -44,12 +49,3 @@ export const nofMessages = "x-ro-nof-messages";
 
 
 export const supportedDateFormats = ["D/M/YYYY", "D/M/YY", "D MMM YYYY", "D MMMM YYYY", "D MMM YY", "D MMMM YY"];
-
-// events 
-export const geminiFocusEvent = "nof-focus-on";
-export const geminiLogoffEvent = "nof-logoff";
-export const geminiPaneSwapEvent = "nof-pane-swap";
-export const geminiConcurrencyEvent = "nof-concurrency";
-export const geminiAjaxChangeEvent = "nof-ajax-change";
-export const geminiWarningEvent = "nof-warning";
-export const geminiMessageEvent = "nof-message";

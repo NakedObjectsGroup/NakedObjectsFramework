@@ -8,7 +8,7 @@ import { UrlManagerService } from '../url-manager.service';
 import { PaneComponent } from '../pane/pane';
 import { Type } from '@angular/core/src/type';
 import * as Models from '../models';
-import * as Configservice from '../config.service';
+import { ConfigService } from '../config.service';
 
 @Component({
     selector: 'nof-dynamic-object',
@@ -25,7 +25,7 @@ export class DynamicObjectComponent extends PaneComponent {
         urlManager: UrlManagerService,
         private readonly componentFactoryResolver: ComponentFactoryResolver,
         private readonly customComponentService: CustomComponentService,
-        private readonly configService: Configservice.ConfigService) {
+        private readonly configService: ConfigService) {
         super(activatedRoute, urlManager);
     }
 

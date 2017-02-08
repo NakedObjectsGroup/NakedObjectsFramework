@@ -31,6 +31,7 @@ import { DomainObjectViewModel } from './view-models/domain-object-view-model';
 import { MultiLineDialogViewModel } from './view-models/multi-line-dialog-view-model';
 import { ConfigService } from './config.service';
 import { LoggerService } from './logger.service';
+import { ApplicationPropertiesViewModel} from './view-models/application-properties-view-model';
 
 @Injectable()
 export class ViewModelFactoryService {
@@ -169,6 +170,8 @@ export class ViewModelFactoryService {
         return new TableRowViewModel(this, properties, paneId, title);
     }
 
+    applicationPropertiesViewModel = () => new ApplicationPropertiesViewModel(this.context, this.error, this.configService);
+
     getItems = (links: Models.Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: ListViewModel | CollectionViewModel) => {
 
         const collection = listViewModel instanceof CollectionViewModel ? listViewModel : null;
@@ -242,4 +245,5 @@ export class ViewModelFactoryService {
     //private logoff() {
     //    cvm = null;
     //}
+    
 }
