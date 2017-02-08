@@ -29,7 +29,6 @@ export class ListViewModel extends ContributedActionParentViewModel {
         public routeData: PaneRouteData
     ) {
         super(context, viewModelFactory, urlManager, error, routeData.paneId);
-        this.pluralName = "Objects";   // todo fix constant string
         this.reset(list, routeData);
         const actions = this.listRep.actionMembers();
         this.setActions(actions, routeData);
@@ -43,7 +42,6 @@ export class ListViewModel extends ContributedActionParentViewModel {
     id: string;
     listRep: Models.ListRepresentation;
     size: number;
-    readonly pluralName: string;
     header: string[] | null;
     actions: ActionViewModel[];
     menuItems: MenuItemViewModel[];
