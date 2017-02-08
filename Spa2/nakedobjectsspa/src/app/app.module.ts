@@ -32,7 +32,6 @@ import { RepLoaderService } from './rep-loader.service';
 import { ViewModelFactoryService } from './view-model-factory.service';
 import { ColorService } from './color.service';
 import { MaskService } from './mask.service';
-import { MaskConfigService } from './mask-config.service';
 import { CollectionComponent } from './collection/collection.component';
 import { DndModule } from 'ng2-dnd';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -107,7 +106,6 @@ import { AttachmentPropertyComponent } from './attachment-property/attachment-pr
         ColorService,
         ErrorService,
         MaskService,
-        MaskConfigService,
         CustomComponentService,
         CustomComponentConfigService,
         LoggerService,

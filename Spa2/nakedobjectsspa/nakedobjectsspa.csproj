@@ -141,7 +141,6 @@
     <TypeScriptCompile Include="src\app\index.ts" />
     <TypeScriptCompile Include="src\app\list\list.component.ts" />
     <TypeScriptCompile Include="src\app\logger.service.ts" />
-    <TypeScriptCompile Include="src\app\mask-config.service.ts" />
     <TypeScriptCompile Include="src\app\mask.service.ts" />
     <TypeScriptCompile Include="src\app\menus\menus.component.ts" />
     <TypeScriptCompile Include="src\app\menu\menu.component.ts" />

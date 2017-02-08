@@ -1,6 +1,7 @@
 ﻿import { Inject, Injectable } from '@angular/core';
-import { Http , RequestOptionsArgs, RequestOptions} from '@angular/http';
+import { Http, RequestOptionsArgs, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
+import * as Ro from './ro-interfaces';
 
 export interface IAppConfig {
     appPath: string;
@@ -22,7 +23,7 @@ export interface IAppConfig {
     autoLoadDirty: boolean;
     showDirtyFlag: boolean;
 
-    defaultLocale : string;
+    defaultLocale: string;
 
     // caching constants: do not change unless you know what you're doing 
     httpCacheDepth: number;
@@ -36,18 +37,48 @@ export interface IAppConfig {
     // flag for configurable home button behaviour
     leftClickHomeAlwaysGoesToSinglePane: boolean;
 
-    logLevel : "error" | "warn" | "info" | "debug" | "none";
+    logLevel: "error" | "warn" | "info" | "debug" | "none";
 
-    // optional colors for simple color config 
+    // color set by first matching rule in order type, regex, subtype, default (faster to slower) 
     colors?: {
-        typeMap? : {
+        typeMap?: {
             [index: string]: number;
         },
-        regexArray?: {regex : RegExp, color : number}[],
+        regexArray?: { regex: RegExp, color: number }[],
         subtypeMap?: {
             [index: string]: number;
         },
         default?: number;
+    }
+
+    //Note: "D" is the default mask for anything sent to the client as a date+time,
+    //where no other mask is specified.
+    //This mask deliberately does not specify the timezone as "+0000", unlike the other masks,
+    //with the result that the date+time will be transformed to the timezone of the client.
+    masks?: {
+        currencyMasks?: {
+            [index: string]: {
+                format: Ro.formatType;
+                symbol: string;
+                digits: string;
+                locale: string;
+            }
+        }
+        dateMasks?: {
+            [index: string]: {
+                format: Ro.formatType;
+                mask: string;
+                tz: string;
+                locale: string;
+            }
+        }
+        numberMasks?: {
+            [index: string]: {
+                format: Ro.formatType;
+                fractionSize: number;
+                locale: string;
+            }
+        }
     }
 }
 
@@ -67,7 +98,7 @@ export class ConfigService {
         appPath: "",
         logoffUrl: "",
         postLogoffUrl: "/gemini/home",
-        defaultPageSize: 20, 
+        defaultPageSize: 20,
         listCacheSize: 5,
         shortCutMarker: "___",
         urlShortCuts: [],
@@ -79,18 +110,18 @@ export class ConfigService {
         defaultLocale: "en-GB",
         httpCacheDepth: 50,
         transientCacheDepth: 4,
-        recentCacheDepth: 20, 
+        recentCacheDepth: 20,
         doUrlValidation: false,
         leftClickHomeAlwaysGoesToSinglePane: true,
-        logLevel : "error"
+        logLevel: "error"
     }
 
     constructor(private readonly http: Http) {
 
     }
 
-    get config() {      
-        return this.appConfig;      
+    get config() {
+        return this.appConfig;
     }
 
     set config(newConfig: IAppConfig) {

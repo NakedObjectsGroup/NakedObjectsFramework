@@ -28,5 +28,35 @@
         },
         "default": 0
     },
+    "masks": {
+        "currencyMasks": {
+            "C": {
+                "format": "decimal",
+                "symbol": "GBP",
+                "digits": "1.2-2"
+            },
+            "c": {
+                "format": "decimal",
+                "symbol": "GBP",
+                "digits": "1.2-2"
+            }
+        },
+        "dateMasks?": {
+            "d": {
+                "format": "date-time",
+                "mask": "d MMM yyyy",
+                "tz": "+0000"
+            },
+            "D": {
+                "format": "date",
+                "mask": "d MMM yyyy hh:mm:ss"
+            },
+            "T": {
+                "format": "time",
+                "mask": "HH:mm",
+                "tz": "+0000"
+            }
+        }
+    },
     "logLevel": "debug"
 }
