@@ -11,6 +11,7 @@ import { MenusViewModel } from '../view-models/menus-view-model';
 import { MenuViewModel } from '../view-models/menu-view-model';
 import { PaneComponent } from '../pane/pane';
 import * as Models from '../models';
+import * as Configservice from '../config.service';
 
 @Component({
     selector: 'nof-home',
@@ -24,7 +25,8 @@ export class HomeComponent extends PaneComponent {
         private readonly viewModelFactory: ViewModelFactoryService,
         private readonly context: ContextService,
         private readonly error: ErrorService,
-        private readonly color: ColorService,
+        private readonly colorService: ColorService,
+        private readonly configService : Configservice.ConfigService, 
         private readonly myElement: ElementRef) {
         super(activatedRoute, urlManager);
     }

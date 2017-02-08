@@ -41,6 +41,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         private readonly formBuilder: FormBuilder,
         private readonly configService: ConfigService
     ) {
+        this.pendingColor = `${configService.config.objectColor}${this.colorService.getDefault()}`;
     }
 
     // template API 
@@ -61,13 +62,12 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         return obj ? obj.friendlyName : "";
     }
 
-    // todo move to config 
-    private backgroundColor = "object-color0";
+    // used to smooth transition before object set 
+    private pendingColor = "object-color0";
 
     get color() {
-        const obj = this.object;
-        
-        return obj ? obj.color : this.backgroundColor;
+        const obj = this.object;      
+        return obj ? obj.color : this.pendingColor;
     }
 
     get properties() {
@@ -288,8 +288,8 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (isChanging || modeChanging || wasDirty) {
 
-            // set background color at once to smooth transition
-            this.colorService.toColorNumberFromType(oid.domainType).then(c => this.backgroundColor = `${this.configService.config.objectColor}${c}`);
+            // set pendingColor at once to smooth transition
+            this.colorService.toColorNumberFromType(oid.domainType).then(c => this.pendingColor = `${this.configService.config.objectColor}${c}`);
 
             this.context.getObject(routeData.paneId, oid, routeData.interactionMode)
                 .then((object: Models.DomainObjectRepresentation) => {

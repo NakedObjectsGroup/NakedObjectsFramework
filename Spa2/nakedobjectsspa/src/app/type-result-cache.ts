@@ -8,7 +8,7 @@ export abstract class TypeResultCache<T> {
     private readonly regexCache: { regex: RegExp, result: T }[] = [];
     private readonly subtypeCache: { type: string, result: T }[] = [];
 
-    private default: T;
+    protected default: T;
 
     addType(type: string, result: T) {
         this.resultCache[type] = result;

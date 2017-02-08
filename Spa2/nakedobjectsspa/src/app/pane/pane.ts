@@ -19,11 +19,9 @@ export abstract class PaneComponent implements OnInit, OnDestroy {
     paneType: string;
     arData : ICustomActivatedRouteData;
 
+    // todo make constants 
     // todo init in ngOnInit and make property not function 
     paneIdName = () => this.paneId === 1 ? "pane1" : "pane2";
-
-    // todo constants for strings ! 
-    backgroundColor = "object-color0";
 
     onChild() {
         this.paneType = "split";

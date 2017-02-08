@@ -71,6 +71,10 @@ export class ColorService extends TypeResultCache<number> implements IColorServi
         this.setServiceConfigured();
     }
 
+    getDefault() : number {
+        return this.default;
+    }
+
     configureFromBasicConfig(): void {
         const basicConfig = this.configService.config.colors;
 

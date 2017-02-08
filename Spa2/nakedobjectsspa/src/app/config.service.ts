@@ -43,7 +43,7 @@ export interface IAppConfig {
         map : {
             [index: string]: number;
         },
-        default : number;
+        default: number;
     }
 }
 
