@@ -455,7 +455,7 @@ namespace NakedObjects.Selenium {
         }
 
         protected IWebElement SaveVMButton(Pane pane = Pane.Single) {
-            return GetButton("Save", pane);
+            return GetInputButton("Save", pane);
         }
 
         protected IWebElement SaveAndCloseButton(Pane pane = Pane.Single) {

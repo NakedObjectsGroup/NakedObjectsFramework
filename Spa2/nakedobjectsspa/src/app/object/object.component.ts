@@ -24,6 +24,7 @@ import { ISubscription } from 'rxjs/Subscription';
 import * as Msg from '../user-messages';
 import * as Helpers from '../view-models/helpers-view-models';
 
+
 @Component({
     selector: 'nof-object',
     templateUrl: './object.component.html',
@@ -220,6 +221,8 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         accesskey: null
     }
 
+    private actionButtons : IButton[]; 
+
     get buttons() {
         if (this.mode === InteractionMode.View) {
             return [this.actionButton, this.editButton, this.reloadButton];
@@ -231,18 +234,27 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (this.mode === InteractionMode.Form) {
 
-            const menuItems = this.menuItems()!;
-            const actions = _.flatten(_.map(menuItems, (mi: MenuItemViewModel) => mi.actions!));
+            // cache becuase otherwise we will recreate this array of buttons everytime page changes ! 
+            if (!this.actionButtons) {
 
-            return _.map(actions, a => ({
-                value: a.title,
-                doClick: () => a.doInvoke(),
-                doRightClick: () => a.doInvoke(true),
-                show: () => true,
-                disabled: () => a.disabled() ? true : null,
-                title: () => a.description,
-                accesskey: null
-            })) as IButton[];
+                const menuItems = this.menuItems()!;
+                const actions = _.flatten(_.map(menuItems, (mi: MenuItemViewModel) => mi.actions!));
+
+                this.actionButtons = _.map(actions,
+                    a => ({
+                        value: a.title,
+                        doClick: () =>
+                            a.doInvoke(),
+                        doRightClick: () =>
+                            a.doInvoke(true),
+                        show: () => true,
+                        disabled: () => a.disabled() ? true : null,
+                        title: () => a.description,
+                        accesskey: null
+                    })) as IButton[];
+            }
+
+            return this.actionButtons;
         }
 
         return [] as IButton[];
@@ -274,6 +286,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
             // object has changed - clear existing 
             this.object = null;
             this.form = null;
+            this.actionButtons = null; 
         }
 
         const isChanging = !this.object;

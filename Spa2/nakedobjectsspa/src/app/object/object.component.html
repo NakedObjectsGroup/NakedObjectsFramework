@@ -30,14 +30,7 @@
                     <span class="type">{{friendlyName}}</span> {{title()}}
                 </div>
                 <div *ngIf="viewMode === 'Form'">
-                    <div *ngFor="let menu of  menuItems()">
-                        <div *ngFor="let action of actions(menu)">
-                            <div class="action clickable-area" title="{{action.description}}" tabindex="0" geminiClick (leftClick)="action.doInvoke()"
-                                 (rightClick)="action.doInvoke(true)" [attr.disabled]="action.disabled() ? true : null">
-                                {{action.title}}
-                            </div>
-                        </div>
-                    </div>
+                    <nof-buttons [buttons]="buttons"></nof-buttons>
                 </div>
                 <div *ngIf="viewMode === 'Edit' || viewMode === 'Transient'" class="menus">
                     <nof-buttons [buttons]="buttons"></nof-buttons>

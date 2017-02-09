@@ -28,9 +28,7 @@ namespace NakedObjects.Selenium {
             ClearFieldThenType("#subject1", "Test");
             ClearFieldThenType("#message1", "Hello");
 
-            var action = wait.Until(d => d.FindElements(By.CssSelector(".action")).
-                Single(we => we.Text == "Send"));
-            Click(action);
+            Click(GetInputButton("Send"));
             wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(5)")).Text == "Status:\r\nSent");
             Assert.AreEqual("To:", WaitForCss(".property:nth-child(1)").Text);
             var title = WaitForCss(".title");
@@ -49,9 +47,7 @@ namespace NakedObjects.Selenium {
             //leave 3/4 of the optional fields empty
             ClearFieldThenType("#subject1", "Test2");
 
-            var action = wait.Until(d => d.FindElements(By.CssSelector(".action")).
-                Single(we => we.Text == "Send"));
-            Click(action);
+            Click(GetInputButton("Send"));
             wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(5)")).Text == "Status:\r\nSent");
             Assert.AreEqual("To:", WaitForCss(".property:nth-child(1)").Text);
             var title = WaitForCss(".title");
