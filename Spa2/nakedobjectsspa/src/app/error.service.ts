@@ -3,6 +3,7 @@ import { ContextService } from './context.service';
 import * as Models from './models';
 import { Injectable } from '@angular/core';
 import * as Msg from './user-messages';
+import { ConfigService } from './config.service';
 
 type errorPreprocessor = (reject: Models.ErrorWrapper) => void;
 
@@ -11,20 +12,24 @@ export class ErrorService {
 
     constructor(
         private readonly urlManager: UrlManagerService,
-        private readonly context: ContextService
+        private readonly context: ContextService,
+        private readonly configService: ConfigService
     ) {
 
         this.setErrorPreprocessor(reject => {
             if (reject.category === Models.ErrorCategory.HttpClientError && reject.httpErrorCode === Models.HttpStatusCode.PreconditionFailed) {
-                // todo concurrency failure 
-                //$rootScope.$broadcast(geminiConcurrencyEvent, new Models.ErrorMap({}, 0, Msg.concurrencyMessage));
-                reject.handled = true;
+
+                if (reject.originalUrl) {
+                    const oid = Models.ObjectIdWrapper.fromHref(reject.originalUrl, configService.config.keySeparator);
+                    this.context.setConcurrencyError(oid);
+                    reject.handled = true;
+                }
             }
         });
     }
 
     private preProcessors: errorPreprocessor[] = [];
-    
+
     private handleHttpServerError(reject: Models.ErrorWrapper) {
         this.urlManager.setError(Models.ErrorCategory.HttpServerError);
     }
@@ -44,11 +49,11 @@ export class ErrorService {
         this.urlManager.setError(Models.ErrorCategory.ClientError, reject.clientErrorCode);
     }
 
-    handleError (reject: Models.ErrorWrapper)  {
+    handleError(reject: Models.ErrorWrapper) {
         this.handleErrorAndDisplayMessages(reject, () => { });
     };
 
-    handleErrorAndDisplayMessages (reject: Models.ErrorWrapper, displayMessages: (em: Models.ErrorMap) => void)  {
+    handleErrorAndDisplayMessages(reject: Models.ErrorWrapper, displayMessages: (em: Models.ErrorMap) => void) {
         this.preProcessors.forEach(p => p(reject));
 
         if (reject.handled) {
@@ -70,7 +75,7 @@ export class ErrorService {
         }
     };
 
-    setErrorPreprocessor (handler: errorPreprocessor)  {
+    setErrorPreprocessor(handler: errorPreprocessor) {
         this.preProcessors.push(handler);
     };
 }

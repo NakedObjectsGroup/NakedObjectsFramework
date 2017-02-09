@@ -352,6 +352,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
     private activatedRouteDataSub: ISubscription;
     private paneRouteDataSub: ISubscription;
     private lastPaneRouteData: PaneRouteData;
+    private concurrencyErrorSub : ISubscription;
 
     // todo now this is a child investigate reworking so object is passed in from parent 
     ngOnInit(): void {
@@ -370,6 +371,12 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
                         });
             };
         });
+
+        this.concurrencyErrorSub = this.context.concurrencyError$.subscribe(oid => {
+            if (this.object && this.object.domainObject.getOid(this.configService.config.keySeparator).isSame(oid)) {
+                this.object.concurrency();
+            }
+        });
     }
 
     ngOnDestroy(): void {
@@ -378,6 +385,9 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         if (this.paneRouteDataSub) {
             this.paneRouteDataSub.unsubscribe();
+        }
+        if (this.concurrencyErrorSub) {
+            this.concurrencyErrorSub.unsubscribe();
         }
     }
 

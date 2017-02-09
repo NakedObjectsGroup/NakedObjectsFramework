@@ -689,6 +689,14 @@ export class ContextService {
         return this.copiedViewModel;
     }
 
+    private concurrencyErrorSource = new Subject<Models.ObjectIdWrapper>();
+
+    concurrencyError$ = this.concurrencyErrorSource.asObservable();
+
+    setConcurrencyError(oid: Models.ObjectIdWrapper) {
+        this.concurrencyErrorSource.next(oid);
+    }
+
     private invokeActionInternal(invokeMap: Models.InvokeMap, action: Models.IInvokableAction, fromPaneId: number, toPaneId: number, setDirty: () => void, gotoResult = false) {
 
         invokeMap.setUrlParameter(Constants.roInlinePropertyDetails, false);

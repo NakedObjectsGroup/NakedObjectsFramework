@@ -15,6 +15,7 @@ import * as Models from '../models';
 import * as Helpers from './helpers-view-models';
 import * as _ from 'lodash';
 import { ConfigService } from '../config.service';
+import * as Msg from '../user-messages';
 
 export class DomainObjectViewModel extends MessageViewModel {
 
@@ -154,26 +155,25 @@ export class DomainObjectViewModel extends MessageViewModel {
         }
     }
 
-    readonly concurrency = () => {
-        return (event: any, em: Models.ErrorMap) => {
-            this.routeData = this.urlManager.getRouteData().pane(this.onPaneId);
-            this.contextService.getObject(this.onPaneId, this.domainObject.getOid(this.keySeparator), this.routeData.interactionMode)
-                .then((obj: Models.DomainObjectRepresentation) => {
-                    // cleared cached values so all values are from reloaded representation 
-                    this.contextService.clearObjectCachedValues(this.onPaneId);
-                    return this.contextService.reloadObject(this.onPaneId, obj);
-                })
-                .then((reloadedObj: Models.DomainObjectRepresentation) => {
-                    if (this.routeData.dialogId) {
-                        this.urlManager.closeDialogReplaceHistory(this.routeData.dialogId, this.onPaneId);
-                    }
-                    this.reset(reloadedObj, this.routeData, true);
-                    Helpers.handleErrorResponse(em, this, this.properties);
-                })
-                .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
-        };
-    }
-
+    concurrency() {
+        this.routeData = this.urlManager.getRouteData().pane(this.onPaneId);
+        this.contextService.getObject(this.onPaneId, this.domainObject.getOid(this.keySeparator), this.routeData.interactionMode)
+            .then((obj: Models.DomainObjectRepresentation) => {
+                // cleared cached values so all values are from reloaded representation 
+                this.contextService.clearObjectCachedValues(this.onPaneId);
+                return this.contextService.reloadObject(this.onPaneId, obj);
+            })
+            .then((reloadedObj: Models.DomainObjectRepresentation) => {
+                if (this.routeData.dialogId) {
+                    this.urlManager.closeDialogReplaceHistory(this.routeData.dialogId, this.onPaneId);
+                }
+                this.reset(reloadedObj, this.routeData, true);
+                const em = new Models.ErrorMap({}, 0, Msg.concurrencyMessage);
+                Helpers.handleErrorResponse(em, this, this.properties);
+            })
+            .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+    };
+    
     readonly clientValid = () => _.every(this.properties, p => p.clientValid);
 
     readonly tooltip = () => Helpers.tooltip(this, this.properties);

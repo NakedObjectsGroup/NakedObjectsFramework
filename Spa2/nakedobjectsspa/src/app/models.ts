@@ -459,10 +459,14 @@ export enum ClientErrorCode {
 }
 
 export class ErrorWrapper {
-    constructor(rc: ErrorCategory, code: HttpStatusCode | ClientErrorCode, err: string | ErrorMap | ErrorRepresentation) {
-        this.category = rc;
+    constructor(
+        readonly category: ErrorCategory,
+        code: HttpStatusCode | ClientErrorCode,
+        err: string | ErrorMap | ErrorRepresentation,
+        readonly originalUrl?: string
+    ) {
 
-        if (rc === ErrorCategory.ClientError) {
+        if (category === ErrorCategory.ClientError) {
             this.clientErrorCode = code as ClientErrorCode;
             this.errorCode = ClientErrorCode[this.clientErrorCode];
             let description = Msg.errorUnknown;
@@ -489,11 +493,11 @@ export class ErrorWrapper {
             this.title = Msg.errorClient;
         }
 
-        if (rc === ErrorCategory.HttpClientError || rc === ErrorCategory.HttpServerError) {
+        if (category === ErrorCategory.HttpClientError || category === ErrorCategory.HttpServerError) {
             this.httpErrorCode = code as HttpStatusCode;
             this.errorCode = `${HttpStatusCode[this.httpErrorCode]}(${this.httpErrorCode})`;
 
-            this.description = rc === ErrorCategory.HttpServerError
+            this.description = category === ErrorCategory.HttpServerError
                 ? "A software error has occurred on the server"
                 : "An HTTP error code has been received from the server\n" +
                 "You can look up the meaning of this code in the Restful Objects specification.";
@@ -524,7 +528,6 @@ export class ErrorWrapper {
     httpErrorCode: HttpStatusCode;
     clientErrorCode: ClientErrorCode;
 
-    category: ErrorCategory;
     message: string;
     error: ErrorMap | ErrorRepresentation | null;
 

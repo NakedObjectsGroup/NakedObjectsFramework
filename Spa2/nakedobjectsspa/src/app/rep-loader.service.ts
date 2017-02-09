@@ -157,7 +157,7 @@ export class RepLoaderService {
         return Promise.reject(rr);
     }
 
-    private handleError(response: Response) {
+    private handleError(response: Response, originalUrl : string) {
         let category: Models.ErrorCategory;
         let error: Models.ErrorRepresentation | Models.ErrorMap | string;
 
@@ -194,7 +194,7 @@ export class RepLoaderService {
             }
         }
 
-        const rr = new Models.ErrorWrapper(category, response.status as Models.HttpStatusCode, error);
+        const rr = new Models.ErrorWrapper(category, response.status as Models.HttpStatusCode, error, originalUrl);
 
         return Promise.reject(rr);
     }
@@ -212,7 +212,7 @@ export class RepLoaderService {
             .catch((r: Response) => {
                 this.loadingCountSource.next(--(this.loadingCount));
                 r.url = r.url || config.url;
-                return this.handleError(r);
+                return this.handleError(r, config.url);
             });
     }
 
@@ -273,7 +273,7 @@ export class RepLoaderService {
             .catch((r: Response) => {
                 this.loadingCountSource.next(--(this.loadingCount));
                 r.url = r.url || config.url;
-                return this.handleError(r);
+                return this.handleError(r, config.url);
             });
     }
 
@@ -390,7 +390,7 @@ export class RepLoaderService {
             })
             .catch((r: Response) => {
                 r.url = r.url || config.url;
-                return this.handleError(r);
+                return this.handleError(r, config.url);
             });
     }
 
