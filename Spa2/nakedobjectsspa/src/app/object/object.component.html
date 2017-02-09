@@ -25,30 +25,25 @@
 	</div>
 	<div *ngIf="viewMode === 'Edit' || viewMode === 'Transient' || viewMode === 'Form'" class="object edit" [ngClass]="color">
 		<form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
-			<header class="header">
-				<div #ttl class="title"  dnd-draggable [dragEnabled]="true" [dragData]="object" tabindex="0"(keydown)="copy($event)" (keypress)="copy($event)" >
-					 <span class="type">{{friendlyName}}</span> {{title()}}
-				</div>
-				<div *ngIf="viewMode === 'Form'">
-					<div *ngFor="let menu of  menuItems()">
-						<div *ngFor="let action of actions(menu)">
-							<div class="action clickable-area" title="{{action.description}}" tabindex="0" geminiClick (leftClick)="action.doInvoke()"
-								(rightClick)="action.doInvoke(true)" [attr.disabled]="action.disabled() ? true : null">
-								{{action.title}}
-							</div>
-						</div>
-					</div>
-				</div>
-			    <div *ngIf="viewMode === 'Edit' || viewMode === 'Transient'" class="menus">
-                    <!--todo these should be nof-buttons -->
-			        <input type="submit" class="menu action clickable-area" tabindex="0" [disabled]="!form.valid" geminiClick (leftClick)="onSubmit(true)"
-			               title="{{tooltip}}" value="Save"/>
-			        <input *ngIf="unsaved()" type="submit" class="menu action clickable-area" [disabled]="!form.valid" tabindex="0" geminiClick
-			               (leftClick)="onSubmit(false)" title="{{tooltip}}" value="Save & Close"/>
-			        <input type="button" class="menu action clickable-area" tabindex="0" geminiClick (leftClick)="doEditCancel()" value="Cancel">
-			    </div>
-				<div class="messages">{{message()}}</div>
-			</header>
+            <header class="header">
+                <div #ttl class="title" dnd-draggable [dragEnabled]="true" [dragData]="object" tabindex="0" (keydown)="copy($event)" (keypress)="copy($event)">
+                    <span class="type">{{friendlyName}}</span> {{title()}}
+                </div>
+                <div *ngIf="viewMode === 'Form'">
+                    <div *ngFor="let menu of  menuItems()">
+                        <div *ngFor="let action of actions(menu)">
+                            <div class="action clickable-area" title="{{action.description}}" tabindex="0" geminiClick (leftClick)="action.doInvoke()"
+                                 (rightClick)="action.doInvoke(true)" [attr.disabled]="action.disabled() ? true : null">
+                                {{action.title}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="viewMode === 'Edit' || viewMode === 'Transient'" class="menus">
+                    <nof-buttons [buttons]="buttons"></nof-buttons>
+                </div>
+                <div class="messages">{{message()}}</div>
+            </header>
 			<div class="main-column">
 				<nof-properties *ngIf="properties" [properties]="properties" [parent]="object" [form]="form"></nof-properties>
 			</div>

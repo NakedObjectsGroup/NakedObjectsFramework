@@ -197,7 +197,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         value: "Save",
         doClick: () => this.onSubmit(true),
         show: () => true,
-        disabled: () => this.form ? !this.form.valid : true,
+        disabled: () => this.form && !this.form.valid ? true : null,
         title: () => this.tooltip,
         accesskey: null
     }
@@ -206,7 +206,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         value: "Save & Close",
         doClick: () => this.onSubmit(false),
         show: () => this.unsaved(),
-        disabled: () => this.form ? !this.form.valid : true,
+        disabled: () => this.form && !this.form.valid ? true : null,
         title: () => this.tooltip,
         accesskey: null
     }
@@ -225,13 +225,13 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
             return [this.actionButton, this.editButton, this.reloadButton];
         }
 
-        if (this.mode === InteractionMode.Edit) {
+        if (this.mode === InteractionMode.Edit || this.mode === InteractionMode.Transient) {
             return [this.saveButton, this.saveAndCloseButton, this.cancelButton];
         }
 
-        if (this.mode === InteractionMode.Transient || this.mode === InteractionMode.Form) {
+        if (this.mode === InteractionMode.Form) {
 
-            const menuItems = this.menuItems() !;
+            const menuItems = this.menuItems()!;
             const actions = _.flatten(_.map(menuItems, (mi: MenuItemViewModel) => mi.actions!));
 
             return _.map(actions, a => ({
