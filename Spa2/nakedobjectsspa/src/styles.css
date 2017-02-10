@@ -12,20 +12,6 @@
 }
 
 /* Override unwanted defaults */
-div {
-    display: initial; /*This is to override the agent style sheet setting of display-block*/
-}
-
-input {
-    outline: none;
-    border: none;
-}
-
-.clickable-area {
-    /*Fix to make menus/actions/reference properties clickable*/
-    cursor: pointer;
-}
-
 .gemini * {
     /*Specifies that padding & border are added INSIDE the specified width*/
     box-sizing: border-box;

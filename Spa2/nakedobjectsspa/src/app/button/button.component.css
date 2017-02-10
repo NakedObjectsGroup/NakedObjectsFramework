@@ -17,6 +17,8 @@ input {  /*To override user agent style sheet defaults*/
     font-size: 16pt;
     background-color: transparent;
     padding: 5px;
+    outline: none;
+    border: none;
 }
 
  input:hover, input:focus  {
