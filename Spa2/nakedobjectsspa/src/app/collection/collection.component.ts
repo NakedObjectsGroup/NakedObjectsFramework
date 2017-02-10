@@ -6,6 +6,7 @@ import { PropertyViewModel } from '../view-models/property-view-model';
 import { PaneRouteData } from '../route-data';
 import { UrlManagerService } from '../url-manager.service';
 import { ISubscription } from 'rxjs/Subscription';
+import { TableRowColumnViewModel } from '../view-models/table-row-column-view-model'; // needed for declarations compile 
 
 type state = "summary" | "list" | "table";
 

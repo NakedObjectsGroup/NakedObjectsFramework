@@ -21,6 +21,7 @@ import { IButton } from '../button/button.component';
 import { ConfigService } from '../config.service';
 import { LoggerService } from '../logger.service';
 import { ISubscription } from 'rxjs/Subscription';
+import { TableRowColumnViewModel } from '../view-models/table-row-column-view-model';
 import * as Helpers from '../view-models/helpers-view-models';
 
 @Component({

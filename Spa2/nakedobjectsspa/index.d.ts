@@ -1,0 +1,1 @@
+export * from './dist/out-tsc/app/action/action.component';

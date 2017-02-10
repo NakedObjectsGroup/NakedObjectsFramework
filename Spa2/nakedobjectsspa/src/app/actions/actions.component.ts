@@ -1,6 +1,7 @@
 import { Component, Input, ViewChildren, QueryList, ElementRef, AfterViewInit } from '@angular/core';
 import { ActionComponent } from '../action/action.component';
 import { MenuItemViewModel } from '../view-models/menu-item-view-model';
+import { ActionViewModel } from '../view-models/action-view-model'; // needed for declarations compile 
 
 @Component({
     selector: 'nof-actions',

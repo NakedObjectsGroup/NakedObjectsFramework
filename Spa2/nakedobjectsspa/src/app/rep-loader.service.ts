@@ -7,6 +7,7 @@ import * as Ro from './ro-interfaces';
 import * as _ from 'lodash';
 import { Subject } from 'rxjs/Subject';
 import { ConfigService } from './config.service';
+import { Observable } from 'rxjs'; // for declaration compile
 
 type cachableTypes = Ro.IRepresentation | Blob;
 

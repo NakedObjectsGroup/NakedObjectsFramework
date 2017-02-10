@@ -260,10 +260,6 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         return [] as IButton[];
     }
 
-    // todo that we access viewmodel directly in template from this I think is smell that we should have a 
-    // child component here 
-    actions = (item: MenuItemViewModel) => item.actions;
-
     // todo each component should be looking out for it's own changes - make this generic - eg 
     // component can register for changes it's wants to see rather  than this horrible filtering 
     // I'm doing everywhere 

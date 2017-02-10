@@ -9,6 +9,7 @@ import { Subject } from 'rxjs/Subject';
 import { IDraggableViewModel } from './view-models/idraggable-view-model';
 import { ConfigService } from './config.service';
 import { LoggerService } from './logger.service';
+import { Observable } from 'rxjs'; // for declaration compile
 
 enum DirtyState {
     DirtyMustReload,

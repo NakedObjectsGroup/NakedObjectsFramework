@@ -75,7 +75,7 @@ export class ErrorService {
         }
     };
 
-    setErrorPreprocessor(handler: errorPreprocessor) {
+    private setErrorPreprocessor(handler: errorPreprocessor) {
         this.preProcessors.push(handler);
     };
 }

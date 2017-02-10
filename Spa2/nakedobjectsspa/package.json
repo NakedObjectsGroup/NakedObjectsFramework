@@ -1,8 +1,13 @@
 {
-  "name": "nakedobjectsspa",
-  "version": "0.0.0",
-  "license": "MIT",
+  "name": "nakedobjects.spa",
+  "version": "9.0.0-beta.1",
+  "description": "Single Page Application client for a Naked Objects application.",
+  "license": "Apache-2.0",
+  "author": "Richard Pawson <rpawson@nakedobjects.org>",
+  "bugs" : "https://github.com/NakedObjectsGroup/NakedObjectsFramework/issues",
+  "homepage": "https://github.com/NakedObjectsGroup/NakedObjectsFramework",
   "angular-cli": {},
+  "keywords":["rest", "restful", "objects", "naked",  "nakedobjects", "ddd", "domain", "driven", "design", "api"],
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
