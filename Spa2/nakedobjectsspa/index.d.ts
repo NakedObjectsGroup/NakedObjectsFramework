@@ -1,1 +1,1 @@
-export * from './dist/out-tsc/app/action/action.component';
+export * from './lib/app/action/action.component';
