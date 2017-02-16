@@ -51,6 +51,9 @@ import { ConfigService, configFactory, localeFactory } from './config.service';
 import { LoggerService } from './logger.service';
 import { AttachmentPropertyComponent } from './attachment-property/attachment-property.component';
 import { DynamicErrorComponent } from './dynamic-error/dynamic-error.component';
+import { CiceroComponent } from './cicero/cicero.component';
+import {CiceroCommandFactoryService} from './cicero-command-factory.service';
+import {CiceroRendererService} from './cicero-renderer.service';
 
 @NgModule({
     declarations: [
@@ -85,7 +88,8 @@ import { DynamicErrorComponent } from './dynamic-error/dynamic-error.component';
         DynamicObjectComponent,
         DynamicListComponent,
         AttachmentPropertyComponent,
-        DynamicErrorComponent
+        DynamicErrorComponent,
+        CiceroComponent
     ],
     entryComponents: [
         ObjectComponent,
@@ -113,6 +117,8 @@ import { DynamicErrorComponent } from './dynamic-error/dynamic-error.component';
         CustomComponentConfigService,
         LoggerService,
         ConfigService,
+        CiceroCommandFactoryService,
+        CiceroRendererService,
         { provide: ErrorHandler, useClass: GeminiErrorHandler },       
         { provide: APP_INITIALIZER, useFactory: configFactory, deps: [ConfigService], multi: true },
         { provide: LOCALE_ID, useFactory: localeFactory, deps: [ConfigService] }

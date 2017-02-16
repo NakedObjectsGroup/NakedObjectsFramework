@@ -114,5 +114,5 @@ a, .currentcopy {
 
 /*Hide Cicero icon*/
     .icon-speech {
-        display: none;
+        display:    inline-block;
     }

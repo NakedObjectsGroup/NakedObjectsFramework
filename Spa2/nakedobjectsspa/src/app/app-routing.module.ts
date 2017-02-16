@@ -11,6 +11,7 @@ import { DynamicObjectComponent } from './dynamic-object/dynamic-object.componen
 import { ICustomActivatedRouteData, ViewType } from './route-data';
 import { DynamicListComponent } from './dynamic-list/dynamic-list.component';
 import { DynamicErrorComponent } from './dynamic-error/dynamic-error.component';
+import { CiceroComponent} from './cicero/cicero.component';
 const routes: Routes = [
     {
         path: '',
@@ -91,6 +92,11 @@ const routes: Routes = [
         path: 'gemini/multiLineDialog',
         component: MultiLineDialogComponent,
         data: { pane: 1, paneType: "single" }
+    },
+    {
+        path: 'cicero/home',
+        component: CiceroComponent,
+        data: { pane: 1, paneType: "single" },
     },
     {
         path: '**',

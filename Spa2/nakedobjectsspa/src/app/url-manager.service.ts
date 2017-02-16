@@ -854,6 +854,12 @@ export class UrlManagerService {
         this.router.navigateByUrl(newPath);
     }
 
+//TODO  DRY with cicero above
+    gemini = () => {
+        const newPath = `/${Constants.geminiPath}/${this.getPath().split("/")[2]}`;
+        this.router.navigateByUrl(newPath);
+    }
+
     applicationProperties = () => {
         const newPath = `/${Constants.geminiPath}/${Constants.applicationPropertiesPath}`;
         this.router.navigateByUrl(newPath);
