@@ -3,10 +3,10 @@
 # directories
 /bin
 /dist
-!/dist/out-tsc
 /e2e
 /node_modules
 /obj 
+/src
 
 # IDEs and editors
 *.csproj

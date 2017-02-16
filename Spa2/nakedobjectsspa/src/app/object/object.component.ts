@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, OnDestroy, AfterViewInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
-import { RepresentationsService } from '../representations.service';
 import { ActivatedRoute } from '@angular/router';
 import * as Models from '../models';
 import { UrlManagerService } from '../url-manager.service';

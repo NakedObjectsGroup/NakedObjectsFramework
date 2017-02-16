@@ -1,5 +1,4 @@
 import { Component, Input, ViewChildren, QueryList, AfterViewInit, ElementRef } from '@angular/core';
-import { RepresentationsService } from '../representations.service';
 import { UrlManagerService } from '../url-manager.service';
 import { ClickHandlerService } from '../click-handler.service';
 import { ContextService } from '../context.service';

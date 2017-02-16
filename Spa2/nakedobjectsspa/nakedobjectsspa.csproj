@@ -22,7 +22,6 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="index.js" />
     <Content Include="src\app\actions\actions.component.css" />
     <Content Include="src\app\actions\actions.component.html" />
     <Content Include="src\app\action\action.component.css" />
@@ -109,7 +108,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="index.d.ts" />
     <TypeScriptCompile Include="src\app\actions\actions.component.ts" />
     <TypeScriptCompile Include="src\app\action\action.component.ts" />
     <TypeScriptCompile Include="src\app\app-routing.module.ts" />
