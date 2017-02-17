@@ -5,6 +5,9 @@ import { CiceroCommandFactoryService } from '../cicero-command-factory.service';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { CiceroRendererService } from '../cicero-renderer.service';
 import { CiceroViewModel } from '../view-models/cicero-view-model';
+import { ISubscription } from 'rxjs/Subscription';
+import { RouteData, PaneRouteData, ICustomActivatedRouteData, PaneType, PaneName } from '../route-data'; //TODO trim
+import { UrlManagerService } from '../url-manager.service';
 
 @Component({
   selector: 'nof-cicero',
@@ -15,15 +18,55 @@ export class CiceroComponent implements OnInit {
 
   constructor(
     protected commandFactory: CiceroCommandFactoryService,
-    protected renderer: CiceroRendererService) {
-      this.cvm = new CiceroViewModel();
+    protected renderer: CiceroRendererService,
+    protected urlManager: UrlManagerService) {
+    this.cvm = new CiceroViewModel();
   }
 
   ngOnInit() {
+    if (!this.paneRouteDataSub) {
+      this.paneRouteDataSub =
+        this.urlManager.getPaneRouteDataObservable(1)
+          .subscribe((paneRouteData: PaneRouteData) => {
+            if (!paneRouteData.isEqual(this.lastPaneRouteData)) {
+              this.lastPaneRouteData = paneRouteData;
+              switch (paneRouteData.location) {
+                case RtD.ViewType.Home: {
+                   this.renderer.renderHome(this.cvm, paneRouteData);
+                  break;
+                }
+                case RtD.ViewType.Object: {
+                  this.renderer.renderObject(this.cvm, paneRouteData);
+                  break;
+                }
+                case RtD.ViewType.List: {
+                  this.renderer.renderList(this.cvm, paneRouteData);
+                  break;
+                }
+                default: {
+                  this.renderer.renderError(this.cvm);
+                  break;
+                }
+              }
+            }
+          });
+    };
   }
 
 
+  renderObject(routeData: RtD.PaneRouteData): void {
+    
+  }
+  renderList(routeData: RtD.PaneRouteData): void {
+    
+  }
+  renderError(): void {
+    
+  }
 
+
+  private paneRouteDataSub: ISubscription;
+  private lastPaneRouteData: PaneRouteData;
   private inputText: string;
   private outputText: string;
   private message: string | null;
@@ -34,12 +77,10 @@ export class CiceroComponent implements OnInit {
   private clipboard: Ro.DomainObjectRepresentation;
   private previousInput: string;
   private chainedCommands: string[];
-  private cvm: CiceroViewModel; //TODO: set up
+  private cvm: CiceroViewModel;
 
   set inp(newValue: string) {
     this.inputText = newValue;
-
-    //TODO: Act only on the four keys of Enter, up, down, and space (or tab?)
   }
   get inp(): string {
     return this.inputText;
@@ -52,7 +93,7 @@ export class CiceroComponent implements OnInit {
     return this.outputText;
   }
 
-  parseInput(input: string) :void {
+  parseInput(input: string): void {
     this.cvm.input = input;
     this.commandFactory.parseInput(input, this.cvm);
     this.out = this.cvm.message;
@@ -60,7 +101,7 @@ export class CiceroComponent implements OnInit {
 
   selectPreviousInput = () => {
     this.input = this.previousInput;
-  }; 
+  };
   clearInput = () => {
     this.input = null;
   };
@@ -70,19 +111,6 @@ export class CiceroComponent implements OnInit {
   private outputMessageThenClearIt() {
     this.out = this.message;
     this.message = null;
-  }
-
-  renderHome(routeData: RtD.PaneRouteData): void {
-    this.renderer.renderHome(this.cvm, routeData);
-  }
-  renderObject(routeData: RtD.PaneRouteData): void {
-    this.renderer.renderObject(this.cvm, routeData);
-  }
-  renderList(routeData: RtD.PaneRouteData): void {
-    this.renderer.renderList(this.cvm, routeData);
-  }
-  renderError(): void {
-    this.renderer.renderError(this.cvm);
   }
 
   executeNextChainedCommandIfAny() {
