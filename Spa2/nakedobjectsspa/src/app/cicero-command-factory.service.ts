@@ -45,7 +45,7 @@ export class CiceroCommandFactoryService {
         };
 
 
-        parseInput = (input: string, cvm: CiceroViewModel) => {
+        parseInput(input: string, cvm: CiceroViewModel)  {
             //TODO: sort out whether to process CVMs here, or in the execute method  -  is this ALWAYS called first?
             //Also, must not modify the *input* one here
             cvm.chainedCommands = null; //TODO: Maybe not needed if unexecuted commands are cleared down upon error?

@@ -11,38 +11,13 @@ export class CiceroViewModel {
         viewType: ViewType;
     clipboard: Models.DomainObjectRepresentation;
 
-/*
-    parseInput: (input: string) => void;
-    selectPreviousInput = () => {
-        this.input = this.previousInput;
-    };
-    clearInput = () => {
+    clearInput(): void {
         this.input = null;
     };
-    autoComplete: (input: string) => void;
-*/
-    outputMessageThenClearIt() {
+
+    outputMessageThenClearIt() : void {
         this.output = this.message;
         this.message = null;
-    }
-
-/*
-    renderHome: (routeData: PaneRouteData) => void;
-    renderObject: (routeData: PaneRouteData) => void;
-    renderList: (routeData: PaneRouteData) => void;
-    renderError: () => void;
-
-
-    executeNextChainedCommandIfAny: () => void;
-
-    popNextCommand(): string | null {
-        if (this.chainedCommands) {
-            const next = this.chainedCommands[0];
-            this.chainedCommands.splice(0, 1);
-            return next;
-
-        }
-        return null;
     }
 
     clearInputRenderOutputAndAppendAlertIfAny(output: string): void {
@@ -53,5 +28,4 @@ export class CiceroViewModel {
             this.alert = "";
         }
     }
-    */
 }

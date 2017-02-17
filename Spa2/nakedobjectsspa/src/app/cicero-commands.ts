@@ -81,7 +81,7 @@ import * as moment from 'moment';
 
         //Helper methods follow
         protected clearInputAndSetMessage(text: string): void {
-            this.cvm.input = null;
+            this.cvm.clearInput();
             this.cvm.message = text;
             //TODO this.$route.reload();
         }
@@ -968,7 +968,7 @@ import * as moment from 'moment';
         }
 
         doExecute(args: string, chained: boolean): void {
-            this.cvm.input = null; //To catch case where can't go any further forward and hence url does not change.
+            this.cvm.clearInput(); //To catch case where can't go any further forward and hence url does not change.
             this.location.forward();
         };
     }
@@ -1073,7 +1073,7 @@ import * as moment from 'moment';
 
         private openCollection(collection: Ro.CollectionMember): void {
             this.closeAnyOpenCollections();
-            this.cvm.input = null;
+            this.cvm.clearInput();
             this.urlManager.setCollectionMemberState(collection.collectionId(), RtD.CollectionViewState.List);
         }
     }
