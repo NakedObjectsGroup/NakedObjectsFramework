@@ -79,7 +79,7 @@ export class CiceroCommandFactoryService {
                 }
                 command.execute(argString, chained, cvm);
             } catch (e) {
-                cvm.output = e.message;
+                cvm.setOutputSource(e.message);
                 cvm.input = "";
             }
         };
@@ -100,7 +100,7 @@ export class CiceroCommandFactoryService {
                 const earlierChain = input.substr(0, input.length - charsTyped);
                 cvm.input = earlierChain + command.fullCommand + " ";
             } catch (e) {
-                cvm.output = e.message;
+                cvm.setOutputSource(e.message);
             }
         };
 

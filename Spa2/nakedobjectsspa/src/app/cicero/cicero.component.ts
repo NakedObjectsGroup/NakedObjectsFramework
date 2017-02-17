@@ -24,6 +24,12 @@ export class CiceroComponent implements OnInit {
   }
 
   ngOnInit() {
+    //Set up subscriptions to observables on CiceroViewModel
+    //TODO:  Message, and other props?
+    this.cvm.output$.subscribe((op: string) => {
+      this.outputText = op;
+    });
+
     if (!this.paneRouteDataSub) {
       this.paneRouteDataSub =
         this.urlManager.getPaneRouteDataObservable(1)
@@ -32,7 +38,7 @@ export class CiceroComponent implements OnInit {
               this.lastPaneRouteData = paneRouteData;
               switch (paneRouteData.location) {
                 case RtD.ViewType.Home: {
-                   this.renderer.renderHome(this.cvm, paneRouteData);
+                  this.renderer.renderHome(this.cvm, paneRouteData);
                   break;
                 }
                 case RtD.ViewType.Object: {
@@ -53,18 +59,6 @@ export class CiceroComponent implements OnInit {
     };
   }
 
-
-  renderObject(routeData: RtD.PaneRouteData): void {
-    
-  }
-  renderList(routeData: RtD.PaneRouteData): void {
-    
-  }
-  renderError(): void {
-    
-  }
-
-
   private paneRouteDataSub: ISubscription;
   private lastPaneRouteData: PaneRouteData;
   private inputText: string;
@@ -79,24 +73,11 @@ export class CiceroComponent implements OnInit {
   private chainedCommands: string[];
   private cvm: CiceroViewModel;
 
-  set inp(newValue: string) {
-    this.inputText = newValue;
-  }
-  get inp(): string {
-    return this.inputText;
-  }
-
-  set out(newValue: string) {
-    this.outputText = newValue;
-  }
-  get out(): string {
-    return this.outputText;
-  }
-
   parseInput(input: string): void {
     this.cvm.input = input;
     this.commandFactory.parseInput(input, this.cvm);
-    this.out = this.cvm.message;
+    //TODO: check this  -  why not writing straight to output?
+    this.cvm.setOutputSource(this.cvm.message);
   };
 
   selectPreviousInput = () => {
@@ -108,11 +89,6 @@ export class CiceroComponent implements OnInit {
   private autoComplete(input: string) {
     this.commandFactory.autoComplete(input, this.cvm);
   };
-  private outputMessageThenClearIt() {
-    this.out = this.message;
-    this.message = null;
-  }
-
   executeNextChainedCommandIfAny() {
     if (this.chainedCommands && this.chainedCommands.length > 0) {
       const next = this.popNextCommand();
@@ -128,14 +104,5 @@ export class CiceroComponent implements OnInit {
 
     }
     return null;
-  }
-
-  clearInputRenderOutputAndAppendAlertIfAny(output: string): void {
-    this.clearInput();
-    this.out = output;
-    if (this.alert) {
-      this.out += this.alert;
-      this.alert = "";
-    }
   }
 }

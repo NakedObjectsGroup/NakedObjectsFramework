@@ -90,8 +90,9 @@ import * as moment from 'moment';
             this.clearInputAndSetMessage(Msg.mayNotbeChainedMessage(this.fullCommand , rider));
         }
 
+//TODO: Change this  -  must build up output before setting the outputSource, which will result in refresh
         protected appendAsNewLineToOutput(text: string): void {
-            this.cvm.output.concat(`/n${text}`);
+            this.cvm.setOutputSource(`/n${text}`);
         }
 
         checkMatch(matchText: string): void {

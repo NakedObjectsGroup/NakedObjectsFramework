@@ -31,7 +31,7 @@ renderHome (cvm: CiceroViewModel, routeData: PaneRouteData) : void {
                     this.renderOpenMenu(routeData, cvm);
                 } else {
                     cvm.clearInput();
-                    cvm.output = Msg.welcomeMessage;
+                    cvm.setOutputSource(Msg.welcomeMessage);
                 }
             }
         };
@@ -56,7 +56,7 @@ renderHome (cvm: CiceroViewModel, routeData: PaneRouteData) : void {
                     }).catch((reject: Ro.ErrorWrapper) => {
                         //TODO: Is the first test necessary or would this be rendered OK by generic error handling?
                         if (reject.category === Ro.ErrorCategory.ClientError && reject.clientErrorCode === Ro.ClientErrorCode.ExpiredTransient) {
-                            cvm.output = Msg.errorExpiredTransient;
+                            cvm.setOutputSource(Msg.errorExpiredTransient);
                         } else {
                             this.error.handleError(reject);
                         }
@@ -90,7 +90,7 @@ renderHome (cvm: CiceroViewModel, routeData: PaneRouteData) : void {
         renderError = (cvm: CiceroViewModel) => {
             const err = this.context.getError().error as Ro.ErrorRepresentation;
             cvm.clearInput();
-            cvm.output = `Sorry, an application error has occurred. ${err.message()}`;
+            cvm.setOutputSource(`Sorry, an application error has occurred. ${err.message()}`);
         };
 
         private getListDescription(numPages: number, list: Ro.ListRepresentation, count: number) {
