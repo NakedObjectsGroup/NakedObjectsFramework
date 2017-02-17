@@ -66,7 +66,6 @@ export class CiceroComponent implements OnInit {
   private message: string | null;
   private output: string | null;
   private alert = ""; //Alert is appended before the output
-  private input: string | null;
   private viewType: RtD.ViewType;
   private clipboard: Ro.DomainObjectRepresentation;
   private previousInput: string;
@@ -81,13 +80,20 @@ export class CiceroComponent implements OnInit {
   };
 
   selectPreviousInput = () => {
-    this.input = this.previousInput;
+    this.inputText = this.previousInput;
   };
   clearInput = () => {
-    this.input = null;
+    this.inputText = null;
   };
-  private autoComplete(input: string) {
-    this.commandFactory.autoComplete(input, this.cvm);
+
+
+
+  private ifSpaceThenAutoComplete(input: string) {
+    //TODO: recognise tab also?
+    if (input.substring(input.length-1) == " ") {
+     input = input.substr(0, input.length -2);
+     this.commandFactory.autoComplete(input, this.cvm);
+    }
   };
   executeNextChainedCommandIfAny() {
     if (this.chainedCommands && this.chainedCommands.length > 0) {

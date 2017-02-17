@@ -1,17 +1,8 @@
 <div class="cicero">
     <div class="output" aria-live="polite"><pre>{{outputText}}</pre></div>
-    <input #inputField type="text" [ngModel]="inp" 
+    <input #inputField type="text" [ngModel]="inputText" 
      (keyup.enter)="parseInput(inputField.value)"
      (keydown.arrowup)="selectPreviousInput()" 
      (keydown.arrowdown)="clearInput()"
- />
+     />
 </div>
-
-<!--    gemini-enter="cicero.parseInput(cicero.input)"
-    cicero-up="cicero.selectPreviousInput()" 
-    cicero-down="cicero.clearInput()"
-    cicero-space="cicero.autoComplete(cicero.input)" 
-         (keydown) ="ifSpaceAndTabTheAutoComplete" : new method
-    
-    
-    />-->
