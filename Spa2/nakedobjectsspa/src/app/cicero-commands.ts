@@ -1,18 +1,15 @@
 import * as Ro from './models';
 import * as Msg from './user-messages';
 import * as Rend from './cicero-renderer.service';
-import * as constants from './constants';
+import * as Const from './constants';
+import * as RtD from './route-data';
 import {ContextService} from './context.service';
 import {UrlManagerService} from './url-manager.service';
 import {MaskService} from './mask.service';
 import {ErrorService} from './error.service';
 import {CiceroViewModel} from './view-models/cicero-view-model';
-import {InteractionMode} from './route-data';
-import {ViewType} from './route-data';
-import {CollectionViewState} from './route-data';
 import {Location} from '@angular/common';
 import {CiceroCommandFactoryService} from './cicero-command-factory.service';
-import {PaneRouteData} from './route-data';
 import {ConfigService, IAppConfig} from './config.service';
 import * as moment from 'moment';
 
@@ -49,15 +46,12 @@ import * as moment from 'moment';
         helpText: string;
         protected minArguments: number;
         protected maxArguments: number;
-        protected vm: CiceroViewModel;
+        protected cvm: CiceroViewModel;
         protected keySeparator : string;
 
-        //Must be called after construction and before execute is called
-        initialiseWithViewModel(cvm: CiceroViewModel) {
-            this.vm = cvm;
-        }
-
-        execute(argString: string, chained: boolean): void {
+        execute(argString: string, chained: boolean, cvm : CiceroViewModel): void {
+            this.cvm = cvm; 
+            //TODO Create outgoing Vm and copy across values as needed
             if (!this.isAvailableInCurrentContext()) {
                 this.clearInputAndSetMessage(Msg.commandNotAvailable(this.fullCommand));
                 return;
@@ -87,8 +81,8 @@ import * as moment from 'moment';
 
         //Helper methods follow
         protected clearInputAndSetMessage(text: string): void {
-            this.vm.clearInput();
-            this.vm.message = text;
+            this.cvm.input = null;
+            this.cvm.message = text;
             //TODO this.$route.reload();
         }
 
@@ -97,7 +91,7 @@ import * as moment from 'moment';
         }
 
         protected appendAsNewLineToOutput(text: string): void {
-            this.vm.output.concat(`/n${text}`);
+            this.cvm.output.concat(`/n${text}`);
         }
 
         checkMatch(matchText: string): void {
@@ -176,17 +170,17 @@ import * as moment from 'moment';
             return null;
         }
 
-        protected routeData(): PaneRouteData {
+        protected routeData(): RtD.PaneRouteData {
             return this.urlManager.getRouteData().pane1;
         }
 
         //Helpers delegating to RouteData
         protected isHome(): boolean {
-            return this.vm.viewType === ViewType.Home;
+            return this.cvm.viewType === RtD.ViewType.Home;
         }
 
         protected isObject(): boolean {
-            return this.vm.viewType === ViewType.Object;
+            return this.cvm.viewType === RtD.ViewType.Object;
         }
 
         protected getObject(): Promise<Ro.DomainObjectRepresentation> {
@@ -194,7 +188,7 @@ import * as moment from 'moment';
             //TODO: Consider view model & transient modes?
 
             return this.context.getObject(1, oid, this.routeData().interactionMode).then((obj: Ro.DomainObjectRepresentation) => {
-                if (this.routeData().interactionMode === InteractionMode.Edit) {
+                if (this.routeData().interactionMode === RtD.InteractionMode.Edit) {
                     return this.context.getObjectForEdit(1, obj);
                 } else {
                     return obj; //To wrap a known object as a promise
@@ -203,7 +197,7 @@ import * as moment from 'moment';
         }
 
         protected isList(): boolean {
-            return this.vm.viewType === ViewType.List;
+            return this.cvm.viewType === RtD.ViewType.List;
         }
 
         protected getList(): Promise<Ro.ListRepresentation> {
@@ -243,7 +237,7 @@ import * as moment from 'moment';
         protected closeAnyOpenCollections() {
             const open = Rend.openCollectionIds(this.routeData());
             _.forEach(open, id => {
-                this.urlManager.setCollectionMemberState(id, CollectionViewState.Summary);
+                this.urlManager.setCollectionMemberState(id, RtD.CollectionViewState.Summary);
             });
         }
 
@@ -252,15 +246,15 @@ import * as moment from 'moment';
         }
 
         protected isEdit(): boolean {
-            return this.routeData().interactionMode === InteractionMode.Edit;
+            return this.routeData().interactionMode === RtD.InteractionMode.Edit;
         }
 
         protected isForm(): boolean {
-            return this.routeData().interactionMode === InteractionMode.Form;
+            return this.routeData().interactionMode === RtD.InteractionMode.Form;
         }
 
         protected isTransient(): boolean {
-            return this.routeData().interactionMode === InteractionMode.Transient;
+            return this.routeData().interactionMode === RtD.InteractionMode.Transient;
         }
 
         protected matchingProperties(
@@ -573,7 +567,7 @@ import * as moment from 'moment';
 
         doExecute(args: string, chained: boolean): void {
             if (this.isEdit()) {
-                this.urlManager.setInteractionMode(InteractionMode.View);
+                this.urlManager.setInteractionMode(RtD.InteractionMode.View);
             }
             if (this.isDialog()) {
                 this.urlManager.closeDialogReplaceHistory(""); //TODO provide ID
@@ -615,15 +609,15 @@ import * as moment from 'moment';
             }
             this.getObject().
                 then(obj => {
-                    this.vm.clipboard = obj;
+                    this.cvm.clipboard = obj;
                     this.show();
                 }).
                 catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
         }
 
         private show(): void {
-            if (this.vm.clipboard) {
-                const label = Ro.typePlusTitle(this.vm.clipboard);
+            if (this.cvm.clipboard) {
+                const label = Ro.typePlusTitle(this.cvm.clipboard);
                 this.clearInputAndSetMessage(Msg.clipboardContents(label));
             } else {
                 this.clearInputAndSetMessage(Msg.clipboardEmpty);
@@ -631,7 +625,7 @@ import * as moment from 'moment';
         }
 
         private go(): void {
-            const link = this.vm.clipboard.selfLink();
+            const link = this.cvm.clipboard.selfLink();
             if (link) {
                 this.urlManager.setItem(link);
             } else {
@@ -640,7 +634,7 @@ import * as moment from 'moment';
         }
 
         private discard(): void {
-            this.vm.clipboard = null;
+            this.cvm.clipboard = null;
             this.show();
         }
     }
@@ -662,7 +656,7 @@ import * as moment from 'moment';
                 return;
             }
             this.context.clearObjectCachedValues();
-            this.urlManager.setInteractionMode(InteractionMode.Edit);
+            this.urlManager.setInteractionMode(RtD.InteractionMode.Edit);
         };
     }
 
@@ -807,7 +801,7 @@ import * as moment from 'moment';
                 let value: Ro.Value = new Ro.Value(fieldEntry);
                 //TODO: handle a non-parsable date
                 if (Ro.isDateOrDateTime(field)) {
-                    const m = moment(fieldEntry, constants.supportedDateFormats, "en-GB", true); //TODO get actual locale
+                    const m = moment(fieldEntry, Const.supportedDateFormats, "en-GB", true); //TODO get actual locale
 
                     if (m.isValid()) {
                         const dt = m.toDate();
@@ -845,7 +839,7 @@ import * as moment from 'moment';
         }
 
         private handleClipboard(field: Ro.IField): void {
-            const ref = this.vm.clipboard;
+            const ref = this.cvm.clipboard;
             if (!ref) {
                 this.clearInputAndSetMessage(Msg.emptyClipboard);
                 return;
@@ -855,7 +849,7 @@ import * as moment from 'moment';
             this.context.isSubTypeOf(refType, paramType).
                 then(isSubType => {
                     if (isSubType) {
-                        const obj = this.vm.clipboard;
+                        const obj = this.cvm.clipboard;
                         const selfLink = obj.selfLink();
                         //Need to add a title to the SelfLink as not there by default
                         selfLink.setTitle(obj.title());
@@ -974,7 +968,7 @@ import * as moment from 'moment';
         }
 
         doExecute(args: string, chained: boolean): void {
-            this.vm.clearInput(); //To catch case where can't go any further forward and hence url does not change.
+            this.cvm.input = null; //To catch case where can't go any further forward and hence url does not change.
             this.location.forward();
         };
     }
@@ -1031,7 +1025,7 @@ import * as moment from 'moment';
                             const openCollIds = Rend.openCollectionIds(this.routeData());
                             const coll = obj.collectionMember(openCollIds[0]);
                             //Safe to assume always a List (Cicero doesn't support tables as such & must be open)
-                            this.context.getCollectionDetails(coll, CollectionViewState.List, false).
+                            this.context.getCollectionDetails(coll, RtD.CollectionViewState.List, false).
                                 then(details => this.attemptGotoLinkNumber(itemNo, details.value())).
                                 catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
                         } else {
@@ -1079,8 +1073,8 @@ import * as moment from 'moment';
 
         private openCollection(collection: Ro.CollectionMember): void {
             this.closeAnyOpenCollections();
-            this.vm.clearInput();
-            this.urlManager.setCollectionMemberState(collection.collectionId(), CollectionViewState.List);
+            this.cvm.input = null;
+            this.urlManager.setCollectionMemberState(collection.collectionId(), RtD.CollectionViewState.List);
         }
     }
 
@@ -1187,11 +1181,11 @@ import * as moment from 'moment';
                             // by reject below
                             const warnings = result.extensions().warnings();
                             if (warnings) {
-                                _.forEach(warnings, w => this.vm.alert += `\nWarning: ${w}`);
+                                _.forEach(warnings, w => this.cvm.alert += `\nWarning: ${w}`);
                             }
                             const messages = result.extensions().messages();
                             if (messages) {
-                                _.forEach(messages, m => this.vm.alert += `\n${m}`);
+                                _.forEach(messages, m => this.cvm.alert += `\n${m}`);
                             }
                             this.urlManager.closeDialogReplaceHistory(""); //TODO provide Id
                         }).
@@ -1260,7 +1254,7 @@ import * as moment from 'moment';
 
         private setPage(page : number) {
             const pageSize = this.routeData().pageSize;
-            this.urlManager.setListPaging(page, pageSize, CollectionViewState.List);
+            this.urlManager.setListPaging(page, pageSize, RtD.CollectionViewState.List);
         }
     }
 
@@ -1351,7 +1345,7 @@ import * as moment from 'moment';
                 const propFriendlyName = (propId: string) => Ro.friendlyNameForProperty(obj, propId);
                 this.handleErrorResponse(err, propFriendlyName);
             } else {
-                this.urlManager.setInteractionMode(InteractionMode.View);
+                this.urlManager.setInteractionMode(RtD.InteractionMode.View);
             }
         }
     }
@@ -1458,7 +1452,7 @@ import * as moment from 'moment';
             if (coll.value()) {
                 this.renderItems(coll, startNo, endNo);
             } else {
-                this.context.getCollectionDetails(coll, CollectionViewState.List, false).
+                this.context.getCollectionDetails(coll, RtD.CollectionViewState.List, false).
                     then(details => this.renderItems(details, startNo, endNo)).
                     catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
             }

@@ -6,10 +6,13 @@ export class CiceroViewModel {
     output: string | null;
     alert = ""; //Alert is appended before the output
     input: string | null;
-    parseInput: (input: string) => void;
     previousInput: string;
     chainedCommands: string[];
+        viewType: ViewType;
+    clipboard: Models.DomainObjectRepresentation;
 
+/*
+    parseInput: (input: string) => void;
     selectPreviousInput = () => {
         this.input = this.previousInput;
     };
@@ -17,18 +20,18 @@ export class CiceroViewModel {
         this.input = null;
     };
     autoComplete: (input: string) => void;
-
+*/
     outputMessageThenClearIt() {
         this.output = this.message;
         this.message = null;
     }
 
+/*
     renderHome: (routeData: PaneRouteData) => void;
     renderObject: (routeData: PaneRouteData) => void;
     renderList: (routeData: PaneRouteData) => void;
     renderError: () => void;
-    viewType: ViewType;
-    clipboard: Models.DomainObjectRepresentation;
+
 
     executeNextChainedCommandIfAny: () => void;
 
@@ -50,4 +53,5 @@ export class CiceroViewModel {
             this.alert = "";
         }
     }
+    */
 }

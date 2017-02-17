@@ -45,17 +45,12 @@ export class CiceroCommandFactoryService {
         };
 
 
-        initialiseCommands = (cvm: CiceroViewModel) => {
-            if (!this.commandsInitialised) {
-                _.forEach(this.commands, command => command.initialiseWithViewModel(cvm));
-                this.commandsInitialised = true;
-            }
-        };
-
         parseInput = (input: string, cvm: CiceroViewModel) => {
+            //TODO: sort out whether to process CVMs here, or in the execute method  -  is this ALWAYS called first?
+            //Also, must not modify the *input* one here
             cvm.chainedCommands = null; //TODO: Maybe not needed if unexecuted commands are cleared down upon error?
             if (!input) { //Special case for hitting Enter with no input
-                this.getCommand("wh").execute(null, false);
+                this.getCommand("wh").execute(null, false, cvm);
                 return;
             }
             this.autoComplete(input, cvm);
@@ -82,7 +77,7 @@ export class CiceroCommandFactoryService {
                 if (index >= 0) {
                     argString = input.substr(index + 1);
                 }
-                command.execute(argString, chained);
+                command.execute(argString, chained, cvm);
             } catch (e) {
                 cvm.output = e.message;
                 cvm.input = "";

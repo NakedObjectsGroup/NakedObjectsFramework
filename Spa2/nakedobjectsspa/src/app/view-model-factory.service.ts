@@ -17,7 +17,6 @@ import { TableRowColumnViewModel } from './view-models/table-row-column-view-mod
 import { TableRowViewModel } from './view-models/table-row-view-model';
 import { CollectionPlaceholderViewModel } from './view-models/collection-placeholder-view-model';
 import { RecentItemsViewModel } from './view-models/recent-items-view-model';
-import { CiceroViewModel } from './view-models/cicero-view-model';
 import { ParameterViewModel } from './view-models/parameter-view-model';
 import { ActionViewModel } from './view-models/action-view-model';
 import { PropertyViewModel } from './view-models/property-view-model';
@@ -32,6 +31,9 @@ import { MultiLineDialogViewModel } from './view-models/multi-line-dialog-view-m
 import { ConfigService } from './config.service';
 import { LoggerService } from './logger.service';
 import { ApplicationPropertiesViewModel} from './view-models/application-properties-view-model';
+import { CiceroViewModel } from './view-models/cicero-view-model';
+import {CiceroCommandFactoryService} from './cicero-command-factory.service';
+import {CiceroRendererService} from './cicero-renderer.service';
 
 @Injectable()
 export class ViewModelFactoryService {
@@ -44,7 +46,9 @@ export class ViewModelFactoryService {
         private readonly clickHandler: ClickHandlerService,
         private readonly mask: MaskService,
         private readonly configService: ConfigService,
-        private readonly loggerService: LoggerService
+        private readonly loggerService: LoggerService,
+        private readonly commandFactory: CiceroCommandFactoryService,
+        protected ciceroRenderer: CiceroRendererService
     ) { }
 
     errorViewModel = (error: Models.ErrorWrapper | null) => {
@@ -215,32 +219,6 @@ export class ViewModelFactoryService {
 
         return items;
     };
-
-    private cvm: CiceroViewModel | null = null;
-
-    //ciceroViewModel = () => {
-    //    if (cvm == null) {
-    //        cvm = new Nakedobjectsviewmodels.CiceroViewModel();
-    //        commandFactory.initialiseCommands(cvm);
-    //        cvm.parseInput = (input: string) => {
-    //            commandFactory.parseInput(input, cvm);
-    //        };
-    //        cvm.executeNextChainedCommandIfAny = () => {
-    //            if (cvm.chainedCommands && cvm.chainedCommands.length > 0) {
-    //                const next = cvm.popNextCommand();
-    //                commandFactory.processSingleCommand(next, cvm, true);
-    //            }
-    //        };
-    //        cvm.autoComplete = (input: string) => {
-    //            commandFactory.autoComplete(input, cvm);
-    //        };
-    //        cvm.renderHome = _.partial(ciceroRenderer.renderHome, cvm) as (routeData: PaneRouteData) => void;
-    //        cvm.renderObject = _.partial(ciceroRenderer.renderObject, cvm) as (routeData: PaneRouteData) => void;
-    //        cvm.renderList = _.partial(ciceroRenderer.renderList, cvm) as (routeData: PaneRouteData) => void;
-    //        cvm.renderError = _.partial(ciceroRenderer.renderError, cvm);
-    //    }
-    //    return cvm;
-    //};
 
     //private logoff() {
     //    cvm = null;

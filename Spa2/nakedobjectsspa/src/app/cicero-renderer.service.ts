@@ -23,7 +23,7 @@ export class CiceroRendererService {
   protected keySeparator : string;
 
 //TODO: remove renderer.
-renderHome = (cvm: CiceroViewModel, routeData: PaneRouteData) => {
+renderHome (cvm: CiceroViewModel, routeData: PaneRouteData) : void {
             if (cvm.message) {
                 cvm.outputMessageThenClearIt();
             } else {
