@@ -6,8 +6,8 @@ import * as Contextservice from '../context.service';
 
 @Component({
     selector: 'nof-dynamic-error',
-    templateUrl: './dynamic-error.component.html',
-    styleUrls: ['./dynamic-error.component.css']
+    template: require('./dynamic-error.component.html'),
+    styles: [require('./dynamic-error.component.css')]
 })
 export class DynamicErrorComponent implements OnInit {
 

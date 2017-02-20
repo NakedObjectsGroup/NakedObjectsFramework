@@ -7,8 +7,8 @@ import * as Models from '../models';
 
 @Component({
     selector: 'nof-properties',
-    templateUrl: './properties.component.html',
-    styleUrls: ['./properties.component.css']
+    template: require('./properties.component.html'),
+    styles: [require('./properties.component.css')]
 })
 export class PropertiesComponent implements AfterViewInit {
 

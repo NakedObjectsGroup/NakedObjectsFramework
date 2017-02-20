@@ -19,8 +19,8 @@ import * as Helpers from '../view-models/helpers-view-models';
 
 @Component({
     selector: 'nof-multi-line-dialog',
-    templateUrl: './multi-line-dialog.component.html',
-    styleUrls: ['./multi-line-dialog.component.css']
+    template: require('./multi-line-dialog.component.html'),
+    styles: [require('./multi-line-dialog.component.css')]
 })
 export class MultiLineDialogComponent extends PaneComponent {
 

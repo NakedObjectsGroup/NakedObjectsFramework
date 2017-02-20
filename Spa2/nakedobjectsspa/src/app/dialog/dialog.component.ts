@@ -23,8 +23,8 @@ import * as Helpers from '../view-models/helpers-view-models';
 
 @Component({
     selector: 'nof-dialog',
-    templateUrl: './dialog.component.html',
-    styleUrls: ['./dialog.component.css']
+    template: require('./dialog.component.html'),
+    styles: [require('./dialog.component.css')]
 })
 export class DialogComponent {
 

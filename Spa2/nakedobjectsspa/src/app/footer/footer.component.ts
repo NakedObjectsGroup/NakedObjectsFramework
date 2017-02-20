@@ -15,8 +15,8 @@ import { ConfigService } from '../config.service';
 
 @Component({
     selector: 'nof-footer',
-    templateUrl: './footer.component.html',
-    styleUrls: ['./footer.component.css']
+    template: require('./footer.component.html'),
+    styles: [require('./footer.component.css')]
 })
 export class FooterComponent implements OnInit {
 
@@ -28,8 +28,8 @@ export class FooterComponent implements OnInit {
         private readonly repLoader: RepLoaderService,
         private readonly location: Location,
         private readonly configService: ConfigService,
-        private readonly http: Http,) {
-    }
+        private readonly http: Http
+    ) { }
 
     loading: string;
     template: string;

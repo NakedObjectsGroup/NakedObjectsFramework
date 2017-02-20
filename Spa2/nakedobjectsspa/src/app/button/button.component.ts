@@ -12,8 +12,8 @@ export interface IButton {
 
 @Component({
     selector: 'nof-button',
-    templateUrl: './button.component.html',
-    styleUrls: ['./button.component.css']
+    template: require('./button.component.html'),
+    styles: [require('./button.component.css')]
 })
 export class ButtonComponent {
 

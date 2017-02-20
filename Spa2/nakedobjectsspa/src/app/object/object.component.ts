@@ -26,8 +26,8 @@ import * as Helpers from '../view-models/helpers-view-models';
 
 @Component({
     selector: 'nof-object',
-    templateUrl: './object.component.html',
-    styleUrls: ['./object.component.css']
+    template: require('./object.component.html'),
+    styles: [require('./object.component.css')]
 })
 export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
     

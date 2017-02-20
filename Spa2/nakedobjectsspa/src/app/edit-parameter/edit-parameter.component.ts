@@ -17,8 +17,8 @@ import { LoggerService } from '../logger.service';
     host: {
         '(document:click)': 'handleClick($event)'
     },
-    templateUrl: './edit-parameter.component.html',
-    styleUrls: ['./edit-parameter.component.css']
+    template: require('./edit-parameter.component.html'),
+    styles: [require('./edit-parameter.component.css')]
 })
 export class EditParameterComponent extends FieldComponent implements OnInit {
 

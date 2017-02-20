@@ -6,8 +6,8 @@ import { Router } from '@angular/router';
 
 @Component({
     selector: 'nof-attachment-property',
-    templateUrl: './attachment-property.component.html',
-    styleUrls: ['./attachment-property.component.css']
+    template: require('./attachment-property.component.html'),
+    styles: [require('./attachment-property.component.css')]
 })
 export class AttachmentPropertyComponent {
 

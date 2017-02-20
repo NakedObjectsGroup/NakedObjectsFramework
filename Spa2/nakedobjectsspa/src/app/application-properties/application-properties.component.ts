@@ -4,8 +4,8 @@ import { ApplicationPropertiesViewModel } from '../view-models/application-prope
 
 @Component({
     selector: 'nof-application-properties',
-    templateUrl: './application-properties.component.html',
-    styleUrls: ['./application-properties.component.css']
+    template: require('./application-properties.component.html'),
+    styles: [require('./application-properties.component.css')]
 })
 export class ApplicationPropertiesComponent implements OnInit {
 

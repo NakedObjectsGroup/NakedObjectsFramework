@@ -3,8 +3,8 @@ import { IButton } from '../button/button.component';
 
 @Component({
     selector: 'nof-buttons',
-    templateUrl: './buttons.component.html',
-    styleUrls: ['./buttons.component.css']
+    template: require('./buttons.component.html'),
+    styles: [require('./buttons.component.css')]
 })
 export class ButtonsComponent {
 

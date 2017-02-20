@@ -4,8 +4,8 @@ import { UrlManagerService } from '../url-manager.service';
 
 @Component({
     selector: 'nof-menu',
-    templateUrl: './menu.component.html',
-    styleUrls: ['./menu.component.css']
+    template: require('./menu.component.html'),
+    styles: [require('./menu.component.css')]
 })
 export class MenuComponent implements OnInit {
 

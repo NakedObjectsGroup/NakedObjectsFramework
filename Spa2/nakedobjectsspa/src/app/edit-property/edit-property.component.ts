@@ -18,8 +18,8 @@ import { LoggerService } from '../logger.service';
         '(document:click)': 'handleClick($event)'
     },
     selector: 'nof-edit-property',
-    templateUrl: './edit-property.component.html',
-    styleUrls: ['./edit-property.component.css']
+    template: require('./edit-property.component.html'),
+    styles: [require('./edit-property.component.css')]
 })
 export class EditPropertyComponent extends FieldComponent implements OnInit {
 

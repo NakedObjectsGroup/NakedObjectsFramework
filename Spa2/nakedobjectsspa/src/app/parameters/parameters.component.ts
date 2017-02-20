@@ -7,8 +7,8 @@ import * as Models from '../models';
 
 @Component({
     selector: 'nof-parameters',
-    templateUrl: './parameters.component.html',
-    styleUrls: ['./parameters.component.css']
+    template: require('./parameters.component.html'),
+    styles: [require('./parameters.component.css')]
 })
 export class ParametersComponent {
 

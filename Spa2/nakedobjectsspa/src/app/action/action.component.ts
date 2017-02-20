@@ -5,8 +5,8 @@ import { ISubscription } from 'rxjs/Subscription';
 
 @Component({
     selector: 'nof-action',
-    templateUrl: './action.component.html',
-    styleUrls: ['./action.component.css']
+    template: require('./action.component.html'),
+    styles: [require('./action.component.css')]
 })
 export class ActionComponent {
 

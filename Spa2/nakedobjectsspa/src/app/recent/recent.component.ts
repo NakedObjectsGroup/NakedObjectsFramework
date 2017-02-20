@@ -11,8 +11,8 @@ import { IButton } from '../button/button.component';
 
 @Component({
     selector: 'nof-recent',
-    templateUrl: './recent.component.html',
-    styleUrls: ['./recent.component.css']
+    template: require('./recent.component.html'),
+    styles: [require('./recent.component.css')]
 })
 export class RecentComponent extends PaneComponent {
 

@@ -12,8 +12,8 @@ type state = "summary" | "list" | "table";
 
 @Component({
     selector: 'nof-collection',
-    templateUrl: './collection.component.html',
-    styleUrls: ['./collection.component.css']
+    template: require('./collection.component.html'),
+    styles: [require('./collection.component.css')]
 })
 export class CollectionComponent implements OnInit, OnDestroy {
 

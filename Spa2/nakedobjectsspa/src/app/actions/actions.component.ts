@@ -5,8 +5,8 @@ import { ActionViewModel } from '../view-models/action-view-model'; // needed fo
 
 @Component({
     selector: 'nof-actions',
-    templateUrl: './actions.component.html',
-    styleUrls: ['./actions.component.css']
+    template: require('./actions.component.html'),
+    styles: [require('./actions.component.css')]
 })
 export class ActionsComponent implements AfterViewInit {
 

@@ -15,8 +15,8 @@ import { ConfigService } from '../config.service';
 
 @Component({
     selector: 'nof-dynamic-list',
-    templateUrl: './dynamic-list.component.html',
-    styleUrls: ['./dynamic-list.component.css']
+    template: require('./dynamic-list.component.html'),
+    styles: [require('./dynamic-list.component.css')]
 })
 export class DynamicListComponent extends PaneComponent {
 

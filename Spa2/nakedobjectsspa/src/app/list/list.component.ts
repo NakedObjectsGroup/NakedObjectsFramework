@@ -25,8 +25,8 @@ import * as Helpers from '../view-models/helpers-view-models';
 
 @Component({
     selector: 'nof-list',
-    templateUrl: './list.component.html',
-    styleUrls: ['./list.component.css']
+    template: require('./list.component.html'),
+    styles: [require('./list.component.css')]
 })
 export class ListComponent implements AfterViewInit {
   

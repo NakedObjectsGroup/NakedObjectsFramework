@@ -11,8 +11,8 @@ import * as Helpers from '../view-models/helpers-view-models';
 
 @Component({
     selector: 'nof-view-property',
-    templateUrl: './view-property.component.html',
-    styleUrls: ['./view-property.component.css']
+    template: require('./view-property.component.html'),
+    styles: [require('./view-property.component.css')]
 })
 export class ViewPropertyComponent {
 

@@ -5,8 +5,8 @@ import { ErrorViewModel } from '../view-models/error-view-model';
 
 @Component({
     selector: 'nof-error',
-    templateUrl: './error.component.html',
-    styleUrls: ['./error.component.css']
+    template: require('./error.component.html'),
+    styles: [require('./error.component.css')]
 })
 export class ErrorComponent {
 

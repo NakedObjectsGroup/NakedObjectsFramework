@@ -4,8 +4,8 @@ import { MenuComponent } from '../menu/menu.component';
 
 @Component({
     selector: 'nof-menus',
-    templateUrl: './menus.component.html',
-    styleUrls: ['./menus.component.css']
+    template: require('./menus.component.html'),
+    styles: [require('./menus.component.css')]
 })
 export class MenusComponent implements AfterViewInit {
 

@@ -12,8 +12,8 @@ import { ConfigService } from '../config.service';
 
 @Component({
     selector: 'nof-attachment',
-    templateUrl: './attachment.component.html',
-    styleUrls: ['./attachment.component.css']
+    template: require('./attachment.component.html'),
+    styles: [require('./attachment.component.css')]
 })
 export class AttachmentComponent extends PaneComponent {
 

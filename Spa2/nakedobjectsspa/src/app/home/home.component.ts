@@ -13,8 +13,8 @@ import * as Models from '../models';
 
 @Component({
     selector: 'nof-home',
-    templateUrl: './home.component.html',
-    styleUrls: ['./home.component.css']
+    template: require('./home.component.html'),
+    styles: [require('./home.component.css')]
 })
 export class HomeComponent extends PaneComponent {
 
