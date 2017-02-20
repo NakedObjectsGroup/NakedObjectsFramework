@@ -11,7 +11,7 @@ cpx.copySync(copyTemplates, copyToLib);
 cpx.copySync(copyConfig, copyToLib);
 cpx.copySync(copyBoilerPlate, copyToApp);
 
-options = {
+var options = {
     files: ["./lib/app/app-routing.module.ts", "./lib/app/app.module.ts"],
     from: [/\.\/.*\/.*\.component/g, /\.\/.*\.(service|directive|handler)/g, /\.\/route-data/g],
     to : "nakedobjects.spa"
@@ -19,7 +19,7 @@ options = {
 
 try {
     let changedFiles = replace.sync(options);
-    console.log('Modified files:', changedFiles.join(', '));
+    //console.log('Modified files:', changedFiles.join(', '));
 }
 catch (error) {
     console.error('Error occurred:', error);
