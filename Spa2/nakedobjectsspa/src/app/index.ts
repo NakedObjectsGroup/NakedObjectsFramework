@@ -27,6 +27,7 @@ export * from './properties/properties.component';
 export * from './recent/recent.component';
 export * from './view-parameter/view-parameter.component';
 export * from './view-property/view-property.component';
+export * from './cicero/cicero.component';
 
 export * from './click-handler.service';
 export * from './color.service';
@@ -40,6 +41,8 @@ export * from './mask.service';
 export * from './rep-loader.service';
 export * from './url-manager.service';
 export * from './view-model-factory.service';
+export * from './cicero-command-factory.service';
+export * from './cicero-renderer.service';
 
 export * from './gemini-boolean.directive';
 export * from './gemini-clear.directive';

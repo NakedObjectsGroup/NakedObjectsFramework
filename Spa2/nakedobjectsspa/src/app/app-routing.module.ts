@@ -96,7 +96,7 @@ const routes: Routes = [
     {
         path: 'cicero/home',
         component: CiceroComponent,
-        data: { pane: 1, paneType: "single" },
+        data: { pane: 1, paneType: "single" }
     },
     {
         path: '**',

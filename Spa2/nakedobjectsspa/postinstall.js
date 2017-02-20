@@ -11,10 +11,11 @@ var rootfileList = [
     './lib/config.json',
     './lib/index.html',
     './lib/styles.css',
+    './lib/fonts',
     './lib/assets'];
 
-var rootdest = '../../';
-var appdest = '../../app/';
+var rootdest = '../../src';
+var appdest = '../../src/app/';
 
 gentlyCopy(appfileList, appdest, { overwrite: true });
 gentlyCopy(rootfileList, rootdest, { overwrite: true });
