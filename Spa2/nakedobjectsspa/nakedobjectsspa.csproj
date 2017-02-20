@@ -38,6 +38,8 @@
     <Content Include="src\app\buttons\buttons.component.html" />
     <Content Include="src\app\button\button.component.css" />
     <Content Include="src\app\button\button.component.html" />
+    <Content Include="src\app\cicero\cicero.component.css" />
+    <Content Include="src\app\cicero\cicero.component.html" />
     <Content Include="src\app\collections\collections.component.css" />
     <Content Include="src\app\collections\collections.component.html" />
     <Content Include="src\app\collection\collection.component.css" />
@@ -118,6 +120,10 @@
     <TypeScriptCompile Include="src\app\attachment\attachment.component.ts" />
     <TypeScriptCompile Include="src\app\buttons\buttons.component.ts" />
     <TypeScriptCompile Include="src\app\button\button.component.ts" />
+    <TypeScriptCompile Include="src\app\cicero-command-factory.service.ts" />
+    <TypeScriptCompile Include="src\app\cicero-commands.ts" />
+    <TypeScriptCompile Include="src\app\cicero-renderer.service.ts" />
+    <TypeScriptCompile Include="src\app\cicero\cicero.component.ts" />
     <TypeScriptCompile Include="src\app\click-handler.service.ts" />
     <TypeScriptCompile Include="src\app\collections\collections.component.ts" />
     <TypeScriptCompile Include="src\app\collection\collection.component.ts" />

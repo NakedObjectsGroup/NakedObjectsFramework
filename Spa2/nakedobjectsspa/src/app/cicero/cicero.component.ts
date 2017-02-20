@@ -11,8 +11,8 @@ import { UrlManagerService } from '../url-manager.service';
 
 @Component({
   selector: 'nof-cicero',
-  templateUrl: './cicero.component.html',
-  styleUrls: ['./cicero.component.css']
+  templateUrl: require('./cicero.component.html'),
+  styleUrls: [ require('./cicero.component.css')]
 })
 export class CiceroComponent implements OnInit {
 
