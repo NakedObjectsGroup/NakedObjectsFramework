@@ -35,20 +35,23 @@ class CustomComponentCache extends TypeResultCache<Type<any>> implements ICustom
 export class CustomComponentService implements ICustomErrorComponentConfigurator {
 
     constructor(
-        private readonly context: ContextService,
-        private readonly config: CustomComponentConfigService) {
+        private readonly context: ContextService) {
 
         this.customComponentCaches = [];
         this.customComponentCaches[ViewType.Object] = new CustomComponentCache(context, ObjectComponent);
         this.customComponentCaches[ViewType.List] = new CustomComponentCache(context, ListComponent);
         this.customComponentCaches[ViewType.Error] = new CustomComponentCache(context, ErrorComponent);
-
-        config.configureCustomObjects(this.customComponentCaches[ViewType.Object]);
-        config.configureCustomLists(this.customComponentCaches[ViewType.List]);
-        config.configureCustomErrors(this);
     }
 
     private readonly customComponentCaches: CustomComponentCache[] = [];
+
+    get objectCache(): ICustomComponentConfigurator {
+        return this.customComponentCaches[ViewType.Object];
+    }
+
+    get listCache(): ICustomComponentConfigurator {
+        return this.customComponentCaches[ViewType.List];
+    }
 
     private getErrorKey(rc: Models.ErrorCategory, code: Models.HttpStatusCode | Models.ClientErrorCode) {
         const key = `${Models.ErrorCategory[rc]}-${rc === Models.ErrorCategory.ClientError ? Models.ClientErrorCode[code] : Models.HttpStatusCode[code]}`;
