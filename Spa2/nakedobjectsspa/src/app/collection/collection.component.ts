@@ -50,9 +50,6 @@ export class CollectionComponent implements OnInit, OnDestroy {
         return this.collection.getMessage();
     }
 
-    matchingDialog = () => {
-        //this.dialog.matchingCollectionId === this.collection.id;
-    };
     showActions = () => {
         return !this.disableActions() && (this.state === "table" || this.state === "list");
     };

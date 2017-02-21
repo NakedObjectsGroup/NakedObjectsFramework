@@ -17,7 +17,6 @@ import { LoggerService } from '../logger.service';
 
 export abstract class FieldComponent {
 
-    //filteredList: ViewModels.ChoiceViewModel[] = [];
     elementRef: ElementRef;
 
     protected constructor(
@@ -166,12 +165,11 @@ export abstract class FieldComponent {
     _form: FormGroup;
 
     onValueChanged(data?: any) {
-        // clear previous error message (if any)
-        //this.message = '';
-
+  
         if (this.model) {
             const control = this._form.get(this.model.id);
             if (control && control.dirty && !control.valid) {
+                // todo either do something so need this check  or remove it ! 
                 //this.message = this.model.getMessage();
             }
             this.onChange();
@@ -241,6 +239,7 @@ export abstract class FieldComponent {
     fileUpload() {
         //const file = (this.elementRef[0] as any).files[0] as File;
 
+        // todo - doesn't look right why using query selector ? 
         const element = document.querySelector("input[type='file']");
         const file = (element as any).files[0] as File;
 
@@ -268,7 +267,6 @@ export abstract class FieldComponent {
             if (cvm) {
                 this.droppable.drop(cvm)
                     .then((success) => {
-                        //this.control.reset(this.model.selectedChoice);
                         this.control.setValue(this.model.selectedChoice);
                     });
                 event.preventDefault();

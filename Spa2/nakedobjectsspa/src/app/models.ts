@@ -338,6 +338,7 @@ export function validate(model: IHasExtensions, modelValue: any, viewValue: stri
 
     switch (returnType) {
         case ("number"):
+            // todo - no jQuery so use equivalent check 
             //if (!$.isNumeric(modelValue)) {
             //    return Usermessagesconfig.notANumber;
             //}

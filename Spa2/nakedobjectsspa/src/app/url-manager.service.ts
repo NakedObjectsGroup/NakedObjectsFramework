@@ -408,14 +408,11 @@ export class UrlManagerService {
                 replace = false;
                 search = this.clearPane(search, paneId);
                 this.setId(akm.interactionMode + paneId, InteractionMode[InteractionMode.View], search);
-                //search = this.toggleReloadFlag(search);
                 break;
             case (Transition.ToObjectWithMode):
                 ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Constants.objectPath));
                 replace = false;
                 search = this.clearPane(search, paneId);
-                //this.setId(akm.interactionMode + paneId, InteractionMode[InteractionMode.Form], search);
-                //search = this.toggleReloadFlag(search);
                 break;
             case (Transition.ToList):
                 ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Constants.listPath));
