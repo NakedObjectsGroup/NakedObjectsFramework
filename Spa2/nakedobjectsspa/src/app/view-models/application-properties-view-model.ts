@@ -3,6 +3,7 @@ import * as Contextservice from '../context.service';
 import * as Errorservice from '../error.service';
 import * as Configservice from '../config.service';
 import * as Models from '../models';
+import * as Constants from '../constants';
 
 export class ApplicationPropertiesViewModel {
 
@@ -25,8 +26,7 @@ export class ApplicationPropertiesViewModel {
 
         this.serverUrl = this.configService.config.appPath;
 
-        // todo - later as part of build work
-        this.clientVersion = "not yet implemented";
+        this.clientVersion = Constants.clientVersion;
     }
 
 

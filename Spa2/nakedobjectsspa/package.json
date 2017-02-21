@@ -58,6 +58,7 @@
         "typescript": "~2.0.3",
         "cpx": "^1.5.0",
         "replace-in-file": "^2.3.2",
-        "mv": "^2.1.1"
+        "mv": "^2.1.1",
+        "find-in-files": "^0.3.1"
     }
 }

@@ -142,6 +142,7 @@ export class ConfigService {
 
     load() {
 
+        // todo don't call config - confusing !
         const config = {
             withCredentials: true
         } as RequestOptionsArgs;
