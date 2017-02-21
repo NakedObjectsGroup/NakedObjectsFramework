@@ -162,12 +162,12 @@
     <TypeScriptCompile Include="src\app\properties\properties.component.ts" />
     <TypeScriptCompile Include="src\app\recent\recent.component.ts" />
     <TypeScriptCompile Include="src\app\rep-loader.service.ts" />
-    <TypeScriptCompile Include="src\app\representations.service.ts" />
     <TypeScriptCompile Include="src\app\ro-interfaces-custom.ts" />
     <TypeScriptCompile Include="src\app\ro-interfaces.ts" />
     <TypeScriptCompile Include="src\app\route-data.ts" />
     <TypeScriptCompile Include="src\app\rxjs-extensions.ts" />
     <TypeScriptCompile Include="src\app\shared\index.ts" />
+    <TypeScriptCompile Include="src\app\simple-lru-cache.ts" />
     <TypeScriptCompile Include="src\app\type-result-cache.ts" />
     <TypeScriptCompile Include="src\app\url-manager.service.ts" />
     <TypeScriptCompile Include="src\app\user-messages.ts" />

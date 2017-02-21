@@ -30,10 +30,10 @@ import { DomainObjectViewModel } from './view-models/domain-object-view-model';
 import { MultiLineDialogViewModel } from './view-models/multi-line-dialog-view-model';
 import { ConfigService } from './config.service';
 import { LoggerService } from './logger.service';
-import { ApplicationPropertiesViewModel} from './view-models/application-properties-view-model';
+import { ApplicationPropertiesViewModel } from './view-models/application-properties-view-model';
 import { CiceroViewModel } from './view-models/cicero-view-model';
-import {CiceroCommandFactoryService} from './cicero-command-factory.service';
-import {CiceroRendererService} from './cicero-renderer.service';
+import { CiceroCommandFactoryService } from './cicero-command-factory.service';
+import { CiceroRendererService } from './cicero-renderer.service';
 
 @Injectable()
 export class ViewModelFactoryService {
@@ -219,9 +219,4 @@ export class ViewModelFactoryService {
 
         return items;
     };
-
-    //private logoff() {
-    //    cvm = null;
-    //}
-    
 }
