@@ -908,11 +908,6 @@ export class UrlManagerService {
         }
     }
 
-    reload = () => {
-        // todo 
-        //$window.location.reload(true);
-    }
-
     private getLocation(paneId: number) {
         const path = this.getPath();
         const segments = path.split("/");

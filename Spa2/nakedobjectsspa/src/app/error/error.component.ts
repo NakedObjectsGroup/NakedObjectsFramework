@@ -24,8 +24,7 @@ export class ErrorComponent {
     stackTrace: string[] | null;
 
     ngOnInit(): void {
-        // todo later if no error perhaps just go home ? 
-        // this would happen on error page reload  
+        // expect dynamic-error to  have checked if the context has an error 
 
         // todo do we cover all the possible errors from Spa 1 ?
 
