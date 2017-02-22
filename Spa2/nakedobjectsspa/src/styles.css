@@ -184,28 +184,3 @@ html, #main, body, .background, .single, .split {
 }
 
 /*Cicero*/
-.cicero, .cicero input, .cicero pre {
-    background-color: black;
-    color: green;
-    font-size: 18pt;
-    font-family: Courier New, Courier, monospace;
-    font-weight: bold;
-}
-
-.cicero {
-    width: 100%;
-    border: none;
-}
-
-    .cicero .output {
-        margin: 27px;
-    }
-
-    .cicero input {
-        border-color: green;
-        border-width: 2px;
-        border: solid;
-        padding: 5px;
-        margin: 20px;
-        width: 95%;
-    }

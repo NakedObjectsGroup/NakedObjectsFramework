@@ -1,7 +1,7 @@
 :host {
     overflow-y: auto;
     font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
-    color: white;
+    color: black;
     font-size: 11pt; 
     font-weight: 100;
     display: block;
@@ -20,6 +20,7 @@
     display: block;
     margin-bottom: 20px;
     overflow: hidden;
+     background-image: linear-gradient(to bottom, #11648a, #187ba9 100%);
 }
 
 viewTitle {
@@ -59,7 +60,7 @@ viewTitle {
     margin-bottom: 5px; /*Else hover outline is hidden on the bottom */
     font:inherit;
     font-size: 16pt;
-    color: white;
+    color: black;
     background-color: transparent;
 }
 .menu[disabled="disabled"] {
@@ -67,7 +68,7 @@ viewTitle {
 }
 
 .title:hover, .title:focus   {
-    outline-color: white;
+    outline-color:black;
     outline-style: solid;
     outline-width: 1px;
 }

@@ -1,0 +1,59 @@
+/*Global fonts*/
+.gemini, table, a, pre, textarea, input { 
+    font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+}
+
+@font-face {
+    font-family: "iconFont";
+    src: url('./fonts/iconFont.eot');
+    src: url('./fonts/iconFont.eot?#iefix') format('embedded-opentype'), url('./fonts/iconFont.svg#iconFont') format('svg'), url('./fonts/iconFont.woff') format('woff'), url('./fonts/iconFont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Override unwanted defaults */
+.gemini * {
+    /*Specifies that padding & border are added INSIDE the specified width*/
+    box-sizing: border-box;
+}
+
+pre {
+    white-space: pre-wrap; /* CSS 3 */
+    white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
+}
+
+
+html, #main, body, .background, .single, .split {
+    margin: 0px;
+    height: 100%; /*fill the vertical space*/
+    background-color: white;
+}
+
+.background {
+    overflow-y: auto;
+}
+
+/*Single & Split panes */
+.single, .split {
+    /*changed from 60 to 20 as hack becuase it was cropping list*/
+    padding-bottom: 20px; /*So bottom content doesn't get cut off by footer*/
+}
+
+.single {
+    width: 100%;
+}
+
+.split#pane1 { /*pane1 only because pane2 is inside pane1, so want it 100% of 50%*/
+    width: 50%;
+    overflow-x: auto;
+    float: left;
+}
+
+.link-color0 {
+     background-color: #11648a;
+    color: white;
+}
+

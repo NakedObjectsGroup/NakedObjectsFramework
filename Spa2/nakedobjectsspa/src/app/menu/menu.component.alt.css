@@ -1,0 +1,24 @@
+
+:host {
+    display: block;
+    float: left;
+    padding: 0px;
+    margin-top: 0px;
+    margin-left: 1px; /*Else hover outline is hidden on the left-most menu */
+    margin-right: 10px;
+    margin-bottom: 10px;
+    font-size: 12pt;
+    outline: none;
+}
+
+.name {
+    display: block;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.name:hover, .name:focus  {
+    outline-color: black;
+    outline-style: solid;
+    outline-width: 1px;
+}

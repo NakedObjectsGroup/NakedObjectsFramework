@@ -1,0 +1,26 @@
+:host {
+    display: block;
+    margin-left: 20px;
+    color: black;
+}
+
+.header {
+    display: block;
+    font-size: 24pt; 
+    font-weight: 200;
+    margin-left: 5px;
+     background-image: linear-gradient(to bottom, #11648a, #187ba9 100%);
+}
+
+.properties {
+    display: block;
+    font-size: 11pt; 
+    font-weight: 100;
+    width: 410px;
+    padding: 5px;
+    margin-bottom: 20px;
+}
+
+.property {
+    display: block;
+}

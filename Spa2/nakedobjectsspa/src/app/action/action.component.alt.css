@@ -1,0 +1,32 @@
+:host   {
+    outline: none;
+    margin-left: 5px;
+    margin-right: 20px;
+    width: 150px;
+    margin-bottom: 5px;
+    font-weight: bolder; /*Because black on white light looks too faint*/
+    display: block;
+}
+
+:host[disabled="disabled"]:hover {
+   outline: none;
+}
+
+.name {
+    display: block;
+    cursor: pointer;
+   padding: 2px 5px;
+}
+
+.name[disabled="true"] {
+    color: grey;
+}
+
+.name:hover, .name:focus   {
+    outline-color: black;
+    outline-style: solid;
+    outline-width: 1px;
+    margin-right: 20px;
+    width: 150px;
+    margin-bottom: 5px;
+}

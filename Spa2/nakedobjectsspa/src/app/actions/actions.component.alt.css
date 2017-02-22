@@ -1,0 +1,76 @@
+:host {
+    float: left;
+    margin-bottom: 20px;
+    display: block;
+    margin-left: 20px;
+    margin-right: 10px;
+    background-color: lightgrey;
+    padding-top: 10px;
+}
+
+.submenu  {
+    display: block;
+    cursor: pointer;
+    outline: none;
+    margin-left: 5px;
+    margin-right: 20px;
+    width: 150px;
+    margin-bottom: 5px;
+    font-weight: bolder; /*Because black on white light looks too faint*/
+    padding: 2px 5px;
+}
+
+.submenu:focus, .submenu:hover   {
+    outline-color: black;
+    outline-style: solid;
+    outline-width: 1px;
+    margin-right: 20px;
+    width: 150px;
+    margin-bottom: 5px;
+    font-weight: bolder; /*Because black on white light looks too faint*/
+    display: block;
+    padding: 2px 5px;
+}
+
+.collapsed {
+    display: none;
+}
+
+.open {
+    display: block;
+    margin-left: 10px;
+}
+
+.open.rootMenu {
+    margin-left: 0px;
+}
+
+/*Icons*/
+.icon-expand:before {
+    content: "\e099";
+}
+
+.icon-collapse:before {
+    content: "\e098";
+}
+.submenu .icon-expand, .submenu .icon-collapse {
+        font-size: 8pt;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    font-family: "iconFont";
+    font-weight: normal;
+    font-style: normal;
+    text-decoration: inherit;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    width: auto;
+    height: auto;
+    line-height: normal;
+    vertical-align: baseline;
+    background-image: none;
+    background-position: 0% 0%;
+    background-repeat: repeat;
+    margin-top: 0;
+    position: relative;
+}

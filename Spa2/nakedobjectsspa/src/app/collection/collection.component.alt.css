@@ -1,0 +1,33 @@
+:host {
+    display: block;
+}
+
+:host:not(:last-child) {
+    margin-bottom: 20px;
+}
+
+.summary {
+    display: block;
+    width: 450px;
+    font-size: 12pt;
+    margin-bottom: 10px;
+    overflow: hidden; /*To make div same depth as its floating children*/
+}
+
+.name, .details {
+    display: block;
+    float: left;
+    padding-left: 0px; /*Because it is a heading, so outdented*/
+}
+
+.icon-list, .icon-table, .icon-summary {
+    cursor: pointer;
+    float: right;
+    width: 20px;
+    padding-left: 5px;
+    padding-top: 5px;
+}
+
+th {
+    font-weight: 100;
+}

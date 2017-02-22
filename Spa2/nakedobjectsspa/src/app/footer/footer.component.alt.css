@@ -1,0 +1,119 @@
+:host {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+}
+
+a {
+    color: #11648a;
+    font-size: 36pt;
+    padding: 5px;
+    margin-left: 10px;
+}
+
+    a.disabled {
+        display: none;
+    }
+
+    a:hover, a:focus {
+        outline-style: solid;
+        outline-width: 1px;
+        outline-color: blue;
+    }
+
+    a:active {
+        outline-style: solid;
+        outline-width: 2px;
+        outline-color: black;
+    }
+
+a, .currentcopy {
+    float: left;
+}
+
+.currentcopy {
+    display: inline-block;
+    margin-left: 20px;
+}
+
+/*Warnings & Messages*/
+.messages, .warnings, .loading {
+    background-color: white;
+    font-size: 11pt;
+    color: black;
+}
+
+.warnings {
+    color: red;
+}
+
+/*Icons */
+[class^="icon-"], [class*=" icon-"] {
+    font-family: "iconFont";
+    font-weight: normal;
+    font-style: normal;
+    text-decoration: inherit;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    width: auto;
+    height: auto;
+    line-height: normal;
+    vertical-align: baseline;
+    background-image: none;
+    background-position: 0% 0%;
+    background-repeat: repeat;
+    margin-top: 0;
+    position: relative;
+}
+
+.icon-home:before {
+    content: "\e000";
+}
+
+.icon-arrow-left-3:before {
+    content: "\e09f";
+}
+
+.icon-arrow-right-3:before {
+    content: "\e09d";
+}
+
+.icon-loop:before {
+    content: "\e08f";
+}
+
+.icon-help:before {
+    content: "\e085";
+}
+
+.icon-swap:before {
+    content: "\e0a4";
+}
+
+.icon-full:before {
+    content: "\e08e";
+}
+
+.icon-recent:before {
+    content: "\e06b";
+}
+
+.icon-speech:before {
+    content: "\e036";
+}
+
+.icon-properties:before {
+    content: "\e048";
+}
+
+.icon-logoff:before {
+    content: "\e03b";
+}
+
+/*Hide/show Cicero icon*/
+    .icon-speech {
+        display: none;
+        /*display:    inline-block;*/
+    }

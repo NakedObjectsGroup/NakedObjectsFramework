@@ -1,0 +1,29 @@
+:host {
+    display: block;
+    color: black;
+    margin-left: 20px;
+    padding-left: 20px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.header {
+    display: block;
+    font-size: 24pt; 
+    font-weight: 200;
+     background-image: linear-gradient(to bottom, #11648a, #187ba9 100%);
+}
+
+nof-buttons, nof-button {
+    overflow: hidden;
+    display: block;
+}
+
+table {
+    font-size: 11pt; 
+    font-weight: 200;
+}
+
+tr {
+    cursor: pointer;
+}
