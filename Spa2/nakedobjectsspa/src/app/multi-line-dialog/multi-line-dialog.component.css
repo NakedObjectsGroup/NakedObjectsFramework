@@ -5,8 +5,8 @@
     font-size: 11pt; 
     font-weight: 100;
     display: block;
-        height: 100%;
-        margin-left: 20px;
+    margin-left: 20px;
+    padding-bottom: 60px;
 }
 viewTitle {
     display: inline-block; /*Otherwise focus outline takes full width*/
