@@ -176,15 +176,15 @@ export class MaskService implements IMaskServiceConfigurator {
             const numberMasks = maskConfig.numberMasks;
 
             if (currencyMasks) {
-                _.forEach(currencyMasks, (v, k) => this.setCurrencyMaskMapping(k, v.format, v.symbol, v.digits, v.locale));
+                _.forEach(currencyMasks, (v, k) => this.setCurrencyMaskMapping(k!, v.format, v.symbol, v.digits, v.locale));
             }
 
             if (dateMasks) {
-                _.forEach(dateMasks, (v, k) => this.setDateMaskMapping(k, v.format, v.mask, v.tz, v.locale));
+                _.forEach(dateMasks, (v, k) => this.setDateMaskMapping(k!, v.format, v.mask, v.tz, v.locale));
             }
 
             if (numberMasks) {
-                _.forEach(numberMasks, (v, k) => this.setNumberMaskMapping(k, v.format, v.fractionSize, v.locale));
+                _.forEach(numberMasks, (v, k) => this.setNumberMaskMapping(k!, v.format, v.fractionSize, v.locale));
             }
         }
     }

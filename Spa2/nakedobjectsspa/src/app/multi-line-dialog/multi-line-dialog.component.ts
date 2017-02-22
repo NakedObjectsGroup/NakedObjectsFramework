@@ -8,14 +8,15 @@ import { ErrorService } from '../error.service';
 import { RouteData, PaneRouteData } from '../route-data';
 import { ActionViewModel } from '../view-models/action-view-model';
 import { CollectionViewModel } from '../view-models/collection-view-model';
-import * as Models from '../models';
-import * as _ from 'lodash';
 import { MultiLineDialogViewModel } from '../view-models/multi-line-dialog-view-model';
 import { DialogViewModel } from '../view-models/dialog-view-model';
 import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { ConfigService } from '../config.service';
 import * as Helpers from '../view-models/helpers-view-models';
+import * as Msg from '../user-messages';
+import * as Models from '../models';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'nof-multi-line-dialog',
@@ -72,7 +73,7 @@ export class MultiLineDialogComponent extends PaneComponent {
     rowTooltip = (row: DialogViewModel) => row.tooltip();
 
     rowMessage = (row: DialogViewModel) => {
-        return row.submitted ? 'Submitted' : row.getMessage();
+        return row.submitted ? Msg.submittedMessage : row.getMessage();
     }
 
     rowDisabled = (row: DialogViewModel) => {
@@ -80,7 +81,7 @@ export class MultiLineDialogComponent extends PaneComponent {
     }
 
     get count() {
-        return ` with ${this.dialog.submittedCount()} lines submitted.`;
+        return Msg.submittedCount(this.dialog.submittedCount());
     }
 
     invokeAndAdd(index: number) {

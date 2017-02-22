@@ -50,18 +50,17 @@ export class CollectionComponent implements OnInit, OnDestroy {
         return this.collection.getMessage();
     }
 
-    showActions = () => {
-        return !this.disableActions() && (this.state === "table" || this.state === "list");
-    };
-    showSummary = () => {
-        return (this.mayHaveItems || !this.disableActions()) && (this.state === "table" || this.state === "list");
-    };
-    showList = () => {
-        return (this.mayHaveItems || !this.disableActions()) && (this.state === 'table' || this.state === 'summary');
-    };
-    showTable = () => {
-        return this.mayHaveItems && (this.state === 'list' || this.state === 'summary');
-    };
+    private isSummary = () => this.collection.currentState === CollectionViewState.Summary;
+
+    private isList = () => this.collection.currentState === CollectionViewState.List;
+
+    private isTable = () => this.collection.currentState === CollectionViewState.Table;
+
+    showActions = () => !this.disableActions() && (this.isTable() || this.isList());
+    showSummary = () => (this.mayHaveItems || !this.disableActions()) && (this.isList() || this.isTable());
+    showList = () => (this.mayHaveItems || !this.disableActions()) && (this.isTable() || this.isSummary());
+    showTable = () => this.mayHaveItems && (this.isList() || this.isSummary());
+
     doSummary = () => this.collection.doSummary();
     doList = () => this.collection.doList();
     doTable = () => this.collection.doTable();
