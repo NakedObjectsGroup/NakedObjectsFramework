@@ -9,6 +9,11 @@
     padding-bottom: 60px;
 }
 
+.object-holder {
+    display: block;
+    height: 100%;
+}
+
 .object {
     height: 100%;
     display: block;
