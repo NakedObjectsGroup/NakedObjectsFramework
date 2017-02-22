@@ -846,17 +846,15 @@ export class UrlManagerService {
         this.router.navigateByUrl(tree);
     }
 
-    cicero = () => {
-        const newPath = `/${Constants.ciceroPath}/${this.getPath().split("/")[2]}`;
+    private setMode(newMode: string) {
+        const newPath = `/${newMode}/${this.getPath().split("/")[2]}`;
         this.router.navigateByUrl(newPath);
     }
 
-//TODO  DRY with cicero above
-    gemini = () => {
-        const newPath = `/${Constants.geminiPath}/${this.getPath().split("/")[2]}`;
-        this.router.navigateByUrl(newPath);
-    }
+    cicero = () => this.setMode(Constants.ciceroPath);
 
+    gemini = () => this.setMode(Constants.geminiPath);
+  
     applicationProperties = () => {
         const newPath = `/${Constants.geminiPath}/${Constants.applicationPropertiesPath}`;
         this.router.navigateByUrl(newPath);

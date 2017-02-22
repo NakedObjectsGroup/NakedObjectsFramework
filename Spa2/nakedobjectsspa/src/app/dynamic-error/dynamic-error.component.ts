@@ -1,8 +1,10 @@
 import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
-import * as Customcomponentservice from '../custom-component.service';
+import { CustomComponentService } from '../custom-component.service';
 import { Type } from '@angular/core/src/type';
-import * as Routedata from '../route-data';
-import * as Contextservice from '../context.service';
+import { RouteData } from '../route-data';
+import { ContextService } from '../context.service';
+import { LoggerService } from '../logger.service';
+import { UrlManagerService } from '../url-manager.service';
 
 @Component({
     selector: 'nof-dynamic-error',
@@ -15,17 +17,24 @@ export class DynamicErrorComponent implements OnInit {
     parent: ViewContainerRef;
 
     constructor(
-        private readonly context: Contextservice.ContextService,
+        private readonly context: ContextService,
         private readonly componentFactoryResolver: ComponentFactoryResolver,
-        private readonly customComponentService: Customcomponentservice.CustomComponentService
+        private readonly customComponentService: CustomComponentService,
+        private readonly loggerService: LoggerService,
+        private readonly urlManagerService: UrlManagerService
     ) { }
 
     ngOnInit() {
-        // todo this will fail if error expired 
+
         const errorWrapper = this.context.getError();
-        this.customComponentService.getCustomErrorComponent(errorWrapper.category, errorWrapper.httpErrorCode | errorWrapper.clientErrorCode).then((c: Type<any>) => {
-            const childComponent = this.componentFactoryResolver.resolveComponentFactory(c);
-            this.parent.createComponent(childComponent);
-        });
+        if (errorWrapper) {
+            this.customComponentService.getCustomErrorComponent(errorWrapper.category, errorWrapper.httpErrorCode | errorWrapper.clientErrorCode).then((c: Type<any>) => {
+                const childComponent = this.componentFactoryResolver.resolveComponentFactory(c);
+                this.parent.createComponent(childComponent);
+            });
+        } else {
+            this.loggerService.warn("No error found returning to home page");
+            this.urlManagerService.setHomeSinglePane();
+        }
     }
 }

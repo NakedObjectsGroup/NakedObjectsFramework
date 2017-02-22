@@ -142,12 +142,11 @@ export class ConfigService {
 
     load() {
 
-        // todo don't call config - confusing !
-        const config = {
+        const options = {
             withCredentials: true
         } as RequestOptionsArgs;
 
-        return this.http.get('config.json', config).
+        return this.http.get('config.json', options).
             map(res => res.json()).
             toPromise().
             then(serverConfig => {
