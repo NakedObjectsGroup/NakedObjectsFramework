@@ -112,7 +112,8 @@ a, .currentcopy {
     content: "\e03b";
 }
 
-/*Hide Cicero icon*/
+/*Hide/show Cicero icon*/
     .icon-speech {
-        display:    inline-block;
+        display: none;
+        /*display:    inline-block;*/
     }
