@@ -881,22 +881,25 @@ namespace NakedObjects {
             actionViewModel.doInvoke = () => { };
 
             const invokeWithDialog = (right?: boolean) => {
-                this.context.clearDialogValues(this.onPaneId);
-                this.focusManager.focusOverrideOff();
-                this.urlManager.setDialogOrMultiLineDialog(actionViewModel.actionRep, this.onPaneId);
+                if (!actionViewModel.disabled()) {
+                    this.context.clearDialogValues(this.onPaneId);
+                    this.focusManager.focusOverrideOff();
+                    this.urlManager.setDialogOrMultiLineDialog(actionViewModel.actionRep, this.onPaneId);
+                }
             };
 
-            const invokeWithoutDialog = (right?: boolean) =>
-                actionViewModel.execute([], right).
-                    then(result => {
+            const invokeWithoutDialog = (right?: boolean) => {
+                if (!actionViewModel.disabled()) {
+                    actionViewModel.execute([], right).then(result => {
                         this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || noResultMessage : "");
                         // clear selected items on void actions 
                         this.clearSelected(result);
-                    }).
-                    catch((reject: ErrorWrapper) => {
+                    }).catch((reject: ErrorWrapper) => {
                         const display = (em: ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
                         this.error.handleErrorAndDisplayMessages(reject, display);
                     });
+                }
+            }
 
             showDialog().
                 then(show => actionViewModel.doInvoke = show ? invokeWithDialog : invokeWithoutDialog).

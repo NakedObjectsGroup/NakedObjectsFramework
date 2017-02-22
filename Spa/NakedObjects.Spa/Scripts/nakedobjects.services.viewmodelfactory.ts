@@ -222,27 +222,29 @@ namespace NakedObjects {
             // open dialog on current pane always - invoke action goes to pane indicated by click
             actionViewModel.doInvoke = showDialog() ?
                 (right?: boolean) => {
-                    focusManager.setCurrentPane(paneId);
-                    focusManager.focusOverrideOff();
-                    // clear any previous dialog so we don't pick up values from it
-                    context.clearDialogValues(paneId);               
-                    urlManager.setDialogOrMultiLineDialog(actionRep, paneId);              
-                    focusManager.focusOn(FocusTarget.Dialog, 0, paneId); // in case dialog is already open
+                    if (!actionViewModel.disabled()) {
+                        focusManager.setCurrentPane(paneId);
+                        focusManager.focusOverrideOff();
+                        // clear any previous dialog so we don't pick up values from it
+                        context.clearDialogValues(paneId);
+                        urlManager.setDialogOrMultiLineDialog(actionRep, paneId);
+                        focusManager.focusOn(FocusTarget.Dialog, 0, paneId); // in case dialog is already open
+                    }
                 } :
                 (right?: boolean) => {
-                    focusManager.focusOverrideOff();
-                    const pps = actionViewModel.parameters();
-                    actionViewModel.execute(pps, right).
-                        then((actionResult: ActionResultRepresentation) => {
+                    if (!actionViewModel.disabled()) {
+                        focusManager.focusOverrideOff();
+                        const pps = actionViewModel.parameters();
+                        actionViewModel.execute(pps, right).then((actionResult: ActionResultRepresentation) => {
                             // if expect result and no warning from server generate one here
                             if (actionResult.shouldExpectResult() && !actionResult.warningsOrMessages()) {
                                 $rootScope.$broadcast(geminiWarningEvent, [noResultMessage]);
                             }
-                        }).
-                        catch((reject: ErrorWrapper) => {
+                        }).catch((reject: ErrorWrapper) => {
                             const display = (em: ErrorMap) => vm.setMessage(em.invalidReason() || em.warningMessage);
                             error.handleErrorAndDisplayMessages(reject, display);
                         });
+                    }
                 };
 
             actionViewModel.makeInvokable = (details: IInvokableAction) => actionViewModel.invokableActionRep = details;
