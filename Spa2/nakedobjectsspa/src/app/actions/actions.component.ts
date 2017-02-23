@@ -1,14 +1,16 @@
-import { Component, Input, ViewChildren, QueryList, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, Input, ViewChildren, QueryList, ElementRef, AfterViewInit, OnInit } from '@angular/core';
 import { ActionComponent } from '../action/action.component';
 import { MenuItemViewModel } from '../view-models/menu-item-view-model';
 import { ActionViewModel } from '../view-models/action-view-model'; // needed for declarations compile 
+import * as Models from '../models';
 
 @Component({
     selector: 'nof-actions',
     template: require('./actions.component.html'),
     styles: [require('./actions.component.css')]
 })
-export class ActionsComponent implements AfterViewInit {
+export class ActionsComponent implements OnInit, AfterViewInit {
+   
 
     @Input()
     menu: { menuItems: MenuItemViewModel[] };
@@ -29,6 +31,24 @@ export class ActionsComponent implements AfterViewInit {
 
     displayClass = (menuItem: MenuItemViewModel) => ({ collapsed: menuItem.navCollapsed, open: !menuItem.navCollapsed, rootMenu: !menuItem.name });
 
+    displayContextClass() {
+        return ({
+            objectContext: this.isObjectContext(),
+            collectionContext: this.isCollectionContext()
+        });
+    }
+
+    firstAction : ActionViewModel;
+
+    isObjectContext() {
+        return this.firstAction && this.firstAction.actionRep.parent instanceof Models.DomainObjectRepresentation;
+    }
+
+    isCollectionContext() {
+        return this.firstAction && this.firstAction.actionRep.parent instanceof Models.CollectionMember;
+    }
+
+
     @ViewChildren(ActionComponent)
     actionChildren: QueryList<ActionComponent>;
 
@@ -36,6 +56,20 @@ export class ActionsComponent implements AfterViewInit {
         if (actions && actions.first) {
             actions.first.focus();
         }
+    }
+
+    findFirstAction(menuItems: MenuItemViewModel[]) : ActionViewModel | null {
+        for (const mi of menuItems) {
+            if (mi.actions && mi.actions.length > 0) {
+                return mi.actions[0];
+            }
+            return this.findFirstAction(mi.menuItems);
+        }
+        return null;
+    }
+
+    ngOnInit(): void {
+        this.firstAction = this.findFirstAction(this.items);
     }
 
     ngAfterViewInit(): void {

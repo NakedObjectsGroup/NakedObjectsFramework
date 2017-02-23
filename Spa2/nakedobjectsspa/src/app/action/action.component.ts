@@ -2,6 +2,7 @@ import { Component, Input, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import { ActionViewModel } from '../view-models/action-view-model';
 import { ContextService} from '../context.service';
 import { ISubscription } from 'rxjs/Subscription';
+import * as Models from '../models';
 
 @Component({
     selector: 'nof-action',
@@ -27,6 +28,22 @@ export class ActionComponent {
 
     disabled() {
         return this.action.disabled() ? true : null;
+    }
+
+    displayClass() {
+        return ({
+            tempdisabled: this.tempDisabled(),
+            objectContext: this.isObjectContext(),
+            collectionContext: this.isCollectionContext()
+        });
+    }
+
+    isObjectContext() {
+        return this.action.actionRep.parent instanceof Models.DomainObjectRepresentation;
+    }
+
+    isCollectionContext() {
+        return this.action.actionRep.parent instanceof Models.CollectionMember;
     }
 
     tempDisabled(): boolean {
