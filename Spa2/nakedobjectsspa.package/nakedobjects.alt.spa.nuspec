@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>NakedObjects.Spa</id>
+    <id>NakedObjects.Alt.Spa</id>
     <version>9.0.0-beta1</version>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
@@ -15,7 +15,7 @@
     <description>Single Page Application client for a Naked Objects application.</description>
   </metadata>
   <files>
-    <file src="..\nakedobjectsspa\pack\*" target="Content"/>
-    <file src="..\nakedobjectsspa\pack\assets\*" target="Content\assets"/>
+    <file src="..\nakedobjectsspa\pack2\*" target="Content"/>
+    <file src="..\nakedobjectsspa\pack2\assets\*" target="Content\assets"/>
   </files>
 </package>
