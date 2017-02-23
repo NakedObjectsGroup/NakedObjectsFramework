@@ -18,3 +18,4 @@ let names = ["action", "actions", "application-properties", "attachment", "attac
     "properties", "recent"]
 
 copyAndReplaceAll(names);
+mv("./src/styles.alt.css", "./src/styles.css", { clobber: true, mkdirp: false }, function (err) { if (err) console.error('Error occurred:', err); });
