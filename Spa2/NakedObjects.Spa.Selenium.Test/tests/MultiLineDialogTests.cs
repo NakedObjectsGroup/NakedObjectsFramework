@@ -62,6 +62,7 @@ namespace NakedObjects.Selenium {
             WaitForCss("#description2");
             OKButtonOnLine(2).AssertIsDisabled("Missing mandatory fields: Description; Discount Pct; Type; Category; Min Qty; Start Date; ");
 
+            br.SwitchTo().ActiveElement().SendKeys(Keys.PageDown + Keys.PageDown);
             //Close the MLD
             Click(WaitForCss(".close"));
             WaitForView(Pane.Single, PaneType.Home);
@@ -105,6 +106,7 @@ namespace NakedObjects.Selenium {
             Click(OKButtonOnLine(1));
             WaitForOKButtonToDisappear(1);
 
+            br.SwitchTo().ActiveElement().SendKeys(Keys.PageDown + Keys.PageDown);
             //close
             Click(WaitForCss(".close"));
             WaitForView(Pane.Single, PaneType.Object);
@@ -172,6 +174,7 @@ namespace NakedObjects.Selenium {
             WaitForCss("#product2");
             OKButtonOnLine(2);
 
+            br.SwitchTo().ActiveElement().SendKeys(Keys.PageDown + Keys.PageDown);
             //Close
             Click(WaitForCss(".close"));
             WaitForTextStarting(".title", "SO"); //back to order

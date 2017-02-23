@@ -223,6 +223,7 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.List);
             Reload();
             WaitForCss("td", 64);
+            Thread.Sleep(1000); // temperamental on server 
             OpenActionDialog("Change Discount");
             TypeIntoFieldWithoutClearing("#newdiscount1", "0.10");
             SelectCheckBox("#item1-2");
