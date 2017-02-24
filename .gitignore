@@ -101,3 +101,5 @@ Demo/NakedObjects.Rest.App.Demo/nakedobjects_log.txt.2016-06-02
 /Run/NakedObjects.Template/Scripts/nakedobjects.cicerocommandfactory.js
 /Run/NakedObjects.Template/Scripts/nakedobjects.app.js
 Spa2/nakedobjectsspa/.vs/config/applicationhost.config
+/Template/packages
+/Template/*log.txt
