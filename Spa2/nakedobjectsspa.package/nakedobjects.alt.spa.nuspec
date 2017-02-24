@@ -9,7 +9,7 @@
     <projectUrl>https://github.com/NakedObjectsGroup/</projectUrl>
     <iconUrl>http://www.nakedobjects.net/images/nakedobjects.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>Single Page Application user interface to run against a NakedObjects.Rest server.
+    <summary>A version of the NakedObjects.Spa package, with alternative styling
     </summary>
     <tags>rest restful objects naked nakedobjects ddd domain driven design api</tags>
     <description>Single Page Application client for a Naked Objects application.</description>
