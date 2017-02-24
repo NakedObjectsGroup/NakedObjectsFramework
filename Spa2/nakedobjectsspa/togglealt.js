@@ -6,9 +6,9 @@ function copyAndReplace(name) {
     var fromName = `./src/app/${name}/${name}.component.alt.css`;
     var tempName = `./src/app/${name}/${name}.component.temp.css`;
     var toName = `./src/app/${name}/${name}.component.css`;
-    mv(toName, tempName, { clobber: true, mkdirp: false }, function (err) { if (err) console.error('Error occurred:', err); });
-    mv(fromName, toName, { clobber: true, mkdirp: false }, function (err) { if (err) console.error('Error occurred:', err); });
-    mv(tempName, fromName, { clobber: true, mkdirp: false }, function (err) { if (err) console.error('Error occurred:', err); });
+    mv(toName, tempName, { clobber: false, mkdirp: false }, function (err) { if (err) console.error('Error occurred:', err); });
+    mv(fromName, toName, { clobber: false, mkdirp: false }, function (err) { if (err) console.error('Error occurred:', err); });
+    mv(tempName, fromName, { clobber: false, mkdirp: false }, function (err) { if (err) console.error('Error occurred:', err); });
 }
 
 function copyAndReplaceAll(names) {
@@ -33,12 +33,6 @@ var optionsToAlt = {
     files: ["./package.json"],
     from: [/nakedobjects.spa/g],
     to: "nakedobjects.alt.spa"
-};
-
-var optionsFromAlt = {
-    files: ["./package.json"],
-    from: [/nakedobjects.alt.spa/g],
-    to: "nakedobjects.spa"
 };
 
 find.findSync("name", ".", "package.json").then(s => {
