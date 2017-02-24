@@ -1,4 +1,5 @@
 ﻿var mv = require('mv');
+var replace = require('replace-in-file');
 
 function copyAndReplace(name) {
     var fromName = `./src/app/${name}/${name}.component.alt.css`;
@@ -19,3 +20,12 @@ let names = ["action", "actions", "application-properties", "attachment", "attac
 
 copyAndReplaceAll(names);
 mv("./src/styles.alt.css", "./src/styles.css", { clobber: true, mkdirp: false }, function (err) { if (err) console.error('Error occurred:', err); });
+
+// to update pacakage name 
+var options = {
+    files: ["./package.json"],
+    from: [/nakedobjects.spa/g],
+    to: "nakedobjects.alt.spa"
+};
+
+replace.sync(options);
