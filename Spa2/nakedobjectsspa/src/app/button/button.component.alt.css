@@ -12,7 +12,7 @@
 
 input {  /*To override user agent style sheet defaults*/
     cursor: pointer;
-    color:black;
+    color:white;
     font-weight: 100;
     font-size: 12pt;
     background-color: transparent;
@@ -22,7 +22,7 @@ input {  /*To override user agent style sheet defaults*/
 }
 
  input:hover, input:focus  {
-    outline-color: black;
+    outline-color: white;
     outline-style: solid;
     outline-width: 1px;
 }

@@ -9,6 +9,11 @@
     font-size: 11pt; 
     font-weight: 400;
     padding: 0px;
+}
+
+.dialog {
+    display: block;
+    overflow-y: auto;
     border-style: solid;
     border-color: black;
     border-width: 1px;
@@ -23,19 +28,21 @@ form {
     background-image: linear-gradient(to bottom, #11648a, #187ba9 100%);
 }
 
-.dialog input, .dialog select {
+.dialog select {
     margin-bottom: 10px;
     border-style:solid;
     border-color: grey;
     border-width: 1px;
 }
 
-input {
-    padding-right: 10px; /*To avoid text running over the 'x' (clear button)*/
-}
 
 input[type='text'] {
+    padding-right: 10px; /*To avoid text running over the 'x' (clear button)*/
     padding-left: 4px;
+        margin-bottom: 10px;
+    border-style:solid;
+    border-color: grey;
+    border-width: 1px;
 }
 input[type=button],
 input[type=reset],

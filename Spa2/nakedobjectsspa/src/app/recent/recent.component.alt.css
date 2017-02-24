@@ -1,6 +1,5 @@
 :host {
     display: block;
-    color: black;
     margin-left: 20px;
     padding-left: 20px;
     height: 100%;
@@ -11,7 +10,8 @@
     display: block;
     font-size: 24pt; 
     font-weight: 200;
-     background-image: linear-gradient(to bottom, #11648a, #187ba9 100%);
+    background-image: linear-gradient(to bottom, #11648a, #187ba9 100%);
+    color: white;
 }
 
 nof-buttons, nof-button {
@@ -26,4 +26,5 @@ table {
 
 tr {
     cursor: pointer;
+    color: white;
 }

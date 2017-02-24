@@ -20,7 +20,8 @@
     display: block;
     margin-bottom: 20px;
     overflow: hidden;
-     background-image: linear-gradient(to bottom, #11648a, #187ba9 100%);
+    background-image: linear-gradient(to bottom, #11648a, #187ba9 100%);
+    color: white;
 }
 
 viewTitle {
@@ -68,7 +69,7 @@ viewTitle {
 }
 
 .title:hover, .title:focus   {
-    outline-color:black;
+    outline-color:white;
     outline-style: solid;
     outline-width: 1px;
 }

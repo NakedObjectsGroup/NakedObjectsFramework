@@ -15,10 +15,11 @@
     display: block;
     cursor: pointer;
     padding: 5px;
+    color: white;
 }
 
 .name:hover, .name:focus  {
-    outline-color: black;
+    outline-color:white;
     outline-style: solid;
     outline-width: 1px;
 }

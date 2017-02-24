@@ -20,13 +20,13 @@ a {
     a:hover, a:focus {
         outline-style: solid;
         outline-width: 1px;
-        outline-color: blue;
+        outline-color: #11648a;
     }
 
     a:active {
         outline-style: solid;
         outline-width: 2px;
-        outline-color: black;
+        outline-color: #11648a;
     }
 
 a, .currentcopy {
