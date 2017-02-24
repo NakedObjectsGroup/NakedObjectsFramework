@@ -6,9 +6,20 @@ function copyAndReplace(name) {
     var fromName = `./src/app/${name}/${name}.component.alt.css`;
     var tempName = `./src/app/${name}/${name}.component.temp.css`;
     var toName = `./src/app/${name}/${name}.component.css`;
-    mv(toName, tempName, { clobber: false, mkdirp: false }, function (err) { if (err) console.error('Error occurred:', err); });
-    mv(fromName, toName, { clobber: false, mkdirp: false }, function (err) { if (err) console.error('Error occurred:', err); });
-    mv(tempName, fromName, { clobber: false, mkdirp: false }, function (err) { if (err) console.error('Error occurred:', err); });
+
+    const fErr = function (err) { if (err) console.error('Error occurred:', err); };
+    const opts = { clobber: false, mkdirp: false }
+
+    const p = new Promise(() => {
+        mv(toName, tempName, opts, fErr);
+        return true;
+    }).then(() => {
+        mv(fromName, toName, opts, fErr);
+        return true;
+    }).then(() => {
+        mv(tempName, fromName, opts, fErr);
+        return true;
+    });
 }
 
 function copyAndReplaceAll(names) {
