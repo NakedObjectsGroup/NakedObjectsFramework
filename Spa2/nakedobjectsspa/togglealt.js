@@ -2,13 +2,14 @@
 var replace = require('replace-in-file');
 var find = require('find-in-files');
 
+const fErr = function (err) { if (err) console.error('Error occurred:', err); };
+const opts = { clobber: false, mkdirp: false }
+
 function copyAndReplace(name) {
     var fromName = `./src/app/${name}/${name}.component.alt.css`;
     var tempName = `./src/app/${name}/${name}.component.temp.css`;
     var toName = `./src/app/${name}/${name}.component.css`;
 
-    const fErr = function (err) { if (err) console.error('Error occurred:', err); };
-    const opts = { clobber: false, mkdirp: false }
 
     const mv3 = () => mv(tempName, fromName, opts, fErr);
     const mv2 = () => mv(fromName, toName, opts, mv3);
@@ -30,9 +31,9 @@ let names = ["action", "actions", "application-properties", "attachment", "attac
 
 copyAndReplaceAll(names);
 
-mv("./src/styles.css", "./src/styles.temp.css", { clobber: true, mkdirp: false }, function (err) { if (err) console.error('Error occurred:', err); });
-mv("./src/styles.alt.css", "./src/styles.css", { clobber: true, mkdirp: false }, function (err) { if (err) console.error('Error occurred:', err); });
-mv("./src/styles.temp.css", "./src/styles.alt.css", { clobber: true, mkdirp: false }, function (err) { if (err) console.error('Error occurred:', err); });
+const ms3 = () => mv("./src/styles.temp.css", "./src/styles.alt.css", opts, fErr);
+const ms2 = () => mv("./src/styles.alt.css", "./src/styles.css", opts, ms3);
+const ms1 = () => mv("./src/styles.css", "./src/styles.temp.css", opts, ms2);
 
 // to update package name 
 var optionsToAlt = {
