@@ -10,16 +10,11 @@ function copyAndReplace(name) {
     const fErr = function (err) { if (err) console.error('Error occurred:', err); };
     const opts = { clobber: false, mkdirp: false }
 
-    const p = new Promise(() => {
-        mv(toName, tempName, opts, fErr);
-        return true;
-    }).then(() => {
-        mv(fromName, toName, opts, fErr);
-        return true;
-    }).then(() => {
-        mv(tempName, fromName, opts, fErr);
-        return true;
-    });
+    const mv3 = () => mv(tempName, fromName, opts, fErr);
+    const mv2 = () => mv(fromName, toName, opts, mv3);
+    const mv1 = () => mv(toName, tempName, opts, mv2);
+
+    mv1();
 }
 
 function copyAndReplaceAll(names) {
