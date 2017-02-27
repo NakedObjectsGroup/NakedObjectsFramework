@@ -35,13 +35,6 @@ const ms3 = () => mv("./src/styles.temp.css", "./src/styles.alt.css", opts, fErr
 const ms2 = () => mv("./src/styles.alt.css", "./src/styles.css", opts, ms3);
 const ms1 = () => mv("./src/styles.css", "./src/styles.temp.css", opts, ms2);
 
-// to update package name 
-var optionsToAlt = {
-    files: ["./package.json"],
-    from: [/nakedobjects.spa/g],
-    to: "nakedobjects.alt.spa"
-};
-
 find.findSync("name", ".", "package.json").then(s => {
 
     try {
@@ -60,6 +53,7 @@ find.findSync("name", ".", "package.json").then(s => {
         };
 
         replace.sync(options);
+
     } catch (e) {
         console.error('Error occurred updating name:', e);
     }
