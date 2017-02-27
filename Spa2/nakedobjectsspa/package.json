@@ -28,7 +28,8 @@
     "togglealt" : "node togglealt.js",
     "copybacktoalt" : "node copybacktoalt.js",
     "prepublish": "node prepublish.js",
-    "postinstall": "node postinstall.js"
+    "postinstall": "node postinstall.js",
+    "tsc" :"tsc -p ./src/tsconfig.json"
   },
   "main": "./lib/app/index.js",
   "typings": "./lib/app/index.d.ts",
