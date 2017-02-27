@@ -2,7 +2,8 @@
 
 # directories
 /bin
-/dist
+/dist1
+/dist2
 /e2e
 /node_modules
 /obj 
