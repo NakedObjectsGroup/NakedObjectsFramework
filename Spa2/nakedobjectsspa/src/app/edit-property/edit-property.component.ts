@@ -146,8 +146,8 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
         super.init(this.parent, this.property, this.form.controls[this.prop.id]);
     }
 
-    datePickerChanged(evt: any) {
-        const val = evt.currentTarget.value;
+    datePickerChanged(evt: Event) {
+        const val = (evt.target as HTMLInputElement).value;
         this.formGroup.value[this.property.id] = val;
     }
 

@@ -167,7 +167,6 @@ export function validate(rep: Models.IHasExtensions, vm: FieldViewModel, modelVa
 
 export function setScalarValueInView(vm: { value: string | number | boolean | Date | null }, propertyRep: Models.PropertyMember, value: Models.Value) {
     if (Models.isDateOrDateTime(propertyRep)) {
-        //vm.value = Models.toUtcDate(value);
         const date = Models.toUtcDate(value);
         vm.value = date ? Models.toDateString(date) : "";
     } else if (Models.isTime(propertyRep)) {

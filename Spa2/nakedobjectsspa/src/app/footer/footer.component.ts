@@ -112,19 +112,15 @@ export class FooterComponent implements OnInit {
         return this.copyViewModel.draggableTitle();
     }
 
-
     ngOnInit() {
-        this.context.getUser().then((user: Models.UserRepresentation) => this.userName = user.userName()).catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+        this.context.getUser().then(user => this.userName = user.userName()).catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
-        this.repLoader.loadingCount$.subscribe((count: any) => this.loading = count > 0 ? Msg.loadingMessage : "");
+        this.repLoader.loadingCount$.subscribe(count => this.loading = count > 0 ? Msg.loadingMessage : "");
 
-        this.context.warning$.subscribe((ws: any) =>
-            this.warnings = ws);
+        this.context.warning$.subscribe(ws => this.warnings = ws);
 
-        this.context.messages$.subscribe((ms: any) =>
-            this.messages = ms);
+        this.context.messages$.subscribe(ms => this.messages = ms);
 
-        this.context.copiedViewModel$.subscribe((cvm: any) =>
-            this.copyViewModel = cvm);
+        this.context.copiedViewModel$.subscribe(cvm => this.copyViewModel = cvm);
     }
 }

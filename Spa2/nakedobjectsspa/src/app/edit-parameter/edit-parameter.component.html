@@ -44,7 +44,7 @@
 
             <!--"EntryType.File"-->
             <div *ngIf="parameterEntryType === 6">
-                <input #focus [id]="parameterPaneId" type="file" placeholder="{{description}}" (change)="fileUpload()" />
+                <input #focus [id]="parameterPaneId" type="file" placeholder="{{description}}" (change)="fileUpload($event)" />
             </div>
 
             <!--"EntryType.AutoComplete"-->

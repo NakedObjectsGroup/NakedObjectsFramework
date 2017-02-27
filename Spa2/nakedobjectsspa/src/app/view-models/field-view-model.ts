@@ -69,7 +69,7 @@ export abstract class FieldViewModel extends MessageViewModel {
     private currentChoice: ChoiceViewModel | null;
     private currentMultipleChoices: ChoiceViewModel[];
     private currentRawValue: Ro.scalarValueType | Date | null = null;
-    private choiceOptions: any[] = [];
+    private choiceOptions: ChoiceViewModel[] = [];
 
     file: Models.Link;
 

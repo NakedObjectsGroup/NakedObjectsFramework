@@ -103,12 +103,12 @@ export class SimpleLruCache {
         return node ? node.value : null;
     }
 
-    private updateExistingEntry(key: string, value: cachableTypes): any {
+    private updateExistingEntry(key: string, value: cachableTypes): void {
         const node = this.getNode(key) !;
         node.value = value;
     }
 
-    private addNewEntry(key: string, value: cachableTypes): any {
+    private addNewEntry(key: string, value: cachableTypes): void {
         const newNode = new LruNode(key, value);
         this.cache[key] = newNode;
         this.moveNodeToHead(newNode);

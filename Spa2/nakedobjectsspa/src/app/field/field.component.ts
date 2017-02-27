@@ -162,28 +162,22 @@ export abstract class FieldComponent {
         return this.model.getMessage();
     }
 
-    _form: FormGroup;
+    private formGrp: FormGroup;
 
-    onValueChanged(data?: any) {
-  
+    onValueChanged() {
         if (this.model) {
-            const control = this._form.get(this.model.id);
-            if (control && control.dirty && !control.valid) {
-                // todo either do something so need this check  or remove it ! 
-                //this.message = this.model.getMessage();
-            }
             this.onChange();
         }
     }
 
     set formGroup(fm: FormGroup) {
-        this._form = fm;
-        this._form.valueChanges.subscribe((data: any) => this.onValueChanged(data));
+        this.formGrp = fm;
+        this.formGrp.valueChanges.subscribe((data) => this.onValueChanged());
         this.onValueChanged(); // (re)set validation messages now
     }
 
     get formGroup() {
-        return this._form;
+        return this.formGrp;
     }
 
     populateAutoComplete() {
@@ -221,28 +215,24 @@ export abstract class FieldComponent {
         this.control.reset(item);
     }
 
-    private isInside(clickedComponent: any): boolean {
+    private isInside(clickedComponent: Node): boolean {
         if (clickedComponent) {
             return clickedComponent === this.elementRef.nativeElement || this.isInside(clickedComponent.parentNode);
         }
         return false;
     }
 
-    handleClick(event: any) {
+    handleClick(event: Event) {
         if (this.isAutoComplete) {
-            if (!this.isInside(event.target)) {
+            if (!this.isInside(event.target as Node)) {
                 this.model.choices = [];
             }
         }
     }
 
-    fileUpload() {
-        //const file = (this.elementRef[0] as any).files[0] as File;
-
-        // todo - doesn't look right why using query selector ? 
-        const element = document.querySelector("input[type='file']");
-        const file = (element as any).files[0] as File;
-
+    fileUpload(evt : Event) {
+       
+        const file = (evt.target as HTMLInputElement).files[0];
         const fileReader = new FileReader();
         fileReader.onloadend = () => {
             const link = new Models.Link({
@@ -258,7 +248,7 @@ export abstract class FieldComponent {
         fileReader.readAsDataURL(file);
     }
 
-    paste(event: any) {
+    paste(event: KeyboardEvent) {
         const vKeyCode = 86;
         const deleteKeyCode = 46;
         if (event && (event.keyCode === vKeyCode && event.ctrlKey)) {

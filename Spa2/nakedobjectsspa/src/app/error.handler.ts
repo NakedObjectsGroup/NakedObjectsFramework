@@ -6,6 +6,7 @@ import * as Models from './models';
 export class GeminiErrorHandler implements ErrorHandler {
     handleError(error: any) {
 
+        // todo make safer 
         const ec = error.context || error.rejection.context;
 
         if (ec) {
