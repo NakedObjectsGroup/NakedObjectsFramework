@@ -1,4 +1,5 @@
 ﻿var gentlyCopy = require('gently-copy');
+var fs = require('fs');
 
 var appfileList = [   
     './lib/app/app-routing.module.ts',
@@ -19,3 +20,18 @@ var appdest = '../../src/app/';
 
 gentlyCopy(appfileList, appdest, { overwrite: true });
 gentlyCopy(rootfileList, rootdest, { overwrite: true });
+
+
+var ac = JSON.parse(fs.readFileSync('../../.angular-cli.json', 'utf8'));
+var assets = ac.apps[0].assets;
+var found = false;
+
+for (var i = 0; i < assets.length; i++) {
+    found = assets[i] === "config.json" || found;
+}
+
+if (!found) {
+    assets.push("config.json");
+}
+
+fs.writeFile('../../.angular-cli.json', JSON.stringify(ac, null, 2));
