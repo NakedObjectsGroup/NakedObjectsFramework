@@ -8,32 +8,21 @@
     color: black;
     font-size: 11pt; 
     font-weight: 400;
+    padding-left: 5px;
+    padding-right: 5px; 
 }
 
 .dialog {
-    display: block;
-    padding: 5px;  
+    display: block; 
 }
 
-.dialog input, .dialog select {
-    border-style:solid;
-    border-color: grey;
-    border-width: 1px;
-}
-
-input {
-    padding-right: 10px; /*To avoid text running over the 'x' (clear button)*/
-}
-
-input[type='text'] {
-    padding-left: 4px;
-}
 input[type=button],
 input[type=reset],
 input[type=submit] {
     margin-left: 5px;
     margin-top: 10px;
     margin-right: 5px;
+    margin-bottom: 5px;
     display: inline-block;
     padding: 4px 12px;
     text-align: center;
@@ -57,6 +46,10 @@ input[type='submit']:hover {
     outline: solid;
     outline-width: 1px;
     outline-color: black;
+}
+
+.ok[disabled="disabled"] {
+    color: grey;
 }
 
 .title {
