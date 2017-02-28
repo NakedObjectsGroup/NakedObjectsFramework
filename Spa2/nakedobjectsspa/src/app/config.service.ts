@@ -5,6 +5,7 @@ import * as Ro from './ro-interfaces';
 
 export interface IAppConfig {
     appPath: string;
+    applicationName : string, 
     logoffUrl: string;
 
     // this can be a full url eg http://www.google.com
@@ -96,6 +97,7 @@ export class ConfigService {
     // defaults 
     private appConfig: IAppConfig = {
         appPath: "",
+        applicationName : "", 
         logoffUrl: "",
         postLogoffUrl: "/gemini/home",
         defaultPageSize: 20,

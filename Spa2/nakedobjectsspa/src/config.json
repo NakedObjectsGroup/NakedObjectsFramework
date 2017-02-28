@@ -3,6 +3,7 @@
     "logoffUrl": "http://nakedobjectsrodemo.azurewebsites.net/Account/Logoff",
     "urlShortCuts": [ "http://nakedobjectsrodemo.azurewebsites.net", "AdventureWorksModel" ],
     "doUrlValidation": true,
+    "applicationName" : "Adventureworks Demo",
     "colors": {
         "typeMap": {
             "AdventureWorksModel.Customer": 1,

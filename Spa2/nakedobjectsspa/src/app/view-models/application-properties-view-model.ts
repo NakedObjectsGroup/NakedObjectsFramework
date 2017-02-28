@@ -27,6 +27,8 @@ export class ApplicationPropertiesViewModel {
         this.serverUrl = this.configService.config.appPath;
 
         this.clientVersion = Constants.clientVersion;
+
+        this.applicationName = this.configService.config.applicationName;
     }
 
 
@@ -34,4 +36,5 @@ export class ApplicationPropertiesViewModel {
     user: Ro.IUserRepresentation;
     serverUrl: string;
     clientVersion: string;
+    applicationName : string;
 }

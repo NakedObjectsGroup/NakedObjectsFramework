@@ -13,6 +13,10 @@ export class ApplicationPropertiesComponent implements OnInit {
         private readonly viewModelFactory : ViewModelFactoryService) {
     }
 
+    get applicationName() {
+        return this.applicationProperties.applicationName;
+    }
+
     get userName() {
         return this.applicationProperties.user ? this.applicationProperties.user.userName : "'No user set'";
     }
