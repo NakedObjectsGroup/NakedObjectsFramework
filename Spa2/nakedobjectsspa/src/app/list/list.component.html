@@ -49,7 +49,7 @@
 						<td [hidden]="disableActions()" class="checkbox">
 							<input type="checkbox" [id]="itemId(i)" [(ngModel)]="item.selected">
 						</td>
-						<td *ngIf="itemHasTableTitle(item)" (click)="doItemClick()" [ngClass]="itemColor(item)" class="cell">
+						<td *ngIf="itemHasTableTitle(item)"  geminiClick (leftClick)="doItemClick(item)" (rightClick)="doItemClick(item, true)" [ngClass]="itemColor(item)" class="cell">
 							{{itemTableTitle(item)}}
 						</td>
 						<td *ngFor="let property of itemTableProperties(item)" geminiClick (leftClick)="doItemClick(item)" (rightClick)="doItemClick(item, true)"
