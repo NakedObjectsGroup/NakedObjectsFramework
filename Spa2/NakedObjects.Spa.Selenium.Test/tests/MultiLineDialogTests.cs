@@ -7,11 +7,21 @@
 
 using System;
 using System.Linq;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
 namespace NakedObjects.Selenium {
+
+   
+
+
     public abstract class MultiLineDialogTestsRoot : AWTest {
+        protected void PageDownAndWait() {
+            br.SwitchTo().ActiveElement().SendKeys(Keys.PageDown + Keys.PageDown + Keys.PageDown + Keys.PageDown + Keys.PageDown);
+            Thread.Sleep(1000);
+        }
+
         public virtual void MultiLineMenuAction() {
             GeminiUrl("home?m1=SpecialOfferRepository");
             Click(GetObjectAction("Create Multiple Special Offers"));
@@ -50,6 +60,7 @@ namespace NakedObjects.Selenium {
             SelectDropDownOnField("#category1", "Reseller");
             ClearFieldThenType("#minqty1", "5");
             ClearFieldThenType("#startdate1", "01/01/2002");
+            PageDownAndWait();
             OKButtonOnLine(1).AssertIsEnabled();
             Click(OKButtonOnLine(1));
             WaitForTextEquals(".co-validation", 1, "Submitted");
@@ -62,7 +73,7 @@ namespace NakedObjects.Selenium {
             WaitForCss("#description2");
             OKButtonOnLine(2).AssertIsDisabled("Missing mandatory fields: Description; Discount Pct; Type; Category; Min Qty; Start Date; ");
 
-            br.SwitchTo().ActiveElement().SendKeys(Keys.PageDown + Keys.PageDown);
+            PageDownAndWait();
             //Close the MLD
             Click(WaitForCss(".close"));
             WaitForView(Pane.Single, PaneType.Home);
@@ -106,7 +117,7 @@ namespace NakedObjects.Selenium {
             Click(OKButtonOnLine(1));
             WaitForOKButtonToDisappear(1);
 
-            br.SwitchTo().ActiveElement().SendKeys(Keys.PageDown + Keys.PageDown);
+            PageDownAndWait();
             //close
             Click(WaitForCss(".close"));
             WaitForView(Pane.Single, PaneType.Object);
@@ -174,7 +185,7 @@ namespace NakedObjects.Selenium {
             WaitForCss("#product2");
             OKButtonOnLine(2);
 
-            br.SwitchTo().ActiveElement().SendKeys(Keys.PageDown + Keys.PageDown);
+            PageDownAndWait();
             //Close
             Click(WaitForCss(".close"));
             WaitForTextStarting(".title", "SO"); //back to order
