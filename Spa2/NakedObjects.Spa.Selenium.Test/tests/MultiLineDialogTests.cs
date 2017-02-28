@@ -107,6 +107,7 @@ namespace NakedObjects.Selenium {
             Click(OKButtonOnLine(0));
             WaitForOKButtonToDisappear(0);
 
+            PageDownAndWait();
             //line 1
             ClearFieldThenType("#prod1", "bottle");
             wait.Until(d => d.FindElements(By.CssSelector(".suggestions a")).Count > 0);
