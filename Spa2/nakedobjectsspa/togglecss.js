@@ -6,9 +6,9 @@ const fErr = function (err) { if (err) console.error('Error occurred:', err); };
 const opts = { clobber: false, mkdirp: false }
 
 function copyAndReplace(name) {
-    var fromName = `./lib/app/${name}/${name}.component.alt.css`;
-    var tempName = `./lib/app/${name}/${name}.component.temp.css`;
-    var toName = `./lib/app/${name}/${name}.component.css`;
+    var fromName = `./node_modules/nakedobjects.spa/lib/app/${name}/${name}.component.alt.css`;
+    var tempName = `./node_modules/nakedobjects.spa/lib/app/${name}/${name}.component.temp.css`;
+    var toName = `./node_modules/nakedobjects.spa/lib/app/${name}/${name}.component.css`;
 
 
     const mv3 = () => mv(tempName, fromName, opts, fErr);
@@ -31,8 +31,8 @@ let names = ["action", "actions", "application-properties", "attachment", "attac
 
 copyAndReplaceAll(names);
 
-const ms3 = () => mv("../../src/styles.temp.css", "../../src/styles.alt.css", opts, fErr);
-const ms2 = () => mv("../../src/styles.alt.css", "../../src/styles.css", opts, ms3);
-const ms1 = () => mv("../../src/styles.css", "../../src/styles.temp.css", opts, ms2);
+const ms3 = () => mv("./src/styles.temp.css", "./src/styles.alt.css", opts, fErr);
+const ms2 = () => mv("./src/styles.alt.css", "./src/styles.css", opts, ms3);
+const ms1 = () => mv("./src/styles.css", "./src/styles.temp.css", opts, ms2);
 
 ms1();

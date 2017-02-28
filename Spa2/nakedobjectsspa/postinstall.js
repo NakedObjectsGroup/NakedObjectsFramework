@@ -11,6 +11,7 @@ var appfileList = [
 var rootfileList = [
     './lib/config.json',
     './lib/index.html',
+    './lib/styles.alt.css',
     './lib/styles.css',
     './lib/fonts',
     './lib/assets'];
