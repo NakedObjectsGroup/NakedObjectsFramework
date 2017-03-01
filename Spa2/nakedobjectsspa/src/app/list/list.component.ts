@@ -211,6 +211,12 @@ export class ListComponent implements AfterViewInit {
             // should never get here 
             this.loggerService.throw("ListComponent:setup Missing cachedList");
         }
+
+        if (this.collection) {
+            // if any previous messages clear them
+            this.collection.resetMessage();
+        }
+
         this.selectedDialogId = routeData.dialogId;
     }
 
@@ -242,7 +248,7 @@ export class ListComponent implements AfterViewInit {
                     this.urlManager.getPaneRouteDataObservable(paneId)
                         .subscribe((paneRouteData: PaneRouteData) => {
                             if (!paneRouteData.isEqual(this.lastPaneRouteData)) {
-                                this.lastPaneRouteData = paneRouteData;
+                                this.lastPaneRouteData = paneRouteData;                              
                                 this.setup(paneRouteData);
                             }
                         });
