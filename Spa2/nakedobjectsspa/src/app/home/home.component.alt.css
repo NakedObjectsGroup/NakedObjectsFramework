@@ -1,4 +1,4 @@
-:host {
+:home {
     display: block;
     padding-left: 20px;
     height: 100%;
@@ -6,7 +6,6 @@
     color: black;
     font-size: 11pt; 
     font-weight: 100;
-    padding-bottom: 60px;
 }
 
 .header {
