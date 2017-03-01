@@ -76,7 +76,7 @@
                 <div [ngSwitch]="parameterReturnType">
                     <div *ngSwitchCase="'string'" [ngSwitch]="format">
                         <div *ngSwitchCase="'date'">
-                            <input #focus [id]="parameterPaneId" type="date" placeholder="{{description}}" [formControlName]="parameterId" [geminiClear]="parameter" />
+                            <input #focus [id]="parameterPaneId" type="date" placeholder="{{description}}" [formControlName]="parameterId"  />
                         </div>
                         <div *ngSwitchCase="'time'">
                             <input #focus [id]="parameterPaneId" type="time" placeholder="{{description}}" [formControlName]="parameterId" [geminiClear]="parameter" [form]="form" />
