@@ -1,4 +1,11 @@
-img {
-    max-width: 245px;
-    max-height: 100px;
+.attachment {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    height: 100%;
+}
+
+ img {
+        max-width: 100%;
+        height: auto;
 }
