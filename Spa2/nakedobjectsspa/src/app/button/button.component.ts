@@ -20,6 +20,9 @@ export class ButtonComponent {
     @Input()
     button: IButton;
 
+    @Input()
+    contextClass: string;
+
     doClick() {
         this.button.doClick();
     }
@@ -28,6 +31,10 @@ export class ButtonComponent {
         if (this.button.doRightClick) {
             this.button.doRightClick();
         }
+    }
+
+    get class() {
+        return this.contextClass;
     }
 
     show() {

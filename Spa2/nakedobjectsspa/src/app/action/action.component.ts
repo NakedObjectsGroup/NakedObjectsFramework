@@ -3,6 +3,7 @@ import { ActionViewModel } from '../view-models/action-view-model';
 import { ContextService} from '../context.service';
 import { ISubscription } from 'rxjs/Subscription';
 import * as Models from '../models';
+import { IButton } from '../button/button.component';
 
 @Component({
     selector: 'nof-action',
@@ -15,8 +16,25 @@ export class ActionComponent {
                 private readonly context: ContextService) {
     }
 
+    private avm : ActionViewModel;
+
     @Input()
-    action: ActionViewModel;
+    set action(act: ActionViewModel) {
+        this.avm = act;
+        this.button = {
+            value: this.friendlyName,
+            doClick: () => this.doInvoke(),
+            doRightClick: () => this.doInvoke(true),
+            show: () => true,
+            disabled: () => this.disabled(),
+            title: () => this.description,
+            accesskey: null
+        }
+    }
+
+    get action(): ActionViewModel {
+        return this.avm;
+    }
 
     get description() {
         return this.action.description;
@@ -25,6 +43,18 @@ export class ActionComponent {
     get friendlyName() {
         return this.action.title;
     }
+
+    get contextClass() {
+        if (this.isObjectContext()) {
+            return "objectContext";
+        }
+        if (this.isCollectionContext()) {
+            return "collectionContext";
+        }
+        return "";
+    }
+
+    button: IButton;
 
     disabled() {
         return this.action.disabled() ? true : null;

@@ -32,6 +32,7 @@ export const clear = "Clear";
 export const recentDisabledMessage = "Nothing to clear";
 export const recentMessage = "Clear recent history";
 export const recentTitle = "Recently Viewed Objects";
+export const noUserMessage = "'No user set'";
 
 export const outOfRange = (val: any, min: any, max: any, filter: ILocalFilter) => {
     const minVal = filter ? filter.filter(min) : min;
