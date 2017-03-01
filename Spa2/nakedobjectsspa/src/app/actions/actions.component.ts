@@ -34,7 +34,8 @@ export class ActionsComponent implements OnInit, AfterViewInit {
     displayContextClass() {
         return ({
             objectContext: this.isObjectContext(),
-            collectionContext: this.isCollectionContext()
+            collectionContext: this.isCollectionContext(),
+            homeContext : this.isHomeContext()
         });
     }
 
@@ -48,6 +49,9 @@ export class ActionsComponent implements OnInit, AfterViewInit {
         return this.firstAction && this.firstAction.actionRep.parent instanceof Models.CollectionMember;
     }
 
+    isHomeContext() {
+        return this.firstAction && this.firstAction.actionRep.parent instanceof Models.MenuRepresentation;
+    }
 
     @ViewChildren(ActionComponent)
     actionChildren: QueryList<ActionComponent>;
