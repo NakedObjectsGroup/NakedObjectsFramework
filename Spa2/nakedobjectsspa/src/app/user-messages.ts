@@ -28,6 +28,11 @@ export const concurrencyMessage = "The object has been reloaded to pick up chang
 export const loadingMessage = "Loading...";
 export const submittedMessage = "Submitted";
 
+export const clear = "Clear";
+export const recentDisabledMessage = "Nothing to clear";
+export const recentMessage = "Clear recent history";
+export const recentTitle = "Recently Viewed Objects";
+
 export const outOfRange = (val: any, min: any, max: any, filter: ILocalFilter) => {
     const minVal = filter ? filter.filter(min) : min;
     const maxVal = filter ? filter.filter(max) : max;

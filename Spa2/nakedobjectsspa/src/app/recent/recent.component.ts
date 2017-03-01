@@ -8,6 +8,7 @@ import { RecentItemsViewModel } from '../view-models/recent-items-view-model';
 import { RecentItemViewModel } from '../view-models/recent-item-view-model';
 import { PaneComponent } from '../pane/pane';
 import { IButton } from '../button/button.component';
+import * as Msg from '../user-messages';
 
 @Component({
     selector: 'nof-recent',
@@ -26,7 +27,7 @@ export class RecentComponent extends PaneComponent {
 
     // template API 
 
-    title = "Recently Viewed Objects";
+    title = Msg.recentTitle;
     items = () => this.recent.items;
 
     // todo again a smell - new child component ! 
@@ -39,11 +40,11 @@ export class RecentComponent extends PaneComponent {
     recent: RecentItemsViewModel;
 
     private clearButton: IButton = {
-        value: "Clear",
+        value: Msg.clear,
         doClick: () => this.clear(),
         show: () => true,
         disabled: () => this.clearDisabled(),
-        title: () => "Clear history",
+        title: () => this.clearDisabled() ? Msg.recentDisabledMessage : Msg.recentMessage,
         accesskey: "c"
     };
 
