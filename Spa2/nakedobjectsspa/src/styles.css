@@ -36,20 +36,17 @@ html, #main, body, .background, .single, .split {
     overflow-y: auto;
 }
 
-/*Single & Split panes */
 .single, .split {
-    /*changed from 60 to 20 as hack becuase it was cropping list*/
-    padding-bottom: 20px; /*So bottom content doesn't get cut off by footer*/
+    overflow-x: auto;
+    padding-bottom: 60px;
 }
-
 .single {
     width: 100%;
 }
 
-.split#pane1 { /*pane1 only because pane2 is inside pane1, so want it 100% of 50%*/
+.split { 
+   float: left;
     width: 50%;
-    overflow-x: auto;
-    float: left;
 }
 
 /*0. Black */
