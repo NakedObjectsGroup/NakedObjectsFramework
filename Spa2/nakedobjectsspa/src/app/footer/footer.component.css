@@ -66,6 +66,7 @@ a, .currentcopy {
     background-repeat: repeat;
     margin-top: 0;
     position: relative;
+    cursor: pointer;
 }
 
 .icon-home:before {
