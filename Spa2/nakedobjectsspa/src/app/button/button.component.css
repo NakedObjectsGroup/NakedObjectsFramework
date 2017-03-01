@@ -11,6 +11,8 @@
 }
 
 input {  /*To override user agent style sheet defaults*/
+    white-space: normal; /*Needed to force long names to wrap*/
+    text-align: left;
     cursor: pointer;
     color: white;
     font-weight: 100;
@@ -21,7 +23,14 @@ input {  /*To override user agent style sheet defaults*/
     border: none;
 }
 
- input:hover, input:focus  {
+.objectContext, .collectionContext {
+    font-size: 12pt;
+}
+
+.collectionContext {
+    float: left;
+}
+input:hover, input:focus  {
     outline-color: white;
     outline-style: solid;
     outline-width: 1px;
