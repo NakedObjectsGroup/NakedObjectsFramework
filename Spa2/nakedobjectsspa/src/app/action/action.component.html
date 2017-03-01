@@ -1,4 +1,2 @@
-<div class="name" tabindex="0" title="{{description}}" geminiClick (leftClick)="doInvoke()" (rightClick)="doInvoke(true)" [attr.disabled]="disabled()" [ngClass]="displayClass()">
-    {{friendlyName}}
-</div>
+<input class="name" tabindex="0" type="button" title="{{description}}" value="{{friendlyName}}" geminiClick (leftClick)="doInvoke()" (rightClick)="doInvoke(true)" [disabled]="disabled()" [ngClass]="displayClass()"/>
 
