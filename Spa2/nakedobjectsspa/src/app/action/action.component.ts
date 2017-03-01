@@ -51,6 +51,9 @@ export class ActionComponent {
         if (this.isCollectionContext()) {
             return "collectionContext";
         }
+        if (this.isHomeContext()) {
+            return "homeContext";
+        }
         return "";
     }
 
@@ -60,11 +63,13 @@ export class ActionComponent {
         return this.action.disabled() ? true : null;
     }
 
+    // todo DRY this across actions and action 
     displayClass() {
         return ({
             tempdisabled: this.tempDisabled(),
             objectContext: this.isObjectContext(),
-            collectionContext: this.isCollectionContext()
+            collectionContext: this.isCollectionContext(),
+            homeContext: this.isHomeContext()
         });
     }
 
@@ -74,6 +79,10 @@ export class ActionComponent {
 
     isCollectionContext() {
         return this.action.actionRep.parent instanceof Models.CollectionMember;
+    }
+
+    isHomeContext() {
+        return this.action.actionRep.parent instanceof Models.MenuRepresentation;
     }
 
     tempDisabled(): boolean {
