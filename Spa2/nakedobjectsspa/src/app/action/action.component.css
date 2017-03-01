@@ -7,7 +7,7 @@
     display: block;
 }
 
-:host:disabled:hover {
+:host:disabled {
    outline: none;
 }
 
