@@ -111,7 +111,7 @@
                         <div *ngSwitchCase="'string'" [ngSwitch]="format">
                             <div *ngSwitchCase="'date'">
                                 <input #focus [id]="propertyPaneId"  type="date" placeholder="{{propertyDescription}}" [formControlName]="propertyId"
-                                     (change)="datePickerChanged($event)" [geminiClear]="property" [form]="form" />
+                                     (change)="datePickerChanged($event)"  />
                             </div>
                             <div *ngSwitchCase="'time'">
                                 <input #focus [id]="propertyPaneId"  type="time" placeholder="{{propertyDescription}}" [formControlName]="propertyId"
