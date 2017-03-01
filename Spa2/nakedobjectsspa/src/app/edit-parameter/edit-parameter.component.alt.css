@@ -69,7 +69,8 @@ input[type='text'] {
     outline-style: dashed;
 }
 
-:host.multilinedialog .input-control input:not([type='checkbox']){
+:host.multilinedialog .input-control input:not([type='checkbox']),
+:host.multilinedialog select{
     height: 20px;
     padding-top: 2px;
 }
