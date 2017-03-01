@@ -8,7 +8,7 @@
     display: block;
 }
 
-:host[disabled="disabled"]:hover {
+:host:disabled:hover {
    outline: none;
 }
 
@@ -18,7 +18,7 @@
    padding: 2px 5px;
 }
 
-.name[disabled="true"] {
+.name:disabled {
     color: grey;
 }
 

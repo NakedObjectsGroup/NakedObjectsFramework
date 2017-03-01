@@ -48,7 +48,7 @@ input[type='submit']:hover {
     outline-color: black;
 }
 
-.ok[disabled="disabled"] {
+.ok:disabled {
     color: grey;
 }
 

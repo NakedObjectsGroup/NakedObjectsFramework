@@ -51,7 +51,7 @@
     font-size: 16pt;
 }
 
-.menu[disabled="disabled"], .ok[disabled="disabled"] {
+.menu:disabled, .ok:disabled {
         color: grey;
     }
 

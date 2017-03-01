@@ -62,7 +62,7 @@ viewTitle {
     color: white;
     background-color: transparent;
 }
-.menu[disabled="disabled"] {
+.menu:disabled {
         color: grey;
 }
 
