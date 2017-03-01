@@ -1,8 +1,17 @@
-:host {
+.actions {
     float: left;
     margin-bottom: 20px;
     display: block;
 }
+
+.collectionContext {
+    display: block;
+    float: none;
+    margin-bottom: 5px;
+    width: 490px;
+    overflow: hidden;
+}
+
 
 .submenu  {
     display: block;
