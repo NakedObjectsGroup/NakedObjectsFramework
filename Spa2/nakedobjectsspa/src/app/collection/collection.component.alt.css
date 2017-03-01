@@ -31,3 +31,7 @@
 th {
     font-weight: 100;
 }
+
+tr {
+    cursor: pointer;
+}
