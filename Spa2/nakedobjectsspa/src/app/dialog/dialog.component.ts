@@ -106,11 +106,23 @@ export class DialogComponent {
 
     private createForm(dialog: DialogViewModel) {
         ({ form: this.form, dialog: this.dialog, parms: this.parms } = Helpers.createForm(dialog, this.formBuilder));
+        this.form.valueChanges.subscribe((data) => this.onValueChanged());
+    }
+
+    onValueChanged() {
+        if (this.dialog) {
+            // clear messages if dialog changes 
+            this.dialog.resetMessage();
+            this.context.clearMessages();
+            this.context.clearWarnings();
+        }
     }
 
     closeExistingDialog() {
         if (this.dialog) {
             this.dialog.doCloseKeepHistory();
+            this.context.clearMessages();
+            this.context.clearWarnings();
             this.dialog = null;
         }
     }
