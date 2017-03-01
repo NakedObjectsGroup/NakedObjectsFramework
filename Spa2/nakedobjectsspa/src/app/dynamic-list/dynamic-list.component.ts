@@ -9,7 +9,7 @@ import { PaneComponent } from '../pane/pane';
 import { Type } from '@angular/core/src/type';
 import { ContextService } from '../context.service';
 import { ErrorService } from '../error.service';
-import { IButton } from '../button/button.component';
+import { IButton } from '../action/action.component';
 import * as Models from '../models';
 import { ConfigService } from '../config.service';
 
@@ -64,6 +64,7 @@ export class DynamicListComponent extends PaneComponent {
         doClick: () => this.reload(),
         show: () => true,
         disabled: () => null,
+        tempDisabled: () => null,
         title: () => "",
         accesskey: null
     };

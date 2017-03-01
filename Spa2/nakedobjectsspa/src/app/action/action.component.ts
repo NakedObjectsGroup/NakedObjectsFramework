@@ -1,9 +1,15 @@
-import { Component, Input, ElementRef, OnInit, OnDestroy } from '@angular/core';
-import { ActionViewModel } from '../view-models/action-view-model';
-import { ContextService} from '../context.service';
-import { ISubscription } from 'rxjs/Subscription';
-import * as Models from '../models';
-import { IButton } from '../button/button.component';
+import { Component, OnInit, Input, ElementRef } from '@angular/core';
+
+export interface IButton {
+    doClick: () => void;
+    doRightClick?: () => void;
+    show: () => boolean;
+    disabled: () => boolean | null;
+    tempDisabled: () => boolean | null;
+    value: string;
+    title: () => string;
+    accesskey: string | null;
+}
 
 @Component({
     selector: 'nof-action',
@@ -12,93 +18,55 @@ import { IButton } from '../button/button.component';
 })
 export class ActionComponent {
 
-    constructor(private readonly myElement: ElementRef,
-                private readonly context: ContextService) {
-    }
-
-    private avm : ActionViewModel;
-
     @Input()
-    set action(act: ActionViewModel) {
-        this.avm = act;
-        this.button = {
-            value: this.friendlyName,
-            doClick: () => this.doInvoke(),
-            doRightClick: () => this.doInvoke(true),
-            show: () => true,
-            disabled: () => this.disabled(),
-            title: () => this.description,
-            accesskey: null
-        }
-    }
-
-    get action(): ActionViewModel {
-        return this.avm;
-    }
-
-    get description() {
-        return this.action.description;
-    }
-
-    get friendlyName() {
-        return this.action.title;
-    }
-
-    get contextClass() {
-        if (this.isObjectContext()) {
-            return "objectContext";
-        }
-        if (this.isCollectionContext()) {
-            return "collectionContext";
-        }
-        if (this.isHomeContext()) {
-            return "homeContext";
-        }
-        return "";
-    }
-
     button: IButton;
 
-    disabled() {
-        return this.action.disabled() ? true : null;
+    constructor(private readonly myElement: ElementRef) { }
+
+    private canClick() {
+        return !(this.disabled() || this.tempDisabled());
     }
 
-    // todo DRY this across actions and action 
-    displayClass() {
+    doClick() {
+        if (this.canClick()) {
+            this.button.doClick();
+        }
+    }
+
+    doRightClick() {
+        if (this.canClick() && this.button.doRightClick) {
+            this.button.doRightClick();
+        }
+    }
+
+    class() {
         return ({
-            tempdisabled: this.tempDisabled(),
-            objectContext: this.isObjectContext(),
-            collectionContext: this.isCollectionContext(),
-            homeContext: this.isHomeContext()
+            tempdisabled: this.tempDisabled()
         });
     }
 
-    isObjectContext() {
-        return this.action.actionRep.parent instanceof Models.DomainObjectRepresentation;
+    show() {
+        return this.button && this.button.show();
     }
 
-    isCollectionContext() {
-        return this.action.actionRep.parent instanceof Models.CollectionMember;
+    disabled() {
+        return this.button.disabled();
     }
 
-    isHomeContext() {
-        return this.action.actionRep.parent instanceof Models.MenuRepresentation;
+    tempDisabled() {
+        return this.button.tempDisabled();
     }
 
-    tempDisabled(): boolean {
-        return this.action.invokableActionRep &&
-            this.action.invokableActionRep.isPotent() &&
-            this.context.isPendingPotentActionOrReload(this.action.paneId);
+    get value() {
+        return this.button.value;
     }
 
-    doInvoke(right?: boolean) {
-        if (this.action.disabled() || this.tempDisabled()) {
-            return;
-        }
-        this.action.doInvoke(right);
+    get title() {
+        return this.button.title();
     }
 
     focus() {
-         this.myElement.nativeElement.children[0].focus();
+        // todo breaks stuff !
+        //this.myElement.nativeElement.children[0].focus();
     }
 }

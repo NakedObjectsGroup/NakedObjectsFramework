@@ -3,7 +3,6 @@ export * from './actions/actions.component';
 export * from './application-properties/application-properties.component';
 export * from './attachment/attachment.component';
 export * from './attachment-property/attachment-property.component';
-export * from './button/button.component';
 export * from './buttons/buttons.component';
 export * from './collection/collection.component';
 export * from './collections/collections.component';

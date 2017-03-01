@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IButton } from '../button/button.component';
+import { IButton } from '../action/action.component';
+import * as Actioncomponent from '../action/action.component';
 
 @Component({
     selector: 'nof-buttons',
@@ -9,5 +10,5 @@ import { IButton } from '../button/button.component';
 export class ButtonsComponent {
 
     @Input()
-    buttons: IButton[];
+    buttons: Actioncomponent.IButton[];
 }

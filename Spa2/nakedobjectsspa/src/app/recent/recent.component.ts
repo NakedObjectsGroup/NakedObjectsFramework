@@ -7,7 +7,7 @@ import { RouteData, PaneRouteData } from '../route-data';
 import { RecentItemsViewModel } from '../view-models/recent-items-view-model';
 import { RecentItemViewModel } from '../view-models/recent-item-view-model';
 import { PaneComponent } from '../pane/pane';
-import { IButton } from '../button/button.component';
+import { IButton } from '../action/action.component';
 import * as Msg from '../user-messages';
 
 @Component({
@@ -44,6 +44,7 @@ export class RecentComponent extends PaneComponent {
         doClick: () => this.clear(),
         show: () => true,
         disabled: () => this.clearDisabled(),
+        tempDisabled:  () => null,
         title: () => this.clearDisabled() ? Msg.recentDisabledMessage : Msg.recentMessage,
         accesskey: "c"
     };

@@ -107,6 +107,10 @@ export class ActionViewModel {
 
     readonly disabled = () => !!this.actionRep.disabledReason();
 
+    readonly tempDisabled = () => this.invokableActionRep &&
+        this.invokableActionRep.isPotent() &&
+        this.context.isPendingPotentActionOrReload(this.paneId);
+
     private getParameters(invokableAction: Models.IInvokableAction) {
         const parameters = _.pickBy(invokableAction.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Models.Parameter>;
         const parms = this.routeData.actionParams;

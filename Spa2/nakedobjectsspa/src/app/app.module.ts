@@ -10,7 +10,6 @@ import { ObjectComponent } from './object/object.component';
 import { ListComponent } from './list/list.component';
 import { ErrorComponent } from './error/error.component';
 import { ActionsComponent } from './actions/actions.component';
-import { ActionComponent } from './action/action.component';
 import { PropertiesComponent } from './properties/properties.component';
 import { CollectionsComponent } from './collections/collections.component';
 import { DialogComponent } from './dialog/dialog.component';
@@ -42,7 +41,7 @@ import { GeminiErrorHandler } from './error.handler';
 import { MenusComponent } from './menus/menus.component';
 import { MenuComponent } from './menu/menu.component';
 import { ButtonsComponent } from './buttons/buttons.component';
-import { ButtonComponent } from './button/button.component';
+import { ActionComponent } from './action/action.component';
 import { DynamicObjectComponent } from './dynamic-object/dynamic-object.component'
 import { CustomComponentService } from './custom-component.service';
 import { CustomComponentConfigService } from './custom-component-config.service';
@@ -64,7 +63,6 @@ import { CiceroRendererService } from './cicero-renderer.service';
         ListComponent,
         ErrorComponent,
         ActionsComponent,
-        ActionComponent,
         PropertiesComponent,
         CollectionsComponent,
         DialogComponent,
@@ -84,7 +82,7 @@ import { CiceroRendererService } from './cicero-renderer.service';
         MenusComponent,
         MenuComponent,
         ButtonsComponent,
-        ButtonComponent,
+        ActionComponent,
         DynamicObjectComponent,
         DynamicListComponent,
         AttachmentPropertyComponent,

@@ -24,8 +24,6 @@
   <ItemGroup>
     <Content Include="src\app\actions\actions.component.css" />
     <Content Include="src\app\actions\actions.component.html" />
-    <Content Include="src\app\action\action.component.css" />
-    <Content Include="src\app\action\action.component.html" />
     <Content Include="src\app\app.component.css" />
     <Content Include="src\app\app.component.html" />
     <Content Include="src\app\application-properties\application-properties.component.css" />
@@ -36,8 +34,8 @@
     <Content Include="src\app\attachment\attachment.component.html" />
     <Content Include="src\app\buttons\buttons.component.css" />
     <Content Include="src\app\buttons\buttons.component.html" />
-    <Content Include="src\app\button\button.component.css" />
-    <Content Include="src\app\button\button.component.html" />
+    <Content Include="src\app\action\action.component.css" />
+    <Content Include="src\app\action\action.component.html" />
     <Content Include="src\app\cicero\cicero.component.css" />
     <Content Include="src\app\cicero\cicero.component.html" />
     <Content Include="src\app\collections\collections.component.css" />
@@ -111,7 +109,6 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="src\app\actions\actions.component.ts" />
-    <TypeScriptCompile Include="src\app\action\action.component.ts" />
     <TypeScriptCompile Include="src\app\app-routing.module.ts" />
     <TypeScriptCompile Include="src\app\app.component.ts" />
     <TypeScriptCompile Include="src\app\app.module.ts" />
@@ -119,7 +116,7 @@
     <TypeScriptCompile Include="src\app\attachment-property\attachment-property.component.ts" />
     <TypeScriptCompile Include="src\app\attachment\attachment.component.ts" />
     <TypeScriptCompile Include="src\app\buttons\buttons.component.ts" />
-    <TypeScriptCompile Include="src\app\button\button.component.ts" />
+    <TypeScriptCompile Include="src\app\action\action.component.ts" />
     <TypeScriptCompile Include="src\app\cicero-command-factory.service.ts" />
     <TypeScriptCompile Include="src\app\cicero-commands.ts" />
     <TypeScriptCompile Include="src\app\cicero-renderer.service.ts" />

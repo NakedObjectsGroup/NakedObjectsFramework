@@ -16,7 +16,7 @@ import { CollectionViewModel } from '../view-models/collection-view-model';
 import { MenuItemViewModel } from '../view-models/menu-item-view-model';
 import { PaneComponent } from '../pane/pane';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
-import { IButton } from '../button/button.component';
+import { IButton } from '../action/action.component';
 import { ColorService } from '../color.service';
 import { ConfigService } from '../config.service';
 import { ISubscription } from 'rxjs/Subscription';
@@ -171,6 +171,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         doClick: () => this.toggleActionMenu(),
         show: () => true,
         disabled: () => this.disableActions(),
+        tempDisabled: () => null,
         title: () => this.actionsTooltip(),
         accesskey: "a"
     }
@@ -180,6 +181,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         doClick: () => this.doEdit(),
         show: () => this.showEdit(),
         disabled: () => null,
+        tempDisabled: () => null,
         title: () => "",
         accesskey: null
     }
@@ -189,6 +191,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         doClick: () => this.doReload(),
         show: () => true,
         disabled: () => null,
+        tempDisabled: () => null,
         title: () => "",
         accesskey: null
     }
@@ -198,6 +201,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         doClick: () => this.onSubmit(true),
         show: () => true,
         disabled: () => this.form && !this.form.valid ? true : null,
+        tempDisabled: () => null,
         title: () => this.tooltip,
         accesskey: null
     }
@@ -207,6 +211,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         doClick: () => this.onSubmit(false),
         show: () => this.unsaved(),
         disabled: () => this.form && !this.form.valid ? true : null,
+        tempDisabled: () => null,
         title: () => this.tooltip,
         accesskey: null
     }
@@ -216,6 +221,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         doClick: () => this.doEditCancel(),
         show: () => true,
         disabled: () => null,
+        tempDisabled: () => null,
         title: () => "",
         accesskey: null
     }
@@ -242,12 +248,11 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.actionButtons = _.map(actions,
                     a => ({
                         value: a.title,
-                        doClick: () =>
-                            a.doInvoke(),
-                        doRightClick: () =>
-                            a.doInvoke(true),
+                        doClick: () => a.doInvoke(),
+                        doRightClick: () => a.doInvoke(true),
                         show: () => true,
                         disabled: () => a.disabled() ? true : null,
+                        tempDisabled: () => a.tempDisabled(),
                         title: () => a.description,
                         accesskey: null
                     })) as IButton[];

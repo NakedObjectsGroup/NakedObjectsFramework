@@ -1,22 +1,18 @@
-:host   {
-    outline: none;
-    margin-left: 5px;
-    margin-right: 20px;
-    width: 150px;
-    margin-bottom: 5px;
-    font-weight: bolder; /*Because black on white light looks too faint*/
+ :host {
     display: block;
-}
-
-:host:disabled {
-   outline: none;
+    float: left;
+    padding: 0px;
+    margin-top: 1px;
+    margin-left: 1px; /*Else hover outline is hidden on the left-most menu */
+    margin-right: 10px;
+    margin-bottom: 5px; /*Else hover outline is hidden on the bottom */
+    font-size: 12pt;
+    outline: none;
 }
 
 input {  /*To override user agent style sheet defaults*/
-    white-space: normal; /*Needed to force long names to wrap*/
-    text-align: left;
     cursor: pointer;
-    color: white;
+    color:white;
     font-weight: 100;
     font-size: 12pt;
     background-color: transparent;
@@ -25,21 +21,13 @@ input {  /*To override user agent style sheet defaults*/
     border: none;
 }
 
-.name {
-    display: block;
-    cursor: pointer;
-   padding: 2px 5px;
-}
-
-.name:disabled {
-    color: grey;
-}
-
-.name:hover, .name:focus   {
-    outline-color: black;
+ input:hover, input:focus  {
+    outline-color: white;
     outline-style: solid;
     outline-width: 1px;
-    margin-right: 20px;
-    width: 150px;
-    margin-bottom: 5px;
+}
+
+input:disabled {
+    outline-style: none;
+    color: grey;
 }

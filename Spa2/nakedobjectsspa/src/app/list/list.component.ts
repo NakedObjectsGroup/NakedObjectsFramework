@@ -16,7 +16,7 @@ import { ListViewModel } from '../view-models/list-view-model';
 import { PaneComponent } from '../pane/pane';
 import { ItemViewModel } from '../view-models/item-view-model';
 import { PropertyViewModel } from '../view-models/property-view-model';
-import { IButton } from '../button/button.component';
+import { IButton } from '../action/action.component';
 import { ConfigService } from '../config.service';
 import { LoggerService } from '../logger.service';
 import { ISubscription } from 'rxjs/Subscription';
@@ -109,6 +109,7 @@ export class ListComponent implements AfterViewInit {
         doClick: () => this.toggleActionMenu(),
         show: () => true,
         disabled: () => this.disableActions(),
+        tempDisabled: () => null,
         title: () => this.actionsTooltip,
         accesskey: "a"
     };
@@ -118,6 +119,7 @@ export class ListComponent implements AfterViewInit {
         doClick: () => this.reloadList(),
         show: () => true,
         disabled: () => null,
+        tempDisabled: () => null,
         title: () => "",
         accesskey: null
     };
@@ -127,6 +129,7 @@ export class ListComponent implements AfterViewInit {
         doClick: () => this.pageFirst(),
         show: () => true,
         disabled: () => this.pageFirstDisabled(),
+        tempDisabled: () => null,
         title: () => "",
         accesskey: null
     };
@@ -136,6 +139,7 @@ export class ListComponent implements AfterViewInit {
         doClick: () => this.pagePrevious(),
         show: () => true,
         disabled: () => this.pagePreviousDisabled(),
+        tempDisabled: () => null,
         title: () => "",
         accesskey: null
     };
@@ -145,6 +149,7 @@ export class ListComponent implements AfterViewInit {
         doClick: () => this.pageNext(),
         show: () => true,
         disabled: () => this.pageNextDisabled(),
+        tempDisabled: () => null,
         title: () => "",
         accesskey: null
     };
@@ -154,6 +159,7 @@ export class ListComponent implements AfterViewInit {
         doClick: () => this.pageLast(),
         show: () => true,
         disabled: () => this.pageLastDisabled(),
+        tempDisabled: () => null,
         title: () => "",
         accesskey: null
     };
