@@ -1,33 +1,44 @@
- :host {
-    display: block;
-    float: left;
-    padding: 0px;
-    margin-top: 1px;
-    margin-left: 1px; /*Else hover outline is hidden on the left-most menu */
-    margin-right: 10px;
-    margin-bottom: 5px; /*Else hover outline is hidden on the bottom */
-    font-size: 16pt;
+:host   {
     outline: none;
+    margin-right: 20px;
+    width: 150px;
+    margin-bottom: 5px;
+    font-weight: bolder; /*Because black on white light looks too faint*/
+    display: block;
+}
+
+:host:disabled {
+   outline: none;
 }
 
 input {  /*To override user agent style sheet defaults*/
+    white-space: normal; /*Needed to force long names to wrap*/
+    text-align: left;
     cursor: pointer;
     color: white;
     font-weight: 100;
-    font-size: 16pt;
+    font-size: 12pt;
     background-color: transparent;
     padding: 5px;
     outline: none;
     border: none;
 }
 
- input:hover, input:focus  {
+.name {
+    display: block;
+    cursor: pointer;
+   padding: 2px 5px;
+}
+
+.name:disabled {
+    color: grey;
+}
+
+.name:hover, .name:focus   {
     outline-color: white;
     outline-style: solid;
     outline-width: 1px;
-}
-
-input:disabled {
-    outline-style: none;
-    color: grey;
+    margin-right: 20px;
+    width: 150px;
+    margin-bottom: 5px;
 }

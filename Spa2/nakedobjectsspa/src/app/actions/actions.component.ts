@@ -2,8 +2,8 @@ import { Component, Input, ViewChildren, QueryList, ElementRef, AfterViewInit, O
 import { MenuItemViewModel } from '../view-models/menu-item-view-model';
 import { ActionViewModel } from '../view-models/action-view-model'; // needed for declarations compile 
 import * as Models from '../models';
-import { IButton } from '../action/action.component';
-import * as Actioncomponent from '../action/action.component';
+import { IAction } from '../action/action.component';
+import { ActionComponent} from '../action/action.component';
 
 @Component({
     selector: 'nof-actions',
@@ -20,7 +20,7 @@ export class ActionsComponent implements OnInit, AfterViewInit {
         return this.menu.menuItems;
     }
 
-    //private actionButtons : _.Dictionary<IButton[]> = {};
+    //private actionButtons : _.Dictionary<IAction[]> = {};
 
     private getActionButtons(menuItem: MenuItemViewModel) {
         // todo DRY this clone from ObjectComponent
@@ -42,7 +42,7 @@ export class ActionsComponent implements OnInit, AfterViewInit {
                 tempDisabled: () => a.tempDisabled(),
                 title: () => a.description,
                 accesskey: null
-            })) as IButton[];
+            })) as IAction[];
         //}
 
         //return this.actionButtons[menuItem.name];
@@ -85,10 +85,10 @@ export class ActionsComponent implements OnInit, AfterViewInit {
         return this.firstAction && this.firstAction.actionRep.parent instanceof Models.MenuRepresentation;
     }
 
-    @ViewChildren(Actioncomponent.ActionComponent)
-    actionChildren: QueryList<Actioncomponent.ActionComponent>;
+    @ViewChildren(ActionComponent)
+    actionChildren: QueryList<ActionComponent>;
 
-    focusOnFirstAction(actions: QueryList<Actioncomponent.ActionComponent>) {
+    focusOnFirstAction(actions: QueryList<ActionComponent>) {
         if (actions && actions.first) {
             actions.first.focus();
         }
@@ -110,6 +110,6 @@ export class ActionsComponent implements OnInit, AfterViewInit {
 
     ngAfterViewInit(): void {
         this.focusOnFirstAction(this.actionChildren);
-        this.actionChildren.changes.subscribe((ql: QueryList<Actioncomponent.ActionComponent>) => this.focusOnFirstAction(ql));
+        this.actionChildren.changes.subscribe((ql: QueryList<ActionComponent>) => this.focusOnFirstAction(ql));
     }
 }
