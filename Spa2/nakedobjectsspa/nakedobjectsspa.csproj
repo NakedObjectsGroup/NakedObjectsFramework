@@ -60,10 +60,8 @@
     <Content Include="src\app\home\home.component.html" />
     <Content Include="src\app\list\list.component.css" />
     <Content Include="src\app\list\list.component.html" />
-    <Content Include="src\app\menus\menus.component.css" />
-    <Content Include="src\app\menus\menus.component.html" />
-    <Content Include="src\app\menu\menu.component.css" />
-    <Content Include="src\app\menu\menu.component.html" />
+    <Content Include="src\app\menu-bar\menu-bar.component.css" />
+    <Content Include="src\app\menu-bar\menu-bar.component.html" />
     <Content Include="src\app\multi-line-dialog\multi-line-dialog.component.css" />
     <Content Include="src\app\multi-line-dialog\multi-line-dialog.component.html" />
     <Content Include="src\app\object\object.component.css" />
@@ -148,8 +146,7 @@
     <TypeScriptCompile Include="src\app\list\list.component.ts" />
     <TypeScriptCompile Include="src\app\logger.service.ts" />
     <TypeScriptCompile Include="src\app\mask.service.ts" />
-    <TypeScriptCompile Include="src\app\menus\menus.component.ts" />
-    <TypeScriptCompile Include="src\app\menu\menu.component.ts" />
+    <TypeScriptCompile Include="src\app\menu-bar\menu-bar.component.ts" />
     <TypeScriptCompile Include="src\app\models.ts" />
     <TypeScriptCompile Include="src\app\multi-line-dialog\multi-line-dialog.component.ts" />
     <TypeScriptCompile Include="src\app\object\object.component.ts" />

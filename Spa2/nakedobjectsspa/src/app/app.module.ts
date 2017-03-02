@@ -38,8 +38,7 @@ import { AttachmentComponent } from './attachment/attachment.component';
 import { MultiLineDialogComponent } from './multi-line-dialog/multi-line-dialog.component';
 import { ViewParameterComponent } from './view-parameter/view-parameter.component';
 import { GeminiErrorHandler } from './error.handler';
-import { MenusComponent } from './menus/menus.component';
-import { MenuComponent } from './menu/menu.component';
+import { MenuBarComponent } from './menu-bar/menu-bar.component';
 import { ActionComponent } from './action/action.component';
 import { DynamicObjectComponent } from './dynamic-object/dynamic-object.component'
 import { CustomComponentService } from './custom-component.service';
@@ -81,8 +80,7 @@ import { ActionListComponent } from './action-list/action-list.component';
         AttachmentComponent,
         MultiLineDialogComponent,
         ViewParameterComponent,
-        MenusComponent,
-        MenuComponent,
+        MenuBarComponent,
         ActionComponent,
         DynamicObjectComponent,
         DynamicListComponent,
