@@ -19,7 +19,7 @@ export interface IAction {
 export class ActionComponent {
 
     @Input()
-    button: IAction;
+    action: IAction;
 
     constructor(private readonly myElement: ElementRef) { }
 
@@ -29,13 +29,13 @@ export class ActionComponent {
 
     doClick() {
         if (this.canClick()) {
-            this.button.doClick();
+            this.action.doClick();
         }
     }
 
     doRightClick() {
-        if (this.canClick() && this.button.doRightClick) {
-            this.button.doRightClick();
+        if (this.canClick() && this.action.doRightClick) {
+            this.action.doRightClick();
         }
     }
 
@@ -46,23 +46,23 @@ export class ActionComponent {
     }
 
     show() {
-        return this.button && this.button.show();
+        return this.action && this.action.show();
     }
 
     disabled() {
-        return this.button.disabled();
+        return this.action.disabled();
     }
 
     tempDisabled() {
-        return this.button.tempDisabled();
+        return this.action.tempDisabled();
     }
 
     get value() {
-        return this.button.value;
+        return this.action.value;
     }
 
     get title() {
-        return this.button.title();
+        return this.action.title();
     }
 
     focus() {
