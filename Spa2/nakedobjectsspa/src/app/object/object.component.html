@@ -10,7 +10,7 @@
 				<span class="type">{{friendlyName}}</span> {{title()}}
 		</div>
 		<!--<div>{{object.isDirty() ? "*" : ""}} </div>-->
-		<nof-action-bar [buttons]="buttons"></nof-action-bar>
+		<nof-action-bar [actions]="buttons"></nof-action-bar>
 		<div class="messages">{{message()}}</div>
 	</header>
 	<nof-action-list class="actions" *ngIf="showActions()" [actions]="object"></nof-action-list>
@@ -27,10 +27,10 @@
 				<span class="type">{{friendlyName}}</span> {{title()}}
 			</div>
 			<div *ngIf="viewMode === 'Form'">
-				<nof-action-bar [buttons]="buttons"></nof-action-bar>
+				<nof-action-bar [actions]="buttons"></nof-action-bar>
 			</div>
 			<div *ngIf="viewMode === 'Edit' || viewMode === 'Transient'" class="menus">
-				<nof-action-bar [buttons]="buttons"></nof-action-bar>
+				<nof-action-bar [actions]="buttons"></nof-action-bar>
 			</div>
 			<div class="messages">{{message()}}</div>
 		</header>

@@ -9,5 +9,5 @@ import { IAction } from '../action/action.component';
 export class ActionBarComponent {
 
     @Input()
-    buttons: IAction[];
+    actions: IAction[];
 }
