@@ -7,7 +7,7 @@ import { RouteData, PaneRouteData } from '../route-data';
 import { RecentItemsViewModel } from '../view-models/recent-items-view-model';
 import { RecentItemViewModel } from '../view-models/recent-item-view-model';
 import { PaneComponent } from '../pane/pane';
-import { IAction } from '../action/action.component';
+import { IActionHolder } from '../action/action.component';
 import * as Msg from '../user-messages';
 
 @Component({
@@ -39,7 +39,7 @@ export class RecentComponent extends PaneComponent {
 
     recent: RecentItemsViewModel;
 
-    private clearButton: IAction = {
+    private clearButton: IActionHolder = {
         value: Msg.clear,
         doClick: () => this.clear(),
         show: () => true,
@@ -49,7 +49,7 @@ export class RecentComponent extends PaneComponent {
         accesskey: "c"
     };
 
-    get buttons() {
+    get actionHolders() {
         return [this.clearButton];
     }
 

@@ -2,7 +2,7 @@
 	<div class="list">
 		<header class="header">
 			<div class="title">{{title}}</div>
-		    <nof-action-bar [actions]="buttons"></nof-action-bar>
+		    <nof-action-bar [actions]="actionHolders"></nof-action-bar>
 			<div class="messages">{{message}}</div>
 		</header>
 		<div class="details" *ngIf="size == 0">{{description}}</div>

@@ -9,7 +9,7 @@ import { PaneComponent } from '../pane/pane';
 import { Type } from '@angular/core/src/type';
 import { ContextService } from '../context.service';
 import { ErrorService } from '../error.service';
-import { IAction } from '../action/action.component';
+import { IActionHolder } from '../action/action.component';
 import * as Models from '../models';
 import { ConfigService } from '../config.service';
 
@@ -59,7 +59,7 @@ export class DynamicListComponent extends PaneComponent {
             });
     }
 
-    private reloadPlaceholderButton: IAction = {
+    private reloadPlaceholderButton: IActionHolder = {
         value: "Reload",
         doClick: () => this.reload(),
         show: () => true,
@@ -69,7 +69,7 @@ export class DynamicListComponent extends PaneComponent {
         accesskey: null
     };
 
-    get buttons() {
+    get actionHolders() {
         return [this.reloadPlaceholderButton];
     }
 

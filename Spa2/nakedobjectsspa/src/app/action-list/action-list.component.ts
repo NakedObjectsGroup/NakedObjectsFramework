@@ -2,7 +2,7 @@ import { Component, Input, ViewChildren, QueryList, ElementRef, AfterViewInit, O
 import { MenuItemViewModel } from '../view-models/menu-item-view-model';
 import { ActionViewModel } from '../view-models/action-view-model'; // needed for declarations compile 
 import * as Models from '../models';
-import { IAction } from '../action/action.component';
+import { IActionHolder } from '../action/action.component';
 import { ActionComponent } from '../action/action.component';
 
 @Component({
@@ -20,7 +20,7 @@ export class ActionListComponent implements OnInit, AfterViewInit {
         return this.actions.menuItems;
     }
 
-    //private actionButtons : _.Dictionary<IAction[]> = {};
+    //private actionButtons : _.Dictionary<IActionHolder[]> = {};
 
     private getActionButtons(menuItem: MenuItemViewModel) {
         // todo DRY this clone from ObjectComponent
@@ -42,7 +42,7 @@ export class ActionListComponent implements OnInit, AfterViewInit {
                 tempDisabled: () => a.tempDisabled(),
                 title: () => a.description,
                 accesskey: null
-            })) as IAction[];
+            })) as IActionHolder[];
         //}
 
         //return this.actionButtons[menuItem.name];

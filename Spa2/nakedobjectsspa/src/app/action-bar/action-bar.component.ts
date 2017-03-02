@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IAction } from '../action/action.component';
+import { IActionHolder } from '../action/action.component';
 
 @Component({
     selector: 'nof-action-bar',
@@ -9,5 +9,5 @@ import { IAction } from '../action/action.component';
 export class ActionBarComponent {
 
     @Input()
-    actions: IAction[];
+    actions: IActionHolder[];
 }

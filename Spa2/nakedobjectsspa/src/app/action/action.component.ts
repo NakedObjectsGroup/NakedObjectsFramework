@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ElementRef } from '@angular/core';
 
-export interface IAction {
+export interface IActionHolder {
     doClick: () => void;
     doRightClick?: () => void;
     show: () => boolean;
@@ -19,7 +19,7 @@ export interface IAction {
 export class ActionComponent {
 
     @Input()
-    action: IAction;
+    action: IActionHolder;
 
     constructor(private readonly myElement: ElementRef) { }
 

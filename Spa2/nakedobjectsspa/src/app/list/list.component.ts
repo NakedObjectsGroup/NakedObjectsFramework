@@ -16,7 +16,7 @@ import { ListViewModel } from '../view-models/list-view-model';
 import { PaneComponent } from '../pane/pane';
 import { ItemViewModel } from '../view-models/item-view-model';
 import { PropertyViewModel } from '../view-models/property-view-model';
-import { IAction } from '../action/action.component';
+import { IActionHolder } from '../action/action.component';
 import { ConfigService } from '../config.service';
 import { LoggerService } from '../logger.service';
 import { ISubscription } from 'rxjs/Subscription';
@@ -104,7 +104,7 @@ export class ListComponent implements AfterViewInit {
         return this.collection.header;
     }
 
-    private actionButton: IAction = {
+    private actionButton: IActionHolder = {
         value: "Actions",
         doClick: () => this.toggleActionMenu(),
         show: () => true,
@@ -114,7 +114,7 @@ export class ListComponent implements AfterViewInit {
         accesskey: "a"
     };
 
-    private reloadButton: IAction = {
+    private reloadButton: IActionHolder = {
         value: "Reload",
         doClick: () => this.reloadList(),
         show: () => true,
@@ -124,7 +124,7 @@ export class ListComponent implements AfterViewInit {
         accesskey: null
     };
 
-    private firstButton: IAction = {
+    private firstButton: IActionHolder = {
         value: "First",
         doClick: () => this.pageFirst(),
         show: () => true,
@@ -134,7 +134,7 @@ export class ListComponent implements AfterViewInit {
         accesskey: null
     };
 
-    private previousButton: IAction = {
+    private previousButton: IActionHolder = {
         value: "Previous",
         doClick: () => this.pagePrevious(),
         show: () => true,
@@ -144,7 +144,7 @@ export class ListComponent implements AfterViewInit {
         accesskey: null
     };
 
-    private nextButton: IAction = {
+    private nextButton: IActionHolder = {
         value: "Next",
         doClick: () => this.pageNext(),
         show: () => true,
@@ -154,7 +154,7 @@ export class ListComponent implements AfterViewInit {
         accesskey: null
     };
 
-    private lastButton: IAction = {
+    private lastButton: IActionHolder = {
         value: "Last",
         doClick: () => this.pageLast(),
         show: () => true,
@@ -164,7 +164,7 @@ export class ListComponent implements AfterViewInit {
         accesskey: null
     };
 
-    get buttons() {
+    get actionHolders() {
         return [this.actionButton, this.reloadButton, this.firstButton, this.previousButton, this.nextButton, this.lastButton];
     }
 

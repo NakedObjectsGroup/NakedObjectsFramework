@@ -16,7 +16,7 @@ import { CollectionViewModel } from '../view-models/collection-view-model';
 import { MenuItemViewModel } from '../view-models/menu-item-view-model';
 import { PaneComponent } from '../pane/pane';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
-import { IAction } from '../action/action.component';
+import { IActionHolder } from '../action/action.component';
 import { ColorService } from '../color.service';
 import { ConfigService } from '../config.service';
 import { ISubscription } from 'rxjs/Subscription';
@@ -166,7 +166,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         return obj ? obj.menuItems : [];
     }
 
-    private actionButton: IAction = {
+    private actionButton: IActionHolder = {
         value: "Actions",
         doClick: () => this.toggleActionMenu(),
         show: () => true,
@@ -176,7 +176,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         accesskey: "a"
     }
 
-    private editButton: IAction = {
+    private editButton: IActionHolder = {
         value: "Edit",
         doClick: () => this.doEdit(),
         show: () => this.showEdit(),
@@ -186,7 +186,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         accesskey: null
     }
 
-    private reloadButton: IAction = {
+    private reloadButton: IActionHolder = {
         value: "Reload",
         doClick: () => this.doReload(),
         show: () => true,
@@ -196,7 +196,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         accesskey: null
     }
 
-    private saveButton: IAction = {
+    private saveButton: IActionHolder = {
         value: "Save",
         doClick: () => this.onSubmit(true),
         show: () => true,
@@ -206,7 +206,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         accesskey: null
     }
 
-    private saveAndCloseButton: IAction = {
+    private saveAndCloseButton: IActionHolder = {
         value: "Save & Close",
         doClick: () => this.onSubmit(false),
         show: () => this.unsaved(),
@@ -216,7 +216,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         accesskey: null
     }
 
-    private cancelButton: IAction = {
+    private cancelButton: IActionHolder = {
         value: "Cancel",
         doClick: () => this.doEditCancel(),
         show: () => true,
@@ -226,9 +226,9 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         accesskey: null
     }
 
-    private actionButtons : IAction[]; 
+    private actionButtons : IActionHolder[]; 
 
-    get buttons() {
+    get actionHolders() {
         if (this.mode === InteractionMode.View) {
             return [this.actionButton, this.editButton, this.reloadButton];
         }
@@ -239,7 +239,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (this.mode === InteractionMode.Form) {
 
-            // cache becuase otherwise we will recreate this array of buttons everytime page changes ! 
+            // cache becuase otherwise we will recreate this array of actionHolders everytime page changes !
             if (!this.actionButtons) {
 
                 const menuItems = this.menuItems()!;
@@ -255,13 +255,13 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
                         tempDisabled: () => a.tempDisabled(),
                         title: () => a.description,
                         accesskey: null
-                    })) as IAction[];
+                    })) as IActionHolder[];
             }
 
             return this.actionButtons;
         }
 
-        return [] as IAction[];
+        return [] as IActionHolder[];
     }
 
     // todo each component should be looking out for it's own changes - make this generic - eg 
