@@ -22,6 +22,8 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="src\app\action-bar\action-bar.component.css" />
+    <Content Include="src\app\action-bar\action-bar.component.html" />
     <Content Include="src\app\action-list\action-list.component.css" />
     <Content Include="src\app\action-list\action-list.component.html" />
     <Content Include="src\app\app.component.css" />
@@ -108,7 +110,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="src\app\action-bar\action-bar.component.ts" />
     <TypeScriptCompile Include="src\app\action-list\action-list.component.ts" />
+    <TypeScriptCompile Include="src\app\actions\actions.component.ts" />
     <TypeScriptCompile Include="src\app\app-routing.module.ts" />
     <TypeScriptCompile Include="src\app\app.component.ts" />
     <TypeScriptCompile Include="src\app\app.module.ts" />

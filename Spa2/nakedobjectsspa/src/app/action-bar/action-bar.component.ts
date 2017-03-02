@@ -7,14 +7,14 @@ import { ActionComponent} from '../action/action.component';
 import { ActionsComponent} from '../actions/actions.component';
 
 @Component({
-    selector: 'nof-action-list',
-    template: require('./action-list.component.html'),
-    styles: [require('./action-list.component.css')]
+    selector: 'nof-action-bar',
+    template: require('./action-bar.component.html'),
+    styles: [require('./action-bar.component.css')]
 })
-export class ActionListComponent extends ActionsComponent implements OnInit, AfterViewInit {
+export class ActionBarComponent extends ActionsComponent implements OnInit, AfterViewInit {
 
     @Input()
-    set actions (mi :{ menuItems: MenuItemViewModel[] }) {
+    set actions(mi: { menuItems: MenuItemViewModel[] }) {
         this.menu = mi;
     }
 
