@@ -1,20 +1,2 @@
-<div class="" [ngClass]="displayContextClass()">
-    <div *ngFor="let menu of items">
+<nof-action *ngFor="let button of buttons" [button]="button"></nof-action>
 
-        <div *ngIf="menuName(menu)" (click)="toggleCollapsed(menu)" tabindex="0" class="submenu" [ngSwitch]="navCollapsed(menu)">
-            {{menuName(menu)}}
-            <div *ngSwitchCase="true" class="icon-expand"></div>
-            <div *ngSwitchCase="false" class="icon-collapse"></div>
-        </div>
-        <div class="" [ngClass]="displayClass(menu)">
-            <div *ngIf="menuActions(menu)  && menuActions(menu).length > 0">
-                <div *ngFor="let button of menuButtons(menu)">
-                    <nof-action [button]="button"></nof-action>
-                </div>
-            </div>
-            <div *ngIf="menuItems(menu) && menuItems(menu).length > 0">
-                <nof-action-list [actions]="menu"></nof-action-list>
-            </div>
-        </div>
-    </div>
-</div>

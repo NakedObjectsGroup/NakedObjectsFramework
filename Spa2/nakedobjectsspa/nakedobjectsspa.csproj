@@ -34,8 +34,6 @@
     <Content Include="src\app\attachment-property\attachment-property.component.html" />
     <Content Include="src\app\attachment\attachment.component.css" />
     <Content Include="src\app\attachment\attachment.component.html" />
-    <Content Include="src\app\buttons\buttons.component.css" />
-    <Content Include="src\app\buttons\buttons.component.html" />
     <Content Include="src\app\action\action.component.css" />
     <Content Include="src\app\action\action.component.html" />
     <Content Include="src\app\cicero\cicero.component.css" />
@@ -112,14 +110,12 @@
   <ItemGroup>
     <TypeScriptCompile Include="src\app\action-bar\action-bar.component.ts" />
     <TypeScriptCompile Include="src\app\action-list\action-list.component.ts" />
-    <TypeScriptCompile Include="src\app\actions\actions.component.ts" />
     <TypeScriptCompile Include="src\app\app-routing.module.ts" />
     <TypeScriptCompile Include="src\app\app.component.ts" />
     <TypeScriptCompile Include="src\app\app.module.ts" />
     <TypeScriptCompile Include="src\app\application-properties\application-properties.component.ts" />
     <TypeScriptCompile Include="src\app\attachment-property\attachment-property.component.ts" />
     <TypeScriptCompile Include="src\app\attachment\attachment.component.ts" />
-    <TypeScriptCompile Include="src\app\buttons\buttons.component.ts" />
     <TypeScriptCompile Include="src\app\action\action.component.ts" />
     <TypeScriptCompile Include="src\app\cicero-command-factory.service.ts" />
     <TypeScriptCompile Include="src\app\cicero-commands.ts" />

@@ -40,7 +40,6 @@ import { ViewParameterComponent } from './view-parameter/view-parameter.componen
 import { GeminiErrorHandler } from './error.handler';
 import { MenusComponent } from './menus/menus.component';
 import { MenuComponent } from './menu/menu.component';
-import { ButtonsComponent } from './buttons/buttons.component';
 import { ActionComponent } from './action/action.component';
 import { DynamicObjectComponent } from './dynamic-object/dynamic-object.component'
 import { CustomComponentService } from './custom-component.service';
@@ -53,6 +52,8 @@ import { DynamicErrorComponent } from './dynamic-error/dynamic-error.component';
 import { CiceroComponent } from './cicero/cicero.component';
 import { CiceroCommandFactoryService } from './cicero-command-factory.service';
 import { CiceroRendererService } from './cicero-renderer.service';
+import { ActionBarComponent } from './action-bar/action-bar.component';
+import { ActionListComponent } from './action-list/action-list.component';
 
 @NgModule({
     declarations: [
@@ -62,7 +63,8 @@ import { CiceroRendererService } from './cicero-renderer.service';
         ObjectComponent,
         ListComponent,
         ErrorComponent,
-        ActionsComponent,
+        ActionListComponent,
+        ActionBarComponent,
         PropertiesComponent,
         CollectionsComponent,
         DialogComponent,
@@ -81,7 +83,6 @@ import { CiceroRendererService } from './cicero-renderer.service';
         ViewParameterComponent,
         MenusComponent,
         MenuComponent,
-        ButtonsComponent,
         ActionComponent,
         DynamicObjectComponent,
         DynamicListComponent,
