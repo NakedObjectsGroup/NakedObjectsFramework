@@ -24,10 +24,10 @@ function copyAndReplaceAll(names) {
     }
 }
 
-let names = ["action", "actions", "application-properties", "attachment", "attachment-property", "button", "buttons",
+let names = ["action", "action-bar", "action-list", "application-properties", "attachment", "attachment-property", 
     "cicero", "collection", "collections", "dialog", "dynamic-error", "dynamic-list", "dynamic-object", "edit-parameter",
-    "edit-property", "error", "footer", "home", "list", "menu", "menus", "multi-line-dialog", "object", "parameters",
-    "properties", "recent"]
+    "edit-property", "error", "footer", "home", "list", "menu-bar", "multi-line-dialog", "object", "parameters",
+    "properties", "recent", "view-parameter", "view-property"]
 
 copyAndReplaceAll(names);
 

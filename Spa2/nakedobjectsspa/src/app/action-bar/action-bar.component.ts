@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IActionHolder } from '../action/action.component';
+import { IActionHolder, wrapAction } from '../action/action.component';
 import { IMenuHolderViewModel} from '../view-models/imenu-holder-view-model';
 import { MenuItemViewModel} from '../view-models/menu-item-view-model';
 
@@ -14,23 +14,9 @@ export class ActionBarComponent {
     actions: IActionHolder[];
 
     @Input()
-    set menuHolder (mh : IMenuHolderViewModel) {
-
-        // todo DRY 
-
-        const menuItems = mh.menuItems;
-        const acts = _.flatten(_.map(menuItems, (mi: MenuItemViewModel) => mi.actions!));
-
-        this.actions = _.map(acts,
-            a => ({
-                value: a.title,
-                doClick: () => a.doInvoke(),
-                doRightClick: () => a.doInvoke(true),
-                show: () => true,
-                disabled: () => a.disabled() ? true : null,
-                tempDisabled: () => a.tempDisabled(),
-                title: () => a.description,
-                accesskey: null
-            })) as IActionHolder[];
+    set menuHolder (mhvm : IMenuHolderViewModel) {
+        const menuItems = mhvm.menuItems;
+        const avms = _.flatten(_.map(menuItems, (mi: MenuItemViewModel) => mi.actions!));
+        this.actions = _.map(avms, a => wrapAction(a));
     }
 }

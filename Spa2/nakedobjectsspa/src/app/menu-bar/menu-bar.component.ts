@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, QueryList, AfterViewInit, ViewChildren } from '@angular/core';
 import { LinkViewModel } from '../view-models/link-view-model';
-import * as Actioncomponent from '../action/action.component';
-import * as Urlmanagerservice from '../url-manager.service';
+import { ActionComponent, IActionHolder } from '../action/action.component';
+import { UrlManagerService } from '../url-manager.service';
 
 @Component({
     selector: 'nof-menu-bar',
@@ -10,41 +10,40 @@ import * as Urlmanagerservice from '../url-manager.service';
 })
 export class MenuBarComponent implements AfterViewInit {
 
-    constructor(private readonly urlManager : Urlmanagerservice.UrlManagerService) {  }
+    constructor(private readonly urlManager: UrlManagerService) { }
 
     @Input()
-    set menus(m: LinkViewModel[]) {
+    set menus(links: LinkViewModel[]) {
 
-        this.actions = _.map(m,
-            a => ({
-                value: a.title,
+        this.actions = _.map(links,
+            link => ({
+                value: link.title,
                 doClick: () => {
-                    const menuId = a.link.rel().parms[0].value;
-                    this.urlManager.setMenu(menuId!, a.paneId);
+                    const menuId = link.link.rel().parms[0].value;
+                    this.urlManager.setMenu(menuId!, link.paneId);
                 },
-                doRightClick: () => {},
+                doRightClick: () => { },
                 show: () => true,
-                disabled: () =>  null,
+                disabled: () => null,
                 tempDisabled: () => false,
-                title: () => a.title,
+                title: () => link.title,
                 accesskey: null
-            })) as Actioncomponent.IActionHolder[];
-
+            }));
     }
 
-    actions: Actioncomponent.IActionHolder[];
+    actions: IActionHolder[];
 
-    focusOnFirstMenu(menusList: QueryList<Actioncomponent.ActionComponent>) {
+    focusOnFirstMenu(menusList: QueryList<ActionComponent>) {
         if (menusList && menusList.first) {
             menusList.first.focus();
         }
     }
 
-    @ViewChildren(Actioncomponent.ActionComponent)
-    actionComponents: QueryList<Actioncomponent.ActionComponent>;
+    @ViewChildren(ActionComponent)
+    actionComponents: QueryList<ActionComponent>;
 
     ngAfterViewInit(): void {
         this.focusOnFirstMenu(this.actionComponents);
-        this.actionComponents.changes.subscribe((ql: QueryList<Actioncomponent.ActionComponent>) => this.focusOnFirstMenu(ql));
+        this.actionComponents.changes.subscribe((ql: QueryList<ActionComponent>) => this.focusOnFirstMenu(ql));
     }
 }

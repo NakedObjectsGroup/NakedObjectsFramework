@@ -16,7 +16,7 @@ import { CollectionViewModel } from '../view-models/collection-view-model';
 import { MenuItemViewModel } from '../view-models/menu-item-view-model';
 import { PaneComponent } from '../pane/pane';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
-import { IActionHolder } from '../action/action.component';
+import { IActionHolder, wrapAction } from '../action/action.component';
 import { ColorService } from '../color.service';
 import { ConfigService } from '../config.service';
 import { ISubscription } from 'rxjs/Subscription';
@@ -239,23 +239,12 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (this.mode === InteractionMode.Form) {
 
-            // cache becuase otherwise we will recreate this array of actionHolders everytime page changes !
+            // cache because otherwise we will recreate this array of actionHolders everytime page changes !
             if (!this.actionButtons) {
 
                 const menuItems = this.menuItems()!;
                 const actions = _.flatten(_.map(menuItems, (mi: MenuItemViewModel) => mi.actions!));
-
-                this.actionButtons = _.map(actions,
-                    a => ({
-                        value: a.title,
-                        doClick: () => a.doInvoke(),
-                        doRightClick: () => a.doInvoke(true),
-                        show: () => true,
-                        disabled: () => a.disabled() ? true : null,
-                        tempDisabled: () => a.tempDisabled(),
-                        title: () => a.description,
-                        accesskey: null
-                    })) as IActionHolder[];
+                this.actionButtons = _.map(actions, a => wrapAction(a)); 
             }
 
             return this.actionButtons;

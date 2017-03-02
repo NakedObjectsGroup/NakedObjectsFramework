@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, ElementRef } from '@angular/core';
+import { ActionViewModel } from '../view-models/action-view-model';
 
 export interface IActionHolder {
     doClick: () => void;
@@ -9,6 +10,19 @@ export interface IActionHolder {
     value: string;
     title: () => string;
     accesskey: string | null;
+}
+
+export function wrapAction(a: ActionViewModel): IActionHolder {
+    return {
+        value: a.title,
+        doClick: () => a.doInvoke(),
+        doRightClick: () => a.doInvoke(true),
+        show: () => true,
+        disabled: () => a.disabled() ? true : null,
+        tempDisabled: () => a.tempDisabled(),
+        title: () => a.description,
+        accesskey: null
+    }
 }
 
 @Component({
