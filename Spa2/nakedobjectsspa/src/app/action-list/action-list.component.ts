@@ -6,11 +6,11 @@ import { IAction } from '../action/action.component';
 import { ActionComponent} from '../action/action.component';
 
 @Component({
-    selector: 'nof-actions',
-    template: require('./actions.component.html'),
-    styles: [require('./actions.component.css')]
+    selector: 'nof-action-list',
+    template: require('./action-list.component.html'),
+    styles: [require('./action-list.component.css')]
 })
-export class ActionsComponent implements OnInit, AfterViewInit {
+export class ActionListComponent implements OnInit, AfterViewInit {
 
 
     @Input()

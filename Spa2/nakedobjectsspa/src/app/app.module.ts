@@ -9,7 +9,7 @@ import { HomeComponent } from './home/home.component';
 import { ObjectComponent } from './object/object.component';
 import { ListComponent } from './list/list.component';
 import { ErrorComponent } from './error/error.component';
-import { ActionsComponent } from './actions/actions.component';
+import { ActionListComponent as ActionsComponent } from './action-list/action-list.component';
 import { PropertiesComponent } from './properties/properties.component';
 import { CollectionsComponent } from './collections/collections.component';
 import { DialogComponent } from './dialog/dialog.component';

@@ -1,5 +1,5 @@
 export * from './action/action.component';
-export * from './actions/actions.component';
+export * from './action-list/action-list.component';
 export * from './application-properties/application-properties.component';
 export * from './attachment/attachment.component';
 export * from './attachment-property/attachment-property.component';

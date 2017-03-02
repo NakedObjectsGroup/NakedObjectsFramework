@@ -8,7 +8,7 @@
     </div>
 </div>
 <div class="messages">{{message}}</div>
-<nof-actions *ngIf="showActions()" class="actions" [menu]="collection"></nof-actions>
+<nof-action-list *ngIf="showActions()" class="actions" [menu]="collection"></nof-action-list>
 <nof-dialog *ngIf="showActions()" [parent]="collection" [selectedDialogId]="selectedDialogId"></nof-dialog>
 
 <table *ngIf="state == 'table'">
