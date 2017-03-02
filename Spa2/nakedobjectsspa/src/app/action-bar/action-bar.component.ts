@@ -10,4 +10,5 @@ export class ActionBarComponent {
 
     @Input()
     actions: IActionHolder[];
+
 }

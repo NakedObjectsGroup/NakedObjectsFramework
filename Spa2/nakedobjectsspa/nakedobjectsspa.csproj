@@ -183,6 +183,7 @@
     <TypeScriptCompile Include="src\app\view-models\field-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\helpers-view-models.ts" />
     <TypeScriptCompile Include="src\app\view-models\idraggable-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\imenu-holder-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\imessage-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\link-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\item-view-model.ts" />

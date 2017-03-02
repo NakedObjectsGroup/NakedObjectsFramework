@@ -16,8 +16,9 @@ import * as Helpers from './helpers-view-models';
 import * as _ from 'lodash';
 import { ConfigService } from '../config.service';
 import * as Msg from '../user-messages';
+import { IMenuHolderViewModel} from './imenu-holder-view-model';
 
-export class DomainObjectViewModel extends MessageViewModel {
+export class DomainObjectViewModel extends MessageViewModel implements IMenuHolderViewModel {
 
     constructor(
         private readonly colorService: ColorService,

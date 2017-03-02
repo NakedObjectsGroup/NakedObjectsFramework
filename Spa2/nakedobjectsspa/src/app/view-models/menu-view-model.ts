@@ -6,8 +6,9 @@ import { PaneRouteData } from '../route-data';
 import * as Helpers from './helpers-view-models';
 import * as Models from '../models';
 import * as _ from 'lodash';
+import { IMenuHolderViewModel} from './imenu-holder-view-model';
 
-export class MenuViewModel extends MessageViewModel {
+export class MenuViewModel extends MessageViewModel implements IMenuHolderViewModel {
 
     constructor(
         private readonly viewModelFactory: ViewModelFactoryService,
@@ -27,5 +28,5 @@ export class MenuViewModel extends MessageViewModel {
     private readonly id: string;
     private readonly title: string;
     private readonly actions: ActionViewModel[];
-    private readonly menuItems: MenuItemViewModel[];
+    readonly menuItems: MenuItemViewModel[];
 }

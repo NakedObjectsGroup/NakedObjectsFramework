@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div *ngIf="menuItems(menu) && menuItems(menu).length > 0">
-                <nof-action-list [actions]="menu"></nof-action-list>
+                <nof-action-list [menuHolder]="menu"></nof-action-list>
             </div>
         </div>
     </div>

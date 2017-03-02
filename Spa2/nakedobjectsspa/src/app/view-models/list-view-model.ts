@@ -15,8 +15,9 @@ import * as Models from '../models';
 import * as Msg from '../user-messages';
 import { ContributedActionParentViewModel } from './contributed-action-parent-view-model';
 import { LoggerService } from '../logger.service';
+import * as Imenuholderviewmodel from './imenu-holder-view-model';
 
-export class ListViewModel extends ContributedActionParentViewModel {
+export class ListViewModel extends ContributedActionParentViewModel implements Imenuholderviewmodel.IMenuHolderViewModel {
 
     constructor(
         private readonly colorService: ColorService,

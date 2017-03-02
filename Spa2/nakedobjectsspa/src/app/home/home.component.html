@@ -6,7 +6,7 @@
             <nof-menus class="menus" *ngIf="hasMenus" [menus]="menuItems"></nof-menus> 
 			<div class="messages"></div>
 		</div>
-		<nof-action-list class="actions" *ngIf="selectedMenu" [actions]="selectedMenu"></nof-action-list>
+		<nof-action-list class="actions" *ngIf="selectedMenu" [menuHolder]="selectedMenu"></nof-action-list>
 		<div class="main-column">
 		<nof-dialog *ngIf="selectedMenu" [selectedDialogId]="selectedDialogId" [parent]="selectedMenu" ></nof-dialog>
 		</div>

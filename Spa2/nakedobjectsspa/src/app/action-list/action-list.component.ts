@@ -4,6 +4,7 @@ import { ActionViewModel } from '../view-models/action-view-model'; // needed fo
 import * as Models from '../models';
 import { IActionHolder } from '../action/action.component';
 import { ActionComponent } from '../action/action.component';
+import { IMenuHolderViewModel} from '../view-models/imenu-holder-view-model';
 
 @Component({
     selector: 'nof-action-list',
@@ -14,10 +15,10 @@ export class ActionListComponent implements OnInit, AfterViewInit {
 
 
     @Input()
-    actions: { menuItems: MenuItemViewModel[] };
+    menuHolder: IMenuHolderViewModel;
 
     get items() {
-        return this.actions.menuItems;
+        return this.menuHolder.menuItems;
     }
 
     //private actionButtons : _.Dictionary<IActionHolder[]> = {};

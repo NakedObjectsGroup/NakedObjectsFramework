@@ -1,6 +1,7 @@
 ﻿import { ActionViewModel } from './action-view-model';
+import { IMenuHolderViewModel } from './imenu-holder-view-model';
 
-export class MenuItemViewModel {
+export class MenuItemViewModel implements IMenuHolderViewModel{
     constructor(
         public readonly name: string,
         public actions: ActionViewModel[] | null, // modified todo 
