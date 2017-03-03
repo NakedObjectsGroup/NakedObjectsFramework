@@ -12,11 +12,11 @@ namespace NakedObjects.Selenium {
     public abstract class LocalCollectionActionsTestsRoot : AWTest {
         public virtual void LocalCollectionActionsHonourMemberOrder() {
             GeminiUrl("object?i1=View&r=1&o1=___1.SalesOrderHeader--71105&c1_Details=Table");
-            wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector("nof-action")).Count >= 2);
-            wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector("nof-action"))[0].Text == "Add New Details");
-            wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector("nof-action"))[1].Text == "Add New Detail");
-            wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector("nof-action"))[2].Text == "Remove Details");
-            wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector("nof-action"))[3].Text == "Adjust Quantities");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector("nof-action-bar nof-action")).Count >= 2);
+            wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector("nof-action-bar nof-action input"))[0].GetAttribute("value") == "Add New Details");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector("nof-action-bar nof-action input"))[1].GetAttribute("value") == "Add New Detail");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector("nof-action-bar nof-action input"))[2].GetAttribute("value") == "Remove Details");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector("nof-action-bar nof-action input"))[3].GetAttribute("value") == "Adjust Quantities");
         }
 
         public virtual void CheckBoxesVisibleAndCanBeSelected() {
@@ -63,8 +63,8 @@ namespace NakedObjects.Selenium {
             Click(WaitForCssNo(".icon-list", 1));
 
             //Add new sales reason;  remove sales reasons
-            wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[1].FindElements(By.CssSelector("nof-action div"))[0].Text == "Add New Sales Reason");
-            wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[1].FindElements(By.CssSelector("nof-action div"))[1].Text == "Remove Sales Reasons");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[1].FindElements(By.CssSelector("nof-action-bar nof-action input"))[0].GetAttribute("value") == "Add New Sales Reason");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[1].FindElements(By.CssSelector("nof-action-bar nof-action input"))[1].GetAttribute("value") == "Remove Sales Reasons");
             Click(WaitForCss(".icon-summary"));
             WaitUntilElementDoesNotExist(".collection .actions");
         }

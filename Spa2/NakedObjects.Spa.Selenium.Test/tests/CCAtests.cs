@@ -26,6 +26,7 @@ namespace NakedObjects.Selenium {
             var newMax = rand.Next(10, 999).ToString();
             TypeIntoFieldWithoutClearing("#newmax1", newMax);
 
+            PageDownAndWait();
             //Now select items
             SelectCheckBox("#item1-5");
             SelectCheckBox("#item1-7");
@@ -104,7 +105,9 @@ namespace NakedObjects.Selenium {
             GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&pg1=1&ps1=20&s1_=0&as1=open&c1=Table");
             WaitForView(Pane.Single, PaneType.List);
             Reload();
+            PageDownAndWait();
             SelectCheckBox("#item1-6");
+            PageDownAndWait();
             SelectCheckBox("#item1-9");
             OpenActionDialog("Append To Description");
             Click(OKButton());
@@ -243,7 +246,9 @@ namespace NakedObjects.Selenium {
             TypeIntoFieldWithoutClearing("#newdiscount1", newPct);
             WaitForCss("td", 64);
             //Now select items
+            PageDownAndWait();
             SelectCheckBox("#item1-6");
+            PageDownAndWait();
             SelectCheckBox("#item1-8");
             Click(OKButton());
             WaitUntilElementDoesNotExist(".dialog");
@@ -258,7 +263,9 @@ namespace NakedObjects.Selenium {
             Reload();
             TypeIntoFieldWithoutClearing("#newdiscount1", "0.10");
             var cells = WaitForCss("td", 64);
+            PageDownAndWait();
             SelectCheckBox("#item1-6");
+            PageDownAndWait();
             SelectCheckBox("#item1-8");
             Click(OKButton());
             WaitUntilElementDoesNotExist(".dialog");

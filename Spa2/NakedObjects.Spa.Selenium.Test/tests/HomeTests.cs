@@ -290,7 +290,7 @@ namespace NakedObjects.Selenium {
             WaitForSingleHome();
             ClickOnVariousMenus();
             OpenAndCloseSubMenus();
-            //SelectSuccessiveDialogActionsThenCancel(); todo fix !
+            SelectSuccessiveDialogActionsThenCancel(); 
             ZeroParamReturnsObject();
             ZeroParamReturnsCollection();
             ZeroParamReturnsEmptyCollection();
@@ -317,7 +317,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class MegaHomeTestIe : MegaHomeTestBase {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

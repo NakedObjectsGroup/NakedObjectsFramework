@@ -17,10 +17,7 @@ namespace NakedObjects.Selenium {
 
 
     public abstract class MultiLineDialogTestsRoot : AWTest {
-        protected void PageDownAndWait() {
-            br.SwitchTo().ActiveElement().SendKeys(Keys.PageDown + Keys.PageDown + Keys.PageDown + Keys.PageDown + Keys.PageDown);
-            Thread.Sleep(1000);
-        }
+      
 
         public virtual void MultiLineMenuAction() {
             GeminiUrl("home?m1=SpecialOfferRepository");

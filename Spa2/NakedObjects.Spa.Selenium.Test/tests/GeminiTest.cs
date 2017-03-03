@@ -60,6 +60,8 @@ namespace NakedObjects.Selenium {
             wait.Until(dr => dr.FindElements(By.CssSelector(cssSelector)).Count == count);
         }
 
+
+
         #region overhead
 
         protected const string BaseUrl = TestConfig.BaseUrl;
@@ -592,6 +594,11 @@ namespace NakedObjects.Selenium {
                 WaitForCss(cssForInput).SendKeys(Keys.Escape);
                 wait.Until(br => !br.FindElement(By.CssSelector(".ui-datepicker")).Displayed);
             }
+        }
+
+        protected void PageDownAndWait() {
+            br.SwitchTo().ActiveElement().SendKeys(Keys.PageDown + Keys.PageDown + Keys.PageDown + Keys.PageDown + Keys.PageDown);
+            Thread.Sleep(1000);
         }
 
         #endregion
