@@ -151,7 +151,7 @@ namespace NakedObjects.Selenium {
           
             Actions actions = new Actions(br);
             actions.MoveToElement(element);
-            // actions.click();
+            //actions.click();
             actions.Perform();
 
         }
@@ -276,7 +276,7 @@ namespace NakedObjects.Selenium {
         }
 
         protected virtual void WaitForMenus() {
-            wait.Until(dr => dr.FindElements(By.CssSelector("nof-menu")).Count == 10);
+            wait.Until(dr => dr.FindElements(By.CssSelector("nof-menu-bar nof-action")).Count == 10);
         }
 
         protected virtual void GoToMenuFromHomePage(string menuName) {
@@ -284,11 +284,11 @@ namespace NakedObjects.Selenium {
 
             WaitForMenus();
 
-            ReadOnlyCollection<IWebElement> menus = br.FindElements(By.CssSelector("nof-menu"));
-            IWebElement menu = menus.FirstOrDefault(s => s.Text == menuName);
+            ReadOnlyCollection<IWebElement> menus = br.FindElements(By.CssSelector("nof-action input"));
+            IWebElement menu = menus.FirstOrDefault(s => s.GetAttribute("value") == menuName);
             if (menu != null) {
                 Click(menu);
-                wait.Until(d => d.FindElements(By.CssSelector(".actions nof-action")).Count > 0);
+                wait.Until(d => d.FindElements(By.CssSelector("nof-action-list nof-action")).Count > 0);
             }
             else {
                 throw new NotFoundException(string.Format("menu not found {0}", menuName));
@@ -299,7 +299,7 @@ namespace NakedObjects.Selenium {
             string paneSelector = CssSelectorFor(pane);
             var actions = wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + "input")).Single(el => el.GetAttribute("value") == "Actions"));
             Click(actions);
-            wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " .actions nof-action")).Count > 0);
+            wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " nof-action-list nof-action")).Count > 0);
         }
 
         protected virtual void OpenSubMenu(string menuName, Pane pane = Pane.Single) {
@@ -497,31 +497,33 @@ namespace NakedObjects.Selenium {
         #region Object Actions
 
         protected ReadOnlyCollection<IWebElement> GetObjectActions(int totalNumber, Pane pane = Pane.Single) {
-            var selector = CssSelectorFor(pane) + ".actions nof-action";
+            var selector = CssSelectorFor(pane) + "nof-action-list nof-action";
             wait.Until(d => d.FindElements(By.CssSelector(selector)).Count == totalNumber);
             return br.FindElements(By.CssSelector(selector));
         }
 
         protected void AssertAction(int number, string actionName) {
-            wait.Until(dr => dr.FindElements(By.CssSelector(".actions nof-action"))[number].Text == actionName);
+            wait.Until(dr => dr.FindElements(By.CssSelector("nof-action-list nof-action > input"))[number].GetAttribute("value") == actionName);
         }
 
         protected virtual void AssertActionNotDisplayed(string action) {
-            wait.Until(dr => dr.FindElements(By.CssSelector(".actions nof-action")).FirstOrDefault(el => el.Text == action) == null);
+            wait.Until(dr => dr.FindElements(By.CssSelector($"nof-action-list nof-action inputinput[type='{action}']")).FirstOrDefault() == null);
         }
 
         protected IWebElement GetObjectAction(string actionName, Pane pane = Pane.Single, string subMenuName = null) {
             if (subMenuName != null) {
                 OpenSubMenu(subMenuName);
             }
-            var selector = CssSelectorFor(pane) + ".actions .name";
-            var a = wait.Until(d => d.FindElements(By.CssSelector(selector)).Single(we => we.Text == actionName));
+            var selector = CssSelectorFor(pane) + $"nof-action-list nof-action > input[value='{actionName}']";
+            var a = wait.Until(d => d.FindElement(By.CssSelector(selector)));
             ScrollTo(a);
             return a;
         }
 
         protected IWebElement OpenActionDialog(string actionName, Pane pane = Pane.Single, int? noOfParams = null) {
+           
             Click(GetObjectAction(actionName, pane));
+           
             var dialogSelector = CssSelectorFor(pane) + " .dialog ";
             wait.Until(d => d.FindElement(By.CssSelector(dialogSelector + "> .title")).Text == actionName);
             //Check it has OK & cancel buttons
