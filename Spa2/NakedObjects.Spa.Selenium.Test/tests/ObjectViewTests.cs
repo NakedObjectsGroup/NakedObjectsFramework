@@ -775,9 +775,9 @@ namespace NakedObjects.Selenium {
             //TimeSpanProperty();
             ZeroParamActionCausesObjectToReload();
 
-            //CanInvokeOneNonPotentActionBeforePreviousHasCompleted(); todo unreliable needs fixing 
-            //UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed(); todo unreliable needs fixing 
-            //CannotInvokeAPotentActionUntilPriorOneHasCompleted(); todo unreliable needs fixing 
+            CanInvokeOneNonPotentActionBeforePreviousHasCompleted();
+            UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed();
+            CannotInvokeAPotentActionUntilPriorOneHasCompleted();
 
             //CollectionsUpdateProperly();  move to LocallyRun 
             //NotCountedCollectionUpdatesCorrectly();  move to LocallyRun 
