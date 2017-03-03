@@ -19,13 +19,13 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.Object, "Twin Cycles, AW00000555");
             OpenSubMenu("Orders");
             var actions = GetObjectActions(7);
-            Assert.AreEqual("Review Sales Responsibility", actions[0].Text);
-            Assert.AreEqual("Create New Order", actions[1].Text);
-            Assert.AreEqual("Quick Order", actions[2].Text);
-            Assert.AreEqual("Search For Orders", actions[3].Text);
-            Assert.AreEqual("Last Order", actions[4].Text);
-            Assert.AreEqual("Open Orders", actions[5].Text);
-            Assert.AreEqual("Recent Orders", actions[6].Text);
+            Assert.AreEqual("Review Sales Responsibility", actions[0].GetAttribute("value"));
+            Assert.AreEqual("Create New Order", actions[1].GetAttribute("value"));
+            Assert.AreEqual("Quick Order", actions[2].GetAttribute("value"));
+            Assert.AreEqual("Search For Orders", actions[3].GetAttribute("value"));
+            Assert.AreEqual("Last Order", actions[4].GetAttribute("value"));
+            Assert.AreEqual("Open Orders", actions[5].GetAttribute("value"));
+            Assert.AreEqual("Recent Orders", actions[6].GetAttribute("value"));
         }
 
         public virtual void OpenActionsMenuNotAlreadyOpen() {
@@ -774,9 +774,11 @@ namespace NakedObjects.Selenium {
             AddingObjectToCollectionUpdatesTableView();
             //TimeSpanProperty();
             ZeroParamActionCausesObjectToReload();
-            CanInvokeOneNonPotentActionBeforePreviousHasCompleted();
-            UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed();
-            CannotInvokeAPotentActionUntilPriorOneHasCompleted();
+
+            //CanInvokeOneNonPotentActionBeforePreviousHasCompleted(); todo unreliable needs fixing 
+            //UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed(); todo unreliable needs fixing 
+            //CannotInvokeAPotentActionUntilPriorOneHasCompleted(); todo unreliable needs fixing 
+
             //CollectionsUpdateProperly();  move to LocallyRun 
             //NotCountedCollectionUpdatesCorrectly();  move to LocallyRun 
         }
