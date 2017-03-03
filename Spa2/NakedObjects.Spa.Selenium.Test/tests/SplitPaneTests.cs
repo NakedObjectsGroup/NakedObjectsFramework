@@ -76,7 +76,7 @@ namespace NakedObjects.Selenium {
         public virtual void RightClickActionReturningObjectFromHomeSingle() {
             Url(CustomersMenuUrl);
             WaitForView(Pane.Single, PaneType.Home, "Home");
-            wait.Until(d => d.FindElements(By.CssSelector("nof-action")).Count == CustomerServiceActions);
+            wait.Until(d => d.FindElements(By.CssSelector("nof-action-list nof-action")).Count == CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
             ClearFieldThenType(".value  input", "AW00022262");
             RightClick(OKButton());

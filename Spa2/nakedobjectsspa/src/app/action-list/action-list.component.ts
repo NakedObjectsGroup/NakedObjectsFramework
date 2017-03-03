@@ -13,24 +13,50 @@ import { IMenuHolderViewModel} from '../view-models/imenu-holder-view-model';
 })
 export class ActionListComponent implements OnInit, AfterViewInit {
 
+    private holder: IMenuHolderViewModel;
 
     @Input()
-    menuHolder: IMenuHolderViewModel;
+    set menuHolder(mh: IMenuHolderViewModel) {
+        this.holder = mh;
+        this.actionHolders = []; // clear cache;
+    }
+
+    get menuHolder() {
+        return this.holder;
+    }
 
     get items() {
         return this.menuHolder.menuItems;
     }
 
+    private actionHolders: IActionHolder[][] = [];
+
     private getActionHolders(menuItem: MenuItemViewModel) {
-        // todo investigate caching this 
         return _.map(menuItem.actions, a => wrapAction(a));
+    }
+
+    hasActions = (menuItem: MenuItemViewModel) => {
+        const actions = menuItem.actions;
+        return actions && actions.length > 0;
+    }
+
+    hasItems = (menuItem: MenuItemViewModel) => {
+        const items = menuItem.menuItems;
+        return items && items.length > 0; 
     }
 
     menuName = (menuItem: MenuItemViewModel) => menuItem.name;
 
     menuItems = (menuItem: MenuItemViewModel) => menuItem.menuItems;
 
-    menuActions = (menuItem: MenuItemViewModel) => this.getActionHolders(menuItem);
+    menuActions = (menuItem: MenuItemViewModel, index: number) => {
+
+        // todo is this too naive ? 
+        if (!this.actionHolders[index]) {
+            this.actionHolders[index] = this.getActionHolders(menuItem);
+        }
+        return this.actionHolders[index];
+    };
 
     toggleCollapsed = (menuItem: MenuItemViewModel) => menuItem.toggleCollapsed();
 
@@ -60,6 +86,7 @@ export class ActionListComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit(): void {
+        this.actionHolders = [];
         this.firstAction = this.findFirstAction(this.items);
     }
 
