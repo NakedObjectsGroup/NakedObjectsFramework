@@ -48,6 +48,7 @@ namespace NakedObjects.Selenium {
             GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&as1=open");
             Reload();
             wait.Until(dr => dr.FindElements(By.CssSelector("tbody tr .checkbox")).Count >= 16);
+            PageDownAndWait();
             SelectCheckBox("#item1-2");
             SelectCheckBox("#item1-3");
             SelectCheckBox("#item1-4");
@@ -59,6 +60,7 @@ namespace NakedObjects.Selenium {
             WaitUntilElementDoesNotExist(".dialog");
             Thread.Sleep(1000);
             string maxQty = "Max Qty:";
+            PageDownAndWait();
             CheckIndividualItem(2, maxQty, newMax);
             CheckIndividualItem(3, maxQty, newMax);
             CheckIndividualItem(4, maxQty, newMax);
