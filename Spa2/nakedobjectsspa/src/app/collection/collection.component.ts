@@ -101,6 +101,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
                     // ignore if different object
                     if (this.currentOid === paneRouteData.objectId) {
                         this.collection.reset(paneRouteData, false);
+                        this.collection.resetMessage();
                     }
                     this.selectedDialogId = paneRouteData.dialogId;
                 }
