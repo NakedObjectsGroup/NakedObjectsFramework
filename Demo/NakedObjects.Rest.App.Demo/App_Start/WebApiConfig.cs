@@ -9,8 +9,6 @@ namespace NakedObjects.Rest.App.Demo {
         public static void Register(HttpConfiguration config) {
             // Web API configuration and services
 
-            GlobalConfiguration.Configuration.EnableCors();
-
             // Web API routes
             config.MapHttpAttributeRoutes();
 

@@ -8,14 +8,12 @@
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http.Cors;
 using System.Web.Http.ModelBinding;
 using NakedObjects.Facade;
 using NakedObjects.Rest;
 using NakedObjects.Rest.Model;
 
 namespace MvcTestApp.Controllers {
-    [EnableCors(origins: "http://localhost:49998", headers: "*", methods: "*", exposedHeaders: "Warning, Set-Cookie, ETag", SupportsCredentials = true)]
     public class RestfulObjectsController : RestfulObjectsControllerBase {
         public RestfulObjectsController(IFrameworkFacade frameworkFacade) : base(frameworkFacade) {}
 
