@@ -58,7 +58,7 @@ export function tooltip(onWhat: { clientValid: () => boolean }, fields: FieldVie
     return "";
 }
 
-function getMenuForLevel(menupath: string, level: number) {
+function getMenuNameForLevel(menupath: string, level: number) {
     let menu = "";
 
     if (menupath && menupath.length > 0) {
@@ -72,9 +72,9 @@ function getMenuForLevel(menupath: string, level: number) {
     return menu || "";
 }
 
-function removeDuplicateMenus(menus: MenuItemViewModel[]) {
+function removeDuplicateMenuNames(menus: {name : string}[]) {
     return _.uniqWith(menus,
-        (m1: MenuItemViewModel, m2: MenuItemViewModel) => {
+        (m1: { name: string }, m2: { name: string }) => {
             if (m1.name && m2.name) {
                 return m1.name === m2.name;
             }
@@ -82,41 +82,49 @@ function removeDuplicateMenus(menus: MenuItemViewModel[]) {
         });
 }
 
-export function createSubmenuItems(avms: ActionViewModel[], menu: MenuItemViewModel, level: number) {
+export function createSubmenuItems(avms: ActionViewModel[], menuSlot: {name : string, action : ActionViewModel}, level: number) {
     // if not root menu aggregate all actions with same name
-    if (menu.name) {
-        const actions = _.filter(avms, a => getMenuForLevel(a.menuPath, level) === menu.name && !getMenuForLevel(a.menuPath, level + 1));
-        menu.actions = actions;
+    let menuActions: ActionViewModel[];
+    let menuItems: MenuItemViewModel[];
+
+    if (menuSlot.name) {
+        const actions = _.filter(avms, a => getMenuNameForLevel(a.menuPath, level) === menuSlot.name && !getMenuNameForLevel(a.menuPath, level + 1));
+        menuActions = actions;
 
         //then collate submenus 
 
-        const submenuActions = _.filter(avms, (a: ActionViewModel) => getMenuForLevel(a.menuPath, level) === menu.name && getMenuForLevel(a.menuPath, level + 1));
-        let menus = _
+        const submenuActions = _.filter(avms, (a: ActionViewModel) => getMenuNameForLevel(a.menuPath, level) === menuSlot.name && getMenuNameForLevel(a.menuPath, level + 1));
+        let menuSubSlots = _
             .chain(submenuActions)
-            .map(a => new MenuItemViewModel(getMenuForLevel(a.menuPath, level + 1), null, null))
+            .map(a => ({ name: getMenuNameForLevel(a.menuPath, level + 1), action: a }))
             .value();
 
-        menus = removeDuplicateMenus(menus);
+        menuSubSlots = removeDuplicateMenuNames(menuSubSlots);
 
-        menu.menuItems = _.map(menus, m => createSubmenuItems(submenuActions, m, level + 1));
+        menuItems = _.map(menuSubSlots, slot => createSubmenuItems(submenuActions, slot, level + 1));
+    } else {
+        menuActions = [menuSlot.action];
+        menuItems = null;
     }
-    return menu;
+
+    return new MenuItemViewModel(menuSlot.name, menuActions, menuItems);
 }
 
 export function createMenuItems(avms: ActionViewModel[]) {
 
     // first create a top level menu for each action 
     // note at top level we leave 'un-menued' actions
-    let menus = _
+    // use an anonymous object locally so we can construct objects with readonly properties  
+    let menuSlots = _
         .chain(avms)
-        .map(a => new MenuItemViewModel(getMenuForLevel(a.menuPath, 0), [a], null))
+        .map(a => ({ name: getMenuNameForLevel(a.menuPath, 0), action: a }))
         .value();
 
     // remove non unique submenus 
-    menus = removeDuplicateMenus(menus);
+    menuSlots = removeDuplicateMenuNames(menuSlots);
 
     // update submenus with all actions under same submenu
-    return _.map(menus, m => createSubmenuItems(avms, m, 0));
+    return _.map(menuSlots, slot => createSubmenuItems(avms, slot, 0));
 }
 
 export function actionsTooltip(onWhat: { disableActions: () => boolean }, actionsOpen: boolean) {

@@ -75,12 +75,15 @@ export class ActionListComponent implements OnInit, AfterViewInit {
         }
     }
 
+
     findFirstAction(menuItems: MenuItemViewModel[]): ActionViewModel | null {
         for (const mi of menuItems) {
-            if (mi.actions && mi.actions.length > 0) {
+            if (mi.actions.length > 0) {
                 return mi.actions[0];
             }
-            return this.findFirstAction(mi.menuItems);
+            if (mi.menuItems && mi.menuItems.length > 0) {
+                return this.findFirstAction(mi.menuItems);
+            }
         }
         return null;
     }
