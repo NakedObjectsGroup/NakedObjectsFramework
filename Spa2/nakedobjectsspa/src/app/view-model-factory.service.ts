@@ -59,7 +59,7 @@ export class ViewModelFactoryService {
         const link = propertyRep.attachmentLink();
         if (link) {
             const parent = propertyRep.parent as Models.DomainObjectRepresentation;
-            return new AttachmentViewModel(link, parent, this.context, paneId);
+            return new AttachmentViewModel(link, parent, this.context, this.error, paneId);
         }
         return null;
     }

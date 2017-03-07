@@ -47,14 +47,7 @@ export class AttachmentComponent extends PaneComponent {
 
                     if (avm) {
                         this.title = avm.title;
-
-                        avm.downloadFile()
-                            .then(blob => {
-                                const reader = new FileReader();
-                                reader.onloadend = () => this.image = reader.result;
-                                reader.readAsDataURL(blob);
-                            })
-                            .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+                        avm.setImage(this);
                     }
                 }
             })

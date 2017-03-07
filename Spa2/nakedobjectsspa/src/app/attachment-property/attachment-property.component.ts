@@ -48,7 +48,7 @@ export class AttachmentPropertyComponent {
                         window.navigator.msSaveBlob(blob, this.attachment.title);
                     } else {
                         const burl = URL.createObjectURL(blob);
-                        this.router.navigateByUrl(burl);
+                        window.open(burl);
                     }
                 })
                 .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
@@ -60,17 +60,7 @@ export class AttachmentPropertyComponent {
         this.title = this.attachment.title;
 
         if (this.attachment.displayInline()) {
-            this.attachment.downloadFile()
-                .then(blob => {
-                    const reader = new FileReader();
-                    reader.onloadend = () => {
-                        if (reader.result) {
-                            this.image = reader.result;
-                        }
-                    };
-                    reader.readAsDataURL(blob);
-                })
-                .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+            this.attachment.setImage(this);
         }
     }
 }
