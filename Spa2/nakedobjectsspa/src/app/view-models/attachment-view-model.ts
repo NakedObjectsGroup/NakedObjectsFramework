@@ -7,12 +7,10 @@ import * as Msg from '../user-messages';
 export class AttachmentViewModel {
 
     constructor(
-        private readonly link: Models.Link,
+        public readonly link: Models.Link,
         private readonly parent: Models.DomainObjectRepresentation,
         private readonly context: ContextService,
-        private readonly urlManager: UrlManagerService,
-        private readonly clickHandler: ClickHandlerService,
-        private readonly onPaneId: number
+        public readonly onPaneId: number
     ) {
         this.href = link.href();
         this.mimeType = link.type().asString;
@@ -30,6 +28,5 @@ export class AttachmentViewModel {
         this.mimeType === "image/gif" ||
         this.mimeType === "application/octet-stream";
 
-    // todo modified investigate
-    doClick = (right?: boolean) => this.urlManager.setAttachment(this.link, this.clickHandler.pane(this.onPaneId, right));
+   
 }
