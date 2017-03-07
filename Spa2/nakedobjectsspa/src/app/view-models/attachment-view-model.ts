@@ -3,7 +3,7 @@ import { UrlManagerService } from '../url-manager.service';
 import { ClickHandlerService } from "../click-handler.service";
 import * as Models from '../models';
 import * as Msg from '../user-messages';
-import * as Errorservice from '../error.service';
+import { ErrorService } from '../error.service';
 
 export class AttachmentViewModel {
 
@@ -11,7 +11,7 @@ export class AttachmentViewModel {
         public readonly link: Models.Link,
         private readonly parent: Models.DomainObjectRepresentation,
         private readonly context: ContextService,
-        private readonly error: Errorservice.ErrorService,
+        private readonly error: ErrorService,
         public readonly onPaneId: number
     ) {
         this.href = link.href();
@@ -25,21 +25,20 @@ export class AttachmentViewModel {
     readonly downloadFile = () => this.context.getFile(this.parent, this.href, this.mimeType);
     readonly clearCachedFile = () => this.context.clearCachedFile(this.href);
 
-    readonly displayInline = () => 
+    readonly displayInline = () =>
         this.mimeType === "image/jpeg" ||
         this.mimeType === "image/gif" ||
         this.mimeType === "application/octet-stream";
 
     setImage(setImageOn: { image: string }) {
         this.downloadFile().then(blob => {
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                    if (reader.result) {
-                        setImageOn.image = reader.result;
-                    }
-                };
-                reader.readAsDataURL(blob);
-            })
-            .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                if (reader.result) {
+                    setImageOn.image = reader.result;
+                }
+            };
+            reader.readAsDataURL(blob);
+        }).catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
     }
 }
