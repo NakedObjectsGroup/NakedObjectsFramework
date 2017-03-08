@@ -734,9 +734,9 @@ export class UrlManagerService {
 
         return this.router.routerState.root.queryParams.map((ps: { [key: string]: string }) => {
             const routeData = new RouteData(this.configService, this.loggerService);
-            const paneRouteData = routeData.pane(paneId);
+            const paneRouteData = routeData.pane(paneId)!;
             this.setPaneRouteDataFromParms(paneRouteData, paneId, ps);
-            paneRouteData.location = this.getViewType(this.getLocation(paneId));
+            paneRouteData.location = this.getViewType(this.getLocation(paneId))!;
             return paneRouteData;
         }) as Observable<PaneRouteData>;
     }

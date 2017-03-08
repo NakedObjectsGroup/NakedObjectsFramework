@@ -150,12 +150,12 @@ export class DialogComponent {
             }
 
             if (p instanceof ListViewModel) {
-                action = p.actionMember(this.currentDialogId);
+                action = p.actionMember(this.currentDialogId)!;
                 actionViewModel = _.find(p.actions, a => a.actionRep.actionId() === this.currentDialogId) || null;
             }
 
             if (p instanceof CollectionViewModel && p.hasMatchingLocallyContributedAction(this.currentDialogId)) {
-                action = p.actionMember(this.currentDialogId, this.configService.config.keySeparator);
+                action = p.actionMember(this.currentDialogId, this.configService.config.keySeparator)!;
                 actionViewModel = _.find(p.actions, a => a.actionRep.actionId() === this.currentDialogId) || null;
             }
 

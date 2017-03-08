@@ -938,7 +938,7 @@ export class Value {
             target.value = { "href": (this.link() as Link).href() }; // know true
         } else if (this.isList()) {
             const list = this.list() as Value[]; // know true
-            target.value = _.map(list, v => v.isReference() ? <Ro.ILink>{ "href": v.link().href() } : v.scalar()) as Ro.valueType[];
+            target.value = _.map(list, v => v.isReference() ? <Ro.ILink>{ "href": v.link()!.href() } : v.scalar()) as Ro.valueType[];
         }
         else if (this.isBlob()) {
             target.value = this.blob();
@@ -1615,7 +1615,7 @@ export class CollectionRepresentation extends ResourceRepresentation<RoCustom.IC
     }
 
     actionMember(id: string): ActionMember {
-        return getMember(this.actionMembers(), id, this.collectionId());
+        return getMember(this.actionMembers(), id, this.collectionId())!;
     }
 
     hasActionMember(id: string): boolean {
@@ -1959,7 +1959,7 @@ export class CollectionMember
     }
 
     actionMember(id: string, keySeparator: string): ActionMember {
-        return getMember(this.actionMembers(), id, this.collectionId());
+        return getMember(this.actionMembers(), id, this.collectionId())!;
     }
 
     etagDigest: string;
@@ -2136,7 +2136,7 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
 
     // todo later change to not be dependent on keySeparator
     actionMember(id: string, keySeparator: string): ActionMember {
-        return getMember(this.actionMembers(), id, this.id(keySeparator));
+        return getMember(this.actionMembers(), id, this.id(keySeparator))!;
     }
 
     updateLink(): Link | null {
@@ -2255,7 +2255,7 @@ export class MenuRepresentation extends ResourceRepresentation<RoCustom.IMenuRep
     }
 
     actionMember(id: string, keySeparator: string): ActionMember {
-        return getMember(this.actionMembers(), id, this.menuId());
+        return getMember(this.actionMembers(), id, this.menuId())!;
     }
 
     selfLink(): Link {
@@ -2322,7 +2322,7 @@ export class ListRepresentation
     }
 
     actionMember(id: string): ActionMember {
-        return getMember(this.actionMembers(), id, "list");
+        return getMember(this.actionMembers(), id, "list")!;
     }
 
     hasActionMember(id: string): boolean {

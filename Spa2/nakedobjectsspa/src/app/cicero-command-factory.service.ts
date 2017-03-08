@@ -54,8 +54,8 @@ export class CiceroCommandFactoryService {
                 return;
             }
             this.autoComplete(input, cvm);
-            cvm.input = cvm.input.trim();
-            cvm.previousInput = cvm.input;
+            cvm.input = cvm.input!.trim();
+            cvm.previousInput = cvm.input!;
             const commands = input.split(";");
             if (commands.length > 1) {
                 const first = commands[0];
@@ -72,7 +72,7 @@ export class CiceroCommandFactoryService {
                 input = input.trim();
                 const firstWord = input.split(" ")[0].toLowerCase();
                 const command = this.getCommand(firstWord);
-                let argString: string = null;
+                let argString: string | null = null;
                 const index = input.indexOf(" ");
                 if (index >= 0) {
                     argString = input.substr(index + 1);

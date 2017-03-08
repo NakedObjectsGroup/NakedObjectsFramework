@@ -626,7 +626,7 @@ export class ContextService {
                 }
             } else if (result.resultType() === "list") {
 
-                const resultList = result.result().list();
+                const resultList = result.result().list()!;
                 const parms = this.parameterCache.getValues(action.actionId(), fromPaneId);
                 const search = this.urlManager.setList(action, parms, fromPaneId, toPaneId);
                 const index = this.urlManager.getListCacheIndexFromSearch(search, toPaneId, page, pageSize);

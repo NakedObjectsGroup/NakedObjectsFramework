@@ -83,7 +83,7 @@ export class ColorService extends TypeResultCache<number> implements IColorServi
                 _.forEach(subtypeMap, (v, k) => this.addSubtype(k!, v));
             }
 
-            if (dflt !== null) {
+            if (dflt != null) {
                 this.setDefault(dflt);
             }
         }

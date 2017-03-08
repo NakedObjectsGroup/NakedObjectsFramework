@@ -157,7 +157,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
     }
 
     concurrency() {
-        this.routeData = this.urlManager.getRouteData().pane(this.onPaneId);
+        this.routeData = this.urlManager.getRouteData().pane(this.onPaneId)!;
         this.contextService.getObject(this.onPaneId, this.domainObject.getOid(this.keySeparator), this.routeData.interactionMode)
             .then((obj: Models.DomainObjectRepresentation) => {
                 // cleared cached values so all values are from reloaded representation 
@@ -200,9 +200,11 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
         this.clearCachedFiles();
         const propMap = this.propertyMap();
         this.saveHandler()(this.domainObject, propMap, this.onPaneId, viewObject)
-            .then((obj: Models.DomainObjectRepresentation) => this.reset(obj, this.urlManager.getRouteData().pane(this.onPaneId), true))
+            .then((obj: Models.DomainObjectRepresentation) => this.reset(obj, this.urlManager.getRouteData().pane(this.onPaneId)!, true))
             .catch((reject: Models.ErrorWrapper) => this.handleWrappedError(reject));
     };
+
+    readonly currentPaneData = () => this.urlManager.getRouteData().pane(this.onPaneId)!;
 
     readonly doSaveValidate = () => {
         const propMap = this.propertyMap();
@@ -223,7 +225,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
         this.contextService.clearObjectCachedValues(this.onPaneId);
         this.contextService.getObjectForEdit(this.onPaneId, this.domainObject)
             .then((updatedObject: Models.DomainObjectRepresentation) => {
-                this.reset(updatedObject, this.urlManager.getRouteData().pane(this.onPaneId), true);
+                this.reset(updatedObject, this.currentPaneData(), true);
                 this.urlManager.pushUrlState(this.onPaneId);
                 this.urlManager.setInteractionMode(InteractionMode.Edit, this.onPaneId);
             })
@@ -233,7 +235,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
     readonly doReload = () => {
         this.clearCachedFiles();
         this.contextService.reloadObject(this.onPaneId, this.domainObject)
-            .then((updatedObject: Models.DomainObjectRepresentation) => this.reset(updatedObject, this.urlManager.getRouteData().pane(this.onPaneId), true))
+            .then((updatedObject: Models.DomainObjectRepresentation) => this.reset(updatedObject, this.currentPaneData(), true))
             .catch((reject: Models.ErrorWrapper) => this.handleWrappedError(reject));
     };
 
@@ -243,6 +245,6 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
 
     readonly canDropOn = (targetType: string) => this.contextService.isSubTypeOf(this.domainType, targetType);
 
-    readonly showActions = () => !!this.urlManager.getRouteData().pane(this.onPaneId).actionsOpen;
+    readonly showActions = () => !!this.currentPaneData().actionsOpen;
 
 }

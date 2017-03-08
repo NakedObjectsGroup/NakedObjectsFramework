@@ -49,7 +49,7 @@ import * as moment from 'moment';
         protected cvm: CiceroViewModel;
         protected keySeparator : string;
 
-        execute(argString: string, chained: boolean, cvm : CiceroViewModel): void {
+        execute(argString: string | null, chained: boolean, cvm : CiceroViewModel): void {
             this.cvm = cvm; 
             //TODO Create outgoing Vm and copy across values as needed
             if (!this.isAvailableInCurrentContext()) {
@@ -103,7 +103,7 @@ import * as moment from 'moment';
 
         //argNo starts from 0.
         //If argument does not parse correctly, message will be passed to UI and command aborted.
-        protected argumentAsString(argString: string, argNo: number, optional: boolean = false, toLower: boolean = true): string {
+        protected argumentAsString(argString: string, argNo: number, optional: boolean = false, toLower: boolean = true): string | undefined {
             if (!argString) return undefined;
             if (!optional && argString.split(",").length < argNo + 1) {
                 throw new Error(Msg.tooFewArguments);
@@ -120,17 +120,17 @@ import * as moment from 'moment';
         }
 
         //argNo starts from 0.
-        protected argumentAsNumber(args: string, argNo: number, optional: boolean = false): number {
+        protected argumentAsNumber(args: string, argNo: number, optional: boolean = false): number | null {
             const arg = this.argumentAsString(args, argNo, optional);
             if (!arg && optional) return null;
-            const number = parseInt(arg);
+            const number = parseInt(arg!);
             if (isNaN(number)) {
                 throw new Error(Msg.wrongTypeArgument(argNo + 1));
             }
             return number;
         }
 
-        protected parseInt(input: string): number {
+        protected parseInt(input: string): number | null {
             if (!input) {
                 return null;
             }
@@ -142,12 +142,12 @@ import * as moment from 'moment';
         }
 
         //Parses '17, 3-5, -9, 6-' into two numbers 
-        protected parseRange(arg: string): { start: number, end: number } {
+        protected parseRange(arg: string): { start: number | null, end: number | null } {
             if (!arg) {
                 arg = "1-";
             }
             const clauses = arg.split("-");
-            const range = { start: null as number, end: null as number };
+            const range: { start: number | null, end: number | null } = { start: null, end: null };
             switch (clauses.length) {
                 case 1:
                     range.start = this.parseInt(clauses[0]);
@@ -166,7 +166,7 @@ import * as moment from 'moment';
             return range;
         }
 
-        protected getContextDescription(): string {
+        protected getContextDescription(): string | null {
             //todo
             return null;
         }
@@ -338,7 +338,7 @@ import * as moment from 'moment';
             }
             let msg = Msg.pleaseCompleteOrCorrect;
             _.each(err.valuesMap(), (errorValue, fieldId) => {
-                msg += this.fieldValidationMessage(errorValue, () => getFriendlyName(fieldId));
+                msg += this.fieldValidationMessage(errorValue, () => getFriendlyName(fieldId!));
             });
             this.clearInputAndSetMessage(msg);
         }
@@ -359,14 +359,14 @@ import * as moment from 'moment';
             return msg;
         }
 
-        protected valueForUrl(val: Ro.Value, field: Ro.IField): Ro.Value {
+        protected valueForUrl(val: Ro.Value, field: Ro.IField): Ro.Value | null {
             if (val.isNull()) return val;
             const fieldEntryType = field.entryType();
 
             if (fieldEntryType !== Ro.EntryType.FreeForm || field.isCollectionContributed()) {
 
                 if (fieldEntryType === Ro.EntryType.MultipleChoices || field.isCollectionContributed()) {
-                    let valuesFromRouteData = new Array<Ro.Value>();
+                    let valuesFromRouteData : Ro.Value[] | null = new Array<Ro.Value>();
                     if (field instanceof Ro.Parameter) {
                         const rd = getParametersAndCurrentValue(field.parent, this.context)[field.id()];
                         if (rd) valuesFromRouteData = rd.list(); //TODO: what if only one?
@@ -376,7 +376,7 @@ import * as moment from 'moment';
                         const rd = props[field.id()];
                         if (rd) valuesFromRouteData = rd.list(); //TODO: what if only one?
                     }
-                    let vals: Ro.Value[] = [];
+                    let vals: Ro.Value[] | null = [];
                     if (val.isReference() || val.isScalar()) {
                         vals = new Array<Ro.Value>(val);
                     } else if (val.isList()) { //Should be!
@@ -421,7 +421,7 @@ import * as moment from 'moment';
         }
 
         private leanLink(val: Ro.Value): Ro.Value {
-            return new Ro.Value({ href: val.link().href(), title: val.link().title() });
+            return new Ro.Value({ href: val.link()!.href()!, title: val.link()!.title()! });
         }
 
         private addOrRemoveValue(valuesFromRouteData: Ro.Value[], val: Ro.Value) {
@@ -432,7 +432,7 @@ import * as moment from 'moment';
                 index = _.findIndex(valuesFromRouteData, v => v.scalar() === val.scalar());
             } else { //Must be reference
                 valToAdd = this.leanLink(val);
-                index = _.findIndex(valuesFromRouteData, v => v.link().href() === valToAdd.link().href());
+                index = _.findIndex(valuesFromRouteData, v => v.link()!.href() === valToAdd.link()!.href());
             }
             if (index > -1) {
                 valuesFromRouteData.splice(index, 1);
@@ -482,7 +482,7 @@ import * as moment from 'moment';
             //TODO: handle list - CCAs
         }
 
-        private processActions(match: string, actionsMap: _.Dictionary<Ro.ActionMember>, details: string) {
+        private processActions(match: string | null, actionsMap: _.Dictionary<Ro.ActionMember>, details: string) {
             let actions = _.map(actionsMap, action => action);
             if (actions.length === 0) {
                 this.clearInputAndSetMessage(Msg.noActionsAvailable);

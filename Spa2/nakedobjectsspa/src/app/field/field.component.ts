@@ -232,7 +232,7 @@ export abstract class FieldComponent {
 
     fileUpload(evt : Event) {
        
-        const file = (evt.target as HTMLInputElement).files[0];
+        const file : File = (evt.target as HTMLInputElement)!.files![0];
         const fileReader = new FileReader();
         fileReader.onloadend = () => {
             const link = new Models.Link({

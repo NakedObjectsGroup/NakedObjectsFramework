@@ -8,9 +8,9 @@ export class CiceroViewModel {
     alert = ""; //Alert is appended before the output
     input: string | null;
     previousInput: string;
-    chainedCommands: string[];
-        viewType: ViewType;
-    clipboard: Models.DomainObjectRepresentation;
+    chainedCommands: string[] | null;
+    viewType: ViewType;
+    clipboard: Models.DomainObjectRepresentation | null;
 
     private outputSource = new Subject<string>();
     output$ = this.outputSource.asObservable();
@@ -20,8 +20,8 @@ export class CiceroViewModel {
         this.input = null;
     };
 
-    setOutputSource(text: string) {
-        this.outputSource.next(text);
+    setOutputSource(text: string | null) {
+        this.outputSource.next(Models.withUndefined(text));
     }
 
     outputMessageThenClearIt() : void {

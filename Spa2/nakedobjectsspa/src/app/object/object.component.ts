@@ -226,7 +226,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         accesskey: null
     }
 
-    private actionButtons : IActionHolder[]; 
+    private actionButtons : IActionHolder[] | null; 
 
     get actionHolders() {
         if (this.mode === InteractionMode.View) {

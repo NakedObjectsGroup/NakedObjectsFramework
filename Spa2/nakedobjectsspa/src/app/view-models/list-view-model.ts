@@ -54,11 +54,13 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
             : this.context.getListFromMenu(this.routeData, page, pageSize);
     }
 
+    readonly currentPaneData = () => this.urlManager.getRouteData().pane(this.onPaneId)!;
+
     private readonly pageOrRecreate = (newPage: number, newPageSize: number, newState?: CollectionViewState) => {
         this.recreate(newPage, newPageSize)
             .then((list: Models.ListRepresentation) => {
                 this.urlManager.setListPaging(newPage, newPageSize, newState || this.routeData.state, this.onPaneId);
-                this.routeData = this.urlManager.getRouteData().pane(this.onPaneId);
+                this.routeData = this.currentPaneData();
                 this.reset(list, this.routeData);
             })
             .catch((reject: Models.ErrorWrapper) => {
@@ -192,6 +194,6 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
     };
 
     readonly showActions = () => {
-        return !!this.urlManager.getRouteData().pane(this.onPaneId).actionsOpen;
+        return !!this.currentPaneData().actionsOpen;
     }
 }

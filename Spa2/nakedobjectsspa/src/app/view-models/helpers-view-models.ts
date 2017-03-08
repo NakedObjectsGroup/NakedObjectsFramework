@@ -85,7 +85,7 @@ function removeDuplicateMenuNames(menus: {name : string}[]) {
 export function createSubmenuItems(avms: ActionViewModel[], menuSlot: {name : string, action : ActionViewModel}, level: number) {
     // if not root menu aggregate all actions with same name
     let menuActions: ActionViewModel[];
-    let menuItems: MenuItemViewModel[];
+    let menuItems: MenuItemViewModel[] | null;
 
     if (menuSlot.name) {
         const actions = _.filter(avms, a => getMenuNameForLevel(a.menuPath, level) === menuSlot.name && !getMenuNameForLevel(a.menuPath, level + 1));
