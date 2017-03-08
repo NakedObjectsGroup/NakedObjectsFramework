@@ -13,8 +13,7 @@
     font-weight: 200;
 }
 
-nof-buttons, nof-button {
-    overflow: hidden;
+.collection {
     display: block;
 }
 
