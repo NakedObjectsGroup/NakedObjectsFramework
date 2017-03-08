@@ -293,7 +293,7 @@ export class ContextService {
             });
     };
 
-    getActionDetails = (actionMember: Models.ActionMember): Promise<Models.ActionRepresentation> => {
+    getActionDetails = (actionMember: Models.ActionMember): Promise<Models.IInvokableAction> => {
         const details = actionMember.getDetails();
         if (details) {
             return this.repLoader.populate(details, true);

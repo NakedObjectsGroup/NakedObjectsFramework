@@ -77,23 +77,13 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
                 return pps;
             }
 
-            if (actionViewModel.invokableActionRep) {
-                const rp = rejectAsNeedSelection(actionViewModel.invokableActionRep);
-                return rp ? Promise.reject(rp) : wrappedInvoke(getParms(actionViewModel.invokableActionRep), right).
-                    then(result => {
-                        // clear selected items on void actions 
-                        this.clearSelected(result);
-                        return result;
-                    });
-            }
+            const detailsPromise = actionViewModel.invokableActionRep
+                ? Promise.resolve(actionViewModel.invokableActionRep)
+                : this.context.getActionDetails(actionViewModel.actionRep as Models.ActionMember);
 
-            return this.context.getActionDetails(actionViewModel.actionRep as Models.ActionMember).
-                then((details: Models.ActionRepresentation) => {
+            return detailsPromise.then((details: Models.IInvokableAction) => {
                     const rp = rejectAsNeedSelection(details);
-                    if (rp) {
-                        return Promise.reject(rp);
-                    }
-                    return wrappedInvoke(getParms(details), right);
+                    return rp ? Promise.reject(rp) : wrappedInvoke(getParms(details), right);
                 }).
                 then(result => {
                     // clear selected items on void actions 
