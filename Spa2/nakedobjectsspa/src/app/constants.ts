@@ -50,5 +50,5 @@ export const nofMessages = "x-ro-nof-messages";
 export const supportedDateFormats = ["D/M/YYYY", "D/M/YY", "D MMM YYYY", "D MMMM YYYY", "D MMM YY", "D MMMM YY"];
 
 // updated by build do not update manually or change name or regex may not match 
-export const clientVersion = 'unknown/development build';
+export const clientVersion = '9.0.0-beta.1';
 
