@@ -11,7 +11,7 @@ import { IMenuHolderViewModel} from '../view-models/imenu-holder-view-model';
     template: require('./action-list.component.html'),
     styles: [require('./action-list.component.css')]
 })
-export class ActionListComponent implements OnInit, AfterViewInit {
+export class ActionListComponent implements AfterViewInit {
 
     private holder: IMenuHolderViewModel;
 
@@ -50,8 +50,6 @@ export class ActionListComponent implements OnInit, AfterViewInit {
     menuItems = (menuItem: MenuItemViewModel) => menuItem.menuItems;
 
     menuActions = (menuItem: MenuItemViewModel, index: number) => {
-
-        // todo is this too naive ? 
         if (!this.actionHolders[index]) {
             this.actionHolders[index] = this.getActionHolders(menuItem);
         }
@@ -64,8 +62,6 @@ export class ActionListComponent implements OnInit, AfterViewInit {
 
     displayClass = (menuItem: MenuItemViewModel) => ({ collapsed: menuItem.navCollapsed, open: !menuItem.navCollapsed, rootMenu: !menuItem.name });
 
-    firstAction: ActionViewModel;
-
     @ViewChildren(ActionComponent)
     actionChildren: QueryList<ActionComponent>;
 
@@ -73,24 +69,6 @@ export class ActionListComponent implements OnInit, AfterViewInit {
         if (actions && actions.first) {
             actions.first.focus();
         }
-    }
-
-
-    findFirstAction(menuItems: MenuItemViewModel[]): ActionViewModel | null {
-        for (const mi of menuItems) {
-            if (mi.actions.length > 0) {
-                return mi.actions[0];
-            }
-            if (mi.menuItems && mi.menuItems.length > 0) {
-                return this.findFirstAction(mi.menuItems);
-            }
-        }
-        return null;
-    }
-
-    ngOnInit(): void {
-        this.actionHolders = [];
-        this.firstAction = this.findFirstAction(this.items);
     }
 
     ngAfterViewInit(): void {
