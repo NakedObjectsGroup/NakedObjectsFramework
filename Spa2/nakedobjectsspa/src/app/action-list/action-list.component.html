@@ -2,8 +2,8 @@
 
     <div *ngIf="menuName(menu)" (click)="toggleCollapsed(menu)"  class="submenu" [ngSwitch]="navCollapsed(menu)">
         {{menuName(menu)}}
-        <div *ngSwitchCase="true" class="icon-expand" tabindex="0"></div>
-        <div *ngSwitchCase="false" class="icon-collapse" tabindex="0"></div>
+        <div *ngSwitchCase="true" (keydown.enter)="toggleCollapsed(menu)" class="icon-expand" tabindex="0"></div>
+        <div *ngSwitchCase="false" (keydown.enter)="toggleCollapsed(menu)" class="icon-collapse" tabindex="0"></div>
     </div>
     <div class="menuitem" [ngClass]="displayClass(menu)">
         <div *ngIf="hasActions(menu)">
