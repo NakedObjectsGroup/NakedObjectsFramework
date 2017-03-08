@@ -1,15 +1,3 @@
- :host {
-    display: block;
-    float: left;
-    padding: 0px;
-    margin-top: 1px;
-    margin-left: 1px; /*Else hover outline is hidden on the left-most menu */
-    margin-right: 10px;
-    margin-bottom: 5px; /*Else hover outline is hidden on the bottom */
-    font-size: 12pt;
-    outline: none;
-}
-
 input {  /*To override user agent style sheet defaults*/
     cursor: pointer;
     color:white;

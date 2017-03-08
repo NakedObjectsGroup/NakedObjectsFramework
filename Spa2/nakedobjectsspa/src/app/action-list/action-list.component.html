@@ -5,7 +5,7 @@
         <div *ngSwitchCase="true" class="icon-expand"></div>
         <div *ngSwitchCase="false" class="icon-collapse"></div>
     </div>
-    <div class="" [ngClass]="displayClass(menu)">
+    <div class="menuitem" [ngClass]="displayClass(menu)">
         <div *ngIf="hasActions(menu)">
             <div *ngFor="let action of menuActions(menu, i)">
                 <nof-action [action]="action"></nof-action>

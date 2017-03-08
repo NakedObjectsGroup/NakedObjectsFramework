@@ -13,7 +13,7 @@
 		<nof-action-bar [actions]="actionHolders"></nof-action-bar>
 		<div class="messages">{{message()}}</div>
 	</header>
-	<nof-action-list class="actions" *ngIf="showActions()" [menuHolder]="object"></nof-action-list>
+	<nof-action-list *ngIf="showActions()" [menuHolder]="object"></nof-action-list>
 	<div class="main-column">
 		<nof-dialog [parent]="object" [selectedDialogId]="selectedDialogId"></nof-dialog>
 		<nof-properties class="properties" *ngIf="properties" [properties]="properties"></nof-properties>

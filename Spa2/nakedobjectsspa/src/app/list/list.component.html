@@ -7,7 +7,7 @@
 		</header>
 		<div class="details" *ngIf="size == 0">{{description}}</div>
 		<div *ngIf="size > 0">
-			<nof-action-list class="actions" *ngIf="showActions()" [menuHolder]="collection"></nof-action-list>
+			<nof-action-list  *ngIf="showActions()" [menuHolder]="collection"></nof-action-list>
 			<nof-dialog [parent]="collection" [selectedDialogId]="selectedDialogId"></nof-dialog>
 			<div class="summary" *ngIf="state == 'list'">
 				<div class="details">{{description}}</div>
