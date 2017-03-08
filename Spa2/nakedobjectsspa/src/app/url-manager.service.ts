@@ -461,11 +461,8 @@ export class UrlManagerService {
         this.currentPaneId = paneId;
         let search = this.getSearch();
         if (condition(search)) {
-            let path: string;
             const result = this.handleTransition(paneId, search, transition);
-            ({ path, search } = result);
-
-
+            ({ search } = result);
             _.forEach(newValues,
                 (v, k) => {
                     // k should always be non null
@@ -663,7 +660,7 @@ export class UrlManagerService {
 
         const key = `${akm.selected}${paneId}_${collectionId}`;
         const currentSelected = this.getSearch()[key];
-        const selectedArray: boolean[] = this.arrayFromMask(currentSelected);
+        const selectedArray = this.arrayFromMask(currentSelected);
         selectedArray[item] = isSelected;
         const currentSelectedAsString = (this.createMask(selectedArray)).toString();
         const newValues = _.zipObject([key], [currentSelectedAsString]) as _.Dictionary<string>;
@@ -674,7 +671,7 @@ export class UrlManagerService {
 
         const key = `${akm.selected}${paneId}_${collectionId}`;
         const currentSelected = this.getSearch()[key];
-        const selectedArray: boolean[] = this.arrayFromMask(currentSelected);
+        const selectedArray = this.arrayFromMask(currentSelected);
         _.fill(selectedArray, isSelected);
         const currentSelectedAsString = (this.createMask(selectedArray)).toString();
         const newValues = _.zipObject([key], [currentSelectedAsString]) as _.Dictionary<string>;

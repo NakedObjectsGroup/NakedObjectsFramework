@@ -121,11 +121,8 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
     }
 
     private setItems(newValue: boolean) {
-        _.each(this.items, item => {
-            // debounce this - todo is there a cleaner way ?
-             item.silentSelect(newValue);
-        });
-        const id = (_.first(this.items)).id;
+        _.each(this.items, item => item.silentSelect(newValue));
+        const id = _.first(this.items).id;
         this.urlManager.setAllItemsSelected(newValue, id, this.onPaneId);
     }
 
