@@ -25,8 +25,9 @@ export class PropertiesComponent implements AfterViewInit {
     propComponents: QueryList<EditPropertyComponent>;
 
     focusOnFirstProperty(prop: QueryList<EditPropertyComponent>) {
-        if (prop && prop.first) {
-            prop.first.focus();
+        if (prop) {
+            // until first element returns true
+            _.every(prop.toArray(), i => !i.focus());
         }
     }
 

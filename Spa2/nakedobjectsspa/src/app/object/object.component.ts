@@ -346,7 +346,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
     focusOnTitle(e: QueryList<ElementRef>) {
         if (this.mode === InteractionMode.View) {
             if (e && e.first) {
-                setTimeout(() => e.first.nativeElement.focus(), 0);
+                e.first.nativeElement.focus();
             }
         }
     }

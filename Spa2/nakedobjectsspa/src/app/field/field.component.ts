@@ -273,8 +273,10 @@ export abstract class FieldComponent {
 
     focus() {
         if (this.focusList && this.focusList.first) {
-            setTimeout(() => this.focusList.first.nativeElement.focus(), 0);
+            this.focusList.first.nativeElement.focus();
+            return true;
         }
+        return false; 
     }
 
 }

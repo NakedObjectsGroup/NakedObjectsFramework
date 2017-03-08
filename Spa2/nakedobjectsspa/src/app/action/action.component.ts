@@ -80,6 +80,10 @@ export class ActionComponent {
     }
 
     focus() {
+        if (this.disabled()) {
+            return false;
+        }
         this.myElement.nativeElement.children[0].focus();
+        return true;
     }
 }

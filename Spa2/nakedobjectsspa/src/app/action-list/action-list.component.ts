@@ -66,8 +66,9 @@ export class ActionListComponent implements AfterViewInit {
     actionChildren: QueryList<ActionComponent>;
 
     focusOnFirstAction(actions: QueryList<ActionComponent>) {
-        if (actions && actions.first) {
-            actions.first.focus();
+        if (actions) {
+            // until first element returns true
+            _.every(actions.toArray(), i => !i.focus());
         }
     }
 
