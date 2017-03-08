@@ -54,34 +54,42 @@ export class ActionViewModel {
         Helpers.decrementPendingPotentAction(this.context, this.invokableActionRep, this.paneId);
     }
 
-    // open dialog on current pane always - invoke action goes to pane indicated by click
-    // todo this is modified maybe better way of doing ?
-    doInvoke = this.showDialog()
-        ? (right?: boolean) => {
-            // clear any previous dialog so we don't pick up values from it
-            this.context.clearDialogCachedValues(this.paneId);
-            this.urlManager.setDialogOrMultiLineDialog(this.actionRep, this.paneId);
-        }
-        : (right?: boolean) => {
-            this.incrementPendingPotentAction();
+    readonly invokeWithDialog = (right?: boolean) => {
+        // clear any previous dialog so we don't pick up values from it
+        this.context.clearDialogCachedValues(this.paneId);
+        this.urlManager.setDialogOrMultiLineDialog(this.actionRep, this.paneId);
+    }
 
-            this.parameters()
-                .then((pps: ParameterViewModel[]) => {
-                    return this.execute(pps, right);
-                })
-                .then((actionResult: Models.ActionResultRepresentation) => {
-                    this.decrementPendingPotentAction();
-                    // if expect result and no warning from server generate one here
-                    if (actionResult.shouldExpectResult() && !actionResult.warningsOrMessages()) {
-                        this.context.broadcastWarning(Msg.noResultMessage);
-                    }
-                })
-                .catch((reject: Models.ErrorWrapper) => {
-                    this.decrementPendingPotentAction();
-                    const display = (em: Models.ErrorMap) => this.vm.setMessage(em.invalidReason() || em.warningMessage);
-                    this.error.handleErrorAndDisplayMessages(reject, display);
-                });
-        };
+    readonly invokeWithoutDialogWithParameters = (parameters : Promise<ParameterViewModel[]>,  right?: boolean) => {
+        this.incrementPendingPotentAction();
+
+        return parameters
+            .then((pps: ParameterViewModel[]) => {
+                return this.execute(pps, right);
+            })
+            .then((actionResult: Models.ActionResultRepresentation) => {
+                this.decrementPendingPotentAction();
+                return actionResult;
+            })
+            .catch((reject: Models.ErrorWrapper) => {
+                this.decrementPendingPotentAction();
+                const display = (em: Models.ErrorMap) => this.vm.setMessage(em.invalidReason() || em.warningMessage);
+                this.error.handleErrorAndDisplayMessages(reject, display);
+            });
+    };
+
+    private readonly invokeWithoutDialog = (right?: boolean) => {
+        this.invokeWithoutDialogWithParameters(this.parameters(), right).then((actionResult: Models.ActionResultRepresentation) => {
+            // if expect result and no warning from server generate one here
+            if (actionResult.shouldExpectResult() && !actionResult.warningsOrMessages()) {
+                this.context.broadcastWarning(Msg.noResultMessage);
+            }
+        });
+    };
+
+    // open dialog on current pane always - invoke action goes to pane indicated by click
+    // note this can be modified by decorators 
+    doInvoke = this.showDialog() ? this.invokeWithDialog : this.invokeWithoutDialog;
 
     private getInvokable() {
         if (this.invokableActionRep) {
@@ -95,15 +103,13 @@ export class ActionViewModel {
             });
     }
 
-
-    // todo this is modified maybe better way of doing ?
+    // note this is modified by decorators 
     execute = (pps: ParameterViewModel[], right?: boolean): Promise<Models.ActionResultRepresentation> => {
         const parmMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Models.Value>;
         _.forEach(pps, p => this.urlManager.setParameterValue(this.actionRep.actionId(), p.parameterRep, p.getValue(), this.paneId));
         return this.getInvokable()
             .then((details: Models.IInvokableAction) => this.context.invokeAction(details, parmMap, this.paneId, this.clickHandler.pane(this.paneId, right), this.gotoResult));
     };
-
 
     readonly disabled = () => !!this.actionRep.disabledReason();
 

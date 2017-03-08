@@ -48,18 +48,14 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
 
             const rejectAsNeedSelection = (action: Models.IInvokableAction) : Models.ErrorWrapper | null => {
                 if (this.isLocallyContributed(action)) {
-
                     if (selected.length === 0) {
-
                         const em = new Models.ErrorMap({}, 0, Msg.noItemsSelected);
                         const rp = new Models.ErrorWrapper(Models.ErrorCategory.HttpClientError, Models.HttpStatusCode.UnprocessableEntity, em);
-
                         return rp;
                     }
                 }
                 return null;
             }
-
 
             const getParms = (action: Models.IInvokableAction) => {
 
@@ -77,23 +73,14 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
                 return pps;
             }
 
-            if (actionViewModel.invokableActionRep) {
-                const rp = rejectAsNeedSelection(actionViewModel.invokableActionRep);
-                return rp ? Promise.reject(rp) : wrappedInvoke(getParms(actionViewModel.invokableActionRep), right).
-                    then(result => {
-                        // clear selected items on void actions 
-                        this.clearSelected(result);
-                        return result;
-                    });
-            }
+            const detailsPromise = actionViewModel.invokableActionRep
+                ? Promise.resolve(actionViewModel.invokableActionRep)
+                : this.context.getActionDetails(actionViewModel.actionRep as Models.ActionMember);
 
-            return this.context.getActionDetails(actionViewModel.actionRep as Models.ActionMember).
-                then((details: Models.ActionRepresentation) => {
+            return detailsPromise.
+                then((details: Models.IInvokableAction) => {
                     const rp = rejectAsNeedSelection(details);
-                    if (rp) {
-                        return Promise.reject(rp);
-                    }
-                    return wrappedInvoke(getParms(details), right);
+                    return rp ? Promise.reject(rp) : wrappedInvoke(getParms(details), right);
                 }).
                 then(result => {
                     // clear selected items on void actions 
@@ -103,39 +90,28 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
         }
     }
 
-
-
     protected collectionContributedInvokeDecorator(actionViewModel: ActionViewModel) {
 
         const showDialog = () =>
             this.context.getInvokableAction(actionViewModel.actionRep as Models.ActionMember).
                 then(invokableAction => {
+                    actionViewModel.makeInvokable(invokableAction);
                     const keyCount = _.keys(invokableAction.parameters()).length;
                     return keyCount > 1 || keyCount === 1 && !_.toArray(invokableAction.parameters())[0].isCollectionContributed();
                 });
 
-        // make sure not null while waiting for promise to assign correct function 
+        // make sure not invokable  while waiting for promise to assign correct function 
         actionViewModel.doInvoke = () => { };
 
-        const invokeWithDialog = (right?: boolean) => {
-            this.context.clearDialogCachedValues(this.onPaneId);
-            this.urlManager.setDialogOrMultiLineDialog(actionViewModel.actionRep, this.onPaneId);
-        };
-
         const invokeWithoutDialog = (right?: boolean) =>
-            actionViewModel.execute([], right).
-                then(result => {
-                    this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || Msg.noResultMessage : "");
-                    // clear selected items on void actions 
-                    this.clearSelected(result);
-                }).
-                catch((reject: Models.ErrorWrapper) => {
-                    const display = (em: Models.ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
-                    this.error.handleErrorAndDisplayMessages(reject, display);
-                });
+            actionViewModel.invokeWithoutDialogWithParameters(Promise.resolve([]), right).then((actionResult: Models.ActionResultRepresentation) => {
+                this.setMessage(actionResult.shouldExpectResult() ? actionResult.warningsOrMessages() || Msg.noResultMessage : "");
+                // clear selected items on void actions 
+                this.clearSelected(actionResult);
+            });
 
         showDialog().
-            then(show => actionViewModel.doInvoke = show ? invokeWithDialog : invokeWithoutDialog).
+            then(show => actionViewModel.doInvoke = show ? actionViewModel.invokeWithDialog : invokeWithoutDialog).
             catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
     }
 

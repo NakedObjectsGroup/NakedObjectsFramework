@@ -5,7 +5,7 @@ export type httpMethodsType = "POST" | "PUT" | "GET" | "DELETE";
 export interface ILink {
     id?: string;
     rel?: string;
-    href: string; // todo make a helper object rather than string cf Rel ? 
+    href: string;
     type?: string;
     method?: httpMethodsType;
     title?: string;

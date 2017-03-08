@@ -15,7 +15,6 @@ import { ItemViewModel } from './view-models/item-view-model';
 import { RecentItemViewModel } from './view-models/recent-item-view-model';
 import { TableRowColumnViewModel } from './view-models/table-row-column-view-model';
 import { TableRowViewModel } from './view-models/table-row-view-model';
-import { CollectionPlaceholderViewModel } from './view-models/collection-placeholder-view-model';
 import { RecentItemsViewModel } from './view-models/recent-items-view-model';
 import { ParameterViewModel } from './view-models/parameter-view-model';
 import { ActionViewModel } from './view-models/action-view-model';
@@ -152,10 +151,6 @@ export class ViewModelFactoryService {
 
     collectionViewModel = (collectionRep: Models.CollectionMember, routeData: PaneRouteData, forceReload: boolean) => {
         return new CollectionViewModel(this, this.color, this.error, this.context, this.urlManager, this.configService, this.loggerService, collectionRep, routeData, forceReload);
-    }
-
-    listPlaceholderViewModel = (routeData: PaneRouteData) => {
-        return new CollectionPlaceholderViewModel(this.context, this.error, routeData);
     }
 
     menuViewModel = (menuRep: Models.MenuRepresentation, routeData: PaneRouteData) => {

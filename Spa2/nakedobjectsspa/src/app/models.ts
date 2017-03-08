@@ -878,6 +878,7 @@ export class Value {
         return (this.wrapped == null) ? "" : this.wrapped.toString();
     }
 
+    // todo this modifies the object - fix so it doesn't  
     compress(shortCutMarker: string, urlShortCuts: string[]) {
         if (this.isReference()) {
             this.link() !.compress(shortCutMarker, urlShortCuts); // know true
@@ -937,7 +938,7 @@ export class Value {
             target.value = { "href": (this.link() as Link).href() }; // know true
         } else if (this.isList()) {
             const list = this.list() as Value[]; // know true
-            target.value = _.map(list, (v) => v.isReference() ? <Ro.ILink>{ "href": (v.link() as Link).href() } : v.scalar()) as Ro.valueType[];
+            target.value = _.map(list, v => v.isReference() ? <Ro.ILink>{ "href": v.link().href() } : v.scalar()) as Ro.valueType[];
         }
         else if (this.isBlob()) {
             target.value = this.blob();
