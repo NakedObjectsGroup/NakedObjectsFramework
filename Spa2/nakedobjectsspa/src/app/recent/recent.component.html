@@ -5,6 +5,7 @@
             <nof-action-bar [actions]="actionHolders"></nof-action-bar>
         </div>
         <div *ngIf="recent">
+            <div class="collection">
             <table>
                 <tbody>
                     <tr [ngClass]="itemColor(item)" *ngFor="let item of items()" dnd-draggable [dragEnabled]="true" [dragData]="item" geminiClick
@@ -18,6 +19,7 @@
                     </tr>
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
 </div>

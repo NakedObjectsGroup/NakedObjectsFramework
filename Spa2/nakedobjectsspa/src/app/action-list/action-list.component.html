@@ -1,9 +1,9 @@
 <div *ngFor="let menu of items; let i = index">
 
-    <div *ngIf="menuName(menu)" (click)="toggleCollapsed(menu)" tabindex="0" class="submenu" [ngSwitch]="navCollapsed(menu)">
+    <div *ngIf="menuName(menu)" (click)="toggleCollapsed(menu)"  class="submenu" [ngSwitch]="navCollapsed(menu)">
         {{menuName(menu)}}
-        <div *ngSwitchCase="true" class="icon-expand"></div>
-        <div *ngSwitchCase="false" class="icon-collapse"></div>
+        <div *ngSwitchCase="true" class="icon-expand" tabindex="0"></div>
+        <div *ngSwitchCase="false" class="icon-collapse" tabindex="0"></div>
     </div>
     <div class="menuitem" [ngClass]="displayClass(menu)">
         <div *ngIf="hasActions(menu)">

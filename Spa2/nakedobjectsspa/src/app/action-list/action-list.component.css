@@ -43,8 +43,14 @@
 .icon-collapse:before {
     content: "\e098";
 }
-.submenu .icon-expand, .submenu .icon-collapse {
+.icon-expand, .icon-collapse {
         font-size: 8pt;
+}
+
+.icon-expand:hover, .icon-collapse:hover {
+    outline-color: white;
+    outline-style: solid;
+    outline-width: 1px;
 }
 
 [class^="icon-"], [class*=" icon-"] {

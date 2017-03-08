@@ -14,8 +14,7 @@
     color: white;
 }
 
-nof-buttons, nof-button {
-    overflow: hidden;
+.collection {
     display: block;
 }
 
