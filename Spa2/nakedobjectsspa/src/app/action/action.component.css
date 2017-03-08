@@ -1,15 +1,3 @@
-:host   {
-    outline: none;
-    margin-right: 20px;
-    width: 150px;
-    margin-bottom: 5px;
-    font-weight: bolder; /*Because black on white light looks too faint*/
-    display: block;
-}
-
-:host:disabled {
-   outline: none;
-}
 
 input {  /*To override user agent style sheet defaults*/
     white-space: normal; /*Needed to force long names to wrap*/
@@ -24,21 +12,13 @@ input {  /*To override user agent style sheet defaults*/
     border: none;
 }
 
-.name {
-    display: block;
-    cursor: pointer;
-   padding: 2px 5px;
-}
-
-.name:disabled {
-    color: grey;
-}
-
-.name:hover, .name:focus   {
+input:focus, input:hover   {
     outline-color: white;
     outline-style: solid;
     outline-width: 1px;
-    margin-right: 20px;
-    width: 150px;
-    margin-bottom: 5px;
+}
+
+input:disabled {
+    color: grey;
+    outline: none;
 }
