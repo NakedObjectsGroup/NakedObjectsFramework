@@ -15,6 +15,12 @@
     padding-right: 5px;
 }
 
+.field {
+    display: block;
+    float: left;
+}
+
+
 .reference, .value, collectionDetails {
     display: block;
     float: left;
@@ -113,4 +119,13 @@ select {
 .validation {
     margin-left: 155px;
     font-size: 11pt;
+}
+
+.input-control input:not([type='checkbox']), textarea {
+    width: 245px;
+    height: 20px;
+    padding-left: 2px;
+}
+input, select {
+    border-style: none;
 }

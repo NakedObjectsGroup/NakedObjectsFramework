@@ -1,6 +1,6 @@
 <div [formGroup]="form">
     <div class="name">{{title}}:</div>
-
+    <div class="field">
     <div *ngIf="propertyType === 'ref'">
 
         <div *ngIf="!isEditable" class="value" [ngClass]="classes()">
@@ -137,4 +137,5 @@
         </div>
     </div>
     <div class="validation">{{message}}</div>
+    </div>
 </div>
