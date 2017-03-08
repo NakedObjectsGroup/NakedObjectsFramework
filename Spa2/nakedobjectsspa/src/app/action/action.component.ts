@@ -80,7 +80,6 @@ export class ActionComponent {
     }
 
     focus() {
-        // todo breaks stuff !
-        //this.myElement.nativeElement.children[0].focus();
+        this.myElement.nativeElement.children[0].focus();
     }
 }
