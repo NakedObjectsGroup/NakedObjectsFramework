@@ -2,6 +2,7 @@
 import { ContextService } from '../context.service';
 import { ErrorService } from '../error.service';
 import * as Models from '../models';
+import * as Msg from '../user-messages';
 
 export class CollectionPlaceholderViewModel {
 
@@ -11,8 +12,7 @@ export class CollectionPlaceholderViewModel {
         private readonly routeData: PaneRouteData) {
     }
 
-    // todo string constants in user messages !
-    private readonly description = () => `Page ${this.routeData.page}`;
+    private readonly description = () => `${Msg.page} ${this.routeData.page}`;
 
     private readonly recreate = () =>
         this.routeData.objectId ? this.context.getListFromObject(this.routeData) : this.context.getListFromMenu(this.routeData);

@@ -592,7 +592,6 @@ export class ContextService {
                     this.setObject(toPaneId, resultObject);
                     this.transientCache.add(toPaneId, resultObject);
                     this.urlManager.pushUrlState(toPaneId);
-                    //this.urlManager.setObject(resultObject, toPaneId);
 
                     const interactionMode = resultObject.extensions().interactionMode() === "transient"
                         ? InteractionMode.Transient
@@ -609,7 +608,6 @@ export class ContextService {
                     resultObject.etagDigest = result.etagDigest;
 
                     this.setObject(toPaneId, resultObject);
-                    //this.urlManager.setObject(resultObject, toPaneId);
 
                     // update angular cache 
                     const url = `${selfLink.href()}?${Constants.roInlinePropertyDetails}=false`;
@@ -628,12 +626,9 @@ export class ContextService {
                 }
             } else if (result.resultType() === "list") {
 
-                const resultList = result.result().list() as Models.ListRepresentation;
-
+                const resultList = result.result().list();
                 const parms = this.parameterCache.getValues(action.actionId(), fromPaneId);
-                // todo fix any
-                const search = this.urlManager.setList(action as any, parms, fromPaneId, toPaneId);
-
+                const search = this.urlManager.setList(action, parms, fromPaneId, toPaneId);
                 const index = this.urlManager.getListCacheIndexFromSearch(search, toPaneId, page, pageSize);
                 this.cacheList(resultList, index);
             }

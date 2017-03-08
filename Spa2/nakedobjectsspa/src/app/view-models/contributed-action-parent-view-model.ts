@@ -48,18 +48,14 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
 
             const rejectAsNeedSelection = (action: Models.IInvokableAction) : Models.ErrorWrapper | null => {
                 if (this.isLocallyContributed(action)) {
-
                     if (selected.length === 0) {
-
                         const em = new Models.ErrorMap({}, 0, Msg.noItemsSelected);
                         const rp = new Models.ErrorWrapper(Models.ErrorCategory.HttpClientError, Models.HttpStatusCode.UnprocessableEntity, em);
-
                         return rp;
                     }
                 }
                 return null;
             }
-
 
             const getParms = (action: Models.IInvokableAction) => {
 
@@ -81,7 +77,8 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
                 ? Promise.resolve(actionViewModel.invokableActionRep)
                 : this.context.getActionDetails(actionViewModel.actionRep as Models.ActionMember);
 
-            return detailsPromise.then((details: Models.IInvokableAction) => {
+            return detailsPromise.
+                then((details: Models.IInvokableAction) => {
                     const rp = rejectAsNeedSelection(details);
                     return rp ? Promise.reject(rp) : wrappedInvoke(getParms(details), right);
                 }).

@@ -221,6 +221,7 @@ export const collection = "Collection";
 export const modified = "modified";
 export const properties = "properties";
 export const modifiedProperties = `Modified ${properties}`;
+export const page = "Page";
 
 export const noVisible = "No visible properties";
 

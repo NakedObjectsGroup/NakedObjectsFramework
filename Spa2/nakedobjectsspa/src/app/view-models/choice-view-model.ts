@@ -1,6 +1,5 @@
 ﻿import * as Models from '../models';
 
-// todo might simplify things if this were always the result of a input ? 
 export class ChoiceViewModel {
 
     constructor(

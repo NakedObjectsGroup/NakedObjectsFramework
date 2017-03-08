@@ -1,14 +1,14 @@
-import * as _ from 'lodash';
-import * as Models from "./models";
-import * as Constants from './constants';
 import { RouteData, PaneRouteData, InteractionMode, CollectionViewState, ApplicationMode, ViewType } from './route-data';
 import { Injectable } from '@angular/core';
-import './rxjs-extensions';
 import { Observable } from 'rxjs/Observable';
 import { Router, UrlSegment } from '@angular/router';
 import { Location } from '@angular/common';
 import { ConfigService } from './config.service';
 import { LoggerService } from './logger.service';
+import './rxjs-extensions';
+import * as _ from 'lodash';
+import * as Models from "./models";
+import * as Constants from './constants';
 
 enum Transition {
     Null,
@@ -221,12 +221,10 @@ export class UrlManagerService {
 
 
     private setPaneRouteData(paneRouteData: PaneRouteData, paneId: number) {
-
         const routeParams = this.getSearch();
-
         this.setPaneRouteDataFromParms(paneRouteData, paneId, routeParams);
 
-        //paneRouteData.validate($location.url());
+        paneRouteData.validate(this.location.path());
     }
 
     private isSinglePane() {
@@ -552,8 +550,8 @@ export class UrlManagerService {
         this.executeTransition(newValues, paneId, Transition.ToObjectWithMode, () => true);
     }
 
-    setList = (actionMember: Models.ActionMember, parms: _.Dictionary<Models.Value>, fromPaneId = 1, toPaneId = 1) => {
-        let newValues = {} as _.Dictionary<string>;
+    setList = (actionMember: Models.IInvokableAction, parms: _.Dictionary<Models.Value>, fromPaneId = 1, toPaneId = 1) => {
+        const newValues = {} as _.Dictionary<string>;
         const parent = actionMember.parent;
 
         if (parent instanceof Models.DomainObjectRepresentation) {
@@ -573,21 +571,13 @@ export class UrlManagerService {
 
         newValues[`${akm.collection}${toPaneId}`] = newState;
 
-        // This will also swap the panes of the field values if we are 
-        // right clicking into the other pane.
-
-        //newValues = copyFieldsIntoValues(fromPaneId, toPaneId, newValues);
-        //newValues = setFieldsToParms(toPaneId, newValues);
-
         _.forEach(parms, (p, id) => this.setId(`${akm.parm}${toPaneId}_${id}`, p.toJsonString(this.shortCutMarker, this.urlShortCuts), newValues));
-
 
         this.executeTransition(newValues, toPaneId, Transition.ToList, () => true);
         return newValues;
     }
 
     setProperty = (href: string, paneId = 1) => {
-        //const href = propertyMember.value().link().href();
         const oid = this.getOidFromHref(href);
         const key = `${akm.object}${paneId}`;
         const newValues = _.zipObject([key], [oid]) as _.Dictionary<string>;
