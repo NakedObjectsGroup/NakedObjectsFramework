@@ -29,7 +29,7 @@ import * as Helpers from '../view-models/helpers-view-models';
     template: require('./object.component.html'),
     styles: [require('./object.component.css')]
 })
-export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ObjectComponent implements OnInit, OnDestroy {
     
     constructor(
         private readonly activatedRoute: ActivatedRoute,
@@ -63,6 +63,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // used to smooth transition before object set 
+    // todo remove hard coding
     private pendingColor = "object-color0";
 
     get color() {
@@ -339,18 +340,6 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         });
     }
 
-    // todo give #ttl a better name 
-    @ViewChildren("ttl")
-    titleDiv: QueryList<ElementRef>;
-
-    focusOnTitle(e: QueryList<ElementRef>) {
-        if (this.mode === InteractionMode.View) {
-            if (e && e.first) {
-                e.first.nativeElement.focus();
-            }
-        }
-    }
-
     private activatedRouteDataSub: ISubscription;
     private paneRouteDataSub: ISubscription;
     private lastPaneRouteData: PaneRouteData;
@@ -393,11 +382,6 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-
-    ngAfterViewInit(): void {
-        this.focusOnTitle(this.titleDiv);
-        this.titleDiv.changes.subscribe((ql: QueryList<ElementRef>) => this.focusOnTitle(ql));
-    }
 
     selectedDialogId: string;
 }
