@@ -132,7 +132,7 @@ namespace NakedObjects.Selenium {
 
         public virtual void ZeroParamReturnsCollection() {
             Url(OrdersMenuUrl);
-            WaitForCss(".actions nof-action", OrderServiceActions);
+            WaitForCss("nof-action-list nof-action", OrderServiceActions);
             Click(GetObjectAction("Highest Value Orders"));
             WaitForView(Pane.Single, PaneType.List, "Highest Value Orders");
             WaitForCss(".reference", 20);
@@ -154,7 +154,7 @@ namespace NakedObjects.Selenium {
 
         public virtual void DialogActionOK() {
             Url(CustomersMenuUrl);
-            WaitForCss(".actions nof-action", CustomerServiceActions);
+            WaitForCss("nof-action-list nof-action", CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
             var fieldCss = ".parameter:nth-child(1) input";
             //TODO: Test focus in separate tests; unreliable here
@@ -290,7 +290,7 @@ namespace NakedObjects.Selenium {
             WaitForSingleHome();
             ClickOnVariousMenus();
             OpenAndCloseSubMenus();
-            SelectSuccessiveDialogActionsThenCancel(); 
+            SelectSuccessiveDialogActionsThenCancel();
             ZeroParamReturnsObject();
             ZeroParamReturnsCollection();
             ZeroParamReturnsEmptyCollection();
