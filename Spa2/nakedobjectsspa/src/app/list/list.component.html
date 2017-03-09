@@ -1,79 +1,79 @@
 <div *ngIf="collection">
-	<div class="list">
-		<header class="header">
-			<div class="title">{{title}}</div>
-		    <nof-action-bar [actions]="actionHolders"></nof-action-bar>
-			<div class="messages">{{message}}</div>
-		</header>
-		<div class="details" *ngIf="size == 0">{{description}}</div>
-		<div *ngIf="size > 0">
-			<nof-action-list  *ngIf="showActions()" [menuHolder]="collection"></nof-action-list>
-			<nof-dialog [parent]="collection" [selectedDialogId]="selectedDialogId"></nof-dialog>
-			<div class="summary" *ngIf="state == 'list'">
-				<div class="details">{{description}}</div>
-				<img class="icon-table" (click)="doTable()" src="../../assets/table.png" title="View as Table"/>
-				<table>
-					<thead>
-						<tr>
-							<th [hidden]="hideAllCheckbox()"><input type="checkbox" [id]="itemId('all')" [ngModel]="allSelected()" (click)="selectAll()">All</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr *ngFor="let item of items; let i = index">
-							<td class="checkbox" [hidden]="disableActions()">
-								<input type="checkbox" [id]="itemId(i)" [(ngModel)]="item.selected">
-							</td>
-							<td #rw class="reference" [ngClass]="itemColor(item)" geminiClick (leftClick)="doItemClick(item)" (rightClick)="doItemClick(item, true)"
-								dnd-draggable [dragEnabled]="true" [dragData]="item" (keydown)="copy($event, item)" (keypress)="copy($event, item)" tabindex="0">
-								<label attr.for="{itemId(i)}}">{{itemTitle(item)}}</label>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div class="summary" *ngIf="state == 'table'">
-				<div class="details">{{description}}</div>
-				<img class="icon-list" (click)="doList()" src="../../assets/list.png" title="View as List" />
-			</div>
-			<table *ngIf="state == 'table'">
-				<thead>
-					<tr>
-						<th [hidden]="hideAllCheckbox()"><input type="checkbox" [id]="itemId('all')" [ngModel]="allSelected()" (click)="selectAll()">All</th>
-						<th *ngFor="let heading of header" scope="col">
-							{{heading}}
-						</th>
-					</tr>
-				</thead>
-				<tbody *ngIf="hasTableData()">
-					<tr #rw tabindex="0" *ngFor="let item of items; let i = index" gemini-drag>
-						<td [hidden]="disableActions()" class="checkbox">
-							<input type="checkbox" [id]="itemId(i)" [(ngModel)]="item.selected">
-						</td>
-						<td *ngIf="itemHasTableTitle(item)"  geminiClick (leftClick)="doItemClick(item)" (rightClick)="doItemClick(item, true)" [ngClass]="itemColor(item)" class="cell">
-							{{itemTableTitle(item)}}
-						</td>
-						<td *ngFor="let property of itemTableProperties(item)" geminiClick (leftClick)="doItemClick(item)" (rightClick)="doItemClick(item, true)"
-							[ngClass]="itemColor(item)" class="cell">
-							<div [ngSwitch]="propertyType(property)">
-								<div *ngSwitchCase="'ref'">
-									{{propertyFormattedValue(property)}}
-								</div>
-								<div *ngSwitchCase="'scalar'" [ngSwitch]="propertyReturnType(property)">
-									<div *ngSwitchCase="'boolean'">
-										<input type="checkbox" [checked]="propertyValue(property)" disabled="disabled" />
-									</div>
-								    <div *ngSwitchCase="'number'">
-								        <div class="number">{{propertyFormattedValue(property)}}</div>
-								    </div>
-								    <div *ngSwitchDefault>
-								        <div>{{propertyFormattedValue(property)}}</div>
-									</div>
-								</div>
-							</div>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
+    <div class="list">
+        <header class="header">
+            <div class="title">{{title}}</div>
+            <nof-action-bar [actions]="actionHolders"></nof-action-bar>
+            <div class="messages">{{message}}</div>
+        </header>
+        <div class="details" *ngIf="size == 0">{{description}}</div>
+        <div *ngIf="size > 0">
+            <nof-action-list *ngIf="showActions()" [menuHolder]="collection"></nof-action-list>
+            <nof-dialog [parent]="collection" [selectedDialogId]="selectedDialogId"></nof-dialog>
+            <div class="summary" *ngIf="state == 'list'">
+                <div class="details">{{description}}</div>
+                <img class="icon-table" (click)="doTable()" src="../../assets/table.png" title="View as Table" />
+                <table>
+                    <thead>
+                        <tr>
+                            <th [hidden]="hideAllCheckbox()"><input type="checkbox" [id]="itemId('all')" [ngModel]="allSelected()" (click)="selectAll()">All</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of items; let i = index">
+                            <td class="checkbox" [hidden]="disableActions()">
+                                <input type="checkbox" [id]="itemId(i)" [(ngModel)]="item.selected">
+                            </td>
+                            <td class="reference" [ngClass]="itemColor(item)" geminiClick (leftClick)="doItemClick(item)" (rightClick)="doItemClick(item, true)"
+                                dnd-draggable [dragEnabled]="true" [dragData]="item" (keydown)="copy($event, item)" (keypress)="copy($event, item)" tabindex="0">
+                                <label attr.for="{itemId(i)}}">{{itemTitle(item)}}</label>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="summary" *ngIf="state == 'table'">
+                <div class="details">{{description}}</div>
+                <img class="icon-list" (click)="doList()" src="../../assets/list.png" title="View as List" />
+            </div>
+            <table *ngIf="state == 'table'">
+                <thead>
+                    <tr>
+                        <th [hidden]="hideAllCheckbox()"><input type="checkbox" [id]="itemId('all')" [ngModel]="allSelected()" (click)="selectAll()">All</th>
+                        <th *ngFor="let heading of header" scope="col">
+                            {{heading}}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="hasTableData()">
+                    <tr tabindex="0" *ngFor="let item of items; let i = index" gemini-drag>
+                        <td [hidden]="disableActions()" class="checkbox">
+                            <input type="checkbox" [id]="itemId(i)" [(ngModel)]="item.selected">
+                        </td>
+                        <td *ngIf="itemHasTableTitle(item)" geminiClick (leftClick)="doItemClick(item)" (rightClick)="doItemClick(item, true)" [ngClass]="itemColor(item)" class="cell">
+                            {{itemTableTitle(item)}}
+                        </td>
+                        <td *ngFor="let property of itemTableProperties(item)" geminiClick (leftClick)="doItemClick(item)" (rightClick)="doItemClick(item, true)"
+                            [ngClass]="itemColor(item)" class="cell">
+                            <div [ngSwitch]="propertyType(property)">
+                                <div *ngSwitchCase="'ref'">
+                                    {{propertyFormattedValue(property)}}
+                                </div>
+                                <div *ngSwitchCase="'scalar'" [ngSwitch]="propertyReturnType(property)">
+                                    <div *ngSwitchCase="'boolean'">
+                                        <input type="checkbox" [checked]="propertyValue(property)" disabled="disabled" />
+                                    </div>
+                                    <div *ngSwitchCase="'number'">
+                                        <div class="number">{{propertyFormattedValue(property)}}</div>
+                                    </div>
+                                    <div *ngSwitchDefault>
+                                        <div>{{propertyFormattedValue(property)}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>

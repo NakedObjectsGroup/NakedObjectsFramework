@@ -6,19 +6,19 @@
         </div>
         <div *ngIf="recent">
             <div class="collection">
-            <table>
-                <tbody>
-                    <tr [ngClass]="itemColor(item)" *ngFor="let item of items()" dnd-draggable [dragEnabled]="true" [dragData]="item" geminiClick
-                        (leftClick)="doItemClick(item)" (rightClick)="doItemClick(item, true)">
-                        <td tabindex="0" class="cell">
-                            {{itemTitle(item)}}
-                        </td>
-                        <td tabindex="0" class="cell">
-                            {{itemFriendlyName(item)}}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                <table>
+                    <tbody>
+                        <tr #row tabindex="0" [ngClass]="itemColor(item)" *ngFor="let item of items()" dnd-draggable [dragEnabled]="true" [dragData]="item" geminiClick
+                            (leftClick)="doItemClick(item)" (rightClick)="doItemClick(item, true)">
+                            <td class="cell">
+                                {{itemTitle(item)}}
+                            </td>
+                            <td class="cell">
+                                {{itemFriendlyName(item)}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

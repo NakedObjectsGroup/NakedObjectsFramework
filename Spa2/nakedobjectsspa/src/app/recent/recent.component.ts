@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChildren, ElementRef, QueryList, AfterViewInit } from '@angular/core';
 import { ContextService } from '../context.service';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { ActivatedRoute } from '@angular/router';
@@ -15,7 +15,7 @@ import * as Msg from '../user-messages';
     template: require('./recent.component.html'),
     styles: [require('./recent.component.css')]
 })
-export class RecentComponent extends PaneComponent {
+export class RecentComponent extends PaneComponent implements AfterViewInit {
 
     constructor(
         activatedRoute: ActivatedRoute,
@@ -63,5 +63,21 @@ export class RecentComponent extends PaneComponent {
 
     protected setup(routeData: PaneRouteData) {
         this.recent = this.viewModelFactory.recentItemsViewModel(this.paneId);
+    }
+
+
+    @ViewChildren("row")
+    actionChildren: QueryList<ElementRef>;
+
+    focusOnFirstRow(rows: QueryList<ElementRef>) {
+        if (rows && rows.first) {
+            // until first element returns true
+            rows.first.nativeElement.focus();
+        }
+    }
+
+    ngAfterViewInit(): void {
+        this.focusOnFirstRow(this.actionChildren);
+        this.actionChildren.changes.subscribe((ql: QueryList<ElementRef>) => this.focusOnFirstRow(ql));
     }
 }

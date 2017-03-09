@@ -1,4 +1,4 @@
-import { Component, Input, ViewChildren, QueryList, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, Input, ElementRef } from '@angular/core';
 import { UrlManagerService } from '../url-manager.service';
 import { ClickHandlerService } from '../click-handler.service';
 import { ContextService } from '../context.service';
@@ -28,7 +28,7 @@ import * as Helpers from '../view-models/helpers-view-models';
     template: require('./list.component.html'),
     styles: [require('./list.component.css')]
 })
-export class ListComponent implements AfterViewInit {
+export class ListComponent {
   
     constructor(
         private readonly activatedRoute: ActivatedRoute,
@@ -230,15 +230,6 @@ export class ListComponent implements AfterViewInit {
         Helpers.copy(event, item, this.context);
     }
 
-    @ViewChildren("rw")
-    row: QueryList<ElementRef>;
-
-    focusOnRow(e: QueryList<ElementRef>) {
-        if (e && e.first) {
-            e.first.nativeElement.focus();
-        }
-    }
-
     private activatedRouteDataSub: ISubscription;
     private paneRouteDataSub: ISubscription;
     private lastPaneRouteData: PaneRouteData;
@@ -269,12 +260,6 @@ export class ListComponent implements AfterViewInit {
         if (this.paneRouteDataSub) {
             this.paneRouteDataSub.unsubscribe();
         }
-    }
-
-
-    ngAfterViewInit(): void {
-        this.focusOnRow(this.row);
-        this.row.changes.subscribe((ql: QueryList<ElementRef>) => this.focusOnRow(ql));
     }
 
     selectedDialogId: string;
