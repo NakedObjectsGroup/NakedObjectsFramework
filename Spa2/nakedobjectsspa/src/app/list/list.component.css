@@ -93,6 +93,9 @@ td.checkbox {
 }
 
 /*Tables*/
+table {
+    font-size: 11pt;
+}
 th, td {
     font-weight: 100; /*Override browser default*/
     text-align: left;

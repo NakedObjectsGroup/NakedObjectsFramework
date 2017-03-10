@@ -1,0 +1,33 @@
+.list {
+    color: white;
+    padding-left: 20px;
+    height: 100%;
+    overflow-y: auto;
+    display: block;
+    font-weight: 100;
+}
+
+.header {
+    display: block;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.title, .type {
+    position: relative;
+    font-weight: 100;
+    font-size: 24pt;
+    line-height: 38pt;
+    margin-left: 1px; /*Make room for focus outline*/
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-right: 20px;
+    margin-top: 2px;
+    display: block;
+}
+
+.type {
+    float: left;
+    margin-right: 20px;
+    display: none; /*Change this to display type (e.g. for accessibility)*/
+}
