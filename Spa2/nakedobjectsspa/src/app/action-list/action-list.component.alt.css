@@ -8,22 +8,19 @@
     padding-top: 10px;
 }
 
-.menuitem, .submenu  {
+nof-action, .submenu  {
     display: block;
     cursor: pointer;
     outline: none;
     margin-left: 5px;
     margin-right: 20px;
     width: 150px;
-}
-
-.menuitem {
-    padding: 2px 5px;
+    font-size: 11pt;
+    font-weight: bolder;
 }
 
 .submenu {
-    font-size: 12pt;
-    padding: 2px 10px;
+    padding: 5px;
 }
 
 .collapsed {

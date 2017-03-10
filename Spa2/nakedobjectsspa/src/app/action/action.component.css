@@ -3,13 +3,13 @@ input {  /*To override user agent style sheet defaults*/
     white-space: normal; /*Needed to force long names to wrap*/
     text-align: left;
     cursor: pointer;
-    color: white;
-    font-weight: 100;
-    font-size: 12pt;
     background-color: transparent;
-    padding: 5px;
     outline: none;
     border: none;
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+    padding: 5px;
 }
 
 input:focus, input:hover   {

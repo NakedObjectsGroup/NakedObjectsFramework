@@ -1,12 +1,12 @@
 input {  /*To override user agent style sheet defaults*/
     cursor: pointer;
-    color:white;
-    font-weight: 100;
-    font-size: 12pt;
     background-color: transparent;
-    padding: 5px;
     outline: none;
     border: none;
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+    padding: 5px;
 }
 
  input:hover, input:focus  {

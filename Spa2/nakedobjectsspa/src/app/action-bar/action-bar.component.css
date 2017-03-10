@@ -12,4 +12,5 @@ nof-action   {
     margin-right: 10px;
     margin-bottom: 5px; /*Else hover outline is hidden on the bottom*/
     font-weight: bolder; 
+    font-size: 11pt;
 }
