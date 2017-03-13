@@ -206,7 +206,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Example Model\About the Example Model.txt" />
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
@@ -232,15 +231,21 @@
     <Compile Include="App_Start\UnityWebApiActivator.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\RestfulObjectsController.cs" />
-    <Compile Include="Example Model\Customer.cs" />
-    <Compile Include="Example Model\CustomerRepository.cs" />
-    <Compile Include="Example Model\ExampleDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Template.DataBase\Template.DataBase.csproj">
+      <Project>{a94dc40a-6ffc-4487-9f78-e520c5484f81}</Project>
+      <Name>Template.DataBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Template.Model\Template.Model.csproj">
+      <Project>{b24f4158-9795-4e37-997c-0b25a6c4fc8a}</Project>
+      <Name>Template.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
