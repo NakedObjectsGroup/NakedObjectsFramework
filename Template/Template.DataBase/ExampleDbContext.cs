@@ -8,10 +8,10 @@ namespace Template.DataBase
     {
         public ExampleDbContext(string dbName) : base(dbName)
         {
-            Database.SetInitializer<DbContext>(new DropCreateDatabaseIfModelChanges<DbContext>());
+            Database.SetInitializer(new ExampleDbInitializer());
         }
 
-        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Student> Students { get; set; }
     }
 
 }
