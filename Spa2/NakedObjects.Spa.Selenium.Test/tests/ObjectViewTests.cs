@@ -8,6 +8,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
@@ -461,10 +462,15 @@ namespace NakedObjects.Selenium {
         public virtual void CannotInvokeAPotentActionUntilPriorOneHasCompleted() {
             GeminiUrl("object?r=0&i1=View&o1=___1.SalesOrderHeader--51863&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "SO51863");
+            // clear existing comments
+            //Click(GetObjectAction("Clear Comment"));
+            //wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Sales Person")); //i.e. Comments property has disappeared
             //Set up a comment
             OpenActionDialog("Add Standard Comments");
             Click(OKButton());
             wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Payment on delivery"));
+            
+            Thread.Sleep(1000); // sleep here because otherwise clear button may be still disabled from OK
             var clear = GetObjectAction("Clear Comment");
             Click(clear);
             Click(clear); //i.e. twice in rapid succession
@@ -744,39 +750,39 @@ namespace NakedObjects.Selenium {
     public abstract class MegaObjectViewTestsRoot : ObjectViewTestsRoot {
         [TestMethod] //Mega
         public void MegaObjectViewTest() {
-            ActionsAlreadyOpen();
-            OpenActionsMenuNotAlreadyOpen();
-            OpenAndCloseSubMenusTo3Levels();
-            Properties();
-            Collections();
-            CollectionEagerlyRendered();
-            DateAndCurrencyProperties();
-            TableViewHonouredOnCollection();
-            TableViewIgnoresDuplicatedColumnName();
-            ClickReferenceProperty();
-            // OpenCollectionAsList();  move to LocallyRun 
-            NotCountedCollection();
-            ClickOnLineItemWithCollectionAsList();
-            ClickOnLineItemWithCollectionAsTable();
-            CanClickOnTitleInTableView();
-            DialogAction();
-            DialogActionOk();
-            ObjectAction();
-            CollectionAction();
-            DescriptionRenderedAsTooltip();
-            DisabledAction();
-            ActionsMenuDisabledOnObjectWithNoActions();
-            QueryOnlyActionDoesNotReloadAutomatically();
-            PotentActionDoesReloadAutomatically();
-            NonNavigableReferenceProperty();
-            Colours();
-            ZeroIntValues();
-            AddingObjectToCollectionUpdatesTableView();
-            //TimeSpanProperty();
-            ZeroParamActionCausesObjectToReload();
+            //ActionsAlreadyOpen();
+            //OpenActionsMenuNotAlreadyOpen();
+            //OpenAndCloseSubMenusTo3Levels();
+            //Properties();
+            //Collections();
+            //CollectionEagerlyRendered();
+            //DateAndCurrencyProperties();
+            //TableViewHonouredOnCollection();
+            //TableViewIgnoresDuplicatedColumnName();
+            //ClickReferenceProperty();
+            //// OpenCollectionAsList();  move to LocallyRun 
+            //NotCountedCollection();
+            //ClickOnLineItemWithCollectionAsList();
+            //ClickOnLineItemWithCollectionAsTable();
+            //CanClickOnTitleInTableView();
+            //DialogAction();
+            //DialogActionOk();
+            //ObjectAction();
+            //CollectionAction();
+            //DescriptionRenderedAsTooltip();
+            //DisabledAction();
+            //ActionsMenuDisabledOnObjectWithNoActions();
+            //QueryOnlyActionDoesNotReloadAutomatically();
+            //PotentActionDoesReloadAutomatically();
+            //NonNavigableReferenceProperty();
+            //Colours();
+            //ZeroIntValues();
+            //AddingObjectToCollectionUpdatesTableView();
+            ////TimeSpanProperty();
+            //ZeroParamActionCausesObjectToReload();
 
-            CanInvokeOneNonPotentActionBeforePreviousHasCompleted();
-            UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed();
+            //CanInvokeOneNonPotentActionBeforePreviousHasCompleted();
+            //UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed();
             CannotInvokeAPotentActionUntilPriorOneHasCompleted();
 
             //CollectionsUpdateProperly();  move to LocallyRun 
