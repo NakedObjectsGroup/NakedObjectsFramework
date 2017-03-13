@@ -32,7 +32,7 @@ export class PropertiesComponent implements AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        this.focusOnFirstProperty(this.propComponents);
-        this.propComponents.changes.subscribe((ql: QueryList<EditPropertyComponent>) => this.focusOnFirstProperty(ql));
+        //this.focusOnFirstProperty(this.propComponents);
+        //this.propComponents.changes.subscribe((ql: QueryList<EditPropertyComponent>) => this.focusOnFirstProperty(ql));
     }
 }

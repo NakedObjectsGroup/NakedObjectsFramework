@@ -35,9 +35,9 @@ export class ParametersComponent {
     ngAfterViewInit(): void {
         // on MLD this causes problem with expression has changed error. 
         // we must be changeing page state (ng-untouched) from a change callback.  
-        if (!this.parent.isMultiLineDialogRow) {
-            this.focusOnFirstAction(this.parmComponents);
-            this.parmComponents.changes.subscribe((ql: QueryList<EditParameterComponent>) => this.focusOnFirstAction(ql));
-        }
+        //if (!this.parent.isMultiLineDialogRow) {
+        //    this.focusOnFirstAction(this.parmComponents);
+        //    this.parmComponents.changes.subscribe((ql: QueryList<EditParameterComponent>) => this.focusOnFirstAction(ql));
+        //}
     }
 }
