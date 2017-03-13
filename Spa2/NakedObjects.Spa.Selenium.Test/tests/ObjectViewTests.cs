@@ -462,9 +462,6 @@ namespace NakedObjects.Selenium {
         public virtual void CannotInvokeAPotentActionUntilPriorOneHasCompleted() {
             GeminiUrl("object?r=0&i1=View&o1=___1.SalesOrderHeader--51863&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "SO51863");
-            // clear existing comments
-            //Click(GetObjectAction("Clear Comment"));
-            //wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Sales Person")); //i.e. Comments property has disappeared
             //Set up a comment
             OpenActionDialog("Add Standard Comments");
             Click(OKButton());
