@@ -11,7 +11,7 @@ using NakedObjects.Rest;
 using NakedObjects.Rest.Media;
 using System;
 
-namespace Template.Server {
+namespace NakedObjects.Template {
     public class RestfulObjectsConfig {
 
         public static void RegisterRestfulObjectsRoutes(RouteCollection routes) {

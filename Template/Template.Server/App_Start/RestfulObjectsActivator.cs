@@ -4,8 +4,9 @@
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
+
 using log4net.Config;
-using Template.Server;
+using NakedObjects.Template;
 using System.Web.Http;
 using System.Web.Routing;
 using WebActivatorEx;
@@ -14,7 +15,7 @@ using WebActivatorEx;
 [assembly: PostApplicationStartMethod(typeof (RestfulObjectsActivator), "PostStart")]
 [assembly: XmlConfigurator] // log4net startup config
 
-namespace Template.Server {
+namespace NakedObjects.Template {
     public static class RestfulObjectsActivator {
         public static void PreStart() {
             GlobalConfiguration.Configure(CorsConfig.RegisterCors);

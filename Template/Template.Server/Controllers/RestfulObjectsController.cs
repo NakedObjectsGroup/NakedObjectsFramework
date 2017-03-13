@@ -13,7 +13,7 @@ using NakedObjects.Facade;
 using NakedObjects.Rest;
 using NakedObjects.Rest.Model;
 
-namespace Template.Server.Controllers {
+namespace NakedObjects.Template.Controllers {
     public class RestfulObjectsController : RestfulObjectsControllerBase {
         public RestfulObjectsController(IFrameworkFacade frameworkFacade) : base(frameworkFacade) {}
 

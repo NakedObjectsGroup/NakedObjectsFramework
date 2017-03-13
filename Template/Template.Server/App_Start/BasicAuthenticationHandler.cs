@@ -17,7 +17,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NakedObjects.Facade;
 
-namespace Template.Server {
+namespace NakedObjects.Template {
     public class BasicAuthenticationHandler : DelegatingHandler {
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken) {
             HttpRequestMessage r = request;

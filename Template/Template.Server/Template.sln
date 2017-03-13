@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5BBA91B2-8F10-4606-92A6-5D626658365B}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\.nuget\packages.config = ..\..\.nuget\packages.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{736F4309-4D92-4EE2-8C0B-5CA5ECED0FAA}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\Build.proj = ..\..\Build.proj
+		..\..\.build\MSBuild.Community.Tasks.dll = ..\..\.build\MSBuild.Community.Tasks.dll
+		..\..\.build\MSBuild.Community.Tasks.targets = ..\..\.build\MSBuild.Community.Tasks.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Server", "Template.Server.csproj", "{730972FC-9D78-44C1-91DB-BAB7774FC501}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{730972FC-9D78-44C1-91DB-BAB7774FC501}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{730972FC-9D78-44C1-91DB-BAB7774FC501}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{730972FC-9D78-44C1-91DB-BAB7774FC501}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{730972FC-9D78-44C1-91DB-BAB7774FC501}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

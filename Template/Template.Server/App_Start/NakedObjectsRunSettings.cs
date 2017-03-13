@@ -10,10 +10,9 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
-using Template.Model;
-using Template.DataBase;
+using ExampleModel;
 
-namespace Template.Server {
+namespace NakedObjects.Template {
     public class NakedObjectsRunSettings
     {
 
@@ -26,7 +25,7 @@ namespace Template.Server {
         {
             get
             {
-                return new string[] { "Template.Model" }; //Add top-level namespace(s) that cover the domain model
+                return new string[] { "ExampleModel" }; //Add top-level namespace(s) that cover the domain model
             }
         }
 
