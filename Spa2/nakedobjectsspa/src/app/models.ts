@@ -3,7 +3,7 @@ import * as Constants from './constants';
 import * as RoCustom from './ro-interfaces-custom';
 import * as Msg from './user-messages';
 import * as _ from 'lodash';
-import * as moment from 'moment';
+import * as moment from 'moment'; // todo fix moment locale import size 
 
 // todo later these couple back to angular - rework so no direct coupling 
 import { ConfigService } from './config.service';
@@ -255,6 +255,7 @@ function validateDateTimeFormat(model: IHasExtensions, newValue: Date): string {
     return "";
 }
 
+// todo fix locale
 function getDate(val: string): Date | null {
 
     const dt1 = moment(val, "YYYY-MM-DD", "en-GB", true);
