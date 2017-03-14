@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChildren, QueryList } from '@angular/core';
 import { PaneComponent } from '../pane/pane';
+import { ParametersComponent } from '../parameters/parameters.component';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { ActivatedRoute } from '@angular/router';
 import { UrlManagerService } from '../url-manager.service';
@@ -113,7 +114,7 @@ export class MultiLineDialogComponent extends PaneComponent {
         routeData: PaneRouteData,
         actionViewModel?: ActionViewModel) {
 
-        const action = holder.actionMember(newDialogId, this.configService.config.keySeparator)!;
+        const action = holder.actionMember(newDialogId, this.configService.config.keySeparator) !;
         this.context.getInvokableAction(action).
             then(details => {
 
@@ -160,4 +161,16 @@ export class MultiLineDialogComponent extends PaneComponent {
         }
     }
 
+    @ViewChildren(ParametersComponent)
+    parmComponents: QueryList<ParametersComponent>;
+
+    focus(parms: QueryList<ParametersComponent>) {
+        if (parms && parms.length > 0) {
+            _.some(parms.toArray(), p => p.focus());
+        }
+    }
+
+    ngAfterViewInit(): void {
+        this.parmComponents.changes.subscribe(ql => this.focus(ql));
+    }
 }

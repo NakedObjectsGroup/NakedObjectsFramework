@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ElementRef, HostListener, ViewChildren, QueryList } from '@angular/core';
+import { Component, Input, OnInit, ElementRef, HostListener, ViewChildren, QueryList, Renderer } from '@angular/core';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { UrlManagerService } from '../url-manager.service';
 import * as Models from '../models';
@@ -28,9 +28,10 @@ export class EditParameterComponent extends FieldComponent implements OnInit {
         myElement: ElementRef,
         context: ContextService,
         configService: ConfigService,
-        loggerService : LoggerService
+        loggerService : LoggerService,
+        renderer : Renderer
     ) {
-        super(myElement, context, configService, loggerService);
+        super(myElement, context, configService, loggerService, renderer);
     }
 
     parm: ParameterViewModel;

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy, AfterViewInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
+﻿import { Component, Input, OnInit, OnDestroy, AfterViewInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as Models from '../models';
 import { UrlManagerService } from '../url-manager.service';
@@ -20,6 +20,7 @@ import { IActionHolder, wrapAction } from '../action/action.component';
 import { ColorService } from '../color.service';
 import { ConfigService } from '../config.service';
 import { ISubscription } from 'rxjs/Subscription';
+import { PropertiesComponent } from '../properties/properties.component';
 import * as Msg from '../user-messages';
 import * as Helpers from '../view-models/helpers-view-models';
 
@@ -382,6 +383,22 @@ export class ObjectComponent implements OnInit, OnDestroy {
         }
     }
 
-
     selectedDialogId: string;
+
+    @ViewChildren(PropertiesComponent)
+    propComponents: QueryList<PropertiesComponent>;
+
+    focus(parms: QueryList<PropertiesComponent>) {
+        if (this.mode == null || this.mode === InteractionMode.View){
+            return;
+        }
+        if (parms && parms.length > 0) {
+            _.some(parms.toArray(), p => p.focus());
+        }
+    }
+
+    ngAfterViewInit(): void {
+        this.propComponents.changes.subscribe(ql => this.focus(ql));
+    }
+
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, Renderer, ViewChildren, QueryList } from '@angular/core';
 import { ActionViewModel } from '../view-models/action-view-model';
 
 export interface IActionHolder {
@@ -35,7 +35,9 @@ export class ActionComponent {
     @Input()
     action: IActionHolder;
 
-    constructor(private readonly myElement: ElementRef) { }
+    constructor(
+        private readonly renderer: Renderer
+    ) { }
 
     private canClick() {
         return !(this.disabled() || this.tempDisabled());
@@ -79,11 +81,17 @@ export class ActionComponent {
         return this.action.title();
     }
 
+    @ViewChildren("focus")
+    focusList: QueryList<ElementRef>;
+
     focus() {
         if (this.disabled()) {
             return false;
         }
-        this.myElement.nativeElement.children[0].focus();
-        return true;
+        if (this.focusList && this.focusList.first) {
+            setTimeout(() => this.renderer.invokeElementMethod(this.focusList.first.nativeElement, "focus"));
+            return true;
+        }
+        return false; 
     }
 }

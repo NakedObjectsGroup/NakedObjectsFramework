@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, AfterViewInit, ViewChildren, QueryList } from '@angular/core';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { UrlManagerService } from '../url-manager.service';
 import * as _ from 'lodash';
@@ -19,6 +19,7 @@ import { MenuViewModel } from '../view-models/menu-view-model';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 import { CollectionViewModel } from '../view-models/collection-view-model';
 import { ConfigService } from '../config.service';
+import { ParametersComponent } from '../parameters/parameters.component';
 import * as Helpers from '../view-models/helpers-view-models';
 
 @Component({
@@ -26,7 +27,7 @@ import * as Helpers from '../view-models/helpers-view-models';
     template: require('./dialog.component.html'),
     styles: [require('./dialog.component.css')]
 })
-export class DialogComponent {
+export class DialogComponent implements AfterViewInit {
 
     constructor(
         private readonly viewModelFactory: ViewModelFactoryService,
@@ -180,5 +181,18 @@ export class DialogComponent {
         } else {
             this.closeExistingDialog();
         }
+    }
+
+    @ViewChildren(ParametersComponent)
+    parmComponents: QueryList<ParametersComponent>;
+
+    focus(parms: QueryList<ParametersComponent>) {
+        if (parms && parms.length > 0) {
+            _.some(parms.toArray(), p => p.focus());
+        }
+    }
+
+    ngAfterViewInit(): void {
+        this.parmComponents.changes.subscribe(ql => this.focus(ql));
     }
 }

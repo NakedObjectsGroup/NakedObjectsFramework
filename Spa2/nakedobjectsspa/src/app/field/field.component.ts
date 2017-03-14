@@ -2,7 +2,7 @@ import * as Models from '../models'
 import * as Ro from '../ro-interfaces';
 import { AbstractControl } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
-import { ElementRef, HostListener, QueryList } from '@angular/core';
+import { ElementRef, HostListener, QueryList, Renderer } from '@angular/core';
 import * as _ from 'lodash';
 import { ContextService } from '../context.service';
 import { ChoiceViewModel } from '../view-models/choice-view-model';
@@ -23,7 +23,8 @@ export abstract class FieldComponent {
         myElement: ElementRef,
         private readonly context: ContextService,
         private readonly configService: ConfigService,
-        private readonly loggerService: LoggerService
+        private readonly loggerService: LoggerService,
+        private readonly renderer : Renderer
     ) {
         this.elementRef = myElement;
     }
@@ -273,7 +274,7 @@ export abstract class FieldComponent {
 
     focus() {
         if (this.focusList && this.focusList.first) {
-            this.focusList.first.nativeElement.focus();
+            setTimeout(() => this.renderer.invokeElementMethod(this.focusList.first.nativeElement, "focus"));
             return true;
         }
         return false; 

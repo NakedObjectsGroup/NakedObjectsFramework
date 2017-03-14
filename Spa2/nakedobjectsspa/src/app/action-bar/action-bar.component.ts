@@ -27,7 +27,7 @@ export class ActionBarComponent {
     focusOnFirstAction(actions: QueryList<ActionComponent>) {
         if (actions) {
             // until first element returns true
-            _.every(actions.toArray(), i => !i.focus());
+            _.some(actions.toArray(), i => i.focus());
         }
     }
 

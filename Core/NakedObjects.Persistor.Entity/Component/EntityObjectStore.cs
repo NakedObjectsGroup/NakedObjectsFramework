@@ -282,18 +282,16 @@ namespace NakedObjects.Persistor.Entity.Component {
                 }
 
                 IList<PropertyInfo> idmembers = currentContext.GetIdMembers(entityType);
-                IList<object> keyValues = ((IEntityOid) nakedObjectAdapter.Oid).Key;
+                IList<object> keyValues = ((IEntityOid)nakedObjectAdapter.Oid).Key;
                 Assert.AssertEquals("Member and value counts must match", idmembers.Count, keyValues.Count);
-                IEnumerator<PropertyInfo> idIter = idmembers.GetEnumerator();
-                List<KeyValuePair<string, object>> memberValueMap = keyValues.ToDictionary(x => {
-                    idIter.MoveNext();
-                    return idIter.Current.Name;
-                }).ToList();
+
+                List<KeyValuePair<string, object>> memberValueMap = MemberValueMap(idmembers, keyValues);
 
                 string query = memberValueMap.Aggregate(string.Empty, (s, kvp) => string.Format("{0}it.{1}=@{1}", s.Length == 0 ? s : s + " and ", kvp.Key));
                 ObjectParameter[] parms = memberValueMap.Select(kvp => new ObjectParameter(kvp.Key, kvp.Value)).ToArray();
 
                 First(objectSet.Where(query, parms));
+
             }
             EndResolving(nakedObjectAdapter);
             ResolveChildCollections(nakedObjectAdapter);
@@ -525,7 +523,8 @@ namespace NakedObjects.Persistor.Entity.Component {
                 return new LocalContext(codeOnlyConfig, session, this);
             }
             catch (Exception e) {
-                throw new InitialisationException(Log.LogAndReturn(Resources.NakedObjects.StartPersistorErrorCodeFirst), e);
+                var originalMsg = e.Message;
+                throw new InitialisationException(Log.LogAndReturn($"{Resources.NakedObjects.StartPersistorErrorCodeFirst}: {originalMsg}"), e);
             }
         }
 
@@ -578,11 +577,20 @@ namespace NakedObjects.Persistor.Entity.Component {
             IList<PropertyInfo> idmembers = context.GetIdMembers(type);
             IList<object> keyValues = eoid.Key;
             Assert.AssertEquals("Member and value counts must match", idmembers.Count, keyValues.Count);
+            return MemberValueMap(idmembers, keyValues);
+        }
+
+        private static List<KeyValuePair<string, object>> MemberValueMap(IList<PropertyInfo> idmembers, IList<object> keyValues) {
             IEnumerator<PropertyInfo> idIter = idmembers.GetEnumerator();
-            return keyValues.ToDictionary(x => {
-                idIter.MoveNext();
-                return idIter.Current.Name;
-            }).ToList();
+            try {
+                return keyValues.ToDictionary(x => {
+                    idIter.MoveNext();
+                    return idIter.Current.Name;
+                }).ToList();
+            }
+            finally {
+                idIter.Dispose();
+            }
         }
 
         public object GetObjectByKey(IEntityOid eoid, IObjectSpec hint) {
