@@ -4,7 +4,7 @@ import { ActionViewModel } from '../view-models/action-view-model'; // needed fo
 import * as Models from '../models';
 import { IActionHolder, wrapAction } from '../action/action.component';
 import { ActionComponent } from '../action/action.component';
-import { IMenuHolderViewModel} from '../view-models/imenu-holder-view-model';
+import { IMenuHolderViewModel } from '../view-models/imenu-holder-view-model';
 
 @Component({
     selector: 'nof-action-list',
@@ -42,7 +42,7 @@ export class ActionListComponent implements AfterViewInit {
 
     hasItems = (menuItem: MenuItemViewModel) => {
         const items = menuItem.menuItems;
-        return items && items.length > 0; 
+        return items && items.length > 0;
     }
 
     menuName = (menuItem: MenuItemViewModel) => menuItem.name;
@@ -56,7 +56,9 @@ export class ActionListComponent implements AfterViewInit {
         return this.actionHolders[index];
     };
 
-    toggleCollapsed = (menuItem: MenuItemViewModel) => menuItem.toggleCollapsed();
+    toggleCollapsed = (menuItem: MenuItemViewModel, index: number) => menuItem.toggleCollapsed();
+
+
 
     navCollapsed = (menuItem: MenuItemViewModel) => menuItem.navCollapsed;
 
@@ -65,15 +67,39 @@ export class ActionListComponent implements AfterViewInit {
     @ViewChildren(ActionComponent)
     actionChildren: QueryList<ActionComponent>;
 
-    focusOnFirstAction(actions: QueryList<ActionComponent>) {
-        if (actions) {
+    previousActionChildrenNames: string[] = [];
+
+    focusFromIndex(actions: QueryList<ActionComponent>, index = 0) {
+
+        const toFocus = actions.toArray().slice(index);
+
+        if (toFocus && toFocus.length > 0) {
             // until first element returns true
-            _.every(actions.toArray(), i => !i.focus());
+            _.some(toFocus, i => i.focus());
+        }
+
+    }
+
+
+    focus(actions: QueryList<ActionComponent>) {
+        if (actions && actions.length > 0) {
+            const actionChildrenNames = _.map(actions.toArray(), a => a.action.value);
+            const newActions = _.difference(actionChildrenNames, this.previousActionChildrenNames);
+            let index : number;
+
+            if (newActions && newActions.length > 0) {
+                const firstAction = _.first(newActions);
+                index = _.findIndex(actions.toArray(), a => a.action.value === firstAction);
+                index = index < 0 ? 0 : index; 
+            }
+            this.previousActionChildrenNames = actionChildrenNames;
+            this.focusFromIndex(actions, index);
         }
     }
 
+
     ngAfterViewInit(): void {
-        this.focusOnFirstAction(this.actionChildren);
-        this.actionChildren.changes.subscribe((ql: QueryList<ActionComponent>) => this.focusOnFirstAction(ql));
+        this.focus(this.actionChildren);
+        this.actionChildren.changes.subscribe((ql: QueryList<ActionComponent>) => this.focus(ql));
     }
 }
