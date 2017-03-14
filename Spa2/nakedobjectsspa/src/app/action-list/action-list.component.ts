@@ -77,7 +77,6 @@ export class ActionListComponent implements AfterViewInit {
             // until first element returns true
             _.some(toFocus, i => i.focus());
         }
-
     }
 
 
@@ -85,7 +84,7 @@ export class ActionListComponent implements AfterViewInit {
         if (actions && actions.length > 0) {
             const actionChildrenNames = _.map(actions.toArray(), a => a.action.value);
             const newActions = _.difference(actionChildrenNames, this.previousActionChildrenNames);
-            let index : number;
+            let index : number = 0;
 
             if (newActions && newActions.length > 0) {
                 const firstAction = _.first(newActions);

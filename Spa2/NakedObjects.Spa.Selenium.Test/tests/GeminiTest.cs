@@ -290,7 +290,7 @@ namespace NakedObjects.Selenium {
             IWebElement menu = menus.FirstOrDefault(s => s.GetAttribute("value") == menuName);
             if (menu != null) {
                 Click(menu);
-                wait.Until(d => d.FindElements(By.CssSelector("nof-action-list nof-action")).Count > 0);
+                wait.Until(d => d.FindElements(By.CssSelector("nof-action-list nof-action, nof-action-list div.submenu")).Count > 0);
             }
             else {
                 throw new NotFoundException(string.Format("menu not found {0}", menuName));
@@ -301,7 +301,7 @@ namespace NakedObjects.Selenium {
             string paneSelector = CssSelectorFor(pane);
             var actions = wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + "input")).Single(el => el.GetAttribute("value") == "Actions"));
             Click(actions);
-            wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " nof-action-list nof-action")).Count > 0);
+            wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " nof-action-list nof-action, nof-action-list div.submenu")).Count > 0);
         }
 
         protected virtual void OpenSubMenu(string menuName, Pane pane = Pane.Single) {
