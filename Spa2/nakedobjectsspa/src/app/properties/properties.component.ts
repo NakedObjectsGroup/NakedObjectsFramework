@@ -10,7 +10,7 @@ import * as Models from '../models';
     template: require('./properties.component.html'),
     styles: [require('./properties.component.css')]
 })
-export class PropertiesComponent implements AfterViewInit {
+export class PropertiesComponent  {
 
     @Input()
     parent: DomainObjectViewModel;
@@ -24,15 +24,12 @@ export class PropertiesComponent implements AfterViewInit {
     @ViewChildren(EditPropertyComponent)
     propComponents: QueryList<EditPropertyComponent>;
 
-    focusOnFirstProperty(prop: QueryList<EditPropertyComponent>) {
-        if (prop) {
+    focus() {
+        const prop =  this.propComponents;
+        if (prop && prop.length > 0) {
             // until first element returns true
-            _.every(prop.toArray(), i => !i.focus());
+            return _.some(prop.toArray(), i => i.focus());
         }
-    }
-
-    ngAfterViewInit(): void {
-        //this.focusOnFirstProperty(this.propComponents);
-        //this.propComponents.changes.subscribe((ql: QueryList<EditPropertyComponent>) => this.focusOnFirstProperty(ql));
+        return false;
     }
 }

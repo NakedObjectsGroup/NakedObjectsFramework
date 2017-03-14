@@ -1,4 +1,4 @@
-import { Component, Input, ElementRef, OnInit, HostListener, ViewChildren, QueryList } from '@angular/core';
+import { Component, Input, ElementRef, OnInit, HostListener, ViewChildren, QueryList, Renderer, NgZone } from '@angular/core';
 import * as Models from '../models';
 import { FieldComponent } from '../field/field.component';
 import { FormGroup } from '@angular/forms';
@@ -29,9 +29,10 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
         private readonly error: ErrorService,
         context: ContextService,
         configService: ConfigService,
-        loggerService: LoggerService
+        loggerService: LoggerService,
+        renderer : Renderer
     ) {
-        super(myElement, context, configService, loggerService);
+        super(myElement, context, configService, loggerService, renderer);
     }
 
     prop: PropertyViewModel;

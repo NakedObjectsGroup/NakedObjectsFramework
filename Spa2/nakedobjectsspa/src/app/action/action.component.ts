@@ -83,7 +83,13 @@ export class ActionComponent {
         if (this.disabled()) {
             return false;
         }
-        this.myElement.nativeElement.children[0].focus();
-        return true;
+        // todo fix any
+        const firstChild : any = _.first(this.myElement.nativeElement.children);
+
+        if (firstChild) {
+            firstChild.focus();
+            return true;
+        }
+        return false;
     }
 }

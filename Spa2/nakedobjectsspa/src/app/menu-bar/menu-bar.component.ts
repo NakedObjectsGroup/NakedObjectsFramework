@@ -36,7 +36,7 @@ export class MenuBarComponent implements AfterViewInit {
     focusOnFirstMenu(menusList: QueryList<ActionComponent>) {
         if (menusList) {
             // until first element returns true
-            _.every(menusList.toArray(), i => !i.focus());
+            _.some(menusList.toArray(), i => i.focus());
         }
     }
 
