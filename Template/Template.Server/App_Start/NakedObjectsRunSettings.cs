@@ -47,7 +47,7 @@ namespace NakedObjects.Template {
             get
             {
                 return new Type[] {
-                    typeof(StudentRepository)
+                    typeof(ExampleRepository)
                 };
             }
         }
@@ -60,14 +60,14 @@ namespace NakedObjects.Template {
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig()
         {
             var config = new EntityObjectStoreConfiguration();
-            config.UsingCodeFirstContext(() => new ExampleDbContext("NakedObjectsExample"));
+            config.UsingCodeFirstContext(() => new ExampleDbContext("NakedObjectsTemplate"));
             return config;
         }
 
         public static IMenu[] MainMenus(IMenuFactory factory)
         {
             return new IMenu[] {
-                factory.NewMenu<StudentRepository>(true, "Students")
+                factory.NewMenu<ExampleRepository>(true, "Menu")
             };
         }
     }
