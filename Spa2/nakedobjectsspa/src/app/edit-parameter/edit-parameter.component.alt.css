@@ -66,7 +66,7 @@ input[type='text'] {
 
 :host.multilinedialog input:focus,.multilinedialog input:hover  {
     outline-width: 1px;
-    outline-style: dashed;
+    outline-color: blue;
 }
 
 :host.multilinedialog .input-control input:not([type='checkbox']),

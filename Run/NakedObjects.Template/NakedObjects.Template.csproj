@@ -91,7 +91,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Architecture, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\NakedObjects.Core.8.2.2\lib\net451\NakedObjects.Architecture.dll</HintPath>
+      <HintPath>packages\NakedObjects.Core.8.2.3\lib\net451\NakedObjects.Architecture.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Attributes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -99,7 +99,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\NakedObjects.Core.8.2.2\lib\net451\NakedObjects.Core.dll</HintPath>
+      <HintPath>packages\NakedObjects.Core.8.2.3\lib\net451\NakedObjects.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Facade, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -111,7 +111,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.FWResources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\NakedObjects.Core.8.2.2\lib\net451\NakedObjects.FWResources.dll</HintPath>
+      <HintPath>packages\NakedObjects.Core.8.2.3\lib\net451\NakedObjects.FWResources.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Helpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -119,11 +119,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Metamodel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\NakedObjects.Core.8.2.2\lib\net451\NakedObjects.Metamodel.dll</HintPath>
+      <HintPath>packages\NakedObjects.Core.8.2.3\lib\net451\NakedObjects.Metamodel.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Persistor.Entity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\NakedObjects.Core.8.2.2\lib\net451\NakedObjects.Persistor.Entity.dll</HintPath>
+      <HintPath>packages\NakedObjects.Core.8.2.3\lib\net451\NakedObjects.Persistor.Entity.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.PMResources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -131,7 +131,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Reflector, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\NakedObjects.Core.8.2.2\lib\net451\NakedObjects.Reflector.dll</HintPath>
+      <HintPath>packages\NakedObjects.Core.8.2.3\lib\net451\NakedObjects.Reflector.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Rest">
@@ -143,7 +143,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Snapshot.Xml, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\NakedObjects.Core.8.2.2\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>
+      <HintPath>packages\NakedObjects.Core.8.2.3\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Types, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -151,7 +151,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Unity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\NakedObjects.Core.8.2.2\lib\net451\NakedObjects.Unity.dll</HintPath>
+      <HintPath>packages\NakedObjects.Core.8.2.3\lib\net451\NakedObjects.Unity.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -446,7 +446,7 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-     <Error Condition="!Exists('packages\Microsoft.TypeScript.MSBuild.2.1.5\build\Microsoft.TypeScript.MSBuild.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.TypeScript.MSBuild.2.1.5\build\Microsoft.TypeScript.MSBuild.props'))" />
+    <Error Condition="!Exists('packages\Microsoft.TypeScript.MSBuild.2.1.5\build\Microsoft.TypeScript.MSBuild.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.TypeScript.MSBuild.2.1.5\build\Microsoft.TypeScript.MSBuild.props'))" />
     <Error Condition="!Exists('packages\Microsoft.TypeScript.MSBuild.2.1.5\build\Microsoft.TypeScript.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.TypeScript.MSBuild.2.1.5\build\Microsoft.TypeScript.MSBuild.targets'))" />
   </Target>
   <Import Project="..\..\packages\Microsoft.TypeScript.MSBuild.2.0.3\build\Microsoft.TypeScript.MSBuild.targets" Condition="Exists('..\..\packages\Microsoft.TypeScript.MSBuild.2.0.3\build\Microsoft.TypeScript.MSBuild.targets')" />
