@@ -13,7 +13,7 @@
     <description>Add to a Windows Application project.</description>
     <tags>naked objects nakedobjects batch</tags>
     <dependencies>
-      <dependency id="NakedObjects.Core" version="[8.2.2, 9)" />
+      <dependency id="NakedObjects.Core" version="[8.2.3, 9)" />
     </dependencies>
   </metadata>
 </package>
