@@ -45,12 +45,12 @@
         "dateMasks?": {
             "d": {
                 "format": "date-time",
-                "mask": "d MMM yyyy",
+                "mask": "D MMM YYYY",
                 "tz": "+0000"
             },
             "D": {
                 "format": "date",
-                "mask": "d MMM yyyy hh:mm:ss"
+                "mask": "D MMM YYYY hh:mm:ss"
             },
             "T": {
                 "format": "time",

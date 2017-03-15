@@ -3,6 +3,7 @@ import * as Ro from './ro-interfaces';
 import { DatePipe, CurrencyPipe, DecimalPipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { ConfigService } from './config.service';
+import * as moment from 'moment';
 
 export interface IMaskServiceConfigurator {
     setNumberMaskMapping: (customMask: string, format: Ro.formatType, fractionSize?: number, locale?: string) => void;
@@ -67,8 +68,9 @@ class LocalDateFilter implements ILocalFilter {
         if (!val) {
             return "";
         }
-        const pipe = new DatePipe(this.locale);
-        return transform(() => pipe.transform(val, this.mask));
+        //const pipe = new DatePipe(this.locale);
+        //return transform(() => pipe.transform(val, this.mask));
+        return moment(val).format(this.mask);
     }
 }
 
@@ -119,9 +121,9 @@ export class MaskService implements IMaskServiceConfigurator {
             case ("string"):
                 return new LocalStringFilter();
             case ("date-time"):
-                return new LocalDateFilter(this.defaultLocale, "d MMM yyyy HH:mm:ss");
+                return new LocalDateFilter(this.defaultLocale, "D MMM YYYY HH:mm:ss");
             case ("date"):
-                return new LocalDateFilter(this.defaultLocale, "d MMM yyyy", "+0000");
+                return new LocalDateFilter(this.defaultLocale, "D MMM YYYY", "+0000");
             case ("time"):
                 return new LocalDateFilter(this.defaultLocale, "HH:mm", "+0000");
             case ("utc-millisec"):
