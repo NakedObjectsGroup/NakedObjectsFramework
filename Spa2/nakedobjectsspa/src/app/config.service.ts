@@ -60,24 +60,24 @@ export interface IAppConfig {
         currencyMasks?: {
             [index: string]: {
                 format: Ro.formatType;
-                symbol: string;
-                digits: string;
-                locale: string;
+                symbol?: string;
+                digits?: string;
+                locale?: string;
             }
         }
         dateMasks?: {
             [index: string]: {
                 format: Ro.formatType;
                 mask: string;
-                tz: string;
-                locale: string;
+                tz?: string;
+                locale?: string;
             }
         }
         numberMasks?: {
             [index: string]: {
                 format: Ro.formatType;
-                fractionSize: number;
-                locale: string;
+                digits?: string;
+                locale?: string;
             }
         }
     }

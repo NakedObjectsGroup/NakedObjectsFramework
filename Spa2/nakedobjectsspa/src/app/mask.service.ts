@@ -6,7 +6,7 @@ import { ConfigService } from './config.service';
 import * as moment from 'moment';
 
 export interface IMaskServiceConfigurator {
-    setNumberMaskMapping: (customMask: string, format: Ro.formatType, fractionSize?: number, locale?: string) => void;
+    setNumberMaskMapping: (customMask: string, format: Ro.formatType, digits?: string, locale?: string) => void;
 
     // date masks now use moment mask conventions https://momentjs.com/docs/#/displaying/
     setDateMaskMapping: (customMask: string, format: Ro.formatType, mask: string, tz?: string, locale?: string) => void;
@@ -84,7 +84,7 @@ class LocalNumberFilter implements ILocalFilter {
 
     constructor(
         private readonly locale: string,
-        private readonly fractionSize?: number
+        private readonly digits?: string
     ) { }
 
     filter(val: any): string {
@@ -92,7 +92,7 @@ class LocalNumberFilter implements ILocalFilter {
             return "";
         }
         const pipe = new DecimalPipe(this.locale);
-        return transform(() => pipe.transform(val));
+        return transform(() => pipe.transform(val, this.digits));
     }
 }
 
@@ -162,8 +162,8 @@ export class MaskService implements IMaskServiceConfigurator {
         return this.customFilter(format, remoteMask) || this.defaultLocalFilter(format);
     };
 
-    setNumberMaskMapping(customMask: string, format: Ro.formatType, fractionSize?: number, locale?: string) {
-        this.maskMap[format!][customMask] = new LocalNumberFilter(locale || this.defaultLocale, fractionSize, );
+    setNumberMaskMapping(customMask: string, format: Ro.formatType, digits?: string, locale?: string) {
+        this.maskMap[format!][customMask] = new LocalNumberFilter(locale || this.defaultLocale, digits );
     };
 
     setDateMaskMapping(customMask: string, format: Ro.formatType, mask: string, tz?: string, locale?: string) {
@@ -192,7 +192,7 @@ export class MaskService implements IMaskServiceConfigurator {
             }
 
             if (numberMasks) {
-                _.forEach(numberMasks, (v, k) => this.setNumberMaskMapping(k!, v.format, v.fractionSize, v.locale));
+                _.forEach(numberMasks, (v, k) => this.setNumberMaskMapping(k!, v.format, v.digits, v.locale));
             }
         }
     }
