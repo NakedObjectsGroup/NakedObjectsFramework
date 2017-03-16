@@ -8,6 +8,7 @@ import * as moment from 'moment';
 export interface IMaskServiceConfigurator {
     setNumberMaskMapping: (customMask: string, format: Ro.formatType, fractionSize?: number, locale?: string) => void;
 
+    // date masks now use moment mask conventions https://momentjs.com/docs/#/displaying/
     setDateMaskMapping: (customMask: string, format: Ro.formatType, mask: string, tz?: string, locale?: string) => void;
 
     setCurrencyMaskMapping: (customMask: string, format: Ro.formatType, symbol?: string, digits?: string, locale?: string) => void;
@@ -68,9 +69,14 @@ class LocalDateFilter implements ILocalFilter {
         if (!val) {
             return "";
         }
-        //const pipe = new DatePipe(this.locale);
-        //return transform(() => pipe.transform(val, this.mask));
-        return moment(val).format(this.mask);
+        // Angular date pipes no longer support timezones so we need to use moment here 
+
+        let mmt = moment.utc(val);
+        if (this.tz) {
+            mmt = mmt.utcOffset(this.tz);
+        }
+
+        return mmt.format(this.mask);
     }
 }
 
