@@ -38,15 +38,18 @@ describe('MaskService', () => {
         it("masks a string", inject([MaskService], (maskService: MaskService) => testDefaultMask(maskService, "a string", "string", "a string")));
     });
 
+
+
     // todo investigate and fix failures
     describe("default int", () => {
-        //it("masks empty", inject([MaskService], (maskService: MaskService) => testDefaultMask(maskService, "", "int", "0")));
-        //it("masks null", inject([MaskService], (maskService: MaskService) => testDefaultMask(maskService, null, "int", null)));
+        it("masks empty", inject([MaskService], (maskService: MaskService) => testDefaultMask(maskService, "", "int", "")));
+        it("masks null", inject([MaskService], (maskService: MaskService) => testDefaultMask(maskService, null, "int", "")));
         it("masks 0", inject([MaskService], (maskService: MaskService) => testDefaultMask(maskService, 0, "int", "0")));
         it("masks 101", inject([MaskService], (maskService: MaskService) => testDefaultMask(maskService, 101, "int", "101")));
         it("masks 1002", inject([MaskService], (maskService: MaskService) => testDefaultMask(maskService, 1002, "int", "1,002")));
         it("masks 10003", inject([MaskService], (maskService: MaskService) => testDefaultMask(maskService, 10003, "int", "10,003")));
-        //it("masks max int", inject([MaskService], (maskService: MaskService) => testDefaultMask(maskService, Number.MAX_VALUE, "int", "1.798e+308")));
+        it("masks max int", inject([MaskService], (maskService: MaskService) => testDefaultMask(maskService, Number.MAX_VALUE, "int",
+            "179,769,313,486,232,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000")));
     });
 
 
@@ -71,7 +74,7 @@ describe('MaskService', () => {
         }));
 
         it("masks empty", inject([MaskService], (maskService: MaskService) => testDefaultMask(maskService, "", "date-time", "")));
-        //it("masks null", inject([MaskService], (maskService: MaskService) => testDefaultMask(maskService, null, "date-time", null)));
+        it("masks null", inject([MaskService], (maskService: MaskService) => testDefaultMask(maskService, null, "date-time", "")));
 
         // these tests are locale specific UTC -> GMT/BST
         it("masks arbitaryDate1", inject([MaskService], (maskService: MaskService) => testDefaultMask(maskService, arbitaryDate1, "date-time", ts1)));
@@ -82,7 +85,7 @@ describe('MaskService', () => {
 
     describe("default time", () => {
         it("masks empty", inject([MaskService], (maskService: MaskService) => testDefaultMask(maskService, "", "time", "")));
-        //it("masks null", inject([MaskService], (maskService: MaskService) => testDefaultMask(maskService, null, "time", null)));
+        it("masks null", inject([MaskService], (maskService: MaskService) => testDefaultMask(maskService, null, "time", "")));
 
         // these tests are UTC => UTC
         it("masks arbitaryDate1", inject([MaskService], (maskService: MaskService) => testDefaultMask(maskService, arbitaryDate1, "time", "16:27")));
@@ -98,7 +101,7 @@ describe('MaskService', () => {
 
 
         it("masks empty", inject([MaskService], (maskService: MaskService) => testMask(maskService, "", "customdt", "date-time", "")));
-        //it("masks null", inject([MaskService], (maskService: MaskService) => testMask(maskService, null, "customdt", "date-time", null)));
+        it("masks null", inject([MaskService], (maskService: MaskService) => testMask(maskService, null, "customdt", "date-time", "")));
 
         // these tests are locale specific UTC -> +1000
         it("masks arbitaryDate1", inject([MaskService], (maskService: MaskService) => testMask(maskService, arbitaryDate1, "customdt", "date-time", "6 05 1985 02-27-10")));
@@ -113,7 +116,7 @@ describe('MaskService', () => {
         }));
 
         it("masks empty", inject([MaskService], (maskService: MaskService) => testMask(maskService, "", "customd", "date", "")));
-        //it("masks null", inject([MaskService], (maskService: MaskService) => testMask(maskService, null, "customd", "date", null)));
+        it("masks null", inject([MaskService], (maskService: MaskService) => testMask(maskService, null, "customd", "date", "")));
 
         // these tests are locale specific UTC -> +1000
         it("masks arbitaryDate1", inject([MaskService], (maskService: MaskService) => testMask(maskService, arbitaryDate1, "customd", "date", "6 05 1985")));
@@ -128,7 +131,7 @@ describe('MaskService', () => {
         }));
 
         it("masks empty", inject([MaskService], (maskService: MaskService) => testMask(maskService, "", "customt", "time", "")));
-        //it("masks null", inject([MaskService], (maskService: MaskService) => testMask(maskService, null, "customt", "time", null)));
+        it("masks null", inject([MaskService], (maskService: MaskService) => testMask(maskService, null, "customt", "time", "")));
 
         // these tests are UTC => UTC
         it("masks arbitaryDate1", inject([MaskService], (maskService: MaskService) => testMask(maskService, arbitaryDate1, "customt", "time", "04-57-10")));
