@@ -1,0 +1,11 @@
+﻿<div class="object view" ng-class="object.color">
+    <div class="header">
+        <div class="type">{{object.friendlyName}}</div>
+        <div class="title" gemini-drag tabindex="0">{{object.title}}</div>
+        <div class="messages">{{object.message}}</div>
+    </div>
+    <div class="main-column">
+        <div class="properties" ng-include="'Content/partials/properties.html'"></div>
+    </div>
+    <div class="collections" ng-include="collectionsTemplate"></div>
+</div>

@@ -1,0 +1,4 @@
+﻿<div class="single" ng-class="backgroundColor" ng-swipe-right="$broadcast('back')" ng-swipe-left="$broadcast('forward')">
+    <div class="error"  ng-controller="ErrorController" ng-include="errorTemplate"></div>
+    <div class="footer" ng-controller="ToolBarController" ng-include="toolBar.footerTemplate"></div>
+</div>

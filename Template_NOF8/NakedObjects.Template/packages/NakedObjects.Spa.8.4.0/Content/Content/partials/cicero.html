@@ -1,0 +1,8 @@
+﻿<div class="cicero" gemini-focuson>
+    <div class="output" aria-live="polite"><pre>{{cicero.output}}</pre></div>
+    <input type="text" ng-model="cicero.input" 
+    gemini-enter="cicero.parseInput(cicero.input)"
+    cicero-up="cicero.selectPreviousInput()" 
+    cicero-down="cicero.clearInput()"
+    cicero-space="cicero.autoComplete(cicero.input)" />
+</div>

@@ -1,0 +1,117 @@
+﻿<div class="object edit" ng-class="object.color" >
+    <div class="header" ng-switch="object.unsaved">
+        <div class="type">{{object.friendlyName}}</div>
+        <div class="title">Editing - {{object.title}}</div>
+        <div class="action clickable-area" tabindex="0" ng-disabled="!object.clientValid()" gemini-enter="object.doSave()" ng-click="object.doSave(true)"  title="{{object.tooltip()}}">
+            Save
+        </div>
+        <div ng-switch-when="true" class="action clickable-area" ng-disabled="!object.clientValid()" tabindex="0" gemini-enter="object.doSave()" ng-click="object.doSave(false)">
+            Save & Close
+        </div>
+        <div class="action clickable-area" tabindex="0" gemini-enter="object.doEditCancel()" ng-click="object.doEditCancel()">
+            Cancel
+        </div>
+        <div class="messages">{{object.message}}</div>
+    </div>
+    <div class="main-column">
+        <div class="properties">
+            <div class="property" ng-repeat="property in object.properties" ng-switch="property.type">
+
+                <div class="name"><label for="{{property.paneArgId}}">{{property.title}}:</label></div>
+
+                <div ng-switch-when="ref" ng-switch="property.isEditable">
+
+                    <div ng-switch-when="false" class="value" ng-class="property.color">
+                        {{property.formattedValue}}
+                    </div>
+
+                    <div ng-switch-when="true" class="input-control text" ng-switch="property.entryType">
+                        <input type="hidden" value="{{property.reference}}" ng-model="property.reference" />
+
+                        <!--"EntryType.AutoComplete"-->
+                        <input id="{{property.paneArgId}}" class="{{property.status}} value droppable" ng-class="property.color" placeholder="{{property.description}}" ng-switch-when="5" type="text" ng-model="$parent.property.selectedChoice" select="property.prompt(request)" gemini-autocomplete gemini-drop gemini-fieldmandatorycheck gemini-clear/>
+
+                        <!--"EntryType.ConditionalChoices"-->
+                        <select id="{{property.paneArgId}}" class="{{property.status}}" ng-switch-when="3" ng-model="$parent.property.selectedChoice" select="property.conditionalChoices(args)" gemini-conditionalchoices gemini-fieldmandatorycheck>
+                            <option value="" ng-disabled="!property.optional" selected>{{property.description}}</option>
+                        </select>
+
+                        <!--"EntryType.Choices"-->
+                        <select id="{{property.paneArgId}}" class="{{property.status}}" ng-switch-when="1" ng-model="property.selectedChoice" ng-options="c as c.name for c in property.choices" gemini-fieldmandatorycheck>
+                            <option value="" ng-disabled="!property.optional">{{property.description}}</option>
+                        </select>
+
+                        <!--"EntryType.FreeForm"-->
+                        <input id="{{property.paneArgId}}" class="{{property.status}} value droppable" ng-class="property.color" placeholder="{{property.description}}" ng-switch-when="0" type="text" ng-model="$parent.property.selectedChoice"  gemini-drop gemini-fieldmandatorycheck gemini-clear />
+                    </div>
+                </div>
+
+                <div ng-switch-when="scalar" ng-switch="property.isEditable">
+
+                    <div ng-switch-when="false" ng-switch="property.returnType">
+
+                        <div ng-switch-when="string" ng-switch="property.format">
+                            <div ng-switch-when="blob" class="reference clickable-area" ng-model="$parent.property.attachment" ng-click='property.attachment.doClick()' gemini-rightclick='property.attachment.doClick(true)' gemini-enter='property.attachment.doClick()' gemini-attachment></div>
+                            <div ng-switch-default class="value">{{property.formattedValue}}</div>
+                        </div>
+
+                        <div ng-switch-when="boolean">
+                            <input id="{{property.paneArgId}}" type="checkbox" onclick="return false" ng-checked="property.value" disabled="disabled" />{{parameter.description}}
+                        </div>
+
+                        <div ng-switch-default>
+                            <div class="value">{{property.formattedValue}}</div>
+                        </div>
+                    </div>
+
+                    <div ng-switch-when="true" class="input-control text" ng-switch="property.entryType">
+
+                        <!--"EntryType.AutoComplete"-->
+                        <div ng-switch-when="5">
+                            <input id="{{property.paneArgId}}" class="{{property.status}}" placeholder="{{property.description}}" type="text" ng-model="$parent.property.selectedChoice" select="property.prompt(request)" gemini-autocomplete gemini-fieldmandatorycheck gemini-clear/>
+                        </div>
+
+
+                        <!--"EntryType.ConditionalChoices"-->
+                        <select id="{{property.paneArgId}}" class="{{property.status}}" ng-switch-when="3" ng-model="$parent.property.selectedChoice" select="property.conditionalChoices(args)" gemini-conditionalchoices gemini-fieldmandatorycheck>
+                            <option value="" ng-disabled="!property.optional" selected>{{property.description}}</option>
+                        </select>
+
+                        <!--"EntryType.Choices"-->
+                        <select id="{{property.paneArgId}}" class="{{property.status}}" ng-switch-when="1" ng-model="property.selectedChoice" ng-options="c as c.name for c in property.choices" gemini-fieldmandatorycheck>
+                            <option value="" ng-disabled="!property.optional" selected>{{property.description}}</option>
+                        </select>
+
+                        <!--"EntryType.FreeForm"-->
+                        <div ng-switch-when="0" ng-switch="property.returnType">
+
+                            <div ng-switch-when="string" ng-switch="property.format">
+                                <div ng-switch-when="date">
+                                    <input id="{{property.paneArgId}}" type="date" class="value {{property.status}}" placeholder="{{property.description}}" ng-model="$parent.property.value" gemini-datepicker gemini-fieldvalidate gemini-clear/>
+                                </div>
+                                <div ng-switch-when="time">
+                                    <input id="{{property.paneArgId}}" type="time" class="value {{property.status}}" placeholder="{{property.description}}" ng-model="$parent.property.value" gemini-timepicker gemini-fieldvalidate gemini-clear/>
+                                </div>
+                                <div ng-switch-when="blob" class="reference clickable-area" ng-model="$parent.property.attachment" gemini-attachment></div>
+                                <div ng-switch-default ng-switch="property.multipleLines">
+                                    <input ng-switch-when="1" id="{{property.paneArgId}}" class="{{property.status}}" placeholder="{{property.description}}" type="{{parameter.password ? 'password' : 'text'}}" ng-model="property.value" gemini-fieldvalidate gemini-clear/>
+                                    <textarea ng-switch-default rows="{{$parent.property.multipleLines}}" id="{{$parent.property.paneArgId}}" class="{{$parent.property.status}}"  ng-model="$parent.property.value" gemini-fieldvalidate gemini-placeholder="$parent.property.description"></textarea>
+                                </div>
+                            </div>
+
+                            <div ng-switch-when="boolean">
+                                <input id="{{property.paneArgId}}" class="{{property.status}}" type="checkbox" ng-model="property.value" gemini-boolean/>
+                            </div>
+
+                            <div ng-switch-default>
+                                <input id="{{property.paneArgId}}" class="value {{property.status}}" type="text" placeholder="{{property.description}}" ng-model="property.value" gemini-fieldvalidate gemini-clear/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="validation">{{property.message}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="collections" ng-include="collectionsTemplate"></div>
+</div>

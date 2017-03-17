@@ -1,0 +1,27 @@
+﻿<div ng-switch="parameter.type">
+    <div class="name">
+        <label for="{{parameter.paneArgId}}">{{parameter.title}}</label>
+    </div>
+    <div ng-switch-when="ref" >
+        <div class="value">{{parameter.selectedChoice.toString()}}</div>     
+    </div>
+
+    <div ng-switch-when="scalar" ng-switch="parameter.returnType">
+
+        <div ng-switch-when="string" ng-switch="parameter.format">
+            <div ng-switch-when="blob" class="reference clickable-area" ng-model="$parent.parameter.attachment" ng-click='parameter.attachment.doClick()' gemini-rightclick='parameter.attachment.doClick(true)' gemini-enter='parameter.attachment.doClick()' gemini-attachment tabindex="0"></div>
+            <div ng-switch-default ng-switch="parameter.multipleLines">
+                <div ng-switch-when="1" class="value">{{parameter.value}}</div>
+                <div ng-switch-default class="value multiline" ng-style="{height: $parent.parameter.multipleLines * 20+'px'}"><pre>{{parameter.formattedValue}}</pre></div>
+            </div>
+        </div>
+        <div ng-switch-when="boolean">
+            <input type="checkbox" onclick="return false" ng-checked="parameter.value" disabled="disabled" />
+        </div>
+
+        <div ng-switch-default>
+            <div class="value">{{parameter.value}}</div>
+        </div>
+    </div>
+   
+</div>
