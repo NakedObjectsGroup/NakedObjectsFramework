@@ -6,9 +6,9 @@ const fErr = function (err) { if (err) console.error('Error occurred:', err); };
 const opts = { clobber: false, mkdirp: false }
 
 function copyAndReplace(name) {
-    var fromName = `./node_modules/nakedobjects.spa/lib/app/${name}/${name}.component.alt.css`;
-    var tempName = `./node_modules/nakedobjects.spa/lib/app/${name}/${name}.component.temp.css`;
-    var toName = `./node_modules/nakedobjects.spa/lib/app/${name}/${name}.component.css`;
+    var fromName = `./src/app/${name}/${name}.component.alt.css`;
+    var tempName = `./src/app/${name}/${name}.component.temp.css`;
+    var toName = `./src/app/${name}/${name}.component.css`;
 
 
     const mv3 = () => mv(tempName, fromName, opts, fErr);
@@ -24,10 +24,10 @@ function copyAndReplaceAll(names) {
     }
 }
 
-let names = ["action", "actions", "application-properties", "attachment", "attachment-property", "button", "buttons",
+let names = ["action", "action-bar", "action-list", "application-properties", "attachment", "attachment-property", 
     "cicero", "collection", "collections", "dialog", "dynamic-error", "dynamic-list", "dynamic-object", "edit-parameter",
-    "edit-property", "error", "footer", "home", "list", "menu", "menus", "multi-line-dialog", "object", "parameters",
-    "properties", "recent"]
+    "edit-property", "error", "footer", "home", "list", "menu-bar", "multi-line-dialog", "object", "parameters",
+    "properties", "recent", "view-parameter", "view-property"]
 
 copyAndReplaceAll(names);
 
@@ -36,3 +36,27 @@ const ms2 = () => mv("./src/styles.alt.css", "./src/styles.css", opts, ms3);
 const ms1 = () => mv("./src/styles.css", "./src/styles.temp.css", opts, ms2);
 
 ms1();
+
+find.findSync("name", ".", "package.json").then(s => {
+
+    try {
+        var nameLine = s["package.json"].line[0];
+        var nameSplit = nameLine.split('"');
+        var name = nameSplit[3];
+
+        var newName = name.indexOf("alt") >= 0 ? "nakedobjects.spa" : "nakedobjects.alt.spa";
+
+        var regex = new RegExp(name, "g");
+
+        var options = {
+            files: ["package.json"],
+            from: regex,
+            to: newName
+        };
+
+        replace.sync(options);
+
+    } catch (e) {
+        console.error('Error occurred updating name:', e);
+    }
+});
