@@ -1,3 +1,38 @@
 {
-    "appPath": "http://localhost:5000/rest"
+  "appPath": "http://localhost:5000/rest",
+  "colors": {
+    "typeMap": {
+      "Template.Model.Student": 1
+    }
+  },
+  "masks": {
+    "currencyMasks": {
+      "C": {
+        "format": "decimal",
+        "symbol": "GBP",
+        "digits": "1.2-2"
+      },
+      "c": {
+        "format": "decimal",
+        "symbol": "GBP",
+        "digits": "1.2-2"
+      }
+    },
+    "dateMasks?": {
+      "d": {
+        "format": "date-time",
+        "mask": "D MMM YYYY",
+        "tz": "+0000"
+      },
+      "D": {
+        "format": "date",
+        "mask": "D MMM YYYY hh:mm:ss"
+      },
+      "T": {
+        "format": "time",
+        "mask": "HH:mm",
+        "tz": "+0000"
+      }
+    }
+  }
 }

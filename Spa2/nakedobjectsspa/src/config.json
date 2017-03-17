@@ -20,7 +20,7 @@
                 "color": 2
             },
             {
-                "regex": ".*SalesOrder.*",
+                "regex": ".*PurchaseOrder.*",
                 "color": 10
             }
         ],
