@@ -33,7 +33,6 @@
   },
   "main": "./lib/app/index.js",
   "typings": "./lib/app/index.d.ts",
-  "private": true,
   "dependencies": {
     "@angular/common": "2.4.8",
     "@angular/compiler": "2.4.8",
