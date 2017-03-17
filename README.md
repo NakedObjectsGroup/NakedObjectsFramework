@@ -12,7 +12,7 @@ NOF9  upgrades the Spa client to use the latest version of the Angular framework
 
 The best way to explore NOF 9 initially is to download the Template project from here:
 
-https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Template/Template_NOF9.zip?raw=true
+https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Template_NOF9/Template_NOF9.zip?raw=true
 
 and follow instructions at the start of the new NOF 9 Development Manual, downloaded from here:
 
@@ -23,7 +23,8 @@ NOF8 (stable release)
 
 NOF8  introduces a radically different user interface based on the Single Page Application (SPA) architecture. It uses identical domain model programming conventions as NOF7; indeed it is possible to run the NOF8 client and the NOF7 client alongside each other, as two different 'run' projects talking to the same domain model project(s).
 
-The best way to try NOF8 is to run the NakedObjects.Template application, which may be downloaded as a .zip file from: https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Run/Template_NOF8.zip?raw=true 
+The best way to try NOF8 is to run the NakedObjects.Template application, which may be downloaded as a .zip file from:
+https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Template_NOF8/Template_NOF8.zip?raw=true
 
 (If the unzipped application does not run first time, please see the developer manual for further hints. In particular, look for any server start-up errors in the log file: nakedobjects_log.txt. And also check the connection string in web.config).
 
