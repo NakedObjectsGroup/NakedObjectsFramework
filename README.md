@@ -1,17 +1,24 @@
 Naked Objects Framework
 ======================
 
-The current stable release of the Naked Objects Framework (NOF) is version 8.3.1  -  see below for details.
+The current stable release of the Naked Objects Framework (NOF) is version 8.4. The newer version (NOF9) is now available as a Beta release  -  see below for details.
 
 The NOF may be used entirely as packages from the NuGet public gallery - there is no need to clone this repository.  Indeed, building the framework from source code is quite complex and not recommended for newcomers.  (If you really want to know how to do it, see the section 'How to build the framework from source code' in the Developer Manual.)
 
-NOF9 (under development - master branch)
+NOF9 (beta)
 ====
 
-NOF9 will upgrade the Spa client to use Angular 2 instead of Angular 1.  The code for this new client is being developed in the 'Spa2' project within the master branch, so it does not interfere with the existing (NOF8) Spa project.  Ouor intention is that the Spa2 client will be identical to the NOF8 Spa from a user perspective, and there will be no change to the programming model  -  so the two clients can co-exist, talking to the same NOF8 server via the Restful Objects API. However, any custom views will need to be re-written to follow the Angular 2 patterns.
+NOF9  upgrades the Spa client to use the latest version of the Angular framework (which is a very substantial re-architecting of the original 'Angular 1' framework  -  now referred to as AngularJS).  The code for this new NOF9 client exists within in the 'Spa2' project within the master branch, so it does not interfere with the existing (NOF8) Spa project.  The NOF9 client is identical to the NOF8 client  from a user perspective, and there is no change to the programming model  -  so the two clients can co-exist, talking to the same NOF8 server via the Restful Objects API. However, any custom views will need to be re-written.
 
+The best way to explore NOF 9 initially is to download the Template project from here:
 
-NOF8 (stable release - master branch)
+https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Template/Template.zip?raw=true
+
+and follow instructions at the start of the new NOF 9 Development Manual, downloaded from here:
+
+https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/NOF%209%20-%20DeveloperManual.docx?raw=true
+
+NOF8 (stable release)
 ====
 
 NOF8  introduces a radically different user interface based on the Single Page Application (SPA) architecture. It uses identical domain model programming conventions as NOF7; indeed it is possible to run the NOF8 client and the NOF7 client alongside each other, as two different 'run' projects talking to the same domain model project(s).
