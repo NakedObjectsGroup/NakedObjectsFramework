@@ -4,7 +4,7 @@
 !**/Template/*/*.user
 *.nupkg
 /packages
-/Template/packages
+/Template_NOF9/packages
 /test-results
 /TestResults
 /build
