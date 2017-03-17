@@ -6,11 +6,13 @@ var mv = require('mv');
 var copyTemplates = "./src/**/*.{html,css,png,eot,svg,ttf,woff,txt}";
 var copyBoilerPlate = "./src/app/app*.ts";
 var copyConfig = "./src/empty_config.json";
+var copyTsConfig = "./src/tsconfig.app.json";
 var copyToLib = "lib";
 var copyToApp = "lib/app";
 
 cpx.copySync(copyTemplates, copyToLib);
 cpx.copySync(copyConfig, copyToLib);
+cpx.copySync(copyTsConfig, copyToLib);
 cpx.copySync(copyBoilerPlate, copyToApp);
 
 mv("./lib/empty_config.json", "./lib/config.json", { mkdirp: false }, function (err) { if (err) console.error('Error occurred:', err); });

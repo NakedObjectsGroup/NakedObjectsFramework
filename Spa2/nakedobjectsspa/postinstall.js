@@ -9,6 +9,7 @@ var appfileList = [
     './lib/app/app.module.ts'];
 
 var rootfileList = [
+    './lib/tsconfig.app.json',
     './lib/config.json',
     './lib/index.html',
     './lib/styles.alt.css',
