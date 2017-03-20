@@ -28,7 +28,7 @@
     "togglecss": "node togglecss.js",
     "prepublish": "node prepublish.js",
     "postinstall": "node postinstall.js",
-    "tsc": "tsc -p ./src/tsconfig.json"
+    "tsc": "tsc -p ./src/tsconfig.app.json"
   },
   "main": "./lib/app/index.js",
   "typings": "./lib/app/index.d.ts",
