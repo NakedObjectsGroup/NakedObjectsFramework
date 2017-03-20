@@ -17,7 +17,8 @@
 *.csproj.user
 
 # misc
-angular-cli.json
+.angular-cli.json
+.editorconfig
 karma.conf.js
 protractor.conf.js
 tslint.json
