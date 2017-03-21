@@ -20,6 +20,7 @@
 .field {
     display: block;
     float: left;
+    width: 245px;
 }
 
 .reference, .value, collectionDetails {
@@ -37,10 +38,6 @@
     float: left;
     max-width: 245px;
     max-height: 100px;
-}
-
-.validation {
-    color: black;
 }
 
 /* Drag and drop*/
@@ -118,7 +115,8 @@ select {
     }
 
 .validation {
-    margin-left: 155px;
+    color: black;
+    padding: 5px;
     font-size: 11pt;
 }
 
@@ -129,4 +127,25 @@ select {
 }
 input, select {
     border-style: none;
+}
+.suggestions {
+    display: block;
+    color: black;
+    background-color: white;
+    font-size: 10pt;
+    font-weight: bolder;
+    width: 245px;
+}
+.suggestions ul {
+    display: block;
+    margin: 0px;
+    padding: 5px;
+}
+
+.suggestions ul:hover {
+        color: white;
+    background-color: Black;
+}
+.suggestions li {
+    list-style-type: none;
 }

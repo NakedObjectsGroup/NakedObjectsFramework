@@ -18,8 +18,8 @@
 .field {
     display: block;
     float: left;
+    width: 245px;
 }
-
 
 .reference, .value, collectionDetails {
     display: block;
@@ -36,10 +36,6 @@
     float: left;
     max-width: 245px;
     max-height: 100px;
-}
-
-.validation {
-    color: white;
 }
 
 /* Drag and drop*/
@@ -117,8 +113,9 @@ select {
     }
 
 .validation {
-    margin-left: 155px;
     font-size: 11pt;
+    padding: 5px;
+    color: white;
 }
 
 .input-control input:not([type='checkbox']), textarea {
@@ -128,4 +125,26 @@ select {
 }
 input, select {
     border-style: none;
+}
+
+.suggestions {
+    display: block;
+    color: black;
+    background-color: white;
+    font-size: 10pt;
+    font-weight: bolder;
+    width: 245px;
+}
+.suggestions ul {
+    display: block;
+    margin: 0px;
+    padding: 5px;
+}
+
+.suggestions ul:hover {
+        color: white;
+    background-color: Black;
+}
+.suggestions li {
+    list-style-type: none;
 }
