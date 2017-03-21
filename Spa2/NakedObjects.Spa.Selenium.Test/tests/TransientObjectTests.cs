@@ -216,6 +216,17 @@ namespace NakedObjects.Selenium {
             Click(SaveButton());
             WaitForTextStarting(".title", "Pinch Bolt");
         }
+
+
+        public virtual void AutoCompletePropOnTransient()
+        {
+            GeminiUrl("object?i1=View&o1=___1.Customer--635&as1=open&d1=CreateNewOrder");
+            Click(OKButton());
+            WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Sales Order");
+            wait.Until(dr => dr.FindElement(By.CssSelector("#salesperson1")).GetAttribute("placeholder") == "(auto-complete or drop)");
+            ClearFieldThenType("#salesperson1", "Va");
+            wait.Until(d => d.FindElements(By.CssSelector(".suggestions a")).Count > 0);
+        }
     }
 
     public abstract class TransientObjectTests : TransientObjectTestsRoot {
@@ -302,6 +313,12 @@ namespace NakedObjects.Selenium {
         [TestMethod]
         public override void InvalidPropOnTransientClearedAndReentered() {
             base.InvalidPropOnTransientClearedAndReentered();
+        }
+
+        [TestMethod]
+        public override void AutoCompletePropOnTransient()
+        {
+            base.AutoCompletePropOnTransient();
         }
     }
 
@@ -393,6 +410,7 @@ namespace NakedObjects.Selenium {
             CreateAndSaveNotPersistedObject();
             ValuePropOnTransientEmptyIfNoDefault();
             InvalidPropOnTransientClearedAndReentered();
+            AutoCompletePropOnTransient();
         }
     }
 
