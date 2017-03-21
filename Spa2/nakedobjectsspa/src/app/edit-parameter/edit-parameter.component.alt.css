@@ -169,3 +169,27 @@ select {
     margin-left: 155px;
     font-size: 11pt;
 }
+
+.suggestions {
+    display: block;
+    color: black;
+    background-color: white;
+    font-size: 10pt;
+    width: 245px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+}
+.suggestions ul {
+    display: block;
+    margin: 0px;
+    padding: 5px;
+}
+
+.suggestions ul:hover {
+        color: white;
+    background-color: Black;
+}
+.suggestions li {
+    list-style-type: none;
+}
