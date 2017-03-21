@@ -80,7 +80,8 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
         this.error.handleErrorAndDisplayMessages(reject, display);
     };
 
-    private propertyMap() {
+    // leave this a lambda as it's passed as a function and we must keep the 'this'. 
+    private propertyMap = () => {
         const pps = _.filter(this.properties, property => property.isEditable);
         return _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Models.Value>;
     };
