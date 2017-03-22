@@ -68,7 +68,7 @@ var nofWarnings = "x-ro-nof-warnings";
 var nofMessages = "x-ro-nof-messages";
 var supportedDateFormats = ["D/M/YYYY", "D/M/YY", "D MMM YYYY", "D MMMM YYYY", "D MMM YY", "D MMMM YY"];
 // updated by build do not update manually or change name or regex may not match 
-var clientVersion = '9.0.0-beta.1';
+var clientVersion = '9.0.0-beta.2';
 //# sourceMappingURL=C:/projects/nakedobjectsframework-7b999/Spa2/nakedobjectsspa/src/constants.js.map
 
 /***/ }),
@@ -2508,25 +2508,25 @@ var MaskService = (function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_add_observable_of__ = __webpack_require__(926);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_add_observable_of__ = __webpack_require__(933);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_add_observable_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_rxjs_add_observable_of__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_observable_throw__ = __webpack_require__(927);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_observable_throw__ = __webpack_require__(934);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_observable_throw___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_add_observable_throw__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_catch__ = __webpack_require__(928);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_catch__ = __webpack_require__(935);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_catch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_catch__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_debounceTime__ = __webpack_require__(929);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_debounceTime__ = __webpack_require__(936);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_debounceTime___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_debounceTime__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_distinctUntilChanged__ = __webpack_require__(930);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_distinctUntilChanged__ = __webpack_require__(937);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_distinctUntilChanged___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_distinctUntilChanged__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_do__ = __webpack_require__(931);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_do__ = __webpack_require__(938);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_do___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_do__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_filter__ = __webpack_require__(932);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_filter__ = __webpack_require__(939);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_filter___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_filter__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_map__ = __webpack_require__(933);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_map__ = __webpack_require__(940);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_add_operator_switchMap__ = __webpack_require__(934);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_add_operator_switchMap__ = __webpack_require__(941);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_add_operator_switchMap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_rxjs_add_operator_switchMap__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rxjs_add_operator_toPromise__ = __webpack_require__(935);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rxjs_add_operator_toPromise__ = __webpack_require__(942);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rxjs_add_operator_toPromise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_rxjs_add_operator_toPromise__);
 
 
@@ -3146,6 +3146,11 @@ var DomainObjectViewModel = (function (_super) {
             return _this.domainObject.isTransient() ? _this.contextService.saveObject : _this.contextService.updateObject;
         };
         this.validateHandler = function () { return _this.domainObject.isTransient() ? _this.contextService.validateSaveObject : _this.contextService.validateUpdateObject; };
+        // leave this a lambda as it's passed as a function and we must keep the 'this'. 
+        this.propertyMap = function () {
+            var pps = __WEBPACK_IMPORTED_MODULE_5_lodash__["filter"](_this.properties, function (property) { return property.isEditable; });
+            return __WEBPACK_IMPORTED_MODULE_5_lodash__["zipObject"](__WEBPACK_IMPORTED_MODULE_5_lodash__["map"](pps, function (p) { return p.id; }), __WEBPACK_IMPORTED_MODULE_5_lodash__["map"](pps, function (p) { return p.getValue(); }));
+        };
         this.clientValid = function () { return __WEBPACK_IMPORTED_MODULE_5_lodash__["every"](_this.properties, function (p) { return p.clientValid; }); };
         this.tooltip = function () { return __WEBPACK_IMPORTED_MODULE_4__helpers_view_models__["g" /* tooltip */](_this, _this.properties); };
         this.actionsTooltip = function () { return __WEBPACK_IMPORTED_MODULE_4__helpers_view_models__["f" /* actionsTooltip */](_this, !!_this.routeData.actionsOpen); };
@@ -3206,11 +3211,6 @@ var DomainObjectViewModel = (function (_super) {
         var _this = this;
         var display = function (em) { return __WEBPACK_IMPORTED_MODULE_4__helpers_view_models__["h" /* handleErrorResponse */](em, _this, _this.properties); };
         this.error.handleErrorAndDisplayMessages(reject, display);
-    };
-    ;
-    DomainObjectViewModel.prototype.propertyMap = function () {
-        var pps = __WEBPACK_IMPORTED_MODULE_5_lodash__["filter"](this.properties, function (property) { return property.isEditable; });
-        return __WEBPACK_IMPORTED_MODULE_5_lodash__["zipObject"](__WEBPACK_IMPORTED_MODULE_5_lodash__["map"](pps, function (p) { return p.id; }), __WEBPACK_IMPORTED_MODULE_5_lodash__["map"](pps, function (p) { return p.getValue(); }));
     };
     ;
     DomainObjectViewModel.prototype.wrapAction = function (a) {
@@ -3906,14 +3906,14 @@ var ParametersComponent = (function () {
         __metadata('design:type', Array)
     ], ParametersComponent.prototype, "parameters", void 0);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_7" /* ViewChildren */])(__WEBPACK_IMPORTED_MODULE_2__edit_parameter_edit_parameter_component__["a" /* EditParameterComponent */]), 
-        __metadata('design:type', (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* QueryList */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* QueryList */]) === 'function' && _c) || Object)
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChildren */])(__WEBPACK_IMPORTED_MODULE_2__edit_parameter_edit_parameter_component__["a" /* EditParameterComponent */]), 
+        __metadata('design:type', (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* QueryList */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* QueryList */]) === 'function' && _c) || Object)
     ], ParametersComponent.prototype, "parmComponents", void 0);
     ParametersComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'nof-parameters',
-            template: __webpack_require__(917),
-            styles: [__webpack_require__(885)]
+            template: __webpack_require__(924),
+            styles: [__webpack_require__(892)]
         }), 
         __metadata('design:paramtypes', [(typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["u" /* ChangeDetectorRef */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["u" /* ChangeDetectorRef */]) === 'function' && _d) || Object])
     ], ParametersComponent);
@@ -3937,7 +3937,7 @@ var ParametersComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_Subject__ = __webpack_require__(53);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_Subject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_Subject__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__config_service__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__simple_lru_cache__ = __webpack_require__(696);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__simple_lru_cache__ = __webpack_require__(703);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RepLoaderService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -4753,7 +4753,7 @@ var ErrorService = (function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__menu_item_view_model__ = __webpack_require__(701);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__menu_item_view_model__ = __webpack_require__(708);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__choice_view_model__ = __webpack_require__(73);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__user_messages__ = __webpack_require__(18);
@@ -5029,10 +5029,10 @@ var ApplicationPropertiesComponent = (function () {
         this.applicationProperties = this.viewModelFactory.applicationPropertiesViewModel();
     };
     ApplicationPropertiesComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'nof-application-properties',
-            template: __webpack_require__(898),
-            styles: [__webpack_require__(866)]
+            template: __webpack_require__(905),
+            styles: [__webpack_require__(873)]
         }), 
         __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__view_model_factory_service__["a" /* ViewModelFactoryService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__view_model_factory_service__["a" /* ViewModelFactoryService */]) === 'function' && _a) || Object])
     ], ApplicationPropertiesComponent);
@@ -5107,10 +5107,10 @@ var AttachmentComponent = (function (_super) {
             .catch(function (reject) { return _this.error.handleError(reject); });
     };
     AttachmentComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'nof-attachment',
-            template: __webpack_require__(900),
-            styles: [__webpack_require__(868)]
+            template: __webpack_require__(907),
+            styles: [__webpack_require__(875)]
         }), 
         __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* ActivatedRoute */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* ActivatedRoute */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4__url_manager_service__["a" /* UrlManagerService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__url_manager_service__["a" /* UrlManagerService */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__view_model_factory_service__["a" /* ViewModelFactoryService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__view_model_factory_service__["a" /* ViewModelFactoryService */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1__context_service__["a" /* ContextService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__context_service__["a" /* ContextService */]) === 'function' && _d) || Object, (typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_5__error_service__["a" /* ErrorService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_5__error_service__["a" /* ErrorService */]) === 'function' && _e) || Object, (typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_8__config_service__["a" /* ConfigService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_8__config_service__["a" /* ConfigService */]) === 'function' && _f) || Object])
     ], AttachmentComponent);
@@ -6664,7 +6664,7 @@ var Where = (function (_super) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__cicero_command_factory_service__ = __webpack_require__(251);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cicero_renderer_service__ = __webpack_require__(174);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__view_models_cicero_view_model__ = __webpack_require__(699);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__view_models_cicero_view_model__ = __webpack_require__(706);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__url_manager_service__ = __webpack_require__(14);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CiceroComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -6774,10 +6774,10 @@ var CiceroComponent = (function () {
         return null;
     };
     CiceroComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_5" /* Component */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_6" /* Component */])({
             selector: 'nof-cicero',
-            template: __webpack_require__(901),
-            styles: [__webpack_require__(869)]
+            template: __webpack_require__(908),
+            styles: [__webpack_require__(876)]
         }), 
         __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__cicero_command_factory_service__["a" /* CiceroCommandFactoryService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__cicero_command_factory_service__["a" /* CiceroCommandFactoryService */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__cicero_renderer_service__["a" /* CiceroRendererService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__cicero_renderer_service__["a" /* CiceroRendererService */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_5__url_manager_service__["a" /* UrlManagerService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_5__url_manager_service__["a" /* UrlManagerService */]) === 'function' && _c) || Object])
     ], CiceroComponent);
@@ -6869,16 +6869,16 @@ var DynamicErrorComponent = (function () {
         }
     };
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* ViewChild */])('parent', { read: __WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* ViewContainerRef */] }), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_7" /* ViewChild */])('parent', { read: __WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* ViewContainerRef */] }), 
         __metadata('design:type', (typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* ViewContainerRef */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* ViewContainerRef */]) === 'function' && _a) || Object)
     ], DynamicErrorComponent.prototype, "parent", void 0);
     DynamicErrorComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'nof-dynamic-error',
-            template: __webpack_require__(905),
-            styles: [__webpack_require__(873)]
+            template: __webpack_require__(912),
+            styles: [__webpack_require__(880)]
         }), 
-        __metadata('design:paramtypes', [(typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__context_service__["a" /* ContextService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__context_service__["a" /* ContextService */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["X" /* ComponentFactoryResolver */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["X" /* ComponentFactoryResolver */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1__custom_component_service__["a" /* CustomComponentService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__custom_component_service__["a" /* CustomComponentService */]) === 'function' && _d) || Object, (typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__logger_service__["a" /* LoggerService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__logger_service__["a" /* LoggerService */]) === 'function' && _e) || Object, (typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_4__url_manager_service__["a" /* UrlManagerService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__url_manager_service__["a" /* UrlManagerService */]) === 'function' && _f) || Object])
+        __metadata('design:paramtypes', [(typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__context_service__["a" /* ContextService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__context_service__["a" /* ContextService */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["Y" /* ComponentFactoryResolver */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["Y" /* ComponentFactoryResolver */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1__custom_component_service__["a" /* CustomComponentService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__custom_component_service__["a" /* CustomComponentService */]) === 'function' && _d) || Object, (typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__logger_service__["a" /* LoggerService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__logger_service__["a" /* LoggerService */]) === 'function' && _e) || Object, (typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_4__url_manager_service__["a" /* UrlManagerService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__url_manager_service__["a" /* UrlManagerService */]) === 'function' && _f) || Object])
     ], DynamicErrorComponent);
     return DynamicErrorComponent;
     var _a, _b, _c, _d, _e, _f;
@@ -7005,16 +7005,16 @@ var DynamicListComponent = (function (_super) {
         this.parent.clear();
     };
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* ViewChild */])('parent', { read: __WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* ViewContainerRef */] }), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_7" /* ViewChild */])('parent', { read: __WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* ViewContainerRef */] }), 
         __metadata('design:type', (typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* ViewContainerRef */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* ViewContainerRef */]) === 'function' && _a) || Object)
     ], DynamicListComponent.prototype, "parent", void 0);
     DynamicListComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'nof-dynamic-list',
-            template: __webpack_require__(906),
-            styles: [__webpack_require__(874)]
+            template: __webpack_require__(913),
+            styles: [__webpack_require__(881)]
         }), 
-        __metadata('design:paramtypes', [(typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__url_manager_service__["a" /* UrlManagerService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__url_manager_service__["a" /* UrlManagerService */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_6__context_service__["a" /* ContextService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_6__context_service__["a" /* ContextService */]) === 'function' && _d) || Object, (typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_7__error_service__["a" /* ErrorService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_7__error_service__["a" /* ErrorService */]) === 'function' && _e) || Object, (typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["X" /* ComponentFactoryResolver */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["X" /* ComponentFactoryResolver */]) === 'function' && _f) || Object, (typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_1__custom_component_service__["a" /* CustomComponentService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__custom_component_service__["a" /* CustomComponentService */]) === 'function' && _g) || Object, (typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_9__config_service__["a" /* ConfigService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_9__config_service__["a" /* ConfigService */]) === 'function' && _h) || Object])
+        __metadata('design:paramtypes', [(typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__url_manager_service__["a" /* UrlManagerService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__url_manager_service__["a" /* UrlManagerService */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_6__context_service__["a" /* ContextService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_6__context_service__["a" /* ContextService */]) === 'function' && _d) || Object, (typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_7__error_service__["a" /* ErrorService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_7__error_service__["a" /* ErrorService */]) === 'function' && _e) || Object, (typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["Y" /* ComponentFactoryResolver */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["Y" /* ComponentFactoryResolver */]) === 'function' && _f) || Object, (typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_1__custom_component_service__["a" /* CustomComponentService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__custom_component_service__["a" /* CustomComponentService */]) === 'function' && _g) || Object, (typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_9__config_service__["a" /* ConfigService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_9__config_service__["a" /* ConfigService */]) === 'function' && _h) || Object])
     ], DynamicListComponent);
     return DynamicListComponent;
     var _a, _b, _c, _d, _e, _f, _g, _h;
@@ -7086,16 +7086,16 @@ var DynamicObjectComponent = (function (_super) {
         this.parent.clear();
     };
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* ViewChild */])('parent', { read: __WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* ViewContainerRef */] }), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_7" /* ViewChild */])('parent', { read: __WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* ViewContainerRef */] }), 
         __metadata('design:type', (typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* ViewContainerRef */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* ViewContainerRef */]) === 'function' && _a) || Object)
     ], DynamicObjectComponent.prototype, "parent", void 0);
     DynamicObjectComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'nof-dynamic-object',
-            template: __webpack_require__(907),
-            styles: [__webpack_require__(875)]
+            template: __webpack_require__(914),
+            styles: [__webpack_require__(882)]
         }), 
-        __metadata('design:paramtypes', [(typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__url_manager_service__["a" /* UrlManagerService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__url_manager_service__["a" /* UrlManagerService */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["X" /* ComponentFactoryResolver */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["X" /* ComponentFactoryResolver */]) === 'function' && _d) || Object, (typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1__custom_component_service__["a" /* CustomComponentService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__custom_component_service__["a" /* CustomComponentService */]) === 'function' && _e) || Object, (typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_7__config_service__["a" /* ConfigService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_7__config_service__["a" /* ConfigService */]) === 'function' && _f) || Object])
+        __metadata('design:paramtypes', [(typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__url_manager_service__["a" /* UrlManagerService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__url_manager_service__["a" /* UrlManagerService */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["Y" /* ComponentFactoryResolver */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["Y" /* ComponentFactoryResolver */]) === 'function' && _d) || Object, (typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1__custom_component_service__["a" /* CustomComponentService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__custom_component_service__["a" /* CustomComponentService */]) === 'function' && _e) || Object, (typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_7__config_service__["a" /* ConfigService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_7__config_service__["a" /* ConfigService */]) === 'function' && _f) || Object])
     ], DynamicObjectComponent);
     return DynamicObjectComponent;
     var _a, _b, _c, _d, _e, _f;
@@ -7302,29 +7302,29 @@ var EditParameterComponent = (function (_super) {
         __metadata('design:paramtypes', [(typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_5__angular_forms__["d" /* FormGroup */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_5__angular_forms__["d" /* FormGroup */]) === 'function' && _e) || Object])
     ], EditParameterComponent.prototype, "form", null);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_0" /* HostListener */])('keydown', ['$event']), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_1" /* HostListener */])('keydown', ['$event']), 
         __metadata('design:type', Function), 
         __metadata('design:paramtypes', [Object]), 
         __metadata('design:returntype', void 0)
     ], EditParameterComponent.prototype, "onEnter", null);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_0" /* HostListener */])('keypress', ['$event']), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_1" /* HostListener */])('keypress', ['$event']), 
         __metadata('design:type', Function), 
         __metadata('design:paramtypes', [Object]), 
         __metadata('design:returntype', void 0)
     ], EditParameterComponent.prototype, "onEnter1", null);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_7" /* ViewChildren */])("focus"), 
-        __metadata('design:type', (typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* QueryList */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* QueryList */]) === 'function' && _f) || Object)
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChildren */])("focus"), 
+        __metadata('design:type', (typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* QueryList */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* QueryList */]) === 'function' && _f) || Object)
     ], EditParameterComponent.prototype, "focusList", void 0);
     EditParameterComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'nof-edit-parameter',
             host: {
                 '(document:click)': 'handleClick($event)'
             },
-            template: __webpack_require__(908),
-            styles: [__webpack_require__(876)]
+            template: __webpack_require__(915),
+            styles: [__webpack_require__(883)]
         }), 
         __metadata('design:paramtypes', [(typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_1__view_model_factory_service__["a" /* ViewModelFactoryService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__view_model_factory_service__["a" /* ViewModelFactoryService */]) === 'function' && _g) || Object, (typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_2__url_manager_service__["a" /* UrlManagerService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__url_manager_service__["a" /* UrlManagerService */]) === 'function' && _h) || Object, (typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ElementRef */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ElementRef */]) === 'function' && _j) || Object, (typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_6__context_service__["a" /* ContextService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_6__context_service__["a" /* ContextService */]) === 'function' && _k) || Object, (typeof (_l = typeof __WEBPACK_IMPORTED_MODULE_9__config_service__["a" /* ConfigService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_9__config_service__["a" /* ConfigService */]) === 'function' && _l) || Object, (typeof (_m = typeof __WEBPACK_IMPORTED_MODULE_10__logger_service__["a" /* LoggerService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_10__logger_service__["a" /* LoggerService */]) === 'function' && _m) || Object, (typeof (_o = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Renderer */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Renderer */]) === 'function' && _o) || Object])
     ], EditParameterComponent);
@@ -7569,29 +7569,29 @@ var EditPropertyComponent = (function (_super) {
         __metadata('design:paramtypes', [(typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["d" /* FormGroup */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["d" /* FormGroup */]) === 'function' && _e) || Object])
     ], EditPropertyComponent.prototype, "form", null);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_0" /* HostListener */])('keydown', ['$event']), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_1" /* HostListener */])('keydown', ['$event']), 
         __metadata('design:type', Function), 
         __metadata('design:paramtypes', [Object]), 
         __metadata('design:returntype', void 0)
     ], EditPropertyComponent.prototype, "onEnter", null);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_0" /* HostListener */])('keypress', ['$event']), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_1" /* HostListener */])('keypress', ['$event']), 
         __metadata('design:type', Function), 
         __metadata('design:paramtypes', [Object]), 
         __metadata('design:returntype', void 0)
     ], EditPropertyComponent.prototype, "onEnter1", null);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_7" /* ViewChildren */])("focus"), 
-        __metadata('design:type', (typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* QueryList */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* QueryList */]) === 'function' && _f) || Object)
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChildren */])("focus"), 
+        __metadata('design:type', (typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* QueryList */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* QueryList */]) === 'function' && _f) || Object)
     ], EditPropertyComponent.prototype, "focusList", void 0);
     EditPropertyComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             host: {
                 '(document:click)': 'handleClick($event)'
             },
             selector: 'nof-edit-property',
-            template: __webpack_require__(909),
-            styles: [__webpack_require__(877)]
+            template: __webpack_require__(916),
+            styles: [__webpack_require__(884)]
         }), 
         __metadata('design:paramtypes', [(typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ElementRef */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ElementRef */]) === 'function' && _g) || Object, (typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* Router */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* Router */]) === 'function' && _h) || Object, (typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_4__error_service__["a" /* ErrorService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__error_service__["a" /* ErrorService */]) === 'function' && _j) || Object, (typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_5__context_service__["a" /* ContextService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_5__context_service__["a" /* ContextService */]) === 'function' && _k) || Object, (typeof (_l = typeof __WEBPACK_IMPORTED_MODULE_8__config_service__["a" /* ConfigService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_8__config_service__["a" /* ConfigService */]) === 'function' && _l) || Object, (typeof (_m = typeof __WEBPACK_IMPORTED_MODULE_9__logger_service__["a" /* LoggerService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_9__logger_service__["a" /* LoggerService */]) === 'function' && _m) || Object, (typeof (_o = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Renderer */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Renderer */]) === 'function' && _o) || Object])
     ], EditPropertyComponent);
@@ -7639,10 +7639,10 @@ var ErrorComponent = (function () {
         this.stackTrace = error.stackTrace;
     };
     ErrorComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'nof-error',
-            template: __webpack_require__(910),
-            styles: [__webpack_require__(878)]
+            template: __webpack_require__(917),
+            styles: [__webpack_require__(885)]
         }), 
         __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__context_service__["a" /* ContextService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__context_service__["a" /* ContextService */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__view_model_factory_service__["a" /* ViewModelFactoryService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__view_model_factory_service__["a" /* ViewModelFactoryService */]) === 'function' && _b) || Object])
     ], ErrorComponent);
@@ -7982,10 +7982,10 @@ var HomeComponent = (function (_super) {
         this.getMenu(paneRouteData);
     };
     HomeComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'nof-home',
-            template: __webpack_require__(912),
-            styles: [__webpack_require__(880)]
+            template: __webpack_require__(919),
+            styles: [__webpack_require__(887)]
         }), 
         __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__url_manager_service__["a" /* UrlManagerService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__url_manager_service__["a" /* UrlManagerService */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_5__view_model_factory_service__["a" /* ViewModelFactoryService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_5__view_model_factory_service__["a" /* ViewModelFactoryService */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__context_service__["a" /* ContextService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__context_service__["a" /* ContextService */]) === 'function' && _d) || Object, (typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__error_service__["a" /* ErrorService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__error_service__["a" /* ErrorService */]) === 'function' && _e) || Object, (typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ElementRef */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ElementRef */]) === 'function' && _f) || Object])
     ], HomeComponent);
@@ -8253,10 +8253,10 @@ var ListComponent = (function () {
         }
     };
     ListComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'nof-list',
-            template: __webpack_require__(913),
-            styles: [__webpack_require__(881)]
+            template: __webpack_require__(920),
+            styles: [__webpack_require__(888)]
         }), 
         __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* ActivatedRoute */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* ActivatedRoute */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__url_manager_service__["a" /* UrlManagerService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__url_manager_service__["a" /* UrlManagerService */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__context_service__["a" /* ContextService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__context_service__["a" /* ContextService */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__color_service__["a" /* ColorService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__color_service__["a" /* ColorService */]) === 'function' && _d) || Object, (typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_7__view_model_factory_service__["a" /* ViewModelFactoryService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_7__view_model_factory_service__["a" /* ViewModelFactoryService */]) === 'function' && _e) || Object, (typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_5__error_service__["a" /* ErrorService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_5__error_service__["a" /* ErrorService */]) === 'function' && _f) || Object, (typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_9__config_service__["a" /* ConfigService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_9__config_service__["a" /* ConfigService */]) === 'function' && _g) || Object, (typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_10__logger_service__["a" /* LoggerService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_10__logger_service__["a" /* LoggerService */]) === 'function' && _h) || Object])
     ], ListComponent);
@@ -8453,14 +8453,14 @@ var MultiLineDialogComponent = (function (_super) {
         this.parmComponents.changes.subscribe(function (ql) { return _this.focus(ql); });
     };
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_7" /* ViewChildren */])(__WEBPACK_IMPORTED_MODULE_2__parameters_parameters_component__["a" /* ParametersComponent */]), 
-        __metadata('design:type', (typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* QueryList */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* QueryList */]) === 'function' && _a) || Object)
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChildren */])(__WEBPACK_IMPORTED_MODULE_2__parameters_parameters_component__["a" /* ParametersComponent */]), 
+        __metadata('design:type', (typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* QueryList */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* QueryList */]) === 'function' && _a) || Object)
     ], MultiLineDialogComponent.prototype, "parmComponents", void 0);
     MultiLineDialogComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'nof-multi-line-dialog',
-            template: __webpack_require__(915),
-            styles: [__webpack_require__(883)]
+            template: __webpack_require__(922),
+            styles: [__webpack_require__(890)]
         }), 
         __metadata('design:paramtypes', [(typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4__angular_router__["c" /* ActivatedRoute */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__angular_router__["c" /* ActivatedRoute */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_5__url_manager_service__["a" /* UrlManagerService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_5__url_manager_service__["a" /* UrlManagerService */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__view_model_factory_service__["a" /* ViewModelFactoryService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__view_model_factory_service__["a" /* ViewModelFactoryService */]) === 'function' && _d) || Object, (typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_6__context_service__["a" /* ContextService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_6__context_service__["a" /* ContextService */]) === 'function' && _e) || Object, (typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_7__error_service__["a" /* ErrorService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_7__error_service__["a" /* ErrorService */]) === 'function' && _f) || Object, (typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_8__angular_forms__["c" /* FormBuilder */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_8__angular_forms__["c" /* FormBuilder */]) === 'function' && _g) || Object, (typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_9__config_service__["a" /* ConfigService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_9__config_service__["a" /* ConfigService */]) === 'function' && _h) || Object])
     ], MultiLineDialogComponent);
@@ -8841,14 +8841,14 @@ var ObjectComponent = (function () {
         this.propComponents.changes.subscribe(function (ql) { return _this.focus(ql); });
     };
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_7" /* ViewChildren */])(__WEBPACK_IMPORTED_MODULE_13__properties_properties_component__["a" /* PropertiesComponent */]), 
-        __metadata('design:type', (typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* QueryList */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* QueryList */]) === 'function' && _a) || Object)
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChildren */])(__WEBPACK_IMPORTED_MODULE_13__properties_properties_component__["a" /* PropertiesComponent */]), 
+        __metadata('design:type', (typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* QueryList */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* QueryList */]) === 'function' && _a) || Object)
     ], ObjectComponent.prototype, "propComponents", void 0);
     ObjectComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'nof-object',
-            template: __webpack_require__(916),
-            styles: [__webpack_require__(884)]
+            template: __webpack_require__(923),
+            styles: [__webpack_require__(891)]
         }), 
         __metadata('design:paramtypes', [(typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__url_manager_service__["a" /* UrlManagerService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__url_manager_service__["a" /* UrlManagerService */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__context_service__["a" /* ContextService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__context_service__["a" /* ContextService */]) === 'function' && _d) || Object, (typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_5__view_model_factory_service__["a" /* ViewModelFactoryService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_5__view_model_factory_service__["a" /* ViewModelFactoryService */]) === 'function' && _e) || Object, (typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_11__color_service__["a" /* ColorService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_11__color_service__["a" /* ColorService */]) === 'function' && _f) || Object, (typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_6__error_service__["a" /* ErrorService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_6__error_service__["a" /* ErrorService */]) === 'function' && _g) || Object, (typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_8__angular_forms__["c" /* FormBuilder */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_8__angular_forms__["c" /* FormBuilder */]) === 'function' && _h) || Object, (typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_12__config_service__["a" /* ConfigService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_12__config_service__["a" /* ConfigService */]) === 'function' && _j) || Object])
     ], ObjectComponent);
@@ -8905,14 +8905,14 @@ var PropertiesComponent = (function () {
         __metadata('design:type', Array)
     ], PropertiesComponent.prototype, "properties", void 0);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_7" /* ViewChildren */])(__WEBPACK_IMPORTED_MODULE_2__edit_property_edit_property_component__["a" /* EditPropertyComponent */]), 
-        __metadata('design:type', (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* QueryList */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* QueryList */]) === 'function' && _c) || Object)
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChildren */])(__WEBPACK_IMPORTED_MODULE_2__edit_property_edit_property_component__["a" /* EditPropertyComponent */]), 
+        __metadata('design:type', (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* QueryList */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* QueryList */]) === 'function' && _c) || Object)
     ], PropertiesComponent.prototype, "propComponents", void 0);
     PropertiesComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'nof-properties',
-            template: __webpack_require__(918),
-            styles: [__webpack_require__(886)]
+            template: __webpack_require__(925),
+            styles: [__webpack_require__(893)]
         }), 
         __metadata('design:paramtypes', [])
     ], PropertiesComponent);
@@ -9006,14 +9006,14 @@ var RecentComponent = (function (_super) {
         this.actionChildren.changes.subscribe(function (ql) { return _this.focusOnFirstRow(ql); });
     };
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_7" /* ViewChildren */])("row"), 
-        __metadata('design:type', (typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* QueryList */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* QueryList */]) === 'function' && _a) || Object)
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChildren */])("row"), 
+        __metadata('design:type', (typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* QueryList */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* QueryList */]) === 'function' && _a) || Object)
     ], RecentComponent.prototype, "actionChildren", void 0);
     RecentComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'nof-recent',
-            template: __webpack_require__(919),
-            styles: [__webpack_require__(887)]
+            template: __webpack_require__(926),
+            styles: [__webpack_require__(894)]
         }), 
         __metadata('design:paramtypes', [(typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__url_manager_service__["a" /* UrlManagerService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__url_manager_service__["a" /* UrlManagerService */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1__view_model_factory_service__["a" /* ViewModelFactoryService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__view_model_factory_service__["a" /* ViewModelFactoryService */]) === 'function' && _d) || Object])
     ], RecentComponent);
@@ -9586,28 +9586,28 @@ var MenuViewModel = (function (_super) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__mask_service__ = __webpack_require__(178);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__view_models_attachment_view_model__ = __webpack_require__(389);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__view_models_error_view_model__ = __webpack_require__(700);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__view_models_error_view_model__ = __webpack_require__(707);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__view_models_link_view_model__ = __webpack_require__(393);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__view_models_item_view_model__ = __webpack_require__(392);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__view_models_recent_item_view_model__ = __webpack_require__(704);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__view_models_table_row_column_view_model__ = __webpack_require__(706);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__view_models_table_row_view_model__ = __webpack_require__(707);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__view_models_recent_items_view_model__ = __webpack_require__(705);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__view_models_recent_item_view_model__ = __webpack_require__(711);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__view_models_table_row_column_view_model__ = __webpack_require__(713);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__view_models_table_row_view_model__ = __webpack_require__(714);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__view_models_recent_items_view_model__ = __webpack_require__(712);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__view_models_parameter_view_model__ = __webpack_require__(255);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__view_models_action_view_model__ = __webpack_require__(697);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__view_models_action_view_model__ = __webpack_require__(704);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__view_models_property_view_model__ = __webpack_require__(256);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__view_models_collection_view_model__ = __webpack_require__(254);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__view_models_menu_view_model__ = __webpack_require__(395);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__view_models_menus_view_model__ = __webpack_require__(702);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__view_models_menus_view_model__ = __webpack_require__(709);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22_lodash__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_22_lodash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__view_models_list_view_model__ = __webpack_require__(394);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__view_models_dialog_view_model__ = __webpack_require__(180);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__view_models_domain_object_view_model__ = __webpack_require__(181);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__view_models_multi_line_dialog_view_model__ = __webpack_require__(703);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__view_models_multi_line_dialog_view_model__ = __webpack_require__(710);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__config_service__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__logger_service__ = __webpack_require__(72);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__view_models_application_properties_view_model__ = __webpack_require__(698);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__view_models_application_properties_view_model__ = __webpack_require__(705);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__cicero_command_factory_service__ = __webpack_require__(251);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__cicero_renderer_service__ = __webpack_require__(174);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ViewModelFactoryService; });
@@ -9773,7 +9773,7 @@ var ViewModelFactoryService = (function () {
 
 /***/ }),
 
-/***/ 564:
+/***/ 571:
 /***/ (function(module, exports) {
 
 function webpackEmptyContext(req) {
@@ -9782,20 +9782,20 @@ function webpackEmptyContext(req) {
 webpackEmptyContext.keys = function() { return []; };
 webpackEmptyContext.resolve = webpackEmptyContext;
 module.exports = webpackEmptyContext;
-webpackEmptyContext.id = 564;
+webpackEmptyContext.id = 571;
 
 
 /***/ }),
 
-/***/ 565:
+/***/ 572:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(651);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(658);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__environments_environment__ = __webpack_require__(710);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_app_module__ = __webpack_require__(685);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__environments_environment__ = __webpack_require__(717);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_app_module__ = __webpack_require__(692);
 
 
 
@@ -12115,7 +12115,7 @@ var EntryType;
 
 /***/ }),
 
-/***/ 681:
+/***/ 688:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12170,14 +12170,14 @@ var ActionBarComponent = (function () {
         __metadata('design:paramtypes', [(typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__view_models_imenu_holder_view_model__["IMenuHolderViewModel"] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__view_models_imenu_holder_view_model__["IMenuHolderViewModel"]) === 'function' && _b) || Object])
     ], ActionBarComponent.prototype, "menuHolder", null);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_7" /* ViewChildren */])(__WEBPACK_IMPORTED_MODULE_1__action_action_component__["a" /* ActionComponent */]), 
-        __metadata('design:type', (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* QueryList */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* QueryList */]) === 'function' && _c) || Object)
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChildren */])(__WEBPACK_IMPORTED_MODULE_1__action_action_component__["a" /* ActionComponent */]), 
+        __metadata('design:type', (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* QueryList */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* QueryList */]) === 'function' && _c) || Object)
     ], ActionBarComponent.prototype, "actionChildren", void 0);
     ActionBarComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'nof-action-bar',
-            template: __webpack_require__(894),
-            styles: [__webpack_require__(862)]
+            template: __webpack_require__(901),
+            styles: [__webpack_require__(869)]
         }), 
         __metadata('design:paramtypes', [])
     ], ActionBarComponent);
@@ -12188,7 +12188,7 @@ var ActionBarComponent = (function () {
 
 /***/ }),
 
-/***/ 682:
+/***/ 689:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12289,14 +12289,14 @@ var ActionListComponent = (function () {
         __metadata('design:paramtypes', [(typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__view_models_imenu_holder_view_model__["IMenuHolderViewModel"] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__view_models_imenu_holder_view_model__["IMenuHolderViewModel"]) === 'function' && _b) || Object])
     ], ActionListComponent.prototype, "menuHolder", null);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_7" /* ViewChildren */])(__WEBPACK_IMPORTED_MODULE_1__action_action_component__["a" /* ActionComponent */]), 
-        __metadata('design:type', (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* QueryList */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* QueryList */]) === 'function' && _c) || Object)
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChildren */])(__WEBPACK_IMPORTED_MODULE_1__action_action_component__["a" /* ActionComponent */]), 
+        __metadata('design:type', (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* QueryList */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* QueryList */]) === 'function' && _c) || Object)
     ], ActionListComponent.prototype, "actionChildren", void 0);
     ActionListComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'nof-action-list',
-            template: __webpack_require__(895),
-            styles: [__webpack_require__(863)]
+            template: __webpack_require__(902),
+            styles: [__webpack_require__(870)]
         }), 
         __metadata('design:paramtypes', [])
     ], ActionListComponent);
@@ -12307,7 +12307,7 @@ var ActionListComponent = (function () {
 
 /***/ }),
 
-/***/ 683:
+/***/ 690:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12454,7 +12454,7 @@ var RoutingModule = (function () {
 
 /***/ }),
 
-/***/ 684:
+/***/ 691:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12474,10 +12474,10 @@ var AppComponent = (function () {
     function AppComponent() {
     }
     AppComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'app-root',
-            template: __webpack_require__(897),
-            styles: [__webpack_require__(865)]
+            template: __webpack_require__(904),
+            styles: [__webpack_require__(872)]
         }), 
         __metadata('design:paramtypes', [])
     ], AppComponent);
@@ -12487,7 +12487,7 @@ var AppComponent = (function () {
 
 /***/ }),
 
-/***/ 685:
+/***/ 692:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12495,25 +12495,25 @@ var AppComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(167);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_routing_module__ = __webpack_require__(683);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_component__ = __webpack_require__(684);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__footer_footer_component__ = __webpack_require__(691);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_routing_module__ = __webpack_require__(690);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_component__ = __webpack_require__(691);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__footer_footer_component__ = __webpack_require__(698);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__home_home_component__ = __webpack_require__(382);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__object_object_component__ = __webpack_require__(385);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__list_list_component__ = __webpack_require__(383);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__error_error_component__ = __webpack_require__(380);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__properties_properties_component__ = __webpack_require__(386);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__collections_collections_component__ = __webpack_require__(688);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__dialog_dialog_component__ = __webpack_require__(689);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__collections_collections_component__ = __webpack_require__(695);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__dialog_dialog_component__ = __webpack_require__(696);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__parameters_parameters_component__ = __webpack_require__(252);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__edit_property_edit_property_component__ = __webpack_require__(379);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__view_property_view_property_component__ = __webpack_require__(709);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__view_property_view_property_component__ = __webpack_require__(716);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__edit_parameter_edit_parameter_component__ = __webpack_require__(378);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__recent_recent_component__ = __webpack_require__(387);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__application_properties_application_properties_component__ = __webpack_require__(370);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__gemini_click_directive__ = __webpack_require__(694);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__gemini_boolean_directive__ = __webpack_require__(692);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__gemini_clear_directive__ = __webpack_require__(693);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__gemini_click_directive__ = __webpack_require__(701);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__gemini_boolean_directive__ = __webpack_require__(699);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__gemini_clear_directive__ = __webpack_require__(700);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__error_service__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__context_service__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__url_manager_service__ = __webpack_require__(14);
@@ -12522,13 +12522,13 @@ var AppComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__view_model_factory_service__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__color_service__ = __webpack_require__(176);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__mask_service__ = __webpack_require__(178);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__collection_collection_component__ = __webpack_require__(687);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32_ng2_dnd__ = __webpack_require__(892);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__collection_collection_component__ = __webpack_require__(694);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32_ng2_dnd__ = __webpack_require__(899);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__attachment_attachment_component__ = __webpack_require__(371);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__multi_line_dialog_multi_line_dialog_component__ = __webpack_require__(384);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__view_parameter_view_parameter_component__ = __webpack_require__(708);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__error_handler__ = __webpack_require__(690);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__menu_bar_menu_bar_component__ = __webpack_require__(695);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__view_parameter_view_parameter_component__ = __webpack_require__(715);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__error_handler__ = __webpack_require__(697);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__menu_bar_menu_bar_component__ = __webpack_require__(702);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__action_action_component__ = __webpack_require__(84);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__dynamic_object_dynamic_object_component__ = __webpack_require__(377);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_40__custom_component_service__ = __webpack_require__(177);
@@ -12536,13 +12536,13 @@ var AppComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_42__dynamic_list_dynamic_list_component__ = __webpack_require__(376);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_43__config_service__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_44__logger_service__ = __webpack_require__(72);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_45__attachment_property_attachment_property_component__ = __webpack_require__(686);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_45__attachment_property_attachment_property_component__ = __webpack_require__(693);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_46__dynamic_error_dynamic_error_component__ = __webpack_require__(375);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_47__cicero_cicero_component__ = __webpack_require__(373);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_48__cicero_command_factory_service__ = __webpack_require__(251);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_49__cicero_renderer_service__ = __webpack_require__(174);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_50__action_bar_action_bar_component__ = __webpack_require__(681);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_51__action_list_action_list_component__ = __webpack_require__(682);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_50__action_bar_action_bar_component__ = __webpack_require__(688);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_51__action_list_action_list_component__ = __webpack_require__(689);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -12687,7 +12687,7 @@ var AppModule = (function () {
 
 /***/ }),
 
-/***/ 686:
+/***/ 693:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12765,10 +12765,10 @@ var AttachmentPropertyComponent = (function () {
         __metadata('design:paramtypes', [(typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__view_models_attachment_view_model__["a" /* AttachmentViewModel */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__view_models_attachment_view_model__["a" /* AttachmentViewModel */]) === 'function' && _b) || Object])
     ], AttachmentPropertyComponent.prototype, "attachment", null);
     AttachmentPropertyComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'nof-attachment-property',
-            template: __webpack_require__(899),
-            styles: [__webpack_require__(867)]
+            template: __webpack_require__(906),
+            styles: [__webpack_require__(874)]
         }), 
         __metadata('design:paramtypes', [(typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__error_service__["a" /* ErrorService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__error_service__["a" /* ErrorService */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__url_manager_service__["a" /* UrlManagerService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__url_manager_service__["a" /* UrlManagerService */]) === 'function' && _d) || Object, (typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_5__click_handler_service__["a" /* ClickHandlerService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_5__click_handler_service__["a" /* ClickHandlerService */]) === 'function' && _e) || Object, (typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* Router */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* Router */]) === 'function' && _f) || Object])
     ], AttachmentPropertyComponent);
@@ -12779,7 +12779,7 @@ var AttachmentPropertyComponent = (function () {
 
 /***/ }),
 
-/***/ 687:
+/***/ 694:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12907,10 +12907,10 @@ var CollectionComponent = (function () {
         __metadata('design:type', (typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__view_models_collection_view_model__["a" /* CollectionViewModel */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__view_models_collection_view_model__["a" /* CollectionViewModel */]) === 'function' && _a) || Object)
     ], CollectionComponent.prototype, "collection", void 0);
     CollectionComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'nof-collection',
-            template: __webpack_require__(902),
-            styles: [__webpack_require__(870)]
+            template: __webpack_require__(909),
+            styles: [__webpack_require__(877)]
         }), 
         __metadata('design:paramtypes', [(typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__url_manager_service__["a" /* UrlManagerService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__url_manager_service__["a" /* UrlManagerService */]) === 'function' && _b) || Object])
     ], CollectionComponent);
@@ -12921,7 +12921,7 @@ var CollectionComponent = (function () {
 
 /***/ }),
 
-/***/ 688:
+/***/ 695:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12945,10 +12945,10 @@ var CollectionsComponent = (function () {
         __metadata('design:type', Array)
     ], CollectionsComponent.prototype, "collections", void 0);
     CollectionsComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'nof-collections',
-            template: __webpack_require__(903),
-            styles: [__webpack_require__(871)]
+            template: __webpack_require__(910),
+            styles: [__webpack_require__(878)]
         }), 
         __metadata('design:paramtypes', [])
     ], CollectionsComponent);
@@ -12958,7 +12958,7 @@ var CollectionsComponent = (function () {
 
 /***/ }),
 
-/***/ 689:
+/***/ 696:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13171,14 +13171,14 @@ var DialogComponent = (function () {
         __metadata('design:paramtypes', [String])
     ], DialogComponent.prototype, "selectedDialogId", null);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_7" /* ViewChildren */])(__WEBPACK_IMPORTED_MODULE_14__parameters_parameters_component__["a" /* ParametersComponent */]), 
-        __metadata('design:type', (typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* QueryList */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* QueryList */]) === 'function' && _a) || Object)
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChildren */])(__WEBPACK_IMPORTED_MODULE_14__parameters_parameters_component__["a" /* ParametersComponent */]), 
+        __metadata('design:type', (typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* QueryList */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* QueryList */]) === 'function' && _a) || Object)
     ], DialogComponent.prototype, "parmComponents", void 0);
     DialogComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'nof-dialog',
-            template: __webpack_require__(904),
-            styles: [__webpack_require__(872)]
+            template: __webpack_require__(911),
+            styles: [__webpack_require__(879)]
         }), 
         __metadata('design:paramtypes', [(typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__view_model_factory_service__["a" /* ViewModelFactoryService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__view_model_factory_service__["a" /* ViewModelFactoryService */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__url_manager_service__["a" /* UrlManagerService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__url_manager_service__["a" /* UrlManagerService */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__angular_router__["c" /* ActivatedRoute */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__angular_router__["c" /* ActivatedRoute */]) === 'function' && _d) || Object, (typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_7__error_service__["a" /* ErrorService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_7__error_service__["a" /* ErrorService */]) === 'function' && _e) || Object, (typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_6__context_service__["a" /* ContextService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_6__context_service__["a" /* ContextService */]) === 'function' && _f) || Object, (typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_13__config_service__["a" /* ConfigService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_13__config_service__["a" /* ConfigService */]) === 'function' && _g) || Object, (typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_8__angular_forms__["c" /* FormBuilder */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_8__angular_forms__["c" /* FormBuilder */]) === 'function' && _h) || Object])
     ], DialogComponent);
@@ -13189,7 +13189,7 @@ var DialogComponent = (function () {
 
 /***/ }),
 
-/***/ 690:
+/***/ 697:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13224,7 +13224,7 @@ var GeminiErrorHandler = (function () {
 
 /***/ }),
 
-/***/ 691:
+/***/ 698:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13345,10 +13345,10 @@ var FooterComponent = (function () {
         this.context.copiedViewModel$.subscribe(function (cvm) { return _this.copyViewModel = cvm; });
     };
     FooterComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'nof-footer',
-            template: __webpack_require__(911),
-            styles: [__webpack_require__(879)]
+            template: __webpack_require__(918),
+            styles: [__webpack_require__(886)]
         }), 
         __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__url_manager_service__["a" /* UrlManagerService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__url_manager_service__["a" /* UrlManagerService */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_5__context_service__["a" /* ContextService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_5__context_service__["a" /* ContextService */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__click_handler_service__["a" /* ClickHandlerService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__click_handler_service__["a" /* ClickHandlerService */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_6__error_service__["a" /* ErrorService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_6__error_service__["a" /* ErrorService */]) === 'function' && _d) || Object, (typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_7__rep_loader_service__["a" /* RepLoaderService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_7__rep_loader_service__["a" /* RepLoaderService */]) === 'function' && _e) || Object, (typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* Location */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* Location */]) === 'function' && _f) || Object, (typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_9__config_service__["a" /* ConfigService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_9__config_service__["a" /* ConfigService */]) === 'function' && _g) || Object, (typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* Http */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* Http */]) === 'function' && _h) || Object])
     ], FooterComponent);
@@ -13359,7 +13359,7 @@ var FooterComponent = (function () {
 
 /***/ }),
 
-/***/ 692:
+/***/ 699:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13433,7 +13433,7 @@ var GeminiBooleanDirective = (function () {
         __metadata('design:paramtypes', [(typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__view_models_field_view_model__["a" /* FieldViewModel */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__view_models_field_view_model__["a" /* FieldViewModel */]) === 'function' && _b) || Object])
     ], GeminiBooleanDirective.prototype, "viewModel", null);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_0" /* HostListener */])('click'), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_1" /* HostListener */])('click'), 
         __metadata('design:type', Function), 
         __metadata('design:paramtypes', []), 
         __metadata('design:returntype', void 0)
@@ -13449,7 +13449,7 @@ var GeminiBooleanDirective = (function () {
 
 /***/ }),
 
-/***/ 693:
+/***/ 700:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13551,31 +13551,31 @@ var GeminiClearDirective = (function () {
         __metadata('design:paramtypes', [(typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1__angular_forms__["d" /* FormGroup */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_forms__["d" /* FormGroup */]) === 'function' && _d) || Object])
     ], GeminiClearDirective.prototype, "form", null);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_0" /* HostListener */])("click", ['$event']), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_1" /* HostListener */])("click", ['$event']), 
         __metadata('design:type', Function), 
         __metadata('design:paramtypes', [Object]), 
         __metadata('design:returntype', void 0)
     ], GeminiClearDirective.prototype, "click", null);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_0" /* HostListener */])("touchstart", ['$event']), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_1" /* HostListener */])("touchstart", ['$event']), 
         __metadata('design:type', Function), 
         __metadata('design:paramtypes', [Object]), 
         __metadata('design:returntype', void 0)
     ], GeminiClearDirective.prototype, "touchstart", null);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_0" /* HostListener */])("mousemove", ['$event']), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_1" /* HostListener */])("mousemove", ['$event']), 
         __metadata('design:type', Function), 
         __metadata('design:paramtypes', [Object]), 
         __metadata('design:returntype', void 0)
     ], GeminiClearDirective.prototype, "mousemove", null);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_0" /* HostListener */])("input"), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_1" /* HostListener */])("input"), 
         __metadata('design:type', Function), 
         __metadata('design:paramtypes', []), 
         __metadata('design:returntype', void 0)
     ], GeminiClearDirective.prototype, "input", null);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_0" /* HostListener */])("change"), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_1" /* HostListener */])("change"), 
         __metadata('design:type', Function), 
         __metadata('design:paramtypes', []), 
         __metadata('design:returntype', void 0)
@@ -13591,7 +13591,7 @@ var GeminiClearDirective = (function () {
 
 /***/ }),
 
-/***/ 694:
+/***/ 701:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13637,33 +13637,33 @@ var GeminiClickDirective = (function () {
         return false;
     };
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_2" /* Output */])(), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_3" /* Output */])(), 
         __metadata('design:type', Object)
     ], GeminiClickDirective.prototype, "leftClick", void 0);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_2" /* Output */])(), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_3" /* Output */])(), 
         __metadata('design:type', Object)
     ], GeminiClickDirective.prototype, "rightClick", void 0);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_0" /* HostListener */])('click'), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_1" /* HostListener */])('click'), 
         __metadata('design:type', Function), 
         __metadata('design:paramtypes', []), 
         __metadata('design:returntype', void 0)
     ], GeminiClickDirective.prototype, "onClick", null);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_0" /* HostListener */])('keydown', ['$event']), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_1" /* HostListener */])('keydown', ['$event']), 
         __metadata('design:type', Function), 
         __metadata('design:paramtypes', [Object]), 
         __metadata('design:returntype', void 0)
     ], GeminiClickDirective.prototype, "onEnter", null);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_0" /* HostListener */])('keypress', ['$event']), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_1" /* HostListener */])('keypress', ['$event']), 
         __metadata('design:type', Function), 
         __metadata('design:paramtypes', [Object]), 
         __metadata('design:returntype', void 0)
     ], GeminiClickDirective.prototype, "onEnter1", null);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_0" /* HostListener */])('contextmenu'), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_1" /* HostListener */])('contextmenu'), 
         __metadata('design:type', Function), 
         __metadata('design:paramtypes', []), 
         __metadata('design:returntype', void 0)
@@ -13679,7 +13679,7 @@ var GeminiClickDirective = (function () {
 
 /***/ }),
 
-/***/ 695:
+/***/ 702:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13740,14 +13740,14 @@ var MenuBarComponent = (function () {
         __metadata('design:paramtypes', [Array])
     ], MenuBarComponent.prototype, "menus", null);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_7" /* ViewChildren */])(__WEBPACK_IMPORTED_MODULE_1__action_action_component__["a" /* ActionComponent */]), 
-        __metadata('design:type', (typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* QueryList */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* QueryList */]) === 'function' && _a) || Object)
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChildren */])(__WEBPACK_IMPORTED_MODULE_1__action_action_component__["a" /* ActionComponent */]), 
+        __metadata('design:type', (typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* QueryList */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* QueryList */]) === 'function' && _a) || Object)
     ], MenuBarComponent.prototype, "actionComponents", void 0);
     MenuBarComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'nof-menu-bar',
-            template: __webpack_require__(914),
-            styles: [__webpack_require__(882)]
+            template: __webpack_require__(921),
+            styles: [__webpack_require__(889)]
         }), 
         __metadata('design:paramtypes', [(typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__url_manager_service__["a" /* UrlManagerService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__url_manager_service__["a" /* UrlManagerService */]) === 'function' && _b) || Object])
     ], MenuBarComponent);
@@ -13758,7 +13758,7 @@ var MenuBarComponent = (function () {
 
 /***/ }),
 
-/***/ 696:
+/***/ 703:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13872,7 +13872,7 @@ var SimpleLruCache = (function () {
 
 /***/ }),
 
-/***/ 697:
+/***/ 704:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13995,7 +13995,7 @@ var ActionViewModel = (function () {
 
 /***/ }),
 
-/***/ 698:
+/***/ 705:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14027,7 +14027,7 @@ var ApplicationPropertiesViewModel = (function () {
 
 /***/ }),
 
-/***/ 699:
+/***/ 706:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14069,7 +14069,7 @@ var CiceroViewModel = (function () {
 
 /***/ }),
 
-/***/ 700:
+/***/ 707:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14101,7 +14101,7 @@ var ErrorViewModel = (function () {
 
 /***/ }),
 
-/***/ 701:
+/***/ 708:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14121,7 +14121,7 @@ var MenuItemViewModel = (function () {
 
 /***/ }),
 
-/***/ 702:
+/***/ 709:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14142,7 +14142,7 @@ var MenusViewModel = (function () {
 
 /***/ }),
 
-/***/ 703:
+/***/ 710:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14207,7 +14207,7 @@ var MultiLineDialogViewModel = (function () {
 
 /***/ }),
 
-/***/ 704:
+/***/ 711:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14231,7 +14231,7 @@ var RecentItemViewModel = (function (_super) {
 
 /***/ }),
 
-/***/ 705:
+/***/ 712:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14257,7 +14257,7 @@ var RecentItemsViewModel = (function () {
 
 /***/ }),
 
-/***/ 706:
+/***/ 713:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14331,7 +14331,7 @@ var TableRowColumnViewModel = (function () {
 
 /***/ }),
 
-/***/ 707:
+/***/ 714:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14361,7 +14361,7 @@ var TableRowViewModel = (function () {
 
 /***/ }),
 
-/***/ 708:
+/***/ 715:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14463,10 +14463,10 @@ var ViewParameterComponent = (function () {
         __metadata('design:type', (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__view_models_parameter_view_model__["a" /* ParameterViewModel */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__view_models_parameter_view_model__["a" /* ParameterViewModel */]) === 'function' && _b) || Object)
     ], ViewParameterComponent.prototype, "parameter", void 0);
     ViewParameterComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'nof-view-parameter',
-            template: __webpack_require__(920),
-            styles: [__webpack_require__(888)]
+            template: __webpack_require__(927),
+            styles: [__webpack_require__(895)]
         }), 
         __metadata('design:paramtypes', [])
     ], ViewParameterComponent);
@@ -14477,7 +14477,7 @@ var ViewParameterComponent = (function () {
 
 /***/ }),
 
-/***/ 709:
+/***/ 716:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14614,22 +14614,22 @@ var ViewPropertyComponent = (function () {
         __metadata('design:type', (typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_4__view_models_property_view_model__["a" /* PropertyViewModel */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__view_models_property_view_model__["a" /* PropertyViewModel */]) === 'function' && _a) || Object)
     ], ViewPropertyComponent.prototype, "property", void 0);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_0" /* HostListener */])('keydown', ['$event']), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_1" /* HostListener */])('keydown', ['$event']), 
         __metadata('design:type', Function), 
         __metadata('design:paramtypes', [Object]), 
         __metadata('design:returntype', void 0)
     ], ViewPropertyComponent.prototype, "onEnter", null);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_0" /* HostListener */])('keypress', ['$event']), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_1" /* HostListener */])('keypress', ['$event']), 
         __metadata('design:type', Function), 
         __metadata('design:paramtypes', [Object]), 
         __metadata('design:returntype', void 0)
     ], ViewPropertyComponent.prototype, "onEnter1", null);
     ViewPropertyComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'nof-view-property',
-            template: __webpack_require__(921),
-            styles: [__webpack_require__(889)]
+            template: __webpack_require__(928),
+            styles: [__webpack_require__(896)]
         }), 
         __metadata('design:paramtypes', [(typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__error_service__["a" /* ErrorService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__error_service__["a" /* ErrorService */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__context_service__["a" /* ContextService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__context_service__["a" /* ContextService */]) === 'function' && _d) || Object])
     ], ViewPropertyComponent);
@@ -14640,7 +14640,7 @@ var ViewPropertyComponent = (function () {
 
 /***/ }),
 
-/***/ 710:
+/***/ 717:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14886,14 +14886,14 @@ var ActionComponent = (function () {
         __metadata('design:type', Object)
     ], ActionComponent.prototype, "action", void 0);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_7" /* ViewChildren */])("focus"), 
-        __metadata('design:type', (typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* QueryList */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* QueryList */]) === 'function' && _a) || Object)
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChildren */])("focus"), 
+        __metadata('design:type', (typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* QueryList */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* QueryList */]) === 'function' && _a) || Object)
     ], ActionComponent.prototype, "focusList", void 0);
     ActionComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'nof-action',
-            template: __webpack_require__(896),
-            styles: [__webpack_require__(864)]
+            template: __webpack_require__(903),
+            styles: [__webpack_require__(871)]
         }), 
         __metadata('design:paramtypes', [(typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Renderer */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Renderer */]) === 'function' && _b) || Object])
     ], ActionComponent);
@@ -14904,7 +14904,7 @@ var ActionComponent = (function () {
 
 /***/ }),
 
-/***/ 862:
+/***/ 869:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(7)();
@@ -14922,132 +14922,6 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ 863:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(7)();
-// imports
-
-
-// module
-exports.push([module.i, ":host {\n    float: left;\n    margin-bottom: 20px;\n    display: block;\n    margin-left: 20px;\n    margin-right: 10px;\n    background-color: lightgrey;\n    padding-top: 10px;\n}\n\nnof-action, .submenu  {\n    display: block;\n    cursor: pointer;\n    outline: none;\n    margin-left: 5px;\n    margin-right: 20px;\n    width: 150px;\n    font-size: 11pt;\n    font-weight: bolder;\n}\n\n.submenu {\n    padding: 5px;\n}\n\n.collapsed {\n    display: none;\n}\n\n.open {\n    display: block;\n    margin-left: 10px;\n}\n\n.open.rootMenu {\n    margin-left: 0px;\n}\n\n/*Icons*/\n.icon-expand:before {\n    content: \"\\E099\";\n}\n\n.icon-collapse:before {\n    content: \"\\E098\";\n}\n\n.icon-expand, .icon-collapse {\n        font-size: 8pt;\n}\n\n.icon-expand:hover, .icon-collapse:hover {\n    outline-color: white;\n    outline-style: solid;\n    outline-width: 1px;\n}\n[class^=\"icon-\"], [class*=\" icon-\"] {\n    font-family: \"iconFont\";\n    font-weight: normal;\n    font-style: normal;\n    text-decoration: inherit;\n    -webkit-font-smoothing: antialiased;\n    display: inline-block;\n    width: auto;\n    height: auto;\n    line-height: normal;\n    vertical-align: baseline;\n    background-image: none;\n    background-position: 0% 0%;\n    background-repeat: repeat;\n    margin-top: 0;\n    position: relative;\n}", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ 864:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(7)();
-// imports
-
-
-// module
-exports.push([module.i, "input {  /*To override user agent style sheet defaults*/\n    cursor: pointer;\n    background-color: transparent;\n    outline: none;\n    border: none;\n    font-size: inherit;\n    font-weight: inherit;\n    color: inherit;\n    padding: 5px;\n}\n\n input:hover, input:focus  {\n    outline-color: white;\n    outline-style: solid;\n    outline-width: 1px;\n}\n\ninput:disabled {\n    outline-style: none;\n    color: grey;\n}", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ 865:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(7)();
-// imports
-
-
-// module
-exports.push([module.i, "", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ 866:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(7)();
-// imports
-
-
-// module
-exports.push([module.i, ":host {\n    display: block;\n    margin-left: 20px;\n    color: black;\n}\n\n.header {\n    display: block;\n    font-size: 24pt; \n    font-weight: 200;\n    margin-left: 5px;\n     background-image: -webkit-linear-gradient(top, #11648a, #187ba9 100%);\n     background-image: linear-gradient(to bottom, #11648a, #187ba9 100%);\n}\n\n.properties {\n    display: block;\n    font-size: 11pt; \n    font-weight: 100;\n    width: 410px;\n    padding: 5px;\n    margin-bottom: 20px;\n}\n\n.property {\n    display: block;\n}", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ 867:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(7)();
-// imports
-
-
-// module
-exports.push([module.i, ".reference {\n    cursor: pointer;\n}\n\nimg {\n    max-width: 245px;\n    max-height: 100px;\n}", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ 868:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(7)();
-// imports
-
-
-// module
-exports.push([module.i, ".attachment {\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    height: 100%;\n}\n\nimg {\n    max-width: 245px;\n    max-height: 100px;\n}", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ 869:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(7)();
-// imports
-
-
-// module
-exports.push([module.i, ".cicero, .cicero input, .cicero pre {\n    background-color: black;\n    color: green;\n    font-size: 18pt;\n    font-family: Courier New, Courier, monospace;\n    font-weight: bold;\n}\n\n.cicero {\n    width: 100%;\n    border: none;\n}\n\n    .cicero .output {\n        margin: 27px;\n    }\n\n    .cicero input {\n        border-color: green;\n        border-width: 2px;\n        border: solid;\n        padding: 5px;\n        margin: 20px;\n        width: 95%;\n    }\n", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
 /***/ 870:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -15056,7 +14930,7 @@ exports = module.exports = __webpack_require__(7)();
 
 
 // module
-exports.push([module.i, ":host {\n    display: block;\n}\n\n:host:not(:last-child) {\n    margin-bottom: 20px;\n}\n\n.summary {\n    display: block;\n    width: 450px;\n    font-size: 12pt;\n    margin-bottom: 10px;\n    overflow: hidden; /*To make div same depth as its floating children*/\n}\n\n.name, .details {\n    display: block;\n    float: left;\n    padding-left: 0px; /*Because it is a heading, so outdented*/\n    padding-right: 5px;\n}\n\n.name {\n    width: 150px;\n}\n\n.details {\n    width: 245px;\n}\n\n.icon-list, .icon-table, .icon-summary {\n    cursor: pointer;\n    float: right;\n    width: 20px;\n    padding-left: 5px;\n    padding-top: 5px;\n}\nth {\n    font-weight: 100;\n}\ntable {\n    font-size: 11pt;\n}\ntr {\n    cursor: pointer;\n}\nth, td {\n    font-weight: 100; /*Override browser default*/\n    text-align: left;\n    padding-left: 5px;\n    padding-right: 5px;\n    vertical-align: top;\n}\ntbody .number {\n    text-align:right;\n}", ""]);
+exports.push([module.i, ":host {\n    float: left;\n    margin-bottom: 20px;\n    display: block;\n}\n\n\nnof-action, .submenu  {\n    display: block;\n    cursor: pointer;\n    outline: none;\n    margin-right: 20px;\n    width: 150px;\n    font-size: 11pt;\n    font-weight: bolder;\n}\n.submenu {\n    padding: 5px;\n}\n.collapsed {\n    display: none;\n}\n\n.open {\n    display: block;\n    margin-left: 10px;\n}\n\n.open.rootMenu {\n    margin-left: 0px;\n}\n\n/*Icons*/\n.icon-expand:before {\n    content: \"\\E099\";\n}\n\n.icon-collapse:before {\n    content: \"\\E098\";\n}\n.icon-expand, .icon-collapse {\n        font-size: 8pt;\n}\n\n.icon-expand:hover, .icon-collapse:hover {\n    outline-color: white;\n    outline-style: solid;\n    outline-width: 1px;\n}\n\n[class^=\"icon-\"], [class*=\" icon-\"] {\n    font-family: \"iconFont\";\n    font-weight: normal;\n    font-style: normal;\n    text-decoration: inherit;\n    -webkit-font-smoothing: antialiased;\n    display: inline-block;\n    width: auto;\n    height: auto;\n    line-height: normal;\n    vertical-align: baseline;\n    background-image: none;\n    background-position: 0% 0%;\n    background-repeat: repeat;\n    margin-top: 0;\n    position: relative;\n}", ""]);
 
 // exports
 
@@ -15074,7 +14948,7 @@ exports = module.exports = __webpack_require__(7)();
 
 
 // module
-exports.push([module.i, ":host {\n    display: block;\n    float: left;\n    margin-bottom: 20px;\n    margin-right: 20px;\n}\n\n", ""]);
+exports.push([module.i, "\ninput {  /*To override user agent style sheet defaults*/\n    white-space: normal; /*Needed to force long names to wrap*/\n    text-align: left;\n    cursor: pointer;\n    background-color: transparent;\n    outline: none;\n    border: none;\n    font-size: inherit;\n    font-weight: inherit;\n    color: inherit;\n    padding: 5px;\n}\n\ninput:focus, input:hover   {\n    outline-color: white;\n    outline-style: solid;\n    outline-width: 1px;\n}\n\ninput:disabled {\n    color: grey;\n    outline: none;\n}", ""]);
 
 // exports
 
@@ -15092,7 +14966,7 @@ exports = module.exports = __webpack_require__(7)();
 
 
 // module
-exports.push([module.i, ":host {\n    display: block;\n    width: 410px;\n    margin-bottom: 20px;\n    overflow: hidden; /*Needed to force the floated divs inside this to expand the containing div in height*/\n    background-color: white;\n    font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;\n    color: black;\n    font-size: 11pt; \n    font-weight: 400;\n    padding-left: 5px;\n    padding-right: 5px; \n}\n\n.dialog {\n    display: block;\n    overflow-y: auto;\n    border-style: solid;\n    border-color: black;\n    border-width: 1px;\n}\n\nform {\n    padding: 5px;\n}\n\n.ok {\n    color: white;\n    background-image: -webkit-linear-gradient(top, #11648a, #187ba9 100%);\n    background-image: linear-gradient(to bottom, #11648a, #187ba9 100%);\n}\n\n.dialog select {\n    margin-bottom: 10px;\n    border-style:solid;\n    border-color: grey;\n    border-width: 1px;\n}\n\n\ninput[type='text'] {\n    padding-right: 10px; /*To avoid text running over the 'x' (clear button)*/\n    padding-left: 4px;\n        margin-bottom: 10px;\n    border-style:solid;\n    border-color: grey;\n    border-width: 1px;\n}\ninput[type=button],\ninput[type=reset],\ninput[type=submit] {\n    margin-left: 5px;\n    margin-top: 10px;\n    margin-right: 5px;\n    display: inline-block;\n    padding: 4px 12px;\n    text-align: center;\n    vertical-align: middle;\n    border: 1px transparent solid;\n    cursor: pointer;\n    width: auto;\n    *zoom: 1;\n    color: black;\n    background-color: white;\n    float: right;\n    outline: solid;\n    outline-color: lightgrey;\n    outline-width: 1px;\n}\n\ninput[type='button']:focus,\ninput[type='button']:hover,\ninput[type='submit']:focus,\ninput[type='submit']:hover {\n    outline: solid;\n    outline-width: 1px;\n    outline-color: black;\n}\n\n.title {\n    display: block;\n    font-size: 12pt;        \n    margin-bottom: 10px;\n    color: white;\n    background-image: -webkit-linear-gradient(top, #11648a, #187ba9 100%);\n    background-image: linear-gradient(to bottom, #11648a, #187ba9 100%);\n    padding: 5px;\n    font-weight: 600;\n}\n\n.icon-cancel {\n        color: black;\n        float: right;\n    }\n\n.parameter .name {\n    width: 145px; /*To align input box with reference fields*/\n}\n\n .parameter {\n    overflow: hidden; /*To cope with long param/prop names*/\n    display: block;\n}\n", ""]);
+exports.push([module.i, "", ""]);
 
 // exports
 
@@ -15110,7 +14984,7 @@ exports = module.exports = __webpack_require__(7)();
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ":host {\n    display: block;\n    margin-left: 20px;\n    color: white;\n}\n\n.header {\n    display: block;\n    font-size: 24pt; \n    font-weight: 200;\n    margin-left: 5px;\n}\n\n.properties {\n    display: block;\n    font-size: 11pt; \n    font-weight: 100;\n    width: 410px;\n    padding: 5px;\n    margin-bottom: 20px;\n}\n\n.property {\n    display: block;\n}", ""]);
 
 // exports
 
@@ -15128,7 +15002,7 @@ exports = module.exports = __webpack_require__(7)();
 
 
 // module
-exports.push([module.i, ".list {\n    color: white;\n    padding-left: 20px;\n    height: 100%;\n    overflow-y: auto;\n    display: block;\n    font-weight: 100;\n}\n\n.header {\n    display: block;\n    margin-bottom: 20px;\n    overflow: hidden;\n}\n\n.title, .type {\n    position: relative;\n    font-weight: 100;\n    font-size: 24pt;\n    line-height: 38pt;\n    margin-left: 1px; /*Make room for focus outline*/\n    padding-left: 5px;\n    padding-right: 5px;\n    margin-right: 20px;\n    margin-top: 2px;\n    display: block;\n}\n\n.type {\n    float: left;\n    margin-right: 20px;\n    display: none; /*Change this to display type (e.g. for accessibility)*/\n}", ""]);
+exports.push([module.i, ".reference {\n    cursor: pointer;\n}\n\nimg {\n    max-width: 245px;\n    max-height: 100px;\n}", ""]);
 
 // exports
 
@@ -15146,7 +15020,7 @@ exports = module.exports = __webpack_require__(7)();
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".attachment {\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    height: 100%;\n}\n\n img {\n        max-width: 100%;\n        height: auto;\n}", ""]);
 
 // exports
 
@@ -15164,7 +15038,7 @@ exports = module.exports = __webpack_require__(7)();
 
 
 // module
-exports.push([module.i, "\n:host {\n    overflow: hidden; /*To cope with long prop names*/\n    display: block;\n}\n\n:host:not(:last-child) {\n    margin-bottom: 5px;\n}\n\ninput[type='text'] {\n    padding-left: 4px;\n    padding-right: 10px; /*To avoid text running over the 'x' (clear button)*/\n}\n\ninput {\n    border-style: none;\n}\n\ninput:hover, input:focus {\n    outline-style: solid;\n    outline-color: black;\n    outline-width: 1px;\n}\n.name {\n    float: left;\n    width: 145px;\n    padding-right: 5px;\n}\n\n.reference, .value, collectionDetails {\n    width: 245px;\n    padding-left: 5px;\n    margin: 1px;\n    float: left;\n}\n\ninput:not([type='checkbox']), textarea {\n    width: 245px;\n    height: 20px;\n    padding-right:10px;\n}\n\ninput[type='text'] {\n    padding-left: 4px;\n}\n\n.validation {\n    display: block;\n    color: black;\n}\n\n/*MultiLine dialog*/\n :host.multilinedialog, :host.multilinedialog .co-validation, .multilinedialog .buttons {\n    display: inline-block;\n    vertical-align: top;\n}\n\n:host.multilinedialog .name {\n    display: none;\n}\n\n:host.multilinedialog .parameter {\n    width: 245px; /*To force (on IE) any validation message to be displayed underneath the field*/\n}\n\n:host.multilinedialog input:focus,.multilinedialog input:hover  {\n    outline-width: 1px;\n    outline-color: blue;\n}\n\n:host.multilinedialog .input-control input:not([type='checkbox']),\n:host.multilinedialog select{\n    height: 20px;\n    padding-top: 2px;\n}\n\n:host.multilinedialog .validation {\n    color: black;\n    margin-left: 5px;\n}\n\n\n/* Drag and drop*/\n.value.droppable {\n    border: solid;\n    border-width: 1px;\n    width: 245px;\n    height: 20px;\n}\n\n.value.droppable {\n    border-color: black;\n}\n\n.value.droppable.dropping.candrop {\n    border-color: lawngreen;\n    background-color: white;\n}\n\n.value.droppable.dropping {\n    border-color: red;\n}\n\n/*auto-complete*/\n.ui-autocomplete {\n    width: 245px;\n}\n\n.ui-autocomplete .ui-menu-item {\n        font-family: 'Segoe UI';\n        font-size: 10pt;\n}\n\ntextarea {\n    color: black;\n}\n\n.multiline {\n    overflow: auto;\n}\n\n/* clear button on non-empty input field*/\n.ng-clearable{\n  background-image: url(data:image/gif;base64,R0lGODlhgACAAPcAAAAAAAQEBAwMDBQUFBgYGCAgICQkJCgoKCwsLDQ0NDs7Ozw8PERERFBQUFRUVFhYWGBgYGhoaG5ubnBwcHR0dHh4eH9/fwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAP8ALAAAAACAAIAAAAj/AP8JHEiwoMGDCBMqXMiwocOHECNKnEixosWLGDNq3Mixo8ePIAVWCEnSooWS/wQAmICypcMJAAiQVAlgpcubCGHWlPmRZk2bOIP+s/Bzp0efRVkKvVn0pwCOSJsqXVqyadGnGaNanUr1o9WmWC1q/cq168avVsNOHIu2rNmLaL+qhcg2rtu3E+Oinduwrt67eB/qjctXod/BgAMvDDA4bgCHhxsnVnyQcWPHDCNfnkx5oOXLmBNCAL25s8LPpNE+UOggNWLTlV3HdcCwtey2sAmivv2TdkPbvKXmThm8KQOIwIvX5LxU8+UFEpMrZ47TeWPoE6UXp97S+mDsFLUH/+c+U/lP8BXF8ybf03xN9BbV32YP1T0A+Bfly6afkYD9Ax7p5xp/FvnnHoAfCZgagRMZaB6CIClIGoMQOagchCFJCBqFDVlYHIYkaVjaRx4GB2JJIkrmUQH2GSBUiq9tdIB9PL1oH1AYzehejUvB+FeONOLlo10W6Wgej2YNidtERiqH5FtKkiVRk8U9KeSN7C1gX2GBRbmVQ1q6x6ViXgq3UJjmjUlZmUkphKZyanbG5k+AvVlcnKbNuZxBdgaHJ2x64vgPA1sOVxuWAun5mKGH2ieBoow6FKh9i0b6243mVWrppZjypummnHaa2qeghirqZaVmdyqqqaq6alytptL36lexxjdrUbXmdysAuWI0qVW9ZvTrTycF66uoHBpL0KTJKksQps06+w+y0lq0arS9zoptrLtRW61D3Z667abhXvvtabuaeW5B5d46Lmzt7vouZfGmOy9e3r16b1f5aittv+4qC/BXCjSAaK8DW4VdoPuilHBT6DEca4m8IWCQxKVSfNuJiR5sqcaycTwQxoyC7JrIy3qcm8mpoVwQyaaxTJrLF6usmMyg0XwQzHhRGZyVpk6nmM+8AS2pzUsRfZvRD/EclNKyMY0c0i5B7ZrUETnajZLVqWEdHdUhJWDfABGC7VGfvP0pq30ND4T2bWrbyjZJb8sWt65zf1S3a3cfmzdHe6fWt7BmTxQ4aYNrpLWrmSZZ+NHukWrj34wrJ3mPjycE6ZqZ1xw5oJ2PTOlwixs02ueGlj6QTu5Zqjrr5oEa6EgHUXBjqnOqWS9osZaJ5+6D5Rql2sCjFeyQdwOsLIyD59v2TSImTtyG1UoovUCaPT85YRgdpj3me2lU1/dUiXf9QWOR35V05yPkIQTr7uwUSA76Fn/N7S/kn/33m45SBP0LoAAHSMB1BQQAOw==);\n  background-repeat: no-repeat;\n  background-position: right -10px;\n  background-size: 8px;\n}\n.ng-clearable[class*=\"link-color\"] {\n    background-image: url(data:image/gif;base64,R0lGODlhgACAAPcAAAAAAP78/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAP8ALAAAAACAAIAAAAj/AP8JHEiwoMGDCBMqXMiwocOHECNKnEixosWLGDNq3Mixo8ePIAOIDACypMWRJD+iFGmyJcSVKTnCZOmyZsKZMTPipGmzp8CdOU8CDerT5FCiEo/yLFpSKdKHTpcy7Rj1KcOqUqfqxJoUa1atFb1+vSl2LNiXZa0WTDvybFi2an/CNeuW7FyFc1HWhZrXbN+2exf+9Ts4bt3CVhEbBqvYbuHAaxs7HgxZLuKrkvcqXvxvs+bMDT2fFY32slbSEVH3VJ0adE3WXU2/dv1WtlHaQm2rxH0RtkbfGIHnftyUd23it3UPpzxb+UThHqFjdt5S+uS/p43j1e7SOkHvyZFP1xc/mrtl8m6hg19tfL1P2O6Lqo7PlDT9qZ7vZ9+MvjJC/sz5FxqAdwnIF4FlGdgaglwpuCCDSjn4HIRHSUgRhUBZeByGgGl4IYcdevghhyIGh2GJWzGI4m8IrrgRgS7KpF+M/5lH44E23igYjDqOyGOPpakIpEMgDjneiUbWCCJdPS65UpLfOfkklFLOlGSVOA2J5U5NbskljV4OFWOYFaJIZoQiijYje7at2R1tbhZHXZzRaUfni+bdaSJ1Bum5IXY4Brhffzvy+aah2yEaUo5KEiqno4ECptocpEEK+qilvTHqI6Z7UrqcpFRpGmlf4XH6KanViZqopywqOqCreMJ6HarvqTqQn6PmNaGsu/Hama2hyorrpqCuWmx6efo6qannHRuYb8DaxJuy9RHK6mfO/kqrh9k2m5aLuhb67ZhsETkumAnmWqaOYsUWlZENuruulk6daiWU2maYqb745ntvpzD1G+W/KU4p8K0BB6vXwQMzuSHDEEcs8cRQBgQAOw==);\n}\n.ng-clearable.ng-x  { background-position: right 2px center; }\n.ng-clearable.ng-onX{ cursor: pointer; }\ninput::-ms-clear {display: none;}\n\n/* date fields*/\n.input-control input.hasDatepicker,\n.input-control input.ui-timepicker-input {\n    width: 217px;\n}\n\n.input-control input.hasDatepicker,\n.input-control input.ui-timepicker-input {\n    width: 207px;\n    float: left;\n}\n\nimg.ui-datepicker-trigger {\n    margin-left: 5px;\n    margin-top: 2px;\n    width: 20px;\n}\n\nimg.ui-datepicker-trigger {\n    background-color: white;\n}\n\nselect {\n    width: 245px;\n    height: 20px;\n}\n\n    select[multiple] {\n        height: 68px; /*Issue with IE if just inherit the default height*/\n    }\n\n.validation {\n    margin-left: 155px;\n    font-size: 11pt;\n}\n", ""]);
+exports.push([module.i, ".cicero, .cicero input, .cicero pre {\n    background-color: black;\n    color: green;\n    font-size: 18pt;\n    font-family: Courier New, Courier, monospace;\n    font-weight: bold;\n}\n\n.cicero {\n    width: 100%;\n    border: none;\n}\n\n    .cicero .output {\n        margin: 27px;\n    }\n\n    .cicero input {\n        border-color: green;\n        border-width: 2px;\n        border: solid;\n        padding: 5px;\n        margin: 20px;\n        width: 95%;\n    }\n", ""]);
 
 // exports
 
@@ -15182,7 +15056,7 @@ exports = module.exports = __webpack_require__(7)();
 
 
 // module
-exports.push([module.i, "\n:host {\n    overflow: hidden; /*To cope with long prop names*/\n    display: block;\n}\n\n:host:not(:last-child) {\n    margin-bottom: 5px;\n}\n\n\n.name {\n    display: block;\n    float: left;\n    width: 150px;\n    padding-right: 5px;\n    font-weight: bolder;\n}\n\n.field {\n    display: block;\n    float: left;\n}\n\n.reference, .value, collectionDetails {\n    display: block;\n    float: left;\n    width: 245px;\n    padding-left: 5px;\n    padding-right: 5px;\n    margin: 1px;\n}\n\n.reference img {\n    display: block;\n    cursor: pointer;\n    float: left;\n    max-width: 245px;\n    max-height: 100px;\n}\n\n.validation {\n    color: black;\n}\n\n/* Drag and drop*/\n.value.droppable {\n    border: solid;\n    border-width: 1px;\n    width: 245px;\n    height: 20px;\n}\n\n.value.droppable {\n    border-color: black;\n}\n\n.value.droppable.dropping.candrop {\n    border-color: lawngreen;\n    background-color: white;\n}\n\n.value.droppable.dropping {\n    border-color: red;\n}\n\n/*auto-complete*/\n.ui-autocomplete {\n    width: 245px;\n}\n\n.ui-autocomplete .ui-menu-item {\n        font-family: 'Segoe UI';\n        font-size: 10pt;\n}\n\n\ntextarea {\n    color: black;\n}\n.multiline {\n    overflow: auto;\n}\n\n/* clear button on non-empty input field*/\n.ng-clearable{\n  background-image: url(data:image/gif;base64,R0lGODlhgACAAPcAAAAAAAQEBAwMDBQUFBgYGCAgICQkJCgoKCwsLDQ0NDs7Ozw8PERERFBQUFRUVFhYWGBgYGhoaG5ubnBwcHR0dHh4eH9/fwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAP8ALAAAAACAAIAAAAj/AP8JHEiwoMGDCBMqXMiwocOHECNKnEixosWLGDNq3Mixo8ePIAVWCEnSooWS/wQAmICypcMJAAiQVAlgpcubCGHWlPmRZk2bOIP+s/Bzp0efRVkKvVn0pwCOSJsqXVqyadGnGaNanUr1o9WmWC1q/cq168avVsNOHIu2rNmLaL+qhcg2rtu3E+Oinduwrt67eB/qjctXod/BgAMvDDA4bgCHhxsnVnyQcWPHDCNfnkx5oOXLmBNCAL25s8LPpNE+UOggNWLTlV3HdcCwtey2sAmivv2TdkPbvKXmThm8KQOIwIvX5LxU8+UFEpMrZ47TeWPoE6UXp97S+mDsFLUH/+c+U/lP8BXF8ybf03xN9BbV32YP1T0A+Bfly6afkYD9Ax7p5xp/FvnnHoAfCZgagRMZaB6CIClIGoMQOagchCFJCBqFDVlYHIYkaVjaRx4GB2JJIkrmUQH2GSBUiq9tdIB9PL1oH1AYzehejUvB+FeONOLlo10W6Wgej2YNidtERiqH5FtKkiVRk8U9KeSN7C1gX2GBRbmVQ1q6x6ViXgq3UJjmjUlZmUkphKZyanbG5k+AvVlcnKbNuZxBdgaHJ2x64vgPA1sOVxuWAun5mKGH2ieBoow6FKh9i0b6243mVWrppZjypummnHaa2qeghirqZaVmdyqqqaq6alytptL36lexxjdrUbXmdysAuWI0qVW9ZvTrTycF66uoHBpL0KTJKksQps06+w+y0lq0arS9zoptrLtRW61D3Z667abhXvvtabuaeW5B5d46Lmzt7vouZfGmOy9e3r16b1f5aittv+4qC/BXCjSAaK8DW4VdoPuilHBT6DEca4m8IWCQxKVSfNuJiR5sqcaycTwQxoyC7JrIy3qcm8mpoVwQyaaxTJrLF6usmMyg0XwQzHhRGZyVpk6nmM+8AS2pzUsRfZvRD/EclNKyMY0c0i5B7ZrUETnajZLVqWEdHdUhJWDfABGC7VGfvP0pq30ND4T2bWrbyjZJb8sWt65zf1S3a3cfmzdHe6fWt7BmTxQ4aYNrpLWrmSZZ+NHukWrj34wrJ3mPjycE6ZqZ1xw5oJ2PTOlwixs02ueGlj6QTu5Zqjrr5oEa6EgHUXBjqnOqWS9osZaJ5+6D5Rql2sCjFeyQdwOsLIyD59v2TSImTtyG1UoovUCaPT85YRgdpj3me2lU1/dUiXf9QWOR35V05yPkIQTr7uwUSA76Fn/N7S/kn/33m45SBP0LoAAHSMB1BQQAOw==);\n  background-repeat: no-repeat;\n  background-position: right -10px;\n  background-size: 8px;\n}\n.ng-clearable[class*=\"link-color\"] {\n    background-image: url(data:image/gif;base64,R0lGODlhgACAAPcAAAAAAP78/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAP8ALAAAAACAAIAAAAj/AP8JHEiwoMGDCBMqXMiwocOHECNKnEixosWLGDNq3Mixo8ePIAOIDACypMWRJD+iFGmyJcSVKTnCZOmyZsKZMTPipGmzp8CdOU8CDerT5FCiEo/yLFpSKdKHTpcy7Rj1KcOqUqfqxJoUa1atFb1+vSl2LNiXZa0WTDvybFi2an/CNeuW7FyFc1HWhZrXbN+2exf+9Ts4bt3CVhEbBqvYbuHAaxs7HgxZLuKrkvcqXvxvs+bMDT2fFY32slbSEVH3VJ0adE3WXU2/dv1WtlHaQm2rxH0RtkbfGIHnftyUd23it3UPpzxb+UThHqFjdt5S+uS/p43j1e7SOkHvyZFP1xc/mrtl8m6hg19tfL1P2O6Lqo7PlDT9qZ7vZ9+MvjJC/sz5FxqAdwnIF4FlGdgaglwpuCCDSjn4HIRHSUgRhUBZeByGgGl4IYcdevghhyIGh2GJWzGI4m8IrrgRgS7KpF+M/5lH44E23igYjDqOyGOPpakIpEMgDjneiUbWCCJdPS65UpLfOfkklFLOlGSVOA2J5U5NbskljV4OFWOYFaJIZoQiijYje7at2R1tbhZHXZzRaUfni+bdaSJ1Bum5IXY4Brhffzvy+aah2yEaUo5KEiqno4ECptocpEEK+qilvTHqI6Z7UrqcpFRpGmlf4XH6KanViZqopywqOqCreMJ6HarvqTqQn6PmNaGsu/Hama2hyorrpqCuWmx6efo6qannHRuYb8DaxJuy9RHK6mfO/kqrh9k2m5aLuhb67ZhsETkumAnmWqaOYsUWlZENuruulk6daiWU2maYqb745ntvpzD1G+W/KU4p8K0BB6vXwQMzuSHDEEcs8cRQBgQAOw==);\n}\n.ng-clearable.ng-x  { background-position: right 2px center; }\n.ng-clearable.ng-onX{ cursor: pointer; }\ninput::-ms-clear {display: none;}\n\n/* date fields*/\n.input-control input.hasDatepicker,\n.input-control input.ui-timepicker-input {\n    width: 217px;\n}\n\nimg.ui-datepicker-trigger {\n    margin-left: 5px;\n    margin-top: 2px;\n    width: 20px;\n}\n\nselect {\n    width: 245px;\n    height: 20px;\n}\n\n    select[multiple] {\n        height: 68px; /*Issue with IE if just inherit the default height*/\n    }\n\n.validation {\n    margin-left: 155px;\n    font-size: 11pt;\n}\n\n.input-control input:not([type='checkbox']), textarea {\n    width: 245px;\n    height: 20px;\n    padding-left: 2px;\n}\ninput, select {\n    border-style: none;\n}\n", ""]);
+exports.push([module.i, ":host {\n    display: block;\n}\n\n:host:not(:last-child) {\n    margin-bottom: 20px;\n}\n\n.summary {\n    display: block;\n    width: 450px;\n    font-size: 12pt;\n    margin-bottom: 10px;\n    overflow: hidden; /*To make div same depth as its floating children*/\n}\n\n.name, .details {\n    display: block;\n    float: left;\n    padding-left: 0px; /*Because it is a heading, so outdented*/\n    padding-right: 5px;\n}\n\n.name {\n    width: 150px;\n}\n\n.details {\n    width: 245px;\n}\n\n.icon-list, .icon-table, .icon-summary {\n    cursor: pointer;\n    float: right;\n    width: 20px;\n    padding-left: 5px;\n    padding-top: 5px;\n}\ntable {\n    font-size: 11pt;\n}\nth {\n    font-weight: 100;\n}\n\ntr {\n    cursor: pointer;\n}\n\nth, td {\n    font-weight: 100; /*Override browser default*/\n    text-align: left;\n    padding-left: 5px;\n    padding-right: 5px;\n    vertical-align: top;\n}\n\ntbody .number {\n    text-align:right;\n}", ""]);
 
 // exports
 
@@ -15200,7 +15074,7 @@ exports = module.exports = __webpack_require__(7)();
 
 
 // module
-exports.push([module.i, "\n:host {\n    display: block;\n    padding-left: 20px;\n    height: 100%;\n    overflow-y: auto;\n}\n\n.title, .message, .code, .description, .stacktrace{\n    display: block;\n    margin-bottom: 20px;\n}\n\n.title, .message {\n    font-size: 16pt;\n    color: red;\n}\n\n .code, .description, .stacktrace {\n    font-size: 12pt;\n    color:black;\n}", ""]);
+exports.push([module.i, ":host {\n    display: block;\n    float: left;\n    margin-bottom: 20px;\n    margin-right: 20px;\n}\n\n", ""]);
 
 // exports
 
@@ -15218,7 +15092,7 @@ exports = module.exports = __webpack_require__(7)();
 
 
 // module
-exports.push([module.i, ":host {\n    position: fixed;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    background-color: white;\n}\n\na {\n    color: #11648a;\n    font-size: 36pt;\n    padding: 5px;\n    margin-left: 10px;\n}\n\n    a.disabled {\n        display: none;\n    }\n\n    a:hover, a:focus {\n        outline-style: solid;\n        outline-width: 1px;\n        outline-color: #11648a;\n    }\n\n    a:active {\n        outline-style: solid;\n        outline-width: 2px;\n        outline-color: #11648a;\n    }\n\na, .currentcopy {\n    float: left;\n}\n\n.currentcopy {\n    display: inline-block;\n    margin-left: 20px;\n}\n\n/*Warnings & Messages*/\n.messages, .warnings, .loading {\n    background-color: white;\n    font-size: 11pt;\n    color: black;\n}\n\n.warnings {\n    color: red;\n}\n\n/*Icons */\n[class^=\"icon-\"], [class*=\" icon-\"] {\n    font-family: \"iconFont\";\n    font-weight: normal;\n    font-style: normal;\n    text-decoration: inherit;\n    -webkit-font-smoothing: antialiased;\n    display: inline-block;\n    width: auto;\n    height: auto;\n    line-height: normal;\n    vertical-align: baseline;\n    background-image: none;\n    background-position: 0% 0%;\n    background-repeat: repeat;\n    margin-top: 0;\n    position: relative;\n    cursor: pointer;\n}\n\n.icon-home:before {\n    content: \"\\E000\";\n}\n\n.icon-arrow-left-3:before {\n    content: \"\\E09F\";\n}\n\n.icon-arrow-right-3:before {\n    content: \"\\E09D\";\n}\n\n.icon-loop:before {\n    content: \"\\E08F\";\n}\n\n.icon-help:before {\n    content: \"\\E085\";\n}\n\n.icon-swap:before {\n    content: \"\\E0A4\";\n}\n\n.icon-full:before {\n    content: \"\\E08E\";\n}\n\n.icon-recent:before {\n    content: \"\\E06B\";\n}\n\n.icon-speech:before {\n    content: \"\\E036\";\n}\n\n.icon-properties:before {\n    content: \"\\E048\";\n}\n\n.icon-logoff:before {\n    content: \"\\E03B\";\n}\n\n/*Hide/show Cicero icon*/\n    .icon-speech {\n        display: none;\n        /*display:    inline-block;*/\n    }", ""]);
+exports.push([module.i, ":host {\n    display: block;\n    width: 410px;\n    margin-bottom: 20px;\n    overflow: hidden; /*Needed to force the floated divs inside this to expand the containing div in height*/\n    background-color: white;\n    font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;\n    color: black;\n    font-size: 11pt; \n    font-weight: 400;\n    padding-left: 5px;\n    padding-right: 5px; \n}\n\n.dialog {\n    display: block; \n}\n\ninput[type=button],\ninput[type=reset],\ninput[type=submit] {\n    margin-left: 5px;\n    margin-top: 10px;\n    margin-right: 5px;\n    margin-bottom: 5px;\n    display: inline-block;\n    padding: 4px 12px;\n    text-align: center;\n    vertical-align: middle;\n    border: 1px transparent solid;\n    cursor: pointer;\n    width: auto;\n    *zoom: 1;\n    color: black;\n    background-color: white;\n    float: right;\n    outline: solid;\n    outline-color: lightgrey;\n    outline-width: 1px;\n}\n\ninput[type='button']:focus,\ninput[type='button']:hover,\ninput[type='submit']:focus,\ninput[type='submit']:hover {\n    outline: solid;\n    outline-width: 1px;\n    outline-color: black;\n}\n\n.ok:disabled {\n    color: grey;\n}\n\n.title {\n    display: block;\n    font-size: 12pt;        \n    margin-bottom: 10px;\n}\n\n.icon-cancel {\n        color: black;\n        float: right;\n    }\n\n.parameter .name {\n    width: 145px; /*To align input box with reference fields*/\n}\n\n .parameter {\n    overflow: hidden; /*To cope with long param/prop names*/\n    display: block;\n}\n", ""]);
 
 // exports
 
@@ -15236,7 +15110,7 @@ exports = module.exports = __webpack_require__(7)();
 
 
 // module
-exports.push([module.i, ":home {\n    display: block;\n    padding-left: 20px;\n    height: 100%;\n    overflow-y: auto;\n    color: black;\n    font-size: 11pt; \n    font-weight: 100;\n}\n\n.header {\n    display: block;\n    margin-bottom: 20px;\n    overflow: hidden;\n    background-image: -webkit-linear-gradient(top, #11648a, #187ba9 100%);\n    background-image: linear-gradient(to bottom, #11648a, #187ba9 100%);\n    color: white;\n}\n\n.title {\n    display: block;\n    position: relative;\n    font-weight: 200;\n    font-size: 24pt;\n    line-height: 38pt;\n    margin-left: 1px; /*Make room for focus outline */\n    padding-left: 5px;\n    padding-right: 5px;\n    margin-right: 20px;\n    margin-top: 2px;\n    display: block;\n}\n\n.main-column{\n    float: left;\n    margin-bottom: 20px;\n    margin-right: 20px;\n}", ""]);
+exports.push([module.i, "", ""]);
 
 // exports
 
@@ -15254,7 +15128,7 @@ exports = module.exports = __webpack_require__(7)();
 
 
 // module
-exports.push([module.i, ".list {\n    color: black;\n    padding-left: 20px;\n    height: 100%;\n    overflow-y: auto;\n    display: block;\n    font-weight: 100;\n}\n\n.header {\n    display: block;\n    margin-bottom: 20px;\n    overflow: hidden;\n    background-image: -webkit-linear-gradient(top, #11648a, #187ba9 100%);\n    background-image: linear-gradient(to bottom, #11648a, #187ba9 100%);\n    color: white;\n}\n\n.title, .type {\n    position: relative;\n    font-weight: 100;\n    font-size: 24pt;\n    line-height: 38pt;\n    margin-left: 1px; /*Make room for focus outline*/\n    padding-left: 5px;\n    padding-right: 5px;\n    margin-right: 20px;\n    margin-top: 2px;\n    display: block;\n}\n\n.type {\n    float: left;\n    margin-right: 20px;\n    display: none; /*Change this to display type (e.g. for accessibility)*/\n}\n\n/* Menus */\n\n.menus {\n    display: block;\n}\n.menu, .header .action {\n    display: block;\n    float: left;\n    padding: 5px;\n    margin-top: 0px;\n    margin-left: 1px; /*Else hover outline is hidden on the left-most menu */\n    margin-right: 10px;\n    margin-bottom: 5px; /*Else hover outline is hidden on the bottom */\n    font-size: 16pt;\n}\n\n.menu:disabled, .ok:disabled {\n        color: grey;\n    }\n\n.summary {\n    display: block;\n    width: 450px;\n    font-size: 12pt;\n    margin-bottom: 10px;\n    overflow: hidden;\n}\n\n.details {\n    padding-left: 40px;\n    width: 400px;\n    float: left;\n}\n\n.reference {\n    cursor: pointer;\n    font-size: 11pt; \n    padding-left: 5px;\n    padding-right: 5px;\n    margin: 1px;\n    width: 440px;\n}\n\n.reference:not(:last-child) {\n   margin-bottom: 5px;\n}\n\n.icon-list, .icon-table {\n    cursor: pointer;\n    float: right;\n    width: 20px;\n    padding-top: 5px;\n    padding-left: 5px;\n}\n\n/*Tables*/\ntable {\n    font-size: 11pt;\n}\nth, td {\n    font-weight: 100; /*Override browser default*/\n    text-align: left;\n    padding-left: 5px;\n    padding-right: 5px;\n    vertical-align: top;\n}\n\ntbody .number {\n    text-align:right;\n}\n\ntbody tr {\n  cursor:pointer;\n}\n\n", ""]);
+exports.push([module.i, ".list {\n    color: white;\n    padding-left: 20px;\n    height: 100%;\n    overflow-y: auto;\n    display: block;\n    font-weight: 100;\n}\n\n.header {\n    display: block;\n    margin-bottom: 20px;\n    overflow: hidden;\n}\n\n.title, .type {\n    position: relative;\n    font-weight: 100;\n    font-size: 24pt;\n    line-height: 38pt;\n    margin-left: 1px; /*Make room for focus outline*/\n    padding-left: 5px;\n    padding-right: 5px;\n    margin-right: 20px;\n    margin-top: 2px;\n    display: block;\n}\n\n.type {\n    float: left;\n    margin-right: 20px;\n    display: none; /*Change this to display type (e.g. for accessibility)*/\n}", ""]);
 
 // exports
 
@@ -15272,7 +15146,7 @@ exports = module.exports = __webpack_require__(7)();
 
 
 // module
-exports.push([module.i, ":host {\n    display: block;\n}\n\nnof-action   {\n    outline: none;\n    margin-right: 20px;\n    display: block;\n    float: left;\n    margin-left: 1px; /*Else hover outline is hidden on the left-most menu*/\n    margin-right: 10px;\n    margin-bottom: 5px; /*Else hover outline is hidden on the bottom*/\n    font-size: 16pt;\n}", ""]);
+exports.push([module.i, "", ""]);
 
 // exports
 
@@ -15290,7 +15164,7 @@ exports = module.exports = __webpack_require__(7)();
 
 
 // module
-exports.push([module.i, ":host {\n    overflow-y: auto;\n    font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;\n    color: black;\n    font-size: 11pt; \n    font-weight: 100;\n    display: block;\n        height: 100%;\n        margin-left: 20px;\n}\nviewTitle {\n    display: inline-block; /*Otherwise focus outline takes full width*/\n}\n\n.title, header .type {\n    position: relative;\n    font-weight: 200;\n    font-size: 24pt;\n    line-height: 38pt;\n    margin-left: 1px; /*Make room for focus outline*/\n    padding-left: 5px;\n    padding-right: 5px;\n    margin-right: 20px;\n    margin-top: 2px;\n    display: block;\n}\n\nheader .type {\n    float: left;\n    margin-right: 20px;\n    display: none; /*Change this to display type (e.g. for accessibility)*/\n}\nnof-parameters {\n    display: inline-block;\n}\n.columnHeader {\n    display: inline-block;\n    vertical-align: top;\n    width: 247px;\n    padding-left: 10px;\n}\n\ninput.ok {\n    font-size: 9pt;\n    height: 20px;\n    margin-top: 1px;\n    margin-right: 0px;\n    margin-left: 2px;\n    margin-bottom: 5px;\n    padding-top: 1px;\n    padding-bottom: 0px;\n    padding-left: 2px;\n    padding-right: 2px;\n    vertical-align: top;\n    outline-color: lightgray;\n}\n\ninput.close {\n    float: left;\n    margin-left: 6px;\n    margin-right: 10px;\n}\n.count {\n    display: inline-block;\n    margin-top: 1px;\n}\n.co-validation {\n    display: inline-block;\n}", ""]);
+exports.push([module.i, "\n:host {\n    overflow: hidden; /*To cope with long prop names*/\n    display: block;\n}\n\n:host:not(:last-child) {\n    margin-bottom: 5px;\n}\n\ninput[type=text],  select {\n    border-style:solid;\n    border-color: grey;\n    border-width: 1px;\n}\n\ninput[type='text'] {\n    padding-left: 4px;\n    padding-right: 10px; /*To avoid text running over the 'x' (clear button)*/\n}\n\ninput:hover, input:focus {\n    outline-style: solid;\n    outline-color: black;\n    outline-width: 1px;\n}\n.name {\n    float: left;\n    width: 145px;\n    padding-right: 5px;\n}\n\n.reference, .value, collectionDetails {\n    width: 245px;\n    padding-left: 5px;\n    margin: 1px;\n    float: left;\n}\n\ninput:not([type='checkbox']), textarea {\n    width: 245px;\n    height: 20px;\n    padding-right:10px;\n}\n\ninput[type='text'] {\n    padding-left: 4px;\n}\n\n.validation {\n    display: block;\n    color: black;\n}\n\n/*MultiLine dialog*/\n :host.multilinedialog, :host.multilinedialog .co-validation, .multilinedialog .buttons {\n    display: inline-block;\n    vertical-align: top;\n}\n\n:host.multilinedialog .name {\n    display: none;\n}\n\n:host.multilinedialog .parameter {\n    width: 245px; /*To force (on IE) any validation message to be displayed underneath the field*/\n}\n\n:host.multilinedialog input:focus,:host.multilinedialog input:hover  {\n    outline-width: 1px;\n    outline-color: blue;\n}\n\n:host.multilinedialog .input-control input:not([type='checkbox']),\n:host.multilinedialog select {\n    height: 20px;\n    padding-top: 2px;\n}\n\n:host.multilinedialog .validation {\n    color: white;\n    margin-left: 5px;\n}\n\n\n/* Drag and drop*/\n.value.droppable {\n    border: solid;\n    border-width: 1px;\n    width: 245px;\n    height: 20px;\n}\n\n.value.droppable {\n    border-color: black;\n}\n\n.value.droppable.dropping.candrop {\n    border-color: lawngreen;\n    background-color: white;\n}\n\n.value.droppable.dropping {\n    border-color: red;\n}\n\n/*auto-complete*/\n.ui-autocomplete {\n    width: 245px;\n}\n\n.ui-autocomplete .ui-menu-item {\n        font-family: 'Segoe UI';\n        font-size: 10pt;\n}\n\ntextarea {\n    color: black;\n}\n\n.multiline {\n    overflow: auto;\n}\n\n/* clear button on non-empty input field*/\n.ng-clearable{\n  background-image: url(data:image/gif;base64,R0lGODlhgACAAPcAAAAAAAQEBAwMDBQUFBgYGCAgICQkJCgoKCwsLDQ0NDs7Ozw8PERERFBQUFRUVFhYWGBgYGhoaG5ubnBwcHR0dHh4eH9/fwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAP8ALAAAAACAAIAAAAj/AP8JHEiwoMGDCBMqXMiwocOHECNKnEixosWLGDNq3Mixo8ePIAVWCEnSooWS/wQAmICypcMJAAiQVAlgpcubCGHWlPmRZk2bOIP+s/Bzp0efRVkKvVn0pwCOSJsqXVqyadGnGaNanUr1o9WmWC1q/cq168avVsNOHIu2rNmLaL+qhcg2rtu3E+Oinduwrt67eB/qjctXod/BgAMvDDA4bgCHhxsnVnyQcWPHDCNfnkx5oOXLmBNCAL25s8LPpNE+UOggNWLTlV3HdcCwtey2sAmivv2TdkPbvKXmThm8KQOIwIvX5LxU8+UFEpMrZ47TeWPoE6UXp97S+mDsFLUH/+c+U/lP8BXF8ybf03xN9BbV32YP1T0A+Bfly6afkYD9Ax7p5xp/FvnnHoAfCZgagRMZaB6CIClIGoMQOagchCFJCBqFDVlYHIYkaVjaRx4GB2JJIkrmUQH2GSBUiq9tdIB9PL1oH1AYzehejUvB+FeONOLlo10W6Wgej2YNidtERiqH5FtKkiVRk8U9KeSN7C1gX2GBRbmVQ1q6x6ViXgq3UJjmjUlZmUkphKZyanbG5k+AvVlcnKbNuZxBdgaHJ2x64vgPA1sOVxuWAun5mKGH2ieBoow6FKh9i0b6243mVWrppZjypummnHaa2qeghirqZaVmdyqqqaq6alytptL36lexxjdrUbXmdysAuWI0qVW9ZvTrTycF66uoHBpL0KTJKksQps06+w+y0lq0arS9zoptrLtRW61D3Z667abhXvvtabuaeW5B5d46Lmzt7vouZfGmOy9e3r16b1f5aittv+4qC/BXCjSAaK8DW4VdoPuilHBT6DEca4m8IWCQxKVSfNuJiR5sqcaycTwQxoyC7JrIy3qcm8mpoVwQyaaxTJrLF6usmMyg0XwQzHhRGZyVpk6nmM+8AS2pzUsRfZvRD/EclNKyMY0c0i5B7ZrUETnajZLVqWEdHdUhJWDfABGC7VGfvP0pq30ND4T2bWrbyjZJb8sWt65zf1S3a3cfmzdHe6fWt7BmTxQ4aYNrpLWrmSZZ+NHukWrj34wrJ3mPjycE6ZqZ1xw5oJ2PTOlwixs02ueGlj6QTu5Zqjrr5oEa6EgHUXBjqnOqWS9osZaJ5+6D5Rql2sCjFeyQdwOsLIyD59v2TSImTtyG1UoovUCaPT85YRgdpj3me2lU1/dUiXf9QWOR35V05yPkIQTr7uwUSA76Fn/N7S/kn/33m45SBP0LoAAHSMB1BQQAOw==);\n  background-repeat: no-repeat;\n  background-position: right -10px;\n  background-size: 8px;\n}\n.ng-clearable[class*=\"link-color\"] {\n    background-image: url(data:image/gif;base64,R0lGODlhgACAAPcAAAAAAP78/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAP8ALAAAAACAAIAAAAj/AP8JHEiwoMGDCBMqXMiwocOHECNKnEixosWLGDNq3Mixo8ePIAOIDACypMWRJD+iFGmyJcSVKTnCZOmyZsKZMTPipGmzp8CdOU8CDerT5FCiEo/yLFpSKdKHTpcy7Rj1KcOqUqfqxJoUa1atFb1+vSl2LNiXZa0WTDvybFi2an/CNeuW7FyFc1HWhZrXbN+2exf+9Ts4bt3CVhEbBqvYbuHAaxs7HgxZLuKrkvcqXvxvs+bMDT2fFY32slbSEVH3VJ0adE3WXU2/dv1WtlHaQm2rxH0RtkbfGIHnftyUd23it3UPpzxb+UThHqFjdt5S+uS/p43j1e7SOkHvyZFP1xc/mrtl8m6hg19tfL1P2O6Lqo7PlDT9qZ7vZ9+MvjJC/sz5FxqAdwnIF4FlGdgaglwpuCCDSjn4HIRHSUgRhUBZeByGgGl4IYcdevghhyIGh2GJWzGI4m8IrrgRgS7KpF+M/5lH44E23igYjDqOyGOPpakIpEMgDjneiUbWCCJdPS65UpLfOfkklFLOlGSVOA2J5U5NbskljV4OFWOYFaJIZoQiijYje7at2R1tbhZHXZzRaUfni+bdaSJ1Bum5IXY4Brhffzvy+aah2yEaUo5KEiqno4ECptocpEEK+qilvTHqI6Z7UrqcpFRpGmlf4XH6KanViZqopywqOqCreMJ6HarvqTqQn6PmNaGsu/Hama2hyorrpqCuWmx6efo6qannHRuYb8DaxJuy9RHK6mfO/kqrh9k2m5aLuhb67ZhsETkumAnmWqaOYsUWlZENuruulk6daiWU2maYqb745ntvpzD1G+W/KU4p8K0BB6vXwQMzuSHDEEcs8cRQBgQAOw==);\n}\n.ng-clearable.ng-x  { background-position: right 2px center; }\n.ng-clearable.ng-onX{ cursor: pointer; }\ninput::-ms-clear {display: none;}\n\n/* date fields*/\n.input-control input.hasDatepicker,\n.input-control input.ui-timepicker-input {\n    width: 217px;\n}\n\n.input-control input.hasDatepicker,\n.input-control input.ui-timepicker-input {\n    width: 207px;\n    float: left;\n}\n\nimg.ui-datepicker-trigger {\n    margin-left: 5px;\n    margin-top: 2px;\n    width: 20px;\n}\n\nimg.ui-datepicker-trigger {\n    background-color: black;\n}\n\nselect {\n    width: 245px;\n    height: 20px;\n}\n\n    select[multiple] {\n        height: 68px; /*Issue with IE if just inherit the default height*/\n    }\n\n.validation {\n    margin-left: 155px;\n    font-size: 11pt;\n}\n\n.suggestions {\n    display: block;\n    color: black;\n    background-color: white;\n    font-size: 10pt;\n    width: 245px;\n    border-style: solid;\n    border-width: 1px;\n    border-color: black;\n}\n.suggestions ul {\n    display: block;\n    margin: 0px;\n    padding: 5px;\n}\n\n.suggestions ul:hover {\n        color: white;\n    background-color: Black;\n}\n.suggestions li {\n    list-style-type: none;\n}", ""]);
 
 // exports
 
@@ -15308,7 +15182,7 @@ exports = module.exports = __webpack_require__(7)();
 
 
 // module
-exports.push([module.i, ":host {\n    overflow-y: auto;\n    font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;\n    color: black;\n    font-size: 11pt; \n    font-weight: 100;\n    display: block;\n    height: 100%;\n}\n\n.object {\n    height: 100%;\n    display: block;\n    padding-left: 20px;\n    overflow-y: auto;\n}\n\n.header {\n    display: block;\n    margin-bottom: 20px;\n    overflow: hidden;\n    background-image: -webkit-linear-gradient(top, #11648a, #187ba9 100%);\n    background-image: linear-gradient(to bottom, #11648a, #187ba9 100%);\n    color: white;\n}\n\nviewTitle {\n    display: inline-block; /*Otherwise focus outline takes full width*/\n}\n\n.title, .type {\n    position: relative;\n    font-weight: 200;\n    font-size: 24pt;\n    line-height: 38pt;\n    margin-left: 1px; /*Make room for focus outline*/\n    padding-left: 5px;\n    padding-right: 5px;\n    margin-right: 20px;\n    margin-top: 2px;\n    display: inline-block;\n}\n\n.type {\n    float: left;\n    margin-right: 20px;\n    display: none; /*Change this to display type (e.g. for accessibility)*/\n}\n\n/* Menus */\n.menus {\n    display: block;\n}\n.menu, .header .action {\n    display: block;\n    float: left;\n    padding: 5px;\n    margin-top: 0px;\n    margin-left: 1px; /*Else hover outline is hidden on the left-most menu */\n    margin-right: 10px;\n    margin-bottom: 5px; /*Else hover outline is hidden on the bottom */\n    font:inherit;\n    font-size: 16pt;\n    color: black;\n    background-color: transparent;\n}\n.menu:disabled {\n        color: grey;\n}\n\n.title:hover, .title:focus   {\n    outline-color:white;\n    outline-style: solid;\n    outline-width: 1px;\n}\n\n/*Icons*/\n.icon-expand:before {\n    content: \"\\E099\";\n}\n\n.icon-collapse:before {\n    content: \"\\E098\";\n}\n\n\n.actions, .main-column{\n    float: left;\n    margin-bottom: 20px;\n    margin-right: 20px;\n}\n\n\n", ""]);
+exports.push([module.i, "\n:host {\n    overflow: hidden; /*To cope with long prop names*/\n    display: block;\n}\n\n:host:not(:last-child) {\n    margin-bottom: 5px;\n}\n\n.name {\n    display: block;\n    float: left;\n    width: 150px;\n    padding-right: 5px;\n}\n\n.field {\n    display: block;\n    float: left;\n    width: 245px;\n}\n\n.reference, .value, collectionDetails {\n    display: block;\n    float: left;\n    width: 245px;\n    padding-left: 5px;\n    padding-right: 5px;\n    margin: 1px;\n}\n\n.reference img {\n    display: block;\n    cursor: pointer;\n    float: left;\n    max-width: 245px;\n    max-height: 100px;\n}\n\n/* Drag and drop*/\n.value.droppable {\n    border: solid;\n    border-width: 1px;\n    width: 245px;\n    height: 20px;\n}\n\n.value.droppable {\n    border-color: black;\n}\n\n.value.droppable.dropping.candrop {\n    border-color: lawngreen;\n    background-color: white;\n}\n\n.value.droppable.dropping {\n    border-color: red;\n}\n\n/*auto-complete*/\n.ui-autocomplete {\n    width: 245px;\n}\n\n.ui-autocomplete .ui-menu-item {\n        font-family: 'Segoe UI';\n        font-size: 10pt;\n}\n\n\ntextarea {\n    color: black;\n}\n.multiline {\n    overflow: auto;\n}\n\n/* clear button on non-empty input field*/\n.ng-clearable{\n  background-image: url(data:image/gif;base64,R0lGODlhgACAAPcAAAAAAAQEBAwMDBQUFBgYGCAgICQkJCgoKCwsLDQ0NDs7Ozw8PERERFBQUFRUVFhYWGBgYGhoaG5ubnBwcHR0dHh4eH9/fwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAP8ALAAAAACAAIAAAAj/AP8JHEiwoMGDCBMqXMiwocOHECNKnEixosWLGDNq3Mixo8ePIAVWCEnSooWS/wQAmICypcMJAAiQVAlgpcubCGHWlPmRZk2bOIP+s/Bzp0efRVkKvVn0pwCOSJsqXVqyadGnGaNanUr1o9WmWC1q/cq168avVsNOHIu2rNmLaL+qhcg2rtu3E+Oinduwrt67eB/qjctXod/BgAMvDDA4bgCHhxsnVnyQcWPHDCNfnkx5oOXLmBNCAL25s8LPpNE+UOggNWLTlV3HdcCwtey2sAmivv2TdkPbvKXmThm8KQOIwIvX5LxU8+UFEpMrZ47TeWPoE6UXp97S+mDsFLUH/+c+U/lP8BXF8ybf03xN9BbV32YP1T0A+Bfly6afkYD9Ax7p5xp/FvnnHoAfCZgagRMZaB6CIClIGoMQOagchCFJCBqFDVlYHIYkaVjaRx4GB2JJIkrmUQH2GSBUiq9tdIB9PL1oH1AYzehejUvB+FeONOLlo10W6Wgej2YNidtERiqH5FtKkiVRk8U9KeSN7C1gX2GBRbmVQ1q6x6ViXgq3UJjmjUlZmUkphKZyanbG5k+AvVlcnKbNuZxBdgaHJ2x64vgPA1sOVxuWAun5mKGH2ieBoow6FKh9i0b6243mVWrppZjypummnHaa2qeghirqZaVmdyqqqaq6alytptL36lexxjdrUbXmdysAuWI0qVW9ZvTrTycF66uoHBpL0KTJKksQps06+w+y0lq0arS9zoptrLtRW61D3Z667abhXvvtabuaeW5B5d46Lmzt7vouZfGmOy9e3r16b1f5aittv+4qC/BXCjSAaK8DW4VdoPuilHBT6DEca4m8IWCQxKVSfNuJiR5sqcaycTwQxoyC7JrIy3qcm8mpoVwQyaaxTJrLF6usmMyg0XwQzHhRGZyVpk6nmM+8AS2pzUsRfZvRD/EclNKyMY0c0i5B7ZrUETnajZLVqWEdHdUhJWDfABGC7VGfvP0pq30ND4T2bWrbyjZJb8sWt65zf1S3a3cfmzdHe6fWt7BmTxQ4aYNrpLWrmSZZ+NHukWrj34wrJ3mPjycE6ZqZ1xw5oJ2PTOlwixs02ueGlj6QTu5Zqjrr5oEa6EgHUXBjqnOqWS9osZaJ5+6D5Rql2sCjFeyQdwOsLIyD59v2TSImTtyG1UoovUCaPT85YRgdpj3me2lU1/dUiXf9QWOR35V05yPkIQTr7uwUSA76Fn/N7S/kn/33m45SBP0LoAAHSMB1BQQAOw==);\n  background-repeat: no-repeat;\n  background-position: right -10px;\n  background-size: 8px;\n}\n.ng-clearable[class*=\"link-color\"] {\n    background-image: url(data:image/gif;base64,R0lGODlhgACAAPcAAAAAAP78/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAP8ALAAAAACAAIAAAAj/AP8JHEiwoMGDCBMqXMiwocOHECNKnEixosWLGDNq3Mixo8ePIAOIDACypMWRJD+iFGmyJcSVKTnCZOmyZsKZMTPipGmzp8CdOU8CDerT5FCiEo/yLFpSKdKHTpcy7Rj1KcOqUqfqxJoUa1atFb1+vSl2LNiXZa0WTDvybFi2an/CNeuW7FyFc1HWhZrXbN+2exf+9Ts4bt3CVhEbBqvYbuHAaxs7HgxZLuKrkvcqXvxvs+bMDT2fFY32slbSEVH3VJ0adE3WXU2/dv1WtlHaQm2rxH0RtkbfGIHnftyUd23it3UPpzxb+UThHqFjdt5S+uS/p43j1e7SOkHvyZFP1xc/mrtl8m6hg19tfL1P2O6Lqo7PlDT9qZ7vZ9+MvjJC/sz5FxqAdwnIF4FlGdgaglwpuCCDSjn4HIRHSUgRhUBZeByGgGl4IYcdevghhyIGh2GJWzGI4m8IrrgRgS7KpF+M/5lH44E23igYjDqOyGOPpakIpEMgDjneiUbWCCJdPS65UpLfOfkklFLOlGSVOA2J5U5NbskljV4OFWOYFaJIZoQiijYje7at2R1tbhZHXZzRaUfni+bdaSJ1Bum5IXY4Brhffzvy+aah2yEaUo5KEiqno4ECptocpEEK+qilvTHqI6Z7UrqcpFRpGmlf4XH6KanViZqopywqOqCreMJ6HarvqTqQn6PmNaGsu/Hama2hyorrpqCuWmx6efo6qannHRuYb8DaxJuy9RHK6mfO/kqrh9k2m5aLuhb67ZhsETkumAnmWqaOYsUWlZENuruulk6daiWU2maYqb745ntvpzD1G+W/KU4p8K0BB6vXwQMzuSHDEEcs8cRQBgQAOw==);\n}\n.ng-clearable.ng-x  { background-position: right 2px center; }\n.ng-clearable.ng-onX{ cursor: pointer; }\ninput::-ms-clear {display: none;}\n\n/* date fields*/\n.input-control input.hasDatepicker,\n.input-control input.ui-timepicker-input {\n    width: 217px;\n}\n\nimg.ui-datepicker-trigger {\n    margin-left: 5px;\n    margin-top: 2px;\n    width: 20px;\n}\n\nselect {\n    width: 245px;\n    height: 20px;\n}\n\n    select[multiple] {\n        height: 68px; /*Issue with IE if just inherit the default height*/\n    }\n\n.validation {\n    font-size: 11pt;\n    padding: 5px;\n    color: white;\n}\n\n.input-control input:not([type='checkbox']), textarea {\n    width: 245px;\n    height: 20px;\n    padding-left: 2px;\n}\ninput, select {\n    border-style: none;\n}\n\n.suggestions {\n    display: block;\n    color: black;\n    background-color: white;\n    font-size: 10pt;\n    font-weight: bolder;\n    width: 245px;\n}\n.suggestions ul {\n    display: block;\n    margin: 0px;\n    padding: 5px;\n}\n\n.suggestions ul:hover {\n        color: white;\n    background-color: Black;\n}\n.suggestions li {\n    list-style-type: none;\n}", ""]);
 
 // exports
 
@@ -15326,7 +15200,7 @@ exports = module.exports = __webpack_require__(7)();
 
 
 // module
-exports.push([module.i, "host {\n    width: 410px;\n    padding: 5px;\n    margin-bottom: 20px;\n}\n\n.co-validation {\n    color: red;\n}\n\n:host.multilinedialog .co-validation {\n    vertical-align: top;\n    margin-top: 2px;\n    margin-left: 2px;\n}", ""]);
+exports.push([module.i, "\n:host {\n    display: block;\n    padding-left: 20px;\n    height: 100%;\n    overflow-y: auto;\n}\n\n.title, .message, .code, .description, .stacktrace{\n    display: block;\n    margin-bottom: 20px;\n}\n\n.title, .message {\n    font-size: 16pt;\n    color: red;\n}\n\n .code, .description, .stacktrace {\n    font-size: 12pt;\n    color: white;\n}", ""]);
 
 // exports
 
@@ -15344,7 +15218,7 @@ exports = module.exports = __webpack_require__(7)();
 
 
 // module
-exports.push([module.i, "host {\n    width: 410px;\n    padding: 5px;\n    margin-bottom: 20px;\n}\n", ""]);
+exports.push([module.i, ":host {\n    position: fixed;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    background-color: black;\n}\n\na {\n    color: white;\n    font-size: 36pt;\n    padding: 5px;\n    margin-left: 10px;\n}\n\n    a.disabled {\n        display: none;\n    }\n\n    a:hover, a:focus {\n        outline-style: solid;\n        outline-width: 1px;\n        outline-color: white;\n    }\n\n    a:active {\n        outline-style: solid;\n        outline-width: 2px;\n        outline-color: white;\n    }\n\na, .currentcopy {\n    float: left;\n}\n\n.currentcopy {\n    display: inline-block;\n    margin-left: 20px;\n}\n\n/*Warnings & Messages*/\n.messages, .warnings, .loading {\n    background-color: black;\n    font-size: 11pt;\n    color: white;\n}\n\n.warnings {\n    color: red;\n}\n\n/*Icons */\n[class^=\"icon-\"], [class*=\" icon-\"] {\n    font-family: \"iconFont\";\n    font-weight: normal;\n    font-style: normal;\n    text-decoration: inherit;\n    -webkit-font-smoothing: antialiased;\n    display: inline-block;\n    width: auto;\n    height: auto;\n    line-height: normal;\n    vertical-align: baseline;\n    background-image: none;\n    background-position: 0% 0%;\n    background-repeat: repeat;\n    margin-top: 0;\n    position: relative;\n    cursor: pointer;\n}\n\n.icon-home:before {\n    content: \"\\E000\";\n}\n\n.icon-arrow-left-3:before {\n    content: \"\\E09F\";\n}\n\n.icon-arrow-right-3:before {\n    content: \"\\E09D\";\n}\n\n.icon-loop:before {\n    content: \"\\E08F\";\n}\n\n.icon-help:before {\n    content: \"\\E085\";\n}\n\n.icon-swap:before {\n    content: \"\\E0A4\";\n}\n\n.icon-full:before {\n    content: \"\\E08E\";\n}\n\n.icon-recent:before {\n    content: \"\\E06B\";\n}\n\n.icon-speech:before {\n    content: \"\\E036\";\n}\n\n.icon-properties:before {\n    content: \"\\E048\";\n}\n\n.icon-logoff:before {\n    content: \"\\E03B\";\n}\n\n/*Hide/show Cicero icon*/\n    .icon-speech {\n        display: none;\n        /*display:    inline-block;*/\n    }", ""]);
 
 // exports
 
@@ -15362,7 +15236,7 @@ exports = module.exports = __webpack_require__(7)();
 
 
 // module
-exports.push([module.i, ":host {\n    display: block;\n    margin-left: 20px;\n    padding-left: 20px;\n    height: 100%;\n    overflow-y: auto;\n}\n\n.header {\n    display: block;\n    overflow: hidden;\n    font-size: 24pt; \n    font-weight: 200;\n    background-image: -webkit-linear-gradient(top, #11648a, #187ba9 100%);\n    background-image: linear-gradient(to bottom, #11648a, #187ba9 100%);\n    color: white;\n}\n\n.collection {\n    display: block;\n}\n\ntable {\n    font-size: 11pt; \n    font-weight: 200;\n}\n\ntr {\n    cursor: pointer;\n    color: white;\n}\n\nth, td {\n    font-weight: 100; /*Override browser default*/\n    text-align: left;\n    padding-left: 5px;\n    padding-right: 5px;\n    vertical-align: top;\n}\n\ntbody .number {\n    text-align:right;\n}\n", ""]);
+exports.push([module.i, ".home {\n    display: block;\n    padding-left: 20px;\n    height: 100%;\n    overflow-y: auto;\n    color: white;\n    font-size: 11pt; \n    font-weight: 100;\n}\n\n.header {\n    display: block;\n    margin-bottom: 20px;\n    overflow: hidden;\n}\n\n.title {\n    display: block;\n    position: relative;\n    font-weight: 200;\n    font-size: 24pt;\n    line-height: 38pt;\n    margin-left: 1px; /*Make room for focus outline */\n    padding-left: 5px;\n    padding-right: 5px;\n    margin-right: 20px;\n    margin-top: 2px;\n    display: block;\n}\n\n.main-column{\n    float: left;\n    margin-bottom: 20px;\n    margin-right: 20px;\n}", ""]);
 
 // exports
 
@@ -15380,7 +15254,7 @@ exports = module.exports = __webpack_require__(7)();
 
 
 // module
-exports.push([module.i, ":host {\n    width: 245px;\n    padding-left: 5px;\n    padding-right: 5px;\n    padding-top: 1px;\n    margin-top: 1px;\n    margin-bottom: 1px;\n}\n:host.multilinedialog {\n    padding-left: 10px;\n    width: 247px;\n    display: inline-block;\n    overflow: auto;\n}\n:host.multilinedialog .name{\n display: none;\n}\n\n.reference {\n    cursor: pointer;\n}", ""]);
+exports.push([module.i, ".list {\n    color: white;\n    padding-left: 20px;\n    height: 100%;\n    overflow-y: auto;\n    display: block;\n    font-weight: 100;\n}\n\n.header {\n    display: block;\n    margin-bottom: 20px;\n    overflow: hidden;\n}\n\n.title, .type {\n    position: relative;\n    font-weight: 100;\n    font-size: 24pt;\n    line-height: 38pt;\n    margin-left: 1px; /*Make room for focus outline*/\n    padding-left: 5px;\n    padding-right: 5px;\n    margin-right: 20px;\n    margin-top: 2px;\n    display: block;\n}\n\n.type {\n    float: left;\n    margin-right: 20px;\n    display: none; /*Change this to display type (e.g. for accessibility)*/\n}\n\n/* Menus */\n\n.menus {\n    display: block;\n}\n.menu, .header .action {\n    display: block;\n    float: left;\n    padding: 5px;\n    margin-top: 0px;\n    margin-left: 1px; /*Else hover outline is hidden on the left-most menu */\n    margin-right: 10px;\n    margin-bottom: 5px; /*Else hover outline is hidden on the bottom */\n    font-size: 16pt;\n}\n\n.menu:disabled, .ok:disabled {\n        color: grey;\n    }\n\n.summary {\n    display: block;\n    width: 450px;\n    font-size: 12pt;\n    margin-bottom: 10px;\n    overflow: hidden;\n}\n\n.details {\n    padding-left: 40px;\n    width: 400px;\n    float: left;\n}\n\n.reference {\n    cursor: pointer;\n    font-size: 11pt; \n    padding-left: 5px;\n    padding-right: 5px;\n    margin: 1px;\n    width: 440px;\n}\n\n.reference:not(:last-child) {\n   margin-bottom: 5px;\n}\n\n.icon-list, .icon-table {\n    cursor: pointer;\n    float: right;\n    width: 20px;\n    padding-top: 5px;\n    padding-left: 5px;\n}\n\n\ntd.checkbox {\n    background-color: black; /*Because check-box only ever displayed on default background*/\n}\n\n/*Tables*/\ntable {\n    font-size: 11pt;\n}\nth, td {\n    font-weight: 100; /*Override browser default*/\n    text-align: left;\n    padding-left: 5px;\n    padding-right: 5px;\n    vertical-align: top;\n}\n\ntbody .number {\n    text-align:right;\n}\n\ntbody tr {\n  cursor:pointer;\n}\n\n", ""]);
 
 // exports
 
@@ -15398,7 +15272,25 @@ exports = module.exports = __webpack_require__(7)();
 
 
 // module
-exports.push([module.i, "\n:host {\n    overflow: hidden; /*To cope with long prop names*/\n    display: block;\n}\n\n:host:not(:last-child) {\n    margin-bottom: 5px;\n}\n\n.name {\n    display: block;\n    float: left;\n    width: 150px;\n    padding-right: 5px;\n    font-weight: bolder;\n}\n\n.reference, .value {\n    display: block;\n    float: left;\n    width: 245px;\n    padding-left: 5px;\n    padding-right: 5px;\n    margin: 1px;\n}\n\n.reference {\n    cursor: pointer;\n}\n\n.multiline {\n    overflow: auto;\n}\n", ""]);
+exports.push([module.i, ":host {\n    display: block;\n}\n\nnof-action   {\n    outline: none;\n    margin-right: 20px;\n    display: block;\n    float: left;\n    margin-left: 1px; /*Else hover outline is hidden on the left-most menu*/\n    margin-right: 10px;\n    margin-bottom: 5px; /*Else hover outline is hidden on the bottom*/\n    font-size: 16pt;\n}\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ 890:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(7)();
+// imports
+
+
+// module
+exports.push([module.i, ":host {\n    overflow-y: auto;\n    font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;\n    color: white;\n    font-size: 11pt; \n    font-weight: 100;\n    display: block;\n    margin-left: 20px;\n    padding-bottom: 60px;\n}\nviewTitle {\n    display: inline-block; /*Otherwise focus outline takes full width*/\n}\n\n.title, header .type {\n    position: relative;\n    font-weight: 200;\n    font-size: 24pt;\n    line-height: 38pt;\n    margin-left: 1px; /*Make room for focus outline*/\n    padding-left: 5px;\n    padding-right: 5px;\n    margin-right: 20px;\n    margin-top: 2px;\n    display: block;\n}\n\nheader .type {\n    float: left;\n    margin-right: 20px;\n    display: none; /*Change this to display type (e.g. for accessibility)*/\n}\nnof-parameters {\n    display: inline-block;\n}\n.columnHeader {\n    display: inline-block;\n    vertical-align: top;\n    width: 247px;\n    padding-left: 10px;\n}\n\n\ninput.ok {\n    font-size: 9pt;\n    height: 20px;\n    margin-top: 1px;\n    margin-right: 0px;\n    margin-left: 2px;\n    margin-bottom: 5px;\n    padding-top: 1px;\n    padding-bottom: 0px;\n    padding-left: 2px;\n    padding-right: 2px;\n    vertical-align: top;\n    outline-color: lightgray;\n}\n\ninput.close {\n    float: left;\n    margin-left: 6px;\n    margin-right: 10px;\n}\n.count {\n    display: inline-block;\n    margin-top: 1px;\n}\n.co-validation {\n    display: inline-block;\n}", ""]);
 
 // exports
 
@@ -15411,223 +15303,345 @@ module.exports = module.exports.toString();
 /***/ 891:
 /***/ (function(module, exports, __webpack_require__) {
 
+exports = module.exports = __webpack_require__(7)();
+// imports
+
+
+// module
+exports.push([module.i, ":host {\n    overflow-y: auto;\n    font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;\n    color: white;\n    font-size: 11pt; \n    font-weight: 100;\n    display: block;\n    height: 100%;\n}\n\n.object {\n    height: 100%;\n    display: block;\n    padding-left: 20px;\n    overflow-y: auto;\n}\n\n.header {\n    display: block;\n    margin-bottom: 20px;\n    overflow: hidden;\n}\n\nviewTitle {\n    display: inline-block; /*Otherwise focus outline takes full width*/\n}\n\n.title, .type {\n    position: relative;\n    font-weight: 200;\n    font-size: 24pt;\n    line-height: 38pt;\n    margin-left: 1px; /*Make room for focus outline*/\n    padding-left: 5px;\n    padding-right: 5px;\n    margin-right: 20px;\n    margin-top: 2px;\n    display: inline-block;\n}\n\n.type {\n    float: left;\n    margin-right: 20px;\n    display: none; /*Change this to display type (e.g. for accessibility)*/\n}\n\n/* Menus */\n.menus {\n    display: block;\n}\n.menu, .header .action {\n    display: block;\n    float: left;\n    padding: 5px;\n    margin-top: 0px;\n    margin-left: 1px; /*Else hover outline is hidden on the left-most menu */\n    margin-right: 10px;\n    margin-bottom: 5px; /*Else hover outline is hidden on the bottom */\n    font:inherit;\n    font-size: 16pt;\n    color: white;\n    background-color: transparent;\n}\n.menu:disabled {\n        color: grey;\n}\n\n.title:hover, .title:focus   {\n    outline-color: white;\n    outline-style: solid;\n    outline-width: 1px;\n}\n\n/*Icons*/\n.icon-expand:before {\n    content: \"\\E099\";\n}\n\n.icon-collapse:before {\n    content: \"\\E098\";\n}\n\n\n.actions, .main-column{\n    float: left;\n    margin-bottom: 20px;\n    margin-right: 20px;\n}\n\n\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ 892:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(7)();
+// imports
+
+
+// module
+exports.push([module.i, "host {\n    width: 410px;\n    padding: 5px;\n    margin-bottom: 20px;\n}\n\n.co-validation {\n    color: red;\n}\n\n:host.multilinedialog .co-validation {\n    vertical-align: top;\n    margin-top: 2px;\n    margin-left: 2px;\n}", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ 893:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(7)();
+// imports
+
+
+// module
+exports.push([module.i, "host {\n    width: 410px;\n    padding: 5px;\n    margin-bottom: 20px;\n}\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ 894:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(7)();
+// imports
+
+
+// module
+exports.push([module.i, ":host {\n    display: block;\n    color: white;\n    margin-left: 20px;\n    padding-left: 20px;\n    height: 100%;\n    overflow-y: auto;\n}\n\n.header {\n    display: block;\n    overflow: hidden;\n    font-size: 24pt; \n    font-weight: 200;\n}\n\n.collection {\n    display: block;\n}\n\ntable {\n    font-size: 11pt; \n    font-weight: 200;\n}\n\ntr {\n    cursor: pointer;\n}\n\nth, td {\n    font-weight: 100; /*Override browser default*/\n    text-align: left;\n    padding-left: 5px;\n    padding-right: 5px;\n    vertical-align: top;\n}\n\ntbody .number {\n    text-align:right;\n}\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ 895:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(7)();
+// imports
+
+
+// module
+exports.push([module.i, ":host {\n    width: 245px;\n    padding-left: 5px;\n    padding-right: 5px;\n    padding-top: 1px;\n    margin-top: 1px;\n    margin-bottom: 1px;\n}\n:host.multilinedialog {\n    padding-left: 10px;\n    width: 247px;\n    display: inline-block;\n    overflow: auto;\n}\n:host.multilinedialog .name{\n display: none;\n}\n\n.reference {\n    cursor: pointer;\n}", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ 896:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(7)();
+// imports
+
+
+// module
+exports.push([module.i, "\n:host {\n    overflow: hidden; /*To cope with long prop names*/\n    display: block;\n}\n\n:host:not(:last-child) {\n    margin-bottom: 5px;\n}\n\n.name {\n    display: block;\n    float: left;\n    width: 150px;\n    padding-right: 5px;\n    font-weight: bolder;\n}\n\n.reference, .value {\n    display: block;\n    float: left;\n    width: 245px;\n    padding-left: 5px;\n    padding-right: 5px;\n    margin: 1px;\n}\n\n.reference {\n    cursor: pointer;\n}\n\n.multiline {\n    overflow: auto;\n}\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ 898:
+/***/ (function(module, exports, __webpack_require__) {
+
 var map = {
 	"./af": 434,
 	"./af.js": 434,
-	"./ar": 440,
+	"./ar": 441,
 	"./ar-dz": 435,
 	"./ar-dz.js": 435,
-	"./ar-ly": 436,
-	"./ar-ly.js": 436,
-	"./ar-ma": 437,
-	"./ar-ma.js": 437,
-	"./ar-sa": 438,
-	"./ar-sa.js": 438,
-	"./ar-tn": 439,
-	"./ar-tn.js": 439,
-	"./ar.js": 440,
-	"./az": 441,
-	"./az.js": 441,
-	"./be": 442,
-	"./be.js": 442,
-	"./bg": 443,
-	"./bg.js": 443,
-	"./bn": 444,
-	"./bn.js": 444,
-	"./bo": 445,
-	"./bo.js": 445,
-	"./br": 446,
-	"./br.js": 446,
-	"./bs": 447,
-	"./bs.js": 447,
-	"./ca": 448,
-	"./ca.js": 448,
-	"./cs": 449,
-	"./cs.js": 449,
-	"./cv": 450,
-	"./cv.js": 450,
-	"./cy": 451,
-	"./cy.js": 451,
-	"./da": 452,
-	"./da.js": 452,
-	"./de": 454,
-	"./de-at": 453,
-	"./de-at.js": 453,
-	"./de.js": 454,
-	"./dv": 455,
-	"./dv.js": 455,
-	"./el": 456,
-	"./el.js": 456,
-	"./en-au": 457,
-	"./en-au.js": 457,
-	"./en-ca": 458,
-	"./en-ca.js": 458,
-	"./en-gb": 459,
-	"./en-gb.js": 459,
-	"./en-ie": 460,
-	"./en-ie.js": 460,
-	"./en-nz": 461,
-	"./en-nz.js": 461,
-	"./eo": 462,
-	"./eo.js": 462,
-	"./es": 464,
-	"./es-do": 463,
-	"./es-do.js": 463,
-	"./es.js": 464,
-	"./et": 465,
-	"./et.js": 465,
-	"./eu": 466,
-	"./eu.js": 466,
-	"./fa": 467,
-	"./fa.js": 467,
-	"./fi": 468,
-	"./fi.js": 468,
-	"./fo": 469,
-	"./fo.js": 469,
-	"./fr": 472,
-	"./fr-ca": 470,
-	"./fr-ca.js": 470,
-	"./fr-ch": 471,
-	"./fr-ch.js": 471,
-	"./fr.js": 472,
-	"./fy": 473,
-	"./fy.js": 473,
-	"./gd": 474,
-	"./gd.js": 474,
-	"./gl": 475,
-	"./gl.js": 475,
-	"./he": 476,
-	"./he.js": 476,
-	"./hi": 477,
-	"./hi.js": 477,
-	"./hr": 478,
-	"./hr.js": 478,
-	"./hu": 479,
-	"./hu.js": 479,
-	"./hy-am": 480,
-	"./hy-am.js": 480,
-	"./id": 481,
-	"./id.js": 481,
-	"./is": 482,
-	"./is.js": 482,
-	"./it": 483,
-	"./it.js": 483,
-	"./ja": 484,
-	"./ja.js": 484,
-	"./jv": 485,
-	"./jv.js": 485,
-	"./ka": 486,
-	"./ka.js": 486,
-	"./kk": 487,
-	"./kk.js": 487,
-	"./km": 488,
-	"./km.js": 488,
-	"./ko": 489,
-	"./ko.js": 489,
-	"./ky": 490,
-	"./ky.js": 490,
-	"./lb": 491,
-	"./lb.js": 491,
-	"./lo": 492,
-	"./lo.js": 492,
-	"./lt": 493,
-	"./lt.js": 493,
-	"./lv": 494,
-	"./lv.js": 494,
-	"./me": 495,
-	"./me.js": 495,
-	"./mi": 496,
-	"./mi.js": 496,
-	"./mk": 497,
-	"./mk.js": 497,
-	"./ml": 498,
-	"./ml.js": 498,
-	"./mr": 499,
-	"./mr.js": 499,
-	"./ms": 501,
-	"./ms-my": 500,
-	"./ms-my.js": 500,
-	"./ms.js": 501,
-	"./my": 502,
-	"./my.js": 502,
-	"./nb": 503,
-	"./nb.js": 503,
-	"./ne": 504,
-	"./ne.js": 504,
-	"./nl": 506,
-	"./nl-be": 505,
-	"./nl-be.js": 505,
-	"./nl.js": 506,
-	"./nn": 507,
-	"./nn.js": 507,
-	"./pa-in": 508,
-	"./pa-in.js": 508,
-	"./pl": 509,
-	"./pl.js": 509,
-	"./pt": 511,
-	"./pt-br": 510,
-	"./pt-br.js": 510,
-	"./pt.js": 511,
-	"./ro": 512,
-	"./ro.js": 512,
-	"./ru": 513,
-	"./ru.js": 513,
-	"./se": 514,
-	"./se.js": 514,
-	"./si": 515,
-	"./si.js": 515,
-	"./sk": 516,
-	"./sk.js": 516,
-	"./sl": 517,
-	"./sl.js": 517,
-	"./sq": 518,
-	"./sq.js": 518,
-	"./sr": 520,
-	"./sr-cyrl": 519,
-	"./sr-cyrl.js": 519,
-	"./sr.js": 520,
-	"./ss": 521,
-	"./ss.js": 521,
-	"./sv": 522,
-	"./sv.js": 522,
-	"./sw": 523,
-	"./sw.js": 523,
-	"./ta": 524,
-	"./ta.js": 524,
-	"./te": 525,
-	"./te.js": 525,
-	"./tet": 526,
-	"./tet.js": 526,
-	"./th": 527,
-	"./th.js": 527,
-	"./tl-ph": 528,
-	"./tl-ph.js": 528,
-	"./tlh": 529,
-	"./tlh.js": 529,
-	"./tr": 530,
-	"./tr.js": 530,
-	"./tzl": 531,
-	"./tzl.js": 531,
-	"./tzm": 533,
-	"./tzm-latn": 532,
-	"./tzm-latn.js": 532,
-	"./tzm.js": 533,
-	"./uk": 534,
-	"./uk.js": 534,
-	"./uz": 535,
-	"./uz.js": 535,
-	"./vi": 536,
-	"./vi.js": 536,
-	"./x-pseudo": 537,
-	"./x-pseudo.js": 537,
-	"./yo": 538,
-	"./yo.js": 538,
-	"./zh-cn": 539,
-	"./zh-cn.js": 539,
-	"./zh-hk": 540,
-	"./zh-hk.js": 540,
-	"./zh-tw": 541,
-	"./zh-tw.js": 541
+	"./ar-kw": 436,
+	"./ar-kw.js": 436,
+	"./ar-ly": 437,
+	"./ar-ly.js": 437,
+	"./ar-ma": 438,
+	"./ar-ma.js": 438,
+	"./ar-sa": 439,
+	"./ar-sa.js": 439,
+	"./ar-tn": 440,
+	"./ar-tn.js": 440,
+	"./ar.js": 441,
+	"./az": 442,
+	"./az.js": 442,
+	"./be": 443,
+	"./be.js": 443,
+	"./bg": 444,
+	"./bg.js": 444,
+	"./bn": 445,
+	"./bn.js": 445,
+	"./bo": 446,
+	"./bo.js": 446,
+	"./br": 447,
+	"./br.js": 447,
+	"./bs": 448,
+	"./bs.js": 448,
+	"./ca": 449,
+	"./ca.js": 449,
+	"./cs": 450,
+	"./cs.js": 450,
+	"./cv": 451,
+	"./cv.js": 451,
+	"./cy": 452,
+	"./cy.js": 452,
+	"./da": 453,
+	"./da.js": 453,
+	"./de": 456,
+	"./de-at": 454,
+	"./de-at.js": 454,
+	"./de-ch": 455,
+	"./de-ch.js": 455,
+	"./de.js": 456,
+	"./dv": 457,
+	"./dv.js": 457,
+	"./el": 458,
+	"./el.js": 458,
+	"./en-au": 459,
+	"./en-au.js": 459,
+	"./en-ca": 460,
+	"./en-ca.js": 460,
+	"./en-gb": 461,
+	"./en-gb.js": 461,
+	"./en-ie": 462,
+	"./en-ie.js": 462,
+	"./en-nz": 463,
+	"./en-nz.js": 463,
+	"./eo": 464,
+	"./eo.js": 464,
+	"./es": 466,
+	"./es-do": 465,
+	"./es-do.js": 465,
+	"./es.js": 466,
+	"./et": 467,
+	"./et.js": 467,
+	"./eu": 468,
+	"./eu.js": 468,
+	"./fa": 469,
+	"./fa.js": 469,
+	"./fi": 470,
+	"./fi.js": 470,
+	"./fo": 471,
+	"./fo.js": 471,
+	"./fr": 474,
+	"./fr-ca": 472,
+	"./fr-ca.js": 472,
+	"./fr-ch": 473,
+	"./fr-ch.js": 473,
+	"./fr.js": 474,
+	"./fy": 475,
+	"./fy.js": 475,
+	"./gd": 476,
+	"./gd.js": 476,
+	"./gl": 477,
+	"./gl.js": 477,
+	"./gom-latn": 478,
+	"./gom-latn.js": 478,
+	"./he": 479,
+	"./he.js": 479,
+	"./hi": 480,
+	"./hi.js": 480,
+	"./hr": 481,
+	"./hr.js": 481,
+	"./hu": 482,
+	"./hu.js": 482,
+	"./hy-am": 483,
+	"./hy-am.js": 483,
+	"./id": 484,
+	"./id.js": 484,
+	"./is": 485,
+	"./is.js": 485,
+	"./it": 486,
+	"./it.js": 486,
+	"./ja": 487,
+	"./ja.js": 487,
+	"./jv": 488,
+	"./jv.js": 488,
+	"./ka": 489,
+	"./ka.js": 489,
+	"./kk": 490,
+	"./kk.js": 490,
+	"./km": 491,
+	"./km.js": 491,
+	"./kn": 492,
+	"./kn.js": 492,
+	"./ko": 493,
+	"./ko.js": 493,
+	"./ky": 494,
+	"./ky.js": 494,
+	"./lb": 495,
+	"./lb.js": 495,
+	"./lo": 496,
+	"./lo.js": 496,
+	"./lt": 497,
+	"./lt.js": 497,
+	"./lv": 498,
+	"./lv.js": 498,
+	"./me": 499,
+	"./me.js": 499,
+	"./mi": 500,
+	"./mi.js": 500,
+	"./mk": 501,
+	"./mk.js": 501,
+	"./ml": 502,
+	"./ml.js": 502,
+	"./mr": 503,
+	"./mr.js": 503,
+	"./ms": 505,
+	"./ms-my": 504,
+	"./ms-my.js": 504,
+	"./ms.js": 505,
+	"./my": 506,
+	"./my.js": 506,
+	"./nb": 507,
+	"./nb.js": 507,
+	"./ne": 508,
+	"./ne.js": 508,
+	"./nl": 510,
+	"./nl-be": 509,
+	"./nl-be.js": 509,
+	"./nl.js": 510,
+	"./nn": 511,
+	"./nn.js": 511,
+	"./pa-in": 512,
+	"./pa-in.js": 512,
+	"./pl": 513,
+	"./pl.js": 513,
+	"./pt": 515,
+	"./pt-br": 514,
+	"./pt-br.js": 514,
+	"./pt.js": 515,
+	"./ro": 516,
+	"./ro.js": 516,
+	"./ru": 517,
+	"./ru.js": 517,
+	"./sd": 518,
+	"./sd.js": 518,
+	"./se": 519,
+	"./se.js": 519,
+	"./si": 520,
+	"./si.js": 520,
+	"./sk": 521,
+	"./sk.js": 521,
+	"./sl": 522,
+	"./sl.js": 522,
+	"./sq": 523,
+	"./sq.js": 523,
+	"./sr": 525,
+	"./sr-cyrl": 524,
+	"./sr-cyrl.js": 524,
+	"./sr.js": 525,
+	"./ss": 526,
+	"./ss.js": 526,
+	"./sv": 527,
+	"./sv.js": 527,
+	"./sw": 528,
+	"./sw.js": 528,
+	"./ta": 529,
+	"./ta.js": 529,
+	"./te": 530,
+	"./te.js": 530,
+	"./tet": 531,
+	"./tet.js": 531,
+	"./th": 532,
+	"./th.js": 532,
+	"./tl-ph": 533,
+	"./tl-ph.js": 533,
+	"./tlh": 534,
+	"./tlh.js": 534,
+	"./tr": 535,
+	"./tr.js": 535,
+	"./tzl": 536,
+	"./tzl.js": 536,
+	"./tzm": 538,
+	"./tzm-latn": 537,
+	"./tzm-latn.js": 537,
+	"./tzm.js": 538,
+	"./uk": 539,
+	"./uk.js": 539,
+	"./ur": 540,
+	"./ur.js": 540,
+	"./uz": 542,
+	"./uz-latn": 541,
+	"./uz-latn.js": 541,
+	"./uz.js": 542,
+	"./vi": 543,
+	"./vi.js": 543,
+	"./x-pseudo": 544,
+	"./x-pseudo.js": 544,
+	"./yo": 545,
+	"./yo.js": 545,
+	"./zh-cn": 546,
+	"./zh-cn.js": 546,
+	"./zh-hk": 547,
+	"./zh-hk.js": 547,
+	"./zh-tw": 548,
+	"./zh-tw.js": 548
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -15643,211 +15657,211 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 891;
+webpackContext.id = 898;
 
-
-/***/ }),
-
-/***/ 894:
-/***/ (function(module, exports) {
-
-module.exports = "<nof-action *ngFor=\"let action of actions\" [action]=\"action\"></nof-action>\n\n"
-
-/***/ }),
-
-/***/ 895:
-/***/ (function(module, exports) {
-
-module.exports = "<div *ngFor=\"let menu of items; let i = index\">\n\n    <div *ngIf=\"menuName(menu)\" (click)=\"toggleCollapsed(menu)\"  class=\"submenu\" [ngSwitch]=\"navCollapsed(menu)\">\n        {{menuName(menu)}}\n        <div *ngSwitchCase=\"true\" (keydown.enter)=\"toggleCollapsed(menu)\" class=\"icon-expand\" tabindex=\"0\"></div>\n        <div *ngSwitchCase=\"false\" (keydown.enter)=\"toggleCollapsed(menu)\" class=\"icon-collapse\" tabindex=\"0\"></div>\n    </div>\n    <div  *ngIf=\"!navCollapsed(menu)\"  class=\"menuitem\" [ngClass]=\"displayClass(menu)\">\n        <div *ngIf=\"hasActions(menu)\">\n            <div *ngFor=\"let action of menuActions(menu, i)\">\n                <nof-action [action]=\"action\"></nof-action>\n            </div>\n        </div>\n        <div  *ngIf=\"hasItems(menu)\">\n            <nof-action-list [menuHolder]=\"menu\"></nof-action-list>\n        </div>\n    </div>\n</div>\n"
-
-/***/ }),
-
-/***/ 896:
-/***/ (function(module, exports) {
-
-module.exports = "<input #focus tabindex=\"0\" type=\"button\" geminiClick (leftClick)=\"doClick()\" (rightClick)=\"doRightClick()\"  [value]=\"value\" [disabled]=\"disabled()\" *ngIf=\"show()\" [title]=\"title\" [ngClass]=\"class()\">"
-
-/***/ }),
-
-/***/ 897:
-/***/ (function(module, exports) {
-
-module.exports = "<router-outlet></router-outlet>\n<nof-footer></nof-footer>\n"
-
-/***/ }),
-
-/***/ 898:
-/***/ (function(module, exports) {
-
-module.exports = "<div id=\"pane1\" class=\"single\">\n    <div class=\"properties\">\n        <div class=\"header\">\n            <div class=\"title\">Application Properties</div>\n        </div>\n        <div class=\"main-column\">\n            <div class=\"properties\">\n                <div class=\"property\">\n                    Application Name: {{applicationName}}\n                </div>\n                <div class=\"property\">\n                    User Name: {{userName}}\n                </div>\n                <div class=\"property\">\n                    Server Url: {{serverUrl}}\n                </div>\n                <div class=\"property\">\n                    Server version: {{implVersion}}\n                </div>\n                <div class=\"property\">\n                    Client version: {{clientVersion}}\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n"
-
-/***/ }),
-
-/***/ 899:
-/***/ (function(module, exports) {
-
-module.exports = "<div *ngIf=\"attachment\" class=\"reference\" geminiClick (leftClick)=\"doAttachmentClick()\" (rightClick)=\"doAttachmentClick(true)\" tabindex=\"0\">\n    <div *ngIf=\"!image\">{{title}}</div>\n    <img *ngIf=\"image\" src=\"{{image}}\" alt=\"{{title}}\" />\n</div>\n<div *ngIf=\"!attachment\"><div>Attachment not yet supported on transient</div></div>"
-
-/***/ }),
-
-/***/ 900:
-/***/ (function(module, exports) {
-
-module.exports = "<div [attr.id]=\"paneIdName\" [ngClass]=\"paneType\">\n    <div class=\"attachment view\">\n        <div class=\"reference\">\n            <img *ngIf=\"image\" src=\"{{image}}\" alt=\"{{title}}\" />\n        </div>\n    </div>\n</div>\n<router-outlet (activate)=\"onChild()\" (deactivate)=\"onChildless()\"></router-outlet>\n"
 
 /***/ }),
 
 /***/ 901:
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"cicero\">\n    <div class=\"output\" aria-live=\"polite\"><pre>{{outputText}}</pre></div>\n    <input #inputField type=\"text\" [ngModel]=\"inputText\" \n     (keyup.enter)=\"parseInput(inputField.value)\"\n     (keydown.arrowup)=\"selectPreviousInput()\" \n     (keydown.arrowdown)=\"clearInput()\"\n     />\n</div>"
+module.exports = "<nof-action *ngFor=\"let action of actions\" [action]=\"action\"></nof-action>\n\n"
 
 /***/ }),
 
 /***/ 902:
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"summary\">\n    <div class=\"name\">{{title}}:</div>\n    <div class=\"details\">{{details}}</div>\n    <div>\n        <img *ngIf=\"showSummary()\" class=\"icon-summary\" (click)=\"doSummary()\" src=\"../../assets/summary.png\" title=\"Close Collection\" />\n        <img *ngIf=\"showList()\" class=\"icon-list\" (click)=\"doList()\" src=\"../../assets/list.png\" title=\"View as List\"/>\n        <img *ngIf=\"showTable()\" class=\"icon-table\" (click)=\"doTable()\" src=\"../../assets/table.png\" title=\"View as Table\"/>\n    </div>\n</div>\n<div class=\"messages\">{{message}}</div>\n<nof-action-bar *ngIf=\"showActions()\" class=\"actions\" [menuHolder]=\"collection\"></nof-action-bar>\n<nof-dialog *ngIf=\"showActions()\" [parent]=\"collection\" [selectedDialogId]=\"selectedDialogId\"></nof-dialog>\n\n<table *ngIf=\"state == 'table'\">\n    <thead>\n    <tr>\n        <th [hidden]=\"(disableActions() || noItems())\"><input type=\"checkbox\" [id]=\"itemId('all')\" [ngModel]=\"allSelected()\" (click)=\"selectAll()\">All</th>\n        <th *ngFor=\"let heading of header\" scope=\"col\">\n            {{heading}}\n        </th>\n    </tr>\n    </thead>\n    <tbody *ngIf=\"hasTableData()\">\n        <tr *ngFor=\"let item of items; let i = index\" [ngClass]=\"itemColor(item)\" class=\"clickable-area\"  gemini-drag tabindex=\"0\">\n            <td [hidden]=\"disableActions()\" class=\"checkbox\">\n\t\t\t     <input type=\"checkbox\" [id]=\"itemId(i)\" [(ngModel)]=\"item.selected\">\n\t\t\t</td>\n            <td *ngIf=\"itemHasTableTitle(item)\" class=\"cell\" geminiClick (leftClick)=\"doItemClick(item)\" (rightClick)=\"doItemClick(item, true)\">\n                {{itemTableTitle(item)}}\n            </td>\n            <td *ngFor=\"let property of itemTableProperties(item)\" geminiClick (leftClick)=\"doItemClick(item)\" (rightClick)=\"doItemClick(item, true)\" [ngClass]=\"itemColor(item)\" class=\"cell\">\n                <div  [ngSwitch]=\"propertyType(property)\">\n                    <div *ngSwitchCase=\"'ref'\" class=\"clickable-area\">\n                        {{propertyFormattedValue(property)}}\n                    </div>\n                    <div *ngSwitchCase=\"'scalar'\" [ngSwitch]=\"propertyReturnType(property)\">\n                        <div *ngSwitchCase=\"'boolean'\" class=\"clickable-area\">\n                            <input type=\"checkbox\" [checked]=\"propertyValue(property)\" disabled=\"disabled\" />\n                        </div>\n                        <div *ngSwitchCase=\"'number'\" class=\"clickable-area\">\n                            <div class=\"clickable-area number\">{{propertyFormattedValue(property)}}</div>\n                        </div>\n                        <div *ngSwitchDefault class=\"clickable-area\">\n                            <div class=\"clickable-area\">{{propertyFormattedValue(property)}}</div>\n                        </div>\n                    </div>\n                </div>\n            </td>\n        </tr>\n    </tbody>\n</table>\n<table *ngIf=\"state == 'list'\">\n    <thead>\n        <tr>\n            <th [hidden]=\"(disableActions() || noItems())\"><input type=\"checkbox\" [id]=\"itemId('all')\" [ngModel]=\"allSelected()\" (click)=\"selectAll()\">All</th>\n        </tr>\n    </thead>\n    <tbody>\n        <tr *ngFor=\"let item of items; let i = index\" [ngClass]=\"itemColor(item)\">\n            <td class=\"checkbox\" [hidden]=\"disableActions()\">\n                <input type=\"checkbox\" [id]=\"itemId(i)\" [(ngModel)]=\"item.selected\">\n            </td>\n            <td class=\"reference clickable-area\" gemini-drag geminiClick (leftClick)=\"doItemClick(item)\" (rightClick)=\"doItemClick(item, true)\" tabindex=\"0\">\n                {{itemTitle(item)}}\n            </td>\n        </tr>\n    </tbody>\n</table>"
+module.exports = "<div *ngFor=\"let menu of items; let i = index\">\n\n    <div *ngIf=\"menuName(menu)\" (click)=\"toggleCollapsed(menu)\"  class=\"submenu\" [ngSwitch]=\"navCollapsed(menu)\">\n        {{menuName(menu)}}\n        <div *ngSwitchCase=\"true\" (keydown.enter)=\"toggleCollapsed(menu)\" class=\"icon-expand\" tabindex=\"0\"></div>\n        <div *ngSwitchCase=\"false\" (keydown.enter)=\"toggleCollapsed(menu)\" class=\"icon-collapse\" tabindex=\"0\"></div>\n    </div>\n    <div  *ngIf=\"!navCollapsed(menu)\"  class=\"menuitem\" [ngClass]=\"displayClass(menu)\">\n        <div *ngIf=\"hasActions(menu)\">\n            <div *ngFor=\"let action of menuActions(menu, i)\">\n                <nof-action [action]=\"action\"></nof-action>\n            </div>\n        </div>\n        <div  *ngIf=\"hasItems(menu)\">\n            <nof-action-list [menuHolder]=\"menu\"></nof-action-list>\n        </div>\n    </div>\n</div>\n"
 
 /***/ }),
 
 /***/ 903:
 /***/ (function(module, exports) {
 
-module.exports = "<nof-collection class=\"collection\" *ngFor=\"let collection of collections\" [collection]=\"collection\"></nof-collection>"
+module.exports = "<input #focus tabindex=\"0\" type=\"button\" geminiClick (leftClick)=\"doClick()\" (rightClick)=\"doRightClick()\"  [value]=\"value\" [disabled]=\"disabled()\" *ngIf=\"show()\" [title]=\"title\" [ngClass]=\"class()\">"
 
 /***/ }),
 
 /***/ 904:
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"dialog\" class=\"dialog\">\n\t<div class=\"title\">\n\t\t{{title}}\n\t</div>\n\t<form (ngSubmit)=\"onSubmit()\" [formGroup]=\"form\" autocomplete=\"off\">\n\t\t<nof-parameters class=\"parameters\" [parameters]=\"parameters\" [parent]=\"dialog\" [form]=\"form\"></nof-parameters>\n        <div class=\"co-validation\">{{message}}</div>\n\t\t<div class=\"form-row\">\n\t\t\t<input class=\"ok\" tabindex=\"0\" type=\"submit\" value=\"OK\" title=\"{{tooltip}}\" geminiClick (leftClick)=\"onSubmit()\" (rightClick)=\"onSubmit(true)\" [disabled]=\"!form.valid\" />\n\t\t\t<input class=\"cancel\" tabindex=\"0\" type=\"button\" geminiClick (leftClick)=\"close()\" value=\"Cancel\"/>\n\t\t</div>\n\t</form>\n</div>"
+module.exports = "<router-outlet></router-outlet>\n<nof-footer></nof-footer>\n"
 
 /***/ }),
 
 /***/ 905:
 /***/ (function(module, exports) {
 
-module.exports = "<div #parent></div>\n"
+module.exports = "<div id=\"pane1\" class=\"single\">\n    <div class=\"properties\">\n        <div class=\"header\">\n            <div class=\"title\">Application Properties</div>\n        </div>\n        <div class=\"main-column\">\n            <div class=\"properties\">\n                <div class=\"property\">\n                    Application Name: {{applicationName}}\n                </div>\n                <div class=\"property\">\n                    User Name: {{userName}}\n                </div>\n                <div class=\"property\">\n                    Server Url: {{serverUrl}}\n                </div>\n                <div class=\"property\">\n                    Server version: {{implVersion}}\n                </div>\n                <div class=\"property\">\n                    Client version: {{clientVersion}}\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n"
 
 /***/ }),
 
 /***/ 906:
 /***/ (function(module, exports) {
 
-module.exports = "<div [attr.id]=\"paneIdName\" [ngClass]=\"paneType\">\n    <div #parent></div>\n    <div *ngIf=\"showPlaceholder\"class=\"list\">\n        <div class=\"header\">\n            <div class=\"title\">\n                {{title}}\n            </div>\n            <nof-action-bar [actions]=\"actionHolders\"></nof-action-bar>\n        </div>\n    </div>\n</div>\n<router-outlet (activate)=\"onChild()\" (deactivate)=\"onChildless()\"></router-outlet>\n"
+module.exports = "<div *ngIf=\"attachment\" class=\"reference\" geminiClick (leftClick)=\"doAttachmentClick()\" (rightClick)=\"doAttachmentClick(true)\" tabindex=\"0\">\n    <div *ngIf=\"!image\">{{title}}</div>\n    <img *ngIf=\"image\" src=\"{{image}}\" alt=\"{{title}}\" />\n</div>\n<div *ngIf=\"!attachment\"><div>Attachment not yet supported on transient</div></div>"
 
 /***/ }),
 
 /***/ 907:
 /***/ (function(module, exports) {
 
-module.exports = "<div [attr.id]=\"paneIdName\" [ngClass]=\"paneType\">\n    <div #parent></div>\n</div>\n<router-outlet (activate)=\"onChild()\" (deactivate)=\"onChildless()\"></router-outlet>\n"
+module.exports = "<div [attr.id]=\"paneIdName\" [ngClass]=\"paneType\">\n    <div class=\"attachment view\">\n        <div class=\"reference\">\n            <img *ngIf=\"image\" src=\"{{image}}\" alt=\"{{title}}\" />\n        </div>\n    </div>\n</div>\n<router-outlet (activate)=\"onChild()\" (deactivate)=\"onChildless()\"></router-outlet>\n"
 
 /***/ }),
 
 /***/ 908:
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"name\">\n    <label attr.for=\"{{parameterPaneId}}\">{{title}}</label>\n</div>\n<div [formGroup]=\"form\">\n    <div *ngIf=\"parameterType === 'ref'\">\n\n        <div class=\"value input-control text\">\n            <!--\"EntryType.AutoComplete\"-->\n            <div *ngIf=\"parameterEntryType === 5\">\n                <input #focus [id]=\"parameterPaneId\" class=\"value droppable\" dnd-droppable [allowDrop]=\"accept(parameter)\" (onDropSuccess)=\"drop($event.dragData)\"\n                       [ngClass]=\"droppableClasses()\" placeholder=\"{{description}}\" type=\"text\" [formControlName]=\"parameterId\" [geminiClear]=\"parameter\" [form]=\"form\" />\n                <div class=\"suggestions\" *ngIf=\"choices.length > 0\">\n                    <ul *ngFor=\"let choice of choices\">\n                        <li>\n                            <a (click)=\"select(choice)\">{{choiceName(choice)}}</a>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n\n            <div *ngIf=\"isChoices() && !isMultiple()\">\n                <select #focus [id]=\"parameterPaneId\"  [formControlName]=\"parameterId\">\n                    <option *ngFor=\"let choice of choices\" [label]=\"choiceName(choice)\" [ngValue]=\"choice\">{{choiceName(choice)}}</option>\n                </select>\n            </div>\n            \n            <div *ngIf=\"isChoices() && isMultiple()\">\n                <select #focus [id]=\"parameterPaneId\"  multiple [formControlName]=\"parameterId\">\n                    <option *ngFor=\"let choice of choices\" [label]=\"choiceName(choice)\" [ngValue]=\"choice\">{{choiceName(choice)}}</option>\n                </select>\n            </div>\n\n            <!--\"EntryType.FreeForm\"-->\n            <div *ngIf=\"parameterEntryType === 0\">\n                <input #focus [id]=\"parameterPaneId\" class=\"value droppable\" dnd-droppable [allowDrop]=\"accept(parameter)\" (onDropSuccess)=\"drop($event.dragData)\"\n                       [ngClass]=\"droppableClasses()\" placeholder=\"{{description}}\" type=\"text\" [formControlName]=\"parameterId\" [geminiClear]=\"parameter\" [form]=\"form\" />\n            </div>\n\n        </div>\n    </div>\n\n    <div *ngIf=\"parameterType === 'scalar'\">\n        <div class=\"value input-control text\">\n\n            <!--\"EntryType.File\"-->\n            <div *ngIf=\"parameterEntryType === 6\">\n                <input #focus [id]=\"parameterPaneId\" type=\"file\" placeholder=\"{{description}}\" (change)=\"fileUpload($event)\" />\n            </div>\n\n            <!--\"EntryType.AutoComplete\"-->\n            <div *ngIf=\"parameterEntryType === 5\">\n                <input #focus [id]=\"parameterPaneId\" placeholder=\"{{description}}\" type=\"text\" [formControlName]=\"parameterId\" [geminiClear]=\"parameter\" [form]=\"form\" />\n                <div class=\"suggestions\" *ngIf=\"choices.length > 0\">\n                    <ul *ngFor=\"let choice of choices\">\n                        <li>\n                            <a (click)=\"select(choice)\">{{choiceName(choice)}}</a>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n\n            <div *ngIf=\"isChoices() && !isMultiple()\">\n                <select #focus [id]=\"parameterPaneId\" [formControlName]=\"parameterId\">\n                    <option *ngFor=\"let choice of choices\" [label]=\"choiceName(choice)\" [ngValue]=\"choice\">{{choiceName(choice)}}</option>\n                </select>\n            </div>\n\n            <div *ngIf=\"isChoices() && isMultiple()\">\n                <select #focus [id]=\"parameterPaneId\" multiple [formControlName]=\"parameterId\">\n                    <option *ngFor=\"let choice of choices\" [label]=\"choiceName(choice)\" [ngValue]=\"choice\">{{choiceName(choice)}}</option>\n                </select>\n            </div>\n\n            <!--\"EntryType.FreeForm\"-->\n            <div *ngIf=\"parameterEntryType === 0\">\n                <div [ngSwitch]=\"parameterReturnType\">\n                    <div *ngSwitchCase=\"'string'\" [ngSwitch]=\"format\">\n                        <div *ngSwitchCase=\"'date'\">\n                            <input #focus [id]=\"parameterPaneId\" type=\"date\" placeholder=\"{{description}}\" [formControlName]=\"parameterId\"  />\n                        </div>\n                        <div *ngSwitchCase=\"'time'\">\n                            <input #focus [id]=\"parameterPaneId\" type=\"time\" placeholder=\"{{description}}\" [formControlName]=\"parameterId\" [geminiClear]=\"parameter\" [form]=\"form\" />\n                        </div>\n                        <div *ngSwitchDefault>\n                            <input #focus *ngIf=\"!isMultiline\" [id]=\"parameterPaneId\" placeholder=\"{{description}}\"\n                                   type=\"{{isPassword ? 'password' : 'text'}}\" [formControlName]=\"parameterId\" [geminiClear]=\"parameter\" [form]=\"form\" />\n                            <textarea #focus *ngIf=\"isMultiline\" rows=\"{{rows}}\" [id]=\"parameterPaneId\" [formControlName]=\"parameterId\"\n                                      placeholder=\"{{description}}\"></textarea>\n                        </div>\n                    </div>\n                    <div *ngSwitchCase=\"'boolean'\">\n                        <input #focus [id]=\"parameterPaneId\" type=\"checkbox\" [geminiBoolean]=\"parameter\" />{{description}}\n                    </div>\n                    <div *ngSwitchDefault>\n                        <input #focus [id]=\"parameterPaneId\" type=\"text\" placeholder=\"{{description}}\" [formControlName]=\"parameterId\" [geminiClear]=\"parameter\" [form]=\"form\" />\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n<div class=\"validation\">{{message}}</div>"
+module.exports = "<div class=\"cicero\">\n    <div class=\"output\" aria-live=\"polite\"><pre>{{outputText}}</pre></div>\n    <input #inputField type=\"text\" [ngModel]=\"inputText\" \n     (keyup.enter)=\"parseInput(inputField.value)\"\n     (keydown.arrowup)=\"selectPreviousInput()\" \n     (keydown.arrowdown)=\"clearInput()\"\n     />\n</div>"
 
 /***/ }),
 
 /***/ 909:
 /***/ (function(module, exports) {
 
-module.exports = "<div [formGroup]=\"form\">\n    <div class=\"name\">{{title}}:</div>\n    <div class=\"field\">\n    <div *ngIf=\"propertyType === 'ref'\">\n\n        <div *ngIf=\"!isEditable\" class=\"value\" [ngClass]=\"classes()\">\n            {{formattedValue}}\n        </div>\n\n        <div *ngIf=\"isEditable\" class=\"input-control text\" [ngSwitch]=\"propertyEntryType\">\n            <!--\"EntryType.AutoComplete\"-->\n            <div *ngSwitchCase=\"5\">\n                <input #focus [id]=\"propertyPaneId\" class=\"value droppable\" dnd-droppable [allowDrop]=\"accept(property)\" (onDropSuccess)=\"drop($event.dragData)\"\n                    [ngClass]=\"classes()\" placeholder=\"{{propertyDescription}}\" type=\"text\" [formControlName]=\"propertyId\"\n                    [geminiClear]=\"property\" [form]=\"form\" />\n                <div class=\"suggestions\" *ngIf=\"propertyChoices.length > 0\">\n                    <ul *ngFor=\"let choice of propertyChoices\">\n                        <li>\n                            <a (click)=\"select(choice)\">{{choiceName(choice)}}</a>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n\n            <!--\"EntryType.ConditionalChoices\"-->\n            <div *ngSwitchCase=\"3\">\n                <select #focus [id]=\"propertyPaneId\"  [formControlName]=\"propertyId\">                 \n                    <option *ngFor=\"let choice of propertyChoices\" [ngValue]=\"choice\">{{choiceName(choice)}}</option>\n                </select>\n            </div>\n\n            <!--\"EntryType.Choices\"-->\n            <div *ngSwitchCase=\"1\">\n                <select #focus [id]=\"propertyPaneId\"  [formControlName]=\"propertyId\">\n                    <option *ngFor=\"let choice of propertyChoices\" [ngValue]=\"choice\">{{choiceName(choice)}}</option>\n                </select>\n            </div>\n\n            <!--\"EntryType.FreeForm\"-->\n            <div *ngSwitchCase=\"0\">\n                <input #focus [id]=\"propertyPaneId\" class=\"value droppable\" dnd-droppable [allowDrop]=\"accept(property)\" (onDropSuccess)=\"drop($event.dragData)\"\n                    [ngClass]=\"classes()\" placeholder=\"{{propertyDescription}}\" type=\"text\" [formControlName]=\"propertyId\"\n                    [geminiClear]=\"property\" [form]=\"form\" />\n            </div>\n\n        </div>\n    </div>\n\n    <div *ngIf=\"propertyType === 'scalar'\">\n\n        <div *ngIf=\"!isEditable\">\n            <div [ngSwitch]=\"propertyReturnType\">\n                <div *ngSwitchCase=\"'string'\">\n                    <nof-attachment-property *ngIf=\"isBlob\" [attachment]=\"attachment\"></nof-attachment-property>                    \n                    <div *ngIf=\"!isBlob\">\n                        <div *ngIf=\"!isMultiline\" class=\"value\">\n                            {{formattedValue}}\n                        </div>\n                        <div *ngIf=\"isMultiline\" class=\"value multiline\" [ngStyle]=\"{height : multilineHeight}\">\n                            <pre>{{formattedValue}}</pre>\n                        </div>\n                    </div>\n                </div>\n\n                <div *ngSwitchCase=\"'boolean'\">\n                    <input type=\"checkbox\"  [checked]=\"value\" disabled=\"disabled\" />\n                </div>\n\n                <div *ngSwitchDefault>\n                    <div class=\"value\">\n                        {{formattedValue}}\n                    </div>\n                </div>\n\n            </div>\n        </div>\n\n        <div *ngIf=\"isEditable\" class=\"input-control text\">\n            <div [ngSwitch]=\"propertyEntryType\">\n                <!--\"EntryType.AutoComplete\"-->\n                <div *ngSwitchCase=\"5\">\n                    <input #focus [id]=\"propertyPaneId\" class=\"value droppable\" dnd-droppable [allowDrop]=\"accept(property)\" (onDropSuccess)=\"drop($event.dragData)\"\n                        [ngClass]=\"classes()\" placeholder=\"{{propertyDescription}}\" type=\"text\" [formControlName]=\"propertyId\"\n                        [geminiClear]=\"property\" [form]=\"form\" />\n                    <div class=\"suggestions\" *ngIf=\"propertyChoices.length > 0\">\n                        <ul *ngFor=\"let choice of propertyChoices\">\n                            <li>\n                                <a (click)=\"select(choice)\">{{choiceName(choice)}}</a>\n                            </li>\n                        </ul>\n                    </div>\n                </div>\n\n                <!--\"EntryType.ConditionalChoices\"-->\n                <div *ngSwitchCase=\"3\">\n                    <select #focus [id]=\"propertyPaneId\"  [formControlName]=\"propertyId\">\n                        <option *ngFor=\"let choice of propertyChoices\" [ngValue]=\"choice\">{{choiceName(choice)}}</option>\n                    </select>\n                </div>\n\n                <!--\"EntryType.Choices\"-->\n                <div *ngSwitchCase=\"1\">\n                    <select #focus [id]=\"propertyPaneId\"  [formControlName]=\"propertyId\">\n                        <option *ngFor=\"let choice of propertyChoices\" [ngValue]=\"choice\">{{choiceName(choice)}}</option>\n                    </select>\n                </div>\n\n                <!--\"EntryType.FreeForm\"-->\n                <div *ngSwitchCase=\"0\">\n                    <div [ngSwitch]=\"propertyReturnType\">\n                        <div *ngSwitchCase=\"'string'\" [ngSwitch]=\"format\">\n                            <div *ngSwitchCase=\"'date'\">\n                                <input #focus [id]=\"propertyPaneId\"  type=\"date\" placeholder=\"{{propertyDescription}}\" [formControlName]=\"propertyId\"\n                                     (change)=\"datePickerChanged($event)\"  />\n                            </div>\n                            <div *ngSwitchCase=\"'time'\">\n                                <input #focus [id]=\"propertyPaneId\"  type=\"time\" placeholder=\"{{propertyDescription}}\" [formControlName]=\"propertyId\"\n                                     [geminiClear]=\"property\" [form]=\"form\" />\n                            </div>\n                            <div *ngSwitchDefault>\n                                <input #focus *ngIf=\"!isMultiline\" [id]=\"propertyPaneId\"  placeholder=\"{{propertyDescription}}\" type=\"{{isPassword ? 'password' : 'text'}}\"\n                                     [formControlName]=\"propertyId\" [geminiClear]=\"property\" [form]=\"form\" />\n                                <textarea #focus *ngIf=\"isMultiline\" rows=\"{{rows}}\" [id]=\"propertyPaneId\" [formControlName]=\"propertyId\"\n                                    placeholder=\"{{propertyDescription}}\"></textarea>\n                            </div>\n                        </div>\n                        <div *ngSwitchCase=\"'boolean'\">\n                            <input #focus [id]=\"propertyPaneId\"  type=\"checkbox\" [geminiBoolean]=\"property\" />{{propertyDescription}}\n                        </div>\n                        <div *ngSwitchDefault>\n                            <input #focus [id]=\"propertyPaneId\"  type=\"text\" placeholder=\"{{propertyDescription}}\" [formControlName]=\"propertyId\"\n                                [geminiClear]=\"property\" [form]=\"form\" />\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"validation\">{{message}}</div>\n    </div>\n</div>"
+module.exports = "<div class=\"summary\">\n    <div class=\"name\">{{title}}:</div>\n    <div class=\"details\">{{details}}</div>\n    <div>\n        <img *ngIf=\"showSummary()\" class=\"icon-summary\" (click)=\"doSummary()\" src=\"../../assets/summary.png\" title=\"Close Collection\" />\n        <img *ngIf=\"showList()\" class=\"icon-list\" (click)=\"doList()\" src=\"../../assets/list.png\" title=\"View as List\"/>\n        <img *ngIf=\"showTable()\" class=\"icon-table\" (click)=\"doTable()\" src=\"../../assets/table.png\" title=\"View as Table\"/>\n    </div>\n</div>\n<div class=\"messages\">{{message}}</div>\n<nof-action-bar *ngIf=\"showActions()\" class=\"actions\" [menuHolder]=\"collection\"></nof-action-bar>\n<nof-dialog *ngIf=\"showActions()\" [parent]=\"collection\" [selectedDialogId]=\"selectedDialogId\"></nof-dialog>\n\n<table *ngIf=\"state == 'table'\">\n    <thead>\n    <tr>\n        <th [hidden]=\"(disableActions() || noItems())\"><input type=\"checkbox\" [id]=\"itemId('all')\" [ngModel]=\"allSelected()\" (click)=\"selectAll()\">All</th>\n        <th *ngFor=\"let heading of header\" scope=\"col\">\n            {{heading}}\n        </th>\n    </tr>\n    </thead>\n    <tbody *ngIf=\"hasTableData()\">\n        <tr *ngFor=\"let item of items; let i = index\" [ngClass]=\"itemColor(item)\" class=\"clickable-area\"  gemini-drag tabindex=\"0\">\n            <td [hidden]=\"disableActions()\" class=\"checkbox\">\n\t\t\t     <input type=\"checkbox\" [id]=\"itemId(i)\" [(ngModel)]=\"item.selected\">\n\t\t\t</td>\n            <td *ngIf=\"itemHasTableTitle(item)\" class=\"cell\" geminiClick (leftClick)=\"doItemClick(item)\" (rightClick)=\"doItemClick(item, true)\">\n                {{itemTableTitle(item)}}\n            </td>\n            <td *ngFor=\"let property of itemTableProperties(item)\" geminiClick (leftClick)=\"doItemClick(item)\" (rightClick)=\"doItemClick(item, true)\" [ngClass]=\"itemColor(item)\" class=\"cell\">\n                <div  [ngSwitch]=\"propertyType(property)\">\n                    <div *ngSwitchCase=\"'ref'\" class=\"clickable-area\">\n                        {{propertyFormattedValue(property)}}\n                    </div>\n                    <div *ngSwitchCase=\"'scalar'\" [ngSwitch]=\"propertyReturnType(property)\">\n                        <div *ngSwitchCase=\"'boolean'\" class=\"clickable-area\">\n                            <input type=\"checkbox\" [checked]=\"propertyValue(property)\" disabled=\"disabled\" />\n                        </div>\n                        <div *ngSwitchCase=\"'number'\" class=\"clickable-area\">\n                            <div class=\"clickable-area number\">{{propertyFormattedValue(property)}}</div>\n                        </div>\n                        <div *ngSwitchDefault class=\"clickable-area\">\n                            <div class=\"clickable-area\">{{propertyFormattedValue(property)}}</div>\n                        </div>\n                    </div>\n                </div>\n            </td>\n        </tr>\n    </tbody>\n</table>\n<table *ngIf=\"state == 'list'\">\n    <thead>\n        <tr>\n            <th [hidden]=\"(disableActions() || noItems())\"><input type=\"checkbox\" [id]=\"itemId('all')\" [ngModel]=\"allSelected()\" (click)=\"selectAll()\">All</th>\n        </tr>\n    </thead>\n    <tbody>\n        <tr *ngFor=\"let item of items; let i = index\" [ngClass]=\"itemColor(item)\">\n            <td class=\"checkbox\" [hidden]=\"disableActions()\">\n                <input type=\"checkbox\" [id]=\"itemId(i)\" [(ngModel)]=\"item.selected\">\n            </td>\n            <td class=\"reference clickable-area\" gemini-drag geminiClick (leftClick)=\"doItemClick(item)\" (rightClick)=\"doItemClick(item, true)\" tabindex=\"0\">\n                {{itemTitle(item)}}\n            </td>\n        </tr>\n    </tbody>\n</table>"
 
 /***/ }),
 
 /***/ 910:
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"error\">\n    <div class=\"title\">{{title}}</div>\n    <div class=\"message\">Message: {{message}}</div>\n    <div class=\"code\">Code: {{errorCode}}</div>\n    <div class=\"description\">Description: {{description}}.</div>\n    <div class=\"stacktrace\">\n        Stack Trace :\n        <div class=\"line\" *ngFor=\"let line of stackTrace\">{{line}}</div>\n    </div>\n</div>"
+module.exports = "<nof-collection class=\"collection\" *ngFor=\"let collection of collections\" [collection]=\"collection\"></nof-collection>"
 
 /***/ }),
 
 /***/ 911:
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"footer\">\n\t<a class=\"icon-home\" title=\"Home (Alt-h)\" tabindex=\"0\" geminiClick (leftClick)=\"goHome()\" (rightClick)=\"goHome(true)\" accesskey=\"h\"></a>\n\t<a class=\"icon-back icon-arrow-left-3\" title=\"Back (Alt-b)\" tabindex=\"0\" (click)=\"goBack()\" accesskey=\"b\"></a>\n\t<a class=\"icon-forward icon-arrow-right-3\" title=\"Forward (Alt-f)\" tabindex=\"0\" (click)=\"goForward()\" accesskey=\"f\"></a>\n\t<a class=\"icon-full\" title=\"Expand pane (Alt-e)\" tabindex=\"0\" geminiClick (leftClick)=\"singlePane()\" (rightClick)=\"singlePane(true)\"\n\t\taccesskey=\"e\"></a>\n\t<a class=\"icon-swap\" [attr.disabled]=\"swapDisabled()\" title=\"Swap panes (Alt-s)\" tabindex=\"0\" (click)=\"swapPanes()\" accesskey=\"s\"></a>\n\t<a class=\"icon-recent\" title=\"Recent objects (Alt-r)\" tabindex=\"0\" geminiClick (leftClick)=\"recent()\" (rightClick)=\"recent(true)\" accesskey=\"r\"></a>\n\t<a class=\"icon-speech\" title=\"Cicero - Speech Interface (Alt-c)\" (click)=\"cicero()\" tabindex=\"0\" accesskey=\"c\"></a>\n\t<a class=\"icon-properties\" title=\"Application Properties (Alt-p)\" (click)=\"applicationProperties()\" tabindex=\"0\" accesskey=\"p\"></a>\n\t<a class=\"icon-logoff\" title=\"Log off (Alt-l)\" (click)=\"logOff()\" tabindex=\"0\" accesskey=\"l\"></a>\n\t<span class=\"loading\">{{loading}}</span>\n\n\t<div class=\"warnings\" *ngFor=\"let warning of warnings\">\n\t\t<div>{{warning}}</div>\n\t</div>\n\t<div class=\"messages\" *ngFor=\"let message of messages\">\n\t\t<div>{{message}}</div>\n\t</div>\n\t<div *ngIf=\"copyViewModel\" class=\"currentcopy\">\n        <span>Copying...</span>\n        <div class=\"reference\" [ngClass]=\"currentCopyColor\" dnd-draggable [dragEnabled]=\"true\" [dragData]=\"copyViewModel\">{{currentCopyTitle}}</div>\n    </div>\n\t<!--<div class=\"user\">{{userName}}</div>\n    <a style=\"display: none\"></a>-->\n</div>"
+module.exports = "<div *ngIf=\"dialog\" class=\"dialog\">\n\t<div class=\"title\">\n\t\t{{title}}\n\t</div>\n\t<form (ngSubmit)=\"onSubmit()\" [formGroup]=\"form\" autocomplete=\"off\">\n\t\t<nof-parameters class=\"parameters\" [parameters]=\"parameters\" [parent]=\"dialog\" [form]=\"form\"></nof-parameters>\n        <div class=\"co-validation\">{{message}}</div>\n\t\t<div class=\"form-row\">\n\t\t\t<input class=\"ok\" tabindex=\"0\" type=\"submit\" value=\"OK\" title=\"{{tooltip}}\" geminiClick (leftClick)=\"onSubmit()\" (rightClick)=\"onSubmit(true)\" [disabled]=\"!form.valid\" />\n\t\t\t<input class=\"cancel\" tabindex=\"0\" type=\"button\" geminiClick (leftClick)=\"close()\" value=\"Cancel\"/>\n\t\t</div>\n\t</form>\n</div>"
 
 /***/ }),
 
 /***/ 912:
 /***/ (function(module, exports) {
 
-module.exports = "<div [attr.id]=\"paneIdName\" [ngClass]=\"paneType\">\n\t<!--TODO: This is the Single/Split definition-->\n\t<div class=\"home\">\n\t\t<div class=\"header\">\n\t\t\t<div class=\"title\">Home</div>\n            <nof-menu-bar class=\"menus\" *ngIf=\"hasMenus\" [menus]=\"menuItems\"></nof-menu-bar> \n\t\t\t<div class=\"messages\"></div>\n\t\t</div>\n\t\t<nof-action-list *ngIf=\"selectedMenu\" [menuHolder]=\"selectedMenu\"></nof-action-list>\n\t\t<div class=\"main-column\">\n\t\t<nof-dialog *ngIf=\"selectedMenu\" [selectedDialogId]=\"selectedDialogId\" [parent]=\"selectedMenu\" ></nof-dialog>\n\t\t</div>\n\t</div>\n</div>\n<router-outlet (activate)=\"onChild()\" (deactivate)=\"onChildless()\"></router-outlet>\n"
+module.exports = "<div #parent></div>\n"
 
 /***/ }),
 
 /***/ 913:
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"collection\">\n    <div class=\"list\">\n        <header class=\"header\">\n            <div class=\"title\">{{title}}</div>\n            <nof-action-bar [actions]=\"actionHolders\"></nof-action-bar>\n            <div class=\"messages\">{{message}}</div>\n        </header>\n        <div class=\"details\" *ngIf=\"size == 0\">{{description}}</div>\n        <div *ngIf=\"size > 0\">\n            <nof-action-list *ngIf=\"showActions()\" [menuHolder]=\"collection\"></nof-action-list>\n            <nof-dialog [parent]=\"collection\" [selectedDialogId]=\"selectedDialogId\"></nof-dialog>\n            <div class=\"summary\" *ngIf=\"state == 'list'\">\n                <div class=\"details\">{{description}}</div>\n                <img class=\"icon-table\" (click)=\"doTable()\" src=\"../../assets/table.png\" title=\"View as Table\" />\n                <table>\n                    <thead>\n                        <tr>\n                            <th [hidden]=\"hideAllCheckbox()\"><input type=\"checkbox\" [id]=\"itemId('all')\" [ngModel]=\"allSelected()\" (click)=\"selectAll()\">All</th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        <tr *ngFor=\"let item of items; let i = index\">\n                            <td class=\"checkbox\" [hidden]=\"disableActions()\">\n                                <input type=\"checkbox\" [id]=\"itemId(i)\" [(ngModel)]=\"item.selected\">\n                            </td>\n                            <td class=\"reference\" [ngClass]=\"itemColor(item)\" geminiClick (leftClick)=\"doItemClick(item)\" (rightClick)=\"doItemClick(item, true)\"\n                                dnd-draggable [dragEnabled]=\"true\" [dragData]=\"item\" (keydown)=\"copy($event, item)\" (keypress)=\"copy($event, item)\" tabindex=\"0\">\n                                <label attr.for=\"{itemId(i)}}\">{{itemTitle(item)}}</label>\n                            </td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n            <div class=\"summary\" *ngIf=\"state == 'table'\">\n                <div class=\"details\">{{description}}</div>\n                <img class=\"icon-list\" (click)=\"doList()\" src=\"../../assets/list.png\" title=\"View as List\" />\n            </div>\n            <table *ngIf=\"state == 'table'\">\n                <thead>\n                    <tr>\n                        <th [hidden]=\"hideAllCheckbox()\"><input type=\"checkbox\" [id]=\"itemId('all')\" [ngModel]=\"allSelected()\" (click)=\"selectAll()\">All</th>\n                        <th *ngFor=\"let heading of header\" scope=\"col\">\n                            {{heading}}\n                        </th>\n                    </tr>\n                </thead>\n                <tbody *ngIf=\"hasTableData()\">\n                    <tr tabindex=\"0\" *ngFor=\"let item of items; let i = index\" gemini-drag>\n                        <td [hidden]=\"disableActions()\" class=\"checkbox\">\n                            <input type=\"checkbox\" [id]=\"itemId(i)\" [(ngModel)]=\"item.selected\">\n                        </td>\n                        <td *ngIf=\"itemHasTableTitle(item)\" geminiClick (leftClick)=\"doItemClick(item)\" (rightClick)=\"doItemClick(item, true)\" [ngClass]=\"itemColor(item)\" class=\"cell\">\n                            {{itemTableTitle(item)}}\n                        </td>\n                        <td *ngFor=\"let property of itemTableProperties(item)\" geminiClick (leftClick)=\"doItemClick(item)\" (rightClick)=\"doItemClick(item, true)\"\n                            [ngClass]=\"itemColor(item)\" class=\"cell\">\n                            <div [ngSwitch]=\"propertyType(property)\">\n                                <div *ngSwitchCase=\"'ref'\">\n                                    {{propertyFormattedValue(property)}}\n                                </div>\n                                <div *ngSwitchCase=\"'scalar'\" [ngSwitch]=\"propertyReturnType(property)\">\n                                    <div *ngSwitchCase=\"'boolean'\">\n                                        <input type=\"checkbox\" [checked]=\"propertyValue(property)\" disabled=\"disabled\" />\n                                    </div>\n                                    <div *ngSwitchCase=\"'number'\">\n                                        <div class=\"number\">{{propertyFormattedValue(property)}}</div>\n                                    </div>\n                                    <div *ngSwitchDefault>\n                                        <div>{{propertyFormattedValue(property)}}</div>\n                                    </div>\n                                </div>\n                            </div>\n                        </td>\n                    </tr>\n                </tbody>\n            </table>\n        </div>\n    </div>\n</div>"
+module.exports = "<div [attr.id]=\"paneIdName\" [ngClass]=\"paneType\">\n    <div #parent></div>\n    <div *ngIf=\"showPlaceholder\"class=\"list\">\n        <div class=\"header\">\n            <div class=\"title\">\n                {{title}}\n            </div>\n            <nof-action-bar [actions]=\"actionHolders\"></nof-action-bar>\n        </div>\n    </div>\n</div>\n<router-outlet (activate)=\"onChild()\" (deactivate)=\"onChildless()\"></router-outlet>\n"
 
 /***/ }),
 
 /***/ 914:
 /***/ (function(module, exports) {
 
-module.exports = "<nof-action *ngFor=\"let action of actions\" [action]=\"action\"></nof-action>\n"
+module.exports = "<div [attr.id]=\"paneIdName\" [ngClass]=\"paneType\">\n    <div #parent></div>\n</div>\n<router-outlet (activate)=\"onChild()\" (deactivate)=\"onChildless()\"></router-outlet>\n"
 
 /***/ }),
 
 /***/ 915:
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"pane1\" class=\"single\">\n    <div  *ngIf=\"dialog\" class=\"multilinedialog\">\n        <div class=\"header\">\n            <div class=\"type\">{{objectFriendlyName}}</div>\n            <div class=\"title\" gemini-drag tabindex=\"0\">\n                <div>{{objectTitle}}</div>\n                <div>{{dialogTitle}}</div>\n            </div>\n        </div>\n        <div class=\"columnHeader\" *ngFor=\"let column of header\">{{column}}</div>\n        <div class=\"lineDialog\" *ngFor=\"let row of rows; let i = index \">\n            <form *ngIf=\"!rowSubmitted(row)\" (ngSubmit)=\"invokeAndAdd(i)\" [formGroup]=\"form(i)\" autocomplete=\"off\">\n                <nof-parameters  class=\"parameters multilinedialog\" [parameters]=\"parameters(row)\" [parent]=\"row\" [form]=\"form(i)\"></nof-parameters>               \n                <input class=\"ok\" tabindex=\"0\" type=\"submit\" value=\"OK\" title=\"{{rowTooltip(row)}}\" [disabled]=\"rowDisabled(row)\" geminiClick (leftClick)=\"invokeAndAdd(i)\" />\n                <div class=\"co-validation\">{{rowMessage(row)}}</div>\n            </form>\n            <nof-parameters *ngIf=\"rowSubmitted(row)\" class=\"parameters\" [parameters]=\"parameters(row)\" [parent]=\"row\"></nof-parameters>\n            <div *ngIf=\"rowSubmitted(row)\" class=\"co-validation\">{{rowMessage(row)}}</div>\n        </div>\n        <input class=\"close\" tabindex=\"0\" type=\"submit\" value=\"Close\" title=\"\" geminiClick (leftClick)=\"close()\" />\n        <div class=\"count\">{{count}}</div>\n    </div>\n</div>\n"
+module.exports = "<div class=\"name\">\n    <label attr.for=\"{{parameterPaneId}}\">{{title}}</label>\n</div>\n<div [formGroup]=\"form\">\n    <div *ngIf=\"parameterType === 'ref'\">\n\n        <div class=\"value input-control text\">\n            <!--\"EntryType.AutoComplete\"-->\n            <div *ngIf=\"parameterEntryType === 5\">\n                <input #focus [id]=\"parameterPaneId\" class=\"value droppable\" dnd-droppable [allowDrop]=\"accept(parameter)\" (onDropSuccess)=\"drop($event.dragData)\"\n                       [ngClass]=\"droppableClasses()\" placeholder=\"{{description}}\" type=\"text\" [formControlName]=\"parameterId\" [geminiClear]=\"parameter\" [form]=\"form\" />\n                <div class=\"suggestions\" *ngIf=\"choices.length > 0\">\n                    <ul *ngFor=\"let choice of choices\">\n                        <li>\n                            <a (click)=\"select(choice)\">{{choiceName(choice)}}</a>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n\n            <div *ngIf=\"isChoices() && !isMultiple()\">\n                <select #focus [id]=\"parameterPaneId\"  [formControlName]=\"parameterId\">\n                    <option *ngFor=\"let choice of choices\" [label]=\"choiceName(choice)\" [ngValue]=\"choice\">{{choiceName(choice)}}</option>\n                </select>\n            </div>\n            \n            <div *ngIf=\"isChoices() && isMultiple()\">\n                <select #focus [id]=\"parameterPaneId\"  multiple [formControlName]=\"parameterId\">\n                    <option *ngFor=\"let choice of choices\" [label]=\"choiceName(choice)\" [ngValue]=\"choice\">{{choiceName(choice)}}</option>\n                </select>\n            </div>\n\n            <!--\"EntryType.FreeForm\"-->\n            <div *ngIf=\"parameterEntryType === 0\">\n                <input #focus [id]=\"parameterPaneId\" class=\"value droppable\" dnd-droppable [allowDrop]=\"accept(parameter)\" (onDropSuccess)=\"drop($event.dragData)\"\n                       [ngClass]=\"droppableClasses()\" placeholder=\"{{description}}\" type=\"text\" [formControlName]=\"parameterId\" [geminiClear]=\"parameter\" [form]=\"form\" />\n            </div>\n\n        </div>\n    </div>\n\n    <div *ngIf=\"parameterType === 'scalar'\">\n        <div class=\"value input-control text\">\n\n            <!--\"EntryType.File\"-->\n            <div *ngIf=\"parameterEntryType === 6\">\n                <input #focus [id]=\"parameterPaneId\" type=\"file\" placeholder=\"{{description}}\" (change)=\"fileUpload($event)\" />\n            </div>\n\n            <!--\"EntryType.AutoComplete\"-->\n            <div *ngIf=\"parameterEntryType === 5\">\n                <input #focus [id]=\"parameterPaneId\" placeholder=\"{{description}}\" type=\"text\" [formControlName]=\"parameterId\" [geminiClear]=\"parameter\" [form]=\"form\" />\n                <div class=\"suggestions\" *ngIf=\"choices.length > 0\">\n                    <ul *ngFor=\"let choice of choices\">\n                        <li>\n                            <a (click)=\"select(choice)\">{{choiceName(choice)}}</a>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n\n            <div *ngIf=\"isChoices() && !isMultiple()\">\n                <select #focus [id]=\"parameterPaneId\" [formControlName]=\"parameterId\">\n                    <option *ngFor=\"let choice of choices\" [label]=\"choiceName(choice)\" [ngValue]=\"choice\">{{choiceName(choice)}}</option>\n                </select>\n            </div>\n\n            <div *ngIf=\"isChoices() && isMultiple()\">\n                <select #focus [id]=\"parameterPaneId\" multiple [formControlName]=\"parameterId\">\n                    <option *ngFor=\"let choice of choices\" [label]=\"choiceName(choice)\" [ngValue]=\"choice\">{{choiceName(choice)}}</option>\n                </select>\n            </div>\n\n            <!--\"EntryType.FreeForm\"-->\n            <div *ngIf=\"parameterEntryType === 0\">\n                <div [ngSwitch]=\"parameterReturnType\">\n                    <div *ngSwitchCase=\"'string'\" [ngSwitch]=\"format\">\n                        <div *ngSwitchCase=\"'date'\">\n                            <input #focus [id]=\"parameterPaneId\" type=\"date\" placeholder=\"{{description}}\" [formControlName]=\"parameterId\"  />\n                        </div>\n                        <div *ngSwitchCase=\"'time'\">\n                            <input #focus [id]=\"parameterPaneId\" type=\"time\" placeholder=\"{{description}}\" [formControlName]=\"parameterId\" [geminiClear]=\"parameter\" [form]=\"form\" />\n                        </div>\n                        <div *ngSwitchDefault>\n                            <input #focus *ngIf=\"!isMultiline\" [id]=\"parameterPaneId\" placeholder=\"{{description}}\"\n                                   type=\"{{isPassword ? 'password' : 'text'}}\" [formControlName]=\"parameterId\" [geminiClear]=\"parameter\" [form]=\"form\" />\n                            <textarea #focus *ngIf=\"isMultiline\" rows=\"{{rows}}\" [id]=\"parameterPaneId\" [formControlName]=\"parameterId\"\n                                      placeholder=\"{{description}}\"></textarea>\n                        </div>\n                    </div>\n                    <div *ngSwitchCase=\"'boolean'\">\n                        <input #focus [id]=\"parameterPaneId\" type=\"checkbox\" [geminiBoolean]=\"parameter\" />{{description}}\n                    </div>\n                    <div *ngSwitchDefault>\n                        <input #focus [id]=\"parameterPaneId\" type=\"text\" placeholder=\"{{description}}\" [formControlName]=\"parameterId\" [geminiClear]=\"parameter\" [form]=\"form\" />\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n<div class=\"validation\">{{message}}</div>"
 
 /***/ }),
 
 /***/ 916:
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"expiredTransient\" class=\"title\">The requested view of unsaved object details has expired.</div>\n\n<!--place holder-->\n<div *ngIf=\"!object\">\n    <div class=\"object view\" [ngClass]=\"color\"></div>\n</div>\n<div *ngIf=\"object && viewMode === 'View'\" class=\"object view\" [ngClass]=\"color\">\n    <header class=\"header\">\n        <div class=\"title\" dnd-draggable [dragEnabled]=\"true\" [dragData]=\"object\" tabindex=\"0\" (keydown)=\"copy($event)\" (keypress)=\"copy($event)\">\n            <span class=\"type\">{{friendlyName}}</span> {{title()}}\n        </div>\n        <!--<div>{{object.isDirty() ? \"*\" : \"\"}} </div>-->\n        <nof-action-bar [actions]=\"actionHolders\"></nof-action-bar>\n        <div class=\"messages\">{{message()}}</div>\n    </header>\n    <nof-action-list *ngIf=\"showActions()\" [menuHolder]=\"object\"></nof-action-list>\n    <div class=\"main-column\">\n        <nof-dialog [parent]=\"object\" [selectedDialogId]=\"selectedDialogId\"></nof-dialog>\n        <nof-properties class=\"properties\" *ngIf=\"properties\" [properties]=\"properties\"></nof-properties>\n    </div>\n    <nof-collections class=\"collections\" *ngIf=\"collections\" [collections]=\"collections\"></nof-collections>\n</div>\n<div *ngIf=\"object && (viewMode === 'Edit' || viewMode === 'Transient' || viewMode === 'Form')\" class=\"object edit\" [ngClass]=\"color\">\n    <form (ngSubmit)=\"onSubmit()\" [formGroup]=\"form\" autocomplete=\"off\">\n        <header class=\"header\">\n            <div class=\"title\" dnd-draggable [dragEnabled]=\"true\" [dragData]=\"object\" tabindex=\"0\" (keydown)=\"copy($event)\" (keypress)=\"copy($event)\">\n                <span class=\"type\">{{friendlyName}}</span> {{title()}}\n            </div>\n            <div *ngIf=\"viewMode === 'Form'\">\n                <nof-action-bar [actions]=\"actionHolders\"></nof-action-bar>\n            </div>\n            <div *ngIf=\"viewMode === 'Edit' || viewMode === 'Transient'\" class=\"menus\">\n                <nof-action-bar [actions]=\"actionHolders\"></nof-action-bar>\n            </div>\n            <div class=\"messages\">{{message()}}</div>\n        </header>\n        <div class=\"main-column\">\n            <nof-properties *ngIf=\"properties\" [properties]=\"properties\" [parent]=\"object\" [form]=\"form\"></nof-properties>\n        </div>\n    </form>\n    <nof-collections *ngIf=\"collections\" [collections]=\"collections\"></nof-collections>\n</div>\n<div *ngIf=\"object && viewMode === 'NotPersistent'\" class=\"object view\" [ngClass]=\"color\">\n    <header class=\"header\">\n        <div class=\"title\" dnd-draggable [dragEnabled]=\"true\" [dragData]=\"object\" tabindex=\"0\" (keydown)=\"copy($event)\" (keypress)=\"copy($event)\">\n            <span class=\"type\">{{friendlyName}}</span> {{title()}}\n        </div>\n        <div class=\"messages\">{{message()}}</div>\n    </header>\n    <div class=\"main-column\">\n        <nof-properties class=\"properties\" *ngIf=\"properties\" [properties]=\"properties\"></nof-properties>\n    </div>\n    <nof-collections class=\"collections\" *ngIf=\"collections\" [collections]=\"collections\"></nof-collections>\n</div>\n"
+module.exports = "<div [formGroup]=\"form\">\n    <div class=\"name\">{{title}}:</div>\n    <div class=\"field\">\n    <div *ngIf=\"propertyType === 'ref'\">\n\n        <div *ngIf=\"!isEditable\" class=\"value\" [ngClass]=\"classes()\">\n            {{formattedValue}}\n        </div>\n\n        <div *ngIf=\"isEditable\" class=\"input-control text\" [ngSwitch]=\"propertyEntryType\">\n            <!--\"EntryType.AutoComplete\"-->\n            <div *ngSwitchCase=\"5\">\n                <input #focus [id]=\"propertyPaneId\" class=\"value droppable\" dnd-droppable [allowDrop]=\"accept(property)\" (onDropSuccess)=\"drop($event.dragData)\"\n                    [ngClass]=\"classes()\" placeholder=\"{{propertyDescription}}\" type=\"text\" [formControlName]=\"propertyId\"\n                    [geminiClear]=\"property\" [form]=\"form\" />\n                <div class=\"suggestions\" *ngIf=\"propertyChoices.length > 0\">\n                    <ul *ngFor=\"let choice of propertyChoices\">\n                        <li>\n                            <a (click)=\"select(choice)\">{{choiceName(choice)}}</a>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n\n            <!--\"EntryType.ConditionalChoices\"-->\n            <div *ngSwitchCase=\"3\">\n                <select #focus [id]=\"propertyPaneId\"  [formControlName]=\"propertyId\">                 \n                    <option *ngFor=\"let choice of propertyChoices\" [ngValue]=\"choice\">{{choiceName(choice)}}</option>\n                </select>\n            </div>\n\n            <!--\"EntryType.Choices\"-->\n            <div *ngSwitchCase=\"1\">\n                <select #focus [id]=\"propertyPaneId\"  [formControlName]=\"propertyId\">\n                    <option *ngFor=\"let choice of propertyChoices\" [ngValue]=\"choice\">{{choiceName(choice)}}</option>\n                </select>\n            </div>\n\n            <!--\"EntryType.FreeForm\"-->\n            <div *ngSwitchCase=\"0\">\n                <input #focus [id]=\"propertyPaneId\" class=\"value droppable\" dnd-droppable [allowDrop]=\"accept(property)\" (onDropSuccess)=\"drop($event.dragData)\"\n                    [ngClass]=\"classes()\" placeholder=\"{{propertyDescription}}\" type=\"text\" [formControlName]=\"propertyId\"\n                    [geminiClear]=\"property\" [form]=\"form\" />\n            </div>\n\n        </div>\n    </div>\n\n    <div *ngIf=\"propertyType === 'scalar'\">\n\n        <div *ngIf=\"!isEditable\">\n            <div [ngSwitch]=\"propertyReturnType\">\n                <div *ngSwitchCase=\"'string'\">\n                    <nof-attachment-property *ngIf=\"isBlob\" [attachment]=\"attachment\"></nof-attachment-property>                    \n                    <div *ngIf=\"!isBlob\">\n                        <div *ngIf=\"!isMultiline\" class=\"value\">\n                            {{formattedValue}}\n                        </div>\n                        <div *ngIf=\"isMultiline\" class=\"value multiline\" [ngStyle]=\"{height : multilineHeight}\">\n                            <pre>{{formattedValue}}</pre>\n                        </div>\n                    </div>\n                </div>\n\n                <div *ngSwitchCase=\"'boolean'\">\n                    <input type=\"checkbox\"  [checked]=\"value\" disabled=\"disabled\" />\n                </div>\n\n                <div *ngSwitchDefault>\n                    <div class=\"value\">\n                        {{formattedValue}}\n                    </div>\n                </div>\n\n            </div>\n        </div>\n\n        <div *ngIf=\"isEditable\" class=\"input-control text\">\n            <div [ngSwitch]=\"propertyEntryType\">\n                <!--\"EntryType.AutoComplete\"-->\n                <div *ngSwitchCase=\"5\">\n                    <input #focus [id]=\"propertyPaneId\" class=\"value droppable\" dnd-droppable [allowDrop]=\"accept(property)\" (onDropSuccess)=\"drop($event.dragData)\"\n                        [ngClass]=\"classes()\" placeholder=\"{{propertyDescription}}\" type=\"text\" [formControlName]=\"propertyId\"\n                        [geminiClear]=\"property\" [form]=\"form\" />\n                    <div class=\"suggestions\" *ngIf=\"propertyChoices.length > 0\">\n                        <ul *ngFor=\"let choice of propertyChoices\">\n                            <li>\n                                <a (click)=\"select(choice)\">{{choiceName(choice)}}</a>\n                            </li>\n                        </ul>\n                    </div>\n                </div>\n\n                <!--\"EntryType.ConditionalChoices\"-->\n                <div *ngSwitchCase=\"3\">\n                    <select #focus [id]=\"propertyPaneId\"  [formControlName]=\"propertyId\">\n                        <option *ngFor=\"let choice of propertyChoices\" [ngValue]=\"choice\">{{choiceName(choice)}}</option>\n                    </select>\n                </div>\n\n                <!--\"EntryType.Choices\"-->\n                <div *ngSwitchCase=\"1\">\n                    <select #focus [id]=\"propertyPaneId\"  [formControlName]=\"propertyId\">\n                        <option *ngFor=\"let choice of propertyChoices\" [ngValue]=\"choice\">{{choiceName(choice)}}</option>\n                    </select>\n                </div>\n\n                <!--\"EntryType.FreeForm\"-->\n                <div *ngSwitchCase=\"0\">\n                    <div [ngSwitch]=\"propertyReturnType\">\n                        <div *ngSwitchCase=\"'string'\" [ngSwitch]=\"format\">\n                            <div *ngSwitchCase=\"'date'\">\n                                <input #focus [id]=\"propertyPaneId\"  type=\"date\" placeholder=\"{{propertyDescription}}\" [formControlName]=\"propertyId\"\n                                     (change)=\"datePickerChanged($event)\"  />\n                            </div>\n                            <div *ngSwitchCase=\"'time'\">\n                                <input #focus [id]=\"propertyPaneId\"  type=\"time\" placeholder=\"{{propertyDescription}}\" [formControlName]=\"propertyId\"\n                                     [geminiClear]=\"property\" [form]=\"form\" />\n                            </div>\n                            <div *ngSwitchDefault>\n                                <input #focus *ngIf=\"!isMultiline\" [id]=\"propertyPaneId\"  placeholder=\"{{propertyDescription}}\" type=\"{{isPassword ? 'password' : 'text'}}\"\n                                     [formControlName]=\"propertyId\" [geminiClear]=\"property\" [form]=\"form\" />\n                                <textarea #focus *ngIf=\"isMultiline\" rows=\"{{rows}}\" [id]=\"propertyPaneId\" [formControlName]=\"propertyId\"\n                                    placeholder=\"{{propertyDescription}}\"></textarea>\n                            </div>\n                        </div>\n                        <div *ngSwitchCase=\"'boolean'\">\n                            <input #focus [id]=\"propertyPaneId\"  type=\"checkbox\" [geminiBoolean]=\"property\" />{{propertyDescription}}\n                        </div>\n                        <div *ngSwitchDefault>\n                            <input #focus [id]=\"propertyPaneId\"  type=\"text\" placeholder=\"{{propertyDescription}}\" [formControlName]=\"propertyId\"\n                                [geminiClear]=\"property\" [form]=\"form\" />\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"validation\">{{message}}</div>\n    </div>\n</div>"
 
 /***/ }),
 
 /***/ 917:
 /***/ (function(module, exports) {
 
-module.exports = "<div  *ngIf=\"form\"><nof-edit-parameter  [ngClass]=\"classes()\" *ngFor=\"let parm of parameters\" [parameter]=\"parm\" [parent]=\"parent\" [form]=\"form\"></nof-edit-parameter></div>\n<div *ngIf=\"!form\"><nof-view-parameter [ngClass]=\"classes()\" *ngFor=\"let parm of parameters\" [parameter]=\"parm\" [parent]=\"parent\"></nof-view-parameter></div>"
+module.exports = "<div class=\"error\">\n    <div class=\"title\">{{title}}</div>\n    <div class=\"message\">Message: {{message}}</div>\n    <div class=\"code\">Code: {{errorCode}}</div>\n    <div class=\"description\">Description: {{description}}.</div>\n    <div class=\"stacktrace\">\n        Stack Trace :\n        <div class=\"line\" *ngFor=\"let line of stackTrace\">{{line}}</div>\n    </div>\n</div>"
 
 /***/ }),
 
 /***/ 918:
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"form\"><nof-edit-property class=\"property\" *ngFor=\"let prop of properties\" [property]=\"prop\" [parent]=\"parent\" [form]=\"form\"></nof-edit-property></div>\n<div *ngIf=\"!form\"><nof-view-property class=\"property\" *ngFor=\"let prop of properties\" [property]=\"prop\"></nof-view-property></div>\n\n"
+module.exports = "<div class=\"footer\">\n\t<a class=\"icon-home\" title=\"Home (Alt-h)\" tabindex=\"0\" geminiClick (leftClick)=\"goHome()\" (rightClick)=\"goHome(true)\" accesskey=\"h\"></a>\n\t<a class=\"icon-back icon-arrow-left-3\" title=\"Back (Alt-b)\" tabindex=\"0\" (click)=\"goBack()\" accesskey=\"b\"></a>\n\t<a class=\"icon-forward icon-arrow-right-3\" title=\"Forward (Alt-f)\" tabindex=\"0\" (click)=\"goForward()\" accesskey=\"f\"></a>\n\t<a class=\"icon-full\" title=\"Expand pane (Alt-e)\" tabindex=\"0\" geminiClick (leftClick)=\"singlePane()\" (rightClick)=\"singlePane(true)\"\n\t\taccesskey=\"e\"></a>\n\t<a class=\"icon-swap\" [attr.disabled]=\"swapDisabled()\" title=\"Swap panes (Alt-s)\" tabindex=\"0\" (click)=\"swapPanes()\" accesskey=\"s\"></a>\n\t<a class=\"icon-recent\" title=\"Recent objects (Alt-r)\" tabindex=\"0\" geminiClick (leftClick)=\"recent()\" (rightClick)=\"recent(true)\" accesskey=\"r\"></a>\n\t<a class=\"icon-speech\" title=\"Cicero - Speech Interface (Alt-c)\" (click)=\"cicero()\" tabindex=\"0\" accesskey=\"c\"></a>\n\t<a class=\"icon-properties\" title=\"Application Properties (Alt-p)\" (click)=\"applicationProperties()\" tabindex=\"0\" accesskey=\"p\"></a>\n\t<a class=\"icon-logoff\" title=\"Log off (Alt-l)\" (click)=\"logOff()\" tabindex=\"0\" accesskey=\"l\"></a>\n\t<span class=\"loading\">{{loading}}</span>\n\n\t<div class=\"warnings\" *ngFor=\"let warning of warnings\">\n\t\t<div>{{warning}}</div>\n\t</div>\n\t<div class=\"messages\" *ngFor=\"let message of messages\">\n\t\t<div>{{message}}</div>\n\t</div>\n\t<div *ngIf=\"copyViewModel\" class=\"currentcopy\">\n        <span>Copying...</span>\n        <div class=\"reference\" [ngClass]=\"currentCopyColor\" dnd-draggable [dragEnabled]=\"true\" [dragData]=\"copyViewModel\">{{currentCopyTitle}}</div>\n    </div>\n\t<!--<div class=\"user\">{{userName}}</div>\n    <a style=\"display: none\"></a>-->\n</div>"
 
 /***/ }),
 
 /***/ 919:
 /***/ (function(module, exports) {
 
-module.exports = "<div [attr.id]=\"paneIdName\" [ngClass]=\"paneType\">\n    <div class=\"recent\">\n        <div class=\"header\">\n            <div class=\"title\">{{title}}</div>\n            <nof-action-bar [actions]=\"actionHolders\"></nof-action-bar>\n        </div>\n        <div *ngIf=\"recent\">\n            <div class=\"collection\">\n                <table>\n                    <tbody>\n                        <tr #row tabindex=\"0\" [ngClass]=\"itemColor(item)\" *ngFor=\"let item of items()\" dnd-draggable [dragEnabled]=\"true\" [dragData]=\"item\" geminiClick\n                            (leftClick)=\"doItemClick(item)\" (rightClick)=\"doItemClick(item, true)\">\n                            <td class=\"cell\">\n                                {{itemTitle(item)}}\n                            </td>\n                            <td class=\"cell\">\n                                {{itemFriendlyName(item)}}\n                            </td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n        </div>\n    </div>\n</div>\n<router-outlet (activate)=\"onChild()\" (deactivate)=\"onChildless()\"></router-outlet>\n"
+module.exports = "<div [attr.id]=\"paneIdName\" [ngClass]=\"paneType\">\n\t<!--TODO: This is the Single/Split definition-->\n\t<div class=\"home\">\n\t\t<div class=\"header\">\n\t\t\t<div class=\"title\">Home</div>\n            <nof-menu-bar class=\"menus\" *ngIf=\"hasMenus\" [menus]=\"menuItems\"></nof-menu-bar> \n\t\t\t<div class=\"messages\"></div>\n\t\t</div>\n\t\t<nof-action-list *ngIf=\"selectedMenu\" [menuHolder]=\"selectedMenu\"></nof-action-list>\n\t\t<div class=\"main-column\">\n\t\t<nof-dialog *ngIf=\"selectedMenu\" [selectedDialogId]=\"selectedDialogId\" [parent]=\"selectedMenu\" ></nof-dialog>\n\t\t</div>\n\t</div>\n</div>\n<router-outlet (activate)=\"onChild()\" (deactivate)=\"onChildless()\"></router-outlet>\n"
 
 /***/ }),
 
 /***/ 920:
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"name\">\n    <label attr.for=\"{{parameterPaneId}}\">{{title}}</label>\n</div>\n\n<div *ngIf=\"parameterType === 'ref'\">\n    <div class=\"value\">{{formattedValue}}</div>\n</div>\n\n<div *ngIf=\"parameterType === 'scalar'\" >\n    <div [ngSwitch]=\"parameterReturnType\">\n        <div *ngSwitchCase=\"string\">\n            <div *ngIf=\"!isMultiline\" class=\"value\">\n                {{formattedValue}}\n            </div>\n            <div *ngIf=\"isMultiline\" class=\"value multiline\" [ngStyle]=\"{height : multilineHeight}\">\n                <pre>{{formattedValue}}</pre>\n            </div>\n        </div>\n\n        <div *ngSwitchCase=\"'boolean'\">\n            <input type=\"checkbox\" [checked]=\"value\" disabled=\"disabled\" />\n        </div>\n\n        <div *ngSwitchDefault>\n            <div class=\"value\">{{formattedValue}}</div>\n        </div>\n    </div>\n</div>\n\n\n\n\n"
+module.exports = "<div *ngIf=\"collection\">\n    <div class=\"list\">\n        <header class=\"header\">\n            <div class=\"title\">{{title}}</div>\n            <nof-action-bar [actions]=\"actionHolders\"></nof-action-bar>\n            <div class=\"messages\">{{message}}</div>\n        </header>\n        <div class=\"details\" *ngIf=\"size == 0\">{{description}}</div>\n        <div *ngIf=\"size > 0\">\n            <nof-action-list *ngIf=\"showActions()\" [menuHolder]=\"collection\"></nof-action-list>\n            <nof-dialog [parent]=\"collection\" [selectedDialogId]=\"selectedDialogId\"></nof-dialog>\n            <div class=\"summary\" *ngIf=\"state == 'list'\">\n                <div class=\"details\">{{description}}</div>\n                <img class=\"icon-table\" (click)=\"doTable()\" src=\"../../assets/table.png\" title=\"View as Table\" />\n                <table>\n                    <thead>\n                        <tr>\n                            <th [hidden]=\"hideAllCheckbox()\"><input type=\"checkbox\" [id]=\"itemId('all')\" [ngModel]=\"allSelected()\" (click)=\"selectAll()\">All</th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        <tr *ngFor=\"let item of items; let i = index\">\n                            <td class=\"checkbox\" [hidden]=\"disableActions()\">\n                                <input type=\"checkbox\" [id]=\"itemId(i)\" [(ngModel)]=\"item.selected\">\n                            </td>\n                            <td class=\"reference\" [ngClass]=\"itemColor(item)\" geminiClick (leftClick)=\"doItemClick(item)\" (rightClick)=\"doItemClick(item, true)\"\n                                dnd-draggable [dragEnabled]=\"true\" [dragData]=\"item\" (keydown)=\"copy($event, item)\" (keypress)=\"copy($event, item)\" tabindex=\"0\">\n                                <label attr.for=\"{itemId(i)}}\">{{itemTitle(item)}}</label>\n                            </td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n            <div class=\"summary\" *ngIf=\"state == 'table'\">\n                <div class=\"details\">{{description}}</div>\n                <img class=\"icon-list\" (click)=\"doList()\" src=\"../../assets/list.png\" title=\"View as List\" />\n            </div>\n            <table *ngIf=\"state == 'table'\">\n                <thead>\n                    <tr>\n                        <th [hidden]=\"hideAllCheckbox()\"><input type=\"checkbox\" [id]=\"itemId('all')\" [ngModel]=\"allSelected()\" (click)=\"selectAll()\">All</th>\n                        <th *ngFor=\"let heading of header\" scope=\"col\">\n                            {{heading}}\n                        </th>\n                    </tr>\n                </thead>\n                <tbody *ngIf=\"hasTableData()\">\n                    <tr tabindex=\"0\" *ngFor=\"let item of items; let i = index\" gemini-drag>\n                        <td [hidden]=\"disableActions()\" class=\"checkbox\">\n                            <input type=\"checkbox\" [id]=\"itemId(i)\" [(ngModel)]=\"item.selected\">\n                        </td>\n                        <td *ngIf=\"itemHasTableTitle(item)\" geminiClick (leftClick)=\"doItemClick(item)\" (rightClick)=\"doItemClick(item, true)\" [ngClass]=\"itemColor(item)\" class=\"cell\">\n                            {{itemTableTitle(item)}}\n                        </td>\n                        <td *ngFor=\"let property of itemTableProperties(item)\" geminiClick (leftClick)=\"doItemClick(item)\" (rightClick)=\"doItemClick(item, true)\"\n                            [ngClass]=\"itemColor(item)\" class=\"cell\">\n                            <div [ngSwitch]=\"propertyType(property)\">\n                                <div *ngSwitchCase=\"'ref'\">\n                                    {{propertyFormattedValue(property)}}\n                                </div>\n                                <div *ngSwitchCase=\"'scalar'\" [ngSwitch]=\"propertyReturnType(property)\">\n                                    <div *ngSwitchCase=\"'boolean'\">\n                                        <input type=\"checkbox\" [checked]=\"propertyValue(property)\" disabled=\"disabled\" />\n                                    </div>\n                                    <div *ngSwitchCase=\"'number'\">\n                                        <div class=\"number\">{{propertyFormattedValue(property)}}</div>\n                                    </div>\n                                    <div *ngSwitchDefault>\n                                        <div>{{propertyFormattedValue(property)}}</div>\n                                    </div>\n                                </div>\n                            </div>\n                        </td>\n                    </tr>\n                </tbody>\n            </table>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
 /***/ 921:
 /***/ (function(module, exports) {
 
+module.exports = "<nof-action *ngFor=\"let action of actions\" [action]=\"action\"></nof-action>\n"
+
+/***/ }),
+
+/***/ 922:
+/***/ (function(module, exports) {
+
+module.exports = "<div id=\"pane1\" class=\"single\">\n    <div  *ngIf=\"dialog\" class=\"multilinedialog\">\n        <div class=\"header\">\n            <div class=\"type\">{{objectFriendlyName}}</div>\n            <div class=\"title\" gemini-drag tabindex=\"0\">\n                <div>{{objectTitle}}</div>\n                <div>{{dialogTitle}}</div>\n            </div>\n        </div>\n        <div class=\"columnHeader\" *ngFor=\"let column of header\">{{column}}</div>\n        <div class=\"lineDialog\" *ngFor=\"let row of rows; let i = index \">\n            <form *ngIf=\"!rowSubmitted(row)\" (ngSubmit)=\"invokeAndAdd(i)\" [formGroup]=\"form(i)\" autocomplete=\"off\">\n                <nof-parameters  class=\"parameters multilinedialog\" [parameters]=\"parameters(row)\" [parent]=\"row\" [form]=\"form(i)\"></nof-parameters>               \n                <input class=\"ok\" tabindex=\"0\" type=\"submit\" value=\"OK\" title=\"{{rowTooltip(row)}}\" [disabled]=\"rowDisabled(row)\" geminiClick (leftClick)=\"invokeAndAdd(i)\" />\n                <div class=\"co-validation\">{{rowMessage(row)}}</div>\n            </form>\n            <nof-parameters *ngIf=\"rowSubmitted(row)\" class=\"parameters\" [parameters]=\"parameters(row)\" [parent]=\"row\"></nof-parameters>\n            <div *ngIf=\"rowSubmitted(row)\" class=\"co-validation\">{{rowMessage(row)}}</div>\n        </div>\n        <input class=\"close\" tabindex=\"0\" type=\"submit\" value=\"Close\" title=\"\" geminiClick (leftClick)=\"close()\" />\n        <div class=\"count\">{{count}}</div>\n    </div>\n</div>\n"
+
+/***/ }),
+
+/***/ 923:
+/***/ (function(module, exports) {
+
+module.exports = "<div *ngIf=\"expiredTransient\" class=\"title\">The requested view of unsaved object details has expired.</div>\n\n<!--place holder-->\n<div *ngIf=\"!object\">\n    <div class=\"object view\" [ngClass]=\"color\"></div>\n</div>\n<div *ngIf=\"object && viewMode === 'View'\" class=\"object view\" [ngClass]=\"color\">\n    <header class=\"header\">\n        <div class=\"title\" dnd-draggable [dragEnabled]=\"true\" [dragData]=\"object\" tabindex=\"0\" (keydown)=\"copy($event)\" (keypress)=\"copy($event)\">\n            <span class=\"type\">{{friendlyName}}</span> {{title()}}\n        </div>\n        <!--<div>{{object.isDirty() ? \"*\" : \"\"}} </div>-->\n        <nof-action-bar [actions]=\"actionHolders\"></nof-action-bar>\n        <div class=\"messages\">{{message()}}</div>\n    </header>\n    <nof-action-list *ngIf=\"showActions()\" [menuHolder]=\"object\"></nof-action-list>\n    <div class=\"main-column\">\n        <nof-dialog [parent]=\"object\" [selectedDialogId]=\"selectedDialogId\"></nof-dialog>\n        <nof-properties class=\"properties\" *ngIf=\"properties\" [properties]=\"properties\"></nof-properties>\n    </div>\n    <nof-collections class=\"collections\" *ngIf=\"collections\" [collections]=\"collections\"></nof-collections>\n</div>\n<div *ngIf=\"object && (viewMode === 'Edit' || viewMode === 'Transient' || viewMode === 'Form')\" class=\"object edit\" [ngClass]=\"color\">\n    <form (ngSubmit)=\"onSubmit()\" [formGroup]=\"form\" autocomplete=\"off\">\n        <header class=\"header\">\n            <div class=\"title\" dnd-draggable [dragEnabled]=\"true\" [dragData]=\"object\" tabindex=\"0\" (keydown)=\"copy($event)\" (keypress)=\"copy($event)\">\n                <span class=\"type\">{{friendlyName}}</span> {{title()}}\n            </div>\n            <div *ngIf=\"viewMode === 'Form'\">\n                <nof-action-bar [actions]=\"actionHolders\"></nof-action-bar>\n            </div>\n            <div *ngIf=\"viewMode === 'Edit' || viewMode === 'Transient'\" class=\"menus\">\n                <nof-action-bar [actions]=\"actionHolders\"></nof-action-bar>\n            </div>\n            <div class=\"messages\">{{message()}}</div>\n        </header>\n        <div class=\"main-column\">\n            <nof-properties *ngIf=\"properties\" [properties]=\"properties\" [parent]=\"object\" [form]=\"form\"></nof-properties>\n        </div>\n    </form>\n    <nof-collections *ngIf=\"collections\" [collections]=\"collections\"></nof-collections>\n</div>\n<div *ngIf=\"object && viewMode === 'NotPersistent'\" class=\"object view\" [ngClass]=\"color\">\n    <header class=\"header\">\n        <div class=\"title\" dnd-draggable [dragEnabled]=\"true\" [dragData]=\"object\" tabindex=\"0\" (keydown)=\"copy($event)\" (keypress)=\"copy($event)\">\n            <span class=\"type\">{{friendlyName}}</span> {{title()}}\n        </div>\n        <div class=\"messages\">{{message()}}</div>\n    </header>\n    <div class=\"main-column\">\n        <nof-properties class=\"properties\" *ngIf=\"properties\" [properties]=\"properties\"></nof-properties>\n    </div>\n    <nof-collections class=\"collections\" *ngIf=\"collections\" [collections]=\"collections\"></nof-collections>\n</div>\n"
+
+/***/ }),
+
+/***/ 924:
+/***/ (function(module, exports) {
+
+module.exports = "<div  *ngIf=\"form\"><nof-edit-parameter  [ngClass]=\"classes()\" *ngFor=\"let parm of parameters\" [parameter]=\"parm\" [parent]=\"parent\" [form]=\"form\"></nof-edit-parameter></div>\n<div *ngIf=\"!form\"><nof-view-parameter [ngClass]=\"classes()\" *ngFor=\"let parm of parameters\" [parameter]=\"parm\" [parent]=\"parent\"></nof-view-parameter></div>"
+
+/***/ }),
+
+/***/ 925:
+/***/ (function(module, exports) {
+
+module.exports = "<div *ngIf=\"form\"><nof-edit-property class=\"property\" *ngFor=\"let prop of properties\" [property]=\"prop\" [parent]=\"parent\" [form]=\"form\"></nof-edit-property></div>\n<div *ngIf=\"!form\"><nof-view-property class=\"property\" *ngFor=\"let prop of properties\" [property]=\"prop\"></nof-view-property></div>\n\n"
+
+/***/ }),
+
+/***/ 926:
+/***/ (function(module, exports) {
+
+module.exports = "<div [attr.id]=\"paneIdName\" [ngClass]=\"paneType\">\n    <div class=\"recent\">\n        <div class=\"header\">\n            <div class=\"title\">{{title}}</div>\n            <nof-action-bar [actions]=\"actionHolders\"></nof-action-bar>\n        </div>\n        <div *ngIf=\"recent\">\n            <div class=\"collection\">\n                <table>\n                    <tbody>\n                        <tr #row tabindex=\"0\" [ngClass]=\"itemColor(item)\" *ngFor=\"let item of items()\" dnd-draggable [dragEnabled]=\"true\" [dragData]=\"item\" geminiClick\n                            (leftClick)=\"doItemClick(item)\" (rightClick)=\"doItemClick(item, true)\">\n                            <td class=\"cell\">\n                                {{itemTitle(item)}}\n                            </td>\n                            <td class=\"cell\">\n                                {{itemFriendlyName(item)}}\n                            </td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n        </div>\n    </div>\n</div>\n<router-outlet (activate)=\"onChild()\" (deactivate)=\"onChildless()\"></router-outlet>\n"
+
+/***/ }),
+
+/***/ 927:
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"name\">\n    <label attr.for=\"{{parameterPaneId}}\">{{title}}</label>\n</div>\n\n<div *ngIf=\"parameterType === 'ref'\">\n    <div class=\"value\">{{formattedValue}}</div>\n</div>\n\n<div *ngIf=\"parameterType === 'scalar'\" >\n    <div [ngSwitch]=\"parameterReturnType\">\n        <div *ngSwitchCase=\"string\">\n            <div *ngIf=\"!isMultiline\" class=\"value\">\n                {{formattedValue}}\n            </div>\n            <div *ngIf=\"isMultiline\" class=\"value multiline\" [ngStyle]=\"{height : multilineHeight}\">\n                <pre>{{formattedValue}}</pre>\n            </div>\n        </div>\n\n        <div *ngSwitchCase=\"'boolean'\">\n            <input type=\"checkbox\" [checked]=\"value\" disabled=\"disabled\" />\n        </div>\n\n        <div *ngSwitchDefault>\n            <div class=\"value\">{{formattedValue}}</div>\n        </div>\n    </div>\n</div>\n\n\n\n\n"
+
+/***/ }),
+
+/***/ 928:
+/***/ (function(module, exports) {
+
 module.exports = "<div class=\"name\">{{title}}:</div>\n\n<div *ngIf=\"propertyType === 'ref'\">\n    <div [ngSwitch]=\"propertyRefType\">\n        <div *ngSwitchCase=\"null\"></div>\n        <div *ngSwitchCase=\"'notNavigable'\">\n            <div class=\"value\">{{formattedValue}}</div>\n        </div>\n        <div *ngSwitchDefault class=\"reference\" [ngClass]=\"color\" geminiClick (leftClick)=\"doClick()\"\n             (rightClick)=\"doClick(true)\" dnd-draggable [dragEnabled]=\"true\" [dragData]=\"property\" tabindex=\"0\">\n            {{formattedValue}}\n        </div>\n    </div>\n</div>\n\n<div *ngIf=\"propertyType === 'scalar'\">\n    <div [ngSwitch]=\"propertyReturnType\">\n        <div *ngSwitchCase=\"'string'\">\n\n            <nof-attachment-property *ngIf=\"isBlob\" [attachment]=\"attachment\"></nof-attachment-property>\n            <div *ngIf=\"!isBlob\">\n                <div *ngIf=\"!isMultiline\" class=\"value\">\n                    {{formattedValue}}\n                </div>\n                <div *ngIf=\"isMultiline\" class=\"value multiline\" [ngStyle]=\"{height : multilineHeight}\">\n                    <pre>{{formattedValue}}</pre>\n                </div>\n            </div>\n        </div>\n\n        <div *ngSwitchCase=\"'boolean'\">\n            <input type=\"checkbox\" [checked]=\"value\" disabled=\"disabled\" />\n        </div>\n\n        <div *ngSwitchDefault>\n            <div class=\"value\">{{formattedValue}}</div>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
-/***/ 959:
+/***/ 966:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(565);
+module.exports = __webpack_require__(572);
 
 
 /***/ }),
@@ -15902,5 +15916,5 @@ var PaneComponent = (function () {
 
 /***/ })
 
-},[959]);
+},[966]);
 //# sourceMappingURL=main.bundle.js.map
