@@ -16,6 +16,16 @@
                         </li>
                     </ul>
                 </div>
+
+                <!--<md-input-container>
+                    <input #focus [id]="parameterPaneId" class="value droppable" type="text" dnd-droppable [allowDrop]="accept(parameter)" (onDropSuccess)="drop($event.dragData)" [ngClass]="droppableClasses()" placeholder="{{description}}" mdInput [formControlName]="parameterId" [formControl]="control"  [mdAutocomplete]="auto">
+                </md-input-container>
+
+                <md-autocomplete #auto="mdAutocomplete">
+                    <md-option *ngFor="let option of choices" [value]="option">
+                        {{ option }}
+                    </md-option>
+                </md-autocomplete>-->
             </div>
 
             <div *ngIf="isChoices() && !isMultiple()">

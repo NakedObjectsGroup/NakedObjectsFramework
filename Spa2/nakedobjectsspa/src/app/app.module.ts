@@ -53,6 +53,7 @@ import { CiceroCommandFactoryService } from './cicero-command-factory.service';
 import { CiceroRendererService } from './cicero-renderer.service';
 import { ActionBarComponent } from './action-bar/action-bar.component';
 import { ActionListComponent } from './action-list/action-list.component';
+import { MaterialModule } from '@angular/material';
 
 @NgModule({
     declarations: [
@@ -99,7 +100,8 @@ import { ActionListComponent } from './action-list/action-list.component';
         FormsModule,
         HttpModule,
         RoutingModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        MaterialModule
     ],
     providers: [
         UrlManagerService,
