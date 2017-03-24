@@ -180,4 +180,82 @@ html, #main, body, .background, .single, .split {
     color: white;
 }
 
+.mat-option-ripple {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.mat-ripple {
+    overflow: hidden;
+}
+
+.mat-option {
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    line-height: 48px;
+    height: 48px;
+    padding: 0 16px;
+    font-size: 16px;
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    text-align: start;
+    text-decoration: none;
+    position: relative;
+    cursor: pointer;
+    outline: 0;
+}
+
+.mat-option.mat-active {
+    color: rgba(0,0,0,.87);
+}
+
+.mat-autocomplete-panel.mat-autocomplete-visible {
+    visibility: visible;
+}
+
+.mat-autocomplete-panel.mat-autocomplete-panel-below {
+    top: 6px;
+}
+
+.mat-autocomplete-panel {
+    box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12);
+    min-width: 112px;
+    max-width: 280px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    visibility: hidden;
+    max-height: 256px;
+    position: relative;
+}
+
+.mat-autocomplete-panel, .mat-autocomplete-panel .mat-option.mat-selected:not(.mat-active) {
+    background: #fff;
+    color: rgba(0,0,0,.87);
+}
+
+.cdk-overlay-pane {
+    position: absolute;
+    pointer-events: auto;
+    box-sizing: border-box;
+    z-index: 1000;
+}
+
+.cdk-global-overlay-wrapper, .cdk-overlay-container {
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+
+
+
+
+
+
 /*Cicero*/

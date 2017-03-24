@@ -225,7 +225,7 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Sales Order");
             wait.Until(dr => dr.FindElement(By.CssSelector("#salesperson1")).GetAttribute("placeholder") == "(auto-complete or drop)");
             ClearFieldThenType("#salesperson1", "Va");
-            wait.Until(d => d.FindElements(By.CssSelector(".suggestions a")).Count > 0);
+            wait.Until(d => d.FindElements(By.CssSelector("md-option")).Count > 0);
         }
     }
 

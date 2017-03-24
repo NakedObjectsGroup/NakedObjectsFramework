@@ -96,8 +96,8 @@ namespace NakedObjects.Selenium {
 
             //Line 0
             ClearFieldThenType("#prod0", "Dissolver");
-            wait.Until(d => d.FindElements(By.CssSelector(".suggestions a")).Count > 0);
-            Click(WaitForCss(".suggestions a"));
+            wait.Until(d => d.FindElements(By.CssSelector("md-option")).Count > 0);
+            Click(WaitForCss("md-option"));
             WaitForCss("#prod0.link-color4");
             ClearFieldThenType("#qty0", "4");
             ClearFieldThenType("#unitprice0", "2.54");
@@ -107,8 +107,8 @@ namespace NakedObjects.Selenium {
             PageDownAndWait();
             //line 1
             ClearFieldThenType("#prod1", "bottle");
-            wait.Until(d => d.FindElements(By.CssSelector(".suggestions a")).Count > 2);
-            Click(WaitForCss(".suggestions a"));
+            wait.Until(d => d.FindElements(By.CssSelector("md-option")).Count > 2);
+            Click(WaitForCss("md-option"));
             WaitForCss("#prod1.link-color4");
             ClearFieldThenType("#qty1", "5");
             ClearFieldThenType("#unitprice1", "2.54");
@@ -148,11 +148,11 @@ namespace NakedObjects.Selenium {
             OKButtonOnLine(0).AssertIsDisabled("Missing mandatory fields: Product; ");
             //Auto-complete
             ClearFieldThenType("#product0", "Dissolver");
-            wait.Until(d => d.FindElements(By.CssSelector(".suggestions a")).Count > 0);
+            wait.Until(d => d.FindElements(By.CssSelector("md-option")).Count > 0);
             //As the match has not yet been selected,the field is invalid, so...
             WaitForTextEquals(".validation", 0, "Pending auto-complete...");
             OKButtonOnLine(0).AssertIsDisabled().AssertHasTooltip("Invalid fields: Product; ");
-            Click(WaitForCss(".suggestions a"));
+            Click(WaitForCss("md-option"));
             WaitForCss("#product0.link-color4");
             //Other field with validation
             ClearFieldThenType("#quantity0", "0");
@@ -172,8 +172,8 @@ namespace NakedObjects.Selenium {
             OKButtonOnLine(1).AssertIsDisabled("Missing mandatory fields: Product; ");
             //Auto-complete
             ClearFieldThenType("#product1", "vest, S");
-            wait.Until(d => d.FindElements(By.CssSelector(".suggestions a")).Count > 0);
-            Click(WaitForCss(".suggestions a"));
+            wait.Until(d => d.FindElements(By.CssSelector("md-option")).Count > 0);
+            Click(WaitForCss("md-option"));
             WaitForCss("#product1.link-color4");
             Click(OKButtonOnLine(1));
             WaitForTextEquals(".co-validation", 1, "Submitted");
