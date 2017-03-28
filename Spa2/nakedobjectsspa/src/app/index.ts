@@ -25,6 +25,7 @@ export * from './properties/properties.component';
 export * from './recent/recent.component';
 export * from './view-parameter/view-parameter.component';
 export * from './view-property/view-property.component';
+export * from './row/row.component';
 export * from './cicero/cicero.component';
 
 export * from './click-handler.service';
