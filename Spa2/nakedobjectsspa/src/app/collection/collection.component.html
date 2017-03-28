@@ -14,38 +14,17 @@
 <table *ngIf="state == 'table'">
     <thead>
     <tr>
-        <th [hidden]="(disableActions() || noItems())"><input type="checkbox" [id]="itemId('all')" [ngModel]="allSelected()" (click)="selectAll()">All</th>
+        <th [hidden]="(disableActions() || noItems())">
+            <input type="checkbox" [id]="itemId('all')" [ngModel]="allSelected()" (click)="selectAll()">All
+        </th>
         <th *ngFor="let heading of header" scope="col">
             {{heading}}
         </th>
     </tr>
     </thead>
     <tbody *ngIf="hasTableData()">
-        <tr *ngFor="let item of items; let i = index" [ngClass]="itemColor(item)" class="clickable-area"  gemini-drag tabindex="0">
-            <td [hidden]="disableActions()" class="checkbox">
-			     <input type="checkbox" [id]="itemId(i)" [(ngModel)]="item.selected">
-			</td>
-            <td *ngIf="itemHasTableTitle(item)" class="cell" geminiClick (leftClick)="doItemClick(item)" (rightClick)="doItemClick(item, true)">
-                {{itemTableTitle(item)}}
-            </td>
-            <td *ngFor="let property of itemTableProperties(item)" geminiClick (leftClick)="doItemClick(item)" (rightClick)="doItemClick(item, true)" [ngClass]="itemColor(item)" class="cell">
-                <div  [ngSwitch]="propertyType(property)">
-                    <div *ngSwitchCase="'ref'" class="clickable-area">
-                        {{propertyFormattedValue(property)}}
-                    </div>
-                    <div *ngSwitchCase="'scalar'" [ngSwitch]="propertyReturnType(property)">
-                        <div *ngSwitchCase="'boolean'" class="clickable-area">
-                            <input type="checkbox" [checked]="propertyValue(property)" disabled="disabled" />
-                        </div>
-                        <div *ngSwitchCase="'number'" class="clickable-area">
-                            <div class="clickable-area number">{{propertyFormattedValue(property)}}</div>
-                        </div>
-                        <div *ngSwitchDefault class="clickable-area">
-                            <div class="clickable-area">{{propertyFormattedValue(property)}}</div>
-                        </div>
-                    </div>
-                </div>
-            </td>
+        <tr *ngFor="let item of items; let i = index">
+            <nof-row [item]="item" [index]="i" [withCheckbox]="!disableActions()" [isTable]="true"></nof-row>
         </tr>
     </tbody>
 </table>
@@ -58,8 +37,8 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let item of items; let i = index" [ngClass]="itemColor(item)">
-            <nof-row [item]="item" [index]="i" [withCheckbox]="!disableActions()"></nof-row>
+        <tr *ngFor="let item of items; let i = index">
+            <nof-row [item]="item" [index]="i" [withCheckbox]="!disableActions()" [isTable]="false"></nof-row>
         </tr>
     </tbody>
 </table>

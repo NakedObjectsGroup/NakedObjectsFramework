@@ -2326,7 +2326,7 @@ export class ListRepresentation
 
     hasTableData = () => {
         const valueLinks = this.value();
-        return valueLinks && _.some(valueLinks, (i: Link) => i.members());
+        return valueLinks && _.some(valueLinks, i => i.members());
     }
 }
 
