@@ -255,15 +255,9 @@ function validateDateTimeFormat(model: IHasExtensions, newValue: Date): string {
     return "";
 }
 
-// todo fix locale
 function getDate(val: string): Date | null {
-
-    const dt1 = moment(val, "YYYY-MM-DD", "en-GB", true);
-
-    if (dt1.isValid()) {
-        return dt1.toDate();
-    }
-    return null;
+    const dt1 = moment(val, "YYYY-MM-DD",  true);
+    return dt1.isValid() ? dt1.toDate() : null;
 }
 
 function validateDateFormat(model: IHasExtensions, newValue: Date | string, filter: ILocalFilter): string {
@@ -308,7 +302,7 @@ function validateString(model: IHasExtensions, newValue: any, filter: ILocalFilt
 }
 
 
-export function validateMandatory(model: IHasExtensions, viewValue: string | ChoiceViewModel): string {
+export function validateMandatory(model: IHasExtensions, viewValue: string): string {
     // first check 
     const isMandatory = !model.extensions().optional();
 
@@ -320,7 +314,7 @@ export function validateMandatory(model: IHasExtensions, viewValue: string | Cho
 }
 
 
-export function validate(model: IHasExtensions, modelValue: any, viewValue: string, filter: ILocalFilter): string {
+export function validate(model: IHasExtensions, modelValue: string | ChoiceViewModel | string[] | ChoiceViewModel[], viewValue: string, filter: ILocalFilter): string {
     // first check 
 
     const mandatory = validateMandatory(model, viewValue);
@@ -339,13 +333,13 @@ export function validate(model: IHasExtensions, modelValue: any, viewValue: stri
 
     switch (returnType) {
         case ("number"):
-            // todo - no jQuery so use equivalent check 
-            //if (!$.isNumeric(modelValue)) {
-            //    return Usermessagesconfig.notANumber;
-            //}
-            return validateNumber(model, parseFloat(modelValue), filter);
+            const valueAsNumber = parseFloat(viewValue);
+            if (Number.isFinite(valueAsNumber)    ) {
+                return validateNumber(model, valueAsNumber, filter);
+            }
+            return Msg.notANumber;
         case ("string"):
-            return validateString(model, modelValue, filter);
+            return validateString(model, viewValue, filter);
         case ("boolean"):
             return "";
         default:

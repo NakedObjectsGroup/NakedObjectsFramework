@@ -79,7 +79,7 @@ export abstract class FieldViewModel extends MessageViewModel {
 
     readonly drop = (newValue: IDraggableViewModel) => Helpers.drop(this.context, this.error, this, newValue);
 
-    readonly validate = (modelValue: any, viewValue: string, mandatoryOnly: boolean) => Helpers.validate(this.rep, this, modelValue, viewValue, mandatoryOnly);
+    readonly validate = (modelValue: string | ChoiceViewModel | string[] | ChoiceViewModel[], viewValue: string, mandatoryOnly: boolean) => Helpers.validate(this.rep, this, modelValue, viewValue, mandatoryOnly);
 
     get choices(): ChoiceViewModel[] {
         return this.choiceOptions;
@@ -129,7 +129,7 @@ export abstract class FieldViewModel extends MessageViewModel {
     }
 
 
-    private isValid(viewValue: any): boolean {
+    private isValid(viewValue: string | ChoiceViewModel | string[] | ChoiceViewModel[]): boolean {
 
         let val: string;
 
@@ -164,7 +164,7 @@ export abstract class FieldViewModel extends MessageViewModel {
     };
 
     readonly validator = (c: AbstractControl): { [index: string]: any; } | null => {
-        const viewValue = c.value;
+        const viewValue = c.value as string | ChoiceViewModel | string[] | ChoiceViewModel[];
         const isvalid = this.isValid(viewValue);
         return isvalid ? null : { invalid: "invalid entry" };
     };
