@@ -54,6 +54,7 @@ import { CiceroRendererService } from './cicero-renderer.service';
 import { ActionBarComponent } from './action-bar/action-bar.component';
 import { ActionListComponent } from './action-list/action-list.component';
 import { MaterialModule } from '@angular/material';
+import { RowComponent } from './row/row.component';
 
 @NgModule({
     declarations: [
@@ -87,7 +88,8 @@ import { MaterialModule } from '@angular/material';
         DynamicListComponent,
         AttachmentPropertyComponent,
         DynamicErrorComponent,
-        CiceroComponent
+        CiceroComponent,
+        RowComponent
     ],
     entryComponents: [
         ObjectComponent,

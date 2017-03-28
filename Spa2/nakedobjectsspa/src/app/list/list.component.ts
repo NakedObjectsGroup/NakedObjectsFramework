@@ -226,6 +226,7 @@ export class ListComponent {
         this.selectedDialogId = routeData.dialogId;
     }
 
+    // todo check we still need this after new row component
     copy(event: KeyboardEvent, item: IDraggableViewModel) {
         Helpers.copy(event, item, this.context);
     }

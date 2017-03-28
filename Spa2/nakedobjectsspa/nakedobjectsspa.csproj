@@ -74,6 +74,8 @@
     <Content Include="src\app\properties\properties.component.html" />
     <Content Include="src\app\recent\recent.component.css" />
     <Content Include="src\app\recent\recent.component.html" />
+    <Content Include="src\app\row\row.component.css" />
+    <Content Include="src\app\row\row.component.html" />
     <Content Include="src\app\view-parameter\view-parameter.component.css" />
     <Content Include="src\app\view-parameter\view-parameter.component.html" />
     <Content Include="src\app\view-property\view-property.component.css" />
@@ -160,6 +162,7 @@
     <TypeScriptCompile Include="src\app\ro-interfaces-custom.ts" />
     <TypeScriptCompile Include="src\app\ro-interfaces.ts" />
     <TypeScriptCompile Include="src\app\route-data.ts" />
+    <TypeScriptCompile Include="src\app\row\row.component.ts" />
     <TypeScriptCompile Include="src\app\rxjs-extensions.ts" />
     <TypeScriptCompile Include="src\app\shared\index.ts" />
     <TypeScriptCompile Include="src\app\simple-lru-cache.ts" />

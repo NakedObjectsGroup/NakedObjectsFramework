@@ -1,0 +1,114 @@
+.list {
+    color: white;
+    padding-left: 20px;
+    height: 100%;
+    overflow-y: auto;
+    display: block;
+    font-weight: 100;
+}
+
+.header {
+    display: block;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.title, .type {
+    position: relative;
+    font-weight: 100;
+    font-size: 24pt;
+    line-height: 38pt;
+    margin-left: 1px; /*Make room for focus outline*/
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-right: 20px;
+    margin-top: 2px;
+    display: block;
+}
+
+.type {
+    float: left;
+    margin-right: 20px;
+    display: none; /*Change this to display type (e.g. for accessibility)*/
+}
+
+/* Menus */
+
+.menus {
+    display: block;
+}
+.menu, .header .action {
+    display: block;
+    float: left;
+    padding: 5px;
+    margin-top: 0px;
+    margin-left: 1px; /*Else hover outline is hidden on the left-most menu */
+    margin-right: 10px;
+    margin-bottom: 5px; /*Else hover outline is hidden on the bottom */
+    font-size: 16pt;
+}
+
+.menu:disabled, .ok:disabled {
+        color: grey;
+    }
+
+.summary {
+    display: block;
+    width: 450px;
+    font-size: 12pt;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.details {
+    padding-left: 40px;
+    width: 400px;
+    float: left;
+}
+
+.reference {
+    cursor: pointer;
+    font-size: 11pt; 
+    padding-left: 5px;
+    padding-right: 5px;
+    margin: 1px;
+    width: 440px;
+}
+
+.reference:not(:last-child) {
+   margin-bottom: 5px;
+}
+
+.icon-list, .icon-table {
+    cursor: pointer;
+    float: right;
+    width: 20px;
+    padding-top: 5px;
+    padding-left: 5px;
+}
+
+
+td.checkbox {
+    background-color: black; /*Because check-box only ever displayed on default background*/
+}
+
+/*Tables*/
+table {
+    font-size: 11pt;
+}
+th, td {
+    font-weight: 100; /*Override browser default*/
+    text-align: left;
+    padding-left: 5px;
+    padding-right: 5px;
+    vertical-align: top;
+}
+
+tbody .number {
+    text-align:right;
+}
+
+tbody tr {
+  cursor:pointer;
+}
+

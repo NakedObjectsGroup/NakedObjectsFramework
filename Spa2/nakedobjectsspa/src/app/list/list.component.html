@@ -20,13 +20,7 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let item of items; let i = index">
-                            <td class="checkbox" [hidden]="disableActions()">
-                                <input type="checkbox" [id]="itemId(i)" [(ngModel)]="item.selected">
-                            </td>
-                            <td class="reference" [ngClass]="itemColor(item)" geminiClick (leftClick)="doItemClick(item)" (rightClick)="doItemClick(item, true)"
-                                dnd-draggable [dragEnabled]="true" [dragData]="item" (keydown)="copy($event, item)" (keypress)="copy($event, item)" tabindex="0">
-                                <label attr.for="{itemId(i)}}">{{itemTitle(item)}}</label>
-                            </td>
+                            <nof-row [item]="item" [index]="i" [withCheckbox]="!disableActions()"></nof-row>
                         </tr>
                     </tbody>
                 </table>

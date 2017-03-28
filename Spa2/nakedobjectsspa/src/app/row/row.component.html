@@ -1,0 +1,7 @@
+<td class="checkbox" [hidden]="!withCheckbox">
+    <input type="checkbox" [id]="id" [(ngModel)]="selected">
+</td>
+<td class="reference" [ngClass]="color" geminiClick (leftClick)="doClick()" (rightClick)="doClick(true)"
+    dnd-draggable [dragEnabled]="true" [dragData]="item" (keydown)="copy($event, item)" (keypress)="copy($event, item)" tabindex="0">
+    <label attr.for="{{id}}">{{title}}</label>
+</td>
