@@ -430,7 +430,7 @@ namespace NakedObjects.Selenium {
 
             // "parc" doesn't work in test (ok manually) "parcel" works
             ClearFieldThenType("#comment1", "parcel");
-            wait.Until(d => d.FindElements(By.CssSelector("ul li a")).Count == 2);
+            wait.Until(d => d.FindElements(By.CssSelector("md-option")).Count == 2);
         }
 
         public virtual void AutoCompleteOptionalParamNotSelected() {

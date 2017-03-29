@@ -12,7 +12,7 @@
             <ng-container *ngSwitchCase="5">
                
                 <md-input-container>
-                    <input #focus [id]="propertyPaneId" class="value droppable" type="text" dnd-droppable [allowDrop]="accept(property)" (onDropSuccess)="drop($event.dragData)" [ngClass]="classes()" placeholder="{{propertyDescription}}" mdInput [formControlName]="propertyId" [formControl]="control" [mdAutocomplete]="auto" [geminiClear]="property">
+                    <input #focus [id]="propertyPaneId" class="value droppable" type="text" dnd-droppable [allowDrop]="accept(property)" (onDropSuccess)="drop($event.dragData)" [ngClass]="classes()" placeholder="{{propertyDescription}}" mdInput [formControlName]="propertyId" [formControl]="control" [mdAutocomplete]="auto">
                 </md-input-container>
 
                 <md-autocomplete #auto="mdAutocomplete">
@@ -79,16 +79,17 @@
             <ng-container [ngSwitch]="propertyEntryType">
                 <!--"EntryType.AutoComplete"-->
                 <ng-container *ngSwitchCase="5">
-                    <input #focus [id]="propertyPaneId" class="value droppable" dnd-droppable [allowDrop]="accept(property)" (onDropSuccess)="drop($event.dragData)"
-                        [ngClass]="classes()" placeholder="{{propertyDescription}}" type="text" [formControlName]="propertyId"
-                        [geminiClear]="property" [form]="form" />
-                    <div class="suggestions" *ngIf="propertyChoices.length > 0">
-                        <ul *ngFor="let choice of propertyChoices">
-                            <li>
-                                <a (click)="select(choice)">{{choiceName(choice)}}</a>
-                            </li>
-                        </ul>
-                    </div>
+                
+                    <md-input-container>
+                        <input #focus [id]="propertyPaneId" class="value droppable" type="text" dnd-droppable [allowDrop]="accept(property)" (onDropSuccess)="drop($event.dragData)" [ngClass]="classes()" placeholder="{{propertyDescription}}" mdInput [formControlName]="propertyId" [formControl]="control" [mdAutocomplete]="auto">
+                    </md-input-container>
+
+                    <md-autocomplete #auto="mdAutocomplete">
+                        <md-option *ngFor="let option of propertyChoices" [value]="option">
+                            {{ option }}
+                        </md-option>
+                    </md-autocomplete>
+
                 </ng-container>
 
                 <!--"EntryType.ConditionalChoices"-->

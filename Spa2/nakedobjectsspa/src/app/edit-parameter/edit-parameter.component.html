@@ -9,7 +9,7 @@
             <ng-container *ngIf="parameterEntryType === 5">
    
                 <md-input-container>
-                    <input #focus [id]="parameterPaneId" class="value droppable" type="text" dnd-droppable [allowDrop]="accept(parameter)" (onDropSuccess)="drop($event.dragData)" [ngClass]="droppableClasses()" placeholder="{{description}}" mdInput [formControlName]="parameterId" [formControl]="control"  [mdAutocomplete]="auto" [geminiClear]="parameter">
+                    <input #focus [id]="parameterPaneId" class="value droppable" type="text" dnd-droppable [allowDrop]="accept(parameter)" (onDropSuccess)="drop($event.dragData)" [ngClass]="droppableClasses()" placeholder="{{description}}" mdInput [formControlName]="parameterId" [formControl]="control"  [mdAutocomplete]="auto">
                 </md-input-container>
 
                 <md-autocomplete #auto="mdAutocomplete">
@@ -50,14 +50,15 @@
 
             <!--"EntryType.AutoComplete"-->
             <ng-container *ngIf="parameterEntryType === 5">
-                <input #focus [id]="parameterPaneId" placeholder="{{description}}" type="text" [formControlName]="parameterId" [geminiClear]="parameter" [form]="form" />
-                <div class="suggestions" *ngIf="choices.length > 0">
-                    <ul *ngFor="let choice of choices">
-                        <li>
-                            <a (click)="select(choice)">{{choiceName(choice)}}</a>
-                        </li>
-                    </ul>
-                </div>
+                <md-input-container>
+                    <input #focus [id]="parameterPaneId" type="text" placeholder="{{description}}" mdInput [formControlName]="parameterId" [formControl]="control" [mdAutocomplete]="auto">
+                </md-input-container>
+
+                <md-autocomplete #auto="mdAutocomplete">
+                    <md-option *ngFor="let option of choices" [value]="option">
+                        {{ option }}
+                    </md-option>
+                </md-autocomplete>
             </ng-container>
 
             <ng-container *ngIf="isChoices() && !isMultiple()">
