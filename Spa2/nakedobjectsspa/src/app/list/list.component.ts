@@ -70,16 +70,6 @@ export class ListComponent {
     allSelected = () => this.collection.allSelected();
     hasTableData = () => this.collection.hasTableData();
 
-    itemTableTitle = (item: ItemViewModel) => item.tableRowViewModel.title;
-    itemHasTableTitle = (item: ItemViewModel) => item.tableRowViewModel.showTitle;
-    itemTableProperties = (item: ItemViewModel) => item.tableRowViewModel.properties;
-
-    propertyType = (property: PropertyViewModel) => property.type;
-    propertyValue = (property: PropertyViewModel) => property.value;
-    propertyFormattedValue = (property: PropertyViewModel) => property.formattedValue;
-    propertyReturnType = (property: PropertyViewModel) => property.returnType;
-
-
     get actionsTooltip() {
         return this.collection.actionsTooltip();
     }
@@ -170,14 +160,6 @@ export class ListComponent {
 
     itemId = (i: number | string) => `item${this.collection.onPaneId}-${i}`;
 
-    //itemColor = (item: ItemViewModel) => item.color;
-
-    //itemSelected = (item: ItemViewModel) => item.selected;
-
-    //itemTitle = (item: ItemViewModel) => item.title;
-
-    //doItemClick = (item: ItemViewModel, right?: boolean) => item.doClick(right);
-
     title = "";
     state = "list";
 
@@ -224,11 +206,6 @@ export class ListComponent {
         }
 
         this.selectedDialogId = routeData.dialogId;
-    }
-
-    // todo check we still need this after new row component
-    copy(event: KeyboardEvent, item: IDraggableViewModel) {
-        Helpers.copy(event, item, this.context);
     }
 
     private activatedRouteDataSub: ISubscription;

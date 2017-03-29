@@ -17,15 +17,11 @@
         <th [hidden]="(disableActions() || noItems())">
             <input type="checkbox" [id]="itemId('all')" [ngModel]="allSelected()" (click)="selectAll()">All
         </th>
-        <th *ngFor="let heading of header" scope="col">
-            {{heading}}
-        </th>
+        <th *ngFor="let heading of header" scope="col">{{heading}}</th>
     </tr>
     </thead>
     <tbody *ngIf="hasTableData()">
-        <tr *ngFor="let item of items; let i = index" nof-row [item]="item" [index]="i" [withCheckbox]="!disableActions()" [isTable]="true">
-        
-        </tr>
+        <tr *ngFor="let item of items; let i = index" nof-row [item]="item" [index]="i" [withCheckbox]="!disableActions()" [isTable]="true"></tr>
     </tbody>
 </table>
 <table *ngIf="state == 'list'">
@@ -37,8 +33,6 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let item of items; let i = index" nof-row [item]="item" [index]="i" [withCheckbox]="!disableActions()" [isTable]="false">
-         
-        </tr>
+        <tr *ngFor="let item of items; let i = index" nof-row [item]="item" [index]="i" [withCheckbox]="!disableActions()" [isTable]="false"></tr>
     </tbody>
 </table>
