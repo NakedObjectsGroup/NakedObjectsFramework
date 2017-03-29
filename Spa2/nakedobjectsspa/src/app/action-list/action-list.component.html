@@ -6,13 +6,13 @@
         <div *ngSwitchCase="false" (keydown.enter)="toggleCollapsed(menu)" class="icon-collapse" tabindex="0"></div>
     </div>
     <div  *ngIf="!navCollapsed(menu)"  class="menuitem" [ngClass]="displayClass(menu)">
-        <div *ngIf="hasActions(menu)">
-            <div *ngFor="let action of menuActions(menu, i)">
+        <ng-container *ngIf="hasActions(menu)">
+            <ng-container *ngFor="let action of menuActions(menu, i)">
                 <nof-action [action]="action"></nof-action>
-            </div>
-        </div>
-        <div  *ngIf="hasItems(menu)">
+            </ng-container>
+        </ng-container>
+        <ng-container  *ngIf="hasItems(menu)">
             <nof-action-list [menuHolder]="menu"></nof-action-list>
-        </div>
+        </ng-container>
     </div>
 </div>

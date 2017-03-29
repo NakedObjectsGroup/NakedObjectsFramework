@@ -2,11 +2,11 @@
     <label attr.for="{{parameterPaneId}}">{{title}}</label>
 </div>
 <div [formGroup]="form">
-    <div *ngIf="parameterType === 'ref'">
+    <ng-container *ngIf="parameterType === 'ref'">
 
         <div class="value input-control text">
             <!--"EntryType.AutoComplete"-->
-            <div *ngIf="parameterEntryType === 5">
+            <ng-container *ngIf="parameterEntryType === 5">
    
                 <md-input-container>
                     <input #focus [id]="parameterPaneId" class="value droppable" type="text" dnd-droppable [allowDrop]="accept(parameter)" (onDropSuccess)="drop($event.dragData)" [ngClass]="droppableClasses()" placeholder="{{description}}" mdInput [formControlName]="parameterId" [formControl]="control"  [mdAutocomplete]="auto" [geminiClear]="parameter">
@@ -17,39 +17,39 @@
                         {{ option }}
                     </md-option>
                 </md-autocomplete>
-            </div>
+            </ng-container>
 
-            <div *ngIf="isChoices() && !isMultiple()">
+            <ng-container *ngIf="isChoices() && !isMultiple()">
                 <select #focus [id]="parameterPaneId"  [formControlName]="parameterId">
                     <option *ngFor="let choice of choices" [label]="choiceName(choice)" [ngValue]="choice">{{choiceName(choice)}}</option>
                 </select>
-            </div>
+            </ng-container>
             
-            <div *ngIf="isChoices() && isMultiple()">
+            <ng-container *ngIf="isChoices() && isMultiple()">
                 <select #focus [id]="parameterPaneId"  multiple [formControlName]="parameterId">
                     <option *ngFor="let choice of choices" [label]="choiceName(choice)" [ngValue]="choice">{{choiceName(choice)}}</option>
                 </select>
-            </div>
+            </ng-container>
 
             <!--"EntryType.FreeForm"-->
-            <div *ngIf="parameterEntryType === 0">
+            <ng-container *ngIf="parameterEntryType === 0">
                 <input #focus [id]="parameterPaneId" class="value droppable" dnd-droppable [allowDrop]="accept(parameter)" (onDropSuccess)="drop($event.dragData)"
                        [ngClass]="droppableClasses()" placeholder="{{description}}" type="text" [formControlName]="parameterId" [geminiClear]="parameter" [form]="form" />
-            </div>
+            </ng-container>
 
         </div>
-    </div>
+    </ng-container>
 
-    <div *ngIf="parameterType === 'scalar'">
+    <ng-container *ngIf="parameterType === 'scalar'">
         <div class="value input-control text">
 
             <!--"EntryType.File"-->
-            <div *ngIf="parameterEntryType === 6">
+            <ng-container *ngIf="parameterEntryType === 6">
                 <input #focus [id]="parameterPaneId" type="file" placeholder="{{description}}" (change)="fileUpload($event)" />
-            </div>
+            </ng-container>
 
             <!--"EntryType.AutoComplete"-->
-            <div *ngIf="parameterEntryType === 5">
+            <ng-container *ngIf="parameterEntryType === 5">
                 <input #focus [id]="parameterPaneId" placeholder="{{description}}" type="text" [formControlName]="parameterId" [geminiClear]="parameter" [form]="form" />
                 <div class="suggestions" *ngIf="choices.length > 0">
                     <ul *ngFor="let choice of choices">
@@ -58,46 +58,46 @@
                         </li>
                     </ul>
                 </div>
-            </div>
+            </ng-container>
 
-            <div *ngIf="isChoices() && !isMultiple()">
+            <ng-container *ngIf="isChoices() && !isMultiple()">
                 <select #focus [id]="parameterPaneId" [formControlName]="parameterId">
                     <option *ngFor="let choice of choices" [label]="choiceName(choice)" [ngValue]="choice">{{choiceName(choice)}}</option>
                 </select>
-            </div>
+            </ng-container>
 
-            <div *ngIf="isChoices() && isMultiple()">
+            <ng-container *ngIf="isChoices() && isMultiple()">
                 <select #focus [id]="parameterPaneId" multiple [formControlName]="parameterId">
                     <option *ngFor="let choice of choices" [label]="choiceName(choice)" [ngValue]="choice">{{choiceName(choice)}}</option>
                 </select>
-            </div>
+            </ng-container>
 
             <!--"EntryType.FreeForm"-->
-            <div *ngIf="parameterEntryType === 0">
-                <div [ngSwitch]="parameterReturnType">
-                    <div *ngSwitchCase="'string'" [ngSwitch]="format">
-                        <div *ngSwitchCase="'date'">
+            <ng-container *ngIf="parameterEntryType === 0">
+                <ng-container [ngSwitch]="parameterReturnType">
+                    <ng-container *ngSwitchCase="'string'" [ngSwitch]="format">
+                        <ng-container *ngSwitchCase="'date'">
                             <input #focus [id]="parameterPaneId" type="date" placeholder="{{description}}" [formControlName]="parameterId"  />
-                        </div>
-                        <div *ngSwitchCase="'time'">
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'time'">
                             <input #focus [id]="parameterPaneId" type="time" placeholder="{{description}}" [formControlName]="parameterId" [geminiClear]="parameter" [form]="form" />
-                        </div>
-                        <div *ngSwitchDefault>
+                        </ng-container>
+                        <ng-container *ngSwitchDefault>
                             <input #focus *ngIf="!isMultiline" [id]="parameterPaneId" placeholder="{{description}}"
                                    type="{{isPassword ? 'password' : 'text'}}" [formControlName]="parameterId" [geminiClear]="parameter" [form]="form" />
                             <textarea #focus *ngIf="isMultiline" rows="{{rows}}" [id]="parameterPaneId" [formControlName]="parameterId"
                                       placeholder="{{description}}"></textarea>
-                        </div>
-                    </div>
-                    <div *ngSwitchCase="'boolean'">
+                        </ng-container>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'boolean'">
                         <input #focus [id]="parameterPaneId" type="checkbox" [geminiBoolean]="parameter" />{{description}}
-                    </div>
-                    <div *ngSwitchDefault>
+                    </ng-container>
+                    <ng-container *ngSwitchDefault>
                         <input #focus [id]="parameterPaneId" type="text" placeholder="{{description}}" [formControlName]="parameterId" [geminiClear]="parameter" [form]="form" />
-                    </div>
-                </div>
-            </div>
+                    </ng-container>
+                </ng-container>
+            </ng-container>
         </div>
-    </div>
+    </ng-container>
 </div>
 <div class="validation">{{message}}</div>

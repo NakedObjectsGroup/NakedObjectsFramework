@@ -6,6 +6,9 @@
         dnd-draggable [dragEnabled]="true" [dragData]="item" (keydown)="copy($event, item)" (keypress)="copy($event, item)" tabindex="0">
         <label attr.for="{{id}}">{{title}}</label>
     </td>
+    <td *ngIf="friendlyName" class="cell">
+        {{friendlyName}}
+    </td>
 </ng-container>
 <ng-container *ngIf="isTable">
     <td *ngIf="hasTableTitle()" geminiClick (leftClick)="doClick()" (rightClick)="doClick(true)" [ngClass]="color" class="cell">

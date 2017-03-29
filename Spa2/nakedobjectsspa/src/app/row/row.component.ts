@@ -5,6 +5,7 @@ import * as Helpers from '../view-models/helpers-view-models';
 import { ContextService } from '../context.service';
 import { PropertyViewModel } from '../view-models/property-view-model';
 import { TableRowColumnViewModel } from '../view-models/table-row-column-view-model';
+import { RecentItemViewModel } from '../view-models/recent-item-view-model';
 
 @Component({
     selector: '[nof-row]',
@@ -41,6 +42,10 @@ export class RowComponent {
 
     get title() {
         return this.item.title;
+    }
+
+    get friendlyName() {
+        return this.item instanceof RecentItemViewModel ? this.item.friendlyName : "";
     }
 
     tableTitle = () => this.item.tableRowViewModel.title;

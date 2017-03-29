@@ -8,15 +8,7 @@
             <div class="collection">
                 <table>
                     <tbody>
-                        <tr #row tabindex="0" [ngClass]="itemColor(item)" *ngFor="let item of items()" dnd-draggable [dragEnabled]="true" [dragData]="item" geminiClick
-                            (leftClick)="doItemClick(item)" (rightClick)="doItemClick(item, true)">
-                            <td class="cell">
-                                {{itemTitle(item)}}
-                            </td>
-                            <td class="cell">
-                                {{itemFriendlyName(item)}}
-                            </td>
-                        </tr>
+                        <tr #row *ngFor="let item of items; let i = index" nof-row [item]="item" [index]="i" [withCheckbox]="false" [isTable]="false"></tr>
                     </tbody>
                 </table>
             </div>
