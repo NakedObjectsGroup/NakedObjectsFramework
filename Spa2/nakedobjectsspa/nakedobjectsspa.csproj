@@ -56,6 +56,8 @@
     <Content Include="src\app\error\error.component.html" />
     <Content Include="src\app\footer\footer.component.css" />
     <Content Include="src\app\footer\footer.component.html" />
+    <Content Include="src\app\header\header.component.css" />
+    <Content Include="src\app\header\header.component.html" />
     <Content Include="src\app\home\home.component.css" />
     <Content Include="src\app\home\home.component.html" />
     <Content Include="src\app\list\list.component.css" />
@@ -143,6 +145,7 @@
     <TypeScriptCompile Include="src\app\gemini-boolean.directive.ts" />
     <TypeScriptCompile Include="src\app\gemini-clear.directive.ts" />
     <TypeScriptCompile Include="src\app\gemini-click.directive.ts" />
+    <TypeScriptCompile Include="src\app\header\header.component.ts" />
     <TypeScriptCompile Include="src\app\home\home.component.ts" />
     <TypeScriptCompile Include="src\app\index.ts" />
     <TypeScriptCompile Include="src\app\list\list.component.ts" />

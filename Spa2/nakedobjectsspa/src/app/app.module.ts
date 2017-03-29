@@ -55,6 +55,7 @@ import { ActionBarComponent } from './action-bar/action-bar.component';
 import { ActionListComponent } from './action-list/action-list.component';
 import { MaterialModule } from '@angular/material';
 import { RowComponent } from './row/row.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
     declarations: [
@@ -89,7 +90,8 @@ import { RowComponent } from './row/row.component';
         AttachmentPropertyComponent,
         DynamicErrorComponent,
         CiceroComponent,
-        RowComponent
+        RowComponent,
+        HeaderComponent
     ],
     entryComponents: [
         ObjectComponent,

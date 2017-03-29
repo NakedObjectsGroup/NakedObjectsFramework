@@ -1,4 +1,4 @@
-<div *ngFor="let menu of items; let i = index">
+<ng-container *ngFor="let menu of items; let i = index">
 
     <div *ngIf="menuName(menu)" (click)="toggleCollapsed(menu)"  class="submenu" [ngSwitch]="navCollapsed(menu)">
         {{menuName(menu)}}
@@ -15,4 +15,4 @@
             <nof-action-list [menuHolder]="menu"></nof-action-list>
         </ng-container>
     </div>
-</div>
+</ng-container>

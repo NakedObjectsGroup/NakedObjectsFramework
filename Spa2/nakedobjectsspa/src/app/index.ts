@@ -27,6 +27,7 @@ export * from './view-parameter/view-parameter.component';
 export * from './view-property/view-property.component';
 export * from './row/row.component';
 export * from './cicero/cicero.component';
+export * from './header/header.component';
 
 export * from './click-handler.service';
 export * from './color.service';
