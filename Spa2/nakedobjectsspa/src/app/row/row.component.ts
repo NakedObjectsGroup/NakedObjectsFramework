@@ -3,7 +3,7 @@ import { ItemViewModel } from '../view-models/item-view-model';
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
 import * as Helpers from '../view-models/helpers-view-models';
 import { ContextService } from '../context.service';
-import * as Propertyviewmodel from '../view-models/property-view-model';
+import { PropertyViewModel } from '../view-models/property-view-model';
 import { TableRowColumnViewModel } from '../view-models/table-row-column-view-model';
 
 @Component({
@@ -47,10 +47,10 @@ export class RowComponent {
     hasTableTitle = () => this.item.tableRowViewModel.showTitle;
     tableProperties = () => this.item.tableRowViewModel.properties;
 
-    propertyType = (property: Propertyviewmodel.PropertyViewModel) => property.type;
-    propertyValue = (property: Propertyviewmodel.PropertyViewModel) => property.value;
-    propertyFormattedValue = (property: Propertyviewmodel.PropertyViewModel) => property.formattedValue;
-    propertyReturnType = (property: Propertyviewmodel.PropertyViewModel) => property.returnType;
+    propertyType = (property: PropertyViewModel) => property.type;
+    propertyValue = (property: PropertyViewModel) => property.value;
+    propertyFormattedValue = (property: PropertyViewModel) => property.formattedValue;
+    propertyReturnType = (property: PropertyViewModel) => property.returnType;
 
     doClick = (right?: boolean) => this.item.doClick(right);
 
