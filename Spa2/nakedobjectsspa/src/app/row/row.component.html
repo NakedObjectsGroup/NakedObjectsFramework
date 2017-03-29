@@ -1,8 +1,8 @@
-<td class="checkbox" [hidden]="!withCheckbox">
+<td class="checkbox" *ngIf="withCheckbox">
     <input type="checkbox" [id]="id" [(ngModel)]="item.selected">
 </td>
 <ng-container *ngIf="!isTable">
-    <td class="reference" [ngClass]="color" geminiClick (leftClick)="doClick()" (rightClick)="doClick(true)"
+    <td #focus class="reference" [ngClass]="color" geminiClick (leftClick)="doClick()" (rightClick)="doClick(true)"
         dnd-draggable [dragEnabled]="true" [dragData]="item" (keydown)="copy($event, item)" (keypress)="copy($event, item)" tabindex="0">
         <label attr.for="{{id}}">{{title}}</label>
     </td>
@@ -11,10 +11,10 @@
     </td>
 </ng-container>
 <ng-container *ngIf="isTable">
-    <td *ngIf="hasTableTitle()" geminiClick (leftClick)="doClick()" (rightClick)="doClick(true)" [ngClass]="color" class="cell">
+    <td #focus *ngIf="hasTableTitle()" geminiClick (leftClick)="doClick()" (rightClick)="doClick(true)" [ngClass]="color" class="cell">
         {{tableTitle()}}
     </td>
-    <td *ngFor="let property of tableProperties()" geminiClick (leftClick)="doClick()" (rightClick)="doClick(true)"
+    <td #focus *ngFor="let property of tableProperties()" geminiClick (leftClick)="doClick()" (rightClick)="doClick(true)"
         [ngClass]="color" class="cell">
         <div [ngSwitch]="propertyType(property)">
             <div *ngSwitchCase="'ref'">

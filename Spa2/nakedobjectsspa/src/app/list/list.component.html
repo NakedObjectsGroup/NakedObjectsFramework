@@ -1,4 +1,4 @@
-<div *ngIf="collection">
+<ng-container *ngIf="collection">
     <div class="list">
         <header class="header">
             <div class="title">{{title}}</div>
@@ -6,7 +6,7 @@
             <div class="messages">{{message}}</div>
         </header>
         <div class="details" *ngIf="size == 0">{{description}}</div>
-        <div *ngIf="size > 0">
+        <ng-container *ngIf="size > 0">
             <nof-action-list *ngIf="showActions()" [menuHolder]="collection"></nof-action-list>
             <nof-dialog [parent]="collection" [selectedDialogId]="selectedDialogId"></nof-dialog>
             <div class="summary" *ngIf="state == 'list'">
@@ -15,7 +15,7 @@
                 <table>
                     <thead>
                         <tr>
-                            <th [hidden]="hideAllCheckbox()"><input type="checkbox" [id]="itemId('all')" [ngModel]="allSelected()" (click)="selectAll()">All</th>
+                            <th *ngIf="!hideAllCheckbox()"><input type="checkbox" [id]="itemId('all')" [ngModel]="allSelected()" (click)="selectAll()">All</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -30,7 +30,7 @@
             <table *ngIf="state == 'table'">
                 <thead>
                     <tr>
-                        <th [hidden]="hideAllCheckbox()"><input type="checkbox" [id]="itemId('all')" [ngModel]="allSelected()" (click)="selectAll()">All</th>
+                        <th *ngIf="!hideAllCheckbox()"><input type="checkbox" [id]="itemId('all')" [ngModel]="allSelected()" (click)="selectAll()">All</th>
                         <th *ngFor="let heading of header" scope="col">{{heading}}</th>
                     </tr>
                 </thead>
@@ -38,6 +38,6 @@
                     <tr *ngFor="let item of items; let i = index" nof-row [item]="item" [index]="i" [withCheckbox]="!disableActions()" [isTable]="true"></tr>
                 </tbody>
             </table>
-        </div>
+        </ng-container>
     </div>
-</div>
+</ng-container>

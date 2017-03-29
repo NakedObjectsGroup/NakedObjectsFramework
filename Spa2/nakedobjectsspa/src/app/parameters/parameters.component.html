@@ -1,2 +1,2 @@
-<div  *ngIf="form"><nof-edit-parameter  [ngClass]="classes()" *ngFor="let parm of parameters" [parameter]="parm" [parent]="parent" [form]="form"></nof-edit-parameter></div>
-<div *ngIf="!form"><nof-view-parameter [ngClass]="classes()" *ngFor="let parm of parameters" [parameter]="parm" [parent]="parent"></nof-view-parameter></div>
+<ng-container  *ngIf="form"><nof-edit-parameter  [ngClass]="classes()" *ngFor="let parm of parameters" [parameter]="parm" [parent]="parent" [form]="form"></nof-edit-parameter></ng-container>
+<ng-container *ngIf="!form"><nof-view-parameter [ngClass]="classes()" *ngFor="let parm of parameters" [parameter]="parm" [parent]="parent"></nof-view-parameter></ng-container>

@@ -9,6 +9,7 @@ import { RecentItemViewModel } from '../view-models/recent-item-view-model';
 import { PaneComponent } from '../pane/pane';
 import { IActionHolder } from '../action/action.component';
 import * as Msg from '../user-messages';
+import * as Rowcomponent from '../row/row.component';
 
 @Component({
     selector: 'nof-recent',
@@ -29,13 +30,6 @@ export class RecentComponent extends PaneComponent implements AfterViewInit {
 
     title = Msg.recentTitle;
     items = () => this.recent.items;
-
-    // todo again a smell - new child component ! 
-    itemColor = (item: RecentItemViewModel) => item.color;
-    itemTitle = (item: RecentItemViewModel) => item.title;
-    itemFriendlyName = (item: RecentItemViewModel) => item.friendlyName;
-
-    doItemClick = (item: RecentItemViewModel, right?: boolean) => item.doClick(right);
 
     recent: RecentItemsViewModel;
 
@@ -67,17 +61,17 @@ export class RecentComponent extends PaneComponent implements AfterViewInit {
 
 
     @ViewChildren("row")
-    actionChildren: QueryList<ElementRef>;
+    actionChildren: QueryList<Rowcomponent.RowComponent>;
 
-    focusOnFirstRow(rows: QueryList<ElementRef>) {
+    focusOnFirstRow(rows: QueryList<Rowcomponent.RowComponent>) {
         if (rows && rows.first) {
             // until first element returns true
-            rows.first.nativeElement.focus();
+            rows.first.focus();
         }
     }
 
     ngAfterViewInit(): void {
         this.focusOnFirstRow(this.actionChildren);
-        this.actionChildren.changes.subscribe((ql: QueryList<ElementRef>) => this.focusOnFirstRow(ql));
+        this.actionChildren.changes.subscribe((ql: QueryList<Rowcomponent.RowComponent>) => this.focusOnFirstRow(ql));
     }
 }

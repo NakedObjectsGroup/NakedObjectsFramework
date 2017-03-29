@@ -159,8 +159,8 @@ namespace NakedObjects.Selenium {
             var actions = wait.Until(dr => dr.FindElements(By.CssSelector("input")).Single(el => el.GetAttribute("value") == "Actions"));
             Assert.AreEqual("true", actions.GetAttribute("disabled"));
             actions.AssertHasTooltip("No actions available");
-            var checkboxes = WaitForCss("input[type='checkbox']", 3);
-            Assert.AreEqual(0, checkboxes.Count(cb => cb.Displayed));
+            WaitUntilElementDoesNotExist("input[type='checkbox']");
+            //Assert.AreEqual(0, checkboxes.Count(cb => cb.Displayed));
             //Check that actions menu is disabled and 
         }
 

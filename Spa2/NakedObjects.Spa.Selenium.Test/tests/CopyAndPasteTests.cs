@@ -53,7 +53,7 @@ namespace NakedObjects.Selenium {
 
             //Copy item from list, right pane
             Reload(Pane.Right);
-            item = wait.Until(dr => dr.FindElements(By.CssSelector("#pane2 td"))[3]);
+            item = wait.Until(dr => dr.FindElements(By.CssSelector("#pane2 td"))[1]);
             Assert.AreEqual("Australia", item.Text);
             CopyToClipboard(item);
         }

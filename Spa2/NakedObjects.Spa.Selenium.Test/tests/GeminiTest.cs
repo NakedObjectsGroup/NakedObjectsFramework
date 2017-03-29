@@ -516,7 +516,7 @@ namespace NakedObjects.Selenium {
             if (subMenuName != null) {
                 OpenSubMenu(subMenuName);
             }
-            var selector = CssSelectorFor(pane) + $"nof-action-list nof-action > input[value='{actionName}']";
+            var selector = CssSelectorFor(pane) + $"nof-action-list nof-action input[value='{actionName}']";
             var a = wait.Until(d => d.FindElement(By.CssSelector(selector)));
             ScrollTo(a);
             return a;

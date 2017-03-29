@@ -61,12 +61,12 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.List, "Random Customers");
             Reload();
             var cols = WaitForCss("th", 4).ToArray();
-            Assert.AreEqual("Account Number", cols[1].Text);
-            Assert.AreEqual("Store", cols[2].Text);
-            Assert.AreEqual("Person", cols[3].Text);
-            Assert.AreEqual("Sales Territory", cols[4].Text);
+            Assert.AreEqual("Account Number", cols[0].Text);
+            Assert.AreEqual("Store", cols[1].Text);
+            Assert.AreEqual("Person", cols[2].Text);
+            Assert.AreEqual("Sales Territory", cols[3].Text);
             cols = WaitForCss("tbody tr:first-child td", 4).ToArray();
-            Assert.AreEqual("", cols[2].Text); //As no such column
+            Assert.AreEqual("", cols[1].Text); //As no such column
         }
 
         public virtual void TableViewCanIncludeCollectionSummaries() {
@@ -265,9 +265,9 @@ namespace NakedObjects.Selenium {
             WaitForCss("img.icon-list");
             var header = WaitForCss("thead");
             var cols = header.FindElements(By.CssSelector("th")).ToArray();
-            Assert.AreEqual(3, cols.Length);
-            Assert.AreEqual("", cols[1].Text);
-            Assert.AreEqual("Group Name", cols[2].Text);
+            Assert.AreEqual(2, cols.Length);
+            Assert.AreEqual("", cols[0].Text);
+            Assert.AreEqual("Group Name", cols[1].Text);
         }
 
 

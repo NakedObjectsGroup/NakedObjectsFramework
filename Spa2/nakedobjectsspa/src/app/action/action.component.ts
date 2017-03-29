@@ -84,6 +84,7 @@ export class ActionComponent {
     @ViewChildren("focus")
     focusList: QueryList<ElementRef>;
 
+    // todo DRY focus code across components 
     focus() {
         if (this.disabled()) {
             return false;

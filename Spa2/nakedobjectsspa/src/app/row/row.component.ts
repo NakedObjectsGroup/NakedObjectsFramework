@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChildren, QueryList, ElementRef, Renderer } from '@angular/core';
 import { ItemViewModel } from '../view-models/item-view-model';
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
 import * as Helpers from '../view-models/helpers-view-models';
@@ -14,7 +14,10 @@ import { RecentItemViewModel } from '../view-models/recent-item-view-model';
 })
 export class RowComponent {
 
-    constructor(private readonly context: ContextService) { }
+    constructor(
+        private readonly context: ContextService,
+        private readonly renderer: Renderer
+    ) { }
 
     @Input()
     item: ItemViewModel;
@@ -61,5 +64,17 @@ export class RowComponent {
 
     copy(event: KeyboardEvent, item: IDraggableViewModel) {
         Helpers.copy(event, item, this.context);
+    }
+
+    @ViewChildren("focus")
+    focusList: QueryList<ElementRef>;
+
+    // todo DRY
+    focus() {
+        if (this.focusList && this.focusList.first) {
+            setTimeout(() => this.renderer.invokeElementMethod(this.focusList.first.nativeElement, "focus"));
+            return true;
+        }
+        return false; 
     }
 }

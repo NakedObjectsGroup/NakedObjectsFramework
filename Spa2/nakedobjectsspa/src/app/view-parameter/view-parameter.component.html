@@ -2,30 +2,30 @@
     <label attr.for="{{parameterPaneId}}">{{title}}</label>
 </div>
 
-<div *ngIf="parameterType === 'ref'">
+<ng-container *ngIf="parameterType === 'ref'">
     <div class="value">{{formattedValue}}</div>
-</div>
+</ng-container>
 
-<div *ngIf="parameterType === 'scalar'" >
-    <div [ngSwitch]="parameterReturnType">
-        <div *ngSwitchCase="string">
+<ng-container *ngIf="parameterType === 'scalar'" >
+    <ng-container [ngSwitch]="parameterReturnType">
+        <ng-container *ngSwitchCase="string">
             <div *ngIf="!isMultiline" class="value">
                 {{formattedValue}}
             </div>
             <div *ngIf="isMultiline" class="value multiline" [ngStyle]="{height : multilineHeight}">
                 <pre>{{formattedValue}}</pre>
             </div>
-        </div>
+        </ng-container>
 
-        <div *ngSwitchCase="'boolean'">
+        <ng-container *ngSwitchCase="'boolean'">
             <input type="checkbox" [checked]="value" disabled="disabled" />
-        </div>
+        </ng-container>
 
-        <div *ngSwitchDefault>
+        <ng-container *ngSwitchDefault>
             <div class="value">{{formattedValue}}</div>
-        </div>
-    </div>
-</div>
+        </ng-container>
+    </ng-container>
+</ng-container>
 
 
 

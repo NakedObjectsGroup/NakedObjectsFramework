@@ -1,7 +1,7 @@
 <div class="name">{{title}}:</div>
 
-<div *ngIf="propertyType === 'ref'">
-    <div [ngSwitch]="propertyRefType">
+<ng-container *ngIf="propertyType === 'ref'">
+    <ng-container [ngSwitch]="propertyRefType">
         <div *ngSwitchCase="null"></div>
         <div *ngSwitchCase="'notNavigable'">
             <div class="value">{{formattedValue}}</div>
@@ -10,30 +10,30 @@
              (rightClick)="doClick(true)" dnd-draggable [dragEnabled]="true" [dragData]="property" tabindex="0">
             {{formattedValue}}
         </div>
-    </div>
-</div>
+    </ng-container>
+</ng-container>
 
-<div *ngIf="propertyType === 'scalar'">
-    <div [ngSwitch]="propertyReturnType">
-        <div *ngSwitchCase="'string'">
+<ng-container *ngIf="propertyType === 'scalar'">
+    <ng-container [ngSwitch]="propertyReturnType">
+        <ng-container *ngSwitchCase="'string'">
 
             <nof-attachment-property *ngIf="isBlob" [attachment]="attachment"></nof-attachment-property>
-            <div *ngIf="!isBlob">
+            <ng-container *ngIf="!isBlob">
                 <div *ngIf="!isMultiline" class="value">
                     {{formattedValue}}
                 </div>
                 <div *ngIf="isMultiline" class="value multiline" [ngStyle]="{height : multilineHeight}">
                     <pre>{{formattedValue}}</pre>
                 </div>
-            </div>
-        </div>
+            </ng-container>
+        </ng-container>
 
-        <div *ngSwitchCase="'boolean'">
+        <ng-container *ngSwitchCase="'boolean'">
             <input type="checkbox" [checked]="value" disabled="disabled" />
-        </div>
+        </ng-container>
 
-        <div *ngSwitchDefault>
+        <ng-container *ngSwitchDefault>
             <div class="value">{{formattedValue}}</div>
-        </div>
-    </div>
-</div>
+        </ng-container>
+    </ng-container>
+</ng-container>

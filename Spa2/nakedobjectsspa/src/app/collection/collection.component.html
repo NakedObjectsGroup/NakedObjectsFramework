@@ -14,7 +14,7 @@
 <table *ngIf="state == 'table'">
     <thead>
     <tr>
-        <th [hidden]="(disableActions() || noItems())">
+        <th *ngIf="!(disableActions() || noItems())">
             <input type="checkbox" [id]="itemId('all')" [ngModel]="allSelected()" (click)="selectAll()">All
         </th>
         <th *ngFor="let heading of header" scope="col">{{heading}}</th>
@@ -27,7 +27,7 @@
 <table *ngIf="state == 'list'">
     <thead>
         <tr>
-            <th [hidden]="(disableActions() || noItems())">
+            <th *ngIf="!(disableActions() || noItems())">
                 <input type="checkbox" [id]="itemId('all')" [ngModel]="allSelected()" (click)="selectAll()">All
             </th>
         </tr>

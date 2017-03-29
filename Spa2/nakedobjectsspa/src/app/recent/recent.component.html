@@ -4,15 +4,15 @@
             <div class="title">{{title}}</div>
             <nof-action-bar [actions]="actionHolders"></nof-action-bar>
         </div>
-        <div *ngIf="recent">
+        <ng-container *ngIf="recent">
             <div class="collection">
                 <table>
                     <tbody>
-                        <tr #row *ngFor="let item of items; let i = index" nof-row [item]="item" [index]="i" [withCheckbox]="false" [isTable]="false"></tr>
+                        <tr #row *ngFor="let item of items(); let i = index" nof-row [item]="item" [index]="i" [withCheckbox]="false" [isTable]="false"></tr>
                     </tbody>
                 </table>
             </div>
-        </div>
+        </ng-container>
     </div>
 </div>
 <router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>
