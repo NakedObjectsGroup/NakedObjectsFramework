@@ -36,22 +36,12 @@
     padding-left: 5px;
     padding-top: 5px;
 }
-th {
-    font-weight: 100;
-}
-table {
+
+th { /*TODO: remove when header is also a row component */
     font-size: 11pt;
-}
-tr {
-    cursor: pointer;
-}
-th, td {
     font-weight: 100; /*Override browser default*/
     text-align: left;
     padding-left: 5px;
     padding-right: 5px;
     vertical-align: top;
-}
-tbody .number {
-    text-align:right;
 }
