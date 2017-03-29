@@ -70,9 +70,9 @@ export class CollectionComponent implements OnInit, OnDestroy {
     selectAll = () => this.collection.selectAll();
     hasTableData = () => this.collection.hasTableData();
 
-    itemColor = (item: ItemViewModel) => item.color;
-    itemTitle = (item: ItemViewModel) => item.title;
-    doItemClick = (item: ItemViewModel, right?: boolean) => item.doClick(right);
+    //itemColor = (item: ItemViewModel) => item.color;
+    //itemTitle = (item: ItemViewModel) => item.title;
+    //doItemClick = (item: ItemViewModel, right?: boolean) => item.doClick(right);
 
     itemId = (i: number | string) => `${this.collection.id}${this.collection.onPaneId}-${i}`;
 

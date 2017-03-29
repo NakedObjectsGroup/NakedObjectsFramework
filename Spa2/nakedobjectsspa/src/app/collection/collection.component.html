@@ -23,8 +23,8 @@
     </tr>
     </thead>
     <tbody *ngIf="hasTableData()">
-        <tr *ngFor="let item of items; let i = index">
-            <nof-row [item]="item" [index]="i" [withCheckbox]="!disableActions()" [isTable]="true"></nof-row>
+        <tr *ngFor="let item of items; let i = index" nof-row [item]="item" [index]="i" [withCheckbox]="!disableActions()" [isTable]="true">
+        
         </tr>
     </tbody>
 </table>
@@ -37,8 +37,8 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let item of items; let i = index">
-            <nof-row [item]="item" [index]="i" [withCheckbox]="!disableActions()" [isTable]="false"></nof-row>
+        <tr *ngFor="let item of items; let i = index" nof-row [item]="item" [index]="i" [withCheckbox]="!disableActions()" [isTable]="false">
+         
         </tr>
     </tbody>
 </table>

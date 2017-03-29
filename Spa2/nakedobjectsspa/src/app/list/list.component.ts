@@ -170,13 +170,13 @@ export class ListComponent {
 
     itemId = (i: number | string) => `item${this.collection.onPaneId}-${i}`;
 
-    itemColor = (item: ItemViewModel) => item.color;
+    //itemColor = (item: ItemViewModel) => item.color;
 
-    itemSelected = (item: ItemViewModel) => item.selected;
+    //itemSelected = (item: ItemViewModel) => item.selected;
 
-    itemTitle = (item: ItemViewModel) => item.title;
+    //itemTitle = (item: ItemViewModel) => item.title;
 
-    doItemClick = (item: ItemViewModel, right?: boolean) => item.doClick(right);
+    //doItemClick = (item: ItemViewModel, right?: boolean) => item.doClick(right);
 
     title = "";
     state = "list";

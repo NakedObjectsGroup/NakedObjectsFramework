@@ -7,7 +7,7 @@ import * as Propertyviewmodel from '../view-models/property-view-model';
 import { TableRowColumnViewModel } from '../view-models/table-row-column-view-model';
 
 @Component({
-    selector: 'nof-row',
+    selector: '[nof-row]',
     templateUrl: './row.component.html',
     styleUrls: ['./row.component.css']
 })
