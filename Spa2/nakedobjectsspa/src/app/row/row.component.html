@@ -18,22 +18,22 @@
     <ng-container *ngIf="!friendlyName">
         <td #focus *ngFor="let property of tableProperties()" geminiClick (leftClick)="doClick()" (rightClick)="doClick(true)"
             [ngClass]="color" class="cell" dnd-draggable [dragEnabled]="true" [dragData]="item" (keydown)="copy($event, item)" (keypress)="copy($event, item)">
-            <div [ngSwitch]="propertyType(property)">
-                <div *ngSwitchCase="'ref'">
+            <ng-container [ngSwitch]="propertyType(property)">
+                <ng-container *ngSwitchCase="'ref'">
                     {{propertyFormattedValue(property)}}
-                </div>
-                <div *ngSwitchCase="'scalar'" [ngSwitch]="propertyReturnType(property)">
-                    <div *ngSwitchCase="'boolean'">
+                </ng-container>
+                <ng-container *ngSwitchCase="'scalar'" [ngSwitch]="propertyReturnType(property)">
+                    <ng-container *ngSwitchCase="'boolean'">
                         <input type="checkbox" [checked]="propertyValue(property)" disabled="disabled" />
-                    </div>
-                    <div *ngSwitchCase="'number'">
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'number'">
                         <div class="number">{{propertyFormattedValue(property)}}</div>
-                    </div>
-                    <div *ngSwitchDefault>
+                    </ng-container>
+                    <ng-container *ngSwitchDefault>
                         <div>{{propertyFormattedValue(property)}}</div>
-                    </div>
-                </div>
-            </div>
+                    </ng-container>
+                </ng-container>
+            </ng-container>
         </td>
     </ng-container>
 </ng-container>

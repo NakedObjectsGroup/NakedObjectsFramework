@@ -2,9 +2,9 @@
     <div class="name">{{title}}:</div>
     <div class="details">{{details}}</div>
     <div>
-        <img *ngIf="showSummary()" class="icon-summary" (click)="doSummary()" src="../../assets/summary.png" title="Close Collection" />
-        <img *ngIf="showList()" class="icon-list" (click)="doList()" src="../../assets/list.png" title="View as List" />
-        <img *ngIf="showTable()" class="icon-table" (click)="doTable()" src="../../assets/table.png" title="View as Table" />
+        <img *ngIf="showSummary()" class="icon-summary" (click)="doSummary()" src="../../assets/summary.png" title="Close Collection" alt="Close Collection"/>
+        <img *ngIf="showList()" class="icon-list" (click)="doList()" src="../../assets/list.png" title="View as List" alt="View as List"/>
+        <img *ngIf="showTable()" class="icon-table" (click)="doTable()" src="../../assets/table.png" title="View as Table" alt="View as Table"/>
     </div>
 </div>
 <div class="messages">{{message}}</div>
