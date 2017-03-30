@@ -22,8 +22,12 @@ export class CollectionComponent implements OnInit, OnDestroy {
     @Input()
     collection: CollectionViewModel;
 
+    get currentState() {
+        return this.collection.currentState;
+    }
+
     get state() {
-        return CollectionViewState[this.collection.currentState].toString().toLowerCase() as state;
+        return CollectionViewState[this.currentState].toString().toLowerCase() as state;
     }
 
     get title() {

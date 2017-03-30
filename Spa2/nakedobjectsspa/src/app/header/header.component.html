@@ -1,3 +1,6 @@
-<p>
-  header works!
-</p>
+<th *ngIf="showAllCheckbox()">
+    <input type="checkbox" [id]="itemId" [ngModel]="allSelected()" (click)="selectAll()" title="All"/>
+</th>
+<ng-container *ngIf="header">
+    <th *ngFor="let heading of header" scope="col">{{heading}}</th>
+</ng-container>

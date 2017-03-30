@@ -161,7 +161,12 @@ export class ListComponent {
     itemId = (i: number | string) => `item${this.collection.onPaneId}-${i}`;
 
     title = "";
-    state = "list";
+
+    get state() {
+        return CollectionViewState[this.currentState].toString().toLowerCase();
+    }
+
+    currentState = CollectionViewState.List;
 
     getActionExtensions(routeData: PaneRouteData): Promise<Models.Extensions> {
         return routeData.objectId
@@ -184,16 +189,16 @@ export class ListComponent {
 
         if (this.collection && this.collection.id === listKey) {
             // same collection/page
-            this.state = CollectionViewState[routeData.state].toString().toLowerCase();
+            this.currentState = routeData.state;
             this.collection.refresh(routeData);
         } else if (this.collection && cachedList) {
             // same collection different page
-            this.state = CollectionViewState[routeData.state].toString().toLowerCase();
+            this.currentState = routeData.state;
             this.collection.reset(cachedList, routeData);
         } else if (cachedList) {
             // new collection 
             this.collection = this.viewModelFactory.listViewModel(cachedList, routeData);
-            this.state = CollectionViewState[routeData.state].toString().toLowerCase();
+            this.currentState = routeData.state;
             this.collection.refresh(routeData);
         } else {
             // should never get here 

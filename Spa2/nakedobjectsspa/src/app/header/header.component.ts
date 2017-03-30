@@ -1,15 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import * as Collectionviewmodel from '../view-models/collection-view-model';
+import * as Listviewmodel from '../view-models/list-view-model';
+import { CollectionViewState } from '../route-data';
 
 @Component({
-  selector: 'nof-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+    selector: '[nof-header]',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
 
-  constructor() { }
+    @Input()
+    collection: Collectionviewmodel.CollectionViewModel | Listviewmodel.ListViewModel;
 
-  ngOnInit() {
-  }
+    @Input()
+    state: CollectionViewState;
 
+    allSelected = () => this.collection.allSelected();
+    selectAll = () => this.collection.selectAll();
+
+    itemId = () => `${this.collection.id}${this.collection.onPaneId}-all`;
+
+    showAllCheckbox = () => !(this.collection.disableActions() || this.collection.items.length === 0);
+
+    get header() {
+        return this.state === CollectionViewState.Table ? this.collection.header : null;
+    }
 }
