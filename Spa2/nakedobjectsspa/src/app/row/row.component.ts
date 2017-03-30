@@ -16,7 +16,8 @@ export class RowComponent {
 
     constructor(
         private readonly context: ContextService,
-        private readonly renderer: Renderer
+        private readonly renderer: Renderer,
+        private readonly element: ElementRef,
     ) { }
 
     @Input()
@@ -66,13 +67,12 @@ export class RowComponent {
         Helpers.copy(event, item, this.context);
     }
 
-    @ViewChildren("focus")
-    focusList: QueryList<ElementRef>;
+    
 
     // todo DRY
     focus() {
-        if (this.focusList && this.focusList.first) {
-            setTimeout(() => this.renderer.invokeElementMethod(this.focusList.first.nativeElement, "focus"));
+        if (this.element) {
+            setTimeout(() => this.renderer.invokeElementMethod(this.element.nativeElement, "focus"));
             return true;
         }
         return false; 
