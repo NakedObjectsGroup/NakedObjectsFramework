@@ -19,9 +19,13 @@ export class HeaderComponent {
     allSelected = () => this.collection.allSelected();
     selectAll = () => this.collection.selectAll();
 
-    itemId = () => `${this.collection.id}${this.collection.onPaneId}-all`;
+    itemId = () => `${this.collection.name}${this.collection.onPaneId}-all`;
 
-    showAllCheckbox = () => !(this.collection.disableActions() || this.collection.items.length === 0);
+    private noItems() {
+        return !this.collection.items || this.collection.items.length === 0;
+    }
+
+    showAllCheckbox = () => !(this.collection.disableActions() || this.noItems());
 
     get header() {
         return this.state === CollectionViewState.Table ? this.collection.header : null;

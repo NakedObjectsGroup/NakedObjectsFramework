@@ -44,7 +44,7 @@ namespace NakedObjects.Selenium {
             GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&pg1=1&ps1=20&s1_=0&c1=Table");
             Reload();
             var cols = WaitForCss("th", 5).ToArray();
-            Assert.AreEqual("All", cols[0].Text);
+            Assert.AreEqual("", cols[0].Text);
             Assert.AreEqual("Description", cols[1].Text);
             Assert.AreEqual("XNoMatchingColumn", cols[2].Text);
             Assert.AreEqual("Category", cols[3].Text);
@@ -75,7 +75,7 @@ namespace NakedObjects.Selenium {
             var header = WaitForCss("thead");
             var cols = header.FindElements(By.CssSelector("th")).ToArray();
             Assert.AreEqual(4, cols.Length);
-            Assert.AreEqual("All", cols[0].Text);
+            Assert.AreEqual("", cols[0].Text);
             Assert.AreEqual("", cols[1].Text);
             Assert.AreEqual("Order Date", cols[2].Text);
             Assert.AreEqual("Details", cols[3].Text);

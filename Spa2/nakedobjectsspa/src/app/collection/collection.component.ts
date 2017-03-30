@@ -74,7 +74,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
     selectAll = () => this.collection.selectAll();
     hasTableData = () => this.collection.hasTableData();
 
-    itemId = (i: number | string) => `${this.collection.id}${this.collection.onPaneId}-${i}`;
+    itemId = (i: number | string) => `${this.collection.name}${this.collection.onPaneId}-${i}`;
 
     private paneRouteDataSub: ISubscription;
     private lastPaneRouteData : PaneRouteData;

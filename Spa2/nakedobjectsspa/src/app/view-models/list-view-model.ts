@@ -47,6 +47,7 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
     actions: ActionViewModel[];
     menuItems: MenuItemViewModel[];
     description: () => string;
+    readonly name = "item";
 
     private readonly recreate = (page: number, pageSize: number) => {
         return this.routeData.objectId

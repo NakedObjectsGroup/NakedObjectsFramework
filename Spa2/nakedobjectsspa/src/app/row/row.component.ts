@@ -52,9 +52,9 @@ export class RowComponent {
         return this.item instanceof RecentItemViewModel ? this.item.friendlyName : "";
     }
 
-    tableTitle = () => this.item.tableRowViewModel.title;
-    hasTableTitle = () => this.item.tableRowViewModel.showTitle;
-    tableProperties = () => this.item.tableRowViewModel.properties;
+    tableTitle = () => this.item.tableRowViewModel ? this.item.tableRowViewModel.title : this.title;
+    hasTableTitle = () => (this.item.tableRowViewModel && this.item.tableRowViewModel.showTitle) || (this.item instanceof RecentItemViewModel && this.item.title);
+    tableProperties = () => this.item.tableRowViewModel && this.item.tableRowViewModel.properties;
 
     propertyType = (property: PropertyViewModel) => property.type;
     propertyValue = (property: PropertyViewModel) => property.value;
@@ -66,7 +66,6 @@ export class RowComponent {
     copy(event: KeyboardEvent, item: IDraggableViewModel) {
         Helpers.copy(event, item, this.context);
     }
-
     
 
     // todo DRY

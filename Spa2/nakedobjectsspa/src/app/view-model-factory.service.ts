@@ -174,7 +174,7 @@ export class ViewModelFactoryService {
     getItems = (links: Models.Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: ListViewModel | CollectionViewModel) => {
 
         const collection = listViewModel instanceof CollectionViewModel ? listViewModel : null;
-        const id = collection ? collection.id : "";
+        const id = collection ? collection.name : "";
         const selectedItems = routeData.selectedCollectionItems[id];
         const items = _.map(links, (link, i) => this.itemViewModel(link, routeData.paneId, selectedItems && selectedItems[i], i, id));
 

@@ -32,7 +32,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
         this.title = collectionRep.extensions().friendlyName();
         this.presentationHint = collectionRep.extensions().presentationHint();
         this.pluralName = collectionRep.extensions().pluralName();
-        this.id = collectionRep.collectionId().toLowerCase();
+        this.name = collectionRep.collectionId().toLowerCase();
 
         this.colorService.toColorNumberFromType(collectionRep.extensions().elementType()).
             then(c => this.color = `${this.configService.config.linkColor}${c}`).
@@ -49,8 +49,8 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
     private color: string;
     private editing: boolean;
 
-    readonly id: string;
     readonly title: string;
+    readonly name : string;
 
     details: string;
     mayHaveItems: boolean;
@@ -128,7 +128,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
         if (actionViewModel) {
             return actionViewModel.actionRep;
         }
-        this.loggerService.throw(`CollectionViewModel:actionMember no member ${id} on ${this.id}`);
+        this.loggerService.throw(`CollectionViewModel:actionMember no member ${id} on ${this.name}`);
     }
 
     private hasActionMember(id: string) {
