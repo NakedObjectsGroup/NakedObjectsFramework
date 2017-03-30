@@ -9,30 +9,19 @@
         <ng-container *ngIf="size > 0">
             <nof-action-list *ngIf="showActions()" [menuHolder]="collection"></nof-action-list>
             <nof-dialog [parent]="collection" [selectedDialogId]="selectedDialogId"></nof-dialog>
-            <div class="summary" *ngIf="state == 'list'">
+            <div class="summary">
                 <div class="details">{{description}}</div>
-                <img class="icon-table" (click)="doTable()" src="../../assets/table.png" title="View as Table" />
+                <img *ngIf="state === 'list'" class="icon-table" (click)="doTable()" src="../../assets/table.png" title="View as Table" />
+                <img *ngIf="state === 'table'" class="icon-list" (click)="doList()" src="../../assets/list.png" title="View as List" />
                 <table>
-                    <thead>           
+                    <thead>
                         <tr nof-header [collection]="collection" [state]="currentState"></tr>
                     </thead>
-                    <tbody>
-                        <tr *ngFor="let item of items; let i = index" nof-row [item]="item" [index]="i" [withCheckbox]="!disableActions()" [isTable]="false"></tr>
+                    <tbody *ngIf="state === 'list' || hasTableData()">
+                        <tr *ngFor="let item of items; let i = index" nof-row [item]="item" [index]="i" [withCheckbox]="!disableActions()" [isTable]="state === 'table'"></tr>
                     </tbody>
                 </table>
             </div>
-            <div class="summary" *ngIf="state == 'table'">
-                <div class="details">{{description}}</div>
-                <img class="icon-list" (click)="doList()" src="../../assets/list.png" title="View as List" />
-            </div>
-            <table *ngIf="state == 'table'">
-                <thead>
-                    <tr nof-header [collection]="collection" [state]="currentState"></tr>
-                </thead>
-                <tbody *ngIf="hasTableData()">
-                    <tr *ngFor="let item of items; let i = index" nof-row [item]="item" [index]="i" [withCheckbox]="!disableActions()" [isTable]="true"></tr>
-                </tbody>
-            </table>
         </ng-container>
     </div>
 </ng-container>

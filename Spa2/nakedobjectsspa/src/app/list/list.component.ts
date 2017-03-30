@@ -66,8 +66,6 @@ export class ListComponent {
     doList = () => this.collection.doList();
     doSummary = () => this.collection.doSummary();
 
-
-
     hasTableData = () => this.collection.hasTableData();
 
     get actionsTooltip() {
