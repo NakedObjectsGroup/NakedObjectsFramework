@@ -17,7 +17,7 @@ type state = "summary" | "list" | "table";
 })
 export class CollectionComponent implements OnInit, OnDestroy {
 
-    constructor(private readonly urlManager: UrlManagerService) {}
+    constructor(private readonly urlManager: UrlManagerService) { }
 
     @Input()
     collection: CollectionViewModel;
@@ -69,15 +69,11 @@ export class CollectionComponent implements OnInit, OnDestroy {
     doList = () => this.collection.doList();
     doTable = () => this.collection.doTable();
     disableActions = () => this.collection.disableActions();
-    noItems = () => !this.collection.items || this.collection.items.length === 0;
-    allSelected = () => this.collection.allSelected();
-    selectAll = () => this.collection.selectAll();
+
     hasTableData = () => this.collection.hasTableData();
 
-    itemId = (i: number | string) => `${this.collection.name}${this.collection.onPaneId}-${i}`;
-
     private paneRouteDataSub: ISubscription;
-    private lastPaneRouteData : PaneRouteData;
+    private lastPaneRouteData: PaneRouteData;
 
     private currentOid: string;
 

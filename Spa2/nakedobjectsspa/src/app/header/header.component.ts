@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import * as Collectionviewmodel from '../view-models/collection-view-model';
-import * as Listviewmodel from '../view-models/list-view-model';
+import { CollectionViewModel } from '../view-models/collection-view-model';
+import { ListViewModel } from '../view-models/list-view-model';
 import { CollectionViewState } from '../route-data';
 
 @Component({
@@ -11,7 +11,7 @@ import { CollectionViewState } from '../route-data';
 export class HeaderComponent {
 
     @Input()
-    collection: Collectionviewmodel.CollectionViewModel | Listviewmodel.ListViewModel;
+    collection: CollectionViewModel | ListViewModel;
 
     @Input()
     state: CollectionViewState;

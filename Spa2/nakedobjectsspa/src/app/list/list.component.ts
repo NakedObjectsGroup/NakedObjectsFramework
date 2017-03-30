@@ -29,7 +29,7 @@ import * as Helpers from '../view-models/helpers-view-models';
     styles: [require('./list.component.css')]
 })
 export class ListComponent {
-  
+
     constructor(
         private readonly activatedRoute: ActivatedRoute,
         private readonly urlManager: UrlManagerService,
@@ -39,7 +39,7 @@ export class ListComponent {
         private readonly error: ErrorService,
         private readonly configService: ConfigService,
         private readonly loggerService: LoggerService
-    ) {     
+    ) {
     }
 
     collection: ListViewModel;
@@ -66,8 +66,8 @@ export class ListComponent {
     doList = () => this.collection.doList();
     doSummary = () => this.collection.doSummary();
 
-    selectAll = () => this.collection.selectAll();
-    allSelected = () => this.collection.allSelected();
+
+
     hasTableData = () => this.collection.hasTableData();
 
     get actionsTooltip() {
@@ -158,7 +158,7 @@ export class ListComponent {
         return [this.actionButton, this.reloadButton, this.firstButton, this.previousButton, this.nextButton, this.lastButton];
     }
 
-    itemId = (i: number | string) => `item${this.collection.onPaneId}-${i}`;
+
 
     title = "";
 
@@ -228,7 +228,7 @@ export class ListComponent {
                     this.urlManager.getPaneRouteDataObservable(paneId)
                         .subscribe((paneRouteData: PaneRouteData) => {
                             if (!paneRouteData.isEqual(this.lastPaneRouteData)) {
-                                this.lastPaneRouteData = paneRouteData;                              
+                                this.lastPaneRouteData = paneRouteData;
                                 this.setup(paneRouteData);
                             }
                         });

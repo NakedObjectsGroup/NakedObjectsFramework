@@ -11,19 +11,11 @@
 <nof-action-bar *ngIf="showActions()" class="actions" [menuHolder]="collection"></nof-action-bar>
 <nof-dialog *ngIf="showActions()" [parent]="collection" [selectedDialogId]="selectedDialogId"></nof-dialog>
 
-<table *ngIf="state == 'table'">
+<table>
     <thead>
         <tr nof-header [collection]="collection" [state]="currentState"></tr>
     </thead>
-    <tbody *ngIf="hasTableData()">
-        <tr *ngFor="let item of items; let i = index" nof-row [item]="item" [index]="i" [withCheckbox]="!disableActions()" [isTable]="true"></tr>
-    </tbody>
-</table>
-<table *ngIf="state == 'list'">
-    <thead>
-        <tr nof-header [collection]="collection" [state]="currentState"></tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let item of items; let i = index" nof-row [item]="item" [index]="i" [withCheckbox]="!disableActions()" [isTable]="false"></tr>
+    <tbody *ngIf="state === 'list' || hasTableData()">
+        <tr *ngFor="let item of items; let i = index" nof-row [item]="item" [index]="i" [withCheckbox]="!disableActions()" [isTable]="state === 'table'"></tr>
     </tbody>
 </table>
