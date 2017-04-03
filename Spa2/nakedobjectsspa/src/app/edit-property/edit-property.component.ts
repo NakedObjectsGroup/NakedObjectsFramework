@@ -130,8 +130,12 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
         return choice.name;
     }
 
-    classes(): string {
-        return `${this.prop.color}${this.canDrop ? " candrop" : ""}`;
+    classes(): _.Dictionary<boolean> {
+        return {
+            [this.prop.color]: true,
+            "candrop": this.canDrop,
+            "mat-input-element": null as boolean // remove this class to prevent angular/materials styling overiding our styling
+        };
     }
 
     @Input()

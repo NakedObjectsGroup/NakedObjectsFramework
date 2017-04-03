@@ -252,10 +252,10 @@ html, #main, body, .background, .single, .split {
     width: 100%;
 }
 
-
-
-
-
+/* don't show angular/materials floating placeholder */
+.mat-input-placeholder-wrapper {
+    display: none;
+}
 
 
 /*Cicero*/
