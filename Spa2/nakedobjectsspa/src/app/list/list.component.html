@@ -13,7 +13,8 @@
                 <div class="details">{{description}}</div>
                 <img *ngIf="state === 'list'" class="icon-table" (click)="doTable()" src="../../assets/table.png" title="View as Table" alt="View as Table"/>
                 <img *ngIf="state === 'table'" class="icon-list" (click)="doList()" src="../../assets/list.png" title="View as List" alt="View as List"/>
-                <table>
+             </div>
+             <table>
                     <thead>
                         <tr nof-header [collection]="collection" [state]="currentState"></tr>
                     </thead>
@@ -21,7 +22,6 @@
                         <tr *ngFor="let item of items; let i = index" nof-row [item]="item" [index]="i" [withCheckbox]="!disableActions()" [isTable]="state === 'table'"></tr>
                     </tbody>
                 </table>
-            </div>
         </ng-container>
     </div>
 </ng-container>

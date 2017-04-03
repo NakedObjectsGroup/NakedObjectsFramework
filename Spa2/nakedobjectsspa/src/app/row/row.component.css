@@ -3,7 +3,7 @@
     cursor:pointer;
 }
 
-th, td {
+td {
     font-size: 11pt;
     font-weight: 100; /*Override browser default*/
     text-align: left;
