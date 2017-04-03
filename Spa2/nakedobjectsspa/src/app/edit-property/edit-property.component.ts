@@ -14,9 +14,6 @@ import { ConfigService } from '../config.service';
 import { LoggerService } from '../logger.service';
 
 @Component({
-    host: {
-        '(document:click)': 'handleClick($event)'
-    },
     selector: 'nof-edit-property',
     template: require('./edit-property.component.html'),
     styles: [require('./edit-property.component.css')]
@@ -157,13 +154,17 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
     }
 
     @HostListener('keydown', ['$event'])
-    onEnter(event: KeyboardEvent) {
+    onKeydown(event: KeyboardEvent) {
         this.paste(event);
+        // catch and filter enters or they will submit form
+        this.filterEnter(event);
     }
 
     @HostListener('keypress', ['$event'])
-    onEnter1(event: KeyboardEvent) {
+    onKeypress(event: KeyboardEvent) {
         this.paste(event);
+        // catch and filter enters or they will submit form
+        this.filterEnter(event);
     }
 
     @ViewChildren("focus")

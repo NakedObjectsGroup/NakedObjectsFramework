@@ -217,21 +217,6 @@ export abstract class FieldComponent {
         this.control.reset(item);
     }
 
-    private isInside(clickedComponent: Node): boolean {
-        if (clickedComponent) {
-            return clickedComponent === this.elementRef.nativeElement || this.isInside(clickedComponent.parentNode);
-        }
-        return false;
-    }
-
-    handleClick(event: Event) {
-        if (this.isAutoComplete) {
-            if (!this.isInside(event.target as Node)) {
-                this.model.choices = [];
-            }
-        }
-    }
-
     fileUpload(evt : Event) {
        
         const file : File = (evt.target as HTMLInputElement)!.files![0];
@@ -268,6 +253,13 @@ export abstract class FieldComponent {
         }
         if (event && event.keyCode === deleteKeyCode) {
             this.context.setCopyViewModel(null);
+        }
+    }
+
+    filterEnter(event: KeyboardEvent) {
+        const enterKeyCode = 13;
+        if (event && event.keyCode === enterKeyCode) {
+            event.preventDefault();
         }
     }
 

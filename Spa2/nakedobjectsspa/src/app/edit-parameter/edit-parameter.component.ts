@@ -14,9 +14,6 @@ import { LoggerService } from '../logger.service';
 
 @Component({
     selector: 'nof-edit-parameter',
-    host: {
-        '(document:click)': 'handleClick($event)'
-    },
     template: require('./edit-parameter.component.html'),
     styles: [require('./edit-parameter.component.css')]
 })
@@ -137,13 +134,16 @@ export class EditParameterComponent extends FieldComponent implements OnInit {
     }
 
     @HostListener('keydown', ['$event'])
-    onEnter(event: KeyboardEvent) {
+    onKeydown(event: KeyboardEvent) {
         this.paste(event);
+        // catch and filter enters or they will submit form
+        this.filterEnter(event);
     }
 
     @HostListener('keypress', ['$event'])
-    onEnter1(event: KeyboardEvent) {
+    onKeypress(event: KeyboardEvent) {
         this.paste(event);
+        this.filterEnter(event);
     }
 
     @ViewChildren("focus")
