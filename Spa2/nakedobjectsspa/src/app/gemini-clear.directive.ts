@@ -24,13 +24,12 @@ export class GeminiClearDirective implements OnInit {
 
     @Input()
     set form(fm: FormGroup) {
-        this.formGroup = fm;
-
-        this.formGroup.controls[this.model.id].valueChanges.subscribe(data => this.onChange());     
+        this.formGroup = fm;          
     }
 
     ngOnInit(): void {
         this.onChange();
+        this.formGroup.controls[this.model.id].valueChanges.subscribe(data => this.onChange()); 
     }
 
     // not need the ngClass directive on element even though it doesn't do anything 
@@ -39,7 +38,7 @@ export class GeminiClearDirective implements OnInit {
        
         this.nativeEl.classList.add("ng-clearable");
 
-        if (this.nativeEl.value) {
+        if (this.formGroup.controls[this.model.id].value) {
             this.nativeEl.classList.add("ng-x");
         } else {
             this.nativeEl.classList.remove("ng-x");
@@ -50,8 +49,7 @@ export class GeminiClearDirective implements OnInit {
         if (this.nativeEl.classList.contains("ng-x")) {
             const onX = this.nativeEl.offsetWidth - 18 < event.clientX - this.nativeEl.getBoundingClientRect().left;
             if (onX) {
-                this.nativeEl.classList.add("ng-onX");
-                
+                this.nativeEl.classList.add("ng-onX");               
             } else {
                 this.nativeEl.classList.remove("ng-onX");
             }
