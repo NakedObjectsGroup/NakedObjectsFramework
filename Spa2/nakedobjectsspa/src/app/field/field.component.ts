@@ -14,6 +14,7 @@ import { PropertyViewModel } from '../view-models/property-view-model';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 import { ConfigService } from '../config.service';
 import { LoggerService } from '../logger.service';
+import * as Helpers from '../view-models/helpers-view-models';
 
 export abstract class FieldComponent {
 
@@ -273,11 +274,7 @@ export abstract class FieldComponent {
     abstract focusList: QueryList<ElementRef>;
 
     focus() {
-        if (this.focusList && this.focusList.first) {
-            setTimeout(() => this.renderer.invokeElementMethod(this.focusList.first.nativeElement, "focus"));
-            return true;
-        }
-        return false; 
+        return !!(this.focusList && this.focusList.first) && Helpers.focus(this.renderer, this.focusList.first);
     }
 
 }

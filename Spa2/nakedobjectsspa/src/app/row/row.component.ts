@@ -67,13 +67,7 @@ export class RowComponent {
         Helpers.copy(event, item, this.context);
     }
     
-
-    // todo DRY
     focus() {
-        if (this.element) {
-            setTimeout(() => this.renderer.invokeElementMethod(this.element.nativeElement, "focus"));
-            return true;
-        }
-        return false; 
+        return !!this.element && Helpers.focus(this.renderer, this.element);
     }
 }

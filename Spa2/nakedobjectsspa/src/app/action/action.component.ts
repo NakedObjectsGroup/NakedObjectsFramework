@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, ElementRef, Renderer, ViewChildren, QueryList } from '@angular/core';
 import { ActionViewModel } from '../view-models/action-view-model';
+import * as Helpers from '../view-models/helpers-view-models';
 
 export interface IActionHolder {
     doClick: () => void;
@@ -83,16 +84,11 @@ export class ActionComponent {
 
     @ViewChildren("focus")
     focusList: QueryList<ElementRef>;
-
-    // todo DRY focus code across components 
+ 
     focus() {
         if (this.disabled()) {
             return false;
         }
-        if (this.focusList && this.focusList.first) {
-            setTimeout(() => this.renderer.invokeElementMethod(this.focusList.first.nativeElement, "focus"));
-            return true;
-        }
-        return false; 
+        return !!(this.focusList && this.focusList.first) && Helpers.focus(this.renderer, this.focusList.first);
     }
 }

@@ -64,8 +64,7 @@ export class ObjectComponent implements OnInit, OnDestroy {
     }
 
     // used to smooth transition before object set 
-    // todo remove hard coding
-    private pendingColor = "object-color0";
+    private pendingColor : string;
 
     get color() {
         const obj = this.object;      

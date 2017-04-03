@@ -103,7 +103,6 @@ export class EditParameterComponent extends FieldComponent implements OnInit {
 
     choiceName = (choice: ChoiceViewModel) => choice.name;
 
-
     droppableClasses(): string {
         return `${this.parm.color}${this.canDrop ? " candrop" : ""}`;
     }
@@ -145,5 +144,4 @@ export class EditParameterComponent extends FieldComponent implements OnInit {
 
     @ViewChildren("focus")
     focusList: QueryList<ElementRef>;
-
 }

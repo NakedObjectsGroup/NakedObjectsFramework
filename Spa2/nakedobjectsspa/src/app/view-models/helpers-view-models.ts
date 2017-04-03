@@ -9,6 +9,7 @@ import { IMessageViewModel } from './imessage-view-model';
 import * as Models from '../models';
 import * as Msg from '../user-messages';
 import * as _ from 'lodash';
+import { Renderer, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { DialogViewModel } from './dialog-view-model';
 import { ParameterViewModel} from './parameter-view-model';
@@ -236,4 +237,9 @@ export function decrementPendingPotentAction(context: ContextService, invokablea
     if (invokableaction.isPotent()) {
         context.decPendingPotentActionOrReload(paneId);
     }
+}
+
+export function focus(renderer : Renderer, element : ElementRef) {
+    setTimeout(() => renderer.invokeElementMethod(element.nativeElement, "focus"));
+    return true;
 }
