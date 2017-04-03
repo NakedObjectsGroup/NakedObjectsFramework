@@ -253,9 +253,15 @@ html, #main, body, .background, .single, .split {
 }
 
 /* don't show angular/materials floating placeholder */
-.mat-input-placeholder-wrapper {
+.mat-input-placeholder-wrapper,.mat-input-underline  {
     display: none;
 }
+.mat-option:hover {
+    display: block;
+   background-color: lightgrey;
+}
 
-
-/*Cicero*/
+nof-edit-parameter .mat-input-wrapper {
+    margin: 0;
+    padding-bottom: 0;
+}
