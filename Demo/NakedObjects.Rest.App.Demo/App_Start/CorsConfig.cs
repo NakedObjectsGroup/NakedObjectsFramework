@@ -20,6 +20,8 @@ public class CorsConfig {
                        "http://localhost:8080",
                        "http://nakedobjectstest.azurewebsites.net",
                        "http://nakedobjectstest2.azurewebsites.net",
+                       "https://nakedobjectstest.azurewebsites.net",
+                       "https://nakedobjectstest2.azurewebsites.net",
                        "http://localhost").
            AllowAll().
            AllowResponseHeaders("Warning", "Set-Cookie", "ETag").

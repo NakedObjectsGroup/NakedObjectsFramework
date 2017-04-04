@@ -1,7 +1,7 @@
 ﻿{
-    "appPath": "http://nakedobjectsrodemo.azurewebsites.net",
-    "logoffUrl": "http://nakedobjectsrodemo.azurewebsites.net/Account/Logoff",
-    "urlShortCuts": [ "http://nakedobjectsrodemo.azurewebsites.net", "AdventureWorksModel" ],
+    "appPath": "https://nakedobjectsrodemo.azurewebsites.net",
+    "logoffUrl": "https://nakedobjectsrodemo.azurewebsites.net/Account/Logoff",
+    "urlShortCuts": [ "https://nakedobjectsrodemo.azurewebsites.net", "AdventureWorksModel" ],
     "doUrlValidation": true,
     "applicationName" : "Adventureworks Demo",
     "colors": {
