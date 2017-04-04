@@ -14,6 +14,7 @@ using NakedObjects.Rest;
 using NakedObjects.Rest.Model;
 
 namespace MvcTestApp.Controllers {
+    [Authorize]
     public class RestfulObjectsController : RestfulObjectsControllerBase {
         public RestfulObjectsController(IFrameworkFacade frameworkFacade) : base(frameworkFacade) {}
 
@@ -41,16 +42,6 @@ namespace MvcTestApp.Controllers {
         public override HttpResponseMessage GetVersion([ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
             return base.GetVersion(arguments);
         }
-
-        //[HttpGet]
-        //public override HttpResponseMessage GetDomainTypes([ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
-        //    return base.GetDomainTypes(arguments);
-        //}
-
-        //[HttpGet]
-        //public override HttpResponseMessage GetDomainType(string typeName, [ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
-        //    return base.GetDomainType(typeName, arguments);
-        //}
 
         [HttpGet]
         public override HttpResponseMessage GetService(string serviceName, [ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
@@ -87,45 +78,21 @@ namespace MvcTestApp.Controllers {
             return base.PutObject(domainType, instanceId, arguments);
         }
 
-        //[HttpPost]
-        //public override HttpResponseMessage PostObject(string domainType, string instanceId, [ModelBinder(typeof(ArgumentMapBinder))] ArgumentMap arguments) {
-        //    return base.PostObject(domainType, instanceId, arguments);
-        //}
-
         [HttpGet]
         public override HttpResponseMessage GetProperty(string domainType, string instanceId, string propertyName, [ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
             return base.GetProperty(domainType, instanceId, propertyName, arguments);
         }
-
-        //[HttpGet]
-        //public override HttpResponseMessage GetPropertyType(string typeName, string propertyName, [ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
-        //    return base.GetPropertyType(typeName, propertyName, arguments);
-        //}
 
         [HttpGet]
         public override HttpResponseMessage GetCollection(string domainType, string instanceId, string propertyName, [ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
             return base.GetCollection(domainType, instanceId, propertyName, arguments);
         }
 
-        //[HttpGet]
-        //public override HttpResponseMessage GetCollectionType(string typeName, string propertyName, [ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
-        //    return base.GetCollectionType(typeName, propertyName, arguments);
-        //}
-
         [HttpGet]
         public override HttpResponseMessage GetAction(string domainType, string instanceId, string actionName, [ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
             return base.GetAction(domainType, instanceId, actionName, arguments);
         }
 
-        //[HttpGet]
-        //public override HttpResponseMessage GetActionType(string typeName, string actionName, [ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
-        //    return base.GetActionType(typeName, actionName, arguments);
-        //}
-
-        //[HttpGet]
-        //public override HttpResponseMessage GetActionParameterType(string typeName, string actionName, string parmName, [ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
-        //    return base.GetActionParameterType(typeName, actionName, parmName, arguments);
-        //}
 
         [HttpPut]
         public override HttpResponseMessage PutProperty(string domainType, string instanceId, string propertyName, [ModelBinder(typeof (SingleValueArgumentBinder))] SingleValueArgument argument) {
