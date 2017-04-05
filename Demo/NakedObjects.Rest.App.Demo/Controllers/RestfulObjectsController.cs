@@ -14,7 +14,7 @@ using NakedObjects.Rest;
 using NakedObjects.Rest.Model;
 
 namespace MvcTestApp.Controllers {
-    [Authorize]
+    //[Authorize]
     public class RestfulObjectsController : RestfulObjectsControllerBase {
         public RestfulObjectsController(IFrameworkFacade frameworkFacade) : base(frameworkFacade) {}
 
