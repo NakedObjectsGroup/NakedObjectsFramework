@@ -121,6 +121,21 @@ export class RepLoaderService {
         return Models.isResourceRepresentation(data);
     }
 
+    private logHeaders(headers : Headers) {
+        const hNames = headers.keys();
+
+        const hh = _.map(hNames,
+            (hn) => {
+                const val = headers.get(hn);
+                return `${hn}:${val}`;
+            });
+
+        const ss = _.reduce(hh, (u, t) => `${u}\n${t}`, "");
+
+        console.debug(ss);
+    }
+
+
     private httpPopulate(config: RequestOptions, ignoreCache: boolean, response: Models.IHateoasModel): Promise<Models.IHateoasModel> {
 
         if (ignoreCache) {
@@ -141,6 +156,9 @@ export class RepLoaderService {
             .toPromise()
             .then((r: Response) => {
                 this.loadingCountSource.next(--(this.loadingCount));
+
+                this.logHeaders(r.headers);
+
                 const asJson = r.json();
                 if (!this.isValidResponse(asJson)) {
                     return this.handleInvalidResponse(Models.ErrorCategory.ClientError);
