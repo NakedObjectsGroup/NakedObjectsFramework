@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { ApplicationPropertiesViewModel } from '../view-models/application-properties-view-model';
 import * as Msg from '../user-messages';
+import * as Authservice from '../auth.service';
 
 @Component({
     selector: 'nof-application-properties',
@@ -11,7 +12,9 @@ import * as Msg from '../user-messages';
 export class ApplicationPropertiesComponent implements OnInit {
 
     constructor(
-        private readonly viewModelFactory: ViewModelFactoryService) {
+        private readonly viewModelFactory: ViewModelFactoryService,
+        private readonly authService: Authservice.AuthService
+    ) {
     }
 
     get applicationName() {
@@ -21,6 +24,11 @@ export class ApplicationPropertiesComponent implements OnInit {
     get userName() {
         return this.applicationProperties.user ? this.applicationProperties.user.userName : Msg.noUserMessage;
     }
+
+    get clientUserName() {
+        return this.authService.userProfile ? this.authService.userProfile.name : Msg.noUserMessage;
+    }
+
 
     get serverUrl() {
         return this.applicationProperties.serverUrl;

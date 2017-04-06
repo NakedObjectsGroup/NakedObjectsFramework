@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Request, RequestOptions, Headers, RequestMethod, ResponseContentType } from '@angular/http';
+import { Response, Request, RequestOptions, Headers, RequestMethod, ResponseContentType } from '@angular/http';
 import './rxjs-extensions';
 import * as Models from './models';
 import * as Constants from './constants';

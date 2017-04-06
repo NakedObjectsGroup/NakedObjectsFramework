@@ -8,15 +8,18 @@ import * as _ from 'lodash';
 import { Subject } from 'rxjs/Subject';
 import { ConfigService } from './config.service';
 import { Observable } from 'rxjs'; // for declaration compile
-import {SimpleLruCache} from './simple-lru-cache';
+import { SimpleLruCache } from './simple-lru-cache';
+import { AuthHttp } from 'angular2-jwt';
 
 @Injectable()
 export class RepLoaderService {
 
     constructor(
-        private readonly http: Http,
+        //private readonly http: Http,
+        private readonly http : AuthHttp,
         private readonly configService: ConfigService
     ) { }
+
 
     private loadingCount = 0;
 
@@ -121,7 +124,7 @@ export class RepLoaderService {
         return Models.isResourceRepresentation(data);
     }
 
-    private logHeaders(headers : Headers) {
+    private logHeaders(headers: Headers) {
         const hNames = headers.keys();
 
         const hh = _.map(hNames,

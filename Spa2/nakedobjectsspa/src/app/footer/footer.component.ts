@@ -12,6 +12,7 @@ import { IMessageViewModel } from '../view-models/imessage-view-model';
 import * as Msg from '../user-messages';
 import * as Models from '../models';
 import { ConfigService } from '../config.service';
+import { AuthService } from '../auth.service';
 
 @Component({
     selector: 'nof-footer',
@@ -21,6 +22,7 @@ import { ConfigService } from '../config.service';
 export class FooterComponent implements OnInit {
 
     constructor(
+        private readonly authService : AuthService,
         private readonly urlManager: UrlManagerService,
         private readonly context: ContextService,
         private readonly clickHandler: ClickHandlerService,
@@ -78,8 +80,11 @@ export class FooterComponent implements OnInit {
                     // logoff server
                     this.http.post(this.configService.config.logoffUrl, args);
 
+                    this.authService.logout();
+
                     // logoff client without waiting for server
-                    window.location.href = this.configService.config.postLogoffUrl;
+                    // todo do we need to do this to clear data ? 
+                    //window.location.href = this.configService.config.postLogoffUrl;
                 }
             })
             .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));

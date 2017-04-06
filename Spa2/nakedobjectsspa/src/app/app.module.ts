@@ -56,6 +56,16 @@ import { ActionListComponent } from './action-list/action-list.component';
 import { MaterialModule } from '@angular/material';
 import { RowComponent } from './row/row.component';
 import { HeaderComponent } from './header/header.component';
+import { AuthService, NullAuthService } from './auth.service';
+import { AuthHttp, AuthConfig } from 'angular2-jwt';
+import { Http, RequestOptions } from '@angular/http';
+import { LoginComponent } from './login/login.component';
+
+export function authHttpServiceFactory(http: Http, options: RequestOptions) {
+  return new AuthHttp(new AuthConfig({
+    tokenName: 'id_token'
+  }), http, options);
+}
 
 @NgModule({
     declarations: [
@@ -91,7 +101,8 @@ import { HeaderComponent } from './header/header.component';
         DynamicErrorComponent,
         CiceroComponent,
         RowComponent,
-        HeaderComponent
+        HeaderComponent,
+        LoginComponent
     ],
     entryComponents: [
         ObjectComponent,
@@ -123,9 +134,12 @@ import { HeaderComponent } from './header/header.component';
         ConfigService,
         CiceroCommandFactoryService,
         CiceroRendererService,
+        AuthService,
         { provide: ErrorHandler, useClass: GeminiErrorHandler },
         { provide: APP_INITIALIZER, useFactory: configFactory, deps: [ConfigService], multi: true },
-        { provide: LOCALE_ID, useFactory: localeFactory, deps: [ConfigService] }
+        { provide: LOCALE_ID, useFactory: localeFactory, deps: [ConfigService] },
+        { provide: AuthHttp, useFactory: authHttpServiceFactory, deps: [Http, RequestOptions] },
+        { provide: AuthService, useClass: AuthService },
     ],
     bootstrap: [AppComponent]
 })

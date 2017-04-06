@@ -7,9 +7,9 @@ export class GeminiErrorHandler implements ErrorHandler {
     handleError(error: any) {
 
         // todo make safer 
-        const ec = error.context || error.rejection.context;
+        const ec = error.context || (error.rejection && error.rejection.context);
 
-        if (ec) {
+        if (ec && ec.injector) {
 
             const urlManager: UrlManagerService = ec.injector.get(UrlManagerService);
             const context: ContextService = ec.injector.get(ContextService);
@@ -20,6 +20,7 @@ export class GeminiErrorHandler implements ErrorHandler {
             context.setError(rp);
             urlManager.setError(Models.ErrorCategory.ClientError, Models.ClientErrorCode.SoftwareError);
         } else {
+            console.error(`${error.message}\n${error.stack}`);
             throw error;
         }
     }

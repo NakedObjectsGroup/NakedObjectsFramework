@@ -119,6 +119,7 @@
     <TypeScriptCompile Include="src\app\attachment-property\attachment-property.component.ts" />
     <TypeScriptCompile Include="src\app\attachment\attachment.component.ts" />
     <TypeScriptCompile Include="src\app\action\action.component.ts" />
+    <TypeScriptCompile Include="src\app\auth.service.ts" />
     <TypeScriptCompile Include="src\app\cicero-command-factory.service.ts" />
     <TypeScriptCompile Include="src\app\cicero-commands.ts" />
     <TypeScriptCompile Include="src\app\cicero-renderer.service.ts" />
