@@ -139,7 +139,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
         { provide: APP_INITIALIZER, useFactory: configFactory, deps: [ConfigService], multi: true },
         { provide: LOCALE_ID, useFactory: localeFactory, deps: [ConfigService] },
         { provide: AuthHttp, useFactory: authHttpServiceFactory, deps: [Http, RequestOptions] },
-        { provide: AuthService, useClass: AuthService },
+        { provide: AuthService, useClass: NullAuthService }
     ],
     bootstrap: [AppComponent]
 })
