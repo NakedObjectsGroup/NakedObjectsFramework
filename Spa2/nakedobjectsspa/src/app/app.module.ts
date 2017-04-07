@@ -61,7 +61,7 @@ import { AuthHttp, AuthConfig } from 'angular2-jwt';
 import { Http, RequestOptions } from '@angular/http';
 import { LoginComponent } from './login/login.component';
 
-const useAuth = true;
+const useAuth = false;
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions): any {
     if (useAuth) {
