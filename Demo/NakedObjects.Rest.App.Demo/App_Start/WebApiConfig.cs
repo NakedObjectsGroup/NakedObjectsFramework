@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Configuration;
 using System.Web.Http;
 using System.Web.Routing;
+using NakedObjects.Rest.App.Demo.App_Start;
 
 namespace NakedObjects.Rest.App.Demo {
     public static class WebApiConfig {
@@ -17,6 +19,15 @@ namespace NakedObjects.Rest.App.Demo {
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            var clientID = WebConfigurationManager.AppSettings["auth0:ClientId"];
+            var clientSecret = WebConfigurationManager.AppSettings["auth0:ClientSecret"];
+
+            config.MessageHandlers.Add(new JsonWebTokenValidationHandler() {
+                Audience = clientID,
+                SymmetricKey = clientSecret,
+                IsSecretBase64Encoded = false
+            });
         }
     }
 }
