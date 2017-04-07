@@ -17,9 +17,16 @@ export interface IUserProfile {
 @Injectable()
 export class AuthService {
 
+
+    private options = {
+        auth: {
+            params: { scope: 'email' },
+        }
+    };  
+
     // Configure Auth0
     // this is client id which is public 
-    private readonly lock = new Auth0Lock('wXXvvJOtNZoycQtK1gwxAjYgXDzQv5K9', 'nakedobjects.eu.auth0.com', {});
+    private readonly lock = new Auth0Lock('wXXvvJOtNZoycQtK1gwxAjYgXDzQv5K9', 'nakedobjects.eu.auth0.com', this.options);
 
     //Store profile object in auth class
     userProfile: IUserProfile;
