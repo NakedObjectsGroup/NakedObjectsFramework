@@ -48,7 +48,7 @@ find.findSync("name", ".", "package.json").then(s => {
         var name = nameSplit[3];
 
         var options1 = {
-            files: ["./lib/app/app-routing.module.ts", "./lib/app/app.module.ts"],
+            files: ["./lib/app/app-routing.module.ts", "./lib/app/app.module.ts", "./lib/app/app.component.ts"],
             from: [/\.\/.*\/.*\.component/g, /\.\/.*\.(service|directive|handler)/g, /\.\/route-data/g],
             to: name
         };
