@@ -61,11 +61,18 @@ import { AuthHttp, AuthConfig } from 'angular2-jwt';
 import { Http, RequestOptions } from '@angular/http';
 import { LoginComponent } from './login/login.component';
 
-export function authHttpServiceFactory(http: Http, options: RequestOptions) {
-  return new AuthHttp(new AuthConfig({
-    tokenName: 'id_token'
-  }), http, options);
-}
+const useAuth = true;
+
+export function authHttpServiceFactory(http: Http, options: RequestOptions): any {
+    if (useAuth) {
+        return new AuthHttp(new AuthConfig({
+            tokenName: 'id_token'
+        }), http, options);
+    }
+    else {
+        return http;
+    }
+ }
 
 @NgModule({
     declarations: [
@@ -139,7 +146,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
         { provide: APP_INITIALIZER, useFactory: configFactory, deps: [ConfigService], multi: true },
         { provide: LOCALE_ID, useFactory: localeFactory, deps: [ConfigService] },
         { provide: AuthHttp, useFactory: authHttpServiceFactory, deps: [Http, RequestOptions] },
-        { provide: AuthService, useClass: NullAuthService }
+        { provide: AuthService,  useClass: useAuth ? AuthService : NullAuthService }
     ],
     bootstrap: [AppComponent]
 })
