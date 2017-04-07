@@ -155,16 +155,12 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
 
     @HostListener('keydown', ['$event'])
     onKeydown(event: KeyboardEvent) {
-        this.paste(event);
-        // catch and filter enters or they will submit form
-        this.filterEnter(event);
+        this.handleKeyEvents(event, this.isMultiline);
     }
 
     @HostListener('keypress', ['$event'])
     onKeypress(event: KeyboardEvent) {
-        this.paste(event);
-        // catch and filter enters or they will submit form
-        this.filterEnter(event);
+        this.handleKeyEvents(event, this.isMultiline);
     }
 
     @ViewChildren("focus")

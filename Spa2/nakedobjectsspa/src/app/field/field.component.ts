@@ -263,6 +263,14 @@ export abstract class FieldComponent {
         }
     }
 
+    protected handleKeyEvents(event: KeyboardEvent, isMultiline: boolean) {
+        this.paste(event);
+        // catch and filter enters or they will submit form - ok for multiline
+        if (!isMultiline) {
+            this.filterEnter(event);
+        }
+    }
+
     abstract focusList: QueryList<ElementRef>;
 
     focus() {
