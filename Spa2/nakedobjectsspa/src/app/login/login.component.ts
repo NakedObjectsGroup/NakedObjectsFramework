@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
+import {ConfigService} from '../config.service';
 
 @Component({
   selector: 'nof-login',
@@ -8,6 +9,9 @@ import { AuthService } from '../auth.service';
 })
 export class LoginComponent {
 
-  constructor(public readonly auth: AuthService) { }
+  constructor(
+    public readonly auth: AuthService, 
+    public readonly configService : ConfigService
+  ) { }
 
 }

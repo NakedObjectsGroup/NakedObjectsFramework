@@ -25,11 +25,6 @@ export class ApplicationPropertiesComponent implements OnInit {
         return this.applicationProperties.user ? this.applicationProperties.user.userName : Msg.noUserMessage;
     }
 
-    get clientUserName() {
-        return this.authService.userProfile ? this.authService.userProfile.name : Msg.noUserMessage;
-    }
-
-
     get serverUrl() {
         return this.applicationProperties.serverUrl;
     }

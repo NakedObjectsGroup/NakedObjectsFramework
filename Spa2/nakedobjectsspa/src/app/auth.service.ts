@@ -4,20 +4,10 @@ import { Router, NavigationStart, CanActivate } from '@angular/router';
 import './rxjs-extensions';
 import { UrlManagerService } from './url-manager.service';
 import { LoggerService } from './logger.service';
+import { ConfigService } from './config.service';
 
-
-// todo just use auth0 type 
-export interface IUserProfile {
-    name: string;
-    email?: string;
-    nickname: string;
-    created_at: string;
-    updated_at: string;
-}
 
 export abstract class AuthService {
-
-    userProfile: IUserProfile;
 
     abstract login(): void;
 
@@ -25,50 +15,42 @@ export abstract class AuthService {
 
     abstract logout(): void;
 
-    abstract canActivate(): boolean
+    abstract canActivate(): boolean;
 }
-
 
 
 @Injectable()
 export class Auth0AuthService extends AuthService implements CanActivate {
 
-    private options = {
-        auth: {
-            params: { scope: 'openid email' },
-        }
-    };
-
     // Configure Auth0
     // this is client id which is public 
-    private readonly lock = new Auth0Lock('wXXvvJOtNZoycQtK1gwxAjYgXDzQv5K9', 'nakedobjects.eu.auth0.com', this.options);
+    private readonly lock;
 
     //Store profile object in auth class
-    userProfile: IUserProfile;
+    private userProfile: any; // todo fix
 
     constructor(
         private readonly router: Router,
         private readonly urlManager: UrlManagerService,
-        private readonly logger: LoggerService
+        private readonly logger: LoggerService,
+        private readonly configService: ConfigService
     ) {
         super();
+
+        const options = {
+            auth: {
+                params: { scope: 'openid email' },
+            }
+        };
+
+        this.lock = new Auth0Lock(configService.config.authClientId, configService.config.authDomain, options);
+
         // Set userProfile attribute of already saved profile
         this.userProfile = JSON.parse(localStorage.getItem('profile'));
 
         // Add callback for lock `authenticated` event
         this.lock.on("authenticated", (authResult) => {
             localStorage.setItem('id_token', authResult.idToken);
-
-            // Fetch profile information
-            this.lock.getProfile(authResult.idToken, (error, profile) => {
-                if (error) {
-                    logger.error(error);
-                }
-                else if (profile) {
-                    localStorage.setItem('profile', JSON.stringify(profile));
-                    this.userProfile = profile;
-                }
-            });
         });
 
         this
@@ -115,8 +97,6 @@ export class Auth0AuthService extends AuthService implements CanActivate {
 
 @Injectable()
 export class NullAuthService extends AuthService implements CanActivate {
-
-    userProfile: IUserProfile;
 
     login() { }
 

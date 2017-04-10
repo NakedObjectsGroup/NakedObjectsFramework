@@ -5,6 +5,8 @@ import * as Ro from './ro-interfaces';
 
 export interface IAppConfig {
     authenticate : boolean,
+    authClientId? : string,
+    authDomain? : string,
     appPath: string;
     applicationName : string, 
     logoffUrl: string;
