@@ -5,6 +5,7 @@ import './rxjs-extensions';
 import { UrlManagerService } from './url-manager.service';
 import { LoggerService } from './logger.service';
 import { ConfigService } from './config.service';
+import Auth0Lock from 'auth0-lock';
 
 
 export abstract class AuthService {
@@ -22,12 +23,7 @@ export abstract class AuthService {
 @Injectable()
 export class Auth0AuthService extends AuthService implements CanActivate {
 
-    // Configure Auth0
-    // this is client id which is public 
-    private readonly lock;
-
-    //Store profile object in auth class
-    private userProfile: any; // todo fix
+    private readonly lock: Auth0LockStatic;
 
     constructor(
         private readonly router: Router,
@@ -43,15 +39,12 @@ export class Auth0AuthService extends AuthService implements CanActivate {
             }
         };
 
+        // Configure Auth0
+        // this is client id which is public 
         this.lock = new Auth0Lock(configService.config.authClientId, configService.config.authDomain, options);
 
-        // Set userProfile attribute of already saved profile
-        this.userProfile = JSON.parse(localStorage.getItem('profile'));
-
         // Add callback for lock `authenticated` event
-        this.lock.on("authenticated", (authResult) => {
-            localStorage.setItem('id_token', authResult.idToken);
-        });
+        this.lock.on("authenticated", authResult => localStorage.setItem('id_token', authResult.idToken));
 
         this
             .router
@@ -84,10 +77,7 @@ export class Auth0AuthService extends AuthService implements CanActivate {
 
     logout() {
         // Remove token from localStorage
-        // todo make keys consts 
         localStorage.removeItem('id_token');
-        localStorage.removeItem('profile');
-        this.userProfile = undefined;
     }
 
     canActivate() {
