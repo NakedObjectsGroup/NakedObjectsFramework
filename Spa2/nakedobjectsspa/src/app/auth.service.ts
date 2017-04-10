@@ -1,28 +1,43 @@
 import { Injectable } from '@angular/core';
 import { tokenNotExpired } from 'angular2-jwt';
-import { Router, NavigationStart } from '@angular/router';
+import { Router, NavigationStart, CanActivate } from '@angular/router';
 import './rxjs-extensions';
 import { UrlManagerService } from './url-manager.service';
-import {LoggerService} from './logger.service';
+import { LoggerService } from './logger.service';
+
 
 // todo just use auth0 type 
 export interface IUserProfile {
     name: string;
     email?: string;
     nickname: string;
-    created_at : string;
-    updated_at : string;
+    created_at: string;
+    updated_at: string;
 }
 
-@Injectable()
-export class AuthService {
+export abstract class AuthService {
 
+    userProfile: IUserProfile;
+
+    abstract login(): void;
+
+    abstract authenticated(): boolean;
+
+    abstract logout(): void;
+
+    abstract canActivate(): boolean
+}
+
+
+
+@Injectable()
+export class Auth0AuthService extends AuthService implements CanActivate {
 
     private options = {
         auth: {
-            params: { scope: 'email' },
+            params: { scope: 'openid email' },
         }
-    };  
+    };
 
     // Configure Auth0
     // this is client id which is public 
@@ -36,6 +51,7 @@ export class AuthService {
         private readonly urlManager: UrlManagerService,
         private readonly logger: LoggerService
     ) {
+        super();
         // Set userProfile attribute of already saved profile
         this.userProfile = JSON.parse(localStorage.getItem('profile'));
 
@@ -65,7 +81,7 @@ export class AuthService {
                     if (error) {
                         logger.error(error);
                     }
-                    else if (authResult) {
+                    else if (authResult && authResult.idToken) {
                         localStorage.setItem('id_token', authResult.idToken);
                         setTimeout(() => this.urlManager.setHomeSinglePane());
                     }
@@ -91,10 +107,14 @@ export class AuthService {
         localStorage.removeItem('profile');
         this.userProfile = undefined;
     }
+
+    canActivate() {
+        return this.authenticated();
+    }
 }
 
 @Injectable()
-export class NullAuthService {
+export class NullAuthService extends AuthService implements CanActivate {
 
     userProfile: IUserProfile;
 
@@ -105,4 +125,8 @@ export class NullAuthService {
     }
 
     logout() { }
+
+    canActivate() {
+        return true;
+    }
 }

@@ -56,23 +56,28 @@ import { ActionListComponent } from './action-list/action-list.component';
 import { MaterialModule } from '@angular/material';
 import { RowComponent } from './row/row.component';
 import { HeaderComponent } from './header/header.component';
-import { AuthService, NullAuthService } from './auth.service';
+import { AuthService, Auth0AuthService, NullAuthService } from './auth.service';
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
 import { Http, RequestOptions } from '@angular/http';
 import { LoginComponent } from './login/login.component';
 
-const useAuth = false;
-
-export function authHttpServiceFactory(http: Http, options: RequestOptions): any {
-    if (useAuth) {
-        return new AuthHttp(new AuthConfig({
-            tokenName: 'id_token'
-        }), http, options);
+export function authHttpServiceFactory(http: Http, configService: ConfigService, options: RequestOptions): any {
+    if (configService.config.authenticate) {
+        return new AuthHttp(new AuthConfig({ tokenName: 'id_token' }), http, options);
     }
     else {
         return http;
     }
- }
+}
+
+export function authServiceFactory(configService: ConfigService, auth0AuthService : Auth0AuthService, nullAuthService : NullAuthService ): any {
+    if (configService.config.authenticate) {
+        return auth0AuthService;
+    }
+    else {
+        return nullAuthService;
+    }
+}
 
 @NgModule({
     declarations: [
@@ -141,12 +146,13 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions): any
         ConfigService,
         CiceroCommandFactoryService,
         CiceroRendererService,
-        AuthService,
+        Auth0AuthService,
+        NullAuthService,
         { provide: ErrorHandler, useClass: GeminiErrorHandler },
         { provide: APP_INITIALIZER, useFactory: configFactory, deps: [ConfigService], multi: true },
         { provide: LOCALE_ID, useFactory: localeFactory, deps: [ConfigService] },
-        { provide: AuthHttp, useFactory: authHttpServiceFactory, deps: [Http, RequestOptions] },
-        { provide: AuthService,  useClass: useAuth ? AuthService : NullAuthService }
+        { provide: AuthHttp, useFactory: authHttpServiceFactory, deps: [Http, ConfigService, RequestOptions] },
+        { provide: AuthService,  useFactory: authServiceFactory, deps: [ConfigService, Auth0AuthService, NullAuthService ]}
     ],
     bootstrap: [AppComponent]
 })

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Rx';
 import * as Ro from './ro-interfaces';
 
 export interface IAppConfig {
+    authenticate : boolean,
     appPath: string;
     applicationName : string, 
     logoffUrl: string;
@@ -96,6 +97,7 @@ export class ConfigService {
 
     // defaults 
     private appConfig: IAppConfig = {
+        authenticate : false,
         appPath: "",
         applicationName : "", 
         logoffUrl: "",

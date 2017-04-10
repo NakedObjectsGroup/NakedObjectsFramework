@@ -12,6 +12,8 @@ import { ICustomActivatedRouteData, ViewType } from './route-data';
 import { DynamicListComponent } from './dynamic-list/dynamic-list.component';
 import { DynamicErrorComponent } from './dynamic-error/dynamic-error.component';
 import { CiceroComponent} from './cicero/cicero.component';
+import { AuthService } from './auth.service';
+
 const routes: Routes = [
     {
         path: '',
@@ -21,6 +23,7 @@ const routes: Routes = [
     {
         path: 'gemini/home',
         component: HomeComponent,
+        canActivate: [AuthService],
         data: { pane: 1, paneType: "single" },
         children: [
             { path: "home", component: HomeComponent, data: { pane: 2, paneType: "split" } },
