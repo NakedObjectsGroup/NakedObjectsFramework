@@ -111,6 +111,12 @@
     <Content Include="polyfills.bundle.js" />
     <Content Include="styles.bundle.js" />
     <Content Include="vendor.bundle.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="web.config" />
     <Content Include="vendor.bundle.js.map" />
     <Content Include="styles.bundle.js.map" />
     <Content Include="polyfills.bundle.js.map" />
@@ -119,18 +125,12 @@
     <Content Include="iconFont.61e31f00a5b39f5a3786.eot" />
     <Content Include="iconFont.2f87c9f2aedf8f582535.woff" />
     <Content Include="iconFont.0a1778b9b8be9e01db68.ttf" />
-    <None Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
     </None>
-    <None Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

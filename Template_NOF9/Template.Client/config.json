@@ -1,4 +1,5 @@
 {
+  "applicationName" : "Student Records",
   "appPath": "http://localhost:5000/rest",
   "colors": {
     "typeMap": {
