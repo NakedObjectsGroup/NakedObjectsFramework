@@ -1,5 +1,5 @@
 {
-  "authenticate": true,
+  "authenticate": false,
   "authClientId": "5xMMFaiZ8lnBTRZexsDcooZAfbP1IJB8",
   "authDomain": "nakedobjectsdemo.eu.auth0.com",
   "applicationName" : "Student Records",
