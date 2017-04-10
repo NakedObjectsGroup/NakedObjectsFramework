@@ -1,5 +1,5 @@
 /*Global fonts*/
-.gemini, table, a, pre, textarea, input { 
+.gemini, table, a, pre, textarea, input, button { 
     font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
 }
 

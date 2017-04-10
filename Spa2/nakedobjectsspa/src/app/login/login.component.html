@@ -1,4 +1,4 @@
-<h1>Login</h1>
-<h2>{{configService.config.applicationName}}</h2>
-<p>Click button to login with your google account</p>
+<div class = "title">Welcome to {{configService.config.applicationName}}</div>
+<p>Clicking the login button will generate a pop-up managed by the 'Auth0 service.</p>
+<p>This will allow you to login using your Google, or other recognised account.</p>
 <button class="btn btn-primary btn-margin" (click)="auth.login()">Log In</button>
