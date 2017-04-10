@@ -64,6 +64,10 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="JWT, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\JWT.1.3.2\lib\3.5\JWT.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
@@ -224,6 +228,8 @@
   <ItemGroup>
     <Compile Include="App_Start\BasicAuthenticationHandler.cs" />
     <Compile Include="App_Start\CorsConfig.cs" />
+    <Compile Include="App_Start\JsonWebToken.cs" />
+    <Compile Include="App_Start\JsonWebTokenValidationHandler.cs" />
     <Compile Include="App_Start\NakedObjectsRunSettings.cs" />
     <Compile Include="App_Start\RestfulObjectsActivator.cs" />
     <Compile Include="App_Start\RestfulObjectsConfig.cs" />

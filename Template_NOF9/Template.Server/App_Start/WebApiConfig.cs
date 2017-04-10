@@ -5,6 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedObjects.Template.App_Start;
+using System.Web.Configuration;
 using System.Web.Http;
 using System.Web.Routing;
 
@@ -18,7 +20,15 @@ namespace NakedObjects.Template {
             config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", new {id = RouteParameter.Optional}
                 );
 
-            
+            var clientID = WebConfigurationManager.AppSettings["auth0:ClientId"];
+            var clientSecret = WebConfigurationManager.AppSettings["auth0:ClientSecret"];
+
+            config.MessageHandlers.Add(new JsonWebTokenValidationHandler()
+            {
+                Audience = clientID,
+                SymmetricKey = clientSecret,
+                IsSecretBase64Encoded = false
+            });
         }
     }
 }
