@@ -18,6 +18,7 @@ const routes: Routes = [
     {
         path: '',
         redirectTo: '/gemini/home',
+        canActivate: [AuthService],
         pathMatch: 'full'
     },
     {
@@ -112,6 +113,7 @@ const routes: Routes = [
     {
         path: '**',
         redirectTo: '/gemini/home',
+        canActivate: [AuthService],
         pathMatch: 'full'
     }
 ];

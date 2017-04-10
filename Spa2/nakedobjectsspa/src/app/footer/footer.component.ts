@@ -73,12 +73,16 @@ export class FooterComponent implements OnInit {
             .then((u: Models.UserRepresentation) => {
                 if (window.confirm(Msg.logOffMessage(u.userName() || "Unknown"))) {
 
-                    const args: RequestOptionsArgs = {
-                        withCredentials: true               
-                    };
+                    const serverLogoffUrl = this.configService.config.logoffUrl;
 
-                    // logoff server
-                    this.http.post(this.configService.config.logoffUrl, args);
+                    if (serverLogoffUrl) {
+
+                        const args: RequestOptionsArgs = {
+                            withCredentials: true
+                        };
+
+                        this.http.post(this.configService.config.logoffUrl, args);
+                    }
 
                     this.authService.logout();
 
