@@ -65,7 +65,7 @@ namespace NakedObjects.Selenium {
             //Add new sales reason;  remove sales reasons
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[1].FindElements(By.CssSelector("nof-action-bar nof-action input"))[0].GetAttribute("value") == "Add New Sales Reason");
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[1].FindElements(By.CssSelector("nof-action-bar nof-action input"))[1].GetAttribute("value") == "Remove Sales Reasons");
-            Click(WaitForCss(".icon.minimise"));
+            Click(WaitForCss(".icon.summary"));
             WaitUntilElementDoesNotExist(".collection .actions");
         }
 
