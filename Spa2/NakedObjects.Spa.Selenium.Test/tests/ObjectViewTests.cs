@@ -169,11 +169,11 @@ namespace NakedObjects.Selenium {
         public virtual void OpenCollectionAsList() {
             GeminiUrl("object?i1=View&o1=___1.Employee--5");
             WaitForCss(".collection", 2);
-            var iconList = WaitForCssNo(".collection .icon-list", 0);
+            var iconList = WaitForCssNo(".collection .icon.list", 0);
             Click(iconList);
             WaitForCss("table");
             // cancel table view 
-            Click(WaitForCssNo(".icon-summary", 0));
+            Click(WaitForCssNo(".icon.minimise", 0));
             WaitUntilGone(d => d.FindElement(By.CssSelector(".table")));
         }
 
@@ -182,12 +182,12 @@ namespace NakedObjects.Selenium {
             GeminiUrl("object?i1=View&o1=___1.Vendor--1662");
             WaitForView(Pane.Single, PaneType.Object, "Northern Bike Travel");
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection")).Text == "Product - Order Info:");
-            var iconList = WaitForCssNo(".collection .icon-list", 0);
+            var iconList = WaitForCssNo(".collection .icon.list", 0);
             Click(iconList);
             WaitForCss("table");
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection")).Text.Contains("1 Item"));
             // cancel table view 
-            Click(WaitForCss(".icon-summary"));
+            Click(WaitForCss(".icon.minimise"));
             WaitUntilGone(dr => dr.FindElement(By.CssSelector(".table")));
 
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection")).Text == "Product - Order Info:");
@@ -198,11 +198,11 @@ namespace NakedObjects.Selenium {
             //Open Reasons collection as  List 
             GeminiUrl("object?i1=View&r=1&o1=___1.SalesOrderHeader--65709&c1_SalesOrderHeaderSalesReason=List&as1=open");
             //Now open as table, to initiate the caching
-            Click(WaitForCssNo(".collection .icon-table", 1));
+            Click(WaitForCssNo(".collection .icon.table", 1));
             WaitForCss("thead tr th", 5);
 
             // Go back to summary
-            Click(WaitForCssNo(".icon-summary", 0));
+            Click(WaitForCssNo(".icon.minimise", 0));
             WaitUntilElementDoesNotExist("table");
             //Add a new reason from menu action
             OpenActionDialog("Add New Sales Reasons");
@@ -211,7 +211,7 @@ namespace NakedObjects.Selenium {
             Click(OKButton());
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection .summary .details"))[1].Text == "2 Items");
             //Open table view and confirm that there are indeed 2 rows
-            Click(WaitForCssNo(".collection .icon-table", 1));
+            Click(WaitForCssNo(".collection .icon.table", 1));
             WaitForCss("thead tr th", 5);
             WaitForCss("tbody tr", 2);  //bug #60: only one row showed
 
@@ -231,10 +231,10 @@ namespace NakedObjects.Selenium {
             var title = "Cell: " + num;
             TypeIntoFieldWithoutClearing("#phonenumber1", num);
             Click(OKButton());
-            Click(WaitForCssNo(".collection .icon-list", 2));
+            Click(WaitForCssNo(".collection .icon.list", 2));
 
             wait.Until(dr => dr.FindElements(By.CssSelector("table tbody tr td")).Any(el => el.Text == title));
-            Click(WaitForCssNo(".collection .icon-table", 0));
+            Click(WaitForCssNo(".collection .icon.table", 0));
 
             wait.Until(dr => dr.FindElements(By.CssSelector("table tbody tr td")).Any(el => el.Text == num));
         }

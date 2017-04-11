@@ -60,12 +60,12 @@ namespace NakedObjects.Selenium {
         public virtual void ActionsAvailableOnEmptyCollections() {
             GeminiUrl("object?i1=View&r=1&o1=___1.SalesOrderHeader--70589");
             WaitForTextEquals(".collection", 1, "Reasons:\r\nEmpty");
-            Click(WaitForCssNo(".icon-list", 1));
+            Click(WaitForCssNo(".icon.list", 1));
 
             //Add new sales reason;  remove sales reasons
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[1].FindElements(By.CssSelector("nof-action-bar nof-action input"))[0].GetAttribute("value") == "Add New Sales Reason");
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[1].FindElements(By.CssSelector("nof-action-bar nof-action input"))[1].GetAttribute("value") == "Remove Sales Reasons");
-            Click(WaitForCss(".icon-summary"));
+            Click(WaitForCss(".icon.minimise"));
             WaitUntilElementDoesNotExist(".collection .actions");
         }
 

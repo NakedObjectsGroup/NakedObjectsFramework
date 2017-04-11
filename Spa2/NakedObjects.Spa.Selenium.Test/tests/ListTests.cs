@@ -22,9 +22,9 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.List, "Highest Value Orders");
             //Test content of collection
             Assert.IsTrue(WaitForCss(".list .summary .details").Text.StartsWith("Page 1 of 1574; viewing 20 of"));
-            WaitForCss(".icon-table");
-            WaitUntilElementDoesNotExist(".icon-list");
-            WaitUntilElementDoesNotExist(".icon-summary");
+            WaitForCss(".icon.table");
+            WaitUntilElementDoesNotExist(".icon.list");
+            WaitUntilElementDoesNotExist(".icon.minimise");
             Assert.AreEqual(20, br.FindElements(By.CssSelector(".list table tbody tr td.reference")).Count);
             Assert.AreEqual(20, br.FindElements(By.CssSelector(".list table tbody tr td.checkbox")).Count);
             Assert.AreEqual(0, br.FindElements(By.CssSelector(".cell")).Count); //Cells are in Table view only
@@ -87,20 +87,20 @@ namespace NakedObjects.Selenium {
             Click(GetObjectAction("Current Special Offers"));
             WaitForView(Pane.Single, PaneType.List, "Current Special Offers");
             wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count > 1);
-            var iconTable = WaitForCss(".icon-table");
+            var iconTable = WaitForCss(".icon.table");
             Click(iconTable);
 
-            var iconList = WaitForCss(".icon-list");
-            WaitUntilElementDoesNotExist(".icon-table");
-            WaitUntilElementDoesNotExist(".icon-summary");
+            var iconList = WaitForCss(".icon.list");
+            WaitUntilElementDoesNotExist(".icon.table");
+            WaitUntilElementDoesNotExist(".icon.minimise");
 
             wait.Until(dr => dr.FindElements(By.CssSelector(".list table tbody tr")).Count > 1);
 
             //Switch back to List view
             Click(iconList);
-            WaitForCss(".icon-table");
-            WaitUntilElementDoesNotExist(".icon-list");
-            WaitUntilElementDoesNotExist(".icon-summary");
+            WaitForCss(".icon.table");
+            WaitUntilElementDoesNotExist(".icon.list");
+            WaitUntilElementDoesNotExist(".icon.minimise");
             wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count > 1);
             Assert.AreEqual(0, br.FindElements(By.CssSelector(".cell")).Count); //Cells are in Table view only
         }
@@ -119,7 +119,7 @@ namespace NakedObjects.Selenium {
             Click(GetObjectAction("Current Special Offers"));
             WaitForView(Pane.Single, PaneType.List, "Current Special Offers");
             wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count > 1);
-            var iconTable = WaitForCss(".icon-table");
+            var iconTable = WaitForCss(".icon.table");
             Click(iconTable);
             Thread.Sleep(500);
             wait.Until(dr => dr.FindElement(By.CssSelector("tbody tr:nth-child(1) td:nth-child(2)")).Text == "No Discount");
@@ -262,7 +262,7 @@ namespace NakedObjects.Selenium {
             GeminiUrl("home?m1=EmployeeRepository");
             Click(GetObjectAction("List All Departments"));
             WaitForView(Pane.Single, PaneType.List, "List All Departments");
-            WaitForCss("img.icon-list");
+            WaitForCss("img.icon.list");
             var header = WaitForCss("thead");
             var cols = header.FindElements(By.CssSelector("th")).ToArray();
             Assert.AreEqual(2, cols.Length);
@@ -277,8 +277,8 @@ namespace NakedObjects.Selenium {
             Reload();
             //Confirm in Table view
             WaitForCss("thead tr th");
-            WaitForCss(".icon-list");
-            WaitUntilElementDoesNotExist(".icon-table");
+            WaitForCss(".icon.list");
+            WaitUntilElementDoesNotExist(".icon.table");
             //Test content of collection
             wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
                 .Text.StartsWith("Page 1 of"));
@@ -292,8 +292,8 @@ namespace NakedObjects.Selenium {
                 .Text.StartsWith("Page 2 of"));
             //Confirm in Table view
             WaitForCss("thead tr th");
-            WaitForCss(".icon-list");
-            WaitUntilElementDoesNotExist(".icon-table");
+            WaitForCss(".icon.list");
+            WaitUntilElementDoesNotExist(".icon.table");
 
             GetInputButton("First").AssertIsEnabled();
             GetInputButton("Previous").AssertIsEnabled();
@@ -304,8 +304,8 @@ namespace NakedObjects.Selenium {
                 .Text.StartsWith("Page 45 of 45"));
             //Confirm in Table view
             WaitForCss("thead tr th");
-            var iconList = WaitForCss(".icon-list");
-            WaitUntilElementDoesNotExist(".icon-table");
+            var iconList = WaitForCss(".icon.list");
+            WaitUntilElementDoesNotExist(".icon.table");
 
             GetInputButton("First").AssertIsEnabled();
             var prev = GetInputButton("Previous").AssertIsEnabled();
@@ -316,8 +316,8 @@ namespace NakedObjects.Selenium {
                 .Text.StartsWith("Page 44 of 45"));
             //Confirm in Table view
             WaitForCss("thead tr th");
-            WaitForCss(".icon-list");
-            WaitUntilElementDoesNotExist(".icon-table");
+            WaitForCss(".icon.list");
+            WaitUntilElementDoesNotExist(".icon.table");
             var first = GetInputButton("First").AssertIsEnabled();
             GetInputButton("Previous").AssertIsEnabled();
             GetInputButton("Next").AssertIsEnabled();
@@ -327,8 +327,8 @@ namespace NakedObjects.Selenium {
                 .Text.StartsWith("Page 1 of 45"));
             //Confirm in Table view
             WaitForCss("thead tr th");
-            WaitForCss(".icon-list");
-            WaitUntilElementDoesNotExist(".icon-table");
+            WaitForCss(".icon.list");
+            WaitUntilElementDoesNotExist(".icon.table");
         }
 
     }

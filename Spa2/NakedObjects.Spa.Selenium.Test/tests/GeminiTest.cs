@@ -400,9 +400,9 @@ namespace NakedObjects.Selenium {
 
         protected virtual void AssertFooterExists() {
             wait.Until(d => d.FindElement(By.CssSelector(".footer")));
-            wait.Until(d => d.FindElement(By.CssSelector(".footer .icon-home")).Displayed);
-            wait.Until(d => d.FindElement(By.CssSelector(".footer .icon-back")).Displayed);
-            wait.Until(d => d.FindElement(By.CssSelector(".footer .icon-forward")).Displayed);
+            wait.Until(d => d.FindElement(By.CssSelector(".footer .icon.home")).Displayed);
+            wait.Until(d => d.FindElement(By.CssSelector(".footer .icon.back")).Displayed);
+            wait.Until(d => d.FindElement(By.CssSelector(".footer .icon.forward")).Displayed);
         }
 
         protected void AssertTopItemInListIs(string title) {
@@ -471,27 +471,27 @@ namespace NakedObjects.Selenium {
         }
 
         protected void ClickHomeButton() {
-            Click(WaitForCss(".icon-home"));
+            Click(WaitForCss(".icon.home"));
         }
 
         protected void ClickBackButton() {
-            Click(WaitForCss(".icon-back"));
+            Click(WaitForCss(".icon.back"));
         }
 
         protected void ClickForwardButton() {
-            Click(WaitForCss(".icon-forward"));
+            Click(WaitForCss(".icon.forward"));
         }
 
         protected void ClickRecentButton() {
-            Click(WaitForCss(".icon-recent"));
+            Click(WaitForCss(".icon.recent"));
         }
 
         protected void ClickPropertiesButton() {
-            Click(WaitForCss(".icon-properties"));
+            Click(WaitForCss(".icon.properties"));
         }
 
         protected void ClickLogOffButton() {
-            Click(WaitForCss(".icon-logoff"));
+            Click(WaitForCss(".icon.logoff"));
         }
 
         #endregion
@@ -629,20 +629,20 @@ namespace NakedObjects.Selenium {
         #region ToolBar icons
 
         protected IWebElement HomeIcon() {
-            return WaitForCss(".footer .icon-home");
+            return WaitForCss(".footer .icon.home");
         }
 
         protected IWebElement SwapIcon() {
-            return WaitForCss(".footer .icon-swap");
+            return WaitForCss(".footer .icon.swap");
         }
 
         protected IWebElement FullIcon() {
-            return WaitForCss(".footer .icon-full");
+            return WaitForCss(".footer .icon.full");
         }
 
         protected void GoBack(int clicks = 1) {
             for (int i = 1; i <= clicks; i++) {
-                Click(br.FindElement(By.CssSelector(".icon-back")));
+                Click(br.FindElement(By.CssSelector(".icon.back")));
             }
         }
 
