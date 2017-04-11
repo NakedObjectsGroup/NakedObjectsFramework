@@ -2,7 +2,7 @@
     <div class="name">{{title}}:</div>
     <div class="details">{{details}}</div>
     <div>
-        <div *ngIf="showSummary()" class="icon minimise" (click)="doSummary()"  title="Close Collection" alt="Close Collection"></div>
+        <div *ngIf="showSummary()" class="icon summary" (click)="doSummary()"  title="Close Collection" alt="Close Collection"></div>
         <div *ngIf="showList()" class="icon list" (click)="doList()"  title="View as List" alt="View as List"></div>
         <div *ngIf="showTable()" class="icon table" (click)="doTable()"  title="View as Table" alt="View as Table"></div>
     </div>
