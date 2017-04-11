@@ -11,8 +11,8 @@
             <nof-dialog [parent]="collection" [selectedDialogId]="selectedDialogId"></nof-dialog>
             <div class="summary">
                 <div class="details">{{description}}</div>
-                <img *ngIf="state === 'list'" class="icon-table" (click)="doTable()" src="../../assets/table.png" title="View as Table" alt="View as Table"/>
-                <img *ngIf="state === 'table'" class="icon-list" (click)="doList()" src="../../assets/list.png" title="View as List" alt="View as List"/>
+                <img *ngIf="state === 'list'" class="icon-table" (click)="doTable()" src="/assets/table.png" title="View as Table" alt="View as Table"/>
+                <img *ngIf="state === 'table'" class="icon-list" (click)="doList()" src="/assets/list.png" title="View as List" alt="View as List"/>
              </div>
              <table>
                     <thead>
