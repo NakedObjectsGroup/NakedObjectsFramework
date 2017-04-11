@@ -57,7 +57,7 @@ module.exports = function() {
 
 /***/ }),
 
-/***/ 1268:
+/***/ 1270:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(12)();
@@ -65,21 +65,21 @@ exports = module.exports = __webpack_require__(12)();
 
 
 // module
-exports.push([module.i, "/*Global fonts*/\n.gemini, table, a, pre, textarea, input, button { \n    font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;\n}\n\n@font-face {\n    font-family: \"iconFont\";\n    src: url(" + __webpack_require__(671) + ");\n    src: url(" + __webpack_require__(671) + "?#iefix) format('embedded-opentype'), url(" + __webpack_require__(1318) + "#iconFont) format('svg'), url(" + __webpack_require__(1507) + ") format('woff'), url(" + __webpack_require__(1506) + ") format('truetype');\n    font-weight: normal;\n    font-style: normal;\n}\n\n/* Override unwanted defaults */\n.gemini * {\n    /*Specifies that padding & border are added INSIDE the specified width*/\n    box-sizing: border-box;\n}\n\npre {\n    white-space: pre-wrap; /* CSS 3 */\n    white-space: -moz-pre-wrap; /* Mozilla, since 1999 */\n    white-space: -pre-wrap; /* Opera 4-6 */\n    white-space: -o-pre-wrap; /* Opera 7 */\n    word-wrap: break-word; /* Internet Explorer 5.5+ */\n}\n\n\nhtml, #main, body, .background, .single, .split {\n    margin: 0px;\n    height: 100%; /*fill the vertical space*/\n    background-color: black;\n}\n\n.background {\n    overflow-y: auto;\n}\n\n.single, .split {\n    overflow-x: auto;\n    padding-bottom: 60px;\n}\n.single {\n    width: 100%;\n}\n\n.split { \n   float: left;\n    width: 50%;\n}\n\n/*0. Black */\n.object-color0 {\n    background-color: #000000;\n    color: white;\n}\n\n.link-color0 {\n    background-color: #404040;\n    color: white;\n}\n/*1. Blue*/\n.object-color1 {\n    background-color: #2b5797;\n    color: white;\n}\n\n.link-color1 {\n    background-color: #1b4787;\n    color: white;\n}\n/*2. Green*/\n.object-color2 {\n    background-color: #1e7145;\n    color: white;\n}\n\n.link-color2 {\n    background-color: #0e6135;\n    color: white;\n}\n/*3. Red*/\n.object-color3 {\n    background-color: #ee2121;\n    color: white;\n}\n\n.link-color3 {\n    background-color: #ce0101;\n    color: white;\n}\n/*4. Yellow*/\n.object-color4 {\n    background-color: #ffc41d;\n    color: white;\n}\n\n.link-color4 {\n    background-color: #efb40d;\n    color: white;\n}\n/*5. Purple*/\n.object-color5 {\n    background-color: #603cba;\n    color: white;\n}\n\n.link-color5 {\n    background-color: #502caa;\n    color: white;\n}\n/*6. Orange*/\n.object-color6 {\n    background-color: #da532c;\n    color: white;\n}\n\n.link-color6 {\n    background-color: #ca431c;\n    color: white;\n}\n/*7. Mauve*/\n.object-color7 {\n    background-color: #9f10a7;\n    color: white;\n}\n\n.link-color7 {\n    background-color: #8f0097;\n    color: white;\n}\n/*8. Teal*/\n.object-color8 {\n    background-color: #10aba9;\n    color: white;\n}\n\n.link-color8 {\n    background-color: #009b99;\n    color: white;\n}\n/*9. Cherry*/\n.object-color9 {\n    background-color: #b91d47;\n    color: white;\n}\n\n.link-color9 {\n    background-color: #a90d37;\n    color: white;\n}\n/*10. Grey*/\n.object-color10 {\n    background-color: #525252;\n    color: white;\n}\n\n.link-color10 {\n    background-color: #424242;\n    color: white;\n}\n/*11. Yellow ochre*/\n.object-color11 {\n    background-color: #e3a21a;\n    color: white;\n}\n\n.link-color11 {\n    background-color: #d3920a;\n    color: white;\n}\n/*Fuschia*/\n.object-color12 {\n    background-color: #ff2097;\n    color: white;\n}\n\n.link-color12 {\n    background-color: #df0077;\n    color: white;\n}\n\n/* Auto-complete -  overriding standard Angular/Materials styling */\n.mat-input-placeholder-wrapper,.mat-input-underline  {\n    display: none;\n}\n\n.mat-autocomplete-panel {\n    background: #fff;\n}\n\n.mat-option {\n    white-space: nowrap;\n    overflow-x: hidden;\n    text-overflow: ellipsis;\n    display: block;\n    font-size: 10pt;\n    padding: 0 5px;\n    text-align: start;\n    text-decoration: none;\n    position: relative;\n    cursor: pointer;\n    outline: 0;\n}\n.mat-option:hover {\n    display: block;\n   background-color: grey;\n   color: white;\n}\n\nnof-edit-parameter .mat-input-wrapper, nof-edit-property .mat-input-wrapper  {\n    margin: 0;\n    padding-bottom: 0;\n}\n.cdk-overlay-pane {\n    position: absolute;\n    pointer-events: auto;\n    box-sizing: border-box;\n    z-index: 1000;\n}\n.cdk-global-overlay-wrapper, .cdk-overlay-container {\n    pointer-events: none;\n    top: 0;\n    left: 0;\n    height: 100%;\n    width: 100%;\n}", ""]);
+exports.push([module.i, "/*Global fonts*/\n.gemini, table, a, pre, textarea, input, button { \n    font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;\n}\n\n@font-face {\n    font-family: \"iconFont\";\n    src: url(" + __webpack_require__(671) + ");\n    src: url(" + __webpack_require__(671) + "?#iefix) format('embedded-opentype'), url(" + __webpack_require__(1320) + "#iconFont) format('svg'), url(" + __webpack_require__(1510) + ") format('woff'), url(" + __webpack_require__(1509) + ") format('truetype');\n    font-weight: normal;\n    font-style: normal;\n}\n\n/* Override unwanted defaults */\n.gemini * {\n    /*Specifies that padding & border are added INSIDE the specified width*/\n    box-sizing: border-box;\n}\n\npre {\n    white-space: pre-wrap; /* CSS 3 */\n    white-space: -moz-pre-wrap; /* Mozilla, since 1999 */\n    white-space: -pre-wrap; /* Opera 4-6 */\n    white-space: -o-pre-wrap; /* Opera 7 */\n    word-wrap: break-word; /* Internet Explorer 5.5+ */\n}\n\n\nhtml, #main, body, .background, .single, .split {\n    margin: 0px;\n    height: 100%; /*fill the vertical space*/\n    background-color: black;\n}\n\n.background {\n    overflow-y: auto;\n}\n\n.single, .split {\n    overflow-x: auto;\n    padding-bottom: 60px;\n}\n.single {\n    width: 100%;\n}\n\n.split { \n   float: left;\n    width: 50%;\n}\n\n/*0. Black */\n.object-color0 {\n    background-color: #000000;\n    color: white;\n}\n\n.link-color0 {\n    background-color: #404040;\n    color: white;\n}\n/*1. Blue*/\n.object-color1 {\n    background-color: #2b5797;\n    color: white;\n}\n\n.link-color1 {\n    background-color: #1b4787;\n    color: white;\n}\n/*2. Green*/\n.object-color2 {\n    background-color: #1e7145;\n    color: white;\n}\n\n.link-color2 {\n    background-color: #0e6135;\n    color: white;\n}\n/*3. Red*/\n.object-color3 {\n    background-color: #ee2121;\n    color: white;\n}\n\n.link-color3 {\n    background-color: #ce0101;\n    color: white;\n}\n/*4. Yellow*/\n.object-color4 {\n    background-color: #ffc41d;\n    color: white;\n}\n\n.link-color4 {\n    background-color: #efb40d;\n    color: white;\n}\n/*5. Purple*/\n.object-color5 {\n    background-color: #603cba;\n    color: white;\n}\n\n.link-color5 {\n    background-color: #502caa;\n    color: white;\n}\n/*6. Orange*/\n.object-color6 {\n    background-color: #da532c;\n    color: white;\n}\n\n.link-color6 {\n    background-color: #ca431c;\n    color: white;\n}\n/*7. Mauve*/\n.object-color7 {\n    background-color: #9f10a7;\n    color: white;\n}\n\n.link-color7 {\n    background-color: #8f0097;\n    color: white;\n}\n/*8. Teal*/\n.object-color8 {\n    background-color: #10aba9;\n    color: white;\n}\n\n.link-color8 {\n    background-color: #009b99;\n    color: white;\n}\n/*9. Cherry*/\n.object-color9 {\n    background-color: #b91d47;\n    color: white;\n}\n\n.link-color9 {\n    background-color: #a90d37;\n    color: white;\n}\n/*10. Grey*/\n.object-color10 {\n    background-color: #525252;\n    color: white;\n}\n\n.link-color10 {\n    background-color: #424242;\n    color: white;\n}\n/*11. Yellow ochre*/\n.object-color11 {\n    background-color: #e3a21a;\n    color: white;\n}\n\n.link-color11 {\n    background-color: #d3920a;\n    color: white;\n}\n/*Fuschia*/\n.object-color12 {\n    background-color: #ff2097;\n    color: white;\n}\n\n.link-color12 {\n    background-color: #df0077;\n    color: white;\n}\n\n/* Auto-complete -  overriding standard Angular/Materials styling */\n.mat-input-placeholder-wrapper,.mat-input-underline  {\n    display: none;\n}\n\n.mat-autocomplete-panel {\n    background: #fff;\n}\n\n.mat-option {\n    white-space: nowrap;\n    overflow-x: hidden;\n    text-overflow: ellipsis;\n    display: block;\n    font-size: 10pt;\n    padding: 0 5px;\n    text-align: start;\n    text-decoration: none;\n    position: relative;\n    cursor: pointer;\n    outline: 0;\n}\n.mat-option:hover {\n    display: block;\n   background-color: grey;\n   color: white;\n}\n\nnof-edit-parameter .mat-input-wrapper, nof-edit-property .mat-input-wrapper  {\n    margin: 0;\n    padding-bottom: 0;\n}\n.cdk-overlay-pane {\n    position: absolute;\n    pointer-events: auto;\n    box-sizing: border-box;\n    z-index: 1000;\n}\n.cdk-global-overlay-wrapper, .cdk-overlay-container {\n    pointer-events: none;\n    top: 0;\n    left: 0;\n    height: 100%;\n    width: 100%;\n}", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ 1318:
+/***/ 1320:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "iconFont.507ceb31df41f6b52dc8.svg";
 
 /***/ }),
 
-/***/ 1500:
+/***/ 1502:
 /***/ (function(module, exports) {
 
 /*
@@ -332,24 +332,24 @@ function updateLink(linkElement, obj) {
 
 /***/ }),
 
-/***/ 1506:
+/***/ 1509:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "iconFont.0a1778b9b8be9e01db68.ttf";
 
 /***/ }),
 
-/***/ 1507:
+/***/ 1510:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "iconFont.2f87c9f2aedf8f582535.woff";
 
 /***/ }),
 
-/***/ 1512:
+/***/ 1515:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(855);
+module.exports = __webpack_require__(857);
 
 
 /***/ }),
@@ -361,16 +361,16 @@ module.exports = __webpack_require__.p + "iconFont.61e31f00a5b39f5a3786.eot";
 
 /***/ }),
 
-/***/ 855:
+/***/ 857:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(1268);
+var content = __webpack_require__(1270);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(1500)(content, {});
+var update = __webpack_require__(1502)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -388,5 +388,5 @@ if(false) {
 
 /***/ })
 
-},[1512]);
+},[1515]);
 //# sourceMappingURL=styles.bundle.js.map
