@@ -9,8 +9,8 @@ import { RecentItemViewModel } from '../view-models/recent-item-view-model';
 
 @Component({
     selector: '[nof-row]',
-    templateUrl: './row.component.html',
-    styleUrls: ['./row.component.css']
+    template: require('./row.component.html'),
+    styles: [require('./row.component.css')]
 })
 export class RowComponent {
 

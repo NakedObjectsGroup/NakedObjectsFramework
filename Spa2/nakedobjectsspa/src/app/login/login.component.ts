@@ -4,8 +4,8 @@ import {ConfigService} from '../config.service';
 
 @Component({
   selector: 'nof-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  template: require('./login.component.html'),
+  styles: [require('./login.component.css')]
 })
 export class LoginComponent {
 
