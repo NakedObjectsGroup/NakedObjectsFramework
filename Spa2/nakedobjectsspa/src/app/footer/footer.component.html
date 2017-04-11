@@ -1,14 +1,14 @@
 <div class="footer">
-	<a class="icon-home" title="Home (Alt-h)" tabindex="0" geminiClick (leftClick)="goHome()" (rightClick)="goHome(true)" accesskey="h"></a>
-	<a class="icon-back icon-arrow-left-3" title="Back (Alt-b)" tabindex="0" (click)="goBack()" accesskey="b"></a>
-	<a class="icon-forward icon-arrow-right-3" title="Forward (Alt-f)" tabindex="0" (click)="goForward()" accesskey="f"></a>
-	<a class="icon-full" title="Expand pane (Alt-e)" tabindex="0" geminiClick (leftClick)="singlePane()" (rightClick)="singlePane(true)"
-		accesskey="e"></a>
-	<a class="icon-swap" [attr.disabled]="swapDisabled()" title="Swap panes (Alt-s)" tabindex="0" (click)="swapPanes()" accesskey="s"></a>
-	<a class="icon-recent" title="Recent objects (Alt-r)" tabindex="0" geminiClick (leftClick)="recent()" (rightClick)="recent(true)" accesskey="r"></a>
-	<a class="icon-speech" title="Cicero - Speech Interface (Alt-c)" (click)="cicero()" tabindex="0" accesskey="c"></a>
-	<a class="icon-properties" title="Application Properties (Alt-p)" (click)="applicationProperties()" tabindex="0" accesskey="p"></a>
-	<a class="icon-logoff" title="Log off (Alt-l)" (click)="logOff()" tabindex="0" accesskey="l"></a>
+	<div class="icon home" title="Home (Alt-h)" tabindex="0" geminiClick (leftClick)="goHome()" (rightClick)="goHome(true)" accesskey="h"></div>
+	<div class="icon back" title="Back (Alt-b)" tabindex="0" (click)="goBack()" accesskey="b"></div>
+	<div class="icon forward" title="Forward (Alt-f)" tabindex="0" (click)="goForward()" accesskey="f"></div>
+	<div class="icon full" title="Expand pane (Alt-e)" tabindex="0" geminiClick (leftClick)="singlePane()" (rightClick)="singlePane(true)"
+		accesskey="e"></div>
+	<div class="icon swap" [attr.disabled]="swapDisabled()" title="Swap panes (Alt-s)" tabindex="0" (click)="swapPanes()" accesskey="s"></div>
+	<div class="icon recent" title="Recent objects (Alt-r)" tabindex="0" geminiClick (leftClick)="recent()" (rightClick)="recent(true)" accesskey="r"></div>
+	<div class="icon speech" title="Cicero - Speech Interface (Alt-c)" (click)="cicero()" tabindex="0" accesskey="c"></div>
+	<div class="icon properties" title="Application Properties (Alt-p)" (click)="applicationProperties()" tabindex="0" accesskey="p"></div>
+	<div class="icon logoff" title="Log off (Alt-l)" (click)="logOff()" tabindex="0" accesskey="l"></div>
 	<span class="loading">{{loading}}</span>
 
 	<div class="warnings" *ngFor="let warning of warnings">

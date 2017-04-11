@@ -6,30 +6,30 @@
     background-color: white;
 }
 
-a {
+.icon {
     color: #11648a;
     font-size: 36pt;
     padding: 5px;
     margin-left: 10px;
 }
 
-    a.disabled {
+    .icon.disabled {
         display: none;
     }
 
-    a:hover, a:focus {
+    .icon:hover, .icon:focus {
         outline-style: solid;
         outline-width: 1px;
         outline-color: #11648a;
     }
 
-    a:active {
+    .icon:active {
         outline-style: solid;
         outline-width: 2px;
         outline-color: #11648a;
     }
 
-a, .currentcopy {
+.icon, .currentcopy {
     float: left;
 }
 
@@ -50,7 +50,7 @@ a, .currentcopy {
 }
 
 /*Icons */
-[class^="icon-"], [class*=" icon-"] {
+.icon {
     font-family: "iconFont";
     font-weight: normal;
     font-style: normal;
@@ -69,35 +69,27 @@ a, .currentcopy {
     cursor: pointer;
 }
 
-.icon-home:before {
+.home:before {
     content: "\e000";
 }
 
-.icon-arrow-left-3:before {
+.back:before {
     content: "\e09f";
 }
 
-.icon-arrow-right-3:before {
+.forward:before {
     content: "\e09d";
 }
 
-.icon-loop:before {
-    content: "\e08f";
-}
-
-.icon-help:before {
-    content: "\e085";
-}
-
-.icon-swap:before {
+.swap:before {
     content: "\e0a4";
 }
 
-.icon-full:before {
+.full:before {
     content: "\e08e";
 }
 
-.icon-recent:before {
+.recent:before {
     content: "\e06b";
 }
 
@@ -105,16 +97,16 @@ a, .currentcopy {
     content: "\e036";
 }
 
-.icon-properties:before {
+.properties:before {
     content: "\e048";
 }
 
-.icon-logoff:before {
+.logoff:before {
     content: "\e03b";
 }
 
 /*Hide/show Cicero icon*/
-    .icon-speech {
+    .speech {
         display: none;
         /*display:    inline-block;*/
     }
