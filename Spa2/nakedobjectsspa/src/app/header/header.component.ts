@@ -5,8 +5,8 @@ import { CollectionViewState } from '../route-data';
 
 @Component({
     selector: '[nof-header]',
-    templateUrl: './header.component.html',
-    styleUrls: ['./header.component.css']
+    template: require('./header.component.html'),
+    styles: [require('./header.component.css')]
 })
 export class HeaderComponent {
 
