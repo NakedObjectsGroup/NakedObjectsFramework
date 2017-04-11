@@ -41,15 +41,15 @@
    
 }
 
-icon.summary {
+.icon.summary {
   background: url("../../assets/summary.png");
    background-size: cover;  
 }
-icon.list {
+.icon.list {
  background: url("../../assets/list.png");
   background-size: cover;  
 } 
-icon.table {
+.icon.table {
  background: url("../../assets/table.png");
   background-size: cover;  
 }

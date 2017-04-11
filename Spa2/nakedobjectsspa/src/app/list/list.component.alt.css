@@ -67,6 +67,7 @@
     width: 400px;
     float: left;
 }
+
 .icon {
     display: block;
     cursor: pointer;
@@ -77,11 +78,13 @@
     padding-left: 5px;
     margin-right: 5px;
 }
+
 .icon.list {
  background: url("../../assets/list.png");
   background-size: cover;  
 } 
-icon.table {
+
+.icon.table {
  background: url("../../assets/table.png");
   background-size: cover;  
 }
