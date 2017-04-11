@@ -87,14 +87,14 @@ namespace NakedObjects.Selenium {
             wait.Until(d => d.FindElements(By.CssSelector(".collection")).First().FindElement(By.TagName("table")));
             //Assert.IsNotNull(collections[0].FindElement(By.TagName("table")));
 
-            wait.Until(d => d.FindElements(By.CssSelector(".collection")).First().FindElement(By.CssSelector(".icon-table")));
-            //Assert.IsNotNull(collections[0].FindElement(By.CssSelector(".icon-table")));
-            wait.Until(d => d.FindElements(By.CssSelector(".collection")).First().FindElement(By.CssSelector(".icon-summary")));
+            wait.Until(d => d.FindElements(By.CssSelector(".collection")).First().FindElement(By.CssSelector(".icon.table")));
+            //Assert.IsNotNull(collections[0].FindElement(By.CssSelector(".icon.table")));
+            wait.Until(d => d.FindElements(By.CssSelector(".collection")).First().FindElement(By.CssSelector(".icon.minimise")));
 
-            //Assert.IsNotNull(collections[0].FindElement(By.CssSelector(".icon-summary")));
-            wait.Until(d => d.FindElements(By.CssSelector(".collection")).First().FindElements(By.CssSelector(".icon-list")).Count == 0);
+            //Assert.IsNotNull(collections[0].FindElement(By.CssSelector(".icon.minimise")));
+            wait.Until(d => d.FindElements(By.CssSelector(".collection")).First().FindElements(By.CssSelector(".icon.list")).Count == 0);
 
-            //Assert.IsTrue(collections[0].FindElements(By.CssSelector(".icon-list")).Count == 0);
+            //Assert.IsTrue(collections[0].FindElements(By.CssSelector(".icon.list")).Count == 0);
         }
 
         public virtual void ObjectInEditMode() {

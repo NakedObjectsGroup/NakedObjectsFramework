@@ -15,7 +15,7 @@ namespace NakedObjects.Selenium {
         public virtual void Home() {
             GeminiUrl("object?o1=___1.Product--968");
             WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
-            Click(br.FindElement(By.CssSelector(".icon-home")));
+            Click(br.FindElement(By.CssSelector(".icon.home")));
             WaitForView(Pane.Single, PaneType.Home, "Home");
         }
 
