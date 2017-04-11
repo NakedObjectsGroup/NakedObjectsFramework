@@ -106,6 +106,7 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.Home);
             GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&pg1=1&ps1=20&s1_=0&as1=open&c1=Table");
             WaitForView(Pane.Single, PaneType.List);
+            Thread.Sleep(1000);
             Reload();
             PageDownAndWait();
             SelectCheckBox("#item1-6");

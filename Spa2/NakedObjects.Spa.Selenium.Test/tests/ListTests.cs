@@ -130,6 +130,7 @@ namespace NakedObjects.Selenium {
 
         public virtual void Paging() {
             GeminiUrl("list?m1=CustomerRepository&a1=FindIndividualCustomerByName&p1=1&ps1=20&pm1_firstName=%22%22&pm1_lastName=%22a%22");
+            Thread.Sleep(1000);
             Reload();
 
             //Test content of collection
@@ -262,7 +263,7 @@ namespace NakedObjects.Selenium {
             GeminiUrl("home?m1=EmployeeRepository");
             Click(GetObjectAction("List All Departments"));
             WaitForView(Pane.Single, PaneType.List, "List All Departments");
-            WaitForCss("img.icon.list");
+            WaitForCss(".icon.list");
             var header = WaitForCss("thead");
             var cols = header.FindElements(By.CssSelector("th")).ToArray();
             Assert.AreEqual(2, cols.Length);
