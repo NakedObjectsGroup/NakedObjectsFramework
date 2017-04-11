@@ -33,40 +33,48 @@ export class Auth0AuthService extends AuthService implements CanActivate {
     ) {
         super();
 
-        const options = {
-            auth: {
-                params: { scope: 'openid email' },
-            }
-        };
+        const clientId = configService.config.authClientId;
+        const domain = configService.config.authDomain;
 
-        // Configure Auth0
-        // this is client id which is public 
-        this.lock = new Auth0Lock(configService.config.authClientId, configService.config.authDomain, options);
+        if (clientId && domain) {
 
-        // Add callback for lock `authenticated` event
-        this.lock.on("authenticated", authResult => localStorage.setItem('id_token', authResult.idToken));
+            const options = {
+                auth: {
+                    params: { scope: 'openid email' },
+                }
+            };
 
-        this
-            .router
-            .events
-            .filter(event => event instanceof NavigationStart)
-            .filter((event: NavigationStart) => (/access_token|id_token|error/).test(event.url))
-            .subscribe(() => {
-                this.lock.resumeAuth(window.location.hash, (error: any, authResult: any) => {
-                    if (error) {
-                        logger.error(error);
-                    }
-                    else if (authResult && authResult.idToken) {
-                        localStorage.setItem('id_token', authResult.idToken);
-                        setTimeout(() => this.urlManager.setHomeSinglePane());
-                    }
+            // Configure Auth0
+            // this is client id which is public 
+            this.lock = new Auth0Lock(clientId, domain, options);
+
+            // Add callback for lock `authenticated` event
+            this.lock.on("authenticated", authResult => localStorage.setItem('id_token', authResult.idToken));
+
+            this
+                .router
+                .events
+                .filter(event => event instanceof NavigationStart)
+                .filter((event: NavigationStart) => (/access_token|id_token|error/).test(event.url))
+                .subscribe(() => {
+                    this.lock.resumeAuth(window.location.hash, (error: any, authResult: any) => {
+                        if (error) {
+                            logger.error(error);
+                        }
+                        else if (authResult && authResult.idToken) {
+                            localStorage.setItem('id_token', authResult.idToken);
+                            setTimeout(() => this.urlManager.setHomeSinglePane());
+                        }
+                    });
                 });
-            });
+        }
     }
 
     login() {
         // Call the show method to display the widget.
-        this.lock.show();
+        if (this.lock) {
+            this.lock.show();
+        }
     }
 
     authenticated() {
