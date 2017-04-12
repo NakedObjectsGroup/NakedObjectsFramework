@@ -1,6 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
 import { Response, Request, RequestOptions, Headers, RequestMethod, ResponseContentType } from '@angular/http';
-import './rxjs-extensions';
 import * as Models from './models';
 import * as Ro from './ro-interfaces';
 import * as _ from 'lodash';
@@ -9,6 +8,7 @@ import { ConfigService } from './config.service';
 import { Observable } from 'rxjs'; // for declaration compile
 import { SimpleLruCache } from './simple-lru-cache';
 import { AuthHttp } from 'angular2-jwt';
+import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class RepLoaderService {

@@ -1,5 +1,4 @@
-﻿import './rxjs-extensions';
-import * as Ro from './ro-interfaces';
+﻿import * as Ro from './ro-interfaces';
 import * as _ from 'lodash';
 
 export type CachableTypes = Ro.IRepresentation | Blob;

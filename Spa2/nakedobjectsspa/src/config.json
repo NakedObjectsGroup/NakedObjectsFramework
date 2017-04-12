@@ -1,5 +1,5 @@
 ﻿{
-    "authenticate": false,
+    "authenticate": true,
     "authClientId" : "wXXvvJOtNZoycQtK1gwxAjYgXDzQv5K9",
     "authDomain" : "nakedobjects.eu.auth0.com", 
     "appPath": "https://nakedobjectsrodemo.azurewebsites.net",

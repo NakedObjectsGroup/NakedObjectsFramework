@@ -4,7 +4,6 @@ import { UrlManagerService } from '../url-manager.service';
 import * as _ from 'lodash';
 import * as Models from '../models';
 import { ActivatedRoute } from '@angular/router';
-import '../rxjs-extensions';
 import { ContextService } from '../context.service';
 import { ErrorService } from '../error.service';
 import { FormBuilder, FormGroup } from '@angular/forms';

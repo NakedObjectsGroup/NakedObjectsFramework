@@ -5,7 +5,6 @@ import { Router, UrlSegment } from '@angular/router';
 import { Location } from '@angular/common';
 import { ConfigService } from './config.service';
 import { LoggerService } from './logger.service';
-import './rxjs-extensions';
 import * as _ from 'lodash';
 import * as Models from "./models";
 import * as Constants from './constants';

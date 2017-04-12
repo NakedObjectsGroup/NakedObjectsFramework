@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { tokenNotExpired } from 'angular2-jwt';
 import { Router, NavigationStart, CanActivate } from '@angular/router';
-import './rxjs-extensions';
 import { UrlManagerService } from './url-manager.service';
 import { LoggerService } from './logger.service';
 import { ConfigService } from './config.service';
