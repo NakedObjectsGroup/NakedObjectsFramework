@@ -14,15 +14,15 @@ export abstract class TypeResultCache<T> {
         this.resultCache[type] = result;
     }
 
-    addMatch (matcher: RegExp, result: T) {
+    addMatch(matcher: RegExp, result: T) {
         this.regexCache.push({ regex: matcher, result: result });
     }
 
-    addSubtype (type: string, result: T) {
+    addSubtype(type: string, result: T) {
         this.subtypeCache.push({ type: type, result: result });
     }
 
-    setDefault (def: T) {
+    setDefault(def: T) {
         this.default = def;
     }
 

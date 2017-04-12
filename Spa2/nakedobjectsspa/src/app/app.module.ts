@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+﻿import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler, APP_INITIALIZER, LOCALE_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
@@ -22,7 +22,6 @@ import { ApplicationPropertiesComponent } from './application-properties/applica
 import { GeminiClickDirective } from './gemini-click.directive';
 import { GeminiBooleanDirective } from './gemini-boolean.directive';
 import { GeminiClearDirective } from './gemini-clear.directive';
-import { FieldComponent } from './field/field.component';
 import { ErrorService } from './error.service';
 import { ContextService } from './context.service';
 import { UrlManagerService } from './url-manager.service';
@@ -70,7 +69,7 @@ export function authHttpServiceFactory(http: Http, configService: ConfigService,
     }
 }
 
-export function authServiceFactory(configService: ConfigService, auth0AuthService : Auth0AuthService, nullAuthService : NullAuthService ): any {
+export function authServiceFactory(configService: ConfigService, auth0AuthService: Auth0AuthService, nullAuthService: NullAuthService): any {
     if (configService.config.authenticate) {
         return auth0AuthService;
     }
@@ -152,7 +151,7 @@ export function authServiceFactory(configService: ConfigService, auth0AuthServic
         { provide: APP_INITIALIZER, useFactory: configFactory, deps: [ConfigService], multi: true },
         { provide: LOCALE_ID, useFactory: localeFactory, deps: [ConfigService] },
         { provide: AuthHttp, useFactory: authHttpServiceFactory, deps: [Http, ConfigService, RequestOptions] },
-        { provide: AuthService,  useFactory: authServiceFactory, deps: [ConfigService, Auth0AuthService, NullAuthService ]}
+        { provide: AuthService, useFactory: authServiceFactory, deps: [ConfigService, Auth0AuthService, NullAuthService] }
     ],
     bootstrap: [AppComponent]
 })

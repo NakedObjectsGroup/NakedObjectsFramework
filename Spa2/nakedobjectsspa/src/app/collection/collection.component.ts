@@ -1,14 +1,12 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+﻿import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { CollectionViewState } from '../route-data';
 import { CollectionViewModel } from '../view-models/collection-view-model';
-import { ItemViewModel } from '../view-models/item-view-model';
-import { PropertyViewModel } from '../view-models/property-view-model';
 import { PaneRouteData } from '../route-data';
 import { UrlManagerService } from '../url-manager.service';
 import { ISubscription } from 'rxjs/Subscription';
-import { TableRowColumnViewModel } from '../view-models/table-row-column-view-model'; // needed for declarations compile 
+import { ItemViewModel } from '../view-models/item-view-model'; // needed for declarations compile 
 
-type state = "summary" | "list" | "table";
+type State = "summary" | "list" | "table";
 
 @Component({
     selector: 'nof-collection',
@@ -27,7 +25,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
     }
 
     get state() {
-        return CollectionViewState[this.currentState].toString().toLowerCase() as state;
+        return CollectionViewState[this.currentState].toString().toLowerCase() as State;
     }
 
     get title() {
@@ -46,7 +44,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
         return this.collection.header;
     }
 
-    get items() {
+    get items() : ItemViewModel[] {
         return this.collection.items;
     }
 

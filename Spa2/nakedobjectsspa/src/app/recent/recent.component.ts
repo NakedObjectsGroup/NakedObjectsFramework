@@ -1,15 +1,14 @@
-import { Component, ViewChildren, ElementRef, QueryList, AfterViewInit } from '@angular/core';
-import { ContextService } from '../context.service';
+﻿import { Component, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { ActivatedRoute } from '@angular/router';
 import { UrlManagerService } from '../url-manager.service';
-import { RouteData, PaneRouteData } from '../route-data';
+import { PaneRouteData } from '../route-data';
 import { RecentItemsViewModel } from '../view-models/recent-items-view-model';
-import { RecentItemViewModel } from '../view-models/recent-item-view-model';
 import { PaneComponent } from '../pane/pane';
 import { IActionHolder } from '../action/action.component';
 import * as Msg from '../user-messages';
-import * as Rowcomponent from '../row/row.component';
+import { RowComponent } from '../row/row.component';
+import { RecentItemViewModel } from '../view-models/recent-item-view-model';
 
 @Component({
     selector: 'nof-recent',
@@ -29,7 +28,7 @@ export class RecentComponent extends PaneComponent implements AfterViewInit {
     // template API 
 
     title = Msg.recentTitle;
-    items = () => this.recent.items;
+    items = (): RecentItemViewModel[] => this.recent.items;
 
     recent: RecentItemsViewModel;
 
@@ -38,7 +37,7 @@ export class RecentComponent extends PaneComponent implements AfterViewInit {
         doClick: () => this.clear(),
         show: () => true,
         disabled: () => this.clearDisabled(),
-        tempDisabled:  () => null,
+        tempDisabled: () => null,
         title: () => this.clearDisabled() ? Msg.recentDisabledMessage : Msg.recentMessage,
         accesskey: "c"
     };
@@ -61,9 +60,9 @@ export class RecentComponent extends PaneComponent implements AfterViewInit {
 
 
     @ViewChildren("row")
-    actionChildren: QueryList<Rowcomponent.RowComponent>;
+    actionChildren: QueryList<RowComponent>;
 
-    focusOnFirstRow(rows: QueryList<Rowcomponent.RowComponent>) {
+    focusOnFirstRow(rows: QueryList<RowComponent>) {
         if (rows && rows.first) {
             // until first element returns true
             rows.first.focus();
@@ -72,6 +71,6 @@ export class RecentComponent extends PaneComponent implements AfterViewInit {
 
     ngAfterViewInit(): void {
         this.focusOnFirstRow(this.actionChildren);
-        this.actionChildren.changes.subscribe((ql: QueryList<Rowcomponent.RowComponent>) => this.focusOnFirstRow(ql));
+        this.actionChildren.changes.subscribe((ql: QueryList<RowComponent>) => this.focusOnFirstRow(ql));
     }
 }

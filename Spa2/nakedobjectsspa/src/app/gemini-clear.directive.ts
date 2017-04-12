@@ -1,6 +1,6 @@
-import { Directive, ElementRef, HostListener, Output, EventEmitter, Renderer, Input, OnInit } from '@angular/core';
+﻿import { Directive, ElementRef, HostListener, Output, EventEmitter, Renderer, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import {FieldViewModel} from './view-models/field-view-model';
+import { FieldViewModel } from './view-models/field-view-model';
 
 @Directive({ selector: '[geminiClear]' })
 export class GeminiClearDirective implements OnInit {
@@ -15,7 +15,7 @@ export class GeminiClearDirective implements OnInit {
     }
 
     model: FieldViewModel;
-    formGroup : FormGroup;
+    formGroup: FormGroup;
 
     @Input('geminiClear')
     set viewModel(vm: FieldViewModel) {
@@ -24,18 +24,18 @@ export class GeminiClearDirective implements OnInit {
 
     @Input()
     set form(fm: FormGroup) {
-        this.formGroup = fm;          
+        this.formGroup = fm;
     }
 
     ngOnInit(): void {
         this.onChange();
-        this.formGroup.controls[this.model.id].valueChanges.subscribe(data => this.onChange()); 
+        this.formGroup.controls[this.model.id].valueChanges.subscribe(data => this.onChange());
     }
 
     // not need the ngClass directive on element even though it doesn't do anything 
     // otherwise we lose all the classes added here 
     onChange() {
-       
+
         this.nativeEl.classList.add("ng-clearable");
 
         if (this.formGroup.controls[this.model.id].value) {
@@ -49,7 +49,7 @@ export class GeminiClearDirective implements OnInit {
         if (this.nativeEl.classList.contains("ng-x")) {
             const onX = this.nativeEl.offsetWidth - 18 < event.clientX - this.nativeEl.getBoundingClientRect().left;
             if (onX) {
-                this.nativeEl.classList.add("ng-onX");               
+                this.nativeEl.classList.add("ng-onX");
             } else {
                 this.nativeEl.classList.remove("ng-onX");
             }

@@ -1,14 +1,11 @@
-﻿import { MessageViewModel } from './message-view-model';
-import { ColorService } from '../color.service';
+﻿import { ColorService } from '../color.service';
 import { ContextService } from '../context.service';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { UrlManagerService } from '../url-manager.service';
 import { ErrorService } from '../error.service';
 import { PaneRouteData, CollectionViewState } from '../route-data';
-import { ItemViewModel } from './item-view-model';
 import { ActionViewModel } from './action-view-model';
 import { MenuItemViewModel } from './menu-item-view-model';
-import { ParameterViewModel } from './parameter-view-model';
 import * as _ from 'lodash';
 import * as Helpers from './helpers-view-models';
 import * as Models from '../models';
@@ -25,7 +22,7 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
         viewModelFactory: ViewModelFactoryService,
         urlManager: UrlManagerService,
         error: ErrorService,
-        private readonly loggerService : LoggerService, 
+        private readonly loggerService: LoggerService,
         list: Models.ListRepresentation,
         public routeData: PaneRouteData
     ) {
@@ -55,7 +52,7 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
             : this.context.getListFromMenu(this.routeData, page, pageSize);
     }
 
-    readonly currentPaneData = () => this.urlManager.getRouteData().pane(this.onPaneId)!;
+    readonly currentPaneData = () => this.urlManager.getRouteData().pane(this.onPaneId) !;
 
     private readonly pageOrRecreate = (newPage: number, newPageSize: number, newState?: CollectionViewState) => {
         this.recreate(newPage, newPageSize)
@@ -92,7 +89,7 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
             this.routeData,
             this);
 
-        const totalCount = this.listRep.pagination()!.totalCount;
+        const totalCount = this.listRep.pagination() !.totalCount;
         const count = this.items.length;
         this.size = count;
         if (count > 0) {
@@ -130,10 +127,10 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
         this.routeData = routeData;
 
         this.id = this.urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize);
-        
-        this.page = this.listRep.pagination()!.page;
-        this.pageSize = this.listRep.pagination()!.pageSize;
-        this.numPages = this.listRep.pagination()!.numPages;
+
+        this.page = this.listRep.pagination() !.page;
+        this.pageSize = this.listRep.pagination() !.pageSize;
+        this.numPages = this.listRep.pagination() !.numPages;
 
         this.state = this.listRep.hasTableData() ? CollectionViewState.Table : CollectionViewState.List;
         this.updateItems(list.value());

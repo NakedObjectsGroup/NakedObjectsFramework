@@ -1,8 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Http, Response, Request, RequestOptions, Headers, RequestMethod, ResponseContentType } from '@angular/http';
+﻿import { Injectable } from '@angular/core';
+import { Response, Request, RequestOptions, Headers, RequestMethod, ResponseContentType } from '@angular/http';
 import './rxjs-extensions';
 import * as Models from './models';
-import * as Constants from './constants';
 import * as Ro from './ro-interfaces';
 import * as _ from 'lodash';
 import { Subject } from 'rxjs/Subject';
@@ -16,7 +15,7 @@ export class RepLoaderService {
 
     constructor(
         //private readonly http: Http,
-        private readonly http : AuthHttp,
+        private readonly http: AuthHttp,
         private readonly configService: ConfigService
     ) { }
 

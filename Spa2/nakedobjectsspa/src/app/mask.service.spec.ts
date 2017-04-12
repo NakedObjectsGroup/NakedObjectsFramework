@@ -1,4 +1,4 @@
-import { BaseRequestOptions, Http, XHRBackend } from '@angular/http';
+﻿import { BaseRequestOptions, Http, XHRBackend } from '@angular/http';
 import { TestBed, inject } from '@angular/core/testing';
 import { MaskService } from './mask.service';
 import { ConfigService } from './config.service';
@@ -23,12 +23,12 @@ describe('MaskService', () => {
         });
     });
 
-    function testMask(maskService: MaskService, input: any, mask: string, format: Ro.formatType, expectedResult: string) {
+    function testMask(maskService: MaskService, input: any, mask: string, format: Ro.FormatType, expectedResult: string) {
         const result = maskService.toLocalFilter(mask, format).filter(input);
         expect(result).toBe(expectedResult);
     }
 
-    function testDefaultMask(maskService: MaskService, input: any, format: Ro.formatType, expectedResult: string) {
+    function testDefaultMask(maskService: MaskService, input: any, format: Ro.FormatType, expectedResult: string) {
         testMask(maskService, input, "", format, expectedResult);
     }
 

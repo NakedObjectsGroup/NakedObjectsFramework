@@ -1,4 +1,4 @@
-import { InteractionMode, RouteData, PaneRouteData, CollectionViewState } from './route-data';
+﻿import { InteractionMode, PaneRouteData, CollectionViewState } from './route-data';
 import { UrlManagerService } from './url-manager.service';
 import { RepLoaderService } from './rep-loader.service';
 import { Injectable } from '@angular/core';

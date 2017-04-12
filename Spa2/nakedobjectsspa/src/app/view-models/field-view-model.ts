@@ -52,7 +52,7 @@ export abstract class FieldViewModel extends MessageViewModel {
     readonly mask: string;
     readonly title: string;
     readonly returnType: string;
-    readonly format: Ro.formatType | null;
+    readonly format: Ro.FormatType | null;
     readonly multipleLines: number;
     readonly password: boolean;
     readonly type: "scalar" | "ref";
@@ -68,7 +68,7 @@ export abstract class FieldViewModel extends MessageViewModel {
     formattedValue: string;
     private currentChoice: ChoiceViewModel | null;
     private currentMultipleChoices: ChoiceViewModel[];
-    private currentRawValue: Ro.scalarValueType | Date | null = null;
+    private currentRawValue: Ro.ScalarValueType | Date | null = null;
     private choiceOptions: ChoiceViewModel[] = [];
 
     file: Models.Link;
@@ -110,11 +110,11 @@ export abstract class FieldViewModel extends MessageViewModel {
         }
     }
 
-    get value(): Ro.scalarValueType | Date | null {
+    get value(): Ro.ScalarValueType | Date | null {
         return this.currentRawValue;
     }
 
-    set value(newValue: Ro.scalarValueType | Date | null) {
+    set value(newValue: Ro.ScalarValueType | Date | null) {
         this.currentRawValue = newValue;
         this.update();
     }
@@ -244,7 +244,7 @@ export abstract class FieldViewModel extends MessageViewModel {
         this.color = "";
     }
 
-    readonly setValueFromControl = (newValue: Ro.scalarValueType | Date | ChoiceViewModel | ChoiceViewModel[]) => {
+    readonly setValueFromControl = (newValue: Ro.ScalarValueType | Date | ChoiceViewModel | ChoiceViewModel[]) => {
 
         if (newValue instanceof Array) {
             this.selectedMultiChoices = newValue;
@@ -304,7 +304,7 @@ export abstract class FieldViewModel extends MessageViewModel {
                 return new Models.Value((this.value as Date).toISOString());
             }
 
-            return new Models.Value(this.value as Ro.scalarValueType);
+            return new Models.Value(this.value as Ro.ScalarValueType);
         }
 
         // reference

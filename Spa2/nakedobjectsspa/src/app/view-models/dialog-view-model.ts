@@ -11,8 +11,6 @@ import * as Models from '../models';
 import * as Msg from '../user-messages';
 import * as Helpers from './helpers-view-models';
 import * as _ from 'lodash';
-import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/forms';
-
 
 export class DialogViewModel extends MessageViewModel {
     constructor(

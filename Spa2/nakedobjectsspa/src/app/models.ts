@@ -1,4 +1,4 @@
-import * as Ro from './ro-interfaces';
+﻿import * as Ro from './ro-interfaces';
 import * as Constants from './constants';
 import * as RoCustom from './ro-interfaces-custom';
 import * as Msg from './user-messages';
@@ -12,7 +12,7 @@ import { ContextService } from "./context.service";
 import { ChoiceViewModel } from './view-models/choice-view-model';
 
 // log directly to avoid coupling back to angular  
-function error (message: string,) : never {
+function error(message: string, ): never {
     console.error(message);
     throw new Error(message);
 }
@@ -26,7 +26,7 @@ export function withUndefined<T>(v: T | undefined | null): T | undefined {
     return v === null ? undefined : v;
 }
 
-function validateExists<T>(obj: T | null | undefined, name: string): T  {
+function validateExists<T>(obj: T | null | undefined, name: string): T {
     if (obj) { return obj; }
     error(`validateExists - Expected ${name} does not exist`);
 }
@@ -39,7 +39,7 @@ function getMember<T>(members: _.Dictionary<T>, id: string, owner: string) {
 
 
 export function checkNotNull<T>(v: T | undefined | null): T {
-    if (v != null) { return v}
+    if (v != null) { return v }
     error("checkNotNull - Unexpected null");
 }
 
@@ -256,7 +256,7 @@ function validateDateTimeFormat(model: IHasExtensions, newValue: Date): string {
 }
 
 function getDate(val: string): Date | null {
-    const dt1 = moment(val, "YYYY-MM-DD",  true);
+    const dt1 = moment(val, "YYYY-MM-DD", true);
     return dt1.isValid() ? dt1.toDate() : null;
 }
 
@@ -334,7 +334,7 @@ export function validate(model: IHasExtensions, modelValue: string | ChoiceViewM
     switch (returnType) {
         case ("number"):
             const valueAsNumber = parseFloat(viewValue);
-            if (Number.isFinite(valueAsNumber)    ) {
+            if (Number.isFinite(valueAsNumber)) {
                 return validateNumber(model, valueAsNumber, filter);
             }
             return Msg.notANumber;
@@ -420,7 +420,7 @@ function linkByNamespacedRel(links: Link[], rel: string) {
 export interface IHateoasModel {
     etagDigest: string;
     hateoasUrl: string;
-    method: Ro.httpMethodsType;
+    method: Ro.HttpMethodsType;
     populate(wrapped: Ro.IRepresentation): void;
     getBody(): Ro.IRepresentation;
     getUrl(): string;
@@ -622,7 +622,7 @@ export abstract class HateosModel implements IHateoasModel {
 
     etagDigest: string;
     hateoasUrl = "";
-    method: Ro.httpMethodsType = "GET";
+    method: Ro.HttpMethodsType = "GET";
     urlParms: _.Dictionary<Object>;
 
     protected constructor(protected model?: Ro.IRepresentation) {
@@ -797,13 +797,13 @@ export class MediaType {
 export class Value {
 
     // note this is different from constructor parm as we wrap ILink
-    private wrapped: Link | (Link | Ro.valueType)[] | Ro.scalarValueType | Blob;
+    private wrapped: Link | (Link | Ro.ValueType)[] | Ro.ScalarValueType | Blob;
 
-    constructor(raw: Link | (Link | Ro.valueType)[] | Ro.valueType | Blob) {
+    constructor(raw: Link | (Link | Ro.ValueType)[] | Ro.ValueType | Blob) {
         // can only be Link, number, boolean, string or null    
 
         if (raw instanceof Array) {
-            this.wrapped = raw as (Link | Ro.valueType)[];
+            this.wrapped = raw as (Link | Ro.ValueType)[];
         } else if (raw instanceof Link) {
             this.wrapped = raw;
         } else if (isILink(raw)) {
@@ -851,12 +851,12 @@ export class Value {
         return link ? link.href() : null;
     }
 
-    scalar(): Ro.scalarValueType {
-        return this.isScalar() ? this.wrapped as Ro.scalarValueType : null;
+    scalar(): Ro.ScalarValueType {
+        return this.isScalar() ? this.wrapped as Ro.ScalarValueType : null;
     }
 
     list(): Value[] | null {
-        return this.isList() ? _.map(this.wrapped as (Link | Ro.valueType)[], i => new Value(i)) : null;
+        return this.isList() ? _.map(this.wrapped as (Link | Ro.ValueType)[], i => new Value(i)) : null;
     }
 
     toString(): string {
@@ -933,7 +933,7 @@ export class Value {
             target.value = { "href": (this.link() as Link).href() }; // know true
         } else if (this.isList()) {
             const list = this.list() as Value[]; // know true
-            target.value = _.map(list, v => v.isReference() ? <Ro.ILink>{ "href": v.link()!.href() } : v.scalar()) as Ro.valueType[];
+            target.value = _.map(list, v => v.isReference() ? <Ro.ILink>{ "href": v.link() !.href() } : v.scalar()) as Ro.ValueType[];
         }
         else if (this.isBlob()) {
             target.value = this.blob();
@@ -956,7 +956,7 @@ export class ErrorValue {
 export class Result {
     constructor(
         public readonly wrapped: Ro.IDomainObjectRepresentation | RoCustom.ICustomListRepresentation | Ro.IScalarValueRepresentation | null,
-        private readonly resultType: Ro.resultTypeType
+        private readonly resultType: Ro.ResultTypeType
     ) { }
 
     object(): DomainObjectRepresentation | null {
@@ -1045,7 +1045,7 @@ export class UpdateMap extends ArgumentMap implements IHateoasModel {
     }
 
     properties(): _.Dictionary<Value> {
-        return _.mapValues(this.map, (v : Ro.IValue) => new Value(v.value));
+        return _.mapValues(this.map, (v: Ro.IValue) => new Value(v.value));
     }
 
     setProperty(name: string, value: Value) {
@@ -1144,7 +1144,7 @@ export class Extensions {
     pattern = () => this.wrapped.pattern;
 
     //Nof custom:
-    choices = () => this.wrapped["x-ro-nof-choices"] as { [index: string]: Ro.valueType[]; };
+    choices = () => this.wrapped["x-ro-nof-choices"] as { [index: string]: Ro.ValueType[]; };
     menuPath = () => this.wrapped["x-ro-nof-menuPath"] as string;
     mask = () => this.wrapped["x-ro-nof-mask"] as string;
     tableViewTitle = () => this.wrapped["x-ro-nof-tableViewTitle"] as boolean;
@@ -1195,7 +1195,7 @@ export class ActionResultRepresentation extends ResourceRepresentation<Ro.IActio
     }
 
     // properties 
-    resultType(): Ro.resultTypeType {
+    resultType(): Ro.ResultTypeType {
         // todo later validate the result against the type so we can guarantee  
         return this.wrapped().resultType;
     }
@@ -1610,7 +1610,7 @@ export class CollectionRepresentation extends ResourceRepresentation<RoCustom.IC
     }
 
     actionMember(id: string): ActionMember {
-        return getMember(this.actionMembers(), id, this.collectionId())!;
+        return getMember(this.actionMembers(), id, this.collectionId()) !;
     }
 
     hasActionMember(id: string): boolean {
@@ -1954,7 +1954,7 @@ export class CollectionMember
     }
 
     actionMember(id: string, keySeparator: string): ActionMember {
-        return getMember(this.actionMembers(), id, this.collectionId())!;
+        return getMember(this.actionMembers(), id, this.collectionId()) !;
     }
 
     etagDigest: string;
@@ -2131,7 +2131,7 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
 
     // todo later change to not be dependent on keySeparator
     actionMember(id: string, keySeparator: string): ActionMember {
-        return getMember(this.actionMembers(), id, this.id(keySeparator))!;
+        return getMember(this.actionMembers(), id, this.id(keySeparator)) !;
     }
 
     updateLink(): Link | null {
@@ -2250,7 +2250,7 @@ export class MenuRepresentation extends ResourceRepresentation<RoCustom.IMenuRep
     }
 
     actionMember(id: string, keySeparator: string): ActionMember {
-        return getMember(this.actionMembers(), id, this.menuId())!;
+        return getMember(this.actionMembers(), id, this.menuId()) !;
     }
 
     selfLink(): Link {
@@ -2317,7 +2317,7 @@ export class ListRepresentation
     }
 
     actionMember(id: string): ActionMember {
-        return getMember(this.actionMembers(), id, "list")!;
+        return getMember(this.actionMembers(), id, "list") !;
     }
 
     hasActionMember(id: string): boolean {
@@ -2639,7 +2639,7 @@ export class Link {
         return decodeURIComponent(this.wrapped.href);
     }
 
-    method(): Ro.httpMethodsType {
+    method(): Ro.HttpMethodsType {
         return this.wrapped.method!;
     }
 

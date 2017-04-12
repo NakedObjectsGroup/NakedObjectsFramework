@@ -1,17 +1,15 @@
-import { NgModule } from '@angular/core';
+﻿import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { ListComponent } from './list/list.component';
-import { ErrorComponent } from './error/error.component';
 import { RecentComponent } from './recent/recent.component';
 import { ApplicationPropertiesComponent } from './application-properties/application-properties.component';
 import { AttachmentComponent } from './attachment/attachment.component';
 import { MultiLineDialogComponent } from './multi-line-dialog/multi-line-dialog.component';
 import { DynamicObjectComponent } from './dynamic-object/dynamic-object.component';
-import { ICustomActivatedRouteData, ViewType } from './route-data';
+import { ViewType } from './route-data';
 import { DynamicListComponent } from './dynamic-list/dynamic-list.component';
 import { DynamicErrorComponent } from './dynamic-error/dynamic-error.component';
-import { CiceroComponent} from './cicero/cicero.component';
+import { CiceroComponent } from './cicero/cicero.component';
 import { AuthService } from './auth.service';
 
 const routes: Routes = [

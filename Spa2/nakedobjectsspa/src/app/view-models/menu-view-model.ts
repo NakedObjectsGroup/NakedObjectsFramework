@@ -6,7 +6,7 @@ import { PaneRouteData } from '../route-data';
 import * as Helpers from './helpers-view-models';
 import * as Models from '../models';
 import * as _ from 'lodash';
-import { IMenuHolderViewModel} from './imenu-holder-view-model';
+import { IMenuHolderViewModel } from './imenu-holder-view-model';
 
 export class MenuViewModel extends MessageViewModel implements IMenuHolderViewModel {
 

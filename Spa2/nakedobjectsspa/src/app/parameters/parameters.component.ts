@@ -1,9 +1,8 @@
-import { Component, Input, ViewChildren, QueryList, ChangeDetectorRef  } from '@angular/core';
+﻿import { Component, Input, ViewChildren, QueryList, ChangeDetectorRef } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { EditParameterComponent } from '../edit-parameter/edit-parameter.component';
 import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { DialogViewModel } from '../view-models/dialog-view-model';
-import * as Models from '../models';
 
 @Component({
     selector: 'nof-parameters',
@@ -12,7 +11,7 @@ import * as Models from '../models';
 })
 export class ParametersComponent {
 
-    constructor(private readonly ref : ChangeDetectorRef) { }
+    constructor(private readonly ref: ChangeDetectorRef) { }
 
     @Input()
     parent: DialogViewModel;
@@ -27,7 +26,7 @@ export class ParametersComponent {
     parmComponents: QueryList<EditParameterComponent>;
 
     // todo use proper classes syntax ! 
-    classes = () =>  `parameter${this.parent.isMultiLineDialogRow ? " multilinedialog" : ""}`;
+    classes = () => `parameter${this.parent.isMultiLineDialogRow ? " multilinedialog" : ""}`;
 
     focus() {
         const parms = this.parmComponents;

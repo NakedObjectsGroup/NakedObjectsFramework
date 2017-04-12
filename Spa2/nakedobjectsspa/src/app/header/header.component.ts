@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+﻿import { Component, Input } from '@angular/core';
 import { CollectionViewModel } from '../view-models/collection-view-model';
 import { ListViewModel } from '../view-models/list-view-model';
 import { CollectionViewState } from '../route-data';

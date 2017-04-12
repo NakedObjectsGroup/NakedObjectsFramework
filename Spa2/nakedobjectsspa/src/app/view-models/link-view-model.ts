@@ -41,7 +41,7 @@ export class LinkViewModel implements IDraggableViewModel {
 
     // IDraggableViewModel 
     color: string;
-    readonly value: Ro.scalarValueType;
+    readonly value: Ro.ScalarValueType;
     readonly reference: string;
     readonly selectedChoice: ChoiceViewModel;
     readonly draggableType: string;

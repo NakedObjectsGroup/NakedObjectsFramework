@@ -1,7 +1,5 @@
 ﻿import { ItemViewModel } from './item-view-model';
 import { PaneRouteData, CollectionViewState, InteractionMode } from '../route-data';
-import { ActionViewModel } from './action-view-model';
-import { MenuItemViewModel } from './menu-item-view-model';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { ColorService } from '../color.service';
 import { ErrorService } from '../error.service';
@@ -23,7 +21,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
         context: ContextService,
         urlManager: UrlManagerService,
         private readonly configService: ConfigService,
-        private readonly loggerService : LoggerService,
+        private readonly loggerService: LoggerService,
         public readonly collectionRep: Models.CollectionMember | Models.CollectionRepresentation,
         public readonly routeData: PaneRouteData,
         forceReload: boolean
@@ -50,7 +48,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
     private editing: boolean;
 
     readonly title: string;
-    readonly name : string;
+    readonly name: string;
 
     details: string;
     mayHaveItems: boolean;

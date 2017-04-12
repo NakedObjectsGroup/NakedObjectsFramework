@@ -1,9 +1,8 @@
 ﻿import { ChoiceViewModel } from './choice-view-model';
 import * as Ro from '../ro-interfaces';
-import { ContextService} from '../context.service';
 
 export interface IDraggableViewModel {
-    value: Ro.scalarValueType | Date | null;
+    value: Ro.ScalarValueType | Date | null;
     reference: string;
     selectedChoice: ChoiceViewModel | null;
     color: string;

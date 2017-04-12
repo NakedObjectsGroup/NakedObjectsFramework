@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef, Renderer, ViewChildren, QueryList } from '@angular/core';
+﻿import { Component, Input, ElementRef, Renderer, ViewChildren, QueryList } from '@angular/core';
 import { ActionViewModel } from '../view-models/action-view-model';
 import * as Helpers from '../view-models/helpers-view-models';
 
@@ -84,7 +84,7 @@ export class ActionComponent {
 
     @ViewChildren("focus")
     focusList: QueryList<ElementRef>;
- 
+
     focus() {
         if (this.disabled()) {
             return false;

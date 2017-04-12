@@ -1,8 +1,8 @@
-import * as Models from '../models'
+﻿import * as Models from '../models'
 import * as Ro from '../ro-interfaces';
 import { AbstractControl } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
-import { ElementRef, HostListener, QueryList, Renderer } from '@angular/core';
+import { ElementRef, QueryList, Renderer } from '@angular/core';
 import * as _ from 'lodash';
 import { ContextService } from '../context.service';
 import { ChoiceViewModel } from '../view-models/choice-view-model';
@@ -25,7 +25,7 @@ export abstract class FieldComponent {
         private readonly context: ContextService,
         private readonly configService: ConfigService,
         private readonly loggerService: LoggerService,
-        private readonly renderer : Renderer
+        private readonly renderer: Renderer
     ) {
         this.elementRef = myElement;
     }
@@ -217,9 +217,9 @@ export abstract class FieldComponent {
         this.control.reset(item);
     }
 
-    fileUpload(evt : Event) {
-       
-        const file : File = (evt.target as HTMLInputElement)!.files![0];
+    fileUpload(evt: Event) {
+
+        const file: File = (evt.target as HTMLInputElement) !.files![0];
         const fileReader = new FileReader();
         fileReader.onloadend = () => {
             const link = new Models.Link({

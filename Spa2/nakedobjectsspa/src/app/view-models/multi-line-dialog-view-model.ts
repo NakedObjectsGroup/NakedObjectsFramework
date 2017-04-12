@@ -1,14 +1,12 @@
-import { DialogViewModel } from './dialog-view-model';
+﻿import { DialogViewModel } from './dialog-view-model';
 import { CollectionViewModel } from './collection-view-model';
-import { RouteData, PaneRouteData } from '../route-data';
+import { PaneRouteData } from '../route-data';
 import { ColorService } from '../color.service';
 import { ContextService } from '../context.service';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { UrlManagerService } from '../url-manager.service';
 import { ErrorService } from '../error.service';
 import * as Models from '../models';
-import * as Ro from '../ro-interfaces';
-import * as Msg from '../user-messages';
 import * as _ from 'lodash';
 
 export class MultiLineDialogViewModel {
@@ -47,8 +45,8 @@ export class MultiLineDialogViewModel {
         return dialogViewModel;
     }
 
-    readonly objectFriendlyName = "";
-    readonly objectTitle = "";
+    readonly objectFriendlyName : string = "";
+    readonly objectTitle : string = "";
     readonly title: string;
     readonly dialogs: DialogViewModel[];
 

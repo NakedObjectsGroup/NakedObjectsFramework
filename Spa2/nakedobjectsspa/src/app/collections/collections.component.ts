@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+﻿import { Component, Input } from '@angular/core';
 import { CollectionViewModel } from '../view-models/collection-view-model';
 
 @Component({
@@ -9,5 +9,5 @@ import { CollectionViewModel } from '../view-models/collection-view-model';
 export class CollectionsComponent {
 
     @Input()
-    collections : CollectionViewModel[];
+    collections: CollectionViewModel[];
 }

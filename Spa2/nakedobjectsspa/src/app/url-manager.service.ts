@@ -1,4 +1,4 @@
-import { RouteData, PaneRouteData, InteractionMode, CollectionViewState, ApplicationMode, ViewType } from './route-data';
+﻿import { RouteData, PaneRouteData, InteractionMode, CollectionViewState, ApplicationMode, ViewType } from './route-data';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Router, UrlSegment } from '@angular/router';
@@ -62,7 +62,7 @@ export class UrlManagerService {
         private readonly router: Router,
         private readonly location: Location,
         private readonly configService: ConfigService,
-        private readonly loggerService : LoggerService
+        private readonly loggerService: LoggerService
     ) {
         this.shortCutMarker = configService.config.shortCutMarker;
         this.urlShortCuts = configService.config.urlShortCuts;
@@ -734,9 +734,9 @@ export class UrlManagerService {
 
         return this.router.routerState.root.queryParams.map((ps: { [key: string]: string }) => {
             const routeData = new RouteData(this.configService, this.loggerService);
-            const paneRouteData = routeData.pane(paneId)!;
+            const paneRouteData = routeData.pane(paneId) !;
             this.setPaneRouteDataFromParms(paneRouteData, paneId, ps);
-            paneRouteData.location = this.getViewType(this.getLocation(paneId))!;
+            paneRouteData.location = this.getViewType(this.getLocation(paneId)) !;
             return paneRouteData;
         }) as Observable<PaneRouteData>;
     }
@@ -841,7 +841,7 @@ export class UrlManagerService {
     cicero = () => this.setMode(Constants.ciceroPath);
 
     gemini = () => this.setMode(Constants.geminiPath);
-  
+
     applicationProperties = () => {
         const newPath = `/${Constants.geminiPath}/${Constants.applicationPropertiesPath}`;
         this.router.navigateByUrl(newPath);

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ElementRef, HostListener, ViewChildren, QueryList, Renderer } from '@angular/core';
+﻿import { Component, Input, OnInit, ElementRef, HostListener, ViewChildren, QueryList, Renderer } from '@angular/core';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { UrlManagerService } from '../url-manager.service';
 import * as Models from '../models';
@@ -25,8 +25,8 @@ export class EditParameterComponent extends FieldComponent implements OnInit {
         myElement: ElementRef,
         context: ContextService,
         configService: ConfigService,
-        loggerService : LoggerService,
-        renderer : Renderer
+        loggerService: LoggerService,
+        renderer: Renderer
     ) {
         super(myElement, context, configService, loggerService, renderer);
     }
@@ -100,10 +100,10 @@ export class EditParameterComponent extends FieldComponent implements OnInit {
 
     choiceName = (choice: ChoiceViewModel) => choice.name;
 
-    classes(): _.Dictionary<boolean> {      
+    classes(): _.Dictionary<boolean> {
         return {
-            [this.parm.color] : true,
-            "candrop" : this.canDrop,
+            [this.parm.color]: true,
+            "candrop": this.canDrop,
             "mat-input-element": null as boolean // remove this class to prevent angular/materials styling overiding our styling
         };
     }
@@ -135,12 +135,12 @@ export class EditParameterComponent extends FieldComponent implements OnInit {
 
     @HostListener('keydown', ['$event'])
     onKeydown(event: KeyboardEvent) {
-        this.handleKeyEvents(event, this.isMultiline); 
+        this.handleKeyEvents(event, this.isMultiline);
     }
 
     @HostListener('keypress', ['$event'])
     onKeypress(event: KeyboardEvent) {
-        this.handleKeyEvents(event,  this.isMultiline);      
+        this.handleKeyEvents(event, this.isMultiline);
     }
 
     @ViewChildren("focus")

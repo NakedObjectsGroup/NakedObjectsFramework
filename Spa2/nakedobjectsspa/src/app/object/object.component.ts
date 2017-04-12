@@ -1,20 +1,15 @@
-﻿import { Component, Input, OnInit, OnDestroy, AfterViewInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
+﻿import { Component, OnInit, OnDestroy, ViewChildren, QueryList } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as Models from '../models';
 import { UrlManagerService } from '../url-manager.service';
-import { ClickHandlerService } from '../click-handler.service';
 import { ContextService } from '../context.service';
-import { RepLoaderService } from '../rep-loader.service';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { ErrorService } from '../error.service';
-import { MaskService } from '../mask.service';
-import { PaneRouteData, RouteData, InteractionMode, ICustomActivatedRouteData } from '../route-data';
-import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/forms';
+import { PaneRouteData, InteractionMode, ICustomActivatedRouteData } from '../route-data';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import * as _ from 'lodash';
 import { PropertyViewModel } from '../view-models/property-view-model';
-import { CollectionViewModel } from '../view-models/collection-view-model';
 import { MenuItemViewModel } from '../view-models/menu-item-view-model';
-import { PaneComponent } from '../pane/pane';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 import { IActionHolder, wrapAction } from '../action/action.component';
 import { ColorService } from '../color.service';
@@ -23,7 +18,7 @@ import { ISubscription } from 'rxjs/Subscription';
 import { PropertiesComponent } from '../properties/properties.component';
 import * as Msg from '../user-messages';
 import * as Helpers from '../view-models/helpers-view-models';
-
+import { CollectionViewModel } from '../view-models/collection-view-model';
 
 @Component({
     selector: 'nof-object',
@@ -31,7 +26,7 @@ import * as Helpers from '../view-models/helpers-view-models';
     styles: [require('./object.component.css')]
 })
 export class ObjectComponent implements OnInit, OnDestroy {
-    
+
     constructor(
         private readonly activatedRoute: ActivatedRoute,
         private readonly urlManager: UrlManagerService,
@@ -49,7 +44,7 @@ export class ObjectComponent implements OnInit, OnDestroy {
     expiredTransient = false;
     object: DomainObjectViewModel | null;
 
-    
+
     private mode: InteractionMode | null;
     form: FormGroup | null;
 
@@ -64,10 +59,10 @@ export class ObjectComponent implements OnInit, OnDestroy {
     }
 
     // used to smooth transition before object set 
-    private pendingColor : string;
+    private pendingColor: string;
 
     get color() {
-        const obj = this.object;      
+        const obj = this.object;
         return obj ? obj.color : this.pendingColor;
     }
 
@@ -76,9 +71,9 @@ export class ObjectComponent implements OnInit, OnDestroy {
         return obj ? obj.properties : "";
     }
 
-    get collections() {
+    get collections(): CollectionViewModel[] {
         const obj = this.object;
-        return obj ? obj.collections : "";
+        return obj ? obj.collections : [];
     }
 
     get tooltip(): string {
@@ -227,7 +222,7 @@ export class ObjectComponent implements OnInit, OnDestroy {
         accesskey: null
     }
 
-    private actionButtons : IActionHolder[] | null; 
+    private actionButtons: IActionHolder[] | null;
 
     get actionHolders() {
         if (this.mode === InteractionMode.View) {
@@ -243,9 +238,9 @@ export class ObjectComponent implements OnInit, OnDestroy {
             // cache because otherwise we will recreate this array of actionHolders everytime page changes !
             if (!this.actionButtons) {
 
-                const menuItems = this.menuItems()!;
+                const menuItems = this.menuItems() !;
                 const actions = _.flatten(_.map(menuItems, (mi: MenuItemViewModel) => mi.actions!));
-                this.actionButtons = _.map(actions, a => wrapAction(a)); 
+                this.actionButtons = _.map(actions, a => wrapAction(a));
             }
 
             return this.actionButtons;
@@ -276,7 +271,7 @@ export class ObjectComponent implements OnInit, OnDestroy {
             // object has changed - clear existing 
             this.object = null;
             this.form = null;
-            this.actionButtons = null; 
+            this.actionButtons = null;
         }
 
         const isChanging = !this.object;
@@ -343,7 +338,7 @@ export class ObjectComponent implements OnInit, OnDestroy {
     private activatedRouteDataSub: ISubscription;
     private paneRouteDataSub: ISubscription;
     private lastPaneRouteData: PaneRouteData;
-    private concurrencyErrorSub : ISubscription;
+    private concurrencyErrorSub: ISubscription;
 
     // todo now this is a child investigate reworking so object is passed in from parent 
     ngOnInit(): void {
@@ -388,7 +383,7 @@ export class ObjectComponent implements OnInit, OnDestroy {
     propComponents: QueryList<PropertiesComponent>;
 
     focus(parms: QueryList<PropertiesComponent>) {
-        if (this.mode == null || this.mode === InteractionMode.View){
+        if (this.mode == null || this.mode === InteractionMode.View) {
             return;
         }
         if (parms && parms.length > 0) {

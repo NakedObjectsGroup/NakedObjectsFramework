@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, QueryList, ElementRef, AfterViewInit, ViewChildren } from '@angular/core';
+﻿import { Component, Input, QueryList, ViewChildren } from '@angular/core';
 import { IActionHolder, wrapAction } from '../action/action.component';
 import { IMenuHolderViewModel } from '../view-models/imenu-holder-view-model';
 import { MenuItemViewModel } from '../view-models/menu-item-view-model';

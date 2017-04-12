@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { ConfigService } from './config.service';
 
 @Injectable()
@@ -55,7 +55,7 @@ export class LoggerService {
         return this.noop;
     }
 
-    throw(message?: any, ...optionalParams: any[]) : never {
+    throw(message?: any, ...optionalParams: any[]): never {
         this.error(message, optionalParams);
         throw new Error(message);
     }

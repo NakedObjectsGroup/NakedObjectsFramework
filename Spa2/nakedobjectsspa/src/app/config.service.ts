@@ -1,14 +1,13 @@
-﻿import { Inject, Injectable } from '@angular/core';
-import { Http, RequestOptionsArgs, RequestOptions } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+﻿import { Injectable } from '@angular/core';
+import { Http, RequestOptionsArgs } from '@angular/http';
 import * as Ro from './ro-interfaces';
 
 export interface IAppConfig {
-    authenticate : boolean,
-    authClientId? : string,
-    authDomain? : string,
+    authenticate: boolean,
+    authClientId?: string,
+    authDomain?: string,
     appPath: string;
-    applicationName : string, 
+    applicationName: string,
     logoffUrl: string;
 
     // this can be a full url eg http://www.google.com
@@ -62,7 +61,7 @@ export interface IAppConfig {
     masks?: {
         currencyMasks?: {
             [index: string]: {
-                format: Ro.formatType;
+                format: Ro.FormatType;
                 symbol?: string;
                 digits?: string;
                 locale?: string;
@@ -70,7 +69,7 @@ export interface IAppConfig {
         }
         dateMasks?: {
             [index: string]: {
-                format: Ro.formatType;
+                format: Ro.FormatType;
                 mask: string;
                 tz?: string;
                 locale?: string;
@@ -78,7 +77,7 @@ export interface IAppConfig {
         }
         numberMasks?: {
             [index: string]: {
-                format: Ro.formatType;
+                format: Ro.FormatType;
                 digits?: string;
                 locale?: string;
             }
@@ -99,9 +98,9 @@ export class ConfigService {
 
     // defaults 
     private appConfig: IAppConfig = {
-        authenticate : false,
+        authenticate: false,
         appPath: "",
-        applicationName : "", 
+        applicationName: "",
         logoffUrl: "",
         postLogoffUrl: "/gemini/home",
         defaultPageSize: 20,

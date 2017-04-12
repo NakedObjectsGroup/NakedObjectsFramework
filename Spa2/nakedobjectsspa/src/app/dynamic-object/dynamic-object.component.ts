@@ -1,9 +1,7 @@
-import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
-import { ObjectComponent } from '../object/object.component';
+﻿import { Component, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
 import { CustomComponentService } from '../custom-component.service';
 import { ActivatedRoute } from '@angular/router';
-import { ISubscription } from 'rxjs/Subscription';
-import { RouteData, PaneRouteData, ViewType } from '../route-data';
+import { PaneRouteData, ViewType } from '../route-data';
 import { UrlManagerService } from '../url-manager.service';
 import { PaneComponent } from '../pane/pane';
 import { Type } from '@angular/core/src/type';

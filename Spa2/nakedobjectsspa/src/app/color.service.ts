@@ -1,4 +1,4 @@
-import * as Models from './models';
+﻿import * as Models from './models';
 import * as _ from 'lodash';
 import { Injectable } from '@angular/core';
 import { ContextService } from './context.service';
@@ -6,7 +6,7 @@ import { TypeResultCache } from './type-result-cache';
 import { ConfigService } from './config.service';
 
 export interface IColorServiceConfigurator {
-    addType : (type: string, color: number) => void;
+    addType: (type: string, color: number) => void;
 
     addMatch: (matcher: RegExp, color: number) => void;
 
@@ -28,7 +28,7 @@ export class ColorService extends TypeResultCache<number> implements IColorServi
         this.configureFromConfig();
     }
 
-  
+
     private typeFromUrl(url: string): string {
         const oid = Models.ObjectIdWrapper.fromHref(url, this.configService.config.keySeparator);
         return oid.domainType;
@@ -41,7 +41,7 @@ export class ColorService extends TypeResultCache<number> implements IColorServi
 
     toColorNumberFromType = (type: string | null) => this.getResult(type);
 
-   
+
     addType(type: string, result: number) {
         super.addType(type, result);
     }
@@ -58,7 +58,7 @@ export class ColorService extends TypeResultCache<number> implements IColorServi
         super.setDefault(def);
     }
 
-    getDefault() : number {
+    getDefault(): number {
         return this.default;
     }
 

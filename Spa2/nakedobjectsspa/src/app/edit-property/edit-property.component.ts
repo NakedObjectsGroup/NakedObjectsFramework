@@ -1,17 +1,17 @@
-import { Component, Input, ElementRef, OnInit, HostListener, ViewChildren, QueryList, Renderer, NgZone } from '@angular/core';
-import * as Models from '../models';
+﻿import { Component, Input, ElementRef, OnInit, HostListener, ViewChildren, QueryList, Renderer, NgZone } from '@angular/core';
 import { FieldComponent } from '../field/field.component';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ErrorService } from '../error.service';
 import { ContextService } from '../context.service';
-import { AttachmentViewModel } from '../view-models/attachment-view-model';
 import { FieldViewModel } from '../view-models/field-view-model';
 import { PropertyViewModel } from '../view-models/property-view-model';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 import { ChoiceViewModel } from '../view-models/choice-view-model';
 import { ConfigService } from '../config.service';
 import { LoggerService } from '../logger.service';
+import * as Models from '../models';
+import { AttachmentViewModel } from '../view-models/attachment-view-model';
 
 @Component({
     selector: 'nof-edit-property',
@@ -27,7 +27,7 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
         context: ContextService,
         configService: ConfigService,
         loggerService: LoggerService,
-        renderer : Renderer
+        renderer: Renderer
     ) {
         super(myElement, context, configService, loggerService, renderer);
     }
@@ -71,7 +71,7 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
         return this.property.returnType;
     }
 
-    get propertyEntryType() {
+    get propertyEntryType(): Models.EntryType {
         return this.property.entryType;
     }
 
@@ -119,7 +119,7 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
         return this.property.getMessage();
     }
 
-    get attachment() {
+    get attachment(): AttachmentViewModel {
         return this.property.attachment;
     }
 

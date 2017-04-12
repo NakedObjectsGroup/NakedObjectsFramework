@@ -1,7 +1,6 @@
-import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
+﻿import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
 import { CustomComponentService } from '../custom-component.service';
 import { Type } from '@angular/core/src/type';
-import { RouteData } from '../route-data';
 import { ContextService } from '../context.service';
 import { LoggerService } from '../logger.service';
 import { UrlManagerService } from '../url-manager.service';

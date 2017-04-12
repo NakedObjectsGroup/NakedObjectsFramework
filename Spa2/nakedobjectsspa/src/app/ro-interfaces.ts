@@ -1,19 +1,19 @@
-import { ICustomListRepresentation } from './ro-interfaces-custom';
+﻿import { ICustomListRepresentation } from './ro-interfaces-custom';
 
-export type httpMethodsType = "POST" | "PUT" | "GET" | "DELETE";
+export type HttpMethodsType = "POST" | "PUT" | "GET" | "DELETE";
 
 export interface ILink {
     id?: string;
     rel?: string;
     href: string;
     type?: string;
-    method?: httpMethodsType;
+    method?: HttpMethodsType;
     title?: string;
     arguments?: IValue | IValueMap;
     extensions?: IExtensions;
 }
 
-export type formatType = "string" | "date-time" | "date" | "time" | "utc-millisec" | "big-integer" | "big-decimal" | "blob" | "clob" | "decimal" | "int";
+export type FormatType = "string" | "date-time" | "date" | "time" | "utc-millisec" | "big-integer" | "big-decimal" | "blob" | "clob" | "decimal" | "int";
 
 export interface IExtensions {
     friendlyName?: string;
@@ -24,7 +24,7 @@ export interface IExtensions {
     elementType?: string;
     domainType?: string;
     pluralName?: string;
-    format?: formatType;
+    format?: FormatType;
     memberOrder?: number;
     isService?: boolean;
     minLength?: number;
@@ -109,11 +109,11 @@ export interface IVersionRepresentation extends IResourceRepresentation {
     optionalCapabilities: IOptionalCapabilities;
 }
 
-export type scalarValueType = string | number | boolean | null;
-export type valueType = scalarValueType | ILink;
+export type ScalarValueType = string | number | boolean | null;
+export type ValueType = ScalarValueType | ILink;
 
 export interface IValue {
-    value: valueType | valueType[] | Blob | null;
+    value: ValueType | ValueType[] | Blob | null;
     invalidReason?: string;
 }
 
@@ -143,7 +143,7 @@ export interface IListRepresentation extends IResourceRepresentation {
 }
 
 export interface IScalarValueRepresentation extends IResourceRepresentation {
-    value: scalarValueType;
+    value: ScalarValueType;
 }
 
 export type memberTypeType = "action" | "collection" | "property";
@@ -154,8 +154,8 @@ export interface IMember extends IResourceRepresentation {
 }
 
 export interface IPropertyMember extends IMember {
-    value?: valueType;
-    choices?: valueType[];
+    value?: ValueType;
+    choices?: ValueType[];
     hasChoices: boolean;
     extensions: IPropertyExtensions;
 }
@@ -181,16 +181,16 @@ export interface IDomainObjectRepresentation extends IResourceRepresentation {
     extensions : IDomainObjectExtensions;
 }
 
-export type resultTypeType = "object" | "list" | "scalar" | "void";
+export type ResultTypeType = "object" | "list" | "scalar" | "void";
 
 export interface IActionInvokeRepresentation extends IResourceRepresentation {
-    resultType: resultTypeType;
+    resultType: ResultTypeType;
     result?: IDomainObjectRepresentation | ICustomListRepresentation | IScalarValueRepresentation;
 }
 
 export interface IParameterRepresentation extends IResourceRepresentation {
-    choices?: valueType[];
-    default?: valueType;
+    choices?: ValueType[];
+    default?: ValueType;
     extensions: IParameterExtensions;
 }
 
@@ -203,8 +203,8 @@ export interface IActionRepresentation extends IResourceRepresentation {
 
 export interface IPropertyRepresentation extends IResourceRepresentation {
     id: string;
-    value?: valueType;
-    choices?: valueType[];
+    value?: ValueType;
+    choices?: ValueType[];
     disabledReason?: string;
     extensions: IPropertyExtensions;
 }
@@ -261,6 +261,6 @@ export interface IDomainTypeActionInvokeRepresentation extends IResourceRepresen
 
 export interface IPromptRepresentation extends IResourceRepresentation {
     id: string;
-    choices?: valueType[];
+    choices?: ValueType[];
 }
 

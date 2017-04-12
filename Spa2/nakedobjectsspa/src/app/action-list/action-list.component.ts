@@ -1,7 +1,5 @@
-import { Component, Input, ViewChildren, QueryList, ElementRef, AfterViewInit, OnInit } from '@angular/core';
+﻿import { Component, Input, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { MenuItemViewModel } from '../view-models/menu-item-view-model';
-import { ActionViewModel } from '../view-models/action-view-model'; // needed for declarations compile 
-import * as Models from '../models';
 import { IActionHolder, wrapAction } from '../action/action.component';
 import { ActionComponent } from '../action/action.component';
 import { IMenuHolderViewModel } from '../view-models/imenu-holder-view-model';

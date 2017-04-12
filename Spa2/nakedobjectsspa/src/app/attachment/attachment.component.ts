@@ -1,14 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { ContextService } from '../context.service';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { ActivatedRoute } from '@angular/router';
 import { UrlManagerService } from '../url-manager.service';
-import { RouteData, PaneRouteData } from '../route-data';
 import { ErrorService } from '../error.service';
-import { AttachmentViewModel } from '../view-models/attachment-view-model';
 import { PaneComponent } from '../pane/pane';
 import * as Models from '../models';
 import { ConfigService } from '../config.service';
+import { PaneRouteData } from '../route-data';
 
 @Component({
     selector: 'nof-attachment',

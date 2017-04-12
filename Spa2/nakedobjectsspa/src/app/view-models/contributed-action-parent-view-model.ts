@@ -11,7 +11,7 @@ import { ParameterViewModel } from './parameter-view-model';
 import * as _ from 'lodash';
 import * as Helpers from './helpers-view-models';
 import { MenuItemViewModel } from './menu-item-view-model';
-import { RouteData, PaneRouteData } from '../route-data';
+import { PaneRouteData } from '../route-data';
 
 export abstract class ContributedActionParentViewModel extends MessageViewModel {
 
@@ -20,7 +20,7 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
         protected readonly viewModelFactory: ViewModelFactoryService,
         protected readonly urlManager: UrlManagerService,
         protected readonly error: ErrorService,
-        public readonly onPaneId : number
+        public readonly onPaneId: number
     ) {
         super();
     }
@@ -46,7 +46,7 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
 
             const selected = _.filter(this.items, i => i.selected);
 
-            const rejectAsNeedSelection = (action: Models.IInvokableAction) : Models.ErrorWrapper | null => {
+            const rejectAsNeedSelection = (action: Models.IInvokableAction): Models.ErrorWrapper | null => {
                 if (this.isLocallyContributed(action)) {
                     if (selected.length === 0) {
                         const em = new Models.ErrorMap({}, 0, Msg.noItemsSelected);

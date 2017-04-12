@@ -1,13 +1,10 @@
-import { Component, Input, ElementRef, HostListener } from '@angular/core';
-import { FieldComponent } from '../field/field.component';
-import { FormGroup } from '@angular/forms';
+﻿import { Component, Input, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { ErrorService } from '../error.service';
 import { ContextService } from '../context.service';
-import { AttachmentViewModel } from '../view-models/attachment-view-model';
 import { PropertyViewModel } from '../view-models/property-view-model';
-import * as Models from '../models';
 import * as Helpers from '../view-models/helpers-view-models';
+import {AttachmentViewModel} from '../view-models/attachment-view-model';
 
 @Component({
     selector: 'nof-view-property',
@@ -85,7 +82,7 @@ export class ViewPropertyComponent {
         return this.property.color;
     }
 
-    get attachment() {
+    get attachment() : AttachmentViewModel {
         return this.property.attachment;
     }
 

@@ -1,5 +1,4 @@
-import { Injectable } from '@angular/core';
-import { CustomComponentService } from './custom-component.service';
+﻿import { Injectable } from '@angular/core';
 import { ICustomComponentConfigurator } from './custom-component.service';
 import { ICustomErrorComponentConfigurator } from './custom-component.service';
 

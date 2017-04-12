@@ -1,16 +1,13 @@
-import { Component, Input, OnInit, OnDestroy, AfterViewInit, ViewChildren, QueryList } from '@angular/core';
+﻿import { Component, Input, AfterViewInit, ViewChildren, QueryList } from '@angular/core';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { UrlManagerService } from '../url-manager.service';
 import * as _ from 'lodash';
 import * as Models from '../models';
-import { ActivatedRoute, Data } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import '../rxjs-extensions';
-import { PaneRouteData, RouteData, ViewType } from '../route-data';
-import { ISubscription } from 'rxjs/Subscription';
 import { ContextService } from '../context.service';
-import { ColorService } from '../color.service';
 import { ErrorService } from '../error.service';
-import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { ActionViewModel } from '../view-models/action-view-model';
 import { DialogViewModel } from '../view-models/dialog-view-model';
@@ -151,12 +148,12 @@ export class DialogComponent implements AfterViewInit {
             }
 
             if (p instanceof ListViewModel) {
-                action = p.actionMember(this.currentDialogId)!;
+                action = p.actionMember(this.currentDialogId) !;
                 actionViewModel = _.find(p.actions, a => a.actionRep.actionId() === this.currentDialogId) || null;
             }
 
             if (p instanceof CollectionViewModel && p.hasMatchingLocallyContributedAction(this.currentDialogId)) {
-                action = p.actionMember(this.currentDialogId, this.configService.config.keySeparator)!;
+                action = p.actionMember(this.currentDialogId, this.configService.config.keySeparator) !;
                 actionViewModel = _.find(p.actions, a => a.actionRep.actionId() === this.currentDialogId) || null;
             }
 

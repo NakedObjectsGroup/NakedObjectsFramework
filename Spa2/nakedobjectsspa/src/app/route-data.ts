@@ -70,7 +70,7 @@ export class PaneRouteData {
     constructor(
         public paneId: number,
         private readonly doUrlValidation: boolean,
-        private readonly loggerService : LoggerService) { }
+        private readonly loggerService: LoggerService) { }
 
     location: ViewType;
     objectId: string;

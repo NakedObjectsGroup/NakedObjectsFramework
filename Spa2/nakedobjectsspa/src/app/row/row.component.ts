@@ -1,11 +1,11 @@
-import { Component, Input, ViewChildren, QueryList, ElementRef, Renderer } from '@angular/core';
+﻿import { Component, Input, ElementRef, Renderer } from '@angular/core';
 import { ItemViewModel } from '../view-models/item-view-model';
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
 import * as Helpers from '../view-models/helpers-view-models';
 import { ContextService } from '../context.service';
 import { PropertyViewModel } from '../view-models/property-view-model';
-import { TableRowColumnViewModel } from '../view-models/table-row-column-view-model';
 import { RecentItemViewModel } from '../view-models/recent-item-view-model';
+import { TableRowColumnViewModel } from '../view-models/table-row-column-view-model';
 
 @Component({
     selector: '[nof-row]',
@@ -54,7 +54,7 @@ export class RowComponent {
 
     tableTitle = () => this.item.tableRowViewModel ? this.item.tableRowViewModel.title : this.title;
     hasTableTitle = () => (this.item.tableRowViewModel && this.item.tableRowViewModel.showTitle) || (this.item instanceof RecentItemViewModel && this.item.title);
-    tableProperties = () => this.item.tableRowViewModel && this.item.tableRowViewModel.properties;
+    tableProperties = (): TableRowColumnViewModel[] => this.item.tableRowViewModel && this.item.tableRowViewModel.properties;
 
     propertyType = (property: PropertyViewModel) => property.type;
     propertyValue = (property: PropertyViewModel) => property.value;
@@ -66,7 +66,7 @@ export class RowComponent {
     copy(event: KeyboardEvent, item: IDraggableViewModel) {
         Helpers.copy(event, item, this.context);
     }
-    
+
     focus() {
         return !!this.element && Helpers.focus(this.renderer, this.element);
     }

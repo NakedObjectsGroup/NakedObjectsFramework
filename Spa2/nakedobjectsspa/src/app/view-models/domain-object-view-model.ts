@@ -16,7 +16,7 @@ import * as Helpers from './helpers-view-models';
 import * as _ from 'lodash';
 import { ConfigService } from '../config.service';
 import * as Msg from '../user-messages';
-import { IMenuHolderViewModel} from './imenu-holder-view-model';
+import { IMenuHolderViewModel } from './imenu-holder-view-model';
 
 export class DomainObjectViewModel extends MessageViewModel implements IMenuHolderViewModel {
 
@@ -158,7 +158,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
     }
 
     concurrency() {
-        this.routeData = this.urlManager.getRouteData().pane(this.onPaneId)!;
+        this.routeData = this.urlManager.getRouteData().pane(this.onPaneId) !;
         this.contextService.getObject(this.onPaneId, this.domainObject.getOid(this.keySeparator), this.routeData.interactionMode)
             .then((obj: Models.DomainObjectRepresentation) => {
                 // cleared cached values so all values are from reloaded representation 
@@ -175,7 +175,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
             })
             .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
     };
-    
+
     readonly clientValid = () => _.every(this.properties, p => p.clientValid);
 
     readonly tooltip = () => Helpers.tooltip(this, this.properties);
@@ -201,11 +201,11 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
         this.clearCachedFiles();
         const propMap = this.propertyMap();
         this.saveHandler()(this.domainObject, propMap, this.onPaneId, viewObject)
-            .then((obj: Models.DomainObjectRepresentation) => this.reset(obj, this.urlManager.getRouteData().pane(this.onPaneId)!, true))
+            .then((obj: Models.DomainObjectRepresentation) => this.reset(obj, this.urlManager.getRouteData().pane(this.onPaneId) !, true))
             .catch((reject: Models.ErrorWrapper) => this.handleWrappedError(reject));
     };
 
-    readonly currentPaneData = () => this.urlManager.getRouteData().pane(this.onPaneId)!;
+    readonly currentPaneData = () => this.urlManager.getRouteData().pane(this.onPaneId) !;
 
     readonly doSaveValidate = () => {
         const propMap = this.propertyMap();

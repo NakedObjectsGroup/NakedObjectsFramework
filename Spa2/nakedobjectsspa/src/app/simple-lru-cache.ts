@@ -1,19 +1,12 @@
-import { Injectable } from '@angular/core';
-import { Response, Request, RequestOptions, Headers, RequestMethod, ResponseContentType } from '@angular/http';
-import './rxjs-extensions';
-import * as Models from './models';
-import * as Constants from './constants';
+﻿import './rxjs-extensions';
 import * as Ro from './ro-interfaces';
 import * as _ from 'lodash';
-import { Subject } from 'rxjs/Subject';
-import { ConfigService } from './config.service';
-import { Observable } from 'rxjs'; // for declaration compile
 
-export type cachableTypes = Ro.IRepresentation | Blob;
+export type CachableTypes = Ro.IRepresentation | Blob;
 
 class LruNode {
 
-    constructor(public readonly key: string, public value: cachableTypes) { }
+    constructor(public readonly key: string, public value: CachableTypes) { }
 
     next: LruNode | null = null;
     previous: LruNode | null = null;
@@ -64,7 +57,7 @@ export class SimpleLruCache {
         this.count++;
     }
 
-    add(key: string, value: cachableTypes) {
+    add(key: string, value: CachableTypes) {
 
         if (this.cache[key]) {
             this.updateExistingEntry(key, value);
@@ -98,17 +91,17 @@ export class SimpleLruCache {
         return node;
     }
 
-    get(key: string): cachableTypes | null {
+    get(key: string): CachableTypes | null {
         const node = this.getNode(key);
         return node ? node.value : null;
     }
 
-    private updateExistingEntry(key: string, value: cachableTypes): void {
+    private updateExistingEntry(key: string, value: CachableTypes): void {
         const node = this.getNode(key) !;
         node.value = value;
     }
 
-    private addNewEntry(key: string, value: cachableTypes): void {
+    private addNewEntry(key: string, value: CachableTypes): void {
         const newNode = new LruNode(key, value);
         this.cache[key] = newNode;
         this.moveNodeToHead(newNode);

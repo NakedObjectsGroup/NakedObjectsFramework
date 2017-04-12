@@ -44,7 +44,7 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
             propertyRep.isCollectionContributed(),
             propertyRep.entryType());
 
-        this.draggableType = propertyRep.extensions().returnType()!; // todo fix extensions 
+        this.draggableType = propertyRep.extensions().returnType() !; // todo fix extensions 
         this.isEditable = !propertyRep.disabledReason();
 
         this.attachment = this.viewModelfactory.attachmentViewModel(propertyRep, onPaneId);

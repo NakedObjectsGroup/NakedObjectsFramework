@@ -1,11 +1,10 @@
-import { UrlManagerService } from './url-manager.service';
+﻿import { UrlManagerService } from './url-manager.service';
 import { ContextService } from './context.service';
 import * as Models from './models';
 import { Injectable } from '@angular/core';
-import * as Msg from './user-messages';
 import { ConfigService } from './config.service';
 
-type errorPreprocessor = (reject: Models.ErrorWrapper) => void;
+type ErrorPreprocessor = (reject: Models.ErrorWrapper) => void;
 
 @Injectable()
 export class ErrorService {
@@ -28,7 +27,7 @@ export class ErrorService {
         });
     }
 
-    private preProcessors: errorPreprocessor[] = [];
+    private preProcessors: ErrorPreprocessor[] = [];
 
     private handleHttpServerError(reject: Models.ErrorWrapper) {
         this.urlManager.setError(Models.ErrorCategory.HttpServerError);
@@ -75,7 +74,7 @@ export class ErrorService {
         }
     };
 
-    private setErrorPreprocessor(handler: errorPreprocessor) {
+    private setErrorPreprocessor(handler: ErrorPreprocessor) {
         this.preProcessors.push(handler);
     };
 }

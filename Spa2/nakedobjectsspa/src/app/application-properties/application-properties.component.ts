@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { ApplicationPropertiesViewModel } from '../view-models/application-properties-view-model';
 import * as Msg from '../user-messages';
-import * as Authservice from '../auth.service';
+import { AuthService } from '../auth.service';
 
 @Component({
     selector: 'nof-application-properties',
@@ -13,7 +13,7 @@ export class ApplicationPropertiesComponent implements OnInit {
 
     constructor(
         private readonly viewModelFactory: ViewModelFactoryService,
-        private readonly authService: Authservice.AuthService
+        private readonly authService: AuthService
     ) {
     }
 

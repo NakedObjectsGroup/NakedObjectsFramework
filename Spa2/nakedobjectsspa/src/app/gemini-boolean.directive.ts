@@ -1,9 +1,9 @@
-import { Directive, ElementRef, HostListener, Input, Renderer } from '@angular/core';
+﻿import { Directive, ElementRef, HostListener, Input, Renderer } from '@angular/core';
 import { FieldViewModel } from './view-models/field-view-model';
 
 @Directive({ selector: '[geminiBoolean]' })
 export class GeminiBooleanDirective {
-  
+
     constructor(
         private readonly el: ElementRef,
         private readonly renderer: Renderer

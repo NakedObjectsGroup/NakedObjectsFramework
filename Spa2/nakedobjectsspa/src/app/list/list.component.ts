@@ -1,27 +1,18 @@
-import { Component, Input, ElementRef } from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { UrlManagerService } from '../url-manager.service';
-import { ClickHandlerService } from '../click-handler.service';
 import { ContextService } from '../context.service';
-import { RepLoaderService } from '../rep-loader.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ColorService } from '../color.service';
 import { ErrorService } from '../error.service';
-import { PaneRouteData, RouteData, CollectionViewState, ICustomActivatedRouteData } from '../route-data';
+import { PaneRouteData, CollectionViewState, ICustomActivatedRouteData } from '../route-data';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import * as Models from '../models';
-import * as Constants from '../constants';
-import { IDraggableViewModel } from '../view-models/idraggable-view-model';
-import { IMessageViewModel } from '../view-models/imessage-view-model';
 import { ListViewModel } from '../view-models/list-view-model';
-import { PaneComponent } from '../pane/pane';
-import { ItemViewModel } from '../view-models/item-view-model';
-import { PropertyViewModel } from '../view-models/property-view-model';
 import { IActionHolder } from '../action/action.component';
 import { ConfigService } from '../config.service';
 import { LoggerService } from '../logger.service';
 import { ISubscription } from 'rxjs/Subscription';
-import { TableRowColumnViewModel } from '../view-models/table-row-column-view-model';
-import * as Helpers from '../view-models/helpers-view-models';
+import { ItemViewModel } from '../view-models/item-view-model';
 
 @Component({
     selector: 'nof-list',
@@ -84,7 +75,7 @@ export class ListComponent {
         return this.collection.size;
     }
 
-    get items() {
+    get items(): ItemViewModel[] {
         return this.collection.items;
     }
 

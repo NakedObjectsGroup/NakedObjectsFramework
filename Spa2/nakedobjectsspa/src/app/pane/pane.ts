@@ -1,21 +1,22 @@
-﻿import { Component, OnInit, OnDestroy } from '@angular/core';
+﻿import { OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
-import { RouteData, PaneRouteData, ICustomActivatedRouteData, PaneType, PaneName } from '../route-data';
+import { PaneRouteData, ICustomActivatedRouteData, PaneType, PaneName } from '../route-data';
 import { UrlManagerService } from '../url-manager.service';
 
 export abstract class PaneComponent implements OnInit, OnDestroy {
 
     protected constructor(
         protected readonly activatedRoute: ActivatedRoute,
-        protected readonly  urlManager: UrlManagerService
-    ) { }
+        protected readonly urlManager: UrlManagerService
+    ) {
+    }
 
     // pane API
     paneId: number;
     paneType: PaneType;
-    paneIdName : PaneName; 
-    arData : ICustomActivatedRouteData;
+    paneIdName: PaneName;
+    arData: ICustomActivatedRouteData;
 
     onChild() {
         this.paneType = "split";
@@ -27,7 +28,7 @@ export abstract class PaneComponent implements OnInit, OnDestroy {
 
     private activatedRouteDataSub: ISubscription;
     private paneRouteDataSub: ISubscription;
-    private lastPaneRouteData: PaneRouteData; 
+    private lastPaneRouteData: PaneRouteData;
 
     protected abstract setup(routeData: PaneRouteData);
 
@@ -42,7 +43,7 @@ export abstract class PaneComponent implements OnInit, OnDestroy {
                 this.paneRouteDataSub =
                     this.urlManager.getPaneRouteDataObservable(this.paneId)
                         .subscribe((paneRouteData: PaneRouteData) => {
-                            if (!paneRouteData.isEqual(this.lastPaneRouteData)){
+                            if (!paneRouteData.isEqual(this.lastPaneRouteData)) {
                                 this.lastPaneRouteData = paneRouteData;
                                 this.setup(paneRouteData);
                             }

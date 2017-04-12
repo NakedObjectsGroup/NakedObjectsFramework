@@ -10,11 +10,11 @@ import * as Models from '../models';
 import * as Msg from '../user-messages';
 import * as _ from 'lodash';
 import { Renderer, ElementRef } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, AbstractControl } from '@angular/forms';
+import { FormBuilder, AbstractControl, FormGroup } from '@angular/forms';
 import { DialogViewModel } from './dialog-view-model';
-import { ParameterViewModel} from './parameter-view-model';
+import { ParameterViewModel } from './parameter-view-model';
 
-export function createForm(dialog: DialogViewModel, formBuilder: FormBuilder) {
+export function createForm(dialog: DialogViewModel, formBuilder: FormBuilder): { form: FormGroup, dialog: DialogViewModel, parms: _.Dictionary<ParameterViewModel> } {
     const pps = dialog.parameters;
     const parms = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<ParameterViewModel>;
     const controls = _.mapValues(parms, p => [p.getValueForControl(), (a: AbstractControl) => p.validator(a)]);
@@ -28,7 +28,6 @@ export function createForm(dialog: DialogViewModel, formBuilder: FormBuilder) {
 
     return { form: form, dialog: dialog, parms: parms };
 }
-
 
 
 export function copy(event: KeyboardEvent, item: IDraggableViewModel, context: ContextService) {
@@ -73,7 +72,7 @@ function getMenuNameForLevel(menupath: string, level: number) {
     return menu || "";
 }
 
-function removeDuplicateMenuNames(menus: {name : string}[]) {
+function removeDuplicateMenuNames(menus: { name: string }[]) {
     return _.uniqWith(menus,
         (m1: { name: string }, m2: { name: string }) => {
             if (m1.name && m2.name) {
@@ -83,7 +82,7 @@ function removeDuplicateMenuNames(menus: {name : string}[]) {
         });
 }
 
-export function createSubmenuItems(avms: ActionViewModel[], menuSlot: {name : string, action : ActionViewModel}, level: number) {
+export function createSubmenuItems(avms: ActionViewModel[], menuSlot: { name: string, action: ActionViewModel }, level: number) {
     // if not root menu aggregate all actions with same name
     let menuActions: ActionViewModel[];
     let menuItems: MenuItemViewModel[] | null;
@@ -239,7 +238,7 @@ export function decrementPendingPotentAction(context: ContextService, invokablea
     }
 }
 
-export function focus(renderer : Renderer, element : ElementRef) {
+export function focus(renderer: Renderer, element: ElementRef) {
     setTimeout(() => renderer.invokeElementMethod(element.nativeElement, "focus"));
     return true;
 }

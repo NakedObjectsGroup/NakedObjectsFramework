@@ -1,16 +1,16 @@
 ﻿import * as Ro from '../ro-interfaces';
-import * as Contextservice from '../context.service';
-import * as Errorservice from '../error.service';
-import * as Configservice from '../config.service';
+import { ContextService } from '../context.service';
+import { ErrorService } from '../error.service';
+import { ConfigService } from '../config.service';
 import * as Models from '../models';
 import * as Constants from '../constants';
 
 export class ApplicationPropertiesViewModel {
 
     constructor(
-        private readonly context: Contextservice.ContextService,
-        private readonly error: Errorservice.ErrorService,
-        private readonly configService: Configservice.ConfigService
+        private readonly context: ContextService,
+        private readonly error: ErrorService,
+        private readonly configService: ConfigService
     ) {
         this.setUp();
     }
@@ -36,5 +36,5 @@ export class ApplicationPropertiesViewModel {
     user: Ro.IUserRepresentation;
     serverUrl: string;
     clientVersion: string;
-    applicationName : string;
+    applicationName: string;
 }

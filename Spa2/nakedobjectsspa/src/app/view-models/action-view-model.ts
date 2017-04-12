@@ -60,7 +60,7 @@ export class ActionViewModel {
         this.urlManager.setDialogOrMultiLineDialog(this.actionRep, this.paneId);
     }
 
-    readonly invokeWithoutDialogWithParameters = (parameters : Promise<ParameterViewModel[]>,  right?: boolean) => {
+    readonly invokeWithoutDialogWithParameters = (parameters: Promise<ParameterViewModel[]>, right?: boolean) => {
         this.incrementPendingPotentAction();
 
         return parameters
