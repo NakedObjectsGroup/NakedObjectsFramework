@@ -24,6 +24,8 @@ export class Auth0AuthService extends AuthService implements CanActivate {
 
     private readonly lock: Auth0LockStatic;
 
+    private pendingAuthenticate : boolean = false;
+
     constructor(
         private readonly router: Router,
         private readonly urlManager: UrlManagerService,
@@ -56,13 +58,22 @@ export class Auth0AuthService extends AuthService implements CanActivate {
                 .filter(event => event instanceof NavigationStart)
                 .filter((event: NavigationStart) => (/access_token|id_token|error/).test(event.url))
                 .subscribe(() => {
+                    
                     this.lock.resumeAuth(window.location.hash, (error: any, authResult: any) => {
                         if (error) {
                             logger.error(error);
                         }
                         else if (authResult && authResult.idToken) {
+                            // some sort of race here with token response navigationg us to a page,
+                            // we're making auth OK with token but app.component doesn't yet have router-outlet 
+                            // so we see errors. Set the pending Authenticate flag which will make it look like 
+                            // we're not authenticated and then clear and route home on next event loop.
+
+                            this.pendingAuthenticate = true;
                             localStorage.setItem('id_token', authResult.idToken);
-                            setTimeout(() => this.urlManager.setHomeSinglePane());
+                            setTimeout(() => {
+                                this.pendingAuthenticate = false;
+                                this.urlManager.setHomeSinglePane()});
                         }
                     });
                 });
@@ -88,7 +99,7 @@ export class Auth0AuthService extends AuthService implements CanActivate {
     }
 
     canActivate() {
-        return this.authenticated();
+        return !this.pendingAuthenticate && this.authenticated();
     }
 }
 
