@@ -187,7 +187,7 @@ export class UrlManagerService {
     }
 
     private getPaneParams(params : _.Dictionary<string>, paneId : number) : _.Dictionary<string>{
-        const paneIds = _.filter(_.keys(params), k => k.endsWith(paneId.toString()) && !k.startsWith(akm.reload));
+        const paneIds = _.filter(_.keys(params), k => k.indexOf(paneId.toString()) >= 0 && !k.startsWith(akm.reload));
         return _.pick(params, paneIds) as _.Dictionary<string>;
     }
 
