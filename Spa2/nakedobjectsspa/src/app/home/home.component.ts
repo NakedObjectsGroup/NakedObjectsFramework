@@ -21,10 +21,10 @@ export class HomeComponent extends PaneComponent {
     constructor(urlManager: UrlManagerService,
         activatedRoute: ActivatedRoute,
         private readonly viewModelFactory: ViewModelFactoryService,
-        private readonly contextService: ContextService,
+        context: ContextService,
         private readonly errorService: ErrorService,
         private readonly myElement: ElementRef) {
-        super(activatedRoute, urlManager);
+        super(activatedRoute, urlManager, context);
     }
 
     // template API 
@@ -42,7 +42,7 @@ export class HomeComponent extends PaneComponent {
     private menus: MenusViewModel;
 
     getMenus(paneRouteData: PaneRouteData) {
-        this.contextService.getMenus()
+        this.context.getMenus()
             .then((menus: Models.MenusRepresentation) => {
                 this.menus = this.viewModelFactory.menusViewModel(menus, paneRouteData);
             })
@@ -54,7 +54,7 @@ export class HomeComponent extends PaneComponent {
     getMenu(paneRouteData: PaneRouteData) {
         const menuId = paneRouteData.menuId;
         if (menuId) {
-            this.contextService.getMenu(menuId)
+            this.context.getMenu(menuId)
                 .then((menu: Models.MenuRepresentation) => {
                     this.selectedMenu = this.viewModelFactory.menuViewModel(menu, paneRouteData);
                     this.selectedDialogId = paneRouteData.dialogId;

@@ -1,4 +1,5 @@
-﻿import { Component, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
+﻿import { ContextService } from '../context.service';
+import { Component, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
 import { CustomComponentService } from '../custom-component.service';
 import { ActivatedRoute } from '@angular/router';
 import { PaneRouteData, ViewType } from '../route-data';
@@ -21,10 +22,11 @@ export class DynamicObjectComponent extends PaneComponent {
     constructor(
         activatedRoute: ActivatedRoute,
         urlManager: UrlManagerService,
+        context : ContextService,
         private readonly componentFactoryResolver: ComponentFactoryResolver,
         private readonly customComponentService: CustomComponentService,
         private readonly configService: ConfigService) {
-        super(activatedRoute, urlManager);
+        super(activatedRoute, urlManager, context);
     }
 
     private lastOid: string;

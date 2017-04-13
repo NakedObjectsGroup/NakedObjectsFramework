@@ -1,4 +1,5 @@
-﻿import { Component, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
+﻿import { ContextService } from '../context.service';
+import { Component, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { ActivatedRoute } from '@angular/router';
 import { UrlManagerService } from '../url-manager.service';
@@ -20,9 +21,10 @@ export class RecentComponent extends PaneComponent implements AfterViewInit {
     constructor(
         activatedRoute: ActivatedRoute,
         urlManager: UrlManagerService,
+        context : ContextService, 
         private readonly viewModelFactory: ViewModelFactoryService,
     ) {
-        super(activatedRoute, urlManager);
+        super(activatedRoute, urlManager, context);
     }
 
     // template API 
@@ -44,6 +46,10 @@ export class RecentComponent extends PaneComponent implements AfterViewInit {
 
     get actionHolders() {
         return [this.clearButton];
+    }
+
+    hasItems() {
+        return this.recent && this.recent.items.length > 0;
     }
 
     clear() {

@@ -4,7 +4,7 @@
             <div class="title">{{title}}</div>
             <nof-action-bar [actions]="actionHolders"></nof-action-bar>
         </div>
-        <ng-container *ngIf="recent">
+        <ng-container *ngIf="hasItems()">
             <div class="collection">
                 <table>
                     <tbody>

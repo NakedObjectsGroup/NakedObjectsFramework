@@ -24,12 +24,12 @@ export class DynamicListComponent extends PaneComponent {
     constructor(
         activatedRoute: ActivatedRoute,
         urlManager: UrlManagerService,
-        private readonly context: ContextService,
+        context: ContextService,
         private readonly error: ErrorService,
         private readonly componentFactoryResolver: ComponentFactoryResolver,
         private readonly customComponentService: CustomComponentService,
         private readonly configService: ConfigService) {
-        super(activatedRoute, urlManager);
+        super(activatedRoute, urlManager, context);
     }
 
     private lastOid: string | null;

@@ -72,6 +72,7 @@ export class PaneRouteData {
         private readonly doUrlValidation: boolean,
         private readonly loggerService: LoggerService) { }
 
+    rawParms: _.Dictionary<string>;
     location: ViewType;
     objectId: string;
     menuId: string;
@@ -161,7 +162,13 @@ export class PaneRouteData {
     }
 
     isEqual(other: PaneRouteData) {
-        return _.isEqual(this, other);
+        if (!this.rawParms || !other || !other.rawParms) {
+            return false;
+        }
+        const thisP = _.omit(this.rawParms, "r1");
+        const otherP = _.omit(other.rawParms, "r1");
+
+        return  _.isEqual(thisP, otherP);
     }
 }
 

@@ -30,12 +30,12 @@ export class MultiLineDialogComponent extends PaneComponent {
         activatedRoute: ActivatedRoute,
         urlManager: UrlManagerService,
         private readonly viewModelFactory: ViewModelFactoryService,
-        private readonly context: ContextService,
+        context: ContextService,
         private readonly error: ErrorService,
         private readonly formBuilder: FormBuilder,
         private readonly configService: ConfigService
     ) {
-        super(activatedRoute, urlManager);
+        super(activatedRoute, urlManager, context);
     }
 
     dialog: MultiLineDialogViewModel;

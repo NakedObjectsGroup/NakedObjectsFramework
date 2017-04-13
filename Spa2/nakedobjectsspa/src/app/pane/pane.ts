@@ -1,14 +1,17 @@
-﻿import { OnInit, OnDestroy } from '@angular/core';
+﻿import { ContextService } from '../context.service';
+import { OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
 import { PaneRouteData, ICustomActivatedRouteData, PaneType, PaneName } from '../route-data';
 import { UrlManagerService } from '../url-manager.service';
 
+
 export abstract class PaneComponent implements OnInit, OnDestroy {
 
     protected constructor(
         protected readonly activatedRoute: ActivatedRoute,
-        protected readonly urlManager: UrlManagerService
+        protected readonly urlManager: UrlManagerService,
+        protected readonly context: ContextService
     ) {
     }
 
@@ -44,6 +47,8 @@ export abstract class PaneComponent implements OnInit, OnDestroy {
                     this.urlManager.getPaneRouteDataObservable(this.paneId)
                         .subscribe((paneRouteData: PaneRouteData) => {
                             if (!paneRouteData.isEqual(this.lastPaneRouteData)) {
+                                this.context.clearMessages();
+                                this.context.clearWarnings();
                                 this.lastPaneRouteData = paneRouteData;
                                 this.setup(paneRouteData);
                             }

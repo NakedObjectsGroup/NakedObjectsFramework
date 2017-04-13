@@ -16,10 +16,11 @@ export class RecentItemsViewModel {
         this.items = _.map(items, i => viewModelFactory.recentItemViewModel(i.obj, i.link!, onPaneId, false, i.index));
     }
 
-    readonly items: RecentItemViewModel[];
+    items: RecentItemViewModel[];
 
     readonly clear = () => {
         this.context.clearRecentlyViewed();
+        this.items = [];
         this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
     }
 }
