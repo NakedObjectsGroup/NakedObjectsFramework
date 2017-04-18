@@ -186,13 +186,15 @@ export class UrlManagerService {
         return rawInteractionMode ? (<any>InteractionMode)[rawInteractionMode] : InteractionMode.View;
     }
 
-    private getPaneParams(params : _.Dictionary<string>, paneId : number) : _.Dictionary<string>{
+    private getPaneParams(params : _.Dictionary<string>, paneId : number) : {rp : _.Dictionary<string>, rpwr : _.Dictionary<string>} {
         const paneIds = _.filter(_.keys(params), k => (k.indexOf(paneId.toString()) >= 0 || k.startsWith(akm.reload)));
-        return _.pick(params, paneIds) as _.Dictionary<string>;
+        const allRawParams = _.pick(params, paneIds) as _.Dictionary<string>;
+        const rawParamsWithoutReload = _.omit(allRawParams, akm.reload) as _.Dictionary<string>;
+        return { rp: allRawParams, rpwr: rawParamsWithoutReload };
     }
 
     private setPaneRouteDataFromParms(paneRouteData: PaneRouteData, paneId: number, routeParams: { [key: string]: string }) {
-        paneRouteData.rawParms =  this.getPaneParams(routeParams, paneId);
+        ({ rp :paneRouteData.rawParms, rpwr : paneRouteData.rawParmsWithoutReload} =  this.getPaneParams(routeParams, paneId));
         paneRouteData.menuId = this.getId(akm.menu + paneId, routeParams);
         paneRouteData.actionId = this.getId(akm.action + paneId, routeParams);
         paneRouteData.dialogId = this.getId(akm.dialog + paneId, routeParams);

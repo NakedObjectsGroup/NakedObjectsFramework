@@ -73,6 +73,7 @@ export class PaneRouteData {
         private readonly loggerService: LoggerService) { }
 
     rawParms: _.Dictionary<string>;
+    rawParmsWithoutReload: _.Dictionary<string>;
     location: ViewType;
     objectId: string;
     menuId: string;
@@ -170,16 +171,10 @@ export class PaneRouteData {
     }
 
     isEqualIgnoringReload(other: PaneRouteData) {
-        if (!this.rawParms || !other || !other.rawParms) {
+        if (!this.rawParmsWithoutReload || !other || !other.rawParmsWithoutReload) {
             return false;
         }
-
-        const thisP = _.omit(this.rawParms, "r");
-        const otherP = _.omit(other.rawParms, "r");
-
-        return _.isEqual(thisP, otherP);
+        return _.isEqual(this.rawParmsWithoutReload, other.rawParmsWithoutReload);
     }
-
-
 }
 

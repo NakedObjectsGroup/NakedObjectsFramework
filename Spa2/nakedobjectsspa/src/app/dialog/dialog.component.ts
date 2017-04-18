@@ -118,8 +118,6 @@ export class DialogComponent implements AfterViewInit {
     closeExistingDialog() {
         if (this.dialog) {
             this.dialog.doCloseKeepHistory();
-            this.context.clearMessages();
-            this.context.clearWarnings();
             this.dialog = null;
         }
     }
