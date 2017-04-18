@@ -280,9 +280,9 @@ namespace NakedObjects.Selenium {
             Click(OKButton()); //This will have updated server, but not client-cached object
             //Go and do something else, so screen changes, then back again
             wait.Until(dr => dr.FindElements(By.CssSelector(".dialog")).Count == 0);
-            Click(br.FindElement(By.CssSelector(".icon-home")));
+            Click(br.FindElement(By.CssSelector(".icon.home")));
             WaitForView(Pane.Single, PaneType.Home, "Home");
-            Click(br.FindElement(By.CssSelector(".icon-back")));
+            Click(br.FindElement(By.CssSelector(".icon.back")));
             WaitForView(Pane.Single, PaneType.Object);
             wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(6) .value")).Text == original);
             Reload();
@@ -315,7 +315,7 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.Object, "SO59289");
             WaitForCss(".object.object-color2");
             WaitForCss("tr", 2);
-            wait.Until(dr => dr.FindElements(By.CssSelector("tr.link-color2")).Count == 2);
+            wait.Until(dr => dr.FindElements(By.CssSelector("td.link-color2")).Count == 2);
             GeminiUrl("object?i1=View&o1=___1.SalesOrderDetail--59289--71041");
             WaitForView(Pane.Single, PaneType.Object, "1 x Mountain-400-W Silver, 46");
             WaitForCss(".object.object-color2");
