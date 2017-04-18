@@ -95,10 +95,10 @@ namespace NakedObjects.Selenium {
             GeminiUrl("object?r=0&i1=View&o1=___1.Product--464");
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text.StartsWith("Product Inventory:\r\n3 Items"));
             var cols = WaitForCss("th", 4).ToArray();
-            Assert.AreEqual("Quantity", cols[1].Text);
-            Assert.AreEqual("Location", cols[2].Text);
-            Assert.AreEqual("Shelf", cols[3].Text);
-            Assert.AreEqual("Bin", cols[4].Text);
+            Assert.AreEqual("Quantity", cols[0].Text);
+            Assert.AreEqual("Location", cols[1].Text);
+            Assert.AreEqual("Shelf", cols[2].Text);
+            Assert.AreEqual("Bin", cols[3].Text);
             WaitForCss("tbody tr", 3);
         }
 
@@ -141,15 +141,15 @@ namespace NakedObjects.Selenium {
         public virtual void TableViewHonouredOnCollection() {
             GeminiUrl("object?i1=View&o1=___1.Employee--83&c1_DepartmentHistory=Summary&c1_PayHistory=Table");
             var cols = WaitForCss("th", 3).ToArray();
-            Assert.AreEqual(4, cols.Length);
-            Assert.AreEqual("", cols[1].Text); //Title
-            Assert.AreEqual("Rate Change Date", cols[2].Text);
-            Assert.AreEqual("Rate", cols[3].Text);
+            Assert.AreEqual(3, cols.Length);
+            Assert.AreEqual("", cols[0].Text); //Title
+            Assert.AreEqual("Rate Change Date", cols[1].Text);
+            Assert.AreEqual("Rate", cols[2].Text);
 
             //Dates formatted in table view
             GeminiUrl("object?i1=View&o1=___1.Product--775&c1_SpecialOffers=Table&c1_ProductInventory=List");
             WaitForCss("td", 15);
-            var cell = WaitForCss("td:nth-child(6)");
+            var cell = WaitForCss("td:nth-child(5)");
             Assert.AreEqual("31 Dec 2008", cell.Text);
         }
 
@@ -187,8 +187,8 @@ namespace NakedObjects.Selenium {
             WaitForCss("table");
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection")).Text.Contains("1 Item"));
             // cancel table view 
-            Click(WaitForCss(".icon.minimise"));
-            WaitUntilGone(dr => dr.FindElement(By.CssSelector(".table")));
+            Click(WaitForCss(".icon.summary"));
+            WaitUntilGone(dr => dr.FindElement(By.CssSelector("table")));
 
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection")).Text == "Product - Order Info:");
         }
@@ -747,39 +747,39 @@ namespace NakedObjects.Selenium {
     public abstract class MegaObjectViewTestsRoot : ObjectViewTestsRoot {
         [TestMethod] //Mega
         public void MegaObjectViewTest() {
-            //ActionsAlreadyOpen();
-            //OpenActionsMenuNotAlreadyOpen();
-            //OpenAndCloseSubMenusTo3Levels();
-            //Properties();
-            //Collections();
-            //CollectionEagerlyRendered();
-            //DateAndCurrencyProperties();
-            //TableViewHonouredOnCollection();
-            //TableViewIgnoresDuplicatedColumnName();
-            //ClickReferenceProperty();
-            //// OpenCollectionAsList();  move to LocallyRun 
-            //NotCountedCollection();
-            //ClickOnLineItemWithCollectionAsList();
-            //ClickOnLineItemWithCollectionAsTable();
-            //CanClickOnTitleInTableView();
-            //DialogAction();
-            //DialogActionOk();
-            //ObjectAction();
-            //CollectionAction();
-            //DescriptionRenderedAsTooltip();
-            //DisabledAction();
-            //ActionsMenuDisabledOnObjectWithNoActions();
-            //QueryOnlyActionDoesNotReloadAutomatically();
-            //PotentActionDoesReloadAutomatically();
-            //NonNavigableReferenceProperty();
-            //Colours();
-            //ZeroIntValues();
-            //AddingObjectToCollectionUpdatesTableView();
-            ////TimeSpanProperty();
-            //ZeroParamActionCausesObjectToReload();
+            ActionsAlreadyOpen();
+            OpenActionsMenuNotAlreadyOpen();
+            OpenAndCloseSubMenusTo3Levels();
+            Properties();
+            Collections();
+            CollectionEagerlyRendered();
+            DateAndCurrencyProperties();
+            TableViewHonouredOnCollection();
+            TableViewIgnoresDuplicatedColumnName();
+            ClickReferenceProperty();
+            // OpenCollectionAsList();  move to LocallyRun 
+            NotCountedCollection();
+            ClickOnLineItemWithCollectionAsList();
+            ClickOnLineItemWithCollectionAsTable();
+            CanClickOnTitleInTableView();
+            DialogAction();
+            DialogActionOk();
+            ObjectAction();
+            CollectionAction();
+            DescriptionRenderedAsTooltip();
+            DisabledAction();
+            ActionsMenuDisabledOnObjectWithNoActions();
+            QueryOnlyActionDoesNotReloadAutomatically();
+            PotentActionDoesReloadAutomatically();
+            NonNavigableReferenceProperty();
+            Colours();
+            ZeroIntValues();
+            AddingObjectToCollectionUpdatesTableView();
+            TimeSpanProperty();
+            ZeroParamActionCausesObjectToReload();
 
-            //CanInvokeOneNonPotentActionBeforePreviousHasCompleted();
-            //UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed();
+            CanInvokeOneNonPotentActionBeforePreviousHasCompleted();
+            UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed();
             CannotInvokeAPotentActionUntilPriorOneHasCompleted();
 
             //CollectionsUpdateProperly();  move to LocallyRun 

@@ -11,7 +11,7 @@
 <nof-action-bar *ngIf="showActions()" class="actions" [menuHolder]="collection"></nof-action-bar>
 <nof-dialog *ngIf="showActions()" [parent]="collection" [selectedDialogId]="selectedDialogId"></nof-dialog>
 
-<table>
+<table *ngIf="showSummary()">
     <thead>
         <tr nof-header [collection]="collection" [state]="currentState"></tr>
     </thead>
