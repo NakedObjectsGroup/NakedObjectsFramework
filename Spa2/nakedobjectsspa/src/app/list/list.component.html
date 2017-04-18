@@ -19,7 +19,7 @@
                         <tr nof-header [collection]="collection" [state]="currentState"></tr>
                     </thead>
                     <tbody *ngIf="state === 'list' || hasTableData()">
-                        <tr *ngFor="let item of items; let i = index" nof-row [item]="item" [index]="i" [withCheckbox]="!disableActions()" [isTable]="state === 'table'"></tr>
+                        <tr *ngFor="let item of items; let i = index" nof-row [item]="item" [row]="i" [withCheckbox]="!disableActions()" [isTable]="state === 'table'"></tr>
                     </tbody>
                 </table>
         </ng-container>

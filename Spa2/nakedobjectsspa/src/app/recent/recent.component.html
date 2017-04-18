@@ -8,7 +8,7 @@
             <div class="collection">
                 <table>
                     <tbody>
-                        <tr #row *ngFor="let item of items(); let i = index" nof-row [item]="item" [index]="i" [withCheckbox]="false" [isTable]="true" tabindex="0"></tr>
+                        <tr #row *ngFor="let item of items(); let i = index" nof-row [item]="item" [row]="i" [withCheckbox]="false" [isTable]="true"></tr>
                     </tbody>
                 </table>
             </div>
