@@ -1,4 +1,4 @@
-﻿import { Component, Input, ElementRef, Renderer } from '@angular/core';
+﻿import { Component, Input, ElementRef, Renderer, ViewChildren, QueryList } from '@angular/core';
 import { ItemViewModel } from '../view-models/item-view-model';
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
 import * as Helpers from '../view-models/helpers-view-models';
@@ -82,7 +82,10 @@ export class RowComponent {
         Helpers.copy(event, item, this.context);
     }
 
+    @ViewChildren("focus")
+    rowChildren: QueryList<ElementRef>;
+
     focus() {
-        return !!this.element && Helpers.focus(this.renderer, this.element);
+        return !!this.rowChildren && this.rowChildren.length > 0 && Helpers.focus(this.renderer, this.rowChildren.first);
     }
 }
