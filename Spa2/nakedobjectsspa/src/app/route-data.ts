@@ -165,10 +165,21 @@ export class PaneRouteData {
         if (!this.rawParms || !other || !other.rawParms) {
             return false;
         }
-        const thisP = _.omit(this.rawParms, "r1");
-        const otherP = _.omit(other.rawParms, "r1");
-
+     
         return  _.isEqual(this.rawParms, other.rawParms);
     }
+
+    isEqualIgnoringReload(other: PaneRouteData) {
+        if (!this.rawParms || !other || !other.rawParms) {
+            return false;
+        }
+
+        const thisP = _.omit(this.rawParms, "r");
+        const otherP = _.omit(other.rawParms, "r");
+
+        return _.isEqual(thisP, otherP);
+    }
+
+
 }
 

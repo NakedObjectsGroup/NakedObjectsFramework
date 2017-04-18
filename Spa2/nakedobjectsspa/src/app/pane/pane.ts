@@ -46,9 +46,13 @@ export abstract class PaneComponent implements OnInit, OnDestroy {
                 this.paneRouteDataSub =
                     this.urlManager.getPaneRouteDataObservable(this.paneId)
                         .subscribe((paneRouteData: PaneRouteData) => {
-                            if (!paneRouteData.isEqual(this.lastPaneRouteData)) {
+                            if (!paneRouteData.isEqualIgnoringReload(this.lastPaneRouteData)) {
+                                // only remove messages if something more than reload flag has changed
                                 this.context.clearMessages();
                                 this.context.clearWarnings();
+                            }
+
+                            if (!paneRouteData.isEqual(this.lastPaneRouteData)) {
                                 this.lastPaneRouteData = paneRouteData;
                                 this.setup(paneRouteData);
                             }
