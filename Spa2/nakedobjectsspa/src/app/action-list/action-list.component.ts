@@ -3,6 +3,7 @@ import { MenuItemViewModel } from '../view-models/menu-item-view-model';
 import { IActionHolder, wrapAction } from '../action/action.component';
 import { ActionComponent } from '../action/action.component';
 import { IMenuHolderViewModel } from '../view-models/imenu-holder-view-model';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'nof-action-list',

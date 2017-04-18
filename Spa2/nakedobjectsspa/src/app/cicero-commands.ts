@@ -12,6 +12,7 @@ import {Location} from '@angular/common';
 import {CiceroCommandFactoryService} from './cicero-command-factory.service';
 import {ConfigService, IAppConfig} from './config.service';
 import * as moment from 'moment';
+import * as _ from 'lodash';
 
     export function getParametersAndCurrentValue(action: Ro.ActionMember | Ro.IInvokableAction, context: ContextService): _.Dictionary<Ro.Value> {
 

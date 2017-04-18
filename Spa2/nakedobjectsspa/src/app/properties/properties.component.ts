@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { EditPropertyComponent } from '../edit-property/edit-property.component'
 import { PropertyViewModel } from '../view-models/property-view-model';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'nof-properties',

@@ -9,6 +9,7 @@ import {MaskService} from './mask.service';
 import {ErrorService} from './error.service';
 import {ConfigService, IAppConfig} from './config.service';
 import {Location} from '@angular/common';
+import * as _ from 'lodash';
 
 @Injectable()
 export class CiceroCommandFactoryService {

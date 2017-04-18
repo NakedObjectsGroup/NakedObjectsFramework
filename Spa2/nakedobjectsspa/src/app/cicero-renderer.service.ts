@@ -9,6 +9,7 @@ import { InteractionMode } from './route-data';
 import { MaskService } from './mask.service';
 import { getParametersAndCurrentValue } from './cicero-commands';
 import { ErrorService } from './error.service';
+import * as _ from 'lodash';
 
 @Injectable()
 export class CiceroRendererService {

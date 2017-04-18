@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { EditParameterComponent } from '../edit-parameter/edit-parameter.component';
 import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { DialogViewModel } from '../view-models/dialog-view-model';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'nof-parameters',

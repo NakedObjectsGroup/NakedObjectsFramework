@@ -2,6 +2,7 @@
 import { LinkViewModel } from '../view-models/link-view-model';
 import { ActionComponent, IActionHolder } from '../action/action.component';
 import { UrlManagerService } from '../url-manager.service';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'nof-menu-bar',

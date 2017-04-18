@@ -63,10 +63,10 @@
   "devDependencies": {
     "@angular/cli": "^1.0.0-rc.2",
     "@angular/compiler-cli": "2.4.10",
-    "@types/jasmine": "2.5.38",
-    "@types/lodash": "4.14.37",
-    "@types/node": "~6.0.60",
     "@types/auth0-lock": "10.10.1",
+    "@types/jasmine": "2.5.38",
+    "@types/lodash": "4.14.62",
+    "@types/node": "~6.0.60",
     "codelyzer": "~2.0.0",
     "cpx": "^1.5.0",
     "find-in-files": "^0.3.1",
@@ -81,6 +81,6 @@
     "replace-in-file": "^2.3.2",
     "ts-node": "~2.0.0",
     "tslint": "~4.4.2",
-    "typescript": "~2.0.3"
+    "typescript": "^2.3.0"
   }
 }

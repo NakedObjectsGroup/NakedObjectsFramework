@@ -1,6 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, RequestOptionsArgs } from '@angular/http';
 import * as Ro from './ro-interfaces';
+import * as _ from 'lodash';
 
 export interface IAppConfig {
     authenticate: boolean,
