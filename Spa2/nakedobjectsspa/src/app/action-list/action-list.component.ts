@@ -57,8 +57,6 @@ export class ActionListComponent implements AfterViewInit {
 
     toggleCollapsed = (menuItem: MenuItemViewModel, index: number) => menuItem.toggleCollapsed();
 
-
-
     navCollapsed = (menuItem: MenuItemViewModel) => menuItem.navCollapsed;
 
     displayClass = (menuItem: MenuItemViewModel) => ({ collapsed: menuItem.navCollapsed, open: !menuItem.navCollapsed, rootMenu: !menuItem.name });

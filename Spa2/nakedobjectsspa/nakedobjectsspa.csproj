@@ -10,7 +10,7 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TypeScriptToolsVersion>2.0</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>2.3</TypeScriptToolsVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -170,7 +170,6 @@
     <TypeScriptCompile Include="src\app\ro-interfaces.ts" />
     <TypeScriptCompile Include="src\app\route-data.ts" />
     <TypeScriptCompile Include="src\app\row\row.component.ts" />
-    <TypeScriptCompile Include="src\app\rxjs-extensions.ts" />
     <TypeScriptCompile Include="src\app\shared\index.ts" />
     <TypeScriptCompile Include="src\app\simple-lru-cache.ts" />
     <TypeScriptCompile Include="src\app\type-result-cache.ts" />

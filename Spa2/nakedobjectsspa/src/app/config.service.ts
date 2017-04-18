@@ -2,6 +2,8 @@
 import { Http, RequestOptionsArgs } from '@angular/http';
 import * as Ro from './ro-interfaces';
 import * as _ from 'lodash';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/toPromise';
 
 export interface IAppConfig {
     authenticate: boolean,
