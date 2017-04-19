@@ -90,6 +90,7 @@ export class DynamicListComponent extends PaneComponent {
 
         } else {
             this.showPlaceholder = true;
+            this.title = "List";
             this.parent.clear();
             this.lastOid = null; // so we recreate child after reload
             this.getActionExtensions(routeData)

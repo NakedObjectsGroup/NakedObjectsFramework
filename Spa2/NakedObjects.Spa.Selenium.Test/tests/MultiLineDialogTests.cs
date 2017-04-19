@@ -108,6 +108,7 @@ namespace NakedObjects.Selenium {
             //line 1
             ClearFieldThenType("#prod1", "bottle");
             wait.Until(d => d.FindElements(By.CssSelector("md-option")).Count > 2);
+            Thread.Sleep(1000);
             Click(WaitForCss("md-option"));
             WaitForCss("#prod1.link-color4");
             ClearFieldThenType("#qty1", "5");
