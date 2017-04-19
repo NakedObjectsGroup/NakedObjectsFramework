@@ -1,5 +1,5 @@
 import * as Models from './models';
-import { PaneRouteData } from './route-data';
+import { PaneRouteData, Pane } from './route-data';
 import { ContextService } from './context.service';
 import { UrlManagerService } from './url-manager.service';
 import { ColorService } from './color.service';
@@ -54,7 +54,7 @@ export class ViewModelFactoryService {
         return new ErrorViewModel(error);
     }
 
-    attachmentViewModel = (propertyRep: Models.PropertyMember, paneId: number): AttachmentViewModel | null => {
+    attachmentViewModel = (propertyRep: Models.PropertyMember, paneId: Pane): AttachmentViewModel | null => {
         const link = propertyRep.attachmentLink();
         if (link) {
             const parent = propertyRep.parent as Models.DomainObjectRepresentation;
@@ -63,15 +63,15 @@ export class ViewModelFactoryService {
         return null;
     }
 
-    linkViewModel = (linkRep: Models.Link, paneId: number) => {
+    linkViewModel = (linkRep: Models.Link, paneId: Pane) => {
         return new LinkViewModel(this.context, this.color, this.error, this.urlManager, this.configService, linkRep, paneId);
     }
 
-    itemViewModel = (linkRep: Models.Link, paneId: number, selected: boolean, index: number, id: string) => {
+    itemViewModel = (linkRep: Models.Link, paneId: Pane, selected: boolean, index: number, id: string) => {
         return new ItemViewModel(this.context, this.color, this.error, this.urlManager, this.configService, linkRep, paneId, this.clickHandler, this, index, selected, id);
     }
 
-    recentItemViewModel = (obj: Models.DomainObjectRepresentation, linkRep: Models.Link, paneId: number, selected: boolean, index: number) => {
+    recentItemViewModel = (obj: Models.DomainObjectRepresentation, linkRep: Models.Link, paneId: Pane, selected: boolean, index: number) => {
         return new RecentItemViewModel(this.context, this.color, this.error, this.urlManager, this.configService, linkRep, paneId, this.clickHandler, this, index, selected, obj.extensions().friendlyName());
     }
 
@@ -83,7 +83,7 @@ export class ViewModelFactoryService {
         return propertyRep ? new TableRowColumnViewModel(id, propertyRep, this.mask) : new TableRowColumnViewModel(id);
     }
 
-    propertyViewModel = (propertyRep: Models.PropertyMember, id: string, previousValue: Models.Value, paneId: number, parentValues: () => _.Dictionary<Models.Value>) => {
+    propertyViewModel = (propertyRep: Models.PropertyMember, id: string, previousValue: Models.Value, paneId: Pane, parentValues: () => _.Dictionary<Models.Value>) => {
         return new PropertyViewModel(propertyRep,
             this.color,
             this.error,
@@ -145,7 +145,7 @@ export class ViewModelFactoryService {
         );
     }
 
-    parameterViewModel = (parmRep: Models.Parameter, previousValue: Models.Value, paneId: number) => {
+    parameterViewModel = (parmRep: Models.Parameter, previousValue: Models.Value, paneId: Pane) => {
         return new ParameterViewModel(parmRep, paneId, this.color, this.error, this.mask, previousValue, this, this.context, this.configService);
     }
 
@@ -161,11 +161,11 @@ export class ViewModelFactoryService {
         return new MenusViewModel(this, menusRep, routeData.paneId);
     }
 
-    recentItemsViewModel = (paneId: number) => {
+    recentItemsViewModel = (paneId: Pane) => {
         return new RecentItemsViewModel(this, this.context, this.urlManager, paneId);
     }
 
-    tableRowViewModel = (properties: _.Dictionary<Models.PropertyMember>, paneId: number, title: string): TableRowViewModel => {
+    tableRowViewModel = (properties: _.Dictionary<Models.PropertyMember>, paneId: Pane, title: string): TableRowViewModel => {
         return new TableRowViewModel(this, properties, paneId, title);
     }
 

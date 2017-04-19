@@ -1,6 +1,6 @@
 ﻿import { ParameterViewModel } from './parameter-view-model';
 import { ContextService } from '../context.service';
-import { PaneRouteData, InteractionMode } from '../route-data';
+import { PaneRouteData, InteractionMode, Pane } from '../route-data';
 import { UrlManagerService } from '../url-manager.service';
 import { ErrorService } from '../error.service';
 import { IMessageViewModel } from './imessage-view-model';
@@ -35,7 +35,7 @@ export class ActionViewModel {
         this.description = this.disabled() ? actionRep.disabledReason() : actionRep.extensions().description();
     }
 
-    readonly paneId: number;
+    readonly paneId: Pane;
     readonly menuPath: string;
     readonly title: string;
     readonly description: string;

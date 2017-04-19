@@ -4,7 +4,7 @@ import { ContextService } from '../context.service';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { UrlManagerService } from '../url-manager.service';
 import { ErrorService } from '../error.service';
-import { PaneRouteData, InteractionMode } from '../route-data';
+import { PaneRouteData, InteractionMode, Pane } from '../route-data';
 import { ChoiceViewModel } from './choice-view-model';
 import { ActionViewModel } from './action-view-model';
 import { MenuItemViewModel } from './menu-item-view-model';
@@ -70,7 +70,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
 
     private readonly cancelHandler = () => this.isFormOrTransient() ? () => this.urlManager.popUrlState(this.onPaneId) : () => this.urlManager.setInteractionMode(InteractionMode.View, this.onPaneId);
 
-    private readonly saveHandler = (): (object: Models.DomainObjectRepresentation, props: Object, paneId: number, viewSavedObject: boolean) => Promise<Models.DomainObjectRepresentation> =>
+    private readonly saveHandler = (): (object: Models.DomainObjectRepresentation, props: Object, paneId: Pane, viewSavedObject: boolean) => Promise<Models.DomainObjectRepresentation> =>
         this.domainObject.isTransient() ? this.contextService.saveObject : this.contextService.updateObject;
 
     private readonly validateHandler = () => this.domainObject.isTransient() ? this.contextService.validateSaveObject : this.contextService.validateUpdateObject;

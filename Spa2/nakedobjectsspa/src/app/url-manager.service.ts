@@ -1,4 +1,4 @@
-﻿import { RouteData, PaneRouteData, InteractionMode, CollectionViewState, ApplicationMode, ViewType } from './route-data';
+﻿import { RouteData, PaneRouteData, InteractionMode, CollectionViewState, ApplicationMode, ViewType, Pane } from './route-data';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Router, UrlSegment } from '@angular/router';
@@ -165,7 +165,7 @@ export class UrlManagerService {
         }
     }
 
-    private getIds(typeOfId: string, paneId: number) {
+    private getIds(typeOfId: string, paneId: Pane) {
         return <_.Dictionary<string>>_.pickBy(this.getSearch(), (v, k) => !!k && k.indexOf(typeOfId + paneId) === 0);
     }
 
@@ -173,7 +173,7 @@ export class UrlManagerService {
         return _.mapKeys(ids, (v: any, k: string) => k.substr(k.indexOf("_") + 1));
     }
 
-    private getAndMapIds(typeOfId: string, paneId: number) {
+    private getAndMapIds(typeOfId: string, paneId: Pane) {
         const ids = this.getIds(typeOfId, paneId);
         return this.mapIds(ids);
     }
@@ -193,7 +193,7 @@ export class UrlManagerService {
         return { rp: allRawParams, rpwr: rawParamsWithoutReload };
     }
 
-    private setPaneRouteDataFromParms(paneRouteData: PaneRouteData, paneId: number, routeParams: { [key: string]: string }) {
+    private setPaneRouteDataFromParms(paneRouteData: PaneRouteData, paneId: Pane, routeParams: { [key: string]: string }) {
         ({ rp :paneRouteData.rawParms, rpwr : paneRouteData.rawParmsWithoutReload} =  this.getPaneParams(routeParams, paneId));
         paneRouteData.menuId = this.getId(akm.menu + paneId, routeParams);
         paneRouteData.actionId = this.getId(akm.action + paneId, routeParams);
@@ -227,7 +227,7 @@ export class UrlManagerService {
     }
 
 
-    private setPaneRouteData(paneRouteData: PaneRouteData, paneId: number) {
+    private setPaneRouteData(paneRouteData: PaneRouteData, paneId: Pane) {
         const routeParams = this.getSearch();
         this.setPaneRouteDataFromParms(paneRouteData, paneId, routeParams);
 
@@ -238,22 +238,22 @@ export class UrlManagerService {
         return this.getPath().split("/").length <= 3;
     }
 
-    private searchKeysForPane(search: any, paneId: number, raw: string[]) {
+    private searchKeysForPane(search: any, paneId: Pane, raw: string[]) {
         const ids = _.map(raw, s => s + paneId);
         return _.filter(_.keys(search), k => _.some(ids, id => k.indexOf(id) === 0));
     }
 
-    private allSearchKeysForPane(search: any, paneId: number) {
+    private allSearchKeysForPane(search: any, paneId: Pane) {
         const raw = _.values(akm) as string[];
         return this.searchKeysForPane(search, paneId, raw);
     }
 
-    private clearPane(search: any, paneId: number) {
+    private clearPane(search: any, paneId: Pane) {
         const toClear = this.allSearchKeysForPane(search, paneId);
         return _.omit(search, toClear) as _.Dictionary<string>;
     }
 
-    private clearSearchKeys(search: any, paneId: number, keys: string[]) {
+    private clearSearchKeys(search: any, paneId: Pane, keys: string[]) {
         const toClear = this.searchKeysForPane(search, paneId, keys);
         return _.omit(search, toClear);
     }
@@ -303,7 +303,7 @@ export class UrlManagerService {
         return { path: newPath, replace: mayReplace };
     }
 
-    private capturePane(paneId: number) {
+    private capturePane(paneId: Pane) {
         const search = this.getSearch();
         const toCapture = this.allSearchKeysForPane(search, paneId);
 
@@ -319,11 +319,11 @@ export class UrlManagerService {
         return Models.propertyIdFromUrl(href);
     }
 
-    private setValue(paneId: number, search: any, p: { id: () => string }, pv: Models.Value, valueType: string) {
+    private setValue(paneId: Pane, search: any, p: { id: () => string }, pv: Models.Value, valueType: string) {
         this.setId(`${valueType}${paneId}_${p.id()}`, pv.toJsonString(this.shortCutMarker, this.urlShortCuts), search);
     }
 
-    private setParameter(paneId: number, search: any, p: Models.Parameter, pv: Models.Value) {
+    private setParameter(paneId: Pane, search: any, p: Models.Parameter, pv: Models.Value) {
         this.setValue(paneId, search, p, pv, akm.parm);
     }
 
@@ -378,7 +378,7 @@ export class UrlManagerService {
         return [];
     }
 
-    private clearInvalidParmsFromSearch(paneId: number, search: any, path: string) {
+    private clearInvalidParmsFromSearch(paneId: Pane, search: any, path: string) {
         if (path) {
             const vks = this.validKeys(path);
             const ivks = _.without(_.values(akm), ...vks) as string[];
@@ -387,7 +387,7 @@ export class UrlManagerService {
         return search;
     }
 
-    private handleTransition(paneId: number, search: any, transition: Transition): ITransitionResult {
+    private handleTransition(paneId: Pane, search: any, transition: Transition): ITransitionResult {
 
         let replace = true;
         let path = this.getPath();
@@ -464,7 +464,7 @@ export class UrlManagerService {
         return { path: path, search: search, replace: replace };
     }
 
-    private executeTransition(newValues: _.Dictionary<string>, paneId: number, transition: Transition, condition: (search: any) => boolean) {
+    private executeTransition(newValues: _.Dictionary<string>, paneId: Pane, transition: Transition, condition: (search: any) => boolean) {
         this.currentPaneId = paneId;
         let search = this.getSearch();
         if (condition(search)) {
@@ -504,7 +504,7 @@ export class UrlManagerService {
     }
 
 
-    setMultiLineDialog = (dialogId: string, paneId: number) => {
+    setMultiLineDialog = (dialogId: string, paneId: Pane) => {
         this.pushUrlState();
         const key = `${akm.dialog}${1}`; // always on 1
         const newValues = _.zipObject([key], [dialogId]) as _.Dictionary<string>;
@@ -519,7 +519,7 @@ export class UrlManagerService {
         }
     }
 
-    private closeOrCancelDialog(id: string, paneId: number, transition: Transition) {
+    private closeOrCancelDialog(id: string, paneId: Pane, transition: Transition) {
         const key = `${akm.dialog}${paneId}`;
         const existingValue = this.getSearch()[key];
 
@@ -615,7 +615,7 @@ export class UrlManagerService {
         this.executeTransition(newValues, paneId, Transition.Null, () => true);
     }
 
-    private checkAndSetValue(paneId: number, check: (search: any) => boolean, set: (search: any) => void) {
+    private checkAndSetValue(paneId: Pane, check: (search: any) => boolean, set: (search: any) => void) {
         this.currentPaneId = paneId;
         const search = this.getSearch();
 
@@ -737,7 +737,7 @@ export class UrlManagerService {
         this.loggerService.throw(`UrlManagerService:getViewType ${view} is not a valid ViewType`);
     }
 
-    getPaneRouteDataObservable = (paneId: number) => {
+    getPaneRouteDataObservable = (paneId: Pane) => {
 
         return this.router.routerState.root.queryParams.map((ps: { [key: string]: string }) => {
             const routeData = new RouteData(this.configService, this.loggerService);
@@ -768,7 +768,7 @@ export class UrlManagerService {
         return { paneType: paneType, search: paneSearch };
     }
 
-    getListCacheIndexFromSearch = (search: _.Dictionary<string>, paneId: number, newPage: number, newPageSize: number, format?: CollectionViewState) => {
+    getListCacheIndexFromSearch = (search: _.Dictionary<string>, paneId: Pane, newPage: number, newPageSize: number, format?: CollectionViewState) => {
 
 
         const s1 = this.getId(`${akm.menu}${paneId}`, search) || "";
@@ -790,7 +790,7 @@ export class UrlManagerService {
         return _.reduce(ss, (r, n) => r + this.keySeparator + n, "");
     }
 
-    getListCacheIndex = (paneId: number, newPage: number, newPageSize: number, format?: CollectionViewState) => {
+    getListCacheIndex = (paneId: Pane, newPage: number, newPageSize: number, format?: CollectionViewState) => {
         const search = this.getSearch();
         return this.getListCacheIndexFromSearch(search, paneId, newPage, newPageSize, format);
     }
@@ -817,7 +817,7 @@ export class UrlManagerService {
         }
     }
 
-    clearUrlState = (paneId: number) => {
+    clearUrlState = (paneId: Pane) => {
         this.currentPaneId = paneId;
         this.capturedPanes[paneId] = null;
     }
@@ -902,13 +902,13 @@ export class UrlManagerService {
         }
     }
 
-    private getLocation(paneId: number) {
+    private getLocation(paneId: Pane) {
         const path = this.getPath();
         const segments = path.split("/");
         return segments[paneId + 1]; // e.g. segments 0=~/1=cicero/2=home/3=home
     }
 
-    private isLocation(paneId: number, location: string) {
+    private isLocation(paneId: Pane, location: string) {
         return this.getLocation(paneId) === location; // e.g. segments 0=~/1=cicero/2=home/3=home
     }
 

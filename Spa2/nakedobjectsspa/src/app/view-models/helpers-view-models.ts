@@ -13,6 +13,7 @@ import { Renderer, ElementRef } from '@angular/core';
 import { FormBuilder, AbstractControl, FormGroup } from '@angular/forms';
 import { DialogViewModel } from './dialog-view-model';
 import { ParameterViewModel } from './parameter-view-model';
+import { Pane } from '../route-data';
 
 export function createForm(dialog: DialogViewModel, formBuilder: FormBuilder): { form: FormGroup, dialog: DialogViewModel, parms: _.Dictionary<ParameterViewModel> } {
     const pps = dialog.parameters;
@@ -226,13 +227,13 @@ export function handleErrorResponse(err: Models.ErrorMap, messageViewModel: IMes
 }
 
 
-export function incrementPendingPotentAction(context: ContextService, invokableaction: Models.IInvokableAction, paneId: number) {
+export function incrementPendingPotentAction(context: ContextService, invokableaction: Models.IInvokableAction, paneId: Pane) {
     if (invokableaction.isPotent()) {
         context.incPendingPotentActionOrReload(paneId);
     }
 }
 
-export function decrementPendingPotentAction(context: ContextService, invokableaction: Models.IInvokableAction, paneId: number) {
+export function decrementPendingPotentAction(context: ContextService, invokableaction: Models.IInvokableAction, paneId: Pane) {
     if (invokableaction.isPotent()) {
         context.decPendingPotentActionOrReload(paneId);
     }

@@ -7,6 +7,7 @@ import { ColorService } from '../color.service';
 import { ErrorService } from '../error.service';
 import { UrlManagerService } from '../url-manager.service';
 import { ConfigService } from '../config.service';
+import { Pane } from '../route-data';
 
 export class LinkViewModel implements IDraggableViewModel {
 
@@ -17,7 +18,7 @@ export class LinkViewModel implements IDraggableViewModel {
         protected readonly urlManager: UrlManagerService,
         private readonly configService: ConfigService,
         public readonly link: Models.Link,
-        public readonly paneId: number
+        public readonly paneId: Pane
     ) {
 
         this.title = link.title() + Models.dirtyMarker(this.context, this.configService, link.getOid(this.configService.config.keySeparator));

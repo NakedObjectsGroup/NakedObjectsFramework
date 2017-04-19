@@ -2,9 +2,8 @@
 import { OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
-import { PaneRouteData, ICustomActivatedRouteData, PaneType, PaneName } from '../route-data';
+import { PaneRouteData, ICustomActivatedRouteData, PaneType, PaneName, Pane } from '../route-data';
 import { UrlManagerService } from '../url-manager.service';
-
 
 export abstract class PaneComponent implements OnInit, OnDestroy {
 
@@ -16,7 +15,7 @@ export abstract class PaneComponent implements OnInit, OnDestroy {
     }
 
     // pane API
-    paneId: number;
+    paneId: Pane;
     paneType: PaneType;
     paneIdName: PaneName;
     arData: ICustomActivatedRouteData;

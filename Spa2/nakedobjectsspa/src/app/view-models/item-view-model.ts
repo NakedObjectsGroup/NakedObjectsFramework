@@ -8,6 +8,7 @@ import { ClickHandlerService } from '../click-handler.service';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import * as Models from '../models';
 import { ConfigService } from '../config.service';
+import { Pane } from '../route-data';
 
 export class ItemViewModel extends LinkViewModel {
 
@@ -18,7 +19,7 @@ export class ItemViewModel extends LinkViewModel {
         urlManager: UrlManagerService,
         configService: ConfigService,
         link: Models.Link,
-        paneId: number,
+        paneId: Pane,
         private readonly clickHandler: ClickHandlerService,
         private readonly viewModelFactory: ViewModelFactoryService,
         private readonly index: number,

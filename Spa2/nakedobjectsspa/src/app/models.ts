@@ -10,6 +10,7 @@ import { ConfigService } from './config.service';
 import { MaskService, ILocalFilter } from "./mask.service";
 import { ContextService } from "./context.service";
 import { ChoiceViewModel } from './view-models/choice-view-model';
+import {Pane} from './route-data';
 
 // log directly to avoid coupling back to angular  
 function error(message: string, ): never {
@@ -47,8 +48,8 @@ export function dirtyMarker(context: ContextService, configService: ConfigServic
     return (configService.config.showDirtyFlag && context.getIsDirty(oid)) ? "*" : "";
 }
 
-export function getOtherPane(paneId: number) {
-    return paneId === 1 ? 2 : 1;
+export function getOtherPane(paneId: Pane) {
+    return paneId === Pane.Pane1 ? Pane.Pane2 : Pane.Pane1;
 }
 
 export function toDateString(dt: Date) {

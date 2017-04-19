@@ -66,9 +66,15 @@ interface ICondition {
     name: string;
 }
 
+
+export enum Pane {
+    Pane1 = 1,
+    Pane2 = 2
+}
+
 export class PaneRouteData {
     constructor(
-        public paneId: number,
+        public paneId: Pane,
         private readonly doUrlValidation: boolean,
         private readonly loggerService: LoggerService) { }
 

@@ -15,6 +15,7 @@ import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 import { ConfigService } from '../config.service';
 import { LoggerService } from '../logger.service';
 import * as Helpers from '../view-models/helpers-view-models';
+import { Pane } from '../route-data';
 
 export abstract class FieldComponent {
 
@@ -60,7 +61,7 @@ export abstract class FieldComponent {
     currentOptions: ChoiceViewModel[] = [];
     pArgs: _.Dictionary<Models.Value>;
 
-    paneId: number;
+    paneId: Pane;
     canDrop = false;
 
     droppable: FieldViewModel;
