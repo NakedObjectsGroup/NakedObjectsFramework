@@ -36,8 +36,9 @@ export class Auth0AuthService extends AuthService implements CanActivate {
 
         const clientId = configService.config.authClientId;
         const domain = configService.config.authDomain;
+        const authenticate = configService.config.authenticate;
 
-        if (clientId && domain) {
+        if (authenticate && clientId && domain) {
 
             const options = {
                 auth: {
@@ -64,7 +65,7 @@ export class Auth0AuthService extends AuthService implements CanActivate {
                             logger.error(error);
                         }
                         else if (authResult && authResult.idToken) {
-                            // some sort of race here with token response navigationg us to a page,
+                            // some sort of race here with token response navigating us to a page,
                             // we're making auth OK with token but app.component doesn't yet have router-outlet 
                             // so we see errors. Set the pending Authenticate flag which will make it look like 
                             // we're not authenticated and then clear and route home on next event loop.
