@@ -31,6 +31,7 @@
     "e2e": "ng e2e",
     "togglecss": "node togglecss.js",
     "prepublish": "node prepublish.js",
+    "preinstall": "npm install @types/lodash",
     "postinstall": "node postinstall.js",
     "tsc": "tsc -p ./src/tsconfig.app.json"
   },
