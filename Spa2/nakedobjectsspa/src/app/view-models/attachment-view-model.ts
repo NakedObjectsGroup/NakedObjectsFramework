@@ -2,6 +2,7 @@
 import * as Models from '../models';
 import * as Msg from '../user-messages';
 import { ErrorService } from '../error.service';
+import { Pane } from '../route-data';
 
 export class AttachmentViewModel {
 
@@ -10,7 +11,7 @@ export class AttachmentViewModel {
         private readonly parent: Models.DomainObjectRepresentation,
         private readonly context: ContextService,
         private readonly error: ErrorService,
-        public readonly onPaneId: number
+        public readonly onPaneId: Pane
     ) {
         this.href = link.href();
         this.mimeType = link.type().asString;

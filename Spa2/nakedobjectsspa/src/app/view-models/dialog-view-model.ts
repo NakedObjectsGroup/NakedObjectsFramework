@@ -6,7 +6,7 @@ import { UrlManagerService } from '../url-manager.service';
 import { ErrorService } from '../error.service';
 import { ActionViewModel } from './action-view-model';
 import { ParameterViewModel } from './parameter-view-model';
-import { PaneRouteData } from '../route-data';
+import { PaneRouteData, Pane } from '../route-data';
 import * as Models from '../models';
 import * as Msg from '../user-messages';
 import * as Helpers from './helpers-view-models';
@@ -65,7 +65,7 @@ export class DialogViewModel extends MessageViewModel {
         this.closed = true;
     }
 
-    private readonly onPaneId: number;
+    private readonly onPaneId: Pane;
     private readonly isQueryOnly: boolean;
 
     private readonly actionMember = () => this.actionViewModel.actionRep;

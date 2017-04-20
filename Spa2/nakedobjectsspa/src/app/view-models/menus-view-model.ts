@@ -2,12 +2,14 @@
 import { LinkViewModel } from './link-view-model';
 import * as Models from '../models';
 import * as _ from 'lodash';
+import { Pane } from '../route-data';
+
 
 export class MenusViewModel {
     constructor(
         private readonly viewModelFactory: ViewModelFactoryService,
         private readonly menusRep: Models.MenusRepresentation,
-        onPaneId: number
+        onPaneId: Pane
     ) {
         this.items = _.map(this.menusRep.value(), link => this.viewModelFactory.linkViewModel(link, onPaneId));
     }

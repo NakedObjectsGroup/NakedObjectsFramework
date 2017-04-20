@@ -12,6 +12,7 @@ import * as _ from 'lodash';
 import * as Helpers from './helpers-view-models';
 import { ContextService } from '../context.service';
 import { ConfigService } from '../config.service';
+import { Pane } from '../route-data';
 
 export abstract class FieldViewModel extends MessageViewModel {
 
@@ -21,7 +22,7 @@ export abstract class FieldViewModel extends MessageViewModel {
         protected readonly error: ErrorService,
         protected readonly context: ContextService,
         private readonly configService: ConfigService,
-        public readonly onPaneId: number,
+        public readonly onPaneId: Pane,
         public readonly isScalar: boolean,
         public readonly id: string,
         public readonly isCollectionContributed: boolean,

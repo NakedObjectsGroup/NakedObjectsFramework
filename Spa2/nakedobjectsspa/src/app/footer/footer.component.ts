@@ -11,6 +11,7 @@ import * as Msg from '../user-messages';
 import * as Models from '../models';
 import { ConfigService } from '../config.service';
 import { AuthService } from '../auth.service';
+import { Pane } from '../route-data';
 
 @Component({
     selector: 'nof-footer',
@@ -36,9 +37,9 @@ export class FooterComponent implements OnInit {
     footerTemplate: string;
 
     goHome = (right?: boolean) => {
-        const newPane = this.clickHandler.pane(1, right);
+        const newPane = this.clickHandler.pane(Pane.Pane1, right);
 
-        if (this.configService.config.leftClickHomeAlwaysGoesToSinglePane && newPane === 1) {
+        if (this.configService.config.leftClickHomeAlwaysGoesToSinglePane && newPane === Pane.Pane1) {
             this.urlManager.setHomeSinglePane();
         } else {
             this.urlManager.setHome(newPane);
@@ -63,7 +64,7 @@ export class FooterComponent implements OnInit {
     }
 
     singlePane = (right?: boolean) => {
-        this.urlManager.singlePane(this.clickHandler.pane(1, right));
+        this.urlManager.singlePane(this.clickHandler.pane(Pane.Pane1, right));
     };
 
     logOff = () => {
@@ -97,11 +98,11 @@ export class FooterComponent implements OnInit {
     };
 
     recent = (right?: boolean) => {
-        this.urlManager.setRecent(this.clickHandler.pane(1, right));
+        this.urlManager.setRecent(this.clickHandler.pane(Pane.Pane1, right));
     };
 
     cicero = () => {
-        this.urlManager.singlePane(this.clickHandler.pane(1));
+        this.urlManager.singlePane(this.clickHandler.pane(Pane.Pane1));
         this.urlManager.cicero();
     };
     userName: string;

@@ -50,7 +50,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
     draggableTitle = () => this.title;
 
     domainObject: Models.DomainObjectRepresentation;
-    onPaneId: number;
+    onPaneId: Pane;
 
     title: string;
     friendlyName: string;

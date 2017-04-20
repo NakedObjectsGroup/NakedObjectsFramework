@@ -9,12 +9,14 @@ import * as Models from '../models';
 import * as Msg from '../user-messages';
 import * as _ from 'lodash';
 import { ConfigService } from '../config.service';
+import { Pane } from '../route-data';
+
 
 export class ParameterViewModel extends FieldViewModel {
 
     constructor(
         public readonly parameterRep: Models.Parameter,
-        onPaneId: number,
+        onPaneId: Pane,
         color: ColorService,
         error: ErrorService,
         private readonly maskService: MaskService,

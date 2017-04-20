@@ -14,6 +14,8 @@ import * as Msg from '../user-messages';
 import * as Models from '../models';
 import * as Helpers from './helpers-view-models';
 import * as Configservice from '../config.service';
+import { Pane } from '../route-data';
+
 
 export class PropertyViewModel extends FieldViewModel implements IDraggableViewModel {
 
@@ -29,7 +31,7 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         configService: Configservice.ConfigService,
         id: string,
         private readonly previousValue: Models.Value,
-        onPaneId: number,
+        onPaneId: Pane,
         parentValues: () => _.Dictionary<Models.Value>
     ) {
 

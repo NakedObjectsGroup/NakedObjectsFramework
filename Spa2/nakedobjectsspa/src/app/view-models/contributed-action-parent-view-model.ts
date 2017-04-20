@@ -11,7 +11,7 @@ import { ParameterViewModel } from './parameter-view-model';
 import * as _ from 'lodash';
 import * as Helpers from './helpers-view-models';
 import { MenuItemViewModel } from './menu-item-view-model';
-import { PaneRouteData } from '../route-data';
+import { PaneRouteData, Pane } from '../route-data';
 
 export abstract class ContributedActionParentViewModel extends MessageViewModel {
 
@@ -20,7 +20,7 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
         protected readonly viewModelFactory: ViewModelFactoryService,
         protected readonly urlManager: UrlManagerService,
         protected readonly error: ErrorService,
-        public readonly onPaneId: number
+        public readonly onPaneId: Pane
     ) {
         super();
     }
