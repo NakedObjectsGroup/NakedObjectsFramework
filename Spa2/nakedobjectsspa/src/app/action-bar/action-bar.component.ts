@@ -18,7 +18,7 @@ export class ActionBarComponent {
     @Input()
     set menuHolder(mhvm: IMenuHolderViewModel) {
         const menuItems = mhvm.menuItems;
-        const avms = _.flatten(_.map(menuItems, (mi: MenuItemViewModel) => mi.actions!));
+        const avms = _.flatten(_.map(menuItems || [], (mi: MenuItemViewModel) => mi.actions!));
         this.actions = _.map(avms, a => wrapAction(a));
     }
 

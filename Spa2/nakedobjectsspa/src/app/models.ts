@@ -28,7 +28,7 @@ export function withUndefined<T>(v: T | undefined | null): T | undefined {
 }
 
 function validateExists<T>(obj: T | null | undefined, name: string): T {
-    if (obj) { return obj; }
+    if (obj) { return obj!; }
     error(`validateExists - Expected ${name} does not exist`);
 }
 
@@ -40,7 +40,7 @@ function getMember<T>(members: _.Dictionary<T>, id: string, owner: string) {
 
 
 export function checkNotNull<T>(v: T | undefined | null): T {
-    if (v != null) { return v }
+    if (v != null) { return v! }
     error("checkNotNull - Unexpected null");
 }
 
@@ -2496,11 +2496,11 @@ export class UserRepresentation extends ResourceRepresentation<Ro.IUserRepresent
 
     // links 
     selfLink(): Link {
-        return linkByRel(this.links(), "self"); // mandatory
+        return linkByRel(this.links(), "self")!; // mandatory
     }
 
     upLink(): Link {
-        return linkByRel(this.links(), "up") as Link; // mandatory
+        return linkByRel(this.links(), "up")!; // mandatory
     }
 
     // linked representations 

@@ -83,7 +83,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
             const size = this.collectionRep.size();
             const itemLinks = this.collectionRep.value();
 
-            if (size > 0 || size == null) {
+            if (size == null || size > 0) {
                 this.mayHaveItems = true;
             }
             this.details = Helpers.getCollectionDetails(size);

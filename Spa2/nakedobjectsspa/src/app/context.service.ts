@@ -44,10 +44,10 @@ class DirtyList {
     }
 }
 
-function isSameObject(object: Models.DomainObjectRepresentation, type: string, id?: string) {
+function isSameObject(object: Models.DomainObjectRepresentation | null | undefined, type: string, id?: string) {
     if (object) {
         const sid = object.serviceId();
-        return sid ? sid === type : (object.domainType() === type && object.instanceId() === id);
+        return sid ? sid === type : (object.domainType() === type && object.instanceId() === Models.withNull(id));
     }
     return false;
 }
@@ -58,7 +58,7 @@ class TransientCache {
     constructor(private readonly depth: number) { }
 
     add(paneId: Pane, obj: Models.DomainObjectRepresentation) {
-        let paneObjects = this.transientCache[paneId];
+        let paneObjects = this.transientCache[paneId]!;
         if (paneObjects.length >= this.depth) {
             paneObjects = paneObjects.slice(-(this.depth - 1));
         }
@@ -67,12 +67,12 @@ class TransientCache {
     }
 
     get(paneId: Pane, type: string, id: string): Models.DomainObjectRepresentation | null {
-        const paneObjects = this.transientCache[paneId];
+        const paneObjects = this.transientCache[paneId]!;
         return _.find(paneObjects, o => isSameObject(o, type, id)) || null;
     }
 
     remove(paneId: Pane, type: string, id: string) {
-        let paneObjects = this.transientCache[paneId];
+        let paneObjects = this.transientCache[paneId]!;
         paneObjects = _.remove(paneObjects, o => isSameObject(o, type, id));
         this.transientCache[paneId] = paneObjects;
     }
@@ -129,7 +129,7 @@ class ValueCache {
             this.currentValues[paneId] = {};
         }
 
-        this.currentValues[paneId][valueId] = value;
+        this.currentValues[paneId]![valueId] = value;
     }
 
     getValue(id: string, valueId: string, paneId: Pane) {
@@ -138,16 +138,16 @@ class ValueCache {
             this.currentValues[paneId] = {};
         }
 
-        return this.currentValues[paneId][valueId];
+        return this.currentValues[paneId]![valueId];
     }
 
-    getValues(id: string | null, paneId: Pane) {
+    getValues(id: string | null, paneId: Pane){
         if (id && this.currentId[paneId] !== id) {
             this.currentId[paneId] = id;
             this.currentValues[paneId] = {};
         }
 
-        return this.currentValues[paneId];
+        return this.currentValues[paneId] as _.Dictionary<Models.Value>;
     }
 
     clear(paneId: Pane) {
@@ -185,7 +185,7 @@ export class ContextService {
 
     // cached values
 
-    private currentObjects: [undefined, Models.DomainObjectRepresentation, Models.DomainObjectRepresentation] = [undefined,null,null]; // per pane 
+    private currentObjects: [undefined, Models.DomainObjectRepresentation | null, Models.DomainObjectRepresentation | null] = [undefined,null,null]; // per pane 
     private transientCache = new TransientCache(this.configService.config.transientCacheDepth);
 
     private currentMenuList: _.Dictionary<Models.MenuRepresentation> = {};
@@ -653,7 +653,7 @@ export class ContextService {
     }
 
     isPendingPotentActionOrReload(paneId: Pane) {
-        return this.pendingPotentActionCount[paneId] > 0;
+        return this.pendingPotentActionCount[paneId]! > 0;
     }
 
     private warningsSource = new Subject<string[]>();

@@ -100,11 +100,11 @@ export class EditParameterComponent extends FieldComponent implements OnInit {
 
     choiceName = (choice: ChoiceViewModel) => choice.name;
 
-    classes(): _.Dictionary<boolean> {
+    classes(): _.Dictionary<boolean | null> {
         return {
             [this.parm.color]: true,
             "candrop": this.canDrop,
-            "mat-input-element": null as boolean // remove this class to prevent angular/materials styling overiding our styling
+            "mat-input-element": null as boolean | null // remove this class to prevent angular/materials styling overiding our styling
         };
     }
 

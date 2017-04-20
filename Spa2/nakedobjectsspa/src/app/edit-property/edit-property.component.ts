@@ -119,7 +119,7 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
         return this.property.getMessage();
     }
 
-    get attachment(): AttachmentViewModel {
+    get attachment(): AttachmentViewModel | null {
         return this.property.attachment;
     }
 
@@ -127,11 +127,11 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
         return choice.name;
     }
 
-    classes(): _.Dictionary<boolean> {
+    classes(): _.Dictionary<boolean | null> {
         return {
             [this.prop.color]: true,
             "candrop": this.canDrop,
-            "mat-input-element": null as boolean // remove this class to prevent angular/materials styling overiding our styling
+            "mat-input-element": null as boolean | null // remove this class to prevent angular/materials styling overiding our styling
         };
     }
 

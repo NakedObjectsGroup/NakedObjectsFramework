@@ -82,7 +82,7 @@ export class ViewPropertyComponent {
         return this.property.color;
     }
 
-    get attachment() : AttachmentViewModel {
+    get attachment() : AttachmentViewModel | null {
         return this.property.attachment;
     }
 
