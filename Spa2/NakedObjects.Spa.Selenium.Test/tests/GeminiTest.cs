@@ -341,7 +341,8 @@ namespace NakedObjects.Selenium {
             MultiLineDialog,
             Attachment,
             Properties,
-            Error
+            Error,
+            Logoff
         }
 
         protected enum ClickType {

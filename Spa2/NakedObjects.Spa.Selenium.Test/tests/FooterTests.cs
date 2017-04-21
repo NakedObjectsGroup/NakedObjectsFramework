@@ -132,10 +132,10 @@ namespace NakedObjects.Selenium {
         public virtual void LogOff() {
             GeminiUrl("home");
             ClickLogOffButton();
-            Thread.Sleep(1000);
-            IAlert alert = br.SwitchTo().Alert();
-            Assert.IsTrue(alert.Text.StartsWith("Please confirm logoff of user:"));
-            alert.Dismiss();
+            wait.Until(d => br.FindElement(By.CssSelector(".title")).Text.StartsWith("Log Off"));
+            var cancel = wait.Until(dr => dr.FindElement(By.CssSelector("button[value='Cancel']")));
+            Click(cancel);
+            WaitForView(Pane.Single, PaneType.Home);
         }
 
         #region WarningsAndInfo

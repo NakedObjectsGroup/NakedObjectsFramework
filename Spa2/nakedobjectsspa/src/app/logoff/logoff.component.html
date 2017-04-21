@@ -1,12 +1,10 @@
-<ng-container *ngIf="userIsLoggedIn()">
-    <div class="title">Log Off {{configService.config.applicationName}}</div>
+<div class="title">Log Off {{configService.config.applicationName}}</div>
+<ng-container *ngIf="userIsLoggedIn()">    
     <p>Please confirm log off</p>
     <p>User : {{userId}}</p>
-    <button class="btn btn-primary btn-margin" (click)="logoff()">Log Off</button>
-    <button class="btn btn-primary btn-margin" (click)="cancel()">Cancel</button>
+    <button class="btn btn-primary btn-margin" type="button" value="Log Off" (click)="logoff()">Log Off</button>
 </ng-container>
 <ng-container *ngIf="!userIsLoggedIn()">
-    <div class="title">Log Off {{configService.config.applicationName}}</div>
     <p>No user is logged in</p>
-    <button class="btn btn-primary btn-margin" (click)="cancel()">Cancel</button>
 </ng-container>
+<button class="btn btn-primary btn-margin" type="button" value="Cancel" (click)="cancel()">Cancel</button>
