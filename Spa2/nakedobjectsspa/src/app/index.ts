@@ -29,6 +29,7 @@ export * from './row/row.component';
 export * from './cicero/cicero.component';
 export * from './header/header.component';
 export * from './login/login.component';
+export * from './logoff/logoff.component';
 
 export * from './click-handler.service';
 export * from './color.service';
