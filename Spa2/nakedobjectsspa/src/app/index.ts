@@ -54,3 +54,4 @@ export * from './gemini-click.directive';
 export * from './error.handler';
 
 export * from './route-data';
+export * from './view-models/view-models';

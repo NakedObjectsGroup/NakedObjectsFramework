@@ -208,6 +208,7 @@
     <TypeScriptCompile Include="src\app\view-models\recent-items-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\table-row-column-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\table-row-view-model.ts" />
+    <TypeScriptCompile Include="src\app\view-models\view-models.ts" />
     <TypeScriptCompile Include="src\app\view-parameter\view-parameter.component.ts" />
     <TypeScriptCompile Include="src\app\view-property\view-property.component.ts" />
     <TypeScriptCompile Include="src\environments\environment.prod.ts" />
