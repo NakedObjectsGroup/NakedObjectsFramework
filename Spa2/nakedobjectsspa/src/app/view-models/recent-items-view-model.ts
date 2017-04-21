@@ -11,7 +11,7 @@ export class RecentItemsViewModel {
         viewModelFactory: ViewModelFactoryService,
         private readonly context: ContextService,
         private readonly urlManager: UrlManagerService,
-        onPaneId: Pane
+        private readonly onPaneId: Pane
     ) {
         const items = _.map(this.context.getRecentlyViewed(), (o, i) => ({ obj: o, link: o.updateSelfLinkWithTitle(), index: i }));
         this.items = _.map(items, i => viewModelFactory.recentItemViewModel(i.obj, i.link!, onPaneId, false, i.index));
@@ -22,6 +22,6 @@ export class RecentItemsViewModel {
     readonly clear = () => {
         this.context.clearRecentlyViewed();
         this.items = [];
-        this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
+        this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl(this.onPaneId);
     }
 }

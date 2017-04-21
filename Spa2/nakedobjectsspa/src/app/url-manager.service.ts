@@ -186,10 +186,10 @@ export class UrlManagerService {
         return rawInteractionMode ? (<any>InteractionMode)[rawInteractionMode] : InteractionMode.View;
     }
 
-    private getPaneParams(params : _.Dictionary<string>, paneId : number) : {rp : _.Dictionary<string>, rpwr : _.Dictionary<string>} {
-        const paneIds = _.filter(_.keys(params), k => (k.indexOf(paneId.toString()) >= 0 || k.startsWith(akm.reload)));
+    private getPaneParams(params: _.Dictionary<string>, paneId: number): { rp: _.Dictionary<string>, rpwr: _.Dictionary<string> } {
+        const paneIds = _.filter(_.keys(params), k => (k.indexOf(paneId.toString()) >= 0));
         const allRawParams = _.pick(params, paneIds) as _.Dictionary<string>;
-        const rawParamsWithoutReload = _.omit(allRawParams, akm.reload) as _.Dictionary<string>;
+        const rawParamsWithoutReload = _.omit(allRawParams, akm.reload + paneId) as _.Dictionary<string>;
         return { rp: allRawParams, rpwr: rawParamsWithoutReload };
     }
 
@@ -927,16 +927,16 @@ export class UrlManagerService {
     isApplicationProperties = (paneId = Pane.Pane1) => this.isLocation(paneId, Constants.applicationPropertiesPath);
     isMultiLineDialog = (paneId = Pane.Pane1) => this.isLocation(paneId, Constants.multiLineDialogPath);
 
-    private toggleReloadFlag(search: any) {
-        const currentFlag = search[akm.reload];
+    private toggleReloadFlag(search: any, paneId : Pane) {
+        const currentFlag = search[akm.reload + paneId];
         const newFlag = currentFlag === "1" ? 0 : 1;
-        search[akm.reload] = newFlag;
+        search[akm.reload + paneId] = newFlag;
         return search;
     }
 
-    triggerPageReloadByFlippingReloadFlagInUrl = () => {
+    triggerPageReloadByFlippingReloadFlagInUrl = (paneId = Pane.Pane1) => {
         const search = this.getSearch();
-        this.toggleReloadFlag(search);
+        this.toggleReloadFlag(search, paneId);
         const result = { path: this.getPath(), search: search, replace: true };
         this.setNewSearch(result);
     }
