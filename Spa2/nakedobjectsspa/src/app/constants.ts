@@ -30,8 +30,9 @@ export const recentPath: PathSegment = "recent";
 export const attachmentPath: PathSegment = "attachment";
 export const applicationPropertiesPath: PathSegment = "applicationProperties";
 export const multiLineDialogPath: PathSegment = "multiLineDialog";
+export const logoffPath: PathSegment = "logoff";
 
-export type PathSegment = "home" | "object" | "list" | "error" | "recent" | "attachment" | "applicationProperties" | "multiLineDialog";
+export type PathSegment = "home" | "object" | "list" | "error" | "recent" | "attachment" | "applicationProperties" | "multiLineDialog" | "logoff";
 
 //Restful Objects constants
 export const roDomainType = "x-ro-domain-type";

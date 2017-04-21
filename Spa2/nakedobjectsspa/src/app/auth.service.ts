@@ -1,3 +1,4 @@
+import { LogoffComponent } from './logoff/logoff.component';
 import { Injectable } from '@angular/core';
 import { tokenNotExpired } from 'angular2-jwt';
 import { Router, NavigationStart, CanActivate } from '@angular/router';
@@ -16,6 +17,8 @@ export abstract class AuthService {
     abstract logout(): void;
 
     abstract canActivate(): boolean;
+
+    abstract userIsLoggedIn() : boolean;
 }
 
 
@@ -91,7 +94,7 @@ export class Auth0AuthService extends AuthService implements CanActivate {
     authenticated() {
         // Check if there's an unexpired JWT
         // This searches for an item in localStorage with key == 'id_token'
-        return tokenNotExpired();
+        return tokenNotExpired("id_token");
     }
 
     logout() {
@@ -101,6 +104,14 @@ export class Auth0AuthService extends AuthService implements CanActivate {
 
     canActivate() {
         return !this.pendingAuthenticate && this.authenticated();
+    }
+
+    canDeactivate(component: LogoffComponent) {
+        return !component.isActive;
+    }
+
+    userIsLoggedIn() {
+        return this.authenticated();
     }
 }
 
@@ -117,5 +128,13 @@ export class NullAuthService extends AuthService implements CanActivate {
 
     canActivate() {
         return true;
+    }
+
+    canDeactivate(component: LogoffComponent) {
+        return true;
+    }
+
+    userIsLoggedIn() {
+        return false;
     }
 }

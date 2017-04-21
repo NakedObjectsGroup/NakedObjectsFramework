@@ -45,9 +45,11 @@ export class FooterComponent implements OnInit {
             this.urlManager.setHome(newPane);
         }
     };
+
     goBack = () => {
         this.location.back();
     };
+    
     goForward = () => {
         this.location.forward();
     };
@@ -67,35 +69,9 @@ export class FooterComponent implements OnInit {
         this.urlManager.singlePane(this.clickHandler.pane(Pane.Pane1, right));
     };
 
-    logOff = () => {
-        this.context.getUser()
-            .then((u: Models.UserRepresentation) => {
-                if (window.confirm(Msg.logOffMessage(u.userName() || "Unknown"))) {
+    logOff = () => this.urlManager.logoff();
 
-                    const serverLogoffUrl = this.configService.config.logoffUrl;
-
-                    if (serverLogoffUrl) {
-
-                        const args: RequestOptionsArgs = {
-                            withCredentials: true
-                        };
-
-                        this.http.post(this.configService.config.logoffUrl, args);
-                    }
-
-                    this.authService.logout();
-
-                    // logoff client without waiting for server
-                    // todo do we need to do this to clear data ? 
-                    //window.location.href = this.configService.config.postLogoffUrl;
-                }
-            })
-            .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
-    };
-
-    applicationProperties = () => {
-        this.urlManager.applicationProperties();
-    };
+    applicationProperties = () => this.urlManager.applicationProperties();
 
     recent = (right?: boolean) => {
         this.urlManager.setRecent(this.clickHandler.pane(Pane.Pane1, right));
@@ -105,6 +81,7 @@ export class FooterComponent implements OnInit {
         this.urlManager.singlePane(this.clickHandler.pane(Pane.Pane1));
         this.urlManager.cicero();
     };
+    
     userName: string;
 
     warnings: string[];

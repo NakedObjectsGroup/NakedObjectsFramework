@@ -58,6 +58,7 @@ import { AuthService, Auth0AuthService, NullAuthService } from './auth.service';
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
 import { Http, RequestOptions } from '@angular/http';
 import { LoginComponent } from './login/login.component';
+import { LogoffComponent } from './logoff/logoff.component';
 
 export function authHttpServiceFactory(http: Http, configService: ConfigService, options: RequestOptions): any {
     if (configService.config.authenticate) {
@@ -112,7 +113,8 @@ export function authServiceFactory(configService: ConfigService, auth0AuthServic
         CiceroComponent,
         RowComponent,
         HeaderComponent,
-        LoginComponent
+        LoginComponent,
+        LogoffComponent
     ],
     entryComponents: [
         ObjectComponent,

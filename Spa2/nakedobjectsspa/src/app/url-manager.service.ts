@@ -75,7 +75,7 @@ export class UrlManagerService {
 
     private capturedPanes = [] as ({ paneType: Constants.PathSegment; search: Object } | null)[];
 
-    private currentPaneId = 1;
+    private currentPaneId = Pane.Pane1;
 
     private createSubMask(arr: boolean[]) {
         let nMask = 0;
@@ -817,6 +817,7 @@ export class UrlManagerService {
         }
     }
 
+
     clearUrlState = (paneId: Pane) => {
         this.currentPaneId = paneId;
         this.capturedPanes[paneId] = null;
@@ -854,14 +855,19 @@ export class UrlManagerService {
         this.router.navigateByUrl(newPath);
     }
 
+    logoff = () => {
+        const newPath = `/${Constants.geminiPath}/${Constants.logoffPath}`;
+        this.router.navigateByUrl(newPath);
+    }
+
     currentpane = () => this.currentPaneId;
 
     setHomeSinglePane = () => {
-        this.currentPaneId = 1;
+        this.currentPaneId = Pane.Pane1;
 
         const path = this.getPath();
         const segments = path.split("/");
-        const mode = segments[1];
+        const mode = segments[1] || Constants.geminiPath;
         const newPath = `/${mode}/${Constants.homePath}`;
 
         const tree = this.router.createUrlTree([newPath]);
@@ -869,8 +875,8 @@ export class UrlManagerService {
         this.router.navigateByUrl(tree);
     }
 
-    singlePane = (paneId = 1) => {
-        this.currentPaneId = 1;
+    singlePane = (paneId = Pane.Pane1) => {
+        this.currentPaneId = Pane.Pane1;
 
         if (!this.isSinglePane()) {
 
@@ -885,15 +891,15 @@ export class UrlManagerService {
 
             let search = this.getSearch();
 
-            if (paneToKeepId === 1) {
+            if (paneToKeepId === Pane.Pane1) {
                 // just remove second pane
                 search = this.clearPane(search, paneToRemoveId);
             }
 
-            if (paneToKeepId === 2) {
+            if (paneToKeepId === Pane.Pane2) {
                 // swap pane 2 to pane 1 then remove 2
                 search = this.swapSearchIds(search);
-                search = this.clearPane(search, 2);
+                search = this.clearPane(search, Pane.Pane2);
             }
 
             const tree = this.router.createUrlTree([newPath], { queryParams: search });

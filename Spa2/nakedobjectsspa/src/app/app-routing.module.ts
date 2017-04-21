@@ -1,4 +1,5 @@
-﻿import { NgModule } from '@angular/core';
+﻿import { LogoffComponent } from './logoff/logoff.component';
+import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { RecentComponent } from './recent/recent.component';
@@ -100,6 +101,13 @@ const routes: Routes = [
         path: 'gemini/multiLineDialog',
         component: MultiLineDialogComponent,
         canActivate: [AuthService],
+        data: { pane: 1, paneType: "single" }
+    },
+    {
+        path: 'gemini/logoff',
+        component: LogoffComponent,
+        canActivate: [AuthService],
+        canDeactivate: [AuthService],
         data: { pane: 1, paneType: "single" }
     },
     {
