@@ -64,6 +64,8 @@
     <Content Include="src\app\list\list.component.html" />
     <Content Include="src\app\login\login.component.css" />
     <Content Include="src\app\login\login.component.html" />
+    <Content Include="src\app\logoff\logoff.component.css" />
+    <Content Include="src\app\logoff\logoff.component.html" />
     <Content Include="src\app\menu-bar\menu-bar.component.css" />
     <Content Include="src\app\menu-bar\menu-bar.component.html" />
     <Content Include="src\app\multi-line-dialog\multi-line-dialog.component.css" />
@@ -154,6 +156,7 @@
     <TypeScriptCompile Include="src\app\list\list.component.ts" />
     <TypeScriptCompile Include="src\app\logger.service.ts" />
     <TypeScriptCompile Include="src\app\login\login.component.ts" />
+    <TypeScriptCompile Include="src\app\logoff\logoff.component.ts" />
     <TypeScriptCompile Include="src\app\mask.service.spec.ts" />
     <TypeScriptCompile Include="src\app\mask.service.ts" />
     <TypeScriptCompile Include="src\app\menu-bar\menu-bar.component.ts" />
