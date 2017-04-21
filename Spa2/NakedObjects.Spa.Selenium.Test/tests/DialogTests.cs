@@ -519,7 +519,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void ValidationOfContributeeParameter() {
-            GeminiUrl("object?r=0&i1=View&o1=___1.Customer--10&as1=open&d1=CreateNewOrder");
+            GeminiUrl("object?r1=0&i1=View&o1=___1.Customer--10&as1=open&d1=CreateNewOrder");
             Click(OKButton());
             //Test written against #37 where message is preceded by '199 Restful Objects'
             wait.Until(dr => dr.FindElement(By.CssSelector(".co-validation")).Text ==

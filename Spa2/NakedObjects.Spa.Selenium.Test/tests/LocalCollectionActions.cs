@@ -11,7 +11,7 @@ using OpenQA.Selenium;
 namespace NakedObjects.Selenium {
     public abstract class LocalCollectionActionsTestsRoot : AWTest {
         public virtual void LocalCollectionActionsHonourMemberOrder() {
-            GeminiUrl("object?i1=View&r=1&o1=___1.SalesOrderHeader--71105&c1_Details=Table");
+            GeminiUrl("object?i1=View&r1=1&o1=___1.SalesOrderHeader--71105&c1_Details=Table");
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector("nof-action-bar nof-action")).Count >= 2);
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector("nof-action-bar nof-action input"))[0].GetAttribute("value") == "Add New Details");
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector("nof-action-bar nof-action input"))[1].GetAttribute("value") == "Add New Detail");
@@ -20,7 +20,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void CheckBoxesVisibleAndCanBeSelected() {
-            GeminiUrl("object?i1=View&r=1&o1=___1.SalesOrderHeader--44284&c1_Details=List");
+            GeminiUrl("object?i1=View&r1=1&o1=___1.SalesOrderHeader--44284&c1_Details=List");
             WaitForCss("input[type='checkbox']", 17); // 16 lines plus all
             WaitForSelectedCheckboxes(0);
 
@@ -38,7 +38,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void SelectionsPreservedIfNavigatingAwayAndBack() {
-            GeminiUrl("object?i1=View&r=1&o1=___1.SalesOrderHeader--67298&c1_Details=List");
+            GeminiUrl("object?i1=View&r1=1&o1=___1.SalesOrderHeader--67298&c1_Details=List");
             WaitForCss("input[type='checkbox']", 28);
             WaitForSelectedCheckboxes(0);
             SelectCheckBox("input[type = 'checkbox']#details1-0");
@@ -58,7 +58,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void ActionsAvailableOnEmptyCollections() {
-            GeminiUrl("object?i1=View&r=1&o1=___1.SalesOrderHeader--70589");
+            GeminiUrl("object?i1=View&r1=1&o1=___1.SalesOrderHeader--70589");
             WaitForTextEquals(".collection", 1, "Reasons:\r\nEmpty");
             Click(WaitForCssNo(".icon.list", 1));
 
@@ -70,14 +70,14 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void CannotInvokeZeroParamSelectionActionWithNothingSelected() {
-            GeminiUrl("object?i1=View&r=1&o1=___1.SalesOrderHeader--63023&c1_SalesOrderHeaderSalesReason=List");
+            GeminiUrl("object?i1=View&r1=1&o1=___1.SalesOrderHeader--63023&c1_SalesOrderHeaderSalesReason=List");
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[1].FindElements(By.CssSelector("nof-action"))[1].Text == "Remove Sales Reasons");
             Click(GetObjectAction("Remove Sales Reasons"));
             WaitForTextEquals(".messages", 2, "Must select items for collection contributed action");
         }
 
         public virtual void CannotInvokeDialogSelectionActionWithNothingSelected() {
-            GeminiUrl("object?i1=View&r=1&o1=___1.SalesOrderHeader--63023&c1_SalesOrderHeaderSalesReason=Summary&c1_Details=List&d1=AdjustQuantities");
+            GeminiUrl("object?i1=View&r1=1&o1=___1.SalesOrderHeader--63023&c1_SalesOrderHeaderSalesReason=Summary&c1_Details=List&d1=AdjustQuantities");
             WaitForTextEquals(".collection .dialog .title", "Adjust Quantities");
             TypeIntoFieldWithoutClearing("#newquantity1", "7");
             Click(OKButton());
@@ -85,7 +85,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void ZeroAndOneParamActionInvoked() {
-            GeminiUrl("object?i1=View&r=1&o1=___1.SalesOrderHeader--63074&c1_SalesOrderHeaderSalesReason=List");
+            GeminiUrl("object?i1=View&r1=1&o1=___1.SalesOrderHeader--63074&c1_SalesOrderHeaderSalesReason=List");
             WaitForTextEquals(".collection .summary", 1, "Reasons:\r\n1 Item");
             SelectCheckBox("#salesorderheadersalesreason1-0");
             Click(GetObjectAction("Remove Sales Reasons"));

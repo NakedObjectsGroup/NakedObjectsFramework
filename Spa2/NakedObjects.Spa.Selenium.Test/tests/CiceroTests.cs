@@ -399,7 +399,7 @@ namespace NakedObjects.Selenium {
             WaitForOutputContaining("Multiple matches:\r\nMountain Bikes");
 
             //Conditional choices on editing an object
-            //CiceroUrl("object?r=0&o1=___1.Product--840");
+            //CiceroUrl("object?r1=0&o1=___1.Product--840");
             //WaitForOutput("Product: HL Road Frame - Black, 52");
             //EnterCommand("edit");
             //WaitForOutput("Editing Product: HL Road Frame - Black, 52");

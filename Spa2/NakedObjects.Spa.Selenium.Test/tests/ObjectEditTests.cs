@@ -219,7 +219,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void ViewModelEditOpensInEditMode() {
-            GeminiUrl("object?i1=Form&r=1&o1=___1.EmailTemplate----------New");
+            GeminiUrl("object?i1=Form&r1=1&o1=___1.EmailTemplate----------New");
             WaitForCss("input#to1");
             WaitForCss("input#from1");
         }
