@@ -332,7 +332,7 @@ export function validateMandatory(model: IHasExtensions, viewValue: string): str
 }
 
 
-export function validate(model: IHasExtensions, modelValue: string | ChoiceViewModel | string[] | ChoiceViewModel[], viewValue: string, filter: ILocalFilter): string {
+export function validateAgainstType(model: IHasExtensions, modelValue: string | ChoiceViewModel | string[] | ChoiceViewModel[], viewValue: string, filter: ILocalFilter): string {
     // first check 
 
     const mandatory = validateMandatory(model, viewValue);

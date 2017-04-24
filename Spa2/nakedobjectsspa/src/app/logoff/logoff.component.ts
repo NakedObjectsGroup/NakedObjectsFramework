@@ -25,10 +25,10 @@ export class LogoffComponent implements OnInit {
 
   userId: string;
 
-  isActive = true;;
+  isActive = true;
 
   userIsLoggedIn() {
-    return this.authService.userIsLoggedIn()
+      return this.authService.userIsLoggedIn();
   } 
 
   cancel() {

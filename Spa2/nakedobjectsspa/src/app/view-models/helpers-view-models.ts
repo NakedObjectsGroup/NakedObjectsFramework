@@ -165,7 +165,7 @@ export function drop(context: ContextService, error: ErrorService, vm: FieldView
 };
 
 export function validate(rep: Models.IHasExtensions, vm: FieldViewModel, modelValue: string | ChoiceViewModel | string[] | ChoiceViewModel[], viewValue: string, mandatoryOnly: boolean) {
-    const message = mandatoryOnly ? Models.validateMandatory(rep, viewValue) : Models.validate(rep, modelValue, viewValue, vm.localFilter);
+    const message = mandatoryOnly ? Models.validateMandatory(rep, viewValue) : Models.validateAgainstType(rep, modelValue, viewValue, vm.localFilter);
 
     if (message !== Msg.mandatory) {
         vm.setMessage(message);
