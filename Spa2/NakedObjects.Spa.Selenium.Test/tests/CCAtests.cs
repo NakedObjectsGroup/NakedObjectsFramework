@@ -309,8 +309,9 @@ namespace NakedObjects.Selenium {
             Click(GetObjectAction("Comment As Users Unhappy"));
             Thread.Sleep(1000); //Because there is no visible change to wait for
             Reload();
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
             wait.Until(dr => dr.FindElements(By.CssSelector("span.loading:empty")));
+            Thread.Sleep(2000);
             wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) == 3);
 
             //Confirm that the three checkboxes have now been cleared
