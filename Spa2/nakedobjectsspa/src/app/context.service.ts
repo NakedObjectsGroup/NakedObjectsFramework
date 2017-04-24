@@ -12,6 +12,8 @@ import { Observable } from 'rxjs'; // for declaration compile
 import { Dictionary } from 'lodash';
 import each from 'lodash/each';
 import find from 'lodash/find';
+import filter from 'lodash/filter';
+import map from 'lodash/map';
 import forEach from 'lodash/forEach';
 import keys from 'lodash/keys';
 import findKey from 'lodash/findKey';
@@ -20,8 +22,6 @@ import omit from 'lodash/omit';
 import remove from 'lodash/remove';
 import sortBy from 'lodash/sortBy';
 
-//todo fix
-import * as _ from 'lodash'
 
 enum DirtyState {
     DirtyMustReload,
@@ -750,12 +750,8 @@ export class ContextService {
                 // this should always be true 
                 if (ccaValue && ccaValue.isList()) {
 
-                    const links = _
-                        .chain(ccaValue.list() as Models.Value[])
-                        .filter((v: Models.Value) => v.isReference())
-                        .map((v: Models.Value) => v.link())
-                        .value();
-
+                    const refValues = filter(ccaValue.list(), v => v.isReference());
+                    const links = map(refValues, v => v.link());
                     return () => forEach(links, (l: Models.Link) => this.dirtyList.setDirty(l.getOid(this.keySeparator)));
                 }
             }

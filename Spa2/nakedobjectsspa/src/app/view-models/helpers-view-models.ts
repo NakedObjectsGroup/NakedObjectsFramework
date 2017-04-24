@@ -24,9 +24,6 @@ import mapValues from 'lodash/mapValues';
 import reduce from 'lodash/reduce';
 import uniqWith from 'lodash/uniqWith';
 
-//todo fix
-import * as _ from 'lodash'
-
 export function createForm(dialog: DialogViewModel, formBuilder: FormBuilder): { form: FormGroup, dialog: DialogViewModel, parms: Dictionary<ParameterViewModel> } {
     const pps = dialog.parameters;
     const parms = zipObject(map(pps, p => p.id), map(pps, p => p)) as Dictionary<ParameterViewModel>;
@@ -107,11 +104,8 @@ export function createSubmenuItems(avms: ActionViewModel[], menuSlot: { name: st
         //then collate submenus 
 
         const submenuActions = filter(avms, (a: ActionViewModel) => getMenuNameForLevel(a.menuPath, level) === menuSlot.name && getMenuNameForLevel(a.menuPath, level + 1));
-        let menuSubSlots = _
-            .chain(submenuActions)
-            .map(a => ({ name: getMenuNameForLevel(a.menuPath, level + 1), action: a }))
-            .value();
-
+        let menuSubSlots =  map(submenuActions, a => ({ name: getMenuNameForLevel(a.menuPath, level + 1), action: a }));
+      
         menuSubSlots = removeDuplicateMenuNames(menuSubSlots);
 
         menuItems = map(menuSubSlots, slot => createSubmenuItems(submenuActions, slot, level + 1));
@@ -128,10 +122,7 @@ export function createMenuItems(avms: ActionViewModel[]) {
     // first create a top level menu for each action 
     // note at top level we leave 'un-menued' actions
     // use an anonymous object locally so we can construct objects with readonly properties  
-    let menuSlots = _
-        .chain(avms)
-        .map(a => ({ name: getMenuNameForLevel(a.menuPath, 0), action: a }))
-        .value();
+    let menuSlots = map(avms, a => ({ name: getMenuNameForLevel(a.menuPath, 0), action: a }));
 
     // remove non unique submenus 
     menuSlots = removeDuplicateMenuNames(menuSlots);
