@@ -7,7 +7,7 @@ import { ViewModelFactoryService } from '../view-model-factory.service';
 import { ErrorService } from '../error.service';
 import { PaneRouteData, InteractionMode, ICustomActivatedRouteData } from '../route-data';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import * as _ from 'lodash';
+
 import { PropertyViewModel } from '../view-models/property-view-model';
 import { MenuItemViewModel } from '../view-models/menu-item-view-model';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
@@ -19,6 +19,14 @@ import { PropertiesComponent } from '../properties/properties.component';
 import * as Msg from '../user-messages';
 import * as Helpers from '../view-models/helpers-view-models';
 import { CollectionViewModel } from '../view-models/collection-view-model';
+import { Dictionary } from 'lodash';
+import filter from 'lodash/filter';
+import forEach from 'lodash/forEach';
+import map from 'lodash/map';
+import flatten from 'lodash/flatten';
+import zipObject from 'lodash/zipObject';
+import mapValues from 'lodash/mapValues';
+import some from 'lodash/some';
 
 @Component({
     selector: 'nof-object',
@@ -239,8 +247,8 @@ export class ObjectComponent implements OnInit, OnDestroy {
             if (!this.actionButtons) {
 
                 const menuItems = this.menuItems() !;
-                const actions = _.flatten(_.map(menuItems, (mi: MenuItemViewModel) => mi.actions!));
-                this.actionButtons = _.map(actions, a => wrapAction(a));
+                const actions = flatten(map(menuItems, (mi: MenuItemViewModel) => mi.actions!));
+                this.actionButtons = map(actions, a => wrapAction(a));
             }
 
             return this.actionButtons;
@@ -318,18 +326,18 @@ export class ObjectComponent implements OnInit, OnDestroy {
 
     private createForm(vm: DomainObjectViewModel) {
         const pps = vm.properties;
-        const props = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<PropertyViewModel>;
-        const editableProps = _.filter(props, p => p.isEditable);
-        const editablePropsMap = _.zipObject(_.map(editableProps, p => p.id), _.map(editableProps, p => p));
+        const props = zipObject(map(pps, p => p.id), map(pps, p => p)) as Dictionary<PropertyViewModel>;
+        const editableProps = filter(props, p => p.isEditable);
+        const editablePropsMap = zipObject(map(editableProps, p => p.id), map(editableProps, p => p));
 
-        const controls = _.mapValues(editablePropsMap, p => [p.getValueForControl(), a => p.validator(a)]) as _.Dictionary<any>;
+        const controls = mapValues(editablePropsMap, p => [p.getValueForControl(), a => p.validator(a)]) as Dictionary<any>;
         this.form = this.formBuilder.group(controls);
 
         this.form!.valueChanges.subscribe((data: any) => {
             // cache parm values
             const obj = this.object;
             if (obj) {
-                _.forEach(data, (v, k) => editablePropsMap[k!].setValueFromControl(v));
+                forEach(data, (v, k) => editablePropsMap[k!].setValueFromControl(v));
                 obj.setProperties();
             }
         });
@@ -387,7 +395,7 @@ export class ObjectComponent implements OnInit, OnDestroy {
             return;
         }
         if (parms && parms.length > 0) {
-            _.some(parms.toArray(), p => p.focus());
+            some(parms.toArray(), p => p.focus());
         }
     }
 

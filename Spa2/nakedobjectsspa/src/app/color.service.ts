@@ -1,9 +1,11 @@
 ﻿import * as Models from './models';
-import * as _ from 'lodash';
+
 import { Injectable } from '@angular/core';
 import { ContextService } from './context.service';
 import { TypeResultCache } from './type-result-cache';
 import { ConfigService } from './config.service';
+import { Dictionary } from 'lodash';
+import forEach from 'lodash/forEach';
 
 export interface IColorServiceConfigurator {
     addType: (type: string, color: number) => void;
@@ -72,15 +74,15 @@ export class ColorService extends TypeResultCache<number> implements IColorServi
             const dflt = colorConfig.default;
 
             if (typeMap) {
-                _.forEach(typeMap, (v, k) => this.addType(k!, v));
+                forEach(typeMap, (v, k) => this.addType(k!, v));
             }
 
             if (regexArray) {
-                _.forEach(regexArray, item => this.addMatch(new RegExp(item.regex), item.color));
+                forEach(regexArray, item => this.addMatch(new RegExp(item.regex), item.color));
             }
 
             if (subtypeMap) {
-                _.forEach(subtypeMap, (v, k) => this.addSubtype(k!, v));
+                forEach(subtypeMap, (v, k) => this.addSubtype(k!, v));
             }
 
             if (dflt != null) {

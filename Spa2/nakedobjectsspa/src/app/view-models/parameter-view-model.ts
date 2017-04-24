@@ -7,10 +7,13 @@ import { ViewModelFactoryService } from '../view-model-factory.service';
 import { MaskService } from '../mask.service';
 import * as Models from '../models';
 import * as Msg from '../user-messages';
-import * as _ from 'lodash';
+import { Dictionary } from 'lodash';
 import { ConfigService } from '../config.service';
 import { Pane } from '../route-data';
-
+import filter from 'lodash/filter';
+import find from 'lodash/find';
+import map from 'lodash/map';
+import some from 'lodash/some';
 
 export class ParameterViewModel extends FieldViewModel {
 
@@ -83,7 +86,7 @@ export class ParameterViewModel extends FieldViewModel {
 
     private setupParameterAutocomplete() {
         const parmRep = this.parameterRep;
-        this.setupAutocomplete(parmRep, () => <_.Dictionary<Models.Value>>{});
+        this.setupAutocomplete(parmRep, () => <Dictionary<Models.Value>>{});
     }
 
     private setupParameterFreeformReference() {
@@ -110,10 +113,10 @@ export class ParameterViewModel extends FieldViewModel {
         const parmViewModel = this;
         function setCurrentChoices(vals: Models.Value) {
             const list = vals.list() !;
-            const choicesToSet = _.map(list, val => new ChoiceViewModel(val, parmViewModel.id, val.link() ? val.link() !.title() : undefined));
+            const choicesToSet = map(list, val => new ChoiceViewModel(val, parmViewModel.id, val.link() ? val.link() !.title() : undefined));
 
             if (fieldEntryType === Models.EntryType.MultipleChoices) {
-                parmViewModel.selectedMultiChoices = _.filter(parmViewModel.choices, c => _.some(choicesToSet, choiceToSet => c.valuesEqual(choiceToSet)));
+                parmViewModel.selectedMultiChoices = filter(parmViewModel.choices, c => some(choicesToSet, choiceToSet => c.valuesEqual(choiceToSet)));
             } else {
                 parmViewModel.selectedMultiChoices = choicesToSet;
             }
@@ -124,7 +127,7 @@ export class ParameterViewModel extends FieldViewModel {
 
             if (fieldEntryType === Models.EntryType.Choices) {
                 const choices = parmViewModel.choices!;
-                parmViewModel.selectedChoice = _.find(choices, c => c.valuesEqual(choiceToSet)) || null;
+                parmViewModel.selectedChoice = find(choices, c => c.valuesEqual(choiceToSet)) || null;
             } else {
                 if (!parmViewModel.selectedChoice || parmViewModel.selectedChoice.getValue().toValueString() !== choiceToSet.getValue().toValueString()) {
                     parmViewModel.selectedChoice = choiceToSet;

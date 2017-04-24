@@ -10,7 +10,12 @@ import { PaneRouteData, Pane } from '../route-data';
 import * as Models from '../models';
 import * as Msg from '../user-messages';
 import * as Helpers from './helpers-view-models';
-import * as _ from 'lodash';
+import each from 'lodash/each';
+import every from 'lodash/every';
+import forEach from 'lodash/forEach';
+import map from 'lodash/map';
+import {Dictionary} from 'lodash';
+import pickBy from 'lodash/pickBy';
 
 export class DialogViewModel extends MessageViewModel {
     constructor(
@@ -38,8 +43,8 @@ export class DialogViewModel extends MessageViewModel {
 
         const fields = this.context.getDialogCachedValues(this.actionMember().actionId(), this.onPaneId);
 
-        const parameters = _.pickBy(this.actionViewModel.invokableActionRep.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Models.Parameter>;
-        this.parameters = _.map(parameters, p => this.viewModelFactory.parameterViewModel(p, fields[p.id()], this.onPaneId));
+        const parameters = pickBy(this.actionViewModel.invokableActionRep.parameters(), p => !p.isCollectionContributed()) as Dictionary<Models.Parameter>;
+        this.parameters = map(parameters, p => this.viewModelFactory.parameterViewModel(p, fields[p.id()], this.onPaneId));
 
 
         this.title = this.actionMember().extensions().friendlyName();
@@ -83,14 +88,14 @@ export class DialogViewModel extends MessageViewModel {
 
     readonly refresh = () => {
         const fields = this.context.getDialogCachedValues(this.actionMember().actionId(), this.onPaneId);
-        _.forEach(this.parameters, p => p.refresh(fields[p.id]));
+        forEach(this.parameters, p => p.refresh(fields[p.id]));
     }
 
-    readonly clientValid = () => _.every(this.parameters, p => p.clientValid);
+    readonly clientValid = () => every(this.parameters, p => p.clientValid);
 
     readonly tooltip = () => Helpers.tooltip(this, this.parameters);
 
-    readonly setParms = () => _.forEach(this.parameters, p => this.context.cacheFieldValue(this.actionMember().actionId(), p.parameterRep.id(), p.getValue(), this.onPaneId));
+    readonly setParms = () => forEach(this.parameters, p => this.context.cacheFieldValue(this.actionMember().actionId(), p.parameterRep.id(), p.getValue(), this.onPaneId));
 
     readonly doInvoke = (right?: boolean) =>
         this.execute(right)
@@ -139,6 +144,6 @@ export class DialogViewModel extends MessageViewModel {
 
     clearMessages = () => {
         this.resetMessage();
-        _.each(this.actionViewModel.parameters, parm => parm.clearMessage());
+        each(this.actionViewModel.parameters, parm => parm.clearMessage());
     };
 }

@@ -5,7 +5,8 @@ import { ViewModelFactoryService } from '../view-model-factory.service';
 import { PaneRouteData } from '../route-data';
 import * as Helpers from './helpers-view-models';
 import * as Models from '../models';
-import * as _ from 'lodash';
+import map from 'lodash/map';
+
 import { IMenuHolderViewModel } from './imenu-holder-view-model';
 
 export class MenuViewModel extends MessageViewModel implements IMenuHolderViewModel {
@@ -21,7 +22,7 @@ export class MenuViewModel extends MessageViewModel implements IMenuHolderViewMo
 
         const actions = menuRep.actionMembers();
         this.title = menuRep.title();
-        this.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, this, routeData));
+        this.actions = map(actions, action => viewModelFactory.actionViewModel(action, this, routeData));
         this.menuItems = Helpers.createMenuItems(this.actions);
     }
 

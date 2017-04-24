@@ -1,9 +1,9 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, RequestOptionsArgs } from '@angular/http';
 import * as Ro from './ro-interfaces';
-import * as _ from 'lodash';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
+import assign from 'lodash/assign';
 
 export interface IAppConfig {
     authenticate: boolean,
@@ -134,7 +134,7 @@ export class ConfigService {
 
     set config(newConfig: IAppConfig) {
         // merge defaults
-        _.assign(this.appConfig, newConfig);
+        assign(this.appConfig, newConfig);
     }
 
     getAppPath(appPath: string) {

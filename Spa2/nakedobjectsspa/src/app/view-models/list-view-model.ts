@@ -6,7 +6,7 @@ import { ErrorService } from '../error.service';
 import { PaneRouteData, CollectionViewState } from '../route-data';
 import { ActionViewModel } from './action-view-model';
 import { MenuItemViewModel } from './menu-item-view-model';
-import * as _ from 'lodash';
+import find from 'lodash/find';
 import * as Helpers from './helpers-view-models';
 import * as Models from '../models';
 import * as Msg from '../user-messages';
@@ -183,7 +183,7 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
     readonly actionsTooltip = () => Helpers.actionsTooltip(this, !!this.routeData.actionsOpen);
 
     readonly actionMember = (id: string) => {
-        const actionViewModel = _.find(this.actions, a => a.actionRep.actionId() === id);
+        const actionViewModel = find(this.actions, a => a.actionRep.actionId() === id);
 
         if (actionViewModel) {
             return actionViewModel.actionRep;

@@ -1,10 +1,11 @@
 ﻿import { ContextService } from './context.service';
+import { Dictionary } from 'lodash';
 
 export abstract class TypeResultCache<T> {
 
     protected constructor(protected readonly context: ContextService) { }
 
-    private readonly resultCache: _.Dictionary<T> = {};
+    private readonly resultCache: Dictionary<T> = {};
     private readonly regexCache: { regex: RegExp, result: T }[] = [];
     private readonly subtypeCache: { type: string, result: T }[] = [];
 

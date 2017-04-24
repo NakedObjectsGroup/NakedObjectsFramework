@@ -2,8 +2,24 @@
 import * as Constants from './constants';
 import * as RoCustom from './ro-interfaces-custom';
 import * as Msg from './user-messages';
-import * as _ from 'lodash';
+import { Dictionary } from 'lodash';
 import * as moment from 'moment'; // todo fix moment locale import size 
+import each from 'lodash/each';
+import find from 'lodash/find';
+import assign from 'lodash/assign';
+import clone from 'lodash/clone';
+import keys from 'lodash/keys';
+import map from 'lodash/map';
+import cloneDeep from 'lodash/cloneDeep';
+import concat from 'lodash/concat';
+import mapValues from 'lodash/mapValues';
+import pickBy from 'lodash/pickBy';
+import reduce from 'lodash/reduce';
+import some from 'lodash/some';
+import fromPairs from 'lodash/fromPairs';
+import forOwn from 'lodash/forOwn';
+import last from 'lodash/last';
+import merge from 'lodash/merge';
 
 // todo later these couple back to angular - rework so no direct coupling 
 import { ConfigService } from './config.service';
@@ -11,6 +27,7 @@ import { MaskService, ILocalFilter } from "./mask.service";
 import { ContextService } from "./context.service";
 import { ChoiceViewModel } from './view-models/choice-view-model';
 import {Pane} from './route-data';
+import forEach from 'lodash/forEach';
 
 // log directly to avoid coupling back to angular  
 function error(message: string, ): never {
@@ -32,7 +49,7 @@ function validateExists<T>(obj: T | null | undefined, name: string): T {
     error(`validateExists - Expected ${name} does not exist`);
 }
 
-function getMember<T>(members: _.Dictionary<T>, id: string, owner: string) {
+function getMember<T>(members: Dictionary<T>, id: string, owner: string) {
     const member = members[id];
     if (member) { return member; }
     error(`getMember - no member ${id} on ${owner}`);
@@ -144,14 +161,14 @@ export function toTime(value: Value) {
 
 export function compress(toCompress: string, shortCutMarker: string, urlShortCuts: string[]) {
     if (toCompress) {
-        _.forEach(urlShortCuts, (sc, i) => toCompress = toCompress.replace(sc, `${shortCutMarker}${i}`));
+        forEach(urlShortCuts, (sc, i) => toCompress = toCompress.replace(sc, `${shortCutMarker}${i}`));
     }
     return toCompress;
 }
 
 export function decompress(toDecompress: string, shortCutMarker: string, urlShortCuts: string[]) {
     if (toDecompress) {
-        _.forEach(urlShortCuts, (sc, i) => toDecompress = toDecompress.replace(`${shortCutMarker}${i}`, sc));
+        forEach(urlShortCuts, (sc, i) => toDecompress = toDecompress.replace(`${shortCutMarker}${i}`, sc));
     }
     return toDecompress;
 }
@@ -181,13 +198,13 @@ export function propertyIdFromUrl(href: string) {
 }
 
 export function friendlyTypeName(fullName: string) {
-    const shortName = _.last(fullName.split("."));
+    const shortName = last(fullName.split("."));
     const result = shortName.replace(/([A-Z])/g, " $1").trim();
     return result.charAt(0).toUpperCase() + result.slice(1);
 }
 
 export function friendlyNameForParam(action: IInvokableAction, parmId: string) {
-    const param = _.find(action.parameters(), (p) => p.id() === parmId);
+    const param = find(action.parameters(), (p) => p.id() === parmId);
     return param ? param.extensions().friendlyName() : "";
 }
 
@@ -400,11 +417,11 @@ function getId(prop: PropertyRepresentation | PropertyMember) {
 }
 
 function wrapLinks(links: Ro.ILink[]) {
-    return _.map(links, l => new Link(l));
+    return map(links, l => new Link(l));
 }
 
 function getLinkByRel(links: Link[], rel: Rel) {
-    return _.find(links, i => i.rel().uniqueValue === rel.uniqueValue);
+    return find(links, i => i.rel().uniqueValue === rel.uniqueValue);
 }
 
 function linkByRel(links: Link[], rel: string) {
@@ -536,7 +553,7 @@ export class ErrorWrapper {
 // abstract classes 
 
 function toOid(id: string[], keySeparator: string) {
-    return _.reduce(id, (a, v) => `${a}${keySeparator}${v}`) as string;
+    return reduce(id, (a, v) => `${a}${keySeparator}${v}`) as string;
 }
 
 export class ObjectIdWrapper {
@@ -624,7 +641,7 @@ export abstract class HateosModel implements IHateoasModel {
     etagDigest: string;
     hateoasUrl = "";
     method: Ro.HttpMethodsType = "GET";
-    urlParms: _.Dictionary<Object>;
+    urlParms: Dictionary<Object>;
 
     protected constructor(protected model?: Ro.IRepresentation) {
     }
@@ -635,9 +652,9 @@ export abstract class HateosModel implements IHateoasModel {
 
     getBody(): Ro.IRepresentation {
         if (this.method === "POST" || this.method === "PUT") {
-            const m = _.clone(this.model);
-            const up = _.clone(this.urlParms);
-            return _.merge(m, up);
+            const m = clone(this.model);
+            const up = clone(this.urlParms);
+            return merge(m, up);
         }
 
         return {};
@@ -645,25 +662,25 @@ export abstract class HateosModel implements IHateoasModel {
 
     getUrl(): string {
         const url = this.hateoasUrl;
-        const attrAsJson = _.clone(this.model);
+        const attrAsJson = clone(this.model);
 
         if (this.method === "GET" || this.method === "DELETE") {
 
-            if (_.keys(attrAsJson).length > 0) {
+            if (keys(attrAsJson).length > 0) {
                 // there are model parms so encode everything into json 
 
-                const urlParmsAsJson = _.clone(this.urlParms);
-                const asJson = _.merge(attrAsJson, urlParmsAsJson);
-                if (_.keys(asJson).length > 0) {
+                const urlParmsAsJson = clone(this.urlParms);
+                const asJson = merge(attrAsJson, urlParmsAsJson);
+                if (keys(asJson).length > 0) {
                     const map = JSON.stringify(asJson);
                     const parmString = encodeURI(map);
                     return url + "?" + parmString;
                 }
                 return url;
             }
-            if (_.keys(this.urlParms).length > 0) {
+            if (keys(this.urlParms).length > 0) {
                 // there are only url reserved parms so they can just be appended to url
-                const urlParmString = _.reduce(this.urlParms, (result, n, key) => (result === "" ? "" : result + "&") + key + "=" + n, "");
+                const urlParmString = reduce(this.urlParms, (result, n, key) => (result === "" ? "" : result + "&") + key + "=" + n, "");
 
                 return url + "?" + urlParmString;
             }
@@ -758,7 +775,7 @@ export class Rel {
         this.uniqueValue = splitPostFix[0];
 
         if (splitPostFix.length > 1) {
-            this.parms = _.map(splitPostFix.slice(1), s => new RelParm(s));
+            this.parms = map(splitPostFix.slice(1), s => new RelParm(s));
         }
     }
 }
@@ -857,7 +874,7 @@ export class Value {
     }
 
     list(): Value[] | null {
-        return this.isList() ? _.map(this.wrapped as (Link | Ro.ValueType)[], i => new Value(i)) : null;
+        return this.isList() ? map(this.wrapped as (Link | Ro.ValueType)[], i => new Value(i)) : null;
     }
 
     toString(): string {
@@ -867,8 +884,8 @@ export class Value {
 
         if (this.isList()) {
             const list = this.list() !; // know true
-            const ss = _.map(list, v => v.toString());
-            return ss.length === 0 ? "" : _.reduce(ss, (m, s) => m + "-" + s, "");
+            const ss = map(list, v => v.toString());
+            return ss.length === 0 ? "" : reduce(ss, (m, s) => m + "-" + s, "");
         }
 
         return (this.wrapped == null) ? "" : this.wrapped.toString();
@@ -881,7 +898,7 @@ export class Value {
         }
         if (this.isList()) {
             const list = this.list() !; // know true
-            _.forEach(list, i => i.compress(shortCutMarker, urlShortCuts));
+            forEach(list, i => i.compress(shortCutMarker, urlShortCuts));
         };
 
         if (this.scalar() && this.wrapped instanceof String) {
@@ -895,7 +912,7 @@ export class Value {
         }
         if (this.isList()) {
             const list = this.list() as Value[]; // know true
-            _.forEach(list, i => i.decompress(shortCutMarker, urlShortCuts));
+            forEach(list, i => i.decompress(shortCutMarker, urlShortCuts));
         };
 
         if (this.scalar() && this.wrapped instanceof String) {
@@ -918,7 +935,7 @@ export class Value {
 
     toJsonString(shortCutMarker: string, urlShortCuts: string[]): string {
 
-        const cloneThis = _.cloneDeep(this as Value);
+        const cloneThis = cloneDeep(this as Value);
         cloneThis.compress(shortCutMarker, urlShortCuts);
         const value = cloneThis.wrapped;
         const raw = (value instanceof Link) ? value.wrapped : value;
@@ -934,7 +951,7 @@ export class Value {
             target.value = { "href": (this.link() as Link).href() }; // know true
         } else if (this.isList()) {
             const list = this.list() as Value[]; // know true
-            target.value = _.map(list, v => v.isReference() ? <Ro.ILink>{ "href": v.link() !.href() } : v.scalar()) as Ro.ValueType[];
+            target.value = map(list, v => v.isReference() ? <Ro.ILink>{ "href": v.link() !.href() } : v.scalar()) as Ro.ValueType[];
         }
         else if (this.isBlob()) {
             target.value = this.blob();
@@ -944,7 +961,7 @@ export class Value {
         }
     }
 
-    set(target: _.Dictionary<Ro.IValue | string>, name: string) {
+    set(target: Dictionary<Ro.IValue | string>, name: string) {
         const t = target[name] = <Ro.IValue>{ value: null };
         this.setValue(t);
     }
@@ -1005,10 +1022,10 @@ export class ErrorMap {
 
     }
 
-    valuesMap(): _.Dictionary<ErrorValue> {
+    valuesMap(): Dictionary<ErrorValue> {
 
-        const values = _.pickBy(this.wrapped(), i => isIValue(i)) as _.Dictionary<Ro.IValue>;
-        return _.mapValues(values, v => new ErrorValue(new Value(v.value), withNull(v.invalidReason)));
+        const values = pickBy(this.wrapped(), i => isIValue(i)) as Dictionary<Ro.IValue>;
+        return mapValues(values, v => new ErrorValue(new Value(v.value), withNull(v.invalidReason)));
     }
 
     invalidReason(): string {
@@ -1022,7 +1039,7 @@ export class ErrorMap {
     }
 
     containsError() {
-        return !!this.invalidReason() || !!this.warningMessage || _.some(this.valuesMap(), ev => !!ev.invalidReason);
+        return !!this.invalidReason() || !!this.warningMessage || some(this.valuesMap(), ev => !!ev.invalidReason);
     }
 
 }
@@ -1040,13 +1057,13 @@ export class UpdateMap extends ArgumentMap implements IHateoasModel {
             error("UpdateMap - attempting to create update map for object without update link");
         }
 
-        _.each(this.properties(), (value: Value, key: string) => {
+        each(this.properties(), (value: Value, key: string) => {
             this.setProperty(key, value);
         });
     }
 
-    properties(): _.Dictionary<Value> {
-        return _.mapValues(this.map, (v: Ro.IValue) => new Value(v.value));
+    properties(): Dictionary<Value> {
+        return mapValues(this.map, (v: Ro.IValue) => new Value(v.value));
     }
 
     setProperty(name: string, value: Value) {
@@ -1211,7 +1228,7 @@ export class ActionResultRepresentation extends ResourceRepresentation<Ro.IActio
         const wOrM = has(this.extensions().warnings()) ? this.extensions().warnings() : this.extensions().messages();
 
         if (has(wOrM)) {
-            return _.reduce(wOrM, (s, t) => s + " " + t, "");
+            return reduce(wOrM, (s, t) => s + " " + t, "");
         }
 
         return undefined;
@@ -1231,7 +1248,7 @@ export interface IHasExtensions {
 
 export interface IField extends IHasExtensions {
     id(): string;
-    choices(): _.Dictionary<Value> | null;
+    choices(): Dictionary<Value> | null;
     isScalar(): boolean;
     isCollectionContributed(): boolean;
 
@@ -1257,17 +1274,17 @@ export class Parameter
     }
 
     // properties 
-    choices(): _.Dictionary<Value> | null {
+    choices(): Dictionary<Value> | null {
         const customExtensions = this.extensions();
         // use custom choices extension by preference 
         if (customExtensions.choices()) {
-            return _.mapValues(customExtensions.choices(), v => new Value(v));
+            return mapValues(customExtensions.choices(), v => new Value(v));
         }
 
         const choices = this.wrapped().choices;
         if (choices) {
-            const values = _.map(choices, item => new Value(item));
-            return _.fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
+            const values = map(choices, item => new Value(item));
+            return fromPairs(map(values, v => [v.toString(), v])) as Dictionary<Value>;
         }
         return null;
     }
@@ -1313,7 +1330,7 @@ export class Parameter
         return isList && isOnList;
     }
 
-    private hasChoices(): boolean { return _.some(this.choices() || {}); }
+    private hasChoices(): boolean { return some(this.choices() || {}); }
 
     entryType(): EntryType {
 
@@ -1356,7 +1373,7 @@ export interface IInvokableAction extends IHasExtensions {
     actionId(): string;
     invokeLink(): Link | null;
     getInvokeMap(): InvokeMap | null;
-    parameters(): _.Dictionary<Parameter>;
+    parameters(): Dictionary<Parameter>;
     disabledReason(): string;
 
     isQueryOnly(): boolean;
@@ -1403,17 +1420,17 @@ export class ActionRepresentation extends ResourceRepresentation<Ro.IActionRepre
         return this.wrapped().id;
     }
 
-    private parameterMap: _.Dictionary<Parameter>;
+    private parameterMap: Dictionary<Parameter>;
 
     private initParameterMap(): void {
 
         if (!this.parameterMap) {
             const parameters = this.wrapped().parameters;
-            this.parameterMap = _.mapValues(parameters, (p, id) => new Parameter(p, this, id!));
+            this.parameterMap = mapValues(parameters, (p, id) => new Parameter(p, this, id!));
         }
     }
 
-    parameters(): _.Dictionary<Parameter> {
+    parameters(): Dictionary<Parameter> {
         this.initParameterMap();
         return this.parameterMap;
     }
@@ -1458,17 +1475,17 @@ export class PromptMap extends ArgumentMap implements IHateoasModel {
         val.set(this.map, name);
     }
 
-    setArguments(args: _.Dictionary<Value>) {
-        _.each(args, (arg, key) => this.setArgument(key!, arg));
+    setArguments(args: Dictionary<Value>) {
+        each(args, (arg, key) => this.setArgument(key!, arg));
     }
 
     setMember(name: string, value: Value) {
         value.set(this.promptMap()["x-ro-nof-members"] as Ro.IValueMap, name);
     }
 
-    setMembers(objectValues: () => _.Dictionary<Value>) {
+    setMembers(objectValues: () => Dictionary<Value>) {
         if (this.map["x-ro-nof-members"]) {
-            _.forEach(objectValues(), (v, k) => this.setMember(k!, v));
+            forEach(objectValues(), (v, k) => this.setMember(k!, v));
         }
     }
 }
@@ -1505,17 +1522,17 @@ export class PromptRepresentation extends ResourceRepresentation<Ro.IPromptRepre
         return this.wrapped().id;
     }
 
-    choices(addEmpty: boolean): _.Dictionary<Value> | null {
+    choices(addEmpty: boolean): Dictionary<Value> | null {
         const ch = this.wrapped().choices;
         if (ch) {
-            let values = _.map(ch, item => new Value(item));
+            let values = map(ch, item => new Value(item));
 
             if (addEmpty) {
                 const emptyValue = new Value("");
-                values = _.concat<Value>([emptyValue], values);
+                values = concat<Value>([emptyValue], values);
             }
 
-            return _.fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
+            return fromPairs(map(values, v => [v.toString(), v])) as Dictionary<Value>;
         }
         return null;
     }
@@ -1554,7 +1571,7 @@ export class CollectionRepresentation extends ResourceRepresentation<RoCustom.IC
 
     setFromMap(map: AddToRemoveFromMap) {
         //this.set(map.attributes);
-        _.assign(this.resource(), map.map);
+        assign(this.resource(), map.map);
     }
 
     private addToMap() {
@@ -1600,13 +1617,13 @@ export class CollectionRepresentation extends ResourceRepresentation<RoCustom.IC
 
     hasTableData = () => {
         const valueLinks = this.value();
-        return valueLinks && _.some(valueLinks, (i: Link) => i.members());
+        return valueLinks && some(valueLinks, (i: Link) => i.members());
     }
 
-    private actionMemberMap: _.Dictionary<ActionMember>;
+    private actionMemberMap: Dictionary<ActionMember>;
 
     actionMembers() {
-        this.actionMemberMap = this.actionMemberMap || _.mapValues(this.wrapped().members, (m, id) => Member.wrapMember(m, this, id!)) as _.Dictionary<ActionMember>;
+        this.actionMemberMap = this.actionMemberMap || mapValues(this.wrapped().members, (m, id) => Member.wrapMember(m, this, id!)) as Dictionary<ActionMember>;
         return this.actionMemberMap;
     }
 
@@ -1662,7 +1679,7 @@ export class PropertyRepresentation extends ResourceRepresentation<Ro.IPropertyR
 
     setFromModifyMap(map: ModifyMap) {
         //this.set(map.attributes);
-        _.assign(this.resource(), map.map);
+        assign(this.resource(), map.map);
     }
 
     getModifyMap(): ModifyMap | null {
@@ -1688,18 +1705,18 @@ export class PropertyRepresentation extends ResourceRepresentation<Ro.IPropertyR
         return new Value(withNull(this.wrapped().value));
     }
 
-    choices(): _.Dictionary<Value> | null {
+    choices(): Dictionary<Value> | null {
 
         // use custom choices extension by preference 
 
         const choices = this.extensions().choices();
         if (choices) {
-            return _.mapValues(choices, v => new Value(v));
+            return mapValues(choices, v => new Value(v));
         }
         const ch = this.wrapped().choices;
         if (ch) {
-            const values = _.map(ch, item => new Value(item));
-            return _.fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
+            const values = map(ch, item => new Value(item));
+            return fromPairs(map(values, v => [v.toString(), v])) as Dictionary<Value>;
         }
         return null;
     }
@@ -1802,7 +1819,7 @@ export class PropertyMember extends Member<Ro.IPropertyMember> implements IField
     }
 
     setFromModifyMap(map: ModifyMap) {
-        _.forOwn(map.map, (v, k) => {
+        forOwn(map.map, (v, k) => {
             (<any>this.wrapped)[k!] = v;
         });
     }
@@ -1855,17 +1872,17 @@ export class PropertyMember extends Member<Ro.IPropertyMember> implements IField
         return !!this.promptLink();
     }
 
-    choices(): _.Dictionary<Value> | null {
+    choices(): Dictionary<Value> | null {
 
         // use custom choices extension by preference 
         const choices = this.extensions().choices();
         if (choices) {
-            return _.mapValues(choices, v => new Value(v));
+            return mapValues(choices, v => new Value(v));
         }
         const ch = this.wrapped().choices;
         if (ch) {
-            const values = _.map(ch, (item) => new Value(item));
-            return _.fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
+            const values = map(ch, (item) => new Value(item));
+            return fromPairs(map(values, v => [v.toString(), v])) as Dictionary<Value>;
         }
         return null;
     }
@@ -1937,15 +1954,15 @@ export class CollectionMember
 
     hasTableData = () => {
         const valueLinks = this.value();
-        return valueLinks && _.some(valueLinks, (i: Link) => i.members());
+        return valueLinks && some(valueLinks, (i: Link) => i.members());
     }
 
-    private actionMemberMap: _.Dictionary<ActionMember>;
+    private actionMemberMap: Dictionary<ActionMember>;
 
-    actionMembers(): _.Dictionary<ActionMember> {
+    actionMembers(): Dictionary<ActionMember> {
         const members = this.wrapped().members;
         if (members) {
-            return this.actionMemberMap || _.mapValues(members, (m, id) => Member.wrapMember(m, this, id!)) as _.Dictionary<ActionMember>;
+            return this.actionMemberMap || mapValues(members, (m, id) => Member.wrapMember(m, this, id!)) as Dictionary<ActionMember>;
         }
         return {};
     }
@@ -2025,17 +2042,17 @@ export class InvokableActionMember extends ActionMember {
 
     // properties 
 
-    private parameterMap: _.Dictionary<Parameter>;
+    private parameterMap: Dictionary<Parameter>;
 
     private initParameterMap(): void {
 
         if (!this.parameterMap) {
             const parameters = this.wrapped().parameters;
-            this.parameterMap = _.mapValues(parameters, (p, id) => new Parameter(p, this, id!));
+            this.parameterMap = mapValues(parameters, (p, id) => new Parameter(p, this, id!));
         }
     }
 
-    parameters(): _.Dictionary<Parameter> {
+    parameters(): Dictionary<Parameter> {
         this.initParameterMap();
         return this.parameterMap;
     }
@@ -2075,17 +2092,17 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
         return withNull(this.wrapped().instanceId);
     }
 
-    private memberMap: _.Dictionary<Member<Ro.IMember>>;
-    private propertyMemberMap: _.Dictionary<PropertyMember>;
-    private collectionMemberMap: _.Dictionary<CollectionMember>;
-    private actionMemberMap: _.Dictionary<ActionMember>;
+    private memberMap: Dictionary<Member<Ro.IMember>>;
+    private propertyMemberMap: Dictionary<PropertyMember>;
+    private collectionMemberMap: Dictionary<CollectionMember>;
+    private actionMemberMap: Dictionary<ActionMember>;
 
     private resetMemberMaps() {
         const members = this.wrapped().members;
-        this.memberMap = _.mapValues(members, (m, id) => Member.wrapMember(m, this, id!) !);
-        this.propertyMemberMap = _.pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === "property") as _.Dictionary<PropertyMember>;
-        this.collectionMemberMap = _.pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === "collection") as _.Dictionary<CollectionMember>;
-        this.actionMemberMap = _.pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === "action") as _.Dictionary<ActionMember>;
+        this.memberMap = mapValues(members, (m, id) => Member.wrapMember(m, this, id!) !);
+        this.propertyMemberMap = pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === "property") as Dictionary<PropertyMember>;
+        this.collectionMemberMap = pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === "collection") as Dictionary<CollectionMember>;
+        this.actionMemberMap = pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === "action") as Dictionary<ActionMember>;
     }
 
     private initMemberMaps() {
@@ -2094,22 +2111,22 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
         }
     }
 
-    members(): _.Dictionary<Member<Ro.IMember>> {
+    members(): Dictionary<Member<Ro.IMember>> {
         this.initMemberMaps();
         return this.memberMap;
     }
 
-    propertyMembers(): _.Dictionary<PropertyMember> {
+    propertyMembers(): Dictionary<PropertyMember> {
         this.initMemberMaps();
         return this.propertyMemberMap;
     }
 
-    collectionMembers(): _.Dictionary<CollectionMember> {
+    collectionMembers(): Dictionary<CollectionMember> {
         this.initMemberMaps();
         return this.collectionMemberMap;
     }
 
-    actionMembers(): _.Dictionary<ActionMember> {
+    actionMembers(): Dictionary<ActionMember> {
         this.initMemberMaps();
         return this.actionMemberMap;
     }
@@ -2215,15 +2232,15 @@ export class MenuRepresentation extends ResourceRepresentation<RoCustom.IMenuRep
         return this.wrapped().menuId;
     }
 
-    private memberMap: _.Dictionary<Member<Ro.IMember>>;
+    private memberMap: Dictionary<Member<Ro.IMember>>;
 
-    private actionMemberMap: _.Dictionary<ActionMember>;
+    private actionMemberMap: Dictionary<ActionMember>;
 
     private resetMemberMaps() {
         const members = this.wrapped().members;
         // todo know member won't be null because not link - not good code though 
-        this.memberMap = _.mapValues(members, (m, id) => Member.wrapMember(m, this, id!) as Member<Ro.IMember>);
-        this.actionMemberMap = _.pickBy(this.memberMap, m => m.memberType() === "action") as _.Dictionary<ActionMember>;
+        this.memberMap = mapValues(members, (m, id) => Member.wrapMember(m, this, id!) as Member<Ro.IMember>);
+        this.actionMemberMap = pickBy(this.memberMap, m => m.memberType() === "action") as Dictionary<ActionMember>;
     }
 
     private initMemberMaps() {
@@ -2232,12 +2249,12 @@ export class MenuRepresentation extends ResourceRepresentation<RoCustom.IMenuRep
         }
     }
 
-    members(): _.Dictionary<Member<Ro.IMember>> {
+    members(): Dictionary<Member<Ro.IMember>> {
         this.initMemberMaps();
         return this.memberMap;
     }
 
-    actionMembers(): _.Dictionary<ActionMember> {
+    actionMembers(): Dictionary<ActionMember> {
         this.initMemberMaps();
         return this.actionMemberMap;
     }
@@ -2310,10 +2327,10 @@ export class ListRepresentation
         return this.wrapped().pagination || null;
     }
 
-    private actionMemberMap: _.Dictionary<ActionMember>;
+    private actionMemberMap: Dictionary<ActionMember>;
 
     actionMembers() {
-        this.actionMemberMap = this.actionMemberMap || _.mapValues(this.wrapped().members, (m, id) => Member.wrapMember(m, this, id!)) as _.Dictionary<ActionMember>;
+        this.actionMemberMap = this.actionMemberMap || mapValues(this.wrapped().members, (m, id) => Member.wrapMember(m, this, id!)) as Dictionary<ActionMember>;
         return this.actionMemberMap;
     }
 
@@ -2327,7 +2344,7 @@ export class ListRepresentation
 
     hasTableData = () => {
         const valueLinks = this.value();
-        return valueLinks && _.some(valueLinks, i => i.members());
+        return valueLinks && some(valueLinks, i => i.members());
     }
 }
 
@@ -2456,7 +2473,7 @@ export class DomainServicesRepresentation extends ListRepresentation {
     }
 
     getService(serviceType: string) {
-        const serviceLink = _.find(this.value(), link => link.rel().parms[0].value === serviceType);
+        const serviceLink = find(this.value(), link => link.rel().parms[0].value === serviceType);
         return serviceLink ? serviceLink.getTargetAs<DomainObjectRepresentation>() : null;
     }
 }
@@ -2481,7 +2498,7 @@ export class MenusRepresentation extends ListRepresentation {
     }
 
     getMenu(menuId: string) {
-        const menuLink = _.find(this.value(), link => link.rel().parms[0].value === menuId);
+        const menuLink = find(this.value(), link => link.rel().parms[0].value === menuId);
         if (menuLink) {
             return menuLink.getTargetAs<MenuRepresentation>();
         }
@@ -2665,9 +2682,9 @@ export class Link {
         return withNull(this.wrapped.arguments);
     }
 
-    members(): _.Dictionary<PropertyMember> | null {
+    members(): Dictionary<PropertyMember> | null {
         const members = (this.wrapped as RoCustom.ICustomLink).members;
-        return members ? _.mapValues(members, (m, id) => Member.wrapMember(m, this, id!) as PropertyMember) : null;
+        return members ? mapValues(members, (m, id) => Member.wrapMember(m, this, id!) as PropertyMember) : null;
     }
 
     private lazyExtensions: Extensions;
@@ -2730,7 +2747,7 @@ export class Link {
 }
 
 export interface IHasActions extends IHasExtensions {
-    actionMembers(): _.Dictionary<ActionMember>;
+    actionMembers(): Dictionary<ActionMember>;
     actionMember(id: string, keySeparator: string): ActionMember;
     hasActionMember(id: string): boolean;
     etagDigest: string;

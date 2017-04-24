@@ -8,8 +8,12 @@ import { ClickHandlerService } from '../click-handler.service';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import * as Models from '../models';
 import * as Msg from '../user-messages';
-import * as _ from 'lodash';
+import { Dictionary } from 'lodash';
 import * as Helpers from './helpers-view-models';
+import forEach from 'lodash/forEach';
+import map from 'lodash/map';
+import zipObject from 'lodash/zipObject';
+import pickBy from 'lodash/pickBy';
 
 export class ActionViewModel {
 
@@ -105,8 +109,8 @@ export class ActionViewModel {
 
     // note this is modified by decorators 
     execute = (pps: ParameterViewModel[], right?: boolean): Promise<Models.ActionResultRepresentation> => {
-        const parmMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Models.Value>;
-        _.forEach(pps, p => this.urlManager.setParameterValue(this.actionRep.actionId(), p.parameterRep, p.getValue(), this.paneId));
+        const parmMap = zipObject(map(pps, p => p.id), map(pps, p => p.getValue())) as Dictionary<Models.Value>;
+        forEach(pps, p => this.urlManager.setParameterValue(this.actionRep.actionId(), p.parameterRep, p.getValue(), this.paneId));
         return this.getInvokable()
             .then((details: Models.IInvokableAction) => this.context.invokeAction(details, parmMap, this.paneId, this.clickHandler.pane(this.paneId, right), this.gotoResult));
     };
@@ -118,9 +122,9 @@ export class ActionViewModel {
         this.context.isPendingPotentActionOrReload(this.paneId);
 
     private getParameters(invokableAction: Models.IInvokableAction) {
-        const parameters = _.pickBy(invokableAction.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Models.Parameter>;
+        const parameters = pickBy(invokableAction.parameters(), p => !p.isCollectionContributed()) as Dictionary<Models.Parameter>;
         const parms = this.routeData.actionParams;
-        return _.map(parameters, parm => this.viewModelFactory.parameterViewModel(parm, parms[parm.id()], this.paneId));
+        return map(parameters, parm => this.viewModelFactory.parameterViewModel(parm, parms[parm.id()], this.paneId));
     }
 
     readonly parameters = () => {

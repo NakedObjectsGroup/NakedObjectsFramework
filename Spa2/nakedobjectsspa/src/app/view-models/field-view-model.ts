@@ -8,11 +8,18 @@ import { AbstractControl } from '@angular/forms';
 import * as Models from '../models';
 import * as Ro from '../ro-interfaces';
 import * as Msg from '../user-messages';
-import * as _ from 'lodash';
+import { Dictionary } from 'lodash';
 import * as Helpers from './helpers-view-models';
 import { ContextService } from '../context.service';
 import { ConfigService } from '../config.service';
 import { Pane } from '../route-data';
+import filter from 'lodash/filter';
+import find from 'lodash/find';
+import every from 'lodash/every';
+import map from 'lodash/map';
+import fromPairs from 'lodash/fromPairs';
+import some from 'lodash/some';
+import partial from 'lodash/partial';
 
 export abstract class FieldViewModel extends MessageViewModel {
 
@@ -62,7 +69,7 @@ export abstract class FieldViewModel extends MessageViewModel {
     reference = "";
     minLength: number;
     color: string;
-    promptArguments: _.Dictionary<Models.Value>;
+    promptArguments: Dictionary<Models.Value>;
     currentValue: Models.Value;
     originalValue: Models.Value;
     localFilter: ILocalFilter;
@@ -76,7 +83,7 @@ export abstract class FieldViewModel extends MessageViewModel {
 
     refresh: (newValue: Models.Value) => void;
     prompt: (searchTerm: string) => Promise<ChoiceViewModel[]>;
-    conditionalChoices: (args: _.Dictionary<Models.Value>) => Promise<ChoiceViewModel[]>;
+    conditionalChoices: (args: Dictionary<Models.Value>) => Promise<ChoiceViewModel[]>;
 
     readonly drop = (newValue: IDraggableViewModel) => Helpers.drop(this.context, this.error, this, newValue);
 
@@ -91,10 +98,10 @@ export abstract class FieldViewModel extends MessageViewModel {
 
         if (this.entryType === Models.EntryType.MultipleConditionalChoices) {
             const currentSelectedOptions = this.selectedMultiChoices;
-            this.selectedMultiChoices = _.filter(this.choiceOptions, c => _.some(currentSelectedOptions, (choiceToSet: any) => c.valuesEqual(choiceToSet)));
+            this.selectedMultiChoices = filter(this.choiceOptions, c => some(currentSelectedOptions, (choiceToSet: any) => c.valuesEqual(choiceToSet)));
         } else if (this.entryType === Models.EntryType.ConditionalChoices) {
             const currentSelectedOption = this.selectedChoice;
-            this.selectedChoice = _.find(this.choiceOptions, (c: any) => c.valuesEqual(currentSelectedOption));
+            this.selectedChoice = find(this.choiceOptions, (c: any) => c.valuesEqual(currentSelectedOption));
         }
     }
 
@@ -138,7 +145,7 @@ export abstract class FieldViewModel extends MessageViewModel {
             val = viewValue.getValue().toValueString();
         } else if (viewValue instanceof Array) {
             if (viewValue.length) {
-                return _.every(viewValue as (string | ChoiceViewModel)[], (v: any) => this.isValid(v));
+                return every(viewValue as (string | ChoiceViewModel)[], (v: any) => this.isValid(v));
             }
             val = "";
         } else {
@@ -186,14 +193,14 @@ export abstract class FieldViewModel extends MessageViewModel {
         this.setColor();
     };
 
-    protected setupChoices(choices: _.Dictionary<Models.Value>) {
-        this.choices = _.map(choices, (v, n) => new ChoiceViewModel(v, this.id, n));
+    protected setupChoices(choices: Dictionary<Models.Value>) {
+        this.choices = map(choices, (v, n) => new ChoiceViewModel(v, this.id, n));
     }
 
-    protected setupAutocomplete(rep: Models.IField, parentValues: () => _.Dictionary<Models.Value>, digest?: string | null) {
+    protected setupAutocomplete(rep: Models.IField, parentValues: () => Dictionary<Models.Value>, digest?: string | null) {
 
         this.prompt = (searchTerm: string) => {
-            const createcvm = _.partial(Helpers.createChoiceViewModels, this.id, searchTerm);
+            const createcvm = partial(Helpers.createChoiceViewModels, this.id, searchTerm);
             return this.context.autoComplete(rep, this.id, parentValues, searchTerm, digest).then(createcvm);
         };
         const promptLink = rep.promptLink() as Models.Link; // always
@@ -203,12 +210,12 @@ export abstract class FieldViewModel extends MessageViewModel {
 
     protected setupConditionalChoices(rep: Models.IField, digest?: string | null) {
 
-        this.conditionalChoices = (args: _.Dictionary<Models.Value>) => {
-            const createcvm = _.partial(Helpers.createChoiceViewModels, this.id, null);
-            return this.context.conditionalChoices(rep, this.id, () => <_.Dictionary<Models.Value>>{}, args, digest).then(createcvm);
+        this.conditionalChoices = (args: Dictionary<Models.Value>) => {
+            const createcvm = partial(Helpers.createChoiceViewModels, this.id, null);
+            return this.context.conditionalChoices(rep, this.id, () => <Dictionary<Models.Value>>{}, args, digest).then(createcvm);
         };
         const promptLink = rep.promptLink() as Models.Link;
-        this.promptArguments = _.fromPairs(_.map(promptLink!.arguments() !, (v: any, key: string) => [key, new Models.Value(v.value)]));
+        this.promptArguments = fromPairs(map(promptLink!.arguments() !, (v: any, key: string) => [key, new Models.Value(v.value)]));
     }
 
     protected getRequiredIndicator() {
@@ -269,10 +276,10 @@ export abstract class FieldViewModel extends MessageViewModel {
             if (this.entryType === Models.EntryType.MultipleChoices || this.entryType === Models.EntryType.MultipleConditionalChoices || this.isCollectionContributed) {
                 const selections = this.selectedMultiChoices || [];
                 if (this.type === "scalar") {
-                    const selValues = _.map(selections, (cvm: ChoiceViewModel) => cvm.getValue().scalar());
+                    const selValues = map(selections, (cvm: ChoiceViewModel) => cvm.getValue().scalar());
                     return new Models.Value(selValues);
                 }
-                const selRefs = _.map(selections, cvm => ({ href: cvm.getValue().href() !, title: cvm.name })); // reference 
+                const selRefs = map(selections, cvm => ({ href: cvm.getValue().href() !, title: cvm.name })); // reference 
                 return new Models.Value(selRefs);
             }
 

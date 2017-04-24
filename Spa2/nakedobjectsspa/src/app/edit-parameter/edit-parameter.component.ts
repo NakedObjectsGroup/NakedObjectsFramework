@@ -11,6 +11,7 @@ import { DialogViewModel } from '../view-models/dialog-view-model';
 import { ChoiceViewModel } from '../view-models/choice-view-model';
 import { ConfigService } from '../config.service';
 import { LoggerService } from '../logger.service';
+import { Dictionary } from 'lodash';
 
 @Component({
     selector: 'nof-edit-parameter',
@@ -100,7 +101,7 @@ export class EditParameterComponent extends FieldComponent implements OnInit {
 
     choiceName = (choice: ChoiceViewModel) => choice.name;
 
-    classes(): _.Dictionary<boolean | null> {
+    classes(): Dictionary<boolean | null> {
         return {
             [this.parm.color]: true,
             "candrop": this.canDrop,

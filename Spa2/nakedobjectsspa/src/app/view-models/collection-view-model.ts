@@ -8,9 +8,10 @@ import { UrlManagerService } from '../url-manager.service';
 import { ContributedActionParentViewModel } from './contributed-action-parent-view-model';
 import * as Helpers from './helpers-view-models';
 import * as Models from '../models';
-import * as _ from 'lodash';
+import find from 'lodash/find';
 import { ConfigService } from '../config.service';
 import { LoggerService } from '../logger.service';
+import some from 'lodash/some';
 
 export class CollectionViewModel extends ContributedActionParentViewModel {
 
@@ -115,14 +116,14 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
     readonly doSummary = () => this.urlManager.setCollectionMemberState(this.collectionRep.collectionId(), CollectionViewState.Summary, this.onPaneId);
     readonly doList = () => this.urlManager.setCollectionMemberState(this.collectionRep.collectionId(), CollectionViewState.List, this.onPaneId);
     readonly doTable = () => this.urlManager.setCollectionMemberState(this.collectionRep.collectionId(), CollectionViewState.Table, this.onPaneId);
-    readonly hasTableData = () => this.items && _.some(this.items, (i: ItemViewModel) => i.tableRowViewModel);
+    readonly hasTableData = () => this.items && some(this.items, (i: ItemViewModel) => i.tableRowViewModel);
 
     readonly description = () => this.details.toString();
 
     readonly disableActions = () => this.editing || !this.actions || this.actions.length === 0;
 
     readonly actionMember = (id: string, keySeparator: string) => {
-        const actionViewModel = _.find(this.actions, a => a.actionRep.actionId() === id);
+        const actionViewModel = find(this.actions, a => a.actionRep.actionId() === id);
         if (actionViewModel) {
             return actionViewModel.actionRep;
         }
@@ -130,7 +131,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
     }
 
     private hasActionMember(id: string) {
-        return !!_.find(this.actions, a => a.actionRep.actionId() === id);
+        return !!find(this.actions, a => a.actionRep.actionId() === id);
     }
 
     readonly hasMatchingLocallyContributedAction = (id: string) => {

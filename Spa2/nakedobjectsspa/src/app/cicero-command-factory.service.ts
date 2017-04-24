@@ -7,9 +7,12 @@ import {ContextService} from './context.service';
 import {UrlManagerService} from './url-manager.service';
 import {MaskService} from './mask.service';
 import {ErrorService} from './error.service';
-import {ConfigService, IAppConfig} from './config.service';
+import {ConfigService} from './config.service';
 import {Location} from '@angular/common';
-import * as _ from 'lodash';
+import { Dictionary } from 'lodash';
+import filter from 'lodash/filter';
+import reduce from 'lodash/reduce';
+import last from 'lodash/last';
 
 @Injectable()
 export class CiceroCommandFactoryService {
@@ -23,7 +26,7 @@ export class CiceroCommandFactoryService {
 
  private commandsInitialised = false;
 
-        private commands: _.Dictionary<Command> = {
+        private commands: Dictionary<Command> = {
             "ac": new Cmd.Action(this.urlManager, this.location, this, this.context, this.mask,this.error, this.configService),
             "ba": new Cmd.Back(this.urlManager, this.location, this, this.context, this.mask,this.error, this.configService),
             "ca": new Cmd.Cancel(this.urlManager, this.location, this, this.context, this.mask,this.error, this.configService),
@@ -89,7 +92,7 @@ export class CiceroCommandFactoryService {
         //complete e.g. reject unrecognised action or one not available in context.
         autoComplete = (input: string, cvm: CiceroViewModel) => {
             if (!input) return;
-            let lastInChain = _.last(input.split(";")).toLowerCase();
+            let lastInChain = last(input.split(";")).toLowerCase();
             const charsTyped = lastInChain.length;
             lastInChain = lastInChain.trim();
             if (lastInChain.length === 0 || lastInChain.indexOf(" ") >= 0) { //i.e. not the first word
@@ -119,8 +122,8 @@ export class CiceroCommandFactoryService {
         };
 
         allCommandsForCurrentContext = () => {
-            const commandsInContext = _.filter(this.commands, c => c.isAvailableInCurrentContext());
-            return _.reduce(commandsInContext, (r, c) => r + c.fullCommand + "\n" , Msg.commandsAvailable);
+            const commandsInContext = filter(this.commands, c => c.isAvailableInCurrentContext());
+            return reduce(commandsInContext, (r, c) => r + c.fullCommand + "\n" , Msg.commandsAvailable);
         };
 
 }

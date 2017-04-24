@@ -7,7 +7,10 @@ import { ViewModelFactoryService } from '../view-model-factory.service';
 import { UrlManagerService } from '../url-manager.service';
 import { ErrorService } from '../error.service';
 import * as Models from '../models';
-import * as _ from 'lodash';
+import filter from 'lodash/filter';
+import map from 'lodash/map';
+import range from 'lodash/range';
+import takeRight from 'lodash/takeRight';
 
 export class MultiLineDialogViewModel {
 
@@ -29,7 +32,7 @@ export class MultiLineDialogViewModel {
 
         const initialCount = action.extensions().multipleLines() || 1;
 
-        this.dialogs = _.map(_.range(initialCount), i => this.createRow(i));
+        this.dialogs = map(range(initialCount), i => this.createRow(i));
         this.title = this.dialogs[0].title;
         this.action.parent.etagDigest = "*";
     }
@@ -50,7 +53,7 @@ export class MultiLineDialogViewModel {
     readonly title: string;
     readonly dialogs: DialogViewModel[];
 
-    readonly header = () => this.dialogs.length === 0 ? [] : _.map(this.dialogs[0].parameters, p => p.title);
+    readonly header = () => this.dialogs.length === 0 ? [] : map(this.dialogs[0].parameters, p => p.title);
 
     readonly invokeAndAdd = (index: number) => {
         this.dialogs[index].doInvoke();
@@ -65,12 +68,12 @@ export class MultiLineDialogViewModel {
             // if this is last dialog always add another
             return this.pushNewDialog();
         }
-        else if (_.takeRight(this.dialogs)[0].submitted) {
+        else if (takeRight(this.dialogs)[0].submitted) {
             // if the last dialog is submitted add another 
             return this.pushNewDialog();
         }
         return 0;
     }
 
-    readonly submittedCount = () => _.filter(this.dialogs, d => d.submitted).length;
+    readonly submittedCount = () => filter(this.dialogs, d => d.submitted).length;
 }

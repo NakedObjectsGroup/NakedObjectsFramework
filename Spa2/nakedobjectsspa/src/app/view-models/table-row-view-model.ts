@@ -1,18 +1,20 @@
 ﻿import { TableRowColumnViewModel } from './table-row-column-view-model';
 import { ViewModelFactoryService } from '../view-model-factory.service';
-import * as _ from 'lodash';
+import { Dictionary } from 'lodash';
 import * as Models from '../models';
 import { Pane } from '../route-data';
+import find from 'lodash/find';
+import map from 'lodash/map';
 
 export class TableRowViewModel {
 
     constructor(
         private readonly viewModelFactory: ViewModelFactoryService,
-        properties: _.Dictionary<Models.PropertyMember>,
+        properties: Dictionary<Models.PropertyMember>,
         private readonly paneId: Pane,
         public readonly title: string
     ) {
-        this.properties = _.map(properties, (property, id) => viewModelFactory.propertyTableViewModel(id as string, property));
+        this.properties = map(properties, (property, id) => viewModelFactory.propertyTableViewModel(id as string, property));
     }
 
     properties: TableRowColumnViewModel[];
@@ -24,7 +26,7 @@ export class TableRowViewModel {
     readonly conformColumns = (showTitle: boolean, columns: string[]) => {
         this.showTitle = showTitle;
         if (columns) {
-            this.properties = _.map(columns, c => _.find(this.properties, tp => tp.id === c) || this.getPlaceHolderTableRowColumnViewModel(c));
+            this.properties = map(columns, c => find(this.properties, tp => tp.id === c) || this.getPlaceHolderTableRowColumnViewModel(c));
         }
     }
 }

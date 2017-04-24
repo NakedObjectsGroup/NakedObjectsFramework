@@ -8,22 +8,34 @@ import { ChoiceViewModel } from './choice-view-model';
 import { IMessageViewModel } from './imessage-view-model';
 import * as Models from '../models';
 import * as Msg from '../user-messages';
-import * as _ from 'lodash';
+import { Dictionary } from 'lodash';
 import { Renderer, ElementRef } from '@angular/core';
 import { FormBuilder, AbstractControl, FormGroup } from '@angular/forms';
 import { DialogViewModel } from './dialog-view-model';
 import { ParameterViewModel } from './parameter-view-model';
 import { Pane } from '../route-data';
+import each from 'lodash/each';
+import filter from 'lodash/filter';
+import find from 'lodash/find';
+import forEach from 'lodash/forEach';
+import map from 'lodash/map';
+import zipObject from 'lodash/zipObject';
+import mapValues from 'lodash/mapValues';
+import reduce from 'lodash/reduce';
+import uniqWith from 'lodash/uniqWith';
 
-export function createForm(dialog: DialogViewModel, formBuilder: FormBuilder): { form: FormGroup, dialog: DialogViewModel, parms: _.Dictionary<ParameterViewModel> } {
+//todo fix
+import * as _ from 'lodash'
+
+export function createForm(dialog: DialogViewModel, formBuilder: FormBuilder): { form: FormGroup, dialog: DialogViewModel, parms: Dictionary<ParameterViewModel> } {
     const pps = dialog.parameters;
-    const parms = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p)) as _.Dictionary<ParameterViewModel>;
-    const controls = _.mapValues(parms, p => [p.getValueForControl(), (a: AbstractControl) => p.validator(a)]);
+    const parms = zipObject(map(pps, p => p.id), map(pps, p => p)) as Dictionary<ParameterViewModel>;
+    const controls = mapValues(parms, p => [p.getValueForControl(), (a: AbstractControl) => p.validator(a)]);
     const form = formBuilder.group(controls);
 
     form.valueChanges.subscribe((data: any) => {
         // cache parm values
-        _.forEach(data, (v, k) => parms[k!].setValueFromControl(v));
+        forEach(data, (v, k) => parms[k!].setValueFromControl(v));
         dialog.setParms();
     });
 
@@ -44,16 +56,16 @@ export function tooltip(onWhat: { clientValid: () => boolean }, fields: FieldVie
         return "";
     }
 
-    const missingMandatoryFields = _.filter(fields, p => !p.clientValid && !p.getMessage());
+    const missingMandatoryFields = filter(fields, p => !p.clientValid && !p.getMessage());
 
     if (missingMandatoryFields.length > 0) {
-        return _.reduce(missingMandatoryFields, (s, t) => s + t.title + "; ", Msg.mandatoryFieldsPrefix);
+        return reduce(missingMandatoryFields, (s, t) => s + t.title + "; ", Msg.mandatoryFieldsPrefix);
     }
 
-    const invalidFields = _.filter(fields, p => !p.clientValid);
+    const invalidFields = filter(fields, p => !p.clientValid);
 
     if (invalidFields.length > 0) {
-        return _.reduce(invalidFields, (s, t) => s + t.title + "; ", Msg.invalidFieldsPrefix);
+        return reduce(invalidFields, (s, t) => s + t.title + "; ", Msg.invalidFieldsPrefix);
     }
 
     return "";
@@ -74,7 +86,7 @@ function getMenuNameForLevel(menupath: string, level: number) {
 }
 
 function removeDuplicateMenuNames(menus: { name: string }[]) {
-    return _.uniqWith(menus,
+    return uniqWith(menus,
         (m1: { name: string }, m2: { name: string }) => {
             if (m1.name && m2.name) {
                 return m1.name === m2.name;
@@ -89,12 +101,12 @@ export function createSubmenuItems(avms: ActionViewModel[], menuSlot: { name: st
     let menuItems: MenuItemViewModel[] | null;
 
     if (menuSlot.name) {
-        const actions = _.filter(avms, a => getMenuNameForLevel(a.menuPath, level) === menuSlot.name && !getMenuNameForLevel(a.menuPath, level + 1));
+        const actions = filter(avms, a => getMenuNameForLevel(a.menuPath, level) === menuSlot.name && !getMenuNameForLevel(a.menuPath, level + 1));
         menuActions = actions;
 
         //then collate submenus 
 
-        const submenuActions = _.filter(avms, (a: ActionViewModel) => getMenuNameForLevel(a.menuPath, level) === menuSlot.name && getMenuNameForLevel(a.menuPath, level + 1));
+        const submenuActions = filter(avms, (a: ActionViewModel) => getMenuNameForLevel(a.menuPath, level) === menuSlot.name && getMenuNameForLevel(a.menuPath, level + 1));
         let menuSubSlots = _
             .chain(submenuActions)
             .map(a => ({ name: getMenuNameForLevel(a.menuPath, level + 1), action: a }))
@@ -102,7 +114,7 @@ export function createSubmenuItems(avms: ActionViewModel[], menuSlot: { name: st
 
         menuSubSlots = removeDuplicateMenuNames(menuSubSlots);
 
-        menuItems = _.map(menuSubSlots, slot => createSubmenuItems(submenuActions, slot, level + 1));
+        menuItems = map(menuSubSlots, slot => createSubmenuItems(submenuActions, slot, level + 1));
     } else {
         menuActions = [menuSlot.action];
         menuItems = null;
@@ -125,7 +137,7 @@ export function createMenuItems(avms: ActionViewModel[]) {
     menuSlots = removeDuplicateMenuNames(menuSlots);
 
     // update submenus with all actions under same submenu
-    return _.map(menuSlots, slot => createSubmenuItems(avms, slot, 0));
+    return map(menuSlots, slot => createSubmenuItems(avms, slot, 0));
 }
 
 export function actionsTooltip(onWhat: { disableActions: () => boolean }, actionsOpen: boolean) {
@@ -185,8 +197,8 @@ export function setScalarValueInView(vm: { value: string | number | boolean | Da
     }
 }
 
-export function createChoiceViewModels(id: string, searchTerm: string, choices: _.Dictionary<Models.Value>) {
-    return Promise.resolve(_.map(choices, (v, k) => new ChoiceViewModel(v, id, k, searchTerm)));
+export function createChoiceViewModels(id: string, searchTerm: string, choices: Dictionary<Models.Value>) {
+    return Promise.resolve(map(choices, (v, k) => new ChoiceViewModel(v, id, k, searchTerm)));
 }
 
 export function handleErrorResponse(err: Models.ErrorMap, messageViewModel: IMessageViewModel, valueViewModels: FieldViewModel[]) {
@@ -195,9 +207,9 @@ export function handleErrorResponse(err: Models.ErrorMap, messageViewModel: IMes
     let fieldValidationErrors = false;
     let contributedParameterErrorMsg = "";
 
-    _.each(err.valuesMap(), (errorValue, k) => {
+    each(err.valuesMap(), (errorValue, k) => {
 
-        const valueViewModel = _.find(valueViewModels, vvm => vvm.id === k);
+        const valueViewModel = find(valueViewModels, vvm => vvm.id === k);
 
         if (valueViewModel) {
             const reason = errorValue.invalidReason;

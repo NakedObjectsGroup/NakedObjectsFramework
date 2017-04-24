@@ -1,7 +1,6 @@
 ﻿import { Component, Input, AfterViewInit, ViewChildren, QueryList } from '@angular/core';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { UrlManagerService } from '../url-manager.service';
-import * as _ from 'lodash';
 import * as Models from '../models';
 import { ActivatedRoute } from '@angular/router';
 import { ContextService } from '../context.service';
@@ -17,6 +16,11 @@ import { CollectionViewModel } from '../view-models/collection-view-model';
 import { ConfigService } from '../config.service';
 import { ParametersComponent } from '../parameters/parameters.component';
 import * as Helpers from '../view-models/helpers-view-models';
+import { Dictionary } from 'lodash';
+import filter from 'lodash/filter';
+import find from 'lodash/find';
+import forEach from 'lodash/forEach';
+import some from 'lodash/some';
 
 @Component({
     selector: 'nof-dialog',
@@ -84,7 +88,7 @@ export class DialogComponent implements AfterViewInit {
 
     onSubmit(right?: boolean) {
         if (this.dialog) {
-            _.forEach(this.parms,
+            forEach(this.parms,
                 (p, k) => {
                     const newValue = this.form.value[p.id];
                     p.setValueFromControl(newValue);
@@ -99,7 +103,7 @@ export class DialogComponent implements AfterViewInit {
         }
     };
 
-    private parms: _.Dictionary<ParameterViewModel>;
+    private parms: Dictionary<ParameterViewModel>;
 
     private createForm(dialog: DialogViewModel) {
         ({ form: this.form, dialog: this.dialog, parms: this.parms } = Helpers.createForm(dialog, this.formBuilder));
@@ -146,12 +150,12 @@ export class DialogComponent implements AfterViewInit {
 
             if (p instanceof ListViewModel) {
                 action = p.actionMember(this.currentDialogId) !;
-                actionViewModel = _.find(p.actions, a => a.actionRep.actionId() === this.currentDialogId) || null;
+                actionViewModel = find(p.actions, a => a.actionRep.actionId() === this.currentDialogId) || null;
             }
 
             if (p instanceof CollectionViewModel && p.hasMatchingLocallyContributedAction(this.currentDialogId)) {
                 action = p.actionMember(this.currentDialogId, this.configService.config.keySeparator) !;
-                actionViewModel = _.find(p.actions, a => a.actionRep.actionId() === this.currentDialogId) || null;
+                actionViewModel = find(p.actions, a => a.actionRep.actionId() === this.currentDialogId) || null;
             }
 
             if (action) {
@@ -182,7 +186,7 @@ export class DialogComponent implements AfterViewInit {
 
     focus(parms: QueryList<ParametersComponent>) {
         if (parms && parms.length > 0) {
-            _.some(parms.toArray(), p => p.focus());
+            some(parms.toArray(), p => p.focus());
         }
     }
 

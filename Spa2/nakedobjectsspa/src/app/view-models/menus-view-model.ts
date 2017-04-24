@@ -1,7 +1,8 @@
 ﻿import { ViewModelFactoryService } from '../view-model-factory.service';
 import { LinkViewModel } from './link-view-model';
 import * as Models from '../models';
-import * as _ from 'lodash';
+import map from 'lodash/map';
+
 import { Pane } from '../route-data';
 
 
@@ -11,7 +12,7 @@ export class MenusViewModel {
         private readonly menusRep: Models.MenusRepresentation,
         onPaneId: Pane
     ) {
-        this.items = _.map(this.menusRep.value(), link => this.viewModelFactory.linkViewModel(link, onPaneId));
+        this.items = map(this.menusRep.value(), link => this.viewModelFactory.linkViewModel(link, onPaneId));
     }
 
     readonly items: LinkViewModel[];

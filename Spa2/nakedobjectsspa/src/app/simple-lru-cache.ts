@@ -1,5 +1,5 @@
 ﻿import * as Ro from './ro-interfaces';
-import * as _ from 'lodash';
+import { Dictionary } from 'lodash';
 
 export type CachableTypes = Ro.IRepresentation | Blob;
 
@@ -16,7 +16,7 @@ export class SimpleLruCache {
 
     constructor(private readonly depth: number) { }
 
-    private cache: _.Dictionary<LruNode> = {};
+    private cache: Dictionary<LruNode> = {};
     private count = 0;
     private head: LruNode | null = null;
     private tail: LruNode | null = null;

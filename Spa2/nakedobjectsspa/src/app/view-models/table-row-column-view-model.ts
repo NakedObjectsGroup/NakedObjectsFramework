@@ -4,7 +4,8 @@ import * as Msg from '../user-messages';
 import * as Ro from '../ro-interfaces';
 import * as Models from '../models';
 import * as Helpers from './helpers-view-models';
-import * as _ from 'lodash';
+import find from 'lodash/find';
+import map from 'lodash/map';
 
 export class TableRowColumnViewModel {
 
@@ -42,8 +43,8 @@ export class TableRowColumnViewModel {
                     if (propertyRep.entryType() === Models.EntryType.Choices) {
                         const currentChoice = new ChoiceViewModel(value, id);
                         const choicesMap = propertyRep.choices() !;
-                        const choices = _.map(choicesMap, (v, n) => new ChoiceViewModel(v, id, n));
-                        const choice = _.find(choices, c => c.valuesEqual(currentChoice));
+                        const choices = map(choicesMap, (v, n) => new ChoiceViewModel(v, id, n));
+                        const choice = find(choices, c => c.valuesEqual(currentChoice));
 
                         if (choice) {
                             this.value = choice.name;

@@ -9,13 +9,14 @@ import { MaskService } from '../mask.service';
 import { ClickHandlerService } from '../click-handler.service';
 import { UrlManagerService } from '../url-manager.service';
 import { IDraggableViewModel } from './idraggable-view-model';
-import * as _ from 'lodash';
+import { Dictionary } from 'lodash';
 import * as Msg from '../user-messages';
 import * as Models from '../models';
 import * as Helpers from './helpers-view-models';
 import * as Configservice from '../config.service';
 import { Pane } from '../route-data';
-
+import find from 'lodash/find';
+import concat from 'lodash/concat';
 
 export class PropertyViewModel extends FieldViewModel implements IDraggableViewModel {
 
@@ -32,7 +33,7 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         id: string,
         private readonly previousValue: Models.Value,
         onPaneId: Pane,
-        parentValues: () => _.Dictionary<Models.Value>
+        parentValues: () => Dictionary<Models.Value>
     ) {
 
         super(propertyRep,
@@ -88,7 +89,7 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         return null;
     }
 
-    private setupPropertyAutocomplete(parentValues: () => _.Dictionary<Models.Value>) {
+    private setupPropertyAutocomplete(parentValues: () => Dictionary<Models.Value>) {
         const propertyRep = this.propertyRep;
         this.setupAutocomplete(propertyRep, parentValues, this.getDigest(propertyRep));
     }
@@ -118,11 +119,11 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
 
             if (this.optional) {
                 const emptyChoice = new ChoiceViewModel(new Models.Value(""), this.id);
-                this.choices = _.concat<ChoiceViewModel>([emptyChoice], this.choices);
+                this.choices = concat<ChoiceViewModel>([emptyChoice], this.choices);
             }
 
             const currentChoice = new ChoiceViewModel(newValue, this.id);
-            this.selectedChoice = _.find(this.choices, c => c.valuesEqual(currentChoice)) || null;
+            this.selectedChoice = find(this.choices, c => c.valuesEqual(currentChoice)) || null;
         } else if (!propertyRep.isScalar()) {
             this.selectedChoice = new ChoiceViewModel(newValue, this.id);
         }

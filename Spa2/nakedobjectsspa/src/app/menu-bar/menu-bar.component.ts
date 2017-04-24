@@ -2,7 +2,9 @@
 import { LinkViewModel } from '../view-models/link-view-model';
 import { ActionComponent, IActionHolder } from '../action/action.component';
 import { UrlManagerService } from '../url-manager.service';
-import * as _ from 'lodash';
+import map from 'lodash/map';
+import some from 'lodash/some';
+
 
 @Component({
     selector: 'nof-menu-bar',
@@ -16,7 +18,7 @@ export class MenuBarComponent implements AfterViewInit {
     @Input()
     set menus(links: LinkViewModel[]) {
 
-        this.actions = _.map(links,
+        this.actions = map(links,
             link => ({
                 value: link.title,
                 doClick: () => {
@@ -37,7 +39,7 @@ export class MenuBarComponent implements AfterViewInit {
     focusOnFirstMenu(menusList: QueryList<ActionComponent>) {
         if (menusList) {
             // until first element returns true
-            _.some(menusList.toArray(), i => i.focus());
+            some(menusList.toArray(), i => i.focus());
         }
     }
 

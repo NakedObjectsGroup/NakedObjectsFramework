@@ -2,13 +2,17 @@
 import { Response, Request, RequestOptions, Headers, RequestMethod, ResponseContentType } from '@angular/http';
 import * as Models from './models';
 import * as Ro from './ro-interfaces';
-import * as _ from 'lodash';
+
 import { Subject } from 'rxjs/Subject';
 import { ConfigService } from './config.service';
 import { Observable } from 'rxjs'; // for declaration compile
 import { SimpleLruCache } from './simple-lru-cache';
 import { AuthHttp } from 'angular2-jwt';
 import 'rxjs/add/operator/toPromise';
+import { Dictionary } from 'lodash';
+import each from 'lodash/each';
+import reduce from 'lodash/reduce';
+
 
 @Injectable()
 export class RepLoaderService {
@@ -203,14 +207,14 @@ export class RepLoaderService {
         return this.httpValidate(config);
     }
 
-    retrieveFromLink = <T extends Models.IHateoasModel>(link: Models.Link | null, parms?: _.Dictionary<Object>): Promise<T> => {
+    retrieveFromLink = <T extends Models.IHateoasModel>(link: Models.Link | null, parms?: Dictionary<Object>): Promise<T> => {
 
         if (link) {
             const response = link.getTarget();
             let urlParms = "";
 
             if (parms) {
-                const urlParmString = _.reduce(parms, (result, n, key) => (result === "" ? "" : result + "&") + key + "=" + n, "");
+                const urlParmString = reduce(parms, (result, n, key) => (result === "" ? "" : result + "&") + key + "=" + n, "");
                 urlParms = urlParmString !== "" ? `?${urlParmString}` : "";
             }
 
@@ -226,11 +230,11 @@ export class RepLoaderService {
     }
 
 
-    invoke = (action: Models.IInvokableAction, parms: _.Dictionary<Models.Value>, urlParms: _.Dictionary<Object>): Promise<Models.ActionResultRepresentation> => {
+    invoke = (action: Models.IInvokableAction, parms: Dictionary<Models.Value>, urlParms: Dictionary<Object>): Promise<Models.ActionResultRepresentation> => {
         const invokeMap = action.getInvokeMap();
         if (invokeMap) {
-            _.each(urlParms, (v, k) => invokeMap.setUrlParameter(k!, v));
-            _.each(parms, (v, k) => invokeMap.setParameter(k!, v));
+            each(urlParms, (v, k) => invokeMap.setUrlParameter(k!, v));
+            each(parms, (v, k) => invokeMap.setParameter(k!, v));
             return this.retrieve(invokeMap, Models.ActionResultRepresentation);
         }
         return Promise.reject(`attempting to invoke uninvokable action ${action.actionId()}`);

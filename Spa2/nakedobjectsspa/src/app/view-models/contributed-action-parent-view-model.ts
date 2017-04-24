@@ -8,10 +8,22 @@ import { ContextService } from '../context.service';
 import { ItemViewModel } from './item-view-model';
 import { ActionViewModel } from './action-view-model';
 import { ParameterViewModel } from './parameter-view-model';
-import * as _ from 'lodash';
+import { Dictionary } from 'lodash';
 import * as Helpers from './helpers-view-models';
 import { MenuItemViewModel } from './menu-item-view-model';
 import { PaneRouteData, Pane } from '../route-data';
+import each from 'lodash/each';
+import filter from 'lodash/filter';
+import find from 'lodash/find';
+import clone from 'lodash/clone';
+import every from 'lodash/every';
+import forEach from 'lodash/forEach';
+import keys from 'lodash/keys';
+import map from 'lodash/map';
+import first from 'lodash/first';
+import some from 'lodash/some';
+import values from 'lodash/values';
+import toArray from 'lodash/toArray';
 
 export abstract class ContributedActionParentViewModel extends MessageViewModel {
 
@@ -25,26 +37,26 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
         super();
     }
 
-    readonly allSelected = () => _.every(this.items, item => item.selected);
+    readonly allSelected = () => every(this.items, item => item.selected);
     items: ItemViewModel[];
     actions: ActionViewModel[];
     menuItems: MenuItemViewModel[];
 
     private isLocallyContributed(action: Models.IInvokableAction) {
-        return _.some(action.parameters(), p => p.isCollectionContributed());
+        return some(action.parameters(), p => p.isCollectionContributed());
     }
 
-    setActions(actions: _.Dictionary<Models.ActionMember>, routeData: PaneRouteData) {
-        this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
+    setActions(actions: Dictionary<Models.ActionMember>, routeData: PaneRouteData) {
+        this.actions = map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
         this.menuItems = Helpers.createMenuItems(this.actions);
-        _.forEach(this.actions, a => this.decorate(a));
+        forEach(this.actions, a => this.decorate(a));
     }
 
     protected collectionContributedActionDecorator(actionViewModel: ActionViewModel) {
         const wrappedInvoke = actionViewModel.execute;
         actionViewModel.execute = (pps: ParameterViewModel[], right?: boolean) => {
 
-            const selected = _.filter(this.items, i => i.selected);
+            const selected = filter(this.items, i => i.selected);
 
             const rejectAsNeedSelection = (action: Models.IInvokableAction): Models.ErrorWrapper | null => {
                 if (this.isLocallyContributed(action)) {
@@ -59,14 +71,14 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
 
             const getParms = (action: Models.IInvokableAction) => {
 
-                const parms = _.values(action.parameters()) as Models.Parameter[];
-                const contribParm = _.find(parms, p => p.isCollectionContributed());
+                const parms = values(action.parameters()) as Models.Parameter[];
+                const contribParm = find(parms, p => p.isCollectionContributed());
 
                 if (contribParm) {
-                    const parmValue = new Models.Value(_.map(selected, i => i.link));
+                    const parmValue = new Models.Value(map(selected, i => i.link));
                     const collectionParmVm = this.viewModelFactory.parameterViewModel(contribParm, parmValue, this.onPaneId);
 
-                    const allpps = _.clone(pps);
+                    const allpps = clone(pps);
                     allpps.push(collectionParmVm);
                     return allpps;
                 }
@@ -96,8 +108,8 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
             this.context.getInvokableAction(actionViewModel.actionRep as Models.ActionMember).
                 then(invokableAction => {
                     actionViewModel.makeInvokable(invokableAction);
-                    const keyCount = _.keys(invokableAction.parameters()).length;
-                    return keyCount > 1 || keyCount === 1 && !_.toArray(invokableAction.parameters())[0].isCollectionContributed();
+                    const keyCount = keys(invokableAction.parameters()).length;
+                    return keyCount > 1 || keyCount === 1 && !toArray(invokableAction.parameters())[0].isCollectionContributed();
                 });
 
         // make sure not invokable  while waiting for promise to assign correct function 
@@ -121,8 +133,8 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
     }
 
     private setItems(newValue: boolean) {
-        _.each(this.items, item => item.silentSelect(newValue));
-        const id = _.first(this.items).id;
+        each(this.items, item => item.silentSelect(newValue));
+        const id = first(this.items).id;
         this.urlManager.setAllItemsSelected(newValue, id, this.onPaneId);
     }
 

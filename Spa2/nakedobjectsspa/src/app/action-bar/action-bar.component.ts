@@ -3,7 +3,9 @@ import { IActionHolder, wrapAction } from '../action/action.component';
 import { IMenuHolderViewModel } from '../view-models/imenu-holder-view-model';
 import { MenuItemViewModel } from '../view-models/menu-item-view-model';
 import { ActionComponent } from '../action/action.component';
-import * as _ from 'lodash';
+import flatten from 'lodash/flatten';
+import map from 'lodash/map';
+import some from 'lodash/map';
 
 @Component({
     selector: 'nof-action-bar',
@@ -18,8 +20,8 @@ export class ActionBarComponent {
     @Input()
     set menuHolder(mhvm: IMenuHolderViewModel) {
         const menuItems = mhvm.menuItems;
-        const avms = _.flatten(_.map(menuItems || [], (mi: MenuItemViewModel) => mi.actions!));
-        this.actions = _.map(avms, a => wrapAction(a));
+        const avms = flatten(map(menuItems || [], (mi: MenuItemViewModel) => mi.actions!));
+        this.actions = map(avms, a => wrapAction(a));
     }
 
     @ViewChildren(ActionComponent)
@@ -28,7 +30,7 @@ export class ActionBarComponent {
     focusOnFirstAction(actions: QueryList<ActionComponent>) {
         if (actions) {
             // until first element returns true
-            _.some(actions.toArray(), i => i.focus());
+            some(actions.toArray(), i => i.focus());
         }
     }
 

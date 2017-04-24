@@ -12,6 +12,7 @@ import { ConfigService } from '../config.service';
 import { LoggerService } from '../logger.service';
 import * as Models from '../models';
 import { AttachmentViewModel } from '../view-models/attachment-view-model';
+import { Dictionary } from 'lodash';
 
 @Component({
     selector: 'nof-edit-property',
@@ -127,7 +128,7 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
         return choice.name;
     }
 
-    classes(): _.Dictionary<boolean | null> {
+    classes(): Dictionary<boolean | null> {
         return {
             [this.prop.color]: true,
             "candrop": this.canDrop,

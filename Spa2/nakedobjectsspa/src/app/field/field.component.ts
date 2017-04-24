@@ -3,7 +3,7 @@ import * as Ro from '../ro-interfaces';
 import { AbstractControl } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { ElementRef, QueryList, Renderer } from '@angular/core';
-import * as _ from 'lodash';
+
 import { ContextService } from '../context.service';
 import { ChoiceViewModel } from '../view-models/choice-view-model';
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
@@ -16,6 +16,11 @@ import { ConfigService } from '../config.service';
 import { LoggerService } from '../logger.service';
 import * as Helpers from '../view-models/helpers-view-models';
 import { Pane } from '../route-data';
+import { Dictionary } from 'lodash';
+import find from 'lodash/find';
+import every from 'lodash/every';
+import mapValues from 'lodash/mapValues';
+import omit from 'lodash/omit';
 
 export abstract class FieldComponent {
 
@@ -53,13 +58,13 @@ export abstract class FieldComponent {
         this.isAutoComplete = this.model.entryType === Models.EntryType.AutoComplete;
 
         if (this.isConditionalChoices) {
-            this.pArgs = _.omit(this.model.promptArguments, "x-ro-nof-members") as _.Dictionary<Models.Value>;
+            this.pArgs = omit(this.model.promptArguments, "x-ro-nof-members") as Dictionary<Models.Value>;
             this.populateDropdown();
         }
     }
 
     currentOptions: ChoiceViewModel[] = [];
-    pArgs: _.Dictionary<Models.Value>;
+    pArgs: Dictionary<Models.Value>;
 
     paneId: Pane;
     canDrop = false;
@@ -90,10 +95,10 @@ export abstract class FieldComponent {
         return object && "properties" in object;
     }
 
-    mapValues(args: _.Dictionary<Models.Value>, parmsOrProps: { argId: string, getValue: () => Models.Value }[]) {
-        return _.mapValues(this.pArgs,
+    mapValues(args: Dictionary<Models.Value>, parmsOrProps: { argId: string, getValue: () => Models.Value }[]) {
+        return mapValues(this.pArgs,
             (v, n) => {
-                const pop = _.find(parmsOrProps, p => p.argId === n);
+                const pop = find(parmsOrProps, p => p.argId === n);
                 return pop!.getValue();
             });
     }
@@ -124,7 +129,7 @@ export abstract class FieldComponent {
         prompts.
             then((cvms: ChoiceViewModel[]) => {
                 // if unchanged return 
-                if (cvms.length === this.currentOptions.length && _.every(cvms, (c, i) => c.equals(this.currentOptions[i]))) {
+                if (cvms.length === this.currentOptions.length && every(cvms, (c, i) => c.equals(this.currentOptions[i]))) {
                     return;
                 }
                 this.model.choices = cvms;
@@ -193,7 +198,7 @@ export abstract class FieldComponent {
         if (input && input.length > 0 && input.length >= this.model.minLength) {
             this.model.prompt(input)
                 .then((cvms: ChoiceViewModel[]) => {
-                    if (cvms.length === this.currentOptions.length && _.every(cvms, (c, i) => c.equals(this.currentOptions[i]))) {
+                    if (cvms.length === this.currentOptions.length && every(cvms, (c, i) => c.equals(this.currentOptions[i]))) {
                         return;
                     }
                     this.model.choices = cvms;

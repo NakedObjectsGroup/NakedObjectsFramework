@@ -13,10 +13,18 @@ import { CollectionViewModel } from './collection-view-model';
 import { ParameterViewModel } from './parameter-view-model';
 import * as Models from '../models';
 import * as Helpers from './helpers-view-models';
-import * as _ from 'lodash';
+import { Dictionary } from 'lodash';
 import { ConfigService } from '../config.service';
 import * as Msg from '../user-messages';
 import { IMenuHolderViewModel } from './imenu-holder-view-model';
+import filter from 'lodash/filter';
+import every from 'lodash/every';
+import forEach from 'lodash/forEach';
+import map from 'lodash/map';
+import zipObject from 'lodash/zipObject';
+import fromPairs from 'lodash/fromPairs';
+import values from 'lodash/values';
+import mapValues from 'lodash/mapValues';
 
 export class DomainObjectViewModel extends MessageViewModel implements IMenuHolderViewModel {
 
@@ -37,7 +45,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
     }
 
     private readonly keySeparator: string;
-    private props: _.Dictionary<Models.Value>;
+    private props: Dictionary<Models.Value>;
     private instanceId: string;
     unsaved: boolean;
 
@@ -64,7 +72,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
     properties: PropertyViewModel[];
     collections: CollectionViewModel[];
 
-    private readonly editProperties = () => _.filter(this.properties, p => p.isEditable && p.isDirty());
+    private readonly editProperties = () => filter(this.properties, p => p.isEditable && p.isDirty());
 
     private readonly isFormOrTransient = () => this.domainObject.extensions().interactionMode() === "form" || this.domainObject.extensions().interactionMode() === "transient";
 
@@ -82,19 +90,19 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
 
     // leave this a lambda as it's passed as a function and we must keep the 'this'. 
     private propertyMap = () => {
-        const pps = _.filter(this.properties, property => property.isEditable);
-        return _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Models.Value>;
+        const pps = filter(this.properties, property => property.isEditable);
+        return zipObject(map(pps, p => p.id), map(pps, p => p.getValue())) as Dictionary<Models.Value>;
     };
 
     private wrapAction(a: ActionViewModel) {
         const wrappedInvoke = a.execute;
         a.execute = (pps: ParameterViewModel[], right?: boolean) => {
             this.setProperties();
-            const pairs = _.map(this.editProperties(), p => [p.id, p.getValue()]);
-            const prps = _.fromPairs(pairs) as _.Dictionary<Models.Value>;
+            const pairs = map(this.editProperties(), p => [p.id, p.getValue()]);
+            const prps = fromPairs(pairs) as Dictionary<Models.Value>;
 
-            const parmValueMap = _.mapValues(a.invokableActionRep.parameters(), p => ({ parm: p, value: prps[p.id()] }));
-            const allpps = _.map(parmValueMap, o => this.viewModelFactory.parameterViewModel(o.parm, o.value, this.onPaneId));
+            const parmValueMap = mapValues(a.invokableActionRep.parameters(), p => ({ parm: p, value: prps[p.id()] }));
+            const allpps = map(parmValueMap, o => this.viewModelFactory.parameterViewModel(o.parm, o.value, this.onPaneId));
             return wrappedInvoke(allpps, right)
                 .catch((reject: Models.ErrorWrapper) => {
                     this.handleWrappedError(reject);
@@ -111,13 +119,13 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
         this.isInEdit = routeData.interactionMode !== InteractionMode.View || iMode === "form" || iMode === "transient";
         this.props = routeData.interactionMode !== InteractionMode.View ? this.contextService.getObjectCachedValues(this.domainObject.id(this.keySeparator), routeData.paneId) : {};
 
-        const actions = _.values(this.domainObject.actionMembers()) as Models.ActionMember[];
-        this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, this.routeData));
+        const actions = values(this.domainObject.actionMembers()) as Models.ActionMember[];
+        this.actions = map(actions, action => this.viewModelFactory.actionViewModel(action, this, this.routeData));
 
         this.menuItems = Helpers.createMenuItems(this.actions);
 
-        this.properties = _.map(this.domainObject.propertyMembers(), (property, id) => this.viewModelFactory.propertyViewModel(property, id!, this.props[id!], this.onPaneId, this.propertyMap));
-        this.collections = _.map(this.domainObject.collectionMembers(), collection => this.viewModelFactory.collectionViewModel(collection, this.routeData, resetting));
+        this.properties = map(this.domainObject.propertyMembers(), (property, id) => this.viewModelFactory.propertyViewModel(property, id!, this.props[id!], this.onPaneId, this.propertyMap));
+        this.collections = map(this.domainObject.collectionMembers(), collection => this.viewModelFactory.collectionViewModel(collection, this.routeData, resetting));
 
         this.unsaved = routeData.interactionMode === InteractionMode.Transient;
 
@@ -153,7 +161,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
         this.resetMessage();
 
         if (routeData.interactionMode === InteractionMode.Form) {
-            _.forEach(this.actions, a => this.wrapAction(a));
+            forEach(this.actions, a => this.wrapAction(a));
         }
     }
 
@@ -176,7 +184,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
             .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
     };
 
-    readonly clientValid = () => _.every(this.properties, p => p.clientValid);
+    readonly clientValid = () => every(this.properties, p => p.clientValid);
 
     readonly tooltip = () => Helpers.tooltip(this, this.properties);
 
@@ -186,7 +194,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
         this.urlManager.toggleObjectMenu(this.onPaneId);
     };
 
-    readonly setProperties = () => _.forEach(this.editProperties(),
+    readonly setProperties = () => forEach(this.editProperties(),
         p => this.contextService.cachePropertyValue(this.domainObject, p.propertyRep, p.getValue(), this.onPaneId));
 
     readonly doEditCancel = () => {
@@ -195,7 +203,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
         this.cancelHandler()();
     };
 
-    readonly clearCachedFiles = () => _.forEach(this.properties, p => p.attachment ? p.attachment.clearCachedFile() : null);
+    readonly clearCachedFiles = () => forEach(this.properties, p => p.attachment ? p.attachment.clearCachedFile() : null);
 
     readonly doSave = (viewObject: boolean) => {
         this.clearCachedFiles();
@@ -240,7 +248,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
             .catch((reject: Models.ErrorWrapper) => this.handleWrappedError(reject));
     };
 
-    readonly hideEdit = () => this.isFormOrTransient() || _.every(this.properties, p => !p.isEditable);
+    readonly hideEdit = () => this.isFormOrTransient() || every(this.properties, p => !p.isEditable);
 
     readonly disableActions = () => !this.actions || this.actions.length === 0;
 

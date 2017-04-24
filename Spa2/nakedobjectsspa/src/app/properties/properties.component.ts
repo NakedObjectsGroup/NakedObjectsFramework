@@ -3,7 +3,8 @@ import { FormGroup } from '@angular/forms';
 import { EditPropertyComponent } from '../edit-property/edit-property.component'
 import { PropertyViewModel } from '../view-models/property-view-model';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
-import * as _ from 'lodash';
+import some from 'lodash/some';
+
 
 @Component({
     selector: 'nof-properties',
@@ -28,7 +29,7 @@ export class PropertiesComponent {
         const prop = this.propComponents;
         if (prop && prop.length > 0) {
             // until first element returns true
-            return _.some(prop.toArray(), i => i.focus());
+            return some(prop.toArray(), i => i.focus());
         }
         return false;
     }

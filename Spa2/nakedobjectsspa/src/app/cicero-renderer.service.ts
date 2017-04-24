@@ -9,7 +9,13 @@ import { InteractionMode } from './route-data';
 import { MaskService } from './mask.service';
 import { getParametersAndCurrentValue } from './cicero-commands';
 import { ErrorService } from './error.service';
-import * as _ from 'lodash';
+import { Dictionary } from 'lodash';
+import each from 'lodash/each';
+import filter from 'lodash/filter';
+import forEach from 'lodash/forEach';
+import keys from 'lodash/keys';
+import some from 'lodash/some';
+import invert from 'lodash/invert';
 
 @Injectable()
 export class CiceroRendererService {
@@ -43,7 +49,7 @@ export class CiceroRendererService {
             this.context.getObject(1, oid, routeData.interactionMode) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
                 .then((obj: Ro.DomainObjectRepresentation) => {
                     const openCollIds = openCollectionIds(routeData);
-                    if (_.some(openCollIds)) {
+                    if (some(openCollIds)) {
                         this.renderOpenCollection(openCollIds[0], obj, cvm);
                     } else if (obj.isTransient()) {
                         this.renderTransientObject(routeData, obj, cvm);
@@ -107,7 +113,7 @@ export class CiceroRendererService {
     //TODO functions become 'private'
     //Returns collection Ids for any collections on an object that are currently in List or Table mode
     private openCollectionIds(routeData: PaneRouteData): string[] {
-        return _.filter(_.keys(routeData.collections), k => routeData.collections[k] != CollectionViewState.Summary);
+        return filter(keys(routeData.collections), k => routeData.collections[k] != CollectionViewState.Summary);
     }
 
     private renderOpenCollection(collId: string, obj: Ro.DomainObjectRepresentation, cvm: CiceroViewModel) {
@@ -178,7 +184,7 @@ export class CiceroRendererService {
         mask: MaskService): string {
         const actionName = invokable.extensions().friendlyName();
         let output = `Action dialog: ${actionName}\n`;
-        _.forEach(getParametersAndCurrentValue(invokable, this.context), (value, paramId) => {
+        forEach(getParametersAndCurrentValue(invokable, this.context), (value, paramId) => {
             output += Ro.friendlyNameForParam(invokable, paramId) + ": ";
             const param = invokable.parameters()[paramId];
             output += renderFieldValue(param, value, mask);
@@ -190,9 +196,9 @@ export class CiceroRendererService {
     private renderModifiedProperties(obj: Ro.DomainObjectRepresentation, routeData: PaneRouteData, mask: MaskService): string {
         let output = "";
         const props = this.context.getObjectCachedValues(obj.id(this.keySeparator));
-        if (_.keys(props).length > 0) {
+        if (keys(props).length > 0) {
             output += Msg.modifiedProperties + ":\n";
-            _.each(props, (value, propId) => {
+            each(props, (value, propId) => {
                 output += Ro.friendlyNameForProperty(obj, propId) + ": ";
                 const pm = obj.propertyMember(propId);
                 output += renderFieldValue(pm, value, mask);
@@ -205,7 +211,7 @@ export class CiceroRendererService {
 
 //Returns collection Ids for any collections on an object that are currently in List or Table mode
 export function openCollectionIds(routeData: PaneRouteData): string[] {
-    return _.filter(_.keys(routeData.collections), k => routeData.collections[k] !== CollectionViewState.Summary);
+    return filter(keys(routeData.collections), k => routeData.collections[k] !== CollectionViewState.Summary);
 }
 
 //Handles empty values, and also enum conversion
@@ -238,16 +244,16 @@ export function renderFieldValue(field: Ro.IField, value: Ro.Value, mask: MaskSe
 
 function renderSingleChoice(field: Ro.IField, value: Ro.Value) {
     //This is to handle an enum: render it as text, not a number:  
-    const inverted = _.invert(field.choices());
+    const inverted = invert(field.choices());
     return (<any>inverted)[value.toValueString()];
 }
 
 function renderMultipleChoicesCommaSeparated(field: Ro.IField, value: Ro.Value) {
     //This is to handle an enum: render it as text, not a number: 
-    const inverted = _.invert(field.choices());
+    const inverted = invert(field.choices());
     let output = "";
     const values = value.list();
-    _.forEach(values, v => {
+    forEach(values, v => {
         output += (<any>inverted)[v.toValueString()] + ",";
     });
     return output;

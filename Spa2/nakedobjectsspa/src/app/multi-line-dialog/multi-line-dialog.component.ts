@@ -17,7 +17,11 @@ import { ConfigService } from '../config.service';
 import * as Helpers from '../view-models/helpers-view-models';
 import * as Msg from '../user-messages';
 import * as Models from '../models';
-import * as _ from 'lodash';
+import { Dictionary } from 'lodash';
+import find from 'lodash/find';
+import forEach from 'lodash/forEach';
+import map from 'lodash/map';
+import some from 'lodash/some';
 
 @Component({
     selector: 'nof-multi-line-dialog',
@@ -40,7 +44,7 @@ export class MultiLineDialogComponent extends PaneComponent {
 
     dialog: MultiLineDialogViewModel;
 
-    rowData: { form: FormGroup, dialog: DialogViewModel, parms: _.Dictionary<ParameterViewModel> }[];
+    rowData: { form: FormGroup, dialog: DialogViewModel, parms: Dictionary<ParameterViewModel> }[];
 
     form = (i: number) => {
         const rowData = this.rowData[i];
@@ -88,7 +92,7 @@ export class MultiLineDialogComponent extends PaneComponent {
     invokeAndAdd(index: number) {
         const parms = this.rowData[index].parms;
 
-        _.forEach(parms,
+        forEach(parms,
             p => {
                 const newValue = this.rowData[index].form.value[p.id];
                 p.setValueFromControl(newValue);
@@ -123,7 +127,7 @@ export class MultiLineDialogComponent extends PaneComponent {
                 }
 
                 this.dialog = this.viewModelFactory.multiLineDialogViewModel(routeData, details, holder);
-                this.rowData = _.map(this.dialog.dialogs, d => this.createForm(d));
+                this.rowData = map(this.dialog.dialogs, d => this.createForm(d));
             }).
             catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
     }
@@ -145,10 +149,10 @@ export class MultiLineDialogComponent extends PaneComponent {
                     const ovm = this.viewModelFactory.domainObjectViewModel(object, routeData, false);
                     const newDialogId = routeData.dialogId;
 
-                    const lcaCollection = _.find(ovm.collections, c => c.hasMatchingLocallyContributedAction(newDialogId));
+                    const lcaCollection = find(ovm.collections, c => c.hasMatchingLocallyContributedAction(newDialogId));
 
                     if (lcaCollection) {
-                        const actionViewModel = _.find(lcaCollection.actions, a => a.actionRep.actionId() === newDialogId);
+                        const actionViewModel = find(lcaCollection.actions, a => a.actionRep.actionId() === newDialogId);
                         this.setMultiLineDialog(lcaCollection, newDialogId, routeData, actionViewModel);
                     } else {
                         this.setMultiLineDialog(object, newDialogId, routeData);
@@ -166,7 +170,7 @@ export class MultiLineDialogComponent extends PaneComponent {
 
     focus(parms: QueryList<ParametersComponent>) {
         if (parms && parms.length > 0) {
-            _.some(parms.toArray(), p => p.focus());
+            some(parms.toArray(), p => p.focus());
         }
     }
 

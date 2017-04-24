@@ -1,9 +1,10 @@
-﻿import * as _ from 'lodash';
+﻿
 import * as Ro from './ro-interfaces';
 import { CurrencyPipe, DecimalPipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { ConfigService } from './config.service';
 import * as moment from 'moment';
+import forEach from 'lodash/forEach';
 
 export interface IMaskServiceConfigurator {
     setNumberMaskMapping: (customMask: string, format: Ro.FormatType, digits?: string, locale?: string) => void;
@@ -184,15 +185,15 @@ export class MaskService implements IMaskServiceConfigurator {
             const numberMasks = maskConfig.numberMasks;
 
             if (currencyMasks) {
-                _.forEach(currencyMasks, (v, k) => this.setCurrencyMaskMapping(k!, v.format, v.symbol, v.digits, v.locale));
+                forEach(currencyMasks, (v, k) => this.setCurrencyMaskMapping(k!, v.format, v.symbol, v.digits, v.locale));
             }
 
             if (dateMasks) {
-                _.forEach(dateMasks, (v, k) => this.setDateMaskMapping(k!, v.format, v.mask, v.tz, v.locale));
+                forEach(dateMasks, (v, k) => this.setDateMaskMapping(k!, v.format, v.mask, v.tz, v.locale));
             }
 
             if (numberMasks) {
-                _.forEach(numberMasks, (v, k) => this.setNumberMaskMapping(k!, v.format, v.digits, v.locale));
+                forEach(numberMasks, (v, k) => this.setNumberMaskMapping(k!, v.format, v.digits, v.locale));
             }
         }
     }

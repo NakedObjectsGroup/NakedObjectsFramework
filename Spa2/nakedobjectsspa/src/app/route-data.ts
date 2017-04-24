@@ -1,7 +1,11 @@
 ﻿import * as Models from './models';
-import * as _ from 'lodash';
+
 import { ConfigService } from './config.service';
 import { LoggerService } from './logger.service';
+import { Dictionary } from 'lodash';
+import keys from 'lodash/keys';
+import isEqual from 'lodash/isEqual';
+
 
 export type PaneName = "pane1" | "pane2";
 export type PaneType = "single" | "split";
@@ -78,23 +82,23 @@ export class PaneRouteData {
         private readonly doUrlValidation: boolean,
         private readonly loggerService: LoggerService) { }
 
-    rawParms: _.Dictionary<string>;
-    rawParmsWithoutReload: _.Dictionary<string>;
+    rawParms: Dictionary<string>;
+    rawParmsWithoutReload: Dictionary<string>;
     location: ViewType;
     objectId: string;
     menuId: string;
-    collections: _.Dictionary<CollectionViewState>;
-    selectedCollectionItems: _.Dictionary<boolean[]>;
+    collections: Dictionary<CollectionViewState>;
+    selectedCollectionItems: Dictionary<boolean[]>;
     actionsOpen: string;
     actionId: string;
     // Note that actionParams applies to executed actions. For dialogs see dialogFields
     // we have both because of contributed actions where we have to distinguish the action parms that 
     // created the current list and the the parms for the contributed action
 
-    actionParams: _.Dictionary<Models.Value>;
+    actionParams: Dictionary<Models.Value>;
     state: CollectionViewState;
     dialogId: string;
-    dialogFields: _.Dictionary<Models.Value>;
+    dialogFields: Dictionary<Models.Value>;
     page: number;
     pageSize: number;
     interactionMode: InteractionMode;
@@ -125,7 +129,7 @@ export class PaneRouteData {
     };
 
     private isEmptyMap = {
-        condition: (val: any) => _.keys(val).length === 0,
+        condition: (val: any) => keys(val).length === 0,
         name: "is an empty map"
     };
 
@@ -173,14 +177,14 @@ export class PaneRouteData {
             return false;
         }
      
-        return  _.isEqual(this.rawParms, other.rawParms);
+        return  isEqual(this.rawParms, other.rawParms);
     }
 
     isEqualIgnoringReload(other: PaneRouteData) {
         if (!this.rawParmsWithoutReload || !other || !other.rawParmsWithoutReload) {
             return false;
         }
-        return _.isEqual(this.rawParmsWithoutReload, other.rawParmsWithoutReload);
+        return isEqual(this.rawParmsWithoutReload, other.rawParmsWithoutReload);
     }
 }
 

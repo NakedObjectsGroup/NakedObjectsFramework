@@ -12,14 +12,27 @@ import {Location} from '@angular/common';
 import {CiceroCommandFactoryService} from './cicero-command-factory.service';
 import {ConfigService, IAppConfig} from './config.service';
 import * as moment from 'moment';
-import * as _ from 'lodash';
+import { Dictionary } from 'lodash';
+import each from 'lodash/each';
+import filter from 'lodash/filter';
+import findIndex from 'lodash/findIndex';
+import forEach from 'lodash/forEach';
+import every from 'lodash/every';
+import keys from 'lodash/keys';
+import map from 'lodash/map';
+import zipObject from 'lodash/zipObject';
+import mapValues from 'lodash/mapValues';
+import reduce from 'lodash/reduce';
+import some from 'lodash/some';
+import mapKeys from 'lodash/mapKeys';
+import fromPairs from 'lodash/fromPairs';
 
-    export function getParametersAndCurrentValue(action: Ro.ActionMember | Ro.IInvokableAction, context: ContextService): _.Dictionary<Ro.Value> {
+    export function getParametersAndCurrentValue(action: Ro.ActionMember | Ro.IInvokableAction, context: ContextService): Dictionary<Ro.Value> {
 
         if (Ro.isIInvokableAction(action)) {
             const parms = action.parameters();
             const values = context.getDialogCachedValues(action.actionId());
-            return _.mapValues(parms, p => {
+            return mapValues(parms, p => {
                 const value = values[p.id()];
                 if (value === undefined) {
                     return p.default();
@@ -233,12 +246,12 @@ import * as _ from 'lodash';
         //Tests that at least one collection is open (should only be one). 
         //TODO: assumes that closing collection removes it from routeData NOT sets it to Summary
         protected isCollection(): boolean {
-            return this.isObject() && _.some(this.routeData().collections);
+            return this.isObject() && some(this.routeData().collections);
         }
 
         protected closeAnyOpenCollections() {
             const open = Rend.openCollectionIds(this.routeData());
-            _.forEach(open, id => {
+            forEach(open, id => {
                 this.urlManager.setCollectionMemberState(id, RtD.CollectionViewState.Summary);
             });
         }
@@ -262,7 +275,7 @@ import * as _ from 'lodash';
         protected matchingProperties(
             obj: Ro.DomainObjectRepresentation,
             match: string): Ro.PropertyMember[] {
-            let props = _.map(obj.propertyMembers(), prop => prop);
+            let props = map(obj.propertyMembers(), prop => prop);
             if (match) {
                 props = this.matchFriendlyNameAndOrMenuPath(props, match);
             }
@@ -272,7 +285,7 @@ import * as _ from 'lodash';
         protected matchingCollections(
             obj: Ro.DomainObjectRepresentation,
             match: string): Ro.CollectionMember[] {
-            const allColls = _.map(obj.collectionMembers(), action => action);
+            const allColls = map(obj.collectionMembers(), action => action);
             if (match) {
                 return this.matchFriendlyNameAndOrMenuPath<Ro.CollectionMember>(allColls, match);
             } else {
@@ -281,7 +294,7 @@ import * as _ from 'lodash';
         }
 
         protected matchingParameters(action: Ro.InvokableActionMember, match: string): Ro.Parameter[] {
-            let params = _.map(action.parameters(), p => p);
+            let params = map(action.parameters(), p => p);
             if (match) {
                 params = this.matchFriendlyNameAndOrMenuPath(params, match);
             }
@@ -292,28 +305,28 @@ import * as _ from 'lodash';
             reps: T[], match: string): T[] {
             const clauses = match.split(" ");
             //An exact match has preference over any partial match
-            const exactMatches = _.filter(reps, (rep) => {
+            const exactMatches = filter(reps, (rep) => {
                 const path = rep.extensions().menuPath();
                 const name = rep.extensions().friendlyName().toLowerCase();
                 return match === name ||
                     (!!path && match === path.toLowerCase() + " " + name) ||
-                    _.every(clauses, clause => name === clause || (!!path && path.toLowerCase() === clause));
+                    every(clauses, clause => name === clause || (!!path && path.toLowerCase() === clause));
             });
             if (exactMatches.length > 0) return exactMatches;
-            return _.filter(reps, rep => {
+            return filter(reps, rep => {
                 const path = rep.extensions().menuPath();
                 const name = rep.extensions().friendlyName().toLowerCase();
-                return _.every(clauses, clause => name.indexOf(clause) >= 0 ||  (!!path && path.toLowerCase().indexOf(clause) >= 0));
+                return every(clauses, clause => name.indexOf(clause) >= 0 ||  (!!path && path.toLowerCase().indexOf(clause) >= 0));
             });
         }
 
-        protected findMatchingChoicesForRef(choices: _.Dictionary<Ro.Value>, titleMatch: string): Ro.Value[] {
-            return _.filter(choices, v => v.toString().toLowerCase().indexOf(titleMatch.toLowerCase()) >= 0);
+        protected findMatchingChoicesForRef(choices: Dictionary<Ro.Value>, titleMatch: string): Ro.Value[] {
+            return filter(choices, v => v.toString().toLowerCase().indexOf(titleMatch.toLowerCase()) >= 0);
         }
 
-        protected findMatchingChoicesForScalar(choices: _.Dictionary<Ro.Value>, titleMatch: string): Ro.Value[] {
-            const labels = _.keys(choices);
-            const matchingLabels = _.filter(labels, l => l.toString().toLowerCase().indexOf(titleMatch.toLowerCase()) >= 0);
+        protected findMatchingChoicesForScalar(choices: Dictionary<Ro.Value>, titleMatch: string): Ro.Value[] {
+            const labels = keys(choices);
+            const matchingLabels = filter(labels, l => l.toString().toLowerCase().indexOf(titleMatch.toLowerCase()) >= 0);
             const result = new Array<Ro.Value>();
             switch (matchingLabels.length) {
                 case 0:
@@ -326,7 +339,7 @@ import * as _ from 'lodash';
                 default:
                     //Push the matching KEYs, wrapped as (pseudo) Values for display in message to user
                     //For simple scalars the values would also be OK, but not for Enums
-                    _.forEach(matchingLabels, label => result.push(new Ro.Value(label)));
+                    forEach(matchingLabels, label => result.push(new Ro.Value(label)));
                     break;
             }
             return result;
@@ -338,7 +351,7 @@ import * as _ from 'lodash';
                 return;
             }
             let msg = Msg.pleaseCompleteOrCorrect;
-            _.each(err.valuesMap(), (errorValue, fieldId) => {
+            each(err.valuesMap(), (errorValue, fieldId) => {
                 msg += this.fieldValidationMessage(errorValue, () => getFriendlyName(fieldId!));
             });
             this.clearInputAndSetMessage(msg);
@@ -383,14 +396,14 @@ import * as _ from 'lodash';
                     } else if (val.isList()) { //Should be!
                         vals = val.list();
                     }
-                    _.forEach(vals, v => {
+                    forEach(vals, v => {
                         this.addOrRemoveValue(valuesFromRouteData, v);
                     });
                     if (vals[0].isScalar()) { //then all must be scalar
-                        const scalars = _.map(valuesFromRouteData, v => v.scalar());
+                        const scalars = map(valuesFromRouteData, v => v.scalar());
                         return new Ro.Value(scalars);
                     } else { //assumed to be links
-                        const links = _.map(valuesFromRouteData, v => (
+                        const links = map(valuesFromRouteData, v => (
                             { href: v.link().href(), title: v.link().title() }
                         ));
                         return new Ro.Value(links);
@@ -430,10 +443,10 @@ import * as _ from 'lodash';
             let valToAdd: Ro.Value;
             if (val.isScalar()) {
                 valToAdd = val;
-                index = _.findIndex(valuesFromRouteData, v => v.scalar() === val.scalar());
+                index = findIndex(valuesFromRouteData, v => v.scalar() === val.scalar());
             } else { //Must be reference
                 valToAdd = this.leanLink(val);
-                index = _.findIndex(valuesFromRouteData, v => v.link()!.href() === valToAdd.link()!.href());
+                index = findIndex(valuesFromRouteData, v => v.link()!.href() === valToAdd.link()!.href());
             }
             if (index > -1) {
                 valuesFromRouteData.splice(index, 1);
@@ -483,8 +496,8 @@ import * as _ from 'lodash';
             //TODO: handle list - CCAs
         }
 
-        private processActions(match: string | null, actionsMap: _.Dictionary<Ro.ActionMember>, details: string) {
-            let actions = _.map(actionsMap, action => action);
+        private processActions(match: string | null, actionsMap: Dictionary<Ro.ActionMember>, details: string) {
+            let actions = map(actionsMap, action => action);
             if (actions.length === 0) {
                 this.clearInputAndSetMessage(Msg.noActionsAvailable);
                 return;
@@ -519,7 +532,7 @@ import * as _ from 'lodash';
         }
 
         private listActions(actions: Ro.ActionMember[]): string {
-            return _.reduce(actions, (s, t) => {
+            return reduce(actions, (s, t) => {
                 const menupath = t.extensions().menuPath() ? `${t.extensions().menuPath()} - ` : "";
                 const disabled = t.disabledReason() ? ` (${Msg.disabledPrefix} ${t.disabledReason()})` : "";
                 return s + menupath + t.extensions().friendlyName() + disabled + "\n";
@@ -530,7 +543,7 @@ import * as _ from 'lodash';
             this.context.clearDialogCachedValues();
             this.urlManager.setDialog(action.actionId());
             this.context.getInvokableAction(action).
-                then(invokable => _.forEach(invokable.parameters(), p => this.setFieldValueInContextAndUrl(p, p.default()))).
+                then(invokable => forEach(invokable.parameters(), p => this.setFieldValueInContextAndUrl(p, p.default()))).
                 catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
         }
 
@@ -705,21 +718,21 @@ import * as _ from 'lodash';
                             break;
                         default:
                             s = `${fieldName} ${Msg.matchesMultiple}`;
-                            s += _.reduce(fields, (s, prop) => s + prop.extensions().friendlyName() + "\n", "");
+                            s += reduce(fields, (s, prop) => s + prop.extensions().friendlyName() + "\n", "");
                     }
                     this.clearInputAndSetMessage(s);
                 }).
                 catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
         }
 
-        private findAndClearAnyDependentFields(changingField: string, allFields: _.Dictionary<Ro.IField>) {
+        private findAndClearAnyDependentFields(changingField: string, allFields: Dictionary<Ro.IField>) {
 
-            _.forEach(allFields, field => {
+            forEach(allFields, field => {
                 const promptLink = field.promptLink();
 
                 if (promptLink) {
                     const pArgs = promptLink.arguments();
-                    const argNames = _.keys(pArgs);
+                    const argNames = keys(pArgs);
 
                     if (argNames.indexOf(changingField.toLowerCase()) >= 0) {
                         this.clearField(field);
@@ -732,7 +745,7 @@ import * as _ from 'lodash';
             this.getActionForCurrentDialog().
                 then(action => {
                     //TODO: error -  need to get invokable action to get the params.
-                    let params = _.map(action.parameters(), param => param);
+                    let params = map(action.parameters(), param => param);
                     params = this.matchFriendlyNameAndOrMenuPath(params, fieldName);
                     switch (params.length) {
                         case 0:
@@ -898,28 +911,28 @@ import * as _ from 'lodash';
                     break;
                 default:
                     let msg = Msg.multipleMatches;
-                    _.forEach(matches, m => msg += m.toString() + "\n");
+                    forEach(matches, m => msg += m.toString() + "\n");
                     this.clearInputAndSetMessage(msg);
                     break;
             }
         }
 
-        private getPropertiesAndCurrentValue(obj : Ro.DomainObjectRepresentation) : _.Dictionary<Ro.Value> {
+        private getPropertiesAndCurrentValue(obj : Ro.DomainObjectRepresentation) : Dictionary<Ro.Value> {
             const props = obj.propertyMembers();
-            const values = _.mapValues(props, p => p.value());
+            const values = mapValues(props, p => p.value());
             const modifiedProps = this.context.getObjectCachedValues(obj.id(this.keySeparator));
 
-            _.forEach(values, (v, k) => {
+            forEach(values, (v, k) => {
                 const newValue = modifiedProps[k];
                 if (newValue) {
                     values[k] = newValue;
                 }
             });
-            return _.mapKeys(values, (v, k) => k.toLowerCase());
+            return mapKeys(values, (v, k) => k.toLowerCase());
         }
 
         private handleConditionalChoices(field: Ro.IField, fieldEntry: string): void {
-            let enteredFields: _.Dictionary<Ro.Value>;
+            let enteredFields: Dictionary<Ro.Value>;
 
             if (field instanceof Ro.Parameter) {
                 enteredFields = getParametersAndCurrentValue(field.parent, this.context);
@@ -929,8 +942,8 @@ import * as _ from 'lodash';
                 enteredFields = this.getPropertiesAndCurrentValue(field.parent as Ro.DomainObjectRepresentation);
             }
 
-            const args = _.fromPairs(_.map(field.promptLink().arguments(), (v: any, key: string) => [key, new Ro.Value(v.value)])) as _.Dictionary<Ro.Value>;
-            _.forEach(_.keys(args), key => args[key] = enteredFields[key]);
+            const args = fromPairs(map(field.promptLink().arguments(), (v: any, key: string) => [key, new Ro.Value(v.value)])) as Dictionary<Ro.Value>;
+            forEach(keys(args), key => args[key] = enteredFields[key]);
 
             this.context.conditionalChoices(field, field.id(), null, args).
                 then(choices => {
@@ -951,7 +964,7 @@ import * as _ from 'lodash';
                 s += field.extensions().optional() ? `\n${Msg.optional}` : `\n${Msg.mandatory}`;
                 if (field.choices()) {
                     const label = `\n${Msg.choices}: `;
-                    s += _.reduce(field.choices(), (s, cho) =>  s + cho + " ", label);
+                    s += reduce(field.choices(), (s, cho) =>  s + cho + " ", label);
                 }
             }
             return s;
@@ -1032,7 +1045,7 @@ import * as _ from 'lodash';
                                 catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
                         } else {
                             const matchingProps = this.matchingProperties(obj, arg0);
-                            const matchingRefProps = _.filter(matchingProps, (p) => { return !p.isScalar() });
+                            const matchingRefProps = filter(matchingProps, (p) => { return !p.isScalar() });
                             const matchingColls = this.matchingCollections(obj, arg0);
                             let s = "";
                             switch (matchingRefProps.length + matchingColls.length) {
@@ -1049,10 +1062,10 @@ import * as _ from 'lodash';
                                     }
                                     break;
                                 default:
-                                    const props = _.reduce(matchingRefProps, (s, prop) => {
+                                    const props = reduce(matchingRefProps, (s, prop) => {
                                         return s + prop.extensions().friendlyName() + "\n";
                                     }, "");
-                                    const colls = _.reduce(matchingColls, (s, coll) => {
+                                    const colls = reduce(matchingColls, (s, coll) => {
                                         return s + coll.extensions().friendlyName() + "\n";
                                     }, "");
                                     s = `Multiple matches for ${arg0}:\n${props}${colls}`;
@@ -1127,8 +1140,8 @@ import * as _ from 'lodash';
                     var links = menus.value();
                     if (name) {
                         //TODO: do multi-clause match
-                        const exactMatches = _.filter(links, (t) => { return t.title().toLowerCase() === name; });
-                        const partialMatches = _.filter(links, (t) => { return t.title().toLowerCase().indexOf(name) > -1; });
+                        const exactMatches = filter(links, (t) => { return t.title().toLowerCase() === name; });
+                        const partialMatches = filter(links, (t) => { return t.title().toLowerCase().indexOf(name) > -1; });
                         links = exactMatches.length === 1 ? exactMatches : partialMatches;
                     }
                     switch (links.length) {
@@ -1143,7 +1156,7 @@ import * as _ from 'lodash';
                             break;
                         default:
                             const label = name ? `${Msg.matchingMenus}\n` : `${Msg.allMenus}\n`;
-                            const s = _.reduce(links, (s, t) => { return s + t.title() + "\n"; }, label);
+                            const s = reduce(links, (s, t) => { return s + t.title() + "\n"; }, label);
                             this.clearInputAndSetMessage(s);
                     }
                 });
@@ -1170,7 +1183,7 @@ import * as _ from 'lodash';
                         this.mayNotBeChained(Msg.queryOnlyRider);
                         return;
                     }
-                    let fieldMap: _.Dictionary<Ro.Value>;
+                    let fieldMap: Dictionary<Ro.Value>;
                     if (this.isForm()) {
                         const obj = action.parent as Ro.DomainObjectRepresentation;
                         fieldMap = this.context.getObjectCachedValues(obj.id(this.keySeparator)); //Props passed in as pseudo-params to action
@@ -1183,11 +1196,11 @@ import * as _ from 'lodash';
                             // by reject below
                             const warnings = result.extensions().warnings();
                             if (warnings) {
-                                _.forEach(warnings, w => this.cvm.alert += `\nWarning: ${w}`);
+                                forEach(warnings, w => this.cvm.alert += `\nWarning: ${w}`);
                             }
                             const messages = result.extensions().messages();
                             if (messages) {
-                                _.forEach(messages, m => this.cvm.alert += `\n${m}`);
+                                forEach(messages, m => this.cvm.alert += `\n${m}`);
                             }
                             this.urlManager.closeDialogReplaceHistory(""); //TODO provide Id
                         }).
@@ -1314,7 +1327,7 @@ import * as _ from 'lodash';
                     const newValsFromUrl = this.context.getObjectCachedValues(obj.id(this.keySeparator));
                     const propIds = new Array<string>();
                     const values = new Array<Ro.Value>();
-                    _.forEach(props, (propMember, propId) => {
+                    forEach(props, (propMember, propId) => {
                         if (!propMember.disabledReason()) {
                             propIds.push(propId);
                             const newVal = newValsFromUrl[propId];
@@ -1328,7 +1341,7 @@ import * as _ from 'lodash';
                             }
                         }
                     });
-                    const propMap = _.zipObject(propIds, values) as _.Dictionary<Ro.Value>;
+                    const propMap = zipObject(propIds, values) as Dictionary<Ro.Value>;
                     const mode = obj.extensions().interactionMode();
                     const toSave = mode === "form" || mode === "transient";
                     const saveOrUpdate = toSave ? this.context.saveObject : this.context.updateObject;
@@ -1427,8 +1440,8 @@ import * as _ from 'lodash';
                                 s = props.length > 0 ? this.renderPropNameAndValue(props[0]) : Rend.renderCollectionNameAndSize(colls[0]);
                                 break;
                             default:
-                                s = _.reduce(props, (s, prop) => s + this.renderPropNameAndValue(prop), "");
-                                s += _.reduce(colls, (s, coll) => s + Rend.renderCollectionNameAndSize(coll), "");
+                                s = reduce(props, (s, prop) => s + this.renderPropNameAndValue(prop), "");
+                                s += reduce(colls, (s, coll) => s + Rend.renderCollectionNameAndSize(coll), "");
                         }
                         this.clearInputAndSetMessage(s);
                     }).

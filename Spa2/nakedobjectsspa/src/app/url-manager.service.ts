@@ -1,13 +1,29 @@
 ﻿import { RouteData, PaneRouteData, InteractionMode, CollectionViewState, ApplicationMode, ViewType, Pane } from './route-data';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Router, UrlSegment } from '@angular/router';
+import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { ConfigService } from './config.service';
 import { LoggerService } from './logger.service';
-import * as _ from 'lodash';
+import { Dictionary } from 'lodash';
 import * as Models from "./models";
 import * as Constants from './constants';
+import filter from 'lodash/filter';
+import forEach from 'lodash/forEach';
+import keys from 'lodash/keys';
+import map from 'lodash/map';
+import fill from 'lodash/fill';
+import zipObject from 'lodash/zipObject';
+import mapValues from 'lodash/mapValues';
+import pickBy from 'lodash/pickBy';
+import reduce from 'lodash/reduce';
+import some from 'lodash/some';
+import pick from 'lodash/pick';
+import omit from 'lodash/omit';
+import values from 'lodash/values';
+import mapKeys from 'lodash/mapKeys';
+import merge from 'lodash/merge';
+import without from 'lodash/without';
 
 enum Transition {
     Null,
@@ -112,9 +128,9 @@ export class UrlManagerService {
         // split into smaller arrays if necessary 
 
         const arrays = this.createArrays(arr);
-        const masks = _.map(arrays, a => this.createSubMask(a).toString());
+        const masks = map(arrays, a => this.createSubMask(a).toString());
 
-        return _.reduce(masks, (res, val) => res + "-" + val);
+        return reduce(masks, (res, val) => res + "-" + val);
     }
 
     // convert from mask string to array of bools
@@ -135,8 +151,8 @@ export class UrlManagerService {
     private arrayFromMask(sMask: string) {
         sMask = sMask || "0";
         const sMasks = sMask.split("-");
-        const maskArrays = _.map(sMasks, s => this.arrayFromSubMask(s));
-        return _.reduce(maskArrays, (res, val) => res.concat(val), [] as boolean[]);
+        const maskArrays = map(sMasks, s => this.arrayFromSubMask(s));
+        return reduce(maskArrays, (res, val) => res.concat(val), [] as boolean[]);
     }
 
     private getSearch() {
@@ -166,11 +182,11 @@ export class UrlManagerService {
     }
 
     private getIds(typeOfId: string, paneId: Pane) {
-        return <_.Dictionary<string>>_.pickBy(this.getSearch(), (v, k) => !!k && k.indexOf(typeOfId + paneId) === 0);
+        return <Dictionary<string>>pickBy(this.getSearch(), (v, k) => !!k && k.indexOf(typeOfId + paneId) === 0);
     }
 
-    private mapIds(ids: _.Dictionary<string>): _.Dictionary<string> {
-        return _.mapKeys(ids, (v: any, k: string) => k.substr(k.indexOf("_") + 1));
+    private mapIds(ids: Dictionary<string>): Dictionary<string> {
+        return mapKeys(ids, (v: any, k: string) => k.substr(k.indexOf("_") + 1));
     }
 
     private getAndMapIds(typeOfId: string, paneId: Pane) {
@@ -178,18 +194,18 @@ export class UrlManagerService {
         return this.mapIds(ids);
     }
 
-    private getMappedValues(mappedIds: _.Dictionary<string>) {
-        return _.mapValues(mappedIds, v => Models.Value.fromJsonString(v, this.shortCutMarker, this.urlShortCuts));
+    private getMappedValues(mappedIds: Dictionary<string>) {
+        return mapValues(mappedIds, v => Models.Value.fromJsonString(v, this.shortCutMarker, this.urlShortCuts));
     }
 
     private getInteractionMode(rawInteractionMode: string): InteractionMode {
         return rawInteractionMode ? (<any>InteractionMode)[rawInteractionMode] : InteractionMode.View;
     }
 
-    private getPaneParams(params: _.Dictionary<string>, paneId: number): { rp: _.Dictionary<string>, rpwr: _.Dictionary<string> } {
-        const paneIds = _.filter(_.keys(params), k => (k.indexOf(paneId.toString()) >= 0));
-        const allRawParams = _.pick(params, paneIds) as _.Dictionary<string>;
-        const rawParamsWithoutReload = _.omit(allRawParams, akm.reload + paneId) as _.Dictionary<string>;
+    private getPaneParams(params: Dictionary<string>, paneId: number): { rp: Dictionary<string>, rpwr: Dictionary<string> } {
+        const paneIds = filter(keys(params), k => (k.indexOf(paneId.toString()) >= 0));
+        const allRawParams = pick(params, paneIds) as Dictionary<string>;
+        const rawParamsWithoutReload = omit(allRawParams, akm.reload + paneId) as Dictionary<string>;
         return { rp: allRawParams, rpwr: rawParamsWithoutReload };
     }
 
@@ -212,10 +228,10 @@ export class UrlManagerService {
         paneRouteData.interactionMode = this.getInteractionMode(rawInteractionMode);
 
         const collKeyMap = this.getAndMapIds(akm.collection, paneId);
-        paneRouteData.collections = _.mapValues(collKeyMap, v => (<any>CollectionViewState)[v]);
+        paneRouteData.collections = mapValues(collKeyMap, v => (<any>CollectionViewState)[v]);
 
         const collSelectedKeyMap = this.getAndMapIds(akm.selected, paneId);
-        paneRouteData.selectedCollectionItems = _.mapValues(collSelectedKeyMap, v => this.arrayFromMask(v));
+        paneRouteData.selectedCollectionItems = mapValues(collSelectedKeyMap, v => this.arrayFromMask(v));
 
         const parmKeyMap = this.getAndMapIds(akm.parm, paneId);
         paneRouteData.actionParams = this.getMappedValues(parmKeyMap);
@@ -239,23 +255,23 @@ export class UrlManagerService {
     }
 
     private searchKeysForPane(search: any, paneId: Pane, raw: string[]) {
-        const ids = _.map(raw, s => s + paneId);
-        return _.filter(_.keys(search), k => _.some(ids, id => k.indexOf(id) === 0));
+        const ids = map(raw, s => s + paneId);
+        return filter(keys(search), k => some(ids, id => k.indexOf(id) === 0));
     }
 
     private allSearchKeysForPane(search: any, paneId: Pane) {
-        const raw = _.values(akm) as string[];
+        const raw = values(akm) as string[];
         return this.searchKeysForPane(search, paneId, raw);
     }
 
     private clearPane(search: any, paneId: Pane) {
         const toClear = this.allSearchKeysForPane(search, paneId);
-        return _.omit(search, toClear) as _.Dictionary<string>;
+        return omit(search, toClear) as Dictionary<string>;
     }
 
     private clearSearchKeys(search: any, paneId: Pane, keys: string[]) {
         const toClear = this.searchKeysForPane(search, paneId, keys);
-        return _.omit(search, toClear);
+        return omit(search, toClear);
     }
 
     private paneIsAlwaysSingle(paneType: string) {
@@ -307,7 +323,7 @@ export class UrlManagerService {
         const search = this.getSearch();
         const toCapture = this.allSearchKeysForPane(search, paneId);
 
-        return _.pick(search, toCapture);
+        return pick(search, toCapture);
     }
 
     private getOidFromHref(href: string) {
@@ -381,7 +397,7 @@ export class UrlManagerService {
     private clearInvalidParmsFromSearch(paneId: Pane, search: any, path: string) {
         if (path) {
             const vks = this.validKeys(path);
-            const ivks = _.without(_.values(akm), ...vks) as string[];
+            const ivks = without(values(akm), ...vks) as string[];
             return this.clearSearchKeys(search, paneId, ivks);
         }
         return search;
@@ -464,13 +480,13 @@ export class UrlManagerService {
         return { path: path, search: search, replace: replace };
     }
 
-    private executeTransition(newValues: _.Dictionary<string>, paneId: Pane, transition: Transition, condition: (search: any) => boolean) {
+    private executeTransition(newValues: Dictionary<string>, paneId: Pane, transition: Transition, condition: (search: any) => boolean) {
         this.currentPaneId = paneId;
         let search = this.getSearch();
         if (condition(search)) {
             const result = this.handleTransition(paneId, search, transition);
             ({ search } = result);
-            _.forEach(newValues,
+            forEach(newValues,
                 (v, k) => {
                     // k should always be non null
                     if (v)
@@ -493,13 +509,13 @@ export class UrlManagerService {
 
     setMenu = (menuId: string, paneId =  Pane.Pane1) => {
         const key = `${akm.menu}${paneId}`;
-        const newValues = _.zipObject([key], [menuId]) as _.Dictionary<string>;
+        const newValues = zipObject([key], [menuId]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.ToMenu, search => this.getId(key, search) !== menuId);
     }
 
     setDialog = (dialogId: string, paneId =  Pane.Pane1) => {
         const key = `${akm.dialog}${paneId}`;
-        const newValues = _.zipObject([key], [dialogId]) as _.Dictionary<string>;
+        const newValues = zipObject([key], [dialogId]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.ToDialog, search => this.getId(key, search) !== dialogId);
     }
 
@@ -507,7 +523,7 @@ export class UrlManagerService {
     setMultiLineDialog = (dialogId: string, paneId: Pane) => {
         this.pushUrlState();
         const key = `${akm.dialog}${Pane.Pane1}`; // always on 1
-        const newValues = _.zipObject([key], [dialogId]) as _.Dictionary<string>;
+        const newValues = zipObject([key], [dialogId]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.ToMultiLineDialog, search => this.getId(key, search) !== dialogId);
     }
 
@@ -524,7 +540,7 @@ export class UrlManagerService {
         const existingValue = this.getSearch()[key];
 
         if (existingValue === id) {
-            const newValues = _.zipObject([key], [null]) as _.Dictionary<string>;
+            const newValues = zipObject([key], [null]) as Dictionary<string>;
             this.executeTransition(newValues, paneId, transition, () => true);
         }
     }
@@ -541,7 +557,7 @@ export class UrlManagerService {
     setObject = (resultObject: Models.DomainObjectRepresentation, paneId =  Pane.Pane1) => {
         const oid = resultObject.id(this.keySeparator);
         const key = `${akm.object}${paneId}`;
-        const newValues = _.zipObject([key], [oid]) as _.Dictionary<string>;
+        const newValues = zipObject([key], [oid]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
     }
 
@@ -549,13 +565,13 @@ export class UrlManagerService {
         const oid = resultObject.id(this.keySeparator);
         const okey = `${akm.object}${paneId}`;
         const mkey = `${akm.interactionMode}${paneId}`;
-        const newValues = _.zipObject([okey, mkey], [oid, InteractionMode[newMode]]) as _.Dictionary<string>;
+        const newValues = zipObject([okey, mkey], [oid, InteractionMode[newMode]]) as Dictionary<string>;
 
         this.executeTransition(newValues, paneId, Transition.ToObjectWithMode, () => true);
     }
 
-    setList = (actionMember: Models.IInvokableAction, parms: _.Dictionary<Models.Value>, fromPaneId =  Pane.Pane1, toPaneId =  Pane.Pane1) => {
-        const newValues = {} as _.Dictionary<string>;
+    setList = (actionMember: Models.IInvokableAction, parms: Dictionary<Models.Value>, fromPaneId =  Pane.Pane1, toPaneId =  Pane.Pane1) => {
+        const newValues = {} as Dictionary<string>;
         const parent = actionMember.parent;
 
         if (parent instanceof Models.DomainObjectRepresentation) {
@@ -575,7 +591,7 @@ export class UrlManagerService {
 
         newValues[`${akm.collection}${toPaneId}`] = newState;
 
-        _.forEach(parms, (p, id) => this.setId(`${akm.parm}${toPaneId}_${id}`, p.toJsonString(this.shortCutMarker, this.urlShortCuts), newValues));
+        forEach(parms, (p, id) => this.setId(`${akm.parm}${toPaneId}_${id}`, p.toJsonString(this.shortCutMarker, this.urlShortCuts), newValues));
 
         this.executeTransition(newValues, toPaneId, Transition.ToList, () => true);
         return newValues;
@@ -584,7 +600,7 @@ export class UrlManagerService {
     setProperty = (href: string, paneId =  Pane.Pane1) => {
         const oid = this.getOidFromHref(href);
         const key = `${akm.object}${paneId}`;
-        const newValues = _.zipObject([key], [oid]) as _.Dictionary<string>;
+        const newValues = zipObject([key], [oid]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
     }
 
@@ -592,7 +608,7 @@ export class UrlManagerService {
         const href = link.href();
         const oid = this.getOidFromHref(href);
         const key = `${akm.object}${paneId}`;
-        const newValues = _.zipObject([key], [oid]) as _.Dictionary<string>;
+        const newValues = zipObject([key], [oid]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
     }
 
@@ -604,14 +620,14 @@ export class UrlManagerService {
         const pid = this.getPidFromHref(href);
 
 
-        const newValues = _.zipObject([okey, akey], [oid, pid]) as _.Dictionary<string>;
+        const newValues = zipObject([okey, akey], [oid, pid]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.ToAttachment, () => true);
     }
 
     toggleObjectMenu = (paneId =  Pane.Pane1) => {
         const key = akm.actions + paneId;
         const actionsId = this.getSearch()[key] ? null : "open";
-        const newValues = _.zipObject([key], [actionsId]) as _.Dictionary<string>;
+        const newValues = zipObject([key], [actionsId]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.Null, () => true);
     }
 
@@ -635,13 +651,13 @@ export class UrlManagerService {
 
     setCollectionMemberState = (collectionMemberId: string, state: CollectionViewState, paneId =  Pane.Pane1) => {
         const key = `${akm.collection}${paneId}_${collectionMemberId}`;
-        const newValues = _.zipObject([key], [CollectionViewState[state]]) as _.Dictionary<string>;
+        const newValues = zipObject([key], [CollectionViewState[state]]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.Null, () => true);
     }
 
     setListState = (state: CollectionViewState, paneId =  Pane.Pane1) => {
         const key = `${akm.collection}${paneId}`;
-        const newValues = _.zipObject([key], [CollectionViewState[state]]) as _.Dictionary<string>;
+        const newValues = zipObject([key], [CollectionViewState[state]]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.Null, () => true);
     }
 
@@ -659,7 +675,7 @@ export class UrlManagerService {
             transition = Transition.Null;
         }
 
-        const newValues = _.zipObject([key], [InteractionMode[newMode]]) as _.Dictionary<string>;
+        const newValues = zipObject([key], [InteractionMode[newMode]]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, transition, () => true);
     }
 
@@ -670,7 +686,7 @@ export class UrlManagerService {
         const selectedArray = this.arrayFromMask(currentSelected);
         selectedArray[item] = isSelected;
         const currentSelectedAsString = (this.createMask(selectedArray)).toString();
-        const newValues = _.zipObject([key], [currentSelectedAsString]) as _.Dictionary<string>;
+        const newValues = zipObject([key], [currentSelectedAsString]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.Null, () => true);
     }
 
@@ -679,14 +695,14 @@ export class UrlManagerService {
         const key = `${akm.selected}${paneId}_${collectionId}`;
         const currentSelected = this.getSearch()[key];
         const selectedArray = this.arrayFromMask(currentSelected);
-        _.fill(selectedArray, isSelected);
+        fill(selectedArray, isSelected);
         const currentSelectedAsString = (this.createMask(selectedArray)).toString();
-        const newValues = _.zipObject([key], [currentSelectedAsString]) as _.Dictionary<string>;
+        const newValues = zipObject([key], [currentSelectedAsString]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.Null, () => true);
     }
 
     setListPaging = (newPage: number, newPageSize: number, state: CollectionViewState, paneId =  Pane.Pane1) => {
-        const pageValues = {} as _.Dictionary<string>;
+        const pageValues = {} as Dictionary<string>;
 
         pageValues[`${akm.page}${paneId}`] = newPage.toString();
         pageValues[`${akm.pageSize}${paneId}`] = newPageSize.toString();
@@ -763,22 +779,22 @@ export class UrlManagerService {
 
         // clear any dialogs so we don't return  to a dialog
 
-        paneSearch = _.omit(paneSearch, `${akm.dialog}${paneId}`);
+        paneSearch = omit(paneSearch, `${akm.dialog}${paneId}`);
 
         return { paneType: paneType, search: paneSearch };
     }
 
-    getListCacheIndexFromSearch = (search: _.Dictionary<string>, paneId: Pane, newPage: number, newPageSize: number, format?: CollectionViewState) => {
+    getListCacheIndexFromSearch = (search: Dictionary<string>, paneId: Pane, newPage: number, newPageSize: number, format?: CollectionViewState) => {
 
 
         const s1 = this.getId(`${akm.menu}${paneId}`, search) || "";
         const s2 = this.getId(`${akm.object}${paneId}`, search) || "";
         const s3 = this.getId(`${akm.action}${paneId}`, search) || "";
 
-        const parms = <_.Dictionary<string>>_.pickBy(search, (v, k) => !!k && k.indexOf(akm.parm + paneId) === 0);
-        const mappedParms = _.mapValues(parms, v => decodeURIComponent(Models.decompress(v, this.shortCutMarker, this.urlShortCuts)));
+        const parms = <Dictionary<string>>pickBy(search, (v, k) => !!k && k.indexOf(akm.parm + paneId) === 0);
+        const mappedParms = mapValues(parms, v => decodeURIComponent(Models.decompress(v, this.shortCutMarker, this.urlShortCuts)));
 
-        const s4 = _.reduce(mappedParms, (r, n, k) => r + (k + "=" + n + this.keySeparator), "");
+        const s4 = reduce(mappedParms, (r, n, k) => r + (k + "=" + n + this.keySeparator), "");
 
         const s5 = `${newPage}`;
         const s6 = `${newPageSize}`;
@@ -787,7 +803,7 @@ export class UrlManagerService {
 
         const ss = [s1, s2, s3, s4, s5, s6, s7] as string[];
 
-        return _.reduce(ss, (r, n) => r + this.keySeparator + n, "");
+        return reduce(ss, (r, n) => r + this.keySeparator + n, "");
     }
 
     getListCacheIndex = (paneId: Pane, newPage: number, newPageSize: number, format?: CollectionViewState) => {
@@ -803,7 +819,7 @@ export class UrlManagerService {
         if (capturedPane) {
             this.capturedPanes[paneId] = null;
             let search = this.clearPane(this.getSearch(), paneId);
-            search = _.merge(search, capturedPane.search);
+            search = merge(search, capturedPane.search);
             let path: string;
             let replace: boolean;
             ({ path, replace } = this.setupPaneNumberAndTypes(paneId, capturedPane.paneType));
@@ -824,7 +840,7 @@ export class UrlManagerService {
     }
 
     private swapSearchIds(search: any) {
-        return _.mapKeys(search,
+        return mapKeys(search,
             (v: any, k: string) => k.replace(/(\D+)(\d{1})(\w*)/, (match, p1, p2, p3) => `${p1}${p2 === "1" ? "2" : "1"}${p3}`));
     }
 

@@ -3,7 +3,11 @@ import { MenuItemViewModel } from '../view-models/menu-item-view-model';
 import { IActionHolder, wrapAction } from '../action/action.component';
 import { ActionComponent } from '../action/action.component';
 import { IMenuHolderViewModel } from '../view-models/imenu-holder-view-model';
-import * as _ from 'lodash';
+import map from 'lodash/map';
+import some from 'lodash/some';
+import findIndex from 'lodash/findIndex';
+import difference from 'lodash/difference';
+import first from 'lodash/first';
 
 @Component({
     selector: 'nof-action-list',
@@ -31,7 +35,7 @@ export class ActionListComponent implements AfterViewInit {
     private actionHolders: IActionHolder[][] = [];
 
     private getActionHolders(menuItem: MenuItemViewModel) {
-        return _.map(menuItem.actions, a => wrapAction(a));
+        return map(menuItem.actions, a => wrapAction(a));
     }
 
     hasActions = (menuItem: MenuItemViewModel) => {
@@ -72,20 +76,20 @@ export class ActionListComponent implements AfterViewInit {
 
         if (toFocus && toFocus.length > 0) {
             // until first element returns true
-            _.some(toFocus, i => i.focus());
+            some(toFocus, i => i.focus());
         }
     }
 
 
     focus(actions: QueryList<ActionComponent>) {
         if (actions && actions.length > 0) {
-            const actionChildrenNames = _.map(actions.toArray(), a => a.action.value);
-            const newActions = _.difference(actionChildrenNames, this.previousActionChildrenNames);
+            const actionChildrenNames = map(actions.toArray(), a => a.action.value);
+            const newActions = difference(actionChildrenNames, this.previousActionChildrenNames);
             let index : number = 0;
 
             if (newActions && newActions.length > 0) {
-                const firstAction = _.first(newActions);
-                index = _.findIndex(actions.toArray(), a => a.action.value === firstAction);
+                const firstAction = first(newActions);
+                index = findIndex(actions.toArray(), a => a.action.value === firstAction);
                 index = index < 0 ? 0 : index; 
             }
             this.previousActionChildrenNames = actionChildrenNames;

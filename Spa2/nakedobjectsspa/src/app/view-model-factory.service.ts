@@ -22,7 +22,7 @@ import { PropertyViewModel } from './view-models/property-view-model';
 import { CollectionViewModel } from './view-models/collection-view-model';
 import { MenuViewModel } from './view-models/menu-view-model';
 import { MenusViewModel } from './view-models/menus-view-model';
-import * as _ from 'lodash';
+import { Dictionary } from 'lodash';
 import { ListViewModel } from './view-models/list-view-model';
 import { DialogViewModel } from './view-models/dialog-view-model';
 import { DomainObjectViewModel } from './view-models/domain-object-view-model';
@@ -33,6 +33,9 @@ import { ApplicationPropertiesViewModel } from './view-models/application-proper
 import { CiceroViewModel } from './view-models/cicero-view-model';
 import { CiceroCommandFactoryService } from './cicero-command-factory.service';
 import { CiceroRendererService } from './cicero-renderer.service';
+import forEach from 'lodash/forEach';
+import map from 'lodash/map';
+import find from 'lodash/find';
 
 @Injectable()
 export class ViewModelFactoryService {
@@ -83,7 +86,7 @@ export class ViewModelFactoryService {
         return propertyRep ? new TableRowColumnViewModel(id, propertyRep, this.mask) : new TableRowColumnViewModel(id);
     }
 
-    propertyViewModel = (propertyRep: Models.PropertyMember, id: string, previousValue: Models.Value, paneId: Pane, parentValues: () => _.Dictionary<Models.Value>) => {
+    propertyViewModel = (propertyRep: Models.PropertyMember, id: string, previousValue: Models.Value, paneId: Pane, parentValues: () => Dictionary<Models.Value>) => {
         return new PropertyViewModel(propertyRep,
             this.color,
             this.error,
@@ -165,7 +168,7 @@ export class ViewModelFactoryService {
         return new RecentItemsViewModel(this, this.context, this.urlManager, paneId);
     }
 
-    tableRowViewModel = (properties: _.Dictionary<Models.PropertyMember>, paneId: Pane, title: string): TableRowViewModel => {
+    tableRowViewModel = (properties: Dictionary<Models.PropertyMember>, paneId: Pane, title: string): TableRowViewModel => {
         return new TableRowViewModel(this, properties, paneId, title);
     }
 
@@ -176,7 +179,7 @@ export class ViewModelFactoryService {
         const collection = listViewModel instanceof CollectionViewModel ? listViewModel : null;
         const id = collection ? collection.name : "";
         const selectedItems = routeData.selectedCollectionItems[id];
-        const items = _.map(links, (link, i) => this.itemViewModel(link, routeData.paneId, selectedItems && selectedItems[i], i, id));
+        const items = map(links, (link, i) => this.itemViewModel(link, routeData.paneId, selectedItems && selectedItems[i], i, id));
 
         if (tableView) {
 
@@ -192,7 +195,7 @@ export class ViewModelFactoryService {
             if (items.length > 0) {
                 getExtensions().
                     then((ext: Models.Extensions) => {
-                        _.forEach(items, itemViewModel => {
+                        forEach(items, itemViewModel => {
                             itemViewModel.tableRowViewModel.conformColumns(ext.tableViewTitle(), ext.tableViewColumns());
                         });
 
@@ -200,8 +203,8 @@ export class ViewModelFactoryService {
                             const firstItem = items[0].tableRowViewModel;
 
                             const propertiesHeader =
-                                _.map(firstItem.properties, (p, i) => {
-                                    const match = _.find(items, (item: ItemViewModel) => item.tableRowViewModel.properties[i].title);
+                                map(firstItem.properties, (p, i) => {
+                                    const match = find(items, (item: ItemViewModel) => item.tableRowViewModel.properties[i].title);
                                     return match ? match.tableRowViewModel.properties[i].title : firstItem.properties[i].id;
                                 });
 

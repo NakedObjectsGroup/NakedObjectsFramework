@@ -3,7 +3,8 @@ import { FormGroup } from '@angular/forms';
 import { EditParameterComponent } from '../edit-parameter/edit-parameter.component';
 import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { DialogViewModel } from '../view-models/dialog-view-model';
-import * as _ from 'lodash';
+import some from 'lodash/some';
+
 
 @Component({
     selector: 'nof-parameters',
@@ -33,7 +34,7 @@ export class ParametersComponent {
         const parms = this.parmComponents;
         if (parms && parms.length > 0) {
             // until first element returns true
-            return _.some(parms.toArray(), i => i.focus());
+            return some(parms.toArray(), i => i.focus());
         }
         return false;
     }
