@@ -9,8 +9,8 @@ import { Location } from '@angular/common';
 
 @Component({
   selector: 'nof-logoff',
-  templateUrl: require('./logoff.component.html'),
-  styleUrls: [require('./logoff.component.css')]
+  template: require('./logoff.component.html'),
+  styles: [require('./logoff.component.css')]
 })
 export class LogoffComponent implements OnInit {
 
