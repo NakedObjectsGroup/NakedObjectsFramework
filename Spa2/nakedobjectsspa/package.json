@@ -51,7 +51,6 @@
     "angular2-jwt": "0.2.2",
     "auth0-lock": "10.14.0",
     "core-js": "2.4.1",
-    "date-fns": "^1.28.3",
     "find-in-files": "0.4.0",
     "gently-copy": "2.3.1",
     "lodash": "4.17.4",
