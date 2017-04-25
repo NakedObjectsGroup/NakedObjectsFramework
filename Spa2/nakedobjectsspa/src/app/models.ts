@@ -650,17 +650,19 @@ export class MediaType {
 export class Value {
 
     // note this is different from constructor parm as we wrap ILink
-    private wrapped: Link | (Link | Ro.ValueType)[] | Ro.ScalarValueType | Blob;
+    private wrapped: Link | Value[] | Ro.ScalarValueType | Blob;
 
-    constructor(raw: Link | (Link | Ro.ValueType)[] | Ro.ValueType | Blob) {
+    constructor(raw: Link | (Link | Ro.ValueType | Value)[] | Ro.ValueType | Blob | Value) {
         // can only be Link, number, boolean, string or null    
 
         if (raw instanceof Array) {
-            this.wrapped = raw as (Link | Ro.ValueType)[];
+            this.wrapped = map(raw as (Link | Ro.ValueType | Value)[], i => new Value(i));
         } else if (raw instanceof Link) {
             this.wrapped = raw;
         } else if (isILink(raw)) {
             this.wrapped = new Link(raw);
+        } else if (raw instanceof Value) {
+            this.wrapped = raw.wrapped;
         } else {
             this.wrapped = raw;
         }
@@ -709,7 +711,7 @@ export class Value {
     }
 
     list(): Value[] | null {
-        return this.isList() ? map(this.wrapped as (Link | Ro.ValueType)[], i => new Value(i)) : null;
+        return this.isList() ? this.wrapped as Value[] : null;
     }
 
     toString(): string {
@@ -726,39 +728,45 @@ export class Value {
         return (this.wrapped == null) ? "" : this.wrapped.toString();
     }
 
-    // todo this modifies the object - fix so it doesn't  
-    compress(shortCutMarker: string, urlShortCuts: string[]) {
+    private compress(shortCutMarker: string, urlShortCuts: string[]) : Value {
         if (this.isReference()) {
-            this.link() !.compress(shortCutMarker, urlShortCuts); // know true
+            const link = this.link()!.compress(shortCutMarker, urlShortCuts); // know true
+            return new Value(link);
         }
-        if (this.isList()) {
-            const list = this.list() !; // know true
-            forEach(list, i => i.compress(shortCutMarker, urlShortCuts));
+        if (this.isList()) {          
+            const list = map(this.list()!, i => i.compress(shortCutMarker, urlShortCuts));
+            return new Value(list);
         };
 
         if (this.scalar() && this.wrapped instanceof String) {
-            this.wrapped = compress(this.wrapped as string, shortCutMarker, urlShortCuts);
+            const scalar = compress(this.wrapped as string, shortCutMarker, urlShortCuts);
+            return new Value(scalar);
         }
+
+        return this;
     }
 
-    decompress(shortCutMarker: string, urlShortCuts: string[]) {
+    private decompress(shortCutMarker: string, urlShortCuts: string[]) {
         if (this.isReference()) {
-            this.link() !.decompress(shortCutMarker, urlShortCuts);  // know true
+            const link = this.link()!.decompress(shortCutMarker, urlShortCuts);  // know true
+            return new Value(link);
         }
-        if (this.isList()) {
-            const list = this.list() as Value[]; // know true
-            forEach(list, i => i.decompress(shortCutMarker, urlShortCuts));
+        if (this.isList()) {          
+            const list = map(this.list()!, i => i.decompress(shortCutMarker, urlShortCuts));
+            return new Value(list);
         };
 
         if (this.scalar() && this.wrapped instanceof String) {
-            this.wrapped = decompress(this.wrapped as string, shortCutMarker, urlShortCuts);
+            const scalar = decompress(this.wrapped as string, shortCutMarker, urlShortCuts);
+            return new Value(scalar);
         }
+
+        return this;
     }
 
     static fromJsonString(jsonString: string, shortCutMarker: string, urlShortCuts: string[]): Value {
         const value = new Value(JSON.parse(jsonString));
-        value.decompress(shortCutMarker, urlShortCuts);
-        return value;
+        return value.decompress(shortCutMarker, urlShortCuts);
     }
 
     toValueString(): string {
@@ -770,8 +778,7 @@ export class Value {
 
     toJsonString(shortCutMarker: string, urlShortCuts: string[]): string {
 
-        const cloneThis = cloneDeep(this as Value);
-        cloneThis.compress(shortCutMarker, urlShortCuts);
+        const cloneThis = this.compress(shortCutMarker, urlShortCuts);
         const value = cloneThis.wrapped;
         const raw = (value instanceof Link) ? value.wrapped : value;
         return JSON.stringify(raw);
@@ -2481,11 +2488,13 @@ export class Link {
     constructor(public wrapped: Ro.ILink) { }
 
     compress(shortCutMarker: string, urlShortCuts: string[]) {
-        this.wrapped.href = compress(this.wrapped.href, shortCutMarker, urlShortCuts);
+        const href = compress(this.wrapped.href, shortCutMarker, urlShortCuts);
+        return new Link({ href: href });
     }
 
     decompress(shortCutMarker: string, urlShortCuts: string[]) {
-        this.wrapped.href = decompress(this.wrapped.href, shortCutMarker, urlShortCuts);
+        const href = decompress(this.wrapped.href, shortCutMarker, urlShortCuts);
+        return new Link({ href: href });
     }
 
     href(): string {

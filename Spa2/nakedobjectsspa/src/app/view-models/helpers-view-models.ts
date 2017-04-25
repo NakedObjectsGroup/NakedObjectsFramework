@@ -23,9 +23,9 @@ import zipObject from 'lodash/zipObject';
 import mapValues from 'lodash/mapValues';
 import reduce from 'lodash/reduce';
 import uniqWith from 'lodash/uniqWith';
-import * as Maskservice from '../mask.service';
-import * as moment from 'moment';
-import * as Configservice from '../config.service'; // todo fix moment locale import size 
+import { ILocalFilter } from '../mask.service';
+import * as moment from 'moment';// todo fix moment locale import size 
+import { ConfigService } from '../config.service'; 
 
 export function createForm(dialog: DialogViewModel, formBuilder: FormBuilder): { form: FormGroup, dialog: DialogViewModel, parms: Dictionary<ParameterViewModel> } {
     const pps = dialog.parameters;
@@ -171,7 +171,7 @@ function isInteger(value: number) {
     return typeof value === "number" && isFinite(value) && Math.floor(value) === value;
 }
 
-function validateNumber(model: Models.IHasExtensions, newValue: number, filter: Maskservice.ILocalFilter): string {
+function validateNumber(model: Models.IHasExtensions, newValue: number, filter: ILocalFilter): string {
     const format = model.extensions().format();
 
     switch (format) {
@@ -226,7 +226,7 @@ function getDate(val: string): Date | null {
 }
 
 
-function validateDateFormat(model: Models.IHasExtensions, newValue: Date | string, filter: Maskservice.ILocalFilter): string {
+function validateDateFormat(model: Models.IHasExtensions, newValue: Date | string, filter: ILocalFilter): string {
     const range = model.extensions().range();
     const newDate = (newValue instanceof Date) ? newValue : getDate(newValue);
 
@@ -250,7 +250,7 @@ function validateTimeFormat(model: Models.IHasExtensions, newValue: Date): strin
     return "";
 }
 
-function validateString(model: Models.IHasExtensions, newValue: any, filter: Maskservice.ILocalFilter): string {
+function validateString(model: Models.IHasExtensions, newValue: any, filter: ILocalFilter): string {
     const format = model.extensions().format();
 
     switch (format) {
@@ -280,7 +280,7 @@ function validateMandatory(model: Models.IHasExtensions, viewValue: string): str
 }
 
 
-function validateAgainstType(model: Models.IHasExtensions, modelValue: string | ChoiceViewModel | string[] | ChoiceViewModel[], viewValue: string, filter: Maskservice.ILocalFilter): string {
+function validateAgainstType(model: Models.IHasExtensions, modelValue: string | ChoiceViewModel | string[] | ChoiceViewModel[], viewValue: string, filter: ILocalFilter): string {
     // first check 
 
     const mandatory = validateMandatory(model, viewValue);
@@ -338,7 +338,7 @@ export function setScalarValueInView(vm: { value: string | number | boolean | Da
 }
 
 
-export function dirtyMarker(context: ContextService, configService: Configservice.ConfigService, oid: Models.ObjectIdWrapper) {
+export function dirtyMarker(context: ContextService, configService: ConfigService, oid: Models.ObjectIdWrapper) {
     return (configService.config.showDirtyFlag && context.getIsDirty(oid)) ? "*" : "";
 }
 
