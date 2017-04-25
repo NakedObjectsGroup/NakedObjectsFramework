@@ -76,6 +76,10 @@ export enum Pane {
     Pane2 = 2
 }
 
+export function getOtherPane(paneId: Pane) {
+    return paneId === Pane.Pane1 ? Pane.Pane2 : Pane.Pane1;
+}
+
 export class PaneRouteData {
     constructor(
         public paneId: Pane,

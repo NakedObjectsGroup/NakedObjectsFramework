@@ -3,7 +3,6 @@ import * as Constants from './constants';
 import * as RoCustom from './ro-interfaces-custom';
 import * as Msg from './user-messages';
 import { Dictionary } from 'lodash';
-import * as moment from 'moment'; // todo fix moment locale import size 
 import each from 'lodash/each';
 import find from 'lodash/find';
 import assign from 'lodash/assign';
@@ -20,14 +19,9 @@ import fromPairs from 'lodash/fromPairs';
 import forOwn from 'lodash/forOwn';
 import last from 'lodash/last';
 import merge from 'lodash/merge';
-
-// todo later these couple back to angular - rework so no direct coupling 
-import { ConfigService } from './config.service';
-import { MaskService, ILocalFilter } from "./mask.service";
-import { ContextService } from "./context.service";
-import { ChoiceViewModel } from './view-models/choice-view-model';
-import {Pane} from './route-data';
 import forEach from 'lodash/forEach';
+
+// do not couple this back to angular by imports  
 
 // log directly to avoid coupling back to angular  
 function error(message: string, ): never {
@@ -55,18 +49,9 @@ function getMember<T>(members: Dictionary<T>, id: string, owner: string) {
     error(`getMember - no member ${id} on ${owner}`);
 }
 
-
 export function checkNotNull<T>(v: T | undefined | null): T {
     if (v != null) { return v! }
     error("checkNotNull - Unexpected null");
-}
-
-export function dirtyMarker(context: ContextService, configService: ConfigService, oid: ObjectIdWrapper) {
-    return (configService.config.showDirtyFlag && context.getIsDirty(oid)) ? "*" : "";
-}
-
-export function getOtherPane(paneId: Pane) {
-    return paneId === Pane.Pane1 ? Pane.Pane2 : Pane.Pane1;
 }
 
 export function toDateString(dt: Date) {
@@ -91,8 +76,45 @@ export function toTimeString(dt: Date) {
     minutes = minutes.length === 1 ? `0${minutes}` : minutes;
     seconds = seconds.length === 1 ? `0${seconds}` : seconds;
 
-
     return `${hours}:${minutes}:${seconds}`;
+}
+
+export function getTime(rawTime: string): Date | null {
+    if (!rawTime || rawTime.length === 0) {
+        return null;
+    }
+
+    const hours = parseInt(rawTime.substring(0, 2));
+    const mins = parseInt(rawTime.substring(3, 5));
+    const secs = parseInt(rawTime.substring(6, 8));
+
+    return new Date(1970, 0, 1, hours, mins, secs);
+}
+
+export function isDateOrDateTime(rep: IHasExtensions) {
+    const returnType = rep.extensions().returnType();
+    const format = rep.extensions().format();
+
+    return (returnType === "string" && ((format === "date-time") || (format === "date")));
+}
+
+export function isTime(rep: IHasExtensions) {
+    const returnType = rep.extensions().returnType();
+    const format = rep.extensions().format();
+
+    return returnType === "string" && format === "time";
+}
+
+export function toTime(value: Value) {
+    const rawValue = value ? value.toString() : "";
+    const dateValue = getTime(rawValue);
+    return dateValue ? dateValue : null;
+}
+
+export function toUtcDate(value: Value) {
+    const rawValue = value ? value.toString() : "";
+    const dateValue = getUtcDate(rawValue);
+    return dateValue ? dateValue : null;
 }
 
 export function getUtcDate(rawDate: string): Date | null {
@@ -118,46 +140,6 @@ export function getUtcDate(rawDate: string): Date | null {
 
     return null;
 }
-
-export function getTime(rawTime: string): Date | null {
-    if (!rawTime || rawTime.length === 0) {
-        return null;
-    }
-
-    const hours = parseInt(rawTime.substring(0, 2));
-    const mins = parseInt(rawTime.substring(3, 5));
-    const secs = parseInt(rawTime.substring(6, 8));
-
-    return new Date(1970, 0, 1, hours, mins, secs);
-}
-
-
-export function isDateOrDateTime(rep: IHasExtensions) {
-    const returnType = rep.extensions().returnType();
-    const format = rep.extensions().format();
-
-    return (returnType === "string" && ((format === "date-time") || (format === "date")));
-}
-
-export function isTime(rep: IHasExtensions) {
-    const returnType = rep.extensions().returnType();
-    const format = rep.extensions().format();
-
-    return returnType === "string" && format === "time";
-}
-
-export function toUtcDate(value: Value) {
-    const rawValue = value ? value.toString() : "";
-    const dateValue = getUtcDate(rawValue);
-    return dateValue ? dateValue : null;
-}
-
-export function toTime(value: Value) {
-    const rawValue = value ? value.toString() : "";
-    const dateValue = getTime(rawValue);
-    return dateValue ? dateValue : null;
-}
-
 
 export function compress(toCompress: string, shortCutMarker: string, urlShortCuts: string[]) {
     if (toCompress) {
@@ -218,153 +200,6 @@ export function typePlusTitle(obj: DomainObjectRepresentation) {
     const title = obj.title();
     return type + ": " + title;
 }
-
-function isInteger(value: number) {
-    return typeof value === "number" && isFinite(value) && Math.floor(value) === value;
-}
-
-
-function validateNumber(model: IHasExtensions, newValue: number, filter: ILocalFilter): string {
-    const format = model.extensions().format();
-
-    switch (format) {
-        case ("int"):
-            if (!isInteger(newValue)) {
-                return "Not an integer";
-            }
-    }
-
-    const range = model.extensions().range();
-
-    if (range) {
-        const min = range.min;
-        const max = range.max;
-
-        if (min && newValue < min) {
-            return Msg.outOfRange(newValue, min, max, filter);
-        }
-
-        if (max && newValue > max) {
-            return Msg.outOfRange(newValue, min, max, filter);
-        }
-    }
-
-    return "";
-}
-
-function validateStringFormat(model: IHasExtensions, newValue: string): string {
-
-    const maxLength = model.extensions().maxLength();
-    const pattern = model.extensions().pattern();
-    const len = newValue ? newValue.length : 0;
-
-    if (maxLength && len > maxLength) {
-        return Msg.tooLong;
-    }
-
-    if (pattern) {
-        const regex = new RegExp(pattern);
-        return regex.test(newValue) ? "" : Msg.noPatternMatch;
-    }
-    return "";
-}
-
-function validateDateTimeFormat(model: IHasExtensions, newValue: Date): string {
-    return "";
-}
-
-function getDate(val: string): Date | null {
-    const dt1 = moment(val, "YYYY-MM-DD", true);
-    return dt1.isValid() ? dt1.toDate() : null;
-}
-
-function validateDateFormat(model: IHasExtensions, newValue: Date | string, filter: ILocalFilter): string {
-    const range = model.extensions().range();
-    const newDate = (newValue instanceof Date) ? newValue : getDate(newValue);
-
-    if (range && newDate) {
-        const min = range.min ? getDate(range.min as string) : null;
-        const max = range.max ? getDate(range.max as string) : null;
-
-        if (min && newDate < min) {
-            return Msg.outOfRange(toDateString(newDate), getUtcDate(range.min as string), getUtcDate(range.max as string), filter);
-        }
-
-        if (max && newDate > max) {
-            return Msg.outOfRange(toDateString(newDate), getUtcDate(range.min as string), getUtcDate(range.max as string), filter);
-        }
-    }
-
-    return "";
-}
-
-function validateTimeFormat(model: IHasExtensions, newValue: Date): string {
-    return "";
-}
-
-function validateString(model: IHasExtensions, newValue: any, filter: ILocalFilter): string {
-    const format = model.extensions().format();
-
-    switch (format) {
-        case ("string"):
-            return validateStringFormat(model, newValue as string);
-        case ("date-time"):
-            return validateDateTimeFormat(model, newValue as Date);
-        case ("date"):
-            return validateDateFormat(model, newValue as Date | string, filter);
-        case ("time"):
-            return validateTimeFormat(model, newValue as Date);
-        default:
-            return "";
-    }
-}
-
-
-export function validateMandatory(model: IHasExtensions, viewValue: string): string {
-    // first check 
-    const isMandatory = !model.extensions().optional();
-
-    if (isMandatory && (viewValue === "" || viewValue == null)) {
-        return Msg.mandatory;
-    }
-
-    return "";
-}
-
-
-export function validateAgainstType(model: IHasExtensions, modelValue: string | ChoiceViewModel | string[] | ChoiceViewModel[], viewValue: string, filter: ILocalFilter): string {
-    // first check 
-
-    const mandatory = validateMandatory(model, viewValue);
-
-    if (mandatory) {
-        return mandatory;
-    }
-
-    // if optional but empty always valid 
-    if (modelValue == null || modelValue === "") {
-        return "";
-    }
-
-    // check type 
-    const returnType = model.extensions().returnType();
-
-    switch (returnType) {
-        case ("number"):
-            const valueAsNumber = parseFloat(viewValue);
-            if (Number.isFinite(valueAsNumber)) {
-                return validateNumber(model, valueAsNumber, filter);
-            }
-            return Msg.notANumber;
-        case ("string"):
-            return validateString(model, viewValue, filter);
-        case ("boolean"):
-            return "";
-        default:
-            return "";
-    }
-}
-
 
 // helper functions 
 

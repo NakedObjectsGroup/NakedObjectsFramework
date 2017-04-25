@@ -1,4 +1,4 @@
-﻿import { RouteData, PaneRouteData, InteractionMode, CollectionViewState, ApplicationMode, ViewType, Pane } from './route-data';
+﻿import { RouteData, PaneRouteData, InteractionMode, CollectionViewState, ApplicationMode, ViewType, Pane, getOtherPane } from './route-data';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
@@ -91,7 +91,7 @@ export class UrlManagerService {
 
     private capturedPanes = [] as ({ paneType: Constants.PathSegment; search: Object } | null)[];
 
-    private currentPaneId = Pane.Pane1;
+    private currentPaneId: Pane = Pane.Pane1;
 
     private createSubMask(arr: boolean[]) {
         let nMask = 0;
@@ -210,7 +210,7 @@ export class UrlManagerService {
     }
 
     private setPaneRouteDataFromParms(paneRouteData: PaneRouteData, paneId: Pane, routeParams: { [key: string]: string }) {
-        ({ rp :paneRouteData.rawParms, rpwr : paneRouteData.rawParmsWithoutReload} =  this.getPaneParams(routeParams, paneId));
+        ({ rp: paneRouteData.rawParms, rpwr: paneRouteData.rawParmsWithoutReload } = this.getPaneParams(routeParams, paneId));
         paneRouteData.menuId = this.getId(akm.menu + paneId, routeParams);
         paneRouteData.actionId = this.getId(akm.action + paneId, routeParams);
         paneRouteData.dialogId = this.getId(akm.dialog + paneId, routeParams);
@@ -499,21 +499,21 @@ export class UrlManagerService {
         }
     }
 
-    setHome = (paneId = Pane.Pane1) => {
+    setHome = (paneId: Pane = Pane.Pane1) => {
         this.executeTransition({}, paneId, Transition.ToHome, () => true);
     }
 
-    setRecent = (paneId = Pane.Pane1) => {
+    setRecent = (paneId: Pane = Pane.Pane1) => {
         this.executeTransition({}, paneId, Transition.ToRecent, () => true);
     }
 
-    setMenu = (menuId: string, paneId =  Pane.Pane1) => {
+    setMenu = (menuId: string, paneId: Pane = Pane.Pane1) => {
         const key = `${akm.menu}${paneId}`;
         const newValues = zipObject([key], [menuId]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.ToMenu, search => this.getId(key, search) !== menuId);
     }
 
-    setDialog = (dialogId: string, paneId =  Pane.Pane1) => {
+    setDialog = (dialogId: string, paneId = Pane.Pane1) => {
         const key = `${akm.dialog}${paneId}`;
         const newValues = zipObject([key], [dialogId]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.ToDialog, search => this.getId(key, search) !== dialogId);
@@ -527,7 +527,7 @@ export class UrlManagerService {
         this.executeTransition(newValues, paneId, Transition.ToMultiLineDialog, search => this.getId(key, search) !== dialogId);
     }
 
-    setDialogOrMultiLineDialog = (actionRep: Models.ActionMember | Models.ActionRepresentation, paneId =  Pane.Pane1) => {
+    setDialogOrMultiLineDialog = (actionRep: Models.ActionMember | Models.ActionRepresentation, paneId = Pane.Pane1) => {
         if (actionRep.extensions().multipleLines()) {
             this.setMultiLineDialog(actionRep.actionId(), paneId);
         } else {
@@ -546,22 +546,22 @@ export class UrlManagerService {
     }
 
 
-    closeDialogKeepHistory = (id: string, paneId =  Pane.Pane1) => {
+    closeDialogKeepHistory = (id: string, paneId = Pane.Pane1) => {
         this.closeOrCancelDialog(id, paneId, Transition.FromDialogKeepHistory);
     }
 
-    closeDialogReplaceHistory = (id: string, paneId =  Pane.Pane1) => {
+    closeDialogReplaceHistory = (id: string, paneId = Pane.Pane1) => {
         this.closeOrCancelDialog(id, paneId, Transition.FromDialog);
     }
 
-    setObject = (resultObject: Models.DomainObjectRepresentation, paneId =  Pane.Pane1) => {
+    setObject = (resultObject: Models.DomainObjectRepresentation, paneId = Pane.Pane1) => {
         const oid = resultObject.id(this.keySeparator);
         const key = `${akm.object}${paneId}`;
         const newValues = zipObject([key], [oid]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
     }
 
-    setObjectWithMode = (resultObject: Models.DomainObjectRepresentation, newMode: InteractionMode, paneId =  Pane.Pane1) => {
+    setObjectWithMode = (resultObject: Models.DomainObjectRepresentation, newMode: InteractionMode, paneId = Pane.Pane1) => {
         const oid = resultObject.id(this.keySeparator);
         const okey = `${akm.object}${paneId}`;
         const mkey = `${akm.interactionMode}${paneId}`;
@@ -570,7 +570,7 @@ export class UrlManagerService {
         this.executeTransition(newValues, paneId, Transition.ToObjectWithMode, () => true);
     }
 
-    setList = (actionMember: Models.IInvokableAction, parms: Dictionary<Models.Value>, fromPaneId =  Pane.Pane1, toPaneId =  Pane.Pane1) => {
+    setList = (actionMember: Models.IInvokableAction, parms: Dictionary<Models.Value>, fromPaneId = Pane.Pane1, toPaneId = Pane.Pane1) => {
         const newValues = {} as Dictionary<string>;
         const parent = actionMember.parent;
 
@@ -597,14 +597,14 @@ export class UrlManagerService {
         return newValues;
     }
 
-    setProperty = (href: string, paneId =  Pane.Pane1) => {
+    setProperty = (href: string, paneId = Pane.Pane1) => {
         const oid = this.getOidFromHref(href);
         const key = `${akm.object}${paneId}`;
         const newValues = zipObject([key], [oid]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
     }
 
-    setItem = (link: Models.Link, paneId =  Pane.Pane1) => {
+    setItem = (link: Models.Link, paneId = Pane.Pane1) => {
         const href = link.href();
         const oid = this.getOidFromHref(href);
         const key = `${akm.object}${paneId}`;
@@ -612,7 +612,7 @@ export class UrlManagerService {
         this.executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
     }
 
-    setAttachment = (attachmentlink: Models.Link, paneId =  Pane.Pane1) => {
+    setAttachment = (attachmentlink: Models.Link, paneId = Pane.Pane1) => {
         const href = attachmentlink.href();
         const okey = `${akm.object}${paneId}`;
         const akey = `${akm.attachment}${paneId}`;
@@ -624,7 +624,7 @@ export class UrlManagerService {
         this.executeTransition(newValues, paneId, Transition.ToAttachment, () => true);
     }
 
-    toggleObjectMenu = (paneId =  Pane.Pane1) => {
+    toggleObjectMenu = (paneId = Pane.Pane1) => {
         const key = akm.actions + paneId;
         const actionsId = this.getSearch()[key] ? null : "open";
         const newValues = zipObject([key], [actionsId]) as Dictionary<string>;
@@ -643,25 +643,25 @@ export class UrlManagerService {
         }
     }
 
-    setParameterValue = (actionId: string, p: Models.Parameter, pv: Models.Value, paneId =  Pane.Pane1) =>
+    setParameterValue = (actionId: string, p: Models.Parameter, pv: Models.Value, paneId = Pane.Pane1) =>
         this.checkAndSetValue(paneId,
             search => this.getId(`${akm.action}${paneId}`, search) === actionId,
             search => this.setParameter(paneId, search, p, pv));
 
 
-    setCollectionMemberState = (collectionMemberId: string, state: CollectionViewState, paneId =  Pane.Pane1) => {
+    setCollectionMemberState = (collectionMemberId: string, state: CollectionViewState, paneId = Pane.Pane1) => {
         const key = `${akm.collection}${paneId}_${collectionMemberId}`;
         const newValues = zipObject([key], [CollectionViewState[state]]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.Null, () => true);
     }
 
-    setListState = (state: CollectionViewState, paneId =  Pane.Pane1) => {
+    setListState = (state: CollectionViewState, paneId = Pane.Pane1) => {
         const key = `${akm.collection}${paneId}`;
         const newValues = zipObject([key], [CollectionViewState[state]]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.Null, () => true);
     }
 
-    setInteractionMode = (newMode: InteractionMode, paneId =  Pane.Pane1) => {
+    setInteractionMode = (newMode: InteractionMode, paneId = Pane.Pane1) => {
         const key = `${akm.interactionMode}${paneId}`;
         const routeParams = this.getSearch();
         const currentMode = this.getInteractionMode(this.getId(key, routeParams));
@@ -679,7 +679,7 @@ export class UrlManagerService {
         this.executeTransition(newValues, paneId, transition, () => true);
     }
 
-    setItemSelected = (item: number, isSelected: boolean, collectionId: string, paneId =  Pane.Pane1) => {
+    setItemSelected = (item: number, isSelected: boolean, collectionId: string, paneId = Pane.Pane1) => {
 
         const key = `${akm.selected}${paneId}_${collectionId}`;
         const currentSelected = this.getSearch()[key];
@@ -690,7 +690,7 @@ export class UrlManagerService {
         this.executeTransition(newValues, paneId, Transition.Null, () => true);
     }
 
-    setAllItemsSelected = (isSelected: boolean, collectionId: string, paneId =  Pane.Pane1) => {
+    setAllItemsSelected = (isSelected: boolean, collectionId: string, paneId = Pane.Pane1) => {
 
         const key = `${akm.selected}${paneId}_${collectionId}`;
         const currentSelected = this.getSearch()[key];
@@ -701,7 +701,7 @@ export class UrlManagerService {
         this.executeTransition(newValues, paneId, Transition.Null, () => true);
     }
 
-    setListPaging = (newPage: number, newPageSize: number, state: CollectionViewState, paneId =  Pane.Pane1) => {
+    setListPaging = (newPage: number, newPageSize: number, state: CollectionViewState, paneId = Pane.Pane1) => {
         const pageValues = {} as Dictionary<string>;
 
         pageValues[`${akm.page}${paneId}`] = newPage.toString();
@@ -718,7 +718,7 @@ export class UrlManagerService {
         const mode = segments[1];
         const newPath = `/${mode}/error`;
 
-        const search : any = {};
+        const search: any = {};
         // always on pane 1
         search[akm.errorCat + Pane.Pane1] = Models.ErrorCategory[errorCategory];
 
@@ -757,18 +757,18 @@ export class UrlManagerService {
 
         return this.router.routerState.root.queryParams.map((ps: { [key: string]: string }) => {
             const routeData = new RouteData(this.configService, this.loggerService);
-            const paneRouteData = routeData.pane(paneId) !;
+            const paneRouteData = routeData.pane(paneId)!;
             this.setPaneRouteDataFromParms(paneRouteData, paneId, ps);
-            paneRouteData.location = this.getViewType(this.getLocation(paneId)) !;
+            paneRouteData.location = this.getViewType(this.getLocation(paneId))!;
             return paneRouteData;
         }) as Observable<PaneRouteData>;
     }
 
-    pushUrlState = (paneId = Pane.Pane1) => {
+    pushUrlState = (paneId: Pane = Pane.Pane1) => {
         this.capturedPanes[paneId] = this.getUrlState(paneId);
     }
 
-    getUrlState = (paneId = Pane.Pane1) => {
+    getUrlState = (paneId: Pane = Pane.Pane1) => {
         this.currentPaneId = paneId;
 
         const path = this.getPath();
@@ -811,7 +811,7 @@ export class UrlManagerService {
         return this.getListCacheIndexFromSearch(search, paneId, newPage, newPageSize, format);
     }
 
-    popUrlState = (paneId = Pane.Pane1) => {
+    popUrlState = (paneId: Pane = Pane.Pane1) => {
         this.currentPaneId = paneId;
 
         const capturedPane = this.capturedPanes[paneId];
@@ -850,7 +850,7 @@ export class UrlManagerService {
         const [, mode, oldPane1, oldPane2 = Constants.homePath] = segments;
         const newPath = `/${mode}/${oldPane2}/${oldPane1}`;
         const search = this.swapSearchIds(this.getSearch()) as any;
-        this.currentPaneId = Models.getOtherPane(this.currentPaneId);
+        this.currentPaneId = getOtherPane(this.currentPaneId);
 
         const tree = this.router.createUrlTree([newPath], { queryParams: search });
 
@@ -891,13 +891,13 @@ export class UrlManagerService {
         this.router.navigateByUrl(tree);
     }
 
-    singlePane = (paneId = Pane.Pane1) => {
+    singlePane = (paneId: Pane = Pane.Pane1) => {
         this.currentPaneId = Pane.Pane1;
 
         if (!this.isSinglePane()) {
 
             const paneToKeepId = paneId;
-            const paneToRemoveId = Models.getOtherPane(paneToKeepId);
+            const paneToRemoveId = getOtherPane(paneToKeepId);
 
             const path = this.getPath();
             const segments = path.split("/");
@@ -934,23 +934,23 @@ export class UrlManagerService {
         return this.getLocation(paneId) === location; // e.g. segments 0=~/1=cicero/2=home/3=home
     }
 
-    isHome = (paneId = Pane.Pane1) => this.isLocation(paneId, Constants.homePath);
-    isObject = (paneId = Pane.Pane1) => this.isLocation(paneId, Constants.objectPath);
-    isList = (paneId = Pane.Pane1) => this.isLocation(paneId, Constants.listPath);
-    isError = (paneId = Pane.Pane1) => this.isLocation(paneId, Constants.errorPath);
-    isRecent = (paneId = Pane.Pane1) => this.isLocation(paneId, Constants.recentPath);
-    isAttachment = (paneId = Pane.Pane1) => this.isLocation(paneId, Constants.attachmentPath);
-    isApplicationProperties = (paneId = Pane.Pane1) => this.isLocation(paneId, Constants.applicationPropertiesPath);
-    isMultiLineDialog = (paneId = Pane.Pane1) => this.isLocation(paneId, Constants.multiLineDialogPath);
+    isHome = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, Constants.homePath);
+    isObject = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, Constants.objectPath);
+    isList = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, Constants.listPath);
+    isError = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, Constants.errorPath);
+    isRecent = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, Constants.recentPath);
+    isAttachment = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, Constants.attachmentPath);
+    isApplicationProperties = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, Constants.applicationPropertiesPath);
+    isMultiLineDialog = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, Constants.multiLineDialogPath);
 
-    private toggleReloadFlag(search: any, paneId : Pane) {
+    private toggleReloadFlag(search: any, paneId: Pane) {
         const currentFlag = search[akm.reload + paneId];
         const newFlag = currentFlag === "1" ? 0 : 1;
         search[akm.reload + paneId] = newFlag;
         return search;
     }
 
-    triggerPageReloadByFlippingReloadFlagInUrl = (paneId = Pane.Pane1) => {
+    triggerPageReloadByFlippingReloadFlagInUrl = (paneId: Pane = Pane.Pane1) => {
         const search = this.getSearch();
         this.toggleReloadFlag(search, paneId);
         const result = { path: this.getPath(), search: search, replace: true };

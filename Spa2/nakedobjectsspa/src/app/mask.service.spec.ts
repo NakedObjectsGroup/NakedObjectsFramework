@@ -38,9 +38,6 @@ describe('MaskService', () => {
         it("masks a string", inject([MaskService], (maskService: MaskService) => testDefaultMask(maskService, "a string", "string", "a string")));
     });
 
-
-
-    // todo investigate and fix failures
     describe("default int", () => {
         it("masks empty", inject([MaskService], (maskService: MaskService) => testDefaultMask(maskService, "", "int", "")));
         it("masks null", inject([MaskService], (maskService: MaskService) => testDefaultMask(maskService, null, "int", "")));
@@ -51,7 +48,6 @@ describe('MaskService', () => {
         it("masks max int", inject([MaskService], (maskService: MaskService) => testDefaultMask(maskService, Number.MAX_VALUE, "int",
             "179,769,313,486,232,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000")));
     });
-
 
     const arbitaryDate1 = new Date(Date.UTC(1985, 5, 4, 16, 27, 10));
     const arbitaryDate2 = new Date(Date.UTC(2003, 1, 20, 1, 13, 55));

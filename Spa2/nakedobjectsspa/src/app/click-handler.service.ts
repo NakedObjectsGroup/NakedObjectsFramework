@@ -1,6 +1,5 @@
-import * as Models from './models';
 import { Injectable } from '@angular/core';
-import { Pane } from './route-data';
+import { Pane, getOtherPane } from './route-data';
 
 @Injectable()
 export class ClickHandlerService {
@@ -11,7 +10,7 @@ export class ClickHandlerService {
     }
 
     private sameOtherClickHandler(currentPane: Pane, right = false): Pane {
-        return right ? Models.getOtherPane(currentPane) : currentPane;
+        return right ? getOtherPane(currentPane) : currentPane;
     }
 
     readonly pane = this.sameOtherClickHandler;

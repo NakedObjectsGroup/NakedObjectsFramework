@@ -8,6 +8,7 @@ import { ErrorService } from '../error.service';
 import { UrlManagerService } from '../url-manager.service';
 import { ConfigService } from '../config.service';
 import { Pane } from '../route-data';
+import * as Helpers from './helpers-view-models';
 
 export class LinkViewModel implements IDraggableViewModel {
 
@@ -21,7 +22,7 @@ export class LinkViewModel implements IDraggableViewModel {
         public readonly paneId: Pane
     ) {
 
-        this.title = link.title() + Models.dirtyMarker(this.context, this.configService, link.getOid(this.configService.config.keySeparator));
+        this.title = link.title() + Helpers.dirtyMarker(this.context, this.configService, link.getOid(this.configService.config.keySeparator));
         this.domainType = link.type().domainType;
 
         // for dropping 

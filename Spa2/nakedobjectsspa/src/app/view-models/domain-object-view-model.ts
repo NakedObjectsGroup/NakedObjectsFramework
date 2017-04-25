@@ -131,7 +131,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
 
         this.title = this.unsaved ? `Unsaved ${this.domainObject.extensions().friendlyName()}` : this.domainObject.title();
 
-        this.title = this.title + Models.dirtyMarker(this.contextService, this.configService, obj.getOid(this.keySeparator));
+        this.title = this.title + Helpers.dirtyMarker(this.contextService, this.configService, obj.getOid(this.keySeparator));
 
         this.friendlyName = this.domainObject.extensions().friendlyName();
         this.presentationHint = this.domainObject.extensions().presentationHint();
