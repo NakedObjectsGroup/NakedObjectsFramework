@@ -184,6 +184,8 @@ class ValueCache {
 @Injectable()
 export class ContextService {
 
+    clearingDataFlag = false; 
+
     constructor(
         private readonly urlManager: UrlManagerService,
         private readonly repLoader: RepLoaderService,

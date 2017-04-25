@@ -6,8 +6,7 @@ import * as Models from './models';
 export class GeminiErrorHandler implements ErrorHandler {
     handleError(error: any) {
 
-        // todo make safer 
-        const ec = error.context || (error.rejection && error.rejection.context);
+        const ec = (error && error.context) || (error && error.rejection && error.rejection.context);
 
         if (ec && ec.injector) {
 
@@ -20,6 +19,7 @@ export class GeminiErrorHandler implements ErrorHandler {
             context.setError(rp);
             urlManager.setError(Models.ErrorCategory.ClientError, Models.ClientErrorCode.SoftwareError);
         } else {
+            error = error || { message: "null error", stack: "" };
             console.error(`${error.message}\n${error.stack}`);
             throw error;
         }

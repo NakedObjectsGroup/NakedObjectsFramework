@@ -24,9 +24,6 @@ export class ErrorComponent {
 
     ngOnInit(): void {
         // expect dynamic-error to  have checked if the context has an error 
-
-        // todo do we cover all the possible errors from Spa 1 ?
-
         const errorWrapper = this.context.getError();
         const error = this.viewModelFactory.errorViewModel(errorWrapper);
 
