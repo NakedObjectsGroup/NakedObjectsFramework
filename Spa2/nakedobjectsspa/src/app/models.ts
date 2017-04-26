@@ -1586,17 +1586,21 @@ export class Member<T extends Ro.IMember> extends NestedRepresentation<Ro.IMembe
         return isScalarType(this.extensions().returnType());
     }
 
-    static wrapMember(toWrap: Ro.IPropertyMember | Ro.ICollectionMember | Ro.IActionMember, parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation | Link | CollectionRepresentation | CollectionMember, id: string): Member<Ro.IMember> | null {
+    static wrapPropertyMember(toWrap: Ro.IPropertyMember, parent: Link, id: string): PropertyMember {
+        return new PropertyMember(toWrap as Ro.IPropertyMember, parent, id);
+    }
+
+    static wrapMember(toWrap: Ro.IPropertyMember | Ro.ICollectionMember | Ro.IActionMember, parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation | CollectionRepresentation | CollectionMember, id: string): Member<Ro.IMember> {
 
         if (toWrap.memberType === "property") {
-            return new PropertyMember(toWrap as Ro.IPropertyMember, parent as DomainObjectRepresentation | Link, id);
+            return new PropertyMember(toWrap as Ro.IPropertyMember, parent as DomainObjectRepresentation, id);
         }
 
         if (toWrap.memberType === "collection") {
             return new CollectionMember(toWrap as Ro.ICollectionMember, parent as DomainObjectRepresentation, id);
         }
 
-        if (toWrap.memberType === "action" && !(parent instanceof Link)) {
+        if (toWrap.memberType === "action") {
             const member = new ActionMember(toWrap as Ro.IActionMember, parent as IHasActions, id);
 
             if (member.invokeLink()) {
@@ -1605,8 +1609,6 @@ export class Member<T extends Ro.IMember> extends NestedRepresentation<Ro.IMembe
 
             return member;
         }
-
-        return null;
     }
 }
 
@@ -2056,8 +2058,7 @@ export class MenuRepresentation extends ResourceRepresentation<RoCustom.IMenuRep
 
     private resetMemberMaps() {
         const members = this.wrapped().members;
-        // todo know member won't be null because not link - not good code though 
-        this.memberMap = mapValues(members, (m, id) => Member.wrapMember(m, this, id!) as Member<Ro.IMember>);
+        this.memberMap = mapValues(members, (m, id) => Member.wrapMember(m, this, id!));
         this.actionMemberMap = pickBy(this.memberMap, m => m.memberType() === "action") as Dictionary<ActionMember>;
     }
 
@@ -2504,7 +2505,7 @@ export class Link {
 
     members(): Dictionary<PropertyMember> | null {
         const members = (this.wrapped as RoCustom.ICustomLink).members;
-        return members ? mapValues(members, (m, id) => Member.wrapMember(m, this, id!) as PropertyMember) : null;
+        return members ? mapValues(members, (m, id) => Member.wrapPropertyMember(m, this, id!)) : null;
     }
 
     private lazyExtensions: Extensions;
