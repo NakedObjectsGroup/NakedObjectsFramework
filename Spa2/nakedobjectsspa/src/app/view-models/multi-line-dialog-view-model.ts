@@ -38,14 +38,7 @@ export class MultiLineDialogViewModel {
     }
 
     private readonly createRow = (i: number) => {
-        const dialogViewModel = this.viewModelFactory.dialogViewModel(this.routeData, this.action as Models.IInvokableAction, null, true);
-
-        dialogViewModel.actionViewModel.gotoResult = false;
-        dialogViewModel.doCloseKeepHistory = () => dialogViewModel.submitted = true;
-        dialogViewModel.doCloseReplaceHistory = () => dialogViewModel.submitted = true;
-        dialogViewModel.doCompleteButLeaveOpen = () => dialogViewModel.submitted = true;
-        dialogViewModel.parameters.forEach(p => p.setAsRow(i));
-        return dialogViewModel;
+        return this.viewModelFactory.dialogViewModel(this.routeData, this.action as Models.IInvokableAction, null, true, i);
     }
 
     readonly objectFriendlyName : string = "";

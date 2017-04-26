@@ -1,4 +1,5 @@
-﻿import { MessageViewModel } from './message-view-model';
+﻿import { resolveForwardRef } from '@angular/core/core';
+import { MessageViewModel } from './message-view-model';
 import { ColorService } from '../color.service';
 import { ContextService } from '../context.service';
 import { ViewModelFactoryService } from '../view-model-factory.service';
@@ -14,7 +15,7 @@ import each from 'lodash/each';
 import every from 'lodash/every';
 import forEach from 'lodash/forEach';
 import map from 'lodash/map';
-import {Dictionary} from 'lodash';
+import { Dictionary } from 'lodash';
 import pickBy from 'lodash/pickBy';
 
 export class DialogViewModel extends MessageViewModel {
@@ -27,7 +28,8 @@ export class DialogViewModel extends MessageViewModel {
         private readonly routeData: PaneRouteData,
         action: Models.IInvokableAction,
         actionViewModel: ActionViewModel | null,
-        public readonly isMultiLineDialogRow: boolean
+        public readonly isMultiLineDialogRow: boolean,
+        row?: number
     ) {
         super();
 
@@ -53,6 +55,11 @@ export class DialogViewModel extends MessageViewModel {
         this.id = this.actionViewModel.actionRep.actionId();
 
         this.incrementPendingPotentAction();
+
+        if (this.isMultiLineDialogRow) {
+            this.actionViewModel.gotoResult = false;
+            this.parameters.forEach(p => p.setAsRow(row));
+        }
     }
 
     public readonly actionViewModel: ActionViewModel;
@@ -104,42 +111,42 @@ export class DialogViewModel extends MessageViewModel {
                     this.setMessage(actionResult.warningsOrMessages() || Msg.noResultMessage);
                 } else if (actionResult.resultType() === "void") {
                     // dialog staying on same page so treat as cancel 
-                    // for url replacing purposes
+                    // for url replacing purposes and have to explicitly close
                     this.doCloseReplaceHistory();
-
                 } else if (!this.isQueryOnly) {
-                    // not query only - always close
-
-                    this.doClose();
-                } else if (!right) {
-                    // query only going to new page close dialog and keep history
-
-                    this.doClose();
+                    // not query only and going to new page mark as complete 
+                    // and have to explicitly close
+                    this.doCloseKeepHistory();
+                } else {
+                    // query only - if on same pane will be replaced if on other pane
+                    // will stay open  
+                    this.doComplete();
                 }
-                // else query only going to other tab leave dialog open
-                this.doCompleteButLeaveOpen();
             })
             .catch((reject: Models.ErrorWrapper) => {
                 const display = (em: Models.ErrorMap) => Helpers.handleErrorResponse(em, this, this.parameters);
                 this.error.handleErrorAndDisplayMessages(reject, display);
             });
 
-    // todo tidy and rework these getting confusing 
+    private submit() {
+        if (this.isMultiLineDialogRow) {
+            this.submitted = true;
+        }
+    }
+
     doCloseKeepHistory = () => {
         this.urlManager.closeDialogKeepHistory(this.id, this.onPaneId);
-        this.decrementPendingPotentAction();
+        this.doComplete()
     };
 
     doCloseReplaceHistory = () => {
         this.urlManager.closeDialogReplaceHistory(this.id, this.onPaneId);
-        this.decrementPendingPotentAction();
+        this.doComplete();
     };
 
-    doClose() {
+    private doComplete() {
+        this.submit();
         this.decrementPendingPotentAction();
-    }
-
-    doCompleteButLeaveOpen = () => {
     }
 
     clearMessages = () => {

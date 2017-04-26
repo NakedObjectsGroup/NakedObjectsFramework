@@ -102,7 +102,7 @@ export class ViewModelFactoryService {
             parentValues);
     }
 
-    dialogViewModel = (routeData: PaneRouteData, action: Models.IInvokableAction, actionViewModel: ActionViewModel | null, isRow: boolean) => {
+    dialogViewModel = (routeData: PaneRouteData, action: Models.IInvokableAction, actionViewModel: ActionViewModel | null, isRow: boolean, row? : number) => {
 
         return new DialogViewModel(this.color,
             this.context,
@@ -112,7 +112,8 @@ export class ViewModelFactoryService {
             routeData,
             action,
             actionViewModel,
-            isRow);
+            isRow,
+            row);
     }
 
     multiLineDialogViewModel = (routeData: PaneRouteData, action: Models.IInvokableAction, holder: Models.MenuRepresentation | Models.DomainObjectRepresentation | CollectionViewModel) => {
