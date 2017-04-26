@@ -24,7 +24,7 @@ import mapValues from 'lodash/mapValues';
 import reduce from 'lodash/reduce';
 import uniqWith from 'lodash/uniqWith';
 import { ILocalFilter } from '../mask.service';
-import * as moment from 'moment';// todo fix moment locale import size 
+import * as moment from 'moment'; // todo fix moment locale import size 
 import { ConfigService } from '../config.service'; 
 
 export function createForm(dialog: DialogViewModel, formBuilder: FormBuilder): { form: FormGroup, dialog: DialogViewModel, parms: Dictionary<ParameterViewModel> } {

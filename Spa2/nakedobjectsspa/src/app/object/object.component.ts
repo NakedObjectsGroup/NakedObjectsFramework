@@ -51,7 +51,6 @@ export class ObjectComponent implements OnInit, OnDestroy {
     expiredTransient = false;
     object: DomainObjectViewModel | null;
 
-
     private mode: InteractionMode | null;
     form: FormGroup | null;
 
@@ -254,10 +253,6 @@ export class ObjectComponent implements OnInit, OnDestroy {
         return [] as IActionHolder[];
     }
 
-    // todo each component should be looking out for it's own changes - make this generic - eg 
-    // component can register for changes it's wants to see rather  than this horrible filtering 
-    // I'm doing everywhere 
-
     protected setup(routeData: PaneRouteData) {
         // subscription means may get with no oid 
 
@@ -270,8 +265,6 @@ export class ObjectComponent implements OnInit, OnDestroy {
 
         const oid = Models.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator);
 
-        // todo this is a recurring pattern in angular 2 code - generalise 
-        // across components 
         if (this.object && !this.object.domainObject.getOid().isSame(oid)) {
             // object has changed - clear existing 
             this.object = null;
@@ -306,7 +299,7 @@ export class ObjectComponent implements OnInit, OnDestroy {
                         if (this.mode === InteractionMode.Edit ||
                             this.mode === InteractionMode.Form ||
                             this.mode === InteractionMode.Transient) {
-                            this.createForm(this.object as DomainObjectViewModel); // will never be null
+                            this.createForm(this.object!); // will never be null
                         }
                     }
                 })
@@ -345,7 +338,6 @@ export class ObjectComponent implements OnInit, OnDestroy {
     private lastPaneRouteData: PaneRouteData;
     private concurrencyErrorSub: ISubscription;
 
-    // todo now this is a child investigate reworking so object is passed in from parent 
     ngOnInit(): void {
         this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: ICustomActivatedRouteData) => {
 
