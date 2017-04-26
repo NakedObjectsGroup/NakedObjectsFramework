@@ -105,7 +105,7 @@
     <Content Include="src\fonts\iconFont.woff" />
     <Content Include="src\config.json" />
     <Content Include="src\empty_config.json" />
-    <Content Include="src\tsconfig.json" />
+    <Content Include="tsconfig.json" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
