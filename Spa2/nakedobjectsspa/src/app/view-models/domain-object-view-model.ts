@@ -117,7 +117,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
         this.routeData = routeData;
         const iMode = this.domainObject.extensions().interactionMode();
         this.isInEdit = routeData.interactionMode !== InteractionMode.View || iMode === "form" || iMode === "transient";
-        this.props = routeData.interactionMode !== InteractionMode.View ? this.contextService.getObjectCachedValues(this.domainObject.id(this.keySeparator), routeData.paneId) : {};
+        this.props = routeData.interactionMode !== InteractionMode.View ? this.contextService.getObjectCachedValues(this.domainObject.id(), routeData.paneId) : {};
 
         const actions = values(this.domainObject.actionMembers()) as Models.ActionMember[];
         this.actions = map(actions, action => this.viewModelFactory.actionViewModel(action, this, this.routeData));
@@ -131,7 +131,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
 
         this.title = this.unsaved ? `Unsaved ${this.domainObject.extensions().friendlyName()}` : this.domainObject.title();
 
-        this.title = this.title + Helpers.dirtyMarker(this.contextService, this.configService, obj.getOid(this.keySeparator));
+        this.title = this.title + Helpers.dirtyMarker(this.contextService, this.configService, obj.getOid());
 
         this.friendlyName = this.domainObject.extensions().friendlyName();
         this.presentationHint = this.domainObject.extensions().presentationHint();
@@ -167,7 +167,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
 
     concurrency() {
         this.routeData = this.urlManager.getRouteData().pane(this.onPaneId) !;
-        this.contextService.getObject(this.onPaneId, this.domainObject.getOid(this.keySeparator), this.routeData.interactionMode)
+        this.contextService.getObject(this.onPaneId, this.domainObject.getOid(), this.routeData.interactionMode)
             .then((obj: Models.DomainObjectRepresentation) => {
                 // cleared cached values so all values are from reloaded representation 
                 this.contextService.clearObjectCachedValues(this.onPaneId);

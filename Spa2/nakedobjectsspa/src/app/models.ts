@@ -238,11 +238,6 @@ export function isIDomainObjectRepresentation(object: any): object is Ro.IDomain
     return isResourceRepresentation(object) && "domainType" in object && "instanceId" in object && "members" in object;
 }
 
-// todo remove
-export function isIInvokableAction(object: any): object is ActionRepresentation | InvokableActionMember {
-    return object && "parameters" in object && "extensions" in object;
-}
-
 function getId(prop: PropertyRepresentation | PropertyMember) {
     if (prop instanceof PropertyRepresentation) {
         return prop.instanceId();
@@ -277,6 +272,7 @@ export interface IHateoasModel {
     populate(wrapped: Ro.IRepresentation): void;
     getBody(): Ro.IRepresentation;
     getUrl(): string;
+    keySeparator : string;
 }
 
 export enum ErrorCategory {
@@ -413,11 +409,11 @@ export class ObjectIdWrapper {
         return id ? id.split(keySeparator) : [];
     }
 
-    static fromObject(object: DomainObjectRepresentation, keySeparator: string) {
-        const oid = new ObjectIdWrapper(keySeparator);
+    static fromObject(object: DomainObjectRepresentation) {
+        const oid = new ObjectIdWrapper(object.keySeparator);
         oid.domainType = object.domainType() || "";
         oid.instanceId = object.instanceId() || "";
-        oid.splitInstanceId = this.safeSplit(oid.instanceId, keySeparator);
+        oid.splitInstanceId = this.safeSplit(oid.instanceId, object.keySeparator);
         oid.isService = !oid.instanceId;
         return oid;
     }
@@ -477,6 +473,7 @@ export abstract class HateosModel implements IHateoasModel {
     hateoasUrl = "";
     method: Ro.HttpMethodsType = "GET";
     urlParms: Dictionary<Object>;
+    keySeparator : string;
 
     protected constructor(protected model?: Ro.IRepresentation) {
     }
@@ -1054,7 +1051,6 @@ export class ActionResultRepresentation extends ResourceRepresentation<Ro.IActio
 
     // properties 
     resultType(): Ro.ResultTypeType {
-        // todo later validate the result against the type so we can guarantee  
         return this.wrapped().resultType;
     }
 
@@ -1795,7 +1791,7 @@ export class CollectionMember
         return !!this.actionMembers()[id];
     }
 
-    actionMember(id: string, keySeparator: string): ActionMember {
+    actionMember(id: string): ActionMember {
         return getMember(this.actionMembers(), id, this.collectionId()) !;
     }
 
@@ -1894,10 +1890,9 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
     constructor(model?: Ro.IRepresentation) {
         super(model);
     }
-
-    // todo later change this to not be dependent of keySeparator 
-    id(keySeparator: string): string {
-        return `${this.domainType() || this.serviceId()}${this.instanceId() ? `${keySeparator}${this.instanceId()}` : ""}`;
+   
+    id(): string {
+        return `${this.domainType() || this.serviceId()}${this.instanceId() ? `${this.keySeparator}${this.instanceId()}` : ""}`;
     }
 
     title(): string {
@@ -1971,9 +1966,8 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
         return !!this.actionMembers()[id];
     }
 
-    // todo later change to not be dependent on keySeparator
-    actionMember(id: string, keySeparator: string): ActionMember {
-        return getMember(this.actionMembers(), id, this.id(keySeparator)) !;
+    actionMember(id: string): ActionMember {
+        return getMember(this.actionMembers(), id, this.id()) !;
     }
 
     updateLink(): Link | null {
@@ -2023,9 +2017,9 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
     }
 
     private oid: ObjectIdWrapper;
-    getOid(keySeparator: string): ObjectIdWrapper {
+    getOid(): ObjectIdWrapper {
         if (!this.oid) {
-            this.oid = ObjectIdWrapper.fromObject(this, keySeparator);
+            this.oid = ObjectIdWrapper.fromObject(this);
         }
 
         return this.oid;
@@ -2091,7 +2085,7 @@ export class MenuRepresentation extends ResourceRepresentation<RoCustom.IMenuRep
         return !!this.actionMembers()[id];
     }
 
-    actionMember(id: string, keySeparator: string): ActionMember {
+    actionMember(id: string): ActionMember {
         return getMember(this.actionMembers(), id, this.menuId()) !;
     }
 
@@ -2574,7 +2568,7 @@ export class Link {
 
 export interface IHasActions extends IHasExtensions {
     actionMembers(): Dictionary<ActionMember>;
-    actionMember(id: string, keySeparator: string): ActionMember;
+    actionMember(id: string): ActionMember;
     hasActionMember(id: string): boolean;
     etagDigest: string;
 }

@@ -110,7 +110,7 @@ class RecentCache {
     add(obj: Models.DomainObjectRepresentation) {
 
         // find any matching entries and remove them - should only be one
-        remove(this.recentCache, i => i.id(this.keySeparator) === obj.id(this.keySeparator));
+        remove(this.recentCache, i => i.id() === obj.id());
 
         // push obj on top of array 
         this.recentCache = [obj].concat(this.recentCache);
@@ -215,7 +215,7 @@ export class ContextService {
     private readonly objectEditCache = new ValueCache();
 
     getFile = (object: Models.DomainObjectRepresentation, url: string, mt: string) => {
-        const isDirty = this.getIsDirty(object.getOid(this.keySeparator));
+        const isDirty = this.getIsDirty(object.getOid());
         return this.repLoader.getFile(url, mt, isDirty);
     }
 
@@ -269,7 +269,7 @@ export class ContextService {
         return this.repLoader.retrieveFromLink<Models.DomainObjectRepresentation>(object.selfLink(), parms)
             .then(obj => {
                 this.currentObjects[paneId] = obj;
-                const oid = obj.getOid(this.keySeparator);
+                const oid = obj.getOid();
                 this.dirtyList.clearDirty(oid);
                 return Promise.resolve(obj);
             });
@@ -322,7 +322,7 @@ export class ContextService {
                 details.setUrlParameter(Constants.roInlineCollectionItems, true);
             }
             const parent = collectionMember.parent;
-            const oid = parent.getOid(this.keySeparator);
+            const oid = parent.getOid();
             const isDirty = this.dirtyList.getDirty(oid) !== DirtyState.Clean;
 
             return this.repLoader.populate(details, isDirty || ignoreCache);
@@ -493,10 +493,10 @@ export class ContextService {
     }
 
     getActionExtensionsFromMenu = (menuId: string, actionId: string) =>
-        this.getMenu(menuId).then(menu => Promise.resolve(menu.actionMember(actionId, this.keySeparator).extensions()));
+        this.getMenu(menuId).then(menu => Promise.resolve(menu.actionMember(actionId).extensions()));
 
     getActionExtensionsFromObject = (paneId: Pane, oid: Models.ObjectIdWrapper, actionId: string) =>
-        this.getObject(paneId, oid, InteractionMode.View).then(object => Promise.resolve(object.actionMember(actionId, this.keySeparator).extensions()));
+        this.getObject(paneId, oid, InteractionMode.View).then(object => Promise.resolve(object.actionMember(actionId).extensions()));
 
     private getPagingParms(page: number, pageSize: number): Dictionary<Object> {
         return (page && pageSize) ? { "x-ro-page": page, "x-ro-pageSize": pageSize } : {};
@@ -516,7 +516,7 @@ export class ContextService {
             urlParms[Constants.roInlineCollectionItems] = true;
         }
 
-        const promise = () => this.getMenu(menuId).then(menu => this.getInvokableAction(menu.actionMember(actionId, this.keySeparator))).then(details => this.repLoader.invoke(details, parms, urlParms));
+        const promise = () => this.getMenu(menuId).then(menu => this.getInvokableAction(menu.actionMember(actionId))).then(details => this.repLoader.invoke(details, parms, urlParms));
         return this.getList(paneId, promise, newPage, newPageSize);
     }
 
@@ -536,7 +536,7 @@ export class ContextService {
         }
 
         const promise = () => this.getObject(paneId, oid, InteractionMode.View)
-            .then(object => this.getInvokableAction(object.actionMember(actionId, this.keySeparator)))
+            .then(object => this.getInvokableAction(object.actionMember(actionId)))
             .then(details => this.repLoader.invoke(details, parms, urlParms));
 
         return this.getList(paneId, promise, newPage, newPageSize);
@@ -589,7 +589,8 @@ export class ContextService {
         if (!result.result().isNull()) {
             if (result.resultType() === "object") {
 
-                const resultObject = result.result().object() as Models.DomainObjectRepresentation;
+                const resultObject = result.result().object();
+                resultObject.keySeparator = this.keySeparator;
 
                 if (resultObject.persistLink()) {
                     // transient object
@@ -731,17 +732,17 @@ export class ContextService {
 
         if (action.isNotQueryOnly()) {
             if (parent instanceof Models.DomainObjectRepresentation) {
-                return () => this.dirtyList.setDirty(parent.getOid(this.keySeparator));
+                return () => this.dirtyList.setDirty(parent.getOid());
             }
             if (parent instanceof Models.CollectionRepresentation) {
                 return () => {
                     const selfLink = parent.selfLink();
-                    const oid = Models.ObjectIdWrapper.fromLink(selfLink, this.configService.config.keySeparator);
+                    const oid = Models.ObjectIdWrapper.fromLink(selfLink, this.keySeparator);
                     this.dirtyList.setDirty(oid);
                 };
             }
             if (parent instanceof Models.CollectionMember) {
-                return () => this.dirtyList.setDirty(parent.parent.getOid(this.keySeparator));
+                return () => this.dirtyList.setDirty(parent.parent.getOid());
             }
             if (parent instanceof Models.ListRepresentation && parms) {
 
@@ -776,7 +777,7 @@ export class ContextService {
 
     private setNewObject(updatedObject: Models.DomainObjectRepresentation, paneId: Pane, viewSavedObject: Boolean) {
         this.setObject(paneId, updatedObject);
-        this.dirtyList.setDirty(updatedObject.getOid(this.configService.config.keySeparator), true);
+        this.dirtyList.setDirty(updatedObject.getOid(), true);
 
         if (viewSavedObject) {
             this.urlManager.setObject(updatedObject, paneId);
@@ -807,7 +808,7 @@ export class ContextService {
 
         return this.repLoader.retrieve(persist, Models.DomainObjectRepresentation, object.etagDigest)
             .then((updatedObject: Models.DomainObjectRepresentation) => {
-                this.transientCache.remove(paneId, object.domainType()!, object.id(this.keySeparator));
+                this.transientCache.remove(paneId, object.domainType()!, object.id());
                 this.setNewObject(updatedObject, paneId, viewSavedObject);
                 return Promise.resolve(updatedObject);
             });
@@ -901,7 +902,7 @@ export class ContextService {
     }
 
     cachePropertyValue = (obj: Models.DomainObjectRepresentation, p: Models.PropertyMember, pv: Models.Value, paneId: Pane = Pane.Pane1) => {
-        this.dirtyList.setDirty(obj.getOid(this.keySeparator));
-        this.objectEditCache.addValue(obj.id(this.keySeparator), p.id(), pv, paneId);
+        this.dirtyList.setDirty(obj.getOid());
+        this.objectEditCache.addValue(obj.id(), p.id(), pv, paneId);
     }
 }

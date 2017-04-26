@@ -18,7 +18,6 @@ import reduce from 'lodash/reduce';
 export class RepLoaderService {
 
     constructor(
-        //private readonly http: Http,
         private readonly http: AuthHttp,
         private readonly configService: ConfigService
     ) { }
@@ -137,6 +136,7 @@ export class RepLoaderService {
 
             if (cachedValue) {
                 response.populate(cachedValue);
+                response.keySeparator = this.configService.config.keySeparator;
                 return Promise.resolve(response);
             }
         }
@@ -157,6 +157,7 @@ export class RepLoaderService {
                 this.cache.add(config.url, representation);
                 response.populate(representation);
                 response.etagDigest = r.headers.get("ETag");
+                response.keySeparator = this.configService.config.keySeparator;
                 return Promise.resolve(response);
             })
             .catch((r: Response) => {
@@ -194,9 +195,7 @@ export class RepLoaderService {
     }
 
 
-    retrieve = <T extends Models.IHateoasModel>(map: Models.IHateoasModel,
-        rc: { new (): Models.IHateoasModel },
-        digest?: string | null): Promise<T> => {
+    retrieve = <T extends Models.IHateoasModel>(map: Models.IHateoasModel, rc: { new (): Models.IHateoasModel }, digest?: string | null): Promise<T> => {
         const response = new rc();
         const config = this.setConfigFromMap(map, digest);
         return this.httpPopulate(config, true, response);

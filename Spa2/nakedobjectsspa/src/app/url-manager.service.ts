@@ -554,14 +554,14 @@ export class UrlManagerService {
     }
 
     setObject = (resultObject: Models.DomainObjectRepresentation, paneId: Pane = Pane.Pane1) => {
-        const oid = resultObject.id(this.keySeparator);
+        const oid = resultObject.id();
         const key = `${akm.object}${paneId}`;
         const newValues = zipObject([key], [oid]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
     }
 
     setObjectWithMode = (resultObject: Models.DomainObjectRepresentation, newMode: InteractionMode, paneId: Pane = Pane.Pane1) => {
-        const oid = resultObject.id(this.keySeparator);
+        const oid = resultObject.id();
         const okey = `${akm.object}${paneId}`;
         const mkey = `${akm.interactionMode}${paneId}`;
         const newValues = zipObject([okey, mkey], [oid, InteractionMode[newMode]]) as Dictionary<string>;
@@ -574,7 +574,7 @@ export class UrlManagerService {
         const parent = actionMember.parent;
 
         if (parent instanceof Models.DomainObjectRepresentation) {
-            newValues[`${akm.object}${toPaneId}`] = parent.id(this.keySeparator);
+            newValues[`${akm.object}${toPaneId}`] = parent.id();
         }
 
         if (parent instanceof Models.MenuRepresentation) {

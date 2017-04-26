@@ -7,7 +7,6 @@ import { ViewModelFactoryService } from '../view-model-factory.service';
 import { ErrorService } from '../error.service';
 import { PaneRouteData, InteractionMode, ICustomActivatedRouteData } from '../route-data';
 import { FormBuilder, FormGroup } from '@angular/forms';
-
 import { PropertyViewModel } from '../view-models/property-view-model';
 import { MenuItemViewModel } from '../view-models/menu-item-view-model';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
@@ -275,7 +274,7 @@ export class ObjectComponent implements OnInit, OnDestroy {
 
         // todo this is a recurring pattern in angular 2 code - generalise 
         // across components 
-        if (this.object && !this.object.domainObject.getOid(this.configService.config.keySeparator).isSame(oid)) {
+        if (this.object && !this.object.domainObject.getOid().isSame(oid)) {
             // object has changed - clear existing 
             this.object = null;
             this.form = null;
@@ -367,7 +366,7 @@ export class ObjectComponent implements OnInit, OnDestroy {
         });
 
         this.concurrencyErrorSub = this.context.concurrencyError$.subscribe(oid => {
-            if (this.object && this.object.domainObject.getOid(this.configService.config.keySeparator).isSame(oid)) {
+            if (this.object && this.object.domainObject.getOid().isSame(oid)) {
                 this.object.concurrency();
             }
         });

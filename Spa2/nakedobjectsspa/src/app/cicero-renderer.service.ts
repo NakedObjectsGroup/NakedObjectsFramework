@@ -83,7 +83,7 @@ export class CiceroRendererService {
                             const count = list.value().length;
                             const numPages = list.pagination().numPages;
                             const description = this.getListDescription(numPages, list, count);
-                            const actionMember = menu.actionMember(routeData.actionId, this.keySeparator);
+                            const actionMember = menu.actionMember(routeData.actionId);
                             const actionName = actionMember.extensions().friendlyName();
                             const output = `Result from ${actionName}:\n${description}`;
                             cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
@@ -135,7 +135,7 @@ export class CiceroRendererService {
         let output = `${Msg.editing} `;
         output += Ro.typePlusTitle(obj) + "\n";
         if (routeData.dialogId) {
-            this.context.getInvokableAction(obj.actionMember(routeData.dialogId, this.keySeparator)).
+            this.context.getInvokableAction(obj.actionMember(routeData.dialogId)).
                 then(invokableAction => {
                     output += this.renderActionDialog(invokableAction, routeData, this.mask);
                     cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
@@ -150,7 +150,7 @@ export class CiceroRendererService {
     private renderObjectTitleAndDialogIfOpen(routeData: PaneRouteData, obj: Ro.DomainObjectRepresentation, cvm: CiceroViewModel) {
         let output = Ro.typePlusTitle(obj) + "\n";
         if (routeData.dialogId) {
-            this.context.getInvokableAction(obj.actionMember(routeData.dialogId, this.keySeparator)).
+            this.context.getInvokableAction(obj.actionMember(routeData.dialogId)).
                 then(invokableAction => {
                     output += this.renderActionDialog(invokableAction, routeData, this.mask);
                     cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
@@ -166,7 +166,7 @@ export class CiceroRendererService {
         this.context.getMenu(routeData.menuId).
             then(menu => {
                 output += Msg.menuTitle(menu.title());
-                return routeData.dialogId ? this.context.getInvokableAction(menu.actionMember(routeData.dialogId, this.keySeparator)) : Promise.resolve(null);
+                return routeData.dialogId ? this.context.getInvokableAction(menu.actionMember(routeData.dialogId)) : Promise.resolve(null);
             }).
             then(invokableAction => {
                 if (invokableAction) {
@@ -196,7 +196,7 @@ export class CiceroRendererService {
 
     private renderModifiedProperties(obj: Ro.DomainObjectRepresentation, routeData: PaneRouteData, mask: MaskService): string {
         let output = "";
-        const props = this.context.getObjectCachedValues(obj.id(this.keySeparator));
+        const props = this.context.getObjectCachedValues(obj.id());
         if (keys(props).length > 0) {
             output += Msg.modifiedProperties + ":\n";
             each(props, (value, propId) => {

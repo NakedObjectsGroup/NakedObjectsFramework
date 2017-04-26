@@ -141,11 +141,11 @@ export class DialogComponent implements AfterViewInit {
             let actionViewModel: ActionViewModel | null = null;
 
             if (p instanceof MenuViewModel) {
-                action = p.menuRep.actionMember(this.currentDialogId, this.configService.config.keySeparator);
+                action = p.menuRep.actionMember(this.currentDialogId);
             }
 
             if (p instanceof DomainObjectViewModel && p.domainObject.hasActionMember(this.currentDialogId)) {
-                action = p.domainObject.actionMember(this.currentDialogId, this.configService.config.keySeparator);
+                action = p.domainObject.actionMember(this.currentDialogId);
             }
 
             if (p instanceof ListViewModel) {
@@ -154,7 +154,7 @@ export class DialogComponent implements AfterViewInit {
             }
 
             if (p instanceof CollectionViewModel && p.hasMatchingLocallyContributedAction(this.currentDialogId)) {
-                action = p.actionMember(this.currentDialogId, this.configService.config.keySeparator) !;
+                action = p.actionMember(this.currentDialogId) !;
                 actionViewModel = find(p.actions, a => a.actionRep.actionId() === this.currentDialogId) || null;
             }
 

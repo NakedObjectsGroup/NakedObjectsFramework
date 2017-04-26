@@ -118,7 +118,7 @@ export class MultiLineDialogComponent extends PaneComponent {
         routeData: PaneRouteData,
         actionViewModel?: ActionViewModel) {
 
-        const action = holder.actionMember(newDialogId, this.configService.config.keySeparator) !;
+        const action = holder.actionMember(newDialogId)!;
         this.context.getInvokableAction(action).
             then(details => {
 

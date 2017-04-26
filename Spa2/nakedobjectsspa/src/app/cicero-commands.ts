@@ -30,7 +30,7 @@ import fromPairs from 'lodash/fromPairs';
 
     export function getParametersAndCurrentValue(action: Ro.ActionMember | Models.ActionRepresentation | Models.InvokableActionMember, context: ContextService): Dictionary<Ro.Value> {
 
-        if (Ro.isIInvokableAction(action)) {
+        if (action instanceof Models.InvokableActionMember || action instanceof Models.ActionRepresentation) {
             const parms = action.parameters();
             const values = context.getDialogCachedValues(action.actionId());
             return mapValues(parms, p => {
@@ -237,9 +237,9 @@ import fromPairs from 'lodash/fromPairs';
         protected getActionForCurrentDialog(): Promise<Models.InvokableActionMember | Models.ActionRepresentation> {
             const dialogId = this.routeData().dialogId;
             if (this.isObject()) {
-                return this.getObject().then((obj: Ro.DomainObjectRepresentation) => this.context.getInvokableAction(obj.actionMember(dialogId, this.keySeparator)));
+                return this.getObject().then((obj: Ro.DomainObjectRepresentation) => this.context.getInvokableAction(obj.actionMember(dialogId)));
             } else if (this.isMenu()) {
-                return this.getMenu().then((menu: Ro.MenuRepresentation) => this.context.getInvokableAction(menu.actionMember(dialogId, this.keySeparator))); //i.e. return a promise
+                return this.getMenu().then((menu: Ro.MenuRepresentation) => this.context.getInvokableAction(menu.actionMember(dialogId))); //i.e. return a promise
             }
             return Promise.reject(new Ro.ErrorWrapper(Ro.ErrorCategory.ClientError, Ro.ClientErrorCode.NotImplemented, "List actions not implemented yet"));
         }
@@ -387,7 +387,7 @@ import fromPairs from 'lodash/fromPairs';
                         if (rd) valuesFromRouteData = rd.list(); //TODO: what if only one?
                     } else if (field instanceof Ro.PropertyMember) {
                         const obj = field.parent as Ro.DomainObjectRepresentation;
-                        const props = this.context.getObjectCachedValues(obj.id(this.keySeparator));
+                        const props = this.context.getObjectCachedValues(obj.id());
                         const rd = props[field.id()];
                         if (rd) valuesFromRouteData = rd.list(); //TODO: what if only one?
                     }
@@ -921,7 +921,7 @@ import fromPairs from 'lodash/fromPairs';
         private getPropertiesAndCurrentValue(obj : Ro.DomainObjectRepresentation) : Dictionary<Ro.Value> {
             const props = obj.propertyMembers();
             const values = mapValues(props, p => p.value());
-            const modifiedProps = this.context.getObjectCachedValues(obj.id(this.keySeparator));
+            const modifiedProps = this.context.getObjectCachedValues(obj.id());
 
             forEach(values, (v, k) => {
                 const newValue = modifiedProps[k];
@@ -1187,7 +1187,7 @@ import fromPairs from 'lodash/fromPairs';
                     let fieldMap: Dictionary<Ro.Value>;
                     if (this.isForm()) {
                         const obj = action.parent as Ro.DomainObjectRepresentation;
-                        fieldMap = this.context.getObjectCachedValues(obj.id(this.keySeparator)); //Props passed in as pseudo-params to action
+                        fieldMap = this.context.getObjectCachedValues(obj.id()); //Props passed in as pseudo-params to action
                     } else {
                         fieldMap = getParametersAndCurrentValue(action, this.context);
                     }
@@ -1325,7 +1325,7 @@ import fromPairs from 'lodash/fromPairs';
             this.getObject().
                 then((obj: Ro.DomainObjectRepresentation) => {
                     const props = obj.propertyMembers();
-                    const newValsFromUrl = this.context.getObjectCachedValues(obj.id(this.keySeparator));
+                    const newValsFromUrl = this.context.getObjectCachedValues(obj.id());
                     const propIds = new Array<string>();
                     const values = new Array<Ro.Value>();
                     forEach(props, (propMember, propId) => {
@@ -1454,7 +1454,7 @@ import fromPairs from 'lodash/fromPairs';
             const name = pm.extensions().friendlyName();
             let value: string;
             const parent = pm.parent as Ro.DomainObjectRepresentation;
-            const props = this.context.getObjectCachedValues(parent.id(this.keySeparator));
+            const props = this.context.getObjectCachedValues(parent.id());
             const modifiedValue = props[pm.id()];
             if (this.isEdit() && !pm.disabledReason() && modifiedValue) {
                 value = Rend.renderFieldValue(pm, modifiedValue, this.mask) + ` (${Msg.modified})`;
