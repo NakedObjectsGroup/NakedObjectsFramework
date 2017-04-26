@@ -137,7 +137,7 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
     }
 
     readonly toggleActionMenu = () => {
-        if (this.disableActions()) return;
+        if (this.noActions()) return;
         this.urlManager.toggleObjectMenu(this.onPaneId);
     }
 
@@ -178,7 +178,7 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
         this.setPage(this.page, this.state);
     }
 
-    readonly disableActions = () => !this.actions || this.actions.length === 0 || !this.items || this.items.length === 0;
+    readonly noActions = () => !this.actions || this.actions.length === 0 || !this.items || this.items.length === 0;
 
     readonly actionsTooltip = () => Helpers.actionsTooltip(this, !!this.routeData.actionsOpen);
 

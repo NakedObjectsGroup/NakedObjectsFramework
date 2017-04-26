@@ -42,8 +42,8 @@ export class ListComponent {
     pageNext = () => this.collection.pageNext();
     pageLast = () => this.collection.pageLast();
 
-    disableActions = () => this.collection.disableActions() ? true : null;
-    hideAllCheckbox = () => this.collection.disableActions() || this.collection.items.length === 0;
+    disableActions = () => this.collection.noActions() ? true : null;
+    hideAllCheckbox = () => this.collection.noActions() || this.collection.items.length === 0;
 
 
     pageFirstDisabled = () => this.collection.pageFirstDisabled() ? true : null;

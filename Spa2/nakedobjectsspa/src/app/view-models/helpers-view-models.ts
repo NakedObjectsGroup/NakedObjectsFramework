@@ -134,11 +134,11 @@ export function createMenuItems(avms: ActionViewModel[]) {
     return map(menuSlots, slot => createSubmenuItems(avms, slot, 0));
 }
 
-export function actionsTooltip(onWhat: { disableActions: () => boolean }, actionsOpen: boolean) {
+export function actionsTooltip(onWhat: { noActions: () => boolean }, actionsOpen: boolean) {
     if (actionsOpen) {
         return Msg.closeActions;
     }
-    return onWhat.disableActions() ? Msg.noActions : Msg.openActions;
+    return onWhat.noActions() ? Msg.noActions : Msg.openActions;
 }
 
 export function getCollectionDetails(count: number | null) {

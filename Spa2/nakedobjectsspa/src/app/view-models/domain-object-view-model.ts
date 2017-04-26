@@ -250,7 +250,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
 
     readonly hideEdit = () => this.isFormOrTransient() || every(this.properties, p => !p.isEditable);
 
-    readonly disableActions = () => !this.actions || this.actions.length === 0;
+    readonly noActions = () => !this.actions || this.actions.length === 0;
 
     readonly canDropOn = (targetType: string) => this.contextService.isSubTypeOf(this.domainType, targetType);
 

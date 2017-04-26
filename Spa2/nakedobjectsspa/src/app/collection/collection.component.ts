@@ -66,7 +66,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
     doSummary = () => this.collection.doSummary();
     doList = () => this.collection.doList();
     doTable = () => this.collection.doTable();
-    disableActions = () => this.collection.disableActions();
+    disableActions = () => this.collection.noActions();
 
     hasTableData = () => this.collection.hasTableData();
 

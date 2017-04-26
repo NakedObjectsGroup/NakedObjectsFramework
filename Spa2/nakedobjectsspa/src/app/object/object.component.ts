@@ -109,11 +109,9 @@ export class ObjectComponent implements OnInit, OnDestroy {
         return obj ? `${prefix}${obj.title}` : "";
     }
 
-    // todo investigate if logic in this would be better here rather than view model
-
     disableActions = () => {
         const obj = this.object;
-        return obj && obj.disableActions() ? true : null;
+        return obj && obj.noActions() ? true : null;
     }
 
     actionsTooltip = () => {

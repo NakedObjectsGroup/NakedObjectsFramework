@@ -25,7 +25,7 @@ export class HeaderComponent {
         return !this.collection.items || this.collection.items.length === 0;
     }
 
-    showAllCheckbox = () => !(this.collection.disableActions() || this.noItems());
+    showAllCheckbox = () => !(this.collection.noActions() || this.noItems());
 
     get header() {
         return this.state === CollectionViewState.Table ? this.collection.header : null;

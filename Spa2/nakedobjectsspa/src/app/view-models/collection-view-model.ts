@@ -120,7 +120,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
 
     readonly description = () => this.details.toString();
 
-    readonly disableActions = () => this.editing || !this.actions || this.actions.length === 0;
+    readonly noActions = () => this.editing || !this.actions || this.actions.length === 0;
 
     readonly actionMember = (id: string) => {
         const actionViewModel = find(this.actions, a => a.actionRep.actionId() === id);
