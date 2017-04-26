@@ -153,7 +153,7 @@ class ValueCache {
         return this.currentValues[paneId]![valueId];
     }
 
-    getValues(id: string | null, paneId: Pane){
+    getValues(id: string | null, paneId: Pane) {
         if (id && this.currentId[paneId] !== id) {
             this.currentId[paneId] = id;
             this.currentValues[paneId] = {};
@@ -184,13 +184,13 @@ class ValueCache {
 @Injectable()
 export class ContextService {
 
-    clearingDataFlag = false; 
+    clearingDataFlag = false;
 
     constructor(
         private readonly urlManager: UrlManagerService,
         private readonly repLoader: RepLoaderService,
         private readonly configService: ConfigService,
-        private readonly loggerService : LoggerService
+        private readonly loggerService: LoggerService
     ) {
         this.keySeparator = this.configService.config.keySeparator;
     }
@@ -199,7 +199,7 @@ export class ContextService {
 
     // cached values
 
-    private currentObjects: [undefined, Models.DomainObjectRepresentation | null, Models.DomainObjectRepresentation | null] = [undefined,null,null]; // per pane 
+    private currentObjects: [undefined, Models.DomainObjectRepresentation | null, Models.DomainObjectRepresentation | null] = [undefined, null, null]; // per pane 
     private transientCache = new TransientCache(this.configService.config.transientCacheDepth);
 
     private currentMenuList: Dictionary<Models.MenuRepresentation> = {};
@@ -593,7 +593,7 @@ export class ContextService {
 
                 if (resultObject.persistLink()) {
                     // transient object
-                    const domainType = resultObject.extensions().domainType() !;
+                    const domainType = resultObject.extensions().domainType()!;
                     resultObject.wrapped().domainType = domainType;
                     resultObject.wrapped().instanceId = (this.nextTransientId++).toString();
 
@@ -650,7 +650,7 @@ export class ContextService {
         }
     }
 
-    private pendingPotentActionCount : [undefined, number, number]  = [undefined, 0, 0];
+    private pendingPotentActionCount: [undefined, number, number] = [undefined, 0, 0];
 
     incPendingPotentActionOrReload(paneId: Pane) {
         this.pendingPotentActionCount[paneId]++;
@@ -807,7 +807,7 @@ export class ContextService {
 
         return this.repLoader.retrieve(persist, Models.DomainObjectRepresentation, object.etagDigest)
             .then((updatedObject: Models.DomainObjectRepresentation) => {
-                this.transientCache.remove(paneId, object.domainType() !, object.id(this.keySeparator));
+                this.transientCache.remove(paneId, object.domainType()!, object.id(this.keySeparator));
                 this.setNewObject(updatedObject, paneId, viewSavedObject);
                 return Promise.resolve(updatedObject);
             });
@@ -880,27 +880,27 @@ export class ContextService {
         forEach(this.currentLists, (v, k) => delete this.currentLists[k!]);
     }
 
-    cacheFieldValue = (dialogId: string, pid: string, pv: Models.Value, paneId = Pane.Pane1) => {
+    cacheFieldValue = (dialogId: string, pid: string, pv: Models.Value, paneId: Pane = Pane.Pane1) => {
         this.parameterCache.addValue(dialogId, pid, pv, paneId);
     }
 
-    getDialogCachedValues = (dialogId: string | null = null, paneId = Pane.Pane1) => {
+    getDialogCachedValues = (dialogId: string | null = null, paneId: Pane = Pane.Pane1) => {
         return this.parameterCache.getValues(dialogId, paneId);
     }
 
-    getObjectCachedValues = (objectId: string | null = null, paneId = Pane.Pane1) => {
+    getObjectCachedValues = (objectId: string | null = null, paneId: Pane = Pane.Pane1) => {
         return this.objectEditCache.getValues(objectId, paneId);
     }
 
-    clearDialogCachedValues = (paneId = Pane.Pane1) => {
+    clearDialogCachedValues = (paneId: Pane = Pane.Pane1) => {
         this.parameterCache.clear(paneId);
     }
 
-    clearObjectCachedValues = (paneId = Pane.Pane1) => {
+    clearObjectCachedValues = (paneId: Pane = Pane.Pane1) => {
         this.objectEditCache.clear(paneId);
     }
 
-    cachePropertyValue = (obj: Models.DomainObjectRepresentation, p: Models.PropertyMember, pv: Models.Value, paneId = Pane.Pane1) => {
+    cachePropertyValue = (obj: Models.DomainObjectRepresentation, p: Models.PropertyMember, pv: Models.Value, paneId: Pane = Pane.Pane1) => {
         this.dirtyList.setDirty(obj.getOid(this.keySeparator));
         this.objectEditCache.addValue(obj.id(this.keySeparator), p.id(), pv, paneId);
     }

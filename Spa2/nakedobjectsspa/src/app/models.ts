@@ -9,7 +9,6 @@ import assign from 'lodash/assign';
 import clone from 'lodash/clone';
 import keys from 'lodash/keys';
 import map from 'lodash/map';
-import cloneDeep from 'lodash/cloneDeep';
 import concat from 'lodash/concat';
 import mapValues from 'lodash/mapValues';
 import pickBy from 'lodash/pickBy';
