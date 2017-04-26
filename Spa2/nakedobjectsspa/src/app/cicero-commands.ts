@@ -3,6 +3,7 @@ import * as Msg from './user-messages';
 import * as Rend from './cicero-renderer.service';
 import * as Const from './constants';
 import * as RtD from './route-data';
+import * as Models from './models';
 import {ContextService} from './context.service';
 import {UrlManagerService} from './url-manager.service';
 import {MaskService} from './mask.service';
@@ -27,7 +28,7 @@ import some from 'lodash/some';
 import mapKeys from 'lodash/mapKeys';
 import fromPairs from 'lodash/fromPairs';
 
-    export function getParametersAndCurrentValue(action: Ro.ActionMember | Ro.IInvokableAction, context: ContextService): Dictionary<Ro.Value> {
+    export function getParametersAndCurrentValue(action: Ro.ActionMember | Models.ActionRepresentation | Models.InvokableActionMember, context: ContextService): Dictionary<Ro.Value> {
 
         if (Ro.isIInvokableAction(action)) {
             const parms = action.parameters();
@@ -233,7 +234,7 @@ import fromPairs from 'lodash/fromPairs';
             return !!this.routeData().dialogId;
         }
 
-        protected getActionForCurrentDialog(): Promise<Ro.IInvokableAction> {
+        protected getActionForCurrentDialog(): Promise<Models.InvokableActionMember | Models.ActionRepresentation> {
             const dialogId = this.routeData().dialogId;
             if (this.isObject()) {
                 return this.getObject().then((obj: Ro.DomainObjectRepresentation) => this.context.getInvokableAction(obj.actionMember(dialogId, this.keySeparator)));
@@ -1177,7 +1178,7 @@ import fromPairs from 'lodash/fromPairs';
         doExecute(args: string, chained: boolean): void {
 
             this.getActionForCurrentDialog().
-                then((action: Ro.IInvokableAction) => {
+                then((action: Models.ActionRepresentation | Models.InvokableActionMember) => {
 
                     if (chained && action.invokeLink().method() !== "GET") {
                         this.mayNotBeChained(Msg.queryOnlyRider);

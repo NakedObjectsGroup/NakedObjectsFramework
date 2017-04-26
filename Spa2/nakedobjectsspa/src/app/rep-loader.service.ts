@@ -230,7 +230,7 @@ export class RepLoaderService {
     }
 
 
-    invoke = (action: Models.IInvokableAction, parms: Dictionary<Models.Value>, urlParms: Dictionary<Object>): Promise<Models.ActionResultRepresentation> => {
+    invoke = (action: Models.ActionRepresentation | Models.InvokableActionMember, parms: Dictionary<Models.Value>, urlParms: Dictionary<Object>): Promise<Models.ActionResultRepresentation> => {
         const invokeMap = action.getInvokeMap();
         if (invokeMap) {
             each(urlParms, (v, k) => invokeMap.setUrlParameter(k!, v));

@@ -45,7 +45,7 @@ export class ActionViewModel {
     readonly description: string;
     readonly presentationHint: string;
     gotoResult = true;
-    invokableActionRep: Models.IInvokableAction;
+    invokableActionRep: Models.ActionRepresentation | Models.InvokableActionMember;
 
     // form actions should never show dialogs
     private readonly showDialog = () => this.actionRep.extensions().hasParams() && (this.routeData.interactionMode !== InteractionMode.Form);
@@ -101,7 +101,7 @@ export class ActionViewModel {
         }
 
         return this.context.getInvokableAction(this.actionRep)
-            .then((details: Models.IInvokableAction) => {
+            .then((details: Models.ActionRepresentation | Models.InvokableActionMember) => {
                 this.invokableActionRep = details;
                 return details;
             });
@@ -112,7 +112,7 @@ export class ActionViewModel {
         const parmMap = zipObject(map(pps, p => p.id), map(pps, p => p.getValue())) as Dictionary<Models.Value>;
         forEach(pps, p => this.urlManager.setParameterValue(this.actionRep.actionId(), p.parameterRep, p.getValue(), this.paneId));
         return this.getInvokable()
-            .then((details: Models.IInvokableAction) => this.context.invokeAction(details, parmMap, this.paneId, this.clickHandler.pane(this.paneId, right), this.gotoResult));
+            .then((details: Models.ActionRepresentation | Models.InvokableActionMember) => this.context.invokeAction(details, parmMap, this.paneId, this.clickHandler.pane(this.paneId, right), this.gotoResult));
     };
 
     readonly disabled = () => !!this.actionRep.disabledReason();
@@ -121,7 +121,7 @@ export class ActionViewModel {
         this.invokableActionRep.isPotent() &&
         this.context.isPendingPotentActionOrReload(this.paneId);
 
-    private getParameters(invokableAction: Models.IInvokableAction) {
+    private getParameters(invokableAction: Models.ActionRepresentation | Models.InvokableActionMember) {
         const parameters = pickBy(invokableAction.parameters(), p => !p.isCollectionContributed()) as Dictionary<Models.Parameter>;
         const parms = this.routeData.actionParams;
         return map(parameters, parm => this.viewModelFactory.parameterViewModel(parm, parms[parm.id()], this.paneId));
@@ -135,11 +135,11 @@ export class ActionViewModel {
         }
 
         return this.context.getInvokableAction(this.actionRep)
-            .then((details: Models.IInvokableAction) => {
+            .then((details: Models.ActionRepresentation | Models.InvokableActionMember) => {
                 this.invokableActionRep = details;
                 return this.getParameters(details);
             });
     };
 
-    readonly makeInvokable = (details: Models.IInvokableAction) => this.invokableActionRep = details;
+    readonly makeInvokable = (details: Models.ActionRepresentation | Models.InvokableActionMember) => this.invokableActionRep = details;
 }

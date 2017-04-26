@@ -42,7 +42,7 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
     actions: ActionViewModel[];
     menuItems: MenuItemViewModel[];
 
-    private isLocallyContributed(action: Models.IInvokableAction) {
+    private isLocallyContributed(action: Models.ActionRepresentation | Models.InvokableActionMember) {
         return some(action.parameters(), p => p.isCollectionContributed());
     }
 
@@ -58,7 +58,7 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
 
             const selected = filter(this.items, i => i.selected);
 
-            const rejectAsNeedSelection = (action: Models.IInvokableAction): Models.ErrorWrapper | null => {
+            const rejectAsNeedSelection = (action: Models.ActionRepresentation | Models.InvokableActionMember): Models.ErrorWrapper | null => {
                 if (this.isLocallyContributed(action)) {
                     if (selected.length === 0) {
                         const em = new Models.ErrorMap({}, 0, Msg.noItemsSelected);
@@ -69,7 +69,7 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
                 return null;
             }
 
-            const getParms = (action: Models.IInvokableAction) => {
+            const getParms = (action: Models.ActionRepresentation | Models.InvokableActionMember) => {
 
                 const parms = values(action.parameters()) as Models.Parameter[];
                 const contribParm = find(parms, p => p.isCollectionContributed());
@@ -90,7 +90,7 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
                 : this.context.getActionDetails(actionViewModel.actionRep as Models.ActionMember);
 
             return detailsPromise.
-                then((details: Models.IInvokableAction) => {
+                then(details => {
                     const rp = rejectAsNeedSelection(details);
                     return rp ? Promise.reject(rp) : wrappedInvoke(getParms(details), right);
                 }).
@@ -105,7 +105,7 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
     protected collectionContributedInvokeDecorator(actionViewModel: ActionViewModel) {
 
         const showDialog = () =>
-            this.context.getInvokableAction(actionViewModel.actionRep as Models.ActionMember).
+            this.context.getInvokableAction(actionViewModel.actionRep).
                 then(invokableAction => {
                     actionViewModel.makeInvokable(invokableAction);
                     const keyCount = keys(invokableAction.parameters()).length;

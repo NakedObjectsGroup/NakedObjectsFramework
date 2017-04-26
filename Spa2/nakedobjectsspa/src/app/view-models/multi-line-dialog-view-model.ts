@@ -21,7 +21,7 @@ export class MultiLineDialogViewModel {
         private readonly urlManager: UrlManagerService,
         private readonly error: ErrorService,
         private readonly routeData: PaneRouteData,
-        private readonly action: Models.IInvokableAction,
+        private readonly action: Models.ActionRepresentation | Models.InvokableActionMember,
         holder: Models.MenuRepresentation | Models.DomainObjectRepresentation | CollectionViewModel
     ) {
 
@@ -38,7 +38,7 @@ export class MultiLineDialogViewModel {
     }
 
     private readonly createRow = (i: number) => {
-        return this.viewModelFactory.dialogViewModel(this.routeData, this.action as Models.IInvokableAction, null, true, i);
+        return this.viewModelFactory.dialogViewModel(this.routeData, this.action as Models.ActionRepresentation | Models.InvokableActionMember, null, true, i);
     }
 
     readonly objectFriendlyName : string = "";

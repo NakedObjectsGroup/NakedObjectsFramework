@@ -184,7 +184,7 @@ export function friendlyTypeName(fullName: string) {
     return result.charAt(0).toUpperCase() + result.slice(1);
 }
 
-export function friendlyNameForParam(action: IInvokableAction, parmId: string) {
+export function friendlyNameForParam(action: ActionRepresentation | InvokableActionMember, parmId: string) {
     const param = find(action.parameters(), (p) => p.id() === parmId);
     return param ? param.extensions().friendlyName() : "";
 }
@@ -238,7 +238,8 @@ export function isIDomainObjectRepresentation(object: any): object is Ro.IDomain
     return isResourceRepresentation(object) && "domainType" in object && "instanceId" in object && "members" in object;
 }
 
-export function isIInvokableAction(object: any): object is IInvokableAction {
+// todo remove
+export function isIInvokableAction(object: any): object is ActionRepresentation | InvokableActionMember {
     return object && "parameters" in object && "extensions" in object;
 }
 
@@ -1030,8 +1031,6 @@ export class InvokeMap extends ArgumentMap implements IHateoasModel {
     setParameter(name: string, value: Value) {
         value.set(this.map, name);
     }
-
-
 }
 
 export class ActionResultRepresentation extends ResourceRepresentation<Ro.IActionInvokeRepresentation> {
@@ -1206,23 +1205,7 @@ export class Parameter
     }
 }
 
-// this interface guarantees that an action can be invoked. 
-// An ActionRepresentation is always invokable 
-// An ActionMember is not 
-export interface IInvokableAction extends IHasExtensions {
-    parent: IHasActions;
-    actionId(): string;
-    invokeLink(): Link | null;
-    getInvokeMap(): InvokeMap | null;
-    parameters(): Dictionary<Parameter>;
-    disabledReason(): string;
-
-    isQueryOnly(): boolean;
-    isNotQueryOnly(): boolean;
-    isPotent(): boolean;
-}
-
-export class ActionRepresentation extends ResourceRepresentation<Ro.IActionRepresentation> implements IInvokableAction {
+export class ActionRepresentation extends ResourceRepresentation<Ro.IActionRepresentation> {
 
     wrapped = () => this.resource() as Ro.IActionRepresentation;
 

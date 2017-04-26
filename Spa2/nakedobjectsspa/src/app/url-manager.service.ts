@@ -569,7 +569,7 @@ export class UrlManagerService {
         this.executeTransition(newValues, paneId, Transition.ToObjectWithMode, () => true);
     }
 
-    setList = (actionMember: Models.IInvokableAction, parms: Dictionary<Models.Value>, fromPaneId = Pane.Pane1, toPaneId = Pane.Pane1) => {
+    setList = (actionMember: Models.ActionRepresentation | Models.InvokableActionMember, parms: Dictionary<Models.Value>, fromPaneId = Pane.Pane1, toPaneId = Pane.Pane1) => {
         const newValues = {} as Dictionary<string>;
         const parent = actionMember.parent;
 

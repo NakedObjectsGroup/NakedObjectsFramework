@@ -26,20 +26,14 @@ export class DialogViewModel extends MessageViewModel {
         private readonly urlManager: UrlManagerService,
         private readonly error: ErrorService,
         private readonly routeData: PaneRouteData,
-        action: Models.IInvokableAction,
+        action: Models.ActionRepresentation | Models.InvokableActionMember,
         actionViewModel: ActionViewModel | null,
         public readonly isMultiLineDialogRow: boolean,
         row?: number
     ) {
         super();
 
-        // todo not happy with the whole invokable action thing here casting is horrid.
-        this.actionViewModel = actionViewModel ||
-            this.viewModelFactory.actionViewModel(action as Models.ActionMember | Models.ActionRepresentation,
-                this,
-                routeData);
-
-        this.actionViewModel.makeInvokable(action);
+        this.actionViewModel = actionViewModel || this.viewModelFactory.actionViewModel(action, this, routeData);
 
         this.onPaneId = routeData.paneId;
 
@@ -47,7 +41,6 @@ export class DialogViewModel extends MessageViewModel {
 
         const parameters = pickBy(this.actionViewModel.invokableActionRep.parameters(), p => !p.isCollectionContributed()) as Dictionary<Models.Parameter>;
         this.parameters = map(parameters, p => this.viewModelFactory.parameterViewModel(p, fields[p.id()], this.onPaneId));
-
 
         this.title = this.actionMember().extensions().friendlyName();
         this.isQueryOnly = this.actionViewModel.invokableActionRep.isQueryOnly();

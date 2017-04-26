@@ -1,5 +1,6 @@
 import * as Ro from './models';
 import * as Msg from './user-messages';
+import * as Models from './models';
 import { Injectable } from '@angular/core';
 import { CiceroViewModel } from './view-models/cicero-view-model';
 import { PaneRouteData, CollectionViewState } from './route-data';
@@ -179,7 +180,7 @@ export class CiceroRendererService {
             });
     }
 
-    private renderActionDialog(invokable: Ro.IInvokableAction,
+    private renderActionDialog(invokable: Models.ActionRepresentation | Models.InvokableActionMember,
         routeData: PaneRouteData,
         mask: MaskService): string {
         const actionName = invokable.extensions().friendlyName();

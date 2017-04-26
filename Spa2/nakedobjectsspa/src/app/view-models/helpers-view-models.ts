@@ -385,13 +385,13 @@ export function handleErrorResponse(err: Models.ErrorMap, messageViewModel: IMes
 }
 
 
-export function incrementPendingPotentAction(context: ContextService, invokableaction: Models.IInvokableAction, paneId: Pane) {
+export function incrementPendingPotentAction(context: ContextService, invokableaction: Models.ActionRepresentation | Models.InvokableActionMember, paneId: Pane) {
     if (invokableaction.isPotent()) {
         context.incPendingPotentActionOrReload(paneId);
     }
 }
 
-export function decrementPendingPotentAction(context: ContextService, invokableaction: Models.IInvokableAction, paneId: Pane) {
+export function decrementPendingPotentAction(context: ContextService, invokableaction: Models.ActionRepresentation | Models.InvokableActionMember, paneId: Pane) {
     if (invokableaction.isPotent()) {
         context.decPendingPotentActionOrReload(paneId);
     }

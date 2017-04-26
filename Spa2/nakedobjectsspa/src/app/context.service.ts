@@ -330,13 +330,13 @@ export class ContextService {
         return Promise.reject(`Couldn't find details on ${collectionMember.collectionId()}`);
     };
 
-    getInvokableAction = (action: Models.ActionMember | Models.ActionRepresentation | Models.IInvokableAction): Promise<Models.IInvokableAction> => {
+    getInvokableAction = (action: Models.ActionMember | Models.ActionRepresentation): Promise<Models.InvokableActionMember | Models.ActionRepresentation> => {
 
-        if (action.invokeLink()) {
-            return Promise.resolve(action as Models.IInvokableAction);
+        if (action instanceof Models.InvokableActionMember || action instanceof Models.ActionRepresentation) {
+            return Promise.resolve(action);
         }
 
-        return this.getActionDetails(action as Models.ActionMember);
+        return this.getActionDetails(action);
     };
 
     getMenu = (menuId: string): Promise<Models.MenuRepresentation> => {
@@ -583,7 +583,7 @@ export class ContextService {
 
     private nextTransientId = 0;
 
-    setResult = (action: Models.IInvokableAction, result: Models.ActionResultRepresentation, fromPaneId: number, toPaneId: number, page: number, pageSize: number) => {
+    setResult = (action: Models.ActionRepresentation | Models.InvokableActionMember, result: Models.ActionResultRepresentation, fromPaneId: number, toPaneId: number, page: number, pageSize: number) => {
 
 
         if (!result.result().isNull()) {
@@ -707,7 +707,7 @@ export class ContextService {
         this.concurrencyErrorSource.next(oid);
     }
 
-    private invokeActionInternal(invokeMap: Models.InvokeMap, action: Models.IInvokableAction, fromPaneId: number, toPaneId: number, setDirty: () => void, gotoResult = false) {
+    private invokeActionInternal(invokeMap: Models.InvokeMap, action: Models.ActionRepresentation | Models.InvokableActionMember, fromPaneId: number, toPaneId: number, setDirty: () => void, gotoResult = false) {
 
         invokeMap.setUrlParameter(Constants.roInlinePropertyDetails, false);
 
@@ -726,7 +726,7 @@ export class ContextService {
             });
     }
 
-    private getSetDirtyFunction(action: Models.IInvokableAction, parms: Dictionary<Models.Value>) {
+    private getSetDirtyFunction(action: Models.ActionRepresentation | Models.InvokableActionMember, parms: Dictionary<Models.Value>) {
         const parent = action.parent;
 
         if (action.isNotQueryOnly()) {
@@ -762,9 +762,9 @@ export class ContextService {
         return () => { };
     }
 
-    invokeAction = (action: Models.IInvokableAction, parms: Dictionary<Models.Value>, fromPaneId = 1, toPaneId = 1, gotoResult = true) => {
+    invokeAction = (action: Models.ActionRepresentation | Models.InvokableActionMember, parms: Dictionary<Models.Value>, fromPaneId = 1, toPaneId = 1, gotoResult = true) => {
 
-        const invokeOnMap = (iAction: Models.IInvokableAction) => {
+        const invokeOnMap = (iAction: Models.ActionRepresentation | Models.InvokableActionMember) => {
             const im = iAction.getInvokeMap() as Models.InvokeMap;
             each(parms, (parm, k) => im.setParameter(k!, parm));
             const setDirty = this.getSetDirtyFunction(iAction, parms);
