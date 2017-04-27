@@ -1586,29 +1586,40 @@ export class Member<T extends Ro.IMember> extends NestedRepresentation<Ro.IMembe
         return isScalarType(this.extensions().returnType());
     }
 
-    static wrapPropertyMember(toWrap: Ro.IPropertyMember, parent: Link, id: string): PropertyMember {
-        return new PropertyMember(toWrap as Ro.IPropertyMember, parent, id);
-    }
-
-    static wrapMember(toWrap: Ro.IPropertyMember | Ro.ICollectionMember | Ro.IActionMember, parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation | CollectionRepresentation | CollectionMember, id: string): Member<Ro.IMember> {
-
+    static wrapLinkMember(toWrap: Ro.IPropertyMember | Ro.ICollectionMember, parent: Link, id: string): PropertyMember | CollectionMember {
+     
         if (toWrap.memberType === "property") {
-            return new PropertyMember(toWrap as Ro.IPropertyMember, parent as DomainObjectRepresentation, id);
+            return new PropertyMember(toWrap as Ro.IPropertyMember, parent, id);
         }
 
         if (toWrap.memberType === "collection") {
-            return new CollectionMember(toWrap as Ro.ICollectionMember, parent as DomainObjectRepresentation, id);
+            return new CollectionMember(toWrap as Ro.ICollectionMember, parent, id);
+        }
+
+        error('Unexpected member: ${id}');
+    }
+
+    static wrapMember(toWrap: Ro.IPropertyMember | Ro.ICollectionMember | Ro.IActionMember, parent: DomainObjectRepresentation | IHasActions, id: string): Member<Ro.IMember> {
+
+        if (toWrap.memberType === "property" && parent instanceof DomainObjectRepresentation) {
+            return new PropertyMember(toWrap as Ro.IPropertyMember, parent, id);
+        }
+
+        if (toWrap.memberType === "collection" && parent instanceof DomainObjectRepresentation) {
+            return new CollectionMember(toWrap as Ro.ICollectionMember, parent, id);
         }
 
         if (toWrap.memberType === "action") {
-            const member = new ActionMember(toWrap as Ro.IActionMember, parent as IHasActions, id);
+            const member = new ActionMember(toWrap as Ro.IActionMember, parent, id);
 
             if (member.invokeLink()) {
-                return new InvokableActionMember(toWrap as Ro.IActionMember, parent as IHasActions, id);
+                return new InvokableActionMember(toWrap as Ro.IActionMember, parent, id);
             }
 
             return member;
         }
+
+        error('Unexpected member: ${id}');
     }
 }
 
@@ -1746,12 +1757,11 @@ export class CollectionMember
     implements IHasLinksAsValue, IHasActions {
 
 
-
     wrapped = () => this.resource() as RoCustom.ICustomCollectionMember;
 
-    constructor(wrapped: Ro.ICollectionMember, public parent: DomainObjectRepresentation, private readonly id: string) {
+    constructor(wrapped: Ro.ICollectionMember, public parent: DomainObjectRepresentation | Link, private readonly id: string) {
         super(wrapped);
-        this.etagDigest = parent.etagDigest;
+        this.etagDigest = parent instanceof DomainObjectRepresentation ?  parent.etagDigest : undefined;
     }
 
     collectionId(): string {
@@ -2503,9 +2513,9 @@ export class Link {
         return withNull(this.wrapped.arguments);
     }
 
-    members(): Dictionary<PropertyMember> | null {
+    members(): Dictionary<PropertyMember | CollectionMember> | null {
         const members = (this.wrapped as RoCustom.ICustomLink).members;
-        return members ? mapValues(members, (m, id) => Member.wrapPropertyMember(m, this, id!)) : null;
+        return members ? mapValues(members, (m, id) => Member.wrapLinkMember(m, this, id!)) : null;
     }
 
     private lazyExtensions: Extensions;

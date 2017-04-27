@@ -37,7 +37,7 @@ export interface ICustomListRepresentation extends Ro.IListRepresentation {
 }
 
 export interface ICustomLink extends Ro.ILink {
-    members: { [index: string]: Ro.IPropertyMember };
+    members: { [index: string]: Ro.IPropertyMember | Ro.ICollectionMember };
 }
 
 export interface IMenuRepresentation extends Ro.IResourceRepresentation {

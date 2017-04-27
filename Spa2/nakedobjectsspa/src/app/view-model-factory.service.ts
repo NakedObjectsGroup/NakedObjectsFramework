@@ -169,7 +169,7 @@ export class ViewModelFactoryService {
         return new RecentItemsViewModel(this, this.context, this.urlManager, paneId);
     }
 
-    tableRowViewModel = (properties: Dictionary<Models.PropertyMember>, paneId: Pane, title: string): TableRowViewModel => {
+    tableRowViewModel = (properties: Dictionary<Models.PropertyMember | Models.CollectionMember>, paneId: Pane, title: string): TableRowViewModel => {
         return new TableRowViewModel(this, properties, paneId, title);
     }
 

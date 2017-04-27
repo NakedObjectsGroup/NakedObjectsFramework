@@ -10,7 +10,7 @@ export class TableRowViewModel {
 
     constructor(
         private readonly viewModelFactory: ViewModelFactoryService,
-        properties: Dictionary<Models.PropertyMember>,
+        properties: Dictionary<Models.PropertyMember | Models.CollectionMember>,
         private readonly paneId: Pane,
         public readonly title: string
     ) {

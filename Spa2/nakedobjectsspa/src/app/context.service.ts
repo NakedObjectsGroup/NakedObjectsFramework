@@ -322,8 +322,11 @@ export class ContextService {
                 details.setUrlParameter(Constants.roInlineCollectionItems, true);
             }
             const parent = collectionMember.parent;
-            const oid = parent.getOid();
-            const isDirty = this.dirtyList.getDirty(oid) !== DirtyState.Clean;
+            let isDirty : boolean = false;
+            if (parent instanceof Models.DomainObjectRepresentation) {
+                const oid = parent.getOid();
+                isDirty = this.dirtyList.getDirty(oid) !== DirtyState.Clean;
+            }
 
             return this.repLoader.populate(details, isDirty || ignoreCache);
         }
@@ -741,8 +744,13 @@ export class ContextService {
                     this.dirtyList.setDirty(oid);
                 };
             }
-            if (parent instanceof Models.CollectionMember) {
-                return () => this.dirtyList.setDirty(parent.parent.getOid());
+            if (parent instanceof Models.CollectionMember) {     
+                return () => {
+                    const memberParent = parent.parent;
+                    if (memberParent instanceof Models.DomainObjectRepresentation) {
+                        this.dirtyList.setDirty(memberParent.getOid());
+                    }
+                };
             }
             if (parent instanceof Models.ListRepresentation && parms) {
 
