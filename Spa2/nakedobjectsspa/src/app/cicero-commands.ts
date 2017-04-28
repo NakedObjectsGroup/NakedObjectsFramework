@@ -49,6 +49,7 @@ export class CommandResult {
     input: string;
     output: string;
     changeState: () => void = () => { };
+    clipboard: any; // todo object ? 
 }
 
 
@@ -713,6 +714,8 @@ export class Clipboard extends Command {
     protected minArguments = 1;
     protected maxArguments = 1;
 
+    private contents : any;
+
     isAvailableInCurrentContext(): boolean {
         return true;
     }
@@ -733,41 +736,54 @@ export class Clipboard extends Command {
     };
 
     doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
-        return Promise.reject("Not Implemented");
+        const sub = this.argumentAsString(args, 0);
+        if (Msg.clipboardCopy.indexOf(sub) === 0) {
+            return this.copy();
+        } else if (Msg.clipboardShow.indexOf(sub) === 0) {
+            return this.show();
+        } else if (Msg.clipboardGo.indexOf(sub) === 0) {
+            return this.go();
+        } else if (Msg.clipboardDiscard.indexOf(sub) === 0) {
+            return this.discard();
+        } else {
+            return this.returnResult("", Msg.clipboardError);
+        }
     };
 
-    private copy(): void {
-        if (!this.isObject()) {
-            this.clearInputAndSetMessage(Msg.clipboardContextError);
-            return;
+    private copy(): Promise<CommandResult> {
+        if (!this.isObject()) {         
+            return this.returnResult("", Msg.clipboardContextError);
         }
-        this.getObject().then(obj => {
-            this.cvm.clipboard = obj;
-            this.show();
-        }).catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
+        return this.getObject().then(obj => {
+            this.contents = obj;
+            const label = Ro.typePlusTitle(obj);
+            return this.returnResult("", Msg.clipboardContents(label));
+        });
     }
 
-    private show(): void {
-        if (this.cvm.clipboard) {
-            const label = Ro.typePlusTitle(this.cvm.clipboard);
-            this.clearInputAndSetMessage(Msg.clipboardContents(label));
+    private show(): Promise<CommandResult> {
+        if (this.contents) {
+            const label = Ro.typePlusTitle(this.contents);
+            return this.returnResult("", Msg.clipboardContents(label));
         } else {
-            this.clearInputAndSetMessage(Msg.clipboardEmpty);
+           
+            return this.returnResult("", Msg.clipboardEmpty);
         }
     }
 
-    private go(): void {
-        const link = this.cvm.clipboard.selfLink();
+    private go(): Promise<CommandResult>  {
+        const link = this.contents && this.contents.selfLink();
         if (link) {
-            this.urlManager.setItem(link);
+            //this.urlManager.setItem(link);
+            return this.returnResult("", "", () => this.urlManager.setItem(link));
         } else {
-            this.show();
+            return this.show();
         }
     }
 
-    private discard(): void {
-        this.cvm.clipboard = null;
-        this.show();
+    private discard(): Promise<CommandResult> {
+        this.contents = null;
+        return this.show();
     }
 }
 
@@ -792,7 +808,15 @@ export class Edit extends Command {
     };
 
     doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
-        return Promise.reject("Not Implemented");
+        if (chained) {
+            return this.returnResult("", this.mayNotBeChained());
+        }
+        const newState = () => {
+            this.context.clearObjectCachedValues();
+            this.urlManager.setInteractionMode(RtD.InteractionMode.Edit);
+        }
+
+        return this.returnResult("", "", newState);
     };
 }
 
@@ -842,11 +866,8 @@ export class Enter extends Command {
                         const s = this.renderFieldDetails(field, field.value());
                         return this.returnResult("", s);
                     } else {
-                        const newState = () => {
-                            this.findAndClearAnyDependentFields(field.id(), obj.propertyMembers());
-                            this.setField(field, fieldEntry);
-                        }
-                        return this.returnResult("", "", newState);
+                        this.findAndClearAnyDependentFields(field.id(), obj.propertyMembers());
+                        return this.setField(field, fieldEntry);
                     }
                 default:
                     const ss = reduce(fields, (s, prop) => s + prop.extensions().friendlyName() + "\n", `${fieldName} ${Msg.matchesMultiple}`);
@@ -887,11 +908,8 @@ export class Enter extends Command {
                         const s = this.renderFieldDetails(p, value);
                         return this.returnResult("", s);
                     } else {
-                        const newState = () => {
-                            this.findAndClearAnyDependentFields(fieldName, action.parameters());
-                            this.setField(params[0], fieldEntry);
-                        }
-                        return this.returnResult("", "", newState);
+                        this.findAndClearAnyDependentFields(fieldName, action.parameters());
+                        return this.setField(params[0], fieldEntry);
                     }
                 default:
                     return this.returnResult("", `${Msg.multipleFieldMatches} ${fieldName}`);//TODO: list them
@@ -910,37 +928,36 @@ export class Enter extends Command {
         }
     }
 
-    private setField(field: Ro.IField, fieldEntry: string): void {
+    private setField(field: Ro.IField, fieldEntry: string) {
         if (field instanceof Ro.PropertyMember && field.disabledReason()) {
-            this.clearInputAndSetMessage(`${field.extensions().friendlyName()} ${Msg.isNotModifiable}`);
-            return;
+            return this.returnResult("", `${field.extensions().friendlyName()} ${Msg.isNotModifiable}`);
         }
         const entryType = field.entryType();
         switch (entryType) {
             case Ro.EntryType.FreeForm:
-                this.handleFreeForm(field, fieldEntry);
-                return;
+                return this.handleFreeForm(field, fieldEntry);
             case Ro.EntryType.AutoComplete:
-                this.handleAutoComplete(field, fieldEntry);
-                return;
+                return this.handleAutoComplete(field, fieldEntry);
+              
             case Ro.EntryType.Choices:
-                this.handleChoices(field, fieldEntry);
-                return;
+                return this.handleChoices(field, fieldEntry);
+               
             case Ro.EntryType.MultipleChoices:
-                this.handleChoices(field, fieldEntry);
-                return;
+                return this.handleChoices(field, fieldEntry);
+           
             case Ro.EntryType.ConditionalChoices:
-                this.handleConditionalChoices(field, fieldEntry);
-                return;
+                return this.handleConditionalChoices(field, fieldEntry);
+              
             case Ro.EntryType.MultipleConditionalChoices:
-                this.handleConditionalChoices(field, fieldEntry);
-                return;
+                return this.handleConditionalChoices(field, fieldEntry);
+                
             default:
-                throw new Error(Msg.invalidCase);
+              
+                return this.returnResult("", Msg.invalidCase);
         }
     }
 
-    private handleFreeForm(field: Ro.IField, fieldEntry: string): void {
+    private handleFreeForm(field: Ro.IField, fieldEntry: string) {
         if (field.isScalar()) {
             let value: Ro.Value = new Ro.Value(fieldEntry);
             //TODO: handle a non-parsable date
@@ -953,8 +970,9 @@ export class Enter extends Command {
                 }
             }
             this.setFieldValue(field, value);
+            return this.returnResult("", "", () => this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl());
         } else {
-            this.handleReferenceField(field, fieldEntry);
+            return this.handleReferenceField(field, fieldEntry);
         }
     }
 
@@ -970,11 +988,11 @@ export class Enter extends Command {
         }
     }
 
-    private handleReferenceField(field: Ro.IField, fieldEntry: string): void {
+    private handleReferenceField(field: Ro.IField, fieldEntry: string) {
         if (this.isPaste(fieldEntry)) {
-            this.handleClipboard(field);
-        } else {
-            this.clearInputAndSetMessage(Msg.invalidRefEntry);
+            return this.handleClipboard(field);
+        } else {         
+            return this.returnResult("", Msg.invalidRefEntry);
         }
     }
 
@@ -982,15 +1000,15 @@ export class Enter extends Command {
         return "paste".indexOf(fieldEntry) === 0;
     }
 
-    private handleClipboard(field: Ro.IField): void {
+    private handleClipboard(field: Ro.IField) {
         const ref = this.cvm.clipboard;
         if (!ref) {
-            this.clearInputAndSetMessage(Msg.emptyClipboard);
-            return;
+            
+            return this.returnResult("", Msg.emptyClipboard);
         }
         const paramType = field.extensions().returnType();
         const refType = ref.domainType();
-        this.context.isSubTypeOf(refType, paramType).then(isSubType => {
+        return this.context.isSubTypeOf(refType, paramType).then(isSubType => {
             if (isSubType) {
                 const obj = this.cvm.clipboard;
                 const selfLink = obj.selfLink();
@@ -998,47 +1016,48 @@ export class Enter extends Command {
                 selfLink.setTitle(obj.title());
                 const value = new Ro.Value(selfLink);
                 this.setFieldValue(field, value);
+
+                return this.returnResult("", "", () => this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl());
             } else {
-                this.clearInputAndSetMessage(Msg.incompatibleClipboard);
+                
+                return this.returnResult("", Msg.incompatibleClipboard);
             }
-        }).catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
+        });
     }
 
-    private handleAutoComplete(field: Ro.IField, fieldEntry: string): void {
+    private handleAutoComplete(field: Ro.IField, fieldEntry: string) {
         //TODO: Need to check that the minimum number of characters has been entered or fail validation
         if (!field.isScalar() && this.isPaste(fieldEntry)) {
-            this.handleClipboard(field);
+            return this.handleClipboard(field);
         } else {
-            this.context.autoComplete(field, field.id(), null, fieldEntry).then(choices => {
+            return this.context.autoComplete(field, field.id(), null, fieldEntry).then(choices => {
                 const matches = this.findMatchingChoicesForRef(choices, fieldEntry);
-                this.switchOnMatches(field, fieldEntry, matches);
-            }).catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
+                return this.switchOnMatches(field, fieldEntry, matches);
+            });
         }
     }
 
-    private handleChoices(field: Ro.IField, fieldEntry: string): void {
+    private handleChoices(field: Ro.IField, fieldEntry: string) {
         let matches: Ro.Value[];
         if (field.isScalar()) {
             matches = this.findMatchingChoicesForScalar(field.choices(), fieldEntry);
         } else {
             matches = this.findMatchingChoicesForRef(field.choices(), fieldEntry);
         }
-        this.switchOnMatches(field, fieldEntry, matches);
+        return this.switchOnMatches(field, fieldEntry, matches);
     }
 
     private switchOnMatches(field: Ro.IField, fieldEntry: string, matches: Ro.Value[]) {
         switch (matches.length) {
-            case 0:
-                this.clearInputAndSetMessage(Msg.noMatch(fieldEntry));
-                break;
+            case 0:          
+                return this.returnResult("", Msg.noMatch(fieldEntry));
             case 1:
                 this.setFieldValue(field, matches[0]);
-                break;
+                return this.returnResult("", "", () => this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl());
             default:
                 let msg = Msg.multipleMatches;
                 forEach(matches, m => msg += m.toString() + "\n");
-                this.clearInputAndSetMessage(msg);
-                break;
+                return this.returnResult("", msg);
         }
     }
 
@@ -1057,7 +1076,7 @@ export class Enter extends Command {
         return mapKeys(values, (v, k) => k.toLowerCase());
     }
 
-    private handleConditionalChoices(field: Ro.IField, fieldEntry: string): void {
+    private handleConditionalChoices(field: Ro.IField, fieldEntry: string) {
         let enteredFields: Dictionary<Ro.Value>;
 
         if (field instanceof Ro.Parameter) {
@@ -1071,10 +1090,10 @@ export class Enter extends Command {
         const args = fromPairs(map(field.promptLink().arguments(), (v: any, key: string) => [key, new Ro.Value(v.value)])) as Dictionary<Ro.Value>;
         forEach(keys(args), key => args[key] = enteredFields[key]);
 
-        this.context.conditionalChoices(field, field.id(), null, args).then(choices => {
+        return this.context.conditionalChoices(field, field.id(), null, args).then(choices => {
             const matches = this.findMatchingChoicesForRef(choices, fieldEntry);
-            this.switchOnMatches(field, fieldEntry, matches);
-        }).catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
+            return this.switchOnMatches(field, fieldEntry, matches);
+        });
     }
 
     private renderFieldDetails(field: Ro.IField, value: Ro.Value): string {
@@ -1729,7 +1748,40 @@ export class Show extends Command {
     };
 
     doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
-        return Promise.reject("Not Implemented");
+        if (this.isCollection()) {
+            const arg = this.argumentAsString(args, 0, true);
+            const { start, end } = this.parseRange(arg);
+            return this.getObject().then(obj => {
+                const openCollIds = Rend.openCollectionIds(this.routeData());
+                const coll = obj.collectionMember(openCollIds[0]);
+                return this.renderCollectionItems(coll, start, end);
+            });
+           
+        } else if (this.isList()) {
+            const arg = this.argumentAsString(args, 0, true);
+            const { start, end } = this.parseRange(arg);
+            return this.getList().then(list => this.renderItems(list, start, end));
+        } else if (this.isObject()) {
+            const fieldName = this.argumentAsString(args, 0);
+            return this.getObject().then((obj: Ro.DomainObjectRepresentation) => {
+                const props = this.matchingProperties(obj, fieldName);
+                const colls = this.matchingCollections(obj, fieldName);
+                //TODO -  include these
+                let s: string;
+                switch (props.length + colls.length) {
+                case 0:
+                    s = fieldName ? Msg.doesNotMatch(fieldName) : Msg.noVisible;
+                    break;
+                case 1:
+                    s = props.length > 0 ? this.renderPropNameAndValue(props[0]) : Rend.renderCollectionNameAndSize(colls[0]);
+                    break;
+                default:
+                    s = reduce(props, (s, prop) => s + this.renderPropNameAndValue(prop), "");
+                    s += reduce(colls, (s, coll) => s + Rend.renderCollectionNameAndSize(coll), "");
+                }
+                return this.returnResult("", s);
+            });
+        }
     };
 
     private renderPropNameAndValue(pm: Ro.PropertyMember): string {
@@ -1748,14 +1800,14 @@ export class Show extends Command {
 
     private renderCollectionItems(coll: Ro.CollectionMember, startNo: number, endNo: number) {
         if (coll.value()) {
-            this.renderItems(coll, startNo, endNo);
+            return this.renderItems(coll, startNo, endNo);
         } else {
-            this.context.getCollectionDetails(coll, RtD.CollectionViewState.List, false).then(details => this.renderItems(details, startNo, endNo))
-                .catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
+            return this.context.getCollectionDetails(coll, RtD.CollectionViewState.List, false).
+                then(details => this.renderItems(details, startNo, endNo));
         }
     }
 
-    private renderItems(source: Ro.IHasLinksAsValue, startNo: number, endNo: number): void {
+    private renderItems(source: Ro.IHasLinksAsValue, startNo: number, endNo: number) {
         //TODO: problem here is that unless collections are in-lined value will be null.
         const max = source.value().length;
         if (!startNo) {
@@ -1765,12 +1817,12 @@ export class Show extends Command {
             endNo = max;
         }
         if (startNo > max || endNo > max) {
-            this.clearInputAndSetMessage(Msg.highestItem(source.value().length));
-            return;
+           
+            return this.returnResult("", Msg.highestItem(source.value().length));
         }
         if (startNo > endNo) {
-            this.clearInputAndSetMessage(Msg.startHigherEnd);
-            return;
+            
+            return this.returnResult("", Msg.startHigherEnd);
         }
         let output = "";
         let i: number;
@@ -1778,7 +1830,8 @@ export class Show extends Command {
         for (i = startNo; i <= endNo; i++) {
             output += `${Msg.item} ${i}: ${links[i - 1].title()}\n`;
         }
-        this.clearInputAndSetMessage(output);
+       
+        return this.returnResult("", output);
     }
 }
 

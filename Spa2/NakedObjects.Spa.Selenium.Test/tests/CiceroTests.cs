@@ -194,9 +194,14 @@ namespace NakedObjects.Selenium {
 
             CiceroUrl("object?o1=___1.Person--12941");
             WaitForOutput("Person: Dakota Wood");
+            CiceroUrl("object?o1=___1.Person--12942");
+            WaitForOutput("Person: Jaclyn Liang");
+
+            EnterCommand("back");
+            WaitForOutput("Person: Dakota Wood");
             EnterCommand("clipboard cop");
             WaitForOutput("Clipboard contains: Person: Dakota Wood");
-            CiceroUrl("object?o1=___1.Person--12942");
+            EnterCommand("fo");
             WaitForOutput("Person: Jaclyn Liang");
             //Check clipboard still unmodified
             EnterCommand("clipboard sh");
@@ -256,7 +261,7 @@ namespace NakedObjects.Selenium {
 
         public virtual void Enter() {
             //Entering fields (into dialogs)
-            CiceroUrl("home?m1=CustomerRepository&d1=FindIndividualCustomerByName&f1_firstName=%22%22&f1_lastName=%22%22");
+            CiceroUrl("home?m1=CustomerRepository&d1=FindIndividualCustomerByName");
             WaitForOutput("Customers menu\r\nAction dialog: Find Individual Customer By Name\r\nFirst Name: empty\r\nLast Name: empty");
             EnterCommand("enter first, Arthur G");
             WaitForOutput("Customers menu\r\nAction dialog: Find Individual Customer By Name\r\nFirst Name: Arthur G\r\nLast Name: empty");
@@ -264,15 +269,15 @@ namespace NakedObjects.Selenium {
             WaitForOutput("Customers menu\r\nAction dialog: Find Individual Customer By Name\r\nFirst Name: Arthur G\r\nLast Name: Fenton-Jones III");
 
             //Different types (bool, date, number)
-            CiceroUrl("object?o1=___1.Product--897&as1=open&d1=BestSpecialOffer&f1_quantity=%22%22");
+            CiceroUrl("object?o1=___1.Product--897&as1=open&d1=BestSpecialOffer");
             WaitForOutputContaining("Action dialog: Best Special Offer");
             EnterCommand("enter quantity,25");
             WaitForOutputContaining("Quantity: 25");
-            CiceroUrl("home?m1=PurchaseOrderRepository&d1=ListPurchaseOrders&f1_vendor=null&f1_fromDate=%22%22&f1_toDate=%22%22");
+            CiceroUrl("home?m1=PurchaseOrderRepository&d1=ListPurchaseOrders");
             WaitForOutputContaining("Action dialog: List Purchase Orders");
             EnterCommand("enter from, 1 Jan 2016");
             WaitForOutputContaining("From Date: 1 Jan 2016");
-            CiceroUrl("object?o1=___1.Customer--140&as1=open&d1=CreateNewOrder&f1_copyHeaderFromLastOrder=false");
+            CiceroUrl("object?o1=___1.Customer--140&as1=open&d1=CreateNewOrder");
             WaitForOutputContaining("Action dialog: Create New Order");
             EnterCommand("enter copy,false");
             WaitForOutputContaining("Copy Header From Last Order: false");
@@ -435,8 +440,8 @@ namespace NakedObjects.Selenium {
             //WaitForOutputContaining("Sub Categories: -Road Bikes-Gloves");
 
             //Finish somewhere other than home!
-            EnterCommand("menu products");
-            WaitForOutput("Products menu");
+            //EnterCommand("menu products");
+            //WaitForOutput("Products menu");
         }
 
         public virtual void Gemini() {
@@ -1500,9 +1505,8 @@ namespace NakedObjects.Selenium {
             Action();
             BackAndForward();
             Cancel();
-            //Clipboard();
-            //Edit();
-            //Enter();
+            Edit();
+            Enter();
             //Gemini();
             //Goto();
             //Help();
@@ -1513,6 +1517,7 @@ namespace NakedObjects.Selenium {
             //Save();
             //Show();
             //Where();
+            //Clipboard();
             //SpaceBarAutoComplete();
             //UnrecognisedCommand();
             //UpAndDownArrow();

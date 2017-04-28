@@ -241,7 +241,7 @@ export function renderFieldValue(field: Ro.IField, value: Ro.Value, mask: MaskSe
     }
     let properScalarValue: number | string | boolean | Date;
     if (Ro.isDateOrDateTime(field)) {
-        properScalarValue = this.toUtcDate(value);
+        properScalarValue = Ro.toUtcDate(value);
     } else {
         properScalarValue = value.scalar();
     }
