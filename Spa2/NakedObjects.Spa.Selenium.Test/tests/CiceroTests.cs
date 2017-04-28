@@ -1498,30 +1498,30 @@ namespace NakedObjects.Selenium {
         [TestMethod] //Mega
         public void MegaCiceroTests() {
             Action();
-            BackAndForward();
-            Cancel();
-            Clipboard();
-            Edit();
-            Enter();
-            Gemini();
-            Goto();
-            Help();
-            Menu();
-            OK();
-            Page();
-            Root();
-            Save();
-            Show();
-            Where();
-            SpaceBarAutoComplete();
-            UnrecognisedCommand();
-            UpAndDownArrow();
-            ScenarioEditAndSave();
-            ScenarioMultiSelect();
-            ScenarioTransientObject();
-            ScenarioUsingClipboard();
-            ScenarioTestEditableVM();
-            ChainedCommands();
+            //BackAndForward();
+            //Cancel();
+            //Clipboard();
+            //Edit();
+            //Enter();
+            //Gemini();
+            //Goto();
+            //Help();
+            //Menu();
+            //OK();
+            //Page();
+            //Root();
+            //Save();
+            //Show();
+            //Where();
+            //SpaceBarAutoComplete();
+            //UnrecognisedCommand();
+            //UpAndDownArrow();
+            //ScenarioEditAndSave();
+            //ScenarioMultiSelect();
+            //ScenarioTransientObject();
+            //ScenarioUsingClipboard();
+            //ScenarioTestEditableVM();
+            //ChainedCommands();
         }
     }
 
@@ -1564,7 +1564,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    //[TestClass] 
+    [TestClass] 
     public class MegaCiceroTestsChrome : MegaCiceroTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

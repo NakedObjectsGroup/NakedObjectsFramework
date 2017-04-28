@@ -1,6 +1,6 @@
 <ng-container *ngIf="auth.authenticated()">
 <router-outlet></router-outlet>
-<nof-footer></nof-footer>
+<nof-footer *ngIf="isGemini()"></nof-footer>
 </ng-container>
 <ng-container *ngIf="!auth.authenticated()">
      <nof-login></nof-login>

@@ -687,7 +687,7 @@ namespace NakedObjects.Selenium {
         #region Cicero helper methods
 
         protected void CiceroUrl(string url) {
-            br.Navigate().GoToUrl(TestConfig.BaseUrl + "#/cicero/" + url);
+            br.Navigate().GoToUrl(TestConfig.BaseUrl + "/cicero/" + url);
         }
 
         protected void WaitForOutput(string output) {

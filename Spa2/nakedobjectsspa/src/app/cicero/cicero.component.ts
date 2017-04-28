@@ -8,6 +8,7 @@ import { CiceroViewModel } from '../view-models/cicero-view-model';
 import { ISubscription } from 'rxjs/Subscription';
 import { RouteData, PaneRouteData, ICustomActivatedRouteData, PaneType, PaneName } from '../route-data'; //TODO trim
 import { UrlManagerService } from '../url-manager.service';
+import * as Cicerorendererservice from '../cicero-renderer.service';
 
 @Component({
     selector: 'nof-cicero',
@@ -39,13 +40,15 @@ export class CiceroComponent implements OnInit {
                     .subscribe((paneRouteData: PaneRouteData) => {
                         if (!paneRouteData.isEqual(this.lastPaneRouteData)) {
                             this.lastPaneRouteData = paneRouteData;
+
+                            let renderResult: Promise<Cicerorendererservice.RenderResult>;
                             switch (paneRouteData.location) {
                                 case RtD.ViewType.Home: {
-                                    this.renderer.renderHome(this.cvm, paneRouteData);
+                                    renderResult = this.renderer.renderHome(this.cvm.message, paneRouteData);
                                     break;
                                 }
                                 case RtD.ViewType.Object: {
-                                    this.renderer.renderObject(this.cvm, paneRouteData);
+                                    renderResult = this.renderer.renderObject(this.cvm.message, paneRouteData);
                                     break;
                                 }
                                 case RtD.ViewType.List: {
@@ -57,6 +60,12 @@ export class CiceroComponent implements OnInit {
                                     break;
                                 }
                             }
+
+                            renderResult.then(rr => {
+                                this.inputText = rr.input;
+                                this.outputText = rr.output;
+                            });
+
                         }
                     });
         };
@@ -87,10 +96,26 @@ export class CiceroComponent implements OnInit {
     private cvm: CiceroViewModel;
 
     parseInput(input: string): void {
-        this.cvm.input = input;
-        this.commandFactory.parseInput(input, this.cvm);
-        //TODO: check this  -  why not writing straight to output?
-        this.cvm.setOutputSource(this.cvm.message);
+        //this.cvm.input = input;
+        //this.commandFactory.parseInput(input, this.cvm);
+        ////TODO: check this  -  why not writing straight to output?
+        //this.cvm.setOutputSource(this.cvm.message);
+
+        const parseResult = this.commandFactory.getCommandNew(input);
+
+        if (parseResult.command) {
+
+            parseResult.command.executeNew().
+                then(r => {
+                    this.inputText = r.input;
+                    this.outputText = r.output;
+                    r.changeState();
+                }).
+                catch(e => this.outputText = e.toString());
+        }
+        else if (parseResult.error) {
+            this.outputText = parseResult.error;
+        }
     };
 
     selectPreviousInput = () => {

@@ -29,6 +29,16 @@ export class CiceroViewModel {
         this.message = null;
     }
 
+    renderOutputAndAppendAlertIfAny(output: string): string {
+        let text = output;
+        if (this.alert) {
+            text += this.alert;
+            this.alert = "";
+        }
+        return text;
+    }
+
+
     clearInputRenderOutputAndAppendAlertIfAny(output: string): void {
         this.clearInput();
         let text = output;

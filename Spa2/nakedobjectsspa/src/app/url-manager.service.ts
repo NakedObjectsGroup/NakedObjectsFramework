@@ -857,13 +857,30 @@ export class UrlManagerService {
     }
 
     private setMode(newMode: string) {
-        const newPath = `/${newMode}/${this.getPath().split("/")[2]}`;
-        this.router.navigateByUrl(newPath);
+        const path = this.getPath();
+        const segments = path.split("/");
+        const [, , pane1] = segments;
+        const newPath = `/${newMode}/${pane1}`;
+        const search = this.clearPane(this.getSearch(), Pane.Pane2);
+        const tree = this.router.createUrlTree([newPath], { queryParams: search });
+
+        this.router.navigateByUrl(tree);
     }
+
+    private getMode() {
+        const path = this.getPath();
+        const segments = path.split("/");
+        const [, mode] = segments;
+        return mode as Constants.ModePathSegment;
+    }
+
 
     cicero = () => this.setMode(Constants.ciceroPath);
 
     gemini = () => this.setMode(Constants.geminiPath);
+
+    isGemini = () => this.getMode() === Constants.geminiPath;
+
 
     applicationProperties = () => {
         const newPath = `/${Constants.geminiPath}/${Constants.applicationPropertiesPath}`;

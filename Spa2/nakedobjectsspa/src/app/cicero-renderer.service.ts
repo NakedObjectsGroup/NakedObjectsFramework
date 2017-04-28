@@ -18,8 +18,17 @@ import keys from 'lodash/keys';
 import some from 'lodash/some';
 import invert from 'lodash/invert';
 
+export class RenderResult {
+    input: string;
+    output : string;
+}
+
+
 @Injectable()
 export class CiceroRendererService {
+
+
+
 
     constructor(protected context: ContextService,
         protected configService: ConfigService,
@@ -29,43 +38,44 @@ export class CiceroRendererService {
     }
     protected keySeparator: string;
 
+    private returnResult(input: string, output: string): Promise<RenderResult> {
+        return Promise.resolve({ input: input, output: output });
+    }
+
+
     //TODO: remove renderer.
-    renderHome(cvm: CiceroViewModel, routeData: PaneRouteData): void {
-        if (cvm.message) {
-            cvm.outputMessageThenClearIt();
+    renderHome(message : string, routeData: PaneRouteData): Promise<RenderResult> {
+        if (message) {
+            
+            return this.returnResult("", message);
         } else {
             if (routeData.menuId) {
-                this.renderOpenMenu(routeData, cvm);
+                return this.renderOpenMenu(routeData);
             } else {
-                cvm.clearInput();
-                cvm.setOutputSource(Msg.welcomeMessage);
+                return this.returnResult("", Msg.welcomeMessage);
             }
         }
     };
-    renderObject = (cvm: CiceroViewModel, routeData: PaneRouteData) => {
-        if (cvm.message) {
-            cvm.outputMessageThenClearIt();
+
+    renderObject(message: string, routeData: PaneRouteData): Promise<RenderResult>  {
+        if (message) {
+
+            return this.returnResult("", message);
         } else {
             const oid = Ro.ObjectIdWrapper.fromObjectId(routeData.objectId, this.keySeparator);
-            this.context.getObject(1, oid, routeData.interactionMode) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
+
+            return this.context.getObject(1, oid, routeData.interactionMode) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
                 .then((obj: Ro.DomainObjectRepresentation) => {
                     const openCollIds = openCollectionIds(routeData);
                     if (some(openCollIds)) {
-                        this.renderOpenCollection(openCollIds[0], obj, cvm);
+                        return this.renderOpenCollection(openCollIds[0], obj);
                     } else if (obj.isTransient()) {
-                        this.renderTransientObject(routeData, obj, cvm);
+                        return this.renderTransientObject(routeData, obj);
                     } else if (routeData.interactionMode === InteractionMode.Edit ||
                         routeData.interactionMode === InteractionMode.Form) {
-                        this.renderForm(routeData, obj, cvm);
+                        return this.renderForm(routeData, obj);
                     } else {
-                        this.renderObjectTitleAndDialogIfOpen(routeData, obj, cvm);
-                    }
-                }).catch((reject: Ro.ErrorWrapper) => {
-                    //TODO: Is the first test necessary or would this be rendered OK by generic error handling?
-                    if (reject.category === Ro.ErrorCategory.ClientError && reject.clientErrorCode === Ro.ClientErrorCode.ExpiredTransient) {
-                        cvm.setOutputSource(Msg.errorExpiredTransient);
-                    } else {
-                        this.error.handleError(reject);
+                        return this.renderObjectTitleAndDialogIfOpen(routeData, obj);
                     }
                 });
         }
@@ -117,53 +127,57 @@ export class CiceroRendererService {
         return filter(keys(routeData.collections), k => routeData.collections[k] != CollectionViewState.Summary);
     }
 
-    private renderOpenCollection(collId: string, obj: Ro.DomainObjectRepresentation, cvm: CiceroViewModel) {
+    private renderOpenCollection(collId: string, obj: Ro.DomainObjectRepresentation) : Promise<RenderResult> {
         const coll = obj.collectionMember(collId);
         let output = renderCollectionNameAndSize(coll);
         output += `(${Msg.collection} ${Msg.on} ${Ro.typePlusTitle(obj)})`;
-        cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+        //cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+        return this.returnResult("", output);
     }
 
-    private renderTransientObject(routeData: PaneRouteData, obj: Ro.DomainObjectRepresentation, cvm: CiceroViewModel) {
-        var output = `${Msg.unsaved} `;
+    private renderTransientObject(routeData: PaneRouteData, obj: Ro.DomainObjectRepresentation) {
+        let output = `${Msg.unsaved} `;
         output += obj.extensions().friendlyName() + "\n";
         output += this.renderModifiedProperties(obj, routeData, this.mask);
-        cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+        //cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+        return this.returnResult("", output);
     }
 
-    private renderForm(routeData: PaneRouteData, obj: Ro.DomainObjectRepresentation, cvm: CiceroViewModel) {
+    private renderForm(routeData: PaneRouteData, obj: Ro.DomainObjectRepresentation) {
         let output = `${Msg.editing} `;
         output += Ro.typePlusTitle(obj) + "\n";
         if (routeData.dialogId) {
-            this.context.getInvokableAction(obj.actionMember(routeData.dialogId)).
+            return this.context.getInvokableAction(obj.actionMember(routeData.dialogId)).
                 then(invokableAction => {
                     output += this.renderActionDialog(invokableAction, routeData, this.mask);
-                    cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-                }).
-                catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
+                    //cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+                    return this.returnResult("", output);
+                });
         } else {
             output += this.renderModifiedProperties(obj, routeData, this.mask);
-            cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+            //cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+            return this.returnResult("", output);
         }
     }
 
-    private renderObjectTitleAndDialogIfOpen(routeData: PaneRouteData, obj: Ro.DomainObjectRepresentation, cvm: CiceroViewModel) {
+    private renderObjectTitleAndDialogIfOpen(routeData: PaneRouteData, obj: Ro.DomainObjectRepresentation) {
         let output = Ro.typePlusTitle(obj) + "\n";
         if (routeData.dialogId) {
-            this.context.getInvokableAction(obj.actionMember(routeData.dialogId)).
+            return this.context.getInvokableAction(obj.actionMember(routeData.dialogId)).
                 then(invokableAction => {
                     output += this.renderActionDialog(invokableAction, routeData, this.mask);
-                    cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-                }).
-                catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
+                    //cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+                    return this.returnResult("", output);
+                });
         } else {
-            cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+            //cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+            return this.returnResult("", output);
         }
     }
 
-    private renderOpenMenu(routeData: PaneRouteData, cvm: CiceroViewModel) {
+    private renderOpenMenu(routeData: PaneRouteData) : Promise<RenderResult> {
         var output = "";
-        this.context.getMenu(routeData.menuId).
+        return this.context.getMenu(routeData.menuId).
             then(menu => {
                 output += Msg.menuTitle(menu.title());
                 return routeData.dialogId ? this.context.getInvokableAction(menu.actionMember(routeData.dialogId)) : Promise.resolve(null);
@@ -172,11 +186,8 @@ export class CiceroRendererService {
                 if (invokableAction) {
                     output += `\n${this.renderActionDialog(invokableAction, routeData, this.mask)}`;
                 }
-                cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-            }).
-            catch((reject: Ro.ErrorWrapper) => {
-                this.error.handleError(reject);
-                cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+                
+                return this.returnResult("", output);
             });
     }
 
@@ -229,7 +240,7 @@ export function renderFieldValue(field: Ro.IField, value: Ro.Value, mask: MaskSe
         }
     }
     let properScalarValue: number | string | boolean | Date;
-    if (this.isDateOrDateTime(field)) {
+    if (Ro.isDateOrDateTime(field)) {
         properScalarValue = this.toUtcDate(value);
     } else {
         properScalarValue = value.scalar();

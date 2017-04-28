@@ -1,6 +1,6 @@
 <div class="cicero">
     <div class="output" aria-live="polite"><pre>{{outputText}}</pre></div>
-    <input #inputField type="text" [ngModel]="inputText" 
+    <input #inputField type="text" [(ngModel)]="inputText" 
      (keyup.enter)="parseInput(inputField.value)"
      (keydown.arrowup)="selectPreviousInput()" 
      (keydown.arrowdown)="clearInput()"

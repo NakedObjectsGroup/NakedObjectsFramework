@@ -117,6 +117,24 @@ const routes: Routes = [
         data: { pane: 1, paneType: "single" }
     },
     {
+        path: 'cicero/object',
+        component: CiceroComponent,
+        canActivate: [AuthService],
+        data: { pane: 1, paneType: "single" }
+    },
+    {
+        path: 'cicero/list',
+        component: CiceroComponent,
+        canActivate: [AuthService],
+        data: { pane: 1, paneType: "single" }
+    },
+    {
+        path: 'cicero/error',
+        component: CiceroComponent,
+        canActivate: [AuthService],
+        data: { pane: 1, paneType: "single" }
+    },
+    {
         path: '**',
         redirectTo: '/gemini/home',
         canActivate: [AuthService],

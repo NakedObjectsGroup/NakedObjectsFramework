@@ -711,7 +711,7 @@ export class ContextService {
         this.concurrencyErrorSource.next(oid);
     }
 
-    private invokeActionInternal(invokeMap: Models.InvokeMap, action: Models.ActionRepresentation | Models.InvokableActionMember, fromPaneId: number, toPaneId: number, setDirty: () => void, gotoResult = false) {
+    private invokeActionInternal(invokeMap: Models.InvokeMap, action: Models.ActionRepresentation | Models.InvokableActionMember, fromPaneId: number, toPaneId: number, setDirty: () => void, gotoResult : boolean = false) {
 
         invokeMap.setUrlParameter(Constants.roInlinePropertyDetails, false);
 
@@ -771,7 +771,7 @@ export class ContextService {
         return () => { };
     }
 
-    invokeAction = (action: Models.ActionRepresentation | Models.InvokableActionMember, parms: Dictionary<Models.Value>, fromPaneId = 1, toPaneId = 1, gotoResult = true) => {
+    invokeAction = (action: Models.ActionRepresentation | Models.InvokableActionMember, parms: Dictionary<Models.Value>, fromPaneId = 1, toPaneId = 1, gotoResult : boolean = true) => {
 
         const invokeOnMap = (iAction: Models.ActionRepresentation | Models.InvokableActionMember) => {
             const im = iAction.getInvokeMap() as Models.InvokeMap;
