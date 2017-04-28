@@ -1499,7 +1499,7 @@ namespace NakedObjects.Selenium {
         public void MegaCiceroTests() {
             Action();
             BackAndForward();
-            //Cancel();
+            Cancel();
             //Clipboard();
             //Edit();
             //Enter();
