@@ -1406,14 +1406,9 @@ export class Menu extends Command {
                         return this.returnResult("", Msg.doesNotMatchMenu(name));
                     case 1:
                         const menuId = links[0].rel().parms[0].value;
-
-                        const newState = () => {
-                            this.urlManager.setHome();
-                            this.urlManager.clearUrlState(1);
-                            this.urlManager.setMenu(menuId);
-                        }
-
-                        return this.returnResult("", "", newState);
+                        this.urlManager.setHome();
+                        this.urlManager.clearUrlState(1);
+                        return this.returnResult("", "", () => this.urlManager.setMenu(menuId));
 
                     default:
                         const label = name ? `${Msg.matchingMenus}\n` : `${Msg.allMenus}\n`;

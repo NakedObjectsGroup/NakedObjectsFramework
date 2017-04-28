@@ -52,11 +52,11 @@ export class CiceroComponent implements OnInit {
                                     break;
                                 }
                                 case RtD.ViewType.List: {
-                                    this.renderer.renderList(this.cvm, paneRouteData);
+                                    renderResult = this.renderer.renderList(this.cvm.message, paneRouteData);
                                     break;
                                 }
                                 default: {
-                                    this.renderer.renderError(this.cvm);
+                                    renderResult = this.renderer.renderError(this.cvm.message);
                                     break;
                                 }
                             }

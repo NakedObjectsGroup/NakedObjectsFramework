@@ -491,16 +491,16 @@ namespace NakedObjects.Selenium {
             EnterCommand("go x,y");
             WaitForOutput("Too many arguments provided");
             //Now try for a list context
-            CiceroUrl("list?m1=SpecialOfferRepository&d1=CurrentSpecialOffers&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0");
+            CiceroUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&pg1=1&ps1=20&s1_=0&c1=List");
             WaitForOutput("Result from Current Special Offers:\r\n16 items");
             EnterCommand("go 1");
             WaitForOutput("Special Offer: No Discount");
-            CiceroUrl("list?m1=SpecialOfferRepository&d1=CurrentSpecialOffers&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0");
+            CiceroUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&pg1=1&ps1=20&s1_=0&c1=List");
             WaitForOutput("Result from Current Special Offers:\r\n16 items");
             EnterCommand("go 16");
             WaitForOutput("Special Offer: Mountain-500 Silver Clearance Sale");
             //Try out of range
-            CiceroUrl("list?m1=SpecialOfferRepository&d1=CurrentSpecialOffers&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0");
+            CiceroUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&pg1=1&ps1=20&s1_=0&c1=List");
             WaitForOutput("Result from Current Special Offers:\r\n16 items");
             EnterCommand("go 0");
             WaitForOutput("0 is out of range for displayed items");
@@ -1507,10 +1507,10 @@ namespace NakedObjects.Selenium {
             Cancel();
             Edit();
             Enter();
-            //Gemini();
-            //Goto();
-            //Help();
-            //Menu();
+            Gemini();
+            Goto();
+            Help();
+            Menu();
             //OK();
             //Page();
             //Root();

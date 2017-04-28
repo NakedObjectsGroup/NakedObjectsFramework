@@ -81,13 +81,14 @@ export class CiceroRendererService {
         }
     };
 
-    renderList = (cvm: CiceroViewModel, routeData: PaneRouteData) => {
-        if (cvm.message) {
-            cvm.outputMessageThenClearIt();
+    renderList(message : string, routeData: PaneRouteData): Promise<RenderResult> {
+        if (message) {
+
+            return this.returnResult("", message);
         } else {
             const listPromise = this.context.getListFromMenu(routeData, routeData.page, routeData.pageSize);
-            listPromise.
-                then((list: Ro.ListRepresentation) => {
+            return listPromise.
+                then((list: Ro.ListRepresentation) => 
                     this.context.getMenu(routeData.menuId).
                         then(menu => {
                             const count = list.value().length;
@@ -96,18 +97,16 @@ export class CiceroRendererService {
                             const actionMember = menu.actionMember(routeData.actionId);
                             const actionName = actionMember.extensions().friendlyName();
                             const output = `Result from ${actionName}:\n${description}`;
-                            cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
-                        }).
-                        catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
-                }).
-                catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
+                           
+                            return this.returnResult("", output);
+                        })
+                );
         }
     };
 
-    renderError = (cvm: CiceroViewModel) => {
+    renderError (message : string) {
         const err = this.context.getError().error as Ro.ErrorRepresentation;
-        cvm.clearInput();
-        cvm.setOutputSource(`Sorry, an application error has occurred. ${err.message()}`);
+        return this.returnResult("", `Sorry, an application error has occurred. ${err.message()}`);
     };
 
     private getListDescription(numPages: number, list: Ro.ListRepresentation, count: number) {
@@ -281,7 +280,7 @@ export function renderCollectionNameAndSize(coll: Ro.CollectionMember): string {
             output += `1 ${Msg.item}`;
             break;
         default:
-            output += this.numberOfItems(coll.size());
+            output += Msg.numberOfItems(coll.size());
     }
     return output + "\n";
 }
