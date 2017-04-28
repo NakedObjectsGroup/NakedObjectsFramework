@@ -1498,7 +1498,7 @@ namespace NakedObjects.Selenium {
         [TestMethod] //Mega
         public void MegaCiceroTests() {
             Action();
-            //BackAndForward();
+            BackAndForward();
             //Cancel();
             //Clipboard();
             //Edit();

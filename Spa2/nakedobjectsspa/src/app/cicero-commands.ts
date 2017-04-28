@@ -297,10 +297,7 @@ export abstract class Command {
 
     protected closeAnyOpenCollections() {
         const open = Rend.openCollectionIds(this.routeData());
-        forEach(open,
-            id => {
-                this.urlManager.setCollectionMemberState(id, RtD.CollectionViewState.Summary);
-            });
+        forEach(open, id => this.urlManager.setCollectionMemberState(id, RtD.CollectionViewState.Summary));
     }
 
     protected isTable(): boolean {
@@ -670,7 +667,8 @@ export class Back extends Command {
     };
 
     doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
-        return Promise.reject("Not Implemented");
+       
+        return this.returnResult("", "", () => this.location.back());
     };
 }
 
@@ -824,7 +822,7 @@ export class Enter extends Command {
     private fieldEntryForEdit(fieldName: string, fieldEntry: string) {
         return this.getObject().then(obj => {
             const fields = this.matchingProperties(obj, fieldName);
-            
+
             switch (fields.length) {
                 case 0:
                     const s = Msg.doesNotMatchProperties(fieldName);
@@ -845,7 +843,7 @@ export class Enter extends Command {
                 default:
                     const ss = reduce(fields, (s, prop) => s + prop.extensions().friendlyName() + "\n", `${fieldName} ${Msg.matchesMultiple}`);
                     return this.returnResult("", ss);
-            }            
+            }
         });
     }
 
@@ -872,7 +870,7 @@ export class Enter extends Command {
             let params = map(action.parameters(), param => param);
             params = this.matchFriendlyNameAndOrMenuPath(params, fieldName);
             switch (params.length) {
-                case 0:                  
+                case 0:
                     return this.returnResult("", Msg.doesNotMatchDialog(fieldName));
                 case 1:
                     if (fieldEntry === "?") {
@@ -1106,7 +1104,7 @@ export class Forward extends Command {
     };
 
     doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
-        return Promise.reject("Not Implemented");
+        return this.returnResult("", null, () => this.location.forward());
     };
 }
 
@@ -1140,6 +1138,8 @@ export class Goto extends Command {
     isAvailableInCurrentContext(): boolean {
         return this.isObject() || this.isList();
     }
+
+
 
     doExecute(args: string, chained: boolean): void {
         const arg0 = this.argumentAsString(args, 0);
@@ -1205,21 +1205,74 @@ export class Goto extends Command {
     };
 
     doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
-        return Promise.reject("Not Implemented");
+        const arg0 = this.argumentAsString(args, 0);
+        if (this.isList()) {
+            let itemNo: number;
+            try {
+                itemNo = this.parseInt(arg0);
+            } catch (e) {
+                return this.returnResult("", e.message);
+            }
+            return this.getList().then((list: Ro.ListRepresentation) => this.attemptGotoLinkNumber(itemNo, list.value()));
+        }
+        if (this.isObject) {
+
+            return this.getObject().then((obj: Ro.DomainObjectRepresentation) => {
+                if (this.isCollection()) {
+                    const itemNo = this.argumentAsNumber(args, 0);
+                    const openCollIds = Rend.openCollectionIds(this.routeData());
+                    const coll = obj.collectionMember(openCollIds[0]);
+                    //Safe to assume always a List (Cicero doesn't support tables as such & must be open)
+                    return this.context.getCollectionDetails(coll, RtD.CollectionViewState.List, false).then(details => this.attemptGotoLinkNumber(itemNo, details.value()));
+
+                } else {
+                    const matchingProps = this.matchingProperties(obj, arg0);
+                    const matchingRefProps = filter(matchingProps, (p) => { return !p.isScalar() });
+                    const matchingColls = this.matchingCollections(obj, arg0);
+
+                    switch (matchingRefProps.length + matchingColls.length) {
+                        case 0:
+
+                            return this.returnResult("", Msg.noRefFieldMatch(arg0));
+                        case 1:
+                            //TODO: Check for any empty reference
+                            if (matchingRefProps.length > 0) {
+                                const link = matchingRefProps[0].value().link();
+                                this.urlManager.setItem(link);
+
+                                return this.returnResult("", "", () => this.urlManager.setItem(link));
+
+                            } else { //Must be collection
+
+                                return this.returnResult("", "", () => this.openCollection(matchingColls[0]));
+                            }
+
+                        default:
+                            const props = reduce(matchingRefProps, (s, prop) => s + prop.extensions().friendlyName() + "\n", "");
+                            const colls = reduce(matchingColls, (s, coll) => s + coll.extensions().friendlyName() + "\n", "");
+                            const s = `Multiple matches for ${arg0}:\n${props}${colls}`;
+                            return this.returnResult("", s);
+                    }
+
+                }
+            });
+        }
     };
 
-    private attemptGotoLinkNumber(itemNo: number, links: Ro.Link[]): void {
+    private attemptGotoLinkNumber(itemNo: number, links: Ro.Link[]): Promise<CommandResult> {
         if (itemNo < 1 || itemNo > links.length) {
-            this.clearInputAndSetMessage(Msg.outOfItemRange(itemNo));
+
+            return this.returnResult("", Msg.outOfItemRange(itemNo));
         } else {
             const link = links[itemNo - 1]; // On UI, first item is '1'
-            this.urlManager.setItem(link);
+
+
+            return this.returnResult("", "", () => this.urlManager.setItem(link));
         }
     }
 
     private openCollection(collection: Ro.CollectionMember): void {
         this.closeAnyOpenCollections();
-        this.cvm.clearInput();
         this.urlManager.setCollectionMemberState(collection.collectionId(), RtD.CollectionViewState.List);
     }
 }
@@ -1423,7 +1476,7 @@ export class OK extends Command {
                 }
 
                 return this.returnResult("", alert, () => this.urlManager.closeDialogReplaceHistory(""));
-                     
+
             });
         });
     };

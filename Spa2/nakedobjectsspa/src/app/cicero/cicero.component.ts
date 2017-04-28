@@ -62,8 +62,12 @@ export class CiceroComponent implements OnInit {
                             }
 
                             renderResult.then(rr => {
-                                this.inputText = rr.input;
-                                this.outputText = rr.output;
+                                if (rr.input != null) {
+                                    this.inputText = rr.input;
+                                }
+                                if (rr.output != null) {
+                                    this.outputText = rr.output;
+                                }
                             });
 
                         }
@@ -107,8 +111,12 @@ export class CiceroComponent implements OnInit {
 
             parseResult.command.executeNew().
                 then(r => {
-                    this.inputText = r.input;
-                    this.outputText = r.output;
+                    if (r.input != null) {
+                        this.inputText = r.input;
+                    }
+                    if (r.output != null) {
+                        this.outputText = r.output;
+                    }
                     r.changeState();
                 }).
                 catch(e => this.outputText = e.toString());
