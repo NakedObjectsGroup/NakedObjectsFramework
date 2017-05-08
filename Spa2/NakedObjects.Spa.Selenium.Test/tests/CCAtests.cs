@@ -291,11 +291,11 @@ namespace NakedObjects.Selenium {
             wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count > 30);
 
             SelectCheckBox("#item1-all"); //To clear
-            Thread.Sleep(2000);
+         
             Click(GetObjectAction("Clear Comments"));
-            Thread.Sleep(2000);
+        
             Reload();
-            Thread.Sleep(4000);
+          
             //wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) == 0);
 
             //SelectCheckBox("#item1-all", true); //To clear
@@ -305,24 +305,24 @@ namespace NakedObjects.Selenium {
             SelectCheckBox("#item1-1");
             SelectCheckBox("#item1-2");
             SelectCheckBox("#item1-3");
-            Thread.Sleep(2000);
+         
             Click(GetObjectAction("Comment As Users Unhappy"));
-            Thread.Sleep(1000); //Because there is no visible change to wait for
+            Thread.Sleep(2000); //Because there is no visible change to wait for
             Reload();
-            Thread.Sleep(2000);
+           
             wait.Until(dr => dr.FindElements(By.CssSelector("span.loading:empty")));
-            Thread.Sleep(2000);
+           
             wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) == 3);
 
             //Confirm that the three checkboxes have now been cleared
             wait.Until(dr => !dr.FindElements(By.CssSelector("input")).Where(el => el.GetAttribute("type") == "checkbox").Any(el => el.Selected));
 
             SelectCheckBox("#item1-all"); //To clear
-            Thread.Sleep(2000);
+          
             Click(GetObjectAction("Clear Comments"));
-            Thread.Sleep(2000);
+      
             Reload();
-            Thread.Sleep(1000);
+         
             wait.Until(dr => dr.FindElements(By.CssSelector("span.loading:empty")));
             wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) == 0);
         }
