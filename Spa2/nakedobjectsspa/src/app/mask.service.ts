@@ -49,7 +49,7 @@ class LocalCurrencyFilter implements ILocalFilter {
     ) { }
 
     filter(val: any): string {
-        if (!val) {
+        if (val == null || val === "") {
             return "";
         }
 

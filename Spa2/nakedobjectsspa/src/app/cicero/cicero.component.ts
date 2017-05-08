@@ -174,8 +174,7 @@ export class CiceroComponent implements OnInit {
                         };
                         this.error.handleErrorAndDisplayMessages(e, display);
                     }
-
-                  
+                            
                 });
         }
         else if (parseResult.error) {

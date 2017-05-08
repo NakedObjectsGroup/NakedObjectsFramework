@@ -813,9 +813,7 @@ namespace NakedObjects.Selenium {
 
             //No arguments
             CiceroUrl("object?o1=___1.Product--839&i1=Edit");
-            WaitForOutput("Editing Product: HL Road Frame - Black, 48\r\n" +
-                          "Modified properties:\r\n" +
-                          "List Price: £1,500.00");
+            WaitForOutputStarting("Editing Product: HL Road Frame - Black, 48");
             EnterCommand("save x");
             WaitForOutput("Too many arguments provided");
 
@@ -1514,9 +1512,9 @@ namespace NakedObjects.Selenium {
             OK();
             Page();
             Root();
-            //Save();
-            //Show();
-            //Where();
+            Save();
+            Show();
+            Where();
             //Clipboard();
             //SpaceBarAutoComplete();
             //UnrecognisedCommand();

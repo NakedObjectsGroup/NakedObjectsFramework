@@ -1676,11 +1676,48 @@ export class Save extends Command {
     }
 
     doExecute(args: string, chained: boolean): void {
+        //if (chained) {
+        //    this.mayNotBeChained();
+        //    return;
+        //}
+        //this.getObject().then((obj: Ro.DomainObjectRepresentation) => {
+        //    const props = obj.propertyMembers();
+        //    const newValsFromUrl = this.context.getObjectCachedValues(obj.id());
+        //    const propIds = new Array<string>();
+        //    const values = new Array<Ro.Value>();
+        //    forEach(props,
+        //        (propMember, propId) => {
+        //            if (!propMember.disabledReason()) {
+        //                propIds.push(propId);
+        //                const newVal = newValsFromUrl[propId];
+        //                if (newVal) {
+        //                    values.push(newVal);
+        //                } else if (propMember.value().isNull() &&
+        //                    propMember.isScalar()) {
+        //                    values.push(new Ro.Value(""));
+        //                } else {
+        //                    values.push(propMember.value());
+        //                }
+        //            }
+        //        });
+        //    const propMap = zipObject(propIds, values) as Dictionary<Ro.Value>;
+        //    const mode = obj.extensions().interactionMode();
+        //    const toSave = mode === "form" || mode === "transient";
+        //    const saveOrUpdate = toSave ? this.context.saveObject : this.context.updateObject;
+
+        //    saveOrUpdate(obj, propMap, 1, true).catch((reject: Ro.ErrorWrapper) => {
+        //        const display = (em: Ro.ErrorMap) => this.handleError(em, obj);
+        //        this.error.handleErrorAndDisplayMessages(reject, display);
+        //    });
+        //}).catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
+    };
+
+    doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
         if (chained) {
-            this.mayNotBeChained();
-            return;
+            //this.mayNotBeChained();
+            return this.returnResult("", this.mayNotBeChained());
         }
-        this.getObject().then((obj: Ro.DomainObjectRepresentation) => {
+        return this.getObject().then((obj: Ro.DomainObjectRepresentation) => {
             const props = obj.propertyMembers();
             const newValsFromUrl = this.context.getObjectCachedValues(obj.id());
             const propIds = new Array<string>();
@@ -1705,15 +1742,16 @@ export class Save extends Command {
             const toSave = mode === "form" || mode === "transient";
             const saveOrUpdate = toSave ? this.context.saveObject : this.context.updateObject;
 
-            saveOrUpdate(obj, propMap, 1, true).catch((reject: Ro.ErrorWrapper) => {
-                const display = (em: Ro.ErrorMap) => this.handleError(em, obj);
-                this.error.handleErrorAndDisplayMessages(reject, display);
+            return saveOrUpdate(obj, propMap, 1, true).then(() => {
+                return this.returnResult(null, null);
+            }).catch((reject: Ro.ErrorWrapper) => {
+                if (reject.error instanceof Models.ErrorMap) {
+                    const propFriendlyName = (propId: string) => Ro.friendlyNameForProperty(obj, propId);
+                    return this.handleErrorResponse(reject.error, propFriendlyName);
+                }
+                return Promise.reject(reject);
             });
-        }).catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
-    };
-
-    doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
-        return Promise.reject("Not Implemented");
+        });
     };
 
     private handleError(err: Ro.ErrorMap, obj: Ro.DomainObjectRepresentation) {
@@ -1768,56 +1806,65 @@ export class Show extends Command {
     }
 
     doExecute(args: string, chained: boolean): void {
-        if (this.isCollection()) {
-            const arg = this.argumentAsString(args, 0, true);
-            const { start, end } = this.parseRange(arg);
-            this.getObject().then(obj => {
-                const openCollIds = Rend.openCollectionIds(this.routeData());
-                const coll = obj.collectionMember(openCollIds[0]);
-                this.renderCollectionItems(coll, start, end);
-            }).catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
-            return;
-        } else if (this.isList()) {
-            const arg = this.argumentAsString(args, 0, true);
-            const { start, end } = this.parseRange(arg);
-            this.getList().then(list => this.renderItems(list, start, end)).catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
-        } else if (this.isObject()) {
-            const fieldName = this.argumentAsString(args, 0);
-            this.getObject().then((obj: Ro.DomainObjectRepresentation) => {
-                const props = this.matchingProperties(obj, fieldName);
-                const colls = this.matchingCollections(obj, fieldName);
-                //TODO -  include these
-                let s: string;
-                switch (props.length + colls.length) {
-                    case 0:
-                        s = fieldName ? Msg.doesNotMatch(fieldName) : Msg.noVisible;
-                        break;
-                    case 1:
-                        s = props.length > 0 ? this.renderPropNameAndValue(props[0]) : Rend.renderCollectionNameAndSize(colls[0]);
-                        break;
-                    default:
-                        s = reduce(props, (s, prop) => s + this.renderPropNameAndValue(prop), "");
-                        s += reduce(colls, (s, coll) => s + Rend.renderCollectionNameAndSize(coll), "");
-                }
-                this.clearInputAndSetMessage(s);
-            }).catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
-        }
+        //if (this.isCollection()) {
+        //    const arg = this.argumentAsString(args, 0, true);
+        //    const { start, end } = this.parseRange(arg);
+        //    this.getObject().then(obj => {
+        //        const openCollIds = Rend.openCollectionIds(this.routeData());
+        //        const coll = obj.collectionMember(openCollIds[0]);
+        //        this.renderCollectionItems(coll, start, end);
+        //    }).catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
+        //    return;
+        //} else if (this.isList()) {
+        //    const arg = this.argumentAsString(args, 0, true);
+        //    const { start, end } = this.parseRange(arg);
+        //    this.getList().then(list => this.renderItems(list, start, end)).catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
+        //} else if (this.isObject()) {
+        //    const fieldName = this.argumentAsString(args, 0);
+        //    this.getObject().then((obj: Ro.DomainObjectRepresentation) => {
+        //        const props = this.matchingProperties(obj, fieldName);
+        //        const colls = this.matchingCollections(obj, fieldName);
+        //        //TODO -  include these
+        //        let s: string;
+        //        switch (props.length + colls.length) {
+        //            case 0:
+        //                s = fieldName ? Msg.doesNotMatch(fieldName) : Msg.noVisible;
+        //                break;
+        //            case 1:
+        //                s = props.length > 0 ? this.renderPropNameAndValue(props[0]) : Rend.renderCollectionNameAndSize(colls[0]);
+        //                break;
+        //            default:
+        //                s = reduce(props, (s, prop) => s + this.renderPropNameAndValue(prop), "");
+        //                s += reduce(colls, (s, coll) => s + Rend.renderCollectionNameAndSize(coll), "");
+        //        }
+        //        this.clearInputAndSetMessage(s);
+        //    }).catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
+        //}
     };
 
     doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
         if (this.isCollection()) {
             const arg = this.argumentAsString(args, 0, true);
-            const { start, end } = this.parseRange(arg);
-            return this.getObject().then(obj => {
-                const openCollIds = Rend.openCollectionIds(this.routeData());
-                const coll = obj.collectionMember(openCollIds[0]);
-                return this.renderCollectionItems(coll, start, end);
-            });
-           
+            try {
+                const { start, end } = this.parseRange(arg);
+                return this.getObject().then(obj => {
+                    const openCollIds = Rend.openCollectionIds(this.routeData());
+                    const coll = obj.collectionMember(openCollIds[0]);
+                    return this.renderCollectionItems(coll, start, end);
+                });
+            }
+            catch (e1) {
+                return this.returnResult("", e1.message);
+            }
         } else if (this.isList()) {
             const arg = this.argumentAsString(args, 0, true);
-            const { start, end } = this.parseRange(arg);
-            return this.getList().then(list => this.renderItems(list, start, end));
+            try {
+                const { start, end } = this.parseRange(arg);
+                return this.getList().then(list => this.renderItems(list, start, end));
+            }
+            catch (e2) {
+                return this.returnResult("", e2.message);
+            }
         } else if (this.isObject()) {
             const fieldName = this.argumentAsString(args, 0);
             return this.getObject().then((obj: Ro.DomainObjectRepresentation) => {
@@ -1908,6 +1955,7 @@ export class Where extends Command {
     };
 
     doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
-        return Promise.reject("Not Implemented");
+        //return Promise.reject("Not Implemented");
+        return this.returnResult(null, null, () =>  this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl());
     };
 }
