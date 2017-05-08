@@ -1536,45 +1536,85 @@ export class Page extends Command {
     }
 
     doExecute(args: string, chained: boolean): void {
+        //const arg = this.argumentAsString(args, 0);
+        //this.getList().then(listRep => {
+        //    const numPages = listRep.pagination().numPages;
+        //    const page = this.routeData().page;
+        //    const pageSize = this.routeData().pageSize;
+        //    if (Msg.pageFirst.indexOf(arg) === 0) {
+        //        this.setPage(1);
+        //        return;
+        //    } else if (Msg.pagePrevious.indexOf(arg) === 0) {
+        //        if (page === 1) {
+        //            this.clearInputAndSetMessage(Msg.alreadyOnFirst);
+        //        } else {
+        //            this.setPage(page - 1);
+        //        }
+        //    } else if (Msg.pageNext.indexOf(arg) === 0) {
+        //        if (page === numPages) {
+        //            this.clearInputAndSetMessage(Msg.alreadyOnLast);
+        //        } else {
+        //            this.setPage(page + 1);
+        //        }
+        //    } else if (Msg.pageLast.indexOf(arg) === 0) {
+        //        this.setPage(numPages);
+        //    } else {
+        //        const number = parseInt(arg);
+        //        if (isNaN(number)) {
+        //            this.clearInputAndSetMessage(Msg.pageArgumentWrong);
+        //            return;
+        //        }
+        //        if (number < 1 || number > numPages) {
+        //            this.clearInputAndSetMessage(Msg.pageNumberWrong(numPages));
+        //            return;
+        //        }
+        //        this.setPage(number);
+        //    }
+        //}).catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
+    }
+
+    doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
         const arg = this.argumentAsString(args, 0);
-        this.getList().then(listRep => {
+        return this.getList().then(listRep => {
             const numPages = listRep.pagination().numPages;
             const page = this.routeData().page;
             const pageSize = this.routeData().pageSize;
             if (Msg.pageFirst.indexOf(arg) === 0) {
-                this.setPage(1);
-                return;
+                //this.setPage(1);
+                return this.returnResult(null, null, () => this.setPage(1));
             } else if (Msg.pagePrevious.indexOf(arg) === 0) {
                 if (page === 1) {
-                    this.clearInputAndSetMessage(Msg.alreadyOnFirst);
+                    //this.clearInputAndSetMessage(Msg.alreadyOnFirst);
+                    return this.returnResult("", Msg.alreadyOnFirst);
                 } else {
-                    this.setPage(page - 1);
+                    //this.setPage(page - 1);
+                    return this.returnResult(null, null, () => this.setPage(page - 1));
                 }
             } else if (Msg.pageNext.indexOf(arg) === 0) {
                 if (page === numPages) {
-                    this.clearInputAndSetMessage(Msg.alreadyOnLast);
+                    //this.clearInputAndSetMessage(Msg.alreadyOnLast);
+                    return this.returnResult("", Msg.alreadyOnLast);
                 } else {
-                    this.setPage(page + 1);
+                    //this.setPage(page + 1);
+                    return this.returnResult(null, null, () => this.setPage(page + 1));
                 }
             } else if (Msg.pageLast.indexOf(arg) === 0) {
-                this.setPage(numPages);
+                //this.setPage(numPages);
+                return this.returnResult(null, null, () => this.setPage(numPages));
             } else {
                 const number = parseInt(arg);
                 if (isNaN(number)) {
-                    this.clearInputAndSetMessage(Msg.pageArgumentWrong);
-                    return;
+                    //this.clearInputAndSetMessage(Msg.pageArgumentWrong);
+                    return this.returnResult("", Msg.pageArgumentWrong);
                 }
                 if (number < 1 || number > numPages) {
-                    this.clearInputAndSetMessage(Msg.pageNumberWrong(numPages));
-                    return;
+                    //this.clearInputAndSetMessage(Msg.pageNumberWrong(numPages));
+                    return this.returnResult("", Msg.pageNumberWrong(numPages));
                 }
-                this.setPage(number);
+                //this.setPage(number);
+                return this.returnResult(null, null, () => this.setPage(number));
             }
-        }).catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
-    }
-
-    doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
-        return Promise.reject("Not Implemented");
+        });
     };
 
     private setPage(page: number) {
@@ -1615,11 +1655,12 @@ export class Root extends Command {
     }
 
     doExecute(args: string, chained: boolean): void {
-        this.closeAnyOpenCollections();
+        //this.closeAnyOpenCollections();
     };
 
     doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
-        return Promise.reject("Not Implemented");
+        //return Promise.reject("Not Implemented");
+        return this.returnResult(null, null, () => this.closeAnyOpenCollections());
     };
 }
 

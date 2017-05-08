@@ -1512,8 +1512,8 @@ namespace NakedObjects.Selenium {
             Help();
             Menu();
             OK();
-            //Page();
-            //Root();
+            Page();
+            Root();
             //Save();
             //Show();
             //Where();
