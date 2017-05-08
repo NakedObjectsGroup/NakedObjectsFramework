@@ -395,16 +395,31 @@ export abstract class Command {
 
     protected handleErrorResponse(err: Ro.ErrorMap, getFriendlyName: (id: string) => string) {
         if (err.invalidReason()) {
-            this.clearInputAndSetMessage(err.invalidReason());
-            return;
+            //this.clearInputAndSetMessage();
+            return this.returnResult("", err.invalidReason());
         }
         let msg = Msg.pleaseCompleteOrCorrect;
         each(err.valuesMap(),
             (errorValue, fieldId) => {
                 msg += this.fieldValidationMessage(errorValue, () => getFriendlyName(fieldId!));
             });
-        this.clearInputAndSetMessage(msg);
+        //this.clearInputAndSetMessage(msg);
+        return this.returnResult("", msg);
     }
+
+    protected handleErrorResponseNew(err: Ro.ErrorMap, getFriendlyName: (id: string) => string) {
+        if (err.invalidReason()) {
+            return this.returnResult("", err.invalidReason());
+         
+        }
+        let msg = Msg.pleaseCompleteOrCorrect;
+        each(err.valuesMap(),
+            (errorValue, fieldId) => {
+                msg += this.fieldValidationMessage(errorValue, () => getFriendlyName(fieldId!));
+            });
+        return this.returnResult("",msg);
+    }
+
 
     private fieldValidationMessage(errorValue: Ro.ErrorValue, fieldFriendlyName: () => string): string {
         let msg = "";
@@ -1497,8 +1512,14 @@ export class OK extends Command {
                     forEach(messages, m => alert += `\n${m}`);
                 }
 
-                return this.returnResult("", alert, () => this.urlManager.closeDialogReplaceHistory(""));
+                return this.returnResult("", alert || null, () => this.urlManager.closeDialogReplaceHistory(""));
 
+            }).catch((reject: Ro.ErrorWrapper) => {
+                if (reject.error instanceof Models.ErrorMap) {
+                    const paramFriendlyName = (paramId: string) => Ro.friendlyNameForParam(action, paramId);
+                    return this.handleErrorResponse(reject.error as Models.ErrorMap, paramFriendlyName);
+                }
+                return Promise.reject(reject);
             });
         });
     };

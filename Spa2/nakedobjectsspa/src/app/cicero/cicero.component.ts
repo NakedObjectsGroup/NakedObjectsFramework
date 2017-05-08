@@ -9,6 +9,9 @@ import { ISubscription } from 'rxjs/Subscription';
 import { RouteData, PaneRouteData, ICustomActivatedRouteData, PaneType, PaneName } from '../route-data'; //TODO trim
 import { UrlManagerService } from '../url-manager.service';
 import * as Cicerorendererservice from '../cicero-renderer.service';
+import * as Errorservice from '../error.service';
+import * as Usermessages from '../user-messages';
+import each from 'lodash/each';
 
 @Component({
     selector: 'nof-cicero',
@@ -20,6 +23,7 @@ export class CiceroComponent implements OnInit {
     constructor(
         protected commandFactory: CiceroCommandFactoryService,
         protected renderer: CiceroRendererService,
+        protected error : Errorservice.ErrorService, 
         protected urlManager: UrlManagerService) {
         this.cvm = new CiceroViewModel();
     }
@@ -68,6 +72,14 @@ export class CiceroComponent implements OnInit {
                                 if (rr.output != null) {
                                     this.outputText = rr.output;
                                 }
+                            }).catch(e => {
+                                if (e instanceof Ro.ErrorWrapper) {
+                                    this.error.handleErrorAndDisplayMessages(e, (em: Ro.ErrorMap) => {
+                                        this.outputText = em.invalidReason();
+                                    });
+                                }
+
+                               
                             });
 
                         }
@@ -99,6 +111,41 @@ export class CiceroComponent implements OnInit {
     private chainedCommands: string[];
     private cvm: CiceroViewModel;
 
+
+
+    private fieldValidationMessage(errorValue: Ro.ErrorValue, fieldFriendlyName: () => string): string {
+        let msg = "";
+        const reason = errorValue.invalidReason;
+        const value = errorValue.value;
+        if (reason) {
+            msg += `${fieldFriendlyName()}: `;
+            if (reason === Usermessages.mandatory) {
+                msg += Usermessages.required;
+            } else {
+                msg += `${value} ${reason}`;
+            }
+            msg += "\n";
+        }
+        return msg;
+    }
+
+    protected handleErrorResponse(err: Ro.ErrorMap, getFriendlyName: (id: string) => string) {
+        if (err.invalidReason()) {
+            this.inputText = "";
+            this.outputText = err.invalidReason();
+            return;
+        }
+        let msg = Usermessages.pleaseCompleteOrCorrect;
+        each(err.valuesMap(),
+            (errorValue, fieldId) => {
+                msg += this.fieldValidationMessage(errorValue, () => getFriendlyName(fieldId!));
+            });
+       
+
+        this.inputText = "";
+        this.outputText = msg;
+    }
+
     parseInput(input: string): void {
         //this.cvm.input = input;
         //this.commandFactory.parseInput(input, this.cvm);
@@ -119,7 +166,17 @@ export class CiceroComponent implements OnInit {
                     }
                     r.changeState();
                 }).
-                catch(e => this.outputText = e.toString());
+                catch(e => {
+                    if (e instanceof Ro.ErrorWrapper) {
+                        const display = (em: Ro.ErrorMap) => {
+                            const paramFriendlyName = (paramId: string) => "todo " + paramId;// Ro.friendlyNameForParam(action, paramId);
+                            this.handleErrorResponse(em, paramFriendlyName);
+                        };
+                        this.error.handleErrorAndDisplayMessages(e, display);
+                    }
+
+                  
+                });
         }
         else if (parseResult.error) {
             this.outputText = parseResult.error;

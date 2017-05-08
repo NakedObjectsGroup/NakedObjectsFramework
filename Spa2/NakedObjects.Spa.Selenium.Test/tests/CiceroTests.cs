@@ -1511,7 +1511,7 @@ namespace NakedObjects.Selenium {
             Goto();
             Help();
             Menu();
-            //OK();
+            OK();
             //Page();
             //Root();
             //Save();
