@@ -63,7 +63,7 @@ export class CiceroCommandFactoryService {
             this.getCommand("wh").execute(null, false, cvm);
             return;
         }
-        this.autoComplete(input, cvm);
+        this.autoComplete(input);
         cvm.input = cvm.input!.trim();
         cvm.previousInput = cvm.input!;
         const commands = input.split(";");
@@ -141,21 +141,24 @@ export class CiceroCommandFactoryService {
 
     //TODO: change the name & functionality to pre-parse or somesuch as could do more than auto
     //complete e.g. reject unrecognised action or one not available in context.
-    autoComplete = (input: string, cvm: CiceroViewModel) => {
-        if (!input) return;
+    autoComplete = (input: string) : {in : string, out : string} => {
+        if (!input) {
+            return {in : input, out : null};
+        }
         let lastInChain = last(input.split(";")).toLowerCase();
         const charsTyped = lastInChain.length;
         lastInChain = lastInChain.trim();
         if (lastInChain.length === 0 || lastInChain.indexOf(" ") >= 0) { //i.e. not the first word
-            cvm.input += " ";
-            return;
+            //cvm.input += " ";
+            return { in: input + " ", out: null };;
         }
         try {
             const command = this.getCommand(lastInChain);
             const earlierChain = input.substr(0, input.length - charsTyped);
-            cvm.input = earlierChain + command.fullCommand + " ";
+           // return earlierChain + command.fullCommand + " ";
+            return { in: earlierChain + command.fullCommand + " ", out: null };;
         } catch (e) {
-            cvm.setOutputSource(e.message);
+            return {in : "", out: e.message}
         }
     };
 

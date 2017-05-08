@@ -729,8 +729,6 @@ export class Clipboard extends Command {
     protected minArguments = 1;
     protected maxArguments = 1;
 
-    private contents : any;
-
     isAvailableInCurrentContext(): boolean {
         return true;
     }
@@ -770,15 +768,15 @@ export class Clipboard extends Command {
             return this.returnResult("", Msg.clipboardContextError);
         }
         return this.getObject().then(obj => {
-            this.contents = obj;
+            this.context.ciceroClipboard = obj;
             const label = Ro.typePlusTitle(obj);
             return this.returnResult("", Msg.clipboardContents(label));
         });
     }
 
     private show(): Promise<CommandResult> {
-        if (this.contents) {
-            const label = Ro.typePlusTitle(this.contents);
+        if (this.context.ciceroClipboard) {
+            const label = Ro.typePlusTitle(this.context.ciceroClipboard);
             return this.returnResult("", Msg.clipboardContents(label));
         } else {
            
@@ -787,7 +785,7 @@ export class Clipboard extends Command {
     }
 
     private go(): Promise<CommandResult>  {
-        const link = this.contents && this.contents.selfLink();
+        const link = this.context.ciceroClipboard && this.context.ciceroClipboard.selfLink();
         if (link) {
             //this.urlManager.setItem(link);
             return this.returnResult("", "", () => this.urlManager.setItem(link));
@@ -797,7 +795,7 @@ export class Clipboard extends Command {
     }
 
     private discard(): Promise<CommandResult> {
-        this.contents = null;
+        this.context.ciceroClipboard = null;
         return this.show();
     }
 }
@@ -1016,7 +1014,7 @@ export class Enter extends Command {
     }
 
     private handleClipboard(field: Ro.IField) {
-        const ref = this.cvm.clipboard;
+        const ref = this.context.ciceroClipboard;
         if (!ref) {
             
             return this.returnResult("", Msg.emptyClipboard);
@@ -1025,7 +1023,7 @@ export class Enter extends Command {
         const refType = ref.domainType();
         return this.context.isSubTypeOf(refType, paramType).then(isSubType => {
             if (isSubType) {
-                const obj = this.cvm.clipboard;
+                const obj = this.context.ciceroClipboard as any;
                 const selfLink = obj.selfLink();
                 //Need to add a title to the SelfLink as not there by default
                 selfLink.setTitle(obj.title());

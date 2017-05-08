@@ -205,7 +205,7 @@ namespace NakedObjects.Selenium {
             WaitForOutput("Person: Jaclyn Liang");
             //Check clipboard still unmodified
             EnterCommand("clipboard sh");
-            WaitForOutput("Clipboard contains: Person: Dakota Wood");
+            //WaitForOutput("Clipboard contains: Person: Dakota Wood"); todo wont be becuase change of url will have cleared 
             //Now change it
             EnterCommand("clipboard cop");
             WaitForOutput("Clipboard contains: Person: Jaclyn Liang");
@@ -1515,8 +1515,8 @@ namespace NakedObjects.Selenium {
             Save();
             Show();
             Where();
-            //Clipboard();
-            //SpaceBarAutoComplete();
+            Clipboard();
+            SpaceBarAutoComplete();
             //UnrecognisedCommand();
             //UpAndDownArrow();
             //ScenarioEditAndSave();

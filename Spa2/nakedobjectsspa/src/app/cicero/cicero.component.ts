@@ -12,6 +12,7 @@ import * as Cicerorendererservice from '../cicero-renderer.service';
 import * as Errorservice from '../error.service';
 import * as Usermessages from '../user-messages';
 import each from 'lodash/each';
+import * as Cicerocommandfactoryservice from '../cicero-command-factory.service';
 
 @Component({
     selector: 'nof-cicero',
@@ -190,13 +191,20 @@ export class CiceroComponent implements OnInit {
         this.inputText = null;
     };
 
-    private ifSpaceThenAutoComplete(input: string) {
+    autocomplete(input: string) {
         //TODO: recognise tab also?
-        if (input.substring(input.length - 1) == " ") {
-            input = input.substr(0, input.length - 2);
-            this.commandFactory.autoComplete(input, this.cvm);
+        if (input.substring(input.length - 1) === " ") {
+            input = input.substr(0, input.length - 1);
+            const res = this.commandFactory.autoComplete(input);
+            if (res.in != null) {
+                this.inputText = res.in;
+            }
+            if (res.out != null) {
+                this.outputText = res.out;
+            }
         }
     };
+
     executeNextChainedCommandIfAny() {
         if (this.chainedCommands && this.chainedCommands.length > 0) {
             const next = this.popNextCommand();

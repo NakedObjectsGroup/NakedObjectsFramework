@@ -913,4 +913,6 @@ export class ContextService {
         this.dirtyList.setDirty(obj.getOid());
         this.objectEditCache.addValue(obj.id(), p.id(), pv, paneId);
     }
+
+    public ciceroClipboard: any;
 }
