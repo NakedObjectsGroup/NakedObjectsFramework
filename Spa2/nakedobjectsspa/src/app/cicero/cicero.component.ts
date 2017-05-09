@@ -2,17 +2,15 @@ import * as Ro from '../models';
 import * as RtD from '../route-data';
 import { Component, OnInit } from '@angular/core';
 import { CiceroCommandFactoryService } from '../cicero-command-factory.service';
-import { ViewModelFactoryService } from '../view-model-factory.service';
 import { CiceroRendererService } from '../cicero-renderer.service';
 import { CiceroViewModel } from '../view-models/cicero-view-model';
 import { ISubscription } from 'rxjs/Subscription';
-import { RouteData, PaneRouteData, ICustomActivatedRouteData, PaneType, PaneName } from '../route-data'; //TODO trim
+import {  PaneRouteData} from '../route-data'; //TODO trim
 import { UrlManagerService } from '../url-manager.service';
 import * as Cicerorendererservice from '../cicero-renderer.service';
 import * as Errorservice from '../error.service';
 import * as Usermessages from '../user-messages';
 import each from 'lodash/each';
-import * as Cicerocommandfactoryservice from '../cicero-command-factory.service';
 
 @Component({
     selector: 'nof-cicero',
@@ -152,7 +150,7 @@ export class CiceroComponent implements OnInit {
         //this.commandFactory.parseInput(input, this.cvm);
         ////TODO: check this  -  why not writing straight to output?
         //this.cvm.setOutputSource(this.cvm.message);
-
+        this.previousInput = this.commandFactory.autoComplete(input).in.trim();
         const parseResult = this.commandFactory.getCommandNew(input);
 
         if (parseResult.command) {
@@ -179,19 +177,21 @@ export class CiceroComponent implements OnInit {
                 });
         }
         else if (parseResult.error) {
+            
             this.outputText = parseResult.error;
+            this.inputText = "";
         }
     };
 
     selectPreviousInput = () => {
-        this.inputText = this.previousInput;
+       setTimeout(() => this.inputText = this.previousInput);
     };
 
     clearInput = () => {
-        this.inputText = null;
+        this.inputText = "";
     };
 
-    autocomplete(input: string) {
+    autocomplete(input: string) : string {
         //TODO: recognise tab also?
         if (input.substring(input.length - 1) === " ") {
             input = input.substr(0, input.length - 1);
@@ -202,7 +202,9 @@ export class CiceroComponent implements OnInit {
             if (res.out != null) {
                 this.outputText = res.out;
             }
+            return res.in;
         }
+        return input;
     };
 
     executeNextChainedCommandIfAny() {

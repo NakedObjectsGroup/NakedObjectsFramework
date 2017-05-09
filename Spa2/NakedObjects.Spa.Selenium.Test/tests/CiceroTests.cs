@@ -1055,6 +1055,7 @@ namespace NakedObjects.Selenium {
             WaitForOutputStarting("Cicero is");
             Assert.AreEqual("", WaitForCss("input").GetAttribute("value"));
             TypeIntoFieldWithoutClearing("input", Keys.ArrowUp);
+         
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "help");
             TypeIntoFieldWithoutClearing("input", " gem" + Keys.Enter);
             WaitForOutputStarting("gemini command");
@@ -1517,8 +1518,8 @@ namespace NakedObjects.Selenium {
             Where();
             Clipboard();
             SpaceBarAutoComplete();
-            //UnrecognisedCommand();
-            //UpAndDownArrow();
+            UnrecognisedCommand();
+            UpAndDownArrow();
             //ScenarioEditAndSave();
             //ScenarioMultiSelect();
             //ScenarioTransientObject();
