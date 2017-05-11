@@ -80,11 +80,17 @@ export class CiceroComponent implements OnInit {
 
                                 this.executeCommands(this.ciceroContext.chainedCommands);
 
-                            }).catch(e => {
-                                if (e instanceof Ro.ErrorWrapper) {
-                                    this.error.handleErrorAndDisplayMessages(e, (em: Ro.ErrorMap) => {
-                                        this.outputText = em.invalidReason();
-                                    });
+                            }).catch(reject => {
+                                if (reject instanceof Ro.ErrorWrapper) {
+                                    if (reject.category === Ro.ErrorCategory.ClientError && reject.clientErrorCode === Ro.ClientErrorCode.ExpiredTransient) {
+                                        this.outputText = "The requested view of unsaved object details has expired.";
+
+                                    } else {
+                                        this.error.handleErrorAndDisplayMessages(reject, (em: Ro.ErrorMap) => {
+                                            this.outputText = em.invalidReason();
+                                        });
+                                    }
+                                    
                                 }
 
                                
