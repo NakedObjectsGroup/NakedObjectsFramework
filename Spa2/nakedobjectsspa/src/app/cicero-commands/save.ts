@@ -1,20 +1,14 @@
-import * as Cicerocommands from './command-result';
+import { CommandResult } from './command-result';
+import { Command } from './Command';
 import * as Models from '../models';
-import * as Command from './Command';
 import * as Usermessages from '../user-messages';
 import * as Routedata from '../route-data';
 import { Dictionary } from 'lodash';
-import map from 'lodash/map';
-import some from 'lodash/some';
-import filter from 'lodash/filter';
-import every from 'lodash/every';
-import each from 'lodash/each';
-import forEach from 'lodash/forEach';
-import findIndex from 'lodash/findIndex';
-import zipObject from 'lodash/zipObject';
-import { Location } from '@angular/common';
 
-export class Save extends Command.Command {
+import forEach from 'lodash/forEach';
+import zipObject from 'lodash/zipObject';
+
+export class Save extends Command {
 
     fullCommand = Usermessages.saveCommand;
     helpText = Usermessages.saveHelp;
@@ -25,10 +19,9 @@ export class Save extends Command.Command {
         return this.isEdit() || this.isTransient();
     }
 
-    doExecuteNew(args: string, chained: boolean): Promise<Cicerocommands.CommandResult> {
+    doExecute(args: string, chained: boolean): Promise<CommandResult> {
         if (chained) {
-            //this.mayNotBeChained();
-            return this.returnResult("", this.mayNotBeChained(), () => {}, true);
+            return this.returnResult("", this.mayNotBeChained(), () => { }, true);
         }
         return this.getObject().then((obj: Models.DomainObjectRepresentation) => {
             const props = obj.propertyMembers();

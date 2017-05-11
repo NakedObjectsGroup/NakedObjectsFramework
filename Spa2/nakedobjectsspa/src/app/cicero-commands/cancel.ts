@@ -1,13 +1,12 @@
-import * as Cicerocommands from './command-result';
-import * as Command from './Command';
-import * as Usermessages from '../user-messages';
-import * as Routedata from '../route-data';
-import { Location } from '@angular/common';
+import { CommandResult } from './command-result';
+import { Command } from './Command';
+import * as Msg from '../user-messages';
+import * as RtD from '../route-data';
 
-export class Cancel extends Command.Command {
+export class Cancel extends Command {
 
-    fullCommand = Usermessages.cancelCommand;
-    helpText = Usermessages.cancelHelp;
+    fullCommand = Msg.cancelCommand;
+    helpText = Msg.cancelHelp;
     protected minArguments = 0;
     protected maxArguments = 0;
 
@@ -15,18 +14,9 @@ export class Cancel extends Command.Command {
         return this.isDialog() || this.isEdit();
     }
 
-    doExecute(args: string, chained: boolean): void {
+    doExecute(args: string, chained: boolean): Promise<CommandResult> {
         if (this.isEdit()) {
-            this.urlManager.setInteractionMode(Routedata.InteractionMode.View);
-        }
-        if (this.isDialog()) {
-            this.urlManager.closeDialogReplaceHistory(""); //TODO provide ID
-        }
-    };
-
-    doExecuteNew(args: string, chained: boolean): Promise<Cicerocommands.CommandResult> {
-        if (this.isEdit()) {           
-            return this.returnResult("", "", () => this.urlManager.setInteractionMode(Routedata.InteractionMode.View));
+            return this.returnResult("", "", () => this.urlManager.setInteractionMode(RtD.InteractionMode.View));
         }
 
         if (this.isDialog()) {

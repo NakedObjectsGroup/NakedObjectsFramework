@@ -1,20 +1,13 @@
-import * as Cicerocommands from './command-result';
+import { CommandResult } from './command-result';
+import { Command } from './Command';
 import * as Models from '../models';
-import * as Command from './Command';
 import * as Usermessages from '../user-messages';
 import * as Cicerorendererservice from '../cicero-renderer.service';
 import * as Routedata from '../route-data';
-import map from 'lodash/map';
-import some from 'lodash/some';
 import filter from 'lodash/filter';
-import every from 'lodash/every';
-import each from 'lodash/each';
-import forEach from 'lodash/forEach';
-import findIndex from 'lodash/findIndex';
 import reduce from 'lodash/reduce';
-import { Location } from '@angular/common';
 
-export class Goto extends Command.Command {
+export class Goto extends Command {
 
     fullCommand = Usermessages.gotoCommand;
     helpText = Usermessages.gotoHelp;
@@ -25,10 +18,7 @@ export class Goto extends Command.Command {
         return this.isObject() || this.isList();
     }
 
-
-
-
-    doExecuteNew(args: string, chained: boolean): Promise<Cicerocommands.CommandResult> {
+    doExecute(args: string, chained: boolean): Promise<CommandResult> {
         const arg0 = this.argumentAsString(args, 0);
         if (this.isList()) {
             let itemNo: number;
@@ -83,7 +73,7 @@ export class Goto extends Command.Command {
         }
     };
 
-    private attemptGotoLinkNumber(itemNo: number, links: Models.Link[]): Promise<Cicerocommands.CommandResult> {
+    private attemptGotoLinkNumber(itemNo: number, links: Models.Link[]): Promise<CommandResult> {
         if (itemNo < 1 || itemNo > links.length) {
 
             return this.returnResult("", Usermessages.outOfItemRange(itemNo));

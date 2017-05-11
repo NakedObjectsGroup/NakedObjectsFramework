@@ -1,12 +1,12 @@
-import * as Cicerocommands from './command-result';
+import { CommandResult } from './command-result';
+import { Command } from './Command';
 import * as Models from '../models';
-import * as Command from './Command';
 import * as Usermessages from '../user-messages';
 import { Dictionary } from 'lodash';
 import forEach from 'lodash/forEach';
-import { Location } from '@angular/common';
+import * as Commandresult from './command-result';
 
-export class OK extends Command.Command {
+export class OK extends Command {
 
     fullCommand = Usermessages.okCommand;
     helpText = Usermessages.okHelp;
@@ -17,9 +17,9 @@ export class OK extends Command.Command {
         return this.isDialog();
     }
 
-   
 
-    doExecuteNew(args: string, chained: boolean): Promise<Cicerocommands.CommandResult> {
+
+    doExecute(args: string, chained: boolean): Promise<CommandResult> {
         return this.getActionForCurrentDialog().then((action: Models.ActionRepresentation | Models.InvokableActionMember) => {
 
             if (chained && action.invokeLink().method() !== "GET") {
@@ -31,7 +31,7 @@ export class OK extends Command.Command {
                 const obj = action.parent as Models.DomainObjectRepresentation;
                 fieldMap = this.context.getObjectCachedValues(obj.id()); //Props passed in as pseudo-params to action
             } else {
-                fieldMap = Cicerocommands.getParametersAndCurrentValue(action, this.context);
+                fieldMap = Commandresult.getParametersAndCurrentValue(action, this.context);
             }
 
             return this.context.invokeAction(action, fieldMap).then((result: Models.ActionResultRepresentation) => {

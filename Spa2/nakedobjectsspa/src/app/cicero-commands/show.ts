@@ -1,19 +1,12 @@
-import * as Cicerocommands from './command-result';
+import { CommandResult } from './command-result';
+import { Command } from './Command';
 import * as Models from '../models';
-import * as Command from './Command';
 import * as Usermessages from '../user-messages';
 import * as Cicerorendererservice from '../cicero-renderer.service';
 import * as Routedata from '../route-data';
-import map from 'lodash/map';
-import some from 'lodash/some';
-import filter from 'lodash/filter';
-import every from 'lodash/every';
-import each from 'lodash/each';
-import forEach from 'lodash/forEach';
 import reduce from 'lodash/reduce';
-import { Location } from '@angular/common';
 
-export class Show extends Command.Command {
+export class Show extends Command {
 
     fullCommand = Usermessages.showCommand;
     helpText = Usermessages.showHelp;
@@ -24,9 +17,9 @@ export class Show extends Command.Command {
         return this.isObject() || this.isCollection() || this.isList();
     }
 
-   
 
-    doExecuteNew(args: string, chained: boolean): Promise<Cicerocommands.CommandResult> {
+
+    doExecute(args: string, chained: boolean): Promise<CommandResult> {
         if (this.isCollection()) {
             const arg = this.argumentAsString(args, 0, true);
             try {
@@ -57,15 +50,15 @@ export class Show extends Command.Command {
                 //TODO -  include these
                 let s: string;
                 switch (props.length + colls.length) {
-                case 0:
-                    s = fieldName ? Usermessages.doesNotMatch(fieldName) : Usermessages.noVisible;
-                    break;
-                case 1:
-                    s = props.length > 0 ? this.renderPropNameAndValue(props[0]) : Cicerorendererservice.renderCollectionNameAndSize(colls[0]);
-                    break;
-                default:
-                    s = reduce(props, (s, prop) => s + this.renderPropNameAndValue(prop), "");
-                    s += reduce(colls, (s, coll) => s + Cicerorendererservice.renderCollectionNameAndSize(coll), "");
+                    case 0:
+                        s = fieldName ? Usermessages.doesNotMatch(fieldName) : Usermessages.noVisible;
+                        break;
+                    case 1:
+                        s = props.length > 0 ? this.renderPropNameAndValue(props[0]) : Cicerorendererservice.renderCollectionNameAndSize(colls[0]);
+                        break;
+                    default:
+                        s = reduce(props, (s, prop) => s + this.renderPropNameAndValue(prop), "");
+                        s += reduce(colls, (s, coll) => s + Cicerorendererservice.renderCollectionNameAndSize(coll), "");
                 }
                 return this.returnResult("", s);
             });
@@ -105,11 +98,11 @@ export class Show extends Command.Command {
             endNo = max;
         }
         if (startNo > max || endNo > max) {
-           
+
             return this.returnResult("", Usermessages.highestItem(source.value().length));
         }
         if (startNo > endNo) {
-            
+
             return this.returnResult("", Usermessages.startHigherEnd);
         }
         let output = "";
@@ -118,7 +111,7 @@ export class Show extends Command.Command {
         for (i = startNo; i <= endNo; i++) {
             output += `${Usermessages.item} ${i}: ${links[i - 1].title()}\n`;
         }
-       
+
         return this.returnResult("", output);
     }
 }

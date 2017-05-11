@@ -1,9 +1,8 @@
-import * as Cicerocommands from './command-result';
-import * as Command from './Command';
+import { CommandResult } from './command-result';
+import { Command } from './Command';
 import * as Usermessages from '../user-messages';
-import { Location } from '@angular/common';
 
-export class Back extends Command.Command {
+export class Back extends Command {
 
     fullCommand = Usermessages.backCommand;
     helpText = Usermessages.backHelp;
@@ -14,12 +13,7 @@ export class Back extends Command.Command {
         return true;
     }
 
-    doExecute(args: string, chained: boolean): void {
-        this.location.back();
-    };
-
-    doExecuteNew(args: string, chained: boolean): Promise<Cicerocommands.CommandResult> {
-       
+    doExecute(args: string, chained: boolean): Promise<CommandResult> {
         return this.returnResult("", "", () => this.location.back());
     };
 }

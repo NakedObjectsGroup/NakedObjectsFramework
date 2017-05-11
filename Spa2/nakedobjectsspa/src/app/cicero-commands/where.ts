@@ -1,9 +1,8 @@
-import * as Cicerocommands from './command-result';
-import * as Command from './Command';
+import { CommandResult } from './command-result';
+import { Command } from './Command';
 import * as Usermessages from '../user-messages';
-import { Location } from '@angular/common';
 
-export class Where extends Command.Command {
+export class Where extends Command {
 
     fullCommand = Usermessages.whereCommand;
     helpText = Usermessages.whereHelp;
@@ -14,7 +13,7 @@ export class Where extends Command.Command {
         return true;
     }
 
-    doExecuteNew(args: string, chained: boolean): Promise<Cicerocommands.CommandResult> {
-        return this.returnResult(null, null, () =>  this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl());
+    doExecute(args: string, chained: boolean): Promise<CommandResult> {
+        return this.returnResult(null, null, () => this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl());
     };
 }

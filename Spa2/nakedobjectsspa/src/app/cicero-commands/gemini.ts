@@ -1,9 +1,8 @@
-import * as Cicerocommands from './command-result';
-import * as Command from './Command';
+import { CommandResult } from './command-result';
+import { Command } from './Command';
 import * as Usermessages from '../user-messages';
-import { Location } from '@angular/common';
 
-export class Gemini extends Command.Command {
+export class Gemini extends Command {
 
     fullCommand = Usermessages.geminiCommand;
     helpText = Usermessages.geminiHelp;
@@ -14,8 +13,7 @@ export class Gemini extends Command.Command {
         return true;
     }
 
-
-    doExecuteNew(args: string, chained: boolean): Promise<Cicerocommands.CommandResult> {
+    doExecute(args: string, chained: boolean): Promise<CommandResult> {
         return this.returnResult("", "", () => this.urlManager.gemini());
     };
 }

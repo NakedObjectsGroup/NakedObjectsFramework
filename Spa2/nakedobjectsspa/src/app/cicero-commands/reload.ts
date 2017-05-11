@@ -1,9 +1,8 @@
-import * as Cicerocommands from './command-result';
-import * as Command from './Command';
+import { CommandResult } from './command-result';
+import { Command } from './Command';
 import * as Usermessages from '../user-messages';
-import { Location } from '@angular/common';
 
-export class Reload extends Command.Command {
+export class Reload extends Command {
 
     fullCommand = Usermessages.reloadCommand;
     helpText = Usermessages.reloadHelp;
@@ -14,7 +13,7 @@ export class Reload extends Command.Command {
         return this.isObject() || this.isList();
     }
 
-    doExecuteNew(args: string, chained: boolean): Promise<Cicerocommands.CommandResult> {
+    doExecute(args: string, chained: boolean): Promise<CommandResult> {
         return Promise.reject("Not Implemented");
     };
 }

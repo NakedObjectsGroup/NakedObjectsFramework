@@ -1,10 +1,9 @@
-import * as Cicerocommands from './command-result';
-import * as Command from './Command';
+import { CommandResult } from './command-result';
+import { Command } from './Command';
 import * as Usermessages from '../user-messages';
 import * as Routedata from '../route-data';
-import { Location } from '@angular/common';
 
-export class Edit extends Command.Command {
+export class Edit extends Command {
 
     fullCommand = Usermessages.editCommand;
     helpText = Usermessages.editHelp;
@@ -15,18 +14,9 @@ export class Edit extends Command.Command {
         return this.isObject() && !this.isEdit();
     }
 
-    doExecute(args: string, chained: boolean): void {
+    doExecute(args: string, chained: boolean): Promise<CommandResult> {
         if (chained) {
-            this.mayNotBeChained();
-            return;
-        }
-        this.context.clearObjectCachedValues();
-        this.urlManager.setInteractionMode(Routedata.InteractionMode.Edit);
-    };
-
-    doExecuteNew(args: string, chained: boolean): Promise<Cicerocommands.CommandResult> {
-        if (chained) {
-            return this.returnResult("", this.mayNotBeChained(), () => {}, true);
+            return this.returnResult("", this.mayNotBeChained(), () => { }, true);
         }
         const newState = () => {
             this.context.clearObjectCachedValues();

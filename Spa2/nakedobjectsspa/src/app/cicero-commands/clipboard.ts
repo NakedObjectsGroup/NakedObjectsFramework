@@ -1,10 +1,9 @@
-import * as Cicerocommands from './command-result';
-import * as Command from './Command';
+import { CommandResult } from './command-result';
+import { Command } from './Command';
 import * as Usermessages from '../user-messages';
 import * as Models from '../models';
-import { Location } from '@angular/common';
 
-export class Clipboard extends Command.Command {
+export class Clipboard extends Command {
 
     fullCommand = Usermessages.clipboardCommand;
     helpText = Usermessages.clipboardHelp;
@@ -16,9 +15,7 @@ export class Clipboard extends Command.Command {
         return true;
     }
 
-   
-
-    doExecuteNew(args: string, chained: boolean): Promise<Cicerocommands.CommandResult> {
+    doExecute(args: string, chained: boolean): Promise<CommandResult> {
         const sub = this.argumentAsString(args, 0);
         if (Usermessages.clipboardCopy.indexOf(sub) === 0) {
             return this.copy();
@@ -33,8 +30,8 @@ export class Clipboard extends Command.Command {
         }
     };
 
-    private copy(): Promise<Cicerocommands.CommandResult> {
-        if (!this.isObject()) {         
+    private copy(): Promise<CommandResult> {
+        if (!this.isObject()) {
             return this.returnResult("", Usermessages.clipboardContextError);
         }
         return this.getObject().then(obj => {
@@ -44,27 +41,26 @@ export class Clipboard extends Command.Command {
         });
     }
 
-    private show(): Promise<Cicerocommands.CommandResult> {
+    private show(): Promise<CommandResult> {
         if (this.ciceroContext.ciceroClipboard) {
             const label = Models.typePlusTitle(this.ciceroContext.ciceroClipboard);
             return this.returnResult("", Usermessages.clipboardContents(label));
         } else {
-           
+
             return this.returnResult("", Usermessages.clipboardEmpty);
         }
     }
 
-    private go(): Promise<Cicerocommands.CommandResult>  {
+    private go(): Promise<CommandResult> {
         const link = this.ciceroContext.ciceroClipboard && this.ciceroContext.ciceroClipboard.selfLink();
         if (link) {
-            //this.urlManager.setItem(link);
             return this.returnResult("", "", () => this.urlManager.setItem(link));
         } else {
             return this.show();
         }
     }
 
-    private discard(): Promise<Cicerocommands.CommandResult> {
+    private discard(): Promise<CommandResult> {
         this.ciceroContext.ciceroClipboard = null;
         return this.show();
     }

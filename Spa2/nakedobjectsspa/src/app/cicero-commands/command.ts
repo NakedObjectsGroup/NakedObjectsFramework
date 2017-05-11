@@ -1,16 +1,15 @@
 import { Location } from '@angular/common';
-import * as Cicerocontextservice from '../cicero-context.service';
-import * as Cicerocommands from './command-result';
+import { CiceroContextService } from '../cicero-context.service';
+import { CommandResult } from './command-result';
 import * as Routedata from '../route-data';
 import * as Models from '../models';
 import * as Usermessages from '../user-messages';
-import * as Cicerorendererservice from '../cicero-renderer.service';
-import * as Urlmanagerservice from '../url-manager.service';
-import * as Cicerocommandfactoryservice from '../cicero-command-factory.service';
-import * as Contextservice from '../context.service';
-import * as Maskservice from '../mask.service';
-import * as Errorservice from '../error.service';
-import * as Configservice from '../config.service';
+import { UrlManagerService } from '../url-manager.service';
+import { CiceroCommandFactoryService } from '../cicero-command-factory.service';
+import { ContextService } from '../context.service';
+import { MaskService } from '../mask.service';
+import { ErrorService } from '../error.service';
+import { ConfigService } from '../config.service';
 import map from 'lodash/map';
 import some from 'lodash/some';
 import filter from 'lodash/filter';
@@ -19,18 +18,20 @@ import each from 'lodash/each';
 import keys from 'lodash/keys';
 import forEach from 'lodash/forEach';
 import findIndex from 'lodash/findIndex';
-import {Dictionary} from 'lodash';
+import { Dictionary } from 'lodash';
+import * as Commandresult from './command-result';
+import * as Cicerorendererservice from '../cicero-renderer.service';
 
 export abstract class Command {
 
-    constructor(protected urlManager: Urlmanagerservice.UrlManagerService,
+    constructor(protected urlManager: UrlManagerService,
         protected location: Location,
-        protected commandFactory: Cicerocommandfactoryservice.CiceroCommandFactoryService,
-        protected context: Contextservice.ContextService,
-        protected mask: Maskservice.MaskService,
-        protected error: Errorservice.ErrorService,
-        protected configService: Configservice.ConfigService,
-        protected ciceroContext : Cicerocontextservice.CiceroContextService
+        protected commandFactory: CiceroCommandFactoryService,
+        protected context: ContextService,
+        protected mask: MaskService,
+        protected error: ErrorService,
+        protected configService: ConfigService,
+        protected ciceroContext: CiceroContextService
     ) {
         this.keySeparator = configService.config.keySeparator;
     }
@@ -46,8 +47,8 @@ export abstract class Command {
     protected keySeparator: string;
 
 
-    executeNew(): Promise<Cicerocommands.CommandResult> {
-        const result = new Cicerocommands.CommandResult();
+    execute(): Promise<CommandResult> {
+        const result = new CommandResult();
 
         //TODO Create outgoing Vm and copy across values as needed
         if (!this.isAvailableInCurrentContext()) {
@@ -68,36 +69,21 @@ export abstract class Command {
                 return this.returnResult("", Usermessages.tooManyArguments);
             }
         }
-        return this.doExecuteNew(this.argString, this.chained, result);
+        return this.doExecute(this.argString, this.chained, result);
     }
 
-    returnResult(input: string, output: string, changeState?: () => void, stopChain? : boolean): Promise<Cicerocommands.CommandResult> {
+    protected returnResult(input: string, output: string, changeState?: () => void, stopChain?: boolean): Promise<CommandResult> {
         changeState = changeState ? changeState : () => { };
-        return Promise.resolve({ input: input, output: output, changeState: changeState, stopChain : stopChain });
+        return Promise.resolve({ input: input, output: output, changeState: changeState, stopChain: stopChain });
     }
 
-
-    //abstract doExecute(args: string, chained: boolean): void;
-
-    abstract doExecuteNew(args: string, chained: boolean, result: Cicerocommands.CommandResult): Promise<Cicerocommands.CommandResult>;
+    protected abstract doExecute(args: string, chained: boolean, result: CommandResult): Promise<CommandResult>;
 
     abstract isAvailableInCurrentContext(): boolean;
-
-    //Helper methods follow
-    //protected clearInputAndSetMessage(text: string): void {
-    //    this.cvm.clearInput();
-    //    this.cvm.message = text;
-    //    //TODO this.$route.reload();
-    //}
 
     protected mayNotBeChained(rider: string = "") {
         return Usermessages.mayNotbeChainedMessage(this.fullCommand, rider);
     }
-
-    //TODO: Change this  -  must build up output before setting the outputSource, which will result in refresh
-    //protected appendAsNewLineToOutput(text: string): void {
-    //    this.cvm.setOutputSource(`/n${text}`);
-    //}
 
     checkMatch(matchText: string): void {
         if (this.fullCommand.indexOf(matchText) !== 0) {
@@ -153,16 +139,16 @@ export abstract class Command {
         const clauses = arg.split("-");
         const range: { start: number | null; end: number | null } = { start: null, end: null };
         switch (clauses.length) {
-        case 1:
-            range.start = this.parseInt(clauses[0]);
-            range.end = range.start;
-            break;
-        case 2:
-            range.start = this.parseInt(clauses[0]);
-            range.end = this.parseInt(clauses[1]);
-            break;
-        default:
-            throw new Error(Usermessages.tooManyDashes);
+            case 1:
+                range.start = this.parseInt(clauses[0]);
+                range.end = range.start;
+                break;
+            case 2:
+                range.start = this.parseInt(clauses[0]);
+                range.end = this.parseInt(clauses[1]);
+                break;
+            default:
+                throw new Error(Usermessages.tooManyDashes);
         }
         if ((range.start != null && range.start < 1) || (range.end != null && range.end < 1)) {
             throw new Error(Usermessages.mustBeGreaterThanZero);
@@ -320,25 +306,24 @@ export abstract class Command {
         const matchingLabels = filter(labels, l => l.toString().toLowerCase().indexOf(titleMatch.toLowerCase()) >= 0);
         const result = new Array<Models.Value>();
         switch (matchingLabels.length) {
-        case 0:
-            break; //leave result empty
-        case 1:
-            //Push the VALUE for the key
-            //For simple scalars they are the same, but not for Enums
-            result.push(choices[matchingLabels[0]]);
-            break;
-        default:
-            //Push the matching KEYs, wrapped as (pseudo) Values for display in message to user
-            //For simple scalars the values would also be OK, but not for Enums
-            forEach(matchingLabels, label => result.push(new Models.Value(label)));
-            break;
+            case 0:
+                break; //leave result empty
+            case 1:
+                //Push the VALUE for the key
+                //For simple scalars they are the same, but not for Enums
+                result.push(choices[matchingLabels[0]]);
+                break;
+            default:
+                //Push the matching KEYs, wrapped as (pseudo) Values for display in message to user
+                //For simple scalars the values would also be OK, but not for Enums
+                forEach(matchingLabels, label => result.push(new Models.Value(label)));
+                break;
         }
         return result;
     }
 
     protected handleErrorResponse(err: Models.ErrorMap, getFriendlyName: (id: string) => string) {
         if (err.invalidReason()) {
-            //this.clearInputAndSetMessage();
             return this.returnResult("", err.invalidReason());
         }
         let msg = Usermessages.pleaseCompleteOrCorrect;
@@ -346,21 +331,20 @@ export abstract class Command {
             (errorValue, fieldId) => {
                 msg += this.fieldValidationMessage(errorValue, () => getFriendlyName(fieldId!));
             });
-        //this.clearInputAndSetMessage(msg);
         return this.returnResult("", msg);
     }
 
     protected handleErrorResponseNew(err: Models.ErrorMap, getFriendlyName: (id: string) => string) {
         if (err.invalidReason()) {
             return this.returnResult("", err.invalidReason());
-         
+
         }
         let msg = Usermessages.pleaseCompleteOrCorrect;
         each(err.valuesMap(),
             (errorValue, fieldId) => {
                 msg += this.fieldValidationMessage(errorValue, () => getFriendlyName(fieldId!));
             });
-        return this.returnResult("",msg);
+        return this.returnResult("", msg);
     }
 
 
@@ -389,7 +373,7 @@ export abstract class Command {
             if (fieldEntryType === Models.EntryType.MultipleChoices || field.isCollectionContributed()) {
                 let valuesFromRouteData: Models.Value[] | null = new Array<Models.Value>();
                 if (field instanceof Models.Parameter) {
-                    const rd = Cicerocommands.getParametersAndCurrentValue(field.parent, this.context)[field.id()];
+                    const rd = Commandresult.getParametersAndCurrentValue(field.parent, this.context)[field.id()];
                     if (rd) valuesFromRouteData = rd.list(); //TODO: what if only one?
                 } else if (field instanceof Models.PropertyMember) {
                     const obj = field.parent as Models.DomainObjectRepresentation;
@@ -466,11 +450,9 @@ export abstract class Command {
 
     protected setFieldValueInContextAndUrl(field: Models.Parameter, urlVal: Models.Value) {
         this.context.cacheFieldValue(this.routeData().dialogId, field.id(), urlVal);
-        //this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
     }
 
     protected setPropertyValueinContextAndUrl(obj: Models.DomainObjectRepresentation, property: Models.PropertyMember, urlVal: Models.Value) {
         this.context.cachePropertyValue(obj, property, urlVal);
-        //this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
     }
 }

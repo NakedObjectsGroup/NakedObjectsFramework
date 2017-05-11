@@ -141,7 +141,7 @@ export class CiceroComponent implements OnInit {
 
 
     private executeCommand(cmd: Command) {
-        cmd.executeNew().then(r => {
+        cmd.execute().then(r => {
             if (r.input != null) {
                 this.inputText = r.input;
             }
@@ -149,9 +149,6 @@ export class CiceroComponent implements OnInit {
                 this.outputText = r.output;
             }
             r.changeState();
-
-
-
 
         }).catch(e => {
             if (e instanceof Ro.ErrorWrapper) {

@@ -1,9 +1,8 @@
-import * as Cicerocommands from './command-result';
-import * as Command from './Command';
+import { CommandResult } from './command-result';
+import { Command } from './Command';
 import * as Usermessages from '../user-messages';
-import { Location } from '@angular/common';
 
-export class Help extends Command.Command {
+export class Help extends Command {
 
     fullCommand = Usermessages.helpCommand;
     helpText = Usermessages.helpHelp;
@@ -14,9 +13,7 @@ export class Help extends Command.Command {
         return true;
     }
 
-   
-
-    doExecuteNew(args: string, chained: boolean): Promise<Cicerocommands.CommandResult> {
+    doExecute(args: string, chained: boolean): Promise<CommandResult> {
         const arg = this.argumentAsString(args, 0);
         if (!arg) {
             return this.returnResult("", Usermessages.basicHelp);
