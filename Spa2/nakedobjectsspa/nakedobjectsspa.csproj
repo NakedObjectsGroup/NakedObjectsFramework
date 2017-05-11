@@ -184,7 +184,6 @@
     <TypeScriptCompile Include="src\app\view-models\application-properties-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\attachment-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\choice-view-model.ts" />
-    <TypeScriptCompile Include="src\app\view-models\cicero-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\collection-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\contributed-action-parent-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\dialog-view-model.ts" />

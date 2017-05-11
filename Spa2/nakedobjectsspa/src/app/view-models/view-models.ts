@@ -2,7 +2,6 @@
 export * from './application-properties-view-model';
 export * from './attachment-view-model';
 export * from './choice-view-model';
-export * from './cicero-view-model';
 export * from './collection-view-model';
 export * from './contributed-action-parent-view-model';
 export * from './dialog-view-model';

@@ -2,7 +2,6 @@ import * as Ro from './models';
 import * as Msg from './user-messages';
 import * as Models from './models';
 import { Injectable } from '@angular/core';
-import { CiceroViewModel } from './view-models/cicero-view-model';
 import { PaneRouteData, CollectionViewState } from './route-data';
 import { ContextService } from './context.service';
 import { ConfigService, IAppConfig } from './config.service';
@@ -10,7 +9,6 @@ import { InteractionMode } from './route-data';
 import { MaskService } from './mask.service';
 import { getParametersAndCurrentValue } from './cicero-commands';
 import { ErrorService } from './error.service';
-import { Dictionary } from 'lodash';
 import each from 'lodash/each';
 import filter from 'lodash/filter';
 import forEach from 'lodash/forEach';
@@ -44,64 +42,52 @@ export class CiceroRendererService {
 
 
     //TODO: remove renderer.
-    renderHome(message : string, routeData: PaneRouteData): Promise<RenderResult> {
-        if (message) {
-            
-            return this.returnResult("", message);
+    renderHome(routeData: PaneRouteData): Promise<RenderResult> {
+
+        if (routeData.menuId) {
+            return this.renderOpenMenu(routeData);
         } else {
-            if (routeData.menuId) {
-                return this.renderOpenMenu(routeData);
-            } else {
-                return this.returnResult("", Msg.welcomeMessage);
-            }
+            return this.returnResult("", Msg.welcomeMessage);
         }
     };
 
-    renderObject(message: string, routeData: PaneRouteData): Promise<RenderResult>  {
-        if (message) {
+    renderObject(routeData: PaneRouteData): Promise<RenderResult> {
 
-            return this.returnResult("", message);
-        } else {
-            const oid = Ro.ObjectIdWrapper.fromObjectId(routeData.objectId, this.keySeparator);
+        const oid = Ro.ObjectIdWrapper.fromObjectId(routeData.objectId, this.keySeparator);
 
-            return this.context.getObject(1, oid, routeData.interactionMode) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
-                .then((obj: Ro.DomainObjectRepresentation) => {
-                    const openCollIds = openCollectionIds(routeData);
-                    if (some(openCollIds)) {
-                        return this.renderOpenCollection(openCollIds[0], obj);
-                    } else if (obj.isTransient()) {
-                        return this.renderTransientObject(routeData, obj);
-                    } else if (routeData.interactionMode === InteractionMode.Edit ||
-                        routeData.interactionMode === InteractionMode.Form) {
-                        return this.renderForm(routeData, obj);
-                    } else {
-                        return this.renderObjectTitleAndDialogIfOpen(routeData, obj);
-                    }
-                });
-        }
+        return this.context.getObject(1, oid, routeData.interactionMode) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
+            .then((obj: Ro.DomainObjectRepresentation) => {
+                const openCollIds = openCollectionIds(routeData);
+                if (some(openCollIds)) {
+                    return this.renderOpenCollection(openCollIds[0], obj);
+                } else if (obj.isTransient()) {
+                    return this.renderTransientObject(routeData, obj);
+                } else if (routeData.interactionMode === InteractionMode.Edit ||
+                    routeData.interactionMode === InteractionMode.Form) {
+                    return this.renderForm(routeData, obj);
+                } else {
+                    return this.renderObjectTitleAndDialogIfOpen(routeData, obj);
+                }
+            });
+
     };
 
-    renderList(message : string, routeData: PaneRouteData): Promise<RenderResult> {
-        if (message) {
+    renderList(routeData: PaneRouteData): Promise<RenderResult> {
+        const listPromise = this.context.getListFromMenu(routeData, routeData.page, routeData.pageSize);
+        return listPromise.
+            then((list: Ro.ListRepresentation) =>
+                this.context.getMenu(routeData.menuId).
+                    then(menu => {
+                        const count = list.value().length;
+                        const numPages = list.pagination().numPages;
+                        const description = this.getListDescription(numPages, list, count);
+                        const actionMember = menu.actionMember(routeData.actionId);
+                        const actionName = actionMember.extensions().friendlyName();
+                        const output = `Result from ${actionName}:\n${description}`;
 
-            return this.returnResult("", message);
-        } else {
-            const listPromise = this.context.getListFromMenu(routeData, routeData.page, routeData.pageSize);
-            return listPromise.
-                then((list: Ro.ListRepresentation) => 
-                    this.context.getMenu(routeData.menuId).
-                        then(menu => {
-                            const count = list.value().length;
-                            const numPages = list.pagination().numPages;
-                            const description = this.getListDescription(numPages, list, count);
-                            const actionMember = menu.actionMember(routeData.actionId);
-                            const actionName = actionMember.extensions().friendlyName();
-                            const output = `Result from ${actionName}:\n${description}`;
-                           
-                            return this.returnResult("", output);
-                        })
-                );
-        }
+                        return this.returnResult("", output);
+                    })
+            );
     };
 
     renderError (message : string) {

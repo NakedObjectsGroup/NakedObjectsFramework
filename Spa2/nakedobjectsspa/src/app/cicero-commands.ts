@@ -8,7 +8,6 @@ import { ContextService } from './context.service';
 import { UrlManagerService } from './url-manager.service';
 import { MaskService } from './mask.service';
 import { ErrorService } from './error.service';
-import { CiceroViewModel } from './view-models/cicero-view-model';
 import { Location } from '@angular/common';
 import { CiceroCommandFactoryService } from './cicero-command-factory.service';
 import { ConfigService, IAppConfig } from './config.service';
@@ -76,34 +75,8 @@ export abstract class Command {
     helpText: string;
     protected minArguments: number;
     protected maxArguments: number;
-    protected cvm: CiceroViewModel;
     protected keySeparator: string;
 
-    execute(argString: string | null, chained: boolean, cvm: CiceroViewModel): void {
-        this.cvm = cvm;
-        //TODO Create outgoing Vm and copy across values as needed
-        if (!this.isAvailableInCurrentContext()) {
-            this.clearInputAndSetMessage(Msg.commandNotAvailable(this.fullCommand));
-            return;
-        }
-        //TODO: This could be moved into a pre-parse method as it does not depend on context
-        if (argString == null) {
-            if (this.minArguments > 0) {
-                this.clearInputAndSetMessage(Msg.noArguments);
-                return;
-            }
-        } else {
-            const args = argString.split(",");
-            if (args.length < this.minArguments) {
-                this.clearInputAndSetMessage(Msg.tooFewArguments);
-                return;
-            } else if (args.length > this.maxArguments) {
-                this.clearInputAndSetMessage(Msg.tooManyArguments);
-                return;
-            }
-        }
-        this.doExecute(argString, chained);
-    }
 
     executeNew(): Promise<CommandResult> {
         const result = new CommandResult();
@@ -136,27 +109,27 @@ export abstract class Command {
     }
 
 
-    abstract doExecute(args: string, chained: boolean): void;
+    //abstract doExecute(args: string, chained: boolean): void;
 
     abstract doExecuteNew(args: string, chained: boolean, result: CommandResult): Promise<CommandResult>;
 
     abstract isAvailableInCurrentContext(): boolean;
 
     //Helper methods follow
-    protected clearInputAndSetMessage(text: string): void {
-        this.cvm.clearInput();
-        this.cvm.message = text;
-        //TODO this.$route.reload();
-    }
+    //protected clearInputAndSetMessage(text: string): void {
+    //    this.cvm.clearInput();
+    //    this.cvm.message = text;
+    //    //TODO this.$route.reload();
+    //}
 
     protected mayNotBeChained(rider: string = "") {
         return Msg.mayNotbeChainedMessage(this.fullCommand, rider);
     }
 
     //TODO: Change this  -  must build up output before setting the outputSource, which will result in refresh
-    protected appendAsNewLineToOutput(text: string): void {
-        this.cvm.setOutputSource(`/n${text}`);
-    }
+    //protected appendAsNewLineToOutput(text: string): void {
+    //    this.cvm.setOutputSource(`/n${text}`);
+    //}
 
     checkMatch(matchText: string): void {
         if (this.fullCommand.indexOf(matchText) !== 0) {
@@ -545,24 +518,7 @@ export class Action extends Command {
         return (this.isMenu() || this.isObject() || this.isForm()) && !this.isDialog() && !this.isEdit(); //TODO add list
     }
 
-    doExecute(args: string, chained: boolean): void {
-        const match = this.argumentAsString(args, 0);
-        const details = this.argumentAsString(args, 1, true);
-        if (details && details !== "?") {
-            this.clearInputAndSetMessage(Msg.mustbeQuestionMark);
-            return;
-        }
-        if (this.isObject()) {
-            this.getObject()
-                .then((obj: Ro.DomainObjectRepresentation) => this.processActions(match, obj.actionMembers(), details))
-                .catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
-        } else if (this.isMenu()) {
-            this.getMenu()
-                .then((menu: Ro.MenuRepresentation) => this.processActions(match, menu.actionMembers(), details))
-                .catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
-        }
-        //TODO: handle list - CCAs
-    }
+   
 
     doExecuteNew(args: string, chained: boolean, result: CommandResult): Promise<CommandResult> {
         const match = this.argumentAsString(args, 0);
@@ -607,35 +563,7 @@ export class Action extends Command {
         }
     }
 
-    private processActions(match: string | null, actionsMap: Dictionary<Ro.ActionMember>, details: string) {
-        let actions = map(actionsMap, action => action);
-        if (actions.length === 0) {
-            this.clearInputAndSetMessage(Msg.noActionsAvailable);
-            return;
-        }
-        if (match) {
-            actions = this.matchFriendlyNameAndOrMenuPath(actions, match);
-        }
-        switch (actions.length) {
-            case 0:
-                this.clearInputAndSetMessage(Msg.doesNotMatchActions(match));
-                break;
-            case 1:
-                const action = actions[0];
-                if (details) {
-                    this.renderActionDetails(action);
-                } else if (action.disabledReason()) {
-                    this.disabledAction(action);
-                } else {
-                    this.openActionDialog(action);
-                }
-                break;
-            default:
-                let output = match ? Msg.matchingActions : Msg.actionsMessage;
-                output += this.listActions(actions);
-                this.clearInputAndSetMessage(output);
-        }
-    }
+   
 
     private disabledAction(action: Ro.ActionMember) {
         return `${Msg.actionPrefix} ${action.extensions().friendlyName()} ${Msg.isDisabled} ${action.disabledReason()}`;
@@ -735,20 +663,7 @@ export class Clipboard extends Command {
         return true;
     }
 
-    doExecute(args: string, chained: boolean): void {
-        const sub = this.argumentAsString(args, 0);
-        if (Msg.clipboardCopy.indexOf(sub) === 0) {
-            this.copy();
-        } else if (Msg.clipboardShow.indexOf(sub) === 0) {
-            this.show();
-        } else if (Msg.clipboardGo.indexOf(sub) === 0) {
-            this.go();
-        } else if (Msg.clipboardDiscard.indexOf(sub) === 0) {
-            this.discard();
-        } else {
-            this.clearInputAndSetMessage(Msg.clipboardError);
-        }
-    };
+   
 
     doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
         const sub = this.argumentAsString(args, 0);
@@ -1140,10 +1055,7 @@ export class Forward extends Command {
         return true;
     }
 
-    doExecute(args: string, chained: boolean): void {
-        this.cvm.clearInput(); //To catch case where can't go any further forward and hence url does not change.
-        this.location.forward();
-    };
+   
 
     doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
         return this.returnResult("", null, () => this.location.forward());
@@ -1161,9 +1073,6 @@ export class Gemini extends Command {
         return true;
     }
 
-    doExecute(args: string, chained: boolean): void {
-        this.urlManager.gemini();
-    };
 
     doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
         return this.returnResult("", "", () => this.urlManager.gemini());
@@ -1183,68 +1092,6 @@ export class Goto extends Command {
 
 
 
-    doExecute(args: string, chained: boolean): void {
-        const arg0 = this.argumentAsString(args, 0);
-        if (this.isList()) {
-            let itemNo: number;
-            try {
-                itemNo = this.parseInt(arg0);
-            } catch (e) {
-                this.clearInputAndSetMessage(e.message);
-                return;
-            }
-            this.getList().then((list: Ro.ListRepresentation) => {
-                this.attemptGotoLinkNumber(itemNo, list.value());
-                return;
-            });
-            return;
-        }
-        if (this.isObject) {
-
-            this.getObject().then((obj: Ro.DomainObjectRepresentation) => {
-                if (this.isCollection()) {
-                    const itemNo = this.argumentAsNumber(args, 0);
-                    const openCollIds = Rend.openCollectionIds(this.routeData());
-                    const coll = obj.collectionMember(openCollIds[0]);
-                    //Safe to assume always a List (Cicero doesn't support tables as such & must be open)
-                    this.context.getCollectionDetails(coll, RtD.CollectionViewState.List, false).then(details => this.attemptGotoLinkNumber(itemNo, details.value()))
-                        .catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
-                } else {
-                    const matchingProps = this.matchingProperties(obj, arg0);
-                    const matchingRefProps = filter(matchingProps, (p) => { return !p.isScalar() });
-                    const matchingColls = this.matchingCollections(obj, arg0);
-                    let s = "";
-                    switch (matchingRefProps.length + matchingColls.length) {
-                        case 0:
-                            s = Msg.noRefFieldMatch(arg0);
-                            break;
-                        case 1:
-                            //TODO: Check for any empty reference
-                            if (matchingRefProps.length > 0) {
-                                const link = matchingRefProps[0].value().link();
-                                this.urlManager.setItem(link);
-                            } else { //Must be collection
-                                this.openCollection(matchingColls[0]);
-                            }
-                            break;
-                        default:
-                            const props = reduce(matchingRefProps,
-                                (s, prop) => {
-                                    return s + prop.extensions().friendlyName() + "\n";
-                                },
-                                "");
-                            const colls = reduce(matchingColls,
-                                (s, coll) => {
-                                    return s + coll.extensions().friendlyName() + "\n";
-                                },
-                                "");
-                            s = `Multiple matches for ${arg0}:\n${props}${colls}`;
-                    }
-                    this.clearInputAndSetMessage(s);
-                }
-            }).catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
-        }
-    };
 
     doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
         const arg0 = this.argumentAsString(args, 0);
@@ -1330,22 +1177,7 @@ export class Help extends Command {
         return true;
     }
 
-    doExecute(args: string, chained: boolean): void {
-        const arg = this.argumentAsString(args, 0);
-        if (!arg) {
-            this.clearInputAndSetMessage(Msg.basicHelp);
-        } else if (arg === "?") {
-            const commands = this.commandFactory.allCommandsForCurrentContext();
-            this.clearInputAndSetMessage(commands);
-        } else {
-            try {
-                const c = this.commandFactory.getCommand(arg);
-                this.clearInputAndSetMessage(c.fullCommand + " command:\n" + c.helpText);
-            } catch (e) {
-                this.clearInputAndSetMessage(e.message);
-            }
-        }
-    };
+   
 
     doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
         const arg = this.argumentAsString(args, 0);
@@ -1376,34 +1208,7 @@ export class Menu extends Command {
         return true;
     }
 
-    doExecute(args: string, chained: boolean): void {
-        const name = this.argumentAsString(args, 0);
-        this.context.getMenus()
-            .then((menus: Ro.MenusRepresentation) => {
-                var links = menus.value();
-                if (name) {
-                    //TODO: do multi-clause match
-                    const exactMatches = filter(links, (t) => { return t.title().toLowerCase() === name; });
-                    const partialMatches = filter(links, (t) => { return t.title().toLowerCase().indexOf(name) > -1; });
-                    links = exactMatches.length === 1 ? exactMatches : partialMatches;
-                }
-                switch (links.length) {
-                    case 0:
-                        this.clearInputAndSetMessage(Msg.doesNotMatchMenu(name));
-                        break;
-                    case 1:
-                        const menuId = links[0].rel().parms[0].value;
-                        this.urlManager.setHome();
-                        this.urlManager.clearUrlState(1);
-                        this.urlManager.setMenu(menuId);
-                        break;
-                    default:
-                        const label = name ? `${Msg.matchingMenus}\n` : `${Msg.allMenus}\n`;
-                        const s = reduce(links, (s, t) => { return s + t.title() + "\n"; }, label);
-                        this.clearInputAndSetMessage(s);
-                }
-            });
-    }
+   
 
     doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
         const name = this.argumentAsString(args, 0);
@@ -1445,43 +1250,7 @@ export class OK extends Command {
         return this.isDialog();
     }
 
-    doExecute(args: string, chained: boolean): void {
-
-        //this.getActionForCurrentDialog().then((action: Models.ActionRepresentation | Models.InvokableActionMember) => {
-
-        //    if (chained && action.invokeLink().method() !== "GET") {
-        //        this.mayNotBeChained(Msg.queryOnlyRider);
-        //        return;
-        //    }
-        //    let fieldMap: Dictionary<Ro.Value>;
-        //    if (this.isForm()) {
-        //        const obj = action.parent as Ro.DomainObjectRepresentation;
-        //        fieldMap = this.context.getObjectCachedValues(obj.id()); //Props passed in as pseudo-params to action
-        //    } else {
-        //        fieldMap = getParametersAndCurrentValue(action, this.context);
-        //    }
-        //    this.context.invokeAction(action, fieldMap).then((result: Ro.ActionResultRepresentation) => {
-        //        // todo handle case where result is empty - this is no longer handled 
-        //        // by reject below
-        //        const warnings = result.extensions().warnings();
-        //        if (warnings) {
-        //            forEach(warnings, w => this.cvm.alert += `\nWarning: ${w}`);
-        //        }
-        //        const messages = result.extensions().messages();
-        //        if (messages) {
-        //            forEach(messages, m => this.cvm.alert += `\n${m}`);
-        //        }
-        //        this.urlManager.closeDialogReplaceHistory(""); //TODO provide Id
-        //    }).catch((reject: Ro.ErrorWrapper) => {
-
-        //        const display = (em: Ro.ErrorMap) => {
-        //            const paramFriendlyName = (paramId: string) => Ro.friendlyNameForParam(action, paramId);
-        //            this.handleErrorResponse(em, paramFriendlyName);
-        //        };
-        //        this.error.handleErrorAndDisplayMessages(reject, display);
-        //    });
-        //}).catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
-    }
+   
 
     doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
         return this.getActionForCurrentDialog().then((action: Models.ActionRepresentation | Models.InvokableActionMember) => {
@@ -1535,43 +1304,7 @@ export class Page extends Command {
         return this.isList();
     }
 
-    doExecute(args: string, chained: boolean): void {
-        //const arg = this.argumentAsString(args, 0);
-        //this.getList().then(listRep => {
-        //    const numPages = listRep.pagination().numPages;
-        //    const page = this.routeData().page;
-        //    const pageSize = this.routeData().pageSize;
-        //    if (Msg.pageFirst.indexOf(arg) === 0) {
-        //        this.setPage(1);
-        //        return;
-        //    } else if (Msg.pagePrevious.indexOf(arg) === 0) {
-        //        if (page === 1) {
-        //            this.clearInputAndSetMessage(Msg.alreadyOnFirst);
-        //        } else {
-        //            this.setPage(page - 1);
-        //        }
-        //    } else if (Msg.pageNext.indexOf(arg) === 0) {
-        //        if (page === numPages) {
-        //            this.clearInputAndSetMessage(Msg.alreadyOnLast);
-        //        } else {
-        //            this.setPage(page + 1);
-        //        }
-        //    } else if (Msg.pageLast.indexOf(arg) === 0) {
-        //        this.setPage(numPages);
-        //    } else {
-        //        const number = parseInt(arg);
-        //        if (isNaN(number)) {
-        //            this.clearInputAndSetMessage(Msg.pageArgumentWrong);
-        //            return;
-        //        }
-        //        if (number < 1 || number > numPages) {
-        //            this.clearInputAndSetMessage(Msg.pageNumberWrong(numPages));
-        //            return;
-        //        }
-        //        this.setPage(number);
-        //    }
-        //}).catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
-    }
+ 
 
     doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
         const arg = this.argumentAsString(args, 0);
@@ -1634,10 +1367,6 @@ export class Reload extends Command {
         return this.isObject() || this.isList();
     }
 
-    doExecute(args: string, chained: boolean): void {
-        this.clearInputAndSetMessage("Reload command is not yet implemented");
-    };
-
     doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
         return Promise.reject("Not Implemented");
     };
@@ -1654,12 +1383,7 @@ export class Root extends Command {
         return this.isCollection();
     }
 
-    doExecute(args: string, chained: boolean): void {
-        //this.closeAnyOpenCollections();
-    };
-
     doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
-        //return Promise.reject("Not Implemented");
         return this.returnResult(null, null, () => this.closeAnyOpenCollections());
     };
 }
@@ -1674,43 +1398,6 @@ export class Save extends Command {
     isAvailableInCurrentContext(): boolean {
         return this.isEdit() || this.isTransient();
     }
-
-    doExecute(args: string, chained: boolean): void {
-        //if (chained) {
-        //    this.mayNotBeChained();
-        //    return;
-        //}
-        //this.getObject().then((obj: Ro.DomainObjectRepresentation) => {
-        //    const props = obj.propertyMembers();
-        //    const newValsFromUrl = this.context.getObjectCachedValues(obj.id());
-        //    const propIds = new Array<string>();
-        //    const values = new Array<Ro.Value>();
-        //    forEach(props,
-        //        (propMember, propId) => {
-        //            if (!propMember.disabledReason()) {
-        //                propIds.push(propId);
-        //                const newVal = newValsFromUrl[propId];
-        //                if (newVal) {
-        //                    values.push(newVal);
-        //                } else if (propMember.value().isNull() &&
-        //                    propMember.isScalar()) {
-        //                    values.push(new Ro.Value(""));
-        //                } else {
-        //                    values.push(propMember.value());
-        //                }
-        //            }
-        //        });
-        //    const propMap = zipObject(propIds, values) as Dictionary<Ro.Value>;
-        //    const mode = obj.extensions().interactionMode();
-        //    const toSave = mode === "form" || mode === "transient";
-        //    const saveOrUpdate = toSave ? this.context.saveObject : this.context.updateObject;
-
-        //    saveOrUpdate(obj, propMap, 1, true).catch((reject: Ro.ErrorWrapper) => {
-        //        const display = (em: Ro.ErrorMap) => this.handleError(em, obj);
-        //        this.error.handleErrorAndDisplayMessages(reject, display);
-        //    });
-        //}).catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
-    };
 
     doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
         if (chained) {
@@ -1775,12 +1462,12 @@ export class Selection extends Command {
         return this.isList();
     }
 
-    doExecute(args: string, chained: boolean): void {
-        //TODO: Add in sub-commands: Add, Remove, All, Clear & Show
-        const arg = this.argumentAsString(args, 0);
-        const { start, end } = this.parseRange(arg); //'destructuring'
-        this.getList().then(list => this.selectItems(list, start, end)).catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
-    };
+    //doExecute(args: string, chained: boolean): void {
+    //    //TODO: Add in sub-commands: Add, Remove, All, Clear & Show
+    //    const arg = this.argumentAsString(args, 0);
+    //    const { start, end } = this.parseRange(arg); //'destructuring'
+    //    this.getList().then(list => this.selectItems(list, start, end)).catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
+    //};
 
     doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
         return Promise.reject("Not Implemented");
@@ -1805,42 +1492,7 @@ export class Show extends Command {
         return this.isObject() || this.isCollection() || this.isList();
     }
 
-    doExecute(args: string, chained: boolean): void {
-        //if (this.isCollection()) {
-        //    const arg = this.argumentAsString(args, 0, true);
-        //    const { start, end } = this.parseRange(arg);
-        //    this.getObject().then(obj => {
-        //        const openCollIds = Rend.openCollectionIds(this.routeData());
-        //        const coll = obj.collectionMember(openCollIds[0]);
-        //        this.renderCollectionItems(coll, start, end);
-        //    }).catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
-        //    return;
-        //} else if (this.isList()) {
-        //    const arg = this.argumentAsString(args, 0, true);
-        //    const { start, end } = this.parseRange(arg);
-        //    this.getList().then(list => this.renderItems(list, start, end)).catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
-        //} else if (this.isObject()) {
-        //    const fieldName = this.argumentAsString(args, 0);
-        //    this.getObject().then((obj: Ro.DomainObjectRepresentation) => {
-        //        const props = this.matchingProperties(obj, fieldName);
-        //        const colls = this.matchingCollections(obj, fieldName);
-        //        //TODO -  include these
-        //        let s: string;
-        //        switch (props.length + colls.length) {
-        //            case 0:
-        //                s = fieldName ? Msg.doesNotMatch(fieldName) : Msg.noVisible;
-        //                break;
-        //            case 1:
-        //                s = props.length > 0 ? this.renderPropNameAndValue(props[0]) : Rend.renderCollectionNameAndSize(colls[0]);
-        //                break;
-        //            default:
-        //                s = reduce(props, (s, prop) => s + this.renderPropNameAndValue(prop), "");
-        //                s += reduce(colls, (s, coll) => s + Rend.renderCollectionNameAndSize(coll), "");
-        //        }
-        //        this.clearInputAndSetMessage(s);
-        //    }).catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
-        //}
-    };
+   
 
     doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
         if (this.isCollection()) {
@@ -1950,12 +1602,7 @@ export class Where extends Command {
         return true;
     }
 
-    doExecute(args: string, chained: boolean): void {
-        //this.$route.reload(); TODO
-    };
-
     doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
-        //return Promise.reject("Not Implemented");
         return this.returnResult(null, null, () =>  this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl());
     };
 }

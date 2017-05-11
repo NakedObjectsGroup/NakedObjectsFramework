@@ -1,5 +1,4 @@
 ﻿import { Injectable } from '@angular/core';
-import { CiceroViewModel } from './view-models/cicero-view-model';
 import { Command } from './cicero-commands';
 import * as Cmd from './cicero-commands';
 import * as Msg from './user-messages';
@@ -58,27 +57,7 @@ export class CiceroCommandFactoryService {
     };
 
 
-    parseInput(input: string, cvm: CiceroViewModel) {
-        //TODO: sort out whether to process CVMs here, or in the execute method  -  is this ALWAYS called first?
-        //Also, must not modify the *input* one here
-        cvm.chainedCommands = null; //TODO: Maybe not needed if unexecuted commands are cleared down upon error?
-        if (!input) { //Special case for hitting Enter with no input
-            this.getCommand("wh").execute(null, false, cvm);
-            return;
-        }
-        this.autoComplete(input);
-        cvm.input = cvm.input!.trim();
-        cvm.previousInput = cvm.input!;
-        const commands = input.split(";");
-        if (commands.length > 1) {
-            const first = commands[0];
-            commands.splice(0, 1);
-            cvm.chainedCommands = commands;
-            this.processSingleCommand(first, cvm, false);
-        } else {
-            this.processSingleCommand(input, cvm, false);
-        }
-    };
+  
 
     getCommandNew(input: string): ParseResult {
         //TODO: sort out whether to process CVMs here, or in the execute method  -  is this ALWAYS called first?
@@ -97,18 +76,7 @@ export class CiceroCommandFactoryService {
             return { error: e.message }
         }
 
-        //this.autoComplete(input, cvm);
-        //cvm.input = cvm.input!.trim();
-        //cvm.previousInput = cvm.input!;
-        //const commands = input.split(";");
-        //if (commands.length > 1) {
-        //    const first = commands[0];
-        //    commands.splice(0, 1);
-        //    cvm.chainedCommands = commands;
-        //    this.processSingleCommand(first, cvm, false);
-        //} else {
-        //    this.processSingleCommand(input, cvm, false);
-        //}
+      
     };
 
     getSingleCommand = (input: string, chained: boolean) => {
@@ -128,22 +96,7 @@ export class CiceroCommandFactoryService {
     };
 
 
-    processSingleCommand = (input: string, cvm: CiceroViewModel, chained: boolean) => {
-        try {
-            input = input.trim();
-            const firstWord = input.split(" ")[0].toLowerCase();
-            const command = this.getCommand(firstWord);
-            let argString: string | null = null;
-            const index = input.indexOf(" ");
-            if (index >= 0) {
-                argString = input.substr(index + 1);
-            }
-            command.execute(argString, chained, cvm);
-        } catch (e) {
-            cvm.setOutputSource(e.message);
-            cvm.input = "";
-        }
-    };
+   
 
     //TODO: change the name & functionality to pre-parse or somesuch as could do more than auto
     //complete e.g. reject unrecognised action or one not available in context.

@@ -46,6 +46,7 @@ export * from './view-model-factory.service';
 export * from './cicero-command-factory.service';
 export * from './cicero-renderer.service';
 export * from './auth.service';
+export * from './cicero-context.service';
 
 export * from './gemini-boolean.directive';
 export * from './gemini-clear.directive';

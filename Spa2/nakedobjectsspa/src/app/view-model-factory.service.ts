@@ -30,7 +30,6 @@ import { MultiLineDialogViewModel } from './view-models/multi-line-dialog-view-m
 import { ConfigService } from './config.service';
 import { LoggerService } from './logger.service';
 import { ApplicationPropertiesViewModel } from './view-models/application-properties-view-model';
-import { CiceroViewModel } from './view-models/cicero-view-model';
 import { CiceroCommandFactoryService } from './cicero-command-factory.service';
 import { CiceroRendererService } from './cicero-renderer.service';
 import forEach from 'lodash/forEach';
