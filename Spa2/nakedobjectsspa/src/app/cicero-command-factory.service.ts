@@ -32,6 +32,7 @@ import * as Save from './cicero-commands/save';
 import * as Selection1 from './cicero-commands/selection';
 import * as Show from './cicero-commands/show';
 import * as Where from './cicero-commands/where';
+import * as Result from './cicero-commands/result';
 
 export class ParseResult {
     command?: Command[];
@@ -113,29 +114,24 @@ export class CiceroCommandFactoryService {
         return command;
     };
 
-
-   
-
     //TODO: change the name & functionality to pre-parse or somesuch as could do more than auto
     //complete e.g. reject unrecognised action or one not available in context.
-    autoComplete = (input: string) : {in : string, out : string} => {
+    autoComplete = (input: string) : Result.Result => {
         if (!input) {
-            return {in : input, out : null};
+            return {input : input, output : null};
         }
         let lastInChain = last(input.split(";")).toLowerCase();
         const charsTyped = lastInChain.length;
         lastInChain = lastInChain.trim();
         if (lastInChain.length === 0 || lastInChain.indexOf(" ") >= 0) { //i.e. not the first word
-            //cvm.input += " ";
-            return { in: input + " ", out: null };;
+            return { input: input + " ", output: null };
         }
         try {
             const command = this.getCommand(lastInChain);
             const earlierChain = input.substr(0, input.length - charsTyped);
-           // return earlierChain + command.fullCommand + " ";
-            return { in: earlierChain + command.fullCommand + " ", out: null };;
+            return { input: earlierChain + command.fullCommand + " ", output: null };
         } catch (e) {
-            return {in : "", out: e.message}
+            return {input : "", output: e.message}
         }
     };
 

@@ -15,17 +15,10 @@ import forEach from 'lodash/forEach';
 import keys from 'lodash/keys';
 import some from 'lodash/some';
 import invert from 'lodash/invert';
-
-export class RenderResult {
-    input: string;
-    output : string;
-}
-
+import {Result} from './cicero-commands/result';
 
 @Injectable()
 export class CiceroRendererService {
-
-
 
 
     constructor(protected context: ContextService,
@@ -36,13 +29,13 @@ export class CiceroRendererService {
     }
     protected keySeparator: string;
 
-    private returnResult(input: string, output: string): Promise<RenderResult> {
+    private returnResult(input: string, output: string): Promise<Result> {
         return Promise.resolve({ input: input, output: output });
     }
 
 
     //TODO: remove renderer.
-    renderHome(routeData: PaneRouteData): Promise<RenderResult> {
+    renderHome(routeData: PaneRouteData): Promise<Result> {
 
         if (routeData.menuId) {
             return this.renderOpenMenu(routeData);
@@ -51,7 +44,7 @@ export class CiceroRendererService {
         }
     };
 
-    renderObject(routeData: PaneRouteData): Promise<RenderResult> {
+    renderObject(routeData: PaneRouteData): Promise<Result> {
 
         const oid = Ro.ObjectIdWrapper.fromObjectId(routeData.objectId, this.keySeparator);
 
@@ -72,7 +65,7 @@ export class CiceroRendererService {
 
     };
 
-    renderList(routeData: PaneRouteData): Promise<RenderResult> {
+    renderList(routeData: PaneRouteData): Promise<Result> {
         const listPromise = this.context.getListFromMenu(routeData, routeData.page, routeData.pageSize);
         return listPromise.
             then((list: Ro.ListRepresentation) =>
@@ -112,7 +105,7 @@ export class CiceroRendererService {
         return filter(keys(routeData.collections), k => routeData.collections[k] != CollectionViewState.Summary);
     }
 
-    private renderOpenCollection(collId: string, obj: Ro.DomainObjectRepresentation) : Promise<RenderResult> {
+    private renderOpenCollection(collId: string, obj: Ro.DomainObjectRepresentation) : Promise<Result> {
         const coll = obj.collectionMember(collId);
         let output = renderCollectionNameAndSize(coll);
         output += `(${Msg.collection} ${Msg.on} ${Ro.typePlusTitle(obj)})`;
@@ -151,16 +144,14 @@ export class CiceroRendererService {
             return this.context.getInvokableAction(obj.actionMember(routeData.dialogId)).
                 then(invokableAction => {
                     output += this.renderActionDialog(invokableAction, routeData, this.mask);
-                    //cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
                     return this.returnResult("", output);
                 });
         } else {
-            //cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
             return this.returnResult("", output);
         }
     }
 
-    private renderOpenMenu(routeData: PaneRouteData) : Promise<RenderResult> {
+    private renderOpenMenu(routeData: PaneRouteData) : Promise<Result> {
         var output = "";
         return this.context.getMenu(routeData.menuId).
             then(menu => {

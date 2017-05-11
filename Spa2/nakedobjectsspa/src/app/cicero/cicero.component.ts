@@ -2,7 +2,7 @@ import * as Ro from '../models';
 import * as RtD from '../route-data';
 import { Component, OnInit } from '@angular/core';
 import { CiceroCommandFactoryService } from '../cicero-command-factory.service';
-import { CiceroRendererService, RenderResult } from '../cicero-renderer.service';
+import { CiceroRendererService } from '../cicero-renderer.service';
 import { ISubscription } from 'rxjs/Subscription';
 import { PaneRouteData } from '../route-data'; //TODO trim
 import { UrlManagerService } from '../url-manager.service';
@@ -11,6 +11,7 @@ import * as Usermessages from '../user-messages';
 import each from 'lodash/each';
 import { CiceroContextService } from '../cicero-context.service';
 import { Command } from '../cicero-commands/Command';
+import { Result } from '../cicero-commands/result';
 
 @Component({
     selector: 'nof-cicero',
@@ -20,18 +21,14 @@ import { Command } from '../cicero-commands/Command';
 export class CiceroComponent implements OnInit {
 
     constructor(
-        protected commandFactory: CiceroCommandFactoryService,
-        protected renderer: CiceroRendererService,
-        protected error: ErrorService,
-        protected urlManager: UrlManagerService,
-        protected ciceroContext: CiceroContextService) {
-       
+        private readonly commandFactory: CiceroCommandFactoryService,
+        private readonly renderer: CiceroRendererService,
+        private readonly error: ErrorService,
+        private readonly urlManager: UrlManagerService,
+        private readonly ciceroContext: CiceroContextService) {     
     }
 
     ngOnInit() {
-        //Set up subscriptions to observables on CiceroViewModel
-        //TODO:  Message, and other props?
-
         if (!this.paneRouteDataSub) {
             this.paneRouteDataSub =
                 this.urlManager.getPaneRouteDataObservable(1)
@@ -39,7 +36,7 @@ export class CiceroComponent implements OnInit {
                         if (!paneRouteData.isEqual(this.lastPaneRouteData)) {
                             this.lastPaneRouteData = paneRouteData;
 
-                            let renderResult: Promise<RenderResult>;
+                            let renderResult: Promise<Result>;
                             switch (paneRouteData.location) {
                                 case RtD.ViewType.Home: {
                                     renderResult = this.renderer.renderHome(paneRouteData);
@@ -60,13 +57,7 @@ export class CiceroComponent implements OnInit {
                             }
 
                             renderResult.then(rr => {
-                                if (rr.input != null) {
-                                    this.inputText = rr.input;
-                                }
-                                if (rr.output != null) {
-                                    this.outputText = rr.output;
-                                }
-
+                                this.writeInputOutput(rr);
                                 this.executeCommands(this.ciceroContext.chainedCommands);
 
                             }).catch(reject => {
@@ -97,13 +88,9 @@ export class CiceroComponent implements OnInit {
         }
     }
 
-
     private paneRouteDataSub: ISubscription;
     private lastPaneRouteData: PaneRouteData;
-    private inputText: string;
-    private outputText: string;
   
-    private viewType: RtD.ViewType;
     private previousInput: string;
 
     private fieldValidationMessage(errorValue: Ro.ErrorValue, fieldFriendlyName: () => string): string {
@@ -122,7 +109,7 @@ export class CiceroComponent implements OnInit {
         return msg;
     }
 
-    protected handleErrorResponse(err: Ro.ErrorMap, getFriendlyName: (id: string) => string) {
+    private handleErrorResponse(err: Ro.ErrorMap, getFriendlyName: (id: string) => string) {
         if (err.invalidReason()) {
             this.inputText = "";
             this.outputText = err.invalidReason();
@@ -142,14 +129,8 @@ export class CiceroComponent implements OnInit {
 
     private executeCommand(cmd: Command) {
         cmd.execute().then(r => {
-            if (r.input != null) {
-                this.inputText = r.input;
-            }
-            if (r.output != null) {
-                this.outputText = r.output;
-            }
+            this.writeInputOutput(r);
             r.changeState();
-
         }).catch(e => {
             if (e instanceof Ro.ErrorWrapper) {
                 const display = (em: Ro.ErrorMap) => {
@@ -162,7 +143,6 @@ export class CiceroComponent implements OnInit {
         });
     }
 
-
     private executeCommands(cmds: Command[]) {
         if (cmds && cmds.length > 0) {
             const [cmd, ...chained] = cmds;
@@ -171,13 +151,21 @@ export class CiceroComponent implements OnInit {
         }
     }
 
+    private writeInputOutput(result: Result) {
+        if (result.input != null) {
+            this.inputText = result.input;
+        }
+        if (result.output != null) {
+            this.outputText = result.output;
+        }
+    }
+
+    // template API 
+    inputText: string;
+    outputText: string;
 
     parseInput(input: string): void {
-        //this.cvm.input = input;
-        //this.commandFactory.parseInput(input, this.cvm);
-        ////TODO: check this  -  why not writing straight to output?
-        //this.cvm.setOutputSource(this.cvm.message);
-        this.previousInput = this.commandFactory.autoComplete(input).in.trim();
+        this.previousInput = this.commandFactory.autoComplete(input).input.trim();
         const parseResult = this.commandFactory.getCommandNew(input);
 
         if (parseResult.command) {
@@ -202,13 +190,8 @@ export class CiceroComponent implements OnInit {
         if (input.substring(input.length - 1) === " ") {
             input = input.substr(0, input.length - 1);
             const res = this.commandFactory.autoComplete(input);
-            if (res.in != null) {
-                this.inputText = res.in;
-            }
-            if (res.out != null) {
-                this.outputText = res.out;
-            }
-            return res.in;
+            this.writeInputOutput(res);
+            return res.input;
         }
         return input;
     };

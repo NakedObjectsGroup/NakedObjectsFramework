@@ -128,6 +128,7 @@
     <TypeScriptCompile Include="src\app\cicero-commands\action.ts" />
     <TypeScriptCompile Include="src\app\cicero-commands\back.ts" />
     <TypeScriptCompile Include="src\app\cicero-commands\cancel.ts" />
+    <TypeScriptCompile Include="src\app\cicero-commands\result.ts" />
     <TypeScriptCompile Include="src\app\cicero-commands\command-result.ts" />
     <TypeScriptCompile Include="src\app\cicero-commands\clipboard.ts" />
     <TypeScriptCompile Include="src\app\cicero-commands\command.ts" />
