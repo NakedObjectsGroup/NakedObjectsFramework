@@ -1211,7 +1211,7 @@ namespace NakedObjects.Selenium {
             WaitForOutputStarting("Please complete or correct these fields:");
             //Request for an expired transient
             CiceroUrl("object?i1=Transient&o1=___1.CreditCard--37");
-            WaitForOutput("The requested view of unsaved object details has expired");
+            WaitForOutput("The requested view of unsaved object details has expired.");
         }
 
         public virtual void ScenarioUsingClipboard() {
@@ -1236,7 +1236,9 @@ namespace NakedObjects.Selenium {
             WaitForOutput("Person: Carmen Perez");
             EnterCommand("clip copy");
             WaitForOutput("Clipboard contains: Person: Carmen Perez");
-            EnterCommand("back");
+            EnterCommand("menu emp");
+            WaitForOutput("Employees menu");
+            EnterCommand("ac create new");
             WaitForOutput("Employees menu\r\nAction dialog: Create New Employee From Contact\r\nContact Details: empty");
             EnterCommand("enter details, paste");
             WaitForOutput("Employees menu\r\nAction dialog: Create New Employee From Contact\r\nContact Details: Carmen Perez");
@@ -1525,10 +1527,8 @@ namespace NakedObjects.Selenium {
             ScenarioEditAndSave();
             ScenarioMultiSelect();
             ScenarioTestEditableVM();
-
-            //ScenarioUsingClipboard();
-            //ScenarioTransientObject();
-
+            ScenarioUsingClipboard();
+            ScenarioTransientObject();
         }
     }
 
