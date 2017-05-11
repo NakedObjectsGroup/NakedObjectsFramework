@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import * as Cicerocommands from './cicero-commands';
+import * as Cicerocommands from './cicero-commands/command-result';
+import * as Command from './cicero-commands/Command';
 
 @Injectable()
 export class CiceroContextService {
@@ -7,8 +8,8 @@ export class CiceroContextService {
   
     public ciceroClipboard: any;
 
-    public chainedCommands: Cicerocommands.Command[];
-    public nextChainedCommand : Cicerocommands.Command;
+    public chainedCommands: Command.Command[];
+    public nextChainedCommand : Command.Command;
 
     queueNextCommand() {
         if (this.chainedCommands && this.chainedCommands.length > 0) {

@@ -9,9 +9,8 @@ import { UrlManagerService } from '../url-manager.service';
 import { ErrorService } from '../error.service';
 import * as Usermessages from '../user-messages';
 import each from 'lodash/each';
-import { Command } from '../cicero-commands';
 import { CiceroContextService } from '../cicero-context.service';
-
+import { Command } from '../cicero-commands/Command';
 
 @Component({
     selector: 'nof-cicero',

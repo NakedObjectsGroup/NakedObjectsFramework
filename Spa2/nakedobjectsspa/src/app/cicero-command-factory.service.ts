@@ -1,6 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import { Command } from './cicero-commands';
-import * as Cmd from './cicero-commands';
+import { Command } from './cicero-commands/Command';
 import * as Msg from './user-messages';
 import { ContextService } from './context.service';
 import { UrlManagerService } from './url-manager.service';
@@ -14,6 +13,25 @@ import reduce from 'lodash/reduce';
 import last from 'lodash/last';
 import map from 'lodash/map';
 import * as Cicerocontextservice from './cicero-context.service';
+import * as Action from './cicero-commands/action';
+import * as Back from './cicero-commands/back';
+import * as Cancel from './cicero-commands/cancel';
+import * as Clipboard from './cicero-commands/clipboard';
+import * as Edit from './cicero-commands/edit';
+import * as Enter from './cicero-commands/enter';
+import * as Forward from './cicero-commands/forward';
+import * as Gemini from './cicero-commands/gemini';
+import * as Goto from './cicero-commands/goto';
+import * as Help from './cicero-commands/help';
+import * as Menu from './cicero-commands/menu';
+import * as Ok from './cicero-commands/ok';
+import * as Page from './cicero-commands/page';
+import * as Reload from './cicero-commands/reload';
+import * as Root from './cicero-commands/root';
+import * as Save from './cicero-commands/save';
+import * as Selection1 from './cicero-commands/selection';
+import * as Show from './cicero-commands/show';
+import * as Where from './cicero-commands/where';
 
 export class ParseResult {
     command?: Command[];
@@ -35,25 +53,25 @@ export class CiceroCommandFactoryService {
     private commandsInitialised = false;
 
     private commands: Dictionary<Command> = {
-        "ac": new Cmd.Action(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
-        "ba": new Cmd.Back(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
-        "ca": new Cmd.Cancel(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
-        "cl": new Cmd.Clipboard(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
-        "ed": new Cmd.Edit(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
-        "en": new Cmd.Enter(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
-        "fo": new Cmd.Forward(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
-        "ge": new Cmd.Gemini(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
-        "go": new Cmd.Goto(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
-        "he": new Cmd.Help(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
-        "me": new Cmd.Menu(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
-        "ok": new Cmd.OK(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
-        "pa": new Cmd.Page(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
-        "re": new Cmd.Reload(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
-        "ro": new Cmd.Root(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
-        "sa": new Cmd.Save(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
-        "se": new Cmd.Selection(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
-        "sh": new Cmd.Show(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
-        "wh": new Cmd.Where(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext)
+        "ac": new Action.Action(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "ba": new Back.Back(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "ca": new Cancel.Cancel(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "cl": new Clipboard.Clipboard(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "ed": new Edit.Edit(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "en": new Enter.Enter(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "fo": new Forward.Forward(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "ge": new Gemini.Gemini(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "go": new Goto.Goto(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "he": new Help.Help(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "me": new Menu.Menu(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "ok": new Ok.OK(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "pa": new Page.Page(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "re": new Reload.Reload(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "ro": new Root.Root(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "sa": new Save.Save(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "se": new Selection1.Selection(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "sh": new Show.Show(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "wh": new Where.Where(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext)
     };
 
 

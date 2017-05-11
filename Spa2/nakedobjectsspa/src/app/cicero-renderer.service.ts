@@ -7,7 +7,7 @@ import { ContextService } from './context.service';
 import { ConfigService, IAppConfig } from './config.service';
 import { InteractionMode } from './route-data';
 import { MaskService } from './mask.service';
-import { getParametersAndCurrentValue } from './cicero-commands';
+import { getParametersAndCurrentValue } from './cicero-commands/command-result';
 import { ErrorService } from './error.service';
 import each from 'lodash/each';
 import filter from 'lodash/filter';
