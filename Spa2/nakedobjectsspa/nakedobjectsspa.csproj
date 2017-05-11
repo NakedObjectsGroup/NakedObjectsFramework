@@ -126,6 +126,7 @@
     <TypeScriptCompile Include="src\app\auth.service.ts" />
     <TypeScriptCompile Include="src\app\cicero-command-factory.service.ts" />
     <TypeScriptCompile Include="src\app\cicero-commands.ts" />
+    <TypeScriptCompile Include="src\app\cicero-context.service.ts" />
     <TypeScriptCompile Include="src\app\cicero-renderer.service.ts" />
     <TypeScriptCompile Include="src\app\cicero\cicero.component.ts" />
     <TypeScriptCompile Include="src\app\click-handler.service.ts" />

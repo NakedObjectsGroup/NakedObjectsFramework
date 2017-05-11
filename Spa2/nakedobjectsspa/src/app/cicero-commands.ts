@@ -27,6 +27,7 @@ import reduce from 'lodash/reduce';
 import some from 'lodash/some';
 import mapKeys from 'lodash/mapKeys';
 import fromPairs from 'lodash/fromPairs';
+import * as Cicerocontextservice from './cicero-context.service';
 
 export function getParametersAndCurrentValue(action: Ro.ActionMember | Models.ActionRepresentation | Models.InvokableActionMember, context: ContextService): Dictionary<Ro.Value> {
 
@@ -49,7 +50,7 @@ export class CommandResult {
     input: string;
     output: string;
     changeState: () => void = () => { };
-    clipboard: any; // todo object ? 
+    stopChain : boolean; 
 }
 
 
@@ -61,7 +62,8 @@ export abstract class Command {
         protected context: ContextService,
         protected mask: MaskService,
         protected error: ErrorService,
-        protected configService: ConfigService
+        protected configService: ConfigService,
+        protected ciceroContext : Cicerocontextservice.CiceroContextService
     ) {
         this.keySeparator = configService.config.keySeparator;
     }
@@ -128,9 +130,9 @@ export abstract class Command {
         return this.doExecuteNew(this.argString, this.chained, result);
     }
 
-    returnResult(input: string, output: string, changeState?: () => void): Promise<CommandResult> {
+    returnResult(input: string, output: string, changeState?: () => void, stopChain? : boolean): Promise<CommandResult> {
         changeState = changeState ? changeState : () => { };
-        return Promise.resolve({ input: input, output: output, changeState: changeState });
+        return Promise.resolve({ input: input, output: output, changeState: changeState, stopChain : stopChain });
     }
 
 
@@ -768,15 +770,15 @@ export class Clipboard extends Command {
             return this.returnResult("", Msg.clipboardContextError);
         }
         return this.getObject().then(obj => {
-            this.context.ciceroClipboard = obj;
+            this.ciceroContext.ciceroClipboard = obj;
             const label = Ro.typePlusTitle(obj);
             return this.returnResult("", Msg.clipboardContents(label));
         });
     }
 
     private show(): Promise<CommandResult> {
-        if (this.context.ciceroClipboard) {
-            const label = Ro.typePlusTitle(this.context.ciceroClipboard);
+        if (this.ciceroContext.ciceroClipboard) {
+            const label = Ro.typePlusTitle(this.ciceroContext.ciceroClipboard);
             return this.returnResult("", Msg.clipboardContents(label));
         } else {
            
@@ -785,7 +787,7 @@ export class Clipboard extends Command {
     }
 
     private go(): Promise<CommandResult>  {
-        const link = this.context.ciceroClipboard && this.context.ciceroClipboard.selfLink();
+        const link = this.ciceroContext.ciceroClipboard && this.ciceroContext.ciceroClipboard.selfLink();
         if (link) {
             //this.urlManager.setItem(link);
             return this.returnResult("", "", () => this.urlManager.setItem(link));
@@ -795,7 +797,7 @@ export class Clipboard extends Command {
     }
 
     private discard(): Promise<CommandResult> {
-        this.context.ciceroClipboard = null;
+        this.ciceroContext.ciceroClipboard = null;
         return this.show();
     }
 }
@@ -822,7 +824,7 @@ export class Edit extends Command {
 
     doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
         if (chained) {
-            return this.returnResult("", this.mayNotBeChained());
+            return this.returnResult("", this.mayNotBeChained(), () => {}, true);
         }
         const newState = () => {
             this.context.clearObjectCachedValues();
@@ -1014,7 +1016,7 @@ export class Enter extends Command {
     }
 
     private handleClipboard(field: Ro.IField) {
-        const ref = this.context.ciceroClipboard;
+        const ref = this.ciceroContext.ciceroClipboard;
         if (!ref) {
             
             return this.returnResult("", Msg.emptyClipboard);
@@ -1023,7 +1025,7 @@ export class Enter extends Command {
         const refType = ref.domainType();
         return this.context.isSubTypeOf(refType, paramType).then(isSubType => {
             if (isSubType) {
-                const obj = this.context.ciceroClipboard as any;
+                const obj = this.ciceroContext.ciceroClipboard as any;
                 const selfLink = obj.selfLink();
                 //Need to add a title to the SelfLink as not there by default
                 selfLink.setTitle(obj.title());
@@ -1485,7 +1487,7 @@ export class OK extends Command {
         return this.getActionForCurrentDialog().then((action: Models.ActionRepresentation | Models.InvokableActionMember) => {
 
             if (chained && action.invokeLink().method() !== "GET") {
-                return this.returnResult("", this.mayNotBeChained(Msg.queryOnlyRider));
+                return this.returnResult("", this.mayNotBeChained(Msg.queryOnlyRider), () => { }, true);
             }
 
             let fieldMap: Dictionary<Ro.Value>;
@@ -1713,7 +1715,7 @@ export class Save extends Command {
     doExecuteNew(args: string, chained: boolean): Promise<CommandResult> {
         if (chained) {
             //this.mayNotBeChained();
-            return this.returnResult("", this.mayNotBeChained());
+            return this.returnResult("", this.mayNotBeChained(), () => {}, true);
         }
         return this.getObject().then((obj: Ro.DomainObjectRepresentation) => {
             const props = obj.propertyMembers();

@@ -59,6 +59,7 @@ import { AuthHttp, AuthConfig } from 'angular2-jwt';
 import { Http, RequestOptions } from '@angular/http';
 import { LoginComponent } from './login/login.component';
 import { LogoffComponent } from './logoff/logoff.component';
+import * as Cicerocontextservice from './cicero-context.service';
 
 export function authHttpServiceFactory(http: Http, configService: ConfigService, options: RequestOptions): any {
     if (configService.config.authenticate) {
@@ -146,6 +147,7 @@ export function authServiceFactory(configService: ConfigService, auth0AuthServic
         ConfigService,
         CiceroCommandFactoryService,
         CiceroRendererService,
+        Cicerocontextservice.CiceroContextService, 
         Auth0AuthService,
         NullAuthService,
         { provide: ErrorHandler, useClass: GeminiErrorHandler },

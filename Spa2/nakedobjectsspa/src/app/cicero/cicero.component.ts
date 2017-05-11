@@ -1,16 +1,19 @@
 import * as Ro from '../models';
 import * as RtD from '../route-data';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { CiceroCommandFactoryService } from '../cicero-command-factory.service';
 import { CiceroRendererService } from '../cicero-renderer.service';
 import { CiceroViewModel } from '../view-models/cicero-view-model';
 import { ISubscription } from 'rxjs/Subscription';
-import {  PaneRouteData} from '../route-data'; //TODO trim
+import { PaneRouteData } from '../route-data'; //TODO trim
 import { UrlManagerService } from '../url-manager.service';
 import * as Cicerorendererservice from '../cicero-renderer.service';
 import * as Errorservice from '../error.service';
 import * as Usermessages from '../user-messages';
 import each from 'lodash/each';
+import { Command } from '../cicero-commands';
+import * as Cicerocontextservice from '../cicero-context.service';
+import * as Helpersviewmodels from '../view-models/helpers-view-models';
 
 @Component({
     selector: 'nof-cicero',
@@ -23,7 +26,8 @@ export class CiceroComponent implements OnInit {
         protected commandFactory: CiceroCommandFactoryService,
         protected renderer: CiceroRendererService,
         protected error : Errorservice.ErrorService, 
-        protected urlManager: UrlManagerService) {
+        protected urlManager: UrlManagerService,
+        protected ciceroContext: Cicerocontextservice.CiceroContextService) {
         this.cvm = new CiceroViewModel();
     }
 
@@ -36,6 +40,8 @@ export class CiceroComponent implements OnInit {
                 this.outputText = op;
             });
         }
+
+      
 
         if (!this.paneRouteDataSub) {
             this.paneRouteDataSub =
@@ -71,6 +77,9 @@ export class CiceroComponent implements OnInit {
                                 if (rr.output != null) {
                                     this.outputText = rr.output;
                                 }
+
+                                this.executeCommands(this.ciceroContext.chainedCommands);
+
                             }).catch(e => {
                                 if (e instanceof Ro.ErrorWrapper) {
                                     this.error.handleErrorAndDisplayMessages(e, (em: Ro.ErrorMap) => {
@@ -105,11 +114,11 @@ export class CiceroComponent implements OnInit {
     private output: string | null;
     private alert = ""; //Alert is appended before the output
     private viewType: RtD.ViewType;
-    private clipboard: Ro.DomainObjectRepresentation;
+    //private clipboard: Ro.DomainObjectRepresentation;
     private previousInput: string;
-    private chainedCommands: string[];
+    //private chainedCommands: Command[];
     private cvm: CiceroViewModel;
-
+    //private nextChainedCommand : Command;
 
 
     private fieldValidationMessage(errorValue: Ro.ErrorValue, fieldFriendlyName: () => string): string {
@@ -145,6 +154,42 @@ export class CiceroComponent implements OnInit {
         this.outputText = msg;
     }
 
+
+    private executeCommand(cmd : Command) {
+        cmd.executeNew().then(r => {
+            if (r.input != null) {
+                this.inputText = r.input;
+            }
+            if (r.output != null) {
+                this.outputText = r.output;
+            }
+            r.changeState();
+
+      
+
+
+        }).catch(e => {
+            if (e instanceof Ro.ErrorWrapper) {
+                const display = (em: Ro.ErrorMap) => {
+                    const paramFriendlyName = (paramId: string) => "todo " + paramId; // Ro.friendlyNameForParam(action, paramId);
+                    this.handleErrorResponse(em, paramFriendlyName);
+                };
+                this.error.handleErrorAndDisplayMessages(e, display);
+            }
+
+        });
+    }
+
+
+    private executeCommands(cmds: Command[]) {
+        if (cmds && cmds.length > 0) {
+            const [cmd, ...chained] = cmds;
+            this.ciceroContext.chainedCommands = chained;
+            this.executeCommand(cmd);
+        }
+    }
+
+
     parseInput(input: string): void {
         //this.cvm.input = input;
         //this.commandFactory.parseInput(input, this.cvm);
@@ -154,30 +199,9 @@ export class CiceroComponent implements OnInit {
         const parseResult = this.commandFactory.getCommandNew(input);
 
         if (parseResult.command) {
-
-            parseResult.command.executeNew().
-                then(r => {
-                    if (r.input != null) {
-                        this.inputText = r.input;
-                    }
-                    if (r.output != null) {
-                        this.outputText = r.output;
-                    }
-                    r.changeState();
-                }).
-                catch(e => {
-                    if (e instanceof Ro.ErrorWrapper) {
-                        const display = (em: Ro.ErrorMap) => {
-                            const paramFriendlyName = (paramId: string) => "todo " + paramId;// Ro.friendlyNameForParam(action, paramId);
-                            this.handleErrorResponse(em, paramFriendlyName);
-                        };
-                        this.error.handleErrorAndDisplayMessages(e, display);
-                    }
-                            
-                });
+            this.executeCommands(parseResult.command);
         }
         else if (parseResult.error) {
-            
             this.outputText = parseResult.error;
             this.inputText = "";
         }
@@ -207,20 +231,20 @@ export class CiceroComponent implements OnInit {
         return input;
     };
 
-    executeNextChainedCommandIfAny() {
-        if (this.chainedCommands && this.chainedCommands.length > 0) {
-            const next = this.popNextCommand();
-            this.commandFactory.processSingleCommand(next, this.cvm, true);
-        }
-    };
+    //executeNextChainedCommandIfAny() {
+    //    if (this.chainedCommands && this.chainedCommands.length > 0) {
+    //        const next = this.popNextCommand();
+    //        this.commandFactory.processSingleCommand(next, this.cvm, true);
+    //    }
+    //};
 
-    popNextCommand(): string | null {
-        if (this.chainedCommands) {
-            const next = this.chainedCommands[0];
-            this.chainedCommands.splice(0, 1);
-            return next;
+    //popNextCommand(): string | null {
+    //    if (this.chainedCommands) {
+    //        const next = this.chainedCommands[0];
+    //        this.chainedCommands.splice(0, 1);
+    //        return next;
 
-        }
-        return null;
-    }
+    //    }
+    //    return null;
+    //}
 }

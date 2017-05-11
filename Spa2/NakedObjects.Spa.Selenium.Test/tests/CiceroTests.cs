@@ -1280,6 +1280,7 @@ namespace NakedObjects.Selenium {
             EnterCommand("where");
             WaitForOutputStarting("Product:");
 
+            CiceroUrl("home");
             //Try to chain an action invocation on a non-query action
             EnterCommand("menu special; ac create new; ok");
             WaitForOutputStarting("ok command may not be chained unless the action is query-only. Use Where command to see where execution stopped.");
@@ -1289,7 +1290,7 @@ namespace NakedObjects.Selenium {
             //Try to chain a command that is not avialable in the current context
             CiceroUrl("home");
             WaitForOutputStarting("Welcome to Cicero");
-            EnterCommand("menu sh;action rand;ok;show 1");
+            EnterCommand("menu pr;action rand;show 1");
             WaitForOutput("The command: show is not available in the current context");
 
             //Error in execution -  Timing problem?
@@ -1520,12 +1521,14 @@ namespace NakedObjects.Selenium {
             SpaceBarAutoComplete();
             UnrecognisedCommand();
             UpAndDownArrow();
-            //ScenarioEditAndSave();
-            //ScenarioMultiSelect();
-            //ScenarioTransientObject();
+            ChainedCommands();
+            ScenarioEditAndSave();
+            ScenarioMultiSelect();
+            ScenarioTestEditableVM();
+
             //ScenarioUsingClipboard();
-            //ScenarioTestEditableVM();
-            //ChainedCommands();
+            //ScenarioTransientObject();
+
         }
     }
 

@@ -914,5 +914,5 @@ export class ContextService {
         this.objectEditCache.addValue(obj.id(), p.id(), pv, paneId);
     }
 
-    public ciceroClipboard: any;
+   
 }

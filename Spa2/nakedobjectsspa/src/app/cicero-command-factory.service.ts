@@ -13,9 +13,11 @@ import { Dictionary } from 'lodash';
 import filter from 'lodash/filter';
 import reduce from 'lodash/reduce';
 import last from 'lodash/last';
+import map from 'lodash/map';
+import * as Cicerocontextservice from './cicero-context.service';
 
 export class ParseResult {
-    command?: Command;
+    command?: Command[];
     error?: string;
 }
 
@@ -28,30 +30,31 @@ export class CiceroCommandFactoryService {
         protected context: ContextService,
         protected mask: MaskService,
         protected error: ErrorService,
-        protected configService: ConfigService) { }
+        protected configService: ConfigService,
+        protected ciceroContext : Cicerocontextservice.CiceroContextService) { }
 
     private commandsInitialised = false;
 
     private commands: Dictionary<Command> = {
-        "ac": new Cmd.Action(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService),
-        "ba": new Cmd.Back(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService),
-        "ca": new Cmd.Cancel(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService),
-        "cl": new Cmd.Clipboard(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService),
-        "ed": new Cmd.Edit(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService),
-        "en": new Cmd.Enter(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService),
-        "fo": new Cmd.Forward(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService),
-        "ge": new Cmd.Gemini(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService),
-        "go": new Cmd.Goto(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService),
-        "he": new Cmd.Help(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService),
-        "me": new Cmd.Menu(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService),
-        "ok": new Cmd.OK(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService),
-        "pa": new Cmd.Page(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService),
-        "re": new Cmd.Reload(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService),
-        "ro": new Cmd.Root(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService),
-        "sa": new Cmd.Save(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService),
-        "se": new Cmd.Selection(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService),
-        "sh": new Cmd.Show(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService),
-        "wh": new Cmd.Where(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService),
+        "ac": new Cmd.Action(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "ba": new Cmd.Back(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "ca": new Cmd.Cancel(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "cl": new Cmd.Clipboard(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "ed": new Cmd.Edit(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "en": new Cmd.Enter(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "fo": new Cmd.Forward(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "ge": new Cmd.Gemini(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "go": new Cmd.Goto(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "he": new Cmd.Help(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "me": new Cmd.Menu(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "ok": new Cmd.OK(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "pa": new Cmd.Page(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "re": new Cmd.Reload(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "ro": new Cmd.Root(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "sa": new Cmd.Save(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "se": new Cmd.Selection(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "sh": new Cmd.Show(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext),
+        "wh": new Cmd.Where(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext)
     };
 
 
@@ -82,13 +85,16 @@ export class CiceroCommandFactoryService {
         //Also, must not modify the *input* one here
         //cvm.chainedCommands = null; //TODO: Maybe not needed if unexecuted commands are cleared down upon error?
         if (!input) { //Special case for hitting Enter with no input
-            return { command: this.getCommand("wh") }
+            return { command: [this.getCommand("wh")] };
         }
 
         try {
-            return { command: this.getSingleCommand(input, false) }
+            const commands = input.split(";");
+            const cmds = map(commands, (c) => this.getSingleCommand(c, commands.length > 1));
+            return { command: cmds };
+
         } catch (e) {
-            return {error : e.message}
+            return { error: e.message }
         }
 
         //this.autoComplete(input, cvm);
