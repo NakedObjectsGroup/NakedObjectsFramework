@@ -14,6 +14,7 @@ import filter from 'lodash/filter';
 import forEach from 'lodash/forEach';
 import keys from 'lodash/keys';
 import some from 'lodash/some';
+import reduce from 'lodash/reduce';
 import invert from 'lodash/invert';
 import { Result } from './cicero-commands/result';
 
@@ -145,10 +146,10 @@ export class CiceroRendererService {
     }
 
     private renderOpenMenu(routeData: PaneRouteData): Promise<Result> {
-        var output = "";
+        let output = "";
         return this.context.getMenu(routeData.menuId).
             then(menu => {
-                output += Msg.menuTitle(menu.title());
+                output = Msg.menuTitle(menu.title());
                 return routeData.dialogId ? this.context.getInvokableAction(menu.actionMember(routeData.dialogId)) : Promise.resolve(null);
             }).
             then(invokableAction => {
@@ -163,33 +164,28 @@ export class CiceroRendererService {
     private renderActionDialog(invokable: Models.ActionRepresentation | Models.InvokableActionMember,
         routeData: PaneRouteData,
         mask: MaskService): string {
+
         const actionName = invokable.extensions().friendlyName();
-        let output = `Action dialog: ${actionName}\n`;
-        forEach(getParametersAndCurrentValue(invokable, this.context), (value, paramId) => {
-            output += Ro.friendlyNameForParam(invokable, paramId) + ": ";
+        const prefix = `Action dialog: ${actionName}\n`;
+        const parms = getParametersAndCurrentValue(invokable, this.context);
+        return reduce(parms, (s, value, paramId) => {
             const param = invokable.parameters()[paramId];
-            output += this.renderFieldValue(param, value, mask);
-            output += "\n";
-        });
-        return output;
+            return `${s}${Ro.friendlyNameForParam(invokable, paramId)}: ${this.renderFieldValue(param, value, mask)}\n`;
+        }, prefix);
     }
 
     private renderModifiedProperties(obj: Ro.DomainObjectRepresentation, routeData: PaneRouteData, mask: MaskService): string {
-        let output = "";
         const props = this.context.getObjectCachedValues(obj.id());
         if (keys(props).length > 0) {
-            output += Msg.modifiedProperties + ":\n";
-            each(props, (value, propId) => {
-                output += Ro.friendlyNameForProperty(obj, propId) + ": ";
-                const pm = obj.propertyMember(propId);
-                output += this.renderFieldValue(pm, value, mask);
-                output += "\n";
-            });
-        }
-        return output;
-    }
+            const prefix = `${Msg.modifiedProperties}:\n`;
 
-    
+            return reduce(props, (s, value, propId) => {
+                const pm = obj.propertyMember(propId);
+                return `${s}${Ro.friendlyNameForProperty(obj, propId)}: ${this.renderFieldValue(pm, value, mask)}\n`;
+            }, prefix);
+        }
+        return "";
+    }
 
     private renderSingleChoice(field: Ro.IField, value: Ro.Value) {
         //This is to handle an enum: render it as text, not a number:  
@@ -200,30 +196,22 @@ export class CiceroRendererService {
     private renderMultipleChoicesCommaSeparated(field: Ro.IField, value: Ro.Value) {
         //This is to handle an enum: render it as text, not a number: 
         const inverted = invert(field.choices());
-        let output = "";
         const values = value.list();
-        forEach(values, v => {
-            output += (<any>inverted)[v.toValueString()] + ",";
-        });
-        return output;
+        return reduce(values, (s, v) => `${s}${(<any>inverted)[v.toValueString()]},`, "");
     }
-
 
     // helpers 
 
     renderCollectionNameAndSize(coll: Ro.CollectionMember): string {
-        let output: string = coll.extensions().friendlyName() + ": ";
+        const prefix = `${coll.extensions().friendlyName()}`;
         switch (coll.size()) {
-        case 0:
-            output += Msg.empty;
-            break;
-        case 1:
-            output += `1 ${Msg.item}`;
-            break;
-        default:
-            output += Msg.numberOfItems(coll.size());
+            case 0:
+                return `${prefix}: ${Msg.empty}\n`;
+            case 1:
+                return `${prefix}: 1 ${Msg.item}\n`;
+            default:
+                return `${prefix}: ${Msg.numberOfItems(coll.size())}\n`;
         }
-        return output + "\n";
     }
 
     openCollectionIds(routeData: PaneRouteData): string[] {

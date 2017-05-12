@@ -7,8 +7,6 @@ import { ISubscription } from 'rxjs/Subscription';
 import { PaneRouteData } from '../route-data'; //TODO trim
 import { UrlManagerService } from '../url-manager.service';
 import { ErrorService } from '../error.service';
-import * as Usermessages from '../user-messages';
-import each from 'lodash/each';
 import { CiceroContextService } from '../cicero-context.service';
 import { Command } from '../cicero-commands/Command';
 import { Result } from '../cicero-commands/result';
@@ -31,21 +29,13 @@ export class CiceroComponent implements OnInit {
     private render() {
         switch (this.lastPaneRouteData.location) {
             case RtD.ViewType.Home:
-                {
-                    return this.renderer.renderHome(this.lastPaneRouteData);
-                }
+                return this.renderer.renderHome(this.lastPaneRouteData);
             case RtD.ViewType.Object:
-                {
-                    return this.renderer.renderObject(this.lastPaneRouteData);
-                }
+                return this.renderer.renderObject(this.lastPaneRouteData);
             case RtD.ViewType.List:
-                {
-                    return this.renderer.renderList(this.lastPaneRouteData);
-                }
+                return this.renderer.renderList(this.lastPaneRouteData);
             default:
-                {
-                    return this.renderer.renderError("");
-                }
+                return this.renderer.renderError("unknown render error");
         }
     }
 
@@ -56,26 +46,20 @@ export class CiceroComponent implements OnInit {
                     .subscribe((paneRouteData: PaneRouteData) => {
                         if (!paneRouteData.isEqual(this.lastPaneRouteData)) {
                             this.lastPaneRouteData = paneRouteData;
-                                                
-                            this.render().then(rr => {
-                                this.writeInputOutput(rr);
-                                this.executeCommands(this.ciceroContext.chainedCommands);
-                            }).catch(reject => {
-                                if (reject instanceof Ro.ErrorWrapper) {
+
+                            this.render().
+                                then(result => {
+                                    this.writeInputOutput(result);
+                                    this.executeCommands(this.ciceroContext.chainedCommands);
+                                }).
+                                catch((reject: Ro.ErrorWrapper) => {
                                     if (reject.category === Ro.ErrorCategory.ClientError && reject.clientErrorCode === Ro.ClientErrorCode.ExpiredTransient) {
                                         this.outputText = "The requested view of unsaved object details has expired.";
-
                                     } else {
-                                        this.error.handleErrorAndDisplayMessages(reject, (em: Ro.ErrorMap) => {
-                                            this.outputText = em.invalidReason();
-                                        });
+                                        const display = (em: Ro.ErrorMap) => this.outputText = em.invalidReason() || em.warningMessage;
+                                        this.error.handleErrorAndDisplayMessages(reject, display);
                                     }
-
-                                }
-
-
-                            });
-
+                                });
                         }
                     });
         };
@@ -93,54 +77,16 @@ export class CiceroComponent implements OnInit {
   
     private previousInput: string;
 
-    private fieldValidationMessage(errorValue: Ro.ErrorValue, fieldFriendlyName: () => string): string {
-        let msg = "";
-        const reason = errorValue.invalidReason;
-        const value = errorValue.value;
-        if (reason) {
-            msg += `${fieldFriendlyName()}: `;
-            if (reason === Usermessages.mandatory) {
-                msg += Usermessages.required;
-            } else {
-                msg += `${value} ${reason}`;
-            }
-            msg += "\n";
-        }
-        return msg;
-    }
-
-    private handleErrorResponse(err: Ro.ErrorMap, getFriendlyName: (id: string) => string) {
-        if (err.invalidReason()) {
-            this.inputText = "";
-            this.outputText = err.invalidReason();
-            return;
-        }
-        let msg = Usermessages.pleaseCompleteOrCorrect;
-        each(err.valuesMap(),
-            (errorValue, fieldId) => {
-                msg += this.fieldValidationMessage(errorValue, () => getFriendlyName(fieldId!));
-            });
-
-
-        this.inputText = "";
-        this.outputText = msg;
-    }
-
-
     private executeCommand(cmd: Command) {
-        cmd.execute().then(r => {
-            this.writeInputOutput(r);
-            r.changeState();
-        }).catch(e => {
-            if (e instanceof Ro.ErrorWrapper) {
-                const display = (em: Ro.ErrorMap) => {
-                    const paramFriendlyName = (paramId: string) => "todo " + paramId; // Ro.friendlyNameForParam(action, paramId);
-                    this.handleErrorResponse(em, paramFriendlyName);
-                };
-                this.error.handleErrorAndDisplayMessages(e, display);
-            }
-
-        });
+        cmd.execute().
+            then(result => {
+                this.writeInputOutput(result);
+                result.changeState();
+            }).
+            catch((reject: Ro.ErrorWrapper) => {
+                const display = (em: Ro.ErrorMap) => this.outputText =  em.invalidReason() || em.warningMessage;
+                this.error.handleErrorAndDisplayMessages(reject, display);
+            });
     }
 
     private executeCommands(cmds: Command[]) {
