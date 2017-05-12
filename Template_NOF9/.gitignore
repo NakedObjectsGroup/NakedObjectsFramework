@@ -1,0 +1,7 @@
+/packages
+**/bin
+**/obj
+**/nakedobjects_log*.*
+*.dll
+*.zip
+
