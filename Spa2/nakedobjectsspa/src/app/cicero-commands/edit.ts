@@ -5,6 +5,7 @@ import * as Routedata from '../route-data';
 
 export class Edit extends Command {
 
+    shortCommand = "ed";
     fullCommand = Usermessages.editCommand;
     helpText = Usermessages.editHelp;
     protected minArguments = 0;

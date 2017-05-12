@@ -8,6 +8,7 @@ import reduce from 'lodash/reduce';
 
 export class Show extends Command {
 
+    shortCommand = "sh";
     fullCommand = Usermessages.showCommand;
     helpText = Usermessages.showHelp;
     protected minArguments = 0;
@@ -17,15 +18,13 @@ export class Show extends Command {
         return this.isObject() || this.isCollection() || this.isList();
     }
 
-
-
     doExecute(args: string, chained: boolean): Promise<CommandResult> {
         if (this.isCollection()) {
             const arg = this.argumentAsString(args, 0, true);
             try {
                 const { start, end } = this.parseRange(arg);
                 return this.getObject().then(obj => {
-                    const openCollIds = Cicerorendererservice.openCollectionIds(this.routeData());
+                    const openCollIds = this.ciceroRenderer.openCollectionIds(this.routeData());
                     const coll = obj.collectionMember(openCollIds[0]);
                     return this.renderCollectionItems(coll, start, end);
                 });
@@ -54,11 +53,11 @@ export class Show extends Command {
                         s = fieldName ? Usermessages.doesNotMatch(fieldName) : Usermessages.noVisible;
                         break;
                     case 1:
-                        s = props.length > 0 ? this.renderPropNameAndValue(props[0]) : Cicerorendererservice.renderCollectionNameAndSize(colls[0]);
+                        s = props.length > 0 ? this.renderPropNameAndValue(props[0]) : this.ciceroRenderer.renderCollectionNameAndSize(colls[0]);
                         break;
                     default:
                         s = reduce(props, (s, prop) => s + this.renderPropNameAndValue(prop), "");
-                        s += reduce(colls, (s, coll) => s + Cicerorendererservice.renderCollectionNameAndSize(coll), "");
+                        s += reduce(colls, (s, coll) => s + this.ciceroRenderer.renderCollectionNameAndSize(coll), "");
                 }
                 return this.returnResult("", s);
             });
@@ -72,9 +71,9 @@ export class Show extends Command {
         const props = this.context.getObjectCachedValues(parent.id());
         const modifiedValue = props[pm.id()];
         if (this.isEdit() && !pm.disabledReason() && modifiedValue) {
-            value = Cicerorendererservice.renderFieldValue(pm, modifiedValue, this.mask) + ` (${Usermessages.modified})`;
+            value = this.ciceroRenderer.renderFieldValue(pm, modifiedValue, this.mask) + ` (${Usermessages.modified})`;
         } else {
-            value = Cicerorendererservice.renderFieldValue(pm, pm.value(), this.mask);
+            value = this.ciceroRenderer.renderFieldValue(pm, pm.value(), this.mask);
         }
         return `${name}: ${value}\n`;
     }

@@ -5,6 +5,7 @@ import * as Models from '../models';
 
 export class Clipboard extends Command {
 
+    shortCommand = "cl";
     fullCommand = Usermessages.clipboardCommand;
     helpText = Usermessages.clipboardHelp;
 

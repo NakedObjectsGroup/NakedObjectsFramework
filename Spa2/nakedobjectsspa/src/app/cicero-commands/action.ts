@@ -9,7 +9,9 @@ import reduce from 'lodash/reduce';
 
 export class Action extends Command {
 
+    shortCommand = "ac";
     fullCommand = Usermessages.actionCommand;
+
     helpText = Usermessages.actionHelp;
     protected minArguments = 0;
     protected maxArguments = 2;

@@ -5,6 +5,7 @@ import * as RtD from '../route-data';
 
 export class Cancel extends Command {
 
+    shortCommand = "ca";
     fullCommand = Msg.cancelCommand;
     helpText = Msg.cancelHelp;
     protected minArguments = 0;

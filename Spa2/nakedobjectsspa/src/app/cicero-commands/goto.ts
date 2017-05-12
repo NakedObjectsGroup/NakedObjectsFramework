@@ -9,6 +9,7 @@ import reduce from 'lodash/reduce';
 
 export class Goto extends Command {
 
+    shortCommand = "go";
     fullCommand = Usermessages.gotoCommand;
     helpText = Usermessages.gotoHelp;
     protected minArguments = 1;
@@ -34,7 +35,7 @@ export class Goto extends Command {
             return this.getObject().then((obj: Models.DomainObjectRepresentation) => {
                 if (this.isCollection()) {
                     const itemNo = this.argumentAsNumber(args, 0);
-                    const openCollIds = Cicerorendererservice.openCollectionIds(this.routeData());
+                    const openCollIds = this.ciceroRenderer.openCollectionIds(this.routeData());
                     const coll = obj.collectionMember(openCollIds[0]);
                     //Safe to assume always a List (Cicero doesn't support tables as such & must be open)
                     return this.context.getCollectionDetails(coll, Routedata.CollectionViewState.List, false).then(details => this.attemptGotoLinkNumber(itemNo, details.value()));

@@ -4,6 +4,8 @@ import * as Usermessages from '../user-messages';
 import * as Routedata from '../route-data';
 
 export class Page extends Command {
+
+    shortCommand = "pa";
     fullCommand = Usermessages.pageCommand;
     helpText = Usermessages.pageHelp;
     protected minArguments = 1;

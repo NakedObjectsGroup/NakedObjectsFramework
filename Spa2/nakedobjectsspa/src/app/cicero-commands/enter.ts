@@ -16,6 +16,7 @@ import * as Commandresult from './command-result';
 
 export class Enter extends Command {
 
+    shortCommand = "en";
     fullCommand = Usermessages.enterCommand;
     helpText = Usermessages.enterHelp;
     protected minArguments = 2;

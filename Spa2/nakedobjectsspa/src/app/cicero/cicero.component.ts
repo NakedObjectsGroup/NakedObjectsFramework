@@ -28,6 +28,27 @@ export class CiceroComponent implements OnInit {
         private readonly ciceroContext: CiceroContextService) {     
     }
 
+    private render() {
+        switch (this.lastPaneRouteData.location) {
+            case RtD.ViewType.Home:
+                {
+                    return this.renderer.renderHome(this.lastPaneRouteData);
+                }
+            case RtD.ViewType.Object:
+                {
+                    return this.renderer.renderObject(this.lastPaneRouteData);
+                }
+            case RtD.ViewType.List:
+                {
+                    return this.renderer.renderList(this.lastPaneRouteData);
+                }
+            default:
+                {
+                    return this.renderer.renderError("");
+                }
+        }
+    }
+
     ngOnInit() {
         if (!this.paneRouteDataSub) {
             this.paneRouteDataSub =
@@ -35,31 +56,10 @@ export class CiceroComponent implements OnInit {
                     .subscribe((paneRouteData: PaneRouteData) => {
                         if (!paneRouteData.isEqual(this.lastPaneRouteData)) {
                             this.lastPaneRouteData = paneRouteData;
-
-                            let renderResult: Promise<Result>;
-                            switch (paneRouteData.location) {
-                                case RtD.ViewType.Home: {
-                                    renderResult = this.renderer.renderHome(paneRouteData);
-                                    break;
-                                }
-                                case RtD.ViewType.Object: {
-                                    renderResult = this.renderer.renderObject(paneRouteData);
-                                    break;
-                                }
-                                case RtD.ViewType.List: {
-                                    renderResult = this.renderer.renderList(paneRouteData);
-                                    break;
-                                }
-                                default: {
-                                    renderResult = this.renderer.renderError("");
-                                    break;
-                                }
-                            }
-
-                            renderResult.then(rr => {
+                                                
+                            this.render().then(rr => {
                                 this.writeInputOutput(rr);
                                 this.executeCommands(this.ciceroContext.chainedCommands);
-
                             }).catch(reject => {
                                 if (reject instanceof Ro.ErrorWrapper) {
                                     if (reject.category === Ro.ErrorCategory.ClientError && reject.clientErrorCode === Ro.ClientErrorCode.ExpiredTransient) {
@@ -166,10 +166,10 @@ export class CiceroComponent implements OnInit {
 
     parseInput(input: string): void {
         this.previousInput = this.commandFactory.autoComplete(input).input.trim();
-        const parseResult = this.commandFactory.getCommandNew(input);
+        const parseResult = this.commandFactory.getCommands(input);
 
-        if (parseResult.command) {
-            this.executeCommands(parseResult.command);
+        if (parseResult.commands) {
+            this.executeCommands(parseResult.commands);
         }
         else if (parseResult.error) {
             this.outputText = parseResult.error;

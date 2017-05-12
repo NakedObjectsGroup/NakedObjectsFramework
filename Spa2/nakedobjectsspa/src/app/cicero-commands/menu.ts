@@ -7,6 +7,7 @@ import reduce from 'lodash/reduce';
 
 export class Menu extends Command {
 
+    shortCommand = "me";
     fullCommand = Usermessages.menuCommand;
     helpText = Usermessages.menuHelp;
     protected minArguments = 0;

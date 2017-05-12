@@ -5,6 +5,7 @@ import * as Usermessages from '../user-messages';
 
 export class Selection extends Command {
 
+    shortCommand = "se";
     fullCommand = Usermessages.selectionCommand;
     helpText = Usermessages.selectionHelp;
     protected minArguments = 1;

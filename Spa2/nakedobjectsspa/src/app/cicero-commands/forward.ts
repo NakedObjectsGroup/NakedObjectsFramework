@@ -4,6 +4,7 @@ import * as Usermessages from '../user-messages';
 
 export class Forward extends Command {
 
+    shortCommand = "fo";
     fullCommand = Usermessages.forwardCommand;
     helpText = Usermessages.forwardHelp;
     protected minArguments = 0;

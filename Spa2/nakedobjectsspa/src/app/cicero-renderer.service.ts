@@ -4,7 +4,7 @@ import * as Models from './models';
 import { Injectable } from '@angular/core';
 import { PaneRouteData, CollectionViewState } from './route-data';
 import { ContextService } from './context.service';
-import { ConfigService, IAppConfig } from './config.service';
+import { ConfigService } from './config.service';
 import { InteractionMode } from './route-data';
 import { MaskService } from './mask.service';
 import { getParametersAndCurrentValue } from './cicero-commands/command-result';
@@ -15,28 +15,26 @@ import forEach from 'lodash/forEach';
 import keys from 'lodash/keys';
 import some from 'lodash/some';
 import invert from 'lodash/invert';
-import {Result} from './cicero-commands/result';
+import { Result } from './cicero-commands/result';
 
 @Injectable()
 export class CiceroRendererService {
 
-
-    constructor(protected context: ContextService,
-        protected configService: ConfigService,
-        protected error: ErrorService,
-        protected mask: MaskService) {
+    constructor(
+        private readonly context: ContextService,
+        private readonly configService: ConfigService,
+        private readonly error: ErrorService,
+        private readonly mask: MaskService
+    ) {
         this.keySeparator = configService.config.keySeparator;
     }
+
     protected keySeparator: string;
 
-    private returnResult(input: string, output: string): Promise<Result> {
-        return Promise.resolve({ input: input, output: output });
-    }
-
-
+    private returnResult = (input: string, output: string): Promise<Result> => Promise.resolve(Result.create(input, output));
+ 
     //TODO: remove renderer.
     renderHome(routeData: PaneRouteData): Promise<Result> {
-
         if (routeData.menuId) {
             return this.renderOpenMenu(routeData);
         } else {
@@ -50,7 +48,7 @@ export class CiceroRendererService {
 
         return this.context.getObject(1, oid, routeData.interactionMode) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
             .then((obj: Ro.DomainObjectRepresentation) => {
-                const openCollIds = openCollectionIds(routeData);
+                const openCollIds = this.openCollectionIds(routeData);
                 if (some(openCollIds)) {
                     return this.renderOpenCollection(openCollIds[0], obj);
                 } else if (obj.isTransient()) {
@@ -83,7 +81,7 @@ export class CiceroRendererService {
             );
     };
 
-    renderError (message : string) {
+    renderError(message: string) {
         const err = this.context.getError().error as Ro.ErrorRepresentation;
         return this.returnResult("", `Sorry, an application error has occurred. ${err.message()}`);
     };
@@ -101,15 +99,12 @@ export class CiceroRendererService {
 
     //TODO functions become 'private'
     //Returns collection Ids for any collections on an object that are currently in List or Table mode
-    private openCollectionIds(routeData: PaneRouteData): string[] {
-        return filter(keys(routeData.collections), k => routeData.collections[k] != CollectionViewState.Summary);
-    }
+   
 
-    private renderOpenCollection(collId: string, obj: Ro.DomainObjectRepresentation) : Promise<Result> {
+    private renderOpenCollection(collId: string, obj: Ro.DomainObjectRepresentation): Promise<Result> {
         const coll = obj.collectionMember(collId);
-        let output = renderCollectionNameAndSize(coll);
+        let output = this.renderCollectionNameAndSize(coll);
         output += `(${Msg.collection} ${Msg.on} ${Ro.typePlusTitle(obj)})`;
-        //cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
         return this.returnResult("", output);
     }
 
@@ -117,7 +112,6 @@ export class CiceroRendererService {
         let output = `${Msg.unsaved} `;
         output += obj.extensions().friendlyName() + "\n";
         output += this.renderModifiedProperties(obj, routeData, this.mask);
-        //cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
         return this.returnResult("", output);
     }
 
@@ -128,7 +122,6 @@ export class CiceroRendererService {
             return this.context.getInvokableAction(obj.actionMember(routeData.dialogId)).
                 then(invokableAction => {
                     output += this.renderActionDialog(invokableAction, routeData, this.mask);
-                    //cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
                     return this.returnResult("", output);
                 });
         } else {
@@ -151,7 +144,7 @@ export class CiceroRendererService {
         }
     }
 
-    private renderOpenMenu(routeData: PaneRouteData) : Promise<Result> {
+    private renderOpenMenu(routeData: PaneRouteData): Promise<Result> {
         var output = "";
         return this.context.getMenu(routeData.menuId).
             then(menu => {
@@ -162,7 +155,7 @@ export class CiceroRendererService {
                 if (invokableAction) {
                     output += `\n${this.renderActionDialog(invokableAction, routeData, this.mask)}`;
                 }
-                
+
                 return this.returnResult("", output);
             });
     }
@@ -175,7 +168,7 @@ export class CiceroRendererService {
         forEach(getParametersAndCurrentValue(invokable, this.context), (value, paramId) => {
             output += Ro.friendlyNameForParam(invokable, paramId) + ": ";
             const param = invokable.parameters()[paramId];
-            output += renderFieldValue(param, value, mask);
+            output += this.renderFieldValue(param, value, mask);
             output += "\n";
         });
         return output;
@@ -189,67 +182,38 @@ export class CiceroRendererService {
             each(props, (value, propId) => {
                 output += Ro.friendlyNameForProperty(obj, propId) + ": ";
                 const pm = obj.propertyMember(propId);
-                output += renderFieldValue(pm, value, mask);
+                output += this.renderFieldValue(pm, value, mask);
                 output += "\n";
             });
         }
         return output;
     }
-}
 
-//Returns collection Ids for any collections on an object that are currently in List or Table mode
-export function openCollectionIds(routeData: PaneRouteData): string[] {
-    return filter(keys(routeData.collections), k => routeData.collections[k] !== CollectionViewState.Summary);
-}
+    
 
-//Handles empty values, and also enum conversion
-export function renderFieldValue(field: Ro.IField, value: Ro.Value, mask: MaskService): string {
-    if (!field.isScalar()) { //i.e. a reference
-        return value.isNull() ? Msg.empty : value.toString();
+    private renderSingleChoice(field: Ro.IField, value: Ro.Value) {
+        //This is to handle an enum: render it as text, not a number:  
+        const inverted = invert(field.choices());
+        return (<any>inverted)[value.toValueString()];
     }
-    //Rest is for scalar fields only:
-    if (value.toString()) { //i.e. not empty        
-        if (field.entryType() === Ro.EntryType.Choices) {
-            return renderSingleChoice(field, value);
-        } else if (field.entryType() === Ro.EntryType.MultipleChoices && value.isList()) {
-            return renderMultipleChoicesCommaSeparated(field, value);
-        }
-    }
-    let properScalarValue: number | string | boolean | Date;
-    if (Ro.isDateOrDateTime(field)) {
-        properScalarValue = Ro.toUtcDate(value);
-    } else {
-        properScalarValue = value.scalar();
-    }
-    if (properScalarValue === "" || properScalarValue == null) {
-        return Msg.empty;
-    } else {
-        const remoteMask = field.extensions().mask();
-        const format = field.extensions().format();
-        return mask.toLocalFilter(remoteMask, format).filter(properScalarValue);
-    }
-}
 
-function renderSingleChoice(field: Ro.IField, value: Ro.Value) {
-    //This is to handle an enum: render it as text, not a number:  
-    const inverted = invert(field.choices());
-    return (<any>inverted)[value.toValueString()];
-}
+    private renderMultipleChoicesCommaSeparated(field: Ro.IField, value: Ro.Value) {
+        //This is to handle an enum: render it as text, not a number: 
+        const inverted = invert(field.choices());
+        let output = "";
+        const values = value.list();
+        forEach(values, v => {
+            output += (<any>inverted)[v.toValueString()] + ",";
+        });
+        return output;
+    }
 
-function renderMultipleChoicesCommaSeparated(field: Ro.IField, value: Ro.Value) {
-    //This is to handle an enum: render it as text, not a number: 
-    const inverted = invert(field.choices());
-    let output = "";
-    const values = value.list();
-    forEach(values, v => {
-        output += (<any>inverted)[v.toValueString()] + ",";
-    });
-    return output;
-}
 
-export function renderCollectionNameAndSize(coll: Ro.CollectionMember): string {
-    let output: string = coll.extensions().friendlyName() + ": ";
-    switch (coll.size()) {
+    // helpers 
+
+    renderCollectionNameAndSize(coll: Ro.CollectionMember): string {
+        let output: string = coll.extensions().friendlyName() + ": ";
+        switch (coll.size()) {
         case 0:
             output += Msg.empty;
             break;
@@ -258,6 +222,45 @@ export function renderCollectionNameAndSize(coll: Ro.CollectionMember): string {
             break;
         default:
             output += Msg.numberOfItems(coll.size());
+        }
+        return output + "\n";
     }
-    return output + "\n";
+
+    openCollectionIds(routeData: PaneRouteData): string[] {
+        return filter(keys(routeData.collections), k => routeData.collections[k] !== CollectionViewState.Summary);
+    }
+
+    //Handles empty values, and also enum conversion
+    renderFieldValue(field: Ro.IField, value: Ro.Value, mask: MaskService): string {
+        if (!field.isScalar()) { //i.e. a reference
+            return value.isNull() ? Msg.empty : value.toString();
+        }
+        //Rest is for scalar fields only:
+        if (value.toString()) { //i.e. not empty        
+            if (field.entryType() === Ro.EntryType.Choices) {
+                return this.renderSingleChoice(field, value);
+            } else if (field.entryType() === Ro.EntryType.MultipleChoices && value.isList()) {
+                return this.renderMultipleChoicesCommaSeparated(field, value);
+            }
+        }
+        let properScalarValue: number | string | boolean | Date;
+        if (Ro.isDateOrDateTime(field)) {
+            properScalarValue = Ro.toUtcDate(value);
+        } else {
+            properScalarValue = value.scalar();
+        }
+        if (properScalarValue === "" || properScalarValue == null) {
+            return Msg.empty;
+        } else {
+            const remoteMask = field.extensions().mask();
+            const format = field.extensions().format();
+            return mask.toLocalFilter(remoteMask, format).filter(properScalarValue);
+        }
+    }
+
 }
+
+
+
+
+

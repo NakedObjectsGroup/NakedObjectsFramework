@@ -10,6 +10,7 @@ import zipObject from 'lodash/zipObject';
 
 export class Save extends Command {
 
+    shortCommand = "sa";
     fullCommand = Usermessages.saveCommand;
     helpText = Usermessages.saveHelp;
     protected minArguments = 0;

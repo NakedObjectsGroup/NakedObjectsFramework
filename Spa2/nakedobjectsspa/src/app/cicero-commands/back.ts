@@ -4,6 +4,7 @@ import * as Usermessages from '../user-messages';
 
 export class Back extends Command {
 
+    shortCommand = "ba";
     fullCommand = Usermessages.backCommand;
     helpText = Usermessages.backHelp;
     protected minArguments = 0;

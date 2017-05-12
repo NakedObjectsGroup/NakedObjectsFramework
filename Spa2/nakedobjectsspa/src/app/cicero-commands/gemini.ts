@@ -4,6 +4,7 @@ import * as Usermessages from '../user-messages';
 
 export class Gemini extends Command {
 
+    shortCommand = "ge";
     fullCommand = Usermessages.geminiCommand;
     helpText = Usermessages.geminiHelp;
     protected minArguments = 0;

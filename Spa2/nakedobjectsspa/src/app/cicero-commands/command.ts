@@ -20,7 +20,8 @@ import forEach from 'lodash/forEach';
 import findIndex from 'lodash/findIndex';
 import { Dictionary } from 'lodash';
 import * as Commandresult from './command-result';
-import * as Cicerorendererservice from '../cicero-renderer.service';
+import { CiceroRendererService } from '../cicero-renderer.service';
+
 
 export abstract class Command {
 
@@ -31,7 +32,8 @@ export abstract class Command {
         protected mask: MaskService,
         protected error: ErrorService,
         protected configService: ConfigService,
-        protected ciceroContext: CiceroContextService
+        protected ciceroContext: CiceroContextService,
+        protected ciceroRenderer: CiceroRendererService,
     ) {
         this.keySeparator = configService.config.keySeparator;
     }
@@ -39,7 +41,7 @@ export abstract class Command {
     argString: string;
     chained: boolean;
 
-
+    shortCommand : string;
     fullCommand: string;
     helpText: string;
     protected minArguments: number;
@@ -226,7 +228,7 @@ export abstract class Command {
     }
 
     protected closeAnyOpenCollections() {
-        const open = Cicerorendererservice.openCollectionIds(this.routeData());
+        const open = this.ciceroRenderer.openCollectionIds(this.routeData());
         forEach(open, id => this.urlManager.setCollectionMemberState(id, Routedata.CollectionViewState.Summary));
     }
 

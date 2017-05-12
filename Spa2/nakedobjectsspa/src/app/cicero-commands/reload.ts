@@ -4,6 +4,7 @@ import * as Usermessages from '../user-messages';
 
 export class Reload extends Command {
 
+    shortCommand = "re";
     fullCommand = Usermessages.reloadCommand;
     helpText = Usermessages.reloadHelp;
     protected minArguments = 0;

@@ -8,6 +8,7 @@ import * as Commandresult from './command-result';
 
 export class OK extends Command {
 
+    shortCommand = "ok";
     fullCommand = Usermessages.okCommand;
     helpText = Usermessages.okHelp;
     protected minArguments = 0;
