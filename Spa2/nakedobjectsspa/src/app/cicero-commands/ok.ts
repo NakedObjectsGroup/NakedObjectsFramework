@@ -36,20 +36,9 @@ export class OK extends Command {
             }
 
             return this.context.invokeAction(action, fieldMap).then((result: Models.ActionResultRepresentation) => {
-                // todo handle case where result is empty - this is no longer handled 
-                // by reject below
-                let alert = "";
-
-                const warnings = result.extensions().warnings();
-                if (warnings) {
-                    forEach(warnings, w => alert += `\nWarning: ${w}`);
-                }
-                const messages = result.extensions().messages();
-                if (messages) {
-                    forEach(messages, m => alert += `\n${m}`);
-                }
-
-                return this.returnResult("", alert || null, () => this.urlManager.closeDialogReplaceHistory(""));
+              
+               
+               return this.returnResult("", null, () =>  this.urlManager.closeDialogReplaceHistory(this.routeData().dialogId));
 
             }).catch((reject: Models.ErrorWrapper) => {
                 if (reject.error instanceof Models.ErrorMap) {

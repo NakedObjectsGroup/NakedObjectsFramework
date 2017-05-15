@@ -10,6 +10,8 @@ import { ErrorService } from '../error.service';
 import { CiceroContextService } from '../cicero-context.service';
 import { Command } from '../cicero-commands/Command';
 import { Result } from '../cicero-commands/result';
+import * as Contextservice from '../context.service';
+import reduce from 'lodash/reduce';
 
 @Component({
     selector: 'nof-cicero',
@@ -23,8 +25,12 @@ export class CiceroComponent implements OnInit {
         private readonly renderer: CiceroRendererService,
         private readonly error: ErrorService,
         private readonly urlManager: UrlManagerService,
-        private readonly ciceroContext: CiceroContextService) {     
+        private readonly ciceroContext: CiceroContextService,
+        private readonly context : Contextservice.ContextService) {     
     }
+
+    private warnings : string[];
+    private messages : string[];
 
     private render() {
         switch (this.lastPaneRouteData.location) {
@@ -63,6 +69,12 @@ export class CiceroComponent implements OnInit {
                         }
                     });
         };
+
+        this.context.warning$.subscribe(ws => this.warnings = ws);
+
+        this.context.messages$.subscribe(ms => this.messages = ms);
+
+
     }
 
     ngOnDestroy(): void {
@@ -101,8 +113,14 @@ export class CiceroComponent implements OnInit {
         if (result.input != null) {
             this.inputText = result.input;
         }
+
         if (result.output != null) {
-            this.outputText = result.output;
+            const warning = this.warnings && this.warnings.length > 0 ? reduce(this.warnings, (s, w) => `${s}${w}\n`, "Warning: ") : "";
+            const messages = this.messages && this.messages.length > 0 ? reduce(this.messages, (s, w) => `${s}${w}\n`, "") : "";
+            const prefix = `${warning}${messages}`;
+            const output = result.output != null ? result.output : "";
+
+            this.outputText = `${prefix}${output}`;
         }
     }
 

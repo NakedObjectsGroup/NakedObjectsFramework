@@ -9,14 +9,13 @@ import { InteractionMode } from './route-data';
 import { MaskService } from './mask.service';
 import { getParametersAndCurrentValue } from './cicero-commands/command-result';
 import { ErrorService } from './error.service';
-import each from 'lodash/each';
 import filter from 'lodash/filter';
-import forEach from 'lodash/forEach';
 import keys from 'lodash/keys';
 import some from 'lodash/some';
 import reduce from 'lodash/reduce';
 import invert from 'lodash/invert';
 import { Result } from './cicero-commands/result';
+
 
 @Injectable()
 export class CiceroRendererService {
@@ -104,61 +103,55 @@ export class CiceroRendererService {
 
     private renderOpenCollection(collId: string, obj: Ro.DomainObjectRepresentation): Promise<Result> {
         const coll = obj.collectionMember(collId);
-        let output = this.renderCollectionNameAndSize(coll);
-        output += `(${Msg.collection} ${Msg.on} ${Ro.typePlusTitle(obj)})`;
+        const output = `${this.renderCollectionNameAndSize(coll)}(${Msg.collection} ${Msg.on} ${Ro.typePlusTitle(obj)})`;
         return this.returnResult("", output);
     }
 
     private renderTransientObject(routeData: PaneRouteData, obj: Ro.DomainObjectRepresentation) {
-        let output = `${Msg.unsaved} `;
-        output += obj.extensions().friendlyName() + "\n";
-        output += this.renderModifiedProperties(obj, routeData, this.mask);
+        const output = `${Msg.unsaved} ${obj.extensions().friendlyName()}\n${this.renderModifiedProperties(obj, routeData, this.mask)}`;
         return this.returnResult("", output);
     }
 
     private renderForm(routeData: PaneRouteData, obj: Ro.DomainObjectRepresentation) {
-        let output = `${Msg.editing} `;
-        output += Ro.typePlusTitle(obj) + "\n";
+        const prefix = `${Msg.editing} ${Ro.typePlusTitle(obj)}\n`;
         if (routeData.dialogId) {
             return this.context.getInvokableAction(obj.actionMember(routeData.dialogId)).
                 then(invokableAction => {
-                    output += this.renderActionDialog(invokableAction, routeData, this.mask);
+                    const output = `${prefix}${this.renderActionDialog(invokableAction, routeData, this.mask)}`;
                     return this.returnResult("", output);
                 });
         } else {
-            output += this.renderModifiedProperties(obj, routeData, this.mask);
-            //cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
+            const output = `${prefix}${this.renderModifiedProperties(obj, routeData, this.mask)}`;
             return this.returnResult("", output);
         }
     }
 
     private renderObjectTitleAndDialogIfOpen(routeData: PaneRouteData, obj: Ro.DomainObjectRepresentation) {
-        let output = Ro.typePlusTitle(obj) + "\n";
+        const prefix = `${Ro.typePlusTitle(obj)}\n`;
         if (routeData.dialogId) {
             return this.context.getInvokableAction(obj.actionMember(routeData.dialogId)).
                 then(invokableAction => {
-                    output += this.renderActionDialog(invokableAction, routeData, this.mask);
+                    const output = `${prefix}${this.renderActionDialog(invokableAction, routeData, this.mask)}`;
                     return this.returnResult("", output);
                 });
         } else {
-            return this.returnResult("", output);
+            return this.returnResult("", prefix);
         }
     }
 
     private renderOpenMenu(routeData: PaneRouteData): Promise<Result> {
-        let output = "";
-        return this.context.getMenu(routeData.menuId).
-            then(menu => {
-                output = Msg.menuTitle(menu.title());
-                return routeData.dialogId ? this.context.getInvokableAction(menu.actionMember(routeData.dialogId)) : Promise.resolve(null);
-            }).
-            then(invokableAction => {
-                if (invokableAction) {
-                    output += `\n${this.renderActionDialog(invokableAction, routeData, this.mask)}`;
-                }
-
-                return this.returnResult("", output);
-            });
+        
+        return this.context.getMenu(routeData.menuId).then(menu => {
+            const prefix = Msg.menuTitle(menu.title());
+            if (routeData.dialogId) {
+                return this.context.getInvokableAction(menu.actionMember(routeData.dialogId)).then(invokableAction => {                   
+                    const output = `${prefix}\n${this.renderActionDialog(invokableAction, routeData, this.mask)}`;                  
+                    return this.returnResult("", output);
+                });
+            } else {
+                return this.returnResult("", prefix);
+            }
+        });
     }
 
     private renderActionDialog(invokable: Models.ActionRepresentation | Models.InvokableActionMember,
