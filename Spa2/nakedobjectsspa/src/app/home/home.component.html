@@ -1,15 +1,20 @@
-<div [attr.id]="paneIdName" [ngClass]="paneType">
-	<!--TODO: This is the Single/Split definition-->
-	<div class="home">
-		<div class="header">
-			<div class="title">Home</div>
-            <nof-menu-bar class="menus" *ngIf="hasMenus" [menus]="menuItems"></nof-menu-bar> 
-			<div class="messages"></div>
-		</div>
-		<nof-action-list *ngIf="selectedMenu" [menuHolder]="selectedMenu"></nof-action-list>
-		<div class="main-column">
-		<nof-dialog *ngIf="selectedMenu" [selectedDialogId]="selectedDialogId" [parent]="selectedMenu" ></nof-dialog>
+<ng-container *ngIf="hasAuthorisedMenus">
+	<div [attr.id]="paneIdName" [ngClass]="paneType">
+		<!--TODO: This is the Single/Split definition-->
+		<div class="home">
+			<div class="header">
+				<div class="title">Home</div>
+				<nof-menu-bar class="menus" *ngIf="hasMenus" [menus]="menuItems"></nof-menu-bar>
+				<div class="messages"></div>
+			</div>
+			<nof-action-list *ngIf="selectedMenu" [menuHolder]="selectedMenu"></nof-action-list>
+			<div class="main-column">
+				<nof-dialog *ngIf="selectedMenu" [selectedDialogId]="selectedDialogId" [parent]="selectedMenu"></nof-dialog>
+			</div>
 		</div>
 	</div>
-</div>
-<router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>
+	<router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>
+</ng-container>
+<ng-container *ngIf="!hasAuthorisedMenus">
+	<p>You have no authorized menus</p>
+</ng-container>

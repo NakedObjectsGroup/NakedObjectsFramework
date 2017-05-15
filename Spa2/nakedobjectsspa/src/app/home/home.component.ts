@@ -39,12 +39,15 @@ export class HomeComponent extends PaneComponent {
     selectedMenu: MenuViewModel | null;
     selectedDialogId: string | null;
 
+    hasAuthorisedMenus : boolean = true;
+
     private menus: MenusViewModel;
 
     getMenus(paneRouteData: PaneRouteData) {
         this.context.getMenus()
             .then((menus: Models.MenusRepresentation) => {
                 this.menus = this.viewModelFactory.menusViewModel(menus, paneRouteData);
+                this.hasAuthorisedMenus = this.menus && this.menus.items && this.menus.items.length > 0;
             })
             .catch((reject: Models.ErrorWrapper) => {
                 this.errorService.handleError(reject);
