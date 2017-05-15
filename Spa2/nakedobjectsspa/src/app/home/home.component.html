@@ -16,5 +16,5 @@
 	<router-outlet (activate)="onChild()" (deactivate)="onChildless()"></router-outlet>
 </ng-container>
 <ng-container *ngIf="!hasAuthorisedMenus">
-	<p>You have no authorized menus</p>
+	<p>Either no menu actions are available  -  or you are not authorized to see any of them.  Please contact the application administrator.</p>
 </ng-container>
