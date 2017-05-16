@@ -225,7 +225,8 @@ export abstract class FieldComponent {
 
     populateBoolean() {
 
-        if (this.isBoolean) {
+        // editable booleans only
+        if (this.isBoolean && this.control) {
             const input = this.control.value;
             const element = this.checkboxList.first.nativeElement;
             if (input == null) {
