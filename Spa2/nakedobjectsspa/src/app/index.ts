@@ -48,7 +48,6 @@ export * from './cicero-renderer.service';
 export * from './auth.service';
 export * from './cicero-context.service';
 
-export * from './gemini-boolean.directive';
 export * from './gemini-clear.directive';
 export * from './gemini-click.directive';
 

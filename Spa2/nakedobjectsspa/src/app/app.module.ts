@@ -19,7 +19,6 @@ import { EditParameterComponent } from './edit-parameter/edit-parameter.componen
 import { RecentComponent } from './recent/recent.component';
 import { ApplicationPropertiesComponent } from './application-properties/application-properties.component';
 import { GeminiClickDirective } from './gemini-click.directive';
-import { GeminiBooleanDirective } from './gemini-boolean.directive';
 import { GeminiClearDirective } from './gemini-clear.directive';
 import { ErrorService } from './error.service';
 import { ContextService } from './context.service';
@@ -99,7 +98,6 @@ export function authServiceFactory(configService: ConfigService, auth0AuthServic
         RecentComponent,
         ApplicationPropertiesComponent,
         GeminiClickDirective,
-        GeminiBooleanDirective,
         GeminiClearDirective,
         CollectionComponent,
         AttachmentComponent,

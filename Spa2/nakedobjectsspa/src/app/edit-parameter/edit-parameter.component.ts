@@ -1,4 +1,4 @@
-﻿import { Component, Input, OnInit, ElementRef, HostListener, ViewChildren, QueryList, Renderer } from '@angular/core';
+﻿import { Component, Input, OnInit, ElementRef, HostListener, ViewChildren, QueryList, Renderer, AfterViewInit } from '@angular/core';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { UrlManagerService } from '../url-manager.service';
 import * as Models from '../models';
@@ -18,7 +18,7 @@ import { Dictionary } from 'lodash';
     template: require('./edit-parameter.component.html'),
     styles: [require('./edit-parameter.component.css')]
 })
-export class EditParameterComponent extends FieldComponent implements OnInit {
+export class EditParameterComponent extends FieldComponent implements OnInit, AfterViewInit {
 
     constructor(
         private readonly viewModelFactory: ViewModelFactoryService,
@@ -144,6 +144,19 @@ export class EditParameterComponent extends FieldComponent implements OnInit {
         this.handleKeyEvents(event, this.isMultiline);
     }
 
+    @HostListener('click', ['$event'])
+    onClick(event: KeyboardEvent) {
+        this.handleClick(event);
+    }
+
     @ViewChildren("focus")
     focusList: QueryList<ElementRef>;
+
+    @ViewChildren("checkbox")
+    checkboxList: QueryList<ElementRef>;
+
+    ngAfterViewInit() {
+        this.populateBoolean();
+    }
+
 }

@@ -126,7 +126,7 @@
                             </ng-container>
                         </ng-container>
                         <ng-container *ngSwitchCase="'boolean'">
-                            <input #focus [id]="propertyPaneId"  type="checkbox" [geminiBoolean]="property" />{{propertyDescription}}
+                            <input #focus #checkbox [id]="propertyPaneId" type="checkbox" [formControlName]="propertyId"/>{{propertyDescription}}
                         </ng-container>
                         <ng-container *ngSwitchDefault>
                             <input #focus [id]="propertyPaneId"  type="text" placeholder="{{propertyDescription}}" [formControlName]="propertyId"

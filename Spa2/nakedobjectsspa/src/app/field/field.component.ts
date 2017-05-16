@@ -2,7 +2,7 @@
 import * as Ro from '../ro-interfaces';
 import { AbstractControl } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
-import { ElementRef, QueryList, Renderer } from '@angular/core';
+import { ElementRef, QueryList, Renderer, ViewChildren } from '@angular/core';
 
 import { ContextService } from '../context.service';
 import { ChoiceViewModel } from '../view-models/choice-view-model';
@@ -163,11 +163,17 @@ export abstract class FieldComponent {
             this.populateDropdown();
         } else if (this.isAutoComplete) {
             this.populateAutoComplete();
+        } else if (this.isBoolean) {
+            this.populateBoolean();
         }
     }
 
     get message() {
         return this.model.getMessage();
+    }
+
+    get isBoolean() {
+        return this.model.returnType === "boolean";
     }
 
     private formGrp: FormGroup;
@@ -217,6 +223,22 @@ export abstract class FieldComponent {
         }
     }
 
+    populateBoolean() {
+
+        if (this.isBoolean) {
+            const input = this.control.value;
+            const element = this.checkboxList.first.nativeElement;
+            if (input == null) {
+                this.renderer.setElementProperty(element, "indeterminate", true);
+                this.renderer.setElementProperty(element, "checked", null);
+            } else {
+                this.renderer.setElementProperty(element, "indeterminate", false);
+                this.renderer.setElementProperty(element, "checked", !!input);
+            }
+        }
+    }
+
+
     select(item: ChoiceViewModel) {
         this.model.choices = [];
         this.model.selectedChoice = item;
@@ -254,8 +276,6 @@ export abstract class FieldComponent {
                     });
                 event.preventDefault();
             }
-
-
         }
         if (event && event.keyCode === deleteKeyCode) {
             this.context.setCopyViewModel(null);
@@ -276,6 +296,29 @@ export abstract class FieldComponent {
             this.filterEnter(event);
         }
     }
+
+    triStateClick = (currentValue: any) => {
+
+        switch (currentValue) {
+            case false:
+                return true;
+            case true:
+                return null;
+            default: // null
+                return false;
+        }
+    };
+
+
+    protected handleClick(event: Event) {
+        if (this.isBoolean && this.model.optional) {
+            const currentValue = this.control.value;
+            setTimeout(() => this.control.setValue(this.triStateClick(currentValue)));
+            event.preventDefault();
+        }
+    }
+
+    abstract checkboxList: QueryList<ElementRef>;
 
     abstract focusList: QueryList<ElementRef>;
 

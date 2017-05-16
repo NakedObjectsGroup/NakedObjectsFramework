@@ -1,4 +1,4 @@
-﻿import { Component, Input, ElementRef, OnInit, HostListener, ViewChildren, QueryList, Renderer, NgZone } from '@angular/core';
+﻿import { Component, Input, ElementRef, OnInit, HostListener, ViewChildren, QueryList, Renderer, AfterViewInit } from '@angular/core';
 import { FieldComponent } from '../field/field.component';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -19,7 +19,7 @@ import { Dictionary } from 'lodash';
     template: require('./edit-property.component.html'),
     styles: [require('./edit-property.component.css')]
 })
-export class EditPropertyComponent extends FieldComponent implements OnInit {
+export class EditPropertyComponent extends FieldComponent implements OnInit, AfterViewInit {
 
     constructor(
         myElement: ElementRef,
@@ -166,4 +166,11 @@ export class EditPropertyComponent extends FieldComponent implements OnInit {
 
     @ViewChildren("focus")
     focusList: QueryList<ElementRef>;
+
+    @ViewChildren("checkbox")
+    checkboxList: QueryList<ElementRef>;
+
+    ngAfterViewInit() {
+        this.populateBoolean();
+    }
 }

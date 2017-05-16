@@ -91,7 +91,7 @@
                         </ng-container>
                     </ng-container>
                     <ng-container *ngSwitchCase="'boolean'">
-                        <input #focus [id]="parameterPaneId" type="checkbox" [geminiBoolean]="parameter" />{{description}}
+                        <input #focus #checkbox [id]="parameterPaneId" type="checkbox" [formControlName]="parameterId"/>{{description}}
                     </ng-container>
                     <ng-container *ngSwitchDefault>
                         <input #focus [id]="parameterPaneId" type="text" placeholder="{{description}}" [formControlName]="parameterId" [geminiClear]="parameter" [form]="form" />
