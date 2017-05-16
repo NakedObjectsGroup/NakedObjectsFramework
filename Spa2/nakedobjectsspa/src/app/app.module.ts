@@ -1,5 +1,5 @@
 ﻿import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule, ErrorHandler, APP_INITIALIZER, LOCALE_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
@@ -59,7 +59,8 @@ import { AuthHttp, AuthConfig } from 'angular2-jwt';
 import { Http, RequestOptions } from '@angular/http';
 import { LoginComponent } from './login/login.component';
 import { LogoffComponent } from './logoff/logoff.component';
-import * as Cicerocontextservice from './cicero-context.service';
+import { CiceroContextService } from './cicero-context.service';
+import { MdAutocompleteModule, MdDatepickerModule, MdNativeDateModule } from '@angular/material';
 
 export function authHttpServiceFactory(http: Http, configService: ConfigService, options: RequestOptions): any {
     if (configService.config.authenticate) {
@@ -123,13 +124,16 @@ export function authServiceFactory(configService: ConfigService, auth0AuthServic
     ],
     imports: [
         BrowserModule,
-        BrowserAnimationsModule,
+        NoopAnimationsModule,
         DndModule.forRoot(),
         FormsModule,
         HttpModule,
         RoutingModule,
         ReactiveFormsModule,
-        MaterialModule
+        MaterialModule,
+        MdAutocompleteModule,
+        MdDatepickerModule,
+        MdNativeDateModule
     ],
     providers: [
         UrlManagerService,
@@ -147,7 +151,7 @@ export function authServiceFactory(configService: ConfigService, auth0AuthServic
         ConfigService,
         CiceroCommandFactoryService,
         CiceroRendererService,
-        Cicerocontextservice.CiceroContextService, 
+        CiceroContextService, 
         Auth0AuthService,
         NullAuthService,
         { provide: ErrorHandler, useClass: GeminiErrorHandler },
