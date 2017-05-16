@@ -1,4 +1,5 @@
 ﻿import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule, ErrorHandler, APP_INITIALIZER, LOCALE_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
@@ -122,6 +123,7 @@ export function authServiceFactory(configService: ConfigService, auth0AuthServic
     ],
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
         DndModule.forRoot(),
         FormsModule,
         HttpModule,

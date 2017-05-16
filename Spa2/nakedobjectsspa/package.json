@@ -44,7 +44,7 @@
     "@angular/core": "4.0.2",
     "@angular/forms": "4.0.2",
     "@angular/http": "4.0.2",
-    "@angular/material": "2.0.0-beta.2",
+    "@angular/material": "2.0.0-beta.5",
     "@angular/platform-browser": "4.0.2",
     "@angular/platform-browser-dynamic": "4.0.2",
     "@angular/router": "4.0.2",
@@ -83,6 +83,6 @@
     "replace-in-file": "2.5.0",
     "ts-node": "3.0.2",
     "tslint": "5.1.0",
-    "typescript": "2.3.0"
+    "typescript": "2.3.2"
   }
 }
