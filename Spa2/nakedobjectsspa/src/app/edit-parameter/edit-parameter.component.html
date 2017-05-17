@@ -80,7 +80,7 @@
                         <ng-container *ngSwitchCase="'date'">
                             <!--<input #focus [id]="parameterPaneId" type="date" placeholder="{{description}}" [formControlName]="parameterId" />-->
                             <!--<input #focus [id]="parameterPaneId" placeholder="{{description}}" [formControlName]="parameterId" [dpDayPicker]="datepickerConfig" theme="gemini" />-->
-                            <ng2-datepicker  #focus [id]="parameterPaneId"   [formControlName]="parameterId" [options]="datepickerConfig"></ng2-datepicker >
+                            <ng2-datepicker  [id]="parameterPaneId"   [formControlName]="parameterId" [options]="datepickerConfig"></ng2-datepicker >
                             
                         </ng-container>
                         <ng-container *ngSwitchCase="'time'">
