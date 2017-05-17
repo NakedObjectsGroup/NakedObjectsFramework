@@ -1,4 +1,4 @@
-﻿import { Component, Input, OnInit, ElementRef, HostListener, ViewChildren, QueryList, Renderer, AfterViewInit } from '@angular/core';
+﻿import { Component, Input, OnInit, ElementRef, HostListener, ViewChildren, QueryList, Renderer, AfterViewInit, ViewChild } from '@angular/core';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { UrlManagerService } from '../url-manager.service';
 import * as Models from '../models';
@@ -12,6 +12,7 @@ import { ChoiceViewModel } from '../view-models/choice-view-model';
 import { ConfigService } from '../config.service';
 import { LoggerService } from '../logger.service';
 import { Dictionary } from 'lodash';
+import { DatePickerComponent }from 'ng2-date-picker';
 
 @Component({
     selector: 'nof-edit-parameter',
@@ -154,6 +155,9 @@ export class EditParameterComponent extends FieldComponent implements OnInit, Af
 
     @ViewChildren("checkbox")
     checkboxList: QueryList<ElementRef>;
+
+    @ViewChild("datepicker")
+    datepicker: DatePickerComponent;
 
     ngAfterViewInit() {
         this.populateBoolean();

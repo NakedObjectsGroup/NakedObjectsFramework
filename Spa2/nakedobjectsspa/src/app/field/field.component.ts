@@ -2,8 +2,7 @@
 import * as Ro from '../ro-interfaces';
 import { AbstractControl } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
-import { ElementRef, QueryList, Renderer, ViewChildren } from '@angular/core';
-
+import { ElementRef, QueryList, Renderer } from '@angular/core';
 import { ContextService } from '../context.service';
 import { ChoiceViewModel } from '../view-models/choice-view-model';
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
@@ -21,6 +20,8 @@ import find from 'lodash/find';
 import every from 'lodash/every';
 import mapValues from 'lodash/mapValues';
 import omit from 'lodash/omit';
+import { DatePickerComponent } from 'ng2-date-picker';
+
 
 export abstract class FieldComponent {
 
@@ -310,6 +311,18 @@ export abstract class FieldComponent {
         }
     };
 
+    private dpStateOpen : boolean = false;
+
+    toggleDatepicker() {
+        if (this.dpStateOpen) {
+            this.dpStateOpen = false;
+            this.datepicker.api.open();
+        } else {
+            this.dpStateOpen = true;
+            this.datepicker.api.close();
+        }
+        return false;
+    }
 
     protected handleClick(event: Event) {
         if (this.isBoolean && this.model.optional) {
@@ -323,8 +336,18 @@ export abstract class FieldComponent {
 
     abstract focusList: QueryList<ElementRef>;
 
+    abstract datepicker: DatePickerComponent;
+
     focus() {
+        // todo focus on datepicker 
+
         return !!(this.focusList && this.focusList.first) && Helpers.focus(this.renderer, this.focusList.first);
+    }
+
+    get datepickerConfig() {
+        return {
+            format: "D MMM YYYY"
+        }
     }
 
 }

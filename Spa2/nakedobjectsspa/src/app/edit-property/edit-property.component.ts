@@ -1,4 +1,4 @@
-﻿import { Component, Input, ElementRef, OnInit, HostListener, ViewChildren, QueryList, Renderer, AfterViewInit } from '@angular/core';
+﻿import { Component, Input, ElementRef, OnInit, HostListener, ViewChildren, QueryList, Renderer, AfterViewInit, ViewChild } from '@angular/core';
 import { FieldComponent } from '../field/field.component';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -13,6 +13,7 @@ import { LoggerService } from '../logger.service';
 import * as Models from '../models';
 import { AttachmentViewModel } from '../view-models/attachment-view-model';
 import { Dictionary } from 'lodash';
+import { DatePickerComponent } from 'ng2-date-picker';
 
 @Component({
     selector: 'nof-edit-property',
@@ -169,6 +170,9 @@ export class EditPropertyComponent extends FieldComponent implements OnInit, Aft
 
     @ViewChildren("checkbox")
     checkboxList: QueryList<ElementRef>;
+
+    @ViewChild("datepicker")
+    datepicker: DatePickerComponent;
 
     ngAfterViewInit() {
         this.populateBoolean();
