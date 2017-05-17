@@ -62,6 +62,7 @@ import { LogoffComponent } from './logoff/logoff.component';
 import { CiceroContextService } from './cicero-context.service';
 import { MdAutocompleteModule, MdDatepickerModule, MdNativeDateModule } from '@angular/material';
 import {DpDatePickerModule} from 'ng2-date-picker';
+import { DatePickerModule } from 'ng2-datepicker';
 
 export function authHttpServiceFactory(http: Http, configService: ConfigService, options: RequestOptions): any {
     if (configService.config.authenticate) {
@@ -135,7 +136,8 @@ export function authServiceFactory(configService: ConfigService, auth0AuthServic
         MdAutocompleteModule,
         MdDatepickerModule,
         MdNativeDateModule,
-        DpDatePickerModule
+        DpDatePickerModule,
+        DatePickerModule 
     ],
     providers: [
         UrlManagerService,

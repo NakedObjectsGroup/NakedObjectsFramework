@@ -21,7 +21,7 @@ import every from 'lodash/every';
 import mapValues from 'lodash/mapValues';
 import omit from 'lodash/omit';
 import { DatePickerComponent } from 'ng2-date-picker';
-
+import { DatePickerOptions, DateModel } from 'ng2-datepicker';
 
 export abstract class FieldComponent {
 
@@ -330,6 +330,9 @@ export abstract class FieldComponent {
             setTimeout(() => this.control.setValue(this.triStateClick(currentValue)));
             event.preventDefault();
         }
+        if (this.datepicker) {
+            this.datepicker.api.open();
+        }
     }
 
     abstract checkboxList: QueryList<ElementRef>;
@@ -345,9 +348,7 @@ export abstract class FieldComponent {
     }
 
     get datepickerConfig() {
-        return {
-            format: "D MMM YYYY"
-        }
+        return new DatePickerOptions();
     }
 
 }

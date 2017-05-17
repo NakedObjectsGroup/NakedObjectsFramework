@@ -79,7 +79,9 @@
                     <ng-container *ngSwitchCase="'string'" [ngSwitch]="format">
                         <ng-container *ngSwitchCase="'date'">
                             <!--<input #focus [id]="parameterPaneId" type="date" placeholder="{{description}}" [formControlName]="parameterId" />-->
-                            <input #focus [id]="parameterPaneId" placeholder="{{description}}" [formControlName]="parameterId" [dpDayPicker]="datepickerConfig" theme="gemini" />
+                            <!--<input #focus [id]="parameterPaneId" placeholder="{{description}}" [formControlName]="parameterId" [dpDayPicker]="datepickerConfig" theme="gemini" />-->
+                            <ng2-datepicker  #focus [id]="parameterPaneId"   [formControlName]="parameterId" [options]="datepickerConfig"></ng2-datepicker >
+                            
                         </ng-container>
                         <ng-container *ngSwitchCase="'time'">
                             <input #focus [id]="parameterPaneId" type="time" placeholder="{{description}}" [formControlName]="parameterId" [geminiClear]="parameter" [form]="form" />
