@@ -23,6 +23,8 @@ import omit from 'lodash/omit';
 
 export abstract class FieldComponent {
 
+    // todo what can we remove once  autocomplete is a separate component ? 
+
     elementRef: ElementRef;
 
     protected constructor(
