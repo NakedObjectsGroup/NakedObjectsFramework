@@ -362,13 +362,33 @@ export class ContextService {
             });
     };
 
-    clearMessages = () => this.messagesSource.next([]);
+    private pendingClearMessages : boolean = false;
+    private pendingClearWarnings : boolean = false;
 
-    clearWarnings = () => this.warningsSource.next([]);
 
-    broadcastMessage = (m: string) => this.messagesSource.next([m]);
+    clearMessages = () => {
+        if (this.pendingClearMessages) {
+            this.messagesSource.next([]);
+        }
+        this.pendingClearMessages = !this.pendingClearMessages;
+    }
 
-    broadcastWarning = (w: string) => this.warningsSource.next([w]);
+    clearWarnings = () => {
+        if (this.pendingClearWarnings) {
+            this.warningsSource.next([]);
+        }
+        this.pendingClearWarnings = !this.pendingClearWarnings;
+    }
+    
+    broadcastMessage = (m: string) => {
+        this.pendingClearMessages = false;
+        this.messagesSource.next([m]);
+    }
+
+    broadcastWarning = (w: string) => {
+        this.pendingClearWarnings = false;
+        this.warningsSource.next([w]);
+    }
 
     getHome = () => {
         // for moment don't bother caching only called on startup and for whatever resaon cache doesn't work. 
@@ -681,6 +701,8 @@ export class ContextService {
     messages$ = this.messagesSource.asObservable();
 
     private setMessages(result: Models.ActionResultRepresentation) {
+        this.pendingClearMessages = this.pendingClearWarnings = false;
+        
         const warnings = result.extensions().warnings() || [];
         const messages = result.extensions().messages() || [];
 
