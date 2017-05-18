@@ -20,8 +20,6 @@ import find from 'lodash/find';
 import every from 'lodash/every';
 import mapValues from 'lodash/mapValues';
 import omit from 'lodash/omit';
-import { DatePickerComponent } from 'ng2-date-picker';
-import { DatePickerOptions, DateModel } from 'ng2-datepicker';
 
 export abstract class FieldComponent {
 
@@ -41,7 +39,7 @@ export abstract class FieldComponent {
     private model: ParameterViewModel | PropertyViewModel;
     private isConditionalChoices: boolean;
     private isAutoComplete: boolean;
-    private control: AbstractControl;
+    control: AbstractControl;
 
     protected init(vmParent: DialogViewModel | DomainObjectViewModel,
         vm: ParameterViewModel | PropertyViewModel,
@@ -311,27 +309,11 @@ export abstract class FieldComponent {
         }
     };
 
-    private dpStateOpen : boolean = false;
-
-    toggleDatepicker() {
-        if (this.dpStateOpen) {
-            this.dpStateOpen = false;
-            this.datepicker.api.open();
-        } else {
-            this.dpStateOpen = true;
-            this.datepicker.api.close();
-        }
-        return false;
-    }
-
     protected handleClick(event: Event) {
         if (this.isBoolean && this.model.optional) {
             const currentValue = this.control.value;
             setTimeout(() => this.control.setValue(this.triStateClick(currentValue)));
             event.preventDefault();
-        }
-        if (this.datepicker) {
-            this.datepicker.api.open();
         }
     }
 
@@ -339,16 +321,10 @@ export abstract class FieldComponent {
 
     abstract focusList: QueryList<ElementRef>;
 
-    abstract datepicker: DatePickerComponent;
-
     focus() {
         // todo focus on datepicker 
 
         return !!(this.focusList && this.focusList.first) && Helpers.focus(this.renderer, this.focusList.first);
-    }
-
-    get datepickerConfig() {
-        return new DatePickerOptions();
     }
 
 }

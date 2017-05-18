@@ -56,7 +56,6 @@
     "lodash": "4.17.4",
     "moment": "2.18.1",
     "mv": "2.1.1",
-    "ng2-date-picker": "^1.4.2",
     "ng2-datepicker": "^1.8.3",
     "ng2-dnd": "4.0.2",
     "replace-in-file": "2.5.0",

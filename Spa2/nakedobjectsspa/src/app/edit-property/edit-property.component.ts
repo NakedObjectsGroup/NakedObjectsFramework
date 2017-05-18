@@ -13,7 +13,6 @@ import { LoggerService } from '../logger.service';
 import * as Models from '../models';
 import { AttachmentViewModel } from '../view-models/attachment-view-model';
 import { Dictionary } from 'lodash';
-import { DatePickerComponent } from 'ng2-date-picker';
 
 @Component({
     selector: 'nof-edit-property',
@@ -150,11 +149,6 @@ export class EditPropertyComponent extends FieldComponent implements OnInit, Aft
         super.init(this.parent, this.property, this.form.controls[this.prop.id]);
     }
 
-    datePickerChanged(evt: Event) {
-        const val = (evt.target as HTMLInputElement).value;
-        this.formGroup.value[this.property.id] = val;
-    }
-
     @HostListener('keydown', ['$event'])
     onKeydown(event: KeyboardEvent) {
         this.handleKeyEvents(event, this.isMultiline);
@@ -170,9 +164,6 @@ export class EditPropertyComponent extends FieldComponent implements OnInit, Aft
 
     @ViewChildren("checkbox")
     checkboxList: QueryList<ElementRef>;
-
-    @ViewChild("datepicker")
-    datepicker: DatePickerComponent;
 
     ngAfterViewInit() {
         this.populateBoolean();

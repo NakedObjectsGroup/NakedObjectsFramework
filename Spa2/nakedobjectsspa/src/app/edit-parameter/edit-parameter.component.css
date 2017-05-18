@@ -195,7 +195,3 @@ select {
 .suggestions li {
     list-style-type: none;
 }
-
-:host /deep/ ng2-datepicker .datepicker-container {
-    position : absolute;
-}

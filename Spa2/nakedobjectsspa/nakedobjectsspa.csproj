@@ -42,6 +42,8 @@
     <Content Include="src\app\collections\collections.component.html" />
     <Content Include="src\app\collection\collection.component.css" />
     <Content Include="src\app\collection\collection.component.html" />
+    <Content Include="src\app\date-picker\date-picker.component.css" />
+    <Content Include="src\app\date-picker\date-picker.component.html" />
     <Content Include="src\app\dialog\dialog.component.css" />
     <Content Include="src\app\dialog\dialog.component.html" />
     <Content Include="src\app\dynamic-error\dynamic-error.component.css" />
@@ -159,6 +161,7 @@
     <TypeScriptCompile Include="src\app\context.service.ts" />
     <TypeScriptCompile Include="src\app\custom-component-config.service.ts" />
     <TypeScriptCompile Include="src\app\custom-component.service.ts" />
+    <TypeScriptCompile Include="src\app\date-picker\date-picker.component.ts" />
     <TypeScriptCompile Include="src\app\dialog\dialog.component.ts" />
     <TypeScriptCompile Include="src\app\dynamic-error\dynamic-error.component.ts" />
     <TypeScriptCompile Include="src\app\dynamic-list\dynamic-list.component.ts" />

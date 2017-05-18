@@ -27,6 +27,11 @@ import { ILocalFilter } from '../mask.service';
 import * as moment from 'moment'; // todo fix moment locale import size 
 import { ConfigService } from '../config.service'; 
 
+export function getDate(val: string): Date | null {
+    const dt1 = moment(val, "YYYY-MM-DD", true);
+    return dt1.isValid() ? dt1.toDate() : null;
+}
+
 export function createForm(dialog: DialogViewModel, formBuilder: FormBuilder): { form: FormGroup, dialog: DialogViewModel, parms: Dictionary<ParameterViewModel> } {
     const pps = dialog.parameters;
     const parms = zipObject(map(pps, p => p.id), map(pps, p => p)) as Dictionary<ParameterViewModel>;
@@ -220,10 +225,6 @@ function validateDateTimeFormat(model: Models.IHasExtensions, newValue: Date): s
     return "";
 }
 
-function getDate(val: string): Date | null {
-    const dt1 = moment(val, "YYYY-MM-DD", true);
-    return dt1.isValid() ? dt1.toDate() : null;
-}
 
 
 function validateDateFormat(model: Models.IHasExtensions, newValue: Date | string, filter: ILocalFilter): string {
