@@ -36,6 +36,9 @@
     <Content Include="src\app\attachment\attachment.component.html" />
     <Content Include="src\app\action\action.component.css" />
     <Content Include="src\app\action\action.component.html" />
+    <Content Include="src\app\auto-complete\auto-complete.component.alt.css" />
+    <Content Include="src\app\auto-complete\auto-complete.component.css" />
+    <Content Include="src\app\auto-complete\auto-complete.component.html" />
     <Content Include="src\app\cicero\cicero.component.css" />
     <Content Include="src\app\cicero\cicero.component.html" />
     <Content Include="src\app\collections\collections.component.css" />
@@ -126,6 +129,7 @@
     <TypeScriptCompile Include="src\app\attachment\attachment.component.ts" />
     <TypeScriptCompile Include="src\app\action\action.component.ts" />
     <TypeScriptCompile Include="src\app\auth.service.ts" />
+    <TypeScriptCompile Include="src\app\auto-complete\auto-complete.component.ts" />
     <TypeScriptCompile Include="src\app\cicero-command-factory.service.ts" />
     <TypeScriptCompile Include="src\app\cicero-commands\action.ts" />
     <TypeScriptCompile Include="src\app\cicero-commands\back.ts" />

@@ -68,6 +68,7 @@ export abstract class FieldComponent {
     paneId: Pane;
     canDrop = false;
 
+    // todo why do we need this ? 
     droppable: FieldViewModel;
 
     accept(droppableVm: FieldViewModel) {
