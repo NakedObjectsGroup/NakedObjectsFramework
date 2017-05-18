@@ -657,6 +657,7 @@ namespace NakedObjects.Facade.Impl {
                     }
                 }
             }
+         
             return actionResultContext.ToActionResultContextFacade(this, Framework);
         }
 

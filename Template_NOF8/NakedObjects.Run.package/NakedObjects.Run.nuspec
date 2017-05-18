@@ -17,7 +17,7 @@
     Install into into a new ASP.NET Web.Api project.</description>
     <dependencies>
       <dependency id="NakedObjects.Rest" version="[8.1.0, 9)" />
-      <dependency id="NakedObjects.Facade.Impl" version="[8.1.1, 9)" />
+      <dependency id="NakedObjects.Facade.Impl" version="[8.1.2, 9)" />
       <dependency id="NakedObjects.Spa" version="[8.4.0, 9)" />
       <dependency id="WebActivatorEx" version="[2.1.0, 3.0)" />
       <dependency id="Unity.AspNet.WebApi" version="[3.5.1404, 4.0)" />
