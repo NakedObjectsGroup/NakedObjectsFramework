@@ -31,6 +31,7 @@ export * from './header/header.component';
 export * from './login/login.component';
 export * from './logoff/logoff.component';
 export * from './date-picker/date-picker.component';
+export * from './auto-complete/auto-complete.component';
 
 export * from './click-handler.service';
 export * from './color.service';
