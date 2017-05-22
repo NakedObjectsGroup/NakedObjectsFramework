@@ -64,6 +64,7 @@ import { MdAutocompleteModule } from '@angular/material';
 import { DatePickerModule } from 'ng2-datepicker';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { AutoCompleteComponent } from './auto-complete/auto-complete.component';
+import { Ng2DatePickerComponent } from './ng2-datepicker/ng2-datepicker.component';
 
 export function authHttpServiceFactory(http: Http, configService: ConfigService, options: RequestOptions): any {
     if (configService.config.authenticate) {
@@ -120,7 +121,8 @@ export function authServiceFactory(configService: ConfigService, auth0AuthServic
         LoginComponent,
         LogoffComponent,
         DatePickerComponent,
-        AutoCompleteComponent
+        AutoCompleteComponent,
+        Ng2DatePickerComponent
     ],
     entryComponents: [
         ObjectComponent,

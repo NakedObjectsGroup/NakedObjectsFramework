@@ -6,9 +6,9 @@ import { FormGroup, AbstractControl } from '@angular/forms';
 import { Dictionary } from 'lodash';
 
 @Component({
-    selector: 'app-auto-complete',
-    templateUrl: './auto-complete.component.html',
-    styleUrls: ['./auto-complete.component.css']
+    selector: 'nof-auto-complete',
+    template: require('./auto-complete.component.html'),
+    styles: [require('./auto-complete.component.css')]
 })
 export class AutoCompleteComponent implements OnInit {
 
@@ -36,7 +36,7 @@ export class AutoCompleteComponent implements OnInit {
         return this.model.id;
     }
 
-    get control() : AbstractControl {
+    get control(): AbstractControl {
         return this.form.controls[this.model.id];
     }
 

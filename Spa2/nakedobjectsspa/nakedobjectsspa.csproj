@@ -75,6 +75,7 @@
     <Content Include="src\app\menu-bar\menu-bar.component.html" />
     <Content Include="src\app\multi-line-dialog\multi-line-dialog.component.css" />
     <Content Include="src\app\multi-line-dialog\multi-line-dialog.component.html" />
+    <Content Include="src\app\ng2-datepicker\ng2-datepicker.component.html" />
     <Content Include="src\app\object\object.component.css" />
     <Content Include="src\app\object\object.component.html" />
     <Content Include="src\app\parameters\parameters.component.css" />
@@ -111,6 +112,7 @@
     <Content Include="src\config.json" />
     <Content Include="src\empty_config.json" />
     <Content Include="tsconfig.json" />
+    <Content Include="src\app\ng2-datepicker\ng2-datepicker.component.sass" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -190,6 +192,7 @@
     <TypeScriptCompile Include="src\app\menu-bar\menu-bar.component.ts" />
     <TypeScriptCompile Include="src\app\models.ts" />
     <TypeScriptCompile Include="src\app\multi-line-dialog\multi-line-dialog.component.ts" />
+    <TypeScriptCompile Include="src\app\ng2-datepicker\ng2-datepicker.component.ts" />
     <TypeScriptCompile Include="src\app\object\object.component.ts" />
     <TypeScriptCompile Include="src\app\pane\pane.ts" />
     <TypeScriptCompile Include="src\app\parameters\parameters.component.ts" />

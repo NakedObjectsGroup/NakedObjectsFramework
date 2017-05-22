@@ -23,7 +23,7 @@ import omit from 'lodash/omit';
 
 export abstract class FieldComponent {
 
-    // todo what can we remove once  autocomplete is a separate component ? 
+    // todo what can we remove once  autocomplete and datepicker are separate components ? 
 
     elementRef: ElementRef;
 

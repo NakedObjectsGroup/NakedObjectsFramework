@@ -78,8 +78,8 @@
                 <ng-container [ngSwitch]="parameterReturnType">
                     <ng-container *ngSwitchCase="'string'" [ngSwitch]="format">
                         <ng-container *ngSwitchCase="'date'">
-                            <input #focus [id]="parameterPaneId" type="date" placeholder="{{description}}" [formControlName]="parameterId" />
-                            <!--<nof-date-picker [control]="control"></nof-date-picker>-->
+                            <!--<input #focus [id]="parameterPaneId" type="date" placeholder="{{description}}" [formControlName]="parameterId" />-->
+                            <nof-date-picker [control]="control"></nof-date-picker>
                         </ng-container>
                         <ng-container *ngSwitchCase="'time'">
                             <input #focus [id]="parameterPaneId" type="time" placeholder="{{description}}" [formControlName]="parameterId" [geminiClear]="parameter" [form]="form" />

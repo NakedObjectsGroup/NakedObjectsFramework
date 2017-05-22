@@ -1,9 +1,9 @@
-import { AfterViewInit } from '@angular/core/core';
+import { AfterViewInit, ViewChild } from '@angular/core';
 import { Component, OnInit, Input, EventEmitter } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { DateModel } from 'ng2-datepicker';
 import * as Helpers from '../view-models/helpers-view-models';
 import * as moment from 'moment';
+import { DateModel, Ng2DatePickerComponent } from "../ng2-datepicker/ng2-datepicker.component";
 
 @Component({
     selector: 'nof-date-picker',
@@ -19,18 +19,19 @@ export class DatePickerComponent implements AfterViewInit {
     @Input()
     control: AbstractControl;
 
-    
     handleDefaultEvent(data: string) {
         if (this.control) {
-            // if (data ="closed") {
-            //    this.control.setValue("");
-            // }
+            if (data === "closed") {
+                const dateModel = this.datepicker.date as DateModel;
+                const val = dateModel.momentObj ? dateModel.momentObj.toDate() : "";            
+                this.control.setValue(val);                      
+            }
         }
     }
 
     handleDateChangedEvent(data: DateModel) {
         if (this.control) {
-            const date = data.momentObj.toDate();
+            const date = data.momentObj ? data.momentObj.toDate() : null;
             this.control.setValue(date);
         }
     }
@@ -50,13 +51,7 @@ export class DatePickerComponent implements AfterViewInit {
     inputEvents : EventEmitter<{data : string | Date, type : string}>;
 
     private getDateModel(date: moment.Moment) : DateModel {
-        return {
-            day: date.format('DD'),
-            month: date.format('MM'),
-            year: date.format('YYYY'),
-            formatted: date.format(this.datepickerConfig.format),
-            momentObj: date
-        };
+        return new DateModel(date, this.datepickerConfig.format);     
     }
 
     ngAfterViewInit(): void {
@@ -70,7 +65,8 @@ export class DatePickerComponent implements AfterViewInit {
         }
     }
 
-
     datepickerConfig = { format: "D MMM YYYY" }
 
+    @ViewChild("dp")
+    datepicker : Ng2DatePickerComponent;
 }
