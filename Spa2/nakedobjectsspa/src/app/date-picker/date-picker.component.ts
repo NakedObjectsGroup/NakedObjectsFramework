@@ -1,6 +1,7 @@
+import { FieldViewModel } from '../view-models/field-view-model';
 import { AfterViewInit, ViewChild } from '@angular/core';
 import { Component, OnInit, Input, EventEmitter } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
+import { AbstractControl, FormGroup } from '@angular/forms';
 import * as Helpers from '../view-models/helpers-view-models';
 import * as moment from 'moment';
 import { DateModel, Ng2DatePickerComponent } from "../ng2-datepicker/ng2-datepicker.component";
@@ -19,6 +20,12 @@ export class DatePickerComponent implements AfterViewInit {
     @Input()
     control: AbstractControl;
 
+    @Input()
+    form: FormGroup;
+
+    @Input()
+    model: FieldViewModel;
+
     handleDefaultEvent(data: string) {
         if (this.control) {
             if (data === "closed") {
@@ -31,8 +38,20 @@ export class DatePickerComponent implements AfterViewInit {
 
     handleDateChangedEvent(data: DateModel) {
         if (this.control) {
-            const date = data.momentObj ? data.momentObj.toDate() : null;
+            this.model.resetMessage();
+            this.model.clientValid = true;
+
+            const date = data.momentObj ? data.momentObj.toDate() : "";
             this.control.setValue(date);
+          
+        }
+    }
+
+   handleInvalidDateEvent(data: string) {
+        if (this.control) {
+           this.model.setMessage("Invalid date");
+           this.model.clientValid = false;
+           this.control.setErrors({"Invalid date": true});
         }
     }
 
@@ -44,6 +63,10 @@ export class DatePickerComponent implements AfterViewInit {
             case ("dateChanged"):
                 this.handleDateChangedEvent(e.data as DateModel);
                 break;
+             case ("dateInvalid"):
+                this.handleInvalidDateEvent(e.data as string);
+                break;
+         
             default: //ignore
         }
     }
@@ -63,6 +86,7 @@ export class DatePickerComponent implements AfterViewInit {
                 setTimeout(() => this.inputEvents.emit({ data: date, type: "setDate" }));
             }
         }
+
     }
 
     datepickerConfig = { format: "D MMM YYYY" }

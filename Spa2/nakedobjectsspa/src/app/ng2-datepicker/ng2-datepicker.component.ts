@@ -1,6 +1,7 @@
 import { Component, ElementRef, Inject, OnInit, Input, Output, EventEmitter, } from '@angular/core';
 import { SlimScrollOptions } from 'ng2-slimscroll';
 import * as moment from 'moment';
+import { FieldViewModel } from '../view-models/field-view-model';
 
 export interface IDateModel {
     day: string;
@@ -29,7 +30,7 @@ export class DateModel implements IDateModel {
         this.day = dateModel && dateModel.day ? dateModel.day : null;
         this.month = dateModel && dateModel.month ? dateModel.month : null;
         this.year = dateModel && dateModel.year ? dateModel.year : null;
-        this.formatted = dateModel && dateModel.formatted ? dateModel.formatted : null;
+        this.formatted = dateModel && dateModel.formatted ? dateModel.formatted : "";
         this.momentObj = dateModel && dateModel.momentObj ? dateModel.momentObj : null;
     }
 
@@ -114,13 +115,21 @@ export class Ng2DatePickerComponent implements OnInit {
     }
 
     inputChanged(newValue: string) {
-        const dt = moment(newValue);
+
+        const dt = moment(newValue, this.options.format, true);
         if (dt.isValid()) {
-            this.setValue(dt);
+            this.setValue(dt)
         }
         else {
-            this.value = new DateModel();
+            this.setValue(null);
+            if (newValue) {
+                this.outputEvents.emit({ type: 'dateInvalid', data: newValue });
+            }
         }
+    }
+
+    get formatted() : string {
+        return this.date.formatted;
     }
 
     get value(): DateModel {
@@ -132,9 +141,10 @@ export class Ng2DatePickerComponent implements OnInit {
     }
 
     set value(date: DateModel) {
-        if (!date) { return; }
-        this.date = date;
-        this.outputEvents.emit({ type: 'dateChanged', data: this.value });
+        if (date) { 
+            this.date = date;
+            this.outputEvents.emit({ type: 'dateChanged', data: this.value });
+        }
     }
 
     ngOnInit() {
@@ -148,7 +158,7 @@ export class Ng2DatePickerComponent implements OnInit {
 
         if (this.options.initialDate instanceof Date) {
             const initialDate = moment(this.options.initialDate);
-            this.selectDate(null, initialDate);
+            this.selectDate(initialDate);
         }
 
         if (this.options.minDate instanceof Date) {
@@ -189,8 +199,7 @@ export class Ng2DatePickerComponent implements OnInit {
                     if (!date) {
                         throw new Error(`Invalid date: ${e.data}`);
                     }
-                    //this.currentDate = date;
-                    this.selectDate(null, date);
+                    this.selectDate(date);
                 }
             });
         }
@@ -242,13 +251,12 @@ export class Ng2DatePickerComponent implements OnInit {
     }
 
     setValue(date: moment.Moment) {
-        this.value = new DateModel(date, this.options.format);
+        this.value = date ? new DateModel(date, this.options.format) : new DateModel();
         this.generateCalendar();
-        this.outputEvents.emit({ type: 'dateChanged', data: this.value });
     }
 
 
-    selectDate(e: MouseEvent, date: moment.Moment) {
+    selectDate(date: moment.Moment, e?: MouseEvent, ) {
         if (e) { e.preventDefault(); }
         setTimeout(() => this.setValue(date));
         this.opened = false;
@@ -294,7 +302,7 @@ export class Ng2DatePickerComponent implements OnInit {
     }
 
     today() {      
-        this.selectDate(null, moment());
+        this.selectDate(moment());
     }
 
     toggle() {
@@ -318,7 +326,7 @@ export class Ng2DatePickerComponent implements OnInit {
     }
 
     clear() {
-        this.value = new DateModel();
+        this.selectDate(null);
         this.close();
     }
 }
