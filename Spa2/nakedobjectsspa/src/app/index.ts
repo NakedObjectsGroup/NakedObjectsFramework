@@ -32,6 +32,7 @@ export * from './login/login.component';
 export * from './logoff/logoff.component';
 export * from './date-picker/date-picker.component';
 export * from './auto-complete/auto-complete.component';
+export * from './ng2-datepicker/ng2-datepicker.component';
 
 export * from './click-handler.service';
 export * from './color.service';

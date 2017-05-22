@@ -114,7 +114,7 @@ export class Ng2DatePickerComponent implements OnInit {
     }
 
     inputChanged(newValue: string) {
-        const dt = moment(newValue, this.options.format, true);
+        const dt = moment(newValue);
         if (dt.isValid()) {
             this.setValue(dt);
         }
