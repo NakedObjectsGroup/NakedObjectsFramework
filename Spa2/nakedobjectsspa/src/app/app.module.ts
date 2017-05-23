@@ -61,7 +61,6 @@ import { LoginComponent } from './login/login.component';
 import { LogoffComponent } from './logoff/logoff.component';
 import { CiceroContextService } from './cicero-context.service';
 import { MdAutocompleteModule } from '@angular/material';
-import { DatePickerModule } from 'ng2-datepicker';
 import { DatePickerFacadeComponent } from './date-picker-facade/date-picker-facade.component';
 import { AutoCompleteComponent } from './auto-complete/auto-complete.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
@@ -138,8 +137,7 @@ export function authServiceFactory(configService: ConfigService, auth0AuthServic
         RoutingModule,
         ReactiveFormsModule,
         MaterialModule,
-        MdAutocompleteModule,
-        DatePickerModule 
+        MdAutocompleteModule
     ],
     providers: [
         UrlManagerService,
