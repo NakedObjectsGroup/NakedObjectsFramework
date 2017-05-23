@@ -2,16 +2,10 @@ import { Component, ElementRef, Inject, OnInit, Input, Output, EventEmitter, } f
 import { SlimScrollOptions } from 'ng2-slimscroll';
 import * as moment from 'moment';
 import { FieldViewModel } from '../view-models/field-view-model';
+import concat from 'lodash/concat';
 
-export interface IDateModel {
-    day: string;
-    month: string;
-    year: string;
-    formatted: string;
-    momentObj: moment.Moment;
-}
 
-export class DateModel implements IDateModel {
+export class DateModel  {
     day: string;
     month: string;
     year: string;
@@ -26,7 +20,7 @@ export class DateModel implements IDateModel {
         this.momentObj = date;
     }
 
-    private initFromDateModel(dateModel: IDateModel) {
+    private initFromDateModel(dateModel: DateModel) {
         this.day = dateModel && dateModel.day ? dateModel.day : null;
         this.month = dateModel && dateModel.month ? dateModel.month : null;
         this.year = dateModel && dateModel.year ? dateModel.year : null;
@@ -34,12 +28,12 @@ export class DateModel implements IDateModel {
         this.momentObj = dateModel && dateModel.momentObj ? dateModel.momentObj : null;
     }
 
-    constructor(obj?: IDateModel | moment.Moment, format?: string) {
+    constructor(obj?: DateModel | moment.Moment, format?: string) {
         if (obj && format) {
             this.initFromDate(obj as moment.Moment, format);
         }
         else {
-            this.initFromDateModel(obj as IDateModel);
+            this.initFromDateModel(obj as DateModel);
         }
     }
 }
@@ -89,9 +83,15 @@ export interface CalendarDate {
     styleUrls: ['./ng2-datepicker.component.sass']
 })
 export class Ng2DatePickerComponent implements OnInit {
-    @Input() options: DatePickerOptions;
-    @Input() inputEvents: EventEmitter<{ type: string, data: string | DateModel }>;
-    @Output() outputEvents: EventEmitter<{ type: string, data: string | DateModel }>;
+
+    @Input() 
+    options: DatePickerOptions;
+    
+    @Input() 
+    inputEvents: EventEmitter<{ type: string, data: string | DateModel }>;
+    
+    @Output() 
+    outputEvents: EventEmitter<{ type: string, data: string | DateModel }>;
 
     date: DateModel;
 
@@ -104,7 +104,7 @@ export class Ng2DatePickerComponent implements OnInit {
     minDate: moment.Moment | any;
     maxDate: moment.Moment | any;
 
-    constructor( @Inject(ElementRef) public el: ElementRef) {
+    constructor(private readonly el: ElementRef) {
         this.opened = false;
         this.options = this.options || {};
         this.days = [];
@@ -114,11 +114,29 @@ export class Ng2DatePickerComponent implements OnInit {
         this.outputEvents = new EventEmitter<{ type: string, data: string | DateModel }>();
     }
 
-    inputChanged(newValue: string) {
+    private validInputFormats = ["DD/MM/YYYY", "DD/MM/YY", "D/M/YY", "D/M/YYYY", "D MMM YYYY", "D MMMM YYYY"];
 
-        const dt = moment(newValue, this.options.format, true);
+    private validateDate(newValue: string) {
+        let dt: moment.Moment;
+
+        for (let f of this.validInputFormats) {
+            dt = moment(newValue, f, true);
+            if (dt.isValid()) {
+                break;
+            }
+        }
+
+        return dt;
+    }
+
+
+    inputChanged(newValue : string) {
+
+        const dt = this.validateDate(newValue);
+
         if (dt.isValid()) {
-            this.setValue(dt)
+            this.setValue(dt);
+            setTimeout(() => this.formatted = this.value.formatted);
         }
         else {
             this.setValue(null);
@@ -128,9 +146,7 @@ export class Ng2DatePickerComponent implements OnInit {
         }
     }
 
-    get formatted() : string {
-        return this.date.formatted;
-    }
+    formatted : string;
 
     get value(): DateModel {
         return this.date;
@@ -149,6 +165,8 @@ export class Ng2DatePickerComponent implements OnInit {
 
     ngOnInit() {
         this.options = new DatePickerOptions(this.options);
+        this.validInputFormats =  concat([this.options.format], this.validInputFormats)
+        
         this.scrollOptions = {
             barBackground: '#C9C9C9',
             barWidth: '7',
@@ -258,7 +276,10 @@ export class Ng2DatePickerComponent implements OnInit {
 
     selectDate(date: moment.Moment, e?: MouseEvent, ) {
         if (e) { e.preventDefault(); }
-        setTimeout(() => this.setValue(date));
+        setTimeout(() => {
+            this.setValue(date);
+            this.formatted = this.value.formatted;
+        });
         this.opened = false;
     }
 
@@ -268,6 +289,7 @@ export class Ng2DatePickerComponent implements OnInit {
         setTimeout(() => {
             const date: moment.Moment = this.date.momentObj.year(year);
             this.setValue(date);
+            this.formatted = this.value.formatted;
             this.yearPicker = false;
             this.generateCalendar();
         });
@@ -292,12 +314,14 @@ export class Ng2DatePickerComponent implements OnInit {
     prevMonth() {
         const date = this.currentDate.subtract(1, 'month');
         this.setValue(date);
+        this.formatted = this.value.formatted;
         this.generateCalendar();
     }
 
     nextMonth() {
         const date =  this.currentDate.add(1, 'month');
         this.setValue(date);
+        this.formatted = this.value.formatted;
         this.generateCalendar();
     }
 
