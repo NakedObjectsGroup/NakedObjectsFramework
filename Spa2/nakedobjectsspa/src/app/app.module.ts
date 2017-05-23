@@ -62,9 +62,9 @@ import { LogoffComponent } from './logoff/logoff.component';
 import { CiceroContextService } from './cicero-context.service';
 import { MdAutocompleteModule } from '@angular/material';
 import { DatePickerModule } from 'ng2-datepicker';
-import { DatePickerComponent } from './date-picker/date-picker.component';
+import { DatePickerFacadeComponent } from './date-picker-facade/date-picker-facade.component';
 import { AutoCompleteComponent } from './auto-complete/auto-complete.component';
-import { Ng2DatePickerComponent } from './ng2-datepicker/ng2-datepicker.component';
+import { DatePickerComponent } from './date-picker/date-picker.component';
 
 export function authHttpServiceFactory(http: Http, configService: ConfigService, options: RequestOptions): any {
     if (configService.config.authenticate) {
@@ -120,9 +120,9 @@ export function authServiceFactory(configService: ConfigService, auth0AuthServic
         HeaderComponent,
         LoginComponent,
         LogoffComponent,
-        DatePickerComponent,
+        DatePickerFacadeComponent,
         AutoCompleteComponent,
-        Ng2DatePickerComponent
+        DatePickerComponent
     ],
     entryComponents: [
         ObjectComponent,

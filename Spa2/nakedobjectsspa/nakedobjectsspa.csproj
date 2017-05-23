@@ -45,8 +45,8 @@
     <Content Include="src\app\collections\collections.component.html" />
     <Content Include="src\app\collection\collection.component.css" />
     <Content Include="src\app\collection\collection.component.html" />
-    <Content Include="src\app\date-picker\date-picker.component.css" />
-    <Content Include="src\app\date-picker\date-picker.component.html" />
+    <Content Include="src\app\date-picker-facade\date-picker-facade.component.css" />
+    <Content Include="src\app\date-picker-facade\date-picker-facade.component.html" />
     <Content Include="src\app\dialog\dialog.component.css" />
     <Content Include="src\app\dialog\dialog.component.html" />
     <Content Include="src\app\dynamic-error\dynamic-error.component.css" />
@@ -75,7 +75,7 @@
     <Content Include="src\app\menu-bar\menu-bar.component.html" />
     <Content Include="src\app\multi-line-dialog\multi-line-dialog.component.css" />
     <Content Include="src\app\multi-line-dialog\multi-line-dialog.component.html" />
-    <Content Include="src\app\ng2-datepicker\ng2-datepicker.component.html" />
+    <Content Include="src\app\date-picker\date-picker.component.html" />
     <Content Include="src\app\object\object.component.css" />
     <Content Include="src\app\object\object.component.html" />
     <Content Include="src\app\parameters\parameters.component.css" />
@@ -112,7 +112,7 @@
     <Content Include="src\config.json" />
     <Content Include="src\empty_config.json" />
     <Content Include="tsconfig.json" />
-    <Content Include="src\app\ng2-datepicker\ng2-datepicker.component.sass" />
+    <Content Include="src\app\date-picker\date-picker.component.css" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -167,7 +167,7 @@
     <TypeScriptCompile Include="src\app\context.service.ts" />
     <TypeScriptCompile Include="src\app\custom-component-config.service.ts" />
     <TypeScriptCompile Include="src\app\custom-component.service.ts" />
-    <TypeScriptCompile Include="src\app\date-picker\date-picker.component.ts" />
+    <TypeScriptCompile Include="src\app\date-picker-facade\date-picker-facade.component.ts" />
     <TypeScriptCompile Include="src\app\dialog\dialog.component.ts" />
     <TypeScriptCompile Include="src\app\dynamic-error\dynamic-error.component.ts" />
     <TypeScriptCompile Include="src\app\dynamic-list\dynamic-list.component.ts" />
@@ -192,7 +192,7 @@
     <TypeScriptCompile Include="src\app\menu-bar\menu-bar.component.ts" />
     <TypeScriptCompile Include="src\app\models.ts" />
     <TypeScriptCompile Include="src\app\multi-line-dialog\multi-line-dialog.component.ts" />
-    <TypeScriptCompile Include="src\app\ng2-datepicker\ng2-datepicker.component.ts" />
+    <TypeScriptCompile Include="src\app\date-picker\date-picker.component.ts" />
     <TypeScriptCompile Include="src\app\object\object.component.ts" />
     <TypeScriptCompile Include="src\app\pane\pane.ts" />
     <TypeScriptCompile Include="src\app\parameters\parameters.component.ts" />
