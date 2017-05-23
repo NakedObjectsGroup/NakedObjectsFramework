@@ -60,20 +60,17 @@
 }
 .datepicker-container .datepicker-calendar .datepicker-calendar-top {
     width: 100%;
-    height: 80px;
     background: black;
     display: inline-block;
     position: relative;
 }
 .datepicker-container .datepicker-calendar .datepicker-calendar-top .year-title {
     display: block;
-    margin-top: 12px;
     color: white;
-    font-size: 28px;
+    font-size: 18px;
     text-align: center;
 }
 .datepicker-container .datepicker-calendar .datepicker-calendar-top button {
-    width: 200px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
