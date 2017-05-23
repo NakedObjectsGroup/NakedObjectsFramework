@@ -64,6 +64,7 @@ import { MdAutocompleteModule } from '@angular/material';
 import { DatePickerFacadeComponent } from './date-picker-facade/date-picker-facade.component';
 import { AutoCompleteComponent } from './auto-complete/auto-complete.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
+import { SlimScrollModule } from 'ng2-slimscroll';
 
 export function authHttpServiceFactory(http: Http, configService: ConfigService, options: RequestOptions): any {
     if (configService.config.authenticate) {
@@ -137,7 +138,8 @@ export function authServiceFactory(configService: ConfigService, auth0AuthServic
         RoutingModule,
         ReactiveFormsModule,
         MaterialModule,
-        MdAutocompleteModule
+        MdAutocompleteModule,
+        SlimScrollModule
     ],
     providers: [
         UrlManagerService,
