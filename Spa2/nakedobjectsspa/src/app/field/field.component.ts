@@ -20,6 +20,7 @@ import find from 'lodash/find';
 import every from 'lodash/every';
 import mapValues from 'lodash/mapValues';
 import omit from 'lodash/omit';
+import { BehaviorSubject } from 'rxjs';
 
 export abstract class FieldComponent {
 
@@ -283,6 +284,26 @@ export abstract class FieldComponent {
         if (event && event.keyCode === deleteKeyCode) {
             this.context.setCopyViewModel(null);
         }
+    }
+
+    clear() {
+        this.control.reset("");
+        this.model.clear();
+    }
+
+    private bSubject: BehaviorSubject<any>;
+
+    get subject() {
+        if (!this.bSubject) {
+            const initialValue = this.control.value;
+            this.bSubject = new BehaviorSubject(initialValue);
+
+            this.control.valueChanges.subscribe((data) => {
+                this.bSubject.next(data);
+            });
+        }
+  
+        return this.bSubject;
     }
 
     filterEnter(event: KeyboardEvent) {

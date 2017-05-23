@@ -1,5 +1,5 @@
 <md-input-container>
-    <input  [id]="modelPaneId" class="value droppable" type="text" dnd-droppable [allowDrop]="accept(parameter)" (onDropSuccess)="drop($event.dragData)" [ngClass]="classes()" placeholder="{{description}}" mdInput [formControlName]="modelId" [formControl]="control" [mdAutocomplete]="auto" [geminiClear]="model" [form]="form">
+    <input  [id]="modelPaneId" class="value droppable" type="text" dnd-droppable [allowDrop]="accept(parameter)" (onDropSuccess)="drop($event.dragData)" [ngClass]="classes()" placeholder="{{description}}" mdInput [formControlName]="modelId" [formControl]="control" [mdAutocomplete]="auto" [geminiClear]="subject" (clear)="clear()">
 </md-input-container>
 
 <md-autocomplete #auto="mdAutocomplete">

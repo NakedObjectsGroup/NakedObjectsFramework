@@ -12,7 +12,7 @@
             <ng-container *ngSwitchCase="5">
                
                 <md-input-container>
-                    <input #focus [id]="propertyPaneId" class="value droppable" type="text" dnd-droppable [allowDrop]="accept(property)" (onDropSuccess)="drop($event.dragData)" [ngClass]="classes()" placeholder="{{propertyDescription}}" mdInput [formControlName]="propertyId" [formControl]="control" [mdAutocomplete]="auto" [geminiClear]="property" [form]="form">
+                    <input #focus [id]="propertyPaneId" class="value droppable" type="text" dnd-droppable [allowDrop]="accept(property)" (onDropSuccess)="drop($event.dragData)" [ngClass]="classes()" placeholder="{{propertyDescription}}" mdInput [formControlName]="propertyId" [formControl]="control" [mdAutocomplete]="auto" [geminiClear]="subject" (clear)="clear()">
                 </md-input-container>
 
                 <md-autocomplete #auto="mdAutocomplete">
@@ -40,7 +40,7 @@
             <ng-container *ngSwitchCase="0">
                 <input #focus [id]="propertyPaneId" class="value droppable" dnd-droppable [allowDrop]="accept(property)" (onDropSuccess)="drop($event.dragData)"
                     [ngClass]="classes()" placeholder="{{propertyDescription}}" type="text" [formControlName]="propertyId"
-                    [geminiClear]="property" [form]="form" />
+                    [geminiClear]="subject" (clear)="clear()" />
             </ng-container>
 
         </div>
@@ -81,7 +81,7 @@
                 <ng-container *ngSwitchCase="5">
                 
                     <md-input-container>
-                        <input #focus [id]="propertyPaneId"  type="text" placeholder="{{propertyDescription}}" mdInput [formControlName]="propertyId" [formControl]="control" [mdAutocomplete]="auto" [geminiClear]="property" [form]="form">
+                        <input #focus [id]="propertyPaneId"  type="text" placeholder="{{propertyDescription}}" mdInput [formControlName]="propertyId" [formControl]="control" [mdAutocomplete]="auto" [geminiClear]="subject" (clear)="clear()">
                     </md-input-container>
 
                     <md-autocomplete #auto="mdAutocomplete">
@@ -117,11 +117,11 @@
                             </ng-container>
                             <ng-container *ngSwitchCase="'time'">
                                 <input #focus [id]="propertyPaneId"  type="time" placeholder="{{propertyDescription}}" [formControlName]="propertyId"
-                                     [geminiClear]="property" [form]="form" />
+                                       [geminiClear]="subject" (clear)="clear()" />
                             </ng-container>
                             <ng-container *ngSwitchDefault>
                                 <input #focus *ngIf="!isMultiline" [id]="propertyPaneId"  placeholder="{{propertyDescription}}" type="{{isPassword ? 'password' : 'text'}}"
-                                     [formControlName]="propertyId" [geminiClear]="property" [form]="form" />
+                                     [formControlName]="propertyId" [geminiClear]="subject" (clear)="clear()" />
                                 <textarea #focus *ngIf="isMultiline" rows="{{rows}}" [id]="propertyPaneId" [formControlName]="propertyId"
                                     placeholder="{{propertyDescription}}"></textarea>
                             </ng-container>
@@ -131,7 +131,7 @@
                         </ng-container>
                         <ng-container *ngSwitchDefault>
                             <input #focus [id]="propertyPaneId"  type="text" placeholder="{{propertyDescription}}" [formControlName]="propertyId"
-                                [geminiClear]="property" [form]="form" />
+                                   [geminiClear]="subject" (clear)="clear()" />
                         </ng-container>
                     </ng-container>
                 </ng-container>

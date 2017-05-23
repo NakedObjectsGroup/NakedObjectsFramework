@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, Input, Output, EventEmitter } from '@ang
 import { SlimScrollOptions } from 'ng2-slimscroll';
 import * as moment from 'moment';
 import concat from 'lodash/concat';
+import { BehaviorSubject } from 'rxjs';
 
 // based on ng2-datepicker https://github.com/jkuri/ng2-datepicker
 
@@ -149,7 +150,19 @@ export class DatePickerComponent implements OnInit {
         }
     }
 
-    formatted : string;
+    private _formatted : string; 
+
+    set formatted(s: string) {
+        this._formatted = s;
+
+        if (this.bSubject) {
+            this.bSubject.next(s);
+        }
+    }
+
+    get formatted(): string {
+        return this._formatted;
+    }
 
     get value(): DateModel {
         return this.date;
@@ -356,4 +369,16 @@ export class DatePickerComponent implements OnInit {
         this.selectDate(null);
         this.close();
     }
+
+    private bSubject: BehaviorSubject<any>;
+
+    get subject() {
+        if (!this.bSubject) {
+            const initialValue = this.formatted;
+            this.bSubject = new BehaviorSubject(initialValue);
+        }
+
+        return this.bSubject;
+    }
+
 }

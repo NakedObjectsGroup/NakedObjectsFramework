@@ -1,6 +1,5 @@
 ﻿import { Directive, ElementRef, HostListener, Output, EventEmitter, Renderer, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { FieldViewModel } from './view-models/field-view-model';
+import { BehaviorSubject} from 'rxjs';
 
 @Directive({ selector: '[geminiClear]' })
 export class GeminiClearDirective implements OnInit {
@@ -14,22 +13,15 @@ export class GeminiClearDirective implements OnInit {
         this.nativeEl = this.el.nativeElement;
     }
 
-    model: FieldViewModel;
-    formGroup: FormGroup;
-
     @Input('geminiClear')
-    set viewModel(vm: FieldViewModel) {
-        this.model = vm;
-    }
+    subject: BehaviorSubject<any>;
 
-    @Input()
-    set form(fm: FormGroup) {
-        this.formGroup = fm;
-    }
-
+    @Output()
+    clear = new EventEmitter();
+      
     ngOnInit(): void {
         this.onChange();
-        this.formGroup.controls[this.model.id].valueChanges.subscribe(data => this.onChange());
+        this.subject.subscribe(data => this.onChange());
     }
 
     // not need the ngClass directive on element even though it doesn't do anything 
@@ -38,7 +30,7 @@ export class GeminiClearDirective implements OnInit {
 
         this.nativeEl.classList.add("ng-clearable");
 
-        if (this.formGroup.controls[this.model.id].value) {
+        if (this.subject.getValue()) {
             this.nativeEl.classList.add("ng-x");
         } else {
             this.nativeEl.classList.remove("ng-x");
@@ -62,9 +54,7 @@ export class GeminiClearDirective implements OnInit {
             event.preventDefault();
             this.nativeEl.classList.remove("ng-x");
             this.nativeEl.classList.remove("ng-onX");
-
-            this.model.clear();
-            this.formGroup.controls[this.model.id].reset("");
+            this.clear.emit("event");
         }
     }
 
