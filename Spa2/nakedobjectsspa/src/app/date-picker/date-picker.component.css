@@ -1,6 +1,5 @@
 .datepicker-container {
     display: inline-block;
-    position: absolute;
 }
 .datepicker-container .datepicker-input-container {
     display: inline-block;
@@ -16,8 +15,10 @@
 }
 
 .datepicker-container .datepicker-input-container .datepicker-input-icon:before {
+    background-color: white;
+    padding-left: 1px;
         font-family: "iconFont";
-        font-size: 14pt;
+        font-size: 14px;
     font-weight: normal;
     font-style: normal;
     text-decoration: inherit;
@@ -52,7 +53,6 @@
     -ms-user-select: none;
     user-select: none;
     width: 250px;
-    position: absolute;
     z-index: 99;
     background: white;
     border-radius: 0px;
@@ -90,7 +90,6 @@
     float: left;
     width: 15px;
     height: 15px;
-    position: absolute;
     top: 2px;
     left: 12px;
 }
@@ -101,7 +100,6 @@
     fill: white;
 }
 .datepicker-container .datepicker-calendar .datepicker-calendar-top .close {
-    position: absolute;
     top: 5px;
     right: 5px;
     font-size: 20px;
