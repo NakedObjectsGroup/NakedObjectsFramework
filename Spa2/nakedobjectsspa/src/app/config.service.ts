@@ -45,6 +45,8 @@ export interface IAppConfig {
 
     logLevel: "error" | "warn" | "info" | "debug" | "none";
 
+    dateInputFormat : string;
+
     // color set by first matching rule in order type, regex, subtype, default (faster to slower) 
     colors?: {
         typeMap?: {
@@ -121,7 +123,8 @@ export class ConfigService {
         recentCacheDepth: 20,
         doUrlValidation: false,
         leftClickHomeAlwaysGoesToSinglePane: true,
-        logLevel: "error"
+        logLevel: "error",
+        dateInputFormat: "D MMM YYYY"
     }
 
     constructor(private readonly http: Http) {

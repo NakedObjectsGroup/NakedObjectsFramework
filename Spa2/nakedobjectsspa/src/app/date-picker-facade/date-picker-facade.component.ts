@@ -1,10 +1,11 @@
 import { FieldViewModel } from '../view-models/field-view-model';
 import { AfterViewInit, ViewChild } from '@angular/core';
-import { Component, OnInit, Input, EventEmitter } from '@angular/core';
+import { Component, Input, EventEmitter } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import * as Helpers from '../view-models/helpers-view-models';
 import * as moment from 'moment';
-import { DateModel, DatePickerComponent } from "../date-picker/date-picker.component";
+import { DateModel, DatePickerComponent, DatePickerOptions } from "../date-picker/date-picker.component";
+import { ConfigService} from '../config.service';
 
 @Component({
     selector: 'nof-date-picker-facade',
@@ -13,8 +14,9 @@ import { DateModel, DatePickerComponent } from "../date-picker/date-picker.compo
 })
 export class DatePickerFacadeComponent implements AfterViewInit {
 
-    constructor() { 
+    constructor(private readonly configService : ConfigService) { 
         this.inputEvents = new EventEmitter<{ type: string, data: string | Date }>();
+        this.datePickerOptions.format = configService.config.dateInputFormat;
     }
 
     @Input()
@@ -44,10 +46,8 @@ export class DatePickerFacadeComponent implements AfterViewInit {
         if (this.control) {
             this.model.resetMessage();
             this.model.clientValid = true;
-
             const date = data.momentObj ? data.momentObj.toDate() : "";
-            this.control.setValue(date);
-          
+            this.control.setValue(date);      
         }
     }
 
@@ -78,7 +78,7 @@ export class DatePickerFacadeComponent implements AfterViewInit {
     inputEvents : EventEmitter<{data : string | Date, type : string}>;
 
     private getDateModel(date: moment.Moment) : DateModel {
-        return new DateModel(date, this.datepickerConfig.format);     
+        return new DateModel(date, this.datePickerOptions.format);     
     }
 
     ngAfterViewInit(): void {
@@ -86,16 +86,12 @@ export class DatePickerFacadeComponent implements AfterViewInit {
         if (existingValue && (existingValue instanceof String || typeof existingValue === "string")) {
             const date = Helpers.getDate(existingValue as string);
             if (date) {
-                // todo date or model ?
-                const dModel = this.getDateModel(moment(date));
                 setTimeout(() => this.inputEvents.emit({ data: date, type: "setDate" }));
             }
         }
-
     }
 
-    // todo from config
-    datepickerConfig = { format: "D MMM YYYY" }
+    datePickerOptions = new DatePickerOptions();
 
     @ViewChild("dp")
     datepicker : DatePickerComponent;

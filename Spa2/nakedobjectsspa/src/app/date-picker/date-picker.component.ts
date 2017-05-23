@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnInit, Input, Output, EventEmitter, } from '@angular/core';
+import { Component, ElementRef, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { SlimScrollOptions } from 'ng2-slimscroll';
 import * as moment from 'moment';
 import concat from 'lodash/concat';
@@ -67,7 +67,7 @@ export class DatePickerOptions {
     }
 }
 
-export interface CalendarDate {
+export interface ICalendarDate {
     day: number;
     month: number;
     year: number;
@@ -99,7 +99,7 @@ export class DatePickerComponent implements OnInit {
     date: DateModel;
 
     opened: boolean;
-    days: CalendarDate[];
+    days: ICalendarDate[];
     years: number[];
     yearPicker: boolean;
     scrollOptions: SlimScrollOptions;
@@ -257,7 +257,7 @@ export class DatePickerComponent implements OnInit {
                 }
             }
 
-            const day: CalendarDate = {
+            const day: ICalendarDate = {
                 day: i > 0 ? i : null,
                 month: i > 0 ? month : null,
                 year: i > 0 ? year : null,
