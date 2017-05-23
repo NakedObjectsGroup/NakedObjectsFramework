@@ -26,6 +26,10 @@ export class DatePickerFacadeComponent implements AfterViewInit {
     @Input()
     model: FieldViewModel;
 
+    get id() {
+        return this.model.paneArgId;
+    }
+
     handleDefaultEvent(data: string) {
         if (this.control) {
             if (data === "closed") {
@@ -82,6 +86,7 @@ export class DatePickerFacadeComponent implements AfterViewInit {
         if (existingValue && (existingValue instanceof String || typeof existingValue === "string")) {
             const date = Helpers.getDate(existingValue as string);
             if (date) {
+                // todo date or model ?
                 const dModel = this.getDateModel(moment(date));
                 setTimeout(() => this.inputEvents.emit({ data: date, type: "setDate" }));
             }
@@ -89,6 +94,7 @@ export class DatePickerFacadeComponent implements AfterViewInit {
 
     }
 
+    // todo from config
     datepickerConfig = { format: "D MMM YYYY" }
 
     @ViewChild("dp")

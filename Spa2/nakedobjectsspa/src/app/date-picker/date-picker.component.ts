@@ -93,6 +93,9 @@ export class DatePickerComponent implements OnInit {
     @Output() 
     outputEvents: EventEmitter<{ type: string, data: string | DateModel }>;
 
+    @Input()
+    id : string;
+
     date: DateModel;
 
     opened: boolean;
