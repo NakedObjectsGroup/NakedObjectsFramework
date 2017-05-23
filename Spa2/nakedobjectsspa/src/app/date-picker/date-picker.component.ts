@@ -3,6 +3,7 @@ import { SlimScrollOptions } from 'ng2-slimscroll';
 import * as moment from 'moment';
 import concat from 'lodash/concat';
 
+// based on ng2-datepicker https://github.com/jkuri/ng2-datepicker
 
 export class DateModel  {
     day: string;
@@ -164,7 +165,7 @@ export class DatePickerComponent implements OnInit {
 
     ngOnInit() {
         this.options = new DatePickerOptions(this.options);
-        this.validInputFormats =  concat([this.options.format], this.validInputFormats)
+        this.validInputFormats = concat([this.options.format], this.validInputFormats);
         
         this.scrollOptions = {
             barBackground: '#C9C9C9',
