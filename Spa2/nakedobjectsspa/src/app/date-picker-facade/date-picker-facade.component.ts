@@ -6,6 +6,7 @@ import * as Helpers from '../view-models/helpers-view-models';
 import * as moment from 'moment';
 import { DateModel, DatePickerComponent, DatePickerOptions } from "../date-picker/date-picker.component";
 import { ConfigService} from '../config.service';
+import * as Constants from '../constants';
 
 @Component({
     selector: 'nof-date-picker-facade',
@@ -36,7 +37,7 @@ export class DatePickerFacadeComponent implements AfterViewInit {
         if (this.control) {
             if (data === "closed") {
                 const dateModel = this.datepicker.date as DateModel;
-                const val = dateModel.momentObj ? dateModel.momentObj.toDate() : "";            
+                const val = dateModel.momentObj ? dateModel.momentObj.format(Constants.fixedDateFormat) : "";            
                 this.control.setValue(val);                      
             }
         }

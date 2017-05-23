@@ -25,10 +25,11 @@ import reduce from 'lodash/reduce';
 import uniqWith from 'lodash/uniqWith';
 import { ILocalFilter } from '../mask.service';
 import * as moment from 'moment'; // todo fix moment locale import size 
-import { ConfigService } from '../config.service'; 
+import { ConfigService } from '../config.service';
+import * as Constants from '../constants';
 
 export function getDate(val: string): Date | null {
-    const dt1 = moment(val, "YYYY-MM-DD", true);
+    const dt1 = moment(val, Constants.fixedDateFormat, true);
     return dt1.isValid() ? dt1.toDate() : null;
 }
 

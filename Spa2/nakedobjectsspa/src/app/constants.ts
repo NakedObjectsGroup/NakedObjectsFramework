@@ -15,6 +15,8 @@ export function getSvrPath() {
     return path;
 }
 
+export const fixedDateFormat = "YYYY-MM-DD";
+
 // routing constants 
 
 export const geminiPath: ModePathSegment = "gemini";
