@@ -41,16 +41,16 @@
   </div>
   <div class="datepicker-calendar" *ngIf="opened">
     <div class="datepicker-calendar-top">
-      <button class="year-title" type="button" (click)="openYearPicker()" *ngIf="!yearPicker">
-        {{ currentDate.format('YYYY') }}
-      </button>
-      <i class="close" (click)="close()">
+      <!--<i class="close" (click)="close()">
         <svg width="350px" height="349px" viewBox="-1 0 350 349" version="1.1">
           <g id="delete" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
             <path d="M336.559,68.611 L231.016,174.165 L336.559,279.714 C352.258,295.419 352.258,320.859 336.559,336.564 C328.715,344.408 318.431,348.333 308.152,348.333 C297.856,348.333 287.571,344.414 279.733,336.564 L174.167,231.003 L68.609,336.563 C60.766,344.407 50.481,348.332 40.193,348.332 C29.908,348.332 19.63,344.413 11.78,336.563 C-3.919,320.865 -3.919,295.424 11.78,279.713 L117.32,174.164 L11.774,68.611 C-3.925,52.912 -3.925,27.466 11.774,11.767 C27.47,-3.92 52.901,-3.92 68.603,11.767 L174.166,117.321 L279.721,11.767 C295.426,-3.92 320.86,-3.92 336.553,11.767 C352.258,27.466 352.258,52.912 336.559,68.611 Z" id="Shape" fill="#000000" fill-rule="nonzero"></path>
           </g>
         </svg>
-      </i>
+      </i>-->
+            <button class="year-title" type="button" (click)="openYearPicker()" *ngIf="!yearPicker">
+        {{ currentDate.format('YYYY') }}
+      </button>
     </div>
     <div class="datepicker-calendar-container">
       <div *ngIf="!yearPicker">

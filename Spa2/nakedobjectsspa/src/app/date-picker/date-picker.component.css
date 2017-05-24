@@ -7,7 +7,7 @@
 }
 
 .datepicker-input {
-    width: 225px;
+    width: 215px;
 }
 
 .datepicker-container .datepicker-input-container .datepicker-input-icon {
@@ -18,7 +18,7 @@
     background-color: white;
     padding-left: 1px;
         font-family: "iconFont";
-        font-size: 14px;
+        font-size: 16px;
     font-weight: normal;
     font-style: normal;
     text-decoration: inherit;
@@ -141,6 +141,7 @@
     margin-top: 10px;
     display: inline-block;
     border: 1px solid transparent;
+    color: white;
 }
 .datepicker-container .datepicker-calendar .datepicker-calendar-container .datepicker-calendar-day-names span {
     font-size: 12px;

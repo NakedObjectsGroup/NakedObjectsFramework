@@ -112,9 +112,9 @@
                     <ng-container [ngSwitch]="propertyReturnType">
                         <ng-container *ngSwitchCase="'string'" [ngSwitch]="format">
                             <ng-container *ngSwitchCase="'date'">
-                                <input #focus [id]="propertyPaneId"  type="date" placeholder="{{propertyDescription}}" [formControlName]="propertyId"
-                                     (change)="datePickerChanged($event)"  />
-                                <!--<nof-date-picker-facade [control]="control" [form]="form" [model]="property"></nof-date-picker-facade>-->
+                                <!--<input #focus [id]="propertyPaneId"  type="date" placeholder="{{propertyDescription}}" [formControlName]="propertyId"
+                                     (change)="datePickerChanged($event)"  />-->
+                                <nof-date-picker-facade [control]="control" [form]="form" [model]="property"></nof-date-picker-facade>
                             </ng-container>
                             <ng-container *ngSwitchCase="'time'">
                                 <input #focus [id]="propertyPaneId"  type="time" placeholder="{{propertyDescription}}" [formControlName]="propertyId"
