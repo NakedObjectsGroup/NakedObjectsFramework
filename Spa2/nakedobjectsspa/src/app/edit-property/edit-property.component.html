@@ -11,7 +11,7 @@
             <!--"EntryType.AutoComplete"-->
             <ng-container *ngSwitchCase="5">
                
-                <md-input-container>
+                <!--<md-input-container>
                     <input #focus [id]="propertyPaneId" class="value droppable" type="text" dnd-droppable [allowDrop]="accept(property)" (onDropSuccess)="drop($event.dragData)" [ngClass]="classes()" placeholder="{{propertyDescription}}" mdInput [formControlName]="propertyId" [formControl]="control" [mdAutocomplete]="auto" [geminiClear]="subject" (clear)="clear()">
                 </md-input-container>
 
@@ -19,7 +19,8 @@
                     <md-option *ngFor="let option of propertyChoices" [value]="option">
                         {{ option }}
                     </md-option>
-                </md-autocomplete>
+                </md-autocomplete>-->
+                <nof-auto-complete [form]="form" [model]="property"></nof-auto-complete>
             </ng-container>
 
             <!--"EntryType.ConditionalChoices"-->
@@ -80,7 +81,7 @@
                 <!--"EntryType.AutoComplete"-->
                 <ng-container *ngSwitchCase="5">
                 
-                    <md-input-container>
+                    <!--<md-input-container>
                         <input #focus [id]="propertyPaneId"  type="text" placeholder="{{propertyDescription}}" mdInput [formControlName]="propertyId" [formControl]="control" [mdAutocomplete]="auto" [geminiClear]="subject" (clear)="clear()">
                     </md-input-container>
 
@@ -88,8 +89,8 @@
                         <md-option *ngFor="let option of propertyChoices" [value]="option">
                             {{ option }}
                         </md-option>
-                    </md-autocomplete>
-
+                    </md-autocomplete>-->
+                    <nof-auto-complete [form]="form" [model]="parameter"></nof-auto-complete>
                 </ng-container>
 
                 <!--"EntryType.ConditionalChoices"-->

@@ -1,23 +1,27 @@
-import { Component, OnInit, Input } from '@angular/core';
-import * as Fieldviewmodel from '../view-models/field-view-model';
-import * as Choiceviewmodel from '../view-models/choice-view-model';
-import * as Idraggableviewmodel from '../view-models/idraggable-view-model';
+import { ContextService } from '../context.service';
+import { Component, Input } from '@angular/core';
+import { FieldViewModel } from '../view-models/field-view-model';
+import { ChoiceViewModel } from '../view-models/choice-view-model';
+import { IDraggableViewModel } from '../view-models/idraggable-view-model';
 import { FormGroup, AbstractControl } from '@angular/forms';
 import { Dictionary } from 'lodash';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
     selector: 'nof-auto-complete',
     template: require('./auto-complete.component.html'),
     styles: [require('./auto-complete.component.css')]
 })
-export class AutoCompleteComponent implements OnInit {
+export class AutoCompleteComponent {
+
+    constructor(private readonly context: ContextService) { }
 
     // todo support cut and paste ! 
 
-    private _model: Fieldviewmodel.FieldViewModel;
+    private _model: FieldViewModel;
 
     @Input()
-    set model(m: Fieldviewmodel.FieldViewModel) {
+    set model(m: FieldViewModel) {
         this._model = m;
     }
 
@@ -40,7 +44,7 @@ export class AutoCompleteComponent implements OnInit {
         return this.form.controls[this.model.id];
     }
 
-    get choices(): Choiceviewmodel.ChoiceViewModel[] {
+    get choices(): ChoiceViewModel[] {
         return this.model.choices;
     }
 
@@ -48,9 +52,9 @@ export class AutoCompleteComponent implements OnInit {
 
     canDrop = false;
 
-    accept(droppableVm: Fieldviewmodel.FieldViewModel) {
+    accept(droppableVm: FieldViewModel) {
 
-        return (draggableVm: Idraggableviewmodel.IDraggableViewModel) => {
+        return (draggableVm: IDraggableViewModel) => {
             if (draggableVm) {
                 draggableVm.canDropOn(droppableVm.returnType).then((canDrop: boolean) => this.canDrop = canDrop).catch(() => this.canDrop = false);
                 return true;
@@ -59,7 +63,7 @@ export class AutoCompleteComponent implements OnInit {
         }
     };
 
-    drop(draggableVm: Idraggableviewmodel.IDraggableViewModel) {
+    drop(draggableVm: IDraggableViewModel) {
         if (this.canDrop) {
             this.model.drop(draggableVm)
                 .then((success) => {
@@ -80,8 +84,42 @@ export class AutoCompleteComponent implements OnInit {
         return this.model.description;
     }
 
+    paste(event: KeyboardEvent) {
+        const vKeyCode = 86;
+        const deleteKeyCode = 46;
+        if (event && (event.keyCode === vKeyCode && event.ctrlKey)) {
+            const cvm = this.context.getCopyViewModel();
 
-    ngOnInit() {
+            if (cvm) {
+                this.model.drop(cvm)
+                    .then((success) => {
+                        this.control.setValue(this.model.selectedChoice);
+                    });
+                event.preventDefault();
+            }
+        }
+        if (event && event.keyCode === deleteKeyCode) {
+            this.context.setCopyViewModel(null);
+        }
     }
 
+    clear() {
+        this.model.clear();
+        this.control.reset();
+    }
+
+    private bSubject: BehaviorSubject<any>;
+
+    get subject() {
+        if (!this.bSubject) {
+            const initialValue = this.control.value;
+            this.bSubject = new BehaviorSubject(initialValue);
+
+            this.control.valueChanges.subscribe((data) => {
+                this.bSubject.next(data);
+            });
+        }
+
+        return this.bSubject;
+    }
 }

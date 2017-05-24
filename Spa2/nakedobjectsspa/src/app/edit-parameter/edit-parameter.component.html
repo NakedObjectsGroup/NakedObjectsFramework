@@ -8,7 +8,7 @@
             <!--"EntryType.AutoComplete"-->
             <ng-container *ngIf="parameterEntryType === 5">
 
-                <md-input-container>
+                <!--<md-input-container>
                     <input #focus [id]="parameterPaneId" class="value droppable" type="text" dnd-droppable [allowDrop]="accept(parameter)" (onDropSuccess)="drop($event.dragData)" [ngClass]="classes()" placeholder="{{description}}" mdInput [formControlName]="parameterId" [formControl]="control" [mdAutocomplete]="auto" [geminiClear]="subject" (clear)="clear()" >
                 </md-input-container>
 
@@ -16,7 +16,8 @@
                     <md-option *ngFor="let option of choices" [value]="option">
                         {{ option }}
                     </md-option>
-                </md-autocomplete>
+                </md-autocomplete>-->
+                <nof-auto-complete [form]="form" [model]="parameter"></nof-auto-complete>
             </ng-container>
 
             <ng-container *ngIf="isChoices() && !isMultiple()">
@@ -50,7 +51,7 @@
 
             <!--"EntryType.AutoComplete"-->
             <ng-container *ngIf="parameterEntryType === 5">
-                <md-input-container>
+                <!--<md-input-container>
                     <input #focus [id]="parameterPaneId" type="text" [attr.placeholder]="description" mdInput [formControlName]="parameterId" [formControl]="control" [mdAutocomplete]="auto" [geminiClear]="subject" (clear)="clear()">
                 </md-input-container>
 
@@ -58,7 +59,8 @@
                     <md-option *ngFor="let option of choices" [value]="option">
                         {{ option }}
                     </md-option>
-                </md-autocomplete>
+                </md-autocomplete>-->
+                <nof-auto-complete [form]="form" [model]="parameter"></nof-auto-complete>
             </ng-container>
 
             <ng-container *ngIf="isChoices() && !isMultiple()">
