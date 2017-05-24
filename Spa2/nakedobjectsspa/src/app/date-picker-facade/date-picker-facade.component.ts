@@ -33,22 +33,29 @@ export class DatePickerFacadeComponent implements AfterViewInit {
         return this.model.paneArgId;
     }
 
+    setValueIfChanged(dateModel : DateModel) {
+        const oldValue = this.control.value;
+        const newValue = dateModel.momentObj ? dateModel.momentObj.format(Constants.fixedDateFormat) : "";            
+
+        if (newValue !== oldValue) {
+            this.model.resetMessage();
+            this.model.clientValid = true;
+            this.control.setValue(newValue);  
+        }
+    }
+
     handleDefaultEvent(data: string) {
         if (this.control) {
             if (data === "closed") {
                 const dateModel = this.datepicker.date;
-                const val = dateModel.momentObj ? dateModel.momentObj.format(Constants.fixedDateFormat) : "";            
-                this.control.setValue(val);                      
+                this.setValueIfChanged(dateModel);                      
             }
         }
     }
 
-    handleDateChangedEvent(data: DateModel) {
-        if (this.control) {
-            this.model.resetMessage();
-            this.model.clientValid = true;
-            const date = data.momentObj ? data.momentObj.toDate() : "";
-            this.control.setValue(date);      
+    handleDateChangedEvent(dateModel: DateModel) {
+        if (this.control) {          
+            this.setValueIfChanged(dateModel);      
         }
     }
 

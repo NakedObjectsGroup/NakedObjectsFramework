@@ -20,6 +20,7 @@ import find from 'lodash/find';
 import every from 'lodash/every';
 import mapValues from 'lodash/mapValues';
 import omit from 'lodash/omit';
+import keys from 'lodash/keys';
 import { BehaviorSubject } from 'rxjs';
 
 export abstract class FieldComponent {
@@ -126,32 +127,45 @@ export abstract class FieldComponent {
         return this.mapValues(this.pArgs, parmsOrProps);
     }
 
+    private lastArgs : Dictionary<Models.Value>;
+
+    private argsChanged(newArgs: Dictionary<Models.Value>) {
+        const same = this.lastArgs && 
+                     keys(this.lastArgs).length === keys(newArgs).length &&
+                     every(this.lastArgs, (v, k) => newArgs[k].toValueString() === v.toValueString());
+
+        this.lastArgs = newArgs;
+        return !same;
+    }
+
     populateDropdown() {
         const nArgs = this.populateArguments();
-        const prompts = this.model.conditionalChoices(nArgs); //  scope.select({ args: nArgs });
-        prompts.
-            then((cvms: ChoiceViewModel[]) => {
-                // if unchanged return 
-                if (cvms.length === this.currentOptions.length && every(cvms, (c, i) => c.equals(this.currentOptions[i]))) {
-                    return;
-                }
-                this.model.choices = cvms;
-                this.currentOptions = cvms;
-
-                if (this.isConditionalChoices) {
-                    // need to reset control to find the selected options 
-                    if (this.model.entryType === Models.EntryType.MultipleConditionalChoices) {
-                        this.control.reset(this.model.selectedMultiChoices);
-                    } else {
-                        this.control.reset(this.model.selectedChoice);
+        if (this.argsChanged(nArgs)) {
+            const prompts = this.model.conditionalChoices(nArgs);
+            prompts.
+                then((cvms: ChoiceViewModel[]) => {
+                    // if unchanged return 
+                    if (cvms.length === this.currentOptions.length && every(cvms, (c, i) => c.equals(this.currentOptions[i]))) {
+                        return;
                     }
-                }
-            }).
-            catch(() => {
-                // error clear everything 
-                this.model.selectedChoice = null;
-                this.currentOptions = [];
-            });
+                    this.model.choices = cvms;
+                    this.currentOptions = cvms;
+
+                    if (this.isConditionalChoices) {
+                        // need to reset control to find the selected options 
+                        if (this.model.entryType === Models.EntryType.MultipleConditionalChoices) {
+                            this.control.reset(this.model.selectedMultiChoices);
+                        } else {
+                            this.control.reset(this.model.selectedChoice);
+                        }
+                    }
+                }).
+                catch(() => {
+                    // error clear everything 
+                    this.model.selectedChoice = null;
+                    this.currentOptions = [];
+                });
+        }
     }
 
     wrapReferences(val: string): string | Ro.ILink {
@@ -161,6 +175,7 @@ export abstract class FieldComponent {
         return val;
     }
 
+  
     onChange() {
         if (this.isConditionalChoices) {
             this.populateDropdown();
@@ -189,7 +204,7 @@ export abstract class FieldComponent {
 
     set formGroup(fm: FormGroup) {
         this.formGrp = fm;
-        this.formGrp.valueChanges.debounceTime(200).subscribe((data) => this.onValueChanged());
+        this.formGrp.valueChanges.subscribe(data => this.onValueChanged());
         this.onValueChanged(); // (re)set validation messages now
     }
 
