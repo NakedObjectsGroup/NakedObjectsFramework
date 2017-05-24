@@ -48,8 +48,9 @@
           </g>
         </svg>
       </i>-->
-            <button class="year-title" type="button" (click)="openYearPicker()" *ngIf="!yearPicker">
-        {{ currentDate.format('YYYY') }}
+            <button type="button" (click)="openYearPicker()" *ngIf="!yearPicker">
+<span class="year-title">{{ currentDate.format('YYYY') }}</span> 
+
       </button>
     </div>
     <div class="datepicker-calendar-container">
