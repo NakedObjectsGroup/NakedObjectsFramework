@@ -160,7 +160,6 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         const remoteMask = propertyRep.extensions().mask();
         const localFilter = this.maskService.toLocalFilter(remoteMask, propertyRep.extensions().format() !);
         this.localFilter = localFilter;
-        // formatting also happens in in directive - at least for dates - value is now date in that case
 
         this.refresh = (newValue: Models.Value) => this.callIfChanged(newValue, (value: Models.Value) => {
 
