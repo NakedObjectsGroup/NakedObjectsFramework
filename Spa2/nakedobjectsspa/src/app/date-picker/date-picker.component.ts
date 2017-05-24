@@ -376,6 +376,8 @@ export class DatePickerComponent implements OnInit {
         if (!this.bSubject) {
             const initialValue = this.formatted;
             this.bSubject = new BehaviorSubject(initialValue);
+
+            this.bSubject.debounceTime(200).subscribe((data : string) => this.inputChanged(data));
         }
 
         return this.bSubject;
