@@ -66,13 +66,11 @@ export class ParameterViewModel extends FieldViewModel {
             this.setupParameterSelectedValue();
         }
 
-        const remoteMask = parameterRep.extensions().mask();
-
-        if (remoteMask && parameterRep.isScalar()) {
-            const localFilter = this.maskService.toLocalFilter(remoteMask, parameterRep.extensions().format() !);
+        if (parameterRep.isScalar()) {
+            const remoteMask = parameterRep.extensions().mask();
+            const localFilter = this.maskService.toLocalFilter(remoteMask, parameterRep.extensions().format()!);
             this.localFilter = localFilter;
-            // formatting also happens in in directive - at least for dates - value is now date in that case
-            this.formattedValue = localFilter.filter(this.value!.toString());
+            this.formattedValue = localFilter.filter(this.value ? this.value.toString() : this.value);
         }
 
         this.description = this.getRequiredIndicator() + this.description;
