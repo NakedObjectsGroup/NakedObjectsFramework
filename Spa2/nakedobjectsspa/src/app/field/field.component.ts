@@ -189,7 +189,7 @@ export abstract class FieldComponent {
 
     set formGroup(fm: FormGroup) {
         this.formGrp = fm;
-        this.formGrp.valueChanges.subscribe((data) => this.onValueChanged());
+        this.formGrp.valueChanges.debounceTime(200).subscribe((data) => this.onValueChanged());
         this.onValueChanged(); // (re)set validation messages now
     }
 

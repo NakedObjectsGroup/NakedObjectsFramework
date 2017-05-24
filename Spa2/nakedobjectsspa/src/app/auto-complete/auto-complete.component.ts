@@ -16,8 +16,6 @@ export class AutoCompleteComponent {
 
     constructor(private readonly context: ContextService) { }
 
-    // todo support cut and paste ! 
-
     private _model: FieldViewModel;
 
     @Input()

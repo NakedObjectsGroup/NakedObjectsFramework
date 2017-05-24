@@ -10,16 +10,6 @@
         <div *ngIf="isEditable" class="input-control text" [ngSwitch]="propertyEntryType">
             <!--"EntryType.AutoComplete"-->
             <ng-container *ngSwitchCase="5">
-               
-                <!--<md-input-container>
-                    <input #focus [id]="propertyPaneId" class="value droppable" type="text" dnd-droppable [allowDrop]="accept(property)" (onDropSuccess)="drop($event.dragData)" [ngClass]="classes()" placeholder="{{propertyDescription}}" mdInput [formControlName]="propertyId" [formControl]="control" [mdAutocomplete]="auto" [geminiClear]="subject" (clear)="clear()">
-                </md-input-container>
-
-                <md-autocomplete #auto="mdAutocomplete">
-                    <md-option *ngFor="let option of propertyChoices" [value]="option">
-                        {{ option }}
-                    </md-option>
-                </md-autocomplete>-->
                 <nof-auto-complete [form]="form" [model]="property"></nof-auto-complete>
             </ng-container>
 
@@ -80,16 +70,6 @@
             <ng-container [ngSwitch]="propertyEntryType">
                 <!--"EntryType.AutoComplete"-->
                 <ng-container *ngSwitchCase="5">
-                
-                    <!--<md-input-container>
-                        <input #focus [id]="propertyPaneId"  type="text" placeholder="{{propertyDescription}}" mdInput [formControlName]="propertyId" [formControl]="control" [mdAutocomplete]="auto" [geminiClear]="subject" (clear)="clear()">
-                    </md-input-container>
-
-                    <md-autocomplete #auto="mdAutocomplete">
-                        <md-option *ngFor="let option of propertyChoices" [value]="option">
-                            {{ option }}
-                        </md-option>
-                    </md-autocomplete>-->
                     <nof-auto-complete [form]="form" [model]="parameter"></nof-auto-complete>
                 </ng-container>
 
@@ -112,8 +92,6 @@
                     <ng-container [ngSwitch]="propertyReturnType">
                         <ng-container *ngSwitchCase="'string'" [ngSwitch]="format">
                             <ng-container *ngSwitchCase="'date'">
-                                <!--<input #focus [id]="propertyPaneId"  type="date" placeholder="{{propertyDescription}}" [formControlName]="propertyId"
-                                     (change)="datePickerChanged($event)"  />-->
                                 <nof-date-picker-facade [control]="control" [form]="form" [model]="property"></nof-date-picker-facade>
                             </ng-container>
                             <ng-container *ngSwitchCase="'time'">
