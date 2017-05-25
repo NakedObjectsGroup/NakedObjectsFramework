@@ -65,6 +65,7 @@ namespace NakedObjects.Selenium {
             GeminiUrl("object?i1=Edit&o1=___1.SpecialOffer--11");
             SaveButton().AssertIsEnabled();
             ClearFieldThenType("#startdate1", "");
+            Thread.Sleep(1000);
             SaveButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Start Date; ");
             ClearFieldThenType("#minqty1", "");
             SaveButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Start Date; Min Qty; ");
@@ -316,7 +317,7 @@ namespace NakedObjects.Selenium {
 
             // set values back
             EditObject();
-
+            Thread.Sleep(1000);
             SelectDropDownOnField("#productcategory1", "Accessories");
 
             var slpsc = new SelectElement(br.FindElement(By.CssSelector("select#productsubcategory1")));

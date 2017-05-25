@@ -32,6 +32,7 @@ namespace NakedObjects.Selenium {
             SelectDropDownOnField("#category0", "Reseller");
             ClearFieldThenType("#minqty0", "10");
             ClearFieldThenType("#startdate0", "01/01/2002");
+            Thread.Sleep(1000);
             OKButtonOnLine(0).AssertIsEnabled();
             //Submit line 0
             Click(OKButtonOnLine(0));
@@ -45,7 +46,7 @@ namespace NakedObjects.Selenium {
             WaitForReadOnlyEnteredParam(0, 2, "Promotion");
             WaitForReadOnlyEnteredParam(0, 3, "Reseller");
             WaitForReadOnlyEnteredParam(0, 4, "10");
-            WaitForReadOnlyEnteredParam(0, 5, "2002-01-01");
+            WaitForReadOnlyEnteredParam(0, 5, "1 Jan 2002");
 
             //line 1
             OKButtonOnLine(1).AssertIsDisabled("Missing mandatory fields: Description; Discount Pct; Type; Category; Min Qty; Start Date; ");

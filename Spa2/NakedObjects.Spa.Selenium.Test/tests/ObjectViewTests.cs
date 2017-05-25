@@ -376,8 +376,22 @@ namespace NakedObjects.Selenium {
             GeminiUrl("object?o1=___1.Customer--555&as1=open");
             OpenSubMenu("Orders");
             var dialog = OpenActionDialog("Search For Orders", Pane.Single, 2);
+            ClearFieldThenType("#fromdate1", "");
+            Thread.Sleep(1000);
             GetInputNumber(dialog, 0).SendKeys("1 Jan 2003");
             GetInputNumber(dialog, 1).SendKeys("1 Dec 2003" + Keys.Escape);
+          
+            Click(OKButton());
+            WaitForView(Pane.Single, PaneType.List, "Search For Orders");
+        }
+
+        public virtual void DialogActionOk1() {
+            GeminiUrl("home");
+            GeminiUrl("object?o1=___1.Customer--555&as1=open");
+            OpenSubMenu("Orders");
+            var dialog = OpenActionDialog("Search For Orders", Pane.Single, 2);
+            ClearFieldThenType("#fromdate1", "");
+            Thread.Sleep(1000);
             dialog.FindElements(By.CssSelector(".parameter .value input"))[0].SendKeys("01/01/2003");
             dialog.FindElements(By.CssSelector(".parameter .value input"))[1].SendKeys("01/12/2003" + Keys.Escape);
             Click(OKButton());
@@ -597,6 +611,11 @@ namespace NakedObjects.Selenium {
         }
 
         [TestMethod]
+        public override void DialogActionOk1() {
+            base.DialogActionOk1();
+        }
+
+        [TestMethod]
         public override void ObjectAction() {
             base.ObjectAction();
         }
@@ -764,6 +783,7 @@ namespace NakedObjects.Selenium {
             CanClickOnTitleInTableView();
             DialogAction();
             DialogActionOk();
+            DialogActionOk1();
             ObjectAction();
             CollectionAction();
             DescriptionRenderedAsTooltip();
