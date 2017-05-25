@@ -317,7 +317,7 @@ namespace NakedObjects.Selenium {
 
             // set values back
             EditObject();
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
             SelectDropDownOnField("#productcategory1", "Accessories");
 
             var slpsc = new SelectElement(br.FindElement(By.CssSelector("select#productsubcategory1")));
