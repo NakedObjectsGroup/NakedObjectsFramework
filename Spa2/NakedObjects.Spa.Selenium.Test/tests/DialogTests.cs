@@ -78,11 +78,12 @@ namespace NakedObjects.Selenium {
             OpenSubMenu("Orders");
             OpenActionDialog("Search For Orders");
             var fromDate = WaitForCss("#fromdate1");
-            Assert.AreEqual("2000-01-01", fromDate.GetAttribute("value")); //Default field value
-            ClearFieldThenType("#fromdate1", "01 09 2007");
+            Assert.AreEqual("1 Jan 2000", fromDate.GetAttribute("value")); //Default field value
+            ClearFieldThenType("#fromdate1", "01/09/2007");
             //CancelDatePicker("#fromdate1");
-            ClearFieldThenType("#todate1", "01 04 2008");
+            ClearFieldThenType("#todate1", "01/04/2008");
             //CancelDatePicker("#todate1");
+            Thread.Sleep(1000);
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Search For Orders");
             var details = WaitForCss(".summary .details");
