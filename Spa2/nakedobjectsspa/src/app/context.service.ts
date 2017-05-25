@@ -8,7 +8,6 @@ import { Subject } from 'rxjs/Subject';
 import { IDraggableViewModel } from './view-models/idraggable-view-model';
 import { ConfigService } from './config.service';
 import { LoggerService } from './logger.service';
-import { Observable } from 'rxjs'; // for declaration compile
 import { Dictionary } from 'lodash';
 import each from 'lodash/each';
 import find from 'lodash/find';
@@ -21,12 +20,13 @@ import first from 'lodash/first';
 import omit from 'lodash/omit';
 import remove from 'lodash/remove';
 import sortBy from 'lodash/sortBy';
+import { Observable } from 'rxjs/Observable'; // do not delete 
 
 
 enum DirtyState {
-    DirtyMustReload,
-    DirtyMayReload,
-    Clean
+    DirtyMustReload = 1,
+    DirtyMayReload = 2,
+    Clean = 3
 }
 
 class DirtyList {
@@ -271,6 +271,7 @@ export class ContextService {
                 this.currentObjects[paneId] = obj;
                 const oid = obj.getOid();
                 this.dirtyList.clearDirty(oid);
+                this.cacheRecentlyViewed(obj);
                 return Promise.resolve(obj);
             });
     }
@@ -891,7 +892,12 @@ export class ContextService {
 
     getRecentlyViewed = () => this.recentcache.items();
 
-    clearRecentlyViewed = () => this.recentcache.clear();
+    clearRecentlyViewed = () => {
+        // clear both recent view and cached objects 
+
+        each(this.recentcache.items(), i => this.dirtyList.setDirty(i.getOid()));
+        this.recentcache.clear();
+    };
 
     private logoff() {
         for (let pane = 1; pane <= 2; pane++) {
