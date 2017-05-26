@@ -289,9 +289,9 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("Product Subcategory:\r\nBib-Shorts", properties[7].Text);
 
             EditObject();
-
+            Thread.Sleep(4000);
             // set product category and sub category
-
+            wait.Until(d => d.FindElement(By.CssSelector("select#productcategory1")));
             var slctd = new SelectElement(br.FindElement(By.CssSelector("select#productcategory1")));
 
             Assert.AreEqual("Clothing", slctd.SelectedOption.Text);
@@ -317,9 +317,11 @@ namespace NakedObjects.Selenium {
 
             // set values back
             EditObject();
-            Thread.Sleep(2000);
-            SelectDropDownOnField("#productcategory1", "Accessories");
+            Thread.Sleep(4000);
 
+            wait.Until(d => d.FindElement(By.CssSelector("select#productcategory1")));
+            SelectDropDownOnField("select#productcategory1", "Accessories");
+            wait.Until(d => d.FindElement(By.CssSelector("select#productsubcategory1")));
             var slpsc = new SelectElement(br.FindElement(By.CssSelector("select#productsubcategory1")));
             wait.Until(d => slpsc.Options.Count == 13);
 
