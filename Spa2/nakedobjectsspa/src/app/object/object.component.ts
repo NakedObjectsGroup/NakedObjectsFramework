@@ -26,6 +26,7 @@ import flatten from 'lodash/flatten';
 import zipObject from 'lodash/zipObject';
 import mapValues from 'lodash/mapValues';
 import some from 'lodash/some';
+import * as Routedata from '../route-data';
 
 @Component({
     selector: 'nof-object',
@@ -278,7 +279,7 @@ export class ObjectComponent implements OnInit, OnDestroy {
 
         this.mode = routeData.interactionMode;
 
-        const wasDirty = this.context.getIsDirty(oid);
+        const wasDirty = this.isDirty(routeData, oid);
 
         this.selectedDialogId = routeData.dialogId;
 
@@ -338,6 +339,11 @@ export class ObjectComponent implements OnInit, OnDestroy {
     private lastPaneRouteData: PaneRouteData;
     private concurrencyErrorSub: ISubscription;
 
+    isDirty(paneRouteData: PaneRouteData, oid? : Models.ObjectIdWrapper) {
+        oid = oid || Models.ObjectIdWrapper.fromObjectId(paneRouteData.objectId, this.configService.config.keySeparator);
+        return this.context.getIsDirty(oid);
+    }
+
     ngOnInit(): void {
         this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: ICustomActivatedRouteData) => {
 
@@ -345,9 +351,9 @@ export class ObjectComponent implements OnInit, OnDestroy {
 
             if (!this.paneRouteDataSub) {
                 this.paneRouteDataSub =
-                    this.urlManager.getPaneRouteDataObservable(paneId)
-                        .subscribe((paneRouteData: PaneRouteData) => {
-                            if (!paneRouteData.isEqual(this.lastPaneRouteData)) {
+                    this.urlManager.getPaneRouteDataObservable(paneId).debounceTime(10)
+                    .subscribe((paneRouteData: PaneRouteData) => {
+                            if (!paneRouteData.isEqual(this.lastPaneRouteData) || this.isDirty(paneRouteData)) {
                                 this.lastPaneRouteData = paneRouteData;
                                 this.setup(paneRouteData);
                             }

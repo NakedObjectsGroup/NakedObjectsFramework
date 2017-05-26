@@ -51,16 +51,16 @@ export class RouteData {
         private readonly configService: ConfigService,
         private readonly loggerService: LoggerService
     ) {
-        this.pane1 = new PaneRouteData(1, configService.config.doUrlValidation, loggerService);
-        this.pane2 = new PaneRouteData(2, configService.config.doUrlValidation, loggerService);
+        this.pane1 = new PaneRouteData(Pane.Pane1, configService.config.doUrlValidation, loggerService);
+        this.pane2 = new PaneRouteData(Pane.Pane2, configService.config.doUrlValidation, loggerService);
     }
 
     pane1: PaneRouteData;
     pane2: PaneRouteData;
 
-    pane = (pane: number) => {
-        if (pane === 1) { return this.pane1; }
-        if (pane === 2) { return this.pane2; }
+    pane = (pane: Pane) => {
+        if (pane === Pane.Pane1) { return this.pane1; }
+        if (pane === Pane.Pane2) { return this.pane2; }
         this.loggerService.throw('RouteData:pane ${pane} is not a valid pane index on RouteData');
     }
 }

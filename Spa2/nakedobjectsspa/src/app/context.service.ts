@@ -757,14 +757,31 @@ export class ContextService {
         const parent = action.parent;
 
         if (action.isNotQueryOnly()) {
+
+            const setCurrentObjectsDirty = () => {
+                const pane1Obj = this.currentObjects[1];
+                const pane2Obj = this.currentObjects[2];
+                const setDirty = (m: Models.DomainObjectRepresentation) => {
+                    if (m) {
+                        this.dirtyList.setDirty(m.getOid());
+                    }
+                }
+                setDirty(pane1Obj);
+                setDirty(pane2Obj);
+            }
+
             if (parent instanceof Models.DomainObjectRepresentation) {
-                return () => this.dirtyList.setDirty(parent.getOid());
+                return () => {
+                    this.dirtyList.setDirty(parent.getOid());
+                    setCurrentObjectsDirty();
+                };
             }
             if (parent instanceof Models.CollectionRepresentation) {
                 return () => {
                     const selfLink = parent.selfLink();
                     const oid = Models.ObjectIdWrapper.fromLink(selfLink, this.keySeparator);
                     this.dirtyList.setDirty(oid);
+                    setCurrentObjectsDirty();
                 };
             }
             if (parent instanceof Models.CollectionMember) {     
@@ -773,6 +790,7 @@ export class ContextService {
                     if (memberParent instanceof Models.DomainObjectRepresentation) {
                         this.dirtyList.setDirty(memberParent.getOid());
                     }
+                    setCurrentObjectsDirty();
                 };
             }
             if (parent instanceof Models.ListRepresentation && parms) {
@@ -786,9 +804,14 @@ export class ContextService {
 
                     const refValues = filter(ccaValue.list(), v => v.isReference());
                     const links = map(refValues, v => v.link());
-                    return () => forEach(links, (l: Models.Link) => this.dirtyList.setDirty(l.getOid(this.keySeparator)));
+                    return () => {
+                        forEach(links, (l: Models.Link) => this.dirtyList.setDirty(l.getOid(this.keySeparator)));
+                        setCurrentObjectsDirty();
+                    };
                 }
             }
+
+            return setCurrentObjectsDirty;
         }
 
         return () => { };
