@@ -32,6 +32,7 @@ export * from './login/login.component';
 export * from './logoff/logoff.component';
 export * from './date-picker-facade/date-picker-facade.component';
 export * from './auto-complete/auto-complete.component';
+export * from './auto-complete-facade/auto-complete-facade.component';
 export * from './date-picker/date-picker.component';
 
 export * from './click-handler.service';
