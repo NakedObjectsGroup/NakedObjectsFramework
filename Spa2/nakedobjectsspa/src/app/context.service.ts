@@ -831,7 +831,7 @@ export class ContextService {
 
     private setNewObject(updatedObject: Models.DomainObjectRepresentation, paneId: Pane, viewSavedObject: Boolean) {
         this.setObject(paneId, updatedObject);
-        this.dirtyList.setDirty(updatedObject.getOid(), true);
+        this.dirtyList.clearDirty(updatedObject.getOid());
 
         if (viewSavedObject) {
             this.urlManager.setObject(updatedObject, paneId);

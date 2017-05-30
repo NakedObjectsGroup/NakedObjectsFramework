@@ -228,14 +228,16 @@ export class ObjectComponent implements OnInit, OnDestroy {
     }
 
     private actionButtons: IActionHolder[] | null;
+    private viewButtons =  [this.actionButton, this.editButton, this.reloadButton];
+    private saveButtons = [this.saveButton, this.saveAndCloseButton, this.cancelButton];
 
     get actionHolders() {
         if (this.mode === InteractionMode.View) {
-            return [this.actionButton, this.editButton, this.reloadButton];
+            return this.viewButtons;
         }
 
         if (this.mode === InteractionMode.Edit || this.mode === InteractionMode.Transient) {
-            return [this.saveButton, this.saveAndCloseButton, this.cancelButton];
+            return this.saveButtons;
         }
 
         if (this.mode === InteractionMode.Form) {
