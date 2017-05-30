@@ -5,6 +5,7 @@ import { ErrorService } from '../error.service';
 import { Router } from '@angular/router';
 import { UrlManagerService } from '../url-manager.service';
 import { ClickHandlerService } from '../click-handler.service';
+import * as Msg from '../user-messages';
 
 @Component({
     selector: 'nof-attachment-property',
@@ -36,6 +37,8 @@ export class AttachmentPropertyComponent {
 
     title: string;
     image: string;
+    noImage = Msg.noImageMessage;
+
 
     doAttachmentClick = (right?: boolean) => {
         if (this.attachment.displayInline()) {

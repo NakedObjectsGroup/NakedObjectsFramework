@@ -2,4 +2,4 @@
     <div *ngIf="!image">{{title}}</div>
     <img *ngIf="image" src="{{image}}" alt="{{title}}" />
 </div>
-<div *ngIf="!attachment"><div>Attachment not yet supported on transient</div></div>
+<div *ngIf="!attachment"><div>{{noImage}}</div></div>
