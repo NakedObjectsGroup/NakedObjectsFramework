@@ -133,14 +133,22 @@ export class DatePickerComponent implements OnInit {
         return dt;
     }
 
+    setDateIfChanged(newDate : moment.Moment){
+        const currentDate = this.value.momentObj;
+        if (!newDate.isSame(currentDate)) {
+            this.setValue(newDate);
+            setTimeout(() => this.formatted = this.value.formatted);
+        }
+
+    }
+
 
     inputChanged(newValue : string) {
 
         const dt = this.validateDate(newValue);
 
         if (dt.isValid()) {
-            this.setValue(dt);
-            setTimeout(() => this.formatted = this.value.formatted);
+            this.setDateIfChanged(dt);
         }
         else {
             this.setValue(null);
