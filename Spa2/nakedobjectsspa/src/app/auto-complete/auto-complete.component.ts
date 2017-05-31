@@ -127,4 +127,33 @@ export class AutoCompleteComponent {
 
         return this.bSubject;
     }
+
+    private currentIndex : number = -1;
+
+    isSelected(i : number) {
+        return {"selected" : i === this.currentIndex};
+    }
+
+    onArrowUp() {
+        this.currentIndex--; 
+        this.currentIndex = this.currentIndex < -1 ? -1 : this.currentIndex;
+        return false;
+    }
+
+    onArrowDown() {
+        this.currentIndex++; 
+        const maxIndex = this.choices.length -1; 
+        this.currentIndex = this.currentIndex > maxIndex  ? maxIndex : this.currentIndex;
+        return false;
+    }
+
+    selectCurrent() {
+        const maxIndex = this.choices.length -1; 
+        if (this.currentIndex >= 0 && this.currentIndex <= maxIndex) {
+            this.select(this.choices[this.currentIndex]);
+            return false;
+        }
+        return true;
+    }
+
 }

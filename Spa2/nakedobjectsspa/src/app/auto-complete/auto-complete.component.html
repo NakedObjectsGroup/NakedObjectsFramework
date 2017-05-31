@@ -1,9 +1,9 @@
 <div [formGroup]="form">
     <input #focus [id]="modelPaneId" class="value droppable" dnd-droppable [allowDrop]="accept(model)" (onDropSuccess)="drop($event.dragData)"
-           [ngClass]="classes()" placeholder="{{description}}" type="text" [formControlName]="modelId" [geminiClear]="subject" (clear)="clear()" />
+           [ngClass]="classes()" placeholder="{{description}}" type="text" [formControlName]="modelId" [geminiClear]="subject" (clear)="clear()" (keydown.arrowup)="onArrowUp()" (keydown.arrowdown)="onArrowDown()" (keyup.enter)="selectCurrent()"/>
     <div class="suggestions" *ngIf="choices.length > 0">
-        <ul *ngFor="let choice of choices">
-            <li>
+        <ul >
+            <li [ngClass]="isSelected(i)" *ngFor="let choice of choices; let i = index">
                 <a (click)="select(choice)">{{choiceName(choice)}}</a>
             </li>
         </ul>
