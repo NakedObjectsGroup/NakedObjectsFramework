@@ -379,11 +379,19 @@ namespace NakedObjects.Selenium {
             OpenActionDialog("List Accounts For Sales Person");
             wait.Until(dr => dr.FindElement(By.CssSelector("#sp1")).GetAttribute("placeholder") == "* (auto-complete or drop)");
             ClearFieldThenType("#sp1", "Valdez");
-            wait.Until(d => d.FindElements(By.CssSelector("md-option")).Count > 0);
+
+            // nof custom autocomplete
+            wait.Until(d => d.FindElements(By.CssSelector(".suggestions a")).Count > 0);
+            // angular/material autocomplete
+            //wait.Until(d => d.FindElements(By.CssSelector("md-option")).Count > 0);
             //As the match has not yet been selected,the field is invalid, so...
             WaitForTextEquals(".validation", "Pending auto-complete...");
             OKButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Sp; ");
-            Click(WaitForCss("md-option"));
+
+            // nof custom autocomplete
+            Click(WaitForCss(".suggestions a"));
+            // angular/material autocomplete
+            //Click(WaitForCss("md-option"));
             WaitForCss("#sp1.link-color6");
             OKButton().AssertIsEnabled();
             Click(OKButton());
@@ -416,8 +424,14 @@ namespace NakedObjects.Selenium {
             OpenActionDialog("Find Product");
             // for some reason "BB" doesn't work in test - works OK manually - "BB Ball" seems to work
             ClearFieldThenType("#product1", "BB Ball");
-            wait.Until(dr => dr.FindElement(By.CssSelector("md-option")).Text == "BB Ball Bearing");
-            var item = br.FindElement(By.CssSelector("md-option"));
+
+            // nof custom 
+            wait.Until(dr => dr.FindElement(By.CssSelector("ul li a")).Text == "BB Ball Bearing");
+            var item = br.FindElement(By.CssSelector("ul li a"));
+
+            // angular/material
+            //wait.Until(dr => dr.FindElement(By.CssSelector("md-option")).Text == "BB Ball Bearing");
+            //var item = br.FindElement(By.CssSelector("md-option"));
             //As the match has not yet been selected,the field is invalid, so...
             WaitForTextEquals(".validation", "Pending auto-complete...");
             Click(item);
@@ -431,7 +445,11 @@ namespace NakedObjects.Selenium {
 
             // "parc" doesn't work in test (ok manually) "parcel" works
             ClearFieldThenType("#comment1", "parcel");
-            wait.Until(d => d.FindElements(By.CssSelector("md-option")).Count == 2);
+
+            // nof custom
+            wait.Until(d => d.FindElements(By.CssSelector("ul li a")).Count == 2);
+            // angular/material
+            //wait.Until(d => d.FindElements(By.CssSelector("md-option")).Count == 2);
         }
 
         public virtual void AutoCompleteOptionalParamNotSelected() {
@@ -443,8 +461,13 @@ namespace NakedObjects.Selenium {
             //TODO: Message should change to Invalid fields
             OKButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Customer; ");
             ClearFieldThenType("#customer1", "AW00000456");
-            wait.Until(dr => dr.FindElement(By.CssSelector("md-option")).Text == "Riding Excursions, AW00000456");
-            var item = br.FindElement(By.CssSelector("md-option"));
+
+            // nof custom
+            wait.Until(dr => dr.FindElement(By.CssSelector("ul li a")).Text == "Riding Excursions, AW00000456");
+            var item = br.FindElement(By.CssSelector("ul li a"));
+            // angular/material
+            //wait.Until(dr => dr.FindElement(By.CssSelector("md-option")).Text == "Riding Excursions, AW00000456");
+            //var item = br.FindElement(By.CssSelector("md-option"));
             Click(item);
             OKButton().AssertIsEnabled();
         }

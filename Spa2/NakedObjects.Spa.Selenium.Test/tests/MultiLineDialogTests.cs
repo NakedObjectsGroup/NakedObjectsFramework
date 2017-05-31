@@ -97,8 +97,13 @@ namespace NakedObjects.Selenium {
 
             //Line 0
             ClearFieldThenType("#prod0", "Dissolver");
-            wait.Until(d => d.FindElements(By.CssSelector("md-option")).Count > 0);
-            Click(WaitForCss("md-option"));
+
+            // nof custom autocomplete
+            wait.Until(d => d.FindElements(By.CssSelector(".suggestions a")).Count > 0);
+            Click(WaitForCss(".suggestions a"));
+            // for angular2/material
+            //wait.Until(d => d.FindElements(By.CssSelector("md-option")).Count > 0);
+            //Click(WaitForCss("md-option"));
             WaitForCss("#prod0.link-color4");
             ClearFieldThenType("#qty0", "4");
             ClearFieldThenType("#unitprice0", "2.54");
@@ -108,9 +113,17 @@ namespace NakedObjects.Selenium {
             PageDownAndWait();
             //line 1
             ClearFieldThenType("#prod1", "bottle");
-            wait.Until(d => d.FindElements(By.CssSelector("md-option")).Count > 2);
-            Thread.Sleep(1000);
-            Click(WaitForCss("md-option"));
+
+            // nof custom 
+            wait.Until(d => d.FindElements(By.CssSelector(".suggestions a")).Count > 2);
+            Click(WaitForCss(".suggestions a"));
+
+            // anagular/material
+            //wait.Until(d => d.FindElements(By.CssSelector("md-option")).Count > 2);
+            //Thread.Sleep(1000);
+            //Click(WaitForCss("md-option"));
+
+
             WaitForCss("#prod1.link-color4");
             ClearFieldThenType("#qty1", "5");
             ClearFieldThenType("#unitprice1", "2.54");

@@ -84,8 +84,13 @@ namespace NakedObjects.Selenium {
             //Now check that Auto-complete is working
             WaitForCss("input#salesperson1").Clear();
             ClearFieldThenType("input#salesperson1", "Ito");
-            wait.Until(dr => dr.FindElement(By.CssSelector("md-option")).Text == "Shu Ito");
-            var item = br.FindElement(By.CssSelector("md-option"));
+
+            // for nof custom auto-complete
+            wait.Until(dr => dr.FindElement(By.CssSelector("div ul:nth-child(1) li a")).Text == "Shu Ito");
+            var item = br.FindElement(By.CssSelector("div ul:nth-child(1) li a"));
+            // for angular/material autocomplete
+            //wait.Until(dr => dr.FindElement(By.CssSelector("md-option")).Text == "Shu Ito");
+            //var item = br.FindElement(By.CssSelector("md-option"));
             Click(item);
             wait.Until(dr => dr.FindElement(By.CssSelector("input#salesperson1")).GetAttribute("value") == "Shu Ito");
             //Finish somewhere else

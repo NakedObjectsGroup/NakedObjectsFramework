@@ -10,7 +10,7 @@
         <div *ngIf="isEditable" class="input-control text" [ngSwitch]="propertyEntryType">
             <!--"EntryType.AutoComplete"-->
             <ng-container *ngSwitchCase="5">
-                <nof-auto-complete-facade [form]="form" [model]="property"></nof-auto-complete-facade>
+                <nof-auto-complete [form]="form" [model]="property"></nof-auto-complete>
             </ng-container>
 
             <!--"EntryType.ConditionalChoices"-->
@@ -70,7 +70,7 @@
             <ng-container [ngSwitch]="propertyEntryType">
                 <!--"EntryType.AutoComplete"-->
                 <ng-container *ngSwitchCase="5">
-                    <nof-auto-complete-facade [form]="form" [model]="parameter"></nof-auto-complete-facade>
+                    <nof-auto-complete [form]="form" [model]="parameter"></nof-auto-complete>
                 </ng-container>
 
                 <!--"EntryType.ConditionalChoices"-->

@@ -1,11 +1,11 @@
 <div [formGroup]="form">
-    <md-input-container>
-        <input [id]="modelPaneId" class="value droppable" type="text" dnd-droppable [allowDrop]="accept(model)" (onDropSuccess)="drop($event.dragData)" [ngClass]="classes()" placeholder="{{description}}" mdInput [formControlName]="modelId" [formControl]="control" [mdAutocomplete]="auto" [geminiClear]="subject" (clear)="clear()">
-    </md-input-container>
-
-    <md-autocomplete #auto="mdAutocomplete">
-        <md-option *ngFor="let option of choices" [value]="option">
-            {{ option }}
-        </md-option>
-    </md-autocomplete>
+    <input #focus [id]="modelPaneId" class="value droppable" dnd-droppable [allowDrop]="accept(model)" (onDropSuccess)="drop($event.dragData)"
+           [ngClass]="classes()" placeholder="{{description}}" type="text" [formControlName]="modelId" [geminiClear]="subject" (clear)="clear()" />
+    <div class="suggestions" *ngIf="choices.length > 0">
+        <ul *ngFor="let choice of choices">
+            <li>
+                <a (click)="select(choice)">{{choiceName(choice)}}</a>
+            </li>
+        </ul>
+    </div>
 </div>

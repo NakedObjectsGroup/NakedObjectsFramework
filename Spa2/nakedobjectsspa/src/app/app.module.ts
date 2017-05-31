@@ -1,5 +1,4 @@
 ﻿import { BrowserModule } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule, ErrorHandler, APP_INITIALIZER, LOCALE_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
@@ -51,7 +50,6 @@ import { CiceroCommandFactoryService } from './cicero-command-factory.service';
 import { CiceroRendererService } from './cicero-renderer.service';
 import { ActionBarComponent } from './action-bar/action-bar.component';
 import { ActionListComponent } from './action-list/action-list.component';
-import { MaterialModule } from '@angular/material';
 import { RowComponent } from './row/row.component';
 import { HeaderComponent } from './header/header.component';
 import { AuthService, Auth0AuthService, NullAuthService } from './auth.service';
@@ -60,12 +58,11 @@ import { Http, RequestOptions } from '@angular/http';
 import { LoginComponent } from './login/login.component';
 import { LogoffComponent } from './logoff/logoff.component';
 import { CiceroContextService } from './cicero-context.service';
-import { MdAutocompleteModule } from '@angular/material';
 import { DatePickerFacadeComponent } from './date-picker-facade/date-picker-facade.component';
 import { AutoCompleteComponent } from './auto-complete/auto-complete.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { SlimScrollModule } from 'ng2-slimscroll';
-import { AutoCompleteFacadeComponent } from './auto-complete-facade/auto-complete-facade.component';
+
 
 export function authHttpServiceFactory(http: Http, configService: ConfigService, options: RequestOptions): any {
     if (configService.config.authenticate) {
@@ -123,8 +120,7 @@ export function authServiceFactory(configService: ConfigService, auth0AuthServic
         LogoffComponent,
         DatePickerFacadeComponent,
         AutoCompleteComponent,
-        DatePickerComponent,
-        AutoCompleteFacadeComponent
+        DatePickerComponent
     ],
     entryComponents: [
         ObjectComponent,
@@ -133,14 +129,11 @@ export function authServiceFactory(configService: ConfigService, auth0AuthServic
     ],
     imports: [
         BrowserModule,
-        NoopAnimationsModule,
         DndModule.forRoot(),
         FormsModule,
         HttpModule,
         RoutingModule,
         ReactiveFormsModule,
-        MaterialModule,
-        MdAutocompleteModule,
         SlimScrollModule
     ],
     providers: [

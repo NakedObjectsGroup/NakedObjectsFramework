@@ -73,8 +73,7 @@ export class AutoCompleteComponent {
     classes(): Dictionary<boolean | null> {
         return {
             [this.model.color]: true,
-            "candrop": this.canDrop,
-            "mat-input-element": null as boolean | null // remove this class to prevent angular/materials styling overiding our styling
+            "candrop": this.canDrop
         };
     }
 
@@ -105,6 +104,14 @@ export class AutoCompleteComponent {
         this.model.clear();
         this.control.reset();
     }
+
+    select(item: ChoiceViewModel) {
+        this.model.choices = [];
+        this.model.selectedChoice = item;
+        this.control.reset(item);
+    }
+
+    choiceName = (choice: ChoiceViewModel) => choice.name;
 
     private bSubject: BehaviorSubject<any>;
 
