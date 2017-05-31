@@ -491,8 +491,7 @@ namespace NakedObjects.Selenium {
 
         public virtual void ValidateSingleRefParamFromChoices() {
             GeminiUrl("object?o1=___1.SalesOrderHeader--71742&c1_SalesOrderHeaderSalesReason=List&as1=open&d1=AddNewSalesReason");
-            wait.Until(dr => dr.FindElements(By.CssSelector(".collection")).Count == 2);
-            Thread.Sleep(1000);
+            wait.Until(dr => dr.FindElements(By.CssSelector("#reason1 option")).Count >= 10);
             SelectDropDownOnField("#reason1", "Price");
             Click(OKButton());
             wait.Until(dr => dr.FindElement(By.CssSelector(".parameter .validation")).Text.Length > 0);
