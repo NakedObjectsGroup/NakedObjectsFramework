@@ -81,7 +81,7 @@ namespace NakedObjects.Selenium {
             properties = br.FindElements(By.CssSelector(".property"));
             Assert.AreEqual("Sales Person:\r\nLynn Tsoflias", properties[2].Text);
             properties = br.FindElements(By.CssSelector(".property"));
-            Assert.IsTrue(properties[3].Text.StartsWith("Modified Date:\r\n13 Oct 2008"));
+            Assert.IsTrue(properties[3].Text.StartsWith("Modified Date:\r\n13 Oct 2008"), properties[3].Text);
         }
 
         public virtual void Collections() {
