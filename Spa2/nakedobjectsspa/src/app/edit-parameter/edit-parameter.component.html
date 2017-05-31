@@ -7,7 +7,7 @@
         <div class="value input-control text">
             <!--"EntryType.AutoComplete"-->
             <ng-container *ngIf="parameterEntryType === 5">
-                <nof-auto-complete [form]="form" [model]="parameter"></nof-auto-complete>
+                <nof-auto-complete-facade [form]="form" [model]="parameter"></nof-auto-complete-facade>
             </ng-container>
 
             <ng-container *ngIf="isChoices() && !isMultiple()">
@@ -41,7 +41,7 @@
 
             <!--"EntryType.AutoComplete"-->
             <ng-container *ngIf="parameterEntryType === 5">
-                <nof-auto-complete [form]="form" [model]="parameter"></nof-auto-complete>
+                <nof-auto-complete-facade [form]="form" [model]="parameter"></nof-auto-complete-facade>
             </ng-container>
 
             <ng-container *ngIf="isChoices() && !isMultiple()">
