@@ -90,12 +90,9 @@ export class DatePickerFacadeComponent implements AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        const existingValue = this.control.value;
+        const existingValue : any = this.control.value;
         if (existingValue && (existingValue instanceof String || typeof existingValue === "string")) {
-            const date = Helpers.getDate(existingValue as string);
-            if (date) {
-                setTimeout(() => this.inputEvents.emit({ data: date, type: "setDate" }));
-            }
+            setTimeout(() => this.inputEvents.emit({ data: existingValue as string, type: "setDate" }));
         }
     }
 

@@ -1,3 +1,4 @@
+import * as Constants from '../constants';
 import { Component, ElementRef, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { SlimScrollOptions } from 'ng2-slimscroll';
 import * as moment from 'moment';
@@ -118,7 +119,7 @@ export class DatePickerComponent implements OnInit {
         this.outputEvents = new EventEmitter<{ type: string, data: string | DateModel }>();
     }
 
-    private validInputFormats = ["DD/MM/YYYY", "DD/MM/YY", "D/M/YY", "D/M/YYYY", "D MMM YYYY", "D MMMM YYYY"];
+    private validInputFormats = ["DD/MM/YYYY", "DD/MM/YY", "D/M/YY", "D/M/YYYY", "D MMM YYYY", "D MMMM YYYY", Constants.fixedDateFormat];
 
     private validateDate(newValue: string) {
         let dt: moment.Moment;
@@ -234,11 +235,9 @@ export class DatePickerComponent implements OnInit {
                 }
 
                 if (e.type === 'setDate') {
-                    if (!(e.data instanceof Date)) {
-                        throw new Error(`Input data must be an instance of Date!`);
-                    }
-                    const date: moment.Moment = moment(e.data);
-                    if (!date) {
+                
+                    const date: moment.Moment = this.validateDate(e.data);
+                    if (!date.isValid()) {
                         throw new Error(`Invalid date: ${e.data}`);
                     }
                     this.selectDate(date);
