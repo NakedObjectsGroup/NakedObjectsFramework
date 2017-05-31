@@ -542,7 +542,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class MegaObjectEditTestsChrome : MegaObjectEditTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

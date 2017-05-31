@@ -124,7 +124,7 @@ export class DatePickerComponent implements OnInit {
         let dt: moment.Moment;
 
         for (let f of this.validInputFormats) {
-            dt = moment(newValue, f, true);
+            dt = moment.utc(newValue, f, true);
             if (dt.isValid()) {
                 break;
             }
@@ -378,7 +378,7 @@ export class DatePickerComponent implements OnInit {
         this.close();
     }
 
-    private bSubject: BehaviorSubject<any>;
+    private bSubject: BehaviorSubject<string>;
 
     get subject() {
         if (!this.bSubject) {
