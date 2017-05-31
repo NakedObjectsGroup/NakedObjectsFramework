@@ -1,5 +1,5 @@
 import { ContextService } from '../context.service';
-import { Component, Input } from '@angular/core';
+import { Component, Input, AfterViewInit } from '@angular/core';
 import { FieldViewModel } from '../view-models/field-view-model';
 import { ChoiceViewModel } from '../view-models/choice-view-model';
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
@@ -12,7 +12,7 @@ import { BehaviorSubject } from 'rxjs';
     template: require('./auto-complete.component.html'),
     styles: [require('./auto-complete.component.css')]
 })
-export class AutoCompleteComponent {
+export class AutoCompleteComponent implements AfterViewInit {
 
     constructor(private readonly context: ContextService) { }
 
@@ -156,4 +156,7 @@ export class AutoCompleteComponent {
         return true;
     }
 
+    ngAfterViewInit(): void {
+       this.control.valueChanges.subscribe(() => this.currentIndex = -1);
+    }
 }
