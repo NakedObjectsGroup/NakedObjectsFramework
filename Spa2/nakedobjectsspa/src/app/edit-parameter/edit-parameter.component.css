@@ -104,16 +104,6 @@ input[type='text'] {
     border-color: red;
 }
 
-/*auto-complete*/
-.ui-autocomplete {
-    width: 245px;
-}
-
-.ui-autocomplete .ui-menu-item {
-        font-family: 'Segoe UI';
-        font-size: 10pt;
-}
-
 textarea {
     color: black;
 }
