@@ -119,14 +119,14 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.Home);
             ClickPropertiesButton();
             WaitForView(Pane.Single, PaneType.Properties, "Application Properties");
-            wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 4);
+            wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 5);
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
             Thread.Sleep(1000);
-            Assert.IsTrue(properties[0].Text.StartsWith("Application Name:"));
-            Assert.IsTrue(properties[1].Text.StartsWith("User Name:"));
-            Assert.IsTrue(properties[2].Text.StartsWith("Server Url: http")); // maybe https
-            Assert.IsTrue(properties[3].Text.StartsWith("Server version: 8.1.0"));
-            Assert.IsTrue(properties[4].Text.StartsWith("Client version:"));
+            Assert.IsTrue(properties[0].Text.StartsWith("Application Name:"), properties[0].Text);
+            Assert.IsTrue(properties[1].Text.StartsWith("User Name:"), properties[1].Text);
+            Assert.IsTrue(properties[2].Text.StartsWith("Server Url: http"), properties[2].Text); // maybe https
+            Assert.IsTrue(properties[3].Text.StartsWith("Server version: 8.1.0"), properties[3].Text);
+            Assert.IsTrue(properties[4].Text.StartsWith("Client version:"), properties[4].Text);
         }
 
         public virtual void LogOff() {
