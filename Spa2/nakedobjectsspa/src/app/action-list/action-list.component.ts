@@ -3,6 +3,7 @@ import { MenuItemViewModel } from '../view-models/menu-item-view-model';
 import { IActionHolder, wrapAction } from '../action/action.component';
 import { ActionComponent } from '../action/action.component';
 import { IMenuHolderViewModel } from '../view-models/imenu-holder-view-model';
+import { ISubscription } from 'rxjs/Subscription';
 import map from 'lodash/map';
 import some from 'lodash/some';
 import findIndex from 'lodash/findIndex';
@@ -97,9 +98,16 @@ export class ActionListComponent implements AfterViewInit {
         }
     }
 
+    private sub: ISubscription;
 
     ngAfterViewInit(): void {
         this.focus(this.actionChildren);
-        this.actionChildren.changes.subscribe((ql: QueryList<ActionComponent>) => this.focus(ql));
+        this.sub = this.actionChildren.changes.subscribe((ql: QueryList<ActionComponent>) => this.focus(ql));
+    }
+
+    ngOnDestroy(): void {
+        if (this.sub) {
+            this.sub.unsubscribe();
+        }
     }
 }

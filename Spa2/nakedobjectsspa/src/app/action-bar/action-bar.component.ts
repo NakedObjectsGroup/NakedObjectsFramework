@@ -1,8 +1,9 @@
-﻿import { Component, Input, QueryList, ViewChildren } from '@angular/core';
+﻿import { Component, Input, QueryList, ViewChildren, OnDestroy, AfterViewInit } from '@angular/core';
 import { IActionHolder, wrapAction } from '../action/action.component';
 import { IMenuHolderViewModel } from '../view-models/imenu-holder-view-model';
 import { MenuItemViewModel } from '../view-models/menu-item-view-model';
 import { ActionComponent } from '../action/action.component';
+import { ISubscription } from 'rxjs/Subscription';
 import flatten from 'lodash/flatten';
 import map from 'lodash/map';
 import some from 'lodash/map';
@@ -12,8 +13,8 @@ import some from 'lodash/map';
     template: require('./action-bar.component.html'),
     styles: [require('./action-bar.component.css')]
 })
-export class ActionBarComponent {
-
+export class ActionBarComponent implements OnDestroy, AfterViewInit {
+   
     @Input()
     actions: IActionHolder[];
 
@@ -34,8 +35,16 @@ export class ActionBarComponent {
         }
     }
 
+    private sub : ISubscription;
+
     ngAfterViewInit(): void {
         this.focusOnFirstAction(this.actionChildren);
-        this.actionChildren.changes.subscribe((ql: QueryList<ActionComponent>) => this.focusOnFirstAction(ql));
+        this.sub = this.actionChildren.changes.subscribe((ql: QueryList<ActionComponent>) => this.focusOnFirstAction(ql));
+    }
+
+    ngOnDestroy(): void {
+        if (this.sub) {
+            this.sub.unsubscribe();
+        }
     }
 }
