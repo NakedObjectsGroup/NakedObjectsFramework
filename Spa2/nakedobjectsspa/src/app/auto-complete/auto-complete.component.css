@@ -1,0 +1,24 @@
+.suggestions ul {
+    list-style-type: none;
+    width: 245px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+    margin: 0px;
+    padding-left: 5px;
+    font-family: 'Segoe UI';
+    font-size: 10pt;
+}  
+
+.validation {
+    font-family: 'Segoe UI';
+    font-size: 10pt;
+} 
+
+input {
+    width: 245px;
+    padding-left: 5px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: Grey;
+}
