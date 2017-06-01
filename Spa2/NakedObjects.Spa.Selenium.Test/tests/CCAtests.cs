@@ -295,7 +295,8 @@ namespace NakedObjects.Selenium {
             Click(GetObjectAction("Clear Comments"));
         
             Reload();
-          
+            wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count > 30);
+
             //wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) == 0);
 
             //SelectCheckBox("#item1-all", true); //To clear
@@ -320,9 +321,10 @@ namespace NakedObjects.Selenium {
             SelectCheckBox("#item1-all"); //To clear
           
             Click(GetObjectAction("Clear Comments"));
-      
+            Thread.Sleep(1000);
             Reload();
-         
+            wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count > 30);
+
             wait.Until(dr => dr.FindElements(By.CssSelector("span.loading:empty")));
             wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) == 0);
         }
