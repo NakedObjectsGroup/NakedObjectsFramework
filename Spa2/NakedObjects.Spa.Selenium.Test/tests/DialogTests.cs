@@ -513,7 +513,11 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void ValidateSingleRefParamFromChoices() {
-            GeminiUrl("object?o1=___1.SalesOrderHeader--71742&c1_SalesOrderHeaderSalesReason=List&as1=open&d1=AddNewSalesReason");
+            GeminiUrl("object?o1=___1.SalesOrderHeader--71742&c1_SalesOrderHeaderSalesReason=List&as1=open");
+            WaitForView(Pane.Single, PaneType.Object);
+            var action = wait.Until(dr => dr.FindElement(By.CssSelector("nof-action input[value='Add New Sales Reason'")));
+            Click(action);
+
             wait.Until(dr => dr.FindElements(By.CssSelector("#reason1 option")).Count >= 10);
             SelectDropDownOnField("#reason1", "Price");
             Click(OKButton());
