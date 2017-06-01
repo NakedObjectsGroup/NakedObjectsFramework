@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
 import { PaneRouteData, ICustomActivatedRouteData, PaneType, PaneName, Pane } from '../route-data';
 import { UrlManagerService } from '../url-manager.service';
+import { safeUnsubscribe } from '../helpers-components';
 
 export abstract class PaneComponent implements OnInit, OnDestroy {
 
@@ -61,11 +62,7 @@ export abstract class PaneComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        if (this.activatedRouteDataSub) {
-            this.activatedRouteDataSub.unsubscribe();
-        }
-        if (this.paneRouteDataSub) {
-            this.paneRouteDataSub.unsubscribe();
-        }
+        safeUnsubscribe(this.activatedRouteDataSub);
+        safeUnsubscribe(this.paneRouteDataSub);
     }
 }

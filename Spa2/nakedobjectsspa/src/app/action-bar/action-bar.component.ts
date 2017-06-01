@@ -7,6 +7,7 @@ import { ISubscription } from 'rxjs/Subscription';
 import flatten from 'lodash/flatten';
 import map from 'lodash/map';
 import some from 'lodash/map';
+import {safeUnsubscribe} from '../helpers-components';
 
 @Component({
     selector: 'nof-action-bar',
@@ -43,8 +44,6 @@ export class ActionBarComponent implements OnDestroy, AfterViewInit {
     }
 
     ngOnDestroy(): void {
-        if (this.sub) {
-            this.sub.unsubscribe();
-        }
+        safeUnsubscribe(this.sub);
     }
 }

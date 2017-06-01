@@ -13,7 +13,6 @@ import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 import { IActionHolder, wrapAction } from '../action/action.component';
 import { ColorService } from '../color.service';
 import { ConfigService } from '../config.service';
-import { ISubscription } from 'rxjs/Subscription';
 import { PropertiesComponent } from '../properties/properties.component';
 import * as Msg from '../user-messages';
 import * as Helpers from '../view-models/helpers-view-models';
@@ -27,6 +26,8 @@ import zipObject from 'lodash/zipObject';
 import mapValues from 'lodash/mapValues';
 import some from 'lodash/some';
 import * as Routedata from '../route-data';
+import { ISubscription } from 'rxjs/Subscription';
+import {safeUnsubscribe} from '../helpers-components';
 
 @Component({
     selector: 'nof-object',
@@ -316,17 +317,25 @@ export class ObjectComponent implements OnInit, OnDestroy {
                 });
         }
     }
+    private lastPaneRouteData: PaneRouteData;
+
+    private activatedRouteDataSub: ISubscription;
+    private paneRouteDataSub: ISubscription;
+    private concurrencyErrorSub: ISubscription;
+    private formSub: ISubscription;
+    private focusSub: ISubscription;
 
     private createForm(vm: DomainObjectViewModel) {
+        safeUnsubscribe(this.formSub);
+
         const pps = vm.properties;
         const props = zipObject(map(pps, p => p.id), map(pps, p => p)) as Dictionary<PropertyViewModel>;
         const editableProps = filter(props, p => p.isEditable);
         const editablePropsMap = zipObject(map(editableProps, p => p.id), map(editableProps, p => p));
 
         const controls = mapValues(editablePropsMap, p => [p.getValueForControl(), a => p.validator(a)]) as Dictionary<any>;
-        this.form = this.formBuilder.group(controls);
-
-        this.form!.valueChanges.subscribe((data: any) => {
+        this.form = this.formBuilder.group(controls);   
+        this.formSub = this.form!.valueChanges.subscribe((data: any) => {
             // cache parm values
             const obj = this.object;
             if (obj) {
@@ -335,11 +344,6 @@ export class ObjectComponent implements OnInit, OnDestroy {
             }
         });
     }
-
-    private activatedRouteDataSub: ISubscription;
-    private paneRouteDataSub: ISubscription;
-    private lastPaneRouteData: PaneRouteData;
-    private concurrencyErrorSub: ISubscription;
 
     isDirty(paneRouteData: PaneRouteData, oid? : Models.ObjectIdWrapper) {
         oid = oid || Models.ObjectIdWrapper.fromObjectId(paneRouteData.objectId, this.configService.config.keySeparator);
@@ -370,18 +374,6 @@ export class ObjectComponent implements OnInit, OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
-        if (this.activatedRouteDataSub) {
-            this.activatedRouteDataSub.unsubscribe();
-        }
-        if (this.paneRouteDataSub) {
-            this.paneRouteDataSub.unsubscribe();
-        }
-        if (this.concurrencyErrorSub) {
-            this.concurrencyErrorSub.unsubscribe();
-        }
-    }
-
     selectedDialogId: string;
 
     @ViewChildren(PropertiesComponent)
@@ -397,7 +389,14 @@ export class ObjectComponent implements OnInit, OnDestroy {
     }
 
     ngAfterViewInit(): void {
-        this.propComponents.changes.subscribe(ql => this.focus(ql));
+        this.focusSub = this.propComponents.changes.subscribe(ql => this.focus(ql));
     }
 
+    ngOnDestroy(): void {
+        safeUnsubscribe(this.activatedRouteDataSub);
+        safeUnsubscribe(this.paneRouteDataSub);
+        safeUnsubscribe(this.concurrencyErrorSub);
+        safeUnsubscribe(this.formSub);
+        safeUnsubscribe(this.focusSub);
+    }
 }

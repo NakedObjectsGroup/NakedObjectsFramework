@@ -1,4 +1,4 @@
-﻿import { Component, ViewChildren, QueryList } from '@angular/core';
+﻿import { Component, ViewChildren, QueryList, AfterViewInit, OnDestroy } from '@angular/core';
 import { PaneComponent } from '../pane/pane';
 import { ParametersComponent } from '../parameters/parameters.component';
 import { ViewModelFactoryService } from '../view-model-factory.service';
@@ -14,7 +14,6 @@ import { DialogViewModel } from '../view-models/dialog-view-model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { ConfigService } from '../config.service';
-import * as Helpers from '../view-models/helpers-view-models';
 import * as Msg from '../user-messages';
 import * as Models from '../models';
 import { Dictionary } from 'lodash';
@@ -22,13 +21,16 @@ import find from 'lodash/find';
 import forEach from 'lodash/forEach';
 import map from 'lodash/map';
 import some from 'lodash/some';
+import each from 'lodash/each';
+import { ISubscription } from 'rxjs/Subscription';
+import { safeUnsubscribe, createForm } from '../helpers-components'; 
 
 @Component({
     selector: 'nof-multi-line-dialog',
     template: require('./multi-line-dialog.component.html'),
     styles: [require('./multi-line-dialog.component.css')]
 })
-export class MultiLineDialogComponent extends PaneComponent {
+export class MultiLineDialogComponent extends PaneComponent implements AfterViewInit, OnDestroy {
 
     constructor(
         activatedRoute: ActivatedRoute,
@@ -44,7 +46,7 @@ export class MultiLineDialogComponent extends PaneComponent {
 
     dialog: MultiLineDialogViewModel;
 
-    rowData: { form: FormGroup, dialog: DialogViewModel, parms: Dictionary<ParameterViewModel> }[];
+    rowData: { form: FormGroup, dialog: DialogViewModel, parms: Dictionary<ParameterViewModel>, sub : ISubscription }[];
 
     form = (i: number) => {
         const rowData = this.rowData[i];
@@ -110,7 +112,7 @@ export class MultiLineDialogComponent extends PaneComponent {
     }
 
     private createForm(dialog: DialogViewModel) {
-        return Helpers.createForm(dialog, this.formBuilder);
+        return createForm(dialog, this.formBuilder);
     }
 
     setMultiLineDialog(holder: Models.MenuRepresentation | Models.DomainObjectRepresentation | CollectionViewModel,
@@ -174,7 +176,15 @@ export class MultiLineDialogComponent extends PaneComponent {
         }
     }
 
+    private sub: ISubscription;
+
     ngAfterViewInit(): void {
-        this.parmComponents.changes.subscribe(ql => this.focus(ql));
+        this.sub = this.parmComponents.changes.subscribe(ql => this.focus(ql));
+    }
+
+    ngOnDestroy(): void {
+        safeUnsubscribe(this.sub);
+        each(this.rowData, rd => safeUnsubscribe(rd.sub));
+        super.ngOnDestroy();
     }
 }

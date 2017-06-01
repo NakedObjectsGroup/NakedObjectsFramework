@@ -13,6 +13,7 @@ import { ConfigService } from '../config.service';
 import { LoggerService } from '../logger.service';
 import { ISubscription } from 'rxjs/Subscription';
 import { ItemViewModel } from '../view-models/item-view-model';
+import { safeUnsubscribe } from '../helpers-components';
 
 @Component({
     selector: 'nof-list',
@@ -226,12 +227,9 @@ export class ListComponent {
     }
 
     ngOnDestroy(): void {
-        if (this.activatedRouteDataSub) {
-            this.activatedRouteDataSub.unsubscribe();
-        }
-        if (this.paneRouteDataSub) {
-            this.paneRouteDataSub.unsubscribe();
-        }
+        safeUnsubscribe(this.paneRouteDataSub);
+        safeUnsubscribe(this.activatedRouteDataSub);
+      
     }
 
     selectedDialogId: string;

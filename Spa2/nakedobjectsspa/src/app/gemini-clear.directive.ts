@@ -1,8 +1,10 @@
-﻿import { Directive, ElementRef, HostListener, Output, EventEmitter, Renderer, Input, OnInit } from '@angular/core';
-import { BehaviorSubject} from 'rxjs';
+﻿import { Directive, ElementRef, HostListener, Output, EventEmitter, Renderer, Input, OnInit, OnDestroy } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { ISubscription } from 'rxjs/Subscription';
+import { safeUnsubscribe } from './helpers-components';
 
 @Directive({ selector: '[geminiClear]' })
-export class GeminiClearDirective implements OnInit {
+export class GeminiClearDirective implements OnInit, OnDestroy {
 
     private readonly nativeEl: HTMLInputElement;
 
@@ -18,10 +20,12 @@ export class GeminiClearDirective implements OnInit {
 
     @Output()
     clear = new EventEmitter();
-      
+
+    private sub: ISubscription;
+
     ngOnInit(): void {
         this.onChange();
-        this.subject.subscribe(data => this.onChange());
+        this.sub = this.subject.subscribe(data => this.onChange());
     }
 
     // not need the ngClass directive on element even though it doesn't do anything 
@@ -82,4 +86,9 @@ export class GeminiClearDirective implements OnInit {
     change() {
         this.onChange();
     }
+
+    ngOnDestroy() {
+        safeUnsubscribe(this.sub);
+    }
+
 }

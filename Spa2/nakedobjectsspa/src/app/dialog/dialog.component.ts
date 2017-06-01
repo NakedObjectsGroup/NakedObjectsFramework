@@ -1,4 +1,4 @@
-﻿import { Component, Input, AfterViewInit, ViewChildren, QueryList } from '@angular/core';
+﻿import { Component, Input, AfterViewInit, ViewChildren, QueryList, OnDestroy } from '@angular/core';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { UrlManagerService } from '../url-manager.service';
 import * as Models from '../models';
@@ -15,19 +15,19 @@ import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 import { CollectionViewModel } from '../view-models/collection-view-model';
 import { ConfigService } from '../config.service';
 import { ParametersComponent } from '../parameters/parameters.component';
-import * as Helpers from '../view-models/helpers-view-models';
 import { Dictionary } from 'lodash';
-import filter from 'lodash/filter';
 import find from 'lodash/find';
 import forEach from 'lodash/forEach';
 import some from 'lodash/some';
+import { ISubscription } from 'rxjs/Subscription';
+import { safeUnsubscribe, createForm } from '../helpers-components'; 
 
 @Component({
     selector: 'nof-dialog',
     template: require('./dialog.component.html'),
     styles: [require('./dialog.component.css')]
 })
-export class DialogComponent implements AfterViewInit {
+export class DialogComponent implements AfterViewInit, OnDestroy {
 
     constructor(
         private readonly viewModelFactory: ViewModelFactoryService,
@@ -104,10 +104,15 @@ export class DialogComponent implements AfterViewInit {
     };
 
     private parms: Dictionary<ParameterViewModel>;
+    private formSub : ISubscription;
+    private sub: ISubscription;
+    private createFormSub : ISubscription;
 
     private createForm(dialog: DialogViewModel) {
-        ({ form: this.form, dialog: this.dialog, parms: this.parms } = Helpers.createForm(dialog, this.formBuilder));
-        this.form.valueChanges.subscribe((data) => this.onValueChanged());
+        safeUnsubscribe(this.formSub);
+        safeUnsubscribe(this.createFormSub);
+        ({ form: this.form, dialog: this.dialog, parms: this.parms, sub : this.createFormSub } = createForm(dialog, this.formBuilder));     
+        this.formSub = this.form.valueChanges.subscribe((data) => this.onValueChanged());
     }
 
     onValueChanged() {
@@ -191,6 +196,12 @@ export class DialogComponent implements AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        this.parmComponents.changes.subscribe(ql => this.focus(ql));
+        this.sub = this.parmComponents.changes.subscribe(ql => this.focus(ql));
+    }
+
+    ngOnDestroy(): void {
+        safeUnsubscribe(this.createFormSub);
+        safeUnsubscribe(this.formSub);
+        safeUnsubscribe(this.sub);
     }
 }

@@ -1,18 +1,21 @@
 import { ContextService } from '../context.service';
-import { Component, Input, AfterViewInit } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { FieldViewModel } from '../view-models/field-view-model';
 import { ChoiceViewModel } from '../view-models/choice-view-model';
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
 import { FormGroup, AbstractControl } from '@angular/forms';
+import { ISubscription } from 'rxjs/Subscription';
 import { Dictionary } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
+import {safeUnsubscribe} from '../helpers-components';
 
 @Component({
     selector: 'nof-auto-complete',
     template: require('./auto-complete.component.html'),
     styles: [require('./auto-complete.component.css')]
 })
-export class AutoCompleteComponent implements AfterViewInit {
+export class AutoCompleteComponent implements OnDestroy {
+   
 
     constructor(private readonly context: ContextService) { }
 
@@ -114,14 +117,16 @@ export class AutoCompleteComponent implements AfterViewInit {
     choiceName = (choice: ChoiceViewModel) => choice.name;
 
     private bSubject: BehaviorSubject<any>;
+    private sub: ISubscription;
 
     get subject() {
         if (!this.bSubject) {
             const initialValue = this.control.value;
             this.bSubject = new BehaviorSubject(initialValue);
 
-            this.control.valueChanges.subscribe((data) => {
+            this.sub = this.control.valueChanges.subscribe((data) => {
                 this.bSubject.next(data);
+                this.currentIndex = -1;
             });
         }
 
@@ -156,7 +161,8 @@ export class AutoCompleteComponent implements AfterViewInit {
         return true;
     }
 
-    ngAfterViewInit(): void {
-       this.control.valueChanges.subscribe(() => this.currentIndex = -1);
+    ngOnDestroy(): void {
+        safeUnsubscribe(this.sub);
     }
+
 }

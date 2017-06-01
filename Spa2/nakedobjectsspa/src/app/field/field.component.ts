@@ -2,7 +2,7 @@
 import * as Ro from '../ro-interfaces';
 import { AbstractControl } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
-import { ElementRef, QueryList, Renderer } from '@angular/core';
+import { ElementRef, QueryList, Renderer, OnDestroy } from '@angular/core';
 import { ContextService } from '../context.service';
 import { ChoiceViewModel } from '../view-models/choice-view-model';
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
@@ -22,8 +22,10 @@ import mapValues from 'lodash/mapValues';
 import omit from 'lodash/omit';
 import keys from 'lodash/keys';
 import { BehaviorSubject } from 'rxjs';
+import { ISubscription } from 'rxjs/Subscription';
+import { safeUnsubscribe } from '../helpers-components'; 
 
-export abstract class FieldComponent {
+export abstract class FieldComponent implements OnDestroy {
 
     // todo what can we remove once  autocomplete and datepicker are separate components ? 
 
@@ -307,13 +309,14 @@ export abstract class FieldComponent {
     }
 
     private bSubject: BehaviorSubject<any>;
+    private sub : ISubscription;
 
     get subject() {
         if (!this.bSubject) {
             const initialValue = this.control.value;
             this.bSubject = new BehaviorSubject(initialValue);
 
-            this.control.valueChanges.subscribe((data) => {
+            this.sub = this.control.valueChanges.subscribe((data) => {
                 this.bSubject.next(data);
             });
         }
@@ -366,4 +369,7 @@ export abstract class FieldComponent {
         return !!(this.focusList && this.focusList.first) && Helpers.focus(this.renderer, this.focusList.first);
     }
 
+    ngOnDestroy() {
+        safeUnsubscribe(this.sub);
+    }
 }

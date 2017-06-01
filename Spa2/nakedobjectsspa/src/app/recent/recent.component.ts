@@ -1,5 +1,5 @@
 ﻿import { ContextService } from '../context.service';
-import { Component, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
+import { Component, ViewChildren, QueryList, AfterViewInit, OnDestroy } from '@angular/core';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { ActivatedRoute } from '@angular/router';
 import { UrlManagerService } from '../url-manager.service';
@@ -10,13 +10,15 @@ import { IActionHolder } from '../action/action.component';
 import * as Msg from '../user-messages';
 import { RowComponent } from '../row/row.component';
 import { RecentItemViewModel } from '../view-models/recent-item-view-model';
+import { ISubscription } from 'rxjs/Subscription';
+import { safeUnsubscribe } from '../helpers-components'; 
 
 @Component({
     selector: 'nof-recent',
     template: require('./recent.component.html'),
     styles: [require('./recent.component.css')]
 })
-export class RecentComponent extends PaneComponent implements AfterViewInit {
+export class RecentComponent extends PaneComponent implements AfterViewInit, OnDestroy {
 
     constructor(
         activatedRoute: ActivatedRoute,
@@ -75,8 +77,15 @@ export class RecentComponent extends PaneComponent implements AfterViewInit {
         }
     }
 
+    private sub : ISubscription;
+
     ngAfterViewInit(): void {
         this.focusOnFirstRow(this.actionChildren);
-        this.actionChildren.changes.subscribe((ql: QueryList<RowComponent>) => this.focusOnFirstRow(ql));
+        this.sub = this.actionChildren.changes.subscribe((ql: QueryList<RowComponent>) => this.focusOnFirstRow(ql));
+    }
+
+    ngOnDestroy() {
+        safeUnsubscribe(this.sub);
+        super.ngOnDestroy();
     }
 }

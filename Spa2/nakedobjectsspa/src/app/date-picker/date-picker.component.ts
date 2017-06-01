@@ -4,6 +4,8 @@ import { SlimScrollOptions } from 'ng2-slimscroll';
 import * as moment from 'moment';
 import concat from 'lodash/concat';
 import { BehaviorSubject } from 'rxjs';
+import { ISubscription } from 'rxjs/Subscription';
+import { safeUnsubscribe } from '../helpers-components'; 
 
 // based on ng2-datepicker https://github.com/jkuri/ng2-datepicker
 
@@ -188,6 +190,8 @@ export class DatePickerComponent implements OnInit {
         }
     }
 
+    private eventsSub: ISubscription;
+
     ngOnInit() {
         this.options = new DatePickerOptions(this.options);
         this.validInputFormats = concat([this.options.format], this.validInputFormats);
@@ -221,7 +225,7 @@ export class DatePickerComponent implements OnInit {
         this.outputEvents.emit({ type: 'default', data: 'init' });
 
         if (this.inputEvents) {
-            this.inputEvents.subscribe((e: any) => {
+            this.eventsSub = this.inputEvents.subscribe((e: any) => {
                 if (e.type === 'action') {
                     if (e.data === 'toggle') {
                         this.toggle();
@@ -378,16 +382,22 @@ export class DatePickerComponent implements OnInit {
     }
 
     private bSubject: BehaviorSubject<string>;
+    private sub : ISubscription;
 
     get subject() {
         if (!this.bSubject) {
             const initialValue = this.formatted;
             this.bSubject = new BehaviorSubject(initialValue);
 
-            this.bSubject.debounceTime(200).subscribe((data : string) => this.inputChanged(data));
+            this.sub = this.bSubject.debounceTime(200).subscribe((data : string) => this.inputChanged(data));
         }
 
         return this.bSubject;
     }
 
+
+    ngOnDestroy(): void {
+        safeUnsubscribe(this.sub);
+        safeUnsubscribe(this.eventsSub);
+    }
 }

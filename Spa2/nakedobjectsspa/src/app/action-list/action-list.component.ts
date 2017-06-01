@@ -9,6 +9,7 @@ import some from 'lodash/some';
 import findIndex from 'lodash/findIndex';
 import difference from 'lodash/difference';
 import first from 'lodash/first';
+import { safeUnsubscribe } from '../helpers-components';
 
 @Component({
     selector: 'nof-action-list',
@@ -86,12 +87,12 @@ export class ActionListComponent implements AfterViewInit {
         if (actions && actions.length > 0) {
             const actionChildrenNames = map(actions.toArray(), a => a.action.value);
             const newActions = difference(actionChildrenNames, this.previousActionChildrenNames);
-            let index : number = 0;
+            let index: number = 0;
 
             if (newActions && newActions.length > 0) {
                 const firstAction = first(newActions);
                 index = findIndex(actions.toArray(), a => a.action.value === firstAction);
-                index = index < 0 ? 0 : index; 
+                index = index < 0 ? 0 : index;
             }
             this.previousActionChildrenNames = actionChildrenNames;
             this.focusFromIndex(actions, index);
@@ -106,8 +107,6 @@ export class ActionListComponent implements AfterViewInit {
     }
 
     ngOnDestroy(): void {
-        if (this.sub) {
-            this.sub.unsubscribe();
-        }
+        safeUnsubscribe(this.sub);
     }
 }

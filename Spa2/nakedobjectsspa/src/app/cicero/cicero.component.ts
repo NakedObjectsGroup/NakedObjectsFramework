@@ -12,6 +12,7 @@ import { Command } from '../cicero-commands/Command';
 import { Result } from '../cicero-commands/result';
 import * as Contextservice from '../context.service';
 import reduce from 'lodash/reduce';
+import {safeUnsubscribe} from '../helpers-components';
 
 @Component({
     selector: 'nof-cicero',
@@ -70,21 +71,20 @@ export class CiceroComponent implements OnInit {
                     });
         };
 
-        this.context.warning$.subscribe(ws => this.warnings = ws);
-
-        this.context.messages$.subscribe(ms => this.messages = ms);
-
-
+        this.warnSub = this.context.warning$.subscribe(ws => this.warnings = ws);
+        this.errorSub = this.context.messages$.subscribe(ms => this.messages = ms);
     }
 
     ngOnDestroy(): void {
-
-        if (this.paneRouteDataSub) {
-            this.paneRouteDataSub.unsubscribe();
-        }
+        safeUnsubscribe(this.paneRouteDataSub);
+        safeUnsubscribe(this.warnSub);
+        safeUnsubscribe(this.errorSub);
     }
 
     private paneRouteDataSub: ISubscription;
+    private warnSub: ISubscription;
+    private errorSub : ISubscription;
+
     private lastPaneRouteData: PaneRouteData;
   
     private previousInput: string;

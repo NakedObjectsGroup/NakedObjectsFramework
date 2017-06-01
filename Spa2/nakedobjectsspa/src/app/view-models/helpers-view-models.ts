@@ -10,17 +10,11 @@ import * as Models from '../models';
 import * as Msg from '../user-messages';
 import { Dictionary } from 'lodash';
 import { Renderer, ElementRef } from '@angular/core';
-import { FormBuilder, AbstractControl, FormGroup } from '@angular/forms';
-import { DialogViewModel } from './dialog-view-model';
-import { ParameterViewModel } from './parameter-view-model';
 import { Pane } from '../route-data';
 import each from 'lodash/each';
 import filter from 'lodash/filter';
 import find from 'lodash/find';
-import forEach from 'lodash/forEach';
 import map from 'lodash/map';
-import zipObject from 'lodash/zipObject';
-import mapValues from 'lodash/mapValues';
 import reduce from 'lodash/reduce';
 import uniqWith from 'lodash/uniqWith';
 import { ILocalFilter } from '../mask.service';
@@ -32,22 +26,6 @@ export function getDate(val: string): Date | null {
     const dt1 = moment(val, Constants.fixedDateFormat, true);
     return dt1.isValid() ? dt1.toDate() : null;
 }
-
-export function createForm(dialog: DialogViewModel, formBuilder: FormBuilder): { form: FormGroup, dialog: DialogViewModel, parms: Dictionary<ParameterViewModel> } {
-    const pps = dialog.parameters;
-    const parms = zipObject(map(pps, p => p.id), map(pps, p => p)) as Dictionary<ParameterViewModel>;
-    const controls = mapValues(parms, p => [p.getValueForControl(), (a: AbstractControl) => p.validator(a)]);
-    const form = formBuilder.group(controls);
-
-    form.valueChanges.subscribe((data: any) => {
-        // cache parm values
-        forEach(data, (v, k) => parms[k!].setValueFromControl(v));
-        dialog.setParms();
-    });
-
-    return { form: form, dialog: dialog, parms: parms };
-}
-
 
 export function copy(event: KeyboardEvent, item: IDraggableViewModel, context: ContextService) {
     const cKeyCode = 67;

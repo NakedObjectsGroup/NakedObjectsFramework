@@ -163,6 +163,7 @@
     <TypeScriptCompile Include="src\app\collection\collection.component.ts" />
     <TypeScriptCompile Include="src\app\color.service.ts" />
     <TypeScriptCompile Include="src\app\config.service.ts" />
+    <TypeScriptCompile Include="src\app\helpers-components.ts" />
     <TypeScriptCompile Include="src\app\constants.ts" />
     <TypeScriptCompile Include="src\app\context.service.ts" />
     <TypeScriptCompile Include="src\app\custom-component-config.service.ts" />

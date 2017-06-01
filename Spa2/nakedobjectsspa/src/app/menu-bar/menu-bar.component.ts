@@ -1,17 +1,18 @@
-﻿import { Component, Input, QueryList, AfterViewInit, ViewChildren } from '@angular/core';
+﻿import { Component, Input, QueryList, AfterViewInit, ViewChildren, OnDestroy } from '@angular/core';
 import { LinkViewModel } from '../view-models/link-view-model';
 import { ActionComponent, IActionHolder } from '../action/action.component';
 import { UrlManagerService } from '../url-manager.service';
 import map from 'lodash/map';
 import some from 'lodash/some';
-
+import { ISubscription } from 'rxjs/Subscription';
+import { safeUnsubscribe } from '../helpers-components';
 
 @Component({
     selector: 'nof-menu-bar',
     template: require('./menu-bar.component.html'),
     styles: [require('./menu-bar.component.css')]
 })
-export class MenuBarComponent implements AfterViewInit {
+export class MenuBarComponent implements AfterViewInit, OnDestroy {
 
     constructor(private readonly urlManager: UrlManagerService) { }
 
@@ -46,8 +47,14 @@ export class MenuBarComponent implements AfterViewInit {
     @ViewChildren(ActionComponent)
     actionComponents: QueryList<ActionComponent>;
 
+    private sub : ISubscription;
+
     ngAfterViewInit(): void {
         this.focusOnFirstMenu(this.actionComponents);
-        this.actionComponents.changes.subscribe((ql: QueryList<ActionComponent>) => this.focusOnFirstMenu(ql));
+        this.sub = this.actionComponents.changes.subscribe((ql: QueryList<ActionComponent>) => this.focusOnFirstMenu(ql));
+    }
+
+    ngOnDestroy() {
+        safeUnsubscribe(this.sub);
     }
 }

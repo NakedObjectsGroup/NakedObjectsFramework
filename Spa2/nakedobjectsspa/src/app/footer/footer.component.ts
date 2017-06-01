@@ -1,6 +1,6 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
-import { Http, RequestOptionsArgs } from '@angular/http';
+import { Http } from '@angular/http';
 import { UrlManagerService } from '../url-manager.service';
 import { ClickHandlerService } from '../click-handler.service';
 import { ContextService } from '../context.service';
@@ -12,13 +12,15 @@ import * as Models from '../models';
 import { ConfigService } from '../config.service';
 import { AuthService } from '../auth.service';
 import { Pane } from '../route-data';
+import { ISubscription } from 'rxjs/Subscription';
+import { safeUnsubscribe } from '../helpers-components'; 
 
 @Component({
     selector: 'nof-footer',
     template: require('./footer.component.html'),
     styles: [require('./footer.component.css')]
 })
-export class FooterComponent implements OnInit {
+export class FooterComponent implements OnInit, OnDestroy {
 
     constructor(
         private readonly authService: AuthService,
@@ -97,15 +99,24 @@ export class FooterComponent implements OnInit {
         return this.copyViewModel.draggableTitle();
     }
 
+    private warnSub: ISubscription;
+    private messageSub: ISubscription;
+    private cvmSub: ISubscription;
+    private lcSub: ISubscription;
+
     ngOnInit() {
         this.context.getUser().then(user => this.userName = user.userName()).catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
 
         this.repLoader.loadingCount$.subscribe(count => this.loading = count > 0 ? Msg.loadingMessage : "");
-
         this.context.warning$.subscribe(ws => this.warnings = ws);
-
         this.context.messages$.subscribe(ms => this.messages = ms);
-
         this.context.copiedViewModel$.subscribe(cvm => this.copyViewModel = cvm);
+    }
+
+    ngOnDestroy() {
+        safeUnsubscribe(this.warnSub);
+        safeUnsubscribe(this.messageSub);
+        safeUnsubscribe(this.cvmSub);
+        safeUnsubscribe(this.lcSub);
     }
 }
