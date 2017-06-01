@@ -33,18 +33,8 @@
           </Type>
         </Object>
       </Declarations>
-      <Code Language="csharp" Kind="method decl" Delimiter="$"><![CDATA[#region $Name$ (collection)
-        private ICollection<$Type$> _$Name$ = new List<$Type$>();
-
-        public virtual ICollection<$Type$> $Name$ {
-            get {
-                return _$Name$;
-            }
-            set {
-                _$Name$ = value;
-            }
-        }
-        #endregion
+      <Code Language="csharp" Kind="method decl" Delimiter="$">
+  <![CDATA[public virtual ICollection<$Type$> $Name$ {get; set;} = new List<$Type$>();
 ]]></Code>
     </Snippet>
   </CodeSnippet>
