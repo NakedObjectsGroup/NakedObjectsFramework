@@ -518,7 +518,8 @@ namespace NakedObjects.Selenium {
             var action = wait.Until(dr => dr.FindElement(By.CssSelector("nof-action input[value='Add New Sales Reason'")));
             ScrollTo(action);
             Click(action);
-
+            
+            PageDownAndWait();
             wait.Until(dr => dr.FindElement(By.CssSelector("select#reason1")));
             wait.Until(dr => dr.FindElements(By.CssSelector("select#reason1 option")).Count >= 10);
             SelectDropDownOnField("select#reason1", "Price");
