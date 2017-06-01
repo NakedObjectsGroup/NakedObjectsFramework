@@ -458,7 +458,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class MegaTransientObjectTestsChrome : MegaTransientObjectTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

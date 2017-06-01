@@ -231,7 +231,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass] //Chrome Individual
+    //[TestClass] //Chrome Individual
     public class LocallyRunTestsChrome : LocallyRunTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

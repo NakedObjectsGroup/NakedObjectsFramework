@@ -175,7 +175,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class MegaAttachmentTestsChrome : MegaAttachmentTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
