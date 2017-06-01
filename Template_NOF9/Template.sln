@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Model", "Template.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Client", "Template.Client\Template.Client.csproj", "{9F3A372C-4F7F-4094-A399-BCB2E8397D2E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.SeedData", "Template.SeedData\Template.SeedData.csproj", "{DA6C0059-19B9-47AA-9282-36A169D11672}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{9F3A372C-4F7F-4094-A399-BCB2E8397D2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F3A372C-4F7F-4094-A399-BCB2E8397D2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F3A372C-4F7F-4094-A399-BCB2E8397D2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA6C0059-19B9-47AA-9282-36A169D11672}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA6C0059-19B9-47AA-9282-36A169D11672}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA6C0059-19B9-47AA-9282-36A169D11672}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA6C0059-19B9-47AA-9282-36A169D11672}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

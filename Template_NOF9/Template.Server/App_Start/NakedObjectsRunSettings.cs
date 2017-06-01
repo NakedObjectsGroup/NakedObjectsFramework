@@ -12,6 +12,7 @@ using NakedObjects.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
 using Template.Model;
 using Template.DataBase;
+using Template.SeedData;
 
 namespace NakedObjects.Template {
     public class NakedObjectsRunSettings
@@ -60,7 +61,7 @@ namespace NakedObjects.Template {
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig()
         {
             var config = new EntityObjectStoreConfiguration();
-            config.UsingCodeFirstContext(() => new ExampleDbContext("NakedObjectsTemplate"));
+            config.UsingCodeFirstContext(() => new ExampleDbContext("NakedObjectsTemplate", new ExampleDbInitializer()));
             return config;
         }
 

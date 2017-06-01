@@ -251,6 +251,10 @@
       <Project>{b24f4158-9795-4e37-997c-0b25a6c4fc8a}</Project>
       <Name>Template.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Template.SeedData\Template.SeedData.csproj">
+      <Project>{da6c0059-19b9-47aa-9282-36a169d11672}</Project>
+      <Name>Template.SeedData</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
