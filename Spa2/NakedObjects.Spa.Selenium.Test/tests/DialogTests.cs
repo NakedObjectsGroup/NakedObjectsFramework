@@ -517,9 +517,9 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.Object);
             var action = wait.Until(dr => dr.FindElement(By.CssSelector("nof-action input[value='Add New Sales Reason'")));
             Click(action);
-
-            wait.Until(dr => dr.FindElements(By.CssSelector("#reason1 option")).Count >= 10);
-            SelectDropDownOnField("#reason1", "Price");
+            wait.Until(dr => dr.FindElement(By.CssSelector("select#reason1")));
+            wait.Until(dr => dr.FindElements(By.CssSelector("select#reason1 option")).Count >= 10);
+            SelectDropDownOnField("select#reason1", "Price");
             Click(OKButton());
             wait.Until(dr => dr.FindElement(By.CssSelector(".parameter .validation")).Text.Length > 0);
             var validation = WaitForCss(".parameter .validation");
