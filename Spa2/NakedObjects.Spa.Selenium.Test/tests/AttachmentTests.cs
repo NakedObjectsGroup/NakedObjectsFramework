@@ -5,23 +5,27 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
 namespace NakedObjects.Selenium {
     public abstract class AttachmentTestsRoot : AWTest {
         public virtual void ImageAsProperty() {
+            Debug.WriteLine(nameof(ImageAsProperty));
             GeminiUrl("object?o1=___1.Product--968");
             wait.Until(d => d.FindElements(By.CssSelector(".property")).Count == 23);
             wait.Until(dr => dr.FindElement(By.CssSelector(".property img")).GetAttribute("src").Length > 0);
         }
 
         public virtual void EmptyImageProperty() {
+            Debug.WriteLine(nameof(EmptyImageProperty));
             GeminiUrl("object?i1=View&o1=___1.Person--13742");
             wait.Until(d => d.FindElements(By.CssSelector(".property"))[9].Text == "Photo:");
         }
 
         public virtual void ClickOnImage() {
+            Debug.WriteLine(nameof(ClickOnImage));
             GeminiUrl("object?o1=___1.Product--779");
             Click(WaitForCss(".property img"));
             WaitForView(Pane.Single, PaneType.Attachment);
@@ -29,6 +33,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void RightClickOnImage() {
+            Debug.WriteLine(nameof(RightClickOnImage));
             GeminiUrl("object?o1=___1.Product--780");
             RightClick(WaitForCss(".property img"));
             WaitForView(Pane.Left, PaneType.Object);
@@ -37,92 +42,6 @@ namespace NakedObjects.Selenium {
             wait.Until(dr => dr.FindElement(By.CssSelector("#pane2 .attachment .reference img")).GetAttribute("src").Length > 0);
         }
     }
-
-    public abstract class AttachmentTests : AttachmentTestsRoot {
-        [TestMethod]
-        public override void ImageAsProperty() {
-            base.ImageAsProperty();
-        }
-
-        [TestMethod]
-        public override void EmptyImageProperty() {
-            base.EmptyImageProperty();
-        }
-
-        [TestMethod]
-        public override void ClickOnImage() {
-            base.ClickOnImage();
-        }
-
-        [TestMethod]
-        public override void RightClickOnImage() {
-            base.RightClickOnImage();
-        }
-    }
-
-    #region browsers specific subclasses
-
-    public class AttachmentTestsIe : AttachmentTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitIeDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-    }
-
-    //[TestClass] //Firefox Individual
-    public class AttachmentTestsFirefox : AttachmentTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitFirefoxDriver();
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-
-        protected override void ScrollTo(IWebElement element) {
-            string script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
-            ((IJavaScriptExecutor) br).ExecuteScript(script);
-        }
-    }
-
-    public class AttachmentTestsChrome : AttachmentTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitChromeDriver();
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-    }
-
-    #endregion
 
     #region Mega tests
 
