@@ -12,6 +12,7 @@ using OpenQA.Selenium;
 namespace NakedObjects.Selenium {
     public abstract class PerformanceTestsRoot : AWTest {
         public virtual void RetrieveRandomEmployees() {
+            Debug.WriteLine(nameof(RetrieveRandomEmployees));
             var stopWatch = new Stopwatch();
             stopWatch.Start();
             GeminiUrl("home?m1=EmployeeRepository");
@@ -30,8 +31,8 @@ namespace NakedObjects.Selenium {
 
     public abstract class PerformanceTests : PerformanceTestsRoot {
         [TestMethod] //Mega
-        public override void RetrieveRandomEmployees() {
-            base.RetrieveRandomEmployees();
+        public void MegaPerformanceTests() {
+            RetrieveRandomEmployees();
         }
     }
 
@@ -42,7 +43,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -61,7 +62,7 @@ namespace NakedObjects.Selenium {
     public class PerformanceTestsFirefox : PerformanceTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -85,7 +86,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
