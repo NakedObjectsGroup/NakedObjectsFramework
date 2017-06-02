@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Keywords />
+      <Title>Image</Title>
+      <Author>Naked Objects Group</Author>
+      <Description>Adds an Image property and corresponding action.</Description>
+      <HelpUrl>www.nakedobjects.net</HelpUrl>
+      <Shortcut>coll</Shortcut>
+    </Header>
+    <Snippet>
+      <References />
+      <Imports />
+      <Declarations>
+        <Literal Editable="true">
+          <ID>Name</ID>
+          <ToolTip>Enter the name for the Image property</ToolTip>
+          <Default>Photo</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp" Kind="method decl" Delimiter="$">
+  <![CDATA[#Region $Name$ (Image)
+  [Hidden(WhenTo.UntilPersisted)][NotMapped]
+public virtual Image $Name$
+{
+    get
+    {
+        if (PhotoContent == null) return null;
+        return new Image($Name$Content, $Name$Name, $Name$Mime);
+    }
+}
+
+[NakedObjectsIgnore]
+public virtual byte[] $Name$Content { get; set; }
+
+[NakedObjectsIgnore]
+public virtual string $Name$Name { get; set; }
+
+[NakedObjectsIgnore]
+public virtual string $Name$Mime { get; set; }
+
+public void Add$Name$(Image newImage)
+{
+    $Name$Content = newImage.GetResourceAsByteArray();
+    $Name$Name = newImage.Name;
+    $Name$Mime = newImage.MimeType;
+}
+#endregion
+]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
