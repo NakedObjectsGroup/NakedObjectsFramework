@@ -515,18 +515,13 @@ namespace NakedObjects.Selenium {
         public virtual void ValidateSingleRefParamFromChoices() {
             GeminiUrl("object?o1=___1.SalesOrderHeader--71742&c1_SalesOrderHeaderSalesReason=List&as1=open");
 
-
             WaitForView(Pane.Single, PaneType.Object);
 
             Thread.Sleep(2000);
 
             var action = wait.Until(dr => dr.FindElement(By.CssSelector("nof-action input[value='Add New Sales Reason'")));
 
-            //ScrollTo(action);
-
             Click(action);
-
-            //PageDownAndWait();
 
             wait.Until(dr => dr.FindElement(By.CssSelector("select#reason1")));
             wait.Until(dr => dr.FindElements(By.CssSelector("select#reason1 option")).Count >= 10);
@@ -837,43 +832,43 @@ namespace NakedObjects.Selenium {
     public abstract class MegaDialogTestsRoot : DialogTestsRoot {
         [TestMethod] //Mega
         public void MegaDialogTest() {
-            //PasswordParam();
-            //ScalarChoicesParm();
-            //TestCancelDialog();
-            //FieldsRetainedWhenNavigatingAwayAndBack();
-            //ReopeningADialogThatWasntCancelledDoesNotRetainFields();
-            //ScalarParmShowsDefaultValue();
-            //DateTimeParmKeepsValue();
-            ////TimeSpanParm(); fails - maybe as a result of using chrome timepicker ? 
-            //RefChoicesParmKeepsValue();
-            //MultipleRefChoicesDefaults();
-            //MultipleRefChoicesChangeDefaults();
-            //ConditionalChoices();
-            //ChoicesDefaults();
-            //ChoicesOptional();
-            //ChoicesChangeDefaults();
-            ////ConditionalChoicesDefaults();  move to LocallyRun 
-            ////ConditionalChoicesMultiple();  move to LocallyRun 
-            //AutoCompleteParm();
-            //AutoCompleteParmDefault();
-            //ClearingAutoCompleteTextClearsUnderlyingReference();
-            //AutoCompleteParmShowSingleItem();
-            //AutoCompleteScalarField();
-            //AutoCompleteOptionalParamNotSelected();
-            //MandatoryParameterEnforced();
-            //ValidateSingleValueParameter();
+            PasswordParam();
+            ScalarChoicesParm();
+            TestCancelDialog();
+            FieldsRetainedWhenNavigatingAwayAndBack();
+            ReopeningADialogThatWasntCancelledDoesNotRetainFields();
+            ScalarParmShowsDefaultValue();
+            DateTimeParmKeepsValue();
+            //TimeSpanParm(); fails - maybe as a result of using chrome timepicker ? 
+            RefChoicesParmKeepsValue();
+            MultipleRefChoicesDefaults();
+            MultipleRefChoicesChangeDefaults();
+            ConditionalChoices();
+            ChoicesDefaults();
+            ChoicesOptional();
+            ChoicesChangeDefaults();
+            //ConditionalChoicesDefaults();  move to LocallyRun 
+            //ConditionalChoicesMultiple();  move to LocallyRun 
+            AutoCompleteParm();
+            AutoCompleteParmDefault();
+            ClearingAutoCompleteTextClearsUnderlyingReference();
+            AutoCompleteParmShowSingleItem();
+            AutoCompleteScalarField();
+            AutoCompleteOptionalParamNotSelected();
+            MandatoryParameterEnforced();
+            ValidateSingleValueParameter();
             ValidateSingleRefParamFromChoices();
-            //CoValidationOfMultipleParameters();
-            //ParameterDescriptionRenderedAsPlaceholder();
-            //BooleanParams();
-            //NullableBooleanParams();
-            //WarningShownWithinDialogAndInFooter();
-            //DefaultReferenceParamRendersCorrectly();
-            //QueryOnlyActionDialogPersists();
-            //PotentActionDialogDisappearsAndFieldsNotRemembered();
-            //OptionalReferenceParamCanBeNull();
-            //ValidationOfContributeeParameter();
-            //NoResultFoundMessageLeavesDialogOpen();
+            CoValidationOfMultipleParameters();
+            ParameterDescriptionRenderedAsPlaceholder();
+            BooleanParams();
+            NullableBooleanParams();
+            WarningShownWithinDialogAndInFooter();
+            DefaultReferenceParamRendersCorrectly();
+            QueryOnlyActionDialogPersists();
+            PotentActionDialogDisappearsAndFieldsNotRemembered();
+            OptionalReferenceParamCanBeNull();
+            ValidationOfContributeeParameter();
+            NoResultFoundMessageLeavesDialogOpen();
         }
     }
 

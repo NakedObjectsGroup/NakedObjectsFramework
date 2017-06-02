@@ -203,7 +203,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class MegaViewModelTestsChrome : MegaViewModelTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
