@@ -173,8 +173,8 @@ namespace NakedObjects.Selenium {
             Click(iconList);
             WaitForCss("table");
             // cancel table view 
-            Click(WaitForCssNo(".icon.minimise", 0));
-            WaitUntilGone(d => d.FindElement(By.CssSelector(".table")));
+            Click(WaitForCssNo(".icon.summary", 0));
+            WaitUntilGone(d => d.FindElement(By.CssSelector("table")));
         }
 
         public virtual void NotCountedCollection() {
@@ -202,16 +202,19 @@ namespace NakedObjects.Selenium {
             WaitForCss("thead tr th", 5);
 
             // Go back to summary
-            Click(WaitForCssNo(".icon.minimise", 0));
+            Click(WaitForCssNo(".icon.summary", 0));
             WaitUntilElementDoesNotExist("table");
             //Add a new reason from menu action
             OpenActionDialog("Add New Sales Reasons");
             br.FindElement(By.CssSelector(".value  select option[label='Review']")).Click();
             wait.Until(dr => new SelectElement(WaitForCss("select#reasons1")).AllSelectedOptions.Count == 1);
+            Thread.Sleep(1000);
             Click(OKButton());
+            Thread.Sleep(1000);
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection .summary .details"))[1].Text == "2 Items");
             //Open table view and confirm that there are indeed 2 rows
             Click(WaitForCssNo(".collection .icon.table", 1));
+            Thread.Sleep(1000);
             WaitForCss("thead tr th", 5);
             WaitForCss("tbody tr", 2);  //bug #60: only one row showed
 
@@ -333,7 +336,8 @@ namespace NakedObjects.Selenium {
             WaitForCss(".object.object-color0");
             wait.Until(dr => dr.FindElements(By.CssSelector("div .reference")).Count >= 2);
             var cc = GetReferenceFromProperty("Credit Card");
-            Assert.IsTrue(cc.GetAttribute("class").Contains("link-color0"));
+            wait.Until(dr => GetReferenceFromProperty("Credit Card").GetAttribute("class").Contains("link-color0"));
+         
         }
 
         public virtual void ZeroIntValues() {
@@ -777,7 +781,7 @@ namespace NakedObjects.Selenium {
             TableViewHonouredOnCollection();
             TableViewIgnoresDuplicatedColumnName();
             ClickReferenceProperty();
-            // OpenCollectionAsList();  move to LocallyRun 
+            OpenCollectionAsList();
             NotCountedCollection();
             ClickOnLineItemWithCollectionAsList();
             ClickOnLineItemWithCollectionAsTable();
@@ -803,8 +807,8 @@ namespace NakedObjects.Selenium {
             UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed();
             CannotInvokeAPotentActionUntilPriorOneHasCompleted();
 
-            //CollectionsUpdateProperly();  move to LocallyRun 
-            //NotCountedCollectionUpdatesCorrectly();  move to LocallyRun 
+            //CollectionsUpdateProperly(); // broken fix 
+            NotCountedCollectionUpdatesCorrectly();
         }
     }
 

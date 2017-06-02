@@ -5,14 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Collections.ObjectModel;
-using System.Threading;
+using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
 namespace NakedObjects.Selenium {
     public abstract class FooterTestsRoot : AWTest {
         public virtual void Home() {
+            Debug.WriteLine(nameof(Home));
             GeminiUrl("object?o1=___1.Product--968");
             WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
             Click(br.FindElement(By.CssSelector(".icon.home")));
@@ -20,6 +20,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void BackAndForward() {
+            Debug.WriteLine(nameof(BackAndForward));
             Url(BaseUrl);
             GoToMenuFromHomePage("Orders");
             Click(GetObjectAction("Random Order"));
@@ -60,6 +61,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void RecentObjects() {
+            Debug.WriteLine(nameof(RecentObjects));
             GeminiUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber&f1_accountNumber=%22AW%22");
             ClearFieldThenType("#accountnumber1", "AW00000042");
             Click(OKButton());
@@ -115,6 +117,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void ApplicationProperties() {
+            Debug.WriteLine(nameof(ApplicationProperties));
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
             ClickPropertiesButton();
@@ -130,6 +133,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void LogOff() {
+            Debug.WriteLine(nameof(LogOff));
             GeminiUrl("home");
             ClickLogOffButton();
             wait.Until(d => br.FindElement(By.CssSelector(".title")).Text.StartsWith("Log Off"));
@@ -141,6 +145,7 @@ namespace NakedObjects.Selenium {
         #region WarningsAndInfo
 
         public virtual void ExplicitWarningsAndInfo() {
+            Debug.WriteLine(nameof(ExplicitWarningsAndInfo));
             GeminiUrl("home?m1=WorkOrderRepository");
             Click(GetObjectAction("Generate Info And Warning"));
             var warn = WaitForCss(".footer .warnings");
@@ -155,6 +160,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void ZeroParamActionReturningNullGeneratesGenericWarning() {
+            Debug.WriteLine(nameof(ZeroParamActionReturningNullGeneratesGenericWarning));
             GeminiUrl("home?m1=EmployeeRepository");
             Click(GetObjectAction("Me"));
             WaitForTextEquals(".footer .warnings", "no result found");
@@ -206,68 +212,7 @@ namespace NakedObjects.Selenium {
         #endregion
     }
 
-    #region browsers specific subclasses 
 
-    public class FooterIconTestsIe : FooterTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitIeDriver();
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            base.CleanUpTest();
-        }
-    }
-
-    //[TestClass] //Firefox Individual
-    public class FooterIconTestsFirefox : FooterTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitFirefoxDriver();
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            base.CleanUpTest();
-        }
-    }
-
-    public class FooterIconTestsChrome : FooterTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitChromeDriver();
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            base.CleanUpTest();
-        }
-
-        protected override void ScrollTo(IWebElement element) {
-            string script = string.Format("window.scrollTo(0, {0})", element.Location.Y);
-            ((IJavaScriptExecutor) br).ExecuteScript(script);
-        }
-    }
-
-    #endregion
 
     #region Mega tests
 
@@ -288,7 +233,7 @@ namespace NakedObjects.Selenium {
     public class MegaFooterTestsFirefox : MegaFooterTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -299,7 +244,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -308,7 +253,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -319,7 +264,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -328,7 +273,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -339,7 +284,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
