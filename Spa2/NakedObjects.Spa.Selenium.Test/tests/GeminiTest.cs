@@ -60,8 +60,6 @@ namespace NakedObjects.Selenium {
             wait.Until(dr => dr.FindElements(By.CssSelector(cssSelector)).Count == count);
         }
 
-
-
         #region overhead
 
         protected const string BaseUrl = TestConfig.BaseUrl;

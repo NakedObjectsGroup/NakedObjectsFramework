@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -17,6 +18,7 @@ namespace NakedObjects.Selenium {
     /// </summary>
     public abstract class CCATestsRoot : AWTest {
         public virtual void ListViewWithParmDialogAlreadyOpen() {
+            Debug.WriteLine(nameof(ListViewWithParmDialogAlreadyOpen));
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
             GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&as1=open&d1=ChangeMaxQuantity&f1_newMax=%22%22");
@@ -43,6 +45,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void ListViewWithParmDialogNotOpen() {
+            Debug.WriteLine(nameof(ListViewWithParmDialogNotOpen));
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
             GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&as1=open");
@@ -70,6 +73,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void DateParam() {
+            Debug.WriteLine(nameof(DateParam));
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
             GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&pg1=1&ps1=20&s1_=0&as1=open&c1=Table");
@@ -102,6 +106,7 @@ namespace NakedObjects.Selenium {
 
         //To test an error that was previously being thrown by the RO server
         public virtual void EmptyParam() {
+            Debug.WriteLine(nameof(EmptyParam));
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
             GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&pg1=1&ps1=20&s1_=0&as1=open&c1=Table");
@@ -119,6 +124,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void TestSelectAll() {
+            Debug.WriteLine(nameof(TestSelectAll));
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
             GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0");
@@ -137,6 +143,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void SelectAllTableView() {
+            Debug.WriteLine(nameof(SelectAllTableView));
             GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&c1=Table");
             Reload();
             WaitForCss("td", 64);
@@ -154,6 +161,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void IfNoCCAs() {
+            Debug.WriteLine(nameof(IfNoCCAs));
             //test that Actions is disabled & no checkboxes appear
             GeminiUrl("list?m1=PersonRepository&a1=RandomContacts&pg1=1&ps1=20&s1_=0&c1=List");
             Reload();
@@ -161,11 +169,10 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("true", actions.GetAttribute("disabled"));
             actions.AssertHasTooltip("No actions available");
             WaitUntilElementDoesNotExist("input[type='checkbox']");
-            //Assert.AreEqual(0, checkboxes.Count(cb => cb.Displayed));
-            //Check that actions menu is disabled and 
         }
 
         public virtual void SelectionRetainedWhenNavigatingAwayAndBack() {
+            Debug.WriteLine(nameof(SelectionRetainedWhenNavigatingAwayAndBack));
             GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=1&ps1=20&s1_=152&c1=List");
             Reload();
             WaitForSelectedCheckboxes(3);
@@ -177,6 +184,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void SelectionClearedWhenPageChanged() {
+            Debug.WriteLine(nameof(SelectionClearedWhenPageChanged));
             GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=1&ps1=20&s1_=152&c1=List");
             Reload();
             WaitForTextStarting(".details", "Page 1 of ");
@@ -202,6 +210,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void TableViewWithParmDialogNotOpen() {
+            Debug.WriteLine(nameof(TableViewWithParmDialogNotOpen));
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
             GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&as1=open&c1=Table");
@@ -240,6 +249,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void TableViewWithParmDialogAlreadyOpen() {
+            Debug.WriteLine(nameof(TableViewWithParmDialogAlreadyOpen));
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
             GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&c1=Table&as1=open&d1=ChangeDiscount");
@@ -265,7 +275,7 @@ namespace NakedObjects.Selenium {
             GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&c1=Table&as1=open&d1=ChangeDiscount");
             Reload();
             TypeIntoFieldWithoutClearing("#newdiscount1", "0.10");
-            var cells = WaitForCss("td", 64);
+            WaitForCss("td", 64);
             PageDownAndWait();
             SelectCheckBox("#item1-6");
             PageDownAndWait();
@@ -275,6 +285,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void ReloadingAQueryableClearsSelection() {
+            Debug.WriteLine(nameof(ReloadingAQueryableClearsSelection));
             GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=20&ps1=5&s1_=0&as1=open");
             Reload();
             wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count > 30);
@@ -286,40 +297,36 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void ZeroParamAction() {
+            Debug.WriteLine(nameof(ZeroParamAction));
             GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=20&ps1=5&s1_=0&as1=open&c1=Table");
             Reload();
             wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count > 30);
 
             SelectCheckBox("#item1-all"); //To clear
-         
+
             Click(GetObjectAction("Clear Comments"));
-        
+
             Reload();
             wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count > 30);
-
-            //wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) == 0);
-
-            //SelectCheckBox("#item1-all", true); //To clear
-            //WaitForSelectedCheckboxes(0);
 
             //Now add comments
             SelectCheckBox("#item1-1");
             SelectCheckBox("#item1-2");
             SelectCheckBox("#item1-3");
-         
+
             Click(GetObjectAction("Comment As Users Unhappy"));
             Thread.Sleep(2000); //Because there is no visible change to wait for
             Reload();
-           
+
             wait.Until(dr => dr.FindElements(By.CssSelector("span.loading:empty")));
-           
+
             wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) == 3);
 
             //Confirm that the three checkboxes have now been cleared
             wait.Until(dr => !dr.FindElements(By.CssSelector("input")).Where(el => el.GetAttribute("type") == "checkbox").Any(el => el.Selected));
 
             SelectCheckBox("#item1-all"); //To clear
-          
+
             Click(GetObjectAction("Clear Comments"));
             Thread.Sleep(1000);
             Reload();
@@ -328,7 +335,6 @@ namespace NakedObjects.Selenium {
             wait.Until(dr => dr.FindElements(By.CssSelector("span.loading:empty")));
             wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) == 0);
         }
-
     }
 
     public abstract class MegaCCATests : CCATestsRoot {
@@ -336,7 +342,7 @@ namespace NakedObjects.Selenium {
         public void MegaCCATest() {
             ListViewWithParmDialogAlreadyOpen();
             ListViewWithParmDialogNotOpen();
-            // DateParam(); fails on server 
+            DateParam();
             EmptyParam();
             TestSelectAll();
             SelectAllTableView();
