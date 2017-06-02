@@ -21,7 +21,7 @@ namespace NakedObjects.Selenium {
         public virtual void ShiftEnterEquivalentToRightClick() {
             Url(CustomersMenuUrl);
             WaitForView(Pane.Single, PaneType.Home, "Home");
-            wait.Until(d => d.FindElements(By.CssSelector("action")).Count == CustomerServiceActions);
+            wait.Until(d => d.FindElements(By.CssSelector("nof-action")).Count >= CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
             ClearFieldThenType(".value  input", "AW00022262");
             OKButton().SendKeys(Keys.Shift + Keys.Enter);
@@ -157,7 +157,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class MegaKeyboardTestsChrome : MegaKeyboardTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
