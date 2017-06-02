@@ -515,11 +515,11 @@ namespace NakedObjects.Selenium {
         public virtual void ValidateSingleRefParamFromChoices() {
             GeminiUrl("object?o1=___1.SalesOrderHeader--71742&c1_SalesOrderHeaderSalesReason=List&as1=open");
 
-            Thread.Sleep(2000); // debug etc 
+            //Thread.Sleep(2000); // debug etc 
 
             WaitForView(Pane.Single, PaneType.Object);
 
-            //Thread.Sleep(2000);
+            Thread.Sleep(2000);
 
             var action = wait.Until(dr => dr.FindElement(By.CssSelector("nof-action input[value='Add New Sales Reason'")));
 
