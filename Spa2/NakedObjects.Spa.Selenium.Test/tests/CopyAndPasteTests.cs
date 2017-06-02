@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -13,6 +14,7 @@ using OpenQA.Selenium;
 namespace NakedObjects.Selenium {
     public abstract class CopyAndPasteTestsRoot : AWTest {
         public virtual void CopyTitleOrPropertyIntoClipboard() {
+            Debug.WriteLine(nameof(CopyTitleOrPropertyIntoClipboard));
             GeminiUrl("object/object?o1=___1.Product--990&o2=___1.Customer--13179");
             WaitForView(Pane.Left, PaneType.Object, "Mountain-500 Black, 42");
             WaitForView(Pane.Right, PaneType.Object, "Adrian Sanchez, AW00013179");
@@ -45,6 +47,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void CopyListItemIntoClipboard() {
+            Debug.WriteLine(nameof(CopyListItemIntoClipboard));
             GeminiUrl("list/list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&m2=PersonRepository&a2=ValidCountries&p2=1&ps2=20");
             Reload(Pane.Left);
             var item = wait.Until(dr => dr.FindElements(By.CssSelector("#pane1 td"))[1]);
@@ -59,6 +62,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void PasteIntoReferenceField() {
+            Debug.WriteLine(nameof(PasteIntoReferenceField));
             GeminiUrl("object/object?o1=___1.PurchaseOrderHeader--1372&i1=Edit&o2=___1.Employee--161");
             WaitForView(Pane.Left, PaneType.Object);
             Assert.AreEqual("Annette Hill", WaitForCss("#pane1 .property:nth-child(4) .value.droppable").GetAttribute("value"));
@@ -72,6 +76,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void PasteIntoReferenceFieldThatAlsoHasAutoCompleteAndFindMenu() {
+            Debug.WriteLine(nameof(PasteIntoReferenceFieldThatAlsoHasAutoCompleteAndFindMenu));
             GeminiUrl("object/object?o2=___1.SalesPerson--284&o1=___1.Store--740&i1=Edit");
             WaitForView(Pane.Left, PaneType.Object, "Editing - Touring Services");
             Assert.AreEqual("Tsvi Reiter", WaitForCss("input#salesperson1").GetAttribute("value"));
@@ -99,6 +104,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void PasteIntoDialog() {
+            Debug.WriteLine(nameof(PasteIntoDialog));
             GeminiUrl("home/object?m1=SalesRepository&d1=CreateNewSalesPerson&o2=___1.Employee--206");
             var title = WaitForCss("#pane2 .header .title");
             Assert.AreEqual("Stuart Munson", title.Text);
@@ -114,6 +120,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void PasteAnImplementationOfAnInterface() {
+            Debug.WriteLine(nameof(PasteAnImplementationOfAnInterface));
             GeminiUrl("object/object?i1=View&o1=___1.Employee--88&i2=View&o2=___1.Employee--203&as1=open&d1=SpecifyManager&f1_manager=null");
             var title = WaitForCss("#pane2 .header .title");
             Assert.AreEqual("Ken Myer", title.Text);
@@ -126,6 +133,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void PasteIntoAutoCompleteField() {
+            Debug.WriteLine(nameof(PasteIntoAutoCompleteField));
             GeminiUrl("home/object?m1=CustomerRepository&i2=View&o2=___1.Customer--29929&d1=FindCustomer&f1_customer=null");
             var title = WaitForCss("#pane2 .header .title");
             Assert.AreEqual("Many Bikes Store, AW00029929", title.Text);
@@ -137,12 +145,12 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void DroppableReferenceFieldWithoutAutoComplete() {
+            Debug.WriteLine(nameof(DroppableReferenceFieldWithoutAutoComplete));
             GeminiUrl("object?o1=___1.PurchaseOrderHeader--121");
             GetReferenceProperty("Order Placed By", "Sheela Word");
             EditObject();
-            wait.Until(dr => dr.FindElements(By.CssSelector(".property")).
-                    Single(we => we.FindElement(By.CssSelector(".name")).Text == "Order Placed By" + ":" &&
-                                 we.FindElement(By.CssSelector(".value.droppable")).GetAttribute("value") == "Sheela Word")
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property")).Single(we => we.FindElement(By.CssSelector(".name")).Text == "Order Placed By" + ":" &&
+                                                                                       we.FindElement(By.CssSelector(".value.droppable")).GetAttribute("value") == "Sheela Word")
             );
             //Finish somewhere else
             GeminiUrl("home");
@@ -150,9 +158,9 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void CannotPasteWrongTypeIntoReferenceField() {
+            Debug.WriteLine(nameof(CannotPasteWrongTypeIntoReferenceField));
             GeminiUrl("object/object?o1=___1.PurchaseOrderHeader--1372&i1=Edit&o2=___1.Product--771");
             WaitForView(Pane.Left, PaneType.Object);
-            //CancelDatePicker("#orderdate1");
             var fieldCss = "#pane1 .property:nth-child(4) .value.droppable";
             Assert.AreEqual("Annette Hill", WaitForCss(fieldCss).GetAttribute("value"));
             var title = WaitForCss("#pane2 .header .title");
@@ -171,6 +179,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed() {
+            Debug.WriteLine(nameof(DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed));
             GeminiUrl("home/object?m1=EmployeeRepository&d1=CreateNewEmployeeFromContact&f1_contactDetails=null&o2=___1.Person--10895");
             var title = WaitForCss("#pane2 .header .title");
             Assert.AreEqual("Arthur Kapoor", title.Text);
@@ -178,8 +187,8 @@ namespace NakedObjects.Selenium {
             CopyToClipboard(title);
 
             string selector = "#pane1 .parameter .value";
-            var target = WaitForCss(selector);
-           
+            WaitForCss(selector);
+
             // this has changed with new autocomplete 
             //Assert.AreEqual("", target.Text);
 
@@ -191,124 +200,6 @@ namespace NakedObjects.Selenium {
             CancelDialog();
         }
     }
-
-    public abstract class CopyAndPasteTests : CopyAndPasteTestsRoot {
-        [TestMethod]
-        public override void CopyTitleOrPropertyIntoClipboard() {
-            base.CopyTitleOrPropertyIntoClipboard();
-        }
-
-        [TestMethod]
-        public override void CopyListItemIntoClipboard() {
-            base.CopyListItemIntoClipboard();
-        }
-
-        [TestMethod]
-        public override void PasteIntoReferenceField() {
-            base.PasteIntoReferenceField();
-        }
-
-        [TestMethod]
-        public override void PasteIntoReferenceFieldThatAlsoHasAutoCompleteAndFindMenu() {
-            base.PasteIntoReferenceFieldThatAlsoHasAutoCompleteAndFindMenu();
-        }
-
-        [TestMethod]
-        public override void PasteIntoDialog() {
-            base.PasteIntoDialog();
-        }
-
-        [TestMethod]
-        public override void PasteIntoAutoCompleteField() {
-            base.PasteIntoAutoCompleteField();
-        }
-
-        [TestMethod]
-        public override void PasteAnImplementationOfAnInterface() {
-            base.PasteAnImplementationOfAnInterface();
-        }
-
-        [TestMethod]
-        public override void DroppableReferenceFieldWithoutAutoComplete() {
-            base.DroppableReferenceFieldWithoutAutoComplete();
-        }
-
-        [TestMethod]
-        public override void CannotPasteWrongTypeIntoReferenceField() {
-            base.CannotPasteWrongTypeIntoReferenceField();
-        }
-
-        [TestMethod]
-        public override void DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed() {
-            base.DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed();
-        }
-    }
-
-    #region browsers specific subclasses
-
-    //[TestClass]
-    public class CopyAndPasteTestsIe : CopyAndPasteTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitIeDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-    }
-
-    //[TestClass] //Firefox Individual
-    public class CopyAndPasteTestsFirefox : CopyAndPasteTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitFirefoxDriver();
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-
-        protected override void ScrollTo(IWebElement element) {
-            string script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
-            ((IJavaScriptExecutor) br).ExecuteScript(script);
-        }
-    }
-
-    //[TestClass]
-    public class CopyAndPasteTestsChrome : CopyAndPasteTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitChromeDriver();
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-    }
-
-    #endregion
 
     #region Mega tests
 
@@ -336,7 +227,7 @@ namespace NakedObjects.Selenium {
     public class MegaCopyAndPasteTestsFirefox : MegaCopyAndPasteTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -356,7 +247,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -376,7 +267,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
