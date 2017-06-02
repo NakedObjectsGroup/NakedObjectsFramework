@@ -25,13 +25,13 @@
         </Literal>
       </Declarations>
       <Code Language="csharp" Kind="method decl" Delimiter="$">
-  <![CDATA[#Region $Name$ (Image)
+  <![CDATA[#region $Name$ (Image)
   [Hidden(WhenTo.UntilPersisted)][NotMapped]
 public virtual Image $Name$
 {
     get
     {
-        if (PhotoContent == null) return null;
+        if ($Name$Content == null) return null;
         return new Image($Name$Content, $Name$Name, $Name$Mime);
     }
 }
