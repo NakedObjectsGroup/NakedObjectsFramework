@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
@@ -78,6 +79,7 @@ namespace NakedObjects.Selenium {
 
         public virtual void CannotInvokeDialogSelectionActionWithNothingSelected() {
             GeminiUrl("object?i1=View&r1=1&o1=___1.SalesOrderHeader--63023&c1_SalesOrderHeaderSalesReason=Summary&c1_Details=List&d1=AdjustQuantities");
+            Thread.Sleep(1000);
             WaitForTextEquals(".collection .dialog .title", "Adjust Quantities");
             TypeIntoFieldWithoutClearing("#newquantity1", "7");
             Click(OKButton());

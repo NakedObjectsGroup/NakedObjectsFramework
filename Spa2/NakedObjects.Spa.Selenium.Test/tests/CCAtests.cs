@@ -350,7 +350,6 @@ namespace NakedObjects.Selenium {
             TableViewWithParmDialogAlreadyOpen();
             ReloadingAQueryableClearsSelection();
             ZeroParamAction();
-
             IfNoCCAs();
             SelectionClearedWhenPageChanged();
             TableViewWithParmDialogNotOpen();
