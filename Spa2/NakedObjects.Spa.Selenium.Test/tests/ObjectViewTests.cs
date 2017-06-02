@@ -331,6 +331,7 @@ namespace NakedObjects.Selenium {
             //Default
             GeminiUrl("object?i1=View&o1=___1.PersonCreditCard--10768--6875");
             WaitForCss(".object.object-color0");
+            wait.Until(dr => dr.FindElements(By.CssSelector("div .reference")).Count >= 2);
             var cc = GetReferenceFromProperty("Credit Card");
             Assert.IsTrue(cc.GetAttribute("class").Contains("link-color0"));
         }
