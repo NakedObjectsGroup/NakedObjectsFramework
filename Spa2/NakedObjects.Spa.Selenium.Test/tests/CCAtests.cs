@@ -79,6 +79,7 @@ namespace NakedObjects.Selenium {
             GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&pg1=1&ps1=20&s1_=0&as1=open&c1=Table");
             WaitForView(Pane.Single, PaneType.List);
             Reload();
+            WaitForView(Pane.Single, PaneType.List);
             SelectCheckBox("#item1-6");
             SelectCheckBox("#item1-9");
             OpenActionDialog("Extend Offers");
@@ -95,7 +96,7 @@ namespace NakedObjects.Selenium {
             WaitUntilElementDoesNotExist(".dialog");
             Thread.Sleep(1000);
             Reload();
-
+            WaitForView(Pane.Single, PaneType.List);
             //Check that exactly two rows were updated
             string endDate = "End Date:";
             CheckIndividualItem(6, endDate, outFutureDate);
