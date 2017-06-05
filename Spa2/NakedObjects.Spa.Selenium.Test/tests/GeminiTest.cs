@@ -307,7 +307,7 @@ namespace NakedObjects.Selenium {
             var sub = wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " .submenu")).Single(el => el.Text == menuName));
             var expand = sub.FindElement(By.CssSelector(".icon-expand"));
             Click(expand);
-            Assert.IsNotNull(sub.FindElement(By.CssSelector(".icon-collapse")));
+            wait.Until(dr => dr.FindElements(By.CssSelector(".icon-collapse")).Count > 0);
         }
 
         protected virtual void CloseSubMenu(string menuName) {
