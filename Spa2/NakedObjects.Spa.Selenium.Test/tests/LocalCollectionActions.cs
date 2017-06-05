@@ -78,8 +78,13 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void CannotInvokeDialogSelectionActionWithNothingSelected() {
-            GeminiUrl("object?i1=View&r1=1&o1=___1.SalesOrderHeader--63023&c1_SalesOrderHeaderSalesReason=Summary&c1_Details=List&d1=AdjustQuantities");
-            Thread.Sleep(1000);
+            GeminiUrl("object?i1=View&r1=1&o1=___1.SalesOrderHeader--63023&c1_SalesOrderHeaderSalesReason=Summary&c1_Details=List");
+        
+
+            var action = wait.Until(dr => dr.FindElement(By.CssSelector("nof-action input[value='Adjust Quantities'")));
+
+            Click(action);
+
             WaitForTextEquals(".collection .dialog .title", "Adjust Quantities");
             TypeIntoFieldWithoutClearing("#newquantity1", "7");
             Click(OKButton());
