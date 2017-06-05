@@ -101,13 +101,15 @@ namespace NakedObjects.Selenium {
             GeminiUrl("object?i1=View&o1=___1.Shift--1&as1=open");
             OpenActionDialog("Change Times");
             var rand = new Random();
-            var start = new TimeSpan(rand.Next(23), rand.Next(59), 0).ToString(@"hh\:mm");
-            ClearFieldThenType("#starttime1", start);
-            var end = new TimeSpan(rand.Next(23), rand.Next(59), 0).ToString(@"hh\:mm");
-            ClearFieldThenType("#endtime1", end);
+            var start = new TimeSpan(rand.Next(23), rand.Next(59), 0);
+            ClearFieldThenType("#starttime1", start.ToString("hhmm"));
+            Thread.Sleep(1000);
+            var end = new TimeSpan(rand.Next(23), rand.Next(59), 0);
+            ClearFieldThenType("#endtime1", end.ToString("hhmm"));
+            Thread.Sleep(1000);
             Click(OKButton());
-            WaitForTextEquals(".property", 2, "Start Time:\r\n" + start);
-            WaitForTextEquals(".property", 3, "End Time:\r\n" + end);
+            WaitForTextEquals(".property", 2, "Start Time:\r\n" + start.ToString(@"hh\:mm"));
+            WaitForTextEquals(".property", 3, "End Time:\r\n" + end.ToString(@"hh\:mm"));
         }
 
         public virtual void RefChoicesParmKeepsValue() {
