@@ -100,12 +100,19 @@ namespace NakedObjects.Selenium {
             Debug.WriteLine(nameof(TimeSpanParm));
             GeminiUrl("object?i1=View&o1=___1.Shift--1&as1=open");
             OpenActionDialog("Change Times");
-            var rand = new Random();
-            var start = new TimeSpan(rand.Next(23), rand.Next(59), 0);
-            TypeIntoFieldWithoutClearing("nof-dialog input#starttime1", start.ToString("hhmm"));
+
             Thread.Sleep(1000);
+
+            var rand = new Random();
+         
             var end = new TimeSpan(rand.Next(23), rand.Next(59), 0);
             TypeIntoFieldWithoutClearing("nof-dialog input#endtime1", end.ToString("hhmm"));
+
+            Thread.Sleep(1000);
+
+            var start = new TimeSpan(rand.Next(23), rand.Next(59), 0);
+            TypeIntoFieldWithoutClearing("nof-dialog input#starttime1", start.ToString("hhmm"));
+
             Thread.Sleep(2000);
 
             Click(OKButton());
