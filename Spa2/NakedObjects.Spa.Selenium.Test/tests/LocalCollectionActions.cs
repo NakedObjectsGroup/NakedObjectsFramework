@@ -80,7 +80,7 @@ namespace NakedObjects.Selenium {
         public virtual void CannotInvokeDialogSelectionActionWithNothingSelected() {
             GeminiUrl("object?i1=View&r1=1&o1=___1.SalesOrderHeader--63023&c1_SalesOrderHeaderSalesReason=Summary&c1_Details=List");
         
-
+            Thread.Sleep(4000);
             var action = wait.Until(dr => dr.FindElement(By.CssSelector("nof-action input[value='Adjust Quantities'")));
 
             Click(action);
