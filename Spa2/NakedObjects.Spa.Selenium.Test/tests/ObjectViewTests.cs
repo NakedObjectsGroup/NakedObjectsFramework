@@ -496,10 +496,12 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed() {
-            GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--69143&as1=open&r1=0");
+            GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--69143&as1=open");
+            WaitForView(Pane.Single, PaneType.Object, "SO69143");
             Click(GetObjectAction("Clear Comment"));
             WaitUntilElementDoesNotExist(".tempdisabled");
             OpenActionDialog("Add Standard Comments");
+            Thread.Sleep(1000);
             Click(OKButton());
             wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Payment on delivery"));
 
@@ -773,37 +775,37 @@ namespace NakedObjects.Selenium {
     public abstract class MegaObjectViewTestsRoot : ObjectViewTestsRoot {
         [TestMethod] //Mega
         public void MegaObjectViewTest() {
-            ActionsAlreadyOpen();
-            OpenActionsMenuNotAlreadyOpen();
-            OpenAndCloseSubMenusTo3Levels();
-            Properties();
-            Collections();
-            CollectionEagerlyRendered();
-            DateAndCurrencyProperties();
-            TableViewHonouredOnCollection();
-            TableViewIgnoresDuplicatedColumnName();
-            ClickReferenceProperty();
-            OpenCollectionAsList();
-            NotCountedCollection();
-            ClickOnLineItemWithCollectionAsList();
-            ClickOnLineItemWithCollectionAsTable();
-            CanClickOnTitleInTableView();
-            DialogAction();
-            DialogActionOk();
-            DialogActionOk1();
-            ObjectAction();
-            CollectionAction();
-            DescriptionRenderedAsTooltip();
-            DisabledAction();
-            ActionsMenuDisabledOnObjectWithNoActions();
-            QueryOnlyActionDoesNotReloadAutomatically();
-            PotentActionDoesReloadAutomatically();
-            NonNavigableReferenceProperty();
-            Colours();
-            ZeroIntValues();
-            AddingObjectToCollectionUpdatesTableView();
-            TimeSpanProperty();
-            ZeroParamActionCausesObjectToReload();
+            //ActionsAlreadyOpen();
+            //OpenActionsMenuNotAlreadyOpen();
+            //OpenAndCloseSubMenusTo3Levels();
+            //Properties();
+            //Collections();
+            //CollectionEagerlyRendered();
+            //DateAndCurrencyProperties();
+            //TableViewHonouredOnCollection();
+            //TableViewIgnoresDuplicatedColumnName();
+            //ClickReferenceProperty();
+            //OpenCollectionAsList();
+            //NotCountedCollection();
+            //ClickOnLineItemWithCollectionAsList();
+            //ClickOnLineItemWithCollectionAsTable();
+            //CanClickOnTitleInTableView();
+            //DialogAction();
+            //DialogActionOk();
+            //DialogActionOk1();
+            //ObjectAction();
+            //CollectionAction();
+            //DescriptionRenderedAsTooltip();
+            //DisabledAction();
+            //ActionsMenuDisabledOnObjectWithNoActions();
+            //QueryOnlyActionDoesNotReloadAutomatically();
+            //PotentActionDoesReloadAutomatically();
+            //NonNavigableReferenceProperty();
+            //Colours();
+            //ZeroIntValues();
+            //AddingObjectToCollectionUpdatesTableView();
+            //TimeSpanProperty();
+            //ZeroParamActionCausesObjectToReload();
 
             CanInvokeOneNonPotentActionBeforePreviousHasCompleted();
             UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed();
