@@ -517,8 +517,21 @@ namespace NakedObjects.Selenium {
             }
             var selector = CssSelectorFor(pane) + $"nof-action-list nof-action input[value='{actionName}']";
             var a = wait.Until(d => d.FindElement(By.CssSelector(selector)));
-            //ScrollTo(a);
-            return a;
+
+            if (a.Enabled) {
+                return a;
+            }
+            
+            Thread.Sleep(1000);
+
+            a = wait.Until(d => d.FindElement(By.CssSelector(selector)));
+
+            if (a.Enabled) {
+                return a;
+            }
+
+            throw new Exception("Action not enabled");
+
         }
 
         protected IWebElement OpenActionDialog(string actionName, Pane pane = Pane.Single, int? noOfParams = null) {
