@@ -102,11 +102,12 @@ namespace NakedObjects.Selenium {
             OpenActionDialog("Change Times");
             var rand = new Random();
             var start = new TimeSpan(rand.Next(23), rand.Next(59), 0);
-            ClearFieldThenType("#starttime1", start.ToString("hhmm"));
+            TypeIntoFieldWithoutClearing("#starttime1", start.ToString("hhmm"));
             Thread.Sleep(1000);
             var end = new TimeSpan(rand.Next(23), rand.Next(59), 0);
-            ClearFieldThenType("#endtime1", end.ToString("hhmm"));
-            Thread.Sleep(1000);
+            TypeIntoFieldWithoutClearing("#endtime1", end.ToString("hhmm"));
+            Thread.Sleep(2000);
+
             Click(OKButton());
             WaitForTextEquals(".property", 2, "Start Time:\r\n" + start.ToString(@"hh\:mm"));
             WaitForTextEquals(".property", 3, "End Time:\r\n" + end.ToString(@"hh\:mm"));
