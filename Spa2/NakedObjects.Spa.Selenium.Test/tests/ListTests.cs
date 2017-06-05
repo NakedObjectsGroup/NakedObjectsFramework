@@ -526,7 +526,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass]
+   //[TestClass] toggle
     public class MegaListTestsChrome : MegaListTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

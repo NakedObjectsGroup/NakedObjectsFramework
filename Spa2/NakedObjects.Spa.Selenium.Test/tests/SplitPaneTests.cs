@@ -485,7 +485,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass]
+   //[TestClass] toggle
     public class MegaSplitPaneTestChrome : SplitPaneTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

@@ -398,7 +398,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass]
+   //[TestClass] toggle
     public class CCATestsChrome : MegaCCATests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

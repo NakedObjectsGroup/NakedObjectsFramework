@@ -6,9 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+
 
 namespace NakedObjects.Selenium {
     /// <summary>
@@ -17,6 +19,7 @@ namespace NakedObjects.Selenium {
     /// 
     public abstract class UrlTestsRoot : AWTest {
         public virtual void UnrecognisedUrlGoesToHome() {
+            Debug.WriteLine(nameof(UnrecognisedUrlGoesToHome));
             GeminiUrl("unrecognised");
             WaitForView(Pane.Single, PaneType.Home, "Home");
             Assert.IsTrue(br.FindElements(By.CssSelector(".actions")).Count == 0);
@@ -25,12 +28,14 @@ namespace NakedObjects.Selenium {
         #region Single pane Urls
 
         public virtual void Home() {
+            Debug.WriteLine(nameof(Home));
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home, "Home");
             Assert.IsTrue(br.FindElements(By.CssSelector(".actions")).Count == 0);
         }
 
         public virtual void HomeWithMenu() {
+            Debug.WriteLine(nameof(HomeWithMenu));
             GeminiUrl("home?m1=CustomerRepository");
             WaitForView(Pane.Single, PaneType.Home, "Home");
             wait.Until(d => d.FindElement(By.CssSelector("nof-action-list")));
@@ -48,6 +53,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void Object() {
+            Debug.WriteLine(nameof(Object));
             GeminiUrl("object?o1=___1.Store--350");
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
             wait.Until(d => d.FindElement(By.CssSelector(".view")));
@@ -67,11 +73,13 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void ObjectWithNoSuchObject() {
+            Debug.WriteLine(nameof(ObjectWithNoSuchObject));
             GeminiUrl("object?o1=___1.Foo--555");
             wait.Until(d => d.FindElement(By.CssSelector(".error")));
         }
 
         public virtual void ObjectWithActions() {
+            Debug.WriteLine(nameof(ObjectWithActions));
             GeminiUrl("object?o1=___1.Store--350&as1=open");
             GetObjectAction("Create New Address");
             AssertObjectElementsPresent();
@@ -79,6 +87,7 @@ namespace NakedObjects.Selenium {
 
         //TODO:  Need to add tests for object & home (later, list) with action (dialog) open
         public virtual void ObjectWithCollections() {
+            Debug.WriteLine(nameof(ObjectWithCollections));
             GeminiUrl("object?o1=___1.Store--350&&c1_Addresses=List&c1_Contacts=Table");
             wait.Until(d => d.FindElement(By.CssSelector(".collections")));
             AssertObjectElementsPresent();
@@ -98,6 +107,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void ObjectInEditMode() {
+            Debug.WriteLine(nameof(ObjectInEditMode));
             GeminiUrl("object?o1=___1.Store--350&i1=Edit");
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
             wait.Until(d => d.FindElement(By.CssSelector(".edit")));
@@ -107,6 +117,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void ListZeroParameterAction() {
+            Debug.WriteLine(nameof(ListZeroParameterAction));
             GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders");
             Reload();
             wait.Until(d => d.FindElement(By.CssSelector(".list")));
@@ -118,6 +129,7 @@ namespace NakedObjects.Selenium {
         #region Split pane Urls
 
         public virtual void SplitHomeHome() {
+            Debug.WriteLine(nameof(ListZeroParameterAction));
             GeminiUrl("home/home");
             WaitForView(Pane.Left, PaneType.Home, "Home");
             WaitForView(Pane.Right, PaneType.Home, "Home");
@@ -288,72 +300,6 @@ namespace NakedObjects.Selenium {
         #endregion
     }
 
-    #region browsers specific subclasses 
-
-    public class UrlTestsIe : UrlTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitIeDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-    }
-
-    //[TestClass] //Firefox Individual
-    public class UrlTestsFirefox : UrlTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitFirefoxDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-    }
-
-    public class UrlTestsChrome : UrlTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitChromeDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-
-        protected override void ScrollTo(IWebElement element) {
-            string script = $"window.scrollTo(0, {element.Location.Y})";
-            ((IJavaScriptExecutor) br).ExecuteScript(script);
-        }
-    }
-
-    #endregion
-
     public class MegaUrlTestRoot : UrlTestsRoot {
         [TestMethod] //Mega
         public virtual void MegaUrlTest() {
@@ -381,7 +327,7 @@ namespace NakedObjects.Selenium {
     public class MegaUrlTestFirefox : MegaUrlTestRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -401,7 +347,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -416,12 +362,12 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass]
+   //[TestClass] toggle
     public class MegaUrlTestChrome : MegaUrlTestRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]

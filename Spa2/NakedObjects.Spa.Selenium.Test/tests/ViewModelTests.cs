@@ -5,19 +5,23 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Linq;
+using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
 namespace NakedObjects.Selenium {
     public abstract class ViewModelTestsRoot : AWTest {
         public virtual void CreateVM() {
+            Debug.WriteLine(nameof(CreateVM));
+
             GeminiUrl("object?i1=View&o1=___1.CustomerDashboard--20071&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Sean Campbell - Dashboard");
             //TODO: test for no Edit button?
         }
 
         public virtual void CreateEditableVM() {
+            Debug.WriteLine(nameof(CreateEditableVM));
+
             GeminiUrl("object?i1=View&o1=___1.Person--9169&as1=open");
             Click(GetObjectAction("Create Email"));
             WaitForView(Pane.Single, PaneType.Object, "New email");
@@ -39,6 +43,8 @@ namespace NakedObjects.Selenium {
 
         //Test for #46
         public virtual void EditableVMWithEmptyLeadingKeys() {
+            Debug.WriteLine(nameof(EditableVMWithEmptyLeadingKeys));
+
             GeminiUrl("object?i1=View&o1=___1.Person--9169&as1=open");
             Click(GetObjectAction("Create Email"));
             WaitForView(Pane.Single, PaneType.Object, "New email");
@@ -55,6 +61,8 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void CreateSwitchableVM() {
+            Debug.WriteLine(nameof(CreateSwitchableVM));
+
             GeminiUrl("object?i1=View&o1=___1.StoreSalesInfo--AW00000293--False&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Sales Info for: Fashionable Bikes and Accessories");
             Click(GetObjectAction("Edit")); //Note: not same as the generic (object) Edit button
@@ -88,69 +96,6 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    #region browsers specific subclasses
-
-    public class ViewModelTestsIe : ViewModelsTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitIeDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-    }
-
-    //[TestClass] //Firefox Individual
-    public class ViewModelFirefox : ViewModelsTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitFirefoxDriver();
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-
-        protected override void ScrollTo(IWebElement element) {
-            string script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
-            ((IJavaScriptExecutor) br).ExecuteScript(script);
-        }
-    }
-
-    public class ViewModelTestsChrome : ViewModelsTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitChromeDriver();
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-    }
-
-    #endregion
 
     #region Mega tests
 
@@ -168,7 +113,7 @@ namespace NakedObjects.Selenium {
     public class MegaViewModelTestsFirefox : MegaViewModelTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -188,7 +133,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -203,12 +148,12 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass]
+   //[TestClass] toggle
     public class MegaViewModelTestsChrome : MegaViewModelTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]

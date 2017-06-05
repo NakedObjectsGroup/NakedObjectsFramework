@@ -160,7 +160,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass]
+   //[TestClass] toggle
     public class MegaRedirectTestChrome : MegaRedirectTestBase {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
