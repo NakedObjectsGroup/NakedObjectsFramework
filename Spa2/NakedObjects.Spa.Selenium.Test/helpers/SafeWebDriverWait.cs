@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Diagnostics;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
@@ -26,14 +27,26 @@ namespace NakedObjects.Selenium {
             wait.IgnoreExceptionTypes(exceptionTypes);
         }
 
+        private void DebugDumpPage() {
+            var page = Driver.PageSource;
+            Debug.WriteLine(page);
+        }
+
+
         public TResult Until<TResult>(Func<IWebDriver, TResult> condition) {
-            return wait.Until(d => {
-                try {
-                    return condition(d);
-                }
-                catch {}
-                return default(TResult);
-            });
+            try {
+                return wait.Until(d => {
+                    try {
+                        return condition(d);
+                    }
+                    catch { }
+                    return default(TResult);
+                });
+            }
+            catch  {
+                DebugDumpPage();
+                throw;
+            }
         }
 
         public TimeSpan Timeout {

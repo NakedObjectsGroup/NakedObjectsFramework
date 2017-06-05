@@ -157,7 +157,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class MegaKeyboardTestsChrome : MegaKeyboardTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
