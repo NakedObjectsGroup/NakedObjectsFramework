@@ -102,10 +102,10 @@ namespace NakedObjects.Selenium {
             OpenActionDialog("Change Times");
             var rand = new Random();
             var start = new TimeSpan(rand.Next(23), rand.Next(59), 0);
-            TypeIntoFieldWithoutClearing("#starttime1", start.ToString("hhmm"));
+            TypeIntoFieldWithoutClearing("nof-dialog input#starttime1", start.ToString("hhmm"));
             Thread.Sleep(1000);
             var end = new TimeSpan(rand.Next(23), rand.Next(59), 0);
-            TypeIntoFieldWithoutClearing("#endtime1", end.ToString("hhmm"));
+            TypeIntoFieldWithoutClearing("nof-dialog input#endtime1", end.ToString("hhmm"));
             Thread.Sleep(2000);
 
             Click(OKButton());
