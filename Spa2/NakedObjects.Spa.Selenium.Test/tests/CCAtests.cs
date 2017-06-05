@@ -75,11 +75,13 @@ namespace NakedObjects.Selenium {
         public virtual void DateParam() {
             Debug.WriteLine(nameof(DateParam));
             GeminiUrl("home");
-            WaitForView(Pane.Single, PaneType.Home);
+          
             GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&pg1=1&ps1=20&s1_=0&as1=open&c1=Table");
-            WaitForView(Pane.Single, PaneType.List);
             Reload();
-            WaitForView(Pane.Single, PaneType.List);
+
+            wait.Until(dr => dr.FindElements(By.CssSelector("tbody tr .checkbox")).Count >= 16);
+            PageDownAndWait();
+
             SelectCheckBox("#item1-6");
             SelectCheckBox("#item1-9");
             OpenActionDialog("Extend Offers");
