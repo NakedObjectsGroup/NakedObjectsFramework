@@ -619,7 +619,7 @@ namespace NakedObjects.Selenium {
             //ReopeningADialogThatWasntCancelledDoesNotRetainFields();
             //ScalarParmShowsDefaultValue();
             //DateTimeParmKeepsValue();
-            TimeSpanParm();
+            //TimeSpanParm(); // needs more work
             //RefChoicesParmKeepsValue();
             //MultipleRefChoicesDefaults();
             //MultipleRefChoicesChangeDefaults();
