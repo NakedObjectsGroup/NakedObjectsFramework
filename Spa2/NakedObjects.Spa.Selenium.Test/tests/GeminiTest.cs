@@ -517,7 +517,7 @@ namespace NakedObjects.Selenium {
             }
             var selector = CssSelectorFor(pane) + $"nof-action-list nof-action input[value='{actionName}']";
             var a = wait.Until(d => d.FindElement(By.CssSelector(selector)));
-            ScrollTo(a);
+            //ScrollTo(a);
             return a;
         }
 
