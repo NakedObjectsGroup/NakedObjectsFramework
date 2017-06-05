@@ -148,7 +148,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-   //[TestClass] toggle
+   [TestClass] //toggle
     public class MegaViewModelTestsChrome : MegaViewModelTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

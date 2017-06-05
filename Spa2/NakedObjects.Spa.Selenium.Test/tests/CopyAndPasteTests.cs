@@ -242,7 +242,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-   //[TestClass] toggle
+   [TestClass] //toggle
     public class MegaCopyAndPasteTestsChrome : MegaCopyAndPasteTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
