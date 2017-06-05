@@ -18,6 +18,7 @@ namespace NakedObjects.Selenium {
         public virtual void ActionsAlreadyOpen() {
             GeminiUrl("object?o1=___1.Customer--555&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Twin Cycles, AW00000555");
+            wait.Until(d => br.FindElements(By.CssSelector(".submenu")).Count >= 1);
             OpenSubMenu("Orders");
             var actions = GetObjectActions(7);
             Assert.AreEqual("Review Sales Responsibility", actions[0].GetAttribute("value"));
