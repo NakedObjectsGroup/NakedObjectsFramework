@@ -471,6 +471,7 @@ namespace NakedObjects.Selenium {
         //completed.
         public virtual void CanInvokeOneNonPotentActionBeforePreviousHasCompleted() {
             GeminiUrl("object?i1=View&o1=___1.Customer--389&as1=open");
+            wait.Until(d => br.FindElements(By.CssSelector(".submenu")).Count >= 1);
             OpenSubMenu("Orders");
             var open = GetObjectAction("Open Orders");
             var recent = GetObjectAction("Recent Orders");
