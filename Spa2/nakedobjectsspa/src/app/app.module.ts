@@ -62,6 +62,8 @@ import { DatePickerFacadeComponent } from './date-picker-facade/date-picker-faca
 import { AutoCompleteComponent } from './auto-complete/auto-complete.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { SlimScrollModule } from 'ng2-slimscroll';
+import { TimePickerComponent } from './time-picker/time-picker.component';
+import { TimePickerFacadeComponent } from './time-picker-facade/time-picker-facade.component';
 
 
 export function authHttpServiceFactory(http: Http, configService: ConfigService, options: RequestOptions): any {
@@ -120,7 +122,9 @@ export function authServiceFactory(configService: ConfigService, auth0AuthServic
         LogoffComponent,
         DatePickerFacadeComponent,
         AutoCompleteComponent,
-        DatePickerComponent
+        DatePickerComponent,
+        TimePickerComponent,
+        TimePickerFacadeComponent
     ],
     entryComponents: [
         ObjectComponent,

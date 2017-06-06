@@ -34,6 +34,8 @@ export * from './date-picker-facade/date-picker-facade.component';
 export * from './auto-complete/auto-complete.component';
 export * from './date-picker/date-picker.component';
 export * from './helpers-components';
+export * from './time-picker-facade/time-picker-facade.component';
+export * from './time-picker/time-picker.component';
 
 export * from './click-handler.service';
 export * from './color.service';

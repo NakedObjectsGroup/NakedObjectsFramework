@@ -36,6 +36,9 @@
     <Content Include="src\app\attachment\attachment.component.html" />
     <Content Include="src\app\action\action.component.css" />
     <Content Include="src\app\action\action.component.html" />
+    <Content Include="src\app\auto-complete-facade\auto-complete-facade.component.alt.css" />
+    <Content Include="src\app\auto-complete-facade\auto-complete-facade.component.css" />
+    <Content Include="src\app\auto-complete-facade\auto-complete-facade.component.html" />
     <Content Include="src\app\auto-complete\auto-complete.component.alt.css" />
     <Content Include="src\app\auto-complete\auto-complete.component.css" />
     <Content Include="src\app\auto-complete\auto-complete.component.html" />
@@ -88,6 +91,10 @@
     <Content Include="src\app\recent\recent.component.html" />
     <Content Include="src\app\row\row.component.css" />
     <Content Include="src\app\row\row.component.html" />
+    <Content Include="src\app\time-picker-facade\time-picker-facade.component.css" />
+    <Content Include="src\app\time-picker-facade\time-picker-facade.component.html" />
+    <Content Include="src\app\time-picker\time-picker.component.css" />
+    <Content Include="src\app\time-picker\time-picker.component.html" />
     <Content Include="src\app\view-parameter\view-parameter.component.css" />
     <Content Include="src\app\view-parameter\view-parameter.component.html" />
     <Content Include="src\app\view-property\view-property.component.css" />
@@ -131,6 +138,7 @@
     <TypeScriptCompile Include="src\app\attachment\attachment.component.ts" />
     <TypeScriptCompile Include="src\app\action\action.component.ts" />
     <TypeScriptCompile Include="src\app\auth.service.ts" />
+    <TypeScriptCompile Include="src\app\auto-complete-facade\auto-complete-facade.component.ts" />
     <TypeScriptCompile Include="src\app\auto-complete\auto-complete.component.ts" />
     <TypeScriptCompile Include="src\app\cicero-command-factory.service.ts" />
     <TypeScriptCompile Include="src\app\cicero-commands\action.ts" />
@@ -207,6 +215,8 @@
     <TypeScriptCompile Include="src\app\row\row.component.ts" />
     <TypeScriptCompile Include="src\app\shared\index.ts" />
     <TypeScriptCompile Include="src\app\simple-lru-cache.ts" />
+    <TypeScriptCompile Include="src\app\time-picker-facade\time-picker-facade.component.ts" />
+    <TypeScriptCompile Include="src\app\time-picker\time-picker.component.ts" />
     <TypeScriptCompile Include="src\app\type-result-cache.ts" />
     <TypeScriptCompile Include="src\app\url-manager.service.ts" />
     <TypeScriptCompile Include="src\app\user-messages.ts" />

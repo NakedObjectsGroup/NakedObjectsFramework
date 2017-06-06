@@ -101,20 +101,17 @@ namespace NakedObjects.Selenium {
             GeminiUrl("object?i1=View&o1=___1.Shift--1&as1=open");
             OpenActionDialog("Change Times");
 
-            Thread.Sleep(1000);
-
+        
             var rand = new Random();
          
             var end = new TimeSpan(rand.Next(23), rand.Next(59), 0);
-            TypeIntoFieldWithoutClearing("nof-dialog input#endtime1", end.ToString("hhmm"));
+            ClearFieldThenType("nof-dialog input#endtime1", end.ToString("hhmm"));
 
-            Thread.Sleep(1000);
-
+           
             var start = new TimeSpan(rand.Next(23), rand.Next(59), 0);
-            TypeIntoFieldWithoutClearing("nof-dialog input#starttime1", start.ToString("hhmm"));
-
+            ClearFieldThenType("nof-dialog input#starttime1", start.ToString("hhmm"));
             Thread.Sleep(2000);
-
+           
             Click(OKButton());
             WaitForTextEquals(".property", 2, "Start Time:\r\n" + start.ToString(@"hh\:mm"));
             WaitForTextEquals(".property", 3, "End Time:\r\n" + end.ToString(@"hh\:mm"));
@@ -612,43 +609,43 @@ namespace NakedObjects.Selenium {
     public abstract class MegaDialogTestsRoot : DialogTestsRoot {
         [TestMethod] //Mega
         public void MegaDialogTest() {
-            PasswordParam();
-            ScalarChoicesParm();
-            TestCancelDialog();
-            FieldsRetainedWhenNavigatingAwayAndBack();
-            ReopeningADialogThatWasntCancelledDoesNotRetainFields();
-            ScalarParmShowsDefaultValue();
-            DateTimeParmKeepsValue();
-            //TimeSpanParm(); // needs more work
-            RefChoicesParmKeepsValue();
-            MultipleRefChoicesDefaults();
-            MultipleRefChoicesChangeDefaults();
-            ConditionalChoices();
-            ChoicesDefaults();
-            ChoicesOptional();
-            ChoicesChangeDefaults();
-            ConditionalChoicesDefaults();
-            ConditionalChoicesMultiple();
-            AutoCompleteParm();
-            AutoCompleteParmDefault();
-            ClearingAutoCompleteTextClearsUnderlyingReference();
-            AutoCompleteParmShowSingleItem();
-            AutoCompleteScalarField();
-            AutoCompleteOptionalParamNotSelected();
-            MandatoryParameterEnforced();
-            ValidateSingleValueParameter();
-            ValidateSingleRefParamFromChoices();
-            CoValidationOfMultipleParameters();
-            ParameterDescriptionRenderedAsPlaceholder();
-            BooleanParams();
-            NullableBooleanParams();
-            WarningShownWithinDialogAndInFooter();
-            DefaultReferenceParamRendersCorrectly();
-            QueryOnlyActionDialogPersists();
-            PotentActionDialogDisappearsAndFieldsNotRemembered();
-            OptionalReferenceParamCanBeNull();
-            ValidationOfContributeeParameter();
-            NoResultFoundMessageLeavesDialogOpen();
+            //PasswordParam();
+            //ScalarChoicesParm();
+            //TestCancelDialog();
+            //FieldsRetainedWhenNavigatingAwayAndBack();
+            //ReopeningADialogThatWasntCancelledDoesNotRetainFields();
+            //ScalarParmShowsDefaultValue();
+            //DateTimeParmKeepsValue();
+            TimeSpanParm(); 
+            //RefChoicesParmKeepsValue();
+            //MultipleRefChoicesDefaults();
+            //MultipleRefChoicesChangeDefaults();
+            //ConditionalChoices();
+            //ChoicesDefaults();
+            //ChoicesOptional();
+            //ChoicesChangeDefaults();
+            //ConditionalChoicesDefaults();
+            //ConditionalChoicesMultiple();
+            //AutoCompleteParm();
+            //AutoCompleteParmDefault();
+            //ClearingAutoCompleteTextClearsUnderlyingReference();
+            //AutoCompleteParmShowSingleItem();
+            //AutoCompleteScalarField();
+            //AutoCompleteOptionalParamNotSelected();
+            //MandatoryParameterEnforced();
+            //ValidateSingleValueParameter();
+            //ValidateSingleRefParamFromChoices();
+            //CoValidationOfMultipleParameters();
+            //ParameterDescriptionRenderedAsPlaceholder();
+            //BooleanParams();
+            //NullableBooleanParams();
+            //WarningShownWithinDialogAndInFooter();
+            //DefaultReferenceParamRendersCorrectly();
+            //QueryOnlyActionDialogPersists();
+            //PotentActionDialogDisappearsAndFieldsNotRemembered();
+            //OptionalReferenceParamCanBeNull();
+            //ValidationOfContributeeParameter();
+            //NoResultFoundMessageLeavesDialogOpen();
         }
     }
 

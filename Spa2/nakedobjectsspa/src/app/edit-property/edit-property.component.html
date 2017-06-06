@@ -95,8 +95,7 @@
                                 <nof-date-picker-facade [control]="control" [form]="form" [model]="property"></nof-date-picker-facade>
                             </ng-container>
                             <ng-container *ngSwitchCase="'time'">
-                                <input #focus [id]="propertyPaneId"  type="time" placeholder="{{propertyDescription}}" [formControlName]="propertyId"
-                                       [geminiClear]="subject" (clear)="clear()" />
+                                <nof-time-picker-facade [control]="control" [form]="form" [model]="property"></nof-time-picker-facade>
                             </ng-container>
                             <ng-container *ngSwitchDefault>
                                 <input #focus *ngIf="!isMultiline" [id]="propertyPaneId"  placeholder="{{propertyDescription}}" type="{{isPassword ? 'password' : 'text'}}"

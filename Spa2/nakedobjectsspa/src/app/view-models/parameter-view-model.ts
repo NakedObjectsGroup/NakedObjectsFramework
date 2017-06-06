@@ -177,7 +177,8 @@ export class ParameterViewModel extends FieldViewModel {
                 const date = Models.toUtcDate(newValue || new Models.Value(this.dflt));
                 this.value = date ? Models.toDateString(date) : "";
             } else if (Models.isTime(parmRep)) {
-                this.value = Models.toTime(newValue || new Models.Value(this.dflt));
+                const time = Models.toTime(newValue || new Models.Value(this.dflt));
+                this.value = time ? Models.toTimeString(time) : "";
             } else {
                 this.value = (newValue ? newValue.toString() : null) || this.dflt || "";
             }

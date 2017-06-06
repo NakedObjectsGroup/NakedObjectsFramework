@@ -311,7 +311,8 @@ export function setScalarValueInView(vm: { value: string | number | boolean | Da
         const date = Models.toUtcDate(value);
         vm.value = date ? Models.toDateString(date) : "";
     } else if (Models.isTime(propertyRep)) {
-        vm.value = Models.toTime(value);
+        const time = Models.toTime(value);
+        vm.value = time ? Models.toTimeString(time) : "";
     } else {
         vm.value = value.scalar();
     }
