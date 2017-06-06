@@ -93,12 +93,12 @@ input[type='text'] {
     border-color: black;
 }
 
-.value.droppable.dropping.candrop {
+.value.droppable.dnd-drag-over.candrop {
     border-color: lawngreen;
     background-color: white;
 }
 
-.value.droppable.dropping {
+.value.droppable.dnd-drag-over {
     border-color: red;
 }
 
