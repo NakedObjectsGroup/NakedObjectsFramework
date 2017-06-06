@@ -43,15 +43,6 @@ export class TimePickerFacadeComponent  {
         }
     }
 
-    handleDefaultEvent(data: string) {
-        if (this.control) {
-            if (data === "closed") {
-                // const dateModel = this.datepicker.date;
-                // this.setValueIfChanged(dateModel);                      
-            }
-        }
-    }
-
     handleTimeChangedEvent(time: string) {
         if (this.control) {          
             this.setValueIfChanged(time);      
@@ -68,9 +59,6 @@ export class TimePickerFacadeComponent  {
 
     handleEvents(e: { data: string, type: string }) {
         switch (e.type) {
-            case ("default"):
-                this.handleDefaultEvent(e.data);
-                break;
             case ("timeChanged"):
                 this.handleTimeChangedEvent(e.data);
                 break;
@@ -91,9 +79,7 @@ export class TimePickerFacadeComponent  {
         }
     }
 
-    
-
-    @ViewChild("dp")
+    @ViewChild("tp")
     timepicker : TimePickerComponent;
 
 }

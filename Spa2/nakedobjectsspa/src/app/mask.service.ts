@@ -73,11 +73,19 @@ class LocalDateFilter implements ILocalFilter {
         // Angular date pipes no longer support timezones so we need to use moment here 
 
         let mmt = moment.utc(val);
-        if (this.tz) {
-            mmt = mmt.utcOffset(this.tz);
+
+        if (!mmt.isValid()) {
+            // see if it's a time
+            mmt = moment.utc(val, "HH:mm:ss");
         }
 
-        return mmt.format(this.mask);
+        if (mmt.isValid()) {
+            if (this.tz) {
+                mmt = mmt.utcOffset(this.tz);
+            }
+            return mmt.format(this.mask);
+        }
+        return "";
     }
 }
 

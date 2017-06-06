@@ -25,7 +25,7 @@ export class TimePickerComponent implements OnInit {
     @Input()
     id : string;
 
-    date: moment.Moment;  
+    time: moment.Moment;  
 
     constructor(private readonly el: ElementRef) {
         this.outputEvents = new EventEmitter<{ type: string, data: string }>();
@@ -33,7 +33,7 @@ export class TimePickerComponent implements OnInit {
 
     private validInputFormats = ["HH:mm:ss", "HH:mm", "HHmm"];
 
-    private validateDate(newValue: string) {
+    private validateTime(newValue: string) {
         let dt: moment.Moment;
 
         for (let f of this.validInputFormats) {
@@ -46,10 +46,10 @@ export class TimePickerComponent implements OnInit {
         return dt;
     }
 
-    setDateIfChanged(newDate : moment.Moment){
-        const currentDate = this.value;
-        if (!newDate.isSame(currentDate)) {
-            this.setValue(newDate);
+    setTimeIfChanged(newTime : moment.Moment){
+        const currentTime = this.value;
+        if (!newTime.isSame(currentTime)) {
+            this.setValue(newTime);
             setTimeout(() => this.formatted = this.value.format("HH:mm"));
         }
 
@@ -58,10 +58,10 @@ export class TimePickerComponent implements OnInit {
 
     inputChanged(newValue : string) {
 
-        const dt = this.validateDate(newValue);
+        const dt = this.validateTime(newValue);
 
         if (dt.isValid()) {
-            this.setDateIfChanged(dt);
+            this.setTimeIfChanged(dt);
         }
         else {
             this.setValue(null);
@@ -86,16 +86,16 @@ export class TimePickerComponent implements OnInit {
     }
 
     get value(): moment.Moment {
-        return this.date;
+        return this.time;
     }
 
-    get currentDate(): moment.Moment {
-        return this.date || moment();
+    get currentTime(): moment.Moment {
+        return this.time || moment();
     }
 
-    set value(date: moment.Moment) {
-        if (date) { 
-            this.date = date;
+    set value(time: moment.Moment) {
+        if (time) { 
+            this.time = time;
             this.outputEvents.emit({ type: 'timeChanged', data: this.value.format("HH:mm:ss") });
         }
     }
@@ -111,11 +111,11 @@ export class TimePickerComponent implements OnInit {
                
                 if (e.type === 'setTime') {
                 
-                    const date: moment.Moment = this.validateDate(e.data);
+                    const date: moment.Moment = this.validateTime(e.data);
                     if (!date.isValid()) {
-                        throw new Error(`Invalid date: ${e.data}`);
+                        throw new Error(`Invalid time: ${e.data}`);
                     }
-                    this.selectDate(date);
+                    this.selectTime(date);
                 }
             });
         }
@@ -128,23 +128,22 @@ export class TimePickerComponent implements OnInit {
     }
 
 
-    selectDate(date: moment.Moment, e?: MouseEvent, ) {
+    selectTime(time: moment.Moment, e?: MouseEvent, ) {
         if (e) { e.preventDefault(); }
         setTimeout(() => {
-            this.setValue(date);
+            this.setValue(time);
             this.formatted = this.value.format("HH:mm");
         });
         
     }  
 
-    writeValue(date: moment.Moment) {
-        if (!date) { return; }
-        this.date = date;
+    writeValue(time: moment.Moment) {
+        if (!time) { return; }
+        this.time = time;
     }
 
     clear() {
-        this.selectDate(null);
-        
+        this.selectTime(null);        
     }
 
     private bSubject: BehaviorSubject<string>;
