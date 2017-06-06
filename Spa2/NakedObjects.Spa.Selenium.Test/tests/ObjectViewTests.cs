@@ -811,7 +811,7 @@ namespace NakedObjects.Selenium {
             UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed();
             CannotInvokeAPotentActionUntilPriorOneHasCompleted();
 
-            //CollectionsUpdateProperly(); // broken fix 
+            CollectionsUpdateProperly(); 
             NotCountedCollectionUpdatesCorrectly();
         }
     }

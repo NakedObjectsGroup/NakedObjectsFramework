@@ -223,6 +223,23 @@ export class ContextService {
 
     clearCachedFile = (url: string) => this.repLoader.clearCache(url);
 
+    clearCachedCollections(obj: Models.DomainObjectRepresentation) {
+
+        each(obj.collectionMembers(), cm => {
+            const details = cm.getDetails();
+
+            if (details) {
+                const baseUrl = details.getUrl();
+                details.setUrlParameter(Constants.roInlineCollectionItems, true);
+                const inlineUrl = details.getUrl();
+
+                this.repLoader.clearCache(baseUrl);
+                this.repLoader.clearCache(inlineUrl);
+            }
+        });
+    }
+
+
     // exposed for test mocking
     getDomainObject = (paneId: Pane, oid: Models.ObjectIdWrapper, interactionMode: InteractionMode): Promise<Models.DomainObjectRepresentation> => {
         const type = oid.domainType;
@@ -255,6 +272,7 @@ export class ContextService {
                 this.currentObjects[paneId] = obj;
                 if (forceReload) {
                     this.dirtyList.clearDirty(oid);
+                    this.clearCachedCollections(obj);
                 }
                 this.cacheRecentlyViewed(obj);
                 this.decPendingPotentActionOrReload(paneId);
