@@ -1,7 +1,7 @@
 import { Directive, ElementRef, HostListener, Output, EventEmitter } from '@angular/core';
 
-@Directive({ selector: '[geminiClick]' })
-export class GeminiClickDirective {
+@Directive({ selector: '[nofClick]' })
+export class ClickDirective {
     private readonly el: HTMLElement;
     constructor(el: ElementRef) {
         this.el = el.nativeElement;

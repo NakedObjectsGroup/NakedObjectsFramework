@@ -18,8 +18,8 @@ import { ViewPropertyComponent } from './view-property/view-property.component';
 import { EditParameterComponent } from './edit-parameter/edit-parameter.component';
 import { RecentComponent } from './recent/recent.component';
 import { ApplicationPropertiesComponent } from './application-properties/application-properties.component';
-import { GeminiClickDirective } from './gemini-click.directive';
-import { GeminiClearDirective } from './gemini-clear.directive';
+import { ClickDirective  } from './click.directive';
+import { ClearDirective  } from './clear.directive';
 import { ErrorService } from './error.service';
 import { ContextService } from './context.service';
 import { UrlManagerService } from './url-manager.service';
@@ -103,8 +103,8 @@ export function authServiceFactory(configService: ConfigService, auth0AuthServic
         EditParameterComponent,
         RecentComponent,
         ApplicationPropertiesComponent,
-        GeminiClickDirective,
-        GeminiClearDirective,
+        ClickDirective,
+        ClearDirective,
         CollectionComponent,
         AttachmentComponent,
         MultiLineDialogComponent,

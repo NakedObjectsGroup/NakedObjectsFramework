@@ -6,7 +6,7 @@
         <div *ngSwitchCase="'notNavigable'">
             <div class="value">{{formattedValue}}</div>
         </div>
-        <div *ngSwitchDefault class="reference" [ngClass]="color" geminiClick (leftClick)="doClick()"
+        <div *ngSwitchDefault class="reference" [ngClass]="color" nofClick (leftClick)="doClick()"
              (rightClick)="doClick(true)" dnd-draggable [dragEnabled]="true" [dragData]="property" tabindex="0">
             {{formattedValue}}
         </div>

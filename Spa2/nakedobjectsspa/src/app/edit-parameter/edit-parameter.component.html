@@ -25,7 +25,7 @@
             <!--"EntryType.FreeForm"-->
             <ng-container *ngIf="parameterEntryType === 0">
                 <input #focus [id]="parameterPaneId" class="value droppable" dnd-droppable [allowDrop]="accept(parameter)" (onDropSuccess)="drop($event.dragData)"
-                       [ngClass]="classes()" placeholder="{{description}}" type="text" [formControlName]="parameterId" [geminiClear]="subject" (clear)="clear()" />
+                       [ngClass]="classes()" placeholder="{{description}}" type="text" [formControlName]="parameterId" [nofClear]="subject" (clear)="clear()" />
             </ng-container>
 
         </div>
@@ -68,7 +68,7 @@
                         </ng-container>
                         <ng-container *ngSwitchDefault>
                             <input #focus *ngIf="!isMultiline" [id]="parameterPaneId" placeholder="{{description}}"
-                                   type="{{isPassword ? 'password' : 'text'}}" [formControlName]="parameterId" [geminiClear]="subject" (clear)="clear()" />
+                                   type="{{isPassword ? 'password' : 'text'}}" [formControlName]="parameterId" [nofClear]="subject" (clear)="clear()" />
                             <textarea #focus *ngIf="isMultiline" rows="{{rows}}" [id]="parameterPaneId" [formControlName]="parameterId"
                                       placeholder="{{description}}"></textarea>
                         </ng-container>
@@ -77,7 +77,7 @@
                         <input #focus #checkbox [id]="parameterPaneId" type="checkbox" [formControlName]="parameterId" />{{description}}
                     </ng-container>
                     <ng-container *ngSwitchDefault>
-                        <input #focus [id]="parameterPaneId" type="text" placeholder="{{description}}" [formControlName]="parameterId" [geminiClear]="subject" (clear)="clear()" />
+                        <input #focus [id]="parameterPaneId" type="text" placeholder="{{description}}" [formControlName]="parameterId" [nofClear]="subject" (clear)="clear()" />
                     </ng-container>
                 </ng-container>
             </ng-container>

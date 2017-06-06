@@ -11,13 +11,13 @@
         <div class="lineDialog" *ngFor="let row of rows; let i = index ">
             <form *ngIf="!rowSubmitted(row)" (ngSubmit)="invokeAndAdd(i)" [formGroup]="form(i)" autocomplete="off">
                 <nof-parameters  class="parameters multilinedialog" [parameters]="parameters(row)" [parent]="row" [form]="form(i)"></nof-parameters>               
-                <input class="ok" tabindex="0" type="submit" value="OK" title="{{rowTooltip(row)}}" [disabled]="rowDisabled(row)" geminiClick (leftClick)="invokeAndAdd(i)" />
+                <input class="ok" tabindex="0" type="submit" value="OK" title="{{rowTooltip(row)}}" [disabled]="rowDisabled(row)" nofClick (leftClick)="invokeAndAdd(i)" />
                 <div class="co-validation">{{rowMessage(row)}}</div>
             </form>
             <nof-parameters *ngIf="rowSubmitted(row)" class="parameters" [parameters]="parameters(row)" [parent]="row"></nof-parameters>
             <div *ngIf="rowSubmitted(row)" class="co-validation">{{rowMessage(row)}}</div>
         </div>
-        <input class="close" tabindex="0" type="submit" value="Close" title="" geminiClick (leftClick)="close()" />
+        <input class="close" tabindex="0" type="submit" value="Close" title="" nofClick (leftClick)="close()" />
         <div class="count">{{count}}</div>
     </div>
 </div>

@@ -3,8 +3,8 @@ import { BehaviorSubject } from 'rxjs';
 import { ISubscription } from 'rxjs/Subscription';
 import { safeUnsubscribe } from './helpers-components';
 
-@Directive({ selector: '[geminiClear]' })
-export class GeminiClearDirective implements OnInit, OnDestroy {
+@Directive({ selector: '[nofClear]' })
+export class ClearDirective implements OnInit, OnDestroy {
 
     private readonly nativeEl: HTMLInputElement;
 
@@ -15,7 +15,7 @@ export class GeminiClearDirective implements OnInit, OnDestroy {
         this.nativeEl = this.el.nativeElement;
     }
 
-    @Input('geminiClear')
+    @Input('nofClear')
     subject: BehaviorSubject<any>;
 
     @Output()

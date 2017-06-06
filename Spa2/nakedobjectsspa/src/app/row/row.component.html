@@ -2,21 +2,21 @@
     <input type="checkbox" [id]="id" [(ngModel)]="item.selected">
 </td>
 <ng-container *ngIf="!isTable">
-    <td #focus class="reference" [ngClass]="color" geminiClick (leftClick)="doClick()" (rightClick)="doClick(true)"
+    <td #focus class="reference" [ngClass]="color" nofClick (leftClick)="doClick()" (rightClick)="doClick(true)"
         dnd-draggable [dragEnabled]="true" [dragData]="item" (keydown)="copy($event, item)" (keypress)="copy($event, item)" tabindex="0">
         <label attr.for="{{id}}">{{title}}</label>
     </td>
 </ng-container>
 <ng-container *ngIf="isTable">
-    <td #focus *ngIf="hasTableTitle()" geminiClick (leftClick)="doClick()" (rightClick)="doClick(true)" [ngClass]="color" class="cell" dnd-draggable [dragEnabled]="true" [dragData]="item" (keydown)="copy($event, item)" (keypress)="copy($event, item)" [tabindex]="tabIndexFirstColumn('title')">
+    <td #focus *ngIf="hasTableTitle()" nofClick (leftClick)="doClick()" (rightClick)="doClick(true)" [ngClass]="color" class="cell" dnd-draggable [dragEnabled]="true" [dragData]="item" (keydown)="copy($event, item)" (keypress)="copy($event, item)" [tabindex]="tabIndexFirstColumn('title')">
         {{tableTitle()}}
     </td>
-    <td *ngIf="friendlyName" class="cell" [ngClass]="color" geminiClick (leftClick)="doClick()" (rightClick)="doClick(true)"
+    <td *ngIf="friendlyName" class="cell" [ngClass]="color" nofClick (leftClick)="doClick()" (rightClick)="doClick(true)"
         dnd-draggable [dragEnabled]="true" [dragData]="item" (keydown)="copy($event, item)" (keypress)="copy($event, item)" [tabindex]="tabIndexFirstColumn('fname')">
         {{friendlyName}}
     </td>
     <ng-container *ngIf="!friendlyName">
-        <td #focus *ngFor="let property of tableProperties(); let i = index" geminiClick (leftClick)="doClick()" (rightClick)="doClick(true)"
+        <td #focus *ngFor="let property of tableProperties(); let i = index" nofClick (leftClick)="doClick()" (rightClick)="doClick(true)"
             [ngClass]="color" class="cell" dnd-draggable [dragEnabled]="true" [dragData]="item" (keydown)="copy($event, item)" (keypress)="copy($event, item)" [tabindex]="tabIndexFirstColumn(i)">
             <ng-container [ngSwitch]="propertyType(property)">
                 <ng-container *ngSwitchCase="'ref'">

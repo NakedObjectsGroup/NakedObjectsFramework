@@ -1,6 +1,6 @@
 <div [formGroup]="form">
     <md-input-container>
-        <input [id]="modelPaneId" class="value droppable" type="text" dnd-droppable [allowDrop]="accept(model)" (onDropSuccess)="drop($event.dragData)" [ngClass]="classes()" placeholder="{{description}}" mdInput [formControlName]="modelId" [formControl]="control" [mdAutocomplete]="auto" [geminiClear]="subject" (clear)="clear()">
+        <input [id]="modelPaneId" class="value droppable" type="text" dnd-droppable [allowDrop]="accept(model)" (onDropSuccess)="drop($event.dragData)" [ngClass]="classes()" placeholder="{{description}}" mdInput [formControlName]="modelId" [formControl]="control" [mdAutocomplete]="auto" [nofClear]="subject" (clear)="clear()">
     </md-input-container>
 
     <md-autocomplete #auto="mdAutocomplete">

@@ -6,8 +6,8 @@
 		<nof-parameters class="parameters" [parameters]="parameters" [parent]="dialog" [form]="form"></nof-parameters>
         <div class="co-validation">{{message}}</div>
 		<div class="form-row">
-			<input class="ok" tabindex="0" type="submit" value="OK" title="{{tooltip}}" geminiClick (leftClick)="onSubmit()" (rightClick)="onSubmit(true)" [disabled]="!form.valid" />
-			<input class="cancel" tabindex="0" type="button" geminiClick (leftClick)="close()" value="Cancel"/>
+			<input class="ok" tabindex="0" type="submit" value="OK" title="{{tooltip}}" nofClick (leftClick)="onSubmit()" (rightClick)="onSubmit(true)" [disabled]="!form.valid" />
+			<input class="cancel" tabindex="0" type="button" nofClick (leftClick)="close()" value="Cancel"/>
 		</div>
 	</form>
 </div>

@@ -1,4 +1,4 @@
-<div *ngIf="attachment" class="reference" geminiClick (leftClick)="doAttachmentClick()" (rightClick)="doAttachmentClick(true)" tabindex="0">
+<div *ngIf="attachment" class="reference" nofClick (leftClick)="doAttachmentClick()" (rightClick)="doAttachmentClick(true)" tabindex="0">
     <div *ngIf="!image">{{title}}</div>
     <img *ngIf="image" src="{{image}}" alt="{{title}}" />
 </div>

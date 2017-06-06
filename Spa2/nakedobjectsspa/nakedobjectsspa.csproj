@@ -187,8 +187,8 @@
     <TypeScriptCompile Include="src\app\error\error.component.ts" />
     <TypeScriptCompile Include="src\app\field\field.component.ts" />
     <TypeScriptCompile Include="src\app\footer\footer.component.ts" />
-    <TypeScriptCompile Include="src\app\gemini-clear.directive.ts" />
-    <TypeScriptCompile Include="src\app\gemini-click.directive.ts" />
+    <TypeScriptCompile Include="src\app\clear.directive.ts" />
+    <TypeScriptCompile Include="src\app\click.directive.ts" />
     <TypeScriptCompile Include="src\app\header\header.component.ts" />
     <TypeScriptCompile Include="src\app\home\home.component.ts" />
     <TypeScriptCompile Include="src\app\index.ts" />
