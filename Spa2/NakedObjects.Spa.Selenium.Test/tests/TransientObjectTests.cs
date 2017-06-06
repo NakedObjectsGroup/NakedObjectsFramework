@@ -15,7 +15,7 @@ namespace NakedObjects.Selenium {
     public abstract class TransientObjectTestsRoot : AWTest {
         public virtual void CreateAndSaveTransientObject() {
             GeminiUrl("object?o1=___1.Person--12043&as1=open");
-            Click(GetObjectAction("Create New Credit Card"));
+            Click(GetObjectEnabledAction("Create New Credit Card"));
             SelectDropDownOnField("#cardtype1", "Vista");
             string number = DateTime.Now.Ticks.ToString(); //pseudo-random string
             var obfuscated = number.Substring(number.Length - 4).PadLeft(number.Length, '*');
@@ -28,7 +28,7 @@ namespace NakedObjects.Selenium {
 
         public virtual void SaveAndClose() {
             GeminiUrl("object?o1=___1.Person--12043&as1=open");
-            Click(GetObjectAction("Create New Credit Card"));
+            Click(GetObjectEnabledAction("Create New Credit Card"));
             SelectDropDownOnField("#cardtype1", "Vista");
             string number = DateTime.Now.Ticks.ToString(); //pseudo-random string
             var obfuscated = number.Substring(number.Length - 4).PadLeft(number.Length, '*');
@@ -38,14 +38,14 @@ namespace NakedObjects.Selenium {
             Click(SaveAndCloseButton());
             WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
             //But check that credit card was saved nonetheless
-            GetObjectAction("Recent Credit Cards").Click();
+            GetObjectEnabledAction("Recent Credit Cards").Click();
             WaitForView(Pane.Single, PaneType.List, "Recent Credit Cards");
             wait.Until(dr => dr.FindElements(By.CssSelector(".list table tbody tr td.reference")).First().Text == obfuscated);
         }
 
         public virtual void MissingMandatoryFieldsNotified() {
             GeminiUrl("object?o1=___1.Person--12043&as1=open");
-            Click(GetObjectAction("Create New Credit Card"));
+            Click(GetObjectEnabledAction("Create New Credit Card"));
             SelectDropDownOnField("#cardtype1", "Vista");
             SelectDropDownOnField("#expyear1", "2020");
             SaveButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Card Number; Exp Month; ");
@@ -53,7 +53,7 @@ namespace NakedObjects.Selenium {
 
         public virtual void IndividualFieldValidation() {
             GeminiUrl("object?o1=___1.Person--12043&as1=open");
-            Click(GetObjectAction("Create New Credit Card"));
+            Click(GetObjectEnabledAction("Create New Credit Card"));
             SelectDropDownOnField("#cardtype1", "Vista");
             ClearFieldThenType("input#cardnumber1", "123");
             SelectDropDownOnField("#expmonth1", "1");
@@ -66,7 +66,7 @@ namespace NakedObjects.Selenium {
 
         public virtual void MultiFieldValidation() {
             GeminiUrl("object?o1=___1.Person--12043&as1=open");
-            Click(GetObjectAction("Create New Credit Card"));
+            Click(GetObjectEnabledAction("Create New Credit Card"));
             SelectDropDownOnField("#cardtype1", "Vista");
             ClearFieldThenType("#cardnumber1", "1111222233334444");
             SelectDropDownOnField("#expmonth1", "1");
@@ -77,7 +77,7 @@ namespace NakedObjects.Selenium {
 
         public virtual void PropertyDescriptionAndRequiredRenderedAsPlaceholder() {
             GeminiUrl("object?o1=___1.Person--12043&as1=open");
-            Click(GetObjectAction("Create New Credit Card"));
+            Click(GetObjectEnabledAction("Create New Credit Card"));
             var name = WaitForCss("input#cardnumber1");
             Assert.AreEqual("* Without spaces", name.GetAttribute("placeholder"));
         }
@@ -85,7 +85,7 @@ namespace NakedObjects.Selenium {
         public virtual void CancelTransientObject() {
             GeminiUrl("object?o1=___1.Person--12043&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
-            Click(GetObjectAction("Create New Credit Card"));
+            Click(GetObjectEnabledAction("Create New Credit Card"));
             Click(GetCancelEditButton());
             WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
         }
@@ -96,11 +96,11 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Right, PaneType.Object, "Isabella Richardson");
 
             OpenSubMenu("Work Orders", Pane.Left);
-            Click(GetObjectAction("Create New Work Order", Pane.Left));
+            Click(GetObjectEnabledAction("Create New Work Order", Pane.Left));
             WaitForView(Pane.Left, PaneType.Object, "Editing - Unsaved Work Order");
             ClearFieldThenType("#orderqty1", "4");
 
-            Click(GetObjectAction("Create New Credit Card", Pane.Right));
+            Click(GetObjectEnabledAction("Create New Credit Card", Pane.Right));
             WaitForView(Pane.Right, PaneType.Object, "Editing - Unsaved Credit Card");
             ClearFieldThenType("#cardnumber2", "1111222233334444");
 
@@ -114,7 +114,7 @@ namespace NakedObjects.Selenium {
         public virtual void BackAndForwardOverTransient() {
             GeminiUrl("object?o1=___1.Person--12043&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
-            Click(GetObjectAction("Create New Credit Card"));
+            Click(GetObjectEnabledAction("Create New Credit Card"));
             WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Credit Card");
             Click(br.FindElement(By.CssSelector(".icon.back")));
             WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
@@ -131,7 +131,7 @@ namespace NakedObjects.Selenium {
             GeminiUrl("home?m1=ProductRepository");
             WaitForView(Pane.Single, PaneType.Home);
             Thread.Sleep(1000); // no idea why this keeps failing on server 
-            Click(GetObjectAction("New Product"));
+            Click(GetObjectEnabledAction("New Product"));
             WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Product");
             // set product category and sub category
             SelectDropDownOnField("#productcategory1", "Clothing");
@@ -150,7 +150,7 @@ namespace NakedObjects.Selenium {
         public virtual void TransientWithHiddenNonOptionalFields() {
             GeminiUrl("object?i1=View&o1=___1.Product--380&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Hex Nut 8");
-            Click(GetObjectAction("Create New Work Order", Pane.Single, "Work Orders"));
+            Click(GetObjectEnabledAction("Create New Work Order", Pane.Single, "Work Orders"));
             WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Work Order");
             ClearFieldThenType("#scrappedqty1", "1");
             ClearFieldThenType("#orderqty1", "1");
@@ -186,7 +186,7 @@ namespace NakedObjects.Selenium {
 
         public virtual void CreateAndSaveNotPersistedObject() {
             GeminiUrl("home?m1=EmployeeRepository");
-            Click(GetObjectAction("Create Staff Summary"));
+            Click(GetObjectEnabledAction("Create Staff Summary"));
             WaitForView(Pane.Single, PaneType.Object, "Staff Summary");
             // todo fix once type is no longer displayed
             WaitForTextStarting(".object", "Staff Summary\r\nFemale"); //i.e. no buttons in the header
@@ -195,7 +195,7 @@ namespace NakedObjects.Selenium {
         public virtual void ValuePropOnTransientEmptyIfNoDefault() {
             GeminiUrl("object?i1=View&o1=___1.Product--497&as1=open");
             OpenSubMenu("Work Orders");
-            Click(GetObjectAction("Create New Work Order"));
+            Click(GetObjectEnabledAction("Create New Work Order"));
             WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Work Order");
             var field = WaitForCss("#orderqty1");
             Assert.AreEqual("", field.GetAttribute("value"));
@@ -205,7 +205,7 @@ namespace NakedObjects.Selenium {
         public virtual void InvalidPropOnTransientClearedAndReentered() {
             GeminiUrl("object?i1=View&o1=___1.Product--497&as1=open");
             OpenSubMenu("Work Orders");
-            Click(GetObjectAction("Create New Work Order"));
+            Click(GetObjectEnabledAction("Create New Work Order"));
             WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Work Order");
             ClearFieldThenType("#scrappedqty1", "0");
             ClearFieldThenType("#orderqty1", "0");

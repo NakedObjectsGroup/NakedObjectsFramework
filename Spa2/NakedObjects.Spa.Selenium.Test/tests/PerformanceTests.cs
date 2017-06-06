@@ -18,7 +18,7 @@ namespace NakedObjects.Selenium {
             GeminiUrl("home?m1=EmployeeRepository");
             WaitForView(Pane.Single, PaneType.Home);
             for (int i = 0; i < 100; i++) {
-                Click(GetObjectAction("Random Employee"));
+                Click(GetObjectEnabledAction("Random Employee"));
                 WaitForView(Pane.Single, PaneType.Object);
                 ClickBackButton();
                 WaitForView(Pane.Single, PaneType.Home);

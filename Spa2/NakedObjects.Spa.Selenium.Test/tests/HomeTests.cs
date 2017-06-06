@@ -63,14 +63,14 @@ namespace NakedObjects.Selenium {
             AssertActionNotDisplayed("Random Store");
             AssertActionNotDisplayed("Random Individual");
             OpenSubMenu("Stores");
-            GetObjectAction("Random Store");
+            GetObjectEnabledAction("Random Store");
             AssertActionNotDisplayed("Random Individual");
             OpenSubMenu("Individuals");
-            GetObjectAction("Random Store");
-            GetObjectAction("Random Individual");
+            GetObjectEnabledAction("Random Store");
+            GetObjectEnabledAction("Random Individual");
             CloseSubMenu("Stores");
             AssertActionNotDisplayed("Random Store");
-            GetObjectAction("Random Individual");
+            GetObjectEnabledAction("Random Individual");
             OpenActionDialog("Find Individual Customer By Name");
             AssertActionNotDisplayed("Random Store");
 
@@ -78,22 +78,22 @@ namespace NakedObjects.Selenium {
             GoToMenuFromHomePage("Sales");
             AssertActionNotDisplayed("Action1");
             OpenSubMenu("Sub Menu");
-            GetObjectAction("Action1");
+            GetObjectEnabledAction("Action1");
             AssertActionNotDisplayed("Action2");
             OpenSubMenu("Level 2 sub menu");
-            GetObjectAction("Action2");
+            GetObjectEnabledAction("Action2");
             AssertActionNotDisplayed("Action3");
             AssertActionNotDisplayed("Action4");
             OpenSubMenu("Level 3 sub menu");
-            GetObjectAction("Action3");
-            GetObjectAction("Action4");
+            GetObjectEnabledAction("Action3");
+            GetObjectEnabledAction("Action4");
             CloseSubMenu("Level 3 sub menu");
-            GetObjectAction("Action1");
-            GetObjectAction("Action2");
+            GetObjectEnabledAction("Action1");
+            GetObjectEnabledAction("Action2");
             AssertActionNotDisplayed("Action3");
             AssertActionNotDisplayed("Action4");
             CloseSubMenu("Level 2 sub menu");
-            GetObjectAction("Action1");
+            GetObjectEnabledAction("Action1");
             AssertActionNotDisplayed("Action2");
             AssertActionNotDisplayed("Action3");
             AssertActionNotDisplayed("Action4");
@@ -122,7 +122,7 @@ namespace NakedObjects.Selenium {
         public virtual void ZeroParamReturnsObject() {
             Url(CustomersMenuUrl);
             OpenSubMenu("Stores");
-            Click(GetObjectAction("Random Store"));
+            Click(GetObjectEnabledAction("Random Store"));
             WaitForView(Pane.Single, PaneType.Object);
 
             var title = WaitForCss(".header .title");
@@ -132,7 +132,7 @@ namespace NakedObjects.Selenium {
         public virtual void ZeroParamReturnsCollection() {
             Url(OrdersMenuUrl);
             WaitForCss("nof-action-list nof-action", OrderServiceActions);
-            Click(GetObjectAction("Highest Value Orders"));
+            Click(GetObjectEnabledAction("Highest Value Orders"));
             WaitForView(Pane.Single, PaneType.List, "Highest Value Orders");
             WaitForCss(".reference", 20);
 
@@ -143,7 +143,7 @@ namespace NakedObjects.Selenium {
         public virtual void ZeroParamReturnsEmptyCollection() {
             Url(CustomersMenuUrl);
             OpenSubMenu("Individuals");
-            Click(GetObjectAction("Find Individual Customer By Name"));
+            Click(GetObjectEnabledAction("Find Individual Customer By Name"));
             ClearFieldThenType("#lastname1", "zzz");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Find Individual Customer By Name");

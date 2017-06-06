@@ -23,7 +23,7 @@ namespace NakedObjects.Selenium {
             Debug.WriteLine(nameof(CreateEditableVM));
 
             GeminiUrl("object?i1=View&o1=___1.Person--9169&as1=open");
-            Click(GetObjectAction("Create Email"));
+            Click(GetObjectEnabledAction("Create Email"));
             WaitForView(Pane.Single, PaneType.Object, "New email");
             wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[4].Text == "Status:\r\nNew");
 
@@ -46,7 +46,7 @@ namespace NakedObjects.Selenium {
             Debug.WriteLine(nameof(EditableVMWithEmptyLeadingKeys));
 
             GeminiUrl("object?i1=View&o1=___1.Person--9169&as1=open");
-            Click(GetObjectAction("Create Email"));
+            Click(GetObjectEnabledAction("Create Email"));
             WaitForView(Pane.Single, PaneType.Object, "New email");
             wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[4].Text == "Status:\r\nNew");
 
@@ -65,7 +65,7 @@ namespace NakedObjects.Selenium {
 
             GeminiUrl("object?i1=View&o1=___1.StoreSalesInfo--AW00000293--False&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Sales Info for: Fashionable Bikes and Accessories");
-            Click(GetObjectAction("Edit")); //Note: not same as the generic (object) Edit button
+            Click(GetObjectEnabledAction("Edit")); //Note: not same as the generic (object) Edit button
             WaitForView(Pane.Single, PaneType.Object, "Editing - Sales Info for: Fashionable Bikes and Accessories");
             SelectDropDownOnField("#salesterritory1", "Central");
             Click(SaveVMButton()); //TODO: check if this works

@@ -516,27 +516,32 @@ namespace NakedObjects.Selenium {
                 OpenSubMenu(subMenuName);
             }
             var selector = CssSelectorFor(pane) + $"nof-action-list nof-action input[value='{actionName}']";
-            var a = wait.Until(d => d.FindElement(By.CssSelector(selector)));
+            return wait.Until(d => d.FindElement(By.CssSelector(selector)));
+        }
+
+
+        protected IWebElement GetObjectEnabledAction(string actionName, Pane pane = Pane.Single, string subMenuName = null) {
+
+            var a = GetObjectAction(actionName, pane, subMenuName);
 
             if (a.Enabled) {
                 return a;
             }
-            
+
             Thread.Sleep(1000);
 
-            a = wait.Until(d => d.FindElement(By.CssSelector(selector)));
+            a = GetObjectAction(actionName, pane, subMenuName);
 
             if (a.Enabled) {
                 return a;
             }
 
             throw new Exception("Action not enabled");
-
         }
 
         protected IWebElement OpenActionDialog(string actionName, Pane pane = Pane.Single, int? noOfParams = null) {
            
-            Click(GetObjectAction(actionName, pane));
+            Click(GetObjectEnabledAction(actionName, pane));
            
             var dialogSelector = CssSelectorFor(pane) + " .dialog ";
             wait.Until(d => d.FindElement(By.CssSelector(dialogSelector + "> .title")).Text == actionName);

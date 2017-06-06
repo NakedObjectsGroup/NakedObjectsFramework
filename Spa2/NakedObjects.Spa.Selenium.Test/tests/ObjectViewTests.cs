@@ -42,24 +42,24 @@ namespace NakedObjects.Selenium {
             GeminiUrl("object?i1=View&o1=___1.ProductInventory--320--1&as1=open");
             AssertActionNotDisplayed("Action1");
             OpenSubMenu("Sub Menu");
-            GetObjectAction("Action1");
+            GetObjectEnabledAction("Action1");
             AssertActionNotDisplayed("Action2");
             OpenSubMenu("Level 2 sub menu");
-            GetObjectAction("Action2");
+            GetObjectEnabledAction("Action2");
             AssertActionNotDisplayed("Action3");
             AssertActionNotDisplayed("Action4");
             OpenSubMenu("Level 3 sub menu");
-            GetObjectAction("Action1");
-            GetObjectAction("Action2");
-            GetObjectAction("Action3");
-            GetObjectAction("Action4");
+            GetObjectEnabledAction("Action1");
+            GetObjectEnabledAction("Action2");
+            GetObjectEnabledAction("Action3");
+            GetObjectEnabledAction("Action4");
             CloseSubMenu("Level 3 sub menu");
-            GetObjectAction("Action1");
-            GetObjectAction("Action2");
+            GetObjectEnabledAction("Action1");
+            GetObjectEnabledAction("Action2");
             AssertActionNotDisplayed("Action3");
             AssertActionNotDisplayed("Action4");
             CloseSubMenu("Level 2 sub menu");
-            GetObjectAction("Action1");
+            GetObjectEnabledAction("Action1");
             AssertActionNotDisplayed("Action2");
             AssertActionNotDisplayed("Action3");
             AssertActionNotDisplayed("Action4");
@@ -408,7 +408,7 @@ namespace NakedObjects.Selenium {
             GeminiUrl("home");
             GeminiUrl("object?o1=___1.Customer--555&as1=open");
             OpenSubMenu("Orders");
-            Click(GetObjectAction("Last Order"));
+            Click(GetObjectEnabledAction("Last Order"));
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
         }
 
@@ -416,13 +416,13 @@ namespace NakedObjects.Selenium {
             GeminiUrl("home");
             GeminiUrl("object?o1=___1.Customer--555&as1=open");
             OpenSubMenu("Orders");
-            Click(GetObjectAction("Recent Orders"));
+            Click(GetObjectEnabledAction("Recent Orders"));
             WaitForView(Pane.Single, PaneType.List, "Recent Orders");
         }
 
         public virtual void DescriptionRenderedAsTooltip() {
             GeminiUrl("home?m1=SalesRepository");
-            var a = GetObjectAction("Create New Sales Person");
+            var a = GetObjectEnabledAction("Create New Sales Person");
             Assert.AreEqual("... from an existing Employee", a.GetAttribute("title"));
         }
 
@@ -449,14 +449,14 @@ namespace NakedObjects.Selenium {
 
             var rn = br.FindElements(By.CssSelector(".property"))[19].Text;
 
-            Click(GetObjectAction("Clear Comment"));
+            Click(GetObjectEnabledAction("Clear Comment"));
             wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[19].Text != rn);
             //First set up some comments
             OpenActionDialog("Add Standard Comments");
             Click(OKButton());
             wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Payment on delivery"));
             //Now clear them
-            Click(GetObjectAction("Clear Comment"));
+            Click(GetObjectEnabledAction("Clear Comment"));
             // wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text == "Comment:");
         }
 
@@ -473,8 +473,8 @@ namespace NakedObjects.Selenium {
             GeminiUrl("object?i1=View&o1=___1.Customer--389&as1=open");
             wait.Until(d => br.FindElements(By.CssSelector(".submenu")).Count >= 1);
             OpenSubMenu("Orders");
-            var open = GetObjectAction("Open Orders");
-            var recent = GetObjectAction("Recent Orders");
+            var open = GetObjectEnabledAction("Open Orders");
+            var recent = GetObjectEnabledAction("Recent Orders");
             RightClick(open);
             RightClick(recent); //i.e. in rapid succession
             WaitForView(Pane.Right, PaneType.List, "Recent Orders");
@@ -489,7 +489,7 @@ namespace NakedObjects.Selenium {
             wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Payment on delivery"));
             
             Thread.Sleep(1000); // sleep here because otherwise clear button may be still disabled from OK
-            var clear = GetObjectAction("Clear Comment");
+            var clear = GetObjectEnabledAction("Clear Comment");
             Click(clear);
             Click(clear); //i.e. twice in rapid succession
             wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Sales Person")); //i.e. Comments property has disappeared
@@ -498,7 +498,7 @@ namespace NakedObjects.Selenium {
         public virtual void UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed() {
             GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--69143&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "SO69143");
-            Click(GetObjectAction("Clear Comment"));
+            Click(GetObjectEnabledAction("Clear Comment"));
             WaitUntilElementDoesNotExist(".tempdisabled");
             OpenActionDialog("Add Standard Comments");
             Thread.Sleep(1000);
@@ -507,7 +507,7 @@ namespace NakedObjects.Selenium {
 
             OpenActionDialog("Add Standard Comments");
 
-            Click(GetObjectAction("Clear Comment"));
+            Click(GetObjectEnabledAction("Clear Comment"));
 
             WaitForCss("nof-action .tempdisabled");
             //wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Sales Person")); //i.e. Comments property has disappeared

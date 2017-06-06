@@ -89,14 +89,14 @@ namespace NakedObjects.Selenium {
         public virtual void RightClickActionReturningListFromHomeSingle() {
             Url(OrdersMenuUrl);
             WaitForView(Pane.Single, PaneType.Home, "Home");
-            RightClick(GetObjectAction("Highest Value Orders"));
+            RightClick(GetObjectEnabledAction("Highest Value Orders"));
             WaitForView(Pane.Left, PaneType.Home, "Home");
             WaitForView(Pane.Right, PaneType.List, "Highest Value Orders");
         }
 
         public virtual void RightClickReferenceFromListSingle() {
             Url(OrdersMenuUrl);
-            Click(GetObjectAction("Highest Value Orders"));
+            Click(GetObjectEnabledAction("Highest Value Orders"));
             WaitForView(Pane.Single, PaneType.List, "Highest Value Orders");
             var row = WaitForCss("table .reference");
             Assert.AreEqual("SO51131", row.Text);
@@ -118,7 +118,7 @@ namespace NakedObjects.Selenium {
             GeminiUrl("object?o1=___1.Customer--30116&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Technical Parts Manufacturing, AW00030116");
             OpenSubMenu("Orders");
-            RightClick(GetObjectAction("Last Order"));
+            RightClick(GetObjectEnabledAction("Last Order"));
             WaitForView(Pane.Left, PaneType.Object, "Technical Parts Manufacturing, AW00030116");
             WaitForView(Pane.Right, PaneType.Object, "SO67279");
         }
@@ -224,7 +224,7 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
             WaitForView(Pane.Right, PaneType.Object, "SO71926");
             OpenSubMenu("Orders", Pane.Left);
-            RightClick(GetObjectAction("Create New Order", Pane.Left));
+            RightClick(GetObjectEnabledAction("Create New Order", Pane.Left));
             var selector = CssSelectorFor(Pane.Left) + " .dialog ";
             wait.Until(d => d.FindElement(By.CssSelector(selector)));
         }

@@ -307,7 +307,7 @@ namespace NakedObjects.Selenium {
 
             SelectCheckBox("#item1-all"); //To clear
 
-            Click(GetObjectAction("Clear Comments"));
+            Click(GetObjectEnabledAction("Clear Comments"));
 
             Reload();
             wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count > 30);
@@ -317,7 +317,7 @@ namespace NakedObjects.Selenium {
             SelectCheckBox("#item1-2");
             SelectCheckBox("#item1-3");
 
-            Click(GetObjectAction("Comment As Users Unhappy"));
+            Click(GetObjectEnabledAction("Comment As Users Unhappy"));
             Thread.Sleep(2000); //Because there is no visible change to wait for
             Reload();
 
@@ -330,7 +330,7 @@ namespace NakedObjects.Selenium {
 
             SelectCheckBox("#item1-all"); //To clear
 
-            Click(GetObjectAction("Clear Comments"));
+            Click(GetObjectEnabledAction("Clear Comments"));
             Thread.Sleep(1000);
             Reload();
             wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count > 30);

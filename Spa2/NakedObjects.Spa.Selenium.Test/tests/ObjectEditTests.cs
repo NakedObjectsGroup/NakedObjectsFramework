@@ -228,7 +228,7 @@ namespace NakedObjects.Selenium {
         public virtual void MultiLineText() {
             GeminiUrl("object?o1=___1.SalesOrderHeader--44440&as1=open");
             WaitForView(Pane.Single, PaneType.Object);
-            Click(GetObjectAction("Clear Comment"));
+            Click(GetObjectEnabledAction("Clear Comment"));
 
             WaitUntilElementDoesNotExist(".tempdisabled");
             var dialog = OpenActionDialog("Add Multi Line Comment");

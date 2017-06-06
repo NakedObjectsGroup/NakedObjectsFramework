@@ -15,7 +15,7 @@ namespace NakedObjects.Selenium {
     public abstract class RedirectTestsRoot : AWTest {
         public virtual void RedirectFromActionResult() {
             GeminiUrl("home?m1=SalesRepository");
-            Click(GetObjectAction("Random Sales Tax Rate"));
+            Click(GetObjectEnabledAction("Random Sales Tax Rate"));
             WaitForView(Pane.Single, PaneType.Object);
             //Redirected from a SalesTaxRate to corresponding StateProvice
             wait.Until(dr => dr.FindElement(By.CssSelector(".properties")).Text.Contains("Is Only State Province"));
@@ -23,7 +23,7 @@ namespace NakedObjects.Selenium {
 
         public virtual void RedirectFromLink() {
             GeminiUrl("home?m1=SalesRepository");
-            Click(GetObjectAction("Sales Tax Rates"));
+            Click(GetObjectEnabledAction("Sales Tax Rates"));
             WaitForView(Pane.Single, PaneType.List);
             WaitForCss(".reference", 20);
             var row = WaitForCssNo(".reference", 0);

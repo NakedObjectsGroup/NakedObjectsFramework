@@ -21,7 +21,7 @@ namespace NakedObjects.Selenium {
 
         public virtual void MultiLineMenuAction() {
             GeminiUrl("home?m1=SpecialOfferRepository");
-            Click(GetObjectAction("Create Multiple Special Offers"));
+            Click(GetObjectEnabledAction("Create Multiple Special Offers"));
             WaitForView(Pane.Single, PaneType.MultiLineDialog, "Create Multiple Special Offers");
             WaitForTextEquals(".count", "with 0 lines submitted.");
             //Enter line 0
@@ -88,11 +88,11 @@ namespace NakedObjects.Selenium {
         public virtual void MultiLineObjectAction() {
             GeminiUrl("object?i1=View&r1=1&o1=___1.Vendor--1504&as1=open");
             OpenSubMenu("Purchase Orders");
-            Click(GetObjectAction("Create New Purchase Order"));
+            Click(GetObjectEnabledAction("Create New Purchase Order"));
             WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Purchase Order Header");
             SaveObject();
             OpenObjectActions();
-            Click(GetObjectAction("Add New Details"));
+            Click(GetObjectEnabledAction("Add New Details"));
             WaitForView(Pane.Single, PaneType.MultiLineDialog);
 
             //Line 0
@@ -209,7 +209,7 @@ namespace NakedObjects.Selenium {
         public virtual void InvokeMLDFromObjectInRightPane()
         {
             GeminiUrl("home/object?i2=View&r2=1&o2=___1.PurchaseOrderHeader--300&as2=open");
-            Click(GetObjectAction("Add New Details", Pane.Right));
+            Click(GetObjectEnabledAction("Add New Details", Pane.Right));
             WaitForView(Pane.Single, PaneType.MultiLineDialog);
             SwapIcon().AssertIsDisabled();
         }

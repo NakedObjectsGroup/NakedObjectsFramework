@@ -23,7 +23,7 @@ namespace NakedObjects.Selenium {
             Debug.WriteLine(nameof(BackAndForward));
             Url(BaseUrl);
             GoToMenuFromHomePage("Orders");
-            Click(GetObjectAction("Random Order"));
+            Click(GetObjectEnabledAction("Random Order"));
             WaitForView(Pane.Single, PaneType.Object);
             var orderTitle = WaitForCss(".title").Text;
             ClickBackButton();
@@ -80,7 +80,7 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.Object, "Marcus Collins, AW00022262");
             ClickHomeButton();
             GoToMenuFromHomePage("Products");
-            Click(GetObjectAction("Find Product By Number"));
+            Click(GetObjectEnabledAction("Find Product By Number"));
             ClearFieldThenType("#number1", "LJ-0192-S");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Long-Sleeve Logo Jersey, S");
@@ -147,14 +147,14 @@ namespace NakedObjects.Selenium {
         public virtual void ExplicitWarningsAndInfo() {
             Debug.WriteLine(nameof(ExplicitWarningsAndInfo));
             GeminiUrl("home?m1=WorkOrderRepository");
-            Click(GetObjectAction("Generate Info And Warning"));
+            Click(GetObjectEnabledAction("Generate Info And Warning"));
             var warn = WaitForCss(".footer .warnings");
             Assert.AreEqual("Warn User of something else", warn.Text);
             var msg = WaitForCss(".footer .messages");
             Assert.AreEqual("Inform User of something", msg.Text);
 
             //Test that both are cleared by next action
-            Click(GetObjectAction("Random Work Order"));
+            Click(GetObjectEnabledAction("Random Work Order"));
             WaitUntilElementDoesNotExist(".footer .warnings");
             WaitUntilElementDoesNotExist(".footer .messages");
         }
@@ -162,9 +162,9 @@ namespace NakedObjects.Selenium {
         public virtual void ZeroParamActionReturningNullGeneratesGenericWarning() {
             Debug.WriteLine(nameof(ZeroParamActionReturningNullGeneratesGenericWarning));
             GeminiUrl("home?m1=EmployeeRepository");
-            Click(GetObjectAction("Me"));
+            Click(GetObjectEnabledAction("Me"));
             WaitForTextEquals(".footer .warnings", "no result found");
-            Click(GetObjectAction("My Departmental Colleagues"));
+            Click(GetObjectEnabledAction("My Departmental Colleagues"));
             WaitForTextEquals(".footer .warnings", "Current user unknown");
         }
 

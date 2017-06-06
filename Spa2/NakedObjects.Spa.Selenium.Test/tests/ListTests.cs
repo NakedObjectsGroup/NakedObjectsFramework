@@ -18,7 +18,7 @@ namespace NakedObjects.Selenium {
     public abstract class ListTestsRoot : AWTest {
         public virtual void ActionReturnsListView() {
             Url(OrdersMenuUrl);
-            Click(GetObjectAction("Highest Value Orders"));
+            Click(GetObjectEnabledAction("Highest Value Orders"));
             WaitForView(Pane.Single, PaneType.List, "Highest Value Orders");
             //Test content of collection
             Assert.IsTrue(WaitForCss(".list .summary .details").Text.StartsWith("Page 1 of 1574; viewing 20 of"));
@@ -84,7 +84,7 @@ namespace NakedObjects.Selenium {
 
         public virtual void SwitchToTableViewAndBackToList() {
             Url(SpecialOffersMenuUrl);
-            Click(GetObjectAction("Current Special Offers"));
+            Click(GetObjectEnabledAction("Current Special Offers"));
             WaitForView(Pane.Single, PaneType.List, "Current Special Offers");
             wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count > 1);
             var iconTable = WaitForCss(".icon.table");
@@ -107,7 +107,7 @@ namespace NakedObjects.Selenium {
 
         public virtual void NavigateToItemFromListView() {
             Url(SpecialOffersMenuUrl);
-            Click(GetObjectAction("Current Special Offers"));
+            Click(GetObjectEnabledAction("Current Special Offers"));
             WaitForView(Pane.Single, PaneType.List, "Current Special Offers");
             var row = WaitForCss(".reference");
             Click(row);
@@ -116,7 +116,7 @@ namespace NakedObjects.Selenium {
 
         public virtual void NavigateToItemFromTableView() {
             Url(SpecialOffersMenuUrl);
-            Click(GetObjectAction("Current Special Offers"));
+            Click(GetObjectEnabledAction("Current Special Offers"));
             WaitForView(Pane.Single, PaneType.List, "Current Special Offers");
             wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count > 1);
             var iconTable = WaitForCss(".icon.table");
@@ -190,7 +190,7 @@ namespace NakedObjects.Selenium {
             Click(HomeIcon());
             WaitForView(Pane.Single, PaneType.Home, "Home");
             GoToMenuFromHomePage("Special Offers");
-            Click(GetObjectAction("Special Offers With No Minimum Qty"));
+            Click(GetObjectEnabledAction("Special Offers With No Minimum Qty"));
             WaitForView(Pane.Single, PaneType.List, "Special Offers With No Minimum Qty");
 
             wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details")).Text
@@ -230,7 +230,7 @@ namespace NakedObjects.Selenium {
 
         public virtual void ReloadingListGetsUpdatedObject() {
             Url(SpecialOffersMenuUrl);
-            Click(GetObjectAction("Current Special Offers"));
+            Click(GetObjectEnabledAction("Current Special Offers"));
             WaitForView(Pane.Single, PaneType.List, "Current Special Offers");
             WaitForCss(".reference", 16);
             var row = WaitForCssNo(".reference", 6);
@@ -261,7 +261,7 @@ namespace NakedObjects.Selenium {
 
         public virtual void EagerlyRenderTableViewFromAction() {
             GeminiUrl("home?m1=EmployeeRepository");
-            Click(GetObjectAction("List All Departments"));
+            Click(GetObjectEnabledAction("List All Departments"));
             WaitForView(Pane.Single, PaneType.List, "List All Departments");
             WaitForCss(".icon.list");
             var header = WaitForCss("thead");

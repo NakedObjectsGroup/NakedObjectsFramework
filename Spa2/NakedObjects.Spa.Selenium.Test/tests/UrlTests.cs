@@ -81,7 +81,7 @@ namespace NakedObjects.Selenium {
         public virtual void ObjectWithActions() {
             Debug.WriteLine(nameof(ObjectWithActions));
             GeminiUrl("object?o1=___1.Store--350&as1=open");
-            GetObjectAction("Create New Address");
+            GetObjectEnabledAction("Create New Address");
             AssertObjectElementsPresent();
         }
 

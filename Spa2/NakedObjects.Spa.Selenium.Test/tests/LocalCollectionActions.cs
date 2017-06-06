@@ -73,7 +73,7 @@ namespace NakedObjects.Selenium {
         public virtual void CannotInvokeZeroParamSelectionActionWithNothingSelected() {
             GeminiUrl("object?i1=View&r1=1&o1=___1.SalesOrderHeader--63023&c1_SalesOrderHeaderSalesReason=List");
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[1].FindElements(By.CssSelector("nof-action"))[1].Text == "Remove Sales Reasons");
-            Click(GetObjectAction("Remove Sales Reasons"));
+            Click(GetObjectEnabledAction("Remove Sales Reasons"));
             WaitForTextEquals(".messages", 2, "Must select items for collection contributed action");
         }
 
@@ -95,10 +95,10 @@ namespace NakedObjects.Selenium {
             GeminiUrl("object?i1=View&r1=1&o1=___1.SalesOrderHeader--63074&c1_SalesOrderHeaderSalesReason=List");
             WaitForTextEquals(".collection .summary", 1, "Reasons:\r\n1 Item");
             SelectCheckBox("#salesorderheadersalesreason1-0");
-            Click(GetObjectAction("Remove Sales Reasons"));
+            Click(GetObjectEnabledAction("Remove Sales Reasons"));
             WaitUntilElementDoesNotExist("#salesorderheadersalesreason1-0");
             WaitForTextEquals(".collection .summary", 1, "Reasons:\r\nEmpty");
-            Click(GetObjectAction("Add New Sales Reason"));
+            Click(GetObjectEnabledAction("Add New Sales Reason"));
             //Confirm that dialog has opened inside collection
             WaitForTextEquals(".collection .dialog .title", "Add New Sales Reason");
             SelectDropDownOnField("#reason1", "Price");
