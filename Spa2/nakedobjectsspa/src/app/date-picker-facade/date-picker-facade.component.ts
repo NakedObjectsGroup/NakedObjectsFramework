@@ -100,4 +100,8 @@ export class DatePickerFacadeComponent implements AfterViewInit {
 
     @ViewChild("dp")
     datepicker : DatePickerComponent;
+
+    focus() {
+        return this.datepicker.focus();
+    }
 }

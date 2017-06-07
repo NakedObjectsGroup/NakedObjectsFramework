@@ -1,12 +1,12 @@
 import { ContextService } from '../context.service';
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, Renderer } from '@angular/core';
 import { FieldViewModel } from '../view-models/field-view-model';
 import { ChoiceViewModel } from '../view-models/choice-view-model';
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
 import { FormGroup, AbstractControl } from '@angular/forms';
 import { Dictionary } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
-import { accept, dropOn, paste } from '../helpers-components';
+import { accept, dropOn, paste, focus } from '../helpers-components';
 
 @Component({
     selector: 'nof-auto-complete-facade',
@@ -15,7 +15,10 @@ import { accept, dropOn, paste } from '../helpers-components';
 })
 export class AutoCompleteFacadeComponent {
 
-    constructor(private readonly context: ContextService) { }
+    constructor(
+        private readonly context: ContextService, 
+        private readonly renderer : Renderer
+    ) { }
 
     private viewModel: FieldViewModel;
 
@@ -91,5 +94,12 @@ export class AutoCompleteFacadeComponent {
         }
 
         return this.bSubject;
+    }
+
+    @ViewChild("focus")
+    inputField: ElementRef;
+
+    focus() {
+        return focus(this.renderer, this.inputField);
     }
 }

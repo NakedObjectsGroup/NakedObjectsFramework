@@ -1,5 +1,5 @@
 import { ContextService } from '../context.service';
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, ElementRef, ViewChild, Renderer } from '@angular/core';
 import { FieldViewModel } from '../view-models/field-view-model';
 import { ChoiceViewModel } from '../view-models/choice-view-model';
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
@@ -7,7 +7,7 @@ import { FormGroup, AbstractControl } from '@angular/forms';
 import { ISubscription } from 'rxjs/Subscription';
 import { Dictionary } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
-import { safeUnsubscribe, accept, dropOn, paste } from '../helpers-components';
+import { safeUnsubscribe, accept, dropOn, paste, focus } from '../helpers-components';
 
 @Component({
     selector: 'nof-auto-complete',
@@ -16,8 +16,10 @@ import { safeUnsubscribe, accept, dropOn, paste } from '../helpers-components';
 })
 export class AutoCompleteComponent implements OnDestroy {
    
-
-    constructor(private readonly context: ContextService) { }
+    constructor(
+        private readonly context: ContextService,
+        private readonly renderer: Renderer
+    ) { }
 
     private _model: FieldViewModel;
 
@@ -136,4 +138,10 @@ export class AutoCompleteComponent implements OnDestroy {
         safeUnsubscribe(this.sub);
     }
 
+    @ViewChild("focus")
+    inputField : ElementRef;
+
+    focus() {
+        return focus(this.renderer, this.inputField);
+    }
 }

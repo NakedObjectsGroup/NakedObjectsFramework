@@ -93,4 +93,7 @@ export class TimePickerFacadeComponent  {
     @ViewChild("tp")
     timepicker : TimePickerComponent;
 
+    focus() {
+        return this.timepicker.focus();
+    }
 }

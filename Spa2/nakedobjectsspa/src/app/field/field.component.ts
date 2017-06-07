@@ -1,4 +1,5 @@
-﻿import * as Models from '../models'
+﻿import { AutoCompleteComponent } from '../auto-complete/auto-complete.component';
+import * as Models from '../models';
 import { AbstractControl } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { ElementRef, QueryList, Renderer, OnDestroy } from '@angular/core';
@@ -21,7 +22,9 @@ import omit from 'lodash/omit';
 import keys from 'lodash/keys';
 import { BehaviorSubject } from 'rxjs';
 import { ISubscription } from 'rxjs/Subscription';
-import { safeUnsubscribe, focus, accept, dropOn, paste } from '../helpers-components'; 
+import { safeUnsubscribe, focus, accept, dropOn, paste } from '../helpers-components';
+import { DatePickerFacadeComponent } from '../date-picker-facade/date-picker-facade.component';
+import { TimePickerFacadeComponent } from '../time-picker-facade/time-picker-facade.component';
 
 export abstract class FieldComponent implements OnDestroy {
 
@@ -310,12 +313,18 @@ export abstract class FieldComponent implements OnDestroy {
 
     abstract checkboxList: QueryList<ElementRef>;
 
-    abstract focusList: QueryList<ElementRef>;
+    abstract focusList: QueryList<ElementRef | DatePickerFacadeComponent | TimePickerFacadeComponent | AutoCompleteComponent>;
+
 
     focus() {
-        // todo focus on datepicker 
+        const first = this.focusList && this.focusList.first; 
 
-        return !!(this.focusList && this.focusList.first) && focus(this.renderer, this.focusList.first);
+        if (first instanceof ElementRef) {
+            return focus(this.renderer, first);
+        }
+        else {
+            return first.focus();
+        }
     }
 
     ngOnDestroy() {

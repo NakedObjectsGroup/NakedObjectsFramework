@@ -1,8 +1,8 @@
-import { Component, ElementRef, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ElementRef, OnInit, Input, Output, EventEmitter, ViewChild, Renderer } from '@angular/core';
 import * as moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
 import { ISubscription } from 'rxjs/Subscription';
-import { safeUnsubscribe } from '../helpers-components'; 
+import { safeUnsubscribe, focus } from '../helpers-components'; 
 
 
 @Component({
@@ -22,7 +22,9 @@ export class TimePickerComponent implements OnInit {
     @Input()
     id : string;
 
-    constructor(private readonly el: ElementRef) {
+    constructor(
+        private readonly el: ElementRef,
+        private readonly renderer : Renderer) {
         this.outputEvents = new EventEmitter<{ type: string, data: string }>();
     }
 
@@ -137,4 +139,10 @@ export class TimePickerComponent implements OnInit {
         safeUnsubscribe(this.eventsSub);
     }
 
+    @ViewChild("inp")
+    inputField : ElementRef;
+
+    focus() {
+        return focus(this.renderer, this.inputField);
+    }
 }

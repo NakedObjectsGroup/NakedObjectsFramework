@@ -1,11 +1,11 @@
 import * as Constants from '../constants';
-import { Component, ElementRef, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ElementRef, OnInit, Input, Output, EventEmitter, ViewChild, Renderer } from '@angular/core';
 import { SlimScrollOptions } from 'ng2-slimscroll';
 import * as moment from 'moment';
 import concat from 'lodash/concat';
 import { BehaviorSubject } from 'rxjs';
 import { ISubscription } from 'rxjs/Subscription';
-import { safeUnsubscribe } from '../helpers-components'; 
+import { safeUnsubscribe, focus } from '../helpers-components'; 
 
 // based on ng2-datepicker https://github.com/jkuri/ng2-datepicker
 // todo - clean it up !!!!
@@ -112,7 +112,10 @@ export class DatePickerComponent implements OnInit {
     minDate: moment.Moment | any;
     maxDate: moment.Moment | any;
 
-    constructor(private readonly el: ElementRef) {
+    constructor(
+        private readonly el: ElementRef,
+        private readonly renderer: Renderer
+    ) {
         this.opened = false;
         this.options = this.options || {};
         this.days = [];
@@ -400,5 +403,12 @@ export class DatePickerComponent implements OnInit {
     ngOnDestroy(): void {
         safeUnsubscribe(this.sub);
         safeUnsubscribe(this.eventsSub);
+    }
+
+    @ViewChild("inp")
+    inputField : ElementRef;
+
+    focus() {
+        return focus(this.renderer, this.inputField);
     }
 }

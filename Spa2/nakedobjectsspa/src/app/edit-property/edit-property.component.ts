@@ -1,4 +1,7 @@
-﻿import { Component, Input, ElementRef, OnInit, HostListener, ViewChildren, QueryList, Renderer, AfterViewInit, ViewChild } from '@angular/core';
+﻿import { AutoCompleteComponent } from '../auto-complete/auto-complete.component';
+import { TimePickerFacadeComponent } from '../time-picker-facade/time-picker-facade.component';
+import { DatePickerFacadeComponent } from '../date-picker-facade/date-picker-facade.component';
+import { Component, Input, ElementRef, OnInit, HostListener, ViewChildren, QueryList, Renderer, AfterViewInit, ViewChild } from '@angular/core';
 import { FieldComponent } from '../field/field.component';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -156,7 +159,8 @@ export class EditPropertyComponent extends FieldComponent implements OnInit, Aft
     }
 
     @ViewChildren("focus")
-    focusList: QueryList<ElementRef>;
+    focusList: QueryList<ElementRef | DatePickerFacadeComponent | TimePickerFacadeComponent | AutoCompleteComponent>;
+
 
     @ViewChildren("checkbox")
     checkboxList: QueryList<ElementRef>;
