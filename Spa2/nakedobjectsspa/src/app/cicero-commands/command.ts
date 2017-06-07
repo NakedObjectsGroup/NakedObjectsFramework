@@ -74,7 +74,7 @@ export abstract class Command {
         return this.doExecute(this.argString, this.chained, result);
     }
 
-    protected returnResult(input: string, output: string, changeState?: () => void, stopChain?: boolean): Promise<CommandResult> {
+    protected returnResult(input: string | null, output: string | null, changeState?: () => void, stopChain?: boolean): Promise<CommandResult> {
         changeState = changeState ? changeState : () => { };
         return Promise.resolve({ input: input, output: output, changeState: changeState, stopChain: stopChain });
     }
@@ -134,7 +134,7 @@ export abstract class Command {
     }
 
     //Parses '17, 3-5, -9, 6-' into two numbers 
-    protected parseRange(arg: string): { start: number | null; end: number | null } {
+    protected parseRange(arg?: string): { start: number | null; end: number | null } {
         if (!arg) {
             arg = "1-";
         }
@@ -248,9 +248,7 @@ export abstract class Command {
         return this.routeData().interactionMode === Routedata.InteractionMode.Transient;
     }
 
-    protected matchingProperties(
-        obj: Models.DomainObjectRepresentation,
-        match: string): Models.PropertyMember[] {
+    protected matchingProperties(obj: Models.DomainObjectRepresentation, match?: string): Models.PropertyMember[] {
         let props = map(obj.propertyMembers(), prop => prop);
         if (match) {
             props = this.matchFriendlyNameAndOrMenuPath(props, match);
@@ -258,9 +256,7 @@ export abstract class Command {
         return props;
     }
 
-    protected matchingCollections(
-        obj: Models.DomainObjectRepresentation,
-        match: string): Models.CollectionMember[] {
+    protected matchingCollections(obj: Models.DomainObjectRepresentation, match?: string): Models.CollectionMember[] {
         const allColls = map(obj.collectionMembers(), action => action);
         if (match) {
             return this.matchFriendlyNameAndOrMenuPath<Models.CollectionMember>(allColls, match);

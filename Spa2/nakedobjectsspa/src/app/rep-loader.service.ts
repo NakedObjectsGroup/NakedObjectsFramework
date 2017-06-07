@@ -66,7 +66,7 @@ export class RepLoaderService {
             error = `Failed to connect to server: ${response.url || "unknown"}`;
         } else {
             category = Models.ErrorCategory.HttpClientError;
-            const message = response.headers.get("warning") || "Unknown client HTTP error";
+            const message = (response.headers && response.headers.get("warning")) || "Unknown client HTTP error";
 
             if (response.status === Models.HttpStatusCode.BadRequest ||
                 response.status === Models.HttpStatusCode.UnprocessableEntity) {
@@ -100,8 +100,9 @@ export class RepLoaderService {
             })
             .catch((r: Response) => {
                 this.loadingCountSource.next(--(this.loadingCount));
-                r.url = r.url || config.url;
-                return this.handleError(r, config.url);
+                const originalUrl = config.url || "Unknown url";
+                r.url = r.url || originalUrl;
+                return this.handleError(r, originalUrl);
             });
     }
 
@@ -128,11 +129,17 @@ export class RepLoaderService {
 
     private httpPopulate(config: RequestOptions, ignoreCache: boolean, response: Models.IHateoasModel): Promise<Models.IHateoasModel> {
 
+        if (!config.url) {
+            throw new Error("Request must have a URL");
+        }
+
+        const requestUrl = config.url;
+
         if (ignoreCache) {
             // clear cache of existing values
-            this.cache.remove(config.url);
+            this.cache.remove(requestUrl);
         } else {
-            const cachedValue = this.cache.get(config.url);
+            const cachedValue = this.cache.get(requestUrl);
 
             if (cachedValue) {
                 response.populate(cachedValue);
@@ -154,16 +161,16 @@ export class RepLoaderService {
                 }
 
                 const representation = this.handleRedirectedObject(response, asJson);
-                this.cache.add(config.url, representation);
+                this.cache.add(requestUrl, representation);
                 response.populate(representation);
-                response.etagDigest = r.headers.get("ETag");
+                response.etagDigest = (r.headers && r.headers.get("ETag")) || "";
                 response.keySeparator = this.configService.config.keySeparator;
                 return Promise.resolve(response);
             })
             .catch((r: Response) => {
                 this.loadingCountSource.next(--(this.loadingCount));
-                r.url = r.url || config.url;
-                return this.handleError(r, config.url);
+                r.url = r.url || requestUrl;
+                return this.handleError(r, requestUrl);
             });
     }
 

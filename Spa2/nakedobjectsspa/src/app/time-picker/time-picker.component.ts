@@ -2,8 +2,8 @@ import { Component, ElementRef, OnInit, Input, Output, EventEmitter, ViewChild, 
 import * as moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
 import { ISubscription } from 'rxjs/Subscription';
-import { safeUnsubscribe, focus } from '../helpers-components'; 
-
+import { safeUnsubscribe, focus } from '../helpers-components';
+import * as Models from '../models';
 
 @Component({
   selector: 'nof-time-picker',
@@ -28,7 +28,7 @@ export class TimePickerComponent implements OnInit {
         this.outputEvents = new EventEmitter<{ type: string, data: string }>();
     }
 
-    private timeValue: moment.Moment;  
+    private timeValue: moment.Moment | null;  
     private modelValue : string; 
 
     set model(s: string) {
@@ -43,11 +43,11 @@ export class TimePickerComponent implements OnInit {
         return this.modelValue;
     }
 
-    get time(): moment.Moment {
+    get time(): moment.Moment | null {
         return this.timeValue;
     }
 
-    set time(time: moment.Moment) {   
+    set time(time: moment.Moment | null) {   
         if (time && time.isValid()) { 
             this.timeValue = time;
             this.outputEvents.emit({ type: 'timeChanged', data: time.format("HH:mm:ss") });
@@ -57,7 +57,7 @@ export class TimePickerComponent implements OnInit {
     private validInputFormats = ["HH:mm:ss", "HH:mm", "HHmm"];
 
     private validateTime(newValue: string) {
-        let dt: moment.Moment;
+        let dt: moment.Moment = moment();
 
         for (let f of this.validInputFormats) {
             dt = moment.utc(newValue, f, true);
@@ -69,8 +69,8 @@ export class TimePickerComponent implements OnInit {
         return dt;
     }
 
-    setTimeIfChanged(newTime : moment.Moment){
-        if (!newTime.isSame(this.time)) {
+    setTimeIfChanged(newTime: moment.Moment) {
+        if (!newTime.isSame(Models.withUndefined(this.time))) {
             this.time = newTime;
             setTimeout(() => this.model = newTime.format("HH:mm"));
         }

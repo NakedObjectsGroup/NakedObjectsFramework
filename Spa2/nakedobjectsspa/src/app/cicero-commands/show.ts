@@ -61,6 +61,7 @@ export class Show extends Command {
                 return this.returnResult("", s);
             });
         }
+        throw new Error("unexpected view type");
     };
 
     private renderPropNameAndValue(pm: Models.PropertyMember): string {
@@ -77,7 +78,7 @@ export class Show extends Command {
         return `${name}: ${value}\n`;
     }
 
-    private renderCollectionItems(coll: Models.CollectionMember, startNo: number, endNo: number) {
+    private renderCollectionItems(coll: Models.CollectionMember, startNo: number | null, endNo: number | null) {
         if (coll.value()) {
             return this.renderItems(coll, startNo, endNo);
         } else {
@@ -86,9 +87,15 @@ export class Show extends Command {
         }
     }
 
-    private renderItems(source: Models.IHasLinksAsValue, startNo: number, endNo: number) {
+    private renderItems(source: Models.IHasLinksAsValue, startNo: number | null , endNo: number | null) {
         //TODO: problem here is that unless collections are in-lined value will be null.
-        const max = source.value().length;
+
+        const links = source.value();
+        if (links == null) {
+            throw new Error("unexpected null value");
+        }
+
+        const max = links.length;
         if (!startNo) {
             startNo = 1;
         }
@@ -97,7 +104,7 @@ export class Show extends Command {
         }
         if (startNo > max || endNo > max) {
 
-            return this.returnResult("", Usermessages.highestItem(source.value().length));
+            return this.returnResult("", Usermessages.highestItem(links.length));
         }
         if (startNo > endNo) {
 
@@ -105,7 +112,7 @@ export class Show extends Command {
         }
         let output = "";
         let i: number;
-        const links = source.value();
+        
         for (i = startNo; i <= endNo; i++) {
             output += `${Usermessages.item} ${i}: ${links[i - 1].title()}\n`;
         }
