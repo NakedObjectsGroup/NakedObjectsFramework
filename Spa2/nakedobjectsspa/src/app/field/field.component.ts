@@ -1,5 +1,4 @@
 ﻿import * as Models from '../models'
-import * as Ro from '../ro-interfaces';
 import { AbstractControl } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { ElementRef, QueryList, Renderer, OnDestroy } from '@angular/core';
@@ -13,7 +12,6 @@ import { PropertyViewModel } from '../view-models/property-view-model';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 import { ConfigService } from '../config.service';
 import { LoggerService } from '../logger.service';
-import * as Helpers from '../view-models/helpers-view-models';
 import { Pane } from '../route-data';
 import { Dictionary } from 'lodash';
 import find from 'lodash/find';
@@ -23,29 +21,61 @@ import omit from 'lodash/omit';
 import keys from 'lodash/keys';
 import { BehaviorSubject } from 'rxjs';
 import { ISubscription } from 'rxjs/Subscription';
-import { safeUnsubscribe, focus } from '../helpers-components'; 
+import { safeUnsubscribe, focus, accept, dropOn, paste } from '../helpers-components'; 
 
 export abstract class FieldComponent implements OnDestroy {
 
-    // todo what can we remove once  autocomplete and datepicker are separate components ? 
-
-    elementRef: ElementRef;
-
-    protected constructor(
-        myElement: ElementRef,
+    protected constructor(     
         private readonly context: ContextService,
         private readonly configService: ConfigService,
         private readonly loggerService: LoggerService,
         private readonly renderer: Renderer
-    ) {
-        this.elementRef = myElement;
+    ) {}
+
+    set formGroup(fm: FormGroup) {
+        this.formGrp = fm;
+        this.formGrp.valueChanges.debounceTime(200).subscribe(data => this.onValueChanged());
+        this.onValueChanged(); // (re)set validation messages now
     }
 
+    get formGroup() {
+        return this.formGrp;
+    }
+
+    get message() {
+        return this.model.getMessage();
+    }
+
+    get isBoolean() {
+        return this.model.returnType === "boolean";
+    }
+
+    get subject() {
+        if (!this.bSubject) {
+            const initialValue = this.control.value;
+            this.bSubject = new BehaviorSubject(initialValue);
+
+            this.sub = this.control.valueChanges.subscribe((data) => {
+                this.bSubject.next(data);
+            });
+        }
+
+        return this.bSubject;
+    }
+
+    private formGrp: FormGroup;
     private vmParent: DialogViewModel | DomainObjectViewModel;
     private model: ParameterViewModel | PropertyViewModel;
     private isConditionalChoices: boolean;
     private isAutoComplete: boolean;
+    private bSubject: BehaviorSubject<any>;
+    private sub: ISubscription;
+
     control: AbstractControl;
+    currentOptions: ChoiceViewModel[] = [];
+    pArgs: Dictionary<Models.Value>;
+    paneId: Pane;
+    canDrop = false;
 
     protected init(vmParent: DialogViewModel | DomainObjectViewModel,
         vm: ParameterViewModel | PropertyViewModel,
@@ -68,40 +98,19 @@ export abstract class FieldComponent implements OnDestroy {
         }
     }
 
-    currentOptions: ChoiceViewModel[] = [];
-    pArgs: Dictionary<Models.Value>;
-
-    paneId: Pane;
-    canDrop = false;
-
-    // todo why do we need this ? 
-    droppable: FieldViewModel;
-
     accept(droppableVm: FieldViewModel) {
-
-        return (draggableVm: IDraggableViewModel) => {
-            if (draggableVm) {
-                draggableVm.canDropOn(droppableVm.returnType).then((canDrop: boolean) => this.canDrop = canDrop).catch(() => this.canDrop = false);
-                return true;
-            }
-            return false;
-        }
+        return accept(droppableVm, this);   
     };
 
     drop(draggableVm: IDraggableViewModel) {
-        if (this.canDrop) {
-            this.droppable.drop(draggableVm)
-                .then((success) => {
-                    this.control.setValue(this.model.selectedChoice);
-                });
-        }
+        dropOn(draggableVm, this.model, this);
     }
 
-    isDomainObjectViewModel(object: any): object is DomainObjectViewModel {
+    private isDomainObjectViewModel(object: any): object is DomainObjectViewModel {
         return object && "properties" in object;
     }
 
-    mapValues(args: Dictionary<Models.Value>, parmsOrProps: { argId: string, getValue: () => Models.Value }[]) {
+    private mapValues(args: Dictionary<Models.Value>, parmsOrProps: { argId: string, getValue: () => Models.Value }[]) {
         return mapValues(this.pArgs,
             (v, n) => {
                 const pop = find(parmsOrProps, p => p.argId === n);
@@ -109,7 +118,7 @@ export abstract class FieldComponent implements OnDestroy {
             });
     }
 
-    populateArguments() {
+    private populateArguments() {
 
         const dialog = this.vmParent as DialogViewModel;
         const object = this.vmParent as DomainObjectViewModel;
@@ -140,7 +149,7 @@ export abstract class FieldComponent implements OnDestroy {
         return !same;
     }
 
-    populateDropdown() {
+    private populateDropdown() {
         const nArgs = this.populateArguments();
         if (this.argsChanged(nArgs)) {
             const prompts = this.model.conditionalChoices(nArgs);
@@ -170,15 +179,7 @@ export abstract class FieldComponent implements OnDestroy {
         }
     }
 
-    wrapReferences(val: string): string | Ro.ILink {
-        if (val && this.model.type === "ref") {
-            return { href: val };
-        }
-        return val;
-    }
-
-  
-    onChange() {
+    private onChange() {
         if (this.isConditionalChoices) {
             this.populateDropdown();
         } else if (this.isAutoComplete) {
@@ -188,33 +189,13 @@ export abstract class FieldComponent implements OnDestroy {
         }
     }
 
-    get message() {
-        return this.model.getMessage();
-    }
-
-    get isBoolean() {
-        return this.model.returnType === "boolean";
-    }
-
-    private formGrp: FormGroup;
-
-    onValueChanged() {
+    private onValueChanged() {
         if (this.model) {
             this.onChange();
         }
     }
 
-    set formGroup(fm: FormGroup) {
-        this.formGrp = fm;
-        this.formGrp.valueChanges.debounceTime(200).subscribe(data => this.onValueChanged());
-        this.onValueChanged(); // (re)set validation messages now
-    }
-
-    get formGroup() {
-        return this.formGrp;
-    }
-
-    populateAutoComplete() {
+    private populateAutoComplete() {
         const input = this.control.value;
 
         if (input instanceof ChoiceViewModel) {
@@ -243,7 +224,7 @@ export abstract class FieldComponent implements OnDestroy {
         }
     }
 
-    populateBoolean() {
+    protected populateBoolean() {
 
         // editable booleans only
         if (this.isBoolean && this.control) {
@@ -259,8 +240,7 @@ export abstract class FieldComponent implements OnDestroy {
         }
     }
 
-
-    select(item: ChoiceViewModel) {
+    private select(item: ChoiceViewModel) {
         this.model.choices = [];
         this.model.selectedChoice = item;
         this.control.reset(item);
@@ -285,22 +265,7 @@ export abstract class FieldComponent implements OnDestroy {
     }
 
     paste(event: KeyboardEvent) {
-        const vKeyCode = 86;
-        const deleteKeyCode = 46;
-        if (event && (event.keyCode === vKeyCode && event.ctrlKey)) {
-            const cvm = this.context.getCopyViewModel();
-
-            if (cvm) {
-                this.droppable.drop(cvm)
-                    .then((success) => {
-                        this.control.setValue(this.model.selectedChoice);
-                    });
-                event.preventDefault();
-            }
-        }
-        if (event && event.keyCode === deleteKeyCode) {
-            this.context.setCopyViewModel(null);
-        }
+        paste(event, this.model, this, () => this.context.getCopyViewModel(), () => this.context.setCopyViewModel(null));
     }
 
     clear() {
@@ -308,23 +273,7 @@ export abstract class FieldComponent implements OnDestroy {
         this.model.clear();
     }
 
-    private bSubject: BehaviorSubject<any>;
-    private sub : ISubscription;
-
-    get subject() {
-        if (!this.bSubject) {
-            const initialValue = this.control.value;
-            this.bSubject = new BehaviorSubject(initialValue);
-
-            this.sub = this.control.valueChanges.subscribe((data) => {
-                this.bSubject.next(data);
-            });
-        }
-  
-        return this.bSubject;
-    }
-
-    filterEnter(event: KeyboardEvent) {
+    private filterEnter(event: KeyboardEvent) {
         const enterKeyCode = 13;
         if (event && event.keyCode === enterKeyCode) {
             event.preventDefault();
@@ -339,7 +288,7 @@ export abstract class FieldComponent implements OnDestroy {
         }
     }
 
-    triStateClick = (currentValue: any) => {
+    private triStateClick = (currentValue: any) => {
 
         switch (currentValue) {
             case false:

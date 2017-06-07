@@ -5,7 +5,6 @@ import * as Models from '../models';
 import { FieldComponent } from '../field/field.component';
 import { FormGroup } from '@angular/forms';
 import { ContextService } from '../context.service';
-import { FieldViewModel } from '../view-models/field-view-model';
 import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { DialogViewModel } from '../view-models/dialog-view-model';
 import { ChoiceViewModel } from '../view-models/choice-view-model';
@@ -24,13 +23,12 @@ export class EditParameterComponent extends FieldComponent implements OnInit, Af
     constructor(
         private readonly viewModelFactory: ViewModelFactoryService,
         private readonly urlManager: UrlManagerService,
-        myElement: ElementRef,
         context: ContextService,
         configService: ConfigService,
         loggerService: LoggerService,
         renderer: Renderer
     ) {
-        super(myElement, context, configService, loggerService, renderer);
+        super(context, configService, loggerService, renderer);
     }
 
     parm: ParameterViewModel;
@@ -41,7 +39,6 @@ export class EditParameterComponent extends FieldComponent implements OnInit, Af
     @Input()
     set parameter(value: ParameterViewModel) {
         this.parm = value;
-        this.droppable = value as FieldViewModel;
     }
 
     get parameter() {
@@ -105,8 +102,7 @@ export class EditParameterComponent extends FieldComponent implements OnInit, Af
     classes(): Dictionary<boolean | null> {
         return {
             [this.parm.color]: true,
-            "candrop": this.canDrop,
-            "mat-input-element": null as boolean | null // remove this class to prevent angular/materials styling overiding our styling
+            "candrop": this.canDrop
         };
     }
 

@@ -8,7 +8,8 @@ import forEach from 'lodash/forEach';
 import map from 'lodash/map';
 import zipObject from 'lodash/zipObject';
 import mapValues from 'lodash/mapValues';
-
+import {FieldViewModel} from './view-models/field-view-model';
+import {IDraggableViewModel} from './view-models/idraggable-view-model';
 
 export function safeUnsubscribe(sub: ISubscription) {
     if (sub) {
@@ -36,4 +37,45 @@ export function createForm(dialog: DialogViewModel, formBuilder: FormBuilder): {
     });
 
     return { form: form, dialog: dialog, parms: parms, sub : sub };
+}
+
+export function accept(droppableVm: FieldViewModel, component: { canDrop: boolean }) {
+
+    return (draggableVm: IDraggableViewModel) => {
+        if (draggableVm) {
+            draggableVm.canDropOn(droppableVm.returnType).
+                then(canDrop => component.canDrop = canDrop).
+                catch(() => component.canDrop = false);
+            return true;
+        }
+        return false;
+    }
+};
+
+export function dropOn(draggableVm: IDraggableViewModel, droppable : FieldViewModel,  component: { canDrop: boolean, control : AbstractControl }) {
+    if (component.canDrop) {
+        droppable.drop(draggableVm)
+            .then((success) => {
+                component.control.setValue(droppable.selectedChoice);
+            });
+    }
+}
+
+export function paste(event: KeyboardEvent, droppable: FieldViewModel, component: { control: AbstractControl }, get : () => IDraggableViewModel, clear : () => void) {
+    const vKeyCode = 86;
+    const deleteKeyCode = 46;
+    if (event && (event.keyCode === vKeyCode && event.ctrlKey)) {
+        const cvm = get();
+
+        if (cvm) {
+            droppable.drop(cvm)
+                .then((success) => {
+                    component.control.setValue(droppable.selectedChoice);
+                });
+            event.preventDefault();
+        }
+    }
+    if (event && event.keyCode === deleteKeyCode) {
+        clear();
+    }
 }

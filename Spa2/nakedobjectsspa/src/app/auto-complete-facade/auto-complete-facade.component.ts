@@ -6,6 +6,7 @@ import { IDraggableViewModel } from '../view-models/idraggable-view-model';
 import { FormGroup, AbstractControl } from '@angular/forms';
 import { Dictionary } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
+import { accept, dropOn, paste } from '../helpers-components';
 
 @Component({
     selector: 'nof-auto-complete-facade',
@@ -16,18 +17,18 @@ export class AutoCompleteFacadeComponent {
 
     constructor(private readonly context: ContextService) { }
 
-    private _model: FieldViewModel;
+    private viewModel: FieldViewModel;
 
     @Input()
     set model(m: FieldViewModel) {
-        this._model = m;
+        this.viewModel = m;
     }
 
     @Input()
     form: FormGroup;
 
     get model() {
-        return this._model;
+        return this.viewModel;
     }
 
     get modelPaneId() {
@@ -46,28 +47,14 @@ export class AutoCompleteFacadeComponent {
         return this.model.choices;
     }
 
-    // todo cloned from field component - move to helpers ?
-
     canDrop = false;
 
     accept(droppableVm: FieldViewModel) {
-
-        return (draggableVm: IDraggableViewModel) => {
-            if (draggableVm) {
-                draggableVm.canDropOn(droppableVm.returnType).then((canDrop: boolean) => this.canDrop = canDrop).catch(() => this.canDrop = false);
-                return true;
-            }
-            return false;
-        }
+        return accept(droppableVm, this);
     };
 
     drop(draggableVm: IDraggableViewModel) {
-        if (this.canDrop) {
-            this.model.drop(draggableVm)
-                .then((success) => {
-                    this.control.setValue(this.model.selectedChoice);
-                });
-        }
+        dropOn(draggableVm, this.model, this);
     }
 
     classes(): Dictionary<boolean | null> {
@@ -83,22 +70,7 @@ export class AutoCompleteFacadeComponent {
     }
 
     paste(event: KeyboardEvent) {
-        const vKeyCode = 86;
-        const deleteKeyCode = 46;
-        if (event && (event.keyCode === vKeyCode && event.ctrlKey)) {
-            const cvm = this.context.getCopyViewModel();
-
-            if (cvm) {
-                this.model.drop(cvm)
-                    .then((success) => {
-                        this.control.setValue(this.model.selectedChoice);
-                    });
-                event.preventDefault();
-            }
-        }
-        if (event && event.keyCode === deleteKeyCode) {
-            this.context.setCopyViewModel(null);
-        }
+        paste(event, this.model, this, () => this.context.getCopyViewModel(), () => this.context.setCopyViewModel(null));
     }
 
     clear() {

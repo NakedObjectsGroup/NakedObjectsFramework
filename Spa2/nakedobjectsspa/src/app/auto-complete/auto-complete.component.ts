@@ -7,7 +7,7 @@ import { FormGroup, AbstractControl } from '@angular/forms';
 import { ISubscription } from 'rxjs/Subscription';
 import { Dictionary } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
-import {safeUnsubscribe} from '../helpers-components';
+import { safeUnsubscribe, accept, dropOn, paste } from '../helpers-components';
 
 @Component({
     selector: 'nof-auto-complete',
@@ -49,28 +49,14 @@ export class AutoCompleteComponent implements OnDestroy {
         return this.model.choices;
     }
 
-    // todo cloned from field component - move to helpers ?
-
     canDrop = false;
 
     accept(droppableVm: FieldViewModel) {
-
-        return (draggableVm: IDraggableViewModel) => {
-            if (draggableVm) {
-                draggableVm.canDropOn(droppableVm.returnType).then((canDrop: boolean) => this.canDrop = canDrop).catch(() => this.canDrop = false);
-                return true;
-            }
-            return false;
-        }
+        return accept(droppableVm, this);
     };
 
     drop(draggableVm: IDraggableViewModel) {
-        if (this.canDrop) {
-            this.model.drop(draggableVm)
-                .then((success) => {
-                    this.control.setValue(this.model.selectedChoice);
-                });
-        }
+        dropOn(draggableVm, this.model, this);
     }
 
     classes(): Dictionary<boolean | null> {
@@ -85,22 +71,7 @@ export class AutoCompleteComponent implements OnDestroy {
     }
 
     paste(event: KeyboardEvent) {
-        const vKeyCode = 86;
-        const deleteKeyCode = 46;
-        if (event && (event.keyCode === vKeyCode && event.ctrlKey)) {
-            const cvm = this.context.getCopyViewModel();
-
-            if (cvm) {
-                this.model.drop(cvm)
-                    .then((success) => {
-                        this.control.setValue(this.model.selectedChoice);
-                    });
-                event.preventDefault();
-            }
-        }
-        if (event && event.keyCode === deleteKeyCode) {
-            this.context.setCopyViewModel(null);
-        }
+        paste(event, this.model, this, () => this.context.getCopyViewModel(), () => this.context.setCopyViewModel(null));
     }
 
     clear() {

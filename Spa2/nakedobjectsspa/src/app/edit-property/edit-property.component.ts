@@ -4,7 +4,6 @@ import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ErrorService } from '../error.service';
 import { ContextService } from '../context.service';
-import { FieldViewModel } from '../view-models/field-view-model';
 import { PropertyViewModel } from '../view-models/property-view-model';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 import { ChoiceViewModel } from '../view-models/choice-view-model';
@@ -22,7 +21,6 @@ import { Dictionary } from 'lodash';
 export class EditPropertyComponent extends FieldComponent implements OnInit, AfterViewInit {
 
     constructor(
-        myElement: ElementRef,
         private readonly router: Router,
         private readonly error: ErrorService,
         context: ContextService,
@@ -30,10 +28,10 @@ export class EditPropertyComponent extends FieldComponent implements OnInit, Aft
         loggerService: LoggerService,
         renderer: Renderer
     ) {
-        super(myElement, context, configService, loggerService, renderer);
+        super(context, configService, loggerService, renderer);
     }
 
-    prop: PropertyViewModel;
+    private prop: PropertyViewModel;
 
     @Input()
     parent: DomainObjectViewModel;
@@ -41,7 +39,6 @@ export class EditPropertyComponent extends FieldComponent implements OnInit, Aft
     @Input()
     set property(value: PropertyViewModel) {
         this.prop = value;
-        this.droppable = value as FieldViewModel;
     }
 
     get property() {
@@ -131,8 +128,7 @@ export class EditPropertyComponent extends FieldComponent implements OnInit, Aft
     classes(): Dictionary<boolean | null> {
         return {
             [this.prop.color]: true,
-            "candrop": this.canDrop,
-            "mat-input-element": null as boolean | null // remove this class to prevent angular/materials styling overiding our styling
+            "candrop": this.canDrop
         };
     }
 

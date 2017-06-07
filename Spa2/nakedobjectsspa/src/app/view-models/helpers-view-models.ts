@@ -17,7 +17,7 @@ import map from 'lodash/map';
 import reduce from 'lodash/reduce';
 import uniqWith from 'lodash/uniqWith';
 import { ILocalFilter } from '../mask.service';
-import * as moment from 'moment'; // todo fix moment locale import size 
+import * as moment from 'moment'; 
 import { ConfigService } from '../config.service';
 import * as Constants from '../constants';
 
