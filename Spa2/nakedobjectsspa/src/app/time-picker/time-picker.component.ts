@@ -114,6 +114,7 @@ export class TimePickerComponent implements OnInit {
 
     clear() {
         this.modelValue = "";     
+        this.setTime("");
     }
 
     private bSubject: BehaviorSubject<string>;

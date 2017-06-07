@@ -1,4 +1,5 @@
-﻿
+﻿import { callLifecycleHooksChildrenFirst } from '@angular/core/src/view/provider';
+
 import * as Ro from './ro-interfaces';
 import { CurrencyPipe, DecimalPipe } from '@angular/common';
 import { Injectable } from '@angular/core';
@@ -66,18 +67,14 @@ class LocalDateFilter implements ILocalFilter {
         private readonly tz?: string,
     ) { }
 
-    filter(val: any): string {
+    filter(val: string): string {
         if (!val) {
             return "";
         }
         // Angular date pipes no longer support timezones so we need to use moment here 
 
-        let mmt = moment.utc(val);
-
-        if (!mmt.isValid()) {
-            // see if it's a time
-            mmt = moment.utc(val, "HH:mm:ss");
-        }
+        // date or time
+        let mmt = val.length > 8 ?  moment.utc(val) : moment.utc(val, "HH:mm:ss");
 
         if (mmt.isValid()) {
             if (this.tz) {
