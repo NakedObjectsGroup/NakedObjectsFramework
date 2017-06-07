@@ -47,3 +47,24 @@ li  a {
 .ng-clearable.ng-x  { background-position: right 2px center; }
 .ng-clearable.ng-onX{ cursor: pointer; }
 input::-ms-clear {display: none;}
+
+/* drag and drop in an auto-complete field */
+.value.droppable {
+    border: solid;
+    border-width: 1px;
+    width: 245px;
+    height: 20px;
+}
+
+.value.droppable {
+    border-color: black;
+}
+
+.value.droppable.dnd-drag-over.candrop {
+    border-color: lawngreen;
+    background-color: white;
+}
+
+.value.droppable.dnd-drag-over {
+    border-color: red;
+}
