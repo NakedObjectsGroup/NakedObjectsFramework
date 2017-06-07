@@ -725,27 +725,32 @@ namespace NakedObjects.Selenium {
 
         public virtual void Page() {
             CiceroUrl("list?m1=OrderRepository&a1=HighestValueOrders&p1=1&ps1=20&s1_=0");
-            WaitForOutputStarting("Result from Highest Value Orders:\r\nPage 1 of 1574");
+            WaitForOutputStarting("Result from Highest Value Orders:\r\nPage 1 of 157");
+
+            var lastPage = br.FindElement(By.CssSelector(".output")).Text.Split(' ')[7];
+            var lastPagePlusOne = (int.Parse(lastPage) + 1).ToString();
+            var lastPageLessOne = (int.Parse(lastPage) - 1).ToString();
+
             EnterCommand("page 0");
-            WaitForOutput("Specified page number must be between 1 and 1574");
+            WaitForOutput($"Specified page number must be between 1 and {lastPage}");
             EnterCommand("page 2");
-            WaitForOutputStarting("Result from Highest Value Orders:\r\nPage 2 of 1574");
-            EnterCommand("page 1574");
-            WaitForOutputStarting("Result from Highest Value Orders:\r\nPage 1574 of 1574");
-            EnterCommand("page 1575");
-            WaitForOutput("Specified page number must be between 1 and 1574");
+            WaitForOutputStarting($"Result from Highest Value Orders:\r\nPage 2 of {lastPage}");
+            EnterCommand($"page {lastPage}");
+            WaitForOutputStarting($"Result from Highest Value Orders:\r\nPage {lastPage} of {lastPage}");
+            EnterCommand($"page {lastPagePlusOne}");
+            WaitForOutput($"Specified page number must be between 1 and {lastPage}");
             EnterCommand("page f");
-            WaitForOutputStarting("Result from Highest Value Orders:\r\nPage 1 of 1574");
+            WaitForOutputStarting($"Result from Highest Value Orders:\r\nPage 1 of {lastPage}");
             EnterCommand("page p");
             WaitForOutput("List is already showing the first page");
             EnterCommand("pa last");
-            WaitForOutputStarting("Result from Highest Value Orders:\r\nPage 1574 of 1574");
+            WaitForOutputStarting($"Result from Highest Value Orders:\r\nPage {lastPage} of {lastPage}");
             EnterCommand("pa nex");
             WaitForOutput("List is already showing the last page");
             EnterCommand("page p");
-            WaitForOutputStarting("Result from Highest Value Orders:\r\nPage 1573 of 1574");
+            WaitForOutputStarting($"Result from Highest Value Orders:\r\nPage {lastPageLessOne} of {lastPage}");
             EnterCommand("pa ne");
-            WaitForOutputStarting("Result from Highest Value Orders:\r\nPage 1574 of 1574");
+            WaitForOutputStarting($"Result from Highest Value Orders:\r\nPage {lastPage} of {lastPage}");
 
             //Invalid argument
             EnterCommand("page furst");
