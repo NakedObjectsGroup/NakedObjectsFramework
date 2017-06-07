@@ -6,6 +6,7 @@ import { ContextService } from '../context.service';
 import { PropertyViewModel } from '../view-models/property-view-model';
 import { RecentItemViewModel } from '../view-models/recent-item-view-model';
 import { TableRowColumnViewModel } from '../view-models/table-row-column-view-model';
+import { focus } from '../helpers-components';
 
 @Component({
     selector: '[nof-row]',
@@ -86,6 +87,6 @@ export class RowComponent {
     rowChildren: QueryList<ElementRef>;
 
     focus() {
-        return !!this.rowChildren && this.rowChildren.length > 0 && Helpers.focus(this.renderer, this.rowChildren.first);
+        return !!this.rowChildren && this.rowChildren.length > 0 && focus(this.renderer, this.rowChildren.first);
     }
 }

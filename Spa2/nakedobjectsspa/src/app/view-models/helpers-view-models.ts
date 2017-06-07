@@ -9,7 +9,6 @@ import { IMessageViewModel } from './imessage-view-model';
 import * as Models from '../models';
 import * as Msg from '../user-messages';
 import { Dictionary } from 'lodash';
-import { Renderer, ElementRef } from '@angular/core';
 import { Pane } from '../route-data';
 import each from 'lodash/each';
 import filter from 'lodash/filter';
@@ -376,9 +375,4 @@ export function decrementPendingPotentAction(context: ContextService, invokablea
     if (invokableaction.isPotent()) {
         context.decPendingPotentActionOrReload(paneId);
     }
-}
-
-export function focus(renderer: Renderer, element: ElementRef) {
-    setTimeout(() => renderer.invokeElementMethod(element.nativeElement, "focus"));
-    return true;
 }

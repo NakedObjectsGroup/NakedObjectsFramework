@@ -23,7 +23,7 @@ import omit from 'lodash/omit';
 import keys from 'lodash/keys';
 import { BehaviorSubject } from 'rxjs';
 import { ISubscription } from 'rxjs/Subscription';
-import { safeUnsubscribe } from '../helpers-components'; 
+import { safeUnsubscribe, focus } from '../helpers-components'; 
 
 export abstract class FieldComponent implements OnDestroy {
 
@@ -366,7 +366,7 @@ export abstract class FieldComponent implements OnDestroy {
     focus() {
         // todo focus on datepicker 
 
-        return !!(this.focusList && this.focusList.first) && Helpers.focus(this.renderer, this.focusList.first);
+        return !!(this.focusList && this.focusList.first) && focus(this.renderer, this.focusList.first);
     }
 
     ngOnDestroy() {

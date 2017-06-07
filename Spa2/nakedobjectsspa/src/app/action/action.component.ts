@@ -1,6 +1,6 @@
 ﻿import { Component, Input, ElementRef, Renderer, ViewChildren, QueryList } from '@angular/core';
 import { ActionViewModel } from '../view-models/action-view-model';
-import * as Helpers from '../view-models/helpers-view-models';
+import { focus } from '../helpers-components';
 
 export interface IActionHolder {
     doClick: () => void;
@@ -89,6 +89,6 @@ export class ActionComponent {
         if (this.disabled()) {
             return false;
         }
-        return !!(this.focusList && this.focusList.first) && Helpers.focus(this.renderer, this.focusList.first);
+        return !!(this.focusList && this.focusList.first) && focus(this.renderer, this.focusList.first);
     }
 }

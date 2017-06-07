@@ -7,7 +7,7 @@ import { ISubscription } from 'rxjs/Subscription';
 import flatten from 'lodash/flatten';
 import map from 'lodash/map';
 import some from 'lodash/map';
-import {safeUnsubscribe} from '../helpers-components';
+import { safeUnsubscribe } from '../helpers-components';
 
 @Component({
     selector: 'nof-action-bar',

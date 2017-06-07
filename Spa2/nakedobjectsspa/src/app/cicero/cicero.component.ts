@@ -1,6 +1,6 @@
 import * as Ro from '../models';
 import * as RtD from '../route-data';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Renderer } from '@angular/core';
 import { CiceroCommandFactoryService } from '../cicero-command-factory.service';
 import { CiceroRendererService } from '../cicero-renderer.service';
 import { ISubscription } from 'rxjs/Subscription';
@@ -10,9 +10,9 @@ import { ErrorService } from '../error.service';
 import { CiceroContextService } from '../cicero-context.service';
 import { Command } from '../cicero-commands/Command';
 import { Result } from '../cicero-commands/result';
-import * as Contextservice from '../context.service';
+import {ContextService} from '../context.service';
 import reduce from 'lodash/reduce';
-import {safeUnsubscribe} from '../helpers-components';
+import { safeUnsubscribe, focus } from '../helpers-components';
 
 @Component({
     selector: 'nof-cicero',
@@ -23,11 +23,12 @@ export class CiceroComponent implements OnInit {
 
     constructor(
         private readonly commandFactory: CiceroCommandFactoryService,
-        private readonly renderer: CiceroRendererService,
+        private readonly ciceroRendererService: CiceroRendererService,
         private readonly error: ErrorService,
         private readonly urlManager: UrlManagerService,
         private readonly ciceroContext: CiceroContextService,
-        private readonly context : Contextservice.ContextService) {     
+        private readonly context: ContextService,
+        private readonly renderer: Renderer) {     
     }
 
     private warnings : string[];
@@ -36,13 +37,13 @@ export class CiceroComponent implements OnInit {
     private render() {
         switch (this.lastPaneRouteData.location) {
             case RtD.ViewType.Home:
-                return this.renderer.renderHome(this.lastPaneRouteData);
+                return this.ciceroRendererService.renderHome(this.lastPaneRouteData);
             case RtD.ViewType.Object:
-                return this.renderer.renderObject(this.lastPaneRouteData);
+                return this.ciceroRendererService.renderObject(this.lastPaneRouteData);
             case RtD.ViewType.List:
-                return this.renderer.renderList(this.lastPaneRouteData);
+                return this.ciceroRendererService.renderList(this.lastPaneRouteData);
             default:
-                return this.renderer.renderError("unknown render error");
+                return this.ciceroRendererService.renderError("unknown render error");
         }
     }
 
@@ -122,6 +123,7 @@ export class CiceroComponent implements OnInit {
 
             this.outputText = `${prefix}${output}`;
         }
+        this.focusOnInput();
     }
 
     // template API 
@@ -159,4 +161,12 @@ export class CiceroComponent implements OnInit {
         }
         return input;
     };
+
+    focusOnInput() {
+        focus(this.renderer, this.inputField);
+    }
+
+
+    @ViewChild("inputField")
+    inputField: ElementRef;
 }

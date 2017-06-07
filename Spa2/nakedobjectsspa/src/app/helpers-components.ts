@@ -1,3 +1,4 @@
+import { Renderer, ElementRef } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
 import { Dictionary } from 'lodash';
 import { FormBuilder, AbstractControl, FormGroup } from '@angular/forms';
@@ -13,6 +14,12 @@ export function safeUnsubscribe(sub: ISubscription) {
     if (sub) {
         sub.unsubscribe();
     }
+}
+
+
+export function focus(renderer: Renderer, element: ElementRef) {
+    setTimeout(() => renderer.invokeElementMethod(element.nativeElement, "focus"));
+    return true;
 }
 
 
