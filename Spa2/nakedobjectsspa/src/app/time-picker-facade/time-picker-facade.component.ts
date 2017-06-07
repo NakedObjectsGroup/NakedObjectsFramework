@@ -32,7 +32,7 @@ export class TimePickerFacadeComponent  {
         return this.model.paneArgId;
     }
 
-    setValueIfChanged(time : string) {
+    setValueIfChanged(time : string) {      
         const oldValue = this.control.value;
         const newValue = time ? time : "";            
 
@@ -49,9 +49,18 @@ export class TimePickerFacadeComponent  {
         }
     }
 
+    handleTimeClearedEvent() {
+        if (this.control) {
+            this.model.resetMessage();
+            this.model.clientValid = true;
+            this.control.setValue("");
+        }
+    }
+
    handleInvalidTimeEvent(data: string) {
         if (this.control) {
-           this.model.setMessage("Invalid date");
+           this.control.setValue("");
+           this.model.setMessage("Invalid time");
            this.model.clientValid = false;
            this.control.setErrors({"Invalid time": true});
         }
@@ -65,7 +74,9 @@ export class TimePickerFacadeComponent  {
              case ("timeInvalid"):
                 this.handleInvalidTimeEvent(e.data);
                 break;
-         
+             case ("timeCleared"):
+                this.handleTimeClearedEvent();
+                break;
             default: //ignore
         }
     }

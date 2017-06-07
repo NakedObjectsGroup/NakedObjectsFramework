@@ -8,6 +8,7 @@ import { ISubscription } from 'rxjs/Subscription';
 import { safeUnsubscribe } from '../helpers-components'; 
 
 // based on ng2-datepicker https://github.com/jkuri/ng2-datepicker
+// to do - clean it up !!!!
 
 export class DateModel  {
     day: string;

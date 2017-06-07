@@ -1,8 +1,5 @@
-import * as Constants from '../constants';
 import { Component, ElementRef, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { SlimScrollOptions } from 'ng2-slimscroll';
 import * as moment from 'moment';
-import concat from 'lodash/concat';
 import { BehaviorSubject } from 'rxjs';
 import { ISubscription } from 'rxjs/Subscription';
 import { safeUnsubscribe } from '../helpers-components'; 
@@ -25,10 +22,34 @@ export class TimePickerComponent implements OnInit {
     @Input()
     id : string;
 
-    time: moment.Moment;  
-
     constructor(private readonly el: ElementRef) {
         this.outputEvents = new EventEmitter<{ type: string, data: string }>();
+    }
+
+    private timeValue: moment.Moment;  
+    private modelValue : string; 
+
+    set model(s: string) {
+        this.modelValue = s;
+
+        if (this.bSubject) {
+            this.bSubject.next(s);
+        }
+    }
+
+    get model(): string {
+        return this.modelValue;
+    }
+
+    get time(): moment.Moment {
+        return this.timeValue;
+    }
+
+    set time(time: moment.Moment) {   
+        if (time && time.isValid()) { 
+            this.timeValue = time;
+            this.outputEvents.emit({ type: 'timeChanged', data: time.format("HH:mm:ss") });
+        }
     }
 
     private validInputFormats = ["HH:mm:ss", "HH:mm", "HHmm"];
@@ -47,103 +68,52 @@ export class TimePickerComponent implements OnInit {
     }
 
     setTimeIfChanged(newTime : moment.Moment){
-        const currentTime = this.value;
-        if (!newTime.isSame(currentTime)) {
-            this.setValue(newTime);
-            setTimeout(() => this.formatted = this.value.format("HH:mm"));
+        if (!newTime.isSame(this.time)) {
+            this.time = newTime;
+            setTimeout(() => this.model = newTime.format("HH:mm"));
         }
-
     }
 
+    setTime(newValue: string) {
 
-    inputChanged(newValue : string) {
-
-        const dt = this.validateTime(newValue);
-
-        if (dt.isValid()) {
-            this.setTimeIfChanged(dt);
+        if (newValue === "" || newValue == null) {
+            this.timeValue = null;
+            this.outputEvents.emit({ type: 'timeCleared', data: "" });
         }
         else {
-            this.setValue(null);
-            if (newValue) {
+            const dt = this.validateTime(newValue);
+
+            if (dt.isValid()) {
+                this.setTimeIfChanged(dt);
+            }
+            else {
+                this.timeValue = null;
                 this.outputEvents.emit({ type: 'timeInvalid', data: newValue });
             }
         }
     }
 
-    private _formatted : string; 
 
-    set formatted(s: string) {
-        this._formatted = s;
-
-        if (this.bSubject) {
-            this.bSubject.next(s);
-        }
-    }
-
-    get formatted(): string {
-        return this._formatted;
-    }
-
-    get value(): moment.Moment {
-        return this.time;
-    }
-
-    get currentTime(): moment.Moment {
-        return this.time || moment();
-    }
-
-    set value(time: moment.Moment) {
-        if (time) { 
-            this.time = time;
-            this.outputEvents.emit({ type: 'timeChanged', data: this.value.format("HH:mm:ss") });
-        }
+    inputChanged(newValue : string) {
+        this.setTime(newValue);     
     }
 
     private eventsSub: ISubscription;
 
     ngOnInit() {
     
-        this.outputEvents.emit({ type: 'default', data: 'init' });
-
         if (this.inputEvents) {
             this.eventsSub = this.inputEvents.subscribe((e: any) => {
                
                 if (e.type === 'setTime') {
-                
-                    const date: moment.Moment = this.validateTime(e.data);
-                    if (!date.isValid()) {
-                        throw new Error(`Invalid time: ${e.data}`);
-                    }
-                    this.selectTime(date);
+                    this.setTime(e.data);
                 }
             });
         }
     }
 
-   
-
-    setValue(date: moment.Moment) {
-        this.value = date;
-    }
-
-
-    selectTime(time: moment.Moment, e?: MouseEvent, ) {
-        if (e) { e.preventDefault(); }
-        setTimeout(() => {
-            this.setValue(time);
-            this.formatted = this.value.format("HH:mm");
-        });
-        
-    }  
-
-    writeValue(time: moment.Moment) {
-        if (!time) { return; }
-        this.time = time;
-    }
-
     clear() {
-        this.selectTime(null);        
+        this.modelValue = "";     
     }
 
     private bSubject: BehaviorSubject<string>;
@@ -151,7 +121,7 @@ export class TimePickerComponent implements OnInit {
 
     get subject() {
         if (!this.bSubject) {
-            const initialValue = this.formatted;
+            const initialValue = this.model;
             this.bSubject = new BehaviorSubject(initialValue);
 
             this.sub = this.bSubject.debounceTime(200).subscribe((data : string) => this.inputChanged(data));
