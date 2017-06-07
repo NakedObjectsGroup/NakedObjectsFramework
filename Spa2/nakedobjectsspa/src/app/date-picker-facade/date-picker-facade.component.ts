@@ -2,11 +2,11 @@ import { FieldViewModel } from '../view-models/field-view-model';
 import { AfterViewInit, ViewChild } from '@angular/core';
 import { Component, Input, EventEmitter } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
-import * as Helpers from '../view-models/helpers-view-models';
 import * as moment from 'moment';
 import { DateModel, DatePickerComponent, DatePickerOptions } from "../date-picker/date-picker.component";
 import { ConfigService} from '../config.service';
 import * as Constants from '../constants';
+import * as Msg from '../user-messages';
 
 @Component({
     selector: 'nof-date-picker-facade',
@@ -15,6 +15,7 @@ import * as Constants from '../constants';
 })
 export class DatePickerFacadeComponent implements AfterViewInit {
 
+    // todo make interface for events 
     constructor(private readonly configService : ConfigService) { 
         this.inputEvents = new EventEmitter<{ type: string, data: string | Date }>();
         this.datePickerOptions.format = configService.config.dateInputFormat;
@@ -61,9 +62,9 @@ export class DatePickerFacadeComponent implements AfterViewInit {
 
    handleInvalidDateEvent(data: string) {
         if (this.control) {
-           this.model.setMessage("Invalid date");
+           this.model.setMessage(Msg.invalidDate);
            this.model.clientValid = false;
-           this.control.setErrors({"Invalid date": true});
+           this.control.setErrors({[Msg.invalidDate]: true});
         }
     }
 

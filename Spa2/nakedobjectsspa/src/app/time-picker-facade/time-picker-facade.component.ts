@@ -1,12 +1,10 @@
 import { TimePickerComponent } from '../time-picker/time-picker.component';
 import { FieldViewModel } from '../view-models/field-view-model';
-import { AfterViewInit, ViewChild } from '@angular/core';
+import {  ViewChild } from '@angular/core';
 import { Component, Input, EventEmitter } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
-import * as Helpers from '../view-models/helpers-view-models';
-import * as moment from 'moment';
 import { ConfigService} from '../config.service';
-import * as Constants from '../constants';
+import * as Msg from '../user-messages';
 
 @Component({
   selector: 'nof-time-picker-facade',
@@ -15,6 +13,7 @@ import * as Constants from '../constants';
 })
 export class TimePickerFacadeComponent  {
 
+    // todo make interface for events 
     constructor(private readonly configService : ConfigService) { 
         this.inputEvents = new EventEmitter<{ type: string, data: string }>();
     }
@@ -60,12 +59,13 @@ export class TimePickerFacadeComponent  {
    handleInvalidTimeEvent(data: string) {
         if (this.control) {
            this.control.setValue("");
-           this.model.setMessage("Invalid time");
+           this.model.setMessage(Msg.invalidTime);
            this.model.clientValid = false;
-           this.control.setErrors({"Invalid time": true});
+           this.control.setErrors({[Msg.invalidTime]: true});
         }
     }
 
+    
     handleEvents(e: { data: string, type: string }) {
         switch (e.type) {
             case ("timeChanged"):

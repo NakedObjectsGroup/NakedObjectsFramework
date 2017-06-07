@@ -35,6 +35,9 @@ export const recentTitle = "Recently Viewed Objects";
 export const noUserMessage = "'No user set'";
 export const noImageMessage = "No image";
 
+export const invalidDate = "Invalid date";
+export const invalidTime = "Invalid time";
+
 export const outOfRange = (val: any, min: any, max: any, filter: ILocalFilter) => {
     const minVal = filter ? filter.filter(min) : min;
     const maxVal = filter ? filter.filter(max) : max;
