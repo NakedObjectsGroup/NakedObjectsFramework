@@ -315,16 +315,13 @@ export abstract class FieldComponent implements OnDestroy {
 
     abstract focusList: QueryList<ElementRef | DatePickerFacadeComponent | TimePickerFacadeComponent | AutoCompleteComponent>;
 
-
     focus() {
         const first = this.focusList && this.focusList.first; 
 
         if (first instanceof ElementRef) {
             return focus(this.renderer, first);
-        }
-        else {
-            return first.focus();
-        }
+        }     
+        return first && first.focus();        
     }
 
     ngOnDestroy() {
