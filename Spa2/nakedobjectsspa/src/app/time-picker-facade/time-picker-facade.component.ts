@@ -5,6 +5,7 @@ import { Component, Input, EventEmitter } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { ConfigService} from '../config.service';
 import * as Msg from '../user-messages';
+import { ITimePickerOutputEvent, ITimePickerInputEvent } from '../time-picker/time-picker.component';
 
 @Component({
   selector: 'nof-time-picker-facade',
@@ -13,9 +14,8 @@ import * as Msg from '../user-messages';
 })
 export class TimePickerFacadeComponent  {
 
-    // todo make interface for events 
     constructor(private readonly configService : ConfigService) { 
-        this.inputEvents = new EventEmitter<{ type: string, data: string }>();
+        this.inputEvents = new EventEmitter<ITimePickerInputEvent>();
     }
 
     @Input()
@@ -64,9 +64,8 @@ export class TimePickerFacadeComponent  {
            this.control.setErrors({[Msg.invalidTime]: true});
         }
     }
-
-    
-    handleEvents(e: { data: string, type: string }) {
+  
+    handleEvents(e: ITimePickerOutputEvent) {
         switch (e.type) {
             case ("timeChanged"):
                 this.handleTimeChangedEvent(e.data);
@@ -81,12 +80,12 @@ export class TimePickerFacadeComponent  {
         }
     }
 
-    inputEvents : EventEmitter<{data : string, type : string}>;
+    inputEvents : EventEmitter<ITimePickerInputEvent>;
 
     ngAfterViewInit(): void {
-        const existingValue : any = this.control.value;
+        const existingValue: any = this.control.value;
         if (existingValue && (existingValue instanceof String || typeof existingValue === "string")) {
-            setTimeout(() => this.inputEvents.emit({ data: existingValue as string, type: "setTime" }));
+            setTimeout(() => this.inputEvents.emit({ type: "setTime", data: existingValue as string }));
         }
     }
 
@@ -94,6 +93,6 @@ export class TimePickerFacadeComponent  {
     timepicker : TimePickerComponent;
 
     focus() {
-        return this.timepicker.focus();
+        return this.timepicker && this.timepicker.focus();
     }
 }

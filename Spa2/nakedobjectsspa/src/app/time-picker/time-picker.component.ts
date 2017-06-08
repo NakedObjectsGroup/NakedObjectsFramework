@@ -5,6 +5,16 @@ import { ISubscription } from 'rxjs/Subscription';
 import { safeUnsubscribe, focus } from '../helpers-components';
 import * as Models from '../models';
 
+export interface ITimePickerOutputEvent {
+    type: "timeChanged" | "timeCleared" | "timeInvalid";
+    data : string;
+}
+
+export interface ITimePickerInputEvent {
+    type: "setTime";
+    data: string;
+}
+
 @Component({
   selector: 'nof-time-picker',
   templateUrl: './time-picker.component.html',
@@ -14,10 +24,10 @@ export class TimePickerComponent implements OnInit {
 
       
     @Input() 
-    inputEvents: EventEmitter<{ type: string, data: string  }>;
+    inputEvents: EventEmitter<ITimePickerInputEvent>;
     
     @Output() 
-    outputEvents: EventEmitter<{ type: string, data: string }>;
+    outputEvents: EventEmitter<ITimePickerOutputEvent>;
 
     @Input()
     id : string;
@@ -25,7 +35,7 @@ export class TimePickerComponent implements OnInit {
     constructor(
         private readonly el: ElementRef,
         private readonly renderer : Renderer) {
-        this.outputEvents = new EventEmitter<{ type: string, data: string }>();
+        this.outputEvents = new EventEmitter<ITimePickerOutputEvent>();
     }
 
     private timeValue: moment.Moment | null;  
@@ -95,7 +105,6 @@ export class TimePickerComponent implements OnInit {
         }
     }
 
-
     inputChanged(newValue : string) {
         this.setTime(newValue);     
     }
@@ -105,8 +114,7 @@ export class TimePickerComponent implements OnInit {
     ngOnInit() {
     
         if (this.inputEvents) {
-            this.eventsSub = this.inputEvents.subscribe((e: any) => {
-               
+            this.eventsSub = this.inputEvents.subscribe((e: ITimePickerInputEvent) => {           
                 if (e.type === 'setTime') {
                     this.setTime(e.data);
                 }
@@ -133,13 +141,12 @@ export class TimePickerComponent implements OnInit {
         return this.bSubject;
     }
 
-
     ngOnDestroy(): void {
         safeUnsubscribe(this.sub);
         safeUnsubscribe(this.eventsSub);
     }
 
-    @ViewChild("inp")
+    @ViewChild("focus")
     inputField : ElementRef;
 
     focus() {
