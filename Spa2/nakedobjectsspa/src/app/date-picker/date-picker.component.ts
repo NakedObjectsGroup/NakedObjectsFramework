@@ -10,6 +10,10 @@ import { safeUnsubscribe, focus } from '../helpers-components';
 // based on ng2-datepicker https://github.com/jkuri/ng2-datepicker
 // todo - clean it up !!!!
 
+export type IDatePickerInputEvent = IDatePickerInputDateEvent | IDatePickerInputActionEvent;
+
+export type IDatePickerOutputEvent = IDatePickerOutputDefaultEvent | IDatePickerOutputChangedEvent | IDatePickerOutputInvalidEvent;
+
 export interface IDatePickerInputDateEvent {
     type: "setDate";
     data:  string;
@@ -19,10 +23,6 @@ export interface IDatePickerInputActionEvent {
     type: "action";
     data: "toggle" | "close" | "open";
 }
-
-export type IDatePickerInputEvent = IDatePickerInputDateEvent | IDatePickerInputActionEvent;
-
-export type IDatePickerOutputEvent = IDatePickerOutputDefaultEvent | IDatePickerOutputChangedEvent | IDatePickerOutputInvalidEvent;
 
 export interface IDatePickerOutputDefaultEvent {
     type: "default";
@@ -40,24 +40,16 @@ export interface IDatePickerOutputInvalidEvent {
 }
 
 export class DateModel  {
-    day: string;
-    month: string;
-    year: string;
+  
     formatted: string;
     momentObj: moment.Moment;
 
     private initFromDate(date: moment.Moment, format: string) {
-        this.day = date.format('DD');
-        this.month = date.format('MM');
-        this.year = date.format('YYYY');
         this.formatted = date.format(format);
         this.momentObj = date;
     }
 
     private initFromDateModel(dateModel: DateModel) {
-        this.day = dateModel && dateModel.day ? dateModel.day : null;
-        this.month = dateModel && dateModel.month ? dateModel.month : null;
-        this.year = dateModel && dateModel.year ? dateModel.year : null;
         this.formatted = dateModel && dateModel.formatted ? dateModel.formatted : "";
         this.momentObj = dateModel && dateModel.momentObj ? dateModel.momentObj : null;
     }
