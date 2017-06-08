@@ -7,6 +7,7 @@ import { DateModel, DatePickerComponent, DatePickerOptions } from "../date-picke
 import { ConfigService} from '../config.service';
 import * as Constants from '../constants';
 import * as Msg from '../user-messages';
+import {IDatePickerInputEvent, IDatePickerOutputEvent} from '../date-picker/date-picker.component';
 
 @Component({
     selector: 'nof-date-picker-facade',
@@ -17,7 +18,7 @@ export class DatePickerFacadeComponent implements AfterViewInit {
 
     // todo make interface for events 
     constructor(private readonly configService : ConfigService) { 
-        this.inputEvents = new EventEmitter<{ type: string, data: string | Date }>();
+        this.inputEvents = new EventEmitter<IDatePickerInputEvent>();
         this.datePickerOptions.format = configService.config.dateInputFormat;
     }
 
@@ -68,23 +69,23 @@ export class DatePickerFacadeComponent implements AfterViewInit {
         }
     }
 
-    handleEvents(e: { data: DateModel | string, type: string }) {
+   handleEvents(e: IDatePickerOutputEvent) {
         switch (e.type) {
             case ("default"):
-                this.handleDefaultEvent(e.data as string);
+                this.handleDefaultEvent(e.data);
                 break;
             case ("dateChanged"):
-                this.handleDateChangedEvent(e.data as DateModel);
+                this.handleDateChangedEvent(e.data);
                 break;
              case ("dateInvalid"):
-                this.handleInvalidDateEvent(e.data as string);
+                this.handleInvalidDateEvent(e.data);
                 break;
          
             default: //ignore
         }
     }
 
-    inputEvents : EventEmitter<{data : string | Date, type : string}>;
+   inputEvents: EventEmitter<IDatePickerInputEvent>;
 
     private getDateModel(date: moment.Moment) : DateModel {
         return new DateModel(date, this.datePickerOptions.format);     
@@ -93,7 +94,7 @@ export class DatePickerFacadeComponent implements AfterViewInit {
     ngAfterViewInit(): void {
         const existingValue : any = this.control.value;
         if (existingValue && (existingValue instanceof String || typeof existingValue === "string")) {
-            setTimeout(() => this.inputEvents.emit({ data: existingValue as string, type: "setDate" }));
+            setTimeout(() => this.inputEvents.emit({ type: "setDate", data: existingValue as string,  }));
         }
     }
 

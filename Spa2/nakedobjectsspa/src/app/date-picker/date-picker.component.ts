@@ -10,6 +10,35 @@ import { safeUnsubscribe, focus } from '../helpers-components';
 // based on ng2-datepicker https://github.com/jkuri/ng2-datepicker
 // todo - clean it up !!!!
 
+export interface IDatePickerInputDateEvent {
+    type: "setDate";
+    data:  string;
+}
+
+export interface IDatePickerInputActionEvent {
+    type: "action";
+    data: "toggle" | "close" | "open";
+}
+
+export type IDatePickerInputEvent = IDatePickerInputDateEvent | IDatePickerInputActionEvent;
+
+export type IDatePickerOutputEvent = IDatePickerOutputDefaultEvent | IDatePickerOutputChangedEvent | IDatePickerOutputInvalidEvent;
+
+export interface IDatePickerOutputDefaultEvent {
+    type: "default";
+    data: "init" | "opened" | "closed";
+}
+
+export interface IDatePickerOutputChangedEvent {
+    type: "dateChanged";
+    data: DateModel;
+}
+
+export interface IDatePickerOutputInvalidEvent {
+    type: "dateInvalid";
+    data: string;
+}
+
 export class DateModel  {
     day: string;
     month: string;
@@ -93,10 +122,10 @@ export class DatePickerComponent implements OnInit {
     options: DatePickerOptions;
     
     @Input() 
-    inputEvents: EventEmitter<{ type: string, data: string | DateModel }>;
+    inputEvents: EventEmitter<IDatePickerInputEvent>;
     
     @Output() 
-    outputEvents: EventEmitter<{ type: string, data: string | DateModel }>;
+    outputEvents: EventEmitter<IDatePickerOutputEvent>;
 
     @Input()
     id : string;
@@ -122,7 +151,7 @@ export class DatePickerComponent implements OnInit {
         this.years = [];
         this.date = new DateModel();
 
-        this.outputEvents = new EventEmitter<{ type: string, data: string | DateModel }>();
+        this.outputEvents = new EventEmitter<IDatePickerOutputEvent>();
     }
 
     private validInputFormats = ["DD/MM/YYYY", "DD/MM/YY", "D/M/YY", "D/M/YYYY", "D MMM YYYY", "D MMMM YYYY", Constants.fixedDateFormat];
@@ -226,29 +255,31 @@ export class DatePickerComponent implements OnInit {
 
         this.generateYears();
         this.generateCalendar();
-        this.outputEvents.emit({ type: 'default', data: 'init' });
+        this.outputEvents.emit({ type: 'default', data: "init" } as IDatePickerOutputDefaultEvent);
 
         if (this.inputEvents) {
-            this.eventsSub = this.inputEvents.subscribe((e: any) => {
-                if (e.type === 'action') {
-                    if (e.data === 'toggle') {
-                        this.toggle();
+            this.eventsSub = this.inputEvents.subscribe((e: IDatePickerInputEvent) => {
+                switch (e.type) {
+                    case 'action': {
+                        if (e.data === 'toggle') {
+                            this.toggle();
+                        }
+                        if (e.data === 'close') {
+                            this.close();
+                        }
+                        if (e.data === 'open') {
+                            this.open();
+                        }
+                        break;
                     }
-                    if (e.data === 'close') {
-                        this.close();
+                    case 'setDate': {
+                        const date: moment.Moment = this.validateDate(e.data);
+                        if (!date.isValid()) {
+                            throw new Error(`Invalid date: ${e.data}`);
+                        }
+                        this.selectDate(date);
+                        break;
                     }
-                    if (e.data === 'open') {
-                        this.open();
-                    }
-                }
-
-                if (e.type === 'setDate') {
-                
-                    const date: moment.Moment = this.validateDate(e.data);
-                    if (!date.isValid()) {
-                        throw new Error(`Invalid date: ${e.data}`);
-                    }
-                    this.selectDate(date);
                 }
             });
         }
@@ -368,12 +399,12 @@ export class DatePickerComponent implements OnInit {
     private open = () => {
         this.opened = true;
         this.yearPicker = false;
-        this.outputEvents.emit({ type: 'default', data: 'opened' });
+        this.outputEvents.emit({ type: 'default', data: 'opened' } as IDatePickerOutputDefaultEvent);
     }
 
     private close = () => {
         this.opened = false;
-        this.outputEvents.emit({ type: 'default', data: 'closed' });
+        this.outputEvents.emit({ type: 'default', data: 'closed' } as IDatePickerOutputDefaultEvent);
     }
 
     openYearPicker() {
