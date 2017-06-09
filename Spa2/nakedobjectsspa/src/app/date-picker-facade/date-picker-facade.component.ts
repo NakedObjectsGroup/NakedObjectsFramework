@@ -3,7 +3,7 @@ import { AfterViewInit, ViewChild } from '@angular/core';
 import { Component, Input, EventEmitter } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import * as moment from 'moment';
-import { DateModel, DatePickerComponent, DatePickerOptions } from "../date-picker/date-picker.component";
+import { DatePickerComponent, DatePickerOptions } from "../date-picker/date-picker.component";
 import { ConfigService } from '../config.service';
 import * as Constants from '../constants';
 import * as Msg from '../user-messages';
@@ -49,7 +49,7 @@ export class DatePickerFacadeComponent implements AfterViewInit {
     handleDefaultEvent(data: string) {
         if (this.control) {
             if (data === "closed") {
-                const dateModel = this.datepicker.dateModel.momentObj;
+                const dateModel = this.datepicker.dateModel;
                 this.setValueIfChanged(dateModel);
             }
         }

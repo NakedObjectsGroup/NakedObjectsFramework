@@ -43,32 +43,6 @@ export interface IDatePickerOutputClearedEvent {
     data: string;
 }
 
-export class DateModel  {
-  
-    formatted: string;
-    momentObj: moment.Moment;
-
-    private initFromDate(date: moment.Moment, format: string) {
-        this.formatted = date.format(format);
-        this.momentObj = date;
-    }
-
-    private initFromDateModel(dateModel: DateModel) {
-        this.formatted = dateModel && dateModel.formatted ? dateModel.formatted : "";
-        this.momentObj = dateModel && dateModel.momentObj ? dateModel.momentObj : null;
-    }
-
-    constructor(obj?: DateModel | moment.Moment, format?: string) {
-        if (obj && format) {
-            this.initFromDate(obj as moment.Moment, format);
-        }
-        else {
-            this.initFromDateModel(obj as DateModel);
-        }
-    }
-}
-
-
 export class DatePickerOptions {
     autoApply?: boolean;
     style?: 'normal' | 'big' | 'bold';
@@ -132,14 +106,14 @@ export class DatePickerComponent implements OnInit {
         this.opened = false;
         this.options = this.options || {};
         this.days = [];
-        this.dateModelValue = new DateModel();
+        this.dateModelValue = null;
 
         this.outputEvents = new EventEmitter<IDatePickerOutputEvent>();
     }
 
     private validInputFormats = ["DD/MM/YYYY", "DD/MM/YY", "D/M/YY", "D/M/YYYY", "D MMM YYYY", "D MMMM YYYY", Constants.fixedDateFormat];
 
-    private dateModelValue: DateModel;
+    private dateModelValue: moment.Moment;
     private modelValue : string; 
 
     set model(s: string) {
@@ -154,21 +128,21 @@ export class DatePickerComponent implements OnInit {
         return this.modelValue;
     }
 
-    get dateModel(): DateModel {
+    get dateModel(): moment.Moment {
         return this.dateModelValue;
     }
 
     get currentDate(): moment.Moment {
-        return this.dateModelValue.momentObj || moment().utc();
+        return this.dateModelValue || moment().utc();
     }
 
-    set dateModel(date: DateModel) {
-        if (date && date.momentObj) { 
+    set dateModel(date: moment.Moment) {
+        if (date) { 
             this.dateModelValue = date;
-            this.outputEvents.emit({ type: 'dateChanged', data: this.dateModel.momentObj });
+            this.outputEvents.emit({ type: 'dateChanged', data: this.dateModel });
         }
         else {
-            this.dateModelValue = date;
+            this.dateModelValue = null;
             this.outputEvents.emit({ type: 'dateCleared', data: "" });
         }
     }
@@ -189,10 +163,10 @@ export class DatePickerComponent implements OnInit {
     }
 
     setDateIfChanged(newDate : moment.Moment){
-        const currentDate = this.dateModel.momentObj;
+        const currentDate = this.dateModel;
         if (!newDate.isSame(currentDate)) {
             this.setValue(newDate);
-            setTimeout(() => this.model = this.dateModel.formatted);
+            setTimeout(() => this.model = this.dateModel.format(this.options.format));
         }
 
     }
@@ -289,19 +263,23 @@ export class DatePickerComponent implements OnInit {
     }
 
     setValue(date: moment.Moment) {
-        this.dateModel = date ? new DateModel(date, this.options.format) : new DateModel();
+        this.dateModel = date;
+    }
+
+    private formatDate(date : moment.Moment) {
+        return this.dateModel.format(this.options.format);
     }
 
     selectDate(date: moment.Moment, e?: MouseEvent, ) {
         if (e) { e.preventDefault(); }
         setTimeout(() => {
             this.setValue(date);
-            this.model = this.dateModel.formatted;
+            this.model = this.formatDate(this.dateModel);
         });
         this.opened = false;
     }
 
-    writeValue(date: DateModel) {
+    writeValue(date: moment.Moment) {
         if (!date) { return; }
         this.dateModelValue = date;
     }
@@ -309,28 +287,28 @@ export class DatePickerComponent implements OnInit {
     prevMonth() {
         const date = this.currentDate.subtract(1, 'month');
         this.setValue(date);
-        this.model = this.dateModel.formatted;
+        this.model = this.formatDate(this.dateModel);
         this.generateCalendar();
     }
 
     nextMonth() {
         const date =  this.currentDate.add(1, 'month');
         this.setValue(date);
-        this.model = this.dateModel.formatted;
+        this.model = this.formatDate(this.dateModel);
         this.generateCalendar();
     }
 
     prevYear() {
         const date = this.currentDate.subtract(1, 'year');
         this.setValue(date);
-        this.model = this.dateModel.formatted;
+        this.model = this.formatDate(this.dateModel);
         this.generateCalendar();
     }
 
     nextYear() {
         const date =  this.currentDate.add(1, 'year');
         this.setValue(date);
-        this.model = this.dateModel.formatted;
+        this.model = this.formatDate(this.dateModel);
         this.generateCalendar();
     }
 
@@ -356,6 +334,7 @@ export class DatePickerComponent implements OnInit {
 
     clear() {
         this.selectDate(null);
+        this.model = "";
         this.close();
     }
 
@@ -367,7 +346,7 @@ export class DatePickerComponent implements OnInit {
             const initialValue = this.model;
             this.bSubject = new BehaviorSubject(initialValue);
 
-            this.sub = this.bSubject.debounceTime(200).subscribe((data : string) => this.inputChanged(data));
+            this.sub = this.bSubject.debounceTime(1000).subscribe((data : string) => this.inputChanged(data));
         }
 
         return this.bSubject;
