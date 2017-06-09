@@ -130,8 +130,6 @@ export class DatePickerComponent implements OnInit {
     yearPicker: boolean;
     scrollOptions: SlimScrollOptions;
 
-    minDate: moment.Moment | any;
-    maxDate: moment.Moment | any;
 
     constructor(
         private readonly el: ElementRef,
@@ -233,19 +231,6 @@ export class DatePickerComponent implements OnInit {
             this.selectDate(initialDate);
         }
 
-        if (this.options.minDate instanceof Date) {
-            this.minDate = moment(this.options.minDate);
-        } else {
-            this.minDate = null;
-        }
-
-        if (this.options.maxDate instanceof Date) {
-            this.maxDate = moment(this.options.maxDate);
-        } else {
-            this.maxDate = null;
-        }
-
-        this.generateYears();
         this.generateCalendar();
         this.outputEvents.emit({ type: 'default', data: "init" } as IDatePickerOutputDefaultEvent);
 
@@ -294,25 +279,13 @@ export class DatePickerComponent implements OnInit {
             const currentDate: moment.Moment = moment(`${i}.${month + 1}.${year}`, 'DD.MM.YYYY');
             const today: boolean = moment().isSame(currentDate, 'day') && moment().isSame(currentDate, 'month');
             const selected: boolean = (selectedDate && selectedDate.isSame(currentDate, 'day'));
-            let betweenMinMax = true;
-
-            if (this.minDate !== null) {
-                if (this.maxDate !== null) {
-                    betweenMinMax = currentDate.isBetween(this.minDate, this.maxDate, 'day', '[]');
-                } else {
-                    betweenMinMax = !currentDate.isBefore(this.minDate, 'day');
-                }
-            } else {
-                if (this.maxDate !== null) {
-                    betweenMinMax = !currentDate.isAfter(this.maxDate, 'day');
-                }
-            }
+           
 
             const day: ICalendarDate = {
                 day: i > 0 ? i : null,
                 month: i > 0 ? month : null,
                 year: i > 0 ? year : null,
-                enabled: i > 0 ? betweenMinMax : false,
+                enabled: true,
                 today: i > 0 && today,
                 selected: i > 0 && selected,
                 momentObj: currentDate
@@ -320,6 +293,7 @@ export class DatePickerComponent implements OnInit {
 
             this.days.push(day);
         }
+        this.generateYears();
     }
 
     setValue(date: moment.Moment) {
@@ -350,13 +324,15 @@ export class DatePickerComponent implements OnInit {
     }
 
     generateYears() {
-        const date: moment.Moment = this.minDate || moment().year(moment().year() - 40);
-        const toDate: moment.Moment = this.maxDate || moment().year(moment().year() + 40);
-        const years = toDate.year() - date.year();
+        const currentDate =  moment(this.currentDate);
+        const fromDate: moment.Moment = moment().year(currentDate.year() - 40);
+        const toDate: moment.Moment = moment().year(currentDate.year() + 40);
+        const years = toDate.year() - fromDate.year();
+        this.years = [];
 
         for (let i = 0; i < years; i++) {
-            this.years.push(date.year());
-            date.add(1, 'year');
+            this.years.push(fromDate.year());
+            fromDate.add(1, 'year');
         }
     }
 
