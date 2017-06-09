@@ -292,7 +292,6 @@ export class DatePickerComponent implements OnInit {
         this.dateModel = date ? new DateModel(date, this.options.format) : new DateModel();
     }
 
-
     selectDate(date: moment.Moment, e?: MouseEvent, ) {
         if (e) { e.preventDefault(); }
         setTimeout(() => {
@@ -311,24 +310,28 @@ export class DatePickerComponent implements OnInit {
         const date = this.currentDate.subtract(1, 'month');
         this.setValue(date);
         this.model = this.dateModel.formatted;
+        this.generateCalendar();
     }
 
     nextMonth() {
         const date =  this.currentDate.add(1, 'month');
         this.setValue(date);
         this.model = this.dateModel.formatted;
+        this.generateCalendar();
     }
 
     prevYear() {
         const date = this.currentDate.subtract(1, 'year');
         this.setValue(date);
         this.model = this.dateModel.formatted;
+        this.generateCalendar();
     }
 
     nextYear() {
         const date =  this.currentDate.add(1, 'year');
         this.setValue(date);
         this.model = this.dateModel.formatted;
+        this.generateCalendar();
     }
 
     today() {      
