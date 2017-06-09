@@ -121,12 +121,9 @@ export class DatePickerComponent implements OnInit {
 
     @Input()
     id : string;
-
-    
+   
     opened: boolean;
     days: ICalendarDate[];
-    years: number[];
-    yearPicker: boolean;
 
     constructor(
         private readonly el: ElementRef,
@@ -135,7 +132,6 @@ export class DatePickerComponent implements OnInit {
         this.opened = false;
         this.options = this.options || {};
         this.days = [];
-        this.years = [];
         this.dateModelValue = new DateModel();
 
         this.outputEvents = new EventEmitter<IDatePickerOutputEvent>();
@@ -163,7 +159,7 @@ export class DatePickerComponent implements OnInit {
     }
 
     get currentDate(): moment.Moment {
-        return this.dateModelValue.momentObj || moment();
+        return this.dateModelValue.momentObj || moment().utc();
     }
 
     set dateModel(date: DateModel) {
@@ -229,7 +225,6 @@ export class DatePickerComponent implements OnInit {
             this.selectDate(initialDate);
         }
 
-        this.generateCalendar();
         this.outputEvents.emit({ type: 'default', data: "init" } as IDatePickerOutputDefaultEvent);
 
         if (this.inputEvents) {
@@ -261,24 +256,24 @@ export class DatePickerComponent implements OnInit {
     }
 
     generateCalendar() {
-        const date: moment.Moment = moment(this.currentDate);
-        const month = date.month();
-        const year = date.year();
+        const currentDate = moment(this.currentDate); // clone so not mutated
+        const month = currentDate.month();
+        const year = currentDate.year();
         let n = 1;
-        const firstWeekDay = (this.options.firstWeekdaySunday) ? date.date(2).day() : date.date(1).day();
+        const firstWeekDay = (this.options.firstWeekdaySunday) ? currentDate.date(2).day() : currentDate.date(1).day();
 
         if (firstWeekDay !== 1) {
             n -= (firstWeekDay + 6) % 7;
         }
 
         this.days = [];
-        const selectedDate: moment.Moment = date;
-        for (let i = n; i <= date.endOf('month').date(); i += 1) {
-            const currentDate: moment.Moment = moment(`${i}.${month + 1}.${year}`, 'DD.MM.YYYY');
-            const today: boolean = moment().isSame(currentDate, 'day') && moment().isSame(currentDate, 'month');
-            const selected: boolean = (selectedDate && selectedDate.isSame(currentDate, 'day'));
+        
+        const endOfMonth = moment(currentDate).endOf('month'); 
+        for (let i = n; i <= endOfMonth.date(); i += 1) {
+            const date: moment.Moment = moment.utc(`${i}.${month + 1}.${year}`, 'DD.MM.YYYY');
+            const today: boolean = moment().utc().isSame(date, 'day') && moment().isSame(date, 'month');
+            const selected: boolean = this.currentDate.isSame(date, 'day');
            
-
             const day: ICalendarDate = {
                 day: i > 0 ? i : null,
                 month: i > 0 ? month : null,
@@ -286,17 +281,15 @@ export class DatePickerComponent implements OnInit {
                 enabled: i > 0,
                 today: i > 0 && today,
                 selected: i > 0 && selected,
-                momentObj: currentDate
+                momentObj: date
             };
 
             this.days.push(day);
         }
-        this.generateYears();
     }
 
     setValue(date: moment.Moment) {
         this.dateModel = date ? new DateModel(date, this.options.format) : new DateModel();
-        this.generateCalendar();
     }
 
 
@@ -309,31 +302,6 @@ export class DatePickerComponent implements OnInit {
         this.opened = false;
     }
 
-    selectYear(e: MouseEvent, year: number) {
-        e.preventDefault();
-
-        setTimeout(() => {
-            const date: moment.Moment = this.dateModelValue.momentObj.year(year);
-            this.setValue(date);
-            this.model = this.dateModel.formatted;
-            this.yearPicker = false;
-            this.generateCalendar();
-        });
-    }
-
-    generateYears() {
-        const currentDate =  moment(this.currentDate);
-        const fromDate: moment.Moment = moment().year(currentDate.year() - 40);
-        const toDate: moment.Moment = moment().year(currentDate.year() + 40);
-        const years = toDate.year() - fromDate.year();
-        this.years = [];
-
-        for (let i = 0; i < years; i++) {
-            this.years.push(fromDate.year());
-            fromDate.add(1, 'year');
-        }
-    }
-
     writeValue(date: DateModel) {
         if (!date) { return; }
         this.dateModelValue = date;
@@ -343,33 +311,28 @@ export class DatePickerComponent implements OnInit {
         const date = this.currentDate.subtract(1, 'month');
         this.setValue(date);
         this.model = this.dateModel.formatted;
-        this.generateCalendar();
     }
 
     nextMonth() {
         const date =  this.currentDate.add(1, 'month');
         this.setValue(date);
         this.model = this.dateModel.formatted;
-        this.generateCalendar();
     }
 
     prevYear() {
         const date = this.currentDate.subtract(1, 'year');
         this.setValue(date);
         this.model = this.dateModel.formatted;
-        this.generateCalendar();
     }
 
     nextYear() {
         const date =  this.currentDate.add(1, 'year');
         this.setValue(date);
         this.model = this.dateModel.formatted;
-        this.generateCalendar();
     }
 
-
     today() {      
-        this.selectDate(moment());
+        this.selectDate(moment().utc());
     }
 
     toggle() {
@@ -377,19 +340,15 @@ export class DatePickerComponent implements OnInit {
         change();
     }
 
-    private open = () => {
+    private open = () => {     
+        this.generateCalendar();
         this.opened = true;
-        this.yearPicker = false;
         this.outputEvents.emit({ type: 'default', data: 'opened' } as IDatePickerOutputDefaultEvent);
     }
 
     private close = () => {
         this.opened = false;
         this.outputEvents.emit({ type: 'default', data: 'closed' } as IDatePickerOutputDefaultEvent);
-    }
-
-    openYearPicker() {
-        setTimeout(() => this.yearPicker = true);
     }
 
     clear() {
