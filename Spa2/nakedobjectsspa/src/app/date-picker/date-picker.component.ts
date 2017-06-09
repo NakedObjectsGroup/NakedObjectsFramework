@@ -1,6 +1,5 @@
 import * as Constants from '../constants';
 import { Component, ElementRef, OnInit, Input, Output, EventEmitter, ViewChild, Renderer } from '@angular/core';
-import { SlimScrollOptions } from 'ng2-slimscroll';
 import * as moment from 'moment';
 import concat from 'lodash/concat';
 import { BehaviorSubject } from 'rxjs';
@@ -128,7 +127,6 @@ export class DatePickerComponent implements OnInit {
     days: ICalendarDate[];
     years: number[];
     yearPicker: boolean;
-    scrollOptions: SlimScrollOptions;
 
     constructor(
         private readonly el: ElementRef,
@@ -224,13 +222,7 @@ export class DatePickerComponent implements OnInit {
     ngOnInit() {
         this.options = new DatePickerOptions(this.options);
         this.validInputFormats = concat([this.options.format], this.validInputFormats);
-        
-        this.scrollOptions = {
-            barBackground: '#C9C9C9',
-            barWidth: '7',
-            gridBackground: '#C9C9C9',
-            gridWidth: '2'
-        };
+       
 
         if (this.options.initialDate instanceof Date) {
             const initialDate = moment(this.options.initialDate);
