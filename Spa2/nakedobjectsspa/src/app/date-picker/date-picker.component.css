@@ -275,3 +275,22 @@ input {
 .ng-clearable.ng-x  { background-position: right 2px center; }
 .ng-clearable.ng-onX{ cursor: pointer; }
 input::-ms-clear {display: none;}
+
+.datepicker-calendar-top {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.prevYear {
+    margin-left: 20px;
+        float: left;
+}
+.year-title{
+    width: 170px;
+    align-content: center;
+    float: left
+}
+.nextYear {
+    float: right;
+    margin-right: 20px;
+}
