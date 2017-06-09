@@ -49,7 +49,7 @@ export class DatePickerFacadeComponent implements AfterViewInit {
     handleDefaultEvent(data: string) {
         if (this.control) {
             if (data === "closed") {
-                const dateModel = this.datepicker.date;
+                const dateModel = this.datepicker.dateModel;
                 this.setValueIfChanged(dateModel);                      
             }
         }

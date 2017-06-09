@@ -69,8 +69,6 @@ export class DatePickerOptions {
     autoApply?: boolean;
     style?: 'normal' | 'big' | 'bold';
     locale?: string;
-    minDate?: Date;
-    maxDate?: Date;
     initialDate?: Date;
     firstWeekdaySunday?: boolean;
     format?: string;
@@ -82,8 +80,6 @@ export class DatePickerOptions {
         this.autoApply = obj && obj.autoApply;
         this.style = obj && obj.style ? obj.style : 'normal';
         this.locale = obj && obj.locale ? obj.locale : 'en';
-        this.minDate = obj && obj.minDate ? obj.minDate : null;
-        this.maxDate = obj && obj.maxDate ? obj.maxDate : null;
         this.initialDate = obj && obj.initialDate ? obj.initialDate : null;
         this.firstWeekdaySunday = obj && obj.firstWeekdaySunday ? obj.firstWeekdaySunday : false;
         this.format = obj && obj.format ? obj.format : 'YYYY-MM-DD';
@@ -122,14 +118,12 @@ export class DatePickerComponent implements OnInit {
     @Input()
     id : string;
 
-    date: DateModel;
-
+    
     opened: boolean;
     days: ICalendarDate[];
     years: number[];
     yearPicker: boolean;
     scrollOptions: SlimScrollOptions;
-
 
     constructor(
         private readonly el: ElementRef,
@@ -139,12 +133,44 @@ export class DatePickerComponent implements OnInit {
         this.options = this.options || {};
         this.days = [];
         this.years = [];
-        this.date = new DateModel();
+        this.dateModelValue = new DateModel();
 
         this.outputEvents = new EventEmitter<IDatePickerOutputEvent>();
     }
 
     private validInputFormats = ["DD/MM/YYYY", "DD/MM/YY", "D/M/YY", "D/M/YYYY", "D MMM YYYY", "D MMMM YYYY", Constants.fixedDateFormat];
+
+    private dateModelValue: DateModel;
+    private modelValue : string; 
+
+    set model(s: string) {
+        this.modelValue = s;
+
+        if (this.bSubject) {
+            this.bSubject.next(s);
+        }
+    }
+
+    get model(): string {
+        return this.modelValue;
+    }
+
+    get dateModel(): DateModel {
+        return this.dateModelValue;
+    }
+
+    get currentDate(): moment.Moment {
+        return this.dateModelValue.momentObj || moment();
+    }
+
+    set dateModel(date: DateModel) {
+        if (date) { 
+            this.dateModelValue = date;
+            this.outputEvents.emit({ type: 'dateChanged', data: this.dateModel });
+        }
+    }
+
+    private eventsSub: ISubscription;
 
     private validateDate(newValue: string) {
         let dt: moment.Moment;
@@ -160,10 +186,10 @@ export class DatePickerComponent implements OnInit {
     }
 
     setDateIfChanged(newDate : moment.Moment){
-        const currentDate = this.value.momentObj;
+        const currentDate = this.dateModel.momentObj;
         if (!newDate.isSame(currentDate)) {
             this.setValue(newDate);
-            setTimeout(() => this.formatted = this.value.formatted);
+            setTimeout(() => this.model = this.dateModel.formatted);
         }
 
     }
@@ -184,36 +210,7 @@ export class DatePickerComponent implements OnInit {
         }
     }
 
-    private _formatted : string; 
-
-    set formatted(s: string) {
-        this._formatted = s;
-
-        if (this.bSubject) {
-            this.bSubject.next(s);
-        }
-    }
-
-    get formatted(): string {
-        return this._formatted;
-    }
-
-    get value(): DateModel {
-        return this.date;
-    }
-
-    get currentDate(): moment.Moment {
-        return this.date.momentObj || moment();
-    }
-
-    set value(date: DateModel) {
-        if (date) { 
-            this.date = date;
-            this.outputEvents.emit({ type: 'dateChanged', data: this.value });
-        }
-    }
-
-    private eventsSub: ISubscription;
+    
 
     ngOnInit() {
         this.options = new DatePickerOptions(this.options);
@@ -285,7 +282,7 @@ export class DatePickerComponent implements OnInit {
                 day: i > 0 ? i : null,
                 month: i > 0 ? month : null,
                 year: i > 0 ? year : null,
-                enabled: true,
+                enabled: i > 0,
                 today: i > 0 && today,
                 selected: i > 0 && selected,
                 momentObj: currentDate
@@ -297,7 +294,7 @@ export class DatePickerComponent implements OnInit {
     }
 
     setValue(date: moment.Moment) {
-        this.value = date ? new DateModel(date, this.options.format) : new DateModel();
+        this.dateModel = date ? new DateModel(date, this.options.format) : new DateModel();
         this.generateCalendar();
     }
 
@@ -306,7 +303,7 @@ export class DatePickerComponent implements OnInit {
         if (e) { e.preventDefault(); }
         setTimeout(() => {
             this.setValue(date);
-            this.formatted = this.value.formatted;
+            this.model = this.dateModel.formatted;
         });
         this.opened = false;
     }
@@ -315,9 +312,9 @@ export class DatePickerComponent implements OnInit {
         e.preventDefault();
 
         setTimeout(() => {
-            const date: moment.Moment = this.date.momentObj.year(year);
+            const date: moment.Moment = this.dateModelValue.momentObj.year(year);
             this.setValue(date);
-            this.formatted = this.value.formatted;
+            this.model = this.dateModel.formatted;
             this.yearPicker = false;
             this.generateCalendar();
         });
@@ -338,20 +335,20 @@ export class DatePickerComponent implements OnInit {
 
     writeValue(date: DateModel) {
         if (!date) { return; }
-        this.date = date;
+        this.dateModelValue = date;
     }
 
     prevMonth() {
         const date = this.currentDate.subtract(1, 'month');
         this.setValue(date);
-        this.formatted = this.value.formatted;
+        this.model = this.dateModel.formatted;
         this.generateCalendar();
     }
 
     nextMonth() {
         const date =  this.currentDate.add(1, 'month');
         this.setValue(date);
-        this.formatted = this.value.formatted;
+        this.model = this.dateModel.formatted;
         this.generateCalendar();
     }
 
@@ -389,7 +386,7 @@ export class DatePickerComponent implements OnInit {
 
     get subject() {
         if (!this.bSubject) {
-            const initialValue = this.formatted;
+            const initialValue = this.model;
             this.bSubject = new BehaviorSubject(initialValue);
 
             this.sub = this.bSubject.debounceTime(200).subscribe((data : string) => this.inputChanged(data));
