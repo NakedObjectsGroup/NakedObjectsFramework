@@ -12,7 +12,7 @@ import { safeUnsubscribe, focus } from '../helpers-components';
 
 export type IDatePickerInputEvent = IDatePickerInputDateEvent | IDatePickerInputActionEvent;
 
-export type IDatePickerOutputEvent = IDatePickerOutputDefaultEvent | IDatePickerOutputChangedEvent | IDatePickerOutputInvalidEvent;
+export type IDatePickerOutputEvent = IDatePickerOutputDefaultEvent | IDatePickerOutputChangedEvent | IDatePickerOutputInvalidEvent | IDatePickerOutputClearedEvent;
 
 export interface IDatePickerInputDateEvent {
     type: "setDate";
@@ -31,11 +31,16 @@ export interface IDatePickerOutputDefaultEvent {
 
 export interface IDatePickerOutputChangedEvent {
     type: "dateChanged";
-    data: DateModel;
+    data: moment.Moment;
 }
 
 export interface IDatePickerOutputInvalidEvent {
     type: "dateInvalid";
+    data: string;
+}
+
+export interface IDatePickerOutputClearedEvent {
+    type: "dateCleared";
     data: string;
 }
 
@@ -164,9 +169,13 @@ export class DatePickerComponent implements OnInit {
     }
 
     set dateModel(date: DateModel) {
-        if (date) { 
+        if (date && date.momentObj) { 
             this.dateModelValue = date;
-            this.outputEvents.emit({ type: 'dateChanged', data: this.dateModel });
+            this.outputEvents.emit({ type: 'dateChanged', data: this.dateModel.momentObj });
+        }
+        else {
+            this.dateModelValue = date;
+            this.outputEvents.emit({ type: 'dateCleared', data: "" });
         }
     }
 
