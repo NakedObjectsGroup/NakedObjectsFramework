@@ -28,6 +28,7 @@ export const concurrencyMessage = "The object has been reloaded to pick up chang
 export const loadingMessage = "Loading...";
 export const submittedMessage = "Submitted";
 
+export const today = "Today";
 export const clear = "Clear";
 export const recentDisabledMessage = "Nothing to clear";
 export const recentMessage = "Clear recent history";

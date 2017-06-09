@@ -5,9 +5,9 @@ import concat from 'lodash/concat';
 import { BehaviorSubject } from 'rxjs';
 import { ISubscription } from 'rxjs/Subscription';
 import { safeUnsubscribe, focus } from '../helpers-components'; 
+import * as Msg from '../user-messages';
 
 // based on ng2-datepicker https://github.com/jkuri/ng2-datepicker
-// todo - clean it up !!!!
 
 export type IDatePickerInputEvent = IDatePickerInputDateEvent | IDatePickerInputActionEvent;
 
@@ -44,26 +44,12 @@ export interface IDatePickerOutputClearedEvent {
 }
 
 export class DatePickerOptions {
-    autoApply?: boolean;
-    style?: 'normal' | 'big' | 'bold';
-    locale?: string;
-    initialDate?: Date;
     firstWeekdaySunday?: boolean;
     format?: string;
-    selectYearText?: string;
-    todayText?: string;
-    clearText?: string;
-
+   
     constructor(obj?: DatePickerOptions) {
-        this.autoApply = obj && obj.autoApply;
-        this.style = obj && obj.style ? obj.style : 'normal';
-        this.locale = obj && obj.locale ? obj.locale : 'en';
-        this.initialDate = obj && obj.initialDate ? obj.initialDate : null;
         this.firstWeekdaySunday = obj && obj.firstWeekdaySunday ? obj.firstWeekdaySunday : false;
         this.format = obj && obj.format ? obj.format : 'YYYY-MM-DD';
-        this.selectYearText = obj && obj.selectYearText ? obj.selectYearText : 'Select Year';
-        this.todayText = obj && obj.todayText ? obj.todayText : 'Today';
-        this.clearText = obj && obj.clearText ? obj.clearText : 'Clear';
     }
 }
 
@@ -100,7 +86,6 @@ export class DatePickerComponent implements OnInit {
     days: ICalendarDate[];
 
     constructor(
-        private readonly el: ElementRef,
         private readonly renderer: Renderer
     ) {
         this.opened = false;
@@ -168,9 +153,7 @@ export class DatePickerComponent implements OnInit {
             this.setValue(newDate);
             setTimeout(() => this.model = this.formatDate(this.dateModel));
         }
-
     }
-
 
     inputChanged(newValue : string) {
 
@@ -187,17 +170,9 @@ export class DatePickerComponent implements OnInit {
         }
     }
 
-    
-
     ngOnInit() {
         this.options = new DatePickerOptions(this.options);
         this.validInputFormats = concat([this.options.format], this.validInputFormats);
-       
-
-        if (this.options.initialDate instanceof Date) {
-            const initialDate = moment(this.options.initialDate);
-            this.selectDate(initialDate);
-        }
 
         this.outputEvents.emit({ type: 'default', data: "init" } as IDatePickerOutputDefaultEvent);
 
@@ -337,6 +312,10 @@ export class DatePickerComponent implements OnInit {
         this.model = "";
         this.close();
     }
+
+    todayMsg = Msg.today;
+    clearMsg = Msg.clear;
+
 
     private bSubject: BehaviorSubject<string>;
     private sub : ISubscription;
