@@ -361,6 +361,21 @@ export class DatePickerComponent implements OnInit {
         this.generateCalendar();
     }
 
+    prevYear() {
+        const date = this.currentDate.subtract(1, 'year');
+        this.setValue(date);
+        this.model = this.dateModel.formatted;
+        this.generateCalendar();
+    }
+
+    nextYear() {
+        const date =  this.currentDate.add(1, 'year');
+        this.setValue(date);
+        this.model = this.dateModel.formatted;
+        this.generateCalendar();
+    }
+
+
     today() {      
         this.selectDate(moment());
     }
