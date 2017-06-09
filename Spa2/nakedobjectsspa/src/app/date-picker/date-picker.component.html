@@ -42,7 +42,7 @@
     <div class="datepicker-calendar" *ngIf="opened">
         <div class="datepicker-calendar-top">
             <i (click)="prevYear()">
-                <svg width="190px" height="306px" viewBox="58 0 190 306" version="1.1">
+                <svg class="prevYear" width="190px" height="306px" viewBox="58 0 190 306" version="1.1">
                     <g id="keyboard-left-arrow-button" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(58.000000, 0.000000)">
                         <g id="chevron-left" fill-rule="nonzero" fill="#000000">
                             <polygon id="Shape" points="189.35 35.7 153.65 0 0.65 153 153.65 306 189.35 270.3 72.05 153"></polygon>
@@ -52,7 +52,7 @@
             </i>
             <span class="year-title">{{ currentDate.format('YYYY') }}</span>
             <i (click)="nextYear()">
-                <svg width="190px" height="306px" viewBox="58 0 190 306" version="1.1">
+                <svg class = "nextYear" width="190px" height="306px" viewBox="58 0 190 306" version="1.1">
                     <g id="keyboard-right-arrow-button" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(58.000000, 0.000000)">
                         <g id="chevron-right" fill-rule="nonzero" fill="#000000">
                             <polygon id="Shape" points="36.35 0 0.65 35.7 117.95 153 0.65 270.3 36.35 306 189.35 153"></polygon>
