@@ -166,7 +166,7 @@ export class DatePickerComponent implements OnInit {
         const currentDate = this.dateModel;
         if (!newDate.isSame(currentDate)) {
             this.setValue(newDate);
-            setTimeout(() => this.model = this.dateModel.format(this.options.format));
+            setTimeout(() => this.model = this.formatDate(this.dateModel));
         }
 
     }
@@ -267,7 +267,7 @@ export class DatePickerComponent implements OnInit {
     }
 
     private formatDate(date : moment.Moment) {
-        return this.dateModel.format(this.options.format);
+        return this.dateModel ? this.dateModel.format(this.options.format) : "";
     }
 
     selectDate(date: moment.Moment, e?: MouseEvent, ) {
