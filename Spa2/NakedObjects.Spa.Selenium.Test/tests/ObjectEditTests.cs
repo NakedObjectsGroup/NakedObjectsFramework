@@ -133,16 +133,16 @@ namespace NakedObjects.Selenium {
             var ind11 = DateTime.Today.AddDays(11).ToString(inmask);
             var message = $"Value is outside the range {outtoday} to {outd10}";
             ClearDateFieldThenType("#discontinueddate1", inyesterday);
-            wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation")).Count == 23);
-            Assert.AreEqual(message, br.FindElements(By.CssSelector(".property .validation"))[20].Text);
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[20].Text == message);
+            //Assert.AreEqual(message, br.FindElements(By.CssSelector(".property .validation"))[20].Text);
 
             //wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[17].Text == message);
-            ClearDateFieldThenType("#discontinueddate1", intoday);
+            ClearFieldThenType("#discontinueddate1", intoday);
             wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[20].Text == "");
-            ClearDateFieldThenType("#discontinueddate1", ind11);
+            ClearFieldThenType("#discontinueddate1", ind11);
             wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation")).Count == 23);
             wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[20].Text == message);
-            ClearDateFieldThenType("#discontinueddate1", ind10);
+            ClearFieldThenType("#discontinueddate1", ind10);
             wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[20].Text == "");
         }
 
@@ -173,10 +173,11 @@ namespace NakedObjects.Selenium {
             //ClearDateFieldThenType("#sellstartdate1", sellStart.ToString("d MMM yyyy"));
             //ClearDateFieldThenType("#sellenddate1", sellEnd.ToString("dd/MM/yy")); //Test different input format...
 
-            ClearDateFieldThenType("#sellstartdate1", sellStart.ToString("dd/MM/yyyy"));
-            ClearDateFieldThenType("#sellenddate1", sellEnd.ToString("dd/MM/yyyy"));
+            ClearFieldThenType("#sellstartdate1", sellStart.ToString("dd/MM/yyyy"));
+            ClearFieldThenType("#sellenddate1", sellEnd.ToString("dd/MM/yyyy"));
 
             ClearFieldThenType("#daystomanufacture1", "1");
+            Thread.Sleep(2000);
             SaveObject();
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
@@ -334,13 +335,10 @@ namespace NakedObjects.Selenium {
 
         public virtual void CoValidationOnSavingChanges() {
             GeminiUrl("object?o1=___1.WorkOrder--43134&i1=Edit");
-            WaitForView(Pane.Single, PaneType.Object);
-            //ClearFieldThenType("input#startdate1", ""); //Seems to be necessary to clear the date fields fully
-            //ClearFieldThenType("input#startdate1", "");
-            ClearFieldThenType("input#startdate1", "17 Oct 2007");
-            //ClearFieldThenType("input#duedate1", ""); //Seems to be necessary to clear the date fields fully
-            //ClearFieldThenType("input#duedate1", "");
+            WaitForView(Pane.Single, PaneType.Object);     
+            ClearFieldThenType("input#startdate1", "17 Oct 2007");         
             ClearFieldThenType("input#duedate1", "15 Oct 2007");
+            Thread.Sleep(2000);
             Click(SaveButton());
             WaitForMessage("StartDate must be before DueDate");
         }

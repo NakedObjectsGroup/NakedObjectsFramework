@@ -104,7 +104,7 @@ namespace NakedObjects.Selenium {
             ShiftEnterEquivalentToRightClick();
         }
 
-        [TestMethod]
+        [TestMethod] // don't work on chrome 
         [Priority(-1)]
         public void ProblematicKeyboardNavigationTests() {
             SelectFooterIconsWithAccessKeys();
@@ -151,7 +151,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass] //toggle
+    //[TestClass] //toggle
     public class MegaKeyboardTestsChrome : MegaKeyboardTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
