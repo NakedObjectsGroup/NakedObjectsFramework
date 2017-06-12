@@ -112,12 +112,13 @@ namespace NakedObjects.Selenium {
 
     public abstract class MegaKeyboardTestsRoot : KeyboardNavigationTestsRoot {
         [TestMethod] //Mega
+        [Priority(0)]
         public void MegaKeyboardTest() {
             EnterEquivalentToLeftClick();
             ShiftEnterEquivalentToRightClick();
         }
         [TestMethod]
-        [Priority(0)]
+        [Priority(-1)]
         public void ProblematicTests() {
 
         }

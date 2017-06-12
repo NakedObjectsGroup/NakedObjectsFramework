@@ -406,10 +406,8 @@ namespace NakedObjects.Selenium {
             MultiFieldValidation();
             PropertyDescriptionAndRequiredRenderedAsPlaceholder();
             CancelTransientObject();
-            SwapPanesWithTransients();
             BackAndForwardOverTransient();
-            RequestForExpiredTransient();
-            //ConditionalChoicesOnTransient();  move to LocallyRun 
+            RequestForExpiredTransient();          
             TransientWithHiddenNonOptionalFields();
             CanInvokeActionOnASavedTransient();
             TransientCreatedFromDialogClosesDialog();
@@ -420,8 +418,9 @@ namespace NakedObjects.Selenium {
         }
         [TestMethod]
         [Priority(-1)]
-        public void ProblematicTests() {
-
+        public void ProblematicTransientObjectTests() {
+            ConditionalChoicesOnTransient();
+            SwapPanesWithTransients();
         }
     }
 

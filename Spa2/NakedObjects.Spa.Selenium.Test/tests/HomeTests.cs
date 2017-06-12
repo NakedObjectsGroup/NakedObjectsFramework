@@ -233,7 +233,7 @@ namespace NakedObjects.Selenium {
             DialogActionOK();
         }
         [TestMethod]
-        [Priority(0)]
+        [Priority(-1)]
         public void ProblematicTests() {
 
         }
