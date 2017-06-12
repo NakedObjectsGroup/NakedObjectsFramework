@@ -497,7 +497,7 @@ namespace NakedObjects.Selenium {
 
         [TestMethod]
         [Priority(-1)]
-        public void ProblematicbjectEditTests() {
+        public void ProblematicObjectEditTests() {
             RangeValidationOnDate();
             ObjectEditChangeDateTime();
             CoValidationOnSavingChanges();

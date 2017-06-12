@@ -142,8 +142,7 @@ namespace NakedObjects.Selenium {
             Click(iconList);
             WaitForCss("table");
 
-            var selector = ".collection .actions nof-action";
-            var action = wait.Until(d => d.FindElements(By.CssSelector(selector)).Single(we => we.Text == "Add New Details"));
+            var action = GetLCA("Add New Details");
             Click(action);
 
             WaitForView(Pane.Single, PaneType.MultiLineDialog);
@@ -155,11 +154,11 @@ namespace NakedObjects.Selenium {
             OKButtonOnLine(0).AssertIsDisabled("Missing mandatory fields: Product; ");
             //Auto-complete
             ClearFieldThenType("#product0", "Dissolver");
-            wait.Until(d => d.FindElements(By.CssSelector("md-option")).Count > 0);
+            wait.Until(d => d.FindElements(By.CssSelector(".suggestions a")).Count > 0);
             //As the match has not yet been selected,the field is invalid, so...
             WaitForTextEquals(".validation", 0, "Pending auto-complete...");
             OKButtonOnLine(0).AssertIsDisabled().AssertHasTooltip("Invalid fields: Product; ");
-            Click(WaitForCss("md-option"));
+            Click(WaitForCss(".suggestions a"));
             WaitForCss("#product0.link-color4");
             //Other field with validation
             ClearFieldThenType("#quantity0", "0");
@@ -179,8 +178,8 @@ namespace NakedObjects.Selenium {
             OKButtonOnLine(1).AssertIsDisabled("Missing mandatory fields: Product; ");
             //Auto-complete
             ClearFieldThenType("#product1", "vest, S");
-            wait.Until(d => d.FindElements(By.CssSelector("md-option")).Count > 0);
-            Click(WaitForCss("md-option"));
+            wait.Until(d => d.FindElements(By.CssSelector(".suggestions a")).Count > 0);
+            Click(WaitForCss(".suggestions a"));
             WaitForCss("#product1.link-color4");
             Click(OKButtonOnLine(1));
             WaitForTextEquals(".co-validation", 1, "Submitted");
