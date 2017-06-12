@@ -99,7 +99,7 @@ namespace NakedObjects.Selenium {
             //Assert.IsNotNull(collections[0].FindElement(By.CssSelector(".icon.table")));
             wait.Until(d => d.FindElements(By.CssSelector(".collection")).First().FindElement(By.CssSelector(".icon.summary")));
 
-            //Assert.IsNotNull(collections[0].FindElement(By.CssSelector(".icon.minimise")));
+            //Assert.IsNotNull(collections[0].FindElement(By.CssSelector(".icon.summary")));
             wait.Until(d => d.FindElements(By.CssSelector(".collection")).First().FindElements(By.CssSelector(".icon.list")).Count == 0);
 
             //Assert.IsTrue(collections[0].FindElements(By.CssSelector(".icon.list")).Count == 0);

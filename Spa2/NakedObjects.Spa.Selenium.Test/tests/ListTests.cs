@@ -16,15 +16,23 @@ namespace NakedObjects.Selenium {
     /// Tests applied from a List view.
     /// </summary>
     public abstract class ListTestsRoot : AWTest {
+
+        private bool PageTitleOK() {
+            var text = WaitForCss(".list .summary .details").Text;
+
+            return text.StartsWith("Page 1 of 1574; viewing 20 of") || text.StartsWith("Page 1 of 1575; viewing 20 of");
+
+        }
+
         public virtual void ActionReturnsListView() {
             Url(OrdersMenuUrl);
             Click(GetObjectEnabledAction("Highest Value Orders"));
             WaitForView(Pane.Single, PaneType.List, "Highest Value Orders");
             //Test content of collection
-            Assert.IsTrue(WaitForCss(".list .summary .details").Text.StartsWith("Page 1 of 1574; viewing 20 of"));
+            Assert.IsTrue(PageTitleOK());
             WaitForCss(".icon.table");
             WaitUntilElementDoesNotExist(".icon.list");
-            WaitUntilElementDoesNotExist(".icon.minimise");
+            WaitUntilElementDoesNotExist(".icon.summary");
             Assert.AreEqual(20, br.FindElements(By.CssSelector(".list table tbody tr td.reference")).Count);
             Assert.AreEqual(20, br.FindElements(By.CssSelector(".list table tbody tr td.checkbox")).Count);
             Assert.AreEqual(0, br.FindElements(By.CssSelector(".cell")).Count); //Cells are in Table view only
@@ -92,7 +100,7 @@ namespace NakedObjects.Selenium {
 
             var iconList = WaitForCss(".icon.list");
             WaitUntilElementDoesNotExist(".icon.table");
-            WaitUntilElementDoesNotExist(".icon.minimise");
+            WaitUntilElementDoesNotExist(".icon.summary");
 
             wait.Until(dr => dr.FindElements(By.CssSelector(".list table tbody tr")).Count > 1);
 
@@ -100,7 +108,7 @@ namespace NakedObjects.Selenium {
             Click(iconList);
             WaitForCss(".icon.table");
             WaitUntilElementDoesNotExist(".icon.list");
-            WaitUntilElementDoesNotExist(".icon.minimise");
+            WaitUntilElementDoesNotExist(".icon.summary");
             wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count > 1);
             Assert.AreEqual(0, br.FindElements(By.CssSelector(".cell")).Count); //Cells are in Table view only
         }
