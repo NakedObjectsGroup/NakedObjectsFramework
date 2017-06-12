@@ -29,7 +29,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    public abstract class PerformanceTests : PerformanceTestsRoot {
+    public abstract class MegaPerformanceTest : PerformanceTestsRoot {
         [TestMethod] //Mega
         [Priority(0)]
         public void PerformanceTests() {
@@ -45,7 +45,7 @@ namespace NakedObjects.Selenium {
     #region browsers specific subclasses
 
     //[TestClass]
-    public class PerformanceTestsIe : PerformanceTests {
+    public class MegaPerformanceTestIe : MegaPerformanceTest {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
@@ -65,7 +65,7 @@ namespace NakedObjects.Selenium {
     }
 
     //[TestClass]
-    public class PerformanceTestsFirefox : PerformanceTests {
+    public class MegaPerformanceTestFirefox : MegaPerformanceTest {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             GeminiTest.InitialiseClass(context);
@@ -88,7 +88,7 @@ namespace NakedObjects.Selenium {
     }
 
    [TestClass] //toggle
-    public class PerformanceTestsChrome : PerformanceTests {
+    public class MegaPerformanceTestChrome : MegaPerformanceTest {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
