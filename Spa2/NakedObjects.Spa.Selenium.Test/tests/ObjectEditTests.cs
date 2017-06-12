@@ -426,7 +426,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -444,7 +444,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
 
         protected override void ScrollTo(IWebElement element) {
@@ -468,7 +468,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -479,7 +479,7 @@ namespace NakedObjects.Selenium {
     public abstract class MegaObjectEditTestsRoot : ObjectEditTestsRoot {
         [TestMethod] //Mega
         [Priority(0)]
-        public void MegaObjectEditTest() {
+        public void ObjectEditTest() {
             ObjectEditChangeScalar();
             ObjectEditCancelLeavesUnchanged();
             LocalValidationOfMandatoryFields();
@@ -497,7 +497,7 @@ namespace NakedObjects.Selenium {
 
         [TestMethod]
         [Priority(-1)]
-        public void ProblematicTests() {
+        public void ProblematicbjectEditTests() {
             RangeValidationOnDate();
             ObjectEditChangeDateTime();
             CoValidationOnSavingChanges();
@@ -519,7 +519,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -539,7 +539,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -559,7 +559,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 

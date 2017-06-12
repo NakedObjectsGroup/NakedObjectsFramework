@@ -1312,17 +1312,17 @@ namespace NakedObjects.Selenium {
         public virtual void LaunchCiceroFromIcon() {
             GeminiUrl("object?o1=___1.Product--968");
             WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
-            Click(WaitForCss(".icon-speech"));
+            Click(WaitForCss(".icon.speech"));
             WaitForOutput("Product: Touring-1000 Blue, 54"); //Cicero
             GeminiUrl("object/list?o1=___1.Store--350&m2=OrderRepository&a2=HighestValueOrders");
             WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
-            Click(WaitForCss(".icon-speech"));
+            Click(WaitForCss(".icon.speech"));
             WaitForOutput("Store: Twin Cycles"); //Cicero
 
             GeminiUrl("object?o1=___1.Product--968&as1=open&d1=BestSpecialOffer&f1_quantity=%22%22");
             WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
             WaitForCss("#quantity1"); //i.e. dialog open
-            Click(WaitForCss(".icon-speech"));
+            Click(WaitForCss(".icon.speech"));
             WaitForOutput("Product: Touring-1000 Blue, 54\r\nAction dialog: Best Special Offer\r\nQuantity: empty");
         }
     }
@@ -1489,7 +1489,7 @@ namespace NakedObjects.Selenium {
 
         [TestMethod]
         [Priority(-1)]
-        public void ProblematicTests() {
+        public void ProblematicCiceroTests() {
             LaunchCiceroFromIcon();
         }
     }
@@ -1509,7 +1509,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -1529,7 +1529,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 
@@ -1549,7 +1549,7 @@ namespace NakedObjects.Selenium {
 
         [TestCleanup]
         public virtual void CleanupTest() {
-            base.CleanUpTest();
+            CleanUpTest();
         }
     }
 

@@ -255,7 +255,7 @@ namespace NakedObjects.Selenium {
 
         [TestMethod]
         [Priority(-1)]
-        public void ProblematicTests() {
+        public void ProblematicSplitPaneTests() {
             ClickReferenceInRightPaneObject();
             RightClickReferenceInRightPaneObject();
             ActionDialogOpensInCorrectPane();
