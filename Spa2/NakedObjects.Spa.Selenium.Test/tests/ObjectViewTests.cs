@@ -775,7 +775,7 @@ namespace NakedObjects.Selenium {
     public abstract class MegaObjectViewTestsRoot : ObjectViewTestsRoot {
         [TestMethod] //Mega
         [Priority(0)]
-        public void MegaObjectViewTest() {
+        public void ObjectViewTest() {
             ActionsAlreadyOpen();
             OpenActionsMenuNotAlreadyOpen();
             OpenAndCloseSubMenusTo3Levels();
@@ -807,17 +807,15 @@ namespace NakedObjects.Selenium {
             AddingObjectToCollectionUpdatesTableView();
             TimeSpanProperty();
             ZeroParamActionCausesObjectToReload();
-
             CanInvokeOneNonPotentActionBeforePreviousHasCompleted();
             UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed();
             CannotInvokeAPotentActionUntilPriorOneHasCompleted();
-
             CollectionsUpdateProperly(); 
             NotCountedCollectionUpdatesCorrectly();
         }
-        [TestMethod]
+        //[TestMethod]
         [Priority(-1)]
-        public void ProblematicTests() {
+        public void ProblematicObjectViewTest() {
 
         }
     }

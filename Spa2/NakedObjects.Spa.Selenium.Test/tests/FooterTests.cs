@@ -219,7 +219,7 @@ namespace NakedObjects.Selenium {
     public abstract class MegaFooterTestsRoot : FooterTestsRoot {
         [TestMethod] //Mega
         [Priority(0)]
-        public void MegaFooterTest() {
+        public void FooterTest() {
             ExplicitWarningsAndInfo();
             ZeroParamActionReturningNullGeneratesGenericWarning();
             Home();
@@ -228,7 +228,7 @@ namespace NakedObjects.Selenium {
             ApplicationProperties();
             LogOff();
         }
-        [TestMethod]
+        //[TestMethod]
         [Priority(-1)]
         public void ProblematicTests() {
 

@@ -306,16 +306,15 @@ namespace NakedObjects.Selenium {
     public abstract class MegaMultiLineDialogTestsRoot : MultiLineDialogTestsRoot {
         [TestMethod] //Mega
         [Priority(0)]
-        public void MegaMultiLineDialogTest() {
+        public void MultiLineDialogTests() {
             MultiLineMenuAction();
             MultiLineObjectAction();
-            // MultiLineObjectActionInCollection();  move to LocallyRun 
             InvokeMLDFromObjectInRightPane();
         }
         [TestMethod]
         [Priority(-1)]
-        public void ProblematicTests() {
-
+        public void ProblematicMultiLineDialogTests() {
+            MultiLineObjectActionInCollection(); 
         }
     }
 

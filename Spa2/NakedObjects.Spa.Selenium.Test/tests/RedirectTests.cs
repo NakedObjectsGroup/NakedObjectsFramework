@@ -115,12 +115,12 @@ namespace NakedObjects.Selenium {
     public class MegaRedirectTestBase : RedirectTestsRoot {
         [TestMethod] //Mega
         [Priority(0)]
-        public virtual void MegaRedirectTest() {
+        public virtual void RedirectTests() {
             // todo look into is it just config ?
             //RedirectFromActionResult();
             //RedirectFromLink();
         }
-        [TestMethod]
+        //[TestMethod]
         [Priority(-1)]
         public void ProblematicTests() {
 

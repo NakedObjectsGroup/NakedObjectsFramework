@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 
 namespace NakedObjects.Selenium {
     public abstract class CopyAndPasteTestsRoot : AWTest {
@@ -199,6 +200,38 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("Arthur Kapoor", input.GetAttribute("value"));
             CancelDialog();
         }
+
+        public virtual void IfNoObjectInClipboardCtrlVRevertsToBrowserBehaviour() {
+            GeminiUrl("home?m1=EmployeeRepository&d1=CreateNewEmployeeFromContact&f1_contactDetails=null");
+            WaitForView(Pane.Single, PaneType.Home);
+            var home = WaitForCss(".title");
+            Actions action = new Actions(br);
+            action.DoubleClick(home); //Should put "Home"into browser clipboard
+            action.SendKeys(Keys.Control + "c");
+            action.Perform();
+            Thread.Sleep(500);
+            //home.SendKeys(Keys.Control + "c");
+            string selector = "input.value";
+            var target = WaitForCss(selector);
+            Assert.AreEqual("", target.GetAttribute("value"));
+            target.Click();
+            target.SendKeys(Keys.Control + "v");
+            Assert.AreEqual("Home", target.GetAttribute("value"));
+        }
+
+        public virtual void CanClearADroppableReferenceField() {
+            GeminiUrl("object?o1=___1.PurchaseOrderHeader--561&i1=Edit");
+            WaitForView(Pane.Single, PaneType.Object);
+            var fieldCss = ".property:nth-child(4) .value.droppable";
+            var field = WaitForCss(fieldCss);
+            Assert.AreEqual("Ben Miller", field.GetAttribute("value"));
+            Thread.Sleep(100);
+
+            var fieldBeforeCss = WaitForCss(".property:nth-child(3) input");
+            fieldBeforeCss.SendKeys(Keys.Tab);
+            field.SendKeys(Keys.Delete);
+            wait.Until(dr => dr.FindElement(By.CssSelector(fieldCss)).GetAttribute("value") == "* (drop here)");
+        }
     }
 
     #region Mega tests
@@ -206,7 +239,7 @@ namespace NakedObjects.Selenium {
     public abstract class MegaCopyAndPasteTestsRoot : CopyAndPasteTestsRoot {
         [TestMethod] //Mega
         [Priority(0)]
-        public void MegaCopyAndPasteTest() {
+        public void CopyAndPasteTests() {
             CopyTitleOrPropertyIntoClipboard();
             CopyListItemIntoClipboard();
             PasteIntoReferenceField();
@@ -217,15 +250,12 @@ namespace NakedObjects.Selenium {
             DroppableReferenceFieldWithoutAutoComplete();
             CannotPasteWrongTypeIntoReferenceField();
             DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed();
-
-            // Moved to LocallRunTests as fail on server 
-            //CanClearADroppableReferenceField();
-            //IfNoObjectInClipboardCtrlVRevertsToBrowserBehaviour(); 
         }
         [TestMethod]
         [Priority(-1)]
-        public void ProblematicTests() {
-
+        public void ProblematicCopyAndPasteTests() {
+            CanClearADroppableReferenceField();
+            IfNoObjectInClipboardCtrlVRevertsToBrowserBehaviour();
         }
     }
 

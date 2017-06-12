@@ -489,23 +489,21 @@ namespace NakedObjects.Selenium {
             LocalValidationOfMandatoryFields();
             LocalValidationOfMaxLength();
             LocalValidationOfRegex();
-            RangeValidationOnNumber();
-            //RangeValidationOnDate();  move to LocallyRun 
-            ObjectEditChangeEnum();
-            //ObjectEditChangeDateTime();  move to LocallyRun 
+            RangeValidationOnNumber();        
+            ObjectEditChangeEnum();         
             CanSetAndClearAnOptionalDropDown();
             ObjectEditPicksUpLatestServerVersion();
             ViewModelEditOpensInEditMode();
             MultiLineText();
-
             ObjectEditChangeChoices();
-            ObjectEditChangeConditionalChoices();
-            //CoValidationOnSavingChanges(); move to LocallyRun 
+            ObjectEditChangeConditionalChoices();        
         }
         [TestMethod]
         [Priority(-1)]
         public void ProblematicTests() {
-
+            RangeValidationOnDate();
+            ObjectEditChangeDateTime(); 
+            CoValidationOnSavingChanges();
         }
     }
 

@@ -609,7 +609,7 @@ namespace NakedObjects.Selenium {
     public abstract class MegaDialogTestsRoot : DialogTestsRoot {
         [TestMethod] //Mega
         [Priority(0)]
-        public void MegaDialogTest() {
+        public void DialogTests() {
             PasswordParam();
             ScalarChoicesParm();
             TestCancelDialog();
@@ -648,7 +648,7 @@ namespace NakedObjects.Selenium {
             ValidationOfContributeeParameter();
             NoResultFoundMessageLeavesDialogOpen();
         }
-        [TestMethod]
+        //[TestMethod]
         [Priority(-1)]
         public void ProblematicTests() {
 

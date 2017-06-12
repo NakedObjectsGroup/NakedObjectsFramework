@@ -398,7 +398,7 @@ namespace NakedObjects.Selenium {
     public abstract class MegaTransientObjectTestsRoot : TransientObjectTestsRoot {
         [TestMethod] //Mega
         [Priority(0)]
-        public void MegaTestTransientObjectTests() {
+        public void TransientObjectTests() {
             CreateAndSaveTransientObject();
             SaveAndClose();
             MissingMandatoryFieldsNotified();

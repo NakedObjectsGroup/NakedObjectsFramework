@@ -32,10 +32,10 @@ namespace NakedObjects.Selenium {
     public abstract class PerformanceTests : PerformanceTestsRoot {
         [TestMethod] //Mega
         [Priority(0)]
-        public void MegaPerformanceTests() {
+        public void PerformanceTests() {
             RetrieveRandomEmployees();
         }
-        [TestMethod]
+        //[TestMethod]
         [Priority(-1)]
         public void ProblematicTests() {
 

@@ -222,7 +222,7 @@ namespace NakedObjects.Selenium {
     public class MegaHomeTestBase : HomeTestsRoot {
         [TestMethod] //Mega
         [Priority(0)]
-        public virtual void MegaHomeTest() {
+        public virtual void HomeTests() {
             WaitForSingleHome();
             ClickOnVariousMenus();
             OpenAndCloseSubMenus();
@@ -232,7 +232,7 @@ namespace NakedObjects.Selenium {
             ZeroParamReturnsEmptyCollection();
             DialogActionOK();
         }
-        [TestMethod]
+        //[TestMethod]
         [Priority(-1)]
         public void ProblematicTests() {
 

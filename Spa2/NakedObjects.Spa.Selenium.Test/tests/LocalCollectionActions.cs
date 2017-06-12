@@ -219,20 +219,19 @@ namespace NakedObjects.Selenium {
     public abstract class MegaLocalCollectionActionsTestsRoot : LocalCollectionActionsTestsRoot {
         [TestMethod] //Mega
         [Priority(0)]
-        public void MegaLocalCollectionActionsTest() {
+        public void LocalCollectionActionsTest() {
             LocalCollectionActionsHonourMemberOrder();
             CheckBoxesVisibleAndCanBeSelected();
             SelectionsPreservedIfNavigatingAwayAndBack();
-            // CannotInvokeZeroParamSelectionActionWithNothingSelected(); move to LocallyRun
             CannotInvokeDialogSelectionActionWithNothingSelected();
-            //ZeroAndOneParamActionInvoked();   move to LocallyRun
             ActionsAvailableOnEmptyCollections();
             SelectionsOnMultipleOpenCollectionsAreIndependent();
         }
         [TestMethod]
         [Priority(-1)]
-        public void ProblematicTests() {
-
+        public void ProblematicLocalCollectionActionsTests() {
+            CannotInvokeZeroParamSelectionActionWithNothingSelected();
+            ZeroAndOneParamActionInvoked();
         }
     }
 
