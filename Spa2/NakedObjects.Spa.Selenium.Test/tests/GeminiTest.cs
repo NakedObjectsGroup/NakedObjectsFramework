@@ -516,6 +516,11 @@ namespace NakedObjects.Selenium {
             return wait.Until(d => d.FindElement(By.CssSelector(selector)));
         }
 
+        protected IWebElement GetLCA(string actionName, Pane pane = Pane.Single) {
+            var selector = CssSelectorFor(pane) + $"nof-collection nof-action input[value='{actionName}']";
+            return wait.Until(d => d.FindElement(By.CssSelector(selector)));
+        }
+
         protected IWebElement GetObjectEnabledAction(string actionName, Pane pane = Pane.Single, string subMenuName = null) {
             var a = GetObjectAction(actionName, pane, subMenuName);
 
