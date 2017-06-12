@@ -342,6 +342,7 @@ namespace NakedObjects.Selenium {
 
     public abstract class MegaCCATests : CCATestsRoot {
         [TestMethod] //Mega
+        [Priority(0)]
         public void MegaCCATest() {
             ListViewWithParmDialogAlreadyOpen();
             ListViewWithParmDialogNotOpen();
@@ -356,6 +357,11 @@ namespace NakedObjects.Selenium {
             IfNoCCAs();
             SelectionClearedWhenPageChanged();
             TableViewWithParmDialogNotOpen();
+        }
+        [TestMethod]
+        [Priority(-1)]
+        public void ProblematicTests() {
+
         }
     }
 

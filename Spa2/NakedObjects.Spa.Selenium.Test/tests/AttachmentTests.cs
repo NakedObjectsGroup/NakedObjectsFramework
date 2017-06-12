@@ -47,11 +47,17 @@ namespace NakedObjects.Selenium {
 
     public abstract class MegaAttachmentTestsRoot : AttachmentTestsRoot {
         [TestMethod] //Mega
+        [Priority(0)]
         public void MegaAttachmentTest() {
             ImageAsProperty();
             EmptyImageProperty();
             ClickOnImage();
             RightClickOnImage();
+        }
+        [TestMethod] 
+        [Priority(-1)]
+        public void ProblematicTests() {
+           
         }
     }
 

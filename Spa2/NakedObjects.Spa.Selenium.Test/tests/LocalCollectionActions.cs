@@ -218,6 +218,7 @@ namespace NakedObjects.Selenium {
 
     public abstract class MegaLocalCollectionActionsTestsRoot : LocalCollectionActionsTestsRoot {
         [TestMethod] //Mega
+        [Priority(0)]
         public void MegaLocalCollectionActionsTest() {
             LocalCollectionActionsHonourMemberOrder();
             CheckBoxesVisibleAndCanBeSelected();
@@ -227,6 +228,11 @@ namespace NakedObjects.Selenium {
             //ZeroAndOneParamActionInvoked();   move to LocallyRun
             ActionsAvailableOnEmptyCollections();
             SelectionsOnMultipleOpenCollectionsAreIndependent();
+        }
+        [TestMethod]
+        [Priority(0)]
+        public void ProblematicTests() {
+
         }
     }
 

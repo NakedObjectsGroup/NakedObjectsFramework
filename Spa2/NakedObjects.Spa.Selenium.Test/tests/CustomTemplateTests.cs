@@ -127,11 +127,17 @@ namespace NakedObjects.Selenium {
 
     public abstract class MegaCustomTemplateTestsRoot : CustomTemplateTestsRoot {
         [TestMethod] //Mega
+        [Priority(0)]
         public void MegaCustomTemplateTests() {
-            base.CustomViewTemplate();
-            base.CustomEditTemplate();
-            base.CustomListTemplate();
-            base.CustomErrorHandling();
+            CustomViewTemplate();
+            CustomEditTemplate();
+            CustomListTemplate();
+            CustomErrorHandling();
+        }
+        [TestMethod]
+        [Priority(-1)]
+        public void ProblematicTests() {
+
         }
     }
 

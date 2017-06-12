@@ -302,6 +302,7 @@ namespace NakedObjects.Selenium {
 
     public class MegaUrlTestRoot : UrlTestsRoot {
         [TestMethod] //Mega
+        [Priority(0)]
         public virtual void MegaUrlTest() {
             Home();
             UnrecognisedUrlGoesToHome();
@@ -320,6 +321,11 @@ namespace NakedObjects.Selenium {
             SplitListHome();
             SplitListObject();
             SplitListList();
+        }
+        [TestMethod]
+        [Priority(-1)]
+        public void ProblematicTests() {
+
         }
     }
 

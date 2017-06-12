@@ -469,6 +469,7 @@ namespace NakedObjects.Selenium {
 
     public abstract class MegaListTestsRoot : ListTestsRoot {
         [TestMethod] //Mega
+        [Priority(0)]
         public void MegaListTest() {
             //ActionReturnsListView();  move to LocallyRun 
             ActionReturnsEmptyList();
@@ -484,6 +485,11 @@ namespace NakedObjects.Selenium {
             ReloadingListGetsUpdatedObject();
             EagerlyRenderTableViewFromAction();
             PagingTableView();
+        }
+        [TestMethod]
+        [Priority(-1)]
+        public void ProblematicTests() {
+
         }
     }
 

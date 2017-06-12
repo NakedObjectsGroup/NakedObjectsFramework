@@ -774,6 +774,7 @@ namespace NakedObjects.Selenium {
 
     public abstract class MegaObjectViewTestsRoot : ObjectViewTestsRoot {
         [TestMethod] //Mega
+        [Priority(0)]
         public void MegaObjectViewTest() {
             ActionsAlreadyOpen();
             OpenActionsMenuNotAlreadyOpen();
@@ -813,6 +814,11 @@ namespace NakedObjects.Selenium {
 
             CollectionsUpdateProperly(); 
             NotCountedCollectionUpdatesCorrectly();
+        }
+        [TestMethod]
+        [Priority(-1)]
+        public void ProblematicTests() {
+
         }
     }
 

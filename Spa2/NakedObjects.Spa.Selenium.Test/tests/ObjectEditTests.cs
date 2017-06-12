@@ -482,6 +482,7 @@ namespace NakedObjects.Selenium {
 
     public abstract class MegaObjectEditTestsRoot : ObjectEditTestsRoot {
         [TestMethod] //Mega
+        [Priority(0)]
         public void MegaObjectEditTest() {
             ObjectEditChangeScalar();
             ObjectEditCancelLeavesUnchanged();
@@ -500,6 +501,11 @@ namespace NakedObjects.Selenium {
             ObjectEditChangeChoices();
             ObjectEditChangeConditionalChoices();
             //CoValidationOnSavingChanges(); move to LocallyRun 
+        }
+        [TestMethod]
+        [Priority(-1)]
+        public void ProblematicTests() {
+
         }
     }
 

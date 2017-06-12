@@ -205,6 +205,7 @@ namespace NakedObjects.Selenium {
 
     public abstract class MegaCopyAndPasteTestsRoot : CopyAndPasteTestsRoot {
         [TestMethod] //Mega
+        [Priority(0)]
         public void MegaCopyAndPasteTest() {
             CopyTitleOrPropertyIntoClipboard();
             CopyListItemIntoClipboard();
@@ -220,6 +221,11 @@ namespace NakedObjects.Selenium {
             // Moved to LocallRunTests as fail on server 
             //CanClearADroppableReferenceField();
             //IfNoObjectInClipboardCtrlVRevertsToBrowserBehaviour(); 
+        }
+        [TestMethod]
+        [Priority(-1)]
+        public void ProblematicTests() {
+
         }
     }
 

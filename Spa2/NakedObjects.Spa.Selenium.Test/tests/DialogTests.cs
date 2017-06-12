@@ -608,44 +608,50 @@ namespace NakedObjects.Selenium {
 
     public abstract class MegaDialogTestsRoot : DialogTestsRoot {
         [TestMethod] //Mega
+        [Priority(0)]
         public void MegaDialogTest() {
-            //PasswordParam();
-            //ScalarChoicesParm();
-            //TestCancelDialog();
-            //FieldsRetainedWhenNavigatingAwayAndBack();
-            //ReopeningADialogThatWasntCancelledDoesNotRetainFields();
-            //ScalarParmShowsDefaultValue();
-            //DateTimeParmKeepsValue();
-            TimeSpanParm(); 
-            //RefChoicesParmKeepsValue();
-            //MultipleRefChoicesDefaults();
-            //MultipleRefChoicesChangeDefaults();
-            //ConditionalChoices();
-            //ChoicesDefaults();
-            //ChoicesOptional();
-            //ChoicesChangeDefaults();
-            //ConditionalChoicesDefaults();
-            //ConditionalChoicesMultiple();
-            //AutoCompleteParm();
-            //AutoCompleteParmDefault();
-            //ClearingAutoCompleteTextClearsUnderlyingReference();
-            //AutoCompleteParmShowSingleItem();
-            //AutoCompleteScalarField();
-            //AutoCompleteOptionalParamNotSelected();
-            //MandatoryParameterEnforced();
-            //ValidateSingleValueParameter();
-            //ValidateSingleRefParamFromChoices();
-            //CoValidationOfMultipleParameters();
-            //ParameterDescriptionRenderedAsPlaceholder();
-            //BooleanParams();
-            //NullableBooleanParams();
-            //WarningShownWithinDialogAndInFooter();
-            //DefaultReferenceParamRendersCorrectly();
-            //QueryOnlyActionDialogPersists();
-            //PotentActionDialogDisappearsAndFieldsNotRemembered();
-            //OptionalReferenceParamCanBeNull();
-            //ValidationOfContributeeParameter();
-            //NoResultFoundMessageLeavesDialogOpen();
+            PasswordParam();
+            ScalarChoicesParm();
+            TestCancelDialog();
+            FieldsRetainedWhenNavigatingAwayAndBack();
+            ReopeningADialogThatWasntCancelledDoesNotRetainFields();
+            ScalarParmShowsDefaultValue();
+            DateTimeParmKeepsValue();
+            TimeSpanParm();
+            RefChoicesParmKeepsValue();
+            MultipleRefChoicesDefaults();
+            MultipleRefChoicesChangeDefaults();
+            ConditionalChoices();
+            ChoicesDefaults();
+            ChoicesOptional();
+            ChoicesChangeDefaults();
+            ConditionalChoicesDefaults();
+            ConditionalChoicesMultiple();
+            AutoCompleteParm();
+            AutoCompleteParmDefault();
+            ClearingAutoCompleteTextClearsUnderlyingReference();
+            AutoCompleteParmShowSingleItem();
+            AutoCompleteScalarField();
+            AutoCompleteOptionalParamNotSelected();
+            MandatoryParameterEnforced();
+            ValidateSingleValueParameter();
+            ValidateSingleRefParamFromChoices();
+            CoValidationOfMultipleParameters();
+            ParameterDescriptionRenderedAsPlaceholder();
+            BooleanParams();
+            NullableBooleanParams();
+            WarningShownWithinDialogAndInFooter();
+            DefaultReferenceParamRendersCorrectly();
+            QueryOnlyActionDialogPersists();
+            PotentActionDialogDisappearsAndFieldsNotRemembered();
+            OptionalReferenceParamCanBeNull();
+            ValidationOfContributeeParameter();
+            NoResultFoundMessageLeavesDialogOpen();
+        }
+        [TestMethod]
+        [Priority(-1)]
+        public void ProblematicTests() {
+
         }
     }
 

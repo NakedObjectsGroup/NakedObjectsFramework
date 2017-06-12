@@ -397,6 +397,7 @@ namespace NakedObjects.Selenium {
 
     public abstract class MegaTransientObjectTestsRoot : TransientObjectTestsRoot {
         [TestMethod] //Mega
+        [Priority(0)]
         public void MegaTestTransientObjectTests() {
             CreateAndSaveTransientObject();
             SaveAndClose();
@@ -416,6 +417,11 @@ namespace NakedObjects.Selenium {
             ValuePropOnTransientEmptyIfNoDefault();
             InvalidPropOnTransientClearedAndReentered();
             AutoCompletePropOnTransient();
+        }
+        [TestMethod]
+        [Priority(-1)]
+        public void ProblematicTests() {
+
         }
     }
 

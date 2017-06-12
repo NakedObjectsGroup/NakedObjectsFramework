@@ -116,6 +116,11 @@ namespace NakedObjects.Selenium {
             EnterEquivalentToLeftClick();
             ShiftEnterEquivalentToRightClick();
         }
+        [TestMethod]
+        [Priority(0)]
+        public void ProblematicTests() {
+
+        }
     }
 
     //[TestClass]

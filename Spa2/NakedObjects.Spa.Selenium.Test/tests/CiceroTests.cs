@@ -1508,6 +1508,7 @@ namespace NakedObjects.Selenium {
 
     public abstract class MegaCiceroTestsRoot : CiceroTestRoot {
         [TestMethod] //Mega
+        [Priority(0)]
         public void MegaCiceroTests() {
             Action();
             BackAndForward();
@@ -1534,6 +1535,11 @@ namespace NakedObjects.Selenium {
             ScenarioTestEditableVM();
             ScenarioUsingClipboard();
             ScenarioTransientObject();
+        }
+        [TestMethod]
+        [Priority(-1)]
+        public void ProblematicTests() {
+
         }
     }
 

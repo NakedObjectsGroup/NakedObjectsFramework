@@ -101,11 +101,17 @@ namespace NakedObjects.Selenium {
 
     public abstract class MegaViewModelTestsRoot : ViewModelTestsRoot {
         [TestMethod] //Mega
+        [Priority(0)]
         public void MegaViewModelTest() {
             CreateVM();
             CreateEditableVM();
             EditableVMWithEmptyLeadingKeys();
             CreateSwitchableVM();
+        }
+        [TestMethod]
+        [Priority(-1)]
+        public void ProblematicTests() {
+
         }
     }
 
