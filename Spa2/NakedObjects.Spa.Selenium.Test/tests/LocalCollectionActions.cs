@@ -72,7 +72,9 @@ namespace NakedObjects.Selenium {
 
         public virtual void CannotInvokeZeroParamSelectionActionWithNothingSelected() {
             GeminiUrl("object?i1=View&r1=1&o1=___1.SalesOrderHeader--63023&c1_SalesOrderHeaderSalesReason=List");
+            Thread.Sleep(1000);
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[1].FindElements(By.CssSelector("nof-action input"))[1].GetAttribute("value") == "Remove Sales Reasons");
+            Thread.Sleep(1000);
             Click(GetLCA("Remove Sales Reasons"));
             WaitForTextEquals(".messages", 2, "Must select items for collection contributed action");
         }
