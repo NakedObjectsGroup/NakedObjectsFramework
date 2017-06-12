@@ -44,28 +44,6 @@ namespace NakedObjects.Selenium {
             wait.Until(dr => dr.FindElements(By.CssSelector("#pane2 .reference"))[0].Text == "Fender Set - Mountain");
         }
 
-        protected virtual void RunMegaSplitPaneTest() {
-            RightClickActionReturningObjectFromHomeSingle();
-            RightClickActionReturningListFromHomeSingle();
-            RightClickReferenceFromListSingle();
-            RightClickReferencePropertyFromObjectSingle();
-            RightClickActionFromObjectSingle();
-            RightClickHomeIconFromObjectSingle();
-            SwapPanesIconFromSingleOpensHomeOnLeft();
-            ClickReferenceInLeftPaneObject();
-            //ClickReferenceInRightPaneObject();  move to LocallyRun 
-            //RightClickReferenceInRightPaneObject();  move to LocallyRun 
-            LeftClickHomeIconFromSplitObjectObject();
-            RightClickHomeIconFromSplitObjectObject();
-            //ActionDialogOpensInCorrectPane();  move to LocallyRun 
-            RightClickIsSameAsLeftClickForOpeningDialog();
-            SwapPanes();
-            FullPaneFromLeft();
-            FullPaneFromRight();
-            //ListInSplitPaneUpdatesWhenSearchParamsChange();move to LocallyRun 
-            //TwoListsCanBothBeReloaded(); move to LocallyRun 
-        }
-
         protected override void ScrollTo(IWebElement element) {
             string script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
             ((IJavaScriptExecutor) br).ExecuteScript(script);
@@ -257,6 +235,38 @@ namespace NakedObjects.Selenium {
         #endregion
     }
 
+
+    public abstract class MegaSplitPaneTestRoot : SplitPaneTestsRoot {
+        [TestMethod] //Mega
+        [Priority(0)]
+        public void SplitPaneTests() {
+            RightClickActionReturningObjectFromHomeSingle();
+            RightClickActionReturningListFromHomeSingle();
+            RightClickReferenceFromListSingle();
+            RightClickReferencePropertyFromObjectSingle();
+            RightClickActionFromObjectSingle();
+            RightClickHomeIconFromObjectSingle();
+            SwapPanesIconFromSingleOpensHomeOnLeft();
+            ClickReferenceInLeftPaneObject();
+            LeftClickHomeIconFromSplitObjectObject();
+            RightClickHomeIconFromSplitObjectObject();
+            RightClickIsSameAsLeftClickForOpeningDialog();
+            SwapPanes();
+            FullPaneFromLeft();
+            FullPaneFromRight(); 
+        }
+        [TestMethod] 
+        [Priority(-1)]
+        public void ProblematicTests() {
+            ClickReferenceInRightPaneObject();  
+            RightClickReferenceInRightPaneObject();  
+            ActionDialogOpensInCorrectPane();  
+            ListInSplitPaneUpdatesWhenSearchParamsChange();
+            TwoListsCanBothBeReloaded(); 
+        }
+    }
+
+
     public abstract class SplitPaneTests : SplitPaneTestsRoot {
         [TestMethod]
         public override void ListInSplitPaneUpdatesWhenSearchParamsChange() {
@@ -367,79 +377,10 @@ namespace NakedObjects.Selenium {
         #endregion
     }
 
-    #region browser specific subclasses
-
-    public class SplitPaneTestsIe : SplitPaneTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitIeDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-    }
-
-    //[TestClass] //Firefox Individual
-    public class SplitPaneTestsFirefox : SplitPaneTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitFirefoxDriver();
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-
-        protected override void ScrollTo(IWebElement element) {
-            string script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
-            ((IJavaScriptExecutor) br).ExecuteScript(script);
-        }
-
-        [TestMethod]
-        protected override void RunMegaSplitPaneTest() {
-            base.RunMegaSplitPaneTest();
-        }
-    }
-
-    public class SplitPaneTestsChrome : SplitPaneTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitChromeDriver();
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-    }
-
-    #endregion
-
     #region Mega tests
 
     //[TestClass]
-    public class MegaSplitPaneTestFirefox : SplitPaneTestsRoot {
+    public class MegaSplitPaneTestFirefox : MegaSplitPaneTestRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             AWTest.InitialiseClass(context);
@@ -454,15 +395,10 @@ namespace NakedObjects.Selenium {
         public virtual void CleanupTest() {
             CleanUpTest();
         }
-
-        [TestMethod]
-        public void MegaSplitPaneTest() {
-            RunMegaSplitPaneTest();
-        }
     }
 
     //[TestClass]
-    public class MegaSplitPaneTestIe : SplitPaneTestsRoot {
+    public class MegaSplitPaneTestIe : MegaSplitPaneTestRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
@@ -479,14 +415,11 @@ namespace NakedObjects.Selenium {
             CleanUpTest();
         }
 
-        [TestMethod]
-        public void MegaSplitPaneTest() {
-            RunMegaSplitPaneTest();
-        }
+      
     }
 
     [TestClass] //toggle
-    public class MegaSplitPaneTestChrome : SplitPaneTestsRoot {
+    public class MegaSplitPaneTestChrome : MegaSplitPaneTestRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
@@ -501,11 +434,6 @@ namespace NakedObjects.Selenium {
         [TestCleanup]
         public virtual void CleanupTest() {
             CleanUpTest();
-        }
-
-        [TestMethod]
-        public void MegaSplitPaneTest() {
-            RunMegaSplitPaneTest();
         }
     }
 
