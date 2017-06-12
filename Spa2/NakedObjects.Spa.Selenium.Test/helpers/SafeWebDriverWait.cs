@@ -44,7 +44,7 @@ namespace NakedObjects.Selenium {
                 });
             }
             catch  {
-                DebugDumpPage();
+                //DebugDumpPage();
                 throw;
             }
         }
