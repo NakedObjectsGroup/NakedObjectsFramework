@@ -352,16 +352,17 @@ namespace NakedObjects.Selenium {
             SelectAllTableView();
             SelectionRetainedWhenNavigatingAwayAndBack();
             TableViewWithParmDialogAlreadyOpen();
-            ReloadingAQueryableClearsSelection();
-            ZeroParamAction();
+            ReloadingAQueryableClearsSelection();        
             IfNoCCAs();
             SelectionClearedWhenPageChanged();
             TableViewWithParmDialogNotOpen();
         }
 
-        //[TestMethod]
+        [TestMethod]
         [Priority(-1)]
-        public void ProblematicTests() { }
+        public void ProblematicCCATests() {
+            ZeroParamAction();
+        }
     }
 
     #region browsers specific subclasses
