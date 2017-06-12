@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,6 +15,7 @@ using OpenQA.Selenium;
 namespace NakedObjects.Selenium {
     public abstract class TransientObjectTestsRoot : AWTest {
         public virtual void CreateAndSaveTransientObject() {
+            Debug.WriteLine(nameof(CreateAndSaveTransientObject));
             GeminiUrl("object?o1=___1.Person--12043&as1=open");
             Click(GetObjectEnabledAction("Create New Credit Card"));
             SelectDropDownOnField("#cardtype1", "Vista");
@@ -27,6 +29,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void SaveAndClose() {
+            Debug.WriteLine(nameof(SaveAndClose));
             GeminiUrl("object?o1=___1.Person--12043&as1=open");
             Click(GetObjectEnabledAction("Create New Credit Card"));
             SelectDropDownOnField("#cardtype1", "Vista");
@@ -44,6 +47,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void MissingMandatoryFieldsNotified() {
+            Debug.WriteLine(nameof(MissingMandatoryFieldsNotified));
             GeminiUrl("object?o1=___1.Person--12043&as1=open");
             Click(GetObjectEnabledAction("Create New Credit Card"));
             SelectDropDownOnField("#cardtype1", "Vista");
@@ -52,6 +56,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void IndividualFieldValidation() {
+            Debug.WriteLine(nameof(IndividualFieldValidation));
             GeminiUrl("object?o1=___1.Person--12043&as1=open");
             Click(GetObjectEnabledAction("Create New Credit Card"));
             SelectDropDownOnField("#cardtype1", "Vista");
@@ -65,6 +70,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void MultiFieldValidation() {
+            Debug.WriteLine(nameof(MultiFieldValidation));
             GeminiUrl("object?o1=___1.Person--12043&as1=open");
             Click(GetObjectEnabledAction("Create New Credit Card"));
             SelectDropDownOnField("#cardtype1", "Vista");
@@ -76,6 +82,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void PropertyDescriptionAndRequiredRenderedAsPlaceholder() {
+            Debug.WriteLine(nameof(PropertyDescriptionAndRequiredRenderedAsPlaceholder));
             GeminiUrl("object?o1=___1.Person--12043&as1=open");
             Click(GetObjectEnabledAction("Create New Credit Card"));
             var name = WaitForCss("input#cardnumber1");
@@ -83,6 +90,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void CancelTransientObject() {
+            Debug.WriteLine(nameof(CancelTransientObject));
             GeminiUrl("object?o1=___1.Person--12043&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
             Click(GetObjectEnabledAction("Create New Credit Card"));
@@ -91,6 +99,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void SwapPanesWithTransients() {
+            Debug.WriteLine(nameof(SwapPanesWithTransients));
             GeminiUrl("object/object?o1=___1.Product--738&as1=open&o2=___1.Person--20774&as2=open");
             WaitForView(Pane.Left, PaneType.Object, "LL Road Frame - Black, 52");
             WaitForView(Pane.Right, PaneType.Object, "Isabella Richardson");
@@ -112,6 +121,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void BackAndForwardOverTransient() {
+            Debug.WriteLine(nameof(BackAndForwardOverTransient));
             GeminiUrl("object?o1=___1.Person--12043&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
             Click(GetObjectEnabledAction("Create New Credit Card"));
@@ -123,11 +133,13 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void RequestForExpiredTransient() {
+            Debug.WriteLine(nameof(RequestForExpiredTransient));
             GeminiUrl("object?i1=Transient&o1=___1.CreditCard--100");
             wait.Until(dr => dr.FindElement(By.CssSelector(".title")).Text == "The requested view of unsaved object details has expired.");
         }
 
         public virtual void ConditionalChoicesOnTransient() {
+            Debug.WriteLine(nameof(ConditionalChoicesOnTransient));
             GeminiUrl("home?m1=ProductRepository");
             WaitForView(Pane.Single, PaneType.Home);
             Thread.Sleep(1000); // no idea why this keeps failing on server 
@@ -148,6 +160,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void TransientWithHiddenNonOptionalFields() {
+            Debug.WriteLine(nameof(TransientWithHiddenNonOptionalFields));
             GeminiUrl("object?i1=View&o1=___1.Product--380&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Hex Nut 8");
             Click(GetObjectEnabledAction("Create New Work Order", Pane.Single, "Work Orders"));
@@ -159,6 +172,7 @@ namespace NakedObjects.Selenium {
 
         //Test for a previous bug  -  where Etag error was resulting
         public virtual void CanInvokeActionOnASavedTransient() {
+            Debug.WriteLine(nameof(CanInvokeActionOnASavedTransient));
             GeminiUrl("object?i1=View&o1=___1.Customer--11783&as1=open&d1=CreateNewOrder&f1_copyHeaderFromLastOrder=true");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Sales Order");
@@ -171,6 +185,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void TransientCreatedFromDialogClosesDialog() {
+            Debug.WriteLine(nameof(TransientCreatedFromDialogClosesDialog));
             GeminiUrl("object?i1=View&o1=___1.Customer--30107&as1=open");
             OpenSubMenu("Orders");
             OpenActionDialog("Create New Order");
@@ -185,6 +200,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void CreateAndSaveNotPersistedObject() {
+            Debug.WriteLine(nameof(CreateAndSaveNotPersistedObject));
             GeminiUrl("home?m1=EmployeeRepository");
             Click(GetObjectEnabledAction("Create Staff Summary"));
             WaitForView(Pane.Single, PaneType.Object, "Staff Summary");
@@ -193,6 +209,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void ValuePropOnTransientEmptyIfNoDefault() {
+            Debug.WriteLine(nameof(ValuePropOnTransientEmptyIfNoDefault));
             GeminiUrl("object?i1=View&o1=___1.Product--497&as1=open");
             OpenSubMenu("Work Orders");
             Click(GetObjectEnabledAction("Create New Work Order"));
@@ -203,6 +220,7 @@ namespace NakedObjects.Selenium {
 
         //Test written against a specific failure scenario
         public virtual void InvalidPropOnTransientClearedAndReentered() {
+            Debug.WriteLine(nameof(InvalidPropOnTransientClearedAndReentered));
             GeminiUrl("object?i1=View&o1=___1.Product--497&as1=open");
             OpenSubMenu("Work Orders");
             Click(GetObjectEnabledAction("Create New Work Order"));
@@ -218,6 +236,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void AutoCompletePropOnTransient() {
+            Debug.WriteLine(nameof(AutoCompletePropOnTransient));
             GeminiUrl("object?i1=View&o1=___1.Customer--635&as1=open&d1=CreateNewOrder");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Sales Order");
@@ -231,164 +250,6 @@ namespace NakedObjects.Selenium {
             //wait.Until(d => d.FindElements(By.CssSelector("md-option")).Count > 0);
         }
     }
-
-    public abstract class TransientObjectTests : TransientObjectTestsRoot {
-        [TestMethod]
-        public override void CreateAndSaveTransientObject() {
-            base.CreateAndSaveTransientObject();
-        }
-
-        [TestMethod]
-        public override void SaveAndClose() {
-            base.SaveAndClose();
-        }
-
-        [TestMethod]
-        public override void MissingMandatoryFieldsNotified() {
-            base.MissingMandatoryFieldsNotified();
-        }
-
-        [TestMethod]
-        public override void IndividualFieldValidation() {
-            base.IndividualFieldValidation();
-        }
-
-        [TestMethod]
-        public override void MultiFieldValidation() {
-            base.MultiFieldValidation();
-        }
-
-        [TestMethod]
-        public override void PropertyDescriptionAndRequiredRenderedAsPlaceholder() {
-            base.PropertyDescriptionAndRequiredRenderedAsPlaceholder();
-        }
-
-        [TestMethod]
-        public override void CancelTransientObject() {
-            base.CancelTransientObject();
-        }
-
-        [TestMethod]
-        public override void SwapPanesWithTransients() {
-            base.SwapPanesWithTransients();
-        }
-
-        [TestMethod]
-        public override void BackAndForwardOverTransient() {
-            base.BackAndForwardOverTransient();
-        }
-
-        [TestMethod]
-        public override void RequestForExpiredTransient() {
-            base.RequestForExpiredTransient();
-        }
-
-        [TestMethod]
-        public override void ConditionalChoicesOnTransient() {
-            base.ConditionalChoicesOnTransient();
-        }
-
-        [TestMethod]
-        public override void TransientWithHiddenNonOptionalFields() {
-            base.TransientWithHiddenNonOptionalFields();
-        }
-
-        [TestMethod]
-        public override void CanInvokeActionOnASavedTransient() {
-            base.CanInvokeActionOnASavedTransient();
-        }
-
-        [TestMethod]
-        public override void TransientCreatedFromDialogClosesDialog() {
-            base.TransientCreatedFromDialogClosesDialog();
-        }
-
-        [TestMethod]
-        public override void CreateAndSaveNotPersistedObject() {
-            base.CreateAndSaveNotPersistedObject();
-        }
-
-        [TestMethod]
-        public override void ValuePropOnTransientEmptyIfNoDefault() {
-            base.ValuePropOnTransientEmptyIfNoDefault();
-        }
-
-        [TestMethod]
-        public override void InvalidPropOnTransientClearedAndReentered() {
-            base.InvalidPropOnTransientClearedAndReentered();
-        }
-
-        [TestMethod]
-        public override void AutoCompletePropOnTransient() {
-            base.AutoCompletePropOnTransient();
-        }
-    }
-
-    #region browsers specific subclasses
-
-    //[TestClass]
-    public class TransientObjectTestsIe : TransientObjectTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.IEDriverServer.exe");
-            GeminiTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitIeDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-    }
-
-    //[TestClass] //Firefox Individual
-    public class TransientObjectTestsFirefox : TransientObjectTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            GeminiTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitFirefoxDriver();
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-
-        protected override void ScrollTo(IWebElement element) {
-            string script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
-            ((IJavaScriptExecutor) br).ExecuteScript(script);
-        }
-    }
-
-    //[TestClass]
-    public class TransientObjectTestsChrome : TransientObjectTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.chromedriver.exe");
-            GeminiTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitChromeDriver();
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-    }
-
-    #endregion
 
     #region Mega tests
 
