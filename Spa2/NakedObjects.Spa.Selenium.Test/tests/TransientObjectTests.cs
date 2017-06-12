@@ -217,9 +217,7 @@ namespace NakedObjects.Selenium {
             WaitForTextStarting(".title", "Pinch Bolt");
         }
 
-
-        public virtual void AutoCompletePropOnTransient()
-        {
+        public virtual void AutoCompletePropOnTransient() {
             GeminiUrl("object?i1=View&o1=___1.Customer--635&as1=open&d1=CreateNewOrder");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Sales Order");
@@ -321,8 +319,7 @@ namespace NakedObjects.Selenium {
         }
 
         [TestMethod]
-        public override void AutoCompletePropOnTransient()
-        {
+        public override void AutoCompletePropOnTransient() {
             base.AutoCompletePropOnTransient();
         }
     }
@@ -334,7 +331,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -353,7 +350,7 @@ namespace NakedObjects.Selenium {
     public class TransientObjectTestsFirefox : TransientObjectTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -377,7 +374,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -407,7 +404,7 @@ namespace NakedObjects.Selenium {
             PropertyDescriptionAndRequiredRenderedAsPlaceholder();
             CancelTransientObject();
             BackAndForwardOverTransient();
-            RequestForExpiredTransient();          
+            RequestForExpiredTransient();
             TransientWithHiddenNonOptionalFields();
             CanInvokeActionOnASavedTransient();
             TransientCreatedFromDialogClosesDialog();
@@ -416,6 +413,7 @@ namespace NakedObjects.Selenium {
             InvalidPropOnTransientClearedAndReentered();
             AutoCompletePropOnTransient();
         }
+
         [TestMethod]
         [Priority(-1)]
         public void ProblematicTransientObjectTests() {
@@ -428,7 +426,7 @@ namespace NakedObjects.Selenium {
     public class MegaTransientObjectTestsFirefox : MegaTransientObjectTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -448,7 +446,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -463,12 +461,12 @@ namespace NakedObjects.Selenium {
         }
     }
 
-   [TestClass] //toggle
+    [TestClass] //toggle
     public class MegaTransientObjectTestsChrome : MegaTransientObjectTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]

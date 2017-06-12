@@ -52,8 +52,8 @@ namespace NakedObjects.Selenium {
             WaitForView(Pane.Single, PaneType.Object);
             WaitForSelectedCheckboxes(3);
         }
-        public virtual void SelectionsOnMultipleOpenCollectionsAreIndependent()
-        {
+
+        public virtual void SelectionsOnMultipleOpenCollectionsAreIndependent() {
             GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--53175&c1_SalesOrderHeaderSalesReason=List&c1_Details=List&s1_salesorderheadersalesreason=2&s1_details=5");
             WaitForSelectedCheckboxes(3); //2 in the first collection, one in the second 
         }
@@ -79,7 +79,7 @@ namespace NakedObjects.Selenium {
 
         public virtual void CannotInvokeDialogSelectionActionWithNothingSelected() {
             GeminiUrl("object?i1=View&r1=1&o1=___1.SalesOrderHeader--63023&c1_SalesOrderHeaderSalesReason=Summary&c1_Details=List");
-        
+
             Thread.Sleep(4000);
             var action = wait.Until(dr => dr.FindElement(By.CssSelector("nof-action input[value='Adjust Quantities'")));
 
@@ -144,8 +144,7 @@ namespace NakedObjects.Selenium {
         }
 
         [TestMethod]
-        public override void SelectionsOnMultipleOpenCollectionsAreIndependent()
-        {
+        public override void SelectionsOnMultipleOpenCollectionsAreIndependent() {
             base.SelectionsOnMultipleOpenCollectionsAreIndependent();
         }
     }
@@ -156,7 +155,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -175,7 +174,7 @@ namespace NakedObjects.Selenium {
     public class LocalCollectionActionsFirefox : LocalCollectionActionsTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -198,7 +197,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -227,6 +226,7 @@ namespace NakedObjects.Selenium {
             ActionsAvailableOnEmptyCollections();
             SelectionsOnMultipleOpenCollectionsAreIndependent();
         }
+
         [TestMethod]
         [Priority(-1)]
         public void ProblematicLocalCollectionActionsTests() {
@@ -239,7 +239,7 @@ namespace NakedObjects.Selenium {
     public class MegaLocalCollectionActionsTestsFirefox : MegaLocalCollectionActionsTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -258,7 +258,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -273,12 +273,12 @@ namespace NakedObjects.Selenium {
         }
     }
 
-   [TestClass] //toggle
+    [TestClass] //toggle
     public class MegaLocalCollectionActionsTestsChrome : MegaLocalCollectionActionsTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]

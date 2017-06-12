@@ -96,7 +96,6 @@ namespace NakedObjects.Selenium {
         }
     }
 
-
     #region Mega tests
 
     public abstract class MegaViewModelTestsRoot : ViewModelTestsRoot {
@@ -108,11 +107,10 @@ namespace NakedObjects.Selenium {
             EditableVMWithEmptyLeadingKeys();
             CreateSwitchableVM();
         }
+
         //[TestMethod]
         [Priority(-1)]
-        public void ProblematicTests() {
-
-        }
+        public void ProblematicTests() { }
     }
 
     //[TestClass]
@@ -154,7 +152,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-   [TestClass] //toggle
+    [TestClass] //toggle
     public class MegaViewModelTestsChrome : MegaViewModelTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

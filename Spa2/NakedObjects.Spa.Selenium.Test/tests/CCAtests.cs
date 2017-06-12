@@ -75,7 +75,7 @@ namespace NakedObjects.Selenium {
         public virtual void DateParam() {
             Debug.WriteLine(nameof(DateParam));
             GeminiUrl("home");
-          
+
             GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&pg1=1&ps1=20&s1_=0&as1=open&c1=Table");
             Reload();
 
@@ -358,11 +358,10 @@ namespace NakedObjects.Selenium {
             SelectionClearedWhenPageChanged();
             TableViewWithParmDialogNotOpen();
         }
+
         //[TestMethod]
         [Priority(-1)]
-        public void ProblematicTests() {
-
-        }
+        public void ProblematicTests() { }
     }
 
     #region browsers specific subclasses
@@ -372,7 +371,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -390,7 +389,7 @@ namespace NakedObjects.Selenium {
     public class CcaTestsFirefox : MegaCCATests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -404,12 +403,12 @@ namespace NakedObjects.Selenium {
         }
     }
 
-   [TestClass] //toggle
+    [TestClass] //toggle
     public class CCATestsChrome : MegaCCATests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]

@@ -24,7 +24,7 @@ namespace NakedObjects.Selenium {
     public class NewTestFrameworkExampleFirefox : NewTestFrameworkExample {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]

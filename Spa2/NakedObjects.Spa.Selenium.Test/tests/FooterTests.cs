@@ -212,8 +212,6 @@ namespace NakedObjects.Selenium {
         #endregion
     }
 
-
-
     #region Mega tests
 
     public abstract class MegaFooterTestsRoot : FooterTestsRoot {
@@ -228,11 +226,10 @@ namespace NakedObjects.Selenium {
             ApplicationProperties();
             LogOff();
         }
+
         //[TestMethod]
         [Priority(-1)]
-        public void ProblematicTests() {
-
-        }
+        public void ProblematicTests() { }
     }
 
     //[TestClass]
@@ -274,7 +271,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-   [TestClass] //toggle
+    [TestClass] //toggle
     public class MegaFooterTestsChrome : MegaFooterTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

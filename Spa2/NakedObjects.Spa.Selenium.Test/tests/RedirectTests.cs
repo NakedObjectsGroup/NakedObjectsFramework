@@ -46,72 +46,6 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    #region browsers specific subclasses 
-
-    public class RedirectTestsIe : RedirectTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitIeDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            base.CleanUpTest();
-        }
-    }
-
-    //[TestClass] //Firefox Individual
-    public class RedirectTestsFirefox : RedirectTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitFirefoxDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            base.CleanUpTest();
-        }
-    }
-
-    public class RedirectTestsChrome : RedirectTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitChromeDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            base.CleanUpTest();
-        }
-
-        protected override void ScrollTo(IWebElement element) {
-            string script = string.Format("window.scrollTo(0, {0})", element.Location.Y);
-            ((IJavaScriptExecutor) br).ExecuteScript(script);
-        }
-    }
-
-    #endregion
-
     public class MegaRedirectTestBase : RedirectTestsRoot {
         [TestMethod] //Mega
         [Priority(0)]
@@ -120,18 +54,17 @@ namespace NakedObjects.Selenium {
             //RedirectFromActionResult();
             //RedirectFromLink();
         }
+
         //[TestMethod]
         [Priority(-1)]
-        public void ProblematicTests() {
-
-        }
+        public void ProblematicTests() { }
     }
 
     //[TestClass]
     public class MegaRedirectTestFirefox : MegaRedirectTestBase {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -151,7 +84,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -166,12 +99,12 @@ namespace NakedObjects.Selenium {
         }
     }
 
-   [TestClass] //toggle
+    [TestClass] //toggle
     public class MegaRedirectTestChrome : MegaRedirectTestBase {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]

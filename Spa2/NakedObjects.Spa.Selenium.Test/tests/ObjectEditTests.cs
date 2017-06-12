@@ -55,11 +55,10 @@ namespace NakedObjects.Selenium {
             CancelObject();
 
             string currency = "£" + int.Parse(oldPrice).ToString("c").Substring(1);
-        
+
             wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[5].Text == "List Price:\r\n" + currency);
             wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[17].Text == "Days To Manufacture:\r\n" + oldDays);
         }
-
 
         public virtual void LocalValidationOfMandatoryFields() {
             GeminiUrl("object?i1=Edit&o1=___1.SpecialOffer--11");
@@ -252,7 +251,6 @@ namespace NakedObjects.Selenium {
                             $"{ran1}\r\n{ran2}\r\n{ran3}");
         }
 
-
         public virtual void ObjectEditChangeChoices() {
             GeminiUrl("object?o1=___1.Product--870");
             EditObject();
@@ -287,9 +285,9 @@ namespace NakedObjects.Selenium {
 
             Assert.AreEqual("Product Category:\r\nClothing", properties[6].Text);
             Assert.AreEqual("Product Subcategory:\r\nBib-Shorts", properties[7].Text);
-   
+
             EditObject();
-          
+
             // set product category and sub category
             wait.Until(d => d.FindElement(By.CssSelector("select#productcategory1")));
             var slctd = new SelectElement(br.FindElement(By.CssSelector("select#productcategory1")));
@@ -316,8 +314,8 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("Product Subcategory:\r\nMountain Bikes", properties[7].Text);
 
             // set values back
-          
-            EditObject();         
+
+            EditObject();
 
             wait.Until(d => d.FindElement(By.CssSelector("select#productcategory1")));
             SelectDropDownOnField("select#productcategory1", "Accessories");
@@ -346,8 +344,6 @@ namespace NakedObjects.Selenium {
             Click(SaveButton());
             WaitForMessage("StartDate must be before DueDate");
         }
-
-
     }
 
     public abstract class ObjectEditTests : ObjectEditTestsRoot {
@@ -419,7 +415,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -438,7 +434,7 @@ namespace NakedObjects.Selenium {
     public class ObjectEditPageTestsFirefox : ObjectEditTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -462,7 +458,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -489,20 +485,21 @@ namespace NakedObjects.Selenium {
             LocalValidationOfMandatoryFields();
             LocalValidationOfMaxLength();
             LocalValidationOfRegex();
-            RangeValidationOnNumber();        
-            ObjectEditChangeEnum();         
+            RangeValidationOnNumber();
+            ObjectEditChangeEnum();
             CanSetAndClearAnOptionalDropDown();
             ObjectEditPicksUpLatestServerVersion();
             ViewModelEditOpensInEditMode();
             MultiLineText();
             ObjectEditChangeChoices();
-            ObjectEditChangeConditionalChoices();        
+            ObjectEditChangeConditionalChoices();
         }
+
         [TestMethod]
         [Priority(-1)]
         public void ProblematicTests() {
             RangeValidationOnDate();
-            ObjectEditChangeDateTime(); 
+            ObjectEditChangeDateTime();
             CoValidationOnSavingChanges();
         }
     }
@@ -511,7 +508,7 @@ namespace NakedObjects.Selenium {
     public class MegaObjectEditTestsFirefox : MegaObjectEditTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -531,7 +528,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -546,12 +543,12 @@ namespace NakedObjects.Selenium {
         }
     }
 
-   [TestClass] //toggle
+    [TestClass] //toggle
     public class MegaObjectEditTestsChrome : MegaObjectEditTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]

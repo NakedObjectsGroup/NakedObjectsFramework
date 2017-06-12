@@ -1060,7 +1060,7 @@ namespace NakedObjects.Selenium {
             WaitForOutputStarting("Cicero is");
             Assert.AreEqual("", WaitForCss("input").GetAttribute("value"));
             TypeIntoFieldWithoutClearing("input", Keys.ArrowUp);
-         
+
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "help");
             TypeIntoFieldWithoutClearing("input", " gem" + Keys.Enter);
             WaitForOutputStarting("gemini command");
@@ -1308,6 +1308,23 @@ namespace NakedObjects.Selenium {
             //EnterCommand("where");
             //WaitForOutput("Result from Current Special Offers:\r\n16 items");
         }
+
+        public virtual void LaunchCiceroFromIcon() {
+            GeminiUrl("object?o1=___1.Product--968");
+            WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
+            Click(WaitForCss(".icon-speech"));
+            WaitForOutput("Product: Touring-1000 Blue, 54"); //Cicero
+            GeminiUrl("object/list?o1=___1.Store--350&m2=OrderRepository&a2=HighestValueOrders");
+            WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
+            Click(WaitForCss(".icon-speech"));
+            WaitForOutput("Store: Twin Cycles"); //Cicero
+
+            GeminiUrl("object?o1=___1.Product--968&as1=open&d1=BestSpecialOffer&f1_quantity=%22%22");
+            WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
+            WaitForCss("#quantity1"); //i.e. dialog open
+            Click(WaitForCss(".icon-speech"));
+            WaitForOutput("Product: Touring-1000 Blue, 54\r\nAction dialog: Best Special Offer\r\nQuantity: empty");
+        }
     }
 
     public abstract class CiceroTests : CiceroTestRoot {
@@ -1437,73 +1454,6 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    #region Individual tests - browser specific 
-
-    public class CiceroTestsIe : CiceroTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitIeDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            base.CleanUpTest();
-        }
-    }
-
-    //[TestClass] //Firefox Individual
-    public class CiceroTestsFirefox : CiceroTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitFirefoxDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            base.CleanUpTest();
-        }
-    }
-
-    //[TestClass]
-    public class CiceroTestsChrome : CiceroTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitChromeDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            base.CleanUpTest();
-        }
-
-        protected override void ScrollTo(IWebElement element) {
-            string script = string.Format("window.scrollTo(0, {0})", element.Location.Y);
-            ((IJavaScriptExecutor) br).ExecuteScript(script);
-        }
-    }
-
-    #endregion
-
     #region Mega tests
 
     public abstract class MegaCiceroTestsRoot : CiceroTestRoot {
@@ -1536,10 +1486,11 @@ namespace NakedObjects.Selenium {
             ScenarioUsingClipboard();
             ScenarioTransientObject();
         }
-        //[TestMethod]
+
+        [TestMethod]
         [Priority(-1)]
         public void ProblematicTests() {
-
+            LaunchCiceroFromIcon();
         }
     }
 
@@ -1547,7 +1498,7 @@ namespace NakedObjects.Selenium {
     public class MegaCiceroTestsFirefox : MegaCiceroTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -1567,7 +1518,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -1582,12 +1533,12 @@ namespace NakedObjects.Selenium {
         }
     }
 
-    [TestClass] 
+    [TestClass]
     public class MegaCiceroTestsChrome : MegaCiceroTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]

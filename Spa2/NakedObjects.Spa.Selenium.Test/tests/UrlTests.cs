@@ -11,7 +11,6 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-
 namespace NakedObjects.Selenium {
     /// <summary>
     /// Tests only that a given URLs return the correct views. No actions performed on them
@@ -322,11 +321,10 @@ namespace NakedObjects.Selenium {
             SplitListObject();
             SplitListList();
         }
+
         //[TestMethod]
         [Priority(-1)]
-        public void ProblematicUrlTests() {
-
-        }
+        public void ProblematicUrlTests() { }
     }
 
     //[TestClass]
@@ -368,7 +366,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-   [TestClass] //toggle
+    [TestClass] //toggle
     public class MegaUrlTestChrome : MegaUrlTestRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

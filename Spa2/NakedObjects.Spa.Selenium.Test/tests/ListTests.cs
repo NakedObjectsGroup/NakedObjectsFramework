@@ -271,8 +271,6 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("Group Name", cols[1].Text);
         }
 
-
-
         public virtual void PagingTableView() {
             GeminiUrl("list?m1=CustomerRepository&a1=FindIndividualCustomerByName&p1=1&ps1=20&pm1_firstName=%22%22&pm1_lastName=%22a%22&c1=Table");
             Reload();
@@ -331,7 +329,6 @@ namespace NakedObjects.Selenium {
             WaitForCss(".icon.list");
             WaitUntilElementDoesNotExist(".icon.table");
         }
-
     }
 
     public abstract class ListTests : ListTestsRoot {
@@ -407,7 +404,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -425,7 +422,7 @@ namespace NakedObjects.Selenium {
     public class ListTestsFirefox : ListTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -444,7 +441,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -485,6 +482,7 @@ namespace NakedObjects.Selenium {
             EagerlyRenderTableViewFromAction();
             PagingTableView();
         }
+
         [TestMethod]
         [Priority(-1)]
         public void ProblematicListTests() {
@@ -496,7 +494,7 @@ namespace NakedObjects.Selenium {
     public class MegaListTestsFirefox : MegaListTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -516,7 +514,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -531,12 +529,12 @@ namespace NakedObjects.Selenium {
         }
     }
 
-   [TestClass] //toggle
+    [TestClass] //toggle
     public class MegaListTestsChrome : MegaListTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]

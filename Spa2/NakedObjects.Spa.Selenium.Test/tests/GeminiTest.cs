@@ -148,12 +148,10 @@ namespace NakedObjects.Selenium {
             //string script = string.Format("window.scrollTo({0}, {1});return true;", element.Location.X, element.Location.Y);
             //((IJavaScriptExecutor) br).ExecuteScript(script);
 
-          
             Actions actions = new Actions(br);
             actions.MoveToElement(element);
             //actions.click();
             actions.Perform();
-
         }
 
         protected virtual void Click(IWebElement element) {
@@ -351,7 +349,7 @@ namespace NakedObjects.Selenium {
         protected IWebElement GetReferenceFromProperty(string propertyName, Pane pane = Pane.Single) {
             string propCss = CssSelectorFor(pane) + " " + ".property";
             var prop = wait.Until(dr => dr.FindElements(By.CssSelector(propCss))
-                    .Where(we => we.FindElement(By.CssSelector(".name")).Text == propertyName + ":").Single()
+                .Where(we => we.FindElement(By.CssSelector(".name")).Text == propertyName + ":").Single()
             );
             return prop.FindElement(By.CssSelector(".reference"));
         }
@@ -359,8 +357,8 @@ namespace NakedObjects.Selenium {
         protected IWebElement GetReferenceProperty(string propertyName, string refTitle, Pane pane = Pane.Single) {
             string propCss = CssSelectorFor(pane) + " " + ".property";
             var prop = wait.Until(dr => dr.FindElements(By.CssSelector(propCss))
-                    .Where(we => we.FindElement(By.CssSelector(".name")).Text == propertyName + ":" &&
-                                 we.FindElement(By.CssSelector(".reference")).Text == refTitle).Single()
+                .Where(we => we.FindElement(By.CssSelector(".name")).Text == propertyName + ":" &&
+                             we.FindElement(By.CssSelector(".reference")).Text == refTitle).Single()
             );
             return prop.FindElement(By.CssSelector(".reference"));
         }
@@ -435,7 +433,6 @@ namespace NakedObjects.Selenium {
             var title = br.FindElement(By.CssSelector(".header .title")).Text;
             Assert.IsFalse(title.StartsWith("Editing"));
         }
-
 
         protected IWebElement GetButton(string text, Pane pane = Pane.Single) {
             string selector = CssSelectorFor(pane) + ".header .action";
@@ -519,9 +516,7 @@ namespace NakedObjects.Selenium {
             return wait.Until(d => d.FindElement(By.CssSelector(selector)));
         }
 
-
         protected IWebElement GetObjectEnabledAction(string actionName, Pane pane = Pane.Single, string subMenuName = null) {
-
             var a = GetObjectAction(actionName, pane, subMenuName);
 
             if (a.Enabled) {
@@ -540,9 +535,8 @@ namespace NakedObjects.Selenium {
         }
 
         protected IWebElement OpenActionDialog(string actionName, Pane pane = Pane.Single, int? noOfParams = null) {
-           
             Click(GetObjectEnabledAction(actionName, pane));
-           
+
             var dialogSelector = CssSelectorFor(pane) + " .dialog ";
             wait.Until(d => d.FindElement(By.CssSelector(dialogSelector + "> .title")).Text == actionName);
             //Check it has OK & cancel buttons
@@ -602,8 +596,6 @@ namespace NakedObjects.Selenium {
         protected void Reload(Pane pane = Pane.Single) {
             Click(GetInputButton("Reload", pane));
         }
-
-      
 
         protected void CancelDatePicker(string cssForInput) {
             var dp = br.FindElement(By.CssSelector(".ui-datepicker"));

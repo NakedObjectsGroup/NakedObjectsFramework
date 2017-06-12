@@ -35,11 +35,10 @@ namespace NakedObjects.Selenium {
         public void PerformanceTests() {
             RetrieveRandomEmployees();
         }
+
         //[TestMethod]
         [Priority(-1)]
-        public void ProblematicTests() {
-
-        }
+        public void ProblematicTests() { }
     }
 
     #region browsers specific subclasses
@@ -87,7 +86,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-   [TestClass] //toggle
+    [TestClass] //toggle
     public class MegaPerformanceTestChrome : MegaPerformanceTest {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

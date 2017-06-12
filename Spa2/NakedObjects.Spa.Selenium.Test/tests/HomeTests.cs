@@ -217,8 +217,6 @@ namespace NakedObjects.Selenium {
         #endregion
     }
 
-
-
     public class MegaHomeTestBase : HomeTestsRoot {
         [TestMethod] //Mega
         [Priority(0)]
@@ -232,11 +230,10 @@ namespace NakedObjects.Selenium {
             ZeroParamReturnsEmptyCollection();
             DialogActionOK();
         }
+
         //[TestMethod]
         [Priority(-1)]
-        public void ProblematicTests() {
-
-        }
+        public void ProblematicTests() { }
     }
 
     //[TestClass]
@@ -278,7 +275,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-   [TestClass] //toggle
+    [TestClass] //toggle
     public class MegaHomeTestChrome : MegaHomeTestBase {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

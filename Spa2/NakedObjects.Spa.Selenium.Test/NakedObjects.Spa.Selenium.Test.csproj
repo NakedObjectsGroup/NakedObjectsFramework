@@ -67,7 +67,6 @@
     <Compile Include="tests\AttachmentTests.cs" />
     <Compile Include="tests\LocalCollectionActions.cs" />
     <Compile Include="tests\RedirectTests.cs" />
-    <Compile Include="tests\LocallyRunTests.cs" />
     <Compile Include="tests\MegaPerformanceTest.cs" />
     <Compile Include="tests\NewTestFrameworkExample.cs" />
     <Compile Include="tests\GeminiTest.cs" />

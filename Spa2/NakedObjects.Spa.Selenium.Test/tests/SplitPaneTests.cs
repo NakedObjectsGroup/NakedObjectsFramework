@@ -169,13 +169,11 @@ namespace NakedObjects.Selenium {
         }
 
         //Behaviour modified with #61 - assuming config option set to true
-        public virtual void LeftClickHomeIconFromSplitObjectObject()
-        {
+        public virtual void LeftClickHomeIconFromSplitObjectObject() {
             Url(TwoObjects);
             Click(HomeIcon());
             WaitForView(Pane.Single, PaneType.Home);
         }
-
 
         public virtual void RightClickHomeIconFromSplitObjectObject() {
             Url(TwoObjects);
@@ -235,7 +233,6 @@ namespace NakedObjects.Selenium {
         #endregion
     }
 
-
     public abstract class MegaSplitPaneTestRoot : SplitPaneTestsRoot {
         [TestMethod] //Mega
         [Priority(0)]
@@ -253,19 +250,19 @@ namespace NakedObjects.Selenium {
             RightClickIsSameAsLeftClickForOpeningDialog();
             SwapPanes();
             FullPaneFromLeft();
-            FullPaneFromRight(); 
+            FullPaneFromRight();
         }
-        [TestMethod] 
+
+        [TestMethod]
         [Priority(-1)]
         public void ProblematicTests() {
-            ClickReferenceInRightPaneObject();  
-            RightClickReferenceInRightPaneObject();  
-            ActionDialogOpensInCorrectPane();  
+            ClickReferenceInRightPaneObject();
+            RightClickReferenceInRightPaneObject();
+            ActionDialogOpensInCorrectPane();
             ListInSplitPaneUpdatesWhenSearchParamsChange();
-            TwoListsCanBothBeReloaded(); 
+            TwoListsCanBothBeReloaded();
         }
     }
-
 
     public abstract class SplitPaneTests : SplitPaneTestsRoot {
         [TestMethod]
@@ -383,7 +380,7 @@ namespace NakedObjects.Selenium {
     public class MegaSplitPaneTestFirefox : MegaSplitPaneTestRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -402,7 +399,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -414,8 +411,6 @@ namespace NakedObjects.Selenium {
         public virtual void CleanupTest() {
             CleanUpTest();
         }
-
-      
     }
 
     [TestClass] //toggle
@@ -423,7 +418,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]

@@ -251,6 +251,7 @@ namespace NakedObjects.Selenium {
             CannotPasteWrongTypeIntoReferenceField();
             DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed();
         }
+
         [TestMethod]
         [Priority(-1)]
         public void ProblematicCopyAndPasteTests() {
@@ -278,7 +279,7 @@ namespace NakedObjects.Selenium {
         }
     }
 
-   [TestClass] //toggle
+    [TestClass] //toggle
     public class MegaCopyAndPasteTestsChrome : MegaCopyAndPasteTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

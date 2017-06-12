@@ -12,13 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
 namespace NakedObjects.Selenium {
-
-   
-
-
     public abstract class MultiLineDialogTestsRoot : AWTest {
-      
-
         public virtual void MultiLineMenuAction() {
             GeminiUrl("home?m1=SpecialOfferRepository");
             Click(GetObjectEnabledAction("Create Multiple Special Offers"));
@@ -123,7 +117,6 @@ namespace NakedObjects.Selenium {
             //Thread.Sleep(1000);
             //Click(WaitForCss("md-option"));
 
-
             WaitForCss("#prod1.link-color4");
             ClearFieldThenType("#qty1", "5");
             ClearFieldThenType("#unitprice1", "2.54");
@@ -150,8 +143,7 @@ namespace NakedObjects.Selenium {
             WaitForCss("table");
 
             var selector = ".collection .actions nof-action";
-            var action = wait.Until(d => d.FindElements(By.CssSelector(selector)).
-                Single(we => we.Text == "Add New Details"));
+            var action = wait.Until(d => d.FindElements(By.CssSelector(selector)).Single(we => we.Text == "Add New Details"));
             Click(action);
 
             WaitForView(Pane.Single, PaneType.MultiLineDialog);
@@ -206,8 +198,7 @@ namespace NakedObjects.Selenium {
         }
 
         //#53
-        public virtual void InvokeMLDFromObjectInRightPane()
-        {
+        public virtual void InvokeMLDFromObjectInRightPane() {
             GeminiUrl("home/object?i2=View&r2=1&o2=___1.PurchaseOrderHeader--300&as2=open");
             Click(GetObjectEnabledAction("Add New Details", Pane.Right));
             WaitForView(Pane.Single, PaneType.MultiLineDialog);
@@ -230,9 +221,9 @@ namespace NakedObjects.Selenium {
         public override void MultiLineObjectActionInCollection() {
             base.MultiLineObjectActionInCollection();
         }
+
         [TestMethod]
-        public override void InvokeMLDFromObjectInRightPane()
-        {
+        public override void InvokeMLDFromObjectInRightPane() {
             base.InvokeMLDFromObjectInRightPane();
         }
     }
@@ -243,7 +234,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -262,7 +253,7 @@ namespace NakedObjects.Selenium {
     public class MultiLineDialogFirefox : MultiLineDialogsTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -285,7 +276,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -311,10 +302,11 @@ namespace NakedObjects.Selenium {
             MultiLineObjectAction();
             InvokeMLDFromObjectInRightPane();
         }
+
         [TestMethod]
         [Priority(-1)]
         public void ProblematicMultiLineDialogTests() {
-            MultiLineObjectActionInCollection(); 
+            MultiLineObjectActionInCollection();
         }
     }
 
@@ -322,7 +314,7 @@ namespace NakedObjects.Selenium {
     public class MegaMultiLineDialogTestsFirefox : MegaMultiLineDialogTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -341,7 +333,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -356,12 +348,12 @@ namespace NakedObjects.Selenium {
         }
     }
 
-   [TestClass] //toggle
+    [TestClass] //toggle
     public class MegaMultiLineDialogTestsChrome : MegaMultiLineDialogTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]

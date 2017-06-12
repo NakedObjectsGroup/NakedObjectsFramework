@@ -193,9 +193,9 @@ namespace NakedObjects.Selenium {
 
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection")).Text == "Product - Order Info:");
         }
+
         //#60 bug caused by cache
-        public virtual void CollectionsUpdateProperly()
-        {
+        public virtual void CollectionsUpdateProperly() {
             //Open Reasons collection as  List 
             GeminiUrl("object?i1=View&r1=1&o1=___1.SalesOrderHeader--65709&c1_SalesOrderHeaderSalesReason=List&as1=open");
             //Now open as table, to initiate the caching
@@ -217,7 +217,7 @@ namespace NakedObjects.Selenium {
             Click(WaitForCssNo(".collection .icon.table", 1));
             Thread.Sleep(1000);
             WaitForCss("thead tr th", 5);
-            WaitForCss("tbody tr", 2);  //bug #60: only one row showed
+            WaitForCss("tbody tr", 2); //bug #60: only one row showed
 
             //Attempt to leave object as we found it
             OpenActionDialog("Remove Sales Reason");
@@ -225,9 +225,9 @@ namespace NakedObjects.Selenium {
             Click(OKButton());
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection .summary .details"))[1].Text == "1 Item");
         }
+
         //#60 - test orginal version of bug involving NotCounted
-        public virtual void NotCountedCollectionUpdatesCorrectly()
-        {
+        public virtual void NotCountedCollectionUpdatesCorrectly() {
             GeminiUrl("object?i1=View&r1=1&o1=___1.Person--7489&as1=open&d1=CreateNewPhoneNumber");
             SelectDropDownOnField("#type1", "Cell");
             var rnd = new Random();
@@ -242,6 +242,7 @@ namespace NakedObjects.Selenium {
 
             wait.Until(dr => dr.FindElements(By.CssSelector("table tbody tr td")).Any(el => el.Text == num));
         }
+
         public virtual void ClickOnLineItemWithCollectionAsList() {
             var testUrl = GeminiBaseUrl + "object?o1=___1.Store--350&as1=open" + "&c1_Addresses=List";
             Url(testUrl);
@@ -338,7 +339,6 @@ namespace NakedObjects.Selenium {
             wait.Until(dr => dr.FindElements(By.CssSelector("div .reference")).Count >= 2);
             var cc = GetReferenceFromProperty("Credit Card");
             wait.Until(dr => GetReferenceFromProperty("Credit Card").GetAttribute("class").Contains("link-color0"));
-         
         }
 
         public virtual void ZeroIntValues() {
@@ -386,7 +386,7 @@ namespace NakedObjects.Selenium {
             Thread.Sleep(1000);
             GetInputNumber(dialog, 0).SendKeys("1 Jan 2003");
             GetInputNumber(dialog, 1).SendKeys("1 Dec 2003" + Keys.Escape);
-          
+
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Search For Orders");
         }
@@ -487,7 +487,7 @@ namespace NakedObjects.Selenium {
             OpenActionDialog("Add Standard Comments");
             Click(OKButton());
             wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Payment on delivery"));
-            
+
             Thread.Sleep(1000); // sleep here because otherwise clear button may be still disabled from OK
             var clear = GetObjectEnabledAction("Clear Comment");
             Click(clear);
@@ -583,14 +583,12 @@ namespace NakedObjects.Selenium {
         }
 
         [TestMethod]
-        public override void NotCountedCollectionUpdatesCorrectly()
-        {
+        public override void NotCountedCollectionUpdatesCorrectly() {
             base.NotCountedCollectionUpdatesCorrectly();
         }
 
         [TestMethod]
-        public override void CollectionsUpdateProperly()
-        {
+        public override void CollectionsUpdateProperly() {
             base.CollectionsUpdateProperly();
         }
 
@@ -810,14 +808,13 @@ namespace NakedObjects.Selenium {
             CanInvokeOneNonPotentActionBeforePreviousHasCompleted();
             UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed();
             CannotInvokeAPotentActionUntilPriorOneHasCompleted();
-            CollectionsUpdateProperly(); 
+            CollectionsUpdateProperly();
             NotCountedCollectionUpdatesCorrectly();
         }
+
         //[TestMethod]
         [Priority(-1)]
-        public void ProblematicObjectViewTest() {
-
-        }
+        public void ProblematicObjectViewTest() { }
     }
 
     //[TestClass]

@@ -101,17 +101,15 @@ namespace NakedObjects.Selenium {
             GeminiUrl("object?i1=View&o1=___1.Shift--1&as1=open");
             OpenActionDialog("Change Times");
 
-        
             var rand = new Random();
-         
+
             var end = new TimeSpan(rand.Next(23), rand.Next(59), 0);
             ClearFieldThenType("nof-dialog input#endtime1", end.ToString("hhmm"));
 
-           
             var start = new TimeSpan(rand.Next(23), rand.Next(59), 0);
             ClearFieldThenType("nof-dialog input#starttime1", start.ToString("hhmm"));
             Thread.Sleep(2000);
-           
+
             Click(OKButton());
             WaitForTextEquals(".property", 2, "Start Time:\r\n" + start.ToString(@"hh\:mm"));
             WaitForTextEquals(".property", 3, "End Time:\r\n" + end.ToString(@"hh\:mm"));
@@ -537,7 +535,7 @@ namespace NakedObjects.Selenium {
         public virtual void ValidateSingleValueParameter() {
             Debug.WriteLine(nameof(ValidateSingleValueParameter));
             GeminiUrl("object?o1=___1.Product--342&as1=open&d1=BestSpecialOffer");
-         
+
             ClearFieldThenType("#quantity1", "0");
             Click(OKButton());
             wait.Until(dr => dr.FindElement(By.CssSelector(".parameter .validation")).Text.Length > 0);
@@ -648,18 +646,17 @@ namespace NakedObjects.Selenium {
             ValidationOfContributeeParameter();
             NoResultFoundMessageLeavesDialogOpen();
         }
+
         //[TestMethod]
         [Priority(-1)]
-        public void ProblematicTests() {
-
-        }
+        public void ProblematicTests() { }
     }
 
     //[TestClass]
     public class MegaDialogTestsFirefox : MegaDialogTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -679,7 +676,7 @@ namespace NakedObjects.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -694,12 +691,12 @@ namespace NakedObjects.Selenium {
         }
     }
 
-   [TestClass] //toggle
+    [TestClass] //toggle
     public class MegaDialogTestsChrome : MegaDialogTestsRoot {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
-            AWTest.InitialiseClass(context);
+            GeminiTest.InitialiseClass(context);
         }
 
         [TestInitialize]
