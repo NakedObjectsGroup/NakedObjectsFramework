@@ -1,15 +1,15 @@
 ﻿var mv = require('mv');
 var replace = require('replace-in-file');
 var find = require('find-in-files');
+var pathExists = require('path-exists');
 
 const fErr = function (err) { if (err) console.error('Error occurred:', err); };
 const opts = { clobber: false, mkdirp: false }
 
-function copyAndReplace(name) {
-    var fromName = `./src/app/${name}/${name}.component.alt.css`;
-    var tempName = `./src/app/${name}/${name}.component.temp.css`;
-    var toName = `./src/app/${name}/${name}.component.css`;
-
+function copyAndReplace(name, path) {
+    var fromName = `./${path}/app/${name}/${name}.component.alt.css`;
+    var tempName = `./${path}/app/${name}/${name}.component.temp.css`;
+    var toName = `./${path}/app/${name}/${name}.component.css`;
 
     const mv3 = () => mv(tempName, fromName, opts, fErr);
     const mv2 = () => mv(fromName, toName, opts, mv3);
@@ -20,7 +20,10 @@ function copyAndReplace(name) {
 
 function copyAndReplaceAll(names) {
     for (name of names) {
-        copyAndReplace(name);
+        pathExists("./node_modules/nakedobjects.spa").then(exists => {
+            const path = exists ? "node_modules/nakedobjects.spa/lib" : "src";
+            copyAndReplace(name, path);
+        }
     }
 }
 
@@ -28,6 +31,7 @@ let names = ["action", "action-bar", "action-list", "application-properties", "a
     "cicero", "collection", "collections", "dialog", "dynamic-error", "dynamic-list", "dynamic-object", "edit-parameter",
     "edit-property", "error", "footer", "home", "list", "login", "menu-bar", "multi-line-dialog", "object", "parameters",
     "properties", "recent", "view-parameter", "view-property"]
+
 
 copyAndReplaceAll(names);
 
