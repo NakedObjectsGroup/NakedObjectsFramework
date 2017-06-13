@@ -27,10 +27,13 @@ function copyAndReplaceAll(names) {
     }
 }
 
-let names = ["action", "action-bar", "action-list", "application-properties", "attachment", "attachment-property", 
-    "cicero", "collection", "collections", "dialog", "dynamic-error", "dynamic-list", "dynamic-object", "edit-parameter",
-    "edit-property", "error", "footer", "home", "list", "login", "menu-bar", "multi-line-dialog", "object", "parameters",
-    "properties", "recent", "view-parameter", "view-property"]
+let names = ["action", "action-bar", "action-list", "application-properties", "attachment",
+             "attachment-property", "auto-complete", "auto-complete-facade", "cicero",
+             "collection", "collections", "date-picker", "date-picker-facade","dialog",
+             "dynamic-error", "dynamic-list", "dynamic-object", "edit-parameter",
+             "edit-property", "error", "footer", "header", "home", "list", "login", "logoff",
+             "menu-bar", "multi-line-dialog", "object", "parameters", "properties", "recent",
+             "row", "time-picker", "time-picker-facade", "view-parameter", "view-property"]
 
 
 copyAndReplaceAll(names);
