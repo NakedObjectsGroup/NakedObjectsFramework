@@ -556,7 +556,7 @@ namespace NakedObjects.Selenium {
 
             Thread.Sleep(2000);
 
-            var action = wait.Until(dr => dr.FindElement(By.CssSelector("nof-action input[value='Add New Sales Reason'")));
+            var action = wait.Until(dr => dr.FindElement(By.CssSelector("nof-action input[value='Add New Sales Reason']")));
 
             Click(action);
 

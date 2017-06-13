@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Linq;
+using System.Diagnostics;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
@@ -14,6 +14,7 @@ using OpenQA.Selenium;
 namespace NakedObjects.Selenium {
     public abstract class MultiLineDialogTestsRoot : AWTest {
         public virtual void MultiLineMenuAction() {
+            Debug.WriteLine(nameof(MultiLineMenuAction));
             GeminiUrl("home?m1=SpecialOfferRepository");
             Click(GetObjectEnabledAction("Create Multiple Special Offers"));
             WaitForView(Pane.Single, PaneType.MultiLineDialog, "Create Multiple Special Offers");
@@ -80,6 +81,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void MultiLineObjectAction() {
+            Debug.WriteLine(nameof(MultiLineObjectAction));
             GeminiUrl("object?i1=View&r1=1&o1=___1.Vendor--1504&as1=open");
             OpenSubMenu("Purchase Orders");
             Click(GetObjectEnabledAction("Create New Purchase Order"));
@@ -131,6 +133,7 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void MultiLineObjectActionInCollection() {
+            Debug.WriteLine(nameof(MultiLineObjectActionInCollection));
             GeminiUrl("object?i1=View&r1=1&o1=___1.Customer--29562&as1=open&d1=CreateNewOrder");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Sales Order");
@@ -141,7 +144,7 @@ namespace NakedObjects.Selenium {
             var iconList = WaitForCssNo(".collection .icon.list", 0);
             Click(iconList);
             WaitForCss("table");
-
+            wait.Until(dr => dr.FindElement(By.CssSelector("nof-action input[value='Add New Details']")));
             var action = GetLCA("Add New Details");
             Click(action);
 
@@ -198,98 +201,13 @@ namespace NakedObjects.Selenium {
 
         //#53
         public virtual void InvokeMLDFromObjectInRightPane() {
+            Debug.WriteLine(nameof(InvokeMLDFromObjectInRightPane));
             GeminiUrl("home/object?i2=View&r2=1&o2=___1.PurchaseOrderHeader--300&as2=open");
             Click(GetObjectEnabledAction("Add New Details", Pane.Right));
             WaitForView(Pane.Single, PaneType.MultiLineDialog);
             SwapIcon().AssertIsDisabled();
         }
     }
-
-    public abstract class MultiLineDialogsTests : MultiLineDialogTestsRoot {
-        [TestMethod]
-        public override void MultiLineMenuAction() {
-            base.MultiLineMenuAction();
-        }
-
-        [TestMethod]
-        public override void MultiLineObjectAction() {
-            base.MultiLineObjectAction();
-        }
-
-        [TestMethod]
-        public override void MultiLineObjectActionInCollection() {
-            base.MultiLineObjectActionInCollection();
-        }
-
-        [TestMethod]
-        public override void InvokeMLDFromObjectInRightPane() {
-            base.InvokeMLDFromObjectInRightPane();
-        }
-    }
-
-    #region browsers specific subclasses
-
-    public class MultiLineDialogTestsIe : MultiLineDialogsTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.IEDriverServer.exe");
-            GeminiTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitIeDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-    }
-
-    //[TestClass] //Firefox Individual
-    public class MultiLineDialogFirefox : MultiLineDialogsTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            GeminiTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitFirefoxDriver();
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-
-        protected override void ScrollTo(IWebElement element) {
-            string script = string.Format("window.scrollTo({0}, {1});return true;", element.Location.X, element.Location.Y);
-            ((IJavaScriptExecutor) br).ExecuteScript(script);
-        }
-    }
-
-    public class MultiLineDialogTestsChrome : MultiLineDialogsTests {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
-            FilePath(@"drivers.chromedriver.exe");
-            GeminiTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest() {
-            InitChromeDriver();
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest() {
-            CleanUpTest();
-        }
-    }
-
-    #endregion
 
     #region Mega tests
 
