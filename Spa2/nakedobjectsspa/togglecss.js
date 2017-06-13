@@ -23,7 +23,7 @@ function copyAndReplaceAll(names) {
         pathExists("./node_modules/nakedobjects.spa").then(exists => {
             const path = exists ? "node_modules/nakedobjects.spa/lib" : "src";
             copyAndReplace(name, path);
-        }
+        });
     }
 }
 
