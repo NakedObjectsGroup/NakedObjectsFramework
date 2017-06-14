@@ -137,14 +137,19 @@ export abstract class Command {
         const clauses = arg.split("-");
         const range: { start: number | null; end: number | null } = { start: null, end: null };
         switch (clauses.length) {
-            case 1:
-                range.start = this.parseInt(clauses[0]);
+            case 1: {
+                const firstValue =  clauses[0];
+                range.start = firstValue ? this.parseInt(firstValue) : null;
                 range.end = range.start;
                 break;
-            case 2:
-                range.start = this.parseInt(clauses[0]);
-                range.end = this.parseInt(clauses[1]);
+            }
+            case 2: {
+                const firstValue =  clauses[0];
+                const secondValue =  clauses[1];
+                range.start = firstValue ? this.parseInt(firstValue) : null;
+                range.end = secondValue ? this.parseInt(secondValue): null;
                 break;
+            }
             default:
                 throw new Error(Usermessages.tooManyDashes);
         }
