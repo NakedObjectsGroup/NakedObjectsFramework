@@ -158,8 +158,8 @@ export class MaskService implements IMaskServiceConfigurator {
     };
 
     private customFilter(format: Ro.FormatType, remoteMask: string | null) {
-        if (remoteMask && this.maskMap[format!]) {
-            return this.maskMap[format!][remoteMask];
+        if (remoteMask && this.maskMap[format]) {
+            return this.maskMap[format][remoteMask];
         }
         return undefined;
     }

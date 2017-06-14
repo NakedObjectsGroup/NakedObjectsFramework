@@ -21,6 +21,11 @@ export class Goto extends Command {
 
     doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
         const arg0 = this.argumentAsString(args, 0);
+
+        if (arg0 === undefined) {
+            return this.returnResult("", Usermessages.outOfItemRange(undefined));
+        }
+
         if (this.isList()) {
             let itemNo: number;
             try {
@@ -34,7 +39,7 @@ export class Goto extends Command {
 
             return this.getObject().then((obj: Models.DomainObjectRepresentation) => {
                 if (this.isCollection()) {
-                    const itemNo = this.argumentAsNumber(args, 0);
+                    const itemNo = this.argumentAsNumber(args, 0)!;
                     const openCollIds = this.ciceroRenderer.openCollectionIds(this.routeData());
                     const coll = obj.collectionMember(openCollIds[0]);
                     //Safe to assume always a List (Cicero doesn't support tables as such & must be open)
@@ -53,9 +58,11 @@ export class Goto extends Command {
                         //TODO: Check for any empty reference
                         if (matchingRefProps.length > 0) {
                             const link = matchingRefProps[0].value().link();
-                            this.urlManager.setItem(link);
+                            if (link) {
+                                this.urlManager.setItem(link);
+                            }
 
-                            return this.returnResult("", "", () => this.urlManager.setItem(link));
+                            return this.returnResult("", "");
 
                         } else { //Must be collection
 
@@ -72,16 +79,15 @@ export class Goto extends Command {
                 }
             });
         }
+        // should never happen
+        return this.returnResult("", Usermessages.commandNotAvailable(this.fullCommand));
     };
 
     private attemptGotoLinkNumber(itemNo: number, links: Models.Link[]): Promise<CommandResult> {
         if (itemNo < 1 || itemNo > links.length) {
-
             return this.returnResult("", Usermessages.outOfItemRange(itemNo));
         } else {
             const link = links[itemNo - 1]; // On UI, first item is '1'
-
-
             return this.returnResult("", "", () => this.urlManager.setItem(link));
         }
     }

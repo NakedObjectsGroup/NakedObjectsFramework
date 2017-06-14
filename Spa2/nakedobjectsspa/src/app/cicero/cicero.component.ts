@@ -131,7 +131,8 @@ export class CiceroComponent implements OnInit {
     outputText: string;
 
     parseInput(input: string): void {
-        this.previousInput = this.commandFactory.autoComplete(input).input.trim();
+        const prevInput = this.commandFactory.autoComplete(input).input;
+        this.previousInput = prevInput ? prevInput.trim() : "";
         const parseResult = this.commandFactory.getCommands(input);
 
         if (parseResult.commands) {
@@ -157,7 +158,7 @@ export class CiceroComponent implements OnInit {
             input = input.substr(0, input.length - 1);
             const res = this.commandFactory.autoComplete(input);
             this.writeInputOutput(res);
-            return res.input;
+            return res.input || "";
         }
         return input;
     };

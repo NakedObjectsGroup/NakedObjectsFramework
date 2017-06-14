@@ -111,7 +111,7 @@ export abstract class Command {
     }
 
     //argNo starts from 0.
-    protected argumentAsNumber(args: string, argNo: number, optional: boolean = false): number | null {
+    protected argumentAsNumber(args: string | null, argNo: number, optional: boolean = false): number | null {
         const arg = this.argumentAsString(args, argNo, optional);
         if (!arg && optional) return null;
         const number = parseInt(arg!);
@@ -121,10 +121,7 @@ export abstract class Command {
         return number;
     }
 
-    protected parseInt(input: string): number | null {
-        if (!input) {
-            return null;
-        }
+    protected parseInt(input: string): number {
         const number = parseInt(input);
         if (isNaN(number)) {
             throw new Error(Usermessages.isNotANumber(input));

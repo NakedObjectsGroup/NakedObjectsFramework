@@ -1596,7 +1596,7 @@ export class Member<T extends Ro.IMember> extends NestedRepresentation<Ro.IMembe
             return new CollectionMember(toWrap as Ro.ICollectionMember, parent, id);
         }
 
-        error('Unexpected member: ${id}');
+        return error('Unexpected member: ${id}');
     }
 
     static wrapMember(toWrap: Ro.IPropertyMember | Ro.ICollectionMember | Ro.IActionMember, parent: DomainObjectRepresentation | IHasActions, id: string): Member<Ro.IMember> {
@@ -1619,7 +1619,7 @@ export class Member<T extends Ro.IMember> extends NestedRepresentation<Ro.IMembe
             return member;
         }
 
-        error('Unexpected member: ${id}');
+        return error('Unexpected member: ${id}');
     }
 }
 

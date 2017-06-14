@@ -70,8 +70,7 @@ export class CiceroRendererService {
                 this.context.getMenu(routeData.menuId).
                     then(menu => {
                         const count = list.value().length;
-                        const numPages = list.pagination().numPages;
-                        const description = this.getListDescription(numPages, list, count);
+                        const description = this.getListDescription(list, count);
                         const actionMember = menu.actionMember(routeData.actionId);
                         const actionName = actionMember.extensions().friendlyName();
                         const output = `Result from ${actionName}:\n${description}`;
@@ -82,18 +81,23 @@ export class CiceroRendererService {
     };
 
     renderError(message: string) {
-        const err = this.context.getError().error as Ro.ErrorRepresentation;
-        return this.returnResult("", `Sorry, an application error has occurred. ${err.message()}`);
+        const err = this.context.getError();
+        const errRep = err ? err.error : null;
+        const msg = (errRep instanceof Ro.ErrorRepresentation) ? errRep.message() : "Unknown";
+        return this.returnResult("", `Sorry, an application error has occurred. ${msg}`);
     };
 
-    private getListDescription(numPages: number, list: Ro.ListRepresentation, count: number) {
-        if (numPages > 1) {
-            const page = list.pagination().page;
-            const totalCount = list.pagination().totalCount;
-            return `Page ${page} of ${numPages} containing ${count} of ${totalCount} items`;
-        } else {
-            return `${count} items`;
+    private getListDescription(list: Ro.ListRepresentation, count: number) {
+        const pagination = list.pagination();
+        if (pagination) {
+            const numPages = pagination.numPages;
+            if (numPages > 1) {
+                const page = pagination.page;
+                const totalCount = pagination.totalCount;
+                return `Page ${page} of ${numPages} containing ${count} of ${totalCount} items`;
+            }
         }
+        return `${count} items`;
     }
 
 
@@ -182,14 +186,14 @@ export class CiceroRendererService {
 
     private renderSingleChoice(field: Ro.IField, value: Ro.Value) {
         //This is to handle an enum: render it as text, not a number:  
-        const inverted = invert(field.choices());
+        const inverted = invert(field.choices()!);
         return (<any>inverted)[value.toValueString()];
     }
 
     private renderMultipleChoicesCommaSeparated(field: Ro.IField, value: Ro.Value) {
         //This is to handle an enum: render it as text, not a number: 
-        const inverted = invert(field.choices());
-        const values = value.list();
+        const inverted = invert(field.choices()!);
+        const values = value.list()!;
         return reduce(values, (s, v) => `${s}${(<any>inverted)[v.toValueString()]},`, "");
     }
 
@@ -197,13 +201,14 @@ export class CiceroRendererService {
 
     renderCollectionNameAndSize(coll: Ro.CollectionMember): string {
         const prefix = `${coll.extensions().friendlyName()}`;
-        switch (coll.size()) {
+        const size = coll.size() || 0;
+        switch (size) {
             case 0:
                 return `${prefix}: ${Msg.empty}\n`;
             case 1:
                 return `${prefix}: 1 ${Msg.item}\n`;
             default:
-                return `${prefix}: ${Msg.numberOfItems(coll.size())}\n`;
+                return `${prefix}: ${Msg.numberOfItems(size)}\n`;
         }
     }
 
@@ -224,7 +229,7 @@ export class CiceroRendererService {
                 return this.renderMultipleChoicesCommaSeparated(field, value);
             }
         }
-        let properScalarValue: number | string | boolean | Date;
+        let properScalarValue: number | string | boolean | Date | null;
         if (Ro.isDateOrDateTime(field)) {
             properScalarValue = Ro.toUtcDate(value);
         } else {
@@ -234,7 +239,7 @@ export class CiceroRendererService {
             return Msg.empty;
         } else {
             const remoteMask = field.extensions().mask();
-            const format = field.extensions().format();
+            const format = field.extensions().format()!;
             return mask.toLocalFilter(remoteMask, format).filter(properScalarValue);
         }
     }
