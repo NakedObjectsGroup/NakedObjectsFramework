@@ -1,6 +1,6 @@
 :host {
     display: block;
-    width: 410px;
+    width: 420px;
     margin-bottom: 20px;
     overflow: hidden; /*Needed to force the floated divs inside this to expand the containing div in height*/
     background-color: white;
@@ -27,6 +27,7 @@ form {
 .ok {
     color: white;
     background-image: linear-gradient(to bottom, #11648a, #187ba9 100%);
+    margin-bottom: 10px;
 }
 
 .dialog select {

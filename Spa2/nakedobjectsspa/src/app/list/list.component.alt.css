@@ -80,12 +80,12 @@
 }
 
 .icon.list {
- background: url("../../assets/list.png");
+ background: url("../../assets/alt.list.png");
   background-size: cover;  
 } 
 
 .icon.table {
- background: url("../../assets/table.png");
+ background: url("../../assets/alt.table.png");
   background-size: cover;  
 }
 

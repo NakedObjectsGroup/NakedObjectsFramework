@@ -29,14 +29,14 @@ input:hover, input:focus {
 }
 
 .reference, .value, collectionDetails {
-    width: 245px;
+    width: 230px;
     padding-left: 5px;
     margin: 1px;
     float: left;
 }
 
 input:not([type='checkbox']), textarea {
-    width: 245px;
+    width: 230px;
     height: 20px;
     padding-right:10px;
 }
@@ -61,7 +61,7 @@ input[type='text'] {
 }
 
 :host.multilinedialog .parameter {
-    width: 245px; /*To force (on IE) any validation message to be displayed underneath the field*/
+    width: 230px; /*To force (on IE) any validation message to be displayed underneath the field*/
 }
 
 :host.multilinedialog input:focus,.multilinedialog input:hover  {
@@ -85,7 +85,7 @@ input[type='text'] {
 .value.droppable {
     border: solid;
     border-width: 1px;
-    width: 245px;
+    width: 230px;
     height: 20px;
 }
 
@@ -147,7 +147,7 @@ img.ui-datepicker-trigger {
 }
 
 select {
-    width: 245px;
+    width: 230px;
     height: 20px;
 }
 
@@ -165,7 +165,7 @@ select {
     color: black;
     background-color: white;
     font-size: 10pt;
-    width: 245px;
+    width: 230px;
     border-style: solid;
     border-width: 1px;
     border-color: black;

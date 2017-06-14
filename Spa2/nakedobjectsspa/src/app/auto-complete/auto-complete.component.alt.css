@@ -29,8 +29,9 @@ input {
 li  a {
     padding-left: 5px;
 }
-.selected {
-    background-color: grey;
+
+li:hover, .selected {
+    background-color:#11648a;
     color: white;
 }
 

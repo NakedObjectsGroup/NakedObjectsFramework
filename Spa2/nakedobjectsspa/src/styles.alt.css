@@ -49,7 +49,7 @@ html, #main, body, .background, .single, .split {
     width: 50%;
 }
 
-.link-color0 {
+.link-color0, .link-color1,.link-color2,.link-color3,.link-color4,.link-color5,.link-color6,.link-color7,.link-color8,.link-color9  {
      background-color: #11648a;
     color: white;
 }
