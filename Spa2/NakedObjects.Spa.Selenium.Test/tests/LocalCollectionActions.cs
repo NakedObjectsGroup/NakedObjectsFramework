@@ -100,6 +100,7 @@ namespace NakedObjects.Selenium {
             Click(GetLCA("Remove Sales Reasons"));
             WaitUntilElementDoesNotExist("#salesorderheadersalesreason1-0");
             WaitForTextEquals(".collection .summary", 1, "Reasons:\r\nEmpty");
+            Thread.Sleep(1000);
             Click(GetLCA("Add New Sales Reason"));
             //Confirm that dialog has opened inside collection
             WaitForTextEquals(".collection .dialog .title", "Add New Sales Reason");
