@@ -14,7 +14,7 @@ export class Gemini extends Command {
         return true;
     }
 
-    doExecute(args: string, chained: boolean): Promise<CommandResult> {
+    doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
         return this.returnResult("", "", () => this.urlManager.gemini());
     };
 }

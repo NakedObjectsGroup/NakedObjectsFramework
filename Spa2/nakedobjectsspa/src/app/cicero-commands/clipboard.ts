@@ -16,8 +16,13 @@ export class Clipboard extends Command {
         return true;
     }
 
-    doExecute(args: string, chained: boolean): Promise<CommandResult> {
+    doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
         const sub = this.argumentAsString(args, 0);
+
+        if (sub === undefined) {
+            return this.returnResult("", Usermessages.clipboardError);
+        }
+
         if (Usermessages.clipboardCopy.indexOf(sub) === 0) {
             return this.copy();
         } else if (Usermessages.clipboardShow.indexOf(sub) === 0) {

@@ -39,18 +39,18 @@ export function withUndefined<T>(v: T | undefined | null): T | undefined {
 
 function validateExists<T>(obj: T | null | undefined, name: string): T {
     if (obj) { return obj!; }
-    error(`validateExists - Expected ${name} does not exist`);
+    return error(`validateExists - Expected ${name} does not exist`);
 }
 
 function getMember<T>(members: Dictionary<T>, id: string, owner: string) {
     const member = members[id];
     if (member) { return member; }
-    error(`getMember - no member ${id} on ${owner}`);
+    return error(`getMember - no member ${id} on ${owner}`);
 }
 
 export function checkNotNull<T>(v: T | undefined | null): T {
     if (v != null) { return v! }
-    error("checkNotNull - Unexpected null");
+    return error("checkNotNull - Unexpected null");
 }
 
 export function toDateString(dt: Date) {
@@ -266,7 +266,7 @@ function linkByNamespacedRel(links: Link[], rel: string) {
 // interfaces 
 
 export interface IHateoasModel {
-    etagDigest: string;
+    etagDigest?: string;
     hateoasUrl: string;
     method: Ro.HttpMethodsType;
     populate(wrapped: Ro.IRepresentation): void;
@@ -469,7 +469,7 @@ export class ObjectIdWrapper {
 
 export abstract class HateosModel implements IHateoasModel {
 
-    etagDigest: string;
+    etagDigest?: string;
     hateoasUrl = "";
     method: Ro.HttpMethodsType = "GET";
     urlParms: Dictionary<Object>;
@@ -1807,7 +1807,7 @@ export class CollectionMember
         return getMember(this.actionMembers(), id, this.collectionId()) !;
     }
 
-    etagDigest: string;
+    etagDigest?: string;
 }
 
 // matches 14.4.3 
@@ -2581,7 +2581,7 @@ export interface IHasActions extends IHasExtensions {
     actionMembers(): Dictionary<ActionMember>;
     actionMember(id: string): ActionMember;
     hasActionMember(id: string): boolean;
-    etagDigest: string;
+    etagDigest?: string;
 }
 
 export interface IHasLinksAsValue {

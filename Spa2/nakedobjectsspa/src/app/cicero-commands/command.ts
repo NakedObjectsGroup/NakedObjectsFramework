@@ -38,7 +38,7 @@ export abstract class Command {
         this.keySeparator = configService.config.keySeparator;
     }
 
-    argString: string;
+    argString: string | null;
     chained: boolean;
 
     shortCommand : string;
@@ -59,7 +59,6 @@ export abstract class Command {
         //TODO: This could be moved into a pre-parse method as it does not depend on context
         if (this.argString == null) {
             if (this.minArguments > 0) {
-
                 return this.returnResult("", Usermessages.noArguments);
             }
         } else {
@@ -79,7 +78,7 @@ export abstract class Command {
         return Promise.resolve({ input: input, output: output, changeState: changeState, stopChain: stopChain });
     }
 
-    protected abstract doExecute(args: string, chained: boolean, result: CommandResult): Promise<CommandResult>;
+    protected abstract doExecute(args: string | null, chained: boolean, result: CommandResult): Promise<CommandResult>;
 
     abstract isAvailableInCurrentContext(): boolean;
 
@@ -95,7 +94,7 @@ export abstract class Command {
 
     //argNo starts from 0.
     //If argument does not parse correctly, message will be passed to UI and command aborted.
-    protected argumentAsString(argString: string, argNo: number, optional: boolean = false, toLower: boolean = true): string | undefined {
+    protected argumentAsString(argString: string | null, argNo: number, optional: boolean = false, toLower: boolean = true): string | undefined {
         if (!argString) return undefined;
         if (!optional && argString.split(",").length < argNo + 1) {
             throw new Error(Usermessages.tooFewArguments);
@@ -275,8 +274,8 @@ export abstract class Command {
 
     protected matchFriendlyNameAndOrMenuPath<T extends Models.IHasExtensions>(
         reps: T[],
-        match: string): T[] {
-        const clauses = match.split(" ");
+        match: string | undefined): T[] {
+        const clauses = match ? match.split(" ") : [];
         //An exact match has preference over any partial match
         const exactMatches = filter(reps,
             (rep) => {
@@ -379,11 +378,11 @@ export abstract class Command {
                     const rd = props[field.id()];
                     if (rd) valuesFromRouteData = rd.list(); //TODO: what if only one?
                 }
-                let vals: Models.Value[] | null = [];
+                let vals: Models.Value[] = [];
                 if (val.isReference() || val.isScalar()) {
                     vals = new Array<Models.Value>(val);
                 } else if (val.isList()) { //Should be!
-                    vals = val.list();
+                    vals = val.list()!;
                 }
                 forEach(vals,
                     v => {

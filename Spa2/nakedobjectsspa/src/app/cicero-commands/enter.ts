@@ -26,9 +26,18 @@ export class Enter extends Command {
         return this.isDialog() || this.isEdit() || this.isTransient() || this.isForm();
     }
 
-    doExecute(args: string, chained: boolean): Promise<CommandResult> {
+    doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
         const fieldName = this.argumentAsString(args, 0);
         const fieldEntry = this.argumentAsString(args, 1, false, false);
+
+        if (fieldName === undefined) {
+            return this.returnResult("", Usermessages.doesNotMatchDialog(fieldName));
+        }
+
+        if (fieldEntry === undefined) {
+            return this.returnResult("", Usermessages.tooFewArguments);
+        }
+
         if (this.isDialog()) {
             return this.fieldEntryForDialog(fieldName, fieldEntry);
         } else {
@@ -36,7 +45,7 @@ export class Enter extends Command {
         }
     };
 
-    private fieldEntryForEdit(fieldName: string, fieldEntry: string) {
+    private fieldEntryForEdit(fieldName: string | undefined, fieldEntry: string) {
         return this.getObject().then(obj => {
             const fields = this.matchingProperties(obj, fieldName);
 

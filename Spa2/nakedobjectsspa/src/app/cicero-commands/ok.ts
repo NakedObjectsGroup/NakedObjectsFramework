@@ -20,7 +20,7 @@ export class OK extends Command {
 
 
 
-    doExecute(args: string, chained: boolean): Promise<CommandResult> {
+    doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
         return this.getActionForCurrentDialog().then((action: Models.ActionRepresentation | Models.InvokableActionMember) => {
 
             if (chained && action.isNotQueryOnly()) {

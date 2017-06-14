@@ -14,7 +14,7 @@ export class Forward extends Command {
         return true;
     }
 
-    doExecute(args: string, chained: boolean): Promise<CommandResult> {
+    doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
         return this.returnResult("", null, () => this.location.forward());
     };
 }

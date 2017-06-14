@@ -14,7 +14,7 @@ export class Root extends Command {
         return this.isCollection();
     }
 
-    doExecute(args: string, chained: boolean): Promise<CommandResult> {
+    doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
         return this.returnResult(null, null, () => this.closeAnyOpenCollections());
     };
 }

@@ -15,7 +15,7 @@ export class Cancel extends Command {
         return this.isDialog() || this.isEdit();
     }
 
-    doExecute(args: string, chained: boolean): Promise<CommandResult> {
+    doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
         if (this.isEdit()) {
             return this.returnResult("", "", () => this.urlManager.setInteractionMode(RtD.InteractionMode.View));
         }

@@ -20,7 +20,7 @@ export class Action extends Command {
         return (this.isMenu() || this.isObject() || this.isForm()) && !this.isDialog() && !this.isEdit(); //TODO add list
     }
 
-    doExecute(args: string, chained: boolean, result: CommandResult): Promise<CommandResult> {
+    doExecute(args: string | null, chained: boolean, result: CommandResult): Promise<CommandResult> {
         const match = this.argumentAsString(args, 0);
         const details = this.argumentAsString(args, 1, true);
         if (details && details !== "?") {
@@ -36,7 +36,7 @@ export class Action extends Command {
         return Promise.reject("TODO: handle list - CCAs");
     }
 
-    private processActions(match: string | null, actionsMap: Dictionary<Models.ActionMember>, details: string): Promise<CommandResult> {
+    private processActions(match: string | undefined, actionsMap: Dictionary<Models.ActionMember>, details: string | undefined): Promise<CommandResult> {
         let actions = map(actionsMap, action => action);
         if (actions.length === 0) {
             return this.returnResult("", Usermessages.noActionsAvailable);

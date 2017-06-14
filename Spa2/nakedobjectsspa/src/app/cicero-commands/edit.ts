@@ -15,7 +15,7 @@ export class Edit extends Command {
         return this.isObject() && !this.isEdit();
     }
 
-    doExecute(args: string, chained: boolean): Promise<CommandResult> {
+    doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
         if (chained) {
             return this.returnResult("", this.mayNotBeChained(), () => { }, true);
         }

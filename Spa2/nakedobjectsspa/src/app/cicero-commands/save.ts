@@ -20,7 +20,7 @@ export class Save extends Command {
         return this.isEdit() || this.isTransient();
     }
 
-    doExecute(args: string, chained: boolean): Promise<CommandResult> {
+    doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
         if (chained) {
             return this.returnResult("", this.mayNotBeChained(), () => { }, true);
         }

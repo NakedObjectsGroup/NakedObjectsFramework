@@ -17,7 +17,7 @@ export class Menu extends Command {
         return true;
     }
 
-    doExecute(args: string, chained: boolean): Promise<CommandResult> {
+    doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
         const name = this.argumentAsString(args, 0);
         return this.context.getMenus()
             .then((menus: Models.MenusRepresentation) => {

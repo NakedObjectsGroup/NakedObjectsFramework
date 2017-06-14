@@ -266,7 +266,7 @@ export const mustbeQuestionMark = "Second argument may only be a question mark -
 
 export const noActionsAvailable = "No actions available";
 
-export const doesNotMatchActions = (a: string) => `${a} does not match any actions`;
+export const doesNotMatchActions = (a: string | undefined) => `${a} does not match any actions`;
 
 export const matchingActions = "Matching actions:\n";
 export const actionsMessage = "Actions:\n";
@@ -287,11 +287,11 @@ export const clipboardContents = (contents: string) => `Clipboard contains: ${co
 
 export const clipboardEmpty = "Clipboard is empty";
 
-export const doesNotMatchProperties = (name: string) => `${name} does not match any properties`;
+export const doesNotMatchProperties = (name: string | undefined) => `${name} does not match any properties`;
 
 export const matchesMultiple = "matches multiple fields:\n";
 
-export const doesNotMatchDialog = (name: string) => `${name} does not match any fields in the dialog`;
+export const doesNotMatchDialog = (name: string | undefined) => `${name} does not match any fields in the dialog`;
 
 export const multipleFieldMatches = "Multiple fields match";
 

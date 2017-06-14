@@ -19,7 +19,7 @@ export class Goto extends Command {
         return this.isObject() || this.isList();
     }
 
-    doExecute(args: string, chained: boolean): Promise<CommandResult> {
+    doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
         const arg0 = this.argumentAsString(args, 0);
         if (this.isList()) {
             let itemNo: number;

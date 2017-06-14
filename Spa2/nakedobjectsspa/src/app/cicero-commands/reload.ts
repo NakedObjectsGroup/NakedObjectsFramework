@@ -14,7 +14,7 @@ export class Reload extends Command {
         return this.isObject() || this.isList();
     }
 
-    doExecute(args: string, chained: boolean): Promise<CommandResult> {
+    doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
         return Promise.reject("Not Implemented");
     };
 }
