@@ -226,7 +226,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\BasicAuthenticationHandler.cs" />
     <Compile Include="App_Start\CorsConfig.cs" />
     <Compile Include="App_Start\JsonWebToken.cs" />
     <Compile Include="App_Start\JsonWebTokenValidationHandler.cs" />
