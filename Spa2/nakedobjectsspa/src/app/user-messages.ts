@@ -232,6 +232,8 @@ export const noVisible = "No visible properties";
 
 export const doesNotMatch = (name: string) => `${name} does not match any properties`;
 
+export const cannotPage = "Cannot page list";
+
 export const alreadyOnFirst = "List is already showing the first page";
 
 export const alreadyOnLast = "List is already showing the last page";

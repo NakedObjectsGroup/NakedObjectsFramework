@@ -24,8 +24,8 @@ export class Menu extends Command {
                 var links = menus.value();
                 if (name) {
                     //TODO: do multi-clause match
-                    const exactMatches = filter(links, (t) => { return t.title().toLowerCase() === name; });
-                    const partialMatches = filter(links, (t) => { return t.title().toLowerCase().indexOf(name) > -1; });
+                    const exactMatches = filter(links, (t) => { return (t.title() || "").toLowerCase() === name; });
+                    const partialMatches = filter(links, (t) => { return (t.title() || "").toLowerCase().indexOf(name) > -1; });
                     links = exactMatches.length === 1 ? exactMatches : partialMatches;
                 }
                 switch (links.length) {

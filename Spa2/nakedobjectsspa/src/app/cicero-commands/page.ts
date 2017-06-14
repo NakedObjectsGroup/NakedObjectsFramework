@@ -17,10 +17,19 @@ export class Page extends Command {
 
     doExecute(args: string, chained: boolean): Promise<CommandResult> {
         const arg = this.argumentAsString(args, 0);
+        if (arg === undefined) {
+            return this.returnResult("", Usermessages.pageArgumentWrong);
+        }
+
         return this.getList().then(listRep => {
-            const numPages = listRep.pagination().numPages;
+            const paginationData = listRep.pagination();
+
+            if (!paginationData) {
+                return this.returnResult("", Usermessages.cannotPage);
+            }
+
+            const numPages = paginationData.numPages;
             const page = this.routeData().page;
-            const pageSize = this.routeData().pageSize;
             if (Usermessages.pageFirst.indexOf(arg) === 0) {
                 return this.returnResult(null, null, () => this.setPage(1));
             } else if (Usermessages.pagePrevious.indexOf(arg) === 0) {

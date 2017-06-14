@@ -61,7 +61,7 @@ export function dropOn(draggableVm: IDraggableViewModel, droppable : FieldViewMo
     }
 }
 
-export function paste(event: KeyboardEvent, droppable: FieldViewModel, component: { control: AbstractControl }, get : () => IDraggableViewModel, clear : () => void) {
+export function paste(event: KeyboardEvent, droppable: FieldViewModel, component: { control: AbstractControl }, get : () => IDraggableViewModel | null, clear : () => void) {
     const vKeyCode = 86;
     const deleteKeyCode = 46;
     if (event && (event.keyCode === vKeyCode && event.ctrlKey)) {

@@ -279,12 +279,13 @@ export class RepLoaderService {
             .toPromise()
             .then((r: Response) => {
                 const blob = r.blob();
-                this.cache.add(config.url, blob);
+                this.cache.add(config.url!, blob);
                 return blob;
             })
             .catch((r: Response) => {
-                r.url = r.url || config.url;
-                return this.handleError(r, config.url);
+                const originalUrl = config.url || "Unknown url";
+                r.url = r.url || originalUrl;
+                return this.handleError(r, originalUrl);
             });
     }
 
