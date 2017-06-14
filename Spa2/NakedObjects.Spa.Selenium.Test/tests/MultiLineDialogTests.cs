@@ -145,6 +145,7 @@ namespace NakedObjects.Selenium {
             Click(iconList);
             WaitForCss("table");
             wait.Until(dr => dr.FindElement(By.CssSelector("nof-action input[value='Add New Details']")));
+            Thread.Sleep(1000);
             var action = GetLCA("Add New Details");
             Click(action);
 
