@@ -108,7 +108,7 @@ namespace NakedObjects.Selenium {
             Click(GetObjectEnabledAction("Create New Work Order", Pane.Left));
             WaitForView(Pane.Left, PaneType.Object, "Editing - Unsaved Work Order");
             ClearFieldThenType("#orderqty1", "4");
-
+            Thread.Sleep(1000);
             Click(GetObjectEnabledAction("Create New Credit Card", Pane.Right));
             WaitForView(Pane.Right, PaneType.Object, "Editing - Unsaved Credit Card");
             ClearFieldThenType("#cardnumber2", "1111222233334444");
