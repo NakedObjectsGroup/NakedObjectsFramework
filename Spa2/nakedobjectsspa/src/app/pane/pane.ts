@@ -22,11 +22,11 @@ export abstract class PaneComponent implements OnInit, OnDestroy {
     arData: ICustomActivatedRouteData;
 
     onChild() {
-        this.paneType = "split";
+        setTimeout(() => this.paneType = "split");
     }
 
     onChildless() {
-        this.paneType = "single";
+         setTimeout(() => this.paneType = "single");
     }
 
     private activatedRouteDataSub: ISubscription;
