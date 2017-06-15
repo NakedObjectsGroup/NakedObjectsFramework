@@ -79,6 +79,7 @@
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
     "karma-coverage-istanbul-reporter": "^1.2.1",
+    "karma-remap-istanbul": "0.6.0",
     "mv": "2.1.1",
     "protractor": "~5.1.2",
     "replace-in-file": "2.5.0",
