@@ -9,8 +9,8 @@ import { ITimePickerOutputEvent, ITimePickerInputEvent } from '../time-picker/ti
 
 @Component({
   selector: 'nof-time-picker-facade',
-  templateUrl: './time-picker-facade.component.html',
-  styleUrls: ['./time-picker-facade.component.css']
+  template: require('./time-picker-facade.component.html'),
+  styles: [require('./time-picker-facade.component.css')]
 })
 export class TimePickerFacadeComponent  {
 
