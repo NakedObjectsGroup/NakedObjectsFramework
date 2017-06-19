@@ -2,7 +2,6 @@
 import { Response, Request, RequestOptions, Headers, RequestMethod, ResponseContentType } from '@angular/http';
 import * as Models from './models';
 import * as Ro from './ro-interfaces';
-
 import { Subject } from 'rxjs/Subject';
 import { ConfigService } from './config.service';
 import { Observable } from 'rxjs'; // for declaration compile
@@ -185,7 +184,7 @@ export class RepLoaderService {
             body: model.getBody()
         });
 
-        return this.httpPopulate(config, !!ignoreCache, response);
+        return this.httpPopulate(config, !!ignoreCache, response) as Promise<T>;
     }
 
     setConfigFromMap(map: Models.IHateoasModel, digest?: string | null) {
@@ -205,7 +204,7 @@ export class RepLoaderService {
     retrieve = <T extends Models.IHateoasModel>(map: Models.IHateoasModel, rc: { new (): Models.IHateoasModel }, digest?: string | null): Promise<T> => {
         const response = new rc();
         const config = this.setConfigFromMap(map, digest);
-        return this.httpPopulate(config, true, response);
+        return this.httpPopulate(config, true, response) as Promise<T>;
     }
 
     validate = (map: Models.IHateoasModel, digest?: string): Promise<boolean> => {
@@ -230,7 +229,7 @@ export class RepLoaderService {
                 withCredentials: true
             });
 
-            return this.httpPopulate(config, true, response);
+            return this.httpPopulate(config, true, response) as Promise<T>;
         }
         return Promise.reject("link must not be null");
     }
@@ -260,7 +259,7 @@ export class RepLoaderService {
             // clear cache of existing values
             this.cache.remove(url);
         } else {
-            const blob = this.cache.get(url);
+            const blob = this.cache.get(url) as Blob;
             if (blob) {
                 return Promise.resolve(blob);
             }
