@@ -1,8 +1,17 @@
-.reference {
+﻿.reference {
     cursor: pointer;
 }
 
 img {
     max-width: 245px;
     max-height: 100px;
+}
+
+.value {
+    display: block;
+    float: left;
+    width: 245px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin: 1px;
 }
