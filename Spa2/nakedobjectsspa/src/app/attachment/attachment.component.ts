@@ -45,7 +45,6 @@ export class AttachmentComponent extends PaneComponent {
                     const avm = this.viewModelFactory.attachmentViewModel(attachment, routeData.paneId);
 
                     if (avm) {
-                        this.title = avm.title;
                         avm.setImage(this);
                     }
                 }

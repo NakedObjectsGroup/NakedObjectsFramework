@@ -1,5 +1,5 @@
-<div *ngIf="attachment" class="reference" nofClick (leftClick)="doAttachmentClick()" (rightClick)="doAttachmentClick(true)" tabindex="0">
+<div *ngIf="attachment && !attachment.empty" class="reference" nofClick (leftClick)="doAttachmentClick()" (rightClick)="doAttachmentClick(true)" tabindex="0">
     <div *ngIf="!image">{{title}}</div>
     <img *ngIf="image" src="{{image}}" alt="{{title}}" />
 </div>
-<div *ngIf="!attachment"><div>{{noImage}}</div></div>
+<ng-container *ngIf="!attachment || attachment.empty"><div class="value">{{noImage}}</div></ng-container>

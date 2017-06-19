@@ -39,7 +39,6 @@ export class AttachmentPropertyComponent {
     image: string;
     noImage = Msg.noImageMessage;
 
-
     doAttachmentClick = (right?: boolean) => {
         if (this.attachment.displayInline()) {
             this.urlManager.setAttachment(this.attachment.link, this.clickHandlerService.pane(this.attachment.onPaneId, right));
@@ -59,11 +58,11 @@ export class AttachmentPropertyComponent {
     };
 
     private setup() {
-
-        this.title = this.attachment.title;
-
         if (this.attachment.displayInline()) {
             this.attachment.setImage(this);
+        }
+        else {
+            this.attachment.setTitle(this);
         }
     }
 }

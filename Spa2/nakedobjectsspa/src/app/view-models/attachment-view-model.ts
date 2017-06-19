@@ -20,24 +20,35 @@ export class AttachmentViewModel {
 
     private readonly href: string;
     private readonly mimeType: string;
-    readonly title: string;
+    title: string;
     readonly downloadFile = () => this.context.getFile(this.parent, this.href, this.mimeType);
     readonly clearCachedFile = () => this.context.clearCachedFile(this.href);
+    empty : boolean = false;
 
     readonly displayInline = () =>
         this.mimeType === "image/jpeg" ||
         this.mimeType === "image/gif" ||
         this.mimeType === "application/octet-stream";
 
-    setImage(setImageOn: { image: string }) {
+    setImage(setImageOn: { image: string, title : string }) {
         this.downloadFile().then(blob => {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                if (reader.result) {
-                    setImageOn.image = reader.result;
-                }
-            };
-            reader.readAsDataURL(blob);
+            if (blob.size > 0) {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    if (reader.result) {
+                        setImageOn.image = reader.result;
+                    }
+                };
+                reader.readAsDataURL(blob);
+            } else {
+                this.empty = true;
+                this.title = Msg.noImageMessage;
+            }
+            setImageOn.title = this.title;
         }).catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+    }
+
+    setTitle(setTitleOn: {title : string }) {
+         setTitleOn.title = this.title;
     }
 }
