@@ -21,7 +21,7 @@ namespace NakedObjects.Selenium {
         public virtual void EmptyImageProperty() {
             Debug.WriteLine(nameof(EmptyImageProperty));
             GeminiUrl("object?i1=View&o1=___1.Person--13742");
-            wait.Until(d => d.FindElements(By.CssSelector(".property"))[9].Text == "Photo:");
+            wait.Until(d => d.FindElements(By.CssSelector(".property"))[9].Text == "Photo:\r\nNo image");
         }
 
         public virtual void ClickOnImage() {
