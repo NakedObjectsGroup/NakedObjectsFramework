@@ -45,7 +45,7 @@ export class Auth0AuthService extends AuthService implements CanActivate {
 
             const options = {
                 auth: {
-                    params: { scope: 'openid email' },
+                    params: { scope: 'openid email' }
                 }
             };
 

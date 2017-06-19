@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from './auth.service';
-import * as Urlmanagerservice from './url-manager.service';
+import { UrlManagerService } from './url-manager.service';
 
 @Component({
     selector: 'app-root',
@@ -9,7 +9,7 @@ import * as Urlmanagerservice from './url-manager.service';
 })
 
 export class AppComponent {
-    constructor(public readonly auth: AuthService, private readonly urlManager : Urlmanagerservice.UrlManagerService) { }
+    constructor(public readonly auth: AuthService, private readonly urlManager : UrlManagerService) { }
 
     isGemini = () =>  this.urlManager.isGemini();
 }
