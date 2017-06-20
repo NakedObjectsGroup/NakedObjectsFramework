@@ -202,6 +202,11 @@ export function typePlusTitle(obj: DomainObjectRepresentation) {
 
 // helper functions 
 
+function isAutoComplete(args: Ro.IValue | Ro.IValueMap | Ro.IObjectOfType | Ro.IPromptMap | null) {
+    return args && args.hasOwnProperty(Constants.roSearchTerm);
+}
+
+
 function isScalarType(typeName: string | null) {
     return typeName === "string" || typeName === "number" || typeName === "boolean" || typeName === "integer";
 }
@@ -743,7 +748,7 @@ export class Value {
         return this;
     }
 
-    private decompress(shortCutMarker: string, urlShortCuts: string[]) {
+    private decompress(shortCutMarker: string, urlShortCuts: string[]) : Value {
         if (this.isReference()) {
             const link = this.link()!.decompress(shortCutMarker, urlShortCuts);  // know true
             return new Value(link);
@@ -1174,7 +1179,7 @@ export class Parameter
         if (promptLink) {
             // ConditionalChoices, ConditionalMultipleChoices, AutoComplete 
 
-            if (!!promptLink.arguments() ![Constants.roSearchTerm]) {
+            if (isAutoComplete(promptLink.arguments())) {
 
                 // autocomplete 
                 return EntryType.AutoComplete;
@@ -1736,7 +1741,7 @@ export class PropertyMember extends Member<Ro.IPropertyMember> implements IField
         if (link) {
             // ConditionalChoices, ConditionalMultipleChoices, AutoComplete 
 
-            if (!!link.arguments() ![Constants.roSearchTerm]) {
+            if (isAutoComplete(link.arguments())) {
                 // autocomplete 
                 return EntryType.AutoComplete;
             }

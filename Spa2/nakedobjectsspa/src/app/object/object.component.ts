@@ -331,9 +331,9 @@ export class ObjectComponent implements OnInit, OnDestroy {
         const pps = vm.properties;
         const props = zipObject(map(pps, p => p.id), map(pps, p => p)) as Dictionary<PropertyViewModel>;
         const editableProps = filter(props, p => p.isEditable);
-        const editablePropsMap = zipObject(map(editableProps, p => p.id), map(editableProps, p => p));
+        const editablePropsMap : Dictionary<PropertyViewModel> = zipObject(map(editableProps, p => p.id), map(editableProps, p => p));
 
-        const controls = mapValues(editablePropsMap, p => [p.getValueForControl(), a => p.validator(a)]) as Dictionary<any>;
+        const controls = mapValues(editablePropsMap, p => [p.getValueForControl(), (a : any) => p.validator(a)]) as Dictionary<any>;
         this.form = this.formBuilder.group(controls);   
         this.formSub = this.form!.valueChanges.subscribe((data: any) => {
             // cache parm values

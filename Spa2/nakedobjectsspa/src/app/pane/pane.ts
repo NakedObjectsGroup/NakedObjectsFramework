@@ -33,7 +33,7 @@ export abstract class PaneComponent implements OnInit, OnDestroy {
     private paneRouteDataSub: ISubscription;
     private lastPaneRouteData: PaneRouteData;
 
-    protected abstract setup(routeData: PaneRouteData);
+    protected abstract setup(routeData: PaneRouteData) : void;
 
     ngOnInit(): void {
         this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: ICustomActivatedRouteData) => {

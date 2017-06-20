@@ -1,5 +1,5 @@
 ﻿import { ICustomListRepresentation } from './ro-interfaces-custom';
-
+import * as Constants from './constants';
 export type HttpMethodsType = "POST" | "PUT" | "GET" | "DELETE";
 
 export interface ILink {
@@ -123,6 +123,7 @@ export interface IValueMap {
 
 export interface IObjectOfType {
     members: IValueMap;
+    "x-ro-invalidReason"? : string;
 }
 
 export interface IPromptMap {
