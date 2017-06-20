@@ -16,7 +16,6 @@ import { IDatePickerInputEvent, IDatePickerOutputEvent } from '../date-picker/da
 })
 export class DatePickerFacadeComponent implements AfterViewInit {
 
-    // todo make interface for events 
     constructor(private readonly configService: ConfigService) {
         this.inputEvents = new EventEmitter<IDatePickerInputEvent>();
         this.datePickerOptions.format = configService.config.dateInputFormat;

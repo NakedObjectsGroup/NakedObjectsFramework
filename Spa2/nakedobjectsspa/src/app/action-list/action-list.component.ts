@@ -82,7 +82,6 @@ export class ActionListComponent implements AfterViewInit {
         }
     }
 
-
     focus(actions: QueryList<ActionComponent>) {
         if (actions && actions.length > 0) {
             const actionChildrenNames = map(actions.toArray(), a => a.action.value);
