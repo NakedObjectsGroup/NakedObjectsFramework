@@ -172,12 +172,14 @@ export class Enter extends Command {
 
     private setFieldValue(field: Models.IField, value: Models.Value): void {
         const urlVal = this.valueForUrl(value, field);
-        if (field instanceof Models.Parameter) {
-            this.setFieldValueInContextAndUrl(field, urlVal);
-        } else if (field instanceof Models.PropertyMember) {
-            const parent = field.parent;
-            if (parent instanceof Models.DomainObjectRepresentation) {
-                this.setPropertyValueinContextAndUrl(parent, field, urlVal);
+        if (urlVal != null) {
+            if (field instanceof Models.Parameter) {
+                this.setFieldValueInContextAndUrl(field, urlVal);
+            } else if (field instanceof Models.PropertyMember) {
+                const parent = field.parent;
+                if (parent instanceof Models.DomainObjectRepresentation) {
+                    this.setPropertyValueinContextAndUrl(parent, field, urlVal);
+                }
             }
         }
     }
@@ -197,10 +199,9 @@ export class Enter extends Command {
     private handleClipboard(field: Models.IField) {
         const ref = this.ciceroContext.ciceroClipboard;
         if (!ref) {
-
             return this.returnResult("", Usermessages.emptyClipboard);
         }
-        const paramType = field.extensions().returnType();
+        const paramType = field.extensions().returnType()!;
         const refType = ref.domainType();
         return this.context.isSubTypeOf(refType, paramType).then(isSubType => {
             if (isSubType) {
@@ -224,7 +225,7 @@ export class Enter extends Command {
         if (!field.isScalar() && this.isPaste(fieldEntry)) {
             return this.handleClipboard(field);
         } else {
-            return this.context.autoComplete(field, field.id(), null, fieldEntry).then(choices => {
+            return this.context.autoComplete(field, field.id(), () => ({}), fieldEntry).then(choices => {
                 const matches = this.findMatchingChoicesForRef(choices, fieldEntry);
                 return this.switchOnMatches(field, fieldEntry, matches);
             });
@@ -281,10 +282,10 @@ export class Enter extends Command {
             enteredFields = this.getPropertiesAndCurrentValue(field.parent as Models.DomainObjectRepresentation);
         }
 
-        const args = fromPairs(map(field.promptLink().arguments(), (v: any, key: string) => [key, new Models.Value(v.value)])) as Dictionary<Models.Value>;
+        const args = fromPairs(map(field.promptLink()!.arguments()!, (v: any, key: string) => [key, new Models.Value(v.value)])) as Dictionary<Models.Value>;
         forEach(keys(args), key => args[key] = enteredFields[key]);
 
-        return this.context.conditionalChoices(field, field.id(), null, args).then(choices => {
+        return this.context.conditionalChoices(field, field.id(), () => ({}), args).then(choices => {
             const matches = this.findMatchingChoicesForRef(choices, fieldEntry);
             return this.switchOnMatches(field, fieldEntry, matches);
         });
@@ -294,14 +295,15 @@ export class Enter extends Command {
         let s = Usermessages.fieldName(field.extensions().friendlyName());
         const desc = field.extensions().description();
         s += desc ? `\n${Usermessages.descriptionFieldPrefix} ${desc}` : "";
-        s += `\n${Usermessages.typePrefix} ${Models.friendlyTypeName(field.extensions().returnType())}`;
+        s += `\n${Usermessages.typePrefix} ${Models.friendlyTypeName(field.extensions().returnType()!)}`;
         if (field instanceof Models.PropertyMember && field.disabledReason()) {
             s += `\n${Usermessages.unModifiablePrefix(field.disabledReason())}`;
         } else {
             s += field.extensions().optional() ? `\n${Usermessages.optional}` : `\n${Usermessages.mandatory}`;
-            if (field.choices()) {
+            const choices = field.choices();
+            if (choices) {
                 const label = `\n${Usermessages.choices}: `;
-                s += reduce(field.choices(), (s, cho) => s + cho + " ", label);
+                s += reduce(choices, (ss, cho) => ss + cho + " ", label);
             }
         }
         return s;

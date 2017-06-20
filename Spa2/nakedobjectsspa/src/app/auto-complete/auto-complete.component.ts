@@ -1,4 +1,4 @@
-import { ContextService } from '../context.service';
+﻿import { ContextService } from '../context.service';
 import { Component, Input, OnDestroy, ElementRef, ViewChild, Renderer } from '@angular/core';
 import { FieldViewModel } from '../view-models/field-view-model';
 import { ChoiceViewModel } from '../view-models/choice-view-model';
@@ -21,18 +21,18 @@ export class AutoCompleteComponent implements OnDestroy {
         private readonly renderer: Renderer
     ) { }
 
-    private _model: FieldViewModel;
+    private fieldViewModel: FieldViewModel;
 
     @Input()
     set model(m: FieldViewModel) {
-        this._model = m;
+        this.fieldViewModel = m;
     }
 
     @Input()
     form: FormGroup;
 
     get model() {
-        return this._model;
+        return this.fieldViewModel;
     }
 
     get modelPaneId() {

@@ -146,10 +146,10 @@ export interface IScalarValueRepresentation extends IResourceRepresentation {
     value: ScalarValueType;
 }
 
-export type memberTypeType = "action" | "collection" | "property";
+export type MemberTypeType = "action" | "collection" | "property";
 
 export interface IMember extends IResourceRepresentation {
-    memberType: memberTypeType;
+    memberType: MemberTypeType;
     disabledReason?: string;
 }
 

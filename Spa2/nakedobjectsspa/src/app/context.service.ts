@@ -249,7 +249,7 @@ export class ContextService {
         const forceReload = (dirtyState === DirtyState.DirtyMustReload) || ((dirtyState === DirtyState.DirtyMayReload) && this.configService.config.autoLoadDirty);
 
         if (!forceReload && isSameObject(this.currentObjects[paneId], type, id)) {
-            return Promise.resolve(this.currentObjects[paneId]);
+            return Promise.resolve(this.currentObjects[paneId]!);
         }
 
         // deeper cache for transients
@@ -308,7 +308,7 @@ export class ContextService {
     getService = (paneId: Pane, serviceType: string): Promise<Models.DomainObjectRepresentation> => {
 
         if (isSameObject(this.currentObjects[paneId], serviceType)) {
-            return Promise.resolve(this.currentObjects[paneId]);
+            return Promise.resolve(this.currentObjects[paneId]!);
         }
 
         return this.getServices()
@@ -631,7 +631,7 @@ export class ContextService {
         if (!result.result().isNull()) {
             if (result.resultType() === "object") {
 
-                const resultObject = result.result().object();
+                const resultObject = result.result().object()!;
                 resultObject.keySeparator = this.keySeparator;
 
                 if (resultObject.persistLink()) {
@@ -696,11 +696,12 @@ export class ContextService {
     private pendingPotentActionCount: [undefined, number, number] = [undefined, 0, 0];
 
     incPendingPotentActionOrReload(paneId: Pane) {
-        this.pendingPotentActionCount[paneId]++;
+        const count = this.pendingPotentActionCount[paneId]! + 1;
+        this.pendingPotentActionCount[paneId] = count;
     }
 
     decPendingPotentActionOrReload(paneId: Pane) {
-        const count = --this.pendingPotentActionCount[paneId];
+        const count = this.pendingPotentActionCount[paneId]! - 1;
 
         if (count < 0) {
             // should never happen
@@ -777,9 +778,9 @@ export class ContextService {
         if (action.isNotQueryOnly()) {
 
             const setCurrentObjectsDirty = () => {
-                const pane1Obj = this.currentObjects[1];
-                const pane2Obj = this.currentObjects[2];
-                const setDirty = (m: Models.DomainObjectRepresentation) => {
+                const pane1Obj = this.currentObjects[Pane.Pane1];
+                const pane2Obj = this.currentObjects[Pane.Pane2];
+                const setDirty = (m: Models.DomainObjectRepresentation | null | undefined) => {
                     if (m) {
                         this.dirtyList.setDirty(m.getOid());
                     }
@@ -820,8 +821,8 @@ export class ContextService {
                 // this should always be true 
                 if (ccaValue && ccaValue.isList()) {
 
-                    const refValues = filter(ccaValue.list(), v => v.isReference());
-                    const links = map(refValues, v => v.link());
+                    const refValues = filter(ccaValue.list()!, v => v.isReference());
+                    const links = map(refValues, v => v.link()!);
                     return () => {
                         forEach(links, (l: Models.Link) => this.dirtyList.setDirty(l.getOid(this.keySeparator)));
                         setCurrentObjectsDirty();

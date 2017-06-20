@@ -23,7 +23,7 @@ export class RecentItemsViewModel {
 
     private refreshItems() {       
         const items = map(this.recentlyViewed, (o, i) => ({ obj: o, link: o.updateSelfLinkWithTitle(), index: i }));
-        this._items = map(items, i => this.viewModelFactory.recentItemViewModel(i.obj, i.link!, this.onPaneId, false, i.index));
+        this.recentItems = map(items, i => this.viewModelFactory.recentItemViewModel(i.obj, i.link!, this.onPaneId, false, i.index));
     }
 
     private itemsHaveChanged() {
@@ -39,18 +39,18 @@ export class RecentItemsViewModel {
         return !same;
     }
 
-    private _items : RecentItemViewModel[];
+    private recentItems : RecentItemViewModel[];
 
     get items() : RecentItemViewModel[] {
         if (this.itemsHaveChanged()) {
             this.refreshItems();
         }
-        return this._items;
+        return this.recentItems;
     }
 
     readonly clear = () => {
         this.context.clearRecentlyViewed();
-        this._items = [];
+        this.recentItems = [];
         this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl(this.onPaneId);
     }
 }

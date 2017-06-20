@@ -51,7 +51,7 @@ export class DialogViewModel extends MessageViewModel {
 
         if (this.isMultiLineDialogRow) {
             this.actionViewModel.gotoResult = false;
-            this.parameters.forEach(p => p.setAsRow(row));
+            this.parameters.forEach(p => p.setAsRow(row!));
         }
     }
 
@@ -129,7 +129,7 @@ export class DialogViewModel extends MessageViewModel {
 
     doCloseKeepHistory = () => {
         this.urlManager.closeDialogKeepHistory(this.id, this.onPaneId);
-        this.doComplete()
+        this.doComplete();
     };
 
     doCloseReplaceHistory = () => {

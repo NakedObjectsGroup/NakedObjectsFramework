@@ -1570,7 +1570,7 @@ export class Member<T extends Ro.IMember> extends NestedRepresentation<Ro.IMembe
         super.update(newValue);
     }
 
-    memberType(): Ro.memberTypeType {
+    memberType(): Ro.MemberTypeType {
         return this.wrapped().memberType;
     }
 
@@ -2173,7 +2173,7 @@ export class ListRepresentation
 
     hasTableData = () => {
         const valueLinks = this.value();
-        return valueLinks && some(valueLinks, i => i.members());
+        return valueLinks && some(valueLinks, (i : Link) => i.members());
     }
 }
 

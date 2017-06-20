@@ -32,7 +32,7 @@ class LocalStringFilter implements ILocalFilter {
     }
 }
 
-function transform(tfm: () => string) {
+function transform(tfm: () => string | null) {
     try {
         return tfm();
     }
@@ -55,7 +55,7 @@ class LocalCurrencyFilter implements ILocalFilter {
         }
 
         const pipe = new CurrencyPipe(this.locale);
-        return transform(() => pipe.transform(val, this.symbol, true, this.digits));
+        return transform(() => pipe.transform(val, this.symbol, true, this.digits)) || "";
     }
 }
 
@@ -98,7 +98,8 @@ class LocalNumberFilter implements ILocalFilter {
             return "";
         }
         const pipe = new DecimalPipe(this.locale);
-        return transform(() => pipe.transform(val, this.digits));
+        const result = transform(() => pipe.transform(val, this.digits));
+        return result == null ? "" : result;
     }
 }
 

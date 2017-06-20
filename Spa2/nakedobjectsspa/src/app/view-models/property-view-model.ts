@@ -83,7 +83,7 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         const parent = propertyRep.parent;
         if (parent instanceof Models.DomainObjectRepresentation) {
             if (parent.isTransient()) {
-                return parent.etagDigest;
+                return Models.withNull(parent.etagDigest);
             }
         }
         return null;

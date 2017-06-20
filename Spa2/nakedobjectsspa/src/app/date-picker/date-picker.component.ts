@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 import { ISubscription } from 'rxjs/Subscription';
 import { safeUnsubscribe, focus } from '../helpers-components'; 
 import * as Msg from '../user-messages';
+import * as Models from '../models';
 
 // based on ng2-datepicker https://github.com/jkuri/ng2-datepicker
 
@@ -54,9 +55,9 @@ export class DatePickerOptions {
 }
 
 export interface ICalendarDate {
-    day: number;
-    month: number;
-    year: number;
+    day: number | null;
+    month: number | null;
+    year: number | null;
     enabled: boolean;
     today: boolean;
     selected: boolean;
@@ -98,7 +99,7 @@ export class DatePickerComponent implements OnInit {
 
     private validInputFormats = ["DD/MM/YYYY", "DD/MM/YY", "D/M/YY", "D/M/YYYY", "D MMM YYYY", "D MMMM YYYY", Constants.fixedDateFormat];
 
-    private dateModelValue: moment.Moment;
+    private dateModelValue: moment.Moment | null;
     private modelValue : string; 
 
     set model(s: string) {
@@ -113,7 +114,7 @@ export class DatePickerComponent implements OnInit {
         return this.modelValue;
     }
 
-    get dateModel(): moment.Moment {
+    get dateModel(): moment.Moment | null {
         return this.dateModelValue;
     }
 
@@ -121,10 +122,10 @@ export class DatePickerComponent implements OnInit {
         return this.dateModelValue || moment().utc();
     }
 
-    set dateModel(date: moment.Moment) {
+    set dateModel(date: moment.Moment | null) {
         if (date) { 
             this.dateModelValue = date;
-            this.outputEvents.emit({ type: 'dateChanged', data: this.dateModel });
+            this.outputEvents.emit({ type: 'dateChanged', data: this.dateModel! });
         }
         else {
             this.dateModelValue = null;
@@ -135,21 +136,20 @@ export class DatePickerComponent implements OnInit {
     private eventsSub: ISubscription;
 
     private validateDate(newValue: string) {
-        let dt: moment.Moment;
-
+   
         for (let f of this.validInputFormats) {
-            dt = moment.utc(newValue, f, true);
+            const dt = moment.utc(newValue, f, true);
             if (dt.isValid()) {
-                break;
+                return dt;
             }
         }
 
-        return dt;
+        return null;
     }
 
     setDateIfChanged(newDate : moment.Moment){
         const currentDate = this.dateModel;
-        if (!newDate.isSame(currentDate)) {
+        if (!newDate.isSame(Models.withUndefined(currentDate))) {
             this.setValue(newDate);
             setTimeout(() => this.model = this.formatDate(this.dateModel));
         }
@@ -159,7 +159,7 @@ export class DatePickerComponent implements OnInit {
 
         const dt = this.validateDate(newValue);
 
-        if (dt.isValid()) {
+        if (dt && dt.isValid()) {
             this.setDateIfChanged(dt);
         }
         else {
@@ -172,7 +172,8 @@ export class DatePickerComponent implements OnInit {
 
     ngOnInit() {
         this.options = new DatePickerOptions(this.options);
-        this.validInputFormats = concat([this.options.format], this.validInputFormats);
+        const optionFormats = this.options.format ? [this.options.format] : [];
+        this.validInputFormats = concat(optionFormats, this.validInputFormats);
 
         this.outputEvents.emit({ type: 'default', data: "init" } as IDatePickerOutputDefaultEvent);
 
@@ -192,11 +193,14 @@ export class DatePickerComponent implements OnInit {
                         break;
                     }
                     case 'setDate': {
-                        const date: moment.Moment = this.validateDate(e.data);
-                        if (!date.isValid()) {
+                        const date = this.validateDate(e.data);
+                        if (date && date.isValid()) {
+                            this.selectDate(date);
+                        }
+                        else {
                             throw new Error(`Invalid date: ${e.data}`);
                         }
-                        this.selectDate(date);
+                        
                         break;
                     }
                 }
@@ -237,15 +241,15 @@ export class DatePickerComponent implements OnInit {
         }
     }
 
-    setValue(date: moment.Moment) {
+    setValue(date: moment.Moment | null) {
         this.dateModel = date;
     }
 
-    private formatDate(date : moment.Moment) {
+    private formatDate(date : moment.Moment | null) {
         return this.dateModel ? this.dateModel.format(this.options.format) : "";
     }
 
-    selectDate(date: moment.Moment, e?: MouseEvent, ) {
+    selectDate(date: moment.Moment | null, e?: MouseEvent, ) {
         if (e) { e.preventDefault(); }
         setTimeout(() => {
             this.setValue(date);

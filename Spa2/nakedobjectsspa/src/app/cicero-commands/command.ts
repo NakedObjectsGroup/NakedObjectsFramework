@@ -1,4 +1,4 @@
-import { Location } from '@angular/common';
+﻿import { Location } from '@angular/common';
 import { CiceroContextService } from '../cicero-context.service';
 import { CommandResult } from './command-result';
 import * as Routedata from '../route-data';
@@ -21,7 +21,7 @@ import findIndex from 'lodash/findIndex';
 import { Dictionary } from 'lodash';
 import * as Commandresult from './command-result';
 import { CiceroRendererService } from '../cicero-renderer.service';
-
+import * as Rointerfaces from '../ro-interfaces';
 
 export abstract class Command {
 
@@ -75,7 +75,7 @@ export abstract class Command {
 
     protected returnResult(input: string | null, output: string | null, changeState?: () => void, stopChain?: boolean): Promise<CommandResult> {
         changeState = changeState ? changeState : () => { };
-        return Promise.resolve({ input: input, output: output, changeState: changeState, stopChain: stopChain });
+        return Promise.resolve({ input: input, output: output, changeState: changeState, stopChain: !!stopChain });
     }
 
     protected abstract doExecute(args: string | null, chained: boolean, result: CommandResult): Promise<CommandResult>;
@@ -296,11 +296,15 @@ export abstract class Command {
             });
     }
 
-    protected findMatchingChoicesForRef(choices: Dictionary<Models.Value>, titleMatch: string): Models.Value[] {
-        return filter(choices, v => v.toString().toLowerCase().indexOf(titleMatch.toLowerCase()) >= 0);
+    protected findMatchingChoicesForRef(choices: Dictionary<Models.Value> | null, titleMatch: string): Models.Value[] {
+        return choices ? filter(choices, v => v.toString().toLowerCase().indexOf(titleMatch.toLowerCase()) >= 0) : [];
     }
 
-    protected findMatchingChoicesForScalar(choices: Dictionary<Models.Value>, titleMatch: string): Models.Value[] {
+    protected findMatchingChoicesForScalar(choices: Dictionary<Models.Value> | null, titleMatch: string): Models.Value[] {
+        if (choices == null) {
+            return [];
+        }
+
         const labels = keys(choices);
         const matchingLabels = filter(labels, l => l.toString().toLowerCase().indexOf(titleMatch.toLowerCase()) >= 0);
         const result = new Array<Models.Value>();
@@ -386,18 +390,15 @@ export abstract class Command {
                 } else if (val.isList()) { //Should be!
                     vals = val.list()!;
                 }
-                forEach(vals,
-                    v => {
-                        this.addOrRemoveValue(valuesFromRouteData, v);
-                    });
+                valuesFromRouteData = valuesFromRouteData || [];
+
+                forEach(vals, v => this.addOrRemoveValue(valuesFromRouteData!, v));
+                   
                 if (vals[0].isScalar()) { //then all must be scalar
                     const scalars = map(valuesFromRouteData, v => v.scalar());
                     return new Models.Value(scalars);
                 } else { //assumed to be links
-                    const links = map(valuesFromRouteData,
-                        v => (
-                            { href: v.link().href(), title: v.link().title() }
-                        ));
+                    const links: Rointerfaces.ILink[] = map(valuesFromRouteData, v => ({ href: v.link()!.href(), title: Models.withUndefined(v.link()!.title()) }));
                     return new Models.Value(links);
                 }
             }

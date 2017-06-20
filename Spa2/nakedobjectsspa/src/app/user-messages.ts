@@ -311,7 +311,7 @@ export const typePrefix = "Type:";
 
 export const unModifiablePrefix = (reason: string) => `Unmodifiable: ${reason}`;
 export const outOfItemRange = (n: number | undefined) => `${n} is out of range for displayed items`;
-export const doesNotMatchMenu = (name: string) => `${name} does not match any menu`;
+export const doesNotMatchMenu = (name: string | undefined) => `${name} does not match any menu`;
 export const matchingMenus = "Matching menus:";
 export const menuTitle = (title: string) => `${title} menu`;
 export const allMenus = "Menus:";
