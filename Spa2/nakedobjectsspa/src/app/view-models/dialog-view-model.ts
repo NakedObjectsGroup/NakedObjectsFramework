@@ -1,5 +1,4 @@
-﻿import { resolveForwardRef } from '@angular/core/core';
-import { MessageViewModel } from './message-view-model';
+﻿import { MessageViewModel } from './message-view-model';
 import { ColorService } from '../color.service';
 import { ContextService } from '../context.service';
 import { ViewModelFactoryService } from '../view-model-factory.service';

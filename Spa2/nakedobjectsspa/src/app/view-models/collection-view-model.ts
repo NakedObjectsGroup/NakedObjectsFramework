@@ -127,7 +127,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
         if (actionViewModel) {
             return actionViewModel.actionRep;
         }
-        this.loggerService.throw(`CollectionViewModel:actionMember no member ${id} on ${this.name}`);
+        return this.loggerService.throw(`CollectionViewModel:actionMember no member ${id} on ${this.name}`);
     }
 
     private hasActionMember(id: string) {

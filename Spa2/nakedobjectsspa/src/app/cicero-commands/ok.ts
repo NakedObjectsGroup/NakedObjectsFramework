@@ -1,10 +1,8 @@
-import { CommandResult } from './command-result';
+import { CommandResult, getParametersAndCurrentValue } from './command-result';
 import { Command } from './Command';
 import * as Models from '../models';
 import * as Usermessages from '../user-messages';
 import { Dictionary } from 'lodash';
-import forEach from 'lodash/forEach';
-import * as Commandresult from './command-result';
 
 export class OK extends Command {
 
@@ -18,8 +16,6 @@ export class OK extends Command {
         return this.isDialog();
     }
 
-
-
     doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
         return this.getActionForCurrentDialog().then((action: Models.ActionRepresentation | Models.InvokableActionMember) => {
 
@@ -32,12 +28,11 @@ export class OK extends Command {
                 const obj = action.parent as Models.DomainObjectRepresentation;
                 fieldMap = this.context.getObjectCachedValues(obj.id()); //Props passed in as pseudo-params to action
             } else {
-                fieldMap = Commandresult.getParametersAndCurrentValue(action, this.context);
+                fieldMap = getParametersAndCurrentValue(action, this.context);
             }
 
             return this.context.invokeAction(action, fieldMap).then((result: Models.ActionResultRepresentation) => {
-              
-               
+                        
                return this.returnResult("", null, () =>  this.urlManager.closeDialogReplaceHistory(this.routeData().dialogId));
 
             }).catch((reject: Models.ErrorWrapper) => {

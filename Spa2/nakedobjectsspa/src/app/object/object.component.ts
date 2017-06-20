@@ -25,9 +25,8 @@ import flatten from 'lodash/flatten';
 import zipObject from 'lodash/zipObject';
 import mapValues from 'lodash/mapValues';
 import some from 'lodash/some';
-import * as Routedata from '../route-data';
 import { ISubscription } from 'rxjs/Subscription';
-import {safeUnsubscribe} from '../helpers-components';
+import { safeUnsubscribe } from '../helpers-components';
 
 @Component({
     selector: 'nof-object',

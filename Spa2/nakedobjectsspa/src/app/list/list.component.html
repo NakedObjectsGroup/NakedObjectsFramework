@@ -5,7 +5,7 @@
             <nof-action-bar [actions]="actionHolders"></nof-action-bar>
             <div class="messages">{{message}}</div>
         </header>
-        <div class="details" *ngIf="size == 0">{{description}}</div>
+        <div class="details" *ngIf="size === 0">{{description}}</div>
         <ng-container *ngIf="size > 0">
             <nof-action-list *ngIf="showActions()" [menuHolder]="collection"></nof-action-list>
             <nof-dialog [parent]="collection" [selectedDialogId]="selectedDialogId"></nof-dialog>

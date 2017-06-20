@@ -188,7 +188,7 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
         if (actionViewModel) {
             return actionViewModel.actionRep;
         }
-        this.loggerService.throw(`no actionviewmodel ${id} on ${this.id}`);
+        return this.loggerService.throw(`no actionviewmodel ${id} on ${this.id}`);
     };
 
     readonly showActions = () => {

@@ -749,7 +749,7 @@ export class UrlManagerService {
             case Constants.applicationPropertiesPath: return ViewType.ApplicationProperties;
             case Constants.multiLineDialogPath: return ViewType.MultiLineDialog;
         }
-        this.loggerService.throw(`UrlManagerService:getViewType ${view} is not a valid ViewType`);
+        return this.loggerService.throw(`UrlManagerService:getViewType ${view} is not a valid ViewType`);
     }
 
     getPaneRouteDataObservable = (paneId: Pane) => {

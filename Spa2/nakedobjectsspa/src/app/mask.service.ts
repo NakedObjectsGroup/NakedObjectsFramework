@@ -1,6 +1,4 @@
-﻿import { callLifecycleHooksChildrenFirst } from '@angular/core/src/view/provider';
-
-import * as Ro from './ro-interfaces';
+﻿import * as Ro from './ro-interfaces';
 import { CurrencyPipe, DecimalPipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { ConfigService } from './config.service';

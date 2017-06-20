@@ -61,7 +61,7 @@ export class RouteData {
     pane = (pane: Pane) => {
         if (pane === Pane.Pane1) { return this.pane1; }
         if (pane === Pane.Pane2) { return this.pane2; }
-        this.loggerService.throw('RouteData:pane ${pane} is not a valid pane index on RouteData');
+        return this.loggerService.throw('RouteData:pane ${pane} is not a valid pane index on RouteData');
     }
 }
 

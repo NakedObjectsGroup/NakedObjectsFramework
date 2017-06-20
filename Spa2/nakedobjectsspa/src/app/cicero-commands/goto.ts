@@ -2,7 +2,6 @@ import { CommandResult } from './command-result';
 import { Command } from './Command';
 import * as Models from '../models';
 import * as Usermessages from '../user-messages';
-import * as Cicerorendererservice from '../cicero-renderer.service';
 import * as Routedata from '../route-data';
 import filter from 'lodash/filter';
 import reduce from 'lodash/reduce';
