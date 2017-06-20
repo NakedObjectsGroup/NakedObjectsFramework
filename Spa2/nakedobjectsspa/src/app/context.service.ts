@@ -701,13 +701,13 @@ export class ContextService {
     }
 
     decPendingPotentActionOrReload(paneId: Pane) {
-        const count = this.pendingPotentActionCount[paneId]! - 1;
+        let count = this.pendingPotentActionCount[paneId]! - 1;
 
-        if (count < 0) {
-            // should never happen
-            this.pendingPotentActionCount[paneId] = 0;
+        if (count < 0) {  // should never happen
+            count = 0;
             this.loggerService.warn("ContextService:decPendingPotentActionOrReload count less than 0");
         }
+        this.pendingPotentActionCount[paneId] = count;
     }
 
     isPendingPotentActionOrReload(paneId: Pane) {
