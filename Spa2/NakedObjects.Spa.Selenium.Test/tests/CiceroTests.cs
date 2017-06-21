@@ -1487,7 +1487,7 @@ namespace NakedObjects.Selenium {
             ScenarioTransientObject();
         }
 
-        [TestMethod]
+        //[TestMethod]
         [Priority(-1)]
         public void ProblematicCiceroTests() {
             LaunchCiceroFromIcon();

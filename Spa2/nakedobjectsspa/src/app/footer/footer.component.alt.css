@@ -107,6 +107,6 @@
 
 /*Hide/show Cicero icon*/
     .speech {
-        display: none;
-        /*display:    inline-block;*/
+        /*display: none;*/
+        display:    inline-block;
     }
