@@ -1,9 +1,0 @@
-﻿<div class="title">
-    {{dialog.title}}
-</div>
-<form>
-    <div class="parameters" ng-include="parametersTemplate"></div>
-    <div class="co-validation">{{dialog.message}}</div>
-    <input class="ok" tabindex="0" type="submit" value="OK" title="{{dialog.tooltip()}}" ng-disabled="!dialog.clientValid()" gemini-enter="dialog.doInvoke()" ng-click="dialog.doInvoke()" gemini-rightclick="dialog.doInvoke(true)"/>
-    <input class="cancel" tabindex="0" type="button" gemini-enter="dialog.doCloseReplaceHistory()" ng-click="dialog.doCloseReplaceHistory()" value="Cancel" />
-</form>

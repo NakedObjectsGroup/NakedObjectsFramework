@@ -1,1 +1,0 @@
-//# sourceMappingURL=nakedobjects.vminterfaces.js.map
