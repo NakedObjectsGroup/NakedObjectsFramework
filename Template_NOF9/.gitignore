@@ -1,4 +1,4 @@
-/packages
+**/packages
 **/bin
 **/obj
 **/nakedobjects_log*.*

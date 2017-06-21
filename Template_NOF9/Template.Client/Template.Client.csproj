@@ -94,6 +94,10 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\alt.calendar.png" />
+    <Content Include="assets\alt.list.png" />
+    <Content Include="assets\alt.summary.png" />
+    <Content Include="assets\alt.table.png" />
     <Content Include="assets\calendar.png" />
     <Content Include="assets\list.png" />
     <Content Include="assets\summary.png" />
@@ -101,30 +105,28 @@
     <Content Include="favicon.ico" />
     <Content Include="iconFont.507ceb31df41f6b52dc8.svg" />
     <Content Include="index.html" />
-    <Content Include="inline.bundle.js" />
-    <Content Include="main.bundle.js" />
+    <Content Include="inline.78f74185633bea68c078.bundle.js" />
+    <Content Include="main.c06e4aa4a0ecbe286b9c.bundle.js" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="config.json" />
-    <Content Include="polyfills.bundle.js" />
-    <Content Include="styles.bundle.js" />
-    <Content Include="vendor.bundle.js" />
+    <Content Include="polyfills.34a3cae36254ed087563.bundle.js" />
+    <Content Include="styles.c5f9f995b6c4cda349cd.bundle.css" />
+    <Content Include="vendor.50bbc77fa8562acbf045.bundle.js" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="web.config" />
-    <Content Include="vendor.bundle.js.map" />
-    <Content Include="styles.bundle.js.map" />
-    <Content Include="polyfills.bundle.js.map" />
-    <Content Include="main.bundle.js.map" />
-    <Content Include="inline.bundle.js.map" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="iconFont.61e31f00a5b39f5a3786.eot" />
     <Content Include="iconFont.2f87c9f2aedf8f582535.woff" />
     <Content Include="iconFont.0a1778b9b8be9e01db68.ttf" />
+    <Content Include="assets\.npmignore" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
