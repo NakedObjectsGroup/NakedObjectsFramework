@@ -404,34 +404,34 @@ namespace NakedObjects.Selenium {
             WaitForOutputContaining("Multiple matches:\r\nMountain Bikes");
 
             //Conditional choices on editing an object
-            //CiceroUrl("object?r1=0&o1=___1.Product--840");
-            //WaitForOutput("Product: HL Road Frame - Black, 52");
-            //EnterCommand("edit");
-            //WaitForOutput("Editing Product: HL Road Frame - Black, 52");
-            //EnterCommand("enter product category,cloth");
-            //WaitForOutputContaining("Modified properties:");
-            //WaitForOutputContaining("Product Subcategory: empty");
-            //WaitForOutputContaining("Product Category: Clothing");
-            //EnterCommand("enter sub, glove");
-            //WaitForOutputContaining("Product Subcategory: Gloves");
-            //EnterCommand("enter sub, bike");
-            //WaitForOutput("None of the choices matches bike");
-            //EnterCommand("enter product category,bike");
-            //WaitForOutputContaining("Product Category: Bikes");
-            //EnterCommand("enter sub, bike");
-            //WaitForOutputContaining("Multiple matches:\r\nMountain Bikes");
+            CiceroUrl("object?r1=0&o1=___1.Product--840");
+            WaitForOutput("Product: HL Road Frame - Black, 52");
+            EnterCommand("edit");
+            WaitForOutput("Editing Product: HL Road Frame - Black, 52");
+            EnterCommand("enter product category,cloth");
+            WaitForOutputContaining("Modified properties:");
+            WaitForOutputContaining("Product Subcategory: empty");
+            WaitForOutputContaining("Product Category: Clothing");
+            EnterCommand("enter sub, glove");
+            WaitForOutputContaining("Product Subcategory: Gloves");
+            EnterCommand("enter sub, bike");
+            WaitForOutput("None of the choices matches bike");
+            EnterCommand("enter product category,bike");
+            WaitForOutputContaining("Product Category: Bikes");
+            EnterCommand("enter sub, bike");
+            WaitForOutputContaining("Multiple matches:\r\nMountain Bikes");
 
             //Multiple choices
-            //CiceroUrl("home?m1=ProductRepository&d1=ListProductsBySubCategories&f1_subCategories=%5B%7B%22href%22:%22http:%2F%2Flocalhost:61546%2Fobjects%2F___1.ProductSubcategory%2F1%22,%22title%22:%22Mountain%20Bikes%22%7D,%7B%22href%22:%22http:%2F%2Flocalhost:61546%2Fobjects%2F___1.ProductSubcategory%2F3%22,%22title%22:%22Touring%20Bikes%22%7D%5D");
-            //WaitForOutputContaining("Sub Categories: -Mountain Bikes-Touring Bikes");
-            //EnterCommand("enter sub, handle");
-            //WaitForOutputContaining("Sub Categories: -Mountain Bikes-Touring Bikes-Handlebars");
-            //EnterCommand("enter sub, mountain bikes");
-            //WaitForOutputContaining("Sub Categories: -Touring Bikes-Handlebars");
+            CiceroUrl("home?m1=ProductRepository&d1=ListProductsBySubCategories&f1_subCategories=%5B%7B%22href%22:%22http:%2F%2Flocalhost:61546%2Fobjects%2F___1.ProductSubcategory%2F1%22,%22title%22:%22Mountain%20Bikes%22%7D,%7B%22href%22:%22http:%2F%2Flocalhost:61546%2Fobjects%2F___1.ProductSubcategory%2F3%22,%22title%22:%22Touring%20Bikes%22%7D%5D");
+            WaitForOutputContaining("Sub Categories: -Mountain Bikes-Touring Bikes");
+            EnterCommand("enter sub, handle");
+            WaitForOutputContaining("Sub Categories: -Mountain Bikes-Touring Bikes-Handlebars");
+            EnterCommand("enter sub, mountain bikes");
+            WaitForOutputContaining("Sub Categories: -Touring Bikes-Handlebars");
 
             //TODO: Conditional multi-choices
             //CiceroUrl("home?m1=ProductRepository&d1=FindProductsByCategory");
-            //WaitForOutputStarting("Action dialog: Find Products By Category");
+            //WaitForOutputContaining("Action dialog: Find Products By Category");
             //EnterCommand("enter Categories,cloth");
             //WaitForOutputContaining("Categories: -Bikes-Clothing");
             //EnterCommand("enter sub, glove");
@@ -440,8 +440,8 @@ namespace NakedObjects.Selenium {
             //WaitForOutputContaining("Sub Categories: -Road Bikes-Gloves");
 
             //Finish somewhere other than home!
-            //EnterCommand("menu products");
-            //WaitForOutput("Products menu");
+            EnterCommand("menu products");
+            WaitForOutput("Products menu");
         }
 
         public virtual void Gemini() {
@@ -1460,30 +1460,30 @@ namespace NakedObjects.Selenium {
         [TestMethod] //Mega
         [Priority(0)]
         public void CiceroTests() {
-            Action();
-            BackAndForward();
-            Cancel();
-            Edit();
+            //Action();
+            //BackAndForward();
+            //Cancel();
+            //Edit();
             Enter();
-            Gemini();
-            Goto();
-            Help();
-            Menu();
-            OK();
-            Page();
-            Root();
-            Save();
-            Show();
-            Where();
-            Clipboard();
-            SpaceBarAutoComplete();
-            UnrecognisedCommand();
-            UpAndDownArrow();
-            ChainedCommands();
-            ScenarioEditAndSave();
-            ScenarioMultiSelect();
-            ScenarioTestEditableVM();
-            ScenarioUsingClipboard();
+            //Gemini();
+            //Goto();
+            //Help();
+            //Menu();
+            //OK();
+            //Page();
+            //Root();
+            //Save();
+            //Show();
+            //Where();
+            //Clipboard();
+            //SpaceBarAutoComplete();
+            //UnrecognisedCommand();
+            //UpAndDownArrow();
+            //ChainedCommands();
+            //ScenarioEditAndSave();
+            //ScenarioMultiSelect();
+            //ScenarioTestEditableVM();
+            //ScenarioUsingClipboard();
             ScenarioTransientObject();
         }
 
