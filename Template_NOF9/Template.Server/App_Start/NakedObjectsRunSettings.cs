@@ -20,7 +20,7 @@ namespace NakedObjects.Template {
 
         public static string RestRoot
         {
-            get { return "rest"; }
+            get { return ""; }
         }
 
         private static string[] ModelNamespaces
