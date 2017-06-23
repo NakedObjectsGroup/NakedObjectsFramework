@@ -1,18 +1,19 @@
-import { CommandResult } from './command-result';
+import { Dictionary } from 'lodash';
+import forEach from 'lodash/forEach';
+import fromPairs from 'lodash/fromPairs';
+import keys from 'lodash/keys';
+import last from 'lodash/last';
+import map from 'lodash/map';
+import mapKeys from 'lodash/mapKeys';
+import mapValues from 'lodash/mapValues';
+import reduce from 'lodash/reduce';
+import * as moment from 'moment';
 import { Command } from './Command';
+import * as Commandresult from './command-result';
+import { CommandResult } from './command-result';
+import * as Constants from '../constants';
 import * as Models from '../models';
 import * as Usermessages from '../user-messages';
-import * as Constants from '../constants';
-import { Dictionary } from 'lodash';
-import map from 'lodash/map';
-import forEach from 'lodash/forEach';
-import reduce from 'lodash/reduce';
-import keys from 'lodash/keys';
-import mapValues from 'lodash/mapValues';
-import mapKeys from 'lodash/mapKeys';
-import fromPairs from 'lodash/fromPairs';
-import * as moment from 'moment';
-import * as Commandresult from './command-result';
 
 export class Enter extends Command {
 
@@ -70,21 +71,28 @@ export class Enter extends Command {
         });
     }
 
+    private isDependentField(fieldName: string, possibleDependent: Models.IField): boolean {
+        const promptLink = possibleDependent.promptLink();
+
+        if (promptLink) {
+            const pArgs = promptLink.arguments();
+            const argNames = keys(pArgs);
+
+            return (argNames.indexOf(fieldName.toLowerCase()) >= 0);
+        }
+        return false;
+    }
+
+
     private findAndClearAnyDependentFields(changingField: string, allFields: Dictionary<Models.IField>) {
 
-        forEach(allFields,
-            field => {
-                const promptLink = field.promptLink();
-
-                if (promptLink) {
-                    const pArgs = promptLink.arguments();
-                    const argNames = keys(pArgs);
-
-                    if (argNames.indexOf(changingField.toLowerCase()) >= 0) {
-                        this.clearField(field);
-                    }
+        forEach(allFields, field => {
+            if (this.isDependentField(changingField, field)) {
+                if (!this.isMultiChoiceField(field)) {
+                    this.clearField(field);
                 }
-            });
+            }
+        });
     }
 
     private fieldEntryForDialog(fieldName: string, fieldEntry: string) {
@@ -132,21 +140,15 @@ export class Enter extends Command {
                 return this.handleFreeForm(field, fieldEntry);
             case Models.EntryType.AutoComplete:
                 return this.handleAutoComplete(field, fieldEntry);
-
             case Models.EntryType.Choices:
                 return this.handleChoices(field, fieldEntry);
-
             case Models.EntryType.MultipleChoices:
                 return this.handleChoices(field, fieldEntry);
-
             case Models.EntryType.ConditionalChoices:
                 return this.handleConditionalChoices(field, fieldEntry);
-
             case Models.EntryType.MultipleConditionalChoices:
                 return this.handleConditionalChoices(field, fieldEntry);
-
             default:
-
                 return this.returnResult("", Usermessages.invalidCase);
         }
     }
@@ -211,10 +213,8 @@ export class Enter extends Command {
                 selfLink.setTitle(obj.title());
                 const value = new Models.Value(selfLink);
                 this.setFieldValue(field, value);
-
                 return this.returnResult("", "", () => this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl());
             } else {
-
                 return this.returnResult("", Usermessages.incompatibleClipboard);
             }
         });
@@ -227,28 +227,51 @@ export class Enter extends Command {
         } else {
             return this.context.autoComplete(field, field.id(), () => ({}), fieldEntry).then(choices => {
                 const matches = this.findMatchingChoicesForRef(choices, fieldEntry);
-                return this.switchOnMatches(field, fieldEntry, matches);
+                const allFields = Commandresult.getFields(field);
+                return this.switchOnMatches(field, allFields, fieldEntry, matches);
             });
         }
     }
 
-    private handleChoices(field: Models.IField, fieldEntry: string) {
+    private handleChoices(field: Models.IField,  fieldEntry: string) {
         let matches: Models.Value[];
         if (field.isScalar()) {
             matches = this.findMatchingChoicesForScalar(field.choices(), fieldEntry);
         } else {
             matches = this.findMatchingChoicesForRef(field.choices(), fieldEntry);
         }
-        return this.switchOnMatches(field, fieldEntry, matches);
+        const allFields = Commandresult.getFields(field);
+        return this.switchOnMatches(field, allFields, fieldEntry, matches);
     }
 
-    private switchOnMatches(field: Models.IField, fieldEntry: string, matches: Models.Value[]) {
+    private updateDependentField(field: Models.IField) : Promise<CommandResult> {
+        return this.handleConditionalChoices(field);
+    }
+ 
+    private setFieldAndCheckDependencies(field: Models.IField, allFields : Models.IField[],  match : Models.Value) : Promise<CommandResult[]> {
+        this.setFieldValue(field, match);
+        const promises: Promise<CommandResult>[] = [];
+
+        if (this.isMultiChoiceField(field)) {
+            // find any dependent fields and update           
+            forEach(allFields, depField => {
+                if (this.isDependentField(field.id().toLowerCase(), depField)) {
+                    promises.push(this.updateDependentField(depField));
+                }
+            });
+        }
+
+        promises.push(this.returnResult("", "", () => this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl()));
+        return Promise.all(promises);
+    }
+
+
+    private switchOnMatches(field: Models.IField, allFields: Models.IField[], fieldEntry: string, matches: Models.Value[]) {
         switch (matches.length) {
             case 0:
                 return this.returnResult("", Usermessages.noMatch(fieldEntry));
             case 1:
-                this.setFieldValue(field, matches[0]);
-                return this.returnResult("", "", () => this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl());
+                return this.setFieldAndCheckDependencies(field, allFields, matches[0]).then((crs: CommandResult[]) => last(crs));   
             default:
                 let msg = Usermessages.multipleMatches;
                 forEach(matches, m => msg += m.toString() + "\n");
@@ -261,8 +284,7 @@ export class Enter extends Command {
         const values = mapValues(props, p => p.value());
         const modifiedProps = this.context.getObjectCachedValues(obj.id());
 
-        forEach(values,
-            (v, k) => {
+        forEach(values,  (v, k) => {
                 const newValue = modifiedProps[k];
                 if (newValue) {
                     values[k] = newValue;
@@ -271,11 +293,12 @@ export class Enter extends Command {
         return mapKeys(values, (v, k) => k.toLowerCase());
     }
 
-    private handleConditionalChoices(field: Models.IField, fieldEntry: string) {
+    private handleConditionalChoices(field: Models.IField, fieldEntry?: string) {
         let enteredFields: Dictionary<Models.Value>;
+        const allFields = Commandresult.getFields(field);
 
         if (field instanceof Models.Parameter) {
-            enteredFields = Commandresult.getParametersAndCurrentValue(field.parent, this.context);
+           enteredFields = Commandresult.getParametersAndCurrentValue(field.parent, this.context);
         }
 
         if (field instanceof Models.PropertyMember) {
@@ -285,9 +308,19 @@ export class Enter extends Command {
         const args = fromPairs(map(field.promptLink()!.arguments()!, (v: any, key: string) => [key, new Models.Value(v.value)])) as Dictionary<Models.Value>;
         forEach(keys(args), key => args[key] = enteredFields[key]);
 
+        let fieldEntryOrExistingValue : string;
+
+        if (fieldEntry === undefined) {
+            const def = args[field.id()];
+            fieldEntryOrExistingValue = def ? def.toValueString() : "";
+        }
+        else {
+            fieldEntryOrExistingValue = fieldEntry;
+        }
+
         return this.context.conditionalChoices(field, field.id(), () => ({}), args).then(choices => {
-            const matches = this.findMatchingChoicesForRef(choices, fieldEntry);
-            return this.switchOnMatches(field, fieldEntry, matches);
+            const matches = this.findMatchingChoicesForRef(choices, fieldEntryOrExistingValue);
+            return this.switchOnMatches(field, allFields, fieldEntryOrExistingValue, matches);
         });
     }
 

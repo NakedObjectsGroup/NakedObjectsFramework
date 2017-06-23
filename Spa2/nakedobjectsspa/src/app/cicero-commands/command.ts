@@ -212,6 +212,12 @@ export abstract class Command {
         return !!this.routeData().dialogId;
     }
 
+    protected isMultiChoiceField(field : Models.IField) {
+        const entryType = field.entryType();
+        return entryType === Models.EntryType.MultipleChoices || entryType === Models.EntryType.MultipleConditionalChoices;
+    }
+
+
     protected getActionForCurrentDialog(): Promise<Models.InvokableActionMember | Models.ActionRepresentation> {
         const dialogId = this.routeData().dialogId;
         if (this.isObject()) {
@@ -373,7 +379,7 @@ export abstract class Command {
 
         if (fieldEntryType !== Models.EntryType.FreeForm || field.isCollectionContributed()) {
 
-            if (fieldEntryType === Models.EntryType.MultipleChoices || field.isCollectionContributed()) {
+            if (this.isMultiChoiceField(field) || field.isCollectionContributed()) {
                 let valuesFromRouteData: Models.Value[] | null = new Array<Models.Value>();
                 if (field instanceof Models.Parameter) {
                     const rd = Commandresult.getParametersAndCurrentValue(field.parent, this.context)[field.id()];

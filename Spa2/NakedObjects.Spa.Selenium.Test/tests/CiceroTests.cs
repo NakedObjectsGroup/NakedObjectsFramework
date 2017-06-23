@@ -430,14 +430,14 @@ namespace NakedObjects.Selenium {
             WaitForOutputContaining("Sub Categories: -Touring Bikes-Handlebars");
 
             //TODO: Conditional multi-choices
-            //CiceroUrl("home?m1=ProductRepository&d1=FindProductsByCategory");
-            //WaitForOutputContaining("Action dialog: Find Products By Category");
-            //EnterCommand("enter Categories,cloth");
-            //WaitForOutputContaining("Categories: -Bikes-Clothing");
-            //EnterCommand("enter sub, glove");
-            //WaitForOutputContaining("Sub Categories: -Mountain Bikes-Road Bikes-Gloves");
-            //EnterCommand("enter sub, mount");
-            //WaitForOutputContaining("Sub Categories: -Road Bikes-Gloves");
+            CiceroUrl("home?m1=ProductRepository&d1=FindProductsByCategory");
+            WaitForOutputContaining("Action dialog: Find Products By Category");
+            EnterCommand("enter Categories,cloth");
+            WaitForOutputContaining("Categories: -Bikes-Clothing");
+            EnterCommand("enter sub, glove");
+            WaitForOutputContaining("Subcategories: -Mountain Bikes-Road Bikes-Gloves");
+            EnterCommand("enter sub, mount");
+            WaitForOutputContaining("Subcategories: -Road Bikes-Gloves");
 
             //Finish somewhere other than home!
             EnterCommand("menu products");
@@ -1460,30 +1460,30 @@ namespace NakedObjects.Selenium {
         [TestMethod] //Mega
         [Priority(0)]
         public void CiceroTests() {
-            //Action();
-            //BackAndForward();
-            //Cancel();
-            //Edit();
+            Action();
+            BackAndForward();
+            Cancel();
+            Edit();
             Enter();
-            //Gemini();
-            //Goto();
-            //Help();
-            //Menu();
-            //OK();
-            //Page();
-            //Root();
-            //Save();
-            //Show();
-            //Where();
-            //Clipboard();
-            //SpaceBarAutoComplete();
-            //UnrecognisedCommand();
-            //UpAndDownArrow();
-            //ChainedCommands();
-            //ScenarioEditAndSave();
-            //ScenarioMultiSelect();
-            //ScenarioTestEditableVM();
-            //ScenarioUsingClipboard();
+            Gemini();
+            Goto();
+            Help();
+            Menu();
+            OK();
+            Page();
+            Root();
+            Save();
+            Show();
+            Where();
+            Clipboard();
+            SpaceBarAutoComplete();
+            UnrecognisedCommand();
+            UpAndDownArrow();
+            ChainedCommands();
+            ScenarioEditAndSave();
+            ScenarioMultiSelect();
+            ScenarioTestEditableVM();
+            ScenarioUsingClipboard();
             ScenarioTransientObject();
         }
 
