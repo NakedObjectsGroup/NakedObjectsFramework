@@ -1470,31 +1470,31 @@ namespace NakedObjects.Selenium {
         [TestMethod] //Mega
         [Priority(0)]
         public void CiceroTests() {
-            //Action();
-            //BackAndForward();
-            //Cancel();
-            //Edit();
+            Action();
+            BackAndForward();
+            Cancel();
+            Edit();
             Enter();
-            //Gemini();
-            //Goto();
-            //Help();
-            //Menu();
-            //OK();
-            //Page();
-            //Root();
-            //Save();
-            //Show();
-            //Where();
-            //Clipboard();
-            //SpaceBarAutoComplete();
-            //UnrecognisedCommand();
-            //UpAndDownArrow();
-            //ChainedCommands();
-            //ScenarioEditAndSave();
-            //ScenarioMultiSelect();
-            //ScenarioTestEditableVM();
-            //ScenarioUsingClipboard();
-            //ScenarioTransientObject();
+            Gemini();
+            Goto();
+            Help();
+            Menu();
+            OK();
+            Page();
+            Root();
+            Save();
+            Show();
+            Where();
+            Clipboard();
+            SpaceBarAutoComplete();
+            UnrecognisedCommand();
+            UpAndDownArrow();
+            ChainedCommands();
+            ScenarioEditAndSave();
+            ScenarioMultiSelect();
+            ScenarioTestEditableVM();
+            ScenarioUsingClipboard();
+            ScenarioTransientObject();
         }
 
         //[TestMethod]

@@ -300,13 +300,12 @@ export class Enter extends Command {
      private updateOnMatches(field: Models.IField, allFields: Models.IField[], fieldEntry: string, matches: Models.Value[]) {
         switch (matches.length) {
             case 0:
-                return this.setFieldAndCheckDependencies(field, allFields, new Models.Value(null)).then((crs: CommandResult[]) => last(crs));   
             case 1:
-                return this.setFieldAndCheckDependencies(field, allFields, matches[0]).then((crs: CommandResult[]) => last(crs));   
+                const match = matches.length === 0 ? new Models.Value(null) : matches[0];
+                return this.setFieldAndCheckDependencies(field, allFields, match).then((crs: CommandResult[]) => last(crs));   
             default:
-                let msg = Usermessages.multipleMatches;
-                forEach(matches, m => msg += m.toString() + "\n");
-                return this.returnResult("", msg);
+                // shouldn't happen - ignore
+                return this.returnResult("", "");
         }
     }
 
@@ -347,20 +346,24 @@ export class Enter extends Command {
     }
 
     private renderFieldDetails(field: Models.IField, value: Models.Value): string {
-        let s = Usermessages.fieldName(field.extensions().friendlyName());
+           
+        const fieldName = Usermessages.fieldName(field.extensions().friendlyName());
         const desc = field.extensions().description();
-        s += desc ? `\n${Usermessages.descriptionFieldPrefix} ${desc}` : "";
-        s += `\n${Usermessages.typePrefix} ${Models.friendlyTypeName(field.extensions().returnType()!)}`;
+        const descAndPrefix = desc ? `\n${Usermessages.descriptionFieldPrefix} ${desc}` : "";
+        const types = `\n${Usermessages.typePrefix} ${Models.friendlyTypeName(field.extensions().returnType()!)}`;
+
+        let postFix = "";
         if (field instanceof Models.PropertyMember && field.disabledReason()) {
-            s += `\n${Usermessages.unModifiablePrefix(field.disabledReason())}`;
+            postFix = `\n${Usermessages.unModifiablePrefix(field.disabledReason())}`;
         } else {
-            s += field.extensions().optional() ? `\n${Usermessages.optional}` : `\n${Usermessages.mandatory}`;
+            postFix = field.extensions().optional() ? `\n${Usermessages.optional}` : `\n${Usermessages.mandatory}`;
             const choices = field.choices();
             if (choices) {
                 const label = `\n${Usermessages.choices}: `;
-                s += reduce(choices, (ss, cho) => ss + cho + " ", label);
+                const labelAndChoices = reduce(choices, (ss, cho) => ss + cho + " ", label);
+                postFix = `${postFix}${labelAndChoices}`;
             }
         }
-        return s;
+        return `${fieldName}${descAndPrefix}${types}${postFix}`
     }
 }
