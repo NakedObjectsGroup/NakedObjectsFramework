@@ -15,8 +15,7 @@ export function getParametersAndCurrentValue(action: Ro.ActionMember | Models.Ac
         const values = mapValues(parms, p => {
             const value = cachedValues[p.id()];
             return value === undefined ? p.default() : value;
-        });
-      
+        });  
         return  values;
     }
     return {};

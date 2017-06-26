@@ -405,7 +405,7 @@ export abstract class Command {
                     return new Models.Value(scalars);
                 } else { //assumed to be links
                     const links: Rointerfaces.ILink[] = map(valuesFromRouteData, v => ({ href: v.link()!.href(), title: Models.withUndefined(v.link()!.title()) }));
-                    return new Models.Value(links);
+                    return new Models.Value(links.length > 0 ? links : null);
                 }
             }
             if (val.isScalar()) {

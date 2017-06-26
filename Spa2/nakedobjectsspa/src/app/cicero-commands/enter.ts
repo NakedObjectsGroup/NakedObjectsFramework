@@ -145,9 +145,9 @@ export class Enter extends Command {
             case Models.EntryType.MultipleChoices:
                 return this.handleChoices(field, fieldEntry);
             case Models.EntryType.ConditionalChoices:
-                return this.handleConditionalChoices(field, fieldEntry);
+                return this.handleConditionalChoices(field, false, fieldEntry);
             case Models.EntryType.MultipleConditionalChoices:
-                return this.handleConditionalChoices(field, fieldEntry);
+                return this.handleConditionalChoices(field, false, fieldEntry);
             default:
                 return this.returnResult("", Usermessages.invalidCase);
         }
@@ -245,21 +245,24 @@ export class Enter extends Command {
     }
 
     private updateDependentField(field: Models.IField) : Promise<CommandResult> {
-        return this.handleConditionalChoices(field);
+        return this.handleConditionalChoices(field, true);
     }
  
-    private setFieldAndCheckDependencies(field: Models.IField, allFields : Models.IField[],  match : Models.Value) : Promise<CommandResult[]> {
+    private setFieldAndCheckDependencies(field: Models.IField, allFields: Models.IField[], match: Models.Value): Promise<CommandResult[]> {
         this.setFieldValue(field, match);
         const promises: Promise<CommandResult>[] = [];
 
-        if (this.isMultiChoiceField(field)) {
-            // find any dependent fields and update           
-            forEach(allFields, depField => {
+
+        // find any dependent multi choice fields and update    
+        // non multi choice we will have just cleared        
+        forEach(allFields, depField => {
+            if (this.isMultiChoiceField(depField)) {
                 if (this.isDependentField(field.id().toLowerCase(), depField)) {
                     promises.push(this.updateDependentField(depField));
                 }
-            });
-        }
+            }
+        });
+
 
         promises.push(this.returnResult("", "", () => this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl()));
         return Promise.all(promises);
@@ -293,7 +296,21 @@ export class Enter extends Command {
         return mapKeys(values, (v, k) => k.toLowerCase());
     }
 
-    private handleConditionalChoices(field: Models.IField, fieldEntry?: string) {
+
+     private updateOnMatches(field: Models.IField, allFields: Models.IField[], fieldEntry: string, matches: Models.Value[]) {
+        switch (matches.length) {
+            case 0:
+                return this.setFieldAndCheckDependencies(field, allFields, new Models.Value(null)).then((crs: CommandResult[]) => last(crs));   
+            case 1:
+                return this.setFieldAndCheckDependencies(field, allFields, matches[0]).then((crs: CommandResult[]) => last(crs));   
+            default:
+                let msg = Usermessages.multipleMatches;
+                forEach(matches, m => msg += m.toString() + "\n");
+                return this.returnResult("", msg);
+        }
+    }
+
+    private handleConditionalChoices(field: Models.IField, updating : boolean, fieldEntry?: string, ) {
         let enteredFields: Dictionary<Models.Value>;
         const allFields = Commandresult.getFields(field);
 
@@ -320,6 +337,11 @@ export class Enter extends Command {
 
         return this.context.conditionalChoices(field, field.id(), () => ({}), args).then(choices => {
             const matches = this.findMatchingChoicesForRef(choices, fieldEntryOrExistingValue);
+        
+            if (updating) {
+                return this.updateOnMatches(field, allFields, fieldEntryOrExistingValue, matches);
+            }
+
             return this.switchOnMatches(field, allFields, fieldEntryOrExistingValue, matches);
         });
     }

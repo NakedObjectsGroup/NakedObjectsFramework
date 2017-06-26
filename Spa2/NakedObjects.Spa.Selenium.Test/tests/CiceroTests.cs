@@ -365,7 +365,7 @@ namespace NakedObjects.Selenium {
             //EnterCommand("enter to,info@nakedobjects.net");
             //WaitForOutputContaining("To: info@nakedobjects.net");
 
-            //Cannot use enter on a non-modifable property
+            //Cannot use enter on a non-modifiable property
             CiceroUrl("object?i1=Edit&o1=___1.WorkOrder--37879");
             WaitForOutputStarting("Editing Work Order: HL Crankset");
             EnterCommand("enter stocked,3");
@@ -429,7 +429,7 @@ namespace NakedObjects.Selenium {
             EnterCommand("enter sub, mountain bikes");
             WaitForOutputContaining("Sub Categories: -Touring Bikes-Handlebars");
 
-            //TODO: Conditional multi-choices
+          
             CiceroUrl("home?m1=ProductRepository&d1=FindProductsByCategory");
             WaitForOutputContaining("Action dialog: Find Products By Category");
             EnterCommand("enter Categories,cloth");
@@ -438,6 +438,16 @@ namespace NakedObjects.Selenium {
             WaitForOutputContaining("Subcategories: -Mountain Bikes-Road Bikes-Gloves");
             EnterCommand("enter sub, mount");
             WaitForOutputContaining("Subcategories: -Road Bikes-Gloves");
+            EnterCommand("enter sub, road bikes");
+            WaitForOutputContaining("Subcategories: -Gloves");
+            EnterCommand("enter sub, gloves");
+            WaitForOutputContaining("Subcategories: empty");
+
+            CiceroUrl("home?m1=ProductRepository&d1=FindProductsByCategory");
+            WaitForOutputContaining("Action dialog: Find Products By Category");
+            EnterCommand("enter Categories,bikes");
+            WaitForOutputContaining("Categories: empty");        
+            WaitForOutputContaining("Subcategories: empty");
 
             //Finish somewhere other than home!
             EnterCommand("menu products");
@@ -1301,12 +1311,12 @@ namespace NakedObjects.Selenium {
             WaitForOutput("The command: show is not available in the current context");
 
             //Error in execution -  Timing problem?
-            //CiceroUrl("home");
-            //WaitForOutputStarting("Welcome to Cicero");
-            //EnterCommand("menu special; ac current; ok; show 20");
-            //WaitForOutput("The highest numbered item is 16");
-            //EnterCommand("where");
-            //WaitForOutput("Result from Current Special Offers:\r\n16 items");
+            CiceroUrl("home");
+            WaitForOutputStarting("Welcome to Cicero");
+            EnterCommand("menu special; ac current; ok; show 20");
+            WaitForOutput("The highest numbered item is 16");
+            EnterCommand("where");
+            WaitForOutput("Result from Current Special Offers:\r\n16 items");
         }
 
         public virtual void LaunchCiceroFromIcon() {
@@ -1460,31 +1470,31 @@ namespace NakedObjects.Selenium {
         [TestMethod] //Mega
         [Priority(0)]
         public void CiceroTests() {
-            Action();
-            BackAndForward();
-            Cancel();
-            Edit();
+            //Action();
+            //BackAndForward();
+            //Cancel();
+            //Edit();
             Enter();
-            Gemini();
-            Goto();
-            Help();
-            Menu();
-            OK();
-            Page();
-            Root();
-            Save();
-            Show();
-            Where();
-            Clipboard();
-            SpaceBarAutoComplete();
-            UnrecognisedCommand();
-            UpAndDownArrow();
-            ChainedCommands();
-            ScenarioEditAndSave();
-            ScenarioMultiSelect();
-            ScenarioTestEditableVM();
-            ScenarioUsingClipboard();
-            ScenarioTransientObject();
+            //Gemini();
+            //Goto();
+            //Help();
+            //Menu();
+            //OK();
+            //Page();
+            //Root();
+            //Save();
+            //Show();
+            //Where();
+            //Clipboard();
+            //SpaceBarAutoComplete();
+            //UnrecognisedCommand();
+            //UpAndDownArrow();
+            //ChainedCommands();
+            //ScenarioEditAndSave();
+            //ScenarioMultiSelect();
+            //ScenarioTestEditableVM();
+            //ScenarioUsingClipboard();
+            //ScenarioTransientObject();
         }
 
         //[TestMethod]
