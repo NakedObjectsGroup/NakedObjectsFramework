@@ -1054,6 +1054,44 @@ namespace NakedObjects.Selenium {
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "menu pr;action rand;ok ");
         }
 
+        public virtual void TabAutoComplete() {
+            CiceroUrl("home");
+            WaitForOutputStarting("Welcome to Cicero");
+            TypeIntoFieldWithoutClearing("input", "sel" + Keys.Tab);
+            wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "selection ");
+
+            CiceroUrl("object?o1=___1.Product--968");
+            WaitForOutput("Product: Touring-1000 Blue, 54");
+            //Hitting Tab with no entry has no effect
+            TypeIntoFieldWithoutClearing("input", Keys.Tab);
+            wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "");
+            WaitForOutput("Product: Touring-1000 Blue, 54");
+
+            //Unrecognised two chars
+            TypeIntoFieldWithoutClearing("input", "xx" + Keys.Tab);
+            WaitForOutput("No command begins with xx");
+
+            //Single character
+            CiceroUrl("home");
+            WaitForOutputStarting("Welcome to Cicero");
+            TypeIntoFieldWithoutClearing("input", "f" + Keys.Tab);
+            WaitForOutput("Command word must have at least 2 characters");
+
+            //if there's any argument specified, just adds a space
+            CiceroUrl("object?o1=___1.Product--968");
+            WaitForOutput("Product: Touring-1000 Blue, 54");
+            TypeIntoFieldWithoutClearing("input", "he menu" + Keys.Tab);
+            wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "help menu ");
+
+            //chained commands
+            ClearFieldThenType("input", "me pr;ac rand;ok " + Keys.Tab);
+            wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "menu pr;action rand;ok ");
+
+            //Space bar before command eventually removed
+            ClearFieldThenType("input", " me pr; ac rand; ok " + Keys.Tab);
+            wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "menu pr;action rand;ok ");
+        }
+
         public virtual void UnrecognisedCommand() {
             CiceroUrl("home");
             WaitForOutputStarting("Welcome to Cicero");
@@ -1424,6 +1462,11 @@ namespace NakedObjects.Selenium {
         }
 
         [TestMethod]
+        public override void TabAutoComplete() {
+            base.TabAutoComplete();
+        }
+
+        [TestMethod]
         public override void UnrecognisedCommand() {
             base.UnrecognisedCommand();
         }
@@ -1487,6 +1530,7 @@ namespace NakedObjects.Selenium {
             Where();
             Clipboard();
             SpaceBarAutoComplete();
+            TabAutoComplete();
             UnrecognisedCommand();
             UpAndDownArrow();
             ChainedCommands();

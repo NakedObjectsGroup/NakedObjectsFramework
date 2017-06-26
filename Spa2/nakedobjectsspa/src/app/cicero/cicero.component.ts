@@ -4,13 +4,13 @@ import { Component, OnInit, ViewChild, ElementRef, Renderer } from '@angular/cor
 import { CiceroCommandFactoryService } from '../cicero-command-factory.service';
 import { CiceroRendererService } from '../cicero-renderer.service';
 import { ISubscription } from 'rxjs/Subscription';
-import { PaneRouteData } from '../route-data'; //TODO trim
+import { PaneRouteData } from '../route-data'; 
 import { UrlManagerService } from '../url-manager.service';
 import { ErrorService } from '../error.service';
 import { CiceroContextService } from '../cicero-context.service';
 import { Command } from '../cicero-commands/Command';
 import { Result } from '../cicero-commands/result';
-import {ContextService} from '../context.service';
+import { ContextService } from '../context.service';
 import reduce from 'lodash/reduce';
 import { safeUnsubscribe, focus } from '../helpers-components';
 
@@ -85,9 +85,7 @@ export class CiceroComponent implements OnInit {
     private paneRouteDataSub: ISubscription;
     private warnSub: ISubscription;
     private errorSub : ISubscription;
-
-    private lastPaneRouteData: PaneRouteData;
-  
+    private lastPaneRouteData: PaneRouteData;  
     private previousInput: string;
 
     private executeCommand(cmd: Command) {
@@ -131,7 +129,7 @@ export class CiceroComponent implements OnInit {
     outputText: string;
 
     parseInput(input: string): void {
-        const prevInput = this.commandFactory.autoComplete(input).input;
+        const prevInput = this.commandFactory.preParse(input).input;
         this.previousInput = prevInput ? prevInput.trim() : "";
         const parseResult = this.commandFactory.getCommands(input);
 
@@ -144,29 +142,20 @@ export class CiceroComponent implements OnInit {
         }
     };
 
-    selectPreviousInput = () => {
-        setTimeout(() => this.inputText = this.previousInput);
-    };
+    selectPreviousInput = () => setTimeout(() => this.inputText = this.previousInput);
 
-    clearInput = () => {
-        this.inputText = "";
-    };
+    clearInput = () => this.inputText = "";
 
-    autocomplete(input: string): string {
-        //TODO: recognise tab also?
-        if (input.substring(input.length - 1) === " ") {
-            input = input.substr(0, input.length - 1);
-            const res = this.commandFactory.autoComplete(input);
-            this.writeInputOutput(res);
-            return res.input || "";
-        }
-        return input;
+    autocomplete(input: string): boolean {
+        input = input.trim();
+        const res = this.commandFactory.preParse(input);
+        this.writeInputOutput(res);
+        return false;
     };
 
     focusOnInput() {
         focus(this.renderer, this.inputField);
     }
-
 
     @ViewChild("inputField")
     inputField: ElementRef;

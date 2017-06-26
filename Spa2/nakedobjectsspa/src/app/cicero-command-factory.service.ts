@@ -96,9 +96,8 @@ export class CiceroCommandFactoryService {
         return command;
     };
 
-    //TODO: change the name & functionality to pre-parse or somesuch as could do more than auto
-    //complete e.g. reject unrecognised action or one not available in context.
-    autoComplete = (input: string): Result => {
+    //TODO:  could do more than auto complete e.g. reject unrecognised action or one not available in context.
+    preParse = (input: string): Result => {
         if (!input) {
             return Result.create(input, null);
         }
