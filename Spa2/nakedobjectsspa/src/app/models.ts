@@ -191,7 +191,7 @@ export function friendlyNameForParam(action: ActionRepresentation | InvokableAct
 
 export function friendlyNameForProperty(obj: DomainObjectRepresentation, propId: string) {
     const prop = obj.propertyMember(propId);
-    return prop.extensions().friendlyName();
+    return prop ? prop.extensions().friendlyName() : propId;
 }
 
 export function typePlusTitle(obj: DomainObjectRepresentation) {

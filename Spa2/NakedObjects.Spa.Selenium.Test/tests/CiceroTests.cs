@@ -322,7 +322,7 @@ namespace NakedObjects.Selenium {
 
             //Can enter an empty value
             EnterCommand("enter end date,");
-            WaitForOutputContaining("End Date: empty");
+            WaitForOutputContaining("End Date: required");
 
             //Invalid context
             CiceroUrl("home");

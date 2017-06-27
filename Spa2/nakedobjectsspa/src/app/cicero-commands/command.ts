@@ -356,15 +356,18 @@ export abstract class Command {
     }
 
 
-    private fieldValidationMessage(errorValue: Models.ErrorValue, fieldFriendlyName: () => string): string {     
-        const reason = errorValue.invalidReason;     
+    protected validationMessage(reason : string | null, value : Models.Value, fieldFriendlyName:  string): string {    
         if (reason) {
-            const value = errorValue.value;
-            const prefix = `${fieldFriendlyName()}: `;
-            const suffix = reason === Usermessages.mandatory ?  Usermessages.required : `${value} ${reason}`;
+            const prefix = `${fieldFriendlyName}: `;
+            const suffix = reason === Usermessages.mandatory ? Usermessages.required : `${value} ${reason}`;
             return `${prefix}${suffix}\n`;
         }
         return "";
+    }
+
+    private fieldValidationMessage(errorValue: Models.ErrorValue, fieldFriendlyName: () => string): string {     
+        const reason = errorValue.invalidReason;
+        return this.validationMessage(reason, errorValue.value, fieldFriendlyName());      
     }
 
     protected valueForUrl(val: Models.Value, field: Models.IField): Models.Value | null {

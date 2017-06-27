@@ -120,7 +120,6 @@ export function validateMandatory(model: Models.IHasExtensions, viewValue: strin
 
 export function validateMandatoryAgainstType(model: Models.IHasExtensions, viewValue: string, filter: ILocalFilter): string {
 
-
     // check type 
     const returnType = model.extensions().returnType();
 
@@ -138,4 +137,16 @@ export function validateMandatoryAgainstType(model: Models.IHasExtensions, viewV
     default:
         return "";
     }
+}
+
+export function validateDate(newValue: string, validInputFormats : string[]) {
+   
+    for (let f of validInputFormats) {
+        const dt = moment.utc(newValue, f, true);
+        if (dt.isValid()) {
+            return dt;
+        }
+    }
+
+    return null;
 }

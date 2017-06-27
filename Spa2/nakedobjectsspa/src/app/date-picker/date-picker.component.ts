@@ -7,6 +7,7 @@ import { ISubscription } from 'rxjs/Subscription';
 import { safeUnsubscribe, focus } from '../helpers-components'; 
 import * as Msg from '../user-messages';
 import * as Models from '../models';
+import * as Validate from '../validate';
 
 // based on ng2-datepicker https://github.com/jkuri/ng2-datepicker
 
@@ -136,15 +137,7 @@ export class DatePickerComponent implements OnInit {
     private eventsSub: ISubscription;
 
     private validateDate(newValue: string) {
-   
-        for (let f of this.validInputFormats) {
-            const dt = moment.utc(newValue, f, true);
-            if (dt.isValid()) {
-                return dt;
-            }
-        }
-
-        return null;
+        return Validate.validateDate(newValue, this.validInputFormats);
     }
 
     setDateIfChanged(newDate : moment.Moment){

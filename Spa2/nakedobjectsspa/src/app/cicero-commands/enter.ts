@@ -1,4 +1,4 @@
-import { Dictionary } from 'lodash';
+﻿import { Dictionary } from 'lodash';
 import forEach from 'lodash/forEach';
 import fromPairs from 'lodash/fromPairs';
 import keys from 'lodash/keys';
@@ -14,6 +14,7 @@ import { CommandResult } from './command-result';
 import * as Constants from '../constants';
 import * as Models from '../models';
 import * as Usermessages from '../user-messages';
+import * as Validate from '../validate';
 
 export class Enter extends Command {
 
@@ -155,16 +156,35 @@ export class Enter extends Command {
 
     private handleFreeForm(field: Models.IField, fieldEntry: string) {
         if (field.isScalar()) {
-            let value: Models.Value = new Models.Value(fieldEntry);
-            //TODO: handle a non-parsable date
-            if (Models.isDateOrDateTime(field)) {
-                const m = moment(fieldEntry, Constants.supportedDateFormats, "en-GB", true); //TODO get actual locale
 
-                if (m.isValid()) {
-                    const dt = m.toDate();
-                    value = new Models.Value(Models.toDateString(dt));
+            const mandatoryError = Validate.validateMandatory(field, fieldEntry); 
+
+            if (mandatoryError) {
+                return this.returnResult("", this.validationMessage(mandatoryError, new Models.Value(""), field.extensions().friendlyName()));
+            }
+
+            let value = new Models.Value(fieldEntry);
+            if (Models.isDateOrDateTime(field)) {
+                const dt = Validate.validateDate(fieldEntry, Constants.supportedDateFormats);
+
+                if (dt) {
+                    value = new Models.Value(Models.toDateString(dt.toDate()));
                 }
             }
+
+            // if optional but empty always valid 
+            if (fieldEntry != null && fieldEntry !== "") {
+
+                const remoteMask = field.extensions().mask();
+                const localFilter = this.mask.toLocalFilter(remoteMask, field.extensions().format()!);
+
+                const validateError = Validate.validateMandatoryAgainstType(field, fieldEntry, localFilter);
+
+                if (validateError) {
+                    return this.returnResult("", this.validationMessage(validateError, value, field.extensions().friendlyName()));
+                }
+            }
+            
             this.setFieldValue(field, value);
             return this.returnResult("", "", () => this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl());
         } else {
