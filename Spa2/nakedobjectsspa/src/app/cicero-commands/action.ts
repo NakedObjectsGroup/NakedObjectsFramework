@@ -84,7 +84,7 @@ export class Action extends Command {
 
                 this.context.clearDialogCachedValues();
                 this.urlManager.setDialog(action.actionId());
-                forEach(invokable.parameters(), p => this.setFieldValueInContextAndUrl(p, p.default()));
+                forEach(invokable.parameters(), p => this.setFieldValueInContext(p, p.default()));
 
                 return this.returnResult("", "");
             });

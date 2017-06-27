@@ -37,7 +37,7 @@ export function withUndefined<T>(v: T | undefined | null): T | undefined {
     return v === null ? undefined : v;
 }
 
-function validateExists<T>(obj: T | null | undefined, name: string): T {
+function validateExists<T>(obj: T | null | undefined, name: string) {
     if (obj) { return obj!; }
     return error(`validateExists - Expected ${name} does not exist`);
 }
@@ -48,7 +48,7 @@ function getMember<T>(members: Dictionary<T>, id: string, owner: string) {
     return error(`getMember - no member ${id} on ${owner}`);
 }
 
-export function checkNotNull<T>(v: T | undefined | null): T {
+export function checkNotNull<T>(v: T | undefined | null) {
     if (v != null) { return v! }
     return error("checkNotNull - Unexpected null");
 }

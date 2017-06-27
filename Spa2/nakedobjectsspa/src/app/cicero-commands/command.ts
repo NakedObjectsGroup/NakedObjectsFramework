@@ -346,7 +346,6 @@ export abstract class Command {
     protected handleErrorResponseNew(err: Models.ErrorMap, getFriendlyName: (id: string) => string) {
         if (err.invalidReason()) {
             return this.returnResult("", err.invalidReason());
-
         }
         let msg = Usermessages.pleaseCompleteOrCorrect;
         each(err.valuesMap(),
@@ -357,20 +356,15 @@ export abstract class Command {
     }
 
 
-    private fieldValidationMessage(errorValue: Models.ErrorValue, fieldFriendlyName: () => string): string {
-        let msg = "";
-        const reason = errorValue.invalidReason;
-        const value = errorValue.value;
+    private fieldValidationMessage(errorValue: Models.ErrorValue, fieldFriendlyName: () => string): string {     
+        const reason = errorValue.invalidReason;     
         if (reason) {
-            msg += `${fieldFriendlyName()}: `;
-            if (reason === Usermessages.mandatory) {
-                msg += Usermessages.required;
-            } else {
-                msg += `${value} ${reason}`;
-            }
-            msg += "\n";
+            const value = errorValue.value;
+            const prefix = `${fieldFriendlyName()}: `;
+            const suffix = reason === Usermessages.mandatory ?  Usermessages.required : `${value} ${reason}`;
+            return `${prefix}${suffix}\n`;
         }
-        return msg;
+        return "";
     }
 
     protected valueForUrl(val: Models.Value, field: Models.IField): Models.Value | null {
@@ -454,11 +448,11 @@ export abstract class Command {
         }
     }
 
-    protected setFieldValueInContextAndUrl(field: Models.Parameter, urlVal: Models.Value) {
-        this.context.cacheFieldValue(this.routeData().dialogId, field.id(), urlVal);
+    protected setFieldValueInContext(field: Models.Parameter, val: Models.Value) {
+        this.context.cacheFieldValue(this.routeData().dialogId, field.id(), val);
     }
 
-    protected setPropertyValueinContextAndUrl(obj: Models.DomainObjectRepresentation, property: Models.PropertyMember, urlVal: Models.Value) {
+    protected setPropertyValueinContext(obj: Models.DomainObjectRepresentation, property: Models.PropertyMember, urlVal: Models.Value) {
         this.context.cachePropertyValue(obj, property, urlVal);
     }
 }

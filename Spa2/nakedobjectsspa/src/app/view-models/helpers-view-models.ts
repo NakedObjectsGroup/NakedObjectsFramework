@@ -17,14 +17,8 @@ import map from 'lodash/map';
 import reduce from 'lodash/reduce';
 import uniqWith from 'lodash/uniqWith';
 import { ILocalFilter } from '../mask.service';
-import * as moment from 'moment'; 
 import { ConfigService } from '../config.service';
-import * as Constants from '../constants';
-
-export function getDate(val: string): Date | null {
-    const dt1 = moment(val, Constants.fixedDateFormat, true);
-    return dt1.isValid() ? dt1.toDate() : null;
-}
+import * as Validate from '../validate';
 
 export function copy(event: KeyboardEvent, item: IDraggableViewModel, context: ContextService) {
     const cKeyCode = 67;
@@ -150,119 +144,10 @@ export function drop(context: ContextService, error: ErrorService, vm: FieldView
         catch((reject: Models.ErrorWrapper) => error.handleError(reject));
 };
 
-function isInteger(value: number) {
-    return typeof value === "number" && isFinite(value) && Math.floor(value) === value;
-}
-
-function validateNumber(model: Models.IHasExtensions, newValue: number, filter: ILocalFilter): string {
-    const format = model.extensions().format();
-
-    switch (format) {
-    case ("int"):
-        if (!isInteger(newValue)) {
-            return "Not an integer";
-        }
-    }
-
-    const range = model.extensions().range();
-
-    if (range) {
-        const min = range.min;
-        const max = range.max;
-
-        if (min && newValue < min) {
-            return Msg.outOfRange(newValue, min, max, filter);
-        }
-
-        if (max && newValue > max) {
-            return Msg.outOfRange(newValue, min, max, filter);
-        }
-    }
-
-    return "";
-}
-
-function validateStringFormat(model: Models.IHasExtensions, newValue: string): string {
-
-    const maxLength = model.extensions().maxLength();
-    const pattern = model.extensions().pattern();
-    const len = newValue ? newValue.length : 0;
-
-    if (maxLength && len > maxLength) {
-        return Msg.tooLong;
-    }
-
-    if (pattern) {
-        const regex = new RegExp(pattern);
-        return regex.test(newValue) ? "" : Msg.noPatternMatch;
-    }
-    return "";
-}
-
-function validateDateTimeFormat(model: Models.IHasExtensions, newValue: Date): string {
-    return "";
-}
-
-
-
-function validateDateFormat(model: Models.IHasExtensions, newValue: Date | string, filter: ILocalFilter): string {
-    const range = model.extensions().range();
-    const newDate = (newValue instanceof Date) ? newValue : getDate(newValue);
-
-    if (range && newDate) {
-        const min = range.min ? getDate(range.min as string) : null;
-        const max = range.max ? getDate(range.max as string) : null;
-
-        if (min && newDate < min) {
-            return Msg.outOfRange(Models.toDateString(newDate), Models.getUtcDate(range.min as string), Models.getUtcDate(range.max as string), filter);
-        }
-
-        if (max && newDate > max) {
-            return Msg.outOfRange(Models.toDateString(newDate), Models.getUtcDate(range.min as string), Models.getUtcDate(range.max as string), filter);
-        }
-    }
-
-    return "";
-}
-
-function validateTimeFormat(model: Models.IHasExtensions, newValue: Date): string {
-    return "";
-}
-
-function validateString(model: Models.IHasExtensions, newValue: any, filter: ILocalFilter): string {
-    const format = model.extensions().format();
-
-    switch (format) {
-    case ("string"):
-        return validateStringFormat(model, newValue as string);
-    case ("date-time"):
-        return validateDateTimeFormat(model, newValue as Date);
-    case ("date"):
-        return validateDateFormat(model, newValue as Date | string, filter);
-    case ("time"):
-        return validateTimeFormat(model, newValue as Date);
-    default:
-        return "";
-    }
-}
-
-
-function validateMandatory(model: Models.IHasExtensions, viewValue: string): string {
-    // first check 
-    const isMandatory = !model.extensions().optional();
-
-    if (isMandatory && (viewValue === "" || viewValue == null)) {
-        return Msg.mandatory;
-    }
-
-    return "";
-}
-
-
 function validateAgainstType(model: Models.IHasExtensions, modelValue: string | ChoiceViewModel | string[] | ChoiceViewModel[], viewValue: string, filter: ILocalFilter): string {
     // first check 
 
-    const mandatory = validateMandatory(model, viewValue);
+    const mandatory = Validate.validateMandatory(model, viewValue);
 
     if (mandatory) {
         return mandatory;
@@ -273,27 +158,11 @@ function validateAgainstType(model: Models.IHasExtensions, modelValue: string | 
         return "";
     }
 
-    // check type 
-    const returnType = model.extensions().returnType();
-
-    switch (returnType) {
-    case ("number"):
-        const valueAsNumber = parseFloat(viewValue);
-        if (Number.isFinite(valueAsNumber)) {
-            return validateNumber(model, valueAsNumber, filter);
-        }
-        return Msg.notANumber;
-    case ("string"):
-        return validateString(model, viewValue, filter);
-    case ("boolean"):
-        return "";
-    default:
-        return "";
-    }
+    return Validate.validateMandatoryAgainstType(model, viewValue, filter);
 }
 
 export function validate(rep: Models.IHasExtensions, vm: FieldViewModel, modelValue: string | ChoiceViewModel | string[] | ChoiceViewModel[], viewValue: string, mandatoryOnly: boolean) {
-    const message = mandatoryOnly ? validateMandatory(rep, viewValue) : validateAgainstType(rep, modelValue, viewValue, vm.localFilter);
+    const message = mandatoryOnly ? Validate.validateMandatory(rep, viewValue) : validateAgainstType(rep, modelValue, viewValue, vm.localFilter);
 
     if (message !== Msg.mandatory) {
         vm.setMessage(message);

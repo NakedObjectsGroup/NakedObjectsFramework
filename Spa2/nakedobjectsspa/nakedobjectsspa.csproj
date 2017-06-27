@@ -220,6 +220,7 @@
     <TypeScriptCompile Include="src\app\type-result-cache.ts" />
     <TypeScriptCompile Include="src\app\url-manager.service.ts" />
     <TypeScriptCompile Include="src\app\user-messages.ts" />
+    <TypeScriptCompile Include="src\app\validate.ts" />
     <TypeScriptCompile Include="src\app\view-model-factory.service.ts" />
     <TypeScriptCompile Include="src\app\view-models\action-view-model.ts" />
     <TypeScriptCompile Include="src\app\view-models\application-properties-view-model.ts" />

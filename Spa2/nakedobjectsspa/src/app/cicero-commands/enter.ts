@@ -176,11 +176,11 @@ export class Enter extends Command {
         const urlVal = this.valueForUrl(value, field);
         if (urlVal != null) {
             if (field instanceof Models.Parameter) {
-                this.setFieldValueInContextAndUrl(field, urlVal);
+                this.setFieldValueInContext(field, urlVal);
             } else if (field instanceof Models.PropertyMember) {
                 const parent = field.parent;
                 if (parent instanceof Models.DomainObjectRepresentation) {
-                    this.setPropertyValueinContextAndUrl(parent, field, urlVal);
+                    this.setPropertyValueinContext(parent, field, urlVal);
                 }
             }
         }

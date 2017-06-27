@@ -1,18 +1,19 @@
-import * as Ro from '../models';
-import * as RtD from '../route-data';
-import { Component, OnInit, ViewChild, ElementRef, Renderer } from '@angular/core';
-import { CiceroCommandFactoryService } from '../cicero-command-factory.service';
-import { CiceroRendererService } from '../cicero-renderer.service';
+import { Component, ElementRef, OnInit, Renderer, ViewChild } from '@angular/core';
+import reduce from 'lodash/reduce';
 import { ISubscription } from 'rxjs/Subscription';
-import { PaneRouteData } from '../route-data'; 
-import { UrlManagerService } from '../url-manager.service';
-import { ErrorService } from '../error.service';
-import { CiceroContextService } from '../cicero-context.service';
+import { CiceroCommandFactoryService } from '../cicero-command-factory.service';
 import { Command } from '../cicero-commands/Command';
 import { Result } from '../cicero-commands/result';
+import { CiceroContextService } from '../cicero-context.service';
+import { CiceroRendererService } from '../cicero-renderer.service';
 import { ContextService } from '../context.service';
-import reduce from 'lodash/reduce';
-import { safeUnsubscribe, focus } from '../helpers-components';
+import { ErrorService } from '../error.service';
+import { focus, safeUnsubscribe } from '../helpers-components';
+import * as Ro from '../models';
+import * as RtD from '../route-data';
+import { PaneRouteData } from '../route-data';
+import { UrlManagerService } from '../url-manager.service';
+ 
 
 @Component({
     selector: 'nof-cicero',
