@@ -41,8 +41,6 @@ export function getFields(field: Models.IField):  Models.IField[] {
 }
 
 
-
-
 export class CommandResult extends Result{
     changeState: () => void = () => { };
     stopChain: boolean;

@@ -1,6 +1,7 @@
 import { CommandResult } from './command-result';
 import { Command } from './Command';
 import * as Usermessages from '../user-messages';
+import * as Models from '../models';
 
 export class Reload extends Command {
 
@@ -15,6 +16,9 @@ export class Reload extends Command {
     }
 
     doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
-        return Promise.reject("Not Implemented");
+        
+        return  this.getObject()
+            .then(o => this.context.reloadObject(1, o))
+            .then((updatedObject: Models.DomainObjectRepresentation) => this.returnResult("", "", () => this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl() ));           
     };
 }
