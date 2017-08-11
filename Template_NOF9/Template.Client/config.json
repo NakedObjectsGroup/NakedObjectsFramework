@@ -3,7 +3,7 @@
   "authClientId": "5xMMFaiZ8lnBTRZexsDcooZAfbP1IJB8",
   "authDomain": "nakedobjectsdemo.eu.auth0.com",
   "applicationName" : "Student Records",
-  "appPath": "http://localhost:5000/rest",
+  "appPath": "http://localhost:5000/",
   "colors": {
     "typeMap": {
       "Template.Model.Student": 1
