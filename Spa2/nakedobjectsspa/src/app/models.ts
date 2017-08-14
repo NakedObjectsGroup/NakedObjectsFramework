@@ -65,6 +65,10 @@ export function toDateString(dt: Date) {
     return `${year}-${month}-${day}`;
 }
 
+export function toDateTimeString(dt: Date) {
+    return `${toDateString(dt)} ${toTimeString(dt)}`
+}
+
 export function toTimeString(dt: Date) {
 
     let hours = dt.getHours().toString();
@@ -90,11 +94,22 @@ export function getTime(rawTime: string): Date | null {
     return new Date(1970, 0, 1, hours, mins, secs);
 }
 
-export function isDateOrDateTime(rep: IHasExtensions) {
+export function isDate(rep: IHasExtensions) {
     const returnType = rep.extensions().returnType();
     const format = rep.extensions().format();
 
-    return (returnType === "string" && ((format === "date-time") || (format === "date")));
+    return (returnType === "string" && format === "date");
+}
+
+export function isDateTime(rep: IHasExtensions) {
+    const returnType = rep.extensions().returnType();
+    const format = rep.extensions().format();
+
+    return (returnType === "string" && format === "date-time");
+}
+
+export function isDateOrDateTime(rep: IHasExtensions) {
+    return isDate(rep) || isDateTime(rep);
 }
 
 export function isTime(rep: IHasExtensions) {

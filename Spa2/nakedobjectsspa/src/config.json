@@ -45,7 +45,7 @@
                 "digits": "1.2-2"
             }
         },
-        "dateMasks?": {
+        "dateMasks": {
             "d": {
                 "format": "date-time",
                 "mask": "D MMM YYYY",
