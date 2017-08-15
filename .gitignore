@@ -19,3 +19,4 @@ nog-packages.txt
 *.orig
 *.DotSettings
 .vs/config/applicationhost.config
+/Spa2
