@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NakedObjects.Facade.Impl</id>
-    <version>8.1.2</version>
+    <version>9.0.0</version>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Implementation of the Facade API for current version of the Naked Objects Framework</description>
     <dependencies>
-      <dependency id="NakedObjects.Core" version="[8.2.4, 9)" />
+      <dependency id="NakedObjects.Core" version="[9.0.1, 10)" />
       <dependency id="NakedObjects.Facade" version="[8.1.0, 8.2)" />
     </dependencies>
   </metadata>
