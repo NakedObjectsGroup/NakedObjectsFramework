@@ -8,6 +8,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
+using NakedObjects.Core;
 
 namespace TestData {
     public class Product : TestHelper {
@@ -27,6 +28,13 @@ namespace TestData {
         public override void Updating() {
             ModifiedDate = DateTime.Now;
             base.Updating();
+        }
+
+        public override void Persisted() {
+            base.Persisted();
+            if (this.Id == 0) {
+                throw new UnexpectedCallException("Id must not be null");
+            }
         }
     }
 }

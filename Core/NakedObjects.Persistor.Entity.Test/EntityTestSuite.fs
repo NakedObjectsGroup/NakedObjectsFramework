@@ -215,10 +215,12 @@ type EntityTestSuite() =
     [<Test>]
     member x.ChangeScalarOnPersistentCallsUpdatingUpdated() = x.Tests.ChangeScalarOnPersistentCallsUpdatingUpdated()
     
-    
     [<Test>]
     member x.ChangeReferenceOnPersistentCallsUpdatingUpdated() = x.Tests.ChangeReferenceOnPersistentCallsUpdatingUpdated()
     
+    [<Test>]
+    member x.UpdatedDoesntCallPersistedAtOnce() = x.Tests.UpdatedDoesntCallPersistedAtOnce()
+
     [<Test>]
     member x.LoadObjectReturnSameObject() = x.Tests.LoadObjectReturnSameObject()
     

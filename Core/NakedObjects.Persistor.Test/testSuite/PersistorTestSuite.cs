@@ -264,6 +264,14 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.AreEqual(1, person.GetEvents()["Updated"], "updated");
         }
 
+        public void UpdatedDoesntCallPersistedAtOnce() {
+            var person = GetPerson(1);
+            person.PersistInUpdated();
+            ChangeScalarOnPerson(1);
+            Assert.AreEqual(1, person.GetEvents()["Updating"], "updating");
+            Assert.AreEqual(1, person.GetEvents()["Updated"], "updated");
+        }
+
         public void AddToCollectionOnPersistent() {
             var person1 = GetPerson(1);
             var person4 = GetPerson(4);

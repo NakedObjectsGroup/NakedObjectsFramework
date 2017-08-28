@@ -17,6 +17,7 @@ namespace TestData {
         private string name;
         private ICollection<Person> relatives = new List<Person>();
         private bool updateInPersisting;
+        private bool persistInUpdated;
 
         [Key]
         public virtual int PersonId { get; set; }
@@ -94,6 +95,10 @@ namespace TestData {
             updateInPersisting = true;
         }
 
+        public void PersistInUpdated() {
+            persistInUpdated = true;
+        }
+
         public override void Persisting() {
             base.Persisting();
 
@@ -102,6 +107,17 @@ namespace TestData {
                 var product = Container.NewTransientInstance<Product>();
                 product.Name = "ProductOne";
                 FavouriteProduct = product;
+            }
+        }
+
+        public override void Updated() {
+            base.Updated();
+
+            if (persistInUpdated) {
+                // 
+                var product = Container.NewTransientInstance<Product>();
+                product.Name = "ProductTest";
+                Container.Persist(ref product);
             }
         }
     }
