@@ -139,6 +139,20 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("Sub Total:\r\n£819.31", properties[11].Text);
         }
 
+        public virtual void ConcurrencyProperties() {
+            GeminiUrl("object?i1=View&o1=___1.Product--355");
+            wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 23);
+            ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
+
+            //By default a DateTime property is rendered as date only:
+            Assert.AreEqual("Sell Start Date:\r\n1 Jun 2002", properties[18].Text);
+
+            //If marked with ConcurrencyCheck, rendered as date time
+            //Extra test to check for object which has non zero mm:ss 
+            Assert.IsTrue(properties[22].Text.StartsWith("Modified Date:\r\n11 Mar 2008"));
+            Assert.IsTrue(properties[22].Text.EndsWith(":01:36")); //Only check mm:ss to avoid TimeZone difference server vs. client
+        }
+
         public virtual void TableViewHonouredOnCollection() {
             GeminiUrl("object?i1=View&o1=___1.Employee--83&c1_DepartmentHistory=Summary&c1_PayHistory=Table");
             var cols = WaitForCss("th", 3).ToArray();
@@ -558,6 +572,11 @@ namespace NakedObjects.Selenium {
         }
 
         [TestMethod]
+        public override void ConcurrencyProperties() {
+            base.ConcurrencyProperties();
+        }
+
+        [TestMethod]
         public override void TableViewHonouredOnCollection() {
             base.TableViewHonouredOnCollection();
         }
@@ -781,6 +800,7 @@ namespace NakedObjects.Selenium {
             Collections();
             CollectionEagerlyRendered();
             DateAndCurrencyProperties();
+            ConcurrencyProperties();
             TableViewHonouredOnCollection();
             TableViewIgnoresDuplicatedColumnName();
             ClickReferenceProperty();
