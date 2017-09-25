@@ -501,7 +501,7 @@ namespace NakedObjects.Facade.Impl {
                             }
                         }
                         propertiesToDisplay = ((IObjectSpec) nakedObject.Spec).Properties.
-                            Where(p => p.IsVisible(nakedObject)).
+                            Where(p => p.IsVisible(nakedObject) || p.IsVisibleWhenPersisted(nakedObject)).
                             Select(p => new PropertyContext {Target = nakedObject, Property = p}).ToArray();
                     }
                 }

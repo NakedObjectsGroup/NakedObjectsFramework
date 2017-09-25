@@ -109,6 +109,11 @@ namespace NakedObjects.Core.Reflect {
             return InteractionUtils.IsVisible(this, ic, LifecycleManager, metamodelManager);
         }
 
+        public virtual bool IsVisibleWhenPersistent(INakedObjectAdapter target) {
+            IInteractionContext ic = InteractionContext.AccessMember(Session, false, target, Identifier);
+            return InteractionUtils.IsVisibleWhenPersistent(this, ic, LifecycleManager, metamodelManager);
+        }
+
         /// <summary>
         ///     Loops over all <see cref="IDisablingInteractionAdvisor" /> <see cref="IFacet" />s and
         ///     returns <c>true</c> only if none disables the member.

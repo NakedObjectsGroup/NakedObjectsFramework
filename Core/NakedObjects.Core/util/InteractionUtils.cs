@@ -31,12 +31,9 @@ namespace NakedObjects.Core.Util {
             IEnumerable<IHidingInteractionAdvisor> facets = specification.GetFacets().Where(f => f is IHidingInteractionAdvisor).Cast<IHidingInteractionAdvisor>();
             foreach (IHidingInteractionAdvisor advisor in facets) {
                 var facet = advisor as IHiddenFacet;
-                if (facet != null) {
-                    if (facet.Value == WhenTo.OncePersisted) {
-                        continue;
-                    }
+                if (facet?.Value != WhenTo.UntilPersisted) {
+                    buf.Append(advisor.Hides(ic, lifecycleManager, manager));
                 }
-                buf.Append(advisor.Hides(ic, lifecycleManager, manager));
             }
             return IsVisible(buf);
         }
