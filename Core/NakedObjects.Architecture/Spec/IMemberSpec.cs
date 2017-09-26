@@ -27,5 +27,14 @@ namespace NakedObjects.Architecture.Spec {
         ///     may be <c>null</c> if just checking for authorization
         /// </param>
         bool IsVisible(INakedObjectAdapter target);
+
+        /// <summary>
+        ///     Determines if this member is visible imperatively (ie <c>HideXxx(...)</c>).
+        ///     Ignores 'UntilPersisted' anotations
+        /// </summary>
+        /// <param name="target">
+        ///     may be <c>null</c> if just checking for authorization
+        /// </param>
+        bool IsVisibleWhenPersistent(INakedObjectAdapter target);
     }
 }

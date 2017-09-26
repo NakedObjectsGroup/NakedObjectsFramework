@@ -500,8 +500,10 @@ namespace NakedObjects.Facade.Impl {
                                 Framework.Persistor.ObjectChanged(nakedObject, Framework.LifecycleManager, Framework.MetamodelManager);
                             }
                         }
+                        // return the visible properties when the object is persistent 
+                        // it won't actually be until end of transaction
                         propertiesToDisplay = ((IObjectSpec) nakedObject.Spec).Properties.
-                            Where(p => p.IsVisible(nakedObject) || p.IsVisibleWhenPersisted(nakedObject)).
+                            Where(p => p.IsVisibleWhenPersistent(nakedObject)).
                             Select(p => new PropertyContext {Target = nakedObject, Property = p}).ToArray();
                     }
                 }

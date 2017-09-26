@@ -194,6 +194,10 @@ namespace NakedObjects.Core.Spec {
             return base.IsVisible(RealTarget(target));
         }
 
+        public override bool IsVisibleWhenPersistent(INakedObjectAdapter target) {
+            return base.IsVisibleWhenPersistent(RealTarget(target));
+        }
+
         public INakedObjectAdapter[] RealParameters(INakedObjectAdapter target, INakedObjectAdapter[] parameterSet) {
             return parameterSet ?? (IsContributedMethod ? new[] {target} : new INakedObjectAdapter[0]);
         }
