@@ -1,7 +1,8 @@
 Naked Objects Framework
-======================
+=======================
 
-The current stable release of the Naked Objects Framework (NOF) is version 9.0.0.
+NOF9  -  Current stable release
+===============================
 
 The NOF may be used entirely as packages from the NuGet public gallery - there is no need to clone this repository.  Indeed, building the framework from source code is quite complex and not recommended for newcomers.  (If you really to know how to do it, see the sections 'How to build the framework from source code' and/or 'Building the NOF9 client using Angular/CLI and Node Package Manager' in the Developer Manual.)
 
@@ -17,20 +18,6 @@ https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documenta
 
 NOF8 (superseded)
 ====
-
-NOF8  introduces a radically different user interface based on the Single Page Application (SPA) architecture. It uses identical domain model programming conventions as NOF7; indeed it is possible to run the NOF8 client and the NOF7 client alongside each other, as two different 'run' projects talking to the same domain model project(s).
-
-The best way to try NOF8 is to run the NakedObjects.Template application, which may be downloaded as a .zip file from:
-https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Template_NOF8/Template_NOF8.zip?raw=true
-
-(If the unzipped application does not run first time, please see the developer manual for further hints. In particular, look for any server start-up errors in the log file: nakedobjects_log.txt. And also check the connection string in web.config).
-
-The developer manual for NOF 8 is available here: .
-https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/NOF8DeveloperManual.docx?raw=true
-
-When searching the NuGet package gallery for NOF8 please ensure you have the 'include pre-releases' checkbox selected.
-
-NOF8 source code is held in the 8.0 branch of this repository.
 
 NOF7 (superseded - 7.0 branch)
 ====
