@@ -125,7 +125,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Facade.Impl">
-      <HintPath>..\..\packages\NakedObjects.Facade.Impl.9.0.0\lib\net451\NakedObjects.Facade.Impl.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Facade.Impl.9.0.2\lib\net451\NakedObjects.Facade.Impl.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.FWResources">
