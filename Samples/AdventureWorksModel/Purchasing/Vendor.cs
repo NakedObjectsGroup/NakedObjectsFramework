@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using NakedObjects;
 
 namespace AdventureWorksModel {
@@ -50,6 +51,11 @@ namespace AdventureWorksModel {
         [Optionally]
         [MemberOrder(60)]
         public virtual string PurchasingWebServiceURL { get; set; }
+
+        public virtual IQueryable<string> AutoCompletePurchasingWebServiceURL([MinLength(2)] string value) {
+            var matchingNames = new List<string> { "http://www.store1.com", "http://www.store2.com", "http://www.store3.com" };
+            return from p in matchingNames.AsQueryable() select p.Trim();
+        }
 
         private ICollection<ProductVendor> _ProductVendor = new List<ProductVendor>();
 
