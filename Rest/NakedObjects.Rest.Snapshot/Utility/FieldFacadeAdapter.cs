@@ -68,7 +68,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 return new UriMtHelper(oidStrategy, req, parameterContext);
             }
 
-            return new UriMtHelper(oidStrategy, req, association);
+            return new UriMtHelper(oidStrategy, req, association, objectFacade);
         }
 
     }

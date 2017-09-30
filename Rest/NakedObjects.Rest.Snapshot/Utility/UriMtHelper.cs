@@ -134,15 +134,13 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             CachedType = RestUtils.SpecToPredefinedTypeString(spec, oidStrategy);
         }
 
-        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, IAssociationFacade assoc)
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, IAssociationFacade assoc, IObjectFacade objectFacade)
             : this(oidStrategy, req) {
-            cachedId = "";
-            if (assoc.IsCollection) {
-                CachedType = assoc.IsASet ? PredefinedJsonType.Set.ToRoString() : PredefinedJsonType.List.ToRoString();
-            }
-            else {
-                CachedType = assoc.Specification.DomainTypeName(oidStrategy);
-            }
+            IOidTranslation oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectFacade);
+            cachedId = oid.InstanceId;
+            CachedType = oid.DomainType;
+            this.assoc = assoc;
+            spec = objectFacade.Specification;       
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, TypeActionInvokeContext context)
