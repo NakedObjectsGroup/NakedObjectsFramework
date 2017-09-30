@@ -149,6 +149,7 @@ namespace AdventureWorksModel {
         private ICollection<WorkOrderRouting> _WorkOrderRouting = new List<WorkOrderRouting>();
 
         [Disabled]
+        [Hidden(WhenTo.UntilPersisted)]
         [Eagerly(EagerlyAttribute.Do.Rendering)]
         [TableView(true, "OperationSequence", "ScheduledStartDate", "ScheduledEndDate", "Location", "PlannedCost")]
         public virtual ICollection<WorkOrderRouting> WorkOrderRoutings {
