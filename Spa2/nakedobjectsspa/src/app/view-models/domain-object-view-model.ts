@@ -205,11 +205,14 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
 
     readonly clearCachedFiles = () => forEach(this.properties, p => p.attachment ? p.attachment.clearCachedFile() : null);
 
-    readonly doSave = (viewObject: boolean) => {
+    readonly doSave = (viewObject: boolean, onSuccess : () => void) => {
         this.clearCachedFiles();
         const propMap = this.propertyMap();
-        this.saveHandler()(this.domainObject, propMap, this.onPaneId, viewObject)
-            .then((obj: Models.DomainObjectRepresentation) => this.reset(obj, this.urlManager.getRouteData().pane(this.onPaneId) !, true))
+        return this.saveHandler()(this.domainObject, propMap, this.onPaneId, viewObject)
+            .then((obj: Models.DomainObjectRepresentation) => {
+                onSuccess();
+                this.reset(obj, this.urlManager.getRouteData().pane(this.onPaneId) !, true);
+            })
             .catch((reject: Models.ErrorWrapper) => this.handleWrappedError(reject));
     };
 

@@ -83,7 +83,7 @@ export class TimePickerFacadeComponent  {
     inputEvents : EventEmitter<ITimePickerInputEvent>;
 
     ngAfterViewInit(): void {
-        const existingValue: any = this.control.value;
+        const existingValue: any = this.control && this.control.value;
         if (existingValue && (existingValue instanceof String || typeof existingValue === "string")) {
             setTimeout(() => this.inputEvents.emit({ type: "setTime", data: existingValue as string }));
         }

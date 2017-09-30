@@ -91,10 +91,13 @@ export class ObjectComponent implements OnInit, OnDestroy {
     onSubmit(viewObject: boolean) {
         const obj = this.object;
         if (obj) {
-            obj.doSave(viewObject);
+            // if save OK we will want to null object and form as returned object may differ
+            // and redrawing in current form can fail. If save not OK don't null as 
+            // will redraw and display errors.
+            const onSuccess = () => this.clearCurrentObject();
+            obj.doSave(viewObject, onSuccess);
         }
     }
-
 
     copy(event: KeyboardEvent) {
         const obj = this.object;
@@ -256,6 +259,12 @@ export class ObjectComponent implements OnInit, OnDestroy {
         return [] as IActionHolder[];
     }
 
+    private clearCurrentObject() {
+        this.object = null;
+        this.form = null;
+        this.actionButtons = null;
+    }
+
     protected setup(routeData: PaneRouteData) {
         // subscription means may get with no oid 
 
@@ -270,9 +279,7 @@ export class ObjectComponent implements OnInit, OnDestroy {
 
         if (this.object && !this.object.domainObject.getOid().isSame(oid)) {
             // object has changed - clear existing 
-            this.object = null;
-            this.form = null;
-            this.actionButtons = null;
+            this.clearCurrentObject();
         }
 
         const isChanging = !this.object;
