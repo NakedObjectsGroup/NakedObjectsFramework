@@ -342,6 +342,14 @@ namespace NakedObjects.Selenium {
             Click(SaveButton());
             WaitForMessage("StartDate must be before DueDate");
         }
+
+        // test for #108
+        public virtual void ObjectEditScalarAutocomplete() {
+            GeminiUrl("object?i1=Edit&o1=___1.Vendor--1686");
+            WaitForView(Pane.Single, PaneType.Object);
+            // autocomplete is rendered
+            wait.Until(dr => dr.FindElements(By.CssSelector("nof-edit-property .name"))[5].Text.StartsWith("Purchasing Web Service URL:"));
+        }
     }
 
     public abstract class ObjectEditTests : ObjectEditTestsRoot {
@@ -491,6 +499,7 @@ namespace NakedObjects.Selenium {
             MultiLineText();
             ObjectEditChangeChoices();
             ObjectEditChangeConditionalChoices();
+            ObjectEditScalarAutocomplete();
         }
 
         [TestMethod]
