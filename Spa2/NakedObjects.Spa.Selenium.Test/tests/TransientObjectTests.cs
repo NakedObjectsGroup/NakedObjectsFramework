@@ -279,22 +279,22 @@ namespace NakedObjects.Selenium {
         [TestMethod] //Mega
         [Priority(0)]
         public void TransientObjectTests() {
-            //CreateAndSaveTransientObject();
-            //SaveAndClose();
-            //MissingMandatoryFieldsNotified();
-            //IndividualFieldValidation();
-            //MultiFieldValidation();
-            //PropertyDescriptionAndRequiredRenderedAsPlaceholder();
-            //CancelTransientObject();
-            //BackAndForwardOverTransient();
-            //RequestForExpiredTransient();
-            //TransientWithHiddenNonOptionalFields();
-            //CanInvokeActionOnASavedTransient();
-            //TransientCreatedFromDialogClosesDialog();
-            //CreateAndSaveNotPersistedObject();
-            //ValuePropOnTransientEmptyIfNoDefault();
-            //InvalidPropOnTransientClearedAndReentered();
-            //AutoCompletePropOnTransient();
+            CreateAndSaveTransientObject();
+            SaveAndClose();
+            MissingMandatoryFieldsNotified();
+            IndividualFieldValidation();
+            MultiFieldValidation();
+            PropertyDescriptionAndRequiredRenderedAsPlaceholder();
+            CancelTransientObject();
+            BackAndForwardOverTransient();
+            RequestForExpiredTransient();
+            TransientWithHiddenNonOptionalFields();
+            CanInvokeActionOnASavedTransient();
+            TransientCreatedFromDialogClosesDialog();
+            CreateAndSaveNotPersistedObject();
+            ValuePropOnTransientEmptyIfNoDefault();
+            InvalidPropOnTransientClearedAndReentered();
+            AutoCompletePropOnTransient();
             TransientWithHiddenUntilPersistedFields();
         }
 
