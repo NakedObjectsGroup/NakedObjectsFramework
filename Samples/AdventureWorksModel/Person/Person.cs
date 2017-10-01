@@ -395,6 +395,11 @@ namespace AdventureWorksModel {
         [MemberOrder(30), Optionally]
         public virtual string Subject { get; set; }
 
+        public virtual IQueryable<string> AutoCompleteSubject([MinLength(2)] string value) {
+            var matchingNames = new List<string> { "Subject1", "Subject2", "Subject3" };
+            return from p in matchingNames.AsQueryable() select p.Trim();
+        }
+
         [MemberOrder(40), Optionally]
         public virtual string Message { get; set; }
 
