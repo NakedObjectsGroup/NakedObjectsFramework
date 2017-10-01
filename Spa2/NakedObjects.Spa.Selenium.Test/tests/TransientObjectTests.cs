@@ -249,6 +249,28 @@ namespace NakedObjects.Selenium {
             // anagular/material
             //wait.Until(d => d.FindElements(By.CssSelector("md-option")).Count > 0);
         }
+
+        // test for bug #104
+        public virtual void TransientWithHiddenUntilPersistedFields() {
+            Debug.WriteLine(nameof(TransientWithHiddenNonOptionalFields));
+            GeminiUrl("object?i1=View&o1=___1.Product--390&as1=open");
+            WaitForView(Pane.Single, PaneType.Object, "Hex Nut 20");
+            Click(GetObjectEnabledAction("Create New Work Order", Pane.Single, "Work Orders"));
+            WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Work Order");
+            ClearFieldThenType("#scrappedqty1", "1");
+            ClearFieldThenType("#orderqty1", "1");
+
+            // no end date or routings 
+            wait.Until(dr => dr.FindElements(By.CssSelector("nof-edit-property .name"))[6].Text.StartsWith("Due Date:"));
+            wait.Until(dr => dr.FindElements(By.CssSelector("nof-collection .name")).Count == 0);
+
+            SaveObject();
+
+            // visible end date and routings
+            wait.Until(dr => dr.FindElements(By.CssSelector("nof-view-property .name"))[6].Text == "End Date:");
+            wait.Until(dr => dr.FindElement(By.CssSelector("nof-collection .name")).Text == "Work Order Routings:");
+        }
+
     }
 
     #region Mega tests
@@ -257,22 +279,23 @@ namespace NakedObjects.Selenium {
         [TestMethod] //Mega
         [Priority(0)]
         public void TransientObjectTests() {
-            CreateAndSaveTransientObject();
-            SaveAndClose();
-            MissingMandatoryFieldsNotified();
-            IndividualFieldValidation();
-            MultiFieldValidation();
-            PropertyDescriptionAndRequiredRenderedAsPlaceholder();
-            CancelTransientObject();
-            BackAndForwardOverTransient();
-            RequestForExpiredTransient();
-            TransientWithHiddenNonOptionalFields();
-            CanInvokeActionOnASavedTransient();
-            TransientCreatedFromDialogClosesDialog();
-            CreateAndSaveNotPersistedObject();
-            ValuePropOnTransientEmptyIfNoDefault();
-            InvalidPropOnTransientClearedAndReentered();
-            AutoCompletePropOnTransient();
+            //CreateAndSaveTransientObject();
+            //SaveAndClose();
+            //MissingMandatoryFieldsNotified();
+            //IndividualFieldValidation();
+            //MultiFieldValidation();
+            //PropertyDescriptionAndRequiredRenderedAsPlaceholder();
+            //CancelTransientObject();
+            //BackAndForwardOverTransient();
+            //RequestForExpiredTransient();
+            //TransientWithHiddenNonOptionalFields();
+            //CanInvokeActionOnASavedTransient();
+            //TransientCreatedFromDialogClosesDialog();
+            //CreateAndSaveNotPersistedObject();
+            //ValuePropOnTransientEmptyIfNoDefault();
+            //InvalidPropOnTransientClearedAndReentered();
+            //AutoCompletePropOnTransient();
+            TransientWithHiddenUntilPersistedFields();
         }
 
         [TestMethod]
