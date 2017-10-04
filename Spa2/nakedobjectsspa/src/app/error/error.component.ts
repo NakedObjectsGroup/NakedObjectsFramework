@@ -1,4 +1,4 @@
-﻿import { Component } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { ContextService } from '../context.service';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 
@@ -7,7 +7,7 @@ import { ViewModelFactoryService } from '../view-model-factory.service';
     template: require('./error.component.html'),
     styles: [require('./error.component.css')]
 })
-export class ErrorComponent {
+export class ErrorComponent implements OnInit {
 
     constructor(
         private readonly context: ContextService,

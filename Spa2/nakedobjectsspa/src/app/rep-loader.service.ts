@@ -45,6 +45,11 @@ export class RepLoaderService {
         return Promise.reject(rr);
     }
 
+    private isObjectUrl(url : string){
+        const segments = url.split('/'); 
+        return segments.length >= 4 && segments[3] === "objects";
+    }
+
     private handleError(response: Response, originalUrl: string) {
         let category: Models.ErrorCategory;
         let error: Models.ErrorRepresentation | Models.ErrorMap | string;
@@ -73,7 +78,14 @@ export class RepLoaderService {
                 error = new Models.ErrorMap(response.json() as Ro.IValueMap | Ro.IObjectOfType,
                     response.status,
                     message);
-            } else if (response.status === Models.HttpStatusCode.NotFound) {
+            } else if (response.status === Models.HttpStatusCode.NotFound && this.isObjectUrl(originalUrl)) {
+                // were looking for an object an got not found - object may be deleted
+                // treat as http problem.
+                category = Models.ErrorCategory.HttpClientError;
+                error = `Failed to connect to server: ${response.url || "unknown"}`;
+            }
+            else if (response.status === Models.HttpStatusCode.NotFound) {
+                // general not found other than object - assume client programming error
                 category = Models.ErrorCategory.ClientError;
                 error = `Failed to connect to server: ${response.url || "unknown"}`;
             }

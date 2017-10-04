@@ -63,6 +63,7 @@ import { AutoCompleteComponent } from './auto-complete/auto-complete.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { TimePickerComponent } from './time-picker/time-picker.component';
 import { TimePickerFacadeComponent } from './time-picker-facade/time-picker-facade.component';
+import { ObjectNotFoundErrorComponent } from './object-not-found-error/object-not-found-error.component';
 
 
 export function authHttpServiceFactory(http: Http, configService: ConfigService, options: RequestOptions): any {
@@ -123,12 +124,14 @@ export function authServiceFactory(configService: ConfigService, auth0AuthServic
         AutoCompleteComponent,
         DatePickerComponent,
         TimePickerComponent,
-        TimePickerFacadeComponent
+        TimePickerFacadeComponent,
+        ObjectNotFoundErrorComponent
     ],
     entryComponents: [
         ObjectComponent,
         ListComponent,
-        ErrorComponent
+        ErrorComponent,
+        ObjectNotFoundErrorComponent
     ],
     imports: [
         BrowserModule,

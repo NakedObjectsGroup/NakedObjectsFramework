@@ -277,6 +277,10 @@ export class ContextService {
                 this.cacheRecentlyViewed(obj);
                 this.decPendingPotentActionOrReload(paneId);
                 return Promise.resolve(obj);
+            })
+            .catch((e) => {
+                this.decPendingPotentActionOrReload(paneId);
+                throw e;
             });
     };
 

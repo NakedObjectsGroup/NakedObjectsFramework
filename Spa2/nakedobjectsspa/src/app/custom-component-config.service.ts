@@ -1,6 +1,8 @@
 ﻿import { Injectable } from '@angular/core';
 import { ICustomComponentConfigurator } from './custom-component.service';
 import { ICustomErrorComponentConfigurator } from './custom-component.service';
+import { ErrorCategory, HttpStatusCode } from './models';
+import { ObjectNotFoundErrorComponent } from './object-not-found-error/object-not-found-error.component';
 
 export interface ICustomComponentConfigService {
     configureCustomObjects(custom: ICustomComponentConfigurator): void;
@@ -21,5 +23,8 @@ export class CustomComponentConfigService implements ICustomComponentConfigServi
 
     configureCustomLists(custom: ICustomComponentConfigurator) { }
 
-    configureCustomErrors(custom: ICustomErrorComponentConfigurator) { }
+    configureCustomErrors(custom: ICustomErrorComponentConfigurator) { 
+        // by default configure page for 404 errors
+        custom.addError(ErrorCategory.HttpClientError, HttpStatusCode.NotFound, ObjectNotFoundErrorComponent );
+    }
 }

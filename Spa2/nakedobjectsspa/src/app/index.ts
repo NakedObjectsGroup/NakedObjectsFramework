@@ -36,6 +36,7 @@ export * from './date-picker/date-picker.component';
 export * from './helpers-components';
 export * from './time-picker-facade/time-picker-facade.component';
 export * from './time-picker/time-picker.component';
+export * from './object-not-found-error/object-not-found-error.component';
 
 export * from './click-handler.service';
 export * from './color.service';

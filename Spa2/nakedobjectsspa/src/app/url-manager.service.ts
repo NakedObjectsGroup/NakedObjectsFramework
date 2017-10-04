@@ -723,7 +723,8 @@ export class UrlManagerService {
 
         const result = { path: newPath, search: search, replace: false };
 
-        if (errorCategory === Models.ErrorCategory.HttpClientError && ec === Models.HttpStatusCode.PreconditionFailed) {
+        if (errorCategory === Models.ErrorCategory.HttpClientError && 
+            (ec === Models.HttpStatusCode.PreconditionFailed || ec === Models.HttpStatusCode.NotFound)) {
             result.replace = true;
         }
         this.setNewSearch(result);

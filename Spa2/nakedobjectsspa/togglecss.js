@@ -33,7 +33,7 @@ let names = ["action", "action-bar", "action-list", "application-properties", "a
              "collection", "collections", "date-picker", "date-picker-facade","dialog",
              "dynamic-error", "dynamic-list", "dynamic-object", "edit-parameter",
              "edit-property", "error", "footer", "header", "home", "list", "login", "logoff",
-             "menu-bar", "multi-line-dialog", "object", "parameters", "properties", "recent",
+             "menu-bar", "multi-line-dialog", "object", "object-not-found-error", "parameters", "properties", "recent",
              "row", "time-picker", "time-picker-facade", "view-parameter", "view-property"]
 
 
