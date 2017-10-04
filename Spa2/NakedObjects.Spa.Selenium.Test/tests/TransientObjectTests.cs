@@ -18,6 +18,7 @@ namespace NakedObjects.Selenium {
             Debug.WriteLine(nameof(CreateAndSaveTransientObject));
             GeminiUrl("object?o1=___1.Person--12043&as1=open");
             Click(GetObjectEnabledAction("Create New Credit Card"));
+            WaitForTextEquals("#cardtype1", "*");
             SelectDropDownOnField("#cardtype1", "Vista");
             string number = DateTime.Now.Ticks.ToString(); //pseudo-random string
             var obfuscated = number.Substring(number.Length - 4).PadLeft(number.Length, '*');
@@ -145,6 +146,10 @@ namespace NakedObjects.Selenium {
             Thread.Sleep(1000); // no idea why this keeps failing on server 
             Click(GetObjectEnabledAction("New Product"));
             WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Product");
+
+            var sellStartDate = br.FindElement(By.CssSelector("#sellstartdate1"));
+            Assert.AreEqual("*", sellStartDate.GetAttribute("placeholder"));
+
             // set product category and sub category
             SelectDropDownOnField("#productcategory1", "Clothing");
 
