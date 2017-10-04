@@ -124,6 +124,13 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
 
             const currentChoice = new ChoiceViewModel(newValue, this.id);
             this.selectedChoice = find(this.choices, c => c.valuesEqual(currentChoice)) || null;
+
+            if (!this.optional && this.selectedChoice == null) {
+                // mandatory and not selected so add a mandatory indicator choice
+                const indicatorChoice = new ChoiceViewModel(new Models.Value(""), this.id, "*");
+                this.choices = concat<ChoiceViewModel>([indicatorChoice], this.choices);
+                this.selectedChoice = indicatorChoice;
+            }
         } else if (!propertyRep.isScalar()) {
             this.selectedChoice = new ChoiceViewModel(newValue, this.id);
         }

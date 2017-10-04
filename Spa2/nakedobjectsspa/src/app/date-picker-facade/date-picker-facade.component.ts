@@ -34,6 +34,10 @@ export class DatePickerFacadeComponent implements AfterViewInit {
         return this.model.paneArgId;
     }
 
+    get description() {
+        return this.model.description;
+    }
+
     setValueIfChanged(dateModel: moment.Moment | null) {
         const oldValue = this.control.value;
         const newValue = dateModel ? dateModel.format(Constants.fixedDateFormat) : "";

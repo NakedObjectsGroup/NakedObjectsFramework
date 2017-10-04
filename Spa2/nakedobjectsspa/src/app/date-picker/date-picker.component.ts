@@ -83,6 +83,9 @@ export class DatePickerComponent implements OnInit {
 
     @Input()
     id : string;
+
+    @Input()
+    description : string;
    
     opened: boolean;
     days: ICalendarDate[];
