@@ -11,9 +11,14 @@
     margin-bottom: 20px;
 }
 
-.title, .message {
-    font-size: 16pt;
+.title {
+    font-size: 24pt;
     color: red;
+}
+
+.message {
+    font-size: 16pt;
+    color:white;
 }
 
  .code, .description, .stacktrace {
