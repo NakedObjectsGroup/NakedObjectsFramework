@@ -20,6 +20,8 @@ import map from 'lodash/map';
 import fromPairs from 'lodash/fromPairs';
 import some from 'lodash/some';
 import partial from 'lodash/partial';
+import concat from 'lodash/concat';
+
 
 export abstract class FieldViewModel extends MessageViewModel {
 
@@ -78,6 +80,7 @@ export abstract class FieldViewModel extends MessageViewModel {
     private currentMultipleChoices: ChoiceViewModel[];
     private currentRawValue: Ro.ScalarValueType | Date | null = null;
     private choiceOptions: ChoiceViewModel[] = [];
+    hasValue = false;
 
     file: Models.Link;
 
@@ -102,6 +105,13 @@ export abstract class FieldViewModel extends MessageViewModel {
         } else if (this.entryType === Models.EntryType.ConditionalChoices) {
             const currentSelectedOption = this.selectedChoice;
             this.selectedChoice = find(this.choiceOptions, (c: any) => c.valuesEqual(currentSelectedOption));
+        }
+
+        if (!this.optional && !(this.hasValue)) {
+            // mandatory and not selected so add a mandatory indicator choice
+            const indicatorChoice = new ChoiceViewModel(new Models.Value(""), this.id, "*");
+            this.choiceOptions = concat<ChoiceViewModel>([indicatorChoice], this.choices);
+            this.selectedChoice = indicatorChoice;
         }
     }
 

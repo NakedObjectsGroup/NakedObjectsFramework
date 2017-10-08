@@ -41,6 +41,7 @@ export class ParameterViewModel extends FieldViewModel {
             parameterRep.entryType());
 
         this.dflt = parameterRep.default().toString();
+        this.hasValue = !!this.dflt;
 
         const fieldEntryType = this.entryType;
 
@@ -78,8 +79,9 @@ export class ParameterViewModel extends FieldViewModel {
 
     private readonly dflt: string;
 
+
     private setupParameterChoices() {
-        this.setupChoices(this.parameterRep.choices() !);
+        this.setupChoices(this.parameterRep.choices()!);
     }
 
     private setupParameterAutocomplete() {
