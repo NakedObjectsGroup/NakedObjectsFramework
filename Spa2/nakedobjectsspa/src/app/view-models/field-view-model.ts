@@ -107,7 +107,7 @@ export abstract class FieldViewModel extends MessageViewModel {
             this.selectedChoice = find(this.choiceOptions, (c: any) => c.valuesEqual(currentSelectedOption));
         }
 
-        if (!this.optional && !(this.hasValue)) {
+        if (!this.optional && !this.hasValue && this.entryType !== Models.EntryType.AutoComplete) {
             // mandatory and not selected so add a mandatory indicator choice
             const indicatorChoice = new ChoiceViewModel(new Models.Value(""), this.id, "*");
             this.choiceOptions = concat<ChoiceViewModel>([indicatorChoice], this.choices);

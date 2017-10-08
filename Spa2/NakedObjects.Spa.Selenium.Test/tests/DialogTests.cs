@@ -208,10 +208,12 @@ namespace NakedObjects.Selenium {
             SelectDropDownOnField("#category1", "Clothing");
             WaitForCss("#subcategory1");
 
-            wait.Until(d => new SelectElement(WaitForCss("#subcategory1")).Options.ElementAt(0).Text == "Bib-Shorts");
+            wait.Until(d => new SelectElement(WaitForCss("#subcategory1")).Options.ElementAt(0).Text == "*");
+
+            wait.Until(d => new SelectElement(WaitForCss("#subcategory1")).Options.ElementAt(1).Text == "Bib-Shorts");
 
             SelectDropDownOnField("#category1", "Accessories");
-            wait.Until(d => new SelectElement(WaitForCss("#subcategory1")).Options.ElementAt(0).Text == "Bike Racks");
+            wait.Until(d => new SelectElement(WaitForCss("#subcategory1")).Options.ElementAt(1).Text == "Bike Racks");
 
             var msg = OKButton().AssertIsDisabled().GetAttribute("title");
             Assert.AreEqual("Missing mandatory fields: Sub Category; ", msg);
