@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-object-not-found-error',
-  templateUrl: './object-not-found-error.component.html',
-  styleUrls: ['./object-not-found-error.component.css']
+  selector: 'object-not-found-error',
+  template: require('./object-not-found-error.component.html'),
+  styles: [require('./object-not-found-error.component.css')]
 })
 export class ObjectNotFoundErrorComponent implements OnInit {
   constructor() { }
