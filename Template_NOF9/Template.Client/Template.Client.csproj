@@ -105,16 +105,16 @@
     <Content Include="favicon.ico" />
     <Content Include="iconFont.507ceb31df41f6b52dc8.svg" />
     <Content Include="index.html" />
-    <Content Include="inline.5828bce6c9077b68804d.bundle.js" />
-    <Content Include="main.07cb7933fa751f1f9597.bundle.js" />
+    <Content Include="inline.e845b8147d7419d09e22.bundle.js" />
+    <Content Include="main.848370ed077d85ec485f.bundle.js" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="config.json" />
-    <Content Include="polyfills.01b3ced6d6d0deec1525.bundle.js" />
+    <Content Include="polyfills.6eeb71afb109012f5f06.bundle.js" />
     <Content Include="styles.c5f9f995b6c4cda349cd.bundle.css" />
-    <Content Include="vendor.d2d67c65b8aaa0d92f6d.bundle.js" />
+    <Content Include="vendor.294c71c2738023a6562a.bundle.js" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
