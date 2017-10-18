@@ -319,6 +319,13 @@ namespace AdventureWorksModel {
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
+        [MemberOrder(99)]
+        [NotPersisted]
+        public virtual long Ticks
+        {
+            get { return ModifiedDate.Ticks; }
+        }
+
         #endregion
 
         #region rowguid
