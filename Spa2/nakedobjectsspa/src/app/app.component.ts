@@ -9,7 +9,9 @@ import { UrlManagerService } from './url-manager.service';
 })
 
 export class AppComponent {
-    constructor(public readonly auth: AuthService, private readonly urlManager : UrlManagerService) { }
+    constructor(public readonly auth: AuthService, private readonly urlManager : UrlManagerService) {
+        auth.handleAuthenticationWithHash();
+     }
 
     isGemini = () =>  this.urlManager.isGemini();
 }

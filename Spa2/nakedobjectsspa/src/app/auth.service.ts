@@ -19,6 +19,8 @@ export abstract class AuthService {
     abstract canActivate(): boolean;
 
     abstract userIsLoggedIn() : boolean;
+
+    abstract handleAuthenticationWithHash() : void;
 }
 
 
@@ -43,45 +45,57 @@ export class Auth0AuthService extends AuthService implements CanActivate {
 
         if (authenticate && clientId && domain) {
 
-            const options = {
+            this.lock = new Auth0Lock(clientId, domain, {
+                oidcConformant: true,
+                autoclose: true,
                 auth: {
-                    params: { scope: 'openid email' }
+                  //redirectUrl: 'http://',
+                  responseType: 'token id_token',
+                  audience: `https://${domain}/api/v2/`,
+                  params: {
+                    scope: 'openid email'
+                  }
                 }
-            };
-
-            // Configure Auth0
-            // this is client id which is public 
-            this.lock = new Auth0Lock(clientId, domain, options);
-
-            // Add callback for lock `authenticated` event
-            this.lock.on("authenticated", authResult => localStorage.setItem('id_token', authResult.idToken));
-
-            this
-                .router
-                .events
-                .filter(event => event instanceof NavigationStart)
-                .filter((event: NavigationStart) => (/access_token|id_token|error/).test(event.url))
-                .subscribe(() => {
-                    
-                    this.lock.resumeAuth(window.location.hash, (error: any, authResult: any) => {
-                        if (error) {
-                            logger.error(error);
-                        }
-                        else if (authResult && authResult.idToken) {
-                            // some sort of race here with token response navigating us to a page,
-                            // we're making auth OK with token but app.component doesn't yet have router-outlet 
-                            // so we see errors. Set the pending Authenticate flag which will make it look like 
-                            // we're not authenticated and then clear and route home on next event loop.
-
-                            this.pendingAuthenticate = true;
-                            localStorage.setItem('id_token', authResult.idToken);
-                            setTimeout(() => {
-                                this.pendingAuthenticate = false;
-                                this.urlManager.setHomeSinglePane()});
-                        }
-                    });
-                });
+              });
         }
+    }
+
+    public handleAuthenticationWithHash(): void {
+        this
+            .router
+            .events
+            .filter(event => event instanceof NavigationStart)
+            .filter((event: NavigationStart) => (/access_token|id_token|error/).test(event.url))
+            .subscribe(() => {
+                this.lock.resumeAuth(window.location.hash, (err, authResult) => {
+                    if (err) {
+                        this.urlManager.setHomeSinglePane();
+                        console.log(err);
+                        alert(`Error: ${err.error}. Check the console for further details.`);
+                        return;
+                    }
+                    if (authResult) {
+                        // some sort of race here with token response navigating us to a page,
+                        // we're making auth OK with token but app.component doesn't yet have router-outlet 
+                        // so we see errors. Set the pending Authenticate flag which will make it look like 
+                        // we're not authenticated and then clear and route home on next event loop.
+                        this.setSession(authResult);
+                        this.pendingAuthenticate = true;
+                        setTimeout(() => {
+                            this.pendingAuthenticate = false;
+                            this.urlManager.setHomeSinglePane()
+                        });
+                    }
+                });
+            });
+    }
+
+    private setSession(authResult: any): void {
+        // Set the time that the access token will expire at
+        const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
+        localStorage.setItem('access_token', authResult.accessToken);
+        localStorage.setItem('id_token', authResult.idToken);
+        localStorage.setItem('expires_at', expiresAt);
     }
 
     login() {
@@ -92,14 +106,24 @@ export class Auth0AuthService extends AuthService implements CanActivate {
     }
 
     authenticated() {
-        // Check if there's an unexpired JWT
-        // This searches for an item in localStorage with key == 'id_token'
-        return tokenNotExpired("id_token");
+        // Check whether the current time is past the
+        // access token's expiry time
+        const expiresAtItem = localStorage.getItem('expires_at');
+        if (expiresAtItem) {
+            const expiresAt = JSON.parse(expiresAtItem);
+            return new Date().getTime() < expiresAt;
+        }
+        return false;
     }
 
     logout() {
         // Remove token from localStorage
+        // Remove tokens and expiry time from localStorage
+        localStorage.removeItem('access_token');
         localStorage.removeItem('id_token');
+        localStorage.removeItem('expires_at');
+        // Go back to the home route
+        this.router.navigate(['/']);
     }
 
     canActivate() {
@@ -137,4 +161,6 @@ export class NullAuthService extends AuthService implements CanActivate {
     userIsLoggedIn() {
         return false;
     }
+
+    handleAuthenticationWithHash() {}
 }
