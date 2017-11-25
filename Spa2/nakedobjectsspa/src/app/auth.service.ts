@@ -53,7 +53,7 @@ export class Auth0AuthService extends AuthService implements CanActivate {
                   responseType: 'token id_token',
                   audience: `https://${domain}/api/v2/`,
                   params: {
-                    scope: 'openid email'
+                    scope: 'openid email profile'
                   }
                 }
               });

@@ -1,6 +1,6 @@
 ﻿{
     "authenticate": false,
-    "authClientId" : "wXXvvJOtNZoycQtK1gwxAjYgXDzQv5K9",
+    "authClientId" : "rPQAuoz7OKjb9badPe9gmVUhpaa0x9FT",
     "authDomain" : "nakedobjects.eu.auth0.com", 
     "appPath": "https://nakedobjectsrodemo.azurewebsites.net",
     "logoffUrl": "",

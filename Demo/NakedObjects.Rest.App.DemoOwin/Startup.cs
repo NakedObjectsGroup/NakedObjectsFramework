@@ -31,6 +31,8 @@ namespace NakedObjects.Rest.App.DemoOwin
                 new JwtBearerAuthenticationOptions {
                     AuthenticationMode = AuthenticationMode.Active,
                     TokenValidationParameters = new TokenValidationParameters() {
+                        // causes this clain to be used as 'Identity.Name'
+                        NameClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
                         ValidAudience = apiIdentifier,
                         ValidIssuer = domain,
                         IssuerSigningKeyResolver = (token, securityToken, identifier, parameters) => keyResolver.GetSigningKey(identifier)
