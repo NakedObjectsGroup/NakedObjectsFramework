@@ -57,7 +57,7 @@
         "mv": "2.1.1",
         "ng2-dnd": "4.0.2",
         "replace-in-file": "2.5.0",
-        "rxjs": "5.5.2",
+        "rxjs": "^5.1.0",
         "ts-helpers": "1.1.2",
         "zone.js": "^0.8.4",
         "path-exists" :"3.0.0"
