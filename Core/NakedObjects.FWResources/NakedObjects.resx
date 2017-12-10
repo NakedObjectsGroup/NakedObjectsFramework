@@ -409,6 +409,11 @@ Original Error: {0}</value>
   <data name="ProxyExplanation" xml:space="preserve">
     <value>all properties must be made virtual/Overrideable and all collection properties should be of type ICollection&lt;T&gt;</value>
   </data>
+  <data name="ProxyExplanationTransient" xml:space="preserve">
+    <value>this may be because domain code is adding a transient to a persistent collection
+- stack trace of this exception should show domain code at fault if this is the case.
+Otherwise check all properties are virtual/Overrideable and all collection properties are of type ICollection&lt;T&gt;</value>
+  </data>
   <data name="NoProxyMessage" xml:space="preserve">
     <value>{0} not been proxied ({1})</value>
   </data>

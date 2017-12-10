@@ -37,6 +37,8 @@ namespace NakedObjects.Persistor.Entity.Component {
     public sealed class EntityObjectStore : IObjectStore, IDisposable {
         #region Delegates
 
+        public delegate INakedObjectAdapter GetAdapterForDelegate(object domainObject);
+
         public delegate INakedObjectAdapter CreateAdapterDelegate(IOid oid, object domainObject);
 
         public delegate INakedObjectAdapter CreateAggregatedAdapterDelegate(INakedObjectAdapter nakedObjectAdapter, PropertyInfo property, object newDomainObject);
@@ -50,6 +52,7 @@ namespace NakedObjects.Persistor.Entity.Component {
         #endregion
 
         private static readonly ILog Log = LogManager.GetLogger(typeof (EntityObjectStore));
+        private GetAdapterForDelegate getAdapterFor;
         private CreateAdapterDelegate createAdapter;
         private CreateAggregatedAdapterDelegate createAggregatedAdapter;
         private RemoveAdapterDelegate removeAdapter;
@@ -70,6 +73,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             this.injector = injector;
             this.nakedObjectManager = nakedObjectManager;
 
+            getAdapterFor = domainObject => this.nakedObjectManager.GetAdapterFor(domainObject);
             createAdapter = (oid, domainObject) => this.nakedObjectManager.CreateAdapter(domainObject, oid, null);
             replacePoco = (nakedObject, newDomainObject) => this.nakedObjectManager.ReplacePoco(nakedObject, newDomainObject);
             removeAdapter = o => this.nakedObjectManager.RemoveAdapter(o);
@@ -641,15 +645,20 @@ namespace NakedObjects.Persistor.Entity.Component {
             property?.SetValue(child, parent, null);
         }
 
-        private static void CheckProxies(object objectToCheck) {
+        private void CheckProxies(object objectToCheck) {
             Type objectType = objectToCheck.GetType();
             if (!EnforceProxies || TypeUtils.IsSystem(objectType) || TypeUtils.IsMicrosoft(objectType)) {
                 // may be using types provided by System or Microsoft (eg Authentication User). 
                 // No point enforcing proxying on them. 
                 return;
             }
-            Assert.AssertTrue(string.Format(Resources.NakedObjects.NoProxyMessage, objectToCheck.GetType(), Resources.NakedObjects.ProxyExplanation), TypeUtils.IsEntityProxy(objectToCheck.GetType()));
-            Assert.AssertTrue(string.Format(Resources.NakedObjects.NoChangeTrackerMessage, objectToCheck.GetType(), Resources.NakedObjects.ProxyExplanation), objectToCheck is IEntityWithChangeTracker);
+
+            var adapter = getAdapterFor(objectToCheck);
+            var isTransientObject = adapter?.Oid != null && adapter.Oid.IsTransient;       
+            var explanation = isTransientObject ? Resources.NakedObjects.ProxyExplanationTransient : Resources.NakedObjects.ProxyExplanation;
+
+            Assert.AssertTrue(string.Format(Resources.NakedObjects.NoProxyMessage, objectToCheck.GetType(), explanation), TypeUtils.IsEntityProxy(objectToCheck.GetType()));
+            Assert.AssertTrue(string.Format(Resources.NakedObjects.NoChangeTrackerMessage, objectToCheck.GetType(), explanation), objectToCheck is IEntityWithChangeTracker);
         }
 
         private void LoadObjectIntoNakedObjectsFramework(object domainObject, LocalContext context) {
@@ -893,7 +902,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                 }
                 CallPersistingPersistedForComplexObjects(proxyAdapter);
 
-                CheckProxies((object) objectToAdd);
+                parent.CheckProxies((object) objectToAdd);
 
                 return objectToAdd;
             }
