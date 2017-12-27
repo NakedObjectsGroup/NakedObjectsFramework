@@ -159,6 +159,7 @@ namespace AdventureWorksModel {
 
         #region AddNewRouting (Action)
 
+        [Hidden(WhenTo.UntilPersisted)]
         [MemberOrder(1)]
         public WorkOrderRouting AddNewRouting(Location loc) {
             var wor = Container.NewTransientInstance<WorkOrderRouting>();
