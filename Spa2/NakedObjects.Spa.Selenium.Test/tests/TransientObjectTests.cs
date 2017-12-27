@@ -274,6 +274,9 @@ namespace NakedObjects.Selenium {
             // visible end date and routings
             wait.Until(dr => dr.FindElements(By.CssSelector("nof-view-property .name"))[6].Text == "End Date:");
             wait.Until(dr => dr.FindElement(By.CssSelector("nof-collection .name")).Text == "Work Order Routings:");
+            // visible add routing action
+            OpenObjectActions();
+            GetObjectEnabledAction("Add New Routing");
         }
 
     }
