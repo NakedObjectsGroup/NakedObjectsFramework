@@ -36,8 +36,8 @@ namespace AdventureWorksModel {
         public WorkOrder CreateNewWorkOrder2(Product product) {
             return CreateNewWorkOrder(product);
         }
-
-        public WorkOrder CreateNewWorkOrder3(Product product, int orderQty) {
+        [FinderAction]
+        public WorkOrder CreateNewWorkOrder3([ContributedAction("Work Orders"), FindMenu, Description("product partial name")] Product product, int orderQty) {
             var wo = CreateNewWorkOrder(product);
             wo.OrderQty = orderQty;
             wo.ScrappedQty = 0;
