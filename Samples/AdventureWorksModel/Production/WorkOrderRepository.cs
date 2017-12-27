@@ -37,6 +37,14 @@ namespace AdventureWorksModel {
             return CreateNewWorkOrder(product);
         }
 
+        public WorkOrder CreateNewWorkOrder3(Product product, int orderQty) {
+            var wo = CreateNewWorkOrder(product);
+            wo.OrderQty = orderQty;
+            wo.ScrappedQty = 0;
+            Container.Persist(ref wo);
+            return wo;
+        }
+
         [QueryOnly]
         public void GenerateInfoAndWarning() {
             Container.InformUser("Inform User of something");
