@@ -279,6 +279,23 @@ namespace NakedObjects.Selenium {
             GetObjectEnabledAction("Add New Routing");
         }
 
+        // test for bug #128
+        public virtual void PersistentWithHiddenUntilPersistedFields() {
+            Debug.WriteLine(nameof(TransientWithHiddenNonOptionalFields));
+            GeminiUrl("object?i1=View&o1=___1.Product--390&as1=open");
+            WaitForView(Pane.Single, PaneType.Object, "Hex Nut 20");
+
+            Click(GetObjectEnabledAction("Create New Work Order3", Pane.Single, "Work Orders"));
+            ClearFieldThenType("#orderqty1", "1");
+            Click(OKButton());
+
+            // visible end date and routings
+            wait.Until(dr => dr.FindElements(By.CssSelector("nof-view-property .name"))[6].Text == "End Date:");
+            wait.Until(dr => dr.FindElement(By.CssSelector("nof-collection .name")).Text == "Work Order Routings:");
+            // visible add routing action
+            OpenObjectActions();
+            GetObjectEnabledAction("Add New Routing");
+        }
     }
 
     #region Mega tests
