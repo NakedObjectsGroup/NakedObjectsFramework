@@ -45,6 +45,11 @@ namespace AdventureWorksModel {
             return wo;
         }
 
+        [PageSize(20)]
+        public IQueryable<Product> AutoComplete0CreateNewWorkOrder3([MinLength(2)] string name) {
+            return Container.Instances<Product>().Where(p => p.Name.Contains(name));
+        }
+
         [QueryOnly]
         public void GenerateInfoAndWarning() {
             Container.InformUser("Inform User of something");
