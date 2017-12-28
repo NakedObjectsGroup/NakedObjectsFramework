@@ -511,8 +511,8 @@ namespace NakedObjects.Facade.Impl {
                 }
             }
 
-            // isPersisted flag indicated to return the visible actions when the object is persistent 
-            // it won't actually be until end of transaction
+            // isPersisted flag indicates to return the visible actions when the object is persistent 
+            // as it won't actually be until end of transaction
             ObjectContext oc = GetObjectContext(objectContext.Target, isPersisted);
             oc.Reason = objectContext.Reason;
             oc.VisibleProperties = propertiesToDisplay;
@@ -650,9 +650,10 @@ namespace NakedObjects.Facade.Impl {
                 if (ConsentHandler(actionContext.Action.IsUsable(actionContext.Target), actionResultContext, Cause.Disabled)) {
                     if (ValidateParameters(actionContext, arguments.Values) && !arguments.ValidateOnly) {
                         INakedObjectAdapter result = actionContext.Action.Execute(actionContext.Target, actionContext.VisibleParameters.Select(p => p.ProposedNakedObject).ToArray());
-                        var oc  = GetObjectContext(result);
+                        var isResultTransient = result != null && result.ResolveState.IsTransient();
+                        var oc  = GetObjectContext(result, !isResultTransient);
 
-                        if (result != null && result.ResolveState.IsTransient()) {
+                        if (isResultTransient) {
                             string rawValue;
                             var securityHash = GetTransientSecurityHash(oc, out rawValue);
                             actionResultContext.TransientSecurityHash = securityHash;
@@ -923,7 +924,7 @@ namespace NakedObjects.Facade.Impl {
             var actions = menuActions.Select(m => new Tuple<string, IActionSpec>(m.Item1, actionLeafs.SingleOrDefault(a => a.Identifier.Equals(m.Item2.Identifier)))).Where(t => t.Item2 != null);
 
             var objectSpec = nakedObject.Spec as IObjectSpec;
-            IAssociationSpec[] properties = objectSpec == null ? new IAssociationSpec[] {} : objectSpec.Properties.Where(p => p.IsVisible(nakedObject)).ToArray();
+            var properties = objectSpec?.Properties.Where(p => IsVisible(p, nakedObject, isPersisted)).ToArray() ?? new IAssociationSpec[] {};
 
             ActionContext[] ccaContexts = {};
 
