@@ -484,6 +484,7 @@ namespace NakedObjects.Facade.Impl {
 
             // if we fail we need to display all - if OK only those that are visible 
             PropertyContext[] propertiesToDisplay = objectContext.VisibleProperties;
+            var isPersisted = false;
 
             if (contexts.Values.All(c => string.IsNullOrEmpty(c.Reason))) {
                 if (ConsentHandler(CrossValidate(objectContext), objectContext, Cause.Other)) {
@@ -505,11 +506,14 @@ namespace NakedObjects.Facade.Impl {
                         propertiesToDisplay = ((IObjectSpec) nakedObject.Spec).Properties.
                             Where(p => p.IsVisibleWhenPersistent(nakedObject)).
                             Select(p => new PropertyContext {Target = nakedObject, Property = p}).ToArray();
+                        isPersisted = true;
                     }
                 }
             }
 
-            ObjectContext oc = GetObjectContext(objectContext.Target);
+            // isPersisted flag indicated to return the visible actions when the object is persistent 
+            // it won't actually be until end of transaction
+            ObjectContext oc = GetObjectContext(objectContext.Target, isPersisted);
             oc.Reason = objectContext.Reason;
             oc.VisibleProperties = propertiesToDisplay;
             return oc.ToObjectContextFacade(this, Framework);
@@ -901,12 +905,16 @@ namespace NakedObjects.Facade.Impl {
             return new Tuple<string, IActionSpecImmutable>[] {};
         }
 
-        private ObjectContext GetObjectContext(INakedObjectAdapter nakedObject) {
+        private static bool IsVisible(IMemberSpec actionSpec, INakedObjectAdapter nakedObject, bool isPersisted) {
+            return isPersisted ? actionSpec.IsVisibleWhenPersistent(nakedObject) : actionSpec.IsVisible(nakedObject);
+        }
+
+        private ObjectContext GetObjectContext(INakedObjectAdapter nakedObject, bool isPersisted = false) {
             if (nakedObject == null) {
                 return null;
             }
 
-            IActionSpec[] actionLeafs = nakedObject.Spec.GetActionLeafNodes().Where(p => p.IsVisible(nakedObject)).ToArray();
+            IActionSpec[] actionLeafs = nakedObject.Spec.GetActionLeafNodes().Where(p => IsVisible(p, nakedObject, isPersisted)).ToArray();
 
             var menuItems = nakedObject.Spec.Menu?.MenuItems ?? new List<IMenuItemImmutable>();
 
