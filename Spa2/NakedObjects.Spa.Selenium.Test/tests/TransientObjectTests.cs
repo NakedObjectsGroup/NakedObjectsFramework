@@ -321,6 +321,7 @@ namespace NakedObjects.Selenium {
             InvalidPropOnTransientClearedAndReentered();
             AutoCompletePropOnTransient();
             TransientWithHiddenUntilPersistedFields();
+            PersistentWithHiddenUntilPersistedFields();
         }
 
         [TestMethod]
