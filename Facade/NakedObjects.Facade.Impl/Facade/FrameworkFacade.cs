@@ -650,10 +650,11 @@ namespace NakedObjects.Facade.Impl {
                 if (ConsentHandler(actionContext.Action.IsUsable(actionContext.Target), actionResultContext, Cause.Disabled)) {
                     if (ValidateParameters(actionContext, arguments.Values) && !arguments.ValidateOnly) {
                         INakedObjectAdapter result = actionContext.Action.Execute(actionContext.Target, actionContext.VisibleParameters.Select(p => p.ProposedNakedObject).ToArray());
-                        var isResultTransient = result != null && result.ResolveState.IsTransient();
-                        var oc  = GetObjectContext(result, !isResultTransient);
+                        var isProxied = result != null && TypeUtils.IsEntityProxy(result.Object.GetType());
+                        // if proxied object is known to EF and so is being persisted
+                        var oc  = GetObjectContext(result, isProxied);
 
-                        if (isResultTransient) {
+                        if (result != null && result.ResolveState.IsTransient()) {
                             string rawValue;
                             var securityHash = GetTransientSecurityHash(oc, out rawValue);
                             actionResultContext.TransientSecurityHash = securityHash;
