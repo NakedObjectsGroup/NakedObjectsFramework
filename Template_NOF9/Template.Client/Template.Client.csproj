@@ -105,24 +105,22 @@
     <Content Include="favicon.ico" />
     <Content Include="iconFont.507ceb31df41f6b52dc8.svg" />
     <Content Include="index.html" />
-    <Content Include="inline.e845b8147d7419d09e22.bundle.js" />
-    <Content Include="main.848370ed077d85ec485f.bundle.js" />
+    <Content Include="inline.7b2ae8656a273fab8560.bundle.js" />
+    <Content Include="main.2ef25f9e87cfa4baa42c.bundle.js" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="config.json" />
-    <Content Include="polyfills.6eeb71afb109012f5f06.bundle.js" />
+    <Content Include="polyfills.9040afbe24e0c634c11b.bundle.js" />
     <Content Include="styles.c5f9f995b6c4cda349cd.bundle.css" />
-    <Content Include="vendor.294c71c2738023a6562a.bundle.js" />
+    <Content Include="vendor.029fa3d2110ea7450bed.bundle.js" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="web.config" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="iconFont.61e31f00a5b39f5a3786.eot" />
     <Content Include="iconFont.2f87c9f2aedf8f582535.woff" />
     <Content Include="iconFont.0a1778b9b8be9e01db68.ttf" />
