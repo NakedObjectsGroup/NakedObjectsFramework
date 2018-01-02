@@ -39,8 +39,11 @@ input:hover, input:focus {
 
 input:not([type='checkbox']), textarea {
     width: 245px;
-    height: 20px;
     padding-right:10px;
+}
+
+input:not([type='checkbox']) {
+    height: 20px;
 }
 
 input[type='text'] {

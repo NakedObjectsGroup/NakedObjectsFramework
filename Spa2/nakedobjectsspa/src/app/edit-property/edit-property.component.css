@@ -109,9 +109,13 @@ select {
 
 .input-control input:not([type='checkbox']), textarea {
     width: 245px;
-    height: 20px;
     padding-left: 2px;
 }
+
+input:not([type='checkbox']) {
+    height: 20px;
+}
+
 input, select {
     border-style: none;
 }
