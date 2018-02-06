@@ -12,7 +12,7 @@ param($rootPath, $toolsPath, $package, $project)
 	$CSSnippets = "$toolsPath\C#\*.snippet"
 
 	$CSTemplates = "$toolsPath\C#\*.zip"
-	$vsVersions = @("2015","2013","2012","2010")
+	$vsVersions = @("2017","2015","2013","2012","2010")
 
 	Function copyFiles ($toParent, $toDir,  $files) {
 
