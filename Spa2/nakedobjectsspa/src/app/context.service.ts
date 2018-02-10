@@ -246,7 +246,10 @@ export class ContextService {
         const id = oid.instanceId;
 
         const dirtyState = this.dirtyList.getDirty(oid);
-        const forceReload = (dirtyState === DirtyState.DirtyMustReload) || ((dirtyState === DirtyState.DirtyMayReload) && this.configService.config.autoLoadDirty);
+        // no need to reload forms 
+        const forceReload = interactionMode !== InteractionMode.Form &&
+                            ((dirtyState === DirtyState.DirtyMustReload) ||
+                             ((dirtyState === DirtyState.DirtyMayReload) && this.configService.config.autoLoadDirty));
 
         if (!forceReload && isSameObject(this.currentObjects[paneId], type, id)) {
             return Promise.resolve(this.currentObjects[paneId]!);
@@ -933,7 +936,10 @@ export class ContextService {
     };
 
     private cacheRecentlyViewed(obj: Models.DomainObjectRepresentation) {
-        this.recentcache.add(obj);
+        // never cache forms 
+        if (obj.extensions().interactionMode() !== "form") {
+            this.recentcache.add(obj);
+        }
     }
 
     getRecentlyViewed = () => this.recentcache.items();
