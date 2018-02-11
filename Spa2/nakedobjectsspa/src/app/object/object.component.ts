@@ -345,6 +345,13 @@ export class ObjectComponent implements OnInit, OnDestroy {
             // cache parm values
             const obj = this.object;
             if (obj) {
+                // TODO
+                // temp code for #137 - need better fix
+                const pps = obj.properties;
+                const props = zipObject(map(pps, p => p.id), map(pps, p => p)) as Dictionary<PropertyViewModel>;
+                const editableProps = filter(props, p => p.isEditable);
+                const editablePropsMap = zipObject(map(editableProps, p => p.id), map(editableProps, p => p)) as Dictionary<PropertyViewModel>;
+
                 forEach(data, (v, k) => editablePropsMap[k!].setValueFromControl(v));
                 obj.setProperties();
             }

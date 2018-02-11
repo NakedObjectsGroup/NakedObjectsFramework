@@ -72,7 +72,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
     properties: PropertyViewModel[];
     collections: CollectionViewModel[];
 
-    private readonly editProperties = () => filter(this.properties, p => p.isEditable && p.isDirty());
+    private readonly editProperties = () => filter(this.properties, p => p.isEditable);
 
     private readonly isFormOrTransient = () => this.domainObject.extensions().interactionMode() === "form" || this.domainObject.extensions().interactionMode() === "transient";
 

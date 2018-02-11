@@ -235,7 +235,7 @@ export abstract class FieldViewModel extends MessageViewModel {
     private setColor() {
 
         if (this.entryType === Models.EntryType.AutoComplete && this.selectedChoice && this.type === "ref") {
-            const href = this.selectedChoice.getValue().href();
+            const href = this.selectedChoice.getValue().getHref();
             if (href) {
                 this.colorService.toColorNumberFromHref(href)
                     .then(c => {
@@ -289,7 +289,7 @@ export abstract class FieldViewModel extends MessageViewModel {
                     const selValues = map(selections, (cvm: ChoiceViewModel) => cvm.getValue().scalar());
                     return new Models.Value(selValues);
                 }
-                const selRefs = map(selections, cvm => ({ href: cvm.getValue().href() !, title: cvm.name })); // reference 
+                const selRefs = map(selections, cvm => ({ href: cvm.getValue().getHref() !, title: cvm.name })); // reference 
                 return new Models.Value(selRefs);
             }
 
@@ -299,7 +299,7 @@ export abstract class FieldViewModel extends MessageViewModel {
             }
 
             // reference 
-            return new Models.Value(choiceValue && choiceValue.isReference() && this.selectedChoice ? { href: choiceValue.href() !, title: this.selectedChoice.name } : null);
+            return new Models.Value(choiceValue && choiceValue.isReference() && this.selectedChoice ? { href: choiceValue.getHref() !, title: this.selectedChoice.name } : null);
         }
 
         if (this.type === "scalar") {

@@ -141,7 +141,7 @@ class ValueCache {
             this.currentValues[paneId] = {};
         }
 
-        this.currentValues[paneId]![valueId] = value;
+        this.currentValues[paneId]![valueId] = new Models.Value(value);
     }
 
     getValue(id: string, valueId: string, paneId: Pane) {
