@@ -82,7 +82,7 @@ namespace AdventureWorksModel {
         [NakedObjectsIgnore]
         public virtual int VendorID { get; set; }
 
-        [Disabled]
+        [Disabled(WhenTo.OncePersisted)]
         [MemberOrder(1)]
         public virtual Vendor Vendor { get; set; }
 

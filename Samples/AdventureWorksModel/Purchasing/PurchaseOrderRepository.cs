@@ -148,6 +148,15 @@ namespace AdventureWorksModel
         {
             return Container.Instances<Vendor>().Where(v => v.Name.ToUpper().StartsWith(name.ToUpper()));
         }
+
+        [MemberOrder(7)]
+        public PurchaseOrderHeader CreateNewPurchaseOrder2()
+        {
+            var purchaseOrderHeader = NewTransientInstance<PurchaseOrderHeader>();
+            purchaseOrderHeader.OrderPlacedBy = null;
+            return purchaseOrderHeader;
+        }
+
         #endregion
 
         #region FindById
