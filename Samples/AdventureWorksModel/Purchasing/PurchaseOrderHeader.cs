@@ -116,7 +116,6 @@ namespace AdventureWorksModel {
         [MemberOrder(11)]
         public virtual DateTime OrderDate { get; set; }
 
-        [Optionally]
         [Mask("d")]
         [MemberOrder(20)]
         public virtual DateTime? ShipDate { get; set; }
