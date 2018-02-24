@@ -305,7 +305,7 @@ export class ObjectComponent implements OnInit, OnDestroy {
                         this.object = this.viewModelFactory.domainObjectViewModel(object, routeData, wasDirty);
                     }
 
-                    if (modeChanging || isChanging) {
+                    if (modeChanging || isChanging || wasDirty) {
                         if (this.mode === InteractionMode.Edit ||
                             this.mode === InteractionMode.Form ||
                             this.mode === InteractionMode.Transient) {
