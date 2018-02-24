@@ -313,6 +313,10 @@ namespace NakedObjects.Selenium {
             Click(GetObjectEnabledAction("Random Vendor", Pane.Right));
             WaitForView(Pane.Right, PaneType.Object);
 
+            WaitForCss("#pane1 [value='Save']");
+
+            SaveButton(Pane.Left).AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Vendor; Order Placed By; Ship Date;");
+
             var title = WaitForCss("#pane2 .header .title");
             title.Click();
             CopyToClipboard(title);
@@ -321,6 +325,9 @@ namespace NakedObjects.Selenium {
 
             ClickBackButton();
             WaitForView(Pane.Right, PaneType.Home);
+            WaitForCss("#pane1 [value='Save']");
+
+            SaveButton(Pane.Left).AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Order Placed By; Ship Date;");
 
             OpenMenu("Employees", Pane.Right);
             Click(GetObjectEnabledAction("Random Employee", Pane.Right));
@@ -329,11 +336,17 @@ namespace NakedObjects.Selenium {
             var title1 = WaitForCss("#pane2 .header .title");
             title1.Click();
             CopyToClipboard(title1);
+            WaitForCss("#pane1 [value='Save']");
+
+            SaveButton(Pane.Left).AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Ship Date;");
 
             PasteIntoReferenceField("#orderplacedby1");
 
             var today = DateTime.Today;
             ClearFieldThenType("#shipdate1", today.ToString("dd/MM/yyyy"));
+            WaitForCss("#pane1 [value='Save']");
+
+            SaveButton(Pane.Left).AssertIsEnabled().AssertHasTooltip("");
 
             Click(SaveButton(Pane.Left));
             var date = today.ToString("M/d/yyyy") + " 12:00:00 AM";
