@@ -48,7 +48,7 @@ export class ObjectComponent implements OnInit, OnDestroy {
         this.pendingColor = `${configService.config.objectColor}${this.colorService.getDefault()}`;
     }
 
-    // template API 
+    // template API
     expiredTransient = false;
     object: DomainObjectViewModel | null;
 
@@ -59,13 +59,13 @@ export class ObjectComponent implements OnInit, OnDestroy {
         return this.mode == null ? "" : InteractionMode[this.mode];
     }
 
-    // must be properties as object may change - eg be reloaded 
+    // must be properties as object may change - eg be reloaded
     get friendlyName() {
         const obj = this.object;
         return obj ? obj.friendlyName : "";
     }
 
-    // used to smooth transition before object set 
+    // used to smooth transition before object set
     private pendingColor: string;
 
     get color() {
@@ -92,7 +92,7 @@ export class ObjectComponent implements OnInit, OnDestroy {
         const obj = this.object;
         if (obj) {
             // if save OK we will want to null object and form as returned object may differ
-            // and redrawing in current form can fail. If save not OK don't null as 
+            // and redrawing in current form can fail. If save not OK don't null as
             // will redraw and display errors.
             const onSuccess = () => this.clearCurrentObject();
             obj.doSave(viewObject, onSuccess);
@@ -266,7 +266,7 @@ export class ObjectComponent implements OnInit, OnDestroy {
     }
 
     protected setup(routeData: PaneRouteData) {
-        // subscription means may get with no oid 
+        // subscription means may get with no oid
 
         if (!routeData.objectId) {
             this.mode = null;
@@ -278,7 +278,7 @@ export class ObjectComponent implements OnInit, OnDestroy {
         const oid = Models.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator);
 
         if (this.object && !this.object.domainObject.getOid().isSame(oid)) {
-            // object has changed - clear existing 
+            // object has changed - clear existing
             this.clearCurrentObject();
         }
 
@@ -300,7 +300,7 @@ export class ObjectComponent implements OnInit, OnDestroy {
             this.context.getObject(routeData.paneId, oid, routeData.interactionMode)
                 .then((object: Models.DomainObjectRepresentation) => {
 
-                    // only change the object property if the object has changed 
+                    // only change the object property if the object has changed
                     if (isChanging || wasDirty) {
                         this.object = this.viewModelFactory.domainObjectViewModel(object, routeData, wasDirty);
                     }
@@ -340,18 +340,11 @@ export class ObjectComponent implements OnInit, OnDestroy {
         const editablePropsMap = zipObject(map(editableProps, p => p.id), map(editableProps, p => p)) as Dictionary<PropertyViewModel>;
 
         const controls = mapValues(editablePropsMap, p => [p.getValueForControl(), (a : any) => p.validator(a)]) as Dictionary<any>;
-        this.form = this.formBuilder.group(controls);   
+        this.form = this.formBuilder.group(controls);
         this.formSub = this.form!.valueChanges.subscribe((data: any) => {
             // cache parm values
             const obj = this.object;
             if (obj) {
-                // TODO
-                // temp code for #137 - need better fix
-                const pps = obj.properties;
-                const props = zipObject(map(pps, p => p.id), map(pps, p => p)) as Dictionary<PropertyViewModel>;
-                const editableProps = filter(props, p => p.isEditable);
-                const editablePropsMap = zipObject(map(editableProps, p => p.id), map(editableProps, p => p)) as Dictionary<PropertyViewModel>;
-
                 forEach(data, (v, k) => editablePropsMap[k!].setValueFromControl(v));
                 obj.setProperties();
             }
