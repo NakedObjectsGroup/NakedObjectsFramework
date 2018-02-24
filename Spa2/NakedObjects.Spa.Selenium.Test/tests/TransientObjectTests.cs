@@ -332,8 +332,11 @@ namespace NakedObjects.Selenium {
 
             PasteIntoReferenceField("#orderplacedby1");
 
+            var today = DateTime.Today;
+            ClearFieldThenType("#shipdate1", today.ToString("dd/MM/yyyy"));
+
             Click(SaveButton(Pane.Left));
-            var date = DateTime.Today.ToString("M/d/yyyy") + " 12:00:00 AM";
+            var date = today.ToString("M/d/yyyy") + " 12:00:00 AM";
             WaitForView(Pane.Left, PaneType.Object, date);
         }
     }
