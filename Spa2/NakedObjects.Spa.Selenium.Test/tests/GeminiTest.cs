@@ -308,6 +308,18 @@ namespace NakedObjects.Selenium {
             wait.Until(dr => dr.FindElements(By.CssSelector(".icon-collapse")).Count > 0);
         }
 
+        protected virtual void OpenMenu(string menuName, Pane pane = Pane.Single) {
+            string paneSelector = CssSelectorFor(pane);
+            var menu = wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + "input")).Single(el => el.GetAttribute("value") == menuName));
+            if (menu != null) {
+                Click(menu);
+                wait.Until(d => d.FindElements(By.CssSelector("nof-action-list nof-action, nof-action-list div.submenu")).Count > 0);
+            }
+            else {
+                throw new NotFoundException(string.Format("menu not found {0}", menuName));
+            }
+        }
+
         protected virtual void CloseSubMenu(string menuName) {
             var sub = wait.Until(dr => dr.FindElements(By.CssSelector(".submenu")).Single(el => el.Text == menuName));
             var expand = sub.FindElement(By.CssSelector(".icon-collapse"));
