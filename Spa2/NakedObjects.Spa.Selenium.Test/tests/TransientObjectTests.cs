@@ -361,32 +361,32 @@ namespace NakedObjects.Selenium {
         [TestMethod] //Mega
         [Priority(0)]
         public void TransientObjectTests() {
-            //CreateAndSaveTransientObject();
-            //SaveAndClose();
-            //MissingMandatoryFieldsNotified();
-            //IndividualFieldValidation();
-            //MultiFieldValidation();
-            //PropertyDescriptionAndRequiredRenderedAsPlaceholder();
-            //CancelTransientObject();
-            //BackAndForwardOverTransient();
-            //RequestForExpiredTransient();
-            //TransientWithHiddenNonOptionalFields();
-            //CanInvokeActionOnASavedTransient();
-            //TransientCreatedFromDialogClosesDialog();
-            //CreateAndSaveNotPersistedObject();
-            //ValuePropOnTransientEmptyIfNoDefault();
-            //InvalidPropOnTransientClearedAndReentered();
-            //AutoCompletePropOnTransient();
-            //TransientWithHiddenUntilPersistedFields();
-            //PersistentWithHiddenUntilPersistedFields();
+            CreateAndSaveTransientObject();
+            SaveAndClose();
+            MissingMandatoryFieldsNotified();
+            IndividualFieldValidation();
+            MultiFieldValidation();
+            PropertyDescriptionAndRequiredRenderedAsPlaceholder();
+            CancelTransientObject();
+            BackAndForwardOverTransient();
+            RequestForExpiredTransient();
+            TransientWithHiddenNonOptionalFields();
+            CanInvokeActionOnASavedTransient();
+            TransientCreatedFromDialogClosesDialog();
+            CreateAndSaveNotPersistedObject();
+            ValuePropOnTransientEmptyIfNoDefault();
+            InvalidPropOnTransientClearedAndReentered();
+            AutoCompletePropOnTransient();
+            TransientWithHiddenUntilPersistedFields();
+            PersistentWithHiddenUntilPersistedFields();
             TransientWithOtherPaneChanges();
         }
 
         [TestMethod]
         [Priority(-1)]
         public void ProblematicTransientObjectTests() {
-            //ConditionalChoicesOnTransient();
-            //SwapPanesWithTransients();
+            ConditionalChoicesOnTransient();
+            SwapPanesWithTransients();
         }
     }
 
