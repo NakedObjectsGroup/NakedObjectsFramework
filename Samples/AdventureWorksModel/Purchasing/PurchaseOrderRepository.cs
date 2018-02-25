@@ -140,6 +140,7 @@ namespace AdventureWorksModel
         {
             var purchaseOrderHeader = NewTransientInstance<PurchaseOrderHeader>();
             purchaseOrderHeader.Vendor = vendor;
+            purchaseOrderHeader.ShipDate = DateTime.Today;
             return purchaseOrderHeader;
         }
 
