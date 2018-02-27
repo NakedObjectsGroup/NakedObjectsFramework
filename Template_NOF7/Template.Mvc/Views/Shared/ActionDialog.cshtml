@@ -1,0 +1,16 @@
+@using NakedObjects.Web.Mvc.Html
+@model NakedObjects.Web.Mvc.Models.FindViewModel
+
+@{
+    Layout = "~/Views/Shared/_NofLayout.cshtml";
+    ViewBag.Title = Model.ContextAction.Name;
+}
+
+<div id="body">
+    <section class="main-content" >
+        @(Html.TabbedHistory())   
+        <div class="@(IdHelper.ActionDialogName)" id="@(Html.ObjectActionDialogId(Model.ContextObject, Model.ContextAction))" >
+            @{ Html.RenderPartial("DialogControl", Model); }
+        </div>
+    </section>
+</div>

@@ -1,0 +1,33 @@
+@using NakedObjects.Resources
+@using NakedObjects.Web.Mvc.Html
+@model object
+
+
+@*This view is used, by default, for an object that implements IViewModelEdit,
+    or that implements IViewModelSwitchable when it is in edit mode.  Otherwise
+    viewmodels are rendered like any other objects using the ObjectView view. The use of
+    this view for editable viewmodels is to avoid the rendering of a Save button.*@
+
+@{
+    Layout = "~/Views/Shared/_NofLayout.cshtml";
+    ViewBag.Title = "@(Html.ObjectTitle(Model)" + "Edit View Model";
+}
+
+<div id="body">
+    <section class="main-content" >
+        @(Html.TabbedHistory(Model))   
+        <div class="@Html.ViewModelClass(Model)" id="@Html.ObjectTypeAsCssId(Model)">
+            @(Html.ObjectTitle(Model))
+            @(Html.ValidationSummary(true, MvcUi.EditError))
+            @(Html.UserMessages())
+            @using (Html.BeginForm(IdHelper.EditAction,
+                Html.TypeName(Model).ToString(),
+                new {id = Html.GetObjectId(Model).ToString()},
+                FormMethod.Post,
+                new {@class = IdHelper.EditName})) {
+                @(Html.PropertyListEdit(Model))
+                @(Html.MenuOnTransient(Model))
+            }
+        </div> 
+    </section>
+</div>
