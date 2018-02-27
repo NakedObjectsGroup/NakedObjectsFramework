@@ -24,6 +24,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -105,8 +106,8 @@
     <Content Include="favicon.ico" />
     <Content Include="iconFont.507ceb31df41f6b52dc8.svg" />
     <Content Include="index.html" />
-    <Content Include="inline.2e70ec6bef4436c24284.bundle.js" />
-    <Content Include="main.f5e109b0f5e93fc21264.bundle.js" />
+    <Content Include="inline.227528ad47776398ab53.bundle.js" />
+    <Content Include="main.4ce12bfcc6d85a414f5f.bundle.js" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -114,7 +115,7 @@
     <Content Include="config.json" />
     <Content Include="polyfills.24684f931b665cfc8adf.bundle.js" />
     <Content Include="styles.c5f9f995b6c4cda349cd.bundle.css" />
-    <Content Include="vendor.0201ecf5a503a734fda3.bundle.js" />
+    <Content Include="vendor.0f54824ff19f03f84be7.bundle.js" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />

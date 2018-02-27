@@ -99,3 +99,4 @@ Rest/NakedObjects.Rest.App/log.txt
 /Template_NOF8/NakedObjects.Template/Scripts/nakedobjects.cicerocommandfactory.js
 /Template_NOF8/NakedObjects.Template/Scripts/nakedobjects.app.js
 Spa2/nakedobjectsspa/.vs/config/applicationhost.config
+*.tgz
