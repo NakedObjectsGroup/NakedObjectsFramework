@@ -4,6 +4,7 @@
 !**/Template/*/*.user
 *.nupkg
 /packages
+/Template_NOF7
 /Template_NOF9/packages
 /Template_NOF8/NakedObjects.Template/packages
 /test-results
