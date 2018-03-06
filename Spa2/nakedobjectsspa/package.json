@@ -52,7 +52,7 @@
         "find-in-files": "0.4.0",
         "gently-copy": "2.3.1",
         "lodash": "4.17.4",
-        "moment": "2.18.1",
+        "moment": "2.19.3",
         "mv": "2.1.1",
         "ng2-dnd": "4.0.2",
         "replace-in-file": "2.5.0",
