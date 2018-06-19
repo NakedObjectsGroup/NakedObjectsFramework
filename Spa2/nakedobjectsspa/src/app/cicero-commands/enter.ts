@@ -1,13 +1,12 @@
 ﻿import { Dictionary } from 'lodash';
-import forEach from 'lodash/forEach';
-import fromPairs from 'lodash/fromPairs';
-import keys from 'lodash/keys';
-import last from 'lodash/last';
-import map from 'lodash/map';
-import mapKeys from 'lodash/mapKeys';
-import mapValues from 'lodash/mapValues';
-import reduce from 'lodash/reduce';
-import * as moment from 'moment';
+import forEach from 'lodash-es/forEach';
+import fromPairs from 'lodash-es/fromPairs';
+import keys from 'lodash-es/keys';
+import last from 'lodash-es/last';
+import map from 'lodash-es/map';
+import mapKeys from 'lodash-es/mapKeys';
+import mapValues from 'lodash-es/mapValues';
+import reduce from 'lodash-es/reduce';
 import { Command } from './Command';
 import * as Commandresult from './command-result';
 import { CommandResult } from './command-result';
@@ -45,7 +44,7 @@ export class Enter extends Command {
         } else {
             return this.fieldEntryForEdit(fieldName, fieldEntry);
         }
-    };
+    }
 
     private fieldEntryForEdit(fieldName: string | undefined, fieldEntry: string) {
         return this.getObject().then(obj => {
@@ -58,15 +57,15 @@ export class Enter extends Command {
                 case 1:
                     const field = fields[0];
                     if (fieldEntry === "?") {
-                        //TODO: does this work in edit mode i.e. show entered value
-                        const s = this.renderFieldDetails(field, field.value());
-                        return this.returnResult("", s);
+                        // TODO: does this work in edit mode i.e. show entered value
+                        const details = this.renderFieldDetails(field, field.value());
+                        return this.returnResult("", details);
                     } else {
                         this.findAndClearAnyDependentFields(field.id(), obj.propertyMembers());
                         return this.setField(field, fieldEntry);
                     }
                 default:
-                    const ss = reduce(fields, (s, prop) => s + prop.extensions().friendlyName() + "\n", `${fieldName} ${Usermessages.matchesMultiple}`);
+                    const ss = reduce(fields, (str, prop) => str + prop.extensions().friendlyName() + "\n", `${fieldName} ${Usermessages.matchesMultiple}`);
                     return this.returnResult("", ss);
             }
         });
@@ -84,7 +83,6 @@ export class Enter extends Command {
         return false;
     }
 
-
     private findAndClearAnyDependentFields(changingField: string, allFields: Dictionary<Models.IField>) {
 
         forEach(allFields, field => {
@@ -98,7 +96,7 @@ export class Enter extends Command {
 
     private fieldEntryForDialog(fieldName: string, fieldEntry: string) {
         return this.getActionForCurrentDialog().then(action => {
-            //TODO: error -  need to get invokable action to get the params.
+            //
             let params = map(action.parameters(), param => param);
             params = this.matchFriendlyNameAndOrMenuPath(params, fieldName);
             switch (params.length) {
@@ -115,7 +113,7 @@ export class Enter extends Command {
                         return this.setField(params[0], fieldEntry);
                     }
                 default:
-                    return this.returnResult("", `${Usermessages.multipleFieldMatches} ${fieldName}`);//TODO: list them
+                    return this.returnResult("", `${Usermessages.multipleFieldMatches} ${fieldName}`); // TODO: list them
             }
         });
     }
@@ -157,7 +155,7 @@ export class Enter extends Command {
     private handleFreeForm(field: Models.IField, fieldEntry: string) {
         if (field.isScalar()) {
 
-            const mandatoryError = Validate.validateMandatory(field, fieldEntry); 
+            const mandatoryError = Validate.validateMandatory(field, fieldEntry);
 
             if (mandatoryError) {
                 return this.returnResult("", this.validationMessage(mandatoryError, new Models.Value(""), field.extensions().friendlyName()));
@@ -172,7 +170,7 @@ export class Enter extends Command {
                 }
             }
 
-            // if optional but empty always valid 
+            // if optional but empty always valid
             if (fieldEntry != null && fieldEntry !== "") {
 
                 const remoteMask = field.extensions().mask();
@@ -184,7 +182,7 @@ export class Enter extends Command {
                     return this.returnResult("", this.validationMessage(validateError, value, field.extensions().friendlyName()));
                 }
             }
-            
+
             this.setFieldValue(field, value);
             return this.returnResult("", "", () => this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl());
         } else {
@@ -229,7 +227,7 @@ export class Enter extends Command {
             if (isSubType) {
                 const obj = this.ciceroContext.ciceroClipboard as any;
                 const selfLink = obj.selfLink();
-                //Need to add a title to the SelfLink as not there by default
+                // Need to add a title to the SelfLink as not there by default
                 selfLink.setTitle(obj.title());
                 const value = new Models.Value(selfLink);
                 this.setFieldValue(field, value);
@@ -241,11 +239,11 @@ export class Enter extends Command {
     }
 
     private handleAutoComplete(field: Models.IField, fieldEntry: string) {
-        //TODO: Need to check that the minimum number of characters has been entered or fail validation
+        // TODO: Need to check that the minimum number of characters has been entered or fail validation
         if (!field.isScalar() && this.isPaste(fieldEntry)) {
             return this.handleClipboard(field);
         } else {
-            return this.context.autoComplete(field, field.id(), () => ({}), fieldEntry).then(choices => {
+            return this.context.autoComplete(field, field.id(), () => ({}), fieldEntry).then((choices: Dictionary<Models.Value>) => {
                 const matches = this.findMatchingChoicesForRef(choices, fieldEntry);
                 const allFields = Commandresult.getFields(field);
                 return this.switchOnMatches(field, allFields, fieldEntry, matches);
@@ -264,17 +262,16 @@ export class Enter extends Command {
         return this.switchOnMatches(field, allFields, fieldEntry, matches);
     }
 
-    private updateDependentField(field: Models.IField) : Promise<CommandResult> {
+    private updateDependentField(field: Models.IField): Promise<CommandResult> {
         return this.handleConditionalChoices(field, true);
     }
- 
+
     private setFieldAndCheckDependencies(field: Models.IField, allFields: Models.IField[], match: Models.Value): Promise<CommandResult[]> {
         this.setFieldValue(field, match);
         const promises: Promise<CommandResult>[] = [];
 
-
-        // find any dependent multi choice fields and update    
-        // non multi choice we will have just cleared        
+        // find any dependent multi choice fields and update
+        // non multi choice we will have just cleared
         forEach(allFields, depField => {
             if (this.isMultiChoiceField(depField)) {
                 if (this.isDependentField(field.id().toLowerCase(), depField)) {
@@ -283,18 +280,17 @@ export class Enter extends Command {
             }
         });
 
-
         promises.push(this.returnResult("", "", () => this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl()));
         return Promise.all(promises);
     }
-
 
     private switchOnMatches(field: Models.IField, allFields: Models.IField[], fieldEntry: string, matches: Models.Value[]) {
         switch (matches.length) {
             case 0:
                 return this.returnResult("", Usermessages.noMatch(fieldEntry));
             case 1:
-                return this.setFieldAndCheckDependencies(field, allFields, matches[0]).then((crs: CommandResult[]) => last(crs));   
+                // TODO fix "!""
+                return this.setFieldAndCheckDependencies(field, allFields, matches[0]).then((crs: CommandResult[]) => last(crs)!);
             default:
                 let msg = Usermessages.multipleMatches;
                 forEach(matches, m => msg += m.toString() + "\n");
@@ -316,20 +312,20 @@ export class Enter extends Command {
         return mapKeys(values, (v, k) => k.toLowerCase());
     }
 
-
      private updateOnMatches(field: Models.IField, allFields: Models.IField[], fieldEntry: string, matches: Models.Value[]) {
         switch (matches.length) {
             case 0:
             case 1:
                 const match = matches.length === 0 ? new Models.Value(null) : matches[0];
-                return this.setFieldAndCheckDependencies(field, allFields, match).then((crs: CommandResult[]) => last(crs));   
+                // TODO fix "!""
+                return this.setFieldAndCheckDependencies(field, allFields, match).then((crs: CommandResult[]) => last(crs)!);
             default:
                 // shouldn't happen - ignore
                 return this.returnResult("", "");
         }
     }
 
-    private handleConditionalChoices(field: Models.IField, updating : boolean, fieldEntry?: string, ) {
+    private handleConditionalChoices(field: Models.IField, updating: boolean, fieldEntry?: string, ) {
         let enteredFields: Dictionary<Models.Value>;
         const allFields = Commandresult.getFields(field);
 
@@ -341,22 +337,22 @@ export class Enter extends Command {
             enteredFields = this.getPropertiesAndCurrentValue(field.parent as Models.DomainObjectRepresentation);
         }
 
-        const args = fromPairs(map(field.promptLink()!.arguments()!, (v: any, key: string) => [key, new Models.Value(v.value)])) as Dictionary<Models.Value>;
+        // TODO fix this any cast
+        const args = fromPairs(map(field.promptLink()!.arguments()! as any, (v: any, key: string) => [key, new Models.Value(v.value)])) as Dictionary<Models.Value>;
         forEach(keys(args), key => args[key] = enteredFields[key]);
 
-        let fieldEntryOrExistingValue : string;
+        let fieldEntryOrExistingValue: string;
 
         if (fieldEntry === undefined) {
             const def = args[field.id()];
             fieldEntryOrExistingValue = def ? def.toValueString() : "";
-        }
-        else {
+        } else {
             fieldEntryOrExistingValue = fieldEntry;
         }
 
-        return this.context.conditionalChoices(field, field.id(), () => ({}), args).then(choices => {
+        return this.context.conditionalChoices(field, field.id(), () => ({}), args).then((choices: Dictionary<Models.Value>) => {
             const matches = this.findMatchingChoicesForRef(choices, fieldEntryOrExistingValue);
-        
+
             if (updating) {
                 return this.updateOnMatches(field, allFields, fieldEntryOrExistingValue, matches);
             }
@@ -366,7 +362,7 @@ export class Enter extends Command {
     }
 
     private renderFieldDetails(field: Models.IField, value: Models.Value): string {
-           
+
         const fieldName = Usermessages.fieldName(field.extensions().friendlyName());
         const desc = field.extensions().description();
         const descAndPrefix = desc ? `\n${Usermessages.descriptionFieldPrefix} ${desc}` : "";
@@ -384,6 +380,6 @@ export class Enter extends Command {
                 postFix = `${postFix}${labelAndChoices}`;
             }
         }
-        return `${fieldName}${descAndPrefix}${types}${postFix}`
+        return `${fieldName}${descAndPrefix}${types}${postFix}`;
     }
 }

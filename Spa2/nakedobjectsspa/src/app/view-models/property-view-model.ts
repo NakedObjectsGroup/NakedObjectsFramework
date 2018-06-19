@@ -15,10 +15,16 @@ import * as Models from '../models';
 import * as Helpers from './helpers-view-models';
 import * as Configservice from '../config.service';
 import { Pane } from '../route-data';
-import find from 'lodash/find';
-import concat from 'lodash/concat';
+import find from 'lodash-es/find';
+import concat from 'lodash-es/concat';
 
 export class PropertyViewModel extends FieldViewModel implements IDraggableViewModel {
+
+    readonly isEditable: boolean;
+    readonly attachment: AttachmentViewModel | null;
+    refType: "null" | "navigable" | "notNavigable";
+    // IDraggableViewModel
+    readonly draggableType: string;
 
     constructor(
         public readonly propertyRep: Models.PropertyMember,
@@ -77,7 +83,6 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         this.hasValue = previousValue && !previousValue.isNull;
         this.description = this.getRequiredIndicator() + this.description;
     }
-
 
     private getDigest(propertyRep: Models.PropertyMember): string | null {
         const parent = propertyRep.parent;
@@ -179,11 +184,6 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         });
     }
 
-    readonly isEditable: boolean;
-    readonly attachment: AttachmentViewModel | null;
-    refType: "null" | "navigable" | "notNavigable";
-    // IDraggableViewModel
-    readonly draggableType: string;
     readonly draggableTitle = () => this.formattedValue;
     readonly canDropOn = (targetType: string) => this.context.isSubTypeOf(this.returnType, targetType) as Promise<boolean>;
 

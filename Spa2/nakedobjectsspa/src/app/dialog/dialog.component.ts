@@ -1,4 +1,4 @@
-﻿import { Component, Input, AfterViewInit, ViewChildren, QueryList, OnDestroy } from '@angular/core';
+import { Component, Input, AfterViewInit, ViewChildren, QueryList, OnDestroy } from '@angular/core';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { UrlManagerService } from '../url-manager.service';
 import * as Models from '../models';
@@ -16,16 +16,16 @@ import { CollectionViewModel } from '../view-models/collection-view-model';
 import { ConfigService } from '../config.service';
 import { ParametersComponent } from '../parameters/parameters.component';
 import { Dictionary } from 'lodash';
-import find from 'lodash/find';
-import forEach from 'lodash/forEach';
-import some from 'lodash/some';
-import { ISubscription } from 'rxjs/Subscription';
-import { safeUnsubscribe, createForm } from '../helpers-components'; 
+import find from 'lodash-es/find';
+import forEach from 'lodash-es/forEach';
+import some from 'lodash-es/some';
+import { SubscriptionLike as ISubscription } from 'rxjs';
+import { safeUnsubscribe, createForm } from '../helpers-components';
 
 @Component({
     selector: 'nof-dialog',
-    template: require('./dialog.component.html'),
-    styles: [require('./dialog.component.css')]
+    templateUrl: 'dialog.component.html',
+    styleUrls: ['dialog.component.css']
 })
 export class DialogComponent implements AfterViewInit, OnDestroy {
 
@@ -40,6 +40,10 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
     }
 
     private parentViewModel: MenuViewModel | DomainObjectViewModel | ListViewModel | CollectionViewModel;
+    private parms: Dictionary<ParameterViewModel>;
+    private formSub: ISubscription;
+    private sub: ISubscription;
+    private createFormSub: ISubscription;
 
     @Input()
     set parent(parent: MenuViewModel | DomainObjectViewModel | ListViewModel | CollectionViewModel) {
@@ -65,6 +69,9 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
     dialog: DialogViewModel | null;
 
     form: FormGroup;
+
+    @ViewChildren(ParametersComponent)
+    parmComponents: QueryList<ParametersComponent>;
 
     get title() {
         const dialog = this.dialog;
@@ -101,23 +108,18 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
         if (this.dialog) {
             this.dialog.doCloseReplaceHistory();
         }
-    };
-
-    private parms: Dictionary<ParameterViewModel>;
-    private formSub : ISubscription;
-    private sub: ISubscription;
-    private createFormSub : ISubscription;
+    }
 
     private createForm(dialog: DialogViewModel) {
         safeUnsubscribe(this.formSub);
         safeUnsubscribe(this.createFormSub);
-        ({ form: this.form, dialog: this.dialog, parms: this.parms, sub : this.createFormSub } = createForm(dialog, this.formBuilder));     
+        ({ form: this.form, dialog: this.dialog, parms: this.parms, sub : this.createFormSub } = createForm(dialog, this.formBuilder));
         this.formSub = this.form.valueChanges.subscribe((data) => this.onValueChanged());
     }
 
     onValueChanged() {
         if (this.dialog) {
-            // clear messages if dialog changes 
+            // clear messages if dialog changes
             this.dialog.resetMessage();
             this.context.clearMessages();
             this.context.clearWarnings();
@@ -133,7 +135,7 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
 
     getDialog() {
 
-        // if it's the same dialog just return 
+        // if it's the same dialog just return
 
         if (this.parent && this.currentDialogId) {
 
@@ -169,7 +171,7 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
                         // only if we still have a dialog (may have beenn removed while getting invokable action)
 
                         if (this.currentDialogId) {
-                            // must be a change 
+                            // must be a change
                             this.closeExistingDialog();
 
                             const dialogViewModel = this.viewModelFactory.dialogViewModel(this.parent.routeData, details, actionViewModel, false);
@@ -185,9 +187,6 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
             this.closeExistingDialog();
         }
     }
-
-    @ViewChildren(ParametersComponent)
-    parmComponents: QueryList<ParametersComponent>;
 
     focus(parms: QueryList<ParametersComponent>) {
         if (parms && parms.length > 0) {

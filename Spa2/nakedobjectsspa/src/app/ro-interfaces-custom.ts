@@ -1,6 +1,6 @@
-﻿import* as Ro from './ro-interfaces';
+﻿import * as Ro from './ro-interfaces';
 
-//NOF custom RO constants
+// NOF custom RO constants
 
 export interface ICustomExtensions extends Ro.IExtensions {
     "x-ro-nof-choices"?: { [index: string]: Ro.ValueType[]; };

@@ -1,0 +1,159 @@
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule, ErrorHandler, APP_INITIALIZER, LOCALE_ID } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { FooterComponent } from 'nakedobjects.spa';
+import { HomeComponent } from 'nakedobjects.spa';
+import { ObjectComponent } from 'nakedobjects.spa';
+import { ListComponent } from 'nakedobjects.spa';
+import { ErrorComponent } from 'nakedobjects.spa';
+import { PropertiesComponent } from 'nakedobjects.spa';
+import { CollectionsComponent } from 'nakedobjects.spa';
+import { DialogComponent } from 'nakedobjects.spa';
+import { ParametersComponent } from 'nakedobjects.spa';
+import { EditPropertyComponent } from 'nakedobjects.spa';
+import { ViewPropertyComponent } from 'nakedobjects.spa';
+import { EditParameterComponent } from 'nakedobjects.spa';
+import { RecentComponent } from 'nakedobjects.spa';
+import { ApplicationPropertiesComponent } from 'nakedobjects.spa';
+import { ClickDirective  } from 'nakedobjects.spa';
+import { ClearDirective  } from 'nakedobjects.spa';
+import { ErrorService } from 'nakedobjects.spa';
+import { ContextService } from 'nakedobjects.spa';
+import { UrlManagerService } from 'nakedobjects.spa';
+import { ClickHandlerService } from 'nakedobjects.spa';
+import { RepLoaderService } from 'nakedobjects.spa';
+import { ViewModelFactoryService } from 'nakedobjects.spa';
+import { ColorService } from 'nakedobjects.spa';
+import { MaskService } from 'nakedobjects.spa';
+import { CollectionComponent } from 'nakedobjects.spa';
+import { DndModule } from 'ng2-dnd';
+import { ReactiveFormsModule } from '@angular/forms';
+import { AttachmentComponent } from 'nakedobjects.spa';
+import { MultiLineDialogComponent } from 'nakedobjects.spa';
+import { ViewParameterComponent } from 'nakedobjects.spa';
+import { GeminiErrorHandler } from 'nakedobjects.spa';
+import { MenuBarComponent } from 'nakedobjects.spa';
+import { ActionComponent } from 'nakedobjects.spa';
+import { DynamicObjectComponent } from 'nakedobjects.spa';
+import { CustomComponentService } from 'nakedobjects.spa';
+import { CustomComponentConfigService } from 'nakedobjects.spa';
+import { DynamicListComponent } from 'nakedobjects.spa';
+import { ConfigService, configFactory, localeFactory } from 'nakedobjects.spa';
+import { LoggerService } from 'nakedobjects.spa';
+import { AttachmentPropertyComponent } from 'nakedobjects.spa';
+import { DynamicErrorComponent } from 'nakedobjects.spa';
+import { CiceroComponent } from 'nakedobjects.spa';
+import { CiceroCommandFactoryService } from 'nakedobjects.spa';
+import { CiceroRendererService } from 'nakedobjects.spa';
+import { ActionBarComponent } from 'nakedobjects.spa';
+import { ActionListComponent } from 'nakedobjects.spa';
+import { RowComponent } from 'nakedobjects.spa';
+import { HeaderComponent } from 'nakedobjects.spa';
+import { AuthService } from 'nakedobjects.spa';
+import { LoginComponent } from 'nakedobjects.spa';
+import { LogoffComponent } from 'nakedobjects.spa';
+import { CiceroContextService } from 'nakedobjects.spa';
+import { DatePickerFacadeComponent } from 'nakedobjects.spa';
+import { AutoCompleteComponent } from 'nakedobjects.spa';
+import { DatePickerComponent } from 'nakedobjects.spa';
+import { TimePickerComponent } from 'nakedobjects.spa';
+import { TimePickerFacadeComponent } from 'nakedobjects.spa';
+import { ObjectNotFoundErrorComponent } from 'nakedobjects.spa';
+import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from 'nakedobjects.spa';
+
+// export function authServiceFactory(configService: ConfigService, auth0AuthService: Auth0AuthService, nullAuthService: NullAuthService): any {
+//     if (configService.config.authenticate) {
+//         return auth0AuthService;
+//     }
+//     else {
+//         return nullAuthService;
+//     }
+// }
+
+@NgModule({
+    declarations: [
+        AppComponent,
+        FooterComponent,
+        HomeComponent,
+        ObjectComponent,
+        ListComponent,
+        ErrorComponent,
+        ActionListComponent,
+        ActionBarComponent,
+        PropertiesComponent,
+        CollectionsComponent,
+        DialogComponent,
+        ParametersComponent,
+        EditPropertyComponent,
+        ViewPropertyComponent,
+        EditParameterComponent,
+        RecentComponent,
+        ApplicationPropertiesComponent,
+        ClickDirective,
+        ClearDirective,
+        CollectionComponent,
+        AttachmentComponent,
+        MultiLineDialogComponent,
+        ViewParameterComponent,
+        MenuBarComponent,
+        ActionComponent,
+        DynamicObjectComponent,
+        DynamicListComponent,
+        AttachmentPropertyComponent,
+        DynamicErrorComponent,
+        CiceroComponent,
+        RowComponent,
+        HeaderComponent,
+        LoginComponent,
+        LogoffComponent,
+        DatePickerFacadeComponent,
+        AutoCompleteComponent,
+        DatePickerComponent,
+        TimePickerComponent,
+        TimePickerFacadeComponent,
+        ObjectNotFoundErrorComponent,
+    ],
+    entryComponents: [
+        ObjectComponent,
+        ListComponent,
+        ErrorComponent,
+        ObjectNotFoundErrorComponent
+    ],
+    imports: [
+        BrowserModule,
+        DndModule.forRoot(),
+        FormsModule,
+        RoutingModule,
+        ReactiveFormsModule,
+        HttpClientModule
+    ],
+    providers: [
+        UrlManagerService,
+        ClickHandlerService,
+        ContextService,
+        RepLoaderService,
+        ViewModelFactoryService,
+        ColorService,
+        ErrorService,
+        MaskService,
+        CustomComponentService,
+        // to configure custom components create implementation of ICustomComponentConfigService and bind in here
+        { provide: CustomComponentConfigService, useClass: CustomComponentConfigService },
+        LoggerService,
+        ConfigService,
+        CiceroCommandFactoryService,
+        CiceroRendererService,
+        CiceroContextService,
+        AuthService,
+        { provide: ErrorHandler, useClass: GeminiErrorHandler },
+        { provide: APP_INITIALIZER, useFactory: configFactory, deps: [ConfigService], multi: true },
+        { provide: LOCALE_ID, useFactory: localeFactory, deps: [ConfigService] },
+        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    ],
+    bootstrap: [AppComponent]
+})
+export class AppModule { }

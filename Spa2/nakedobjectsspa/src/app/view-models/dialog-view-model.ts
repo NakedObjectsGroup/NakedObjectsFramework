@@ -10,12 +10,12 @@ import { PaneRouteData, Pane } from '../route-data';
 import * as Models from '../models';
 import * as Msg from '../user-messages';
 import * as Helpers from './helpers-view-models';
-import each from 'lodash/each';
-import every from 'lodash/every';
-import forEach from 'lodash/forEach';
-import map from 'lodash/map';
+import each from 'lodash-es/each';
+import every from 'lodash-es/every';
+import forEach from 'lodash-es/forEach';
+import map from 'lodash-es/map';
 import { Dictionary } from 'lodash';
-import pickBy from 'lodash/pickBy';
+import pickBy from 'lodash-es/pickBy';
 
 export class DialogViewModel extends MessageViewModel {
     constructor(
@@ -54,6 +54,14 @@ export class DialogViewModel extends MessageViewModel {
         }
     }
 
+    private readonly onPaneId: Pane;
+    private readonly isQueryOnly: boolean;
+    readonly title: string;
+    readonly id: string;
+    readonly parameters: ParameterViewModel[];
+    submitted = false;
+    closed = false; // make sure we never close more than once
+
     public readonly actionViewModel: ActionViewModel;
 
     private incrementPendingPotentAction() {
@@ -69,21 +77,12 @@ export class DialogViewModel extends MessageViewModel {
         this.closed = true;
     }
 
-    private readonly onPaneId: Pane;
-    private readonly isQueryOnly: boolean;
-
     private readonly actionMember = () => this.actionViewModel.actionRep;
 
     private readonly execute = (right?: boolean) => {
         const pps = this.parameters;
         return this.actionViewModel.execute(pps, right);
-    };
-
-    readonly title: string;
-    readonly id: string;
-    readonly parameters: ParameterViewModel[];
-    submitted = false;
-    closed = false; // make sure we never close more than once 
+    }
 
     readonly refresh = () => {
         const fields = this.context.getDialogCachedValues(this.actionMember().actionId(), this.onPaneId);
@@ -102,23 +101,23 @@ export class DialogViewModel extends MessageViewModel {
                 if (actionResult.shouldExpectResult()) {
                     this.setMessage(actionResult.warningsOrMessages() || Msg.noResultMessage);
                 } else if (actionResult.resultType() === "void") {
-                    // dialog staying on same page so treat as cancel 
+                    // dialog staying on same page so treat as cancel
                     // for url replacing purposes and have to explicitly close
                     this.doCloseReplaceHistory();
                 } else if (!this.isQueryOnly) {
-                    // not query only and going to new page mark as complete 
+                    // not query only and going to new page mark as complete
                     // and have to explicitly close
                     this.doCloseKeepHistory();
                 } else {
                     // query only - if on same pane will be replaced if on other pane
-                    // will stay open  
+                    // will stay open
                     this.doComplete();
                 }
             })
             .catch((reject: Models.ErrorWrapper) => {
                 const display = (em: Models.ErrorMap) => Helpers.handleErrorResponse(em, this, this.parameters);
                 this.error.handleErrorAndDisplayMessages(reject, display);
-            });
+            })
 
     private submit() {
         if (this.isMultiLineDialogRow) {
@@ -129,12 +128,12 @@ export class DialogViewModel extends MessageViewModel {
     doCloseKeepHistory = () => {
         this.urlManager.closeDialogKeepHistory(this.id, this.onPaneId);
         this.doComplete();
-    };
+    }
 
     doCloseReplaceHistory = () => {
         this.urlManager.closeDialogReplaceHistory(this.id, this.onPaneId);
         this.doComplete();
-    };
+    }
 
     private doComplete() {
         this.submit();
@@ -144,5 +143,5 @@ export class DialogViewModel extends MessageViewModel {
     clearMessages = () => {
         this.resetMessage();
         each(this.actionViewModel.parameters, parm => parm.clearMessage());
-    };
+    }
 }

@@ -1,6 +1,6 @@
-﻿import { RouteData, PaneRouteData, InteractionMode, CollectionViewState, ApplicationMode, ViewType, Pane, getOtherPane } from './route-data';
+import { RouteData, PaneRouteData, InteractionMode, CollectionViewState, ApplicationMode, ViewType, Pane, getOtherPane } from './route-data';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { ConfigService } from './config.service';
@@ -8,22 +8,23 @@ import { LoggerService } from './logger.service';
 import { Dictionary } from 'lodash';
 import * as Models from "./models";
 import * as Constants from './constants';
-import filter from 'lodash/filter';
-import forEach from 'lodash/forEach';
-import keys from 'lodash/keys';
-import map from 'lodash/map';
-import fill from 'lodash/fill';
-import zipObject from 'lodash/zipObject';
-import mapValues from 'lodash/mapValues';
-import pickBy from 'lodash/pickBy';
-import reduce from 'lodash/reduce';
-import some from 'lodash/some';
-import pick from 'lodash/pick';
-import omit from 'lodash/omit';
-import values from 'lodash/values';
-import mapKeys from 'lodash/mapKeys';
-import merge from 'lodash/merge';
-import without from 'lodash/without';
+import filter from 'lodash-es/filter';
+import forEach from 'lodash-es/forEach';
+import keys from 'lodash-es/keys';
+import map from 'lodash-es/map';
+import fill from 'lodash-es/fill';
+import zipObject from 'lodash-es/zipObject';
+import mapValues from 'lodash-es/mapValues';
+import pickBy from 'lodash-es/pickBy';
+import reduce from 'lodash-es/reduce';
+import some from 'lodash-es/some';
+import pick from 'lodash-es/pick';
+import omit from 'lodash-es/omit';
+import values from 'lodash-es/values';
+import mapKeys from 'lodash-es/mapKeys';
+import merge from 'lodash-es/merge';
+import without from 'lodash-es/without';
+import { map as rxjsmap } from 'rxjs/operators';
 
 enum Transition {
     Null,
@@ -41,9 +42,9 @@ enum Transition {
     ToAttachment,
     ToObjectWithMode,
     ToMultiLineDialog
-};
+}
 
-// keep in alphabetic order to help avoid name collisions 
+// keep in alphabetic order to help avoid name collisions
 // all key map
 const akm = {
     action: "a",
@@ -64,11 +65,10 @@ const akm = {
 };
 
 interface ITransitionResult {
-    path: string,
+    path: string;
     search: any;
     replace: boolean;
 }
-
 
 @Injectable()
 export class UrlManagerService {
@@ -79,15 +79,19 @@ export class UrlManagerService {
         private readonly configService: ConfigService,
         private readonly loggerService: LoggerService
     ) {
-        this.shortCutMarker = configService.config.shortCutMarker;
-        this.urlShortCuts = configService.config.urlShortCuts;
-        this.keySeparator = this.configService.config.keySeparator;
     }
 
-    // just for tidyness
-    private readonly shortCutMarker: string;
-    private readonly urlShortCuts: string[];
-    private readonly keySeparator: string;
+    private get shortCutMarker() {
+        return this.configService.config.shortCutMarker;
+    }
+
+    private get urlShortCuts() {
+        return this.configService.config.urlShortCuts;
+    }
+
+    private get keySeparator() {
+        return this.configService.config.keySeparator;
+    }
 
     private capturedPanes = [] as ({ paneType: Constants.PathSegment; search: Object } | null)[];
 
@@ -104,10 +108,10 @@ export class UrlManagerService {
         }
 
         const nLen = arr.length;
+        // tslint:disable-next-line
         for (nFlag; nFlag < nLen; nMask |= (<any>arr)[nFlag] << nFlag++);
         return nMask;
     }
-
 
     // convert from array of bools to mask string
     private createArrays(arr: boolean[], arrays?: boolean[][]): boolean[][] {
@@ -123,20 +127,19 @@ export class UrlManagerService {
         return arrays;
     }
 
-
     private createMask(arr: boolean[]) {
-        // split into smaller arrays if necessary 
+        // split into smaller arrays if necessary
 
         const arrays = this.createArrays(arr);
         const masks = map(arrays, a => this.createSubMask(a).toString());
 
-        return reduce(masks, (res, val) => res + "-" + val);
+        return reduce(masks, (res: string, val) => res + "-" + val) || "";
     }
 
     // convert from mask string to array of bools
     private arrayFromSubMask(sMask: string) {
-        const nMask = parseInt(sMask);
-        // nMask must be between 0 and 2147483647 - to keep simple we stick to 31 bits 
+        const nMask = parseInt(sMask, 10);
+        // nMask must be between 0 and 2147483647 - to keep simple we stick to 31 bits
         if (nMask > 0x7fffffff || nMask < -0x80000000) {
             const msg = `UrlManagerService:arrayFromSubMask Out of range ${nMask}`;
             this.loggerService.error(msg);
@@ -144,6 +147,7 @@ export class UrlManagerService {
         }
         const aFromMask = [] as boolean[];
         let len = 31; // make array always 31 bit long as we may concat another on end
+        // tslint:disable-next-line
         for (let nShifted = nMask; len > 0; aFromMask.push(Boolean(nShifted & 1)), nShifted >>>= 1, --len);
         return aFromMask;
     }
@@ -236,12 +240,11 @@ export class UrlManagerService {
         const parmKeyMap = this.getAndMapIds(akm.parm, paneId);
         paneRouteData.actionParams = this.getMappedValues(parmKeyMap);
 
-        paneRouteData.page = parseInt(this.getId(akm.page + paneId, routeParams));
-        paneRouteData.pageSize = parseInt(this.getId(akm.pageSize + paneId, routeParams));
+        paneRouteData.page = parseInt(this.getId(akm.page + paneId, routeParams), 10);
+        paneRouteData.pageSize = parseInt(this.getId(akm.pageSize + paneId, routeParams), 10);
 
         paneRouteData.attachmentId = this.getId(akm.attachment + paneId, routeParams);
     }
-
 
     private setPaneRouteData(paneRouteData: PaneRouteData, paneId: Pane) {
         const routeParams = this.getSearch();
@@ -269,8 +272,8 @@ export class UrlManagerService {
         return omit(search, toClear) as Dictionary<string>;
     }
 
-    private clearSearchKeys(search: any, paneId: Pane, keys: string[]) {
-        const toClear = this.searchKeysForPane(search, paneId, keys);
+    private clearSearchKeys(search: any, paneId: Pane, searchKeys: string[]) {
+        const toClear = this.searchKeysForPane(search, paneId, searchKeys);
         return omit(search, toClear);
     }
 
@@ -282,6 +285,7 @@ export class UrlManagerService {
 
         const path = this.getPath();
         const segments = path.split("/");
+        // tslint:disable-next-line:prefer-const
         let [, mode, pane1Type, pane2Type] = segments;
         let changeMode = false;
         let mayReplace = true;
@@ -304,7 +308,7 @@ export class UrlManagerService {
 
         // changing item on pane 2
         // either single pane so need to add new pane of appropriate type
-        // or double pane with second pane of wrong type. 
+        // or double pane with second pane of wrong type.
         if (pane === Pane.Pane2 && (this.isSinglePane() || pane2Type !== newPaneType)) {
             newPath = `/${mode}/${pane1Type}/${newPaneType}`;
             changeMode = false;
@@ -342,7 +346,6 @@ export class UrlManagerService {
     private setParameter(paneId: Pane, search: any, p: Models.Parameter, pv: Models.Value) {
         this.setValue(paneId, search, p, pv, akm.parm);
     }
-
 
     private getId(key: string, search: any) {
         return Models.decompress(search[key], this.shortCutMarker, this.urlShortCuts);
@@ -461,13 +464,13 @@ export class UrlManagerService {
             case (Transition.ToMultiLineDialog):
                 ({ path, replace } = this.setupPaneNumberAndTypes(Pane.Pane1, Constants.multiLineDialogPath)); // always on 1
                 if (paneId === Pane.Pane2) {
-                    // came from 2 
+                    // came from 2
                     search = this.swapSearchIds(search);
                 }
                 search = this.clearPane(search, Pane.Pane2); // always on pane 1
                 break;
             default:
-                // null transition 
+                // null transition
                 break;
         }
 
@@ -480,7 +483,7 @@ export class UrlManagerService {
         return { path: path, search: search, replace: replace };
     }
 
-    private executeTransition(newValues: Dictionary<string>, paneId: Pane, transition: Transition, condition: (search: any) => boolean) {
+    private executeTransition(newValues: Dictionary<string | null>, paneId: Pane, transition: Transition, condition: (search: any) => boolean) {
         this.currentPaneId = paneId;
         let search = this.getSearch();
         if (condition(search)) {
@@ -489,10 +492,11 @@ export class UrlManagerService {
             forEach(newValues,
                 (v, k) => {
                     // k should always be non null
-                    if (v)
-                        this.setId(k!, v, search);
-                    else
-                        this.clearId(k!, search);
+                    if (v) {
+                        this.setId(k, v, search);
+                    } else {
+                        this.clearId(k, search);
+                    }
                 }
             );
             this.setNewSearch(result);
@@ -519,7 +523,6 @@ export class UrlManagerService {
         this.executeTransition(newValues, paneId, Transition.ToDialog, search => this.getId(key, search) !== dialogId);
     }
 
-
     setMultiLineDialog = (dialogId: string, paneId: Pane) => {
         this.pushUrlState();
         const key = `${akm.dialog}${Pane.Pane1}`; // always on 1
@@ -540,7 +543,7 @@ export class UrlManagerService {
         const existingValue = this.getSearch()[key];
 
         if (existingValue === id) {
-            const newValues = zipObject([key], [null]) as Dictionary<string>;
+            const newValues = zipObject([key], [null]) as Dictionary<string | null>;
             this.executeTransition(newValues, paneId, transition, () => true);
         }
     }
@@ -618,7 +621,6 @@ export class UrlManagerService {
         const oid = this.getOidFromHref(href);
         const pid = this.getPidFromHref(href);
 
-
         const newValues = zipObject([okey, akey], [oid, pid]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.ToAttachment, () => true);
     }
@@ -634,7 +636,7 @@ export class UrlManagerService {
         this.currentPaneId = paneId;
         const search = this.getSearch();
 
-        // only add field if matching dialog or dialog (to catch case when swapping panes) 
+        // only add field if matching dialog or dialog (to catch case when swapping panes)
         if (check(search)) {
             set(search);
             const result = { path: this.getPath(), search: search, replace: false };
@@ -645,8 +647,7 @@ export class UrlManagerService {
     setParameterValue = (actionId: string, p: Models.Parameter, pv: Models.Value, paneId: Pane = Pane.Pane1) =>
         this.checkAndSetValue(paneId,
             search => this.getId(`${akm.action}${paneId}`, search) === actionId,
-            search => this.setParameter(paneId, search, p, pv));
-
+            search => this.setParameter(paneId, search, p, pv))
 
     setCollectionMemberState = (collectionMemberId: string, state: CollectionViewState, paneId: Pane = Pane.Pane1) => {
         const key = `${akm.collection}${paneId}_${collectionMemberId}`;
@@ -706,7 +707,7 @@ export class UrlManagerService {
         pageValues[`${akm.page}${paneId}`] = newPage.toString();
         pageValues[`${akm.pageSize}${paneId}`] = newPageSize.toString();
         pageValues[`${akm.collection}${paneId}`] = CollectionViewState[state];
-        pageValues[`${akm.selected}${paneId}_`] = "0"; // clear selection 
+        pageValues[`${akm.selected}${paneId}_`] = "0"; // clear selection
 
         this.executeTransition(pageValues, paneId, Transition.Page, () => true);
     }
@@ -723,7 +724,7 @@ export class UrlManagerService {
 
         const result = { path: newPath, search: search, replace: false };
 
-        if (errorCategory === Models.ErrorCategory.HttpClientError && 
+        if (errorCategory === Models.ErrorCategory.HttpClientError &&
             (ec === Models.HttpStatusCode.PreconditionFailed || ec === Models.HttpStatusCode.NotFound)) {
             result.replace = true;
         }
@@ -755,13 +756,13 @@ export class UrlManagerService {
 
     getPaneRouteDataObservable = (paneId: Pane) => {
 
-        return this.router.routerState.root.queryParams.map((ps: { [key: string]: string }) => {
+        return this.router.routerState.root.queryParams.pipe(rxjsmap((ps: { [key: string]: string }) => {
             const routeData = new RouteData(this.configService, this.loggerService);
             const paneRouteData = routeData.pane(paneId)!;
             this.setPaneRouteDataFromParms(paneRouteData, paneId, ps);
             paneRouteData.location = this.getViewType(this.getLocation(paneId))!;
             return paneRouteData;
-        }) as Observable<PaneRouteData>;
+        }));
     }
 
     pushUrlState = (paneId: Pane = Pane.Pane1) => {
@@ -785,7 +786,6 @@ export class UrlManagerService {
     }
 
     getListCacheIndexFromSearch = (search: Dictionary<string>, paneId: Pane, newPage: number, newPageSize: number, format?: CollectionViewState) => {
-
 
         const s1 = this.getId(`${akm.menu}${paneId}`, search) || "";
         const s2 = this.getId(`${akm.object}${paneId}`, search) || "";
@@ -827,12 +827,11 @@ export class UrlManagerService {
             const result = { path: path, search: search, replace: replace };
             this.setNewSearch(result);
         } else {
-            // probably reloaded page so no state to pop. 
-            // just go home 
+            // probably reloaded page so no state to pop.
+            // just go home
             this.setHome(paneId);
         }
     }
-
 
     clearUrlState = (paneId: Pane) => {
         this.currentPaneId = paneId;
@@ -875,13 +874,11 @@ export class UrlManagerService {
         return mode as Constants.ModePathSegment;
     }
 
-
     cicero = () => this.setMode(Constants.ciceroPath);
 
     gemini = () => this.setMode(Constants.geminiPath);
 
     isGemini = () => this.getMode() === Constants.geminiPath;
-
 
     applicationProperties = () => {
         const newPath = `/${Constants.geminiPath}/${Constants.applicationPropertiesPath}`;

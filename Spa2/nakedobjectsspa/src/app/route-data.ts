@@ -3,9 +3,8 @@
 import { ConfigService } from './config.service';
 import { LoggerService } from './logger.service';
 import { Dictionary } from 'lodash';
-import keys from 'lodash/keys';
-import isEqual from 'lodash/isEqual';
-
+import keys from 'lodash-es/keys';
+import isEqual from 'lodash-es/isEqual';
 
 export type PaneName = "pane1" | "pane2";
 export type PaneType = "single" | "split";
@@ -66,10 +65,9 @@ export class RouteData {
 }
 
 interface ICondition {
-    condition: (val: any) => boolean,
+    condition: (val: any) => boolean;
     name: string;
 }
-
 
 export enum Pane {
     Pane1 = 1,
@@ -96,7 +94,7 @@ export class PaneRouteData {
     actionsOpen: string;
     actionId: string;
     // Note that actionParams applies to executed actions. For dialogs see dialogFields
-    // we have both because of contributed actions where we have to distinguish the action parms that 
+    // we have both because of contributed actions where we have to distinguish the action parms that
     // created the current list and the the parms for the contributed action
 
     actionParams: Dictionary<Models.Value>;
@@ -110,12 +108,6 @@ export class PaneRouteData {
     attachmentId: string;
 
     private validatingUrl: string;
-
-    isValid(name: string) {
-        if (!this.hasOwnProperty(name)) {
-            this.loggerService.throw(`PaneRouteData:isValid ${name} is not a valid property on PaneRouteData`);
-        }
-    }
 
     private isNull = {
         condition: (val: any) => !val,
@@ -136,6 +128,12 @@ export class PaneRouteData {
         condition: (val: any) => keys(val).length === 0,
         name: "is an empty map"
     };
+
+    isValid(name: string) {
+        if (!this.hasOwnProperty(name)) {
+            this.loggerService.throw(`PaneRouteData:isValid ${name} is not a valid property on PaneRouteData`);
+        }
+    }
 
     private assertMustBe(context: string, name: string, contextCondition: ICondition, valueCondition: ICondition) {
         // make sure context and name are valid
@@ -170,7 +168,7 @@ export class PaneRouteData {
         this.validatingUrl = url;
 
         if (this.doUrlValidation) {
-            // Can add more conditions here 
+            // Can add more conditions here
             this.assertMustBeNullInContext("objectId", "menuId");
             this.assertMustBeNullInContext("menuId", "objectId");
         }
@@ -180,7 +178,7 @@ export class PaneRouteData {
         if (!this.rawParms || !other || !other.rawParms) {
             return false;
         }
-     
+
         return  isEqual(this.rawParms, other.rawParms);
     }
 
@@ -191,4 +189,3 @@ export class PaneRouteData {
         return isEqual(this.rawParmsWithoutReload, other.rawParmsWithoutReload);
     }
 }
-

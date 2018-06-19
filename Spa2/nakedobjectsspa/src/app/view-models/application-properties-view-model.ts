@@ -15,6 +15,12 @@ export class ApplicationPropertiesViewModel {
         this.setUp();
     }
 
+    serverVersion: Ro.IVersionRepresentation;
+    user: Ro.IUserRepresentation;
+    serverUrl: string;
+    clientVersion: string;
+    applicationName: string;
+
     private setUp() {
         this.context.getUser().
             then((u: Models.UserRepresentation) => this.user = u.wrapped()).
@@ -30,11 +36,4 @@ export class ApplicationPropertiesViewModel {
 
         this.applicationName = this.configService.config.applicationName;
     }
-
-
-    serverVersion: Ro.IVersionRepresentation;
-    user: Ro.IUserRepresentation;
-    serverUrl: string;
-    clientVersion: string;
-    applicationName: string;
 }

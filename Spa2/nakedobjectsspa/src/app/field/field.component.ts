@@ -1,4 +1,4 @@
-﻿import { AutoCompleteComponent } from '../auto-complete/auto-complete.component';
+import { AutoCompleteComponent } from '../auto-complete/auto-complete.component';
 import * as Models from '../models';
 import { AbstractControl } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
@@ -15,20 +15,20 @@ import { ConfigService } from '../config.service';
 import { LoggerService } from '../logger.service';
 import { Pane } from '../route-data';
 import { Dictionary } from 'lodash';
-import find from 'lodash/find';
-import every from 'lodash/every';
-import mapValues from 'lodash/mapValues';
-import omit from 'lodash/omit';
-import keys from 'lodash/keys';
-import { BehaviorSubject } from 'rxjs';
-import { ISubscription } from 'rxjs/Subscription';
+import find from 'lodash-es/find';
+import every from 'lodash-es/every';
+import mapValues from 'lodash-es/mapValues';
+import omit from 'lodash-es/omit';
+import keys from 'lodash-es/keys';
+import { BehaviorSubject ,  SubscriptionLike as ISubscription } from 'rxjs';
 import { safeUnsubscribe, focus, accept, dropOn, paste } from '../helpers-components';
 import { DatePickerFacadeComponent } from '../date-picker-facade/date-picker-facade.component';
 import { TimePickerFacadeComponent } from '../time-picker-facade/time-picker-facade.component';
+import { debounceTime } from 'rxjs/operators';
 
 export abstract class FieldComponent implements OnDestroy {
 
-    protected constructor(     
+    protected constructor(
         private readonly context: ContextService,
         private readonly configService: ConfigService,
         private readonly loggerService: LoggerService,
@@ -37,7 +37,7 @@ export abstract class FieldComponent implements OnDestroy {
 
     set formGroup(fm: FormGroup) {
         this.formGrp = fm;
-        this.formGrp.valueChanges.debounceTime(200).subscribe(data => this.onValueChanged());
+        this.formGrp.valueChanges.pipe(debounceTime(200)).subscribe(data => this.onValueChanged());
         this.onValueChanged(); // (re)set validation messages now
     }
 
@@ -73,12 +73,16 @@ export abstract class FieldComponent implements OnDestroy {
     private isAutoComplete: boolean;
     private bSubject: BehaviorSubject<any>;
     private sub: ISubscription;
+    private lastArgs: Dictionary<Models.Value>;
 
     control: AbstractControl;
     currentOptions: ChoiceViewModel[] = [];
     pArgs: Dictionary<Models.Value>;
     paneId: Pane;
     canDrop = false;
+
+    abstract checkboxList: QueryList<ElementRef>;
+    abstract focusList: QueryList<ElementRef | DatePickerFacadeComponent | TimePickerFacadeComponent | AutoCompleteComponent>;
 
     protected init(vmParent: DialogViewModel | DomainObjectViewModel,
         vm: ParameterViewModel | PropertyViewModel,
@@ -102,8 +106,8 @@ export abstract class FieldComponent implements OnDestroy {
     }
 
     accept(droppableVm: FieldViewModel) {
-        return accept(droppableVm, this);   
-    };
+        return accept(droppableVm, this);
+    }
 
     drop(draggableVm: IDraggableViewModel) {
         dropOn(draggableVm, this.model, this);
@@ -141,10 +145,8 @@ export abstract class FieldComponent implements OnDestroy {
         return this.mapValues(this.pArgs, parmsOrProps);
     }
 
-    private lastArgs : Dictionary<Models.Value>;
-
     private argsChanged(newArgs: Dictionary<Models.Value>) {
-        const same = this.lastArgs && 
+        const same = this.lastArgs &&
                      keys(this.lastArgs).length === keys(newArgs).length &&
                      every(this.lastArgs, (v, k) => newArgs[k].toValueString() === v.toValueString());
 
@@ -158,7 +160,7 @@ export abstract class FieldComponent implements OnDestroy {
             const prompts = this.model.conditionalChoices(nArgs);
             prompts.
                 then((cvms: ChoiceViewModel[]) => {
-                    // if unchanged return 
+                    // if unchanged return
                     if (cvms.length === this.currentOptions.length && every(cvms, (c, i) => c.equals(this.currentOptions[i]))) {
                         return;
                     }
@@ -166,7 +168,7 @@ export abstract class FieldComponent implements OnDestroy {
                     this.currentOptions = cvms;
 
                     if (this.isConditionalChoices) {
-                        // need to reset control to find the selected options 
+                        // need to reset control to find the selected options
                         if (this.model.entryType === Models.EntryType.MultipleConditionalChoices) {
                             this.control.reset(this.model.selectedMultiChoices);
                         } else {
@@ -175,7 +177,7 @@ export abstract class FieldComponent implements OnDestroy {
                     }
                 }).
                 catch(() => {
-                    // error clear everything 
+                    // error clear everything
                     this.model.selectedChoice = null;
                     this.currentOptions = [];
                 });
@@ -301,7 +303,7 @@ export abstract class FieldComponent implements OnDestroy {
             default: // null
                 return false;
         }
-    };
+    }
 
     protected handleClick(event: Event) {
         if (this.isBoolean && this.model.optional) {
@@ -311,17 +313,13 @@ export abstract class FieldComponent implements OnDestroy {
         }
     }
 
-    abstract checkboxList: QueryList<ElementRef>;
-
-    abstract focusList: QueryList<ElementRef | DatePickerFacadeComponent | TimePickerFacadeComponent | AutoCompleteComponent>;
-
     focus() {
-        const first = this.focusList && this.focusList.first; 
+        const first = this.focusList && this.focusList.first;
 
         if (first instanceof ElementRef) {
             return focus(this.renderer, first);
-        }     
-        return first && first.focus();        
+        }
+        return first && first.focus();
     }
 
     ngOnDestroy() {

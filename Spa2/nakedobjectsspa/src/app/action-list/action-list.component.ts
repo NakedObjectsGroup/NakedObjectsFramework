@@ -1,24 +1,29 @@
-﻿import { Component, Input, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
+import { Component, Input, ViewChildren, QueryList, AfterViewInit, OnDestroy } from '@angular/core';
 import { MenuItemViewModel } from '../view-models/menu-item-view-model';
 import { IActionHolder, wrapAction } from '../action/action.component';
 import { ActionComponent } from '../action/action.component';
 import { IMenuHolderViewModel } from '../view-models/imenu-holder-view-model';
-import { ISubscription } from 'rxjs/Subscription';
-import map from 'lodash/map';
-import some from 'lodash/some';
-import findIndex from 'lodash/findIndex';
-import difference from 'lodash/difference';
-import first from 'lodash/first';
+import { SubscriptionLike as ISubscription } from 'rxjs';
+import map from 'lodash-es/map';
+import some from 'lodash-es/some';
+import findIndex from 'lodash-es/findIndex';
+import difference from 'lodash-es/difference';
+import first from 'lodash-es/first';
 import { safeUnsubscribe } from '../helpers-components';
 
 @Component({
     selector: 'nof-action-list',
-    template: require('./action-list.component.html'),
-    styles: [require('./action-list.component.css')]
+    templateUrl: 'action-list.component.html',
+    styleUrls: ['action-list.component.css']
 })
-export class ActionListComponent implements AfterViewInit {
+export class ActionListComponent implements AfterViewInit, OnDestroy {
 
+    private previousActionChildrenNames: string[] = [];
     private holder: IMenuHolderViewModel;
+    private sub: ISubscription;
+
+    @ViewChildren(ActionComponent)
+    actionChildren: QueryList<ActionComponent>;
 
     @Input()
     set menuHolder(mh: IMenuHolderViewModel) {
@@ -59,18 +64,13 @@ export class ActionListComponent implements AfterViewInit {
             this.actionHolders[index] = this.getActionHolders(menuItem);
         }
         return this.actionHolders[index];
-    };
+    }
 
     toggleCollapsed = (menuItem: MenuItemViewModel, index: number) => menuItem.toggleCollapsed();
 
     navCollapsed = (menuItem: MenuItemViewModel) => menuItem.navCollapsed;
 
     displayClass = (menuItem: MenuItemViewModel) => ({ collapsed: menuItem.navCollapsed, open: !menuItem.navCollapsed, rootMenu: !menuItem.name });
-
-    @ViewChildren(ActionComponent)
-    actionChildren: QueryList<ActionComponent>;
-
-    previousActionChildrenNames: string[] = [];
 
     focusFromIndex(actions: QueryList<ActionComponent>, index = 0) {
 
@@ -86,7 +86,7 @@ export class ActionListComponent implements AfterViewInit {
         if (actions && actions.length > 0) {
             const actionChildrenNames = map(actions.toArray(), a => a.action.value);
             const newActions = difference(actionChildrenNames, this.previousActionChildrenNames);
-            let index: number = 0;
+            let index = 0;
 
             if (newActions && newActions.length > 0) {
                 const firstAction = first(newActions);
@@ -97,8 +97,6 @@ export class ActionListComponent implements AfterViewInit {
             this.focusFromIndex(actions, index);
         }
     }
-
-    private sub: ISubscription;
 
     ngAfterViewInit(): void {
         this.focus(this.actionChildren);

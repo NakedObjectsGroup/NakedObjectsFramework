@@ -1,26 +1,35 @@
-﻿import { Injectable } from '@angular/core';
-import { Response, Request, RequestOptions, Headers, RequestMethod, ResponseContentType } from '@angular/http';
+import { Injectable } from '@angular/core';
 import * as Models from './models';
 import * as Ro from './ro-interfaces';
-import { Subject } from 'rxjs/Subject';
+import { Subject ,  Observable } from 'rxjs';
 import { ConfigService } from './config.service';
-import { Observable } from 'rxjs'; // for declaration compile
 import { SimpleLruCache } from './simple-lru-cache';
-import { AuthHttp } from 'angular2-jwt';
-import 'rxjs/add/operator/toPromise';
-import { Dictionary } from 'lodash';
-import each from 'lodash/each';
-import reduce from 'lodash/reduce';
 
+import { Dictionary } from 'lodash';
+import each from 'lodash-es/each';
+import reduce from 'lodash-es/reduce';
+import { HttpClient, HttpRequest, HttpHeaders, HttpParams, HttpResponse, HttpErrorResponse } from '@angular/common/http';
+
+interface RequestOptions {
+    method: 'DELETE' | 'GET' | 'POST' | 'PUT';
+    url: string;
+    init: {
+        headers?: HttpHeaders;
+        reportProgress?: boolean;
+        params?: HttpParams;
+        responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
+        withCredentials?: boolean;
+        body?: object;
+    };
+}
 
 @Injectable()
 export class RepLoaderService {
 
     constructor(
-        private readonly http: AuthHttp,
+        private readonly http: HttpClient,
         private readonly configService: ConfigService
     ) { }
-
 
     private loadingCount = 0;
 
@@ -28,12 +37,12 @@ export class RepLoaderService {
 
     loadingCount$ = this.loadingCountSource.asObservable();
 
-    // use our own LRU cache 
+    // use our own LRU cache
     private cache = new SimpleLruCache(this.configService.config.httpCacheDepth);
 
     private addIfMatchHeader(config: RequestOptions, digest?: string | null) {
-        if (digest && (config.method === RequestMethod.Post || config.method === RequestMethod.Put || config.method === RequestMethod.Delete)) {
-            config.headers = new Headers({ "If-Match": digest });
+        if (digest && (config.method === "POST" || config.method === "PUT" || config.method === "DELETE")) {
+            config.init.headers = new HttpHeaders({ "If-Match": digest });
         }
     }
 
@@ -45,20 +54,20 @@ export class RepLoaderService {
         return Promise.reject(rr);
     }
 
-    private isObjectUrl(url : string){
-        const segments = url.split('/'); 
+    private isObjectUrl(url: string) {
+        const segments = url.split('/');
         return segments.length >= 4 && segments[3] === "objects";
     }
 
-    private handleError(response: Response, originalUrl: string) {
+    private handleError(response: HttpErrorResponse, originalUrl: string) {
         let category: Models.ErrorCategory;
         let error: Models.ErrorRepresentation | Models.ErrorMap | string;
 
         if (response.status === Models.HttpStatusCode.InternalServerError) {
-            // this error should contain an error representatation 
-            if (Models.isErrorRepresentation(response.json())) {
-                const errorRep = new Models.ErrorRepresentation();
-                errorRep.populate(response.json() as Ro.IErrorRepresentation);
+            // this error should contain an error representatation
+            const errorRep = new Models.ErrorRepresentation();
+                if (Models.isErrorRepresentation(response.error)) {
+                errorRep.populate(response.error as Ro.IErrorRepresentation);
                 category = Models.ErrorCategory.HttpServerError;
                 error = errorRep;
             } else {
@@ -74,8 +83,8 @@ export class RepLoaderService {
 
             if (response.status === Models.HttpStatusCode.BadRequest ||
                 response.status === Models.HttpStatusCode.UnprocessableEntity) {
-                // these errors should contain a map          
-                error = new Models.ErrorMap(response.json() as Ro.IValueMap | Ro.IObjectOfType,
+                // these errors should contain a map
+                error = new Models.ErrorMap(response.error as Ro.IValueMap | Ro.IObjectOfType,
                     response.status,
                     message);
             } else if (response.status === Models.HttpStatusCode.NotFound && this.isObjectUrl(originalUrl)) {
@@ -83,13 +92,11 @@ export class RepLoaderService {
                 // treat as http problem.
                 category = Models.ErrorCategory.HttpClientError;
                 error = `Failed to connect to server: ${response.url || "unknown"}`;
-            }
-            else if (response.status === Models.HttpStatusCode.NotFound) {
+            } else if (response.status === Models.HttpStatusCode.NotFound) {
                 // general not found other than object - assume client programming error
                 category = Models.ErrorCategory.ClientError;
                 error = `Failed to connect to server: ${response.url || "unknown"}`;
-            }
-            else {
+            } else {
                 error = message;
             }
         }
@@ -99,25 +106,25 @@ export class RepLoaderService {
         return Promise.reject(rr);
     }
 
-
     private httpValidate(config: RequestOptions): Promise<boolean> {
         this.loadingCountSource.next(++(this.loadingCount));
 
-        return this.http.request(new Request(config))
+        return this.http.request(new HttpRequest(config.method, config.url, config.init))
             .toPromise()
             .then(() => {
                 this.loadingCountSource.next(--(this.loadingCount));
                 return Promise.resolve(true);
             })
-            .catch((r: Response) => {
+            // todo fix any
+            .catch((r: HttpErrorResponse) => {
                 this.loadingCountSource.next(--(this.loadingCount));
                 const originalUrl = config.url || "Unknown url";
-                r.url = r.url || originalUrl;
+                // const rr = r.clone({url :  r.url || originalUrl});
                 return this.handleError(r, originalUrl);
             });
     }
 
-    // special handler for case where we receive a redirected object back from server 
+    // special handler for case where we receive a redirected object back from server
     // instead of an actionresult. Wrap the object in an actionresult and then handle normally
     private handleRedirectedObject(response: Models.IHateoasModel, data: Ro.IRepresentation) {
 
@@ -127,7 +134,7 @@ export class RepLoaderService {
                 result: data,
                 links: [],
                 extensions: {}
-            }
+            };
             return actionResult;
         }
 
@@ -161,26 +168,28 @@ export class RepLoaderService {
 
         this.loadingCountSource.next(++(this.loadingCount));
 
-        return this.http.request(new Request(config))
+        return this.http.request(new HttpRequest(config.method, config.url, config.init.body, config.init))
             .toPromise()
-            .then((r: Response) => {
+            // todo fix this
+            .then((r: HttpResponse<Ro.IRepresentation>) => {
                 this.loadingCountSource.next(--(this.loadingCount));
 
-                const asJson = r.json();
-                if (!this.isValidResponse(asJson)) {
+                // const asJson = r.json();
+                if (!this.isValidResponse(r.body)) {
                     return this.handleInvalidResponse(Models.ErrorCategory.ClientError);
                 }
 
-                const representation = this.handleRedirectedObject(response, asJson);
+                const representation = this.handleRedirectedObject(response, r.body!);
                 this.cache.add(requestUrl, representation);
                 response.populate(representation);
                 response.etagDigest = (r.headers && r.headers.get("ETag")) || "";
                 response.keySeparator = this.configService.config.keySeparator;
                 return Promise.resolve(response);
             })
-            .catch((r: Response) => {
+            // todo fix any
+            .catch((r: HttpErrorResponse) => {
                 this.loadingCountSource.next(--(this.loadingCount));
-                r.url = r.url || requestUrl;
+                // const rr = r.clone({url :  r.url || requestUrl});
                 return this.handleError(r, requestUrl);
             });
     }
@@ -189,29 +198,32 @@ export class RepLoaderService {
 
         const response = model;
 
-        const config = new RequestOptions({
-            withCredentials: true,
+        const config = {
             url: model.getUrl(),
             method: model.method,
-            body: model.getBody()
-        });
+            init: {
+                withCredentials: true,
+                body: model.getBody()
+            }
+        };
 
         return this.httpPopulate(config, !!ignoreCache, response) as Promise<T>;
     }
 
     setConfigFromMap(map: Models.IHateoasModel, digest?: string | null) {
 
-        const config = new RequestOptions({
-            withCredentials: true,
+        const config = {
             url: map.getUrl(),
             method: map.method,
-            body: map.getBody()
-        });
+            init: {
+                withCredentials: true,
+                body: map.getBody()
+            }
+        };
 
         this.addIfMatchHeader(config, digest);
         return config;
     }
-
 
     retrieve = <T extends Models.IHateoasModel>(map: Models.IHateoasModel, rc: { new (): Models.IHateoasModel }, digest?: string | null): Promise<T> => {
         const response = new rc();
@@ -235,17 +247,18 @@ export class RepLoaderService {
                 urlParms = urlParmString !== "" ? `?${urlParmString}` : "";
             }
 
-            const config = new RequestOptions({
+            const config = {
                 method: link.method(),
                 url: link.href() + urlParms,
-                withCredentials: true
-            });
+                init: {
+                    withCredentials: true
+                }
+            };
 
             return this.httpPopulate(config, true, response) as Promise<T>;
         }
         return Promise.reject("link must not be null");
     }
-
 
     invoke = (action: Models.ActionRepresentation | Models.InvokableActionMember, parms: Dictionary<Models.Value>, urlParms: Dictionary<Object>): Promise<Models.ActionResultRepresentation> => {
         const invokeMap = action.getInvokeMap();
@@ -263,7 +276,7 @@ export class RepLoaderService {
 
     addToCache = (url: string, m: Ro.IResourceRepresentation) => {
         this.cache.add(url, m);
-    };
+    }
 
     getFile = (url: string, mt: string, ignoreCache: boolean): Promise<Blob> => {
 
@@ -277,39 +290,46 @@ export class RepLoaderService {
             }
         }
 
-        const config = new RequestOptions({
+        const config = {
             method: "GET",
             url: url,
-            responseType: ResponseContentType.Blob,
-            headers: new Headers({ "Accept": mt })
-        });
+            init: {
+                responseType: 'blob',
 
-        const request = new Request(config);
+                // responseType: ResponseContentType.Blob,
+                headers: new HttpHeaders({ "Accept": mt })
+            }
+        };
+
+        const request = new HttpRequest(config.method, config.url, config.init);
 
         return this.http.request(request)
             .toPromise()
-            .then((r: Response) => {
-                const blob = r.blob();
+            // todo fix this
+            .then((r: HttpResponse<Blob>) => {
+                const blob = r.body!;
                 this.cache.add(config.url!, blob);
                 return blob;
             })
-            .catch((r: Response) => {
+            .catch((r: HttpErrorResponse) => {
                 const originalUrl = config.url || "Unknown url";
-                r.url = r.url || originalUrl;
+                // const rr = r.clone({url :  r.url || originalUrl});
                 return this.handleError(r, originalUrl);
             });
     }
 
     uploadFile = (url: string, mt: string, file: Blob): Promise<boolean> => {
 
-        const config = new RequestOptions({
+        const config = {
             method: "POST",
             url: url,
-            body: file,
-            headers: new Headers({ "Content-Type": mt })
-        });
+            init: {
+                body: file,
+                headers: new Headers({ "Content-Type": mt })
+            }
+        };
 
-        const request = new Request(config);
+        const request = new HttpRequest(config.method, config.url, config.init);
 
         return this.http.request(request)
             .toPromise()
@@ -320,7 +340,6 @@ export class RepLoaderService {
                 return Promise.resolve(false);
             });
     }
-
 
     private logoff() {
         this.cache.removeAll();

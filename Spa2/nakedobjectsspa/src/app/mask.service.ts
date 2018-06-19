@@ -2,8 +2,10 @@
 import { CurrencyPipe, DecimalPipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { ConfigService } from './config.service';
-import * as moment from 'moment';
-import forEach from 'lodash/forEach';
+import * as momentNs from 'moment';
+import forEach from 'lodash-es/forEach';
+
+const moment = momentNs;
 
 export interface IMaskServiceConfigurator {
     setNumberMaskMapping: (customMask: string, format: Ro.FormatType, digits?: string, locale?: string) => void;
@@ -13,7 +15,6 @@ export interface IMaskServiceConfigurator {
 
     setCurrencyMaskMapping: (customMask: string, format: Ro.FormatType, symbol?: string, digits?: string, locale?: string) => void;
 }
-
 
 export interface ILocalFilter {
     filter(val: any): string;
@@ -33,8 +34,7 @@ class LocalStringFilter implements ILocalFilter {
 function transform(tfm: () => string | null) {
     try {
         return tfm();
-    }
-    catch (e) {
+    } catch (e) {
         return "";
     }
 }
@@ -53,7 +53,7 @@ class LocalCurrencyFilter implements ILocalFilter {
         }
 
         const pipe = new CurrencyPipe(this.locale);
-        return transform(() => pipe.transform(val, this.symbol, true, this.digits)) || "";
+        return transform(() => pipe.transform(val, this.symbol, "symbol", this.digits)) || "";
     }
 }
 
@@ -69,7 +69,7 @@ class LocalDateFilter implements ILocalFilter {
         if (!val) {
             return "";
         }
-        // Angular date pipes no longer support timezones so we need to use moment here 
+        // Angular date pipes no longer support timezones so we need to use moment here
 
         // date or time
         let mmt = val.length > 8 ?  moment.utc(val) : moment.utc(val, "HH:mm:ss");
@@ -154,7 +154,7 @@ export class MaskService implements IMaskServiceConfigurator {
             default:
                 return new LocalStringFilter();
         }
-    };
+    }
 
     private customFilter(format: Ro.FormatType, remoteMask: string | null) {
         if (remoteMask && this.maskMap[format]) {
@@ -165,19 +165,19 @@ export class MaskService implements IMaskServiceConfigurator {
 
     toLocalFilter(remoteMask: string | null, format: Ro.FormatType) {
         return this.customFilter(format, remoteMask) || this.defaultLocalFilter(format);
-    };
+    }
 
     setNumberMaskMapping(customMask: string, format: Ro.FormatType, digits?: string, locale?: string) {
         this.maskMap[format!][customMask] = new LocalNumberFilter(locale || this.defaultLocale, digits);
-    };
+    }
 
     setDateMaskMapping(customMask: string, format: Ro.FormatType, mask: string, tz?: string, locale?: string) {
         this.maskMap[format!][customMask] = new LocalDateFilter(locale || this.defaultLocale, mask, tz);
-    };
+    }
 
     setCurrencyMaskMapping(customMask: string, format: Ro.FormatType, symbol?: string, digits?: string, locale?: string) {
         this.maskMap[format!][customMask] = new LocalCurrencyFilter(locale || this.defaultLocale, symbol, digits);
-    };
+    }
 
     private configureFromConfig() {
         const maskConfig = this.appConfig.config.masks;

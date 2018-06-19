@@ -50,7 +50,7 @@ export class ErrorService {
 
     handleError(reject: Models.ErrorWrapper) {
         this.handleErrorAndDisplayMessages(reject, () => { });
-    };
+    }
 
     handleErrorAndDisplayMessages(reject: Models.ErrorWrapper, displayMessages: (em: Models.ErrorMap) => void) {
         this.preProcessors.forEach(p => p(reject));
@@ -72,9 +72,9 @@ export class ErrorService {
                 this.handleClientError(reject);
                 break;
         }
-    };
+    }
 
     private setErrorPreprocessor(handler: ErrorPreprocessor) {
         this.preProcessors.push(handler);
-    };
+    }
 }

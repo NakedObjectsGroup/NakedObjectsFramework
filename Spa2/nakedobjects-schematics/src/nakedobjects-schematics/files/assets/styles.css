@@ -1,0 +1,227 @@
+/*Global fonts*/
+.gemini, table, a, pre, textarea, input, button { 
+    font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+}
+
+@font-face {
+    font-family: "iconFont";
+    src: url('./fonts/iconFont.eot');
+    src: url('./fonts/iconFont.eot?#iefix') format('embedded-opentype'), url('./fonts/iconFont.svg#iconFont') format('svg'), url('./fonts/iconFont.woff') format('woff'), url('./fonts/iconFont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Override unwanted defaults */
+.gemini * {
+    /*Specifies that padding & border are added INSIDE the specified width*/
+    box-sizing: border-box;
+}
+
+pre {
+    white-space: pre-wrap; /* CSS 3 */
+    white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
+}
+
+
+html, #main, body, .background, .single, .split {
+    margin: 0px;
+    height: 100%; /*fill the vertical space*/
+    background-color: black;
+}
+
+.background {
+    overflow-y: auto;
+}
+
+.single, .split {
+    overflow-x: auto;
+    padding-bottom: 60px;
+}
+.single {
+    width: 100%;
+}
+
+.split { 
+   float: left;
+    width: 50%;
+}
+
+/*0. Black */
+.object-color0 {
+    background-color: #000000;
+    color: white;
+}
+
+.link-color0 {
+    background-color: #404040;
+    color: white;
+}
+/*1. Blue*/
+.object-color1 {
+    background-color: #2b5797;
+    color: white;
+}
+
+.link-color1 {
+    background-color: #1b4787;
+    color: white;
+}
+/*2. Green*/
+.object-color2 {
+    background-color: #1e7145;
+    color: white;
+}
+
+.link-color2 {
+    background-color: #0e6135;
+    color: white;
+}
+/*3. Red*/
+.object-color3 {
+    background-color: #ee2121;
+    color: white;
+}
+
+.link-color3 {
+    background-color: #ce0101;
+    color: white;
+}
+/*4. Yellow*/
+.object-color4 {
+    background-color: #ffc41d;
+    color: white;
+}
+
+.link-color4 {
+    background-color: #efb40d;
+    color: white;
+}
+/*5. Purple*/
+.object-color5 {
+    background-color: #603cba;
+    color: white;
+}
+
+.link-color5 {
+    background-color: #502caa;
+    color: white;
+}
+/*6. Orange*/
+.object-color6 {
+    background-color: #da532c;
+    color: white;
+}
+
+.link-color6 {
+    background-color: #ca431c;
+    color: white;
+}
+/*7. Mauve*/
+.object-color7 {
+    background-color: #9f10a7;
+    color: white;
+}
+
+.link-color7 {
+    background-color: #8f0097;
+    color: white;
+}
+/*8. Teal*/
+.object-color8 {
+    background-color: #10aba9;
+    color: white;
+}
+
+.link-color8 {
+    background-color: #009b99;
+    color: white;
+}
+/*9. Cherry*/
+.object-color9 {
+    background-color: #b91d47;
+    color: white;
+}
+
+.link-color9 {
+    background-color: #a90d37;
+    color: white;
+}
+/*10. Grey*/
+.object-color10 {
+    background-color: #525252;
+    color: white;
+}
+
+.link-color10 {
+    background-color: #424242;
+    color: white;
+}
+/*11. Yellow ochre*/
+.object-color11 {
+    background-color: #e3a21a;
+    color: white;
+}
+
+.link-color11 {
+    background-color: #d3920a;
+    color: white;
+}
+/*Fuschia*/
+.object-color12 {
+    background-color: #ff2097;
+    color: white;
+}
+
+.link-color12 {
+    background-color: #df0077;
+    color: white;
+}
+
+/* Auto-complete -  overriding standard Angular/Materials styling */
+.mat-input-placeholder-wrapper,.mat-input-underline  {
+    display: none;
+}
+
+.mat-autocomplete-panel {
+    background: #fff;
+}
+
+.mat-option {
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    font-size: 10pt;
+    padding: 0 5px;
+    text-align: start;
+    text-decoration: none;
+    position: relative;
+    cursor: pointer;
+    outline: 0;
+}
+.mat-option:hover {
+    display: block;
+   background-color: grey;
+   color: white;
+}
+
+nof-edit-parameter .mat-input-wrapper, nof-edit-property .mat-input-wrapper  {
+    margin: 0;
+    padding-bottom: 0;
+}
+.cdk-overlay-pane {
+    position: absolute;
+    pointer-events: auto;
+    box-sizing: border-box;
+    z-index: 1000;
+}
+.cdk-global-overlay-wrapper, .cdk-overlay-container {
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}

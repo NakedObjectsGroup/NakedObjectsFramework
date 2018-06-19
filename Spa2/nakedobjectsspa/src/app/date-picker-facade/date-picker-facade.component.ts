@@ -2,19 +2,21 @@ import { FieldViewModel } from '../view-models/field-view-model';
 import { AfterViewInit, ViewChild } from '@angular/core';
 import { Component, Input, EventEmitter } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
-import * as moment from 'moment';
 import { DatePickerComponent, DatePickerOptions } from "../date-picker/date-picker.component";
 import { ConfigService } from '../config.service';
 import * as Constants from '../constants';
 import * as Msg from '../user-messages';
 import { IDatePickerInputEvent, IDatePickerOutputEvent } from '../date-picker/date-picker.component';
+import * as momentNs from 'moment';
 
 @Component({
     selector: 'nof-date-picker-facade',
-    template: require('./date-picker-facade.component.html'),
-    styles: [require('./date-picker-facade.component.css')]
+    templateUrl: 'date-picker-facade.component.html',
+    styleUrls: ['date-picker-facade.component.css']
 })
 export class DatePickerFacadeComponent implements AfterViewInit {
+
+    datePickerOptions = new DatePickerOptions();
 
     constructor(private readonly configService: ConfigService) {
         this.inputEvents = new EventEmitter<IDatePickerInputEvent>();
@@ -30,6 +32,11 @@ export class DatePickerFacadeComponent implements AfterViewInit {
     @Input()
     model: FieldViewModel;
 
+    @ViewChild("dp")
+    datepicker: DatePickerComponent;
+
+    inputEvents: EventEmitter<IDatePickerInputEvent>;
+
     get id() {
         return this.model.paneArgId;
     }
@@ -38,7 +45,7 @@ export class DatePickerFacadeComponent implements AfterViewInit {
         return this.model.description;
     }
 
-    setValueIfChanged(dateModel: moment.Moment | null) {
+    setValueIfChanged(dateModel: momentNs.Moment | null) {
         const oldValue = this.control.value;
         const newValue = dateModel ? dateModel.format(Constants.fixedDateFormat) : "";
 
@@ -58,7 +65,7 @@ export class DatePickerFacadeComponent implements AfterViewInit {
         }
     }
 
-    handleDateChangedEvent(dateModel: moment.Moment) {
+    handleDateChangedEvent(dateModel: momentNs.Moment) {
         if (this.control) {
             this.setValueIfChanged(dateModel);
         }
@@ -95,11 +102,9 @@ export class DatePickerFacadeComponent implements AfterViewInit {
                 this.handleInvalidDateEvent(e.data);
                 break;
 
-            default: //ignore
+            default: // ignore
         }
     }
-
-    inputEvents: EventEmitter<IDatePickerInputEvent>;
 
     ngAfterViewInit(): void {
         const existingValue: any = this.control && this.control.value;
@@ -107,11 +112,6 @@ export class DatePickerFacadeComponent implements AfterViewInit {
             setTimeout(() => this.inputEvents.emit({ type: "setDate", data: existingValue as string, }));
         }
     }
-
-    datePickerOptions = new DatePickerOptions();
-
-    @ViewChild("dp")
-    datepicker: DatePickerComponent;
 
     focus() {
         return this.datepicker.focus();

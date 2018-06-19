@@ -36,22 +36,22 @@ export class LoggerService {
     }
 
     get error(): (message?: any, ...optionalParams: any[]) => void {
-        if (this.logError) return console.error.bind(console);
+        if (this.logError) { return console.error.bind(console); }
         return this.noop;
     }
 
     get warn(): (message?: any, ...optionalParams: any[]) => void {
-        if (this.logWarn) return console.warn.bind(console);
+        if (this.logWarn) { return console.warn.bind(console); }
         return this.noop;
     }
 
     get info(): (message?: any, ...optionalParams: any[]) => void {
-        if (this.logInfo) return console.info.bind(console);
+        if (this.logInfo) { return console.info.bind(console); }
         return this.noop;
     }
 
     get debug(): (message?: any, ...optionalParams: any[]) => void {
-        if (this.logDebug) return console.debug.bind(console);
+        if (this.logDebug) { return console.debug.bind(console); }
         return this.noop;
     }
 

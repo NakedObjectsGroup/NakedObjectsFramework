@@ -1,7 +1,6 @@
 ﻿import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler, APP_INITIALIZER, LOCALE_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 import { RoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FooterComponent } from './footer/footer.component';
@@ -37,7 +36,7 @@ import { ViewParameterComponent } from './view-parameter/view-parameter.componen
 import { GeminiErrorHandler } from './error.handler';
 import { MenuBarComponent } from './menu-bar/menu-bar.component';
 import { ActionComponent } from './action/action.component';
-import { DynamicObjectComponent } from './dynamic-object/dynamic-object.component'
+import { DynamicObjectComponent } from './dynamic-object/dynamic-object.component';
 import { CustomComponentService } from './custom-component.service';
 import { CustomComponentConfigService } from './custom-component-config.service';
 import { DynamicListComponent } from './dynamic-list/dynamic-list.component';
@@ -52,9 +51,7 @@ import { ActionBarComponent } from './action-bar/action-bar.component';
 import { ActionListComponent } from './action-list/action-list.component';
 import { RowComponent } from './row/row.component';
 import { HeaderComponent } from './header/header.component';
-import { AuthService, Auth0AuthService, NullAuthService } from './auth.service';
-import { AuthHttp, AuthConfig } from 'angular2-jwt';
-import { Http, RequestOptions } from '@angular/http';
+import { AuthService } from './auth.service';
 import { LoginComponent } from './login/login.component';
 import { LogoffComponent } from './logoff/logoff.component';
 import { CiceroContextService } from './cicero-context.service';
@@ -64,25 +61,18 @@ import { DatePickerComponent } from './date-picker/date-picker.component';
 import { TimePickerComponent } from './time-picker/time-picker.component';
 import { TimePickerFacadeComponent } from './time-picker-facade/time-picker-facade.component';
 import { ObjectNotFoundErrorComponent } from './object-not-found-error/object-not-found-error.component';
+import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './auth.interceptor';
 
-
-export function authHttpServiceFactory(http: Http, configService: ConfigService, options: RequestOptions): any {
-    if (configService.config.authenticate) {
-        return new AuthHttp(new AuthConfig({ tokenName: 'id_token' }), http, options);
-    }
-    else {
-        return http;
-    }
-}
-
-export function authServiceFactory(configService: ConfigService, auth0AuthService: Auth0AuthService, nullAuthService: NullAuthService): any {
-    if (configService.config.authenticate) {
-        return auth0AuthService;
-    }
-    else {
-        return nullAuthService;
-    }
-}
+// export function authServiceFactory(configService: ConfigService, auth0AuthService: Auth0AuthService, nullAuthService: NullAuthService): any {
+//     if (configService.config.authenticate) {
+//         return auth0AuthService;
+//     }
+//     else {
+//         return nullAuthService;
+//     }
+// }
 
 @NgModule({
     declarations: [
@@ -125,7 +115,7 @@ export function authServiceFactory(configService: ConfigService, auth0AuthServic
         DatePickerComponent,
         TimePickerComponent,
         TimePickerFacadeComponent,
-        ObjectNotFoundErrorComponent
+        ObjectNotFoundErrorComponent,
     ],
     entryComponents: [
         ObjectComponent,
@@ -137,9 +127,9 @@ export function authServiceFactory(configService: ConfigService, auth0AuthServic
         BrowserModule,
         DndModule.forRoot(),
         FormsModule,
-        HttpModule,
         RoutingModule,
         ReactiveFormsModule,
+        HttpClientModule
     ],
     providers: [
         UrlManagerService,
@@ -157,14 +147,12 @@ export function authServiceFactory(configService: ConfigService, auth0AuthServic
         ConfigService,
         CiceroCommandFactoryService,
         CiceroRendererService,
-        CiceroContextService, 
-        Auth0AuthService,
-        NullAuthService,
+        CiceroContextService,
+        AuthService,
         { provide: ErrorHandler, useClass: GeminiErrorHandler },
         { provide: APP_INITIALIZER, useFactory: configFactory, deps: [ConfigService], multi: true },
         { provide: LOCALE_ID, useFactory: localeFactory, deps: [ConfigService] },
-        { provide: AuthHttp, useFactory: authHttpServiceFactory, deps: [Http, ConfigService, RequestOptions] },
-        { provide: AuthService, useFactory: authServiceFactory, deps: [ConfigService, Auth0AuthService, NullAuthService] }
+        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
     ],
     bootstrap: [AppComponent]
 })

@@ -1,6 +1,5 @@
-﻿import { Directive, ElementRef, HostListener, Output, EventEmitter, Renderer, Input, OnInit, OnDestroy } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { ISubscription } from 'rxjs/Subscription';
+import { Directive, ElementRef, HostListener, Output, EventEmitter, Renderer, Input, OnInit, OnDestroy } from '@angular/core';
+import { BehaviorSubject ,  SubscriptionLike as ISubscription } from 'rxjs';
 import { safeUnsubscribe } from './helpers-components';
 
 @Directive({ selector: '[nofClear]' })
@@ -15,6 +14,7 @@ export class ClearDirective implements OnInit, OnDestroy {
         this.nativeEl = this.el.nativeElement;
     }
 
+    // tslint:disable-next-line:no-input-rename
     @Input('nofClear')
     subject: BehaviorSubject<any>;
 
@@ -28,8 +28,8 @@ export class ClearDirective implements OnInit, OnDestroy {
         this.sub = this.subject.subscribe(data => this.onChange());
     }
 
-    // not need the ngClass directive on element even though it doesn't do anything 
-    // otherwise we lose all the classes added here 
+    // not need the ngClass directive on element even though it doesn't do anything
+    // otherwise we lose all the classes added here
     onChange() {
 
         this.nativeEl.classList.add("ng-clearable");

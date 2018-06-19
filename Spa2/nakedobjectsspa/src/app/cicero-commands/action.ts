@@ -3,9 +3,9 @@ import * as Models from '../models';
 import { Command } from './Command';
 import * as Usermessages from '../user-messages';
 import { Dictionary } from 'lodash';
-import map from 'lodash/map';
-import forEach from 'lodash/forEach';
-import reduce from 'lodash/reduce';
+import map from 'lodash-es/map';
+import forEach from 'lodash-es/forEach';
+import reduce from 'lodash-es/reduce';
 
 export class Action extends Command {
 
@@ -17,7 +17,7 @@ export class Action extends Command {
     protected maxArguments = 2;
 
     isAvailableInCurrentContext(): boolean {
-        return (this.isMenu() || this.isObject() || this.isForm()) && !this.isDialog() && !this.isEdit(); //TODO add list
+        return (this.isMenu() || this.isObject() || this.isForm()) && !this.isDialog() && !this.isEdit(); // TODO add list
     }
 
     doExecute(args: string | null, chained: boolean, result: CommandResult): Promise<CommandResult> {
@@ -32,7 +32,7 @@ export class Action extends Command {
         } else if (this.isMenu()) {
             return this.getMenu().then(menu => this.processActions(match, menu.actionMembers(), details));
         }
-        //TODO: handle list - CCAs
+        // TODO: handle list - CCAs
         return Promise.reject("TODO: handle list - CCAs");
     }
 

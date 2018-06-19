@@ -26,13 +26,13 @@ export class OK extends Command {
             let fieldMap: Dictionary<Models.Value>;
             if (this.isForm()) {
                 const obj = action.parent as Models.DomainObjectRepresentation;
-                fieldMap = this.context.getObjectCachedValues(obj.id()); //Props passed in as pseudo-params to action
+                fieldMap = this.context.getObjectCachedValues(obj.id()); // Props passed in as pseudo-params to action
             } else {
                 fieldMap = getParametersAndCurrentValue(action, this.context);
             }
 
             return this.context.invokeAction(action, fieldMap).then((result: Models.ActionResultRepresentation) => {
-                        
+
                return this.returnResult("", null, () =>  this.urlManager.closeDialogReplaceHistory(this.routeData().dialogId));
 
             }).catch((reject: Models.ErrorWrapper) => {
@@ -43,5 +43,5 @@ export class OK extends Command {
                 return Promise.reject(reject);
             });
         });
-    };
+    }
 }

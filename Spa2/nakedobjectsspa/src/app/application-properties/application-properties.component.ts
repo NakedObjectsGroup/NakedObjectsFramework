@@ -6,8 +6,8 @@ import { AuthService } from '../auth.service';
 
 @Component({
     selector: 'nof-application-properties',
-    template: require('./application-properties.component.html'),
-    styles: [require('./application-properties.component.css')]
+    templateUrl: 'application-properties.component.html',
+    styleUrls: ['application-properties.component.css']
 })
 export class ApplicationPropertiesComponent implements OnInit {
 

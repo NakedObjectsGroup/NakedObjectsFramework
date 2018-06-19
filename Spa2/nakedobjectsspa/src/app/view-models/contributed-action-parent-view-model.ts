@@ -12,18 +12,18 @@ import { Dictionary } from 'lodash';
 import * as Helpers from './helpers-view-models';
 import { MenuItemViewModel } from './menu-item-view-model';
 import { PaneRouteData, Pane } from '../route-data';
-import each from 'lodash/each';
-import filter from 'lodash/filter';
-import find from 'lodash/find';
-import clone from 'lodash/clone';
-import every from 'lodash/every';
-import forEach from 'lodash/forEach';
-import keys from 'lodash/keys';
-import map from 'lodash/map';
-import first from 'lodash/first';
-import some from 'lodash/some';
-import values from 'lodash/values';
-import toArray from 'lodash/toArray';
+import each from 'lodash-es/each';
+import filter from 'lodash-es/filter';
+import find from 'lodash-es/find';
+import clone from 'lodash-es/clone';
+import every from 'lodash-es/every';
+import forEach from 'lodash-es/forEach';
+import keys from 'lodash-es/keys';
+import map from 'lodash-es/map';
+import first from 'lodash-es/first';
+import some from 'lodash-es/some';
+import values from 'lodash-es/values';
+import toArray from 'lodash-es/toArray';
 
 export abstract class ContributedActionParentViewModel extends MessageViewModel {
 
@@ -37,10 +37,10 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
         super();
     }
 
-    readonly allSelected = () => every(this.items, item => item.selected);
     items: ItemViewModel[];
     actions: ActionViewModel[];
     menuItems: MenuItemViewModel[];
+    readonly allSelected = () => every(this.items, item => item.selected);
 
     private isLocallyContributed(action: Models.ActionRepresentation | Models.InvokableActionMember) {
         return some(action.parameters(), p => p.isCollectionContributed());
@@ -67,7 +67,7 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
                     }
                 }
                 return null;
-            }
+            };
 
             const getParms = (action: Models.ActionRepresentation | Models.InvokableActionMember) => {
 
@@ -83,7 +83,7 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
                     return allpps;
                 }
                 return pps;
-            }
+            };
 
             const detailsPromise = actionViewModel.invokableActionRep
                 ? Promise.resolve(actionViewModel.invokableActionRep)
@@ -95,11 +95,11 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
                     return rp ? Promise.reject(rp) : wrappedInvoke(getParms(details), right);
                 }).
                 then(result => {
-                    // clear selected items on void actions 
+                    // clear selected items on void actions
                     this.clearSelected(result);
                     return result;
                 });
-        }
+        };
     }
 
     protected collectionContributedInvokeDecorator(actionViewModel: ActionViewModel) {
@@ -112,13 +112,13 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
                     return keyCount > 1 || keyCount === 1 && !toArray(invokableAction.parameters())[0].isCollectionContributed();
                 });
 
-        // make sure not invokable  while waiting for promise to assign correct function 
+        // make sure not invokable  while waiting for promise to assign correct function
         actionViewModel.doInvoke = () => { };
 
         const invokeWithoutDialog = (right?: boolean) =>
             actionViewModel.invokeWithoutDialogWithParameters(Promise.resolve([]), right).then((actionResult: Models.ActionResultRepresentation) => {
                 this.setMessage(actionResult.shouldExpectResult() ? actionResult.warningsOrMessages() || Msg.noResultMessage : "");
-                // clear selected items on void actions 
+                // clear selected items on void actions
                 this.clearSelected(actionResult);
             });
 
@@ -134,7 +134,8 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
 
     private setItems(newValue: boolean) {
         each(this.items, item => item.silentSelect(newValue));
-        const id = first(this.items).id;
+        // TODO fix "!"
+        const id = first(this.items)!.id;
         this.urlManager.setAllItemsSelected(newValue, id, this.onPaneId);
     }
 
@@ -147,6 +148,5 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
     readonly selectAll = () => {
         const newState = !this.allSelected();
         this.setItems(newState);
-    };
-
+    }
 }

@@ -34,7 +34,7 @@ export class Clipboard extends Command {
         } else {
             return this.returnResult("", Usermessages.clipboardError);
         }
-    };
+    }
 
     private copy(): Promise<CommandResult> {
         if (!this.isObject()) {

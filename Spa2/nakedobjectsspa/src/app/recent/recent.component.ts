@@ -1,4 +1,4 @@
-﻿import { ContextService } from '../context.service';
+import { ContextService } from '../context.service';
 import { Component, ViewChildren, QueryList, AfterViewInit, OnDestroy } from '@angular/core';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { ActivatedRoute } from '@angular/router';
@@ -10,29 +10,24 @@ import { IActionHolder } from '../action/action.component';
 import * as Msg from '../user-messages';
 import { RowComponent } from '../row/row.component';
 import { RecentItemViewModel } from '../view-models/recent-item-view-model';
-import { ISubscription } from 'rxjs/Subscription';
-import { safeUnsubscribe } from '../helpers-components'; 
+import { SubscriptionLike as ISubscription } from 'rxjs';
+import { safeUnsubscribe } from '../helpers-components';
 
 @Component({
     selector: 'nof-recent',
-    template: require('./recent.component.html'),
-    styles: [require('./recent.component.css')]
+    templateUrl: 'recent.component.html',
+    styleUrls: ['recent.component.css']
 })
 export class RecentComponent extends PaneComponent implements AfterViewInit, OnDestroy {
 
     constructor(
         activatedRoute: ActivatedRoute,
         urlManager: UrlManagerService,
-        context : ContextService, 
+        context: ContextService,
         private readonly viewModelFactory: ViewModelFactoryService,
     ) {
         super(activatedRoute, urlManager, context);
     }
-
-    // template API 
-
-    title = Msg.recentTitle;
-    items = (): RecentItemViewModel[] => this.recent.items;
 
     recent: RecentItemsViewModel;
 
@@ -45,6 +40,16 @@ export class RecentComponent extends PaneComponent implements AfterViewInit, OnD
         title: () => this.clearDisabled() ? Msg.recentDisabledMessage : Msg.recentMessage,
         accesskey: "c"
     };
+
+    @ViewChildren("row")
+    actionChildren: QueryList<RowComponent>;
+
+    private sub: ISubscription;
+
+    // template API
+
+    title = Msg.recentTitle;
+    items = (): RecentItemViewModel[] => this.recent.items;
 
     get actionHolders() {
         return [this.clearButton];
@@ -66,18 +71,12 @@ export class RecentComponent extends PaneComponent implements AfterViewInit, OnD
         this.recent = this.viewModelFactory.recentItemsViewModel(this.paneId);
     }
 
-
-    @ViewChildren("row")
-    actionChildren: QueryList<RowComponent>;
-
     focusOnFirstRow(rows: QueryList<RowComponent>) {
         if (rows && rows.first) {
             // until first element returns true
             rows.first.focus();
         }
     }
-
-    private sub : ISubscription;
 
     ngAfterViewInit(): void {
         this.focusOnFirstRow(this.actionChildren);

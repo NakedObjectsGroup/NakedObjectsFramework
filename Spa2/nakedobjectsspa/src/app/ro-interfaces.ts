@@ -71,6 +71,7 @@ export interface IParameterExtensions extends IExtensions {
     optional: boolean;
 }
 
+// tslint:disable-next-line:no-empty-interface
 export interface IRepresentation {
 }
 
@@ -79,8 +80,8 @@ export interface IResourceRepresentation extends IRepresentation {
     extensions: IExtensions;
 }
 
+// tslint:disable-next-line:no-empty-interface
 export interface IHomePageRepresentation extends IResourceRepresentation {
-
 }
 
 export interface IUserRepresentation extends IResourceRepresentation {
@@ -122,7 +123,7 @@ export interface IValueMap {
 
 export interface IObjectOfType {
     members: IValueMap;
-    "x-ro-invalidReason"? : string;
+    "x-ro-invalidReason"?: string;
 }
 
 export interface IPromptMap {
@@ -178,7 +179,7 @@ export interface IDomainObjectRepresentation extends IResourceRepresentation {
     serviceId?: string;
     title: string;
     members: { [index: string]: IPropertyMember | IActionMember | ICollectionMember };
-    extensions : IDomainObjectExtensions;
+    extensions: IDomainObjectExtensions;
 }
 
 export type ResultTypeType = "object" | "list" | "scalar" | "void";
@@ -263,4 +264,3 @@ export interface IPromptRepresentation extends IResourceRepresentation {
     id: string;
     choices?: ValueType[];
 }
-

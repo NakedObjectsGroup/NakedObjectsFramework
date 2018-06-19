@@ -1,12 +1,12 @@
 import { Dictionary } from 'lodash';
-import map from 'lodash/map';
-import mapValues from 'lodash/mapValues';
+import map from 'lodash-es/map';
+import mapValues from 'lodash-es/mapValues';
 import { Result } from './result';
 import { ContextService } from '../context.service';
 import * as Ro from '../models';
 import * as Models from '../models';
 
-// todo move this 
+// todo move this
 export function getParametersAndCurrentValue(action: Ro.ActionMember | Models.ActionRepresentation | Models.InvokableActionMember, context: ContextService):  Dictionary<Ro.Value> {
 
     if (action instanceof Models.InvokableActionMember || action instanceof Models.ActionRepresentation) {
@@ -15,7 +15,7 @@ export function getParametersAndCurrentValue(action: Ro.ActionMember | Models.Ac
         const values = mapValues(parms, p => {
             const value = cachedValues[p.id()];
             return value === undefined ? p.default() : value;
-        });  
+        });
         return  values;
     }
     return {};
@@ -32,16 +32,14 @@ export function getFields(field: Models.IField):  Models.IField[] {
     }
 
     if (field instanceof Models.PropertyMember) {
-        // todo 
+        // todo
         return [];
     }
-
 
     return [];
 }
 
-
-export class CommandResult extends Result{
-    changeState: () => void = () => { };
+export class CommandResult extends Result {
     stopChain: boolean;
+    changeState: () => void = () => { };
 }

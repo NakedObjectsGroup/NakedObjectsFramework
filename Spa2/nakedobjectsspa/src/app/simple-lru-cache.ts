@@ -11,7 +11,6 @@ class LruNode {
     previous: LruNode | null = null;
 }
 
-
 export class SimpleLruCache {
 
     constructor(private readonly depth: number) { }
@@ -35,7 +34,7 @@ export class SimpleLruCache {
         if (nodeNext) {
             nodeNext.previous = nodePrevious;
         } else {
-            //was tail
+            // was tail
             this.tail = nodePrevious;
         }
         this.count--;

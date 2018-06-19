@@ -17,5 +17,5 @@ export class Where extends Command {
     doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
         this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
         return this.returnResult(null, null);
-    };
+    }
 }

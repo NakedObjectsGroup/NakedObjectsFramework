@@ -5,8 +5,8 @@ import { ContextService } from '../context.service';
 
 @Component({
     selector: 'nof-login',
-    template: require('./login.component.html'),
-    styles: [require('./login.component.css')]
+    templateUrl: 'login.component.html',
+    styleUrls: ['login.component.css']
 })
 export class LoginComponent {
 

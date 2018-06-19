@@ -2,22 +2,22 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfigService } from '../config.service';
 import { AuthService } from '../auth.service';
-import { Http, RequestOptionsArgs } from '@angular/http';
 import { UrlManagerService } from '../url-manager.service';
 import { Location } from '@angular/common';
+import { HttpClient, HttpRequest, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 
 @Component({
     selector: 'nof-logoff',
-    template: require('./logoff.component.html'),
-    styles: [require('./logoff.component.css')]
+    templateUrl: 'logoff.component.html',
+    styleUrls: ['logoff.component.css']
 })
 export class LogoffComponent implements OnInit {
 
     constructor(
         private readonly context: ContextService,
         private readonly authService: AuthService,
-        private readonly configService: ConfigService,
-        private readonly http: Http,
+        readonly configService: ConfigService,
+        private readonly http: HttpClient,
         private readonly urlManager: UrlManagerService,
         private readonly location: Location,
     ) { }
@@ -42,9 +42,9 @@ export class LogoffComponent implements OnInit {
 
         if (serverLogoffUrl) {
 
-            const args: RequestOptionsArgs = {
+            const args = {
                 withCredentials: true
-            }
+            };
 
             this.http.post(this.configService.config.logoffUrl, args);
         }
@@ -52,7 +52,7 @@ export class LogoffComponent implements OnInit {
         // logoff client without waiting for server
         this.authService.logout();
 
-        // if set this will reload page and cause all cached data to be lost.  
+        // if set this will reload page and cause all cached data to be lost.
         if (postLogoffUrl) {
             this.context.clearingDataFlag = true;
             window.location.href = postLogoffUrl;

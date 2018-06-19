@@ -3,8 +3,8 @@ import { ViewModelFactoryService } from '../view-model-factory.service';
 import { Dictionary } from 'lodash';
 import * as Models from '../models';
 import { Pane } from '../route-data';
-import find from 'lodash/find';
-import map from 'lodash/map';
+import find from 'lodash-es/find';
+import map from 'lodash-es/map';
 
 export class TableRowViewModel {
 

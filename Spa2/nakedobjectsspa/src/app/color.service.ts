@@ -5,7 +5,7 @@ import { ContextService } from './context.service';
 import { TypeResultCache } from './type-result-cache';
 import { ConfigService } from './config.service';
 import { Dictionary } from 'lodash';
-import forEach from 'lodash/forEach';
+import forEach from 'lodash-es/forEach';
 
 export interface IColorServiceConfigurator {
     addType: (type: string, color: number) => void;
@@ -16,7 +16,6 @@ export interface IColorServiceConfigurator {
 
     setDefault: (def: number) => void;
 }
-
 
 @Injectable()
 export class ColorService extends TypeResultCache<number> implements IColorServiceConfigurator {
@@ -30,7 +29,6 @@ export class ColorService extends TypeResultCache<number> implements IColorServi
         this.configureFromConfig();
     }
 
-
     private typeFromUrl(url: string): string {
         const oid = Models.ObjectIdWrapper.fromHref(url, this.configService.config.keySeparator);
         return oid.domainType;
@@ -42,7 +40,6 @@ export class ColorService extends TypeResultCache<number> implements IColorServi
     }
 
     toColorNumberFromType = (type: string | null) => this.getResult(type);
-
 
     addType(type: string, result: number) {
         super.addType(type, result);

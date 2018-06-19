@@ -10,10 +10,10 @@ import * as Models from '../models';
 import * as Msg from '../user-messages';
 import { Dictionary } from 'lodash';
 import * as Helpers from './helpers-view-models';
-import forEach from 'lodash/forEach';
-import map from 'lodash/map';
-import zipObject from 'lodash/zipObject';
-import pickBy from 'lodash/pickBy';
+import forEach from 'lodash-es/forEach';
+import map from 'lodash-es/map';
+import zipObject from 'lodash-es/zipObject';
+import pickBy from 'lodash-es/pickBy';
 
 export class ActionViewModel {
 
@@ -80,7 +80,7 @@ export class ActionViewModel {
                 const display = (em: Models.ErrorMap) => this.vm.setMessage(em.invalidReason() || em.warningMessage);
                 this.error.handleErrorAndDisplayMessages(reject, display);
             });
-    };
+    }
 
     private readonly invokeWithoutDialog = (right?: boolean) => {
         this.invokeWithoutDialogWithParameters(this.parameters(), right).then((actionResult: Models.ActionResultRepresentation) => {
@@ -89,10 +89,11 @@ export class ActionViewModel {
                 this.context.broadcastWarning(Msg.noResultMessage);
             }
         });
-    };
+    }
 
     // open dialog on current pane always - invoke action goes to pane indicated by click
-    // note this can be modified by decorators 
+    // note this can be modified by decorators
+    // tslint:disable-next-line:member-ordering
     doInvoke = this.showDialog() ? this.invokeWithDialog : this.invokeWithoutDialog;
 
     private getInvokable() {
@@ -107,19 +108,19 @@ export class ActionViewModel {
             });
     }
 
-    // note this is modified by decorators 
+    // note this is modified by decorators
     execute = (pps: ParameterViewModel[], right?: boolean): Promise<Models.ActionResultRepresentation> => {
         const parmMap = zipObject(map(pps, p => p.id), map(pps, p => p.getValue())) as Dictionary<Models.Value>;
         forEach(pps, p => this.urlManager.setParameterValue(this.actionRep.actionId(), p.parameterRep, p.getValue(), this.paneId));
         return this.getInvokable()
             .then((details: Models.ActionRepresentation | Models.InvokableActionMember) => this.context.invokeAction(details, parmMap, this.paneId, this.clickHandler.pane(this.paneId, right), this.gotoResult));
-    };
+    }
 
     readonly disabled = () => !!this.actionRep.disabledReason();
 
     readonly tempDisabled = () => this.invokableActionRep &&
         this.invokableActionRep.isPotent() &&
-        this.context.isPendingPotentActionOrReload(this.paneId);
+        this.context.isPendingPotentActionOrReload(this.paneId)
 
     private getParameters(invokableAction: Models.ActionRepresentation | Models.InvokableActionMember) {
         const parameters = pickBy(invokableAction.parameters(), p => !p.isCollectionContributed()) as Dictionary<Models.Parameter>;
@@ -139,7 +140,7 @@ export class ActionViewModel {
                 this.invokableActionRep = details;
                 return this.getParameters(details);
             });
-    };
+    }
 
     readonly makeInvokable = (details: Models.ActionRepresentation | Models.InvokableActionMember) => this.invokableActionRep = details;
 }

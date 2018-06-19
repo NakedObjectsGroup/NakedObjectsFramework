@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, OnDestroy, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as Models from '../models';
 import { UrlManagerService } from '../url-manager.service';
@@ -18,22 +18,23 @@ import * as Msg from '../user-messages';
 import * as Helpers from '../view-models/helpers-view-models';
 import { CollectionViewModel } from '../view-models/collection-view-model';
 import { Dictionary } from 'lodash';
-import filter from 'lodash/filter';
-import forEach from 'lodash/forEach';
-import map from 'lodash/map';
-import flatten from 'lodash/flatten';
-import zipObject from 'lodash/zipObject';
-import mapValues from 'lodash/mapValues';
-import some from 'lodash/some';
-import { ISubscription } from 'rxjs/Subscription';
+import filter from 'lodash-es/filter';
+import forEach from 'lodash-es/forEach';
+import map from 'lodash-es/map';
+import flatten from 'lodash-es/flatten';
+import zipObject from 'lodash-es/zipObject';
+import mapValues from 'lodash-es/mapValues';
+import some from 'lodash-es/some';
+import { SubscriptionLike as ISubscription } from 'rxjs';
 import { safeUnsubscribe } from '../helpers-components';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
     selector: 'nof-object',
-    template: require('./object.component.html'),
-    styles: [require('./object.component.css')]
+    templateUrl: 'object.component.html',
+    styleUrls: ['object.component.css']
 })
-export class ObjectComponent implements OnInit, OnDestroy {
+export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
 
     constructor(
         private readonly activatedRoute: ActivatedRoute,
@@ -47,6 +48,83 @@ export class ObjectComponent implements OnInit, OnDestroy {
     ) {
         this.pendingColor = `${configService.config.objectColor}${this.colorService.getDefault()}`;
     }
+
+    private actionButton: IActionHolder = {
+        value: "Actions",
+        doClick: () => this.toggleActionMenu(),
+        show: () => true,
+        disabled: () => this.disableActions(),
+        tempDisabled: () => null,
+        title: () => this.actionsTooltip(),
+        accesskey: "a"
+    };
+
+    private editButton: IActionHolder = {
+        value: "Edit",
+        doClick: () => this.doEdit(),
+        show: () => this.showEdit(),
+        disabled: () => null,
+        tempDisabled: () => null,
+        title: () => "",
+        accesskey: null
+    };
+
+    private reloadButton: IActionHolder = {
+        value: "Reload",
+        doClick: () => this.doReload(),
+        show: () => true,
+        disabled: () => null,
+        tempDisabled: () => null,
+        title: () => "",
+        accesskey: null
+    };
+
+    private saveButton: IActionHolder = {
+        value: "Save",
+        doClick: () => this.onSubmit(true),
+        show: () => true,
+        disabled: () => this.form && !this.form.valid ? true : null,
+        tempDisabled: () => null,
+        title: () => this.tooltip,
+        accesskey: null
+    };
+
+    private saveAndCloseButton: IActionHolder = {
+        value: "Save & Close",
+        doClick: () => this.onSubmit(false),
+        show: () => this.unsaved(),
+        disabled: () => this.form && !this.form.valid ? true : null,
+        tempDisabled: () => null,
+        title: () => this.tooltip,
+        accesskey: null
+    };
+
+    private cancelButton: IActionHolder = {
+        value: "Cancel",
+        doClick: () => this.doEditCancel(),
+        show: () => true,
+        disabled: () => null,
+        tempDisabled: () => null,
+        title: () => "",
+        accesskey: null
+    };
+
+    private actionButtons: IActionHolder[] | null;
+    private viewButtons =  [this.actionButton, this.editButton, this.reloadButton];
+    private saveButtons = [this.saveButton, this.saveAndCloseButton, this.cancelButton];
+
+    private lastPaneRouteData: PaneRouteData;
+
+    private activatedRouteDataSub: ISubscription;
+    private paneRouteDataSub: ISubscription;
+    private concurrencyErrorSub: ISubscription;
+    private formSub: ISubscription;
+    private focusSub: ISubscription;
+
+    selectedDialogId: string;
+
+    @ViewChildren(PropertiesComponent)
+    propComponents: QueryList<PropertiesComponent>;
 
     // template API
     expiredTransient = false;
@@ -170,70 +248,6 @@ export class ObjectComponent implements OnInit, OnDestroy {
         return obj ? obj.menuItems : [];
     }
 
-    private actionButton: IActionHolder = {
-        value: "Actions",
-        doClick: () => this.toggleActionMenu(),
-        show: () => true,
-        disabled: () => this.disableActions(),
-        tempDisabled: () => null,
-        title: () => this.actionsTooltip(),
-        accesskey: "a"
-    }
-
-    private editButton: IActionHolder = {
-        value: "Edit",
-        doClick: () => this.doEdit(),
-        show: () => this.showEdit(),
-        disabled: () => null,
-        tempDisabled: () => null,
-        title: () => "",
-        accesskey: null
-    }
-
-    private reloadButton: IActionHolder = {
-        value: "Reload",
-        doClick: () => this.doReload(),
-        show: () => true,
-        disabled: () => null,
-        tempDisabled: () => null,
-        title: () => "",
-        accesskey: null
-    }
-
-    private saveButton: IActionHolder = {
-        value: "Save",
-        doClick: () => this.onSubmit(true),
-        show: () => true,
-        disabled: () => this.form && !this.form.valid ? true : null,
-        tempDisabled: () => null,
-        title: () => this.tooltip,
-        accesskey: null
-    }
-
-    private saveAndCloseButton: IActionHolder = {
-        value: "Save & Close",
-        doClick: () => this.onSubmit(false),
-        show: () => this.unsaved(),
-        disabled: () => this.form && !this.form.valid ? true : null,
-        tempDisabled: () => null,
-        title: () => this.tooltip,
-        accesskey: null
-    }
-
-    private cancelButton: IActionHolder = {
-        value: "Cancel",
-        doClick: () => this.doEditCancel(),
-        show: () => true,
-        disabled: () => null,
-        tempDisabled: () => null,
-        title: () => "",
-        accesskey: null
-    }
-
-    private actionButtons: IActionHolder[] | null;
-    private viewButtons =  [this.actionButton, this.editButton, this.reloadButton];
-    private saveButtons = [this.saveButton, this.saveAndCloseButton, this.cancelButton];
-
     get actionHolders() {
         if (this.mode === InteractionMode.View) {
             return this.viewButtons;
@@ -323,13 +337,6 @@ export class ObjectComponent implements OnInit, OnDestroy {
                 });
         }
     }
-    private lastPaneRouteData: PaneRouteData;
-
-    private activatedRouteDataSub: ISubscription;
-    private paneRouteDataSub: ISubscription;
-    private concurrencyErrorSub: ISubscription;
-    private formSub: ISubscription;
-    private focusSub: ISubscription;
 
     private createForm(vm: DomainObjectViewModel) {
         safeUnsubscribe(this.formSub);
@@ -339,7 +346,7 @@ export class ObjectComponent implements OnInit, OnDestroy {
         const editableProps = filter(props, p => p.isEditable);
         const editablePropsMap = zipObject(map(editableProps, p => p.id), map(editableProps, p => p)) as Dictionary<PropertyViewModel>;
 
-        const controls = mapValues(editablePropsMap, p => [p.getValueForControl(), (a : any) => p.validator(a)]) as Dictionary<any>;
+        const controls = mapValues(editablePropsMap, p => [p.getValueForControl(), (a: any) => p.validator(a)]) as Dictionary<any>;
         this.form = this.formBuilder.group(controls);
         this.formSub = this.form!.valueChanges.subscribe((data: any) => {
             // cache parm values
@@ -351,7 +358,7 @@ export class ObjectComponent implements OnInit, OnDestroy {
         });
     }
 
-    isDirty(paneRouteData: PaneRouteData, oid? : Models.ObjectIdWrapper) {
+    isDirty(paneRouteData: PaneRouteData, oid?: Models.ObjectIdWrapper) {
         oid = oid || Models.ObjectIdWrapper.fromObjectId(paneRouteData.objectId, this.configService.config.keySeparator);
         return this.context.getIsDirty(oid);
     }
@@ -362,15 +369,16 @@ export class ObjectComponent implements OnInit, OnDestroy {
             const paneId = data.pane;
 
             if (!this.paneRouteDataSub) {
+                const paneRouteData = this.urlManager.getPaneRouteDataObservable(paneId);
                 this.paneRouteDataSub =
-                    this.urlManager.getPaneRouteDataObservable(paneId).debounceTime(10)
-                    .subscribe((paneRouteData: PaneRouteData) => {
-                            if (!paneRouteData.isEqual(this.lastPaneRouteData) || this.isDirty(paneRouteData)) {
-                                this.lastPaneRouteData = paneRouteData;
-                                this.setup(paneRouteData);
+                    paneRouteData.pipe(debounceTime(10))
+                    .subscribe((prd: PaneRouteData) => {
+                            if (!prd.isEqual(this.lastPaneRouteData) || this.isDirty(prd)) {
+                                this.lastPaneRouteData = prd;
+                                this.setup(prd);
                             }
                         });
-            };
+            }
         });
 
         this.concurrencyErrorSub = this.context.concurrencyError$.subscribe(oid => {
@@ -379,11 +387,6 @@ export class ObjectComponent implements OnInit, OnDestroy {
             }
         });
     }
-
-    selectedDialogId: string;
-
-    @ViewChildren(PropertiesComponent)
-    propComponents: QueryList<PropertiesComponent>;
 
     focus(parms: QueryList<PropertiesComponent>) {
         if (this.mode == null || this.mode === InteractionMode.View) {

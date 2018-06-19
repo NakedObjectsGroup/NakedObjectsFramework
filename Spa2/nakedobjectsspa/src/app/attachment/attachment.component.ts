@@ -11,8 +11,8 @@ import { PaneRouteData } from '../route-data';
 
 @Component({
     selector: 'nof-attachment',
-    template: require('./attachment.component.html'),
-    styles: [require('./attachment.component.css')]
+    templateUrl: 'attachment.component.html',
+    styleUrls: ['attachment.component.css']
 })
 export class AttachmentComponent extends PaneComponent {
 
@@ -27,7 +27,7 @@ export class AttachmentComponent extends PaneComponent {
         super(activatedRoute, urlManager, context);
     }
 
-    // template API 
+    // template API
     image: string;
     title: string;
 

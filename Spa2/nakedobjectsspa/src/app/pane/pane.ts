@@ -1,7 +1,7 @@
-﻿import { ContextService } from '../context.service';
+import { ContextService } from '../context.service';
 import { OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ISubscription } from 'rxjs/Subscription';
+import { SubscriptionLike as ISubscription } from 'rxjs';
 import { PaneRouteData, ICustomActivatedRouteData, PaneType, PaneName, Pane } from '../route-data';
 import { UrlManagerService } from '../url-manager.service';
 import { safeUnsubscribe } from '../helpers-components';
@@ -14,6 +14,10 @@ export abstract class PaneComponent implements OnInit, OnDestroy {
         protected readonly context: ContextService
     ) {
     }
+
+    private activatedRouteDataSub: ISubscription;
+    private paneRouteDataSub: ISubscription;
+    private lastPaneRouteData: PaneRouteData;
 
     // pane API
     paneId: Pane;
@@ -29,11 +33,7 @@ export abstract class PaneComponent implements OnInit, OnDestroy {
          setTimeout(() => this.paneType = "single");
     }
 
-    private activatedRouteDataSub: ISubscription;
-    private paneRouteDataSub: ISubscription;
-    private lastPaneRouteData: PaneRouteData;
-
-    protected abstract setup(routeData: PaneRouteData) : void;
+    protected abstract setup(routeData: PaneRouteData): void;
 
     ngOnInit(): void {
         this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: ICustomActivatedRouteData) => {
@@ -57,7 +57,7 @@ export abstract class PaneComponent implements OnInit, OnDestroy {
                                 this.setup(paneRouteData);
                             }
                         });
-            };
+            }
         });
     }
 

@@ -12,7 +12,6 @@ export interface ICustomComponentConfigService {
     configureCustomErrors(custom: ICustomErrorComponentConfigurator): void;
 }
 
-
 // default implementation which does nothing
 @Injectable()
 export class CustomComponentConfigService implements ICustomComponentConfigService {
@@ -23,7 +22,7 @@ export class CustomComponentConfigService implements ICustomComponentConfigServi
 
     configureCustomLists(custom: ICustomComponentConfigurator) { }
 
-    configureCustomErrors(custom: ICustomErrorComponentConfigurator) { 
+    configureCustomErrors(custom: ICustomErrorComponentConfigurator) {
         // by default configure page for 404 errors
         custom.addError(ErrorCategory.HttpClientError, HttpStatusCode.NotFound, ObjectNotFoundErrorComponent );
     }

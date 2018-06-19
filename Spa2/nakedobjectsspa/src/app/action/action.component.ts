@@ -23,18 +23,21 @@ export function wrapAction(a: ActionViewModel): IActionHolder {
         tempDisabled: () => a.tempDisabled(),
         title: () => a.description,
         accesskey: null
-    }
+    };
 }
 
 @Component({
     selector: 'nof-action',
-    template: require('./action.component.html'),
-    styles: [require('./action.component.css')]
+    templateUrl: 'action.component.html',
+    styleUrls: ['action.component.css']
 })
 export class ActionComponent {
 
     @Input()
     action: IActionHolder;
+
+    @ViewChildren("focus")
+    focusList: QueryList<ElementRef>;
 
     constructor(
         private readonly renderer: Renderer
@@ -81,9 +84,6 @@ export class ActionComponent {
     get title() {
         return this.action.title();
     }
-
-    @ViewChildren("focus")
-    focusList: QueryList<ElementRef>;
 
     focus() {
         if (this.disabled()) {

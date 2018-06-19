@@ -25,7 +25,7 @@ export class LinkViewModel implements IDraggableViewModel {
         this.title = link.title() + Helpers.dirtyMarker(this.context, this.configService, link.getOid(this.configService.config.keySeparator));
         this.domainType = link.type().domainType;
 
-        // for dropping 
+        // for dropping
         const value = new Models.Value(link);
 
         this.value = value.toString();
@@ -41,7 +41,7 @@ export class LinkViewModel implements IDraggableViewModel {
     readonly title: string;
     private readonly domainType: string;
 
-    // IDraggableViewModel 
+    // IDraggableViewModel
     color: string;
     readonly value: Ro.ScalarValueType;
     readonly reference: string;

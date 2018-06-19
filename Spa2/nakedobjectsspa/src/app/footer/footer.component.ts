@@ -1,6 +1,5 @@
-﻿import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
-import { Http } from '@angular/http';
 import { UrlManagerService } from '../url-manager.service';
 import { ClickHandlerService } from '../click-handler.service';
 import { ContextService } from '../context.service';
@@ -12,13 +11,14 @@ import * as Models from '../models';
 import { ConfigService } from '../config.service';
 import { AuthService } from '../auth.service';
 import { Pane } from '../route-data';
-import { ISubscription } from 'rxjs/Subscription';
-import { safeUnsubscribe } from '../helpers-components'; 
+import { SubscriptionLike as ISubscription } from 'rxjs';
+import { safeUnsubscribe } from '../helpers-components';
+import { HttpClient, HttpRequest, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 
 @Component({
     selector: 'nof-footer',
-    template: require('./footer.component.html'),
-    styles: [require('./footer.component.css')]
+    templateUrl: 'footer.component.html',
+    styleUrls: ['footer.component.css']
 })
 export class FooterComponent implements OnInit, OnDestroy {
 
@@ -31,12 +31,21 @@ export class FooterComponent implements OnInit, OnDestroy {
         private readonly repLoader: RepLoaderService,
         private readonly location: Location,
         private readonly configService: ConfigService,
-        private readonly http: Http
+        private readonly http: HttpClient
     ) { }
+
+    private warnSub: ISubscription;
+    private messageSub: ISubscription;
+    private cvmSub: ISubscription;
+    private lcSub: ISubscription;
 
     loading: string;
     template: string;
     footerTemplate: string;
+    userName: string;
+    warnings: string[];
+    messages: string[];
+    copyViewModel: IDraggableViewModel;
 
     goHome = (right?: boolean) => {
         const newPane = this.clickHandler.pane(Pane.Pane1, right);
@@ -46,22 +55,22 @@ export class FooterComponent implements OnInit, OnDestroy {
         } else {
             this.urlManager.setHome(newPane);
         }
-    };
+    }
 
     goBack = () => {
         this.location.back();
-    };
-    
+    }
+
     goForward = () => {
         this.location.forward();
-    };
+    }
 
     swapPanes = () => {
         if (!this.swapDisabled()) {
             this.context.swapCurrentObjects();
             this.urlManager.swapPanes();
         }
-    };
+    }
 
     swapDisabled = () => {
         return this.urlManager.isMultiLineDialog() ? true : null;
@@ -69,7 +78,7 @@ export class FooterComponent implements OnInit, OnDestroy {
 
     singlePane = (right?: boolean) => {
         this.urlManager.singlePane(this.clickHandler.pane(Pane.Pane1, right));
-    };
+    }
 
     logOff = () => this.urlManager.logoff();
 
@@ -77,19 +86,12 @@ export class FooterComponent implements OnInit, OnDestroy {
 
     recent = (right?: boolean) => {
         this.urlManager.setRecent(this.clickHandler.pane(Pane.Pane1, right));
-    };
+    }
 
     cicero = () => {
         this.urlManager.singlePane(this.clickHandler.pane(Pane.Pane1));
         this.urlManager.cicero();
-    };
-    
-    userName: string;
-
-    warnings: string[];
-    messages: string[];
-
-    copyViewModel: IDraggableViewModel;
+    }
 
     get currentCopyColor() {
         return this.copyViewModel.color;
@@ -98,11 +100,6 @@ export class FooterComponent implements OnInit, OnDestroy {
     get currentCopyTitle() {
         return this.copyViewModel.draggableTitle();
     }
-
-    private warnSub: ISubscription;
-    private messageSub: ISubscription;
-    private cvmSub: ISubscription;
-    private lcSub: ISubscription;
 
     ngOnInit() {
         this.context.getUser().then(user => this.userName = user.userName()).catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));

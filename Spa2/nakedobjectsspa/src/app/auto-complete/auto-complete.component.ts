@@ -1,27 +1,31 @@
-﻿import { ContextService } from '../context.service';
+import { ContextService } from '../context.service';
 import { Component, Input, OnDestroy, ElementRef, ViewChild, Renderer } from '@angular/core';
 import { FieldViewModel } from '../view-models/field-view-model';
 import { ChoiceViewModel } from '../view-models/choice-view-model';
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
 import { FormGroup, AbstractControl } from '@angular/forms';
-import { ISubscription } from 'rxjs/Subscription';
+import { SubscriptionLike as ISubscription ,  BehaviorSubject } from 'rxjs';
 import { Dictionary } from 'lodash';
-import { BehaviorSubject } from 'rxjs';
 import { safeUnsubscribe, accept, dropOn, paste, focus } from '../helpers-components';
 
 @Component({
     selector: 'nof-auto-complete',
-    template: require('./auto-complete.component.html'),
-    styles: [require('./auto-complete.component.css')]
+    templateUrl: 'auto-complete.component.html',
+    styleUrls: ['auto-complete.component.css']
 })
 export class AutoCompleteComponent implements OnDestroy {
-   
+
     constructor(
         private readonly context: ContextService,
         private readonly renderer: Renderer
     ) { }
 
     private fieldViewModel: FieldViewModel;
+    private bSubject: BehaviorSubject<any>;
+    private sub: ISubscription;
+    private currentIndex = -1;
+    @ViewChild("focus")
+    inputField: ElementRef;
 
     @Input()
     set model(m: FieldViewModel) {
@@ -55,7 +59,7 @@ export class AutoCompleteComponent implements OnDestroy {
 
     accept(droppableVm: FieldViewModel) {
         return accept(droppableVm, this);
-    };
+    }
 
     drop(draggableVm: IDraggableViewModel) {
         dropOn(draggableVm, this.model, this);
@@ -89,9 +93,6 @@ export class AutoCompleteComponent implements OnDestroy {
 
     choiceName = (choice: ChoiceViewModel) => choice.name;
 
-    private bSubject: BehaviorSubject<any>;
-    private sub: ISubscription;
-
     get subject() {
         if (!this.bSubject) {
             const initialValue = this.control.value;
@@ -106,27 +107,25 @@ export class AutoCompleteComponent implements OnDestroy {
         return this.bSubject;
     }
 
-    private currentIndex : number = -1;
-
-    isSelected(i : number) {
+    isSelected(i: number) {
         return {"selected" : i === this.currentIndex};
     }
 
     onArrowUp() {
-        this.currentIndex--; 
+        this.currentIndex--;
         this.currentIndex = this.currentIndex < -1 ? -1 : this.currentIndex;
         return false;
     }
 
     onArrowDown() {
-        this.currentIndex++; 
-        const maxIndex = this.choices.length -1; 
+        this.currentIndex++;
+        const maxIndex = this.choices.length - 1;
         this.currentIndex = this.currentIndex > maxIndex  ? maxIndex : this.currentIndex;
         return false;
     }
 
     selectCurrent() {
-        const maxIndex = this.choices.length -1; 
+        const maxIndex = this.choices.length - 1;
         if (this.currentIndex >= 0 && this.currentIndex <= maxIndex) {
             this.select(this.choices[this.currentIndex]);
             return false;
@@ -137,9 +136,6 @@ export class AutoCompleteComponent implements OnDestroy {
     ngOnDestroy(): void {
         safeUnsubscribe(this.sub);
     }
-
-    @ViewChild("focus")
-    inputField : ElementRef;
 
     focus() {
         return focus(this.renderer, this.inputField);

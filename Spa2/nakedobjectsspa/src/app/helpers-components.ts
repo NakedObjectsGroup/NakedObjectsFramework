@@ -1,13 +1,13 @@
 import { Renderer, ElementRef } from '@angular/core';
-import { ISubscription } from 'rxjs/Subscription';
+import { SubscriptionLike as ISubscription } from 'rxjs';
 import { Dictionary } from 'lodash';
 import { FormBuilder, AbstractControl, FormGroup } from '@angular/forms';
 import { DialogViewModel } from './view-models/dialog-view-model';
 import { ParameterViewModel } from './view-models/parameter-view-model';
-import forEach from 'lodash/forEach';
-import map from 'lodash/map';
-import zipObject from 'lodash/zipObject';
-import mapValues from 'lodash/mapValues';
+import forEach from 'lodash-es/forEach';
+import map from 'lodash-es/map';
+import zipObject from 'lodash-es/zipObject';
+import mapValues from 'lodash-es/mapValues';
 import {FieldViewModel} from './view-models/field-view-model';
 import {IDraggableViewModel} from './view-models/idraggable-view-model';
 
@@ -17,14 +17,12 @@ export function safeUnsubscribe(sub: ISubscription) {
     }
 }
 
-
 export function focus(renderer: Renderer, element: ElementRef) {
     setTimeout(() => renderer.invokeElementMethod(element.nativeElement, "focus"));
     return true;
 }
 
-
-export function createForm(dialog: DialogViewModel, formBuilder: FormBuilder): { form: FormGroup, dialog: DialogViewModel, parms: Dictionary<ParameterViewModel>, sub : ISubscription } {
+export function createForm(dialog: DialogViewModel, formBuilder: FormBuilder): { form: FormGroup, dialog: DialogViewModel, parms: Dictionary<ParameterViewModel>, sub: ISubscription } {
     const pps = dialog.parameters;
     const parms = zipObject(map(pps, p => p.id), map(pps, p => p)) as Dictionary<ParameterViewModel>;
     const controls = mapValues(parms, p => [p.getValueForControl(), (a: AbstractControl) => p.validator(a)]);
@@ -49,10 +47,10 @@ export function accept(droppableVm: FieldViewModel, component: { canDrop: boolea
             return true;
         }
         return false;
-    }
-};
+    };
+}
 
-export function dropOn(draggableVm: IDraggableViewModel, droppable : FieldViewModel,  component: { canDrop: boolean, control : AbstractControl }) {
+export function dropOn(draggableVm: IDraggableViewModel, droppable: FieldViewModel,  component: { canDrop: boolean, control: AbstractControl }) {
     if (component.canDrop) {
         droppable.drop(draggableVm)
             .then((success) => {
@@ -61,7 +59,7 @@ export function dropOn(draggableVm: IDraggableViewModel, droppable : FieldViewMo
     }
 }
 
-export function paste(event: KeyboardEvent, droppable: FieldViewModel, component: { control: AbstractControl }, get : () => IDraggableViewModel | null, clear : () => void) {
+export function paste(event: KeyboardEvent, droppable: FieldViewModel, component: { control: AbstractControl }, get: () => IDraggableViewModel | null, clear: () => void) {
     const vKeyCode = 86;
     const deleteKeyCode = 46;
     if (event && (event.keyCode === vKeyCode && event.ctrlKey)) {

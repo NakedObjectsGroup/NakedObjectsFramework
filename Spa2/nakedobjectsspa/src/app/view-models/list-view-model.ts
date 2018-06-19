@@ -6,7 +6,7 @@ import { ErrorService } from '../error.service';
 import { PaneRouteData, CollectionViewState } from '../route-data';
 import { ActionViewModel } from './action-view-model';
 import { MenuItemViewModel } from './menu-item-view-model';
-import find from 'lodash/find';
+import find from 'lodash-es/find';
 import * as Helpers from './helpers-view-models';
 import * as Models from '../models';
 import * as Msg from '../user-messages';
@@ -36,7 +36,6 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
     private pageSize: number;
     private numPages: number;
     private state: CollectionViewState;
-
     id: string;
     listRep: Models.ListRepresentation;
     size: number;
@@ -45,6 +44,17 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
     menuItems: MenuItemViewModel[];
     description: () => string;
     readonly name = "item";
+
+    private readonly earlierDisabled = () => this.page === 1 || this.numPages === 1;
+
+    private readonly laterDisabled = () => this.page === this.numPages || this.numPages === 1;
+
+    // tslint:disable:member-ordering
+    readonly pageFirstDisabled = this.earlierDisabled;
+    readonly pageLastDisabled = this.laterDisabled;
+    readonly pageNextDisabled = this.laterDisabled;
+    readonly pagePreviousDisabled = this.earlierDisabled;
+    // tslint:enable:member-ordering
 
     private readonly recreate = (page: number, pageSize: number) => {
         return this.routeData.objectId
@@ -70,18 +80,6 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
     private readonly setPage = (newPage: number, newState: CollectionViewState) => {
         this.pageOrRecreate(newPage, this.pageSize, newState);
     }
-
-    private readonly earlierDisabled = () => this.page === 1 || this.numPages === 1;
-
-    private readonly laterDisabled = () => this.page === this.numPages || this.numPages === 1;
-
-    readonly pageFirstDisabled = this.earlierDisabled;
-
-    readonly pageLastDisabled = this.laterDisabled;
-
-    readonly pageNextDisabled = this.laterDisabled;
-
-    readonly pagePreviousDisabled = this.earlierDisabled;
 
     private readonly updateItems = (value: Models.Link[]) => {
         this.items = this.viewModelFactory.getItems(value,
@@ -137,27 +135,27 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
     }
 
     readonly toggleActionMenu = () => {
-        if (this.noActions()) return;
+        if (this.noActions()) { return; }
         this.urlManager.toggleObjectMenu(this.onPaneId);
     }
 
     readonly pageNext = () => {
-        if (this.pageNextDisabled()) return;
+        if (this.pageNextDisabled()) { return; }
         this.setPage(this.page < this.numPages ? this.page + 1 : this.page, this.state);
     }
 
     readonly pagePrevious = () => {
-        if (this.pagePreviousDisabled()) return;
+        if (this.pagePreviousDisabled()) { return; }
         this.setPage(this.page > 1 ? this.page - 1 : this.page, this.state);
     }
 
     readonly pageFirst = () => {
-        if (this.pageFirstDisabled()) return;
+        if (this.pageFirstDisabled()) { return; }
         this.setPage(1, this.state);
-    };
+    }
 
     readonly pageLast = () => {
-        if (this.pageLastDisabled()) return;
+        if (this.pageLastDisabled()) { return; }
         this.setPage(this.numPages, this.state);
     }
 
@@ -189,7 +187,7 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
             return actionViewModel.actionRep;
         }
         return this.loggerService.throw(`no actionviewmodel ${id} on ${this.id}`);
-    };
+    }
 
     readonly showActions = () => {
         return !!this.currentPaneData().actionsOpen;

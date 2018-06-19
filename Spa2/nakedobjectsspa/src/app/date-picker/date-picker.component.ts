@@ -1,13 +1,15 @@
 import * as Constants from '../constants';
-import { Component, ElementRef, OnInit, Input, Output, EventEmitter, ViewChild, Renderer } from '@angular/core';
-import * as moment from 'moment';
-import concat from 'lodash/concat';
-import { BehaviorSubject } from 'rxjs';
-import { ISubscription } from 'rxjs/Subscription';
-import { safeUnsubscribe, focus } from '../helpers-components'; 
+import { Component, ElementRef, OnInit, Input, Output, EventEmitter, ViewChild, Renderer, OnDestroy } from '@angular/core';
+import * as momentNs from 'moment';
+import concat from 'lodash-es/concat';
+import { BehaviorSubject, Observable,  SubscriptionLike as ISubscription } from 'rxjs';
+import { safeUnsubscribe, focus } from '../helpers-components';
 import * as Msg from '../user-messages';
 import * as Models from '../models';
 import * as Validate from '../validate';
+import { debounceTime } from 'rxjs/operators';
+
+const moment = momentNs;
 
 // based on ng2-datepicker https://github.com/jkuri/ng2-datepicker
 
@@ -32,7 +34,7 @@ export interface IDatePickerOutputDefaultEvent {
 
 export interface IDatePickerOutputChangedEvent {
     type: "dateChanged";
-    data: moment.Moment;
+    data: momentNs.Moment;
 }
 
 export interface IDatePickerOutputInvalidEvent {
@@ -48,7 +50,7 @@ export interface IDatePickerOutputClearedEvent {
 export class DatePickerOptions {
     firstWeekdaySunday?: boolean;
     format?: string;
-   
+
     constructor(obj?: DatePickerOptions) {
         this.firstWeekdaySunday = obj && obj.firstWeekdaySunday ? obj.firstWeekdaySunday : false;
         this.format = obj && obj.format ? obj.format : 'YYYY-MM-DD';
@@ -62,33 +64,36 @@ export interface ICalendarDate {
     enabled: boolean;
     today: boolean;
     selected: boolean;
-    momentObj: moment.Moment;
+    momentObj: momentNs.Moment;
 }
 
 @Component({
     selector: 'nof-date-picker',
-    template: require('./date-picker.component.html'),
-    styles: [require('./date-picker.component.css')]
+    templateUrl: 'date-picker.component.html',
+    styleUrls: ['date-picker.component.css']
 })
-export class DatePickerComponent implements OnInit {
+export class DatePickerComponent implements OnInit, OnDestroy {
 
-    @Input() 
+    @Input()
     options: DatePickerOptions;
-    
-    @Input() 
+
+    @Input()
     inputEvents: EventEmitter<IDatePickerInputEvent>;
-    
-    @Output() 
+
+    @Output()
     outputEvents: EventEmitter<IDatePickerOutputEvent>;
 
     @Input()
-    id : string;
+    id: string;
 
     @Input()
-    description : string;
-   
+    description: string;
+
     opened: boolean;
     days: ICalendarDate[];
+
+    @ViewChild("inp")
+    inputField: ElementRef;
 
     constructor(
         private readonly renderer: Renderer
@@ -103,8 +108,14 @@ export class DatePickerComponent implements OnInit {
 
     private validInputFormats = ["DD/MM/YYYY", "DD/MM/YY", "D/M/YY", "D/M/YYYY", "D MMM YYYY", "D MMMM YYYY", Constants.fixedDateFormat];
 
-    private dateModelValue: moment.Moment | null;
-    private modelValue : string; 
+    private dateModelValue: momentNs.Moment | null;
+    private modelValue: string;
+
+    todayMsg = Msg.today;
+    clearMsg = Msg.clear;
+
+    private bSubject: BehaviorSubject<string>;
+    private sub: ISubscription;
 
     set model(s: string) {
         this.modelValue = s;
@@ -118,20 +129,19 @@ export class DatePickerComponent implements OnInit {
         return this.modelValue;
     }
 
-    get dateModel(): moment.Moment | null {
+    get dateModel(): momentNs.Moment | null {
         return this.dateModelValue;
     }
 
-    get currentDate(): moment.Moment {
+    get currentDate(): momentNs.Moment {
         return this.dateModelValue || moment().utc();
     }
 
-    set dateModel(date: moment.Moment | null) {
-        if (date) { 
+    set dateModel(date: momentNs.Moment | null) {
+        if (date) {
             this.dateModelValue = date;
             this.outputEvents.emit({ type: 'dateChanged', data: this.dateModel! });
-        }
-        else {
+        } else {
             this.dateModelValue = null;
             this.outputEvents.emit({ type: 'dateCleared', data: "" });
         }
@@ -143,7 +153,7 @@ export class DatePickerComponent implements OnInit {
         return Validate.validateDate(newValue, this.validInputFormats);
     }
 
-    setDateIfChanged(newDate : moment.Moment){
+    setDateIfChanged(newDate: momentNs.Moment) {
         const currentDate = this.dateModel;
         if (!newDate.isSame(Models.withUndefined(currentDate))) {
             this.setValue(newDate);
@@ -151,14 +161,13 @@ export class DatePickerComponent implements OnInit {
         }
     }
 
-    inputChanged(newValue : string) {
+    inputChanged(newValue: string) {
 
         const dt = this.validateDate(newValue);
 
         if (dt && dt.isValid()) {
             this.setDateIfChanged(dt);
-        }
-        else {
+        } else {
             this.setValue(null);
             if (newValue) {
                 this.outputEvents.emit({ type: 'dateInvalid', data: newValue });
@@ -192,11 +201,10 @@ export class DatePickerComponent implements OnInit {
                         const date = this.validateDate(e.data);
                         if (date && date.isValid()) {
                             this.selectDate(date);
-                        }
-                        else {
+                        } else {
                             throw new Error(`Invalid date: ${e.data}`);
                         }
-                        
+
                         break;
                     }
                 }
@@ -216,13 +224,13 @@ export class DatePickerComponent implements OnInit {
         }
 
         this.days = [];
-        
-        const endOfMonth = moment(currentDate).endOf('month'); 
+
+        const endOfMonth = moment(currentDate).endOf('month');
         for (let i = n; i <= endOfMonth.date(); i += 1) {
-            const date: moment.Moment = moment.utc(`${i}.${month + 1}.${year}`, 'DD.MM.YYYY');
+            const date: momentNs.Moment = moment.utc(`${i}.${month + 1}.${year}`, 'DD.MM.YYYY');
             const today: boolean = moment().utc().isSame(date, 'day') && moment().isSame(date, 'month');
             const selected: boolean = this.currentDate.isSame(date, 'day');
-           
+
             const day: ICalendarDate = {
                 day: i > 0 ? i : null,
                 month: i > 0 ? month : null,
@@ -237,15 +245,15 @@ export class DatePickerComponent implements OnInit {
         }
     }
 
-    setValue(date: moment.Moment | null) {
+    setValue(date: momentNs.Moment | null) {
         this.dateModel = date;
     }
 
-    private formatDate(date : moment.Moment | null) {
+    private formatDate(date: momentNs.Moment | null) {
         return this.dateModel ? this.dateModel.format(this.options.format) : "";
     }
 
-    selectDate(date: moment.Moment | null, e?: MouseEvent, ) {
+    selectDate(date: momentNs.Moment | null, e?: MouseEvent, ) {
         if (e) { e.preventDefault(); }
         setTimeout(() => {
             this.setValue(date);
@@ -254,7 +262,7 @@ export class DatePickerComponent implements OnInit {
         this.opened = false;
     }
 
-    writeValue(date: moment.Moment) {
+    writeValue(date: momentNs.Moment) {
         if (!date) { return; }
         this.dateModelValue = date;
     }
@@ -287,7 +295,7 @@ export class DatePickerComponent implements OnInit {
         this.generateCalendar();
     }
 
-    today() {      
+    today() {
         this.selectDate(moment().utc());
     }
 
@@ -296,7 +304,7 @@ export class DatePickerComponent implements OnInit {
         change();
     }
 
-    private open = () => {     
+    private open = () => {
         this.generateCalendar();
         this.opened = true;
         this.outputEvents.emit({ type: 'default', data: 'opened' } as IDatePickerOutputDefaultEvent);
@@ -313,32 +321,22 @@ export class DatePickerComponent implements OnInit {
         this.close();
     }
 
-    todayMsg = Msg.today;
-    clearMsg = Msg.clear;
-
-
-    private bSubject: BehaviorSubject<string>;
-    private sub : ISubscription;
-
     get subject() {
         if (!this.bSubject) {
             const initialValue = this.model;
             this.bSubject = new BehaviorSubject(initialValue);
 
-            this.sub = this.bSubject.debounceTime(1000).subscribe((data : string) => this.inputChanged(data));
+            this.sub = this.bSubject
+                .pipe(debounceTime(1000)).subscribe((data: string) => this.inputChanged(data));
         }
 
         return this.bSubject;
     }
 
-
     ngOnDestroy(): void {
         safeUnsubscribe(this.sub);
         safeUnsubscribe(this.eventsSub);
     }
-
-    @ViewChild("inp")
-    inputField : ElementRef;
 
     focus() {
         return focus(this.renderer, this.inputField);

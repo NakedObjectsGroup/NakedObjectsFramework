@@ -5,8 +5,8 @@ import * as Usermessages from '../user-messages';
 import * as Routedata from '../route-data';
 import { Dictionary } from 'lodash';
 
-import forEach from 'lodash/forEach';
-import zipObject from 'lodash/zipObject';
+import forEach from 'lodash-es/forEach';
+import zipObject from 'lodash-es/zipObject';
 
 export class Save extends Command {
 
@@ -59,7 +59,7 @@ export class Save extends Command {
                 return Promise.reject(reject);
             });
         });
-    };
+    }
 
     private handleError(err: Models.ErrorMap, obj: Models.DomainObjectRepresentation) {
         if (err.containsError()) {

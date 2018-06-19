@@ -23,7 +23,7 @@ export class ChoiceViewModel {
         other instanceof ChoiceViewModel &&
         this.id === other.id &&
         this.name === other.name &&
-        this.wrapped.toValueString() === other.wrapped.toValueString();
+        this.wrapped.toValueString() === other.wrapped.toValueString()
 
     readonly valuesEqual = (other: ChoiceViewModel): boolean => {
         if (other instanceof ChoiceViewModel) {

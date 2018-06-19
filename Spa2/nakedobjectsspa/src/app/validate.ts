@@ -1,9 +1,10 @@
 ﻿import * as Models from './models';
 import * as Msg from './user-messages';
 import { ILocalFilter } from './mask.service';
-import * as moment from 'moment';
+import * as momentNs from 'moment';
 import * as Constants from './constants';
 
+const moment = momentNs;
 
 function isInteger(value: number) {
     return typeof value === "number" && isFinite(value) && Math.floor(value) === value;
@@ -63,8 +64,6 @@ export function validateDateTimeFormat(model: Models.IHasExtensions, newValue: D
     return "";
 }
 
-
-
 export function validateDateFormat(model: Models.IHasExtensions, newValue: Date | string, filter: ILocalFilter): string {
     const range = model.extensions().range();
     const newDate = (newValue instanceof Date) ? newValue : getDate(newValue);
@@ -106,9 +105,8 @@ export function validateString(model: Models.IHasExtensions, newValue: any, filt
     }
 }
 
-
 export function validateMandatory(model: Models.IHasExtensions, viewValue: string): string {
-    // first check 
+    // first check
     const isMandatory = !model.extensions().optional();
 
     if (isMandatory && (viewValue === "" || viewValue == null)) {
@@ -120,7 +118,7 @@ export function validateMandatory(model: Models.IHasExtensions, viewValue: strin
 
 export function validateMandatoryAgainstType(model: Models.IHasExtensions, viewValue: string, filter: ILocalFilter): string {
 
-    // check type 
+    // check type
     const returnType = model.extensions().returnType();
 
     switch (returnType) {
@@ -139,9 +137,9 @@ export function validateMandatoryAgainstType(model: Models.IHasExtensions, viewV
     }
 }
 
-export function validateDate(newValue: string, validInputFormats : string[]) {
-   
-    for (let f of validInputFormats) {
+export function validateDate(newValue: string, validInputFormats: string[]) {
+
+    for (const f of validInputFormats) {
         const dt = moment.utc(newValue, f, true);
         if (dt.isValid()) {
             return dt;

@@ -1,27 +1,25 @@
-﻿import { InteractionMode, PaneRouteData, Pane, CollectionViewState } from './route-data';
+import { InteractionMode, PaneRouteData, Pane, CollectionViewState } from './route-data';
 import { UrlManagerService } from './url-manager.service';
 import { RepLoaderService } from './rep-loader.service';
 import { Injectable } from '@angular/core';
 import * as Constants from './constants';
 import * as Models from './models';
-import { Subject } from 'rxjs/Subject';
+import { Subject ,  Observable } from 'rxjs';
 import { IDraggableViewModel } from './view-models/idraggable-view-model';
 import { ConfigService } from './config.service';
 import { LoggerService } from './logger.service';
 import { Dictionary } from 'lodash';
-import each from 'lodash/each';
-import find from 'lodash/find';
-import filter from 'lodash/filter';
-import map from 'lodash/map';
-import forEach from 'lodash/forEach';
-import keys from 'lodash/keys';
-import findKey from 'lodash/findKey';
-import first from 'lodash/first';
-import omit from 'lodash/omit';
-import remove from 'lodash/remove';
-import sortBy from 'lodash/sortBy';
-import { Observable } from 'rxjs/Observable'; // do not delete 
-
+import each from 'lodash-es/each';
+import find from 'lodash-es/find';
+import filter from 'lodash-es/filter';
+import map from 'lodash-es/map';
+import forEach from 'lodash-es/forEach';
+import keys from 'lodash-es/keys';
+import findKey from 'lodash-es/findKey';
+import first from 'lodash-es/first';
+import omit from 'lodash-es/omit';
+import remove from 'lodash-es/remove';
+import sortBy from 'lodash-es/sortBy';
 
 enum DirtyState {
     DirtyMustReload = 1,
@@ -65,7 +63,7 @@ function isSameObject(object: Models.DomainObjectRepresentation | null | undefin
 }
 
 class TransientCache {
-    private transientCache: [undefined, Models.DomainObjectRepresentation[], Models.DomainObjectRepresentation[]] = [undefined, [], []]; // per pane 
+    private transientCache: [undefined, Models.DomainObjectRepresentation[], Models.DomainObjectRepresentation[]] = [undefined, [], []]; // per pane
 
     constructor(private readonly depth: number) { }
 
@@ -112,10 +110,10 @@ class RecentCache {
         // find any matching entries and remove them - should only be one
         remove(this.recentCache, i => i.id() === obj.id());
 
-        // push obj on top of array 
+        // push obj on top of array
         this.recentCache = [obj].concat(this.recentCache);
 
-        // drop oldest if we're full 
+        // drop oldest if we're full
         if (this.recentCache.length > this.depth) {
             this.recentCache = this.recentCache.slice(0, this.depth);
         }
@@ -192,14 +190,40 @@ export class ContextService {
         private readonly configService: ConfigService,
         private readonly loggerService: LoggerService
     ) {
-        this.keySeparator = this.configService.config.keySeparator;
     }
 
-    private readonly keySeparator: string;
+    private pendingClearMessages = false;
+    private pendingClearWarnings = false;
+    private nextTransientId = 0;
+    private currentError: Models.ErrorWrapper | null = null;
+    private previousUrl: string | null = null;
+    private warningsSource = new Subject<string[]>();
+    private messagesSource = new Subject<string[]>();
+
+    warning$ = this.warningsSource.asObservable();
+    messages$ = this.messagesSource.asObservable();
+
+    private pendingPotentActionCount: [undefined, number, number] = [undefined, 0, 0];
+
+    private copiedViewModelSource = new Subject<IDraggableViewModel>();
+
+    copiedViewModel$ = this.copiedViewModelSource.asObservable();
+
+    private copiedViewModel: IDraggableViewModel | null;
+
+    private concurrencyErrorSource = new Subject<Models.ObjectIdWrapper>();
+
+    concurrencyError$ = this.concurrencyErrorSource.asObservable();
+
+    private subTypeCache: Dictionary<Dictionary<Promise<boolean>>> = {};
+
+    private get keySeparator() {
+        return this.configService.config.keySeparator;
+    }
 
     // cached values
 
-    private currentObjects: [undefined, Models.DomainObjectRepresentation | null, Models.DomainObjectRepresentation | null] = [undefined, null, null]; // per pane 
+    private currentObjects: [undefined, Models.DomainObjectRepresentation | null, Models.DomainObjectRepresentation | null] = [undefined, null, null]; // per pane
     private transientCache = new TransientCache(this.configService.config.transientCacheDepth);
 
     private currentMenuList: Dictionary<Models.MenuRepresentation> = {};
@@ -239,14 +263,13 @@ export class ContextService {
         });
     }
 
-
     // exposed for test mocking
     getDomainObject = (paneId: Pane, oid: Models.ObjectIdWrapper, interactionMode: InteractionMode): Promise<Models.DomainObjectRepresentation> => {
         const type = oid.domainType;
         const id = oid.instanceId;
 
         const dirtyState = this.dirtyList.getDirty(oid);
-        // no need to reload forms 
+        // no need to reload forms
         const forceReload = interactionMode !== InteractionMode.Form &&
                             ((dirtyState === DirtyState.DirtyMustReload) ||
                              ((dirtyState === DirtyState.DirtyMayReload) && this.configService.config.autoLoadDirty));
@@ -268,7 +291,6 @@ export class ContextService {
         object.hateoasUrl = `${this.configService.config.appPath}/objects/${type}/${id}`;
         object.setInlinePropertyDetails(interactionMode === InteractionMode.Edit);
 
-
         this.incPendingPotentActionOrReload(paneId);
         return this.repLoader.populate<Models.DomainObjectRepresentation>(object, forceReload)
             .then((obj: Models.DomainObjectRepresentation) => {
@@ -285,7 +307,7 @@ export class ContextService {
                 this.decPendingPotentActionOrReload(paneId);
                 throw e;
             });
-    };
+    }
 
     private editOrReloadObject(paneId: Pane, object: Models.DomainObjectRepresentation, inlineDetails: boolean) {
         const parms: Dictionary<Object> = {};
@@ -306,7 +328,7 @@ export class ContextService {
     mustReload = (oid: Models.ObjectIdWrapper) => {
         const dirtyState = this.dirtyList.getDirty(oid);
         return (dirtyState === DirtyState.DirtyMustReload) || ((dirtyState === DirtyState.DirtyMayReload) && this.configService.config.autoLoadDirty);
-    };
+    }
 
     getObjectForEdit = (paneId: Pane, object: Models.DomainObjectRepresentation) => this.editOrReloadObject(paneId, object, true);
 
@@ -330,7 +352,7 @@ export class ContextService {
                 this.currentObjects[paneId] = service;
                 return Promise.resolve(service);
             });
-    };
+    }
 
     getActionDetails = (actionMember: Models.ActionMember): Promise<Models.ActionRepresentation> => {
         const details = actionMember.getDetails();
@@ -338,7 +360,7 @@ export class ContextService {
             return this.repLoader.populate(details, true);
         }
         return Promise.reject(`Couldn't find details on ${actionMember.actionId()}`);
-    };
+    }
 
     getCollectionDetails = (collectionMember: Models.CollectionMember, state: CollectionViewState, ignoreCache: boolean): Promise<Models.CollectionRepresentation> => {
         const details = collectionMember.getDetails();
@@ -348,7 +370,7 @@ export class ContextService {
                 details.setUrlParameter(Constants.roInlineCollectionItems, true);
             }
             const parent = collectionMember.parent;
-            let isDirty : boolean = false;
+            let isDirty = false;
             if (parent instanceof Models.DomainObjectRepresentation) {
                 const oid = parent.getOid();
                 isDirty = this.dirtyList.getDirty(oid) !== DirtyState.Clean;
@@ -357,7 +379,7 @@ export class ContextService {
             return this.repLoader.populate(details, isDirty || ignoreCache);
         }
         return Promise.reject(`Couldn't find details on ${collectionMember.collectionId()}`);
-    };
+    }
 
     getInvokableAction = (action: Models.ActionMember | Models.ActionRepresentation): Promise<Models.InvokableActionMember | Models.ActionRepresentation> => {
 
@@ -366,7 +388,7 @@ export class ContextService {
         }
 
         return this.getActionDetails(action);
-    };
+    }
 
     getMenu = (menuId: string): Promise<Models.MenuRepresentation> => {
 
@@ -386,11 +408,7 @@ export class ContextService {
                 this.currentMenuList[menuId] = menu;
                 return Promise.resolve(menu);
             });
-    };
-
-    private pendingClearMessages : boolean = false;
-    private pendingClearWarnings : boolean = false;
-
+    }
 
     clearMessages = () => {
         if (this.pendingClearMessages) {
@@ -405,7 +423,7 @@ export class ContextService {
         }
         this.pendingClearWarnings = !this.pendingClearWarnings;
     }
-    
+
     broadcastMessage = (m: string) => {
         this.pendingClearMessages = false;
         this.messagesSource.next([m]);
@@ -417,10 +435,10 @@ export class ContextService {
     }
 
     getHome = () => {
-        // for moment don't bother caching only called on startup and for whatever resaon cache doesn't work. 
-        // once version cached no longer called.  
+        // for moment don't bother caching only called on startup and for whatever resaon cache doesn't work.
+        // once version cached no longer called.
         return this.repLoader.populate<Models.HomePageRepresentation>(new Models.HomePageRepresentation({}, this.configService.config.appPath));
-    };
+    }
 
     getServices = () => {
 
@@ -437,7 +455,7 @@ export class ContextService {
                 this.currentServices = services;
                 return Promise.resolve(services);
             });
-    };
+    }
 
     getMenus = () => {
         if (this.currentMenus) {
@@ -453,7 +471,7 @@ export class ContextService {
                 this.currentMenus = menus;
                 return Promise.resolve(this.currentMenus);
             });
-    };
+    }
 
     getVersion = () => {
 
@@ -470,7 +488,7 @@ export class ContextService {
                 this.currentVersion = version;
                 return Promise.resolve(version);
             });
-    };
+    }
 
     getUser = () => {
 
@@ -487,22 +505,22 @@ export class ContextService {
                 this.currentUser = user;
                 return Promise.resolve(user);
             });
-    };
+    }
 
     getObject = (paneId: Pane, oid: Models.ObjectIdWrapper, interactionMode: InteractionMode) => {
         return oid.isService ? this.getService(paneId, oid.domainType) : this.getDomainObject(paneId, oid, interactionMode);
-    };
+    }
 
     getCachedList = (paneId: Pane, page: number, pageSize: number) => {
         const index = this.urlManager.getListCacheIndex(paneId, page, pageSize);
         const entry = this.currentLists[index];
         return entry ? entry.list : null;
-    };
+    }
 
     clearCachedList = (paneId: Pane, page: number, pageSize: number) => {
         const index = this.urlManager.getListCacheIndex(paneId, page, pageSize);
         delete this.currentLists[index];
-    };
+    }
 
     private cacheList(list: Models.ListRepresentation, index: string) {
 
@@ -513,8 +531,10 @@ export class ContextService {
         } else {
 
             if (keys(this.currentLists).length >= this.configService.config.listCacheSize) {
-                //delete oldest;
-                const oldest = first(sortBy(this.currentLists, "e.added")).added;
+                // delete oldest;
+                // TODO this looks wrong surely just "added" test !
+                // Fix "!"
+                const oldest = first(sortBy(this.currentLists, "e.added"))!.added;
                 const oldestIndex = findKey(this.currentLists, (e: { added: number }) => e.added === oldest);
                 if (oldestIndex) {
                     delete this.currentLists[oldestIndex];
@@ -542,10 +562,11 @@ export class ContextService {
     }
 
     getActionExtensionsFromMenu = (menuId: string, actionId: string) =>
-        this.getMenu(menuId).then(menu => Promise.resolve(menu.actionMember(actionId).extensions()));
+        this.getMenu(menuId)
+        .then(menu => Promise.resolve(menu.actionMember(actionId).extensions()))
 
     getActionExtensionsFromObject = (paneId: Pane, oid: Models.ObjectIdWrapper, actionId: string) =>
-        this.getObject(paneId, oid, InteractionMode.View).then(object => Promise.resolve(object.actionMember(actionId).extensions()));
+        this.getObject(paneId, oid, InteractionMode.View).then(object => Promise.resolve(object.actionMember(actionId).extensions()))
 
     private getPagingParms(page: number, pageSize: number): Dictionary<Object> {
         return (page && pageSize) ? { "x-ro-page": page, "x-ro-pageSize": pageSize } : {};
@@ -604,36 +625,29 @@ export class ContextService {
 
     }
 
-    private currentError: Models.ErrorWrapper | null = null;
-
     getError = () => this.currentError;
 
     setError = (e: Models.ErrorWrapper) => this.currentError = e;
-
-    private previousUrl: string | null = null;
 
     getPreviousUrl = () => this.previousUrl;
 
     setPreviousUrl = (url: string) => this.previousUrl = url;
 
     private doPrompt = (field: Models.IField, id: string, searchTerm: string | null, setupPrompt: (map: Models.PromptMap) => void, objectValues: () => Dictionary<Models.Value>, digest?: string | null) => {
-        const map = field.getPromptMap() as Models.PromptMap; // not null
-        map.setMembers(objectValues);
-        setupPrompt(map);
+        const promptMap = field.getPromptMap() as Models.PromptMap; // not null
+        promptMap.setMembers(objectValues);
+        setupPrompt(promptMap);
         const addEmptyOption = field.entryType() !== Models.EntryType.AutoComplete && field.extensions().optional();
-        return this.repLoader.retrieve(map, Models.PromptRepresentation, digest).then((p: Models.PromptRepresentation) => p.choices(addEmptyOption));
+        return this.repLoader.retrieve(promptMap, Models.PromptRepresentation, digest).then((p: Models.PromptRepresentation) => p.choices(addEmptyOption));
     }
 
     autoComplete = (field: Models.IField, id: string, objectValues: () => Dictionary<Models.Value>, searchTerm: string, digest?: string | null) =>
-        this.doPrompt(field, id, searchTerm, (map: Models.PromptMap) => map.setSearchTerm(searchTerm), objectValues, digest);
+        this.doPrompt(field, id, searchTerm, (promptMap: Models.PromptMap) => promptMap.setSearchTerm(searchTerm), objectValues, digest)
 
     conditionalChoices = (field: Models.IField, id: string, objectValues: () => Dictionary<Models.Value>, args: Dictionary<Models.Value>, digest?: string | null) =>
-        this.doPrompt(field, id, null, (map: Models.PromptMap) => map.setArguments(args), objectValues, digest);
-
-    private nextTransientId = 0;
+        this.doPrompt(field, id, null, (promptMap: Models.PromptMap) => promptMap.setArguments(args), objectValues, digest)
 
     setResult = (action: Models.ActionRepresentation | Models.InvokableActionMember, result: Models.ActionResultRepresentation, fromPaneId: number, toPaneId: number, page: number, pageSize: number) => {
-
 
         if (!result.result().isNull()) {
             if (result.resultType() === "object") {
@@ -664,19 +678,19 @@ export class ContextService {
 
                     const selfLink = resultObject.selfLink() as Models.Link;
                     // persistent object
-                    // set the object here and then update the url. That should reload the page but pick up this object 
-                    // so we don't hit the server again. 
+                    // set the object here and then update the url. That should reload the page but pick up this object
+                    // so we don't hit the server again.
 
                     // copy the etag down into the object
                     resultObject.etagDigest = result.etagDigest;
 
                     this.setObject(toPaneId, resultObject);
 
-                    // update angular cache 
+                    // update angular cache
                     const url = `${selfLink.href()}?${Constants.roInlinePropertyDetails}=false`;
                     this.repLoader.addToCache(url, resultObject.wrapped());
 
-                    // if render in edit must be  a form 
+                    // if render in edit must be  a form
                     if (resultObject.extensions().interactionMode() === "form") {
                         this.urlManager.pushUrlState(toPaneId);
                         this.urlManager.setObjectWithMode(resultObject, InteractionMode.Form, toPaneId);
@@ -700,8 +714,6 @@ export class ContextService {
         }
     }
 
-    private pendingPotentActionCount: [undefined, number, number] = [undefined, 0, 0];
-
     incPendingPotentActionOrReload(paneId: Pane) {
         const count = this.pendingPotentActionCount[paneId]! + 1;
         this.pendingPotentActionCount[paneId] = count;
@@ -721,27 +733,15 @@ export class ContextService {
         return this.pendingPotentActionCount[paneId]! > 0;
     }
 
-    private warningsSource = new Subject<string[]>();
-    private messagesSource = new Subject<string[]>();
-
-    warning$ = this.warningsSource.asObservable();
-    messages$ = this.messagesSource.asObservable();
-
     private setMessages(result: Models.ActionResultRepresentation) {
         this.pendingClearMessages = this.pendingClearWarnings = false;
-        
+
         const warnings = result.extensions().warnings() || [];
         const messages = result.extensions().messages() || [];
 
         this.warningsSource.next(warnings);
         this.messagesSource.next(messages);
     }
-
-    private copiedViewModelSource = new Subject<IDraggableViewModel>();
-
-    copiedViewModel$ = this.copiedViewModelSource.asObservable();
-
-    private copiedViewModel: IDraggableViewModel | null;
 
     setCopyViewModel(dvm: IDraggableViewModel | null) {
         this.copiedViewModel = dvm;
@@ -752,15 +752,17 @@ export class ContextService {
         return this.copiedViewModel;
     }
 
-    private concurrencyErrorSource = new Subject<Models.ObjectIdWrapper>();
-
-    concurrencyError$ = this.concurrencyErrorSource.asObservable();
-
     setConcurrencyError(oid: Models.ObjectIdWrapper) {
         this.concurrencyErrorSource.next(oid);
     }
 
-    private invokeActionInternal(invokeMap: Models.InvokeMap, action: Models.ActionRepresentation | Models.InvokableActionMember, fromPaneId: number, toPaneId: number, setDirty: () => void, gotoResult : boolean = false) {
+    private invokeActionInternal(
+        invokeMap: Models.InvokeMap,
+        action: Models.ActionRepresentation | Models.InvokableActionMember,
+        fromPaneId: number,
+        toPaneId: number,
+        setDirty: () => void,
+        gotoResult: boolean = false) {
 
         invokeMap.setUrlParameter(Constants.roInlinePropertyDetails, false);
 
@@ -791,10 +793,10 @@ export class ContextService {
                     if (m) {
                         this.dirtyList.setDirty(m.getOid());
                     }
-                }
+                };
                 setDirty(pane1Obj);
                 setDirty(pane2Obj);
-            }
+            };
 
             if (parent instanceof Models.DomainObjectRepresentation) {
                 return () => {
@@ -810,7 +812,7 @@ export class ContextService {
                     setCurrentObjectsDirty();
                 };
             }
-            if (parent instanceof Models.CollectionMember) {     
+            if (parent instanceof Models.CollectionMember) {
                 return () => {
                     const memberParent = parent.parent;
                     if (memberParent instanceof Models.DomainObjectRepresentation) {
@@ -825,7 +827,7 @@ export class ContextService {
                 const ccaId = ccaParm ? ccaParm.id() : null;
                 const ccaValue = ccaId ? parms[ccaId] : null;
 
-                // this should always be true 
+                // this should always be true
                 if (ccaValue && ccaValue.isList()) {
 
                     const refValues = filter(ccaValue.list()!, v => v.isReference());
@@ -843,7 +845,7 @@ export class ContextService {
         return () => { };
     }
 
-    invokeAction = (action: Models.ActionRepresentation | Models.InvokableActionMember, parms: Dictionary<Models.Value>, fromPaneId = 1, toPaneId = 1, gotoResult : boolean = true) => {
+    invokeAction = (action: Models.ActionRepresentation | Models.InvokableActionMember, parms: Dictionary<Models.Value>, fromPaneId = 1, toPaneId = 1, gotoResult: boolean = true) => {
 
         const invokeOnMap = (iAction: Models.ActionRepresentation | Models.InvokableActionMember) => {
             const im = iAction.getInvokeMap() as Models.InvokeMap;
@@ -894,7 +896,6 @@ export class ContextService {
             });
     }
 
-
     validateUpdateObject = (object: Models.DomainObjectRepresentation, props: Dictionary<Models.Value>) => {
         const update = object.getUpdateMap();
         update.setValidateOnly();
@@ -907,10 +908,7 @@ export class ContextService {
         persist.setValidateOnly();
         each(props, (v, k) => persist.setMember(k!, v));
         return this.repLoader.validate(persist, object.etagDigest);
-    };
-
-
-    private subTypeCache: Dictionary<Dictionary<Promise<boolean>>> = {};
+    }
 
     isSubTypeOf = (toCheckType: string, againstType: string): Promise<boolean> => {
 
@@ -933,10 +931,10 @@ export class ContextService {
         this.subTypeCache[toCheckType] = entry;
 
         return promise;
-    };
+    }
 
     private cacheRecentlyViewed(obj: Models.DomainObjectRepresentation) {
-        // never cache forms 
+        // never cache forms
         if (obj.extensions().interactionMode() !== "form") {
             this.recentcache.add(obj);
         }
@@ -945,11 +943,11 @@ export class ContextService {
     getRecentlyViewed = () => this.recentcache.items();
 
     clearRecentlyViewed = () => {
-        // clear both recent view and cached objects 
+        // clear both recent view and cached objects
 
         each(this.recentcache.items(), i => this.dirtyList.setDirty(i.getOid()));
         this.recentcache.clear();
-    };
+    }
 
     private logoff() {
         for (let pane = 1; pane <= 2; pane++) {
@@ -964,7 +962,7 @@ export class ContextService {
         this.recentcache.clear();
         this.dirtyList.clear();
 
-        // k will always be defined 
+        // k will always be defined
         forEach(this.currentMenuList, (v, k) => delete this.currentMenuList[k!]);
         forEach(this.currentLists, (v, k) => delete this.currentLists[k!]);
     }
@@ -993,6 +991,4 @@ export class ContextService {
         this.dirtyList.setDirty(obj.getOid());
         this.objectEditCache.addValue(obj.id(), p.id(), pv, paneId);
     }
-
-   
 }

@@ -1,4 +1,4 @@
-﻿import { Component, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
+﻿import { Component, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
 import { CustomComponentService } from '../custom-component.service';
 import { ActivatedRoute } from '@angular/router';
 import { PaneRouteData, ViewType } from '../route-data';
@@ -13,10 +13,10 @@ import { ConfigService } from '../config.service';
 
 @Component({
     selector: 'nof-dynamic-list',
-    template: require('./dynamic-list.component.html'),
-    styles: [require('./dynamic-list.component.css')]
+    templateUrl: 'dynamic-list.component.html',
+    styleUrls: ['dynamic-list.component.css']
 })
-export class DynamicListComponent extends PaneComponent {
+export class DynamicListComponent extends PaneComponent implements OnDestroy {
 
     @ViewChild('parent', { read: ViewContainerRef })
     parent: ViewContainerRef;
@@ -32,9 +32,19 @@ export class DynamicListComponent extends PaneComponent {
         super(activatedRoute, urlManager, context);
     }
 
+    private reloadPlaceholderButton: IActionHolder = {
+        value: "Reload",
+        doClick: () => this.reload(),
+        show: () => true,
+        disabled: () => null,
+        tempDisabled: () => null,
+        title: () => "",
+        accesskey: null
+    };
+
     private lastOid: string | null;
-    title: string = "";
-    showPlaceholder: boolean = true;
+    title = "";
+    showPlaceholder = true;
     private cachedRouteData: PaneRouteData;
 
     getActionExtensions(routeData: PaneRouteData): Promise<Models.Extensions> {
@@ -56,16 +66,6 @@ export class DynamicListComponent extends PaneComponent {
                 this.error.handleError(reject);
             });
     }
-
-    private reloadPlaceholderButton: IActionHolder = {
-        value: "Reload",
-        doClick: () => this.reload(),
-        show: () => true,
-        disabled: () => null,
-        tempDisabled: () => null,
-        title: () => "",
-        accesskey: null
-    };
 
     get actionHolders() {
         return [this.reloadPlaceholderButton];
@@ -106,4 +106,3 @@ export class DynamicListComponent extends PaneComponent {
         this.parent.clear();
     }
 }
-

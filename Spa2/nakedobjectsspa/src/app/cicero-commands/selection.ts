@@ -21,7 +21,7 @@ export class Selection extends Command {
         //    const { start, end } = this.parseRange(arg); //'destructuring'
         //    this.getList().then(list => this.selectItems(list, start, end)).catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
         return Promise.reject("Not Implemented");
-    };
+    }
 
     private selectItems(list: Models.ListRepresentation, startNo: number, endNo: number): void {
         let itemNo: number;

@@ -10,10 +10,10 @@ import * as Msg from '../user-messages';
 import { Dictionary } from 'lodash';
 import { ConfigService } from '../config.service';
 import { Pane } from '../route-data';
-import filter from 'lodash/filter';
-import find from 'lodash/find';
-import map from 'lodash/map';
-import some from 'lodash/some';
+import filter from 'lodash-es/filter';
+import find from 'lodash-es/find';
+import map from 'lodash-es/map';
+import some from 'lodash-es/some';
 
 export class ParameterViewModel extends FieldViewModel {
 
@@ -78,7 +78,6 @@ export class ParameterViewModel extends FieldViewModel {
     }
 
     private readonly dflt: string;
-
 
     private setupParameterChoices() {
         this.setupChoices(this.parameterRep.choices()!);
@@ -146,7 +145,7 @@ export class ParameterViewModel extends FieldViewModel {
                     setCurrentChoice(toSet);
                 }
             }
-        }
+        };
 
         parmViewModel.refresh(this.previousValue);
 
@@ -184,7 +183,7 @@ export class ParameterViewModel extends FieldViewModel {
             } else {
                 this.value = (newValue ? newValue.toString() : null) || this.dflt || "";
             }
-        }
+        };
 
         this.refresh(this.previousValue);
     }
@@ -204,7 +203,8 @@ export class ParameterViewModel extends FieldViewModel {
                     }
                     break;
                 }
-            // fall through 
+            // fall through
+            // tslint:disable-next-line:no-switch-case-fall-through
             case (Models.EntryType.AutoComplete):
             case (Models.EntryType.Choices):
             case (Models.EntryType.ConditionalChoices):

@@ -1,6 +1,6 @@
-import { Component, ElementRef, OnInit, Renderer, ViewChild } from '@angular/core';
-import reduce from 'lodash/reduce';
-import { ISubscription } from 'rxjs/Subscription';
+import { Component, ElementRef, OnInit, Renderer, ViewChild, OnDestroy } from '@angular/core';
+import reduce from 'lodash-es/reduce';
+import { SubscriptionLike as ISubscription } from 'rxjs';
 import { CiceroCommandFactoryService } from '../cicero-command-factory.service';
 import { Command } from '../cicero-commands/Command';
 import { Result } from '../cicero-commands/result';
@@ -13,14 +13,13 @@ import * as Ro from '../models';
 import * as RtD from '../route-data';
 import { PaneRouteData } from '../route-data';
 import { UrlManagerService } from '../url-manager.service';
- 
 
 @Component({
     selector: 'nof-cicero',
-    template: require('./cicero.component.html'),
-    styles: [require('./cicero.component.css')]
+    templateUrl: 'cicero.component.html',
+    styleUrls: ['cicero.component.css']
 })
-export class CiceroComponent implements OnInit {
+export class CiceroComponent implements OnInit, OnDestroy {
 
     constructor(
         private readonly commandFactory: CiceroCommandFactoryService,
@@ -29,11 +28,23 @@ export class CiceroComponent implements OnInit {
         private readonly urlManager: UrlManagerService,
         private readonly ciceroContext: CiceroContextService,
         private readonly context: ContextService,
-        private readonly renderer: Renderer) {     
+        private readonly renderer: Renderer) {
     }
 
-    private warnings : string[];
-    private messages : string[];
+    private warnings: string[];
+    private messages: string[];
+    private paneRouteDataSub: ISubscription;
+    private warnSub: ISubscription;
+    private errorSub: ISubscription;
+    private lastPaneRouteData: PaneRouteData;
+    private previousInput: string;
+
+    @ViewChild("inputField")
+    inputField: ElementRef;
+
+    // template API
+    inputText: string;
+    outputText: string;
 
     private render() {
         switch (this.lastPaneRouteData.location) {
@@ -71,7 +82,7 @@ export class CiceroComponent implements OnInit {
                                 });
                         }
                     });
-        };
+        }
 
         this.warnSub = this.context.warning$.subscribe(ws => this.warnings = ws);
         this.errorSub = this.context.messages$.subscribe(ms => this.messages = ms);
@@ -82,12 +93,6 @@ export class CiceroComponent implements OnInit {
         safeUnsubscribe(this.warnSub);
         safeUnsubscribe(this.errorSub);
     }
-
-    private paneRouteDataSub: ISubscription;
-    private warnSub: ISubscription;
-    private errorSub : ISubscription;
-    private lastPaneRouteData: PaneRouteData;  
-    private previousInput: string;
 
     private executeCommand(cmd: Command) {
         cmd.execute().
@@ -125,10 +130,6 @@ export class CiceroComponent implements OnInit {
         this.focusOnInput();
     }
 
-    // template API 
-    inputText: string;
-    outputText: string;
-
     parseInput(input: string): void {
         const prevInput = this.commandFactory.preParse(input).input;
         this.previousInput = prevInput ? prevInput.trim() : "";
@@ -136,12 +137,11 @@ export class CiceroComponent implements OnInit {
 
         if (parseResult.commands) {
             this.executeCommands(parseResult.commands);
-        }
-        else if (parseResult.error) {
+        } else if (parseResult.error) {
             this.outputText = parseResult.error;
             this.inputText = "";
         }
-    };
+    }
 
     selectPreviousInput = () => setTimeout(() => this.inputText = this.previousInput);
 
@@ -152,12 +152,9 @@ export class CiceroComponent implements OnInit {
         const res = this.commandFactory.preParse(input);
         this.writeInputOutput(res);
         return false;
-    };
+    }
 
     focusOnInput() {
         focus(this.renderer, this.inputField);
     }
-
-    @ViewChild("inputField")
-    inputField: ElementRef;
 }

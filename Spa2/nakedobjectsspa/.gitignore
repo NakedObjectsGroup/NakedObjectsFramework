@@ -3,11 +3,10 @@
 # compiled output
 /dist
 /tmp
-/lib
+/out-tsc
 
 # dependencies
 /node_modules
-/bower_components
 
 # IDEs and editors
 /.idea
@@ -16,6 +15,7 @@
 .c9/
 *.launch
 .settings/
+*.sublime-workspace
 
 # IDE - VSCode
 .vscode/*
@@ -27,16 +27,13 @@
 # misc
 /.sass-cache
 /connect.lock
-/coverage/*
+/coverage
 /libpeerconnection.log
 npm-debug.log
+yarn-error.log
 testem.log
 /typings
 
-# e2e
-/e2e/*.js
-/e2e/*.map
-
-#System Files
+# System Files
 .DS_Store
 Thumbs.db

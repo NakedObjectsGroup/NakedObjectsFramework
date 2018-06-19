@@ -47,7 +47,7 @@ export class Page extends Command {
             } else if (Usermessages.pageLast.indexOf(arg) === 0) {
                 return this.returnResult(null, null, () => this.setPage(numPages));
             } else {
-                const number = parseInt(arg);
+                const number = parseInt(arg, 10);
                 if (isNaN(number)) {
                     return this.returnResult("", Usermessages.pageArgumentWrong);
                 }
@@ -57,7 +57,7 @@ export class Page extends Command {
                 return this.returnResult(null, null, () => this.setPage(number));
             }
         });
-    };
+    }
 
     private setPage(page: number) {
         const pageSize = this.routeData().pageSize;

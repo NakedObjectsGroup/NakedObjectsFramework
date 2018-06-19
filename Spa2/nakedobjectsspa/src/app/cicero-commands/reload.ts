@@ -16,9 +16,9 @@ export class Reload extends Command {
     }
 
     doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
-        
+
         return  this.getObject()
             .then(o => this.context.reloadObject(1, o))
-            .then((updatedObject: Models.DomainObjectRepresentation) => this.returnResult("", "", () => this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl() ));           
-    };
+            .then((updatedObject: Models.DomainObjectRepresentation) => this.returnResult("", "", () => this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl() ));
+    }
 }

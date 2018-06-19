@@ -60,9 +60,9 @@ export abstract class TypeResultCache<T> {
     }
 
     getResult(type: string | null) {
-        // 1 cache 
-        // 2 match regex 
-        // 3 match subtype 
+        // 1 cache
+        // 2 match regex
+        // 3 match subtype
 
         // this is potentially expensive - need to filter out non ref types ASAP
 
@@ -84,5 +84,4 @@ export abstract class TypeResultCache<T> {
 
         return this.isSubtype(type);
     }
-
 }

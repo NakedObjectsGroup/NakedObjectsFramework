@@ -8,10 +8,10 @@ import { UrlManagerService } from '../url-manager.service';
 import { ContributedActionParentViewModel } from './contributed-action-parent-view-model';
 import * as Helpers from './helpers-view-models';
 import * as Models from '../models';
-import find from 'lodash/find';
+import find from 'lodash-es/find';
 import { ConfigService } from '../config.service';
 import { LoggerService } from '../logger.service';
-import some from 'lodash/some';
+import some from 'lodash-es/some';
 
 export class CollectionViewModel extends ContributedActionParentViewModel {
 
@@ -60,7 +60,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
 
         let state = routeData.collections[this.collectionRep.collectionId()];
 
-        // collections are always shown as summary on transient 
+        // collections are always shown as summary on transient
         if (routeData.interactionMode === InteractionMode.Transient) {
             state = CollectionViewState.Summary;
         }
@@ -71,7 +71,6 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
             }
             return CollectionViewState.Summary;
         }
-
 
         if (state == null) {
             state = getDefaultTableState(this.collectionRep.extensions());
@@ -111,7 +110,6 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
             this.currentState = state;
         }
     }
-
 
     readonly doSummary = () => this.urlManager.setCollectionMemberState(this.collectionRep.collectionId(), CollectionViewState.Summary, this.onPaneId);
     readonly doList = () => this.urlManager.setCollectionMemberState(this.collectionRep.collectionId(), CollectionViewState.List, this.onPaneId);

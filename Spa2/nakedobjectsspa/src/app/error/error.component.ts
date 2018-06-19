@@ -4,8 +4,8 @@ import { ViewModelFactoryService } from '../view-model-factory.service';
 
 @Component({
     selector: 'nof-error',
-    template: require('./error.component.html'),
-    styles: [require('./error.component.css')]
+    templateUrl: 'error.component.html',
+    styleUrls: ['error.component.css']
 })
 export class ErrorComponent implements OnInit {
 
@@ -14,7 +14,7 @@ export class ErrorComponent implements OnInit {
         private readonly viewModelFactory: ViewModelFactoryService
     ) { }
 
-    // template API 
+    // template API
 
     title: string;
     message: string;
@@ -23,7 +23,7 @@ export class ErrorComponent implements OnInit {
     stackTrace: string[] | null;
 
     ngOnInit(): void {
-        // expect dynamic-error to  have checked if the context has an error 
+        // expect dynamic-error to  have checked if the context has an error
         const errorWrapper = this.context.getError();
         const error = this.viewModelFactory.errorViewModel(errorWrapper);
 

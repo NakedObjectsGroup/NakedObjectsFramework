@@ -4,9 +4,10 @@ import { ListViewModel } from '../view-models/list-view-model';
 import { CollectionViewState } from '../route-data';
 
 @Component({
+    // tslint:disable-next-line:component-selector
     selector: '[nof-header]',
-    template: require('./header.component.html'),
-    styles: [require('./header.component.css')]
+    templateUrl: 'header.component.html',
+    styleUrls: ['header.component.css']
 })
 export class HeaderComponent {
 

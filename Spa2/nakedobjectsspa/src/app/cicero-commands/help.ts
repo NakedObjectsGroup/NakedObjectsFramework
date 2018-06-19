@@ -29,5 +29,5 @@ export class Help extends Command {
                 return this.returnResult("", e.message);
             }
         }
-    };
+    }
 }

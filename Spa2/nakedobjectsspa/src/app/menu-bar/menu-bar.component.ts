@@ -1,20 +1,25 @@
-﻿import { Component, Input, QueryList, AfterViewInit, ViewChildren, OnDestroy } from '@angular/core';
+import { Component, Input, QueryList, AfterViewInit, ViewChildren, OnDestroy } from '@angular/core';
 import { LinkViewModel } from '../view-models/link-view-model';
 import { ActionComponent, IActionHolder } from '../action/action.component';
 import { UrlManagerService } from '../url-manager.service';
-import map from 'lodash/map';
-import some from 'lodash/some';
-import { ISubscription } from 'rxjs/Subscription';
+import map from 'lodash-es/map';
+import some from 'lodash-es/some';
+import { SubscriptionLike as ISubscription } from 'rxjs';
 import { safeUnsubscribe } from '../helpers-components';
 
 @Component({
     selector: 'nof-menu-bar',
-    template: require('./menu-bar.component.html'),
-    styles: [require('./menu-bar.component.css')]
+    templateUrl: 'menu-bar.component.html',
+    styleUrls: ['menu-bar.component.css']
 })
 export class MenuBarComponent implements AfterViewInit, OnDestroy {
 
     constructor(private readonly urlManager: UrlManagerService) { }
+
+    @ViewChildren(ActionComponent)
+    actionComponents: QueryList<ActionComponent>;
+
+    private sub: ISubscription;
 
     @Input()
     set menus(links: LinkViewModel[]) {
@@ -43,11 +48,6 @@ export class MenuBarComponent implements AfterViewInit, OnDestroy {
             some(menusList.toArray(), i => i.focus());
         }
     }
-
-    @ViewChildren(ActionComponent)
-    actionComponents: QueryList<ActionComponent>;
-
-    private sub : ISubscription;
 
     ngAfterViewInit(): void {
         this.focusOnFirstMenu(this.actionComponents);

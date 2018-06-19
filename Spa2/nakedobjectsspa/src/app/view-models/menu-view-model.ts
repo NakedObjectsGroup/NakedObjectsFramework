@@ -5,7 +5,7 @@ import { ViewModelFactoryService } from '../view-model-factory.service';
 import { PaneRouteData } from '../route-data';
 import * as Helpers from './helpers-view-models';
 import * as Models from '../models';
-import map from 'lodash/map';
+import map from 'lodash-es/map';
 
 import { IMenuHolderViewModel } from './imenu-holder-view-model';
 

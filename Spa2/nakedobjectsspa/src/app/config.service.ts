@@ -1,22 +1,27 @@
-﻿import { Injectable } from '@angular/core';
-import { Http, RequestOptionsArgs } from '@angular/http';
+import { Injectable } from '@angular/core';
 import * as Ro from './ro-interfaces';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/toPromise';
-import assign from 'lodash/assign';
+
+import assign from 'lodash-es/assign';
+import { HttpClient, HttpRequest, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+
+export enum ConfigState {
+    pending,
+    loaded,
+    failed
+}
 
 export interface IAppConfig {
-    authenticate: boolean,
-    authClientId?: string,
-    authDomain?: string,
+    authenticate: boolean;
+    authClientId?: string;
+    authDomain?: string;
     appPath: string;
-    applicationName: string,
+    applicationName: string;
     logoffUrl: string;
 
     // this can be a full url eg http://www.google.com
     postLogoffUrl: string;
 
-    defaultPageSize: number; // can be overridden by server 
+    defaultPageSize: number; // can be overridden by server
     listCacheSize: number;
 
     shortCutMarker: string;
@@ -31,13 +36,13 @@ export interface IAppConfig {
 
     defaultLocale: string;
 
-    // caching constants: do not change unless you know what you're doing 
+    // caching constants: do not change unless you know what you're doing
     httpCacheDepth: number;
     transientCacheDepth: number;
     recentCacheDepth: number;
 
-    // checks for inconsistencies in url 
-    // deliberately off by default 
+    // checks for inconsistencies in url
+    // deliberately off by default
     doUrlValidation: boolean;
 
     // flag for configurable home button behaviour
@@ -45,9 +50,9 @@ export interface IAppConfig {
 
     logLevel: "error" | "warn" | "info" | "debug" | "none";
 
-    dateInputFormat : string;
+    dateInputFormat: string;
 
-    // color set by first matching rule in order type, regex, subtype, default (faster to slower) 
+    // color set by first matching rule in order type, regex, subtype, default (faster to slower)
     colors?: {
         typeMap?: {
             [index: string]: number;
@@ -57,12 +62,12 @@ export interface IAppConfig {
             [index: string]: number;
         },
         default?: number;
-    }
+    };
 
-    //Note: "D" is the default mask for anything sent to the client as a date+time,
-    //where no other mask is specified.
-    //This mask deliberately does not specify the timezone as "+0000", unlike the other masks,
-    //with the result that the date+time will be transformed to the timezone of the client.
+    // Note: "D" is the default mask for anything sent to the client as a date+time,
+    // where no other mask is specified.
+    // This mask deliberately does not specify the timezone as "+0000", unlike the other masks,
+    // with the result that the date+time will be transformed to the timezone of the client.
     masks?: {
         currencyMasks?: {
             [index: string]: {
@@ -87,7 +92,7 @@ export interface IAppConfig {
                 locale?: string;
             }
         }
-    }
+    };
 }
 
 export function configFactory(config: ConfigService) {
@@ -101,7 +106,7 @@ export function localeFactory(config: ConfigService) {
 @Injectable()
 export class ConfigService {
 
-    // defaults 
+    // defaults
     private appConfig: IAppConfig = {
         authenticate: false,
         appPath: "",
@@ -125,11 +130,13 @@ export class ConfigService {
         leftClickHomeAlwaysGoesToSinglePane: true,
         logLevel: "error",
         dateInputFormat: "D MMM YYYY"
+    };
+
+    constructor(private readonly http: HttpClient) {
+
     }
 
-    constructor(private readonly http: Http) {
-
-    }
+    loadingStatus: ConfigState = ConfigState.pending;
 
     get config() {
         return this.appConfig;
@@ -155,15 +162,18 @@ export class ConfigService {
 
         const options = {
             withCredentials: true
-        } as RequestOptionsArgs;
+        };
 
-        return this.http.get('config.json', options).
-            map(res => res.json()).
+        return this.http.get<IAppConfig>('config.json', options).
             toPromise().
-            then(serverConfig => {
-                this.config = serverConfig as IAppConfig;
+            then((r) => {
+                this.config = r;
                 this.checkAppPath();
+                this.loadingStatus = ConfigState.loaded;
                 return true;
+            }).
+            catch(() => {
+                this.loadingStatus = ConfigState.failed;
             });
     }
 }

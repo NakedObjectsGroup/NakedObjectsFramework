@@ -8,8 +8,8 @@ import {AttachmentViewModel} from '../view-models/attachment-view-model';
 
 @Component({
     selector: 'nof-view-property',
-    template: require('./view-property.component.html'),
-    styles: [require('./view-property.component.css')]
+    templateUrl: 'view-property.component.html',
+    styleUrls: ['view-property.component.css']
 })
 export class ViewPropertyComponent {
 
@@ -19,12 +19,12 @@ export class ViewPropertyComponent {
         private readonly context: ContextService
     ) { }
 
-    // template inputs 
+    // template inputs
 
     @Input()
     property: PropertyViewModel;
 
-    // template listeners 
+    // template listeners
 
     @HostListener('keydown', ['$event'])
     onEnter(event: KeyboardEvent) {
@@ -82,7 +82,7 @@ export class ViewPropertyComponent {
         return this.property.color;
     }
 
-    get attachment() : AttachmentViewModel | null {
+    get attachment(): AttachmentViewModel | null {
         return this.property.attachment;
     }
 

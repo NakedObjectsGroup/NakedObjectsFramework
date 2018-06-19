@@ -3,7 +3,7 @@ import { Command } from './Command';
 import * as Models from '../models';
 import * as Usermessages from '../user-messages';
 import * as Routedata from '../route-data';
-import reduce from 'lodash/reduce';
+import reduce from 'lodash-es/reduce';
 
 export class Show extends Command {
 
@@ -27,8 +27,7 @@ export class Show extends Command {
                     const coll = obj.collectionMember(openCollIds[0]);
                     return this.renderCollectionItems(coll, start, end);
                 });
-            }
-            catch (e1) {
+            } catch (e1) {
                 return this.returnResult("", e1.message);
             }
         } else if (this.isList()) {
@@ -36,8 +35,7 @@ export class Show extends Command {
             try {
                 const { start, end } = this.parseRange(arg);
                 return this.getList().then(list => this.renderItems(list, start, end));
-            }
-            catch (e2) {
+            } catch (e2) {
                 return this.returnResult("", e2.message);
             }
         } else if (this.isObject()) {
@@ -45,7 +43,7 @@ export class Show extends Command {
             return this.getObject().then((obj: Models.DomainObjectRepresentation) => {
                 const props = this.matchingProperties(obj, fieldName);
                 const colls = this.matchingCollections(obj, fieldName);
-                //TODO -  include these
+                // TODO -  include these
                 let s: string;
                 switch (props.length + colls.length) {
                     case 0:
@@ -55,14 +53,14 @@ export class Show extends Command {
                         s = props.length > 0 ? this.renderPropNameAndValue(props[0]) : this.ciceroRenderer.renderCollectionNameAndSize(colls[0]);
                         break;
                     default:
-                        s = reduce(props, (s, prop) => s + this.renderPropNameAndValue(prop), "");
-                        s += reduce(colls, (s, coll) => s + this.ciceroRenderer.renderCollectionNameAndSize(coll), "");
+                        s = reduce(props, (str, prop) => str + this.renderPropNameAndValue(prop), "");
+                        s += reduce(colls, (str, coll) => str + this.ciceroRenderer.renderCollectionNameAndSize(coll), "");
                 }
                 return this.returnResult("", s);
             });
         }
         throw new Error("unexpected view type");
-    };
+    }
 
     private renderPropNameAndValue(pm: Models.PropertyMember): string {
         const name = pm.extensions().friendlyName();
@@ -88,7 +86,7 @@ export class Show extends Command {
     }
 
     private renderItems(source: Models.IHasLinksAsValue, startNo: number | null , endNo: number | null) {
-        //TODO: problem here is that unless collections are in-lined value will be null.
+        // TODO: problem here is that unless collections are in-lined value will be null.
 
         const links = source.value();
         if (links == null) {
@@ -112,7 +110,7 @@ export class Show extends Command {
         }
         let output = "";
         let i: number;
-        
+
         for (i = startNo; i <= endNo; i++) {
             output += `${Usermessages.item} ${i}: ${links[i - 1].title()}\n`;
         }

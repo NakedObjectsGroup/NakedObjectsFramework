@@ -7,8 +7,8 @@ import { UrlManagerService } from '../url-manager.service';
 
 @Component({
     selector: 'nof-dynamic-error',
-    template: require('./dynamic-error.component.html'),
-    styles: [require('./dynamic-error.component.css')]
+    templateUrl: 'dynamic-error.component.html',
+    styleUrls: ['dynamic-error.component.css']
 })
 export class DynamicErrorComponent implements OnInit {
 
@@ -27,7 +27,7 @@ export class DynamicErrorComponent implements OnInit {
 
         const errorWrapper = this.context.getError();
         if (errorWrapper) {
-            this.customComponentService.getCustomErrorComponent(errorWrapper.category, errorWrapper.httpErrorCode | errorWrapper.clientErrorCode).then((c: Type<any>) => {
+            this.customComponentService.getCustomErrorComponent(errorWrapper.category, errorWrapper.httpErrorCode || errorWrapper.clientErrorCode).then((c: Type<any>) => {
                 const childComponent = this.componentFactoryResolver.resolveComponentFactory(c);
                 this.parent.createComponent(childComponent);
             });

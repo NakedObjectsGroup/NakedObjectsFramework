@@ -13,8 +13,8 @@ import { LinkViewModel } from '../view-models/link-view-model';
 
 @Component({
     selector: 'nof-home',
-    template: require('./home.component.html'),
-    styles: [require('./home.component.css')]
+    templateUrl: 'home.component.html',
+    styleUrls: ['home.component.css']
 })
 export class HomeComponent extends PaneComponent {
 
@@ -27,7 +27,7 @@ export class HomeComponent extends PaneComponent {
         super(activatedRoute, urlManager, context);
     }
 
-    // template API 
+    // template API
     get hasMenus() {
         return !!this.menus;
     }
@@ -39,7 +39,7 @@ export class HomeComponent extends PaneComponent {
     selectedMenu: MenuViewModel | null;
     selectedDialogId: string | null;
 
-    hasAuthorisedMenus : boolean = true;
+    hasAuthorisedMenus = true;
 
     private menus: MenusViewModel;
 

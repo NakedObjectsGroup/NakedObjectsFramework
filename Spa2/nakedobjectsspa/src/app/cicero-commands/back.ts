@@ -16,5 +16,5 @@ export class Back extends Command {
 
     doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
         return this.returnResult("", "", () => this.location.back());
-    };
+    }
 }

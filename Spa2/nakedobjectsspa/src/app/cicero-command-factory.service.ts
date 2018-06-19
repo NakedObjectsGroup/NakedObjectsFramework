@@ -29,19 +29,23 @@ import { Show } from './cicero-commands/show';
 import { Where } from './cicero-commands/where';
 import { Result } from './cicero-commands/result';
 import { Dictionary } from 'lodash';
-import filter from 'lodash/filter';
-import reduce from 'lodash/reduce';
-import last from 'lodash/last';
-import map from 'lodash/map';
-import fromPairs from 'lodash/fromPairs';
+import filter from 'lodash-es/filter';
+import reduce from 'lodash-es/reduce';
+import last from 'lodash-es/last';
+import map from 'lodash-es/map';
+import fromPairs from 'lodash-es/fromPairs';
 import {CiceroRendererService} from './cicero-renderer.service';
 
 export class ParseResult {
     commands?: Command[];
     error?: string;
 
-    static create = (commands: Command[]): ParseResult => ({ commands: commands });
-    static createError = (msg : string) : ParseResult => ({ error : msg});
+    static create(commands: Command[]): ParseResult {
+        return { commands: commands };
+    }
+    static createError(msg: string): ParseResult {
+        return { error: msg };
+    }
 }
 
 @Injectable()
@@ -54,7 +58,7 @@ export class CiceroCommandFactoryService {
                 private readonly error: ErrorService,
                 private readonly configService: ConfigService,
                 private readonly ciceroContext: CiceroContextService,
-                private readonly ciceroRenderer : CiceroRendererService) { }
+                private readonly ciceroRenderer: CiceroRendererService) { }
 
     private commandsInitialised = false;
 
@@ -62,11 +66,11 @@ export class CiceroCommandFactoryService {
 
     private allCommands: Command[] = map(this.commandTypes, T => new T(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext, this.ciceroRenderer));
 
-    private commands : Dictionary<Command> = fromPairs(map(this.allCommands, c => [c.shortCommand, c]));
+    private commands: Dictionary<Command> = fromPairs(map(this.allCommands, c => [c.shortCommand, c]));
 
     private mapInputToCommands(input: string) {
         if (!input) {
-            //Special case for hitting Enter with no input
+            // Special case for hitting Enter with no input
             return [this.getCommand("wh")];
         }
         const commands = input.split(";");
@@ -79,10 +83,10 @@ export class CiceroCommandFactoryService {
         } catch (e) {
             return ParseResult.createError(e.message);
         }
-    };
+    }
 
-    getArgs(input : string) {
-        const index = input.indexOf(" ");     
+    getArgs(input: string) {
+        const index = input.indexOf(" ");
         return index >= 0 ? input.substr(index + 1) : null;
     }
 
@@ -94,17 +98,17 @@ export class CiceroCommandFactoryService {
         command.argString = this.getArgs(input);
         command.chained = chained;
         return command;
-    };
+    }
 
-    //TODO:  could do more than auto complete e.g. reject unrecognised action or one not available in context.
+    // TODO:  could do more than auto complete e.g. reject unrecognised action or one not available in context.
     preParse = (input: string): Result => {
         if (!input) {
             return Result.create(input, null);
         }
-        let lastInChain = last(input.split(";")).toLowerCase();
+        let lastInChain = (last(input.split(";")) || "").toLowerCase();
         const charsTyped = lastInChain.length;
         lastInChain = lastInChain.trim();
-        if (lastInChain.length === 0 || lastInChain.indexOf(" ") >= 0) { //i.e. not the first word
+        if (lastInChain.length === 0 || lastInChain.indexOf(" ") >= 0) { // i.e. not the first word
             return Result.create(`${input} `, null);
         }
         try {
@@ -114,7 +118,7 @@ export class CiceroCommandFactoryService {
         } catch (e) {
             return Result.create("", e.message);
         }
-    };
+    }
 
     getCommand = (commandWord: string) => {
         if (commandWord.length < 2) {
@@ -128,11 +132,10 @@ export class CiceroCommandFactoryService {
         }
         command.checkMatch(commandWord);
         return command;
-    };
+    }
 
     allCommandsForCurrentContext = () => {
         const commandsInContext = filter(this.commands, c => c.isAvailableInCurrentContext());
         return reduce<Command, string>(commandsInContext, (r, c) => `${r}${c.fullCommand}\n`, Msg.commandsAvailable);
-    };
-
+    }
 }

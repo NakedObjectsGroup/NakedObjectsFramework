@@ -3,12 +3,12 @@ import { FormGroup } from '@angular/forms';
 import { EditParameterComponent } from '../edit-parameter/edit-parameter.component';
 import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { DialogViewModel } from '../view-models/dialog-view-model';
-import some from 'lodash/some';
+import some from 'lodash-es/some';
 
 @Component({
     selector: 'nof-parameters',
-    template: require('./parameters.component.html'),
-    styles: [require('./parameters.component.css')]
+    templateUrl: 'parameters.component.html',
+    styleUrls: ['parameters.component.css']
 })
 export class ParametersComponent {
 

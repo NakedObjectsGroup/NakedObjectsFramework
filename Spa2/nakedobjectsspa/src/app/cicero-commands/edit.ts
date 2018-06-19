@@ -22,8 +22,8 @@ export class Edit extends Command {
         const newState = () => {
             this.context.clearObjectCachedValues();
             this.urlManager.setInteractionMode(Routedata.InteractionMode.Edit);
-        }
+        };
 
         return this.returnResult("", "", newState);
-    };
+    }
 }

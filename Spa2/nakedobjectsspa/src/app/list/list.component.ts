@@ -1,4 +1,4 @@
-﻿import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UrlManagerService } from '../url-manager.service';
 import { ContextService } from '../context.service';
 import { ActivatedRoute } from '@angular/router';
@@ -11,16 +11,16 @@ import { ListViewModel } from '../view-models/list-view-model';
 import { IActionHolder } from '../action/action.component';
 import { ConfigService } from '../config.service';
 import { LoggerService } from '../logger.service';
-import { ISubscription } from 'rxjs/Subscription';
+import { SubscriptionLike as ISubscription } from 'rxjs';
 import { ItemViewModel } from '../view-models/item-view-model';
 import { safeUnsubscribe } from '../helpers-components';
 
 @Component({
     selector: 'nof-list',
-    template: require('./list.component.html'),
-    styles: [require('./list.component.css')]
+    templateUrl: 'list.component.html',
+    styleUrls: ['list.component.css']
 })
-export class ListComponent {
+export class ListComponent implements OnInit, OnDestroy {
 
     constructor(
         private readonly activatedRoute: ActivatedRoute,
@@ -35,54 +35,9 @@ export class ListComponent {
     }
 
     collection: ListViewModel;
-
-    toggleActionMenu = () => this.collection.toggleActionMenu();
-    reloadList = () => this.collection.reload();
-    pageFirst = () => this.collection.pageFirst();
-    pagePrevious = () => this.collection.pagePrevious();
-    pageNext = () => this.collection.pageNext();
-    pageLast = () => this.collection.pageLast();
-
-    disableActions = () => this.collection.noActions() ? true : null;
-    hideAllCheckbox = () => this.collection.noActions() || this.collection.items.length === 0;
-
-
-    pageFirstDisabled = () => this.collection.pageFirstDisabled() ? true : null;
-    pagePreviousDisabled = () => this.collection.pagePreviousDisabled() ? true : null;
-    pageNextDisabled = () => this.collection.pageNextDisabled() ? true : null;
-    pageLastDisabled = () => this.collection.pageLastDisabled() ? true : null;
-
-    showActions = () => this.collection.showActions();
-
-    doTable = () => this.collection.doTable();
-    doList = () => this.collection.doList();
-    doSummary = () => this.collection.doSummary();
-
-    hasTableData = () => this.collection.hasTableData();
-
-    get actionsTooltip() {
-        return this.collection.actionsTooltip();
-    }
-
-    get message() {
-        return this.collection.getMessage();
-    }
-
-    get description() {
-        return this.collection.description();
-    }
-
-    get size() {
-        return this.collection.size;
-    }
-
-    get items(): ItemViewModel[] {
-        return this.collection.items;
-    }
-
-    get header() {
-        return this.collection.header;
-    }
+    title = "";
+    currentState = CollectionViewState.List;
+    selectedDialogId: string;
 
     private actionButton: IActionHolder = {
         value: "Actions",
@@ -144,27 +99,71 @@ export class ListComponent {
         accesskey: null
     };
 
+    private cachedRouteData: PaneRouteData;
+    private activatedRouteDataSub: ISubscription;
+    private paneRouteDataSub: ISubscription;
+    private lastPaneRouteData: PaneRouteData;
+
+    toggleActionMenu = () => this.collection.toggleActionMenu();
+    reloadList = () => this.collection.reload();
+    pageFirst = () => this.collection.pageFirst();
+    pagePrevious = () => this.collection.pagePrevious();
+    pageNext = () => this.collection.pageNext();
+    pageLast = () => this.collection.pageLast();
+
+    disableActions = () => this.collection.noActions() ? true : null;
+    hideAllCheckbox = () => this.collection.noActions() || this.collection.items.length === 0;
+
+    pageFirstDisabled = () => this.collection.pageFirstDisabled() ? true : null;
+    pagePreviousDisabled = () => this.collection.pagePreviousDisabled() ? true : null;
+    pageNextDisabled = () => this.collection.pageNextDisabled() ? true : null;
+    pageLastDisabled = () => this.collection.pageLastDisabled() ? true : null;
+
+    showActions = () => this.collection.showActions();
+
+    doTable = () => this.collection.doTable();
+    doList = () => this.collection.doList();
+    doSummary = () => this.collection.doSummary();
+
+    hasTableData = () => this.collection.hasTableData();
+
+    get actionsTooltip() {
+        return this.collection.actionsTooltip();
+    }
+
+    get message() {
+        return this.collection.getMessage();
+    }
+
+    get description() {
+        return this.collection.description();
+    }
+
+    get size() {
+        return this.collection.size;
+    }
+
+    get items(): ItemViewModel[] {
+        return this.collection.items;
+    }
+
+    get header() {
+        return this.collection.header;
+    }
+
     get actionHolders() {
         return [this.actionButton, this.reloadButton, this.firstButton, this.previousButton, this.nextButton, this.lastButton];
     }
 
-
-
-    title = "";
-
     get state() {
         return CollectionViewState[this.currentState].toString().toLowerCase();
     }
-
-    currentState = CollectionViewState.List;
 
     getActionExtensions(routeData: PaneRouteData): Promise<Models.Extensions> {
         return routeData.objectId
             ? this.context.getActionExtensionsFromObject(routeData.paneId, Models.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator), routeData.actionId)
             : this.context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
     }
-
-    private cachedRouteData: PaneRouteData;
 
     protected setup(routeData: PaneRouteData) {
         this.cachedRouteData = routeData;
@@ -186,12 +185,12 @@ export class ListComponent {
             this.currentState = routeData.state;
             this.collection.reset(cachedList, routeData);
         } else if (cachedList) {
-            // new collection 
+            // new collection
             this.collection = this.viewModelFactory.listViewModel(cachedList, routeData);
             this.currentState = routeData.state;
             this.collection.refresh(routeData);
         } else {
-            // should never get here 
+            // should never get here
             this.loggerService.throw("ListComponent:setup Missing cachedList");
         }
 
@@ -203,11 +202,7 @@ export class ListComponent {
         this.selectedDialogId = routeData.dialogId;
     }
 
-    private activatedRouteDataSub: ISubscription;
-    private paneRouteDataSub: ISubscription;
-    private lastPaneRouteData: PaneRouteData;
-
-    // now this is a child investigate reworking so object is passed in from parent 
+    // now this is a child investigate reworking so object is passed in from parent
     ngOnInit(): void {
         this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: ICustomActivatedRouteData) => {
 
@@ -222,15 +217,13 @@ export class ListComponent {
                                 this.setup(paneRouteData);
                             }
                         });
-            };
+            }
         });
     }
 
     ngOnDestroy(): void {
         safeUnsubscribe(this.paneRouteDataSub);
         safeUnsubscribe(this.activatedRouteDataSub);
-      
-    }
 
-    selectedDialogId: string;
+    }
 }

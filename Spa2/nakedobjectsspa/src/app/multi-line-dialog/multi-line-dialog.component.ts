@@ -1,4 +1,4 @@
-﻿import { Component, ViewChildren, QueryList, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, ViewChildren, QueryList, AfterViewInit, OnDestroy } from '@angular/core';
 import { PaneComponent } from '../pane/pane';
 import { ParametersComponent } from '../parameters/parameters.component';
 import { ViewModelFactoryService } from '../view-model-factory.service';
@@ -17,18 +17,18 @@ import { ConfigService } from '../config.service';
 import * as Msg from '../user-messages';
 import * as Models from '../models';
 import { Dictionary } from 'lodash';
-import find from 'lodash/find';
-import forEach from 'lodash/forEach';
-import map from 'lodash/map';
-import some from 'lodash/some';
-import each from 'lodash/each';
-import { ISubscription } from 'rxjs/Subscription';
-import { safeUnsubscribe, createForm } from '../helpers-components'; 
+import find from 'lodash-es/find';
+import forEach from 'lodash-es/forEach';
+import map from 'lodash-es/map';
+import some from 'lodash-es/some';
+import each from 'lodash-es/each';
+import { SubscriptionLike as ISubscription } from 'rxjs';
+import { safeUnsubscribe, createForm } from '../helpers-components';
 
 @Component({
     selector: 'nof-multi-line-dialog',
-    template: require('./multi-line-dialog.component.html'),
-    styles: [require('./multi-line-dialog.component.css')]
+    templateUrl: 'multi-line-dialog.component.html',
+    styleUrls: ['multi-line-dialog.component.css']
 })
 export class MultiLineDialogComponent extends PaneComponent implements AfterViewInit, OnDestroy {
 
@@ -44,9 +44,13 @@ export class MultiLineDialogComponent extends PaneComponent implements AfterView
         super(activatedRoute, urlManager, context);
     }
 
+    @ViewChildren(ParametersComponent)
+    parmComponents: QueryList<ParametersComponent>;
+
+    private sub: ISubscription;
     dialog: MultiLineDialogViewModel;
 
-    rowData: { form: FormGroup, dialog: DialogViewModel, parms: Dictionary<ParameterViewModel>, sub : ISubscription }[];
+    rowData: { form: FormGroup, dialog: DialogViewModel, parms: Dictionary<ParameterViewModel>, sub: ISubscription }[];
 
     form = (i: number) => {
         const rowData = this.rowData[i];
@@ -151,7 +155,8 @@ export class MultiLineDialogComponent extends PaneComponent implements AfterView
                     const ovm = this.viewModelFactory.domainObjectViewModel(object, routeData, false);
                     const newDialogId = routeData.dialogId;
 
-                    const lcaCollection = find(ovm.collections, c => c.hasMatchingLocallyContributedAction(newDialogId));
+                    // don't know why need cast here - problem in lodash types ?
+                    const lcaCollection = find(ovm.collections, c => c.hasMatchingLocallyContributedAction(newDialogId)) as CollectionViewModel | undefined;
 
                     if (lcaCollection) {
                         const actionViewModel = find(lcaCollection.actions, a => a.actionRep.actionId() === newDialogId);
@@ -167,16 +172,11 @@ export class MultiLineDialogComponent extends PaneComponent implements AfterView
         }
     }
 
-    @ViewChildren(ParametersComponent)
-    parmComponents: QueryList<ParametersComponent>;
-
     focus(parms: QueryList<ParametersComponent>) {
         if (parms && parms.length > 0) {
             some(parms.toArray(), p => p.focus());
         }
     }
-
-    private sub: ISubscription;
 
     ngAfterViewInit(): void {
         this.sub = this.parmComponents.changes.subscribe(ql => this.focus(ql));

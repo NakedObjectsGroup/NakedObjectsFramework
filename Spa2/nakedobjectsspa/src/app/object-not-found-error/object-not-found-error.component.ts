@@ -1,18 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'object-not-found-error',
-  template: require('./object-not-found-error.component.html'),
-  styles: [require('./object-not-found-error.component.css')]
+  templateUrl: 'object-not-found-error.component.html',
+  styleUrls: ['object-not-found-error.component.css']
 })
 export class ObjectNotFoundErrorComponent implements OnInit {
   constructor() { }
 
-  // template API 
+  // template API
 
   title: string;
   message: string;
- 
+
   ngOnInit(): void {
 
     this.title = "Object does not exist";

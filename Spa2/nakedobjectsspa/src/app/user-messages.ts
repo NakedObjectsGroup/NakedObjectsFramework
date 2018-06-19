@@ -52,7 +52,7 @@ export const logOffMessage = (u: string) => `Please confirm logoff of user: ${u}
 
 export const submittedCount = (c: number) => ` with ${c} lines submitted.`;
 
-//Cicero commands and Help text
+// Cicero commands and Help text
 
 export const welcomeMessage = "Welcome to Cicero. Type 'help' and the Enter key for more information.";
 export const basicHelp = "Cicero is a user interface purpose-designed to work with an audio screen-reader.\n" +
@@ -203,7 +203,7 @@ export const whereCommand = "where";
 export const whereHelp = "Display a reminder of the current context.\n" +
     "The same can also be achieved by hitting the Return key on the empty input field.";
 
-//Cicero feedback messages
+// Cicero feedback messages
 export const commandTooShort = "Command word must have at least 2 characters";
 export const noCommandMatch = (a: string) => `No command begins with ${a}`;
 export const commandsAvailable = "Commands available in current context:\n";
@@ -319,7 +319,7 @@ export const noRefFieldMatch = (s: string) => `${s} does not match any reference
 export const unsaved = "Unsaved";
 export const editing = "Editing";
 
-//Error messages
+// Error messages
 export const errorUnknown = "Unknown software error";
 export const errorExpiredTransient = "The requested view of unsaved object details has expired";
 export const errorWrongType = "An unexpected type of result was returned";

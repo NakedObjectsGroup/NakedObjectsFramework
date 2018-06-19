@@ -10,7 +10,7 @@ export abstract class MessageViewModel implements IMessageViewModel {
         } else {
             this.previousMessage = this.message;
         }
-    };
+    }
     readonly resetMessage = () => this.message = this.previousMessage = "";
     readonly setMessage = (msg: string) => this.message = msg;
     readonly getMessage = () => this.message;

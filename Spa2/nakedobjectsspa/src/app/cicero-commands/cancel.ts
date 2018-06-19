@@ -25,5 +25,5 @@ export class Cancel extends Command {
         }
 
         return this.returnResult("", "some sort of error"); // todo
-    };
+    }
 }

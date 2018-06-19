@@ -9,8 +9,8 @@ import * as Msg from '../user-messages';
 
 @Component({
     selector: 'nof-attachment-property',
-    template: require('./attachment-property.component.html'),
-    styles: [require('./attachment-property.component.css')]
+    templateUrl: 'attachment-property.component.html',
+    styleUrls: ['attachment-property.component.css']
 })
 export class AttachmentPropertyComponent {
 
@@ -46,7 +46,7 @@ export class AttachmentPropertyComponent {
             this.attachment.downloadFile()
                 .then(blob => {
                     if (window.navigator.msSaveBlob) {
-                        // internet explorer 
+                        // internet explorer
                         window.navigator.msSaveBlob(blob, this.attachment.title);
                     } else {
                         const burl = URL.createObjectURL(blob);
@@ -55,13 +55,12 @@ export class AttachmentPropertyComponent {
                 })
                 .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
         }
-    };
+    }
 
     private setup() {
         if (this.attachment.displayInline()) {
             this.attachment.setImage(this);
-        }
-        else {
+        } else {
             this.attachment.setTitle(this);
         }
     }
