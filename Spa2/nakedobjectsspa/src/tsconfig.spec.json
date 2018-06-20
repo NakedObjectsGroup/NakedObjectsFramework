@@ -1,19 +1,29 @@
 {
-  "extends": "../tsconfig.json",
-  "compilerOptions": {
-    "outDir": "../out-tsc/spec",
-    "module": "commonjs",
-    "types": [
-      "jasmine",
-      "node"
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+      "outDir": "../out-tsc/spec",
+      "module": "commonjs",
+      "target": "es5",
+      "baseUrl": "",
+      "types": [
+        "jasmine",
+        "node"
+      ],
+      "paths": {
+        "@nakedobjects/lib": [
+          "../dist/nakedobjects-lib"
+        ]
+      }
+    },
+    "files": [
+      "test.ts",
+      "polyfills.ts"
+    ],
+    "include": [
+      "../nakedobjects-lib/**/*.ts"
+    ],
+    "exclude": [
+      "node_modules",
+      "tmp"
     ]
-  },
-  "files": [
-    "test.ts",
-    "polyfills.ts"
-  ],
-  "include": [
-    "**/*.spec.ts",
-    "**/*.d.ts"
-  ]
-}
+  }
