@@ -2,16 +2,17 @@
   "extends": "../tsconfig.json",
   "angularCompilerOptions": {
     "paths": {
-      "@nakedobjects/lib": [ "../nakedobjects-lib/src/public_api.ts" ]
+      "@nakedobjects/lib": [ "../dist/nakedobjects-lib" ]
     }
   },
   "compilerOptions": {
     "outDir": "../out-tsc/app",
     "module": "es2015",
+    "baseUrl": "",
     "types": [],
     "paths": {
-        "@nakedobjects/lib": [ "../nakedobjects-lib/src/public_api.ts" ]
-      }
+      "@nakedobjects/lib": [ "../dist/nakedobjects-lib" ]
+    }
   },
   "exclude": [
     "test.ts",

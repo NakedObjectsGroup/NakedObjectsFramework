@@ -1,8 +1,8 @@
 {
-    "$schema": "../node_modules/ng-packagr/package.schema.json",
     "ngPackage": {
+        "$schema": "./node_modules/ng-packagr/package.schema.json",
         "lib": {
-            "entryFile": "../public_api.ts",
+            "entryFile": "src/public_api.ts",
             "umdModuleIds": {
                 "lodash": "_",
                 "moment": "moment",
@@ -18,10 +18,9 @@
             "moment",
             "ng2-dnd"
         ],
-        "keepLifecycleScripts": false,
-        "dest": "../dist"
+        "dest": "../dist/nakedobjects-lib"
     },
-    "name": "nakedobjects.spa",
+    "name": "@nakedobjects/lib",
     "version": "10.0.0",
     "description": "Single Page Application client for a Naked Objects application.",
     "license": "Apache-2.0",

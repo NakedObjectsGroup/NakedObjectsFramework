@@ -8,7 +8,7 @@
 
 <ng-container *ngIf="parameterType === 'scalar'" >
     <ng-container [ngSwitch]="parameterReturnType">
-        <ng-container *ngSwitchCase="string">
+        <ng-container *ngSwitchCase="'string'">
             <div *ngIf="!isMultiline" class="value">
                 {{formattedValue}}
             </div>

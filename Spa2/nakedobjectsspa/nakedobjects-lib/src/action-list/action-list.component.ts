@@ -66,7 +66,7 @@ export class ActionListComponent implements AfterViewInit, OnDestroy {
         return this.actionHolders[index];
     }
 
-    toggleCollapsed = (menuItem: MenuItemViewModel, index: number) => menuItem.toggleCollapsed();
+    toggleCollapsed = (menuItem: MenuItemViewModel) => menuItem.toggleCollapsed();
 
     navCollapsed = (menuItem: MenuItemViewModel) => menuItem.navCollapsed;
 

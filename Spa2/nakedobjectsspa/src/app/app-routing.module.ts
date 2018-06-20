@@ -1,17 +1,18 @@
-﻿import { LogoffComponent } from './logoff/logoff.component';
+﻿
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { RecentComponent } from './recent/recent.component';
-import { ApplicationPropertiesComponent } from './application-properties/application-properties.component';
-import { AttachmentComponent } from './attachment/attachment.component';
-import { MultiLineDialogComponent } from './multi-line-dialog/multi-line-dialog.component';
-import { DynamicObjectComponent } from './dynamic-object/dynamic-object.component';
-import { ViewType } from './route-data';
-import { DynamicListComponent } from './dynamic-list/dynamic-list.component';
-import { DynamicErrorComponent } from './dynamic-error/dynamic-error.component';
-import { CiceroComponent } from './cicero/cicero.component';
-import { AuthService } from './auth.service';
+import { HomeComponent } from '@nakedobjects/lib';
+import { RecentComponent } from '@nakedobjects/lib';
+import { ApplicationPropertiesComponent } from '@nakedobjects/lib';
+import { AttachmentComponent } from '@nakedobjects/lib';
+import { MultiLineDialogComponent } from '@nakedobjects/lib';
+import { DynamicObjectComponent } from '@nakedobjects/lib';
+import { ViewType } from '@nakedobjects/lib';
+import { DynamicListComponent } from '@nakedobjects/lib';
+import { DynamicErrorComponent } from '@nakedobjects/lib';
+import { CiceroComponent } from '@nakedobjects/lib';
+import { AuthService } from '@nakedobjects/lib';
+import { LogoffComponent } from '@nakedobjects/lib';
 
 const routes: Routes = [
     {

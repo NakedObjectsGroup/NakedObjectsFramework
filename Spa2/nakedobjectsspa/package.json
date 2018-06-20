@@ -30,7 +30,9 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "prepackage": "node prepackage.js",
-    "packagr": "ng-packagr -p ./src/package.json"
+    "packagr": "ng-packagr -p ./lib/package.json",
+    "build:app": "cpr dist/nakedobjects-lib src/@nakedobjects/lib && ng build packages && rimraf src/@nakedobjects",
+    "build:lib": "rimraf dist && ng-packagr -p nakedobjects-lib/package.json"
   },
   "private": true,
   "dependencies": {
@@ -65,6 +67,7 @@
     "@types/lodash-es": "4.17.0",
     "@types/node": "~8.9.4",
     "codelyzer": "~4.2.1",
+    "cpr": "^3.0.0",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~1.7.1",
@@ -72,9 +75,12 @@
     "karma-coverage-istanbul-reporter": "~2.0.0",
     "karma-jasmine": "~1.1.1",
     "karma-jasmine-html-reporter": "^0.2.2",
-    "ng-packagr": "2.4.2",
+    "ng-packagr": "3.0.0",
     "protractor": "~5.3.0",
+    "rimraf": "^2.6.1",
     "ts-node": "~5.0.1",
+    "tsickle": "^0.29.0",
+    "tslib": "^1.7.1",
     "tslint": "~5.9.1",
     "typescript": "~2.7.2",
     "replace-in-file": "^3.4.0",

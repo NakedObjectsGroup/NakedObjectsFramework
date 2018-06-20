@@ -77,10 +77,10 @@
     margin-right: 5px;
 }
 .icon.list {
- background: url("../../assets/list.png");
-  background-size: cover;  
-} 
+ background: url("../../../src/assets/list.png");
+  background-size: cover;
+}
 .icon.table {
- background: url("../../assets/table.png");
-  background-size: cover;  
+ background: url("../../../src/assets/table.png");
+  background-size: cover;
 }
