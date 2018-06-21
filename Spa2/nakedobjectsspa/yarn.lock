@@ -175,6 +175,12 @@
   dependencies:
     tslib "^1.9.0"
 
+"@beyerleinf/ngx-dnd@^6.0.0-preview3":
+  version "6.0.0-preview3"
+  resolved "https://registry.yarnpkg.com/@beyerleinf/ngx-dnd/-/ngx-dnd-6.0.0-preview3.tgz#15a0e594a4d0d9fecc80e9fe1e3ba3fea9a1bcca"
+  dependencies:
+    tslib "^1.9.0"
+
 "@ngtools/json-schema@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@ngtools/json-schema/-/json-schema-1.1.0.tgz#c3a0c544d62392acc2813a42c8a0dc6f58f86922"
@@ -4434,10 +4440,6 @@ ng-packagr@^3.0.3:
     stylus "^0.54.5"
     uglify-js "^3.0.7"
     update-notifier "^2.3.0"
-
-ng2-dnd@5.0.2:
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/ng2-dnd/-/ng2-dnd-5.0.2.tgz#862278ac7dedfa14f5783bbf34014d5d73dfefb4"
 
 no-case@^2.2.0:
   version "2.3.2"

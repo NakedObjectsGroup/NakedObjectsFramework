@@ -3,7 +3,7 @@ import { NgModule, ErrorHandler, APP_INITIALIZER, LOCALE_ID } from '@angular/cor
 import { FormsModule } from '@angular/forms';
 import { RoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { DndModule } from 'ng2-dnd';
+import { DndModule } from '@beyerleinf/ngx-dnd';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';

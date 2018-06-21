@@ -44,15 +44,15 @@
     "@angular/platform-browser": "^6.0.3",
     "@angular/platform-browser-dynamic": "^6.0.3",
     "@angular/router": "^6.0.3",
-    "core-js": "^2.5.4",
-    "rxjs": "^6.0.0",
-    "zone.js": "^0.8.26",
+    "@beyerleinf/ngx-dnd": "^6.0.0-preview3",
     "auth0-js": "^9.6.1",
     "auth0-lock": "11.7.2",
+    "core-js": "^2.5.4",
     "lodash": "4.17.10",
     "lodash-es": "4.17.10",
     "moment": "2.22.2",
-    "ng2-dnd": "5.0.2"
+    "rxjs": "^6.0.0",
+    "zone.js": "^0.8.26"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.6.8",
@@ -67,6 +67,7 @@
     "@types/node": "~8.9.4",
     "codelyzer": "~4.2.1",
     "cpr": "^3.0.0",
+    "find-in-files": "^0.5.0",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~1.7.1",
@@ -76,13 +77,12 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "ng-packagr": "^3.0.3",
     "protractor": "~5.3.0",
+    "replace-in-file": "^3.4.0",
     "rimraf": "^2.6.1",
     "ts-node": "~5.0.1",
     "tsickle": "^0.29.0",
     "tslib": "^1.7.1",
     "tslint": "~5.9.1",
-    "typescript": "~2.7.2",
-    "replace-in-file": "^3.4.0",
-    "find-in-files": "^0.5.0"
+    "typescript": "~2.7.2"
   }
 }

@@ -16,7 +16,7 @@
             "lodash",
             "lodash-es",
             "moment",
-            "ng2-dnd"
+            "@beyerleinf/ngx-dnd"
         ],
         "dest": "../dist/nakedobjects-lib"
     },
@@ -58,7 +58,7 @@
         "lodash": "4.17.10",
         "lodash-es": "4.17.10",
         "moment": "2.22.2",
-        "ng2-dnd": "5.0.2"
+        "@beyerleinf/ngx-dnd": "^6.0.0-preview3"
     },
     "peerDependencies": {
         "@angular/animations": "^6.0.3",

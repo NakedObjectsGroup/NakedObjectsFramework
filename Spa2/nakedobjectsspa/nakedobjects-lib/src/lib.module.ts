@@ -27,7 +27,7 @@ import { ViewModelFactoryService } from './view-model-factory.service';
 import { ColorService } from './color.service';
 import { MaskService } from './mask.service';
 import { CollectionComponent } from './collection/collection.component';
-import { DndModule } from 'ng2-dnd';
+import { DndModule } from '@beyerleinf/ngx-dnd';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AttachmentComponent } from './attachment/attachment.component';
 import { MultiLineDialogComponent } from './multi-line-dialog/multi-line-dialog.component';
