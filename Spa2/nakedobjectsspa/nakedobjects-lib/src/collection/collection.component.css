@@ -42,14 +42,14 @@
 }
 
 .icon.summary {
-  background: url("../../../src/assets/summary.png");
+  background: url("assets/summary.png");
    background-size: cover;
 }
 .icon.list {
- background: url("../../../src/assets/list.png");
+ background: url("assets/list.png");
   background-size: cover;
 }
 .icon.table {
- background: url("../../../src/assets/table.png");
+ background: url("assets/table.png");
   background-size: cover;
 }

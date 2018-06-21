@@ -1,17 +1,18 @@
-import { LogoffComponent } from 'nakedobjects.spa';
+
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent } from 'nakedobjects.spa';
-import { RecentComponent } from 'nakedobjects.spa';
-import { ApplicationPropertiesComponent } from 'nakedobjects.spa';
-import { AttachmentComponent } from 'nakedobjects.spa';
-import { MultiLineDialogComponent } from 'nakedobjects.spa';
-import { DynamicObjectComponent } from 'nakedobjects.spa';
-import { ViewType } from 'nakedobjects.spa';
-import { DynamicListComponent } from 'nakedobjects.spa';
-import { DynamicErrorComponent } from 'nakedobjects.spa';
-import { CiceroComponent } from 'nakedobjects.spa';
-import { AuthService } from 'nakedobjects.spa';
+import { HomeComponent } from '@nakedobjects/lib';
+import { RecentComponent } from '@nakedobjects/lib';
+import { ApplicationPropertiesComponent } from '@nakedobjects/lib';
+import { AttachmentComponent } from '@nakedobjects/lib';
+import { MultiLineDialogComponent } from '@nakedobjects/lib';
+import { DynamicObjectComponent } from '@nakedobjects/lib';
+import { ViewType } from '@nakedobjects/lib';
+import { DynamicListComponent } from '@nakedobjects/lib';
+import { DynamicErrorComponent } from '@nakedobjects/lib';
+import { CiceroComponent } from '@nakedobjects/lib';
+import { AuthService } from '@nakedobjects/lib';
+import { LogoffComponent } from '@nakedobjects/lib';
 
 const routes: Routes = [
     {
