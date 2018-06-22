@@ -1,6 +1,6 @@
 {
   "name": "nakedobjects.spa",
-  "version": "10.0.0",
+  "version": "10.0.0-beta.1",
   "description": "Single Page Application client for a Naked Objects application.",
   "license": "Apache-2.0",
   "author": "Richard Pawson <rpawson@nakedobjects.org>",
