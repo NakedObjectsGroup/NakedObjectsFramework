@@ -2,7 +2,7 @@
   "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
   "schematics": {
     "new-project": {
-      "description": "Crerate a new NOF Spa project",
+      "description": "Create a new NOF Spa project",
       "factory": "./nakedobjects-schematics/index#newProject"
     }
   }

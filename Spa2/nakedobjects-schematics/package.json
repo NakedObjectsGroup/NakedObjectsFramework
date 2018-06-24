@@ -1,16 +1,19 @@
 {
-  "name": "nakedobjects-schematics",
-  "version": "0.0.0",
-  "description": "A blank schematics",
+  "name": "@nakedobjects/schematics",
+  "version": "1.0.0-beta.1",
+  "description": "Schematics for Naked Objects",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "npm run build && jasmine src/**/*_spec.js"
   },
   "keywords": [
-    "schematics"
+    "schematics",
+    "objects",
+    "naked",
+    "nakedobjects"
   ],
-  "author": "",
-  "license": "MIT",
+  "license": "Apache-2.0",
+  "author": "Richard Pawson <rpawson@nakedobjects.org>",
   "schematics": "./src/collection.json",
   "dependencies": {
     "@angular-devkit/core": "^0.7.0-beta.1",
