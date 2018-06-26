@@ -14,7 +14,7 @@ export class AppComponent {
     constructor(public readonly auth: AuthService,
                 private readonly urlManager: UrlManagerService,
                 public readonly config: ConfigService) {
-        auth.handleAuthenticationWithHash();
+        auth.handleAuthentication();
      }
 
     isGemini = () =>  this.urlManager.isGemini();

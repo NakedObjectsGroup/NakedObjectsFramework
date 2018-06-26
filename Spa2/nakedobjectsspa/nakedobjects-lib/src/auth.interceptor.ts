@@ -8,7 +8,7 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(public auth: AuthService) { }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    if (this.auth.userIsLoggedIn()) {
+    if (this.auth.isAuthenticated()) {
       request = request.clone({
         setHeaders: {
           Authorization: this.auth.getAuthorizationHeader()

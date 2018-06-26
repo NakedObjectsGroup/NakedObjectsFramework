@@ -9,25 +9,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LibModule } from '@nakedobjects/lib';
 
-// export function authServiceFactory(configService: ConfigService, auth0AuthService: Auth0AuthService, nullAuthService: NullAuthService): any {
-//     if (configService.config.authenticate) {
-//         return auth0AuthService;
-//     }
-//     else {
-//         return nullAuthService;
-//     }
-// }
-
 @NgModule({
     declarations: [
         AppComponent,
     ],
-    // entryComponents: [
-    //     ObjectComponent,
-    //     ListComponent,
-    //     ErrorComponent,
-    //     ObjectNotFoundErrorComponent
-    // ],
     imports: [
         BrowserModule,
         DndModule.forRoot(),

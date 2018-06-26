@@ -46,7 +46,6 @@
     "@angular/router": "^6.0.3",
     "@beyerleinf/ngx-dnd": "^6.0.0-preview3",
     "auth0-js": "^9.6.1",
-    "auth0-lock": "11.7.2",
     "core-js": "^2.5.4",
     "lodash": "4.17.10",
     "lodash-es": "4.17.10",

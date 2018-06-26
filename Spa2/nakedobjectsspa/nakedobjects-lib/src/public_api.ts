@@ -30,6 +30,7 @@ export * from './cicero/cicero.component';
 export * from './header/header.component';
 export * from './login/login.component';
 export * from './logoff/logoff.component';
+export * from './callback/callback.component';
 export * from './date-picker-facade/date-picker-facade.component';
 export * from './auto-complete/auto-complete.component';
 export * from './date-picker/date-picker.component';

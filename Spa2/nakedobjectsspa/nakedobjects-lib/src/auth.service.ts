@@ -4,17 +4,15 @@ import { Router, NavigationStart, CanActivate } from '@angular/router';
 import { UrlManagerService } from './url-manager.service';
 import { LoggerService } from './logger.service';
 import { ConfigService } from './config.service';
-// import Auth0Lock from 'auth0-lock';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import * as auth0 from 'auth0-js';
+
+(window as any).global = window;
 
 @Injectable()
 export class AuthService  implements CanActivate {
-
-    private pendingAuthenticate = false;
-    // private lockInstance: Auth0LockStatic | undefined;
-    private lockInstance = undefined;
 
     getAuthorizationHeader(): string {
         // todo
@@ -29,26 +27,18 @@ export class AuthService  implements CanActivate {
         return this.configService.config.authenticate;
     }
 
-    private get lock() {
-        const clientId = this.configService.config.authClientId;
+    private get auth0() {
+        const clientID = this.configService.config.authClientId;
         const domain = this.configService.config.authDomain;
 
-        if (this.authenticate && clientId && domain && !this.lockInstance) {
-
-            // this.lockInstance = new Auth0Lock(clientId, domain, {
-            //     oidcConformant: true,
-            //     autoclose: true,
-            //     auth: {
-            //       // redirectUrl: 'http://',
-            //       responseType: 'token id_token',
-            //       audience: `https://${domain}/api/v2/`,
-            //       params: {
-            //         scope: 'openid email profile'
-            //       }
-            //     }
-            //   });
-        }
-        return undefined; // this.lockInstance;
+        return new auth0.WebAuth({
+            clientID,
+            domain,
+            responseType: 'token id_token',
+            audience: `https://${domain}/userinfo`,
+            redirectUri: 'http://localhost:49998/gemini/callback',
+            scope: 'openid email profile'
+        });
     }
 
     constructor(
@@ -59,36 +49,22 @@ export class AuthService  implements CanActivate {
     ) {
     }
 
-    public handleAuthenticationWithHash(): void {
-        if (this.authenticate && this.lock) {
-            this
-                .router
-                .events
-                .pipe(
-                  filter(event => event instanceof NavigationStart),
-                  filter((event: NavigationStart) => (/access_token|id_token|error/).test(event.url)))
-                .subscribe(() => {
-                    this.lock!.resumeAuth(window.location.hash, (err, authResult) => {
-                        if (err) {
-                            this.urlManager.setHomeSinglePane();
-                            console.log(err);
-                            alert(`Error: ${err.error}. Check the console for further details.`);
-                            return;
-                        }
-                        if (authResult) {
-                            // some sort of race here with token response navigating us to a page,
-                            // we're making auth OK with token but app.component doesn't yet have router-outlet
-                            // so we see errors. Set the pending Authenticate flag which will make it look like
-                            // we're not authenticated and then clear and route home on next event loop.
-                            this.setSession(authResult);
-                            this.pendingAuthenticate = true;
-                            setTimeout(() => {
-                                this.pendingAuthenticate = false;
-                                this.urlManager.setHomeSinglePane();
-                            });
-                        }
-                    });
-                });
+    public login(): void {
+        this.auth0.authorize();
+    }
+
+    public handleAuthentication(): void {
+        if (this.authenticate) {
+            this.auth0.parseHash((err, authResult) => {
+                if (authResult && authResult.accessToken && authResult.idToken) {
+                  this.setSession(authResult);
+                  this.urlManager.setHomeSinglePane();
+                } else if (err) {
+                    this.urlManager.setHomeSinglePane();
+                    console.log(err);
+                    alert(`Error: ${err.error}. Check the console for further details.`);
+                }
+              });
         }
     }
 
@@ -99,13 +75,6 @@ export class AuthService  implements CanActivate {
             localStorage.setItem('access_token', authResult.accessToken);
             localStorage.setItem('id_token', authResult.idToken);
             localStorage.setItem('expires_at', expiresAt);
-        }
-    }
-
-    login() {
-        // Call the show method to display the widget.
-        if (this.lock) {
-            this.lock.show();
         }
     }
 
@@ -125,19 +94,18 @@ export class AuthService  implements CanActivate {
 
     logout() {
         if (this.authenticate) {
-            // Remove token from localStorage
-            // Remove tokens and expiry time from localStorage
+             // Remove tokens and expiry time from localStorage
             localStorage.removeItem('access_token');
             localStorage.removeItem('id_token');
             localStorage.removeItem('expires_at');
             // Go back to the home route
-            this.router.navigate(['/']);
+            this.urlManager.setHomeSinglePane();
         }
     }
 
     canActivate() {
         if (this.authenticate) {
-            return !this.pendingAuthenticate && this.authenticated();
+            return this.authenticated();
         }
         return true;
     }
@@ -149,39 +117,10 @@ export class AuthService  implements CanActivate {
         return true;
     }
 
-    userIsLoggedIn() {
-        if (this.authenticate) {
-            return this.authenticated();
-        }
-        return false;
+    public isAuthenticated(): boolean {
+        // Check whether the current time is past the
+        // access token's expiry time
+        const expiresAt = JSON.parse(localStorage.getItem('expires_at') || '{}');
+        return new Date().getTime() < expiresAt;
     }
 }
-
-// @Injectable()
-// export class NullAuthService extends AuthService implements CanActivate {
-//     getAuthorizationHeader(): string {
-//         throw new Error("Method not implemented.");
-//     }
-
-//     login() { }
-
-//     authenticated() {
-//         return true;
-//     }
-
-//     logout() { }
-
-//     canActivate() {
-//         return true;
-//     }
-
-//     canDeactivate(component: LogoffComponent) {
-//         return true;
-//     }
-
-//     userIsLoggedIn() {
-//         return false;
-//     }
-
-//     handleAuthenticationWithHash() { }
-// }

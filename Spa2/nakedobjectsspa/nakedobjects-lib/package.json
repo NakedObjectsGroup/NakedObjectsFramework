@@ -11,8 +11,6 @@
         },
         "whitelistedNonPeerDependencies": [
             "auth0-js",
-            "auth0-lock",
-            "gently-copy",
             "lodash",
             "lodash-es",
             "moment",
@@ -54,7 +52,6 @@
     },
     "dependencies": {
         "auth0-js": "^9.6.1",
-        "auth0-lock": "11.7.2",
         "lodash": "4.17.10",
         "lodash-es": "4.17.10",
         "moment": "2.22.2",

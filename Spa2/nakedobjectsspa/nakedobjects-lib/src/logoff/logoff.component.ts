@@ -27,7 +27,7 @@ export class LogoffComponent implements OnInit {
     isActive = true;
 
     userIsLoggedIn() {
-        return this.authService.userIsLoggedIn();
+        return this.authService.isAuthenticated();
     }
 
     cancel() {

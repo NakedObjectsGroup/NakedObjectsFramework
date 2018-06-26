@@ -13,6 +13,7 @@ import { DynamicErrorComponent } from '@nakedobjects/lib';
 import { CiceroComponent } from '@nakedobjects/lib';
 import { AuthService } from '@nakedobjects/lib';
 import { LogoffComponent } from '@nakedobjects/lib';
+import { CallbackComponent } from '@nakedobjects/lib';
 
 const routes: Routes = [
     {
@@ -110,6 +111,10 @@ const routes: Routes = [
         canActivate: [AuthService],
         canDeactivate: [AuthService],
         data: { pane: 1, paneType: "single" }
+    },
+    {
+        path: 'gemini/callback',
+        component: CallbackComponent
     },
     {
         path: 'cicero/home',

@@ -53,6 +53,7 @@ import { HeaderComponent } from './header/header.component';
 import { AuthService } from './auth.service';
 import { LoginComponent } from './login/login.component';
 import { LogoffComponent } from './logoff/logoff.component';
+import { CallbackComponent } from './callback/callback.component';
 import { CiceroContextService } from './cicero-context.service';
 import { DatePickerFacadeComponent } from './date-picker-facade/date-picker-facade.component';
 import { AutoCompleteComponent } from './auto-complete/auto-complete.component';
@@ -63,15 +64,6 @@ import { ObjectNotFoundErrorComponent } from './object-not-found-error/object-no
 import { HttpClientModule } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './auth.interceptor';
-
-// export function authServiceFactory(configService: ConfigService, auth0AuthService: Auth0AuthService, nullAuthService: NullAuthService): any {
-//     if (configService.config.authenticate) {
-//         return auth0AuthService;
-//     }
-//     else {
-//         return nullAuthService;
-//     }
-// }
 
 @NgModule({
     declarations: [
@@ -114,6 +106,7 @@ import { AuthInterceptor } from './auth.interceptor';
         TimePickerComponent,
         TimePickerFacadeComponent,
         ObjectNotFoundErrorComponent,
+        CallbackComponent,
     ],
     entryComponents: [
         ObjectComponent,
@@ -169,6 +162,7 @@ import { AuthInterceptor } from './auth.interceptor';
         TimePickerComponent,
         TimePickerFacadeComponent,
         ObjectNotFoundErrorComponent,
+        CallbackComponent,
     ],
 })
 export class LibModule {

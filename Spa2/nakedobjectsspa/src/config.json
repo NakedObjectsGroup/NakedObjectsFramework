@@ -1,7 +1,7 @@
 ﻿{
     "authenticate": false,
-    "authClientId" : "rPQAuoz7OKjb9badPe9gmVUhpaa0x9FT",
-    "authDomain" : "nakedobjects.eu.auth0.com", 
+    "authClientId" : "bB8ln8mh8hVb5kxnpTowceMb0t25Owl9",
+    "authDomain" : "nakedobjects.eu.auth0.com",
     "appPath": "https://nakedobjectsrodemo.azurewebsites.net",
     "logoffUrl": "",
     "urlShortCuts": [ "https://nakedobjectsrodemo.azurewebsites.net", "AdventureWorksModel" ],
