@@ -15,10 +15,6 @@ import * as auth0 from 'auth0-js';
 export class AuthService  implements CanActivate {
 
     getAuthorizationHeader(): string {
-        // todo
-        // if (this.authenticated()){
-        //     return new HttpHeaders({"Bearer": localStorage.getItem('id_token')})
-        // }
         const token = localStorage.getItem('id_token') || "";
         return `Bearer ${token}`;
     }
@@ -30,13 +26,15 @@ export class AuthService  implements CanActivate {
     private get auth0() {
         const clientID = this.configService.config.authClientId;
         const domain = this.configService.config.authDomain;
+        const url = (window as any).location.origin;
+        const redirectUrl = `${url}/gemini/callback`;
 
         return new auth0.WebAuth({
             clientID,
             domain,
             responseType: 'token id_token',
             audience: `https://${domain}/userinfo`,
-            redirectUri: 'http://localhost:49998/gemini/callback',
+            redirectUri: redirectUrl,
             scope: 'openid email profile'
         });
     }
@@ -78,20 +76,6 @@ export class AuthService  implements CanActivate {
         }
     }
 
-    authenticated() {
-        if (this.authenticate) {
-            // Check whether the current time is past the
-            // access token's expiry time
-            const expiresAtItem = localStorage.getItem('expires_at');
-            if (expiresAtItem) {
-                const expiresAt = JSON.parse(expiresAtItem);
-                return new Date().getTime() < expiresAt;
-            }
-            return false;
-        }
-        return true;
-    }
-
     logout() {
         if (this.authenticate) {
              // Remove tokens and expiry time from localStorage
@@ -105,7 +89,7 @@ export class AuthService  implements CanActivate {
 
     canActivate() {
         if (this.authenticate) {
-            return this.authenticated();
+            return this.isAuthenticated();
         }
         return true;
     }

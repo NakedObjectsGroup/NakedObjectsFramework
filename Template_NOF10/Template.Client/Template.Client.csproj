@@ -107,7 +107,8 @@
     <Content Include="favicon.ico" />
     <Content Include="iconFont.507ceb31df41f6b52dc8.svg" />
     <Content Include="index.html" />
-    <Content Include="main.6fdd37921ccd2f58e4c5.js" />
+    <Content Include="list.697c8b857c1eba797d5e.png" />
+    <Content Include="main.ef8270d8464fb0232380.js" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -116,14 +117,14 @@
     <Content Include="polyfills.2f4a59095805af02bd79.js" />
     <Content Include="runtime.a66f828dca56eeb90e02.js" />
     <Content Include="styles.ba6414ff6893d7e4880e.css" />
+    <Content Include="summary.f67923f950a28f9c5a12.png" />
+    <Content Include="table.48b72d4d56f021fd164e.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="web.config" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="iconFont.61e31f00a5b39f5a3786.eot" />
     <Content Include="iconFont.2f87c9f2aedf8f582535.woff" />
     <Content Include="iconFont.0a1778b9b8be9e01db68.ttf" />

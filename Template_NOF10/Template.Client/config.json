@@ -1,7 +1,7 @@
 {
-    "authenticate": false,
-    "authClientId": "5xMMFaiZ8lnBTRZexsDcooZAfbP1IJB8",
-    "authDomain": "nakedobjectsdemo.eu.auth0.com",
+    "authenticate": true,
+    "authClientId": "bB8ln8mh8hVb5kxnpTowceMb0t25Owl9",
+    "authDomain": "nakedobjects.eu.auth0.com",
     "applicationName": "Student Records",
     "appPath": "http://localhost:5000/",
     "colors": {
