@@ -3,6 +3,7 @@
   "version": "1.0.0-beta.1",
   "description": "Schematics for Naked Objects",
   "scripts": {
+    "prebuild": "node prebuild.js",
     "build": "tsc -p tsconfig.json",
     "test": "npm run build && jasmine src/**/*_spec.js"
   },
@@ -21,6 +22,7 @@
     "@types/jasmine": "^2.6.0",
     "@types/node": "^8.0.31",
     "jasmine": "^2.8.0",
+    "mv": "2.1.1",
     "typescript": "^2.5.2"
   }
 }
