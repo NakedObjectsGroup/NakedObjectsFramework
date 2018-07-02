@@ -1,8 +1,16 @@
+var cpx = require('cpx');
 var mv = require('mv');
 
-mv("../nakedobjectsspa/src/app/app.component.ts", "./src/nakedobjects-schematics/files/code/component", { mkdirp: false }, function (err) { if (err) console.error('Error occurred:', err); });
-mv("../nakedobjectsspa/src/app/app.component.css", "./src/nakedobjects-schematics/files/code/component_css", { mkdirp: false }, function (err) { if (err) console.error('Error occurred:', err); });
-mv("../nakedobjectsspa/src/app/app.component.html", "./src/nakedobjects-schematics/files/code/component_template", { mkdirp: false }, function (err) { if (err) console.error('Error occurred:', err); });
-mv("../nakedobjectsspa/src/app/app.module.ts", "./src/nakedobjects-schematics/files/code/module", { mkdirp: false }, function (err) { if (err) console.error('Error occurred:', err); });
-mv("../nakedobjectsspa/src/app/app-routing.module.ts", "./src/nakedobjects-schematics/files/code/routing", { mkdirp: false }, function (err) { if (err) console.error('Error occurred:', err); });
+var copyCode = "../nakedobjectsspa/src/app/*.{ts,css,html}";
+var copyAssets = "../nakedobjectsspa/src/app/*.{ts,css,html}";
+var tempCodeDir = "./temp/code";
+var codeDir = "./src/nakedobjects-schematics/files/code";
+
+cpx.copySync(copyCode, tempCodeDir);
+
+mv(`${tempCodeDir}/app-routing.module.ts`, `${codeDir}/routing`, { mkdirp: false }, function (err) { if (err) console.error('Error occurred:', err); });
+mv(`${tempCodeDir}/app.component.css`, `${codeDir}/component_css`, { mkdirp: false }, function (err) { if (err) console.error('Error occurred:', err); });
+mv(`${tempCodeDir}/app.component.html`, `${codeDir}/component_template`, { mkdirp: false }, function (err) { if (err) console.error('Error occurred:', err); });
+mv(`${tempCodeDir}/app.component.ts`, `${codeDir}/component`, { mkdirp: false }, function (err) { if (err) console.error('Error occurred:', err); });
+mv(`${tempCodeDir}/app.module.ts`, `${codeDir}/module`, { mkdirp: false }, function (err) { if (err) console.error('Error occurred:', err); });
 

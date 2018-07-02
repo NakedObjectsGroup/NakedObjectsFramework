@@ -22,6 +22,7 @@
     "@types/jasmine": "^2.6.0",
     "@types/node": "^8.0.31",
     "jasmine": "^2.8.0",
+    "cpx": "1.5.0",
     "mv": "2.1.1",
     "typescript": "^2.5.2"
   }
