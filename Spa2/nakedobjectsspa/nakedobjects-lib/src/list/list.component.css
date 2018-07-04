@@ -56,7 +56,7 @@
 }
 
 .menu:disabled, .ok:disabled {
-    color: grey;
+    color: var(--disabled-color);
 }
 
 .summary {

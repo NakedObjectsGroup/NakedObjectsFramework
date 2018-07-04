@@ -72,11 +72,11 @@ viewTitle {
 }
 
 .menu:disabled {
-    color: var(--disabled-text-color);
+    color: var(--disabled-color);
 }
 
 .title:hover, .title:focus {
-    outline-color: var(contrast-outline-color);
+    outline-color: var(--contrast-outline-color);
     outline-style: solid;
     outline-width: 1px;
 }

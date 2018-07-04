@@ -25,12 +25,12 @@
 }
 
 button   {
-    color: white;
-    background-color: black;
+    color: var(--default-text-color);
+    background-color: var(--default-background-color);
     border: none;
     outline-style: solid;
     outline-width: 1px;
-    outline-color: white;
+    outline-color: var(--default-outline-color);
     margin-right: 20px;
     display: block;
     float: left;
