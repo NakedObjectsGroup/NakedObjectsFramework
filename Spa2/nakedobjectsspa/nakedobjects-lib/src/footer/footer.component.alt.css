@@ -3,31 +3,31 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: white;
+    background-color: var(--default-background-color);
 }
 
 .icon {
-    color: #11648a;
+    color: var(--default-outline-color);
     font-size: 36pt;
     padding: 5px;
     margin-left: 10px;
 }
 
-    .icon.disabled {
-        display: none;
-    }
+.icon.disabled {
+    display: none;
+}
 
-    .icon:hover, .icon:focus {
-        outline-style: solid;
-        outline-width: 1px;
-        outline-color: #11648a;
-    }
+.icon:hover, .icon:focus {
+    outline-style: solid;
+    outline-width: 1px;
+    outline-color: var(--default-outline-color);
+}
 
-    .icon:active {
-        outline-style: solid;
-        outline-width: 2px;
-        outline-color: #11648a;
-    }
+.icon:active {
+    outline-style: solid;
+    outline-width: 2px;
+    outline-color: var(--default-outline-color);
+}
 
 .icon, .currentcopy {
     float: left;
@@ -39,10 +39,11 @@
 }
 
 /*Warnings & Messages*/
+
 .messages, .warnings, .loading {
-    background-color: white;
+    background-color: var(--default-background-color);
     font-size: 11pt;
-    color: black;
+    color: var(--default-text-color);
 }
 
 .warnings {
@@ -50,6 +51,7 @@
 }
 
 /*Icons */
+
 .icon {
     font-family: "iconFont";
     font-weight: normal;
@@ -106,7 +108,8 @@
 }
 
 /*Hide/show Cicero icon*/
-    .speech {
-        /*display: none;*/
-        display:    inline-block;
-    }
+
+.speech {
+    /*display: none;*/
+    display: inline-block;
+}

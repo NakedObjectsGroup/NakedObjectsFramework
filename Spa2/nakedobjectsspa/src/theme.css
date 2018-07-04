@@ -1,0 +1,66 @@
+:root {
+    --default-background-color: black;
+    --menu-background-color: inherit;
+    --default-text-color: white;
+    --contrast-text-color: white;
+    --warning-text-color: red;
+    --default-outline-color: white;
+    --contrast-outline-color: white;
+    --disabled-color: grey;
+    /*0. Black */
+    --link-color0: #404040;
+    --object-color0: #000000;
+    --text-color0: var(--contrast-text-color);
+    /*1. Blue*/
+    --link-color1: #1b4787;
+    --object-color1: #2b5797;
+    --text-color1: var(--contrast-text-color);
+    /*2. Green*/
+    --link-color2: #0e6135;
+    --object-color2: #1e7145;
+    --text-color2: var(--contrast-text-color);
+    /*3. Red*/
+    --link-color3: #ce0101;
+    --object-color3: #ee2121;
+    --text-color3: var(--contrast-text-color);
+    /*4. Yellow*/
+    --link-color4: #efb40d;
+    --object-color4: #ffc41d;
+    --text-color4: var(--contrast-text-color);
+    /*5. Purple*/
+    --link-color5: #502caa;
+    --object-color5: #603cba;
+    --text-color5: var(--contrast-text-color);
+    /*6. Orange*/
+    --link-color6: #ca431c;
+    --object-color6: #da532c;
+    --text-color6: var(--contrast-text-color);
+    /*7. Mauve*/
+    --link-color7: #8f0097;
+    --object-color7: #9f10a7;
+    --text-color7: var(--contrast-text-color);
+    /*8. Teal*/
+    --link-color8: #009b99;
+    --object-color8: #10aba9;
+    --text-color8: var(--contrast-text-color);
+    /*9. Cherry*/
+    --link-color9: #a90d37;
+    --object-color9: #b91d47;
+    --text-color9: var(--contrast-text-color);
+    /*10. Grey*/
+    --link-color10: #424242;
+    --object-color10: #525252;
+    --text-color10: var(--contrast-text-color);
+    /*11. Yellow ochre*/
+    --link-color11: #d3920a;
+    --object-color11: #e3a21a;
+    --text-color11: var(--contrast-text-color);
+    /*12Fuschia*/
+    --link-color12: #df0077;
+    --object-color12: #ff2097;
+    --text-color12: var(--contrast-text-color);
+    --header-background-image: none;
+    --summary-icon: url("assets/summary.png");
+    --list-icon: url("assets/list.png");
+    --table-icon: url("assets/table.png");
+}

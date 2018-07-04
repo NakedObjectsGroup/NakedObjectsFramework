@@ -9,7 +9,7 @@
 .header {
     display: block;
     overflow: hidden;
-    font-size: 24pt; 
+    font-size: 24pt;
     font-weight: 200;
     background-image: linear-gradient(to bottom, #11648a, #187ba9 100%);
     color: white;
@@ -20,7 +20,7 @@
 }
 
 table {
-    font-size: 11pt; 
+    font-size: 11pt;
     font-weight: 200;
 }
 

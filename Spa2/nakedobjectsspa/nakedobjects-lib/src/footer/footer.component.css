@@ -3,32 +3,32 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: black;
+    background-color: var(--default-background-color);
 }
 
 .icon {
     display: block;
-    color: white;
+    color: var(--default-outline-color);
     font-size: 36pt;
     padding: 5px;
     margin-left: 10px;
 }
 
-    .icon.disabled {
-        display: none;
-    }
+.icon.disabled {
+    display: none;
+}
 
-    .icon:hover, .icon:focus {
-        outline-style: solid;
-        outline-width: 1px;
-        outline-color: white;
-    }
+.icon:hover, .icon:focus {
+    outline-style: solid;
+    outline-width: 1px;
+    outline-color: var(--default-outline-color);
+}
 
-    .icon:active {
-        outline-style: solid;
-        outline-width: 2px;
-        outline-color: white;
-    }
+.icon:active {
+    outline-style: solid;
+    outline-width: 2px;
+    outline-color: var(--default-outline-color);
+}
 
 .icon, .currentcopy {
     float: left;
@@ -40,17 +40,19 @@
 }
 
 /*Warnings & Messages*/
+
 .messages, .warnings, .loading {
-    background-color: black;
+    background-color: var(--default-background-color);
     font-size: 11pt;
-    color: white;
+    color: var(--default-text-color);
 }
 
 .warnings {
-    color: red;
+    color: var(--warning-text-color);
 }
 
 /*Icons */
+
 .icon {
     font-family: "iconFont";
     font-weight: normal;
@@ -107,7 +109,8 @@
 }
 
 /*Hide/show Cicero icon*/
-    .speech {
-        display: none;
-        /*display:    inline-block;*/
-    }
+
+.speech {
+    display: none;
+    /*display:    inline-block;*/
+}

@@ -1,6 +1,6 @@
-
 :host {
-    overflow: hidden; /*To cope with long prop names*/
+    overflow: hidden;
+    /*To cope with long prop names*/
     display: block;
 }
 
@@ -13,6 +13,7 @@
     float: left;
     width: 150px;
     padding-right: 5px;
+    font-weight: bolder; /*added to match alt*/
 }
 
 .reference, .value {

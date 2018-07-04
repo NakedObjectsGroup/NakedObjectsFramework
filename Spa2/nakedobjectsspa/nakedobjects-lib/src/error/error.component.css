@@ -1,4 +1,3 @@
-
 :host {
     display: block;
     padding-left: 20px;
@@ -6,17 +5,17 @@
     overflow-y: auto;
 }
 
-.title, .message, .code, .description, .stacktrace{
+.title, .message, .code, .description, .stacktrace {
     display: block;
     margin-bottom: 20px;
 }
 
 .title, .message {
-    font-size: 24pt;
-    color: red;
+    font-size: 16pt;
+    color: var(--warning-text-color);
 }
 
- .code, .description, .stacktrace {
+.code, .description, .stacktrace {
     font-size: 12pt;
-    color: white;
+    color: var(--default-text-color);
 }

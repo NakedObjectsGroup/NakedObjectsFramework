@@ -3,8 +3,8 @@
     padding-left: 20px;
     height: 100%;
     overflow-y: auto;
-    color: white;
-    font-size: 11pt; 
+    color: var(--default-text-color);
+    font-size: 11pt;
     font-weight: 100;
 }
 
@@ -12,6 +12,8 @@
     display: block;
     margin-bottom: 20px;
     overflow: hidden;
+    color: var(--contrast-text-color);
+    background-image: var(--header-background-image);
 }
 
 .title {
@@ -35,5 +37,5 @@
 }
 
 p {
-    color: white;
+    color: var(--default-text-color);
 }

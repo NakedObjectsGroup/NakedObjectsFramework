@@ -1,6 +1,7 @@
-
-input {  /*To override user agent style sheet defaults*/
-    white-space: normal; /*Needed to force long names to wrap*/
+input {
+    /*To override user agent style sheet defaults*/
+    white-space: normal;
+    /*Needed to force long names to wrap*/
     text-align: left;
     cursor: pointer;
     background-color: transparent;
@@ -12,13 +13,13 @@ input {  /*To override user agent style sheet defaults*/
     padding: 5px;
 }
 
-input:focus, input:hover   {
-    outline-color: white;
+input:focus, input:hover {
+    outline-color: var(--contrast-outline-color);
     outline-style: solid;
     outline-width: 1px;
 }
 
 input:disabled {
-    color: grey;
+    color: var(--disabled-color);
     outline: none;
 }

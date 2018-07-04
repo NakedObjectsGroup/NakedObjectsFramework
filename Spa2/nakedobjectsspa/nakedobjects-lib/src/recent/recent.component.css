@@ -1,6 +1,6 @@
 :host {
     display: block;
-    color: white;
+    /* color: white; */
     margin-left: 20px;
     padding-left: 20px;
     height: 100%;
@@ -9,9 +9,12 @@
 
 .header {
     display: block;
+    margin-bottom: 20px;
     overflow: hidden;
-    font-size: 24pt; 
+    color: var(--contrast-text-color);
+    font-size: 24pt;
     font-weight: 200;
+    background-image: var(--header-background-image);
 }
 
 .collection {
@@ -19,7 +22,7 @@
 }
 
 table {
-    font-size: 11pt; 
+    font-size: 11pt;
     font-weight: 200;
 }
 

@@ -11,13 +11,15 @@
     width: 450px;
     font-size: 12pt;
     margin-bottom: 10px;
-    overflow: hidden; /*To make div same depth as its floating children*/
+    overflow: hidden;
+    /*To make div same depth as its floating children*/
 }
 
 .name, .details {
     display: block;
     float: left;
-    padding-left: 0px; /*Because it is a heading, so outdented*/
+    padding-left: 0px;
+    /*Because it is a heading, so outdented*/
     padding-right: 5px;
 }
 
@@ -38,18 +40,19 @@
     padding-left: 5px;
     padding-top: 5px;
     margin-right: 5px;
-
 }
 
 .icon.summary {
-  background: url("assets/summary.png");
-   background-size: cover;
+    background: var(--summary-icon);
+    background-size: cover;
 }
+
 .icon.list {
- background: url("assets/list.png");
-  background-size: cover;
+    background: var(--list-icon);
+    background-size: cover;
 }
+
 .icon.table {
- background: url("assets/table.png");
-  background-size: cover;
+    background: var(--table-icon);
+    background-size: cover;
 }

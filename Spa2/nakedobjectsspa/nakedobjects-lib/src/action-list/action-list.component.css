@@ -2,21 +2,27 @@
     float: left;
     margin-bottom: 20px;
     display: block;
+    /* margin-left: 20px;
+    margin-right: 10px;
+    padding-top: 10px; */
+    background-color: var(--menu-background-color);
 }
 
-
-nof-action, .submenu  {
+nof-action, .submenu {
     display: block;
     cursor: pointer;
     outline: none;
+    /* margin-left: 5px; */
     margin-right: 20px;
     width: 150px;
     font-size: 11pt;
     font-weight: bolder;
 }
+
 .submenu {
     padding: 5px;
 }
+
 .collapsed {
     display: none;
 }
@@ -31,6 +37,7 @@ nof-action, .submenu  {
 }
 
 /*Icons*/
+
 .icon-expand:before {
     content: "\e099";
 }
@@ -38,12 +45,13 @@ nof-action, .submenu  {
 .icon-collapse:before {
     content: "\e098";
 }
+
 .icon-expand, .icon-collapse {
-        font-size: 8pt;
+    font-size: 8pt;
 }
 
 .icon-expand:hover, .icon-collapse:hover {
-    outline-color: white;
+    outline-color: var(--contrast-outline-color);
     outline-style: solid;
     outline-width: 1px;
 }

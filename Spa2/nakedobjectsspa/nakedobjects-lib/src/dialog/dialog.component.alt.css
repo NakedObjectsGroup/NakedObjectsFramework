@@ -2,14 +2,15 @@
     display: block;
     width: 420px;
     margin-bottom: 20px;
-    overflow: hidden; /*Needed to force the floated divs inside this to expand the containing div in height*/
+    overflow: hidden;
+    /*Needed to force the floated divs inside this to expand the containing div in height*/
     background-color: white;
     font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
     color: black;
-    font-size: 11pt; 
+    font-size: 11pt;
     font-weight: 400;
     padding-left: 5px;
-    padding-right: 5px; 
+    padding-right: 5px;
 }
 
 .dialog {
@@ -32,23 +33,22 @@ form {
 
 .dialog select {
     margin-bottom: 10px;
-    border-style:solid;
+    border-style: solid;
     border-color: grey;
     border-width: 1px;
 }
-
 
 input[type='text'] {
-    padding-right: 10px; /*To avoid text running over the 'x' (clear button)*/
+    padding-right: 10px;
+    /*To avoid text running over the 'x' (clear button)*/
     padding-left: 4px;
-        margin-bottom: 10px;
-    border-style:solid;
+    margin-bottom: 10px;
+    border-style: solid;
     border-color: grey;
     border-width: 1px;
 }
-input[type=button],
-input[type=reset],
-input[type=submit] {
+
+input[type=button], input[type=reset], input[type=submit] {
     margin-left: 5px;
     margin-top: 10px;
     margin-right: 5px;
@@ -68,10 +68,7 @@ input[type=submit] {
     outline-width: 1px;
 }
 
-input[type='button']:focus,
-input[type='button']:hover,
-input[type='submit']:focus,
-input[type='submit']:hover {
+input[type='button']:focus, input[type='button']:hover, input[type='submit']:focus, input[type='submit']:hover {
     outline: solid;
     outline-width: 1px;
     outline-color: black;
@@ -79,7 +76,7 @@ input[type='submit']:hover {
 
 .title {
     display: block;
-    font-size: 12pt;        
+    font-size: 12pt;
     margin-bottom: 10px;
     color: white;
     background-image: linear-gradient(to bottom, #11648a, #187ba9 100%);
@@ -88,15 +85,17 @@ input[type='submit']:hover {
 }
 
 .icon-cancel {
-        color: black;
-        float: right;
-    }
-
-.parameter .name {
-    width: 145px; /*To align input box with reference fields*/
+    color: black;
+    float: right;
 }
 
- .parameter {
-    overflow: hidden; /*To cope with long param/prop names*/
+.parameter .name {
+    width: 145px;
+    /*To align input box with reference fields*/
+}
+
+.parameter {
+    overflow: hidden;
+    /*To cope with long param/prop names*/
     display: block;
 }

@@ -24,6 +24,7 @@
               "src/config.json"
             ],
             "styles": [
+              "src/theme.css",
               "src/styles.css"
             ],
             "scripts": []

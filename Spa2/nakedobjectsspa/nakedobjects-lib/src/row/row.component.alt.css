@@ -13,7 +13,7 @@ td {
 }
 
 td.checkbox {
-    background-color: white; /*Because check-box only ever displayed on default background*/
+    background-color: var(--default-background-color); /* Because check-box only ever displayed on default background*/
 }
 
 .number {
@@ -22,7 +22,7 @@ td.checkbox {
 
 .reference {  /*i.e. in  List, not Table mode */
     cursor: pointer;
-    font-size: 11pt; 
+    font-size: 11pt;
     padding-left: 5px;
     padding-right: 5px;
     margin: 1px;

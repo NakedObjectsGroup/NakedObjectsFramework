@@ -1,19 +1,20 @@
 :host {
     display: block;
     margin-left: 20px;
-    color: white;
+    color: var(--default-text-color);
 }
 
 .header {
     display: block;
-    font-size: 24pt; 
-    font-weight: 200;
-    margin-left: 5px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    color: var(--contrast-text-color);
+    background-image: var(--header-background-image);
 }
 
 .properties {
     display: block;
-    font-size: 11pt; 
+    font-size: 11pt;
     font-weight: 100;
     width: 410px;
     padding: 5px;

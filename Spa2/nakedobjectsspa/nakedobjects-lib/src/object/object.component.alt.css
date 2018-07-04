@@ -2,7 +2,7 @@
     overflow-y: auto;
     font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
     color: black;
-    font-size: 11pt; 
+    font-size: 11pt;
     font-weight: 100;
     display: block;
     height: 100%;
@@ -19,12 +19,13 @@
     display: block;
     margin-bottom: 20px;
     overflow: hidden;
-    background-image: linear-gradient(to bottom, #11648a, #187ba9 100%);
-    color: white;
+    color: var(--contrast-text-color);
+    background-image: var(--header-background-image);
 }
 
 viewTitle {
-    display: inline-block; /*Otherwise focus outline takes full width*/
+    display: inline-block;
+    /*Otherwise focus outline takes full width*/
 }
 
 .title, .type {
@@ -32,7 +33,8 @@ viewTitle {
     font-weight: 200;
     font-size: 24pt;
     line-height: 38pt;
-    margin-left: 1px; /*Make room for focus outline*/
+    margin-left: 1px;
+    /*Make room for focus outline*/
     padding-left: 5px;
     padding-right: 5px;
     margin-right: 20px;
@@ -43,37 +45,44 @@ viewTitle {
 .type {
     float: left;
     margin-right: 20px;
-    display: none; /*Change this to display type (e.g. for accessibility)*/
+    display: none;
+    /*Change this to display type (e.g. for accessibility)*/
 }
 
 /* Menus */
+
 .menus {
     display: block;
 }
+
 .menu, .header .action {
     display: block;
     float: left;
     padding: 5px;
     margin-top: 0px;
-    margin-left: 1px; /*Else hover outline is hidden on the left-most menu */
+    margin-left: 1px;
+    /*Else hover outline is hidden on the left-most menu */
     margin-right: 10px;
-    margin-bottom: 5px; /*Else hover outline is hidden on the bottom */
-    font:inherit;
+    margin-bottom: 5px;
+    /*Else hover outline is hidden on the bottom */
+    font: inherit;
     font-size: 16pt;
     color: black;
     background-color: transparent;
 }
+
 .menu:disabled {
-        color: grey;
+    color: grey;
 }
 
-.title:hover, .title:focus   {
-    outline-color:white;
+.title:hover, .title:focus {
+    outline-color: white;
     outline-style: solid;
     outline-width: 1px;
 }
 
 /*Icons*/
+
 .icon-expand:before {
     content: "\e099";
 }
@@ -82,11 +91,8 @@ viewTitle {
     content: "\e098";
 }
 
-
-.actions, .main-column{
+.actions, .main-column {
     float: left;
     margin-bottom: 20px;
     margin-right: 20px;
 }
-
-
