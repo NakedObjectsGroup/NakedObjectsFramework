@@ -1,7 +1,7 @@
 :host {
     overflow-y: auto;
     font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
-    color: white;
+    color: var(--default-text-color);
     font-size: 11pt;
     font-weight: 100;
     display: block;
@@ -67,16 +67,16 @@ viewTitle {
     /*Else hover outline is hidden on the bottom */
     font: inherit;
     font-size: 16pt;
-    color: white;
+    color: var(--default-text-color);
     background-color: transparent;
 }
 
 .menu:disabled {
-    color: grey;
+    color: var(--disabled-text-color);
 }
 
 .title:hover, .title:focus {
-    outline-color: white;
+    outline-color: var(contrast-outline-color);
     outline-style: solid;
     outline-width: 1px;
 }

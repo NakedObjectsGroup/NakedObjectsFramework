@@ -1,5 +1,5 @@
 .list {
-    color: white;
+    color: var(--contrast-text-color);
     padding-left: 20px;
     height: 100%;
     overflow-y: auto;
