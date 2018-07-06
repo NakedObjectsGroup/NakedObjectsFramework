@@ -9,6 +9,12 @@
     --default-outline-color: var(--theme-accent-color);
     --contrast-outline-color: white;
     --disabled-color: grey;
+
+    --dialog-contrast-color: white;
+    --dialog-contrast-text-color: white;
+    --dialog-color: white;
+    --dialog-text-color:black;
+
     --link-color0: var(--theme-accent-color);
     --object-color0: var(--default-background-color);
     --link-text-color0: var(--contrast-text-color);

@@ -4,18 +4,46 @@
     margin-bottom: 20px;
     overflow: hidden;
     /*Needed to force the floated divs inside this to expand the containing div in height*/
-    background-color: white;
+    background-color: var(--dialog-color);
     font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
-    color: black;
+    color: var(--dialog-text-color);
     font-size: 11pt;
     font-weight: 400;
-    padding-left: 5px;
-    padding-right: 5px;
+    /* padding-left: 5px;
+    padding-right: 5px; */
 }
 
 .dialog {
     display: block;
+    /*added*/
+    overflow-y: auto;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
 }
+
+/*added*/
+form {
+    padding: 5px;
+}
+
+.dialog select {
+    margin-bottom: 10px;
+    border-style: solid;
+    border-color: grey;
+    border-width: 1px;
+}
+
+input[type='text'] {
+    padding-right: 10px;
+    /*To avoid text running over the 'x' (clear button)*/
+    padding-left: 4px;
+    margin-bottom: 10px;
+    border-style: solid;
+    border-color: grey;
+    border-width: 1px;
+}
+/*end*/
 
 input[type=button], input[type=reset], input[type=submit] {
     margin-left: 5px;
@@ -30,8 +58,8 @@ input[type=button], input[type=reset], input[type=submit] {
     cursor: pointer;
     width: auto;
     *zoom: 1;
-    color: black;
-    background-color: white;
+    /* color: black;
+    background-color: white; */
     float: right;
     outline: solid;
     outline-color: lightgrey;
@@ -44,19 +72,25 @@ input[type='button']:focus, input[type='button']:hover, input[type='submit']:foc
     outline-color: black;
 }
 
-.ok:disabled {
-    color: grey;
+input.ok {
+    color: var(--dialog-contrast-text-color);
+    background-image: var(--header-background-image);
+    margin-bottom: 10px;
+}
+
+input.ok:disabled {
+    color: var(--disabled-color);
 }
 
 .title {
     display: block;
     font-size: 12pt;
     margin-bottom: 10px;
-}
-
-.icon-cancel {
-    color: black;
-    float: right;
+    /*added*/
+    color: var(--dialog-contrast-text-color);
+    background-image: var(--header-background-image);
+    padding: 5px;
+    font-weight: 600;
 }
 
 .parameter .name {
