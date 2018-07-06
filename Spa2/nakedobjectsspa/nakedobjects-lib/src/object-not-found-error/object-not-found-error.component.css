@@ -12,7 +12,7 @@
 
 .title {
     font-size: 24pt;
-    color: var(--warning-text-color);
+    color: var(--warning-color);
 }
 
 .message {

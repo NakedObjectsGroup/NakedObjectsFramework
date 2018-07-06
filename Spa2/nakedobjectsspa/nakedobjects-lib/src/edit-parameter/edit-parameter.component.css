@@ -54,7 +54,7 @@ input[type='text'] {
 
 .validation {
     display: block;
-    color: black;
+    color: var(--default-text-color);
 }
 
 /*MultiLine dialog*/
@@ -84,7 +84,7 @@ input[type='text'] {
 }
 
 :host.multilinedialog .validation {
-    color: white;
+    color: var(--default-text-color);
     margin-left: 5px;
 }
 
@@ -102,12 +102,13 @@ input[type='text'] {
 }
 
 .value.droppable.dnd-drag-over.candrop {
-    border-color: lawngreen;
+    border-color: var(--approval-color);
+    ;
     background-color: white;
 }
 
 .value.droppable.dnd-drag-over {
-    border-color: red;
+    border-color: var(--warning-color);
 }
 
 textarea {
@@ -161,7 +162,7 @@ img.ui-datepicker-trigger {
 }
 
 img.ui-datepicker-trigger {
-    background-color: black;
+    background-color: var(--default-background-color);
 }
 
 select {

@@ -5,7 +5,7 @@ host {
 }
 
 .co-validation {
-    color: red;
+    color: var(--warning-color);
 }
 
 :host.multilinedialog .co-validation {

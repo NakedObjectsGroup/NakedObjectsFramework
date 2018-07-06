@@ -12,7 +12,7 @@
 
 .title, .message {
     font-size: 16pt;
-    color: var(--warning-text-color);
+    color: var(--warning-color);
 }
 
 .code, .description, .stacktrace {

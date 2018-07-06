@@ -48,7 +48,7 @@
 }
 
 .warnings {
-    color: var(--warning-text-color);
+    color: var(--warning--color);
 }
 
 /*Icons */
