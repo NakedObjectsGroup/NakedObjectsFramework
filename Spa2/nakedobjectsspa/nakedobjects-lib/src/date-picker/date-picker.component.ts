@@ -1,5 +1,5 @@
 import * as Constants from '../constants';
-import { Component, ElementRef, OnInit, Input, Output, EventEmitter, ViewChild, Renderer, OnDestroy } from '@angular/core';
+import { Component, ElementRef, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
 import * as momentNs from 'moment';
 import concat from 'lodash-es/concat';
 import { BehaviorSubject, Observable,  SubscriptionLike as ISubscription } from 'rxjs';
@@ -95,9 +95,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
     @ViewChild("inp")
     inputField: ElementRef;
 
-    constructor(
-        private readonly renderer: Renderer
-    ) {
+    constructor() {
         this.opened = false;
         this.options = this.options || {};
         this.days = [];
@@ -339,6 +337,6 @@ export class DatePickerComponent implements OnInit, OnDestroy {
     }
 
     focus() {
-        return focus(this.renderer, this.inputField);
+        return focus(this.inputField);
     }
 }

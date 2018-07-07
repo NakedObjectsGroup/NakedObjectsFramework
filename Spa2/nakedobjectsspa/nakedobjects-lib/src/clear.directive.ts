@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, Output, EventEmitter, Renderer, Input, OnInit, OnDestroy } from '@angular/core';
+import { Directive, ElementRef, HostListener, Output, EventEmitter, Input, OnInit, OnDestroy } from '@angular/core';
 import { BehaviorSubject ,  SubscriptionLike as ISubscription } from 'rxjs';
 import { safeUnsubscribe } from './helpers-components';
 
@@ -8,8 +8,7 @@ export class ClearDirective implements OnInit, OnDestroy {
     private readonly nativeEl: HTMLInputElement;
 
     constructor(
-        private readonly el: ElementRef,
-        private readonly renderer: Renderer
+        private readonly el: ElementRef
     ) {
         this.nativeEl = this.el.nativeElement;
     }

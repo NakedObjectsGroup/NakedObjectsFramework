@@ -1,4 +1,4 @@
-﻿import { Component, Input, ElementRef, Renderer, ViewChildren, QueryList } from '@angular/core';
+﻿import { Component, Input, ElementRef, ViewChildren, QueryList } from '@angular/core';
 import { ItemViewModel } from '../view-models/item-view-model';
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
 import * as Helpers from '../view-models/helpers-view-models';
@@ -18,7 +18,6 @@ export class RowComponent {
 
     constructor(
         private readonly context: ContextService,
-        private readonly renderer: Renderer,
         private readonly element: ElementRef,
     ) { }
 
@@ -86,6 +85,6 @@ export class RowComponent {
     }
 
     focus() {
-        return !!this.rowChildren && this.rowChildren.length > 0 && focus(this.renderer, this.rowChildren.first);
+        return !!this.rowChildren && this.rowChildren.length > 0 && focus(this.rowChildren.first);
     }
 }

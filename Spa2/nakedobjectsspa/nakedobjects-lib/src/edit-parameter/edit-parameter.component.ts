@@ -1,7 +1,7 @@
 ﻿import { AutoCompleteComponent } from '../auto-complete/auto-complete.component';
 import { TimePickerFacadeComponent } from '../time-picker-facade/time-picker-facade.component';
 import { DatePickerFacadeComponent } from '../date-picker-facade/date-picker-facade.component';
-import { Component, Input, OnInit, ElementRef, HostListener, ViewChildren, QueryList, Renderer, AfterViewInit } from '@angular/core';
+import { Component, Input, OnInit, ElementRef, HostListener, ViewChildren, QueryList, AfterViewInit, Renderer2 } from '@angular/core';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { UrlManagerService } from '../url-manager.service';
 import * as Models from '../models';
@@ -28,7 +28,7 @@ export class EditParameterComponent extends FieldComponent implements OnInit, Af
         context: ContextService,
         configService: ConfigService,
         loggerService: LoggerService,
-        renderer: Renderer
+        renderer: Renderer2
     ) {
         super(context, configService, loggerService, renderer);
     }

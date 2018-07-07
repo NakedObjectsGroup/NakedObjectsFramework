@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Renderer, ViewChild, OnDestroy } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import reduce from 'lodash-es/reduce';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { CiceroCommandFactoryService } from '../cicero-command-factory.service';
@@ -27,8 +27,7 @@ export class CiceroComponent implements OnInit, OnDestroy {
         private readonly error: ErrorService,
         private readonly urlManager: UrlManagerService,
         private readonly ciceroContext: CiceroContextService,
-        private readonly context: ContextService,
-        private readonly renderer: Renderer) {
+        private readonly context: ContextService) {
     }
 
     private warnings: string[];
@@ -155,6 +154,6 @@ export class CiceroComponent implements OnInit, OnDestroy {
     }
 
     focusOnInput() {
-        focus(this.renderer, this.inputField);
+        focus(this.inputField);
     }
 }

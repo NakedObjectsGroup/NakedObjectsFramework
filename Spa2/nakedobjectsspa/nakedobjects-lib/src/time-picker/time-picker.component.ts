@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Input, Output, EventEmitter, ViewChild, Renderer, OnDestroy } from '@angular/core';
+import { Component, ElementRef, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
 import * as momentNs from 'moment';
 import { BehaviorSubject ,  SubscriptionLike as ISubscription } from 'rxjs';
 import { safeUnsubscribe, focus } from '../helpers-components';
@@ -37,8 +37,8 @@ export class TimePickerComponent implements OnInit, OnDestroy {
     inputField: ElementRef;
 
     constructor(
-        private readonly el: ElementRef,
-        private readonly renderer: Renderer) {
+        private readonly el: ElementRef
+    ) {
         this.outputEvents = new EventEmitter<ITimePickerOutputEvent>();
     }
 
@@ -147,6 +147,6 @@ export class TimePickerComponent implements OnInit, OnDestroy {
     }
 
     focus() {
-        return focus(this.renderer, this.inputField);
+        return focus(this.inputField);
     }
 }

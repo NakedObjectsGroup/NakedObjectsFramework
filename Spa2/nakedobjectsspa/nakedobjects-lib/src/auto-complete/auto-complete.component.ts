@@ -1,5 +1,5 @@
 import { ContextService } from '../context.service';
-import { Component, Input, OnDestroy, ElementRef, ViewChild, Renderer } from '@angular/core';
+import { Component, Input, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { FieldViewModel } from '../view-models/field-view-model';
 import { ChoiceViewModel } from '../view-models/choice-view-model';
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
@@ -16,8 +16,7 @@ import { safeUnsubscribe, accept, dropOn, paste, focus } from '../helpers-compon
 export class AutoCompleteComponent implements OnDestroy {
 
     constructor(
-        private readonly context: ContextService,
-        private readonly renderer: Renderer
+        private readonly context: ContextService
     ) { }
 
     private fieldViewModel: FieldViewModel;
@@ -138,6 +137,6 @@ export class AutoCompleteComponent implements OnDestroy {
     }
 
     focus() {
-        return focus(this.renderer, this.inputField);
+        return focus(this.inputField);
     }
 }

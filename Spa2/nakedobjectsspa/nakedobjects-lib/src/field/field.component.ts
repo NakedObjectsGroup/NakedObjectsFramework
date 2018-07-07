@@ -2,7 +2,7 @@ import { AutoCompleteComponent } from '../auto-complete/auto-complete.component'
 import * as Models from '../models';
 import { AbstractControl } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
-import { ElementRef, QueryList, Renderer, OnDestroy } from '@angular/core';
+import { ElementRef, QueryList, Renderer2, OnDestroy } from '@angular/core';
 import { ContextService } from '../context.service';
 import { ChoiceViewModel } from '../view-models/choice-view-model';
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
@@ -32,7 +32,7 @@ export abstract class FieldComponent implements OnDestroy {
         private readonly context: ContextService,
         private readonly configService: ConfigService,
         private readonly loggerService: LoggerService,
-        private readonly renderer: Renderer
+        private readonly renderer: Renderer2
     ) {}
 
     set formGroup(fm: FormGroup) {
@@ -236,11 +236,11 @@ export abstract class FieldComponent implements OnDestroy {
             const input = this.control.value;
             const element = this.checkboxList.first.nativeElement;
             if (input == null) {
-                this.renderer.setElementProperty(element, "indeterminate", true);
-                this.renderer.setElementProperty(element, "checked", null);
+                this.renderer.setProperty(element, "indeterminate", true);
+                this.renderer.setProperty(element, "checked", null);
             } else {
-                this.renderer.setElementProperty(element, "indeterminate", false);
-                this.renderer.setElementProperty(element, "checked", !!input);
+                this.renderer.setProperty(element, "indeterminate", false);
+                this.renderer.setProperty(element, "checked", !!input);
             }
         }
     }
@@ -317,7 +317,7 @@ export abstract class FieldComponent implements OnDestroy {
         const first = this.focusList && this.focusList.first;
 
         if (first instanceof ElementRef) {
-            return focus(this.renderer, first);
+            return focus(first);
         }
         return first && first.focus();
     }

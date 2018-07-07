@@ -1,4 +1,4 @@
-﻿import { Component, Input, ElementRef, Renderer, ViewChildren, QueryList } from '@angular/core';
+﻿import { Component, Input, ElementRef, ViewChildren, QueryList } from '@angular/core';
 import { ActionViewModel } from '../view-models/action-view-model';
 import { focus } from '../helpers-components';
 
@@ -39,9 +39,7 @@ export class ActionComponent {
     @ViewChildren("focus")
     focusList: QueryList<ElementRef>;
 
-    constructor(
-        private readonly renderer: Renderer
-    ) { }
+    constructor() { }
 
     private canClick() {
         return !(this.disabled() || this.tempDisabled());
@@ -89,6 +87,6 @@ export class ActionComponent {
         if (this.disabled()) {
             return false;
         }
-        return !!(this.focusList && this.focusList.first) && focus(this.renderer, this.focusList.first);
+        return !!(this.focusList && this.focusList.first) && focus(this.focusList.first);
     }
 }
