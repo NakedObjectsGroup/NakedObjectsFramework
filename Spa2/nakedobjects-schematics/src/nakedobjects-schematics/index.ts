@@ -27,7 +27,8 @@ function getCreateFiles(localFiles: Tree) {
         { path: "src/fonts/iconFont.ttf", file: localFiles.get("fonts/iconFont.ttf")! },
         { path: "src/fonts/iconFont.woff", file: localFiles.get("fonts/iconFont.woff")! },
         { path: "src/fonts/license.txt", file: localFiles.get("fonts/license.txt")! },
-        { path: "src/alt.styles.css", file: localFiles.get("assets/styles.alt.css")! },
+        { path: "src/theme.css", file: localFiles.get("assets/theme.css")! },
+        { path: "src/theme.alt.css", file: localFiles.get("assets/theme.alt.css")! },
     ];
 }
 
@@ -77,13 +78,17 @@ export function newProject(/* options: any */): Rule {
         const asJson = JSON.parse(configA6.toString());
 
         Object.entries(asJson.projects).forEach(([,value] : any) => {
-            const assets = value.architect &&
+            const options = value.architect &&
                 value.architect.build &&
-                value.architect.build.options &&
-                value.architect.build.options.assets;
+                value.architect.build.options;
 
+            const assets = options && options.assets;
             if (assets) {
                 assets.push("src/config.json");
+            }
+            const styles = options && options.styles;
+            if (styles) {
+                styles.push("src/theme.css");
             }
         });
 
