@@ -79,6 +79,12 @@
     --object-color12: #ff2097;
     --link-text-color12: var(--contrast-text-color);
     --object-text-color12: var(--contrast-text-color);
+
+    --default-link-color: var(--link-color0);
+    --default-object-color:  var(--object-color0);
+    --default-link-text-color: var(--contrast-text-color);
+    --default-object-text-color: var(--default-text-color);
+
     --header-background-image: none;
     --summary-icon: url("assets/summary.png");
     --list-icon: url("assets/list.png");
