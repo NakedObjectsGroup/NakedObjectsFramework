@@ -15,11 +15,11 @@
     --dialog-color: white;
     --dialog-text-color:black;
 
-    --link-color0: var(--theme-accent-color);
-    --object-color0: var(--default-background-color);
-    --link-text-color0: var(--contrast-text-color);
-    --object-text-color0: var(--default-text-color);
-    
+    --default-link-color: var(--theme-accent-color);
+    --default-object-color: var(--default-background-color);
+    --default-link-text-color: var(--contrast-text-color);
+    --default-object-text-color: var(--default-text-color);
+
     --header-background-image: linear-gradient(to bottom, var(--theme-accent-color), #187ba9 100%);
     --summary-icon: url("assets/alt.summary.png");
     --list-icon: url("assets/alt.list.png");
