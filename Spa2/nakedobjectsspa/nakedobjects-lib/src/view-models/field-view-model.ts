@@ -104,8 +104,7 @@ export abstract class FieldViewModel extends MessageViewModel {
             this.selectedMultiChoices = filter(this.choiceOptions, c => some(currentSelectedOptions, (choiceToSet: any) => c.valuesEqual(choiceToSet)));
         } else if (this.entryType === Models.EntryType.ConditionalChoices) {
             const currentSelectedOption = this.selectedChoice;
-            // todo this used to work lodash types ?
-            this.selectedChoice = find(this.choiceOptions, (c: any) => c.valuesEqual(currentSelectedOption)) as any;
+            this.selectedChoice = find(this.choiceOptions, c => c.valuesEqual(currentSelectedOption));
         }
 
         if (!this.optional && !this.hasValue && this.entryType !== Models.EntryType.AutoComplete) {

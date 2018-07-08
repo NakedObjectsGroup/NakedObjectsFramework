@@ -115,11 +115,9 @@ export class RepLoaderService {
                 this.loadingCountSource.next(--(this.loadingCount));
                 return Promise.resolve(true);
             })
-            // todo fix any
             .catch((r: HttpErrorResponse) => {
                 this.loadingCountSource.next(--(this.loadingCount));
                 const originalUrl = config.url || "Unknown url";
-                // const rr = r.clone({url :  r.url || originalUrl});
                 return this.handleError(r, originalUrl);
             });
     }
@@ -170,11 +168,9 @@ export class RepLoaderService {
 
         return this.http.request(new HttpRequest(config.method, config.url, config.init.body, config.init))
             .toPromise()
-            // todo fix this
             .then((r: HttpResponse<Ro.IRepresentation>) => {
                 this.loadingCountSource.next(--(this.loadingCount));
 
-                // const asJson = r.json();
                 if (!this.isValidResponse(r.body)) {
                     return this.handleInvalidResponse(Models.ErrorCategory.ClientError);
                 }
@@ -186,10 +182,8 @@ export class RepLoaderService {
                 response.keySeparator = this.configService.config.keySeparator;
                 return Promise.resolve(response);
             })
-            // todo fix any
             .catch((r: HttpErrorResponse) => {
                 this.loadingCountSource.next(--(this.loadingCount));
-                // const rr = r.clone({url :  r.url || requestUrl});
                 return this.handleError(r, requestUrl);
             });
     }
@@ -305,7 +299,6 @@ export class RepLoaderService {
 
         return this.http.request(request)
             .toPromise()
-            // todo fix this
             .then((r: HttpResponse<Blob>) => {
                 const blob = r.body!;
                 this.cache.add(config.url!, blob);
@@ -313,7 +306,6 @@ export class RepLoaderService {
             })
             .catch((r: HttpErrorResponse) => {
                 const originalUrl = config.url || "Unknown url";
-                // const rr = r.clone({url :  r.url || originalUrl});
                 return this.handleError(r, originalUrl);
             });
     }

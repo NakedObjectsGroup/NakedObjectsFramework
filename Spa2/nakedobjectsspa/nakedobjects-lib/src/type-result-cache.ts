@@ -35,7 +35,7 @@ export abstract class TypeResultCache<T> {
     private isSubtypeOf(subtype: string, index: number, count: number): Promise<T> {
 
         if (index >= count) {
-            return Promise.reject("") as any;
+            return Promise.reject("");
         }
 
         const entry = this.subtypeCache[index];
