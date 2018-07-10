@@ -7,7 +7,6 @@
 }
 
 .icon {
-    display: block;
     color: var(--default-outline-color);
     font-size: 36pt;
     padding: 5px;

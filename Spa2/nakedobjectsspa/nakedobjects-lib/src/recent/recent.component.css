@@ -1,10 +1,10 @@
-:host {
-    display: block;
-    /* color: white; */
-    margin-left: 20px;
+.recent {
     padding-left: 20px;
     height: 100%;
     overflow-y: auto;
+    color: var(--default-text-color);
+    font-size: 11pt;
+    font-weight: 100;
 }
 
 .header {
@@ -15,6 +15,20 @@
     font-size: 24pt;
     font-weight: 200;
     background-image: var(--header-background-image);
+}
+
+.title {
+    position: relative;
+    font-weight: 200;
+    font-size: 24pt;
+    line-height: 38pt;
+    margin-left: 1px;
+    /*Make room for focus outline*/
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-right: 20px;
+    margin-top: 2px;
+    display: inline-block;
 }
 
 .collection {

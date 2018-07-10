@@ -6,14 +6,16 @@
     margin-top: 1px;
     margin-bottom: 1px;
 }
+
 :host.multilinedialog {
     padding-left: 10px;
     width: 247px;
     display: inline-block;
     overflow: auto;
 }
-:host.multilinedialog .name{
- display: none;
+
+:host.multilinedialog .name {
+    display: none;
 }
 
 .reference {

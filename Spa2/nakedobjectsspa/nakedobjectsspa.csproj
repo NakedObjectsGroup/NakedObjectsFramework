@@ -35,10 +35,8 @@
     <Content Include="nakedobjects-lib\src\application-properties\application-properties.component.html" />
     <Content Include="nakedobjects-lib\src\attachment-property\attachment-property.component.css" />
     <Content Include="nakedobjects-lib\src\attachment-property\attachment-property.component.html" />
-    <Content Include="nakedobjects-lib\src\attachment\attachment.component.alt.css" />
     <Content Include="nakedobjects-lib\src\attachment\attachment.component.css" />
     <Content Include="nakedobjects-lib\src\attachment\attachment.component.html" />
-    <Content Include="nakedobjects-lib\src\auto-complete\auto-complete.component.alt.css" />
     <Content Include="nakedobjects-lib\src\auto-complete\auto-complete.component.css" />
     <Content Include="nakedobjects-lib\src\auto-complete\auto-complete.component.html" />
     <Content Include="nakedobjects-lib\src\callback\callback.component.css" />
@@ -51,10 +49,8 @@
     <Content Include="nakedobjects-lib\src\collection\collection.component.html" />
     <Content Include="nakedobjects-lib\src\date-picker-facade\date-picker-facade.component.css" />
     <Content Include="nakedobjects-lib\src\date-picker-facade\date-picker-facade.component.html" />
-    <Content Include="nakedobjects-lib\src\date-picker\date-picker.component.alt.css" />
     <Content Include="nakedobjects-lib\src\date-picker\date-picker.component.css" />
     <Content Include="nakedobjects-lib\src\date-picker\date-picker.component.html" />
-    <Content Include="nakedobjects-lib\src\dialog\dialog.component.alt.css" />
     <Content Include="nakedobjects-lib\src\dialog\dialog.component.css" />
     <Content Include="nakedobjects-lib\src\dialog\dialog.component.html" />
     <Content Include="nakedobjects-lib\src\dynamic-error\dynamic-error.component.css" />
@@ -63,10 +59,8 @@
     <Content Include="nakedobjects-lib\src\dynamic-list\dynamic-list.component.html" />
     <Content Include="nakedobjects-lib\src\dynamic-object\dynamic-object.component.css" />
     <Content Include="nakedobjects-lib\src\dynamic-object\dynamic-object.component.html" />
-    <Content Include="nakedobjects-lib\src\edit-parameter\edit-parameter.component.alt.css" />
     <Content Include="nakedobjects-lib\src\edit-parameter\edit-parameter.component.css" />
     <Content Include="nakedobjects-lib\src\edit-parameter\edit-parameter.component.html" />
-    <Content Include="nakedobjects-lib\src\edit-property\edit-property.component.alt.css" />
     <Content Include="nakedobjects-lib\src\edit-property\edit-property.component.css" />
     <Content Include="nakedobjects-lib\src\edit-property\edit-property.component.html" />
     <Content Include="nakedobjects-lib\src\error\error.component.css" />
@@ -123,7 +117,6 @@
     <Content Include="src\fonts\license.txt" />
     <Content Include="src\index.html" />
     <Content Include="src\karma.conf.js" />
-    <Content Include="src\styles.alt.css" />
     <Content Include="src\styles.css" />
     <Content Include="src\theme.alt.css" />
     <Content Include="src\theme.css" />

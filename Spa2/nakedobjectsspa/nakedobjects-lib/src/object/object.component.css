@@ -1,6 +1,5 @@
 :host {
     overflow-y: auto;
-    font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
     color: var(--default-text-color);
     font-size: 11pt;
     font-weight: 100;

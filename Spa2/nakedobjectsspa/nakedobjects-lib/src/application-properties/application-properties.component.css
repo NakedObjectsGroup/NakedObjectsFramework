@@ -1,7 +1,10 @@
 :host {
     display: block;
+    /* color: white; */
     margin-left: 20px;
-    color: var(--default-text-color);
+    padding-left: 20px;
+    height: 100%;
+    overflow-y: auto;
 }
 
 .header {
@@ -9,18 +12,30 @@
     margin-bottom: 20px;
     overflow: hidden;
     color: var(--contrast-text-color);
+    font-size: 24pt;
+    font-weight: 200;
     background-image: var(--header-background-image);
 }
 
+.title {
+    position: relative;
+    font-weight: 200;
+    font-size: 24pt;
+    line-height: 38pt;
+    margin-left: 1px;
+    /*Make room for focus outline*/
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-right: 20px;
+    margin-top: 2px;
+    display: inline-block;
+}
+
 .properties {
-    display: block;
+    color: var(--default-text-color);
     font-size: 11pt;
     font-weight: 100;
     width: 410px;
     padding: 5px;
     margin-bottom: 20px;
-}
-
-.property {
-    display: block;
 }

@@ -7,9 +7,8 @@ input {
     background-color: transparent;
     outline: none;
     border: none;
-    font-size: inherit;
-    font-weight: inherit;
-    color: inherit;
+    font-size: 11pt;
+    color: var(--contrast-text-color);
     padding: 5px;
 }
 
