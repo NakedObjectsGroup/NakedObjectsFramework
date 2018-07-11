@@ -348,7 +348,7 @@ namespace NakedObjects.Selenium {
             Recent,
             MultiLineDialog,
             Attachment,
-            Properties,
+            ApplicationProperties,
             Error,
             Logoff
         }

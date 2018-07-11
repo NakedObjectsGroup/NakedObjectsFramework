@@ -121,7 +121,7 @@ namespace NakedObjects.Selenium {
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
             ClickPropertiesButton();
-            WaitForView(Pane.Single, PaneType.Properties, "Application Properties");
+            WaitForView(Pane.Single, PaneType.ApplicationProperties, "Application Properties");
             wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 5);
             wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[3].Text.StartsWith("Server API version: 8.1.1"));
             var properties = br.FindElements(By.CssSelector(".property"));
