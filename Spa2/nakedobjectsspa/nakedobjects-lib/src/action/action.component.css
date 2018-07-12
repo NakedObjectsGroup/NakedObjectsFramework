@@ -7,9 +7,9 @@ input {
     background-color: transparent;
     outline: none;
     border: none;
-    font-size: 11pt;
+    font-size: var(--font-size-2);
     color: var(--contrast-text-color);
-    padding: 5px;
+    padding: var(--space-3);
 }
 
 input:focus, input:hover {

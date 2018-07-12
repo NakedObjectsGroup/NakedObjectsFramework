@@ -5,7 +5,7 @@
 }
 
 :host:not(:last-child) {
-    margin-bottom: 5px;
+    margin-bottom: var(--space-3);
 }
 
 input[type=text], select {
@@ -15,8 +15,8 @@ input[type=text], select {
 }
 
 input[type='text'] {
-    padding-left: 4px;
-    padding-right: 10px;
+    padding-left: var(--space-3);
+    padding-right: var(--space-4);
     /*To avoid text running over the 'x' (clear button)*/
 }
 
@@ -29,27 +29,27 @@ input:hover, input:focus {
 .name {
     float: left;
     width: 145px;
-    padding-right: 5px;
+    padding-right: var(--space-3);
 }
 
 .reference, .value, collectionDetails {
-    width: 245px;
-    padding-left: 5px;
-    margin: 1px;
+    width: var(--field-value-width);
+    padding-left: var(--space-3);
+    margin: var(--space-1);
     float: left;
 }
 
 input:not([type='checkbox']), textarea {
-    width: 245px;
-    padding-right: 10px;
+    width: var(--field-value-width);
+    padding-right: var(--space-4);
 }
 
 input:not([type='checkbox']) {
-    height: 20px;
+    height: var(--field-value-height);
 }
 
 input[type='text'] {
-    padding-left: 4px;
+    padding-left: var(--space-3);
 }
 
 .validation {
@@ -69,7 +69,7 @@ input[type='text'] {
 }
 
 :host.multilinedialog .parameter {
-    width: 245px;
+    width: var(--field-value-width);
     /*To force (on IE) any validation message to be displayed underneath the field*/
 }
 
@@ -79,13 +79,13 @@ input[type='text'] {
 }
 
 :host.multilinedialog .input-control input:not([type='checkbox']), :host.multilinedialog select {
-    height: 20px;
-    padding-top: 2px;
+    height: var(--field-value-height);
+    padding-top: var(--space-1);
 }
 
 :host.multilinedialog .validation {
     color: var(--default-text-color);
-    margin-left: 5px;
+    margin-left: var(--space-3);
 }
 
 /* Drag and drop*/
@@ -93,8 +93,8 @@ input[type='text'] {
 .value.droppable {
     border: solid;
     border-width: 1px;
-    width: 245px;
-    height: 20px;
+    width: var(--field-value-width);
+    height: var(--field-value-height);
 }
 
 .value.droppable {
@@ -156,8 +156,8 @@ input::-ms-clear {
 }
 
 img.ui-datepicker-trigger {
-    margin-left: 5px;
-    margin-top: 2px;
+    margin-left: var(--space-3);
+    margin-top: var(--space-1);
     width: 20px;
 }
 
@@ -166,8 +166,8 @@ img.ui-datepicker-trigger {
 }
 
 select {
-    width: 245px;
-    height: 20px;
+    width: var(--field-value-width);
+    height: var(--field-value-height);
 }
 
 select[multiple] {
@@ -176,16 +176,16 @@ select[multiple] {
 }
 
 .validation {
-    margin-left: 155px;
-    font-size: 11pt;
+    margin-left: 15var(--space-3);
+    font-size: var(--font-size-2);
 }
 
 .suggestions {
     display: block;
     color: black;
     background-color: white;
-    font-size: 10pt;
-    width: 245px;
+    font-size: var(--font-size-1);
+    width: var(--field-value-width);
     border-style: solid;
     border-width: 1px;
     border-color: black;
@@ -194,7 +194,7 @@ select[multiple] {
 .suggestions ul {
     display: block;
     margin: 0px;
-    padding: 5px;
+    padding: var(--space-3);
 }
 
 .suggestions ul:hover {

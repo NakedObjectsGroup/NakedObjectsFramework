@@ -1,31 +1,31 @@
 .suggestions ul {
     list-style-type: none;
-    width: 245px;
+    width: var(--field-value-width);
     border-style: solid;
     border-width: 1px;
     border-color: black;
     margin: 0px;
-    font-family: 'Segoe UI';
-    font-size: 10pt;
+    font-family: var(--font-text-family);
+    font-size: var(--font-size-1);
     padding-left: 0px;
-    font-weight: 400;
+    font-weight: var(--font-weight-3);
 }
 
 .validation {
-    font-family: 'Segoe UI';
-    font-size: 10pt;
+    font-family: var(--font-text-family);
+    font-size: var(--font-size-1);
 }
 
 input {
-    width: 245px;
-    padding-left: 5px;
+    width: var(--field-value-width);
+    padding-left: var(--space-3);
     border-style: solid;
     border-width: 1px;
     border-color: Grey;
 }
 
 li a {
-    padding-left: 5px;
+    padding-left: var(--space-3);
 }
 
 li:hover, .selected {
@@ -63,8 +63,8 @@ input::-ms-clear {
 .value.droppable {
     border: solid;
     border-width: 1px;
-    width: 245px;
-    height: 20px;
+    width: var(--field-value-width);
+    height: var(--field-value-height);
 }
 
 .value.droppable {

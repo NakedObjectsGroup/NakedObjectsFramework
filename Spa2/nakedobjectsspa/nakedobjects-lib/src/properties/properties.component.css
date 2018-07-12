@@ -1,5 +1,5 @@
 host {
-    width: 410px;
-    padding: 5px;
-    margin-bottom: 20px;
+    width: var(--field-width);
+    padding: var(--space-3);
+    margin-bottom: var(--space-5);
 }

@@ -1,10 +1,10 @@
 :host {
     overflow-y: auto;
     color: var(--default-text-color);
-    font-size: 11pt;
-    font-weight: 100;
+    font-size: var(--font-size-2);
+    font-weight: var(--font-weight-1);
     display: block;
-    margin-left: 20px;
+    margin-left: var(--space-5);
     padding-bottom: 60px;
 }
 
@@ -15,21 +15,21 @@ viewTitle {
 
 .title, .header .type {
     position: relative;
-    font-weight: 200;
-    font-size: 24pt;
+    font-weight: var(--font-weight-2);
+    font-size: var(--font-size-4);
     line-height: 38pt;
-    margin-left: 1px;
+    margin-left: var(--space-1);
     /*Make room for focus outline*/
-    padding-left: 5px;
-    padding-right: 5px;
-    margin-right: 20px;
-    margin-top: 2px;
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
+    margin-right: var(--space-5);
+    margin-top: var(--space-1);
     display: block;
 }
 
 .header .type {
     float: left;
-    margin-right: 20px;
+    margin-right: var(--space-5);
     display: none;
     /*Change this to display type (e.g. for accessibility)*/
 }
@@ -42,32 +42,32 @@ nof-parameters {
     display: inline-block;
     vertical-align: top;
     width: 247px;
-    padding-left: 10px;
+    padding-left: var(--space-4);
 }
 
 input.ok {
-    font-size: 9pt;
-    height: 20px;
-    margin-top: 1px;
+    font-size: var(--font-size-1);
+    height: var(--field-value-height);
+    margin-top: var(--space-1);
     margin-right: 0px;
-    margin-left: 2px;
-    margin-bottom: 5px;
-    padding-top: 1px;
+    margin-left: var(--space-1);
+    margin-bottom: var(--space-3);
+    padding-top: var(--space-1);
     padding-bottom: 0px;
-    padding-left: 2px;
-    padding-right: 2px;
+    padding-left: var(--space-1);
+    padding-right: var(--space-1);
     vertical-align: top;
 }
 
 input.close {
     float: left;
     margin-left: 6px;
-    margin-right: 10px;
+    margin-right: var(--space-4);
 }
 
 .count {
     display: inline-block;
-    margin-top: 1px;
+    margin-top: var(--space-1);
 }
 
 .co-validation {

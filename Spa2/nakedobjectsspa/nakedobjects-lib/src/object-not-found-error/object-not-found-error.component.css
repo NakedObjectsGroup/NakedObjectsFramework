@@ -1,26 +1,26 @@
 :host {
     display: block;
-    padding-left: 20px;
+    padding-left: var(--space-5);
     height: 100%;
     overflow-y: auto;
 }
 
 .title, .message, .code, .description, .stacktrace {
     display: block;
-    margin-bottom: 20px;
+    margin-bottom: var(--space-5);
 }
 
 .title {
-    font-size: 24pt;
+    font-size: var(--font-size-4);
     color: var(--warning-color);
 }
 
 .message {
-    font-size: 16pt;
+    font-size: var(--font-size-3);
     color: var(--default-text-color);
 }
 
 .code, .description, .stacktrace {
-    font-size: 12pt;
+    font-size: var(--font-size-2);
     color: var(--default-text-color);
 }

@@ -3,14 +3,14 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: var(--default-background-color);
+    background-color: var(--footer-background-color);
 }
 
 .icon {
     color: var(--default-outline-color);
-    font-size: 36pt;
-    padding: 5px;
-    margin-left: 10px;
+    font-size: var(--footer-icon-size);
+    padding: var(--space-3);
+    margin-left: var(--space-4);
 }
 
 .icon.disabled {
@@ -35,14 +35,14 @@
 
 .currentcopy {
     display: inline-block;
-    margin-left: 20px;
+    margin-left: var(--space-5);
 }
 
 /*Warnings & Messages*/
 
 .messages, .warnings, .loading {
     background-color: var(--default-background-color);
-    font-size: 11pt;
+    font-size: var(--font-size-2);
     color: var(--default-text-color);
 }
 
@@ -54,7 +54,7 @@
 
 .icon {
     font-family: "iconFont";
-    font-weight: normal;
+    font-weight: var(--font-weight-1);
     font-style: normal;
     text-decoration: inherit;
     -webkit-font-smoothing: antialiased;

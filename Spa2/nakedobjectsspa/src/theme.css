@@ -1,4 +1,35 @@
 :root {
+    /*Font TODO: consider merging size & weight to one font style?*/  
+    --font-text-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+
+    --font-size-1: 10pt;
+    --font-size-2: 12pt;
+    --font-size-3: 16pt;
+    --font-size-4: 24pt;
+
+    --font-weight-1: 100;
+    --font-weight-2: 200;
+    --font-weight-3: 400;
+    --font-weight-4: 600;
+
+    /*Layout*/
+    --field-width: 410px;
+    --field-value-height: 20px;
+    --field-value-width: 245px;
+
+    --table-width: 450px;
+
+    --space-1: 1px;
+    --space-2: 2px;
+    --space-3: 5px;
+    --space-4: 10px;
+    --space-5: 20px;
+
+    /*Footer*/
+    --footer-icon-size: 36pt;
+    --footer-icon-color: white;
+    --footer-icon-background: black;
+
     --default-background-color: black;
     --menu-background-color: inherit;
     --default-text-color: white;

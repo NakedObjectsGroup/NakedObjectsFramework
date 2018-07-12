@@ -1,7 +1,7 @@
 host {
-    width: 410px;
-    padding: 5px;
-    margin-bottom: 20px;
+    width: var(--field-width);
+    padding: var(--space-3);
+    margin-bottom: var(--space-5);
 }
 
 .co-validation {
@@ -10,6 +10,6 @@ host {
 
 :host.multilinedialog .co-validation {
     vertical-align: top;
-    margin-top: 2px;
-    margin-left: 2px;
+    margin-top: var(--space-1);
+    margin-left: var(--space-1);
 }

@@ -1,8 +1,8 @@
 :host {
     overflow-y: auto;
     color: var(--default-text-color);
-    font-size: 11pt;
-    font-weight: 100;
+    font-size: var(--font-size-2);
+    font-weight: var(--font-weight-1);
     display: block;
     height: 100%;
 }
@@ -10,13 +10,13 @@
 .object {
     height: 100%;
     display: block;
-    padding-left: 20px;
+    padding-left: var(--space-5);
     overflow-y: auto;
 }
 
 .header {
     display: block;
-    margin-bottom: 20px;
+    margin-bottom: var(--space-5);
     overflow: hidden;
     color: var(--contrast-text-color);
     background-image: var(--header-background-image);
@@ -29,21 +29,21 @@ viewTitle {
 
 .title, .type {
     position: relative;
-    font-weight: 200;
-    font-size: 24pt;
+    font-weight: var(--font-weight-2);
+    font-size: var(--font-size-4);
     line-height: 38pt;
-    margin-left: 1px;
+    margin-left: var(--space-1);
     /*Make room for focus outline*/
-    padding-left: 5px;
-    padding-right: 5px;
-    margin-right: 20px;
-    margin-top: 2px;
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
+    margin-right: var(--space-5);
+    margin-top: var(--space-1);
     display: inline-block;
 }
 
 .type {
     float: left;
-    margin-right: 20px;
+    margin-right: var(--space-5);
     display: none;
     /*Change this to display type (e.g. for accessibility)*/
 }
@@ -57,15 +57,15 @@ viewTitle {
 .menu, .header .action {
     display: block;
     float: left;
-    padding: 5px;
+    padding: var(--space-3);
     margin-top: 0px;
-    margin-left: 1px;
+    margin-left: var(--space-1);
     /*Else hover outline is hidden on the left-most menu */
-    margin-right: 10px;
-    margin-bottom: 5px;
+    margin-right: var(--space-4);
+    margin-bottom: var(--space-3);
     /*Else hover outline is hidden on the bottom */
     font: inherit;
-    font-size: 16pt;
+    font-size: var(--font-size-3);
     color: var(--default-text-color);
     background-color: transparent;
 }
@@ -92,6 +92,6 @@ viewTitle {
 
 .actions, .main-column {
     float: left;
-    margin-bottom: 20px;
-    margin-right: 20px;
+    margin-bottom: var(--space-5);
+    margin-right: var(--space-5);
 }

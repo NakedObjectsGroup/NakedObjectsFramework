@@ -1,14 +1,14 @@
 /*Global fonts*/
 
 .gemini, table, a, pre, textarea, input, button {
-    font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+   font-family: var(--font-text-family);
 }
 
 @font-face {
     font-family: "iconFont";
     src: url('./fonts/iconFont.eot');
     src: url('./fonts/iconFont.eot?#iefix') format('embedded-opentype'), url('./fonts/iconFont.svg#iconFont') format('svg'), url('./fonts/iconFont.woff') format('woff'), url('./fonts/iconFont.ttf') format('truetype');
-    font-weight: normal;
+    font-weight: var(--font-weight-1);
     font-style: normal;
 }
 

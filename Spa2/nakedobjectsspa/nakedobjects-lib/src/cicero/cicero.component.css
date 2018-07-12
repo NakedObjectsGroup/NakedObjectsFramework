@@ -3,7 +3,7 @@
     color: green;
     font-size: 18pt;
     font-family: Courier New, Courier, monospace;
-    font-weight: bold;
+    font-weight: var(--font-weight-2);
 }
 
 .cicero {

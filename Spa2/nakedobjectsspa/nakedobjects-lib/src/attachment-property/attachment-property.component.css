@@ -3,15 +3,15 @@
 }
 
 img {
-    max-width: 245px;
+    max-width: var(--field-value-width);
     max-height: 100px;
 }
 
 .value {
     display: block;
     float: left;
-    width: 245px;
-    padding-left: 5px;
-    padding-right: 5px;
-    margin: 1px;
+    width: var(--field-value-width);
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
+    margin: var(--space-1);
 }

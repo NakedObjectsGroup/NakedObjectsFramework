@@ -5,24 +5,24 @@
 }
 
 :host:not(:last-child) {
-    margin-bottom: 5px;
+    margin-bottom: var(--space-3);
 }
 
 .name {
     display: block;
     float: left;
     width: 150px;
-    padding-right: 5px;
-    font-weight: bolder; /*added to match alt*/
+    padding-right: var(--space-3);
+    font-weight: var(--font-weight-2)er; /*added to match alt*/
 }
 
 .reference, .value {
     display: block;
     float: left;
-    width: 245px;
-    padding-left: 5px;
-    padding-right: 5px;
-    margin: 1px;
+    width: var(--field-value-width);
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
+    margin: var(--space-1);
 }
 
 .reference {

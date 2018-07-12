@@ -1,10 +1,10 @@
 :host {
     float: left;
-    margin-bottom: 20px;
+    margin-bottom: var(--space-5);
     display: block;
-    /* margin-left: 20px; */
-    margin-right: 10px;
-    padding-top: 10px;
+    /* margin-left: var(--space-5); */
+    margin-right: var(--space-4);
+    padding-top: var(--space-4);
     background-color: var(--menu-background-color);
 }
 
@@ -12,15 +12,15 @@ nof-action, .submenu {
     display: block;
     cursor: pointer;
     outline: none;
-    /* margin-left: 5px; */
-    margin-right: 20px;
+    /* margin-left: var(--space-3); */
+    margin-right: var(--space-5);
     width: 150px;
-    font-size: 11pt;
-    font-weight: bolder;
+    font-size: var(--font-size-2);
+    font-weight: var(--font-weight-2)er;
 }
 
 .submenu {
-    padding: 5px;
+    padding: var(--space-3);
 }
 
 .collapsed {
@@ -28,7 +28,7 @@ nof-action, .submenu {
 }
 
 .open {
-    margin-left: 10px;
+    margin-left: var(--space-4);
 }
 
 .open.rootMenu {
@@ -46,7 +46,7 @@ nof-action, .submenu {
 }
 
 .icon-expand, .icon-collapse {
-    font-size: 8pt;
+    font-size: var(--font-size-1);
 }
 
 .icon-expand:hover, .icon-collapse:hover {
@@ -57,7 +57,7 @@ nof-action, .submenu {
 
 [class^="icon-"], [class*=" icon-"] {
     font-family: "iconFont";
-    font-weight: normal;
+    font-weight: var(--font-weight-1);
     font-style: normal;
     text-decoration: inherit;
     -webkit-font-smoothing: antialiased;

@@ -1,5 +1,5 @@
 input {
-    width: 245px;
+    width: var(--field-value-width);
 }
 
 /* clear button on non-empty input field*/

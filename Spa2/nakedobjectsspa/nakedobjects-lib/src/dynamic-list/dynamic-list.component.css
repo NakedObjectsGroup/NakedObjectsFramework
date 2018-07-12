@@ -1,15 +1,15 @@
 .list {
     color: var(--contrast-text-color);
-    padding-left: 20px;
+    padding-left: var(--space-5);
     height: 100%;
     overflow-y: auto;
     display: block;
-    font-weight: 100;
+    font-weight: var(--font-weight-1);
 }
 
 .header {
     display: block;
-    margin-bottom: 20px;
+    margin-bottom: var(--space-5);
     overflow: hidden;
     color: var(--contrast-text-color);
     background-image: var(--header-background-image);
@@ -17,21 +17,21 @@
 
 .title, .type {
     position: relative;
-    font-weight: 100;
-    font-size: 24pt;
+    font-weight: var(--font-weight-1);
+    font-size: var(--font-size-4);
     line-height: 38pt;
-    margin-left: 1px;
+    margin-left: var(--space-1);
     /*Make room for focus outline*/
-    padding-left: 5px;
-    padding-right: 5px;
-    margin-right: 20px;
-    margin-top: 2px;
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
+    margin-right: var(--space-5);
+    margin-top: var(--space-1);
     display: block;
 }
 
 .type {
     float: left;
-    margin-right: 20px;
+    margin-right: var(--space-5);
     display: none;
     /*Change this to display type (e.g. for accessibility)*/
 }

@@ -5,37 +5,37 @@
 }
 
 :host:not(:last-child) {
-    margin-bottom: 5px;
+    margin-bottom: var(--space-3);
 }
 
 .name {
     display: block;
     float: left;
     width: 150px;
-    padding-right: 5px;
-    font-weight: bolder;
+    padding-right: var(--space-3);
+    font-weight: var(--font-weight-2)er;
 }
 
 .field {
     display: block;
     float: left;
-    width: 245px;
+    width: var(--field-value-width);
 }
 
 .reference, .value, collectionDetails {
     display: block;
     float: left;
-    width: 245px;
-    padding-left: 5px;
-    padding-right: 5px;
-    margin: 1px;
+    width: var(--field-value-width);
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
+    margin: var(--space-1);
 }
 
 .reference img {
     display: block;
     cursor: pointer;
     float: left;
-    max-width: 245px;
+    max-width: var(--field-value-width);
     max-height: 100px;
 }
 
@@ -44,8 +44,8 @@
 .value.droppable {
     border: solid;
     border-width: 1px;
-    width: 245px;
-    height: 20px;
+    width: var(--field-value-width);
+    height: var(--field-value-height);
 }
 
 .value.droppable {
@@ -96,14 +96,14 @@ input::-ms-clear {
 }
 
 img.ui-datepicker-trigger {
-    margin-left: 5px;
-    margin-top: 2px;
+    margin-left: var(--space-3);
+    margin-top: var(--space-1);
     width: 20px;
 }
 
 select {
-    width: 245px;
-    height: 20px;
+    width: var(--field-value-width);
+    height: var(--field-value-height);
 }
 
 select[multiple] {
@@ -113,17 +113,17 @@ select[multiple] {
 
 .validation {
     color: var(--default-text-color);
-    padding: 5px;
-    font-size: 11pt;
+    padding: var(--space-3);
+    font-size: var(--font-size-2);
 }
 
 .input-control input:not([type='checkbox']), textarea {
-    width: 245px;
-    padding-left: 2px;
+    width: var(--field-value-width);
+    padding-left: var(--space-1);
 }
 
 input:not([type='checkbox']) {
-    height: 20px;
+    height: var(--field-value-height);
 }
 
 input, select {
@@ -134,15 +134,15 @@ input, select {
     display: block;
     color: black;
     background-color: white;
-    font-size: 10pt;
-    font-weight: bolder;
-    width: 245px;
+    font-size: var(--font-size-1);
+    font-weight: var(--font-weight-2)er;
+    width: var(--field-value-width);
 }
 
 .suggestions ul {
     display: block;
     margin: 0px;
-    padding: 5px;
+    padding: var(--space-3);
 }
 
 .suggestions ul:hover {

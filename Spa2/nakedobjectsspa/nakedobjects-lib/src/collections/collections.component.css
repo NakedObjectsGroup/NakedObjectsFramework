@@ -1,7 +1,7 @@
 :host {
     display: block;
     float: left;
-    margin-bottom: 20px;
-    margin-right: 20px;
+    margin-bottom: var(--space-5);
+    margin-right: var(--space-5);
 }
 

@@ -1,33 +1,33 @@
 .recent {
-    padding-left: 20px;
+    padding-left: var(--space-5);
     height: 100%;
     overflow-y: auto;
     color: var(--default-text-color);
-    font-size: 11pt;
-    font-weight: 100;
+    font-size: var(--font-size-2);
+    font-weight: var(--font-weight-1);
 }
 
 .header {
     display: block;
-    margin-bottom: 20px;
+    margin-bottom: var(--space-5);
     overflow: hidden;
     color: var(--contrast-text-color);
-    font-size: 24pt;
-    font-weight: 200;
+    font-size: var(--font-size-4);
+    font-weight: var(--font-weight-2);
     background-image: var(--header-background-image);
 }
 
 .title {
     position: relative;
-    font-weight: 200;
-    font-size: 24pt;
+    font-weight: var(--font-weight-2);
+    font-size: var(--font-size-4);
     line-height: 38pt;
-    margin-left: 1px;
+    margin-left: var(--space-1);
     /*Make room for focus outline*/
-    padding-left: 5px;
-    padding-right: 5px;
-    margin-right: 20px;
-    margin-top: 2px;
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
+    margin-right: var(--space-5);
+    margin-top: var(--space-1);
     display: inline-block;
 }
 
@@ -36,8 +36,8 @@
 }
 
 table {
-    font-size: 11pt;
-    font-weight: 200;
+    font-size: var(--font-size-2);
+    font-weight: var(--font-weight-2);
 }
 
 tr {
@@ -45,10 +45,10 @@ tr {
 }
 
 th, td {
-    font-weight: 100; /*Override browser default*/
+    font-weight: var(--font-weight-1); /*Override browser default*/
     text-align: left;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
     vertical-align: top;
 }
 

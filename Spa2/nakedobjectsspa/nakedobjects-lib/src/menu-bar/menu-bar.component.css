@@ -4,11 +4,11 @@
 
 nof-action   {
     outline: none;
-    margin-right: 20px;
+    margin-right: var(--space-5);
     display: block;
     float: left;
-    margin-left: 1px; /*Else hover outline is hidden on the left-most menu*/
-    margin-right: 10px;
-    margin-bottom: 5px; /*Else hover outline is hidden on the bottom*/
-    font-size: 16pt;
+    margin-left: var(--space-1); /*Else hover outline is hidden on the left-most menu*/
+    margin-right: var(--space-4);
+    margin-bottom: var(--space-3); /*Else hover outline is hidden on the bottom*/
+    font-size: var(--font-size-3);
 }

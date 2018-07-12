@@ -21,10 +21,10 @@
 
 .datepicker-container .datepicker-input-container .datepicker-input-icon:before {
     background-color: white;
-    padding-left: 1px;
+    padding-left: var(--space-1);
     font-family: "iconFont";
     font-size: 16px;
-    font-weight: normal;
+    font-weight: var(--font-weight-1);
     font-style: normal;
     text-decoration: inherit;
     -webkit-font-smoothing: antialiased;
@@ -135,7 +135,7 @@
 .datepicker-container .datepicker-calendar .datepicker-calendar-container {
     display: inline-block;
     width: 100%;
-    padding: 10px;
+    padding: var(--space-4);
     background: #222628;
 }
 
@@ -162,7 +162,7 @@
 
 .datepicker-container .datepicker-calendar .datepicker-calendar-container .datepicker-calendar-day-names {
     width: 230px;
-    margin-top: 10px;
+    margin-top: var(--space-4);
     display: inline-block;
     border: 1px solid transparent;
     color: white;
@@ -253,7 +253,7 @@
     border-radius: 0px;
     cursor: pointer;
     text-align: center;
-    padding: 5px 10px;
+    padding: 5px var(--space-4);
     border: 1px solid #366aab;
     border-radius: 0px;
 }
@@ -296,7 +296,7 @@
 
 input {
     border: none;
-    width: 245px;
+    width: var(--field-value-width);
     padding-left: 2px;
 }
 

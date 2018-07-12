@@ -6,10 +6,10 @@ nof-action   {
     outline: none;
     display: block;
     float: left;
-    padding: 5px;
-    margin-left: 1px; /*Else hover outline is hidden on the left-most menu*/
-    margin-right: 10px;
-    margin-bottom: 5px; /*Else hover outline is hidden on the bottom*/
-    font-weight: bolder;
-    font-size: 11pt;
+    padding: var(--space-3);
+    margin-left: var(--space-1); /*Else hover outline is hidden on the left-most menu*/
+    margin-right: var(--space-4);
+    margin-bottom: var(--space-3); /*Else hover outline is hidden on the bottom*/
+    font-weight: var(--font-weight-2)er;
+    font-size: var(--font-size-2);
 }
