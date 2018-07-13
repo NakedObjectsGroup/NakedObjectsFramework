@@ -41,7 +41,7 @@ nof-parameters {
 .columnHeader {
     display: inline-block;
     vertical-align: top;
-    width: 247px;
+    width: var(--field-value-width);
     padding-left: var(--space-4);
 }
 

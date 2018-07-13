@@ -8,11 +8,9 @@
 }
 
 .datepicker-input {
-    width: 215px;
+    width: calc(var(--field-value-width) - 25px);
     height: 20px;
-    border-style: solid;
-    border-width: 1px;
-    border-color: Grey;
+    border: none;
 }
 
 .datepicker-container .datepicker-input-container .datepicker-input-icon {
@@ -43,6 +41,10 @@
     color: black;
 }
 
+.datepicker-input-icon {
+    padding-left: 5px;
+}
+
 .datepicker-container .datepicker-input-container .datepicker-input-icon i {
     cursor: pointer;
 }
@@ -61,7 +63,7 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    width: 250px;
+    width: var(--field-value-width);
     z-index: 99;
     background: white;
     border-radius: 0px;

@@ -21,14 +21,13 @@ input[type='text'] {
 }
 
 input:hover, input:focus {
-    outline-style: solid;
     outline-color: black;
     outline-width: 1px;
 }
 
 .name {
     float: left;
-    width: 145px;
+    width: var(--field-name-width);
     padding-right: var(--space-3);
 }
 

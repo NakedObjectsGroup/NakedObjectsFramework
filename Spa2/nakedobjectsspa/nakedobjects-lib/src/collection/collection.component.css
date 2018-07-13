@@ -24,7 +24,7 @@
 }
 
 .name {
-    width: 150px;
+    width: var(--field-name-width);
 }
 
 .details {

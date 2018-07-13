@@ -4,14 +4,10 @@
     display: block;
 }
 
-:host:not(:last-child) {
-    margin-bottom: var(--space-3);
-}
-
 .name {
     display: block;
     float: left;
-    width: 150px;
+    width: var(--field-name-width);
     padding-right: var(--space-3);
     font-weight: var(--font-weight-2)er;
 }

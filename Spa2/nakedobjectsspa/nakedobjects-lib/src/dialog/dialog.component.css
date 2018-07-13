@@ -92,7 +92,7 @@ input.ok:disabled {
 }
 
 .parameter .name {
-    width: 145px;
+    width: var(--field-name-width);
     /*To align input box with reference fields*/
 }
 

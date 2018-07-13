@@ -76,19 +76,9 @@ viewTitle {
 
 .title:hover, .title:focus {
     outline-color: var(--contrast-outline-color);
-    outline-style: solid;
     outline-width: 1px;
 }
 
-/*Icons*/
-
-.icon-expand:before {
-    content: "\e099";
-}
-
-.icon-collapse:before {
-    content: "\e098";
-}
 
 .actions, .main-column {
     float: left;

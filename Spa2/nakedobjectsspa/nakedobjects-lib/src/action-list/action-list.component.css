@@ -12,15 +12,18 @@ nof-action, .submenu {
     display: block;
     cursor: pointer;
     outline: none;
-    /* margin-left: var(--space-3); */
     margin-right: var(--space-5);
-    width: 150px;
-    font-size: var(--font-size-2);
-    font-weight: var(--font-weight-2)er;
+    width: var(--action-width);
 }
 
 .submenu {
     padding: var(--space-3);
+}
+
+.submenu:hover {
+    outline-style: solid;
+    outline-width: 1px;
+    outline-color: var(--default-contrast-color);
 }
 
 .collapsed {
@@ -38,11 +41,11 @@ nof-action, .submenu {
 /*Icons*/
 
 .icon-expand:before {
-    content: "\e099";
+    content: var(--submenu-expand-icon);
 }
 
 .icon-collapse:before {
-    content: "\e098";
+    content: var(--submenu-collapse-icon);
 }
 
 .icon-expand, .icon-collapse {
@@ -51,7 +54,6 @@ nof-action, .submenu {
 
 .icon-expand:hover, .icon-collapse:hover {
     outline-color: var(--contrast-outline-color);
-    outline-style: solid;
     outline-width: 1px;
 }
 

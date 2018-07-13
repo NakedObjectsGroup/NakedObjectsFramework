@@ -11,14 +11,23 @@
     --font-weight-2: 200;
     --font-weight-3: 400;
     --font-weight-4: 600;
-
     /*Layout*/
+
+    /*Action-menu*/
+    --action-width: 150px;
+    --submenu-expand-icon: "\e099";
+    --submenu-collapse-icon: "\e098";
+
+    /*Fields (properties and parameters) */
     --field-width: 410px;
+    --field-name-width: 145px;
     --field-value-height: 20px;
     --field-value-width: 245px;
 
+    /*Collections*/
     --table-width: 450px;
 
+    /* Spacing */
     --space-1: 1px;
     --space-2: 2px;
     --space-3: 5px;

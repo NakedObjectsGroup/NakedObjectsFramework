@@ -27,7 +27,6 @@ button {
     color: var(--default-text-color);
     background-color: var(--default-background-color);
     border: none;
-    outline-style: solid;
     outline-width: 1px;
     outline-color: var(--default-outline-color);
     margin-right: var(--space-5);

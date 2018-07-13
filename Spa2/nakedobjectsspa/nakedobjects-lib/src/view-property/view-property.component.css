@@ -11,7 +11,7 @@
 .name {
     display: block;
     float: left;
-    width: 150px;
+    width: var(--field-name-width);
     padding-right: var(--space-3);
     font-weight: var(--font-weight-2)er; /*added to match alt*/
 }

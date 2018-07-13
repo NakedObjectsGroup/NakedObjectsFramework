@@ -12,6 +12,7 @@
     font-style: normal;
 }
 
+
 /* Override unwanted defaults */
 
 .gemini * {
@@ -37,6 +38,12 @@ html, #main, body, .background, .single, .split {
     height: 100%;
     /*fill the vertical space*/
     background-color: var(--default-background-color);
+}
+
+/*Other global defaults*/
+gemini {
+    outline-style: var(--default-outline-style);
+    outline-color: var(--default-outline-color);   
 }
 
 .background {

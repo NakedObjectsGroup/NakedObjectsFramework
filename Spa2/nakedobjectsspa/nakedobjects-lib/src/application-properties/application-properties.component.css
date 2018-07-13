@@ -19,9 +19,6 @@
 
 .title {
     position: relative;
-    font-weight: var(--font-weight-2);
-    font-size: var(--font-size-4);
-    line-height: 38pt;
     margin-left: var(--space-1);
     /*Make room for focus outline*/
     padding-left: var(--space-3);

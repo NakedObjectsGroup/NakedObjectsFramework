@@ -10,6 +10,7 @@ input {
     font-size: var(--font-size-2);
     color: var(--contrast-text-color);
     padding: var(--space-3);
+    font-weight: var(--font-weight-1);
 }
 
 input:focus, input:hover {

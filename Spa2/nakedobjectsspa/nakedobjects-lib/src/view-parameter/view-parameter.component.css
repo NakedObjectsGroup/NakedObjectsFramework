@@ -9,7 +9,7 @@
 
 :host.multilinedialog {
     padding-left: var(--space-4);
-    width: 247px;
+    width: var(--field-value-width);
     display: inline-block;
     overflow: auto;
 }
