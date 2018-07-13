@@ -19,7 +19,7 @@
     margin-bottom: var(--space-5);
     overflow: hidden;
     color: var(--contrast-text-color);
-    background-image: var(--header-background-image);
+    background-color: var(--header-background-color);
 }
 
 viewTitle {

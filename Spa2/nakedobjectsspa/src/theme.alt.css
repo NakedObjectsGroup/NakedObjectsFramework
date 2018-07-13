@@ -1,7 +1,47 @@
 :root {
+    --font-text-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+
+    --font-size-1: 10pt;
+    --font-size-2: 12pt;
+    --font-size-3: 16pt;
+    --font-size-4: 24pt;
+
+    --font-weight-1: 100;
+    --font-weight-2: 200;
+    --font-weight-3: 400;
+    --font-weight-4: 600;
+    /*Layout*/
+
+    /*Action-menu*/
+    --action-width: 150px;
+    --submenu-expand-icon: "\e099";
+    --submenu-collapse-icon: "\e098";
+    --menu-background-color: lightgrey;
+    --menu-text-color: var(--default-text-color);
+
+    /*Fields (properties and parameters) */
+    --field-width: 410px;
+    --field-name-width: 145px;
+    --field-value-height: 20px;
+    --field-value-width: 245px;
+
+    /*Collections*/
+    --table-width: 450px;
+
+    /* Spacing */
+    --space-1: 1px;
+    --space-2: 2px;
+    --space-3: 5px;
+    --space-4: 10px;
+    --space-5: 20px;
+
+    /*Footer*/
+    --footer-icon-size: 36pt;
+    --footer-icon-color: white;
+    --footer-icon-background: black;
+
     --theme-accent-color: #11648a;
     --default-background-color: white;
-    --menu-background-color: lightgrey;
     --default-text-color: black;
     --contrast-text-color: white;
     --warning-color: red;
@@ -20,7 +60,7 @@
     --default-link-text-color: var(--contrast-text-color);
     --default-object-text-color: var(--default-text-color);
 
-    --header-background-image: linear-gradient(to bottom, var(--theme-accent-color), #187ba9 100%);
+    --header-background-color: var(--theme-accent-color);
     --summary-icon: url("assets/alt.summary.png");
     --list-icon: url("assets/alt.list.png");
     --table-icon: url("assets/alt.table.png");

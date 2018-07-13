@@ -1,5 +1,4 @@
 :root {
-    /*Font TODO: consider merging size & weight to one font style?*/  
     --font-text-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
 
     --font-size-1: 10pt;
@@ -17,6 +16,9 @@
     --action-width: 150px;
     --submenu-expand-icon: "\e099";
     --submenu-collapse-icon: "\e098";
+    --menu-background-color: inherit;
+    --menu-text-color: var(--default-text-color);
+
 
     /*Fields (properties and parameters) */
     --field-width: 410px;
@@ -40,7 +42,6 @@
     --footer-icon-background: black;
 
     --default-background-color: black;
-    --menu-background-color: inherit;
     --default-text-color: white;
     --contrast-text-color: white;
     --warning-color: red;
@@ -125,7 +126,7 @@
     --default-link-text-color: var(--contrast-text-color);
     --default-object-text-color: var(--default-text-color);
 
-    --header-background-image: none;
+    --header-background-color:inherit;
     --summary-icon: url("assets/summary.png");
     --list-icon: url("assets/list.png");
     --table-icon: url("assets/table.png");

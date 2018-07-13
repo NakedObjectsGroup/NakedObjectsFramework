@@ -72,7 +72,7 @@ input[type='button']:focus, input[type='button']:hover, input[type='submit']:foc
 
 input.ok {
     color: var(--dialog-contrast-text-color);
-    background-image: var(--header-background-image);
+    background-color: var(--header-background-color);
     margin-bottom: var(--space-4);
 }
 
@@ -86,7 +86,7 @@ input.ok:disabled {
     margin-bottom: var(--space-4);
     /*added*/
     color: var(--dialog-contrast-text-color);
-    background-image: var(--header-background-image);
+    background-color: var(--header-background-color);
     padding: var(--space-3);
     font-weight: var(--font-weight-4);
 }

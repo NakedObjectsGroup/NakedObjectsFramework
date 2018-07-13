@@ -18,6 +18,7 @@ nof-action, .submenu {
 
 .submenu {
     padding: var(--space-3);
+    color: var(--menu-text-color);
 }
 
 .submenu:hover {

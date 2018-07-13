@@ -29,7 +29,7 @@ li a {
 }
 
 li:hover, .selected {
-    background-image: var(--header-background-image);
+    background-color: var(--header-background-color);
     background-color: grey;
 }
 
