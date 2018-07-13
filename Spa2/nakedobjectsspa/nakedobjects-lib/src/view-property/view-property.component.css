@@ -25,6 +25,12 @@
     margin: var(--space-1);
 }
 
+.reference:hover {
+    outline-style: solid;
+    outline-width: 1px;
+    outline-color: var(--default-outline-color);
+}
+
 .reference {
     cursor: pointer;
 }
