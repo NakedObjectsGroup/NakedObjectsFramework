@@ -8,8 +8,17 @@
     font-weight: var(--font-weight-1);
 }
 
-.title {
+.header {
     display: block;
+    margin-bottom: var(--space-5);
+    overflow: hidden;
+    color: var(--contrast-text-color);
+    font-size: var(--font-size-4);
+    font-weight: var(--font-weight-2);
+    background-image: var(--header-background-color);
+}
+
+.title {
     position: relative;
     font-weight: var(--font-weight-2);
     font-size: var(--font-size-4);

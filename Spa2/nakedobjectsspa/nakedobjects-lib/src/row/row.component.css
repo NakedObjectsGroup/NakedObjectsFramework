@@ -12,10 +12,6 @@ td {
     vertical-align: top;
 }
 
-td.checkbox {
-    background-color: var(--default-background-color); /* Because check-box only ever displayed on default background*/
-}
-
 .number {
     text-align:right;
 }

@@ -4,14 +4,21 @@
     height: 100%;
     overflow-y: auto;
     color: white;
-    font-size: var(--font-size-2); 
+    font-size: var(--font-size-2);
     font-weight: var(--font-weight-1);
 }
 
-
+.header {
+    display: block;
+    margin-bottom: var(--space-5);
+    overflow: hidden;
+    color: var(--contrast-text-color);
+    font-size: var(--font-size-4);
+    font-weight: var(--font-weight-2);
+    background-image: var(--header-background-color);
+}
 
 .title {
-    display: block;
     position: relative;
     font-weight: var(--font-weight-2);
     font-size: var(--font-size-4);

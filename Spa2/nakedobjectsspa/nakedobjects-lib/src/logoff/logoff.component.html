@@ -1,10 +1,16 @@
-<div class="title">Log Off {{configService.config.applicationName}}</div>
-<ng-container *ngIf="userIsLoggedIn()">    
-    <p>Please confirm log off</p>
-    <p>User : {{userId}}</p>
-    <button class="btn btn-primary btn-margin" type="button" value="Log Off" (click)="logoff()">Log Off</button>
-</ng-container>
-<ng-container *ngIf="!userIsLoggedIn()">
-    <p>No user is logged in</p>
-</ng-container>
-<button class="btn btn-primary btn-margin" type="button" value="Cancel" (click)="cancel()">Cancel</button>
+<div id="pane1" class="single">
+    <div class="logoff">
+        <div class="header">
+            <div class="title">Log Off {{configService.config.applicationName}}</div>
+        </div>
+        <ng-container *ngIf="userIsLoggedIn()">
+            <p>Please confirm log off</p>
+            <p>User : {{userId}}</p>
+            <button class="btn btn-primary btn-margin" type="button" value="Log Off" (click)="logoff()">Log Off</button>
+        </ng-container>
+        <ng-container *ngIf="!userIsLoggedIn()">
+            <p>No user is logged in</p>
+        </ng-container>
+        <button class="btn btn-primary btn-margin" type="button" value="Cancel" (click)="cancel()">Cancel</button>
+    </div>
+</div>

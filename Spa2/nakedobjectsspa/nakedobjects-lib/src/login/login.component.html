@@ -1,9 +1,15 @@
-<div class="title">Welcome to {{configService.config.applicationName}}</div>
-<ng-container *ngIf="!context.clearingDataFlag">
-    <p>Clicking the login button will generate a pop-up managed by the 'Auth0 service.</p>
-    <p>This will allow you to login using your Google, or other recognised account.</p>
-    <button class="btn btn-primary btn-margin" (click)="auth.login()">Log In</button>
-</ng-container>
-<ng-container *ngIf="context.clearingDataFlag">
-    <p>Please wait while caches are cleared</p>
-</ng-container>
+<div id="pane1" class="single">
+    <div class="login">
+        <div class="header">
+            <div class="title">Welcome to {{configService.config.applicationName}}</div>
+        </div>
+        <ng-container *ngIf="!context.clearingDataFlag">
+            <p>Clicking the login button will generate a pop-up managed by the 'Auth0 service.</p>
+            <p>This will allow you to login using your Google, or other recognised account.</p>
+            <button class="btn btn-primary btn-margin" (click)="auth.login()">Log In</button>
+        </ng-container>
+        <ng-container *ngIf="context.clearingDataFlag">
+            <p>Please wait while caches are cleared</p>
+        </ng-container>
+    </div>
+</div>
