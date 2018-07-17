@@ -6,7 +6,7 @@ import { ActionComponent } from '../action/action.component';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import flatten from 'lodash-es/flatten';
 import map from 'lodash-es/map';
-import some from 'lodash-es/map';
+import some from 'lodash-es/some';
 import { safeUnsubscribe } from '../helpers-components';
 
 @Component({
