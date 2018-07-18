@@ -71,7 +71,7 @@ namespace NakedObjects.Core.Component {
 
         private ITypeSpec NewObjectSpec(ITypeSpecImmutable spec) {
             if (!localCache.ContainsKey(spec)) {
-                localCache[spec] = specFactory.CreateTypeSpec(spec);
+				localCache[spec] = specFactory.CreateTypeSpec(spec);
             }
 
             return localCache[spec];

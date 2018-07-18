@@ -25,12 +25,18 @@ namespace NakedObjects.Reflect.FacetFactory {
     public sealed class RemoveSuperclassMethodsFacetFactory : FacetFactoryAbstract {
         private readonly IDictionary<Type, MethodInfo[]> typeToMethods = new Dictionary<Type, MethodInfo[]>();
 
+		private void addToMethodsDictionary(Type type, MethodInfo[] methods)
+		{
+			if (!typeToMethods.ContainsKey(type))
+				typeToMethods.Add(type, methods);
+		}
+
         public RemoveSuperclassMethodsFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Objects) {}
 
         private void InitForType(Type type) {
             if (!typeToMethods.ContainsKey(type)) {
-                typeToMethods.Add(type, type.GetMethods());
+				addToMethodsDictionary(type, type.GetMethods());
             }
         }
 

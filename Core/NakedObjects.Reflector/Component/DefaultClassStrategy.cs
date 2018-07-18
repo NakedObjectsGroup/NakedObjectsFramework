@@ -24,10 +24,17 @@ namespace NakedObjects.Reflect.Component {
     public sealed class DefaultClassStrategy : IClassStrategy {
         private static readonly ILog Log = LogManager.GetLogger(typeof (DefaultClassStrategy));
         private readonly IReflectorConfiguration config;
-        // only intended for use during initial reflection
-        [NonSerialized] private IImmutableDictionary<Type, bool> namespaceScratchPad = ImmutableDictionary<Type, bool>.Empty;
+		// only intended for use during initial reflection
 
-        public DefaultClassStrategy(IReflectorConfiguration config) {
+		[NonSerialized] private IImmutableDictionary<Type, bool> _namespaceScratchPad = ImmutableDictionary<Type, bool>.Empty;
+
+		public void AddToScratchPad(Type type, bool value)
+		{
+			if (!_namespaceScratchPad.ContainsKey(type))
+				_namespaceScratchPad = _namespaceScratchPad.Add(type, value);
+		}
+
+		public DefaultClassStrategy(IReflectorConfiguration config) {
             this.config = config;
         }
 
@@ -35,6 +42,7 @@ namespace NakedObjects.Reflect.Component {
 
         public bool IsTypeToBeIntrospected(Type type) {
             Type returnType = FilterNullableAndProxies(type);
+			var genArgs = type.GetGenericArguments();
             return !IsTypeIgnored(returnType) &&
                    !IsTypeUnsupportedByReflector(returnType) &&
                    IsTypeWhiteListed(returnType) &&
@@ -82,22 +90,24 @@ namespace NakedObjects.Reflect.Component {
         }
 
         private bool IsNamespaceMatch(Type type) {
-            if (!namespaceScratchPad.ContainsKey(type)) {
+            if (!_namespaceScratchPad.ContainsKey(type)) {
                 var ns = type.Namespace ?? "";
                 var match = config.SupportedNamespaces.Any(ns.StartsWith);
-                namespaceScratchPad = namespaceScratchPad.Add(type, match);
+				AddToScratchPad(type, match);
             }
 
-            return namespaceScratchPad[type];
+            return _namespaceScratchPad[type];
         }
 
         private bool IsTypeWhiteListed(Type type) {
-            return IsTypeSupportedSystemType(type) || IsNamespaceMatch(type) || IsTypeExplicitlyRequested(type);
+			var result = IsTypeSupportedSystemType(type) || IsNamespaceMatch(type) || IsTypeExplicitlyRequested(type);
+			return result;
         }
 
         private bool IsTypeExplicitlyRequested(Type type) {
             IEnumerable<Type> services = config.Services;
-            return config.TypesToIntrospect.Any(t => t == type) || services.Any(t => t == type) || type.IsGenericType && config.TypesToIntrospect.Any(t => t == type.GetGenericTypeDefinition());
+            var result = config.TypesToIntrospect.Any(t => t == type) || services.Any(t => t == type) || type.IsGenericType && config.TypesToIntrospect.Any(t => t == type.GetGenericTypeDefinition());
+			return result;
         }
 
         private Type ToMatch(Type type) {
@@ -109,11 +119,12 @@ namespace NakedObjects.Reflect.Component {
         }
 
         private bool IsTypeUnsupportedByReflector(Type type) {
-            return type.IsPointer ||
+			var boolean = type.IsPointer ||
                    type.IsByRef ||
                    CollectionUtils.IsDictionary(type) ||
                    type.IsGenericParameter ||
                    type.ContainsGenericParameters;
+			return boolean;
         }
 
         // because Sets don't implement IEnumerable<>
