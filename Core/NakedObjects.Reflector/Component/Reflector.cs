@@ -139,17 +139,6 @@ namespace NakedObjects.Reflect.Component {
             return (ITypeSpecBuilder)metamodel.GetSpecification(type, true) ?? LoadSpecificationAndCache(type);
         }
 
-		public ITypeSpecBuilder LoadSpecification(Type type)
-		{
-			Assert.AssertNotNull(type);
-			var spec = (ITypeSpecBuilder)metamodel.GetSpecification(type, true);
-			if (spec == null)
-			{
-				spec = LoadSpecificationAndCache(type);
-				return spec;
-			}
-			return spec;
-        }
 
         public T LoadSpecification<T>(Type type) where T : ITypeSpecImmutable {
             var spec = LoadSpecification(type);
@@ -233,11 +222,6 @@ namespace NakedObjects.Reflect.Component {
 
             PopulateContributedActions(spec, services);
             PopulateFinderActions(spec, services);
-        }
-
-        private void PopulateAssociatedActions(IObjectSpecBuilder spec, Type[] services)
-        {
-            PopulateAssociatedActions(spec, services);
         }
 
         private void InstallMainMenus(IMenu[] menus) {
