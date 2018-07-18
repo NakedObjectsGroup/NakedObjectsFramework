@@ -75,7 +75,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
 
     private readonly editProperties = () => filter(this.properties, p => p.isEditable);
 
-    private readonly isFormOrTransient = () => this.domainObject.extensions().interactionMode() === "form" || this.domainObject.extensions().interactionMode() === "transient";
+    private readonly isFormOrTransient = () => this.domainObject.extensions().interactionMode() === 'form' || this.domainObject.extensions().interactionMode() === 'transient';
 
     private readonly cancelHandler = () => this.isFormOrTransient() ? () => this.urlManager.popUrlState(this.onPaneId) : () => this.urlManager.setInteractionMode(InteractionMode.View, this.onPaneId);
 
@@ -117,7 +117,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
         this.onPaneId = routeData.paneId;
         this.routeData = routeData;
         const iMode = this.domainObject.extensions().interactionMode();
-        this.isInEdit = routeData.interactionMode !== InteractionMode.View || iMode === "form" || iMode === "transient";
+        this.isInEdit = routeData.interactionMode !== InteractionMode.View || iMode === 'form' || iMode === 'transient';
         this.props = routeData.interactionMode !== InteractionMode.View ? this.contextService.getObjectCachedValues(this.domainObject.id(), routeData.paneId) : {};
 
         const actions = values(this.domainObject.actionMembers()) as Models.ActionMember[];
@@ -151,9 +151,9 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
         };
         const sav = selfAsValue();
 
-        this.value = sav ? sav.toString() : "";
-        this.reference = sav ? sav.toValueString() : "";
-        this.selectedChoice = sav ? new ChoiceViewModel(sav, "") : null;
+        this.value = sav ? sav.toString() : '';
+        this.reference = sav ? sav.toValueString() : '';
+        this.selectedChoice = sav ? new ChoiceViewModel(sav, '') : null;
 
         this.colorService.toColorNumberFromType(this.domainObject.domainType())
             .then(c => this.color = `${this.configService.config.objectColor}${c}`)

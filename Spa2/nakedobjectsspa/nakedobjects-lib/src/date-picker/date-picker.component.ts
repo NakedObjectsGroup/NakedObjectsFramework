@@ -18,32 +18,32 @@ export type IDatePickerInputEvent = IDatePickerInputDateEvent | IDatePickerInput
 export type IDatePickerOutputEvent = IDatePickerOutputDefaultEvent | IDatePickerOutputChangedEvent | IDatePickerOutputInvalidEvent | IDatePickerOutputClearedEvent;
 
 export interface IDatePickerInputDateEvent {
-    type: "setDate";
+    type: 'setDate';
     data:  string;
 }
 
 export interface IDatePickerInputActionEvent {
-    type: "action";
-    data: "toggle" | "close" | "open";
+    type: 'action';
+    data: 'toggle' | 'close' | 'open';
 }
 
 export interface IDatePickerOutputDefaultEvent {
-    type: "default";
-    data: "init" | "opened" | "closed";
+    type: 'default';
+    data: 'init' | 'opened' | 'closed';
 }
 
 export interface IDatePickerOutputChangedEvent {
-    type: "dateChanged";
+    type: 'dateChanged';
     data: momentNs.Moment;
 }
 
 export interface IDatePickerOutputInvalidEvent {
-    type: "dateInvalid";
+    type: 'dateInvalid';
     data: string;
 }
 
 export interface IDatePickerOutputClearedEvent {
-    type: "dateCleared";
+    type: 'dateCleared';
     data: string;
 }
 
@@ -92,7 +92,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
     opened: boolean;
     days: ICalendarDate[];
 
-    @ViewChild("inp")
+    @ViewChild('inp')
     inputField: ElementRef;
 
     constructor() {
@@ -104,7 +104,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
         this.outputEvents = new EventEmitter<IDatePickerOutputEvent>();
     }
 
-    private validInputFormats = ["DD/MM/YYYY", "DD/MM/YY", "D/M/YY", "D/M/YYYY", "D MMM YYYY", "D MMMM YYYY", Constants.fixedDateFormat];
+    private validInputFormats = ['DD/MM/YYYY', 'DD/MM/YY', 'D/M/YY', 'D/M/YYYY', 'D MMM YYYY', 'D MMMM YYYY', Constants.fixedDateFormat];
 
     private dateModelValue: momentNs.Moment | null;
     private modelValue: string;
@@ -141,7 +141,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
             this.outputEvents.emit({ type: 'dateChanged', data: this.dateModel! });
         } else {
             this.dateModelValue = null;
-            this.outputEvents.emit({ type: 'dateCleared', data: "" });
+            this.outputEvents.emit({ type: 'dateCleared', data: '' });
         }
     }
 
@@ -178,7 +178,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
         const optionFormats = this.options.format ? [this.options.format] : [];
         this.validInputFormats = concat(optionFormats, this.validInputFormats);
 
-        this.outputEvents.emit({ type: 'default', data: "init" } as IDatePickerOutputDefaultEvent);
+        this.outputEvents.emit({ type: 'default', data: 'init' } as IDatePickerOutputDefaultEvent);
 
         if (this.inputEvents) {
             this.eventsSub = this.inputEvents.subscribe((e: IDatePickerInputEvent) => {
@@ -248,7 +248,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
     }
 
     private formatDate(date: momentNs.Moment | null) {
-        return this.dateModel ? this.dateModel.format(this.options.format) : "";
+        return this.dateModel ? this.dateModel.format(this.options.format) : '';
     }
 
     selectDate(date: momentNs.Moment | null, e?: MouseEvent, ) {
@@ -315,7 +315,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
 
     clear() {
         this.selectDate(null);
-        this.model = "";
+        this.model = '';
         this.close();
     }
 

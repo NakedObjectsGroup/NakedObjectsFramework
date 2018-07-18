@@ -38,7 +38,7 @@ export class CiceroComponent implements OnInit, OnDestroy {
     private lastPaneRouteData: PaneRouteData;
     private previousInput: string;
 
-    @ViewChild("inputField")
+    @ViewChild('inputField')
     inputField: ElementRef;
 
     // template API
@@ -54,7 +54,7 @@ export class CiceroComponent implements OnInit, OnDestroy {
             case RtD.ViewType.List:
                 return this.ciceroRendererService.renderList(this.lastPaneRouteData);
             default:
-                return this.ciceroRendererService.renderError("unknown render error");
+                return this.ciceroRendererService.renderError('unknown render error');
         }
     }
 
@@ -73,7 +73,7 @@ export class CiceroComponent implements OnInit, OnDestroy {
                                 }).
                                 catch((reject: Ro.ErrorWrapper) => {
                                     if (reject.category === Ro.ErrorCategory.ClientError && reject.clientErrorCode === Ro.ClientErrorCode.ExpiredTransient) {
-                                        this.outputText = "The requested view of unsaved object details has expired.";
+                                        this.outputText = 'The requested view of unsaved object details has expired.';
                                     } else {
                                         const display = (em: Ro.ErrorMap) => this.outputText = em.invalidReason() || em.warningMessage;
                                         this.error.handleErrorAndDisplayMessages(reject, display);
@@ -119,10 +119,10 @@ export class CiceroComponent implements OnInit, OnDestroy {
         }
 
         if (result.output != null) {
-            const warning = this.warnings && this.warnings.length > 0 ? reduce(this.warnings, (s, w) => `${s}${w}\n`, "Warning: ") : "";
-            const messages = this.messages && this.messages.length > 0 ? reduce(this.messages, (s, w) => `${s}${w}\n`, "") : "";
+            const warning = this.warnings && this.warnings.length > 0 ? reduce(this.warnings, (s, w) => `${s}${w}\n`, 'Warning: ') : '';
+            const messages = this.messages && this.messages.length > 0 ? reduce(this.messages, (s, w) => `${s}${w}\n`, '') : '';
             const prefix = `${warning}${messages}`;
-            const output = result.output != null ? result.output : "";
+            const output = result.output != null ? result.output : '';
 
             this.outputText = `${prefix}${output}`;
         }
@@ -131,20 +131,20 @@ export class CiceroComponent implements OnInit, OnDestroy {
 
     parseInput(input: string): void {
         const prevInput = this.commandFactory.preParse(input).input;
-        this.previousInput = prevInput ? prevInput.trim() : "";
+        this.previousInput = prevInput ? prevInput.trim() : '';
         const parseResult = this.commandFactory.getCommands(input);
 
         if (parseResult.commands) {
             this.executeCommands(parseResult.commands);
         } else if (parseResult.error) {
             this.outputText = parseResult.error;
-            this.inputText = "";
+            this.inputText = '';
         }
     }
 
     selectPreviousInput = () => setTimeout(() => this.inputText = this.previousInput);
 
-    clearInput = () => this.inputText = "";
+    clearInput = () => this.inputText = '';
 
     autocomplete(input: string): boolean {
         input = input.trim();

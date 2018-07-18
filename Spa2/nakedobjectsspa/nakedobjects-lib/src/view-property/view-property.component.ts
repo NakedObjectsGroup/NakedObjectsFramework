@@ -67,7 +67,7 @@ export class ViewPropertyComponent {
     }
 
     get isBlob() {
-        return this.property.format === "blob";
+        return this.property.format === 'blob';
     }
 
     get isMultiline() {

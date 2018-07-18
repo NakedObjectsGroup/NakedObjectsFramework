@@ -4,7 +4,7 @@ import * as Usermessages from '../user-messages';
 
 export class Back extends Command {
 
-    shortCommand = "ba";
+    shortCommand = 'ba';
     fullCommand = Usermessages.backCommand;
     helpText = Usermessages.backHelp;
     protected minArguments = 0;
@@ -15,6 +15,6 @@ export class Back extends Command {
     }
 
     doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
-        return this.returnResult("", "", () => this.location.back());
+        return this.returnResult('', '', () => this.location.back());
     }
 }

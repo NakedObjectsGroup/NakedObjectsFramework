@@ -50,37 +50,37 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private actionButton: IActionHolder = {
-        value: "Actions",
+        value: 'Actions',
         doClick: () => this.toggleActionMenu(),
         show: () => true,
         disabled: () => this.disableActions(),
         tempDisabled: () => null,
         title: () => this.actionsTooltip(),
-        accesskey: "a"
+        accesskey: 'a'
     };
 
     private editButton: IActionHolder = {
-        value: "Edit",
+        value: 'Edit',
         doClick: () => this.doEdit(),
         show: () => this.showEdit(),
         disabled: () => null,
         tempDisabled: () => null,
-        title: () => "",
+        title: () => '',
         accesskey: null
     };
 
     private reloadButton: IActionHolder = {
-        value: "Reload",
+        value: 'Reload',
         doClick: () => this.doReload(),
         show: () => true,
         disabled: () => null,
         tempDisabled: () => null,
-        title: () => "",
+        title: () => '',
         accesskey: null
     };
 
     private saveButton: IActionHolder = {
-        value: "Save",
+        value: 'Save',
         doClick: () => this.onSubmit(true),
         show: () => true,
         disabled: () => this.form && !this.form.valid ? true : null,
@@ -90,7 +90,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
     };
 
     private saveAndCloseButton: IActionHolder = {
-        value: "Save & Close",
+        value: 'Save & Close',
         doClick: () => this.onSubmit(false),
         show: () => this.unsaved(),
         disabled: () => this.form && !this.form.valid ? true : null,
@@ -100,12 +100,12 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
     };
 
     private cancelButton: IActionHolder = {
-        value: "Cancel",
+        value: 'Cancel',
         doClick: () => this.doEditCancel(),
         show: () => true,
         disabled: () => null,
         tempDisabled: () => null,
-        title: () => "",
+        title: () => '',
         accesskey: null
     };
 
@@ -134,13 +134,13 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
     form: FormGroup | null;
 
     get viewMode() {
-        return this.mode == null ? "" : InteractionMode[this.mode];
+        return this.mode == null ? '' : InteractionMode[this.mode];
     }
 
     // must be properties as object may change - eg be reloaded
     get friendlyName() {
         const obj = this.object;
-        return obj ? obj.friendlyName : "";
+        return obj ? obj.friendlyName : '';
     }
 
     // used to smooth transition before object set
@@ -153,7 +153,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
 
     get properties() {
         const obj = this.object;
-        return obj ? obj.properties : "";
+        return obj ? obj.properties : '';
     }
 
     get collections(): CollectionViewModel[] {
@@ -163,7 +163,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
 
     get tooltip(): string {
         const obj = this.object;
-        return obj ? obj.tooltip() : "";
+        return obj ? obj.tooltip() : '';
     }
 
     onSubmit(viewObject: boolean) {
@@ -186,8 +186,8 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
 
     title() {
         const obj = this.object;
-        const prefix = this.mode === InteractionMode.Edit || this.mode === InteractionMode.Transient ? `${Msg.editing} - ` : "";
-        return obj ? `${prefix}${obj.title}` : "";
+        const prefix = this.mode === InteractionMode.Edit || this.mode === InteractionMode.Transient ? `${Msg.editing} - ` : '';
+        return obj ? `${prefix}${obj.title}` : '';
     }
 
     disableActions = () => {
@@ -197,7 +197,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
 
     actionsTooltip = () => {
         const obj = this.object;
-        return obj ? obj.actionsTooltip() : "";
+        return obj ? obj.actionsTooltip() : '';
     }
 
     unsaved = () => {
@@ -235,7 +235,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
 
     message = () => {
         const obj = this.object;
-        return obj ? obj.getMessage() : "";
+        return obj ? obj.getMessage() : '';
     }
 
     showActions = () => {

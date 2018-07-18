@@ -5,7 +5,7 @@ import * as Routedata from '../route-data';
 
 export class Edit extends Command {
 
-    shortCommand = "ed";
+    shortCommand = 'ed';
     fullCommand = Usermessages.editCommand;
     helpText = Usermessages.editHelp;
     protected minArguments = 0;
@@ -17,13 +17,13 @@ export class Edit extends Command {
 
     doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
         if (chained) {
-            return this.returnResult("", this.mayNotBeChained(), () => { }, true);
+            return this.returnResult('', this.mayNotBeChained(), () => { }, true);
         }
         const newState = () => {
             this.context.clearObjectCachedValues();
             this.urlManager.setInteractionMode(Routedata.InteractionMode.Edit);
         };
 
-        return this.returnResult("", "", newState);
+        return this.returnResult('', '', newState);
     }
 }

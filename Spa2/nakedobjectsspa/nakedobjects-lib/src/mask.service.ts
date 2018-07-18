@@ -27,7 +27,7 @@ export interface IMaskMap {
 class LocalStringFilter implements ILocalFilter {
 
     filter(val: any): string {
-        return val ? val.toString() : "";
+        return val ? val.toString() : '';
     }
 }
 
@@ -35,7 +35,7 @@ function transform(tfm: () => string | null) {
     try {
         return tfm();
     } catch (e) {
-        return "";
+        return '';
     }
 }
 
@@ -48,12 +48,12 @@ class LocalCurrencyFilter implements ILocalFilter {
     ) { }
 
     filter(val: any): string {
-        if (val == null || val === "") {
-            return "";
+        if (val == null || val === '') {
+            return '';
         }
 
         const pipe = new CurrencyPipe(this.locale);
-        return transform(() => pipe.transform(val, this.symbol, "symbol", this.digits)) || "";
+        return transform(() => pipe.transform(val, this.symbol, 'symbol', this.digits)) || '';
     }
 }
 
@@ -67,12 +67,12 @@ class LocalDateFilter implements ILocalFilter {
 
     filter(val: string): string {
         if (!val) {
-            return "";
+            return '';
         }
         // Angular date pipes no longer support timezones so we need to use moment here
 
         // date or time
-        let mmt = val.length > 8 ?  moment.utc(val) : moment.utc(val, "HH:mm:ss");
+        let mmt = val.length > 8 ?  moment.utc(val) : moment.utc(val, 'HH:mm:ss');
 
         if (mmt.isValid()) {
             if (this.tz) {
@@ -80,7 +80,7 @@ class LocalDateFilter implements ILocalFilter {
             }
             return mmt.format(this.mask);
         }
-        return "";
+        return '';
     }
 }
 
@@ -92,12 +92,12 @@ class LocalNumberFilter implements ILocalFilter {
     ) { }
 
     filter(val: any): string {
-        if (val == null || val === "") {
-            return "";
+        if (val == null || val === '') {
+            return '';
         }
         const pipe = new DecimalPipe(this.locale);
         const result = transform(() => pipe.transform(val, this.digits));
-        return result == null ? "" : result;
+        return result == null ? '' : result;
     }
 }
 
@@ -106,12 +106,12 @@ export class MaskService implements IMaskServiceConfigurator {
 
     private maskMap: IMaskMap = {
         string: {},
-        "date-time": {},
+        'date-time': {},
         date: {},
         time: {},
-        "utc-millisec": {},
-        "big-integer": {},
-        "big-decimal": {},
+        'utc-millisec': {},
+        'big-integer': {},
+        'big-decimal': {},
         blob: {},
         clob: {},
         decimal: {},
@@ -129,27 +129,27 @@ export class MaskService implements IMaskServiceConfigurator {
 
     defaultLocalFilter(format: Ro.FormatType): ILocalFilter {
         switch (format) {
-            case ("string"):
+            case ('string'):
                 return new LocalStringFilter();
-            case ("date-time"):
-                return new LocalDateFilter(this.defaultLocale, "D MMM YYYY HH:mm:ss");
-            case ("date"):
-                return new LocalDateFilter(this.defaultLocale, "D MMM YYYY", "+0000");
-            case ("time"):
-                return new LocalDateFilter(this.defaultLocale, "HH:mm", "+0000");
-            case ("utc-millisec"):
+            case ('date-time'):
+                return new LocalDateFilter(this.defaultLocale, 'D MMM YYYY HH:mm:ss');
+            case ('date'):
+                return new LocalDateFilter(this.defaultLocale, 'D MMM YYYY', '+0000');
+            case ('time'):
+                return new LocalDateFilter(this.defaultLocale, 'HH:mm', '+0000');
+            case ('utc-millisec'):
                 return new LocalNumberFilter(this.defaultLocale);
-            case ("big-integer"):
+            case ('big-integer'):
                 return new LocalNumberFilter(this.defaultLocale);
-            case ("big-decimal"):
+            case ('big-decimal'):
                 return new LocalNumberFilter(this.defaultLocale);
-            case ("blob"):
+            case ('blob'):
                 return new LocalStringFilter();
-            case ("clob"):
+            case ('clob'):
                 return new LocalStringFilter();
-            case ("decimal"):
+            case ('decimal'):
                 return new LocalNumberFilter(this.defaultLocale);
-            case ("int"):
+            case ('int'):
                 return new LocalNumberFilter(this.defaultLocale);
             default:
                 return new LocalStringFilter();

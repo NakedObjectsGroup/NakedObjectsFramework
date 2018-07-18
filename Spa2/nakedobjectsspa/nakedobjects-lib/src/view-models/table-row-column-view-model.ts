@@ -23,18 +23,18 @@ export class TableRowColumnViewModel {
                 const size = propertyRep.size();
 
                 this.formattedValue = Helpers.getCollectionDetails(size);
-                this.value = "";
-                this.type = "scalar";
-                this.returnType = "string";
+                this.value = '';
+                this.type = 'scalar';
+                this.returnType = 'string';
             }
 
             if (propertyRep instanceof Models.PropertyMember) {
-                const isPassword = propertyRep.extensions().dataType() === "password";
+                const isPassword = propertyRep.extensions().dataType() === 'password';
                 const value = propertyRep.value();
                 this.returnType = propertyRep.extensions().returnType() !;
 
                 if (propertyRep.isScalar()) {
-                    this.type = "scalar";
+                    this.type = 'scalar';
                     Helpers.setScalarValueInView(this, propertyRep, value);
 
                     const remoteMask = propertyRep.extensions().mask();
@@ -57,19 +57,19 @@ export class TableRowColumnViewModel {
                     }
                 } else {
                     // is reference
-                    this.type = "ref";
-                    this.formattedValue = value.isNull() ? "" : value.toString();
+                    this.type = 'ref';
+                    this.formattedValue = value.isNull() ? '' : value.toString();
                 }
             }
         } else {
-            this.type = "scalar";
-            this.value = "";
-            this.formattedValue = "";
-            this.title = "";
+            this.type = 'scalar';
+            this.value = '';
+            this.formattedValue = '';
+            this.title = '';
         }
     }
 
-    readonly type: "ref" | "scalar";
+    readonly type: 'ref' | 'scalar';
     readonly returnType: string;
     readonly value: Ro.ScalarValueType | Date;
     readonly formattedValue: string;

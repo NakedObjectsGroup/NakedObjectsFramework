@@ -46,8 +46,8 @@ export abstract class FieldViewModel extends MessageViewModel {
         this.returnType = ext.returnType() !;
         this.format = Models.withNull(ext.format());
         this.multipleLines = ext.multipleLines() || 1;
-        this.password = ext.dataType() === "password";
-        this.type = isScalar ? "scalar" : "ref";
+        this.password = ext.dataType() === 'password';
+        this.type = isScalar ? 'scalar' : 'ref';
         this.argId = `${id.toLowerCase()}`;
         this.paneArgId = `${this.argId}${onPaneId}`;
     }
@@ -64,10 +64,10 @@ export abstract class FieldViewModel extends MessageViewModel {
     readonly format: Ro.FormatType | null;
     readonly multipleLines: number;
     readonly password: boolean;
-    readonly type: "scalar" | "ref";
+    readonly type: 'scalar' | 'ref';
 
     clientValid = true;
-    reference = "";
+    reference = '';
     minLength: number;
     color: string;
     promptArguments: Dictionary<Models.Value>;
@@ -109,7 +109,7 @@ export abstract class FieldViewModel extends MessageViewModel {
 
         if (!this.optional && !this.hasValue && this.entryType !== Models.EntryType.AutoComplete) {
             // mandatory and not selected so add a mandatory indicator choice
-            const indicatorChoice = new ChoiceViewModel(new Models.Value(""), this.id, "*");
+            const indicatorChoice = new ChoiceViewModel(new Models.Value(''), this.id, '*');
             this.choiceOptions = concat<ChoiceViewModel>([indicatorChoice], this.choices);
             this.selectedChoice = indicatorChoice;
         }
@@ -156,7 +156,7 @@ export abstract class FieldViewModel extends MessageViewModel {
             if (viewValue.length) {
                 return every(viewValue as (string | ChoiceViewModel)[], (v: any) => this.isValid(v));
             }
-            val = "";
+            val = '';
         } else {
             val = viewValue as string;
         }
@@ -175,7 +175,7 @@ export abstract class FieldViewModel extends MessageViewModel {
         }
 
         // only fully validate freeform scalar
-        const fullValidate = this.entryType === Models.EntryType.FreeForm && this.type === "scalar";
+        const fullValidate = this.entryType === Models.EntryType.FreeForm && this.type === 'scalar';
 
         return this.validate(viewValue, val, !fullValidate);
     }
@@ -183,7 +183,7 @@ export abstract class FieldViewModel extends MessageViewModel {
     readonly validator = (c: AbstractControl): { [index: string]: any; } | null => {
         const viewValue = c.value as string | ChoiceViewModel | string[] | ChoiceViewModel[];
         const isvalid = this.isValid(viewValue);
-        return isvalid ? null : { invalid: "invalid entry" };
+        return isvalid ? null : { invalid: 'invalid entry' };
     }
 
     readonly setNewValue = (newValue: IDraggableViewModel) => {
@@ -195,7 +195,7 @@ export abstract class FieldViewModel extends MessageViewModel {
     readonly clear = () => {
         this.selectedChoice = null;
         this.value = null;
-        this.reference = "";
+        this.reference = '';
     }
 
     protected update() {
@@ -228,12 +228,12 @@ export abstract class FieldViewModel extends MessageViewModel {
     }
 
     protected getRequiredIndicator() {
-        return this.optional || typeof this.value === "boolean" ? "" : "* ";
+        return this.optional || typeof this.value === 'boolean' ? '' : '* ';
     }
 
     private setColor() {
 
-        if (this.entryType === Models.EntryType.AutoComplete && this.selectedChoice && this.type === "ref") {
+        if (this.entryType === Models.EntryType.AutoComplete && this.selectedChoice && this.type === 'ref') {
             const href = this.selectedChoice.getValue().getHref();
             if (href) {
                 this.colorService.toColorNumberFromHref(href)
@@ -258,7 +258,7 @@ export abstract class FieldViewModel extends MessageViewModel {
             return;
         }
 
-        this.color = "";
+        this.color = '';
     }
 
     readonly setValueFromControl = (newValue: Ro.ScalarValueType | Date | ChoiceViewModel | ChoiceViewModel[]) => {
@@ -284,7 +284,7 @@ export abstract class FieldViewModel extends MessageViewModel {
 
             if (this.entryType === Models.EntryType.MultipleChoices || this.entryType === Models.EntryType.MultipleConditionalChoices || this.isCollectionContributed) {
                 const selections = this.selectedMultiChoices || [];
-                if (this.type === "scalar") {
+                if (this.type === 'scalar') {
                     const selValues = map(selections, (cvm: ChoiceViewModel) => cvm.getValue().scalar());
                     return new Models.Value(selValues);
                 }
@@ -293,27 +293,27 @@ export abstract class FieldViewModel extends MessageViewModel {
             }
 
             const choiceValue = this.selectedChoice ? this.selectedChoice.getValue() : null;
-            if (this.type === "scalar") {
-                return new Models.Value(choiceValue && choiceValue.scalar() != null ? choiceValue.scalar() : "");
+            if (this.type === 'scalar') {
+                return new Models.Value(choiceValue && choiceValue.scalar() != null ? choiceValue.scalar() : '');
             }
 
             // reference
             return new Models.Value(choiceValue && choiceValue.isReference() && this.selectedChoice ? { href: choiceValue.getHref() !, title: this.selectedChoice.name } : null);
         }
 
-        if (this.type === "scalar") {
+        if (this.type === 'scalar') {
             if (this.value == null) {
-                return new Models.Value("");
+                return new Models.Value('');
             }
 
             if (this.value instanceof Date) {
 
-                if (this.format === "time") {
+                if (this.format === 'time') {
                     // time format
                     return new Models.Value(Models.toTimeString(this.value as Date));
                 }
 
-                if (this.format === "date") {
+                if (this.format === 'date') {
                     // truncate time;
                     return new Models.Value(Models.toDateString(this.value as Date));
                 }

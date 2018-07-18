@@ -4,7 +4,7 @@ import * as Usermessages from '../user-messages';
 
 export class Where extends Command {
 
-    shortCommand = "wh";
+    shortCommand = 'wh';
     fullCommand = Usermessages.whereCommand;
     helpText = Usermessages.whereHelp;
     protected minArguments = 0;

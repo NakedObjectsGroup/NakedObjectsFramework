@@ -53,7 +53,7 @@ export class ParameterViewModel extends FieldViewModel {
             this.setupParameterAutocomplete();
         }
 
-        if (fieldEntryType === Models.EntryType.FreeForm && this.type === "ref") {
+        if (fieldEntryType === Models.EntryType.FreeForm && this.type === 'ref') {
             this.setupParameterFreeformReference();
         }
 
@@ -154,10 +154,10 @@ export class ParameterViewModel extends FieldViewModel {
     private toTriStateBoolean(valueToSet: string | boolean | number | null): boolean | null {
 
         // looks stupid but note type checking
-        if (valueToSet === true || valueToSet === "true") {
+        if (valueToSet === true || valueToSet === 'true') {
             return true;
         }
-        if (valueToSet === false || valueToSet === "false") {
+        if (valueToSet === false || valueToSet === 'false') {
             return false;
         }
         return null;
@@ -169,19 +169,19 @@ export class ParameterViewModel extends FieldViewModel {
 
         this.refresh = (newValue: Models.Value) => {
 
-            if (returnType === "boolean") {
+            if (returnType === 'boolean') {
                 const valueToSet = (newValue ? newValue.toValueString() : null) || parmRep.default().scalar();
                 const bValueToSet = this.toTriStateBoolean(valueToSet);
 
                 this.value = bValueToSet;
             } else if (Models.isDateOrDateTime(parmRep)) {
                 const date = Models.toUtcDate(newValue || new Models.Value(this.dflt));
-                this.value = date ? Models.toDateString(date) : "";
+                this.value = date ? Models.toDateString(date) : '';
             } else if (Models.isTime(parmRep)) {
                 const time = Models.toTime(newValue || new Models.Value(this.dflt));
-                this.value = time ? Models.toTimeString(time) : "";
+                this.value = time ? Models.toTimeString(time) : '';
             } else {
-                this.value = (newValue ? newValue.toString() : null) || this.dflt || "";
+                this.value = (newValue ? newValue.toString() : null) || this.dflt || '';
             }
         };
 
@@ -195,11 +195,11 @@ export class ParameterViewModel extends FieldViewModel {
 
         switch (this.entryType) {
             case (Models.EntryType.FreeForm):
-                if (this.type === "scalar") {
+                if (this.type === 'scalar') {
                     if (this.localFilter) {
-                        this.formattedValue = this.value ? this.localFilter.filter(this.value) : "";
+                        this.formattedValue = this.value ? this.localFilter.filter(this.value) : '';
                     } else {
-                        this.formattedValue = this.value ? this.value.toString() : "";
+                        this.formattedValue = this.value ? this.value.toString() : '';
                     }
                     break;
                 }
@@ -208,7 +208,7 @@ export class ParameterViewModel extends FieldViewModel {
             case (Models.EntryType.AutoComplete):
             case (Models.EntryType.Choices):
             case (Models.EntryType.ConditionalChoices):
-                this.formattedValue = this.selectedChoice ? this.selectedChoice.toString() : "";
+                this.formattedValue = this.selectedChoice ? this.selectedChoice.toString() : '';
                 break;
             case (Models.EntryType.MultipleChoices):
             case (Models.EntryType.MultipleConditionalChoices):
@@ -216,7 +216,7 @@ export class ParameterViewModel extends FieldViewModel {
                 this.formattedValue = `${count} selected`;
                 break;
             default:
-                this.formattedValue = this.value ? this.value.toString() : "";
+                this.formattedValue = this.value ? this.value.toString() : '';
         }
     }
 }

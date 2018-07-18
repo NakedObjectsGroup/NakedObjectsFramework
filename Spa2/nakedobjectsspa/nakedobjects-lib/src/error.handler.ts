@@ -14,12 +14,12 @@ export class GeminiErrorHandler implements ErrorHandler {
             const context: ContextService = ec.injector.get(ContextService);
 
             const rp = new Models.ErrorWrapper(Models.ErrorCategory.ClientError, Models.ClientErrorCode.SoftwareError, error.message);
-            rp.stackTrace = error.stack.split("\n");
+            rp.stackTrace = error.stack.split('\n');
 
             context.setError(rp);
             urlManager.setError(Models.ErrorCategory.ClientError, Models.ClientErrorCode.SoftwareError);
         } else {
-            error = error || { message: "null error", stack: "" };
+            error = error || { message: 'null error', stack: '' };
             console.error(`${error.message}\n${error.stack}`);
             throw error;
         }

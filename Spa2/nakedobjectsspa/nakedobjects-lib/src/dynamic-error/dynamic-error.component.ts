@@ -32,7 +32,7 @@ export class DynamicErrorComponent implements OnInit {
                 this.parent.createComponent(childComponent);
             });
         } else {
-            this.loggerService.warn("No error found returning to home page");
+            this.loggerService.warn('No error found returning to home page');
             this.urlManagerService.setHomeSinglePane();
         }
     }

@@ -26,91 +26,91 @@ const routes: Routes = [
         path: 'gemini/home',
         component: HomeComponent,
         canActivate: [AuthService],
-        data: { pane: 1, paneType: "single" },
+        data: { pane: 1, paneType: 'single' },
         children: [
-            { path: "home", component: HomeComponent, data: { pane: 2, paneType: "split" } },
-            { path: "object", component: DynamicObjectComponent, data: { pane: 2, paneType: "split" } },
-            { path: "list", component: DynamicListComponent, data: { pane: 2, paneType: "split" } },
-            { path: "attachment", component: AttachmentComponent, data: { pane: 2, paneType: "split" } },
-            { path: "recent", component: RecentComponent, data: { pane: 2, paneType: "split" } }
+            { path: 'home', component: HomeComponent, data: { pane: 2, paneType: 'split' } },
+            { path: 'object', component: DynamicObjectComponent, data: { pane: 2, paneType: 'split' } },
+            { path: 'list', component: DynamicListComponent, data: { pane: 2, paneType: 'split' } },
+            { path: 'attachment', component: AttachmentComponent, data: { pane: 2, paneType: 'split' } },
+            { path: 'recent', component: RecentComponent, data: { pane: 2, paneType: 'split' } }
         ]
     },
     {
         path: 'gemini/object',
         component: DynamicObjectComponent,
         canActivate: [AuthService],
-        data: { pane: 1, paneType: "single", dynamicType: ViewType.Object },
+        data: { pane: 1, paneType: 'single', dynamicType: ViewType.Object },
         children: [
-            { path: "home", component: HomeComponent, data: { pane: 2, paneType: "split" } },
-            { path: "object", component: DynamicObjectComponent, data: { pane: 2, paneType: "split" } },
-            { path: "list", component: DynamicListComponent, data: { pane: 2, paneType: "split" } },
-            { path: "attachment", component: AttachmentComponent, data: { pane: 2, paneType: "split" } },
-            { path: "recent", component: RecentComponent, data: { pane: 2, paneType: "split" } }
+            { path: 'home', component: HomeComponent, data: { pane: 2, paneType: 'split' } },
+            { path: 'object', component: DynamicObjectComponent, data: { pane: 2, paneType: 'split' } },
+            { path: 'list', component: DynamicListComponent, data: { pane: 2, paneType: 'split' } },
+            { path: 'attachment', component: AttachmentComponent, data: { pane: 2, paneType: 'split' } },
+            { path: 'recent', component: RecentComponent, data: { pane: 2, paneType: 'split' } }
         ]
     },
     {
         path: 'gemini/list',
         component: DynamicListComponent,
         canActivate: [AuthService],
-        data: { pane: 1, paneType: "single" },
+        data: { pane: 1, paneType: 'single' },
         children: [
-            { path: "home", component: HomeComponent, data: { pane: 2, paneType: "split" } },
-            { path: "object", component: DynamicObjectComponent, data: { pane: 2, paneType: "split" } },
-            { path: "list", component: DynamicListComponent, data: { pane: 2, paneType: "split" } },
-            { path: "attachment", component: AttachmentComponent, data: { pane: 2, paneType: "split" } },
-            { path: "recent", component: RecentComponent, data: { pane: 2, paneType: "split" } }
+            { path: 'home', component: HomeComponent, data: { pane: 2, paneType: 'split' } },
+            { path: 'object', component: DynamicObjectComponent, data: { pane: 2, paneType: 'split' } },
+            { path: 'list', component: DynamicListComponent, data: { pane: 2, paneType: 'split' } },
+            { path: 'attachment', component: AttachmentComponent, data: { pane: 2, paneType: 'split' } },
+            { path: 'recent', component: RecentComponent, data: { pane: 2, paneType: 'split' } }
         ]
     },
     {
         path: 'gemini/attachment',
         component: AttachmentComponent,
         canActivate: [AuthService],
-        data: { pane: 1, paneType: "single" },
+        data: { pane: 1, paneType: 'single' },
         children: [
-            { path: "home", component: HomeComponent, data: { pane: 2, paneType: "split" } },
-            { path: "object", component: DynamicObjectComponent, data: { pane: 2, paneType: "split" } },
-            { path: "list", component: DynamicListComponent, data: { pane: 2, paneType: "split" } },
-            { path: "attachment", component: AttachmentComponent, data: { pane: 2, paneType: "split" } },
-            { path: "recent", component: RecentComponent, data: { pane: 2, paneType: "split" } }
+            { path: 'home', component: HomeComponent, data: { pane: 2, paneType: 'split' } },
+            { path: 'object', component: DynamicObjectComponent, data: { pane: 2, paneType: 'split' } },
+            { path: 'list', component: DynamicListComponent, data: { pane: 2, paneType: 'split' } },
+            { path: 'attachment', component: AttachmentComponent, data: { pane: 2, paneType: 'split' } },
+            { path: 'recent', component: RecentComponent, data: { pane: 2, paneType: 'split' } }
         ]
     },
     {
         path: 'gemini/recent',
         component: RecentComponent,
         canActivate: [AuthService],
-        data: { pane: 1, paneType: "single" },
+        data: { pane: 1, paneType: 'single' },
         children: [
-            { path: "home", component: HomeComponent, data: { pane: 2, paneType: "split" } },
-            { path: "object", component: DynamicObjectComponent, data: { pane: 2, paneType: "split" } },
-            { path: "list", component: DynamicListComponent, data: { pane: 2, paneType: "split" } },
-            { path: "attachment", component: AttachmentComponent, data: { pane: 2, paneType: "split" } },
-            { path: "recent", component: RecentComponent, data: { pane: 2, paneType: "split" } }
+            { path: 'home', component: HomeComponent, data: { pane: 2, paneType: 'split' } },
+            { path: 'object', component: DynamicObjectComponent, data: { pane: 2, paneType: 'split' } },
+            { path: 'list', component: DynamicListComponent, data: { pane: 2, paneType: 'split' } },
+            { path: 'attachment', component: AttachmentComponent, data: { pane: 2, paneType: 'split' } },
+            { path: 'recent', component: RecentComponent, data: { pane: 2, paneType: 'split' } }
         ]
     },
     {
         path: 'gemini/error',
         component: DynamicErrorComponent,
         canActivate: [AuthService],
-        data: { pane: 1, paneType: "single" }
+        data: { pane: 1, paneType: 'single' }
     },
     {
         path: 'gemini/applicationProperties',
         component: ApplicationPropertiesComponent,
         canActivate: [AuthService],
-        data: { pane: 1, paneType: "single" }
+        data: { pane: 1, paneType: 'single' }
     },
     {
         path: 'gemini/multiLineDialog',
         component: MultiLineDialogComponent,
         canActivate: [AuthService],
-        data: { pane: 1, paneType: "single" }
+        data: { pane: 1, paneType: 'single' }
     },
     {
         path: 'gemini/logoff',
         component: LogoffComponent,
         canActivate: [AuthService],
         canDeactivate: [AuthService],
-        data: { pane: 1, paneType: "single" }
+        data: { pane: 1, paneType: 'single' }
     },
     {
         path: 'gemini/callback',
@@ -120,25 +120,25 @@ const routes: Routes = [
         path: 'cicero/home',
         component: CiceroComponent,
         canActivate: [AuthService],
-        data: { pane: 1, paneType: "single" }
+        data: { pane: 1, paneType: 'single' }
     },
     {
         path: 'cicero/object',
         component: CiceroComponent,
         canActivate: [AuthService],
-        data: { pane: 1, paneType: "single" }
+        data: { pane: 1, paneType: 'single' }
     },
     {
         path: 'cicero/list',
         component: CiceroComponent,
         canActivate: [AuthService],
-        data: { pane: 1, paneType: "single" }
+        data: { pane: 1, paneType: 'single' }
     },
     {
         path: 'cicero/error',
         component: CiceroComponent,
         canActivate: [AuthService],
-        data: { pane: 1, paneType: "single" }
+        data: { pane: 1, paneType: 'single' }
     },
     {
         path: '**',

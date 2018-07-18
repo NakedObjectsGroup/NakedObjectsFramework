@@ -23,7 +23,7 @@ export class AutoCompleteComponent implements OnDestroy {
     private bSubject: BehaviorSubject<any>;
     private sub: ISubscription;
     private currentIndex = -1;
-    @ViewChild("focus")
+    @ViewChild('focus')
     inputField: ElementRef;
 
     @Input()
@@ -67,7 +67,7 @@ export class AutoCompleteComponent implements OnDestroy {
     classes(): Dictionary<boolean | null> {
         return {
             [this.model.color]: true,
-            "candrop": this.canDrop
+            'candrop': this.canDrop
         };
     }
 
@@ -107,7 +107,7 @@ export class AutoCompleteComponent implements OnDestroy {
     }
 
     isSelected(i: number) {
-        return {"selected" : i === this.currentIndex};
+        return {'selected' : i === this.currentIndex};
     }
 
     onArrowUp() {

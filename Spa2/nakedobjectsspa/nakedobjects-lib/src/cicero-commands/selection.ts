@@ -5,7 +5,7 @@ import * as Usermessages from '../user-messages';
 
 export class Selection extends Command {
 
-    shortCommand = "se";
+    shortCommand = 'se';
     fullCommand = Usermessages.selectionCommand;
     helpText = Usermessages.selectionHelp;
     protected minArguments = 1;
@@ -20,13 +20,13 @@ export class Selection extends Command {
         //    const arg = this.argumentAsString(args, 0);
         //    const { start, end } = this.parseRange(arg); //'destructuring'
         //    this.getList().then(list => this.selectItems(list, start, end)).catch((reject: Ro.ErrorWrapper) => this.error.handleError(reject));
-        return Promise.reject("Not Implemented");
+        return Promise.reject('Not Implemented');
     }
 
     private selectItems(list: Models.ListRepresentation, startNo: number, endNo: number): void {
         let itemNo: number;
         for (itemNo = startNo; itemNo <= endNo; itemNo++) {
-            this.urlManager.setItemSelected(itemNo - 1, true, "");
+            this.urlManager.setItemSelected(itemNo - 1, true, '');
         }
     }
 }

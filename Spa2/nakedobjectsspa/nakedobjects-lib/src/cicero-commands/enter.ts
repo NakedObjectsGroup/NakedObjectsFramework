@@ -17,7 +17,7 @@ import * as Validate from '../validate';
 
 export class Enter extends Command {
 
-    shortCommand = "en";
+    shortCommand = 'en';
     fullCommand = Usermessages.enterCommand;
     helpText = Usermessages.enterHelp;
     protected minArguments = 2;
@@ -32,11 +32,11 @@ export class Enter extends Command {
         const fieldEntry = this.argumentAsString(args, 1, false, false);
 
         if (fieldName === undefined) {
-            return this.returnResult("", Usermessages.doesNotMatchDialog(fieldName));
+            return this.returnResult('', Usermessages.doesNotMatchDialog(fieldName));
         }
 
         if (fieldEntry === undefined) {
-            return this.returnResult("", Usermessages.tooFewArguments);
+            return this.returnResult('', Usermessages.tooFewArguments);
         }
 
         if (this.isDialog()) {
@@ -53,20 +53,20 @@ export class Enter extends Command {
             switch (fields.length) {
                 case 0:
                     const s = Usermessages.doesNotMatchProperties(fieldName);
-                    return this.returnResult("", s);
+                    return this.returnResult('', s);
                 case 1:
                     const field = fields[0];
-                    if (fieldEntry === "?") {
+                    if (fieldEntry === '?') {
                         // TODO: does this work in edit mode i.e. show entered value
                         const details = this.renderFieldDetails(field, field.value());
-                        return this.returnResult("", details);
+                        return this.returnResult('', details);
                     } else {
                         this.findAndClearAnyDependentFields(field.id(), obj.propertyMembers());
                         return this.setField(field, fieldEntry);
                     }
                 default:
-                    const ss = reduce(fields, (str, prop) => str + prop.extensions().friendlyName() + "\n", `${fieldName} ${Usermessages.matchesMultiple}`);
-                    return this.returnResult("", ss);
+                    const ss = reduce(fields, (str, prop) => str + prop.extensions().friendlyName() + '\n', `${fieldName} ${Usermessages.matchesMultiple}`);
+                    return this.returnResult('', ss);
             }
         });
     }
@@ -101,19 +101,19 @@ export class Enter extends Command {
             params = this.matchFriendlyNameAndOrMenuPath(params, fieldName);
             switch (params.length) {
                 case 0:
-                    return this.returnResult("", Usermessages.doesNotMatchDialog(fieldName));
+                    return this.returnResult('', Usermessages.doesNotMatchDialog(fieldName));
                 case 1:
-                    if (fieldEntry === "?") {
+                    if (fieldEntry === '?') {
                         const p = params[0];
                         const value = Commandresult.getParametersAndCurrentValue(p.parent, this.context)[p.id()];
                         const s = this.renderFieldDetails(p, value);
-                        return this.returnResult("", s);
+                        return this.returnResult('', s);
                     } else {
                         this.findAndClearAnyDependentFields(fieldName, action.parameters());
                         return this.setField(params[0], fieldEntry);
                     }
                 default:
-                    return this.returnResult("", `${Usermessages.multipleFieldMatches} ${fieldName}`); // TODO: list them
+                    return this.returnResult('', `${Usermessages.multipleFieldMatches} ${fieldName}`); // TODO: list them
             }
         });
     }
@@ -131,7 +131,7 @@ export class Enter extends Command {
 
     private setField(field: Models.IField, fieldEntry: string) {
         if (field instanceof Models.PropertyMember && field.disabledReason()) {
-            return this.returnResult("", `${field.extensions().friendlyName()} ${Usermessages.isNotModifiable}`);
+            return this.returnResult('', `${field.extensions().friendlyName()} ${Usermessages.isNotModifiable}`);
         }
         const entryType = field.entryType();
         switch (entryType) {
@@ -148,7 +148,7 @@ export class Enter extends Command {
             case Models.EntryType.MultipleConditionalChoices:
                 return this.handleConditionalChoices(field, false, fieldEntry);
             default:
-                return this.returnResult("", Usermessages.invalidCase);
+                return this.returnResult('', Usermessages.invalidCase);
         }
     }
 
@@ -158,7 +158,7 @@ export class Enter extends Command {
             const mandatoryError = Validate.validateMandatory(field, fieldEntry);
 
             if (mandatoryError) {
-                return this.returnResult("", this.validationMessage(mandatoryError, new Models.Value(""), field.extensions().friendlyName()));
+                return this.returnResult('', this.validationMessage(mandatoryError, new Models.Value(''), field.extensions().friendlyName()));
             }
 
             let value = new Models.Value(fieldEntry);
@@ -171,7 +171,7 @@ export class Enter extends Command {
             }
 
             // if optional but empty always valid
-            if (fieldEntry != null && fieldEntry !== "") {
+            if (fieldEntry != null && fieldEntry !== '') {
 
                 const remoteMask = field.extensions().mask();
                 const localFilter = this.mask.toLocalFilter(remoteMask, field.extensions().format()!);
@@ -179,12 +179,12 @@ export class Enter extends Command {
                 const validateError = Validate.validateMandatoryAgainstType(field, fieldEntry, localFilter);
 
                 if (validateError) {
-                    return this.returnResult("", this.validationMessage(validateError, value, field.extensions().friendlyName()));
+                    return this.returnResult('', this.validationMessage(validateError, value, field.extensions().friendlyName()));
                 }
             }
 
             this.setFieldValue(field, value);
-            return this.returnResult("", "", () => this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl());
+            return this.returnResult('', '', () => this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl());
         } else {
             return this.handleReferenceField(field, fieldEntry);
         }
@@ -208,18 +208,18 @@ export class Enter extends Command {
         if (this.isPaste(fieldEntry)) {
             return this.handleClipboard(field);
         } else {
-            return this.returnResult("", Usermessages.invalidRefEntry);
+            return this.returnResult('', Usermessages.invalidRefEntry);
         }
     }
 
     private isPaste(fieldEntry: string) {
-        return "paste".indexOf(fieldEntry) === 0;
+        return 'paste'.indexOf(fieldEntry) === 0;
     }
 
     private handleClipboard(field: Models.IField) {
         const ref = this.ciceroContext.ciceroClipboard;
         if (!ref) {
-            return this.returnResult("", Usermessages.emptyClipboard);
+            return this.returnResult('', Usermessages.emptyClipboard);
         }
         const paramType = field.extensions().returnType()!;
         const refType = ref.domainType();
@@ -231,9 +231,9 @@ export class Enter extends Command {
                 selfLink.setTitle(obj.title());
                 const value = new Models.Value(selfLink);
                 this.setFieldValue(field, value);
-                return this.returnResult("", "", () => this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl());
+                return this.returnResult('', '', () => this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl());
             } else {
-                return this.returnResult("", Usermessages.incompatibleClipboard);
+                return this.returnResult('', Usermessages.incompatibleClipboard);
             }
         });
     }
@@ -280,21 +280,21 @@ export class Enter extends Command {
             }
         });
 
-        promises.push(this.returnResult("", "", () => this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl()));
+        promises.push(this.returnResult('', '', () => this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl()));
         return Promise.all(promises);
     }
 
     private switchOnMatches(field: Models.IField, allFields: Models.IField[], fieldEntry: string, matches: Models.Value[]) {
         switch (matches.length) {
             case 0:
-                return this.returnResult("", Usermessages.noMatch(fieldEntry));
+                return this.returnResult('', Usermessages.noMatch(fieldEntry));
             case 1:
                 // TODO fix "!""
                 return this.setFieldAndCheckDependencies(field, allFields, matches[0]).then((crs: CommandResult[]) => last(crs)!);
             default:
                 let msg = Usermessages.multipleMatches;
-                forEach(matches, m => msg += m.toString() + "\n");
-                return this.returnResult("", msg);
+                forEach(matches, m => msg += m.toString() + '\n');
+                return this.returnResult('', msg);
         }
     }
 
@@ -321,7 +321,7 @@ export class Enter extends Command {
                 return this.setFieldAndCheckDependencies(field, allFields, match).then((crs: CommandResult[]) => last(crs)!);
             default:
                 // shouldn't happen - ignore
-                return this.returnResult("", "");
+                return this.returnResult('', '');
         }
     }
 
@@ -345,7 +345,7 @@ export class Enter extends Command {
 
         if (fieldEntry === undefined) {
             const def = args[field.id()];
-            fieldEntryOrExistingValue = def ? def.toValueString() : "";
+            fieldEntryOrExistingValue = def ? def.toValueString() : '';
         } else {
             fieldEntryOrExistingValue = fieldEntry;
         }
@@ -365,10 +365,10 @@ export class Enter extends Command {
 
         const fieldName = Usermessages.fieldName(field.extensions().friendlyName());
         const desc = field.extensions().description();
-        const descAndPrefix = desc ? `\n${Usermessages.descriptionFieldPrefix} ${desc}` : "";
+        const descAndPrefix = desc ? `\n${Usermessages.descriptionFieldPrefix} ${desc}` : '';
         const types = `\n${Usermessages.typePrefix} ${Models.friendlyTypeName(field.extensions().returnType()!)}`;
 
-        let postFix = "";
+        let postFix = '';
         if (field instanceof Models.PropertyMember && field.disabledReason()) {
             postFix = `\n${Usermessages.unModifiablePrefix(field.disabledReason())}`;
         } else {
@@ -376,7 +376,7 @@ export class Enter extends Command {
             const choices = field.choices();
             if (choices) {
                 const label = `\n${Usermessages.choices}: `;
-                const labelAndChoices = reduce(choices, (ss, cho) => ss + cho + " ", label);
+                const labelAndChoices = reduce(choices, (ss, cho) => ss + cho + ' ', label);
                 postFix = `${postFix}${labelAndChoices}`;
             }
         }

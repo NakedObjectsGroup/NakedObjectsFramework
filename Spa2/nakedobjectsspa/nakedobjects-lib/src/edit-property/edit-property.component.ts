@@ -36,10 +36,10 @@ export class EditPropertyComponent extends FieldComponent implements OnInit, Aft
 
     private prop: PropertyViewModel;
 
-    @ViewChildren("focus")
+    @ViewChildren('focus')
     focusList: QueryList<ElementRef | DatePickerFacadeComponent | TimePickerFacadeComponent | AutoCompleteComponent>;
 
-    @ViewChildren("checkbox")
+    @ViewChildren('checkbox')
     checkboxList: QueryList<ElementRef>;
 
     @Input()
@@ -99,7 +99,7 @@ export class EditPropertyComponent extends FieldComponent implements OnInit, Aft
     }
 
     get isBlob() {
-        return this.property.format === "blob";
+        return this.property.format === 'blob';
     }
 
     get isMultiline() {
@@ -137,7 +137,7 @@ export class EditPropertyComponent extends FieldComponent implements OnInit, Aft
     classes(): Dictionary<boolean | null> {
         return {
             [this.prop.color]: true,
-            "candrop": this.canDrop
+            'candrop': this.canDrop
         };
     }
 

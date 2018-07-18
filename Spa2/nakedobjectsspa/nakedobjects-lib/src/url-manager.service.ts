@@ -6,7 +6,7 @@ import { Location } from '@angular/common';
 import { ConfigService } from './config.service';
 import { LoggerService } from './logger.service';
 import { Dictionary } from 'lodash';
-import * as Models from "./models";
+import * as Models from './models';
 import * as Constants from './constants';
 import filter from 'lodash-es/filter';
 import forEach from 'lodash-es/forEach';
@@ -47,21 +47,21 @@ enum Transition {
 // keep in alphabetic order to help avoid name collisions
 // all key map
 const akm = {
-    action: "a",
-    actions: "as",
-    attachment: "at",
-    collection: "c",
-    dialog: "d",
-    errorCat: "et",
-    interactionMode: "i",
-    menu: "m",
-    object: "o",
-    page: "pg",
-    pageSize: "ps",
-    parm: "pm",
-    prop: "pp",
-    reload: "r",
-    selected: "s"
+    action: 'a',
+    actions: 'as',
+    attachment: 'at',
+    collection: 'c',
+    dialog: 'd',
+    errorCat: 'et',
+    interactionMode: 'i',
+    menu: 'm',
+    object: 'o',
+    page: 'pg',
+    pageSize: 'ps',
+    parm: 'pm',
+    prop: 'pp',
+    reload: 'r',
+    selected: 's'
 };
 
 interface ITransitionResult {
@@ -133,7 +133,7 @@ export class UrlManagerService {
         const arrays = this.createArrays(arr);
         const masks = map(arrays, a => this.createSubMask(a).toString());
 
-        return reduce(masks, (res: string, val) => res + "-" + val) || "";
+        return reduce(masks, (res: string, val) => res + '-' + val) || '';
     }
 
     // convert from mask string to array of bools
@@ -153,8 +153,8 @@ export class UrlManagerService {
     }
 
     private arrayFromMask(sMask: string) {
-        sMask = sMask || "0";
-        const sMasks = sMask.split("-");
+        sMask = sMask || '0';
+        const sMasks = sMask.split('-');
         const maskArrays = map(sMasks, s => this.arrayFromSubMask(s));
         return reduce(maskArrays, (res, val) => res.concat(val), [] as boolean[]);
     }
@@ -168,8 +168,8 @@ export class UrlManagerService {
     private getPath() {
 
         const url = this.router.url;
-        let end = url.indexOf(";");
-        end = end === -1 ? url.indexOf("?") : end;
+        let end = url.indexOf(';');
+        end = end === -1 ? url.indexOf('?') : end;
         const path = url.substring(0, end > 0 ? end : url.length);
         return path;
     }
@@ -190,7 +190,7 @@ export class UrlManagerService {
     }
 
     private mapIds(ids: Dictionary<string>): Dictionary<string> {
-        return mapKeys(ids, (v: any, k: string) => k.substr(k.indexOf("_") + 1));
+        return mapKeys(ids, (v: any, k: string) => k.substr(k.indexOf('_') + 1));
     }
 
     private getAndMapIds(typeOfId: string, paneId: Pane) {
@@ -254,7 +254,7 @@ export class UrlManagerService {
     }
 
     private isSinglePane() {
-        return this.getPath().split("/").length <= 3;
+        return this.getPath().split('/').length <= 3;
     }
 
     private searchKeysForPane(search: any, paneId: Pane, raw: string[]) {
@@ -284,7 +284,7 @@ export class UrlManagerService {
     private setupPaneNumberAndTypes(pane: Pane, newPaneType: Constants.PathSegment, newMode?: ApplicationMode): { path: string, replace: boolean } {
 
         const path = this.getPath();
-        const segments = path.split("/");
+        const segments = path.split('/');
         // tslint:disable-next-line:prefer-const
         let [, mode, pane1Type, pane2Type] = segments;
         let changeMode = false;
@@ -301,7 +301,7 @@ export class UrlManagerService {
         // make sure pane is of correct type
         if (pane === Pane.Pane1 && pane1Type !== newPaneType) {
             const single = this.isSinglePane() || this.paneIsAlwaysSingle(newPaneType);
-            newPath = `/${mode}/${newPaneType}${single ? "" : `/${pane2Type}`}`;
+            newPath = `/${mode}/${newPaneType}${single ? '' : `/${pane2Type}`}`;
             changeMode = false;
             mayReplace = false;
         }
@@ -474,7 +474,7 @@ export class UrlManagerService {
                 break;
         }
 
-        const segments = path.split("/");
+        const segments = path.split('/');
         const [, , pane1Type, pane2Type] = segments;
 
         search = this.clearInvalidParmsFromSearch(Pane.Pane1, search, pane1Type);
@@ -585,9 +585,9 @@ export class UrlManagerService {
         }
 
         newValues[`${akm.action}${toPaneId}`] = actionMember.actionId();
-        newValues[`${akm.page}${toPaneId}`] = "1";
+        newValues[`${akm.page}${toPaneId}`] = '1';
         newValues[`${akm.pageSize}${toPaneId}`] = this.configService.config.defaultPageSize.toString();
-        newValues[`${akm.selected}${toPaneId}_`] = "0";
+        newValues[`${akm.selected}${toPaneId}_`] = '0';
 
         const newState = actionMember.extensions().renderEagerly() ? CollectionViewState[CollectionViewState.Table] : CollectionViewState[CollectionViewState.List];
 
@@ -627,7 +627,7 @@ export class UrlManagerService {
 
     toggleObjectMenu = (paneId: Pane = Pane.Pane1) => {
         const key = akm.actions + paneId;
-        const actionsId = this.getSearch()[key] ? null : "open";
+        const actionsId = this.getSearch()[key] ? null : 'open';
         const newValues = zipObject([key], [actionsId]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.Null, () => true);
     }
@@ -707,14 +707,14 @@ export class UrlManagerService {
         pageValues[`${akm.page}${paneId}`] = newPage.toString();
         pageValues[`${akm.pageSize}${paneId}`] = newPageSize.toString();
         pageValues[`${akm.collection}${paneId}`] = CollectionViewState[state];
-        pageValues[`${akm.selected}${paneId}_`] = "0"; // clear selection
+        pageValues[`${akm.selected}${paneId}_`] = '0'; // clear selection
 
         this.executeTransition(pageValues, paneId, Transition.Page, () => true);
     }
 
     setError = (errorCategory: Models.ErrorCategory, ec?: Models.ClientErrorCode | Models.HttpStatusCode) => {
         const path = this.getPath();
-        const segments = path.split("/");
+        const segments = path.split('/');
         const mode = segments[1];
         const newPath = `/${mode}/error`;
 
@@ -773,7 +773,7 @@ export class UrlManagerService {
         this.currentPaneId = paneId;
 
         const path = this.getPath();
-        const segments = path.split("/");
+        const segments = path.split('/');
 
         const paneType = <Constants.PathSegment>segments[paneId + 1] || Constants.homePath;
         let paneSearch = this.capturePane(paneId);
@@ -787,23 +787,23 @@ export class UrlManagerService {
 
     getListCacheIndexFromSearch = (search: Dictionary<string>, paneId: Pane, newPage: number, newPageSize: number, format?: CollectionViewState) => {
 
-        const s1 = this.getId(`${akm.menu}${paneId}`, search) || "";
-        const s2 = this.getId(`${akm.object}${paneId}`, search) || "";
-        const s3 = this.getId(`${akm.action}${paneId}`, search) || "";
+        const s1 = this.getId(`${akm.menu}${paneId}`, search) || '';
+        const s2 = this.getId(`${akm.object}${paneId}`, search) || '';
+        const s3 = this.getId(`${akm.action}${paneId}`, search) || '';
 
         const parms = <Dictionary<string>>pickBy(search, (v, k) => !!k && k.indexOf(akm.parm + paneId) === 0);
         const mappedParms = mapValues(parms, v => decodeURIComponent(Models.decompress(v, this.shortCutMarker, this.urlShortCuts)));
 
-        const s4 = reduce(mappedParms, (r, n, k) => r + (k + "=" + n + this.keySeparator), "");
+        const s4 = reduce(mappedParms, (r, n, k) => r + (k + '=' + n + this.keySeparator), '');
 
         const s5 = `${newPage}`;
         const s6 = `${newPageSize}`;
 
-        const s7 = format ? `${format}` : "";
+        const s7 = format ? `${format}` : '';
 
         const ss = [s1, s2, s3, s4, s5, s6, s7] as string[];
 
-        return reduce(ss, (r, n) => r + this.keySeparator + n, "");
+        return reduce(ss, (r, n) => r + this.keySeparator + n, '');
     }
 
     getListCacheIndex = (paneId: Pane, newPage: number, newPageSize: number, format?: CollectionViewState) => {
@@ -840,12 +840,12 @@ export class UrlManagerService {
 
     private swapSearchIds(search: any) {
         return mapKeys(search,
-            (v: any, k: string) => k.replace(/(\D+)(\d{1})(\w*)/, (match, p1, p2, p3) => `${p1}${p2 === "1" ? "2" : "1"}${p3}`));
+            (v: any, k: string) => k.replace(/(\D+)(\d{1})(\w*)/, (match, p1, p2, p3) => `${p1}${p2 === '1' ? '2' : '1'}${p3}`));
     }
 
     swapPanes = () => {
         const path = this.getPath();
-        const segments = path.split("/");
+        const segments = path.split('/');
         const [, mode, oldPane1, oldPane2 = Constants.homePath] = segments;
         const newPath = `/${mode}/${oldPane2}/${oldPane1}`;
         const search = this.swapSearchIds(this.getSearch()) as any;
@@ -858,7 +858,7 @@ export class UrlManagerService {
 
     private setMode(newMode: string) {
         const path = this.getPath();
-        const segments = path.split("/");
+        const segments = path.split('/');
         const [, , pane1] = segments;
         const newPath = `/${newMode}/${pane1}`;
         const search = this.clearPane(this.getSearch(), Pane.Pane2);
@@ -869,7 +869,7 @@ export class UrlManagerService {
 
     private getMode() {
         const path = this.getPath();
-        const segments = path.split("/");
+        const segments = path.split('/');
         const [, mode] = segments;
         return mode as Constants.ModePathSegment;
     }
@@ -896,7 +896,7 @@ export class UrlManagerService {
         this.currentPaneId = Pane.Pane1;
 
         const path = this.getPath();
-        const segments = path.split("/");
+        const segments = path.split('/');
         const mode = segments[1] || Constants.geminiPath;
         const newPath = `/${mode}/${Constants.homePath}`;
 
@@ -914,7 +914,7 @@ export class UrlManagerService {
             const paneToRemoveId = getOtherPane(paneToKeepId);
 
             const path = this.getPath();
-            const segments = path.split("/");
+            const segments = path.split('/');
             const mode = segments[1];
             const paneToKeep = segments[paneToKeepId + 1];
             const newPath = `/${mode}/${paneToKeep}`;
@@ -940,7 +940,7 @@ export class UrlManagerService {
 
     private getLocation(paneId: Pane) {
         const path = this.getPath();
-        const segments = path.split("/");
+        const segments = path.split('/');
         return segments[paneId + 1]; // e.g. segments 0=~/1=cicero/2=home/3=home
     }
 
@@ -959,7 +959,7 @@ export class UrlManagerService {
 
     private toggleReloadFlag(search: any, paneId: Pane) {
         const currentFlag = search[akm.reload + paneId];
-        const newFlag = currentFlag === "1" ? 0 : 1;
+        const newFlag = currentFlag === '1' ? 0 : 1;
         search[akm.reload + paneId] = newFlag;
         return search;
     }

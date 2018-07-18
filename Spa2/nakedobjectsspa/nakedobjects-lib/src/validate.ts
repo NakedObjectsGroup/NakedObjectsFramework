@@ -7,7 +7,7 @@ import * as Constants from './constants';
 const moment = momentNs;
 
 function isInteger(value: number) {
-    return typeof value === "number" && isFinite(value) && Math.floor(value) === value;
+    return typeof value === 'number' && isFinite(value) && Math.floor(value) === value;
 }
 
 function getDate(val: string): Date | null {
@@ -19,9 +19,9 @@ export function validateNumber(model: Models.IHasExtensions, newValue: number, f
     const format = model.extensions().format();
 
     switch (format) {
-        case ("int"):
+        case ('int'):
             if (!isInteger(newValue)) {
-                return "Not an integer";
+                return 'Not an integer';
             }
     }
 
@@ -40,7 +40,7 @@ export function validateNumber(model: Models.IHasExtensions, newValue: number, f
         }
     }
 
-    return "";
+    return '';
 }
 
 export function validateStringFormat(model: Models.IHasExtensions, newValue: string): string {
@@ -55,13 +55,13 @@ export function validateStringFormat(model: Models.IHasExtensions, newValue: str
 
     if (pattern) {
         const regex = new RegExp(pattern);
-        return regex.test(newValue) ? "" : Msg.noPatternMatch;
+        return regex.test(newValue) ? '' : Msg.noPatternMatch;
     }
-    return "";
+    return '';
 }
 
 export function validateDateTimeFormat(model: Models.IHasExtensions, newValue: Date): string {
-    return "";
+    return '';
 }
 
 export function validateDateFormat(model: Models.IHasExtensions, newValue: Date | string, filter: ILocalFilter): string {
@@ -81,27 +81,27 @@ export function validateDateFormat(model: Models.IHasExtensions, newValue: Date 
         }
     }
 
-    return "";
+    return '';
 }
 
 export function validateTimeFormat(model: Models.IHasExtensions, newValue: Date): string {
-    return "";
+    return '';
 }
 
 export function validateString(model: Models.IHasExtensions, newValue: any, filter: ILocalFilter): string {
     const format = model.extensions().format();
 
     switch (format) {
-        case ("string"):
+        case ('string'):
             return validateStringFormat(model, newValue as string);
-        case ("date-time"):
+        case ('date-time'):
             return validateDateTimeFormat(model, newValue as Date);
-        case ("date"):
+        case ('date'):
             return validateDateFormat(model, newValue as Date | string, filter);
-        case ("time"):
+        case ('time'):
             return validateTimeFormat(model, newValue as Date);
         default:
-            return "";
+            return '';
     }
 }
 
@@ -109,11 +109,11 @@ export function validateMandatory(model: Models.IHasExtensions, viewValue: strin
     // first check
     const isMandatory = !model.extensions().optional();
 
-    if (isMandatory && (viewValue === "" || viewValue == null)) {
+    if (isMandatory && (viewValue === '' || viewValue == null)) {
         return Msg.mandatory;
     }
 
-    return "";
+    return '';
 }
 
 export function validateMandatoryAgainstType(model: Models.IHasExtensions, viewValue: string, filter: ILocalFilter): string {
@@ -122,18 +122,18 @@ export function validateMandatoryAgainstType(model: Models.IHasExtensions, viewV
     const returnType = model.extensions().returnType();
 
     switch (returnType) {
-    case ("number"):
+    case ('number'):
         const valueAsNumber = parseFloat(viewValue);
         if (Number.isFinite(valueAsNumber)) {
             return validateNumber(model, valueAsNumber, filter);
         }
         return Msg.notANumber;
-    case ("string"):
+    case ('string'):
         return validateString(model, viewValue, filter);
-    case ("boolean"):
-        return "";
+    case ('boolean'):
+        return '';
     default:
-        return "";
+        return '';
     }
 }
 

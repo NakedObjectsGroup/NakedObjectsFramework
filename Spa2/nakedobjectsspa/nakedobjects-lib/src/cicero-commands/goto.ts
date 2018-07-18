@@ -8,7 +8,7 @@ import reduce from 'lodash-es/reduce';
 
 export class Goto extends Command {
 
-    shortCommand = "go";
+    shortCommand = 'go';
     fullCommand = Usermessages.gotoCommand;
     helpText = Usermessages.gotoHelp;
     protected minArguments = 1;
@@ -22,7 +22,7 @@ export class Goto extends Command {
         const arg0 = this.argumentAsString(args, 0);
 
         if (arg0 === undefined) {
-            return this.returnResult("", Usermessages.outOfItemRange(undefined));
+            return this.returnResult('', Usermessages.outOfItemRange(undefined));
         }
 
         if (this.isList()) {
@@ -30,7 +30,7 @@ export class Goto extends Command {
             try {
                 itemNo = this.parseInt(arg0);
             } catch (e) {
-                return this.returnResult("", e.message);
+                return this.returnResult('', e.message);
             }
             return this.getList().then((list: Models.ListRepresentation) => this.attemptGotoLinkNumber(itemNo, list.value()));
         }
@@ -52,7 +52,7 @@ export class Goto extends Command {
                     switch (matchingRefProps.length + matchingColls.length) {
                     case 0:
 
-                        return this.returnResult("", Usermessages.noRefFieldMatch(arg0));
+                        return this.returnResult('', Usermessages.noRefFieldMatch(arg0));
                     case 1:
                         // TODO: Check for any empty reference
                         if (matchingRefProps.length > 0) {
@@ -61,33 +61,33 @@ export class Goto extends Command {
                                 this.urlManager.setItem(link);
                             }
 
-                            return this.returnResult("", "");
+                            return this.returnResult('', '');
 
                         } else { // Must be collection
 
-                            return this.returnResult("", "", () => this.openCollection(matchingColls[0]));
+                            return this.returnResult('', '', () => this.openCollection(matchingColls[0]));
                         }
 
                     default:
-                        const props = reduce(matchingRefProps, (str, prop) => str + prop.extensions().friendlyName() + "\n", "");
-                        const colls = reduce(matchingColls, (str, coll) => str + coll.extensions().friendlyName() + "\n", "");
+                        const props = reduce(matchingRefProps, (str, prop) => str + prop.extensions().friendlyName() + '\n', '');
+                        const colls = reduce(matchingColls, (str, coll) => str + coll.extensions().friendlyName() + '\n', '');
                         const s = `Multiple matches for ${arg0}:\n${props}${colls}`;
-                        return this.returnResult("", s);
+                        return this.returnResult('', s);
                     }
 
                 }
             });
         }
         // should never happen
-        return this.returnResult("", Usermessages.commandNotAvailable(this.fullCommand));
+        return this.returnResult('', Usermessages.commandNotAvailable(this.fullCommand));
     }
 
     private attemptGotoLinkNumber(itemNo: number, links: Models.Link[]): Promise<CommandResult> {
         if (itemNo < 1 || itemNo > links.length) {
-            return this.returnResult("", Usermessages.outOfItemRange(itemNo));
+            return this.returnResult('', Usermessages.outOfItemRange(itemNo));
         } else {
             const link = links[itemNo - 1]; // On UI, first item is '1'
-            return this.returnResult("", "", () => this.urlManager.setItem(link));
+            return this.returnResult('', '', () => this.urlManager.setItem(link));
         }
     }
 

@@ -16,7 +16,7 @@ export class ObjectNotFoundErrorComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.title = "Object does not exist";
-    this.message = "The requested object might have been deleted by you or another user. If not, please contact your system administrator.";
+    this.title = 'Object does not exist';
+    this.message = 'The requested object might have been deleted by you or another user. If not, please contact your system administrator.';
   }
 }

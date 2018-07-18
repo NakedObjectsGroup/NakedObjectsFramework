@@ -7,7 +7,7 @@ import reduce from 'lodash-es/reduce';
 
 export class Show extends Command {
 
-    shortCommand = "sh";
+    shortCommand = 'sh';
     fullCommand = Usermessages.showCommand;
     helpText = Usermessages.showHelp;
     protected minArguments = 0;
@@ -28,7 +28,7 @@ export class Show extends Command {
                     return this.renderCollectionItems(coll, start, end);
                 });
             } catch (e1) {
-                return this.returnResult("", e1.message);
+                return this.returnResult('', e1.message);
             }
         } else if (this.isList()) {
             const arg = this.argumentAsString(args, 0, true);
@@ -36,7 +36,7 @@ export class Show extends Command {
                 const { start, end } = this.parseRange(arg);
                 return this.getList().then(list => this.renderItems(list, start, end));
             } catch (e2) {
-                return this.returnResult("", e2.message);
+                return this.returnResult('', e2.message);
             }
         } else if (this.isObject()) {
             const fieldName = this.argumentAsString(args, 0);
@@ -53,13 +53,13 @@ export class Show extends Command {
                         s = props.length > 0 ? this.renderPropNameAndValue(props[0]) : this.ciceroRenderer.renderCollectionNameAndSize(colls[0]);
                         break;
                     default:
-                        s = reduce(props, (str, prop) => str + this.renderPropNameAndValue(prop), "");
-                        s += reduce(colls, (str, coll) => str + this.ciceroRenderer.renderCollectionNameAndSize(coll), "");
+                        s = reduce(props, (str, prop) => str + this.renderPropNameAndValue(prop), '');
+                        s += reduce(colls, (str, coll) => str + this.ciceroRenderer.renderCollectionNameAndSize(coll), '');
                 }
-                return this.returnResult("", s);
+                return this.returnResult('', s);
             });
         }
-        throw new Error("unexpected view type");
+        throw new Error('unexpected view type');
     }
 
     private renderPropNameAndValue(pm: Models.PropertyMember): string {
@@ -90,7 +90,7 @@ export class Show extends Command {
 
         const links = source.value();
         if (links == null) {
-            throw new Error("unexpected null value");
+            throw new Error('unexpected null value');
         }
 
         const max = links.length;
@@ -102,19 +102,19 @@ export class Show extends Command {
         }
         if (startNo > max || endNo > max) {
 
-            return this.returnResult("", Usermessages.highestItem(links.length));
+            return this.returnResult('', Usermessages.highestItem(links.length));
         }
         if (startNo > endNo) {
 
-            return this.returnResult("", Usermessages.startHigherEnd);
+            return this.returnResult('', Usermessages.startHigherEnd);
         }
-        let output = "";
+        let output = '';
         let i: number;
 
         for (i = startNo; i <= endNo; i++) {
             output += `${Usermessages.item} ${i}: ${links[i - 1].title()}\n`;
         }
 
-        return this.returnResult("", output);
+        return this.returnResult('', output);
     }
 }

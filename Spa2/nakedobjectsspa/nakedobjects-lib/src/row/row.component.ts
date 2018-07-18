@@ -33,11 +33,11 @@ export class RowComponent {
     @Input()
     isTable: boolean;
 
-    @ViewChildren("focus")
+    @ViewChildren('focus')
     rowChildren: QueryList<ElementRef>;
 
     get id() {
-        return `${this.item.id || "item"}${this.item.paneId}-${this.row}`;
+        return `${this.item.id || 'item'}${this.item.paneId}-${this.row}`;
     }
 
     get color() {
@@ -53,15 +53,15 @@ export class RowComponent {
     }
 
     get friendlyName() {
-        return this.item instanceof RecentItemViewModel ? this.item.friendlyName : "";
+        return this.item instanceof RecentItemViewModel ? this.item.friendlyName : '';
     }
 
     tabIndexFirstColumn(i: number | string) {
         if (this.isTable) {
             if (this.hasTableTitle()) {
-                return i === "title" ? 0 : -1;
+                return i === 'title' ? 0 : -1;
             } else  if (this.friendlyName) {
-                return i === "fname" ? 0 : -1;
+                return i === 'fname' ? 0 : -1;
             } else if (i === 0) {
                 return 0;
             }

@@ -38,7 +38,7 @@ export class CiceroRendererService {
         if (routeData.menuId) {
             return this.renderOpenMenu(routeData);
         } else {
-            return this.returnResult("", Msg.welcomeMessage);
+            return this.returnResult('', Msg.welcomeMessage);
         }
     }
 
@@ -74,7 +74,7 @@ export class CiceroRendererService {
                         const actionName = actionMember.extensions().friendlyName();
                         const output = `Result from ${actionName}:\n${description}`;
 
-                        return this.returnResult("", output);
+                        return this.returnResult('', output);
                     })
             );
     }
@@ -82,8 +82,8 @@ export class CiceroRendererService {
     renderError(message: string) {
         const err = this.context.getError();
         const errRep = err ? err.error : null;
-        const msg = (errRep instanceof Ro.ErrorRepresentation) ? errRep.message() : "Unknown";
-        return this.returnResult("", `Sorry, an application error has occurred. ${msg}`);
+        const msg = (errRep instanceof Ro.ErrorRepresentation) ? errRep.message() : 'Unknown';
+        return this.returnResult('', `Sorry, an application error has occurred. ${msg}`);
     }
 
     private getListDescription(list: Ro.ListRepresentation, count: number) {
@@ -105,12 +105,12 @@ export class CiceroRendererService {
     private renderOpenCollection(collId: string, obj: Ro.DomainObjectRepresentation): Promise<Result> {
         const coll = obj.collectionMember(collId);
         const output = `${this.renderCollectionNameAndSize(coll)}(${Msg.collection} ${Msg.on} ${Ro.typePlusTitle(obj)})`;
-        return this.returnResult("", output);
+        return this.returnResult('', output);
     }
 
     private renderTransientObject(routeData: PaneRouteData, obj: Ro.DomainObjectRepresentation) {
         const output = `${Msg.unsaved} ${obj.extensions().friendlyName()}\n${this.renderModifiedProperties(obj, routeData, this.mask)}`;
-        return this.returnResult("", output);
+        return this.returnResult('', output);
     }
 
     private renderForm(routeData: PaneRouteData, obj: Ro.DomainObjectRepresentation) {
@@ -119,11 +119,11 @@ export class CiceroRendererService {
             return this.context.getInvokableAction(obj.actionMember(routeData.dialogId)).
                 then(invokableAction => {
                     const output = `${prefix}${this.renderActionDialog(invokableAction, routeData, this.mask)}`;
-                    return this.returnResult("", output);
+                    return this.returnResult('', output);
                 });
         } else {
             const output = `${prefix}${this.renderModifiedProperties(obj, routeData, this.mask)}`;
-            return this.returnResult("", output);
+            return this.returnResult('', output);
         }
     }
 
@@ -133,10 +133,10 @@ export class CiceroRendererService {
             return this.context.getInvokableAction(obj.actionMember(routeData.dialogId)).
                 then(invokableAction => {
                     const output = `${prefix}${this.renderActionDialog(invokableAction, routeData, this.mask)}`;
-                    return this.returnResult("", output);
+                    return this.returnResult('', output);
                 });
         } else {
-            return this.returnResult("", prefix);
+            return this.returnResult('', prefix);
         }
     }
 
@@ -147,10 +147,10 @@ export class CiceroRendererService {
             if (routeData.dialogId) {
                 return this.context.getInvokableAction(menu.actionMember(routeData.dialogId)).then(invokableAction => {
                     const output = `${prefix}\n${this.renderActionDialog(invokableAction, routeData, this.mask)}`;
-                    return this.returnResult("", output);
+                    return this.returnResult('', output);
                 });
             } else {
-                return this.returnResult("", prefix);
+                return this.returnResult('', prefix);
             }
         });
     }
@@ -178,7 +178,7 @@ export class CiceroRendererService {
                 return `${s}${Ro.friendlyNameForProperty(obj, propId)}: ${this.renderFieldValue(pm, value, mask)}\n`;
             }, prefix);
         }
-        return "";
+        return '';
     }
 
     private renderSingleChoice(field: Ro.IField, value: Ro.Value) {
@@ -191,7 +191,7 @@ export class CiceroRendererService {
         // This is to handle an enum: render it as text, not a number:
         const inverted = invert(field.choices()!);
         const values = value.list()!;
-        return reduce(values, (s, v) => `${s}${(<any>inverted)[v.toValueString()]},`, "");
+        return reduce(values, (s, v) => `${s}${(<any>inverted)[v.toValueString()]},`, '');
     }
 
     // helpers
@@ -232,7 +232,7 @@ export class CiceroRendererService {
         } else {
             properScalarValue = value.scalar();
         }
-        if (properScalarValue === "" || properScalarValue == null) {
+        if (properScalarValue === '' || properScalarValue == null) {
             return Msg.empty;
         } else {
             const remoteMask = field.extensions().mask();

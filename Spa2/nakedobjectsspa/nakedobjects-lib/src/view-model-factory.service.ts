@@ -179,7 +179,7 @@ export class ViewModelFactoryService {
     getItems = (links: Models.Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: ListViewModel | CollectionViewModel) => {
 
         const collection = listViewModel instanceof CollectionViewModel ? listViewModel : null;
-        const id = collection ? collection.name : "";
+        const id = collection ? collection.name : '';
         const selectedItems = routeData.selectedCollectionItems[id];
         const items = map(links, (link, i) => this.itemViewModel(link, routeData.paneId, selectedItems && selectedItems[i], i, id));
 
@@ -211,7 +211,7 @@ export class ViewModelFactoryService {
                                     return match ? match.tableRowViewModel.properties[i].title : firstItem.properties[i].id;
                                 });
 
-                            listViewModel.header = firstItem.showTitle ? [""].concat(propertiesHeader) : propertiesHeader;
+                            listViewModel.header = firstItem.showTitle ? [''].concat(propertiesHeader) : propertiesHeader;
                         }
                     }).
                     catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));

@@ -6,7 +6,7 @@ import { Dictionary } from 'lodash';
 
 export class OK extends Command {
 
-    shortCommand = "ok";
+    shortCommand = 'ok';
     fullCommand = Usermessages.okCommand;
     helpText = Usermessages.okHelp;
     protected minArguments = 0;
@@ -20,7 +20,7 @@ export class OK extends Command {
         return this.getActionForCurrentDialog().then((action: Models.ActionRepresentation | Models.InvokableActionMember) => {
 
             if (chained && action.isNotQueryOnly()) {
-                return this.returnResult("", this.mayNotBeChained(Usermessages.queryOnlyRider), () => { }, true);
+                return this.returnResult('', this.mayNotBeChained(Usermessages.queryOnlyRider), () => { }, true);
             }
 
             let fieldMap: Dictionary<Models.Value>;
@@ -33,7 +33,7 @@ export class OK extends Command {
 
             return this.context.invokeAction(action, fieldMap).then((result: Models.ActionResultRepresentation) => {
 
-               return this.returnResult("", null, () =>  this.urlManager.closeDialogReplaceHistory(this.routeData().dialogId));
+               return this.returnResult('', null, () =>  this.urlManager.closeDialogReplaceHistory(this.routeData().dialogId));
 
             }).catch((reject: Models.ErrorWrapper) => {
                 if (reject.error instanceof Models.ErrorMap) {

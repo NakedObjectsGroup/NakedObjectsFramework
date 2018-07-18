@@ -4,7 +4,7 @@ import * as Usermessages from '../user-messages';
 
 export class Gemini extends Command {
 
-    shortCommand = "ge";
+    shortCommand = 'ge';
     fullCommand = Usermessages.geminiCommand;
     helpText = Usermessages.geminiHelp;
     protected minArguments = 0;
@@ -15,6 +15,6 @@ export class Gemini extends Command {
     }
 
     doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
-        return this.returnResult("", "", () => this.urlManager.gemini());
+        return this.returnResult('', '', () => this.urlManager.gemini());
     }
 }

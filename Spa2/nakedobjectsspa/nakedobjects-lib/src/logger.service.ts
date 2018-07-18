@@ -13,21 +13,21 @@ export class LoggerService {
 
     constructor(private readonly configService: ConfigService) {
         switch (configService.config.logLevel) {
-            case ("debug"):
+            case ('debug'):
                 this.logError = this.logWarn = this.logInfo = this.logDebug = true;
                 break;
-            case ("info"):
+            case ('info'):
                 this.logError = this.logWarn = this.logInfo = true;
                 this.logDebug = false;
                 break;
-            case ("warn"):
+            case ('warn'):
                 this.logError = this.logWarn = true;
                 this.logInfo = this.logDebug = false;
                 break;
-            case ("none"):
+            case ('none'):
                 this.logError = this.logWarn = this.logInfo = this.logDebug = false;
                 break;
-            case ("error"):
+            case ('error'):
             default:
                 this.logError = true;
                 this.logWarn = this.logInfo = this.logDebug = false;

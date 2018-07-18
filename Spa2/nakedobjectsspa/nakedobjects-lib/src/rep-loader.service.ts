@@ -41,22 +41,22 @@ export class RepLoaderService {
     private cache = new SimpleLruCache(this.configService.config.httpCacheDepth);
 
     private addIfMatchHeader(config: RequestOptions, digest?: string | null) {
-        if (digest && (config.method === "POST" || config.method === "PUT" || config.method === "DELETE")) {
-            config.init.headers = new HttpHeaders({ "If-Match": digest });
+        if (digest && (config.method === 'POST' || config.method === 'PUT' || config.method === 'DELETE')) {
+            config.init.headers = new HttpHeaders({ 'If-Match': digest });
         }
     }
 
     private handleInvalidResponse(rc: Models.ErrorCategory) {
         const rr = new Models.ErrorWrapper(rc,
             Models.ClientErrorCode.ConnectionProblem,
-            "The response from the client was not parseable as a RestfulObject json Representation ");
+            'The response from the client was not parseable as a RestfulObject json Representation ');
 
         return Promise.reject(rr);
     }
 
     private isObjectUrl(url: string) {
         const segments = url.split('/');
-        return segments.length >= 4 && segments[3] === "objects";
+        return segments.length >= 4 && segments[3] === 'objects';
     }
 
     private handleError(response: HttpErrorResponse, originalUrl: string) {
@@ -76,10 +76,10 @@ export class RepLoaderService {
         } else if (response.status <= 0) {
             // failed to connect
             category = Models.ErrorCategory.ClientError;
-            error = `Failed to connect to server: ${response.url || "unknown"}`;
+            error = `Failed to connect to server: ${response.url || 'unknown'}`;
         } else {
             category = Models.ErrorCategory.HttpClientError;
-            const message = (response.headers && response.headers.get("warning")) || "Unknown client HTTP error";
+            const message = (response.headers && response.headers.get('warning')) || 'Unknown client HTTP error';
 
             if (response.status === Models.HttpStatusCode.BadRequest ||
                 response.status === Models.HttpStatusCode.UnprocessableEntity) {
@@ -91,11 +91,11 @@ export class RepLoaderService {
                 // were looking for an object an got not found - object may be deleted
                 // treat as http problem.
                 category = Models.ErrorCategory.HttpClientError;
-                error = `Failed to connect to server: ${response.url || "unknown"}`;
+                error = `Failed to connect to server: ${response.url || 'unknown'}`;
             } else if (response.status === Models.HttpStatusCode.NotFound) {
                 // general not found other than object - assume client programming error
                 category = Models.ErrorCategory.ClientError;
-                error = `Failed to connect to server: ${response.url || "unknown"}`;
+                error = `Failed to connect to server: ${response.url || 'unknown'}`;
             } else {
                 error = message;
             }
@@ -117,7 +117,7 @@ export class RepLoaderService {
             })
             .catch((r: HttpErrorResponse) => {
                 this.loadingCountSource.next(--(this.loadingCount));
-                const originalUrl = config.url || "Unknown url";
+                const originalUrl = config.url || 'Unknown url';
                 return this.handleError(r, originalUrl);
             });
     }
@@ -128,7 +128,7 @@ export class RepLoaderService {
 
         if (response instanceof Models.ActionResultRepresentation && Models.isIDomainObjectRepresentation(data)) {
             const actionResult: Ro.IActionInvokeRepresentation = {
-                resultType: "object",
+                resultType: 'object',
                 result: data,
                 links: [],
                 extensions: {}
@@ -146,7 +146,7 @@ export class RepLoaderService {
     private httpPopulate(config: RequestOptions, ignoreCache: boolean, response: Models.IHateoasModel): Promise<Models.IHateoasModel> {
 
         if (!config.url) {
-            throw new Error("Request must have a URL");
+            throw new Error('Request must have a URL');
         }
 
         const requestUrl = config.url;
@@ -178,7 +178,7 @@ export class RepLoaderService {
                 const representation = this.handleRedirectedObject(response, r.body!);
                 this.cache.add(requestUrl, representation);
                 response.populate(representation);
-                response.etagDigest = (r.headers && r.headers.get("ETag")) || "";
+                response.etagDigest = (r.headers && r.headers.get('ETag')) || '';
                 response.keySeparator = this.configService.config.keySeparator;
                 return Promise.resolve(response);
             })
@@ -234,11 +234,11 @@ export class RepLoaderService {
 
         if (link) {
             const response = link.getTarget();
-            let urlParms = "";
+            let urlParms = '';
 
             if (parms) {
-                const urlParmString = reduce(parms, (result, n, key) => (result === "" ? "" : result + "&") + key + "=" + n, "");
-                urlParms = urlParmString !== "" ? `?${urlParmString}` : "";
+                const urlParmString = reduce(parms, (result, n, key) => (result === '' ? '' : result + '&') + key + '=' + n, '');
+                urlParms = urlParmString !== '' ? `?${urlParmString}` : '';
             }
 
             const config = {
@@ -251,7 +251,7 @@ export class RepLoaderService {
 
             return this.httpPopulate(config, true, response) as Promise<T>;
         }
-        return Promise.reject("link must not be null");
+        return Promise.reject('link must not be null');
     }
 
     invoke = (action: Models.ActionRepresentation | Models.InvokableActionMember, parms: Dictionary<Models.Value>, urlParms: Dictionary<Object>): Promise<Models.ActionResultRepresentation> => {
@@ -285,13 +285,13 @@ export class RepLoaderService {
         }
 
         const config = {
-            method: "GET",
+            method: 'GET',
             url: url,
             init: {
                 responseType: 'blob',
 
                 // responseType: ResponseContentType.Blob,
-                headers: new HttpHeaders({ "Accept": mt })
+                headers: new HttpHeaders({ 'Accept': mt })
             }
         };
 
@@ -305,7 +305,7 @@ export class RepLoaderService {
                 return blob;
             })
             .catch((r: HttpErrorResponse) => {
-                const originalUrl = config.url || "Unknown url";
+                const originalUrl = config.url || 'Unknown url';
                 return this.handleError(r, originalUrl);
             });
     }
@@ -313,11 +313,11 @@ export class RepLoaderService {
     uploadFile = (url: string, mt: string, file: Blob): Promise<boolean> => {
 
         const config = {
-            method: "POST",
+            method: 'POST',
             url: url,
             init: {
                 body: file,
-                headers: new Headers({ "Content-Type": mt })
+                headers: new Headers({ 'Content-Type': mt })
             }
         };
 

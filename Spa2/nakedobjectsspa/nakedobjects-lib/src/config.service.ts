@@ -33,6 +33,7 @@ export interface IAppConfig {
 
     autoLoadDirty: boolean;
     showDirtyFlag: boolean;
+    clearCacheOnChange: boolean;
 
     defaultLocale: string;
 
@@ -48,7 +49,7 @@ export interface IAppConfig {
     // flag for configurable home button behaviour
     leftClickHomeAlwaysGoesToSinglePane: boolean;
 
-    logLevel: "error" | "warn" | "info" | "debug" | "none";
+    logLevel: 'error' | 'warn' | 'info' | 'debug' | 'none';
 
     dateInputFormat: string;
 
@@ -109,27 +110,28 @@ export class ConfigService {
     // defaults
     private appConfig: IAppConfig = {
         authenticate: false,
-        appPath: "",
-        applicationName: "",
-        logoffUrl: "",
-        postLogoffUrl: "/gemini/home",
+        appPath: '',
+        applicationName: '',
+        logoffUrl: '',
+        postLogoffUrl: '/gemini/home',
         defaultPageSize: 20,
         listCacheSize: 5,
-        shortCutMarker: "___",
+        shortCutMarker: '___',
         urlShortCuts: [],
-        keySeparator: "--",
-        objectColor: "object-color",
-        linkColor: "link-color",
+        keySeparator: '--',
+        objectColor: 'object-color',
+        linkColor: 'link-color',
         autoLoadDirty: true,
         showDirtyFlag: false,
-        defaultLocale: "en-GB",
+        clearCacheOnChange: false,
+        defaultLocale: 'en-GB',
         httpCacheDepth: 50,
         transientCacheDepth: 4,
         recentCacheDepth: 20,
         doUrlValidation: false,
         leftClickHomeAlwaysGoesToSinglePane: true,
-        logLevel: "error",
-        dateInputFormat: "D MMM YYYY"
+        logLevel: 'error',
+        dateInputFormat: 'D MMM YYYY'
     };
 
     constructor(private readonly http: HttpClient) {
@@ -148,8 +150,8 @@ export class ConfigService {
     }
 
     getAppPath(appPath: string) {
-        if (appPath.charAt(appPath.length - 1) === "/") {
-            return appPath.length > 1 ? appPath.substring(0, appPath.length - 1) : "";
+        if (appPath.charAt(appPath.length - 1) === '/') {
+            return appPath.length > 1 ? appPath.substring(0, appPath.length - 1) : '';
         }
         return appPath;
     }

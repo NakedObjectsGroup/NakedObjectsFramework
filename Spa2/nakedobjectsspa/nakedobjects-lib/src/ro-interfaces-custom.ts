@@ -3,20 +3,20 @@
 // NOF custom RO constants
 
 export interface ICustomExtensions extends Ro.IExtensions {
-    "x-ro-nof-choices"?: { [index: string]: Ro.ValueType[]; };
-    "x-ro-nof-menuPath"?: string;
-    "x-ro-nof-mask"?: string;
-    "x-ro-nof-interactionMode"?: string;
-    "x-ro-nof-tableViewTitle"?: boolean;
-    "x-ro-nof-tableViewColumns"?: string[];
-    "x-ro-nof-multipleLines"?: number;
-    "x-ro-nof-warnings"?: string[];
-    "x-ro-nof-messages"?: string[];
-    "x-ro-nof-dataType"?: string;
-    "x-ro-nof-range"?: IRange;
-    "x-ro-nof-notNavigable"?: boolean;
-    "x-ro-nof-renderEagerly"?: boolean;
-    "x-ro-nof-presentationHint"?: string;
+    'x-ro-nof-choices'?: { [index: string]: Ro.ValueType[]; };
+    'x-ro-nof-menuPath'?: string;
+    'x-ro-nof-mask'?: string;
+    'x-ro-nof-interactionMode'?: string;
+    'x-ro-nof-tableViewTitle'?: boolean;
+    'x-ro-nof-tableViewColumns'?: string[];
+    'x-ro-nof-multipleLines'?: number;
+    'x-ro-nof-warnings'?: string[];
+    'x-ro-nof-messages'?: string[];
+    'x-ro-nof-dataType'?: string;
+    'x-ro-nof-range'?: IRange;
+    'x-ro-nof-notNavigable'?: boolean;
+    'x-ro-nof-renderEagerly'?: boolean;
+    'x-ro-nof-presentationHint'?: string;
 }
 
 export interface IRange {

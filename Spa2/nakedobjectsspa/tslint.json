@@ -83,10 +83,10 @@
       "check-whitespace"
     ],
     "prefer-const": true,
-    // "quotemark": [
-    //   true,
-    //   "single"
-    // ],
+    "quotemark": [
+      true,
+      "single"
+    ],
     "radix": true,
     "semicolon": [
       true,

@@ -6,8 +6,8 @@ import { Dictionary } from 'lodash';
 import keys from 'lodash-es/keys';
 import isEqual from 'lodash-es/isEqual';
 
-export type PaneName = "pane1" | "pane2";
-export type PaneType = "single" | "split";
+export type PaneName = 'pane1' | 'pane2';
+export type PaneType = 'single' | 'split';
 
 export interface ICustomActivatedRouteData {
     pane: number;
@@ -111,22 +111,22 @@ export class PaneRouteData {
 
     private isNull = {
         condition: (val: any) => !val,
-        name: "is null"
+        name: 'is null'
     };
 
     private isNotNull = {
         condition: (val: any) => val,
-        name: "is not null"
+        name: 'is not null'
     };
 
     private isLength0 = {
         condition: (val: any) => val && val.length === 0,
-        name: "is length 0"
+        name: 'is length 0'
     };
 
     private isEmptyMap = {
         condition: (val: any) => keys(val).length === 0,
-        name: "is an empty map"
+        name: 'is an empty map'
     };
 
     isValid(name: string) {
@@ -169,8 +169,8 @@ export class PaneRouteData {
 
         if (this.doUrlValidation) {
             // Can add more conditions here
-            this.assertMustBeNullInContext("objectId", "menuId");
-            this.assertMustBeNullInContext("menuId", "objectId");
+            this.assertMustBeNullInContext('objectId', 'menuId');
+            this.assertMustBeNullInContext('menuId', 'objectId');
         }
     }
 

@@ -35,7 +35,7 @@ export abstract class TypeResultCache<T> {
     private isSubtypeOf(subtype: string, index: number, count: number): Promise<T> {
 
         if (index >= count) {
-            return Promise.reject("");
+            return Promise.reject('');
         }
 
         const entry = this.subtypeCache[index];
@@ -66,7 +66,7 @@ export abstract class TypeResultCache<T> {
 
         // this is potentially expensive - need to filter out non ref types ASAP
 
-        if (!type || type === "string" || type === "number" || type === "boolean") {
+        if (!type || type === 'string' || type === 'number' || type === 'boolean') {
             return Promise.resolve(this.default);
         }
 

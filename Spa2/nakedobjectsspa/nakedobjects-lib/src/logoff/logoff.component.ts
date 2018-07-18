@@ -60,6 +60,6 @@ export class LogoffComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.context.getUser().then(u => this.userId = u.userName() || "Unknown");
+        this.context.getUser().then(u => this.userId = u.userName() || 'Unknown');
     }
 }

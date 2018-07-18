@@ -117,7 +117,7 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
 
         const invokeWithoutDialog = (right?: boolean) =>
             actionViewModel.invokeWithoutDialogWithParameters(Promise.resolve([]), right).then((actionResult: Models.ActionResultRepresentation) => {
-                this.setMessage(actionResult.shouldExpectResult() ? actionResult.warningsOrMessages() || Msg.noResultMessage : "");
+                this.setMessage(actionResult.shouldExpectResult() ? actionResult.warningsOrMessages() || Msg.noResultMessage : '');
                 // clear selected items on void actions
                 this.clearSelected(actionResult);
             });
@@ -140,7 +140,7 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
     }
 
     protected clearSelected(result: Models.ActionResultRepresentation) {
-        if (result.resultType() === "void") {
+        if (result.resultType() === 'void') {
             this.setItems(false);
         }
     }

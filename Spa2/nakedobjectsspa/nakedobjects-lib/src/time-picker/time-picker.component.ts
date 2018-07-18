@@ -8,12 +8,12 @@ import { debounceTime } from 'rxjs/operators';
 const moment = momentNs;
 
 export interface ITimePickerOutputEvent {
-    type: "timeChanged" | "timeCleared" | "timeInvalid";
+    type: 'timeChanged' | 'timeCleared' | 'timeInvalid';
     data: string;
 }
 
 export interface ITimePickerInputEvent {
-    type: "setTime";
+    type: 'setTime';
     data: string;
 }
 
@@ -33,7 +33,7 @@ export class TimePickerComponent implements OnInit, OnDestroy {
     @Input()
     id: string;
 
-    @ViewChild("focus")
+    @ViewChild('focus')
     inputField: ElementRef;
 
     constructor(
@@ -67,11 +67,11 @@ export class TimePickerComponent implements OnInit, OnDestroy {
     set time(time: momentNs.Moment | null) {
         if (time && time.isValid()) {
             this.timeValue = time;
-            this.outputEvents.emit({ type: 'timeChanged', data: time.format("HH:mm:ss") });
+            this.outputEvents.emit({ type: 'timeChanged', data: time.format('HH:mm:ss') });
         }
     }
 
-    private validInputFormats = ["HH:mm:ss", "HH:mm", "HHmm"];
+    private validInputFormats = ['HH:mm:ss', 'HH:mm', 'HHmm'];
 
     private validateTime(newValue: string) {
         let dt: momentNs.Moment = moment();
@@ -89,15 +89,15 @@ export class TimePickerComponent implements OnInit, OnDestroy {
     setTimeIfChanged(newTime: momentNs.Moment) {
         if (!newTime.isSame(Models.withUndefined(this.time))) {
             this.time = newTime;
-            setTimeout(() => this.model = newTime.format("HH:mm"));
+            setTimeout(() => this.model = newTime.format('HH:mm'));
         }
     }
 
     setTime(newValue: string) {
 
-        if (newValue === "" || newValue == null) {
+        if (newValue === '' || newValue == null) {
             this.timeValue = null;
-            this.outputEvents.emit({ type: 'timeCleared', data: "" });
+            this.outputEvents.emit({ type: 'timeCleared', data: '' });
         } else {
             const dt = this.validateTime(newValue);
 
@@ -126,8 +126,8 @@ export class TimePickerComponent implements OnInit, OnDestroy {
     }
 
     clear() {
-        this.modelValue = "";
-        this.setTime("");
+        this.modelValue = '';
+        this.setTime('');
     }
 
     get subject() {

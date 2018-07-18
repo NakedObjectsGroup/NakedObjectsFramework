@@ -27,7 +27,7 @@ export class TimePickerFacadeComponent implements AfterViewInit {
     @Input()
     model: FieldViewModel;
 
-    @ViewChild("tp")
+    @ViewChild('tp')
     timepicker: TimePickerComponent;
 
     inputEvents: EventEmitter<ITimePickerInputEvent>;
@@ -38,7 +38,7 @@ export class TimePickerFacadeComponent implements AfterViewInit {
 
     setValueIfChanged(time: string) {
         const oldValue = this.control.value;
-        const newValue = time ? time : "";
+        const newValue = time ? time : '';
 
         if (newValue !== oldValue) {
             this.model.resetMessage();
@@ -57,13 +57,13 @@ export class TimePickerFacadeComponent implements AfterViewInit {
         if (this.control) {
             this.model.resetMessage();
             this.model.clientValid = true;
-            this.control.setValue("");
+            this.control.setValue('');
         }
     }
 
    handleInvalidTimeEvent(data: string) {
         if (this.control) {
-           this.control.setValue("");
+           this.control.setValue('');
            this.model.setMessage(Msg.invalidTime);
            this.model.clientValid = false;
            this.control.setErrors({[Msg.invalidTime]: true});
@@ -72,13 +72,13 @@ export class TimePickerFacadeComponent implements AfterViewInit {
 
     handleEvents(e: ITimePickerOutputEvent) {
         switch (e.type) {
-            case ("timeChanged"):
+            case ('timeChanged'):
                 this.handleTimeChangedEvent(e.data);
                 break;
-             case ("timeInvalid"):
+             case ('timeInvalid'):
                 this.handleInvalidTimeEvent(e.data);
                 break;
-             case ("timeCleared"):
+             case ('timeCleared'):
                 this.handleTimeClearedEvent();
                 break;
             default: // ignore
@@ -87,8 +87,8 @@ export class TimePickerFacadeComponent implements AfterViewInit {
 
     ngAfterViewInit(): void {
         const existingValue: any = this.control && this.control.value;
-        if (existingValue && (existingValue instanceof String || typeof existingValue === "string")) {
-            setTimeout(() => this.inputEvents.emit({ type: "setTime", data: existingValue as string }));
+        if (existingValue && (existingValue instanceof String || typeof existingValue === 'string')) {
+            setTimeout(() => this.inputEvents.emit({ type: 'setTime', data: existingValue as string }));
         }
     }
 

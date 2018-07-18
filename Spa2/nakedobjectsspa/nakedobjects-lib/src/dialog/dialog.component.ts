@@ -75,22 +75,22 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
 
     get title() {
         const dialog = this.dialog;
-        return dialog ? dialog.title : "";
+        return dialog ? dialog.title : '';
     }
 
     get message() {
         const dialog = this.dialog;
-        return dialog ? dialog.getMessage() : "";
+        return dialog ? dialog.getMessage() : '';
     }
 
     get parameters() {
         const dialog = this.dialog;
-        return dialog ? dialog.parameters : "";
+        return dialog ? dialog.parameters : '';
     }
 
     get tooltip(): string {
         const dialog = this.dialog;
-        return dialog ? dialog.tooltip() : "";
+        return dialog ? dialog.tooltip() : '';
     }
 
     onSubmit(right?: boolean) {

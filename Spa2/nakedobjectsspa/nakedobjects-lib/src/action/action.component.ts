@@ -36,7 +36,7 @@ export class ActionComponent {
     @Input()
     action: IActionHolder;
 
-    @ViewChildren("focus")
+    @ViewChildren('focus')
     focusList: QueryList<ElementRef>;
 
     constructor() { }

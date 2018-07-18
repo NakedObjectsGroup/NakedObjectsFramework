@@ -1,5 +1,5 @@
 ﻿import { ICustomListRepresentation } from './ro-interfaces-custom';
-export type HttpMethodsType = "POST" | "PUT" | "GET" | "DELETE";
+export type HttpMethodsType = 'POST' | 'PUT' | 'GET' | 'DELETE';
 
 export interface ILink {
     id?: string;
@@ -12,7 +12,7 @@ export interface ILink {
     extensions?: IExtensions;
 }
 
-export type FormatType = "string" | "date-time" | "date" | "time" | "utc-millisec" | "big-integer" | "big-decimal" | "blob" | "clob" | "decimal" | "int";
+export type FormatType = 'string' | 'date-time' | 'date' | 'time' | 'utc-millisec' | 'big-integer' | 'big-decimal' | 'blob' | 'clob' | 'decimal' | 'int';
 
 export interface IExtensions {
     friendlyName?: string;
@@ -123,7 +123,7 @@ export interface IValueMap {
 
 export interface IObjectOfType {
     members: IValueMap;
-    "x-ro-invalidReason"?: string;
+    'x-ro-invalidReason'?: string;
 }
 
 export interface IPromptMap {
@@ -147,7 +147,7 @@ export interface IScalarValueRepresentation extends IResourceRepresentation {
     value: ScalarValueType;
 }
 
-export type MemberTypeType = "action" | "collection" | "property";
+export type MemberTypeType = 'action' | 'collection' | 'property';
 
 export interface IMember extends IResourceRepresentation {
     memberType: MemberTypeType;
@@ -182,7 +182,7 @@ export interface IDomainObjectRepresentation extends IResourceRepresentation {
     extensions: IDomainObjectExtensions;
 }
 
-export type ResultTypeType = "object" | "list" | "scalar" | "void";
+export type ResultTypeType = 'object' | 'list' | 'scalar' | 'void';
 
 export interface IActionInvokeRepresentation extends IResourceRepresentation {
     resultType: ResultTypeType;

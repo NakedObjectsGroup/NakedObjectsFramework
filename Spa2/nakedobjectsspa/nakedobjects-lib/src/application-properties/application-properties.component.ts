@@ -30,7 +30,7 @@ export class ApplicationPropertiesComponent implements OnInit {
     }
 
     get implVersion() {
-        return this.applicationProperties.serverVersion ? this.applicationProperties.serverVersion.implVersion : "";
+        return this.applicationProperties.serverVersion ? this.applicationProperties.serverVersion.implVersion : '';
     }
 
     get clientVersion() {

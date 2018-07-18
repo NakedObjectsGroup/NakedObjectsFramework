@@ -1,8 +1,8 @@
 ﻿import { IMessageViewModel } from './imessage-view-model';
 
 export abstract class MessageViewModel implements IMessageViewModel {
-    private previousMessage = "";
-    private message = "";
+    private previousMessage = '';
+    private message = '';
 
     readonly clearMessage = () => {
         if (this.message === this.previousMessage) {
@@ -11,7 +11,7 @@ export abstract class MessageViewModel implements IMessageViewModel {
             this.previousMessage = this.message;
         }
     }
-    readonly resetMessage = () => this.message = this.previousMessage = "";
+    readonly resetMessage = () => this.message = this.previousMessage = '';
     readonly setMessage = (msg: string) => this.message = msg;
     readonly getMessage = () => this.message;
 }

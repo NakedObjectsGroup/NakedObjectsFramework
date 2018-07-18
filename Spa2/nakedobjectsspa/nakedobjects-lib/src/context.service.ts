@@ -131,7 +131,7 @@ class RecentCache {
 class ValueCache {
 
     private currentValues: [undefined, Dictionary<Models.Value>, Dictionary<Models.Value>] = [undefined, {}, {}];
-    private currentId: [undefined, string, string] = [undefined, "", ""];
+    private currentId: [undefined, string, string] = [undefined, '', ''];
 
     addValue(id: string, valueId: string, value: Models.Value, paneId: Pane) {
         if (this.currentId[paneId] !== id) {
@@ -161,7 +161,7 @@ class ValueCache {
     }
 
     clear(paneId: Pane) {
-        this.currentId[paneId] = "";
+        this.currentId[paneId] = '';
         this.currentValues[paneId] = {};
     }
 
@@ -283,7 +283,7 @@ export class ContextService {
             const transientObj = this.transientCache.get(paneId, type, id);
             const p: Promise<Models.DomainObjectRepresentation> = transientObj
                 ? Promise.resolve(transientObj)
-                : Promise.reject(new Models.ErrorWrapper(Models.ErrorCategory.ClientError, Models.ClientErrorCode.ExpiredTransient, ""));
+                : Promise.reject(new Models.ErrorWrapper(Models.ErrorCategory.ClientError, Models.ClientErrorCode.ExpiredTransient, ''));
             return p;
         }
 
@@ -534,7 +534,7 @@ export class ContextService {
                 // delete oldest;
                 // TODO this looks wrong surely just "added" test !
                 // Fix "!"
-                const oldest = first(sortBy(this.currentLists, "e.added"))!.added;
+                const oldest = first(sortBy(this.currentLists, 'e.added'))!.added;
                 const oldestIndex = findKey(this.currentLists, (e: { added: number }) => e.added === oldest);
                 if (oldestIndex) {
                     delete this.currentLists[oldestIndex];
@@ -547,13 +547,13 @@ export class ContextService {
 
     private handleResult = (paneId: Pane, result: Models.ActionResultRepresentation, page: number, pageSize: number): Promise<Models.ListRepresentation> => {
 
-        if (result.resultType() === "list") {
+        if (result.resultType() === 'list') {
             const resultList = result.result().list() as Models.ListRepresentation; // not null
             const index = this.urlManager.getListCacheIndex(paneId, page, pageSize);
             this.cacheList(resultList, index);
             return Promise.resolve(resultList);
         } else {
-            return Promise.reject(new Models.ErrorWrapper(Models.ErrorCategory.ClientError, Models.ClientErrorCode.WrongType, "expect list"));
+            return Promise.reject(new Models.ErrorWrapper(Models.ErrorCategory.ClientError, Models.ClientErrorCode.WrongType, 'expect list'));
         }
     }
 
@@ -569,7 +569,7 @@ export class ContextService {
         this.getObject(paneId, oid, InteractionMode.View).then(object => Promise.resolve(object.actionMember(actionId).extensions()))
 
     private getPagingParms(page: number, pageSize: number): Dictionary<Object> {
-        return (page && pageSize) ? { "x-ro-page": page, "x-ro-pageSize": pageSize } : {};
+        return (page && pageSize) ? { 'x-ro-page': page, 'x-ro-pageSize': pageSize } : {};
     }
 
     getListFromMenu = (routeData: PaneRouteData, page?: number, pageSize?: number) => {
@@ -650,7 +650,7 @@ export class ContextService {
     setResult = (action: Models.ActionRepresentation | Models.InvokableActionMember, result: Models.ActionResultRepresentation, fromPaneId: number, toPaneId: number, page: number, pageSize: number) => {
 
         if (!result.result().isNull()) {
-            if (result.resultType() === "object") {
+            if (result.resultType() === 'object') {
 
                 const resultObject = result.result().object()!;
                 resultObject.keySeparator = this.keySeparator;
@@ -670,7 +670,7 @@ export class ContextService {
                     this.transientCache.add(toPaneId, resultObject);
                     this.urlManager.pushUrlState(toPaneId);
 
-                    const interactionMode = resultObject.extensions().interactionMode() === "transient"
+                    const interactionMode = resultObject.extensions().interactionMode() === 'transient'
                         ? InteractionMode.Transient
                         : InteractionMode.NotPersistent;
                     this.urlManager.setObjectWithMode(resultObject, interactionMode, toPaneId);
@@ -691,7 +691,7 @@ export class ContextService {
                     this.repLoader.addToCache(url, resultObject.wrapped());
 
                     // if render in edit must be  a form
-                    if (resultObject.extensions().interactionMode() === "form") {
+                    if (resultObject.extensions().interactionMode() === 'form') {
                         this.urlManager.pushUrlState(toPaneId);
                         this.urlManager.setObjectWithMode(resultObject, InteractionMode.Form, toPaneId);
                     } else {
@@ -699,9 +699,9 @@ export class ContextService {
                         this.urlManager.setObject(resultObject, toPaneId);
                     }
                 } else {
-                    this.loggerService.throw("ContextService:setResult result object without self or persist link");
+                    this.loggerService.throw('ContextService:setResult result object without self or persist link');
                 }
-            } else if (result.resultType() === "list") {
+            } else if (result.resultType() === 'list') {
 
                 const resultList = result.result().list()!;
                 const parms = this.parameterCache.getValues(action.actionId(), fromPaneId);
@@ -709,7 +709,7 @@ export class ContextService {
                 const index = this.urlManager.getListCacheIndexFromSearch(search, toPaneId, page, pageSize);
                 this.cacheList(resultList, index);
             }
-        } else if (result.resultType() === "void") {
+        } else if (result.resultType() === 'void') {
             this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl(fromPaneId);
         }
     }
@@ -724,7 +724,7 @@ export class ContextService {
 
         if (count < 0) {  // should never happen
             count = 0;
-            this.loggerService.warn("ContextService:decPendingPotentActionOrReload count less than 0");
+            this.loggerService.warn('ContextService:decPendingPotentActionOrReload count less than 0');
         }
         this.pendingPotentActionCount[paneId] = count;
     }
@@ -766,7 +766,7 @@ export class ContextService {
 
         invokeMap.setUrlParameter(Constants.roInlinePropertyDetails, false);
 
-        if (action.extensions().returnType() === "list" && action.extensions().renderEagerly()) {
+        if (action.extensions().returnType() === 'list' && action.extensions().renderEagerly()) {
             invokeMap.setUrlParameter(Constants.roInlineCollectionItems, true);
         }
 
@@ -912,7 +912,7 @@ export class ContextService {
 
     isSubTypeOf = (toCheckType: string, againstType: string): Promise<boolean> => {
 
-        if (this.subTypeCache[toCheckType] && typeof this.subTypeCache[toCheckType][againstType] !== "undefined") {
+        if (this.subTypeCache[toCheckType] && typeof this.subTypeCache[toCheckType][againstType] !== 'undefined') {
             return this.subTypeCache[toCheckType][againstType];
         }
 
@@ -935,7 +935,7 @@ export class ContextService {
 
     private cacheRecentlyViewed(obj: Models.DomainObjectRepresentation) {
         // never cache forms
-        if (obj.extensions().interactionMode() !== "form") {
+        if (obj.extensions().interactionMode() !== 'form') {
             this.recentcache.add(obj);
         }
     }

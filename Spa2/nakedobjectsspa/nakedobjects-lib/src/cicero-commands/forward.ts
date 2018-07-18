@@ -4,7 +4,7 @@ import * as Usermessages from '../user-messages';
 
 export class Forward extends Command {
 
-    shortCommand = "fo";
+    shortCommand = 'fo';
     fullCommand = Usermessages.forwardCommand;
     helpText = Usermessages.forwardHelp;
     protected minArguments = 0;
@@ -15,6 +15,6 @@ export class Forward extends Command {
     }
 
     doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
-        return this.returnResult("", null, () => this.location.forward());
+        return this.returnResult('', null, () => this.location.forward());
     }
 }

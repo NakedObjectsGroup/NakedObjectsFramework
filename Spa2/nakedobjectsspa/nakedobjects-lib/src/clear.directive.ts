@@ -31,57 +31,57 @@ export class ClearDirective implements OnInit, OnDestroy {
     // otherwise we lose all the classes added here
     onChange() {
 
-        this.nativeEl.classList.add("ng-clearable");
+        this.nativeEl.classList.add('ng-clearable');
 
         if (this.subject.getValue()) {
-            this.nativeEl.classList.add("ng-x");
+            this.nativeEl.classList.add('ng-x');
         } else {
-            this.nativeEl.classList.remove("ng-x");
+            this.nativeEl.classList.remove('ng-x');
         }
     }
 
     onMouseMove(event: MouseEvent) {
-        if (this.nativeEl.classList.contains("ng-x")) {
+        if (this.nativeEl.classList.contains('ng-x')) {
             const onX = this.nativeEl.offsetWidth - 18 < event.clientX - this.nativeEl.getBoundingClientRect().left;
             if (onX) {
-                this.nativeEl.classList.add("ng-onX");
+                this.nativeEl.classList.add('ng-onX');
             } else {
-                this.nativeEl.classList.remove("ng-onX");
+                this.nativeEl.classList.remove('ng-onX');
             }
         }
     }
 
     onClick(event: KeyboardEvent) {
-        if (this.nativeEl.classList.contains("ng-onX")) {
+        if (this.nativeEl.classList.contains('ng-onX')) {
 
             event.preventDefault();
-            this.nativeEl.classList.remove("ng-x");
-            this.nativeEl.classList.remove("ng-onX");
-            this.clear.emit("event");
+            this.nativeEl.classList.remove('ng-x');
+            this.nativeEl.classList.remove('ng-onX');
+            this.clear.emit('event');
         }
     }
 
-    @HostListener("click", ['$event'])
+    @HostListener('click', ['$event'])
     click(event: KeyboardEvent) {
         this.onClick(event);
     }
 
-    @HostListener("touchstart", ['$event'])
+    @HostListener('touchstart', ['$event'])
     touchstart(event: KeyboardEvent) {
         this.onClick(event);
     }
 
-    @HostListener("mousemove", ['$event'])
+    @HostListener('mousemove', ['$event'])
     mousemove(event: MouseEvent) {
         this.onMouseMove(event);
     }
 
-    @HostListener("input")
+    @HostListener('input')
     input() {
         this.onChange();
     }
 
-    @HostListener("change")
+    @HostListener('change')
     change() {
         this.onChange();
     }

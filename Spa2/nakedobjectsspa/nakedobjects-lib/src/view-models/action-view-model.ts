@@ -35,7 +35,7 @@ export class ActionViewModel {
         this.paneId = routeData.paneId;
         this.title = actionRep.extensions().friendlyName();
         this.presentationHint = actionRep.extensions().presentationHint();
-        this.menuPath = actionRep.extensions().menuPath() || "";
+        this.menuPath = actionRep.extensions().menuPath() || '';
         this.description = this.disabled() ? actionRep.disabledReason() : actionRep.extensions().description();
     }
 

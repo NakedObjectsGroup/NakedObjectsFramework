@@ -35,67 +35,67 @@ export class ListComponent implements OnInit, OnDestroy {
     }
 
     collection: ListViewModel;
-    title = "";
+    title = '';
     currentState = CollectionViewState.List;
     selectedDialogId: string;
 
     private actionButton: IActionHolder = {
-        value: "Actions",
+        value: 'Actions',
         doClick: () => this.toggleActionMenu(),
         show: () => true,
         disabled: () => this.disableActions(),
         tempDisabled: () => null,
         title: () => this.actionsTooltip,
-        accesskey: "a"
+        accesskey: 'a'
     };
 
     private reloadButton: IActionHolder = {
-        value: "Reload",
+        value: 'Reload',
         doClick: () => this.reloadList(),
         show: () => true,
         disabled: () => null,
         tempDisabled: () => null,
-        title: () => "",
+        title: () => '',
         accesskey: null
     };
 
     private firstButton: IActionHolder = {
-        value: "First",
+        value: 'First',
         doClick: () => this.pageFirst(),
         show: () => true,
         disabled: () => this.pageFirstDisabled(),
         tempDisabled: () => null,
-        title: () => "",
+        title: () => '',
         accesskey: null
     };
 
     private previousButton: IActionHolder = {
-        value: "Previous",
+        value: 'Previous',
         doClick: () => this.pagePrevious(),
         show: () => true,
         disabled: () => this.pagePreviousDisabled(),
         tempDisabled: () => null,
-        title: () => "",
+        title: () => '',
         accesskey: null
     };
 
     private nextButton: IActionHolder = {
-        value: "Next",
+        value: 'Next',
         doClick: () => this.pageNext(),
         show: () => true,
         disabled: () => this.pageNextDisabled(),
         tempDisabled: () => null,
-        title: () => "",
+        title: () => '',
         accesskey: null
     };
 
     private lastButton: IActionHolder = {
-        value: "Last",
+        value: 'Last',
         doClick: () => this.pageLast(),
         show: () => true,
         disabled: () => this.pageLastDisabled(),
         tempDisabled: () => null,
-        title: () => "",
+        title: () => '',
         accesskey: null
     };
 
@@ -191,7 +191,7 @@ export class ListComponent implements OnInit, OnDestroy {
             this.collection.refresh(routeData);
         } else {
             // should never get here
-            this.loggerService.throw("ListComponent:setup Missing cachedList");
+            this.loggerService.throw('ListComponent:setup Missing cachedList');
         }
 
         if (this.collection) {

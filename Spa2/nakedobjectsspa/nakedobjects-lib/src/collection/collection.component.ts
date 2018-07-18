@@ -7,7 +7,7 @@ import { ItemViewModel } from '../view-models/item-view-model'; // needed for de
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { safeUnsubscribe } from '../helpers-components';
 
-type State = "summary" | "list" | "table";
+type State = 'summary' | 'list' | 'table';
 
 @Component({
     selector: 'nof-collection',

@@ -10,7 +10,7 @@ import zipObject from 'lodash-es/zipObject';
 
 export class Save extends Command {
 
-    shortCommand = "sa";
+    shortCommand = 'sa';
     fullCommand = Usermessages.saveCommand;
     helpText = Usermessages.saveHelp;
     protected minArguments = 0;
@@ -22,7 +22,7 @@ export class Save extends Command {
 
     doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
         if (chained) {
-            return this.returnResult("", this.mayNotBeChained(), () => { }, true);
+            return this.returnResult('', this.mayNotBeChained(), () => { }, true);
         }
         return this.getObject().then((obj: Models.DomainObjectRepresentation) => {
             const props = obj.propertyMembers();
@@ -38,7 +38,7 @@ export class Save extends Command {
                             values.push(newVal);
                         } else if (propMember.value().isNull() &&
                             propMember.isScalar()) {
-                            values.push(new Models.Value(""));
+                            values.push(new Models.Value(''));
                         } else {
                             values.push(propMember.value());
                         }
@@ -46,7 +46,7 @@ export class Save extends Command {
                 });
             const propMap = zipObject(propIds, values) as Dictionary<Models.Value>;
             const mode = obj.extensions().interactionMode();
-            const toSave = mode === "form" || mode === "transient";
+            const toSave = mode === 'form' || mode === 'transient';
             const saveOrUpdate = toSave ? this.context.saveObject : this.context.updateObject;
 
             return saveOrUpdate(obj, propMap, 1, true).then(() => {

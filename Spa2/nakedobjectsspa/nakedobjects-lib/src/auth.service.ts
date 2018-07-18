@@ -15,7 +15,7 @@ import * as auth0 from 'auth0-js';
 export class AuthService  implements CanActivate {
 
     getAuthorizationHeader(): string {
-        const token = localStorage.getItem('id_token') || "";
+        const token = localStorage.getItem('id_token') || '';
         return `Bearer ${token}`;
     }
 

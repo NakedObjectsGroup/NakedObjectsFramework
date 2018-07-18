@@ -2,7 +2,7 @@ import { FieldViewModel } from '../view-models/field-view-model';
 import { AfterViewInit, ViewChild } from '@angular/core';
 import { Component, Input, EventEmitter } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
-import { DatePickerComponent, DatePickerOptions } from "../date-picker/date-picker.component";
+import { DatePickerComponent, DatePickerOptions } from '../date-picker/date-picker.component';
 import { ConfigService } from '../config.service';
 import * as Constants from '../constants';
 import * as Msg from '../user-messages';
@@ -32,7 +32,7 @@ export class DatePickerFacadeComponent implements AfterViewInit {
     @Input()
     model: FieldViewModel;
 
-    @ViewChild("dp")
+    @ViewChild('dp')
     datepicker: DatePickerComponent;
 
     inputEvents: EventEmitter<IDatePickerInputEvent>;
@@ -47,7 +47,7 @@ export class DatePickerFacadeComponent implements AfterViewInit {
 
     setValueIfChanged(dateModel: momentNs.Moment | null) {
         const oldValue = this.control.value;
-        const newValue = dateModel ? dateModel.format(Constants.fixedDateFormat) : "";
+        const newValue = dateModel ? dateModel.format(Constants.fixedDateFormat) : '';
 
         if (newValue !== oldValue) {
             this.model.resetMessage();
@@ -58,7 +58,7 @@ export class DatePickerFacadeComponent implements AfterViewInit {
 
     handleDefaultEvent(data: string) {
         if (this.control) {
-            if (data === "closed") {
+            if (data === 'closed') {
                 const dateModel = this.datepicker.dateModel;
                 this.setValueIfChanged(dateModel);
             }
@@ -75,7 +75,7 @@ export class DatePickerFacadeComponent implements AfterViewInit {
         if (this.control) {
             this.model.resetMessage();
             this.model.clientValid = true;
-            this.control.setValue("");
+            this.control.setValue('');
         }
     }
 
@@ -89,16 +89,16 @@ export class DatePickerFacadeComponent implements AfterViewInit {
 
     handleEvents(e: IDatePickerOutputEvent) {
         switch (e.type) {
-            case ("default"):
+            case ('default'):
                 this.handleDefaultEvent(e.data);
                 break;
-            case ("dateChanged"):
+            case ('dateChanged'):
                 this.handleDateChangedEvent(e.data);
                 break;
-            case ("dateCleared"):
+            case ('dateCleared'):
                 this.handleDateClearedEvent();
                 break;
-            case ("dateInvalid"):
+            case ('dateInvalid'):
                 this.handleInvalidDateEvent(e.data);
                 break;
 
@@ -108,8 +108,8 @@ export class DatePickerFacadeComponent implements AfterViewInit {
 
     ngAfterViewInit(): void {
         const existingValue: any = this.control && this.control.value;
-        if (existingValue && (existingValue instanceof String || typeof existingValue === "string")) {
-            setTimeout(() => this.inputEvents.emit({ type: "setDate", data: existingValue as string, }));
+        if (existingValue && (existingValue instanceof String || typeof existingValue === 'string')) {
+            setTimeout(() => this.inputEvents.emit({ type: 'setDate', data: existingValue as string, }));
         }
     }
 

@@ -12,7 +12,7 @@ export class ClickDirective {
 
     @HostListener('click') onClick() {
 
-        this.leftClick.emit("event");
+        this.leftClick.emit('event');
         return false;
     }
 
@@ -20,7 +20,7 @@ export class ClickDirective {
         const enterKeyCode = 13;
         if (event.which === enterKeyCode) {
             const trigger = event.shiftKey ? this.rightClick : this.leftClick;
-            trigger.emit("event");
+            trigger.emit('event');
             return false;
         }
 
@@ -36,7 +36,7 @@ export class ClickDirective {
     }
 
     @HostListener('contextmenu') onContextMenu() {
-        this.rightClick.emit("event");
+        this.rightClick.emit('event');
         return false;
     }
 }

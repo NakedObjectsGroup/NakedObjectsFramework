@@ -26,11 +26,11 @@ export abstract class PaneComponent implements OnInit, OnDestroy {
     arData: ICustomActivatedRouteData;
 
     onChild() {
-        setTimeout(() => this.paneType = "split");
+        setTimeout(() => this.paneType = 'split');
     }
 
     onChildless() {
-         setTimeout(() => this.paneType = "single");
+         setTimeout(() => this.paneType = 'single');
     }
 
     protected abstract setup(routeData: PaneRouteData): void;
@@ -40,7 +40,7 @@ export abstract class PaneComponent implements OnInit, OnDestroy {
             this.arData = data;
             this.paneId = data.pane;
             this.paneType = data.paneType;
-            this.paneIdName = this.paneId === 1 ? "pane1" : "pane2";
+            this.paneIdName = this.paneId === 1 ? 'pane1' : 'pane2';
 
             if (!this.paneRouteDataSub) {
                 this.paneRouteDataSub =

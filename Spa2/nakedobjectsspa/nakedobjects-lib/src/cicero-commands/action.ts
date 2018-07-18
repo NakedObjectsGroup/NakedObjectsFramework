@@ -9,7 +9,7 @@ import reduce from 'lodash-es/reduce';
 
 export class Action extends Command {
 
-    shortCommand = "ac";
+    shortCommand = 'ac';
     fullCommand = Usermessages.actionCommand;
 
     helpText = Usermessages.actionHelp;
@@ -23,8 +23,8 @@ export class Action extends Command {
     doExecute(args: string | null, chained: boolean, result: CommandResult): Promise<CommandResult> {
         const match = this.argumentAsString(args, 0);
         const details = this.argumentAsString(args, 1, true);
-        if (details && details !== "?") {
-            return this.returnResult("", Usermessages.mustbeQuestionMark);
+        if (details && details !== '?') {
+            return this.returnResult('', Usermessages.mustbeQuestionMark);
         }
         if (this.isObject()) {
             return this.getObject().then(obj => this.processActions(match, obj.actionMembers(), details));
@@ -33,33 +33,33 @@ export class Action extends Command {
             return this.getMenu().then(menu => this.processActions(match, menu.actionMembers(), details));
         }
         // TODO: handle list - CCAs
-        return Promise.reject("TODO: handle list - CCAs");
+        return Promise.reject('TODO: handle list - CCAs');
     }
 
     private processActions(match: string | undefined, actionsMap: Dictionary<Models.ActionMember>, details: string | undefined): Promise<CommandResult> {
         let actions = map(actionsMap, action => action);
         if (actions.length === 0) {
-            return this.returnResult("", Usermessages.noActionsAvailable);
+            return this.returnResult('', Usermessages.noActionsAvailable);
         }
         if (match) {
             actions = this.matchFriendlyNameAndOrMenuPath(actions, match);
         }
         switch (actions.length) {
             case 0:
-                return this.returnResult("", Usermessages.doesNotMatchActions(match));
+                return this.returnResult('', Usermessages.doesNotMatchActions(match));
             case 1:
                 const action = actions[0];
                 if (details) {
-                    return this.returnResult("", this.renderActionDetails(action));
+                    return this.returnResult('', this.renderActionDetails(action));
                 } else if (action.disabledReason()) {
-                    return this.returnResult("", this.disabledAction(action));
+                    return this.returnResult('', this.disabledAction(action));
                 } else {
                     return this.openActionDialog(action);
                 }
             default:
                 let output = match ? Usermessages.matchingActions : Usermessages.actionsMessage;
                 output += this.listActions(actions);
-                return this.returnResult("", output);
+                return this.returnResult('', output);
         }
     }
 
@@ -70,11 +70,11 @@ export class Action extends Command {
     private listActions(actions: Models.ActionMember[]): string {
         return reduce(actions,
             (s, t) => {
-                const menupath = t.extensions().menuPath() ? `${t.extensions().menuPath()} - ` : "";
-                const disabled = t.disabledReason() ? ` (${Usermessages.disabledPrefix} ${t.disabledReason()})` : "";
-                return s + menupath + t.extensions().friendlyName() + disabled + "\n";
+                const menupath = t.extensions().menuPath() ? `${t.extensions().menuPath()} - ` : '';
+                const disabled = t.disabledReason() ? ` (${Usermessages.disabledPrefix} ${t.disabledReason()})` : '';
+                return s + menupath + t.extensions().friendlyName() + disabled + '\n';
             },
-            "");
+            '');
     }
 
     private openActionDialog(action: Models.ActionMember): Promise<CommandResult> {
@@ -86,7 +86,7 @@ export class Action extends Command {
                 this.urlManager.setDialog(action.actionId());
                 forEach(invokable.parameters(), p => this.setFieldValueInContext(p, p.default()));
 
-                return this.returnResult("", "");
+                return this.returnResult('', '');
             });
     }
 

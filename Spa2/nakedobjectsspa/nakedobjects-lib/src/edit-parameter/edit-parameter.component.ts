@@ -35,10 +35,10 @@ export class EditParameterComponent extends FieldComponent implements OnInit, Af
 
     parm: ParameterViewModel;
 
-    @ViewChildren("focus")
+    @ViewChildren('focus')
     focusList: QueryList<ElementRef | DatePickerFacadeComponent | TimePickerFacadeComponent | AutoCompleteComponent>;
 
-    @ViewChildren("checkbox")
+    @ViewChildren('checkbox')
     checkboxList: QueryList<ElementRef>;
 
     @Input()
@@ -110,7 +110,7 @@ export class EditParameterComponent extends FieldComponent implements OnInit, Af
     classes(): Dictionary<boolean | null> {
         return {
             [this.parm.color]: true,
-            "candrop": this.canDrop
+            'candrop': this.canDrop
         };
     }
 

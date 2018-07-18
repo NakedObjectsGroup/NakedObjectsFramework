@@ -22,7 +22,7 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
 
     readonly isEditable: boolean;
     readonly attachment: AttachmentViewModel | null;
-    refType: "null" | "navigable" | "notNavigable";
+    refType: 'null' | 'navigable' | 'notNavigable';
     // IDraggableViewModel
     readonly draggableType: string;
 
@@ -123,7 +123,7 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
             this.setupChoices(choices);
 
             if (this.optional) {
-                const emptyChoice = new ChoiceViewModel(new Models.Value(""), this.id);
+                const emptyChoice = new ChoiceViewModel(new Models.Value(''), this.id);
                 this.choices = concat<ChoiceViewModel>([emptyChoice], this.choices);
             }
 
@@ -136,15 +136,15 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
 
     private setupReference(value: Models.Value, rep: Models.IHasExtensions) {
         if (value.isNull()) {
-            this.reference = "";
+            this.reference = '';
             this.value = this.description;
-            this.formattedValue = "";
-            this.refType = "null";
+            this.formattedValue = '';
+            this.refType = 'null';
         } else {
             this.reference = value!.link() !.href();
             this.value = value.toString();
             this.formattedValue = value.toString();
-            this.refType = rep.extensions().notNavigable() ? "notNavigable" : "navigable";
+            this.refType = rep.extensions().notNavigable() ? 'notNavigable' : 'navigable';
         }
         if (this.entryType === Models.EntryType.FreeForm) {
             this.description = this.description || Msg.dropPrompt;

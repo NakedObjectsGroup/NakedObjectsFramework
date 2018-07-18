@@ -53,20 +53,20 @@ export abstract class Command {
 
         // TODO Create outgoing Vm and copy across values as needed
         if (!this.isAvailableInCurrentContext()) {
-            return this.returnResult("", Usermessages.commandNotAvailable(this.fullCommand));
+            return this.returnResult('', Usermessages.commandNotAvailable(this.fullCommand));
         }
         // TODO: This could be moved into a pre-parse method as it does not depend on context
         if (this.argString == null) {
             if (this.minArguments > 0) {
-                return this.returnResult("", Usermessages.noArguments);
+                return this.returnResult('', Usermessages.noArguments);
             }
         } else {
-            const args = this.argString.split(",");
+            const args = this.argString.split(',');
             if (args.length < this.minArguments) {
 
-                return this.returnResult("", Usermessages.tooFewArguments);
+                return this.returnResult('', Usermessages.tooFewArguments);
             } else if (args.length > this.maxArguments) {
-                return this.returnResult("", Usermessages.tooManyArguments);
+                return this.returnResult('', Usermessages.tooManyArguments);
             }
         }
         return this.doExecute(this.argString, this.chained, result);
@@ -81,7 +81,7 @@ export abstract class Command {
 
     abstract isAvailableInCurrentContext(): boolean;
 
-    protected mayNotBeChained(rider: string = "") {
+    protected mayNotBeChained(rider: string = '') {
         return Usermessages.mayNotbeChainedMessage(this.fullCommand, rider);
     }
 
@@ -95,10 +95,10 @@ export abstract class Command {
     // If argument does not parse correctly, message will be passed to UI and command aborted.
     protected argumentAsString(argString: string | null, argNo: number, optional: boolean = false, toLower: boolean = true): string | undefined {
         if (!argString) { return undefined; }
-        if (!optional && argString.split(",").length < argNo + 1) {
+        if (!optional && argString.split(',').length < argNo + 1) {
             throw new Error(Usermessages.tooFewArguments);
         }
-        const args = argString.split(",");
+        const args = argString.split(',');
         if (args.length < argNo + 1) {
             if (optional) {
                 return undefined;
@@ -131,9 +131,9 @@ export abstract class Command {
     // Parses '17, 3-5, -9, 6-' into two numbers
     protected parseRange(arg?: string): { start: number | null; end: number | null } {
         if (!arg) {
-            arg = "1-";
+            arg = '1-';
         }
-        const clauses = arg.split("-");
+        const clauses = arg.split('-');
         const range: { start: number | null; end: number | null } = { start: null, end: null };
         switch (clauses.length) {
             case 1: {
@@ -223,7 +223,7 @@ export abstract class Command {
         } else if (this.isMenu()) {
             return this.getMenu().then((menu: Models.MenuRepresentation) => this.context.getInvokableAction(menu.actionMember(dialogId))); // i.e. return a promise
         }
-        return Promise.reject(new Models.ErrorWrapper(Models.ErrorCategory.ClientError, Models.ClientErrorCode.NotImplemented, "List actions not implemented yet"));
+        return Promise.reject(new Models.ErrorWrapper(Models.ErrorCategory.ClientError, Models.ClientErrorCode.NotImplemented, 'List actions not implemented yet'));
     }
 
     // Tests that at least one collection is open (should only be one).
@@ -281,14 +281,14 @@ export abstract class Command {
     protected matchFriendlyNameAndOrMenuPath<T extends Models.IHasExtensions>(
         reps: T[],
         match: string | undefined): T[] {
-        const clauses = match ? match.split(" ") : [];
+        const clauses = match ? match.split(' ') : [];
         // An exact match has preference over any partial match
         const exactMatches = filter(reps,
             (rep) => {
                 const path = rep.extensions().menuPath();
                 const name = rep.extensions().friendlyName().toLowerCase();
                 return match === name ||
-                    (!!path && match === path.toLowerCase() + " " + name) ||
+                    (!!path && match === path.toLowerCase() + ' ' + name) ||
                     every(clauses, clause => name === clause || (!!path && path.toLowerCase() === clause));
             });
         if (exactMatches.length > 0) { return exactMatches; }
@@ -331,26 +331,26 @@ export abstract class Command {
 
     protected handleErrorResponse(err: Models.ErrorMap, getFriendlyName: (id: string) => string) {
         if (err.invalidReason()) {
-            return this.returnResult("", err.invalidReason());
+            return this.returnResult('', err.invalidReason());
         }
         let msg = Usermessages.pleaseCompleteOrCorrect;
         each(err.valuesMap(),
             (errorValue, fieldId) => {
                 msg += this.fieldValidationMessage(errorValue, () => getFriendlyName(fieldId!));
             });
-        return this.returnResult("", msg);
+        return this.returnResult('', msg);
     }
 
     protected handleErrorResponseNew(err: Models.ErrorMap, getFriendlyName: (id: string) => string) {
         if (err.invalidReason()) {
-            return this.returnResult("", err.invalidReason());
+            return this.returnResult('', err.invalidReason());
         }
         let msg = Usermessages.pleaseCompleteOrCorrect;
         each(err.valuesMap(),
             (errorValue, fieldId) => {
                 msg += this.fieldValidationMessage(errorValue, () => getFriendlyName(fieldId!));
             });
-        return this.returnResult("", msg);
+        return this.returnResult('', msg);
     }
 
     protected validationMessage(reason: string | null, value: Models.Value, fieldFriendlyName:  string): string {
@@ -359,7 +359,7 @@ export abstract class Command {
             const suffix = reason === Usermessages.mandatory ? Usermessages.required : `${value} ${reason}`;
             return `${prefix}${suffix}\n`;
         }
-        return "";
+        return '';
     }
 
     private fieldValidationMessage(errorValue: Models.ErrorValue, fieldFriendlyName: () => string): string {
@@ -411,7 +411,7 @@ export abstract class Command {
 
         if (val.isScalar()) {
             if (val.isNull()) {
-                return new Models.Value("");
+                return new Models.Value('');
             }
             return val;
             // TODO: consider these options:

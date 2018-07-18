@@ -100,7 +100,7 @@ export class DialogViewModel extends MessageViewModel {
             .then((actionResult: Models.ActionResultRepresentation) => {
                 if (actionResult.shouldExpectResult()) {
                     this.setMessage(actionResult.warningsOrMessages() || Msg.noResultMessage);
-                } else if (actionResult.resultType() === "void") {
+                } else if (actionResult.resultType() === 'void') {
                     // dialog staying on same page so treat as cancel
                     // for url replacing purposes and have to explicitly close
                     this.doCloseReplaceHistory();

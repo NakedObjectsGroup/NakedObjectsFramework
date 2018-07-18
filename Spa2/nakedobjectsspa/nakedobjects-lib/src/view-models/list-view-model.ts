@@ -43,7 +43,7 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
     actions: ActionViewModel[];
     menuItems: MenuItemViewModel[];
     description: () => string;
-    readonly name = "item";
+    readonly name = 'item';
 
     private readonly earlierDisabled = () => this.page === 1 || this.numPages === 1;
 

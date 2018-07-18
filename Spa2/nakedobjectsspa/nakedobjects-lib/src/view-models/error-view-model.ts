@@ -18,10 +18,10 @@ export class ErrorViewModel {
                 error.httpErrorCode === Models.HttpStatusCode.PreconditionFailed;
         }
 
-        this.description = this.description || "No description available";
-        this.errorCode = this.errorCode || "No code available";
-        this.message = this.message || "No message available";
-        this.stackTrace = this.stackTrace || ["No stack trace available"];
+        this.description = this.description || 'No description available';
+        this.errorCode = this.errorCode || 'No code available';
+        this.message = this.message || 'No message available';
+        this.stackTrace = this.stackTrace || ['No stack trace available'];
     }
 
     readonly originalError: Models.ErrorWrapper | null;

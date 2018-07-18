@@ -71,9 +71,9 @@ export class CiceroCommandFactoryService {
     private mapInputToCommands(input: string) {
         if (!input) {
             // Special case for hitting Enter with no input
-            return [this.getCommand("wh")];
+            return [this.getCommand('wh')];
         }
-        const commands = input.split(";");
+        const commands = input.split(';');
         return map(commands, c => this.getSingleCommand(c, commands.length > 1));
     }
 
@@ -86,14 +86,14 @@ export class CiceroCommandFactoryService {
     }
 
     getArgs(input: string) {
-        const index = input.indexOf(" ");
+        const index = input.indexOf(' ');
         return index >= 0 ? input.substr(index + 1) : null;
     }
 
     getSingleCommand = (input: string, chained: boolean) => {
 
         input = input.trim();
-        const [firstWord] = input.split(" ");
+        const [firstWord] = input.split(' ');
         const command = this.getCommand(firstWord);
         command.argString = this.getArgs(input);
         command.chained = chained;
@@ -105,10 +105,10 @@ export class CiceroCommandFactoryService {
         if (!input) {
             return Result.create(input, null);
         }
-        let lastInChain = (last(input.split(";")) || "").toLowerCase();
+        let lastInChain = (last(input.split(';')) || '').toLowerCase();
         const charsTyped = lastInChain.length;
         lastInChain = lastInChain.trim();
-        if (lastInChain.length === 0 || lastInChain.indexOf(" ") >= 0) { // i.e. not the first word
+        if (lastInChain.length === 0 || lastInChain.indexOf(' ') >= 0) { // i.e. not the first word
             return Result.create(`${input} `, null);
         }
         try {
@@ -116,7 +116,7 @@ export class CiceroCommandFactoryService {
             const earlierChain = input.substr(0, input.length - charsTyped);
             return Result.create(`${earlierChain}${command.fullCommand} `, null);
         } catch (e) {
-            return Result.create("", e.message);
+            return Result.create('', e.message);
         }
     }
 

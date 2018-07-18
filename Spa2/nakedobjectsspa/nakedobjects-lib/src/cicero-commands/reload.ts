@@ -5,7 +5,7 @@ import * as Models from '../models';
 
 export class Reload extends Command {
 
-    shortCommand = "re";
+    shortCommand = 're';
     fullCommand = Usermessages.reloadCommand;
     helpText = Usermessages.reloadHelp;
     protected minArguments = 0;
@@ -19,6 +19,6 @@ export class Reload extends Command {
 
         return  this.getObject()
             .then(o => this.context.reloadObject(1, o))
-            .then((updatedObject: Models.DomainObjectRepresentation) => this.returnResult("", "", () => this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl() ));
+            .then((updatedObject: Models.DomainObjectRepresentation) => this.returnResult('', '', () => this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl() ));
     }
 }

@@ -30,36 +30,36 @@ export function copy(event: KeyboardEvent, item: IDraggableViewModel, context: C
 
 export function tooltip(onWhat: { clientValid: () => boolean }, fields: FieldViewModel[]): string {
     if (onWhat.clientValid()) {
-        return "";
+        return '';
     }
 
     const missingMandatoryFields = filter(fields, p => !p.clientValid && !p.getMessage());
 
     if (missingMandatoryFields.length > 0) {
-        return reduce(missingMandatoryFields, (s, t) => s + t.title + "; ", Msg.mandatoryFieldsPrefix);
+        return reduce(missingMandatoryFields, (s, t) => s + t.title + '; ', Msg.mandatoryFieldsPrefix);
     }
 
     const invalidFields = filter(fields, p => !p.clientValid);
 
     if (invalidFields.length > 0) {
-        return reduce(invalidFields, (s, t) => s + t.title + "; ", Msg.invalidFieldsPrefix);
+        return reduce(invalidFields, (s, t) => s + t.title + '; ', Msg.invalidFieldsPrefix);
     }
 
-    return "";
+    return '';
 }
 
 function getMenuNameForLevel(menupath: string, level: number) {
-    let menu = "";
+    let menu = '';
 
     if (menupath && menupath.length > 0) {
-        const menus = menupath.split("_");
+        const menus = menupath.split('_');
 
         if (menus.length > level) {
             menu = menus[level];
         }
     }
 
-    return menu || "";
+    return menu || '';
 }
 
 function removeDuplicateMenuNames(menus: { name: string, action: ActionViewModel }[]) {
@@ -125,7 +125,7 @@ export function getCollectionDetails(count: number | null) {
         return Msg.emptyCollectionSize;
     }
 
-    const postfix = count === 1 ? "Item" : "Items";
+    const postfix = count === 1 ? 'Item' : 'Items';
 
     return `${count} ${postfix}`;
 }
@@ -152,8 +152,8 @@ function validateAgainstType(model: Models.IHasExtensions, modelValue: string | 
     }
 
     // if optional but empty always valid
-    if (modelValue == null || modelValue === "") {
-        return "";
+    if (modelValue == null || modelValue === '') {
+        return '';
     }
 
     return Validate.validateMandatoryAgainstType(model, viewValue, localFilter);
@@ -175,20 +175,20 @@ export function validate(rep: Models.IHasExtensions, vm: FieldViewModel, modelVa
 export function setScalarValueInView(vm: { value: string | number | boolean | Date | null }, propertyRep: Models.PropertyMember, value: Models.Value) {
     if (Models.isDate(propertyRep)) {
         const date = Models.toUtcDate(value);
-        vm.value = date ? Models.toDateString(date) : "";
+        vm.value = date ? Models.toDateString(date) : '';
     } else if (Models.isDateTime(propertyRep)) {
         const date = Models.toUtcDate(value);
-        vm.value = date ? Models.toDateTimeString(date) : "";
+        vm.value = date ? Models.toDateTimeString(date) : '';
     } else if (Models.isTime(propertyRep)) {
         const time = Models.toTime(value);
-        vm.value = time ? Models.toTimeString(time) : "";
+        vm.value = time ? Models.toTimeString(time) : '';
     } else {
         vm.value = value.scalar();
     }
 }
 
 export function dirtyMarker(context: ContextService, configService: ConfigService, oid: Models.ObjectIdWrapper) {
-    return (configService.config.showDirtyFlag && context.getIsDirty(oid)) ? "*" : "";
+    return (configService.config.showDirtyFlag && context.getIsDirty(oid)) ? '*' : '';
 }
 
 export function createChoiceViewModels(id: string, searchTerm: string, choices: Dictionary<Models.Value>) {
@@ -199,7 +199,7 @@ export function handleErrorResponse(err: Models.ErrorMap, messageViewModel: IMes
 
     let requiredFieldsMissing = false; // only show warning message if we have nothing else
     let fieldValidationErrors = false;
-    let contributedParameterErrorMsg = "";
+    let contributedParameterErrorMsg = '';
 
     each(err.valuesMap(), (errorValue, k) => {
 
@@ -208,8 +208,8 @@ export function handleErrorResponse(err: Models.ErrorMap, messageViewModel: IMes
         if (valueViewModel) {
             const reason = errorValue.invalidReason;
             if (reason) {
-                if (reason === "Mandatory") {
-                    const r = "REQUIRED";
+                if (reason === 'Mandatory') {
+                    const r = 'REQUIRED';
                     requiredFieldsMissing = true;
                     valueViewModel.description = valueViewModel.description.indexOf(r) === 0 ? valueViewModel.description : `${r} ${valueViewModel.description}`;
                 } else {
@@ -220,11 +220,11 @@ export function handleErrorResponse(err: Models.ErrorMap, messageViewModel: IMes
         } else {
             // no matching parm for message - this can happen in contributed actions
             // make the message a dialog level warning.
-            contributedParameterErrorMsg = errorValue.invalidReason || "";
+            contributedParameterErrorMsg = errorValue.invalidReason || '';
         }
     });
 
-    let msg = contributedParameterErrorMsg || err.invalidReason() || "";
+    let msg = contributedParameterErrorMsg || err.invalidReason() || '';
     if (requiredFieldsMissing) { msg = `${msg} Please complete REQUIRED fields. `; }
     if (fieldValidationErrors) { msg = `${msg} See field validation message(s). `; }
 

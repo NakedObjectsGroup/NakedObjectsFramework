@@ -50,7 +50,7 @@ export abstract class FieldComponent implements OnDestroy {
     }
 
     get isBoolean() {
-        return this.model.returnType === "boolean";
+        return this.model.returnType === 'boolean';
     }
 
     get subject() {
@@ -100,7 +100,7 @@ export abstract class FieldComponent implements OnDestroy {
         this.isAutoComplete = this.model.entryType === Models.EntryType.AutoComplete;
 
         if (this.isConditionalChoices) {
-            this.pArgs = omit(this.model.promptArguments, "x-ro-nof-members") as Dictionary<Models.Value>;
+            this.pArgs = omit(this.model.promptArguments, 'x-ro-nof-members') as Dictionary<Models.Value>;
             this.populateDropdown();
         }
     }
@@ -114,7 +114,7 @@ export abstract class FieldComponent implements OnDestroy {
     }
 
     private isDomainObjectViewModel(object: any): object is DomainObjectViewModel {
-        return object && "properties" in object;
+        return object && 'properties' in object;
     }
 
     private mapValues(args: Dictionary<Models.Value>, parmsOrProps: { argId: string, getValue: () => Models.Value }[]) {
@@ -131,7 +131,7 @@ export abstract class FieldComponent implements OnDestroy {
         const object = this.vmParent as DomainObjectViewModel;
 
         if (!dialog && !object) {
-            this.loggerService.throw("FieldComponent:populateArguments Expect dialog or object");
+            this.loggerService.throw('FieldComponent:populateArguments Expect dialog or object');
         }
 
         let parmsOrProps: { argId: string, getValue: () => Models.Value }[];
@@ -236,11 +236,11 @@ export abstract class FieldComponent implements OnDestroy {
             const input = this.control.value;
             const element = this.checkboxList.first.nativeElement;
             if (input == null) {
-                this.renderer.setProperty(element, "indeterminate", true);
-                this.renderer.setProperty(element, "checked", null);
+                this.renderer.setProperty(element, 'indeterminate', true);
+                this.renderer.setProperty(element, 'checked', null);
             } else {
-                this.renderer.setProperty(element, "indeterminate", false);
-                this.renderer.setProperty(element, "checked", !!input);
+                this.renderer.setProperty(element, 'indeterminate', false);
+                this.renderer.setProperty(element, 'checked', !!input);
             }
         }
     }
@@ -274,7 +274,7 @@ export abstract class FieldComponent implements OnDestroy {
     }
 
     clear() {
-        this.control.reset("");
+        this.control.reset('');
         this.model.clear();
     }
 

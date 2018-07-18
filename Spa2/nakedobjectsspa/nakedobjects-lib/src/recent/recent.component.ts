@@ -38,10 +38,10 @@ export class RecentComponent extends PaneComponent implements AfterViewInit, OnD
         disabled: () => this.clearDisabled(),
         tempDisabled: () => null,
         title: () => this.clearDisabled() ? Msg.recentDisabledMessage : Msg.recentMessage,
-        accesskey: "c"
+        accesskey: 'c'
     };
 
-    @ViewChildren("row")
+    @ViewChildren('row')
     actionChildren: QueryList<RowComponent>;
 
     private sub: ISubscription;

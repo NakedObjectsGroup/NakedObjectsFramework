@@ -33,14 +33,14 @@ export class Extensions {
     constructor(private wrapped: RoCustom.ICustomExtensions) { }
 
     // Standard RO:
-    friendlyName = () => this.wrapped.friendlyName || "";
-    description = () => this.wrapped.description || "";
+    friendlyName = () => this.wrapped.friendlyName || '';
+    description = () => this.wrapped.description || '';
     returnType = () => this.wrapped.returnType || null;
     optional = () => this.wrapped.optional || false;
     hasParams = () => this.wrapped.hasParams || false;
     elementType = () => this.wrapped.elementType || null;
     domainType = () => this.wrapped.domainType || null;
-    pluralName = () => this.wrapped.pluralName || "";
+    pluralName = () => this.wrapped.pluralName || '';
     format = () => this.wrapped.format;
     memberOrder = () => this.wrapped.memberOrder;
     isService = () => this.wrapped.isService || false;
@@ -49,20 +49,20 @@ export class Extensions {
     pattern = () => this.wrapped.pattern;
 
     // Nof custom:
-    choices = () => this.wrapped["x-ro-nof-choices"] as { [index: string]: Ro.ValueType[]; };
-    menuPath = () => this.wrapped["x-ro-nof-menuPath"] as string;
-    mask = () => this.wrapped["x-ro-nof-mask"] as string;
-    tableViewTitle = () => this.wrapped["x-ro-nof-tableViewTitle"] as boolean;
-    tableViewColumns = () => this.wrapped["x-ro-nof-tableViewColumns"] as string[];
-    multipleLines = () => this.wrapped["x-ro-nof-multipleLines"] as number;
-    warnings = () => this.wrapped["x-ro-nof-warnings"] as string[];
-    messages = () => this.wrapped["x-ro-nof-messages"] as string[];
-    interactionMode = () => this.wrapped["x-ro-nof-interactionMode"] as string;
-    dataType = () => this.wrapped["x-ro-nof-dataType"] as string;
-    range = () => this.wrapped["x-ro-nof-range"] as RoCustom.IRange;
-    notNavigable = () => this.wrapped["x-ro-nof-notNavigable"] as boolean;
-    renderEagerly = () => this.wrapped["x-ro-nof-renderEagerly"] as boolean;
-    presentationHint = () => this.wrapped["x-ro-nof-presentationHint"] as string;
+    choices = () => this.wrapped['x-ro-nof-choices'] as { [index: string]: Ro.ValueType[]; };
+    menuPath = () => this.wrapped['x-ro-nof-menuPath'] as string;
+    mask = () => this.wrapped['x-ro-nof-mask'] as string;
+    tableViewTitle = () => this.wrapped['x-ro-nof-tableViewTitle'] as boolean;
+    tableViewColumns = () => this.wrapped['x-ro-nof-tableViewColumns'] as string[];
+    multipleLines = () => this.wrapped['x-ro-nof-multipleLines'] as number;
+    warnings = () => this.wrapped['x-ro-nof-warnings'] as string[];
+    messages = () => this.wrapped['x-ro-nof-messages'] as string[];
+    interactionMode = () => this.wrapped['x-ro-nof-interactionMode'] as string;
+    dataType = () => this.wrapped['x-ro-nof-dataType'] as string;
+    range = () => this.wrapped['x-ro-nof-range'] as RoCustom.IRange;
+    notNavigable = () => this.wrapped['x-ro-nof-notNavigable'] as boolean;
+    renderEagerly = () => this.wrapped['x-ro-nof-renderEagerly'] as boolean;
+    presentationHint = () => this.wrapped['x-ro-nof-presentationHint'] as string;
 }
 
 export interface IHasExtensions {
@@ -102,7 +102,7 @@ function getMember<T>(members: Dictionary<T>, id: string, owner: string) {
 
 export function checkNotNull<T>(v: T | undefined | null) {
     if (v != null) { return v!; }
-    return error("checkNotNull - Unexpected null");
+    return error('checkNotNull - Unexpected null');
 }
 
 export function toDateString(dt: Date) {
@@ -150,14 +150,14 @@ export function isDate(rep: IHasExtensions) {
     const returnType = rep.extensions().returnType();
     const format = rep.extensions().format();
 
-    return (returnType === "string" && format === "date");
+    return (returnType === 'string' && format === 'date');
 }
 
 export function isDateTime(rep: IHasExtensions) {
     const returnType = rep.extensions().returnType();
     const format = rep.extensions().format();
 
-    return (returnType === "string" && format === "date-time");
+    return (returnType === 'string' && format === 'date-time');
 }
 
 export function isDateOrDateTime(rep: IHasExtensions) {
@@ -168,17 +168,17 @@ export function isTime(rep: IHasExtensions) {
     const returnType = rep.extensions().returnType();
     const format = rep.extensions().format();
 
-    return returnType === "string" && format === "time";
+    return returnType === 'string' && format === 'time';
 }
 
 export function toTime(value: Value) {
-    const rawValue = value ? value.toString() : "";
+    const rawValue = value ? value.toString() : '';
     const dateValue = getTime(rawValue);
     return dateValue ? dateValue : null;
 }
 
 export function toUtcDate(value: Value) {
-    const rawValue = value ? value.toString() : "";
+    const rawValue = value ? value.toString() : '';
     const dateValue = getUtcDate(rawValue);
     return dateValue ? dateValue : null;
 }
@@ -224,37 +224,37 @@ export function decompress(toDecompress: string, shortCutMarker: string, urlShor
 export function getClassName(obj: any) {
     const funcNameRegex = /function (.{1,})\(/;
     const results = (funcNameRegex).exec(obj.constructor.toString());
-    return (results && results.length > 1) ? results[1] : "";
+    return (results && results.length > 1) ? results[1] : '';
 }
 
 export function typeFromUrl(url: string) {
     const typeRegex = /(objects|services)\/([\w|\.]+)/;
     const results = (typeRegex).exec(url);
-    return (results && results.length > 2) ? results[2] : "";
+    return (results && results.length > 2) ? results[2] : '';
 }
 
 export function idFromUrl(href: string) {
     const urlRegex = /(objects|services)\/(.*?)\/([^\/]*)/;
     const results = (urlRegex).exec(href);
-    return (results && results.length > 3) ? results[3] : "";
+    return (results && results.length > 3) ? results[3] : '';
 }
 
 export function propertyIdFromUrl(href: string) {
     const urlRegex = /(objects)\/(.*)\/(.*)\/(properties)\/(.*)/;
     const results = (urlRegex).exec(href);
-    return (results && results.length > 5) ? results[5] : "";
+    return (results && results.length > 5) ? results[5] : '';
 }
 
 export function friendlyTypeName(fullName: string) {
     // TODO Fix "!"
-    const shortName = last(fullName.split("."))!;
-    const result = shortName.replace(/([A-Z])/g, " $1").trim();
+    const shortName = last(fullName.split('.'))!;
+    const result = shortName.replace(/([A-Z])/g, ' $1').trim();
     return result.charAt(0).toUpperCase() + result.slice(1);
 }
 
 export function friendlyNameForParam(action: ActionRepresentation | InvokableActionMember, parmId: string) {
     const param = find(action.parameters(), (p) => p.id() === parmId);
-    return param ? param.extensions().friendlyName() : "";
+    return param ? param.extensions().friendlyName() : '';
 }
 
 export function friendlyNameForProperty(obj: DomainObjectRepresentation, propId: string) {
@@ -265,7 +265,7 @@ export function friendlyNameForProperty(obj: DomainObjectRepresentation, propId:
 export function typePlusTitle(obj: DomainObjectRepresentation) {
     const type = obj.extensions().friendlyName();
     const title = obj.title();
-    return type + ": " + title;
+    return type + ': ' + title;
 }
 
 // helper functions
@@ -275,11 +275,11 @@ function isAutoComplete(args: Ro.IValue | Ro.IValueMap | Ro.IObjectOfType | Ro.I
 }
 
 function isScalarType(typeName: string | null) {
-    return typeName === "string" || typeName === "number" || typeName === "boolean" || typeName === "integer";
+    return typeName === 'string' || typeName === 'number' || typeName === 'boolean' || typeName === 'integer';
 }
 
 function isListType(typeName: string | null) {
-    return typeName === "list";
+    return typeName === 'list';
 }
 
 function emptyResource(): Ro.IResourceRepresentation {
@@ -287,27 +287,27 @@ function emptyResource(): Ro.IResourceRepresentation {
 }
 
 function isILink(object: any): object is Ro.ILink {
-    return object && object instanceof Object && "href" in object;
+    return object && object instanceof Object && 'href' in object;
 }
 
 function isIObjectOfType(object: any): object is Ro.IObjectOfType {
-    return object && object instanceof Object && "members" in object;
+    return object && object instanceof Object && 'members' in object;
 }
 
 function isIValue(object: any): object is Ro.IValue {
-    return object && object instanceof Object && "value" in object;
+    return object && object instanceof Object && 'value' in object;
 }
 
 export function isResourceRepresentation(object: any): object is Ro.IResourceRepresentation {
-    return object && object instanceof Object && "links" in object && "extensions" in object;
+    return object && object instanceof Object && 'links' in object && 'extensions' in object;
 }
 
 export function isErrorRepresentation(object: any): object is Ro.IErrorRepresentation {
-    return isResourceRepresentation(object) && "message" in object;
+    return isResourceRepresentation(object) && 'message' in object;
 }
 
 export function isIDomainObjectRepresentation(object: any): object is Ro.IDomainObjectRepresentation {
-    return isResourceRepresentation(object) && "domainType" in object && "instanceId" in object && "members" in object;
+    return isResourceRepresentation(object) && 'domainType' in object && 'instanceId' in object && 'members' in object;
 }
 
 function getId(prop: PropertyRepresentation | PropertyMember) {
@@ -414,11 +414,11 @@ export class ErrorWrapper {
             this.errorCode = `${HttpStatusCode[this.httpErrorCode]}(${this.httpErrorCode})`;
 
             this.description = category === ErrorCategory.HttpServerError
-                ? "A software error has occurred on the server"
-                : "An HTTP error code has been received from the server\n" +
-                "You can look up the meaning of this code in the Restful Objects specification.";
+                ? 'A software error has occurred on the server'
+                : 'An HTTP error code has been received from the server\n' +
+                'You can look up the meaning of this code in the Restful Objects specification.';
 
-            this.title = "Error message received from server";
+            this.title = 'Error message received from server';
         }
 
         if (err instanceof ErrorMap) {
@@ -471,8 +471,8 @@ export class ObjectIdWrapper {
 
     static fromObject(object: DomainObjectRepresentation) {
         const oid = new ObjectIdWrapper(object.keySeparator);
-        oid.domainType = object.domainType() || "";
-        oid.instanceId = object.instanceId() || "";
+        oid.domainType = object.domainType() || '';
+        oid.instanceId = object.instanceId() || '';
         oid.splitInstanceId = this.safeSplit(oid.instanceId, object.keySeparator);
         oid.isService = !oid.instanceId;
         return oid;
@@ -522,7 +522,7 @@ export class ObjectIdWrapper {
 
     constructor(private readonly keySeparator: string) {
         if (keySeparator == null) {
-            error("ObjectIdWrapper must have a keySeparator");
+            error('ObjectIdWrapper must have a keySeparator');
         }
     }
 
@@ -538,8 +538,8 @@ export class ObjectIdWrapper {
 export abstract class HateosModel implements IHateoasModel {
 
     etagDigest?: string;
-    hateoasUrl = "";
-    method: Ro.HttpMethodsType = "GET";
+    hateoasUrl = '';
+    method: Ro.HttpMethodsType = 'GET';
     urlParms: Dictionary<Object>;
     keySeparator: string;
 
@@ -551,7 +551,7 @@ export abstract class HateosModel implements IHateoasModel {
     }
 
     getBody(): Ro.IRepresentation {
-        if (this.method === "POST" || this.method === "PUT") {
+        if (this.method === 'POST' || this.method === 'PUT') {
             const m = clone(this.model);
             const up = clone(this.urlParms);
             return merge(m, up);
@@ -564,7 +564,7 @@ export abstract class HateosModel implements IHateoasModel {
         const url = this.hateoasUrl;
         const attrAsJson = clone(this.model);
 
-        if (this.method === "GET" || this.method === "DELETE") {
+        if (this.method === 'GET' || this.method === 'DELETE') {
 
             if (keys(attrAsJson).length > 0) {
                 // there are model parms so encode everything into json
@@ -574,15 +574,15 @@ export abstract class HateosModel implements IHateoasModel {
                 if (keys(asJson).length > 0) {
                     const jsonMap = JSON.stringify(asJson);
                     const parmString = encodeURI(jsonMap);
-                    return url + "?" + parmString;
+                    return url + '?' + parmString;
                 }
                 return url;
             }
             if (keys(this.urlParms).length > 0) {
                 // there are only url reserved parms so they can just be appended to url
-                const urlParmString = reduce(this.urlParms, (result, n, key) => (result === "" ? "" : result + "&") + key + "=" + n, "");
+                const urlParmString = reduce(this.urlParms, (result, n, key) => (result === '' ? '' : result + '&') + key + '=' + n, '');
 
-                return url + "?" + urlParmString;
+                return url + '?' + urlParmString;
             }
         }
 
@@ -651,7 +651,7 @@ export class RelParm {
 
 export class Rel {
 
-    ns = "";
+    ns = '';
     uniqueValue: string;
     parms: RelParm[] = [];
 
@@ -663,14 +663,14 @@ export class Rel {
 
         let postFix: string;
 
-        if (this.asString.substring(0, 3) === "urn") {
+        if (this.asString.substring(0, 3) === 'urn') {
             // namespaced
-            this.ns = this.asString.substring(0, this.asString.indexOf("/") + 1);
-            postFix = this.asString.substring(this.asString.indexOf("/") + 1);
+            this.ns = this.asString.substring(0, this.asString.indexOf('/') + 1);
+            postFix = this.asString.substring(this.asString.indexOf('/') + 1);
         } else {
             postFix = this.asString;
         }
-        const splitPostFix = postFix.split(";");
+        const splitPostFix = postFix.split(';');
         this.uniqueValue = splitPostFix[0];
 
         if (splitPostFix.length > 1) {
@@ -692,20 +692,20 @@ export class MediaType {
     }
 
     private decomposeMediaType() {
-        const parms = this.asString.split(";");
+        const parms = this.asString.split(';');
         if (parms.length > 0) {
             this.applicationType = parms[0];
         }
 
         for (let i = 1; i < parms.length; i++) {
-            if (parms[i].trim().substring(0, 7) === "profile") {
+            if (parms[i].trim().substring(0, 7) === 'profile') {
                 this.profile = parms[i].trim();
-                const profileValue = (this.profile.split("=")[1].replace(/\"/g, "")).trim();
-                this.representationType = (profileValue.split("/")[1]).trim();
+                const profileValue = (this.profile.split('=')[1].replace(/\"/g, '')).trim();
+                this.representationType = (profileValue.split('/')[1]).trim();
             }
             if (parms[i].trim().substring(0, 16) === Constants.roDomainType) {
                 this.xRoDomainType = (parms[i]).trim();
-                this.domainType = (this.xRoDomainType.split("=")[1].replace(/\"/g, "")).trim();
+                this.domainType = (this.xRoDomainType.split('=')[1].replace(/\"/g, '')).trim();
             }
         }
     }
@@ -751,7 +751,7 @@ export class Value {
 
     isFileReference(): boolean {
         const href = this.getHref();
-        return href ? href.indexOf("data") === 0 : false;
+        return href ? href.indexOf('data') === 0 : false;
     }
 
     isList(): boolean {
@@ -785,16 +785,16 @@ export class Value {
 
     toString(): string {
         if (this.isReference()) {
-            return this.link() !.title() || ""; // know true
+            return this.link() !.title() || ''; // know true
         }
 
         if (this.isList()) {
             const list = this.list() !; // know true
             const ss = map(list, v => v.toString());
-            return ss.length === 0 ? "" : reduce(ss, (m, s) => m + "-" + s, "");
+            return ss.length === 0 ? '' : reduce(ss, (m, s) => m + '-' + s, '');
         }
 
-        return (this.wrapped == null) ? "" : this.wrapped.toString();
+        return (this.wrapped == null) ? '' : this.wrapped.toString();
     }
 
     private compress(shortCutMarker: string, urlShortCuts: string[]): Value {
@@ -837,7 +837,7 @@ export class Value {
         if (this.isReference()) {
             return this.link() !.href();  // know true
         }
-        return (this.wrapped == null) ? "" : this.wrapped.toString();
+        return (this.wrapped == null) ? '' : this.wrapped.toString();
     }
 
     toJsonString(shortCutMarker: string, urlShortCuts: string[]): string {
@@ -853,10 +853,10 @@ export class Value {
             target.value = this.link() !.wrapped; // know true
         } else if (this.isReference()) {
 
-            target.value = { "href": (this.link() as Link).href() }; // know true
+            target.value = { 'href': (this.link() as Link).href() }; // know true
         } else if (this.isList()) {
             const list = this.list() as Value[]; // know true
-            target.value = map(list, v => v.isReference() ? <Ro.ILink>{ "href": v.link() !.href() } : v.scalar()) as Ro.ValueType[];
+            target.value = map(list, v => v.isReference() ? <Ro.ILink>{ 'href': v.link() !.href() } : v.scalar()) as Ro.ValueType[];
         } else if (this.isBlob()) {
             target.value = this.blob();
         } else {
@@ -881,21 +881,21 @@ export class Result {
     ) { }
 
     object(): DomainObjectRepresentation | null {
-        if (!this.isNull() && this.resultType === "object") {
+        if (!this.isNull() && this.resultType === 'object') {
             return new DomainObjectRepresentation(this.wrapped as Ro.IDomainObjectRepresentation);
         }
         return null;
     }
 
     list(): ListRepresentation | null {
-        if (!this.isNull() && this.resultType === "list") {
+        if (!this.isNull() && this.resultType === 'list') {
             return new ListRepresentation(this.wrapped as RoCustom.ICustomListRepresentation);
         }
         return null;
     }
 
     scalar(): ScalarValueRepresentation | null {
-        if (!this.isNull() && this.resultType === "scalar") {
+        if (!this.isNull() && this.resultType === 'scalar') {
             return new ScalarValueRepresentation(this.wrapped as Ro.IScalarValueRepresentation);
         }
         return null;
@@ -906,7 +906,7 @@ export class Result {
     }
 
     isVoid(): boolean {
-        return (this.resultType === "void");
+        return (this.resultType === 'void');
     }
 }
 
@@ -955,7 +955,7 @@ export class UpdateMap extends ArgumentMap implements IHateoasModel {
         if (link) {
             link.copyToHateoasModel(this);
         } else {
-            error("UpdateMap - attempting to create update map for object without update link");
+            error('UpdateMap - attempting to create update map for object without update link');
         }
 
         each(this.properties(), (value: Value, key: string) => {
@@ -986,7 +986,7 @@ export class AddToRemoveFromMap extends ArgumentMap implements IHateoasModel {
         if (link) {
             link.copyToHateoasModel(this);
         } else {
-            const type = add ? "add" : "remove";
+            const type = add ? 'add' : 'remove';
             error(`AddToRemoveFromMap attempting to create ${type} map for object without ${type} link`);
         }
     }
@@ -1000,7 +1000,7 @@ export class ModifyMap extends ArgumentMap implements IHateoasModel {
         if (link) {
             link.copyToHateoasModel(this);
         } else {
-            error("ModifyMap attempting to create modify map for object without modify link");
+            error('ModifyMap attempting to create modify map for object without modify link');
         }
         propertyResource.value().set(this.valueMap, this.id);
     }
@@ -1014,7 +1014,7 @@ export class ClearMap extends ArgumentMap implements IHateoasModel {
         if (link) {
             link.copyToHateoasModel(this);
         } else {
-            error("ClearMap attempting to create clear map for object without clear link");
+            error('ClearMap attempting to create clear map for object without clear link');
         }
     }
 }
@@ -1046,7 +1046,7 @@ export abstract class ResourceRepresentation<T extends Ro.IResourceRepresentatio
 
 export class InvokeMap extends ArgumentMap implements IHateoasModel {
     constructor(private readonly link: Link) {
-        super(link.arguments() as Ro.IValueMap, "");
+        super(link.arguments() as Ro.IValueMap, '');
         link.copyToHateoasModel(this);
     }
 
@@ -1065,7 +1065,7 @@ export class ActionResultRepresentation extends ResourceRepresentation<Ro.IActio
 
     // links
     selfLink(): Link | null {
-        return linkByRel(this.links(), "self") || null;
+        return linkByRel(this.links(), 'self') || null;
     }
 
     // link representations
@@ -1089,14 +1089,14 @@ export class ActionResultRepresentation extends ResourceRepresentation<Ro.IActio
         const wOrM = has(this.extensions().warnings()) ? this.extensions().warnings() : this.extensions().messages();
 
         if (has(wOrM)) {
-            return reduce(wOrM, (s, t) => s + " " + t, "");
+            return reduce(wOrM, (s, t) => s + ' ' + t, '');
         }
 
         return undefined;
     }
 
     shouldExpectResult(): boolean {
-        return this.result().isNull() && this.resultType() !== "void";
+        return this.result().isNull() && this.resultType() !== 'void';
     }
 
 }
@@ -1147,7 +1147,7 @@ export class Parameter
     }
 
     promptLink(): Link | null {
-        return linkByNamespacedRel(this.links(), "prompt") || null;
+        return linkByNamespacedRel(this.links(), 'prompt') || null;
     }
 
     getPromptMap(): PromptMap | null {
@@ -1160,7 +1160,7 @@ export class Parameter
     }
 
     default(): Value {
-        const dflt = this.wrapped().default == null ? (isScalarType(this.extensions().returnType()) ? "" : null) : this.wrapped().default;
+        const dflt = this.wrapped().default == null ? (isScalarType(this.extensions().returnType()) ? '' : null) : this.wrapped().default;
         return new Value(withNull(dflt));
     }
 
@@ -1213,7 +1213,7 @@ export class Parameter
             return EntryType.Choices;
         }
 
-        if (this.extensions().format() === "blob") {
+        if (this.extensions().format() === 'blob') {
             return EntryType.File;
         }
 
@@ -1229,15 +1229,15 @@ export class ActionRepresentation extends ResourceRepresentation<Ro.IActionRepre
 
     // links
     selfLink(): Link {
-        return linkByRel(this.links(), "self") as Link; // known to exist
+        return linkByRel(this.links(), 'self') as Link; // known to exist
     }
 
     upLink(): Link {
-        return linkByRel(this.links(), "up") as Link; // known to exist
+        return linkByRel(this.links(), 'up') as Link; // known to exist
     }
 
     invokeLink(): Link | null {
-        return linkByNamespacedRel(this.links(), "invoke") || null; // may not exist if disabled
+        return linkByNamespacedRel(this.links(), 'invoke') || null; // may not exist if disabled
     }
 
     // linked representations
@@ -1274,22 +1274,22 @@ export class ActionRepresentation extends ResourceRepresentation<Ro.IActionRepre
     }
 
     disabledReason(): string {
-        return this.wrapped().disabledReason || "";
+        return this.wrapped().disabledReason || '';
     }
 
     isQueryOnly(): boolean {
         const invokeLink = this.invokeLink();
-        return !!invokeLink && invokeLink.method() === "GET";
+        return !!invokeLink && invokeLink.method() === 'GET';
     }
 
     isNotQueryOnly(): boolean {
         const invokeLink = this.invokeLink();
-        return !!invokeLink && invokeLink.method() !== "GET";
+        return !!invokeLink && invokeLink.method() !== 'GET';
     }
 
     isPotent(): boolean {
         const invokeLink = this.invokeLink();
-        return !!invokeLink && invokeLink.method() === "POST";
+        return !!invokeLink && invokeLink.method() === 'POST';
     }
 }
 
@@ -1318,11 +1318,11 @@ export class PromptMap extends ArgumentMap implements IHateoasModel {
     }
 
     setMember(name: string, value: Value) {
-        value.set(this.promptMap()["x-ro-nof-members"] as Ro.IValueMap, name);
+        value.set(this.promptMap()['x-ro-nof-members'] as Ro.IValueMap, name);
     }
 
     setMembers(objectValues: () => Dictionary<Value>) {
-        if (this.valueMap["x-ro-nof-members"]) {
+        if (this.valueMap['x-ro-nof-members']) {
             forEach(objectValues(), (v, k) => this.setMember(k!, v));
         }
     }
@@ -1338,11 +1338,11 @@ export class PromptRepresentation extends ResourceRepresentation<Ro.IPromptRepre
 
     // links
     selfLink(): Link {
-        return linkByRel(this.links(), "self") as Link; // known to exist
+        return linkByRel(this.links(), 'self') as Link; // known to exist
     }
 
     upLink(): Link {
-        return linkByRel(this.links(), "up") as Link; // known to exist
+        return linkByRel(this.links(), 'up') as Link; // known to exist
     }
 
     // linked representations
@@ -1366,7 +1366,7 @@ export class PromptRepresentation extends ResourceRepresentation<Ro.IPromptRepre
             let values = map(ch, item => new Value(item));
 
             if (addEmpty) {
-                const emptyValue = new Value("");
+                const emptyValue = new Value('');
                 values = concat<Value>([emptyValue], values);
             }
 
@@ -1384,19 +1384,19 @@ export class CollectionRepresentation extends ResourceRepresentation<RoCustom.IC
 
     // links
     selfLink(): Link {
-        return linkByRel(this.links(), "self") as Link; // known to exist
+        return linkByRel(this.links(), 'self') as Link; // known to exist
     }
 
     upLink(): Link {
-        return linkByRel(this.links(), "up") as Link; // known to exist
+        return linkByRel(this.links(), 'up') as Link; // known to exist
     }
 
     addToLink(): Link | null {
-        return linkByNamespacedRel(this.links(), "add-to") || null;
+        return linkByNamespacedRel(this.links(), 'add-to') || null;
     }
 
     removeFromLink(): Link | null {
-        return linkByNamespacedRel(this.links(), "remove-from") || null;
+        return linkByNamespacedRel(this.links(), 'remove-from') || null;
     }
 
     // linked representations
@@ -1449,7 +1449,7 @@ export class CollectionRepresentation extends ResourceRepresentation<RoCustom.IC
     }
 
     disabledReason(): string {
-        return this.wrapped().disabledReason || "";
+        return this.wrapped().disabledReason || '';
     }
 
     hasTableData = () => {
@@ -1478,23 +1478,23 @@ export class PropertyRepresentation extends ResourceRepresentation<Ro.IPropertyR
 
     // links
     modifyLink(): Link | null {
-        return linkByNamespacedRel(this.links(), "modify") || null;
+        return linkByNamespacedRel(this.links(), 'modify') || null;
     }
 
     clearLink(): Link | null {
-        return linkByNamespacedRel(this.links(), "clear") || null;
+        return linkByNamespacedRel(this.links(), 'clear') || null;
     }
 
     selfLink(): Link {
-        return linkByRel(this.links(), "self") as Link; // known to exist
+        return linkByRel(this.links(), 'self') as Link; // known to exist
     }
 
     upLink(): Link {
-        return linkByRel(this.links(), "up") as Link; // known to exist
+        return linkByRel(this.links(), 'up') as Link; // known to exist
     }
 
     promptLink(): Link | null {
-        return linkByNamespacedRel(this.links(), "prompt") || null;
+        return linkByNamespacedRel(this.links(), 'prompt') || null;
     }
 
     private modifyMap() {
@@ -1555,7 +1555,7 @@ export class PropertyRepresentation extends ResourceRepresentation<Ro.IPropertyR
     }
 
     disabledReason(): string {
-        return this.wrapped().disabledReason || "";
+        return this.wrapped().disabledReason || '';
     }
 
     // helper
@@ -1579,11 +1579,11 @@ export class Member<T extends Ro.IMember> extends NestedRepresentation<Ro.IMembe
 
     static wrapLinkMember(toWrap: Ro.IPropertyMember | Ro.ICollectionMember, parent: Link, id: string): PropertyMember | CollectionMember {
 
-        if (toWrap.memberType === "property") {
+        if (toWrap.memberType === 'property') {
             return new PropertyMember(toWrap as Ro.IPropertyMember, parent, id);
         }
 
-        if (toWrap.memberType === "collection") {
+        if (toWrap.memberType === 'collection') {
             return new CollectionMember(toWrap as Ro.ICollectionMember, parent, id);
         }
 
@@ -1592,15 +1592,15 @@ export class Member<T extends Ro.IMember> extends NestedRepresentation<Ro.IMembe
 
     static wrapMember(toWrap: Ro.IPropertyMember | Ro.ICollectionMember | Ro.IActionMember, parent: DomainObjectRepresentation | IHasActions, id: string): Member<Ro.IMember> {
 
-        if (toWrap.memberType === "property" && parent instanceof DomainObjectRepresentation) {
+        if (toWrap.memberType === 'property' && parent instanceof DomainObjectRepresentation) {
             return new PropertyMember(toWrap as Ro.IPropertyMember, parent, id);
         }
 
-        if (toWrap.memberType === "collection" && parent instanceof DomainObjectRepresentation) {
+        if (toWrap.memberType === 'collection' && parent instanceof DomainObjectRepresentation) {
             return new CollectionMember(toWrap as Ro.ICollectionMember, parent, id);
         }
 
-        if (toWrap.memberType === "action") {
+        if (toWrap.memberType === 'action') {
             const member = new ActionMember(toWrap as Ro.IActionMember, parent, id);
 
             if (member.invokeLink()) {
@@ -1624,11 +1624,11 @@ export class Member<T extends Ro.IMember> extends NestedRepresentation<Ro.IMembe
     }
 
     detailsLink(): Link | null {
-        return linkByNamespacedRel(this.links(), "details") || null;
+        return linkByNamespacedRel(this.links(), 'details') || null;
     }
 
     disabledReason(): string {
-        return this.wrapped().disabledReason || "";
+        return this.wrapped().disabledReason || '';
     }
 
     isScalar(): boolean {
@@ -1652,11 +1652,11 @@ export class PropertyMember extends Member<Ro.IPropertyMember> implements IField
     }
 
     modifyLink(): Link | null {
-        return linkByNamespacedRel(this.links(), "modify") || null;
+        return linkByNamespacedRel(this.links(), 'modify') || null;
     }
 
     clearLink(): Link | null {
-        return linkByNamespacedRel(this.links(), "clear") || null;
+        return linkByNamespacedRel(this.links(), 'clear') || null;
     }
 
     private modifyMap() {
@@ -1697,11 +1697,11 @@ export class PropertyMember extends Member<Ro.IPropertyMember> implements IField
     }
 
     attachmentLink(): Link | null {
-        return linkByNamespacedRel(this.links(), "attachment") || null;
+        return linkByNamespacedRel(this.links(), 'attachment') || null;
     }
 
     promptLink(): Link | null {
-        return linkByNamespacedRel(this.links(), "prompt") || null;
+        return linkByNamespacedRel(this.links(), 'prompt') || null;
     }
 
     getDetails(): PropertyRepresentation | null {
@@ -1845,11 +1845,11 @@ export class ActionMember extends Member<Ro.IActionMember> {
     // 1.1 inlined
 
     invokeLink(): Link | null {
-        return linkByNamespacedRel(this.links(), "invoke") || null;
+        return linkByNamespacedRel(this.links(), 'invoke') || null;
     }
 
     disabledReason(): string {
-        return this.wrapped().disabledReason || "";
+        return this.wrapped().disabledReason || '';
     }
 }
 
@@ -1869,17 +1869,17 @@ export class InvokableActionMember extends ActionMember {
 
     isQueryOnly(): boolean {
         const invokeLink = this.invokeLink();
-        return !!invokeLink && invokeLink.method() === "GET";
+        return !!invokeLink && invokeLink.method() === 'GET';
     }
 
     isNotQueryOnly(): boolean {
         const invokeLink = this.invokeLink();
-        return !!invokeLink && invokeLink.method() !== "GET";
+        return !!invokeLink && invokeLink.method() !== 'GET';
     }
 
     isPotent(): boolean {
         const invokeLink = this.invokeLink();
-        return !!invokeLink && invokeLink.method() === "POST";
+        return !!invokeLink && invokeLink.method() === 'POST';
     }
 
     private initParameterMap(): void {
@@ -1911,7 +1911,7 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
     }
 
     id(): string {
-        return `${this.domainType() || this.serviceId()}${this.instanceId() ? `${this.keySeparator}${this.instanceId()}` : ""}`;
+        return `${this.domainType() || this.serviceId()}${this.instanceId() ? `${this.keySeparator}${this.instanceId()}` : ''}`;
     }
 
     title(): string {
@@ -1933,9 +1933,9 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
     private resetMemberMaps() {
         const members = this.wrapped().members;
         this.memberMap = mapValues(members, (m, id) => Member.wrapMember(m, this, id!) !);
-        this.propertyMemberMap = pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === "property") as Dictionary<PropertyMember>;
-        this.collectionMemberMap = pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === "collection") as Dictionary<CollectionMember>;
-        this.actionMemberMap = pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === "action") as Dictionary<ActionMember>;
+        this.propertyMemberMap = pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === 'property') as Dictionary<PropertyMember>;
+        this.collectionMemberMap = pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === 'collection') as Dictionary<CollectionMember>;
+        this.actionMemberMap = pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === 'action') as Dictionary<ActionMember>;
     }
 
     private initMemberMaps() {
@@ -1985,7 +1985,7 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
     }
 
     updateLink(): Link | null {
-        return linkByNamespacedRel(this.links(), "update") || null;
+        return linkByNamespacedRel(this.links(), 'update') || null;
     }
 
     isTransient(): boolean {
@@ -1993,11 +1993,11 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
     }
 
     persistLink(): Link | null {
-        return linkByNamespacedRel(this.links(), "persist") || null;
+        return linkByNamespacedRel(this.links(), 'persist') || null;
     }
 
     selfLink(): Link | null {
-        return linkByRel(this.links(), "self") || null;
+        return linkByRel(this.links(), 'self') || null;
     }
 
     private updateMap() {
@@ -2017,12 +2017,12 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
     }
 
     getPersistMap() {
-        const persistMap = validateExists(this.persistMap(), "PersistMap");
+        const persistMap = validateExists(this.persistMap(), 'PersistMap');
         return new PersistMap(this, persistMap);
     }
 
     getUpdateMap() {
-        const updateMap = validateExists(this.updateMap(), "UpdateMap");
+        const updateMap = validateExists(this.updateMap(), 'UpdateMap');
         return new UpdateMap(this, updateMap);
     }
 
@@ -2068,7 +2068,7 @@ export class MenuRepresentation extends ResourceRepresentation<RoCustom.IMenuRep
     private resetMemberMaps() {
         const members = this.wrapped().members;
         this.memberMap = mapValues(members, (m, id) => Member.wrapMember(m, this, id!));
-        this.actionMemberMap = pickBy(this.memberMap, m => m.memberType() === "action") as Dictionary<ActionMember>;
+        this.actionMemberMap = pickBy(this.memberMap, m => m.memberType() === 'action') as Dictionary<ActionMember>;
     }
 
     private initMemberMaps() {
@@ -2100,7 +2100,7 @@ export class MenuRepresentation extends ResourceRepresentation<RoCustom.IMenuRep
     }
 
     selfLink(): Link {
-        return linkByRel(this.links(), "self") as Link; // mandatory
+        return linkByRel(this.links(), 'self') as Link; // mandatory
     }
 
     // linked representations
@@ -2139,7 +2139,7 @@ export class ListRepresentation
 
     // links
     selfLink(): Link {
-        return linkByRel(this.links(), "self") as Link;
+        return linkByRel(this.links(), 'self') as Link;
     }
 
     // linked representations
@@ -2162,7 +2162,7 @@ export class ListRepresentation
     }
 
     actionMember(id: string): ActionMember {
-        return getMember(this.actionMembers(), id, "list") !;
+        return getMember(this.actionMembers(), id, 'list') !;
     }
 
     hasActionMember(id: string): boolean {
@@ -2229,7 +2229,7 @@ export class PersistMap extends HateosModel implements IHateoasModel {
         if (link) {
             link.copyToHateoasModel(this);
         } else {
-            error("PersistMap attempting to create persist map for object with no persist link");
+            error('PersistMap attempting to create persist map for object with no persist link');
         }
     }
 
@@ -2249,11 +2249,11 @@ export class VersionRepresentation extends ResourceRepresentation<Ro.IVersionRep
 
     // links
     selfLink(): Link {
-        return linkByRel(this.links(), "self") as Link; // mandatory
+        return linkByRel(this.links(), 'self') as Link; // mandatory
     }
 
     upLink(): Link {
-        return linkByRel(this.links(), "up") as Link; // mandatory
+        return linkByRel(this.links(), 'up') as Link; // mandatory
     }
 
     // linked representations
@@ -2286,7 +2286,7 @@ export class DomainServicesRepresentation extends ListRepresentation {
 
     // links
     upLink(): Link {
-        return linkByRel(this.links(), "up") as Link; // mandatory
+        return linkByRel(this.links(), 'up') as Link; // mandatory
     }
 
     // linked representations
@@ -2311,7 +2311,7 @@ export class MenusRepresentation extends ListRepresentation {
 
     // links
     upLink(): Link {
-        return linkByRel(this.links(), "up") as Link; // mandatory
+        return linkByRel(this.links(), 'up') as Link; // mandatory
     }
 
     // linked representations
@@ -2339,11 +2339,11 @@ export class UserRepresentation extends ResourceRepresentation<Ro.IUserRepresent
 
     // links
     selfLink(): Link {
-        return linkByRel(this.links(), "self")!; // mandatory
+        return linkByRel(this.links(), 'self')!; // mandatory
     }
 
     upLink(): Link {
-        return linkByRel(this.links(), "up")!; // mandatory
+        return linkByRel(this.links(), 'up')!; // mandatory
     }
 
     // linked representations
@@ -2381,11 +2381,11 @@ export class DomainTypeActionInvokeRepresentation extends ResourceRepresentation
         super();
         this.hateoasUrl = `${appPath}/domain-types/${toCheckType}/type-actions/isSubtypeOf/invoke`;
         this.urlParms = {};
-        this.urlParms["supertype"] = againstType;
+        this.urlParms['supertype'] = againstType;
     }
 
     selfLink(): Link {
-        return linkByRel(this.links(), "self") as Link;
+        return linkByRel(this.links(), 'self') as Link;
     }
 
     // linked representations
@@ -2414,24 +2414,24 @@ export class HomePageRepresentation extends ResourceRepresentation<Ro.IHomePageR
 
     // links
     serviceLink(): Link {
-        return linkByNamespacedRel(this.links(), "services") as Link;
+        return linkByNamespacedRel(this.links(), 'services') as Link;
     }
 
     userLink(): Link {
-        return linkByNamespacedRel(this.links(), "user") as Link;
+        return linkByNamespacedRel(this.links(), 'user') as Link;
     }
 
     selfLink(): Link {
-        return linkByRel(this.links(), "self") as Link;
+        return linkByRel(this.links(), 'self') as Link;
     }
 
     versionLink(): Link {
-        return linkByNamespacedRel(this.links(), "version") as Link;
+        return linkByNamespacedRel(this.links(), 'version') as Link;
     }
 
     // custom
     menusLink(): Link {
-        return linkByNamespacedRel(this.links(), "menus") as Link;
+        return linkByNamespacedRel(this.links(), 'menus') as Link;
     }
 
     // linked representations
@@ -2470,19 +2470,19 @@ export class Link {
     private oid: ObjectIdWrapper;
     private lazyExtensions: Extensions;
     private repTypeToModel: any = {
-        "homepage": HomePageRepresentation,
-        "user": UserRepresentation,
-        "version": VersionRepresentation,
-        "list": ListRepresentation,
-        "object": DomainObjectRepresentation,
-        "object-property": PropertyRepresentation,
-        "object-collection": CollectionRepresentation,
-        "object-action": ActionRepresentation,
-        "action-result": ActionResultRepresentation,
-        "error": ErrorRepresentation,
-        "prompt": PromptRepresentation,
+        'homepage': HomePageRepresentation,
+        'user': UserRepresentation,
+        'version': VersionRepresentation,
+        'list': ListRepresentation,
+        'object': DomainObjectRepresentation,
+        'object-property': PropertyRepresentation,
+        'object-collection': CollectionRepresentation,
+        'object-action': ActionRepresentation,
+        'action-result': ActionResultRepresentation,
+        'error': ErrorRepresentation,
+        'prompt': PromptRepresentation,
         // custom
-        "menu": MenuRepresentation
+        'menu': MenuRepresentation
     };
 
     constructor(public wrapped: Ro.ILink) { }

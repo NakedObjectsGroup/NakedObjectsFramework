@@ -4,7 +4,7 @@ import * as Usermessages from '../user-messages';
 
 export class Root extends Command {
 
-    shortCommand = "ro";
+    shortCommand = 'ro';
     fullCommand = Usermessages.rootCommand;
     helpText = Usermessages.rootHelp;
     protected minArguments = 0;

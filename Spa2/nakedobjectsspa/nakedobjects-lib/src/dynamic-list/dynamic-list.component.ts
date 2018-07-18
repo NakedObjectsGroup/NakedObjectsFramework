@@ -33,17 +33,17 @@ export class DynamicListComponent extends PaneComponent implements OnDestroy {
     }
 
     private reloadPlaceholderButton: IActionHolder = {
-        value: "Reload",
+        value: 'Reload',
         doClick: () => this.reload(),
         show: () => true,
         disabled: () => null,
         tempDisabled: () => null,
-        title: () => "",
+        title: () => '',
         accesskey: null
     };
 
     private lastOid: string | null;
-    title = "";
+    title = '';
     showPlaceholder = true;
     private cachedRouteData: PaneRouteData;
 
@@ -90,7 +90,7 @@ export class DynamicListComponent extends PaneComponent implements OnDestroy {
 
         } else {
             this.showPlaceholder = true;
-            this.title = "List";
+            this.title = 'List';
             this.parent.clear();
             this.lastOid = null; // so we recreate child after reload
             this.getActionExtensions(routeData)
