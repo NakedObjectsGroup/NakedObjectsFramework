@@ -10,17 +10,71 @@ import each from 'lodash-es/each';
 import reduce from 'lodash-es/reduce';
 import { HttpClient, HttpRequest, HttpHeaders, HttpParams, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
-interface RequestOptions {
+class RequestOptions {
+
+    private constructor(url: string, method: 'DELETE' | 'GET' | 'POST' | 'PUT', body?: object, digest?: string | null) {
+        this.url = url;
+        this.method = method;
+        this.init = {
+            withCredentials: true,
+        };
+        if (body) {
+            this.body = body;
+        }
+        if (digest && this.isPotent()) {
+            this.init.headers = new HttpHeaders({ 'If-Match': digest });
+        }
+    }
+
     method: 'DELETE' | 'GET' | 'POST' | 'PUT';
     url: string;
+    body?: object;
     init: {
         headers?: HttpHeaders;
         reportProgress?: boolean;
         params?: HttpParams;
         responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
         withCredentials?: boolean;
-        body?: object;
     };
+
+    static fromMap(map: Models.IHateoasModel, digest?: string | null) {
+        return new RequestOptions(map.getUrl(), map.method, map.getBody(), digest);
+    }
+
+    static fromLink(link: Models.Link, parms?: Dictionary<Object>) {
+        let urlParms = '';
+
+        if (parms) {
+            const urlParmString = reduce(parms, (result, n, key) => (result === '' ? '' : result + '&') + key + '=' + n, '');
+            urlParms = urlParmString !== '' ? `?${urlParmString}` : '';
+        }
+
+        return new RequestOptions(link.href() + urlParms, link.method());
+    }
+
+    static fromFile(url: string, method: 'GET' | 'POST', mt: string, body?: object) {
+        const options = new RequestOptions(url, method, body);
+
+        options.init.responseType = 'blob';
+
+        if (method === 'GET') {
+            options.init.headers = new HttpHeaders({ 'Accept': mt });
+        }
+        if (method === 'POST') {
+            options.init.headers = new HttpHeaders({ 'Content-Type': mt });
+        }
+
+        delete options.init.withCredentials;
+        return options;
+    }
+
+    isPotent() {
+        return this.method === 'POST' || this.method === 'PUT' || this.method === 'DELETE';
+    }
+
+    toHttpRequest() {
+        return new HttpRequest(this.method, this.url, this.body, this.init);
+    }
 }
 
 @Injectable()
@@ -39,12 +93,6 @@ export class RepLoaderService {
 
     // use our own LRU cache
     private cache = new SimpleLruCache(this.configService.config.httpCacheDepth);
-
-    private addIfMatchHeader(config: RequestOptions, digest?: string | null) {
-        if (digest && (config.method === 'POST' || config.method === 'PUT' || config.method === 'DELETE')) {
-            config.init.headers = new HttpHeaders({ 'If-Match': digest });
-        }
-    }
 
     private handleInvalidResponse(rc: Models.ErrorCategory) {
         const rr = new Models.ErrorWrapper(rc,
@@ -106,10 +154,10 @@ export class RepLoaderService {
         return Promise.reject(rr);
     }
 
-    private httpValidate(config: RequestOptions): Promise<boolean> {
+    private httpValidate(options: RequestOptions): Promise<boolean> {
         this.loadingCountSource.next(++(this.loadingCount));
 
-        return this.http.request(new HttpRequest(config.method, config.url, config.init))
+        return this.http.request(options.toHttpRequest())
             .toPromise()
             .then(() => {
                 this.loadingCountSource.next(--(this.loadingCount));
@@ -117,7 +165,7 @@ export class RepLoaderService {
             })
             .catch((r: HttpErrorResponse) => {
                 this.loadingCountSource.next(--(this.loadingCount));
-                const originalUrl = config.url || 'Unknown url';
+                const originalUrl = options.url || 'Unknown url';
                 return this.handleError(r, originalUrl);
             });
     }
@@ -143,13 +191,13 @@ export class RepLoaderService {
         return Models.isResourceRepresentation(data);
     }
 
-    private httpPopulate(config: RequestOptions, ignoreCache: boolean, response: Models.IHateoasModel): Promise<Models.IHateoasModel> {
+    private httpPopulate(options: RequestOptions, ignoreCache: boolean, response: Models.IHateoasModel): Promise<Models.IHateoasModel> {
 
-        if (!config.url) {
+        if (!options.url) {
             throw new Error('Request must have a URL');
         }
 
-        const requestUrl = config.url;
+        const requestUrl = options.url;
 
         if (ignoreCache) {
             // clear cache of existing values
@@ -166,7 +214,7 @@ export class RepLoaderService {
 
         this.loadingCountSource.next(++(this.loadingCount));
 
-        return this.http.request(new HttpRequest(config.method, config.url, config.init.body, config.init))
+        return this.http.request(options.toHttpRequest())
             .toPromise()
             .then((r: HttpResponse<Ro.IRepresentation>) => {
                 this.loadingCountSource.next(--(this.loadingCount));
@@ -189,67 +237,28 @@ export class RepLoaderService {
     }
 
     populate = <T extends Models.IHateoasModel>(model: Models.IHateoasModel, ignoreCache?: boolean): Promise<T> => {
-
         const response = model;
-
-        const config = {
-            url: model.getUrl(),
-            method: model.method,
-            init: {
-                withCredentials: true,
-                body: model.getBody()
-            }
-        };
-
-        return this.httpPopulate(config, !!ignoreCache, response) as Promise<T>;
-    }
-
-    setConfigFromMap(map: Models.IHateoasModel, digest?: string | null) {
-
-        const config = {
-            url: map.getUrl(),
-            method: map.method,
-            init: {
-                withCredentials: true,
-                body: map.getBody()
-            }
-        };
-
-        this.addIfMatchHeader(config, digest);
-        return config;
+        const options = RequestOptions.fromMap(model);
+        return this.httpPopulate(options, !!ignoreCache, response) as Promise<T>;
     }
 
     retrieve = <T extends Models.IHateoasModel>(map: Models.IHateoasModel, rc: { new (): Models.IHateoasModel }, digest?: string | null): Promise<T> => {
         const response = new rc();
-        const config = this.setConfigFromMap(map, digest);
-        return this.httpPopulate(config, true, response) as Promise<T>;
+        const options = RequestOptions.fromMap(map, digest);
+        return this.httpPopulate(options, true, response) as Promise<T>;
     }
 
     validate = (map: Models.IHateoasModel, digest?: string): Promise<boolean> => {
-        const config = this.setConfigFromMap(map, digest);
-        return this.httpValidate(config);
+        const options = RequestOptions.fromMap(map, digest);
+        return this.httpValidate(options);
     }
 
     retrieveFromLink = <T extends Models.IHateoasModel>(link: Models.Link | null, parms?: Dictionary<Object>): Promise<T> => {
 
         if (link) {
             const response = link.getTarget();
-            let urlParms = '';
-
-            if (parms) {
-                const urlParmString = reduce(parms, (result, n, key) => (result === '' ? '' : result + '&') + key + '=' + n, '');
-                urlParms = urlParmString !== '' ? `?${urlParmString}` : '';
-            }
-
-            const config = {
-                method: link.method(),
-                url: link.href() + urlParms,
-                init: {
-                    withCredentials: true
-                }
-            };
-
-            return this.httpPopulate(config, true, response) as Promise<T>;
+            const options = RequestOptions.fromLink(link, parms);
+            return this.httpPopulate(options, true, response) as Promise<T>;
         }
         return Promise.reject('link must not be null');
     }
@@ -284,46 +293,26 @@ export class RepLoaderService {
             }
         }
 
-        const config = {
-            method: 'GET',
-            url: url,
-            init: {
-                responseType: 'blob',
+        const options = RequestOptions.fromFile(url, 'GET', mt);
 
-                // responseType: ResponseContentType.Blob,
-                headers: new HttpHeaders({ 'Accept': mt })
-            }
-        };
-
-        const request = new HttpRequest(config.method, config.url, config.init);
-
-        return this.http.request(request)
+        return this.http.request(options.toHttpRequest())
             .toPromise()
             .then((r: HttpResponse<Blob>) => {
                 const blob = r.body!;
-                this.cache.add(config.url!, blob);
+                this.cache.add(options.url!, blob);
                 return blob;
             })
             .catch((r: HttpErrorResponse) => {
-                const originalUrl = config.url || 'Unknown url';
+                const originalUrl = options.url || 'Unknown url';
                 return this.handleError(r, originalUrl);
             });
     }
 
     uploadFile = (url: string, mt: string, file: Blob): Promise<boolean> => {
 
-        const config = {
-            method: 'POST',
-            url: url,
-            init: {
-                body: file,
-                headers: new Headers({ 'Content-Type': mt })
-            }
-        };
+        const options = RequestOptions.fromFile(url, 'POST', mt, file);
 
-        const request = new HttpRequest(config.method, config.url, config.init);
-
-        return this.http.request(request)
+        return this.http.request(options.toHttpRequest())
             .toPromise()
             .then(() => {
                 return Promise.resolve(true);
