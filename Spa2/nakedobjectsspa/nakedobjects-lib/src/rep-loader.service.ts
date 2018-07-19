@@ -198,8 +198,11 @@ export class RepLoaderService {
         }
 
         const requestUrl = options.url;
+        const clearCache = this.configService.config.clearCacheOnChange && options.isPotent();
 
-        if (ignoreCache) {
+        if (clearCache) {
+            this.cache.removeAll();
+        } else if (ignoreCache) {
             // clear cache of existing values
             this.cache.remove(requestUrl);
         } else {

@@ -7,6 +7,7 @@
     "urlShortCuts": [ "https://nakedobjectsrodemo.azurewebsites.net", "AdventureWorksModel" ],
     "doUrlValidation": true,
     "applicationName" : "Adventureworks Demo",
+    "clearCacheOnChange": true,
     "colors": {
         "typeMap": {
             "AdventureWorksModel.Customer": 1,

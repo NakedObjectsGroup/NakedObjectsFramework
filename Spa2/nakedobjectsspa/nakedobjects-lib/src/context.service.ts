@@ -786,6 +786,10 @@ export class ContextService {
 
         if (action.isNotQueryOnly()) {
 
+            if (this.configService.config.clearCacheOnChange) {
+                return () => this.clearCachesAfterChange();
+            }
+
             const setCurrentObjectsDirty = () => {
                 const pane1Obj = this.currentObjects[Pane.Pane1];
                 const pane2Obj = this.currentObjects[Pane.Pane2];
@@ -949,6 +953,14 @@ export class ContextService {
         this.recentcache.clear();
     }
 
+    private clearCachesAfterChange = () => {
+        this.currentObjects[1] = null;
+        this.currentObjects[2] = null;
+        this.currentLists = {};
+        this.recentcache.clear();
+        this.dirtyList.clear();
+    }
+
     private logoff() {
         for (let pane = 1; pane <= 2; pane++) {
             delete this.currentObjects[pane];
@@ -957,7 +969,6 @@ export class ContextService {
         this.currentMenus = null;
         this.currentVersion = null;
         this.currentUser = null;
-
         this.transientCache.clear();
         this.recentcache.clear();
         this.dirtyList.clear();
