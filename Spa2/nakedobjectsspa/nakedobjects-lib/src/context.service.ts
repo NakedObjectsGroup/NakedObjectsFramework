@@ -786,9 +786,9 @@ export class ContextService {
 
         if (action.isNotQueryOnly()) {
 
-            if (this.configService.config.clearCacheOnChange) {
-                return () => this.clearCachesAfterChange();
-            }
+            const clearCacheIfNecessary = this.configService.config.clearCacheOnChange
+                ? () => this.clearCachesAfterChange()
+                : () => { };
 
             const setCurrentObjectsDirty = () => {
                 const pane1Obj = this.currentObjects[Pane.Pane1];
@@ -806,6 +806,7 @@ export class ContextService {
                 return () => {
                     this.dirtyList.setDirty(parent.getOid());
                     setCurrentObjectsDirty();
+                    clearCacheIfNecessary();
                 };
             }
             if (parent instanceof Models.CollectionRepresentation) {
@@ -814,6 +815,7 @@ export class ContextService {
                     const oid = Models.ObjectIdWrapper.fromLink(selfLink, this.keySeparator);
                     this.dirtyList.setDirty(oid);
                     setCurrentObjectsDirty();
+                    clearCacheIfNecessary();
                 };
             }
             if (parent instanceof Models.CollectionMember) {
@@ -823,6 +825,7 @@ export class ContextService {
                         this.dirtyList.setDirty(memberParent.getOid());
                     }
                     setCurrentObjectsDirty();
+                    clearCacheIfNecessary();
                 };
             }
             if (parent instanceof Models.ListRepresentation && parms) {
@@ -839,11 +842,15 @@ export class ContextService {
                     return () => {
                         forEach(links, (l: Models.Link) => this.dirtyList.setDirty(l.getOid(this.keySeparator)));
                         setCurrentObjectsDirty();
+                        clearCacheIfNecessary();
                     };
                 }
             }
 
-            return setCurrentObjectsDirty;
+            return () => {
+                setCurrentObjectsDirty();
+                clearCacheIfNecessary();
+            };
         }
 
         return () => { };
@@ -958,7 +965,6 @@ export class ContextService {
         this.currentObjects[2] = null;
         this.currentLists = {};
         this.recentcache.clear();
-        this.dirtyList.clear();
     }
 
     private logoff() {
