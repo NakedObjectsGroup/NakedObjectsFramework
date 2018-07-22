@@ -34,6 +34,9 @@ export abstract class PaneComponent implements OnInit, OnDestroy {
     }
 
     protected abstract setup(routeData: PaneRouteData): void;
+    protected doSetup(routeData: PaneRouteData) {
+        return !routeData.isEqual(this.lastPaneRouteData);
+    }
 
     ngOnInit(): void {
         this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: ICustomActivatedRouteData) => {
@@ -52,7 +55,7 @@ export abstract class PaneComponent implements OnInit, OnDestroy {
                                 this.context.clearWarnings();
                             }
 
-                            if (!paneRouteData.isEqual(this.lastPaneRouteData)) {
+                            if (this.doSetup(paneRouteData)) {
                                 this.lastPaneRouteData = paneRouteData;
                                 this.setup(paneRouteData);
                             }

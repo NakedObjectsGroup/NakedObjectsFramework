@@ -71,6 +71,11 @@ export class DynamicListComponent extends PaneComponent implements OnDestroy {
         return [this.reloadPlaceholderButton];
     }
 
+    protected doSetup(routeData: PaneRouteData) {
+        return super.doSetup(routeData) ||
+            this.context.getCachedList(routeData.paneId, routeData.page, routeData.pageSize) == null;
+    }
+
     protected setup(routeData: PaneRouteData) {
         this.cachedRouteData = routeData;
         const cachedList = this.context.getCachedList(routeData.paneId, routeData.page, routeData.pageSize);

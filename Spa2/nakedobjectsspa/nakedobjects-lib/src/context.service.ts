@@ -787,7 +787,7 @@ export class ContextService {
         if (action.isNotQueryOnly()) {
 
             const clearCacheIfNecessary = this.configService.config.clearCacheOnChange
-                ? () => this.clearCachesAfterChange()
+                ? () => this.markDirtyAfterChange()
                 : () => { };
 
             const setCurrentObjectsDirty = () => {
@@ -960,11 +960,9 @@ export class ContextService {
         this.recentcache.clear();
     }
 
-    private clearCachesAfterChange = () => {
-        this.currentObjects[1] = null;
-        this.currentObjects[2] = null;
+    private markDirtyAfterChange = () => {
+        each(this.recentcache.items(), i => this.dirtyList.setDirty(i.getOid()));
         this.currentLists = {};
-        this.recentcache.clear();
     }
 
     private logoff() {
