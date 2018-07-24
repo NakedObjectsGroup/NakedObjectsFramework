@@ -790,22 +790,10 @@ export class ContextService {
                 ? () => this.markDirtyAfterChange()
                 : () => { };
 
-            const setCurrentObjectsDirty = () => {
-                const pane1Obj = this.currentObjects[Pane.Pane1];
-                const pane2Obj = this.currentObjects[Pane.Pane2];
-                const setDirty = (m: Models.DomainObjectRepresentation | null | undefined) => {
-                    if (m) {
-                        this.dirtyList.setDirty(m.getOid());
-                    }
-                };
-                setDirty(pane1Obj);
-                setDirty(pane2Obj);
-            };
-
             if (parent instanceof Models.DomainObjectRepresentation) {
                 return () => {
                     this.dirtyList.setDirty(parent.getOid());
-                    setCurrentObjectsDirty();
+                    this.setCurrentObjectsDirty();
                     clearCacheIfNecessary();
                 };
             }
@@ -814,7 +802,7 @@ export class ContextService {
                     const selfLink = parent.selfLink();
                     const oid = Models.ObjectIdWrapper.fromLink(selfLink, this.keySeparator);
                     this.dirtyList.setDirty(oid);
-                    setCurrentObjectsDirty();
+                    this.setCurrentObjectsDirty();
                     clearCacheIfNecessary();
                 };
             }
@@ -824,7 +812,7 @@ export class ContextService {
                     if (memberParent instanceof Models.DomainObjectRepresentation) {
                         this.dirtyList.setDirty(memberParent.getOid());
                     }
-                    setCurrentObjectsDirty();
+                    this.setCurrentObjectsDirty();
                     clearCacheIfNecessary();
                 };
             }
@@ -841,14 +829,14 @@ export class ContextService {
                     const links = map(refValues, v => v.link()!);
                     return () => {
                         forEach(links, (l: Models.Link) => this.dirtyList.setDirty(l.getOid(this.keySeparator)));
-                        setCurrentObjectsDirty();
+                        this.setCurrentObjectsDirty();
                         clearCacheIfNecessary();
                     };
                 }
             }
 
             return () => {
-                setCurrentObjectsDirty();
+                this.setCurrentObjectsDirty();
                 clearCacheIfNecessary();
             };
         }
@@ -879,6 +867,13 @@ export class ContextService {
         }
     }
 
+    private setDirtyIfNecessary() {
+        if (this.configService.config.clearCacheOnChange) {
+            this.markDirtyAfterChange();
+            this.setCurrentObjectsDirty();
+        }
+    }
+
     updateObject = (object: Models.DomainObjectRepresentation, props: Dictionary<Models.Value>, paneId: Pane, viewSavedObject: boolean) => {
         const update = object.getUpdateMap();
 
@@ -886,6 +881,7 @@ export class ContextService {
 
         return this.repLoader.retrieve(update, Models.DomainObjectRepresentation, object.etagDigest)
             .then((updatedObject: Models.DomainObjectRepresentation) => {
+                this.setDirtyIfNecessary();
                 // This is a kludge because updated object has no self link.
                 const rawLinks = object.wrapped().links;
                 updatedObject.wrapped().links = rawLinks;
@@ -901,6 +897,7 @@ export class ContextService {
 
         return this.repLoader.retrieve(persist, Models.DomainObjectRepresentation, object.etagDigest)
             .then((updatedObject: Models.DomainObjectRepresentation) => {
+                this.setDirtyIfNecessary();
                 this.transientCache.remove(paneId, object.domainType()!, object.id());
                 this.setNewObject(updatedObject, paneId, viewSavedObject);
                 return Promise.resolve(updatedObject);
@@ -963,6 +960,18 @@ export class ContextService {
     private markDirtyAfterChange = () => {
         each(this.recentcache.items(), i => this.dirtyList.setDirty(i.getOid()));
         this.currentLists = {};
+    }
+
+    private setCurrentObjectsDirty = () => {
+        const pane1Obj = this.currentObjects[Pane.Pane1];
+        const pane2Obj = this.currentObjects[Pane.Pane2];
+        const setDirty = (m: Models.DomainObjectRepresentation | null | undefined) => {
+            if (m) {
+                this.dirtyList.setDirty(m.getOid());
+            }
+        };
+        setDirty(pane1Obj);
+        setDirty(pane2Obj);
     }
 
     private logoff() {
