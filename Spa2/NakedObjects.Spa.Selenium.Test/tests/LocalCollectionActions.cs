@@ -25,7 +25,7 @@ namespace NakedObjects.Selenium {
             WaitForCss("input[type='checkbox']", 17); // 16 lines plus all
             WaitForSelectedCheckboxes(0);
 
-            br.SwitchTo().ActiveElement().SendKeys(Keys.PageDown + Keys.PageDown);
+            //br.SwitchTo().ActiveElement().SendKeys(Keys.PageDown + Keys.PageDown);
             SelectCheckBox("input[type = 'checkbox']#details1-0");
             SelectCheckBox("input[type = 'checkbox']#details1-2");
             SelectCheckBox("input[type = 'checkbox']#details1-7");

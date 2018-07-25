@@ -352,7 +352,7 @@ namespace NakedObjects.Selenium {
             SelectAllTableView();
             SelectionRetainedWhenNavigatingAwayAndBack();
             TableViewWithParmDialogAlreadyOpen();
-            ReloadingAQueryableClearsSelection();        
+            ReloadingAQueryableClearsSelection();
             IfNoCCAs();
             SelectionClearedWhenPageChanged();
             TableViewWithParmDialogNotOpen();
