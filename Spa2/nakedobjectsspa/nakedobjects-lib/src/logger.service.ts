@@ -46,11 +46,13 @@ export class LoggerService {
     }
 
     get info(): (message?: any, ...optionalParams: any[]) => void {
+        // tslint:disable-next-line:no-console
         if (this.logInfo) { return console.info.bind(console); }
         return this.noop;
     }
 
     get debug(): (message?: any, ...optionalParams: any[]) => void {
+        // tslint:disable-next-line:no-console
         if (this.logDebug) { return console.debug.bind(console); }
         return this.noop;
     }
