@@ -142,6 +142,6 @@ export class DialogViewModel extends MessageViewModel {
 
     clearMessages = () => {
         this.resetMessage();
-        each(this.actionViewModel.parameters, parm => parm.clearMessage());
+        this.actionViewModel.parameters().then(pp => each(pp, p => p.clearMessage()));
     }
 }
