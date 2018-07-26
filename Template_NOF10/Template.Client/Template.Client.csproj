@@ -107,23 +107,20 @@
     <Content Include="favicon.ico" />
     <Content Include="iconFont.507ceb31df41f6b52dc8.svg" />
     <Content Include="index.html" />
-    <Content Include="list.697c8b857c1eba797d5e.png" />
-    <Content Include="main.24408ca17180efe88a38.js" />
+    <Content Include="main.3365251cd9d2635ab4ad.js" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="config.json" />
-    <Content Include="polyfills.2f4a59095805af02bd79.js" />
-    <Content Include="runtime.a66f828dca56eeb90e02.js" />
-    <Content Include="styles.ba6414ff6893d7e4880e.css" />
-    <Content Include="summary.f67923f950a28f9c5a12.png" />
-    <Content Include="table.48b72d4d56f021fd164e.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="polyfills.7a0e6866a34e280f48e7.js" />
+    <Content Include="runtime.a66f828dca56eeb90e02.js" />
+    <Content Include="styles.b76823b8e0918c571d52.css" />
     <Content Include="web.config" />
     <Content Include="iconFont.61e31f00a5b39f5a3786.eot" />
     <Content Include="iconFont.2f87c9f2aedf8f582535.woff" />
