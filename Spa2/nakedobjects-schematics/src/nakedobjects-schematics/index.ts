@@ -13,7 +13,7 @@ function getUpdateFiles(localFiles: Tree) {
 function getCreateFiles(localFiles: Tree) {
     return [
         { path: "src/app/app-routing.module.ts", file: localFiles.get("code/routing")! },
-        { path: "src/config.json", file: localFiles.get("assets/config")! },
+        { path: "src/config.json", file: localFiles.get("code/config")! },
         { path: "src/assets/alt.calendar.png", file: localFiles.get("assets/alt.calendar.png")! },
         { path: "src/assets/alt.list.png", file: localFiles.get("assets/alt.list.png")! },
         { path: "src/assets/alt.summary.png", file: localFiles.get("assets/alt.summary.png")! },
