@@ -107,7 +107,7 @@
     <Content Include="favicon.ico" />
     <Content Include="iconFont.507ceb31df41f6b52dc8.svg" />
     <Content Include="index.html" />
-    <Content Include="main.3365251cd9d2635ab4ad.js" />
+    <Content Include="main.dcfd2fd9cfbe7e406e87.js" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
