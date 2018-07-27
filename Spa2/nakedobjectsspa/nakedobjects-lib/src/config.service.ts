@@ -123,7 +123,7 @@ export class ConfigService {
         linkColor: 'link-color',
         autoLoadDirty: true,
         showDirtyFlag: false,
-        clearCacheOnChange: false,
+        clearCacheOnChange: true,
         defaultLocale: 'en-GB',
         httpCacheDepth: 50,
         transientCacheDepth: 4,
