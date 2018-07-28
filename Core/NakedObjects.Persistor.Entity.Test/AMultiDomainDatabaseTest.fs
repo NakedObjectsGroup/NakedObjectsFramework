@@ -43,7 +43,7 @@ let Setup() = DomainLoadTestAssembly()
 type AMultiDomainDatabaseTests() = 
     class
         
-        [<TestFixtureSetUp>]
+        [<OneTimeSetUp>]
         member x.Setup() = Setup()
         
         [<Test>]

@@ -11,7 +11,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
-using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
@@ -23,6 +22,8 @@ using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 using NUnit.Framework;
+using Unity;
+using Unity.Lifetime;
 using Assert = NUnit.Framework.Assert;
 
 namespace NakedObjects.Core.Test.Adapter {
@@ -137,12 +138,12 @@ namespace NakedObjects.Core.Test.Adapter {
             container.RegisterInstance<IReflectorConfiguration>(rc, new ContainerControlledLifetimeManager());
         }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void SetupFixture() {
             InitializeNakedObjectsFramework(this);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TearDownFixture() {
             CleanupNakedObjectsFramework(this);
         }

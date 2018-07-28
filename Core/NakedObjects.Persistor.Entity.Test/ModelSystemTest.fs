@@ -14,7 +14,6 @@ open SystemTestCode
 open NakedObjects
 open TestCode
 open System.Collections.Generic
-open Microsoft.Practices.Unity
 open NakedObjects.Architecture.Configuration
 open NakedObjects.Core.Configuration
 open System.Data.Entity.Core.Objects.DataClasses
@@ -22,6 +21,9 @@ open System.Linq
 open NakedObjects.Architecture.Adapter
 open NakedObjects.Persistor.Entity.Configuration
 open System
+open Unity;
+open Unity.Injection;
+open Unity.Lifetime;
 
 [<TestFixture>]
 type ModelSystemTests() = 
@@ -48,7 +50,7 @@ type ModelSystemTests() =
         container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
         ()
     
-    [<TestFixtureSetUpAttribute>]
+    [<OneTimeSetUpAttribute>]
     member x.SetupFixture() = NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)
     
     [<SetUp>]
@@ -57,7 +59,7 @@ type ModelSystemTests() =
     [<TearDown>]
     member x.TearDownTest() = ()
     
-    [<TestFixtureTearDown>]
+    [<OneTimeTearDown>]
     member x.TearDownFixture() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
     
     override x.MenuServices = 

@@ -24,7 +24,7 @@ let codeOnlyCePersistor =
 type CodeOnlyCeTests() = 
     class
         
-        [<TestFixtureSetUp>]
+        [<OneTimeSetUp>]
         member x.Setup() = CodeFirstCeSetup()
         
         [<Test>]

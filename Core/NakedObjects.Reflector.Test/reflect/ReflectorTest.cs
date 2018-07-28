@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
@@ -22,6 +21,9 @@ using NakedObjects.Meta.Component;
 using NakedObjects.Reflect.Component;
 using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Reflect.TypeFacetFactory;
+using Unity;
+using Unity.Injection;
+using Unity.Lifetime;
 
 namespace NakedObjects.Reflect.Test {
     public class NullMenuFactory : IMenuFactory {

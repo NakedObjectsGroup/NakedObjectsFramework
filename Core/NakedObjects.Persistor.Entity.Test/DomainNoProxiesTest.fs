@@ -47,13 +47,13 @@ let overwritePersistor =
 type DomainNoProxiesTests() = 
     class
         
-        [<TestFixtureSetUp>]
+        [<OneTimeSetUp>]
         member x.Setup() = 
             DomainSetup()
             setProxyingAndDeferredLoading <- false
             ()
         
-        [<TestFixtureTearDown>]
+        [<OneTimeTearDown>]
         member x.TearDown() = 
             persistor.SetupContexts()
             setProxyingAndDeferredLoading <- true

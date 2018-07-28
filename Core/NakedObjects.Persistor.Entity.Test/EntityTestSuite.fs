@@ -14,7 +14,6 @@ open NakedObjects.Persistor.TestSuite
 open TestData
 open TestCode
 open System.Security.Principal
-open Microsoft.Practices.Unity
 open NakedObjects.Architecture.Configuration
 open NakedObjects.Core.Configuration
 open NakedObjects.Core.Authentication
@@ -22,6 +21,9 @@ open System.Data.Entity.Core.Objects.DataClasses
 open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Persistor.Entity
 open NakedObjects.Persistor.Entity.Component
+open Unity;
+open Unity.Injection;
+open Unity.Lifetime;
 
 
 
@@ -158,7 +160,7 @@ type EntityTestSuite() =
     
     member x.ClearOldTestData() = ()
     
-    [<TestFixtureSetUpAttribute>]
+    [<OneTimeSetUpAttribute>]
     member x.SetupFixture() = 
         System.Data.Entity.Database.SetInitializer(new TestDataInitializer())
         NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)
@@ -169,7 +171,7 @@ type EntityTestSuite() =
     [<TearDown>]
     member x.TearDownTest() = ()
     
-    [<TestFixtureTearDown>]
+    [<OneTimeTearDown>]
     member x.TearDownFixture() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
     
     override x.Fixtures = [| box (new TestDataFixture()) |]

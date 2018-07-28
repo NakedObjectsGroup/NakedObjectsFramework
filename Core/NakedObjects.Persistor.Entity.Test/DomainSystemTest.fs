@@ -16,9 +16,11 @@ open TestCode
 open NakedObjects.Core.Util
 open NakedObjects.Core.Configuration
 open NakedObjects.Architecture.Configuration
-open Microsoft.Practices.Unity
 open System.Data.Entity.Core.Objects.DataClasses
 open NakedObjects.Persistor.Entity.Configuration
+open Unity;
+open Unity.Injection;
+open Unity.Lifetime;
 
 [<TestFixture>]
 type DomainSystemTests() = 
@@ -45,7 +47,7 @@ type DomainSystemTests() =
         ()
 
     
-    [<TestFixtureSetUpAttribute>]
+    [<OneTimeSetUpAttribute>]
     member x.SetupFixture() = NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)
     
     [<SetUp>]
@@ -54,7 +56,7 @@ type DomainSystemTests() =
     [<TearDown>]
     member x.TearDownTest() = ()
     
-    [<TestFixtureTearDown>]
+    [<OneTimeTearDown>]
     member x.TearDownFixture() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
     
     override x.MenuServices = 

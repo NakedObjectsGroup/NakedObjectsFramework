@@ -37,12 +37,12 @@ let overwritePersistor =
 type DomainTests() = 
     class
         
-        [<TestFixtureSetUp>]
+        [<OneTimeSetUp>]
         member x.Setup() = 
             DomainSetup()
             ()
         
-        [<TestFixtureTearDown>]
+        [<OneTimeTearDown>]
         member x.TearDown() = persistor.SetupContexts()
         
         [<Test>]

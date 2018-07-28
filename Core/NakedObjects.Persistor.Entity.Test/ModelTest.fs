@@ -24,7 +24,7 @@ let persistor =
 type ModelTests() = 
     class
         
-        [<TestFixtureSetUp>]
+        [<OneTimeSetUp>]
         member x.Setup() = ()//ModelSetup()
         
         [<Test>]

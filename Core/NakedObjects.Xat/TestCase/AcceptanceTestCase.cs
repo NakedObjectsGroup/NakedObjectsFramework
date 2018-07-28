@@ -12,7 +12,6 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
 using Common.Logging;
-using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
@@ -24,6 +23,9 @@ using NakedObjects.Core.Util;
 using NakedObjects.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Unity;
+using Unity;
+using Unity.Injection;
+using Unity.Lifetime;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 #pragma warning disable 618
 

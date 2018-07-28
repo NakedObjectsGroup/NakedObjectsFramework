@@ -32,10 +32,10 @@ let multiDatabasePersistor =
 type AMultiDatabaseTests() = 
     class
         
-        [<TestFixtureSetUp>]
+        [<OneTimeSetUp>]
         member x.Setup() = MultiDatabaseSetup()
         
-        [<TestFixtureTearDown>]
+        [<OneTimeTearDown>]
         member x.TearDown() = multiDatabasePersistor.SetupContexts()
         
         [<Test>]

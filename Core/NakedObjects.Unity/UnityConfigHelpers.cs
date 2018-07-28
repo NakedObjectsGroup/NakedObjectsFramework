@@ -6,9 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Reflect;
+using Unity;
+using Unity.Injection;
+using Unity.Lifetime;
 
 namespace NakedObjects.Unity {
     public class UnityConfigHelpers {

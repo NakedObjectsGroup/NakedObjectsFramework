@@ -6,7 +6,6 @@ open Snapshot.Xml.Test
 open NakedObjects.Snapshot
 open NakedObjects.Architecture.Adapter
 open System.Xml.Linq
-open Microsoft.Practices.Unity
 open System.Data.Entity
 open System
 open System.IO
@@ -19,6 +18,9 @@ open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Snapshot.Xml.Service
 open System.Text.RegularExpressions
 open NUnit.Framework
+open Unity;
+open Unity.Injection;
+open Unity.Lifetime;
 
 
 let normalizeData d1 d2 =
@@ -58,7 +60,7 @@ type DomainTests() =
             
             ()
         
-        [<TestFixtureSetUp>]
+        [<OneTimeSetUp>]
         member x.FixtureSetup() =
             AcceptanceTestCase.InitializeNakedObjectsFramework(x)
                 
