@@ -33,8 +33,8 @@ let normalizeData d1 d2 =
     (nd1, nd2)
 
 let writetests = false
-let testFiles = @"..\..\testfiles"
-let getFile name = Path.Combine(testFiles, name) + ".htm"
+let dir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "testfiles");
+let getFile name = Path.Combine(dir, name) + ".htm"
 let getTestData name = File.ReadAllText(getFile name)
 let writeTestData name data = File.WriteAllText(getFile name, data)
 let checkResults resultsFile s = 

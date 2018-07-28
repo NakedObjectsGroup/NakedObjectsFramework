@@ -66,13 +66,27 @@
     <Compile Include="XmlSnapshotService.fs" />
     <None Include="packages.config" />
     <None Include="app.config" />
-    <None Include="complexTestData.htm" />
-    <None Include="complexTestDataWithCollection.htm" />
-    <None Include="complexTestDataWithCollectionAnnotation.htm" />
-    <None Include="complexTestDataWithNestedReference.htm" />
-    <None Include="complexTestDataWithReference.htm" />
-    <None Include="complexTestDataWithReferenceAnnotation.htm" />
-    <None Include="simpleTestData.htm" />
+    <None Include="testfiles\complexTestData.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="testfiles\complexTestDataWithCollection.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="testfiles\complexTestDataWithCollectionAnnotation.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="testfiles\complexTestDataWithNestedReference.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="testfiles\complexTestDataWithReference.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="testfiles\complexTestDataWithReferenceAnnotation.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="testfiles\simpleTestData.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NakedObjects.Persistor.Entity\NakedObjects.Persistor.Entity.csproj">
