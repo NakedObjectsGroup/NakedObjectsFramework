@@ -97,7 +97,7 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Moq">
-      <HintPath>..\..\packages\Moq.4.9.0\lib\net45\Moq.dll</HintPath>
+      <HintPath>..\..\packages\Moq.4.7.0\lib\net45\Moq.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
