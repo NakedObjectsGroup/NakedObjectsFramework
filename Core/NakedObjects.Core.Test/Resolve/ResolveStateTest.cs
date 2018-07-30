@@ -123,7 +123,6 @@ namespace NakedObjects.Core.Test.Resolve {
             ExpectException(() => GhostSM().Handle(Events.EndPartResolvingEvent));
             ExpectException(() => GhostSM().Handle(Events.EndResolvingEvent));
             ExpectException(() => GhostSM().Handle(Events.InitializeTransientEvent));
-            ExpectException(() => GhostSM().Handle(Events.StartSerializingEvent));
             ExpectException(() => GhostSM().Handle(Events.InitializeAggregateEvent));
         }
 
@@ -144,9 +143,6 @@ namespace NakedObjects.Core.Test.Resolve {
             ExpectException(() => ResolvedPartSm().Handle(Events.EndPartResolvingEvent));
             ExpectException(() => ResolvedPartSm().Handle(Events.EndResolvingEvent));
             ExpectException(() => ResolvedPartSm().Handle(Events.InitializeTransientEvent));
-            ExpectException(() => ResolvedPartSm().Handle(Events.StartSerializingEvent));
-            ExpectException(() => ResolvedPartSm().Handle(Events.StartSerializingEvent));
-            ExpectException(() => ResolvedPartSm().Handle(Events.StartSerializingEvent));
         }
 
         [Test]
@@ -156,9 +152,6 @@ namespace NakedObjects.Core.Test.Resolve {
             ExpectException(() => ResolvedSm().Handle(Events.StartResolvingEvent));
             ExpectException(() => ResolvedSm().Handle(Events.StartPartResolvingEvent));
             ExpectException(() => ResolvedSm().Handle(Events.InitializeTransientEvent));
-            ExpectException(() => ResolvedSm().Handle(Events.StartSerializingEvent));
-            ExpectException(() => ResolvedSm().Handle(Events.StartSerializingEvent));
-            ExpectException(() => ResolvedSm().Handle(Events.StartSerializingEvent));
         }
 
         [Test]
@@ -168,7 +161,6 @@ namespace NakedObjects.Core.Test.Resolve {
             ExpectException(() => ResolvingSm().Handle(Events.StartResolvingEvent));
             ExpectException(() => ResolvingSm().Handle(Events.StartPartResolvingEvent));
             ExpectException(() => ResolvingSm().Handle(Events.InitializeTransientEvent));
-            ExpectException(() => ResolvingSm().Handle(Events.DestroyEvent));
             ExpectException(() => ResolvingSm().Handle(Events.StartUpdatingEvent));
             ExpectException(() => ResolvingSm().Handle(Events.StartSerializingEvent));
             ExpectException(() => ResolvingSm().Handle(Events.StartSerializingEvent));
@@ -244,14 +236,10 @@ namespace NakedObjects.Core.Test.Resolve {
         public void InvalidChangesFromTransient() {
             ExpectException(() => TransientSm().Handle(Events.InitializePersistentEvent));
             ExpectException(() => TransientSm().Handle(Events.EndPartResolvingEvent));
-            ExpectException(() => TransientSm().Handle(Events.StartResolvingEvent));
             ExpectException(() => TransientSm().Handle(Events.StartPartResolvingEvent));
             ExpectException(() => TransientSm().Handle(Events.InitializeTransientEvent));
             ExpectException(() => TransientSm().Handle(Events.DestroyEvent));
             ExpectException(() => TransientSm().Handle(Events.StartUpdatingEvent));
-            ExpectException(() => TransientSm().Handle(Events.StartSerializingEvent));
-            ExpectException(() => TransientSm().Handle(Events.StartSerializingEvent));
-            ExpectException(() => TransientSm().Handle(Events.StartSerializingEvent));
             ExpectException(() => TransientSm().Handle(Events.InitializeAggregateEvent));
         }
 
@@ -294,6 +282,8 @@ namespace NakedObjects.Core.Test.Resolve {
             ExpectNoException(() => ResolvedPartSm().Handle(Events.DestroyEvent));
             ExpectNoException(() => ResolvedPartSm().Handle(Events.StartUpdatingEvent));
             ExpectNoException(() => ResolvedPartSm().Handle(Events.StartSerializingEvent));
+            ExpectNoException(() => ResolvedPartSm().Handle(Events.StartSetupEvent));
+            ExpectNoException(() => ResolvedPartSm().Handle(Events.StartPartSetupEvent));
         }
 
         [Test]
@@ -302,11 +292,14 @@ namespace NakedObjects.Core.Test.Resolve {
             ExpectNoException(() => ResolvedSm().Handle(Events.DestroyEvent));
             ExpectNoException(() => ResolvedSm().Handle(Events.StartUpdatingEvent));
             ExpectNoException(() => ResolvedSm().Handle(Events.StartSerializingEvent));
+            ExpectNoException(() => ResolvedSm().Handle(Events.StartSetupEvent));
+            ExpectNoException(() => ResolvedSm().Handle(Events.StartPartSetupEvent));
         }
 
         [Test]
         public void ValidChangesFromResolving() {
             ExpectNoException(() => ResolvingSm().Handle(Events.EndResolvingEvent));
+            ExpectNoException(() => ResolvingSm().Handle(Events.DestroyEvent));
         }
 
         [Test]
@@ -334,6 +327,8 @@ namespace NakedObjects.Core.Test.Resolve {
         public void ValidChangesFromTransient() {
             ExpectNoException(() => TransientSm().Handle(Events.StartResolvingEvent));
             ExpectNoException(() => TransientSm().Handle(Events.StartSerializingEvent));
+            ExpectNoException(() => TransientSm().Handle(Events.StartSetupEvent));
+            ExpectNoException(() => TransientSm().Handle(Events.StartPartSetupEvent));
         }
 
         [Test]
