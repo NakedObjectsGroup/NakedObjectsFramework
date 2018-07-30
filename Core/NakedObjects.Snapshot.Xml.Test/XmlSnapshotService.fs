@@ -213,17 +213,19 @@ type DomainTests() =
         member x.CompareXml xml1 xml2 = 
             let doc1 = XDocument.Parse xml1
             let doc2 = XDocument.Parse xml2
-            Assert.AreEqual(doc1.DescendantNodes() |> Seq.length, doc2.DescendantNodes() |> Seq.length)
-            for node in doc1.Descendants() do
-                let matchingNode = doc2.Descendants() |> Seq.find (fun n -> n.Name = node.Name)
-                Assert.IsNotNull matchingNode
-                Assert.IsTrue(x.CompareElementValues node matchingNode)
-                Assert.AreEqual(node.Attributes() |> Seq.length, matchingNode.Attributes() |> Seq.length)
-                for attr in node.Attributes() do
-                    let matchingAttr = matchingNode.Attributes() |> Seq.find (fun a -> a.Name = attr.Name)
-                    Assert.IsNotNull matchingAttr
-                    let nd = normalizeData attr.Value matchingAttr.Value
-                    Assert.AreEqual(fst(nd), snd(nd))
+            if (doc1.DescendantNodes() |> Seq.length) = (doc2.DescendantNodes() |> Seq.length) then 
+                for node in doc1.Descendants() do
+                    let matchingNode = doc2.Descendants() |> Seq.find (fun n -> n.Name = node.Name)
+                    Assert.IsNotNull matchingNode
+                    Assert.IsTrue(x.CompareElementValues node matchingNode)
+                    Assert.AreEqual(node.Attributes() |> Seq.length, matchingNode.Attributes() |> Seq.length)
+                    for attr in node.Attributes() do
+                        let matchingAttr = matchingNode.Attributes() |> Seq.find (fun a -> a.Name = attr.Name)
+                        Assert.IsNotNull matchingAttr
+                        let nd = normalizeData attr.Value matchingAttr.Value
+                        Assert.AreEqual(fst(nd), snd(nd))
+            else
+                raise (Exception())
         
         [<Test>]
         member x.TransformXmlToMatchFull() = 

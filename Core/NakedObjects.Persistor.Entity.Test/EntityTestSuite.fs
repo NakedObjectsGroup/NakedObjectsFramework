@@ -353,8 +353,9 @@ type EntityTestSuite() =
     [<Test>]
     member x.SaveNewObjectWithScalars() = x.Tests.SaveNewObjectWithScalars()
     
-    [<Test>]
-    member x.SaveNewObjectWithValidate() = x.Tests.SaveNewObjectWithValidate()
+    // cross validate is done from facade
+    //[<Test>]
+    //member x.SaveNewObjectWithValidate() = x.Tests.SaveNewObjectWithValidate()
     
     [<Test>]
     member x.ChangeObjectWithValidate() = x.Tests.ChangeObjectWithValidate()
