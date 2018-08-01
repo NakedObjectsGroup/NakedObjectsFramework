@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NakedObjects.Rest</id>
-    <version>8.1.1</version>
+    <version>10.0.0-beta01</version>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -14,11 +14,11 @@
     <description>This package will initially be added automatically when you install NakedObjects.Run</description>
     <dependencies>
       <dependency id="NakedObjects.Facade" version="[8.1.0, 9)" />
-      <dependency id="Newtonsoft.Json" version="[6.0.8, 7.0)" />
-      <dependency id="Microsoft.AspNet.WebApi" version="[5.2.3, 6.0)" />
+      <dependency id="Newtonsoft.Json" version="[11.0.2, 12)" />
+      <dependency id="Microsoft.AspNet.WebApi" version="[5.2.6, 6.0)" />
     </dependencies>
     <frameworkAssemblies>
-      <frameworkAssembly assemblyName="System" targetFramework=".NETFramework4.5.2" />
+      <frameworkAssembly assemblyName="System" targetFramework=".NETFramework4.6.2" />
     </frameworkAssemblies>
   </metadata>
 </package>

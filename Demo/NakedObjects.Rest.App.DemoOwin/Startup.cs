@@ -13,6 +13,7 @@ using System.Web.Http;
 using Auth0.Owin;
 //using IdentityServer3.AccessTokenValidation;
 using Microsoft.IdentityModel.Protocols;
+using Microsoft.IdentityModel.Tokens;
 using AuthenticationMode = Microsoft.Owin.Security.AuthenticationMode;
 
 [assembly: OwinStartup(typeof(NakedObjects.Rest.App.DemoOwin.Startup))]

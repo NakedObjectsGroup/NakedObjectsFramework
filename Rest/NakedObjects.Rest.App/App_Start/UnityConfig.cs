@@ -9,7 +9,6 @@ using System;
 using System.Security.Principal;
 using System.Web;
 using Common.Logging;
-using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Impl;
@@ -19,6 +18,9 @@ using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Facade.Interface;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Unity;
+using Unity;
+using Unity.Lifetime;
+using Unity.Injection;
 
 namespace MvcTestApp {
     /// <summary>

@@ -1,14 +1,12 @@
 using System.Web.Http;
-using Microsoft.Practices.Unity;
-using Microsoft.Practices.Unity.WebApi;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Rest.App.DemoOwin.App_Start;
+using Unity.AspNet.WebApi;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(UnityWebApiActivator), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethod(typeof(UnityWebApiActivator), "Shutdown")]
 
-namespace NakedObjects.Rest.App.DemoOwin.App_Start
-{
+namespace NakedObjects.Rest.App.DemoOwin.App_Start {
     /// <summary>Provides the bootstrapping for integrating Unity with WebApi when it is hosted in ASP.NET</summary>
     public static class UnityWebApiActivator
     {
@@ -20,7 +18,8 @@ namespace NakedObjects.Rest.App.DemoOwin.App_Start
             //var resolver = new UnityDependencyResolver(UnityConfig.GetConfiguredContainer());
 
             GlobalConfiguration.Configuration.DependencyResolver = resolver;
-            UnityConfig.GetConfiguredContainer().Resolve<IReflector>().Reflect();
+            var reflector = UnityConfig.GetConfiguredContainer().Resolve(typeof(IReflector), null) as IReflector;
+            reflector.Reflect();
         }
 
         /// <summary>Disposes the Unity container when the application is shut down.</summary>

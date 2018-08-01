@@ -8,11 +8,11 @@
 using System;
 using System.Web.Http;
 using Common.Logging;
-using Microsoft.Practices.Unity;
-using Microsoft.Practices.Unity.WebApi;
+using Unity;
 using MvcTestApp;
 using NakedObjects.Architecture.Component;
 using WebActivatorEx;
+using Unity.AspNet.WebApi;
 
 [assembly: PreApplicationStartMethod(typeof (UnityWebApiActivator), "Start")]
 [assembly: ApplicationShutdownMethod(typeof (UnityWebApiActivator), "Shutdown")]

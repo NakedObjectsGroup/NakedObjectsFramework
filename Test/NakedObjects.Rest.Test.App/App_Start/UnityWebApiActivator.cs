@@ -6,14 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Web.Http;
-using Microsoft.Practices.Unity;
-using Microsoft.Practices.Unity.WebApi;
 using NakedObjects.Rest.Test.App;
 using NakedObjects.Architecture.Component;
 using WebActivatorEx;
+using Unity.AspNet.WebApi;
 
-[assembly: PreApplicationStartMethod(typeof (UnityWebApiActivator), "Start")]
-[assembly: ApplicationShutdownMethod(typeof (UnityWebApiActivator), "Shutdown")]
+[assembly: PreApplicationStartMethod(typeof(UnityWebApiActivator), "Start")]
+[assembly: ApplicationShutdownMethod(typeof(UnityWebApiActivator), "Shutdown")]
 
 namespace NakedObjects.Rest.Test.App {
     /// <summary>Provides the bootstrapping for integrating Unity with WebApi when it is hosted in ASP.NET</summary>
@@ -24,7 +23,8 @@ namespace NakedObjects.Rest.Test.App {
             // var resolver = new UnityHierarchicalDependencyResolver(UnityConfig.GetConfiguredContainer());
             var resolver = new UnityDependencyResolver(UnityConfig.GetConfiguredContainer());
             GlobalConfiguration.Configuration.DependencyResolver = resolver;
-            UnityConfig.GetConfiguredContainer().Resolve<IReflector>().Reflect();
+            var reflector = UnityConfig.GetConfiguredContainer().Resolve(typeof(IReflector), null) as IReflector;
+            reflector.Reflect();
         }
 
         /// <summary>Disposes the Unity container when the application is shut down.</summary>

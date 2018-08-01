@@ -12,7 +12,7 @@ open NakedObjects.Rest.Media
 open System
 open NakedObjects.Rest.Snapshot.Utility
 open System.Web.Http
-open Microsoft.Practices.Unity
+open Unity
 open RestfulObjects.Test.Data
 open NakedObjects.Facade.Impl.Implementation
 open NakedObjects.Facade.Impl.Utility
@@ -31,6 +31,7 @@ open NakedObjects.Facade.Impl
 open NakedObjects.Facade.Interface
 open NakedObjects.Architecture.Menu
 open NakedObjects.Menu
+open Unity.Lifetime
 
 [<TestFixture>]
 type CNof4TestsDomainType() = 
@@ -106,7 +107,7 @@ type CNof4TestsDomainType() =
             |> ignore
             ()
         
-        [<TestFixtureSetUp>]
+        [<OneTimeSetUp>]
         member x.FixtureSetup() = 
             CodeFirstSetup()
             NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)
@@ -128,7 +129,7 @@ type CNof4TestsDomainType() =
             
             RestfulObjectsControllerBase.CacheSettings <- (0, 3600, 86400)
         
-        [<TestFixtureTearDown>]
+        [<OneTimeTearDown>]
         member x.FixtureTearDown() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
         
         override x.Services = 
@@ -198,8 +199,7 @@ type CNof4TestsDomainType() =
         member x.PersistMostSimpleTransientObject() = Objects9.PersistMostSimpleTransientObject x.api
         
         [<Test>]
-        [<Ignore>]
-         // temp ignore untill fix persist id
+        [<Ignore("until fix persist id")>]
          member x.PersistMostSimpleTransientObjectSimpleOnly() = 
             Objects9.PersistMostSimpleTransientObjectSimpleOnly x.api
         
@@ -208,7 +208,7 @@ type CNof4TestsDomainType() =
             Objects9.PersistMostSimpleTransientObjectValidateOnly x.api
         
         [<Test>]
-        [<Ignore>]
+        [<Ignore("why?")>]
         member x.GetWithValueTransientObject() = Objects9.GetWithValueTransientObject x.api
         
         [<Test>]
@@ -560,15 +560,15 @@ type CNof4TestsDomainType() =
         member x.GetWithNestedViewModel() = DomainObject14.GetWithNestedViewModel x.api
         
         [<Test>]
-        [<Ignore>]
+        [<Ignore("why?")>]
         member x.PutWithReferenceViewModel() = DomainObject14.PutWithReferenceViewModel x.api
         
         [<Test>]
-        [<Ignore>]
+        [<Ignore("why?")>]
         member x.PutWithNestedViewModel() = DomainObject14.PutWithNestedViewModel x.api
         
         [<Test>]
-        [<Ignore>]
+        [<Ignore("why?")>]
         member x.PutWithValueViewModel() = DomainObject14.PutWithValueViewModel x.api
         
         [<Test>]

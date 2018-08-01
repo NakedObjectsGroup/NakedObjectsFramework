@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventureWorksModel", "Samples\AdventureWorksModel\AdventureWorksModel.csproj", "{FDDBA108-8B58-40C6-A375-FFB92B1933DD}"
 EndProject
@@ -16,8 +16,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{736F43
 		.build\MSBuild.Community.Tasks.dll = .build\MSBuild.Community.Tasks.dll
 		.build\MSBuild.Community.Tasks.targets = .build\MSBuild.Community.Tasks.targets
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Rest.App.Demo", "Demo\NakedObjects.Rest.App.Demo\NakedObjects.Rest.App.Demo.csproj", "{90D7847A-AD0E-488D-9CBD-7967B039A115}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Rest.Test.App", "Test\NakedObjects.Rest.Test.App\NakedObjects.Rest.Test.App.csproj", "{B6313295-3DF4-4AAB-B6D4-26B38FBB1668}"
 EndProject
@@ -43,14 +41,6 @@ Global
 		{FDDBA108-8B58-40C6-A375-FFB92B1933DD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FDDBA108-8B58-40C6-A375-FFB92B1933DD}.Release|x86.ActiveCfg = Release|Any CPU
 		{FDDBA108-8B58-40C6-A375-FFB92B1933DD}.Release|x86.Build.0 = Release|Any CPU
-		{90D7847A-AD0E-488D-9CBD-7967B039A115}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{90D7847A-AD0E-488D-9CBD-7967B039A115}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{90D7847A-AD0E-488D-9CBD-7967B039A115}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{90D7847A-AD0E-488D-9CBD-7967B039A115}.Debug|x86.Build.0 = Debug|Any CPU
-		{90D7847A-AD0E-488D-9CBD-7967B039A115}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{90D7847A-AD0E-488D-9CBD-7967B039A115}.Release|Any CPU.Build.0 = Release|Any CPU
-		{90D7847A-AD0E-488D-9CBD-7967B039A115}.Release|x86.ActiveCfg = Release|Any CPU
-		{90D7847A-AD0E-488D-9CBD-7967B039A115}.Release|x86.Build.0 = Release|Any CPU
 		{B6313295-3DF4-4AAB-B6D4-26B38FBB1668}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B6313295-3DF4-4AAB-B6D4-26B38FBB1668}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6313295-3DF4-4AAB-B6D4-26B38FBB1668}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -78,5 +68,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {58846698-545E-47B7-9E9B-2454B2CBF4F1}
 	EndGlobalSection
 EndGlobal

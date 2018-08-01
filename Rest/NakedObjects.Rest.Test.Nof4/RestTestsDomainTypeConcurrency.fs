@@ -12,7 +12,7 @@ open NakedObjects.Rest.Media
 open System
 open NakedObjects.Rest.Snapshot.Utility
 open System.Web.Http
-open Microsoft.Practices.Unity
+open Unity
 open RestfulObjects.Test.Data
 open NakedObjects.Facade.Impl.Implementation
 open NakedObjects.Facade.Impl.Utility
@@ -31,6 +31,7 @@ open NakedObjects.Facade.Impl
 open NakedObjects.Facade.Interface
 open NakedObjects.Architecture.Menu
 open NakedObjects.Menu
+open Unity.Lifetime
 
 [<TestFixture>]
 type DNof4TestsDomainTypeConcurrency() = 
@@ -105,7 +106,7 @@ type DNof4TestsDomainTypeConcurrency() =
             |> ignore
             ()
         
-        [<TestFixtureSetUp>]
+        [<OneTimeSetUp>]
         member x.FixtureSetup() = 
             CodeFirstSetup()
             NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)
@@ -126,7 +127,7 @@ type DNof4TestsDomainTypeConcurrency() =
             
             RestfulObjectsControllerBase.CacheSettings <- (0, 3600, 86400)
         
-        [<TestFixtureTearDown>]
+        [<OneTimeTearDown>]
         member x.FixtureTearDown() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
         
         override x.Services = 
