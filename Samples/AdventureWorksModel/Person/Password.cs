@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace AdventureWorksModel
-{
+namespace AdventureWorksModel {
     public partial class Password
     {
         public virtual int BusinessEntityID { get; set; }

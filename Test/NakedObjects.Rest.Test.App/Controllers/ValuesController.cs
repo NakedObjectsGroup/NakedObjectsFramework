@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using System.Collections.Generic;
 using System.Web.Http;
 
-namespace NakedObjects.Rest.Test.App.Controllers
-{
+namespace NakedObjects.Rest.Test.App.Controllers {
     [Authorize]
     public class ValuesController : ApiController
     {

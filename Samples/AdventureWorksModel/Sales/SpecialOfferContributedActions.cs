@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using NakedObjects;
 
-namespace AdventureWorksModel.Sales
-{
+namespace AdventureWorksModel.Sales {
     public class SpecialOfferContributedActions
     {
 

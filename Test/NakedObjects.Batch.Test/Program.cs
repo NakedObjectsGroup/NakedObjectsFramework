@@ -8,17 +8,14 @@
 using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Batch {
-    public static class UnityActivator {
-        /// <summary>Integrates Unity when the application starts.</summary>
-        public static void Start() {
-            var resolve = UnityConfig.GetConfiguredContainer().Resolve(typeof (IReflector), null) as IReflector;
-            resolve.Reflect();
-        }
+    internal class Program {
+        private static void Main(string[] args) {
+            UnityActivator.Start();
 
-        /// <summary>Disposes the Unity container when the application is shut down.</summary>
-        public static void Shutdown() {
-            var container = UnityConfig.GetConfiguredContainer();
-            container.Dispose();
+            var resolve = UnityConfig.GetConfiguredContainer().Resolve(typeof (IBatchRunner), null) as IBatchRunner;
+            resolve.Run(new BatchStartPoint());
+
+            UnityActivator.Shutdown();
         }
     }
 }

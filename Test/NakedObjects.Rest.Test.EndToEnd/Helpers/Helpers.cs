@@ -7,7 +7,6 @@ using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Web;
-using System.Web.Caching;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

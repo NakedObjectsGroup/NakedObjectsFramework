@@ -8,23 +8,14 @@
 using System;
 using System.Security.Principal;
 using System.Threading;
-using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
-using NakedObjects.Architecture.Menu;
-using NakedObjects.Core.Adapter;
-using NakedObjects.Core.Authentication;
 using NakedObjects.Core.Component;
-using NakedObjects.Core.Spec;
-using NakedObjects.Meta;
-using NakedObjects.Meta.Menu;
-using NakedObjects.Persistor.Entity;
 using NakedObjects.Persistor.Entity.Configuration;
-using NakedObjects.Reflect;
-using NakedObjects.Reflect.FacetFactory;
-using NakedObjects.Reflect.TypeFacetFactory;
-using NakedObjects.Service;
 using NakedObjects.Unity;
+using Unity;
+using Unity.Injection;
+using Unity.Lifetime;
 
 namespace NakedObjects.Batch {
     /// <summary>

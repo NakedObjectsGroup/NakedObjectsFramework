@@ -8,7 +8,6 @@
 using System;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
-using System.Linq;
 using AdventureWorksModel;
 using AdventureWorksModel.Sales;
 using NakedObjects.Core.Configuration;

@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.DatabaseHelpers;
@@ -47,7 +46,8 @@ namespace NakedObjects.Batch {
 
         [TestMethod]
         public void TestBatch() {
-            UnityConfig.GetConfiguredContainer().Resolve<IBatchRunner>().Run(new BatchStartPoint());
+            var resolve = UnityConfig.GetConfiguredContainer().Resolve(typeof (IBatchRunner), null) as IBatchRunner;
+            resolve.Run(new BatchStartPoint());
         }
     }
 }

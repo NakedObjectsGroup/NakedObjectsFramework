@@ -6,7 +6,6 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.ModelBinding;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -17,8 +16,7 @@ using NakedObjects.Rest.Test.App.Models;
 using NakedObjects.Rest.Test.App.Providers;
 using NakedObjects.Rest.Test.App.Results;
 
-namespace NakedObjects.Rest.Test.App.Controllers
-{
+namespace NakedObjects.Rest.Test.App.Controllers {
     [Authorize]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController

@@ -1,8 +1,6 @@
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace NakedObjects.Rest.Test.App.Areas.HelpPage.ModelDescriptions
-{
+namespace NakedObjects.Rest.Test.App.Areas.HelpPage.ModelDescriptions {
     public class EnumTypeModelDescription : ModelDescription
     {
         public EnumTypeModelDescription()

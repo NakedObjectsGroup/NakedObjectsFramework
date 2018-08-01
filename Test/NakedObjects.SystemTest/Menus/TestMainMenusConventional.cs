@@ -8,7 +8,6 @@
 using System;
 using System.Data.Entity;
 using System.Linq;
-using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
@@ -17,6 +16,8 @@ using NakedObjects.Menu;
 using NakedObjects.Meta.Menu;
 using NakedObjects.Xat;
 using TestObjectMenu;
+using Unity;
+using Unity.Lifetime;
 
 namespace NakedObjects.SystemTest.Menus.Service2 {
     [TestClass]

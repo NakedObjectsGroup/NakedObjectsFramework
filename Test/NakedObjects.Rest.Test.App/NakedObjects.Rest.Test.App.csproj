@@ -432,16 +432,16 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Rest\NakedObjects.Rest.Test.Data\NakedObjects.Rest.Test.Data.csproj">
-      <Project>{D1857EE7-DE8A-41AA-9509-CF40697A0589}</Project>
-      <Name>NakedObjects.Rest.Test.Data</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Rest\NakedObjects.Rest.Test.Data\NakedObjects.Rest.Test.Data.csproj">
+      <Project>{D1857EE7-DE8A-41AA-9509-CF40697A0589}</Project>
+      <Name>NakedObjects.Rest.Test.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

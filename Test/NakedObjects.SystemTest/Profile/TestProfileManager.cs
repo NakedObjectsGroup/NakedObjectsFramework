@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Principal;
-using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
@@ -20,6 +19,8 @@ using NakedObjects.Meta.Profile;
 using NakedObjects.Profile;
 using NakedObjects.Services;
 using NakedObjects.Xat;
+using Unity;
+using Unity.Lifetime;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.SystemTest.Profile {

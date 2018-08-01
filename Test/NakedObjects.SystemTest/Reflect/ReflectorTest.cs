@@ -12,7 +12,6 @@ using System.IO;
 using System.Linq;
 using System.Security.Principal;
 using AdventureWorksModel;
-using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
@@ -29,6 +28,9 @@ using NakedObjects.Meta.I18N;
 using NakedObjects.Reflect;
 using NakedObjects.Reflect.Component;
 using NakedObjects.Security;
+using Unity;
+using Unity.Injection;
+using Unity.Lifetime;
 
 namespace NakedObjects.SystemTest.Reflect {
     [TestClass]

@@ -8,7 +8,6 @@
 using System;
 using System.Data.Entity;
 using System.Security.Principal;
-using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MyApp.MyCluster1;
 using MyApp.MyCluster2;
@@ -20,6 +19,8 @@ using NakedObjects.Meta.Authorization;
 using NakedObjects.Security;
 using NakedObjects.Services;
 using NotMyApp.MyCluster2;
+using Unity;
+using Unity.Lifetime;
 
 namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
     [TestClass]

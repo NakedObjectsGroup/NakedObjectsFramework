@@ -7,11 +7,11 @@
 
 using System;
 using System.Data.Entity;
-using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Meta.Menu;
 using TestObjectMenu;
+using Unity;
 
 namespace NakedObjects.SystemTest.Menus {
     [TestClass]

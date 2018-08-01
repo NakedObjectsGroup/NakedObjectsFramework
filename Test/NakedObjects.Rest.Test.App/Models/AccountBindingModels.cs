@@ -1,9 +1,7 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
-namespace NakedObjects.Rest.Test.App.Models
-{
+namespace NakedObjects.Rest.Test.App.Models {
     // Models used as parameters to AccountController actions.
 
     public class AddExternalLoginBindingModel

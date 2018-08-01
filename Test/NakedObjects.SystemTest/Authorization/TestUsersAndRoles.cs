@@ -8,7 +8,6 @@
 using System;
 using System.Data.Entity;
 using System.Security.Principal;
-using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
@@ -17,6 +16,8 @@ using NakedObjects.Meta.Authorization;
 using NakedObjects.Security;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.Audit;
+using Unity;
+using Unity.Lifetime;
 
 namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
     [TestClass]

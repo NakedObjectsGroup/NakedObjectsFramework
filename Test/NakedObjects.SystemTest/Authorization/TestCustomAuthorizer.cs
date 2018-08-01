@@ -8,7 +8,6 @@
 using System;
 using System.Data.Entity;
 using System.Security.Principal;
-using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
@@ -17,6 +16,8 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Meta.Authorization;
 using NakedObjects.Security;
 using NakedObjects.Services;
+using Unity;
+using Unity.Lifetime;
 
 namespace NakedObjects.SystemTest.Authorization.Installer {
     public abstract class TestCustomAuthorizer : AbstractSystemTest<CustomAuthorizerInstallerDbContext> {

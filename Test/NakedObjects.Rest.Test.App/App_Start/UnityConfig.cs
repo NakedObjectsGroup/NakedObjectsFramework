@@ -8,7 +8,6 @@
 using System;
 using System.Security.Principal;
 using System.Web;
-using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Impl;

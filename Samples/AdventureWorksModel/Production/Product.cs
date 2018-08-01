@@ -11,7 +11,6 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedObjects;
-using NakedObjects.Redirect;
 using NakedObjects.Value;
 
 namespace AdventureWorksModel {

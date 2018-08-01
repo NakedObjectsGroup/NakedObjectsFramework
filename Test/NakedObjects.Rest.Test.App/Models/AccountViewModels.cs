@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace NakedObjects.Rest.Test.App.Models
-{
+namespace NakedObjects.Rest.Test.App.Models {
     // Models returned by AccountController actions.
 
     public class ExternalLoginViewModel

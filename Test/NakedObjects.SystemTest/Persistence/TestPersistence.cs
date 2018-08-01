@@ -9,12 +9,13 @@ using System;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
-using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Services;
 using NakedObjects.Xat;
+using Unity;
+using Unity.Lifetime;
 
 namespace NakedObjects.SystemTest.Persistence {
     [TestClass]

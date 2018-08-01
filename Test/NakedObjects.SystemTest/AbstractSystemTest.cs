@@ -11,12 +11,13 @@ using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
-using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.SystemTest.Reflect;
 using NakedObjects.Util;
 using NakedObjects.Xat;
+using Unity;
+using Unity.Lifetime;
 
 namespace NakedObjects.SystemTest {
     public abstract class AbstractSystemTest<TContext> : AcceptanceTestCase

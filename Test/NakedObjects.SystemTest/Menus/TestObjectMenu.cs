@@ -9,7 +9,6 @@ using System;
 using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq;
-using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects;
 using NakedObjects.Architecture.Menu;
@@ -17,6 +16,7 @@ using NakedObjects.Menu;
 using NakedObjects.Meta.Menu;
 using NakedObjects.Services;
 using TestObjectMenu;
+using Unity;
 
 namespace NakedObjects.SystemTest.Menus {
     [TestClass]

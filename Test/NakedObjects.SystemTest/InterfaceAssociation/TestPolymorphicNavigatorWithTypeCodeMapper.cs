@@ -7,13 +7,14 @@
 
 using System;
 using System.Data.Entity;
-using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.PolymorphicAssociations;
 using NakedObjects.SystemTest.Reflect;
+using Unity;
+using Unity.Lifetime;
 
 namespace NakedObjects.SystemTest.PolymorphicNavigator {
     [TestClass]
