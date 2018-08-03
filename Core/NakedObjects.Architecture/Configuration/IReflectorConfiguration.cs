@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Menu;
+using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.Configuration {
     public interface IReflectorConfiguration {
@@ -43,5 +44,13 @@ namespace NakedObjects.Architecture.Configuration {
 
         Func<IMenuFactory, IMenu[]> MainMenus { get; }
         bool IgnoreCase { get; }
+
+        /// <summary>
+        /// Informs the Reflection Framework on how to Load and Introspect Dependencies
+        /// Default will be false which will Reflect the dependencies the standard way
+        /// If Set to True, the dependencies will be loaded asynchronously, and also
+        /// method sorting will be skipped
+        /// </summary>
+        bool ParallelReflectionMode { get; }
     }
 }

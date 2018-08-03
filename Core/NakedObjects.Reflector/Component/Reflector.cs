@@ -21,10 +21,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Menu;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Util;
-using System.Diagnostics;
-using System.IO;
 using System.Threading.Tasks;
-using System.Text;
 
 namespace NakedObjects.Reflect.Component {
     // This is designed to run once, single threaded at startup. It is not intended to be thread safe.
@@ -37,44 +34,6 @@ namespace NakedObjects.Reflect.Component {
         private readonly IMenuFactory menuFactory;
         private readonly IMetamodelBuilder metamodel;
         private readonly ISet<Type> serviceTypes = new HashSet<Type>();
-        private static Dictionary<double, string> timerLog = new Dictionary<double, string>();
-        private static Stopwatch timer;
-        private static string lastLogLine = "";
-		private static Dictionary<int, bool> _activeThreads = new Dictionary<int, bool>();
-		private static string _indent = "";
-		private List<string> _typeTree = new List<string>();
-
-		public void logTime(string logEntry, bool flushToFile)
-        {
-            if (timer == null)
-            {
-                File.Delete(@"D:\Temp\Log.log");
-                timer = new Stopwatch();
-            }
-            if (!timer.IsRunning)
-                timer.Start();
-            int id = timerLog.Count + 1;
-            //logEntry += "," + timer.Elapsed.Ticks;
-            timerLog.Add(id, lastLogLine);
-            lastLogLine = logEntry;
-            if (flushToFile || id % 10 == 0)
-            {
-                timer.Stop();
-                //using (var stream = new FileStream(@"D:\Temp\Log.log", FileMode.Append))
-                File.AppendAllLines(@"D:\Temp\Log.log",timerLog.Values);
-                timerLog.Clear();
-                timer.Start();
-            }
-        }
-
-		public void LogReflectedTypes()
-		{
-			foreach (var item in metamodel.AllSpecifications)
-			{
-				logTime(item.FullName, true);
-			}
-			logTime("Complete", true);
-		}
 
         static Reflector() {
             Log = LogManager.GetLogger(typeof(Reflector));
@@ -139,7 +98,6 @@ namespace NakedObjects.Reflect.Component {
             return (ITypeSpecBuilder)metamodel.GetSpecification(type, true) ?? LoadSpecificationAndCache(type);
         }
 
-
         public T LoadSpecification<T>(Type type) where T : ITypeSpecImmutable {
             var spec = LoadSpecification(type);
             try {
@@ -153,34 +111,29 @@ namespace NakedObjects.Reflect.Component {
         }
 
         public void Reflect() {
-			
-			Type[] s1 = config.Services;
+            Type[] s1 = config.Services;
             Type[] services = s1.ToArray();
             Type[] nonServices = GetTypesToIntrospect();
 
             services.ForEach(t => serviceTypes.Add(t));
-            
+
             var allTypes = services.Union(nonServices).ToArray();
-            
+
             InstallSpecifications(allTypes);
-			File.AppendAllText(@"D:\Temp\Log.log", "Install Specifications\t" + DateTime.Now.Ticks + Environment.NewLine);
 
-			PopulateAssociatedActions(s1.ToArray());
-			File.AppendAllText(@"D:\Temp\Log.log", "Populate Associated Actions\t" + DateTime.Now.Ticks + Environment.NewLine);
+            PopulateAssociatedActions(s1.ToArray());
 
-			//Menus installed once rest of metamodel has been built:
-			if (config.MainMenus != null) {
+            //Menus installed once rest of metamodel has been built:
+            if (config.MainMenus != null) {
                 IMenu[] mainMenus = config.MainMenus(menuFactory);
                 InstallMainMenus(mainMenus);
-				File.AppendAllText(@"D:\Temp\Log.log", "Install Main Menus\t" + DateTime.Now.Ticks + Environment.NewLine);
-			}
-			InstallObjectMenus();
-			File.AppendAllText(@"D:\Temp\Log.log", "Install Object Menus\t" + DateTime.Now.Ticks + Environment.NewLine);
-		}
+            }
+            InstallObjectMenus();
+        }
 
-		#endregion
+        #endregion
 
-		private Type EnsureGenericTypeIsComplete(Type type) {
+        private Type EnsureGenericTypeIsComplete(Type type) {
             if (type.IsGenericType && !type.IsConstructedGenericType) {
                 var genericType = type.GetGenericTypeDefinition();
                 var genericParms = genericType.GetGenericArguments().Select(a => typeof (Object)).ToArray();
@@ -197,15 +150,28 @@ namespace NakedObjects.Reflect.Component {
         }
 
         private void InstallSpecifications(Type[] types) {
-			//types.ForEach(type => LoadSpecification(type));
-			Parallel.ForEach(types,  (type) => LoadSpecification(type));
+            if (this.config.ParallelReflectionMode)
+            {
+                Parallel.ForEach(types, type => LoadSpecification(type));
+            }
+            else
+            {
+                types.ForEach(type => LoadSpecification(type));
+            }            
         }
 
         private void PopulateAssociatedActions(Type[] services) {
             IEnumerable<IObjectSpecBuilder> nonServiceSpecs = AllObjectSpecImmutables.OfType<IObjectSpecBuilder>();
-			//nonServiceSpecs.ForEach(s => PopulateAssociatedActions(s, services));
-			Parallel.ForEach(nonServiceSpecs, (s) => PopulateAssociatedActions(s, services));
-		}
+
+            if (this.config.ParallelReflectionMode)
+            {
+                Parallel.ForEach(nonServiceSpecs, s => PopulateAssociatedActions(s, services));
+            }
+            else
+            {
+                nonServiceSpecs.ForEach(s => PopulateAssociatedActions(s, services));
+            }
+        }
 
         private void PopulateAssociatedActions(IObjectSpecBuilder spec, Type[] services) {
             if (string.IsNullOrWhiteSpace(spec.FullName)) {
@@ -232,8 +198,7 @@ namespace NakedObjects.Reflect.Component {
 
         private void InstallObjectMenus() {
             IEnumerable<IMenuFacet> menuFacets = metamodel.AllSpecifications.Where(s => s.ContainsFacet<IMenuFacet>()).Select(s => s.GetFacet<IMenuFacet>());
-            //menuFacets.ForEach(mf => mf.CreateMenu(metamodel));
-			Parallel.ForEach(menuFacets, (mf) => mf.CreateMenu(metamodel));
+            menuFacets.ForEach(mf => mf.CreateMenu(metamodel));
         }
 
         private void PopulateContributedActions(IObjectSpecBuilder spec, Type[] services) {
@@ -278,13 +243,12 @@ namespace NakedObjects.Reflect.Component {
 
         private ITypeSpecBuilder LoadSpecificationAndCache(Type type) {
             Type actualType = classStrategy.GetType(type);
-            //logTime("Loading Spec: " + type.Namespace + "," + type.Name, false);
+
             if (actualType == null) {
                 throw new ReflectionException("Attempting to introspect a non-introspectable type " + type.FullName + " ");
             }
-			_indent = _indent + ">";
-			_typeTree.Add(_indent + actualType.Name);
-			ITypeSpecBuilder specification = CreateSpecification(actualType);
+
+            ITypeSpecBuilder specification = CreateSpecification(actualType);
 
             if (specification == null) {
                 throw new ReflectionException("unrecognised type " + actualType.FullName);
@@ -293,9 +257,9 @@ namespace NakedObjects.Reflect.Component {
             // We need the specification available in cache even though not yet fully introspected 
             metamodel.Add(actualType, specification);
 
-            specification.Introspect(facetDecoratorSet, new Introspector(this));
-			_indent = _indent.Substring(0, _indent.Length - 1);
-			return specification;
+            specification.Introspect(facetDecoratorSet, new Introspector(this, this.config.ParallelReflectionMode));
+
+            return specification;
         }
 
         private ITypeSpecBuilder CreateSpecification(Type type) {
