@@ -143,9 +143,9 @@
     <MSBuild Projects="@(FWTFiles)" Properties="Configuration=%(Configuration.Identity)"/>
 
    
-    <Exec Command='nunit-console "$(CorePath)\NakedObjects.Core.Test\bin\%(Configuration.Identity)\NakedObjects.Core.Test.dll"' />
-    <Exec Command='nunit-console "$(CorePath)\NakedObjects.Persistor.Entity.Test\bin\%(Configuration.Identity)\NakedObjects.Persistor.Entity.Test.dll"'/>
-    <Exec Command='nunit-console "$(CorePath)\NakedObjects.Snapshot.Xml.Test\bin\%(Configuration.Identity)\NakedObjects.Snapshot.Xml.Test.dll"'/>
+    <Exec Command='nunit3-console "$(CorePath)\NakedObjects.Core.Test\bin\%(Configuration.Identity)\NakedObjects.Core.Test.dll"' />
+    <Exec Command='nunit3-console "$(CorePath)\NakedObjects.Persistor.Entity.Test\bin\%(Configuration.Identity)\NakedObjects.Persistor.Entity.Test.dll"'/>
+    <Exec Command='nunit3-console "$(CorePath)\NakedObjects.Snapshot.Xml.Test\bin\%(Configuration.Identity)\NakedObjects.Snapshot.Xml.Test.dll"'/>
     
     <Exec Command='vstest.console /logger:Appveyor "$(CorePath)\NakedObjects.Metamodel.Test\bin\%(Configuration.Identity)\NakedObjects.Metamodel.Test.dll"' />
     <Exec Command='vstest.console /logger:Appveyor "$(CorePath)\NakedObjects.Reflector.Test\bin\%(Configuration.Identity)\NakedObjects.Reflector.Test.dll"' />
