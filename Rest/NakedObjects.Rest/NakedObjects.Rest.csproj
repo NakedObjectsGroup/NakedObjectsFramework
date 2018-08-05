@@ -97,8 +97,7 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="NakedObjects.Facade, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NakedObjects.Facade.8.1.0\lib\net451\NakedObjects.Facade.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\NakedObjects.Facade.8.1.1-beta01\lib\net451\NakedObjects.Facade.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
