@@ -44,6 +44,11 @@
       <CFGFiles Include="$(RoPath)\NakedObjects.Rest.Test.Nof4\App.config"/>
     </ItemGroup>
 
+    <FileUpdate Files="@(CFGFiles)"
+                RegEx= '\.\\SQLEXPRESS'
+                ReplacementText ='(local)\SQL2012SP1'
+                WarnOnNoUpdate='True'/>
+
     <XmlRead
       XPath="/*[1]/*[1]/*[2]/text()"
       XmlFileName="$(ROPath)\$(ROMVC).package\$(ROMVC).nuspec">
