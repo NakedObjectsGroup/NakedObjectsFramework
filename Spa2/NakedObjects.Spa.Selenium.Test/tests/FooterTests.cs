@@ -123,12 +123,12 @@ namespace NakedObjects.Selenium {
             ClickPropertiesButton();
             WaitForView(Pane.Single, PaneType.ApplicationProperties, "Application Properties");
             wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 5);
-            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[3].Text.StartsWith("Server API version: 10.0.0"));
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[3].Text.StartsWith("Server API version: 8.1.2"));
             var properties = br.FindElements(By.CssSelector(".property"));
             Assert.IsTrue(properties[0].Text.StartsWith("Application Name:"), properties[0].Text);
             Assert.IsTrue(properties[1].Text.StartsWith("User Name:"), properties[1].Text);
             Assert.IsTrue(properties[2].Text.StartsWith("Server Url: http"), properties[2].Text); // maybe https
-            Assert.IsTrue(properties[3].Text.StartsWith("Server API version: 10.0.0"), properties[3].Text);
+            Assert.IsTrue(properties[3].Text.StartsWith("Server API version: 8.1.2"), properties[3].Text);
             Assert.IsTrue(properties[4].Text.StartsWith("Client version:"), properties[4].Text);
         }
 
