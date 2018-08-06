@@ -58,6 +58,7 @@
 
     <ItemGroup>
       <CFGFiles Include="$(CorePath)\NakedObjects.*.Test\App.config"/>
+      <CFGFiles Include="$(CorePath)\NakedObjects.*.Test.Nof4\App.config"/>
     </ItemGroup>
 
     <FileUpdate Files="@(CFGFiles)"
