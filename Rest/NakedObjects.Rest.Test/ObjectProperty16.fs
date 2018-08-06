@@ -2610,7 +2610,7 @@ let PutWithReferencePropertyInternalError(api : RestfulObjectsControllerBase) =
     
     // match arrays 3 and 6 deep
     try
-        compareObject expected1 parsedResult
+        compareObject expected2 parsedResult
     with e -> 
         try 
             compareObject expected2 parsedResult
@@ -2952,7 +2952,7 @@ let DeleteReferencePropertyInternalError(api : RestfulObjectsControllerBase) =
 
     // match arrays 3 , 4 and 6 deep
     try
-        compareObject expected1 parsedResult
+        compareObject expected2 parsedResult
     with e -> 
         try 
             compareObject expected2 parsedResult

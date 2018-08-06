@@ -4728,7 +4728,7 @@ let PutWithReferenceInternalError(api : RestfulObjectsControllerBase) =
     Assert.AreEqual("199 RestfulObjects \"An error exception\"", result.Headers.Warning.ToString())
     
     try
-        compareObject expected1 parsedResult
+        compareObject expected2 parsedResult
     with e -> 
         try 
             compareObject expected2 parsedResult
