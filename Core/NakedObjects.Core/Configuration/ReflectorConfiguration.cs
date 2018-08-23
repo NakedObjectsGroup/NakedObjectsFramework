@@ -85,15 +85,25 @@ namespace NakedObjects.Core.Configuration {
         public ReflectorConfiguration(Type[] typesToIntrospect,
                                       Type[] services,
                                       string[] supportedNamespaces,
-                                      Func<IMenuFactory, IMenu[]> mainMenus = null,
-                                      bool parallelReflectionMode = false) {
+                                      Func<IMenuFactory, IMenu[]> mainMenus = null) 
+            : this(typesToIntrospect, services, supportedNamespaces, ReflectionMode.Serial, SortingPolicy.Sort, mainMenus)  {            
+        }
+
+        public ReflectorConfiguration(Type[] typesToIntrospect,
+                                      Type[] services,
+                                      string[] supportedNamespaces,
+                                      ReflectionMode reflectionMode,
+                                      SortingPolicy sortingPolicy,
+                                      Func<IMenuFactory, IMenu[]> mainMenus = null)
+        {
             SupportedNamespaces = supportedNamespaces;
             SupportedSystemTypes = defaultSystemTypes.ToList();
             TypesToIntrospect = typesToIntrospect;
             Services = services;
             IgnoreCase = false;
-            MainMenus = mainMenus;
-            ParallelReflectionMode = parallelReflectionMode;
+            ReflectionMode = reflectionMode;
+            SortingPolicy = sortingPolicy;
+            MainMenus = mainMenus;            
             ValidateConfig();
         }
 
@@ -108,7 +118,8 @@ namespace NakedObjects.Core.Configuration {
         public Func<IMenuFactory, IMenu[]> MainMenus { get; private set; }
         public string[] SupportedNamespaces { get; private set; }
         public List<Type> SupportedSystemTypes { get; private set; }
-        public bool ParallelReflectionMode { get; private set; }
+        public ReflectionMode ReflectionMode { get; private set; }
+        public SortingPolicy SortingPolicy { get; private set; }
 
         #endregion
 

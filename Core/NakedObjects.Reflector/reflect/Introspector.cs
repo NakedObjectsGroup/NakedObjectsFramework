@@ -21,6 +21,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Util;
+using NakedObjects.Architecture.Configuration;
 
 namespace NakedObjects.Reflect {
 	public sealed class Introspector : IIntrospector {
@@ -30,15 +31,19 @@ namespace NakedObjects.Reflect {
 		private List<IAssociationSpecImmutable> orderedFields;
 		private List<IActionSpecImmutable> orderedObjectActions;
 		private PropertyInfo[] properties;
-		private readonly bool skipMethodSorting = false;
+		private readonly SortingPolicy sortingPolicy;
 
-		public Introspector(IReflector reflector, bool skipMethodSorting = false) {
-			Log.DebugFormat("Creating DotNetIntrospector");
-			this.reflector = reflector;
-			this.skipMethodSorting = skipMethodSorting;
+		public Introspector(IReflector reflector) : this(reflector, SortingPolicy.Sort) {
 		}
 
-		private IClassStrategy ClassStrategy {
+        public Introspector(IReflector reflector, SortingPolicy sortingPolicy)
+        {
+            Log.DebugFormat("Creating DotNetIntrospector");
+            this.reflector = reflector;
+            this.sortingPolicy = sortingPolicy;
+        }
+
+        private IClassStrategy ClassStrategy {
 			get { return reflector.ClassStrategy; }
 		}
 
@@ -150,7 +155,7 @@ namespace NakedObjects.Reflect {
 				allMethods.Remove(pInfo.GetSetMethod());
 			}
 
-            if (skipMethodSorting)
+            if (sortingPolicy == SortingPolicy.Sort)
             {
                 allMethods.Sort(new SortActionsFirst(FacetFactorySet));
             }

@@ -47,10 +47,17 @@ namespace NakedObjects.Architecture.Configuration {
 
         /// <summary>
         /// Informs the Reflection Framework on how to Load and Introspect Dependencies
-        /// Default will be false which will Reflect the dependencies the standard way
-        /// If Set to True, the dependencies will be loaded asynchronously, and also
-        /// method sorting will be skipped
+        /// There are two modes available
+        /// Serial: This is the default mode and will load dependencies in a synchronus manner
+        /// Parallel: The dependencies will be loaded asynchronously
         /// </summary>
-        bool ParallelReflectionMode { get; }
+        ReflectionMode ReflectionMode { get; }
+
+        /// <summary>
+        /// Informs the Introspector to Sort or Skip the method sorting
+        /// Skipping Method Sorting is particulary useful for running
+        /// integ tests
+        /// </summary>
+        SortingPolicy SortingPolicy { get; }
     }
 }

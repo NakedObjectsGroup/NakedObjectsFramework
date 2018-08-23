@@ -150,7 +150,7 @@ namespace NakedObjects.Reflect.Component {
         }
 
         private void InstallSpecifications(Type[] types) {
-            if (this.config.ParallelReflectionMode)
+            if (this.config.ReflectionMode == ReflectionMode.Parallel)
             {
                 Parallel.ForEach(types, type => LoadSpecification(type));
             }
@@ -163,7 +163,7 @@ namespace NakedObjects.Reflect.Component {
         private void PopulateAssociatedActions(Type[] services) {
             IEnumerable<IObjectSpecBuilder> nonServiceSpecs = AllObjectSpecImmutables.OfType<IObjectSpecBuilder>();
 
-            if (this.config.ParallelReflectionMode)
+            if (this.config.ReflectionMode == ReflectionMode.Parallel)
             {
                 Parallel.ForEach(nonServiceSpecs, s => PopulateAssociatedActions(s, services));
             }
@@ -257,7 +257,7 @@ namespace NakedObjects.Reflect.Component {
             // We need the specification available in cache even though not yet fully introspected 
             metamodel.Add(actualType, specification);
 
-            specification.Introspect(facetDecoratorSet, new Introspector(this, this.config.ParallelReflectionMode));
+            specification.Introspect(facetDecoratorSet, new Introspector(this, this.config.SortingPolicy));
 
             return specification;
         }
