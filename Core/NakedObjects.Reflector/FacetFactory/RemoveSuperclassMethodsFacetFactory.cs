@@ -23,14 +23,19 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     Implementation - .Net fails to find methods properly for root class, so we used the saved set.
     /// </para>
     public sealed class RemoveSuperclassMethodsFacetFactory : FacetFactoryAbstract {
+        private object theLock = new object();
         private readonly IDictionary<Type, MethodInfo[]> typeToMethods = new Dictionary<Type, MethodInfo[]>();
 
         public RemoveSuperclassMethodsFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Objects) {}
 
         private void InitForType(Type type) {
-            if (!typeToMethods.ContainsKey(type)) {
-                typeToMethods.Add(type, type.GetMethods());
+            lock (theLock)
+            {
+                if (!typeToMethods.ContainsKey(type))
+                {
+                    typeToMethods.Add(type, type.GetMethods());
+                }
             }
         }
 

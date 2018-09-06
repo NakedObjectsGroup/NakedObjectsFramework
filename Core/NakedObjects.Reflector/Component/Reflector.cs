@@ -21,6 +21,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Menu;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Util;
+using System.Threading.Tasks;
 
 namespace NakedObjects.Reflect.Component {
     // This is designed to run once, single threaded at startup. It is not intended to be thread safe.
@@ -149,12 +150,27 @@ namespace NakedObjects.Reflect.Component {
         }
 
         private void InstallSpecifications(Type[] types) {
-            types.ForEach(type => LoadSpecification(type));
+            if (this.config.ReflectionMode == ReflectionMode.Parallel)
+            {
+                Parallel.ForEach(types, type => LoadSpecification(type));
+            }
+            else
+            {
+                types.ForEach(type => LoadSpecification(type));
+            }            
         }
 
         private void PopulateAssociatedActions(Type[] services) {
             IEnumerable<IObjectSpecBuilder> nonServiceSpecs = AllObjectSpecImmutables.OfType<IObjectSpecBuilder>();
-            nonServiceSpecs.ForEach(s => PopulateAssociatedActions(s, services));
+
+            if (this.config.ReflectionMode == ReflectionMode.Parallel)
+            {
+                Parallel.ForEach(nonServiceSpecs, s => PopulateAssociatedActions(s, services));
+            }
+            else
+            {
+                nonServiceSpecs.ForEach(s => PopulateAssociatedActions(s, services));
+            }
         }
 
         private void PopulateAssociatedActions(IObjectSpecBuilder spec, Type[] services) {
@@ -241,7 +257,7 @@ namespace NakedObjects.Reflect.Component {
             // We need the specification available in cache even though not yet fully introspected 
             metamodel.Add(actualType, specification);
 
-            specification.Introspect(facetDecoratorSet, new Introspector(this));
+            specification.Introspect(facetDecoratorSet, new Introspector(this, this.config.SortingPolicy));
 
             return specification;
         }

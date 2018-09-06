@@ -144,6 +144,8 @@
     <Compile Include="Component\IBatchStartPoint.cs" />
     <Compile Include="Component\IClassStrategy.cs" />
     <Compile Include="Component\IIdentityAdapterMap.cs" />
+    <Compile Include="Configuration\ReflectionMode.cs" />
+    <Compile Include="Configuration\SortingPolicy.cs" />
     <Compile Include="FacetFactory\IAnnotationBasedFacetFactory.cs" />
     <Compile Include="FacetFactory\IPropertyFilteringFacetFactory.cs" />
     <Compile Include="FacetFactory\IMethodIdentifyingFacetFactory.cs" />

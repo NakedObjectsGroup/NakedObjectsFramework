@@ -22,6 +22,7 @@ namespace NakedObjects.Meta.Component {
         private readonly SerializedData tempData;
         private ImmutableList<IMenuImmutable> mainMenus = ImmutableList<IMenuImmutable>.Empty;
         private ImmutableDictionary<string, ITypeSpecImmutable> specs = ImmutableDictionary<string, ITypeSpecImmutable>.Empty;
+        private object theLock = new object();
         // constructor to use when reflecting
         public ImmutableInMemorySpecCache() {}
         // constructor to use when loading metadata from file
@@ -69,11 +70,20 @@ namespace NakedObjects.Meta.Component {
         }
 
         public ITypeSpecImmutable GetSpecification(string key) {
-            return specs.ContainsKey(key) ? specs[key] : null;
+            lock(theLock)
+            {
+                return specs.ContainsKey(key) ? specs[key] : null;
+            }            
         }
 
         public void Cache(string key, ITypeSpecImmutable spec) {
-            specs = specs.Add(key, spec);
+            lock (theLock)
+            {
+                if (!specs.ContainsKey(key))
+                {
+                    specs = specs.Add(key, spec);
+                }                
+            }
         }
 
         public void Clear() {

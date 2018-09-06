@@ -16,6 +16,7 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Menu;
 using NakedObjects.Value;
 using Image = NakedObjects.Value.Image;
+using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Core.Configuration {
     [Serializable]
@@ -84,13 +85,25 @@ namespace NakedObjects.Core.Configuration {
         public ReflectorConfiguration(Type[] typesToIntrospect,
                                       Type[] services,
                                       string[] supportedNamespaces,
-                                      Func<IMenuFactory, IMenu[]> mainMenus = null) {
+                                      Func<IMenuFactory, IMenu[]> mainMenus = null) 
+            : this(typesToIntrospect, services, supportedNamespaces, ReflectionMode.Serial, SortingPolicy.Sort, mainMenus)  {            
+        }
+
+        public ReflectorConfiguration(Type[] typesToIntrospect,
+                                      Type[] services,
+                                      string[] supportedNamespaces,
+                                      ReflectionMode reflectionMode,
+                                      SortingPolicy sortingPolicy,
+                                      Func<IMenuFactory, IMenu[]> mainMenus = null)
+        {
             SupportedNamespaces = supportedNamespaces;
             SupportedSystemTypes = defaultSystemTypes.ToList();
             TypesToIntrospect = typesToIntrospect;
             Services = services;
             IgnoreCase = false;
-            MainMenus = mainMenus;
+            ReflectionMode = reflectionMode;
+            SortingPolicy = sortingPolicy;
+            MainMenus = mainMenus;            
             ValidateConfig();
         }
 
@@ -105,6 +118,8 @@ namespace NakedObjects.Core.Configuration {
         public Func<IMenuFactory, IMenu[]> MainMenus { get; private set; }
         public string[] SupportedNamespaces { get; private set; }
         public List<Type> SupportedSystemTypes { get; private set; }
+        public ReflectionMode ReflectionMode { get; private set; }
+        public SortingPolicy SortingPolicy { get; private set; }
 
         #endregion
 
@@ -123,7 +138,7 @@ namespace NakedObjects.Core.Configuration {
                 configError = true;
                 msg += "No Namespaces specified;\r\n";
             }
-
+                        
             if (configError) {
                 throw new InitialisationException(msg);
             }
