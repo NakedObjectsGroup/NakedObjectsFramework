@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Architecture", "Core\NakedObjects.Architecture\NakedObjects.Architecture.csproj", "{BF6D9655-B873-4980-ACE7-A122EA45F045}"
 EndProject
@@ -51,6 +51,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly", "Core\NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly\NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly.csproj", "{7231F237-B4D1-426E-B308-0DAB49B4D3E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Persistor.Entity.Test.SimpleDatabase", "Core\NakedObjects.Persistor.Entity.Test.SimpleDatabase\NakedObjects.Persistor.Entity.Test.SimpleDatabase.csproj", "{4E38BDD7-D725-4B31-8809-B03E2F121004}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.ParallelReflector", "Core\NakedObjects.ParallelReflector\NakedObjects.ParallelReflector.csproj", "{E2A9CCD2-BDCA-4957-A0AC-51E736F4C33B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -190,9 +192,20 @@ Global
 		{4E38BDD7-D725-4B31-8809-B03E2F121004}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4E38BDD7-D725-4B31-8809-B03E2F121004}.Release|x86.ActiveCfg = Release|x86
 		{4E38BDD7-D725-4B31-8809-B03E2F121004}.Release|x86.Build.0 = Release|x86
+		{E2A9CCD2-BDCA-4957-A0AC-51E736F4C33B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2A9CCD2-BDCA-4957-A0AC-51E736F4C33B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2A9CCD2-BDCA-4957-A0AC-51E736F4C33B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E2A9CCD2-BDCA-4957-A0AC-51E736F4C33B}.Debug|x86.Build.0 = Debug|Any CPU
+		{E2A9CCD2-BDCA-4957-A0AC-51E736F4C33B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2A9CCD2-BDCA-4957-A0AC-51E736F4C33B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2A9CCD2-BDCA-4957-A0AC-51E736F4C33B}.Release|x86.ActiveCfg = Release|Any CPU
+		{E2A9CCD2-BDCA-4957-A0AC-51E736F4C33B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {35031BDE-30A5-4291-9B95-7D4BC58757DA}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = development.vsmdi
