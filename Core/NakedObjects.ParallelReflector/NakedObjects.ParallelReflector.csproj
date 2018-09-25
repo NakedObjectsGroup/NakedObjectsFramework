@@ -9,7 +9,7 @@
     </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>NakedObjects.Reflector</AssemblyName>
+    <AssemblyName>NakedObjects.ParallelReflector</AssemblyName>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
@@ -17,7 +17,7 @@
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
-    <RootNamespace>NakedObjects.Reflect</RootNamespace>
+    <RootNamespace>NakedObjects.ParallelReflect</RootNamespace>
     <NoStandardLibraries>false</NoStandardLibraries>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>
