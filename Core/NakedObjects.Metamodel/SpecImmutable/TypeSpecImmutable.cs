@@ -52,7 +52,15 @@ namespace NakedObjects.Meta.SpecImmutable {
         }
 
         public ImmutableDictionary<string, ITypeSpecBuilder> Introspect(IFacetDecoratorSet decorator, IIntrospector introspector, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            throw new NotImplementedException();
+            metamodel = introspector.IntrospectType(Type, this, metamodel);
+            FullName = introspector.FullName;
+            ShortName = introspector.ShortName;
+            Superclass = introspector.Superclass;
+            Interfaces = introspector.Interfaces.Cast<ITypeSpecImmutable>().ToImmutableList();
+            Fields = introspector.Fields;
+            ObjectActions = introspector.ObjectActions;
+            DecorateAllFacets(decorator);
+            return metamodel;
         }
 
         public void AddSubclass(ITypeSpecImmutable subclass) {
