@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
@@ -106,6 +107,10 @@ namespace NakedObjects.Reflect.Component {
             //Menus installed once rest of metamodel has been built:
             InstallMainMenus();
             InstallObjectMenus();
+        }
+
+        public Tuple<ITypeSpecBuilder, ImmutableDictionary<string, ITypeSpecBuilder>> LoadSpecification(Type type, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            throw new NotImplementedException();
         }
 
         #endregion

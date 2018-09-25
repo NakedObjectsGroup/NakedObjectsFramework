@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Immutable;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
@@ -16,11 +17,15 @@ namespace NakedObjects.ParallelReflect.TypeFacetFactory {
     public sealed class GuidValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public GuidValueTypeFacetFactory(int numericOrder) : base(numericOrder) {}
 
-        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IMetamodelBuilder metamodel) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (GuidValueSemanticsProvider.IsAdaptedType(type)) {
-                var spec = reflector.LoadSpecification<IObjectSpecImmutable>(GuidValueSemanticsProvider.AdaptedType, metamodel);
+                var result = reflector.LoadSpecification(GuidValueSemanticsProvider.AdaptedType, metamodel);
+
+                metamodel = result.Item2;
+                var spec = result.Item1 as IObjectSpecImmutable;
                 AddValueFacets(new GuidValueSemanticsProvider(spec, specification), specification);
             }
+            return metamodel;
         }
     }
 }

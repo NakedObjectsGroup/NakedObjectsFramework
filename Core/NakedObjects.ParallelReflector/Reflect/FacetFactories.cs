@@ -6,8 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Reflect.FacetFactory;
-using NakedObjects.Reflect.TypeFacetFactory;
+using NakedObjects.ParallelReflect.FacetFactory;
+using NakedObjects.ParallelReflect.TypeFacetFactory;
 
 namespace NakedObjects.ParallelReflect {
     /// <summary>

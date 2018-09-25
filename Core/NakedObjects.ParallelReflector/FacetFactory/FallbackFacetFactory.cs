@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,22 +24,13 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     /// </summary>
     public sealed class FallbackFacetFactory : FacetFactoryAbstract {
         public FallbackFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Everything) {}
+            : base(numericOrder, FeatureType.Everything) { }
 
         public bool Recognizes(MethodInfo method) {
             return false;
         }
 
-        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IMetamodelBuilder metamodel) {
-            FacetUtils.AddFacets(
-                new IFacet[] {
-                    new DescribedAsFacetNone(specification),
-                    new ImmutableFacetNever(specification),
-                    new TitleFacetNone(specification)
-                });
-        }
-
-        public override ImmutableDictionary<String, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<String, ITypeSpecBuilder> metamodel) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             FacetUtils.AddFacets(
                 new IFacet[] {
                     new DescribedAsFacetNone(specification),
@@ -81,43 +72,17 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             FacetUtils.AddFacets(facets);
         }
 
-        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IMetamodelBuilder metamodel) {
-            Process(specification);
-        }
-
-        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IMetamodelBuilder metamodel) {
-            Process(specification);
-        }
-
-        public override ImmutableDictionary<String, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<String, ITypeSpecBuilder> metamodel) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Process(specification);
             return metamodel;
         }
 
-        public override ImmutableDictionary<String, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<String, ITypeSpecBuilder> metamodel) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Process(specification);
             return metamodel;
         }
 
-        public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IMetamodelBuilder metamodel) {
-            var facets = new List<IFacet>();
-
-            var param = holder as IActionParameterSpecImmutable;
-            if (param != null) {
-                string name = method.GetParameters()[paramNum].Name ?? method.GetParameters()[paramNum].ParameterType.FullName;
-                INamedFacet namedFacet = new NamedFacetInferred(name, holder);
-                facets.Add(namedFacet);
-                facets.Add(new DescribedAsFacetNone(holder));
-                facets.Add(new MultiLineFacetNone(holder));
-                facets.Add(new MaxLengthFacetZero(holder));
-                facets.Add(new TypicalLengthFacetZero(holder));
-                DefaultTypicalLength(facets, param.Specification, param);
-            }
-
-            FacetUtils.AddFacets(facets);
-        }
-
-        public override ImmutableDictionary<String, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, ImmutableDictionary<String, ITypeSpecBuilder> metamodel) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var facets = new List<IFacet>();
 
             var param = holder as IActionParameterSpecImmutable;
@@ -144,6 +109,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             else {
                 typicalLengthFacet = new TypicalLengthFacetInferred(typicalLengthFacet.Value, holder);
             }
+
             facets.Add(typicalLengthFacet);
         }
     }

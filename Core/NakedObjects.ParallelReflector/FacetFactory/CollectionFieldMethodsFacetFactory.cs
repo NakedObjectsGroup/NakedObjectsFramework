@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,32 +27,17 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         };
 
         public CollectionFieldMethodsFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Collections) {}
+            : base(numericOrder, FeatureType.Collections) { }
 
         public override string[] Prefixes {
             get { return FixedPrefixes; }
         }
 
-        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder collection, IMetamodelBuilder metamodel) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder collection, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             string capitalizedName = property.Name;
             Type type = property.DeclaringType;
 
             var facets = new List<IFacet> {new PropertyAccessorFacet(property, collection)};
-
-            AddSetFacet(facets, property, collection);
-
-            AddHideForSessionFacetNone(facets, collection);
-            AddDisableFacetAlways(facets, collection);
-            FindDefaultHideMethod(reflector, facets, methodRemover, property.DeclaringType, MethodType.Object, "PropertyDefault", collection);
-            FindAndRemoveHideMethod(reflector, facets, methodRemover, type, MethodType.Object, capitalizedName, collection);
-            FacetUtils.AddFacets(facets);
-        }
-
-        public override ImmutableDictionary<String, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder collection, ImmutableDictionary<String, ITypeSpecBuilder> metamodel) {
-            string capitalizedName = property.Name;
-            Type type = property.DeclaringType;
-
-            var facets = new List<IFacet> { new PropertyAccessorFacet(property, collection) };
 
             AddSetFacet(facets, property, collection);
 
@@ -88,7 +73,5 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             candidates = candidates.Where(property => collectionTypes.Contains(property.PropertyType)).ToList();
             return PropertiesToBeIntrospected(candidates, classStrategy);
         }
-
-
     }
 }

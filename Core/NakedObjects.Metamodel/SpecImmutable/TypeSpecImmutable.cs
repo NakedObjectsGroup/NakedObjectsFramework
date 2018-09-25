@@ -51,6 +51,10 @@ namespace NakedObjects.Meta.SpecImmutable {
             DecorateAllFacets(decorator);
         }
 
+        public ImmutableDictionary<string, ITypeSpecBuilder> Introspect(IFacetDecoratorSet decorator, IIntrospector introspector, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            throw new NotImplementedException();
+        }
+
         public void AddSubclass(ITypeSpecImmutable subclass) {
             subclasses = subclasses.Add(subclass);
         }

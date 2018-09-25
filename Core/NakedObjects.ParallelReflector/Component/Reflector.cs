@@ -26,8 +26,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.ParallelReflect.Component {
     // This is designed to run once, single threaded at startup. It is not intended to be thread safe.
-    public sealed class Reflector : IReflector {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(Reflector));
+    public sealed class ParallelReflector : IReflector {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(ParallelReflector));
         private readonly IClassStrategy classStrategy;
         private readonly IReflectorConfiguration config;
         private readonly FacetDecoratorSet facetDecoratorSet;
@@ -35,7 +35,7 @@ namespace NakedObjects.ParallelReflect.Component {
         private readonly IMetamodelBuilder initialMetamodel;
         private readonly ISet<Type> serviceTypes = new HashSet<Type>();
 
-        public Reflector(IClassStrategy classStrategy,
+        public ParallelReflector(IClassStrategy classStrategy,
                          IMetamodelBuilder metamodel,
                          IReflectorConfiguration config,
                          IMenuFactory menuFactory,
@@ -67,22 +67,20 @@ namespace NakedObjects.ParallelReflect.Component {
 
         public IFacetFactorySet FacetFactorySet { get; }
 
-        //public IMetamodelBuilder Metamodel => metamodel;
+        public IMetamodel Metamodel => null;
+        public ITypeSpecBuilder LoadSpecification(Type type) {
+            throw new NotImplementedException();
+        }
+
+        public T LoadSpecification<T>(Type type) where T : ITypeSpecImmutable {
+            throw new NotImplementedException();
+        }
+
+        public void LoadSpecificationForReturnTypes(IList<PropertyInfo> properties, Type classToIgnore) {
+            throw new NotImplementedException();
+        }
 
         public ITypeSpecBuilder[] AllObjectSpecImmutables => initialMetamodel.AllSpecifications.Cast<ITypeSpecBuilder>().ToArray();
-
-        public void LoadSpecificationForReturnTypes(IList<PropertyInfo> properties, Type classToIgnore, IMetamodelBuilder metamodel) {
-            foreach (PropertyInfo property in properties) {
-                if (property.GetGetMethod() != null && property.PropertyType != classToIgnore) {
-                    LoadSpecification(property.PropertyType, metamodel);
-                }
-            }
-        }
-
-        public ITypeSpecBuilder LoadSpecification(Type type, IMetamodelBuilder metamodel) {
-            Assert.AssertNotNull(type);
-            return (ITypeSpecBuilder)metamodel.GetSpecification(type, true) ?? LoadSpecificationAndCache(type, metamodel);
-        }
 
         public Tuple<ITypeSpecBuilder, ImmutableDictionary<String, ITypeSpecBuilder>> LoadSpecification(Type type, ImmutableDictionary<String, ITypeSpecBuilder> metamodel) {
             Assert.AssertNotNull(type);
@@ -94,8 +92,6 @@ namespace NakedObjects.ParallelReflect.Component {
             }
 
             return new Tuple<ITypeSpecBuilder, ImmutableDictionary<String, ITypeSpecBuilder>>(metamodel[typeKey], metamodel);
-
-            //return (ITypeSpecBuilder)metamodel.GetSpecification(type, true) ?? LoadSpecificationAndCache(type, metamodel);
         }
 
         public Tuple<ITypeSpecBuilder, ImmutableDictionary<String, ITypeSpecBuilder>> IntrospectSpecification(Type actualType, ImmutableDictionary<String, ITypeSpecBuilder> metamodel) {
@@ -108,38 +104,9 @@ namespace NakedObjects.ParallelReflect.Component {
             }
 
             return new Tuple<ITypeSpecBuilder, ImmutableDictionary<String, ITypeSpecBuilder>>(metamodel[typeKey], metamodel);
-
-            //return (ITypeSpecBuilder)metamodel.GetSpecification(type, true) ?? LoadSpecificationAndCache(type, metamodel);
-        }
-
-        public T LoadSpecification<T>(Type type, IMetamodelBuilder metamodel) where T : ITypeSpecImmutable {
-            var spec = LoadSpecification(type, metamodel);
-            try {
-                return (T)spec;
-            } catch (Exception) {
-                throw new ReflectionException(Log.LogAndReturn($"Specification for type {type.Name} is {spec.GetType().Name}: cannot be cast to {typeof(T).Name}"));
-            }
         }
 
         public void Reflect() {
-            Type[] s1 = config.Services;
-            Type[] services = s1.ToArray();
-            Type[] nonServices = GetTypesToIntrospect();
-
-            services.ForEach(t => serviceTypes.Add(t));
-
-            var allTypes = services.Union(nonServices).ToArray();
-
-            InstallSpecifications(allTypes, initialMetamodel);
-
-            PopulateAssociatedActions(s1.ToArray(), initialMetamodel);
-
-            //Menus installed once rest of metamodel has been built:
-            InstallMainMenus(initialMetamodel);
-            InstallObjectMenus(initialMetamodel);
-        }
-
-        public void ReflectParallel() {
             Type[] s1 = config.Services;
             Type[] services = s1.ToArray();
             Type[] nonServices = GetTypesToIntrospect();
@@ -211,12 +178,6 @@ namespace NakedObjects.ParallelReflect.Component {
             //var sp = types.AsParallel().Select(type => GetSpecParallel(type));
             mm.ForEach(i => metamodel.Add(i.Value.Type, i.Value));
             return metamodel;
-        }
-
-
-        private void InstallSpecifications(Type[] types, IMetamodelBuilder metamodel) {
-
-            types.ForEach(type => LoadSpecification(type, metamodel));
         }
 
         private void PopulateAssociatedActions(Type[] services, IMetamodelBuilder metamodel) {
@@ -412,33 +373,6 @@ namespace NakedObjects.ParallelReflect.Component {
             metamodel = specification.Introspect(facetDecoratorSet, new Introspector(this), metamodel);
 
             return new Tuple<ITypeSpecBuilder, ImmutableDictionary<String, ITypeSpecBuilder>>(specification, metamodel);
-        }
-
-        private ITypeSpecBuilder LoadSpecificationAndCache(Type type, IMetamodelBuilder metamodel) {
-            Type actualType = classStrategy.GetType(type);
-
-            if (actualType == null) {
-                throw new ReflectionException(Log.LogAndReturn($"Attempting to introspect a non-introspectable type {type.FullName} "));
-            }
-
-            ITypeSpecBuilder specification = CreateSpecification(actualType, metamodel);
-
-            if (specification == null) {
-                throw new ReflectionException(Log.LogAndReturn($"unrecognised type {actualType.FullName}"));
-            }
-
-            // We need the specification available in cache even though not yet fully introspected
-            metamodel.Add(actualType, specification);
-
-            specification.Introspect(facetDecoratorSet, new Introspector(this), metamodel);
-
-            return specification;
-        }
-
-        private ITypeSpecBuilder CreateSpecification(Type type, IMetamodelBuilder metamodel) {
-            TypeUtils.GetType(type.FullName); // This should ensure type is cached
-
-            return IsService(type) ? (ITypeSpecBuilder)ImmutableSpecFactory.CreateServiceSpecImmutable(type, metamodel) : ImmutableSpecFactory.CreateObjectSpecImmutable(type, metamodel);
         }
 
         private ITypeSpecBuilder CreateSpecification(Type type, ImmutableDictionary<String, ITypeSpecBuilder> metamodel) {

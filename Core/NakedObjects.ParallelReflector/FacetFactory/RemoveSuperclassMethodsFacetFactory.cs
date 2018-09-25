@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,20 +25,18 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     ///     Implementation - .Net fails to find methods properly for root class, so we used the saved set.
     /// </para>
     public sealed class RemoveSuperclassMethodsFacetFactory : FacetFactoryAbstract {
-        //private readonly IDictionary<Type, MethodInfo[]> typeToMethods = new Dictionary<Type, MethodInfo[]>();
 
         public RemoveSuperclassMethodsFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Objects) { }
 
-        private void InitForType(Type type, IDictionary<Type, MethodInfo[]>  typeToMethods) {
-
+        private void InitForType(Type type, IDictionary<Type, MethodInfo[]> typeToMethods) {
             if (!typeToMethods.ContainsKey(type)) {
                 typeToMethods.Add(type, type.GetMethods());
             }
         }
 
         public void ProcessSystemType(Type type, IMethodRemover methodRemover, ISpecification holder) {
-            IDictionary<Type, MethodInfo[]> typeToMethods = new Dictionary<Type, MethodInfo[]>();
+            var typeToMethods = new Dictionary<Type, MethodInfo[]>();
             InitForType(type, typeToMethods);
             foreach (MethodInfo method in typeToMethods[type]) {
                 if (methodRemover != null && method != null) {
@@ -47,22 +45,13 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             }
         }
 
-        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IMetamodelBuilder metamodel) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Type currentType = type;
             while (currentType != null) {
                 if (TypeUtils.IsSystem(currentType)) {
                     ProcessSystemType(currentType, methodRemover, specification);
                 }
-                currentType = currentType.BaseType;
-            }
-        }
 
-        public override ImmutableDictionary<String, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<String, ITypeSpecBuilder> metamodel) {
-            Type currentType = type;
-            while (currentType != null) {
-                if (TypeUtils.IsSystem(currentType)) {
-                    ProcessSystemType(currentType, methodRemover, specification);
-                }
                 currentType = currentType.BaseType;
             }
 

@@ -7,12 +7,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Reflect.FacetFactory;
 
 namespace NakedObjects.Reflect {
@@ -146,6 +148,22 @@ namespace NakedObjects.Reflect {
             foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(FeatureType.ActionParameters)) {
                 facetFactory.ProcessParams(reflector, method, paramNum, specification);
             }
+        }
+
+        public ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            throw new NotImplementedException();
+        }
+
+        public ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            throw new NotImplementedException();
+        }
+
+        public ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            throw new NotImplementedException();
+        }
+
+        public ImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            throw new NotImplementedException();
         }
 
         #endregion

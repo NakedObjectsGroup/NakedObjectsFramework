@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,20 +20,9 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class TypeMarkerFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public TypeMarkerFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.ObjectsAndInterfaces) {}
+            : base(numericOrder, FeatureType.ObjectsAndInterfaces) { }
 
-        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IMetamodelBuilder metamodel) {
-            var facets = new List<IFacet> {
-                new TypeIsAbstractFacet(specification, IsAbstract(type)),
-                new TypeIsInterfaceFacet(specification, IsInterface(type)),
-                new TypeIsSealedFacet(specification, IsSealed(type)),
-                new TypeIsVoidFacet(specification, IsVoid(type))
-            };
-
-            FacetUtils.AddFacets(facets);
-        }
-
-        public override ImmutableDictionary<String, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<String, ITypeSpecBuilder> metamodel) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var facets = new List<IFacet> {
                 new TypeIsAbstractFacet(specification, IsAbstract(type)),
                 new TypeIsInterfaceFacet(specification, IsInterface(type)),
@@ -46,7 +35,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         }
 
         private static bool IsVoid(Type type) {
-            return type == typeof (void);
+            return type == typeof(void);
         }
 
         private static bool IsSealed(Type type) {

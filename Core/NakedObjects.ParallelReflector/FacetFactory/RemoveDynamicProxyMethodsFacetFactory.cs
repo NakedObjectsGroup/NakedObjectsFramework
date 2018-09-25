@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,29 +22,13 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         private static readonly string[] MethodsToRemove = {"GetBasePropertyValue", "SetBasePropertyValue", "SetChangeTracker"};
 
         public RemoveDynamicProxyMethodsFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.ObjectsInterfacesAndProperties) {}
+            : base(numericOrder, FeatureType.ObjectsInterfacesAndProperties) { }
 
         private static bool IsDynamicProxyType(Type type) {
             return type.FullName.StartsWith("System.Data.Entity.DynamicProxies");
         }
 
-        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IMetamodelBuilder metamodel) {
-            if (IsDynamicProxyType(type)) {
-                foreach (MethodInfo method in type.GetMethods().Join(MethodsToRemove, mi => mi.Name, s => s, (mi, s) => mi)) {
-                    if (methodRemover != null && method != null) {
-                        methodRemover.RemoveMethod(method);
-                    }
-                }
-            }
-        }
-
-        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IMetamodelBuilder metamodel) {
-            if (IsDynamicProxyType(property.DeclaringType) && property.Name == "RelationshipManager") {
-                FacetUtils.AddFacet(new HiddenFacet(WhenTo.Always, specification));
-            }
-        }
-
-        public override ImmutableDictionary<String, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<String, ITypeSpecBuilder> metamodel) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (IsDynamicProxyType(type)) {
                 foreach (MethodInfo method in type.GetMethods().Join(MethodsToRemove, mi => mi.Name, s => s, (mi, s) => mi)) {
                     if (methodRemover != null && method != null) {
@@ -56,15 +40,13 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        public override ImmutableDictionary<String, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<String, ITypeSpecBuilder> metamodel) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (IsDynamicProxyType(property.DeclaringType) && property.Name == "RelationshipManager") {
                 FacetUtils.AddFacet(new HiddenFacet(WhenTo.Always, specification));
             }
 
             return metamodel;
         }
-
-
     }
 
     // Copyright (c) Naked Objects Group Ltd.

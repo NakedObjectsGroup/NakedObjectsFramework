@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,55 +25,28 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     ///     <see cref="FindMenuAttribute" /> annotation
     /// </summary>
     public sealed class FindMenuFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (FindMenuFacetFactory));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(FindMenuFacetFactory));
 
         public FindMenuFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.PropertiesAndActionParameters) {}
+            : base(numericOrder, FeatureType.PropertiesAndActionParameters) { }
 
         private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<FindMenuAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IMetamodelBuilder metamodel) {
-            Process(method, specification);
-        }
-
-        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IMetamodelBuilder metamodel) {
-            Type pType = property.PropertyType;
-            if ((pType.IsPrimitive || pType == typeof (string) || TypeUtils.IsEnum(pType)) && property.GetCustomAttribute<FindMenuAttribute>() != null) {
-                Log.Warn("Ignoring FindMenu annotation on primitive or un-readable parameter on " + property.ReflectedType + "." + property.Name);
-                return;
-            }
-            if (property.GetGetMethod() != null && !property.PropertyType.IsPrimitive) {
-                Process(property, specification);
-            }
-        }
-
-        public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IMetamodelBuilder metamodel) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
-            Type pType = parameter.ParameterType;
-            if (pType.IsPrimitive || pType == typeof (string) || TypeUtils.IsEnum(pType)) {
-                if (method.GetCustomAttribute<FindMenuAttribute>() != null) {
-                    Log.Warn("Ignoring FindMenu annotation on primitive parameter " + paramNum + " on " + method.ReflectedType + "." + method.Name);
-                }
-                return;
-            }
-            var attribute = parameter.GetCustomAttribute<FindMenuAttribute>();
-            FacetUtils.AddFacet(Create(attribute, holder));
-        }
-
-        public override ImmutableDictionary<String, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<String, ITypeSpecBuilder> metamodel) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Process(method, specification);
             return metamodel;
         }
 
-        public override ImmutableDictionary<String, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<String, ITypeSpecBuilder> metamodel) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Type pType = property.PropertyType;
             if ((pType.IsPrimitive || pType == typeof(string) || TypeUtils.IsEnum(pType)) && property.GetCustomAttribute<FindMenuAttribute>() != null) {
                 Log.Warn("Ignoring FindMenu annotation on primitive or un-readable parameter on " + property.ReflectedType + "." + property.Name);
                 return metamodel;
             }
+
             if (property.GetGetMethod() != null && !property.PropertyType.IsPrimitive) {
                 Process(property, specification);
             }
@@ -81,15 +54,17 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        public override ImmutableDictionary<String, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, ImmutableDictionary<String, ITypeSpecBuilder> metamodel) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             Type pType = parameter.ParameterType;
             if (pType.IsPrimitive || pType == typeof(string) || TypeUtils.IsEnum(pType)) {
                 if (method.GetCustomAttribute<FindMenuAttribute>() != null) {
                     Log.Warn("Ignoring FindMenu annotation on primitive parameter " + paramNum + " on " + method.ReflectedType + "." + method.Name);
                 }
+
                 return metamodel;
             }
+
             var attribute = parameter.GetCustomAttribute<FindMenuAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
             return metamodel;

@@ -65,43 +65,11 @@ namespace NakedObjects.ParallelReflect {
         public ITypeSpecBuilder[] Interfaces { get; set; }
         public ITypeSpecBuilder Superclass { get; set; }
 
-        public void IntrospectType(Type typeToIntrospect, ITypeSpecImmutable spec, IMetamodelBuilder metamodel) {
-
-            if (!TypeUtils.IsPublic(typeToIntrospect)) {
-                throw new ReflectionException(Log.LogAndReturn(string.Format(Resources.NakedObjects.DomainClassReflectionError, typeToIntrospect)));
-            }
-
-            var fullName = typeToIntrospect.FullName;
-
-            IntrospectedType = typeToIntrospect;
-            properties = typeToIntrospect.GetProperties();
-            methods = GetNonPropertyMethods();
-
-            // Process facets at object level
-            // this will also remove some methods, such as the superclass methods.
-            var methodRemover = new IntrospectorMethodRemover(methods);
-            FacetFactorySet.Process(reflector, IntrospectedType, methodRemover, spec, metamodel);
-
-            if (SuperclassType != null && ClassStrategy.IsTypeToBeIntrospected(SuperclassType)) {
-                Superclass = reflector.LoadSpecification(SuperclassType, metamodel);
-            }
-
-            AddAsSubclass(spec);
-
-            var interfaces = new List<ITypeSpecBuilder>();
-            foreach (Type interfaceType in InterfacesTypes) {
-                if (interfaceType != null && ClassStrategy.IsTypeToBeIntrospected(interfaceType)) {
-                    var interfaceSpec = reflector.LoadSpecification(interfaceType, metamodel);
-                    interfaceSpec.AddSubclass(spec);
-                    interfaces.Add(interfaceSpec);
-                }
-            }
-            Interfaces = interfaces.ToArray();
-            IntrospectPropertiesAndCollections(spec, metamodel);
-            IntrospectActions(spec, metamodel);
+        public void IntrospectType(Type typeToIntrospect, ITypeSpecImmutable specification) {
+            throw new NotImplementedException();
         }
 
-        public ImmutableDictionary<String, ITypeSpecBuilder> IntrospectType(Type typeToIntrospect, ITypeSpecImmutable spec, ImmutableDictionary<String, ITypeSpecBuilder> metamodel) {
+        public ImmutableDictionary<string, ITypeSpecBuilder> IntrospectType(Type typeToIntrospect, ITypeSpecImmutable spec, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
 
             if (!TypeUtils.IsPublic(typeToIntrospect)) {
                 throw new ReflectionException(Log.LogAndReturn(string.Format(Resources.NakedObjects.DomainClassReflectionError, typeToIntrospect)));
@@ -149,12 +117,7 @@ namespace NakedObjects.ParallelReflect {
             Superclass?.AddSubclass(spec);
         }
 
-        public void IntrospectPropertiesAndCollections(ITypeSpecImmutable spec, IMetamodelBuilder metamodel) {
-            var objectSpec = spec as IObjectSpecImmutable;
-            orderedFields = objectSpec != null ? CreateSortedListOfMembers(FindAndCreateFieldSpecs(objectSpec, metamodel)) : new List<IAssociationSpecImmutable>();
-        }
-
-        public ImmutableDictionary<String, ITypeSpecBuilder> IntrospectPropertiesAndCollections(ITypeSpecImmutable spec, ImmutableDictionary<String, ITypeSpecBuilder> metamodel) {
+        public ImmutableDictionary<string, ITypeSpecBuilder> IntrospectPropertiesAndCollections(ITypeSpecImmutable spec, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var objectSpec = spec as IObjectSpecImmutable;
             if (objectSpec != null) {
                 var result = FindAndCreateFieldSpecs(objectSpec, metamodel);
@@ -168,13 +131,7 @@ namespace NakedObjects.ParallelReflect {
             return metamodel;
         }
 
-        public void IntrospectActions(ITypeSpecImmutable spec, IMetamodelBuilder metamodel) {
-            // find the actions ...
-            IActionSpecImmutable[] findObjectActionMethods = FindActionMethods(spec, metamodel);
-            orderedObjectActions = CreateSortedListOfMembers(findObjectActionMethods);
-        }
-
-        public ImmutableDictionary<String, ITypeSpecBuilder> IntrospectActions(ITypeSpecImmutable spec, ImmutableDictionary<String, ITypeSpecBuilder> metamodel) {
+        public ImmutableDictionary<string, ITypeSpecBuilder> IntrospectActions(ITypeSpecImmutable spec, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             // find the actions ...
             var result = FindActionMethods(spec, metamodel);
             IActionSpecImmutable[] findObjectActionMethods = result.Item1;
@@ -194,21 +151,7 @@ namespace NakedObjects.ParallelReflect {
             return allMethods.ToArray();
         }
 
-        private IAssociationSpecImmutable[] FindAndCreateFieldSpecs(IObjectSpecImmutable spec, IMetamodelBuilder metamodel) {
-
-            // now create fieldSpecs for value properties, for collections and for reference properties
-            IList<PropertyInfo> collectionProperties = FacetFactorySet.FindCollectionProperties(properties, ClassStrategy).Where(pi => !FacetFactorySet.Filters(pi, ClassStrategy)).ToList();
-            IEnumerable<IAssociationSpecImmutable> collectionSpecs = CreateCollectionSpecs(collectionProperties, spec, metamodel);
-
-            // every other accessor is assumed to be a reference property.
-            IList<PropertyInfo> allProperties = FacetFactorySet.FindProperties(properties, ClassStrategy).Where(pi => !FacetFactorySet.Filters(pi, ClassStrategy)).ToList();
-            IEnumerable<PropertyInfo> refProperties = allProperties.Except(collectionProperties);
-            IEnumerable<IAssociationSpecImmutable> refSpecs = CreateRefPropertySpecs(refProperties, spec, metamodel);
-
-            return collectionSpecs.Union(refSpecs).ToArray();
-        }
-
-        private Tuple<IAssociationSpecImmutable[], ImmutableDictionary<String, ITypeSpecBuilder>> FindAndCreateFieldSpecs(IObjectSpecImmutable spec, ImmutableDictionary<String, ITypeSpecBuilder> metamodel) {
+        private Tuple<IAssociationSpecImmutable[], ImmutableDictionary<string, ITypeSpecBuilder>> FindAndCreateFieldSpecs(IObjectSpecImmutable spec, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
 
             // now create fieldSpecs for value properties, for collections and for reference properties
             IList<PropertyInfo> collectionProperties = FacetFactorySet.FindCollectionProperties(properties, ClassStrategy).Where(pi => !FacetFactorySet.Filters(pi, ClassStrategy)).ToList();
@@ -225,32 +168,10 @@ namespace NakedObjects.ParallelReflect {
             var refSpecs = result.Item1;
             metamodel = result.Item2;
 
-            return new Tuple<IAssociationSpecImmutable[], ImmutableDictionary<String, ITypeSpecBuilder>>(collectionSpecs.Union(refSpecs).ToArray(), metamodel);
+            return new Tuple<IAssociationSpecImmutable[], ImmutableDictionary<string, ITypeSpecBuilder>>(collectionSpecs.Union(refSpecs).ToArray(), metamodel);
         }
 
-
-        private IEnumerable<IAssociationSpecImmutable> CreateCollectionSpecs(IEnumerable<PropertyInfo> collectionProperties, IObjectSpecImmutable spec, IMetamodelBuilder metamodel) {
-            var specs = new List<IAssociationSpecImmutable>();
-
-            foreach (PropertyInfo property in collectionProperties) {
-
-                IIdentifier identifier = new IdentifierImpl(FullName, property.Name);
-
-                // create a collection property spec
-                Type returnType = property.PropertyType;
-                var returnSpec = reflector.LoadSpecification<IObjectSpecImmutable>(returnType, metamodel);
-                Type defaultType = typeof (object);
-                var defaultSpec = reflector.LoadSpecification<IObjectSpecImmutable>(defaultType, metamodel);
-
-                var collection = ImmutableSpecFactory.CreateOneToManyAssociationSpecImmutable(identifier, spec, returnSpec, defaultSpec);
-
-                FacetFactorySet.Process(reflector, property, new IntrospectorMethodRemover(methods), collection, FeatureType.Collections, metamodel);
-                specs.Add(collection);
-            }
-            return specs;
-        }
-
-        private Tuple<IEnumerable<IAssociationSpecImmutable>, ImmutableDictionary<String, ITypeSpecBuilder>> CreateCollectionSpecs(IEnumerable<PropertyInfo> collectionProperties, IObjectSpecImmutable spec, ImmutableDictionary<String, ITypeSpecBuilder> metamodel) {
+        private Tuple<IEnumerable<IAssociationSpecImmutable>, ImmutableDictionary<string, ITypeSpecBuilder>> CreateCollectionSpecs(IEnumerable<PropertyInfo> collectionProperties, IObjectSpecImmutable spec, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var specs = new List<IAssociationSpecImmutable>();
 
             foreach (PropertyInfo property in collectionProperties) {
@@ -273,35 +194,15 @@ namespace NakedObjects.ParallelReflect {
                 metamodel = FacetFactorySet.Process(reflector, property, new IntrospectorMethodRemover(methods), collection, FeatureType.Collections, metamodel);
                 specs.Add(collection);
             }
-            return new Tuple<IEnumerable<IAssociationSpecImmutable>, ImmutableDictionary<String, ITypeSpecBuilder>>(specs, metamodel);
+            return new Tuple<IEnumerable<IAssociationSpecImmutable>, ImmutableDictionary<string, ITypeSpecBuilder>>(specs, metamodel);
         }
 
         /// <summary>
         ///     Creates a list of Association fields for all the properties that use NakedObjects.
         /// </summary>
-        private IEnumerable<IAssociationSpecImmutable> CreateRefPropertySpecs(IEnumerable<PropertyInfo> foundProperties, IObjectSpecImmutable spec, IMetamodelBuilder metamodel) {
-            var specs = new List<IAssociationSpecImmutable>();
+      
 
-            foreach (PropertyInfo property in foundProperties) {
-
-                // create a reference property spec
-                var identifier = new IdentifierImpl(FullName, property.Name);
-                Type propertyType = property.PropertyType;
-                var propertySpec = reflector.LoadSpecification(propertyType, metamodel);
-                if (propertySpec is IServiceSpecImmutable) {
-                    throw new ReflectionException(Log.LogAndReturn($"Type {propertyType.Name} is a service and cannot be used in public property {property.Name} on type {property.DeclaringType?.Name}. If the property is intended to be an injected service it should have a protected get."));
-                }
-                var referenceProperty = ImmutableSpecFactory.CreateOneToOneAssociationSpecImmutable(identifier, spec, propertySpec as IObjectSpecImmutable);
-
-                // Process facets for the property
-                FacetFactorySet.Process(reflector, property, new IntrospectorMethodRemover(methods), referenceProperty, FeatureType.Properties, metamodel);
-                specs.Add(referenceProperty);
-            }
-
-            return specs;
-        }
-
-        private Tuple<IEnumerable<IAssociationSpecImmutable>, ImmutableDictionary<String, ITypeSpecBuilder>> CreateRefPropertySpecs(IEnumerable<PropertyInfo> foundProperties, IObjectSpecImmutable spec, ImmutableDictionary<String, ITypeSpecBuilder> metamodel) {
+        private Tuple<IEnumerable<IAssociationSpecImmutable>, ImmutableDictionary<string, ITypeSpecBuilder>> CreateRefPropertySpecs(IEnumerable<PropertyInfo> foundProperties, IObjectSpecImmutable spec, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var specs = new List<IAssociationSpecImmutable>();
 
             foreach (PropertyInfo property in foundProperties) {
@@ -322,52 +223,14 @@ namespace NakedObjects.ParallelReflect {
                 specs.Add(referenceProperty);
             }
 
-            return new Tuple<IEnumerable<IAssociationSpecImmutable>, ImmutableDictionary<String, ITypeSpecBuilder>>(specs, metamodel);
+            return new Tuple<IEnumerable<IAssociationSpecImmutable>, ImmutableDictionary<string, ITypeSpecBuilder>>(specs, metamodel);
         }
 
-        private IActionSpecImmutable[] FindActionMethods(ITypeSpecImmutable spec, IMetamodelBuilder metamodel) {
-            var actionSpecs = new List<IActionSpecImmutable>();
-            var actions = FacetFactorySet.FindActions(methods.Where(m => m != null).ToArray(), reflector.ClassStrategy).Where(a => !FacetFactorySet.Filters(a, reflector.ClassStrategy)).ToArray();
-            methods = methods.Except(actions).ToArray();
-
-            // ReSharper disable once ForCanBeConvertedToForeach
-            // kepp for look as actions are nulled out within loop
-            for (int i = 0; i < actions.Length; i++) {
-                MethodInfo actionMethod = actions[i];
-
-                // actions are potentially being nulled within this loop
-                if (actionMethod != null) {
-                    string fullMethodName = actionMethod.Name;
-
-                    Type[] parameterTypes = actionMethod.GetParameters().Select(parameterInfo => parameterInfo.ParameterType).ToArray();
-
-                    // build action & its parameters
-
-                    if (actionMethod.ReturnType != typeof (void)) {
-                        reflector.LoadSpecification(actionMethod.ReturnType, metamodel);
-                    }
-
-                    IIdentifier identifier = new IdentifierImpl(FullName, fullMethodName, actionMethod.GetParameters().ToArray());
-                    IActionParameterSpecImmutable[] actionParams = parameterTypes.Select(pt => ImmutableSpecFactory.CreateActionParameterSpecImmutable(reflector.LoadSpecification<IObjectSpecImmutable>(pt, metamodel), identifier)).ToArray();
-
-                    var action = ImmutableSpecFactory.CreateActionSpecImmutable(identifier, spec, actionParams);
-
-                    // Process facets on the action & parameters
-                    FacetFactorySet.Process(reflector, actionMethod, new IntrospectorMethodRemover(actions), action, FeatureType.Actions, metamodel);
-                    for (int l = 0; l < actionParams.Length; l++) {
-                        FacetFactorySet.ProcessParams(reflector, actionMethod, l, actionParams[l], metamodel);
-                    }
-
-                    actionSpecs.Add(action);
-                }
-            }
-
-            return actionSpecs.ToArray();
-        }
+       
 
 
 
-        private Tuple<IActionSpecImmutable[], ImmutableDictionary<String, ITypeSpecBuilder>> FindActionMethods(ITypeSpecImmutable spec, ImmutableDictionary<String, ITypeSpecBuilder> metamodel) {
+        private Tuple<IActionSpecImmutable[], ImmutableDictionary<string, ITypeSpecBuilder>> FindActionMethods(ITypeSpecImmutable spec, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var actionSpecs = new List<IActionSpecImmutable>();
             var actions = FacetFactorySet.FindActions(methods.Where(m => m != null).ToArray(), reflector.ClassStrategy).Where(a => !FacetFactorySet.Filters(a, reflector.ClassStrategy)).ToArray();
             methods = methods.Except(actions).ToArray();
@@ -415,7 +278,7 @@ namespace NakedObjects.ParallelReflect {
                 }
             }
 
-            return new Tuple<IActionSpecImmutable[], ImmutableDictionary<String, ITypeSpecBuilder>>(actionSpecs.ToArray(), metamodel);
+            return new Tuple<IActionSpecImmutable[], ImmutableDictionary<string, ITypeSpecBuilder>>(actionSpecs.ToArray(), metamodel);
         }
 
 

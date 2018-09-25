@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,9 +24,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     public abstract class MethodPrefixBasedFacetFactoryAbstract : FacetFactoryAbstract, IMethodPrefixBasedFacetFactory {
         private static readonly ILog Log = LogManager.GetLogger(typeof(MethodPrefixBasedFacetFactoryAbstract));
 
-
         protected MethodPrefixBasedFacetFactoryAbstract(int numericOrder, FeatureType featureTypes)
-            : base(numericOrder, featureTypes) {}
+            : base(numericOrder, featureTypes) { }
 
         #region IMethodPrefixBasedFacetFactory Members
 
@@ -54,11 +53,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                                            MethodType methodType,
                                            string name,
                                            Type returnType = null) {
-            return type.GetMethods(GetBindingFlagsForMethodType(methodType, reflector)).
-                Where(m => m.Name == name).
-                Where(m => (m.IsStatic && methodType == MethodType.Class) || (!m.IsStatic && methodType == MethodType.Object)).
-                Where(m => m.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null).
-                Where(m => returnType == null || returnType.IsAssignableFrom(m.ReturnType)).ToArray();
+            return type.GetMethods(GetBindingFlagsForMethodType(methodType, reflector)).Where(m => m.Name == name).Where(m => (m.IsStatic && methodType == MethodType.Class) || (!m.IsStatic && methodType == MethodType.Object)).Where(m => m.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null).Where(m => returnType == null || returnType.IsAssignableFrom(m.ReturnType)).ToArray();
         }
 
         /// <summary>
@@ -139,7 +134,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         }
 
         protected void FindDefaultDisableMethod(IReflector reflector, IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, ISpecification specification) {
-            MethodInfo method = FindMethodWithOrWithoutParameters(reflector, type, methodType, RecognisedMethodsAndPrefixes.DisablePrefix + capitalizedName, typeof (string), Type.EmptyTypes);
+            MethodInfo method = FindMethodWithOrWithoutParameters(reflector, type, methodType, RecognisedMethodsAndPrefixes.DisablePrefix + capitalizedName, typeof(string), Type.EmptyTypes);
             if (method != null) {
                 facets.Add(new DisableForContextFacet(method, specification));
             }
@@ -154,7 +149,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         }
 
         protected void FindDefaultHideMethod(IReflector reflector, IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, ISpecification specification) {
-            MethodInfo method = FindMethodWithOrWithoutParameters(reflector, type, methodType, RecognisedMethodsAndPrefixes.HidePrefix + capitalizedName, typeof (bool), Type.EmptyTypes);
+            MethodInfo method = FindMethodWithOrWithoutParameters(reflector, type, methodType, RecognisedMethodsAndPrefixes.HidePrefix + capitalizedName, typeof(bool), Type.EmptyTypes);
             if (method != null) {
                 facets.Add(new HideForContextFacet(method, specification));
                 AddOrAddToExecutedWhereFacet(method, specification);
@@ -162,7 +157,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         }
 
         protected void FindAndRemoveHideMethod(IReflector reflector, IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, ISpecification specification) {
-            MethodInfo method = FindMethod(reflector, type, methodType, RecognisedMethodsAndPrefixes.HidePrefix + capitalizedName, typeof (bool), Type.EmptyTypes);
+            MethodInfo method = FindMethod(reflector, type, methodType, RecognisedMethodsAndPrefixes.HidePrefix + capitalizedName, typeof(bool), Type.EmptyTypes);
             if (method != null) {
                 methodRemover.RemoveMethod(method);
                 facets.Add(new HideForContextFacet(method, specification));

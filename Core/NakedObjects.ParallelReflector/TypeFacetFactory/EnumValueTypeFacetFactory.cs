@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Immutable;
 using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
@@ -17,15 +18,19 @@ namespace NakedObjects.ParallelReflect.TypeFacetFactory {
     public sealed class EnumValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public EnumValueTypeFacetFactory(int numericOrder) : base(numericOrder) {}
 
-        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IMetamodelBuilder metamodel) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (typeof (Enum).IsAssignableFrom(type)) {
                 Type semanticsProviderType = typeof (EnumValueSemanticsProvider<>).MakeGenericType(type);
-                var spec = reflector.LoadSpecification<IObjectSpecImmutable>(type, metamodel);
+                var result = reflector.LoadSpecification(type, metamodel);
+
+                metamodel = result.Item2;
+                var spec = result.Item1 as IObjectSpecImmutable;
                 object semanticsProvider = Activator.CreateInstance(semanticsProviderType, spec, specification);
 
                 MethodInfo method = typeof (ValueUsingValueSemanticsProviderFacetFactory).GetMethod("AddValueFacets", BindingFlags.Static | BindingFlags.Public).MakeGenericMethod(type);
                 method.Invoke(null, new[] {semanticsProvider, specification});
             }
+            return metamodel;
         }
     }
 }

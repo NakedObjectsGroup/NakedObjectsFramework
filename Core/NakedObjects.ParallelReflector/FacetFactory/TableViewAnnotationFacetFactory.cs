@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,7 +25,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         private static readonly ILog Log = LogManager.GetLogger(typeof(TableViewAnnotationFacetFactory));
 
         public TableViewAnnotationFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.CollectionsAndActions) {}
+            : base(numericOrder, FeatureType.CollectionsAndActions) { }
 
         private void Process(MemberInfo member, Type methodReturnType, ISpecification specification) {
             if (CollectionUtils.IsGenericEnumerable(methodReturnType) || CollectionUtils.IsCollection(methodReturnType)) {
@@ -49,27 +49,16 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return new TableViewFacet(attribute.Title, columns, holder);
         }
 
-
         private static ITableViewFacet Create(TableViewAttribute attribute, ISpecification holder) {
             return attribute == null ? null : CreateTableViewFacet(attribute, holder);
         }
 
-        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IMetamodelBuilder metamodel) {
-            Process(method, method.ReturnType, specification);
-        }
-
-        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IMetamodelBuilder metamodel) {
-            if (property.GetGetMethod() != null) {
-                Process(property, property.PropertyType, specification);
-            }
-        }
-
-        public override ImmutableDictionary<String, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<String, ITypeSpecBuilder> metamodel) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Process(method, method.ReturnType, specification);
             return metamodel;
         }
 
-        public override ImmutableDictionary<String, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<String, ITypeSpecBuilder> metamodel) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (property.GetGetMethod() != null) {
                 Process(property, property.PropertyType, specification);
             }
