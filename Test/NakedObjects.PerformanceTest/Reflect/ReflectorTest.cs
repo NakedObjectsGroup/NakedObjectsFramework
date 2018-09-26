@@ -35,6 +35,12 @@ namespace NakedObjects.SystemTest.Reflect {
             return c;
         }
 
+        protected IUnityContainer GetParallelContainer() {
+            var c = new UnityContainer();
+            RegisterParallelTypes(c);
+            return c;
+        }
+
         protected static void RegisterFacetFactories(IUnityContainer container) {
             var factoryTypes = FacetFactories.StandardFacetFactories();
             for (int i = 0; i < factoryTypes.Length; i++) {
@@ -62,6 +68,23 @@ namespace NakedObjects.SystemTest.Reflect {
             StandardUnityConfig.RegisterStandardFacetFactories(container);
             StandardUnityConfig.RegisterCoreContainerControlledTypes(container);
             StandardUnityConfig.RegisterCorePerTransactionTypes<HierarchicalLifetimeManager>(container);
+        }
+
+        protected virtual void RegisterParallelTypes(IUnityContainer container) {
+            //ReflectorConfiguration.NoValidate = true;
+            //RegisterFacetFactories(container);
+
+            //container.RegisterType<IMenuFactory, NullMenuFactory>();
+            //container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(
+            //    new ContainerControlledLifetimeManager(), new InjectionConstructor());
+            //container.RegisterType<IClassStrategy, DefaultClassStrategy>();
+            //container.RegisterType<IReflector, Reflector>();
+            //container.RegisterType<IMetamodel, Metamodel>();
+            //container.RegisterType<IMetamodelBuilder, Metamodel>();
+
+            ParallelUnityConfig.RegisterStandardFacetFactories(container);
+            ParallelUnityConfig.RegisterCoreContainerControlledTypes(container);
+            ParallelUnityConfig.RegisterCorePerTransactionTypes<HierarchicalLifetimeManager>(container);
         }
 
 
@@ -167,7 +190,7 @@ namespace NakedObjects.SystemTest.Reflect {
         public void ReflectAdventureworksParallel() {
             // load adventurework
 
-            IUnityContainer container = GetContainer();
+            IUnityContainer container = GetParallelContainer();
             var rc = new ReflectorConfiguration(Types, Services, ModelNamespaces, MainMenus);
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
@@ -176,7 +199,7 @@ namespace NakedObjects.SystemTest.Reflect {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            //reflector.ReflectParallel();
+            reflector.Reflect();
             stopwatch.Stop();
             TimeSpan interval = stopwatch.Elapsed;
 
@@ -245,7 +268,7 @@ namespace NakedObjects.SystemTest.Reflect {
         public void ReflectDSPParallel() {
             // load adventurework
 
-            IUnityContainer container = GetContainer();
+            IUnityContainer container = GetParallelContainer();
             var rc = DSPReflectorConfiguration(container);
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
@@ -254,7 +277,7 @@ namespace NakedObjects.SystemTest.Reflect {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            //reflector.ReflectParallel();
+            reflector.Reflect();
             stopwatch.Stop();
             TimeSpan interval = stopwatch.Elapsed;
 

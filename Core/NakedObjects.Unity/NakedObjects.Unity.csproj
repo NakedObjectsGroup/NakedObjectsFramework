@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ParallelUnityConfig.cs" />
     <Compile Include="UnityConfigHelpers.cs" />
     <Compile Include="StandardUnityConfig.cs" />
     <Compile Include="Unity\UnityFrameworkResolver.cs" />
@@ -68,6 +69,10 @@
     <ProjectReference Include="..\NakedObjects.Metamodel\NakedObjects.Metamodel.csproj">
       <Project>{51310042-b65b-4480-a8c0-11e6b39c7587}</Project>
       <Name>NakedObjects.Metamodel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.ParallelReflector\NakedObjects.ParallelReflector.csproj">
+      <Project>{E2A9CCD2-BDCA-4957-A0AC-51E736F4C33B}</Project>
+      <Name>NakedObjects.ParallelReflector</Name>
     </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Persistor.Entity\NakedObjects.Persistor.Entity.csproj">
       <Project>{3e188cc2-9f88-47f1-a197-22518958ae25}</Project>
