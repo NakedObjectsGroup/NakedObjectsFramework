@@ -11,8 +11,7 @@ open NakedObjects.Rest
 open NakedObjects.Rest.Media
 open System
 open NakedObjects.Rest.Snapshot.Utility
-open System.Web.Http
-open Unity
+open Microsoft.Practices.Unity
 open RestfulObjects.Test.Data
 open NakedObjects.Facade.Impl.Implementation
 open NakedObjects.Facade.Impl.Utility
@@ -31,7 +30,8 @@ open NakedObjects.Facade.Impl
 open NakedObjects.Facade.Interface
 open NakedObjects.Architecture.Menu
 open NakedObjects.Menu
-open Unity.Lifetime
+open System.Web.Http
+
 
 [<TestFixture>]
 type CNof4TestsDomainType() = 

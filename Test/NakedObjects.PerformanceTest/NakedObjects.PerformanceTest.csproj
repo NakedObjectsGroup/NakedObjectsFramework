@@ -67,9 +67,6 @@
     <Reference Include="Common.Logging.Core, Version=3.4.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Common.Logging.Core.3.4.1\lib\net40\Common.Logging.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CommonServiceLocator, Version=2.0.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Unity.5.8.6\lib\net46\CommonServiceLocator.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -77,6 +74,15 @@
       <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Practices.Unity, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="NakedObjects.Architecture, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NakedObjects.Core.10.0.0-beta01\lib\net451\NakedObjects.Architecture.dll</HintPath>
@@ -97,6 +103,9 @@
     </Reference>
     <Reference Include="NakedObjects.Metamodel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NakedObjects.Core.10.0.0-beta01\lib\net451\NakedObjects.Metamodel.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.MvcResources">
+      <HintPath>Assemblies\NakedObjects.MvcResources.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Persistor.Entity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NakedObjects.Core.10.0.0-beta01\lib\net451\NakedObjects.Persistor.Entity.dll</HintPath>
@@ -121,6 +130,240 @@
     <Reference Include="NakedObjects.Xat, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NakedObjects.Xat.10.0.0-beta01\lib\net451\NakedObjects.Xat.dll</HintPath>
     </Reference>
+    <Reference Include="Sdm.App">
+      <HintPath>Assemblies\Sdm.App.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.App.PubSub.Services">
+      <HintPath>Assemblies\Sdm.App.PubSub.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.AppSpec.Main">
+      <HintPath>Assemblies\Sdm.AppSpec.Main.dll</HintPath>
+    </Reference>
+    <Reference Include="sdm.batch2.framework">
+      <HintPath>Assemblies\sdm.batch2.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="sdm.batch2.framework.datahelper">
+      <HintPath>Assemblies\sdm.batch2.framework.datahelper.dll</HintPath>
+    </Reference>
+    <Reference Include="sdm.batch2.framework.testing">
+      <HintPath>Assemblies\sdm.batch2.framework.testing.dll</HintPath>
+    </Reference>
+    <Reference Include="sdm.batch2.framework.testing.helper">
+      <HintPath>Assemblies\sdm.batch2.framework.testing.helper.dll</HintPath>
+    </Reference>
+    <Reference Include="sdm.batch2.framework.testing.jobs">
+      <HintPath>Assemblies\sdm.batch2.framework.testing.jobs.dll</HintPath>
+    </Reference>
+    <Reference Include="sdm.batch2.framework.XmlSerializers">
+      <HintPath>Assemblies\sdm.batch2.framework.XmlSerializers.dll</HintPath>
+    </Reference>
+    <Reference Include="sdm.bg.bom">
+      <HintPath>Assemblies\sdm.bg.bom.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Bom4.Base">
+      <HintPath>Assemblies\Sdm.Bom4.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="sdm.bomFacade.impl">
+      <HintPath>Assemblies\sdm.bomFacade.impl.dll</HintPath>
+    </Reference>
+    <Reference Include="sdm.ca.bom">
+      <HintPath>Assemblies\sdm.ca.bom.dll</HintPath>
+    </Reference>
+    <Reference Include="sdm.cb.bom">
+      <HintPath>Assemblies\sdm.cb.bom.dll</HintPath>
+    </Reference>
+    <Reference Include="sdm.cb.gro.altovamappings">
+      <HintPath>Assemblies\sdm.cb.gro.altovamappings.dll</HintPath>
+    </Reference>
+    <Reference Include="sdm.cho.bom">
+      <HintPath>Assemblies\sdm.cho.bom.dll</HintPath>
+    </Reference>
+    <Reference Include="sdm.cho.fixture">
+      <HintPath>Assemblies\sdm.cho.fixture.dll</HintPath>
+    </Reference>
+    <Reference Include="sdm.client.privatews">
+      <HintPath>Assemblies\sdm.client.privatews.dll</HintPath>
+    </Reference>
+    <Reference Include="sdm.client.publicws">
+      <HintPath>Assemblies\sdm.client.publicws.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.Accounts.Api">
+      <HintPath>Assemblies\Sdm.Cluster.Accounts.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.ActivationSupport.Impl">
+      <HintPath>Assemblies\Sdm.Cluster.ActivationSupport.Impl.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.Appointment.Api">
+      <HintPath>Assemblies\Sdm.Cluster.Appointment.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.Availability.Impl">
+      <HintPath>Assemblies\Sdm.Cluster.Availability.Impl.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.Calendar.Impl">
+      <HintPath>Assemblies\Sdm.Cluster.Calendar.Impl.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.Claims.Api">
+      <HintPath>Assemblies\Sdm.Cluster.Claims.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.CommunityEmployment.Impl">
+      <HintPath>Assemblies\Sdm.Cluster.CommunityEmployment.Impl.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.Contact.Api">
+      <HintPath>Assemblies\Sdm.Cluster.Contact.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.Contract.Impl">
+      <HintPath>Assemblies\Sdm.Cluster.Contract.Impl.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.CssLegacy.Impl">
+      <HintPath>Assemblies\Sdm.Cluster.CssLegacy.Impl.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.CustomerContrib.Impl">
+      <HintPath>Assemblies\Sdm.Cluster.CustomerContrib.Impl.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.Customers.Api">
+      <HintPath>Assemblies\Sdm.Cluster.Customers.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.Debt.Impl">
+      <HintPath>Assemblies\Sdm.Cluster.Debt.Impl.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.Document.Api">
+      <HintPath>Assemblies\Sdm.Cluster.Document.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.Employers.Api">
+      <HintPath>Assemblies\Sdm.Cluster.Employers.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.InsuranceRecovery.Impl">
+      <HintPath>Assemblies\Sdm.Cluster.InsuranceRecovery.Impl.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.Investigations.Api">
+      <HintPath>Assemblies\Sdm.Cluster.Investigations.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.Location.Impl">
+      <HintPath>Assemblies\Sdm.Cluster.Location.Impl.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.Means.Api">
+      <HintPath>Assemblies\Sdm.Cluster.Means.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.Medical.Api">
+      <HintPath>Assemblies\Sdm.Cluster.Medical.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.Officers.Impl">
+      <HintPath>Assemblies\Sdm.Cluster.Officers.Impl.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.Payments.Impl.XmlSerializers">
+      <HintPath>Assemblies\Sdm.Cluster.Payments.Impl.XmlSerializers.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.Penlive.Impl">
+      <HintPath>Assemblies\Sdm.Cluster.Penlive.Impl.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.PrsiReviews.Api">
+      <HintPath>Assemblies\Sdm.Cluster.PrsiReviews.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.PublishSubscribe.Impl">
+      <HintPath>Assemblies\Sdm.Cluster.PublishSubscribe.Impl.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.Questionnaire.Impl">
+      <HintPath>Assemblies\Sdm.Cluster.Questionnaire.Impl.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.Root.Api">
+      <HintPath>Assemblies\Sdm.Cluster.Root.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.Scheduling.Api">
+      <HintPath>Assemblies\Sdm.Cluster.Scheduling.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.Schemes.Impl">
+      <HintPath>Assemblies\Sdm.Cluster.Schemes.Impl.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.SelfServices.Requests.Api">
+      <HintPath>Assemblies\Sdm.Cluster.SelfServices.Requests.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Cluster.Task.Impl">
+      <HintPath>Assemblies\Sdm.Cluster.Task.Impl.dll</HintPath>
+    </Reference>
+    <Reference Include="sdm.common.bom">
+      <HintPath>Assemblies\sdm.common.bom.dll</HintPath>
+    </Reference>
+    <Reference Include="sdm.common.bom.clusters.impl.contact">
+      <HintPath>Assemblies\sdm.common.bom.clusters.impl.contact.dll</HintPath>
+    </Reference>
+    <Reference Include="sdm.common.bom.clusters.impl.QC">
+      <HintPath>Assemblies\sdm.common.bom.clusters.impl.QC.dll</HintPath>
+    </Reference>
+    <Reference Include="sdm.core.xst">
+      <HintPath>Assemblies\sdm.core.xst.dll</HintPath>
+    </Reference>
+    <Reference Include="sdm.datahelper">
+      <HintPath>Assemblies\sdm.datahelper.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.DigitalServices.Messaging.Infrastructure">
+      <HintPath>Assemblies\Sdm.DigitalServices.Messaging.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.DigitalServices.Messaging.Settings">
+      <HintPath>Assemblies\Sdm.DigitalServices.Messaging.Settings.dll</HintPath>
+    </Reference>
+    <Reference Include="sdm.events">
+      <HintPath>Assemblies\sdm.events.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.FileShare.Common">
+      <HintPath>Assemblies\Sdm.FileShare.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Infrastructure">
+      <HintPath>Assemblies\Sdm.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Infrastructure.Api">
+      <HintPath>Assemblies\Sdm.Infrastructure.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Infrastructure.HTTPModuleManager">
+      <HintPath>Assemblies\Sdm.Infrastructure.HTTPModuleManager.dll</HintPath>
+    </Reference>
+    <Reference Include="sdm.means.bom">
+      <HintPath>Assemblies\sdm.means.bom.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Monitoring.Profiling.Web">
+      <HintPath>Assemblies\Sdm.Monitoring.Profiling.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="sdm.opf.bom">
+      <HintPath>Assemblies\sdm.opf.bom.dll</HintPath>
+    </Reference>
+    <Reference Include="sdm.psc.bom">
+      <HintPath>Assemblies\sdm.psc.bom.dll</HintPath>
+    </Reference>
+    <Reference Include="sdm.resultsprocessor">
+      <HintPath>Assemblies\sdm.resultsprocessor.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Services.Acm.Api">
+      <HintPath>Assemblies\Sdm.Services.Acm.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Services.Bomi4.Api">
+      <HintPath>Assemblies\Sdm.Services.Bomi4.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Services.Bomi4.Impl">
+      <HintPath>Assemblies\Sdm.Services.Bomi4.Impl.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Services.Events.Api">
+      <HintPath>Assemblies\Sdm.Services.Events.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Services.Payments.Api">
+      <HintPath>Assemblies\Sdm.Services.Payments.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Services.Security.Impl">
+      <HintPath>Assemblies\Sdm.Services.Security.Impl.dll</HintPath>
+    </Reference>
+    <Reference Include="sdm.systems.distribution.library">
+      <HintPath>Assemblies\sdm.systems.distribution.library.dll</HintPath>
+    </Reference>
+    <Reference Include="sdm.systems.objectstore.parp.commands">
+      <HintPath>Assemblies\sdm.systems.objectstore.parp.commands.dll</HintPath>
+    </Reference>
+    <Reference Include="sdm.systems.xatdocumentor">
+      <HintPath>Assemblies\sdm.systems.xatdocumentor.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Test.Fixtures">
+      <HintPath>Assemblies\Sdm.Test.Fixtures.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdm.Util">
+      <HintPath>Assemblies\Sdm.Util.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Collections.Immutable.1.3.0\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
@@ -130,27 +373,6 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="Unity.Abstractions, Version=3.3.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Unity.5.8.6\lib\net46\Unity.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Configuration, Version=5.2.1.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Unity.5.8.6\lib\net46\Unity.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Container, Version=5.8.6.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Unity.5.8.6\lib\net46\Unity.Container.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Interception, Version=5.5.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Unity.5.8.6\lib\net46\Unity.Interception.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Interception.Configuration, Version=5.1.4.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Unity.5.8.6\lib\net46\Unity.Interception.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.RegistrationByConvention, Version=2.1.5.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Unity.5.8.6\lib\net46\Unity.RegistrationByConvention.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.ServiceLocation, Version=2.1.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Unity.5.8.6\lib\net46\Unity.ServiceLocation.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">

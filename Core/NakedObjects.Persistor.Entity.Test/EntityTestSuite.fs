@@ -21,9 +21,8 @@ open System.Data.Entity.Core.Objects.DataClasses
 open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Persistor.Entity
 open NakedObjects.Persistor.Entity.Component
-open Unity;
-open Unity.Injection;
-open Unity.Lifetime;
+open Microsoft.Practices.Unity;
+
 
 
 

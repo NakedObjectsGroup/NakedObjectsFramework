@@ -8,9 +8,8 @@
 using System;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Reflect;
-using Unity;
-using Unity.Injection;
-using Unity.Lifetime;
+using Microsoft.Practices.Unity;
+
 
 namespace NakedObjects.Unity {
     public class UnityConfigHelpers {

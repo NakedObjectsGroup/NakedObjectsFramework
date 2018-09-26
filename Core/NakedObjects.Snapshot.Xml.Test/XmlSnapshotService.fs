@@ -18,9 +18,8 @@ open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Snapshot.Xml.Service
 open System.Text.RegularExpressions
 open NUnit.Framework
-open Unity;
-open Unity.Injection;
-open Unity.Lifetime;
+open Microsoft.Practices.Unity;
+
 
 
 let normalizeData d1 d2 =

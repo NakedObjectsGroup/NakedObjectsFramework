@@ -18,9 +18,8 @@ open NakedObjects.Core.Configuration
 open NakedObjects.Architecture.Configuration
 open System.Data.Entity.Core.Objects.DataClasses
 open NakedObjects.Persistor.Entity.Configuration
-open Unity;
-open Unity.Injection;
-open Unity.Lifetime;
+open Microsoft.Practices.Unity;
+
 
 [<TestFixture>]
 type DomainSystemTests() = 

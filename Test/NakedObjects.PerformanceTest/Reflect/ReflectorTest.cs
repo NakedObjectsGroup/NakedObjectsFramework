@@ -9,9 +9,11 @@ using System;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using AdventureWorksModel;
 using AdventureWorksModel.Sales;
+using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
@@ -22,9 +24,7 @@ using NakedObjects.Meta.Component;
 using NakedObjects.Reflect;
 using NakedObjects.Reflect.Component;
 using NakedObjects.Unity;
-using Unity;
-using Unity.Injection;
-using Unity.Lifetime;
+using Sdm.App.App_Start;
 
 namespace NakedObjects.SystemTest.Reflect {
     [TestClass]
@@ -134,7 +134,7 @@ namespace NakedObjects.SystemTest.Reflect {
         }
 
         [TestMethod]
-        public void ReflectAdventureworks() {
+        public void ReflectAdventureworksOld() {
             // load adventurework
 
             IUnityContainer container = GetContainer();
@@ -152,9 +152,132 @@ namespace NakedObjects.SystemTest.Reflect {
 
             Assert.AreEqual(142, reflector.AllObjectSpecImmutables.Length);
             Assert.IsTrue(reflector.AllObjectSpecImmutables.Any());
-            Assert.IsTrue(interval.Milliseconds < 1000);
-            Console.WriteLine(interval.Milliseconds);
+            //Assert.IsTrue(interval.TotalMilliseconds < 1000);
+            Console.WriteLine(interval.TotalMilliseconds);
+            // 971
+
+            string[] names = reflector.AllObjectSpecImmutables.Select(i => i.FullName).ToArray();
+
+            File.AppendAllLines("E:\\Users\\scasc_000\\Documents\\GitHub\\NakedObjectsFramework\\Test\\NakedObjects.PerformanceTest\\Reflect\\awnames.txt", names);
         }
+
+        [TestMethod]
+        public void ReflectAdventureworksParallel() {
+            // load adventurework
+
+            IUnityContainer container = GetContainer();
+            var rc = new ReflectorConfiguration(Types, Services, ModelNamespaces, MainMenus);
+
+            container.RegisterInstance<IReflectorConfiguration>(rc);
+
+            var reflector = container.Resolve<IReflector>();
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            //reflector.ReflectParallel();
+            stopwatch.Stop();
+            TimeSpan interval = stopwatch.Elapsed;
+
+            Assert.AreEqual(142, reflector.AllObjectSpecImmutables.Length);
+            Assert.IsTrue(reflector.AllObjectSpecImmutables.Any());
+            //Assert.IsTrue(interval.TotalMilliseconds < 1000);
+            Console.WriteLine(interval.TotalMilliseconds);
+            // 971
+
+            var names = File.ReadAllLines("E:\\Users\\scasc_000\\Documents\\GitHub\\NakedObjectsFramework\\Test\\NakedObjects.PerformanceTest\\Reflect\\awnames.txt");
+
+            var newNames = reflector.AllObjectSpecImmutables.Select(i => i.FullName).ToArray();
+
+            foreach (var name in names) {
+                if (!newNames.Contains(name)) {
+                    Console.WriteLine("missing name in new metamodel: " + name);
+                }
+            }
+
+            foreach (var name in newNames) {
+                if (!names.Contains(name)) {
+                    Console.WriteLine("name not present in old metamodel: " + name);
+                }
+            }
+        }
+
+
+        private static ReflectorConfiguration DSPReflectorConfiguration(IUnityContainer container) {
+            var appSpec = new SdmAppMainSpecMvc(container);
+
+            return new ReflectorConfiguration(appSpec.TypesForApp, appSpec.AllServicesForApp, appSpec.NamespacesForApp, appSpec.MainMenusForApp);
+        }
+
+        [TestMethod]
+        public void ReflectDSPOld() {
+            // load adventurework
+
+            IUnityContainer container = GetContainer();
+            var rc = DSPReflectorConfiguration(container);
+
+            container.RegisterInstance<IReflectorConfiguration>(rc);
+
+            var reflector = container.Resolve<IReflector>();
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            reflector.Reflect();
+            stopwatch.Stop();
+            TimeSpan interval = stopwatch.Elapsed;
+
+            Assert.AreEqual(7114, reflector.AllObjectSpecImmutables.Length);
+            Assert.IsTrue(reflector.AllObjectSpecImmutables.Any());
+            //Assert.IsTrue(interval.Milliseconds < 1000);
+            Console.WriteLine(interval.TotalMilliseconds);
+            // 223881 
+
+            string[] names = reflector.AllObjectSpecImmutables.Select(i => i.FullName).ToArray();
+
+            File.AppendAllLines("E:\\Users\\scasc_000\\Documents\\GitHub\\NakedObjectsFramework\\Test\\NakedObjects.PerformanceTest\\Reflect\\dspnames.txt", names);
+
+        }
+
+        [TestMethod]
+        public void ReflectDSPParallel() {
+            // load adventurework
+
+            IUnityContainer container = GetContainer();
+            var rc = DSPReflectorConfiguration(container);
+
+            container.RegisterInstance<IReflectorConfiguration>(rc);
+
+            var reflector = container.Resolve<IReflector>();
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            //reflector.ReflectParallel();
+            stopwatch.Stop();
+            TimeSpan interval = stopwatch.Elapsed;
+
+            var names = File.ReadAllLines("E:\\Users\\scasc_000\\Documents\\GitHub\\NakedObjectsFramework\\Test\\NakedObjects.PerformanceTest\\Reflect\\dspnames.txt");
+
+            var newNames = reflector.AllObjectSpecImmutables.Select(i => i.FullName).ToArray();
+
+            foreach (var name in names) {
+                if (!newNames.Contains(name)) {
+                    Console.WriteLine("missing name in new metamodel: " + name);
+                }
+            }
+
+            foreach (var name in newNames) {
+                if (!names.Contains(name)) {
+                    Console.WriteLine("name not present in old metamodel: " + name);
+                }
+            }
+
+     
+            //Assert.AreEqual(7114, reflector.AllObjectSpecImmutables.Length);
+            Assert.IsTrue(reflector.AllObjectSpecImmutables.Any());
+            //Assert.IsTrue(interval.Milliseconds < 1000);
+            Console.WriteLine(interval.TotalMilliseconds);
+            // 144840 = 2m 24s
+        }
+
 
 
         #region Nested type: NullMenuFactory

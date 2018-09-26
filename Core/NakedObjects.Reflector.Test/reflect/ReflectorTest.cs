@@ -21,9 +21,8 @@ using NakedObjects.Meta.Component;
 using NakedObjects.Reflect.Component;
 using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Reflect.TypeFacetFactory;
-using Unity;
-using Unity.Injection;
-using Unity.Lifetime;
+using Microsoft.Practices.Unity;
+
 
 namespace NakedObjects.Reflect.Test {
     public class NullMenuFactory : IMenuFactory {

@@ -23,9 +23,8 @@ using NakedObjects.Core.Util;
 using NakedObjects.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Unity;
-using Unity;
-using Unity.Injection;
-using Unity.Lifetime;
+using Microsoft.Practices.Unity;
+
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 #pragma warning disable 618
 

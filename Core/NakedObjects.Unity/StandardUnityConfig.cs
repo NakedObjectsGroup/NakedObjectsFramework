@@ -17,9 +17,8 @@ using NakedObjects.Persistor.Entity.Component;
 using NakedObjects.Reflect;
 using NakedObjects.Reflect.Component;
 using NakedObjects.Service;
-using Unity;
-using Unity.Injection;
-using Unity.Lifetime;
+using Microsoft.Practices.Unity;
+
 
 namespace NakedObjects.Unity {
     public static class StandardUnityConfig {

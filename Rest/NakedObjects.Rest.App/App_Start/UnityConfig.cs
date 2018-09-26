@@ -18,9 +18,8 @@ using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Facade.Interface;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Unity;
-using Unity;
-using Unity.Lifetime;
-using Unity.Injection;
+using Microsoft.Practices.Unity;
+
 
 namespace MvcTestApp {
     /// <summary>

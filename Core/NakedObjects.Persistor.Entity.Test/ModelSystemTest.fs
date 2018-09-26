@@ -21,9 +21,8 @@ open System.Linq
 open NakedObjects.Architecture.Adapter
 open NakedObjects.Persistor.Entity.Configuration
 open System
-open Unity;
-open Unity.Injection;
-open Unity.Lifetime;
+open Microsoft.Practices.Unity;
+
 
 [<TestFixture>]
 type ModelSystemTests() = 

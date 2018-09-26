@@ -22,8 +22,7 @@ using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 using NUnit.Framework;
-using Unity;
-using Unity.Lifetime;
+using Microsoft.Practices.Unity;
 using Assert = NUnit.Framework.Assert;
 
 namespace NakedObjects.Core.Test.Adapter {

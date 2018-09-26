@@ -23,9 +23,8 @@ open NakedObjects.Architecture.Persist
 open NakedObjects.Core.Configuration
 open NakedObjects.Architecture.Configuration
 open NakedObjects.Persistor.Entity.Configuration
-open Unity;
-open Unity.Injection;
-open Unity.Lifetime;
+open Microsoft.Practices.Unity;
+
 
 [<TestFixture>]
 type CodeSystemTests() = 
