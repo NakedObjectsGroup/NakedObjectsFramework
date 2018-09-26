@@ -133,6 +133,8 @@ namespace NakedObjects.SystemTest.Reflect {
             };
         }
 
+        private static string awFile = "E:\\Users\\scasc_000\\Documents\\GitHub\\NakedObjectsFramework\\Test\\NakedObjects.PerformanceTest\\Reflect\\awnames.txt";
+
         [TestMethod]
         public void ReflectAdventureworksOld() {
             // load adventurework
@@ -158,7 +160,7 @@ namespace NakedObjects.SystemTest.Reflect {
 
             string[] names = reflector.AllObjectSpecImmutables.Select(i => i.FullName).ToArray();
 
-            File.AppendAllLines("E:\\Users\\scasc_000\\Documents\\GitHub\\NakedObjectsFramework\\Test\\NakedObjects.PerformanceTest\\Reflect\\awnames.txt", names);
+            File.AppendAllLines(awFile, names);
         }
 
         [TestMethod]
@@ -184,7 +186,7 @@ namespace NakedObjects.SystemTest.Reflect {
             Console.WriteLine(interval.TotalMilliseconds);
             // 971
 
-            var names = File.ReadAllLines("E:\\Users\\scasc_000\\Documents\\GitHub\\NakedObjectsFramework\\Test\\NakedObjects.PerformanceTest\\Reflect\\awnames.txt");
+            var names = File.ReadAllLines(awFile);
 
             var newNames = reflector.AllObjectSpecImmutables.Select(i => i.FullName).ToArray();
 
@@ -207,6 +209,8 @@ namespace NakedObjects.SystemTest.Reflect {
 
             return new ReflectorConfiguration(appSpec.TypesForApp, appSpec.AllServicesForApp, appSpec.NamespacesForApp, appSpec.MainMenusForApp);
         }
+
+        private static string dspFile = "E:\\Users\\scasc_000\\Documents\\GitHub\\NakedObjectsFramework\\Test\\NakedObjects.PerformanceTest\\Reflect\\dspnames.txt";
 
         [TestMethod]
         public void ReflectDSPOld() {
@@ -233,7 +237,7 @@ namespace NakedObjects.SystemTest.Reflect {
 
             string[] names = reflector.AllObjectSpecImmutables.Select(i => i.FullName).ToArray();
 
-            File.AppendAllLines("E:\\Users\\scasc_000\\Documents\\GitHub\\NakedObjectsFramework\\Test\\NakedObjects.PerformanceTest\\Reflect\\dspnames.txt", names);
+            File.AppendAllLines(dspFile, names);
 
         }
 
@@ -254,7 +258,7 @@ namespace NakedObjects.SystemTest.Reflect {
             stopwatch.Stop();
             TimeSpan interval = stopwatch.Elapsed;
 
-            var names = File.ReadAllLines("E:\\Users\\scasc_000\\Documents\\GitHub\\NakedObjectsFramework\\Test\\NakedObjects.PerformanceTest\\Reflect\\dspnames.txt");
+            var names = File.ReadAllLines(dspFile);
 
             var newNames = reflector.AllObjectSpecImmutables.Select(i => i.FullName).ToArray();
 
