@@ -19,9 +19,7 @@ using NakedObjects.Facade.Interface;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Unity;
-using Unity;
-using Unity.Lifetime;
-using Unity.Injection;
+
 
 namespace NakedObjects.Rest.App.DemoOwin {
     /// <summary>

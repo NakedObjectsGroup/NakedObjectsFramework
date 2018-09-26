@@ -8,7 +8,7 @@
 using Microsoft.Practices.Unity;
 using NakedObjects;
 using NakedObjects.Architecture.Component;
-using Unity;
+
 
 namespace NakedObjects.Rest.App.DemoOwin {
     public class UnityFrameworkResolver : IFrameworkResolver {

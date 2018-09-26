@@ -1,7 +1,8 @@
 using System.Web.Http;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Rest.App.DemoOwin.App_Start;
-using Unity.AspNet.WebApi;
+using Microsoft.Practices.Unity.WebApi;
+
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(UnityWebApiActivator), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethod(typeof(UnityWebApiActivator), "Shutdown")]
