@@ -28,9 +28,8 @@ using NakedObjects.Meta.I18N;
 using NakedObjects.Reflect;
 using NakedObjects.Reflect.Component;
 using NakedObjects.Security;
-using Unity;
-using Unity.Injection;
-using Unity.Lifetime;
+using Microsoft.Practices.Unity;
+
 
 namespace NakedObjects.SystemTest.Reflect {
     [TestClass]

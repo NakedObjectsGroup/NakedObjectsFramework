@@ -14,8 +14,7 @@ using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Services;
 using NakedObjects.Xat;
-using Unity;
-using Unity.Lifetime;
+using Microsoft.Practices.Unity;
 
 namespace NakedObjects.SystemTest.Persistence {
     [TestClass]

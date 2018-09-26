@@ -19,8 +19,7 @@ using NakedObjects.Meta.Profile;
 using NakedObjects.Profile;
 using NakedObjects.Services;
 using NakedObjects.Xat;
-using Unity;
-using Unity.Lifetime;
+using Microsoft.Practices.Unity;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.SystemTest.Profile {

@@ -16,8 +16,8 @@ using NakedObjects.Meta.Authorization;
 using NakedObjects.Security;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.Audit;
-using Unity;
-using Unity.Lifetime;
+using Microsoft.Practices.Unity;
+
 
 namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
     [TestClass]

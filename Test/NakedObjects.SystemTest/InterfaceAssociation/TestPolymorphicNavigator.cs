@@ -11,8 +11,8 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.SystemTest.PolymorphicAssociations;
 using NakedObjects.SystemTest.Reflect;
-using Unity;
-using Unity.Lifetime;
+using Microsoft.Practices.Unity;
+
 
 namespace NakedObjects.SystemTest.PolymorphicNavigator {
     [TestClass]

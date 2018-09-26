@@ -18,8 +18,7 @@ using NakedObjects.Security;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.Audit;
 using NakedObjects.Xat;
-using Unity;
-using Unity.Lifetime;
+using Microsoft.Practices.Unity;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {

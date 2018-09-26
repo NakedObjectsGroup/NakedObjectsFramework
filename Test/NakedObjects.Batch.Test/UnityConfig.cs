@@ -13,9 +13,8 @@ using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core.Component;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Unity;
-using Unity;
-using Unity.Injection;
-using Unity.Lifetime;
+using Microsoft.Practices.Unity;
+
 
 namespace NakedObjects.Batch {
     /// <summary>

@@ -17,8 +17,8 @@ using NakedObjects.Menu;
 using NakedObjects.Meta.Menu;
 using NakedObjects.Xat;
 using TestObjectMenu;
-using Unity;
-using Unity.Lifetime;
+using Microsoft.Practices.Unity;
+
 
 namespace NakedObjects.SystemTest.Menus.Service {
     [TestClass]

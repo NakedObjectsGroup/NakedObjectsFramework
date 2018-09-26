@@ -16,8 +16,8 @@ using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.SystemTest.Reflect;
 using NakedObjects.Util;
 using NakedObjects.Xat;
-using Unity;
-using Unity.Lifetime;
+using Microsoft.Practices.Unity;
+
 
 namespace NakedObjects.SystemTest {
     public abstract class AbstractSystemTest<TContext> : AcceptanceTestCase

@@ -9,7 +9,7 @@ using System.Web.Http;
 using NakedObjects.Rest.Test.App;
 using NakedObjects.Architecture.Component;
 using WebActivatorEx;
-using Unity.AspNet.WebApi;
+using Microsoft.Practices.Unity.WebApi;
 
 [assembly: PreApplicationStartMethod(typeof(UnityWebApiActivator), "Start")]
 [assembly: ApplicationShutdownMethod(typeof(UnityWebApiActivator), "Shutdown")]
