@@ -222,7 +222,7 @@
     <Compile Include="FacetFactory\RemoveEventHandlerMethodsFacetFactory.cs" />
     <Compile Include="FacetFactory\RemoveSuperclassMethodsFacetFactory.cs" />
     <Compile Include="Reflect\Introspector.cs" />
-    <Compile Include="Component\Reflector.cs" />
+    <Compile Include="Component\ParallelReflector.cs" />
     <Compile Include="Reflect\MemberIdentifierComparator.cs" />
     <Compile Include="Reflect\MemberOrderComparator.cs" />
     <Compile Include="Component\DefaultClassStrategy.cs" />

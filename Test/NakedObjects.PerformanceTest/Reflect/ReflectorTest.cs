@@ -256,7 +256,8 @@ namespace NakedObjects.SystemTest.Reflect {
             Assert.IsTrue(reflector.AllObjectSpecImmutables.Any());
             //Assert.IsTrue(interval.Milliseconds < 1000);
             Console.WriteLine(interval.TotalMilliseconds);
-            // 223881 
+            // 223881
+            // 228833 = 3m 48s
 
             string[] names = reflector.AllObjectSpecImmutables.Select(i => i.FullName).ToArray();
 
@@ -303,6 +304,7 @@ namespace NakedObjects.SystemTest.Reflect {
             //Assert.IsTrue(interval.Milliseconds < 1000);
             Console.WriteLine(interval.TotalMilliseconds);
             // 144840 = 2m 24s
+            // 95249 = 1m 35s
         }
 
 

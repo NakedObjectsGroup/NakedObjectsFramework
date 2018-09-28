@@ -195,6 +195,7 @@ namespace NakedObjects.Reflect.Component {
                     }
                 }
             }
+
             spec.AddContributedActions(contributedActions);
             spec.AddCollectionContributedActions(collectionContribActions);
         }
