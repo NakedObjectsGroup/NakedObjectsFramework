@@ -35,6 +35,15 @@ namespace NakedObjects.Meta.Component {
             }
         }
 
+        public ImmutableInMemorySpecCache(string file, IFormatter formatter) {
+            using (FileStream fs = File.Open(file, FileMode.Open)) {
+                var data = (SerializedData)formatter.Deserialize(fs);
+                specs = data.SpecKeys.Zip(data.SpecValues, (k, v) => new { k, v }).ToDictionary(a => a.k, a => a.v).ToImmutableDictionary();
+
+                mainMenus = data.MenuValues.ToImmutableList();
+            }
+        }
+
         // The special constructor is used to deserialize values. 
         public ImmutableInMemorySpecCache(SerializationInfo info, StreamingContext context) {
             tempData = info.GetValue<SerializedData>("data");
@@ -64,6 +73,13 @@ namespace NakedObjects.Meta.Component {
             using (FileStream fs = File.Open(file, FileMode.OpenOrCreate)) {
                 IFormatter formatter = new BinaryFormatter();
                 var data = new SerializedData {SpecKeys = specs.Keys.ToList(), SpecValues = specs.Values.ToList(), MenuValues = mainMenus.ToList()};
+                formatter.Serialize(fs, data);
+            }
+        }
+
+        public void Serialize(string file, IFormatter formatter) {
+            using (FileStream fs = File.Open(file, FileMode.OpenOrCreate)) {
+                var data = new SerializedData { SpecKeys = specs.Keys.ToList(), SpecValues = specs.Values.ToList(), MenuValues = mainMenus.ToList() };
                 formatter.Serialize(fs, data);
             }
         }

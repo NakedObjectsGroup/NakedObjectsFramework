@@ -191,7 +191,7 @@ namespace NakedObjects.Meta.Menu {
             info.AddValue<IMenu>("SuperMenu", SuperMenu);
             info.AddValue<string>("Name", Name);
             info.AddValue<string>("Id", Id);
-            info.AddValue<IMetamodel>("metamodel", Metamodel);
+            info.AddValue<IMetamodel>("Metamodel", Metamodel);
         }
 
         public void OnDeserialization(object sender) {

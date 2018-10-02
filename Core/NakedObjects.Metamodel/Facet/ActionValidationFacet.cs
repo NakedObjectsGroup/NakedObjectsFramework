@@ -8,6 +8,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
@@ -20,7 +21,8 @@ namespace NakedObjects.Meta.Facet {
     public sealed class ActionValidationFacet : FacetAbstract, IActionValidationFacet, IImperativeFacet {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ActionValidationFacet));
         private readonly MethodInfo method;
-        private readonly Func<object, object[], object> methodDelegate;
+        [field: NonSerialized]
+        private Func<object, object[], object> methodDelegate;
 
         public ActionValidationFacet(MethodInfo method, ISpecification holder)
             : base(typeof (IActionValidationFacet), holder) {
@@ -63,6 +65,11 @@ namespace NakedObjects.Meta.Facet {
 
         protected override string ToStringValues() {
             return "method=" + method;
+        }
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context) {
+            methodDelegate = DelegateUtils.CreateDelegate(method);
         }
     }
 

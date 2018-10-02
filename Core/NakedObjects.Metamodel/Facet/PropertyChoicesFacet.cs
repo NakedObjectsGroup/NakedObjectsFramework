@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
@@ -25,8 +26,9 @@ namespace NakedObjects.Meta.Facet {
         private static readonly ILog Log = LogManager.GetLogger(typeof(PropertyChoicesFacet));
 
         private readonly MethodInfo method;
-        private readonly Func<object, object[], object> methodDelegate;
-        private readonly string[] parameterNames;
+        [field: NonSerialized]
+        private Func<object, object[], object> methodDelegate;
+        private string[] parameterNames;
 
         public PropertyChoicesFacet(MethodInfo optionsMethod, Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes, ISpecification holder)
             : base(typeof(IPropertyChoicesFacet), holder) {
@@ -72,6 +74,11 @@ namespace NakedObjects.Meta.Facet {
 
         protected override string ToStringValues() {
             return "method=" + method;
+        }
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context) {
+            methodDelegate = DelegateUtils.CreateDelegate(method);
         }
     }
 

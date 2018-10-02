@@ -8,6 +8,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -20,7 +21,8 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstract, IImperativeFacet {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ActionInvocationFacetViaMethod));
-        private readonly Func<object, object[], object> actionDelegate;
+        [field: NonSerialized]
+        private Func<object, object[], object> actionDelegate;
         private readonly MethodInfo actionMethod;
         private readonly IObjectSpecImmutable elementType;
         private readonly bool isQueryOnly;
@@ -100,7 +102,11 @@ namespace NakedObjects.Meta.Facet {
             return "method=" + actionMethod;
         }
 
-      
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context) {
+            actionDelegate = DelegateUtils.CreateDelegate(actionMethod);
+        }
+
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -11,6 +11,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
+using NakedObjects.Core.Util.Enumer;
 using NakedObjects.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
@@ -21,7 +22,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
         private const int TypicalLengthConst = 11;
 
         public EnumValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualBycontent, default(T), spec) {}
+            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualBycontent, GetDefault(), spec) {}
 
         public static Type Type => typeof (IEnumValueFacet);
 
@@ -37,6 +38,19 @@ namespace NakedObjects.Meta.SemanticsProvider {
         }
 
         #endregion
+
+        private static T GetDefault() {
+            // default(T) for an enum just returns 0 - but that's 
+            // not necessarily a valid value for the enum - and that breaks serialization
+            // return the first value. 
+            var values = Enum.GetValues(AdaptedType);
+            if (values.Length > 0) {
+                return (T) values.GetValue(0);
+            }
+
+            return default(T);
+        }
+
 
         public static bool IsAdaptedType(Type type) {
             return type == AdaptedType;

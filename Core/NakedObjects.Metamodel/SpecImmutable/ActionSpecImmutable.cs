@@ -88,7 +88,7 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         // The special constructor is used to deserialize values. 
         public ActionSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {
-            ownerSpec = info.GetValue<IObjectSpecImmutable>("specification");
+            ownerSpec = info.GetValue<ITypeSpecImmutable>("specification");
             parameters = info.GetValue<IActionParameterSpecImmutable[]>("parameters");
         }
 

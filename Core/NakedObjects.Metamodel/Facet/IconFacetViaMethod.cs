@@ -7,6 +7,7 @@
 
 using System;
 using System.Reflection;
+using System.Runtime.Serialization;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
@@ -14,11 +15,14 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class IconFacetViaMethod : IconFacetAbstract {
+        private readonly MethodInfo method;
         private readonly string iconName; // iconName from attribute
-        private readonly Func<object, object[], object> methodDelegate;
+        [field: NonSerialized]
+        private Func<object, object[], object> methodDelegate;
 
         public IconFacetViaMethod(MethodInfo method, ISpecification holder, string iconName)
             : base(holder) {
+            this.method = method;
             this.iconName = iconName;
             methodDelegate = DelegateUtils.CreateDelegate(method);
         }
@@ -29,6 +33,11 @@ namespace NakedObjects.Meta.Facet {
 
         public override string GetIconName() {
             return iconName;
+        }
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context) {
+            methodDelegate = DelegateUtils.CreateDelegate(method);
         }
     }
 

@@ -7,6 +7,7 @@
 
 using System;
 using System.Reflection;
+using System.Runtime.Serialization;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -16,7 +17,8 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class LoadedCallbackFacetViaMethod : LoadedCallbackFacetAbstract, IImperativeFacet {
-        private readonly Action<object> loadedDelegate;
+        [field: NonSerialized]
+        private Action<object> loadedDelegate;
         private readonly MethodInfo method;
 
         public LoadedCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
@@ -46,6 +48,11 @@ namespace NakedObjects.Meta.Facet {
 
         protected override string ToStringValues() {
             return "method=" + method;
+        }
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context) {
+            loadedDelegate = DelegateUtils.CreateCallbackDelegate(method);
         }
     }
 

@@ -7,6 +7,7 @@
 
 using System;
 using System.Reflection;
+using System.Runtime.Serialization;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
@@ -16,7 +17,8 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class PropertyValidateFacetViaMethod : PropertyValidateFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
-        private readonly Func<object, object[], object> methodDelegate;
+        [field: NonSerialized]
+        private Func<object, object[], object> methodDelegate;
 
         public PropertyValidateFacetViaMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
@@ -45,6 +47,11 @@ namespace NakedObjects.Meta.Facet {
 
         protected override string ToStringValues() {
             return "method=" + method;
+        }
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context) {
+            methodDelegate = DelegateUtils.CreateDelegate(method);
         }
     }
 

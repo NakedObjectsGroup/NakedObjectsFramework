@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
@@ -81,7 +82,8 @@ namespace NakedObjects.Meta.Facet {
         [Serializable]
         public class NakedObjectValidationMethod {
             private readonly MethodInfo method;
-            private readonly Func<object, object[], object> methodDelegate;
+            [field: NonSerialized]
+            private Func<object, object[], object> methodDelegate;
 
             public NakedObjectValidationMethod(MethodInfo method) {
                 this.method = method;
@@ -96,6 +98,11 @@ namespace NakedObjects.Meta.Facet {
 
             public string Execute(INakedObjectAdapter obj, INakedObjectAdapter[] parameters) {
                 return methodDelegate(obj.GetDomainObject(), parameters.Select(no => no.GetDomainObject()).ToArray()) as string;
+            }
+
+            [OnDeserialized]
+            private void OnDeserialized(StreamingContext context) {
+                methodDelegate = DelegateUtils.CreateDelegate(method);
             }
         }
 

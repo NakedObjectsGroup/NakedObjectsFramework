@@ -11,6 +11,9 @@ using System.Data.Entity.Core.Objects.DataClasses;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Xml.Serialization;
 using AdventureWorksModel;
 using AdventureWorksModel.Sales;
 using Microsoft.Practices.Unity;
@@ -20,6 +23,7 @@ using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Menu;
+using NakedObjects.Meta;
 using NakedObjects.Meta.Component;
 using NakedObjects.Reflect;
 using NakedObjects.Reflect.Component;
@@ -184,6 +188,134 @@ namespace NakedObjects.SystemTest.Reflect {
             string[] names = reflector.AllObjectSpecImmutables.Select(i => i.FullName).ToArray();
 
             File.AppendAllLines(awFile, names);
+        }
+
+        [TestMethod]
+        public void SerializeAdventureworks() {
+            // load adventurework
+
+            AssemblyHook.EnsureAssemblyLoaded();
+
+            IUnityContainer container = GetContainer();
+            var rc = new ReflectorConfiguration(Types, Services, ModelNamespaces, MainMenus);
+
+            container.RegisterInstance<IReflectorConfiguration>(rc);
+
+            var reflector = container.Resolve<IReflector>();
+
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            reflector.Reflect();
+            stopwatch.Stop();
+            var reflectInterval = stopwatch.Elapsed.TotalMilliseconds;
+            Console.WriteLine("reflect {0}", reflectInterval);
+
+            Assert.IsTrue(reflector.AllObjectSpecImmutables.Any());
+
+            var cache = container.Resolve<ISpecificationCache>();
+
+            //var f1 =
+            //    cache.AllSpecifications().SelectMany(s => s.Fields)
+            //        .Select(s => s.Spec)
+            //        .Where(s => s != null)
+            //        .OfType<OneToOneAssociationSpecImmutable>()
+            //        .SelectMany(s => s.GetFacets())
+            //        .Select(f => f.GetType().FullName)
+            //        .Distinct();
+
+            //foreach (var f in f1) {
+            //    Console.WriteLine(" field facet  {0}", f);
+            //}
+
+            Directory.CreateDirectory(@"c:\testmetadata");
+
+            const string file = @"c:\testmetadata\metadataAW.bin";
+
+            SerializeDeserialize(cache, file);
+        }
+
+        [TestMethod]
+        public void SerializeDSP() {
+            // load adventurework
+
+            IUnityContainer container = GetContainer();
+            var rc = DSPReflectorConfiguration(container);
+
+            container.RegisterInstance<IReflectorConfiguration>(rc);
+
+            var reflector = container.Resolve<IReflector>();
+
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            reflector.Reflect();
+            stopwatch.Stop();
+            var reflectInterval = stopwatch.Elapsed.TotalMilliseconds;
+            Console.WriteLine("reflect {0}", reflectInterval);
+
+            Assert.IsTrue(reflector.AllObjectSpecImmutables.Any());
+
+            var cache = container.Resolve<ISpecificationCache>();
+
+
+            Directory.CreateDirectory(@"c:\testmetadata");
+
+            const string file = @"c:\testmetadata\metadataDSP.bin";
+
+            SerializeDeserialize(cache, file);
+        }
+
+
+        private void SerializeDeserialize(ISpecificationCache cache, string file) {
+            var stopwatch = new Stopwatch();
+            IUnityContainer container = GetContainer();
+
+            stopwatch.Start();
+
+            IFormatter formatter = new NetDataContractSerializer();
+            //IFormatter formatter = new BinaryFormatter();
+
+
+            cache.Serialize(file, formatter);
+
+            stopwatch.Stop();
+            TimeSpan serializeInterval = stopwatch.Elapsed;
+            stopwatch.Reset();
+
+            // and roundtrip 
+
+            container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(
+                new PerResolveLifetimeManager(), new InjectionConstructor(file, formatter));
+
+            stopwatch.Start();
+            var newCache = container.Resolve<ISpecificationCache>();
+            stopwatch.Stop();
+            TimeSpan deserializeInterval = stopwatch.Elapsed;
+            stopwatch.Reset();
+
+            CompareCaches(cache, newCache);
+
+            Console.WriteLine("serialize {0} deserialize {1} ", serializeInterval.TotalMilliseconds,
+                deserializeInterval.TotalMilliseconds);
+        }
+
+        private static void CompareCaches(ISpecificationCache cache, ISpecificationCache newCache) {
+            Assert.AreEqual(cache.AllSpecifications().Count(), newCache.AllSpecifications().Count());
+
+            var zipped = cache.AllSpecifications().Zip(newCache.AllSpecifications(), (a, b) => new { a, b });
+
+            foreach (var item in zipped) {
+                Assert.AreEqual(item.a.FullName, item.b.FullName);
+
+                Assert.AreEqual(item.a.GetFacets().Count(), item.b.GetFacets().Count());
+
+                var zipfacets = item.a.GetFacets().Zip(item.b.GetFacets(), (x, y) => new { x, y });
+
+                foreach (var zipfacet in zipfacets) {
+                    Assert.AreEqual(zipfacet.x.FacetType, zipfacet.y.FacetType);
+                }
+            }
         }
 
         [TestMethod]

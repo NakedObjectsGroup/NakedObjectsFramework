@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
@@ -23,10 +24,10 @@ namespace NakedObjects.Meta.Facet {
         private const int DefaultPageSize = 50;
         private static readonly ILog Log = LogManager.GetLogger(typeof(AutoCompleteFacet));
         private readonly MethodInfo method;
-        private readonly Func<object, object[], object> methodDelegate;
+        [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
         private AutoCompleteFacet(ISpecification holder)
-            : base(Type, holder) {}
+            : base(Type, holder) { }
 
         public AutoCompleteFacet(MethodInfo autoCompleteMethod, int pageSize, int minLength, ISpecification holder)
             : this(holder) {
@@ -53,15 +54,18 @@ namespace NakedObjects.Meta.Facet {
                 if (queryable != null) {
                     return queryable.Take(PageSize).ToArray();
                 }
+
                 //returning an IEnumerable (of string only)
                 var strings = autoComplete as IEnumerable<string>;
                 if (strings != null) {
                     return strings.Cast<object>().ToArray();
                 }
+
                 //return type is a single object
                 if (!CollectionUtils.IsCollection(autoComplete.GetType())) {
                     return new[] {autoComplete};
                 }
+
                 throw new NakedObjectDomainException(Log.LogAndReturn($"Must return IQueryable or a single object from autoComplete method: {method.Name}"));
             }
             catch (ArgumentException ae) {
@@ -85,6 +89,11 @@ namespace NakedObjects.Meta.Facet {
 
         protected override string ToStringValues() {
             return "method=" + method;
+        }
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context) {
+            methodDelegate = DelegateUtils.CreateDelegate(method);
         }
     }
 

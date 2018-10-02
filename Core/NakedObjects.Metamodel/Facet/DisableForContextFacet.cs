@@ -7,6 +7,7 @@
 
 using System;
 using System.Reflection;
+using System.Runtime.Serialization;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
@@ -18,7 +19,8 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class DisableForContextFacet : FacetAbstract, IDisableForContextFacet, IImperativeFacet {
         private readonly MethodInfo method;
-        private readonly Func<object, Object[], object> methodDelegate;
+        [field: NonSerialized]
+        private Func<object, Object[], object> methodDelegate;
 
         public DisableForContextFacet(MethodInfo method, ISpecification holder)
             : base(typeof (IDisableForContextFacet), holder) {
@@ -57,6 +59,11 @@ namespace NakedObjects.Meta.Facet {
 
         protected override string ToStringValues() {
             return "method=" + method;
+        }
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context) {
+            methodDelegate = DelegateUtils.CreateDelegate(method);
         }
     }
 

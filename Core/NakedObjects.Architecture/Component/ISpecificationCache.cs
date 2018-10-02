@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Runtime.Serialization;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 
@@ -17,6 +18,7 @@ namespace NakedObjects.Architecture.Component {
         void Cache(IMenuImmutable mainMenu);
         IMenuImmutable[] MainMenus();
         void Serialize(string file);
+        void Serialize(string file, IFormatter formatter);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

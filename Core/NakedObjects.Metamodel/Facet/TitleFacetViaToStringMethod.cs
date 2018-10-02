@@ -7,6 +7,7 @@
 
 using System;
 using System.Reflection;
+using System.Runtime.Serialization;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -17,7 +18,8 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class TitleFacetViaToStringMethod : TitleFacetAbstract, IImperativeFacet {
         private readonly MethodInfo maskMethod;
-        private readonly Func<object, object[], object> maskDelegate;
+        [field: NonSerialized]
+        private Func<object, object[], object> maskDelegate;
 
         public TitleFacetViaToStringMethod(MethodInfo maskMethod, ISpecification holder)
             : base(holder) {
@@ -51,6 +53,10 @@ namespace NakedObjects.Meta.Facet {
             }
 
             return GetTitle(nakedObjectAdapter, nakedObjectManager);
+        }
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context) {
+            maskDelegate = maskMethod == null ? null : DelegateUtils.CreateDelegate(maskMethod);
         }
     }
 
