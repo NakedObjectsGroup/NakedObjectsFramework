@@ -144,9 +144,12 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         }
 
         private bool IsCollection(Type type) {
-            return CollectionUtils.IsGenericEnumerable(type) ||
+            return type != null && (
+                   CollectionUtils.IsGenericEnumerable(type) ||
                    type.IsArray ||
-                   CollectionUtils.IsCollectionButNotArray(type);
+                   CollectionUtils.IsCollectionButNotArray(type) ||
+                   IsCollection(type.BaseType) ||
+                   type.GetInterfaces().Where(i => i.IsPublic).Any(IsCollection));
         }
 
         private bool ParametersAreSupported(MethodInfo method, IClassStrategy classStrategy) {

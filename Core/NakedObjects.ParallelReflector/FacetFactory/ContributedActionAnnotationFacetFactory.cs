@@ -36,9 +36,12 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         }
 
         private static bool IsCollection(Type type) {
-            return CollectionUtils.IsGenericEnumerable(type) ||
-                   type.IsArray ||
-                   CollectionUtils.IsCollectionButNotArray(type);
+            return type != null && (
+                       CollectionUtils.IsGenericEnumerable(type) ||
+                       type.IsArray ||
+                       CollectionUtils.IsCollectionButNotArray(type) ||
+                       IsCollection(type.BaseType) ||
+                       type.GetInterfaces().Where(i => i.IsPublic).Any(IsCollection));
         }
 
         private bool IsQueryable(Type type) {

@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Immutable;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
 using System.Diagnostics;
@@ -13,6 +14,8 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization.Formatters.Soap;
+using System.Web.UI;
 using System.Xml.Serialization;
 using AdventureWorksModel;
 using AdventureWorksModel.Sales;
@@ -21,16 +24,23 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Menu;
 using NakedObjects.Meta;
 using NakedObjects.Meta.Component;
+using NakedObjects.Meta.Utils;
 using NakedObjects.Reflect;
 using NakedObjects.Reflect.Component;
 using NakedObjects.Unity;
+using Newtonsoft.Json;
 using Sdm.App.App_Start;
+using Sdm.Test.Fixtures.Clusters.Means.MeansAssessment.Actions;
 
 namespace NakedObjects.SystemTest.Reflect {
+
+
+
     [TestClass]
     public class ReflectorTest {
         protected IUnityContainer GetContainer() {
@@ -160,7 +170,7 @@ namespace NakedObjects.SystemTest.Reflect {
             };
         }
 
-        private static string awFile = "E:\\Users\\scasc_000\\Documents\\GitHub\\NakedObjectsFramework\\Test\\NakedObjects.PerformanceTest\\Reflect\\awnames.txt";
+        //private static string awFile = "E:\\Users\\scasc_000\\Documents\\GitHub\\NakedObjectsFramework\\Test\\NakedObjects.PerformanceTest\\Reflect\\awnames.txt";
 
         [TestMethod]
         public void ReflectAdventureworksOld() {
@@ -185,10 +195,31 @@ namespace NakedObjects.SystemTest.Reflect {
             Console.WriteLine(interval.TotalMilliseconds);
             // 971
 
-            string[] names = reflector.AllObjectSpecImmutables.Select(i => i.FullName).ToArray();
+            var cache = container.Resolve<ISpecificationCache>();
+            serialAwSpecs = cache.AllSpecifications();
 
-            File.AppendAllLines(awFile, names);
+            //string[] names = reflector.AllObjectSpecImmutables.Select(i => i.FullName).ToArray();
+
+            //File.AppendAllLines(awFile, names);
         }
+
+
+        private ITypeSpecImmutable[] DeSerialize(string file, IFormatter formatter) {
+
+            ITypeSpecImmutable[] data;
+            using (FileStream fs = File.Open(file, FileMode.Open)) {
+                data = (ITypeSpecImmutable[])formatter.Deserialize(fs);
+            }
+
+            return data;
+        }
+
+        private void Serialize(string file, IFormatter formatter, ITypeSpecImmutable[] specs) {
+            using (FileStream fs = File.Open(file, FileMode.OpenOrCreate)) {
+                formatter.Serialize(fs, specs);
+            }
+        }
+
 
         [TestMethod]
         public void SerializeAdventureworks() {
@@ -213,7 +244,7 @@ namespace NakedObjects.SystemTest.Reflect {
 
             Assert.IsTrue(reflector.AllObjectSpecImmutables.Any());
 
-            var cache = container.Resolve<ISpecificationCache>();
+            //var cache = container.Resolve<ISpecificationCache>();
 
             //var f1 =
             //    cache.AllSpecifications().SelectMany(s => s.Fields)
@@ -227,12 +258,14 @@ namespace NakedObjects.SystemTest.Reflect {
             //foreach (var f in f1) {
             //    Console.WriteLine(" field facet  {0}", f);
             //}
+            var cache = container.Resolve<ISpecificationCache>();
+            serialAwSpecs = cache.AllSpecifications();
 
-            Directory.CreateDirectory(@"c:\testmetadata");
+            //Directory.CreateDirectory(@"c:\testmetadata");
 
-            const string file = @"c:\testmetadata\metadataAW.bin";
+            //const string file = @"c:\testmetadata\metadataAW.bin";
 
-            SerializeDeserialize(cache, file);
+            //SerializeDeserializeLocal(cache, file);
         }
 
         [TestMethod]
@@ -263,7 +296,7 @@ namespace NakedObjects.SystemTest.Reflect {
 
             const string file = @"c:\testmetadata\metadataDSP.bin";
 
-            SerializeDeserialize(cache, file);
+            SerializeDeserializeLocalEach(cache, file);
         }
 
 
@@ -275,7 +308,7 @@ namespace NakedObjects.SystemTest.Reflect {
 
             IFormatter formatter = new NetDataContractSerializer();
             //IFormatter formatter = new BinaryFormatter();
-
+            //IFormatter formatter = new SoapFormatter();
 
             cache.Serialize(file, formatter);
 
@@ -300,6 +333,92 @@ namespace NakedObjects.SystemTest.Reflect {
                 deserializeInterval.TotalMilliseconds);
         }
 
+        private void SerializeDeserializeLocal(ISpecificationCache cache, string file) {
+            var stopwatch = new Stopwatch();
+            IUnityContainer container = GetContainer();
+
+            stopwatch.Start();
+
+            IFormatter formatter = new NetDataContractSerializer();
+            //IFormatter formatter = new BinaryFormatter();
+            //IFormatter formatter = new SoapFormatter();
+
+            var specs = cache.AllSpecifications();
+
+            Serialize(file, formatter, specs);
+
+            stopwatch.Stop();
+            TimeSpan serializeInterval = stopwatch.Elapsed;
+            stopwatch.Reset();
+
+            // and roundtrip 
+
+            stopwatch.Start();
+            var newSpecs = DeSerialize(file, formatter);
+            stopwatch.Stop();
+            TimeSpan deserializeInterval = stopwatch.Elapsed;
+            stopwatch.Reset();
+
+            Assert.AreEqual(specs.Length, newSpecs.Length);
+
+            //CompareCaches(cache, newCache);
+
+            Console.WriteLine("serialize {0} deserialize {1} ", serializeInterval.TotalMilliseconds,
+                deserializeInterval.TotalMilliseconds);
+        }
+
+        private void SerializeDeserializeLocalEach(ISpecificationCache cache, string file) {
+            var stopwatch = new Stopwatch();
+            //IUnityContainer container = GetContainer();
+
+            //stopwatch.Start();
+
+            IFormatter formatter = new NetDataContractSerializer();
+            //IFormatter formatter = new BinaryFormatter();
+            //IFormatter formatter = new SoapFormatter();
+
+            var specs = cache.AllSpecifications();
+            var index = 0;
+
+            foreach (var spec in specs) {
+
+                try {
+                    ITypeSpecImmutable[] singleSpec = {spec};
+
+                    stopwatch.Start();
+
+                    string fileName = file + index++;
+
+                    Serialize(fileName, formatter, singleSpec);
+
+                    stopwatch.Stop();
+                    TimeSpan serializeInterval = stopwatch.Elapsed;
+                    stopwatch.Reset();
+
+                    // and roundtrip 
+
+                    stopwatch.Start();
+                    var newSpecs = DeSerialize(fileName, formatter);
+                    stopwatch.Stop();
+                    TimeSpan deserializeInterval = stopwatch.Elapsed;
+                    stopwatch.Reset();
+
+                    Assert.AreEqual(1, newSpecs.Length);
+
+                    //CompareCaches(cache, newCache);
+
+                    Console.WriteLine("serialize {0} deserialize {1} ", serializeInterval.TotalMilliseconds,
+                        deserializeInterval.TotalMilliseconds);
+                }
+                catch (Exception e) {
+                    Console.WriteLine("failed "+ index + " " + spec.FullName + " " + e.Message);
+                }
+            }
+        }
+
+
+
+
         private static void CompareCaches(ISpecificationCache cache, ISpecificationCache newCache) {
             Assert.AreEqual(cache.AllSpecifications().Count(), newCache.AllSpecifications().Count());
 
@@ -317,6 +436,9 @@ namespace NakedObjects.SystemTest.Reflect {
                 }
             }
         }
+
+        private ITypeSpecImmutable[] parallelAwSpecs;
+        private ITypeSpecImmutable[] serialAwSpecs;
 
         [TestMethod]
         public void ReflectAdventureworksParallel() {
@@ -341,22 +463,34 @@ namespace NakedObjects.SystemTest.Reflect {
             Console.WriteLine(interval.TotalMilliseconds);
             // 971
 
-            var names = File.ReadAllLines(awFile);
+            var cache = container.Resolve<ISpecificationCache>();
+            parallelAwSpecs = cache.AllSpecifications();
 
-            var newNames = reflector.AllObjectSpecImmutables.Select(i => i.FullName).ToArray();
+            //var names = File.ReadAllLines(awFile);
 
-            foreach (var name in names) {
-                if (!newNames.Contains(name)) {
-                    Console.WriteLine("missing name in new metamodel: " + name);
-                }
-            }
+            //var newNames = reflector.AllObjectSpecImmutables.Select(i => i.FullName).ToArray();
 
-            foreach (var name in newNames) {
-                if (!names.Contains(name)) {
-                    Console.WriteLine("name not present in old metamodel: " + name);
-                }
-            }
+            //foreach (var name in names) {
+            //    if (!newNames.Contains(name)) {
+            //        Console.WriteLine("missing name in new metamodel: " + name);
+            //    }
+            //}
+
+            //foreach (var name in newNames) {
+            //    if (!names.Contains(name)) {
+            //        Console.WriteLine("name not present in old metamodel: " + name);
+            //    }
+            //}
         }
+
+        [TestMethod]
+        public void CompareAWSpecs() {
+            ReflectAdventureworksOld();
+            ReflectAdventureworksParallel();
+            CompareFunctions.Compare(parallelAwSpecs, serialAwSpecs);
+        }
+
+
 
 
         private static ReflectorConfiguration DSPReflectorConfiguration(IUnityContainer container) {
