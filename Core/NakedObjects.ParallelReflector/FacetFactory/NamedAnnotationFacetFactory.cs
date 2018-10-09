@@ -72,7 +72,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
         private INamedFacet CreateProperty(Attribute attribute, ISpecification holder) {
             if (attribute == null) {
-                return SaveDefaultName(holder);
+                return null;
             }
 
             var namedAttribute = attribute as NamedAttribute;
@@ -99,15 +99,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         private INamedFacet CreateAnnotation(string name, ISpecification holder) {
             return new NamedFacetAnnotation(name, holder);
         }
-
-        private static bool IsAlwaysHidden(ISpecification holder) {
-            var hiddenFacet = holder.GetFacet<IHiddenFacet>();
-            return hiddenFacet != null && hiddenFacet.Value == WhenTo.Always;
-        }
-
-        private INamedFacet SaveDefaultName(ISpecification holder) {
-            string name = holder.Identifier.MemberName;
-            return CreateAnnotation(name, holder);
-        }
+       
     }
 }
