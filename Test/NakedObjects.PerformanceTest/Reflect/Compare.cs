@@ -7,6 +7,8 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Meta.Facet;
+using NakedObjects.Meta.Spec;
 
 namespace NakedObjects.SystemTest.Reflect {
     public static class CompareFunctions {
@@ -15,14 +17,36 @@ namespace NakedObjects.SystemTest.Reflect {
 
         }
 
+        public static void Compare(ActionParameterValidation apv1, ActionParameterValidation apv2) {
+
+        }
+
+
+        public static void Compare(IActionParameterSpecImmutable actionParameter1, IActionParameterSpecImmutable actionParameter2) {
+            var specName = actionParameter1.Identifier.ToIdentityString(IdentifierDepth.ClassNameParams);
+
+            Compare(actionParameter1.Specification, actionParameter2.Specification);
+            Compare(actionParameter1.IsChoicesEnabled, actionParameter2.IsChoicesEnabled, specName);
+            Compare(actionParameter1.IsMultipleChoicesEnabled, actionParameter2.IsMultipleChoicesEnabled, specName);        
+            Compare(actionParameter1, actionParameter2, specName);
+        }
+
+        public static void Compare(IActionParameterSpecImmutable[] actionParameters1, IActionParameterSpecImmutable[] actionParameters2) {
+            CompareCount(actionParameters1.Cast<ISpecification>().ToList(), actionParameters2.Cast<ISpecification>().ToList());
+
+            var oSpecs1 = actionParameters1.OrderBy((i) => i == null ? "" : i.Identifier.ToIdentityString(IdentifierDepth.ClassNameParams)).ToList();
+            var oSpecs2 = actionParameters2.OrderBy((i) => i == null ? "" : i.Identifier.ToIdentityString(IdentifierDepth.ClassNameParams)).ToList();
+
+            foreach (var a in oSpecs1.Zip(oSpecs2, (s1, s2) => new { s1, s2 })) {
+                Compare(a.s1, a.s2);
+            }
+        }
+
         public static void Compare(IActionSpecImmutable action1, IActionSpecImmutable action2) {
             var specName = action1.Name;
             Compare(action1.OwnerSpec, action2.OwnerSpec);
-
             Compare(action1.ElementSpec, action2.ElementSpec);
-
-            //IActionParameterSpecImmutable[] Parameters { get; }
-
+            Compare(action1.Parameters, action2.Parameters);
             Compare(action1.ReturnSpec, action2.ReturnSpec);
             Compare(action1.Description, action2.Description, specName);
             Compare(action1.Name, action2.Name, specName);
@@ -143,6 +167,10 @@ namespace NakedObjects.SystemTest.Reflect {
             Assert.AreEqual(b1, b2, $"on {parent} no match {b1} {b2}");
         }
 
+        public static void Compare(IIdentifier i1, IIdentifier i2, string parent) {
+            Assert.AreEqual(i1.ToIdentityString(IdentifierDepth.ClassNameParams), i2.ToIdentityString(IdentifierDepth.ClassNameParams), $"on {parent} no match {i1} {i2}");
+        }
+
         public static IList<string> Compared = new List<string>();
 
         public static void Compare(Type[] types1, Type[] types2, string specName) {
@@ -156,8 +184,20 @@ namespace NakedObjects.SystemTest.Reflect {
             }
         }
 
+        
+
         public static void Compare(IFacet facet1, IFacet facet2, string specName) {
-         
+            //Compare(facet1.Specification.Identifier, facet2.Specification.Identifier, specName);
+            Compare(facet1.FacetType, facet2.FacetType, specName);
+            Compare(facet1.IsNoOp, facet2.IsNoOp, specName);
+            Compare(facet1.CanAlwaysReplace, facet2.CanAlwaysReplace, specName);
+            Compare(facet1.GetType(), facet2.GetType(), specName);
+
+            switch (facet1) {
+                case ActionParameterValidation apv1:
+                    Compare(apv1, facet2 as ActionParameterValidation);
+                    break;
+            }
         }
 
         public static void Compare(IEnumerable<IFacet> facets1, IEnumerable<IFacet> facets2, string specName) {
@@ -174,11 +214,8 @@ namespace NakedObjects.SystemTest.Reflect {
         public static void Compare(ISpecification spec1, ISpecification spec2, string specName) {
 
             Compare(spec1.FacetTypes, spec2.FacetTypes, specName);
-            Compare(
-                spec1.Identifier.ToIdentityString(IdentifierDepth.Parms),
-                spec2.Identifier.ToIdentityString(IdentifierDepth.Parms),
-                specName);
-            
+            //Compare(spec1.Identifier, spec2.Identifier, specName);
+
             Compare(spec1.GetFacets(), spec2.GetFacets(), specName);
         }
 

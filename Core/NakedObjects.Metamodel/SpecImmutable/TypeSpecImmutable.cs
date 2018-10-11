@@ -64,7 +64,9 @@ namespace NakedObjects.Meta.SpecImmutable {
         }
 
         public void AddSubclass(ITypeSpecImmutable subclass) {
-            subclasses = subclasses.Add(subclass);
+            lock (subclasses) {
+                subclasses = subclasses.Add(subclass);
+            }
         }
 
         public ITypeSpecImmutable Superclass { get; private set; }

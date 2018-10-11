@@ -6,7 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Drawing;
 using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -16,6 +18,9 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
+using NakedObjects.Util;
+using NakedObjects.Value;
+using Image = NakedObjects.Value.Image;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class TypicalLengthDerivedFromTypeFacetFactory : AnnotationBasedFacetFactoryAbstract {
@@ -23,34 +28,83 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             : base(numericOrder, FeatureType.PropertiesAndActionParameters) { }
 
         public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            return AddFacetDerivedFromTypeIfPresent(reflector, specification, property.PropertyType, metamodel);
+            AddFacetDerivedFromTypeIfPresent(specification, property.PropertyType, reflector.ClassStrategy);
+            return metamodel;
         }
 
         public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Type type = method.ReturnType;
-            return AddFacetDerivedFromTypeIfPresent(reflector, specification, type, metamodel);
+            AddFacetDerivedFromTypeIfPresent(specification, type, reflector.ClassStrategy);
+            return metamodel;
         }
 
         public override ImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
-            return AddFacetDerivedFromTypeIfPresent(reflector, holder, parameter.ParameterType, metamodel);
+            AddFacetDerivedFromTypeIfPresent(holder, parameter.ParameterType, reflector.ClassStrategy);
+            return metamodel;
         }
 
-        private ImmutableDictionary<string, ITypeSpecBuilder> AddFacetDerivedFromTypeIfPresent(IReflector reflector, ISpecification holder, Type type, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var result = GetTypicalLengthFacet(reflector, type, metamodel);
-            ITypicalLengthFacet facet = result.Item1;
-            if (facet != null) {
-                FacetUtils.AddFacet(new TypicalLengthFacetDerivedFromType(facet, holder));
+        private void AddFacetDerivedFromTypeIfPresent(ISpecification holder, Type type, IClassStrategy classStrategy) {
+            FacetUtils.AddFacet(GetTypicalLengthFacet(type, holder, classStrategy));
+        }
+
+        private ITypicalLengthFacet GetTypicalLengthFacet(Type type, ISpecification holder, IClassStrategy classStrategy) {
+            var attribute = type.GetCustomAttribute<TypicalLengthAttribute>();
+
+            if (attribute != null) {
+                return new TypicalLengthFacetDerivedFromType(attribute.Value, holder);
             }
 
-            return result.Item2;
+            var length = GetValueTypeTypicalLength(type, classStrategy);
+            if (length != null) {
+                return new TypicalLengthFacetDerivedFromType(length.Value, holder);
+            }
+
+            return null;
         }
 
-        private Tuple<ITypicalLengthFacet, ImmutableDictionary<string, ITypeSpecBuilder>> GetTypicalLengthFacet(IReflector reflector, Type type, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var result = reflector.LoadSpecification(type, metamodel);
-            metamodel = result.Item2;
-            var paramTypeSpec = result.Item1 as IObjectSpecImmutable;
-            return new Tuple<ITypicalLengthFacet, ImmutableDictionary<string, ITypeSpecBuilder>>(paramTypeSpec.GetFacet<ITypicalLengthFacet>(), metamodel);
+        private static readonly IDictionary<Type, int> TypeMap = new Dictionary<Type, int> {
+            {typeof(bool), 5 },
+            {typeof(byte), 3},
+            {typeof(char), 2},
+            {typeof(Color ), 4},
+            {typeof(DateTime),  18},
+            {typeof(decimal ), 18},
+            {typeof(double ), 22},
+            {typeof(FileAttachment),  0},
+            {typeof(float),  12},
+            {typeof(Guid ), 36},
+            {typeof(Image),  0},
+            {typeof(int ), 11},
+            {typeof(long ), 20},
+            {typeof(sbyte ), 3},
+            {typeof(short),  6},
+            {typeof(string ), 25},
+            {typeof(TimeSpan ), 6},
+            {typeof(uint ), 10},
+            {typeof(ulong ), 20},
+            {typeof(ushort ), 5}
+        };
+
+        private int? GetValueTypeTypicalLength(Type type, IClassStrategy classStrategy) {
+            var actualType = classStrategy.GetType(type);
+
+            if (actualType != null) {
+                if (actualType.IsArray) {
+                    return 20;
+                }
+
+                if (actualType.IsEnum) {
+                    return 11;
+                }
+
+                if (TypeMap.ContainsKey(actualType)) {
+                    return TypeMap[actualType];
+                }
+            }
+
+            return null;
         }
+
     }
 }
