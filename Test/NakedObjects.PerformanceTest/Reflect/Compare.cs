@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Meta.Facet;
-using NakedObjects.Meta.Spec;
 
 namespace NakedObjects.SystemTest.Reflect {
     public static class CompareFunctions {
@@ -17,17 +18,50 @@ namespace NakedObjects.SystemTest.Reflect {
 
         }
 
-        public static void Compare(ActionParameterValidation apv1, ActionParameterValidation apv2) {
 
+        public static void Compare(IMemberSpecImmutable assoc1, IMemberSpecImmutable assoc2, string specName) {
+
+            Compare(assoc1.ReturnSpec, assoc2.ReturnSpec);
+
+            // make sure same spec
+         
+            CompareTypeName(assoc1.Name, assoc2.Name, specName);
+            CompareTypeName(assoc1.Description, assoc2.Description, specName);
+
+            // only carry on to compare facets if first time
+            if (Compared.Contains(specName)) return;
+            Compared.Add(specName);
+
+            Compare(assoc1 as ISpecification, assoc1, specName);
         }
 
+        public static void Compare(IAssociationSpecImmutable assoc1, IAssociationSpecImmutable assoc2, string specName) {
+            Compare(assoc1.OwnerSpec, assoc2.OwnerSpec);
+            Compare(assoc1 as IMemberSpecImmutable, assoc1, specName);
+        }
+
+        public static void Compare(IOneToManyAssociationSpecImmutable assoc1, IOneToManyAssociationSpecImmutable assoc2) {
+            var specName = assoc1.Name;    
+            Compare(assoc1.ElementSpec, assoc2.ElementSpec);
+            Compare(assoc1, assoc1, specName);
+        }
+
+        public static void Compare(IOneToOneAssociationSpecImmutable assoc1, IOneToOneAssociationSpecImmutable assoc2) {
+            var specName = assoc1.Name;
+            Compare(assoc1, assoc1, specName);
+        }
 
         public static void Compare(IActionParameterSpecImmutable actionParameter1, IActionParameterSpecImmutable actionParameter2) {
             var specName = actionParameter1.Identifier.ToIdentityString(IdentifierDepth.ClassNameParams);
 
             Compare(actionParameter1.Specification, actionParameter2.Specification);
             Compare(actionParameter1.IsChoicesEnabled, actionParameter2.IsChoicesEnabled, specName);
-            Compare(actionParameter1.IsMultipleChoicesEnabled, actionParameter2.IsMultipleChoicesEnabled, specName);        
+            Compare(actionParameter1.IsMultipleChoicesEnabled, actionParameter2.IsMultipleChoicesEnabled, specName);
+
+            // only carry on to compare facets if first time
+            if (Compared.Contains(specName)) return;
+            Compared.Add(specName);
+
             Compare(actionParameter1, actionParameter2, specName);
         }
 
@@ -44,12 +78,17 @@ namespace NakedObjects.SystemTest.Reflect {
 
         public static void Compare(IActionSpecImmutable action1, IActionSpecImmutable action2) {
             var specName = action1.Name;
+            // make sure same spec
             Compare(action1.OwnerSpec, action2.OwnerSpec);
             Compare(action1.ElementSpec, action2.ElementSpec);
             Compare(action1.Parameters, action2.Parameters);
             Compare(action1.ReturnSpec, action2.ReturnSpec);
             Compare(action1.Description, action2.Description, specName);
             Compare(action1.Name, action2.Name, specName);
+
+            // only carry on to compare facets if first time
+            if (Compared.Contains(specName)) return;
+            Compared.Add(specName);
 
             Compare(action1, action2, specName);
         }
@@ -184,7 +223,79 @@ namespace NakedObjects.SystemTest.Reflect {
             }
         }
 
-        
+        public static void Compare(IEnumerable e1, IEnumerable e2, string specName) {
+            foreach (var a in e1.Cast<object>().Zip(e2.Cast<object>(), (o1, o2) => new {o1, o2})) {
+                Compare(a.o1, a.o2, specName);
+            }
+        }
+
+        public static void Compare(object o1, object o2, string specName) {
+            switch (o1) {
+                case string s:
+                    Assert.AreEqual(s, o2 as string);
+                    break;
+                case IEnumerable e:
+                    Compare(e, o2 as IEnumerable, specName);
+                    break;
+                case ITypeSpecImmutable os:
+                    Compare(os, o2 as ITypeSpecImmutable);
+                    break;
+                case IActionSpecImmutable os:
+                    Compare(os, o2 as IActionSpecImmutable);
+                    break;
+                case IOneToManyAssociationSpecImmutable os:
+                    Compare(os, o2 as IOneToManyAssociationSpecImmutable);
+                    break;
+                case IOneToOneAssociationSpecImmutable os:
+                    Compare(os, o2 as IOneToOneAssociationSpecImmutable);
+                    break;
+                case IActionParameterSpecImmutable os:
+                    Compare(os, o2 as IActionParameterSpecImmutable);
+                    break;
+                case IFacet os:
+                    Compare(os, o2 as IFacet, specName);
+                    break;
+                case Type os:
+                    Compare(os, o2 as Type, specName);
+                    break;
+                case MethodInfo os:
+                    var os2 = o2 as MethodInfo;
+                    Assert.AreEqual(os.Name, os2.Name);
+                    Assert.AreEqual(os.DeclaringType, os2.DeclaringType);
+                    break;
+                case Regex re:
+                    Assert.AreEqual(re.ToString(), o2.ToString());
+                    break;
+                case Tuple<string, IObjectSpecImmutable> t:
+                    var t2 = o2 as Tuple<string, IObjectSpecImmutable>;
+                    Assert.AreEqual(t.Item1, t2.Item1);
+                    Compare(t.Item2, t2.Item2);
+                    break;
+                default:
+                    Assert.Fail("debug here");
+                    break;
+            }
+        }
+
+        public static void CompareReflectively(object facet1, object facet2, string specName) {
+            var properties1 = facet1.GetType().GetProperties();
+            var properties2 = facet2.GetType().GetProperties();
+
+            foreach (var a in properties1.Zip(properties2, (p1, p2) => new { p1, p2 })) {
+                var v1 = a.p1.GetValue(facet1);
+                var v2 = a.p2.GetValue(facet2);
+
+                if (v1 == null) {
+                    Assert.IsNull(v2);
+                }
+                else if (v1.GetType().IsValueType) {
+                    Assert.AreEqual(v1, v2);
+                }
+                else {
+                    Compare(v1, v2, specName);
+                }
+            }
+        }
 
         public static void Compare(IFacet facet1, IFacet facet2, string specName) {
             //Compare(facet1.Specification.Identifier, facet2.Specification.Identifier, specName);
@@ -193,11 +304,7 @@ namespace NakedObjects.SystemTest.Reflect {
             Compare(facet1.CanAlwaysReplace, facet2.CanAlwaysReplace, specName);
             Compare(facet1.GetType(), facet2.GetType(), specName);
 
-            switch (facet1) {
-                case ActionParameterValidation apv1:
-                    Compare(apv1, facet2 as ActionParameterValidation);
-                    break;
-            }
+            CompareReflectively(facet1, facet2, specName);
         }
 
         public static void Compare(IEnumerable<IFacet> facets1, IEnumerable<IFacet> facets2, string specName) {
