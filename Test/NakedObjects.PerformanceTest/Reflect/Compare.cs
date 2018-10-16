@@ -10,12 +10,65 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Menu;
+using NakedObjects.Meta.Menu;
+
 
 namespace NakedObjects.SystemTest.Reflect {
     public static class CompareFunctions {
 
-        public static void Compare(IMenuImmutable menu1, IMenuImmutable menu2) {
+        public static void Compare(IMenu menu1, IMenu menu2, string name) {
 
+            if (menu1 == null && menu2 == null) return;
+
+            Compare(menu1.Type, menu2.Type, name);
+        }
+
+        public static void Compare(MenuAction menu1, MenuAction menu2, string name) {
+            Compare(menu1.Action, menu2.Action, name);
+        }
+
+        public static void Compare(MenuImpl menu1, MenuImpl menu2, string name) {
+            Compare(menu1.SuperMenu, menu2.SuperMenu, name);
+            Compare(menu1 as IMenu, menu2, name);
+        }
+
+        public static void Compare(IMenuItemImmutable menu1, IMenuItemImmutable menu2) {
+
+            if (menu1 == null && menu2 == null) return;
+
+            var name = menu1.Name;
+            Compare(menu1.Name, menu2.Name, name);
+            Compare(menu1.Id, menu2.Id, name);
+
+            switch (menu1) {
+                case MenuAction m:
+                    Compare(m, menu2 as MenuAction, name);
+                    break;
+                case MenuImpl m:
+                    Compare(m, menu2 as MenuImpl, name);
+                    break;
+                default:
+                    Assert.Fail();
+                    break;
+            }
+        }
+
+        public static void Compare(IList<IMenuItemImmutable> menu1, IList<IMenuItemImmutable> menu2) {
+
+            var oMenus1 = menu1.OrderBy((i) => i == null ? "" : i.Name).ToList();
+            var oMenus2 = menu2.OrderBy((i) => i == null ? "" : i.Name).ToList();
+
+            foreach (var a in oMenus1.Zip(oMenus2, (m1, m2) => new { m1, m2 })) {
+                Compare(a.m1, a.m2);
+            }
+        }
+
+        public static void Compare(IMenuImmutable menu1, IMenuImmutable menu2) {
+            if (menu1 == null && menu2 == null) return;
+
+            Compare(menu1 as IMenuItemImmutable, menu2);
+            Compare(menu1.MenuItems, menu2.MenuItems);
         }
 
         public static string ToIdString(this IIdentifier id) {
