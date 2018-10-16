@@ -18,6 +18,27 @@ namespace NakedObjects.SystemTest.Reflect {
 
         }
 
+        public static string ToIdString(this IIdentifier id) {
+            return id.ToIdentityString(IdentifierDepth.ClassNameParams);
+        }
+
+        public static string ToIdString(this ISpecification spec) {
+            return spec.Identifier.ToIdString();
+        }
+
+        public static bool HasBeenCompared(ISpecification spec, object to) {
+
+            Assert.AreNotSame(spec, to);
+
+            // only carry on to compare facets if first time
+            if (Compared.ContainsKey(spec)) {
+                Assert.AreSame(Compared[spec], to);
+                return true;
+            }
+
+            Compared[spec] = to;
+            return false;
+        }
 
         public static void Compare(IMemberSpecImmutable assoc1, IMemberSpecImmutable assoc2, string specName) {
 
@@ -29,38 +50,40 @@ namespace NakedObjects.SystemTest.Reflect {
             CompareTypeName(assoc1.Description, assoc2.Description, specName);
 
             // only carry on to compare facets if first time
-            if (Compared.Contains(specName)) return;
-            Compared.Add(specName);
+            if (HasBeenCompared(assoc1, assoc2)) {
+                return;
+            }
 
-            Compare(assoc1 as ISpecification, assoc1, specName);
+            Compare(assoc1 as ISpecification, assoc2, specName);
         }
 
         public static void Compare(IAssociationSpecImmutable assoc1, IAssociationSpecImmutable assoc2, string specName) {
             Compare(assoc1.OwnerSpec, assoc2.OwnerSpec);
-            Compare(assoc1 as IMemberSpecImmutable, assoc1, specName);
+            Compare(assoc1 as IMemberSpecImmutable, assoc2, specName);
         }
 
         public static void Compare(IOneToManyAssociationSpecImmutable assoc1, IOneToManyAssociationSpecImmutable assoc2) {
             var specName = assoc1.Name;    
             Compare(assoc1.ElementSpec, assoc2.ElementSpec);
-            Compare(assoc1, assoc1, specName);
+            Compare(assoc1, assoc2, specName);
         }
 
         public static void Compare(IOneToOneAssociationSpecImmutable assoc1, IOneToOneAssociationSpecImmutable assoc2) {
             var specName = assoc1.Name;
-            Compare(assoc1, assoc1, specName);
+            Compare(assoc1, assoc2, specName);
         }
 
         public static void Compare(IActionParameterSpecImmutable actionParameter1, IActionParameterSpecImmutable actionParameter2) {
-            var specName = actionParameter1.Identifier.ToIdentityString(IdentifierDepth.ClassNameParams);
+            var specName = actionParameter1.Identifier.ToIdString();
 
             Compare(actionParameter1.Specification, actionParameter2.Specification);
             Compare(actionParameter1.IsChoicesEnabled, actionParameter2.IsChoicesEnabled, specName);
             Compare(actionParameter1.IsMultipleChoicesEnabled, actionParameter2.IsMultipleChoicesEnabled, specName);
 
             // only carry on to compare facets if first time
-            if (Compared.Contains(specName)) return;
-            Compared.Add(specName);
+            if (HasBeenCompared(actionParameter1, actionParameter2)) {
+                return;
+            }
 
             Compare(actionParameter1, actionParameter2, specName);
         }
@@ -68,8 +91,8 @@ namespace NakedObjects.SystemTest.Reflect {
         public static void Compare(IActionParameterSpecImmutable[] actionParameters1, IActionParameterSpecImmutable[] actionParameters2) {
             CompareCount(actionParameters1.Cast<ISpecification>().ToList(), actionParameters2.Cast<ISpecification>().ToList());
 
-            var oSpecs1 = actionParameters1.OrderBy((i) => i == null ? "" : i.Identifier.ToIdentityString(IdentifierDepth.ClassNameParams)).ToList();
-            var oSpecs2 = actionParameters2.OrderBy((i) => i == null ? "" : i.Identifier.ToIdentityString(IdentifierDepth.ClassNameParams)).ToList();
+            var oSpecs1 = actionParameters1.OrderBy((i) => i == null ? "" : i.Identifier.ToIdString()).ToList();
+            var oSpecs2 = actionParameters2.OrderBy((i) => i == null ? "" : i.Identifier.ToIdString()).ToList();
 
             foreach (var a in oSpecs1.Zip(oSpecs2, (s1, s2) => new { s1, s2 })) {
                 Compare(a.s1, a.s2);
@@ -87,8 +110,9 @@ namespace NakedObjects.SystemTest.Reflect {
             Compare(action1.Name, action2.Name, specName);
 
             // only carry on to compare facets if first time
-            if (Compared.Contains(specName)) return;
-            Compared.Add(specName);
+            if (HasBeenCompared(action1, action2)) {
+                return;
+            }
 
             Compare(action1, action2, specName);
         }
@@ -207,10 +231,10 @@ namespace NakedObjects.SystemTest.Reflect {
         }
 
         public static void Compare(IIdentifier i1, IIdentifier i2, string parent) {
-            Assert.AreEqual(i1.ToIdentityString(IdentifierDepth.ClassNameParams), i2.ToIdentityString(IdentifierDepth.ClassNameParams), $"on {parent} no match {i1} {i2}");
+            Assert.AreEqual(i1.ToIdString(), i2.ToIdString(), $"on {parent} no match {i1} {i2}");
         }
 
-        public static IList<string> Compared = new List<string>();
+        public static IDictionary<object, object> Compared = new Dictionary<object, object>();
 
         public static void Compare(Type[] types1, Type[] types2, string specName) {
             CompareCount(types1, types2, specName);
@@ -338,10 +362,11 @@ namespace NakedObjects.SystemTest.Reflect {
             Compare(spec1.Type, spec2.Type, specName);
             CompareTypeName(spec1.FullName, spec2.FullName, specName);
 
-            // only carry on down if first time
-            if (Compared.Contains(specName)) return;
-            Compared.Add(specName);
-         
+            // only carry on to compare facets if first time
+            if (HasBeenCompared(spec1, spec2)) {
+                return;
+            }
+
             Compare(spec1.ShortName, spec2.ShortName, specName);
             Compare(spec1.ObjectMenu, spec2.ObjectMenu);
             Compare(spec1.ObjectActions, spec2.ObjectActions);
