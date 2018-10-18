@@ -90,7 +90,23 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             var actualType = classStrategy.GetType(type);
 
             if (actualType != null) {
+
+    
+
+
                 if (actualType.IsArray) {
+                    var elementType = actualType.GetElementType();
+
+                    if (elementType == typeof(string)) {
+                        return null;
+                    }
+
+                    // byte[] has special facet factory
+                   
+                    if (elementType != null && elementType.IsValueType && elementType != typeof(byte)) {
+                        return null;
+                    }
+
                     return 20;
                 }
 

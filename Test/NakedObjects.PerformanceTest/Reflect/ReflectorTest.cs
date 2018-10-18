@@ -439,6 +439,8 @@ namespace NakedObjects.SystemTest.Reflect {
 
         private ITypeSpecImmutable[] parallelAwSpecs;
         private ITypeSpecImmutable[] serialAwSpecs;
+        private ITypeSpecImmutable[] parallelDspSpecs;
+        private ITypeSpecImmutable[] serialDspSpecs;
 
         [TestMethod]
         public void ReflectAdventureworksParallel() {
@@ -490,20 +492,24 @@ namespace NakedObjects.SystemTest.Reflect {
             CompareFunctions.Compare(parallelAwSpecs, serialAwSpecs);
         }
 
-
-
+        [TestMethod]
+        public void CompareDSPSpecs() {
+            ReflectDSPOld();
+            ReflectDSPParallel();
+            CompareFunctions.Compare(parallelDspSpecs, serialDspSpecs);
+        }
 
         private static ReflectorConfiguration DSPReflectorConfiguration(IUnityContainer container) {
-            var appSpec = new SdmAppMainSpecMvc(container);
+            var appSpec = new TweakedSdmAppMainSpecMvc(container);
 
             return new ReflectorConfiguration(appSpec.TypesForApp, appSpec.AllServicesForApp, appSpec.NamespacesForApp, appSpec.MainMenusForApp);
         }
 
-        private static string dspFile = "E:\\Users\\scasc_000\\Documents\\GitHub\\NakedObjectsFramework\\Test\\NakedObjects.PerformanceTest\\Reflect\\dspnames.txt";
+        //private static string dspFile = "E:\\Users\\scasc_000\\Documents\\GitHub\\NakedObjectsFramework\\Test\\NakedObjects.PerformanceTest\\Reflect\\dspnames.txt";
 
         [TestMethod]
         public void ReflectDSPOld() {
-            // load adventurework
+         
 
             IUnityContainer container = GetContainer();
             var rc = DSPReflectorConfiguration(container);
@@ -518,17 +524,15 @@ namespace NakedObjects.SystemTest.Reflect {
             stopwatch.Stop();
             TimeSpan interval = stopwatch.Elapsed;
 
-            Assert.AreEqual(7114, reflector.AllObjectSpecImmutables.Length);
+            //Assert.AreEqual(7114, reflector.AllObjectSpecImmutables.Length);
             Assert.IsTrue(reflector.AllObjectSpecImmutables.Any());
             //Assert.IsTrue(interval.Milliseconds < 1000);
             Console.WriteLine(interval.TotalMilliseconds);
             // 223881
             // 228833 = 3m 48s
 
-            string[] names = reflector.AllObjectSpecImmutables.Select(i => i.FullName).ToArray();
-
-            File.AppendAllLines(dspFile, names);
-
+            var cache = container.Resolve<ISpecificationCache>();
+            serialDspSpecs = cache.AllSpecifications();
         }
 
         [TestMethod]
@@ -548,21 +552,21 @@ namespace NakedObjects.SystemTest.Reflect {
             stopwatch.Stop();
             TimeSpan interval = stopwatch.Elapsed;
 
-            var names = File.ReadAllLines(dspFile);
+            //var names = File.ReadAllLines(dspFile);
 
-            var newNames = reflector.AllObjectSpecImmutables.Select(i => i.FullName).ToArray();
+            //var newNames = reflector.AllObjectSpecImmutables.Select(i => i.FullName).ToArray();
 
-            foreach (var name in names) {
-                if (!newNames.Contains(name)) {
-                    Console.WriteLine("missing name in new metamodel: " + name);
-                }
-            }
+            //foreach (var name in names) {
+            //    if (!newNames.Contains(name)) {
+            //        Console.WriteLine("missing name in new metamodel: " + name);
+            //    }
+            //}
 
-            foreach (var name in newNames) {
-                if (!names.Contains(name)) {
-                    Console.WriteLine("name not present in old metamodel: " + name);
-                }
-            }
+            //foreach (var name in newNames) {
+            //    if (!names.Contains(name)) {
+            //        Console.WriteLine("name not present in old metamodel: " + name);
+            //    }
+            //}
 
      
             //Assert.AreEqual(7114, reflector.AllObjectSpecImmutables.Length);
@@ -571,6 +575,10 @@ namespace NakedObjects.SystemTest.Reflect {
             Console.WriteLine(interval.TotalMilliseconds);
             // 144840 = 2m 24s
             // 95249 = 1m 35s
+
+
+            var cache = container.Resolve<ISpecificationCache>();
+            parallelDspSpecs = cache.AllSpecifications();
         }
 
 

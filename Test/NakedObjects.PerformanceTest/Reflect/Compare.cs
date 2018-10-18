@@ -250,6 +250,9 @@ namespace NakedObjects.SystemTest.Reflect {
             if (t1.IsGenericType && t2.IsGenericType) {
                 Assert.AreEqual(t1.GetGenericTypeDefinition(), t2.GetGenericTypeDefinition(), $"on {specName} no match {t1} {t2}");
             }
+            else if (t1.IsArray && t2.IsArray)  {
+                // ok
+            }
             else {
                 Assert.AreEqual(t1, t2, $"on {specName} no match {t1} {t2}");
             }
@@ -268,6 +271,10 @@ namespace NakedObjects.SystemTest.Reflect {
         }
 
         public static void CompareTypeName(string s1, string s2, string parent) {
+            if (s1.Contains("[]") && s2.Contains("[]")) {
+                return;
+            }
+
             var fromS1 = s1.IndexOf('`');
             var fromS2 = s2.IndexOf('`');
             var trimmedS1 = fromS1 == -1 ? s1 : s1.Remove(fromS1);
@@ -276,6 +283,10 @@ namespace NakedObjects.SystemTest.Reflect {
         }
 
         public static void Compare(string s1, string s2, string parent) {
+            if (s1.Contains("[]") && s2.Contains("[]")) {
+                return;
+            }
+
             Assert.AreEqual(s1, s2, $"on {parent} no match {s1} {s2}");
         }
 
@@ -377,10 +388,10 @@ namespace NakedObjects.SystemTest.Reflect {
         public static void Compare(IFacet facet1, IFacet facet2, string specName) {
             //Compare(facet1.Specification.Identifier, facet2.Specification.Identifier, specName);
             Compare(facet1.FacetType, facet2.FacetType, specName);
+            Compare(facet1.GetType(), facet2.GetType(), specName);
             Compare(facet1.IsNoOp, facet2.IsNoOp, specName);
             Compare(facet1.CanAlwaysReplace, facet2.CanAlwaysReplace, specName);
-            Compare(facet1.GetType(), facet2.GetType(), specName);
-
+           
             CompareReflectively(facet1, facet2, specName);
         }
 
