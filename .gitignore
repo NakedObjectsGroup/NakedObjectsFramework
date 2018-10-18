@@ -35,3 +35,5 @@ Rest/NakedObjects.Rest.App/log.txt
 Spa2/nakedobjectsspa/.vs/config/applicationhost.config
 *.tgz
 .vs/
+Test/NakedObjects.PerformanceTest/Reflect/awnames.txt
+Test/NakedObjects.PerformanceTest/Reflect/dspnames.txt
