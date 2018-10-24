@@ -91,7 +91,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
             if (actualType != null) {
 
-    
+                var fn = actualType.FullName;
 
 
                 if (actualType.IsArray) {
@@ -103,11 +103,11 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
                     // byte[] has special facet factory
                    
-                    if (elementType != null && elementType.IsValueType && elementType != typeof(byte)) {
-                        return null;
+                    if (elementType != null && elementType.IsValueType && elementType == typeof(byte)) {
+                        return 20;
                     }
 
-                    return 20;
+                    return null;
                 }
 
                 if (actualType.IsEnum) {

@@ -367,6 +367,10 @@
     <Reference Include="Sdm.Services.Security.Impl">
       <HintPath>Assemblies\Sdm.Services.Security.Impl.dll</HintPath>
     </Reference>
+    <Reference Include="sdm.systems.application, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Assemblies\sdm.systems.application.dll</HintPath>
+    </Reference>
     <Reference Include="sdm.systems.distribution.library">
       <HintPath>Assemblies\sdm.systems.distribution.library.dll</HintPath>
     </Reference>

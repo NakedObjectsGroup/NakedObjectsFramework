@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
@@ -33,6 +34,7 @@ using NakedObjects.Meta.Utils;
 using NakedObjects.Reflect;
 using NakedObjects.Reflect.Component;
 using NakedObjects.Unity;
+using NakedObjects.Value;
 using Newtonsoft.Json;
 using Sdm.App.App_Start;
 using Sdm.Test.Fixtures.Clusters.Means.MeansAssessment.Actions;
@@ -502,7 +504,16 @@ namespace NakedObjects.SystemTest.Reflect {
         private static ReflectorConfiguration DSPReflectorConfiguration(IUnityContainer container) {
             var appSpec = new TweakedSdmAppMainSpecMvc(container);
 
-            return new ReflectorConfiguration(appSpec.TypesForApp, appSpec.AllServicesForApp, appSpec.NamespacesForApp, appSpec.MainMenusForApp);
+            var types = (new List<Type> {
+                typeof(sdm.systems.application.control.State),
+                typeof(sdm.systems.application.control.State[])
+            });
+
+            types.AddRange(appSpec.TypesForApp);
+            types = types.Distinct().ToList();
+
+
+            return new ReflectorConfiguration(types.ToArray(), appSpec.AllServicesForApp, appSpec.NamespacesForApp, appSpec.MainMenusForApp);
         }
 
         //private static string dspFile = "E:\\Users\\scasc_000\\Documents\\GitHub\\NakedObjectsFramework\\Test\\NakedObjects.PerformanceTest\\Reflect\\dspnames.txt";

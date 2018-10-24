@@ -108,6 +108,12 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             var facets = new List<IFacet>();
 
+            //var name = parameter.Name;
+            //var dt = parameter.Member.DeclaringType?.Name;
+
+            
+
+
             if (parameter.ParameterType.IsGenericType && (parameter.ParameterType.GetGenericTypeDefinition() == typeof(Nullable<>))) {
                 facets.Add(new NullableFacetAlways(holder));
             }
@@ -116,7 +122,12 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             metamodel = result.Item2;
             var returnSpec = result.Item1 as IObjectSpecBuilder;
 
-            if (returnSpec != null && IsCollection(parameter.ParameterType)) {
+            //if (dt == "Docket") {
+            //    Console.WriteLine(dt + " : " + name + " is collection :" + IsCollection(parameter.ParameterType));
+            //}
+
+
+            if (returnSpec != null && IsParameterCollection(parameter.ParameterType)) {
                 Type elementType = CollectionUtils.ElementType(parameter.ParameterType);
                 result = reflector.LoadSpecification(elementType, metamodel);
                 metamodel = result.Item2;
@@ -143,13 +154,24 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                    (method.GetCustomAttribute<QueryOnlyAttribute>() != null);
         }
 
-        private bool IsCollection(Type type) {
+        private bool IsParameterCollection(Type type) {
             return type != null && (
                    CollectionUtils.IsGenericEnumerable(type) ||
                    type.IsArray ||
-                   CollectionUtils.IsCollectionButNotArray(type) ||
-                   IsCollection(type.BaseType) ||
-                   type.GetInterfaces().Where(i => i.IsPublic).Any(IsCollection));
+                   type == typeof(string) ||
+                   CollectionUtils.IsCollectionButNotArray(type)); // ||
+                   //IsCollection(type.BaseType) ||
+                   //type.GetInterfaces().Where(i => i.IsPublic).Any(IsCollection));
+        }
+
+        private bool IsCollection(Type type) {
+            return type != null && (
+                       CollectionUtils.IsGenericEnumerable(type) ||
+                       type.IsArray ||
+                       type == typeof(string) ||
+                       CollectionUtils.IsCollectionButNotArray(type) ||
+                       IsCollection(type.BaseType) ||
+                       type.GetInterfaces().Where(i => i.IsPublic).Any(IsCollection));
         }
 
         private bool ParametersAreSupported(MethodInfo method, IClassStrategy classStrategy) {
