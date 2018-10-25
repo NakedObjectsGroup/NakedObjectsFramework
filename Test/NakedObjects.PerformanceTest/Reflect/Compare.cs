@@ -43,6 +43,10 @@ namespace NakedObjects.SystemTest.Reflect {
             Compare(menu1.Name, menu2.Name, name);
             Compare(menu1.Id, menu2.Id, name);
 
+            if (HasBeenCompared(menu1, menu2)) {
+                return;
+            }
+
             switch (menu1) {
                 case MenuAction m:
                     Compare(m, menu2 as MenuAction, name);
@@ -101,9 +105,9 @@ namespace NakedObjects.SystemTest.Reflect {
                 //DebugMenu(os1, a.m1, oMenus1);
             }
 
-            //foreach (var a in oMenus1.Zip(oMenus2, (m1, m2) => new { m1, m2 })) {
-            //    Compare(a.m1, a.m2);
-            //}
+            foreach (var a in oMenus1.Zip(oMenus2, (m1, m2) => new { m1, m2 })) {
+                Compare(a.m1, a.m2);
+            }
         }
 
         private static void DebugMenu(string[] os1, string m1, List<IMenuItemImmutable> oMenus1) {
@@ -151,6 +155,35 @@ namespace NakedObjects.SystemTest.Reflect {
             return false;
         }
 
+        public static bool HasBeenCompared(IMenuItemImmutable menu, object to) {
+
+            Assert.AreNotSame(menu, to);
+
+            // only carry on to compare facets if first time
+            if (Compared.ContainsKey(menu)) {
+                Assert.AreSame(Compared[menu], to);
+                return true;
+            }
+
+            Compared[menu] = to;
+            return false;
+        }
+
+        public static bool HasBeenCompared(object obj, object to) {
+
+            Assert.AreNotSame(obj, to);
+
+            // only carry on to compare facets if first time
+            if (Compared.ContainsKey(obj)) {
+                Assert.AreSame(Compared[obj], to);
+                return true;
+            }
+
+            Compared[obj] = to;
+            return false;
+        }
+
+
         public static void Compare(IMemberSpecImmutable assoc1, IMemberSpecImmutable assoc2, string specName) {
 
 
@@ -191,7 +224,6 @@ namespace NakedObjects.SystemTest.Reflect {
         public static void Compare(IActionParameterSpecImmutable actionParameter1, IActionParameterSpecImmutable actionParameter2) {
             var specName = actionParameter1.Identifier.ToIdString();
 
-            Compare(actionParameter1.Specification, actionParameter2.Specification);
             Compare(actionParameter1.IsChoicesEnabled, actionParameter2.IsChoicesEnabled, specName);
             Compare(actionParameter1.IsMultipleChoicesEnabled, actionParameter2.IsMultipleChoicesEnabled, specName);
 
@@ -199,7 +231,7 @@ namespace NakedObjects.SystemTest.Reflect {
             if (HasBeenCompared(actionParameter1, actionParameter2)) {
                 return;
             }
-
+            Compare(actionParameter1.Specification, actionParameter2.Specification);
             Compare(actionParameter1, actionParameter2, specName);
         }
 
@@ -219,16 +251,17 @@ namespace NakedObjects.SystemTest.Reflect {
             // make sure same spec
             Compare(action1.Name, action2.Name, specName);
             Compare(action1.Description, action2.Description, specName);
-            Compare(action1.OwnerSpec, action2.OwnerSpec, specName);
-            Compare(action1.ElementSpec, action2.ElementSpec, specName);
-            Compare(action1.Parameters, action2.Parameters);
-            Compare(action1.ReturnSpec, action2.ReturnSpec);
           
-
+         
             // only carry on to compare facets if first time
             if (HasBeenCompared(action1, action2)) {
                 return;
             }
+
+            Compare(action1.OwnerSpec, action2.OwnerSpec, specName);
+            Compare(action1.ElementSpec, action2.ElementSpec, specName);
+            Compare(action1.Parameters, action2.Parameters);
+            Compare(action1.ReturnSpec, action2.ReturnSpec);
 
             Compare(action1, action2, specName);
         }
@@ -242,9 +275,6 @@ namespace NakedObjects.SystemTest.Reflect {
             Compare(field1.ReturnSpec, field2.ReturnSpec);
 
             Compare(field1 as IMemberSpecImmutable, field2, specName);
-        
-
-            //Compare(field1, field2, specName);
         }
 
         public static string ToOrderString(this IActionSpecImmutable spec) {
@@ -291,7 +321,7 @@ namespace NakedObjects.SystemTest.Reflect {
             var oSpecs2 = fields2.OrderBy((i) => i == null ? "" : i.ToIdString()).ToList();
 
             foreach (var a in oSpecs1.Zip(oSpecs2, (s1, s2) => new { s1, s2 })) {
-                //Compare(a.s1, a.s2, ownerName);
+                Compare(a.s1, a.s2, ownerName);
             }
         }
 
@@ -482,6 +512,11 @@ namespace NakedObjects.SystemTest.Reflect {
         }
 
         public static void CompareReflectively(object facet1, object facet2, string specName) {
+
+            if (HasBeenCompared(facet1, facet2)) {
+                return;
+            }
+
             var properties1 = facet1.GetType().GetProperties().OrderBy(p => p.Name);
             var properties2 = facet2.GetType().GetProperties().OrderBy(p => p.Name);
 
@@ -584,8 +619,8 @@ namespace NakedObjects.SystemTest.Reflect {
             Compare(spec1.FinderActions, spec2.FinderActions);
             Compare(spec1.Fields, spec2.Fields, specName);
             Compare(spec1.Interfaces, spec2.Interfaces);
-            //Compare(spec1.Subclasses, spec2.Subclasses); // todo possible bug here with populating subclasses
-            //Compare(spec1.Superclass, spec2.Superclass);
+            Compare(spec1.Subclasses, spec2.Subclasses); // todo possible bug here with populating subclasses
+            Compare(spec1.Superclass, spec2.Superclass);
             Compare(spec1.IsObject, spec2.IsObject, specName);
             Compare(spec1.IsCollection, spec2.IsCollection, specName);
             Compare(spec1.IsQueryable, spec2.IsQueryable, specName);

@@ -108,12 +108,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             var facets = new List<IFacet>();
 
-            //var name = parameter.Name;
-            //var dt = parameter.Member.DeclaringType?.Name;
-
-            
-
-
+          
             if (parameter.ParameterType.IsGenericType && (parameter.ParameterType.GetGenericTypeDefinition() == typeof(Nullable<>))) {
                 facets.Add(new NullableFacetAlways(holder));
             }
@@ -121,10 +116,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             var result = reflector.LoadSpecification(parameter.ParameterType, metamodel);
             metamodel = result.Item2;
             var returnSpec = result.Item1 as IObjectSpecBuilder;
-
-            //if (dt == "Docket") {
-            //    Console.WriteLine(dt + " : " + name + " is collection :" + IsCollection(parameter.ParameterType));
-            //}
 
 
             if (returnSpec != null && IsParameterCollection(parameter.ParameterType)) {
@@ -154,14 +145,13 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                    (method.GetCustomAttribute<QueryOnlyAttribute>() != null);
         }
 
+        // separate methods to reproduce old reflector behaviour
         private bool IsParameterCollection(Type type) {
             return type != null && (
                    CollectionUtils.IsGenericEnumerable(type) ||
                    type.IsArray ||
                    type == typeof(string) ||
-                   CollectionUtils.IsCollectionButNotArray(type)); // ||
-                   //IsCollection(type.BaseType) ||
-                   //type.GetInterfaces().Where(i => i.IsPublic).Any(IsCollection));
+                   CollectionUtils.IsCollectionButNotArray(type));
         }
 
         private bool IsCollection(Type type) {
