@@ -290,6 +290,18 @@ namespace NakedObjects.SystemTest.Reflect {
             return spec.ToIdString() + " : " + suffix;
         }
 
+        public static string ToOrderString(this IAssociationSpecImmutable spec) {
+            if (spec == null) return "";
+
+            var facet = spec.GetFacet<INamedFacet>();
+            var suffix = "";
+            if (facet != null) {
+                suffix = facet.NaturalName;
+            }
+
+
+            return spec.ToIdString() + " : " + suffix;
+        }
 
         public static void Compare(IList<IActionSpecImmutable> actions1, IList<IActionSpecImmutable> actions2) {
             CompareCount(actions1.Cast<ISpecification>().ToList(), actions2.Cast<ISpecification>().ToList());
@@ -317,8 +329,8 @@ namespace NakedObjects.SystemTest.Reflect {
         public static void Compare(IList<IAssociationSpecImmutable> fields1, IList<IAssociationSpecImmutable> fields2, string ownerName) {
             CompareCount(fields1.Cast<ISpecification>().ToList(), fields2.Cast<ISpecification>().ToList());
 
-            var oSpecs1 = fields1.OrderBy((i) => i == null ? "" : i.ToIdString()).ToList();
-            var oSpecs2 = fields2.OrderBy((i) => i == null ? "" : i.ToIdString()).ToList();
+            var oSpecs1 = fields1.OrderBy(i => i.ToOrderString()).ToList();
+            var oSpecs2 = fields2.OrderBy(i => i.ToOrderString()).ToList();
 
             foreach (var a in oSpecs1.Zip(oSpecs2, (s1, s2) => new { s1, s2 })) {
                 Compare(a.s1, a.s2, ownerName);
