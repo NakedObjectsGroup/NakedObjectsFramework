@@ -297,7 +297,7 @@ namespace NakedObjects.Reflect.Test {
         }
 
         [TestMethod]
-        [Ignore]
+        [Ignore] // todo fix
         public void ReflectWithScalars() {
             IUnityContainer container = GetContainer();
             ReflectorConfiguration.NoValidate = true;

@@ -51,9 +51,9 @@ namespace NakedObjects.Rest.App.DemoOwin {
             // container.LoadConfiguration();
             //Standard configuration
 
-            StandardUnityConfig.RegisterStandardFacetFactories(container);
-            StandardUnityConfig.RegisterCoreContainerControlledTypes(container);
-            StandardUnityConfig.RegisterCorePerTransactionTypes<HierarchicalLifetimeManager>(container);
+            ParallelUnityConfig.RegisterStandardFacetFactories(container);
+            ParallelUnityConfig.RegisterCoreContainerControlledTypes(container);
+            ParallelUnityConfig.RegisterCorePerTransactionTypes<HierarchicalLifetimeManager>(container);
 
             // add custom notnavigable factory
 
