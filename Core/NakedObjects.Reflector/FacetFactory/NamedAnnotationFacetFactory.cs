@@ -24,17 +24,17 @@ namespace NakedObjects.Reflect.FacetFactory {
     public sealed class NamedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (NamedAnnotationFacetFactory));
         private Type currentType;
-        private IList<string> namesScratchPad = new List<string>();
+        //private IList<string> namesScratchPad = new List<string>();
 
         public NamedAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Everything) {}
 
-        public void UpdateScratchPad(Type type) {
-            if (currentType != type) {
-                currentType = type;
-                namesScratchPad = new List<string>();
-            }
-        }
+        //public void UpdateScratchPad(Type type) {
+        //    if (currentType != type) {
+        //        currentType = type;
+        //        namesScratchPad = new List<string>();
+        //    }
+        //}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Attribute attribute = type.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) type.GetCustomAttribute<NamedAttribute>();
@@ -47,7 +47,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            UpdateScratchPad(property.ReflectedType);
+            //UpdateScratchPad(property.ReflectedType);
             Attribute attribute = property.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) property.GetCustomAttribute<NamedAttribute>();
             FacetUtils.AddFacet(CreateProperty(attribute, specification));
         }
@@ -75,7 +75,8 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         private INamedFacet CreateProperty(Attribute attribute, ISpecification holder) {
             if (attribute == null) {
-                return SaveDefaultName(holder);
+                //return SaveDefaultName(holder);
+                return null;
             }
             var namedAttribute = attribute as NamedAttribute;
             if (namedAttribute != null) {
@@ -97,27 +98,27 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private INamedFacet CreateAnnotation(string name, ISpecification holder) {
-            if (namesScratchPad.Contains(name)) {
-                Log.WarnFormat("Duplicate name: {0} found on type: {1}", name, currentType.FullName);
-            }
-            namesScratchPad.Add(name);
+            //if (namesScratchPad.Contains(name)) {
+            //    Log.WarnFormat("Duplicate name: {0} found on type: {1}", name, currentType.FullName);
+            //}
+            //namesScratchPad.Add(name);
             return new NamedFacetAnnotation(name, holder);
         }
 
-        private static bool IsAlwaysHidden(ISpecification holder) {
-            var hiddenfacet = holder.GetFacet<IHiddenFacet>();
-            return hiddenfacet != null && hiddenfacet.Value == WhenTo.Always;
-        }
+        //private static bool IsAlwaysHidden(ISpecification holder) {
+        //    var hiddenfacet = holder.GetFacet<IHiddenFacet>();
+        //    return hiddenfacet != null && hiddenfacet.Value == WhenTo.Always;
+        //}
 
-        private INamedFacet SaveDefaultName(ISpecification holder) {
-            string name = holder.Identifier.MemberName;
-            if (!namesScratchPad.Contains(name)) {
-                if (!TypeUtils.IsNakedObjects(currentType) && !IsAlwaysHidden(holder) && !string.IsNullOrWhiteSpace(name)) {
-                    namesScratchPad.Add(name);
-                }
-                return null;
-            }
-            return CreateAnnotation(name, holder);
-        }
+        //private INamedFacet SaveDefaultName(ISpecification holder) {
+        //    string name = holder.Identifier.MemberName;
+        //    if (!namesScratchPad.Contains(name)) {
+        //        if (!TypeUtils.IsNakedObjects(currentType) && !IsAlwaysHidden(holder) && !string.IsNullOrWhiteSpace(name)) {
+        //            namesScratchPad.Add(name);
+        //        }
+        //        return null;
+        //    }
+        //    return CreateAnnotation(name, holder);
+        //}
     }
 }
