@@ -23,7 +23,7 @@ using NakedObjects.Util;
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class NamedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (NamedAnnotationFacetFactory));
-        private Type currentType;
+        //private Type currentType;
         //private IList<string> namesScratchPad = new List<string>();
 
         public NamedAnnotationFacetFactory(int numericOrder)

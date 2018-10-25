@@ -13,7 +13,7 @@
     <summary>Installs the assemblies used to create the NakedObjects.Rest server.</summary>
     <description>This package will initially be added automatically when you install NakedObjects.Run</description>
     <dependencies>
-      <dependency id="NakedObjects.Facade" version="[8.1.0, 9)" />
+      <dependency id="NakedObjects.Facade" version="[8.1.1-beta01, 9)" />
       <dependency id="Newtonsoft.Json" version="[11.0.2, 12)" />
       <dependency id="Microsoft.AspNet.WebApi" version="[5.2.6, 6.0)" />
     </dependencies>
