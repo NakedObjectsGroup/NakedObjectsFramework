@@ -11,6 +11,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SemanticsProvider;
 using NakedObjects.Meta.Utils;
+using NakedObjects.ParallelReflect.FacetFactory;
 
 namespace NakedObjects.ParallelReflect.TypeFacetFactory {
     public abstract class ValueUsingValueSemanticsProviderFacetFactory : FacetFactoryAbstract {

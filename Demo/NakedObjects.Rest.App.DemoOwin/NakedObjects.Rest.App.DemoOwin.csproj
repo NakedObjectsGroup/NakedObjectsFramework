@@ -173,6 +173,9 @@
     <Reference Include="NakedObjects.Metamodel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NakedObjects.Core.10.0.0-beta01\lib\net451\NakedObjects.Metamodel.dll</HintPath>
     </Reference>
+    <Reference Include="NakedObjects.ParallelReflector">
+      <HintPath>..\..\packages\NakedObjects.Core.10.0.0-beta01\lib\net451\NakedObjects.ParallelReflector.dll</HintPath>
+    </Reference>
     <Reference Include="NakedObjects.Persistor.Entity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NakedObjects.Core.10.0.0-beta01\lib\net451\NakedObjects.Persistor.Entity.dll</HintPath>
     </Reference>

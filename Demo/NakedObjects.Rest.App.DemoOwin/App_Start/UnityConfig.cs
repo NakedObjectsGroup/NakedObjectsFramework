@@ -57,8 +57,8 @@ namespace NakedObjects.Rest.App.DemoOwin {
 
             // add custom notnavigable factory
 
-            UnityConfigHelpers.RegisterFacetFactory(typeof(AWNotNavigableFacetFactory), container, 1000);
-            UnityConfigHelpers.RegisterFacetFactory(typeof(AWNotCountedAnnotationFacetFactory), container, 1001);
+            UnityConfigHelpers.RegisterFacetFactory(typeof(AWNotNavigableFacetFactoryParallel), container, 1000);
+            UnityConfigHelpers.RegisterFacetFactory(typeof(AWNotCountedAnnotationFacetFactoryParallel), container, 1001);
 
             // config 
             container.RegisterInstance<IReflectorConfiguration>(NakedObjectsRunSettings.ReflectorConfig(), (new ContainerControlledLifetimeManager()));

@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Immutable;
+using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -8,6 +9,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 using NakedObjects.Reflect.FacetFactory;
 using AdventureWorksModel;
+using NakedObjects.Architecture.SpecImmutable;
 
 namespace AWCustom
 {
@@ -29,6 +31,25 @@ namespace AWCustom
 
         private static INotCountedFacet Create(AWNotCountedAttribute attribute, ISpecification holder)
         {
+            return attribute == null ? null : new NotCountedFacet(holder);
+        }
+    }
+
+    public sealed class AWNotCountedAnnotationFacetFactoryParallel : NakedObjects.ParallelReflect.FacetFactory.AnnotationBasedFacetFactoryAbstract {
+        public AWNotCountedAnnotationFacetFactoryParallel(int numericOrder)
+            : base(numericOrder, FeatureType.Collections) { }
+
+        private static void Process(MemberInfo member, ISpecification holder) {
+            var attribute = member.GetCustomAttribute<AWNotCountedAttribute>();
+            FacetUtils.AddFacet(Create(attribute, holder));
+        }
+
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            Process(property, specification);
+            return metamodel;
+        }
+
+        private static INotCountedFacet Create(AWNotCountedAttribute attribute, ISpecification holder) {
             return attribute == null ? null : new NotCountedFacet(holder);
         }
     }

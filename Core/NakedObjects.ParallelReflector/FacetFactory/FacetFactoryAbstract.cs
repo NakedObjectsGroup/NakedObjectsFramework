@@ -15,7 +15,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedObjects.ParallelReflect.FacetFactory {
     public abstract class FacetFactoryAbstract : IFacetFactory {
         protected FacetFactoryAbstract(int numericOrder, FeatureType featureTypes) {
             NumericOrder = numericOrder;

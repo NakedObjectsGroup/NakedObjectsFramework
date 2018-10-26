@@ -5,49 +5,99 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Collections.Immutable;
 using System.Reflection;
 using AdventureWorksModel;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
-namespace AWCustom
-{
+namespace AWCustom {
     public sealed class AWNotNavigableFacetFactory : FacetFactoryAbstract {
         public AWNotNavigableFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Properties) {}
+            : base(numericOrder, FeatureType.Properties) { }
 
-        public override void Process(IReflector reflector, PropertyInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            if (method.PropertyType.IsAssignableFrom(typeof(ContactType))) {
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            if (property.PropertyType.IsAssignableFrom(typeof(ContactType))) {
                 FacetUtils.AddFacet(new NotNavigableFacet(specification));
             }
-            if (method.PropertyType.IsAssignableFrom(typeof(AddressType))) {
+            if (property.PropertyType.IsAssignableFrom(typeof(AddressType))) {
                 FacetUtils.AddFacet(new NotNavigableFacet(specification));
             }
-            if (method.PropertyType.IsAssignableFrom(typeof(ContactType))) {
+            if (property.PropertyType.IsAssignableFrom(typeof(ContactType))) {
                 FacetUtils.AddFacet(new NotNavigableFacet(specification));
             }
-            if (method.PropertyType.IsAssignableFrom(typeof(Culture))) {
+            if (property.PropertyType.IsAssignableFrom(typeof(Culture))) {
                 FacetUtils.AddFacet(new NotNavigableFacet(specification));
             }
-            if (method.PropertyType.IsAssignableFrom(typeof(SalesReason))) {
+            if (property.PropertyType.IsAssignableFrom(typeof(SalesReason))) {
                 FacetUtils.AddFacet(new NotNavigableFacet(specification));
             }
-            if (method.PropertyType.IsAssignableFrom(typeof(UnitMeasure))) {
+            if (property.PropertyType.IsAssignableFrom(typeof(UnitMeasure))) {
                 FacetUtils.AddFacet(new NotNavigableFacet(specification));
             }
-            if (method.PropertyType.IsAssignableFrom(typeof(ScrapReason))) {
+            if (property.PropertyType.IsAssignableFrom(typeof(ScrapReason))) {
                 FacetUtils.AddFacet(new NotNavigableFacet(specification));
             }
-            if (method.PropertyType.IsAssignableFrom(typeof(ProductSubcategory))) {
+            if (property.PropertyType.IsAssignableFrom(typeof(ProductSubcategory))) {
                 FacetUtils.AddFacet(new NotNavigableFacet(specification));
             }
-            if (method.PropertyType.IsAssignableFrom(typeof(ProductCategory))) {
+            if (property.PropertyType.IsAssignableFrom(typeof(ProductCategory))) {
                 FacetUtils.AddFacet(new NotNavigableFacet(specification));
             }
+        }
+
+
+    }
+
+    public sealed class AWNotNavigableFacetFactoryParallel : NakedObjects.ParallelReflect.FacetFactory.FacetFactoryAbstract {
+        public AWNotNavigableFacetFactoryParallel(int numericOrder)
+            : base(numericOrder, FeatureType.Properties) { }
+
+
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+
+            if (property.PropertyType.IsAssignableFrom(typeof(ContactType))) {
+                FacetUtils.AddFacet(new NotNavigableFacet(specification));
+            }
+
+            if (property.PropertyType.IsAssignableFrom(typeof(AddressType))) {
+                FacetUtils.AddFacet(new NotNavigableFacet(specification));
+            }
+
+            if (property.PropertyType.IsAssignableFrom(typeof(ContactType))) {
+                FacetUtils.AddFacet(new NotNavigableFacet(specification));
+            }
+
+            if (property.PropertyType.IsAssignableFrom(typeof(Culture))) {
+                FacetUtils.AddFacet(new NotNavigableFacet(specification));
+            }
+
+            if (property.PropertyType.IsAssignableFrom(typeof(SalesReason))) {
+                FacetUtils.AddFacet(new NotNavigableFacet(specification));
+            }
+
+            if (property.PropertyType.IsAssignableFrom(typeof(UnitMeasure))) {
+                FacetUtils.AddFacet(new NotNavigableFacet(specification));
+            }
+
+            if (property.PropertyType.IsAssignableFrom(typeof(ScrapReason))) {
+                FacetUtils.AddFacet(new NotNavigableFacet(specification));
+            }
+
+            if (property.PropertyType.IsAssignableFrom(typeof(ProductSubcategory))) {
+                FacetUtils.AddFacet(new NotNavigableFacet(specification));
+            }
+
+            if (property.PropertyType.IsAssignableFrom(typeof(ProductCategory))) {
+                FacetUtils.AddFacet(new NotNavigableFacet(specification));
+            }
+
+            return metamodel;
         }
     }
 }
