@@ -30,8 +30,8 @@ namespace NakedObjects.Rest.App.DemoOwin {
 
         private static readonly Lazy<IUnityContainer> container = new Lazy<IUnityContainer>(() => {
             var container = new UnityContainer();
-            RegisterTypes(container);
-            //RegisterParallelTypes(container);
+            //RegisterTypes(container);
+            RegisterParallelTypes(container);
             return container;
         });
 
