@@ -228,7 +228,16 @@ namespace NakedObjects.ParallelReflect.Component {
                     return a;
                 });
 
-            spec.AddContributedActions(result.Item1);
+            // 
+            var contribActions = new List<IActionSpecImmutable>();
+
+            // group by service - probably do this better - TODO
+            foreach (var service in services) {
+                var matching = result.Item1.Where(i => i.OwnerSpec.Type == service);
+                contribActions.AddRange(matching);
+            }
+
+            spec.AddContributedActions(contribActions);
             spec.AddCollectionContributedActions(result.Item2);
             spec.AddFinderActions(result.Item3);
         }
