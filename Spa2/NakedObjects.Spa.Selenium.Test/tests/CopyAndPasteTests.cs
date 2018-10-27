@@ -254,7 +254,6 @@ namespace NakedObjects.Selenium {
             PasteIntoReferenceField();
             PasteIntoReferenceFieldThatAlsoHasAutoCompleteAndFindMenu();
             PasteIntoDialog();
-            PasteAnImplementationOfAnInterface();
             PasteIntoAutoCompleteField();
             DroppableReferenceFieldWithoutAutoComplete();
             CannotPasteWrongTypeIntoReferenceField();
@@ -264,6 +263,7 @@ namespace NakedObjects.Selenium {
         [TestMethod]
         [Priority(-1)]
         public void ProblematicCopyAndPasteTests() {
+            PasteAnImplementationOfAnInterface();
             CanClearADroppableReferenceField();
             //IfNoObjectInClipboardCtrlVRevertsToBrowserBehaviour(); // fails always
         }
