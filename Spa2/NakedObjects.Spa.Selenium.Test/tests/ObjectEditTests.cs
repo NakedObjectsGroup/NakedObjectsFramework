@@ -487,7 +487,6 @@ namespace NakedObjects.Selenium {
         [Priority(0)]
         public void ObjectEditTest() {
             ObjectEditChangeScalar();
-            ObjectEditCancelLeavesUnchanged();
             LocalValidationOfMandatoryFields();
             LocalValidationOfMaxLength();
             LocalValidationOfRegex();
@@ -505,6 +504,7 @@ namespace NakedObjects.Selenium {
         [TestMethod]
         [Priority(-1)]
         public void ProblematicObjectEditTests() {
+            ObjectEditCancelLeavesUnchanged();
             RangeValidationOnDate();
             ObjectEditChangeDateTime();
             CoValidationOnSavingChanges();
