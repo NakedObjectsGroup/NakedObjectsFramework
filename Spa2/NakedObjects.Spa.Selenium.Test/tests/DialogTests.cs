@@ -643,15 +643,16 @@ namespace NakedObjects.Selenium {
             WarningShownWithinDialogAndInFooter();
             DefaultReferenceParamRendersCorrectly();
             QueryOnlyActionDialogPersists();
-            PotentActionDialogDisappearsAndFieldsNotRemembered();
             OptionalReferenceParamCanBeNull();
             ValidationOfContributeeParameter();
             NoResultFoundMessageLeavesDialogOpen();
         }
 
-        //[TestMethod]
+        [TestMethod]
         [Priority(-1)]
-        public void ProblematicTests() { }
+        public void ProblematicTests() {
+            PotentActionDialogDisappearsAndFieldsNotRemembered();
+        }
     }
 
     //[TestClass]
