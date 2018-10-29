@@ -10,11 +10,14 @@ using System.Collections;
 using System.ComponentModel;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.Facet;
+using NakedObjects.Meta.Spec;
 using NakedObjects.Reflect.FacetFactory;
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
@@ -140,6 +143,14 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             [DisplayName("some name")]
             public void SomeAction1() {}
         }
+
+        private class Customer19 {
+            [Named("Property")]
+            public int SomeProperty { get; set; }
+
+            public int Property { get; set; }
+        }
+
 
         private readonly ISpecificationBuilder facetHolder1 = new TestSpecification();
 
@@ -349,6 +360,36 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual("some name", namedFacetAbstract.Value);
             AssertNoMethodsRemoved();
         }
+
+        private class TestSpecificationWithId : Specification {
+
+            public TestSpecificationWithId(IIdentifier identifier) {
+                Identifier = identifier;
+            }
+
+            public override IIdentifier Identifier { get; }
+        }
+
+
+        [TestMethod] // for bug #156
+        public void TestAnnotationNotPickedUpOnInferredPropertyAfterAnnotatedProperty() {
+            var specification1 = new TestSpecification();
+            var specification2 = new TestSpecificationWithId(new IdentifierImpl("Customer19", "Property"));
+
+            PropertyInfo property1 = FindProperty(typeof(Customer19), "SomeProperty");
+            PropertyInfo property2 = FindProperty(typeof(Customer19), "Property");
+            facetFactory.Process(Reflector, property1, MethodRemover, specification1);
+            facetFactory.Process(Reflector, property2, MethodRemover, specification2);
+            IFacet facet1 = specification1.GetFacet(typeof(INamedFacet));
+            IFacet facet2 = specification2.GetFacet(typeof(INamedFacet));
+            Assert.IsNotNull(facet1);
+            Assert.IsNull(facet2);
+            Assert.IsTrue(facet1 is NamedFacetAnnotation);
+            var namedFacet1 = (NamedFacetAnnotation)facet1;
+            Assert.AreEqual("Property", namedFacet1.Value);
+            AssertNoMethodsRemoved();
+        }
+
     }
 
     // Copyright (c) Naked Objects Group Ltd.
