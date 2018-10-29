@@ -20,3 +20,14 @@ nog-packages.txt
 *.DotSettings
 .vs/config/applicationhost.config
 /Spa2
+.vs
+/Facade
+/Rest
+/Template_NOF10
+/Template_NOF9
+/Test/NakedObjects.PerformanceTest/Assemblies
+**/nakedobjects_log.txt*
+*.tgz
+
+Test/NakedObjects.PerformanceTest/Reflect/DSPInit.cs
+Test/NakedObjects.PerformanceTest/Reflect/dspnames.txt
