@@ -12,10 +12,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Configuration;
+using NakedObjects.Core.Util;
+using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.Component;
 using NakedObjects.Reflect.Component;
 using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Reflect.TypeFacetFactory;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.Reflect.Test {
     public abstract class AbstractReflectorTest {
@@ -123,6 +126,13 @@ namespace NakedObjects.Reflect.Test {
         }
 
         protected abstract IObjectSpecImmutable LoadSpecification(Reflector reflector);
+
+        public static void AssertSpec(Type type, ITypeSpecBuilder spec) {
+            Assert.AreEqual(new IdentifierImpl(type.FullName), spec.Identifier);
+            Assert.AreEqual(type.FullName, spec.FullName);
+            Assert.AreEqual(TypeNameUtils.GetShortName(type.Name), spec.ShortName);
+            Assert.AreEqual(type, spec.Type);
+        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

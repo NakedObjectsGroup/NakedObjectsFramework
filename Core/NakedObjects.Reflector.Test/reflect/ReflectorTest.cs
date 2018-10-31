@@ -181,7 +181,8 @@ namespace NakedObjects.Reflect.Test {
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
             Assert.AreEqual(1, reflector.AllObjectSpecImmutables.Count());
-            Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof (object));
+        
+            AbstractReflectorTest.AssertSpec(typeof(object), reflector.AllObjectSpecImmutables.First());
         }
 
         [TestMethod]
@@ -196,7 +197,12 @@ namespace NakedObjects.Reflect.Test {
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            Assert.AreEqual(3, reflector.AllObjectSpecImmutables.Count());
+            var specs = reflector.AllObjectSpecImmutables;
+            Assert.AreEqual(3, specs.Length);
+
+            AbstractReflectorTest.AssertSpec(typeof(int), specs[0]);
+            AbstractReflectorTest.AssertSpec(typeof(object), specs[1]);
+            AbstractReflectorTest.AssertSpec(typeof(List<>), specs[2]);
         }
 
         [TestMethod]
@@ -211,7 +217,11 @@ namespace NakedObjects.Reflect.Test {
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            Assert.AreEqual(2, reflector.AllObjectSpecImmutables.Count());
+            var specs = reflector.AllObjectSpecImmutables;
+            Assert.AreEqual(2, specs.Length);
+
+            AbstractReflectorTest.AssertSpec(typeof(object), specs[0]);
+            AbstractReflectorTest.AssertSpec(typeof(SetWrapper<>), specs[1]);
         }
 
         [TestMethod]
@@ -228,7 +238,12 @@ namespace NakedObjects.Reflect.Test {
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            Assert.AreEqual(3, reflector.AllObjectSpecImmutables.Count());
+            var specs = reflector.AllObjectSpecImmutables;
+            Assert.AreEqual(3, specs.Length);
+
+            AbstractReflectorTest.AssertSpec(typeof(int), specs[0]);
+            AbstractReflectorTest.AssertSpec(typeof(object), specs[1]);
+            AbstractReflectorTest.AssertSpec(typeof(EnumerableQuery<>), specs[2]);
         }
 
         [TestMethod]
@@ -244,7 +259,11 @@ namespace NakedObjects.Reflect.Test {
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            Assert.AreEqual(2, reflector.AllObjectSpecImmutables.Count());
+            var specs = reflector.AllObjectSpecImmutables;
+            Assert.AreEqual(2, specs.Length);
+
+            AbstractReflectorTest.AssertSpec(typeof(object), specs[0]);
+            AbstractReflectorTest.AssertSpec(it.GetType().GetGenericTypeDefinition(), specs[1]);
         }
 
 
@@ -261,7 +280,11 @@ namespace NakedObjects.Reflect.Test {
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            Assert.AreEqual(2, reflector.AllObjectSpecImmutables.Count());
+            var specs = reflector.AllObjectSpecImmutables;
+            Assert.AreEqual(2, specs.Length);
+
+            AbstractReflectorTest.AssertSpec(typeof(object), specs[0]);
+            AbstractReflectorTest.AssertSpec(it.GetType().GetGenericTypeDefinition(), specs[1]);
         }
 
         [TestMethod]
@@ -276,7 +299,40 @@ namespace NakedObjects.Reflect.Test {
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            Assert.AreEqual(31, reflector.AllObjectSpecImmutables.Count());
+            var specs = reflector.AllObjectSpecImmutables;
+            Assert.AreEqual(31, specs.Length);
+
+            AbstractReflectorTest.AssertSpec(typeof(System.Collections.IList), specs[0]);
+            AbstractReflectorTest.AssertSpec(typeof(IEquatable<long>), specs[1]);
+            AbstractReflectorTest.AssertSpec(typeof(IEquatable<int>), specs[2]);
+            AbstractReflectorTest.AssertSpec(typeof(int), specs[3]);
+            AbstractReflectorTest.AssertSpec(typeof(IComparable<byte>), specs[4]);
+            AbstractReflectorTest.AssertSpec(typeof(IConvertible), specs[5]);
+            AbstractReflectorTest.AssertSpec(typeof(IEquatable<byte>), specs[6]);
+            AbstractReflectorTest.AssertSpec(typeof(object), specs[7]);
+            AbstractReflectorTest.AssertSpec(typeof(IComparable<bool>), specs[8]);
+            AbstractReflectorTest.AssertSpec(typeof(IEquatable<bool>), specs[9]);
+            AbstractReflectorTest.AssertSpec(typeof(byte[]), specs[10]);
+            AbstractReflectorTest.AssertSpec(typeof(Array), specs[11]);
+            AbstractReflectorTest.AssertSpec(typeof(ValueType), specs[12]);
+            AbstractReflectorTest.AssertSpec(typeof(IComparable<long>), specs[13]);
+            AbstractReflectorTest.AssertSpec(typeof(long), specs[14]);
+            AbstractReflectorTest.AssertSpec(typeof(IStructuralComparable), specs[15]);
+            AbstractReflectorTest.AssertSpec(typeof(IComparable), specs[16]);
+            AbstractReflectorTest.AssertSpec(typeof(ICollection), specs[17]);
+            AbstractReflectorTest.AssertSpec(typeof(bool), specs[18]);
+            AbstractReflectorTest.AssertSpec(typeof(ICloneable), specs[19]);
+            AbstractReflectorTest.AssertSpec(typeof(IList<>), specs[20]);
+            AbstractReflectorTest.AssertSpec(typeof(byte), specs[21]);
+            AbstractReflectorTest.AssertSpec(typeof(IFormattable), specs[22]);
+            AbstractReflectorTest.AssertSpec(typeof(IComparable<int>), specs[23]);
+            AbstractReflectorTest.AssertSpec(typeof(IReadOnlyList<>), specs[24]);
+            AbstractReflectorTest.AssertSpec(typeof(IReadOnlyCollection<>), specs[25]);
+            AbstractReflectorTest.AssertSpec(typeof(IStructuralEquatable), specs[26]);
+            AbstractReflectorTest.AssertSpec(typeof(ICollection<>), specs[27]);
+            AbstractReflectorTest.AssertSpec(typeof(TestObjectWithByteArray), specs[28]);
+            AbstractReflectorTest.AssertSpec(typeof(IEnumerable<>), specs[29]);
+            AbstractReflectorTest.AssertSpec(typeof(IEnumerable), specs[30]);
         }
 
 
@@ -292,7 +348,11 @@ namespace NakedObjects.Reflect.Test {
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            Assert.AreEqual(2, reflector.AllObjectSpecImmutables.Count());
+            var specs = reflector.AllObjectSpecImmutables;
+            Assert.AreEqual(2, specs.Length);
+
+            AbstractReflectorTest.AssertSpec(typeof(TestObjectWithStringArray), specs[0]);
+            AbstractReflectorTest.AssertSpec(typeof(string), specs[1]);
         }
 
         [TestMethod]
@@ -306,7 +366,9 @@ namespace NakedObjects.Reflect.Test {
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            Assert.AreEqual(74, reflector.AllObjectSpecImmutables.Count());
+            var specs = reflector.AllObjectSpecImmutables;
+            Assert.AreEqual(74, specs.Length);
+
         }
 
         [TestMethod]
@@ -320,7 +382,28 @@ namespace NakedObjects.Reflect.Test {
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            Assert.AreEqual(19, reflector.AllObjectSpecImmutables.Count());
+            var specs = reflector.AllObjectSpecImmutables;
+            Assert.AreEqual(19, specs.Length);
+
+            AbstractReflectorTest.AssertSpec(typeof(IComparable<string>), specs[0]);
+            AbstractReflectorTest.AssertSpec(typeof(IEquatable<int>), specs[1]);
+            AbstractReflectorTest.AssertSpec(typeof(int), specs[2]);
+            AbstractReflectorTest.AssertSpec(typeof(IConvertible), specs[3]);
+            AbstractReflectorTest.AssertSpec(typeof(object), specs[4]);
+            AbstractReflectorTest.AssertSpec(typeof(IComparable<char>), specs[5]);
+            AbstractReflectorTest.AssertSpec(typeof(char), specs[6]);
+            AbstractReflectorTest.AssertSpec(typeof(ValueType), specs[7]);
+            AbstractReflectorTest.AssertSpec(typeof(IComparable), specs[8]);
+            AbstractReflectorTest.AssertSpec(typeof(ICloneable), specs[9]);
+            AbstractReflectorTest.AssertSpec(typeof(IEquatable<string>), specs[10]);
+            AbstractReflectorTest.AssertSpec(typeof(IEquatable<char>), specs[11]);
+            AbstractReflectorTest.AssertSpec(typeof(void), specs[12]);
+            AbstractReflectorTest.AssertSpec(typeof(IFormattable), specs[13]);
+            AbstractReflectorTest.AssertSpec(typeof(IComparable<int>), specs[14]);
+            AbstractReflectorTest.AssertSpec(typeof(SimpleDomainObject), specs[15]);
+            AbstractReflectorTest.AssertSpec(typeof(string), specs[16]);
+            AbstractReflectorTest.AssertSpec(typeof(IEnumerable<>), specs[17]);
+            AbstractReflectorTest.AssertSpec(typeof(IEnumerable), specs[18]);
         }
 
         #region Nested type: SetWrapper
