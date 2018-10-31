@@ -30,6 +30,7 @@ namespace NakedObjects.Reflect {
         private List<IAssociationSpecImmutable> orderedFields;
         private List<IActionSpecImmutable> orderedObjectActions;
         private PropertyInfo[] properties;
+        private IIdentifier identifier;
 
         public Introspector(IReflector reflector) {
             this.reflector = reflector;
@@ -49,14 +50,18 @@ namespace NakedObjects.Reflect {
 
         public Type IntrospectedType { get; private set; }
 
+        public Type SpecificationType { get; private set; }
+
         /// <summary>
         ///     As per <see cref="MemberInfo.Name" />
         /// </summary>
         public string ClassName => IntrospectedType.Name;
 
-        public string FullName => IntrospectedType.GetProxiedTypeFullName();
+        public IIdentifier Identifier => identifier;
 
-        public string ShortName => TypeNameUtils.GetShortName(IntrospectedType.Name);
+        public string FullName => SpecificationType.GetProxiedTypeFullName();
+
+        public string ShortName => TypeNameUtils.GetShortName(SpecificationType.Name);
 
         public IList<IAssociationSpecImmutable> Fields => orderedFields.ToImmutableList();
 
@@ -65,6 +70,26 @@ namespace NakedObjects.Reflect {
         public ITypeSpecBuilder[] Interfaces { get; set; }
         public ITypeSpecBuilder Superclass { get; set; }
 
+
+        private static bool IsGenericEnumerableOrSet(Type type) {
+            return CollectionUtils.IsGenericType(type, typeof(IEnumerable<>)) ||
+                   CollectionUtils.IsGenericType(type, typeof(ISet<>));
+        }
+
+        private Type GetSpecificationType(Type type) {
+            var actualType = ClassStrategy.GetType(type);
+
+            if (IsGenericEnumerableOrSet(type)) {
+                return type.GetGenericTypeDefinition();
+            }
+            if (type.IsArray && !(type.GetElementType().IsValueType || type.GetElementType() == typeof(string))) {
+                return typeof(System.Array);
+            }
+
+            return actualType;
+        }
+
+
         public void IntrospectType(Type typeToIntrospect, ITypeSpecImmutable spec) {
 
             if (!TypeUtils.IsPublic(typeToIntrospect)) {
@@ -72,8 +97,11 @@ namespace NakedObjects.Reflect {
             }
 
             IntrospectedType = typeToIntrospect;
+            SpecificationType = GetSpecificationType(typeToIntrospect);
+
             properties = typeToIntrospect.GetProperties();
             methods = GetNonPropertyMethods();
+            identifier = new IdentifierImpl(FullName);
 
             // Process facets at object level
             // this will also remove some methods, such as the superclass methods.

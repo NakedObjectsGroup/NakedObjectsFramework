@@ -9,17 +9,21 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Reflection;
+using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Architecture.Reflect {
     public interface IIntrospector {
         Type IntrospectedType { get; }
 
+        Type SpecificationType { get; }
+
         /// <summary>
         ///     As per <see cref="MemberInfo.Name" />
         /// </summary>
         string ClassName { get; }
 
+        IIdentifier Identifier { get; }
         string FullName { get; }
         string ShortName { get; }
         IList<IAssociationSpecImmutable> Fields { get; }

@@ -47,7 +47,7 @@ namespace NakedObjects.Reflect.Test {
 
         [TestMethod]
         public void TestName() {
-            Assert.AreEqual(typeof (TestPoco[]).FullName, Specification.FullName);
+            Assert.AreEqual(typeof (System.Array).FullName, Specification.FullName);
         }
 
         [TestMethod]

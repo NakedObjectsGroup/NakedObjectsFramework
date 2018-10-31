@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.Serialization;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -18,19 +17,17 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
-using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.Spec;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
     public abstract class TypeSpecImmutable : Specification, ITypeSpecBuilder {
-        private readonly IIdentifier identifier;
+        private IIdentifier identifier;
         private ImmutableList<ITypeSpecImmutable> subclasses;
 
         protected TypeSpecImmutable(Type type) {
             Type = type.IsGenericType && CollectionUtils.IsCollection(type) ? type.GetGenericTypeDefinition() : type;
-            identifier = new IdentifierImpl(type.FullName);
             Interfaces = ImmutableList<ITypeSpecImmutable>.Empty;
             subclasses = ImmutableList<ITypeSpecImmutable>.Empty;
             ContributedActions = ImmutableList<IActionSpecImmutable>.Empty;
@@ -42,6 +39,7 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public void Introspect(IFacetDecoratorSet decorator, IIntrospector introspector) {
             introspector.IntrospectType(Type, this);
+            identifier = introspector.Identifier;
             FullName = introspector.FullName;
             ShortName = introspector.ShortName;
             Superclass = introspector.Superclass;
@@ -49,10 +47,12 @@ namespace NakedObjects.Meta.SpecImmutable {
             Fields = introspector.Fields;
             ObjectActions = introspector.ObjectActions;
             DecorateAllFacets(decorator);
+            Type = introspector.SpecificationType;
         }
 
         public ImmutableDictionary<string, ITypeSpecBuilder> Introspect(IFacetDecoratorSet decorator, IIntrospector introspector, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             metamodel = introspector.IntrospectType(Type, this, metamodel);
+            identifier = introspector.Identifier;
             FullName = introspector.FullName;
             ShortName = introspector.ShortName;
             Superclass = introspector.Superclass;
@@ -60,6 +60,7 @@ namespace NakedObjects.Meta.SpecImmutable {
             Fields = introspector.Fields;
             ObjectActions = introspector.ObjectActions;
             DecorateAllFacets(decorator);
+            Type = introspector.SpecificationType;
             return metamodel;
         }
 
