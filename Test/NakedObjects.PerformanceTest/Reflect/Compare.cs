@@ -13,7 +13,6 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Menu;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Menu;
-using Sdm.Test.Fixtures.Clusters.Payments.PaymentContributedActions.Actions;
 
 namespace NakedObjects.SystemTest.Reflect {
     public static class CompareFunctions {
@@ -101,22 +100,10 @@ namespace NakedObjects.SystemTest.Reflect {
                 Assert.AreEqual(a.m1, a.m2);
                 Assert.AreEqual(1, os1.Count(o => o == a.m1), a.m1);
                 Assert.AreEqual(1, os2.Count(o => o == a.m2), a.m2);
-
-                //DebugMenu(os1, a.m1, oMenus1);
             }
 
             foreach (var a in oMenus1.Zip(oMenus2, (m1, m2) => new { m1, m2 })) {
                 Compare(a.m1, a.m2);
-            }
-        }
-
-        private static void DebugMenu(string[] os1, string m1, List<IMenuItemImmutable> oMenus1) {
-            if (os1.Count(o => o == m1) > 1) {
-                var os = oMenus1.Where(i => i.ToOrderString() == m1).ToArray();
-                var o1 = os.ElementAt(0);
-                var o2 = os.ElementAt(1);
-
-                Compare(o1, o2);
             }
         }
 
@@ -141,34 +128,6 @@ namespace NakedObjects.SystemTest.Reflect {
             return spec.Identifier.ToIdString() + spec.ReturnSpec.Identifier.ToIdString();
         }
 
-        public static bool HasBeenCompared(ISpecification spec, object to) {
-
-            Assert.AreNotSame(spec, to);
-
-            // only carry on to compare facets if first time
-            if (Compared.ContainsKey(spec)) {
-                Assert.AreSame(Compared[spec], to);
-                return true;
-            }
-
-            Compared[spec] = to;
-            return false;
-        }
-
-        public static bool HasBeenCompared(IMenuItemImmutable menu, object to) {
-
-            Assert.AreNotSame(menu, to);
-
-            // only carry on to compare facets if first time
-            if (Compared.ContainsKey(menu)) {
-                Assert.AreSame(Compared[menu], to);
-                return true;
-            }
-
-            Compared[menu] = to;
-            return false;
-        }
-
         public static bool HasBeenCompared(object obj, object to) {
 
             Assert.AreNotSame(obj, to);
@@ -191,8 +150,8 @@ namespace NakedObjects.SystemTest.Reflect {
             // make sure same spec
             Compare(assoc1.Identifier, assoc2.Identifier, specName);
 
-            CompareTypeName(assoc1.Name, assoc2.Name, specName);
-            CompareTypeName(assoc1.Description, assoc2.Description, specName);
+            Compare(assoc1.Name, assoc2.Name, specName);
+            Compare(assoc1.Description, assoc2.Description, specName);
 
 
             Compare(assoc1.ReturnSpec, assoc2.ReturnSpec, specName);
@@ -204,11 +163,6 @@ namespace NakedObjects.SystemTest.Reflect {
 
             Compare(assoc1 as ISpecification, assoc2, specName);
         }
-
-        //public static void Compare(IAssociationSpecImmutable assoc1, IAssociationSpecImmutable assoc2, string specName) {
-        //    Compare(assoc1 as IMemberSpecImmutable, assoc2, specName);
-        //    Compare(assoc1.OwnerSpec, assoc2.OwnerSpec);
-        //}
 
         public static void Compare(IOneToManyAssociationSpecImmutable assoc1, IOneToManyAssociationSpecImmutable assoc2) {
             var specName = assoc1.Name;    
@@ -424,24 +378,8 @@ namespace NakedObjects.SystemTest.Reflect {
             }
         }
 
-        public static void CompareTypeName(string s1, string s2, string parent) {
-            //if (s1.Contains("[]") && s2.Contains("[]")) {
-            //    return;
-            //}
-
-            var fromS1 = s1.IndexOf('`');
-            var fromS2 = s2.IndexOf('`');
-            var trimmedS1 = fromS1 == -1 ? s1 : s1.Remove(fromS1);
-            var trimmedS2 = fromS2 == -1 ? s2 : s2.Remove(fromS2);
-            Compare(trimmedS1, trimmedS2, parent);
-        }
-
         public static void Compare(string s1, string s2, string parent) {
             if (s1 == null && s2 == null) {
-                return;
-            }
-
-            if (s1.Contains("[]") && s2.Contains("[]")) {
                 return;
             }
 
@@ -549,7 +487,7 @@ namespace NakedObjects.SystemTest.Reflect {
         }
 
         public static void Compare(IFacet facet1, IFacet facet2, string specName) {
-            //Compare(facet1.Specification.Identifier, facet2.Specification.Identifier, specName);
+            Compare(facet1.Specification.Identifier, facet2.Specification.Identifier, specName);
             Compare(facet1.FacetType, facet2.FacetType, specName);
             Compare(facet1.GetType(), facet2.GetType(), specName);
             Compare(facet1.IsNoOp, facet2.IsNoOp, specName);
@@ -593,7 +531,7 @@ namespace NakedObjects.SystemTest.Reflect {
         public static void Compare(ISpecification spec1, ISpecification spec2, string specName) {
 
             Compare(spec1.FacetTypes, spec2.FacetTypes, specName);
-            CompareTypeName(spec1.ToIdString(), spec2.ToIdString(), specName);
+            Compare(spec1.ToIdString(), spec2.ToIdString(), specName);
 
             Compare(spec1.GetFacets(), spec2.GetFacets(), specName);
         }
@@ -614,10 +552,11 @@ namespace NakedObjects.SystemTest.Reflect {
             var specName = name + " : " + spec1.FullName;
 
             // make sure same spec
-            CompareTypeName(spec1.FullName, spec2.FullName, specName);
+            Compare(spec1.FullName, spec2.FullName, specName);
             Compare(spec1.GetType(), spec2.GetType(), specName);
             Compare(spec1.Type, spec2.Type, specName);
-            
+            Compare(spec1.Identifier, spec2.Identifier, specName);
+
             // only carry on to compare facets if first time
             if (HasBeenCompared(spec1, spec2)) {
                 return;
