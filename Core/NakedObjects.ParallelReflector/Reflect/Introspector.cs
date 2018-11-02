@@ -22,7 +22,7 @@ using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflect {
+namespace NakedObjects.ParallelReflect {
     public sealed class Introspector : IIntrospector {
         private static readonly ILog Log = LogManager.GetLogger(typeof (Introspector));
         private readonly IReflector reflector;
