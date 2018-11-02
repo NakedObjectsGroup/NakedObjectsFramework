@@ -94,7 +94,7 @@ namespace NakedObjects.ParallelReflect.Component {
         }
 
         public ITypeSpecBuilder[] AllObjectSpecImmutables {
-            get { return metamodel.AllSpecifications.Cast<ITypeSpecBuilder>().ToArray(); }
+            get { return initialMetamodel.AllSpecifications.Cast<ITypeSpecBuilder>().ToArray(); }
         }
 
       
@@ -269,26 +269,7 @@ namespace NakedObjects.ParallelReflect.Component {
             return specification;
         }
 
-        private ITypeSpecBuilder LoadSpecificationAndCache(Type type) {
-            Type actualType = classStrategy.GetType(type);
-
-            if (actualType == null) {
-                throw new ReflectionException("Attempting to introspect a non-introspectable type " + type.FullName + " ");
-            }
-
-            ITypeSpecBuilder specification = CreateSpecification(actualType);
-
-            if (specification == null) {
-                throw new ReflectionException("unrecognised type " + actualType.FullName);
-            }
-
-            // We need the specification available in cache even though not yet fully introspected 
-            metamodel.Add(actualType, specification);
-
-            specification.Introspect(facetDecoratorSet, new Introspector(this));
-
-            return specification;
-        }
+       
 
         private Tuple<ITypeSpecBuilder, ImmutableDictionary<string, ITypeSpecBuilder>> LoadPlaceholder(Type type, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             ITypeSpecBuilder specification = CreateSpecification(type, metamodel);
