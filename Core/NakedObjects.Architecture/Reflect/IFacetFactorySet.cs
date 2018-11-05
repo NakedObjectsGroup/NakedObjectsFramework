@@ -7,10 +7,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Architecture.Reflect {
     /// <summary>
@@ -78,5 +80,14 @@ namespace NakedObjects.Architecture.Reflect {
         /// <param name="paramNum">zero-based</param>
         /// <param name="specification"> holder to attach facets to</param>
         void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder specification);
+
+        ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel);
+
+        ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType, ImmutableDictionary<string, ITypeSpecBuilder> metamodel);
+
+        ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType, ImmutableDictionary<string, ITypeSpecBuilder> metamodel);
+
+        ImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel);
+
     }
 }

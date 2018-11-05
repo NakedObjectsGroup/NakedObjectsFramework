@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2050
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Architecture", "Core\NakedObjects.Architecture\NakedObjects.Architecture.csproj", "{BF6D9655-B873-4980-ACE7-A122EA45F045}"
 EndProject
@@ -54,6 +54,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Metamodel.Test", "Core\NakedObjects.Metamodel.Test\NakedObjects.Metamodel.Test.csproj", "{36C4978D-F8E0-48B2-8267-AF8D45978EB1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Unity", "Core\NakedObjects.Unity\NakedObjects.Unity.csproj", "{81F04EDB-4913-4EC8-B4D5-F9CC118FF216}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.ParallelReflector", "Core\NakedObjects.ParallelReflector\NakedObjects.ParallelReflector.csproj", "{09BB8640-87B3-40D5-8977-B1F318C462BE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -195,9 +197,20 @@ Global
 		{81F04EDB-4913-4EC8-B4D5-F9CC118FF216}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81F04EDB-4913-4EC8-B4D5-F9CC118FF216}.Release|Any CPU.Build.0 = Release|Any CPU
 		{81F04EDB-4913-4EC8-B4D5-F9CC118FF216}.Release|x86.ActiveCfg = Release|Any CPU
+		{09BB8640-87B3-40D5-8977-B1F318C462BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09BB8640-87B3-40D5-8977-B1F318C462BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09BB8640-87B3-40D5-8977-B1F318C462BE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{09BB8640-87B3-40D5-8977-B1F318C462BE}.Debug|x86.Build.0 = Debug|Any CPU
+		{09BB8640-87B3-40D5-8977-B1F318C462BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09BB8640-87B3-40D5-8977-B1F318C462BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09BB8640-87B3-40D5-8977-B1F318C462BE}.Release|x86.ActiveCfg = Release|Any CPU
+		{09BB8640-87B3-40D5-8977-B1F318C462BE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DD6326E7-9806-4895-A85A-F9009B86BC59}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = development.vsmdi

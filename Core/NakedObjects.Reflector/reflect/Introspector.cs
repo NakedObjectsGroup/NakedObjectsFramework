@@ -142,6 +142,10 @@ namespace NakedObjects.Reflect {
             IntrospectActions(spec);
         }
 
+        public ImmutableDictionary<string, ITypeSpecBuilder> IntrospectType(Type typeToIntrospect, ITypeSpecImmutable specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         private void AddAsSubclass(ITypeSpecImmutable spec) {

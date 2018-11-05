@@ -1,0 +1,298 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <SchemaVersion>2.0</SchemaVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>NakedObjects.ParallelReflector</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>NakedObjects.ParallelReflect</RootNamespace>
+    <NoStandardLibraries>false</NoStandardLibraries>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <ProjectGuid>{09BB8640-87B3-40D5-8977-B1F318C462BE}</ProjectGuid>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Common.Logging">
+      <HintPath>..\..\packages\Common.Logging.3.0.0\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging.Core">
+      <HintPath>..\..\packages\Common.Logging.Core.3.0.0\lib\net40\Common.Logging.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Attributes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.3\lib\net40\NakedObjects.Attributes.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Helpers">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.3\lib\net40\NakedObjects.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.PMResources">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.3\lib\net40\NakedObjects.PMResources.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Types">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.3\lib\net40\NakedObjects.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable">
+      <HintPath>..\..\packages\Microsoft.Bcl.Immutable.1.0.34\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Reflect\FacetFactories.cs" />
+    <Compile Include="FacetFactory\FindMenuFacetFactory.cs" />
+    <Compile Include="FacetFactory\MenuFacetFactory.cs" />
+    <Compile Include="FacetFactory\TypeMarkerFacetFactory.cs" />
+    <Compile Include="FacetFactory\FacetFactoryAbstract.cs" />
+    <Compile Include="FacetFactory\TableViewAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\DefaultNamingFacetFactory.cs" />
+    <Compile Include="FacetFactory\SystemClassPropertyFilteringFactory.cs" />
+    <Compile Include="FacetFactory\ValidateObjectFacetFactory.cs" />
+    <Compile Include="FacetFactory\TypeOfAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\ActionMethodsFacetFactory.cs" />
+    <Compile Include="FacetFactory\ComplementaryMethodsFilteringFacetFactory.cs" />
+    <Compile Include="FacetFactory\ContributedActionAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\FinderActionFacetFactory.cs" />
+    <Compile Include="FacetFactory\ActionDefaultAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\ExecutedAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\IteratorFilteringFacetFactory.cs" />
+    <Compile Include="FacetFactory\PageSizeAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\PotencyAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\SystemClassMethodFilteringFactory.cs" />
+    <Compile Include="FacetFactory\AnnotationBasedFacetFactoryAbstract.cs" />
+    <Compile Include="FacetFactory\AuthorizeAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\CollectionFacetFactory.cs" />
+    <Compile Include="FacetFactory\CollectionFieldMethodsFacetFactory.cs" />
+    <Compile Include="FacetFactory\DisabledAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\DisableDefaultMethodFacetFactory.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reflect\FacetFactorySet.cs" />
+    <Compile Include="FacetFactory\FallbackFacetFactory.cs" />
+    <Compile Include="FacetFactory\HiddenAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\HiddenDefaultMethodFacetFactory.cs" />
+    <Compile Include="FacetFactory\IMethodPrefixBasedFacetFactory.cs" />
+    <Compile Include="FacetFactory\MethodPrefixBasedFacetFactoryAbstract.cs" />
+    <Compile Include="FacetFactory\DescribedAsAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\NamedAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\ComplexTypeAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\BoundedAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\CallbackMethodsFacetFactory.cs" />
+    <Compile Include="FacetFactory\IconMethodFacetFactory.cs" />
+    <Compile Include="FacetFactory\PluralAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\TitleMethodFacetFactory.cs" />
+    <Compile Include="FacetFactory\ImmutableAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\ProgramPersistableOnlyAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\ValidateProgrammaticUpdatesAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\ViewModelFacetFactory.cs" />
+    <Compile Include="FacetFactory\MemberOrderAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\PasswordAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\PrefixesAndRecognisedMethods.cs" />
+    <Compile Include="FacetFactory\PresentationHintAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\NotPersistedAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\ConcurrencyCheckAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\PropertyDefaultAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\EagerlyAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\EnumFacetFactory.cs" />
+    <Compile Include="FacetFactory\PropertyMethodsFacetFactory.cs" />
+    <Compile Include="FacetFactory\PropertyValidateDefaultFacetFactory.cs" />
+    <Compile Include="FacetFactory\PropertyOrCollectionIdentifyingFacetFactoryAbstract.cs" />
+    <Compile Include="FacetFactory\MultiLineAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\TypicalLengthAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\TypicalLengthDerivedFromTypeFacetFactory.cs" />
+    <Compile Include="FacetFactory\MandatoryDefaultFacetFactory.cs" />
+    <Compile Include="FacetFactory\OptionalAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\OptionalDefaultFacetFactory.cs" />
+    <Compile Include="FacetFactory\RequiredAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\MaskAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\MaxLengthAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\RangeAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\RegExAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\RemoveDynamicProxyMethodsFacetFactory.cs" />
+    <Compile Include="FacetFactory\RemoveEventHandlerMethodsFacetFactory.cs" />
+    <Compile Include="FacetFactory\RemoveSuperclassMethodsFacetFactory.cs" />
+    <Compile Include="Reflect\Introspector.cs" />
+    <Compile Include="Component\ParallelReflector.cs" />
+    <Compile Include="Reflect\MemberIdentifierComparator.cs" />
+    <Compile Include="Reflect\MemberOrderComparator.cs" />
+    <Compile Include="Component\DefaultClassStrategy.cs" />
+    <Compile Include="Reflect\FacetDecoratorSet.cs" />
+    <Compile Include="TypeFacetFactory\ArrayValueTypeFacetFactory.cs" />
+    <Compile Include="TypeFacetFactory\BoolValueTypeFacetFactory.cs" />
+    <Compile Include="TypeFacetFactory\ByteValueTypeFacetFactory.cs" />
+    <Compile Include="TypeFacetFactory\CharValueTypeFacetFactory.cs" />
+    <Compile Include="TypeFacetFactory\ColorValueTypeFacetFactory.cs" />
+    <Compile Include="TypeFacetFactory\DateTimeValueTypeFacetFactory.cs" />
+    <Compile Include="TypeFacetFactory\DecimalValueTypeFacetFactory.cs" />
+    <Compile Include="TypeFacetFactory\DoubleValueTypeFacetFactory.cs" />
+    <Compile Include="TypeFacetFactory\EnumValueTypeFacetFactory.cs" />
+    <Compile Include="TypeFacetFactory\FileAttachmentValueTypeFacetFactory.cs" />
+    <Compile Include="TypeFacetFactory\FloatValueTypeFacetFactory.cs" />
+    <Compile Include="TypeFacetFactory\GuidValueTypeFacetFactory.cs" />
+    <Compile Include="TypeFacetFactory\ImageValueTypeFacetFactory.cs" />
+    <Compile Include="TypeFacetFactory\IntValueTypeFacetFactory.cs" />
+    <Compile Include="TypeFacetFactory\LongValueTypeFacetFactory.cs" />
+    <Compile Include="TypeFacetFactory\SbyteValueTypeFacetFactory.cs" />
+    <Compile Include="TypeFacetFactory\ShortValueTypeFacetFactory.cs" />
+    <Compile Include="TypeFacetFactory\StringValueTypeFacetFactory.cs" />
+    <Compile Include="TypeFacetFactory\TimeValueTypeFacetFactory.cs" />
+    <Compile Include="TypeFacetFactory\UIntValueTypeFacetFactory.cs" />
+    <Compile Include="TypeFacetFactory\ULongValueTypeFacetFactory.cs" />
+    <Compile Include="TypeFacetFactory\UShortValueTypeFacetFactory.cs" />
+    <Compile Include="TypeFacetFactory\ValueUsingValueSemanticsProviderFacetFactory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.VisualBasic.PowerPacks.10.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Visual Basic PowerPacks 10.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NakedObjects.Architecture\NakedObjects.Architecture.csproj">
+      <Project>{BF6D9655-B873-4980-ACE7-A122EA45F045}</Project>
+      <Name>NakedObjects.Architecture</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Core\NakedObjects.Core.csproj">
+      <Project>{3F1E438C-020C-4751-A65A-63C2990D8278}</Project>
+      <Name>NakedObjects.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.FWResources\NakedObjects.FWResources.csproj">
+      <Project>{7494A00E-6A3F-4BDE-84FF-20AA538ED575}</Project>
+      <Name>NakedObjects.FWResources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Metamodel\NakedObjects.Metamodel.csproj">
+      <Project>{51310042-B65B-4480-A8C0-11E6B39C7587}</Project>
+      <Name>NakedObjects.MetamodelManager</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" />
+</Project>
