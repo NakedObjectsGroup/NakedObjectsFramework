@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
@@ -32,8 +31,8 @@ namespace NakedObjects.ParallelReflect.Component {
         private readonly FacetDecoratorSet facetDecoratorSet;
         private readonly IFacetFactorySet facetFactorySet;
         private readonly IMenuFactory menuFactory;
+        private readonly IMetamodelBuilder metamodel;
         private readonly ISet<Type> serviceTypes = new HashSet<Type>();
-        private readonly IMetamodelBuilder initialMetamodel;
 
         static ParallelReflector() {
             Log = LogManager.GetLogger(typeof(ParallelReflector));
@@ -51,7 +50,7 @@ namespace NakedObjects.ParallelReflect.Component {
             Assert.AssertNotNull(menuFactory);
 
             this.classStrategy = classStrategy;
-            this.initialMetamodel = metamodel;
+            this.metamodel = metamodel;
             this.config = config;
             this.menuFactory = menuFactory;
             facetDecoratorSet = new FacetDecoratorSet(facetDecorators);
@@ -78,36 +77,36 @@ namespace NakedObjects.ParallelReflect.Component {
         }
 
         public IMetamodel Metamodel {
-            get { return null; }
-        }
-
-        public ITypeSpecBuilder LoadSpecification(Type type) {
-            throw new NotImplementedException();
-        }
-
-        public T LoadSpecification<T>(Type type) where T : ITypeSpecImmutable {
-            throw new NotImplementedException();
-        }
-
-        public void LoadSpecificationForReturnTypes(IList<PropertyInfo> properties, Type classToIgnore) {
-            throw new NotImplementedException();
+            get { return metamodel; }
         }
 
         public ITypeSpecBuilder[] AllObjectSpecImmutables {
             get { return metamodel.AllSpecifications.Cast<ITypeSpecBuilder>().ToArray(); }
         }
 
-      
-        public Tuple<ITypeSpecBuilder, ImmutableDictionary<string, ITypeSpecBuilder>> LoadSpecification(Type type, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Assert.AssertNotNull(type);
-
-            var actualType = ClassStrategy.GetType(type);
-            var typeKey = ClassStrategy.GetKeyForType(actualType);
-            if (!metamodel.ContainsKey(typeKey)) {
-                return LoadPlaceholder(actualType, metamodel);
+        public void LoadSpecificationForReturnTypes(IList<PropertyInfo> properties, Type classToIgnore) {
+            foreach (PropertyInfo property in properties) {
+                if (property.GetGetMethod() != null && property.PropertyType != classToIgnore) {
+                    LoadSpecification(property.PropertyType);
+                }
             }
+        }
 
-            return new Tuple<ITypeSpecBuilder, ImmutableDictionary<string, ITypeSpecBuilder>>(metamodel[typeKey], metamodel);
+        public ITypeSpecBuilder LoadSpecification(Type type) {
+            Assert.AssertNotNull(type);
+            return (ITypeSpecBuilder)metamodel.GetSpecification(type, true) ?? LoadSpecificationAndCache(type);
+        }
+
+        public T LoadSpecification<T>(Type type) where T : ITypeSpecImmutable {
+            var spec = LoadSpecification(type);
+            try {
+                return (T)spec;
+            } catch (Exception) {
+                throw new ReflectionException(string.Format(
+                    "Specification for type {0} is {1}: cannot be cast to {2}",
+                    type.Name, spec.GetType().Name, typeof(T).Name
+                    ));
+            }
         }
 
         public void Reflect() {
@@ -119,31 +118,19 @@ namespace NakedObjects.ParallelReflect.Component {
 
             var allTypes = services.Union(nonServices).ToArray();
 
-            var mm = InstallSpecificationsParallel(allTypes, initialMetamodel, config);
+            InstallSpecifications(allTypes);
 
-            PopulateAssociatedActions(s1, mm);
+            PopulateAssociatedActions(s1.ToArray());
 
             //Menus installed once rest of metamodel has been built:
             if (config.MainMenus != null) {
                 IMenu[] mainMenus = config.MainMenus(menuFactory);
-                InstallMainMenus(mainMenus, mm);
+                InstallMainMenus(mainMenus);
             }
-            InstallObjectMenus(mm);
+            InstallObjectMenus();
         }
 
         #endregion
-
-        public Tuple<ITypeSpecBuilder, ImmutableDictionary<string, ITypeSpecBuilder>> IntrospectSpecification(Type actualType, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Assert.AssertNotNull(actualType);
-
-            var typeKey = ClassStrategy.GetKeyForType(actualType);
-
-            if (string.IsNullOrEmpty(metamodel[typeKey].FullName)) {
-                return LoadSpecificationAndCache(actualType, metamodel);
-            }
-
-            return new Tuple<ITypeSpecBuilder, ImmutableDictionary<string, ITypeSpecBuilder>>(metamodel[typeKey], metamodel);
-        }
 
         private Type EnsureGenericTypeIsComplete(Type type) {
             if (type.IsGenericType && !type.IsConstructedGenericType) {
@@ -161,35 +148,16 @@ namespace NakedObjects.ParallelReflect.Component {
             return types.Union(systemTypes).ToArray();
         }
 
-        private ImmutableDictionary<string, ITypeSpecBuilder> IntrospectPlaceholders(ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var ph = metamodel.Where(i => string.IsNullOrEmpty(i.Value.FullName)).Select(i => i.Value.Type);
-            var mm = ph.AsParallel().SelectMany(type => IntrospectSpecification(type, metamodel).Item2).Distinct(new DE()).ToDictionary(kvp => kvp.Key, kvp => kvp.Value).ToImmutableDictionary();
-
-            if (mm.Any(i => string.IsNullOrEmpty(i.Value.FullName))) {
-                return IntrospectPlaceholders(mm);
-            }
-
-            return mm;
-        }
-
-        private IMetamodelBuilder InstallSpecificationsParallel(Type[] types, IMetamodelBuilder metamodel, IReflectorConfiguration config) {
-            var mm = GetPlaceholders(types);
-            mm = IntrospectPlaceholders(mm);
-            mm.ForEach(i => metamodel.Add(i.Value.Type, i.Value));
-            return metamodel;
-        }
-
-
         private void InstallSpecifications(Type[] types) {
             types.ForEach(type => LoadSpecification(type));
         }
 
-        private void PopulateAssociatedActions(Type[] services, IMetamodelBuilder metamodel) {
+        private void PopulateAssociatedActions(Type[] services) {
             IEnumerable<IObjectSpecBuilder> nonServiceSpecs = AllObjectSpecImmutables.OfType<IObjectSpecBuilder>();
-            nonServiceSpecs.ForEach(s => PopulateAssociatedActions(s, services, metamodel));
+            nonServiceSpecs.ForEach(s => PopulateAssociatedActions(s, services));
         }
 
-        private void PopulateAssociatedActions(IObjectSpecBuilder spec, Type[] services, IMetamodelBuilder metamodel) {
+        private void PopulateAssociatedActions(IObjectSpecBuilder spec, Type[] services) {
             if (string.IsNullOrWhiteSpace(spec.FullName)) {
                 string id = (spec.Identifier != null ? spec.Identifier.ClassName : "unknown") ?? "unknown";
                 Log.WarnFormat("Specification with id : {0} as has null or empty name", id);
@@ -198,75 +166,63 @@ namespace NakedObjects.ParallelReflect.Component {
             if (TypeUtils.IsSystem(spec.FullName) && !spec.IsCollection) {
                 return;
             }
-
             if (TypeUtils.IsNakedObjects(spec.FullName)) {
                 return;
             }
 
-            PopulateContributedActions(spec, services, metamodel);
-            //PopulateFinderActions(spec, services, metamodel);
+            PopulateContributedActions(spec, services);
+            PopulateFinderActions(spec, services);
         }
 
-        private void InstallMainMenus(IMenu[] menus, IMetamodelBuilder metamodel) {
+        private void InstallMainMenus(IMenu[] menus) {
             foreach (IMenuImmutable menu in menus.OfType<IMenuImmutable>()) {
                 metamodel.AddMainMenu(menu);
             }
         }
 
-        private void InstallObjectMenus(IMetamodelBuilder metamodel) {
+        private void InstallObjectMenus() {
             IEnumerable<IMenuFacet> menuFacets = metamodel.AllSpecifications.Where(s => s.ContainsFacet<IMenuFacet>()).Select(s => s.GetFacet<IMenuFacet>());
             menuFacets.ForEach(mf => mf.CreateMenu(metamodel));
         }
 
-
-        private void PopulateContributedActions(IObjectSpecBuilder spec, Type[] services, IMetamodel metamodel) {
-
-            var result = services.
-                AsParallel().
-                Select(serviceType => {
+        private void PopulateContributedActions(IObjectSpecBuilder spec, Type[] services) {
+            IList<IActionSpecImmutable> contributedActions = new List<IActionSpecImmutable>();
+            IList<IActionSpecImmutable> collectionContribActions = new List<IActionSpecImmutable>();
+            foreach (Type serviceType in services) {
+                if (serviceType != spec.Type) {
                     var serviceSpecification = (IServiceSpecImmutable)metamodel.GetSpecification(serviceType);
                     IActionSpecImmutable[] serviceActions = serviceSpecification.ObjectActions.Where(sa => sa != null).ToArray();
-
-                    var matchingActionsForObject = serviceType != spec.Type ? serviceActions.Where(sa => sa.IsContributedTo(spec)).ToList() : new List<IActionSpecImmutable>();
-                    var matchingActionsForCollection = serviceType != spec.Type ? serviceActions.Where(sa => sa.IsContributedToCollectionOf(spec)).ToList() : new List<IActionSpecImmutable>();
-                    var finderActions = serviceActions.Where(sa => sa.IsFinderMethodFor(spec)).ToList();
-
-                    if (finderActions.Any()) {
-                        finderActions.Sort(new MemberOrderComparator<IActionSpecImmutable>());
+                    List<IActionSpecImmutable> matchingActionsForObject = serviceActions.Where(sa => sa.IsContributedTo(spec)).ToList();
+                    foreach (IActionSpecImmutable action in matchingActionsForObject) {
+                        contributedActions.Add(action);
                     }
 
-                    return new Tuple<List<IActionSpecImmutable>, List<IActionSpecImmutable>, List<IActionSpecImmutable>>(matchingActionsForObject, matchingActionsForCollection, finderActions);
-                }).
-                Aggregate(new Tuple<List<IActionSpecImmutable>, List<IActionSpecImmutable>, List<IActionSpecImmutable>>(new List<IActionSpecImmutable>(), new List<IActionSpecImmutable>(), new List<IActionSpecImmutable>()),
-                (a, t) => {
-                    a.Item1.AddRange(t.Item1);
-                    a.Item2.AddRange(t.Item2);
-                    a.Item3.AddRange(t.Item3);
-                    return a;
-                });
-
-            // 
-            var contribActions = new List<IActionSpecImmutable>();
-
-            // group by service - probably do this better - TODO
-            foreach (var service in services) {
-                var matching = result.Item1.Where(i => i.OwnerSpec.Type == service);
-                contribActions.AddRange(matching);
+                    List<IActionSpecImmutable> matchingActionsForCollection = serviceActions.Where(sa => sa.IsContributedToCollectionOf(spec)).ToList();
+                    foreach (IActionSpecImmutable action in matchingActionsForCollection) {
+                        collectionContribActions.Add(action);
+                    }
+                }
             }
-
-            spec.AddContributedActions(contribActions);
-            spec.AddCollectionContributedActions(result.Item2);
-            spec.AddFinderActions(result.Item3);
+            spec.AddContributedActions(contributedActions);
+            spec.AddCollectionContributedActions(collectionContribActions);
         }
 
-        private ITypeSpecBuilder GetPlaceholder(Type type, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            ITypeSpecBuilder specification = CreateSpecification(type, metamodel);
+        private void PopulateFinderActions(IObjectSpecBuilder spec, Type[] services) {
+            IList<IActionSpecImmutable> finderActions = new List<IActionSpecImmutable>();
+            foreach (Type serviceType in services) {
+                var serviceSpecification = (IServiceSpecImmutable)metamodel.GetSpecification(serviceType);
+                List<IActionSpecImmutable> matchingActions =
+                    serviceSpecification.ObjectActions.
+                        Where(serviceAction => serviceAction.IsFinderMethodFor(spec)).ToList();
 
-            if (specification == null) {
-                throw new ReflectionException($"unrecognised type {type.FullName}");
+                if (matchingActions.Any()) {
+                    matchingActions.Sort(new MemberOrderComparator<IActionSpecImmutable>());
+                    foreach (IActionSpecImmutable action in matchingActions) {
+                        finderActions.Add(action);
+                    }
+                }
             }
-
-            return specification;
+            spec.AddFinderActions(finderActions);
         }
 
         private ITypeSpecBuilder LoadSpecificationAndCache(Type type) {
@@ -290,36 +246,8 @@ namespace NakedObjects.ParallelReflect.Component {
             return specification;
         }
 
-        private Tuple<ITypeSpecBuilder, ImmutableDictionary<string, ITypeSpecBuilder>> LoadPlaceholder(Type type, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            ITypeSpecBuilder specification = CreateSpecification(type, metamodel);
-
-            if (specification == null) {
-                throw new ReflectionException("unrecognised type " + type.FullName);
-            }
-
-            metamodel = metamodel.Add(ClassStrategy.GetKeyForType(type), specification);
-
-            return new Tuple<ITypeSpecBuilder, ImmutableDictionary<string, ITypeSpecBuilder>>(specification, metamodel);
-        }
-
-        private ImmutableDictionary<string, ITypeSpecBuilder> GetPlaceholders(Type[] types) {
-            return types.Select(t => ClassStrategy.GetType(t)).Where(t => t != null).Distinct(new DR(ClassStrategy)).ToDictionary(t => ClassStrategy.GetKeyForType(t), t => GetPlaceholder(t, null)).ToImmutableDictionary();
-        }
-
-        private Tuple<ITypeSpecBuilder, ImmutableDictionary<string, ITypeSpecBuilder>> LoadSpecificationAndCache(Type type, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            ITypeSpecBuilder specification = metamodel[ClassStrategy.GetKeyForType(type)];
-
-            if (specification == null) {
-                throw new ReflectionException("unrecognised type " + type.FullName);
-            }
-
-            metamodel = specification.Introspect(facetDecoratorSet, new Introspector(this), metamodel);
-
-            return new Tuple<ITypeSpecBuilder, ImmutableDictionary<string, ITypeSpecBuilder>>(specification, metamodel);
-        }
-
-        private ITypeSpecBuilder CreateSpecification(Type type, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            TypeUtils.GetType(type.FullName); // This should ensure type is cached
+        private ITypeSpecBuilder CreateSpecification(Type type) {
+            TypeUtils.GetType(type.FullName); // This should ensure type is cached 
 
             return IsService(type) ? (ITypeSpecBuilder)ImmutableSpecFactory.CreateServiceSpecImmutable(type, metamodel) : ImmutableSpecFactory.CreateObjectSpecImmutable(type, metamodel);
         }
@@ -327,50 +255,6 @@ namespace NakedObjects.ParallelReflect.Component {
         private bool IsService(Type type) {
             return serviceTypes.Contains(type);
         }
-
-
-
-        #region Nested type: DE
-
-        private class DE : IEqualityComparer<KeyValuePair<string, ITypeSpecBuilder>> {
-            #region IEqualityComparer<KeyValuePair<string,ITypeSpecBuilder>> Members
-
-            public bool Equals(KeyValuePair<string, ITypeSpecBuilder> x, KeyValuePair<string, ITypeSpecBuilder> y) {
-                return x.Key.Equals(y.Key);
-            }
-
-            public int GetHashCode(KeyValuePair<string, ITypeSpecBuilder> obj) {
-                return obj.Key.GetHashCode();
-            }
-
-            #endregion
-        }
-
-        #endregion
-
-        #region Nested type: DR
-
-        private class DR : IEqualityComparer<Type> {
-            private readonly IClassStrategy classStrategy;
-
-            public DR(IClassStrategy classStrategy) {
-                this.classStrategy = classStrategy;
-            }
-
-            #region IEqualityComparer<Type> Members
-
-            public bool Equals(Type x, Type y) {
-                return classStrategy.GetKeyForType(x) == classStrategy.GetKeyForType(y);
-            }
-
-            public int GetHashCode(Type obj) {
-                return classStrategy.GetKeyForType(obj).GetHashCode();
-            }
-
-            #endregion
-        }
-
-        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.
