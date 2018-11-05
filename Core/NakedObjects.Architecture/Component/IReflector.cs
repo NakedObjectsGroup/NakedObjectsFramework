@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Reflection;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
@@ -38,10 +37,6 @@ namespace NakedObjects.Architecture.Component {
 
         void LoadSpecificationForReturnTypes(IList<PropertyInfo> properties, Type classToIgnore);
         void Reflect();
-
-        // new for ParallelReflector
-
-        Tuple<ITypeSpecBuilder, ImmutableDictionary<string, ITypeSpecBuilder>> LoadSpecification(Type type, ImmutableDictionary<string, ITypeSpecBuilder> metamodel);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

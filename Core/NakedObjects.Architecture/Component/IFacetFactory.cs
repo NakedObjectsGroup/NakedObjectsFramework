@@ -6,13 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Immutable;
 using System.Reflection;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Architecture.Component {
     public interface IFacetFactory : IComparable<IFacetFactory> {
@@ -65,17 +63,5 @@ namespace NakedObjects.Architecture.Component {
         /// <param name="paramNum">zero-based index to the parameter to be processed</param>
         /// <param name="holder">to attach the facets to</param>
         void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder);
-
-        // new for Parallel reflector - TODO comment !
-
-
-        ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel);
-
-        ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel);
-
-        ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel);
-
-        ImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, ImmutableDictionary<string, ITypeSpecBuilder> metamodel);
-
     }
 }

@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.SpecImmutable;
@@ -31,8 +30,5 @@ namespace NakedObjects.Architecture.Reflect {
         ITypeSpecBuilder[] Interfaces { get; set; }
         ITypeSpecBuilder Superclass { get; set; }
         void IntrospectType(Type typeToIntrospect, ITypeSpecImmutable specification);
-
-        ImmutableDictionary<string, ITypeSpecBuilder> IntrospectType(Type typeToIntrospect, ITypeSpecImmutable specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel);
-
     }
 }
