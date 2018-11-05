@@ -61,6 +61,7 @@
     <FWFiles Include="$(CorePath)\NakedObjects.Core\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.Persistor.Entity\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.Reflector\*.csproj"/>
+    <FWFiles Include="$(CorePath)\NakedObjects.ParallelReflector\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.Snapshot.Xml\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.Unity\*.csproj"/>
   </ItemGroup>
@@ -170,6 +171,7 @@
       <FWPdb Include="$(CorePath)\NakedObjects.Core\bin\%(Configuration.Identity)\NakedObjects.Core.pdb"/>
       <FWPdb Include="$(CorePath)\NakedObjects.Persistor.Entity\bin\%(Configuration.Identity)\NakedObjects.Persistor.Entity.pdb"/>
       <FWPdb Include="$(CorePath)\NakedObjects.Reflector\bin\%(Configuration.Identity)\NakedObjects.Reflector.pdb"/>
+      <FWPdb Include="$(CorePath)\NakedObjects.ParallelReflector\bin\%(Configuration.Identity)\NakedObjects.ParallelReflector.pdb"/>
       <FWPdb Include="$(CorePath)\NakedObjects.Snapshot.Xml\bin\%(Configuration.Identity)\NakedObjects.Snapshot.Xml.pdb"/>
       <FWPdb Include="$(CorePath)\NakedObjects.Unity\bin\%(Configuration.Identity)\NakedObjects.Unity.pdb"/>
     </ItemGroup>
@@ -183,6 +185,7 @@
       <FWSrc Include="$(CorePath)\*NakedObjects.Core\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Persistor.Entity\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Reflector\**\*.cs"/>
+      <FWSrc Include="$(CorePath)\*NakedObjects.ParallelReflector\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Snapshot.Xml\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Unity\**\*.cs"/>
     </ItemGroup>

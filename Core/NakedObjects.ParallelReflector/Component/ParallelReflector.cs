@@ -263,7 +263,7 @@ namespace NakedObjects.ParallelReflect.Component {
             ITypeSpecBuilder specification = CreateSpecification(type, metamodel);
 
             if (specification == null) {
-                throw new ReflectionException($"unrecognised type {type.FullName}");
+                throw new ReflectionException(string.Format("unrecognised type {0}", type.FullName));
             }
 
             return specification;

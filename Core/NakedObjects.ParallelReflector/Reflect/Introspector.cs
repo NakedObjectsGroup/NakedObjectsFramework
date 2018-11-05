@@ -30,6 +30,8 @@ namespace NakedObjects.ParallelReflect {
         private List<IAssociationSpecImmutable> orderedFields;
         private List<IActionSpecImmutable> orderedObjectActions;
         private PropertyInfo[] properties;
+        private Type introspectedType;
+        private Type specificationType;
         private IIdentifier identifier;
 
         public Introspector(IReflector reflector) {
@@ -55,9 +57,15 @@ namespace NakedObjects.ParallelReflect {
 
         #region IIntrospector Members
 
-        public Type IntrospectedType { get; private set; }
+        public Type IntrospectedType {
+            get { return introspectedType; }
+            private set { introspectedType = value; }
+        }
 
-        public Type SpecificationType { get; private set; }
+        public Type SpecificationType {
+            get { return specificationType; }
+            private set { specificationType = value; }
+        }
 
         /// <summary>
         ///     As per <see cref="MemberInfo.Name" />
@@ -66,12 +74,18 @@ namespace NakedObjects.ParallelReflect {
             get { return IntrospectedType.Name; }
         }
 
-        public IIdentifier Identifier => identifier;
+        public IIdentifier Identifier {
+            get { return identifier; }
+            private set { identifier = value; }
+        }
 
-        public string FullName => SpecificationType.GetProxiedTypeFullName();
+        public string FullName {
+            get { return SpecificationType.GetProxiedTypeFullName(); }
+        }
 
-        public string ShortName => TypeNameUtils.GetShortName(SpecificationType.Name);
-
+        public string ShortName {
+            get { return TypeNameUtils.GetShortName(SpecificationType.Name); }
+        }
 
         public IList<IAssociationSpecImmutable> Fields {
             get { return orderedFields.ToImmutableList(); }
@@ -118,7 +132,7 @@ namespace NakedObjects.ParallelReflect {
 
             properties = typeToIntrospect.GetProperties();
             methods = GetNonPropertyMethods();
-            identifier = new IdentifierImpl(FullName);
+            Identifier = new IdentifierImpl(FullName);
 
             // Process facets at object level
             // this will also remove some methods, such as the superclass methods.
@@ -286,7 +300,11 @@ namespace NakedObjects.ParallelReflect {
                 metamodel = result.Item2;
                 var propertySpec = result.Item1;
                 if (propertySpec is IServiceSpecImmutable) {
-                    throw new ReflectionException($"Type {propertyType.Name} is a service and cannot be used in public property {property.Name} on type {property.DeclaringType?.Name}. If the property is intended to be an injected service it should have a protected get.");
+                    throw new ReflectionException(string.Format(
+                        "Type {0} is a service and cannot be used in public property {1} on type {2}." +
+                        " If the property is intended to be an injected service it should have a protected get.",
+                        propertyType.Name, property.Name, property.DeclaringType.Name
+                    ));
                 }
                 var referenceProperty = ImmutableSpecFactory.CreateOneToOneAssociationSpecImmutable(identifier, spec, propertySpec as IObjectSpecImmutable);
 

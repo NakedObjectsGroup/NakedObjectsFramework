@@ -30,7 +30,6 @@ namespace NakedObjects.Reflect {
         private List<IAssociationSpecImmutable> orderedFields;
         private List<IActionSpecImmutable> orderedObjectActions;
         private PropertyInfo[] properties;
-        private IIdentifier identifier;
 
         public Introspector(IReflector reflector) {
             Log.DebugFormat("Creating DotNetIntrospector");
@@ -66,12 +65,15 @@ namespace NakedObjects.Reflect {
             get { return IntrospectedType.Name; }
         }
 
-        public IIdentifier Identifier => identifier;
+        public IIdentifier Identifier { get; private set; }
 
-        public string FullName => SpecificationType.GetProxiedTypeFullName();
+        public string FullName {
+            get { return SpecificationType.GetProxiedTypeFullName(); }
+        }
 
-        public string ShortName => TypeNameUtils.GetShortName(SpecificationType.Name);
-
+        public string ShortName {
+            get { return TypeNameUtils.GetShortName(SpecificationType.Name); }
+        }
 
         public IList<IAssociationSpecImmutable> Fields {
             get { return orderedFields.ToImmutableList(); }
@@ -116,7 +118,7 @@ namespace NakedObjects.Reflect {
 
             properties = typeToIntrospect.GetProperties();
             methods = GetNonPropertyMethods();
-            identifier = new IdentifierImpl(FullName);
+            Identifier = new IdentifierImpl(FullName);
 
             // Process facets at object level
             // this will also remove some methods, such as the superclass methods.
