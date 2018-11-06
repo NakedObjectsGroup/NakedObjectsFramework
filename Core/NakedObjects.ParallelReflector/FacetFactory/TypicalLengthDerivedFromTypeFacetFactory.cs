@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Drawing;
 using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -19,7 +18,6 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 using NakedObjects.Value;
-using Image = System.Drawing.Image;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class TypicalLengthDerivedFromTypeFacetFactory : AnnotationBasedFacetFactoryAbstract {
@@ -66,7 +64,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             {typeof(bool), 5 },
             {typeof(byte), 3},
             {typeof(char), 2},
-            {typeof(Color ), 4},
+            {typeof(System.Drawing.Color ), 4},
             {typeof(DateTime),  18},
             {typeof(decimal ), 18},
             {typeof(double ), 22},
