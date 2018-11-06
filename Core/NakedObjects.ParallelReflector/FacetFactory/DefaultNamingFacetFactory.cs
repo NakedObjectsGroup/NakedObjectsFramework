@@ -7,12 +7,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 using NakedObjects.Util;
@@ -24,7 +26,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         public DefaultNamingFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Objects) {}
 
-        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var facets = new List<IFacet>();
             var namedFacet = specification.GetFacet<INamedFacet>();
             if (namedFacet == null) {
@@ -42,6 +44,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             }
 
             FacetUtils.AddFacets(facets);
+            return metamodel;
         }
     }
 }

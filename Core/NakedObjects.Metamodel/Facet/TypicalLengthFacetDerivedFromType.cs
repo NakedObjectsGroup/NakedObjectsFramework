@@ -14,5 +14,8 @@ namespace NakedObjects.Meta.Facet {
     public sealed class TypicalLengthFacetDerivedFromType : TypicalLengthFacetAbstract {
         public TypicalLengthFacetDerivedFromType(ITypicalLengthFacet typicalLengthFacet, ISpecification holder)
             : base(typicalLengthFacet.Value, holder) {}
+
+        public TypicalLengthFacetDerivedFromType(int value, ISpecification holder)
+            : base(value, holder) { }
     }
 }

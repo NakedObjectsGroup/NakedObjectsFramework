@@ -25,7 +25,7 @@ namespace NakedObjects.ParallelReflect.Component {
         private static readonly ILog Log = LogManager.GetLogger(typeof (DefaultClassStrategy));
         private readonly IReflectorConfiguration config;
         // only intended for use during initial reflection
-        [NonSerialized] private IImmutableDictionary<Type, bool> namespaceScratchPad = ImmutableDictionary<Type, bool>.Empty;
+        //[NonSerialized] private IImmutableDictionary<Type, bool> namespaceScratchPad = ImmutableDictionary<Type, bool>.Empty;
 
         public DefaultClassStrategy(IReflectorConfiguration config) {
             this.config = config;
@@ -82,13 +82,15 @@ namespace NakedObjects.ParallelReflect.Component {
         }
 
         private bool IsNamespaceMatch(Type type) {
-            if (!namespaceScratchPad.ContainsKey(type)) {
-                var ns = type.Namespace ?? "";
-                var match = config.SupportedNamespaces.Any(ns.StartsWith);
-                namespaceScratchPad = namespaceScratchPad.Add(type, match);
-            }
+            //if (!namespaceScratchPad.ContainsKey(type)) {
+            //    var ns = type.Namespace ?? "";
+            //    var match = config.SupportedNamespaces.Any(ns.StartsWith);
+            //    namespaceScratchPad = namespaceScratchPad.Add(type, match);
+            //}
 
-            return namespaceScratchPad[type];
+            //return namespaceScratchPad[type];
+            var ns = type.Namespace ?? "";
+            return config.SupportedNamespaces.Any(ns.StartsWith);
         }
 
         private bool IsTypeWhiteListed(Type type) {

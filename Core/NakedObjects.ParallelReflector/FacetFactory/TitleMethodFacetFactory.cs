@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
@@ -15,6 +16,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
@@ -38,7 +40,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         ///     If no title or ToString can be used then will use Facets provided by
         ///     <see cref="FallbackFacetFactory" /> instead.
         /// </summary>
-        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             IList<MethodInfo> attributedMethods = new List<MethodInfo>();
             foreach (PropertyInfo propertyInfo in type.GetProperties(BindingFlags.Public | BindingFlags.Instance)) {
                 if (propertyInfo.GetCustomAttribute<TitleAttribute>() != null) {
@@ -52,7 +54,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             if (attributedMethods.Count > 0) {
                 // attributes takes priority
                 FacetUtils.AddFacet(new TitleFacetViaProperty(attributedMethods.First(), specification));
-                return;
+                return metamodel;
             }
 
             try {
@@ -88,6 +90,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             catch (Exception e) {
                 Log.Warn("Unexpected Exception", e);
             }
+
+            return metamodel;
         }
     }
 }

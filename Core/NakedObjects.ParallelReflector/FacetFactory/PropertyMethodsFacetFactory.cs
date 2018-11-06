@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
@@ -38,7 +39,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             get { return FixedPrefixes; }
         }
 
-        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             string capitalizedName = property.Name;
             var paramTypes = new[] {property.PropertyType};
 
@@ -65,7 +66,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             FindAndRemoveClearMethod(reflector, facets, methodRemover, property.DeclaringType, capitalizedName, specification);
 
             FindAndRemoveAutoCompleteMethod(reflector, facets, methodRemover, property.DeclaringType, capitalizedName, property.PropertyType, specification);
-            FindAndRemoveChoicesMethod(reflector, facets, methodRemover, property.DeclaringType, capitalizedName, property.PropertyType, specification);
+            metamodel = FindAndRemoveChoicesMethod(reflector, facets, methodRemover, property.DeclaringType, capitalizedName, property.PropertyType, specification, metamodel);
             FindAndRemoveDefaultMethod(reflector, facets, methodRemover, property.DeclaringType, capitalizedName, property.PropertyType, specification);
             FindAndRemoveValidateMethod(reflector, facets, methodRemover, property.DeclaringType, paramTypes, capitalizedName, specification);
 
@@ -77,6 +78,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             FindAndRemoveDisableMethod(reflector, facets, methodRemover, property.DeclaringType, MethodType.Object, capitalizedName, specification);
 
             FacetUtils.AddFacets(facets);
+            return metamodel;
         }
 
         private void FindAndRemoveModifyMethod(IReflector reflector,
@@ -129,13 +131,14 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             }
         }
 
-        private void FindAndRemoveChoicesMethod(IReflector reflector,
+        private ImmutableDictionary<string, ITypeSpecBuilder> FindAndRemoveChoicesMethod(IReflector reflector,
                                                 ICollection<IFacet> propertyFacets,
                                                 IMethodRemover methodRemover,
                                                 Type type,
                                                 string capitalizedName,
                                                 Type returnType,
-                                                ISpecification property) {
+                                                ISpecification property,
+                                                ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             MethodInfo[] methods = FindMethods(reflector,
                 type,
                 MethodType.Object,
@@ -152,10 +155,22 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             MethodInfo method = methods.FirstOrDefault();
             RemoveMethod(methodRemover, method);
             if (method != null) {
-                Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes = method.GetParameters().Select(p => new Tuple<string, IObjectSpecImmutable>(p.Name.ToLower(), reflector.LoadSpecification<IObjectSpecImmutable>(p.ParameterType))).ToArray();
-                propertyFacets.Add(new PropertyChoicesFacetx(method, parameterNamesAndTypes, property));
+                var parameterNamesAndTypes = new List<Tuple<string, IObjectSpecImmutable>>();
+                //method.GetParameters().
+                //    Select(p => new Tuple<string, IObjectSpecImmutable>(p.Name.ToLower(), reflector.LoadSpecification<IObjectSpecImmutable>(p.ParameterType, metamodel))).ToArray();
+
+                foreach (var p in method.GetParameters()) {
+                    var result = reflector.LoadSpecification(p.ParameterType, metamodel);
+                    metamodel = result.Item2;
+                    var spec = result.Item1 as IObjectSpecImmutable;
+                    parameterNamesAndTypes.Add(new Tuple<string, IObjectSpecImmutable>(p.Name.ToLower(), spec));
+                }
+
+                propertyFacets.Add(new PropertyChoicesFacetx(method, parameterNamesAndTypes.ToArray(), property));
                 AddOrAddToExecutedWhereFacet(method, property);
             }
+
+            return metamodel;
         }
 
         private void FindAndRemoveAutoCompleteMethod(IReflector reflector,

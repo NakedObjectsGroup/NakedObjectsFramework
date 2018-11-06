@@ -180,9 +180,7 @@ namespace NakedObjects.ParallelReflect.Component {
         }
 
 
-        private void InstallSpecifications(Type[] types) {
-            types.ForEach(type => LoadSpecification(type));
-        }
+      
 
         private void PopulateAssociatedActions(Type[] services, IMetamodelBuilder metamodel) {
             IEnumerable<IObjectSpecBuilder> nonServiceSpecs = AllObjectSpecImmutables.OfType<IObjectSpecBuilder>();

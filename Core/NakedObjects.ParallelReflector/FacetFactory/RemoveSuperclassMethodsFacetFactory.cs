@@ -7,11 +7,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Util;
 
@@ -43,14 +45,17 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             }
         }
 
-        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Type currentType = type;
             while (currentType != null) {
                 if (TypeUtils.IsSystem(currentType)) {
                     ProcessSystemType(currentType, methodRemover, specification);
                 }
+
                 currentType = currentType.BaseType;
             }
+
+            return metamodel;
         }
     }
 

@@ -7,12 +7,14 @@
 
 using System;
 using System.Collections;
+using System.Collections.Immutable;
 using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Util;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
@@ -36,13 +38,14 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             get { return FixedPrefixes; }
         }
 
-        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (typeof (IEnumerable).IsAssignableFrom(type) && !TypeUtils.IsSystem(type)) {
                 MethodInfo method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.GetEnumeratorMethod, null, Type.EmptyTypes);
                 if (method != null) {
                     methodRemover.RemoveMethod(method);
                 }
             }
+            return metamodel;
         }
     }
 

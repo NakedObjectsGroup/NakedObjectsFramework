@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Component;
@@ -14,6 +15,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
@@ -32,11 +34,11 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             get { return FixedPrefixes; }
         }
 
-        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder collection) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder collection, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             string capitalizedName = property.Name;
             Type type = property.DeclaringType;
 
-            var facets = new List<IFacet> {new PropertyAccessorFacet(property, collection)};
+            var facets = new List<IFacet> { new PropertyAccessorFacet(property, collection) };
 
             AddSetFacet(facets, property, collection);
 
@@ -45,6 +47,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             FindDefaultHideMethod(reflector, facets, methodRemover, property.DeclaringType, MethodType.Object, "PropertyDefault", collection);
             FindAndRemoveHideMethod(reflector, facets, methodRemover, type, MethodType.Object, capitalizedName, collection);
             FacetUtils.AddFacets(facets);
+            return metamodel;
         }
 
         private static void AddSetFacet(ICollection<IFacet> collectionFacets, PropertyInfo property, ISpecification collection) {

@@ -6,12 +6,14 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Immutable;
 using System.Reflection;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 using NakedObjects.Security;
@@ -23,33 +25,37 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         public AuthorizeAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.PropertiesCollectionsAndActions) {}
 
-        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {}
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            return metamodel;
+        }
 
-        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Type declaringType = method.DeclaringType;
-            var classAttribute = declaringType.GetCustomAttribute<AuthorizeActionAttribute>();
+            var classAttribute = declaringType?.GetCustomAttribute<AuthorizeActionAttribute>();
             var methodAttribute = method.GetCustomAttribute<AuthorizeActionAttribute>();
 
             if (classAttribute != null && methodAttribute != null) {
-                string declaringTypeName = declaringType == null ? "Unknown Type" : declaringType.FullName;
+                string declaringTypeName = declaringType.FullName;
                 Log.WarnFormat("Class and method level AuthorizeAttributes applied to class {0} - ignoring attribute on method {1}", declaringTypeName, method.Name);
             }
 
             Create(classAttribute ?? methodAttribute, specification);
+            return metamodel;
         }
 
-        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Type declaringType = property.DeclaringType;
-            var classAttribute = declaringType.GetCustomAttribute<AuthorizePropertyAttribute>();
+            var classAttribute = declaringType?.GetCustomAttribute<AuthorizePropertyAttribute>();
             var propertyAttribute = property.GetCustomAttribute<AuthorizePropertyAttribute>();
 
             if (classAttribute != null && propertyAttribute != null) {
-                string declaringTypeName = declaringType == null ? "Unknown Type" : declaringType.FullName;
+                string declaringTypeName = declaringType.FullName;
 
                 Log.WarnFormat("Class and property level AuthorizeAttributes applied to class {0} - ignoring attribute on property {1}", declaringTypeName, property.Name);
             }
 
             Create(classAttribute ?? propertyAttribute, specification);
+            return metamodel;
         }
 
         private static void Create(AuthorizePropertyAttribute attribute, ISpecification holder) {

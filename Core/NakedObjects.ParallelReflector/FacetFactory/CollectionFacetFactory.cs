@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Immutable;
 using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -22,12 +23,12 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         public CollectionFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ObjectsPropertiesAndCollections) {}
 
-        private void ProcessArray(IReflector reflector, Type type, ISpecification holder) {
+        private ImmutableDictionary<string, ITypeSpecBuilder> ProcessArray(IReflector reflector, Type type, ISpecification holder, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             FacetUtils.AddFacet(new ArrayFacet(holder));
             FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder));
 
             var elementType = type.GetElementType();
-            reflector.LoadSpecification(elementType);
+            return reflector.LoadSpecification(elementType, metamodel).Item2;
         }
 
         private void ProcessGenericEnumerable(Type type, ISpecification holder) {
@@ -51,32 +52,40 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             FacetUtils.AddFacet(facet);
         }
 
-        private void ProcessCollection(IReflector reflector, ISpecification holder) {
-            Type collectionElementType = typeof (object);
-            var spec = reflector.LoadSpecification<IObjectSpecImmutable>(collectionElementType);
+        private ImmutableDictionary<string, ITypeSpecBuilder> ProcessCollection(IReflector reflector, ISpecification holder, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            Type collectionElementType = typeof(object);
+            var result = reflector.LoadSpecification(collectionElementType, metamodel);
+            metamodel = result.Item2;
+            var spec = result.Item1 as IObjectSpecImmutable;
             FacetUtils.AddFacet(new TypeOfFacetDefaultToType(holder, collectionElementType, spec));
             FacetUtils.AddFacet(new CollectionFacet(holder));
+            return metamodel;
         }
 
-        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (CollectionUtils.IsGenericEnumerable(type)) {
                 ProcessGenericEnumerable(type, specification);
+                return metamodel;
             }
-            else if (type.IsArray) {
-                ProcessArray(reflector, type, specification);
+
+            if (type.IsArray) {
+                return ProcessArray(reflector, type, specification, metamodel);
             }
-            else if (CollectionUtils.IsCollectionButNotArray(type)) {
-                ProcessCollection(reflector, specification);
+
+            if (CollectionUtils.IsCollectionButNotArray(type)) {
+                return ProcessCollection(reflector, specification, metamodel);
             }
+
+            return metamodel;
         }
 
-        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (CollectionUtils.IsCollectionButNotArray(property.PropertyType)) {
                 specification.AddFacet(new CollectionResetFacet(property, specification));
+                return metamodel;
             }
-            else {
-                base.Process(reflector, property, methodRemover, specification);
-            }
+
+            return base.Process(reflector, property, methodRemover, specification, metamodel);
         }
     }
 }

@@ -6,12 +6,14 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Immutable;
 using System.Reflection;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     /// <summary>
@@ -35,18 +37,20 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             get { return FixedPrefixes; }
         }
 
-        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             try {
                 foreach (string methodName in FixedPrefixes) {
-                    MethodInfo methodInfo = FindMethod(reflector, type, MethodType.Object, methodName, typeof (bool), Type.EmptyTypes);
+                    MethodInfo methodInfo = FindMethod(reflector, type, MethodType.Object, methodName, typeof(bool), Type.EmptyTypes);
                     if (methodInfo != null) {
                         methodRemover.RemoveMethod(methodInfo);
                     }
                 }
             }
             catch (Exception e) {
-                Log.Warn("Unexpected exception", e);
+                Log.Error("Unexpected exception", e);
             }
+
+            return metamodel;
         }
     }
 }

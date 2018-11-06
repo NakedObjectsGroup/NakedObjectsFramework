@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -16,6 +17,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
@@ -45,7 +47,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                                        !CollectionUtils.IsQueryable(p.PropertyType));
         }
 
-        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Log.DebugFormat("Looking for validate methods for {0}", type);
 
             var methodPeers = new List<ValidateObjectFacet.NakedObjectValidationMethod>();
@@ -66,6 +68,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
             IValidateObjectFacet validateFacet = methodPeers.Any() ? (IValidateObjectFacet) new ValidateObjectFacet(specification, methodPeers) : new ValidateObjectFacetNull(specification);
             FacetUtils.AddFacet(validateFacet);
+            return metamodel;
+
         }
     }
 }

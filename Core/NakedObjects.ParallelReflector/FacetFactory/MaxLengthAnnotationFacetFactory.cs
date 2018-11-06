@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using NakedObjects.Architecture.Component;
@@ -13,6 +14,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
@@ -21,9 +23,10 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         public MaxLengthAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ObjectsPropertiesAndActionParameters) {}
 
-        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Attribute attribute = type.GetCustomAttribute<StringLengthAttribute>() ?? (Attribute) type.GetCustomAttribute<MaxLengthAttribute>();
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            Attribute attribute = type.GetCustomAttribute<StringLengthAttribute>() ?? (Attribute)type.GetCustomAttribute<MaxLengthAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
+            return metamodel;
         }
 
         private static void Process(MemberInfo member, ISpecification holder) {
@@ -32,19 +35,22 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Process(method, specification);
+            return metamodel;
         }
 
-        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Process(property, specification);
+            return metamodel;
         }
 
-        public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
-            Attribute attribute = parameter.GetCustomAttribute<StringLengthAttribute>() ?? (Attribute) parameter.GetCustomAttribute<MaxLengthAttribute>();
+            Attribute attribute = parameter.GetCustomAttribute<StringLengthAttribute>() ?? (Attribute)parameter.GetCustomAttribute<MaxLengthAttribute>();
 
             FacetUtils.AddFacet(Create(attribute, holder));
+            return metamodel;
         }
 
         private static IMaxLengthFacet Create(Attribute attribute, ISpecification holder) {

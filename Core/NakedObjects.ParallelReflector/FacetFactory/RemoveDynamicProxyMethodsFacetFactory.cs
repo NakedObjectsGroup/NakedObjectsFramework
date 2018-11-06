@@ -6,12 +6,14 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
@@ -26,7 +28,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return type.FullName.StartsWith("System.Data.Entity.DynamicProxies");
         }
 
-        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (IsDynamicProxyType(type)) {
                 foreach (MethodInfo method in type.GetMethods().Join(MethodsToRemove, mi => mi.Name, s => s, (mi, s) => mi)) {
                     if (methodRemover != null && method != null) {
@@ -34,12 +36,14 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                     }
                 }
             }
+            return metamodel;
         }
 
-        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (IsDynamicProxyType(property.DeclaringType) && property.Name == "RelationshipManager") {
                 FacetUtils.AddFacet(new HiddenFacet(WhenTo.Always, specification));
             }
+            return metamodel;
         }
     }
 

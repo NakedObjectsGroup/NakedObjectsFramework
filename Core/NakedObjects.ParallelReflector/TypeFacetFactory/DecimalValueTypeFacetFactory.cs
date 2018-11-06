@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Immutable;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
@@ -16,11 +17,15 @@ namespace NakedObjects.ParallelReflect.TypeFacetFactory {
     public sealed class DecimalValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public DecimalValueTypeFacetFactory(int numericOrder) : base(numericOrder) {}
 
-        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (DecimalValueSemanticsProvider.IsAdaptedType(type)) {
-                var spec = reflector.LoadSpecification<IObjectSpecImmutable>(DecimalValueSemanticsProvider.AdaptedType);
+                var result = reflector.LoadSpecification(DecimalValueSemanticsProvider.AdaptedType, metamodel);
+
+                metamodel = result.Item2;
+                var spec = result.Item1 as IObjectSpecImmutable;
                 AddValueFacets(new DecimalValueSemanticsProvider(spec, specification), specification);
             }
+            return metamodel;
         }
     }
 }

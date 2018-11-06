@@ -5,12 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
@@ -19,10 +21,11 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         public ActionDefaultAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ActionParameters) {}
 
-        public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             var attribute = parameter.GetCustomAttribute<DefaultValueAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
+            return metamodel;
         }
 
         private static IActionDefaultsFacet Create(DefaultValueAttribute attribute, ISpecification holder) {

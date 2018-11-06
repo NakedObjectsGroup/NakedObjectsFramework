@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Reflection;
 using Common.Logging;
@@ -14,6 +15,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
@@ -24,25 +26,29 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         public NamedAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Everything) { }
 
-        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Attribute attribute = type.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) type.GetCustomAttribute<NamedAttribute>();
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            Attribute attribute = type.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute)type.GetCustomAttribute<NamedAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
+            return metamodel;
         }
 
-        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Attribute attribute = method.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) method.GetCustomAttribute<NamedAttribute>();
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            Attribute attribute = method.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute)method.GetCustomAttribute<NamedAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
+            return metamodel;
         }
 
-        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Attribute attribute = property.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) property.GetCustomAttribute<NamedAttribute>();
+        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            Attribute attribute = property.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute)property.GetCustomAttribute<NamedAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
+            return metamodel;
         }
 
-        public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
+        public override ImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
-            Attribute attribute = parameter.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) parameter.GetCustomAttribute<NamedAttribute>();
+            Attribute attribute = parameter.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute)parameter.GetCustomAttribute<NamedAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
+            return metamodel;
         }
 
         private INamedFacet Create(Attribute attribute, ISpecification holder) {
