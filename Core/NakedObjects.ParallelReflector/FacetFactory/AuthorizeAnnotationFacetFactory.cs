@@ -31,7 +31,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
         public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Type declaringType = method.DeclaringType;
-            var classAttribute = declaringType?.GetCustomAttribute<AuthorizeActionAttribute>();
+            var classAttribute = declaringType.GetCustomAttribute<AuthorizeActionAttribute>();
             var methodAttribute = method.GetCustomAttribute<AuthorizeActionAttribute>();
 
             if (classAttribute != null && methodAttribute != null) {
@@ -45,7 +45,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
         public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Type declaringType = property.DeclaringType;
-            var classAttribute = declaringType?.GetCustomAttribute<AuthorizePropertyAttribute>();
+            var classAttribute = declaringType.GetCustomAttribute<AuthorizePropertyAttribute>();
             var propertyAttribute = property.GetCustomAttribute<AuthorizePropertyAttribute>();
 
             if (classAttribute != null && propertyAttribute != null) {

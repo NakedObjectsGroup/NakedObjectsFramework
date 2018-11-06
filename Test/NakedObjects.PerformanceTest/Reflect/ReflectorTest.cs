@@ -459,7 +459,7 @@ namespace NakedObjects.SystemTest.Reflect {
             stopwatch.Stop();
             TimeSpan interval = stopwatch.Elapsed;
 
-            Assert.AreEqual(142, reflector.AllObjectSpecImmutables.Length);
+            Assert.AreEqual(135, reflector.AllObjectSpecImmutables.Length);
             Assert.IsTrue(reflector.AllObjectSpecImmutables.Any());
             //Assert.IsTrue(interval.TotalMilliseconds < 1000);
             Console.WriteLine(interval.TotalMilliseconds);

@@ -25,19 +25,19 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     ///     Implementation - .Net fails to find methods properly for root class, so we used the saved set.
     /// </para>
     public sealed class RemoveSuperclassMethodsFacetFactory : FacetFactoryAbstract {
-        private readonly IDictionary<Type, MethodInfo[]> typeToMethods = new Dictionary<Type, MethodInfo[]>();
 
         public RemoveSuperclassMethodsFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Objects) {}
 
-        private void InitForType(Type type) {
+        private void InitForType(Type type, IDictionary<Type, MethodInfo[]> typeToMethods) {
             if (!typeToMethods.ContainsKey(type)) {
                 typeToMethods.Add(type, type.GetMethods());
             }
         }
 
         public void ProcessSystemType(Type type, IMethodRemover methodRemover, ISpecification holder) {
-            InitForType(type);
+            var typeToMethods = new Dictionary<Type, MethodInfo[]>();
+            InitForType(type, typeToMethods);
             foreach (MethodInfo method in typeToMethods[type]) {
                 if (methodRemover != null && method != null) {
                     methodRemover.RemoveMethod(method);
