@@ -61,7 +61,7 @@ namespace NakedObjects.SystemTest.Reflect {
 
         public static string ToOrderString(this IMenuItemImmutable menu, bool print = false) {
             if (menu == null) return "";
-            string id = "";
+            string id;
             switch (menu) {
                 case MenuAction m:
                     var facet = m.Action.GetFacet<IActionInvocationFacet>();
@@ -70,11 +70,11 @@ namespace NakedObjects.SystemTest.Reflect {
                         suffix = facet.OrderString();
                     }
 
-                    id = m.Name + ":" + m.Id + ":" + m.Action.ToIdString() + suffix;
+                    id = $"{m.Name}/{m.Id}/{m.Action.ToIdString()}/{suffix}";
                     break;
 
                 default:
-                    id = menu.Name + ":" + menu.Id;
+                    id = $"{menu.Name}/{menu.Id}";
                     break;
             }
 
@@ -240,8 +240,7 @@ namespace NakedObjects.SystemTest.Reflect {
                 suffix = facet.OrderString();
             }
 
-
-            return spec.ToIdString() + " : " + suffix;
+            return $"{spec.ToIdString()}/{suffix}";
         }
 
         public static string ToOrderString(this IAssociationSpecImmutable spec) {
@@ -254,15 +253,14 @@ namespace NakedObjects.SystemTest.Reflect {
             }
 
 
-            return spec.ToIdString() + " : " + suffix;
+            return $"{spec.ToIdString()}/{suffix}";
         }
 
-        public static void Compare(IList<IActionSpecImmutable> actions1, IList<IActionSpecImmutable> actions2) {
+        public static void Compare(IList<IActionSpecImmutable> actions1, IList<IActionSpecImmutable> actions2, bool testOrder = false) {
             CompareCount(actions1.Cast<ISpecification>().ToList(), actions2.Cast<ISpecification>().ToList());
 
-            var oSpecs1 = actions1.OrderBy(i => i.ToOrderString()).ToList();
-            var oSpecs2 = actions2.OrderBy(i => i.ToOrderString()).ToList();
-
+            var oSpecs1 = testOrder ? actions1 : actions1.OrderBy(i => i.ToOrderString()).ToList();
+            var oSpecs2 = testOrder ? actions2 : actions2.OrderBy(i => i.ToOrderString()).ToList();
 
             var os1 = oSpecs1.Select(o => o.ToOrderString()).ToArray();
             var os2 = oSpecs2.Select(o => o.ToOrderString()).ToArray();
@@ -499,17 +497,14 @@ namespace NakedObjects.SystemTest.Reflect {
         public static string OrderString(this IFacet facet) {
             if (facet == null) return "";
 
-
-            if (facet.GetType() == typeof(ActionInvocationFacetViaMethod)) {
+            if (facet is ActionInvocationFacetViaMethod) {
                 var f = (ActionInvocationFacetViaMethod) facet;
-                return f.GetType().ToString() +
-                       f.ActionMethod.Name +
-                       f.ActionMethod.DeclaringType.FullName;
+                return $"{f.GetType()}/{f.ActionMethod.Name}/{f.ActionMethod.DeclaringType?.FullName}";
             }
 
             if (facet.GetType() == typeof(INamedFacet)) {
                 var f = (INamedFacet)facet;
-                return f.GetType().ToString() + f.NaturalName;
+                return   $"{f.GetType()}/{f.NaturalName}";
             }
 
 
@@ -564,9 +559,9 @@ namespace NakedObjects.SystemTest.Reflect {
 
             Compare(spec1.ShortName, spec2.ShortName, specName);
             Compare(spec1.ObjectMenu, spec2.ObjectMenu);
-            Compare(spec1.ObjectActions, spec2.ObjectActions);
-            Compare(spec1.ContributedActions, spec2.ContributedActions);
-            Compare(spec1.CollectionContributedActions, spec2.CollectionContributedActions);
+            Compare(spec1.ObjectActions, spec2.ObjectActions, true);
+            Compare(spec1.ContributedActions, spec2.ContributedActions, true);
+            Compare(spec1.CollectionContributedActions, spec2.CollectionContributedActions, true);
             Compare(spec1.FinderActions, spec2.FinderActions);
             Compare(spec1.Fields, spec2.Fields, specName);
             Compare(spec1.Interfaces, spec2.Interfaces);
