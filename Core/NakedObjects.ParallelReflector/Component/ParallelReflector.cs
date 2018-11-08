@@ -227,11 +227,10 @@ namespace NakedObjects.ParallelReflect.Component {
 
                     var matchingActionsForObject = serviceType != spec.Type ? serviceActions.Where(sa => sa.IsContributedTo(spec)).ToList() : new List<IActionSpecImmutable>();
                     var matchingActionsForCollection = serviceType != spec.Type ? serviceActions.Where(sa => sa.IsContributedToCollectionOf(spec)).ToList() : new List<IActionSpecImmutable>();
-                    var finderActions = serviceActions.Where(sa => sa.IsFinderMethodFor(spec)).ToList();
-
-                    if (finderActions.Any()) {
-                        finderActions.Sort(new MemberOrderComparator<IActionSpecImmutable>());
-                    }
+                    var finderActions = serviceActions.
+                        Where(sa => sa.IsFinderMethodFor(spec)).
+                        OrderBy(a => a, new MemberOrderComparator<IActionSpecImmutable>()).
+                        ToList();
 
                     return new Tuple<List<IActionSpecImmutable>, List<IActionSpecImmutable>, List<IActionSpecImmutable>>(matchingActionsForObject, matchingActionsForCollection, finderActions);
                 }).

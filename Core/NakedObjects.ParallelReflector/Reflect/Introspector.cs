@@ -208,11 +208,8 @@ namespace NakedObjects.ParallelReflect {
                 allMethods.Remove(pInfo.GetGetMethod());
                 allMethods.Remove(pInfo.GetSetMethod());
             }
-            allMethods.Sort(new SortActionsFirst(FacetFactorySet));
-            return allMethods.ToArray();
+            return allMethods.OrderBy(m => m, new SortActionsFirst(FacetFactorySet)).ToArray();
         }
-
-      
 
         private Tuple<IAssociationSpecImmutable[], ImmutableDictionary<string, ITypeSpecBuilder>> FindAndCreateFieldSpecs(IObjectSpecImmutable spec, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Log.DebugFormat("Looking for fields for {0}", IntrospectedType);
@@ -371,13 +368,8 @@ namespace NakedObjects.ParallelReflect {
             return new Tuple<IActionSpecImmutable[], ImmutableDictionary<string, ITypeSpecBuilder>>(actionSpecs.ToArray(), metamodel);
         }
 
-
-
-
         private static List<T> CreateSortedListOfMembers<T>(T[] members) where T : IMemberSpecImmutable {
-            var list = new List<T>(members);
-            list.Sort(new MemberOrderComparator<T>());
-            return list;
+            return members.OrderBy(m => m, new MemberOrderComparator<T>()).ToList();
         }
 
         #region Nested type: IntrospectorMethodRemover
