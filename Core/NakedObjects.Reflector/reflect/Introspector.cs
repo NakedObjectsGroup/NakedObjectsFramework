@@ -172,8 +172,7 @@ namespace NakedObjects.Reflect {
                 allMethods.Remove(pInfo.GetGetMethod());
                 allMethods.Remove(pInfo.GetSetMethod());
             }
-            allMethods.Sort(new SortActionsFirst(FacetFactorySet));
-            return allMethods.ToArray();
+            return allMethods.OrderBy(m => m, new SortActionsFirst(FacetFactorySet)).ToArray();
         }
 
         private IAssociationSpecImmutable[] FindAndCreateFieldSpecs(IObjectSpecImmutable spec) {
@@ -287,9 +286,7 @@ namespace NakedObjects.Reflect {
         }
 
         private static List<T> CreateSortedListOfMembers<T>(T[] members) where T : IMemberSpecImmutable {
-            var list = new List<T>(members);
-            list.Sort(new MemberOrderComparator<T>());
-            return list;
+            return members.OrderBy(m => m, new MemberOrderComparator<T>()).ToList();
         }
 
         #region Nested type: IntrospectorMethodRemover

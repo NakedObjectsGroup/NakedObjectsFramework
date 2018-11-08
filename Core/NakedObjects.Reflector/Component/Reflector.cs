@@ -216,8 +216,8 @@ namespace NakedObjects.Reflect.Component {
                         Where(serviceAction => serviceAction.IsFinderMethodFor(spec)).ToList();
 
                 if (matchingActions.Any()) {
-                    matchingActions.Sort(new MemberOrderComparator<IActionSpecImmutable>());
-                    foreach (IActionSpecImmutable action in matchingActions) {
+                    var orderedActions = matchingActions.OrderBy(a => a, new MemberOrderComparator<IActionSpecImmutable>());
+                    foreach (IActionSpecImmutable action in orderedActions) {
                         finderActions.Add(action);
                     }
                 }
