@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -111,6 +111,10 @@ namespace NakedObjects.ParallelReflect {
             return propertyFilteringFactories.Any(factory => factory.Filters(property, classStrategy));
         }
 
+        public bool Recognizes(MethodInfo method) {
+            return Prefixes.Any(prefix => method.Name.StartsWith(prefix, StringComparison.Ordinal));
+        }
+
         public void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) { }
 
         public void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType) { }
@@ -118,10 +122,6 @@ namespace NakedObjects.ParallelReflect {
         public void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType) { }
 
         public void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder specification) { }
-
-        public bool Recognizes(MethodInfo method) {
-            return Prefixes.Any(prefix => method.Name.StartsWith(prefix));
-        }
 
         #endregion
 

@@ -58,7 +58,7 @@ namespace NakedObjects.ParallelReflect.Component {
         }
 
         public bool IsSystemClass(Type introspectedType) {
-            return introspectedType.FullName.StartsWith("System.");
+            return introspectedType.FullName.StartsWith("System.", StringComparison.Ordinal);
         }
 
         public string GetKeyForType(Type type) {
@@ -93,7 +93,7 @@ namespace NakedObjects.ParallelReflect.Component {
 
             //return namespaceScratchPad[type];
             var ns = type.Namespace ?? "";
-            return config.ModelNamespaces.Any(ns.StartsWith);
+            return config.ModelNamespaces.Any(sn => ns.StartsWith(sn, StringComparison.Ordinal));
         }
 
         private bool IsTypeWhiteListed(Type type) {
