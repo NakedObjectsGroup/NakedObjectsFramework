@@ -121,7 +121,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         }
 
         private static bool MatchesPrefix(MethodInfo actionMethod, string prefix, out string propertyName) {
-            if (actionMethod.Name.StartsWith(prefix)) {
+            if (actionMethod.Name.StartsWith(prefix, StringComparison.Ordinal)) {
                 propertyName = actionMethod.Name.Remove(0, prefix.Length);
                 return true;
             }
@@ -134,7 +134,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         }
 
         private static bool InheritsMethod(Type typeToCheck, string name) {
-            return typeToCheck != null && (typeToCheck.GetMethods().Any(m => m.Name == name) || InheritsMethod(typeToCheck.BaseType, name));
+            return typeToCheck != null && (typeToCheck.GetMethods().Any(m => m.Name.Equals(name, StringComparison.Ordinal)) || InheritsMethod(typeToCheck.BaseType, name));
         }
     }
 }

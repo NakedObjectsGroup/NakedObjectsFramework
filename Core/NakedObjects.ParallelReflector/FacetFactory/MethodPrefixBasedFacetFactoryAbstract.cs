@@ -50,7 +50,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                                            string name,
                                            Type returnType = null) {
             return type.GetMethods(GetBindingFlagsForMethodType(methodType, reflector)).
-                Where(m => m.Name == name).
+                Where(m => m.Name.Equals(name, StringComparison.Ordinal)).
                 Where(m => (m.IsStatic && methodType == MethodType.Class) || (!m.IsStatic && methodType == MethodType.Object)).
                 Where(m => m.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null).
                 Where(m => returnType == null || returnType.IsAssignableFrom(m.ReturnType)).ToArray();

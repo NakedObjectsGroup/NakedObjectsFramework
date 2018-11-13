@@ -314,7 +314,7 @@ namespace NakedObjects.ParallelReflect.Component {
             #region IEqualityComparer<KeyValuePair<string,ITypeSpecBuilder>> Members
 
             public bool Equals(KeyValuePair<string, ITypeSpecBuilder> x, KeyValuePair<string, ITypeSpecBuilder> y) {
-                return x.Key.Equals(y.Key);
+                return x.Key.Equals(y.Key, StringComparison.Ordinal);
             }
 
             public int GetHashCode(KeyValuePair<string, ITypeSpecBuilder> obj) {
@@ -338,7 +338,7 @@ namespace NakedObjects.ParallelReflect.Component {
             #region IEqualityComparer<Type> Members
 
             public bool Equals(Type x, Type y) {
-                return classStrategy.GetKeyForType(x) == classStrategy.GetKeyForType(y);
+                return classStrategy.GetKeyForType(x).Equals(classStrategy.GetKeyForType(y), StringComparison.Ordinal);
             }
 
             public int GetHashCode(Type obj) {

@@ -25,7 +25,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             : base(numericOrder, FeatureType.ObjectsAndProperties) {}
 
         private static bool IsDynamicProxyType(Type type) {
-            return type.FullName.StartsWith("System.Data.Entity.DynamicProxies");
+            return type.FullName.StartsWith("System.Data.Entity.DynamicProxies", StringComparison.Ordinal);
         }
 
         public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -40,7 +40,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         }
 
         public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (IsDynamicProxyType(property.DeclaringType) && property.Name == "RelationshipManager") {
+            if (IsDynamicProxyType(property.DeclaringType) && property.Name.Equals("RelationshipManager", StringComparison.Ordinal)) {
                 FacetUtils.AddFacet(new HiddenFacet(WhenTo.Always, specification));
             }
             return metamodel;

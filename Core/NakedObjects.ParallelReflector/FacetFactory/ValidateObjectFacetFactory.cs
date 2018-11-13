@@ -40,7 +40,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         private bool ContainsField(string name, Type type) {
             PropertyInfo[] properties = type.GetProperties();
 
-            return properties.Any(p => p.Name == name &&
+            return properties.Any(p => p.Name.Equals(name, StringComparison.Ordinal) &&
                                        p.GetGetMethod() != null &&
                                        p.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null &&
                                        !CollectionUtils.IsCollection(p.PropertyType) &&
