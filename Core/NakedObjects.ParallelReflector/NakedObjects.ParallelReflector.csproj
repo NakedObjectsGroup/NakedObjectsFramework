@@ -151,6 +151,7 @@
     <Compile Include="FacetFactory\PrefixesAndRecognisedMethods.cs" />
     <Compile Include="FacetFactory\RemoveIgnoredMethodsFacetFactory.cs" />
     <Compile Include="RecognisedMethodsAndPrefixes.cs" />
+    <Compile Include="Component\FasterTypeUtils.cs" />
     <Compile Include="Reflect\FacetFactories.cs" />
     <Compile Include="FacetFactory\FindMenuFacetFactory.cs" />
     <Compile Include="FacetFactory\MenuFacetFactory.cs" />

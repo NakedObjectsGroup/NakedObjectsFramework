@@ -51,7 +51,7 @@ namespace NakedObjects.ParallelReflect.Component {
                 // use type inside nullable wrapper
                 return type.GetGenericArguments()[0];
             }
-            if (TypeUtils.IsProxy(type)) {
+            if (FasterTypeUtils.IsProxy(type)) {
                 return type.BaseType;
             }
             return type;

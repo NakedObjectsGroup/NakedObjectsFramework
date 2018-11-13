@@ -159,8 +159,11 @@ namespace NakedObjects.ParallelReflect.Component {
         }
 
         private void PopulateAssociatedActions(Type[] services, IMetamodelBuilder metamodel) {
-            IEnumerable<IObjectSpecBuilder> nonServiceSpecs = AllObjectSpecImmutables.OfType<IObjectSpecBuilder>();
-            nonServiceSpecs.ForEach(s => PopulateAssociatedActions(s, services, metamodel));
+            var nonServiceSpecs = AllObjectSpecImmutables.OfType<IObjectSpecBuilder>();
+       
+            foreach (var spec in nonServiceSpecs) {
+                PopulateAssociatedActions(spec, services, metamodel);
+            }
         }
 
         private void PopulateAssociatedActions(IObjectSpecBuilder spec, Type[] services, IMetamodelBuilder metamodel) {
@@ -169,16 +172,15 @@ namespace NakedObjects.ParallelReflect.Component {
                 Log.WarnFormat("Specification with id : {0} as has null or empty name", id);
             }
 
-            if (TypeUtils.IsSystem(spec.FullName) && !spec.IsCollection) {
+            if (FasterTypeUtils.IsSystem(spec.FullName) && !spec.IsCollection) {
                 return;
             }
 
-            if (TypeUtils.IsNakedObjects(spec.FullName)) {
+            if (FasterTypeUtils.IsNakedObjects(spec.FullName)) {
                 return;
             }
 
             PopulateContributedActions(spec, services, metamodel);
-            //PopulateFinderActions(spec, services, metamodel);
         }
 
         private void InstallMainMenus(IMetamodelBuilder metamodel) {
