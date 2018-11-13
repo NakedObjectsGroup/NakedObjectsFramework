@@ -15,6 +15,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
+using NakedObjects.ParallelReflect.Component;
 using NakedObjects.Util;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
@@ -48,7 +49,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Type currentType = type;
             while (currentType != null) {
-                if (TypeUtils.IsSystem(currentType)) {
+                if (FasterTypeUtils.IsSystem(currentType)) {
                     ProcessSystemType(currentType, methodRemover, specification);
                 }
 

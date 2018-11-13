@@ -132,6 +132,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Component\FasterTypeUtils.cs" />
     <Compile Include="Reflect\FacetFactories.cs" />
     <Compile Include="FacetFactory\FindMenuFacetFactory.cs" />
     <Compile Include="FacetFactory\MenuFacetFactory.cs" />

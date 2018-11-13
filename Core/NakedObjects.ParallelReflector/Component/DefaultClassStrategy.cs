@@ -52,7 +52,7 @@ namespace NakedObjects.ParallelReflect.Component {
                 Log.DebugFormat("Using wrapped type instead of {0}", type);
                 return type.GetGenericArguments()[0];
             }
-            if (TypeUtils.IsProxy(type)) {
+            if (FasterTypeUtils.IsProxy(type)) {
                 Log.DebugFormat("Using proxied type instead of {0}", type);
                 return type.BaseType;
             }
