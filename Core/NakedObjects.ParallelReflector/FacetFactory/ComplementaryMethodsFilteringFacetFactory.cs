@@ -14,7 +14,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Meta.Facet;
+
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     /// <summary>

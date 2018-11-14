@@ -10,7 +10,7 @@ using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Meta.Facet;
+
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     /// <summary>
