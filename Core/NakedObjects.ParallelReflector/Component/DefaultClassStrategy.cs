@@ -21,7 +21,7 @@ namespace NakedObjects.ParallelReflect.Component {
     ///     Standard way of determining which fields are to be exposed in a Naked Objects system.
     /// </summary>
     [Serializable]
-    public sealed class DefaultClassStrategy : IClassStrategy {
+    public class DefaultClassStrategy : IClassStrategy {
         private static readonly ILog Log = LogManager.GetLogger(typeof (DefaultClassStrategy));
         private readonly IReflectorConfiguration config;
         // only intended for use during initial reflection
@@ -33,7 +33,7 @@ namespace NakedObjects.ParallelReflect.Component {
 
         #region IClassStrategy Members
 
-        public bool IsTypeToBeIntrospected(Type type) {
+        public virtual bool IsTypeToBeIntrospected(Type type) {
             Type returnType = FilterNullableAndProxies(type);
             return !IsTypeIgnored(returnType) &&
                    !IsTypeUnsupportedByReflector(returnType) &&
@@ -41,12 +41,12 @@ namespace NakedObjects.ParallelReflect.Component {
                    (!IsGenericCollection(type) || type.GetGenericArguments().All(IsTypeToBeIntrospected));
         }
 
-        public Type GetType(Type type) {
+        public virtual Type GetType(Type type) {
             Type returnType = FilterNullableAndProxies(type);
             return IsTypeToBeIntrospected(returnType) ? returnType : null;
         }
 
-        public Type FilterNullableAndProxies(Type type) {
+        public virtual Type FilterNullableAndProxies(Type type) {
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof (Nullable<>)) {
                 // use type inside nullable wrapper
                 Log.DebugFormat("Using wrapped type instead of {0}", type);
@@ -59,11 +59,11 @@ namespace NakedObjects.ParallelReflect.Component {
             return type;
         }
 
-        public bool IsSystemClass(Type introspectedType) {
+        public virtual bool IsSystemClass(Type introspectedType) {
             return introspectedType.FullName.StartsWith("System.", StringComparison.Ordinal);
         }
 
-        public string GetKeyForType(Type type) {
+        public virtual string GetKeyForType(Type type) {
             if (IsGenericCollection(type)) {
                 return type.Namespace + "." + type.Name;
             }
