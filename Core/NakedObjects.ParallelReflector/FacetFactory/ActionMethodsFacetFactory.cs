@@ -147,7 +147,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                                                   !methodInfo.IsStatic &&
                                                   !methodInfo.IsGenericMethod &&
                                                   classStrategy.IsTypeToBeIntrospected(methodInfo.ReturnType) &&
-                                                  ParametersAreSupported(methodInfo, classStrategy)).ToList();
+                                                  ParametersAreSupported(methodInfo, classStrategy)).ToArray();
         }
 
         private bool IsParameterCollection(Type type) {

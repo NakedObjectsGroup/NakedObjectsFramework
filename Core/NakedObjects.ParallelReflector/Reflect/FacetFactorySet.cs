@@ -49,7 +49,7 @@ namespace NakedObjects.ParallelReflect {
         /// </para>
         private readonly IList<IPropertyOrCollectionIdentifyingFacetFactory> propertyOrCollectionIdentifyingFactories;
 
-        private readonly List<IMethodIdentifyingFacetFactory> actionIdentifyingFactories;
+        private readonly IList<IMethodIdentifyingFacetFactory> actionIdentifyingFactories;
 
         public FacetFactorySet(IFacetFactory[] factories) {
             List<IFacetFactory> allFactories = factories.ToList();
@@ -58,13 +58,13 @@ namespace NakedObjects.ParallelReflect {
             Prefixes = allFactories.OfType<IMethodPrefixBasedFacetFactory>().SelectMany(prefixfactory => prefixfactory.Prefixes).ToArray();
 
             foreach (FeatureType featureType in Enum.GetValues(typeof (FeatureType))) {
-                factoriesByFeatureType[featureType] = allFactories.Where(f => f.FeatureTypes.HasFlag(featureType)).ToList();
+                factoriesByFeatureType[featureType] = allFactories.Where(f => f.FeatureTypes.HasFlag(featureType)).ToArray();
             }
 
-            methodFilteringFactories = allFactories.OfType<IMethodFilteringFacetFactory>().ToList();
-            propertyFilteringFactories = allFactories.OfType<IPropertyFilteringFacetFactory>().ToList();
-            propertyOrCollectionIdentifyingFactories = allFactories.OfType<IPropertyOrCollectionIdentifyingFacetFactory>().ToList();
-            actionIdentifyingFactories = allFactories.OfType<IMethodIdentifyingFacetFactory>().ToList();
+            methodFilteringFactories = allFactories.OfType<IMethodFilteringFacetFactory>().ToArray();
+            propertyFilteringFactories = allFactories.OfType<IPropertyFilteringFacetFactory>().ToArray();
+            propertyOrCollectionIdentifyingFactories = allFactories.OfType<IPropertyOrCollectionIdentifyingFacetFactory>().ToArray();
+            actionIdentifyingFactories = allFactories.OfType<IMethodIdentifyingFacetFactory>().ToArray();
 
         }
 
@@ -73,15 +73,15 @@ namespace NakedObjects.ParallelReflect {
         #region IFacetFactorySet Members
 
         public IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
-            return propertyOrCollectionIdentifyingFactories.SelectMany(fact => fact.FindCollectionProperties(candidates, classStrategy)).ToList();
+            return propertyOrCollectionIdentifyingFactories.SelectMany(fact => fact.FindCollectionProperties(candidates, classStrategy)).ToArray();
         }
 
         public IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
-            return propertyOrCollectionIdentifyingFactories.SelectMany(fact => fact.FindProperties(candidates, classStrategy)).ToList();
+            return propertyOrCollectionIdentifyingFactories.SelectMany(fact => fact.FindProperties(candidates, classStrategy)).ToArray();
         }
 
         public IList<MethodInfo> FindActions(IList<MethodInfo> candidates, IClassStrategy classStrategy) {
-            return actionIdentifyingFactories.SelectMany(fact => fact.FindActions(candidates, classStrategy)).ToList();
+            return actionIdentifyingFactories.SelectMany(fact => fact.FindActions(candidates, classStrategy)).ToArray();
 
         }
 

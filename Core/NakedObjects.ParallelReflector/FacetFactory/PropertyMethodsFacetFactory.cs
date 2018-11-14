@@ -223,7 +223,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return candidates.Where(property => property.GetGetMethod() != null &&
                                                 property.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null &&
                                                 classStrategy.IsTypeToBeIntrospected(property.PropertyType) &&
-                                                !CollectionUtils.IsQueryable(property.PropertyType)).ToList();
+                                                !CollectionUtils.IsQueryable(property.PropertyType)).ToArray();
         }
     }
 }

@@ -66,7 +66,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                                                 CollectionUtils.IsCollection(property.PropertyType) &&
                                                 !CollectionUtils.IsBlobOrClob(property.PropertyType) &&
                                                 property.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null &&
-                                                !CollectionUtils.IsQueryable(property.PropertyType)).Select(p => p.PropertyType).ToList();
+                                                !CollectionUtils.IsQueryable(property.PropertyType)).Select(p => p.PropertyType).ToArray();
         }
 
         public override IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
@@ -74,7 +74,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return candidates.Where(property => property.GetGetMethod() != null &&
                                                 property.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null &&
                                                 classStrategy.IsTypeToBeIntrospected(property.PropertyType) &&
-                                                collectionTypes.Contains(property.PropertyType)).ToList();
+                                                collectionTypes.Contains(property.PropertyType)).ToArray();
         }
     }
 }

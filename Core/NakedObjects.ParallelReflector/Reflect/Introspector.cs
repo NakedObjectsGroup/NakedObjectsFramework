@@ -27,8 +27,8 @@ namespace NakedObjects.ParallelReflect {
         private static readonly ILog Log = LogManager.GetLogger(typeof (Introspector));
         private readonly IReflector reflector;
         private MethodInfo[] methods;
-        private List<IAssociationSpecImmutable> orderedFields;
-        private List<IActionSpecImmutable> orderedObjectActions;
+        private IList<IAssociationSpecImmutable> orderedFields;
+        private IList<IActionSpecImmutable> orderedObjectActions;
         private PropertyInfo[] properties;
         private Type introspectedType;
         private Type specificationType;
@@ -88,11 +88,11 @@ namespace NakedObjects.ParallelReflect {
         }
 
         public IList<IAssociationSpecImmutable> Fields {
-            get { return orderedFields.ToImmutableList(); }
+            get { return orderedFields.ToArray(); }
         }
 
         public IList<IActionSpecImmutable> ObjectActions {
-            get { return orderedObjectActions.ToImmutableList(); }
+            get { return orderedObjectActions.ToArray(); }
         }
 
         public ITypeSpecBuilder[] Interfaces { get; set; }
@@ -215,14 +215,14 @@ namespace NakedObjects.ParallelReflect {
             Log.DebugFormat("Looking for fields for {0}", IntrospectedType);
 
             // now create fieldSpecs for value properties, for collections and for reference properties
-            IList<PropertyInfo> collectionProperties = FacetFactorySet.FindCollectionProperties(properties, ClassStrategy).Where(pi => !FacetFactorySet.Filters(pi, ClassStrategy)).ToList();
+            IList<PropertyInfo> collectionProperties = FacetFactorySet.FindCollectionProperties(properties, ClassStrategy).Where(pi => !FacetFactorySet.Filters(pi, ClassStrategy)).ToArray();
             var result1 = CreateCollectionSpecs(collectionProperties, spec, metamodel);
 
             IEnumerable<IAssociationSpecImmutable> collectionSpecs = result1.Item1;
             metamodel = result1.Item2;
 
             // every other accessor is assumed to be a reference property.
-            IList<PropertyInfo> allProperties = FacetFactorySet.FindProperties(properties, ClassStrategy).Where(pi => !FacetFactorySet.Filters(pi, ClassStrategy)).ToList();
+            IList<PropertyInfo> allProperties = FacetFactorySet.FindProperties(properties, ClassStrategy).Where(pi => !FacetFactorySet.Filters(pi, ClassStrategy)).ToArray();
             IEnumerable<PropertyInfo> refProperties = allProperties.Except(collectionProperties);
 
             var result = CreateRefPropertySpecs(refProperties, spec, metamodel);
@@ -368,8 +368,8 @@ namespace NakedObjects.ParallelReflect {
             return new Tuple<IActionSpecImmutable[], ImmutableDictionary<string, ITypeSpecBuilder>>(actionSpecs.ToArray(), metamodel);
         }
 
-        private static List<T> CreateSortedListOfMembers<T>(T[] members) where T : IMemberSpecImmutable {
-            return members.OrderBy(m => m, new MemberOrderComparator<T>()).ToList();
+        private static IList<T> CreateSortedListOfMembers<T>(T[] members) where T : IMemberSpecImmutable {
+            return members.OrderBy(m => m, new MemberOrderComparator<T>()).ToArray();
         }
 
         #region Nested type: IntrospectorMethodRemover
