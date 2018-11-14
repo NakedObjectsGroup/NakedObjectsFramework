@@ -27,8 +27,8 @@ namespace NakedObjects.ParallelReflect {
         private static readonly ILog Log = LogManager.GetLogger(typeof (Introspector));
         private readonly IReflector reflector;
         private MethodInfo[] methods;
-        private List<IAssociationSpecImmutable> orderedFields;
-        private List<IActionSpecImmutable> orderedObjectActions;
+        private IList<IAssociationSpecImmutable> orderedFields;
+        private IList<IActionSpecImmutable> orderedObjectActions;
         private PropertyInfo[] properties;
         private IIdentifier identifier;
 
@@ -63,9 +63,9 @@ namespace NakedObjects.ParallelReflect {
 
         public IIdentifier Identifier => identifier;
 
-        public IList<IAssociationSpecImmutable> Fields => orderedFields.ToImmutableList();
+        public IList<IAssociationSpecImmutable> Fields => orderedFields.ToArray();
 
-        public IList<IActionSpecImmutable> ObjectActions => orderedObjectActions.ToImmutableList();
+        public IList<IActionSpecImmutable> ObjectActions => orderedObjectActions.ToArray();
 
         public ITypeSpecBuilder[] Interfaces { get; set; }
         public ITypeSpecBuilder Superclass { get; set; }
@@ -178,14 +178,14 @@ namespace NakedObjects.ParallelReflect {
         private Tuple<IAssociationSpecImmutable[], ImmutableDictionary<string, ITypeSpecBuilder>> FindAndCreateFieldSpecs(IObjectSpecImmutable spec, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
 
             // now create fieldSpecs for value properties, for collections and for reference properties
-            IList<PropertyInfo> collectionProperties = FacetFactorySet.FindCollectionProperties(properties, ClassStrategy).Where(pi => !FacetFactorySet.Filters(pi, ClassStrategy)).ToList();
+            IList<PropertyInfo> collectionProperties = FacetFactorySet.FindCollectionProperties(properties, ClassStrategy).Where(pi => !FacetFactorySet.Filters(pi, ClassStrategy)).ToArray();
             var result1 = CreateCollectionSpecs(collectionProperties, spec, metamodel);
 
             IEnumerable<IAssociationSpecImmutable> collectionSpecs = result1.Item1;
             metamodel = result1.Item2;
 
             // every other accessor is assumed to be a reference property.
-            IList<PropertyInfo> allProperties = FacetFactorySet.FindProperties(properties, ClassStrategy).Where(pi => !FacetFactorySet.Filters(pi, ClassStrategy)).ToList();
+            IList<PropertyInfo> allProperties = FacetFactorySet.FindProperties(properties, ClassStrategy).Where(pi => !FacetFactorySet.Filters(pi, ClassStrategy)).ToArray();
             IEnumerable<PropertyInfo> refProperties = allProperties.Except(collectionProperties);
 
             var result = CreateRefPropertySpecs(refProperties, spec, metamodel);
@@ -224,7 +224,7 @@ namespace NakedObjects.ParallelReflect {
         /// <summary>
         ///     Creates a list of Association fields for all the properties that use NakedObjects.
         /// </summary>
-      
+
 
         private Tuple<IEnumerable<IAssociationSpecImmutable>, ImmutableDictionary<string, ITypeSpecBuilder>> CreateRefPropertySpecs(IEnumerable<PropertyInfo> foundProperties, IObjectSpecImmutable spec, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var specs = new List<IAssociationSpecImmutable>();
@@ -250,7 +250,7 @@ namespace NakedObjects.ParallelReflect {
             return new Tuple<IEnumerable<IAssociationSpecImmutable>, ImmutableDictionary<string, ITypeSpecBuilder>>(specs, metamodel);
         }
 
-       
+
 
 
 
@@ -305,8 +305,8 @@ namespace NakedObjects.ParallelReflect {
             return new Tuple<IActionSpecImmutable[], ImmutableDictionary<string, ITypeSpecBuilder>>(actionSpecs.ToArray(), metamodel);
         }
 
-        private static List<T> CreateSortedListOfMembers<T>(T[] members) where T : IMemberSpecImmutable {
-            return members.OrderBy(m => m, new MemberOrderComparator<T>()).ToList();
+        private static IList<T> CreateSortedListOfMembers<T>(T[] members) where T : IMemberSpecImmutable {
+            return members.OrderBy(m => m, new MemberOrderComparator<T>()).ToArray();
         }
 
         #region Nested type: IntrospectorMethodRemover

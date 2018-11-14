@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -65,12 +65,12 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                                                 CollectionUtils.IsCollection(property.PropertyType) &&
                                                 !CollectionUtils.IsBlobOrClob(property.PropertyType) &&
                                                 property.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null &&
-                                                !CollectionUtils.IsQueryable(property.PropertyType)).Select(p => p.PropertyType).ToList();
+                                                !CollectionUtils.IsQueryable(property.PropertyType)).Select(p => p.PropertyType).ToArray();
         }
 
         public override IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
             IList<Type> collectionTypes = BuildCollectionTypes(candidates);
-            candidates = candidates.Where(property => collectionTypes.Contains(property.PropertyType)).ToList();
+            candidates = candidates.Where(property => collectionTypes.Contains(property.PropertyType)).ToArray();
             return PropertiesToBeIntrospected(candidates, classStrategy);
         }
     }
