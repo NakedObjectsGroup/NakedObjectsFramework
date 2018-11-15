@@ -22,7 +22,7 @@ using NakedObjects.ParallelReflect.Component;
 namespace NakedObjects.Unity {
     public static class ParallelUnityConfig {
         public static void RegisterCoreContainerControlledTypes(IUnityContainer container) {
-            container.RegisterType<IClassStrategy, DefaultCachingClassStrategy>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IClassStrategy, DefaultClassStrategy>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new ContainerControlledLifetimeManager(), new InjectionConstructor());
             container.RegisterType<IReflector, ParallelReflector>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMetamodel, Metamodel>(new ContainerControlledLifetimeManager());
