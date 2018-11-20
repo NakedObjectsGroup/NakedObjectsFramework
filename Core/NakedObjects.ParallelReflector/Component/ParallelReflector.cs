@@ -226,14 +226,27 @@ namespace NakedObjects.ParallelReflect.Component {
                     var serviceSpecification = (IServiceSpecImmutable)metamodel.GetSpecification(serviceType);
                     IActionSpecImmutable[] serviceActions = serviceSpecification.ObjectActions.Where(sa => sa != null).ToArray();
 
-                    var matchingActionsForObject = serviceType != spec.Type ? serviceActions.Where(sa => sa.IsContributedTo(spec)).ToList() : new List<IActionSpecImmutable>();
-                    var matchingActionsForCollection = serviceType != spec.Type ? serviceActions.Where(sa => sa.IsContributedToCollectionOf(spec)).ToList() : new List<IActionSpecImmutable>();
-                    var finderActions = serviceActions.
-                        Where(sa => sa.IsFinderMethodFor(spec)).
-                        OrderBy(a => a, new MemberOrderComparator<IActionSpecImmutable>()).
-                        ToList();
+                    var matchingActionsForObject = new List<IActionSpecImmutable>();
+                    var matchingActionsForCollection = new List<IActionSpecImmutable>();
+                    var finderActions = new List<IActionSpecImmutable>();
 
-                    return new Tuple<List<IActionSpecImmutable>, List<IActionSpecImmutable>, List<IActionSpecImmutable>>(matchingActionsForObject, matchingActionsForCollection, finderActions);
+                    foreach (var sa in serviceActions) {
+                        if (serviceType != spec.Type) {
+                            if (sa.IsContributedTo(spec)) {
+                                matchingActionsForObject.Add(sa);
+                            }
+
+                            if (sa.IsContributedToCollectionOf(spec)) {
+                                matchingActionsForCollection.Add(sa);
+                            }
+                        }
+
+                        if (sa.IsFinderMethodFor(spec)) {
+                            finderActions.Add(sa);
+                        }
+                    }
+
+                    return new Tuple<List<IActionSpecImmutable>, List<IActionSpecImmutable>, List<IActionSpecImmutable>>(matchingActionsForObject, matchingActionsForCollection, finderActions.OrderBy(a => a, new MemberOrderComparator<IActionSpecImmutable>()).ToList());
                 }).
                 Aggregate(new Tuple<List<IActionSpecImmutable>, List<IActionSpecImmutable>, List<IActionSpecImmutable>>(new List<IActionSpecImmutable>(), new List<IActionSpecImmutable>(), new List<IActionSpecImmutable>()),
                 (a, t) => {
@@ -256,6 +269,8 @@ namespace NakedObjects.ParallelReflect.Component {
             spec.AddCollectionContributedActions(result.Item2);
             spec.AddFinderActions(result.Item3);
         }
+
+
 
         private ITypeSpecBuilder GetPlaceholder(Type type, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             ITypeSpecBuilder specification = CreateSpecification(type, metamodel);
