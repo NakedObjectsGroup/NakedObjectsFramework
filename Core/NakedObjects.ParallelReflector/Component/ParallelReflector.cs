@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -160,7 +160,7 @@ namespace NakedObjects.ParallelReflect.Component {
 
         private void PopulateAssociatedActions(Type[] services, IMetamodelBuilder metamodel) {
             var nonServiceSpecs = AllObjectSpecImmutables.OfType<IObjectSpecBuilder>();
-       
+
             foreach (var spec in nonServiceSpecs) {
                 PopulateAssociatedActions(spec, services, metamodel);
             }
@@ -212,14 +212,27 @@ namespace NakedObjects.ParallelReflect.Component {
                     var serviceSpecification = (IServiceSpecImmutable)metamodel.GetSpecification(serviceType);
                     IActionSpecImmutable[] serviceActions = serviceSpecification.ObjectActions.Where(sa => sa != null).ToArray();
 
-                    var matchingActionsForObject = serviceType != spec.Type ? serviceActions.Where(sa => sa.IsContributedTo(spec)).ToList() : new List<IActionSpecImmutable>();
-                    var matchingActionsForCollection = serviceType != spec.Type ? serviceActions.Where(sa => sa.IsContributedToCollectionOf(spec)).ToList() : new List<IActionSpecImmutable>();
-                    var finderActions = serviceActions.
-                        Where(sa => sa.IsFinderMethodFor(spec)).
-                        OrderBy(m => m, new MemberOrderComparator<IActionSpecImmutable>()).
-                        ToList();
+                    var matchingActionsForObject = new List<IActionSpecImmutable>();
+                    var matchingActionsForCollection = new List<IActionSpecImmutable>();
+                    var finderActions = new List<IActionSpecImmutable>();
 
-                    return new Tuple<List<IActionSpecImmutable>, List<IActionSpecImmutable>, List<IActionSpecImmutable>>(matchingActionsForObject, matchingActionsForCollection, finderActions);
+                    foreach (var sa in serviceActions) {
+                        if (serviceType != spec.Type) {
+                            if (sa.IsContributedTo(spec)) {
+                                matchingActionsForObject.Add(sa);
+                            }
+
+                            if (sa.IsContributedToCollectionOf(spec)) {
+                                matchingActionsForCollection.Add(sa);
+                            }
+                        }
+
+                        if (sa.IsFinderMethodFor(spec)) {
+                            finderActions.Add(sa);
+                        }
+                    }
+
+                    return new Tuple<List<IActionSpecImmutable>, List<IActionSpecImmutable>, List<IActionSpecImmutable>>(matchingActionsForObject, matchingActionsForCollection, finderActions.OrderBy(a => a, new MemberOrderComparator<IActionSpecImmutable>()).ToList());
                 }).
                 Aggregate(new Tuple<List<IActionSpecImmutable>, List<IActionSpecImmutable>, List<IActionSpecImmutable>>(new List<IActionSpecImmutable>(), new List<IActionSpecImmutable>(), new List<IActionSpecImmutable>()),
                 (a, t) => {
@@ -229,7 +242,7 @@ namespace NakedObjects.ParallelReflect.Component {
                     return a;
                 });
 
-            // 
+            //
             var contribActions = new List<IActionSpecImmutable>();
 
             // group by service - probably do this better - TODO
@@ -242,6 +255,8 @@ namespace NakedObjects.ParallelReflect.Component {
             spec.AddCollectionContributedActions(result.Item2);
             spec.AddFinderActions(result.Item3);
         }
+
+
 
         private ITypeSpecBuilder GetPlaceholder(Type type, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             ITypeSpecBuilder specification = CreateSpecification(type, metamodel);
