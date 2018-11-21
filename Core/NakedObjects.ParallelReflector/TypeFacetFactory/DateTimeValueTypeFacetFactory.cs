@@ -17,7 +17,7 @@ namespace NakedObjects.ParallelReflect.TypeFacetFactory {
     public sealed class DateTimeValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public DateTimeValueTypeFacetFactory(int numericOrder) : base(numericOrder) {}
 
-        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (DateTimeValueSemanticsProvider.IsAdaptedType(type)) {
                 var result = reflector.LoadSpecification(DateTimeValueSemanticsProvider.AdaptedType, metamodel);
 

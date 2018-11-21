@@ -39,7 +39,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             get { return FixedPrefixes; }
         }
 
-        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             string capitalizedName = property.Name;
             var paramTypes = new[] {property.PropertyType};
 
@@ -131,14 +131,14 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             }
         }
 
-        private ImmutableDictionary<string, ITypeSpecBuilder> FindAndRemoveChoicesMethod(IReflector reflector,
+        private IImmutableDictionary<string, ITypeSpecBuilder> FindAndRemoveChoicesMethod(IReflector reflector,
                                                 ICollection<IFacet> propertyFacets,
                                                 IMethodRemover methodRemover,
                                                 Type type,
                                                 string capitalizedName,
                                                 Type returnType,
                                                 ISpecification property,
-                                                ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+                                                IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             MethodInfo[] methods = FindMethods(reflector,
                 type,
                 MethodType.Object,

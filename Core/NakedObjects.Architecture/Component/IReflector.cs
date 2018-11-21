@@ -41,7 +41,7 @@ namespace NakedObjects.Architecture.Component {
 
         // new for ParallelReflector
 
-        Tuple<ITypeSpecBuilder, ImmutableDictionary<string, ITypeSpecBuilder>> LoadSpecification(Type type, ImmutableDictionary<string, ITypeSpecBuilder> metamodel);
+        Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>> LoadSpecification(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

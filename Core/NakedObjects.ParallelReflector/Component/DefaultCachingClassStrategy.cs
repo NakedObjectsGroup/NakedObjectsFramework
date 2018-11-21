@@ -15,10 +15,79 @@ namespace NakedObjects.ParallelReflect.Component {
     /// </summary>
     [Serializable]
     public sealed class DefaultCachingClassStrategy : DefaultClassStrategy {
-      
-        public DefaultCachingClassStrategy(IReflectorConfiguration config) : base (config) {
-           
+        private static readonly IDictionary<Type, Flags> Cache = new Dictionary<Type, Flags>();
+
+        public DefaultCachingClassStrategy(IReflectorConfiguration config) : base(config) { }
+
+        private static Flags Setup(Type type) {
+            if (!Cache.ContainsKey(type)) {
+                Cache[type] = new Flags();
+            }
+
+            return Cache[type];
         }
+
+        public override bool IsTypeToBeIntrospected(Type type) {
+            lock (Cache) {
+                var flags = Setup(type);
+
+                if (!flags.IsTypeToBeIntrospected.HasValue) {
+                    flags.IsTypeToBeIntrospected = base.IsTypeToBeIntrospected(type);
+                }
+
+                return flags.IsTypeToBeIntrospected.Value;
+            }
+        }
+
+        public override Type GetType(Type type) {
+            lock (Cache) {
+                var flags = Setup(type);
+
+                if (flags.Type == null) {
+                    flags.Type = base.GetType(type);
+                }
+
+                return flags.Type;
+            }
+        }
+
+        public override Type FilterNullableAndProxies(Type type) {
+            lock (Cache) {
+                var flags = Setup(type);
+
+                if (flags.FilterNullableAndProxies == null) {
+                    flags.FilterNullableAndProxies = base.FilterNullableAndProxies(type);
+                }
+
+                return flags.FilterNullableAndProxies;
+            }
+        }
+
+        public override bool IsSystemClass(Type introspectedType) {
+            lock (Cache) {
+                var flags = Setup(introspectedType);
+
+                if (!flags.IsSystemClass.HasValue) {
+                    flags.IsSystemClass = base.IsSystemClass(introspectedType);
+                }
+
+                return flags.IsSystemClass.Value;
+            }
+        }
+
+        public override string GetKeyForType(Type type) {
+            lock (Cache) {
+                var flags = Setup(type);
+
+                if (flags.KeyForType == null) {
+                    flags.KeyForType = base.GetKeyForType(type);
+                }
+
+                return flags.KeyForType;
+            }
+        }
+
+        #region Nested type: Flags
 
         private class Flags {
             public bool? IsTypeToBeIntrospected { get; set; }
@@ -28,82 +97,7 @@ namespace NakedObjects.ParallelReflect.Component {
             public string KeyForType { get; set; }
         }
 
-        private static readonly IDictionary<Type, Flags> Cache = new Dictionary<Type, Flags>();  
-
-        #region IClassStrategy Members
-
-        public override bool IsTypeToBeIntrospected(Type type) {
-            lock (Cache) {
-                if (!Cache.ContainsKey(type)) {
-                    Cache[type] = new Flags();
-                }
-
-                if (!Cache[type].IsTypeToBeIntrospected.HasValue) {
-                    Cache[type].IsTypeToBeIntrospected = base.IsTypeToBeIntrospected(type);
-                }
-
-                return Cache[type].IsTypeToBeIntrospected.Value;
-            }
-        }
-
-        public override Type GetType(Type type) {
-            lock (Cache) {
-                if (!Cache.ContainsKey(type)) {
-                    Cache[type] = new Flags();
-                }
-
-                if (Cache[type].Type == null) {
-                    Cache[type].Type = base.GetType(type);
-                }
-
-                return Cache[type].Type;
-            }
-        }
-
-        public override Type FilterNullableAndProxies(Type type) {
-            lock (Cache) {
-                if (!Cache.ContainsKey(type)) {
-                    Cache[type] = new Flags();
-                }
-
-                if (Cache[type].FilterNullableAndProxies == null) {
-                    Cache[type].FilterNullableAndProxies = base.FilterNullableAndProxies(type);
-                }
-
-                return Cache[type].FilterNullableAndProxies;
-            }
-        }
-
-        public override bool IsSystemClass(Type introspectedType) {
-            lock (Cache) {
-                if (!Cache.ContainsKey(introspectedType)) {
-                    Cache[introspectedType] = new Flags();
-                }
-
-                if (!Cache[introspectedType].IsSystemClass.HasValue) {
-                    Cache[introspectedType].IsSystemClass = base.IsSystemClass(introspectedType);
-                }
-
-                return Cache[introspectedType].IsSystemClass.Value;
-            }
-        }
-
-        public override string GetKeyForType(Type type) {
-            lock (Cache) {
-                if (!Cache.ContainsKey(type)) {
-                    Cache[type] = new Flags();
-                }
-
-                if (Cache[type].KeyForType == null) {
-                    Cache[type].KeyForType = base.GetKeyForType(type);
-                }
-
-                return Cache[type].KeyForType;
-            }
-        }
-
         #endregion
-
     }
 
     // Copyright (c) Naked Objects Group Ltd.

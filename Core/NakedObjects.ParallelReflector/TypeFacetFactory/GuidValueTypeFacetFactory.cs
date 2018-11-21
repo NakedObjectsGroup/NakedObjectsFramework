@@ -17,7 +17,7 @@ namespace NakedObjects.ParallelReflect.TypeFacetFactory {
     public sealed class GuidValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public GuidValueTypeFacetFactory(int numericOrder) : base(numericOrder) {}
 
-        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (GuidValueSemanticsProvider.IsAdaptedType(type)) {
                 var result = reflector.LoadSpecification(GuidValueSemanticsProvider.AdaptedType, metamodel);
 

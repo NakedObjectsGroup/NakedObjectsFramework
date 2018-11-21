@@ -27,7 +27,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             get { return new string[] {}; }
         }
 
-        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             FindAndRemoveEventHandlerMethods(type, methodRemover);
             return metamodel;
         }

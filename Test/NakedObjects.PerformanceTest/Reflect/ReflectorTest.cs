@@ -34,6 +34,7 @@ using NakedObjects.Reflect;
 using NakedObjects.Reflect.Component;
 using NakedObjects.Unity;
 using NakedObjects.Value;
+using NakedObjectsTest.SystemTest.Reflect;
 using Newtonsoft.Json;
 using Sdm.App.App_Start;
 using Sdm.Test.Fixtures.Clusters.Means.MeansAssessment.Actions;
