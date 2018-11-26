@@ -65,14 +65,26 @@ namespace NakedObjects.Meta.SpecImmutable {
         }
 
         public bool IsContributedTo(IObjectSpecImmutable objectSpecImmutable) {
-            return Parameters.Any(parm => IsContributedTo(parm.Specification, objectSpecImmutable));
+            // deliberately not using lambda or LINQ for speed
+            foreach (var parm in Parameters) {
+                if (IsContributedTo(parm.Specification, objectSpecImmutable)) {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpecImmutable) {
-            return Parameters.Any(parm => {
+            // deliberately not using lambda or LINQ for speed
+            foreach (var parm in Parameters) {
                 var facet = GetFacet<IContributedActionFacet>();
-                return facet != null && facet.IsContributedToCollectionOf(objectSpecImmutable);
-            });
+                if (facet != null && facet.IsContributedToCollectionOf(objectSpecImmutable)) {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         #endregion

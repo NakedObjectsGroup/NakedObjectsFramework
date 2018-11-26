@@ -152,23 +152,32 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
         private bool IsParameterCollection(Type type) {
             return type != null && (
-                       CollectionUtils.IsGenericEnumerable(type) ||
                        type.IsArray ||
                        type == typeof(string) ||
+                       CollectionUtils.IsGenericEnumerable(type) ||                 
                        CollectionUtils.IsCollectionButNotArray(type));
         }
 
-        private bool IsCollection(Type type) {
-            return type != null && (
-                       CollectionUtils.IsGenericEnumerable(type) ||
-                       type.IsArray ||
-                       type == typeof(string) ||
-                       CollectionUtils.IsCollectionButNotArray(type) ||
-                       IsCollection(type.BaseType) ||
-                       type.GetInterfaces().Where(i => i.IsPublic).Any(IsCollection));
+        private bool IsCollection(Type[] interfaces) {
+            foreach (var i in interfaces) {
+                if (i.IsPublic && IsCollection(i)) {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
-
+        private bool IsCollection(Type type) {
+            // replace LINQ/lambda for performance
+            return type != null && (
+                       type.IsArray ||
+                       type == typeof(string) ||
+                       CollectionUtils.IsGenericEnumerable(type) ||
+                       CollectionUtils.IsCollectionButNotArray(type) ||
+                       IsCollection(type.BaseType) ||
+                       IsCollection(type.GetInterfaces()));
+        }
 
         /// <summary>
         ///     Must be called after the <c>CheckForXxxPrefix</c> methods.

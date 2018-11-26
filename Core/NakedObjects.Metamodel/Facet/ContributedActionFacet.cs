@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Facet;
@@ -24,11 +25,29 @@ namespace NakedObjects.Meta.Facet {
         #region IContributedActionFacet Members
 
         public bool IsContributedTo(IObjectSpecImmutable spec) {
-            return objectContributees.Select(t => t.Item1).Any(spec.IsOfType);
+            //return objectContributees.Select(t => t.Item1).Any(spec.IsOfType);
+
+            foreach (var t in objectContributees) {
+                var s = t.Item1;
+                if (spec.IsOfType(s)) {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public bool IsContributedToCollectionOf(IObjectSpecImmutable spec) {
-            return collectionContributees.Select(t => t.Item1).Any(spec.IsOfType);
+            //return collectionContributees.Select(t => t.Item1).Any(spec.IsOfType);
+
+            foreach (var t in collectionContributees) {
+                var s = t.Item1;
+                if (spec.IsOfType(s)) {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public string SubMenuWhenContributedTo(IObjectSpecImmutable spec) {

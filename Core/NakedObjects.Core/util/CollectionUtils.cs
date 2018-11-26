@@ -150,8 +150,20 @@ namespace NakedObjects.Core.Util {
             return genericCollectionType.MakeGenericType(itemType);
         }
 
+        private static bool IsGenericType(Type[] interfaces, Type toMatch) {
+            foreach (var interfaceType in interfaces) {
+                if (IsGenericType(interfaceType, toMatch)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static bool IsGenericType(Type type, Type toMatch) {
-            return type.IsGenericType && (type.GetGenericTypeDefinition() == toMatch || type.GetInterfaces().Any(interfaceType => IsGenericType(interfaceType, toMatch)));
+            return type.IsGenericType &&
+                   (type.GetGenericTypeDefinition() == toMatch ||
+                    IsGenericType(type.GetInterfaces(), toMatch));
         }
 
         private static Type GetGenericEnumerableType(Type type) {

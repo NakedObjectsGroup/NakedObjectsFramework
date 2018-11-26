@@ -115,7 +115,13 @@ namespace NakedObjects.ParallelReflect {
         }
 
         public bool Recognizes(MethodInfo method) {
-            return Prefixes.Any(prefix => method.Name.StartsWith(prefix, StringComparison.Ordinal));
+            // avoid LINQ/lambda for performance
+            foreach (var prefix in Prefixes) {
+                if (method.Name.StartsWith(prefix, StringComparison.Ordinal)) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) { }

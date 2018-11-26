@@ -69,7 +69,9 @@ namespace NakedObjects.Meta.Component {
         }
 
         public ITypeSpecImmutable GetSpecification(string key) {
-            return specs.ContainsKey(key) ? specs[key] : null;
+            ITypeSpecImmutable spec;
+            specs.TryGetValue(key, out spec);
+            return spec;
         }
 
         public void Cache(string key, ITypeSpecImmutable spec) {

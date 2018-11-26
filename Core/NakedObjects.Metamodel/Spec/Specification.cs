@@ -52,7 +52,9 @@ namespace NakedObjects.Meta.Spec {
         }
 
         public virtual IFacet GetFacet(Type facetType) {
-            return facetsByClass.ContainsKey(facetType) ? facetsByClass[facetType] : null;
+            IFacet facet;
+            facetsByClass.TryGetValue(facetType, out facet);
+            return facet;
         }
 
         public T GetFacet<T>() where T : IFacet {
