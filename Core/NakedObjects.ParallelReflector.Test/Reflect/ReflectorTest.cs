@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Threading;
+
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
@@ -21,6 +21,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Menu;
 using NakedObjects.Meta.Component;
+using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.ParallelReflect.Component;
 using NakedObjects.ParallelReflect.FacetFactory;
 using NakedObjects.ParallelReflect.TypeFacetFactory;
@@ -52,6 +53,7 @@ namespace NakedObjects.ParallelReflect.Test {
         #endregion
 
         protected IUnityContainer GetContainer() {
+            ImmutableSpecFactory.ClearCache();
             var c = new UnityContainer();
             RegisterTypes(c);
             return c;
@@ -154,7 +156,7 @@ namespace NakedObjects.ParallelReflect.Test {
             container.RegisterType<IMetamodelBuilder, Metamodel>();
             container.RegisterType<IMenuFactory, NullMenuFactory>();
         }
-
+        
         [TestMethod]
         public void ReflectNoTypes() {
             IUnityContainer container = GetContainer();
@@ -168,8 +170,9 @@ namespace NakedObjects.ParallelReflect.Test {
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
             Assert.IsFalse(reflector.AllObjectSpecImmutables.Any());
+            
         }
-
+        
         [TestMethod]
         public void ReflectObjectType() {
             IUnityContainer container = GetContainer();
@@ -185,8 +188,10 @@ namespace NakedObjects.ParallelReflect.Test {
             Assert.AreEqual(1, reflector.AllObjectSpecImmutables.Count());
         
             AbstractReflectorTest.AssertSpec(typeof(object), reflector.AllObjectSpecImmutables.First());
+            
         }
 
+        
         [TestMethod]
         public void ReflectListTypes() {
             IUnityContainer container = GetContainer();
@@ -205,8 +210,9 @@ namespace NakedObjects.ParallelReflect.Test {
             AbstractReflectorTest.AssertSpec(typeof(int), specs[0]);
             AbstractReflectorTest.AssertSpec(typeof(object), specs[1]);
             AbstractReflectorTest.AssertSpec(typeof(List<>), specs[2]);
+            
         }
-
+        
         [TestMethod]
         public void ReflectSetTypes() {
             IUnityContainer container = GetContainer();
@@ -224,8 +230,9 @@ namespace NakedObjects.ParallelReflect.Test {
 
             AbstractReflectorTest.AssertSpec(typeof(object), specs[0]);
             AbstractReflectorTest.AssertSpec(typeof(SetWrapper<>), specs[1]);
+            
         }
-
+        
         [TestMethod]
         public void ReflectQueryableTypes() {
             IUnityContainer container = GetContainer();
@@ -246,8 +253,9 @@ namespace NakedObjects.ParallelReflect.Test {
             AbstractReflectorTest.AssertSpec(typeof(int), specs[0]);
             AbstractReflectorTest.AssertSpec(typeof(object), specs[1]);
             AbstractReflectorTest.AssertSpec(typeof(EnumerableQuery<>), specs[2]);
+            
         }
-
+        
         [TestMethod]
         public void ReflectWhereIterator() {
             IUnityContainer container = GetContainer();
@@ -266,9 +274,10 @@ namespace NakedObjects.ParallelReflect.Test {
 
             AbstractReflectorTest.AssertSpec(typeof(object), specs[0]);
             AbstractReflectorTest.AssertSpec(it.GetType().GetGenericTypeDefinition(), specs[1]);
+            
         }
 
-
+        
         [TestMethod]
         public void ReflectWhereSelectIterator() {
             IUnityContainer container = GetContainer();
@@ -287,13 +296,40 @@ namespace NakedObjects.ParallelReflect.Test {
 
             AbstractReflectorTest.AssertSpec(typeof(object), specs[0]);
             AbstractReflectorTest.AssertSpec(it.GetType().GetGenericTypeDefinition(), specs[1]);
+            
         }
 
         private static ITypeSpecBuilder GetSpec(Type type, ITypeSpecBuilder[] specs) {
             return specs.Single(s => s.FullName == type.FullName);
         }
 
-        [Ignore]
+        [TestMethod]
+        public void ReflectInt() {
+            IUnityContainer container = GetContainer();
+            ReflectorConfiguration.NoValidate = true;
+
+            var rc = new ReflectorConfiguration(new[] { typeof(int) }, new Type[] { }, new[] { "System" });
+            rc.SupportedSystemTypes.Clear();
+
+            container.RegisterInstance<IReflectorConfiguration>(rc);
+
+            var reflector = container.Resolve<IReflector>();
+            reflector.Reflect();
+
+            var specs = reflector.AllObjectSpecImmutables;
+            Assert.AreEqual(8, specs.Length);
+            AbstractReflectorTest.AssertSpec(typeof(IEquatable<int>), specs);
+            AbstractReflectorTest.AssertSpec(typeof(int), specs);
+            AbstractReflectorTest.AssertSpec(typeof(IConvertible), specs); 
+            AbstractReflectorTest.AssertSpec(typeof(object), specs);    
+            AbstractReflectorTest.AssertSpec(typeof(ValueType), specs);
+            AbstractReflectorTest.AssertSpec(typeof(IComparable<int>), specs);      
+            AbstractReflectorTest.AssertSpec(typeof(IComparable), specs);       
+            AbstractReflectorTest.AssertSpec(typeof(IFormattable), specs);
+            
+        }
+
+       
         [TestMethod]
         public void ReflectByteArray() {
             IUnityContainer container = GetContainer();
@@ -307,8 +343,6 @@ namespace NakedObjects.ParallelReflect.Test {
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();       
            
-            Thread.Sleep(10000);
-
             var specs = reflector.AllObjectSpecImmutables;
             //Assert.AreEqual(31, specs.Length);
 
@@ -343,9 +377,10 @@ namespace NakedObjects.ParallelReflect.Test {
             AbstractReflectorTest.AssertSpec(typeof(TestObjectWithByteArray), specs);
             AbstractReflectorTest.AssertSpec(typeof(IEnumerable<>), specs);
             AbstractReflectorTest.AssertSpec(typeof(IEnumerable), specs);
+            
         }
 
-
+        
         [TestMethod]
         public void ReflectStringArray() {
             IUnityContainer container = GetContainer();
@@ -363,9 +398,10 @@ namespace NakedObjects.ParallelReflect.Test {
 
             AbstractReflectorTest.AssertSpec(typeof(TestObjectWithStringArray), specs[0]);
             AbstractReflectorTest.AssertSpec(typeof(string), specs[1]);
+            
         }
 
-        [Ignore]
+        
         [TestMethod]
         public void ReflectWithScalars() {
             IUnityContainer container = GetContainer();
@@ -377,14 +413,14 @@ namespace NakedObjects.ParallelReflect.Test {
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            Thread.Sleep(10000);
+       
 
             var specs = reflector.AllObjectSpecImmutables;
             Assert.AreEqual(74, specs.Length);
-
+            
         }
 
-        [Ignore]
+        
         [TestMethod]
         public void ReflectSimpleDomainObject() {
             IUnityContainer container = GetContainer();
@@ -396,7 +432,7 @@ namespace NakedObjects.ParallelReflect.Test {
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            Thread.Sleep(5000);
+         
 
             var specs = reflector.AllObjectSpecImmutables;
             Assert.AreEqual(19, specs.Length);
@@ -420,6 +456,7 @@ namespace NakedObjects.ParallelReflect.Test {
             AbstractReflectorTest.AssertSpec(typeof(string), specs);
             AbstractReflectorTest.AssertSpec(typeof(IEnumerable<>), specs);
             AbstractReflectorTest.AssertSpec(typeof(IEnumerable), specs);
+            
         }
 
         #region Nested type: SetWrapper

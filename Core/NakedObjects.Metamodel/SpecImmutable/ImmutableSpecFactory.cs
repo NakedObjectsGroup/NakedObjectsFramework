@@ -59,5 +59,12 @@ namespace NakedObjects.Meta.SpecImmutable {
                 return specCache[type] as IServiceSpecBuilder;
             }
         }
+
+        // for tests
+        public static void ClearCache() {
+            lock (specCache) {
+               specCache.Clear();
+            }
+        }
     }
 }
