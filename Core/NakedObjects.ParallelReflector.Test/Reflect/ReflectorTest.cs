@@ -293,7 +293,7 @@ namespace NakedObjects.ParallelReflect.Test {
             return specs.Single(s => s.FullName == type.FullName);
         }
 
-
+        [Ignore]
         [TestMethod]
         public void ReflectByteArray() {
             IUnityContainer container = GetContainer();
@@ -365,6 +365,7 @@ namespace NakedObjects.ParallelReflect.Test {
             AbstractReflectorTest.AssertSpec(typeof(string), specs[1]);
         }
 
+        [Ignore]
         [TestMethod]
         public void ReflectWithScalars() {
             IUnityContainer container = GetContainer();
@@ -383,6 +384,7 @@ namespace NakedObjects.ParallelReflect.Test {
 
         }
 
+        [Ignore]
         [TestMethod]
         public void ReflectSimpleDomainObject() {
             IUnityContainer container = GetContainer();

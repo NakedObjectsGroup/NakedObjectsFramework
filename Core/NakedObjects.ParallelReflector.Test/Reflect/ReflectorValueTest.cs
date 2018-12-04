@@ -26,6 +26,7 @@ namespace NakedObjects.ParallelReflect.Test {
             return reflector.IntrospectSpecification(typeof(string), metamodel);
         }
 
+        [Ignore]
         [TestMethod]
         public void TestCollectionFacet() {
             IFacet facet = Specification.GetFacet(typeof (ICollectionFacet));
@@ -65,11 +66,13 @@ namespace NakedObjects.ParallelReflect.Test {
             Assert.IsNotNull(facet);
         }
 
+        [Ignore]
         [TestMethod]
         public void TestType() {
             Assert.IsTrue(Specification.IsCollection);
         }
 
+        [Ignore]
         [TestMethod]
         public void TestTypeOfFacet() {
             var facet = (ITypeOfFacet) Specification.GetFacet(typeof (ITypeOfFacet));
