@@ -1,5 +1,5 @@
 <Project ToolsVersion="4.0" DefaultTargets="FrameworkPackageTest"  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
- 
+
   <PropertyGroup>
     <CorePath>Core</CorePath>
     <NOCore>NakedObjects.Core</NOCore>
@@ -20,7 +20,7 @@
   <Choose>
     <When Condition="Exists('C:\Program Files (x86)')">
       <PropertyGroup>
-        <NUnitPath>$(InstalledPackagesPath)\NUnit.Runners.$(NUnitVer)\tools</NUnitPath>      
+        <NUnitPath>$(InstalledPackagesPath)\NUnit.Runners.$(NUnitVer)\tools</NUnitPath>
       </PropertyGroup>
     </When>
     <Otherwise>
@@ -76,10 +76,11 @@
     <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Test.Data\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Entity.Test.CodeOnly\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Entity.Test.Domain\*.csproj"/>
-    <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Entity.Test.ModelFirst\*.csproj"/>   
+    <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Entity.Test.ModelFirst\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Entity.Test\*.fsproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Metamodel.Test\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Reflector.Test\*.csproj"/>
+    <FWTFiles Include="$(CorePath)\NakedObjects.ParallelReflector.Test\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Snapshot.Xml.Test\*.fsproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Snapshot.Xml.Test.Data\*.fsproj"/>
   </ItemGroup>
@@ -114,6 +115,7 @@
       <OldTests Include="$(TestResultsPath)\NakedObjects.Persistor.Entity.Test.xml"/>
       <OldTests Include="$(TestResultsPath)\NakedObjects.Metamodel.Test.xml"/>
       <OldTests Include="$(TestResultsPath)\NakedObjects.Reflector.Test.xml"/>
+      <OldTests Include="$(TestResultsPath)\NakedObjects.ParallelReflector.Test.xml"/>
       <OldTests Include="$(TestResultsPath)\NakedObjects.Snapshot.Xml.Test.xml"/>
     </ItemGroup>
 
@@ -209,6 +211,7 @@
 
     <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(CorePath)\NakedObjects.Metamodel.Test\bin\%(Configuration.Identity)\NakedObjects.Metamodel.Test.dll" /resultsfile:$(TestResultsPath)\NakedObjects.Metamodel.Test.trx' />
     <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(CorePath)\NakedObjects.Reflector.Test\bin\%(Configuration.Identity)\NakedObjects.Reflector.Test.dll" /resultsfile:$(TestResultsPath)\NakedObjects.Reflector.Test.trx' />
+    <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(CorePath)\NakedObjects.ParallelReflector.Test\bin\%(Configuration.Identity)\NakedObjects.ParallelReflector.Test.dll" /resultsfile:$(TestResultsPath)\NakedObjects.Reflector.Test.trx' />
 
     <NUnit Assemblies="$(CorePath)\NakedObjects.Core.Test\bin\%(Configuration.Identity)\NakedObjects.Core.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Core.Test.xml" />
     <NUnit Assemblies="$(CorePath)\NakedObjects.Persistor.Entity.Test\bin\%(Configuration.Identity)\NakedObjects.Persistor.Entity.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Persistor.Entity.Test.xml" />
@@ -236,11 +239,11 @@
   </Target>
 
   <Target Name="FrameworkPackageTest" DependsOnTargets="FrameworkTest">
-    <MSBuild Projects="$(MSBuildProjectFile)" Targets="FrameworkPackage"/>     
+    <MSBuild Projects="$(MSBuildProjectFile)" Targets="FrameworkPackage"/>
   </Target>
 
   <Target Name="FrameworkPackageNoTest" DependsOnTargets="Framework">
     <MSBuild Projects="$(MSBuildProjectFile)" Targets="FrameworkPackage"/>
   </Target>
-  
+
 </Project>

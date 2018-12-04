@@ -1,5 +1,5 @@
 <Project ToolsVersion="4.0" DefaultTargets="FrameworkPackageNoTest"  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
- 
+
   <PropertyGroup>
     <CorePath>Core</CorePath>
     <NOCore>NakedObjects.Core</NOCore>
@@ -46,10 +46,11 @@
     <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Test.Data\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Entity.Test.CodeOnly\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Entity.Test.Domain\*.csproj"/>
-    <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Entity.Test.ModelFirst\*.csproj"/>   
+    <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Entity.Test.ModelFirst\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Entity.Test\*.fsproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Metamodel.Test\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Reflector.Test\*.csproj"/>
+    <FWTFiles Include="$(CorePath)\NakedObjects.ParallelReflector.Test\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Snapshot.Xml.Test\*.fsproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Snapshot.Xml.Test.Data\*.fsproj"/>
   </ItemGroup>
@@ -65,8 +66,8 @@
 								RegEx= '\.\\SQLEXPRESS'
 								ReplacementText ='(local)\SQL2012SP1'
                 WarnOnNoUpdate='True'/>
-    
-    
+
+
   </Target>
 
   <ItemGroup>
@@ -122,8 +123,8 @@
       <FWSrc Include="$(CorePath)\*NakedObjects.Metamodel\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Core\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Persistor.Entity\**\*.cs"/>
-      <FWSrc Include="$(CorePath)\*NakedObjects.Reflector\**\*.cs"/> 
-      <FWSrc Include="$(CorePath)\*NakedObjects.ParallelReflector\**\*.cs"/> 
+      <FWSrc Include="$(CorePath)\*NakedObjects.Reflector\**\*.cs"/>
+      <FWSrc Include="$(CorePath)\*NakedObjects.ParallelReflector\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Snapshot.Xml\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Unity\**\*.cs"/>
     </ItemGroup>
@@ -145,13 +146,14 @@
 
     <MSBuild Projects="@(FWTFiles)" Properties="Configuration=%(Configuration.Identity)"/>
 
-   
+
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Core.Test\bin\%(Configuration.Identity)\NakedObjects.Core.Test.dll"' />
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Persistor.Entity.Test\bin\%(Configuration.Identity)\NakedObjects.Persistor.Entity.Test.dll"'/>
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Snapshot.Xml.Test\bin\%(Configuration.Identity)\NakedObjects.Snapshot.Xml.Test.dll"'/>
-    
+
     <Exec Command='vstest.console /logger:Appveyor "$(CorePath)\NakedObjects.Metamodel.Test\bin\%(Configuration.Identity)\NakedObjects.Metamodel.Test.dll"' />
     <Exec Command='vstest.console /logger:Appveyor "$(CorePath)\NakedObjects.Reflector.Test\bin\%(Configuration.Identity)\NakedObjects.Reflector.Test.dll"' />
+    <Exec Command='vstest.console /logger:Appveyor "$(CorePath)\NakedObjects.ParallelReflector.Test\bin\%(Configuration.Identity)\NakedObjects.ParallelReflector.Test.dll"' />
 
   </Target>
 
@@ -177,11 +179,11 @@
   </Target>
 
   <Target Name="FrameworkPackageTest" DependsOnTargets="FrameworkTest">
-    <MSBuild Projects="$(MSBuildProjectFile)" Targets="FrameworkPackage"/>     
+    <MSBuild Projects="$(MSBuildProjectFile)" Targets="FrameworkPackage"/>
   </Target>
 
   <Target Name="FrameworkPackageNoTest" DependsOnTargets="Framework">
     <MSBuild Projects="$(MSBuildProjectFile)" Targets="FrameworkPackage"/>
   </Target>
-  
+
 </Project>
