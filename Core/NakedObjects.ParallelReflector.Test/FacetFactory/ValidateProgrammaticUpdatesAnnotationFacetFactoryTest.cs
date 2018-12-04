@@ -22,7 +22,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private ValidateProgrammaticUpdatesAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IValidateProgrammaticUpdatesFacet)}; }
+            get { return new[] {typeof(IValidateProgrammaticUpdatesFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -33,25 +33,23 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestApplyValidationNotPickup() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, typeof (Customer1), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IValidateProgrammaticUpdatesFacet));
+            metamodel = facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification, metamodel);
+            IFacet facet = Specification.GetFacet(typeof(IValidateProgrammaticUpdatesFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestApplyValidationPickup() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IValidateProgrammaticUpdatesFacet));
+            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
+            IFacet facet = Specification.GetFacet(typeof(IValidateProgrammaticUpdatesFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ValidateProgrammaticUpdatesFacetAnnotation);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
@@ -67,13 +65,13 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer
 
         [ValidateProgrammaticUpdates]
-        private class Customer {}
+        private class Customer { }
 
         #endregion
 
         #region Nested type: Customer1
 
-        private class Customer1 {}
+        private class Customer1 { }
 
         #endregion
 

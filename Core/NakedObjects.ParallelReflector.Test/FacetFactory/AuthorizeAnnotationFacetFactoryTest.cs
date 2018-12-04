@@ -27,7 +27,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private Mock<ILifecycleManager> mockPersistor;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IHiddenFacet)}; }
+            get { return new[] {typeof(IHiddenFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -37,7 +37,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         [TestMethod]
         public void TestAuthorizeAnnotationActionRoleAuthorized() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-            MethodInfo actionMethod = FindMethod(typeof (Customer), "Action5");
+            MethodInfo actionMethod = FindMethod(typeof(Customer), "Action5");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -55,7 +55,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         [TestMethod]
         public void TestAuthorizeAnnotationActionRoleAuthorizedClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-            MethodInfo actionMethod = FindMethod(typeof (Customer13), "Action1");
+            MethodInfo actionMethod = FindMethod(typeof(Customer13), "Action1");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -73,7 +73,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         [TestMethod]
         public void TestAuthorizeAnnotationActionRoleAuthorizedClassPriorityOverMethod() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-            MethodInfo actionMethod = FindMethod(typeof (Customer14), "Action1");
+            MethodInfo actionMethod = FindMethod(typeof(Customer14), "Action1");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -99,7 +99,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         [TestMethod]
         public void TestAuthorizeAnnotationActionRoleNotAuthorized() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-            MethodInfo actionMethod = FindMethod(typeof (Customer), "Action5");
+            MethodInfo actionMethod = FindMethod(typeof(Customer), "Action5");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -117,7 +117,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         [TestMethod]
         public void TestAuthorizeAnnotationActionRoleNotAuthorizedClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-            MethodInfo actionMethod = FindMethod(typeof (Customer13), "Action1");
+            MethodInfo actionMethod = FindMethod(typeof(Customer13), "Action1");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -136,7 +136,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationActionRoleOnlyAuthorized() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer), "Action3");
+            MethodInfo actionMethod = FindMethod(typeof(Customer), "Action3");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -155,7 +155,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationActionRoleOnlyAuthorizedClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer11), "Action1");
+            MethodInfo actionMethod = FindMethod(typeof(Customer11), "Action1");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -174,7 +174,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationActionRoleOnlyNotAuthorized() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer), "Action3");
+            MethodInfo actionMethod = FindMethod(typeof(Customer), "Action3");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -193,7 +193,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationActionRoleOnlyNotAuthorizedClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer11), "Action1");
+            MethodInfo actionMethod = FindMethod(typeof(Customer11), "Action1");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -212,7 +212,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationActionUserAuthorized() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer), "Action5");
+            MethodInfo actionMethod = FindMethod(typeof(Customer), "Action5");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -231,7 +231,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationActionUserAuthorizedClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer13), "Action1");
+            MethodInfo actionMethod = FindMethod(typeof(Customer13), "Action1");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -250,7 +250,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationActionUserNotAuthorized() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer), "Action5");
+            MethodInfo actionMethod = FindMethod(typeof(Customer), "Action5");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -269,7 +269,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationActionUserNotAuthorizedClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer13), "Action1");
+            MethodInfo actionMethod = FindMethod(typeof(Customer13), "Action1");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -288,7 +288,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationActionUserOnlyAuthorized() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer), "Action4");
+            MethodInfo actionMethod = FindMethod(typeof(Customer), "Action4");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -307,7 +307,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationActionUserOnlyAuthorizedClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer12), "Action1");
+            MethodInfo actionMethod = FindMethod(typeof(Customer12), "Action1");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -326,7 +326,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationActionUserOnlyNotAuthorized() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer), "Action4");
+            MethodInfo actionMethod = FindMethod(typeof(Customer), "Action4");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -345,7 +345,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationActionUserOnlyNotAuthorizedClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer12), "Action1");
+            MethodInfo actionMethod = FindMethod(typeof(Customer12), "Action1");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -364,7 +364,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationEditRoleAuthorized() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer), "Property8");
+            PropertyInfo property = FindProperty(typeof(Customer), "Property8");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -378,7 +378,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationEditRoleAuthorizedClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer8), "Property1");
+            PropertyInfo property = FindProperty(typeof(Customer8), "Property1");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -392,7 +392,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationEditRoleNotAuthorized() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer), "Property8");
+            PropertyInfo property = FindProperty(typeof(Customer), "Property8");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -406,7 +406,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationEditRoleNotAuthorizedClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer8), "Property1");
+            PropertyInfo property = FindProperty(typeof(Customer8), "Property1");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -420,7 +420,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationEditUserAuthorized() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer), "Property8");
+            PropertyInfo property = FindProperty(typeof(Customer), "Property8");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -434,7 +434,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationEditUserAuthorizedClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer8), "Property1");
+            PropertyInfo property = FindProperty(typeof(Customer8), "Property1");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -448,7 +448,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationEditUserNotAuthorized() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer), "Property8");
+            PropertyInfo property = FindProperty(typeof(Customer), "Property8");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -462,7 +462,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationEditUserNotAuthorizedClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer8), "Property1");
+            PropertyInfo property = FindProperty(typeof(Customer8), "Property1");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -476,11 +476,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationPickedUpOnAction() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer), "Action3");
+            MethodInfo actionMethod = FindMethod(typeof(Customer), "Action3");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNotNull(facet);
-            facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
+            facet = Specification.GetFacet(typeof(IDisableForSessionFacet));
             Assert.IsNotNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
@@ -490,11 +490,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationPickedUpOnClassAll() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer9), "Property1");
+            PropertyInfo property = FindProperty(typeof(Customer9), "Property1");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNotNull(facet);
-            facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
+            facet = Specification.GetFacet(typeof(IDisableForSessionFacet));
             Assert.IsNotNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
@@ -504,11 +504,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationPickedUpOnClassEditRole() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer5), "Property1");
+            PropertyInfo property = FindProperty(typeof(Customer5), "Property1");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNull(facet);
-            facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
+            facet = Specification.GetFacet(typeof(IDisableForSessionFacet));
             Assert.IsNotNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
@@ -518,11 +518,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationPickedUpOnClassEditRoleUser() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer8), "Property1");
+            PropertyInfo property = FindProperty(typeof(Customer8), "Property1");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNull(facet);
-            facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
+            facet = Specification.GetFacet(typeof(IDisableForSessionFacet));
             Assert.IsNotNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
@@ -532,11 +532,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationPickedUpOnClassEditUser() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer6), "Property1");
+            PropertyInfo property = FindProperty(typeof(Customer6), "Property1");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNull(facet);
-            facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
+            facet = Specification.GetFacet(typeof(IDisableForSessionFacet));
             Assert.IsNotNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
@@ -546,11 +546,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationPickedUpOnClassForAction() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer11), "Action1");
+            MethodInfo actionMethod = FindMethod(typeof(Customer11), "Action1");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNotNull(facet);
-            facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
+            facet = Specification.GetFacet(typeof(IDisableForSessionFacet));
             Assert.IsNotNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
@@ -560,11 +560,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationPickedUpOnClassViewRole() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer3), "Property1");
+            PropertyInfo property = FindProperty(typeof(Customer3), "Property1");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNotNull(facet);
-            facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
+            facet = Specification.GetFacet(typeof(IDisableForSessionFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
@@ -574,11 +574,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationPickedUpOnClassViewRoleUser() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer7), "Property1");
+            PropertyInfo property = FindProperty(typeof(Customer7), "Property1");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNotNull(facet);
-            facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
+            facet = Specification.GetFacet(typeof(IDisableForSessionFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
@@ -588,11 +588,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationPickedUpOnClassViewUser() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer4), "Property1");
+            PropertyInfo property = FindProperty(typeof(Customer4), "Property1");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNotNull(facet);
-            facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
+            facet = Specification.GetFacet(typeof(IDisableForSessionFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
@@ -602,11 +602,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationPickedUpOnPropertyAll() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer), "Property9");
+            PropertyInfo property = FindProperty(typeof(Customer), "Property9");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNotNull(facet);
-            facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
+            facet = Specification.GetFacet(typeof(IDisableForSessionFacet));
             Assert.IsNotNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
@@ -616,11 +616,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationPickedUpOnPropertyEditRole() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer), "Property5");
+            PropertyInfo property = FindProperty(typeof(Customer), "Property5");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNull(facet);
-            facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
+            facet = Specification.GetFacet(typeof(IDisableForSessionFacet));
             Assert.IsNotNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
@@ -630,11 +630,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationPickedUpOnPropertyEditRoleUser() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer), "Property8");
+            PropertyInfo property = FindProperty(typeof(Customer), "Property8");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNull(facet);
-            facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
+            facet = Specification.GetFacet(typeof(IDisableForSessionFacet));
             Assert.IsNotNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
@@ -644,11 +644,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationPickedUpOnPropertyEditUser() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer), "Property6");
+            PropertyInfo property = FindProperty(typeof(Customer), "Property6");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNull(facet);
-            facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
+            facet = Specification.GetFacet(typeof(IDisableForSessionFacet));
             Assert.IsNotNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
@@ -658,11 +658,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationPickedUpOnPropertyViewRole() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer), "Property3");
+            PropertyInfo property = FindProperty(typeof(Customer), "Property3");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNotNull(facet);
-            facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
+            facet = Specification.GetFacet(typeof(IDisableForSessionFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
@@ -672,11 +672,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationPickedUpOnPropertyViewRoleUser() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer), "Property7");
+            PropertyInfo property = FindProperty(typeof(Customer), "Property7");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNotNull(facet);
-            facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
+            facet = Specification.GetFacet(typeof(IDisableForSessionFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
@@ -686,11 +686,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationPickedUpOnPropertyViewUser() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer), "Property4");
+            PropertyInfo property = FindProperty(typeof(Customer), "Property4");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNotNull(facet);
-            facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
+            facet = Specification.GetFacet(typeof(IDisableForSessionFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
@@ -700,7 +700,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationViewRoleAuthorized() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer), "Property7");
+            PropertyInfo property = FindProperty(typeof(Customer), "Property7");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -714,7 +714,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationViewRoleAuthorizedClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer7), "Property1");
+            PropertyInfo property = FindProperty(typeof(Customer7), "Property1");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -728,7 +728,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationViewRoleNotAuthorized() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer), "Property7");
+            PropertyInfo property = FindProperty(typeof(Customer), "Property7");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -742,7 +742,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationViewRoleNotAuthorizedClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer7), "Property1");
+            PropertyInfo property = FindProperty(typeof(Customer7), "Property1");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -756,7 +756,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationViewUserAuthorized() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer), "Property7");
+            PropertyInfo property = FindProperty(typeof(Customer), "Property7");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -770,7 +770,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationViewUserAuthorizedClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer7), "Property1");
+            PropertyInfo property = FindProperty(typeof(Customer7), "Property1");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -784,7 +784,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationViewUserAuthorizedClassOverProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer14), "Property1");
+            PropertyInfo property = FindProperty(typeof(Customer14), "Property1");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -801,7 +801,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationViewUserNotAuthorized() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer), "Property7");
+            PropertyInfo property = FindProperty(typeof(Customer), "Property7");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -815,7 +815,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeAnnotationViewUserNotAuthorizedClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer7), "Property1");
+            PropertyInfo property = FindProperty(typeof(Customer7), "Property1");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
@@ -829,11 +829,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeEmptyAnnotationOnAction() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer), "Action2");
+            MethodInfo actionMethod = FindMethod(typeof(Customer), "Action2");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNull(facet);
-            facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
+            facet = Specification.GetFacet(typeof(IDisableForSessionFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
@@ -843,11 +843,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeEmptyAnnotationOnClassForAction() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer10), "Action1");
+            MethodInfo actionMethod = FindMethod(typeof(Customer10), "Action1");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNull(facet);
-            facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
+            facet = Specification.GetFacet(typeof(IDisableForSessionFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
@@ -857,11 +857,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeEmptyAnnotationOnClassForProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer2), "Property1");
+            PropertyInfo property = FindProperty(typeof(Customer2), "Property1");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNull(facet);
-            facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
+            facet = Specification.GetFacet(typeof(IDisableForSessionFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
@@ -871,11 +871,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeEmptyAnnotationOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer), "Property2");
+            PropertyInfo property = FindProperty(typeof(Customer), "Property2");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNull(facet);
-            facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
+            facet = Specification.GetFacet(typeof(IDisableForSessionFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
@@ -885,11 +885,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeNoAnnotationOnAction() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer), "Action1");
+            MethodInfo actionMethod = FindMethod(typeof(Customer), "Action1");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNull(facet);
-            facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
+            facet = Specification.GetFacet(typeof(IDisableForSessionFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
@@ -899,11 +899,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeNoAnnotationOnClassForAction() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer), "Action1");
+            MethodInfo actionMethod = FindMethod(typeof(Customer), "Action1");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNull(facet);
-            facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
+            facet = Specification.GetFacet(typeof(IDisableForSessionFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
@@ -913,26 +913,25 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAuthorizeNoAnnotationOnClassForProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer1), "Property1");
+            PropertyInfo property = FindProperty(typeof(Customer1), "Property1");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNull(facet);
-            facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
+            facet = Specification.GetFacet(typeof(IDisableForSessionFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestAuthorizeNoAnnotationOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer1), "Property1");
+            PropertyInfo property = FindProperty(typeof(Customer1), "Property1");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNull(facet);
-            facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
+            facet = Specification.GetFacet(typeof(IDisableForSessionFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
@@ -1250,17 +1249,13 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     }
 
     internal class TestIdentity : IIdentity {
-        private readonly string testUser;
-
         public TestIdentity(string testUser) {
-            this.testUser = testUser;
+            this.Name = testUser;
         }
 
         #region IIdentity Members
 
-        public string Name {
-            get { return testUser; }
-        }
+        public string Name { get; }
 
         public string AuthenticationType {
             get { return ""; }

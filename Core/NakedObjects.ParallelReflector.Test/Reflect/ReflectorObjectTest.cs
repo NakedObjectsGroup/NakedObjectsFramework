@@ -9,14 +9,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.ParallelReflect.Component;
 
 namespace NakedObjects.ParallelReflect.Test {
     public class TestDomainObject {
-        public void Action(DateTime? test) {}
+        public void Action(DateTime? test) { }
     }
 
     [TestClass]
@@ -30,13 +29,13 @@ namespace NakedObjects.ParallelReflect.Test {
 
         [TestMethod]
         public void TestCollectionFacet() {
-            IFacet facet = Specification.GetFacet(typeof (ICollectionFacet));
+            IFacet facet = Specification.GetFacet(typeof(ICollectionFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestDescriptionFaced() {
-            IFacet facet = Specification.GetFacet(typeof (IDescribedAsFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDescribedAsFacet));
             Assert.IsNotNull(facet);
         }
 
@@ -47,30 +46,30 @@ namespace NakedObjects.ParallelReflect.Test {
 
         [TestMethod]
         public void TestName() {
-            Assert.AreEqual(typeof (TestDomainObject).FullName, Specification.FullName);
+            Assert.AreEqual(typeof(TestDomainObject).FullName, Specification.FullName);
         }
 
         [TestMethod]
         public void TestNamedFaced() {
-            IFacet facet = Specification.GetFacet(typeof (INamedFacet));
+            IFacet facet = Specification.GetFacet(typeof(INamedFacet));
             Assert.IsNotNull(facet);
         }
 
         [TestMethod]
         public void TestNoCollectionFacet() {
-            IFacet facet = Specification.GetFacet(typeof (ICollectionFacet));
+            IFacet facet = Specification.GetFacet(typeof(ICollectionFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestNoTypeOfFacet() {
-            var facet = (ITypeOfFacet) Specification.GetFacet(typeof (ITypeOfFacet));
+            var facet = (ITypeOfFacet) Specification.GetFacet(typeof(ITypeOfFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestPluralFaced() {
-            IFacet facet = Specification.GetFacet(typeof (IPluralFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPluralFacet));
             Assert.IsNotNull(facet);
         }
 
@@ -81,7 +80,7 @@ namespace NakedObjects.ParallelReflect.Test {
 
         [TestMethod]
         public void TestTypeOfFacet() {
-            var facet = (ITypeOfFacet) Specification.GetFacet(typeof (ITypeOfFacet));
+            var facet = (ITypeOfFacet) Specification.GetFacet(typeof(ITypeOfFacet));
             Assert.IsNull(facet);
         }
     }

@@ -43,8 +43,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             mockMethodRemover.Setup(remover => remover.RemoveMethods(It.IsAny<IList<MethodInfo>>()));
 
             mockReflector.Setup(reflector =>
-                reflector.LoadSpecification(It.IsAny<Type>(), It.IsAny<IImmutableDictionary<string, ITypeSpecBuilder>>())).
-                Returns((Type t, IImmutableDictionary<string, ITypeSpecBuilder> m) => new Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>>(null, m));
+                reflector.LoadSpecification(It.IsAny<Type>(), It.IsAny<IImmutableDictionary<string, ITypeSpecBuilder>>())).Returns((Type t, IImmutableDictionary<string, ITypeSpecBuilder> m) => new Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>>(null, m));
         }
 
         public virtual void TearDown() {

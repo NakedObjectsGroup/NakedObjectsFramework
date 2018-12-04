@@ -23,7 +23,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private ComplexTypeAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (INamedFacet)}; }
+            get { return new[] {typeof(INamedFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -44,8 +44,8 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestImmutableAnnotationPickedUpOnClassAndDefaultsToAlways() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IComplexTypeFacet));
+            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
+            IFacet facet = Specification.GetFacet(typeof(IComplexTypeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ComplexTypeFacetAnnotation);
             AssertNoMethodsRemoved();
@@ -55,7 +55,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer
 
         [ComplexType]
-        private class Customer {}
+        private class Customer { }
 
         #endregion
 

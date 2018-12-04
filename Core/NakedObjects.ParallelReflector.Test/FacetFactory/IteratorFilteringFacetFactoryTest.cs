@@ -22,7 +22,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private IteratorFilteringFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new Type[] {}; }
+            get { return new Type[] { }; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -43,8 +43,8 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestRequestsRemoverToRemoveIteratorMethods() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo enumeratorMethod = FindMethod(typeof (Customer), "GetEnumerator");
-            metamodel = facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification, metamodel);
+            MethodInfo enumeratorMethod = FindMethod(typeof(Customer), "GetEnumerator");
+            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
             AssertMethodRemoved(enumeratorMethod);
             Assert.IsNotNull(metamodel);
         }
@@ -77,11 +77,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             #endregion
 
-            public void someAction() {}
+            public void someAction() { }
         }
 
         private class Customer1 {
-            public void someAction() {}
+            public void someAction() { }
         }
 
         // ReSharper restore AssignNullToNotNullAttribute

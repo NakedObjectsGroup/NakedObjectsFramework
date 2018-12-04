@@ -24,7 +24,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private DisabledAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IDisabledFacet)}; }
+            get { return new[] {typeof(IDisabledFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -64,121 +64,114 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer2 {
             [Disabled]
-            public void SomeAction() {}
+            public void SomeAction() { }
         }
 
         private class Customer3 {
             [Disabled(WhenTo.Always)]
-            public void SomeAction() {}
+            public void SomeAction() { }
         }
 
         private class Customer4 {
             [Disabled(WhenTo.Never)]
-            public void SomeAction() {}
+            public void SomeAction() { }
         }
 
         private class Customer5 {
             [Disabled(WhenTo.OncePersisted)]
-            public void SomeAction() {}
+            public void SomeAction() { }
         }
 
         private class Customer6 {
             [Disabled(WhenTo.UntilPersisted)]
-            public void SomeAction() {}
+            public void SomeAction() { }
         }
 
         [TestMethod]
         public void TestDisabledAnnotationPickedUpOnAction() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer2), "SomeAction");
+            MethodInfo actionMethod = FindMethod(typeof(Customer2), "SomeAction");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IDisabledFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDisabledFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DisabledFacetAbstract);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestDisabledAnnotationPickedUpOnCollection() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer1), "Orders");
+            PropertyInfo property = FindProperty(typeof(Customer1), "Orders");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IDisabledFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDisabledFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DisabledFacetAbstract);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestDisabledAnnotationPickedUpOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer), "NumberOfOrders");
+            PropertyInfo property = FindProperty(typeof(Customer), "NumberOfOrders");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IDisabledFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDisabledFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DisabledFacetAbstract);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestDisabledWhenAlwaysAnnotationPickedUpOn() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer3), "SomeAction");
+            MethodInfo actionMethod = FindMethod(typeof(Customer3), "SomeAction");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IDisabledFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDisabledFacet));
             var disabledFacetAbstract = (DisabledFacetAbstract) facet;
             Assert.AreEqual(WhenTo.Always, disabledFacetAbstract.Value);
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestDisabledWhenNeverAnnotationPickedUpOn() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer4), "SomeAction");
+            MethodInfo actionMethod = FindMethod(typeof(Customer4), "SomeAction");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IDisabledFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDisabledFacet));
             var disabledFacetAbstract = (DisabledFacetAbstract) facet;
             Assert.AreEqual(WhenTo.Never, disabledFacetAbstract.Value);
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestDisabledWhenOncePersistedAnnotationPickedUpOn() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer5), "SomeAction");
+            MethodInfo actionMethod = FindMethod(typeof(Customer5), "SomeAction");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IDisabledFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDisabledFacet));
             var disabledFacetAbstract = (DisabledFacetAbstract) facet;
             Assert.AreEqual(WhenTo.OncePersisted, disabledFacetAbstract.Value);
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestDisabledWhenUntilPersistedAnnotationPickedUpOn() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer6), "SomeAction");
+            MethodInfo actionMethod = FindMethod(typeof(Customer6), "SomeAction");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IDisabledFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDisabledFacet));
             var disabledFacetAbstract = (DisabledFacetAbstract) facet;
             Assert.AreEqual(WhenTo.UntilPersisted, disabledFacetAbstract.Value);
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]

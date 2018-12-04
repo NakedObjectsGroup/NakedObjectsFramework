@@ -23,7 +23,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private MaskAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IMaskFacet)}; }
+            get { return new[] {typeof(IMaskFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -33,7 +33,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer
 
         [Mask("###")]
-        private class Customer {}
+        private class Customer { }
 
         #endregion
 
@@ -63,7 +63,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer2 {
 // ReSharper disable once UnusedParameter.Local
-            public void SomeAction([Mask("###")] string foo) {}
+            public void SomeAction([Mask("###")] string foo) { }
         }
 
         private class Customer3 {
@@ -75,7 +75,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer4 {
 // ReSharper disable once UnusedParameter.Local
-            public void SomeAction([Mask("###")] int foo) {}
+            public void SomeAction([Mask("###")] int foo) { }
         }
 
         [TestMethod]
@@ -92,60 +92,56 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestMaskAnnotationNotIgnoredForNonStringsProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer3), "NumberOfOrders");
+            PropertyInfo property = FindProperty(typeof(Customer3), "NumberOfOrders");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            Assert.IsNotNull(Specification.GetFacet(typeof (IMaskFacet)));
+            Assert.IsNotNull(Specification.GetFacet(typeof(IMaskFacet)));
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestMaskAnnotationNotIgnoredForPrimitiveOnActionParameter() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (int)});
+            MethodInfo method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(int)});
             metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            Assert.IsNotNull(Specification.GetFacet(typeof (IMaskFacet)));
+            Assert.IsNotNull(Specification.GetFacet(typeof(IMaskFacet)));
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestMaskAnnotationPickedUpOnActionParameter() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
             metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IMaskFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMaskFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaskFacet);
             var maskFacet = (MaskFacet) facet;
             Assert.AreEqual("###", maskFacet.Value);
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestMaskAnnotationPickedUpOnClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IMaskFacet));
+            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
+            IFacet facet = Specification.GetFacet(typeof(IMaskFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaskFacet);
             var maskFacet = (MaskFacet) facet;
             Assert.AreEqual("###", maskFacet.Value);
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestMaskAnnotationPickedUpOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
+            PropertyInfo property = FindProperty(typeof(Customer1), "FirstName");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IMaskFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMaskFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaskFacet);
             var maskFacet = (MaskFacet) facet;

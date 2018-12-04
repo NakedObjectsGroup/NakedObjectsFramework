@@ -24,7 +24,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private DescribedAsAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IDescribedAsFacet)}; }
+            get { return new[] {typeof(IDescribedAsFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -34,7 +34,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer
 
         [DescribedAs("some description")]
-        private class Customer {}
+        private class Customer { }
 
         #endregion
 
@@ -71,16 +71,16 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer3 {
             [DescribedAs("some description")]
-            public void SomeAction() {}
+            public void SomeAction() { }
         }
 
         private class Customer4 {
 // ReSharper disable once UnusedParameter.Local
-            public void SomeAction([DescribedAs("some description")] int x) {}
+            public void SomeAction([DescribedAs("some description")] int x) { }
         }
 
         [System.ComponentModel.Description("some description")]
-        private class Customer5 {}
+        private class Customer5 { }
 
         private class Customer6 {
             [System.ComponentModel.Description("some description")]
@@ -98,168 +98,159 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer8 {
             [System.ComponentModel.Description("some description")]
-            public void SomeAction() {}
+            public void SomeAction() { }
         }
 
         private class Customer9 {
 // ReSharper disable once UnusedParameter.Local
-            public void SomeAction([System.ComponentModel.Description("some description")] int x) {}
+            public void SomeAction([System.ComponentModel.Description("some description")]
+                                   int x) { }
         }
 
         [TestMethod]
         public void TestDescribedAsAnnotationPickedUpOnAction() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer3), "SomeAction");
+            MethodInfo actionMethod = FindMethod(typeof(Customer3), "SomeAction");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IDescribedAsFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDescribedAsFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DescribedAsFacetAbstract);
             var describedAsFacetAbstract = (DescribedAsFacetAbstract) facet;
             Assert.AreEqual("some description", describedAsFacetAbstract.Value);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestDescribedAsAnnotationPickedUpOnActionParameter() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (int)});
+            MethodInfo actionMethod = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(int)});
             metamodel = facetFactory.ProcessParams(Reflector, actionMethod, 0, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IDescribedAsFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDescribedAsFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DescribedAsFacetAbstract);
             var describedAsFacetAbstract = (DescribedAsFacetAbstract) facet;
             Assert.AreEqual("some description", describedAsFacetAbstract.Value);
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestDescribedAsAnnotationPickedUpOnClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IDescribedAsFacet));
+            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
+            IFacet facet = Specification.GetFacet(typeof(IDescribedAsFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DescribedAsFacetAbstract);
             var describedAsFacetAbstract = (DescribedAsFacetAbstract) facet;
             Assert.AreEqual("some description", describedAsFacetAbstract.Value);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestDescribedAsAnnotationPickedUpOnCollection() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer2), "Orders");
+            PropertyInfo property = FindProperty(typeof(Customer2), "Orders");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IDescribedAsFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDescribedAsFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DescribedAsFacetAbstract);
             var describedAsFacetAbstract = (DescribedAsFacetAbstract) facet;
             Assert.AreEqual("some description", describedAsFacetAbstract.Value);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestDescribedAsAnnotationPickedUpOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer1), "NumberOfOrders");
+            PropertyInfo property = FindProperty(typeof(Customer1), "NumberOfOrders");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IDescribedAsFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDescribedAsFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DescribedAsFacetAbstract);
             var describedAsFacetAbstract = (DescribedAsFacetAbstract) facet;
             Assert.AreEqual("some description", describedAsFacetAbstract.Value);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestDescriptionAnnotationPickedUpOnAction() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer8), "SomeAction");
+            MethodInfo actionMethod = FindMethod(typeof(Customer8), "SomeAction");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IDescribedAsFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDescribedAsFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DescribedAsFacetAbstract);
             var describedAsFacetAbstract = (DescribedAsFacetAbstract) facet;
             Assert.AreEqual("some description", describedAsFacetAbstract.Value);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestDescriptionAnnotationPickedUpOnActionParameter() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer9), "SomeAction", new[] {typeof (int)});
+            MethodInfo actionMethod = FindMethod(typeof(Customer9), "SomeAction", new[] {typeof(int)});
             metamodel = facetFactory.ProcessParams(Reflector, actionMethod, 0, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IDescribedAsFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDescribedAsFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DescribedAsFacetAbstract);
             var describedAsFacetAbstract = (DescribedAsFacetAbstract) facet;
             Assert.AreEqual("some description", describedAsFacetAbstract.Value);
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestDescriptionAnnotationPickedUpOnClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, typeof (Customer5), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IDescribedAsFacet));
+            metamodel = facetFactory.Process(Reflector, typeof(Customer5), MethodRemover, Specification, metamodel);
+            IFacet facet = Specification.GetFacet(typeof(IDescribedAsFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DescribedAsFacetAbstract);
             var describedAsFacetAbstract = (DescribedAsFacetAbstract) facet;
             Assert.AreEqual("some description", describedAsFacetAbstract.Value);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestDescriptionAnnotationPickedUpOnCollection() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer7), "Orders");
+            PropertyInfo property = FindProperty(typeof(Customer7), "Orders");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IDescribedAsFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDescribedAsFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DescribedAsFacetAbstract);
             var describedAsFacetAbstract = (DescribedAsFacetAbstract) facet;
             Assert.AreEqual("some description", describedAsFacetAbstract.Value);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestDescriptionAnnotationPickedUpOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer6), "NumberOfOrders");
+            PropertyInfo property = FindProperty(typeof(Customer6), "NumberOfOrders");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IDescribedAsFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDescribedAsFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DescribedAsFacetAbstract);
             var describedAsFacetAbstract = (DescribedAsFacetAbstract) facet;
             Assert.AreEqual("some description", describedAsFacetAbstract.Value);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]

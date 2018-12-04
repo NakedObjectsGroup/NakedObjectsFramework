@@ -22,7 +22,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private BoundedAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IBoundedFacet)}; }
+            get { return new[] {typeof(IBoundedFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -33,8 +33,8 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestBoundedAnnotationPickedUpOnClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IBoundedFacet));
+            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
+            IFacet facet = Specification.GetFacet(typeof(IBoundedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is BoundedFacet);
             AssertNoMethodsRemoved();
@@ -54,7 +54,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer
 
         [Bounded]
-        private class Customer {}
+        private class Customer { }
 
         #endregion
 

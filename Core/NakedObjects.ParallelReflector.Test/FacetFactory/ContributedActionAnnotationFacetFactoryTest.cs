@@ -27,7 +27,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private ContributedActionAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IContributedActionFacet)}; }
+            get { return new[] {typeof(IContributedActionFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -50,7 +50,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestContributedAnnotationNullByDefault1() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Service), "Action1");
+            MethodInfo actionMethod = FindMethod(typeof(Service), "Action1");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet<IContributedActionFacet>();
             Assert.IsNull(facet);
@@ -62,7 +62,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestContributedAnnotationNullByDefault2() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Service), "Action2");
+            MethodInfo actionMethod = FindMethodIgnoreParms(typeof(Service), "Action2");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet<IContributedActionFacet>();
             Assert.IsNull(facet);
@@ -74,7 +74,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestContributedAnnotationPickedUp3() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Service), "Action3");
+            MethodInfo actionMethod = FindMethodIgnoreParms(typeof(Service), "Action3");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IContributedActionFacet>();
             Assert.IsNotNull(facet);
@@ -87,7 +87,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestContributedAnnotationPickedUp4() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Service), "Action4");
+            MethodInfo actionMethod = FindMethodIgnoreParms(typeof(Service), "Action4");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IContributedActionFacet>();
             Assert.IsNotNull(facet);
@@ -95,6 +95,35 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
         }
+
+        #region Nested type: Customer
+
+        // ReSharper disable once ClassNeverInstantiated.Local
+        private class Customer { }
+
+        #endregion
+
+        #region Nested type: Service
+
+        private class Service {
+            // ReSharper disable once UnusedMember.Local
+            public void Action1() { }
+
+            // ReSharper disable once UnusedMember.Local
+            // ReSharper disable once UnusedParameter.Local
+            public void Action2(Customer cust1) { }
+
+            // ReSharper disable once UnusedMember.Local
+            // ReSharper disable once UnusedParameter.Local
+            public void Action3([ContributedAction] Customer cust1) { }
+
+            // ReSharper disable once UnusedMember.Local
+            // ReSharper disable UnusedParameter.Local
+            public void Action4(string str1, [ContributedAction] Customer cust1) { }
+            // ReSharper restore UnusedParameter.Local
+        }
+
+        #endregion
 
         #region Setup/Teardown
 
@@ -109,32 +138,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             facetFactory = null;
             base.TearDown();
         }
-
-        #endregion
-
-        #region Nested type: Customer
-
-        private class Service {
-            // ReSharper disable once UnusedMember.Local
-            public void Action1() {}
-            // ReSharper disable once UnusedMember.Local
-            // ReSharper disable once UnusedParameter.Local
-            public void Action2(Customer cust1) {}
-            // ReSharper disable once UnusedMember.Local
-            // ReSharper disable once UnusedParameter.Local
-            public void Action3([ContributedAction] Customer cust1) {}
-            // ReSharper disable once UnusedMember.Local
-            // ReSharper disable UnusedParameter.Local
-            public void Action4(string str1, [ContributedAction] Customer cust1) {}
-            // ReSharper restore UnusedParameter.Local
-        }
-
-        #endregion
-
-        #region Nested type: Customer
-
-        // ReSharper disable once ClassNeverInstantiated.Local
-        private class Customer {}
 
         #endregion
     }

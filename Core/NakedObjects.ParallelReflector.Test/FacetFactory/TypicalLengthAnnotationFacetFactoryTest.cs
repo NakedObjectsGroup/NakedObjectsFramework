@@ -23,17 +23,90 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private TypicalLengthAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (ITypicalLengthFacet)}; }
+            get { return new[] {typeof(ITypicalLengthFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
         }
 
+        [TestMethod]
+        public override void TestFeatureTypes() {
+            FeatureType featureTypes = facetFactory.FeatureTypes;
+            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
+            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
+            Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameters));
+        }
+
+        [TestMethod]
+        public void TestTypicalLengthAnnotationPickedUpOnActionParameter() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(int)});
+            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
+            IFacet facet = Specification.GetFacet(typeof(ITypicalLengthFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is TypicalLengthFacetAnnotation);
+            var typicalLengthFacetAnnotation = (TypicalLengthFacetAnnotation) facet;
+            Assert.AreEqual(20, typicalLengthFacetAnnotation.Value);
+            Assert.IsNotNull(metamodel);
+        }
+
+        [TestMethod]
+        public void TestTypicalLengthAnnotationPickedUpOnClass() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
+            IFacet facet = Specification.GetFacet(typeof(ITypicalLengthFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is TypicalLengthFacetAnnotation);
+            var typicalLengthFacetAnnotation = (TypicalLengthFacetAnnotation) facet;
+            Assert.AreEqual(16, typicalLengthFacetAnnotation.Value);
+            Assert.IsNotNull(metamodel);
+        }
+
+        [TestMethod]
+        public void TestTypicalLengthAnnotationPickedUpOnProperty() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            PropertyInfo property = FindProperty(typeof(Customer1), "FirstName");
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+            IFacet facet = Specification.GetFacet(typeof(ITypicalLengthFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is TypicalLengthFacetAnnotation);
+            var typicalLengthFacetAnnotation = (TypicalLengthFacetAnnotation) facet;
+            Assert.AreEqual(30, typicalLengthFacetAnnotation.Value);
+            Assert.IsNotNull(metamodel);
+        }
+
         #region Nested type: Customer
 
         [TypicalLength(16)]
-        private class Customer {}
+        private class Customer { }
+
+        #endregion
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            [TypicalLength(30)]
+            // ReSharper disable once UnusedMember.Local
+            public string FirstName {
+                get { return null; }
+            }
+        }
+
+        #endregion
+
+        #region Nested type: Customer2
+
+        private class Customer2 {
+            // ReSharper disable once UnusedMember.Local
+            // ReSharper disable once UnusedParameter.Local
+            public void SomeAction([TypicalLength(20)] int foo) { }
+        }
 
         #endregion
 
@@ -52,74 +125,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         #endregion
-
-        private class Customer1 {
-            [TypicalLength(30)]
-            // ReSharper disable once UnusedMember.Local
-            public string FirstName {
-                get { return null; }
-            }
-        }
-
-        private class Customer2 {
-            // ReSharper disable once UnusedMember.Local
-            // ReSharper disable once UnusedParameter.Local
-            public void SomeAction([TypicalLength(20)] int foo) {}
-        }
-
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
-
-        [TestMethod]
-        public void TestTypicalLengthAnnotationPickedUpOnActionParameter() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (int)});
-            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (ITypicalLengthFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is TypicalLengthFacetAnnotation);
-            var typicalLengthFacetAnnotation = (TypicalLengthFacetAnnotation) facet;
-            Assert.AreEqual(20, typicalLengthFacetAnnotation.Value);
-            Assert.IsNotNull(metamodel);
-
-        }
-
-        [TestMethod]
-        public void TestTypicalLengthAnnotationPickedUpOnClass() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            metamodel = facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (ITypicalLengthFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is TypicalLengthFacetAnnotation);
-            var typicalLengthFacetAnnotation = (TypicalLengthFacetAnnotation) facet;
-            Assert.AreEqual(16, typicalLengthFacetAnnotation.Value);
-            Assert.IsNotNull(metamodel);
-
-        }
-
-        [TestMethod]
-        public void TestTypicalLengthAnnotationPickedUpOnProperty() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (ITypicalLengthFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is TypicalLengthFacetAnnotation);
-            var typicalLengthFacetAnnotation = (TypicalLengthFacetAnnotation) facet;
-            Assert.AreEqual(30, typicalLengthFacetAnnotation.Value);
-            Assert.IsNotNull(metamodel);
-
-        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

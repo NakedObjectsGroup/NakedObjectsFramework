@@ -23,7 +23,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private OptionalAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IMandatoryFacet)}; }
+            get { return new[] {typeof(IMandatoryFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -56,7 +56,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer2 {
 // ReSharper disable once UnusedParameter.Local
-            public void SomeAction([Optionally] string foo) {}
+            public void SomeAction([Optionally] string foo) { }
         }
 
         private class Customer3 {
@@ -68,7 +68,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer4 {
 // ReSharper disable once UnusedParameter.Local
-            public void SomeAction([Optionally] int foo) {}
+            public void SomeAction([Optionally] int foo) { }
         }
 
         [TestMethod]
@@ -85,48 +85,44 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestOptionalAnnotationIgnoredForPrimitiveOnActionParameter() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (int)});
+            MethodInfo method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(int)});
             metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            Assert.IsNull(Specification.GetFacet(typeof (IMandatoryFacet)));
+            Assert.IsNull(Specification.GetFacet(typeof(IMandatoryFacet)));
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestOptionalAnnotationIgnoredForPrimitiveOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer3), "NumberOfOrders");
+            PropertyInfo property = FindProperty(typeof(Customer3), "NumberOfOrders");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            Assert.IsNull(Specification.GetFacet(typeof (IMandatoryFacet)));
+            Assert.IsNull(Specification.GetFacet(typeof(IMandatoryFacet)));
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestOptionalAnnotationPickedUpOnActionParameter() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
             metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IMandatoryFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is OptionalFacet);
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestOptionalAnnotationPickedUpOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
+            PropertyInfo property = FindProperty(typeof(Customer1), "FirstName");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IMandatoryFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is OptionalFacet);
             Assert.IsNotNull(metamodel);
-
         }
     }
 

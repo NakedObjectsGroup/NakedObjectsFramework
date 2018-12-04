@@ -24,55 +24,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private RequiredAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IMandatoryFacet)}; }
+            get { return new[] {typeof(IMandatoryFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
-        }
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new RequiredAnnotationFacetFactory(0);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
-        private class Customer1 {
-            [Required]
-// ReSharper disable once UnusedMember.Local
-            public string FirstName {
-                get { return null; }
-            }
-        }
-
-        private class Customer2 {
-// ReSharper disable once UnusedMember.Local
-// ReSharper disable once UnusedParameter.Local
-            public void SomeAction([Required] string foo) {}
-        }
-
-        private class Customer3 {
-            [Required]
-// ReSharper disable once UnusedMember.Local
-            public int NumberOfOrders {
-                get { return 0; }
-            }
-        }
-
-        private class Customer4 {
-// ReSharper disable once UnusedMember.Local
-// ReSharper disable once UnusedParameter.Local
-            public void SomeAction([Required] int foo) {}
         }
 
         [TestMethod]
@@ -89,53 +45,109 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestRequiredAnnotationOnPrimitiveOnActionParameter() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (int)});
+            MethodInfo method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(int)});
             metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IMandatoryFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MandatoryFacet);
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestRequiredAnnotationOnPrimitiveOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer3), "NumberOfOrders");
+            PropertyInfo property = FindProperty(typeof(Customer3), "NumberOfOrders");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IMandatoryFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MandatoryFacet);
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestRequiredAnnotationPickedUpOnActionParameter() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
             metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IMandatoryFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MandatoryFacet);
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestRequiredAnnotationPickedUpOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
+            PropertyInfo property = FindProperty(typeof(Customer1), "FirstName");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IMandatoryFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MandatoryFacet);
             Assert.IsNotNull(metamodel);
-
         }
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            [Required]
+// ReSharper disable once UnusedMember.Local
+            public string FirstName {
+                get { return null; }
+            }
+        }
+
+        #endregion
+
+        #region Nested type: Customer2
+
+        private class Customer2 {
+// ReSharper disable once UnusedMember.Local
+// ReSharper disable once UnusedParameter.Local
+            public void SomeAction([Required] string foo) { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer3
+
+        private class Customer3 {
+            [Required]
+// ReSharper disable once UnusedMember.Local
+            public int NumberOfOrders {
+                get { return 0; }
+            }
+        }
+
+        #endregion
+
+        #region Nested type: Customer4
+
+        private class Customer4 {
+// ReSharper disable once UnusedMember.Local
+// ReSharper disable once UnusedParameter.Local
+            public void SomeAction([Required] int foo) { }
+        }
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new RequiredAnnotationFacetFactory(0);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

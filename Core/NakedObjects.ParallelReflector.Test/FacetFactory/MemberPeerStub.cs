@@ -16,15 +16,12 @@ using NakedObjects.Meta.Spec;
 
 namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     internal class MemberPeerStub : Specification, IMemberSpecImmutable {
-        private readonly string description;
-        private readonly string name;
-
         public MemberPeerStub(string name)
-            : this(name, null) {}
+            : this(name, null) { }
 
         public MemberPeerStub(string name, string description) {
-            this.name = name;
-            this.description = description;
+            this.Name = name;
+            this.Description = description;
         }
 
         public MemberPeerStub Spec {
@@ -45,17 +42,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             get { return new IdentifierNull(this); }
         }
 
-        #endregion
+        public string Name { get; }
 
-        #region INamedAndDescribed Members
-
-        public string Name {
-            get { return name; }
-        }
-
-        public string Description {
-            get { return description; }
-        }
+        public string Description { get; }
 
         #endregion
 
@@ -115,6 +104,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         // ReSharper disable UnusedAutoPropertyAccessor.Local
         public IObjectSpecImmutable ReturnSpec { get; private set; }
         public IObjectSpecImmutable ElementSpec { get; private set; }
+
         public IObjectSpecImmutable OwnerSpec { get; private set; }
         // ReSharper restore UnusedAutoPropertyAccessor.Local
     }

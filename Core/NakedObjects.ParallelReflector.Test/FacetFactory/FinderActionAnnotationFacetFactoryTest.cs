@@ -23,12 +23,85 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private FinderActionFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IFinderActionFacet)}; }
+            get { return new[] {typeof(IFinderActionFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
         }
+
+        [TestMethod]
+        public void TestFinderActionFacetNullByDefault() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            MethodInfo actionMethod = FindMethod(typeof(Customer), "SomeAction");
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
+            IFacet facet = Specification.GetFacet(typeof(IFinderActionFacet));
+            Assert.IsNull(facet);
+            AssertNoMethodsRemoved();
+            Assert.IsNotNull(metamodel);
+        }
+
+        [TestMethod]
+        public void TestFinderActionAnnotationPickedUp() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            MethodInfo actionMethod = FindMethod(typeof(Customer1), "SomeAction");
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
+            IFacet facet = Specification.GetFacet(typeof(IFinderActionFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is FinderActionFacet);
+            Assert.IsNull((facet as FinderActionFacet).Value); //Prefix is null by default
+            AssertNoMethodsRemoved();
+            Assert.IsNotNull(metamodel);
+        }
+
+        [TestMethod]
+        public void TestFinderActionPrefixPickedUp() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            MethodInfo actionMethod = FindMethod(typeof(Customer1), "SomeOtherAction");
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
+            IFacet facet = Specification.GetFacet(typeof(IFinderActionFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is FinderActionFacet);
+            Assert.AreEqual("Foo", (facet as FinderActionFacet).Value); //Prefix is null by default
+            AssertNoMethodsRemoved();
+            Assert.IsNotNull(metamodel);
+        }
+
+        [TestMethod]
+        public override void TestFeatureTypes() {
+            FeatureType featureTypes = facetFactory.FeatureTypes;
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
+            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
+        }
+
+        #region Nested type: Customer
+
+        private class Customer {
+// ReSharper disable once UnusedMember.Local
+            public void SomeAction() { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            [FinderAction]
+// ReSharper disable once UnusedMember.Local
+            public void SomeAction() { }
+
+            [FinderAction("Foo")]
+            // ReSharper disable once UnusedMember.Local
+            public void SomeOtherAction() { }
+        }
+
+        #endregion
 
         #region Setup/Teardown
 
@@ -45,75 +118,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         #endregion
-
-        private class Customer {
-// ReSharper disable once UnusedMember.Local
-            public void SomeAction() {}
-        }
-
-        private class Customer1 {
-            [FinderAction]
-// ReSharper disable once UnusedMember.Local
-            public void SomeAction() {}
-
-            [FinderAction("Foo")]
-            // ReSharper disable once UnusedMember.Local
-            public void SomeOtherAction() { }
-        }
-
-        [TestMethod]
-        public void TestFinderActionFacetNullByDefault() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            MethodInfo actionMethod = FindMethod(typeof (Customer), "SomeAction");
-            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IFinderActionFacet));
-            Assert.IsNull(facet);
-            AssertNoMethodsRemoved();
-            Assert.IsNotNull(metamodel);
-
-        }
-
-        [TestMethod]
-        public void TestFinderActionAnnotationPickedUp() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            MethodInfo actionMethod = FindMethod(typeof (Customer1), "SomeAction");
-            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IFinderActionFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is FinderActionFacet);
-            Assert.IsNull((facet as FinderActionFacet).Value); //Prefix is null by default
-            AssertNoMethodsRemoved();
-            Assert.IsNotNull(metamodel);
-
-        }
-
-        [TestMethod]
-        public void TestFinderActionPrefixPickedUp() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            MethodInfo actionMethod = FindMethod(typeof(Customer1), "SomeOtherAction");
-            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IFinderActionFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is FinderActionFacet);
-            Assert.AreEqual("Foo", (facet as FinderActionFacet).Value); //Prefix is null by default
-            AssertNoMethodsRemoved();
-            Assert.IsNotNull(metamodel);
-
-
-        }
-
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

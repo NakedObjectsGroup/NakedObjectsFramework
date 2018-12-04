@@ -24,33 +24,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private PropertyDefaultAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IPropertyDefaultFacet)}; }
+            get { return new[] {typeof(IPropertyDefaultFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
-        }
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new PropertyDefaultAnnotationFacetFactory(0);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
-        private class Customer1 {
-            [DefaultValue(1)]
-// ReSharper disable once UnusedMember.Local
-            public int Prop { get; set; }
         }
 
         [TestMethod]
@@ -67,15 +45,41 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestPropertyDefaultAnnotationPickedUpOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer1), "Prop");
+            PropertyInfo property = FindProperty(typeof(Customer1), "Prop");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IPropertyDefaultFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPropertyDefaultFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyDefaultFacetAnnotation);
             var propertyDefaultFacetAnnotation = (PropertyDefaultFacetAnnotation) facet;
             Assert.AreEqual(1, propertyDefaultFacetAnnotation.GetDefault(null));
             Assert.IsNotNull(metamodel);
         }
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            [DefaultValue(1)]
+// ReSharper disable once UnusedMember.Local
+            public int Prop { get; set; }
+        }
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new PropertyDefaultAnnotationFacetFactory(0);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -23,7 +23,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private MultiLineAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IMultiLineFacet)}; }
+            get { return new[] {typeof(IMultiLineFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -33,7 +33,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer
 
         [MultiLine(NumberOfLines = 3, Width = 9)]
-        private class Customer {}
+        private class Customer { }
 
         #endregion
 
@@ -63,11 +63,12 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer2 {
 // ReSharper disable once UnusedParameter.Local
-            public void SomeAction([MultiLine(NumberOfLines = 8, Width = 24)] string foo) {}
+            public void SomeAction([MultiLine(NumberOfLines = 8, Width = 24)]
+                                   string foo) { }
         }
 
         [MultiLine]
-        private class Customer3 {}
+        private class Customer3 { }
 
         private class Customer5 {
             [MultiLine(NumberOfLines = 8, Width = 24)]
@@ -78,7 +79,8 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer6 {
 // ReSharper disable once UnusedParameter.Local
-            public void SomeAction([MultiLine(NumberOfLines = 8, Width = 24)] int foo) {}
+            public void SomeAction([MultiLine(NumberOfLines = 8, Width = 24)]
+                                   int foo) { }
         }
 
         [TestMethod]
@@ -95,83 +97,77 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestMultiLineAnnotationDefaults() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, typeof (Customer3), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IMultiLineFacet));
+            metamodel = facetFactory.Process(Reflector, typeof(Customer3), MethodRemover, Specification, metamodel);
+            IFacet facet = Specification.GetFacet(typeof(IMultiLineFacet));
             var multiLineFacetAnnotation = (MultiLineFacetAnnotation) facet;
             Assert.AreEqual(6, multiLineFacetAnnotation.NumberOfLines);
             Assert.AreEqual(0, multiLineFacetAnnotation.Width);
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestMultiLineAnnotationIgnoredForNonStringActionParameters() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof (Customer6), "SomeAction", new[] {typeof (int)});
+            MethodInfo method = FindMethod(typeof(Customer6), "SomeAction", new[] {typeof(int)});
             metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            Assert.IsNull(Specification.GetFacet(typeof (IMultiLineFacet)));
+            Assert.IsNull(Specification.GetFacet(typeof(IMultiLineFacet)));
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestMultiLineAnnotationIgnoredForNonStringProperties() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer5), "NumberOfOrders");
+            PropertyInfo property = FindProperty(typeof(Customer5), "NumberOfOrders");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IMultiLineFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMultiLineFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestMultiLineAnnotationPickedUpOnActionParameter() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
             metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IMultiLineFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMultiLineFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MultiLineFacetAnnotation);
             var multiLineFacetAnnotation = (MultiLineFacetAnnotation) facet;
             Assert.AreEqual(8, multiLineFacetAnnotation.NumberOfLines);
             Assert.AreEqual(24, multiLineFacetAnnotation.Width);
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestMultiLineAnnotationPickedUpOnClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IMultiLineFacet));
+            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
+            IFacet facet = Specification.GetFacet(typeof(IMultiLineFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MultiLineFacetAnnotation);
             var multiLineFacetAnnotation = (MultiLineFacetAnnotation) facet;
             Assert.AreEqual(3, multiLineFacetAnnotation.NumberOfLines);
             Assert.AreEqual(9, multiLineFacetAnnotation.Width);
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestMultiLineAnnotationPickedUpOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
+            PropertyInfo property = FindProperty(typeof(Customer1), "FirstName");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IMultiLineFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMultiLineFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MultiLineFacetAnnotation);
             var multiLineFacetAnnotation = (MultiLineFacetAnnotation) facet;
             Assert.AreEqual(12, multiLineFacetAnnotation.NumberOfLines);
             Assert.AreEqual(36, multiLineFacetAnnotation.Width);
             Assert.IsNotNull(metamodel);
-
         }
     }
 

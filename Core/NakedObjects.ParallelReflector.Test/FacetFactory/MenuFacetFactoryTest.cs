@@ -23,7 +23,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private MenuFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IMenuFacet)}; }
+            get { return new[] {typeof(IMenuFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -44,32 +44,39 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestDefaultMenuPickedUp() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, typeof (Class1), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IMenuFacet));
+            metamodel = facetFactory.Process(Reflector, typeof(Class1), MethodRemover, Specification, metamodel);
+            IFacet facet = Specification.GetFacet(typeof(IMenuFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MenuFacetDefault);
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestMethodMenuPickedUp() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            var class2Type = typeof (Class2);
+            var class2Type = typeof(Class2);
             metamodel = facetFactory.Process(Reflector, class2Type, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IMenuFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMenuFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MenuFacetViaMethod);
             MethodInfo m1 = class2Type.GetMethod("Menu");
             AssertMethodRemoved(m1);
             Assert.IsNotNull(metamodel);
-
         }
 
         #region Nested type: Class1
 
-        private class Class1 {}
+        private class Class1 { }
+
+        #endregion
+
+        #region Nested type: Class2
+
+        private class Class2 {
+// ReSharper disable once UnusedMember.Local
+            public static void Menu() { }
+        }
 
         #endregion
 
@@ -86,15 +93,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public new void TearDown() {
             facetFactory = null;
             base.TearDown();
-        }
-
-        #endregion
-
-        #region Nested type: Class2
-
-        private class Class2 {
-// ReSharper disable once UnusedMember.Local
-            public static void Menu() {}
         }
 
         #endregion

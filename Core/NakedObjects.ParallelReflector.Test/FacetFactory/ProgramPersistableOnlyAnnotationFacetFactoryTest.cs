@@ -22,7 +22,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private ProgramPersistableOnlyAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IProgramPersistableOnlyFacet)}; }
+            get { return new[] {typeof(IProgramPersistableOnlyFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -43,37 +43,35 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestProgramPersistableOnlyNotPickup() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, typeof (Customer1), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IProgramPersistableOnlyFacet));
+            metamodel = facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification, metamodel);
+            IFacet facet = Specification.GetFacet(typeof(IProgramPersistableOnlyFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestProgramPersistableOnlyPickup() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IProgramPersistableOnlyFacet));
+            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
+            IFacet facet = Specification.GetFacet(typeof(IProgramPersistableOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ProgramPersistableOnly);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
-
         }
 
         #region Nested type: Customer
 
         [ProgramPersistableOnly]
-        private class Customer {}
+        private class Customer { }
 
         #endregion
 
         #region Nested type: Customer1
 
-        private class Customer1 {}
+        private class Customer1 { }
 
         #endregion
 

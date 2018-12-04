@@ -24,7 +24,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private MemberOrderAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IMemberOrderFacet)}; }
+            get { return new[] {typeof(IMemberOrderFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -62,16 +62,16 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             }
 
 // ReSharper disable once UnusedParameter.Local
-            public void AddToOrders(Order o) {}
+            public void AddToOrders(Order o) { }
         }
 
         private class Customer2 {
             [MemberOrder(Sequence = "3")]
-            public void SomeAction() {}
+            public void SomeAction() { }
         }
 
 // ReSharper disable once ClassNeverInstantiated.Local
-        private class Order {}
+        private class Order { }
 
         [TestMethod]
         public override void TestFeatureTypes() {
@@ -87,48 +87,45 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestMemberOrderAnnotationPickedUpOnAction() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction");
+            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction");
             metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IMemberOrderFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMemberOrderFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MemberOrderFacet);
             var memberOrderFacetAnnotation = (MemberOrderFacet) facet;
             Assert.AreEqual("3", memberOrderFacetAnnotation.Sequence);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestMemberOrderAnnotationPickedUpOnCollection() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer1), "Orders");
+            PropertyInfo property = FindProperty(typeof(Customer1), "Orders");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IMemberOrderFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMemberOrderFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MemberOrderFacet);
             var memberOrderFacetAnnotation = (MemberOrderFacet) facet;
             Assert.AreEqual("2", memberOrderFacetAnnotation.Sequence);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestMemberOrderAnnotationPickedUpOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer), "FirstName");
+            PropertyInfo property = FindProperty(typeof(Customer), "FirstName");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IMemberOrderFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMemberOrderFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MemberOrderFacet);
             var memberOrderFacetAnnotation = (MemberOrderFacet) facet;
             Assert.AreEqual("1", memberOrderFacetAnnotation.Sequence);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
-
         }
     }
 

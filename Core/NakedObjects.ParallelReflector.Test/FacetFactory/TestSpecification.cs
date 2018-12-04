@@ -9,5 +9,5 @@ using NakedObjects.Meta.Spec;
 
 namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     // This is for testing of facets 
-    internal class TestSpecification : Specification {}
+    internal class TestSpecification : Specification { }
 }

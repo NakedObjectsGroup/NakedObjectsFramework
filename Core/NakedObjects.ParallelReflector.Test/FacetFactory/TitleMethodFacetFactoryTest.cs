@@ -23,12 +23,95 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private TitleMethodFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (ITitleFacet)}; }
+            get { return new[] {typeof(ITitleFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
         }
+
+        [TestMethod]
+        public override void TestFeatureTypes() {
+            FeatureType featureTypes = facetFactory.FeatureTypes;
+            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
+        }
+
+        [TestMethod]
+        public void TestNoExplicitTitleOrToStringMethod() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            metamodel = facetFactory.Process(Reflector, typeof(Customer2), MethodRemover, Specification, metamodel);
+            Assert.IsNull(Specification.GetFacet(typeof(ITitleFacet)));
+            AssertNoMethodsRemoved();
+            Assert.IsNotNull(metamodel);
+        }
+
+        [TestMethod]
+        public void TestTitleMethodPickedUpOnClassAndMethodRemoved() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            MethodInfo titleMethod = FindMethod(typeof(Customer), "Title");
+            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
+            IFacet facet = Specification.GetFacet(typeof(ITitleFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is TitleFacetViaTitleMethod);
+            var titleFacetViaTitleMethod = (TitleFacetViaTitleMethod) facet;
+            Assert.AreEqual(titleMethod, titleFacetViaTitleMethod.GetMethod());
+            AssertMethodRemoved(titleMethod);
+            Assert.IsNotNull(metamodel);
+        }
+
+        [TestMethod]
+        public void TestToStringMethodPickedUpOnClassAndMethodRemoved() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            MethodInfo toStringMethod = FindMethod(typeof(Customer1), "ToString", new[] {typeof(string)});
+            metamodel = facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification, metamodel);
+            IFacet facet = Specification.GetFacet(typeof(ITitleFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is TitleFacetViaToStringMethod);
+            var titleFacetViaTitleMethod = (TitleFacetViaToStringMethod) facet;
+            Assert.AreEqual(toStringMethod, titleFacetViaTitleMethod.GetMethod());
+            AssertMethodRemoved(toStringMethod);
+            Assert.IsNotNull(metamodel);
+        }
+
+        #region Nested type: Customer
+
+        private class Customer {
+// ReSharper disable once UnusedMember.Local
+            public string Title() {
+                return "Some title";
+            }
+        }
+
+        #endregion
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            public override string ToString() {
+                return "Some title via ToString";
+            }
+
+            // ReSharper disable once UnusedParameter.Local
+            // ReSharper disable once UnusedMember.Local
+            public string ToString(string mask) {
+                return "Some title via ToString";
+            }
+        }
+
+        #endregion
+
+        #region Nested type: Customer2
+
+        private class Customer2 { }
+
+        #endregion
 
         #region Setup/Teardown
 
@@ -45,79 +128,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         #endregion
-
-        private class Customer {
-// ReSharper disable once UnusedMember.Local
-            public string Title() {
-                return "Some title";
-            }
-        }
-
-        private class Customer1 {
-            public override string ToString() {
-                return "Some title via ToString";
-            }
-            // ReSharper disable once UnusedParameter.Local
-            // ReSharper disable once UnusedMember.Local
-            public string ToString(string mask) {
-                return "Some title via ToString";
-            }
-        }
-
-        private class Customer2 {}
-
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
-
-        [TestMethod]
-        public void TestNoExplicitTitleOrToStringMethod() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            metamodel = facetFactory.Process(Reflector, typeof (Customer2), MethodRemover, Specification, metamodel);
-            Assert.IsNull(Specification.GetFacet(typeof (ITitleFacet)));
-            AssertNoMethodsRemoved();
-            Assert.IsNotNull(metamodel);
-
-        }
-
-        [TestMethod]
-        public void TestTitleMethodPickedUpOnClassAndMethodRemoved() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            MethodInfo titleMethod = FindMethod(typeof (Customer), "Title");
-            metamodel = facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (ITitleFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is TitleFacetViaTitleMethod);
-            var titleFacetViaTitleMethod = (TitleFacetViaTitleMethod) facet;
-            Assert.AreEqual(titleMethod, titleFacetViaTitleMethod.GetMethod());
-            AssertMethodRemoved(titleMethod);
-            Assert.IsNotNull(metamodel);
-
-        }
-
-        [TestMethod]
-        public void TestToStringMethodPickedUpOnClassAndMethodRemoved() {
-            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-            MethodInfo toStringMethod = FindMethod(typeof (Customer1), "ToString", new []{typeof(string)});
-            metamodel = facetFactory.Process(Reflector, typeof (Customer1), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (ITitleFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is TitleFacetViaToStringMethod);
-            var titleFacetViaTitleMethod = (TitleFacetViaToStringMethod) facet;
-            Assert.AreEqual(toStringMethod, titleFacetViaTitleMethod.GetMethod());
-            AssertMethodRemoved(toStringMethod);
-            Assert.IsNotNull(metamodel);
-
-        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -24,39 +24,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private RangeAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IRangeFacet)}; }
+            get { return new[] {typeof(IRangeFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
-        }
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new RangeAnnotationFacetFactory(0);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
-        private class Customer1 {
-            [Range(1, 10)]
-// ReSharper disable once UnusedMember.Local
-            public int Prop { get; set; }
-        }
-
-        private class Customer2 {
-// ReSharper disable once UnusedMember.Local
-// ReSharper disable once UnusedParameter.Local
-            public void SomeAction([Range(1, 10)] int foo) {}
         }
 
         [TestMethod]
@@ -73,33 +45,67 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestRangeAnnotationPickedUpOnActionParameter() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (int)});
+            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(int)});
             metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IRangeFacet));
+            IFacet facet = Specification.GetFacet(typeof(IRangeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is RangeFacet);
             var rangeFacetAnnotation = (RangeFacet) facet;
             Assert.AreEqual(1, rangeFacetAnnotation.Min);
             Assert.AreEqual(10, rangeFacetAnnotation.Max);
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestRangeAnnotationPickedUpOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer1), "Prop");
+            PropertyInfo property = FindProperty(typeof(Customer1), "Prop");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IRangeFacet));
+            IFacet facet = Specification.GetFacet(typeof(IRangeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is RangeFacet);
             var rangeFacetAnnotation = (RangeFacet) facet;
             Assert.AreEqual(1, rangeFacetAnnotation.Min);
             Assert.AreEqual(10, rangeFacetAnnotation.Max);
             Assert.IsNotNull(metamodel);
-
         }
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            [Range(1, 10)]
+// ReSharper disable once UnusedMember.Local
+            public int Prop { get; set; }
+        }
+
+        #endregion
+
+        #region Nested type: Customer2
+
+        private class Customer2 {
+// ReSharper disable once UnusedMember.Local
+// ReSharper disable once UnusedParameter.Local
+            public void SomeAction([Range(1, 10)] int foo) { }
+        }
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new RangeAnnotationFacetFactory(0);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

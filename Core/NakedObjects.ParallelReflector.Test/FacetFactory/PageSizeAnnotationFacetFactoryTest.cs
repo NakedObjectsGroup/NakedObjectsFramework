@@ -26,60 +26,28 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private PageSizeAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IPageSizeFacet)}; }
+            get { return new[] {typeof(IPageSizeFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
         }
 
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new PageSizeAnnotationFacetFactory(0);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
-        private class Customer {
-            [PageSize(7)]
-// ReSharper disable once UnusedMember.Local
-            public IQueryable<Customer> SomeAction() {
-                return null;
-            }
-        }
-
-        private class Customer1 {
-// ReSharper disable once UnusedMember.Local
-            public IQueryable<Customer1> SomeAction() {
-                return null;
-            }
-        }
-
         [TestMethod]
         public void TestDefaultPageSizePickedUp() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer1), "SomeAction");
+            MethodInfo actionMethod = FindMethod(typeof(Customer1), "SomeAction");
             var identifier = new IdentifierImpl("Customer1", "SomeAction");
             var actionPeer = ImmutableSpecFactory.CreateActionSpecImmutable(identifier, null, null);
             metamodel = new FallbackFacetFactory(0).Process(Reflector, actionMethod, MethodRemover, actionPeer, metamodel);
-            IFacet facet = actionPeer.GetFacet(typeof (IPageSizeFacet));
+            IFacet facet = actionPeer.GetFacet(typeof(IPageSizeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PageSizeFacetDefault);
             var pageSizeFacet = (IPageSizeFacet) facet;
             Assert.AreEqual(20, pageSizeFacet.Value);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
@@ -96,17 +64,55 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestPageSizeAnnotationPickedUp() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof (Customer), "SomeAction");
+            MethodInfo actionMethod = FindMethod(typeof(Customer), "SomeAction");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IPageSizeFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPageSizeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PageSizeFacetAnnotation);
             var pageSizeFacet = (IPageSizeFacet) facet;
             Assert.AreEqual(7, pageSizeFacet.Value);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
-
         }
+
+        #region Nested type: Customer
+
+        private class Customer {
+            [PageSize(7)]
+// ReSharper disable once UnusedMember.Local
+            public IQueryable<Customer> SomeAction() {
+                return null;
+            }
+        }
+
+        #endregion
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+// ReSharper disable once UnusedMember.Local
+            public IQueryable<Customer1> SomeAction() {
+                return null;
+            }
+        }
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new PageSizeAnnotationFacetFactory(0);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

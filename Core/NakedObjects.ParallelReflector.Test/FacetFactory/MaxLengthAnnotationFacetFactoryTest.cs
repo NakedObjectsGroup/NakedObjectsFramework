@@ -24,7 +24,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private MaxLengthAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IMaxLengthFacet)}; }
+            get { return new[] {typeof(IMaxLengthFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -57,7 +57,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer2 {
 // ReSharper disable UnusedParameter.Local
-            public void SomeAction([MaxLength(20)] string foo) {}
+            public void SomeAction([MaxLength(20)] string foo) { }
         }
 
         private class Customer4 {
@@ -68,7 +68,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         private class Customer5 {
-            public void SomeAction([StringLength(20)] string foo) {}
+            public void SomeAction([StringLength(20)] string foo) { }
         }
 
         private class Customer7 {
@@ -79,37 +79,35 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         private class Customer8 {
-            public void SomeAction([MaxLength(20)] string foo) {}
+            public void SomeAction([MaxLength(20)] string foo) { }
         }
 
         [TestMethod]
         public void TestMaxLengthAnnotationPickedUpOnActionParameter() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof (Customer8), "SomeAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof(Customer8), "SomeAction", new[] {typeof(string)});
             metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IMaxLengthFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMaxLengthFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaxLengthFacetAnnotation);
             var maxLengthFacetAnnotation = (MaxLengthFacetAnnotation) facet;
             Assert.AreEqual(20, maxLengthFacetAnnotation.Value);
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestMaxLengthAnnotationPickedUpOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer7), "FirstName");
+            PropertyInfo property = FindProperty(typeof(Customer7), "FirstName");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IMaxLengthFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMaxLengthFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaxLengthFacetAnnotation);
             var maxLengthFacetAnnotation = (MaxLengthFacetAnnotation) facet;
             Assert.AreEqual(30, maxLengthFacetAnnotation.Value);
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
@@ -126,60 +124,56 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestNofMaxLengthAnnotationPickedUpOnActionParameter() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
             metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IMaxLengthFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMaxLengthFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaxLengthFacetAnnotation);
             var maxLengthFacetAnnotation = (MaxLengthFacetAnnotation) facet;
             Assert.AreEqual(20, maxLengthFacetAnnotation.Value);
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestNofMaxLengthAnnotationPickedUpOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
+            PropertyInfo property = FindProperty(typeof(Customer1), "FirstName");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IMaxLengthFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMaxLengthFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaxLengthFacetAnnotation);
             var maxLengthFacetAnnotation = (MaxLengthFacetAnnotation) facet;
             Assert.AreEqual(30, maxLengthFacetAnnotation.Value);
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestStringLengthAnnotationPickedUpOnActionParameter() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof (Customer5), "SomeAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof(Customer5), "SomeAction", new[] {typeof(string)});
             metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IMaxLengthFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMaxLengthFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaxLengthFacetAnnotation);
             var maxLengthFacetAnnotation = (MaxLengthFacetAnnotation) facet;
             Assert.AreEqual(20, maxLengthFacetAnnotation.Value);
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestStringLengthAnnotationPickedUpOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer4), "FirstName");
+            PropertyInfo property = FindProperty(typeof(Customer4), "FirstName");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IMaxLengthFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMaxLengthFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaxLengthFacetAnnotation);
             var maxLengthFacetAnnotation = (MaxLengthFacetAnnotation) facet;
             Assert.AreEqual(30, maxLengthFacetAnnotation.Value);
             Assert.IsNotNull(metamodel);
-
         }
     }
 

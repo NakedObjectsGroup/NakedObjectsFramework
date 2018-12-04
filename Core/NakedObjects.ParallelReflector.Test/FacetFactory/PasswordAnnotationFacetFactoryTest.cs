@@ -24,7 +24,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private PasswordAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IPasswordFacet)}; }
+            get { return new[] {typeof(IPasswordFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -57,7 +57,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer2 {
 // ReSharper disable once UnusedParameter.Local
-            public void SomeAction([DataType(DataType.Password)] string foo) {}
+            public void SomeAction([DataType(DataType.Password)] string foo) { }
         }
 
         private class Customer3 {
@@ -69,7 +69,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer4 {
 // ReSharper disable once UnusedParameter.Local
-            public void SomeAction([DataType(DataType.PhoneNumber)] string foo) {}
+            public void SomeAction([DataType(DataType.PhoneNumber)] string foo) { }
         }
 
         [TestMethod]
@@ -86,50 +86,46 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestPasswordAnnotationNotPickedUpOnActionParameter() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(string)});
             metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IPasswordFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPasswordFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestPasswordAnnotationNotPickedUpOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer3), "FirstName");
+            PropertyInfo property = FindProperty(typeof(Customer3), "FirstName");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IPasswordFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPasswordFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestPasswordAnnotationPickedUpOnActionParameter() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
             metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IPasswordFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPasswordFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PasswordFacet);
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestPasswordAnnotationPickedUpOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
+            PropertyInfo property = FindProperty(typeof(Customer1), "FirstName");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IPasswordFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPasswordFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PasswordFacet);
             Assert.IsNotNull(metamodel);
-
         }
     }
 

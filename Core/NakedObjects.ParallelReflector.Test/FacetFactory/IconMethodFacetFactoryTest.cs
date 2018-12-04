@@ -26,7 +26,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private IconMethodFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IIconFacet)}; }
+            get { return new[] {typeof(IIconFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -39,40 +39,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             ISession session = new Mock<ISession>().Object;
             INakedObjectManager manager = new Mock<INakedObjectManager>().Object;
             return new NakedObjectAdapter(Metamodel, session, persistor, lifecycleManager, manager, obj, null);
-        }
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new IconMethodFacetFactory(0);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
-        private class Customer {
-// ReSharper disable once UnusedMember.Local
-            public string IconName() {
-                return "TestName";
-            }
-        }
-
-        [IconName("AttributeName")]
-        private class Customer1 {}
-
-        [IconName("AttributeName")]
-        private class Customer2 {
-// ReSharper disable once UnusedMember.Local
-            public string IconName() {
-                return "TestName";
-            }
         }
 
         [TestMethod]
@@ -89,7 +55,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestIconNameFromAttribute() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, typeof (Customer1), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IIconFacet>();
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetAnnotation);
@@ -97,14 +63,13 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             INakedObjectAdapter no = AdapterFor(new Customer1());
             Assert.AreEqual("AttributeName", facet.GetIconName(no));
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestIconNameFromMethod() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IIconFacet>();
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetViaMethod);
@@ -112,28 +77,26 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             INakedObjectAdapter no = AdapterFor(new Customer());
             Assert.AreEqual("TestName", facet.GetIconName(no));
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestIconNameMethodPickedUpOnClassAndMethodRemoved() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo iconNameMethod = FindMethod(typeof (Customer), "IconName");
-            metamodel = facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification, metamodel);
+            MethodInfo iconNameMethod = FindMethod(typeof(Customer), "IconName");
+            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IIconFacet>();
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetViaMethod);
             AssertMethodRemoved(iconNameMethod);
             Assert.IsNotNull(metamodel);
-
         }
 
         [TestMethod]
         public void TestIconNameWithFallbackAttribute() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, typeof (Customer2), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, typeof(Customer2), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IIconFacet>();
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetViaMethod);
@@ -141,8 +104,53 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             INakedObjectAdapter no = AdapterFor(new Customer2());
             Assert.AreEqual("TestName", facet.GetIconName(no));
             Assert.IsNotNull(metamodel);
-
         }
+
+        #region Nested type: Customer
+
+        private class Customer {
+// ReSharper disable once UnusedMember.Local
+            public string IconName() {
+                return "TestName";
+            }
+        }
+
+        #endregion
+
+        #region Nested type: Customer1
+
+        [IconName("AttributeName")]
+        private class Customer1 { }
+
+        #endregion
+
+        #region Nested type: Customer2
+
+        [IconName("AttributeName")]
+        private class Customer2 {
+// ReSharper disable once UnusedMember.Local
+            public string IconName() {
+                return "TestName";
+            }
+        }
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new IconMethodFacetFactory(0);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.
