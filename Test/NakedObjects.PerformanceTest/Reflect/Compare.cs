@@ -376,6 +376,14 @@ namespace NakedObjects.SystemTest.Reflect {
             }
         }
 
+        public static void Compare(IMenuImmutable[] menus1, IMenuImmutable[] menus2) {
+            Assert.AreEqual(menus1.Length, menus2.Length);
+
+            foreach (var a in menus1.Zip(menus2, (s1, s2) => new { s1, s2 })) {
+                Compare(a.s1, a.s2);
+            }
+        }
+
         public static void Compare(string s1, string s2, string parent) {
             if (s1 == null && s2 == null) {
                 return;

@@ -205,6 +205,7 @@ namespace NakedObjects.SystemTest.Reflect {
 
             var cache = container.Resolve<ISpecificationCache>();
             serialAwSpecs = cache.AllSpecifications();
+            serialAwMenus = reflector.Metamodel.MainMenus;
 
             //string[] names = reflector.AllObjectSpecImmutables.Select(i => i.FullName).ToArray();
 
@@ -450,6 +451,10 @@ namespace NakedObjects.SystemTest.Reflect {
         private ITypeSpecImmutable[] serialAwSpecs;
         private ITypeSpecImmutable[] parallelDspSpecs;
         private ITypeSpecImmutable[] serialDspSpecs;
+        private IMenuImmutable[] parallelAwMenus;
+        private IMenuImmutable[] serialAwMenus;
+        private IMenuImmutable[] parallelDspMenus;
+        private IMenuImmutable[] serialDspMenus;
 
         [TestMethod]
         public void ReflectAdventureworksParallelTest() {
@@ -480,6 +485,8 @@ namespace NakedObjects.SystemTest.Reflect {
 
             var cache = container.Resolve<ISpecificationCache>();
             parallelAwSpecs = cache.AllSpecifications();
+            var metamodel = container.Resolve<IMetamodel>();
+            parallelAwMenus = metamodel.MainMenus;
             return interval;
 
             //var names = File.ReadAllLines(awFile);
@@ -507,6 +514,7 @@ namespace NakedObjects.SystemTest.Reflect {
             var oldTime = ReflectAdventureworksOld().TotalMilliseconds;
             var newTime = ReflectAdventureworksParallel().TotalMilliseconds;
             CompareFunctions.Compare(parallelAwSpecs, serialAwSpecs);
+            CompareFunctions.Compare(parallelAwMenus, serialAwMenus);
 
             WriteResult(newTime, oldTime, 32);
         }
@@ -516,6 +524,7 @@ namespace NakedObjects.SystemTest.Reflect {
             var oldTime = ReflectDSPOld().TotalMilliseconds;
             var newTime = ReflectDSPParallel().TotalMilliseconds;
             CompareFunctions.Compare(parallelDspSpecs, serialDspSpecs);
+            CompareFunctions.Compare(parallelDspMenus, serialDspMenus);
 
             WriteResult(newTime, oldTime, 40);
         }
@@ -575,6 +584,7 @@ namespace NakedObjects.SystemTest.Reflect {
 
             var cache = container.Resolve<ISpecificationCache>();
             serialDspSpecs = cache.AllSpecifications();
+            serialDspMenus = reflector.Metamodel.MainMenus;
             return interval;
         }
 
@@ -628,6 +638,8 @@ namespace NakedObjects.SystemTest.Reflect {
 
             var cache = container.Resolve<ISpecificationCache>();
             parallelDspSpecs = cache.AllSpecifications();
+            var metamodel = container.Resolve<IMetamodel>();
+            parallelDspMenus = metamodel.MainMenus;
             return interval;
         }
 
