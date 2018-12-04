@@ -29,6 +29,7 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Menu;
 using NakedObjects.Meta;
 using NakedObjects.Meta.Component;
+using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Meta.Utils;
 using NakedObjects.Reflect;
 using NakedObjects.Reflect.Component;
@@ -46,12 +47,14 @@ namespace NakedObjects.SystemTest.Reflect {
     [TestClass]
     public class ReflectorTest {
         protected IUnityContainer GetContainer() {
+            ImmutableSpecFactory.ClearCache();
             var c = new UnityContainer();
             RegisterTypes(c);
             return c;
         }
 
         protected IUnityContainer GetParallelContainer() {
+            ImmutableSpecFactory.ClearCache();
             var c = new UnityContainer();
             RegisterParallelTypes(c);
             return c;
@@ -578,6 +581,7 @@ namespace NakedObjects.SystemTest.Reflect {
         [TestMethod]
         public void ReflectDSPParallelTest() {
             var interval = ReflectDSPParallel();
+            Console.WriteLine("Expect 132894.8429");
             Console.WriteLine(interval.TotalMilliseconds);
         }
 
