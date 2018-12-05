@@ -6,10 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Meta.Component;
 using NakedObjects.ParallelReflect.Component;
@@ -41,37 +44,53 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestMethodsMarkedIgnoredAreRemoved() {
-            facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification);
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            metamodel = facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification, metamodel);
             AssertRemovedCalled(2);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestNakedObjectsTypeReflectOverAll() {
-            facetFactory.Process(Reflector, typeof(Customer2), MethodRemover, Specification);
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            metamodel = facetFactory.Process(Reflector, typeof(Customer2), MethodRemover, Specification, metamodel);
             AssertRemovedCalled(0);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod, Ignore] //Pending re-instatement of NakedObjectsType & Include attributes (PM 7.2)
         public void TestNakedObjectsTypeReflectOverTypeOnly() {
-            facetFactory.Process(Reflector, typeof(Customer3), MethodRemover, Specification);
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            metamodel = facetFactory.Process(Reflector, typeof(Customer3), MethodRemover, Specification, metamodel);
             AssertRemovedCalled(7); //That's 3 from the class, and 4 inherited from objec (e.g. ToString())
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod, Ignore] //Pending re-instatement of NakedObjectsType & Include attributes (PM 7.2)
         public void TestNakedObjectsTypeReflectOverNone() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             try {
-                facetFactory.Process(Reflector, typeof(Customer4), MethodRemover, Specification);
+                metamodel = facetFactory.Process(Reflector, typeof(Customer4), MethodRemover, Specification, metamodel);
                 Assert.Fail("Shouldn't get to here!");
             }
             catch (Exception e) {
                 Assert.AreEqual("Attempting to introspect a class that has been marked with NakedObjectsType with ReflectOver.None", e.Message);
             }
+
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod, Ignore] //Pending re-instatement of NakedObjectsType & Include attributes (PM 7.2)
         public void TestNakedObjectsTypeReflectOverExplicitlyIncludedMembersOnly() {
-            facetFactory.Process(Reflector, typeof(Customer5), MethodRemover, Specification);
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            metamodel = facetFactory.Process(Reflector, typeof(Customer5), MethodRemover, Specification, metamodel);
             AssertRemovedCalled(6); //That's 2 from the class, and 4 inherited from objec (e.g. ToString())
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]

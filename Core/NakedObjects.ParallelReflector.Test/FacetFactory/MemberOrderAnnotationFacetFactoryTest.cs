@@ -7,11 +7,14 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.ParallelReflect.FacetFactory;
 
@@ -82,38 +85,47 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestMemberOrderAnnotationPickedUpOnAction() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             MethodInfo method = FindMethod(typeof(Customer2), "SomeAction");
-            facetFactory.Process(Reflector, method, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IMemberOrderFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MemberOrderFacet);
             var memberOrderFacetAnnotation = (MemberOrderFacet) facet;
             Assert.AreEqual("3", memberOrderFacetAnnotation.Sequence);
             AssertNoMethodsRemoved();
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestMemberOrderAnnotationPickedUpOnCollection() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             PropertyInfo property = FindProperty(typeof(Customer1), "Orders");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IMemberOrderFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MemberOrderFacet);
             var memberOrderFacetAnnotation = (MemberOrderFacet) facet;
             Assert.AreEqual("2", memberOrderFacetAnnotation.Sequence);
             AssertNoMethodsRemoved();
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestMemberOrderAnnotationPickedUpOnProperty() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             PropertyInfo property = FindProperty(typeof(Customer), "FirstName");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IMemberOrderFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MemberOrderFacet);
             var memberOrderFacetAnnotation = (MemberOrderFacet) facet;
             Assert.AreEqual("1", memberOrderFacetAnnotation.Sequence);
             AssertNoMethodsRemoved();
+            Assert.IsNotNull(metamodel);
         }
     }
 

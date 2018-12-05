@@ -50,7 +50,7 @@ namespace NakedObjects.Meta.SpecImmutable {
             Type = introspector.SpecificationType;
         }
 
-        public ImmutableDictionary<string, ITypeSpecBuilder> Introspect(IFacetDecoratorSet decorator, IIntrospector introspector, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public IImmutableDictionary<string, ITypeSpecBuilder> Introspect(IFacetDecoratorSet decorator, IIntrospector introspector, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             metamodel = introspector.IntrospectType(Type, this, metamodel);
             identifier = introspector.Identifier;
             FullName = introspector.FullName;

@@ -20,7 +20,7 @@ namespace NakedObjects.Architecture.SpecImmutable {
         /// </summary>
         void Introspect(IFacetDecoratorSet decorator, IIntrospector introspector);
 
-        ImmutableDictionary<string, ITypeSpecBuilder> Introspect(IFacetDecoratorSet decorator, IIntrospector introspector, ImmutableDictionary<string, ITypeSpecBuilder> metamodel);
+        IImmutableDictionary<string, ITypeSpecBuilder> Introspect(IFacetDecoratorSet decorator, IIntrospector introspector, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
 
 
         void AddSubclass(ITypeSpecImmutable subclass);

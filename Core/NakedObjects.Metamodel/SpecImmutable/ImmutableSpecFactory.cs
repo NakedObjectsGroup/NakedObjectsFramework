@@ -40,7 +40,7 @@ namespace NakedObjects.Meta.SpecImmutable {
             return new OneToOneAssociationSpecImmutable(identifier, ownerSpec, returnSpec);
         }
 
-        public static IObjectSpecBuilder CreateObjectSpecImmutable(Type type, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public static IObjectSpecBuilder CreateObjectSpecImmutable(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             //if (specCache.ContainsKey(type)) {
             //    return specCache[type] as IObjectSpecBuilder;
             //}
@@ -56,7 +56,7 @@ namespace NakedObjects.Meta.SpecImmutable {
             //return new ObjectSpecImmutable(type);
         }
 
-        public static IServiceSpecBuilder CreateServiceSpecImmutable(Type type, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public static IServiceSpecBuilder CreateServiceSpecImmutable(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             //if (specCache.ContainsKey(type)) {
             //    return specCache[type] as IServiceSpecBuilder;
             //}
@@ -70,6 +70,12 @@ namespace NakedObjects.Meta.SpecImmutable {
             }
 
             //return new ServiceSpecImmutable(type);
+        }
+
+        public static void ClearCache() {
+            lock (specCache) {
+               specCache.Clear();
+            }
         }
     }
 }

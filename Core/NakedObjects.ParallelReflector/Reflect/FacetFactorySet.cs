@@ -126,7 +126,7 @@ namespace NakedObjects.ParallelReflect {
         #endregion
 
 
-        public ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (type.IsInterface) {
                 foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(FeatureType.Interfaces)) {
                     metamodel = facetFactory.Process(reflector, type, methodRemover, specification, metamodel);
@@ -141,7 +141,7 @@ namespace NakedObjects.ParallelReflect {
             return metamodel;
         }
 
-        public ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(featureType)) {
                 metamodel = facetFactory.Process(reflector, method, methodRemover, specification, metamodel);
             }
@@ -149,7 +149,7 @@ namespace NakedObjects.ParallelReflect {
             return metamodel;
         }
 
-        public ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(featureType)) {
                 metamodel = facetFactory.Process(reflector, property, methodRemover, specification, metamodel);
             }
@@ -157,7 +157,7 @@ namespace NakedObjects.ParallelReflect {
             return metamodel;
         }
 
-        public ImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(FeatureType.ActionParameters)) {
                 metamodel = facetFactory.ProcessParams(reflector, method, paramNum, specification, metamodel);
             }

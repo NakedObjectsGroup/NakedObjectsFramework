@@ -47,7 +47,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
         #region IMethodIdentifyingFacetFactory Members
 
-        public override ImmutableDictionary<String, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action, ImmutableDictionary<String, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             string capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
 
             Type type = actionMethod.DeclaringType;
@@ -104,7 +104,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        public override ImmutableDictionary<String, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, ImmutableDictionary<String, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             var facets = new List<IFacet>();
 
@@ -232,7 +232,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             }
         }
 
-        private ImmutableDictionary<String, ITypeSpecBuilder> FindAndRemoveParametersChoicesMethod(IReflector reflector, IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, string[] paramNames, IActionParameterSpecImmutable[] parameters, ImmutableDictionary<String, ITypeSpecBuilder> metamodel) {
+        private IImmutableDictionary<string, ITypeSpecBuilder> FindAndRemoveParametersChoicesMethod(IReflector reflector, IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, string[] paramNames, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             for (int i = 0; i < paramTypes.Length; i++) {
                 Type paramType = paramTypes[i];
                 string paramName = paramNames[i];

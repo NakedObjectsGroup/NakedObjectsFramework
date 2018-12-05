@@ -24,7 +24,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         public RemoveIgnoredMethodsFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ObjectsAndInterfaces) { }
 
-        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder spec, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             RemoveExplicitlyIgnoredMembers(type, methodRemover);
             return metamodel;
         }

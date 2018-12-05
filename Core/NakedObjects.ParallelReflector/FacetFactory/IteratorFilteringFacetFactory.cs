@@ -39,7 +39,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             get { return FixedPrefixes; }
         }
 
-        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (typeof (IEnumerable).IsAssignableFrom(type) && !FasterTypeUtils.IsSystem(type)) {
                 MethodInfo method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.GetEnumeratorMethod, null, Type.EmptyTypes);
                 if (method != null) {

@@ -5,18 +5,24 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
+using NakedObjects.ParallelReflect.Component;
 
 namespace NakedObjects.ParallelReflect.Test {
     [TestClass]
     public class ReflectorCollectionTest : AbstractReflectorTest {
-        protected override IObjectSpecImmutable LoadSpecification(IReflector reflector) {
-            return reflector.LoadSpecification<IObjectSpecImmutable>(typeof(ArrayList));
+        protected override Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>> LoadSpecification(ParallelReflector reflector) {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            metamodel = reflector.LoadSpecification(typeof(ArrayList), metamodel).Item2;
+            return reflector.IntrospectSpecification(typeof(ArrayList), metamodel);
         }
 
         [TestMethod]

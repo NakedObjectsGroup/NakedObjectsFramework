@@ -17,7 +17,7 @@ namespace NakedObjects.ParallelReflect.TypeFacetFactory {
     public sealed class ArrayValueTypeFacetFactory<T> : ValueUsingValueSemanticsProviderFacetFactory {
         public ArrayValueTypeFacetFactory(int numericOrder) : base(numericOrder) {}
 
-        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (ArrayValueSemanticsProvider<T>.IsAdaptedType(type)) {
                 var result = reflector.LoadSpecification(ArrayValueSemanticsProvider<T>.AdaptedType, metamodel);
                 metamodel = result.Item2;

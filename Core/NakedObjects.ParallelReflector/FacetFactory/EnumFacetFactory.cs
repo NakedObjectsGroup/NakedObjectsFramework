@@ -26,7 +26,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         public EnumFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.PropertiesAndActionParameters) { }
 
-        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var attribute = property.GetCustomAttribute<EnumDataTypeAttribute>();
 
             AddEnumFacet(attribute, specification, property.PropertyType);
@@ -51,7 +51,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             }
         }
 
-        public override ImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             var attribute = parameter.GetCustomAttribute<EnumDataTypeAttribute>();
             AddEnumFacet(attribute, holder, parameter.ParameterType);

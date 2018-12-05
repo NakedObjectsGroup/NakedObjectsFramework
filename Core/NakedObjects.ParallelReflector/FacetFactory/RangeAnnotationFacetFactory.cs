@@ -31,13 +31,13 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             FacetUtils.AddFacet(Create(attribute, isDate, specification));
         }
 
-        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             bool isDate = property.PropertyType.IsAssignableFrom(typeof(DateTime));
             Process(property, isDate, specification);
             return metamodel;
         }
 
-        public override ImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             bool isDate = parameter.ParameterType.IsAssignableFrom(typeof(DateTime));
             var range = parameter.GetCustomAttribute<RangeAttribute>();

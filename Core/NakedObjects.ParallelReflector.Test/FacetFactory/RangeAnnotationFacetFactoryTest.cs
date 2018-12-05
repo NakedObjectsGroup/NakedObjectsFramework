@@ -6,12 +6,15 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.ParallelReflect.FacetFactory;
 
@@ -40,26 +43,32 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestRangeAnnotationPickedUpOnActionParameter() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(int)});
-            facetFactory.ProcessParams(Reflector, method, 0, Specification);
+            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IRangeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is RangeFacet);
             var rangeFacetAnnotation = (RangeFacet) facet;
             Assert.AreEqual(1, rangeFacetAnnotation.Min);
             Assert.AreEqual(10, rangeFacetAnnotation.Max);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestRangeAnnotationPickedUpOnProperty() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             PropertyInfo property = FindProperty(typeof(Customer1), "Prop");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IRangeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is RangeFacet);
             var rangeFacetAnnotation = (RangeFacet) facet;
             Assert.AreEqual(1, rangeFacetAnnotation.Min);
             Assert.AreEqual(10, rangeFacetAnnotation.Max);
+            Assert.IsNotNull(metamodel);
         }
 
         #region Nested type: Customer1

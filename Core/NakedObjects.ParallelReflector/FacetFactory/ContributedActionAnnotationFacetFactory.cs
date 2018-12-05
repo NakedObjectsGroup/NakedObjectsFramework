@@ -50,7 +50,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                    CollectionUtils.IsCollectionButNotArray(type);
         }
 
-        private ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo member, ISpecification holder, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo member, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var allParams = member.GetParameters();
             var paramsWithAttribute = allParams.Where(p => p.GetCustomAttribute<ContributedActionAttribute>() != null).ToArray();
             if (!paramsWithAttribute.Any()) return metamodel; //Nothing to do
@@ -89,7 +89,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private static ImmutableDictionary<string, ITypeSpecBuilder> AddCollectionContributedAction(IReflector reflector, MethodInfo member, Type parameterType, ParameterInfo p, ContributedActionFacet facet, ContributedActionAttribute attribute, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private static IImmutableDictionary<string, ITypeSpecBuilder> AddCollectionContributedAction(IReflector reflector, MethodInfo member, Type parameterType, ParameterInfo p, ContributedActionFacet facet, ContributedActionAttribute attribute, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (!CollectionUtils.IsGenericQueryable(parameterType)) { 
             //if (!type.IsQueryable) {
                 Log.WarnFormat("ContributedAction attribute added to a collection parameter type other than IQueryable: {0}", member.Name);
@@ -114,7 +114,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private static ImmutableDictionary<string, ITypeSpecBuilder> AddLocalCollectionContributedAction(IReflector reflector, ParameterInfo p, ContributedActionFacet facet, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private static IImmutableDictionary<string, ITypeSpecBuilder> AddLocalCollectionContributedAction(IReflector reflector, ParameterInfo p, ContributedActionFacet facet, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Type elementType = p.ParameterType.GetGenericArguments()[0];
             var result = reflector.LoadSpecification(elementType, metamodel);
             metamodel = result.Item2;
@@ -123,7 +123,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             return Process(reflector, method, specification, metamodel);
         }
     }

@@ -6,12 +6,15 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.ParallelReflect.FacetFactory;
 
@@ -126,31 +129,42 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestRegExAnnotationIgnoredForNonStringsProperty() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             PropertyInfo property = FindProperty(typeof(Customer3), "NumberOfOrders");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             Assert.IsNull(Specification.GetFacet(typeof(IRegExFacet)));
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestRegExAnnotationIgnoredForPrimitiveOnActionParameter() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             MethodInfo method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(int)});
-            facetFactory.ProcessParams(Reflector, method, 0, Specification);
+            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
             Assert.IsNull(Specification.GetFacet(typeof(IRegExFacet)));
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestRegExAnnotationMessageNullWhenNotSpecified() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             PropertyInfo property = FindProperty(typeof(Customer5), "FirstName");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IRegExFacet));
             var regExFacet = (RegExFacet) facet;
             Assert.AreEqual(null, regExFacet.FailureMessage);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestRegExAnnotationPickedUpOnActionParameter() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
-            facetFactory.ProcessParams(Reflector, method, 0, Specification);
+            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IRegExFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is RegExFacet);
@@ -158,11 +172,14 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             Assert.AreEqual("^A.*", regExFacet.ValidationPattern);
             Assert.AreEqual("Parameter message", regExFacet.FailureMessage);
             Assert.AreEqual(false, regExFacet.IsCaseSensitive);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestRegExAnnotationPickedUpOnClass() {
-            facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification);
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IRegExFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is RegExFacet);
@@ -170,12 +187,15 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             Assert.AreEqual("^A.*", regExFacet.ValidationPattern);
             Assert.AreEqual("Class message", regExFacet.FailureMessage);
             Assert.AreEqual(false, regExFacet.IsCaseSensitive);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestRegExAnnotationPickedUpOnProperty() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             PropertyInfo property = FindProperty(typeof(Customer1), "FirstName");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IRegExFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is RegExFacet);
@@ -183,35 +203,47 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             Assert.AreEqual("^A.*", regExFacet.ValidationPattern);
             Assert.AreEqual("Property message", regExFacet.FailureMessage);
             Assert.AreEqual(false, regExFacet.IsCaseSensitive);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestRegularExpressionAnnotationIgnoredForNonStringsProperty() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             PropertyInfo property = FindProperty(typeof(Customer9), "NumberOfOrders");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             Assert.IsNull(Specification.GetFacet(typeof(IRegExFacet)));
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestRegularExpressionAnnotationIgnoredForPrimitiveOnActionParameter() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             MethodInfo method = FindMethod(typeof(Customer10), "SomeAction", new[] {typeof(int)});
-            facetFactory.ProcessParams(Reflector, method, 0, Specification);
+            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
             Assert.IsNull(Specification.GetFacet(typeof(IRegExFacet)));
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestRegularExpressionAnnotationMessageNullWhenNotSpecified() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             PropertyInfo property = FindProperty(typeof(Customer11), "FirstName");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IRegExFacet));
             var regExFacet = (RegExFacet) facet;
             Assert.AreEqual(null, regExFacet.FailureMessage);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestRegularExpressionAnnotationPickedUpOnActionParameter() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             MethodInfo method = FindMethod(typeof(Customer8), "SomeAction", new[] {typeof(string)});
-            facetFactory.ProcessParams(Reflector, method, 0, Specification);
+            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IRegExFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is RegExFacet);
@@ -219,12 +251,15 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             Assert.AreEqual("^A.*", regExFacet.ValidationPattern);
             Assert.AreEqual("Parameter message", regExFacet.FailureMessage);
             Assert.AreEqual(true, regExFacet.IsCaseSensitive);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestRegularExpressionAnnotationPickedUpOnProperty() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             PropertyInfo property = FindProperty(typeof(Customer7), "FirstName");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IRegExFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is RegExFacet);
@@ -232,6 +267,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             Assert.AreEqual("^A.*", regExFacet.ValidationPattern);
             Assert.AreEqual("Property message", regExFacet.FailureMessage);
             Assert.AreEqual(true, regExFacet.IsCaseSensitive);
+            Assert.IsNotNull(metamodel);
         }
     }
 

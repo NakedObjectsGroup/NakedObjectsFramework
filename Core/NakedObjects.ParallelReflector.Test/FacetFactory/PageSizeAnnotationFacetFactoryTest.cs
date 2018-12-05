@@ -6,12 +6,15 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SpecImmutable;
@@ -32,16 +35,19 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestDefaultPageSizePickedUp() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             MethodInfo actionMethod = FindMethod(typeof(Customer1), "SomeAction");
             var identifier = new IdentifierImpl("Customer1", "SomeAction");
             var actionPeer = ImmutableSpecFactory.CreateActionSpecImmutable(identifier, null, null);
-            new FallbackFacetFactory(0).Process(Reflector, actionMethod, MethodRemover, actionPeer);
+            metamodel = new FallbackFacetFactory(0).Process(Reflector, actionMethod, MethodRemover, actionPeer, metamodel);
             IFacet facet = actionPeer.GetFacet(typeof(IPageSizeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PageSizeFacetDefault);
             var pageSizeFacet = (IPageSizeFacet) facet;
             Assert.AreEqual(20, pageSizeFacet.Value);
             AssertNoMethodsRemoved();
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
@@ -56,14 +62,17 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestPageSizeAnnotationPickedUp() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             MethodInfo actionMethod = FindMethod(typeof(Customer), "SomeAction");
-            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IPageSizeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PageSizeFacetAnnotation);
             var pageSizeFacet = (IPageSizeFacet) facet;
             Assert.AreEqual(7, pageSizeFacet.Value);
             AssertNoMethodsRemoved();
+            Assert.IsNotNull(metamodel);
         }
 
         #region Nested type: Customer

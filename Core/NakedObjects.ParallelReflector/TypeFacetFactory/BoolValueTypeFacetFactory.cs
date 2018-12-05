@@ -17,7 +17,7 @@ namespace NakedObjects.ParallelReflect.TypeFacetFactory {
     public sealed class BooleanValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public BooleanValueTypeFacetFactory(int numericOrder) : base(numericOrder) {}
 
-        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (BooleanValueSemanticsProvider.IsAdaptedType(type)) {
                 var result = reflector.LoadSpecification(BooleanValueSemanticsProvider.AdaptedType, metamodel);
 

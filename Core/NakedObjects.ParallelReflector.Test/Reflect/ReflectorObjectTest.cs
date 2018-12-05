@@ -6,10 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.ParallelReflect.Component;
 
 namespace NakedObjects.ParallelReflect.Test {
     public class TestDomainObject {
@@ -18,8 +20,11 @@ namespace NakedObjects.ParallelReflect.Test {
 
     [TestClass]
     public class ReflectorObjectTest : AbstractReflectorTest {
-        protected override IObjectSpecImmutable LoadSpecification(IReflector reflector) {
-            return reflector.LoadSpecification<IObjectSpecImmutable>(typeof(TestDomainObject));
+        protected override Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>> LoadSpecification(ParallelReflector reflector) {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            metamodel = reflector.LoadSpecification(typeof(TestDomainObject), metamodel).Item2;
+            return reflector.IntrospectSpecification(typeof(TestDomainObject), metamodel);
         }
 
         [TestMethod]

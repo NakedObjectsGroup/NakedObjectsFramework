@@ -6,6 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,6 +16,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.ParallelReflect.FacetFactory;
 
@@ -103,62 +106,80 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestEnumAnnotationPickedUpOnActionParameter() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(int)});
-            facetFactory.ProcessParams(Reflector, method, 0, Specification);
+            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IEnumFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EnumFacet);
             CheckChoices(facet);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestEnumAnnotationPickedUpOnProperty() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             PropertyInfo property = FindProperty(typeof(Customer1), "City");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IEnumFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EnumFacet);
             CheckChoices(facet);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestEnumTypePickedUpOnActionParameter() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             MethodInfo method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(Cities)});
-            facetFactory.ProcessParams(Reflector, method, 0, Specification);
+            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IEnumFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EnumFacet);
             CheckChoices(facet);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestEnumTypePickedUpOnNullableActionParameter() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             MethodInfo method = FindMethod(typeof(Customer6), "SomeAction", new[] {typeof(Cities?)});
-            facetFactory.ProcessParams(Reflector, method, 0, Specification);
+            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IEnumFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EnumFacet);
             CheckChoices(facet);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestEnumTypePickedUpOnNullableProperty() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             PropertyInfo property = FindProperty(typeof(Customer5), "City");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IEnumFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EnumFacet);
             CheckChoices(facet);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestEnumTypePickedUpOnProperty() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             PropertyInfo property = FindProperty(typeof(Customer3), "City");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IEnumFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EnumFacet);
             CheckChoices(facet);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]

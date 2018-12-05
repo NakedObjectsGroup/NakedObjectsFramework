@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
@@ -14,6 +15,7 @@ using Moq;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public abstract class AbstractFacetFactoryTest {
@@ -41,6 +43,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             mockMethodRemover.Setup(remover => remover.RemoveMethod(It.IsAny<MethodInfo>()));
             mockMethodRemover.Setup(remover => remover.RemoveMethods(It.IsAny<IList<MethodInfo>>()));
+
+            mockReflector.Setup(reflector =>
+                reflector.LoadSpecification(It.IsAny<Type>(), It.IsAny<IImmutableDictionary<string, ITypeSpecBuilder>>())).Returns((Type t, IImmutableDictionary<string, ITypeSpecBuilder> m) => new Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>>(null, m));
         }
 
         public virtual void TearDown() {
@@ -58,8 +63,8 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
                 return type.GetMethod(methodName, parameterTypes);
             }
             catch (AmbiguousMatchException) {
-                Log.Warn($"Failed to find method {methodName} on type {type.FullName}");
-                return null;
+                           Log.Warn($"Failed to find method {methodName} on type {type.FullName}");
+     return null;
             }
             catch (ArgumentNullException) {
                 Log.Warn($"Failed to find method {methodName} on type {type.FullName}");

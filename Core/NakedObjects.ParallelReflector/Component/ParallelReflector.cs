@@ -79,7 +79,7 @@ namespace NakedObjects.ParallelReflect.Component {
 
         public ITypeSpecBuilder[] AllObjectSpecImmutables => initialMetamodel.AllSpecifications.Cast<ITypeSpecBuilder>().ToArray();
 
-        public Tuple<ITypeSpecBuilder, ImmutableDictionary<string, ITypeSpecBuilder>> LoadSpecification(Type type, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>> LoadSpecification(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Assert.AssertNotNull(type);
 
             var actualType = ClassStrategy.GetType(type);
@@ -88,7 +88,7 @@ namespace NakedObjects.ParallelReflect.Component {
                 return LoadPlaceholder(actualType, metamodel);
             }
 
-            return new Tuple<ITypeSpecBuilder, ImmutableDictionary<string, ITypeSpecBuilder>>(metamodel[typeKey], metamodel);
+            return new Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>>(metamodel[typeKey], metamodel);
         }
 
         public void Reflect() {
@@ -111,7 +111,7 @@ namespace NakedObjects.ParallelReflect.Component {
 
         #endregion
 
-        public Tuple<ITypeSpecBuilder, ImmutableDictionary<string, ITypeSpecBuilder>> IntrospectSpecification(Type actualType, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>> IntrospectSpecification(Type actualType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Assert.AssertNotNull(actualType);
 
             var typeKey = ClassStrategy.GetKeyForType(actualType);
@@ -120,7 +120,7 @@ namespace NakedObjects.ParallelReflect.Component {
                 return LoadSpecificationAndCache(actualType, metamodel);
             }
 
-            return new Tuple<ITypeSpecBuilder, ImmutableDictionary<string, ITypeSpecBuilder>>(metamodel[typeKey], metamodel);
+            return new Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>>(metamodel[typeKey], metamodel);
         }
 
         private Type EnsureGenericTypeIsComplete(Type type) {
@@ -140,7 +140,7 @@ namespace NakedObjects.ParallelReflect.Component {
             return types.Union(systemTypes).ToArray();
         }
 
-        private ImmutableDictionary<string, ITypeSpecBuilder> IntrospectPlaceholders(ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectPlaceholders(IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var ph = metamodel.Where(i => string.IsNullOrEmpty(i.Value.FullName)).Select(i => i.Value.Type);
             var mm = ph.AsParallel().SelectMany(type => IntrospectSpecification(type, metamodel).Item2).Distinct(new DE()).ToDictionary(kvp => kvp.Key, kvp => kvp.Value).ToImmutableDictionary();
 
@@ -258,7 +258,7 @@ namespace NakedObjects.ParallelReflect.Component {
 
 
 
-        private ITypeSpecBuilder GetPlaceholder(Type type, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private ITypeSpecBuilder GetPlaceholder(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             ITypeSpecBuilder specification = CreateSpecification(type, metamodel);
 
             if (specification == null) {
@@ -268,7 +268,7 @@ namespace NakedObjects.ParallelReflect.Component {
             return specification;
         }
 
-        private Tuple<ITypeSpecBuilder, ImmutableDictionary<string, ITypeSpecBuilder>> LoadPlaceholder(Type type, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>> LoadPlaceholder(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             ITypeSpecBuilder specification = CreateSpecification(type, metamodel);
 
             if (specification == null) {
@@ -277,14 +277,14 @@ namespace NakedObjects.ParallelReflect.Component {
 
             metamodel = metamodel.Add(ClassStrategy.GetKeyForType(type), specification);
 
-            return new Tuple<ITypeSpecBuilder, ImmutableDictionary<string, ITypeSpecBuilder>>(specification, metamodel);
+            return new Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>>(specification, metamodel);
         }
 
-        private ImmutableDictionary<string, ITypeSpecBuilder> GetPlaceholders(Type[] types) {
+        private IImmutableDictionary<string, ITypeSpecBuilder> GetPlaceholders(Type[] types) {
             return types.Select(t => ClassStrategy.GetType(t)).Where(t => t != null).Distinct(new DR(ClassStrategy)).ToDictionary(t => ClassStrategy.GetKeyForType(t), t => GetPlaceholder(t, null)).ToImmutableDictionary();
         }
 
-        private Tuple<ITypeSpecBuilder, ImmutableDictionary<string, ITypeSpecBuilder>> LoadSpecificationAndCache(Type type, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>> LoadSpecificationAndCache(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             ITypeSpecBuilder specification = metamodel[ClassStrategy.GetKeyForType(type)];
 
             if (specification == null) {
@@ -293,10 +293,10 @@ namespace NakedObjects.ParallelReflect.Component {
 
             metamodel = specification.Introspect(facetDecoratorSet, new Introspector(this), metamodel);
 
-            return new Tuple<ITypeSpecBuilder, ImmutableDictionary<string, ITypeSpecBuilder>>(specification, metamodel);
+            return new Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>>(specification, metamodel);
         }
 
-        private ITypeSpecBuilder CreateSpecification(Type type, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private ITypeSpecBuilder CreateSpecification(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             TypeUtils.GetType(type.FullName); // This should ensure type is cached
 
             return IsService(type) ? (ITypeSpecBuilder) ImmutableSpecFactory.CreateServiceSpecImmutable(type, metamodel) : ImmutableSpecFactory.CreateObjectSpecImmutable(type, metamodel);

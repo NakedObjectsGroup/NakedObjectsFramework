@@ -7,12 +7,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.ParallelReflect.FacetFactory;
 
@@ -42,40 +44,54 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestTableViewFacetNotPickedUpOnArray() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             PropertyInfo property = FindProperty(typeof(Customer2), "Orders");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNull(facet);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestTableViewFacetNotPickedUpOnArrayAction() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             MethodInfo method = FindMethod(typeof(Customer2), "OrdersAction");
-            facetFactory.Process(Reflector, method, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNull(facet);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestTableViewFacetNotPickedUpOnCollection() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             PropertyInfo property = FindProperty(typeof(Customer2), "Orders1");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNull(facet);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestTableViewFacetNotPickedUpOnCollectionAction() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             MethodInfo method = FindMethod(typeof(Customer2), "OrdersAction1");
-            facetFactory.Process(Reflector, method, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNull(facet);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestTableViewFacetPickedUpOnArray() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             PropertyInfo property = FindProperty(typeof(Customer1), "Orders");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
@@ -85,12 +101,15 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             Assert.AreEqual("col1", tableViewFacetFromAnnotation.Columns[0]);
             Assert.AreEqual("col2", tableViewFacetFromAnnotation.Columns[1]);
             AssertNoMethodsRemoved();
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestTableViewFacetPickedUpOnArrayAction() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             MethodInfo method = FindMethod(typeof(Customer1), "OrdersAction");
-            facetFactory.Process(Reflector, method, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
@@ -100,12 +119,15 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             Assert.AreEqual("col5", tableViewFacetFromAnnotation.Columns[0]);
             Assert.AreEqual("col6", tableViewFacetFromAnnotation.Columns[1]);
             AssertNoMethodsRemoved();
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestTableViewFacetPickedUpOnCollection() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             PropertyInfo property = FindProperty(typeof(Customer1), "Orders1");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
@@ -115,12 +137,15 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             Assert.AreEqual("col3", tableViewFacetFromAnnotation.Columns[0]);
             Assert.AreEqual("col4", tableViewFacetFromAnnotation.Columns[1]);
             AssertNoMethodsRemoved();
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestTableViewFacetPickedUpOnCollectionAction() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             MethodInfo method = FindMethod(typeof(Customer1), "OrdersAction1");
-            facetFactory.Process(Reflector, method, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
@@ -130,12 +155,15 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             Assert.AreEqual("col7", tableViewFacetFromAnnotation.Columns[0]);
             Assert.AreEqual("col8", tableViewFacetFromAnnotation.Columns[1]);
             AssertNoMethodsRemoved();
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestTableViewFacetPickedUpOnCollectionActionNoColumns() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             MethodInfo method = FindMethod(typeof(Customer1), "OrdersAction2");
-            facetFactory.Process(Reflector, method, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
@@ -143,27 +171,34 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             Assert.AreEqual(true, tableViewFacetFromAnnotation.Title);
             Assert.AreEqual(0, tableViewFacetFromAnnotation.Columns.Length);
             AssertNoMethodsRemoved();
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestTableViewFacetPickedUpOnQueryableAction() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             MethodInfo method = FindMethod(typeof(Customer1), "OrdersAction3");
-            facetFactory.Process(Reflector, method, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
+            Assert.IsNotNull(metamodel);
             IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
-            var tableViewFacetFromAnnotation = (TableViewFacet) facet;
+            var tableViewFacetFromAnnotation = (TableViewFacet)facet;
             Assert.AreEqual(true, tableViewFacetFromAnnotation.Title);
             Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
             Assert.AreEqual("col7", tableViewFacetFromAnnotation.Columns[0]);
             Assert.AreEqual("col8", tableViewFacetFromAnnotation.Columns[1]);
             AssertNoMethodsRemoved();
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestTableViewFacetIgnoresDuplicatesOnAction() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             MethodInfo method = FindMethod(typeof(Customer1), "OrdersAction4");
-            facetFactory.Process(Reflector, method, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
@@ -173,21 +208,26 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             Assert.AreEqual("col7", tableViewFacetFromAnnotation.Columns[0]);
             Assert.AreEqual("col8", tableViewFacetFromAnnotation.Columns[1]);
             AssertNoMethodsRemoved();
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestTableViewFacetIgnoresDuplicatesOnCollection() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             PropertyInfo property = FindProperty(typeof(Customer1), "Orders2");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
-            var tableViewFacetFromAnnotation = (TableViewFacet) facet;
+            var tableViewFacetFromAnnotation = (TableViewFacet)facet;
             Assert.AreEqual(false, tableViewFacetFromAnnotation.Title);
             Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
             Assert.AreEqual("col3", tableViewFacetFromAnnotation.Columns[0]);
             Assert.AreEqual("col4", tableViewFacetFromAnnotation.Columns[1]);
             AssertNoMethodsRemoved();
+            Assert.IsNotNull(metamodel);
+
         }
 
         #region Nested type: Customer1

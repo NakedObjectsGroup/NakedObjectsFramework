@@ -33,7 +33,7 @@ namespace NakedObjects.Architecture.Reflect {
 
         void IntrospectType(Type typeToIntrospect, ITypeSpecImmutable specification);
 
-        ImmutableDictionary<string, ITypeSpecBuilder> IntrospectType(Type typeToIntrospect, ITypeSpecImmutable specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel);
+        IImmutableDictionary<string, ITypeSpecBuilder> IntrospectType(Type typeToIntrospect, ITypeSpecImmutable specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
 
     }
 }

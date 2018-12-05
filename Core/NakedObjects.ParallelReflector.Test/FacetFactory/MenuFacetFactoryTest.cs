@@ -6,11 +6,14 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.ParallelReflect.FacetFactory;
 
@@ -39,21 +42,27 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestDefaultMenuPickedUp() {
-            facetFactory.Process(Reflector, typeof(Class1), MethodRemover, Specification);
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            metamodel = facetFactory.Process(Reflector, typeof(Class1), MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IMenuFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MenuFacetDefault);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestMethodMenuPickedUp() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             var class2Type = typeof(Class2);
-            facetFactory.Process(Reflector, class2Type, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, class2Type, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IMenuFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MenuFacetViaMethod);
             MethodInfo m1 = class2Type.GetMethod("Menu");
             AssertMethodRemoved(m1);
+            Assert.IsNotNull(metamodel);
         }
 
         #region Nested type: Class1

@@ -6,11 +6,14 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.ParallelReflect.FacetFactory;
 
@@ -39,33 +42,42 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestNoExplicitTitleOrToStringMethod() {
-            facetFactory.Process(Reflector, typeof(Customer2), MethodRemover, Specification);
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            metamodel = facetFactory.Process(Reflector, typeof(Customer2), MethodRemover, Specification, metamodel);
             Assert.IsNull(Specification.GetFacet(typeof(ITitleFacet)));
             AssertNoMethodsRemoved();
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestTitleMethodPickedUpOnClassAndMethodRemoved() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             MethodInfo titleMethod = FindMethod(typeof(Customer), "Title");
-            facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(ITitleFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TitleFacetViaTitleMethod);
             var titleFacetViaTitleMethod = (TitleFacetViaTitleMethod) facet;
             Assert.AreEqual(titleMethod, titleFacetViaTitleMethod.GetMethod());
             AssertMethodRemoved(titleMethod);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestToStringMethodPickedUpOnClassAndMethodRemoved() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             MethodInfo toStringMethod = FindMethod(typeof(Customer1), "ToString", new[] {typeof(string)});
-            facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(ITitleFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TitleFacetViaToStringMethod);
             var titleFacetViaTitleMethod = (TitleFacetViaToStringMethod) facet;
             Assert.AreEqual(toStringMethod, titleFacetViaTitleMethod.GetMethod());
             AssertMethodRemoved(toStringMethod);
+            Assert.IsNotNull(metamodel);
         }
 
         #region Nested type: Customer

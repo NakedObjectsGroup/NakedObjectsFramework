@@ -6,12 +6,15 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.ParallelReflect.FacetFactory;
 
@@ -21,7 +24,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private DataTypeAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof(IDataTypeFacet)}; }
+            get { return new[] {typeof (IDataTypeFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -40,63 +43,82 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestNoAnnotationOnProperty() {
-            PropertyInfo property = FindProperty(typeof(Test), nameof(Test.NoAnnotation));
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDataTypeFacet));
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            PropertyInfo property = FindProperty(typeof (Test), nameof(Test.NoAnnotation));
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+            IFacet facet = Specification.GetFacet(typeof (IDataTypeFacet));
             Assert.IsNull(facet);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestDataTypeAnnotationProperty() {
-            PropertyInfo property = FindProperty(typeof(Test), nameof(Test.DataTypeAnnotation));
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IDataTypeFacet facet = Specification.GetFacet(typeof(IDataTypeFacet)) as IDataTypeFacet;
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            PropertyInfo property = FindProperty(typeof (Test),nameof(Test.DataTypeAnnotation));
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+            IDataTypeFacet facet = Specification.GetFacet(typeof (IDataTypeFacet)) as IDataTypeFacet;
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DataTypeFacetAnnotation);
             Assert.IsTrue(facet.DataType() == DataType.PostalCode);
             Assert.IsTrue(facet.CustomDataType() == "");
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestCustomDataTypeAnnotationOnProperty() {
-            PropertyInfo property = FindProperty(typeof(Test), nameof(Test.CustomDataTypeAnnotation));
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            PropertyInfo property = FindProperty(typeof (Test), nameof(Test.CustomDataTypeAnnotation));
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             IDataTypeFacet facet = Specification.GetFacet(typeof(IDataTypeFacet)) as IDataTypeFacet;
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DataTypeFacetAnnotation);
             Assert.IsTrue(facet.DataType() == DataType.Custom);
             Assert.IsTrue(facet.CustomDataType() == "CustomDataType");
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestNoFacetOnActionParameter() {
-            MethodInfo method = FindMethod(typeof(Test), nameof(Test.NoAnnotationMethod), new[] {typeof(string)});
-            facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            MethodInfo method = FindMethod(typeof (Test), nameof(Test.NoAnnotationMethod), new[] {typeof (string)});
+            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
+            IFacet facet = Specification.GetFacet(typeof (IDateOnlyFacet));
             Assert.IsNull(facet);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestAnnotatedDataTypeOnActionParameter() {
-            MethodInfo method = FindMethod(typeof(Test), nameof(Test.DataTypeAnnotationMethod), new[] {typeof(string)});
-            facetFactory.ProcessParams(Reflector, method, 0, Specification);
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            MethodInfo method = FindMethod(typeof (Test), nameof(Test.DataTypeAnnotationMethod), new[] {typeof (string)});
+            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
             IDataTypeFacet facet = Specification.GetFacet(typeof(IDataTypeFacet)) as IDataTypeFacet;
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DataTypeFacetAnnotation);
             Assert.IsTrue(facet.DataType() == DataType.CreditCard);
             Assert.IsTrue(facet.CustomDataType() == "");
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestAnnotatedCustomDataTypeOnActionParameter() {
-            MethodInfo method = FindMethod(typeof(Test), nameof(Test.CustomDataTypeMethod), new[] {typeof(string)});
-            facetFactory.ProcessParams(Reflector, method, 0, Specification);
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            MethodInfo method = FindMethod(typeof (Test), nameof(Test.CustomDataTypeMethod), new[] {typeof (string)});
+            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
             IDataTypeFacet facet = Specification.GetFacet(typeof(IDataTypeFacet)) as IDataTypeFacet;
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DataTypeFacetAnnotation);
             Assert.IsTrue(facet.DataType() == DataType.Custom);
             Assert.IsTrue(facet.CustomDataType() == "CustomDataType");
+            Assert.IsNotNull(metamodel);
         }
+
 
         #region Nested type: Test
 
@@ -109,11 +131,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             [DataType("CustomDataType")]
             public string CustomDataTypeAnnotation => DateTime.Now.ToString();
 
-            public void NoAnnotationMethod(string aDate1) { }
+            public void NoAnnotationMethod(string aDate1) {}
 
-            public void DataTypeAnnotationMethod([DataType(DataType.CreditCard)] string aDate2) { }
+            public void DataTypeAnnotationMethod([DataType(DataType.CreditCard)] string aDate2) {}
 
-            public void CustomDataTypeMethod([DataType("CustomDataType")] string aDate3) { }
+            public void CustomDataTypeMethod([DataType("CustomDataType")] string aDate3) {}
         }
 
         #endregion

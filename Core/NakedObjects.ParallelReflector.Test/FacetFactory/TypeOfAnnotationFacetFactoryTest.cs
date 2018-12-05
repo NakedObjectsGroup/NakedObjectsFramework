@@ -7,11 +7,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.ParallelReflect.FacetFactory;
 
@@ -40,8 +42,10 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestTypeOfFacetInferredForActionWithArrayReturnType() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             MethodInfo actionMethod = FindMethod(typeof(Customer9), "SomeAction");
-            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             IFacet typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
             Assert.IsNotNull(typeOfFacet);
             Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromArray);
@@ -51,12 +55,15 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             Assert.IsTrue(elementTypeFacet is ElementTypeFacet);
             Assert.AreEqual(typeof(Order), elementTypeFacet.Value);
             AssertNoMethodsRemoved();
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestTypeOfFacetInferredForActionWithGenericCollectionReturnType() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             MethodInfo actionMethod = FindMethod(typeof(Customer3), "SomeAction");
-            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             IFacet typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
             Assert.IsNotNull(typeOfFacet);
             Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromGenerics);
@@ -65,12 +72,15 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             Assert.IsNotNull(elementTypeFacet);
             Assert.IsTrue(elementTypeFacet is ElementTypeFacet);
             Assert.AreEqual(typeof(Order), elementTypeFacet.Value);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestTypeOfFacetInferredForCollectionWithGenericCollectionReturnType() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             PropertyInfo property = FindProperty(typeof(Customer4), "Orders");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             IFacet typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
             Assert.IsNotNull(typeOfFacet);
             Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromGenerics);
@@ -79,12 +89,15 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             Assert.IsNotNull(elementTypeFacet);
             Assert.IsTrue(elementTypeFacet is ElementTypeFacet);
             Assert.AreEqual(typeof(Order), elementTypeFacet.Value);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestTypeOfFacetIsInferredForCollectionFromOrderArray() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             PropertyInfo property = FindProperty(typeof(Customer10), "Orders");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             IFacet typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
             Assert.IsNotNull(typeOfFacet);
             Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromArray);
@@ -93,6 +106,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             Assert.IsNotNull(elementTypeFacet);
             Assert.IsTrue(elementTypeFacet is ElementTypeFacet);
             Assert.AreEqual(typeof(Order), elementTypeFacet.Value);
+            Assert.IsNotNull(metamodel);
         }
 
         #region Nested type: Customer10

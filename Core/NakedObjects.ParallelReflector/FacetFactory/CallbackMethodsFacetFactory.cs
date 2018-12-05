@@ -41,7 +41,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             get { return FixedPrefixes; }
         }
 
-        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover remover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover remover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var facets = new List<IFacet>();
             var methods = new List<MethodInfo>();
 

@@ -28,7 +28,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             get { return FixedPrefixes; }
         }
 
-        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             MethodInfo method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.IconNameMethod, typeof(string), Type.EmptyTypes);
             var attribute = type.GetCustomAttribute<IconNameAttribute>();
             if (method != null) {

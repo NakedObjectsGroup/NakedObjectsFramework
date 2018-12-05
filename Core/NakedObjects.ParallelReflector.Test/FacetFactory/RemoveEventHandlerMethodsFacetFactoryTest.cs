@@ -6,11 +6,14 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Meta.Component;
 using NakedObjects.ParallelReflect.Component;
@@ -42,7 +45,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestActionWithNoParameters() {
-            facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification);
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
 
             AssertRemovedCalled(2);
 
@@ -53,6 +58,8 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             foreach (MethodInfo removedMethod in eventMethods) {
                 AssertMethodRemoved(removedMethod);
             }
+
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]

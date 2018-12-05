@@ -6,6 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -13,6 +15,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Meta.Facet;
 using NakedObjects.ParallelReflect.FacetFactory;
@@ -50,45 +53,57 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestIconNameFromAttribute() {
-            facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification);
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            metamodel = facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IIconFacet>();
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetAnnotation);
             Assert.AreEqual("AttributeName", facet.GetIconName());
             INakedObjectAdapter no = AdapterFor(new Customer1());
             Assert.AreEqual("AttributeName", facet.GetIconName(no));
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestIconNameFromMethod() {
-            facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification);
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IIconFacet>();
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetViaMethod);
             Assert.IsNull(facet.GetIconName());
             INakedObjectAdapter no = AdapterFor(new Customer());
             Assert.AreEqual("TestName", facet.GetIconName(no));
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestIconNameMethodPickedUpOnClassAndMethodRemoved() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             MethodInfo iconNameMethod = FindMethod(typeof(Customer), "IconName");
-            facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IIconFacet>();
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetViaMethod);
             AssertMethodRemoved(iconNameMethod);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestIconNameWithFallbackAttribute() {
-            facetFactory.Process(Reflector, typeof(Customer2), MethodRemover, Specification);
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            metamodel = facetFactory.Process(Reflector, typeof(Customer2), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IIconFacet>();
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetViaMethod);
             Assert.AreEqual("AttributeName", facet.GetIconName());
             INakedObjectAdapter no = AdapterFor(new Customer2());
             Assert.AreEqual("TestName", facet.GetIconName(no));
+            Assert.IsNotNull(metamodel);
         }
 
         #region Nested type: Customer

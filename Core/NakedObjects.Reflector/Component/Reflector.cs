@@ -109,7 +109,7 @@ namespace NakedObjects.Reflect.Component {
             InstallObjectMenus();
         }
 
-        public Tuple<ITypeSpecBuilder, ImmutableDictionary<string, ITypeSpecBuilder>> LoadSpecification(Type type, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>> LoadSpecification(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             throw new NotImplementedException();
         }
 

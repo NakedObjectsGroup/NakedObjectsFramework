@@ -6,6 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -13,6 +15,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.ParallelReflect.FacetFactory;
 
@@ -41,14 +44,16 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestPropertyDefaultAnnotationPickedUpOnActionParameter() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
             MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(int)});
-            facetFactory.ProcessParams(Reflector, method, 0, Specification);
+            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IActionDefaultsFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ActionDefaultsFacetAnnotation);
             var actionDefaultFacetAnnotation = (ActionDefaultsFacetAnnotation) facet;
             Assert.AreEqual(1, actionDefaultFacetAnnotation.GetDefault(null).Item1);
             Assert.AreEqual(TypeOfDefaultValue.Explicit, actionDefaultFacetAnnotation.GetDefault(null).Item2);
+            Assert.AreEqual(0, metamodel.Count);
         }
 
         #region Nested type: Customer2

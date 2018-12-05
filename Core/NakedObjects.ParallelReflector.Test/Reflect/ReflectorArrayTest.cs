@@ -6,19 +6,24 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
+using NakedObjects.ParallelReflect.Component;
 
 namespace NakedObjects.ParallelReflect.Test {
     public class TestPoco { }
 
     [TestClass]
     public class ReflectorArrayTest : AbstractReflectorTest {
-        protected override IObjectSpecImmutable LoadSpecification(IReflector reflector) {
-            return reflector.LoadSpecification<IObjectSpecImmutable>(typeof(TestPoco[]));
+        protected override Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>> LoadSpecification(ParallelReflector reflector) {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            metamodel = reflector.LoadSpecification(typeof(TestPoco[]), metamodel).Item2;
+            return reflector.IntrospectSpecification(typeof(TestPoco[]), metamodel);
         }
 
         [TestMethod]

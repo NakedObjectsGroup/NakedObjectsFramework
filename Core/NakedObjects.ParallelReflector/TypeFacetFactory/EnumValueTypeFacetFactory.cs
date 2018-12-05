@@ -18,7 +18,7 @@ namespace NakedObjects.ParallelReflect.TypeFacetFactory {
     public sealed class EnumValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public EnumValueTypeFacetFactory(int numericOrder) : base(numericOrder) {}
 
-        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (typeof (Enum).IsAssignableFrom(type)) {
                 Type semanticsProviderType = typeof (EnumValueSemanticsProvider<>).MakeGenericType(type);
                 var result = reflector.LoadSpecification(type, metamodel);

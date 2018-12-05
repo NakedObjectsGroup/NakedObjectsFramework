@@ -7,10 +7,13 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.ParallelReflect.FacetFactory;
 
 namespace NakedObjects.ParallelReflect.Test.FacetFactory {
@@ -38,9 +41,12 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestRequestsRemoverToRemoveIteratorMethods() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             MethodInfo enumeratorMethod = FindMethod(typeof(Customer), "GetEnumerator");
-            facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
             AssertMethodRemoved(enumeratorMethod);
+            Assert.IsNotNull(metamodel);
         }
 
         #region Setup/Teardown

@@ -6,12 +6,15 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.ParallelReflect.FacetFactory;
 
@@ -21,7 +24,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private DateOnlyFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof(IDateOnlyFacet)}; }
+            get { return new[] {typeof (IDateOnlyFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -40,114 +43,154 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestDefaultDateOnlyOnProperty() {
-            PropertyInfo property = FindProperty(typeof(Test), "ADate1");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            PropertyInfo property = FindProperty(typeof (Test), "ADate1");
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+            IFacet facet = Specification.GetFacet(typeof (IDateOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DateOnlyFacet);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestDefaultDateOnlyOnNullableProperty() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             PropertyInfo property = FindProperty(typeof(Test), "ADate6");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DateOnlyFacet);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestNoFacetOnNonDateProperty() {
-            PropertyInfo property = FindProperty(typeof(Test), "NotADate");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            PropertyInfo property = FindProperty(typeof (Test), "NotADate");
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+            IFacet facet = Specification.GetFacet(typeof (IDateOnlyFacet));
             Assert.IsNull(facet);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestAnnotatedDateOnlyOnProperty() {
-            PropertyInfo property = FindProperty(typeof(Test), "ADate2");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            PropertyInfo property = FindProperty(typeof (Test), "ADate2");
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+            IFacet facet = Specification.GetFacet(typeof (IDateOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DateOnlyFacet);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestAnnotatedDateOnlyOnNullableProperty() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             PropertyInfo property = FindProperty(typeof(Test), "ADate7");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DateOnlyFacet);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestNoFacetOnDateTimeProperty() {
-            PropertyInfo property = FindProperty(typeof(Test), "ADate3");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            PropertyInfo property = FindProperty(typeof (Test), "ADate3");
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+            IFacet facet = Specification.GetFacet(typeof (IDateOnlyFacet));
             Assert.IsNull(facet);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestNoFacetOnDateTimeNullableProperty() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             PropertyInfo property = FindProperty(typeof(Test), "ADate8");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNull(facet);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestNoFacetOnConcurrencyProperty() {
-            PropertyInfo property = FindProperty(typeof(Test), "ADate4");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            PropertyInfo property = FindProperty(typeof (Test), "ADate4");
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+            IFacet facet = Specification.GetFacet(typeof (IDateOnlyFacet));
             Assert.IsNull(facet);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestAnnotatedDateOnlyOnConcurrencyProperty() {
-            PropertyInfo property = FindProperty(typeof(Test), "ADate5");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            PropertyInfo property = FindProperty(typeof (Test), "ADate5");
+            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+            IFacet facet = Specification.GetFacet(typeof (IDateOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DateOnlyFacet);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestDefaultDateOnlyOnActionParameter() {
-            MethodInfo method = FindMethod(typeof(Test), "ADateMethod1", new[] {typeof(DateTime)});
-            facetFactory.ProcessParams(Reflector, method, 0, Specification);
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            MethodInfo method = FindMethod(typeof(Test), "ADateMethod1", new[] { typeof(DateTime) });
+            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DateOnlyFacet);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestAnnotatedDateOnlyOnActionParameter() {
-            MethodInfo method = FindMethod(typeof(Test), "ADateMethod2", new[] {typeof(DateTime)});
-            facetFactory.ProcessParams(Reflector, method, 0, Specification);
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            MethodInfo method = FindMethod(typeof(Test), "ADateMethod2", new[] { typeof(DateTime) });
+            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DateOnlyFacet);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestNoFacetOnDateTimeActionParameter() {
-            MethodInfo method = FindMethod(typeof(Test), "ADateMethod3", new[] {typeof(DateTime)});
-            facetFactory.ProcessParams(Reflector, method, 0, Specification);
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            MethodInfo method = FindMethod(typeof(Test), "ADateMethod3", new[] { typeof(DateTime) });
+            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNull(facet);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestNoFacetOnNotDateActionParameter() {
-            MethodInfo method = FindMethod(typeof(Test), "NotADateMethod", new[] {typeof(TimeSpan)});
-            facetFactory.ProcessParams(Reflector, method, 0, Specification);
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            MethodInfo method = FindMethod(typeof(Test), "NotADateMethod", new[] { typeof(TimeSpan) });
+            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNull(facet);
+            Assert.IsNotNull(metamodel);
         }
+
 
         #region Nested type: Test
 
@@ -178,13 +221,13 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             [DataType(DataType.Date)]
             public TimeSpan NotADate => new TimeSpan();
 
-            public void ADateMethod1(DateTime aDate1) { }
+            public void ADateMethod1(DateTime aDate1) {}
 
-            public void ADateMethod2([DataType(DataType.Date)] DateTime aDate2) { }
+            public void ADateMethod2([DataType(DataType.Date)] DateTime aDate2) {}
 
-            public void ADateMethod3([DataType(DataType.DateTime)] DateTime aDate3) { }
+            public void ADateMethod3([DataType(DataType.DateTime)] DateTime aDate3) {}
 
-            public void NotADateMethod(TimeSpan notADate) { }
+            public void NotADateMethod(TimeSpan notADate) {}
         }
 
         #endregion

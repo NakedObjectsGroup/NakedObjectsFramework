@@ -8,6 +8,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.SpecImmutable;
@@ -104,7 +106,7 @@ namespace NakedObjects.ParallelReflect.Test {
             new CollectionFacetFactory(82)
         };
 
-        protected IMetamodel Metamodel;
+        protected IImmutableDictionary<string, ITypeSpecBuilder> Metamodel;
         protected IObjectSpecImmutable Specification;
 
         protected void AssertIsInstanceOfType<T>(object o) {
@@ -121,17 +123,27 @@ namespace NakedObjects.ParallelReflect.Test {
             var metamodel = new Metamodel(classStrategy, cache);
             var reflector = new ParallelReflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] { }, facetFactories);
 
-            Specification = LoadSpecification(reflector);
-            Metamodel = metamodel;
+            var result = LoadSpecification(reflector);
+            Specification = result.Item1 as IObjectSpecImmutable;
+            Metamodel = result.Item2;
         }
 
-        protected abstract IObjectSpecImmutable LoadSpecification(IReflector reflector);
+        protected abstract Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>> LoadSpecification(ParallelReflector reflector);
 
         public static void AssertSpec(Type type, ITypeSpecBuilder spec) {
+            Assert.IsNotNull(spec, type.FullName);
             Assert.AreEqual(new IdentifierImpl(type.FullName), spec.Identifier);
             Assert.AreEqual(type.FullName, spec.FullName);
             Assert.AreEqual(TypeNameUtils.GetShortName(type.Name), spec.ShortName);
             Assert.AreEqual(type, spec.Type);
+        }
+
+        private static ITypeSpecBuilder GetSpec(Type type, ITypeSpecBuilder[] specs) {
+            return specs.SingleOrDefault(s => s.FullName == type.FullName);
+        }
+
+        public static void AssertSpec(Type type, ITypeSpecBuilder[] specs) {
+            AssertSpec(type, GetSpec(type, specs));
         }
     }
 

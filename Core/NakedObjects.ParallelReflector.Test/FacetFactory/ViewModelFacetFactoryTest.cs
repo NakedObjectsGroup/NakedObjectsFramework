@@ -6,6 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -13,6 +15,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.ParallelReflect.FacetFactory;
 
@@ -41,7 +44,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestViewModelDerive() {
-            facetFactory.Process(Reflector, typeof(Class1), MethodRemover, Specification);
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            metamodel = facetFactory.Process(Reflector, typeof(Class1), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IViewModelFacet>();
             Assert.IsNotNull(facet);
 
@@ -55,19 +60,25 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             Assert.AreEqual(2, key.Length);
             Assert.AreEqual(testClass.Value1, key[0]);
             Assert.AreEqual(testClass.Value2, key[1]);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestViewModelNotPickedUp() {
-            facetFactory.Process(Reflector, typeof(Class2), MethodRemover, Specification);
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            metamodel = facetFactory.Process(Reflector, typeof(Class2), MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IViewModelFacet));
             Assert.IsNull(facet);
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestViewModelPickedUp() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             var class1Type = typeof(Class1);
-            facetFactory.Process(Reflector, class1Type, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, class1Type, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IViewModelFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ViewModelFacetConvention);
@@ -76,12 +87,15 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             MethodInfo m2 = class1Type.GetMethod("PopulateUsingKeys");
 
             AssertMethodsRemoved(new[] {m1, m2});
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestViewModelEditPickedUp() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             var class3Type = typeof(Class3);
-            facetFactory.Process(Reflector, class3Type, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, class3Type, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IViewModelFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ViewModelEditFacetConvention);
@@ -90,12 +104,15 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             MethodInfo m2 = class3Type.GetMethod("PopulateUsingKeys");
 
             AssertMethodsRemoved(new[] {m1, m2});
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestViewModelSwitchablePickedUp() {
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
             var class4Type = typeof(Class4);
-            facetFactory.Process(Reflector, class4Type, MethodRemover, Specification);
+            metamodel = facetFactory.Process(Reflector, class4Type, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IViewModelFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ViewModelSwitchableFacetConvention);
@@ -105,11 +122,14 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             MethodInfo m3 = class4Type.GetMethod("IsEditView");
 
             AssertMethodsRemoved(new[] {m1, m2, m3});
+            Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public void TestViewModelPopulate() {
-            facetFactory.Process(Reflector, typeof(Class1), MethodRemover, Specification);
+            IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            metamodel = facetFactory.Process(Reflector, typeof(Class1), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IViewModelFacet>();
             Assert.IsNotNull(facet);
 
@@ -123,6 +143,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             Assert.AreEqual(keys[0], testClass.Value1);
             Assert.AreEqual(keys[1], testClass.Value2);
+            Assert.IsNotNull(metamodel);
         }
 
         #region Nested type: Class1
