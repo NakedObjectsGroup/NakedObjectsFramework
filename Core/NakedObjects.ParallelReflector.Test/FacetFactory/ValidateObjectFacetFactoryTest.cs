@@ -19,7 +19,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private ValidateObjectFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IValidateObjectFacet)}; }
+            get { return new[] {typeof(IValidateObjectFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {

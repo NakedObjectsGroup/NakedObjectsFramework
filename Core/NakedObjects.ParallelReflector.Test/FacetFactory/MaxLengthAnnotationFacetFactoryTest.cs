@@ -21,7 +21,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private MaxLengthAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IMaxLengthFacet)}; }
+            get { return new[] {typeof(IMaxLengthFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -54,7 +54,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer2 {
 // ReSharper disable UnusedParameter.Local
-            public void SomeAction([MaxLength(20)] string foo) {}
+            public void SomeAction([MaxLength(20)] string foo) { }
         }
 
         private class Customer4 {
@@ -65,7 +65,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         private class Customer5 {
-            public void SomeAction([StringLength(20)] string foo) {}
+            public void SomeAction([StringLength(20)] string foo) { }
         }
 
         private class Customer7 {
@@ -76,14 +76,14 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         private class Customer8 {
-            public void SomeAction([MaxLength(20)] string foo) {}
+            public void SomeAction([MaxLength(20)] string foo) { }
         }
 
         [TestMethod]
         public void TestMaxLengthAnnotationPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer8), "SomeAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof(Customer8), "SomeAction", new[] {typeof(string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMaxLengthFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMaxLengthFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaxLengthFacetAnnotation);
             var maxLengthFacetAnnotation = (MaxLengthFacetAnnotation) facet;
@@ -92,9 +92,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestMaxLengthAnnotationPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer7), "FirstName");
+            PropertyInfo property = FindProperty(typeof(Customer7), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMaxLengthFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMaxLengthFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaxLengthFacetAnnotation);
             var maxLengthFacetAnnotation = (MaxLengthFacetAnnotation) facet;
@@ -113,9 +113,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestNofMaxLengthAnnotationPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMaxLengthFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMaxLengthFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaxLengthFacetAnnotation);
             var maxLengthFacetAnnotation = (MaxLengthFacetAnnotation) facet;
@@ -124,9 +124,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestNofMaxLengthAnnotationPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
+            PropertyInfo property = FindProperty(typeof(Customer1), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMaxLengthFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMaxLengthFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaxLengthFacetAnnotation);
             var maxLengthFacetAnnotation = (MaxLengthFacetAnnotation) facet;
@@ -135,9 +135,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestStringLengthAnnotationPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer5), "SomeAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof(Customer5), "SomeAction", new[] {typeof(string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMaxLengthFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMaxLengthFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaxLengthFacetAnnotation);
             var maxLengthFacetAnnotation = (MaxLengthFacetAnnotation) facet;
@@ -146,9 +146,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestStringLengthAnnotationPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer4), "FirstName");
+            PropertyInfo property = FindProperty(typeof(Customer4), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMaxLengthFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMaxLengthFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaxLengthFacetAnnotation);
             var maxLengthFacetAnnotation = (MaxLengthFacetAnnotation) facet;

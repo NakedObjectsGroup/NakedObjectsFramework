@@ -21,7 +21,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private PresentationHintAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IPresentationHintFacet)}; }
+            get { return new[] {typeof(IPresentationHintFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -31,7 +31,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer
 
         [PresentationHint("ahint")]
-        private class Customer {}
+        private class Customer { }
 
         #endregion
 
@@ -65,7 +65,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private class Customer2 {
             [PresentationHint("ahint")]
 // ReSharper disable UnusedParameter.Local
-            public void SomeAction([PresentationHint("ahint")] string foo) {}
+            public void SomeAction([PresentationHint("ahint")] string foo) { }
         }
 
         private class Customer3 {
@@ -76,7 +76,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         private class Customer4 {
-            public void SomeAction([PresentationHint("ahint")] int foo) {}
+            public void SomeAction([PresentationHint("ahint")] int foo) { }
         }
 
         [TestMethod]
@@ -91,23 +91,23 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestPresentationHintAnnotationNotIgnoredForNonStringsProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer3), "NumberOfOrders");
+            PropertyInfo property = FindProperty(typeof(Customer3), "NumberOfOrders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            Assert.IsNotNull(Specification.GetFacet(typeof (IPresentationHintFacet)));
+            Assert.IsNotNull(Specification.GetFacet(typeof(IPresentationHintFacet)));
         }
 
         [TestMethod]
         public void TestPresentationHintAnnotationNotIgnoredForPrimitiveOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (int)});
+            MethodInfo method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(int)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            Assert.IsNotNull(Specification.GetFacet(typeof (IPresentationHintFacet)));
+            Assert.IsNotNull(Specification.GetFacet(typeof(IPresentationHintFacet)));
         }
 
         [TestMethod]
         public void TestPresentationHintAnnotationPickedUpOnAction() {
-            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
             facetFactory.Process(Reflector, method, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IPresentationHintFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPresentationHintFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PresentationHintFacet);
             var maskFacet = (PresentationHintFacet) facet;
@@ -116,9 +116,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestPresentationHintAnnotationPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IPresentationHintFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPresentationHintFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PresentationHintFacet);
             var maskFacet = (PresentationHintFacet) facet;
@@ -127,8 +127,8 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestPresentationHintAnnotationPickedUpOnClass() {
-            facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IPresentationHintFacet));
+            facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IPresentationHintFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PresentationHintFacet);
             var maskFacet = (PresentationHintFacet) facet;
@@ -137,9 +137,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestPresentationHintAnnotationPickedUpOnCollectionProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer1), "Customers");
+            PropertyInfo property = FindProperty(typeof(Customer1), "Customers");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IPresentationHintFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPresentationHintFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PresentationHintFacet);
             var maskFacet = (PresentationHintFacet) facet;
@@ -148,9 +148,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestPresentationHintAnnotationPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
+            PropertyInfo property = FindProperty(typeof(Customer1), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IPresentationHintFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPresentationHintFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PresentationHintFacet);
             var maskFacet = (PresentationHintFacet) facet;

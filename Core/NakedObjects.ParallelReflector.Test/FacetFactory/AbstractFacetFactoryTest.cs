@@ -14,7 +14,6 @@ using Moq;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.ParallelReflect.FacetFactory;
 
 namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public abstract class AbstractFacetFactoryTest {

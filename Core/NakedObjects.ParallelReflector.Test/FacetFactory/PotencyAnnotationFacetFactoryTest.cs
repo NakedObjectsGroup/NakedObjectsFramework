@@ -20,7 +20,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private PotencyAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IQueryOnlyFacet), typeof (IIdempotentFacet)}; }
+            get { return new[] {typeof(IQueryOnlyFacet), typeof(IIdempotentFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -46,21 +46,21 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private class Customer {
             [QueryOnly]
 // ReSharper disable UnusedMember.Local
-            public void SomeAction() {}
+            public void SomeAction() { }
         }
 
         private class Customer1 {
             [Idempotent]
-            public void SomeAction() {}
+            public void SomeAction() { }
         }
 
         private class Customer2 {
-            public void SomeAction() {}
+            public void SomeAction() { }
         }
 
         private class Customer3 {
             [QueryOnly, Idempotent]
-            public void SomeAction() {}
+            public void SomeAction() { }
         }
 
         [TestMethod]
@@ -75,9 +75,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestIdempotentAnnotationPickedUp() {
-            MethodInfo actionMethod = FindMethod(typeof (Customer1), "SomeAction");
+            MethodInfo actionMethod = FindMethod(typeof(Customer1), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IIdempotentFacet));
+            IFacet facet = Specification.GetFacet(typeof(IIdempotentFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IdempotentFacet);
             AssertNoMethodsRemoved();
@@ -85,23 +85,23 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestIdempotentPriorityAnnotationPickedUp() {
-            MethodInfo actionMethod = FindMethod(typeof (Customer1), "SomeAction");
+            MethodInfo actionMethod = FindMethod(typeof(Customer1), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IIdempotentFacet));
+            IFacet facet = Specification.GetFacet(typeof(IIdempotentFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IdempotentFacet);
-            facet = Specification.GetFacet(typeof (IQueryOnlyFacet));
+            facet = Specification.GetFacet(typeof(IQueryOnlyFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
         }
 
         [TestMethod]
         public void TestNoAnnotationPickedUp() {
-            MethodInfo actionMethod = FindMethod(typeof (Customer2), "SomeAction");
+            MethodInfo actionMethod = FindMethod(typeof(Customer2), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IQueryOnlyFacet));
+            IFacet facet = Specification.GetFacet(typeof(IQueryOnlyFacet));
             Assert.IsNull(facet);
-            facet = Specification.GetFacet(typeof (IIdempotentFacet));
+            facet = Specification.GetFacet(typeof(IIdempotentFacet));
             Assert.IsNull(facet);
 
             AssertNoMethodsRemoved();
@@ -109,9 +109,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestQueryOnlyAnnotationPickedUp() {
-            MethodInfo actionMethod = FindMethod(typeof (Customer), "SomeAction");
+            MethodInfo actionMethod = FindMethod(typeof(Customer), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IQueryOnlyFacet));
+            IFacet facet = Specification.GetFacet(typeof(IQueryOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is QueryOnlyFacet);
             AssertNoMethodsRemoved();

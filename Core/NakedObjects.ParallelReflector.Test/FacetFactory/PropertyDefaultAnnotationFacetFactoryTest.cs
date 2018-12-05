@@ -21,12 +21,43 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private PropertyDefaultAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IPropertyDefaultFacet)}; }
+            get { return new[] {typeof(IPropertyDefaultFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
         }
+
+        [TestMethod]
+        public override void TestFeatureTypes() {
+            FeatureType featureTypes = facetFactory.FeatureTypes;
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
+            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
+        }
+
+        [TestMethod]
+        public void TestPropertyDefaultAnnotationPickedUpOnProperty() {
+            PropertyInfo property = FindProperty(typeof(Customer1), "Prop");
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IPropertyDefaultFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is PropertyDefaultFacetAnnotation);
+            var propertyDefaultFacetAnnotation = (PropertyDefaultFacetAnnotation) facet;
+            Assert.AreEqual(1, propertyDefaultFacetAnnotation.GetDefault(null));
+        }
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            [DefaultValue(1)]
+// ReSharper disable once UnusedMember.Local
+            public int Prop { get; set; }
+        }
+
+        #endregion
 
         #region Setup/Teardown
 
@@ -43,33 +74,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         #endregion
-
-        private class Customer1 {
-            [DefaultValue(1)]
-// ReSharper disable once UnusedMember.Local
-            public int Prop { get; set; }
-        }
-
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
-
-        [TestMethod]
-        public void TestPropertyDefaultAnnotationPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer1), "Prop");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IPropertyDefaultFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PropertyDefaultFacetAnnotation);
-            var propertyDefaultFacetAnnotation = (PropertyDefaultFacetAnnotation) facet;
-            Assert.AreEqual(1, propertyDefaultFacetAnnotation.GetDefault(null));
-        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

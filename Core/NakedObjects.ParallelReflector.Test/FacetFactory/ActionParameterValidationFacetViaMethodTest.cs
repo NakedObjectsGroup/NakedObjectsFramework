@@ -46,18 +46,18 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             mock.Setup(no => no.Object).Returns(customer);
 
-            MethodInfo method = typeof (Customer17).GetMethod("Validate0SomeAction");
+            MethodInfo method = typeof(Customer17).GetMethod("Validate0SomeAction");
             facet = new ActionParameterValidation(method, holder);
         }
 
         [TestCleanup]
-        public void TearDown() {}
+        public void TearDown() { }
 
         #endregion
     }
 
     internal class Customer17 {
-        public void SomeAction(int x, long y, long z) {}
+        public void SomeAction(int x, long y, long z) { }
 
         public string Validate0SomeAction(int x) {
             return x > 0 ? null : "must be positive";

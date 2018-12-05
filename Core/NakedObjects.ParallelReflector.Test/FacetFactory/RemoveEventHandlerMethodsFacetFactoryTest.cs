@@ -24,14 +24,14 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         protected override Type[] SupportedTypes {
             get {
                 return new[] {
-                    typeof (INamedFacet),
-                    typeof (IExecutedFacet),
-                    typeof (IActionValidationFacet),
-                    typeof (IActionInvocationFacet),
-                    typeof (IActionDefaultsFacet),
-                    typeof (IActionChoicesFacet),
-                    typeof (IDescribedAsFacet),
-                    typeof (IMandatoryFacet)
+                    typeof(INamedFacet),
+                    typeof(IExecutedFacet),
+                    typeof(IActionValidationFacet),
+                    typeof(IActionInvocationFacet),
+                    typeof(IActionDefaultsFacet),
+                    typeof(IActionChoicesFacet),
+                    typeof(IDescribedAsFacet),
+                    typeof(IMandatoryFacet)
                 };
             }
         }
@@ -42,11 +42,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestActionWithNoParameters() {
-            facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
+            facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification);
 
             AssertRemovedCalled(2);
 
-            EventInfo eInfo = typeof (Customer).GetEvent("AnEventHandler");
+            EventInfo eInfo = typeof(Customer).GetEvent("AnEventHandler");
 
             var eventMethods = new[] {eInfo.GetAddMethod(), eInfo.GetRemoveMethod()};
 
@@ -90,13 +90,13 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             var cache = new ImmutableInMemorySpecCache();
             ReflectorConfiguration.NoValidate = true;
 
-            var reflectorConfiguration = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new string[] {});
+            var reflectorConfiguration = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new string[] { });
             facetFactory = new RemoveEventHandlerMethodsFacetFactory(0);
             var menuFactory = new NullMenuFactory();
             var classStrategy = new DefaultClassStrategy(reflectorConfiguration);
             var metamodel = new Metamodel(classStrategy, cache);
 
-            Reflector = new ParallelReflector(classStrategy, metamodel, reflectorConfiguration, menuFactory, new IFacetDecorator[] {}, new IFacetFactory[] {facetFactory});
+            Reflector = new ParallelReflector(classStrategy, metamodel, reflectorConfiguration, menuFactory, new IFacetDecorator[] { }, new IFacetFactory[] {facetFactory});
         }
 
         [TestCleanup]

@@ -20,7 +20,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private MenuFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IMenuFacet)}; }
+            get { return new[] {typeof(IMenuFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -39,17 +39,17 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestDefaultMenuPickedUp() {
-            facetFactory.Process(Reflector, typeof (Class1), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMenuFacet));
+            facetFactory.Process(Reflector, typeof(Class1), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IMenuFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MenuFacetDefault);
         }
 
         [TestMethod]
         public void TestMethodMenuPickedUp() {
-            var class2Type = typeof (Class2);
+            var class2Type = typeof(Class2);
             facetFactory.Process(Reflector, class2Type, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMenuFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMenuFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MenuFacetViaMethod);
             MethodInfo m1 = class2Type.GetMethod("Menu");
@@ -58,7 +58,16 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         #region Nested type: Class1
 
-        private class Class1 {}
+        private class Class1 { }
+
+        #endregion
+
+        #region Nested type: Class2
+
+        private class Class2 {
+// ReSharper disable once UnusedMember.Local
+            public static void Menu() { }
+        }
 
         #endregion
 
@@ -75,15 +84,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public new void TearDown() {
             facetFactory = null;
             base.TearDown();
-        }
-
-        #endregion
-
-        #region Nested type: Class2
-
-        private class Class2 {
-// ReSharper disable once UnusedMember.Local
-            public static void Menu() {}
         }
 
         #endregion

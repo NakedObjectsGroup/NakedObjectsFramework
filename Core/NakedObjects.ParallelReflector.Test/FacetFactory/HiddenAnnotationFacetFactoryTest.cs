@@ -22,7 +22,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private HiddenAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IHiddenFacet)}; }
+            get { return new[] {typeof(IHiddenFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -62,27 +62,27 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer2 {
             [Hidden(WhenTo.Always)]
-            public void SomeAction() {}
+            public void SomeAction() { }
         }
 
         private class Customer3 {
             [Hidden(WhenTo.Always)]
-            public void SomeAction() {}
+            public void SomeAction() { }
         }
 
         private class Customer4 {
             [Hidden(WhenTo.Never)]
-            public void SomeAction() {}
+            public void SomeAction() { }
         }
 
         private class Customer5 {
             [Hidden(WhenTo.OncePersisted)]
-            public void SomeAction() {}
+            public void SomeAction() { }
         }
 
         private class Customer6 {
             [Hidden(WhenTo.UntilPersisted)]
-            public void SomeAction() {}
+            public void SomeAction() { }
         }
 
         private class Customer7 {
@@ -116,9 +116,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestDisabledWhenUntilPersistedAnnotationPickedUpOn() {
-            MethodInfo actionMethod = FindMethod(typeof (Customer6), "SomeAction");
+            MethodInfo actionMethod = FindMethod(typeof(Customer6), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHiddenFacet));
             var hiddenFacetAbstract = (HiddenFacet) facet;
             Assert.AreEqual(WhenTo.UntilPersisted, hiddenFacetAbstract.Value);
         }
@@ -135,9 +135,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestHiddenAnnotationPickedUpOnAction() {
-            MethodInfo actionMethod = FindMethod(typeof (Customer2), "SomeAction");
+            MethodInfo actionMethod = FindMethod(typeof(Customer2), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHiddenFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HiddenFacet);
             AssertNoMethodsRemoved();
@@ -145,9 +145,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestHiddenAnnotationPickedUpOnCollection() {
-            PropertyInfo property = FindProperty(typeof (Customer1), "Orders");
+            PropertyInfo property = FindProperty(typeof(Customer1), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHiddenFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HiddenFacet);
             AssertNoMethodsRemoved();
@@ -155,9 +155,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestHiddenAnnotationPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer), "NumberOfOrders");
+            PropertyInfo property = FindProperty(typeof(Customer), "NumberOfOrders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHiddenFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HiddenFacet);
             AssertNoMethodsRemoved();
@@ -165,45 +165,45 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestHiddenWhenAlwaysAnnotationPickedUpOn() {
-            MethodInfo actionMethod = FindMethod(typeof (Customer3), "SomeAction");
+            MethodInfo actionMethod = FindMethod(typeof(Customer3), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHiddenFacet));
             var hiddenFacetAbstract = (HiddenFacet) facet;
             Assert.AreEqual(WhenTo.Always, hiddenFacetAbstract.Value);
         }
 
         [TestMethod]
         public void TestHiddenWhenNeverAnnotationPickedUpOn() {
-            MethodInfo actionMethod = FindMethod(typeof (Customer4), "SomeAction");
+            MethodInfo actionMethod = FindMethod(typeof(Customer4), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHiddenFacet));
             var hiddenFacetAbstract = (HiddenFacet) facet;
             Assert.AreEqual(WhenTo.Never, hiddenFacetAbstract.Value);
         }
 
         [TestMethod]
         public void TestHiddenWhenOncePersistedAnnotationPickedUpOn() {
-            MethodInfo actionMethod = FindMethod(typeof (Customer5), "SomeAction");
+            MethodInfo actionMethod = FindMethod(typeof(Customer5), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHiddenFacet));
             var hiddenFacetAbstract = (HiddenFacet) facet;
             Assert.AreEqual(WhenTo.OncePersisted, hiddenFacetAbstract.Value);
         }
 
         [TestMethod]
         public void TestHiidenPriorityOverScaffoldAnnotation() {
-            PropertyInfo property = FindProperty(typeof (Customer10), "NumberOfOrders");
+            PropertyInfo property = FindProperty(typeof(Customer10), "NumberOfOrders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHiddenFacet));
             var hiddenFacetAbstract = (HiddenFacet) facet;
             Assert.AreEqual(WhenTo.Always, hiddenFacetAbstract.Value);
         }
 
         [TestMethod]
         public void TestScaffoldAnnotationPickedUpOnCollection() {
-            PropertyInfo property = FindProperty(typeof (Customer8), "Orders");
+            PropertyInfo property = FindProperty(typeof(Customer8), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHiddenFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HiddenFacet);
             AssertNoMethodsRemoved();
@@ -211,9 +211,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestScaffoldAnnotationPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer7), "NumberOfOrders");
+            PropertyInfo property = FindProperty(typeof(Customer7), "NumberOfOrders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHiddenFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HiddenFacet);
             AssertNoMethodsRemoved();
@@ -221,9 +221,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestScaffoldTrueAnnotationPickedUpOn() {
-            PropertyInfo property = FindProperty(typeof (Customer9), "NumberOfOrders");
+            PropertyInfo property = FindProperty(typeof(Customer9), "NumberOfOrders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHiddenFacet));
             var hiddenFacetAbstract = (HiddenFacet) facet;
             Assert.AreEqual(WhenTo.Never, hiddenFacetAbstract.Value);
         }

@@ -21,7 +21,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private MemberOrderAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IMemberOrderFacet)}; }
+            get { return new[] {typeof(IMemberOrderFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -59,16 +59,16 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             }
 
 // ReSharper disable once UnusedParameter.Local
-            public void AddToOrders(Order o) {}
+            public void AddToOrders(Order o) { }
         }
 
         private class Customer2 {
             [MemberOrder(Sequence = "3")]
-            public void SomeAction() {}
+            public void SomeAction() { }
         }
 
 // ReSharper disable once ClassNeverInstantiated.Local
-        private class Order {}
+        private class Order { }
 
         [TestMethod]
         public override void TestFeatureTypes() {
@@ -82,9 +82,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestMemberOrderAnnotationPickedUpOnAction() {
-            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction");
+            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction");
             facetFactory.Process(Reflector, method, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMemberOrderFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMemberOrderFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MemberOrderFacet);
             var memberOrderFacetAnnotation = (MemberOrderFacet) facet;
@@ -94,9 +94,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestMemberOrderAnnotationPickedUpOnCollection() {
-            PropertyInfo property = FindProperty(typeof (Customer1), "Orders");
+            PropertyInfo property = FindProperty(typeof(Customer1), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMemberOrderFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMemberOrderFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MemberOrderFacet);
             var memberOrderFacetAnnotation = (MemberOrderFacet) facet;
@@ -106,9 +106,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestMemberOrderAnnotationPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer), "FirstName");
+            PropertyInfo property = FindProperty(typeof(Customer), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMemberOrderFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMemberOrderFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MemberOrderFacet);
             var memberOrderFacetAnnotation = (MemberOrderFacet) facet;

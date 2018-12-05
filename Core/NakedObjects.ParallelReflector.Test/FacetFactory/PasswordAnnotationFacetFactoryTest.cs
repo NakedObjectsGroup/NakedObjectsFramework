@@ -21,7 +21,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private PasswordAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IPasswordFacet)}; }
+            get { return new[] {typeof(IPasswordFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -54,7 +54,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer2 {
 // ReSharper disable once UnusedParameter.Local
-            public void SomeAction([DataType(DataType.Password)] string foo) {}
+            public void SomeAction([DataType(DataType.Password)] string foo) { }
         }
 
         private class Customer3 {
@@ -66,7 +66,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer4 {
 // ReSharper disable once UnusedParameter.Local
-            public void SomeAction([DataType(DataType.PhoneNumber)] string foo) {}
+            public void SomeAction([DataType(DataType.PhoneNumber)] string foo) { }
         }
 
         [TestMethod]
@@ -81,34 +81,34 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestPasswordAnnotationNotPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IPasswordFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPasswordFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestPasswordAnnotationNotPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer3), "FirstName");
+            PropertyInfo property = FindProperty(typeof(Customer3), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IPasswordFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPasswordFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestPasswordAnnotationPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IPasswordFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPasswordFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PasswordFacet);
         }
 
         [TestMethod]
         public void TestPasswordAnnotationPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
+            PropertyInfo property = FindProperty(typeof(Customer1), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IPasswordFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPasswordFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PasswordFacet);
         }

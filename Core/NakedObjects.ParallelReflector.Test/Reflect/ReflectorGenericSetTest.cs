@@ -11,38 +11,37 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
-using NakedObjects.ParallelReflect.Component;
 
 namespace NakedObjects.ParallelReflect.Test {
     [TestClass]
     public class ReflectorGenericSetTest : AbstractReflectorTest {
         protected override IObjectSpecImmutable LoadSpecification(IReflector reflector) {
-            return reflector.LoadSpecification<IObjectSpecImmutable>(typeof (ISet<TestPoco>));
+            return reflector.LoadSpecification<IObjectSpecImmutable>(typeof(ISet<TestPoco>));
         }
 
         [TestMethod]
         public void TestCollectionFacet() {
-            IFacet facet = Specification.GetFacet(typeof (ICollectionFacet));
+            IFacet facet = Specification.GetFacet(typeof(ICollectionFacet));
             Assert.IsNotNull(facet);
             AssertIsInstanceOfType<GenericCollectionFacet>(facet);
         }
 
         [TestMethod]
         public void TestDescriptionFaced() {
-            IFacet facet = Specification.GetFacet(typeof (IDescribedAsFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDescribedAsFacet));
             Assert.IsNotNull(facet);
             AssertIsInstanceOfType<DescribedAsFacetNone>(facet);
         }
 
         [TestMethod]
         public void TestElementTypeFacet() {
-            var facet = (IElementTypeFacet) Specification.GetFacet(typeof (IElementTypeFacet));
+            var facet = (IElementTypeFacet) Specification.GetFacet(typeof(IElementTypeFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestTypeOfFacet() {
-            var facet = (ITypeOfFacet) Specification.GetFacet(typeof (ITypeOfFacet));
+            var facet = (ITypeOfFacet) Specification.GetFacet(typeof(ITypeOfFacet));
             Assert.IsNotNull(facet);
             AssertIsInstanceOfType<TypeOfFacetInferredFromGenerics>(facet);
         }
@@ -59,14 +58,14 @@ namespace NakedObjects.ParallelReflect.Test {
 
         [TestMethod]
         public void TestNamedFaced() {
-            IFacet facet = Specification.GetFacet(typeof (INamedFacet));
+            IFacet facet = Specification.GetFacet(typeof(INamedFacet));
             Assert.IsNotNull(facet);
             AssertIsInstanceOfType<NamedFacetInferred>(facet);
         }
 
         [TestMethod]
         public void TestPluralFaced() {
-            IFacet facet = Specification.GetFacet(typeof (IPluralFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPluralFacet));
             Assert.IsNotNull(facet);
             AssertIsInstanceOfType<PluralFacetInferred>(facet);
         }

@@ -20,7 +20,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private OptionalDefaultFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IMandatoryFacet)}; }
+            get { return new[] {typeof(IMandatoryFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -52,7 +52,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer2 {
 // ReSharper disable once UnusedParameter.Local
-            public void SomeAction(string foo) {}
+            public void SomeAction(string foo) { }
         }
 
         private class Customer3 {
@@ -63,7 +63,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer4 {
 // ReSharper disable once UnusedParameter.Local
-            public void SomeAction(int foo) {}
+            public void SomeAction(int foo) { }
         }
 
         [TestMethod]
@@ -78,36 +78,36 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestOptionalDefaultIgnoredForPrimitiveOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (int)});
+            MethodInfo method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(int)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMandatoryFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MandatoryFacetDefault);
         }
 
         [TestMethod]
         public void TestOptionalDefaultIgnoredForPrimitiveOnProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer3), "NumberOfOrders");
+            PropertyInfo property = FindProperty(typeof(Customer3), "NumberOfOrders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMandatoryFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MandatoryFacetDefault);
         }
 
         [TestMethod]
         public void TestOptionalDefaultPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMandatoryFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is OptionalFacetDefault);
         }
 
         [TestMethod]
         public void TestOptionalDefaultPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
+            PropertyInfo property = FindProperty(typeof(Customer1), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMandatoryFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is OptionalFacetDefault);
         }

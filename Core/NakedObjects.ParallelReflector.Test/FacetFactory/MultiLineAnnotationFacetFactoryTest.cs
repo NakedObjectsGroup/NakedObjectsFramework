@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Data.Entity.Core.Metadata.Edm;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
@@ -21,7 +20,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private MultiLineAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IMultiLineFacet)}; }
+            get { return new[] {typeof(IMultiLineFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -31,7 +30,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer
 
         [MultiLine(NumberOfLines = 3, Width = 9)]
-        private class Customer {}
+        private class Customer { }
 
         #endregion
 
@@ -61,11 +60,12 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer2 {
 // ReSharper disable once UnusedParameter.Local
-            public void SomeAction([MultiLine(NumberOfLines = 8, Width = 24)] string foo) {}
+            public void SomeAction([MultiLine(NumberOfLines = 8, Width = 24)]
+                                   string foo) { }
         }
 
         [MultiLine]
-        private class Customer3 {}
+        private class Customer3 { }
 
         private class Customer5 {
             [MultiLine(NumberOfLines = 8, Width = 24)]
@@ -76,7 +76,8 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer6 {
 // ReSharper disable once UnusedParameter.Local
-            public void SomeAction([MultiLine(NumberOfLines = 8, Width = 24)] int foo) {}
+            public void SomeAction([MultiLine(NumberOfLines = 8, Width = 24)]
+                                   int foo) { }
         }
 
         private class Customer7 {
@@ -96,8 +97,8 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestMultiLineAnnotationDefaults() {
-            facetFactory.Process(Reflector, typeof (Customer3), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMultiLineFacet));
+            facetFactory.Process(Reflector, typeof(Customer3), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IMultiLineFacet));
             var multiLineFacetAnnotation = (MultiLineFacetAnnotation) facet;
             Assert.AreEqual(6, multiLineFacetAnnotation.NumberOfLines);
             Assert.AreEqual(0, multiLineFacetAnnotation.Width);
@@ -105,24 +106,24 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestMultiLineAnnotationIgnoredForNonStringActionParameters() {
-            MethodInfo method = FindMethod(typeof (Customer6), "SomeAction", new[] {typeof (int)});
+            MethodInfo method = FindMethod(typeof(Customer6), "SomeAction", new[] {typeof(int)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            Assert.IsNull(Specification.GetFacet(typeof (IMultiLineFacet)));
+            Assert.IsNull(Specification.GetFacet(typeof(IMultiLineFacet)));
         }
 
         [TestMethod]
         public void TestMultiLineAnnotationIgnoredForNonStringProperties() {
-            PropertyInfo property = FindProperty(typeof (Customer5), "NumberOfOrders");
+            PropertyInfo property = FindProperty(typeof(Customer5), "NumberOfOrders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMultiLineFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMultiLineFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestMultiLineAnnotationPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMultiLineFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMultiLineFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MultiLineFacetAnnotation);
             var multiLineFacetAnnotation = (MultiLineFacetAnnotation) facet;
@@ -132,8 +133,8 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestMultiLineAnnotationPickedUpOnClass() {
-            facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMultiLineFacet));
+            facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IMultiLineFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MultiLineFacetAnnotation);
             var multiLineFacetAnnotation = (MultiLineFacetAnnotation) facet;
@@ -143,9 +144,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestMultiLineAnnotationPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
+            PropertyInfo property = FindProperty(typeof(Customer1), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMultiLineFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMultiLineFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MultiLineFacetAnnotation);
             var multiLineFacetAnnotation = (MultiLineFacetAnnotation) facet;
@@ -160,7 +161,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IFacet facet = Specification.GetFacet(typeof(IMultiLineFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MultiLineFacetAnnotation);
-            var multiLineFacetAnnotation = (MultiLineFacetAnnotation)facet;
+            var multiLineFacetAnnotation = (MultiLineFacetAnnotation) facet;
             Assert.AreEqual(1, multiLineFacetAnnotation.NumberOfLines);
         }
     }

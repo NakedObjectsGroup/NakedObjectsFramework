@@ -108,18 +108,18 @@ namespace NakedObjects.ParallelReflect.Test {
         protected IObjectSpecImmutable Specification;
 
         protected void AssertIsInstanceOfType<T>(object o) {
-            Assert.IsInstanceOfType(o, typeof (T));
+            Assert.IsInstanceOfType(o, typeof(T));
         }
 
         [TestInitialize]
         public virtual void SetUp() {
             var cache = new ImmutableInMemorySpecCache();
             ReflectorConfiguration.NoValidate = true;
-            var config = new ReflectorConfiguration(new[] {typeof (List<TestPoco>), typeof (ArrayList)}, new Type[] {}, new[] {typeof (TestPoco).Namespace});
+            var config = new ReflectorConfiguration(new[] {typeof(List<TestPoco>), typeof(ArrayList)}, new Type[] { }, new[] {typeof(TestPoco).Namespace});
             var menuFactory = new NullMenuFactory();
             var classStrategy = new DefaultClassStrategy(config);
             var metamodel = new Metamodel(classStrategy, cache);
-            var reflector = new ParallelReflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] {}, facetFactories);
+            var reflector = new ParallelReflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] { }, facetFactories);
 
             Specification = LoadSpecification(reflector);
             Metamodel = metamodel;

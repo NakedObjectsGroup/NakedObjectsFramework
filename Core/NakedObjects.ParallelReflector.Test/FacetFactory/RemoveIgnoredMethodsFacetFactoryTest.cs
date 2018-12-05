@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -24,14 +23,14 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         protected override Type[] SupportedTypes {
             get {
                 return new[] {
-                    typeof (INamedFacet),
-                    typeof (IExecutedFacet),
-                    typeof (IActionValidationFacet),
-                    typeof (IActionInvocationFacet),
-                    typeof (IActionDefaultsFacet),
-                    typeof (IActionChoicesFacet),
-                    typeof (IDescribedAsFacet),
-                    typeof (IMandatoryFacet)
+                    typeof(INamedFacet),
+                    typeof(IExecutedFacet),
+                    typeof(IActionValidationFacet),
+                    typeof(IActionInvocationFacet),
+                    typeof(IActionDefaultsFacet),
+                    typeof(IActionChoicesFacet),
+                    typeof(IDescribedAsFacet),
+                    typeof(IMandatoryFacet)
                 };
             }
         }
@@ -42,7 +41,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestMethodsMarkedIgnoredAreRemoved() {
-            facetFactory.Process(Reflector, typeof (Customer1), MethodRemover, Specification);
+            facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification);
             AssertRemovedCalled(2);
         }
 
@@ -63,13 +62,13 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             try {
                 facetFactory.Process(Reflector, typeof(Customer4), MethodRemover, Specification);
                 Assert.Fail("Shouldn't get to here!");
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 Assert.AreEqual("Attempting to introspect a class that has been marked with NakedObjectsType with ReflectOver.None", e.Message);
             }
-
         }
 
-        [TestMethod,Ignore] //Pending re-instatement of NakedObjectsType & Include attributes (PM 7.2)
+        [TestMethod, Ignore] //Pending re-instatement of NakedObjectsType & Include attributes (PM 7.2)
         public void TestNakedObjectsTypeReflectOverExplicitlyIncludedMembersOnly() {
             facetFactory.Process(Reflector, typeof(Customer5), MethodRemover, Specification);
             AssertRemovedCalled(6); //That's 2 from the class, and 4 inherited from objec (e.g. ToString())
@@ -85,12 +84,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
         }
 
-        #region Nested type: Customer
-
         #region TestClasses
 
         private class Customer1 {
-
             [NakedObjectsIgnore]
             public void Method1() { }
 
@@ -100,9 +96,8 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             public void Method3() { }
         }
 
-       // [NakedObjectsType(ReflectOver.All)]
+        // [NakedObjectsType(ReflectOver.All)]
         private class Customer2 {
-
             public void Method1() { }
 
             public void Method2() { }
@@ -112,7 +107,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         //[NakedObjectsType(ReflectOver.TypeOnlyNoMembers)]
         private class Customer3 {
-
             [NakedObjectsIgnore] //Irrelevant!
             public void Method1() { }
 
@@ -123,7 +117,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         //[NakedObjectsType(ReflectOver.None)]
         private class Customer4 {
-
             public void Method1() { }
 
             public void Method2() { }
@@ -133,16 +126,13 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         //[NakedObjectsType(ReflectOver.ExplicitlyIncludedMembersOnly)]
         private class Customer5 {
-
             public void Method1() { }
 
-           // [NakedObjectsInclude]
+            // [NakedObjectsInclude]
             public void Method2() { }
 
             public void Method3() { }
         }
-
-        #endregion
 
         #endregion
 
@@ -154,13 +144,13 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             var cache = new ImmutableInMemorySpecCache();
             ReflectorConfiguration.NoValidate = true;
 
-            var reflectorConfiguration = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new string[] {});
+            var reflectorConfiguration = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new string[] { });
             facetFactory = new RemoveIgnoredMethodsFacetFactory(0);
             var menuFactory = new NullMenuFactory();
             var classStrategy = new DefaultClassStrategy(reflectorConfiguration);
             var metamodel = new Metamodel(classStrategy, cache);
 
-            Reflector = new ParallelReflector(classStrategy, metamodel, reflectorConfiguration, menuFactory, new IFacetDecorator[] {}, new IFacetFactory[] {facetFactory});
+            Reflector = new ParallelReflector(classStrategy, metamodel, reflectorConfiguration, menuFactory, new IFacetDecorator[] { }, new IFacetFactory[] {facetFactory});
         }
 
         [TestCleanup]

@@ -23,11 +23,171 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private TableViewAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (ITableViewFacet)}; }
+            get { return new[] {typeof(ITableViewFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
+        }
+
+        [TestMethod]
+        public override void TestFeatureTypes() {
+            FeatureType featureTypes = facetFactory.FeatureTypes;
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
+            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Collections));
+            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
+        }
+
+        [TestMethod]
+        public void TestTableViewFacetNotPickedUpOnArray() {
+            PropertyInfo property = FindProperty(typeof(Customer2), "Orders");
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            Assert.IsNull(facet);
+        }
+
+        [TestMethod]
+        public void TestTableViewFacetNotPickedUpOnArrayAction() {
+            MethodInfo method = FindMethod(typeof(Customer2), "OrdersAction");
+            facetFactory.Process(Reflector, method, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            Assert.IsNull(facet);
+        }
+
+        [TestMethod]
+        public void TestTableViewFacetNotPickedUpOnCollection() {
+            PropertyInfo property = FindProperty(typeof(Customer2), "Orders1");
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            Assert.IsNull(facet);
+        }
+
+        [TestMethod]
+        public void TestTableViewFacetNotPickedUpOnCollectionAction() {
+            MethodInfo method = FindMethod(typeof(Customer2), "OrdersAction1");
+            facetFactory.Process(Reflector, method, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            Assert.IsNull(facet);
+        }
+
+        [TestMethod]
+        public void TestTableViewFacetPickedUpOnArray() {
+            PropertyInfo property = FindProperty(typeof(Customer1), "Orders");
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is TableViewFacet);
+            var tableViewFacetFromAnnotation = (TableViewFacet) facet;
+            Assert.AreEqual(true, tableViewFacetFromAnnotation.Title);
+            Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
+            Assert.AreEqual("col1", tableViewFacetFromAnnotation.Columns[0]);
+            Assert.AreEqual("col2", tableViewFacetFromAnnotation.Columns[1]);
+            AssertNoMethodsRemoved();
+        }
+
+        [TestMethod]
+        public void TestTableViewFacetPickedUpOnArrayAction() {
+            MethodInfo method = FindMethod(typeof(Customer1), "OrdersAction");
+            facetFactory.Process(Reflector, method, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is TableViewFacet);
+            var tableViewFacetFromAnnotation = (TableViewFacet) facet;
+            Assert.AreEqual(false, tableViewFacetFromAnnotation.Title);
+            Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
+            Assert.AreEqual("col5", tableViewFacetFromAnnotation.Columns[0]);
+            Assert.AreEqual("col6", tableViewFacetFromAnnotation.Columns[1]);
+            AssertNoMethodsRemoved();
+        }
+
+        [TestMethod]
+        public void TestTableViewFacetPickedUpOnCollection() {
+            PropertyInfo property = FindProperty(typeof(Customer1), "Orders1");
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is TableViewFacet);
+            var tableViewFacetFromAnnotation = (TableViewFacet) facet;
+            Assert.AreEqual(false, tableViewFacetFromAnnotation.Title);
+            Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
+            Assert.AreEqual("col3", tableViewFacetFromAnnotation.Columns[0]);
+            Assert.AreEqual("col4", tableViewFacetFromAnnotation.Columns[1]);
+            AssertNoMethodsRemoved();
+        }
+
+        [TestMethod]
+        public void TestTableViewFacetPickedUpOnCollectionAction() {
+            MethodInfo method = FindMethod(typeof(Customer1), "OrdersAction1");
+            facetFactory.Process(Reflector, method, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is TableViewFacet);
+            var tableViewFacetFromAnnotation = (TableViewFacet) facet;
+            Assert.AreEqual(true, tableViewFacetFromAnnotation.Title);
+            Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
+            Assert.AreEqual("col7", tableViewFacetFromAnnotation.Columns[0]);
+            Assert.AreEqual("col8", tableViewFacetFromAnnotation.Columns[1]);
+            AssertNoMethodsRemoved();
+        }
+
+        [TestMethod]
+        public void TestTableViewFacetPickedUpOnCollectionActionNoColumns() {
+            MethodInfo method = FindMethod(typeof(Customer1), "OrdersAction2");
+            facetFactory.Process(Reflector, method, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is TableViewFacet);
+            var tableViewFacetFromAnnotation = (TableViewFacet) facet;
+            Assert.AreEqual(true, tableViewFacetFromAnnotation.Title);
+            Assert.AreEqual(0, tableViewFacetFromAnnotation.Columns.Length);
+            AssertNoMethodsRemoved();
+        }
+
+        [TestMethod]
+        public void TestTableViewFacetPickedUpOnQueryableAction() {
+            MethodInfo method = FindMethod(typeof(Customer1), "OrdersAction3");
+            facetFactory.Process(Reflector, method, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is TableViewFacet);
+            var tableViewFacetFromAnnotation = (TableViewFacet) facet;
+            Assert.AreEqual(true, tableViewFacetFromAnnotation.Title);
+            Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
+            Assert.AreEqual("col7", tableViewFacetFromAnnotation.Columns[0]);
+            Assert.AreEqual("col8", tableViewFacetFromAnnotation.Columns[1]);
+            AssertNoMethodsRemoved();
+        }
+
+        [TestMethod]
+        public void TestTableViewFacetIgnoresDuplicatesOnAction() {
+            MethodInfo method = FindMethod(typeof(Customer1), "OrdersAction4");
+            facetFactory.Process(Reflector, method, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is TableViewFacet);
+            var tableViewFacetFromAnnotation = (TableViewFacet) facet;
+            Assert.AreEqual(true, tableViewFacetFromAnnotation.Title);
+            Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
+            Assert.AreEqual("col7", tableViewFacetFromAnnotation.Columns[0]);
+            Assert.AreEqual("col8", tableViewFacetFromAnnotation.Columns[1]);
+            AssertNoMethodsRemoved();
+        }
+
+        [TestMethod]
+        public void TestTableViewFacetIgnoresDuplicatesOnCollection() {
+            PropertyInfo property = FindProperty(typeof(Customer1), "Orders2");
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is TableViewFacet);
+            var tableViewFacetFromAnnotation = (TableViewFacet) facet;
+            Assert.AreEqual(false, tableViewFacetFromAnnotation.Title);
+            Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
+            Assert.AreEqual("col3", tableViewFacetFromAnnotation.Columns[0]);
+            Assert.AreEqual("col4", tableViewFacetFromAnnotation.Columns[1]);
+            AssertNoMethodsRemoved();
         }
 
         #region Nested type: Customer1
@@ -87,6 +247,13 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         #endregion
 
+        #region Nested type: Order
+
+// ReSharper disable once ClassNeverInstantiated.Local
+        private class Order { }
+
+        #endregion
+
         #region Setup/Teardown
 
         [TestInitialize]
@@ -102,169 +269,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         #endregion
-
-// ReSharper disable once ClassNeverInstantiated.Local
-        private class Order {}
-
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
-
-        [TestMethod]
-        public void TestTableViewFacetNotPickedUpOnArray() {
-            PropertyInfo property = FindProperty(typeof (Customer2), "Orders");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (ITableViewFacet));
-            Assert.IsNull(facet);
-        }
-
-        [TestMethod]
-        public void TestTableViewFacetNotPickedUpOnArrayAction() {
-            MethodInfo method = FindMethod(typeof (Customer2), "OrdersAction");
-            facetFactory.Process(Reflector, method, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (ITableViewFacet));
-            Assert.IsNull(facet);
-        }
-
-        [TestMethod]
-        public void TestTableViewFacetNotPickedUpOnCollection() {
-            PropertyInfo property = FindProperty(typeof (Customer2), "Orders1");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (ITableViewFacet));
-            Assert.IsNull(facet);
-        }
-
-        [TestMethod]
-        public void TestTableViewFacetNotPickedUpOnCollectionAction() {
-            MethodInfo method = FindMethod(typeof (Customer2), "OrdersAction1");
-            facetFactory.Process(Reflector, method, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (ITableViewFacet));
-            Assert.IsNull(facet);
-        }
-
-        [TestMethod]
-        public void TestTableViewFacetPickedUpOnArray() {
-            PropertyInfo property = FindProperty(typeof (Customer1), "Orders");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (ITableViewFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is TableViewFacet);
-            var tableViewFacetFromAnnotation = (TableViewFacet) facet;
-            Assert.AreEqual(true, tableViewFacetFromAnnotation.Title);
-            Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
-            Assert.AreEqual("col1", tableViewFacetFromAnnotation.Columns[0]);
-            Assert.AreEqual("col2", tableViewFacetFromAnnotation.Columns[1]);
-            AssertNoMethodsRemoved();
-        }
-
-        [TestMethod]
-        public void TestTableViewFacetPickedUpOnArrayAction() {
-            MethodInfo method = FindMethod(typeof (Customer1), "OrdersAction");
-            facetFactory.Process(Reflector, method, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (ITableViewFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is TableViewFacet);
-            var tableViewFacetFromAnnotation = (TableViewFacet) facet;
-            Assert.AreEqual(false, tableViewFacetFromAnnotation.Title);
-            Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
-            Assert.AreEqual("col5", tableViewFacetFromAnnotation.Columns[0]);
-            Assert.AreEqual("col6", tableViewFacetFromAnnotation.Columns[1]);
-            AssertNoMethodsRemoved();
-        }
-
-        [TestMethod]
-        public void TestTableViewFacetPickedUpOnCollection() {
-            PropertyInfo property = FindProperty(typeof (Customer1), "Orders1");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (ITableViewFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is TableViewFacet);
-            var tableViewFacetFromAnnotation = (TableViewFacet) facet;
-            Assert.AreEqual(false, tableViewFacetFromAnnotation.Title);
-            Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
-            Assert.AreEqual("col3", tableViewFacetFromAnnotation.Columns[0]);
-            Assert.AreEqual("col4", tableViewFacetFromAnnotation.Columns[1]);
-            AssertNoMethodsRemoved();
-        }
-
-        [TestMethod]
-        public void TestTableViewFacetPickedUpOnCollectionAction() {
-            MethodInfo method = FindMethod(typeof (Customer1), "OrdersAction1");
-            facetFactory.Process(Reflector, method, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (ITableViewFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is TableViewFacet);
-            var tableViewFacetFromAnnotation = (TableViewFacet) facet;
-            Assert.AreEqual(true, tableViewFacetFromAnnotation.Title);
-            Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
-            Assert.AreEqual("col7", tableViewFacetFromAnnotation.Columns[0]);
-            Assert.AreEqual("col8", tableViewFacetFromAnnotation.Columns[1]);
-            AssertNoMethodsRemoved();
-        }
-
-        [TestMethod]
-        public void TestTableViewFacetPickedUpOnCollectionActionNoColumns() {
-            MethodInfo method = FindMethod(typeof (Customer1), "OrdersAction2");
-            facetFactory.Process(Reflector, method, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (ITableViewFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is TableViewFacet);
-            var tableViewFacetFromAnnotation = (TableViewFacet) facet;
-            Assert.AreEqual(true, tableViewFacetFromAnnotation.Title);
-            Assert.AreEqual(0, tableViewFacetFromAnnotation.Columns.Length);
-            AssertNoMethodsRemoved();
-        }
-
-        [TestMethod]
-        public void TestTableViewFacetPickedUpOnQueryableAction() {
-            MethodInfo method = FindMethod(typeof (Customer1), "OrdersAction3");
-            facetFactory.Process(Reflector, method, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (ITableViewFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is TableViewFacet);
-            var tableViewFacetFromAnnotation = (TableViewFacet) facet;
-            Assert.AreEqual(true, tableViewFacetFromAnnotation.Title);
-            Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
-            Assert.AreEqual("col7", tableViewFacetFromAnnotation.Columns[0]);
-            Assert.AreEqual("col8", tableViewFacetFromAnnotation.Columns[1]);
-            AssertNoMethodsRemoved();
-        }
-
-        [TestMethod]
-        public void TestTableViewFacetIgnoresDuplicatesOnAction() {
-            MethodInfo method = FindMethod(typeof(Customer1), "OrdersAction4");
-            facetFactory.Process(Reflector, method, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is TableViewFacet);
-            var tableViewFacetFromAnnotation = (TableViewFacet)facet;
-            Assert.AreEqual(true, tableViewFacetFromAnnotation.Title);
-            Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
-            Assert.AreEqual("col7", tableViewFacetFromAnnotation.Columns[0]);
-            Assert.AreEqual("col8", tableViewFacetFromAnnotation.Columns[1]);
-            AssertNoMethodsRemoved();
-        }
-
-        [TestMethod]
-        public void TestTableViewFacetIgnoresDuplicatesOnCollection() {
-            PropertyInfo property = FindProperty(typeof(Customer1), "Orders2");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is TableViewFacet);
-            var tableViewFacetFromAnnotation = (TableViewFacet)facet;
-            Assert.AreEqual(false, tableViewFacetFromAnnotation.Title);
-            Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
-            Assert.AreEqual("col3", tableViewFacetFromAnnotation.Columns[0]);
-            Assert.AreEqual("col4", tableViewFacetFromAnnotation.Columns[1]);
-            AssertNoMethodsRemoved();
-        }
 
         // Copyright (c) Naked Objects Group Ltd.
     }

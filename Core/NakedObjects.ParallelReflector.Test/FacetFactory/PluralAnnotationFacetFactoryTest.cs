@@ -19,7 +19,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private PluralAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IPluralFacet)}; }
+            get { return new[] {typeof(IPluralFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -38,8 +38,8 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestPluralAnnotationMethodPickedUpOnClass() {
-            facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IPluralFacet));
+            facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IPluralFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PluralFacetAnnotation);
             var pluralFacet = (PluralFacetAnnotation) facet;
@@ -50,7 +50,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer
 
         [Plural("Some plural name")]
-        private class Customer {}
+        private class Customer { }
 
         #endregion
 

@@ -20,7 +20,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private MaskAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IMaskFacet)}; }
+            get { return new[] {typeof(IMaskFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -30,7 +30,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer
 
         [Mask("###")]
-        private class Customer {}
+        private class Customer { }
 
         #endregion
 
@@ -60,7 +60,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer2 {
 // ReSharper disable once UnusedParameter.Local
-            public void SomeAction([Mask("###")] string foo) {}
+            public void SomeAction([Mask("###")] string foo) { }
         }
 
         private class Customer3 {
@@ -72,7 +72,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer4 {
 // ReSharper disable once UnusedParameter.Local
-            public void SomeAction([Mask("###")] int foo) {}
+            public void SomeAction([Mask("###")] int foo) { }
         }
 
         [TestMethod]
@@ -87,23 +87,23 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestMaskAnnotationNotIgnoredForNonStringsProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer3), "NumberOfOrders");
+            PropertyInfo property = FindProperty(typeof(Customer3), "NumberOfOrders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            Assert.IsNotNull(Specification.GetFacet(typeof (IMaskFacet)));
+            Assert.IsNotNull(Specification.GetFacet(typeof(IMaskFacet)));
         }
 
         [TestMethod]
         public void TestMaskAnnotationNotIgnoredForPrimitiveOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (int)});
+            MethodInfo method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(int)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            Assert.IsNotNull(Specification.GetFacet(typeof (IMaskFacet)));
+            Assert.IsNotNull(Specification.GetFacet(typeof(IMaskFacet)));
         }
 
         [TestMethod]
         public void TestMaskAnnotationPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMaskFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMaskFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaskFacet);
             var maskFacet = (MaskFacet) facet;
@@ -112,8 +112,8 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestMaskAnnotationPickedUpOnClass() {
-            facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMaskFacet));
+            facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IMaskFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaskFacet);
             var maskFacet = (MaskFacet) facet;
@@ -122,9 +122,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestMaskAnnotationPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
+            PropertyInfo property = FindProperty(typeof(Customer1), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMaskFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMaskFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaskFacet);
             var maskFacet = (MaskFacet) facet;

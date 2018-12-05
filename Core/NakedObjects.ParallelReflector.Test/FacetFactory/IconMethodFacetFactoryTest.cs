@@ -23,7 +23,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private IconMethodFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IIconFacet)}; }
+            get { return new[] {typeof(IIconFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -37,6 +37,89 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             INakedObjectManager manager = new Mock<INakedObjectManager>().Object;
             return new NakedObjectAdapter(Metamodel, session, persistor, lifecycleManager, manager, obj, null);
         }
+
+        [TestMethod]
+        public override void TestFeatureTypes() {
+            FeatureType featureTypes = facetFactory.FeatureTypes;
+            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
+        }
+
+        [TestMethod]
+        public void TestIconNameFromAttribute() {
+            facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification);
+            var facet = Specification.GetFacet<IIconFacet>();
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is IconFacetAnnotation);
+            Assert.AreEqual("AttributeName", facet.GetIconName());
+            INakedObjectAdapter no = AdapterFor(new Customer1());
+            Assert.AreEqual("AttributeName", facet.GetIconName(no));
+        }
+
+        [TestMethod]
+        public void TestIconNameFromMethod() {
+            facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification);
+            var facet = Specification.GetFacet<IIconFacet>();
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is IconFacetViaMethod);
+            Assert.IsNull(facet.GetIconName());
+            INakedObjectAdapter no = AdapterFor(new Customer());
+            Assert.AreEqual("TestName", facet.GetIconName(no));
+        }
+
+        [TestMethod]
+        public void TestIconNameMethodPickedUpOnClassAndMethodRemoved() {
+            MethodInfo iconNameMethod = FindMethod(typeof(Customer), "IconName");
+            facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification);
+            var facet = Specification.GetFacet<IIconFacet>();
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is IconFacetViaMethod);
+            AssertMethodRemoved(iconNameMethod);
+        }
+
+        [TestMethod]
+        public void TestIconNameWithFallbackAttribute() {
+            facetFactory.Process(Reflector, typeof(Customer2), MethodRemover, Specification);
+            var facet = Specification.GetFacet<IIconFacet>();
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is IconFacetViaMethod);
+            Assert.AreEqual("AttributeName", facet.GetIconName());
+            INakedObjectAdapter no = AdapterFor(new Customer2());
+            Assert.AreEqual("TestName", facet.GetIconName(no));
+        }
+
+        #region Nested type: Customer
+
+        private class Customer {
+// ReSharper disable once UnusedMember.Local
+            public string IconName() {
+                return "TestName";
+            }
+        }
+
+        #endregion
+
+        #region Nested type: Customer1
+
+        [IconName("AttributeName")]
+        private class Customer1 { }
+
+        #endregion
+
+        #region Nested type: Customer2
+
+        [IconName("AttributeName")]
+        private class Customer2 {
+// ReSharper disable once UnusedMember.Local
+            public string IconName() {
+                return "TestName";
+            }
+        }
+
+        #endregion
 
         #region Setup/Teardown
 
@@ -53,77 +136,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         #endregion
-
-        private class Customer {
-// ReSharper disable once UnusedMember.Local
-            public string IconName() {
-                return "TestName";
-            }
-        }
-
-        [IconName("AttributeName")]
-        private class Customer1 {}
-
-        [IconName("AttributeName")]
-        private class Customer2 {
-// ReSharper disable once UnusedMember.Local
-            public string IconName() {
-                return "TestName";
-            }
-        }
-
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
-
-        [TestMethod]
-        public void TestIconNameFromAttribute() {
-            facetFactory.Process(Reflector, typeof (Customer1), MethodRemover, Specification);
-            var facet = Specification.GetFacet<IIconFacet>();
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is IconFacetAnnotation);
-            Assert.AreEqual("AttributeName", facet.GetIconName());
-            INakedObjectAdapter no = AdapterFor(new Customer1());
-            Assert.AreEqual("AttributeName", facet.GetIconName(no));
-        }
-
-        [TestMethod]
-        public void TestIconNameFromMethod() {
-            facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
-            var facet = Specification.GetFacet<IIconFacet>();
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is IconFacetViaMethod);
-            Assert.IsNull(facet.GetIconName());
-            INakedObjectAdapter no = AdapterFor(new Customer());
-            Assert.AreEqual("TestName", facet.GetIconName(no));
-        }
-
-        [TestMethod]
-        public void TestIconNameMethodPickedUpOnClassAndMethodRemoved() {
-            MethodInfo iconNameMethod = FindMethod(typeof (Customer), "IconName");
-            facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
-            var facet = Specification.GetFacet<IIconFacet>();
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is IconFacetViaMethod);
-            AssertMethodRemoved(iconNameMethod);
-        }
-
-        [TestMethod]
-        public void TestIconNameWithFallbackAttribute() {
-            facetFactory.Process(Reflector, typeof (Customer2), MethodRemover, Specification);
-            var facet = Specification.GetFacet<IIconFacet>();
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is IconFacetViaMethod);
-            Assert.AreEqual("AttributeName", facet.GetIconName());
-            INakedObjectAdapter no = AdapterFor(new Customer2());
-            Assert.AreEqual("TestName", facet.GetIconName(no));
-        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -19,7 +19,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private ValidateProgrammaticUpdatesAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IValidateProgrammaticUpdatesFacet)}; }
+            get { return new[] {typeof(IValidateProgrammaticUpdatesFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -28,16 +28,16 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestApplyValidationNotPickup() {
-            facetFactory.Process(Reflector, typeof (Customer1), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IValidateProgrammaticUpdatesFacet));
+            facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IValidateProgrammaticUpdatesFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
         }
 
         [TestMethod]
         public void TestApplyValidationPickup() {
-            facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IValidateProgrammaticUpdatesFacet));
+            facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IValidateProgrammaticUpdatesFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ValidateProgrammaticUpdatesFacetAnnotation);
             AssertNoMethodsRemoved();
@@ -56,13 +56,13 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer
 
         [ValidateProgrammaticUpdates]
-        private class Customer {}
+        private class Customer { }
 
         #endregion
 
         #region Nested type: Customer1
 
-        private class Customer1 {}
+        private class Customer1 { }
 
         #endregion
 

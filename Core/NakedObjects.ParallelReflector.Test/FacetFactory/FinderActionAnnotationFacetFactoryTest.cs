@@ -20,12 +20,60 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private FinderActionFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IFinderActionFacet)}; }
+            get { return new[] {typeof(IFinderActionFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
         }
+
+        [TestMethod]
+        public void TestFinderActionFacetNullByDefault() {
+            MethodInfo actionMethod = FindMethod(typeof(Customer), "SomeAction");
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IExecutedFacet));
+            Assert.IsNull(facet);
+            AssertNoMethodsRemoved();
+        }
+
+        [TestMethod]
+        public void TestFinderActionAnnotationPickedUp() {
+            MethodInfo actionMethod = FindMethod(typeof(Customer1), "SomeAction");
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IFinderActionFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is FinderActionFacet);
+            AssertNoMethodsRemoved();
+        }
+
+        [TestMethod]
+        public override void TestFeatureTypes() {
+            FeatureType featureTypes = facetFactory.FeatureTypes;
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
+            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
+        }
+
+        #region Nested type: Customer
+
+        private class Customer {
+// ReSharper disable once UnusedMember.Local
+            public void SomeAction() { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            [FinderAction]
+// ReSharper disable once UnusedMember.Local
+            public void SomeAction() { }
+        }
+
+        #endregion
 
         #region Setup/Teardown
 
@@ -42,46 +90,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         #endregion
-
-        private class Customer {
-// ReSharper disable once UnusedMember.Local
-            public void SomeAction() {}
-        }
-
-        private class Customer1 {
-            [FinderAction]
-// ReSharper disable once UnusedMember.Local
-            public void SomeAction() {}
-        }
-
-        [TestMethod]
-        public void TestFinderActionFacetNullByDefault() {
-            MethodInfo actionMethod = FindMethod(typeof (Customer), "SomeAction");
-            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IExecutedFacet));
-            Assert.IsNull(facet);
-            AssertNoMethodsRemoved();
-        }
-
-        [TestMethod]
-        public void TestFinderActionAnnotationPickedUp() {
-            MethodInfo actionMethod = FindMethod(typeof (Customer1), "SomeAction");
-            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IFinderActionFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is FinderActionFacet);
-            AssertNoMethodsRemoved();
-        }
-
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

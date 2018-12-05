@@ -19,7 +19,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private BoundedAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IBoundedFacet)}; }
+            get { return new[] {typeof(IBoundedFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -28,8 +28,8 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestBoundedAnnotationPickedUpOnClass() {
-            facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IBoundedFacet));
+            facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IBoundedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is BoundedFacet);
             AssertNoMethodsRemoved();
@@ -48,7 +48,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer
 
         [Bounded]
-        private class Customer {}
+        private class Customer { }
 
         #endregion
 

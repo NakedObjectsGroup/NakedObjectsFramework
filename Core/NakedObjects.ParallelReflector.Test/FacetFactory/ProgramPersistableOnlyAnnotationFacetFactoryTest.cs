@@ -19,7 +19,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private ProgramPersistableOnlyAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IProgramPersistableOnlyFacet)}; }
+            get { return new[] {typeof(IProgramPersistableOnlyFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -38,16 +38,16 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestProgramPersistableOnlyNotPickup() {
-            facetFactory.Process(Reflector, typeof (Customer1), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IProgramPersistableOnlyFacet));
+            facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IProgramPersistableOnlyFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
         }
 
         [TestMethod]
         public void TestProgramPersistableOnlyPickup() {
-            facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IProgramPersistableOnlyFacet));
+            facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IProgramPersistableOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ProgramPersistableOnly);
             AssertNoMethodsRemoved();
@@ -56,13 +56,13 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer
 
         [ProgramPersistableOnly]
-        private class Customer {}
+        private class Customer { }
 
         #endregion
 
         #region Nested type: Customer1
 
-        private class Customer1 {}
+        private class Customer1 { }
 
         #endregion
 

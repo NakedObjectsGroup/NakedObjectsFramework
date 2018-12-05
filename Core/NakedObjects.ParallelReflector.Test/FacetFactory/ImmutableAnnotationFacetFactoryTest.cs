@@ -19,7 +19,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private ImmutableAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IImmutableFacet)}; }
+            get { return new[] {typeof(IImmutableFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -27,8 +27,8 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         public void TestImmutableAnnotationPickedUpOnClassAndDefaultsToAlways() {
-            facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IImmutableFacet));
+            facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IImmutableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
             var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;
@@ -37,8 +37,8 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         public void TestImmutableAnnotationAlwaysPickedUpOnClass() {
-            facetFactory.Process(Reflector, typeof (Customer1), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IImmutableFacet));
+            facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IImmutableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
             var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;
@@ -47,8 +47,8 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         public void TestImmutableAnnotationNeverPickedUpOnClass() {
-            facetFactory.Process(Reflector, typeof (Customer2), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IImmutableFacet));
+            facetFactory.Process(Reflector, typeof(Customer2), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IImmutableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
             var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;
@@ -68,8 +68,8 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestImmutableAnnotationOncePersistedPickedUpOnClass() {
-            facetFactory.Process(Reflector, typeof (Customer3), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IImmutableFacet));
+            facetFactory.Process(Reflector, typeof(Customer3), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IImmutableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
             var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;
@@ -79,8 +79,8 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestImmutableAnnotationUntilPersistedPickedUpOnClass() {
-            facetFactory.Process(Reflector, typeof (Customer4), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IImmutableFacet));
+            facetFactory.Process(Reflector, typeof(Customer4), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IImmutableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
             var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;
@@ -91,35 +91,35 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer
 
         [Immutable]
-        private class Customer {}
+        private class Customer { }
 
         #endregion
 
         #region Nested type: Customer1
 
         [Immutable(WhenTo.Always)]
-        private class Customer1 {}
+        private class Customer1 { }
 
         #endregion
 
         #region Nested type: Customer2
 
         [Immutable(WhenTo.Never)]
-        private class Customer2 {}
+        private class Customer2 { }
 
         #endregion
 
         #region Nested type: Customer3
 
         [Immutable(WhenTo.OncePersisted)]
-        private class Customer3 {}
+        private class Customer3 { }
 
         #endregion
 
         #region Nested type: Customer4
 
         [Immutable(WhenTo.UntilPersisted)]
-        private class Customer4 {}
+        private class Customer4 { }
 
         #endregion
 

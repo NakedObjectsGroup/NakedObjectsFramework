@@ -20,7 +20,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private OptionalAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IMandatoryFacet)}; }
+            get { return new[] {typeof(IMandatoryFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -53,7 +53,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer2 {
 // ReSharper disable once UnusedParameter.Local
-            public void SomeAction([Optionally] string foo) {}
+            public void SomeAction([Optionally] string foo) { }
         }
 
         private class Customer3 {
@@ -65,7 +65,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer4 {
 // ReSharper disable once UnusedParameter.Local
-            public void SomeAction([Optionally] int foo) {}
+            public void SomeAction([Optionally] int foo) { }
         }
 
         [TestMethod]
@@ -80,32 +80,32 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestOptionalAnnotationIgnoredForPrimitiveOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (int)});
+            MethodInfo method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(int)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            Assert.IsNull(Specification.GetFacet(typeof (IMandatoryFacet)));
+            Assert.IsNull(Specification.GetFacet(typeof(IMandatoryFacet)));
         }
 
         [TestMethod]
         public void TestOptionalAnnotationIgnoredForPrimitiveOnProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer3), "NumberOfOrders");
+            PropertyInfo property = FindProperty(typeof(Customer3), "NumberOfOrders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            Assert.IsNull(Specification.GetFacet(typeof (IMandatoryFacet)));
+            Assert.IsNull(Specification.GetFacet(typeof(IMandatoryFacet)));
         }
 
         [TestMethod]
         public void TestOptionalAnnotationPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMandatoryFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is OptionalFacet);
         }
 
         [TestMethod]
         public void TestOptionalAnnotationPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
+            PropertyInfo property = FindProperty(typeof(Customer1), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMandatoryFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is OptionalFacet);
         }
