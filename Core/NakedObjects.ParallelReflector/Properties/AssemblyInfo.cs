@@ -13,12 +13,12 @@ using System.Runtime.CompilerServices;
 // associated with an assembly.
 
 #if DEBUG
-[assembly: AssemblyTitle("Naked Objects Reflector (Debug)")]
+[assembly: AssemblyTitle("Naked Objects ParallelReflector (Debug)")]
 #else
-[assembly: AssemblyTitle("Naked Objects Reflector (Release)")]
+[assembly: AssemblyTitle("Naked Objects ParallelReflector (Release)")]
 #endif
 
-[assembly: InternalsVisibleTo("NakedObjects.Reflector.Test")]
+[assembly: InternalsVisibleTo("NakedObjects.ParallelReflector.Test")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Naked Objects Group")]

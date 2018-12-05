@@ -21,6 +21,7 @@ using System.Runtime.InteropServices;
 
 [assembly: InternalsVisibleTo("NakedObjects.Metamodel.Test")]
 [assembly: InternalsVisibleTo("NakedObjects.Reflector.Test")]
+[assembly: InternalsVisibleTo("NakedObjects.ParallelReflector.Test")]
 [assembly: InternalsVisibleTo("NakedObjects.Reflector")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
