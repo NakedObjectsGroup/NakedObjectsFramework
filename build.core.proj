@@ -80,6 +80,7 @@
     <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Entity.Test\*.fsproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Metamodel.Test\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Reflector.Test\*.csproj"/>
+    <FWTFiles Include="$(CorePath)\NakedObjects.ParallelReflector.Test\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Snapshot.Xml.Test\*.fsproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Snapshot.Xml.Test.Data\*.fsproj"/>
   </ItemGroup>
@@ -209,6 +210,7 @@
 
     <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(CorePath)\NakedObjects.Metamodel.Test\bin\%(Configuration.Identity)\NakedObjects.Metamodel.Test.dll" /resultsfile:$(TestResultsPath)\NakedObjects.Metamodel.Test.trx' />
     <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(CorePath)\NakedObjects.Reflector.Test\bin\%(Configuration.Identity)\NakedObjects.Reflector.Test.dll" /resultsfile:$(TestResultsPath)\NakedObjects.Reflector.Test.trx' />
+    <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(CorePath)\NakedObjects.ParallelReflector.Test\bin\%(Configuration.Identity)\NakedObjects.ParallelReflector.Test.dll" /resultsfile:$(TestResultsPath)\NakedObjects.Reflector.Test.trx' />
 
     <NUnit Assemblies="$(CorePath)\NakedObjects.Core.Test\bin\%(Configuration.Identity)\NakedObjects.Core.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Core.Test.xml" />
     <NUnit Assemblies="$(CorePath)\NakedObjects.Persistor.Entity.Test\bin\%(Configuration.Identity)\NakedObjects.Persistor.Entity.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Persistor.Entity.Test.xml" />
