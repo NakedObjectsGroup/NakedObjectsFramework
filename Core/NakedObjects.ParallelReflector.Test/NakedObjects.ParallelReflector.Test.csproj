@@ -8,8 +8,8 @@
     <ProjectGuid>{906B053D-72D1-45EC-A402-D3D152831A8B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NakedObjects.Reflector</RootNamespace>
-    <AssemblyName>NakedObjects.Reflector.Test</AssemblyName>
+    <RootNamespace>NakedObjects.ParallelReflect</RootNamespace>
+    <AssemblyName>NakedObjects.ParallelReflector.Test</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
