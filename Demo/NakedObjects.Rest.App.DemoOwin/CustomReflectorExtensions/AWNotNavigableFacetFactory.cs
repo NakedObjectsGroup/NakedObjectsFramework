@@ -59,7 +59,7 @@ namespace AWCustom {
             : base(numericOrder, FeatureType.Properties) { }
 
 
-        public override ImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, ImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
 
             if (property.PropertyType.IsAssignableFrom(typeof(ContactType))) {
                 FacetUtils.AddFacet(new NotNavigableFacet(specification));
