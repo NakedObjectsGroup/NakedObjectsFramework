@@ -6,7 +6,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{A3921997-B0F2-4DA2-8433-E82581ACFA07}</ProjectGuid>
+    <ProjectGuid>{E2995CFC-CC68-43D2-98B3-35BF73B45777}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NakedObjects.SystemTest</RootNamespace>
@@ -112,12 +112,18 @@
     <Reference Include="NakedObjects.MvcResources">
       <HintPath>Assemblies\NakedObjects.MvcResources.dll</HintPath>
     </Reference>
+    <Reference Include="NakedObjects.ParallelReflector, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NakedObjects.Core.10.0.0-beta01\lib\net451\NakedObjects.ParallelReflector.dll</HintPath>
+    </Reference>
     <Reference Include="NakedObjects.Persistor.Entity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NakedObjects.Core.10.0.0-beta01\lib\net451\NakedObjects.Persistor.Entity.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.PMResources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.4\lib\net40\NakedObjects.PMResources.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="NakedObjects.Reflector, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NakedObjects.Core.10.0.0-beta01\lib\net451\NakedObjects.Reflector.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Snapshot.Xml, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NakedObjects.Core.10.0.0-beta01\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>
@@ -128,9 +134,6 @@
     </Reference>
     <Reference Include="NakedObjects.Unity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NakedObjects.Core.10.0.0-beta01\lib\net451\NakedObjects.Unity.dll</HintPath>
-    </Reference>
-    <Reference Include="NakedObjects.Xat, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NakedObjects.Xat.10.0.0-beta01\lib\net451\NakedObjects.Xat.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -420,14 +423,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\NakedObjects.ParallelReflector\NakedObjects.ParallelReflector.csproj">
-      <Project>{e2a9ccd2-bdca-4957-a0ac-51e736f4c33b}</Project>
-      <Name>NakedObjects.ParallelReflector</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\NakedObjects.Reflector\NakedObjects.Reflector.csproj">
-      <Project>{91153c56-313c-426e-8b0d-43fa39bd567a}</Project>
-      <Name>NakedObjects.Reflector</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Samples\AdventureWorksModel\AdventureWorksModel.csproj">
       <Project>{FDDBA108-8B58-40C6-A375-FFB92B1933DD}</Project>
       <Name>AdventureWorksModel</Name>
