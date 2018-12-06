@@ -274,7 +274,7 @@ param($rootPath, $toolsPath, $package, $project)
 		# update dependencies 
 
 		# determine valid version range for dependent packages (i.e. exclude next major version)
-		[string] $major = $NewVersion.Substring(0,1)
+		[string] $major = $NewVersion.Substring(0, $NewVersion.IndexOf("."))
 		[int] $majorNext = ([int] $major) + 1
 		[string] $range = "["+$NewVersion+ ", "+$majorNext+")"
 
