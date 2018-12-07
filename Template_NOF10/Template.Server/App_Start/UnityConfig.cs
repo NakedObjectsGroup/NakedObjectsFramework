@@ -57,9 +57,9 @@ namespace Template.Server.App_Start
             // container.LoadConfiguration();
             //Standard configuration
             try {
-                StandardUnityConfig.RegisterStandardFacetFactories(container);
-                StandardUnityConfig.RegisterCoreContainerControlledTypes(container);
-                StandardUnityConfig.RegisterCorePerTransactionTypes<PerResolveLifetimeManager>(container);
+                ParallelUnityConfig.RegisterStandardFacetFactories(container);
+                ParallelUnityConfig.RegisterCoreContainerControlledTypes(container);
+                ParallelUnityConfig.RegisterCorePerTransactionTypes<PerResolveLifetimeManager>(container);
 
                 // config 
                 container.RegisterInstance<IReflectorConfiguration>(NakedObjectsRunSettings.ReflectorConfig(), (new ContainerControlledLifetimeManager()));
