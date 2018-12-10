@@ -257,7 +257,7 @@ export abstract class FieldComponent implements OnDestroy {
         const fileReader = new FileReader();
         fileReader.onloadend = () => {
             const link = new Models.Link({
-                href: fileReader.result,
+                href: fileReader.result as string,
                 type: file.type,
                 title: file.name
             });

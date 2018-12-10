@@ -36,7 +36,7 @@ export class AttachmentViewModel {
                 const reader = new FileReader();
                 reader.onloadend = () => {
                     if (reader.result) {
-                        setImageOn.image = reader.result;
+                        setImageOn.image = reader.result as string;
                     }
                 };
                 reader.readAsDataURL(blob);
