@@ -55,9 +55,11 @@ namespace NakedObjects.Selenium {
             RightClickOnImage();
         }
 
-        //[TestMethod] 
+        [TestMethod]
         [Priority(-1)]
-        public void ProblematicTests() { }
+        public void ProblematicTests() {
+            EmptyImageProperty();
+        }
     }
 
     //[TestClass]
