@@ -228,12 +228,14 @@ namespace NakedObjects.Selenium {
             ZeroParamReturnsObject();
             ZeroParamReturnsCollection();
             ZeroParamReturnsEmptyCollection();
-            DialogActionOK();
+            
         }
 
-        //[TestMethod]
+        [TestMethod]
         [Priority(-1)]
-        public void ProblematicTests() { }
+        public void ProblematicTests() {
+            DialogActionOK();
+        }
     }
 
     //[TestClass]
