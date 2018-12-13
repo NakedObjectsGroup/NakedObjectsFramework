@@ -30,6 +30,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "prepackage": "node prepackage.js",
+    "build:restful-objects": "rimraf dist/restful-objects && ng-packagr -p restful-objects/package.json",
     "build:app": "cpr dist/nakedobjects-lib src/@nakedobjects/lib && ng build packages --no-progress && rimraf src/@nakedobjects",
     "build:lib": "rimraf dist && ng-packagr -p nakedobjects-lib/package.json"
   },

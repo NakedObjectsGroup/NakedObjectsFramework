@@ -1,0 +1,58 @@
+{
+    "ngPackage": {
+        "$schema": "./node_modules/ng-packagr/package.schema.json",
+        "lib": {
+            "entryFile": "src/public_api.ts",
+            "umdModuleIds": {
+                "lodash": "_"
+            }
+        },
+        "whitelistedNonPeerDependencies": [
+            "lodash",
+            "lodash-es"
+        ],
+        "dest": "../dist/restful-objects"
+    },
+    "name": "@nakedobjects/restful-objects",
+    "version": "10.0.0-beta.5",
+    "description": "Single Page Application client for a Naked Objects application.",
+    "license": "Apache-2.0",
+    "author": "Richard Pawson <rpawson@nakedobjects.org>",
+    "bugs": "https://github.com/NakedObjectsGroup/NakedObjectsFramework/issues",
+    "homepage": "https://github.com/NakedObjectsGroup/NakedObjectsFramework",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/NakedObjectsGroup/NakedObjectsFramework.git"
+    },
+    "angular-cli": {},
+    "keywords": [
+        "rest",
+        "restful",
+        "objects",
+        "naked",
+        "nakedobjects",
+        "ddd",
+        "domain",
+        "driven",
+        "design",
+        "api"
+    ],
+    "scripts": {
+        "ng": "ng",
+        "start": "ng serve",
+        "build": "ng build --prod",
+        "test": "ng test",
+        "lint": "ng lint",
+        "e2e": "ng e2e"
+    },
+    "dependencies": {
+        "lodash": "4.17.11",
+        "lodash-es": "4.17.11"
+    },
+    "devDependencies": {
+        "@types/lodash": "^4.14.118",
+        "@types/lodash-es": "4.17.1",
+        "tslint": "~5.11.0",
+        "typescript": "3.1.6"
+    }
+}
