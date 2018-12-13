@@ -19,6 +19,7 @@ import uniqWith from 'lodash-es/uniqWith';
 import { ILocalFilter } from '../mask.service';
 import { ConfigService } from '../config.service';
 import * as Validate from '../validate';
+import { ErrorWrapper } from '../error.wrapper';
 
 export function copy(event: KeyboardEvent, item: IDraggableViewModel, context: ContextService) {
     const cKeyCode = 67;
@@ -139,7 +140,7 @@ export function drop(context: ContextService, error: ErrorService, vm: FieldView
             }
             return false;
         }).
-        catch((reject: Models.ErrorWrapper) => error.handleError(reject));
+        catch((reject: ErrorWrapper) => error.handleError(reject));
 }
 
 function validateAgainstType(model: Models.IHasExtensions, modelValue: string | ChoiceViewModel | string[] | ChoiceViewModel[], viewValue: string, localFilter: ILocalFilter): string {

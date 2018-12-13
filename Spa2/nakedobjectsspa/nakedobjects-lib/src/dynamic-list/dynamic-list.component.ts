@@ -10,6 +10,7 @@ import { ErrorService } from '../error.service';
 import { IActionHolder } from '../action/action.component';
 import * as Models from '../models';
 import { ConfigService } from '../config.service';
+import { ErrorWrapper } from '../error.wrapper';
 
 @Component({
     selector: 'nof-dynamic-list',
@@ -62,7 +63,7 @@ export class DynamicListComponent extends PaneComponent implements OnDestroy {
 
         recreate()
             .then(() => this.setup(this.cachedRouteData))
-            .catch((reject: Models.ErrorWrapper) => {
+            .catch((reject: ErrorWrapper) => {
                 this.error.handleError(reject);
             });
     }
@@ -101,7 +102,7 @@ export class DynamicListComponent extends PaneComponent implements OnDestroy {
             this.getActionExtensions(routeData)
                 .then((ext: Models.Extensions) =>
                     this.title = ext.friendlyName())
-                .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+                .catch((reject: ErrorWrapper) => this.error.handleError(reject));
 
         }
     }

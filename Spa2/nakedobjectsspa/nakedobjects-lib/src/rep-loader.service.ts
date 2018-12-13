@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import * as Models from './models';
 import * as Ro from './ro-interfaces';
-import { Subject ,  Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { ConfigService } from './config.service';
 import { SimpleLruCache } from './simple-lru-cache';
-
 import { Dictionary } from 'lodash';
 import each from 'lodash-es/each';
 import reduce from 'lodash-es/reduce';
 import { HttpClient, HttpRequest, HttpHeaders, HttpParams, HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { ErrorCategory, HttpStatusCode, ClientErrorCode } from './constants';
+import { ErrorWrapper } from './error.wrapper';
 
 class RequestOptions {
 
@@ -94,9 +95,9 @@ export class RepLoaderService {
     // use our own LRU cache
     private cache = new SimpleLruCache(this.configService.config.httpCacheDepth);
 
-    private handleInvalidResponse(rc: Models.ErrorCategory) {
-        const rr = new Models.ErrorWrapper(rc,
-            Models.ClientErrorCode.ConnectionProblem,
+    private handleInvalidResponse(rc: ErrorCategory) {
+        const rr = new ErrorWrapper(rc,
+            ClientErrorCode.ConnectionProblem,
             'The response from the client was not parseable as a RestfulObject json Representation ');
 
         return Promise.reject(rr);
@@ -108,48 +109,48 @@ export class RepLoaderService {
     }
 
     private handleError(response: HttpErrorResponse, originalUrl: string) {
-        let category: Models.ErrorCategory;
+        let category: ErrorCategory;
         let error: Models.ErrorRepresentation | Models.ErrorMap | string;
 
-        if (response.status === Models.HttpStatusCode.InternalServerError) {
+        if (response.status === HttpStatusCode.InternalServerError) {
             // this error should contain an error representatation
             const errorRep = new Models.ErrorRepresentation();
                 if (Models.isErrorRepresentation(response.error)) {
                 errorRep.populate(response.error as Ro.IErrorRepresentation);
-                category = Models.ErrorCategory.HttpServerError;
+                category = ErrorCategory.HttpServerError;
                 error = errorRep;
             } else {
-                return this.handleInvalidResponse(Models.ErrorCategory.HttpServerError);
+                return this.handleInvalidResponse(ErrorCategory.HttpServerError);
             }
         } else if (response.status <= 0) {
             // failed to connect
-            category = Models.ErrorCategory.ClientError;
+            category = ErrorCategory.ClientError;
             error = `Failed to connect to server: ${response.url || 'unknown'}`;
         } else {
-            category = Models.ErrorCategory.HttpClientError;
+            category = ErrorCategory.HttpClientError;
             const message = (response.headers && response.headers.get('warning')) || 'Unknown client HTTP error';
 
-            if (response.status === Models.HttpStatusCode.BadRequest ||
-                response.status === Models.HttpStatusCode.UnprocessableEntity) {
+            if (response.status === HttpStatusCode.BadRequest ||
+                response.status === HttpStatusCode.UnprocessableEntity) {
                 // these errors should contain a map
                 error = new Models.ErrorMap(response.error as Ro.IValueMap | Ro.IObjectOfType,
                     response.status,
                     message);
-            } else if (response.status === Models.HttpStatusCode.NotFound && this.isObjectUrl(originalUrl)) {
+            } else if (response.status === HttpStatusCode.NotFound && this.isObjectUrl(originalUrl)) {
                 // were looking for an object an got not found - object may be deleted
                 // treat as http problem.
-                category = Models.ErrorCategory.HttpClientError;
+                category = ErrorCategory.HttpClientError;
                 error = `Failed to connect to server: ${response.url || 'unknown'}`;
-            } else if (response.status === Models.HttpStatusCode.NotFound) {
+            } else if (response.status === HttpStatusCode.NotFound) {
                 // general not found other than object - assume client programming error
-                category = Models.ErrorCategory.ClientError;
+                category = ErrorCategory.ClientError;
                 error = `Failed to connect to server: ${response.url || 'unknown'}`;
             } else {
                 error = message;
             }
         }
 
-        const rr = new Models.ErrorWrapper(category, response.status as Models.HttpStatusCode, error, originalUrl);
+        const rr = new ErrorWrapper(category, response.status as HttpStatusCode, error, originalUrl);
 
         return Promise.reject(rr);
     }
@@ -223,7 +224,7 @@ export class RepLoaderService {
                 this.loadingCountSource.next(--(this.loadingCount));
 
                 if (!this.isValidResponse(r.body)) {
-                    return this.handleInvalidResponse(Models.ErrorCategory.ClientError);
+                    return this.handleInvalidResponse(ErrorCategory.ClientError);
                 }
 
                 const representation = this.handleRedirectedObject(response, r.body!);

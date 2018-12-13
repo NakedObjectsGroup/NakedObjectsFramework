@@ -24,6 +24,8 @@ import first from 'lodash-es/first';
 import some from 'lodash-es/some';
 import values from 'lodash-es/values';
 import toArray from 'lodash-es/toArray';
+import { ErrorCategory, HttpStatusCode } from '../constants';
+import { ErrorWrapper } from '../error.wrapper';
 
 export abstract class ContributedActionParentViewModel extends MessageViewModel {
 
@@ -58,11 +60,11 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
 
             const selected = filter(this.items, i => i.selected);
 
-            const rejectAsNeedSelection = (action: Models.ActionRepresentation | Models.InvokableActionMember): Models.ErrorWrapper | null => {
+            const rejectAsNeedSelection = (action: Models.ActionRepresentation | Models.InvokableActionMember): ErrorWrapper | null => {
                 if (this.isLocallyContributed(action)) {
                     if (selected.length === 0) {
                         const em = new Models.ErrorMap({}, 0, Msg.noItemsSelected);
-                        const rp = new Models.ErrorWrapper(Models.ErrorCategory.HttpClientError, Models.HttpStatusCode.UnprocessableEntity, em);
+                        const rp = new ErrorWrapper(ErrorCategory.HttpClientError, HttpStatusCode.UnprocessableEntity, em);
                         return rp;
                     }
                 }
@@ -124,7 +126,7 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
 
         showDialog().
             then(show => actionViewModel.doInvoke = show ? actionViewModel.invokeWithDialog : invokeWithoutDialog).
-            catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+            catch((reject: ErrorWrapper) => this.error.handleError(reject));
     }
 
     protected decorate(actionViewModel: ActionViewModel) {

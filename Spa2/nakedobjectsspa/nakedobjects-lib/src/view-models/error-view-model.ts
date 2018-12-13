@@ -1,8 +1,9 @@
-﻿import * as Models from '../models';
+﻿import { ErrorCategory, HttpStatusCode } from '../constants';
+import { ErrorWrapper } from '../error.wrapper';
 
 export class ErrorViewModel {
 
-    constructor(error: Models.ErrorWrapper | null) {
+    constructor(error: ErrorWrapper | null) {
         this.originalError = error;
         if (error) {
             this.title = error.title;
@@ -14,8 +15,8 @@ export class ErrorViewModel {
             this.stackTrace = stackTrace && stackTrace.length !== 0 ? stackTrace : null;
 
             this.isConcurrencyError =
-                error.category === Models.ErrorCategory.HttpClientError &&
-                error.httpErrorCode === Models.HttpStatusCode.PreconditionFailed;
+                error.category === ErrorCategory.HttpClientError &&
+                error.httpErrorCode === HttpStatusCode.PreconditionFailed;
         }
 
         this.description = this.description || 'No description available';
@@ -24,7 +25,7 @@ export class ErrorViewModel {
         this.stackTrace = this.stackTrace || ['No stack trace available'];
     }
 
-    readonly originalError: Models.ErrorWrapper | null;
+    readonly originalError: ErrorWrapper | null;
     readonly title: string;
     readonly message: string;
     readonly stackTrace: string[] | null;

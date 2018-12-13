@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { CustomComponentConfigService } from './custom-component-config.service';
 import { ObjectComponent } from './object/object.component';
-import * as Models from './models';
 import { ViewType } from './route-data';
 import { ListComponent } from './list/list.component';
 import { Type } from '@angular/core/src/type';
 import { TypeResultCache } from './type-result-cache';
 import { ContextService } from './context.service';
 import { ErrorComponent } from './error/error.component';
+import { ErrorCategory, HttpStatusCode, ClientErrorCode } from './constants';
 
 export interface ICustomComponentConfigurator {
     addType: (type: string, result: Type<any>) => void;
@@ -20,7 +20,7 @@ export interface ICustomComponentConfigurator {
 }
 
 export interface ICustomErrorComponentConfigurator {
-    addError(rc: Models.ErrorCategory, code: Models.HttpStatusCode | Models.ClientErrorCode, result: Type<any>): void;
+    addError(rc: ErrorCategory, code: HttpStatusCode | ClientErrorCode, result: Type<any>): void;
 }
 
 class CustomComponentCache extends TypeResultCache<Type<any>> implements ICustomComponentConfigurator {
@@ -50,8 +50,8 @@ export class CustomComponentService implements ICustomErrorComponentConfigurator
 
     private readonly customComponentCaches: CustomComponentCache[] = [];
 
-    private getErrorKey(rc: Models.ErrorCategory, code: Models.HttpStatusCode | Models.ClientErrorCode) {
-        const key = `${Models.ErrorCategory[rc]}-${rc === Models.ErrorCategory.ClientError ? Models.ClientErrorCode[code] : Models.HttpStatusCode[code]}`;
+    private getErrorKey(rc: ErrorCategory, code: HttpStatusCode | ClientErrorCode) {
+        const key = `${ErrorCategory[rc]}-${rc === ErrorCategory.ClientError ? ClientErrorCode[code] : HttpStatusCode[code]}`;
         return key;
     }
 
@@ -59,12 +59,12 @@ export class CustomComponentService implements ICustomErrorComponentConfigurator
         return this.customComponentCaches[viewType].getResult(domainType);
     }
 
-    getCustomErrorComponent(rc: Models.ErrorCategory, code: Models.HttpStatusCode | Models.ClientErrorCode) {
+    getCustomErrorComponent(rc: ErrorCategory, code: HttpStatusCode | ClientErrorCode) {
         const key = this.getErrorKey(rc, code);
         return this.customComponentCaches[ViewType.Error].getResult(key);
     }
 
-    addError(rc: Models.ErrorCategory, code: Models.HttpStatusCode | Models.ClientErrorCode, result: Type<any>) {
+    addError(rc: ErrorCategory, code: HttpStatusCode | ClientErrorCode, result: Type<any>) {
         const key = this.getErrorKey(rc, code);
         this.customComponentCaches[ViewType.Error].addType(key, result);
     }

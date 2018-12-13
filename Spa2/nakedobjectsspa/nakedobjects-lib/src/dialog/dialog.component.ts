@@ -21,6 +21,7 @@ import forEach from 'lodash-es/forEach';
 import some from 'lodash-es/some';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { safeUnsubscribe, createForm } from '../helpers-components';
+import { ErrorWrapper } from '../error.wrapper';
 
 @Component({
     selector: 'nof-dialog',
@@ -178,7 +179,7 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
                             this.createForm(dialogViewModel);
                         }
                     })
-                    .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+                    .catch((reject: ErrorWrapper) => this.error.handleError(reject));
             } else {
                 this.closeExistingDialog();
             }

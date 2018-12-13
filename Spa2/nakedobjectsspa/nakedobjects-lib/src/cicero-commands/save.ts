@@ -4,7 +4,7 @@ import * as Models from '../models';
 import * as Usermessages from '../user-messages';
 import * as Routedata from '../route-data';
 import { Dictionary } from 'lodash';
-
+import { ErrorWrapper } from '../error.wrapper';
 import forEach from 'lodash-es/forEach';
 import zipObject from 'lodash-es/zipObject';
 
@@ -51,7 +51,7 @@ export class Save extends Command {
 
             return saveOrUpdate(obj, propMap, 1, true).then(() => {
                 return this.returnResult(null, null);
-            }).catch((reject: Models.ErrorWrapper) => {
+            }).catch((reject: ErrorWrapper) => {
                 if (reject.error instanceof Models.ErrorMap) {
                     const propFriendlyName = (propId: string) => Models.friendlyNameForProperty(obj, propId);
                     return this.handleErrorResponse(reject.error, propFriendlyName);

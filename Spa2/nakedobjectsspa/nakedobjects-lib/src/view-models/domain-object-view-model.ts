@@ -25,6 +25,7 @@ import zipObject from 'lodash-es/zipObject';
 import fromPairs from 'lodash-es/fromPairs';
 import values from 'lodash-es/values';
 import mapValues from 'lodash-es/mapValues';
+import { ErrorWrapper } from '../error.wrapper';
 
 export class DomainObjectViewModel extends MessageViewModel implements IMenuHolderViewModel {
 
@@ -84,7 +85,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
 
     private readonly validateHandler = () => this.domainObject.isTransient() ? this.contextService.validateSaveObject : this.contextService.validateUpdateObject;
 
-    private handleWrappedError(reject: Models.ErrorWrapper) {
+    private handleWrappedError(reject: ErrorWrapper) {
         const display = (em: Models.ErrorMap) => Helpers.handleErrorResponse(em, this, this.properties);
         this.error.handleErrorAndDisplayMessages(reject, display);
     }
@@ -105,7 +106,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
             const parmValueMap = mapValues(a.invokableActionRep.parameters(), p => ({ parm: p, value: prps[p.id()] }));
             const allpps = map(parmValueMap, o => this.viewModelFactory.parameterViewModel(o.parm, o.value, this.onPaneId));
             return wrappedInvoke(allpps, right)
-                .catch((reject: Models.ErrorWrapper) => {
+                .catch((reject: ErrorWrapper) => {
                     this.handleWrappedError(reject);
                     return Promise.reject(reject);
                 });
@@ -157,7 +158,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
 
         this.colorService.toColorNumberFromType(this.domainObject.domainType())
             .then(c => this.color = `${this.configService.config.objectColor}${c}`)
-            .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+            .catch((reject: ErrorWrapper) => this.error.handleError(reject));
 
         this.resetMessage();
 
@@ -182,7 +183,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
                 const em = new Models.ErrorMap({}, 0, Msg.concurrencyMessage);
                 Helpers.handleErrorResponse(em, this, this.properties);
             })
-            .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+            .catch((reject: ErrorWrapper) => this.error.handleError(reject));
     }
 
     readonly clientValid = () => every(this.properties, p => p.clientValid);
@@ -214,7 +215,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
                 onSuccess();
                 this.reset(obj, this.urlManager.getRouteData().pane(this.onPaneId) !, true);
             })
-            .catch((reject: Models.ErrorWrapper) => this.handleWrappedError(reject));
+            .catch((reject: ErrorWrapper) => this.handleWrappedError(reject));
     }
 
     readonly currentPaneData = () => this.urlManager.getRouteData().pane(this.onPaneId) !;
@@ -227,7 +228,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
                 this.resetMessage();
                 return true;
             })
-            .catch((reject: Models.ErrorWrapper) => {
+            .catch((reject: ErrorWrapper) => {
                 this.handleWrappedError(reject);
                 return Promise.reject(false);
             });
@@ -242,14 +243,14 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
                 this.urlManager.pushUrlState(this.onPaneId);
                 this.urlManager.setInteractionMode(InteractionMode.Edit, this.onPaneId);
             })
-            .catch((reject: Models.ErrorWrapper) => this.handleWrappedError(reject));
+            .catch((reject: ErrorWrapper) => this.handleWrappedError(reject));
     }
 
     readonly doReload = () => {
         this.clearCachedFiles();
         this.contextService.reloadObject(this.onPaneId, this.domainObject)
             .then((updatedObject: Models.DomainObjectRepresentation) => this.reset(updatedObject, this.currentPaneData(), true))
-            .catch((reject: Models.ErrorWrapper) => this.handleWrappedError(reject));
+            .catch((reject: ErrorWrapper) => this.handleWrappedError(reject));
     }
 
     readonly hideEdit = () => this.isFormOrTransient() || every(this.properties, p => !p.isEditable);

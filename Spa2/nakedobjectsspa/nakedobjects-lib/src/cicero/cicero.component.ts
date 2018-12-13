@@ -13,6 +13,8 @@ import * as Ro from '../models';
 import * as RtD from '../route-data';
 import { PaneRouteData } from '../route-data';
 import { UrlManagerService } from '../url-manager.service';
+import { ErrorCategory, ClientErrorCode } from '../constants';
+import { ErrorWrapper } from '../error.wrapper';
 
 @Component({
     selector: 'nof-cicero',
@@ -71,8 +73,8 @@ export class CiceroComponent implements OnInit, OnDestroy {
                                     this.writeInputOutput(result);
                                     this.executeCommands(this.ciceroContext.chainedCommands);
                                 }).
-                                catch((reject: Ro.ErrorWrapper) => {
-                                    if (reject.category === Ro.ErrorCategory.ClientError && reject.clientErrorCode === Ro.ClientErrorCode.ExpiredTransient) {
+                                catch((reject: ErrorWrapper) => {
+                                    if (reject.category === ErrorCategory.ClientError && reject.clientErrorCode === ClientErrorCode.ExpiredTransient) {
                                         this.outputText = 'The requested view of unsaved object details has expired.';
                                     } else {
                                         const display = (em: Ro.ErrorMap) => this.outputText = em.invalidReason() || em.warningMessage;
@@ -99,7 +101,7 @@ export class CiceroComponent implements OnInit, OnDestroy {
                 this.writeInputOutput(result);
                 result.changeState();
             }).
-            catch((reject: Ro.ErrorWrapper) => {
+            catch((reject: ErrorWrapper) => {
                 const display = (em: Ro.ErrorMap) => this.outputText =  em.invalidReason() || em.warningMessage;
                 this.error.handleErrorAndDisplayMessages(reject, display);
             });

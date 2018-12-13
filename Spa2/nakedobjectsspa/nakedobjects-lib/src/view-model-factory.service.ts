@@ -35,6 +35,7 @@ import { CiceroRendererService } from './cicero-renderer.service';
 import forEach from 'lodash-es/forEach';
 import map from 'lodash-es/map';
 import find from 'lodash-es/find';
+import { ErrorWrapper } from './error.wrapper';
 
 @Injectable()
 export class ViewModelFactoryService {
@@ -52,7 +53,7 @@ export class ViewModelFactoryService {
         protected ciceroRenderer: CiceroRendererService
     ) { }
 
-    errorViewModel = (error: Models.ErrorWrapper | null) => {
+    errorViewModel = (error: ErrorWrapper | null) => {
         return new ErrorViewModel(error);
     }
 
@@ -214,7 +215,7 @@ export class ViewModelFactoryService {
                             listViewModel.header = firstItem.showTitle ? [''].concat(propertiesHeader) : propertiesHeader;
                         }
                     }).
-                    catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+                    catch((reject: ErrorWrapper) => this.error.handleError(reject));
             }
         }
 

@@ -8,6 +8,7 @@ import { PaneComponent } from '../pane/pane';
 import * as Models from '../models';
 import { ConfigService } from '../config.service';
 import { PaneRouteData } from '../route-data';
+import { ErrorWrapper } from '../error.wrapper';
 
 @Component({
     selector: 'nof-attachment',
@@ -49,6 +50,6 @@ export class AttachmentComponent extends PaneComponent {
                     }
                 }
             })
-            .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+            .catch((reject: ErrorWrapper) => this.error.handleError(reject));
     }
 }

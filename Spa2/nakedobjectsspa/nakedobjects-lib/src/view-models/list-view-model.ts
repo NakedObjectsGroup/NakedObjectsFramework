@@ -13,6 +13,7 @@ import * as Msg from '../user-messages';
 import { ContributedActionParentViewModel } from './contributed-action-parent-view-model';
 import { LoggerService } from '../logger.service';
 import { IMenuHolderViewModel } from './imenu-holder-view-model';
+import { ErrorWrapper } from '../error.wrapper';
 
 export class ListViewModel extends ContributedActionParentViewModel implements IMenuHolderViewModel {
 
@@ -71,7 +72,7 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
                 this.routeData = this.currentPaneData();
                 this.reset(list, this.routeData);
             })
-            .catch((reject: Models.ErrorWrapper) => {
+            .catch((reject: ErrorWrapper) => {
                 const display = (em: Models.ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
                 this.error.handleErrorAndDisplayMessages(reject, display);
             });
@@ -110,7 +111,7 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
                         this.listRep = list;
                         this.updateItems(list.value());
                     })
-                    .catch((reject: Models.ErrorWrapper) => {
+                    .catch((reject: ErrorWrapper) => {
                         this.error.handleError(reject);
                     });
             } else {

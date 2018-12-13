@@ -3,6 +3,7 @@ import * as Models from '../models';
 import * as Msg from '../user-messages';
 import { ErrorService } from '../error.service';
 import { Pane } from '../route-data';
+import { ErrorWrapper } from '../error.wrapper';
 
 export class AttachmentViewModel {
 
@@ -45,7 +46,7 @@ export class AttachmentViewModel {
                 this.title = Msg.noImageMessage;
             }
             setImageOn.title = this.title;
-        }).catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+        }).catch((reject: ErrorWrapper) => this.error.handleError(reject));
     }
 
     setTitle(setTitleOn: {title: string }) {

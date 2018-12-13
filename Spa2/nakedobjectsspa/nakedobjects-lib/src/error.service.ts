@@ -3,8 +3,10 @@ import { ContextService } from './context.service';
 import * as Models from './models';
 import { Injectable } from '@angular/core';
 import { ConfigService } from './config.service';
+import { ErrorCategory, HttpStatusCode } from './constants';
+import { ErrorWrapper } from './error.wrapper';
 
-type ErrorPreprocessor = (reject: Models.ErrorWrapper) => void;
+type ErrorPreprocessor = (reject: ErrorWrapper) => void;
 
 @Injectable()
 export class ErrorService {
@@ -16,7 +18,7 @@ export class ErrorService {
     ) {
 
         this.setErrorPreprocessor(reject => {
-            if (reject.category === Models.ErrorCategory.HttpClientError && reject.httpErrorCode === Models.HttpStatusCode.PreconditionFailed) {
+            if (reject.category === ErrorCategory.HttpClientError && reject.httpErrorCode === HttpStatusCode.PreconditionFailed) {
 
                 if (reject.originalUrl) {
                     const oid = Models.ObjectIdWrapper.fromHref(reject.originalUrl, configService.config.keySeparator);
@@ -29,30 +31,30 @@ export class ErrorService {
 
     private preProcessors: ErrorPreprocessor[] = [];
 
-    private handleHttpServerError(reject: Models.ErrorWrapper) {
-        this.urlManager.setError(Models.ErrorCategory.HttpServerError);
+    private handleHttpServerError(reject: ErrorWrapper) {
+        this.urlManager.setError(ErrorCategory.HttpServerError);
     }
 
-    private handleHttpClientError(reject: Models.ErrorWrapper,
+    private handleHttpClientError(reject: ErrorWrapper,
         displayMessages: (em: Models.ErrorMap) => void) {
         switch (reject.httpErrorCode) {
-            case (Models.HttpStatusCode.UnprocessableEntity):
+            case (HttpStatusCode.UnprocessableEntity):
                 displayMessages(reject.error as Models.ErrorMap);
                 break;
             default:
-                this.urlManager.setError(Models.ErrorCategory.HttpClientError, reject.httpErrorCode);
+                this.urlManager.setError(ErrorCategory.HttpClientError, reject.httpErrorCode);
         }
     }
 
-    private handleClientError(reject: Models.ErrorWrapper) {
-        this.urlManager.setError(Models.ErrorCategory.ClientError, reject.clientErrorCode);
+    private handleClientError(reject: ErrorWrapper) {
+        this.urlManager.setError(ErrorCategory.ClientError, reject.clientErrorCode);
     }
 
-    handleError(reject: Models.ErrorWrapper) {
+    handleError(reject: ErrorWrapper) {
         this.handleErrorAndDisplayMessages(reject, () => { });
     }
 
-    handleErrorAndDisplayMessages(reject: Models.ErrorWrapper, displayMessages: (em: Models.ErrorMap) => void) {
+    handleErrorAndDisplayMessages(reject: ErrorWrapper, displayMessages: (em: Models.ErrorMap) => void) {
         this.preProcessors.forEach(p => p(reject));
 
         if (reject.handled) {
@@ -62,13 +64,13 @@ export class ErrorService {
 
         this.context.setError(reject);
         switch (reject.category) {
-            case (Models.ErrorCategory.HttpServerError):
+            case (ErrorCategory.HttpServerError):
                 this.handleHttpServerError(reject);
                 break;
-            case (Models.ErrorCategory.HttpClientError):
+            case (ErrorCategory.HttpClientError):
                 this.handleHttpClientError(reject, displayMessages);
                 break;
-            case (Models.ErrorCategory.ClientError):
+            case (ErrorCategory.ClientError):
                 this.handleClientError(reject);
                 break;
         }

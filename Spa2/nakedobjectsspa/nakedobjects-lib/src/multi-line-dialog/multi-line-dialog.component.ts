@@ -24,6 +24,7 @@ import some from 'lodash-es/some';
 import each from 'lodash-es/each';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { safeUnsubscribe, createForm } from '../helpers-components';
+import { ErrorWrapper } from '../error.wrapper';
 
 @Component({
     selector: 'nof-multi-line-dialog',
@@ -135,7 +136,7 @@ export class MultiLineDialogComponent extends PaneComponent implements AfterView
                 this.dialog = this.viewModelFactory.multiLineDialogViewModel(routeData, details, holder);
                 this.rowData = map(this.dialog.dialogs, d => this.createForm(d));
             }).
-            catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+            catch((reject: ErrorWrapper) => this.error.handleError(reject));
     }
 
     protected setup(routeData: PaneRouteData) {
@@ -144,7 +145,7 @@ export class MultiLineDialogComponent extends PaneComponent implements AfterView
                 .then((menu: Models.MenuRepresentation) => {
                     this.setMultiLineDialog(menu, routeData.dialogId, routeData);
                 })
-                .catch((reject: Models.ErrorWrapper) => {
+                .catch((reject: ErrorWrapper) => {
                     this.error.handleError(reject);
                 });
         } else if (routeData.objectId) {
@@ -165,7 +166,7 @@ export class MultiLineDialogComponent extends PaneComponent implements AfterView
                     }
 
                 }).
-                catch((reject: Models.ErrorWrapper) => {
+                catch((reject: ErrorWrapper) => {
                     this.error.handleError(reject);
                 });
         }

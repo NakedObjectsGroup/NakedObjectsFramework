@@ -1,11 +1,11 @@
 ﻿import { Component, Input } from '@angular/core';
 import { AttachmentViewModel } from '../view-models/attachment-view-model';
-import * as Models from '../models';
 import { ErrorService } from '../error.service';
 import { Router } from '@angular/router';
 import { UrlManagerService } from '../url-manager.service';
 import { ClickHandlerService } from '../click-handler.service';
 import * as Msg from '../user-messages';
+import { ErrorWrapper } from '../error.wrapper';
 
 @Component({
     selector: 'nof-attachment-property',
@@ -53,7 +53,7 @@ export class AttachmentPropertyComponent {
                         window.open(burl);
                     }
                 })
-                .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+                .catch((reject: ErrorWrapper) => this.error.handleError(reject));
         }
     }
 

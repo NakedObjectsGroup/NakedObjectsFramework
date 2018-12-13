@@ -12,6 +12,7 @@ import find from 'lodash-es/find';
 import { ConfigService } from '../config.service';
 import { LoggerService } from '../logger.service';
 import some from 'lodash-es/some';
+import { ErrorWrapper } from '../error.wrapper';
 
 export class CollectionViewModel extends ContributedActionParentViewModel {
 
@@ -35,7 +36,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
 
         this.colorService.toColorNumberFromType(collectionRep.extensions().elementType()).
             then(c => this.color = `${this.configService.config.linkColor}${c}`).
-            catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+            catch((reject: ErrorWrapper) => this.error.handleError(reject));
 
         this.reset(routeData, forceReload);
     }
@@ -103,7 +104,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
                             this);
                         this.details = Helpers.getCollectionDetails(this.items.length);
                     }).
-                    catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+                    catch((reject: ErrorWrapper) => this.error.handleError(reject));
             } else {
                 this.items = this.viewModelFactory.getItems(itemLinks!, this.currentState === CollectionViewState.Table, routeData, this);
             }

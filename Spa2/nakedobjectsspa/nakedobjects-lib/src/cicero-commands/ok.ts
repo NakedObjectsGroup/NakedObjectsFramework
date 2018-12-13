@@ -3,6 +3,7 @@ import { Command } from './Command';
 import * as Models from '../models';
 import * as Usermessages from '../user-messages';
 import { Dictionary } from 'lodash';
+import { ErrorWrapper } from '../error.wrapper';
 
 export class OK extends Command {
 
@@ -35,7 +36,7 @@ export class OK extends Command {
 
                return this.returnResult('', null, () =>  this.urlManager.closeDialogReplaceHistory(this.routeData().dialogId));
 
-            }).catch((reject: Models.ErrorWrapper) => {
+            }).catch((reject: ErrorWrapper) => {
                 if (reject.error instanceof Models.ErrorMap) {
                     const paramFriendlyName = (paramId: string) => Models.friendlyNameForParam(action, paramId);
                     return this.handleErrorResponse(reject.error as Models.ErrorMap, paramFriendlyName);

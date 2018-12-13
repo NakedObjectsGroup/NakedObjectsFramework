@@ -14,6 +14,7 @@ import { LoggerService } from '../logger.service';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { ItemViewModel } from '../view-models/item-view-model';
 import { safeUnsubscribe } from '../helpers-components';
+import { ErrorWrapper } from '../error.wrapper';
 
 @Component({
     selector: 'nof-list',
@@ -172,7 +173,7 @@ export class ListComponent implements OnInit, OnDestroy {
         this.getActionExtensions(routeData)
             .then((ext: Models.Extensions) =>
                 this.title = ext.friendlyName())
-            .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+            .catch((reject: ErrorWrapper) => this.error.handleError(reject));
 
         const listKey = this.urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize);
 

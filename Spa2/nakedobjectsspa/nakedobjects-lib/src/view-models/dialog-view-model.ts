@@ -16,6 +16,7 @@ import forEach from 'lodash-es/forEach';
 import map from 'lodash-es/map';
 import { Dictionary } from 'lodash';
 import pickBy from 'lodash-es/pickBy';
+import { ErrorWrapper } from '../error.wrapper';
 
 export class DialogViewModel extends MessageViewModel {
     constructor(
@@ -114,7 +115,7 @@ export class DialogViewModel extends MessageViewModel {
                     this.doComplete();
                 }
             })
-            .catch((reject: Models.ErrorWrapper) => {
+            .catch((reject: ErrorWrapper) => {
                 const display = (em: Models.ErrorMap) => Helpers.handleErrorResponse(em, this, this.parameters);
                 this.error.handleErrorAndDisplayMessages(reject, display);
             })

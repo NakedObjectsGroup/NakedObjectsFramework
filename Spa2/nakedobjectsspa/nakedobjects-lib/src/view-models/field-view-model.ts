@@ -21,6 +21,7 @@ import fromPairs from 'lodash-es/fromPairs';
 import some from 'lodash-es/some';
 import partial from 'lodash-es/partial';
 import concat from 'lodash-es/concat';
+import { ErrorWrapper } from '../error.wrapper';
 
 export abstract class FieldViewModel extends MessageViewModel {
 
@@ -243,7 +244,7 @@ export abstract class FieldViewModel extends MessageViewModel {
                             this.color = `${this.configService.config.linkColor}${c}`;
                         }
                     })
-                    .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+                    .catch((reject: ErrorWrapper) => this.error.handleError(reject));
                 return;
             }
         } else if (this.entryType !== Models.EntryType.AutoComplete && this.value) {
@@ -254,7 +255,7 @@ export abstract class FieldViewModel extends MessageViewModel {
                         this.color = `${this.configService.config.linkColor}${c}`;
                     }
                 })
-                .catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+                .catch((reject: ErrorWrapper) => this.error.handleError(reject));
             return;
         }
 

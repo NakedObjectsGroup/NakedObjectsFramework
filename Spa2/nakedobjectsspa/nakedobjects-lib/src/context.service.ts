@@ -4,10 +4,11 @@ import { RepLoaderService } from './rep-loader.service';
 import { Injectable } from '@angular/core';
 import * as Constants from './constants';
 import * as Models from './models';
-import { Subject ,  Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { IDraggableViewModel } from './view-models/idraggable-view-model';
 import { ConfigService } from './config.service';
 import { LoggerService } from './logger.service';
+import { ErrorWrapper, } from './error.wrapper';
 import { Dictionary } from 'lodash';
 import each from 'lodash-es/each';
 import find from 'lodash-es/find';
@@ -20,6 +21,7 @@ import first from 'lodash-es/first';
 import omit from 'lodash-es/omit';
 import remove from 'lodash-es/remove';
 import sortBy from 'lodash-es/sortBy';
+import { ErrorCategory, ClientErrorCode } from './constants';
 
 enum DirtyState {
     DirtyMustReload = 1,
@@ -195,7 +197,7 @@ export class ContextService {
     private pendingClearMessages = false;
     private pendingClearWarnings = false;
     private nextTransientId = 0;
-    private currentError: Models.ErrorWrapper | null = null;
+    private currentError: ErrorWrapper | null = null;
     private previousUrl: string | null = null;
     private warningsSource = new Subject<string[]>();
     private messagesSource = new Subject<string[]>();
@@ -283,7 +285,7 @@ export class ContextService {
             const transientObj = this.transientCache.get(paneId, type, id);
             const p: Promise<Models.DomainObjectRepresentation> = transientObj
                 ? Promise.resolve(transientObj)
-                : Promise.reject(new Models.ErrorWrapper(Models.ErrorCategory.ClientError, Models.ClientErrorCode.ExpiredTransient, ''));
+                : Promise.reject(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.ExpiredTransient, ''));
             return p;
         }
 
@@ -553,7 +555,7 @@ export class ContextService {
             this.cacheList(resultList, index);
             return Promise.resolve(resultList);
         } else {
-            return Promise.reject(new Models.ErrorWrapper(Models.ErrorCategory.ClientError, Models.ClientErrorCode.WrongType, 'expect list'));
+            return Promise.reject(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.WrongType, 'expect list'));
         }
     }
 
@@ -627,7 +629,7 @@ export class ContextService {
 
     getError = () => this.currentError;
 
-    setError = (e: Models.ErrorWrapper) => this.currentError = e;
+    setError = (e: ErrorWrapper) => this.currentError = e;
 
     getPreviousUrl = () => this.previousUrl;
 
@@ -930,7 +932,7 @@ export class ContextService {
             .then((updatedObject: Models.DomainTypeActionInvokeRepresentation) => {
                 return updatedObject.value();
             })
-            .catch((reject: Models.ErrorWrapper) => {
+            .catch((reject: ErrorWrapper) => {
                 return false;
             });
 

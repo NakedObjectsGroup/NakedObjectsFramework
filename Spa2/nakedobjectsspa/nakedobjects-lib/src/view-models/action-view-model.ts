@@ -14,6 +14,7 @@ import forEach from 'lodash-es/forEach';
 import map from 'lodash-es/map';
 import zipObject from 'lodash-es/zipObject';
 import pickBy from 'lodash-es/pickBy';
+import { ErrorWrapper } from '../error.wrapper';
 
 export class ActionViewModel {
 
@@ -75,7 +76,7 @@ export class ActionViewModel {
                 this.decrementPendingPotentAction();
                 return actionResult;
             })
-            .catch((reject: Models.ErrorWrapper) => {
+            .catch((reject: ErrorWrapper) => {
                 this.decrementPendingPotentAction();
                 const display = (em: Models.ErrorMap) => this.vm.setMessage(em.invalidReason() || em.warningMessage);
                 this.error.handleErrorAndDisplayMessages(reject, display);

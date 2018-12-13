@@ -10,6 +10,7 @@ import { MenuViewModel } from '../view-models/menu-view-model';
 import { PaneComponent } from '../pane/pane';
 import * as Models from '../models';
 import { LinkViewModel } from '../view-models/link-view-model';
+import { ErrorWrapper } from '../error.wrapper';
 
 @Component({
     selector: 'nof-home',
@@ -49,7 +50,7 @@ export class HomeComponent extends PaneComponent {
                 this.menus = this.viewModelFactory.menusViewModel(menus, paneRouteData);
                 this.hasAuthorisedMenus = this.menus && this.menus.items && this.menus.items.length > 0;
             })
-            .catch((reject: Models.ErrorWrapper) => {
+            .catch((reject: ErrorWrapper) => {
                 this.errorService.handleError(reject);
             });
     }
@@ -62,7 +63,7 @@ export class HomeComponent extends PaneComponent {
                     this.selectedMenu = this.viewModelFactory.menuViewModel(menu, paneRouteData);
                     this.selectedDialogId = paneRouteData.dialogId;
                 })
-                .catch((reject: Models.ErrorWrapper) => {
+                .catch((reject: ErrorWrapper) => {
                     this.errorService.handleError(reject);
                 });
         } else {

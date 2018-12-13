@@ -1,7 +1,6 @@
 ﻿import * as Ro from './ro-interfaces';
 import * as Constants from './constants';
 import * as RoCustom from './ro-interfaces-custom';
-import * as Msg from './user-messages';
 import { Dictionary } from 'lodash';
 import each from 'lodash-es/each';
 import find from 'lodash-es/find';
@@ -344,112 +343,6 @@ export interface IHateoasModel {
     populate(wrapped: Ro.IRepresentation): void;
     getBody(): Ro.IRepresentation;
     getUrl(): string;
-}
-
-export enum ErrorCategory {
-    HttpClientError,
-    HttpServerError,
-    ClientError
-}
-
-export enum HttpStatusCode {
-    NoContent = 204,
-    BadRequest = 400,
-    Unauthorized = 401,
-    Forbidden = 403,
-    NotFound = 404,
-    MethodNotAllowed = 405,
-    NotAcceptable = 406,
-    PreconditionFailed = 412,
-    UnprocessableEntity = 422,
-    PreconditionRequired = 428,
-    InternalServerError = 500
-}
-
-export enum ClientErrorCode {
-    ExpiredTransient,
-    WrongType,
-    NotImplemented,
-    SoftwareError,
-    ConnectionProblem = 0
-}
-
-export class ErrorWrapper {
-    constructor(
-        readonly category: ErrorCategory,
-        code: HttpStatusCode | ClientErrorCode,
-        err: string | ErrorMap | ErrorRepresentation,
-        readonly originalUrl?: string
-    ) {
-
-        if (category === ErrorCategory.ClientError) {
-            this.clientErrorCode = code as ClientErrorCode;
-            this.errorCode = ClientErrorCode[this.clientErrorCode];
-            let description = Msg.errorUnknown;
-
-            switch (this.clientErrorCode) {
-                case ClientErrorCode.ExpiredTransient:
-                    description = Msg.errorExpiredTransient;
-                    break;
-                case ClientErrorCode.WrongType:
-                    description = Msg.errorWrongType;
-                    break;
-                case ClientErrorCode.NotImplemented:
-                    description = Msg.errorNotImplemented;
-                    break;
-                case ClientErrorCode.SoftwareError:
-                    description = Msg.errorSoftware;
-                    break;
-                case ClientErrorCode.ConnectionProblem:
-                    description = Msg.errorConnection;
-                    break;
-            }
-
-            this.description = description;
-            this.title = Msg.errorClient;
-        }
-
-        if (category === ErrorCategory.HttpClientError || category === ErrorCategory.HttpServerError) {
-            this.httpErrorCode = code as HttpStatusCode;
-            this.errorCode = `${HttpStatusCode[this.httpErrorCode]}(${this.httpErrorCode})`;
-
-            this.description = category === ErrorCategory.HttpServerError
-                ? 'A software error has occurred on the server'
-                : 'An HTTP error code has been received from the server\n' +
-                'You can look up the meaning of this code in the Restful Objects specification.';
-
-            this.title = 'Error message received from server';
-        }
-
-        if (err instanceof ErrorMap) {
-            const em = err as ErrorMap;
-            this.message = em.invalidReason() || em.warningMessage;
-            this.error = em;
-            this.stackTrace = [];
-        } else if (err instanceof ErrorRepresentation) {
-            const er = err as ErrorRepresentation;
-            this.message = er.message();
-            this.error = er;
-            this.stackTrace = err.stackTrace();
-        } else {
-            this.message = (err as string);
-            this.error = null;
-            this.stackTrace = [];
-        }
-    }
-
-    title: string;
-    description: string;
-    errorCode: string;
-    httpErrorCode: HttpStatusCode;
-    clientErrorCode: ClientErrorCode;
-
-    message: string;
-    error: ErrorMap | ErrorRepresentation | null;
-
-    stackTrace: string[];
-
-    handled = false;
 }
 
 // abstract classes

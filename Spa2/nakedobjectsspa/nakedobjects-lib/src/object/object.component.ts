@@ -28,6 +28,8 @@ import some from 'lodash-es/some';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { safeUnsubscribe } from '../helpers-components';
 import { debounceTime } from 'rxjs/operators';
+import { ErrorCategory, ClientErrorCode } from '../constants';
+import { ErrorWrapper } from '../error.wrapper';
 
 @Component({
     selector: 'nof-object',
@@ -327,8 +329,8 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
                         }
                     }
                 })
-                .catch((reject: Models.ErrorWrapper) => {
-                    if (reject.category === Models.ErrorCategory.ClientError && reject.clientErrorCode === Models.ClientErrorCode.ExpiredTransient) {
+                .catch((reject: ErrorWrapper) => {
+                    if (reject.category === ErrorCategory.ClientError && reject.clientErrorCode === ClientErrorCode.ExpiredTransient) {
                         this.context.setError(reject);
                         this.expiredTransient = true;
                     } else {

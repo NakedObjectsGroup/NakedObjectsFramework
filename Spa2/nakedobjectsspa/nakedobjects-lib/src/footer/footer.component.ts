@@ -7,13 +7,13 @@ import { ErrorService } from '../error.service';
 import { RepLoaderService } from '../rep-loader.service';
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
 import * as Msg from '../user-messages';
-import * as Models from '../models';
 import { ConfigService } from '../config.service';
 import { AuthService } from '../auth.service';
 import { Pane } from '../route-data';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { safeUnsubscribe } from '../helpers-components';
-import { HttpClient, HttpRequest, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { ErrorWrapper } from '../error.wrapper';
 
 @Component({
     selector: 'nof-footer',
@@ -102,7 +102,7 @@ export class FooterComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.context.getUser().then(user => this.userName = user.userName()).catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+        this.context.getUser().then(user => this.userName = user.userName()).catch((reject: ErrorWrapper) => this.error.handleError(reject));
 
         this.repLoader.loadingCount$.subscribe(count => this.loading = count > 0 ? Msg.loadingMessage : '');
         this.context.warning$.subscribe(ws => this.warnings = ws);

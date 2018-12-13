@@ -9,6 +9,7 @@ import { UrlManagerService } from '../url-manager.service';
 import { ConfigService } from '../config.service';
 import { Pane } from '../route-data';
 import * as Helpers from './helpers-view-models';
+import { ErrorWrapper } from '../error.wrapper';
 
 export class LinkViewModel implements IDraggableViewModel {
 
@@ -35,7 +36,7 @@ export class LinkViewModel implements IDraggableViewModel {
 
         this.colorService.toColorNumberFromHref(link.href()).
             then(c => this.color = `${this.configService.config.linkColor}${c}`).
-            catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+            catch((reject: ErrorWrapper) => this.error.handleError(reject));
     }
 
     readonly title: string;

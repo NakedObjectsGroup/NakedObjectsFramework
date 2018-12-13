@@ -1,6 +1,5 @@
 import { RouteData, PaneRouteData, InteractionMode, CollectionViewState, ApplicationMode, ViewType, Pane, getOtherPane } from './route-data';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { ConfigService } from './config.service';
@@ -25,6 +24,7 @@ import mapKeys from 'lodash-es/mapKeys';
 import merge from 'lodash-es/merge';
 import without from 'lodash-es/without';
 import { map as rxjsmap } from 'rxjs/operators';
+import { ErrorCategory, HttpStatusCode, ClientErrorCode } from './constants';
 
 enum Transition {
     Null,
@@ -220,7 +220,7 @@ export class UrlManagerService {
         paneRouteData.dialogId = this.getId(akm.dialog + paneId, routeParams);
 
         const rawErrorCategory = this.getId(akm.errorCat + paneId, routeParams);
-        paneRouteData.errorCategory = rawErrorCategory ? (<any>Models.ErrorCategory)[rawErrorCategory] : null;
+        paneRouteData.errorCategory = rawErrorCategory ? (<any>ErrorCategory)[rawErrorCategory] : null;
 
         paneRouteData.objectId = this.getId(akm.object + paneId, routeParams);
         paneRouteData.actionsOpen = this.getId(akm.actions + paneId, routeParams);
@@ -712,7 +712,7 @@ export class UrlManagerService {
         this.executeTransition(pageValues, paneId, Transition.Page, () => true);
     }
 
-    setError = (errorCategory: Models.ErrorCategory, ec?: Models.ClientErrorCode | Models.HttpStatusCode) => {
+    setError = (errorCategory: ErrorCategory, ec?: ClientErrorCode | HttpStatusCode) => {
         const path = this.getPath();
         const segments = path.split('/');
         const mode = segments[1];
@@ -720,12 +720,12 @@ export class UrlManagerService {
 
         const search: any = {};
         // always on pane 1
-        search[akm.errorCat + Pane.Pane1] = Models.ErrorCategory[errorCategory];
+        search[akm.errorCat + Pane.Pane1] = ErrorCategory[errorCategory];
 
         const result = { path: newPath, search: search, replace: false };
 
-        if (errorCategory === Models.ErrorCategory.HttpClientError &&
-            (ec === Models.HttpStatusCode.PreconditionFailed || ec === Models.HttpStatusCode.NotFound)) {
+        if (errorCategory === ErrorCategory.HttpClientError &&
+            (ec === HttpStatusCode.PreconditionFailed || ec === HttpStatusCode.NotFound)) {
             result.replace = true;
         }
         this.setNewSearch(result);

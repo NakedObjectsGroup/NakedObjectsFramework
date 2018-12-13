@@ -22,6 +22,8 @@ import { Dictionary } from 'lodash';
 import * as Commandresult from './command-result';
 import { CiceroRendererService } from '../cicero-renderer.service';
 import * as Rointerfaces from '../ro-interfaces';
+import { ErrorCategory, ClientErrorCode } from '../constants';
+import { ErrorWrapper } from '../error.wrapper';
 
 export abstract class Command {
 
@@ -223,7 +225,7 @@ export abstract class Command {
         } else if (this.isMenu()) {
             return this.getMenu().then((menu: Models.MenuRepresentation) => this.context.getInvokableAction(menu.actionMember(dialogId))); // i.e. return a promise
         }
-        return Promise.reject(new Models.ErrorWrapper(Models.ErrorCategory.ClientError, Models.ClientErrorCode.NotImplemented, 'List actions not implemented yet'));
+        return Promise.reject(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.NotImplemented, 'List actions not implemented yet'));
     }
 
     // Tests that at least one collection is open (should only be one).

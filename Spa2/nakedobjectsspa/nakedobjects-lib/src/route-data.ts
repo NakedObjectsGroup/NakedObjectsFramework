@@ -1,5 +1,5 @@
 ﻿import * as Models from './models';
-
+import { ErrorCategory, HttpStatusCode, ClientErrorCode } from './constants';
 import { ConfigService } from './config.service';
 import { LoggerService } from './logger.service';
 import { Dictionary } from 'lodash';
@@ -104,7 +104,7 @@ export class PaneRouteData {
     page: number;
     pageSize: number;
     interactionMode: InteractionMode;
-    errorCategory: Models.ErrorCategory;
+    errorCategory: ErrorCategory;
     attachmentId: string;
 
     private validatingUrl: string;

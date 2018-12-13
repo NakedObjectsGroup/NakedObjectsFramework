@@ -4,6 +4,7 @@ import { ErrorService } from '../error.service';
 import { ConfigService } from '../config.service';
 import * as Models from '../models';
 import * as Constants from '../constants';
+import { ErrorWrapper } from '../error.wrapper';
 
 export class ApplicationPropertiesViewModel {
 
@@ -24,11 +25,11 @@ export class ApplicationPropertiesViewModel {
     private setUp() {
         this.context.getUser().
             then((u: Models.UserRepresentation) => this.user = u.wrapped()).
-            catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+            catch((reject: ErrorWrapper) => this.error.handleError(reject));
 
         this.context.getVersion().
             then((v: Models.VersionRepresentation) => this.serverVersion = v.wrapped()).
-            catch((reject: Models.ErrorWrapper) => this.error.handleError(reject));
+            catch((reject: ErrorWrapper) => this.error.handleError(reject));
 
         this.serverUrl = this.configService.config.appPath;
 
