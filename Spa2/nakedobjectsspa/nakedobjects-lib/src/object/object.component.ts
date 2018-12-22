@@ -30,6 +30,7 @@ import { safeUnsubscribe } from '../helpers-components';
 import { debounceTime } from 'rxjs/operators';
 import { ErrorCategory, ClientErrorCode } from '../constants';
 import { ErrorWrapper } from '../error.wrapper';
+import { DragAndDropService } from '../view-models/drag-and-drop.service';
 
 @Component({
     selector: 'nof-object',
@@ -46,7 +47,8 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         private readonly colorService: ColorService,
         private readonly error: ErrorService,
         private readonly formBuilder: FormBuilder,
-        private readonly configService: ConfigService
+        private readonly configService: ConfigService,
+        private readonly dragAndDrop: DragAndDropService,
     ) {
         this.pendingColor = `${configService.config.objectColor}${this.colorService.getDefault()}`;
     }
@@ -182,7 +184,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
     copy(event: KeyboardEvent) {
         const obj = this.object;
         if (obj) {
-            Helpers.copy(event, obj, this.context);
+            Helpers.copy(event, obj, this.dragAndDrop);
         }
     }
 

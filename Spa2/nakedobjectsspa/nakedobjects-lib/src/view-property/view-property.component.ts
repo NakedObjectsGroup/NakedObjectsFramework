@@ -4,7 +4,8 @@ import { ErrorService } from '../error.service';
 import { ContextService } from '../context.service';
 import { PropertyViewModel } from '../view-models/property-view-model';
 import * as Helpers from '../view-models/helpers-view-models';
-import {AttachmentViewModel} from '../view-models/attachment-view-model';
+import { AttachmentViewModel } from '../view-models/attachment-view-model';
+import { DragAndDropService } from '../view-models/drag-and-drop.service';
 
 @Component({
     selector: 'nof-view-property',
@@ -16,7 +17,8 @@ export class ViewPropertyComponent {
     constructor(
         private readonly router: Router,
         private readonly error: ErrorService,
-        private readonly context: ContextService
+        private readonly context: ContextService,
+        private readonly dragAndDrop: DragAndDropService
     ) { }
 
     // template inputs
@@ -91,7 +93,7 @@ export class ViewPropertyComponent {
     copy(event: KeyboardEvent) {
         const prop = this.property;
         if (prop) {
-            Helpers.copy(event, prop, this.context);
+            Helpers.copy(event, prop, this.dragAndDrop);
         }
     }
 }

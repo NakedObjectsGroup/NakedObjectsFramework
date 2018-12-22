@@ -7,6 +7,7 @@ import { FormGroup, AbstractControl } from '@angular/forms';
 import { SubscriptionLike as ISubscription ,  BehaviorSubject } from 'rxjs';
 import { Dictionary } from 'lodash';
 import { safeUnsubscribe, accept, dropOn, paste, focus } from '../helpers-components';
+import { DragAndDropService } from '../view-models/drag-and-drop.service';
 
 @Component({
     selector: 'nof-auto-complete',
@@ -16,7 +17,8 @@ import { safeUnsubscribe, accept, dropOn, paste, focus } from '../helpers-compon
 export class AutoCompleteComponent implements OnDestroy {
 
     constructor(
-        private readonly context: ContextService
+        private readonly context: ContextService,
+        private readonly dragAndDrop: DragAndDropService
     ) { }
 
     private fieldViewModel: FieldViewModel;
@@ -76,7 +78,7 @@ export class AutoCompleteComponent implements OnDestroy {
     }
 
     paste(event: KeyboardEvent) {
-        paste(event, this.model, this, () => this.context.getCopyViewModel(), () => this.context.setCopyViewModel(null));
+        paste(event, this.model, this, () => this.dragAndDrop.getCopyViewModel(), () => this.dragAndDrop.setCopyViewModel(null));
     }
 
     clear() {

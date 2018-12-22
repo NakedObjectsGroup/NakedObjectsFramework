@@ -5,7 +5,6 @@ import { Injectable } from '@angular/core';
 import * as Constants from './constants';
 import * as Models from './models';
 import { Subject } from 'rxjs';
-import { IDraggableViewModel } from './view-models/idraggable-view-model';
 import { ConfigService } from './config.service';
 import { LoggerService } from './logger.service';
 import { ErrorWrapper, } from './error.wrapper';
@@ -206,12 +205,6 @@ export class ContextService {
     messages$ = this.messagesSource.asObservable();
 
     private pendingPotentActionCount: [undefined, number, number] = [undefined, 0, 0];
-
-    private copiedViewModelSource = new Subject<IDraggableViewModel>();
-
-    copiedViewModel$ = this.copiedViewModelSource.asObservable();
-
-    private copiedViewModel: IDraggableViewModel | null;
 
     private concurrencyErrorSource = new Subject<Models.ObjectIdWrapper>();
 
@@ -743,15 +736,6 @@ export class ContextService {
 
         this.warningsSource.next(warnings);
         this.messagesSource.next(messages);
-    }
-
-    setCopyViewModel(dvm: IDraggableViewModel | null) {
-        this.copiedViewModel = dvm;
-        this.copiedViewModelSource.next(Models.withUndefined(dvm));
-    }
-
-    getCopyViewModel() {
-        return this.copiedViewModel;
     }
 
     setConcurrencyError(oid: Models.ObjectIdWrapper) {

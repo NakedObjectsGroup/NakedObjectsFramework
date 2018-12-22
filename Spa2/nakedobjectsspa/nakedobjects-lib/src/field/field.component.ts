@@ -25,6 +25,7 @@ import { safeUnsubscribe, focus, accept, dropOn, paste } from '../helpers-compon
 import { DatePickerFacadeComponent } from '../date-picker-facade/date-picker-facade.component';
 import { TimePickerFacadeComponent } from '../time-picker-facade/time-picker-facade.component';
 import { debounceTime } from 'rxjs/operators';
+import { DragAndDropService } from '../view-models/drag-and-drop.service';
 
 export abstract class FieldComponent implements OnDestroy {
 
@@ -32,7 +33,8 @@ export abstract class FieldComponent implements OnDestroy {
         private readonly context: ContextService,
         private readonly configService: ConfigService,
         private readonly loggerService: LoggerService,
-        private readonly renderer: Renderer2
+        private readonly renderer: Renderer2,
+        private readonly dragAndDrop: DragAndDropService
     ) {}
 
     set formGroup(fm: FormGroup) {
@@ -270,7 +272,7 @@ export abstract class FieldComponent implements OnDestroy {
     }
 
     paste(event: KeyboardEvent) {
-        paste(event, this.model, this, () => this.context.getCopyViewModel(), () => this.context.setCopyViewModel(null));
+        paste(event, this.model, this, () => this.dragAndDrop.getCopyViewModel(), () => this.dragAndDrop.setCopyViewModel(null));
     }
 
     clear() {

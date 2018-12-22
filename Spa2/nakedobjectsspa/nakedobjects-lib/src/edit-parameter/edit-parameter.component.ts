@@ -14,6 +14,7 @@ import { ChoiceViewModel } from '../view-models/choice-view-model';
 import { ConfigService } from '../config.service';
 import { LoggerService } from '../logger.service';
 import { Dictionary } from 'lodash';
+import { DragAndDropService } from '../view-models/drag-and-drop.service';
 
 @Component({
     selector: 'nof-edit-parameter',
@@ -28,9 +29,10 @@ export class EditParameterComponent extends FieldComponent implements OnInit, Af
         context: ContextService,
         configService: ConfigService,
         loggerService: LoggerService,
-        renderer: Renderer2
+        renderer: Renderer2,
+        dragAndDrop: DragAndDropService
     ) {
-        super(context, configService, loggerService, renderer);
+        super(context, configService, loggerService, renderer, dragAndDrop);
     }
 
     parm: ParameterViewModel;

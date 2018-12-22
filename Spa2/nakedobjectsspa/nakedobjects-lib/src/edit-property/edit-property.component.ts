@@ -15,6 +15,7 @@ import { LoggerService } from '../logger.service';
 import * as Models from '../models';
 import { AttachmentViewModel } from '../view-models/attachment-view-model';
 import { Dictionary } from 'lodash';
+import { DragAndDropService } from '../view-models/drag-and-drop.service';
 
 @Component({
     selector: 'nof-edit-property',
@@ -30,8 +31,9 @@ export class EditPropertyComponent extends FieldComponent implements OnInit, Aft
         configService: ConfigService,
         loggerService: LoggerService,
         renderer: Renderer2,
+        dragAndDrop: DragAndDropService,
     ) {
-        super(context, configService, loggerService, renderer);
+        super(context, configService, loggerService, renderer, dragAndDrop);
     }
 
     private prop: PropertyViewModel;

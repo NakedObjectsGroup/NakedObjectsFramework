@@ -64,6 +64,7 @@ import { ObjectNotFoundErrorComponent } from './object-not-found-error/object-no
 import { HttpClientModule } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './auth.interceptor';
+import { DragAndDropService } from './view-models/drag-and-drop.service';
 
 @NgModule({
     declarations: [
@@ -188,6 +189,7 @@ export class LibModule {
             CiceroRendererService,
             CiceroContextService,
             AuthService,
+            DragAndDropService,
             { provide: ErrorHandler, useClass: GeminiErrorHandler },
             { provide: APP_INITIALIZER, useFactory: configFactory, deps: [ConfigService], multi: true },
             { provide: LOCALE_ID, useFactory: localeFactory, deps: [ConfigService] },

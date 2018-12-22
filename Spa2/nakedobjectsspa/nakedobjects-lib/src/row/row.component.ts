@@ -7,6 +7,7 @@ import { PropertyViewModel } from '../view-models/property-view-model';
 import { RecentItemViewModel } from '../view-models/recent-item-view-model';
 import { TableRowColumnViewModel } from '../view-models/table-row-column-view-model';
 import { focus } from '../helpers-components';
+import { DragAndDropService } from '../view-models/drag-and-drop.service';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -19,6 +20,7 @@ export class RowComponent {
     constructor(
         private readonly context: ContextService,
         private readonly element: ElementRef,
+        private readonly dragAndDrop: DragAndDropService,
     ) { }
 
     @Input()
@@ -81,7 +83,7 @@ export class RowComponent {
     doClick = (right?: boolean) => this.item.doClick(right);
 
     copy(event: KeyboardEvent, item: IDraggableViewModel) {
-        Helpers.copy(event, item, this.context);
+        Helpers.copy(event, item, this.dragAndDrop);
     }
 
     focus() {

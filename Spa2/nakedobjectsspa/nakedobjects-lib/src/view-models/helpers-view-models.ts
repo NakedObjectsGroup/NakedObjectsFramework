@@ -2,6 +2,7 @@
 import { MenuItemViewModel } from './menu-item-view-model';
 import { ActionViewModel } from './action-view-model';
 import { ContextService } from '../context.service';
+import { DragAndDropService } from './drag-and-drop.service';
 import { ErrorService } from '../error.service';
 import { IDraggableViewModel } from './idraggable-view-model';
 import { ChoiceViewModel } from './choice-view-model';
@@ -21,10 +22,10 @@ import { ConfigService } from '../config.service';
 import * as Validate from '../validate';
 import { ErrorWrapper } from '../error.wrapper';
 
-export function copy(event: KeyboardEvent, item: IDraggableViewModel, context: ContextService) {
+export function copy(event: KeyboardEvent, item: IDraggableViewModel, drandAndDrop: DragAndDropService) {
     const cKeyCode = 67;
     if (event && (event.keyCode === cKeyCode && event.ctrlKey)) {
-        context.setCopyViewModel(item);
+        drandAndDrop.setCopyViewModel(item);
         event.preventDefault();
     }
 }

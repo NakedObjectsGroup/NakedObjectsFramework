@@ -14,6 +14,7 @@ import { SubscriptionLike as ISubscription } from 'rxjs';
 import { safeUnsubscribe } from '../helpers-components';
 import { HttpClient } from '@angular/common/http';
 import { ErrorWrapper } from '../error.wrapper';
+import { DragAndDropService } from '../view-models/drag-and-drop.service';
 
 @Component({
     selector: 'nof-footer',
@@ -31,7 +32,8 @@ export class FooterComponent implements OnInit, OnDestroy {
         private readonly repLoader: RepLoaderService,
         private readonly location: Location,
         private readonly configService: ConfigService,
-        private readonly http: HttpClient
+        private readonly http: HttpClient,
+        private readonly dragAndDrop: DragAndDropService
     ) { }
 
     private warnSub: ISubscription;
@@ -107,7 +109,7 @@ export class FooterComponent implements OnInit, OnDestroy {
         this.repLoader.loadingCount$.subscribe(count => this.loading = count > 0 ? Msg.loadingMessage : '');
         this.context.warning$.subscribe(ws => this.warnings = ws);
         this.context.messages$.subscribe(ms => this.messages = ms);
-        this.context.copiedViewModel$.subscribe(cvm => this.copyViewModel = cvm);
+        this.dragAndDrop.copiedViewModel$.subscribe(cvm => this.copyViewModel = cvm);
     }
 
     ngOnDestroy() {
