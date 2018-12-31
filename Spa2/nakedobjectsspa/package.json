@@ -48,7 +48,6 @@
     "@angular/platform-browser-dynamic": "^7.1.2",
     "@angular/router": "^7.1.2",
     "@beyerleinf/ngx-dnd": "^6.0.0-preview3",
-    "@nakedobjects/restful-objects": "file:dist/restful-objects/nakedobjects-restful-objects-10.0.0-beta.5.tgz",
     "auth0-js": "^9.8.2",
     "core-js": "^2.6.0",
     "lodash": "4.17.11",
