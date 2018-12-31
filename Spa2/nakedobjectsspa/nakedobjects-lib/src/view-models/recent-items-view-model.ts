@@ -3,7 +3,7 @@ import { ContextService } from '../context.service';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import map from 'lodash-es/map';
 import every from 'lodash-es/every';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import { UrlManagerService } from '../url-manager.service';
 import { Pane } from '../route-data';
 

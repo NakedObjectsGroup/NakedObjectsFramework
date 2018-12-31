@@ -8,7 +8,7 @@ import { PaneRouteData } from '../route-data';
 import { MenusViewModel } from '../view-models/menus-view-model';
 import { MenuViewModel } from '../view-models/menu-view-model';
 import { PaneComponent } from '../pane/pane';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import { LinkViewModel } from '../view-models/link-view-model';
 import { ErrorWrapper } from '../error.wrapper';
 

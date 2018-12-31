@@ -1,6 +1,6 @@
 ﻿import { ViewModelFactoryService } from '../view-model-factory.service';
 import { LinkViewModel } from './link-view-model';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import map from 'lodash-es/map';
 
 import { Pane } from '../route-data';

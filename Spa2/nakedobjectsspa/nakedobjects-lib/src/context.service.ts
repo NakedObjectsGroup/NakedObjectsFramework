@@ -3,7 +3,7 @@ import { UrlManagerService } from './url-manager.service';
 import { RepLoaderService } from './rep-loader.service';
 import { Injectable } from '@angular/core';
 import * as Constants from './constants';
-import * as Models from './models';
+import * as Models from '@nakedobjects/restful-objects';
 import { Subject } from 'rxjs';
 import { ConfigService } from './config.service';
 import { LoggerService } from './logger.service';

@@ -7,7 +7,7 @@ import { ErrorService } from '../error.service';
 import { ActionViewModel } from './action-view-model';
 import { ParameterViewModel } from './parameter-view-model';
 import { PaneRouteData, Pane } from '../route-data';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import * as Msg from '../user-messages';
 import * as Helpers from './helpers-view-models';
 import each from 'lodash-es/each';

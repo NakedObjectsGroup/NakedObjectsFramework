@@ -7,7 +7,7 @@ import { ContextService } from '../context.service';
 import { UrlManagerService } from '../url-manager.service';
 import { ContributedActionParentViewModel } from './contributed-action-parent-view-model';
 import * as Helpers from './helpers-view-models';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import find from 'lodash-es/find';
 import { ConfigService } from '../config.service';
 import { LoggerService } from '../logger.service';

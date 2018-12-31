@@ -1,4 +1,4 @@
-﻿import * as Models from '../models';
+﻿import * as Models from '@nakedobjects/restful-objects';
 
 export class ChoiceViewModel {
 

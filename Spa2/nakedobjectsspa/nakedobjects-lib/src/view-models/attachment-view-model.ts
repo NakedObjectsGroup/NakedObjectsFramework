@@ -1,5 +1,5 @@
 ﻿import { ContextService } from '../context.service';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import * as Msg from '../user-messages';
 import { ErrorService } from '../error.service';
 import { Pane } from '../route-data';

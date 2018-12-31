@@ -1,5 +1,5 @@
 import { AutoCompleteComponent } from '../auto-complete/auto-complete.component';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import { AbstractControl } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { ElementRef, QueryList, Renderer2, OnDestroy } from '@angular/core';

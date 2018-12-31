@@ -1,7 +1,7 @@
 import { Component, Input, AfterViewInit, ViewChildren, QueryList, OnDestroy } from '@angular/core';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { UrlManagerService } from '../url-manager.service';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import { ActivatedRoute } from '@angular/router';
 import { ContextService } from '../context.service';
 import { ErrorService } from '../error.service';

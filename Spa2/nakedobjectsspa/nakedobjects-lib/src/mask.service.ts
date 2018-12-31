@@ -1,4 +1,4 @@
-﻿import * as Ro from './ro-interfaces';
+﻿import * as Ro from '@nakedobjects/restful-objects';
 import { CurrencyPipe, DecimalPipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { ConfigService } from './config.service';

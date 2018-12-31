@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import * as Models from './models';
-import * as Ro from './ro-interfaces';
+import * as Models from '@nakedobjects/restful-objects';
+import * as Ro from '@nakedobjects/restful-objects';
 import { Subject } from 'rxjs';
 import { ConfigService } from './config.service';
 import { SimpleLruCache } from './simple-lru-cache';

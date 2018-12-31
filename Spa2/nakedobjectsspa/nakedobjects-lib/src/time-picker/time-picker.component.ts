@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, Input, Output, EventEmitter, ViewChild, 
 import * as momentNs from 'moment';
 import { BehaviorSubject ,  SubscriptionLike as ISubscription } from 'rxjs';
 import { safeUnsubscribe, focus } from '../helpers-components';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import { debounceTime } from 'rxjs/operators';
 
 const moment = momentNs;

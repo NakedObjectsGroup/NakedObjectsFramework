@@ -6,7 +6,7 @@ import { ErrorService } from '../error.service';
 import { UrlManagerService } from '../url-manager.service';
 import { ClickHandlerService } from '../click-handler.service';
 import { ViewModelFactoryService } from '../view-model-factory.service';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import { ConfigService } from '../config.service';
 import { Pane } from '../route-data';
 

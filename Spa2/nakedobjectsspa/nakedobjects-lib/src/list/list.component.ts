@@ -6,7 +6,7 @@ import { ColorService } from '../color.service';
 import { ErrorService } from '../error.service';
 import { PaneRouteData, CollectionViewState, ICustomActivatedRouteData } from '../route-data';
 import { ViewModelFactoryService } from '../view-model-factory.service';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import { ListViewModel } from '../view-models/list-view-model';
 import { IActionHolder } from '../action/action.component';
 import { ConfigService } from '../config.service';

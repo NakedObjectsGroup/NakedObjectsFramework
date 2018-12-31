@@ -1,8 +1,8 @@
 ﻿import { ChoiceViewModel } from './choice-view-model';
 import { MaskService } from '../mask.service';
 import * as Msg from '../user-messages';
-import * as Ro from '../ro-interfaces';
-import * as Models from '../models';
+import * as Ro from '@nakedobjects/restful-objects';
+import * as Models from '@nakedobjects/restful-objects';
 import * as Helpers from './helpers-view-models';
 import find from 'lodash-es/find';
 import map from 'lodash-es/map';

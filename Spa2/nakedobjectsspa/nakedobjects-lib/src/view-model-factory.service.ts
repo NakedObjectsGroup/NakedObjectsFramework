@@ -1,4 +1,4 @@
-import * as Models from './models';
+import * as Models from '@nakedobjects/restful-objects';
 import { PaneRouteData, Pane } from './route-data';
 import { ContextService } from './context.service';
 import { UrlManagerService } from './url-manager.service';

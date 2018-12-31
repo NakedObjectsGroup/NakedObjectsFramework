@@ -4,7 +4,7 @@ import { DatePickerFacadeComponent } from '../date-picker-facade/date-picker-fac
 import { Component, Input, OnInit, ElementRef, HostListener, ViewChildren, QueryList, AfterViewInit, Renderer2 } from '@angular/core';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { UrlManagerService } from '../url-manager.service';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import { FieldComponent } from '../field/field.component';
 import { FormGroup } from '@angular/forms';
 import { ContextService } from '../context.service';

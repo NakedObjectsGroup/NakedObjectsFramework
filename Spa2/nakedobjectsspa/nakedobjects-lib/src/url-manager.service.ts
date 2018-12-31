@@ -5,7 +5,7 @@ import { Location } from '@angular/common';
 import { ConfigService } from './config.service';
 import { LoggerService } from './logger.service';
 import { Dictionary } from 'lodash';
-import * as Models from './models';
+import * as Models from '@nakedobjects/restful-objects';
 import * as Constants from './constants';
 import filter from 'lodash-es/filter';
 import forEach from 'lodash-es/forEach';

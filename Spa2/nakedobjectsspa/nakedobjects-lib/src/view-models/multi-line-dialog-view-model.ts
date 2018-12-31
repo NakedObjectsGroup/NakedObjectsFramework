@@ -6,7 +6,7 @@ import { ContextService } from '../context.service';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { UrlManagerService } from '../url-manager.service';
 import { ErrorService } from '../error.service';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import filter from 'lodash-es/filter';
 import map from 'lodash-es/map';
 import range from 'lodash-es/range';

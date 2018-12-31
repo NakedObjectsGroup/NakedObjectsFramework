@@ -11,7 +11,7 @@ import { UrlManagerService } from '../url-manager.service';
 import { IDraggableViewModel } from './idraggable-view-model';
 import { Dictionary } from 'lodash';
 import * as Msg from '../user-messages';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import * as Helpers from './helpers-view-models';
 import * as Configservice from '../config.service';
 import { Pane } from '../route-data';

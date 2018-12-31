@@ -1,7 +1,7 @@
 import { CommandResult } from './command-result';
 import { Command } from './Command';
 import * as Usermessages from '../user-messages';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 
 export class Reload extends Command {
 

@@ -30,9 +30,11 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "prepackage": "node prepackage.js",
+    "build:clean": "rimraf dist",
+    "package:restful-objects": "cd dist/restful-objects && npm pack && cd ../..",
     "build:restful-objects": "rimraf dist/restful-objects && ng-packagr -p restful-objects/package.json",
     "build:app": "cpr dist/nakedobjects-lib src/@nakedobjects/lib && ng build packages --no-progress && rimraf src/@nakedobjects",
-    "build:lib": "rimraf dist && ng-packagr -p nakedobjects-lib/package.json"
+    "build:lib": "rimraf dist/nakedobjects-lib && ng-packagr -p nakedobjects-lib/package.json"
   },
   "private": true,
   "dependencies": {
@@ -46,6 +48,7 @@
     "@angular/platform-browser-dynamic": "^7.1.2",
     "@angular/router": "^7.1.2",
     "@beyerleinf/ngx-dnd": "^6.0.0-preview3",
+    "@nakedobjects/restful-objects": "file:dist/restful-objects/nakedobjects-restful-objects-10.0.0-beta.5.tgz",
     "auth0-js": "^9.8.2",
     "core-js": "^2.6.0",
     "lodash": "4.17.11",

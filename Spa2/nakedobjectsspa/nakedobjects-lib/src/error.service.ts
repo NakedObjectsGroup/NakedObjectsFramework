@@ -1,6 +1,6 @@
 ﻿import { UrlManagerService } from './url-manager.service';
 import { ContextService } from './context.service';
-import * as Models from './models';
+import * as Models from '@nakedobjects/restful-objects';
 import { Injectable } from '@angular/core';
 import { ConfigService } from './config.service';
 import { ErrorCategory, HttpStatusCode } from './constants';

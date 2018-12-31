@@ -1,6 +1,6 @@
 import { CommandResult } from './command-result';
 import { Command } from './Command';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import * as Usermessages from '../user-messages';
 import * as Routedata from '../route-data';
 import reduce from 'lodash-es/reduce';

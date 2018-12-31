@@ -1,5 +1,5 @@
 import { CommandResult } from './command-result';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import { Command } from './Command';
 import * as Usermessages from '../user-messages';
 import { Dictionary } from 'lodash';

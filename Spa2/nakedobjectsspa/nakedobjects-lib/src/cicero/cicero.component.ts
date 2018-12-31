@@ -9,7 +9,7 @@ import { CiceroRendererService } from '../cicero-renderer.service';
 import { ContextService } from '../context.service';
 import { ErrorService } from '../error.service';
 import { focus, safeUnsubscribe } from '../helpers-components';
-import * as Ro from '../models';
+import * as Ro from '@nakedobjects/restful-objects';
 import * as RtD from '../route-data';
 import { PaneRouteData } from '../route-data';
 import { UrlManagerService } from '../url-manager.service';

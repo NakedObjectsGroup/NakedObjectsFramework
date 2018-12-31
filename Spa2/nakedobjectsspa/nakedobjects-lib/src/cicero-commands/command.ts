@@ -2,7 +2,7 @@
 import { CiceroContextService } from '../cicero-context.service';
 import { CommandResult } from './command-result';
 import * as Routedata from '../route-data';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import * as Usermessages from '../user-messages';
 import { UrlManagerService } from '../url-manager.service';
 import { CiceroCommandFactoryService } from '../cicero-command-factory.service';
@@ -21,7 +21,7 @@ import findIndex from 'lodash-es/findIndex';
 import { Dictionary } from 'lodash';
 import * as Commandresult from './command-result';
 import { CiceroRendererService } from '../cicero-renderer.service';
-import * as Rointerfaces from '../ro-interfaces';
+import * as Rointerfaces from '@nakedobjects/restful-objects';
 import { ErrorCategory, ClientErrorCode } from '../constants';
 import { ErrorWrapper } from '../error.wrapper';
 

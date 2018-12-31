@@ -66,11 +66,6 @@ export * from './type-result-cache';
 export * from './route-data';
 export * from './view-models/view-models';
 
-export * from './models';
-
-export * from './ro-interfaces';
-export * from './ro-interfaces-custom';
-
 export * from './auth.interceptor';
 
 export * from './lib.module';

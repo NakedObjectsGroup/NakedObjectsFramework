@@ -11,7 +11,7 @@ import { Command } from './Command';
 import * as Commandresult from './command-result';
 import { CommandResult } from './command-result';
 import * as Constants from '../constants';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import * as Usermessages from '../user-messages';
 import * as Validate from '../validate';
 

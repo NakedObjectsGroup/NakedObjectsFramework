@@ -1,5 +1,5 @@
 ﻿import { ChoiceViewModel } from './choice-view-model';
-import * as Ro from '../ro-interfaces';
+import * as Ro from '@nakedobjects/restful-objects';
 
 export interface IDraggableViewModel {
     value: Ro.ScalarValueType | Date | null;

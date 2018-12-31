@@ -1,4 +1,4 @@
-﻿import * as Models from './models';
+﻿import * as Models from '@nakedobjects/restful-objects';
 import { ErrorCategory, HttpStatusCode, ClientErrorCode } from './constants';
 import { ConfigService } from './config.service';
 import { LoggerService } from './logger.service';

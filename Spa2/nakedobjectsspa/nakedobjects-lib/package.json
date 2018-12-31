@@ -14,7 +14,8 @@
             "lodash",
             "lodash-es",
             "moment",
-            "@beyerleinf/ngx-dnd"
+            "@beyerleinf/ngx-dnd",
+            "@nakedobjects/restful-objects"
         ],
         "dest": "../dist/nakedobjects-lib"
     },

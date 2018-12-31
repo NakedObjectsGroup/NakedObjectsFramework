@@ -8,7 +8,7 @@ import { Type } from '@angular/core/src/type';
 import { ContextService } from '../context.service';
 import { ErrorService } from '../error.service';
 import { IActionHolder } from '../action/action.component';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import { ConfigService } from '../config.service';
 import { ErrorWrapper } from '../error.wrapper';
 

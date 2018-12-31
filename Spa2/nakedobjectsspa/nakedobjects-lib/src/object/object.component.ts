@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import { UrlManagerService } from '../url-manager.service';
 import { ContextService } from '../context.service';
 import { ViewModelFactoryService } from '../view-model-factory.service';

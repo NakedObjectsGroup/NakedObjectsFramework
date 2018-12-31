@@ -15,7 +15,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { ConfigService } from '../config.service';
 import * as Msg from '../user-messages';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import { Dictionary } from 'lodash';
 import find from 'lodash-es/find';
 import forEach from 'lodash-es/forEach';

@@ -7,7 +7,7 @@ import { ErrorService } from '../error.service';
 import { IDraggableViewModel } from './idraggable-view-model';
 import { ChoiceViewModel } from './choice-view-model';
 import { IMessageViewModel } from './imessage-view-model';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import * as Msg from '../user-messages';
 import { Dictionary } from 'lodash';
 import { Pane } from '../route-data';

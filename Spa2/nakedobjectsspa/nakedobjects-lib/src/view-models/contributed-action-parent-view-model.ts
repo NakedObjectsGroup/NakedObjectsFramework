@@ -1,5 +1,5 @@
 ﻿import { MessageViewModel } from './message-view-model';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import * as Msg from '../user-messages';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { UrlManagerService } from '../url-manager.service';

@@ -6,7 +6,7 @@ import { ErrorService } from '../error.service';
 import { IMessageViewModel } from './imessage-view-model';
 import { ClickHandlerService } from '../click-handler.service';
 import { ViewModelFactoryService } from '../view-model-factory.service';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import * as Msg from '../user-messages';
 import { Dictionary } from 'lodash';
 import * as Helpers from './helpers-view-models';

@@ -1,8 +1,8 @@
-﻿import * as Ro from '../ro-interfaces';
+﻿import * as Ro from '@nakedobjects/restful-objects';
 import { ContextService } from '../context.service';
 import { ErrorService } from '../error.service';
 import { ConfigService } from '../config.service';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import * as Constants from '../constants';
 import { ErrorWrapper } from '../error.wrapper';
 

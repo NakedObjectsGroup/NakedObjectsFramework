@@ -1,7 +1,7 @@
 ﻿import { IDraggableViewModel } from './idraggable-view-model';
 import { ChoiceViewModel } from './choice-view-model';
-import * as Ro from '../ro-interfaces';
-import * as Models from '../models';
+import * as Ro from '@nakedobjects/restful-objects';
+import * as Models from '@nakedobjects/restful-objects';
 import { ContextService } from '../context.service';
 import { ColorService } from '../color.service';
 import { ErrorService } from '../error.service';

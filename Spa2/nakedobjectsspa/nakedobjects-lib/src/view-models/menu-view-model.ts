@@ -4,7 +4,7 @@ import { MenuItemViewModel } from './menu-item-view-model';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { PaneRouteData } from '../route-data';
 import * as Helpers from './helpers-view-models';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import map from 'lodash-es/map';
 
 import { IMenuHolderViewModel } from './imenu-holder-view-model';

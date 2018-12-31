@@ -1,4 +1,4 @@
-﻿import * as Ro from './ro-interfaces';
+﻿import * as Ro from '@nakedobjects/restful-objects';
 import { Dictionary } from 'lodash';
 
 export type CachableTypes = Ro.IRepresentation | Blob;

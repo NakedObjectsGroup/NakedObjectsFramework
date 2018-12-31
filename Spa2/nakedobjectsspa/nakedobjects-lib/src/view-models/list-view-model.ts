@@ -8,7 +8,7 @@ import { ActionViewModel } from './action-view-model';
 import { MenuItemViewModel } from './menu-item-view-model';
 import find from 'lodash-es/find';
 import * as Helpers from './helpers-view-models';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import * as Msg from '../user-messages';
 import { ContributedActionParentViewModel } from './contributed-action-parent-view-model';
 import { LoggerService } from '../logger.service';

@@ -5,7 +5,7 @@ import concat from 'lodash-es/concat';
 import { BehaviorSubject, Observable,  SubscriptionLike as ISubscription } from 'rxjs';
 import { safeUnsubscribe, focus } from '../helpers-components';
 import * as Msg from '../user-messages';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import * as Validate from '../validate';
 import { debounceTime } from 'rxjs/operators';
 

@@ -1,6 +1,6 @@
-import * as Ro from './models';
+import * as Ro from '@nakedobjects/restful-objects';
 import * as Msg from './user-messages';
-import * as Models from './models';
+import * as Models from '@nakedobjects/restful-objects';
 import { Injectable } from '@angular/core';
 import { PaneRouteData, CollectionViewState } from './route-data';
 import { ContextService } from './context.service';

@@ -5,7 +5,7 @@ import { ChoiceViewModel } from './choice-view-model';
 import { ContextService } from '../context.service';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { MaskService } from '../mask.service';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import * as Msg from '../user-messages';
 import { Dictionary } from 'lodash';
 import { ConfigService } from '../config.service';

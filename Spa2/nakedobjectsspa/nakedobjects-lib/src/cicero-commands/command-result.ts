@@ -3,8 +3,8 @@ import map from 'lodash-es/map';
 import mapValues from 'lodash-es/mapValues';
 import { Result } from './result';
 import { ContextService } from '../context.service';
-import * as Ro from '../models';
-import * as Models from '../models';
+import * as Ro from '@nakedobjects/restful-objects';
+import * as Models from '@nakedobjects/restful-objects';
 
 // todo move this
 export function getParametersAndCurrentValue(action: Ro.ActionMember | Models.ActionRepresentation | Models.InvokableActionMember, context: ContextService):  Dictionary<Ro.Value> {

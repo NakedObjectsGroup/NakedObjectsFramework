@@ -12,7 +12,7 @@ import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 import { ChoiceViewModel } from '../view-models/choice-view-model';
 import { ConfigService } from '../config.service';
 import { LoggerService } from '../logger.service';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import { AttachmentViewModel } from '../view-models/attachment-view-model';
 import { Dictionary } from 'lodash';
 import { DragAndDropService } from '../view-models/drag-and-drop.service';

@@ -11,7 +11,7 @@ import { MenuItemViewModel } from './menu-item-view-model';
 import { PropertyViewModel } from './property-view-model';
 import { CollectionViewModel } from './collection-view-model';
 import { ParameterViewModel } from './parameter-view-model';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import * as Helpers from './helpers-view-models';
 import { Dictionary } from 'lodash';
 import { ConfigService } from '../config.service';

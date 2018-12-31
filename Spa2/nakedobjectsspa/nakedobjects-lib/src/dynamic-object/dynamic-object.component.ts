@@ -6,7 +6,7 @@ import { PaneRouteData, ViewType } from '../route-data';
 import { UrlManagerService } from '../url-manager.service';
 import { PaneComponent } from '../pane/pane';
 import { Type } from '@angular/core/src/type';
-import * as Models from '../models';
+import * as Models from '@nakedobjects/restful-objects';
 import { ConfigService } from '../config.service';
 
 @Component({
