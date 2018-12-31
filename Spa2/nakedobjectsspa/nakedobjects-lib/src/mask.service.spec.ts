@@ -1,7 +1,7 @@
 ﻿import { TestBed, inject } from '@angular/core/testing';
 import { MaskService } from './mask.service';
 import { ConfigService } from './config.service';
-import * as Ro from './ro-interfaces';
+import * as Ro from '@nakedobjects/restful-objects';
 import * as momentNs from 'moment';
 import * as Constants from './constants';
 import { HttpClientModule, HttpClient, HttpRequest, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
