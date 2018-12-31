@@ -2,14 +2,14 @@
 import { ChoiceViewModel } from './choice-view-model';
 import * as Ro from '@nakedobjects/restful-objects';
 import * as Models from '@nakedobjects/restful-objects';
-import { ContextService } from '../context.service';
-import { ColorService } from '../color.service';
-import { ErrorService } from '../error.service';
-import { UrlManagerService } from '../url-manager.service';
-import { ConfigService } from '../config.service';
-import { Pane } from '../route-data';
+import { ContextService } from '@nakedobjects/services';
+import { ColorService } from '@nakedobjects/services';
+import { ErrorService } from '@nakedobjects/services';
+import { UrlManagerService } from '@nakedobjects/services';
+import { ConfigService } from '@nakedobjects/services';
+import { Pane } from '@nakedobjects/services';
 import * as Helpers from './helpers-view-models';
-import { ErrorWrapper } from '../error.wrapper';
+import { ErrorWrapper } from '@nakedobjects/services';
 
 export class LinkViewModel implements IDraggableViewModel {
 

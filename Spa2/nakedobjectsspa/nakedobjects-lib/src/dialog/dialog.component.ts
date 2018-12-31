@@ -1,10 +1,10 @@
 import { Component, Input, AfterViewInit, ViewChildren, QueryList, OnDestroy } from '@angular/core';
 import { ViewModelFactoryService } from '../view-model-factory.service';
-import { UrlManagerService } from '../url-manager.service';
+import { UrlManagerService } from '@nakedobjects/services';
 import * as Models from '@nakedobjects/restful-objects';
 import { ActivatedRoute } from '@angular/router';
-import { ContextService } from '../context.service';
-import { ErrorService } from '../error.service';
+import { ContextService } from '@nakedobjects/services';
+import { ErrorService } from '@nakedobjects/services';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { ActionViewModel } from '../view-models/action-view-model';
@@ -13,7 +13,7 @@ import { ListViewModel } from '../view-models/list-view-model';
 import { MenuViewModel } from '../view-models/menu-view-model';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 import { CollectionViewModel } from '../view-models/collection-view-model';
-import { ConfigService } from '../config.service';
+import { ConfigService } from '@nakedobjects/services';
 import { ParametersComponent } from '../parameters/parameters.component';
 import { Dictionary } from 'lodash';
 import find from 'lodash-es/find';
@@ -21,7 +21,7 @@ import forEach from 'lodash-es/forEach';
 import some from 'lodash-es/some';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { safeUnsubscribe, createForm } from '../helpers-components';
-import { ErrorWrapper } from '../error.wrapper';
+import { ErrorWrapper } from '@nakedobjects/services';
 
 @Component({
     selector: 'nof-dialog',

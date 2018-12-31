@@ -32,6 +32,8 @@
     "prepackage": "node prepackage.js",
     "build:clean": "rimraf dist",
     "package:restful-objects": "cd dist/restful-objects && npm pack && cd ../..",
+    "package:services": "cd dist/nakedobjects-services && npm pack && cd ../..",
+    "build:services": "rimraf dist/services && ng-packagr -p services/package.json",
     "build:restful-objects": "rimraf dist/restful-objects && ng-packagr -p restful-objects/package.json",
     "build:app": "cpr dist/nakedobjects-lib src/@nakedobjects/lib && ng build packages --no-progress && rimraf src/@nakedobjects",
     "build:lib": "rimraf dist/nakedobjects-lib && ng-packagr -p nakedobjects-lib/package.json"

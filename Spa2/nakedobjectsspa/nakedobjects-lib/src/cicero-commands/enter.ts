@@ -13,7 +13,7 @@ import { CommandResult } from './command-result';
 import * as Constants from '../constants';
 import * as Models from '@nakedobjects/restful-objects';
 import * as Usermessages from '../user-messages';
-import * as Validate from '../validate';
+import { validateMandatory, validateDate, validateMandatoryAgainstType } from '@nakedobjects/services';
 
 export class Enter extends Command {
 
@@ -155,7 +155,7 @@ export class Enter extends Command {
     private handleFreeForm(field: Models.IField, fieldEntry: string) {
         if (field.isScalar()) {
 
-            const mandatoryError = Validate.validateMandatory(field, fieldEntry);
+            const mandatoryError = validateMandatory(field, fieldEntry);
 
             if (mandatoryError) {
                 return this.returnResult('', this.validationMessage(mandatoryError, new Models.Value(''), field.extensions().friendlyName()));
@@ -163,7 +163,7 @@ export class Enter extends Command {
 
             let value = new Models.Value(fieldEntry);
             if (Models.isDateOrDateTime(field)) {
-                const dt = Validate.validateDate(fieldEntry, Constants.supportedDateFormats);
+                const dt = validateDate(fieldEntry, Constants.supportedDateFormats);
 
                 if (dt) {
                     value = new Models.Value(Models.toDateString(dt.toDate()));
@@ -176,7 +176,7 @@ export class Enter extends Command {
                 const remoteMask = field.extensions().mask();
                 const localFilter = this.mask.toLocalFilter(remoteMask, field.extensions().format()!);
 
-                const validateError = Validate.validateMandatoryAgainstType(field, fieldEntry, localFilter);
+                const validateError = validateMandatoryAgainstType(field, fieldEntry, localFilter);
 
                 if (validateError) {
                     return this.returnResult('', this.validationMessage(validateError, value, field.extensions().friendlyName()));

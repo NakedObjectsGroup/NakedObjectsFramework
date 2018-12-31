@@ -1,10 +1,10 @@
 ﻿import * as Ro from '@nakedobjects/restful-objects';
-import { ContextService } from '../context.service';
-import { ErrorService } from '../error.service';
-import { ConfigService } from '../config.service';
+import { ContextService } from '@nakedobjects/services';
+import { ErrorService } from '@nakedobjects/services';
+import { ConfigService } from '@nakedobjects/services';
 import * as Models from '@nakedobjects/restful-objects';
 import * as Constants from '../constants';
-import { ErrorWrapper } from '../error.wrapper';
+import { ErrorWrapper } from '@nakedobjects/services';
 
 export class ApplicationPropertiesViewModel {
 

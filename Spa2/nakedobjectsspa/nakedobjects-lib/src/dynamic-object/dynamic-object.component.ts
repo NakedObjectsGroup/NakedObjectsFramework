@@ -1,13 +1,13 @@
-﻿import { ContextService } from '../context.service';
+﻿import { ContextService } from '@nakedobjects/services';
 import { Component, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
 import { CustomComponentService } from '../custom-component.service';
 import { ActivatedRoute } from '@angular/router';
-import { PaneRouteData, ViewType } from '../route-data';
-import { UrlManagerService } from '../url-manager.service';
+import { PaneRouteData, ViewType } from '@nakedobjects/services';
+import { UrlManagerService } from '@nakedobjects/services';
 import { PaneComponent } from '../pane/pane';
 import { Type } from '@angular/core/src/type';
 import * as Models from '@nakedobjects/restful-objects';
-import { ConfigService } from '../config.service';
+import { ConfigService } from '@nakedobjects/services';
 
 @Component({
     selector: 'nof-dynamic-object',

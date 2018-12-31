@@ -1,20 +1,20 @@
 ﻿import { FieldViewModel } from './field-view-model';
-import { ColorService } from '../color.service';
-import { ErrorService } from '../error.service';
+import { ColorService } from '@nakedobjects/services';
+import { ErrorService } from '@nakedobjects/services';
 import { AttachmentViewModel } from './attachment-view-model';
 import { ViewModelFactoryService } from '../view-model-factory.service';
-import { ContextService } from '../context.service';
+import { ContextService } from '@nakedobjects/services';
 import { ChoiceViewModel } from './choice-view-model';
-import { MaskService } from '../mask.service';
-import { ClickHandlerService } from '../click-handler.service';
-import { UrlManagerService } from '../url-manager.service';
+import { MaskService } from '@nakedobjects/services';
+import { ClickHandlerService } from '@nakedobjects/services';
+import { UrlManagerService } from '@nakedobjects/services';
 import { IDraggableViewModel } from './idraggable-view-model';
 import { Dictionary } from 'lodash';
 import * as Msg from '../user-messages';
 import * as Models from '@nakedobjects/restful-objects';
 import * as Helpers from './helpers-view-models';
-import * as Configservice from '../config.service';
-import { Pane } from '../route-data';
+import * as Configservice from '@nakedobjects/services';
+import { Pane } from '@nakedobjects/services';
 import find from 'lodash-es/find';
 import concat from 'lodash-es/concat';
 

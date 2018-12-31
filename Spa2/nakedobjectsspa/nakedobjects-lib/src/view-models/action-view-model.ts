@@ -1,10 +1,10 @@
 ﻿import { ParameterViewModel } from './parameter-view-model';
-import { ContextService } from '../context.service';
-import { PaneRouteData, InteractionMode, Pane } from '../route-data';
-import { UrlManagerService } from '../url-manager.service';
-import { ErrorService } from '../error.service';
+import { ContextService } from '@nakedobjects/services';
+import { PaneRouteData, InteractionMode, Pane } from '@nakedobjects/services';
+import { UrlManagerService } from '@nakedobjects/services';
+import { ErrorService } from '@nakedobjects/services';
 import { IMessageViewModel } from './imessage-view-model';
-import { ClickHandlerService } from '../click-handler.service';
+import { ClickHandlerService } from '@nakedobjects/services';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import * as Models from '@nakedobjects/restful-objects';
 import * as Msg from '../user-messages';
@@ -14,7 +14,7 @@ import forEach from 'lodash-es/forEach';
 import map from 'lodash-es/map';
 import zipObject from 'lodash-es/zipObject';
 import pickBy from 'lodash-es/pickBy';
-import { ErrorWrapper } from '../error.wrapper';
+import { ErrorWrapper } from '@nakedobjects/services';
 
 export class ActionViewModel {
 

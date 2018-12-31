@@ -1,18 +1,18 @@
 import { Component, OnInit, OnDestroy, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as Models from '@nakedobjects/restful-objects';
-import { UrlManagerService } from '../url-manager.service';
-import { ContextService } from '../context.service';
+import { UrlManagerService } from '@nakedobjects/services';
+import { ContextService } from '@nakedobjects/services';
 import { ViewModelFactoryService } from '../view-model-factory.service';
-import { ErrorService } from '../error.service';
-import { PaneRouteData, InteractionMode, ICustomActivatedRouteData } from '../route-data';
+import { ErrorService } from '@nakedobjects/services';
+import { PaneRouteData, InteractionMode, ICustomActivatedRouteData } from '@nakedobjects/services';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PropertyViewModel } from '../view-models/property-view-model';
 import { MenuItemViewModel } from '../view-models/menu-item-view-model';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 import { IActionHolder, wrapAction } from '../action/action.component';
-import { ColorService } from '../color.service';
-import { ConfigService } from '../config.service';
+import { ColorService } from '@nakedobjects/services';
+import { ConfigService } from '@nakedobjects/services';
 import { PropertiesComponent } from '../properties/properties.component';
 import * as Msg from '../user-messages';
 import * as Helpers from '../view-models/helpers-view-models';
@@ -29,7 +29,7 @@ import { SubscriptionLike as ISubscription } from 'rxjs';
 import { safeUnsubscribe } from '../helpers-components';
 import { debounceTime } from 'rxjs/operators';
 import { ErrorCategory, ClientErrorCode } from '../constants';
-import { ErrorWrapper } from '../error.wrapper';
+import { ErrorWrapper } from '@nakedobjects/services';
 import { DragAndDropService } from '../view-models/drag-and-drop.service';
 
 @Component({

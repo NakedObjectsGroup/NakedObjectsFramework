@@ -3,17 +3,17 @@ import { PaneComponent } from '../pane/pane';
 import { ParametersComponent } from '../parameters/parameters.component';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { ActivatedRoute } from '@angular/router';
-import { UrlManagerService } from '../url-manager.service';
-import { ContextService } from '../context.service';
-import { ErrorService } from '../error.service';
-import { PaneRouteData } from '../route-data';
+import { UrlManagerService } from '@nakedobjects/services';
+import { ContextService } from '@nakedobjects/services';
+import { ErrorService } from '@nakedobjects/services';
+import { PaneRouteData } from '@nakedobjects/services';
 import { ActionViewModel } from '../view-models/action-view-model';
 import { CollectionViewModel } from '../view-models/collection-view-model';
 import { MultiLineDialogViewModel } from '../view-models/multi-line-dialog-view-model';
 import { DialogViewModel } from '../view-models/dialog-view-model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ParameterViewModel } from '../view-models/parameter-view-model';
-import { ConfigService } from '../config.service';
+import { ConfigService } from '@nakedobjects/services';
 import * as Msg from '../user-messages';
 import * as Models from '@nakedobjects/restful-objects';
 import { Dictionary } from 'lodash';
@@ -24,7 +24,7 @@ import some from 'lodash-es/some';
 import each from 'lodash-es/each';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { safeUnsubscribe, createForm } from '../helpers-components';
-import { ErrorWrapper } from '../error.wrapper';
+import { ErrorWrapper } from '@nakedobjects/services';
 
 @Component({
     selector: 'nof-multi-line-dialog',

@@ -1,9 +1,9 @@
 ﻿import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
 import { CustomComponentService } from '../custom-component.service';
 import { Type } from '@angular/core/src/type';
-import { ContextService } from '../context.service';
-import { LoggerService } from '../logger.service';
-import { UrlManagerService } from '../url-manager.service';
+import { ContextService } from '@nakedobjects/services';
+import { LoggerService } from '@nakedobjects/services';
+import { UrlManagerService } from '@nakedobjects/services';
 
 @Component({
     selector: 'nof-dynamic-error',

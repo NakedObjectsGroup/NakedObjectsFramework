@@ -1,7 +1,7 @@
 import { Component, Input, QueryList, AfterViewInit, ViewChildren, OnDestroy } from '@angular/core';
 import { LinkViewModel } from '../view-models/link-view-model';
 import { ActionComponent, IActionHolder } from '../action/action.component';
-import { UrlManagerService } from '../url-manager.service';
+import { UrlManagerService } from '@nakedobjects/services';
 import map from 'lodash-es/map';
 import some from 'lodash-es/some';
 import { SubscriptionLike as ISubscription } from 'rxjs';

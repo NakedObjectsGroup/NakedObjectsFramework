@@ -1,10 +1,10 @@
 ﻿import { MessageViewModel } from './message-view-model';
-import { ColorService } from '../color.service';
-import { ContextService } from '../context.service';
+import { ColorService } from '@nakedobjects/services';
+import { ContextService } from '@nakedobjects/services';
 import { ViewModelFactoryService } from '../view-model-factory.service';
-import { UrlManagerService } from '../url-manager.service';
-import { ErrorService } from '../error.service';
-import { PaneRouteData, InteractionMode, Pane } from '../route-data';
+import { UrlManagerService } from '@nakedobjects/services';
+import { ErrorService } from '@nakedobjects/services';
+import { PaneRouteData, InteractionMode, Pane } from '@nakedobjects/services';
 import { ChoiceViewModel } from './choice-view-model';
 import { ActionViewModel } from './action-view-model';
 import { MenuItemViewModel } from './menu-item-view-model';
@@ -14,7 +14,7 @@ import { ParameterViewModel } from './parameter-view-model';
 import * as Models from '@nakedobjects/restful-objects';
 import * as Helpers from './helpers-view-models';
 import { Dictionary } from 'lodash';
-import { ConfigService } from '../config.service';
+import { ConfigService } from '@nakedobjects/services';
 import * as Msg from '../user-messages';
 import { IMenuHolderViewModel } from './imenu-holder-view-model';
 import filter from 'lodash-es/filter';
@@ -25,7 +25,7 @@ import zipObject from 'lodash-es/zipObject';
 import fromPairs from 'lodash-es/fromPairs';
 import values from 'lodash-es/values';
 import mapValues from 'lodash-es/mapValues';
-import { ErrorWrapper } from '../error.wrapper';
+import { ErrorWrapper } from '@nakedobjects/services';
 
 export class DomainObjectViewModel extends MessageViewModel implements IMenuHolderViewModel {
 

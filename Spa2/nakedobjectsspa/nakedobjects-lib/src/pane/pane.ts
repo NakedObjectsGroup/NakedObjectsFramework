@@ -1,9 +1,9 @@
-import { ContextService } from '../context.service';
+import { ContextService } from '@nakedobjects/services';
 import { OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SubscriptionLike as ISubscription } from 'rxjs';
-import { PaneRouteData, ICustomActivatedRouteData, PaneType, PaneName, Pane } from '../route-data';
-import { UrlManagerService } from '../url-manager.service';
+import { PaneRouteData, ICustomActivatedRouteData, PaneType, PaneName, Pane } from '@nakedobjects/services';
+import { UrlManagerService } from '@nakedobjects/services';
 import { safeUnsubscribe } from '../helpers-components';
 
 export abstract class PaneComponent implements OnInit, OnDestroy {

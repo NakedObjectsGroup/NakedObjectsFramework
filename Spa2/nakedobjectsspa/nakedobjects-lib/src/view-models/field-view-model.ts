@@ -1,7 +1,7 @@
 ﻿import { MessageViewModel } from './message-view-model';
-import { ColorService } from '../color.service';
-import { ErrorService } from '../error.service';
-import { ILocalFilter } from '../mask.service';
+import { ColorService } from '@nakedobjects/services';
+import { ErrorService } from '@nakedobjects/services';
+import { ILocalFilter } from '@nakedobjects/services';
 import { ChoiceViewModel } from './choice-view-model';
 import { IDraggableViewModel } from './idraggable-view-model';
 import { AbstractControl } from '@angular/forms';
@@ -10,9 +10,9 @@ import * as Ro from '@nakedobjects/restful-objects';
 import * as Msg from '../user-messages';
 import { Dictionary } from 'lodash';
 import * as Helpers from './helpers-view-models';
-import { ContextService } from '../context.service';
-import { ConfigService } from '../config.service';
-import { Pane } from '../route-data';
+import { ContextService } from '@nakedobjects/services';
+import { ConfigService } from '@nakedobjects/services';
+import { Pane } from '@nakedobjects/services';
 import filter from 'lodash-es/filter';
 import find from 'lodash-es/find';
 import every from 'lodash-es/every';
@@ -21,7 +21,7 @@ import fromPairs from 'lodash-es/fromPairs';
 import some from 'lodash-es/some';
 import partial from 'lodash-es/partial';
 import concat from 'lodash-es/concat';
-import { ErrorWrapper } from '../error.wrapper';
+import { ErrorWrapper } from '@nakedobjects/services';
 
 export abstract class FieldViewModel extends MessageViewModel {
 

@@ -2,7 +2,7 @@
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { Dictionary } from 'lodash';
 import * as Models from '@nakedobjects/restful-objects';
-import { Pane } from '../route-data';
+import { Pane } from '@nakedobjects/services';
 import find from 'lodash-es/find';
 import map from 'lodash-es/map';
 

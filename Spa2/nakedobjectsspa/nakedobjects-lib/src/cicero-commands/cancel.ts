@@ -1,7 +1,7 @@
 import { CommandResult } from './command-result';
 import { Command } from './Command';
 import * as Msg from '../user-messages';
-import * as RtD from '../route-data';
+import * as RtD from '@nakedobjects/services';
 
 export class Cancel extends Command {
 

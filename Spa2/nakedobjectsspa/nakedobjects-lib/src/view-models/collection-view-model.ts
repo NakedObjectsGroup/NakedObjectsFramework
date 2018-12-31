@@ -1,18 +1,18 @@
 ﻿import { ItemViewModel } from './item-view-model';
-import { PaneRouteData, CollectionViewState, InteractionMode } from '../route-data';
+import { PaneRouteData, CollectionViewState, InteractionMode } from '@nakedobjects/services';
 import { ViewModelFactoryService } from '../view-model-factory.service';
-import { ColorService } from '../color.service';
-import { ErrorService } from '../error.service';
-import { ContextService } from '../context.service';
-import { UrlManagerService } from '../url-manager.service';
+import { ColorService } from '@nakedobjects/services';
+import { ErrorService } from '@nakedobjects/services';
+import { ContextService } from '@nakedobjects/services';
+import { UrlManagerService } from '@nakedobjects/services';
 import { ContributedActionParentViewModel } from './contributed-action-parent-view-model';
 import * as Helpers from './helpers-view-models';
 import * as Models from '@nakedobjects/restful-objects';
 import find from 'lodash-es/find';
-import { ConfigService } from '../config.service';
-import { LoggerService } from '../logger.service';
+import { ConfigService } from '@nakedobjects/services';
+import { LoggerService } from '@nakedobjects/services';
 import some from 'lodash-es/some';
-import { ErrorWrapper } from '../error.wrapper';
+import { ErrorWrapper } from '@nakedobjects/services';
 
 export class CollectionViewModel extends ContributedActionParentViewModel {
 

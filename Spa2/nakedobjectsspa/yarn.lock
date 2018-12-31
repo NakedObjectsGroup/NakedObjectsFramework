@@ -268,6 +268,32 @@
   dependencies:
     tslib "^1.9.0"
 
+"@nakedobjects/restful-objects@file:dist/restful-objects":
+  version "10.0.0-beta.5"
+  dependencies:
+    lodash "4.17.11"
+    lodash-es "4.17.11"
+    tslib "^1.9.0"
+
+"@nakedobjects/services@file:dist/nakedobjects-services":
+  version "10.0.0-beta.5"
+  dependencies:
+    auth0-js "^9.8.2"
+    lodash "4.17.11"
+    lodash-es "4.17.11"
+    moment "2.22.2"
+    tslib "^1.9.0"
+
+"@nakedobjects/services@file:dist/nakedobjects-services/nakedobjects-services-10.0.0-beta.5.tgz":
+  version "10.0.0-beta.5"
+  resolved "file:dist/nakedobjects-services/nakedobjects-services-10.0.0-beta.5.tgz#58f781af827de324fcf739e92a27a91ba2939c98"
+  dependencies:
+    auth0-js "^9.8.2"
+    lodash "4.17.11"
+    lodash-es "4.17.11"
+    moment "2.22.2"
+    tslib "^1.9.0"
+
 "@ngtools/json-schema@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@ngtools/json-schema/-/json-schema-1.1.0.tgz#c3a0c544d62392acc2813a42c8a0dc6f58f86922"

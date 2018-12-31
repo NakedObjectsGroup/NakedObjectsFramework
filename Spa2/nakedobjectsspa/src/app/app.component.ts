@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { AuthService } from '@nakedobjects/lib';
-import { UrlManagerService } from '@nakedobjects/lib';
-import { ConfigService } from '@nakedobjects/lib';
+import { AuthService } from '@nakedobjects/services';
+import { UrlManagerService } from '@nakedobjects/services';
+import { ConfigService } from '@nakedobjects/services';
 
 @Component({
     // tslint:disable-next-line:component-selector

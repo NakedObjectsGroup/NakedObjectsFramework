@@ -1,9 +1,9 @@
-﻿import { ContextService } from '../context.service';
+﻿import { ContextService } from '@nakedobjects/services';
 import * as Models from '@nakedobjects/restful-objects';
 import * as Msg from '../user-messages';
-import { ErrorService } from '../error.service';
-import { Pane } from '../route-data';
-import { ErrorWrapper } from '../error.wrapper';
+import { ErrorService } from '@nakedobjects/services';
+import { Pane } from '@nakedobjects/services';
+import { ErrorWrapper } from '@nakedobjects/services';
 
 export class AttachmentViewModel {
 

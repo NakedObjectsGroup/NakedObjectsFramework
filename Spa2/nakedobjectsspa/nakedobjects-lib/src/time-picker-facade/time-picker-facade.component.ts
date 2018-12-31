@@ -3,7 +3,7 @@ import { FieldViewModel } from '../view-models/field-view-model';
 import {  ViewChild, AfterViewInit } from '@angular/core';
 import { Component, Input, EventEmitter } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
-import { ConfigService} from '../config.service';
+import { ConfigService} from '@nakedobjects/services';
 import * as Msg from '../user-messages';
 import { ITimePickerOutputEvent, ITimePickerInputEvent } from '../time-picker/time-picker.component';
 

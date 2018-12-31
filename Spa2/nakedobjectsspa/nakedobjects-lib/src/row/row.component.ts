@@ -2,7 +2,7 @@
 import { ItemViewModel } from '../view-models/item-view-model';
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
 import * as Helpers from '../view-models/helpers-view-models';
-import { ContextService } from '../context.service';
+import { ContextService } from '@nakedobjects/services';
 import { PropertyViewModel } from '../view-models/property-view-model';
 import { RecentItemViewModel } from '../view-models/recent-item-view-model';
 import { TableRowColumnViewModel } from '../view-models/table-row-column-view-model';

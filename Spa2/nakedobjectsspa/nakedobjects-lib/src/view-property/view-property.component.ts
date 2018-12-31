@@ -1,7 +1,7 @@
 ﻿import { Component, Input, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
-import { ErrorService } from '../error.service';
-import { ContextService } from '../context.service';
+import { ErrorService } from '@nakedobjects/services';
+import { ContextService } from '@nakedobjects/services';
 import { PropertyViewModel } from '../view-models/property-view-model';
 import * as Helpers from '../view-models/helpers-view-models';
 import { AttachmentViewModel } from '../view-models/attachment-view-model';

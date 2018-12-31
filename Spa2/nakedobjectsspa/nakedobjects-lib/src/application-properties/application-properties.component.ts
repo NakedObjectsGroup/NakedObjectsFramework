@@ -2,7 +2,7 @@
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { ApplicationPropertiesViewModel } from '../view-models/application-properties-view-model';
 import * as Msg from '../user-messages';
-import { AuthService } from '../auth.service';
+import { AuthService } from '@nakedobjects/services';
 
 @Component({
     selector: 'nof-application-properties',

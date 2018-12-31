@@ -1,11 +1,11 @@
 import * as Models from '@nakedobjects/restful-objects';
-import { PaneRouteData, Pane } from './route-data';
-import { ContextService } from './context.service';
-import { UrlManagerService } from './url-manager.service';
-import { ColorService } from './color.service';
-import { ClickHandlerService } from './click-handler.service';
-import { ErrorService } from './error.service';
-import { MaskService } from './mask.service';
+import { PaneRouteData, Pane } from '@nakedobjects/services';
+import { ContextService } from '@nakedobjects/services';
+import { UrlManagerService } from '@nakedobjects/services';
+import { ColorService } from '@nakedobjects/services';
+import { ClickHandlerService } from '@nakedobjects/services';
+import { ErrorService } from '@nakedobjects/services';
+import { MaskService } from '@nakedobjects/services';
 import { Injectable } from '@angular/core';
 import { AttachmentViewModel } from './view-models/attachment-view-model';
 import { ErrorViewModel } from './view-models/error-view-model';
@@ -27,15 +27,15 @@ import { ListViewModel } from './view-models/list-view-model';
 import { DialogViewModel } from './view-models/dialog-view-model';
 import { DomainObjectViewModel } from './view-models/domain-object-view-model';
 import { MultiLineDialogViewModel } from './view-models/multi-line-dialog-view-model';
-import { ConfigService } from './config.service';
-import { LoggerService } from './logger.service';
+import { ConfigService } from '@nakedobjects/services';
+import { LoggerService } from '@nakedobjects/services';
 import { ApplicationPropertiesViewModel } from './view-models/application-properties-view-model';
 import { CiceroCommandFactoryService } from './cicero-command-factory.service';
 import { CiceroRendererService } from './cicero-renderer.service';
 import forEach from 'lodash-es/forEach';
 import map from 'lodash-es/map';
 import find from 'lodash-es/find';
-import { ErrorWrapper } from './error.wrapper';
+import { ErrorWrapper } from '@nakedobjects/services';
 
 @Injectable()
 export class ViewModelFactoryService {

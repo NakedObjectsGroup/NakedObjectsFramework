@@ -6,15 +6,15 @@ import { Command } from '../cicero-commands/Command';
 import { Result } from '../cicero-commands/result';
 import { CiceroContextService } from '../cicero-context.service';
 import { CiceroRendererService } from '../cicero-renderer.service';
-import { ContextService } from '../context.service';
-import { ErrorService } from '../error.service';
+import { ContextService } from '@nakedobjects/services';
+import { ErrorService } from '@nakedobjects/services';
 import { focus, safeUnsubscribe } from '../helpers-components';
 import * as Ro from '@nakedobjects/restful-objects';
-import * as RtD from '../route-data';
-import { PaneRouteData } from '../route-data';
-import { UrlManagerService } from '../url-manager.service';
+import * as RtD from '@nakedobjects/services';
+import { PaneRouteData } from '@nakedobjects/services';
+import { UrlManagerService } from '@nakedobjects/services';
 import { ErrorCategory, ClientErrorCode } from '../constants';
-import { ErrorWrapper } from '../error.wrapper';
+import { ErrorWrapper } from '@nakedobjects/services';
 
 @Component({
     selector: 'nof-cicero',

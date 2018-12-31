@@ -1,20 +1,20 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { UrlManagerService } from '../url-manager.service';
-import { ContextService } from '../context.service';
+import { UrlManagerService } from '@nakedobjects/services';
+import { ContextService } from '@nakedobjects/services';
 import { ActivatedRoute } from '@angular/router';
-import { ColorService } from '../color.service';
-import { ErrorService } from '../error.service';
-import { PaneRouteData, CollectionViewState, ICustomActivatedRouteData } from '../route-data';
+import { ColorService } from '@nakedobjects/services';
+import { ErrorService } from '@nakedobjects/services';
+import { PaneRouteData, CollectionViewState, ICustomActivatedRouteData } from '@nakedobjects/services';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import * as Models from '@nakedobjects/restful-objects';
 import { ListViewModel } from '../view-models/list-view-model';
 import { IActionHolder } from '../action/action.component';
-import { ConfigService } from '../config.service';
-import { LoggerService } from '../logger.service';
+import { ConfigService } from '@nakedobjects/services';
+import { LoggerService } from '@nakedobjects/services';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { ItemViewModel } from '../view-models/item-view-model';
 import { safeUnsubscribe } from '../helpers-components';
-import { ErrorWrapper } from '../error.wrapper';
+import { ErrorWrapper } from '@nakedobjects/services';
 
 @Component({
     selector: 'nof-list',

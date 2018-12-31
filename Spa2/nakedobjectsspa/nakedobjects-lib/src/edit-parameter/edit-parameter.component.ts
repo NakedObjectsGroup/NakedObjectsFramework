@@ -3,16 +3,16 @@ import { TimePickerFacadeComponent } from '../time-picker-facade/time-picker-fac
 import { DatePickerFacadeComponent } from '../date-picker-facade/date-picker-facade.component';
 import { Component, Input, OnInit, ElementRef, HostListener, ViewChildren, QueryList, AfterViewInit, Renderer2 } from '@angular/core';
 import { ViewModelFactoryService } from '../view-model-factory.service';
-import { UrlManagerService } from '../url-manager.service';
+import { UrlManagerService } from '@nakedobjects/services';
 import * as Models from '@nakedobjects/restful-objects';
 import { FieldComponent } from '../field/field.component';
 import { FormGroup } from '@angular/forms';
-import { ContextService } from '../context.service';
+import { ContextService } from '@nakedobjects/services';
 import { ParameterViewModel } from '../view-models/parameter-view-model';
 import { DialogViewModel } from '../view-models/dialog-view-model';
 import { ChoiceViewModel } from '../view-models/choice-view-model';
-import { ConfigService } from '../config.service';
-import { LoggerService } from '../logger.service';
+import { ConfigService } from '@nakedobjects/services';
+import { LoggerService } from '@nakedobjects/services';
 import { Dictionary } from 'lodash';
 import { DragAndDropService } from '../view-models/drag-and-drop.service';
 

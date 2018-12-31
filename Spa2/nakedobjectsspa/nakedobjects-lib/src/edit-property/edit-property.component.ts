@@ -5,13 +5,13 @@ import { Component, Input, ElementRef, OnInit, HostListener, ViewChildren, Query
 import { FieldComponent } from '../field/field.component';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ErrorService } from '../error.service';
-import { ContextService } from '../context.service';
+import { ErrorService } from '@nakedobjects/services';
+import { ContextService } from '@nakedobjects/services';
 import { PropertyViewModel } from '../view-models/property-view-model';
 import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
 import { ChoiceViewModel } from '../view-models/choice-view-model';
-import { ConfigService } from '../config.service';
-import { LoggerService } from '../logger.service';
+import { ConfigService } from '@nakedobjects/services';
+import { LoggerService } from '@nakedobjects/services';
 import * as Models from '@nakedobjects/restful-objects';
 import { AttachmentViewModel } from '../view-models/attachment-view-model';
 import { Dictionary } from 'lodash';

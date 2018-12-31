@@ -1,19 +1,19 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
-import { UrlManagerService } from '../url-manager.service';
-import { ClickHandlerService } from '../click-handler.service';
-import { ContextService } from '../context.service';
-import { ErrorService } from '../error.service';
-import { RepLoaderService } from '../rep-loader.service';
+import { UrlManagerService } from '@nakedobjects/services';
+import { ClickHandlerService } from '@nakedobjects/services';
+import { ContextService } from '@nakedobjects/services';
+import { ErrorService } from '@nakedobjects/services';
+import { RepLoaderService } from '@nakedobjects/services';
 import { IDraggableViewModel } from '../view-models/idraggable-view-model';
 import * as Msg from '../user-messages';
-import { ConfigService } from '../config.service';
-import { AuthService } from '../auth.service';
-import { Pane } from '../route-data';
+import { ConfigService } from '@nakedobjects/services';
+import { AuthService } from '@nakedobjects/services';
+import { Pane } from '@nakedobjects/services';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { safeUnsubscribe } from '../helpers-components';
 import { HttpClient } from '@angular/common/http';
-import { ErrorWrapper } from '../error.wrapper';
+import { ErrorWrapper } from '@nakedobjects/services';
 import { DragAndDropService } from '../view-models/drag-and-drop.service';
 
 @Component({

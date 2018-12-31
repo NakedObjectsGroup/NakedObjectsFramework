@@ -1,8 +1,8 @@
-﻿import { ContextService } from '../context.service';
+﻿import { ContextService } from '@nakedobjects/services';
 import { Component, OnInit } from '@angular/core';
-import { ConfigService } from '../config.service';
-import { AuthService } from '../auth.service';
-import { UrlManagerService } from '../url-manager.service';
+import { ConfigService } from '@nakedobjects/services';
+import { AuthService } from '@nakedobjects/services';
+import { UrlManagerService } from '@nakedobjects/services';
 import { Location } from '@angular/common';
 import { HttpClient, HttpRequest, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 

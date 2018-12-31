@@ -1,14 +1,14 @@
 ﻿import { Component } from '@angular/core';
-import { ContextService } from '../context.service';
+import { ContextService } from '@nakedobjects/services';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { ActivatedRoute } from '@angular/router';
-import { UrlManagerService } from '../url-manager.service';
-import { ErrorService } from '../error.service';
+import { UrlManagerService } from '@nakedobjects/services';
+import { ErrorService } from '@nakedobjects/services';
 import { PaneComponent } from '../pane/pane';
 import * as Models from '@nakedobjects/restful-objects';
-import { ConfigService } from '../config.service';
-import { PaneRouteData } from '../route-data';
-import { ErrorWrapper } from '../error.wrapper';
+import { ConfigService } from '@nakedobjects/services';
+import { PaneRouteData } from '@nakedobjects/services';
+import { ErrorWrapper } from '@nakedobjects/services';
 
 @Component({
     selector: 'nof-attachment',

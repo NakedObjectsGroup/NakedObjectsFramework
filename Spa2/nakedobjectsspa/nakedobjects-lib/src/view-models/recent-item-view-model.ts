@@ -1,13 +1,13 @@
-﻿import { ContextService } from '../context.service';
-import { ColorService } from '../color.service';
-import { ErrorService } from '../error.service';
-import { UrlManagerService } from '../url-manager.service';
-import { ClickHandlerService } from '../click-handler.service';
+﻿import { ContextService } from '@nakedobjects/services';
+import { ColorService } from '@nakedobjects/services';
+import { ErrorService } from '@nakedobjects/services';
+import { UrlManagerService } from '@nakedobjects/services';
+import { ClickHandlerService } from '@nakedobjects/services';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { ItemViewModel } from './item-view-model';
 import * as Models from '@nakedobjects/restful-objects';
-import { ConfigService } from '../config.service';
-import { Pane } from '../route-data';
+import { ConfigService } from '@nakedobjects/services';
+import { Pane } from '@nakedobjects/services';
 
 export class RecentItemViewModel extends ItemViewModel {
 

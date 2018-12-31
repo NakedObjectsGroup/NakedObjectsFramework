@@ -1,11 +1,11 @@
 ﻿import { DialogViewModel } from './dialog-view-model';
 import { CollectionViewModel } from './collection-view-model';
-import { PaneRouteData } from '../route-data';
-import { ColorService } from '../color.service';
-import { ContextService } from '../context.service';
+import { PaneRouteData } from '@nakedobjects/services';
+import { ColorService } from '@nakedobjects/services';
+import { ContextService } from '@nakedobjects/services';
 import { ViewModelFactoryService } from '../view-model-factory.service';
-import { UrlManagerService } from '../url-manager.service';
-import { ErrorService } from '../error.service';
+import { UrlManagerService } from '@nakedobjects/services';
+import { ErrorService } from '@nakedobjects/services';
 import * as Models from '@nakedobjects/restful-objects';
 import filter from 'lodash-es/filter';
 import map from 'lodash-es/map';

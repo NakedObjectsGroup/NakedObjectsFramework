@@ -1,15 +1,15 @@
 ﻿import { Location } from '@angular/common';
 import { CiceroContextService } from '../cicero-context.service';
 import { CommandResult } from './command-result';
-import * as Routedata from '../route-data';
+import * as Routedata from '@nakedobjects/services';
 import * as Models from '@nakedobjects/restful-objects';
 import * as Usermessages from '../user-messages';
-import { UrlManagerService } from '../url-manager.service';
+import { UrlManagerService } from '@nakedobjects/services';
 import { CiceroCommandFactoryService } from '../cicero-command-factory.service';
-import { ContextService } from '../context.service';
-import { MaskService } from '../mask.service';
-import { ErrorService } from '../error.service';
-import { ConfigService } from '../config.service';
+import { ContextService } from '@nakedobjects/services';
+import { MaskService } from '@nakedobjects/services';
+import { ErrorService } from '@nakedobjects/services';
+import { ConfigService } from '@nakedobjects/services';
 import map from 'lodash-es/map';
 import some from 'lodash-es/some';
 import filter from 'lodash-es/filter';
@@ -23,7 +23,7 @@ import * as Commandresult from './command-result';
 import { CiceroRendererService } from '../cicero-renderer.service';
 import * as Rointerfaces from '@nakedobjects/restful-objects';
 import { ErrorCategory, ClientErrorCode } from '../constants';
-import { ErrorWrapper } from '../error.wrapper';
+import { ErrorWrapper } from '@nakedobjects/services';
 
 export abstract class Command {
 

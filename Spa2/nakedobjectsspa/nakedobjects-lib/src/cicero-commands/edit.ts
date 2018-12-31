@@ -1,7 +1,7 @@
 import { CommandResult } from './command-result';
 import { Command } from './Command';
 import * as Usermessages from '../user-messages';
-import * as Routedata from '../route-data';
+import * as Routedata from '@nakedobjects/services';
 
 export class Edit extends Command {
 

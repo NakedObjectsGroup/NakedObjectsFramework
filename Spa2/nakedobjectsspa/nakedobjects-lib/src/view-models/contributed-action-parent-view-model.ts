@@ -2,16 +2,16 @@
 import * as Models from '@nakedobjects/restful-objects';
 import * as Msg from '../user-messages';
 import { ViewModelFactoryService } from '../view-model-factory.service';
-import { UrlManagerService } from '../url-manager.service';
-import { ErrorService } from '../error.service';
-import { ContextService } from '../context.service';
+import { UrlManagerService } from '@nakedobjects/services';
+import { ErrorService } from '@nakedobjects/services';
+import { ContextService } from '@nakedobjects/services';
 import { ItemViewModel } from './item-view-model';
 import { ActionViewModel } from './action-view-model';
 import { ParameterViewModel } from './parameter-view-model';
 import { Dictionary } from 'lodash';
 import * as Helpers from './helpers-view-models';
 import { MenuItemViewModel } from './menu-item-view-model';
-import { PaneRouteData, Pane } from '../route-data';
+import { PaneRouteData, Pane } from '@nakedobjects/services';
 import each from 'lodash-es/each';
 import filter from 'lodash-es/filter';
 import find from 'lodash-es/find';
@@ -25,7 +25,7 @@ import some from 'lodash-es/some';
 import values from 'lodash-es/values';
 import toArray from 'lodash-es/toArray';
 import { ErrorCategory, HttpStatusCode } from '../constants';
-import { ErrorWrapper } from '../error.wrapper';
+import { ErrorWrapper } from '@nakedobjects/services';
 
 export abstract class ContributedActionParentViewModel extends MessageViewModel {
 

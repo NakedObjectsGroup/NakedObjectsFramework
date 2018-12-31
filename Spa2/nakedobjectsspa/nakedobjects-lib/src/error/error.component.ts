@@ -1,5 +1,5 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { ContextService } from '../context.service';
+import { ContextService } from '@nakedobjects/services';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 
 @Component({

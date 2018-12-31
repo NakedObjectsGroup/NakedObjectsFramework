@@ -1,16 +1,16 @@
 ﻿import { Component, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { UrlManagerService } from '../url-manager.service';
-import { ContextService } from '../context.service';
-import { ErrorService } from '../error.service';
+import { UrlManagerService } from '@nakedobjects/services';
+import { ContextService } from '@nakedobjects/services';
+import { ErrorService } from '@nakedobjects/services';
 import { ViewModelFactoryService } from '../view-model-factory.service';
-import { PaneRouteData } from '../route-data';
+import { PaneRouteData } from '@nakedobjects/services';
 import { MenusViewModel } from '../view-models/menus-view-model';
 import { MenuViewModel } from '../view-models/menu-view-model';
 import { PaneComponent } from '../pane/pane';
 import * as Models from '@nakedobjects/restful-objects';
 import { LinkViewModel } from '../view-models/link-view-model';
-import { ErrorWrapper } from '../error.wrapper';
+import { ErrorWrapper } from '@nakedobjects/services';
 
 @Component({
     selector: 'nof-home',

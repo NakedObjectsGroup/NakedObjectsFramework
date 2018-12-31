@@ -1,11 +1,11 @@
 ﻿import { Injectable } from '@angular/core';
 import { Command } from './cicero-commands/Command';
 import * as Msg from './user-messages';
-import { ContextService } from './context.service';
-import { UrlManagerService } from './url-manager.service';
-import { MaskService } from './mask.service';
-import { ErrorService } from './error.service';
-import { ConfigService } from './config.service';
+import { ContextService } from '@nakedobjects/services';
+import { UrlManagerService } from '@nakedobjects/services';
+import { MaskService } from '@nakedobjects/services';
+import { ErrorService } from '@nakedobjects/services';
+import { ConfigService } from '@nakedobjects/services';
 import { Location } from '@angular/common';
 import { CiceroContextService } from './cicero-context.service';
 import { Action } from './cicero-commands/action';

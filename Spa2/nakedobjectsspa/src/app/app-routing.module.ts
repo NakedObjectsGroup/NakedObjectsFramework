@@ -7,11 +7,11 @@ import { ApplicationPropertiesComponent } from '@nakedobjects/lib';
 import { AttachmentComponent } from '@nakedobjects/lib';
 import { MultiLineDialogComponent } from '@nakedobjects/lib';
 import { DynamicObjectComponent } from '@nakedobjects/lib';
-import { ViewType } from '@nakedobjects/lib';
+import { ViewType } from '@nakedobjects/services';
 import { DynamicListComponent } from '@nakedobjects/lib';
 import { DynamicErrorComponent } from '@nakedobjects/lib';
 import { CiceroComponent } from '@nakedobjects/lib';
-import { AuthService } from '@nakedobjects/lib';
+import { AuthService } from '@nakedobjects/services';
 import { LogoffComponent } from '@nakedobjects/lib';
 import { CallbackComponent } from '@nakedobjects/lib';
 

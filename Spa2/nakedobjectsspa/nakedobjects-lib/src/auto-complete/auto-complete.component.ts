@@ -1,4 +1,4 @@
-import { ContextService } from '../context.service';
+import { ContextService } from '@nakedobjects/services';
 import { Component, Input, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { FieldViewModel } from '../view-models/field-view-model';
 import { ChoiceViewModel } from '../view-models/choice-view-model';

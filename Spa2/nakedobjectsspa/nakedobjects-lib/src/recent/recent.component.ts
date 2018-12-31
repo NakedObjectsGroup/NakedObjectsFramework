@@ -1,9 +1,9 @@
-import { ContextService } from '../context.service';
+import { ContextService } from '@nakedobjects/services';
 import { Component, ViewChildren, QueryList, AfterViewInit, OnDestroy } from '@angular/core';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import { ActivatedRoute } from '@angular/router';
-import { UrlManagerService } from '../url-manager.service';
-import { PaneRouteData } from '../route-data';
+import { UrlManagerService } from '@nakedobjects/services';
+import { PaneRouteData } from '@nakedobjects/services';
 import { RecentItemsViewModel } from '../view-models/recent-items-view-model';
 import { PaneComponent } from '../pane/pane';
 import { IActionHolder } from '../action/action.component';

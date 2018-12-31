@@ -2,9 +2,9 @@ import { CommandResult } from './command-result';
 import { Command } from './Command';
 import * as Models from '@nakedobjects/restful-objects';
 import * as Usermessages from '../user-messages';
-import * as Routedata from '../route-data';
+import * as Routedata from '@nakedobjects/services';
 import { Dictionary } from 'lodash';
-import { ErrorWrapper } from '../error.wrapper';
+import { ErrorWrapper } from '@nakedobjects/services';
 import forEach from 'lodash-es/forEach';
 import zipObject from 'lodash-es/zipObject';
 

@@ -8,6 +8,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LibModule } from '@nakedobjects/lib';
+import { LibModule as ServicesModule } from '@nakedobjects/services';
 
 @NgModule({
     declarations: [
@@ -20,7 +21,8 @@ import { LibModule } from '@nakedobjects/lib';
         RoutingModule,
         ReactiveFormsModule,
         HttpClientModule,
-        LibModule.forRoot()
+        LibModule.forRoot(),
+        ServicesModule.forRoot(),
     ],
     providers: [
     ],

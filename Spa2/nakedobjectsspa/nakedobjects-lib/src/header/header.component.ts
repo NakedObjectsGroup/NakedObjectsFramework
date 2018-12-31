@@ -1,7 +1,7 @@
 ﻿import { Component, Input } from '@angular/core';
 import { CollectionViewModel } from '../view-models/collection-view-model';
 import { ListViewModel } from '../view-models/list-view-model';
-import { CollectionViewState } from '../route-data';
+import { CollectionViewState } from '@nakedobjects/services';
 
 @Component({
     // tslint:disable-next-line:component-selector

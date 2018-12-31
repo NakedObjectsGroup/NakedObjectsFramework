@@ -1,26 +1,26 @@
 ﻿import { FieldViewModel } from './field-view-model';
 import { MenuItemViewModel } from './menu-item-view-model';
 import { ActionViewModel } from './action-view-model';
-import { ContextService } from '../context.service';
+import { ContextService } from '@nakedobjects/services';
 import { DragAndDropService } from './drag-and-drop.service';
-import { ErrorService } from '../error.service';
+import { ErrorService } from '@nakedobjects/services';
 import { IDraggableViewModel } from './idraggable-view-model';
 import { ChoiceViewModel } from './choice-view-model';
 import { IMessageViewModel } from './imessage-view-model';
 import * as Models from '@nakedobjects/restful-objects';
 import * as Msg from '../user-messages';
 import { Dictionary } from 'lodash';
-import { Pane } from '../route-data';
+import { Pane } from '@nakedobjects/services';
 import each from 'lodash-es/each';
 import filter from 'lodash-es/filter';
 import find from 'lodash-es/find';
 import map from 'lodash-es/map';
 import reduce from 'lodash-es/reduce';
 import uniqWith from 'lodash-es/uniqWith';
-import { ILocalFilter } from '../mask.service';
-import { ConfigService } from '../config.service';
-import * as Validate from '../validate';
-import { ErrorWrapper } from '../error.wrapper';
+import { ILocalFilter } from '@nakedobjects/services';
+import { ConfigService } from '@nakedobjects/services';
+import * as Validate from '@nakedobjects/services';
+import { ErrorWrapper } from '@nakedobjects/services';
 
 export function copy(event: KeyboardEvent, item: IDraggableViewModel, drandAndDrop: DragAndDropService) {
     const cKeyCode = 67;

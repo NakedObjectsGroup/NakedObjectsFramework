@@ -1,11 +1,11 @@
 ﻿import { RecentItemViewModel } from './recent-item-view-model';
-import { ContextService } from '../context.service';
+import { ContextService } from '@nakedobjects/services';
 import { ViewModelFactoryService } from '../view-model-factory.service';
 import map from 'lodash-es/map';
 import every from 'lodash-es/every';
 import * as Models from '@nakedobjects/restful-objects';
-import { UrlManagerService } from '../url-manager.service';
-import { Pane } from '../route-data';
+import { UrlManagerService } from '@nakedobjects/services';
+import { Pane } from '@nakedobjects/services';
 
 export class RecentItemsViewModel {
 
