@@ -1,13 +1,9 @@
-import { LogoffComponent } from './logoff/logoff.component';
 import { Injectable } from '@angular/core';
-import { Router, NavigationStart, CanActivate } from '@angular/router';
-import { UrlManagerService } from './url-manager.service';
-import { LoggerService } from './logger.service';
-import { ConfigService } from './config.service';
-import { HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { CanActivate, Router } from '@angular/router';
 import * as auth0 from 'auth0-js';
+import { ConfigService } from './config.service';
+import { LoggerService } from './logger.service';
+import { UrlManagerService } from './url-manager.service';
 
 (window as any).global = window;
 
@@ -94,7 +90,7 @@ export class AuthService  implements CanActivate {
         return true;
     }
 
-    canDeactivate(component: LogoffComponent) {
+    canDeactivate(component: { isActive: boolean }) {
         if (this.authenticate) {
             return !component.isActive;
         }
