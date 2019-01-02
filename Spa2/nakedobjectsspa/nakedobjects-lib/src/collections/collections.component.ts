@@ -1,5 +1,5 @@
 ﻿import { Component, Input } from '@angular/core';
-import { CollectionViewModel } from '../view-models/collection-view-model';
+import { CollectionViewModel } from '@nakedobjects/view-models';
 
 @Component({
     selector: 'nof-collections',

@@ -1,14 +1,14 @@
 ﻿import { MessageViewModel } from './message-view-model';
 import { ColorService } from '@nakedobjects/services';
 import { ContextService } from '@nakedobjects/services';
-import { ViewModelFactoryService } from '../view-model-factory.service';
+import { ViewModelFactoryService } from './view-model-factory.service';
 import { UrlManagerService } from '@nakedobjects/services';
 import { ErrorService } from '@nakedobjects/services';
 import { ActionViewModel } from './action-view-model';
 import { ParameterViewModel } from './parameter-view-model';
 import { PaneRouteData, Pane } from '@nakedobjects/services';
 import * as Models from '@nakedobjects/restful-objects';
-import * as Msg from '../user-messages';
+import * as Msg from './user-messages';
 import * as Helpers from './helpers-view-models';
 import each from 'lodash-es/each';
 import every from 'lodash-es/every';

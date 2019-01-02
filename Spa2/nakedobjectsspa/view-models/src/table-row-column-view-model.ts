@@ -1,6 +1,6 @@
 ﻿import { ChoiceViewModel } from './choice-view-model';
 import { MaskService } from '@nakedobjects/services';
-import * as Msg from '../user-messages';
+import * as Msg from './user-messages';
 import * as Ro from '@nakedobjects/restful-objects';
 import * as Models from '@nakedobjects/restful-objects';
 import * as Helpers from './helpers-view-models';

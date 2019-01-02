@@ -1,8 +1,8 @@
 ﻿import { Component, Input, ViewChildren, QueryList } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { EditParameterComponent } from '../edit-parameter/edit-parameter.component';
-import { ParameterViewModel } from '../view-models/parameter-view-model';
-import { DialogViewModel } from '../view-models/dialog-view-model';
+import { ParameterViewModel } from '@nakedobjects/view-models';
+import { DialogViewModel } from '@nakedobjects/view-models';
 import some from 'lodash-es/some';
 
 @Component({

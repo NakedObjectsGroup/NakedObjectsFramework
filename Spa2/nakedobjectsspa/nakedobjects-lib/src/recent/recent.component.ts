@@ -1,15 +1,15 @@
 import { ContextService } from '@nakedobjects/services';
 import { Component, ViewChildren, QueryList, AfterViewInit, OnDestroy } from '@angular/core';
-import { ViewModelFactoryService } from '../view-model-factory.service';
+import { ViewModelFactoryService } from '@nakedobjects/view-models';
 import { ActivatedRoute } from '@angular/router';
 import { UrlManagerService } from '@nakedobjects/services';
 import { PaneRouteData } from '@nakedobjects/services';
-import { RecentItemsViewModel } from '../view-models/recent-items-view-model';
+import { RecentItemsViewModel } from '@nakedobjects/view-models';
 import { PaneComponent } from '../pane/pane';
 import { IActionHolder } from '../action/action.component';
 import * as Msg from '../user-messages';
 import { RowComponent } from '../row/row.component';
-import { RecentItemViewModel } from '../view-models/recent-item-view-model';
+import { RecentItemViewModel } from '@nakedobjects/view-models';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { safeUnsubscribe } from '../helpers-components';
 

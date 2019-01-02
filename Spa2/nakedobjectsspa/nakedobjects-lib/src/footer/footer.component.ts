@@ -5,7 +5,7 @@ import { ClickHandlerService } from '@nakedobjects/services';
 import { ContextService } from '@nakedobjects/services';
 import { ErrorService } from '@nakedobjects/services';
 import { RepLoaderService } from '@nakedobjects/services';
-import { IDraggableViewModel } from '../view-models/idraggable-view-model';
+import { IDraggableViewModel } from '@nakedobjects/view-models';
 import * as Msg from '../user-messages';
 import { ConfigService } from '@nakedobjects/services';
 import { AuthService } from '@nakedobjects/services';
@@ -14,7 +14,7 @@ import { SubscriptionLike as ISubscription } from 'rxjs';
 import { safeUnsubscribe } from '../helpers-components';
 import { HttpClient } from '@angular/common/http';
 import { ErrorWrapper } from '@nakedobjects/services';
-import { DragAndDropService } from '../view-models/drag-and-drop.service';
+import { DragAndDropService } from '@nakedobjects/view-models';
 
 @Component({
     selector: 'nof-footer',

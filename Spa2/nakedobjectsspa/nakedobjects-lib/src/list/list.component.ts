@@ -5,14 +5,14 @@ import { ActivatedRoute } from '@angular/router';
 import { ColorService } from '@nakedobjects/services';
 import { ErrorService } from '@nakedobjects/services';
 import { PaneRouteData, CollectionViewState, ICustomActivatedRouteData } from '@nakedobjects/services';
-import { ViewModelFactoryService } from '../view-model-factory.service';
+import { ViewModelFactoryService } from '@nakedobjects/view-models';
 import * as Models from '@nakedobjects/restful-objects';
-import { ListViewModel } from '../view-models/list-view-model';
+import { ListViewModel } from '@nakedobjects/view-models';
 import { IActionHolder } from '../action/action.component';
 import { ConfigService } from '@nakedobjects/services';
 import { LoggerService } from '@nakedobjects/services';
 import { SubscriptionLike as ISubscription } from 'rxjs';
-import { ItemViewModel } from '../view-models/item-view-model';
+import { ItemViewModel } from '@nakedobjects/view-models';
 import { safeUnsubscribe } from '../helpers-components';
 import { ErrorWrapper } from '@nakedobjects/services';
 

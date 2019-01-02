@@ -1,7 +1,7 @@
 ﻿import { MessageViewModel } from './message-view-model';
 import { ActionViewModel } from './action-view-model';
 import { MenuItemViewModel } from './menu-item-view-model';
-import { ViewModelFactoryService } from '../view-model-factory.service';
+import { ViewModelFactoryService } from './view-model-factory.service';
 import { PaneRouteData } from '@nakedobjects/services';
 import * as Helpers from './helpers-view-models';
 import * as Models from '@nakedobjects/restful-objects';

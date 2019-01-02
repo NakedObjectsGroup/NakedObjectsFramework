@@ -1,8 +1,8 @@
 ﻿import { Component, Input, ViewChildren, QueryList } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { EditPropertyComponent } from '../edit-property/edit-property.component';
-import { PropertyViewModel } from '../view-models/property-view-model';
-import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
+import { PropertyViewModel } from '@nakedobjects/view-models';
+import { DomainObjectViewModel } from '@nakedobjects/view-models';
 import some from 'lodash-es/some';
 
 @Component({

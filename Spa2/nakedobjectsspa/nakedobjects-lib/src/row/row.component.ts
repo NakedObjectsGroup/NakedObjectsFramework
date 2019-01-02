@@ -1,13 +1,13 @@
 ﻿import { Component, Input, ElementRef, ViewChildren, QueryList } from '@angular/core';
-import { ItemViewModel } from '../view-models/item-view-model';
-import { IDraggableViewModel } from '../view-models/idraggable-view-model';
-import * as Helpers from '../view-models/helpers-view-models';
+import { ItemViewModel } from '@nakedobjects/view-models';
+import { IDraggableViewModel } from '@nakedobjects/view-models';
+import * as Helpers from '@nakedobjects/view-models';
 import { ContextService } from '@nakedobjects/services';
-import { PropertyViewModel } from '../view-models/property-view-model';
-import { RecentItemViewModel } from '../view-models/recent-item-view-model';
-import { TableRowColumnViewModel } from '../view-models/table-row-column-view-model';
+import { PropertyViewModel } from '@nakedobjects/view-models';
+import { RecentItemViewModel } from '@nakedobjects/view-models';
+import { TableRowColumnViewModel } from '@nakedobjects/view-models';
 import { focus } from '../helpers-components';
-import { DragAndDropService } from '../view-models/drag-and-drop.service';
+import { DragAndDropService } from '@nakedobjects/view-models';
 
 @Component({
     // tslint:disable-next-line:component-selector

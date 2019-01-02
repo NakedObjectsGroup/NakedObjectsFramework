@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LibModule } from '@nakedobjects/lib';
 import { LibModule as ServicesModule } from '@nakedobjects/services';
+import { LibModule as ViewModelModule } from '@nakedobjects/view-models';
 
 @NgModule({
     declarations: [
@@ -23,6 +24,7 @@ import { LibModule as ServicesModule } from '@nakedobjects/services';
         HttpClientModule,
         LibModule.forRoot(),
         ServicesModule.forRoot(),
+        ViewModelModule.forRoot(),
     ],
     providers: [
     ],

@@ -2,19 +2,19 @@
 import { TimePickerFacadeComponent } from '../time-picker-facade/time-picker-facade.component';
 import { DatePickerFacadeComponent } from '../date-picker-facade/date-picker-facade.component';
 import { Component, Input, OnInit, ElementRef, HostListener, ViewChildren, QueryList, AfterViewInit, Renderer2 } from '@angular/core';
-import { ViewModelFactoryService } from '../view-model-factory.service';
+import { ViewModelFactoryService } from '@nakedobjects/view-models';
 import { UrlManagerService } from '@nakedobjects/services';
 import * as Models from '@nakedobjects/restful-objects';
 import { FieldComponent } from '../field/field.component';
 import { FormGroup } from '@angular/forms';
 import { ContextService } from '@nakedobjects/services';
-import { ParameterViewModel } from '../view-models/parameter-view-model';
-import { DialogViewModel } from '../view-models/dialog-view-model';
-import { ChoiceViewModel } from '../view-models/choice-view-model';
+import { ParameterViewModel } from '@nakedobjects/view-models';
+import { DialogViewModel } from '@nakedobjects/view-models';
+import { ChoiceViewModel } from '@nakedobjects/view-models';
 import { ConfigService } from '@nakedobjects/services';
 import { LoggerService } from '@nakedobjects/services';
 import { Dictionary } from 'lodash';
-import { DragAndDropService } from '../view-models/drag-and-drop.service';
+import { DragAndDropService } from '@nakedobjects/view-models';
 
 @Component({
     selector: 'nof-edit-parameter',

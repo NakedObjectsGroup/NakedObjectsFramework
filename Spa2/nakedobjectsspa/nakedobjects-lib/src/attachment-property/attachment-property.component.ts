@@ -1,5 +1,5 @@
 ﻿import { Component, Input } from '@angular/core';
-import { AttachmentViewModel } from '../view-models/attachment-view-model';
+import { AttachmentViewModel } from '@nakedobjects/view-models';
 import { ErrorService } from '@nakedobjects/services';
 import { Router } from '@angular/router';
 import { UrlManagerService } from '@nakedobjects/services';

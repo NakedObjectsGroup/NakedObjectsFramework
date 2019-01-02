@@ -1,5 +1,5 @@
 ﻿import { Component, Input, ElementRef, ViewChildren, QueryList } from '@angular/core';
-import { ActionViewModel } from '../view-models/action-view-model';
+import { ActionViewModel } from '@nakedobjects/view-models';
 import { focus } from '../helpers-components';
 
 export interface IActionHolder {

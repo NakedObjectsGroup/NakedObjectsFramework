@@ -3,20 +3,20 @@ import { ActivatedRoute } from '@angular/router';
 import * as Models from '@nakedobjects/restful-objects';
 import { UrlManagerService } from '@nakedobjects/services';
 import { ContextService } from '@nakedobjects/services';
-import { ViewModelFactoryService } from '../view-model-factory.service';
+import { ViewModelFactoryService } from '@nakedobjects/view-models';
 import { ErrorService } from '@nakedobjects/services';
 import { PaneRouteData, InteractionMode, ICustomActivatedRouteData } from '@nakedobjects/services';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { PropertyViewModel } from '../view-models/property-view-model';
-import { MenuItemViewModel } from '../view-models/menu-item-view-model';
-import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
+import { PropertyViewModel } from '@nakedobjects/view-models';
+import { MenuItemViewModel } from '@nakedobjects/view-models';
+import { DomainObjectViewModel } from '@nakedobjects/view-models';
 import { IActionHolder, wrapAction } from '../action/action.component';
 import { ColorService } from '@nakedobjects/services';
 import { ConfigService } from '@nakedobjects/services';
 import { PropertiesComponent } from '../properties/properties.component';
 import * as Msg from '../user-messages';
-import * as Helpers from '../view-models/helpers-view-models';
-import { CollectionViewModel } from '../view-models/collection-view-model';
+import * as Helpers from '@nakedobjects/view-models';
+import { CollectionViewModel } from '@nakedobjects/view-models';
 import { Dictionary } from 'lodash';
 import filter from 'lodash-es/filter';
 import forEach from 'lodash-es/forEach';
@@ -30,7 +30,7 @@ import { safeUnsubscribe } from '../helpers-components';
 import { debounceTime } from 'rxjs/operators';
 import { ErrorCategory, ClientErrorCode } from '../constants';
 import { ErrorWrapper } from '@nakedobjects/services';
-import { DragAndDropService } from '../view-models/drag-and-drop.service';
+import { DragAndDropService } from '@nakedobjects/view-models';
 
 @Component({
     selector: 'nof-object',

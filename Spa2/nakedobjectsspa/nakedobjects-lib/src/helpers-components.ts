@@ -2,14 +2,14 @@ import { ElementRef } from '@angular/core';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { Dictionary } from 'lodash';
 import { FormBuilder, AbstractControl, FormGroup } from '@angular/forms';
-import { DialogViewModel } from './view-models/dialog-view-model';
-import { ParameterViewModel } from './view-models/parameter-view-model';
+import { DialogViewModel } from '@nakedobjects/view-models';
+import { ParameterViewModel } from '@nakedobjects/view-models';
 import forEach from 'lodash-es/forEach';
 import map from 'lodash-es/map';
 import zipObject from 'lodash-es/zipObject';
 import mapValues from 'lodash-es/mapValues';
-import {FieldViewModel} from './view-models/field-view-model';
-import {IDraggableViewModel} from './view-models/idraggable-view-model';
+import {FieldViewModel} from '@nakedobjects/view-models';
+import {IDraggableViewModel} from '@nakedobjects/view-models';
 
 export function safeUnsubscribe(sub: ISubscription) {
     if (sub) {

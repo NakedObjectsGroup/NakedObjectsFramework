@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { ParameterViewModel } from '../view-models/parameter-view-model';
-import { DialogViewModel } from '../view-models/dialog-view-model';
+import { ParameterViewModel } from '@nakedobjects/view-models';
+import { DialogViewModel } from '@nakedobjects/view-models';
 
 @Component({
     selector: 'nof-view-parameter',

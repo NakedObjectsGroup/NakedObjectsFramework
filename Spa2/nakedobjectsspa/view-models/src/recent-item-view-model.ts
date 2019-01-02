@@ -3,7 +3,7 @@ import { ColorService } from '@nakedobjects/services';
 import { ErrorService } from '@nakedobjects/services';
 import { UrlManagerService } from '@nakedobjects/services';
 import { ClickHandlerService } from '@nakedobjects/services';
-import { ViewModelFactoryService } from '../view-model-factory.service';
+import { ViewModelFactoryService } from './view-model-factory.service';
 import { ItemViewModel } from './item-view-model';
 import * as Models from '@nakedobjects/restful-objects';
 import { ConfigService } from '@nakedobjects/services';

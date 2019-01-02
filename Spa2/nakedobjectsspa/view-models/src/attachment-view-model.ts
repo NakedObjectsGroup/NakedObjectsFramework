@@ -1,6 +1,6 @@
 ﻿import { ContextService } from '@nakedobjects/services';
 import * as Models from '@nakedobjects/restful-objects';
-import * as Msg from '../user-messages';
+import * as Msg from './user-messages';
 import { ErrorService } from '@nakedobjects/services';
 import { Pane } from '@nakedobjects/services';
 import { ErrorWrapper } from '@nakedobjects/services';

@@ -1,5 +1,5 @@
 import { Component, Input, QueryList, AfterViewInit, ViewChildren, OnDestroy } from '@angular/core';
-import { LinkViewModel } from '../view-models/link-view-model';
+import { LinkViewModel } from '@nakedobjects/view-models';
 import { ActionComponent, IActionHolder } from '../action/action.component';
 import { UrlManagerService } from '@nakedobjects/services';
 import map from 'lodash-es/map';

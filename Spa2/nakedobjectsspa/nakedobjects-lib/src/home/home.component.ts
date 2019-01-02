@@ -3,13 +3,13 @@ import { ActivatedRoute } from '@angular/router';
 import { UrlManagerService } from '@nakedobjects/services';
 import { ContextService } from '@nakedobjects/services';
 import { ErrorService } from '@nakedobjects/services';
-import { ViewModelFactoryService } from '../view-model-factory.service';
+import { ViewModelFactoryService } from '@nakedobjects/view-models';
 import { PaneRouteData } from '@nakedobjects/services';
-import { MenusViewModel } from '../view-models/menus-view-model';
-import { MenuViewModel } from '../view-models/menu-view-model';
+import { MenusViewModel } from '@nakedobjects/view-models';
+import { MenuViewModel } from '@nakedobjects/view-models';
 import { PaneComponent } from '../pane/pane';
 import * as Models from '@nakedobjects/restful-objects';
-import { LinkViewModel } from '../view-models/link-view-model';
+import { LinkViewModel } from '@nakedobjects/view-models';
 import { ErrorWrapper } from '@nakedobjects/services';
 
 @Component({

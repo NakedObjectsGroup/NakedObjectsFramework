@@ -40,7 +40,6 @@ export * from './object-not-found-error/object-not-found-error.component';
 
 export * from './custom-component-config.service';
 export * from './custom-component.service';
-export * from './view-model-factory.service';
 export * from './cicero-command-factory.service';
 export * from './cicero-renderer.service';
 
@@ -48,5 +47,3 @@ export * from './cicero-context.service';
 
 export * from './clear.directive';
 export * from './click.directive';
-
-export * from './view-models/view-models';

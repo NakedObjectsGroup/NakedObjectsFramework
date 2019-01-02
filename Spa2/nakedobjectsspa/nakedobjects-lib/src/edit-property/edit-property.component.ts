@@ -7,15 +7,15 @@ import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ErrorService } from '@nakedobjects/services';
 import { ContextService } from '@nakedobjects/services';
-import { PropertyViewModel } from '../view-models/property-view-model';
-import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
-import { ChoiceViewModel } from '../view-models/choice-view-model';
+import { PropertyViewModel } from '@nakedobjects/view-models';
+import { DomainObjectViewModel } from '@nakedobjects/view-models';
+import { ChoiceViewModel } from '@nakedobjects/view-models';
 import { ConfigService } from '@nakedobjects/services';
 import { LoggerService } from '@nakedobjects/services';
 import * as Models from '@nakedobjects/restful-objects';
-import { AttachmentViewModel } from '../view-models/attachment-view-model';
+import { AttachmentViewModel } from '@nakedobjects/view-models';
 import { Dictionary } from 'lodash';
-import { DragAndDropService } from '../view-models/drag-and-drop.service';
+import { DragAndDropService } from '@nakedobjects/view-models';
 
 @Component({
     selector: 'nof-edit-property',

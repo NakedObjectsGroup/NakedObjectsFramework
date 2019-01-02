@@ -284,10 +284,10 @@
     moment "2.22.2"
     tslib "^1.9.0"
 
-"@nakedobjects/services@file:dist/nakedobjects-services/nakedobjects-services-10.0.0-beta.5.tgz":
+"@nakedobjects/view-models@file:dist/nakedobjects-view-models":
   version "10.0.0-beta.5"
-  resolved "file:dist/nakedobjects-services/nakedobjects-services-10.0.0-beta.5.tgz#58f781af827de324fcf739e92a27a91ba2939c98"
   dependencies:
+    "@beyerleinf/ngx-dnd" "^6.0.0-preview3"
     auth0-js "^9.8.2"
     lodash "4.17.11"
     lodash-es "4.17.11"

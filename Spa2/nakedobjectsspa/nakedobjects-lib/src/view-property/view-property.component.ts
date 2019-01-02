@@ -2,10 +2,10 @@
 import { Router } from '@angular/router';
 import { ErrorService } from '@nakedobjects/services';
 import { ContextService } from '@nakedobjects/services';
-import { PropertyViewModel } from '../view-models/property-view-model';
-import * as Helpers from '../view-models/helpers-view-models';
-import { AttachmentViewModel } from '../view-models/attachment-view-model';
-import { DragAndDropService } from '../view-models/drag-and-drop.service';
+import { PropertyViewModel } from '@nakedobjects/view-models';
+import * as Helpers from '@nakedobjects/view-models';
+import { AttachmentViewModel } from '@nakedobjects/view-models';
+import { DragAndDropService } from '@nakedobjects/view-models';
 
 @Component({
     selector: 'nof-view-property',

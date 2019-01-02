@@ -1,6 +1,6 @@
 ﻿import { Component } from '@angular/core';
 import { ContextService } from '@nakedobjects/services';
-import { ViewModelFactoryService } from '../view-model-factory.service';
+import { ViewModelFactoryService } from '@nakedobjects/view-models';
 import { ActivatedRoute } from '@angular/router';
 import { UrlManagerService } from '@nakedobjects/services';
 import { ErrorService } from '@nakedobjects/services';

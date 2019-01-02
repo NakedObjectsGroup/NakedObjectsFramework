@@ -1,6 +1,6 @@
 ﻿import { RecentItemViewModel } from './recent-item-view-model';
 import { ContextService } from '@nakedobjects/services';
-import { ViewModelFactoryService } from '../view-model-factory.service';
+import { ViewModelFactoryService } from './view-model-factory.service';
 import map from 'lodash-es/map';
 import every from 'lodash-es/every';
 import * as Models from '@nakedobjects/restful-objects';

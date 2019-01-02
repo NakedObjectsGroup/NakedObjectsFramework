@@ -1,13 +1,13 @@
 import { ContextService } from '@nakedobjects/services';
 import { Component, Input, OnDestroy, ElementRef, ViewChild } from '@angular/core';
-import { FieldViewModel } from '../view-models/field-view-model';
-import { ChoiceViewModel } from '../view-models/choice-view-model';
-import { IDraggableViewModel } from '../view-models/idraggable-view-model';
+import { FieldViewModel } from '@nakedobjects/view-models';
+import { ChoiceViewModel } from '@nakedobjects/view-models';
+import { IDraggableViewModel } from '@nakedobjects/view-models';
 import { FormGroup, AbstractControl } from '@angular/forms';
 import { SubscriptionLike as ISubscription ,  BehaviorSubject } from 'rxjs';
 import { Dictionary } from 'lodash';
 import { safeUnsubscribe, accept, dropOn, paste, focus } from '../helpers-components';
-import { DragAndDropService } from '../view-models/drag-and-drop.service';
+import { DragAndDropService } from '@nakedobjects/view-models';
 
 @Component({
     selector: 'nof-auto-complete',

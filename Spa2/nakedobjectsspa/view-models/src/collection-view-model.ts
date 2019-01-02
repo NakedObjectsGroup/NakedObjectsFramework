@@ -1,6 +1,6 @@
 ﻿import { ItemViewModel } from './item-view-model';
 import { PaneRouteData, CollectionViewState, InteractionMode } from '@nakedobjects/services';
-import { ViewModelFactoryService } from '../view-model-factory.service';
+import { ViewModelFactoryService } from './view-model-factory.service';
 import { ColorService } from '@nakedobjects/services';
 import { ErrorService } from '@nakedobjects/services';
 import { ContextService } from '@nakedobjects/services';

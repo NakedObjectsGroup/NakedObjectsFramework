@@ -1,6 +1,6 @@
 ﻿import { Component, Input } from '@angular/core';
-import { CollectionViewModel } from '../view-models/collection-view-model';
-import { ListViewModel } from '../view-models/list-view-model';
+import { CollectionViewModel } from '@nakedobjects/view-models';
+import { ListViewModel } from '@nakedobjects/view-models';
 import { CollectionViewState } from '@nakedobjects/services';
 
 @Component({

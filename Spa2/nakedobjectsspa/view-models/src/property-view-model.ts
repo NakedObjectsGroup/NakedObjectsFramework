@@ -2,7 +2,7 @@
 import { ColorService } from '@nakedobjects/services';
 import { ErrorService } from '@nakedobjects/services';
 import { AttachmentViewModel } from './attachment-view-model';
-import { ViewModelFactoryService } from '../view-model-factory.service';
+import { ViewModelFactoryService } from './view-model-factory.service';
 import { ContextService } from '@nakedobjects/services';
 import { ChoiceViewModel } from './choice-view-model';
 import { MaskService } from '@nakedobjects/services';
@@ -10,7 +10,7 @@ import { ClickHandlerService } from '@nakedobjects/services';
 import { UrlManagerService } from '@nakedobjects/services';
 import { IDraggableViewModel } from './idraggable-view-model';
 import { Dictionary } from 'lodash';
-import * as Msg from '../user-messages';
+import * as Msg from './user-messages';
 import * as Models from '@nakedobjects/restful-objects';
 import * as Helpers from './helpers-view-models';
 import * as Configservice from '@nakedobjects/services';

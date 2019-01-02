@@ -7,31 +7,29 @@ import { ClickHandlerService } from '@nakedobjects/services';
 import { ErrorService } from '@nakedobjects/services';
 import { MaskService } from '@nakedobjects/services';
 import { Injectable } from '@angular/core';
-import { AttachmentViewModel } from './view-models/attachment-view-model';
-import { ErrorViewModel } from './view-models/error-view-model';
-import { IMessageViewModel } from './view-models/imessage-view-model';
-import { LinkViewModel } from './view-models/link-view-model';
-import { ItemViewModel } from './view-models/item-view-model';
-import { RecentItemViewModel } from './view-models/recent-item-view-model';
-import { TableRowColumnViewModel } from './view-models/table-row-column-view-model';
-import { TableRowViewModel } from './view-models/table-row-view-model';
-import { RecentItemsViewModel } from './view-models/recent-items-view-model';
-import { ParameterViewModel } from './view-models/parameter-view-model';
-import { ActionViewModel } from './view-models/action-view-model';
-import { PropertyViewModel } from './view-models/property-view-model';
-import { CollectionViewModel } from './view-models/collection-view-model';
-import { MenuViewModel } from './view-models/menu-view-model';
-import { MenusViewModel } from './view-models/menus-view-model';
+import { AttachmentViewModel } from './attachment-view-model';
+import { ErrorViewModel } from './error-view-model';
+import { IMessageViewModel } from './imessage-view-model';
+import { LinkViewModel } from './link-view-model';
+import { ItemViewModel } from './item-view-model';
+import { RecentItemViewModel } from './recent-item-view-model';
+import { TableRowColumnViewModel } from './table-row-column-view-model';
+import { TableRowViewModel } from './table-row-view-model';
+import { RecentItemsViewModel } from './recent-items-view-model';
+import { ParameterViewModel } from './parameter-view-model';
+import { ActionViewModel } from './action-view-model';
+import { PropertyViewModel } from './property-view-model';
+import { CollectionViewModel } from './collection-view-model';
+import { MenuViewModel } from './menu-view-model';
+import { MenusViewModel } from './menus-view-model';
 import { Dictionary } from 'lodash';
-import { ListViewModel } from './view-models/list-view-model';
-import { DialogViewModel } from './view-models/dialog-view-model';
-import { DomainObjectViewModel } from './view-models/domain-object-view-model';
-import { MultiLineDialogViewModel } from './view-models/multi-line-dialog-view-model';
+import { ListViewModel } from './list-view-model';
+import { DialogViewModel } from './dialog-view-model';
+import { DomainObjectViewModel } from './domain-object-view-model';
+import { MultiLineDialogViewModel } from './multi-line-dialog-view-model';
 import { ConfigService } from '@nakedobjects/services';
 import { LoggerService } from '@nakedobjects/services';
-import { ApplicationPropertiesViewModel } from './view-models/application-properties-view-model';
-import { CiceroCommandFactoryService } from './cicero-command-factory.service';
-import { CiceroRendererService } from './cicero-renderer.service';
+import { ApplicationPropertiesViewModel } from './application-properties-view-model';
 import forEach from 'lodash-es/forEach';
 import map from 'lodash-es/map';
 import find from 'lodash-es/find';
@@ -48,9 +46,7 @@ export class ViewModelFactoryService {
         private readonly clickHandler: ClickHandlerService,
         private readonly mask: MaskService,
         private readonly configService: ConfigService,
-        private readonly loggerService: LoggerService,
-        private readonly commandFactory: CiceroCommandFactoryService,
-        protected ciceroRenderer: CiceroRendererService
+        private readonly loggerService: LoggerService
     ) { }
 
     errorViewModel = (error: ErrorWrapper | null) => {

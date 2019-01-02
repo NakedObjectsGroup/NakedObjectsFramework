@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { ViewModelFactoryService } from '../view-model-factory.service';
-import { ApplicationPropertiesViewModel } from '../view-models/application-properties-view-model';
+import { ViewModelFactoryService } from '@nakedobjects/view-models';
+import { ApplicationPropertiesViewModel } from '@nakedobjects/view-models';
 import * as Msg from '../user-messages';
 import { AuthService } from '@nakedobjects/services';
 

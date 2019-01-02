@@ -4,13 +4,13 @@ import { AbstractControl } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { ElementRef, QueryList, Renderer2, OnDestroy } from '@angular/core';
 import { ContextService } from '@nakedobjects/services';
-import { ChoiceViewModel } from '../view-models/choice-view-model';
-import { IDraggableViewModel } from '../view-models/idraggable-view-model';
-import { FieldViewModel } from '../view-models/field-view-model';
-import { ParameterViewModel } from '../view-models/parameter-view-model';
-import { DialogViewModel } from '../view-models/dialog-view-model';
-import { PropertyViewModel } from '../view-models/property-view-model';
-import { DomainObjectViewModel } from '../view-models/domain-object-view-model';
+import { ChoiceViewModel } from '@nakedobjects/view-models';
+import { IDraggableViewModel } from '@nakedobjects/view-models';
+import { FieldViewModel } from '@nakedobjects/view-models';
+import { ParameterViewModel } from '@nakedobjects/view-models';
+import { DialogViewModel } from '@nakedobjects/view-models';
+import { PropertyViewModel } from '@nakedobjects/view-models';
+import { DomainObjectViewModel } from '@nakedobjects/view-models';
 import { ConfigService } from '@nakedobjects/services';
 import { LoggerService } from '@nakedobjects/services';
 import { Pane } from '@nakedobjects/services';
@@ -25,7 +25,7 @@ import { safeUnsubscribe, focus, accept, dropOn, paste } from '../helpers-compon
 import { DatePickerFacadeComponent } from '../date-picker-facade/date-picker-facade.component';
 import { TimePickerFacadeComponent } from '../time-picker-facade/time-picker-facade.component';
 import { debounceTime } from 'rxjs/operators';
-import { DragAndDropService } from '../view-models/drag-and-drop.service';
+import { DragAndDropService } from '@nakedobjects/view-models';
 
 export abstract class FieldComponent implements OnDestroy {
 

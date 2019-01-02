@@ -7,7 +7,7 @@ import { IDraggableViewModel } from './idraggable-view-model';
 import { AbstractControl } from '@angular/forms';
 import * as Models from '@nakedobjects/restful-objects';
 import * as Ro from '@nakedobjects/restful-objects';
-import * as Msg from '../user-messages';
+import * as Msg from './user-messages';
 import { Dictionary } from 'lodash';
 import * as Helpers from './helpers-view-models';
 import { ContextService } from '@nakedobjects/services';

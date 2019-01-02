@@ -1,7 +1,7 @@
 ﻿import { MessageViewModel } from './message-view-model';
 import * as Models from '@nakedobjects/restful-objects';
-import * as Msg from '../user-messages';
-import { ViewModelFactoryService } from '../view-model-factory.service';
+import * as Msg from './user-messages';
+import { ViewModelFactoryService } from './view-model-factory.service';
 import { UrlManagerService } from '@nakedobjects/services';
 import { ErrorService } from '@nakedobjects/services';
 import { ContextService } from '@nakedobjects/services';
@@ -24,7 +24,7 @@ import first from 'lodash-es/first';
 import some from 'lodash-es/some';
 import values from 'lodash-es/values';
 import toArray from 'lodash-es/toArray';
-import { ErrorCategory, HttpStatusCode } from '../constants';
+import { ErrorCategory, HttpStatusCode } from './constants';
 import { ErrorWrapper } from '@nakedobjects/services';
 
 export abstract class ContributedActionParentViewModel extends MessageViewModel {

@@ -1,4 +1,4 @@
-import { FieldViewModel } from '../view-models/field-view-model';
+import { FieldViewModel } from '@nakedobjects/view-models';
 import { AfterViewInit, ViewChild } from '@angular/core';
 import { Component, Input, EventEmitter } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';

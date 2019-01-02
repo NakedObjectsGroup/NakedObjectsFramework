@@ -18,7 +18,6 @@ import { RecentComponent } from './recent/recent.component';
 import { ApplicationPropertiesComponent } from './application-properties/application-properties.component';
 import { ClickDirective  } from './click.directive';
 import { ClearDirective  } from './clear.directive';
-import { ViewModelFactoryService } from './view-model-factory.service';
 import { CollectionComponent } from './collection/collection.component';
 import { DndModule } from '@beyerleinf/ngx-dnd';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -52,7 +51,6 @@ import { TimePickerFacadeComponent } from './time-picker-facade/time-picker-faca
 import { ObjectNotFoundErrorComponent } from './object-not-found-error/object-not-found-error.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { DragAndDropService } from './view-models/drag-and-drop.service';
 
 @NgModule({
     declarations: [
@@ -160,14 +158,12 @@ export class LibModule {
         return {
           ngModule: LibModule,
           providers: [
-            ViewModelFactoryService,
             CustomComponentService,
             // to configure custom components create implementation of ICustomComponentConfigService and bind in here
             { provide: CustomComponentConfigService, useClass: CustomComponentConfigService },
             CiceroCommandFactoryService,
             CiceroRendererService,
             CiceroContextService,
-            DragAndDropService,
         ]
         };
       }

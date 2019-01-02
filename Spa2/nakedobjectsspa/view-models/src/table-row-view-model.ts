@@ -1,5 +1,5 @@
 ﻿import { TableRowColumnViewModel } from './table-row-column-view-model';
-import { ViewModelFactoryService } from '../view-model-factory.service';
+import { ViewModelFactoryService } from './view-model-factory.service';
 import { Dictionary } from 'lodash';
 import * as Models from '@nakedobjects/restful-objects';
 import { Pane } from '@nakedobjects/services';

@@ -3,7 +3,7 @@ import { CollectionViewModel } from './collection-view-model';
 import { PaneRouteData } from '@nakedobjects/services';
 import { ColorService } from '@nakedobjects/services';
 import { ContextService } from '@nakedobjects/services';
-import { ViewModelFactoryService } from '../view-model-factory.service';
+import { ViewModelFactoryService } from './view-model-factory.service';
 import { UrlManagerService } from '@nakedobjects/services';
 import { ErrorService } from '@nakedobjects/services';
 import * as Models from '@nakedobjects/restful-objects';

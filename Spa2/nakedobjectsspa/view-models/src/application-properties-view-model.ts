@@ -3,7 +3,7 @@ import { ContextService } from '@nakedobjects/services';
 import { ErrorService } from '@nakedobjects/services';
 import { ConfigService } from '@nakedobjects/services';
 import * as Models from '@nakedobjects/restful-objects';
-import * as Constants from '../constants';
+import * as Constants from './constants';
 import { ErrorWrapper } from '@nakedobjects/services';
 
 export class ApplicationPropertiesViewModel {
