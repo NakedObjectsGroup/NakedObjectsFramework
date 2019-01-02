@@ -33,7 +33,7 @@
     "build:clean": "rimraf dist && rimraf node_modules/@nakedobjects",
     "build:libs": "yarn build:restful-objects && yarn add file:dist/restful-objects && yarn build:services && yarn add file:dist/nakedobjects-services && yarn build:view-models && yarn add file:dist/nakedobjects-view-models && yarn build:cicero && yarn add file:dist/nakedobjects-cicero && yarn build:gemini && yarn add file:dist/nakedobjects-gemini",
     "build:view-models": "rimraf dist/nakedobjects-view-models && ng-packagr -p view-models/package.json",
-    "build:services": "rimraf dist/services && ng-packagr -p services/package.json",
+    "build:services": "rimraf dist/nakedobjects-services && ng-packagr -p services/package.json",
     "build:restful-objects": "rimraf dist/restful-objects && ng-packagr -p restful-objects/package.json",
     "build:cicero": "rimraf dist/nakedobjects-cicero && ng-packagr -p cicero/package.json",
     "build:gemini": "rimraf dist/nakedobjects-gemini && ng-packagr -p gemini/package.json",
