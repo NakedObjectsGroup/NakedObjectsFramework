@@ -6,11 +6,10 @@ import { AppComponent } from './app.component';
 import { DndModule } from '@beyerleinf/ngx-dnd';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { LibModule } from '@nakedobjects/lib';
 import { LibModule as ServicesModule } from '@nakedobjects/services';
 import { LibModule as ViewModelModule } from '@nakedobjects/view-models';
 import { LibModule as CiceroModule } from '@nakedobjects/cicero';
+import { LibModule as GeminiModule } from '@nakedobjects/gemini';
 
 @NgModule({
     declarations: [
@@ -23,10 +22,10 @@ import { LibModule as CiceroModule } from '@nakedobjects/cicero';
         RoutingModule,
         ReactiveFormsModule,
         HttpClientModule,
-        LibModule.forRoot(),
         ServicesModule.forRoot(),
         ViewModelModule.forRoot(),
         CiceroModule.forRoot(),
+        GeminiModule.forRoot(),
     ],
     providers: [
     ],
