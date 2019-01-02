@@ -26,7 +26,6 @@ export * from './recent/recent.component';
 export * from './view-parameter/view-parameter.component';
 export * from './view-property/view-property.component';
 export * from './row/row.component';
-export * from './cicero/cicero.component';
 export * from './header/header.component';
 export * from './login/login.component';
 export * from './logoff/logoff.component';
@@ -40,10 +39,6 @@ export * from './object-not-found-error/object-not-found-error.component';
 
 export * from './custom-component-config.service';
 export * from './custom-component.service';
-export * from './cicero-command-factory.service';
-export * from './cicero-renderer.service';
-
-export * from './cicero-context.service';
 
 export * from './clear.directive';
 export * from './click.directive';

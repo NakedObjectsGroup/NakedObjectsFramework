@@ -10,7 +10,7 @@ import { DynamicObjectComponent } from '@nakedobjects/lib';
 import { ViewType } from '@nakedobjects/services';
 import { DynamicListComponent } from '@nakedobjects/lib';
 import { DynamicErrorComponent } from '@nakedobjects/lib';
-import { CiceroComponent } from '@nakedobjects/lib';
+import { CiceroComponent } from '@nakedobjects/cicero';
 import { AuthService } from '@nakedobjects/services';
 import { LogoffComponent } from '@nakedobjects/lib';
 import { CallbackComponent } from '@nakedobjects/lib';

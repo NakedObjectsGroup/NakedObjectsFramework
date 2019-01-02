@@ -32,9 +32,6 @@ import { CustomComponentConfigService } from './custom-component-config.service'
 import { DynamicListComponent } from './dynamic-list/dynamic-list.component';
 import { AttachmentPropertyComponent } from './attachment-property/attachment-property.component';
 import { DynamicErrorComponent } from './dynamic-error/dynamic-error.component';
-import { CiceroComponent } from './cicero/cicero.component';
-import { CiceroCommandFactoryService } from './cicero-command-factory.service';
-import { CiceroRendererService } from './cicero-renderer.service';
 import { ActionBarComponent } from './action-bar/action-bar.component';
 import { ActionListComponent } from './action-list/action-list.component';
 import { RowComponent } from './row/row.component';
@@ -42,7 +39,6 @@ import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './login/login.component';
 import { LogoffComponent } from './logoff/logoff.component';
 import { CallbackComponent } from './callback/callback.component';
-import { CiceroContextService } from './cicero-context.service';
 import { DatePickerFacadeComponent } from './date-picker-facade/date-picker-facade.component';
 import { AutoCompleteComponent } from './auto-complete/auto-complete.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
@@ -82,7 +78,6 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
         DynamicListComponent,
         AttachmentPropertyComponent,
         DynamicErrorComponent,
-        CiceroComponent,
         RowComponent,
         HeaderComponent,
         LoginComponent,
@@ -138,7 +133,6 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
         DynamicListComponent,
         AttachmentPropertyComponent,
         DynamicErrorComponent,
-        CiceroComponent,
         RowComponent,
         HeaderComponent,
         LoginComponent,
@@ -161,9 +155,6 @@ export class LibModule {
             CustomComponentService,
             // to configure custom components create implementation of ICustomComponentConfigService and bind in here
             { provide: CustomComponentConfigService, useClass: CustomComponentConfigService },
-            CiceroCommandFactoryService,
-            CiceroRendererService,
-            CiceroContextService,
         ]
         };
       }

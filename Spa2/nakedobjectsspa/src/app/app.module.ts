@@ -10,6 +10,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LibModule } from '@nakedobjects/lib';
 import { LibModule as ServicesModule } from '@nakedobjects/services';
 import { LibModule as ViewModelModule } from '@nakedobjects/view-models';
+import { LibModule as CiceroModule } from '@nakedobjects/cicero';
 
 @NgModule({
     declarations: [
@@ -25,6 +26,7 @@ import { LibModule as ViewModelModule } from '@nakedobjects/view-models';
         LibModule.forRoot(),
         ServicesModule.forRoot(),
         ViewModelModule.forRoot(),
+        CiceroModule.forRoot(),
     ],
     providers: [
     ],
