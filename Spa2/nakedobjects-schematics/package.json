@@ -1,6 +1,6 @@
 {
   "name": "@nakedobjects/schematics",
-  "version": "1.0.0-beta.4",
+  "version": "1.0.0-beta.5",
   "description": "Schematics for Naked Objects",
   "license": "Apache-2.0",
   "author": "Richard Pawson <rpawson@nakedobjects.org>",
@@ -24,14 +24,14 @@
   ],
   "schematics": "./src/collection.json",
   "dependencies": {
-    "@angular-devkit/core": "^0.7.0",
-    "@angular-devkit/schematics": "^0.7.0",
-    "@types/jasmine": "^2.8.8",
-    "@types/node": "^10.5.3",
-    "jasmine": "^3.1.0",
+    "@angular-devkit/core": "^7.1.2",
+    "@angular-devkit/schematics": "^7.1.2",
+    "@types/jasmine": "^3.3.1",
+    "@types/node": "^10.12.12",
+    "jasmine": "^3.3.1",
     "cpx": "1.5.0",
     "mv": "2.1.1",
     "rimraf": "^2.6.1",
-    "typescript": "^2.7.2"
+    "typescript": "~3.1.6"
   }
 }
