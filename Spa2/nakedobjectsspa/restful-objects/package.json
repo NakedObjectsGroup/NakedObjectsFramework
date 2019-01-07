@@ -4,14 +4,45 @@
         "lib": {
             "entryFile": "src/public_api.ts",
             "umdModuleIds": {
-                "lodash": "_"
+                "lodash": "_",
+                "lodash-es/assign": "assign",
+                "lodash-es/clone": "clone",
+                "lodash-es/concat": "concat",
+                "lodash-es/each": "each",
+                "lodash-es/find": "find",
+                "lodash-es/forEach": "forEach",
+                "lodash-es/forOwn": "forOwn",
+                "lodash-es/fromPairs": "fromPairs",
+                "lodash-es/keys": "keys",
+                "lodash-es/last": "last",
+                "lodash-es/map": "map",
+                "lodash-es/mapValues": "mapValues",
+                "lodash-es/merge": "merge",
+                "lodash-es/pickBy": "pickBy",
+                "lodash-es/reduce": "reduce",
+                "lodash-es/some": "some"
             }
         },
         "whitelistedNonPeerDependencies": [
             "lodash",
-            "lodash-es"
+            "lodash-es/assign",
+            "lodash-es/clone",
+            "lodash-es/concat",
+            "lodash-es/each",
+            "lodash-es/find",
+            "lodash-es/forEach",
+            "lodash-es/forOwn",
+            "lodash-es/fromPairs",
+            "lodash-es/keys",
+            "lodash-es/last",
+            "lodash-es/map",
+            "lodash-es/mapValues",
+            "lodash-es/merge",
+            "lodash-es/pickBy",
+            "lodash-es/reduce",
+            "lodash-es/some"
         ],
-        "dest": "../dist/restful-objects"
+        "dest": "../dist/nakedobjects-restful-objects"
     },
     "name": "@nakedobjects/restful-objects",
     "version": "10.0.0-beta.5",
@@ -50,9 +81,9 @@
         "lodash-es": "4.17.11"
     },
     "devDependencies": {
-        "@types/lodash": "^4.14.118",
+        "@types/lodash": "^4.14.119",
         "@types/lodash-es": "4.17.1",
-        "tslint": "~5.11.0",
+        "tslint": "~5.12.0",
         "typescript": "3.1.6"
     }
 }

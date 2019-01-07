@@ -564,6 +564,7 @@ export class ContextService {
         this.getObject(paneId, oid, InteractionMode.View).then(object => Promise.resolve(object.actionMember(actionId).extensions()))
 
     private getPagingParms(page: number, pageSize: number): Dictionary<Object> {
+        // TODO refactor this - don't think x-ro-... values should be exposed like this
         return (page && pageSize) ? { 'x-ro-page': page, 'x-ro-pageSize': pageSize } : {};
     }
 
