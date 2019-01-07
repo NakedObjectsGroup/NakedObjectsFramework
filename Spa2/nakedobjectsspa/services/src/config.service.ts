@@ -1,8 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as Ro from '@nakedobjects/restful-objects';
-
 import assign from 'lodash-es/assign';
-import { HttpClient, HttpRequest, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 
 export enum ConfigState {
     pending,

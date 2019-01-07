@@ -1,11 +1,11 @@
-﻿import { TestBed, inject } from '@angular/core/testing';
-import { MaskService } from './mask.service';
-import { ConfigService } from './config.service';
+﻿import { HttpClient, HttpClientModule, HttpHeaders, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { inject, TestBed } from '@angular/core/testing';
 import * as Ro from '@nakedobjects/restful-objects';
 import * as momentNs from 'moment';
+import { ConfigService } from './config.service';
 import * as Constants from './constants';
-import { HttpClientModule, HttpClient, HttpRequest, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MaskService } from './mask.service';
 
 const moment = momentNs;
 

@@ -1,26 +1,26 @@
-import { InteractionMode, PaneRouteData, Pane, CollectionViewState } from './route-data';
-import { UrlManagerService } from './url-manager.service';
-import { RepLoaderService } from './rep-loader.service';
 import { Injectable } from '@angular/core';
-import * as Constants from './constants';
-import * as Models from '@nakedobjects/restful-objects';
-import { Subject } from 'rxjs';
-import { ConfigService } from './config.service';
-import { LoggerService } from './logger.service';
-import { ErrorWrapper, } from './error.wrapper';
+import * as Ro from '@nakedobjects/restful-objects';
 import { Dictionary } from 'lodash';
 import each from 'lodash-es/each';
-import find from 'lodash-es/find';
 import filter from 'lodash-es/filter';
-import map from 'lodash-es/map';
-import forEach from 'lodash-es/forEach';
-import keys from 'lodash-es/keys';
+import find from 'lodash-es/find';
 import findKey from 'lodash-es/findKey';
 import first from 'lodash-es/first';
+import forEach from 'lodash-es/forEach';
+import keys from 'lodash-es/keys';
+import map from 'lodash-es/map';
 import omit from 'lodash-es/omit';
 import remove from 'lodash-es/remove';
 import sortBy from 'lodash-es/sortBy';
-import { ErrorCategory, ClientErrorCode } from './constants';
+import { Subject } from 'rxjs';
+import { ConfigService } from './config.service';
+import * as Constants from './constants';
+import { ClientErrorCode, ErrorCategory } from './constants';
+import { LoggerService } from './logger.service';
+import { RepLoaderService } from './rep-loader.service';
+import { CollectionViewState, InteractionMode, Pane, PaneRouteData } from './route-data';
+import { UrlManagerService } from './url-manager.service';
+import { ErrorWrapper, } from './error.wrapper';
 
 enum DirtyState {
     DirtyMustReload = 1,
@@ -31,21 +31,21 @@ enum DirtyState {
 class DirtyList {
     private dirtyObjects: Dictionary<DirtyState> = {};
 
-    setDirty(oid: Models.ObjectIdWrapper, alwaysReload: boolean = false) {
+    setDirty(oid: Ro.ObjectIdWrapper, alwaysReload: boolean = false) {
         this.setDirtyInternal(oid, alwaysReload ? DirtyState.DirtyMustReload : DirtyState.DirtyMayReload);
     }
 
-    setDirtyInternal(oid: Models.ObjectIdWrapper, dirtyState: DirtyState) {
+    setDirtyInternal(oid: Ro.ObjectIdWrapper, dirtyState: DirtyState) {
         const key = oid.getKey();
         this.dirtyObjects[key] = dirtyState;
     }
 
-    getDirty(oid: Models.ObjectIdWrapper) {
+    getDirty(oid: Ro.ObjectIdWrapper) {
         const key = oid.getKey();
         return this.dirtyObjects[key] || DirtyState.Clean;
     }
 
-    clearDirty(oid: Models.ObjectIdWrapper) {
+    clearDirty(oid: Ro.ObjectIdWrapper) {
         const key = oid.getKey();
         this.dirtyObjects = omit(this.dirtyObjects, key) as Dictionary<DirtyState>;
     }
@@ -55,20 +55,20 @@ class DirtyList {
     }
 }
 
-function isSameObject(object: Models.DomainObjectRepresentation | null | undefined, type: string, id?: string) {
+function isSameObject(object: Ro.DomainObjectRepresentation | null | undefined, type: string, id?: string) {
     if (object) {
         const sid = object.serviceId();
-        return sid ? sid === type : (object.domainType() === type && object.instanceId() === Models.withNull(id));
+        return sid ? sid === type : (object.domainType() === type && object.instanceId() === Ro.withNull(id));
     }
     return false;
 }
 
 class TransientCache {
-    private transientCache: [undefined, Models.DomainObjectRepresentation[], Models.DomainObjectRepresentation[]] = [undefined, [], []]; // per pane
+    private transientCache: [undefined, Ro.DomainObjectRepresentation[], Ro.DomainObjectRepresentation[]] = [undefined, [], []]; // per pane
 
     constructor(private readonly depth: number) { }
 
-    add(paneId: Pane, obj: Models.DomainObjectRepresentation) {
+    add(paneId: Pane, obj: Ro.DomainObjectRepresentation) {
         let paneObjects = this.transientCache[paneId]!;
         if (paneObjects.length >= this.depth) {
             paneObjects = paneObjects.slice(-(this.depth - 1));
@@ -77,7 +77,7 @@ class TransientCache {
         this.transientCache[paneId] = paneObjects;
     }
 
-    get(paneId: Pane, type: string, id: string): Models.DomainObjectRepresentation | null {
+    get(paneId: Pane, type: string, id: string): Ro.DomainObjectRepresentation | null {
         const paneObjects = this.transientCache[paneId]!;
         return find(paneObjects, o => isSameObject(o, type, id)) || null;
     }
@@ -104,9 +104,9 @@ class RecentCache {
 
     constructor(private readonly keySeparator: string, private readonly depth: number) { }
 
-    private recentCache: Models.DomainObjectRepresentation[] = [];
+    private recentCache: Ro.DomainObjectRepresentation[] = [];
 
-    add(obj: Models.DomainObjectRepresentation) {
+    add(obj: Ro.DomainObjectRepresentation) {
 
         // find any matching entries and remove them - should only be one
         remove(this.recentCache, i => i.id() === obj.id());
@@ -120,7 +120,7 @@ class RecentCache {
         }
     }
 
-    items(): Models.DomainObjectRepresentation[] {
+    items(): Ro.DomainObjectRepresentation[] {
         return this.recentCache;
     }
 
@@ -131,16 +131,16 @@ class RecentCache {
 
 class ValueCache {
 
-    private currentValues: [undefined, Dictionary<Models.Value>, Dictionary<Models.Value>] = [undefined, {}, {}];
+    private currentValues: [undefined, Dictionary<Ro.Value>, Dictionary<Ro.Value>] = [undefined, {}, {}];
     private currentId: [undefined, string, string] = [undefined, '', ''];
 
-    addValue(id: string, valueId: string, value: Models.Value, paneId: Pane) {
+    addValue(id: string, valueId: string, value: Ro.Value, paneId: Pane) {
         if (this.currentId[paneId] !== id) {
             this.currentId[paneId] = id;
             this.currentValues[paneId] = {};
         }
 
-        this.currentValues[paneId]![valueId] = new Models.Value(value);
+        this.currentValues[paneId]![valueId] = new Ro.Value(value);
     }
 
     getValue(id: string, valueId: string, paneId: Pane) {
@@ -158,7 +158,7 @@ class ValueCache {
             this.currentValues[paneId] = {};
         }
 
-        return this.currentValues[paneId] as Dictionary<Models.Value>;
+        return this.currentValues[paneId] as Dictionary<Ro.Value>;
     }
 
     clear(paneId: Pane) {
@@ -206,7 +206,7 @@ export class ContextService {
 
     private pendingPotentActionCount: [undefined, number, number] = [undefined, 0, 0];
 
-    private concurrencyErrorSource = new Subject<Models.ObjectIdWrapper>();
+    private concurrencyErrorSource = new Subject<Ro.ObjectIdWrapper>();
 
     concurrencyError$ = this.concurrencyErrorSource.asObservable();
 
@@ -218,31 +218,31 @@ export class ContextService {
 
     // cached values
 
-    private currentObjects: [undefined, Models.DomainObjectRepresentation | null, Models.DomainObjectRepresentation | null] = [undefined, null, null]; // per pane
+    private currentObjects: [undefined, Ro.DomainObjectRepresentation | null, Ro.DomainObjectRepresentation | null] = [undefined, null, null]; // per pane
     private transientCache = new TransientCache(this.configService.config.transientCacheDepth);
 
-    private currentMenuList: Dictionary<Models.MenuRepresentation> = {};
-    private currentServices: Models.DomainServicesRepresentation | null = null;
-    private currentMenus: Models.MenusRepresentation | null = null;
-    private currentVersion: Models.VersionRepresentation | null = null;
-    private currentUser: Models.UserRepresentation | null = null;
+    private currentMenuList: Dictionary<Ro.MenuRepresentation> = {};
+    private currentServices: Ro.DomainServicesRepresentation | null = null;
+    private currentMenus: Ro.MenusRepresentation | null = null;
+    private currentVersion: Ro.VersionRepresentation | null = null;
+    private currentUser: Ro.UserRepresentation | null = null;
 
     private readonly recentcache = new RecentCache(this.keySeparator, this.configService.config.recentCacheDepth);
     private readonly dirtyList = new DirtyList();
-    private currentLists: Dictionary<{ list: Models.ListRepresentation; added: number }> = {};
+    private currentLists: Dictionary<{ list: Ro.ListRepresentation; added: number }> = {};
     private readonly parameterCache = new ValueCache();
     private readonly objectEditCache = new ValueCache();
 
-    getFile = (object: Models.DomainObjectRepresentation, url: string, mt: string) => {
+    getFile = (object: Ro.DomainObjectRepresentation, url: string, mt: string) => {
         const isDirty = this.getIsDirty(object.getOid());
         return this.repLoader.getFile(url, mt, isDirty);
     }
 
-    setFile = (object: Models.DomainObjectRepresentation, url: string, mt: string, file: Blob) => this.repLoader.uploadFile(url, mt, file);
+    setFile = (object: Ro.DomainObjectRepresentation, url: string, mt: string, file: Blob) => this.repLoader.uploadFile(url, mt, file);
 
     clearCachedFile = (url: string) => this.repLoader.clearCache(url);
 
-    clearCachedCollections(obj: Models.DomainObjectRepresentation) {
+    clearCachedCollections(obj: Ro.DomainObjectRepresentation) {
 
         each(obj.collectionMembers(), cm => {
             const details = cm.getDetails();
@@ -259,7 +259,7 @@ export class ContextService {
     }
 
     // exposed for test mocking
-    getDomainObject = (paneId: Pane, oid: Models.ObjectIdWrapper, interactionMode: InteractionMode): Promise<Models.DomainObjectRepresentation> => {
+    getDomainObject = (paneId: Pane, oid: Ro.ObjectIdWrapper, interactionMode: InteractionMode): Promise<Ro.DomainObjectRepresentation> => {
         const type = oid.domainType;
         const id = oid.instanceId;
 
@@ -276,19 +276,19 @@ export class ContextService {
         // deeper cache for transients
         if (interactionMode === InteractionMode.Transient) {
             const transientObj = this.transientCache.get(paneId, type, id);
-            const p: Promise<Models.DomainObjectRepresentation> = transientObj
+            const p: Promise<Ro.DomainObjectRepresentation> = transientObj
                 ? Promise.resolve(transientObj)
                 : Promise.reject(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.ExpiredTransient, ''));
             return p;
         }
 
-        const object = new Models.DomainObjectRepresentation();
+        const object = new Ro.DomainObjectRepresentation();
         object.hateoasUrl = `${this.configService.config.appPath}/objects/${type}/${id}`;
         object.setInlinePropertyDetails(interactionMode === InteractionMode.Edit);
 
         this.incPendingPotentActionOrReload(paneId);
-        return this.repLoader.populate<Models.DomainObjectRepresentation>(object, forceReload)
-            .then((obj: Models.DomainObjectRepresentation) => {
+        return this.repLoader.populate<Ro.DomainObjectRepresentation>(object, forceReload)
+            .then((obj: Ro.DomainObjectRepresentation) => {
                 this.currentObjects[paneId] = obj;
                 if (forceReload) {
                     this.dirtyList.clearDirty(oid);
@@ -304,11 +304,11 @@ export class ContextService {
             });
     }
 
-    private editOrReloadObject(paneId: Pane, object: Models.DomainObjectRepresentation, inlineDetails: boolean) {
+    private editOrReloadObject(paneId: Pane, object: Ro.DomainObjectRepresentation, inlineDetails: boolean) {
         const parms: Dictionary<Object> = {};
         parms[Constants.roInlinePropertyDetails] = inlineDetails;
 
-        return this.repLoader.retrieveFromLink<Models.DomainObjectRepresentation>(object.selfLink(), parms)
+        return this.repLoader.retrieveFromLink<Ro.DomainObjectRepresentation>(object.selfLink(), parms)
             .then(obj => {
                 this.currentObjects[paneId] = obj;
                 const oid = obj.getOid();
@@ -318,38 +318,38 @@ export class ContextService {
             });
     }
 
-    getIsDirty = (oid: Models.ObjectIdWrapper) => !oid.isService && this.dirtyList.getDirty(oid) !== DirtyState.Clean;
+    getIsDirty = (oid: Ro.ObjectIdWrapper) => !oid.isService && this.dirtyList.getDirty(oid) !== DirtyState.Clean;
 
-    mustReload = (oid: Models.ObjectIdWrapper) => {
+    mustReload = (oid: Ro.ObjectIdWrapper) => {
         const dirtyState = this.dirtyList.getDirty(oid);
         return (dirtyState === DirtyState.DirtyMustReload) || ((dirtyState === DirtyState.DirtyMayReload) && this.configService.config.autoLoadDirty);
     }
 
-    getObjectForEdit = (paneId: Pane, object: Models.DomainObjectRepresentation) => this.editOrReloadObject(paneId, object, true);
+    getObjectForEdit = (paneId: Pane, object: Ro.DomainObjectRepresentation) => this.editOrReloadObject(paneId, object, true);
 
-    reloadObject = (paneId: Pane, object: Models.DomainObjectRepresentation) => this.editOrReloadObject(paneId, object, false);
+    reloadObject = (paneId: Pane, object: Ro.DomainObjectRepresentation) => this.editOrReloadObject(paneId, object, false);
 
-    getService = (paneId: Pane, serviceType: string): Promise<Models.DomainObjectRepresentation> => {
+    getService = (paneId: Pane, serviceType: string): Promise<Ro.DomainObjectRepresentation> => {
 
         if (isSameObject(this.currentObjects[paneId], serviceType)) {
             return Promise.resolve(this.currentObjects[paneId]!);
         }
 
         return this.getServices()
-            .then((services: Models.DomainServicesRepresentation) => {
+            .then((services: Ro.DomainServicesRepresentation) => {
                 const service = services.getService(serviceType);
                 if (service) {
                     return this.repLoader.populate(service);
                 }
                 return Promise.reject(`unknown service ${serviceType}`);
             })
-            .then((service: Models.DomainObjectRepresentation) => {
+            .then((service: Ro.DomainObjectRepresentation) => {
                 this.currentObjects[paneId] = service;
                 return Promise.resolve(service);
             });
     }
 
-    getActionDetails = (actionMember: Models.ActionMember): Promise<Models.ActionRepresentation> => {
+    getActionDetails = (actionMember: Ro.ActionMember): Promise<Ro.ActionRepresentation> => {
         const details = actionMember.getDetails();
         if (details) {
             return this.repLoader.populate(details, true);
@@ -357,7 +357,7 @@ export class ContextService {
         return Promise.reject(`Couldn't find details on ${actionMember.actionId()}`);
     }
 
-    getCollectionDetails = (collectionMember: Models.CollectionMember, state: CollectionViewState, ignoreCache: boolean): Promise<Models.CollectionRepresentation> => {
+    getCollectionDetails = (collectionMember: Ro.CollectionMember, state: CollectionViewState, ignoreCache: boolean): Promise<Ro.CollectionRepresentation> => {
         const details = collectionMember.getDetails();
 
         if (details) {
@@ -366,7 +366,7 @@ export class ContextService {
             }
             const parent = collectionMember.parent;
             let isDirty = false;
-            if (parent instanceof Models.DomainObjectRepresentation) {
+            if (parent instanceof Ro.DomainObjectRepresentation) {
                 const oid = parent.getOid();
                 isDirty = this.dirtyList.getDirty(oid) !== DirtyState.Clean;
             }
@@ -376,30 +376,30 @@ export class ContextService {
         return Promise.reject(`Couldn't find details on ${collectionMember.collectionId()}`);
     }
 
-    getInvokableAction = (action: Models.ActionMember | Models.ActionRepresentation): Promise<Models.InvokableActionMember | Models.ActionRepresentation> => {
+    getInvokableAction = (action: Ro.ActionMember | Ro.ActionRepresentation): Promise<Ro.InvokableActionMember | Ro.ActionRepresentation> => {
 
-        if (action instanceof Models.InvokableActionMember || action instanceof Models.ActionRepresentation) {
+        if (action instanceof Ro.InvokableActionMember || action instanceof Ro.ActionRepresentation) {
             return Promise.resolve(action);
         }
 
         return this.getActionDetails(action);
     }
 
-    getMenu = (menuId: string): Promise<Models.MenuRepresentation> => {
+    getMenu = (menuId: string): Promise<Ro.MenuRepresentation> => {
 
         if (this.currentMenuList[menuId]) {
             return Promise.resolve(this.currentMenuList[menuId]);
         }
 
         return this.getMenus()
-            .then((menus: Models.MenusRepresentation) => {
+            .then((menus: Ro.MenusRepresentation) => {
                 const menu = menus.getMenu(menuId);
                 if (menu) {
                     return this.repLoader.populate(menu);
                 }
                 return Promise.reject(`couldn't find menu ${menuId}`);
             })
-            .then((menu: Models.MenuRepresentation) => {
+            .then((menu: Ro.MenuRepresentation) => {
                 this.currentMenuList[menuId] = menu;
                 return Promise.resolve(menu);
             });
@@ -432,7 +432,7 @@ export class ContextService {
     getHome = () => {
         // for moment don't bother caching only called on startup and for whatever resaon cache doesn't work.
         // once version cached no longer called.
-        return this.repLoader.populate<Models.HomePageRepresentation>(new Models.HomePageRepresentation({}, this.configService.config.appPath));
+        return this.repLoader.populate<Ro.HomePageRepresentation>(new Ro.HomePageRepresentation({}, this.configService.config.appPath));
     }
 
     getServices = () => {
@@ -442,11 +442,11 @@ export class ContextService {
         }
 
         return this.getHome()
-            .then((home: Models.HomePageRepresentation) => {
+            .then((home: Ro.HomePageRepresentation) => {
                 const ds = home.getDomainServices();
-                return this.repLoader.populate<Models.DomainServicesRepresentation>(ds);
+                return this.repLoader.populate<Ro.DomainServicesRepresentation>(ds);
             })
-            .then((services: Models.DomainServicesRepresentation) => {
+            .then((services: Ro.DomainServicesRepresentation) => {
                 this.currentServices = services;
                 return Promise.resolve(services);
             });
@@ -458,11 +458,11 @@ export class ContextService {
         }
 
         return this.getHome()
-            .then((home: Models.HomePageRepresentation) => {
+            .then((home: Ro.HomePageRepresentation) => {
                 const ds = home.getMenus();
-                return this.repLoader.populate<Models.MenusRepresentation>(ds);
+                return this.repLoader.populate<Ro.MenusRepresentation>(ds);
             })
-            .then((menus: Models.MenusRepresentation) => {
+            .then((menus: Ro.MenusRepresentation) => {
                 this.currentMenus = menus;
                 return Promise.resolve(this.currentMenus);
             });
@@ -475,11 +475,11 @@ export class ContextService {
         }
 
         return this.getHome()
-            .then((home: Models.HomePageRepresentation) => {
+            .then((home: Ro.HomePageRepresentation) => {
                 const v = home.getVersion();
-                return this.repLoader.populate<Models.VersionRepresentation>(v);
+                return this.repLoader.populate<Ro.VersionRepresentation>(v);
             })
-            .then((version: Models.VersionRepresentation) => {
+            .then((version: Ro.VersionRepresentation) => {
                 this.currentVersion = version;
                 return Promise.resolve(version);
             });
@@ -492,17 +492,17 @@ export class ContextService {
         }
 
         return this.getHome()
-            .then((home: Models.HomePageRepresentation) => {
+            .then((home: Ro.HomePageRepresentation) => {
                 const u = home.getUser();
-                return this.repLoader.populate<Models.UserRepresentation>(u);
+                return this.repLoader.populate<Ro.UserRepresentation>(u);
             })
-            .then((user: Models.UserRepresentation) => {
+            .then((user: Ro.UserRepresentation) => {
                 this.currentUser = user;
                 return Promise.resolve(user);
             });
     }
 
-    getObject = (paneId: Pane, oid: Models.ObjectIdWrapper, interactionMode: InteractionMode) => {
+    getObject = (paneId: Pane, oid: Ro.ObjectIdWrapper, interactionMode: InteractionMode) => {
         return oid.isService ? this.getService(paneId, oid.domainType) : this.getDomainObject(paneId, oid, interactionMode);
     }
 
@@ -517,7 +517,7 @@ export class ContextService {
         delete this.currentLists[index];
     }
 
-    private cacheList(list: Models.ListRepresentation, index: string) {
+    private cacheList(list: Ro.ListRepresentation, index: string) {
 
         const entry = this.currentLists[index];
         if (entry) {
@@ -540,10 +540,10 @@ export class ContextService {
         }
     }
 
-    private handleResult = (paneId: Pane, result: Models.ActionResultRepresentation, page: number, pageSize: number): Promise<Models.ListRepresentation> => {
+    private handleResult = (paneId: Pane, result: Ro.ActionResultRepresentation, page: number, pageSize: number): Promise<Ro.ListRepresentation> => {
 
         if (result.resultType() === 'list') {
-            const resultList = result.result().list() as Models.ListRepresentation; // not null
+            const resultList = result.result().list() as Ro.ListRepresentation; // not null
             const index = this.urlManager.getListCacheIndex(paneId, page, pageSize);
             this.cacheList(resultList, index);
             return Promise.resolve(resultList);
@@ -552,7 +552,7 @@ export class ContextService {
         }
     }
 
-    private getList = (paneId: Pane, resultPromise: () => Promise<Models.ActionResultRepresentation>, page: number, pageSize: number) => {
+    private getList = (paneId: Pane, resultPromise: () => Promise<Ro.ActionResultRepresentation>, page: number, pageSize: number) => {
         return resultPromise().then(result => this.handleResult(paneId, result, page, pageSize));
     }
 
@@ -560,7 +560,7 @@ export class ContextService {
         this.getMenu(menuId)
         .then(menu => Promise.resolve(menu.actionMember(actionId).extensions()))
 
-    getActionExtensionsFromObject = (paneId: Pane, oid: Models.ObjectIdWrapper, actionId: string) =>
+    getActionExtensionsFromObject = (paneId: Pane, oid: Ro.ObjectIdWrapper, actionId: string) =>
         this.getObject(paneId, oid, InteractionMode.View).then(object => Promise.resolve(object.actionMember(actionId).extensions()))
 
     private getPagingParms(page: number, pageSize: number): Dictionary<Object> {
@@ -591,7 +591,7 @@ export class ContextService {
         const actionId = routeData.actionId;
         const parms = routeData.actionParams;
         const state = routeData.state;
-        const oid = Models.ObjectIdWrapper.fromObjectId(objectId, this.keySeparator);
+        const oid = Ro.ObjectIdWrapper.fromObjectId(objectId, this.keySeparator);
         const paneId = routeData.paneId;
         const newPage = page || routeData.page;
         const newPageSize = pageSize || routeData.pageSize;
@@ -608,7 +608,7 @@ export class ContextService {
         return this.getList(paneId, promise, newPage, newPageSize);
     }
 
-    setObject = (paneId: Pane, co: Models.DomainObjectRepresentation) => this.currentObjects[paneId] = co;
+    setObject = (paneId: Pane, co: Ro.DomainObjectRepresentation) => this.currentObjects[paneId] = co;
 
     swapCurrentObjects = () => {
 
@@ -629,21 +629,21 @@ export class ContextService {
 
     setPreviousUrl = (url: string) => this.previousUrl = url;
 
-    private doPrompt = (field: Models.IField, id: string, searchTerm: string | null, setupPrompt: (map: Models.PromptMap) => void, objectValues: () => Dictionary<Models.Value>, digest?: string | null) => {
-        const promptMap = field.getPromptMap() as Models.PromptMap; // not null
+    private doPrompt = (field: Ro.IField, id: string, searchTerm: string | null, setupPrompt: (map: Ro.PromptMap) => void, objectValues: () => Dictionary<Ro.Value>, digest?: string | null) => {
+        const promptMap = field.getPromptMap() as Ro.PromptMap; // not null
         promptMap.setMembers(objectValues);
         setupPrompt(promptMap);
-        const addEmptyOption = field.entryType() !== Models.EntryType.AutoComplete && field.extensions().optional();
-        return this.repLoader.retrieve(promptMap, Models.PromptRepresentation, digest).then((p: Models.PromptRepresentation) => p.choices(addEmptyOption));
+        const addEmptyOption = field.entryType() !== Ro.EntryType.AutoComplete && field.extensions().optional();
+        return this.repLoader.retrieve(promptMap, Ro.PromptRepresentation, digest).then((p: Ro.PromptRepresentation) => p.choices(addEmptyOption));
     }
 
-    autoComplete = (field: Models.IField, id: string, objectValues: () => Dictionary<Models.Value>, searchTerm: string, digest?: string | null) =>
-        this.doPrompt(field, id, searchTerm, (promptMap: Models.PromptMap) => promptMap.setSearchTerm(searchTerm), objectValues, digest)
+    autoComplete = (field: Ro.IField, id: string, objectValues: () => Dictionary<Ro.Value>, searchTerm: string, digest?: string | null) =>
+        this.doPrompt(field, id, searchTerm, (promptMap: Ro.PromptMap) => promptMap.setSearchTerm(searchTerm), objectValues, digest)
 
-    conditionalChoices = (field: Models.IField, id: string, objectValues: () => Dictionary<Models.Value>, args: Dictionary<Models.Value>, digest?: string | null) =>
-        this.doPrompt(field, id, null, (promptMap: Models.PromptMap) => promptMap.setArguments(args), objectValues, digest)
+    conditionalChoices = (field: Ro.IField, id: string, objectValues: () => Dictionary<Ro.Value>, args: Dictionary<Ro.Value>, digest?: string | null) =>
+        this.doPrompt(field, id, null, (promptMap: Ro.PromptMap) => promptMap.setArguments(args), objectValues, digest)
 
-    setResult = (action: Models.ActionRepresentation | Models.InvokableActionMember, result: Models.ActionResultRepresentation, fromPaneId: number, toPaneId: number, page: number, pageSize: number) => {
+    setResult = (action: Ro.ActionRepresentation | Ro.InvokableActionMember, result: Ro.ActionResultRepresentation, fromPaneId: number, toPaneId: number, page: number, pageSize: number) => {
 
         if (!result.result().isNull()) {
             if (result.resultType() === 'object') {
@@ -672,7 +672,7 @@ export class ContextService {
                     this.urlManager.setObjectWithMode(resultObject, interactionMode, toPaneId);
                 } else if (resultObject.selfLink()) {
 
-                    const selfLink = resultObject.selfLink() as Models.Link;
+                    const selfLink = resultObject.selfLink() as Ro.Link;
                     // persistent object
                     // set the object here and then update the url. That should reload the page but pick up this object
                     // so we don't hit the server again.
@@ -729,7 +729,7 @@ export class ContextService {
         return this.pendingPotentActionCount[paneId]! > 0;
     }
 
-    private setMessages(result: Models.ActionResultRepresentation) {
+    private setMessages(result: Ro.ActionResultRepresentation) {
         this.pendingClearMessages = this.pendingClearWarnings = false;
 
         const warnings = result.extensions().warnings() || [];
@@ -739,13 +739,13 @@ export class ContextService {
         this.messagesSource.next(messages);
     }
 
-    setConcurrencyError(oid: Models.ObjectIdWrapper) {
+    setConcurrencyError(oid: Ro.ObjectIdWrapper) {
         this.concurrencyErrorSource.next(oid);
     }
 
     private invokeActionInternal(
-        invokeMap: Models.InvokeMap,
-        action: Models.ActionRepresentation | Models.InvokableActionMember,
+        invokeMap: Ro.InvokeMap,
+        action: Ro.ActionRepresentation | Ro.InvokableActionMember,
         fromPaneId: number,
         toPaneId: number,
         setDirty: () => void,
@@ -757,8 +757,8 @@ export class ContextService {
             invokeMap.setUrlParameter(Constants.roInlineCollectionItems, true);
         }
 
-        return this.repLoader.retrieve(invokeMap, Models.ActionResultRepresentation, action.parent.etagDigest)
-            .then((result: Models.ActionResultRepresentation) => {
+        return this.repLoader.retrieve(invokeMap, Ro.ActionResultRepresentation, action.parent.etagDigest)
+            .then((result: Ro.ActionResultRepresentation) => {
                 setDirty();
                 this.setMessages(result);
                 if (gotoResult) {
@@ -768,7 +768,7 @@ export class ContextService {
             });
     }
 
-    private getSetDirtyFunction(action: Models.ActionRepresentation | Models.InvokableActionMember, parms: Dictionary<Models.Value>) {
+    private getSetDirtyFunction(action: Ro.ActionRepresentation | Ro.InvokableActionMember, parms: Dictionary<Ro.Value>) {
         const parent = action.parent;
 
         if (action.isNotQueryOnly()) {
@@ -777,33 +777,33 @@ export class ContextService {
                 ? () => this.markDirtyAfterChange()
                 : () => { };
 
-            if (parent instanceof Models.DomainObjectRepresentation) {
+            if (parent instanceof Ro.DomainObjectRepresentation) {
                 return () => {
                     this.dirtyList.setDirty(parent.getOid());
                     this.setCurrentObjectsDirty();
                     clearCacheIfNecessary();
                 };
             }
-            if (parent instanceof Models.CollectionRepresentation) {
+            if (parent instanceof Ro.CollectionRepresentation) {
                 return () => {
                     const selfLink = parent.selfLink();
-                    const oid = Models.ObjectIdWrapper.fromLink(selfLink, this.keySeparator);
+                    const oid = Ro.ObjectIdWrapper.fromLink(selfLink, this.keySeparator);
                     this.dirtyList.setDirty(oid);
                     this.setCurrentObjectsDirty();
                     clearCacheIfNecessary();
                 };
             }
-            if (parent instanceof Models.CollectionMember) {
+            if (parent instanceof Ro.CollectionMember) {
                 return () => {
                     const memberParent = parent.parent;
-                    if (memberParent instanceof Models.DomainObjectRepresentation) {
+                    if (memberParent instanceof Ro.DomainObjectRepresentation) {
                         this.dirtyList.setDirty(memberParent.getOid());
                     }
                     this.setCurrentObjectsDirty();
                     clearCacheIfNecessary();
                 };
             }
-            if (parent instanceof Models.ListRepresentation && parms) {
+            if (parent instanceof Ro.ListRepresentation && parms) {
 
                 const ccaParm = find(action.parameters(), p => p.isCollectionContributed());
                 const ccaId = ccaParm ? ccaParm.id() : null;
@@ -815,7 +815,7 @@ export class ContextService {
                     const refValues = filter(ccaValue.list()!, v => v.isReference());
                     const links = map(refValues, v => v.link()!);
                     return () => {
-                        forEach(links, (l: Models.Link) => this.dirtyList.setDirty(l.getOid(this.keySeparator)));
+                        forEach(links, (l: Ro.Link) => this.dirtyList.setDirty(l.getOid(this.keySeparator)));
                         this.setCurrentObjectsDirty();
                         clearCacheIfNecessary();
                     };
@@ -831,10 +831,10 @@ export class ContextService {
         return () => { };
     }
 
-    invokeAction = (action: Models.ActionRepresentation | Models.InvokableActionMember, parms: Dictionary<Models.Value>, fromPaneId = 1, toPaneId = 1, gotoResult: boolean = true) => {
+    invokeAction = (action: Ro.ActionRepresentation | Ro.InvokableActionMember, parms: Dictionary<Ro.Value>, fromPaneId = 1, toPaneId = 1, gotoResult: boolean = true) => {
 
-        const invokeOnMap = (iAction: Models.ActionRepresentation | Models.InvokableActionMember) => {
-            const im = iAction.getInvokeMap() as Models.InvokeMap;
+        const invokeOnMap = (iAction: Ro.ActionRepresentation | Ro.InvokableActionMember) => {
+            const im = iAction.getInvokeMap() as Ro.InvokeMap;
             each(parms, (parm, k) => im.setParameter(k!, parm));
             const setDirty = this.getSetDirtyFunction(iAction, parms);
             return this.invokeActionInternal(im, iAction, fromPaneId, toPaneId, setDirty, gotoResult);
@@ -843,7 +843,7 @@ export class ContextService {
         return invokeOnMap(action);
     }
 
-    private setNewObject(updatedObject: Models.DomainObjectRepresentation, paneId: Pane, viewSavedObject: Boolean) {
+    private setNewObject(updatedObject: Ro.DomainObjectRepresentation, paneId: Pane, viewSavedObject: Boolean) {
         this.setObject(paneId, updatedObject);
         this.dirtyList.clearDirty(updatedObject.getOid());
 
@@ -861,13 +861,13 @@ export class ContextService {
         }
     }
 
-    updateObject = (object: Models.DomainObjectRepresentation, props: Dictionary<Models.Value>, paneId: Pane, viewSavedObject: boolean) => {
+    updateObject = (object: Ro.DomainObjectRepresentation, props: Dictionary<Ro.Value>, paneId: Pane, viewSavedObject: boolean) => {
         const update = object.getUpdateMap();
 
         each(props, (v, k) => update.setProperty(k!, v));
 
-        return this.repLoader.retrieve(update, Models.DomainObjectRepresentation, object.etagDigest)
-            .then((updatedObject: Models.DomainObjectRepresentation) => {
+        return this.repLoader.retrieve(update, Ro.DomainObjectRepresentation, object.etagDigest)
+            .then((updatedObject: Ro.DomainObjectRepresentation) => {
                 this.setDirtyIfNecessary();
                 // This is a kludge because updated object has no self link.
                 const rawLinks = object.wrapped().links;
@@ -877,13 +877,13 @@ export class ContextService {
             });
     }
 
-    saveObject = (object: Models.DomainObjectRepresentation, props: Dictionary<Models.Value>, paneId: Pane, viewSavedObject: boolean) => {
+    saveObject = (object: Ro.DomainObjectRepresentation, props: Dictionary<Ro.Value>, paneId: Pane, viewSavedObject: boolean) => {
         const persist = object.getPersistMap();
 
         each(props, (v, k) => persist.setMember(k!, v));
 
-        return this.repLoader.retrieve(persist, Models.DomainObjectRepresentation, object.etagDigest)
-            .then((updatedObject: Models.DomainObjectRepresentation) => {
+        return this.repLoader.retrieve(persist, Ro.DomainObjectRepresentation, object.etagDigest)
+            .then((updatedObject: Ro.DomainObjectRepresentation) => {
                 this.setDirtyIfNecessary();
                 this.transientCache.remove(paneId, object.domainType()!, object.id());
                 this.setNewObject(updatedObject, paneId, viewSavedObject);
@@ -891,14 +891,14 @@ export class ContextService {
             });
     }
 
-    validateUpdateObject = (object: Models.DomainObjectRepresentation, props: Dictionary<Models.Value>) => {
+    validateUpdateObject = (object: Ro.DomainObjectRepresentation, props: Dictionary<Ro.Value>) => {
         const update = object.getUpdateMap();
         update.setValidateOnly();
         each(props, (v, k) => update.setProperty(k!, v));
         return this.repLoader.validate(update, object.etagDigest);
     }
 
-    validateSaveObject = (object: Models.DomainObjectRepresentation, props: Dictionary<Models.Value>) => {
+    validateSaveObject = (object: Ro.DomainObjectRepresentation, props: Dictionary<Ro.Value>) => {
         const persist = object.getPersistMap();
         persist.setValidateOnly();
         each(props, (v, k) => persist.setMember(k!, v));
@@ -911,10 +911,10 @@ export class ContextService {
             return this.subTypeCache[toCheckType][againstType];
         }
 
-        const isSubTypeOf = new Models.DomainTypeActionInvokeRepresentation(againstType, toCheckType, this.configService.config.appPath);
+        const isSubTypeOf = new Ro.DomainTypeActionInvokeRepresentation(againstType, toCheckType, this.configService.config.appPath);
 
         const promise = this.repLoader.populate(isSubTypeOf, true)
-            .then((updatedObject: Models.DomainTypeActionInvokeRepresentation) => {
+            .then((updatedObject: Ro.DomainTypeActionInvokeRepresentation) => {
                 return updatedObject.value();
             })
             .catch((reject: ErrorWrapper) => {
@@ -928,7 +928,7 @@ export class ContextService {
         return promise;
     }
 
-    private cacheRecentlyViewed(obj: Models.DomainObjectRepresentation) {
+    private cacheRecentlyViewed(obj: Ro.DomainObjectRepresentation) {
         // never cache forms
         if (obj.extensions().interactionMode() !== 'form') {
             this.recentcache.add(obj);
@@ -952,7 +952,7 @@ export class ContextService {
     private setCurrentObjectsDirty = () => {
         const pane1Obj = this.currentObjects[Pane.Pane1];
         const pane2Obj = this.currentObjects[Pane.Pane2];
-        const setDirty = (m: Models.DomainObjectRepresentation | null | undefined) => {
+        const setDirty = (m: Ro.DomainObjectRepresentation | null | undefined) => {
             if (m) {
                 this.dirtyList.setDirty(m.getOid());
             }
@@ -978,7 +978,7 @@ export class ContextService {
         forEach(this.currentLists, (v, k) => delete this.currentLists[k!]);
     }
 
-    cacheFieldValue = (dialogId: string, pid: string, pv: Models.Value, paneId: Pane = Pane.Pane1) => {
+    cacheFieldValue = (dialogId: string, pid: string, pv: Ro.Value, paneId: Pane = Pane.Pane1) => {
         this.parameterCache.addValue(dialogId, pid, pv, paneId);
     }
 
@@ -998,7 +998,7 @@ export class ContextService {
         this.objectEditCache.clear(paneId);
     }
 
-    cachePropertyValue = (obj: Models.DomainObjectRepresentation, p: Models.PropertyMember, pv: Models.Value, paneId: Pane = Pane.Pane1) => {
+    cachePropertyValue = (obj: Ro.DomainObjectRepresentation, p: Ro.PropertyMember, pv: Ro.Value, paneId: Pane = Pane.Pane1) => {
         this.dirtyList.setDirty(obj.getOid());
         this.objectEditCache.addValue(obj.id(), p.id(), pv, paneId);
     }

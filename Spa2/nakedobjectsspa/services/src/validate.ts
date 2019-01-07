@@ -1,8 +1,8 @@
 ﻿import * as Models from '@nakedobjects/restful-objects';
-import * as Msg from './user-messages';
-import { ILocalFilter } from './mask.service';
 import * as momentNs from 'moment';
 import * as Constants from './constants';
+import { ILocalFilter } from './mask.service';
+import * as Msg from './user-messages';
 
 const moment = momentNs;
 

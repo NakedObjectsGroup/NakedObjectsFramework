@@ -1,30 +1,39 @@
-import { RouteData, PaneRouteData, InteractionMode, CollectionViewState, ApplicationMode, ViewType, Pane, getOtherPane } from './route-data';
+import { Location } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Location } from '@angular/common';
-import { ConfigService } from './config.service';
-import { LoggerService } from './logger.service';
+import * as Ro from '@nakedobjects/restful-objects';
 import { Dictionary } from 'lodash';
-import * as Models from '@nakedobjects/restful-objects';
-import * as Constants from './constants';
+import fill from 'lodash-es/fill';
 import filter from 'lodash-es/filter';
 import forEach from 'lodash-es/forEach';
 import keys from 'lodash-es/keys';
 import map from 'lodash-es/map';
-import fill from 'lodash-es/fill';
-import zipObject from 'lodash-es/zipObject';
+import mapKeys from 'lodash-es/mapKeys';
 import mapValues from 'lodash-es/mapValues';
+import merge from 'lodash-es/merge';
+import omit from 'lodash-es/omit';
+import pick from 'lodash-es/pick';
 import pickBy from 'lodash-es/pickBy';
 import reduce from 'lodash-es/reduce';
 import some from 'lodash-es/some';
-import pick from 'lodash-es/pick';
-import omit from 'lodash-es/omit';
 import values from 'lodash-es/values';
-import mapKeys from 'lodash-es/mapKeys';
-import merge from 'lodash-es/merge';
 import without from 'lodash-es/without';
+import zipObject from 'lodash-es/zipObject';
 import { map as rxjsmap } from 'rxjs/operators';
-import { ErrorCategory, HttpStatusCode, ClientErrorCode } from './constants';
+import { ConfigService } from './config.service';
+import { ClientErrorCode, ErrorCategory, HttpStatusCode } from './constants';
+import * as Constants from './constants';
+import { LoggerService } from './logger.service';
+import {
+    ApplicationMode,
+    CollectionViewState,
+    getOtherPane,
+    InteractionMode,
+    Pane,
+    PaneRouteData,
+    RouteData,
+    ViewType
+    } from './route-data';
 
 enum Transition {
     Null,
@@ -199,7 +208,7 @@ export class UrlManagerService {
     }
 
     private getMappedValues(mappedIds: Dictionary<string>) {
-        return mapValues(mappedIds, v => Models.Value.fromJsonString(v, this.shortCutMarker, this.urlShortCuts));
+        return mapValues(mappedIds, v => Ro.Value.fromJsonString(v, this.shortCutMarker, this.urlShortCuts));
     }
 
     private getInteractionMode(rawInteractionMode: string): InteractionMode {
@@ -331,28 +340,28 @@ export class UrlManagerService {
     }
 
     private getOidFromHref(href: string) {
-        const oid = Models.ObjectIdWrapper.fromHref(href, this.keySeparator);
+        const oid = Ro.ObjectIdWrapper.fromHref(href, this.keySeparator);
         return oid.getKey();
     }
 
     private getPidFromHref(href: string) {
-        return Models.propertyIdFromUrl(href);
+        return Ro.propertyIdFromUrl(href);
     }
 
-    private setValue(paneId: Pane, search: any, p: { id: () => string }, pv: Models.Value, valueType: string) {
+    private setValue(paneId: Pane, search: any, p: { id: () => string }, pv: Ro.Value, valueType: string) {
         this.setId(`${valueType}${paneId}_${p.id()}`, pv.toJsonString(this.shortCutMarker, this.urlShortCuts), search);
     }
 
-    private setParameter(paneId: Pane, search: any, p: Models.Parameter, pv: Models.Value) {
+    private setParameter(paneId: Pane, search: any, p: Ro.Parameter, pv: Ro.Value) {
         this.setValue(paneId, search, p, pv, akm.parm);
     }
 
     private getId(key: string, search: any) {
-        return Models.decompress(search[key], this.shortCutMarker, this.urlShortCuts);
+        return Ro.decompress(search[key], this.shortCutMarker, this.urlShortCuts);
     }
 
     private setId(key: string, id: string, search: any) {
-        search[key] = Models.compress(id, this.shortCutMarker, this.urlShortCuts);
+        search[key] = Ro.compress(id, this.shortCutMarker, this.urlShortCuts);
     }
 
     private clearId(key: string, search: any) {
@@ -530,7 +539,7 @@ export class UrlManagerService {
         this.executeTransition(newValues, paneId, Transition.ToMultiLineDialog, search => this.getId(key, search) !== dialogId);
     }
 
-    setDialogOrMultiLineDialog = (actionRep: Models.ActionMember | Models.ActionRepresentation, paneId: Pane = Pane.Pane1) => {
+    setDialogOrMultiLineDialog = (actionRep: Ro.ActionMember | Ro.ActionRepresentation, paneId: Pane = Pane.Pane1) => {
         if (actionRep.extensions().multipleLines()) {
             this.setMultiLineDialog(actionRep.actionId(), paneId);
         } else {
@@ -556,14 +565,14 @@ export class UrlManagerService {
         this.closeOrCancelDialog(id, paneId, Transition.FromDialog);
     }
 
-    setObject = (resultObject: Models.DomainObjectRepresentation, paneId: Pane = Pane.Pane1) => {
+    setObject = (resultObject: Ro.DomainObjectRepresentation, paneId: Pane = Pane.Pane1) => {
         const oid = resultObject.id();
         const key = `${akm.object}${paneId}`;
         const newValues = zipObject([key], [oid]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
     }
 
-    setObjectWithMode = (resultObject: Models.DomainObjectRepresentation, newMode: InteractionMode, paneId: Pane = Pane.Pane1) => {
+    setObjectWithMode = (resultObject: Ro.DomainObjectRepresentation, newMode: InteractionMode, paneId: Pane = Pane.Pane1) => {
         const oid = resultObject.id();
         const okey = `${akm.object}${paneId}`;
         const mkey = `${akm.interactionMode}${paneId}`;
@@ -572,15 +581,15 @@ export class UrlManagerService {
         this.executeTransition(newValues, paneId, Transition.ToObjectWithMode, () => true);
     }
 
-    setList = (actionMember: Models.ActionRepresentation | Models.InvokableActionMember, parms: Dictionary<Models.Value>, fromPaneId = Pane.Pane1, toPaneId = Pane.Pane1) => {
+    setList = (actionMember: Ro.ActionRepresentation | Ro.InvokableActionMember, parms: Dictionary<Ro.Value>, fromPaneId = Pane.Pane1, toPaneId = Pane.Pane1) => {
         const newValues = {} as Dictionary<string>;
         const parent = actionMember.parent;
 
-        if (parent instanceof Models.DomainObjectRepresentation) {
+        if (parent instanceof Ro.DomainObjectRepresentation) {
             newValues[`${akm.object}${toPaneId}`] = parent.id();
         }
 
-        if (parent instanceof Models.MenuRepresentation) {
+        if (parent instanceof Ro.MenuRepresentation) {
             newValues[`${akm.menu}${toPaneId}`] = parent.menuId();
         }
 
@@ -606,7 +615,7 @@ export class UrlManagerService {
         this.executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
     }
 
-    setItem = (link: Models.Link, paneId: Pane = Pane.Pane1) => {
+    setItem = (link: Ro.Link, paneId: Pane = Pane.Pane1) => {
         const href = link.href();
         const oid = this.getOidFromHref(href);
         const key = `${akm.object}${paneId}`;
@@ -614,7 +623,7 @@ export class UrlManagerService {
         this.executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
     }
 
-    setAttachment = (attachmentlink: Models.Link, paneId: Pane = Pane.Pane1) => {
+    setAttachment = (attachmentlink: Ro.Link, paneId: Pane = Pane.Pane1) => {
         const href = attachmentlink.href();
         const okey = `${akm.object}${paneId}`;
         const akey = `${akm.attachment}${paneId}`;
@@ -644,7 +653,7 @@ export class UrlManagerService {
         }
     }
 
-    setParameterValue = (actionId: string, p: Models.Parameter, pv: Models.Value, paneId: Pane = Pane.Pane1) =>
+    setParameterValue = (actionId: string, p: Ro.Parameter, pv: Ro.Value, paneId: Pane = Pane.Pane1) =>
         this.checkAndSetValue(paneId,
             search => this.getId(`${akm.action}${paneId}`, search) === actionId,
             search => this.setParameter(paneId, search, p, pv))
@@ -792,7 +801,7 @@ export class UrlManagerService {
         const s3 = this.getId(`${akm.action}${paneId}`, search) || '';
 
         const parms = <Dictionary<string>>pickBy(search, (v, k) => !!k && k.indexOf(akm.parm + paneId) === 0);
-        const mappedParms = mapValues(parms, v => decodeURIComponent(Models.decompress(v, this.shortCutMarker, this.urlShortCuts)));
+        const mappedParms = mapValues(parms, v => decodeURIComponent(Ro.decompress(v, this.shortCutMarker, this.urlShortCuts)));
 
         const s4 = reduce(mappedParms, (r, n, k) => r + (k + '=' + n + this.keySeparator), '');
 

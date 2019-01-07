@@ -1,22 +1,22 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ErrorHandler, APP_INITIALIZER, LOCALE_ID, ModuleWithProviders  } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { ErrorService } from './error.service';
-import { ContextService } from './context.service';
-import { UrlManagerService } from './url-manager.service';
-import { ClickHandlerService } from './click-handler.service';
-import { RepLoaderService } from './rep-loader.service';
-import { ColorService } from './color.service';
-import { MaskService } from './mask.service';
-import { ReactiveFormsModule } from '@angular/forms';
-import { GeminiErrorHandler } from './error.handler';
-import { ConfigService, configFactory, localeFactory } from './config.service';
-import { LoggerService } from './logger.service';
-import { AuthService } from './auth.service';
-import { HttpClientModule } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
+import { APP_INITIALIZER, ErrorHandler, LOCALE_ID, ModuleWithProviders, NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
 import { AuthInterceptor } from './auth.interceptor';
+import { AuthService } from './auth.service';
+import { ClickHandlerService } from './click-handler.service';
+import { ColorService } from './color.service';
+import { configFactory, ConfigService, localeFactory } from './config.service';
+import { ContextService } from './context.service';
+import { GeminiErrorHandler } from './error.handler';
+import { ErrorService } from './error.service';
+import { LoggerService } from './logger.service';
+import { MaskService } from './mask.service';
+import { RepLoaderService } from './rep-loader.service';
+import { UrlManagerService } from './url-manager.service';
 
 @NgModule({
     imports: [

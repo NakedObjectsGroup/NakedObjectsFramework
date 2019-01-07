@@ -1,10 +1,10 @@
-﻿import * as Models from '@nakedobjects/restful-objects';
-import { ErrorCategory, HttpStatusCode, ClientErrorCode } from './constants';
-import { ConfigService } from './config.service';
-import { LoggerService } from './logger.service';
+﻿import * as Ro from '@nakedobjects/restful-objects';
 import { Dictionary } from 'lodash';
-import keys from 'lodash-es/keys';
 import isEqual from 'lodash-es/isEqual';
+import keys from 'lodash-es/keys';
+import { ConfigService } from './config.service';
+import { ErrorCategory } from './constants';
+import { LoggerService } from './logger.service';
 
 export type PaneName = 'pane1' | 'pane2';
 export type PaneType = 'single' | 'split';
@@ -97,10 +97,10 @@ export class PaneRouteData {
     // we have both because of contributed actions where we have to distinguish the action parms that
     // created the current list and the the parms for the contributed action
 
-    actionParams: Dictionary<Models.Value>;
+    actionParams: Dictionary<Ro.Value>;
     state: CollectionViewState;
     dialogId: string;
-    dialogFields: Dictionary<Models.Value>;
+    dialogFields: Dictionary<Ro.Value>;
     page: number;
     pageSize: number;
     interactionMode: InteractionMode;

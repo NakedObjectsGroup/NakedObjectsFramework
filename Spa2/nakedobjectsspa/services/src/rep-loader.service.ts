@@ -1,15 +1,14 @@
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import * as Models from '@nakedobjects/restful-objects';
 import * as Ro from '@nakedobjects/restful-objects';
-import { Subject } from 'rxjs';
-import { ConfigService } from './config.service';
-import { SimpleLruCache } from './simple-lru-cache';
 import { Dictionary } from 'lodash';
 import each from 'lodash-es/each';
 import reduce from 'lodash-es/reduce';
-import { HttpClient, HttpRequest, HttpHeaders, HttpParams, HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { ErrorCategory, HttpStatusCode, ClientErrorCode } from './constants';
+import { Subject } from 'rxjs';
+import { ConfigService } from './config.service';
+import { ClientErrorCode, ErrorCategory, HttpStatusCode } from './constants';
 import { ErrorWrapper } from './error.wrapper';
+import { SimpleLruCache } from './simple-lru-cache';
 
 class RequestOptions {
 
@@ -38,11 +37,11 @@ class RequestOptions {
         withCredentials?: boolean;
     };
 
-    static fromMap(map: Models.IHateoasModel, digest?: string | null) {
+    static fromMap(map: Ro.IHateoasModel, digest?: string | null) {
         return new RequestOptions(map.getUrl(), map.method, map.getBody(), digest);
     }
 
-    static fromLink(link: Models.Link, parms?: Dictionary<Object>) {
+    static fromLink(link: Ro.Link, parms?: Dictionary<Object>) {
         let urlParms = '';
 
         if (parms) {
@@ -110,12 +109,12 @@ export class RepLoaderService {
 
     private handleError(response: HttpErrorResponse, originalUrl: string) {
         let category: ErrorCategory;
-        let error: Models.ErrorRepresentation | Models.ErrorMap | string;
+        let error: Ro.ErrorRepresentation | Ro.ErrorMap | string;
 
         if (response.status === HttpStatusCode.InternalServerError) {
             // this error should contain an error representatation
-            const errorRep = new Models.ErrorRepresentation();
-                if (Models.isErrorRepresentation(response.error)) {
+            const errorRep = new Ro.ErrorRepresentation();
+                if (Ro.isErrorRepresentation(response.error)) {
                 errorRep.populate(response.error as Ro.IErrorRepresentation);
                 category = ErrorCategory.HttpServerError;
                 error = errorRep;
@@ -133,7 +132,7 @@ export class RepLoaderService {
             if (response.status === HttpStatusCode.BadRequest ||
                 response.status === HttpStatusCode.UnprocessableEntity) {
                 // these errors should contain a map
-                error = new Models.ErrorMap(response.error as Ro.IValueMap | Ro.IObjectOfType,
+                error = new Ro.ErrorMap(response.error as Ro.IValueMap | Ro.IObjectOfType,
                     response.status,
                     message);
             } else if (response.status === HttpStatusCode.NotFound && this.isObjectUrl(originalUrl)) {
@@ -173,9 +172,9 @@ export class RepLoaderService {
 
     // special handler for case where we receive a redirected object back from server
     // instead of an actionresult. Wrap the object in an actionresult and then handle normally
-    private handleRedirectedObject(response: Models.IHateoasModel, data: Ro.IRepresentation) {
+    private handleRedirectedObject(response: Ro.IHateoasModel, data: Ro.IRepresentation) {
 
-        if (response instanceof Models.ActionResultRepresentation && Models.isIDomainObjectRepresentation(data)) {
+        if (response instanceof Ro.ActionResultRepresentation && Ro.isIDomainObjectRepresentation(data)) {
             const actionResult: Ro.IActionInvokeRepresentation = {
                 resultType: 'object',
                 result: data,
@@ -189,10 +188,10 @@ export class RepLoaderService {
     }
 
     private isValidResponse(data: any) {
-        return Models.isResourceRepresentation(data);
+        return Ro.isResourceRepresentation(data);
     }
 
-    private httpPopulate(options: RequestOptions, ignoreCache: boolean, response: Models.IHateoasModel): Promise<Models.IHateoasModel> {
+    private httpPopulate(options: RequestOptions, ignoreCache: boolean, response: Ro.IHateoasModel): Promise<Ro.IHateoasModel> {
 
         if (!options.url) {
             throw new Error('Request must have a URL');
@@ -240,24 +239,24 @@ export class RepLoaderService {
             });
     }
 
-    populate = <T extends Models.IHateoasModel>(model: Models.IHateoasModel, ignoreCache?: boolean): Promise<T> => {
+    populate = <T extends Ro.IHateoasModel>(model: Ro.IHateoasModel, ignoreCache?: boolean): Promise<T> => {
         const response = model;
         const options = RequestOptions.fromMap(model);
         return this.httpPopulate(options, !!ignoreCache, response) as Promise<T>;
     }
 
-    retrieve = <T extends Models.IHateoasModel>(map: Models.IHateoasModel, rc: { new (): Models.IHateoasModel }, digest?: string | null): Promise<T> => {
+    retrieve = <T extends Ro.IHateoasModel>(map: Ro.IHateoasModel, rc: { new (): Ro.IHateoasModel }, digest?: string | null): Promise<T> => {
         const response = new rc();
         const options = RequestOptions.fromMap(map, digest);
         return this.httpPopulate(options, true, response) as Promise<T>;
     }
 
-    validate = (map: Models.IHateoasModel, digest?: string): Promise<boolean> => {
+    validate = (map: Ro.IHateoasModel, digest?: string): Promise<boolean> => {
         const options = RequestOptions.fromMap(map, digest);
         return this.httpValidate(options);
     }
 
-    retrieveFromLink = <T extends Models.IHateoasModel>(link: Models.Link | null, parms?: Dictionary<Object>): Promise<T> => {
+    retrieveFromLink = <T extends Ro.IHateoasModel>(link: Ro.Link | null, parms?: Dictionary<Object>): Promise<T> => {
 
         if (link) {
             const response = link.getTarget();
@@ -267,12 +266,12 @@ export class RepLoaderService {
         return Promise.reject('link must not be null');
     }
 
-    invoke = (action: Models.ActionRepresentation | Models.InvokableActionMember, parms: Dictionary<Models.Value>, urlParms: Dictionary<Object>): Promise<Models.ActionResultRepresentation> => {
+    invoke = (action: Ro.ActionRepresentation | Ro.InvokableActionMember, parms: Dictionary<Ro.Value>, urlParms: Dictionary<Object>): Promise<Ro.ActionResultRepresentation> => {
         const invokeMap = action.getInvokeMap();
         if (invokeMap) {
             each(urlParms, (v, k) => invokeMap.setUrlParameter(k!, v));
             each(parms, (v, k) => invokeMap.setParameter(k!, v));
-            return this.retrieve(invokeMap, Models.ActionResultRepresentation);
+            return this.retrieve(invokeMap, Ro.ActionResultRepresentation);
         }
         return Promise.reject(`attempting to invoke uninvokable action ${action.actionId()}`);
     }

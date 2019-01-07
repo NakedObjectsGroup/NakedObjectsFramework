@@ -1,10 +1,10 @@
-﻿import { UrlManagerService } from './url-manager.service';
-import { ContextService } from './context.service';
-import * as Models from '@nakedobjects/restful-objects';
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
+import * as Ro from '@nakedobjects/restful-objects';
 import { ConfigService } from './config.service';
 import { ErrorCategory, HttpStatusCode } from './constants';
+import { ContextService } from './context.service';
 import { ErrorWrapper } from './error.wrapper';
+import { UrlManagerService } from './url-manager.service';
 
 type ErrorPreprocessor = (reject: ErrorWrapper) => void;
 
@@ -21,7 +21,7 @@ export class ErrorService {
             if (reject.category === ErrorCategory.HttpClientError && reject.httpErrorCode === HttpStatusCode.PreconditionFailed) {
 
                 if (reject.originalUrl) {
-                    const oid = Models.ObjectIdWrapper.fromHref(reject.originalUrl, configService.config.keySeparator);
+                    const oid = Ro.ObjectIdWrapper.fromHref(reject.originalUrl, configService.config.keySeparator);
                     this.context.setConcurrencyError(oid);
                     reject.handled = true;
                 }
@@ -36,10 +36,10 @@ export class ErrorService {
     }
 
     private handleHttpClientError(reject: ErrorWrapper,
-        displayMessages: (em: Models.ErrorMap) => void) {
+        displayMessages: (em: Ro.ErrorMap) => void) {
         switch (reject.httpErrorCode) {
             case (HttpStatusCode.UnprocessableEntity):
-                displayMessages(reject.error as Models.ErrorMap);
+                displayMessages(reject.error as Ro.ErrorMap);
                 break;
             default:
                 this.urlManager.setError(ErrorCategory.HttpClientError, reject.httpErrorCode);
@@ -54,7 +54,7 @@ export class ErrorService {
         this.handleErrorAndDisplayMessages(reject, () => { });
     }
 
-    handleErrorAndDisplayMessages(reject: ErrorWrapper, displayMessages: (em: Models.ErrorMap) => void) {
+    handleErrorAndDisplayMessages(reject: ErrorWrapper, displayMessages: (em: Ro.ErrorMap) => void) {
         this.preProcessors.forEach(p => p(reject));
 
         if (reject.handled) {

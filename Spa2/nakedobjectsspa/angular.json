@@ -117,6 +117,26 @@
           }
         }
       },
+      "services": {
+        "root": "",
+        "sourceRoot": "services/src",
+        "projectType": "application",
+        "prefix": "app",
+        "schematics": {},
+        "architect": {
+          "lint": {
+            "builder": "@angular-devkit/build-angular:tslint",
+            "options": {
+              "tsConfig": [
+                "services/tsconfig.json"
+              ],
+              "exclude": [
+                "**/node_modules/**"
+              ]
+            }
+          }
+        }
+      },
     "nakedobjectsspa-e2e": {
       "root": "e2e/",
       "projectType": "application",

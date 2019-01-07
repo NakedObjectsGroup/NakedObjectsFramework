@@ -1,11 +1,9 @@
-﻿import * as Models from '@nakedobjects/restful-objects';
-
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
+import * as Ro from '@nakedobjects/restful-objects';
+import forEach from 'lodash-es/forEach';
+import { ConfigService } from './config.service';
 import { ContextService } from './context.service';
 import { TypeResultCache } from './type-result-cache';
-import { ConfigService } from './config.service';
-import { Dictionary } from 'lodash';
-import forEach from 'lodash-es/forEach';
 
 export interface IColorServiceConfigurator {
     addType: (type: string, color: number) => void;
@@ -30,7 +28,7 @@ export class ColorService extends TypeResultCache<number> implements IColorServi
     }
 
     private typeFromUrl(url: string): string {
-        const oid = Models.ObjectIdWrapper.fromHref(url, this.configService.config.keySeparator);
+        const oid = Ro.ObjectIdWrapper.fromHref(url, this.configService.config.keySeparator);
         return oid.domainType;
     }
 

@@ -1,5 +1,5 @@
-﻿import { ContextService } from './context.service';
-import { Dictionary } from 'lodash';
+﻿import { Dictionary } from 'lodash';
+import { ContextService } from './context.service';
 
 export abstract class TypeResultCache<T> {
 

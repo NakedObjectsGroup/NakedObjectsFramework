@@ -1,6 +1,6 @@
 ﻿import * as Models from '@nakedobjects/restful-objects';
+import { ClientErrorCode, ErrorCategory, HttpStatusCode } from './constants';
 import * as Msg from './user-messages';
-import { ErrorCategory, HttpStatusCode, ClientErrorCode } from './constants';
 
 export class ErrorWrapper {
     constructor(

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Pane, getOtherPane } from './route-data';
+import { getOtherPane, Pane } from './route-data';
 
 @Injectable()
 export class ClickHandlerService {

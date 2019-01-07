@@ -1,8 +1,8 @@
 ﻿import { ErrorHandler } from '@angular/core';
-import { UrlManagerService } from './url-manager.service';
+import { ClientErrorCode, ErrorCategory } from './constants';
 import { ContextService } from './context.service';
 import { ErrorWrapper } from './error.wrapper';
-import { ErrorCategory, ClientErrorCode } from './constants';
+import { UrlManagerService } from './url-manager.service';
 
 export class GeminiErrorHandler implements ErrorHandler {
     handleError(error: any) {
