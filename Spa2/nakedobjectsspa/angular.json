@@ -97,6 +97,26 @@
         }
       }
     },
+    "restful-objects": {
+        "root": "",
+        "sourceRoot": "restful-objects/src",
+        "projectType": "application",
+        "prefix": "app",
+        "schematics": {},
+        "architect": {
+          "lint": {
+            "builder": "@angular-devkit/build-angular:tslint",
+            "options": {
+              "tsConfig": [
+                "restful-objects/tsconfig.json"
+              ],
+              "exclude": [
+                "**/node_modules/**"
+              ]
+            }
+          }
+        }
+      },
     "nakedobjectsspa-e2e": {
       "root": "e2e/",
       "projectType": "application",

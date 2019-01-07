@@ -359,7 +359,7 @@ export class ObjectIdWrapper {
     isService: boolean;
 
     static safeSplit(id: string, keySeparator: string): string[] {
-      return id ? id.split(keySeparator) : [];
+        return id ? id.split(keySeparator) : [];
     }
 
     static fromObject(object: DomainObjectRepresentation) {
@@ -678,11 +678,11 @@ export class Value {
 
     toString(): string {
         if (this.isReference()) {
-            return this.link() !.title() || ''; // know true
+            return this.link()!.title() || ''; // know true
         }
 
         if (this.isList()) {
-            const list = this.list() !; // know true
+            const list = this.list()!; // know true
             const ss = map(list, v => v.toString());
             return ss.length === 0 ? '' : reduce(ss, (m, s) => m + '-' + s, '');
         }
@@ -728,7 +728,7 @@ export class Value {
 
     toValueString(): string {
         if (this.isReference()) {
-            return this.link() !.href();  // know true
+            return this.link()!.href();  // know true
         }
         return (this.wrapped == null) ? '' : this.wrapped.toString();
     }
@@ -743,13 +743,13 @@ export class Value {
 
     setValue(target: Ro.IValue) {
         if (this.isFileReference()) {
-            target.value = this.link() !.wrapped; // know true
+            target.value = this.link()!.wrapped; // know true
         } else if (this.isReference()) {
 
             target.value = { 'href': (this.link() as Link).href() }; // know true
         } else if (this.isList()) {
             const list = this.list() as Value[]; // know true
-            target.value = map(list, v => v.isReference() ? <Ro.ILink>{ 'href': v.link() !.href() } : v.scalar()) as Ro.ValueType[];
+            target.value = map(list, v => v.isReference() ? <Ro.ILink>{ 'href': v.link()!.href() } : v.scalar()) as Ro.ValueType[];
         } else if (this.isBlob()) {
             target.value = this.blob();
         } else {
@@ -1356,7 +1356,7 @@ export class CollectionRepresentation extends ResourceRepresentation<RoCustom.IC
     }
 
     actionMember(id: string): ActionMember {
-        return getMember(this.actionMembers(), id, this.collectionId()) !;
+        return getMember(this.actionMembers(), id, this.collectionId())!;
     }
 
     hasActionMember(id: string): boolean {
@@ -1669,7 +1669,7 @@ export class CollectionMember
 
     constructor(wrapped: Ro.ICollectionMember, public parent: DomainObjectRepresentation | Link, private readonly id: string) {
         super(wrapped);
-        this.etagDigest = parent instanceof DomainObjectRepresentation ?  parent.etagDigest : undefined;
+        this.etagDigest = parent instanceof DomainObjectRepresentation ? parent.etagDigest : undefined;
     }
 
     collectionId(): string {
@@ -1708,7 +1708,7 @@ export class CollectionMember
     }
 
     actionMember(id: string): ActionMember {
-        return getMember(this.actionMembers(), id, this.collectionId()) !;
+        return getMember(this.actionMembers(), id, this.collectionId())!;
     }
 }
 
@@ -1825,7 +1825,7 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
 
     private resetMemberMaps() {
         const members = this.wrapped().members;
-        this.memberMap = mapValues(members, (m, id) => Member.wrapMember(m, this, id!) !);
+        this.memberMap = mapValues(members, (m, id) => Member.wrapMember(m, this, id!)!);
         this.propertyMemberMap = pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === 'property') as Dictionary<PropertyMember>;
         this.collectionMemberMap = pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === 'collection') as Dictionary<CollectionMember>;
         this.actionMemberMap = pickBy(this.memberMap, (m: Member<Ro.IMember>) => m.memberType() === 'action') as Dictionary<ActionMember>;
@@ -1874,7 +1874,7 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
     }
 
     actionMember(id: string): ActionMember {
-        return getMember(this.actionMembers(), id, this.id()) !;
+        return getMember(this.actionMembers(), id, this.id())!;
     }
 
     updateLink(): Link | null {
@@ -1989,7 +1989,7 @@ export class MenuRepresentation extends ResourceRepresentation<RoCustom.IMenuRep
     }
 
     actionMember(id: string): ActionMember {
-        return getMember(this.actionMembers(), id, this.menuId()) !;
+        return getMember(this.actionMembers(), id, this.menuId())!;
     }
 
     selfLink(): Link {
@@ -2055,7 +2055,7 @@ export class ListRepresentation
     }
 
     actionMember(id: string): ActionMember {
-        return getMember(this.actionMembers(), id, 'list') !;
+        return getMember(this.actionMembers(), id, 'list')!;
     }
 
     hasActionMember(id: string): boolean {
