@@ -13,23 +13,23 @@ describe('MaskService', () => {
 
     beforeEach(() => TestBed.configureTestingModule({
         imports: [HttpClientTestingModule],
-        providers: [ConfigService, MaskService ]
-      }));
+        providers: [ConfigService, MaskService]
+    }));
 
-      beforeEach(() => {
+    beforeEach(() => {
         // 0. set up the test environment
         TestBed.configureTestingModule({
-          imports: [
-            // no more boilerplate code w/ custom providers needed :-)
-            HttpClientModule,
-            HttpClientTestingModule
-          ],
-          providers: [
-            ConfigService,
-            MaskService
-          ]
+            imports: [
+                // no more boilerplate code w/ custom providers needed :-)
+                HttpClientModule,
+                HttpClientTestingModule
+            ],
+            providers: [
+                ConfigService,
+                MaskService
+            ]
         });
-      });
+    });
 
     // beforeEach(() => {
     //     TestBed.configureTestingModule({

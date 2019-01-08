@@ -95,7 +95,7 @@ export class SimpleLruCache {
     }
 
     private updateExistingEntry(key: string, value: CachableTypes): void {
-        const node = this.getNode(key) !;
+        const node = this.getNode(key)!;
         node.value = value;
     }
 

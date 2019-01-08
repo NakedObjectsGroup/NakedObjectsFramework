@@ -266,8 +266,8 @@ export class ContextService {
         const dirtyState = this.dirtyList.getDirty(oid);
         // no need to reload forms
         const forceReload = interactionMode !== InteractionMode.Form &&
-                            ((dirtyState === DirtyState.DirtyMustReload) ||
-                             ((dirtyState === DirtyState.DirtyMayReload) && this.configService.config.autoLoadDirty));
+            ((dirtyState === DirtyState.DirtyMustReload) ||
+                ((dirtyState === DirtyState.DirtyMayReload) && this.configService.config.autoLoadDirty));
 
         if (!forceReload && isSameObject(this.currentObjects[paneId], type, id)) {
             return Promise.resolve(this.currentObjects[paneId]!);
@@ -558,7 +558,7 @@ export class ContextService {
 
     getActionExtensionsFromMenu = (menuId: string, actionId: string) =>
         this.getMenu(menuId)
-        .then(menu => Promise.resolve(menu.actionMember(actionId).extensions()))
+            .then(menu => Promise.resolve(menu.actionMember(actionId).extensions()))
 
     getActionExtensionsFromObject = (paneId: Pane, oid: Ro.ObjectIdWrapper, actionId: string) =>
         this.getObject(paneId, oid, InteractionMode.View).then(object => Promise.resolve(object.actionMember(actionId).extensions()))

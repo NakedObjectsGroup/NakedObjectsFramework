@@ -179,7 +179,7 @@ export class PaneRouteData {
             return false;
         }
 
-        return  isEqual(this.rawParms, other.rawParms);
+        return isEqual(this.rawParms, other.rawParms);
     }
 
     isEqualIgnoringReload(other: PaneRouteData) {

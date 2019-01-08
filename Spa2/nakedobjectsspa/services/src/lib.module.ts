@@ -31,23 +31,23 @@ export class LibModule {
     public static forRoot(): ModuleWithProviders {
 
         return {
-          ngModule: LibModule,
-          providers: [
-            UrlManagerService,
-            ClickHandlerService,
-            ContextService,
-            RepLoaderService,
-            ColorService,
-            ErrorService,
-            MaskService,
-            LoggerService,
-            ConfigService,
-            AuthService,
-            { provide: ErrorHandler, useClass: GeminiErrorHandler },
-            { provide: APP_INITIALIZER, useFactory: configFactory, deps: [ConfigService], multi: true },
-            { provide: LOCALE_ID, useFactory: localeFactory, deps: [ConfigService] },
-            { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
-        ]
+            ngModule: LibModule,
+            providers: [
+                UrlManagerService,
+                ClickHandlerService,
+                ContextService,
+                RepLoaderService,
+                ColorService,
+                ErrorService,
+                MaskService,
+                LoggerService,
+                ConfigService,
+                AuthService,
+                { provide: ErrorHandler, useClass: GeminiErrorHandler },
+                { provide: APP_INITIALIZER, useFactory: configFactory, deps: [ConfigService], multi: true },
+                { provide: LOCALE_ID, useFactory: localeFactory, deps: [ConfigService] },
+                { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+            ]
         };
-      }
- }
+    }
+}

@@ -8,7 +8,7 @@ import { UrlManagerService } from './url-manager.service';
 (window as any).global = window;
 
 @Injectable()
-export class AuthService  implements CanActivate {
+export class AuthService implements CanActivate {
 
     getAuthorizationHeader(): string {
         const token = localStorage.getItem('id_token') || '';
@@ -51,14 +51,14 @@ export class AuthService  implements CanActivate {
         if (this.authenticate) {
             this.auth0.parseHash((err, authResult) => {
                 if (authResult && authResult.accessToken && authResult.idToken) {
-                  this.setSession(authResult);
-                  this.urlManager.setHomeSinglePane();
+                    this.setSession(authResult);
+                    this.urlManager.setHomeSinglePane();
                 } else if (err) {
                     this.urlManager.setHomeSinglePane();
                     console.log(err);
                     alert(`Error: ${err.error}. Check the console for further details.`);
                 }
-              });
+            });
         }
     }
 
@@ -74,7 +74,7 @@ export class AuthService  implements CanActivate {
 
     logout() {
         if (this.authenticate) {
-             // Remove tokens and expiry time from localStorage
+            // Remove tokens and expiry time from localStorage
             localStorage.removeItem('access_token');
             localStorage.removeItem('id_token');
             localStorage.removeItem('expires_at');

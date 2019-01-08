@@ -33,7 +33,7 @@ import {
     PaneRouteData,
     RouteData,
     ViewType
-    } from './route-data';
+} from './route-data';
 
 enum Transition {
     Null,

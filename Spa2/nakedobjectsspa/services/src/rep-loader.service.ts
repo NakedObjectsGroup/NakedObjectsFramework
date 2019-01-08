@@ -114,7 +114,7 @@ export class RepLoaderService {
         if (response.status === HttpStatusCode.InternalServerError) {
             // this error should contain an error representatation
             const errorRep = new Ro.ErrorRepresentation();
-                if (Ro.isErrorRepresentation(response.error)) {
+            if (Ro.isErrorRepresentation(response.error)) {
                 errorRep.populate(response.error as Ro.IErrorRepresentation);
                 category = ErrorCategory.HttpServerError;
                 error = errorRep;
@@ -245,7 +245,7 @@ export class RepLoaderService {
         return this.httpPopulate(options, !!ignoreCache, response) as Promise<T>;
     }
 
-    retrieve = <T extends Ro.IHateoasModel>(map: Ro.IHateoasModel, rc: { new (): Ro.IHateoasModel }, digest?: string | null): Promise<T> => {
+    retrieve = <T extends Ro.IHateoasModel>(map: Ro.IHateoasModel, rc: { new(): Ro.IHateoasModel }, digest?: string | null): Promise<T> => {
         const response = new rc();
         const options = RequestOptions.fromMap(map, digest);
         return this.httpPopulate(options, true, response) as Promise<T>;

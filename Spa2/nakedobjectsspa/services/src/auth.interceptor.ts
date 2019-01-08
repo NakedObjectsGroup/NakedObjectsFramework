@@ -5,16 +5,16 @@ import { AuthService } from './auth.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(public auth: AuthService) { }
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    constructor(public auth: AuthService) { }
+    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    if (this.auth.isAuthenticated()) {
-      request = request.clone({
-        setHeaders: {
-          Authorization: this.auth.getAuthorizationHeader()
+        if (this.auth.isAuthenticated()) {
+            request = request.clone({
+                setHeaders: {
+                    Authorization: this.auth.getAuthorizationHeader()
+                }
+            });
         }
-      });
+        return next.handle(request);
     }
-    return next.handle(request);
-  }
 }
