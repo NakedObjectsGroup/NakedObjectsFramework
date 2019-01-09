@@ -8,7 +8,7 @@ import {
     LoggerService,
     PaneRouteData,
     UrlManagerService
-    } from '@nakedobjects/services';
+} from '@nakedobjects/services';
 import find from 'lodash-es/find';
 import { ActionViewModel } from './action-view-model';
 import { ContributedActionParentViewModel } from './contributed-action-parent-view-model';
@@ -66,7 +66,7 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
             : this.context.getListFromMenu(this.routeData, page, pageSize);
     }
 
-    readonly currentPaneData = () => this.urlManager.getRouteData().pane(this.onPaneId) !;
+    readonly currentPaneData = () => this.urlManager.getRouteData().pane(this.onPaneId)!;
 
     private readonly pageOrRecreate = (newPage: number, newPageSize: number, newState?: CollectionViewState) => {
         this.recreate(newPage, newPageSize)
@@ -91,7 +91,7 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
             this.routeData,
             this);
 
-        const totalCount = this.listRep.pagination() !.totalCount;
+        const totalCount = this.listRep.pagination()!.totalCount;
         const count = this.items.length;
         this.size = count;
         if (count > 0) {
@@ -130,9 +130,9 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
 
         this.id = this.urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize);
 
-        this.page = this.listRep.pagination() !.page;
-        this.pageSize = this.listRep.pagination() !.pageSize;
-        this.numPages = this.listRep.pagination() !.numPages;
+        this.page = this.listRep.pagination()!.page;
+        this.pageSize = this.listRep.pagination()!.pageSize;
+        this.numPages = this.listRep.pagination()!.numPages;
 
         this.state = this.listRep.hasTableData() ? CollectionViewState.Table : CollectionViewState.List;
         this.updateItems(list.value());

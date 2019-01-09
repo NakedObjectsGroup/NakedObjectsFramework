@@ -30,18 +30,18 @@ export class TableRowColumnViewModel {
             if (propertyRep instanceof Ro.PropertyMember) {
                 const isPassword = propertyRep.extensions().dataType() === 'password';
                 const value = propertyRep.value();
-                this.returnType = propertyRep.extensions().returnType() !;
+                this.returnType = propertyRep.extensions().returnType()!;
 
                 if (propertyRep.isScalar()) {
                     this.type = 'scalar';
                     Helpers.setScalarValueInView(this, propertyRep, value);
 
                     const remoteMask = propertyRep.extensions().mask();
-                    const localFilter = mask.toLocalFilter(remoteMask, propertyRep.extensions().format() !);
+                    const localFilter = mask.toLocalFilter(remoteMask, propertyRep.extensions().format()!);
 
                     if (propertyRep.entryType() === Ro.EntryType.Choices) {
                         const currentChoice = new ChoiceViewModel(value, id);
-                        const choicesMap = propertyRep.choices() !;
+                        const choicesMap = propertyRep.choices()!;
                         const choices = map(choicesMap, (v, n) => new ChoiceViewModel(v, id, n));
                         const choice = find(choices, c => c.valuesEqual(currentChoice));
 

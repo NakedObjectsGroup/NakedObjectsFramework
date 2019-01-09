@@ -37,7 +37,7 @@ export abstract class FieldViewModel extends MessageViewModel {
         this.presentationHint = ext.presentationHint();
         this.mask = ext.mask();
         this.title = ext.friendlyName();
-        this.returnType = ext.returnType() !;
+        this.returnType = ext.returnType()!;
         this.format = Ro.withNull(ext.format());
         this.multipleLines = ext.multipleLines() || 1;
         this.password = ext.dataType() === 'password';
@@ -218,7 +218,7 @@ export abstract class FieldViewModel extends MessageViewModel {
             return this.context.conditionalChoices(rep, this.id, () => <Dictionary<Ro.Value>>{}, args, digest).then(createcvm);
         };
         const promptLink = rep.promptLink() as Ro.Link;
-        this.promptArguments = fromPairs(map(promptLink!.arguments() !, (v: any, key: string) => [key, new Ro.Value(v.value)]));
+        this.promptArguments = fromPairs(map(promptLink!.arguments()!, (v: any, key: string) => [key, new Ro.Value(v.value)]));
     }
 
     protected getRequiredIndicator() {
@@ -282,7 +282,7 @@ export abstract class FieldViewModel extends MessageViewModel {
                     const selValues = map(selections, (cvm: ChoiceViewModel) => cvm.getValue().scalar());
                     return new Ro.Value(selValues);
                 }
-                const selRefs = map(selections, cvm => ({ href: cvm.getValue().getHref() !, title: cvm.name })); // reference
+                const selRefs = map(selections, cvm => ({ href: cvm.getValue().getHref()!, title: cvm.name })); // reference
                 return new Ro.Value(selRefs);
             }
 
@@ -292,7 +292,7 @@ export abstract class FieldViewModel extends MessageViewModel {
             }
 
             // reference
-            return new Ro.Value(choiceValue && choiceValue.isReference() && this.selectedChoice ? { href: choiceValue.getHref() !, title: this.selectedChoice.name } : null);
+            return new Ro.Value(choiceValue && choiceValue.isReference() && this.selectedChoice ? { href: choiceValue.getHref()!, title: this.selectedChoice.name } : null);
         }
 
         if (this.type === 'scalar') {

@@ -8,7 +8,7 @@ import {
     Pane,
     PaneRouteData,
     UrlManagerService
-    } from '@nakedobjects/services';
+} from '@nakedobjects/services';
 import { Dictionary } from 'lodash';
 import forEach from 'lodash-es/forEach';
 import map from 'lodash-es/map';

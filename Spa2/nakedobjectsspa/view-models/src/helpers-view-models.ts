@@ -8,7 +8,7 @@ import {
     Pane,
     validateMandatory,
     validateMandatoryAgainstType
-    } from '@nakedobjects/services';
+} from '@nakedobjects/services';
 import { Dictionary } from 'lodash';
 import each from 'lodash-es/each';
 import filter from 'lodash-es/filter';
@@ -88,7 +88,7 @@ export function createSubmenuItems(avms: ActionViewModel[], menuSlot: { name: st
 
         // then collate submenus
         const submenuActions = filter(avms, a => getMenuNameForLevel(a.menuPath, level) === menuSlot.name && !!getMenuNameForLevel(a.menuPath, level + 1));
-        let menuSubSlots =  map(submenuActions, a => ({ name: getMenuNameForLevel(a.menuPath, level + 1), action: a }));
+        let menuSubSlots = map(submenuActions, a => ({ name: getMenuNameForLevel(a.menuPath, level + 1), action: a }));
         menuSubSlots = removeDuplicateMenuNames(menuSubSlots);
 
         menuItems = map(menuSubSlots, slot => createSubmenuItems(submenuActions, slot, level + 1));

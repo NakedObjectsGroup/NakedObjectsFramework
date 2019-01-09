@@ -8,7 +8,7 @@ import {
     MaskService,
     Pane,
     UrlManagerService
-    } from '@nakedobjects/services';
+} from '@nakedobjects/services';
 import { Dictionary } from 'lodash';
 import concat from 'lodash-es/concat';
 import find from 'lodash-es/find';
@@ -120,7 +120,7 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         const propertyRep = this.propertyRep;
         if (this.entryType === Ro.EntryType.Choices) {
 
-            const choices = propertyRep.choices() !;
+            const choices = propertyRep.choices()!;
 
             this.setupChoices(choices);
 
@@ -143,7 +143,7 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
             this.formattedValue = '';
             this.refType = 'null';
         } else {
-            this.reference = value!.link() !.href();
+            this.reference = value!.link()!.href();
             this.value = value.toString();
             this.formattedValue = value.toString();
             this.refType = rep.extensions().notNavigable() ? 'notNavigable' : 'navigable';
@@ -165,7 +165,7 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         const propertyRep = this.propertyRep;
 
         const remoteMask = propertyRep.extensions().mask();
-        const localFilter = this.maskService.toLocalFilter(remoteMask, propertyRep.extensions().format() !);
+        const localFilter = this.maskService.toLocalFilter(remoteMask, propertyRep.extensions().format()!);
         this.localFilter = localFilter;
 
         this.refresh = (newValue: Ro.Value) => this.callIfChanged(newValue, (value: Ro.Value) => {

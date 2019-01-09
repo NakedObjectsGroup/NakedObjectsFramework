@@ -10,7 +10,7 @@ import {
     LoggerService,
     PaneRouteData,
     UrlManagerService
-    } from '@nakedobjects/services';
+} from '@nakedobjects/services';
 import find from 'lodash-es/find';
 import some from 'lodash-es/some';
 import { ContributedActionParentViewModel } from './contributed-action-parent-view-model';

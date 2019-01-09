@@ -90,7 +90,7 @@ export class ParameterViewModel extends FieldViewModel {
         const val = this.previousValue && !this.previousValue.isNull() ? this.previousValue : parmRep.default();
 
         if (!val.isNull() && val.isReference()) {
-            const link = val.link() !;
+            const link = val.link()!;
             this.reference = link.href();
             this.selectedChoice = new ChoiceViewModel(val, this.id, link.title());
         }
@@ -106,8 +106,8 @@ export class ParameterViewModel extends FieldViewModel {
         const fieldEntryType = this.entryType;
         const parmViewModel = this;
         function setCurrentChoices(vals: Ro.Value) {
-            const list = vals.list() !;
-            const choicesToSet = map(list, val => new ChoiceViewModel(val, parmViewModel.id, val.link() ? val.link() !.title() : undefined));
+            const list = vals.list()!;
+            const choicesToSet = map(list, val => new ChoiceViewModel(val, parmViewModel.id, val.link() ? val.link()!.title() : undefined));
 
             if (fieldEntryType === Ro.EntryType.MultipleChoices) {
                 parmViewModel.selectedMultiChoices = filter(parmViewModel.choices, c => some(choicesToSet, choiceToSet => c.valuesEqual(choiceToSet)));
@@ -117,7 +117,7 @@ export class ParameterViewModel extends FieldViewModel {
         }
 
         function setCurrentChoice(val: Ro.Value) {
-            const choiceToSet = new ChoiceViewModel(val, parmViewModel.id, val.link() ? val.link() !.title() : undefined);
+            const choiceToSet = new ChoiceViewModel(val, parmViewModel.id, val.link() ? val.link()!.title() : undefined);
 
             if (fieldEntryType === Ro.EntryType.Choices) {
                 const choices = parmViewModel.choices!;

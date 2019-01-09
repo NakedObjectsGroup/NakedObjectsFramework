@@ -29,7 +29,7 @@ export class RecentItemsViewModel {
         const currentRecentlyViewed = this.context.getRecentlyViewed();
 
         const same = this.recentlyViewed.length === currentRecentlyViewed.length &&
-                     every(this.recentlyViewed, (v, i) => v.id() === currentRecentlyViewed[i].id());
+            every(this.recentlyViewed, (v, i) => v.id() === currentRecentlyViewed[i].id());
 
         if (!same) {
             this.recentlyViewed = currentRecentlyViewed;

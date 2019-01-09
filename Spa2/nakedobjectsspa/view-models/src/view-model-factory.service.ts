@@ -12,7 +12,7 @@ import {
     Pane,
     PaneRouteData,
     UrlManagerService
-    } from '@nakedobjects/services';
+} from '@nakedobjects/services';
 import { Dictionary } from 'lodash';
 import find from 'lodash-es/find';
 import forEach from 'lodash-es/forEach';
@@ -186,9 +186,9 @@ export class ViewModelFactoryService {
         if (tableView) {
 
             const getActionExtensions = routeData.objectId
-            ? (): Promise<Ro.Extensions> =>
-                this.context.getActionExtensionsFromObject(routeData.paneId, Ro.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator), routeData.actionId)
-            : (): Promise<Ro.Extensions> => this.context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
+                ? (): Promise<Ro.Extensions> =>
+                    this.context.getActionExtensionsFromObject(routeData.paneId, Ro.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator), routeData.actionId)
+                : (): Promise<Ro.Extensions> => this.context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
 
             const getExtensions = listViewModel instanceof CollectionViewModel ? () => Promise.resolve(listViewModel.collectionRep.extensions()) : getActionExtensions;
 

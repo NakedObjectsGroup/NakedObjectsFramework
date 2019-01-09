@@ -9,7 +9,7 @@ import {
     Pane,
     PaneRouteData,
     UrlManagerService
-    } from '@nakedobjects/services';
+} from '@nakedobjects/services';
 import { Dictionary } from 'lodash';
 import every from 'lodash-es/every';
 import filter from 'lodash-es/filter';
@@ -141,9 +141,9 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
 
         this.friendlyName = this.domainObject.extensions().friendlyName();
         this.presentationHint = this.domainObject.extensions().presentationHint();
-        this.domainType = this.domainObject.domainType() !;
-        this.instanceId = this.domainObject.instanceId() !;
-        this.draggableType = this.domainObject.domainType() !;
+        this.domainType = this.domainObject.domainType()!;
+        this.instanceId = this.domainObject.instanceId()!;
+        this.draggableType = this.domainObject.domainType()!;
 
         const selfAsValue = (): Ro.Value | null => {
             const link = this.domainObject.selfLink();
@@ -172,7 +172,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
     }
 
     concurrency() {
-        this.routeData = this.urlManager.getRouteData().pane(this.onPaneId) !;
+        this.routeData = this.urlManager.getRouteData().pane(this.onPaneId)!;
         this.contextService.getObject(this.onPaneId, this.domainObject.getOid(), this.routeData.interactionMode)
             .then((obj: Ro.DomainObjectRepresentation) => {
                 // cleared cached values so all values are from reloaded representation
@@ -217,12 +217,12 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
         return this.saveHandler()(this.domainObject, propMap, this.onPaneId, viewObject)
             .then((obj: Ro.DomainObjectRepresentation) => {
                 onSuccess();
-                this.reset(obj, this.urlManager.getRouteData().pane(this.onPaneId) !, true);
+                this.reset(obj, this.urlManager.getRouteData().pane(this.onPaneId)!, true);
             })
             .catch((reject: ErrorWrapper) => this.handleWrappedError(reject));
     }
 
-    readonly currentPaneData = () => this.urlManager.getRouteData().pane(this.onPaneId) !;
+    readonly currentPaneData = () => this.urlManager.getRouteData().pane(this.onPaneId)!;
 
     readonly doSaveValidate = () => {
         const propMap = this.propertyMap();

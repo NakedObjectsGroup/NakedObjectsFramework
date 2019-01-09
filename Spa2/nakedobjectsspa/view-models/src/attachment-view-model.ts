@@ -46,7 +46,7 @@ export class AttachmentViewModel {
         }).catch((reject: ErrorWrapper) => this.error.handleError(reject));
     }
 
-    setTitle(setTitleOn: {title: string }) {
-         setTitleOn.title = this.title;
+    setTitle(setTitleOn: { title: string }) {
+        setTitleOn.title = this.title;
     }
 }
