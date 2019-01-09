@@ -1,32 +1,25 @@
-﻿import { MessageViewModel } from './message-view-model';
-import { ColorService } from '@nakedobjects/services';
-import { ErrorService } from '@nakedobjects/services';
-import { ILocalFilter } from '@nakedobjects/services';
-import { ChoiceViewModel } from './choice-view-model';
-import { IDraggableViewModel } from './idraggable-view-model';
-import { AbstractControl } from '@angular/forms';
-import * as Models from '@nakedobjects/restful-objects';
+﻿import { AbstractControl } from '@angular/forms';
 import * as Ro from '@nakedobjects/restful-objects';
-import * as Msg from './user-messages';
+import { ColorService, ConfigService, ContextService, ErrorService, ErrorWrapper, ILocalFilter, Pane } from '@nakedobjects/services';
 import { Dictionary } from 'lodash';
-import * as Helpers from './helpers-view-models';
-import { ContextService } from '@nakedobjects/services';
-import { ConfigService } from '@nakedobjects/services';
-import { Pane } from '@nakedobjects/services';
+import concat from 'lodash-es/concat';
+import every from 'lodash-es/every';
 import filter from 'lodash-es/filter';
 import find from 'lodash-es/find';
-import every from 'lodash-es/every';
-import map from 'lodash-es/map';
 import fromPairs from 'lodash-es/fromPairs';
-import some from 'lodash-es/some';
+import map from 'lodash-es/map';
 import partial from 'lodash-es/partial';
-import concat from 'lodash-es/concat';
-import { ErrorWrapper } from '@nakedobjects/services';
+import some from 'lodash-es/some';
+import { ChoiceViewModel } from './choice-view-model';
+import * as Helpers from './helpers-view-models';
+import { IDraggableViewModel } from './idraggable-view-model';
+import { MessageViewModel } from './message-view-model';
+import * as Msg from './user-messages';
 
 export abstract class FieldViewModel extends MessageViewModel {
 
     protected constructor(
-        private readonly rep: Models.IHasExtensions,
+        private readonly rep: Ro.IHasExtensions,
         protected readonly colorService: ColorService,
         protected readonly error: ErrorService,
         protected readonly context: ContextService,
@@ -35,7 +28,7 @@ export abstract class FieldViewModel extends MessageViewModel {
         public readonly isScalar: boolean,
         public readonly id: string,
         public readonly isCollectionContributed: boolean,
-        public readonly entryType: Models.EntryType
+        public readonly entryType: Ro.EntryType
     ) {
         super();
         const ext = rep.extensions();
@@ -45,7 +38,7 @@ export abstract class FieldViewModel extends MessageViewModel {
         this.mask = ext.mask();
         this.title = ext.friendlyName();
         this.returnType = ext.returnType() !;
-        this.format = Models.withNull(ext.format());
+        this.format = Ro.withNull(ext.format());
         this.multipleLines = ext.multipleLines() || 1;
         this.password = ext.dataType() === 'password';
         this.type = isScalar ? 'scalar' : 'ref';
@@ -71,9 +64,9 @@ export abstract class FieldViewModel extends MessageViewModel {
     reference = '';
     minLength: number;
     color: string;
-    promptArguments: Dictionary<Models.Value>;
-    currentValue: Models.Value;
-    originalValue: Models.Value;
+    promptArguments: Dictionary<Ro.Value>;
+    currentValue: Ro.Value;
+    originalValue: Ro.Value;
     localFilter: ILocalFilter;
     formattedValue: string;
     private currentChoice: ChoiceViewModel | null;
@@ -82,11 +75,11 @@ export abstract class FieldViewModel extends MessageViewModel {
     private choiceOptions: ChoiceViewModel[] = [];
     hasValue = false;
 
-    file: Models.Link;
+    file: Ro.Link;
 
-    refresh: (newValue: Models.Value) => void;
+    refresh: (newValue: Ro.Value) => void;
     prompt: (searchTerm: string) => Promise<ChoiceViewModel[]>;
-    conditionalChoices: (args: Dictionary<Models.Value>) => Promise<ChoiceViewModel[]>;
+    conditionalChoices: (args: Dictionary<Ro.Value>) => Promise<ChoiceViewModel[]>;
 
     readonly drop = (newValue: IDraggableViewModel) => Helpers.drop(this.context, this.error, this, newValue);
 
@@ -100,17 +93,17 @@ export abstract class FieldViewModel extends MessageViewModel {
     set choices(options: ChoiceViewModel[]) {
         this.choiceOptions = options;
 
-        if (this.entryType === Models.EntryType.MultipleConditionalChoices) {
+        if (this.entryType === Ro.EntryType.MultipleConditionalChoices) {
             const currentSelectedOptions = this.selectedMultiChoices;
             this.selectedMultiChoices = filter(this.choiceOptions, c => some(currentSelectedOptions, (choiceToSet: any) => c.valuesEqual(choiceToSet)));
-        } else if (this.entryType === Models.EntryType.ConditionalChoices) {
+        } else if (this.entryType === Ro.EntryType.ConditionalChoices) {
             const currentSelectedOption = this.selectedChoice;
             this.selectedChoice = find(this.choiceOptions, c => c.valuesEqual(currentSelectedOption));
         }
 
-        if (!this.optional && !this.hasValue && this.entryType !== Models.EntryType.AutoComplete) {
+        if (!this.optional && !this.hasValue && this.entryType !== Ro.EntryType.AutoComplete) {
             // mandatory and not selected so add a mandatory indicator choice
-            const indicatorChoice = new ChoiceViewModel(new Models.Value(''), this.id, '*');
+            const indicatorChoice = new ChoiceViewModel(new Ro.Value(''), this.id, '*');
             this.choiceOptions = concat<ChoiceViewModel>([indicatorChoice], this.choices);
             this.selectedChoice = indicatorChoice;
         }
@@ -162,7 +155,7 @@ export abstract class FieldViewModel extends MessageViewModel {
             val = viewValue as string;
         }
 
-        if (this.entryType === Models.EntryType.AutoComplete && !(viewValue instanceof ChoiceViewModel)) {
+        if (this.entryType === Ro.EntryType.AutoComplete && !(viewValue instanceof ChoiceViewModel)) {
 
             if (val) {
                 this.setMessage(Msg.pendingAutoComplete);
@@ -176,7 +169,7 @@ export abstract class FieldViewModel extends MessageViewModel {
         }
 
         // only fully validate freeform scalar
-        const fullValidate = this.entryType === Models.EntryType.FreeForm && this.type === 'scalar';
+        const fullValidate = this.entryType === Ro.EntryType.FreeForm && this.type === 'scalar';
 
         return this.validate(viewValue, val, !fullValidate);
     }
@@ -203,29 +196,29 @@ export abstract class FieldViewModel extends MessageViewModel {
         this.setColor();
     }
 
-    protected setupChoices(choices: Dictionary<Models.Value>) {
+    protected setupChoices(choices: Dictionary<Ro.Value>) {
         this.choices = map(choices, (v, n) => new ChoiceViewModel(v, this.id, n));
     }
 
-    protected setupAutocomplete(rep: Models.IField, parentValues: () => Dictionary<Models.Value>, digest?: string | null) {
+    protected setupAutocomplete(rep: Ro.IField, parentValues: () => Dictionary<Ro.Value>, digest?: string | null) {
 
         this.prompt = (searchTerm: string) => {
             const createcvm = partial(Helpers.createChoiceViewModels, this.id, searchTerm);
             return this.context.autoComplete(rep, this.id, parentValues, searchTerm, digest).then(createcvm);
         };
-        const promptLink = rep.promptLink() as Models.Link; // always
+        const promptLink = rep.promptLink() as Ro.Link; // always
         this.minLength = promptLink.extensions().minLength() as number; // always
         this.description = this.description || Msg.autoCompletePrompt;
     }
 
-    protected setupConditionalChoices(rep: Models.IField, digest?: string | null) {
+    protected setupConditionalChoices(rep: Ro.IField, digest?: string | null) {
 
-        this.conditionalChoices = (args: Dictionary<Models.Value>) => {
+        this.conditionalChoices = (args: Dictionary<Ro.Value>) => {
             const createcvm = partial(Helpers.createChoiceViewModels, this.id, null);
-            return this.context.conditionalChoices(rep, this.id, () => <Dictionary<Models.Value>>{}, args, digest).then(createcvm);
+            return this.context.conditionalChoices(rep, this.id, () => <Dictionary<Ro.Value>>{}, args, digest).then(createcvm);
         };
-        const promptLink = rep.promptLink() as Models.Link;
-        this.promptArguments = fromPairs(map(promptLink!.arguments() !, (v: any, key: string) => [key, new Models.Value(v.value)]));
+        const promptLink = rep.promptLink() as Ro.Link;
+        this.promptArguments = fromPairs(map(promptLink!.arguments() !, (v: any, key: string) => [key, new Ro.Value(v.value)]));
     }
 
     protected getRequiredIndicator() {
@@ -234,7 +227,7 @@ export abstract class FieldViewModel extends MessageViewModel {
 
     private setColor() {
 
-        if (this.entryType === Models.EntryType.AutoComplete && this.selectedChoice && this.type === 'ref') {
+        if (this.entryType === Ro.EntryType.AutoComplete && this.selectedChoice && this.type === 'ref') {
             const href = this.selectedChoice.getValue().getHref();
             if (href) {
                 this.colorService.toColorNumberFromHref(href)
@@ -247,7 +240,7 @@ export abstract class FieldViewModel extends MessageViewModel {
                     .catch((reject: ErrorWrapper) => this.error.handleError(reject));
                 return;
             }
-        } else if (this.entryType !== Models.EntryType.AutoComplete && this.value) {
+        } else if (this.entryType !== Ro.EntryType.AutoComplete && this.value) {
             this.colorService.toColorNumberFromType(this.returnType)
                 .then(c => {
                     // only if we still have a value may have been cleared by a later call
@@ -277,55 +270,55 @@ export abstract class FieldViewModel extends MessageViewModel {
 
     readonly getValue = () => {
 
-        if (this.entryType === Models.EntryType.File) {
-            return new Models.Value(this.file);
+        if (this.entryType === Ro.EntryType.File) {
+            return new Ro.Value(this.file);
         }
 
-        if (this.entryType !== Models.EntryType.FreeForm || this.isCollectionContributed) {
+        if (this.entryType !== Ro.EntryType.FreeForm || this.isCollectionContributed) {
 
-            if (this.entryType === Models.EntryType.MultipleChoices || this.entryType === Models.EntryType.MultipleConditionalChoices || this.isCollectionContributed) {
+            if (this.entryType === Ro.EntryType.MultipleChoices || this.entryType === Ro.EntryType.MultipleConditionalChoices || this.isCollectionContributed) {
                 const selections = this.selectedMultiChoices || [];
                 if (this.type === 'scalar') {
                     const selValues = map(selections, (cvm: ChoiceViewModel) => cvm.getValue().scalar());
-                    return new Models.Value(selValues);
+                    return new Ro.Value(selValues);
                 }
                 const selRefs = map(selections, cvm => ({ href: cvm.getValue().getHref() !, title: cvm.name })); // reference
-                return new Models.Value(selRefs);
+                return new Ro.Value(selRefs);
             }
 
             const choiceValue = this.selectedChoice ? this.selectedChoice.getValue() : null;
             if (this.type === 'scalar') {
-                return new Models.Value(choiceValue && choiceValue.scalar() != null ? choiceValue.scalar() : '');
+                return new Ro.Value(choiceValue && choiceValue.scalar() != null ? choiceValue.scalar() : '');
             }
 
             // reference
-            return new Models.Value(choiceValue && choiceValue.isReference() && this.selectedChoice ? { href: choiceValue.getHref() !, title: this.selectedChoice.name } : null);
+            return new Ro.Value(choiceValue && choiceValue.isReference() && this.selectedChoice ? { href: choiceValue.getHref() !, title: this.selectedChoice.name } : null);
         }
 
         if (this.type === 'scalar') {
             if (this.value == null) {
-                return new Models.Value('');
+                return new Ro.Value('');
             }
 
             if (this.value instanceof Date) {
 
                 if (this.format === 'time') {
                     // time format
-                    return new Models.Value(Models.toTimeString(this.value as Date));
+                    return new Ro.Value(Ro.toTimeString(this.value as Date));
                 }
 
                 if (this.format === 'date') {
                     // truncate time;
-                    return new Models.Value(Models.toDateString(this.value as Date));
+                    return new Ro.Value(Ro.toDateString(this.value as Date));
                 }
                 // date-time
-                return new Models.Value((this.value as Date).toISOString());
+                return new Ro.Value((this.value as Date).toISOString());
             }
 
-            return new Models.Value(this.value as Ro.ScalarValueType);
+            return new Ro.Value(this.value as Ro.ScalarValueType);
         }
 
         // reference
-        return new Models.Value(this.reference ? { href: this.reference, title: this.value!.toString() } : null);
+        return new Ro.Value(this.reference ? { href: this.reference, title: this.value!.toString() } : null);
     }
 }

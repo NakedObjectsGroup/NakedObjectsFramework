@@ -1,15 +1,8 @@
-﻿import { IDraggableViewModel } from './idraggable-view-model';
+﻿import * as Ro from '@nakedobjects/restful-objects';
+import { ColorService, ConfigService, ContextService, ErrorService, ErrorWrapper, Pane, UrlManagerService } from '@nakedobjects/services';
 import { ChoiceViewModel } from './choice-view-model';
-import * as Ro from '@nakedobjects/restful-objects';
-import * as Models from '@nakedobjects/restful-objects';
-import { ContextService } from '@nakedobjects/services';
-import { ColorService } from '@nakedobjects/services';
-import { ErrorService } from '@nakedobjects/services';
-import { UrlManagerService } from '@nakedobjects/services';
-import { ConfigService } from '@nakedobjects/services';
-import { Pane } from '@nakedobjects/services';
 import * as Helpers from './helpers-view-models';
-import { ErrorWrapper } from '@nakedobjects/services';
+import { IDraggableViewModel } from './idraggable-view-model';
 
 export class LinkViewModel implements IDraggableViewModel {
 
@@ -19,7 +12,7 @@ export class LinkViewModel implements IDraggableViewModel {
         protected readonly error: ErrorService,
         protected readonly urlManager: UrlManagerService,
         private readonly configService: ConfigService,
-        public readonly link: Models.Link,
+        public readonly link: Ro.Link,
         public readonly paneId: Pane
     ) {
 
@@ -27,7 +20,7 @@ export class LinkViewModel implements IDraggableViewModel {
         this.domainType = link.type().domainType;
 
         // for dropping
-        const value = new Models.Value(link);
+        const value = new Ro.Value(link);
 
         this.value = value.toString();
         this.reference = value.toValueString();

@@ -1,11 +1,9 @@
-﻿import { RecentItemViewModel } from './recent-item-view-model';
-import { ContextService } from '@nakedobjects/services';
-import { ViewModelFactoryService } from './view-model-factory.service';
-import map from 'lodash-es/map';
+﻿import * as Ro from '@nakedobjects/restful-objects';
+import { ContextService, Pane, UrlManagerService } from '@nakedobjects/services';
 import every from 'lodash-es/every';
-import * as Models from '@nakedobjects/restful-objects';
-import { UrlManagerService } from '@nakedobjects/services';
-import { Pane } from '@nakedobjects/services';
+import map from 'lodash-es/map';
+import { RecentItemViewModel } from './recent-item-view-model';
+import { ViewModelFactoryService } from './view-model-factory.service';
 
 export class RecentItemsViewModel {
 
@@ -20,7 +18,7 @@ export class RecentItemsViewModel {
     }
 
     private recentItems: RecentItemViewModel[];
-    private recentlyViewed: Models.DomainObjectRepresentation[];
+    private recentlyViewed: Ro.DomainObjectRepresentation[];
 
     private refreshItems() {
         const items = map(this.recentlyViewed, (o, i) => ({ obj: o, link: o.updateSelfLinkWithTitle(), index: i }));

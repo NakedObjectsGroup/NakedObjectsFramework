@@ -1,31 +1,35 @@
-﻿import { MessageViewModel } from './message-view-model';
-import { ColorService } from '@nakedobjects/services';
-import { ContextService } from '@nakedobjects/services';
-import { ViewModelFactoryService } from './view-model-factory.service';
-import { UrlManagerService } from '@nakedobjects/services';
-import { ErrorService } from '@nakedobjects/services';
-import { PaneRouteData, InteractionMode, Pane } from '@nakedobjects/services';
-import { ChoiceViewModel } from './choice-view-model';
-import { ActionViewModel } from './action-view-model';
-import { MenuItemViewModel } from './menu-item-view-model';
-import { PropertyViewModel } from './property-view-model';
-import { CollectionViewModel } from './collection-view-model';
-import { ParameterViewModel } from './parameter-view-model';
-import * as Models from '@nakedobjects/restful-objects';
-import * as Helpers from './helpers-view-models';
+﻿import * as Ro from '@nakedobjects/restful-objects';
+import {
+    ColorService,
+    ConfigService,
+    ContextService,
+    ErrorService,
+    ErrorWrapper,
+    InteractionMode,
+    Pane,
+    PaneRouteData,
+    UrlManagerService
+    } from '@nakedobjects/services';
 import { Dictionary } from 'lodash';
-import { ConfigService } from '@nakedobjects/services';
-import * as Msg from './user-messages';
-import { IMenuHolderViewModel } from './imenu-holder-view-model';
-import filter from 'lodash-es/filter';
 import every from 'lodash-es/every';
+import filter from 'lodash-es/filter';
 import forEach from 'lodash-es/forEach';
-import map from 'lodash-es/map';
-import zipObject from 'lodash-es/zipObject';
 import fromPairs from 'lodash-es/fromPairs';
-import values from 'lodash-es/values';
+import map from 'lodash-es/map';
 import mapValues from 'lodash-es/mapValues';
-import { ErrorWrapper } from '@nakedobjects/services';
+import values from 'lodash-es/values';
+import zipObject from 'lodash-es/zipObject';
+import { ActionViewModel } from './action-view-model';
+import { ChoiceViewModel } from './choice-view-model';
+import { CollectionViewModel } from './collection-view-model';
+import * as Helpers from './helpers-view-models';
+import { IMenuHolderViewModel } from './imenu-holder-view-model';
+import { MenuItemViewModel } from './menu-item-view-model';
+import { MessageViewModel } from './message-view-model';
+import { ParameterViewModel } from './parameter-view-model';
+import { PropertyViewModel } from './property-view-model';
+import * as Msg from './user-messages';
+import { ViewModelFactoryService } from './view-model-factory.service';
 
 export class DomainObjectViewModel extends MessageViewModel implements IMenuHolderViewModel {
 
@@ -36,7 +40,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
         private readonly urlManager: UrlManagerService,
         private readonly error: ErrorService,
         private readonly configService: ConfigService,
-        obj: Models.DomainObjectRepresentation,
+        obj: Ro.DomainObjectRepresentation,
         public routeData: PaneRouteData,
         forceReload: boolean
     ) {
@@ -46,7 +50,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
     }
 
     private readonly keySeparator: string;
-    private props: Dictionary<Models.Value>;
+    private props: Dictionary<Ro.Value>;
     private instanceId: string;
     unsaved: boolean;
 
@@ -57,7 +61,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
     color: string;
     draggableType: string;
 
-    domainObject: Models.DomainObjectRepresentation;
+    domainObject: Ro.DomainObjectRepresentation;
     onPaneId: Pane;
 
     title: string;
@@ -80,20 +84,20 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
 
     private readonly cancelHandler = () => this.isFormOrTransient() ? () => this.urlManager.popUrlState(this.onPaneId) : () => this.urlManager.setInteractionMode(InteractionMode.View, this.onPaneId);
 
-    private readonly saveHandler = (): (object: Models.DomainObjectRepresentation, props: Object, paneId: Pane, viewSavedObject: boolean) => Promise<Models.DomainObjectRepresentation> =>
+    private readonly saveHandler = (): (object: Ro.DomainObjectRepresentation, props: Object, paneId: Pane, viewSavedObject: boolean) => Promise<Ro.DomainObjectRepresentation> =>
         this.domainObject.isTransient() ? this.contextService.saveObject : this.contextService.updateObject
 
     private readonly validateHandler = () => this.domainObject.isTransient() ? this.contextService.validateSaveObject : this.contextService.validateUpdateObject;
 
     private handleWrappedError(reject: ErrorWrapper) {
-        const display = (em: Models.ErrorMap) => Helpers.handleErrorResponse(em, this, this.properties);
+        const display = (em: Ro.ErrorMap) => Helpers.handleErrorResponse(em, this, this.properties);
         this.error.handleErrorAndDisplayMessages(reject, display);
     }
 
     // leave this a lambda as it's passed as a function and we must keep the 'this'.
     private propertyMap = () => {
         const pps = filter(this.properties, property => property.isEditable);
-        return zipObject(map(pps, p => p.id), map(pps, p => p.getValue())) as Dictionary<Models.Value>;
+        return zipObject(map(pps, p => p.id), map(pps, p => p.getValue())) as Dictionary<Ro.Value>;
     }
 
     private wrapAction(a: ActionViewModel) {
@@ -101,7 +105,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
         a.execute = (pps: ParameterViewModel[], right?: boolean) => {
             this.setProperties();
             const pairs = map(this.editProperties(), p => [p.id, p.getValue()]);
-            const prps = fromPairs(pairs) as Dictionary<Models.Value>;
+            const prps = fromPairs(pairs) as Dictionary<Ro.Value>;
 
             const parmValueMap = mapValues(a.invokableActionRep.parameters(), p => ({ parm: p, value: prps[p.id()] }));
             const allpps = map(parmValueMap, o => this.viewModelFactory.parameterViewModel(o.parm, o.value, this.onPaneId));
@@ -113,7 +117,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
         };
     }
 
-    private reset(obj: Models.DomainObjectRepresentation, routeData: PaneRouteData, resetting: boolean) {
+    private reset(obj: Ro.DomainObjectRepresentation, routeData: PaneRouteData, resetting: boolean) {
         this.domainObject = obj;
         this.onPaneId = routeData.paneId;
         this.routeData = routeData;
@@ -121,7 +125,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
         this.isInEdit = routeData.interactionMode !== InteractionMode.View || iMode === 'form' || iMode === 'transient';
         this.props = routeData.interactionMode !== InteractionMode.View ? this.contextService.getObjectCachedValues(this.domainObject.id(), routeData.paneId) : {};
 
-        const actions = values(this.domainObject.actionMembers()) as Models.ActionMember[];
+        const actions = values(this.domainObject.actionMembers()) as Ro.ActionMember[];
         this.actions = map(actions, action => this.viewModelFactory.actionViewModel(action, this, this.routeData));
 
         this.menuItems = Helpers.createMenuItems(this.actions);
@@ -141,12 +145,12 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
         this.instanceId = this.domainObject.instanceId() !;
         this.draggableType = this.domainObject.domainType() !;
 
-        const selfAsValue = (): Models.Value | null => {
+        const selfAsValue = (): Ro.Value | null => {
             const link = this.domainObject.selfLink();
             if (link) {
                 // not transient - can't drag transients so no need to set up IDraggable members on transients
                 link.setTitle(this.title);
-                return new Models.Value(link);
+                return new Ro.Value(link);
             }
             return null;
         };
@@ -170,17 +174,17 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
     concurrency() {
         this.routeData = this.urlManager.getRouteData().pane(this.onPaneId) !;
         this.contextService.getObject(this.onPaneId, this.domainObject.getOid(), this.routeData.interactionMode)
-            .then((obj: Models.DomainObjectRepresentation) => {
+            .then((obj: Ro.DomainObjectRepresentation) => {
                 // cleared cached values so all values are from reloaded representation
                 this.contextService.clearObjectCachedValues(this.onPaneId);
                 return this.contextService.reloadObject(this.onPaneId, obj);
             })
-            .then((reloadedObj: Models.DomainObjectRepresentation) => {
+            .then((reloadedObj: Ro.DomainObjectRepresentation) => {
                 if (this.routeData.dialogId) {
                     this.urlManager.closeDialogReplaceHistory(this.routeData.dialogId, this.onPaneId);
                 }
                 this.reset(reloadedObj, this.routeData, true);
-                const em = new Models.ErrorMap({}, 0, Msg.concurrencyMessage);
+                const em = new Ro.ErrorMap({}, 0, Msg.concurrencyMessage);
                 Helpers.handleErrorResponse(em, this, this.properties);
             })
             .catch((reject: ErrorWrapper) => this.error.handleError(reject));
@@ -211,7 +215,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
         this.clearCachedFiles();
         const propMap = this.propertyMap();
         return this.saveHandler()(this.domainObject, propMap, this.onPaneId, viewObject)
-            .then((obj: Models.DomainObjectRepresentation) => {
+            .then((obj: Ro.DomainObjectRepresentation) => {
                 onSuccess();
                 this.reset(obj, this.urlManager.getRouteData().pane(this.onPaneId) !, true);
             })
@@ -238,7 +242,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
         this.clearCachedFiles();
         this.contextService.clearObjectCachedValues(this.onPaneId);
         this.contextService.getObjectForEdit(this.onPaneId, this.domainObject)
-            .then((updatedObject: Models.DomainObjectRepresentation) => {
+            .then((updatedObject: Ro.DomainObjectRepresentation) => {
                 this.reset(updatedObject, this.currentPaneData(), true);
                 this.urlManager.pushUrlState(this.onPaneId);
                 this.urlManager.setInteractionMode(InteractionMode.Edit, this.onPaneId);
@@ -249,7 +253,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
     readonly doReload = () => {
         this.clearCachedFiles();
         this.contextService.reloadObject(this.onPaneId, this.domainObject)
-            .then((updatedObject: Models.DomainObjectRepresentation) => this.reset(updatedObject, this.currentPaneData(), true))
+            .then((updatedObject: Ro.DomainObjectRepresentation) => this.reset(updatedObject, this.currentPaneData(), true))
             .catch((reject: ErrorWrapper) => this.handleWrappedError(reject));
     }
 

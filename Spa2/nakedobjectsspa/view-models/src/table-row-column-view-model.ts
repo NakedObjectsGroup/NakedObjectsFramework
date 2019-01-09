@@ -1,17 +1,16 @@
-﻿import { ChoiceViewModel } from './choice-view-model';
+﻿import * as Ro from '@nakedobjects/restful-objects';
 import { MaskService } from '@nakedobjects/services';
-import * as Msg from './user-messages';
-import * as Ro from '@nakedobjects/restful-objects';
-import * as Models from '@nakedobjects/restful-objects';
-import * as Helpers from './helpers-view-models';
 import find from 'lodash-es/find';
 import map from 'lodash-es/map';
+import { ChoiceViewModel } from './choice-view-model';
+import * as Helpers from './helpers-view-models';
+import * as Msg from './user-messages';
 
 export class TableRowColumnViewModel {
 
     constructor(
         public readonly id: string,
-        propertyRep?: Models.PropertyMember | Models.CollectionMember,
+        propertyRep?: Ro.PropertyMember | Ro.CollectionMember,
         mask?: MaskService
     ) {
 
@@ -19,7 +18,7 @@ export class TableRowColumnViewModel {
 
             this.title = propertyRep.extensions().friendlyName();
 
-            if (propertyRep instanceof Models.CollectionMember) {
+            if (propertyRep instanceof Ro.CollectionMember) {
                 const size = propertyRep.size();
 
                 this.formattedValue = Helpers.getCollectionDetails(size);
@@ -28,7 +27,7 @@ export class TableRowColumnViewModel {
                 this.returnType = 'string';
             }
 
-            if (propertyRep instanceof Models.PropertyMember) {
+            if (propertyRep instanceof Ro.PropertyMember) {
                 const isPassword = propertyRep.extensions().dataType() === 'password';
                 const value = propertyRep.value();
                 this.returnType = propertyRep.extensions().returnType() !;
@@ -40,7 +39,7 @@ export class TableRowColumnViewModel {
                     const remoteMask = propertyRep.extensions().mask();
                     const localFilter = mask.toLocalFilter(remoteMask, propertyRep.extensions().format() !);
 
-                    if (propertyRep.entryType() === Models.EntryType.Choices) {
+                    if (propertyRep.entryType() === Ro.EntryType.Choices) {
                         const currentChoice = new ChoiceViewModel(value, id);
                         const choicesMap = propertyRep.choices() !;
                         const choices = map(choicesMap, (v, n) => new ChoiceViewModel(v, id, n));

@@ -1,14 +1,8 @@
-﻿import { LinkViewModel } from './link-view-model';
+﻿import * as Ro from '@nakedobjects/restful-objects';
+import { ClickHandlerService, ColorService, ConfigService, ContextService, ErrorService, Pane, UrlManagerService } from '@nakedobjects/services';
+import { LinkViewModel } from './link-view-model';
 import { TableRowViewModel } from './table-row-view-model';
-import { ContextService } from '@nakedobjects/services';
-import { ColorService } from '@nakedobjects/services';
-import { ErrorService } from '@nakedobjects/services';
-import { UrlManagerService } from '@nakedobjects/services';
-import { ClickHandlerService } from '@nakedobjects/services';
 import { ViewModelFactoryService } from './view-model-factory.service';
-import * as Models from '@nakedobjects/restful-objects';
-import { ConfigService } from '@nakedobjects/services';
-import { Pane } from '@nakedobjects/services';
 
 export class ItemViewModel extends LinkViewModel {
 
@@ -18,7 +12,7 @@ export class ItemViewModel extends LinkViewModel {
         error: ErrorService,
         urlManager: UrlManagerService,
         configService: ConfigService,
-        link: Models.Link,
+        link: Ro.Link,
         paneId: Pane,
         private readonly clickHandler: ClickHandlerService,
         private readonly viewModelFactory: ViewModelFactoryService,

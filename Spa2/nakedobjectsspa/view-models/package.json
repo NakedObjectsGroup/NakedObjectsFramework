@@ -5,17 +5,13 @@
             "entryFile": "src/public_api.ts",
             "umdModuleIds": {
                 "lodash": "_",
-                "moment": "moment",
-                "moment-timezone": "moment-timezone"
             }
         },
         "whitelistedNonPeerDependencies": [
-            "auth0-js",
             "lodash",
             "lodash-es",
-            "moment",
-            "@beyerleinf/ngx-dnd",
-            "@nakedobjects/restful-objects"
+            "@nakedobjects/restful-objects",
+            "@nakedobjects/services"
         ],
         "dest": "../dist/nakedobjects-view-models"
     },
@@ -52,11 +48,8 @@
         "e2e": "ng e2e"
     },
     "dependencies": {
-        "auth0-js": "^9.8.2",
         "lodash": "4.17.11",
         "lodash-es": "4.17.11",
-        "moment": "2.22.2",
-        "@beyerleinf/ngx-dnd": "^6.0.0-preview3"
     },
     "peerDependencies": {
         "@angular/animations": "^7.1.2",

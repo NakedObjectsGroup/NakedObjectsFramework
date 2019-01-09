@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as Models from '@nakedobjects/restful-objects';
+import * as Ro from '@nakedobjects/restful-objects';
 import { Subject } from 'rxjs';
 import { IDraggableViewModel } from './idraggable-view-model';
 
@@ -16,7 +16,7 @@ export class DragAndDropService {
 
     setCopyViewModel(dvm: IDraggableViewModel | null) {
         this.copiedViewModel = dvm;
-        this.copiedViewModelSource.next(Models.withUndefined(dvm));
+        this.copiedViewModelSource.next(Ro.withUndefined(dvm));
     }
 
     getCopyViewModel() {

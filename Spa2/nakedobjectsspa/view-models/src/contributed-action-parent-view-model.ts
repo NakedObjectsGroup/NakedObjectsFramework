@@ -1,31 +1,27 @@
-﻿import { MessageViewModel } from './message-view-model';
-import * as Models from '@nakedobjects/restful-objects';
-import * as Msg from './user-messages';
-import { ViewModelFactoryService } from './view-model-factory.service';
-import { UrlManagerService } from '@nakedobjects/services';
-import { ErrorService } from '@nakedobjects/services';
-import { ContextService } from '@nakedobjects/services';
-import { ItemViewModel } from './item-view-model';
-import { ActionViewModel } from './action-view-model';
-import { ParameterViewModel } from './parameter-view-model';
+﻿import * as Ro from '@nakedobjects/restful-objects';
+import { ContextService, ErrorService, ErrorWrapper, Pane, PaneRouteData, UrlManagerService } from '@nakedobjects/services';
 import { Dictionary } from 'lodash';
-import * as Helpers from './helpers-view-models';
-import { MenuItemViewModel } from './menu-item-view-model';
-import { PaneRouteData, Pane } from '@nakedobjects/services';
+import clone from 'lodash-es/clone';
 import each from 'lodash-es/each';
+import every from 'lodash-es/every';
 import filter from 'lodash-es/filter';
 import find from 'lodash-es/find';
-import clone from 'lodash-es/clone';
-import every from 'lodash-es/every';
+import first from 'lodash-es/first';
 import forEach from 'lodash-es/forEach';
 import keys from 'lodash-es/keys';
 import map from 'lodash-es/map';
-import first from 'lodash-es/first';
 import some from 'lodash-es/some';
-import values from 'lodash-es/values';
 import toArray from 'lodash-es/toArray';
+import values from 'lodash-es/values';
+import { ActionViewModel } from './action-view-model';
 import { ErrorCategory, HttpStatusCode } from './constants';
-import { ErrorWrapper } from '@nakedobjects/services';
+import * as Helpers from './helpers-view-models';
+import { ItemViewModel } from './item-view-model';
+import { MenuItemViewModel } from './menu-item-view-model';
+import { MessageViewModel } from './message-view-model';
+import { ParameterViewModel } from './parameter-view-model';
+import * as Msg from './user-messages';
+import { ViewModelFactoryService } from './view-model-factory.service';
 
 export abstract class ContributedActionParentViewModel extends MessageViewModel {
 
@@ -44,11 +40,11 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
     menuItems: MenuItemViewModel[];
     readonly allSelected = () => every(this.items, item => item.selected);
 
-    private isLocallyContributed(action: Models.ActionRepresentation | Models.InvokableActionMember) {
+    private isLocallyContributed(action: Ro.ActionRepresentation | Ro.InvokableActionMember) {
         return some(action.parameters(), p => p.isCollectionContributed());
     }
 
-    setActions(actions: Dictionary<Models.ActionMember>, routeData: PaneRouteData) {
+    setActions(actions: Dictionary<Ro.ActionMember>, routeData: PaneRouteData) {
         this.actions = map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
         this.menuItems = Helpers.createMenuItems(this.actions);
         forEach(this.actions, a => this.decorate(a));
@@ -60,10 +56,10 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
 
             const selected = filter(this.items, i => i.selected);
 
-            const rejectAsNeedSelection = (action: Models.ActionRepresentation | Models.InvokableActionMember): ErrorWrapper | null => {
+            const rejectAsNeedSelection = (action: Ro.ActionRepresentation | Ro.InvokableActionMember): ErrorWrapper | null => {
                 if (this.isLocallyContributed(action)) {
                     if (selected.length === 0) {
-                        const em = new Models.ErrorMap({}, 0, Msg.noItemsSelected);
+                        const em = new Ro.ErrorMap({}, 0, Msg.noItemsSelected);
                         const rp = new ErrorWrapper(ErrorCategory.HttpClientError, HttpStatusCode.UnprocessableEntity, em);
                         return rp;
                     }
@@ -71,13 +67,13 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
                 return null;
             };
 
-            const getParms = (action: Models.ActionRepresentation | Models.InvokableActionMember) => {
+            const getParms = (action: Ro.ActionRepresentation | Ro.InvokableActionMember) => {
 
-                const parms = values(action.parameters()) as Models.Parameter[];
+                const parms = values(action.parameters()) as Ro.Parameter[];
                 const contribParm = find(parms, p => p.isCollectionContributed());
 
                 if (contribParm) {
-                    const parmValue = new Models.Value(map(selected, i => i.link));
+                    const parmValue = new Ro.Value(map(selected, i => i.link));
                     const collectionParmVm = this.viewModelFactory.parameterViewModel(contribParm, parmValue, this.onPaneId);
 
                     const allpps = clone(pps);
@@ -89,7 +85,7 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
 
             const detailsPromise = actionViewModel.invokableActionRep
                 ? Promise.resolve(actionViewModel.invokableActionRep)
-                : this.context.getActionDetails(actionViewModel.actionRep as Models.ActionMember);
+                : this.context.getActionDetails(actionViewModel.actionRep as Ro.ActionMember);
 
             return detailsPromise.
                 then(details => {
@@ -118,7 +114,7 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
         actionViewModel.doInvoke = () => { };
 
         const invokeWithoutDialog = (right?: boolean) =>
-            actionViewModel.invokeWithoutDialogWithParameters(Promise.resolve([]), right).then((actionResult: Models.ActionResultRepresentation) => {
+            actionViewModel.invokeWithoutDialogWithParameters(Promise.resolve([]), right).then((actionResult: Ro.ActionResultRepresentation) => {
                 this.setMessage(actionResult.shouldExpectResult() ? actionResult.warningsOrMessages() || Msg.noResultMessage : '');
                 // clear selected items on void actions
                 this.clearSelected(actionResult);
@@ -141,7 +137,7 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
         this.urlManager.setAllItemsSelected(newValue, id, this.onPaneId);
     }
 
-    protected clearSelected(result: Models.ActionResultRepresentation) {
+    protected clearSelected(result: Ro.ActionResultRepresentation) {
         if (result.resultType() === 'void') {
             this.setItems(false);
         }

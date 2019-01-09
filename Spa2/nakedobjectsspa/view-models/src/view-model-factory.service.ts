@@ -1,39 +1,42 @@
-import * as Models from '@nakedobjects/restful-objects';
-import { PaneRouteData, Pane } from '@nakedobjects/services';
-import { ContextService } from '@nakedobjects/services';
-import { UrlManagerService } from '@nakedobjects/services';
-import { ColorService } from '@nakedobjects/services';
-import { ClickHandlerService } from '@nakedobjects/services';
-import { ErrorService } from '@nakedobjects/services';
-import { MaskService } from '@nakedobjects/services';
 import { Injectable } from '@angular/core';
-import { AttachmentViewModel } from './attachment-view-model';
-import { ErrorViewModel } from './error-view-model';
-import { IMessageViewModel } from './imessage-view-model';
-import { LinkViewModel } from './link-view-model';
-import { ItemViewModel } from './item-view-model';
-import { RecentItemViewModel } from './recent-item-view-model';
-import { TableRowColumnViewModel } from './table-row-column-view-model';
-import { TableRowViewModel } from './table-row-view-model';
-import { RecentItemsViewModel } from './recent-items-view-model';
-import { ParameterViewModel } from './parameter-view-model';
-import { ActionViewModel } from './action-view-model';
-import { PropertyViewModel } from './property-view-model';
-import { CollectionViewModel } from './collection-view-model';
-import { MenuViewModel } from './menu-view-model';
-import { MenusViewModel } from './menus-view-model';
+import * as Ro from '@nakedobjects/restful-objects';
+import {
+    ClickHandlerService,
+    ColorService,
+    ConfigService,
+    ContextService,
+    ErrorService,
+    ErrorWrapper,
+    LoggerService,
+    MaskService,
+    Pane,
+    PaneRouteData,
+    UrlManagerService
+    } from '@nakedobjects/services';
 import { Dictionary } from 'lodash';
-import { ListViewModel } from './list-view-model';
-import { DialogViewModel } from './dialog-view-model';
-import { DomainObjectViewModel } from './domain-object-view-model';
-import { MultiLineDialogViewModel } from './multi-line-dialog-view-model';
-import { ConfigService } from '@nakedobjects/services';
-import { LoggerService } from '@nakedobjects/services';
-import { ApplicationPropertiesViewModel } from './application-properties-view-model';
+import find from 'lodash-es/find';
 import forEach from 'lodash-es/forEach';
 import map from 'lodash-es/map';
-import find from 'lodash-es/find';
-import { ErrorWrapper } from '@nakedobjects/services';
+import { ActionViewModel } from './action-view-model';
+import { ApplicationPropertiesViewModel } from './application-properties-view-model';
+import { AttachmentViewModel } from './attachment-view-model';
+import { CollectionViewModel } from './collection-view-model';
+import { DialogViewModel } from './dialog-view-model';
+import { DomainObjectViewModel } from './domain-object-view-model';
+import { ErrorViewModel } from './error-view-model';
+import { IMessageViewModel } from './imessage-view-model';
+import { ItemViewModel } from './item-view-model';
+import { LinkViewModel } from './link-view-model';
+import { ListViewModel } from './list-view-model';
+import { MenuViewModel } from './menu-view-model';
+import { MenusViewModel } from './menus-view-model';
+import { MultiLineDialogViewModel } from './multi-line-dialog-view-model';
+import { ParameterViewModel } from './parameter-view-model';
+import { PropertyViewModel } from './property-view-model';
+import { RecentItemViewModel } from './recent-item-view-model';
+import { RecentItemsViewModel } from './recent-items-view-model';
+import { TableRowColumnViewModel } from './table-row-column-view-model';
+import { TableRowViewModel } from './table-row-view-model';
 
 @Injectable()
 export class ViewModelFactoryService {
@@ -53,36 +56,36 @@ export class ViewModelFactoryService {
         return new ErrorViewModel(error);
     }
 
-    attachmentViewModel = (propertyRep: Models.PropertyMember, paneId: Pane): AttachmentViewModel | null => {
+    attachmentViewModel = (propertyRep: Ro.PropertyMember, paneId: Pane): AttachmentViewModel | null => {
         const link = propertyRep.attachmentLink();
         if (link) {
-            const parent = propertyRep.parent as Models.DomainObjectRepresentation;
+            const parent = propertyRep.parent as Ro.DomainObjectRepresentation;
             return new AttachmentViewModel(link, parent, this.context, this.error, paneId);
         }
         return null;
     }
 
-    linkViewModel = (linkRep: Models.Link, paneId: Pane) => {
+    linkViewModel = (linkRep: Ro.Link, paneId: Pane) => {
         return new LinkViewModel(this.context, this.color, this.error, this.urlManager, this.configService, linkRep, paneId);
     }
 
-    itemViewModel = (linkRep: Models.Link, paneId: Pane, selected: boolean, index: number, id: string) => {
+    itemViewModel = (linkRep: Ro.Link, paneId: Pane, selected: boolean, index: number, id: string) => {
         return new ItemViewModel(this.context, this.color, this.error, this.urlManager, this.configService, linkRep, paneId, this.clickHandler, this, index, selected, id);
     }
 
-    recentItemViewModel = (obj: Models.DomainObjectRepresentation, linkRep: Models.Link, paneId: Pane, selected: boolean, index: number) => {
+    recentItemViewModel = (obj: Ro.DomainObjectRepresentation, linkRep: Ro.Link, paneId: Pane, selected: boolean, index: number) => {
         return new RecentItemViewModel(this.context, this.color, this.error, this.urlManager, this.configService, linkRep, paneId, this.clickHandler, this, index, selected, obj.extensions().friendlyName());
     }
 
-    actionViewModel = (actionRep: Models.ActionMember | Models.ActionRepresentation, vm: IMessageViewModel, routeData: PaneRouteData) => {
+    actionViewModel = (actionRep: Ro.ActionMember | Ro.ActionRepresentation, vm: IMessageViewModel, routeData: PaneRouteData) => {
         return new ActionViewModel(this, this.context, this.urlManager, this.error, this.clickHandler, actionRep, vm, routeData);
     }
 
-    propertyTableViewModel = (id: string, propertyRep?: Models.PropertyMember | Models.CollectionMember) => {
+    propertyTableViewModel = (id: string, propertyRep?: Ro.PropertyMember | Ro.CollectionMember) => {
         return propertyRep ? new TableRowColumnViewModel(id, propertyRep, this.mask) : new TableRowColumnViewModel(id);
     }
 
-    propertyViewModel = (propertyRep: Models.PropertyMember, id: string, previousValue: Models.Value, paneId: Pane, parentValues: () => Dictionary<Models.Value>) => {
+    propertyViewModel = (propertyRep: Ro.PropertyMember, id: string, previousValue: Ro.Value, paneId: Pane, parentValues: () => Dictionary<Ro.Value>) => {
         return new PropertyViewModel(propertyRep,
             this.color,
             this.error,
@@ -98,7 +101,7 @@ export class ViewModelFactoryService {
             parentValues);
     }
 
-    dialogViewModel = (routeData: PaneRouteData, action: Models.ActionRepresentation | Models.InvokableActionMember, actionViewModel: ActionViewModel | null, isRow: boolean, row?: number) => {
+    dialogViewModel = (routeData: PaneRouteData, action: Ro.ActionRepresentation | Ro.InvokableActionMember, actionViewModel: ActionViewModel | null, isRow: boolean, row?: number) => {
 
         return new DialogViewModel(this.color,
             this.context,
@@ -113,8 +116,8 @@ export class ViewModelFactoryService {
     }
 
     multiLineDialogViewModel = (routeData: PaneRouteData,
-        action: Models.ActionRepresentation | Models.InvokableActionMember,
-        holder: Models.MenuRepresentation | Models.DomainObjectRepresentation | CollectionViewModel) => {
+        action: Ro.ActionRepresentation | Ro.InvokableActionMember,
+        holder: Ro.MenuRepresentation | Ro.DomainObjectRepresentation | CollectionViewModel) => {
 
         return new MultiLineDialogViewModel(this.color,
             this.context,
@@ -126,7 +129,7 @@ export class ViewModelFactoryService {
             holder);
     }
 
-    domainObjectViewModel = (obj: Models.DomainObjectRepresentation, routeData: PaneRouteData, forceReload: boolean) => {
+    domainObjectViewModel = (obj: Ro.DomainObjectRepresentation, routeData: PaneRouteData, forceReload: boolean) => {
         const ovm = new DomainObjectViewModel(this.color, this.context, this, this.urlManager, this.error, this.configService, obj, routeData, forceReload);
         if (forceReload) {
             ovm.clearCachedFiles();
@@ -134,7 +137,7 @@ export class ViewModelFactoryService {
         return ovm;
     }
 
-    listViewModel = (list: Models.ListRepresentation, routeData: PaneRouteData) => {
+    listViewModel = (list: Ro.ListRepresentation, routeData: PaneRouteData) => {
         return new ListViewModel(
             this.color,
             this.context,
@@ -147,19 +150,19 @@ export class ViewModelFactoryService {
         );
     }
 
-    parameterViewModel = (parmRep: Models.Parameter, previousValue: Models.Value, paneId: Pane) => {
+    parameterViewModel = (parmRep: Ro.Parameter, previousValue: Ro.Value, paneId: Pane) => {
         return new ParameterViewModel(parmRep, paneId, this.color, this.error, this.mask, previousValue, this, this.context, this.configService);
     }
 
-    collectionViewModel = (collectionRep: Models.CollectionMember, routeData: PaneRouteData, forceReload: boolean) => {
+    collectionViewModel = (collectionRep: Ro.CollectionMember, routeData: PaneRouteData, forceReload: boolean) => {
         return new CollectionViewModel(this, this.color, this.error, this.context, this.urlManager, this.configService, this.loggerService, collectionRep, routeData, forceReload);
     }
 
-    menuViewModel = (menuRep: Models.MenuRepresentation, routeData: PaneRouteData) => {
+    menuViewModel = (menuRep: Ro.MenuRepresentation, routeData: PaneRouteData) => {
         return new MenuViewModel(this, menuRep, routeData);
     }
 
-    menusViewModel = (menusRep: Models.MenusRepresentation, routeData: PaneRouteData) => {
+    menusViewModel = (menusRep: Ro.MenusRepresentation, routeData: PaneRouteData) => {
         return new MenusViewModel(this, menusRep, routeData.paneId);
     }
 
@@ -167,13 +170,13 @@ export class ViewModelFactoryService {
         return new RecentItemsViewModel(this, this.context, this.urlManager, paneId);
     }
 
-    tableRowViewModel = (properties: Dictionary<Models.PropertyMember | Models.CollectionMember>, paneId: Pane, title: string): TableRowViewModel => {
+    tableRowViewModel = (properties: Dictionary<Ro.PropertyMember | Ro.CollectionMember>, paneId: Pane, title: string): TableRowViewModel => {
         return new TableRowViewModel(this, properties, paneId, title);
     }
 
     applicationPropertiesViewModel = () => new ApplicationPropertiesViewModel(this.context, this.error, this.configService);
 
-    getItems = (links: Models.Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: ListViewModel | CollectionViewModel) => {
+    getItems = (links: Ro.Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: ListViewModel | CollectionViewModel) => {
 
         const collection = listViewModel instanceof CollectionViewModel ? listViewModel : null;
         const id = collection ? collection.name : '';
@@ -183,9 +186,9 @@ export class ViewModelFactoryService {
         if (tableView) {
 
             const getActionExtensions = routeData.objectId
-            ? (): Promise<Models.Extensions> =>
-                this.context.getActionExtensionsFromObject(routeData.paneId, Models.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator), routeData.actionId)
-            : (): Promise<Models.Extensions> => this.context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
+            ? (): Promise<Ro.Extensions> =>
+                this.context.getActionExtensionsFromObject(routeData.paneId, Ro.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator), routeData.actionId)
+            : (): Promise<Ro.Extensions> => this.context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
 
             const getExtensions = listViewModel instanceof CollectionViewModel ? () => Promise.resolve(listViewModel.collectionRep.extensions()) : getActionExtensions;
 
@@ -194,7 +197,7 @@ export class ViewModelFactoryService {
 
             if (items.length > 0) {
                 getExtensions().
-                    then((ext: Models.Extensions) => {
+                    then((ext: Ro.Extensions) => {
                         forEach(items, itemViewModel => {
                             itemViewModel.tableRowViewModel.conformColumns(ext.tableViewTitle(), ext.tableViewColumns());
                         });

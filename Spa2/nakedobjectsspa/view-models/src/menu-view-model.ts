@@ -1,19 +1,18 @@
-﻿import { MessageViewModel } from './message-view-model';
-import { ActionViewModel } from './action-view-model';
-import { MenuItemViewModel } from './menu-item-view-model';
-import { ViewModelFactoryService } from './view-model-factory.service';
+﻿import * as Ro from '@nakedobjects/restful-objects';
 import { PaneRouteData } from '@nakedobjects/services';
-import * as Helpers from './helpers-view-models';
-import * as Models from '@nakedobjects/restful-objects';
 import map from 'lodash-es/map';
-
+import { ActionViewModel } from './action-view-model';
+import * as Helpers from './helpers-view-models';
 import { IMenuHolderViewModel } from './imenu-holder-view-model';
+import { MenuItemViewModel } from './menu-item-view-model';
+import { MessageViewModel } from './message-view-model';
+import { ViewModelFactoryService } from './view-model-factory.service';
 
 export class MenuViewModel extends MessageViewModel implements IMenuHolderViewModel {
 
     constructor(
         private readonly viewModelFactory: ViewModelFactoryService,
-        public readonly menuRep: Models.MenuRepresentation,
+        public readonly menuRep: Ro.MenuRepresentation,
         public readonly routeData: PaneRouteData
     ) {
         super();

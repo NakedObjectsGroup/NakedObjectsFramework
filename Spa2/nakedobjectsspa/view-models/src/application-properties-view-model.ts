@@ -1,10 +1,6 @@
 ﻿import * as Ro from '@nakedobjects/restful-objects';
-import { ContextService } from '@nakedobjects/services';
-import { ErrorService } from '@nakedobjects/services';
-import { ConfigService } from '@nakedobjects/services';
-import * as Models from '@nakedobjects/restful-objects';
+import { ConfigService, ContextService, ErrorService, ErrorWrapper } from '@nakedobjects/services';
 import * as Constants from './constants';
-import { ErrorWrapper } from '@nakedobjects/services';
 
 export class ApplicationPropertiesViewModel {
 
@@ -24,11 +20,11 @@ export class ApplicationPropertiesViewModel {
 
     private setUp() {
         this.context.getUser().
-            then((u: Models.UserRepresentation) => this.user = u.wrapped()).
+            then((u: Ro.UserRepresentation) => this.user = u.wrapped()).
             catch((reject: ErrorWrapper) => this.error.handleError(reject));
 
         this.context.getVersion().
-            then((v: Models.VersionRepresentation) => this.serverVersion = v.wrapped()).
+            then((v: Ro.VersionRepresentation) => this.serverVersion = v.wrapped()).
             catch((reject: ErrorWrapper) => this.error.handleError(reject));
 
         this.serverUrl = this.configService.config.appPath;

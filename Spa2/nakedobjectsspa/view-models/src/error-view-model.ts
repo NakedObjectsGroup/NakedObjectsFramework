@@ -1,5 +1,5 @@
-﻿import { ErrorCategory, HttpStatusCode } from './constants';
-import { ErrorWrapper } from '@nakedobjects/services';
+﻿import { ErrorWrapper } from '@nakedobjects/services';
+import { ErrorCategory, HttpStatusCode } from './constants';
 
 export class ErrorViewModel {
 

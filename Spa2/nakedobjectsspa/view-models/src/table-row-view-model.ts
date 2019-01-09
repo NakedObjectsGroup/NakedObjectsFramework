@@ -1,16 +1,16 @@
-﻿import { TableRowColumnViewModel } from './table-row-column-view-model';
-import { ViewModelFactoryService } from './view-model-factory.service';
-import { Dictionary } from 'lodash';
-import * as Models from '@nakedobjects/restful-objects';
+﻿import * as Ro from '@nakedobjects/restful-objects';
 import { Pane } from '@nakedobjects/services';
+import { Dictionary } from 'lodash';
 import find from 'lodash-es/find';
 import map from 'lodash-es/map';
+import { TableRowColumnViewModel } from './table-row-column-view-model';
+import { ViewModelFactoryService } from './view-model-factory.service';
 
 export class TableRowViewModel {
 
     constructor(
         private readonly viewModelFactory: ViewModelFactoryService,
-        properties: Dictionary<Models.PropertyMember | Models.CollectionMember>,
+        properties: Dictionary<Ro.PropertyMember | Ro.CollectionMember>,
         private readonly paneId: Pane,
         public readonly title: string
     ) {

@@ -1,22 +1,17 @@
-﻿import { MessageViewModel } from './message-view-model';
-import { ColorService } from '@nakedobjects/services';
-import { ContextService } from '@nakedobjects/services';
-import { ViewModelFactoryService } from './view-model-factory.service';
-import { UrlManagerService } from '@nakedobjects/services';
-import { ErrorService } from '@nakedobjects/services';
-import { ActionViewModel } from './action-view-model';
-import { ParameterViewModel } from './parameter-view-model';
-import { PaneRouteData, Pane } from '@nakedobjects/services';
-import * as Models from '@nakedobjects/restful-objects';
-import * as Msg from './user-messages';
-import * as Helpers from './helpers-view-models';
+﻿import * as Ro from '@nakedobjects/restful-objects';
+import { ColorService, ContextService, ErrorService, ErrorWrapper, Pane, PaneRouteData, UrlManagerService } from '@nakedobjects/services';
+import { Dictionary } from 'lodash';
 import each from 'lodash-es/each';
 import every from 'lodash-es/every';
 import forEach from 'lodash-es/forEach';
 import map from 'lodash-es/map';
-import { Dictionary } from 'lodash';
 import pickBy from 'lodash-es/pickBy';
-import { ErrorWrapper } from '@nakedobjects/services';
+import { ActionViewModel } from './action-view-model';
+import * as Helpers from './helpers-view-models';
+import { MessageViewModel } from './message-view-model';
+import { ParameterViewModel } from './parameter-view-model';
+import * as Msg from './user-messages';
+import { ViewModelFactoryService } from './view-model-factory.service';
 
 export class DialogViewModel extends MessageViewModel {
     constructor(
@@ -26,7 +21,7 @@ export class DialogViewModel extends MessageViewModel {
         private readonly urlManager: UrlManagerService,
         private readonly error: ErrorService,
         private readonly routeData: PaneRouteData,
-        action: Models.ActionRepresentation | Models.InvokableActionMember,
+        action: Ro.ActionRepresentation | Ro.InvokableActionMember,
         actionViewModel: ActionViewModel | null,
         public readonly isMultiLineDialogRow: boolean,
         row?: number
@@ -39,7 +34,7 @@ export class DialogViewModel extends MessageViewModel {
 
         const fields = this.context.getDialogCachedValues(this.actionMember().actionId(), this.onPaneId);
 
-        const parameters = pickBy(this.actionViewModel.invokableActionRep.parameters(), p => !p.isCollectionContributed()) as Dictionary<Models.Parameter>;
+        const parameters = pickBy(this.actionViewModel.invokableActionRep.parameters(), p => !p.isCollectionContributed()) as Dictionary<Ro.Parameter>;
         this.parameters = map(parameters, p => this.viewModelFactory.parameterViewModel(p, fields[p.id()], this.onPaneId));
 
         this.title = this.actionMember().extensions().friendlyName();
@@ -98,7 +93,7 @@ export class DialogViewModel extends MessageViewModel {
 
     readonly doInvoke = (right?: boolean) =>
         this.execute(right)
-            .then((actionResult: Models.ActionResultRepresentation) => {
+            .then((actionResult: Ro.ActionResultRepresentation) => {
                 if (actionResult.shouldExpectResult()) {
                     this.setMessage(actionResult.warningsOrMessages() || Msg.noResultMessage);
                 } else if (actionResult.resultType() === 'void') {
@@ -116,7 +111,7 @@ export class DialogViewModel extends MessageViewModel {
                 }
             })
             .catch((reject: ErrorWrapper) => {
-                const display = (em: Models.ErrorMap) => Helpers.handleErrorResponse(em, this, this.parameters);
+                const display = (em: Ro.ErrorMap) => Helpers.handleErrorResponse(em, this, this.parameters);
                 this.error.handleErrorAndDisplayMessages(reject, display);
             })
 

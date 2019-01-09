@@ -1,19 +1,22 @@
-﻿import { ColorService } from '@nakedobjects/services';
-import { ContextService } from '@nakedobjects/services';
-import { ViewModelFactoryService } from './view-model-factory.service';
-import { UrlManagerService } from '@nakedobjects/services';
-import { ErrorService } from '@nakedobjects/services';
-import { PaneRouteData, CollectionViewState } from '@nakedobjects/services';
-import { ActionViewModel } from './action-view-model';
-import { MenuItemViewModel } from './menu-item-view-model';
+﻿import * as Ro from '@nakedobjects/restful-objects';
+import {
+    CollectionViewState,
+    ColorService,
+    ContextService,
+    ErrorService,
+    ErrorWrapper,
+    LoggerService,
+    PaneRouteData,
+    UrlManagerService
+    } from '@nakedobjects/services';
 import find from 'lodash-es/find';
-import * as Helpers from './helpers-view-models';
-import * as Models from '@nakedobjects/restful-objects';
-import * as Msg from './user-messages';
+import { ActionViewModel } from './action-view-model';
 import { ContributedActionParentViewModel } from './contributed-action-parent-view-model';
-import { LoggerService } from '@nakedobjects/services';
+import * as Helpers from './helpers-view-models';
 import { IMenuHolderViewModel } from './imenu-holder-view-model';
-import { ErrorWrapper } from '@nakedobjects/services';
+import { MenuItemViewModel } from './menu-item-view-model';
+import * as Msg from './user-messages';
+import { ViewModelFactoryService } from './view-model-factory.service';
 
 export class ListViewModel extends ContributedActionParentViewModel implements IMenuHolderViewModel {
 
@@ -24,7 +27,7 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
         urlManager: UrlManagerService,
         error: ErrorService,
         private readonly loggerService: LoggerService,
-        list: Models.ListRepresentation,
+        list: Ro.ListRepresentation,
         public routeData: PaneRouteData
     ) {
         super(context, viewModelFactory, urlManager, error, routeData.paneId);
@@ -38,7 +41,7 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
     private numPages: number;
     private state: CollectionViewState;
     id: string;
-    listRep: Models.ListRepresentation;
+    listRep: Ro.ListRepresentation;
     size: number;
     header: string[] | null;
     actions: ActionViewModel[];
@@ -67,13 +70,13 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
 
     private readonly pageOrRecreate = (newPage: number, newPageSize: number, newState?: CollectionViewState) => {
         this.recreate(newPage, newPageSize)
-            .then((list: Models.ListRepresentation) => {
+            .then((list: Ro.ListRepresentation) => {
                 this.urlManager.setListPaging(newPage, newPageSize, newState || this.routeData.state, this.onPaneId);
                 this.routeData = this.currentPaneData();
                 this.reset(list, this.routeData);
             })
             .catch((reject: ErrorWrapper) => {
-                const display = (em: Models.ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
+                const display = (em: Ro.ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
                 this.error.handleErrorAndDisplayMessages(reject, display);
             });
     }
@@ -82,7 +85,7 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
         this.pageOrRecreate(newPage, this.pageSize, newState);
     }
 
-    private readonly updateItems = (value: Models.Link[]) => {
+    private readonly updateItems = (value: Ro.Link[]) => {
         this.items = this.viewModelFactory.getItems(value,
             this.state === CollectionViewState.Table,
             this.routeData,
@@ -121,7 +124,7 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
         }
     }
 
-    readonly reset = (list: Models.ListRepresentation, routeData: PaneRouteData) => {
+    readonly reset = (list: Ro.ListRepresentation, routeData: PaneRouteData) => {
         this.listRep = list;
         this.routeData = routeData;
 

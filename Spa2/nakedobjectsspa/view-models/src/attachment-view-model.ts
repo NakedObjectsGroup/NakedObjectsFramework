@@ -1,15 +1,12 @@
-﻿import { ContextService } from '@nakedobjects/services';
-import * as Models from '@nakedobjects/restful-objects';
+﻿import * as Ro from '@nakedobjects/restful-objects';
+import { ContextService, ErrorService, ErrorWrapper, Pane } from '@nakedobjects/services';
 import * as Msg from './user-messages';
-import { ErrorService } from '@nakedobjects/services';
-import { Pane } from '@nakedobjects/services';
-import { ErrorWrapper } from '@nakedobjects/services';
 
 export class AttachmentViewModel {
 
     constructor(
-        public readonly link: Models.Link,
-        private readonly parent: Models.DomainObjectRepresentation,
+        public readonly link: Ro.Link,
+        private readonly parent: Ro.DomainObjectRepresentation,
         private readonly context: ContextService,
         private readonly error: ErrorService,
         public readonly onPaneId: Pane

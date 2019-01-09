@@ -1,9 +1,9 @@
-﻿import * as Models from '@nakedobjects/restful-objects';
+﻿import * as Ro from '@nakedobjects/restful-objects';
 
 export class ChoiceViewModel {
 
     constructor(
-        private readonly wrapped: Models.Value,
+        private readonly wrapped: Ro.Value,
         private readonly id: string,
         name?: string | null,
         searchTerm?: string

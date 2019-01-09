@@ -1,20 +1,24 @@
-﻿import { ParameterViewModel } from './parameter-view-model';
-import { ContextService } from '@nakedobjects/services';
-import { PaneRouteData, InteractionMode, Pane } from '@nakedobjects/services';
-import { UrlManagerService } from '@nakedobjects/services';
-import { ErrorService } from '@nakedobjects/services';
-import { IMessageViewModel } from './imessage-view-model';
-import { ClickHandlerService } from '@nakedobjects/services';
-import { ViewModelFactoryService } from './view-model-factory.service';
-import * as Models from '@nakedobjects/restful-objects';
-import * as Msg from './user-messages';
+﻿import * as Ro from '@nakedobjects/restful-objects';
+import {
+    ClickHandlerService,
+    ContextService,
+    ErrorService,
+    ErrorWrapper,
+    InteractionMode,
+    Pane,
+    PaneRouteData,
+    UrlManagerService
+    } from '@nakedobjects/services';
 import { Dictionary } from 'lodash';
-import * as Helpers from './helpers-view-models';
 import forEach from 'lodash-es/forEach';
 import map from 'lodash-es/map';
-import zipObject from 'lodash-es/zipObject';
 import pickBy from 'lodash-es/pickBy';
-import { ErrorWrapper } from '@nakedobjects/services';
+import zipObject from 'lodash-es/zipObject';
+import * as Helpers from './helpers-view-models';
+import { IMessageViewModel } from './imessage-view-model';
+import { ParameterViewModel } from './parameter-view-model';
+import * as Msg from './user-messages';
+import { ViewModelFactoryService } from './view-model-factory.service';
 
 export class ActionViewModel {
 
@@ -24,12 +28,12 @@ export class ActionViewModel {
         private readonly urlManager: UrlManagerService,
         private readonly error: ErrorService,
         private readonly clickHandler: ClickHandlerService,
-        public readonly actionRep: Models.ActionMember | Models.ActionRepresentation,
+        public readonly actionRep: Ro.ActionMember | Ro.ActionRepresentation,
         private readonly vm: IMessageViewModel,
         private readonly routeData: PaneRouteData
     ) {
 
-        if (actionRep instanceof Models.ActionRepresentation || actionRep instanceof Models.InvokableActionMember) {
+        if (actionRep instanceof Ro.ActionRepresentation || actionRep instanceof Ro.InvokableActionMember) {
             this.invokableActionRep = actionRep;
         }
 
@@ -46,7 +50,7 @@ export class ActionViewModel {
     readonly description: string;
     readonly presentationHint: string;
     gotoResult = true;
-    invokableActionRep: Models.ActionRepresentation | Models.InvokableActionMember;
+    invokableActionRep: Ro.ActionRepresentation | Ro.InvokableActionMember;
 
     // form actions should never show dialogs
     private readonly showDialog = () => this.actionRep.extensions().hasParams() && (this.routeData.interactionMode !== InteractionMode.Form);
@@ -72,19 +76,19 @@ export class ActionViewModel {
             .then((pps: ParameterViewModel[]) => {
                 return this.execute(pps, right);
             })
-            .then((actionResult: Models.ActionResultRepresentation) => {
+            .then((actionResult: Ro.ActionResultRepresentation) => {
                 this.decrementPendingPotentAction();
                 return actionResult;
             })
             .catch((reject: ErrorWrapper) => {
                 this.decrementPendingPotentAction();
-                const display = (em: Models.ErrorMap) => this.vm.setMessage(em.invalidReason() || em.warningMessage);
+                const display = (em: Ro.ErrorMap) => this.vm.setMessage(em.invalidReason() || em.warningMessage);
                 this.error.handleErrorAndDisplayMessages(reject, display);
             });
     }
 
     private readonly invokeWithoutDialog = (right?: boolean) => {
-        this.invokeWithoutDialogWithParameters(this.parameters(), right).then((actionResult: Models.ActionResultRepresentation) => {
+        this.invokeWithoutDialogWithParameters(this.parameters(), right).then((actionResult: Ro.ActionResultRepresentation) => {
             // if expect result and no warning from server generate one here
             if (actionResult.shouldExpectResult() && !actionResult.warningsOrMessages()) {
                 this.context.broadcastWarning(Msg.noResultMessage);
@@ -103,18 +107,18 @@ export class ActionViewModel {
         }
 
         return this.context.getInvokableAction(this.actionRep)
-            .then((details: Models.ActionRepresentation | Models.InvokableActionMember) => {
+            .then((details: Ro.ActionRepresentation | Ro.InvokableActionMember) => {
                 this.invokableActionRep = details;
                 return details;
             });
     }
 
     // note this is modified by decorators
-    execute = (pps: ParameterViewModel[], right?: boolean): Promise<Models.ActionResultRepresentation> => {
-        const parmMap = zipObject(map(pps, p => p.id), map(pps, p => p.getValue())) as Dictionary<Models.Value>;
+    execute = (pps: ParameterViewModel[], right?: boolean): Promise<Ro.ActionResultRepresentation> => {
+        const parmMap = zipObject(map(pps, p => p.id), map(pps, p => p.getValue())) as Dictionary<Ro.Value>;
         forEach(pps, p => this.urlManager.setParameterValue(this.actionRep.actionId(), p.parameterRep, p.getValue(), this.paneId));
         return this.getInvokable()
-            .then((details: Models.ActionRepresentation | Models.InvokableActionMember) => this.context.invokeAction(details, parmMap, this.paneId, this.clickHandler.pane(this.paneId, right), this.gotoResult));
+            .then((details: Ro.ActionRepresentation | Ro.InvokableActionMember) => this.context.invokeAction(details, parmMap, this.paneId, this.clickHandler.pane(this.paneId, right), this.gotoResult));
     }
 
     readonly disabled = () => !!this.actionRep.disabledReason();
@@ -123,8 +127,8 @@ export class ActionViewModel {
         this.invokableActionRep.isPotent() &&
         this.context.isPendingPotentActionOrReload(this.paneId)
 
-    private getParameters(invokableAction: Models.ActionRepresentation | Models.InvokableActionMember) {
-        const parameters = pickBy(invokableAction.parameters(), p => !p.isCollectionContributed()) as Dictionary<Models.Parameter>;
+    private getParameters(invokableAction: Ro.ActionRepresentation | Ro.InvokableActionMember) {
+        const parameters = pickBy(invokableAction.parameters(), p => !p.isCollectionContributed()) as Dictionary<Ro.Parameter>;
         const parms = this.routeData.actionParams;
         return map(parameters, parm => this.viewModelFactory.parameterViewModel(parm, parms[parm.id()], this.paneId));
     }
@@ -137,11 +141,11 @@ export class ActionViewModel {
         }
 
         return this.context.getInvokableAction(this.actionRep)
-            .then((details: Models.ActionRepresentation | Models.InvokableActionMember) => {
+            .then((details: Ro.ActionRepresentation | Ro.InvokableActionMember) => {
                 this.invokableActionRep = details;
                 return this.getParameters(details);
             });
     }
 
-    readonly makeInvokable = (details: Models.ActionRepresentation | Models.InvokableActionMember) => this.invokableActionRep = details;
+    readonly makeInvokable = (details: Ro.ActionRepresentation | Ro.InvokableActionMember) => this.invokableActionRep = details;
 }

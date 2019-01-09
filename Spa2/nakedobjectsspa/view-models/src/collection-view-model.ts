@@ -1,18 +1,22 @@
-﻿import { ItemViewModel } from './item-view-model';
-import { PaneRouteData, CollectionViewState, InteractionMode } from '@nakedobjects/services';
-import { ViewModelFactoryService } from './view-model-factory.service';
-import { ColorService } from '@nakedobjects/services';
-import { ErrorService } from '@nakedobjects/services';
-import { ContextService } from '@nakedobjects/services';
-import { UrlManagerService } from '@nakedobjects/services';
+﻿import * as Ro from '@nakedobjects/restful-objects';
+import {
+    CollectionViewState,
+    ColorService,
+    ConfigService,
+    ContextService,
+    ErrorService,
+    ErrorWrapper,
+    InteractionMode,
+    LoggerService,
+    PaneRouteData,
+    UrlManagerService
+    } from '@nakedobjects/services';
+import find from 'lodash-es/find';
+import some from 'lodash-es/some';
 import { ContributedActionParentViewModel } from './contributed-action-parent-view-model';
 import * as Helpers from './helpers-view-models';
-import * as Models from '@nakedobjects/restful-objects';
-import find from 'lodash-es/find';
-import { ConfigService } from '@nakedobjects/services';
-import { LoggerService } from '@nakedobjects/services';
-import some from 'lodash-es/some';
-import { ErrorWrapper } from '@nakedobjects/services';
+import { ItemViewModel } from './item-view-model';
+import { ViewModelFactoryService } from './view-model-factory.service';
 
 export class CollectionViewModel extends ContributedActionParentViewModel {
 
@@ -24,7 +28,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
         urlManager: UrlManagerService,
         private readonly configService: ConfigService,
         private readonly loggerService: LoggerService,
-        public readonly collectionRep: Models.CollectionMember | Models.CollectionRepresentation,
+        public readonly collectionRep: Ro.CollectionMember | Ro.CollectionRepresentation,
         public readonly routeData: PaneRouteData,
         forceReload: boolean
     ) {
@@ -66,7 +70,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
             state = CollectionViewState.Summary;
         }
 
-        function getDefaultTableState(exts: Models.Extensions) {
+        function getDefaultTableState(exts: Ro.Extensions) {
             if (exts.renderEagerly()) {
                 return exts.tableViewColumns() || exts.tableViewTitle() ? CollectionViewState.Table : CollectionViewState.List;
             }
@@ -96,7 +100,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
             if (state === CollectionViewState.Summary) {
                 this.items = [];
             } else if (getDetails) {
-                this.context.getCollectionDetails(this.collectionRep as Models.CollectionMember, state, resetting).
+                this.context.getCollectionDetails(this.collectionRep as Ro.CollectionMember, state, resetting).
                     then(details => {
                         this.items = this.viewModelFactory.getItems(details.value(),
                             state === CollectionViewState.Table,

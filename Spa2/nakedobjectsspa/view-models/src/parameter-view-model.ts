@@ -1,29 +1,24 @@
-﻿import { FieldViewModel } from './field-view-model';
-import { ColorService } from '@nakedobjects/services';
-import { ErrorService } from '@nakedobjects/services';
-import { ChoiceViewModel } from './choice-view-model';
-import { ContextService } from '@nakedobjects/services';
-import { ViewModelFactoryService } from './view-model-factory.service';
-import { MaskService } from '@nakedobjects/services';
-import * as Models from '@nakedobjects/restful-objects';
-import * as Msg from './user-messages';
+﻿import * as Ro from '@nakedobjects/restful-objects';
+import { ColorService, ConfigService, ContextService, ErrorService, MaskService, Pane } from '@nakedobjects/services';
 import { Dictionary } from 'lodash';
-import { ConfigService } from '@nakedobjects/services';
-import { Pane } from '@nakedobjects/services';
 import filter from 'lodash-es/filter';
 import find from 'lodash-es/find';
 import map from 'lodash-es/map';
 import some from 'lodash-es/some';
+import { ChoiceViewModel } from './choice-view-model';
+import { FieldViewModel } from './field-view-model';
+import * as Msg from './user-messages';
+import { ViewModelFactoryService } from './view-model-factory.service';
 
 export class ParameterViewModel extends FieldViewModel {
 
     constructor(
-        public readonly parameterRep: Models.Parameter,
+        public readonly parameterRep: Ro.Parameter,
         onPaneId: Pane,
         color: ColorService,
         error: ErrorService,
         private readonly maskService: MaskService,
-        private readonly previousValue: Models.Value,
+        private readonly previousValue: Ro.Value,
         private readonly viewModelFactory: ViewModelFactoryService,
         context: ContextService,
         configService: ConfigService
@@ -45,23 +40,23 @@ export class ParameterViewModel extends FieldViewModel {
 
         const fieldEntryType = this.entryType;
 
-        if (fieldEntryType === Models.EntryType.Choices || fieldEntryType === Models.EntryType.MultipleChoices) {
+        if (fieldEntryType === Ro.EntryType.Choices || fieldEntryType === Ro.EntryType.MultipleChoices) {
             this.setupParameterChoices();
         }
 
-        if (fieldEntryType === Models.EntryType.AutoComplete) {
+        if (fieldEntryType === Ro.EntryType.AutoComplete) {
             this.setupParameterAutocomplete();
         }
 
-        if (fieldEntryType === Models.EntryType.FreeForm && this.type === 'ref') {
+        if (fieldEntryType === Ro.EntryType.FreeForm && this.type === 'ref') {
             this.setupParameterFreeformReference();
         }
 
-        if (fieldEntryType === Models.EntryType.ConditionalChoices || fieldEntryType === Models.EntryType.MultipleConditionalChoices) {
+        if (fieldEntryType === Ro.EntryType.ConditionalChoices || fieldEntryType === Ro.EntryType.MultipleConditionalChoices) {
             this.setupParameterConditionalChoices();
         }
 
-        if (fieldEntryType !== Models.EntryType.FreeForm || this.isCollectionContributed) {
+        if (fieldEntryType !== Ro.EntryType.FreeForm || this.isCollectionContributed) {
             this.setupParameterSelectedChoices();
         } else {
             this.setupParameterSelectedValue();
@@ -85,7 +80,7 @@ export class ParameterViewModel extends FieldViewModel {
 
     private setupParameterAutocomplete() {
         const parmRep = this.parameterRep;
-        this.setupAutocomplete(parmRep, () => <Dictionary<Models.Value>>{});
+        this.setupAutocomplete(parmRep, () => <Dictionary<Ro.Value>>{});
     }
 
     private setupParameterFreeformReference() {
@@ -110,21 +105,21 @@ export class ParameterViewModel extends FieldViewModel {
         const parmRep = this.parameterRep;
         const fieldEntryType = this.entryType;
         const parmViewModel = this;
-        function setCurrentChoices(vals: Models.Value) {
+        function setCurrentChoices(vals: Ro.Value) {
             const list = vals.list() !;
             const choicesToSet = map(list, val => new ChoiceViewModel(val, parmViewModel.id, val.link() ? val.link() !.title() : undefined));
 
-            if (fieldEntryType === Models.EntryType.MultipleChoices) {
+            if (fieldEntryType === Ro.EntryType.MultipleChoices) {
                 parmViewModel.selectedMultiChoices = filter(parmViewModel.choices, c => some(choicesToSet, choiceToSet => c.valuesEqual(choiceToSet)));
             } else {
                 parmViewModel.selectedMultiChoices = choicesToSet;
             }
         }
 
-        function setCurrentChoice(val: Models.Value) {
+        function setCurrentChoice(val: Ro.Value) {
             const choiceToSet = new ChoiceViewModel(val, parmViewModel.id, val.link() ? val.link() !.title() : undefined);
 
-            if (fieldEntryType === Models.EntryType.Choices) {
+            if (fieldEntryType === Ro.EntryType.Choices) {
                 const choices = parmViewModel.choices!;
                 parmViewModel.selectedChoice = find(choices, c => c.valuesEqual(choiceToSet)) || null;
             } else {
@@ -134,11 +129,11 @@ export class ParameterViewModel extends FieldViewModel {
             }
         }
 
-        parmViewModel.refresh = (newValue: Models.Value) => {
+        parmViewModel.refresh = (newValue: Ro.Value) => {
 
             if (newValue || parmViewModel.dflt) {
                 const toSet = newValue || parmRep.default();
-                if (fieldEntryType === Models.EntryType.MultipleChoices || fieldEntryType === Models.EntryType.MultipleConditionalChoices ||
+                if (fieldEntryType === Ro.EntryType.MultipleChoices || fieldEntryType === Ro.EntryType.MultipleConditionalChoices ||
                     parmViewModel.isCollectionContributed) {
                     setCurrentChoices(toSet);
                 } else {
@@ -167,19 +162,19 @@ export class ParameterViewModel extends FieldViewModel {
         const parmRep = this.parameterRep;
         const returnType = parmRep.extensions().returnType();
 
-        this.refresh = (newValue: Models.Value) => {
+        this.refresh = (newValue: Ro.Value) => {
 
             if (returnType === 'boolean') {
                 const valueToSet = (newValue ? newValue.toValueString() : null) || parmRep.default().scalar();
                 const bValueToSet = this.toTriStateBoolean(valueToSet);
 
                 this.value = bValueToSet;
-            } else if (Models.isDateOrDateTime(parmRep)) {
-                const date = Models.toUtcDate(newValue || new Models.Value(this.dflt));
-                this.value = date ? Models.toDateString(date) : '';
-            } else if (Models.isTime(parmRep)) {
-                const time = Models.toTime(newValue || new Models.Value(this.dflt));
-                this.value = time ? Models.toTimeString(time) : '';
+            } else if (Ro.isDateOrDateTime(parmRep)) {
+                const date = Ro.toUtcDate(newValue || new Ro.Value(this.dflt));
+                this.value = date ? Ro.toDateString(date) : '';
+            } else if (Ro.isTime(parmRep)) {
+                const time = Ro.toTime(newValue || new Ro.Value(this.dflt));
+                this.value = time ? Ro.toTimeString(time) : '';
             } else {
                 this.value = (newValue ? newValue.toString() : null) || this.dflt || '';
             }
@@ -194,7 +189,7 @@ export class ParameterViewModel extends FieldViewModel {
         super.update();
 
         switch (this.entryType) {
-            case (Models.EntryType.FreeForm):
+            case (Ro.EntryType.FreeForm):
                 if (this.type === 'scalar') {
                     if (this.localFilter) {
                         this.formattedValue = this.value ? this.localFilter.filter(this.value) : '';
@@ -205,13 +200,13 @@ export class ParameterViewModel extends FieldViewModel {
                 }
             // fall through
             // tslint:disable-next-line:no-switch-case-fall-through
-            case (Models.EntryType.AutoComplete):
-            case (Models.EntryType.Choices):
-            case (Models.EntryType.ConditionalChoices):
+            case (Ro.EntryType.AutoComplete):
+            case (Ro.EntryType.Choices):
+            case (Ro.EntryType.ConditionalChoices):
                 this.formattedValue = this.selectedChoice ? this.selectedChoice.toString() : '';
                 break;
-            case (Models.EntryType.MultipleChoices):
-            case (Models.EntryType.MultipleConditionalChoices):
+            case (Ro.EntryType.MultipleChoices):
+            case (Ro.EntryType.MultipleConditionalChoices):
                 const count = !this.selectedMultiChoices ? 0 : this.selectedMultiChoices.length;
                 this.formattedValue = `${count} selected`;
                 break;

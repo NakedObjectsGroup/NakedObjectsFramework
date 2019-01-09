@@ -1,26 +1,29 @@
-﻿import { FieldViewModel } from './field-view-model';
-import { MenuItemViewModel } from './menu-item-view-model';
-import { ActionViewModel } from './action-view-model';
-import { ContextService } from '@nakedobjects/services';
-import { DragAndDropService } from './drag-and-drop.service';
-import { ErrorService } from '@nakedobjects/services';
-import { IDraggableViewModel } from './idraggable-view-model';
-import { ChoiceViewModel } from './choice-view-model';
-import { IMessageViewModel } from './imessage-view-model';
-import * as Models from '@nakedobjects/restful-objects';
-import * as Msg from './user-messages';
+﻿import * as Ro from '@nakedobjects/restful-objects';
+import {
+    ConfigService,
+    ContextService,
+    ErrorService,
+    ErrorWrapper,
+    ILocalFilter,
+    Pane,
+    validateMandatory,
+    validateMandatoryAgainstType
+    } from '@nakedobjects/services';
 import { Dictionary } from 'lodash';
-import { Pane } from '@nakedobjects/services';
 import each from 'lodash-es/each';
 import filter from 'lodash-es/filter';
 import find from 'lodash-es/find';
 import map from 'lodash-es/map';
 import reduce from 'lodash-es/reduce';
 import uniqWith from 'lodash-es/uniqWith';
-import { ILocalFilter } from '@nakedobjects/services';
-import { ConfigService } from '@nakedobjects/services';
-import * as Validate from '@nakedobjects/services';
-import { ErrorWrapper } from '@nakedobjects/services';
+import { ActionViewModel } from './action-view-model';
+import { ChoiceViewModel } from './choice-view-model';
+import { DragAndDropService } from './drag-and-drop.service';
+import { FieldViewModel } from './field-view-model';
+import { IDraggableViewModel } from './idraggable-view-model';
+import { IMessageViewModel } from './imessage-view-model';
+import { MenuItemViewModel } from './menu-item-view-model';
+import * as Msg from './user-messages';
 
 export function copy(event: KeyboardEvent, item: IDraggableViewModel, drandAndDrop: DragAndDropService) {
     const cKeyCode = 67;
@@ -144,10 +147,10 @@ export function drop(context: ContextService, error: ErrorService, vm: FieldView
         catch((reject: ErrorWrapper) => error.handleError(reject));
 }
 
-function validateAgainstType(model: Models.IHasExtensions, modelValue: string | ChoiceViewModel | string[] | ChoiceViewModel[], viewValue: string, localFilter: ILocalFilter): string {
+function validateAgainstType(model: Ro.IHasExtensions, modelValue: string | ChoiceViewModel | string[] | ChoiceViewModel[], viewValue: string, localFilter: ILocalFilter): string {
     // first check
 
-    const mandatory = Validate.validateMandatory(model, viewValue);
+    const mandatory = validateMandatory(model, viewValue);
 
     if (mandatory) {
         return mandatory;
@@ -158,11 +161,11 @@ function validateAgainstType(model: Models.IHasExtensions, modelValue: string | 
         return '';
     }
 
-    return Validate.validateMandatoryAgainstType(model, viewValue, localFilter);
+    return validateMandatoryAgainstType(model, viewValue, localFilter);
 }
 
-export function validate(rep: Models.IHasExtensions, vm: FieldViewModel, modelValue: string | ChoiceViewModel | string[] | ChoiceViewModel[], viewValue: string, mandatoryOnly: boolean) {
-    const message = mandatoryOnly ? Validate.validateMandatory(rep, viewValue) : validateAgainstType(rep, modelValue, viewValue, vm.localFilter);
+export function validate(rep: Ro.IHasExtensions, vm: FieldViewModel, modelValue: string | ChoiceViewModel | string[] | ChoiceViewModel[], viewValue: string, mandatoryOnly: boolean) {
+    const message = mandatoryOnly ? validateMandatory(rep, viewValue) : validateAgainstType(rep, modelValue, viewValue, vm.localFilter);
 
     if (message !== Msg.mandatory) {
         vm.setMessage(message);
@@ -174,30 +177,30 @@ export function validate(rep: Models.IHasExtensions, vm: FieldViewModel, modelVa
     return vm.clientValid;
 }
 
-export function setScalarValueInView(vm: { value: string | number | boolean | Date | null }, propertyRep: Models.PropertyMember, value: Models.Value) {
-    if (Models.isDate(propertyRep)) {
-        const date = Models.toUtcDate(value);
-        vm.value = date ? Models.toDateString(date) : '';
-    } else if (Models.isDateTime(propertyRep)) {
-        const date = Models.toUtcDate(value);
-        vm.value = date ? Models.toDateTimeString(date) : '';
-    } else if (Models.isTime(propertyRep)) {
-        const time = Models.toTime(value);
-        vm.value = time ? Models.toTimeString(time) : '';
+export function setScalarValueInView(vm: { value: string | number | boolean | Date | null }, propertyRep: Ro.PropertyMember, value: Ro.Value) {
+    if (Ro.isDate(propertyRep)) {
+        const date = Ro.toUtcDate(value);
+        vm.value = date ? Ro.toDateString(date) : '';
+    } else if (Ro.isDateTime(propertyRep)) {
+        const date = Ro.toUtcDate(value);
+        vm.value = date ? Ro.toDateTimeString(date) : '';
+    } else if (Ro.isTime(propertyRep)) {
+        const time = Ro.toTime(value);
+        vm.value = time ? Ro.toTimeString(time) : '';
     } else {
         vm.value = value.scalar();
     }
 }
 
-export function dirtyMarker(context: ContextService, configService: ConfigService, oid: Models.ObjectIdWrapper) {
+export function dirtyMarker(context: ContextService, configService: ConfigService, oid: Ro.ObjectIdWrapper) {
     return (configService.config.showDirtyFlag && context.getIsDirty(oid)) ? '*' : '';
 }
 
-export function createChoiceViewModels(id: string, searchTerm: string, choices: Dictionary<Models.Value>) {
+export function createChoiceViewModels(id: string, searchTerm: string, choices: Dictionary<Ro.Value>) {
     return Promise.resolve(map(choices, (v, k) => new ChoiceViewModel(v, id, k, searchTerm)));
 }
 
-export function handleErrorResponse(err: Models.ErrorMap, messageViewModel: IMessageViewModel, valueViewModels: FieldViewModel[]) {
+export function handleErrorResponse(err: Ro.ErrorMap, messageViewModel: IMessageViewModel, valueViewModels: FieldViewModel[]) {
 
     let requiredFieldsMissing = false; // only show warning message if we have nothing else
     let fieldValidationErrors = false;
@@ -234,13 +237,13 @@ export function handleErrorResponse(err: Models.ErrorMap, messageViewModel: IMes
     messageViewModel.setMessage(msg);
 }
 
-export function incrementPendingPotentAction(context: ContextService, invokableaction: Models.ActionRepresentation | Models.InvokableActionMember, paneId: Pane) {
+export function incrementPendingPotentAction(context: ContextService, invokableaction: Ro.ActionRepresentation | Ro.InvokableActionMember, paneId: Pane) {
     if (invokableaction.isPotent()) {
         context.incPendingPotentActionOrReload(paneId);
     }
 }
 
-export function decrementPendingPotentAction(context: ContextService, invokableaction: Models.ActionRepresentation | Models.InvokableActionMember, paneId: Pane) {
+export function decrementPendingPotentAction(context: ContextService, invokableaction: Ro.ActionRepresentation | Ro.InvokableActionMember, paneId: Pane) {
     if (invokableaction.isPotent()) {
         context.decPendingPotentActionOrReload(paneId);
     }

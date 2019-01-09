@@ -1,22 +1,24 @@
-﻿import { FieldViewModel } from './field-view-model';
-import { ColorService } from '@nakedobjects/services';
-import { ErrorService } from '@nakedobjects/services';
-import { AttachmentViewModel } from './attachment-view-model';
-import { ViewModelFactoryService } from './view-model-factory.service';
-import { ContextService } from '@nakedobjects/services';
-import { ChoiceViewModel } from './choice-view-model';
-import { MaskService } from '@nakedobjects/services';
-import { ClickHandlerService } from '@nakedobjects/services';
-import { UrlManagerService } from '@nakedobjects/services';
-import { IDraggableViewModel } from './idraggable-view-model';
+﻿import * as Ro from '@nakedobjects/restful-objects';
+import {
+    ClickHandlerService,
+    ColorService,
+    ConfigService,
+    ContextService,
+    ErrorService,
+    MaskService,
+    Pane,
+    UrlManagerService
+    } from '@nakedobjects/services';
 import { Dictionary } from 'lodash';
-import * as Msg from './user-messages';
-import * as Models from '@nakedobjects/restful-objects';
-import * as Helpers from './helpers-view-models';
-import * as Configservice from '@nakedobjects/services';
-import { Pane } from '@nakedobjects/services';
-import find from 'lodash-es/find';
 import concat from 'lodash-es/concat';
+import find from 'lodash-es/find';
+import { AttachmentViewModel } from './attachment-view-model';
+import { ChoiceViewModel } from './choice-view-model';
+import { FieldViewModel } from './field-view-model';
+import * as Helpers from './helpers-view-models';
+import { IDraggableViewModel } from './idraggable-view-model';
+import * as Msg from './user-messages';
+import { ViewModelFactoryService } from './view-model-factory.service';
 
 export class PropertyViewModel extends FieldViewModel implements IDraggableViewModel {
 
@@ -27,7 +29,7 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
     readonly draggableType: string;
 
     constructor(
-        public readonly propertyRep: Models.PropertyMember,
+        public readonly propertyRep: Ro.PropertyMember,
         color: ColorService,
         error: ErrorService,
         private readonly viewModelfactory: ViewModelFactoryService,
@@ -35,11 +37,11 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         private readonly maskService: MaskService,
         private readonly urlManager: UrlManagerService,
         private readonly clickHandler: ClickHandlerService,
-        configService: Configservice.ConfigService,
+        configService: ConfigService,
         id: string,
-        private readonly previousValue: Models.Value,
+        private readonly previousValue: Ro.Value,
         onPaneId: Pane,
-        parentValues: () => Dictionary<Models.Value>
+        parentValues: () => Dictionary<Ro.Value>
     ) {
 
         super(propertyRep,
@@ -60,11 +62,11 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
 
         const fieldEntryType = this.entryType;
 
-        if (fieldEntryType === Models.EntryType.AutoComplete) {
+        if (fieldEntryType === Ro.EntryType.AutoComplete) {
             this.setupPropertyAutocomplete(parentValues);
         }
 
-        if (fieldEntryType === Models.EntryType.ConditionalChoices) {
+        if (fieldEntryType === Ro.EntryType.ConditionalChoices) {
             this.setupPropertyConditionalChoices();
         }
 
@@ -84,17 +86,17 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         this.description = this.getRequiredIndicator() + this.description;
     }
 
-    private getDigest(propertyRep: Models.PropertyMember): string | null {
+    private getDigest(propertyRep: Ro.PropertyMember): string | null {
         const parent = propertyRep.parent;
-        if (parent instanceof Models.DomainObjectRepresentation) {
+        if (parent instanceof Ro.DomainObjectRepresentation) {
             if (parent.isTransient()) {
-                return Models.withNull(parent.etagDigest);
+                return Ro.withNull(parent.etagDigest);
             }
         }
         return null;
     }
 
-    private setupPropertyAutocomplete(parentValues: () => Dictionary<Models.Value>) {
+    private setupPropertyAutocomplete(parentValues: () => Dictionary<Ro.Value>) {
         const propertyRep = this.propertyRep;
         this.setupAutocomplete(propertyRep, parentValues, this.getDigest(propertyRep));
     }
@@ -104,7 +106,7 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         this.setupConditionalChoices(propertyRep, this.getDigest(propertyRep));
     }
 
-    private callIfChanged(newValue: Models.Value, doRefresh: (newValue: Models.Value) => void) {
+    private callIfChanged(newValue: Ro.Value, doRefresh: (newValue: Ro.Value) => void) {
         const propertyRep = this.propertyRep;
         const value = newValue || propertyRep.value();
 
@@ -114,16 +116,16 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         }
     }
 
-    private setupChoice(newValue: Models.Value) {
+    private setupChoice(newValue: Ro.Value) {
         const propertyRep = this.propertyRep;
-        if (this.entryType === Models.EntryType.Choices) {
+        if (this.entryType === Ro.EntryType.Choices) {
 
             const choices = propertyRep.choices() !;
 
             this.setupChoices(choices);
 
             if (this.optional) {
-                const emptyChoice = new ChoiceViewModel(new Models.Value(''), this.id);
+                const emptyChoice = new ChoiceViewModel(new Ro.Value(''), this.id);
                 this.choices = concat<ChoiceViewModel>([emptyChoice], this.choices);
             }
 
@@ -134,7 +136,7 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         }
     }
 
-    private setupReference(value: Models.Value, rep: Models.IHasExtensions) {
+    private setupReference(value: Ro.Value, rep: Ro.IHasExtensions) {
         if (value.isNull()) {
             this.reference = '';
             this.value = this.description;
@@ -146,14 +148,14 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
             this.formattedValue = value.toString();
             this.refType = rep.extensions().notNavigable() ? 'notNavigable' : 'navigable';
         }
-        if (this.entryType === Models.EntryType.FreeForm) {
+        if (this.entryType === Ro.EntryType.FreeForm) {
             this.description = this.description || Msg.dropPrompt;
         }
     }
 
     private setupReferencePropertyValue() {
         const propertyRep = this.propertyRep;
-        this.refresh = (newValue: Models.Value) => this.callIfChanged(newValue, (value: Models.Value) => {
+        this.refresh = (newValue: Ro.Value) => this.callIfChanged(newValue, (value: Ro.Value) => {
             this.setupChoice(value);
             this.setupReference(value, propertyRep);
         });
@@ -166,12 +168,12 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         const localFilter = this.maskService.toLocalFilter(remoteMask, propertyRep.extensions().format() !);
         this.localFilter = localFilter;
 
-        this.refresh = (newValue: Models.Value) => this.callIfChanged(newValue, (value: Models.Value) => {
+        this.refresh = (newValue: Ro.Value) => this.callIfChanged(newValue, (value: Ro.Value) => {
 
             this.setupChoice(value);
             Helpers.setScalarValueInView(this, this.propertyRep, value);
 
-            if (propertyRep.entryType() === Models.EntryType.Choices) {
+            if (propertyRep.entryType() === Ro.EntryType.Choices) {
                 if (this.selectedChoice) {
                     this.value = this.selectedChoice.name;
                     this.formattedValue = this.selectedChoice.name;
