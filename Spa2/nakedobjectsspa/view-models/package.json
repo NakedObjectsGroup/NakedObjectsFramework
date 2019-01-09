@@ -4,7 +4,31 @@
         "lib": {
             "entryFile": "src/public_api.ts",
             "umdModuleIds": {
-                "lodash": "_"
+                "lodash": "_",
+                 "lodash-es/reduce" : "reduce",
+                 "lodash-es/uniqWith" : "uniqWith",
+                 "lodash-es/clone" : "clone",
+                 "lodash-es/first" : "first",
+                 "lodash-es/keys" : "keys",
+                 "lodash-es/toArray" : "toArray",
+                 "lodash-es/each" : "each",
+                 "lodash-es/pickBy" : "pickBy",
+                 "lodash-es/forEach" : "forEach",
+                 "lodash-es/mapValues" : "mapValues",
+                 "lodash-es/values" : "values",
+                 "lodash-es/zipObject" : "zipObject",
+                 "lodash-es/range" : "range",
+                 "lodash-es/takeRight" : "takeRight",
+                 "lodash-es/filter" : "filter",
+                 "lodash-es/fromPairs" : "fromPairs",
+                 "lodash-es/partial" : "partial",
+                 "lodash-es/some" : "some",
+                 "lodash-es/concat" : "concat",
+                 "lodash-es/every" : "every",
+                 "lodash-es/find" : "find",
+                 "lodash-es/map" : "map",
+                 "@nakedobjects/restful-objects" : "@nakedobjects/restful-objects",
+                 "@nakedobjects/services" : "@nakedobjects/services"
             }
         },
         "whitelistedNonPeerDependencies": [
