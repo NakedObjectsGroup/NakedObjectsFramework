@@ -4,7 +4,7 @@
         "lib": {
             "entryFile": "src/public_api.ts",
             "umdModuleIds": {
-                "lodash": "_",
+                "lodash": "_"
             }
         },
         "whitelistedNonPeerDependencies": [
@@ -49,7 +49,7 @@
     },
     "dependencies": {
         "lodash": "4.17.11",
-        "lodash-es": "4.17.11",
+        "lodash-es": "4.17.11"
     },
     "peerDependencies": {
         "@angular/animations": "^7.1.2",
