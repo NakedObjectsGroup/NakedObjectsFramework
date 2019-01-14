@@ -1,4 +1,6 @@
-﻿import { Dictionary } from 'lodash';
+﻿import * as Ro from '@nakedobjects/restful-objects';
+import { validateDate, validateMandatory, validateMandatoryAgainstType } from '@nakedobjects/services';
+import { Dictionary } from 'lodash';
 import forEach from 'lodash-es/forEach';
 import fromPairs from 'lodash-es/fromPairs';
 import keys from 'lodash-es/keys';
@@ -8,12 +10,10 @@ import mapKeys from 'lodash-es/mapKeys';
 import mapValues from 'lodash-es/mapValues';
 import reduce from 'lodash-es/reduce';
 import { Command } from './Command';
-import * as Commandresult from './command-result';
 import { CommandResult } from './command-result';
+import * as Commandresult from './command-result';
 import * as Constants from '../constants';
-import * as Models from '@nakedobjects/restful-objects';
 import * as Usermessages from '../user-messages';
-import { validateMandatory, validateDate, validateMandatoryAgainstType } from '@nakedobjects/services';
 
 export class Enter extends Command {
 
@@ -71,7 +71,7 @@ export class Enter extends Command {
         });
     }
 
-    private isDependentField(fieldName: string, possibleDependent: Models.IField): boolean {
+    private isDependentField(fieldName: string, possibleDependent: Ro.IField): boolean {
         const promptLink = possibleDependent.promptLink();
 
         if (promptLink) {
@@ -83,7 +83,7 @@ export class Enter extends Command {
         return false;
     }
 
-    private findAndClearAnyDependentFields(changingField: string, allFields: Dictionary<Models.IField>) {
+    private findAndClearAnyDependentFields(changingField: string, allFields: Dictionary<Ro.IField>) {
 
         forEach(allFields, field => {
             if (this.isDependentField(changingField, field)) {
@@ -118,55 +118,55 @@ export class Enter extends Command {
         });
     }
 
-    private clearField(field: Models.IField): void {
-        this.context.cacheFieldValue(this.routeData().dialogId, field.id(), new Models.Value(null));
+    private clearField(field: Ro.IField): void {
+        this.context.cacheFieldValue(this.routeData().dialogId, field.id(), new Ro.Value(null));
 
-        if (field instanceof Models.Parameter) {
-            this.context.cacheFieldValue(this.routeData().dialogId, field.id(), new Models.Value(null));
-        } else if (field instanceof Models.PropertyMember) {
-            const parent = field.parent as Models.DomainObjectRepresentation;
-            this.context.cachePropertyValue(parent, field, new Models.Value(null));
+        if (field instanceof Ro.Parameter) {
+            this.context.cacheFieldValue(this.routeData().dialogId, field.id(), new Ro.Value(null));
+        } else if (field instanceof Ro.PropertyMember) {
+            const parent = field.parent as Ro.DomainObjectRepresentation;
+            this.context.cachePropertyValue(parent, field, new Ro.Value(null));
         }
     }
 
-    private setField(field: Models.IField, fieldEntry: string) {
-        if (field instanceof Models.PropertyMember && field.disabledReason()) {
+    private setField(field: Ro.IField, fieldEntry: string) {
+        if (field instanceof Ro.PropertyMember && field.disabledReason()) {
             return this.returnResult('', `${field.extensions().friendlyName()} ${Usermessages.isNotModifiable}`);
         }
         const entryType = field.entryType();
         switch (entryType) {
-            case Models.EntryType.FreeForm:
+            case Ro.EntryType.FreeForm:
                 return this.handleFreeForm(field, fieldEntry);
-            case Models.EntryType.AutoComplete:
+            case Ro.EntryType.AutoComplete:
                 return this.handleAutoComplete(field, fieldEntry);
-            case Models.EntryType.Choices:
+            case Ro.EntryType.Choices:
                 return this.handleChoices(field, fieldEntry);
-            case Models.EntryType.MultipleChoices:
+            case Ro.EntryType.MultipleChoices:
                 return this.handleChoices(field, fieldEntry);
-            case Models.EntryType.ConditionalChoices:
+            case Ro.EntryType.ConditionalChoices:
                 return this.handleConditionalChoices(field, false, fieldEntry);
-            case Models.EntryType.MultipleConditionalChoices:
+            case Ro.EntryType.MultipleConditionalChoices:
                 return this.handleConditionalChoices(field, false, fieldEntry);
             default:
                 return this.returnResult('', Usermessages.invalidCase);
         }
     }
 
-    private handleFreeForm(field: Models.IField, fieldEntry: string) {
+    private handleFreeForm(field: Ro.IField, fieldEntry: string) {
         if (field.isScalar()) {
 
             const mandatoryError = validateMandatory(field, fieldEntry);
 
             if (mandatoryError) {
-                return this.returnResult('', this.validationMessage(mandatoryError, new Models.Value(''), field.extensions().friendlyName()));
+                return this.returnResult('', this.validationMessage(mandatoryError, new Ro.Value(''), field.extensions().friendlyName()));
             }
 
-            let value = new Models.Value(fieldEntry);
-            if (Models.isDateOrDateTime(field)) {
+            let value = new Ro.Value(fieldEntry);
+            if (Ro.isDateOrDateTime(field)) {
                 const dt = validateDate(fieldEntry, Constants.supportedDateFormats);
 
                 if (dt) {
-                    value = new Models.Value(Models.toDateString(dt.toDate()));
+                    value = new Ro.Value(Ro.toDateString(dt.toDate()));
                 }
             }
 
@@ -190,21 +190,21 @@ export class Enter extends Command {
         }
     }
 
-    private setFieldValue(field: Models.IField, value: Models.Value): void {
+    private setFieldValue(field: Ro.IField, value: Ro.Value): void {
         const urlVal = this.valueForUrl(value, field);
         if (urlVal != null) {
-            if (field instanceof Models.Parameter) {
+            if (field instanceof Ro.Parameter) {
                 this.setFieldValueInContext(field, urlVal);
-            } else if (field instanceof Models.PropertyMember) {
+            } else if (field instanceof Ro.PropertyMember) {
                 const parent = field.parent;
-                if (parent instanceof Models.DomainObjectRepresentation) {
+                if (parent instanceof Ro.DomainObjectRepresentation) {
                     this.setPropertyValueinContext(parent, field, urlVal);
                 }
             }
         }
     }
 
-    private handleReferenceField(field: Models.IField, fieldEntry: string) {
+    private handleReferenceField(field: Ro.IField, fieldEntry: string) {
         if (this.isPaste(fieldEntry)) {
             return this.handleClipboard(field);
         } else {
@@ -216,7 +216,7 @@ export class Enter extends Command {
         return 'paste'.indexOf(fieldEntry) === 0;
     }
 
-    private handleClipboard(field: Models.IField) {
+    private handleClipboard(field: Ro.IField) {
         const ref = this.ciceroContext.ciceroClipboard;
         if (!ref) {
             return this.returnResult('', Usermessages.emptyClipboard);
@@ -229,7 +229,7 @@ export class Enter extends Command {
                 const selfLink = obj.selfLink();
                 // Need to add a title to the SelfLink as not there by default
                 selfLink.setTitle(obj.title());
-                const value = new Models.Value(selfLink);
+                const value = new Ro.Value(selfLink);
                 this.setFieldValue(field, value);
                 return this.returnResult('', '', () => this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl());
             } else {
@@ -238,12 +238,12 @@ export class Enter extends Command {
         });
     }
 
-    private handleAutoComplete(field: Models.IField, fieldEntry: string) {
+    private handleAutoComplete(field: Ro.IField, fieldEntry: string) {
         // TODO: Need to check that the minimum number of characters has been entered or fail validation
         if (!field.isScalar() && this.isPaste(fieldEntry)) {
             return this.handleClipboard(field);
         } else {
-            return this.context.autoComplete(field, field.id(), () => ({}), fieldEntry).then((choices: Dictionary<Models.Value>) => {
+            return this.context.autoComplete(field, field.id(), () => ({}), fieldEntry).then((choices: Dictionary<Ro.Value>) => {
                 const matches = this.findMatchingChoicesForRef(choices, fieldEntry);
                 const allFields = Commandresult.getFields(field);
                 return this.switchOnMatches(field, allFields, fieldEntry, matches);
@@ -251,8 +251,8 @@ export class Enter extends Command {
         }
     }
 
-    private handleChoices(field: Models.IField,  fieldEntry: string) {
-        let matches: Models.Value[];
+    private handleChoices(field: Ro.IField,  fieldEntry: string) {
+        let matches: Ro.Value[];
         if (field.isScalar()) {
             matches = this.findMatchingChoicesForScalar(field.choices(), fieldEntry);
         } else {
@@ -262,11 +262,11 @@ export class Enter extends Command {
         return this.switchOnMatches(field, allFields, fieldEntry, matches);
     }
 
-    private updateDependentField(field: Models.IField): Promise<CommandResult> {
+    private updateDependentField(field: Ro.IField): Promise<CommandResult> {
         return this.handleConditionalChoices(field, true);
     }
 
-    private setFieldAndCheckDependencies(field: Models.IField, allFields: Models.IField[], match: Models.Value): Promise<CommandResult[]> {
+    private setFieldAndCheckDependencies(field: Ro.IField, allFields: Ro.IField[], match: Ro.Value): Promise<CommandResult[]> {
         this.setFieldValue(field, match);
         const promises: Promise<CommandResult>[] = [];
 
@@ -284,7 +284,7 @@ export class Enter extends Command {
         return Promise.all(promises);
     }
 
-    private switchOnMatches(field: Models.IField, allFields: Models.IField[], fieldEntry: string, matches: Models.Value[]) {
+    private switchOnMatches(field: Ro.IField, allFields: Ro.IField[], fieldEntry: string, matches: Ro.Value[]) {
         switch (matches.length) {
             case 0:
                 return this.returnResult('', Usermessages.noMatch(fieldEntry));
@@ -298,7 +298,7 @@ export class Enter extends Command {
         }
     }
 
-    private getPropertiesAndCurrentValue(obj: Models.DomainObjectRepresentation): Dictionary<Models.Value> {
+    private getPropertiesAndCurrentValue(obj: Ro.DomainObjectRepresentation): Dictionary<Ro.Value> {
         const props = obj.propertyMembers();
         const values = mapValues(props, p => p.value());
         const modifiedProps = this.context.getObjectCachedValues(obj.id());
@@ -312,11 +312,11 @@ export class Enter extends Command {
         return mapKeys(values, (v, k) => k.toLowerCase());
     }
 
-     private updateOnMatches(field: Models.IField, allFields: Models.IField[], fieldEntry: string, matches: Models.Value[]) {
+     private updateOnMatches(field: Ro.IField, allFields: Ro.IField[], fieldEntry: string, matches: Ro.Value[]) {
         switch (matches.length) {
             case 0:
             case 1:
-                const match = matches.length === 0 ? new Models.Value(null) : matches[0];
+                const match = matches.length === 0 ? new Ro.Value(null) : matches[0];
                 // TODO fix "!""
                 return this.setFieldAndCheckDependencies(field, allFields, match).then((crs: CommandResult[]) => last(crs)!);
             default:
@@ -325,20 +325,20 @@ export class Enter extends Command {
         }
     }
 
-    private handleConditionalChoices(field: Models.IField, updating: boolean, fieldEntry?: string, ) {
-        let enteredFields: Dictionary<Models.Value>;
+    private handleConditionalChoices(field: Ro.IField, updating: boolean, fieldEntry?: string, ) {
+        let enteredFields: Dictionary<Ro.Value>;
         const allFields = Commandresult.getFields(field);
 
-        if (field instanceof Models.Parameter) {
+        if (field instanceof Ro.Parameter) {
            enteredFields = Commandresult.getParametersAndCurrentValue(field.parent, this.context);
         }
 
-        if (field instanceof Models.PropertyMember) {
-            enteredFields = this.getPropertiesAndCurrentValue(field.parent as Models.DomainObjectRepresentation);
+        if (field instanceof Ro.PropertyMember) {
+            enteredFields = this.getPropertiesAndCurrentValue(field.parent as Ro.DomainObjectRepresentation);
         }
 
         // TODO fix this any cast
-        const args = fromPairs(map(field.promptLink()!.arguments()! as any, (v: any, key: string) => [key, new Models.Value(v.value)])) as Dictionary<Models.Value>;
+        const args = fromPairs(map(field.promptLink()!.arguments()! as any, (v: any, key: string) => [key, new Ro.Value(v.value)])) as Dictionary<Ro.Value>;
         forEach(keys(args), key => args[key] = enteredFields[key]);
 
         let fieldEntryOrExistingValue: string;
@@ -350,7 +350,7 @@ export class Enter extends Command {
             fieldEntryOrExistingValue = fieldEntry;
         }
 
-        return this.context.conditionalChoices(field, field.id(), () => ({}), args).then((choices: Dictionary<Models.Value>) => {
+        return this.context.conditionalChoices(field, field.id(), () => ({}), args).then((choices: Dictionary<Ro.Value>) => {
             const matches = this.findMatchingChoicesForRef(choices, fieldEntryOrExistingValue);
 
             if (updating) {
@@ -361,15 +361,15 @@ export class Enter extends Command {
         });
     }
 
-    private renderFieldDetails(field: Models.IField, value: Models.Value): string {
+    private renderFieldDetails(field: Ro.IField, value: Ro.Value): string {
 
         const fieldName = Usermessages.fieldName(field.extensions().friendlyName());
         const desc = field.extensions().description();
         const descAndPrefix = desc ? `\n${Usermessages.descriptionFieldPrefix} ${desc}` : '';
-        const types = `\n${Usermessages.typePrefix} ${Models.friendlyTypeName(field.extensions().returnType()!)}`;
+        const types = `\n${Usermessages.typePrefix} ${Ro.friendlyTypeName(field.extensions().returnType()!)}`;
 
         let postFix = '';
-        if (field instanceof Models.PropertyMember && field.disabledReason()) {
+        if (field instanceof Ro.PropertyMember && field.disabledReason()) {
             postFix = `\n${Usermessages.unModifiablePrefix(field.disabledReason())}`;
         } else {
             postFix = field.extensions().optional() ? `\n${Usermessages.optional}` : `\n${Usermessages.mandatory}`;

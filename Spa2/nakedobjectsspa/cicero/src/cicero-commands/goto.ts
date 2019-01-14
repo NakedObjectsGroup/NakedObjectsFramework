@@ -1,10 +1,10 @@
-import { CommandResult } from './command-result';
-import { Command } from './Command';
-import * as Models from '@nakedobjects/restful-objects';
-import * as Usermessages from '../user-messages';
-import * as Routedata from '@nakedobjects/services';
+import * as Ro from '@nakedobjects/restful-objects';
+import { CollectionViewState } from '@nakedobjects/services';
 import filter from 'lodash-es/filter';
 import reduce from 'lodash-es/reduce';
+import { Command } from './Command';
+import { CommandResult } from './command-result';
+import * as Usermessages from '../user-messages';
 
 export class Goto extends Command {
 
@@ -32,17 +32,17 @@ export class Goto extends Command {
             } catch (e) {
                 return this.returnResult('', e.message);
             }
-            return this.getList().then((list: Models.ListRepresentation) => this.attemptGotoLinkNumber(itemNo, list.value()));
+            return this.getList().then((list: Ro.ListRepresentation) => this.attemptGotoLinkNumber(itemNo, list.value()));
         }
         if (this.isObject) {
 
-            return this.getObject().then((obj: Models.DomainObjectRepresentation) => {
+            return this.getObject().then((obj: Ro.DomainObjectRepresentation) => {
                 if (this.isCollection()) {
                     const itemNo = this.argumentAsNumber(args, 0)!;
                     const openCollIds = this.ciceroRenderer.openCollectionIds(this.routeData());
                     const coll = obj.collectionMember(openCollIds[0]);
                     // Safe to assume always a List (Cicero doesn't support tables as such & must be open)
-                    return this.context.getCollectionDetails(coll, Routedata.CollectionViewState.List, false).then(details => this.attemptGotoLinkNumber(itemNo, details.value()));
+                    return this.context.getCollectionDetails(coll, CollectionViewState.List, false).then(details => this.attemptGotoLinkNumber(itemNo, details.value()));
 
                 } else {
                     const matchingProps = this.matchingProperties(obj, arg0);
@@ -82,7 +82,7 @@ export class Goto extends Command {
         return this.returnResult('', Usermessages.commandNotAvailable(this.fullCommand));
     }
 
-    private attemptGotoLinkNumber(itemNo: number, links: Models.Link[]): Promise<CommandResult> {
+    private attemptGotoLinkNumber(itemNo: number, links: Ro.Link[]): Promise<CommandResult> {
         if (itemNo < 1 || itemNo > links.length) {
             return this.returnResult('', Usermessages.outOfItemRange(itemNo));
         } else {
@@ -91,8 +91,8 @@ export class Goto extends Command {
         }
     }
 
-    private openCollection(collection: Models.CollectionMember): void {
+    private openCollection(collection: Ro.CollectionMember): void {
         this.closeAnyOpenCollections();
-        this.urlManager.setCollectionMemberState(collection.collectionId(), Routedata.CollectionViewState.List);
+        this.urlManager.setCollectionMemberState(collection.collectionId(), CollectionViewState.List);
     }
 }

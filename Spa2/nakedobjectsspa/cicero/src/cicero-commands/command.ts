@@ -1,29 +1,30 @@
 ﻿import { Location } from '@angular/common';
-import { CiceroContextService } from '../cicero-context.service';
-import { CommandResult } from './command-result';
-import * as Routedata from '@nakedobjects/services';
-import * as Models from '@nakedobjects/restful-objects';
-import * as Usermessages from '../user-messages';
-import { UrlManagerService } from '@nakedobjects/services';
-import { CiceroCommandFactoryService } from '../cicero-command-factory.service';
-import { ContextService } from '@nakedobjects/services';
-import { MaskService } from '@nakedobjects/services';
-import { ErrorService } from '@nakedobjects/services';
-import { ConfigService } from '@nakedobjects/services';
+import * as Ro from '@nakedobjects/restful-objects';
+import { ErrorWrapper,
+  ConfigService,
+  UrlManagerService,
+  ErrorService,
+  ContextService,
+  PaneRouteData,
+  InteractionMode,
+  CollectionViewState,
+  MaskService } from '@nakedobjects/services';
+import { Dictionary } from 'lodash';
+import each from 'lodash-es/each';
+import every from 'lodash-es/every';
+import filter from 'lodash-es/filter';
+import findIndex from 'lodash-es/findIndex';
+import forEach from 'lodash-es/forEach';
+import keys from 'lodash-es/keys';
 import map from 'lodash-es/map';
 import some from 'lodash-es/some';
-import filter from 'lodash-es/filter';
-import every from 'lodash-es/every';
-import each from 'lodash-es/each';
-import keys from 'lodash-es/keys';
-import forEach from 'lodash-es/forEach';
-import findIndex from 'lodash-es/findIndex';
-import { Dictionary } from 'lodash';
 import * as Commandresult from './command-result';
+import { CommandResult } from './command-result';
+import { CiceroCommandFactoryService } from '../cicero-command-factory.service';
+import { CiceroContextService } from '../cicero-context.service';
 import { CiceroRendererService } from '../cicero-renderer.service';
-import * as Rointerfaces from '@nakedobjects/restful-objects';
-import { ErrorCategory, ClientErrorCode } from '../constants';
-import { ErrorWrapper } from '@nakedobjects/services';
+import { ClientErrorCode, ErrorCategory } from '../constants';
+import * as Usermessages from '../user-messages';
 
 export abstract class Command {
 
@@ -165,7 +166,7 @@ export abstract class Command {
         return null;
     }
 
-    protected routeData(): Routedata.PaneRouteData {
+    protected routeData(): PaneRouteData {
         return this.urlManager.getRouteData().pane1;
     }
 
@@ -178,12 +179,12 @@ export abstract class Command {
         return this.urlManager.isObject();
     }
 
-    protected getObject(): Promise<Models.DomainObjectRepresentation> {
-        const oid = Models.ObjectIdWrapper.fromObjectId(this.routeData().objectId, this.keySeparator);
+    protected getObject(): Promise<Ro.DomainObjectRepresentation> {
+        const oid = Ro.ObjectIdWrapper.fromObjectId(this.routeData().objectId, this.keySeparator);
         // TODO: Consider view model & transient modes?
 
-        return this.context.getObject(1, oid, this.routeData().interactionMode).then((obj: Models.DomainObjectRepresentation) => {
-            if (this.routeData().interactionMode === Routedata.InteractionMode.Edit) {
+        return this.context.getObject(1, oid, this.routeData().interactionMode).then((obj: Ro.DomainObjectRepresentation) => {
+            if (this.routeData().interactionMode === InteractionMode.Edit) {
                 return this.context.getObjectForEdit(1, obj);
             } else {
                 return obj; // To wrap a known object as a promise
@@ -195,7 +196,7 @@ export abstract class Command {
         return this.urlManager.isList();
     }
 
-    protected getList(): Promise<Models.ListRepresentation> {
+    protected getList(): Promise<Ro.ListRepresentation> {
         const routeData = this.routeData();
         // TODO: Currently covers only the list-from-menu; need to cover list from object action
         return this.context.getListFromMenu(routeData, routeData.page, routeData.pageSize);
@@ -205,7 +206,7 @@ export abstract class Command {
         return !!this.routeData().menuId;
     }
 
-    protected getMenu(): Promise<Models.MenuRepresentation> {
+    protected getMenu(): Promise<Ro.MenuRepresentation> {
         return this.context.getMenu(this.routeData().menuId);
     }
 
@@ -213,17 +214,17 @@ export abstract class Command {
         return !!this.routeData().dialogId;
     }
 
-    protected isMultiChoiceField(field: Models.IField) {
+    protected isMultiChoiceField(field: Ro.IField) {
         const entryType = field.entryType();
-        return entryType === Models.EntryType.MultipleChoices || entryType === Models.EntryType.MultipleConditionalChoices;
+        return entryType === Ro.EntryType.MultipleChoices || entryType === Ro.EntryType.MultipleConditionalChoices;
     }
 
-    protected getActionForCurrentDialog(): Promise<Models.InvokableActionMember | Models.ActionRepresentation> {
+    protected getActionForCurrentDialog(): Promise<Ro.InvokableActionMember | Ro.ActionRepresentation> {
         const dialogId = this.routeData().dialogId;
         if (this.isObject()) {
-            return this.getObject().then((obj: Models.DomainObjectRepresentation) => this.context.getInvokableAction(obj.actionMember(dialogId)));
+            return this.getObject().then((obj: Ro.DomainObjectRepresentation) => this.context.getInvokableAction(obj.actionMember(dialogId)));
         } else if (this.isMenu()) {
-            return this.getMenu().then((menu: Models.MenuRepresentation) => this.context.getInvokableAction(menu.actionMember(dialogId))); // i.e. return a promise
+            return this.getMenu().then((menu: Ro.MenuRepresentation) => this.context.getInvokableAction(menu.actionMember(dialogId))); // i.e. return a promise
         }
         return Promise.reject(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.NotImplemented, 'List actions not implemented yet'));
     }
@@ -236,7 +237,7 @@ export abstract class Command {
 
     protected closeAnyOpenCollections() {
         const open = this.ciceroRenderer.openCollectionIds(this.routeData());
-        forEach(open, id => this.urlManager.setCollectionMemberState(id, Routedata.CollectionViewState.Summary));
+        forEach(open, id => this.urlManager.setCollectionMemberState(id, CollectionViewState.Summary));
     }
 
     protected isTable(): boolean {
@@ -244,18 +245,18 @@ export abstract class Command {
     }
 
     protected isEdit(): boolean {
-        return this.routeData().interactionMode === Routedata.InteractionMode.Edit;
+        return this.routeData().interactionMode === InteractionMode.Edit;
     }
 
     protected isForm(): boolean {
-        return this.routeData().interactionMode === Routedata.InteractionMode.Form;
+        return this.routeData().interactionMode === InteractionMode.Form;
     }
 
     protected isTransient(): boolean {
-        return this.routeData().interactionMode === Routedata.InteractionMode.Transient;
+        return this.routeData().interactionMode === InteractionMode.Transient;
     }
 
-    protected matchingProperties(obj: Models.DomainObjectRepresentation, match?: string): Models.PropertyMember[] {
+    protected matchingProperties(obj: Ro.DomainObjectRepresentation, match?: string): Ro.PropertyMember[] {
         let props = map(obj.propertyMembers(), prop => prop);
         if (match) {
             props = this.matchFriendlyNameAndOrMenuPath(props, match);
@@ -263,16 +264,16 @@ export abstract class Command {
         return props;
     }
 
-    protected matchingCollections(obj: Models.DomainObjectRepresentation, match?: string): Models.CollectionMember[] {
+    protected matchingCollections(obj: Ro.DomainObjectRepresentation, match?: string): Ro.CollectionMember[] {
         const allColls = map(obj.collectionMembers(), action => action);
         if (match) {
-            return this.matchFriendlyNameAndOrMenuPath<Models.CollectionMember>(allColls, match);
+            return this.matchFriendlyNameAndOrMenuPath<Ro.CollectionMember>(allColls, match);
         } else {
             return allColls;
         }
     }
 
-    protected matchingParameters(action: Models.InvokableActionMember, match: string): Models.Parameter[] {
+    protected matchingParameters(action: Ro.InvokableActionMember, match: string): Ro.Parameter[] {
         let params = map(action.parameters(), p => p);
         if (match) {
             params = this.matchFriendlyNameAndOrMenuPath(params, match);
@@ -280,7 +281,7 @@ export abstract class Command {
         return params;
     }
 
-    protected matchFriendlyNameAndOrMenuPath<T extends Models.IHasExtensions>(
+    protected matchFriendlyNameAndOrMenuPath<T extends Ro.IHasExtensions>(
         reps: T[],
         match: string | undefined): T[] {
         const clauses = match ? match.split(' ') : [];
@@ -302,18 +303,18 @@ export abstract class Command {
             });
     }
 
-    protected findMatchingChoicesForRef(choices: Dictionary<Models.Value> | null, titleMatch: string): Models.Value[] {
+    protected findMatchingChoicesForRef(choices: Dictionary<Ro.Value> | null, titleMatch: string): Ro.Value[] {
         return choices ? filter(choices, v => v.toString().toLowerCase().indexOf(titleMatch.toLowerCase()) >= 0) : [];
     }
 
-    protected findMatchingChoicesForScalar(choices: Dictionary<Models.Value> | null, titleMatch: string): Models.Value[] {
+    protected findMatchingChoicesForScalar(choices: Dictionary<Ro.Value> | null, titleMatch: string): Ro.Value[] {
         if (choices == null) {
             return [];
         }
 
         const labels = keys(choices);
         const matchingLabels = filter(labels, l => l.toString().toLowerCase().indexOf(titleMatch.toLowerCase()) >= 0);
-        const result = new Array<Models.Value>();
+        const result = new Array<Ro.Value>();
         switch (matchingLabels.length) {
             case 0:
                 break; // leave result empty
@@ -325,13 +326,13 @@ export abstract class Command {
             default:
                 // Push the matching KEYs, wrapped as (pseudo) Values for display in message to user
                 // For simple scalars the values would also be OK, but not for Enums
-                forEach(matchingLabels, label => result.push(new Models.Value(label)));
+                forEach(matchingLabels, label => result.push(new Ro.Value(label)));
                 break;
         }
         return result;
     }
 
-    protected handleErrorResponse(err: Models.ErrorMap, getFriendlyName: (id: string) => string) {
+    protected handleErrorResponse(err: Ro.ErrorMap, getFriendlyName: (id: string) => string) {
         if (err.invalidReason()) {
             return this.returnResult('', err.invalidReason());
         }
@@ -343,7 +344,7 @@ export abstract class Command {
         return this.returnResult('', msg);
     }
 
-    protected handleErrorResponseNew(err: Models.ErrorMap, getFriendlyName: (id: string) => string) {
+    protected handleErrorResponseNew(err: Ro.ErrorMap, getFriendlyName: (id: string) => string) {
         if (err.invalidReason()) {
             return this.returnResult('', err.invalidReason());
         }
@@ -355,7 +356,7 @@ export abstract class Command {
         return this.returnResult('', msg);
     }
 
-    protected validationMessage(reason: string | null, value: Models.Value, fieldFriendlyName:  string): string {
+    protected validationMessage(reason: string | null, value: Ro.Value, fieldFriendlyName:  string): string {
         if (reason) {
             const prefix = `${fieldFriendlyName}: `;
             const suffix = reason === Usermessages.mandatory ? Usermessages.required : `${value} ${reason}`;
@@ -364,31 +365,31 @@ export abstract class Command {
         return '';
     }
 
-    private fieldValidationMessage(errorValue: Models.ErrorValue, fieldFriendlyName: () => string): string {
+    private fieldValidationMessage(errorValue: Ro.ErrorValue, fieldFriendlyName: () => string): string {
         const reason = errorValue.invalidReason;
         return this.validationMessage(reason, errorValue.value, fieldFriendlyName());
     }
 
-    protected valueForUrl(val: Models.Value, field: Models.IField): Models.Value | null {
+    protected valueForUrl(val: Ro.Value, field: Ro.IField): Ro.Value | null {
         if (val.isNull()) { return val; }
         const fieldEntryType = field.entryType();
 
-        if (fieldEntryType !== Models.EntryType.FreeForm || field.isCollectionContributed()) {
+        if (fieldEntryType !== Ro.EntryType.FreeForm || field.isCollectionContributed()) {
 
             if (this.isMultiChoiceField(field) || field.isCollectionContributed()) {
-                let valuesFromRouteData: Models.Value[] | null = new Array<Models.Value>();
-                if (field instanceof Models.Parameter) {
+                let valuesFromRouteData: Ro.Value[] | null = new Array<Ro.Value>();
+                if (field instanceof Ro.Parameter) {
                     const rd = Commandresult.getParametersAndCurrentValue(field.parent, this.context)[field.id()];
                     if (rd) { valuesFromRouteData = rd.list(); } // TODO: what if only one?
-                } else if (field instanceof Models.PropertyMember) {
-                    const obj = field.parent as Models.DomainObjectRepresentation;
+                } else if (field instanceof Ro.PropertyMember) {
+                    const obj = field.parent as Ro.DomainObjectRepresentation;
                     const props = this.context.getObjectCachedValues(obj.id());
                     const rd = props[field.id()];
                     if (rd) { valuesFromRouteData = rd.list(); } // TODO: what if only one?
                 }
-                let vals: Models.Value[] = [];
+                let vals: Ro.Value[] = [];
                 if (val.isReference() || val.isScalar()) {
-                    vals = new Array<Models.Value>(val);
+                    vals = new Array<Ro.Value>(val);
                 } else if (val.isList()) { // Should be!
                     vals = val.list()!;
                 }
@@ -398,10 +399,10 @@ export abstract class Command {
 
                 if (vals[0].isScalar()) { // then all must be scalar
                     const scalars = map(valuesFromRouteData, v => v.scalar());
-                    return new Models.Value(scalars);
+                    return new Ro.Value(scalars);
                 } else { // assumed to be links
-                    const links: Rointerfaces.ILink[] = map(valuesFromRouteData, v => ({ href: v.link()!.href(), title: Models.withUndefined(v.link()!.title()) }));
-                    return new Models.Value(links.length > 0 ? links : null);
+                    const links: Ro.ILink[] = map(valuesFromRouteData, v => ({ href: v.link()!.href(), title: Ro.withUndefined(v.link()!.title()) }));
+                    return new Ro.Value(links.length > 0 ? links : null);
                 }
             }
             if (val.isScalar()) {
@@ -413,7 +414,7 @@ export abstract class Command {
 
         if (val.isScalar()) {
             if (val.isNull()) {
-                return new Models.Value('');
+                return new Ro.Value('');
             }
             return val;
             // TODO: consider these options:
@@ -429,13 +430,13 @@ export abstract class Command {
         return null;
     }
 
-    private leanLink(val: Models.Value): Models.Value {
-        return new Models.Value({ href: val.link()!.href()!, title: val.link()!.title()! });
+    private leanLink(val: Ro.Value): Ro.Value {
+        return new Ro.Value({ href: val.link()!.href()!, title: val.link()!.title()! });
     }
 
-    private addOrRemoveValue(valuesFromRouteData: Models.Value[], val: Models.Value) {
+    private addOrRemoveValue(valuesFromRouteData: Ro.Value[], val: Ro.Value) {
         let index: number;
-        let valToAdd: Models.Value;
+        let valToAdd: Ro.Value;
         if (val.isScalar()) {
             valToAdd = val;
             index = findIndex(valuesFromRouteData, v => v.scalar() === val.scalar());
@@ -450,11 +451,11 @@ export abstract class Command {
         }
     }
 
-    protected setFieldValueInContext(field: Models.Parameter, val: Models.Value) {
+    protected setFieldValueInContext(field: Ro.Parameter, val: Ro.Value) {
         this.context.cacheFieldValue(this.routeData().dialogId, field.id(), val);
     }
 
-    protected setPropertyValueinContext(obj: Models.DomainObjectRepresentation, property: Models.PropertyMember, urlVal: Models.Value) {
+    protected setPropertyValueinContext(obj: Ro.DomainObjectRepresentation, property: Ro.PropertyMember, urlVal: Ro.Value) {
         this.context.cachePropertyValue(obj, property, urlVal);
     }
 }

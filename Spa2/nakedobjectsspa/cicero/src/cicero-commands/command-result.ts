@@ -1,15 +1,14 @@
+import * as Ro from '@nakedobjects/restful-objects';
+import { ContextService } from '@nakedobjects/services';
 import { Dictionary } from 'lodash';
 import map from 'lodash-es/map';
 import mapValues from 'lodash-es/mapValues';
 import { Result } from './result';
-import { ContextService } from '@nakedobjects/services';
-import * as Ro from '@nakedobjects/restful-objects';
-import * as Models from '@nakedobjects/restful-objects';
 
 // todo move this
-export function getParametersAndCurrentValue(action: Ro.ActionMember | Models.ActionRepresentation | Models.InvokableActionMember, context: ContextService):  Dictionary<Ro.Value> {
+export function getParametersAndCurrentValue(action: Ro.ActionMember | Ro.ActionRepresentation | Ro.InvokableActionMember, context: ContextService):  Dictionary<Ro.Value> {
 
-    if (action instanceof Models.InvokableActionMember || action instanceof Models.ActionRepresentation) {
+    if (action instanceof Ro.InvokableActionMember || action instanceof Ro.ActionRepresentation) {
         const parms = action.parameters();
         const cachedValues = context.getDialogCachedValues(action.actionId());
         const values = mapValues(parms, p => {
@@ -21,17 +20,17 @@ export function getParametersAndCurrentValue(action: Ro.ActionMember | Models.Ac
     return {};
 }
 
-export function getFields(field: Models.IField):  Models.IField[] {
+export function getFields(field: Ro.IField):  Ro.IField[] {
 
-    if (field instanceof Models.Parameter) {
+    if (field instanceof Ro.Parameter) {
         const action = field.parent;
-        if (action instanceof Models.InvokableActionMember || action instanceof Models.ActionRepresentation) {
+        if (action instanceof Ro.InvokableActionMember || action instanceof Ro.ActionRepresentation) {
             const parms = action.parameters();
-            return map(parms, p => p as Models.IField);
+            return map(parms, p => p as Ro.IField);
         }
     }
 
-    if (field instanceof Models.PropertyMember) {
+    if (field instanceof Ro.PropertyMember) {
         // todo
         return [];
     }

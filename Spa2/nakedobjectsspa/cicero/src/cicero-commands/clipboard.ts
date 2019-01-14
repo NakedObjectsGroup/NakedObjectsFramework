@@ -1,7 +1,7 @@
-import { CommandResult } from './command-result';
-import { Command } from './Command';
-import * as Usermessages from '../user-messages';
 import * as Models from '@nakedobjects/restful-objects';
+import { Command } from './Command';
+import { CommandResult } from './command-result';
+import * as Usermessages from '../user-messages';
 
 export class Clipboard extends Command {
 

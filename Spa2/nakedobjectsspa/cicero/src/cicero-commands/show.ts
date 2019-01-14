@@ -1,9 +1,9 @@
-import { CommandResult } from './command-result';
-import { Command } from './Command';
-import * as Models from '@nakedobjects/restful-objects';
-import * as Usermessages from '../user-messages';
-import * as Routedata from '@nakedobjects/services';
+import * as Ro from '@nakedobjects/restful-objects';
+import { CollectionViewState } from '@nakedobjects/services';
 import reduce from 'lodash-es/reduce';
+import { Command } from './Command';
+import { CommandResult } from './command-result';
+import * as Usermessages from '../user-messages';
 
 export class Show extends Command {
 
@@ -40,7 +40,7 @@ export class Show extends Command {
             }
         } else if (this.isObject()) {
             const fieldName = this.argumentAsString(args, 0);
-            return this.getObject().then((obj: Models.DomainObjectRepresentation) => {
+            return this.getObject().then((obj: Ro.DomainObjectRepresentation) => {
                 const props = this.matchingProperties(obj, fieldName);
                 const colls = this.matchingCollections(obj, fieldName);
                 // TODO -  include these
@@ -62,10 +62,10 @@ export class Show extends Command {
         throw new Error('unexpected view type');
     }
 
-    private renderPropNameAndValue(pm: Models.PropertyMember): string {
+    private renderPropNameAndValue(pm: Ro.PropertyMember): string {
         const name = pm.extensions().friendlyName();
         let value: string;
-        const parent = pm.parent as Models.DomainObjectRepresentation;
+        const parent = pm.parent as Ro.DomainObjectRepresentation;
         const props = this.context.getObjectCachedValues(parent.id());
         const modifiedValue = props[pm.id()];
         if (this.isEdit() && !pm.disabledReason() && modifiedValue) {
@@ -76,16 +76,16 @@ export class Show extends Command {
         return `${name}: ${value}\n`;
     }
 
-    private renderCollectionItems(coll: Models.CollectionMember, startNo: number | null, endNo: number | null) {
+    private renderCollectionItems(coll: Ro.CollectionMember, startNo: number | null, endNo: number | null) {
         if (coll.value()) {
             return this.renderItems(coll, startNo, endNo);
         } else {
-            return this.context.getCollectionDetails(coll, Routedata.CollectionViewState.List, false).
+            return this.context.getCollectionDetails(coll, CollectionViewState.List, false).
                 then(details => this.renderItems(details, startNo, endNo));
         }
     }
 
-    private renderItems(source: Models.IHasLinksAsValue, startNo: number | null , endNo: number | null) {
+    private renderItems(source: Ro.IHasLinksAsValue, startNo: number | null , endNo: number | null) {
         // TODO: problem here is that unless collections are in-lined value will be null.
 
         const links = source.value();

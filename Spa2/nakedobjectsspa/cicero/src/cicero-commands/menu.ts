@@ -1,9 +1,9 @@
-import { CommandResult } from './command-result';
-import { Command } from './Command';
-import * as Models from '@nakedobjects/restful-objects';
-import * as Usermessages from '../user-messages';
+import * as Ro from '@nakedobjects/restful-objects';
 import filter from 'lodash-es/filter';
 import reduce from 'lodash-es/reduce';
+import { Command } from './Command';
+import { CommandResult } from './command-result';
+import * as Usermessages from '../user-messages';
 
 export class Menu extends Command {
 
@@ -20,7 +20,7 @@ export class Menu extends Command {
     doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
         const name = this.argumentAsString(args, 0);
         return this.context.getMenus()
-            .then((menus: Models.MenusRepresentation) => {
+            .then((menus: Ro.MenusRepresentation) => {
                 let links = menus.value();
                 if (name) {
                     // TODO: do multi-clause match

@@ -1,4 +1,6 @@
-import { Component, ElementRef, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import * as Ro from '@nakedobjects/restful-objects';
+import { ContextService, ErrorService, ErrorWrapper, PaneRouteData, UrlManagerService, ViewType } from '@nakedobjects/services';
 import reduce from 'lodash-es/reduce';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { CiceroCommandFactoryService } from '../cicero-command-factory.service';
@@ -6,15 +8,8 @@ import { Command } from '../cicero-commands/Command';
 import { Result } from '../cicero-commands/result';
 import { CiceroContextService } from '../cicero-context.service';
 import { CiceroRendererService } from '../cicero-renderer.service';
-import { ContextService } from '@nakedobjects/services';
-import { ErrorService } from '@nakedobjects/services';
+import { ClientErrorCode, ErrorCategory } from '../constants';
 import { focus, safeUnsubscribe } from '../helpers-components';
-import * as Ro from '@nakedobjects/restful-objects';
-import * as RtD from '@nakedobjects/services';
-import { PaneRouteData } from '@nakedobjects/services';
-import { UrlManagerService } from '@nakedobjects/services';
-import { ErrorCategory, ClientErrorCode } from '../constants';
-import { ErrorWrapper } from '@nakedobjects/services';
 
 @Component({
     selector: 'nof-cicero',
@@ -49,11 +44,11 @@ export class CiceroComponent implements OnInit, OnDestroy {
 
     private render() {
         switch (this.lastPaneRouteData.location) {
-            case RtD.ViewType.Home:
+            case ViewType.Home:
                 return this.ciceroRendererService.renderHome(this.lastPaneRouteData);
-            case RtD.ViewType.Object:
+            case ViewType.Object:
                 return this.ciceroRendererService.renderObject(this.lastPaneRouteData);
-            case RtD.ViewType.List:
+            case ViewType.List:
                 return this.ciceroRendererService.renderList(this.lastPaneRouteData);
             default:
                 return this.ciceroRendererService.renderError('unknown render error');

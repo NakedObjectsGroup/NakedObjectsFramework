@@ -1,7 +1,7 @@
-import { CommandResult } from './command-result';
+import * as Ro from '@nakedobjects/restful-objects';
 import { Command } from './Command';
+import { CommandResult } from './command-result';
 import * as Usermessages from '../user-messages';
-import * as Models from '@nakedobjects/restful-objects';
 
 export class Reload extends Command {
 
@@ -19,6 +19,6 @@ export class Reload extends Command {
 
         return  this.getObject()
             .then(o => this.context.reloadObject(1, o))
-            .then((updatedObject: Models.DomainObjectRepresentation) => this.returnResult('', '', () => this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl() ));
+            .then((updatedObject: Ro.DomainObjectRepresentation) => this.returnResult('', '', () => this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl() ));
     }
 }

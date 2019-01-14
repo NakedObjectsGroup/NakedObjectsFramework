@@ -1,17 +1,17 @@
-﻿import { Injectable } from '@angular/core';
-import { Command } from './cicero-commands/Command';
-import * as Msg from './user-messages';
-import { ContextService } from '@nakedobjects/services';
-import { UrlManagerService } from '@nakedobjects/services';
-import { MaskService } from '@nakedobjects/services';
-import { ErrorService } from '@nakedobjects/services';
-import { ConfigService } from '@nakedobjects/services';
-import { Location } from '@angular/common';
-import { CiceroContextService } from './cicero-context.service';
+﻿import { Location } from '@angular/common';
+import { Injectable } from '@angular/core';
+import { ConfigService, ContextService, ErrorService, MaskService, UrlManagerService } from '@nakedobjects/services';
+import { Dictionary } from 'lodash';
+import filter from 'lodash-es/filter';
+import fromPairs from 'lodash-es/fromPairs';
+import last from 'lodash-es/last';
+import map from 'lodash-es/map';
+import reduce from 'lodash-es/reduce';
 import { Action } from './cicero-commands/action';
 import { Back } from './cicero-commands/back';
 import { Cancel } from './cicero-commands/cancel';
 import { Clipboard } from './cicero-commands/clipboard';
+import { Command } from './cicero-commands/Command';
 import { Edit } from './cicero-commands/edit';
 import { Enter } from './cicero-commands/enter';
 import { Forward } from './cicero-commands/forward';
@@ -22,19 +22,15 @@ import { Menu } from './cicero-commands/menu';
 import { OK } from './cicero-commands/ok';
 import { Page } from './cicero-commands/page';
 import { Reload } from './cicero-commands/reload';
+import { Result } from './cicero-commands/result';
 import { Root } from './cicero-commands/root';
 import { Save } from './cicero-commands/save';
 import { Selection } from './cicero-commands/selection';
 import { Show } from './cicero-commands/show';
 import { Where } from './cicero-commands/where';
-import { Result } from './cicero-commands/result';
-import { Dictionary } from 'lodash';
-import filter from 'lodash-es/filter';
-import reduce from 'lodash-es/reduce';
-import last from 'lodash-es/last';
-import map from 'lodash-es/map';
-import fromPairs from 'lodash-es/fromPairs';
-import {CiceroRendererService} from './cicero-renderer.service';
+import { CiceroContextService } from './cicero-context.service';
+import { CiceroRendererService } from './cicero-renderer.service';
+import * as Msg from './user-messages';
 
 export class ParseResult {
     commands?: Command[];
@@ -52,13 +48,13 @@ export class ParseResult {
 export class CiceroCommandFactoryService {
 
     constructor(private readonly urlManager: UrlManagerService,
-                private readonly location: Location,
-                private readonly context: ContextService,
-                private readonly mask: MaskService,
-                private readonly error: ErrorService,
-                private readonly configService: ConfigService,
-                private readonly ciceroContext: CiceroContextService,
-                private readonly ciceroRenderer: CiceroRendererService) { }
+        private readonly location: Location,
+        private readonly context: ContextService,
+        private readonly mask: MaskService,
+        private readonly error: ErrorService,
+        private readonly configService: ConfigService,
+        private readonly ciceroContext: CiceroContextService,
+        private readonly ciceroRenderer: CiceroRendererService) { }
 
     private commandsInitialised = false;
 

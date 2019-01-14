@@ -1,6 +1,6 @@
-import { CommandResult } from './command-result';
+import * as Ro from '@nakedobjects/restful-objects';
 import { Command } from './Command';
-import * as Models from '@nakedobjects/restful-objects';
+import { CommandResult } from './command-result';
 import * as Usermessages from '../user-messages';
 
 export class Selection extends Command {
@@ -23,7 +23,7 @@ export class Selection extends Command {
         return Promise.reject('Not Implemented');
     }
 
-    private selectItems(list: Models.ListRepresentation, startNo: number, endNo: number): void {
+    private selectItems(list: Ro.ListRepresentation, startNo: number, endNo: number): void {
         let itemNo: number;
         for (itemNo = startNo; itemNo <= endNo; itemNo++) {
             this.urlManager.setItemSelected(itemNo - 1, true, '');

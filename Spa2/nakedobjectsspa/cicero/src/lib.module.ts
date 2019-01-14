@@ -1,14 +1,12 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ModuleWithProviders } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
-import { CiceroComponent } from './cicero/cicero.component';
-import { CiceroCommandFactoryService } from './cicero-command-factory.service';
-import { CiceroRendererService } from './cicero-renderer.service';
-import { CiceroContextService } from './cicero-context.service';
 import { HttpClientModule } from '@angular/common/http';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ModuleWithProviders, NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
+import { CiceroCommandFactoryService } from './cicero-command-factory.service';
+import { CiceroContextService } from './cicero-context.service';
+import { CiceroRendererService } from './cicero-renderer.service';
+import { CiceroComponent } from './cicero/cicero.component';
 
 @NgModule({
     declarations: [

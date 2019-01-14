@@ -1,20 +1,14 @@
-import * as Ro from '@nakedobjects/restful-objects';
-import * as Msg from './user-messages';
-import * as Models from '@nakedobjects/restful-objects';
 import { Injectable } from '@angular/core';
-import { PaneRouteData, CollectionViewState } from '@nakedobjects/services';
-import { ContextService } from '@nakedobjects/services';
-import { ConfigService } from '@nakedobjects/services';
-import { InteractionMode } from '@nakedobjects/services';
-import { MaskService } from '@nakedobjects/services';
-import { getParametersAndCurrentValue } from './cicero-commands/command-result';
-import { ErrorService } from '@nakedobjects/services';
+import * as Ro from '@nakedobjects/restful-objects';
+import { CollectionViewState, ConfigService, ContextService, ErrorService, InteractionMode, MaskService, PaneRouteData } from '@nakedobjects/services';
 import filter from 'lodash-es/filter';
-import keys from 'lodash-es/keys';
-import some from 'lodash-es/some';
-import reduce from 'lodash-es/reduce';
 import invert from 'lodash-es/invert';
+import keys from 'lodash-es/keys';
+import reduce from 'lodash-es/reduce';
+import some from 'lodash-es/some';
+import { getParametersAndCurrentValue } from './cicero-commands/command-result';
 import { Result } from './cicero-commands/result';
+import * as Msg from './user-messages';
 
 @Injectable()
 export class CiceroRendererService {
@@ -155,7 +149,7 @@ export class CiceroRendererService {
         });
     }
 
-    private renderActionDialog(invokable: Models.ActionRepresentation | Models.InvokableActionMember,
+    private renderActionDialog(invokable: Ro.ActionRepresentation | Ro.InvokableActionMember,
         routeData: PaneRouteData,
         mask: MaskService): string {
 

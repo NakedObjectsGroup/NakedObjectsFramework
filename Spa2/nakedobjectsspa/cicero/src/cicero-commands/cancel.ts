@@ -1,7 +1,7 @@
-import { CommandResult } from './command-result';
+import { InteractionMode } from '@nakedobjects/services';
 import { Command } from './Command';
+import { CommandResult } from './command-result';
 import * as Msg from '../user-messages';
-import * as RtD from '@nakedobjects/services';
 
 export class Cancel extends Command {
 
@@ -17,7 +17,7 @@ export class Cancel extends Command {
 
     doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
         if (this.isEdit()) {
-            return this.returnResult('', '', () => this.urlManager.setInteractionMode(RtD.InteractionMode.View));
+            return this.returnResult('', '', () => this.urlManager.setInteractionMode(InteractionMode.View));
         }
 
         if (this.isDialog()) {

@@ -1,5 +1,5 @@
-import { CommandResult } from './command-result';
 import { Command } from './Command';
+import { CommandResult } from './command-result';
 import * as Usermessages from '../user-messages';
 
 export class Gemini extends Command {

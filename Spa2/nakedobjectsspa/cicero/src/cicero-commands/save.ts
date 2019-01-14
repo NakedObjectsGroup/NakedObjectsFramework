@@ -1,12 +1,11 @@
-import { CommandResult } from './command-result';
-import { Command } from './Command';
-import * as Models from '@nakedobjects/restful-objects';
-import * as Usermessages from '../user-messages';
-import * as Routedata from '@nakedobjects/services';
+import * as Ro from '@nakedobjects/restful-objects';
+import { ErrorWrapper, InteractionMode } from '@nakedobjects/services';
 import { Dictionary } from 'lodash';
-import { ErrorWrapper } from '@nakedobjects/services';
 import forEach from 'lodash-es/forEach';
 import zipObject from 'lodash-es/zipObject';
+import { Command } from './Command';
+import { CommandResult } from './command-result';
+import * as Usermessages from '../user-messages';
 
 export class Save extends Command {
 
@@ -24,11 +23,11 @@ export class Save extends Command {
         if (chained) {
             return this.returnResult('', this.mayNotBeChained(), () => { }, true);
         }
-        return this.getObject().then((obj: Models.DomainObjectRepresentation) => {
+        return this.getObject().then((obj: Ro.DomainObjectRepresentation) => {
             const props = obj.propertyMembers();
             const newValsFromUrl = this.context.getObjectCachedValues(obj.id());
             const propIds = new Array<string>();
-            const values = new Array<Models.Value>();
+            const values = new Array<Ro.Value>();
             forEach(props,
                 (propMember, propId) => {
                     if (!propMember.disabledReason()) {
@@ -38,13 +37,13 @@ export class Save extends Command {
                             values.push(newVal);
                         } else if (propMember.value().isNull() &&
                             propMember.isScalar()) {
-                            values.push(new Models.Value(''));
+                            values.push(new Ro.Value(''));
                         } else {
                             values.push(propMember.value());
                         }
                     }
                 });
-            const propMap = zipObject(propIds, values) as Dictionary<Models.Value>;
+            const propMap = zipObject(propIds, values) as Dictionary<Ro.Value>;
             const mode = obj.extensions().interactionMode();
             const toSave = mode === 'form' || mode === 'transient';
             const saveOrUpdate = toSave ? this.context.saveObject : this.context.updateObject;
@@ -52,8 +51,8 @@ export class Save extends Command {
             return saveOrUpdate(obj, propMap, 1, true).then(() => {
                 return this.returnResult(null, null);
             }).catch((reject: ErrorWrapper) => {
-                if (reject.error instanceof Models.ErrorMap) {
-                    const propFriendlyName = (propId: string) => Models.friendlyNameForProperty(obj, propId);
+                if (reject.error instanceof Ro.ErrorMap) {
+                    const propFriendlyName = (propId: string) => Ro.friendlyNameForProperty(obj, propId);
                     return this.handleErrorResponse(reject.error, propFriendlyName);
                 }
                 return Promise.reject(reject);
@@ -61,12 +60,12 @@ export class Save extends Command {
         });
     }
 
-    private handleError(err: Models.ErrorMap, obj: Models.DomainObjectRepresentation) {
+    private handleError(err: Ro.ErrorMap, obj: Ro.DomainObjectRepresentation) {
         if (err.containsError()) {
-            const propFriendlyName = (propId: string) => Models.friendlyNameForProperty(obj, propId);
+            const propFriendlyName = (propId: string) => Ro.friendlyNameForProperty(obj, propId);
             this.handleErrorResponse(err, propFriendlyName);
         } else {
-            this.urlManager.setInteractionMode(Routedata.InteractionMode.View);
+            this.urlManager.setInteractionMode(InteractionMode.View);
         }
     }
 }

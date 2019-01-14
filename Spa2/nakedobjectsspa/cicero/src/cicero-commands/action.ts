@@ -1,11 +1,11 @@
-import { CommandResult } from './command-result';
-import * as Models from '@nakedobjects/restful-objects';
-import { Command } from './Command';
-import * as Usermessages from '../user-messages';
+import * as Ro from '@nakedobjects/restful-objects';
 import { Dictionary } from 'lodash';
-import map from 'lodash-es/map';
 import forEach from 'lodash-es/forEach';
+import map from 'lodash-es/map';
 import reduce from 'lodash-es/reduce';
+import { Command } from './Command';
+import { CommandResult } from './command-result';
+import * as Usermessages from '../user-messages';
 
 export class Action extends Command {
 
@@ -36,7 +36,7 @@ export class Action extends Command {
         return Promise.reject('TODO: handle list - CCAs');
     }
 
-    private processActions(match: string | undefined, actionsMap: Dictionary<Models.ActionMember>, details: string | undefined): Promise<CommandResult> {
+    private processActions(match: string | undefined, actionsMap: Dictionary<Ro.ActionMember>, details: string | undefined): Promise<CommandResult> {
         let actions = map(actionsMap, action => action);
         if (actions.length === 0) {
             return this.returnResult('', Usermessages.noActionsAvailable);
@@ -63,11 +63,11 @@ export class Action extends Command {
         }
     }
 
-    private disabledAction(action: Models.ActionMember) {
+    private disabledAction(action: Ro.ActionMember) {
         return `${Usermessages.actionPrefix} ${action.extensions().friendlyName()} ${Usermessages.isDisabled} ${action.disabledReason()}`;
     }
 
-    private listActions(actions: Models.ActionMember[]): string {
+    private listActions(actions: Ro.ActionMember[]): string {
         return reduce(actions,
             (s, t) => {
                 const menupath = t.extensions().menuPath() ? `${t.extensions().menuPath()} - ` : '';
@@ -77,7 +77,7 @@ export class Action extends Command {
             '');
     }
 
-    private openActionDialog(action: Models.ActionMember): Promise<CommandResult> {
+    private openActionDialog(action: Ro.ActionMember): Promise<CommandResult> {
 
         return this.context.getInvokableAction(action).
             then(invokable => {
@@ -90,7 +90,7 @@ export class Action extends Command {
             });
     }
 
-    private renderActionDetails(action: Models.ActionMember) {
+    private renderActionDetails(action: Ro.ActionMember) {
         return `${Usermessages.descriptionPrefix} ${action.extensions().friendlyName()}\n${action.extensions().description() || Usermessages.noDescription}`;
     }
 }

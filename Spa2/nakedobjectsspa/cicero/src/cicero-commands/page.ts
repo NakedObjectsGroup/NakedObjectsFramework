@@ -1,7 +1,7 @@
-import { CommandResult } from './command-result';
+import { CollectionViewState } from '@nakedobjects/services';
 import { Command } from './Command';
+import { CommandResult } from './command-result';
 import * as Usermessages from '../user-messages';
-import * as Routedata from '@nakedobjects/services';
 
 export class Page extends Command {
 
@@ -61,6 +61,6 @@ export class Page extends Command {
 
     private setPage(page: number) {
         const pageSize = this.routeData().pageSize;
-        this.urlManager.setListPaging(page, pageSize, Routedata.CollectionViewState.List);
+        this.urlManager.setListPaging(page, pageSize, CollectionViewState.List);
     }
 }

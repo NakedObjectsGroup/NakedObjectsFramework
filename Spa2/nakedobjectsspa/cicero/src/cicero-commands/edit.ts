@@ -1,7 +1,7 @@
-import { CommandResult } from './command-result';
+import { InteractionMode } from '@nakedobjects/services';
 import { Command } from './Command';
+import { CommandResult } from './command-result';
 import * as Usermessages from '../user-messages';
-import * as Routedata from '@nakedobjects/services';
 
 export class Edit extends Command {
 
@@ -21,7 +21,7 @@ export class Edit extends Command {
         }
         const newState = () => {
             this.context.clearObjectCachedValues();
-            this.urlManager.setInteractionMode(Routedata.InteractionMode.Edit);
+            this.urlManager.setInteractionMode(InteractionMode.Edit);
         };
 
         return this.returnResult('', '', newState);
