@@ -1,14 +1,16 @@
 ﻿import { Location } from '@angular/common';
 import * as Ro from '@nakedobjects/restful-objects';
-import { ErrorWrapper,
-  ConfigService,
-  UrlManagerService,
-  ErrorService,
-  ContextService,
-  PaneRouteData,
-  InteractionMode,
-  CollectionViewState,
-  MaskService } from '@nakedobjects/services';
+import {
+    ErrorWrapper,
+    ConfigService,
+    UrlManagerService,
+    ErrorService,
+    ContextService,
+    PaneRouteData,
+    InteractionMode,
+    CollectionViewState,
+    MaskService
+} from '@nakedobjects/services';
 import { Dictionary } from 'lodash';
 import each from 'lodash-es/each';
 import every from 'lodash-es/every';
@@ -140,14 +142,14 @@ export abstract class Command {
         const range: { start: number | null; end: number | null } = { start: null, end: null };
         switch (clauses.length) {
             case 1: {
-                const firstValue =  clauses[0];
+                const firstValue = clauses[0];
                 range.start = firstValue ? this.parseInt(firstValue) : null;
                 range.end = range.start;
                 break;
             }
             case 2: {
-                const firstValue =  clauses[0];
-                const secondValue =  clauses[1];
+                const firstValue = clauses[0];
+                const secondValue = clauses[1];
                 range.start = firstValue ? this.parseInt(firstValue) : null;
                 range.end = secondValue ? this.parseInt(secondValue) : null;
                 break;
@@ -356,7 +358,7 @@ export abstract class Command {
         return this.returnResult('', msg);
     }
 
-    protected validationMessage(reason: string | null, value: Ro.Value, fieldFriendlyName:  string): string {
+    protected validationMessage(reason: string | null, value: Ro.Value, fieldFriendlyName: string): string {
         if (reason) {
             const prefix = `${fieldFriendlyName}: `;
             const suffix = reason === Usermessages.mandatory ? Usermessages.required : `${value} ${reason}`;

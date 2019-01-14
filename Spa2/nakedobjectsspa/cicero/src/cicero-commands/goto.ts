@@ -50,29 +50,29 @@ export class Goto extends Command {
                     const matchingColls = this.matchingCollections(obj, arg0);
 
                     switch (matchingRefProps.length + matchingColls.length) {
-                    case 0:
+                        case 0:
 
-                        return this.returnResult('', Usermessages.noRefFieldMatch(arg0));
-                    case 1:
-                        // TODO: Check for any empty reference
-                        if (matchingRefProps.length > 0) {
-                            const link = matchingRefProps[0].value().link();
-                            if (link) {
-                                this.urlManager.setItem(link);
+                            return this.returnResult('', Usermessages.noRefFieldMatch(arg0));
+                        case 1:
+                            // TODO: Check for any empty reference
+                            if (matchingRefProps.length > 0) {
+                                const link = matchingRefProps[0].value().link();
+                                if (link) {
+                                    this.urlManager.setItem(link);
+                                }
+
+                                return this.returnResult('', '');
+
+                            } else { // Must be collection
+
+                                return this.returnResult('', '', () => this.openCollection(matchingColls[0]));
                             }
 
-                            return this.returnResult('', '');
-
-                        } else { // Must be collection
-
-                            return this.returnResult('', '', () => this.openCollection(matchingColls[0]));
-                        }
-
-                    default:
-                        const props = reduce(matchingRefProps, (str, prop) => str + prop.extensions().friendlyName() + '\n', '');
-                        const colls = reduce(matchingColls, (str, coll) => str + coll.extensions().friendlyName() + '\n', '');
-                        const s = `Multiple matches for ${arg0}:\n${props}${colls}`;
-                        return this.returnResult('', s);
+                        default:
+                            const props = reduce(matchingRefProps, (str, prop) => str + prop.extensions().friendlyName() + '\n', '');
+                            const colls = reduce(matchingColls, (str, coll) => str + coll.extensions().friendlyName() + '\n', '');
+                            const s = `Multiple matches for ${arg0}:\n${props}${colls}`;
+                            return this.returnResult('', s);
                     }
 
                 }

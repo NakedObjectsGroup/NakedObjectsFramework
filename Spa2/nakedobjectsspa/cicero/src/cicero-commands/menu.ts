@@ -29,18 +29,18 @@ export class Menu extends Command {
                     links = exactMatches.length === 1 ? exactMatches : partialMatches;
                 }
                 switch (links.length) {
-                case 0:
-                    return this.returnResult('', Usermessages.doesNotMatchMenu(name));
-                case 1:
-                    const menuId = links[0].rel().parms[0].value!;
-                    this.urlManager.setHome();
-                    this.urlManager.clearUrlState(1);
-                    return this.returnResult('', '', () => this.urlManager.setMenu(menuId));
+                    case 0:
+                        return this.returnResult('', Usermessages.doesNotMatchMenu(name));
+                    case 1:
+                        const menuId = links[0].rel().parms[0].value!;
+                        this.urlManager.setHome();
+                        this.urlManager.clearUrlState(1);
+                        return this.returnResult('', '', () => this.urlManager.setMenu(menuId));
 
-                default:
-                    const label = name ? `${Usermessages.matchingMenus}\n` : `${Usermessages.allMenus}\n`;
-                    const ss = reduce(links, (s, t) => s + t.title() + '\n', label);
-                    return this.returnResult('', ss);
+                    default:
+                        const label = name ? `${Usermessages.matchingMenus}\n` : `${Usermessages.allMenus}\n`;
+                        const ss = reduce(links, (s, t) => s + t.title() + '\n', label);
+                        return this.returnResult('', ss);
                 }
             });
     }

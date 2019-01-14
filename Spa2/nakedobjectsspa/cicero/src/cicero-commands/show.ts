@@ -85,7 +85,7 @@ export class Show extends Command {
         }
     }
 
-    private renderItems(source: Ro.IHasLinksAsValue, startNo: number | null , endNo: number | null) {
+    private renderItems(source: Ro.IHasLinksAsValue, startNo: number | null, endNo: number | null) {
         // TODO: problem here is that unless collections are in-lined value will be null.
 
         const links = source.value();

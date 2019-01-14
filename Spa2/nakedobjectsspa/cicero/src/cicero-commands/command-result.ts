@@ -6,7 +6,7 @@ import mapValues from 'lodash-es/mapValues';
 import { Result } from './result';
 
 // todo move this
-export function getParametersAndCurrentValue(action: Ro.ActionMember | Ro.ActionRepresentation | Ro.InvokableActionMember, context: ContextService):  Dictionary<Ro.Value> {
+export function getParametersAndCurrentValue(action: Ro.ActionMember | Ro.ActionRepresentation | Ro.InvokableActionMember, context: ContextService): Dictionary<Ro.Value> {
 
     if (action instanceof Ro.InvokableActionMember || action instanceof Ro.ActionRepresentation) {
         const parms = action.parameters();
@@ -15,12 +15,12 @@ export function getParametersAndCurrentValue(action: Ro.ActionMember | Ro.Action
             const value = cachedValues[p.id()];
             return value === undefined ? p.default() : value;
         });
-        return  values;
+        return values;
     }
     return {};
 }
 
-export function getFields(field: Ro.IField):  Ro.IField[] {
+export function getFields(field: Ro.IField): Ro.IField[] {
 
     if (field instanceof Ro.Parameter) {
         const action = field.parent;

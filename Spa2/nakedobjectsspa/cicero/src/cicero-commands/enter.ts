@@ -251,7 +251,7 @@ export class Enter extends Command {
         }
     }
 
-    private handleChoices(field: Ro.IField,  fieldEntry: string) {
+    private handleChoices(field: Ro.IField, fieldEntry: string) {
         let matches: Ro.Value[];
         if (field.isScalar()) {
             matches = this.findMatchingChoicesForScalar(field.choices(), fieldEntry);
@@ -303,16 +303,16 @@ export class Enter extends Command {
         const values = mapValues(props, p => p.value());
         const modifiedProps = this.context.getObjectCachedValues(obj.id());
 
-        forEach(values,  (v, k) => {
-                const newValue = modifiedProps[k];
-                if (newValue) {
-                    values[k] = newValue;
-                }
-            });
+        forEach(values, (v, k) => {
+            const newValue = modifiedProps[k];
+            if (newValue) {
+                values[k] = newValue;
+            }
+        });
         return mapKeys(values, (v, k) => k.toLowerCase());
     }
 
-     private updateOnMatches(field: Ro.IField, allFields: Ro.IField[], fieldEntry: string, matches: Ro.Value[]) {
+    private updateOnMatches(field: Ro.IField, allFields: Ro.IField[], fieldEntry: string, matches: Ro.Value[]) {
         switch (matches.length) {
             case 0:
             case 1:
@@ -330,7 +330,7 @@ export class Enter extends Command {
         const allFields = Commandresult.getFields(field);
 
         if (field instanceof Ro.Parameter) {
-           enteredFields = Commandresult.getParametersAndCurrentValue(field.parent, this.context);
+            enteredFields = Commandresult.getParametersAndCurrentValue(field.parent, this.context);
         }
 
         if (field instanceof Ro.PropertyMember) {

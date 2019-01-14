@@ -5,15 +5,28 @@
             "entryFile": "src/public_api.ts",
             "umdModuleIds": {
                 "lodash": "_",
-                "moment": "moment",
-                "moment-timezone": "moment-timezone"
+                "lodash-es/each": "each",
+                "lodash-es/every": "every",
+                "lodash-es/findIndex": "findIndex",
+                "lodash-es/fromPairs": "fromPairs",
+                "lodash-es/last": "last",
+                "lodash-es/map": "map",
+                "lodash-es/mapKeys": "mapKeys",
+                "lodash-es/mapValues": "mapValues",
+                "lodash-es/forEach": "forEach",
+                "lodash-es/zipObject": "zipObject",
+                "lodash-es/filter": "filter",
+                "lodash-es/invert": "invert",
+                "lodash-es/keys": "keys",
+                "lodash-es/reduce": "reduce",
+                "lodash-es/some": "some",
+                "@nakedobjects/restful-objects" : "@nakedobjects/restful-objects",
+                "@nakedobjects/services" : "@nakedobjects/services"
             }
         },
         "whitelistedNonPeerDependencies": [
-            "auth0-js",
             "lodash",
             "lodash-es",
-            "moment",
             "@nakedobjects/restful-objects",
             "@nakedobjects/services"
         ],
@@ -52,10 +65,8 @@
         "e2e": "ng e2e"
     },
     "dependencies": {
-        "auth0-js": "^9.8.2",
         "lodash": "4.17.11",
-        "lodash-es": "4.17.11",
-        "moment": "2.22.2"
+        "lodash-es": "4.17.11"
     },
     "peerDependencies": {
         "@angular/animations": "^7.1.2",

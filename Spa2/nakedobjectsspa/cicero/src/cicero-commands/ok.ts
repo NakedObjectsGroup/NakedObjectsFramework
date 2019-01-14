@@ -34,7 +34,7 @@ export class OK extends Command {
 
             return this.context.invokeAction(action, fieldMap).then((result: Ro.ActionResultRepresentation) => {
 
-               return this.returnResult('', null, () =>  this.urlManager.closeDialogReplaceHistory(this.routeData().dialogId));
+                return this.returnResult('', null, () => this.urlManager.closeDialogReplaceHistory(this.routeData().dialogId));
 
             }).catch((reject: ErrorWrapper) => {
                 if (reject.error instanceof Ro.ErrorMap) {

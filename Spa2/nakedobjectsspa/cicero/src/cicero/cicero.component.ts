@@ -97,7 +97,7 @@ export class CiceroComponent implements OnInit, OnDestroy {
                 result.changeState();
             }).
             catch((reject: ErrorWrapper) => {
-                const display = (em: Ro.ErrorMap) => this.outputText =  em.invalidReason() || em.warningMessage;
+                const display = (em: Ro.ErrorMap) => this.outputText = em.invalidReason() || em.warningMessage;
                 this.error.handleErrorAndDisplayMessages(reject, display);
             });
     }
