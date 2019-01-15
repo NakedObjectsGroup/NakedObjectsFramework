@@ -1,19 +1,19 @@
-﻿
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent } from '@nakedobjects/gemini';
-import { RecentComponent } from '@nakedobjects/gemini';
-import { ApplicationPropertiesComponent } from '@nakedobjects/gemini';
-import { AttachmentComponent } from '@nakedobjects/gemini';
-import { MultiLineDialogComponent } from '@nakedobjects/gemini';
-import { DynamicObjectComponent } from '@nakedobjects/gemini';
-import { ViewType } from '@nakedobjects/services';
-import { DynamicListComponent } from '@nakedobjects/gemini';
-import { DynamicErrorComponent } from '@nakedobjects/gemini';
+﻿import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import { CiceroComponent } from '@nakedobjects/cicero';
-import { AuthService } from '@nakedobjects/services';
-import { LogoffComponent } from '@nakedobjects/gemini';
-import { CallbackComponent } from '@nakedobjects/gemini';
+import {
+    ApplicationPropertiesComponent,
+    AttachmentComponent,
+    CallbackComponent,
+    DynamicErrorComponent,
+    DynamicListComponent,
+    DynamicObjectComponent,
+    HomeComponent,
+    LogoffComponent,
+    MultiLineDialogComponent,
+    RecentComponent
+} from '@nakedobjects/gemini';
+import { AuthService, ViewType } from '@nakedobjects/services';
 
 const routes: Routes = [
     {
