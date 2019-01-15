@@ -1,8 +1,7 @@
 import { AfterViewInit, Component, Input, OnDestroy, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 import * as Ro from '@nakedobjects/restful-objects';
-import { ConfigService, ContextService, ErrorService, ErrorWrapper, UrlManagerService } from '@nakedobjects/services';
+import { ContextService, ErrorService, ErrorWrapper } from '@nakedobjects/services';
 import {
     ActionViewModel,
     CollectionViewModel,
@@ -30,11 +29,8 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
 
     constructor(
         private readonly viewModelFactory: ViewModelFactoryService,
-        private readonly urlManager: UrlManagerService,
-        private readonly activatedRoute: ActivatedRoute,
         private readonly error: ErrorService,
         private readonly context: ContextService,
-        private readonly configService: ConfigService,
         private readonly formBuilder: FormBuilder) {
     }
 

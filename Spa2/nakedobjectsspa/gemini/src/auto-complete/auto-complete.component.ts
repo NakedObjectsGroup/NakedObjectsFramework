@@ -1,10 +1,9 @@
 import { Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
-import { ContextService } from '@nakedobjects/services';
 import { ChoiceViewModel, DragAndDropService, FieldViewModel, IDraggableViewModel } from '@nakedobjects/view-models';
 import { Dictionary } from 'lodash';
+import { BehaviorSubject, SubscriptionLike as ISubscription } from 'rxjs';
 import { accept, dropOn, focus, paste, safeUnsubscribe } from '../helpers-components';
-import { SubscriptionLike as ISubscription, BehaviorSubject } from 'rxjs';
 
 @Component({
     selector: 'nof-auto-complete',
@@ -14,7 +13,6 @@ import { SubscriptionLike as ISubscription, BehaviorSubject } from 'rxjs';
 export class AutoCompleteComponent implements OnDestroy {
 
     constructor(
-        private readonly context: ContextService,
         private readonly dragAndDrop: DragAndDropService
     ) { }
 

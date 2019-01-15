@@ -18,7 +18,7 @@ export class DatePickerFacadeComponent implements AfterViewInit {
 
     datePickerOptions = new DatePickerOptions();
 
-    constructor(private readonly configService: ConfigService) {
+    constructor(configService: ConfigService) {
         this.inputEvents = new EventEmitter<IDatePickerInputEvent>();
         this.datePickerOptions.format = configService.config.dateInputFormat;
     }

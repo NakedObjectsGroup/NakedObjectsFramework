@@ -1,4 +1,4 @@
-﻿import { Component, ElementRef } from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as Ro from '@nakedobjects/restful-objects';
 import { ContextService, ErrorService, ErrorWrapper, PaneRouteData, UrlManagerService } from '@nakedobjects/services';
@@ -16,8 +16,7 @@ export class HomeComponent extends PaneComponent {
         activatedRoute: ActivatedRoute,
         private readonly viewModelFactory: ViewModelFactoryService,
         context: ContextService,
-        private readonly errorService: ErrorService,
-        private readonly myElement: ElementRef) {
+        private readonly errorService: ErrorService) {
         super(activatedRoute, urlManager, context);
     }
 

@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import * as Ro from '@nakedobjects/restful-objects';
 import {
     CollectionViewState,
-    ColorService,
     ConfigService,
     ContextService,
     ErrorService,
@@ -29,7 +28,6 @@ export class ListComponent implements OnInit, OnDestroy {
         private readonly activatedRoute: ActivatedRoute,
         private readonly urlManager: UrlManagerService,
         private readonly context: ContextService,
-        private readonly color: ColorService,
         private readonly viewModelFactory: ViewModelFactoryService,
         private readonly error: ErrorService,
         private readonly configService: ConfigService,

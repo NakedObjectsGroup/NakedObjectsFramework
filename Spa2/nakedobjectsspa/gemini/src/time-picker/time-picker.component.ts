@@ -45,9 +45,7 @@ export class TimePickerComponent implements OnInit, OnDestroy {
     @ViewChild('focus')
     inputField: ElementRef;
 
-    constructor(
-        private readonly el: ElementRef
-    ) {
+    constructor() {
         this.outputEvents = new EventEmitter<ITimePickerOutputEvent>();
     }
 

@@ -1,6 +1,4 @@
 ﻿import { Component, HostListener, Input } from '@angular/core';
-import { Router } from '@angular/router';
-import { ContextService, ErrorService } from '@nakedobjects/services';
 import { copy, DragAndDropService, AttachmentViewModel, PropertyViewModel } from '@nakedobjects/view-models';
 
 @Component({
@@ -11,9 +9,6 @@ import { copy, DragAndDropService, AttachmentViewModel, PropertyViewModel } from
 export class ViewPropertyComponent {
 
     constructor(
-        private readonly router: Router,
-        private readonly error: ErrorService,
-        private readonly context: ContextService,
         private readonly dragAndDrop: DragAndDropService
     ) { }
 

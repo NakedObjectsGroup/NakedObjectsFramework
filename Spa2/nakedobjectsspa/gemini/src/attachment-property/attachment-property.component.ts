@@ -1,5 +1,4 @@
 ﻿import { Component, Input } from '@angular/core';
-import { Router } from '@angular/router';
 import { ClickHandlerService, ErrorService, ErrorWrapper, UrlManagerService } from '@nakedobjects/services';
 import { AttachmentViewModel } from '@nakedobjects/view-models';
 import * as Msg from '../user-messages';
@@ -14,8 +13,7 @@ export class AttachmentPropertyComponent {
     constructor(
         private readonly error: ErrorService,
         private readonly urlManager: UrlManagerService,
-        private readonly clickHandlerService: ClickHandlerService,
-        private readonly router: Router
+        private readonly clickHandlerService: ClickHandlerService
     ) { }
 
     private attach: AttachmentViewModel;

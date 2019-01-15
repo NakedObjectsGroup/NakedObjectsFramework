@@ -1,5 +1,4 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { AuthService } from '@nakedobjects/services';
 import { ApplicationPropertiesViewModel, ViewModelFactoryService } from '@nakedobjects/view-models';
 import * as Msg from '../user-messages';
 
@@ -10,11 +9,7 @@ import * as Msg from '../user-messages';
 })
 export class ApplicationPropertiesComponent implements OnInit {
 
-    constructor(
-        private readonly viewModelFactory: ViewModelFactoryService,
-        private readonly authService: AuthService
-    ) {
-    }
+    constructor(private readonly viewModelFactory: ViewModelFactoryService) { }
 
     get applicationName() {
         return this.applicationProperties.applicationName;

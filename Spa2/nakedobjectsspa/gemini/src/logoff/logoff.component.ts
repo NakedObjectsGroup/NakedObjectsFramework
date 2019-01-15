@@ -1,10 +1,7 @@
 ﻿import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ContextService } from '@nakedobjects/services';
-import { ConfigService } from '@nakedobjects/services';
-import { AuthService } from '@nakedobjects/services';
-import { UrlManagerService } from '@nakedobjects/services';
+import { AuthService, ConfigService, ContextService } from '@nakedobjects/services';
 
 @Component({
     selector: 'nof-logoff',
@@ -18,7 +15,6 @@ export class LogoffComponent implements OnInit {
         private readonly authService: AuthService,
         readonly configService: ConfigService,
         private readonly http: HttpClient,
-        private readonly urlManager: UrlManagerService,
         private readonly location: Location,
     ) { }
 

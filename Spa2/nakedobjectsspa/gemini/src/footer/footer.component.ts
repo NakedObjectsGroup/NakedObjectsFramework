@@ -1,8 +1,6 @@
 import { Location } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
-    AuthService,
     ClickHandlerService,
     ConfigService,
     ContextService,
@@ -25,7 +23,6 @@ import * as Msg from '../user-messages';
 export class FooterComponent implements OnInit, OnDestroy {
 
     constructor(
-        private readonly authService: AuthService,
         private readonly urlManager: UrlManagerService,
         private readonly context: ContextService,
         private readonly clickHandler: ClickHandlerService,
@@ -33,7 +30,6 @@ export class FooterComponent implements OnInit, OnDestroy {
         private readonly repLoader: RepLoaderService,
         private readonly location: Location,
         private readonly configService: ConfigService,
-        private readonly http: HttpClient,
         private readonly dragAndDrop: DragAndDropService
     ) { }
 

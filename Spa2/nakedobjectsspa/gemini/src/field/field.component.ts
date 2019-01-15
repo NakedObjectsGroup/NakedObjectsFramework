@@ -1,6 +1,7 @@
 import { ElementRef, OnDestroy, QueryList, Renderer2 } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import * as Ro from '@nakedobjects/restful-objects';
+import { LoggerService, Pane } from '@nakedobjects/services';
 import {
     ChoiceViewModel,
     DialogViewModel,
@@ -10,31 +11,23 @@ import {
     IDraggableViewModel,
     ParameterViewModel,
     PropertyViewModel
-} from '@nakedobjects/view-models';
+    } from '@nakedobjects/view-models';
 import { Dictionary } from 'lodash';
 import every from 'lodash-es/every';
 import find from 'lodash-es/find';
 import keys from 'lodash-es/keys';
 import mapValues from 'lodash-es/mapValues';
 import omit from 'lodash-es/omit';
+import { BehaviorSubject, SubscriptionLike as ISubscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { AutoCompleteComponent } from '../auto-complete/auto-complete.component';
 import { DatePickerFacadeComponent } from '../date-picker-facade/date-picker-facade.component';
 import { accept, dropOn, focus, paste, safeUnsubscribe } from '../helpers-components';
 import { TimePickerFacadeComponent } from '../time-picker-facade/time-picker-facade.component';
-import {
-    ConfigService,
-    ContextService,
-    LoggerService,
-    Pane
-} from '@nakedobjects/services';
-import { BehaviorSubject, SubscriptionLike as ISubscription } from 'rxjs';
 
 export abstract class FieldComponent implements OnDestroy {
 
     protected constructor(
-        private readonly context: ContextService,
-        private readonly configService: ConfigService,
         private readonly loggerService: LoggerService,
         private readonly renderer: Renderer2,
         private readonly dragAndDrop: DragAndDropService

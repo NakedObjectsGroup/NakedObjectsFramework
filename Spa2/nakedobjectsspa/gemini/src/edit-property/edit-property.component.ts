@@ -10,9 +10,8 @@
     ViewChildren
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
 import * as Ro from '@nakedobjects/restful-objects';
-import { ConfigService, ContextService, ErrorService, LoggerService } from '@nakedobjects/services';
+import { LoggerService } from '@nakedobjects/services';
 import { AttachmentViewModel, ChoiceViewModel, DomainObjectViewModel, DragAndDropService, PropertyViewModel } from '@nakedobjects/view-models';
 import { Dictionary } from 'lodash';
 import { AutoCompleteComponent } from '../auto-complete/auto-complete.component';
@@ -28,15 +27,11 @@ import { TimePickerFacadeComponent } from '../time-picker-facade/time-picker-fac
 export class EditPropertyComponent extends FieldComponent implements OnInit, AfterViewInit {
 
     constructor(
-        private readonly router: Router,
-        private readonly error: ErrorService,
-        context: ContextService,
-        configService: ConfigService,
         loggerService: LoggerService,
         renderer: Renderer2,
         dragAndDrop: DragAndDropService,
     ) {
-        super(context, configService, loggerService, renderer, dragAndDrop);
+        super(loggerService, renderer, dragAndDrop);
     }
 
     private prop: PropertyViewModel;

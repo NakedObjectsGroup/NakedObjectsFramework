@@ -39,8 +39,6 @@ export class ActionComponent {
     @ViewChildren('focus')
     focusList: QueryList<ElementRef>;
 
-    constructor() { }
-
     private canClick() {
         return !(this.disabled() || this.tempDisabled());
     }

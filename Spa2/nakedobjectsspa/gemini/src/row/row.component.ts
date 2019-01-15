@@ -1,5 +1,4 @@
 ﻿import { Component, ElementRef, Input, QueryList, ViewChildren } from '@angular/core';
-import { ContextService } from '@nakedobjects/services';
 import { copy, DragAndDropService, IDraggableViewModel, ItemViewModel, PropertyViewModel, RecentItemViewModel, TableRowColumnViewModel } from '@nakedobjects/view-models';
 import { focus } from '../helpers-components';
 
@@ -12,8 +11,6 @@ import { focus } from '../helpers-components';
 export class RowComponent {
 
     constructor(
-        private readonly context: ContextService,
-        private readonly element: ElementRef,
         private readonly dragAndDrop: DragAndDropService,
     ) { }
 

@@ -11,8 +11,8 @@
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import * as Ro from '@nakedobjects/restful-objects';
-import { ConfigService, ContextService, LoggerService, UrlManagerService } from '@nakedobjects/services';
-import { ChoiceViewModel, DialogViewModel, DragAndDropService, ParameterViewModel, ViewModelFactoryService } from '@nakedobjects/view-models';
+import { LoggerService } from '@nakedobjects/services';
+import { ChoiceViewModel, DialogViewModel, DragAndDropService, ParameterViewModel } from '@nakedobjects/view-models';
 import { Dictionary } from 'lodash';
 import { AutoCompleteComponent } from '../auto-complete/auto-complete.component';
 import { DatePickerFacadeComponent } from '../date-picker-facade/date-picker-facade.component';
@@ -27,15 +27,11 @@ import { TimePickerFacadeComponent } from '../time-picker-facade/time-picker-fac
 export class EditParameterComponent extends FieldComponent implements OnInit, AfterViewInit {
 
     constructor(
-        private readonly viewModelFactory: ViewModelFactoryService,
-        private readonly urlManager: UrlManagerService,
-        context: ContextService,
-        configService: ConfigService,
         loggerService: LoggerService,
         renderer: Renderer2,
         dragAndDrop: DragAndDropService
     ) {
-        super(context, configService, loggerService, renderer, dragAndDrop);
+        super(loggerService, renderer, dragAndDrop);
     }
 
     parm: ParameterViewModel;
