@@ -6,7 +6,26 @@
             "umdModuleIds": {
                 "lodash": "_",
                 "moment": "moment",
-                "moment-timezone": "moment-timezone"
+                "moment-timezone": "moment-timezone",
+                "lodash-es/difference": "difference",
+                "lodash-es/findIndex": "findIndex",
+                "lodash-es/first": "first",
+                "lodash-es/every": "every",
+                "lodash-es/keys": "keys",
+                "lodash-es/omit": "omit",
+                "lodash-es/filter": "filter",
+                "lodash-es/flatten": "flatten",
+                "lodash-es/mapValues": "mapValues",
+                "lodash-es/zipObject": "zipObject",
+                "lodash-es/each": "each",
+                "lodash-es/find": "find",
+                "lodash-es/forEach": "forEach",
+                "lodash-es/map": "map",
+                "lodash-es/some": "some",
+                "lodash-es/concat": "concat",
+                "@nakedobjects/view-models": "@nakedobjects/view-models",
+                "@nakedobjects/services": "@nakedobjects/services",
+                "@nakedobjects/restful-objects": "@nakedobjects/restful-objects"
             }
         },
         "whitelistedNonPeerDependencies": [
