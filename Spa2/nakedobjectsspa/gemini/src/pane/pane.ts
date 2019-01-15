@@ -28,7 +28,7 @@ export abstract class PaneComponent implements OnInit, OnDestroy {
     }
 
     onChildless() {
-         setTimeout(() => this.paneType = 'single');
+        setTimeout(() => this.paneType = 'single');
     }
 
     protected abstract setup(routeData: PaneRouteData): void;

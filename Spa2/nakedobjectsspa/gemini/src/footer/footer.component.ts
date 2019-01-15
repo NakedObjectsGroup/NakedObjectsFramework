@@ -11,7 +11,7 @@ import {
     Pane,
     RepLoaderService,
     UrlManagerService
-    } from '@nakedobjects/services';
+} from '@nakedobjects/services';
 import { DragAndDropService, IDraggableViewModel } from '@nakedobjects/view-models';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { safeUnsubscribe } from '../helpers-components';

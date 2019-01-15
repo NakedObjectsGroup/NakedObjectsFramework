@@ -37,7 +37,7 @@ export function createForm(dialog: DialogViewModel, formBuilder: FormBuilder): {
         dialog.setParms();
     });
 
-    return { form: form, dialog: dialog, parms: parms, sub : sub };
+    return { form: form, dialog: dialog, parms: parms, sub: sub };
 }
 
 export function accept(droppableVm: FieldViewModel, component: { canDrop: boolean }) {
@@ -53,7 +53,7 @@ export function accept(droppableVm: FieldViewModel, component: { canDrop: boolea
     };
 }
 
-export function dropOn(draggableVm: IDraggableViewModel, droppable: FieldViewModel,  component: { canDrop: boolean, control: AbstractControl }) {
+export function dropOn(draggableVm: IDraggableViewModel, droppable: FieldViewModel, component: { canDrop: boolean, control: AbstractControl }) {
     if (component.canDrop) {
         droppable.drop(draggableVm)
             .then((success) => {

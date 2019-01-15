@@ -7,7 +7,7 @@ import {
     OnInit,
     Output,
     ViewChild
-    } from '@angular/core';
+} from '@angular/core';
 import * as Ro from '@nakedobjects/restful-objects';
 import { validateDate } from '@nakedobjects/services';
 import concat from 'lodash-es/concat';
@@ -28,7 +28,7 @@ export type IDatePickerOutputEvent = IDatePickerOutputDefaultEvent | IDatePicker
 
 export interface IDatePickerInputDateEvent {
     type: 'setDate';
-    data:  string;
+    data: string;
 }
 
 export interface IDatePickerInputActionEvent {
@@ -282,7 +282,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
     }
 
     nextMonth() {
-        const date =  this.currentDate.add(1, 'month');
+        const date = this.currentDate.add(1, 'month');
         this.setValue(date);
         this.model = this.formatDate(this.dateModel);
         this.generateCalendar();
@@ -296,7 +296,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
     }
 
     nextYear() {
-        const date =  this.currentDate.add(1, 'year');
+        const date = this.currentDate.add(1, 'year');
         this.setValue(date);
         this.model = this.formatDate(this.dateModel);
         this.generateCalendar();

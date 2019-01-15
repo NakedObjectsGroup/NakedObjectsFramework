@@ -12,7 +12,7 @@ import {
     LoggerService,
     PaneRouteData,
     UrlManagerService
-    } from '@nakedobjects/services';
+} from '@nakedobjects/services';
 import { ItemViewModel, ListViewModel, ViewModelFactoryService } from '@nakedobjects/view-models';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { IActionHolder } from '../action/action.component';

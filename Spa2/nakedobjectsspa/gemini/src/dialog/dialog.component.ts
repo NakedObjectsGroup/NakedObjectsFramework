@@ -12,7 +12,7 @@ import {
     MenuViewModel,
     ParameterViewModel,
     ViewModelFactoryService
-    } from '@nakedobjects/view-models';
+} from '@nakedobjects/view-models';
 import { Dictionary } from 'lodash';
 import find from 'lodash-es/find';
 import forEach from 'lodash-es/forEach';
@@ -112,7 +112,7 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
     private createForm(dialog: DialogViewModel) {
         safeUnsubscribe(this.formSub);
         safeUnsubscribe(this.createFormSub);
-        ({ form: this.form, dialog: this.dialog, parms: this.parms, sub : this.createFormSub } = createForm(dialog, this.formBuilder));
+        ({ form: this.form, dialog: this.dialog, parms: this.parms, sub: this.createFormSub } = createForm(dialog, this.formBuilder));
         this.formSub = this.form.valueChanges.subscribe((data) => this.onValueChanged());
     }
 
@@ -155,12 +155,12 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
             }
 
             if (p instanceof ListViewModel) {
-                action = p.actionMember(this.currentDialogId) !;
+                action = p.actionMember(this.currentDialogId)!;
                 actionViewModel = find(p.actions, a => a.actionRep.actionId() === this.currentDialogId) || null;
             }
 
             if (p instanceof CollectionViewModel && p.hasMatchingLocallyContributedAction(this.currentDialogId)) {
-                action = p.actionMember(this.currentDialogId) !;
+                action = p.actionMember(this.currentDialogId)!;
                 actionViewModel = find(p.actions, a => a.actionRep.actionId() === this.currentDialogId) || null;
             }
 

@@ -12,7 +12,7 @@ import {
     InteractionMode,
     PaneRouteData,
     UrlManagerService
-    } from '@nakedobjects/services';
+} from '@nakedobjects/services';
 import { CollectionViewModel, copy, DomainObjectViewModel, DragAndDropService, MenuItemViewModel, PropertyViewModel, ViewModelFactoryService } from '@nakedobjects/view-models';
 import { Dictionary } from 'lodash';
 import filter from 'lodash-es/filter';
@@ -112,7 +112,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
     };
 
     private actionButtons: IActionHolder[] | null;
-    private viewButtons =  [this.actionButton, this.editButton, this.reloadButton];
+    private viewButtons = [this.actionButton, this.editButton, this.reloadButton];
     private saveButtons = [this.saveButton, this.saveAndCloseButton, this.cancelButton];
 
     private lastPaneRouteData: PaneRouteData;
@@ -264,7 +264,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
             // cache because otherwise we will recreate this array of actionHolders everytime page changes !
             if (!this.actionButtons) {
 
-                const menuItems = this.menuItems() !;
+                const menuItems = this.menuItems()!;
                 const actions = flatten(map(menuItems, (mi: MenuItemViewModel) => mi.actions!));
                 this.actionButtons = map(actions, a => wrapAction(a));
             }
@@ -374,7 +374,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
                 const paneRouteData = this.urlManager.getPaneRouteDataObservable(paneId);
                 this.paneRouteDataSub =
                     paneRouteData.pipe(debounceTime(10))
-                    .subscribe((prd: PaneRouteData) => {
+                        .subscribe((prd: PaneRouteData) => {
                             if (!prd.isEqual(this.lastPaneRouteData) || this.isDirty(prd)) {
                                 this.lastPaneRouteData = prd;
                                 this.setup(prd);

@@ -24,6 +24,6 @@ export class CustomComponentConfigService implements ICustomComponentConfigServi
 
     configureCustomErrors(custom: ICustomErrorComponentConfigurator) {
         // by default configure page for 404 errors
-        custom.addError(ErrorCategory.HttpClientError, HttpStatusCode.NotFound, ObjectNotFoundErrorComponent );
+        custom.addError(ErrorCategory.HttpClientError, HttpStatusCode.NotFound, ObjectNotFoundErrorComponent);
     }
 }

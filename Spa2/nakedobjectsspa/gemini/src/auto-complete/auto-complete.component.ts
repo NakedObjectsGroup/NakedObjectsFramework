@@ -4,7 +4,7 @@ import { ContextService } from '@nakedobjects/services';
 import { ChoiceViewModel, DragAndDropService, FieldViewModel, IDraggableViewModel } from '@nakedobjects/view-models';
 import { Dictionary } from 'lodash';
 import { accept, dropOn, focus, paste, safeUnsubscribe } from '../helpers-components';
-import { SubscriptionLike as ISubscription ,  BehaviorSubject } from 'rxjs';
+import { SubscriptionLike as ISubscription, BehaviorSubject } from 'rxjs';
 
 @Component({
     selector: 'nof-auto-complete',
@@ -106,7 +106,7 @@ export class AutoCompleteComponent implements OnDestroy {
     }
 
     isSelected(i: number) {
-        return {'selected' : i === this.currentIndex};
+        return { 'selected': i === this.currentIndex };
     }
 
     onArrowUp() {
@@ -118,7 +118,7 @@ export class AutoCompleteComponent implements OnDestroy {
     onArrowDown() {
         this.currentIndex++;
         const maxIndex = this.choices.length - 1;
-        this.currentIndex = this.currentIndex > maxIndex  ? maxIndex : this.currentIndex;
+        this.currentIndex = this.currentIndex > maxIndex ? maxIndex : this.currentIndex;
         return false;
     }
 

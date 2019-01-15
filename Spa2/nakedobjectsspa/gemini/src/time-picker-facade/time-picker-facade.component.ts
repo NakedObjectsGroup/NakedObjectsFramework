@@ -7,9 +7,9 @@ import { ITimePickerInputEvent, ITimePickerOutputEvent } from '../time-picker/ti
 import * as Msg from '../user-messages';
 
 @Component({
-  selector: 'nof-time-picker-facade',
-  templateUrl: 'time-picker-facade.component.html',
-  styleUrls: ['time-picker-facade.component.css']
+    selector: 'nof-time-picker-facade',
+    templateUrl: 'time-picker-facade.component.html',
+    styleUrls: ['time-picker-facade.component.css']
 })
 export class TimePickerFacadeComponent implements AfterViewInit {
 
@@ -60,12 +60,12 @@ export class TimePickerFacadeComponent implements AfterViewInit {
         }
     }
 
-   handleInvalidTimeEvent(data: string) {
+    handleInvalidTimeEvent(data: string) {
         if (this.control) {
-           this.control.setValue('');
-           this.model.setMessage(Msg.invalidTime);
-           this.model.clientValid = false;
-           this.control.setErrors({[Msg.invalidTime]: true});
+            this.control.setValue('');
+            this.model.setMessage(Msg.invalidTime);
+            this.model.clientValid = false;
+            this.control.setErrors({ [Msg.invalidTime]: true });
         }
     }
 
@@ -74,10 +74,10 @@ export class TimePickerFacadeComponent implements AfterViewInit {
             case ('timeChanged'):
                 this.handleTimeChangedEvent(e.data);
                 break;
-             case ('timeInvalid'):
+            case ('timeInvalid'):
                 this.handleInvalidTimeEvent(e.data);
                 break;
-             case ('timeCleared'):
+            case ('timeCleared'):
                 this.handleTimeClearedEvent();
                 break;
             default: // ignore

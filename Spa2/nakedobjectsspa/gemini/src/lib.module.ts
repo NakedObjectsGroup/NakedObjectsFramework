@@ -148,12 +148,12 @@ export class LibModule {
     public static forRoot(): ModuleWithProviders {
 
         return {
-          ngModule: LibModule,
-          providers: [
-            CustomComponentService,
-            // to configure custom components create implementation of ICustomComponentConfigService and bind in here
-            { provide: CustomComponentConfigService, useClass: CustomComponentConfigService },
-        ]
+            ngModule: LibModule,
+            providers: [
+                CustomComponentService,
+                // to configure custom components create implementation of ICustomComponentConfigService and bind in here
+                { provide: CustomComponentConfigService, useClass: CustomComponentConfigService },
+            ]
         };
-      }
- }
+    }
+}

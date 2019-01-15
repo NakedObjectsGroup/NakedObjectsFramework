@@ -7,12 +7,12 @@ import {
     OnInit,
     Output,
     ViewChild
-    } from '@angular/core';
+} from '@angular/core';
 import * as Ro from '@nakedobjects/restful-objects';
 import * as momentNs from 'moment';
 import { debounceTime } from 'rxjs/operators';
 import { focus, safeUnsubscribe } from '../helpers-components';
-import { BehaviorSubject ,  SubscriptionLike as ISubscription } from 'rxjs';
+import { BehaviorSubject, SubscriptionLike as ISubscription } from 'rxjs';
 
 const moment = momentNs;
 
@@ -27,9 +27,9 @@ export interface ITimePickerInputEvent {
 }
 
 @Component({
-  selector: 'nof-time-picker',
-  templateUrl: 'time-picker.component.html',
-  styleUrls: ['time-picker.component.css']
+    selector: 'nof-time-picker',
+    templateUrl: 'time-picker.component.html',
+    styleUrls: ['time-picker.component.css']
 })
 export class TimePickerComponent implements OnInit, OnDestroy {
 

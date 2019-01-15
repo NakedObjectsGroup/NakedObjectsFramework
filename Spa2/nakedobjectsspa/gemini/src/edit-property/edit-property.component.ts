@@ -8,7 +8,7 @@
     QueryList,
     Renderer2,
     ViewChildren
-    } from '@angular/core';
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import * as Ro from '@nakedobjects/restful-objects';

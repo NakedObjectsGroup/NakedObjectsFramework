@@ -56,7 +56,7 @@ export class RowComponent {
         if (this.isTable) {
             if (this.hasTableTitle()) {
                 return i === 'title' ? 0 : -1;
-            } else  if (this.friendlyName) {
+            } else if (this.friendlyName) {
                 return i === 'fname' ? 0 : -1;
             } else if (i === 0) {
                 return 0;

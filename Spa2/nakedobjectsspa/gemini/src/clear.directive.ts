@@ -7,9 +7,9 @@ import {
     OnDestroy,
     OnInit,
     Output
-    } from '@angular/core';
+} from '@angular/core';
 import { safeUnsubscribe } from './helpers-components';
-import { BehaviorSubject ,  SubscriptionLike as ISubscription } from 'rxjs';
+import { BehaviorSubject, SubscriptionLike as ISubscription } from 'rxjs';
 
 @Directive({ selector: '[nofClear]' })
 export class ClearDirective implements OnInit, OnDestroy {

@@ -3,7 +3,7 @@ import { CollectionViewState, PaneRouteData, UrlManagerService } from '@nakedobj
 import { CollectionViewModel, ItemViewModel } from '@nakedobjects/view-models';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { safeUnsubscribe } from '../helpers-components';
- // needed for declarations compile
+// needed for declarations compile
 
 type State = 'summary' | 'list' | 'table';
 

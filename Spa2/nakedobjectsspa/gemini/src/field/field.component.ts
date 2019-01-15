@@ -10,7 +10,7 @@ import {
     IDraggableViewModel,
     ParameterViewModel,
     PropertyViewModel
-    } from '@nakedobjects/view-models';
+} from '@nakedobjects/view-models';
 import { Dictionary } from 'lodash';
 import every from 'lodash-es/every';
 import find from 'lodash-es/find';
@@ -22,11 +22,13 @@ import { AutoCompleteComponent } from '../auto-complete/auto-complete.component'
 import { DatePickerFacadeComponent } from '../date-picker-facade/date-picker-facade.component';
 import { accept, dropOn, focus, paste, safeUnsubscribe } from '../helpers-components';
 import { TimePickerFacadeComponent } from '../time-picker-facade/time-picker-facade.component';
-import { ConfigService,
+import {
+    ConfigService,
     ContextService,
-    LoggerService ,
-    Pane } from '@nakedobjects/services';
-import { BehaviorSubject ,  SubscriptionLike as ISubscription } from 'rxjs';
+    LoggerService,
+    Pane
+} from '@nakedobjects/services';
+import { BehaviorSubject, SubscriptionLike as ISubscription } from 'rxjs';
 
 export abstract class FieldComponent implements OnDestroy {
 
@@ -36,7 +38,7 @@ export abstract class FieldComponent implements OnDestroy {
         private readonly loggerService: LoggerService,
         private readonly renderer: Renderer2,
         private readonly dragAndDrop: DragAndDropService
-    ) {}
+    ) { }
 
     set formGroup(fm: FormGroup) {
         this.formGrp = fm;
@@ -150,8 +152,8 @@ export abstract class FieldComponent implements OnDestroy {
 
     private argsChanged(newArgs: Dictionary<Ro.Value>) {
         const same = this.lastArgs &&
-                     keys(this.lastArgs).length === keys(newArgs).length &&
-                     every(this.lastArgs, (v, k) => newArgs[k].toValueString() === v.toValueString());
+            keys(this.lastArgs).length === keys(newArgs).length &&
+            every(this.lastArgs, (v, k) => newArgs[k].toValueString() === v.toValueString());
 
         this.lastArgs = newArgs;
         return !same;
@@ -256,7 +258,7 @@ export abstract class FieldComponent implements OnDestroy {
 
     fileUpload(evt: Event) {
 
-        const file: File = (evt.target as HTMLInputElement) !.files![0];
+        const file: File = (evt.target as HTMLInputElement)!.files![0];
         const fileReader = new FileReader();
         fileReader.onloadend = () => {
             const link = new Ro.Link({
