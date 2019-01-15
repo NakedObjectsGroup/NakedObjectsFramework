@@ -1,13 +1,22 @@
-import * as Constants from '../constants';
-import { Component, ElementRef, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
-import * as momentNs from 'moment';
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output,
+    ViewChild
+    } from '@angular/core';
+import * as Ro from '@nakedobjects/restful-objects';
+import { validateDate } from '@nakedobjects/services';
 import concat from 'lodash-es/concat';
-import { BehaviorSubject, Observable,  SubscriptionLike as ISubscription } from 'rxjs';
-import { safeUnsubscribe, focus } from '../helpers-components';
-import * as Msg from '../user-messages';
-import * as Models from '@nakedobjects/restful-objects';
-import * as Validate from '@nakedobjects/services';
+import * as momentNs from 'moment';
+import { BehaviorSubject, Observable, SubscriptionLike as ISubscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import * as Constants from '../constants';
+import { focus, safeUnsubscribe } from '../helpers-components';
+import * as Msg from '../user-messages';
 
 const moment = momentNs;
 
@@ -148,12 +157,12 @@ export class DatePickerComponent implements OnInit, OnDestroy {
     private eventsSub: ISubscription;
 
     private validateDate(newValue: string) {
-        return Validate.validateDate(newValue, this.validInputFormats);
+        return validateDate(newValue, this.validInputFormats);
     }
 
     setDateIfChanged(newDate: momentNs.Moment) {
         const currentDate = this.dateModel;
-        if (!newDate.isSame(Models.withUndefined(currentDate))) {
+        if (!newDate.isSame(Ro.withUndefined(currentDate))) {
             this.setValue(newDate);
             setTimeout(() => this.model = this.formatDate(this.dateModel));
         }

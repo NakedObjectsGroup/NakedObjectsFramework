@@ -1,20 +1,23 @@
-﻿import { AutoCompleteComponent } from '../auto-complete/auto-complete.component';
-import { TimePickerFacadeComponent } from '../time-picker-facade/time-picker-facade.component';
-import { DatePickerFacadeComponent } from '../date-picker-facade/date-picker-facade.component';
-import { Component, Input, OnInit, ElementRef, HostListener, ViewChildren, QueryList, AfterViewInit, Renderer2 } from '@angular/core';
-import { ViewModelFactoryService } from '@nakedobjects/view-models';
-import { UrlManagerService } from '@nakedobjects/services';
-import * as Models from '@nakedobjects/restful-objects';
-import { FieldComponent } from '../field/field.component';
+﻿import {
+    AfterViewInit,
+    Component,
+    ElementRef,
+    HostListener,
+    Input,
+    OnInit,
+    QueryList,
+    Renderer2,
+    ViewChildren
+    } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ContextService } from '@nakedobjects/services';
-import { ParameterViewModel } from '@nakedobjects/view-models';
-import { DialogViewModel } from '@nakedobjects/view-models';
-import { ChoiceViewModel } from '@nakedobjects/view-models';
-import { ConfigService } from '@nakedobjects/services';
-import { LoggerService } from '@nakedobjects/services';
+import * as Ro from '@nakedobjects/restful-objects';
+import { ConfigService, ContextService, LoggerService, UrlManagerService } from '@nakedobjects/services';
+import { ChoiceViewModel, DialogViewModel, DragAndDropService, ParameterViewModel, ViewModelFactoryService } from '@nakedobjects/view-models';
 import { Dictionary } from 'lodash';
-import { DragAndDropService } from '@nakedobjects/view-models';
+import { AutoCompleteComponent } from '../auto-complete/auto-complete.component';
+import { DatePickerFacadeComponent } from '../date-picker-facade/date-picker-facade.component';
+import { FieldComponent } from '../field/field.component';
+import { TimePickerFacadeComponent } from '../time-picker-facade/time-picker-facade.component';
 
 @Component({
     selector: 'nof-edit-parameter',
@@ -130,15 +133,15 @@ export class EditParameterComponent extends FieldComponent implements OnInit, Af
     }
 
     isChoices() {
-        return this.parm.entryType === Models.EntryType.Choices ||
-            this.parm.entryType === Models.EntryType.ConditionalChoices ||
-            this.parm.entryType === Models.EntryType.MultipleChoices ||
-            this.parm.entryType === Models.EntryType.MultipleConditionalChoices;
+        return this.parm.entryType === Ro.EntryType.Choices ||
+            this.parm.entryType === Ro.EntryType.ConditionalChoices ||
+            this.parm.entryType === Ro.EntryType.MultipleChoices ||
+            this.parm.entryType === Ro.EntryType.MultipleConditionalChoices;
     }
 
     isMultiple() {
-        return this.parm.entryType === Models.EntryType.MultipleChoices ||
-            this.parm.entryType === Models.EntryType.MultipleConditionalChoices;
+        return this.parm.entryType === Ro.EntryType.MultipleChoices ||
+            this.parm.entryType === Ro.EntryType.MultipleConditionalChoices;
     }
 
     @HostListener('keydown', ['$event'])

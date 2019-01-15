@@ -1,11 +1,9 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { CollectionViewState } from '@nakedobjects/services';
-import { CollectionViewModel } from '@nakedobjects/view-models';
-import { PaneRouteData } from '@nakedobjects/services';
-import { UrlManagerService } from '@nakedobjects/services';
-import { ItemViewModel } from '@nakedobjects/view-models'; // needed for declarations compile
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { CollectionViewState, PaneRouteData, UrlManagerService } from '@nakedobjects/services';
+import { CollectionViewModel, ItemViewModel } from '@nakedobjects/view-models';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { safeUnsubscribe } from '../helpers-components';
+ // needed for declarations compile
 
 type State = 'summary' | 'list' | 'table';
 

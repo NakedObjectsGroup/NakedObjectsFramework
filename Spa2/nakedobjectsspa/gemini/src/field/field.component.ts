@@ -1,31 +1,32 @@
-import { AutoCompleteComponent } from '../auto-complete/auto-complete.component';
-import * as Models from '@nakedobjects/restful-objects';
-import { AbstractControl } from '@angular/forms';
-import { FormGroup } from '@angular/forms';
-import { ElementRef, QueryList, Renderer2, OnDestroy } from '@angular/core';
-import { ContextService } from '@nakedobjects/services';
-import { ChoiceViewModel } from '@nakedobjects/view-models';
-import { IDraggableViewModel } from '@nakedobjects/view-models';
-import { FieldViewModel } from '@nakedobjects/view-models';
-import { ParameterViewModel } from '@nakedobjects/view-models';
-import { DialogViewModel } from '@nakedobjects/view-models';
-import { PropertyViewModel } from '@nakedobjects/view-models';
-import { DomainObjectViewModel } from '@nakedobjects/view-models';
-import { ConfigService } from '@nakedobjects/services';
-import { LoggerService } from '@nakedobjects/services';
-import { Pane } from '@nakedobjects/services';
+import { ElementRef, OnDestroy, QueryList, Renderer2 } from '@angular/core';
+import { AbstractControl, FormGroup } from '@angular/forms';
+import * as Ro from '@nakedobjects/restful-objects';
+import {
+    ChoiceViewModel,
+    DialogViewModel,
+    DomainObjectViewModel,
+    DragAndDropService,
+    FieldViewModel,
+    IDraggableViewModel,
+    ParameterViewModel,
+    PropertyViewModel
+    } from '@nakedobjects/view-models';
 import { Dictionary } from 'lodash';
-import find from 'lodash-es/find';
 import every from 'lodash-es/every';
+import find from 'lodash-es/find';
+import keys from 'lodash-es/keys';
 import mapValues from 'lodash-es/mapValues';
 import omit from 'lodash-es/omit';
-import keys from 'lodash-es/keys';
-import { BehaviorSubject ,  SubscriptionLike as ISubscription } from 'rxjs';
-import { safeUnsubscribe, focus, accept, dropOn, paste } from '../helpers-components';
-import { DatePickerFacadeComponent } from '../date-picker-facade/date-picker-facade.component';
-import { TimePickerFacadeComponent } from '../time-picker-facade/time-picker-facade.component';
 import { debounceTime } from 'rxjs/operators';
-import { DragAndDropService } from '@nakedobjects/view-models';
+import { AutoCompleteComponent } from '../auto-complete/auto-complete.component';
+import { DatePickerFacadeComponent } from '../date-picker-facade/date-picker-facade.component';
+import { accept, dropOn, focus, paste, safeUnsubscribe } from '../helpers-components';
+import { TimePickerFacadeComponent } from '../time-picker-facade/time-picker-facade.component';
+import { ConfigService,
+    ContextService,
+    LoggerService ,
+    Pane } from '@nakedobjects/services';
+import { BehaviorSubject ,  SubscriptionLike as ISubscription } from 'rxjs';
 
 export abstract class FieldComponent implements OnDestroy {
 
@@ -75,11 +76,11 @@ export abstract class FieldComponent implements OnDestroy {
     private isAutoComplete: boolean;
     private bSubject: BehaviorSubject<any>;
     private sub: ISubscription;
-    private lastArgs: Dictionary<Models.Value>;
+    private lastArgs: Dictionary<Ro.Value>;
 
     control: AbstractControl;
     currentOptions: ChoiceViewModel[] = [];
-    pArgs: Dictionary<Models.Value>;
+    pArgs: Dictionary<Ro.Value>;
     paneId: Pane;
     canDrop = false;
 
@@ -96,13 +97,13 @@ export abstract class FieldComponent implements OnDestroy {
 
         this.paneId = this.model.onPaneId;
 
-        this.isConditionalChoices = (this.model.entryType === Models.EntryType.ConditionalChoices ||
-            this.model.entryType === Models.EntryType.MultipleConditionalChoices);
+        this.isConditionalChoices = (this.model.entryType === Ro.EntryType.ConditionalChoices ||
+            this.model.entryType === Ro.EntryType.MultipleConditionalChoices);
 
-        this.isAutoComplete = this.model.entryType === Models.EntryType.AutoComplete;
+        this.isAutoComplete = this.model.entryType === Ro.EntryType.AutoComplete;
 
         if (this.isConditionalChoices) {
-            this.pArgs = omit(this.model.promptArguments, 'x-ro-nof-members') as Dictionary<Models.Value>;
+            this.pArgs = omit(this.model.promptArguments, 'x-ro-nof-members') as Dictionary<Ro.Value>;
             this.populateDropdown();
         }
     }
@@ -119,7 +120,7 @@ export abstract class FieldComponent implements OnDestroy {
         return object && 'properties' in object;
     }
 
-    private mapValues(args: Dictionary<Models.Value>, parmsOrProps: { argId: string, getValue: () => Models.Value }[]) {
+    private mapValues(args: Dictionary<Ro.Value>, parmsOrProps: { argId: string, getValue: () => Ro.Value }[]) {
         return mapValues(this.pArgs,
             (v, n) => {
                 const pop = find(parmsOrProps, p => p.argId === n);
@@ -136,7 +137,7 @@ export abstract class FieldComponent implements OnDestroy {
             this.loggerService.throw('FieldComponent:populateArguments Expect dialog or object');
         }
 
-        let parmsOrProps: { argId: string, getValue: () => Models.Value }[];
+        let parmsOrProps: { argId: string, getValue: () => Ro.Value }[];
 
         if (this.isDomainObjectViewModel(object)) {
             parmsOrProps = object.properties;
@@ -147,7 +148,7 @@ export abstract class FieldComponent implements OnDestroy {
         return this.mapValues(this.pArgs, parmsOrProps);
     }
 
-    private argsChanged(newArgs: Dictionary<Models.Value>) {
+    private argsChanged(newArgs: Dictionary<Ro.Value>) {
         const same = this.lastArgs &&
                      keys(this.lastArgs).length === keys(newArgs).length &&
                      every(this.lastArgs, (v, k) => newArgs[k].toValueString() === v.toValueString());
@@ -171,7 +172,7 @@ export abstract class FieldComponent implements OnDestroy {
 
                     if (this.isConditionalChoices) {
                         // need to reset control to find the selected options
-                        if (this.model.entryType === Models.EntryType.MultipleConditionalChoices) {
+                        if (this.model.entryType === Ro.EntryType.MultipleConditionalChoices) {
                             this.control.reset(this.model.selectedMultiChoices);
                         } else {
                             this.control.reset(this.model.selectedChoice);
@@ -258,7 +259,7 @@ export abstract class FieldComponent implements OnDestroy {
         const file: File = (evt.target as HTMLInputElement) !.files![0];
         const fileReader = new FileReader();
         fileReader.onloadend = () => {
-            const link = new Models.Link({
+            const link = new Ro.Link({
                 href: fileReader.result as string,
                 type: file.type,
                 title: file.name

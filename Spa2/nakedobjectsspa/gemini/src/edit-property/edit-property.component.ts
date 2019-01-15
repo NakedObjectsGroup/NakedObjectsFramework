@@ -1,21 +1,24 @@
-﻿import { AutoCompleteComponent } from '../auto-complete/auto-complete.component';
-import { TimePickerFacadeComponent } from '../time-picker-facade/time-picker-facade.component';
-import { DatePickerFacadeComponent } from '../date-picker-facade/date-picker-facade.component';
-import { Component, Input, ElementRef, OnInit, HostListener, ViewChildren, QueryList, AfterViewInit, Renderer2 } from '@angular/core';
-import { FieldComponent } from '../field/field.component';
+﻿import {
+    AfterViewInit,
+    Component,
+    ElementRef,
+    HostListener,
+    Input,
+    OnInit,
+    QueryList,
+    Renderer2,
+    ViewChildren
+    } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ErrorService } from '@nakedobjects/services';
-import { ContextService } from '@nakedobjects/services';
-import { PropertyViewModel } from '@nakedobjects/view-models';
-import { DomainObjectViewModel } from '@nakedobjects/view-models';
-import { ChoiceViewModel } from '@nakedobjects/view-models';
-import { ConfigService } from '@nakedobjects/services';
-import { LoggerService } from '@nakedobjects/services';
-import * as Models from '@nakedobjects/restful-objects';
-import { AttachmentViewModel } from '@nakedobjects/view-models';
+import * as Ro from '@nakedobjects/restful-objects';
+import { ConfigService, ContextService, ErrorService, LoggerService } from '@nakedobjects/services';
+import { AttachmentViewModel, ChoiceViewModel, DomainObjectViewModel, DragAndDropService, PropertyViewModel } from '@nakedobjects/view-models';
 import { Dictionary } from 'lodash';
-import { DragAndDropService } from '@nakedobjects/view-models';
+import { AutoCompleteComponent } from '../auto-complete/auto-complete.component';
+import { DatePickerFacadeComponent } from '../date-picker-facade/date-picker-facade.component';
+import { FieldComponent } from '../field/field.component';
+import { TimePickerFacadeComponent } from '../time-picker-facade/time-picker-facade.component';
 
 @Component({
     selector: 'nof-edit-property',
@@ -80,7 +83,7 @@ export class EditPropertyComponent extends FieldComponent implements OnInit, Aft
         return this.property.returnType;
     }
 
-    get propertyEntryType(): Models.EntryType {
+    get propertyEntryType(): Ro.EntryType {
         return this.property.entryType;
     }
 

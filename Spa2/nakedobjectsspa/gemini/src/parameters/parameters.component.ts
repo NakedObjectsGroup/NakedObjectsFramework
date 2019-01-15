@@ -1,9 +1,8 @@
-﻿import { Component, Input, ViewChildren, QueryList } from '@angular/core';
+﻿import { Component, Input, QueryList, ViewChildren } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { EditParameterComponent } from '../edit-parameter/edit-parameter.component';
-import { ParameterViewModel } from '@nakedobjects/view-models';
-import { DialogViewModel } from '@nakedobjects/view-models';
+import { DialogViewModel, ParameterViewModel } from '@nakedobjects/view-models';
 import some from 'lodash-es/some';
+import { EditParameterComponent } from '../edit-parameter/edit-parameter.component';
 
 @Component({
     selector: 'nof-parameters',

@@ -1,30 +1,20 @@
-import { Component, ViewChildren, QueryList, AfterViewInit, OnDestroy } from '@angular/core';
-import { PaneComponent } from '../pane/pane';
-import { ParametersComponent } from '../parameters/parameters.component';
-import { ViewModelFactoryService } from '@nakedobjects/view-models';
-import { ActivatedRoute } from '@angular/router';
-import { UrlManagerService } from '@nakedobjects/services';
-import { ContextService } from '@nakedobjects/services';
-import { ErrorService } from '@nakedobjects/services';
-import { PaneRouteData } from '@nakedobjects/services';
-import { ActionViewModel } from '@nakedobjects/view-models';
-import { CollectionViewModel } from '@nakedobjects/view-models';
-import { MultiLineDialogViewModel } from '@nakedobjects/view-models';
-import { DialogViewModel } from '@nakedobjects/view-models';
+import { AfterViewInit, Component, OnDestroy, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ParameterViewModel } from '@nakedobjects/view-models';
-import { ConfigService } from '@nakedobjects/services';
-import * as Msg from '../user-messages';
-import * as Models from '@nakedobjects/restful-objects';
+import { ActivatedRoute } from '@angular/router';
+import * as Ro from '@nakedobjects/restful-objects';
+import { ConfigService, ContextService, ErrorService, ErrorWrapper, PaneRouteData, UrlManagerService } from '@nakedobjects/services';
+import { ActionViewModel, CollectionViewModel, DialogViewModel, MultiLineDialogViewModel, ParameterViewModel, ViewModelFactoryService } from '@nakedobjects/view-models';
 import { Dictionary } from 'lodash';
+import each from 'lodash-es/each';
 import find from 'lodash-es/find';
 import forEach from 'lodash-es/forEach';
 import map from 'lodash-es/map';
 import some from 'lodash-es/some';
-import each from 'lodash-es/each';
 import { SubscriptionLike as ISubscription } from 'rxjs';
-import { safeUnsubscribe, createForm } from '../helpers-components';
-import { ErrorWrapper } from '@nakedobjects/services';
+import { createForm, safeUnsubscribe } from '../helpers-components';
+import { PaneComponent } from '../pane/pane';
+import { ParametersComponent } from '../parameters/parameters.component';
+import * as Msg from '../user-messages';
 
 @Component({
     selector: 'nof-multi-line-dialog',
@@ -120,7 +110,7 @@ export class MultiLineDialogComponent extends PaneComponent implements AfterView
         return createForm(dialog, this.formBuilder);
     }
 
-    setMultiLineDialog(holder: Models.MenuRepresentation | Models.DomainObjectRepresentation | CollectionViewModel,
+    setMultiLineDialog(holder: Ro.MenuRepresentation | Ro.DomainObjectRepresentation | CollectionViewModel,
         newDialogId: string,
         routeData: PaneRouteData,
         actionViewModel?: ActionViewModel) {
@@ -142,16 +132,16 @@ export class MultiLineDialogComponent extends PaneComponent implements AfterView
     protected setup(routeData: PaneRouteData) {
         if (routeData.menuId) {
             this.context.getMenu(routeData.menuId)
-                .then((menu: Models.MenuRepresentation) => {
+                .then((menu: Ro.MenuRepresentation) => {
                     this.setMultiLineDialog(menu, routeData.dialogId, routeData);
                 })
                 .catch((reject: ErrorWrapper) => {
                     this.error.handleError(reject);
                 });
         } else if (routeData.objectId) {
-            const oid = Models.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator);
+            const oid = Ro.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator);
             this.context.getObject(routeData.paneId, oid, routeData.interactionMode).
-                then((object: Models.DomainObjectRepresentation) => {
+                then((object: Ro.DomainObjectRepresentation) => {
 
                     const ovm = this.viewModelFactory.domainObjectViewModel(object, routeData, false);
                     const newDialogId = routeData.dialogId;

@@ -1,13 +1,13 @@
-import { FieldViewModel } from '@nakedobjects/view-models';
 import { AfterViewInit, ViewChild } from '@angular/core';
-import { Component, Input, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
-import { DatePickerComponent, DatePickerOptions } from '../date-picker/date-picker.component';
 import { ConfigService } from '@nakedobjects/services';
-import * as Constants from '../constants';
-import * as Msg from '../user-messages';
-import { IDatePickerInputEvent, IDatePickerOutputEvent } from '../date-picker/date-picker.component';
+import { FieldViewModel } from '@nakedobjects/view-models';
 import * as momentNs from 'moment';
+import * as Constants from '../constants';
+import { DatePickerComponent, DatePickerOptions } from '../date-picker/date-picker.component';
+import { IDatePickerInputEvent, IDatePickerOutputEvent } from '../date-picker/date-picker.component';
+import * as Msg from '../user-messages';
 
 @Component({
     selector: 'nof-date-picker-facade',

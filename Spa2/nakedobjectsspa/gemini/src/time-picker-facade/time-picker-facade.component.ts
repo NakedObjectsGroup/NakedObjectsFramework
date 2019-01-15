@@ -1,11 +1,10 @@
-import { TimePickerComponent } from '../time-picker/time-picker.component';
-import { FieldViewModel } from '@nakedobjects/view-models';
-import {  ViewChild, AfterViewInit } from '@angular/core';
-import { Component, Input, EventEmitter } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, ViewChild } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
-import { ConfigService} from '@nakedobjects/services';
+import { ConfigService } from '@nakedobjects/services';
+import { FieldViewModel } from '@nakedobjects/view-models';
+import { TimePickerComponent } from '../time-picker/time-picker.component';
+import { ITimePickerInputEvent, ITimePickerOutputEvent } from '../time-picker/time-picker.component';
 import * as Msg from '../user-messages';
-import { ITimePickerOutputEvent, ITimePickerInputEvent } from '../time-picker/time-picker.component';
 
 @Component({
   selector: 'nof-time-picker-facade',

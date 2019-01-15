@@ -15,7 +15,9 @@
             "lodash-es",
             "moment",
             "@beyerleinf/ngx-dnd",
-            "@nakedobjects/restful-objects"
+            "@nakedobjects/restful-objects",
+            "@nakedobjects/services",
+            "@nakedobjects/view-models"
         ],
         "dest": "../dist/nakedobjects-gemini"
     },

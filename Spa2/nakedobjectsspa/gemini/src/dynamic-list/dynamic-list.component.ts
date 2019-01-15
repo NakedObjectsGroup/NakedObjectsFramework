@@ -1,16 +1,11 @@
-﻿import { Component, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
-import { CustomComponentService } from '../custom-component.service';
-import { ActivatedRoute } from '@angular/router';
-import { PaneRouteData, ViewType } from '@nakedobjects/services';
-import { UrlManagerService } from '@nakedobjects/services';
-import { PaneComponent } from '../pane/pane';
+﻿import { Component, ComponentFactoryResolver, OnDestroy, ViewChild, ViewContainerRef } from '@angular/core';
 import { Type } from '@angular/core/src/type';
-import { ContextService } from '@nakedobjects/services';
-import { ErrorService } from '@nakedobjects/services';
+import { ActivatedRoute } from '@angular/router';
+import * as Ro from '@nakedobjects/restful-objects';
+import { ConfigService, ContextService, ErrorService, ErrorWrapper, PaneRouteData, UrlManagerService, ViewType } from '@nakedobjects/services';
 import { IActionHolder } from '../action/action.component';
-import * as Models from '@nakedobjects/restful-objects';
-import { ConfigService } from '@nakedobjects/services';
-import { ErrorWrapper } from '@nakedobjects/services';
+import { CustomComponentService } from '../custom-component.service';
+import { PaneComponent } from '../pane/pane';
 
 @Component({
     selector: 'nof-dynamic-list',
@@ -48,9 +43,9 @@ export class DynamicListComponent extends PaneComponent implements OnDestroy {
     showPlaceholder = true;
     private cachedRouteData: PaneRouteData;
 
-    getActionExtensions(routeData: PaneRouteData): Promise<Models.Extensions> {
+    getActionExtensions(routeData: PaneRouteData): Promise<Ro.Extensions> {
         return routeData.objectId
-            ? this.context.getActionExtensionsFromObject(routeData.paneId, Models.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator), routeData.actionId)
+            ? this.context.getActionExtensionsFromObject(routeData.paneId, Ro.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator), routeData.actionId)
             : this.context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
     }
 
@@ -100,7 +95,7 @@ export class DynamicListComponent extends PaneComponent implements OnDestroy {
             this.parent.clear();
             this.lastOid = null; // so we recreate child after reload
             this.getActionExtensions(routeData)
-                .then((ext: Models.Extensions) =>
+                .then((ext: Ro.Extensions) =>
                     this.title = ext.friendlyName())
                 .catch((reject: ErrorWrapper) => this.error.handleError(reject));
 

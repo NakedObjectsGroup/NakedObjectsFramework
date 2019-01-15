@@ -1,20 +1,22 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { UrlManagerService } from '@nakedobjects/services';
-import { ContextService } from '@nakedobjects/services';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ColorService } from '@nakedobjects/services';
-import { ErrorService } from '@nakedobjects/services';
-import { PaneRouteData, CollectionViewState, ICustomActivatedRouteData } from '@nakedobjects/services';
-import { ViewModelFactoryService } from '@nakedobjects/view-models';
-import * as Models from '@nakedobjects/restful-objects';
-import { ListViewModel } from '@nakedobjects/view-models';
-import { IActionHolder } from '../action/action.component';
-import { ConfigService } from '@nakedobjects/services';
-import { LoggerService } from '@nakedobjects/services';
+import * as Ro from '@nakedobjects/restful-objects';
+import {
+    CollectionViewState,
+    ColorService,
+    ConfigService,
+    ContextService,
+    ErrorService,
+    ErrorWrapper,
+    ICustomActivatedRouteData,
+    LoggerService,
+    PaneRouteData,
+    UrlManagerService
+    } from '@nakedobjects/services';
+import { ItemViewModel, ListViewModel, ViewModelFactoryService } from '@nakedobjects/view-models';
 import { SubscriptionLike as ISubscription } from 'rxjs';
-import { ItemViewModel } from '@nakedobjects/view-models';
+import { IActionHolder } from '../action/action.component';
 import { safeUnsubscribe } from '../helpers-components';
-import { ErrorWrapper } from '@nakedobjects/services';
 
 @Component({
     selector: 'nof-list',
@@ -160,9 +162,9 @@ export class ListComponent implements OnInit, OnDestroy {
         return CollectionViewState[this.currentState].toString().toLowerCase();
     }
 
-    getActionExtensions(routeData: PaneRouteData): Promise<Models.Extensions> {
+    getActionExtensions(routeData: PaneRouteData): Promise<Ro.Extensions> {
         return routeData.objectId
-            ? this.context.getActionExtensionsFromObject(routeData.paneId, Models.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator), routeData.actionId)
+            ? this.context.getActionExtensionsFromObject(routeData.paneId, Ro.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator), routeData.actionId)
             : this.context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
     }
 
@@ -171,7 +173,7 @@ export class ListComponent implements OnInit, OnDestroy {
         const cachedList = this.context.getCachedList(routeData.paneId, routeData.page, routeData.pageSize);
 
         this.getActionExtensions(routeData)
-            .then((ext: Models.Extensions) =>
+            .then((ext: Ro.Extensions) =>
                 this.title = ext.friendlyName())
             .catch((reject: ErrorWrapper) => this.error.handleError(reject));
 

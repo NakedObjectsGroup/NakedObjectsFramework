@@ -1,7 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
+import { ErrorCategory, HttpStatusCode } from './constants';
 import { ICustomComponentConfigurator } from './custom-component.service';
 import { ICustomErrorComponentConfigurator } from './custom-component.service';
-import { ErrorCategory, HttpStatusCode } from './constants';
 import { ObjectNotFoundErrorComponent } from './object-not-found-error/object-not-found-error.component';
 
 export interface ICustomComponentConfigService {

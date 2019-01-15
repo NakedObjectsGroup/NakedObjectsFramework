@@ -1,8 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { ViewModelFactoryService } from '@nakedobjects/view-models';
-import { ApplicationPropertiesViewModel } from '@nakedobjects/view-models';
-import * as Msg from '../user-messages';
 import { AuthService } from '@nakedobjects/services';
+import { ApplicationPropertiesViewModel, ViewModelFactoryService } from '@nakedobjects/view-models';
+import * as Msg from '../user-messages';
 
 @Component({
     selector: 'nof-application-properties',

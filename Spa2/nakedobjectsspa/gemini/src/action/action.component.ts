@@ -1,4 +1,4 @@
-﻿import { Component, Input, ElementRef, ViewChildren, QueryList } from '@angular/core';
+﻿import { Component, ElementRef, Input, QueryList, ViewChildren } from '@angular/core';
 import { ActionViewModel } from '@nakedobjects/view-models';
 import { focus } from '../helpers-components';
 

@@ -1,7 +1,5 @@
 ﻿import { Component } from '@angular/core';
-import { AuthService } from '@nakedobjects/services';
-import { ConfigService } from '@nakedobjects/services';
-import { ContextService } from '@nakedobjects/services';
+import { AuthService, ConfigService, ContextService } from '@nakedobjects/services';
 
 @Component({
     selector: 'nof-login',

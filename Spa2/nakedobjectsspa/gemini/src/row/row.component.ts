@@ -1,13 +1,7 @@
-﻿import { Component, Input, ElementRef, ViewChildren, QueryList } from '@angular/core';
-import { ItemViewModel } from '@nakedobjects/view-models';
-import { IDraggableViewModel } from '@nakedobjects/view-models';
-import * as Helpers from '@nakedobjects/view-models';
+﻿import { Component, ElementRef, Input, QueryList, ViewChildren } from '@angular/core';
 import { ContextService } from '@nakedobjects/services';
-import { PropertyViewModel } from '@nakedobjects/view-models';
-import { RecentItemViewModel } from '@nakedobjects/view-models';
-import { TableRowColumnViewModel } from '@nakedobjects/view-models';
+import { copy, DragAndDropService, IDraggableViewModel, ItemViewModel, PropertyViewModel, RecentItemViewModel, TableRowColumnViewModel } from '@nakedobjects/view-models';
 import { focus } from '../helpers-components';
-import { DragAndDropService } from '@nakedobjects/view-models';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -83,7 +77,7 @@ export class RowComponent {
     doClick = (right?: boolean) => this.item.doClick(right);
 
     copy(event: KeyboardEvent, item: IDraggableViewModel) {
-        Helpers.copy(event, item, this.dragAndDrop);
+        copy(event, item, this.dragAndDrop);
     }
 
     focus() {

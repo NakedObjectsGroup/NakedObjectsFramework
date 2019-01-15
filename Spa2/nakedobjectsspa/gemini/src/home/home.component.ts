@@ -1,16 +1,9 @@
 ﻿import { Component, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { UrlManagerService } from '@nakedobjects/services';
-import { ContextService } from '@nakedobjects/services';
-import { ErrorService } from '@nakedobjects/services';
-import { ViewModelFactoryService } from '@nakedobjects/view-models';
-import { PaneRouteData } from '@nakedobjects/services';
-import { MenusViewModel } from '@nakedobjects/view-models';
-import { MenuViewModel } from '@nakedobjects/view-models';
+import * as Ro from '@nakedobjects/restful-objects';
+import { ContextService, ErrorService, ErrorWrapper, PaneRouteData, UrlManagerService } from '@nakedobjects/services';
+import { LinkViewModel, MenusViewModel, MenuViewModel, ViewModelFactoryService } from '@nakedobjects/view-models';
 import { PaneComponent } from '../pane/pane';
-import * as Models from '@nakedobjects/restful-objects';
-import { LinkViewModel } from '@nakedobjects/view-models';
-import { ErrorWrapper } from '@nakedobjects/services';
 
 @Component({
     selector: 'nof-home',
@@ -46,7 +39,7 @@ export class HomeComponent extends PaneComponent {
 
     getMenus(paneRouteData: PaneRouteData) {
         this.context.getMenus()
-            .then((menus: Models.MenusRepresentation) => {
+            .then((menus: Ro.MenusRepresentation) => {
                 this.menus = this.viewModelFactory.menusViewModel(menus, paneRouteData);
                 this.hasAuthorisedMenus = this.menus && this.menus.items && this.menus.items.length > 0;
             })
@@ -59,7 +52,7 @@ export class HomeComponent extends PaneComponent {
         const menuId = paneRouteData.menuId;
         if (menuId) {
             this.context.getMenu(menuId)
-                .then((menu: Models.MenuRepresentation) => {
+                .then((menu: Ro.MenuRepresentation) => {
                     this.selectedMenu = this.viewModelFactory.menuViewModel(menu, paneRouteData);
                     this.selectedDialogId = paneRouteData.dialogId;
                 })

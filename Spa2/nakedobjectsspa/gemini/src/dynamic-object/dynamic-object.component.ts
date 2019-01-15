@@ -1,13 +1,10 @@
-﻿import { ContextService } from '@nakedobjects/services';
-import { Component, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
-import { CustomComponentService } from '../custom-component.service';
-import { ActivatedRoute } from '@angular/router';
-import { PaneRouteData, ViewType } from '@nakedobjects/services';
-import { UrlManagerService } from '@nakedobjects/services';
-import { PaneComponent } from '../pane/pane';
+﻿import { Component, ComponentFactoryResolver, OnDestroy, ViewChild, ViewContainerRef } from '@angular/core';
 import { Type } from '@angular/core/src/type';
-import * as Models from '@nakedobjects/restful-objects';
-import { ConfigService } from '@nakedobjects/services';
+import { ActivatedRoute } from '@angular/router';
+import * as Ro from '@nakedobjects/restful-objects';
+import { ConfigService, ContextService, PaneRouteData, UrlManagerService, ViewType } from '@nakedobjects/services';
+import { CustomComponentService } from '../custom-component.service';
+import { PaneComponent } from '../pane/pane';
 
 @Component({
     selector: 'nof-dynamic-object',
@@ -35,7 +32,7 @@ export class DynamicObjectComponent extends PaneComponent implements OnDestroy {
         if (!routeData.objectId) {
             return;
         }
-        const oid = Models.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator);
+        const oid = Ro.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator);
 
         if (oid.domainType !== this.lastOid) {
             this.lastOid = oid.domainType;

@@ -1,36 +1,34 @@
-import { Component, OnInit, OnDestroy, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import * as Models from '@nakedobjects/restful-objects';
-import { UrlManagerService } from '@nakedobjects/services';
-import { ContextService } from '@nakedobjects/services';
-import { ViewModelFactoryService } from '@nakedobjects/view-models';
-import { ErrorService } from '@nakedobjects/services';
-import { PaneRouteData, InteractionMode, ICustomActivatedRouteData } from '@nakedobjects/services';
+import { AfterViewInit, Component, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { PropertyViewModel } from '@nakedobjects/view-models';
-import { MenuItemViewModel } from '@nakedobjects/view-models';
-import { DomainObjectViewModel } from '@nakedobjects/view-models';
-import { IActionHolder, wrapAction } from '../action/action.component';
-import { ColorService } from '@nakedobjects/services';
-import { ConfigService } from '@nakedobjects/services';
-import { PropertiesComponent } from '../properties/properties.component';
-import * as Msg from '../user-messages';
-import * as Helpers from '@nakedobjects/view-models';
-import { CollectionViewModel } from '@nakedobjects/view-models';
+import { ActivatedRoute } from '@angular/router';
+import * as Ro from '@nakedobjects/restful-objects';
+import {
+    ColorService,
+    ConfigService,
+    ContextService,
+    ErrorService,
+    ErrorWrapper,
+    ICustomActivatedRouteData,
+    InteractionMode,
+    PaneRouteData,
+    UrlManagerService
+    } from '@nakedobjects/services';
+import { CollectionViewModel, copy, DomainObjectViewModel, DragAndDropService, MenuItemViewModel, PropertyViewModel, ViewModelFactoryService } from '@nakedobjects/view-models';
 import { Dictionary } from 'lodash';
 import filter from 'lodash-es/filter';
+import flatten from 'lodash-es/flatten';
 import forEach from 'lodash-es/forEach';
 import map from 'lodash-es/map';
-import flatten from 'lodash-es/flatten';
-import zipObject from 'lodash-es/zipObject';
 import mapValues from 'lodash-es/mapValues';
 import some from 'lodash-es/some';
+import zipObject from 'lodash-es/zipObject';
 import { SubscriptionLike as ISubscription } from 'rxjs';
-import { safeUnsubscribe } from '../helpers-components';
 import { debounceTime } from 'rxjs/operators';
-import { ErrorCategory, ClientErrorCode } from '../constants';
-import { ErrorWrapper } from '@nakedobjects/services';
-import { DragAndDropService } from '@nakedobjects/view-models';
+import { IActionHolder, wrapAction } from '../action/action.component';
+import { ClientErrorCode, ErrorCategory } from '../constants';
+import { safeUnsubscribe } from '../helpers-components';
+import { PropertiesComponent } from '../properties/properties.component';
+import * as Msg from '../user-messages';
 
 @Component({
     selector: 'nof-object',
@@ -184,7 +182,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
     copy(event: KeyboardEvent) {
         const obj = this.object;
         if (obj) {
-            Helpers.copy(event, obj, this.dragAndDrop);
+            copy(event, obj, this.dragAndDrop);
         }
     }
 
@@ -293,7 +291,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.expiredTransient = false;
 
-        const oid = Models.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator);
+        const oid = Ro.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator);
 
         if (this.object && !this.object.domainObject.getOid().isSame(oid)) {
             // object has changed - clear existing
@@ -316,7 +314,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
             this.colorService.toColorNumberFromType(oid.domainType).then(c => this.pendingColor = `${this.configService.config.objectColor}${c}`);
 
             this.context.getObject(routeData.paneId, oid, routeData.interactionMode)
-                .then((object: Models.DomainObjectRepresentation) => {
+                .then((object: Ro.DomainObjectRepresentation) => {
 
                     // only change the object property if the object has changed
                     if (isChanging || wasDirty) {
@@ -362,8 +360,8 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         });
     }
 
-    isDirty(paneRouteData: PaneRouteData, oid?: Models.ObjectIdWrapper) {
-        oid = oid || Models.ObjectIdWrapper.fromObjectId(paneRouteData.objectId, this.configService.config.keySeparator);
+    isDirty(paneRouteData: PaneRouteData, oid?: Ro.ObjectIdWrapper) {
+        oid = oid || Ro.ObjectIdWrapper.fromObjectId(paneRouteData.objectId, this.configService.config.keySeparator);
         return this.context.getIsDirty(oid);
     }
 

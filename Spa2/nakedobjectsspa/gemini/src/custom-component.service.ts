@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
-import { CustomComponentConfigService } from './custom-component-config.service';
-import { ObjectComponent } from './object/object.component';
-import { ViewType } from '@nakedobjects/services';
-import { ListComponent } from './list/list.component';
 import { Type } from '@angular/core/src/type';
-import { TypeResultCache } from '@nakedobjects/services';
-import { ContextService } from '@nakedobjects/services';
+import { ContextService, TypeResultCache, ViewType } from '@nakedobjects/services';
+import { ClientErrorCode, ErrorCategory, HttpStatusCode } from './constants';
+import { CustomComponentConfigService } from './custom-component-config.service';
 import { ErrorComponent } from './error/error.component';
-import { ErrorCategory, HttpStatusCode, ClientErrorCode } from './constants';
+import { ListComponent } from './list/list.component';
+import { ObjectComponent } from './object/object.component';
 
 export interface ICustomComponentConfigurator {
     addType: (type: string, result: Type<any>) => void;

@@ -1,10 +1,10 @@
-import { Component, Input, QueryList, AfterViewInit, ViewChildren, OnDestroy } from '@angular/core';
-import { LinkViewModel } from '@nakedobjects/view-models';
-import { ActionComponent, IActionHolder } from '../action/action.component';
+import { AfterViewInit, Component, Input, OnDestroy, QueryList, ViewChildren } from '@angular/core';
 import { UrlManagerService } from '@nakedobjects/services';
+import { LinkViewModel } from '@nakedobjects/view-models';
 import map from 'lodash-es/map';
 import some from 'lodash-es/some';
 import { SubscriptionLike as ISubscription } from 'rxjs';
+import { ActionComponent, IActionHolder } from '../action/action.component';
 import { safeUnsubscribe } from '../helpers-components';
 
 @Component({

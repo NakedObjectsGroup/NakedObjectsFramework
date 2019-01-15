@@ -1,10 +1,10 @@
-﻿import { ContextService } from '@nakedobjects/services';
+﻿import { Location } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { ContextService } from '@nakedobjects/services';
 import { ConfigService } from '@nakedobjects/services';
 import { AuthService } from '@nakedobjects/services';
 import { UrlManagerService } from '@nakedobjects/services';
-import { Location } from '@angular/common';
-import { HttpClient, HttpRequest, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 
 @Component({
     selector: 'nof-logoff',

@@ -1,14 +1,13 @@
-import { Component, Input, ViewChildren, QueryList, AfterViewInit, OnDestroy } from '@angular/core';
-import { MenuItemViewModel } from '@nakedobjects/view-models';
-import { IActionHolder, wrapAction } from '../action/action.component';
-import { ActionComponent } from '../action/action.component';
-import { IMenuHolderViewModel } from '@nakedobjects/view-models';
-import { SubscriptionLike as ISubscription } from 'rxjs';
+import { AfterViewInit, Component, Input, OnDestroy, QueryList, ViewChildren } from '@angular/core';
+import { IMenuHolderViewModel, MenuItemViewModel } from '@nakedobjects/view-models';
+import difference from 'lodash-es/difference';
+import findIndex from 'lodash-es/findIndex';
+import first from 'lodash-es/first';
 import map from 'lodash-es/map';
 import some from 'lodash-es/some';
-import findIndex from 'lodash-es/findIndex';
-import difference from 'lodash-es/difference';
-import first from 'lodash-es/first';
+import { SubscriptionLike as ISubscription } from 'rxjs';
+import { ActionComponent } from '../action/action.component';
+import { IActionHolder, wrapAction } from '../action/action.component';
 import { safeUnsubscribe } from '../helpers-components';
 
 @Component({

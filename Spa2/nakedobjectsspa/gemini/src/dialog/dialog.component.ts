@@ -1,27 +1,25 @@
-import { Component, Input, AfterViewInit, ViewChildren, QueryList, OnDestroy } from '@angular/core';
-import { ViewModelFactoryService } from '@nakedobjects/view-models';
-import { UrlManagerService } from '@nakedobjects/services';
-import * as Models from '@nakedobjects/restful-objects';
-import { ActivatedRoute } from '@angular/router';
-import { ContextService } from '@nakedobjects/services';
-import { ErrorService } from '@nakedobjects/services';
+import { AfterViewInit, Component, Input, OnDestroy, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ParameterViewModel } from '@nakedobjects/view-models';
-import { ActionViewModel } from '@nakedobjects/view-models';
-import { DialogViewModel } from '@nakedobjects/view-models';
-import { ListViewModel } from '@nakedobjects/view-models';
-import { MenuViewModel } from '@nakedobjects/view-models';
-import { DomainObjectViewModel } from '@nakedobjects/view-models';
-import { CollectionViewModel } from '@nakedobjects/view-models';
-import { ConfigService } from '@nakedobjects/services';
-import { ParametersComponent } from '../parameters/parameters.component';
+import { ActivatedRoute } from '@angular/router';
+import * as Ro from '@nakedobjects/restful-objects';
+import { ConfigService, ContextService, ErrorService, ErrorWrapper, UrlManagerService } from '@nakedobjects/services';
+import {
+    ActionViewModel,
+    CollectionViewModel,
+    DialogViewModel,
+    DomainObjectViewModel,
+    ListViewModel,
+    MenuViewModel,
+    ParameterViewModel,
+    ViewModelFactoryService
+    } from '@nakedobjects/view-models';
 import { Dictionary } from 'lodash';
 import find from 'lodash-es/find';
 import forEach from 'lodash-es/forEach';
 import some from 'lodash-es/some';
 import { SubscriptionLike as ISubscription } from 'rxjs';
-import { safeUnsubscribe, createForm } from '../helpers-components';
-import { ErrorWrapper } from '@nakedobjects/services';
+import { createForm, safeUnsubscribe } from '../helpers-components';
+import { ParametersComponent } from '../parameters/parameters.component';
 
 @Component({
     selector: 'nof-dialog',
@@ -145,7 +143,7 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
             }
 
             const p = this.parent;
-            let action: Models.ActionMember | Models.ActionRepresentation | null = null;
+            let action: Ro.ActionMember | Ro.ActionRepresentation | null = null;
             let actionViewModel: ActionViewModel | null = null;
 
             if (p instanceof MenuViewModel) {

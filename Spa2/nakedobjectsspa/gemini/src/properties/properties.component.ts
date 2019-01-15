@@ -1,9 +1,8 @@
-﻿import { Component, Input, ViewChildren, QueryList } from '@angular/core';
+﻿import { Component, Input, QueryList, ViewChildren } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { EditPropertyComponent } from '../edit-property/edit-property.component';
-import { PropertyViewModel } from '@nakedobjects/view-models';
-import { DomainObjectViewModel } from '@nakedobjects/view-models';
+import { DomainObjectViewModel, PropertyViewModel } from '@nakedobjects/view-models';
 import some from 'lodash-es/some';
+import { EditPropertyComponent } from '../edit-property/edit-property.component';
 
 @Component({
     selector: 'nof-properties',

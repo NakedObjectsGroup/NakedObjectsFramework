@@ -1,6 +1,15 @@
-import { Directive, ElementRef, HostListener, Output, EventEmitter, Input, OnInit, OnDestroy } from '@angular/core';
-import { BehaviorSubject ,  SubscriptionLike as ISubscription } from 'rxjs';
+import {
+    Directive,
+    ElementRef,
+    EventEmitter,
+    HostListener,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output
+    } from '@angular/core';
 import { safeUnsubscribe } from './helpers-components';
+import { BehaviorSubject ,  SubscriptionLike as ISubscription } from 'rxjs';
 
 @Directive({ selector: '[nofClear]' })
 export class ClearDirective implements OnInit, OnDestroy {

@@ -1,7 +1,6 @@
 ﻿import { Component, Input } from '@angular/core';
-import { CollectionViewModel } from '@nakedobjects/view-models';
-import { ListViewModel } from '@nakedobjects/view-models';
 import { CollectionViewState } from '@nakedobjects/services';
+import { CollectionViewModel, ListViewModel } from '@nakedobjects/view-models';
 
 @Component({
     // tslint:disable-next-line:component-selector

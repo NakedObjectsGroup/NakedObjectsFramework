@@ -1,12 +1,11 @@
-import { Component, Input, QueryList, ViewChildren, OnDestroy, AfterViewInit } from '@angular/core';
-import { IActionHolder, wrapAction } from '../action/action.component';
-import { IMenuHolderViewModel } from '@nakedobjects/view-models';
-import { MenuItemViewModel } from '@nakedobjects/view-models';
-import { ActionComponent } from '../action/action.component';
-import { SubscriptionLike as ISubscription } from 'rxjs';
+import { AfterViewInit, Component, Input, OnDestroy, QueryList, ViewChildren } from '@angular/core';
+import { IMenuHolderViewModel, MenuItemViewModel } from '@nakedobjects/view-models';
 import flatten from 'lodash-es/flatten';
 import map from 'lodash-es/map';
 import some from 'lodash-es/some';
+import { SubscriptionLike as ISubscription } from 'rxjs';
+import { IActionHolder, wrapAction } from '../action/action.component';
+import { ActionComponent } from '../action/action.component';
 import { safeUnsubscribe } from '../helpers-components';
 
 @Component({

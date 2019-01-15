@@ -1,11 +1,8 @@
 ﻿import { Component, Input } from '@angular/core';
-import { AttachmentViewModel } from '@nakedobjects/view-models';
-import { ErrorService } from '@nakedobjects/services';
 import { Router } from '@angular/router';
-import { UrlManagerService } from '@nakedobjects/services';
-import { ClickHandlerService } from '@nakedobjects/services';
+import { ClickHandlerService, ErrorService, ErrorWrapper, UrlManagerService } from '@nakedobjects/services';
+import { AttachmentViewModel } from '@nakedobjects/view-models';
 import * as Msg from '../user-messages';
-import { ErrorWrapper } from '@nakedobjects/services';
 
 @Component({
     selector: 'nof-attachment-property',

@@ -1,17 +1,13 @@
-import { ContextService } from '@nakedobjects/services';
-import { Component, ViewChildren, QueryList, AfterViewInit, OnDestroy } from '@angular/core';
-import { ViewModelFactoryService } from '@nakedobjects/view-models';
+import { AfterViewInit, Component, OnDestroy, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { UrlManagerService } from '@nakedobjects/services';
-import { PaneRouteData } from '@nakedobjects/services';
-import { RecentItemsViewModel } from '@nakedobjects/view-models';
-import { PaneComponent } from '../pane/pane';
-import { IActionHolder } from '../action/action.component';
-import * as Msg from '../user-messages';
-import { RowComponent } from '../row/row.component';
-import { RecentItemViewModel } from '@nakedobjects/view-models';
+import { ContextService, PaneRouteData, UrlManagerService } from '@nakedobjects/services';
+import { RecentItemsViewModel, RecentItemViewModel, ViewModelFactoryService } from '@nakedobjects/view-models';
 import { SubscriptionLike as ISubscription } from 'rxjs';
+import { IActionHolder } from '../action/action.component';
 import { safeUnsubscribe } from '../helpers-components';
+import { PaneComponent } from '../pane/pane';
+import { RowComponent } from '../row/row.component';
+import * as Msg from '../user-messages';
 
 @Component({
     selector: 'nof-recent',

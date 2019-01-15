@@ -1,9 +1,18 @@
-import { Component, ElementRef, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output,
+    ViewChild
+    } from '@angular/core';
+import * as Ro from '@nakedobjects/restful-objects';
 import * as momentNs from 'moment';
-import { BehaviorSubject ,  SubscriptionLike as ISubscription } from 'rxjs';
-import { safeUnsubscribe, focus } from '../helpers-components';
-import * as Models from '@nakedobjects/restful-objects';
 import { debounceTime } from 'rxjs/operators';
+import { focus, safeUnsubscribe } from '../helpers-components';
+import { BehaviorSubject ,  SubscriptionLike as ISubscription } from 'rxjs';
 
 const moment = momentNs;
 
@@ -87,7 +96,7 @@ export class TimePickerComponent implements OnInit, OnDestroy {
     }
 
     setTimeIfChanged(newTime: momentNs.Moment) {
-        if (!newTime.isSame(Models.withUndefined(this.time))) {
+        if (!newTime.isSame(Ro.withUndefined(this.time))) {
             this.time = newTime;
             setTimeout(() => this.model = newTime.format('HH:mm'));
         }

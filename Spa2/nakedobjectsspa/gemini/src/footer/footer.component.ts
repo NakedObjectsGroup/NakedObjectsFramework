@@ -1,20 +1,21 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
-import { UrlManagerService } from '@nakedobjects/services';
-import { ClickHandlerService } from '@nakedobjects/services';
-import { ContextService } from '@nakedobjects/services';
-import { ErrorService } from '@nakedobjects/services';
-import { RepLoaderService } from '@nakedobjects/services';
-import { IDraggableViewModel } from '@nakedobjects/view-models';
-import * as Msg from '../user-messages';
-import { ConfigService } from '@nakedobjects/services';
-import { AuthService } from '@nakedobjects/services';
-import { Pane } from '@nakedobjects/services';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+    AuthService,
+    ClickHandlerService,
+    ConfigService,
+    ContextService,
+    ErrorService,
+    ErrorWrapper,
+    Pane,
+    RepLoaderService,
+    UrlManagerService
+    } from '@nakedobjects/services';
+import { DragAndDropService, IDraggableViewModel } from '@nakedobjects/view-models';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { safeUnsubscribe } from '../helpers-components';
-import { HttpClient } from '@angular/common/http';
-import { ErrorWrapper } from '@nakedobjects/services';
-import { DragAndDropService } from '@nakedobjects/view-models';
+import * as Msg from '../user-messages';
 
 @Component({
     selector: 'nof-footer',

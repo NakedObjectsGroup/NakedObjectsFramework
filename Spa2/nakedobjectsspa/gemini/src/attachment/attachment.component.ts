@@ -1,14 +1,9 @@
 ﻿import { Component } from '@angular/core';
-import { ContextService } from '@nakedobjects/services';
-import { ViewModelFactoryService } from '@nakedobjects/view-models';
 import { ActivatedRoute } from '@angular/router';
-import { UrlManagerService } from '@nakedobjects/services';
-import { ErrorService } from '@nakedobjects/services';
+import * as Ro from '@nakedobjects/restful-objects';
+import { ConfigService, ContextService, ErrorService, ErrorWrapper, PaneRouteData, UrlManagerService } from '@nakedobjects/services';
+import { ViewModelFactoryService } from '@nakedobjects/view-models';
 import { PaneComponent } from '../pane/pane';
-import * as Models from '@nakedobjects/restful-objects';
-import { ConfigService } from '@nakedobjects/services';
-import { PaneRouteData } from '@nakedobjects/services';
-import { ErrorWrapper } from '@nakedobjects/services';
 
 @Component({
     selector: 'nof-attachment',
@@ -34,10 +29,10 @@ export class AttachmentComponent extends PaneComponent {
 
     protected setup(routeData: PaneRouteData) {
 
-        const oid = Models.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator);
+        const oid = Ro.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator);
 
         this.context.getObject(routeData.paneId, oid, routeData.interactionMode)
-            .then((object: Models.DomainObjectRepresentation) => {
+            .then((object: Ro.DomainObjectRepresentation) => {
 
                 const attachmentId = routeData.attachmentId;
                 const attachment = object.propertyMember(attachmentId);

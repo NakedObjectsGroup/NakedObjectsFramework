@@ -1,11 +1,7 @@
-﻿import { Component, Input, HostListener } from '@angular/core';
+﻿import { Component, HostListener, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { ErrorService } from '@nakedobjects/services';
-import { ContextService } from '@nakedobjects/services';
-import { PropertyViewModel } from '@nakedobjects/view-models';
-import * as Helpers from '@nakedobjects/view-models';
-import { AttachmentViewModel } from '@nakedobjects/view-models';
-import { DragAndDropService } from '@nakedobjects/view-models';
+import { ContextService, ErrorService } from '@nakedobjects/services';
+import { copy, DragAndDropService, AttachmentViewModel, PropertyViewModel } from '@nakedobjects/view-models';
 
 @Component({
     selector: 'nof-view-property',
@@ -93,7 +89,7 @@ export class ViewPropertyComponent {
     copy(event: KeyboardEvent) {
         const prop = this.property;
         if (prop) {
-            Helpers.copy(event, prop, this.dragAndDrop);
+            copy(event, prop, this.dragAndDrop);
         }
     }
 }
