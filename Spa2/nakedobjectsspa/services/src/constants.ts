@@ -19,10 +19,6 @@ export const logoffPath: PathSegment = 'logoff';
 
 export type PathSegment = 'home' | 'object' | 'list' | 'error' | 'recent' | 'attachment' | 'applicationProperties' | 'multiLineDialog' | 'logoff';
 
-// Restful Objects constants
-export const roInlinePropertyDetails = 'x-ro-inline-property-details';
-export const roInlineCollectionItems = 'x-ro-inline-collection-items';
-
 export const supportedDateFormats = ['D/M/YYYY', 'D/M/YY', 'D MMM YYYY', 'D MMMM YYYY', 'D MMM YY', 'D MMMM YY'];
 
 export enum ErrorCategory {

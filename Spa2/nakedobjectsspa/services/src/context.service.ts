@@ -14,7 +14,6 @@ import remove from 'lodash-es/remove';
 import sortBy from 'lodash-es/sortBy';
 import { Subject } from 'rxjs';
 import { ConfigService } from './config.service';
-import * as Constants from './constants';
 import { ClientErrorCode, ErrorCategory } from './constants';
 import { LoggerService } from './logger.service';
 import { RepLoaderService } from './rep-loader.service';
@@ -249,7 +248,7 @@ export class ContextService {
 
             if (details) {
                 const baseUrl = details.getUrl();
-                details.setUrlParameter(Constants.roInlineCollectionItems, true);
+                details.inlineItems(true);
                 const inlineUrl = details.getUrl();
 
                 this.repLoader.clearCache(baseUrl);
@@ -305,8 +304,7 @@ export class ContextService {
     }
 
     private editOrReloadObject(paneId: Pane, object: Ro.DomainObjectRepresentation, inlineDetails: boolean) {
-        const parms: Dictionary<Object> = {};
-        parms[Constants.roInlinePropertyDetails] = inlineDetails;
+        const parms = Ro.inlinePropertyDetails(inlineDetails);
 
         return this.repLoader.retrieveFromLink<Ro.DomainObjectRepresentation>(object.selfLink(), parms)
             .then(obj => {
@@ -362,7 +360,7 @@ export class ContextService {
 
         if (details) {
             if (state === CollectionViewState.Table) {
-                details.setUrlParameter(Constants.roInlineCollectionItems, true);
+                details.inlineItems(true);
             }
             const parent = collectionMember.parent;
             let isDirty = false;
@@ -563,11 +561,6 @@ export class ContextService {
     getActionExtensionsFromObject = (paneId: Pane, oid: Ro.ObjectIdWrapper, actionId: string) =>
         this.getObject(paneId, oid, InteractionMode.View).then(object => Promise.resolve(object.actionMember(actionId).extensions()))
 
-    private getPagingParms(page: number, pageSize: number): Dictionary<Object> {
-        // TODO refactor this - don't think x-ro-... values should be exposed like this
-        return (page && pageSize) ? { 'x-ro-page': page, 'x-ro-pageSize': pageSize } : {};
-    }
-
     getListFromMenu = (routeData: PaneRouteData, page?: number, pageSize?: number) => {
         const menuId = routeData.menuId;
         const actionId = routeData.actionId;
@@ -576,10 +569,10 @@ export class ContextService {
         const paneId = routeData.paneId;
         const newPage = page || routeData.page;
         const newPageSize = pageSize || routeData.pageSize;
-        const urlParms = this.getPagingParms(newPage, newPageSize);
+        const urlParms = Ro.getPagingParms(newPage, newPageSize);
 
         if (state === CollectionViewState.Table) {
-            urlParms[Constants.roInlineCollectionItems] = true;
+            Ro.inlineCollectionItems(true, urlParms);
         }
 
         const promise = () => this.getMenu(menuId).then(menu => this.getInvokableAction(menu.actionMember(actionId))).then(details => this.repLoader.invoke(details, parms, urlParms));
@@ -595,10 +588,10 @@ export class ContextService {
         const paneId = routeData.paneId;
         const newPage = page || routeData.page;
         const newPageSize = pageSize || routeData.pageSize;
-        const urlParms = this.getPagingParms(newPage, newPageSize);
+        const urlParms = Ro.getPagingParms(newPage, newPageSize);
 
         if (state === CollectionViewState.Table) {
-            urlParms[Constants.roInlineCollectionItems] = true;
+            Ro.inlineCollectionItems(true, urlParms);
         }
 
         const promise = () => this.getObject(paneId, oid, InteractionMode.View)
@@ -648,7 +641,7 @@ export class ContextService {
         if (!result.result().isNull()) {
             if (result.resultType() === 'object') {
 
-                const resultObject = result.result().object()!;
+                const resultObject = result.result().object()! as Ro.DomainObjectRepresentation;
                 resultObject.keySeparator = this.keySeparator;
 
                 if (resultObject.persistLink()) {
@@ -672,7 +665,6 @@ export class ContextService {
                     this.urlManager.setObjectWithMode(resultObject, interactionMode, toPaneId);
                 } else if (resultObject.selfLink()) {
 
-                    const selfLink = resultObject.selfLink() as Ro.Link;
                     // persistent object
                     // set the object here and then update the url. That should reload the page but pick up this object
                     // so we don't hit the server again.
@@ -683,7 +675,7 @@ export class ContextService {
                     this.setObject(toPaneId, resultObject);
 
                     // update angular cache
-                    const url = `${selfLink.href()}?${Constants.roInlinePropertyDetails}=false`;
+                    const url = Ro.urlWithInlinePropertyDetailsFalse(resultObject);
                     this.repLoader.addToCache(url, resultObject.wrapped());
 
                     // if render in edit must be  a form
@@ -751,10 +743,10 @@ export class ContextService {
         setDirty: () => void,
         gotoResult: boolean = false) {
 
-        invokeMap.setUrlParameter(Constants.roInlinePropertyDetails, false);
+        invokeMap.inlinePropertyDetails(false);
 
         if (action.extensions().returnType() === 'list' && action.extensions().renderEagerly()) {
-            invokeMap.setUrlParameter(Constants.roInlineCollectionItems, true);
+            invokeMap.inlineCollectionItems(true);
         }
 
         return this.repLoader.retrieve(invokeMap, Ro.ActionResultRepresentation, action.parent.etagDigest)

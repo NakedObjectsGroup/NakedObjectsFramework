@@ -267,6 +267,26 @@ export function typePlusTitle(obj: DomainObjectRepresentation) {
     return type + ': ' + title;
 }
 
+export function getPagingParms(page: number, pageSize: number): Dictionary<Object> {
+    return (page && pageSize) ? { 'x-ro-page': page, 'x-ro-pageSize': pageSize } : {};
+}
+
+export function inlineCollectionItems(flag: boolean, parms?: Dictionary<Object>): Dictionary<Object> {
+    parms = parms || {};
+    parms[Constants.roInlineCollectionItems] = flag;
+    return parms;
+}
+
+export function inlinePropertyDetails(flag: boolean, parms?: Dictionary<Object>): Dictionary<Object> {
+    parms = parms || {};
+    parms[Constants.roInlinePropertyDetails] = flag;
+    return parms;
+}
+
+export function urlWithInlinePropertyDetailsFalse(obj: DomainObjectRepresentation): string {
+    return `${obj.selfLink().href()}?${Constants.roInlinePropertyDetails}=false`;
+}
+
 // helper functions
 
 function isAutoComplete(args: Ro.IValue | Ro.IValueMap | Ro.IObjectOfType | Ro.IPromptMap | null) {
@@ -946,6 +966,14 @@ export class InvokeMap extends ArgumentMap implements IHateoasModel {
     setParameter(name: string, value: Value) {
         value.set(this.valueMap, name);
     }
+
+    inlinePropertyDetails(flag: boolean) {
+        this.setUrlParameter(Constants.roInlinePropertyDetails, flag);
+    }
+
+    inlineCollectionItems(flag: boolean) {
+        this.setUrlParameter(Constants.roInlineCollectionItems, flag);
+    }
 }
 
 export class ActionResultRepresentation extends ResourceRepresentation<Ro.IActionInvokeRepresentation> {
@@ -1361,6 +1389,10 @@ export class CollectionRepresentation extends ResourceRepresentation<RoCustom.IC
 
     hasActionMember(id: string): boolean {
         return !!this.actionMembers()[id];
+    }
+
+    inlineItems(flag: boolean): void {
+        this.setUrlParameter(Constants.roInlineCollectionItems, flag);
     }
 }
 
