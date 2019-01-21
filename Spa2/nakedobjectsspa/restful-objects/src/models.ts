@@ -15,9 +15,36 @@ import merge from 'lodash-es/merge';
 import pickBy from 'lodash-es/pickBy';
 import reduce from 'lodash-es/reduce';
 import some from 'lodash-es/some';
-import * as Constants from './constants';
 import * as Ro from './ro-interfaces';
 import * as RoCustom from './ro-interfaces-custom';
+
+// Restful Objects constants
+ const roDomainType = 'x-ro-domain-type';
+ const roInvalidReason = 'x-ro-invalidReason';
+ const roSearchTerm = 'x-ro-searchTerm';
+ const roPage = 'x-ro-page';
+ const roPageSize = 'x-ro-pageSize';
+ const roInlinePropertyDetails = 'x-ro-inline-property-details';
+ const roValidateOnly = 'x-ro-validate-only';
+ const roInlineCollectionItems = 'x-ro-inline-collection-items';
+
+// Custom
+
+ const roNofChoices = 'x-ro-nof-choices';
+ const roNofMenuPath = 'x-ro-nof-menuPath';
+ const roNofMask = 'x-ro-nof-mask';
+ const roNofTableViewTitle = 'x-ro-nof-tableViewTitle';
+ const roNofTableViewColumns = 'x-ro-nof-tableViewColumns';
+ const roNofMultipleLines = 'x-ro-nof-multipleLines';
+ const roNofWarnings = 'x-ro-nof-warnings';
+ const roNofMessages = 'x-ro-nof-messages';
+ const roNofInteractionMode = 'x-ro-nof-interactionMode';
+ const roNofDataType = 'x-ro-nof-dataType';
+ const roNofRange = 'x-ro-nof-range';
+ const roNofNotNavigable = 'x-ro-nof-notNavigable';
+ const roNofRenderEagerly = 'x-ro-nof-renderEagerly';
+ const roNofPresentationHint = 'x-ro-nof-presentationHint';
+ const roNofMembers = 'x-ro-nof-members';
 
 // do not couple this back to angular by imports
 
@@ -48,20 +75,20 @@ export class Extensions {
     pattern = () => this.wrapped.pattern;
 
     // Nof custom:
-    choices = () => this.wrapped['x-ro-nof-choices'] as { [index: string]: Ro.ValueType[]; };
-    menuPath = () => this.wrapped['x-ro-nof-menuPath'] as string;
-    mask = () => this.wrapped['x-ro-nof-mask'] as string;
-    tableViewTitle = () => this.wrapped['x-ro-nof-tableViewTitle'] as boolean;
-    tableViewColumns = () => this.wrapped['x-ro-nof-tableViewColumns'] as string[];
-    multipleLines = () => this.wrapped['x-ro-nof-multipleLines'] as number;
-    warnings = () => this.wrapped['x-ro-nof-warnings'] as string[];
-    messages = () => this.wrapped['x-ro-nof-messages'] as string[];
-    interactionMode = () => this.wrapped['x-ro-nof-interactionMode'] as string;
-    dataType = () => this.wrapped['x-ro-nof-dataType'] as string;
-    range = () => this.wrapped['x-ro-nof-range'] as RoCustom.IRange;
-    notNavigable = () => this.wrapped['x-ro-nof-notNavigable'] as boolean;
-    renderEagerly = () => this.wrapped['x-ro-nof-renderEagerly'] as boolean;
-    presentationHint = () => this.wrapped['x-ro-nof-presentationHint'] as string;
+    choices = () => this.wrapped[roNofChoices] as { [index: string]: Ro.ValueType[]; };
+    menuPath = () => this.wrapped[roNofMenuPath] as string;
+    mask = () => this.wrapped[roNofMask] as string;
+    tableViewTitle = () => this.wrapped[roNofTableViewTitle] as boolean;
+    tableViewColumns = () => this.wrapped[roNofTableViewColumns] as string[];
+    multipleLines = () => this.wrapped[roNofMultipleLines] as number;
+    warnings = () => this.wrapped[roNofWarnings] as string[];
+    messages = () => this.wrapped[roNofMessages] as string[];
+    interactionMode = () => this.wrapped[roNofInteractionMode] as string;
+    dataType = () => this.wrapped[roNofDataType] as string;
+    range = () => this.wrapped[roNofRange] as RoCustom.IRange;
+    notNavigable = () => this.wrapped[roNofNotNavigable] as boolean;
+    renderEagerly = () => this.wrapped[roNofRenderEagerly] as boolean;
+    presentationHint = () => this.wrapped[roNofPresentationHint] as string;
 }
 
 export interface IHasExtensions {
@@ -268,29 +295,29 @@ export function typePlusTitle(obj: DomainObjectRepresentation) {
 }
 
 export function getPagingParms(page: number, pageSize: number): Dictionary<Object> {
-    return (page && pageSize) ? { 'x-ro-page': page, 'x-ro-pageSize': pageSize } : {};
+    return (page && pageSize) ? { [roPage]: page, [roPageSize]: pageSize } : {};
 }
 
 export function inlineCollectionItems(flag: boolean, parms?: Dictionary<Object>): Dictionary<Object> {
     parms = parms || {};
-    parms[Constants.roInlineCollectionItems] = flag;
+    parms[roInlineCollectionItems] = flag;
     return parms;
 }
 
 export function inlinePropertyDetails(flag: boolean, parms?: Dictionary<Object>): Dictionary<Object> {
     parms = parms || {};
-    parms[Constants.roInlinePropertyDetails] = flag;
+    parms[roInlinePropertyDetails] = flag;
     return parms;
 }
 
 export function urlWithInlinePropertyDetailsFalse(obj: DomainObjectRepresentation): string {
-    return `${obj.selfLink().href()}?${Constants.roInlinePropertyDetails}=false`;
+    return `${obj.selfLink().href()}?${roInlinePropertyDetails}=false`;
 }
 
 // helper functions
 
 function isAutoComplete(args: Ro.IValue | Ro.IValueMap | Ro.IObjectOfType | Ro.IPromptMap | null) {
-    return args && args.hasOwnProperty(Constants.roSearchTerm);
+    return args && args.hasOwnProperty(roSearchTerm);
 }
 
 function isScalarType(typeName: string | null) {
@@ -616,7 +643,7 @@ export class MediaType {
                 const profileValue = (this.profile.split('=')[1].replace(/\"/g, '')).trim();
                 this.representationType = (profileValue.split('/')[1]).trim();
             }
-            if (parms[i].trim().substring(0, 16) === Constants.roDomainType) {
+            if (parms[i].trim().substring(0, 16) === roDomainType) {
                 this.xRoDomainType = (parms[i]).trim();
                 this.domainType = (this.xRoDomainType.split('=')[1].replace(/\"/g, '')).trim();
             }
@@ -848,10 +875,10 @@ export class ErrorMap {
 
         const temp = this.valueMap;
         if (isIObjectOfType(temp)) {
-            return temp[Constants.roInvalidReason] as string;
+            return temp[roInvalidReason] as string;
         }
 
-        return this.wrapped()[Constants.roInvalidReason] as string;
+        return this.wrapped()[roInvalidReason] as string;
     }
 
     containsError() {
@@ -888,7 +915,7 @@ export class UpdateMap extends ArgumentMap implements IHateoasModel {
 
     setValidateOnly() {
         // TODO a boolean is not assignable to an IValueMap - fix - confuses types system !
-        (<any>this.valueMap)[Constants.roValidateOnly] = true;
+        (<any>this.valueMap)[roValidateOnly] = true;
     }
 }
 
@@ -968,11 +995,11 @@ export class InvokeMap extends ArgumentMap implements IHateoasModel {
     }
 
     inlinePropertyDetails(flag: boolean) {
-        this.setUrlParameter(Constants.roInlinePropertyDetails, flag);
+        this.setUrlParameter(roInlinePropertyDetails, flag);
     }
 
     inlineCollectionItems(flag: boolean) {
-        this.setUrlParameter(Constants.roInlineCollectionItems, flag);
+        this.setUrlParameter(roInlineCollectionItems, flag);
     }
 }
 
@@ -1227,7 +1254,7 @@ export class PromptMap extends ArgumentMap implements IHateoasModel {
     }
 
     setSearchTerm(term: string) {
-        this.setArgument(Constants.roSearchTerm, new Value(term));
+        this.setArgument(roSearchTerm, new Value(term));
     }
 
     setArgument(name: string, val: Value) {
@@ -1239,11 +1266,11 @@ export class PromptMap extends ArgumentMap implements IHateoasModel {
     }
 
     setMember(name: string, value: Value) {
-        value.set(this.promptMap()['x-ro-nof-members'] as Ro.IValueMap, name);
+        value.set(this.promptMap()[roNofMembers] as Ro.IValueMap, name);
     }
 
     setMembers(objectValues: () => Dictionary<Value>) {
-        if (this.valueMap['x-ro-nof-members']) {
+        if (this.valueMap[roNofMembers]) {
             forEach(objectValues(), (v, k) => this.setMember(k!, v));
         }
     }
@@ -1392,7 +1419,7 @@ export class CollectionRepresentation extends ResourceRepresentation<RoCustom.IC
     }
 
     inlineItems(flag: boolean): void {
-        this.setUrlParameter(Constants.roInlineCollectionItems, flag);
+        this.setUrlParameter(roInlineCollectionItems, flag);
     }
 }
 
@@ -1952,7 +1979,7 @@ export class DomainObjectRepresentation extends ResourceRepresentation<Ro.IDomai
     }
 
     setInlinePropertyDetails(flag: boolean) {
-        this.setUrlParameter(Constants.roInlinePropertyDetails, flag);
+        this.setUrlParameter(roInlinePropertyDetails, flag);
     }
 
     getOid(): ObjectIdWrapper {
@@ -2163,7 +2190,7 @@ export class PersistMap extends HateosModel implements IHateoasModel {
     }
 
     setValidateOnly() {
-        (<any>this.objectOfType)[Constants.roValidateOnly] = true;
+        (<any>this.objectOfType)[roValidateOnly] = true;
     }
 }
 
