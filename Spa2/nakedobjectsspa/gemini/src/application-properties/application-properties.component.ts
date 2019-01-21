@@ -1,6 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { ApplicationPropertiesViewModel, ViewModelFactoryService } from '@nakedobjects/view-models';
 import * as Msg from '../user-messages';
+import { clientVersion } from '../version';
 
 @Component({
     selector: 'nof-application-properties',
@@ -28,7 +29,7 @@ export class ApplicationPropertiesComponent implements OnInit {
     }
 
     get clientVersion() {
-        return this.applicationProperties.clientVersion;
+        return clientVersion;
     }
 
     private applicationProperties: ApplicationPropertiesViewModel;

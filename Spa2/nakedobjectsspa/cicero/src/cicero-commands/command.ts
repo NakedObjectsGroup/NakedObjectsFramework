@@ -1,16 +1,18 @@
 ﻿import { Location } from '@angular/common';
 import * as Ro from '@nakedobjects/restful-objects';
 import {
-    ErrorWrapper,
-    ConfigService,
-    UrlManagerService,
-    ErrorService,
-    ContextService,
-    PaneRouteData,
-    InteractionMode,
+    ClientErrorCode,
     CollectionViewState,
-    MaskService
-} from '@nakedobjects/services';
+    ConfigService,
+    ContextService,
+    ErrorCategory,
+    ErrorService,
+    ErrorWrapper,
+    InteractionMode,
+    MaskService,
+    PaneRouteData,
+    UrlManagerService
+    } from '@nakedobjects/services';
 import { Dictionary } from 'lodash';
 import each from 'lodash-es/each';
 import every from 'lodash-es/every';
@@ -25,7 +27,6 @@ import { CommandResult } from './command-result';
 import { CiceroCommandFactoryService } from '../cicero-command-factory.service';
 import { CiceroContextService } from '../cicero-context.service';
 import { CiceroRendererService } from '../cicero-renderer.service';
-import { ClientErrorCode, ErrorCategory } from '../constants';
 import * as Usermessages from '../user-messages';
 
 export abstract class Command {

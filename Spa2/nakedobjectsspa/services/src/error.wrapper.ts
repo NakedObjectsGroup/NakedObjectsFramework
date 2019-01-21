@@ -1,6 +1,33 @@
 ﻿import * as Models from '@nakedobjects/restful-objects';
-import { ClientErrorCode, ErrorCategory, HttpStatusCode } from './constants';
 import * as Msg from './user-messages';
+
+export enum ErrorCategory {
+    HttpClientError,
+    HttpServerError,
+    ClientError
+}
+
+export enum HttpStatusCode {
+    NoContent = 204,
+    BadRequest = 400,
+    Unauthorized = 401,
+    Forbidden = 403,
+    NotFound = 404,
+    MethodNotAllowed = 405,
+    NotAcceptable = 406,
+    PreconditionFailed = 412,
+    UnprocessableEntity = 422,
+    PreconditionRequired = 428,
+    InternalServerError = 500
+}
+
+export enum ClientErrorCode {
+    ExpiredTransient,
+    WrongType,
+    NotImplemented,
+    SoftwareError,
+    ConnectionProblem = 0
+}
 
 export class ErrorWrapper {
     constructor(

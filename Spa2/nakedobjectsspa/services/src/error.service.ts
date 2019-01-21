@@ -1,9 +1,8 @@
 ﻿import { Injectable } from '@angular/core';
 import * as Ro from '@nakedobjects/restful-objects';
 import { ConfigService } from './config.service';
-import { ErrorCategory, HttpStatusCode } from './constants';
 import { ContextService } from './context.service';
-import { ErrorWrapper } from './error.wrapper';
+import { ErrorWrapper, ErrorCategory, HttpStatusCode } from './error.wrapper';
 import { UrlManagerService } from './url-manager.service';
 
 type ErrorPreprocessor = (reject: ErrorWrapper) => void;

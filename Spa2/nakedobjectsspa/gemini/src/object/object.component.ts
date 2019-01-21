@@ -3,16 +3,18 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import * as Ro from '@nakedobjects/restful-objects';
 import {
+    ClientErrorCode,
     ColorService,
     ConfigService,
     ContextService,
+    ErrorCategory,
     ErrorService,
     ErrorWrapper,
     ICustomActivatedRouteData,
     InteractionMode,
     PaneRouteData,
     UrlManagerService
-} from '@nakedobjects/services';
+    } from '@nakedobjects/services';
 import { CollectionViewModel, copy, DomainObjectViewModel, DragAndDropService, MenuItemViewModel, PropertyViewModel, ViewModelFactoryService } from '@nakedobjects/view-models';
 import { Dictionary } from 'lodash';
 import filter from 'lodash-es/filter';
@@ -25,7 +27,6 @@ import zipObject from 'lodash-es/zipObject';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { IActionHolder, wrapAction } from '../action/action.component';
-import { ClientErrorCode, ErrorCategory } from '../constants';
 import { safeUnsubscribe } from '../helpers-components';
 import { PropertiesComponent } from '../properties/properties.component';
 import * as Msg from '../user-messages';

@@ -1,5 +1,14 @@
 ﻿import * as Ro from '@nakedobjects/restful-objects';
-import { ContextService, ErrorService, ErrorWrapper, Pane, PaneRouteData, UrlManagerService } from '@nakedobjects/services';
+import {
+    ContextService,
+    ErrorCategory,
+    ErrorService,
+    ErrorWrapper,
+    HttpStatusCode,
+    Pane,
+    PaneRouteData,
+    UrlManagerService
+    } from '@nakedobjects/services';
 import { Dictionary } from 'lodash';
 import clone from 'lodash-es/clone';
 import each from 'lodash-es/each';
@@ -14,7 +23,6 @@ import some from 'lodash-es/some';
 import toArray from 'lodash-es/toArray';
 import values from 'lodash-es/values';
 import { ActionViewModel } from './action-view-model';
-import { ErrorCategory, HttpStatusCode } from './constants';
 import * as Helpers from './helpers-view-models';
 import { ItemViewModel } from './item-view-model';
 import { MenuItemViewModel } from './menu-item-view-model';

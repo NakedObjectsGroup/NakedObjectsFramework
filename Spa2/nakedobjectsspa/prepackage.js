@@ -14,7 +14,7 @@ var version = find.findSync("version", ".", "package.json").then(s => {
 
         // to update client version in code
         var options2 = {
-            files: ["./nakedobjects-lib/src/constants.ts"],
+            files: ["./gemini/src/version.ts"],
             from: [/clientVersion.*/g],
             to: "clientVersion = '" + version + "';"
         };

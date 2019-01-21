@@ -3,7 +3,7 @@ import { Dictionary } from 'lodash';
 import isEqual from 'lodash-es/isEqual';
 import keys from 'lodash-es/keys';
 import { ConfigService } from './config.service';
-import { ErrorCategory } from './constants';
+import { ErrorCategory } from './error.wrapper';
 import { LoggerService } from './logger.service';
 
 export type PaneName = 'pane1' | 'pane2';

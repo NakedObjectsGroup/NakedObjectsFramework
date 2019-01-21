@@ -1,6 +1,15 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import * as Ro from '@nakedobjects/restful-objects';
-import { ContextService, ErrorService, ErrorWrapper, PaneRouteData, UrlManagerService, ViewType } from '@nakedobjects/services';
+import {
+    ClientErrorCode,
+    ContextService,
+    ErrorCategory,
+    ErrorService,
+    ErrorWrapper,
+    PaneRouteData,
+    UrlManagerService,
+    ViewType
+    } from '@nakedobjects/services';
 import reduce from 'lodash-es/reduce';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { CiceroCommandFactoryService } from '../cicero-command-factory.service';
@@ -8,7 +17,6 @@ import { Command } from '../cicero-commands/Command';
 import { Result } from '../cicero-commands/result';
 import { CiceroContextService } from '../cicero-context.service';
 import { CiceroRendererService } from '../cicero-renderer.service';
-import { ClientErrorCode, ErrorCategory } from '../constants';
 import { focus, safeUnsubscribe } from '../helpers-components';
 
 @Component({

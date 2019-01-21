@@ -21,8 +21,7 @@ import without from 'lodash-es/without';
 import zipObject from 'lodash-es/zipObject';
 import { map as rxjsmap } from 'rxjs/operators';
 import { ConfigService } from './config.service';
-import { ClientErrorCode, ErrorCategory, HttpStatusCode } from './constants';
-import * as Constants from './constants';
+import { ClientErrorCode, ErrorCategory, HttpStatusCode } from './error.wrapper';
 import { LoggerService } from './logger.service';
 import {
     ApplicationMode,
@@ -34,6 +33,23 @@ import {
     RouteData,
     ViewType
 } from './route-data';
+
+type ModePathSegment = 'gemini' | 'cicero';
+
+const geminiPath: ModePathSegment = 'gemini';
+const ciceroPath: ModePathSegment = 'cicero';
+
+const homePath: PathSegment = 'home';
+const objectPath: PathSegment = 'object';
+const listPath: PathSegment = 'list';
+const errorPath: PathSegment = 'error';
+const recentPath: PathSegment = 'recent';
+const attachmentPath: PathSegment = 'attachment';
+const applicationPropertiesPath: PathSegment = 'applicationProperties';
+const multiLineDialogPath: PathSegment = 'multiLineDialog';
+const logoffPath: PathSegment = 'logoff';
+
+type PathSegment = 'home' | 'object' | 'list' | 'error' | 'recent' | 'attachment' | 'applicationProperties' | 'multiLineDialog' | 'logoff';
 
 enum Transition {
     Null,
@@ -102,7 +118,7 @@ export class UrlManagerService {
         return this.configService.config.keySeparator;
     }
 
-    private capturedPanes = [] as ({ paneType: Constants.PathSegment; search: Object } | null)[];
+    private capturedPanes = [] as ({ paneType: PathSegment; search: Object } | null)[];
 
     private currentPaneId: Pane = Pane.Pane1;
 
@@ -287,10 +303,10 @@ export class UrlManagerService {
     }
 
     private paneIsAlwaysSingle(paneType: string) {
-        return paneType === Constants.multiLineDialogPath;
+        return paneType === multiLineDialogPath;
     }
 
-    private setupPaneNumberAndTypes(pane: Pane, newPaneType: Constants.PathSegment, newMode?: ApplicationMode): { path: string, replace: boolean } {
+    private setupPaneNumberAndTypes(pane: Pane, newPaneType: PathSegment, newMode?: ApplicationMode): { path: string, replace: boolean } {
 
         const path = this.getPath();
         const segments = path.split('/');
@@ -391,15 +407,15 @@ export class UrlManagerService {
     private validKeys(path: string) {
 
         switch (path) {
-            case Constants.homePath:
+            case homePath:
                 return this.validKeysForHome();
-            case Constants.objectPath:
+            case objectPath:
                 return this.validKeysForObject();
-            case Constants.listPath:
+            case listPath:
                 return this.validKeysForList();
-            case Constants.multiLineDialogPath:
+            case multiLineDialogPath:
                 return this.validKeysForMultiLineDialog();
-            case Constants.attachmentPath:
+            case attachmentPath:
                 return this.validKeysForAttachment();
         }
 
@@ -422,7 +438,7 @@ export class UrlManagerService {
 
         switch (transition) {
             case (Transition.ToHome):
-                ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Constants.homePath));
+                ({ path, replace } = this.setupPaneNumberAndTypes(paneId, homePath));
                 search = this.clearPane(search, paneId);
                 break;
             case (Transition.ToMenu):
@@ -437,18 +453,18 @@ export class UrlManagerService {
                 break;
             case (Transition.ToObjectView):
 
-                ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Constants.objectPath));
+                ({ path, replace } = this.setupPaneNumberAndTypes(paneId, objectPath));
                 replace = false;
                 search = this.clearPane(search, paneId);
                 this.setId(akm.interactionMode + paneId, InteractionMode[InteractionMode.View], search);
                 break;
             case (Transition.ToObjectWithMode):
-                ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Constants.objectPath));
+                ({ path, replace } = this.setupPaneNumberAndTypes(paneId, objectPath));
                 replace = false;
                 search = this.clearPane(search, paneId);
                 break;
             case (Transition.ToList):
-                ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Constants.listPath));
+                ({ path, replace } = this.setupPaneNumberAndTypes(paneId, listPath));
                 this.clearId(akm.menu + paneId, search);
                 this.clearId(akm.object + paneId, search);
                 this.clearId(akm.dialog + paneId, search);
@@ -463,15 +479,15 @@ export class UrlManagerService {
                 replace = false;
                 break;
             case (Transition.ToRecent):
-                ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Constants.recentPath));
+                ({ path, replace } = this.setupPaneNumberAndTypes(paneId, recentPath));
                 search = this.clearPane(search, paneId);
                 break;
             case (Transition.ToAttachment):
-                ({ path, replace } = this.setupPaneNumberAndTypes(paneId, Constants.attachmentPath));
+                ({ path, replace } = this.setupPaneNumberAndTypes(paneId, attachmentPath));
                 search = this.clearPane(search, paneId);
                 break;
             case (Transition.ToMultiLineDialog):
-                ({ path, replace } = this.setupPaneNumberAndTypes(Pane.Pane1, Constants.multiLineDialogPath)); // always on 1
+                ({ path, replace } = this.setupPaneNumberAndTypes(Pane.Pane1, multiLineDialogPath)); // always on 1
                 if (paneId === Pane.Pane2) {
                     // came from 2
                     search = this.swapSearchIds(search);
@@ -751,14 +767,14 @@ export class UrlManagerService {
 
     getViewType(view: string) {
         switch (view) {
-            case Constants.homePath: return ViewType.Home;
-            case Constants.objectPath: return ViewType.Object;
-            case Constants.listPath: return ViewType.List;
-            case Constants.errorPath: return ViewType.Error;
-            case Constants.recentPath: return ViewType.Recent;
-            case Constants.attachmentPath: return ViewType.Attachment;
-            case Constants.applicationPropertiesPath: return ViewType.ApplicationProperties;
-            case Constants.multiLineDialogPath: return ViewType.MultiLineDialog;
+            case homePath: return ViewType.Home;
+            case objectPath: return ViewType.Object;
+            case listPath: return ViewType.List;
+            case errorPath: return ViewType.Error;
+            case recentPath: return ViewType.Recent;
+            case attachmentPath: return ViewType.Attachment;
+            case applicationPropertiesPath: return ViewType.ApplicationProperties;
+            case multiLineDialogPath: return ViewType.MultiLineDialog;
         }
         return this.loggerService.throw(`UrlManagerService:getViewType ${view} is not a valid ViewType`);
     }
@@ -784,7 +800,7 @@ export class UrlManagerService {
         const path = this.getPath();
         const segments = path.split('/');
 
-        const paneType = <Constants.PathSegment>segments[paneId + 1] || Constants.homePath;
+        const paneType = <PathSegment>segments[paneId + 1] || homePath;
         let paneSearch = this.capturePane(paneId);
 
         // clear any dialogs so we don't return  to a dialog
@@ -855,7 +871,7 @@ export class UrlManagerService {
     swapPanes = () => {
         const path = this.getPath();
         const segments = path.split('/');
-        const [, mode, oldPane1, oldPane2 = Constants.homePath] = segments;
+        const [, mode, oldPane1, oldPane2 = homePath] = segments;
         const newPath = `/${mode}/${oldPane2}/${oldPane1}`;
         const search = this.swapSearchIds(this.getSearch()) as any;
         this.currentPaneId = getOtherPane(this.currentPaneId);
@@ -880,22 +896,22 @@ export class UrlManagerService {
         const path = this.getPath();
         const segments = path.split('/');
         const [, mode] = segments;
-        return mode as Constants.ModePathSegment;
+        return mode as ModePathSegment;
     }
 
-    cicero = () => this.setMode(Constants.ciceroPath);
+    cicero = () => this.setMode(ciceroPath);
 
-    gemini = () => this.setMode(Constants.geminiPath);
+    gemini = () => this.setMode(geminiPath);
 
-    isGemini = () => this.getMode() === Constants.geminiPath;
+    isGemini = () => this.getMode() === geminiPath;
 
     applicationProperties = () => {
-        const newPath = `/${Constants.geminiPath}/${Constants.applicationPropertiesPath}`;
+        const newPath = `/${geminiPath}/${applicationPropertiesPath}`;
         this.router.navigateByUrl(newPath);
     }
 
     logoff = () => {
-        const newPath = `/${Constants.geminiPath}/${Constants.logoffPath}`;
+        const newPath = `/${geminiPath}/${logoffPath}`;
         this.router.navigateByUrl(newPath);
     }
 
@@ -906,8 +922,8 @@ export class UrlManagerService {
 
         const path = this.getPath();
         const segments = path.split('/');
-        const mode = segments[1] || Constants.geminiPath;
-        const newPath = `/${mode}/${Constants.homePath}`;
+        const mode = segments[1] || geminiPath;
+        const newPath = `/${mode}/${homePath}`;
 
         const tree = this.router.createUrlTree([newPath]);
 
@@ -957,14 +973,14 @@ export class UrlManagerService {
         return this.getLocation(paneId) === location; // e.g. segments 0=~/1=cicero/2=home/3=home
     }
 
-    isHome = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, Constants.homePath);
-    isObject = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, Constants.objectPath);
-    isList = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, Constants.listPath);
-    isError = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, Constants.errorPath);
-    isRecent = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, Constants.recentPath);
-    isAttachment = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, Constants.attachmentPath);
-    isApplicationProperties = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, Constants.applicationPropertiesPath);
-    isMultiLineDialog = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, Constants.multiLineDialogPath);
+    isHome = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, homePath);
+    isObject = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, objectPath);
+    isList = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, listPath);
+    isError = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, errorPath);
+    isRecent = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, recentPath);
+    isAttachment = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, attachmentPath);
+    isApplicationProperties = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, applicationPropertiesPath);
+    isMultiLineDialog = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, multiLineDialogPath);
 
     private toggleReloadFlag(search: any, paneId: Pane) {
         const currentFlag = search[akm.reload + paneId];

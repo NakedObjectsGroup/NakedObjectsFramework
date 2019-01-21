@@ -1,6 +1,5 @@
 ﻿import * as Ro from '@nakedobjects/restful-objects';
 import { ConfigService, ContextService, ErrorService, ErrorWrapper } from '@nakedobjects/services';
-import * as Constants from './constants';
 
 export class ApplicationPropertiesViewModel {
 
@@ -15,7 +14,6 @@ export class ApplicationPropertiesViewModel {
     serverVersion: Ro.IVersionRepresentation;
     user: Ro.IUserRepresentation;
     serverUrl: string;
-    clientVersion: string;
     applicationName: string;
 
     private setUp() {
@@ -28,8 +26,6 @@ export class ApplicationPropertiesViewModel {
             catch((reject: ErrorWrapper) => this.error.handleError(reject));
 
         this.serverUrl = this.configService.config.appPath;
-
-        this.clientVersion = Constants.clientVersion;
 
         this.applicationName = this.configService.config.applicationName;
     }

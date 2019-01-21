@@ -1,5 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import { ErrorCategory, HttpStatusCode } from './constants';
+import { ErrorCategory, HttpStatusCode } from '@nakedobjects/services';
 import { ICustomComponentConfigurator } from './custom-component.service';
 import { ICustomErrorComponentConfigurator } from './custom-component.service';
 import { ObjectNotFoundErrorComponent } from './object-not-found-error/object-not-found-error.component';

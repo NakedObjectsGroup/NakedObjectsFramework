@@ -1,10 +1,9 @@
 import { AfterViewInit, ViewChild } from '@angular/core';
 import { Component, EventEmitter, Input } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
-import { ConfigService } from '@nakedobjects/services';
+import { ConfigService, fixedDateFormat } from '@nakedobjects/services';
 import { FieldViewModel } from '@nakedobjects/view-models';
 import * as momentNs from 'moment';
-import * as Constants from '../constants';
 import { DatePickerComponent, DatePickerOptions } from '../date-picker/date-picker.component';
 import { IDatePickerInputEvent, IDatePickerOutputEvent } from '../date-picker/date-picker.component';
 import * as Msg from '../user-messages';
@@ -47,7 +46,7 @@ export class DatePickerFacadeComponent implements AfterViewInit {
 
     setValueIfChanged(dateModel: momentNs.Moment | null) {
         const oldValue = this.control.value;
-        const newValue = dateModel ? dateModel.format(Constants.fixedDateFormat) : '';
+        const newValue = dateModel ? dateModel.format(fixedDateFormat) : '';
 
         if (newValue !== oldValue) {
             this.model.resetMessage();

@@ -9,12 +9,11 @@ import {
     ViewChild
 } from '@angular/core';
 import * as Ro from '@nakedobjects/restful-objects';
-import { validateDate } from '@nakedobjects/services';
+import { validateDate, fixedDateFormat } from '@nakedobjects/services';
 import concat from 'lodash-es/concat';
 import * as momentNs from 'moment';
 import { BehaviorSubject, Observable, SubscriptionLike as ISubscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import * as Constants from '../constants';
 import { focus, safeUnsubscribe } from '../helpers-components';
 import * as Msg from '../user-messages';
 
@@ -113,7 +112,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
         this.outputEvents = new EventEmitter<IDatePickerOutputEvent>();
     }
 
-    private validInputFormats = ['DD/MM/YYYY', 'DD/MM/YY', 'D/M/YY', 'D/M/YYYY', 'D MMM YYYY', 'D MMMM YYYY', Constants.fixedDateFormat];
+    private validInputFormats = ['DD/MM/YYYY', 'DD/MM/YY', 'D/M/YY', 'D/M/YYYY', 'D MMM YYYY', 'D MMMM YYYY', fixedDateFormat];
 
     private dateModelValue: momentNs.Moment | null;
     private modelValue: string;

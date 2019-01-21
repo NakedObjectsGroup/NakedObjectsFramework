@@ -1,17 +1,20 @@
 ﻿import * as Models from '@nakedobjects/restful-objects';
 import * as momentNs from 'moment';
-import * as Constants from './constants';
 import { ILocalFilter } from './mask.service';
 import * as Msg from './user-messages';
 
 const moment = momentNs;
+
+export const supportedDateFormats = ['D/M/YYYY', 'D/M/YY', 'D MMM YYYY', 'D MMMM YYYY', 'D MMM YY', 'D MMMM YY'];
+
+export const fixedDateFormat = 'YYYY-MM-DD';
 
 function isInteger(value: number) {
     return typeof value === 'number' && isFinite(value) && Math.floor(value) === value;
 }
 
 function getDate(val: string): Date | null {
-    const dt1 = moment(val, Constants.fixedDateFormat, true);
+    const dt1 = moment(val, fixedDateFormat, true);
     return dt1.isValid() ? dt1.toDate() : null;
 }
 

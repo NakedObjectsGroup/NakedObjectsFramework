@@ -6,8 +6,7 @@ import each from 'lodash-es/each';
 import reduce from 'lodash-es/reduce';
 import { Subject } from 'rxjs';
 import { ConfigService } from './config.service';
-import { ClientErrorCode, ErrorCategory, HttpStatusCode } from './constants';
-import { ErrorWrapper } from './error.wrapper';
+import { ErrorWrapper, ClientErrorCode, ErrorCategory, HttpStatusCode } from './error.wrapper';
 import { SimpleLruCache } from './simple-lru-cache';
 
 class RequestOptions {

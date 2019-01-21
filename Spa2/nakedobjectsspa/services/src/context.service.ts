@@ -14,12 +14,11 @@ import remove from 'lodash-es/remove';
 import sortBy from 'lodash-es/sortBy';
 import { Subject } from 'rxjs';
 import { ConfigService } from './config.service';
-import { ClientErrorCode, ErrorCategory } from './constants';
 import { LoggerService } from './logger.service';
 import { RepLoaderService } from './rep-loader.service';
 import { CollectionViewState, InteractionMode, Pane, PaneRouteData } from './route-data';
 import { UrlManagerService } from './url-manager.service';
-import { ErrorWrapper, } from './error.wrapper';
+import { ErrorWrapper,  ClientErrorCode, ErrorCategory } from './error.wrapper';
 
 enum DirtyState {
     DirtyMustReload = 1,

@@ -1,5 +1,5 @@
 ﻿import * as Ro from '@nakedobjects/restful-objects';
-import { validateDate, validateMandatory, validateMandatoryAgainstType } from '@nakedobjects/services';
+import { supportedDateFormats, validateDate, validateMandatory, validateMandatoryAgainstType } from '@nakedobjects/services';
 import { Dictionary } from 'lodash';
 import forEach from 'lodash-es/forEach';
 import fromPairs from 'lodash-es/fromPairs';
@@ -12,7 +12,6 @@ import reduce from 'lodash-es/reduce';
 import { Command } from './Command';
 import { CommandResult } from './command-result';
 import * as Commandresult from './command-result';
-import * as Constants from '../constants';
 import * as Usermessages from '../user-messages';
 
 export class Enter extends Command {
@@ -163,7 +162,7 @@ export class Enter extends Command {
 
             let value = new Ro.Value(fieldEntry);
             if (Ro.isDateOrDateTime(field)) {
-                const dt = validateDate(fieldEntry, Constants.supportedDateFormats);
+                const dt = validateDate(fieldEntry, supportedDateFormats);
 
                 if (dt) {
                     value = new Ro.Value(Ro.toDateString(dt.toDate()));
