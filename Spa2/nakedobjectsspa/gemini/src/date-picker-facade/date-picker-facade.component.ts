@@ -1,8 +1,8 @@
 import { AfterViewInit, ViewChild } from '@angular/core';
 import { Component, EventEmitter, Input } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
-import { ConfigService, fixedDateFormat } from '@nakedobjects/services';
-import { FieldViewModel } from '@nakedobjects/view-models';
+import { ConfigService } from '@nakedobjects/services';
+import { FieldViewModel, fixedDateFormat } from '@nakedobjects/view-models';
 import * as momentNs from 'moment';
 import { DatePickerComponent, DatePickerOptions } from '../date-picker/date-picker.component';
 import { IDatePickerInputEvent, IDatePickerOutputEvent } from '../date-picker/date-picker.component';

@@ -8,8 +8,6 @@ export * from './mask.service';
 export * from './rep-loader.service';
 export * from './url-manager.service';
 
-export * from './validate';
-
 export * from './auth.service';
 
 export * from './error.handler';

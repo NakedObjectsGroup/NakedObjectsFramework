@@ -1,14 +1,5 @@
 ﻿import * as Ro from '@nakedobjects/restful-objects';
-import {
-    ConfigService,
-    ContextService,
-    ErrorService,
-    ErrorWrapper,
-    ILocalFilter,
-    Pane,
-    validateMandatory,
-    validateMandatoryAgainstType
-} from '@nakedobjects/services';
+import { ConfigService, ContextService, ErrorService, ErrorWrapper, ILocalFilter, Pane } from '@nakedobjects/services';
 import { Dictionary } from 'lodash';
 import each from 'lodash-es/each';
 import filter from 'lodash-es/filter';
@@ -24,6 +15,7 @@ import { IDraggableViewModel } from './idraggable-view-model';
 import { IMessageViewModel } from './imessage-view-model';
 import { MenuItemViewModel } from './menu-item-view-model';
 import * as Msg from './user-messages';
+import { validateMandatory, validateMandatoryAgainstType } from './validate';
 
 export function copy(event: KeyboardEvent, item: IDraggableViewModel, drandAndDrop: DragAndDropService) {
     const cKeyCode = 67;

@@ -26,3 +26,4 @@ export * from './recent-item-view-model';
 export * from './recent-items-view-model';
 export * from './table-row-column-view-model';
 export * from './table-row-view-model';
+export * from './validate';

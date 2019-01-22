@@ -1,8 +1,19 @@
-// Cicero commands and Help text
+import { ILocalFilter } from '@nakedobjects/services';
 
 export const mandatory = 'Mandatory';
 export const optional = 'Optional';
 export const choices = 'Choices';
+
+export const tooLong = 'Too long';
+export const notANumber = 'Not a number';
+export const noPatternMatch = 'Invalid entry';
+
+export const outOfRange = (val: any, min: any, max: any, filter: ILocalFilter) => {
+    const minVal = filter ? filter.filter(min) : min;
+    const maxVal = filter ? filter.filter(max) : max;
+
+    return `Value is outside the range ${minVal || 'unlimited'} to ${maxVal || 'unlimited'}`;
+};
 
 export const welcomeMessage = 'Welcome to Cicero. Type \'help\' and the Enter key for more information.';
 export const basicHelp = 'Cicero is a user interface purpose-designed to work with an audio screen-reader.\n' +

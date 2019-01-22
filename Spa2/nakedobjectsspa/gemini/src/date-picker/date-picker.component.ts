@@ -9,7 +9,7 @@ import {
     ViewChild
 } from '@angular/core';
 import * as Ro from '@nakedobjects/restful-objects';
-import { validateDate, fixedDateFormat } from '@nakedobjects/services';
+import { validateDate, fixedDateFormat } from '@nakedobjects/view-models';
 import concat from 'lodash-es/concat';
 import * as momentNs from 'moment';
 import { BehaviorSubject, Observable, SubscriptionLike as ISubscription } from 'rxjs';

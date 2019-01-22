@@ -1,3 +1,5 @@
+import { ILocalFilter } from '@nakedobjects/services';
+
 // user message constants
 export const noResultMessage = 'no result found';
 export const obscuredText = '*****';
@@ -42,6 +44,13 @@ export const pageMessage = (p: number, tp: number, c: number, tc: number) => `Pa
 export const logOffMessage = (u: string) => `Please confirm logoff of user: ${u}`;
 
 export const submittedCount = (c: number) => ` with ${c} lines submitted.`;
+
+export const outOfRange = (val: any, min: any, max: any, filter: ILocalFilter) => {
+    const minVal = filter ? filter.filter(min) : min;
+    const maxVal = filter ? filter.filter(max) : max;
+
+    return `Value is outside the range ${minVal || 'unlimited'} to ${maxVal || 'unlimited'}`;
+};
 
 // Error messages
 export const errorUnknown = 'Unknown software error';

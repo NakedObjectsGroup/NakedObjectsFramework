@@ -1,5 +1,4 @@
 ﻿import * as Ro from '@nakedobjects/restful-objects';
-import { supportedDateFormats, validateDate, validateMandatory, validateMandatoryAgainstType } from '@nakedobjects/services';
 import { Dictionary } from 'lodash';
 import forEach from 'lodash-es/forEach';
 import fromPairs from 'lodash-es/fromPairs';
@@ -13,6 +12,7 @@ import { Command } from './Command';
 import { CommandResult } from './command-result';
 import * as Commandresult from './command-result';
 import * as Usermessages from '../user-messages';
+import { supportedDateFormats, validateDate, validateMandatory, validateMandatoryAgainstType } from '../validate';
 
 export class Enter extends Command {
 
