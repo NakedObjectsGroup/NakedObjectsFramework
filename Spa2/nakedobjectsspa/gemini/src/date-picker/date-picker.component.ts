@@ -117,9 +117,6 @@ export class DatePickerComponent implements OnInit, OnDestroy {
     private dateModelValue: momentNs.Moment | null;
     private modelValue: string;
 
-    todayMsg = Msg.today;
-    clearMsg = Msg.clear;
-
     private bSubject: BehaviorSubject<string>;
     private sub: ISubscription;
 

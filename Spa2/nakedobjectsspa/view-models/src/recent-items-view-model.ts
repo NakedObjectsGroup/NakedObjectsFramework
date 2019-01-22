@@ -4,6 +4,7 @@ import every from 'lodash-es/every';
 import map from 'lodash-es/map';
 import { RecentItemViewModel } from './recent-item-view-model';
 import { ViewModelFactoryService } from './view-model-factory.service';
+import * as Msg from './user-messages';
 
 export class RecentItemsViewModel {
 
@@ -19,6 +20,9 @@ export class RecentItemsViewModel {
 
     private recentItems: RecentItemViewModel[];
     private recentlyViewed: Ro.DomainObjectRepresentation[];
+
+    title = Msg.recentTitle;
+    clearMessage = Msg.clear;
 
     private refreshItems() {
         const items = map(this.recentlyViewed, (o, i) => ({ obj: o, link: o.updateSelfLinkWithTitle(), index: i }));
@@ -49,5 +53,9 @@ export class RecentItemsViewModel {
         this.context.clearRecentlyViewed();
         this.recentItems = [];
         this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl(this.onPaneId);
+    }
+
+    getRecentMessage(disabled: boolean) {
+        return disabled ? Msg.recentDisabledMessage : Msg.recentMessage;
     }
 }

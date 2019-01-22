@@ -28,12 +28,12 @@ export class RecentComponent extends PaneComponent implements AfterViewInit, OnD
     recent: RecentItemsViewModel;
 
     private clearButton: IActionHolder = {
-        value: Msg.clear,
+        value: '',
         doClick: () => this.clear(),
         show: () => true,
         disabled: () => this.clearDisabled(),
         tempDisabled: () => null,
-        title: () => this.clearDisabled() ? Msg.recentDisabledMessage : Msg.recentMessage,
+        title: () => this.recent.getRecentMessage(this.clearDisabled()),
         accesskey: 'c'
     };
 
@@ -44,7 +44,7 @@ export class RecentComponent extends PaneComponent implements AfterViewInit, OnD
 
     // template API
 
-    title = Msg.recentTitle;
+    title = '';
     items = (): RecentItemViewModel[] => this.recent.items;
 
     get actionHolders() {
@@ -65,6 +65,8 @@ export class RecentComponent extends PaneComponent implements AfterViewInit, OnD
 
     protected setup(routeData: PaneRouteData) {
         this.recent = this.viewModelFactory.recentItemsViewModel(this.paneId);
+        this.clearButton.value = this.recent.clearMessage;
+        this.title = this.recent.title;
     }
 
     focusOnFirstRow(rows: QueryList<RowComponent>) {

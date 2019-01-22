@@ -75,7 +75,7 @@ export class MultiLineDialogComponent extends PaneComponent implements AfterView
     rowTooltip = (row: DialogViewModel) => row.tooltip();
 
     rowMessage = (row: DialogViewModel) => {
-        return row.submitted ? Msg.submittedMessage : row.getMessage();
+        return row.getMessageOrSubmitted();
     }
 
     rowDisabled = (row: DialogViewModel) => {

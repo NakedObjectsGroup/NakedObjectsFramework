@@ -140,4 +140,8 @@ export class DialogViewModel extends MessageViewModel {
         this.resetMessage();
         this.actionViewModel.parameters().then(pp => each(pp, p => p.clearMessage()));
     }
+
+    getMessageOrSubmitted = () => {
+        return this.submitted ? Msg.submittedMessage : this.getMessage();
+    }
 }
