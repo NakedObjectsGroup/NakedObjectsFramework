@@ -7,6 +7,7 @@ import takeRight from 'lodash-es/takeRight';
 import { CollectionViewModel } from './collection-view-model';
 import { DialogViewModel } from './dialog-view-model';
 import { ViewModelFactoryService } from './view-model-factory.service';
+import * as Msg from './user-messages';
 
 export class MultiLineDialogViewModel {
 
@@ -64,4 +65,8 @@ export class MultiLineDialogViewModel {
     }
 
     readonly submittedCount = () => filter(this.dialogs, d => d.submitted).length;
+
+    readonly submittedCountMsg = () => {
+        return Msg.submittedCount(this.submittedCount());
+    }
 }

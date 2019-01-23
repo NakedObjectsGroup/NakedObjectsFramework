@@ -3,7 +3,6 @@ import { AbstractControl, FormGroup } from '@angular/forms';
 import { FieldViewModel } from '@nakedobjects/view-models';
 import { TimePickerComponent } from '../time-picker/time-picker.component';
 import { ITimePickerInputEvent, ITimePickerOutputEvent } from '../time-picker/time-picker.component';
-import * as Msg from '../user-messages';
 
 @Component({
     selector: 'nof-time-picker-facade',
@@ -62,9 +61,9 @@ export class TimePickerFacadeComponent implements AfterViewInit {
     handleInvalidTimeEvent(data: string) {
         if (this.control) {
             this.control.setValue('');
-            this.model.setMessage(Msg.invalidTime);
+            this.model.setInvalidTime();
             this.model.clientValid = false;
-            this.control.setErrors({ [Msg.invalidTime]: true });
+            this.control.setErrors({ [this.model.getMessage()]: true });
         }
     }
 

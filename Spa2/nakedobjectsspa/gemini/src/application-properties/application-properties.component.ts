@@ -1,6 +1,5 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { ApplicationPropertiesViewModel, ViewModelFactoryService } from '@nakedobjects/view-models';
-import * as Msg from '../user-messages';
 import { clientVersion } from '../version';
 
 @Component({
@@ -17,7 +16,7 @@ export class ApplicationPropertiesComponent implements OnInit {
     }
 
     get userName() {
-        return this.applicationProperties.user ? this.applicationProperties.user.userName : Msg.noUserMessage;
+        return this.applicationProperties.userName;
     }
 
     get serverUrl() {

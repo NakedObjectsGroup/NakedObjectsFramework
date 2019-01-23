@@ -6,7 +6,6 @@ import { FieldViewModel, fixedDateFormat } from '@nakedobjects/view-models';
 import * as momentNs from 'moment';
 import { DatePickerComponent, DatePickerOptions } from '../date-picker/date-picker.component';
 import { IDatePickerInputEvent, IDatePickerOutputEvent } from '../date-picker/date-picker.component';
-import * as Msg from '../user-messages';
 
 @Component({
     selector: 'nof-date-picker-facade',
@@ -80,9 +79,9 @@ export class DatePickerFacadeComponent implements AfterViewInit {
 
     handleInvalidDateEvent(data: string) {
         if (this.control) {
-            this.model.setMessage(Msg.invalidDate);
+            this.model.setInvalidDate();
             this.model.clientValid = false;
-            this.control.setErrors({ [Msg.invalidDate]: true });
+            this.control.setErrors({ [this.model.getMessage()]: true });
         }
     }
 

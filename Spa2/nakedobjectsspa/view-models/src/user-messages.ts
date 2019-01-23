@@ -52,6 +52,8 @@ export const outOfRange = (val: any, min: any, max: any, filter: ILocalFilter) =
     return `Value is outside the range ${minVal || 'unlimited'} to ${maxVal || 'unlimited'}`;
 };
 
+export const editing = 'Editing';
+
 // Error messages
 export const errorUnknown = 'Unknown software error';
 export const errorExpiredTransient = 'The requested view of unsaved object details has expired';

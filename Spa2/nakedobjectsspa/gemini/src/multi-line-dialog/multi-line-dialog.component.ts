@@ -14,7 +14,6 @@ import { SubscriptionLike as ISubscription } from 'rxjs';
 import { createForm, safeUnsubscribe } from '../helpers-components';
 import { PaneComponent } from '../pane/pane';
 import { ParametersComponent } from '../parameters/parameters.component';
-import * as Msg from '../user-messages';
 
 @Component({
     selector: 'nof-multi-line-dialog',
@@ -83,7 +82,7 @@ export class MultiLineDialogComponent extends PaneComponent implements AfterView
     }
 
     get count() {
-        return Msg.submittedCount(this.dialog.submittedCount());
+        return this.dialog.submittedCountMsg();
     }
 
     invokeAndAdd(index: number) {

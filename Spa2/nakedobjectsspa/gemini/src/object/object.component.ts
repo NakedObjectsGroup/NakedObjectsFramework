@@ -29,7 +29,6 @@ import { debounceTime } from 'rxjs/operators';
 import { IActionHolder, wrapAction } from '../action/action.component';
 import { safeUnsubscribe } from '../helpers-components';
 import { PropertiesComponent } from '../properties/properties.component';
-import * as Msg from '../user-messages';
 
 @Component({
     selector: 'nof-object',
@@ -189,8 +188,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
 
     title() {
         const obj = this.object;
-        const prefix = this.mode === InteractionMode.Edit || this.mode === InteractionMode.Transient ? `${Msg.editing} - ` : '';
-        return obj ? `${prefix}${obj.title}` : '';
+        return obj ? obj.getTitle(this.mode) : '';
     }
 
     disableActions = () => {

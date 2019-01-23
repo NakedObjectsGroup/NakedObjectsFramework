@@ -9,7 +9,7 @@
 	<div class="icon speech" title="Cicero - Speech Interface (Alt-c)" (click)="cicero()" tabindex="0" accesskey="c"></div>
 	<div class="icon properties" title="Application Properties (Alt-p)" (click)="applicationProperties()" tabindex="0" accesskey="p"></div>
 	<div class="icon logoff" title="Log off (Alt-l)" (click)="logOff()" tabindex="0" accesskey="l"></div>
-	<span class="loading">{{loading}}</span>
+	<span *ngIf="loading" class="loading">Loading...</span>
 
 	<div class="warnings" *ngFor="let warning of warnings">
 		<div>{{warning}}</div>

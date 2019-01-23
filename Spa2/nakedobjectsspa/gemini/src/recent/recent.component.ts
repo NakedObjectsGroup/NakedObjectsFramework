@@ -7,7 +7,6 @@ import { IActionHolder } from '../action/action.component';
 import { safeUnsubscribe } from '../helpers-components';
 import { PaneComponent } from '../pane/pane';
 import { RowComponent } from '../row/row.component';
-import * as Msg from '../user-messages';
 
 @Component({
     selector: 'nof-recent',

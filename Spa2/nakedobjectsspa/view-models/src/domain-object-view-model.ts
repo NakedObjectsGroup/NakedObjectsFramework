@@ -265,4 +265,8 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
 
     readonly showActions = () => !!this.currentPaneData().actionsOpen;
 
+    readonly getTitle = (mode: InteractionMode) => {
+        const prefix = mode === InteractionMode.Edit || mode === InteractionMode.Transient ? `${Msg.editing} - ` : '';
+        return `${prefix}${this.title}`;
+    }
 }

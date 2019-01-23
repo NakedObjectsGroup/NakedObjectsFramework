@@ -1,7 +1,6 @@
 ﻿import { Component, Input } from '@angular/core';
 import { ClickHandlerService, ErrorService, ErrorWrapper, UrlManagerService } from '@nakedobjects/services';
 import { AttachmentViewModel } from '@nakedobjects/view-models';
-import * as Msg from '../user-messages';
 
 @Component({
     selector: 'nof-attachment-property',
@@ -32,7 +31,6 @@ export class AttachmentPropertyComponent {
 
     title: string;
     image: string;
-    noImage = Msg.noImageMessage;
 
     doAttachmentClick = (right?: boolean) => {
         if (this.attachment.displayInline()) {

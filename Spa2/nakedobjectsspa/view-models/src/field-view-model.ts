@@ -268,6 +268,10 @@ export abstract class FieldViewModel extends MessageViewModel {
 
     readonly getValueForControl = () => this.selectedMultiChoices || this.selectedChoice || this.value;
 
+    readonly setInvalidDate = () => this.setMessage(Msg.invalidDate);
+
+    readonly setInvalidTime = () => this.setMessage(Msg.invalidTime);
+
     readonly getValue = () => {
 
         if (this.entryType === Ro.EntryType.File) {

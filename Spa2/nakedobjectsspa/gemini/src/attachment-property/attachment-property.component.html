@@ -2,4 +2,4 @@
     <div *ngIf="!image">{{title}}</div>
     <img *ngIf="image" src="{{image}}" alt="{{title}}" />
 </div>
-<ng-container *ngIf="!attachment || attachment.empty"><div class="value">{{noImage}}</div></ng-container>
+<ng-container *ngIf="!attachment || attachment.empty"><div class="value">No image</div></ng-container>
