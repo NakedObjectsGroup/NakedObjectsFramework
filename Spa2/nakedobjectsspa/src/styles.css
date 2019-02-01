@@ -2,6 +2,7 @@
 
 .gemini, table, a, pre, textarea, input, button {
    font-family: var(--font-text-family);
+   color: white;
 }
 
 @font-face {
