@@ -50,6 +50,7 @@
 
 .value.droppable.dnd-drag-over.candrop {
     border-color: var(--approval-color);
+    cursor: pointer;
 }
 
 .value.droppable.dnd-drag-over {

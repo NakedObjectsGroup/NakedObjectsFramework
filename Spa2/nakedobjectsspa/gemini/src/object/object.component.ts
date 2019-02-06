@@ -122,8 +122,10 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
     private concurrencyErrorSub: ISubscription;
     private formSub: ISubscription;
     private focusSub: ISubscription;
+    private ddSub: ISubscription;
 
     selectedDialogId: string;
+    dropZones: string[] = [];
 
     @ViewChildren(PropertiesComponent)
     propComponents: QueryList<PropertiesComponent>;
@@ -364,6 +366,10 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         return this.context.getIsDirty(oid);
     }
 
+    setDropZones(ids: string[]) {
+        setTimeout(() => this.dropZones = ids);
+    }
+
     ngOnInit(): void {
         this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: ICustomActivatedRouteData) => {
 
@@ -387,6 +393,8 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.object.concurrency();
             }
         });
+
+        this.ddSub = this.dragAndDrop.dropZoneIds$.subscribe(ids => this.setDropZones(ids || []));
     }
 
     focus(parms: QueryList<PropertiesComponent>) {
@@ -408,5 +416,6 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         safeUnsubscribe(this.concurrencyErrorSub);
         safeUnsubscribe(this.formSub);
         safeUnsubscribe(this.focusSub);
+        safeUnsubscribe(this.ddSub);
     }
 }

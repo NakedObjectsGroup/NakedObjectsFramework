@@ -5,8 +5,8 @@
     <div class="object view" [ngClass]="color"></div>
 </ng-container>
 <div *ngIf="object && viewMode === 'View'" class="object view" [ngClass]="color">
-    <header class="header">
-        <div class="title" dnd-draggable [dragEnabled]="true" [dragData]="object" tabindex="0" (keydown)="copy($event)" (keypress)="copy($event)">
+    <header class="header" cdkDropList [cdkDropListConnectedTo]="dropZones">
+        <div class="title" cdkDrag [cdkDragData]="object" tabindex="0" (keydown)="copy($event)" (keypress)="copy($event)">
             <span class="type">{{friendlyName}}</span> {{title()}}
         </div>
         <!--<div>{{object.isDirty() ? "*" : ""}} </div>-->
@@ -22,8 +22,8 @@
 </div>
 <div *ngIf="object && (viewMode === 'Edit' || viewMode === 'Transient' || viewMode === 'Form')" class="object edit" [ngClass]="color">
     <form (ngSubmit)="onSubmit(false)" [formGroup]="form" autocomplete="off">
-        <header class="header">
-            <div class="title" dnd-draggable [dragEnabled]="true" [dragData]="object" tabindex="0" (keydown)="copy($event)" (keypress)="copy($event)">
+        <header class="header" cdkDropList [cdkDropListConnectedTo]="dropZones">
+            <div class="title" cdkDrag [cdkDragData]="object" tabindex="0" (keydown)="copy($event)" (keypress)="copy($event)">
                 <span class="type">{{friendlyName}}</span> {{title()}}
             </div>
             <div *ngIf="viewMode === 'Edit' || viewMode === 'Transient' || viewMode === 'Form'" class="menus">
@@ -38,8 +38,8 @@
     <nof-collections *ngIf="collections" [collections]="collections"></nof-collections>
 </div>
 <div *ngIf="object && viewMode === 'NotPersistent'" class="object view" [ngClass]="color">
-    <header class="header">
-        <div class="title" dnd-draggable [dragEnabled]="true" [dragData]="object" tabindex="0" (keydown)="copy($event)" (keypress)="copy($event)">
+    <header class="header" cdkDropList [cdkDropListConnectedTo]="dropZones">
+        <div class="title" cdkDrag [cdkDragData]="object" tabindex="0" (keydown)="copy($event)" (keypress)="copy($event)">
             <span class="type">{{friendlyName}}</span> {{title()}}
         </div>
         <div class="messages">{{message()}}</div>

@@ -33,7 +33,6 @@
             "lodash",
             "lodash-es",
             "moment",
-            "@beyerleinf/ngx-dnd",
             "@nakedobjects/restful-objects",
             "@nakedobjects/services",
             "@nakedobjects/view-models"
@@ -76,11 +75,11 @@
         "auth0-js": "^9.8.2",
         "lodash": "4.17.11",
         "lodash-es": "4.17.11",
-        "moment": "2.22.2",
-        "@beyerleinf/ngx-dnd": "^6.0.0-preview3"
+        "moment": "2.22.2"
     },
     "peerDependencies": {
         "@angular/animations": "^7.1.2",
+        "@angular/cdk": "^7.3.0",
         "@angular/common": "^7.1.2",
         "@angular/compiler": "^7.1.2",
         "@angular/core": "^7.1.2",

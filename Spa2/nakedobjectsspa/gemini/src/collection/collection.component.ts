@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CollectionViewState, PaneRouteData, UrlManagerService } from '@nakedobjects/services';
-import { CollectionViewModel, ItemViewModel } from '@nakedobjects/view-models';
+import { CollectionViewModel, ItemViewModel, DragAndDropService } from '@nakedobjects/view-models';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { safeUnsubscribe } from '../helpers-components';
 // needed for declarations compile
@@ -14,7 +14,13 @@ type State = 'summary' | 'list' | 'table';
 })
 export class CollectionComponent implements OnInit, OnDestroy {
 
-    constructor(private readonly urlManager: UrlManagerService) { }
+    private ddSub: ISubscription;
+    dropZones: string[] = [];
+
+    constructor(
+        private readonly urlManager: UrlManagerService,
+        private readonly dragAndDrop: DragAndDropService
+    ) { }
 
     @Input()
     collection: CollectionViewModel;
@@ -75,6 +81,10 @@ export class CollectionComponent implements OnInit, OnDestroy {
 
     hasTableData = () => this.collection.hasTableData();
 
+    setDropZones(ids: string[]) {
+        setTimeout(() => this.dropZones = ids);
+    }
+
     ngOnInit(): void {
 
         this.paneRouteDataSub = this.urlManager.getPaneRouteDataObservable(this.collection.onPaneId)
@@ -91,9 +101,11 @@ export class CollectionComponent implements OnInit, OnDestroy {
                     this.selectedDialogId = paneRouteData.dialogId;
                 }
             });
+        this.ddSub = this.dragAndDrop.dropZoneIds$.subscribe(ids => this.setDropZones(ids || []));
     }
 
     ngOnDestroy(): void {
         safeUnsubscribe(this.paneRouteDataSub);
+        safeUnsubscribe(this.ddSub);
     }
 }

@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, OnDestroy, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, QueryList, ViewChildren, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ContextService, PaneRouteData, UrlManagerService } from '@nakedobjects/services';
-import { RecentItemsViewModel, RecentItemViewModel, ViewModelFactoryService } from '@nakedobjects/view-models';
+import { RecentItemsViewModel, RecentItemViewModel, ViewModelFactoryService, DragAndDropService } from '@nakedobjects/view-models';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { IActionHolder } from '../action/action.component';
 import { safeUnsubscribe } from '../helpers-components';
@@ -13,13 +13,17 @@ import { RowComponent } from '../row/row.component';
     templateUrl: 'recent.component.html',
     styleUrls: ['recent.component.css']
 })
-export class RecentComponent extends PaneComponent implements AfterViewInit, OnDestroy {
+export class RecentComponent extends PaneComponent implements AfterViewInit, OnInit, OnDestroy {
+
+    private ddSub: ISubscription;
+    dropZones: string[] = [];
 
     constructor(
         activatedRoute: ActivatedRoute,
         urlManager: UrlManagerService,
         context: ContextService,
         private readonly viewModelFactory: ViewModelFactoryService,
+        private readonly dragAndDrop: DragAndDropService
     ) {
         super(activatedRoute, urlManager, context);
     }
@@ -80,8 +84,18 @@ export class RecentComponent extends PaneComponent implements AfterViewInit, OnD
         this.sub = this.actionChildren.changes.subscribe((ql: QueryList<RowComponent>) => this.focusOnFirstRow(ql));
     }
 
+    setDropZones(ids: string[]) {
+        setTimeout(() => this.dropZones = ids);
+    }
+
+    ngOnInit() {
+        this.ddSub = this.dragAndDrop.dropZoneIds$.subscribe(ids => this.setDropZones(ids || []));
+        super.ngOnInit();
+    }
+
     ngOnDestroy() {
         safeUnsubscribe(this.sub);
+        safeUnsubscribe(this.ddSub);
         super.ngOnDestroy();
     }
 }

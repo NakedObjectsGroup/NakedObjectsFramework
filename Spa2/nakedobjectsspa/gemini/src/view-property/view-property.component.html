@@ -1,14 +1,16 @@
 <div class="name">{{title}}:</div>
 
 <ng-container *ngIf="propertyType === 'ref'">
-    <ng-container [ngSwitch]="propertyRefType">
+    <ng-container [ngSwitch]="propertyRefType" >
         <div *ngSwitchCase="null"></div>
         <div *ngSwitchCase="'notNavigable'">
             <div class="value">{{formattedValue}}</div>
         </div>
-        <div *ngSwitchDefault class="reference" [ngClass]="color" nofClick (leftClick)="doClick()"
-             (rightClick)="doClick(true)" dnd-draggable [dragEnabled]="true" [dragData]="property" tabindex="0">
-            {{formattedValue}}
+        <div cdkDropList [cdkDropListConnectedTo]="dropZones">
+            <div *ngSwitchDefault class="reference" [ngClass]="color" nofClick (leftClick)="doClick()"
+                (rightClick)="doClick(true)" cdkDrag [cdkDragData]="property" tabindex="0">
+                {{formattedValue}}
+            </div>
         </div>
     </ng-container>
 </ng-container>

@@ -14,6 +14,12 @@ export class DragAndDropService {
 
     private copiedViewModel: IDraggableViewModel | null;
 
+    private dropZoneIdsSource = new Subject<string[]>();
+
+    dropZoneIds$ = this.dropZoneIdsSource.asObservable();
+
+    private dropZoneIds: string[] = [];
+
     setCopyViewModel(dvm: IDraggableViewModel | null) {
         this.copiedViewModel = dvm;
         this.copiedViewModelSource.next(Ro.withUndefined(dvm));
@@ -21,5 +27,19 @@ export class DragAndDropService {
 
     getCopyViewModel() {
         return this.copiedViewModel;
+    }
+
+    setDropZoneId (id: string) {
+        if (!this.dropZoneIds.includes(id)) {
+            this.dropZoneIds.push(id);
+            this.dropZoneIdsSource.next(this.dropZoneIds);
+        }
+    }
+
+    clearDropZoneId(id: string) {
+        if (this.dropZoneIds.includes(id)) {
+            this.dropZoneIds = this.dropZoneIds.filter(v => v !== id);
+            this.dropZoneIdsSource.next(this.dropZoneIds);
+        }
     }
 }

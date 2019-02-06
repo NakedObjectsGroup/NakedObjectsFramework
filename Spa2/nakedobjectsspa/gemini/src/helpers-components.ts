@@ -40,17 +40,14 @@ export function createForm(dialog: DialogViewModel, formBuilder: FormBuilder): {
     return { form: form, dialog: dialog, parms: parms, sub: sub };
 }
 
-export function accept(droppableVm: FieldViewModel, component: { canDrop: boolean }) {
-
-    return (draggableVm: IDraggableViewModel) => {
-        if (draggableVm) {
-            draggableVm.canDropOn(droppableVm.returnType).
-                then(canDrop => component.canDrop = canDrop).
-                catch(() => component.canDrop = false);
-            return true;
-        }
-        return false;
-    };
+export function accept(droppableVm: FieldViewModel, component: { canDrop: boolean }, draggableVm: IDraggableViewModel) {
+    if (draggableVm) {
+        draggableVm.canDropOn(droppableVm.returnType).
+            then(canDrop => component.canDrop = canDrop).
+            catch(() => component.canDrop = false);
+        return true;
+    }
+    return false;
 }
 
 export function dropOn(draggableVm: IDraggableViewModel, droppable: FieldViewModel, component: { canDrop: boolean, control: AbstractControl }) {

@@ -102,6 +102,14 @@
   dependencies:
     tslib "^1.9.0"
 
+"@angular/cdk@^7.3.0":
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-7.3.0.tgz#957668181bd7f113c78e53ec82d50a15e6ba6ee3"
+  dependencies:
+    tslib "^1.7.1"
+  optionalDependencies:
+    parse5 "^5.0.0"
+
 "@angular/cli@^7.1.2":
   version "7.1.2"
   resolved "https://registry.yarnpkg.com/@angular/cli/-/cli-7.1.2.tgz#bcad530ef8ab36188f4e4ab800d636989194e9bf"
@@ -262,12 +270,6 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@beyerleinf/ngx-dnd@^6.0.0-preview3":
-  version "6.0.0-preview3"
-  resolved "https://registry.yarnpkg.com/@beyerleinf/ngx-dnd/-/ngx-dnd-6.0.0-preview3.tgz#15a0e594a4d0d9fecc80e9fe1e3ba3fea9a1bcca"
-  dependencies:
-    tslib "^1.9.0"
-
 "@nakedobjects/cicero@file:dist/nakedobjects-cicero":
   version "10.0.0-beta.5"
   dependencies:
@@ -278,7 +280,6 @@
 "@nakedobjects/gemini@file:dist/nakedobjects-gemini":
   version "10.0.0-beta.5"
   dependencies:
-    "@beyerleinf/ngx-dnd" "^6.0.0-preview3"
     auth0-js "^9.8.2"
     lodash "4.17.11"
     lodash-es "4.17.11"
@@ -5128,6 +5129,10 @@ parse5@4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/parse5/-/parse5-4.0.0.tgz#6d78656e3da8d78b4ec0b906f7c08ef1dfe3f608"
 
+parse5@^5.0.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/parse5/-/parse5-5.1.0.tgz#c59341c9723f414c452975564c7c00a68d58acd2"
+
 parseqs@0.0.5:
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/parseqs/-/parseqs-0.0.5.tgz#d5208a3738e46766e291ba2ea173684921a8b89d"
@@ -6851,13 +6856,13 @@ tsickle@^0.34.0:
     mkdirp "^0.5.1"
     source-map "^0.7.3"
 
+tslib@^1.7.1, tslib@^1.9.0, tslib@^1.9.3:
+  version "1.9.3"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.3.tgz#d7e4dd79245d85428c4d7e4822a79917954ca286"
+
 tslib@^1.8.0, tslib@^1.8.1:
   version "1.9.2"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.2.tgz#8be0cc9a1f6dc7727c38deb16c2ebd1a2892988e"
-
-tslib@^1.9.0, tslib@^1.9.3:
-  version "1.9.3"
-  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.3.tgz#d7e4dd79245d85428c4d7e4822a79917954ca286"
 
 tslint@~5.11.0:
   version "5.11.0"

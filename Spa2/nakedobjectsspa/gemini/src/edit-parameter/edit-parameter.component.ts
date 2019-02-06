@@ -7,7 +7,8 @@
     OnInit,
     QueryList,
     Renderer2,
-    ViewChildren
+    ViewChildren,
+    OnDestroy
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import * as Ro from '@nakedobjects/restful-objects';
@@ -24,7 +25,7 @@ import { TimePickerFacadeComponent } from '../time-picker-facade/time-picker-fac
     templateUrl: 'edit-parameter.component.html',
     styleUrls: ['edit-parameter.component.css']
 })
-export class EditParameterComponent extends FieldComponent implements OnInit, AfterViewInit {
+export class EditParameterComponent extends FieldComponent implements OnInit, OnDestroy, AfterViewInit {
 
     constructor(
         loggerService: LoggerService,
@@ -48,6 +49,9 @@ export class EditParameterComponent extends FieldComponent implements OnInit, Af
     @Input()
     set parameter(value: ParameterViewModel) {
         this.parm = value;
+        if (this.parameterEntryType === Ro.EntryType.FreeForm) {
+            this.dragAndDrop.setDropZoneId(this.parameterPaneId);
+        }
     }
 
     get parameter() {
@@ -111,7 +115,8 @@ export class EditParameterComponent extends FieldComponent implements OnInit, Af
     classes(): Dictionary<boolean | null> {
         return {
             [this.parm.color]: true,
-            'candrop': this.canDrop
+            'candrop': this.canDrop,
+            'dnd-drag-over': this.dragOver,
         };
     }
 
@@ -157,5 +162,10 @@ export class EditParameterComponent extends FieldComponent implements OnInit, Af
 
     ngAfterViewInit() {
         this.populateBoolean();
+    }
+
+    ngOnDestroy(): void {
+        this.dragAndDrop.clearDropZoneId(this.parameterPaneId);
+        super.ngOnDestroy();
     }
 }

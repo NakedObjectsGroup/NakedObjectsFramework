@@ -1,9 +1,9 @@
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { HttpClientModule } from '@angular/common/http';
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { DndModule } from '@beyerleinf/ngx-dnd';
 import { ActionBarComponent } from './action-bar/action-bar.component';
 import { ActionListComponent } from './action-list/action-list.component';
 import { ActionComponent } from './action/action.component';
@@ -96,11 +96,11 @@ import { ViewPropertyComponent } from './view-property/view-property.component';
     ],
     imports: [
         BrowserModule,
-        DndModule.forRoot(),
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
         RouterModule,
+        DragDropModule,
     ],
     exports: [
         FooterComponent,

@@ -1,16 +1,22 @@
-﻿import { Component, HostListener, Input } from '@angular/core';
+﻿import { Component, HostListener, Input, OnInit, OnDestroy } from '@angular/core';
 import { copy, DragAndDropService, AttachmentViewModel, PropertyViewModel } from '@nakedobjects/view-models';
+import { SubscriptionLike as ISubscription } from 'rxjs';
+import { safeUnsubscribe } from '../helpers-components';
 
 @Component({
     selector: 'nof-view-property',
     templateUrl: 'view-property.component.html',
     styleUrls: ['view-property.component.css']
 })
-export class ViewPropertyComponent {
+export class ViewPropertyComponent implements OnInit, OnDestroy {
+
+    private ddSub: ISubscription;
 
     constructor(
         private readonly dragAndDrop: DragAndDropService
     ) { }
+
+    dropZones: string[] = [];
 
     // template inputs
 
@@ -86,5 +92,17 @@ export class ViewPropertyComponent {
         if (prop) {
             copy(event, prop, this.dragAndDrop);
         }
+    }
+
+    setDropZones(ids: string[]) {
+        setTimeout(() => this.dropZones = ids);
+    }
+
+    ngOnInit(): void {
+        this.ddSub = this.dragAndDrop.dropZoneIds$.subscribe(ids => this.setDropZones(ids || []));
+    }
+
+    ngOnDestroy(): void {
+        safeUnsubscribe(this.ddSub);
     }
 }

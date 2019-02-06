@@ -15,7 +15,7 @@
     <thead>
         <tr nof-header [collection]="collection" [state]="currentState"></tr>
     </thead>
-    <tbody *ngIf="state === 'list' || hasTableData()">
-        <tr *ngFor="let item of items; let i = index" nof-row [item]="item" [row]="i" [withCheckbox]="!disableActions()" [isTable]="state === 'table'"></tr>
+    <tbody *ngIf="state === 'list' || hasTableData()" cdkDropList [cdkDropListConnectedTo]="dropZones" [cdkDropListOrientation]="'horizontal'">
+        <tr *ngFor="let item of items; let i = index" cdkDrag [cdkDragData]="item" nof-row [item]="item" [row]="i" [withCheckbox]="!disableActions()" [isTable]="state === 'table'"></tr>
     </tbody>
 </table>

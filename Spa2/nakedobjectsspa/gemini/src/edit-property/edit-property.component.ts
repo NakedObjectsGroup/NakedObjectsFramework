@@ -4,11 +4,12 @@
     ElementRef,
     HostListener,
     Input,
+    OnDestroy,
     OnInit,
     QueryList,
     Renderer2,
     ViewChildren
-} from '@angular/core';
+    } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import * as Ro from '@nakedobjects/restful-objects';
 import { LoggerService } from '@nakedobjects/services';
@@ -24,7 +25,7 @@ import { TimePickerFacadeComponent } from '../time-picker-facade/time-picker-fac
     templateUrl: 'edit-property.component.html',
     styleUrls: ['edit-property.component.css']
 })
-export class EditPropertyComponent extends FieldComponent implements OnInit, AfterViewInit {
+export class EditPropertyComponent extends FieldComponent implements OnInit, OnDestroy, AfterViewInit {
 
     constructor(
         loggerService: LoggerService,
@@ -48,6 +49,9 @@ export class EditPropertyComponent extends FieldComponent implements OnInit, Aft
     @Input()
     set property(value: PropertyViewModel) {
         this.prop = value;
+        if (this.propertyEntryType === Ro.EntryType.FreeForm) {
+            this.dragAndDrop.setDropZoneId(this.propertyPaneId);
+        }
     }
 
     get property() {
@@ -137,7 +141,8 @@ export class EditPropertyComponent extends FieldComponent implements OnInit, Aft
     classes(): Dictionary<boolean | null> {
         return {
             [this.prop.color]: true,
-            'candrop': this.canDrop
+            'candrop': this.canDrop,
+            'dnd-drag-over': this.dragOver,
         };
     }
 
@@ -166,5 +171,10 @@ export class EditPropertyComponent extends FieldComponent implements OnInit, Aft
 
     ngAfterViewInit() {
         this.populateBoolean();
+    }
+
+    ngOnDestroy(): void {
+        this.dragAndDrop.clearDropZoneId(this.propertyPaneId);
+        super.ngOnDestroy();
     }
 }

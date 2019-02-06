@@ -19,7 +19,9 @@
 	</div>
 	<div *ngIf="copyViewModel" class="currentcopy">
         <span>Copying...</span>
-        <div class="reference" [ngClass]="currentCopyColor" dnd-draggable [dragEnabled]="true" [dragData]="copyViewModel">{{currentCopyTitle}}</div>
+        <div cdkDropList [cdkDropListConnectedTo]="dropZones">
+            <div class="reference" [ngClass]="currentCopyColor" cdkDrag [cdkDragData]="copyViewModel">{{currentCopyTitle}}</div>
+        </div>
     </div>
 	<!--<div class="user">{{userName}}</div>
     <a style="display: none"></a>-->

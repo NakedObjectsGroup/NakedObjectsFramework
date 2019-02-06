@@ -12,7 +12,7 @@ import {
     PaneRouteData,
     UrlManagerService
 } from '@nakedobjects/services';
-import { ItemViewModel, ListViewModel, ViewModelFactoryService } from '@nakedobjects/view-models';
+import { ItemViewModel, ListViewModel, ViewModelFactoryService, DragAndDropService } from '@nakedobjects/view-models';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { IActionHolder } from '../action/action.component';
 import { safeUnsubscribe } from '../helpers-components';
@@ -24,6 +24,9 @@ import { safeUnsubscribe } from '../helpers-components';
 })
 export class ListComponent implements OnInit, OnDestroy {
 
+    private ddSub: ISubscription;
+    dropZones: string[] = [];
+
     constructor(
         private readonly activatedRoute: ActivatedRoute,
         private readonly urlManager: UrlManagerService,
@@ -31,7 +34,8 @@ export class ListComponent implements OnInit, OnDestroy {
         private readonly viewModelFactory: ViewModelFactoryService,
         private readonly error: ErrorService,
         private readonly configService: ConfigService,
-        private readonly loggerService: LoggerService
+        private readonly loggerService: LoggerService,
+        private readonly dragAndDrop: DragAndDropService
     ) {
     }
 
@@ -203,6 +207,10 @@ export class ListComponent implements OnInit, OnDestroy {
         this.selectedDialogId = routeData.dialogId;
     }
 
+    setDropZones(ids: string[]) {
+        setTimeout(() => this.dropZones = ids);
+    }
+
     // now this is a child investigate reworking so object is passed in from parent
     ngOnInit(): void {
         this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: ICustomActivatedRouteData) => {
@@ -220,11 +228,13 @@ export class ListComponent implements OnInit, OnDestroy {
                         });
             }
         });
+
+        this.ddSub = this.dragAndDrop.dropZoneIds$.subscribe(ids => this.setDropZones(ids || []));
     }
 
     ngOnDestroy(): void {
         safeUnsubscribe(this.paneRouteDataSub);
         safeUnsubscribe(this.activatedRouteDataSub);
-
+        safeUnsubscribe(this.ddSub);
     }
 }

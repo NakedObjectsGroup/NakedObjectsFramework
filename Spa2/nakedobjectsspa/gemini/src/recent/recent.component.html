@@ -7,8 +7,8 @@
         <ng-container *ngIf="hasItems()">
             <div class="collection">
                 <table>
-                    <tbody>
-                        <tr #row *ngFor="let item of items(); let i = index" nof-row [item]="item" [row]="i" [withCheckbox]="false" [isTable]="true"></tr>
+                    <tbody cdkDropList [cdkDropListConnectedTo]="dropZones" [cdkDropListOrientation]="'horizontal'">
+                        <tr #row *ngFor="let item of items(); let i = index" cdkDrag [cdkDragData]="item" nof-row [item]="item" [row]="i" [withCheckbox]="false" [isTable]="true"></tr>
                     </tbody>
                 </table>
             </div>

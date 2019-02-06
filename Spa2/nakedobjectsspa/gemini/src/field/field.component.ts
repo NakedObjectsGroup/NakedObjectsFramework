@@ -24,13 +24,14 @@ import { AutoCompleteComponent } from '../auto-complete/auto-complete.component'
 import { DatePickerFacadeComponent } from '../date-picker-facade/date-picker-facade.component';
 import { accept, dropOn, focus, paste, safeUnsubscribe } from '../helpers-components';
 import { TimePickerFacadeComponent } from '../time-picker-facade/time-picker-facade.component';
+import { CdkDrag, CdkDropList, CdkDragDrop } from '@angular/cdk/drag-drop';
 
 export abstract class FieldComponent implements OnDestroy {
 
     protected constructor(
         private readonly loggerService: LoggerService,
         private readonly renderer: Renderer2,
-        private readonly dragAndDrop: DragAndDropService
+        protected readonly dragAndDrop: DragAndDropService
     ) { }
 
     set formGroup(fm: FormGroup) {
@@ -78,6 +79,7 @@ export abstract class FieldComponent implements OnDestroy {
     pArgs: Dictionary<Ro.Value>;
     paneId: Pane;
     canDrop = false;
+    dragOver = false;
 
     abstract checkboxList: QueryList<ElementRef>;
     abstract focusList: QueryList<ElementRef | DatePickerFacadeComponent | TimePickerFacadeComponent | AutoCompleteComponent>;
@@ -103,12 +105,29 @@ export abstract class FieldComponent implements OnDestroy {
         }
     }
 
-    accept(droppableVm: FieldViewModel) {
-        return accept(droppableVm, this);
+    get accept() {
+        const _this = this;
+        return (cdkDrag: CdkDrag<IDraggableViewModel>, cdkDropList: CdkDropList) => {
+            return accept(_this.model, _this, cdkDrag.data);
+        };
     }
 
-    drop(draggableVm: IDraggableViewModel) {
-        dropOn(draggableVm, this.model, this);
+    drop(event: CdkDragDrop<CdkDrag<IDraggableViewModel>>) {
+        const cdkDrag: CdkDrag<IDraggableViewModel> = event.item;
+        if (event.isPointerOverContainer) {
+            dropOn(cdkDrag.data, this.model, this);
+        }
+        this.canDrop = false;
+        this.dragOver = false;
+    }
+
+    exit() {
+        this.canDrop = false;
+        this.dragOver = false;
+    }
+
+    enter() {
+        this.dragOver = true;
     }
 
     private isDomainObjectViewModel(object: any): object is DomainObjectViewModel {

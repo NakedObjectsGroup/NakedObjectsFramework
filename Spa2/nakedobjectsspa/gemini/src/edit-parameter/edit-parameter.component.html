@@ -24,8 +24,21 @@
 
             <!--"EntryType.FreeForm"-->
             <ng-container *ngIf="parameterEntryType === 0">
-                <input #focus [id]="parameterPaneId" class="value droppable" dnd-droppable [allowDrop]="accept(parameter)" (onDropSuccess)="drop($event.dragData)"
-                       [ngClass]="classes()" placeholder="{{description}}" type="text" [formControlName]="parameterId" [nofClear]="subject" (clear)="clear()" />
+                <input
+                    #focus
+                    [id]="parameterPaneId"
+                    class="value droppable"
+                    cdkDropList
+                    (cdkDropListDropped)="drop($event)"
+                    (cdkDropListExited)="exit()"
+                    (cdkDropListEntered)="enter()"
+                    [cdkDropListEnterPredicate]="accept"
+                    [ngClass]="classes()"
+                    placeholder="{{description}}"
+                    type="text"
+                    [formControlName]="parameterId"
+                    [nofClear]="subject"
+                    (clear)="clear()"/>
             </ng-container>
 
         </div>

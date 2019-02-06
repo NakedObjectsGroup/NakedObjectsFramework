@@ -36,6 +36,7 @@ export class FooterComponent implements OnInit, OnDestroy {
     private messageSub: ISubscription;
     private cvmSub: ISubscription;
     private lcSub: ISubscription;
+    private ddSub: ISubscription;
 
     loading: boolean;
     template: string;
@@ -44,6 +45,7 @@ export class FooterComponent implements OnInit, OnDestroy {
     warnings: string[];
     messages: string[];
     copyViewModel: IDraggableViewModel;
+    dropZones: string[] = [];
 
     goHome = (right?: boolean) => {
         const newPane = this.clickHandler.pane(Pane.Pane1, right);
@@ -99,13 +101,18 @@ export class FooterComponent implements OnInit, OnDestroy {
         return this.copyViewModel.draggableTitle();
     }
 
+    setDropZones(ids: string[]) {
+        setTimeout(() => this.dropZones = ids);
+    }
+
     ngOnInit() {
         this.context.getUser().then(user => this.userName = user.userName()).catch((reject: ErrorWrapper) => this.error.handleError(reject));
 
-        this.repLoader.loadingCount$.subscribe(count => this.loading = count > 0);
-        this.context.warning$.subscribe(ws => this.warnings = ws);
-        this.context.messages$.subscribe(ms => this.messages = ms);
-        this.dragAndDrop.copiedViewModel$.subscribe(cvm => this.copyViewModel = cvm);
+        this.lcSub = this.repLoader.loadingCount$.subscribe(count => this.loading = count > 0);
+        this.warnSub = this.context.warning$.subscribe(ws => this.warnings = ws);
+        this.messageSub = this.context.messages$.subscribe(ms => this.messages = ms);
+        this.cvmSub = this.dragAndDrop.copiedViewModel$.subscribe(cvm => this.copyViewModel = cvm);
+        this.ddSub = this.dragAndDrop.dropZoneIds$.subscribe(ids => this.setDropZones(ids || []));
     }
 
     ngOnDestroy() {
@@ -113,5 +120,6 @@ export class FooterComponent implements OnInit, OnDestroy {
         safeUnsubscribe(this.messageSub);
         safeUnsubscribe(this.cvmSub);
         safeUnsubscribe(this.lcSub);
+        safeUnsubscribe(this.ddSub);
     }
 }

@@ -1,3 +1,4 @@
+import { CdkDrag, CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { ChoiceViewModel, DragAndDropService, FieldViewModel, IDraggableViewModel } from '@nakedobjects/view-models';
@@ -22,10 +23,13 @@ export class AutoCompleteComponent implements OnDestroy {
     private currentIndex = -1;
     @ViewChild('focus')
     inputField: ElementRef;
+    canDrop = false;
+    dragOver = false;
 
     @Input()
     set model(m: FieldViewModel) {
         this.fieldViewModel = m;
+        this.dragAndDrop.setDropZoneId(this.modelPaneId);
     }
 
     @Input()
@@ -51,20 +55,36 @@ export class AutoCompleteComponent implements OnDestroy {
         return this.model.choices;
     }
 
-    canDrop = false;
-
-    accept(droppableVm: FieldViewModel) {
-        return accept(droppableVm, this);
+    get accept() {
+        const _this = this;
+        return (cdkDrag: CdkDrag<IDraggableViewModel>, cdkDropList: CdkDropList) => {
+            return accept(_this.model, _this, cdkDrag.data);
+        };
     }
 
-    drop(draggableVm: IDraggableViewModel) {
-        dropOn(draggableVm, this.model, this);
+    drop(event: CdkDragDrop<CdkDrag<IDraggableViewModel>>) {
+        const cdkDrag: CdkDrag<IDraggableViewModel> = event.item;
+        if (event.isPointerOverContainer) {
+            dropOn(cdkDrag.data, this.model, this);
+        }
+        this.canDrop = false;
+        this.dragOver = false;
+    }
+
+    exit() {
+        this.canDrop = false;
+        this.dragOver = false;
+    }
+
+    enter() {
+        this.dragOver = true;
     }
 
     classes(): Dictionary<boolean | null> {
         return {
             [this.model.color]: true,
-            'candrop': this.canDrop
+            'candrop': this.canDrop,
+            'dnd-drag-over': this.dragOver,
         };
     }
 
@@ -130,6 +150,7 @@ export class AutoCompleteComponent implements OnDestroy {
     }
 
     ngOnDestroy(): void {
+        this.dragAndDrop.clearDropZoneId(this.modelPaneId);
         safeUnsubscribe(this.sub);
     }
 

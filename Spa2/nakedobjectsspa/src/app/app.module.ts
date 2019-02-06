@@ -2,7 +2,6 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { DndModule } from '@beyerleinf/ngx-dnd';
 import { LibModule as CiceroModule } from '@nakedobjects/cicero';
 import { LibModule as GeminiModule } from '@nakedobjects/gemini';
 import { LibModule as ServicesModule } from '@nakedobjects/services';
@@ -16,7 +15,6 @@ import { AppComponent } from './app.component';
     ],
     imports: [
         BrowserModule,
-        DndModule.forRoot(),
         FormsModule,
         RoutingModule,
         ReactiveFormsModule,
