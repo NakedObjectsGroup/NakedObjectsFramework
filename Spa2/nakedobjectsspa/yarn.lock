@@ -270,40 +270,9 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@nakedobjects/cicero@file:dist/nakedobjects-cicero":
+"@nakedobjects/restful-objects@file:dist/nakedobjects-restful-objects/nakedobjects-restful-objects-10.0.0-beta.5.tgz":
   version "10.0.0-beta.5"
-  dependencies:
-    lodash "4.17.11"
-    lodash-es "4.17.11"
-    tslib "^1.9.0"
-
-"@nakedobjects/gemini@file:dist/nakedobjects-gemini":
-  version "10.0.0-beta.5"
-  dependencies:
-    auth0-js "^9.8.2"
-    lodash "4.17.11"
-    lodash-es "4.17.11"
-    moment "2.22.2"
-    tslib "^1.9.0"
-
-"@nakedobjects/restful-objects@file:dist/nakedobjects-restful-objects":
-  version "10.0.0-beta.5"
-  dependencies:
-    lodash "4.17.11"
-    lodash-es "4.17.11"
-    tslib "^1.9.0"
-
-"@nakedobjects/services@file:dist/nakedobjects-services":
-  version "10.0.0-beta.5"
-  dependencies:
-    auth0-js "^9.8.2"
-    lodash "4.17.11"
-    lodash-es "4.17.11"
-    moment "2.22.2"
-    tslib "^1.9.0"
-
-"@nakedobjects/view-models@file:dist/nakedobjects-view-models":
-  version "10.0.0-beta.5"
+  resolved "file:dist/nakedobjects-restful-objects/nakedobjects-restful-objects-10.0.0-beta.5.tgz#0b05dc84a338349bd8affb8e991029558c687448"
   dependencies:
     lodash "4.17.11"
     lodash-es "4.17.11"

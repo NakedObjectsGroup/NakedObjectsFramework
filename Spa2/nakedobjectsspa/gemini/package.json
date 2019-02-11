@@ -75,7 +75,10 @@
         "auth0-js": "^9.8.2",
         "lodash": "4.17.11",
         "lodash-es": "4.17.11",
-        "moment": "2.22.2"
+        "moment": "2.22.2",
+        "@nakedobjects/restful-objects": "^10.0.0-beta.5",
+        "@nakedobjects/services": "^10.0.0-beta.5",
+        "@nakedobjects/view-models": "^10.0.0-beta.5"
     },
     "peerDependencies": {
         "@angular/animations": "^7.1.2",

@@ -73,7 +73,9 @@
     },
     "dependencies": {
         "lodash": "4.17.11",
-        "lodash-es": "4.17.11"
+        "lodash-es": "4.17.11",
+        "@nakedobjects/restful-objects": "^10.0.0-beta.5",
+        "@nakedobjects/services": "^10.0.0-beta.5"
     },
     "peerDependencies": {
         "@angular/animations": "^7.1.2",
