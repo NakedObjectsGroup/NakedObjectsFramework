@@ -37,22 +37,22 @@
 
     "compile:services": "rimraf dist/nakedobjects-services && ng-packagr -p services/package.json",
     "pack:services": "cd dist/nakedobjects-services && npm pack && cd ../..",
-    "install:services": "npm i --no-save dist/nakedobjects-services/nakedobjects-services-10.0.0-beta.5.tgz",
+    "install:services": "npm i dist/nakedobjects-services/nakedobjects-services-10.0.0-beta.5.tgz",
     "build:services": "yarn compile:services && yarn pack:services && yarn install:services",
 
     "compile:view-models": "rimraf dist/nakedobjects-view-models && ng-packagr -p view-models/package.json",
     "pack:view-models": "cd dist/nakedobjects-view-models && npm pack && cd ../..",
-    "install:view-models": "npm i --no-save dist/nakedobjects-view-models/nakedobjects-view-models-10.0.0-beta.5.tgz",
+    "install:view-models": "npm i dist/nakedobjects-view-models/nakedobjects-view-models-10.0.0-beta.5.tgz",
     "build:view-models": "yarn compile:view-models && yarn pack:view-models && yarn install:view-models",
 
     "compile:gemini": "rimraf dist/nakedobjects-gemini && ng-packagr -p gemini/package.json",
     "pack:gemini": "cd dist/nakedobjects-gemini && npm pack && cd ../..",
-    "install:gemini": "npm i --no-save dist/nakedobjects-gemini/nakedobjects-gemini-10.0.0-beta.5.tgz",
+    "install:gemini": "npm i dist/nakedobjects-gemini/nakedobjects-gemini-10.0.0-beta.5.tgz",
     "build:gemini": "yarn compile:gemini && yarn pack:gemini && yarn install:gemini",
 
     "compile:cicero": "rimraf dist/nakedobjects-cicero && ng-packagr -p cicero/package.json",
     "pack:cicero": "cd dist/nakedobjects-cicero && npm pack && cd ../..",
-    "install:cicero": "npm i --no-save dist/nakedobjects-cicero/nakedobjects-cicero-10.0.0-beta.5.tgz",
+    "install:cicero": "npm i dist/nakedobjects-cicero/nakedobjects-cicero-10.0.0-beta.5.tgz",
     "build:cicero": "yarn compile:cicero && yarn pack:cicero && yarn install:cicero",
 
     "build:clean": "rimraf dist && rimraf node_modules/@nakedobjects",
