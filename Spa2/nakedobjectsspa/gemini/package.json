@@ -33,6 +33,7 @@
             "lodash",
             "lodash-es",
             "moment",
+            "@angular/cdk",
             "@nakedobjects/restful-objects",
             "@nakedobjects/services",
             "@nakedobjects/view-models"
