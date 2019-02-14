@@ -244,7 +244,7 @@ export class RepLoaderService {
         return this.httpPopulate(options, !!ignoreCache, response) as Promise<T>;
     }
 
-    retrieve = <T extends Ro.IHateoasModel>(map: Ro.IHateoasModel, rc: { new(): Ro.IHateoasModel }, digest?: string | null): Promise<T> => {
+    retrieve = <T extends Ro.IHateoasModel>(map: Ro.IHateoasModel, rc: new() => Ro.IHateoasModel, digest?: string | null): Promise<T> => {
         const response = new rc();
         const options = RequestOptions.fromMap(map, digest);
         return this.httpPopulate(options, true, response) as Promise<T>;
