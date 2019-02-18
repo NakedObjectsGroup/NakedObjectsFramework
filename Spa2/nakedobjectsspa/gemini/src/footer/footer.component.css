@@ -39,15 +39,16 @@
 }
 
 /*Warnings & Messages*/
-
 .messages, .warnings, .loading {
-    background-color: var(--default-background-color);
     font-size: var(--font-size-2);
+}
+
+.messages, .loading {
     color: var(--default-text-color);
 }
 
 .warnings {
-    color: var(--warning--color);
+    color: var(--warning-color);
 }
 
 /*Icons */
