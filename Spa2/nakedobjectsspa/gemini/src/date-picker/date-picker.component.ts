@@ -15,6 +15,7 @@ import * as momentNs from 'moment';
 import { BehaviorSubject, Observable, SubscriptionLike as ISubscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { focus, safeUnsubscribe } from '../helpers-components';
+import { Dictionary } from 'lodash';
 
 const moment = momentNs;
 
@@ -57,10 +58,12 @@ export interface IDatePickerOutputClearedEvent {
 export class DatePickerOptions {
     firstWeekdaySunday?: boolean;
     format?: string;
+    class?: string;
 
     constructor(obj?: DatePickerOptions) {
         this.firstWeekdaySunday = obj && obj.firstWeekdaySunday ? obj.firstWeekdaySunday : false;
         this.format = obj && obj.format ? obj.format : 'YYYY-MM-DD';
+        this.class = obj && obj.class;
     }
 }
 
@@ -333,6 +336,13 @@ export class DatePickerComponent implements OnInit, OnDestroy {
         }
 
         return this.bSubject;
+    }
+
+    classes(): Dictionary<boolean | null> {
+        return {
+            'datepicker-input': true,
+            [this.options.class]: !!(this.options && this.options.class)
+        };
     }
 
     ngOnDestroy(): void {

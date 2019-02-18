@@ -8,9 +8,8 @@
 }
 
 .datepicker-input {
-    width: calc(var(--field-value-width) - 25px);
+    width: calc(var(--field-value-width) - 30px);
     height: 20px;
-    border: none;
 }
 
 .datepicker-container .datepicker-input-container .datepicker-input-icon {
@@ -297,9 +296,18 @@
 }
 
 input {
-    border: none;
     width: var(--field-value-width);
     padding-left: 2px;
+}
+
+input.parameter {
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+}
+
+input.property {
+    border: none;
 }
 
 .ng-clearable {
