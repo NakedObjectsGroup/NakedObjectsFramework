@@ -1,8 +1,11 @@
 /*Global fonts*/
 
 .gemini, table, a, pre, textarea, input, button {
-   font-family: var(--font-text-family);
-   color: white;
+    font-family: var(--font-text-family);
+}
+
+.startup-message {
+    color: var(--default-text-color);
 }
 
 @font-face {
@@ -12,7 +15,6 @@
     font-weight: var(--font-weight-1);
     font-style: normal;
 }
-
 
 /* Override unwanted defaults */
 
@@ -42,9 +44,10 @@ html, #main, body, .background, .single, .split {
 }
 
 /*Other global defaults*/
+
 gemini {
     outline-style: var(--default-outline-style);
-    outline-color: var(--default-outline-color);   
+    outline-color: var(--default-outline-color);
 }
 
 .background {

@@ -1,5 +1,5 @@
 <ng-container *ngIf="config.loadingStatus === 0">
-  <p>Loading configuration...</p>
+  <p class="startup-message">Loading configuration...</p>
 </ng-container>
 <ng-container *ngIf="config.loadingStatus === 1">
   <ng-container *ngIf="!auth.authenticate || auth.isAuthenticated()">
@@ -11,5 +11,5 @@
   </ng-container>
 </ng-container>
 <ng-container *ngIf="config.loadingStatus === 2">
-  <p>Application configuration failed to load, trying refreshing the page, if that fails please contact the application administrator.</p>
+  <p class="startup-message">Application configuration failed to load, trying refreshing the page, if that fails please contact the application administrator.</p>
 </ng-container>
