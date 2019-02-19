@@ -32,7 +32,7 @@ export class DatePickerFacadeComponent implements AfterViewInit {
     @Input()
     set model(m: FieldViewModel) {
         this.fieldViewModel = m;
-        this.datePickerOptions.class = m instanceof PropertyViewModel ? 'property' : 'parameter';
+        this.datePickerOptions.class = m instanceof PropertyViewModel ? 'datepicker-property' : 'datepicker-parameter';
     }
 
     get model(): FieldViewModel {

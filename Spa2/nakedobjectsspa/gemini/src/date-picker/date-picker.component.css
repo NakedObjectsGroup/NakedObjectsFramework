@@ -300,13 +300,13 @@ input {
     padding-left: 2px;
 }
 
-input.parameter {
+input.datepicker-parameter {
     border-style: solid;
     border-color: black;
     border-width: 1px;
 }
 
-input.property {
+input.datepicker-property {
     border: none;
 }
 
