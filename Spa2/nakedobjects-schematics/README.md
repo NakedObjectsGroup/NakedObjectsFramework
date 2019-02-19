@@ -1,28 +1,16 @@
-# Getting Started With Schematics
+# @nakedobjects/schematics
 
-This repository is a basic Schematic implementation that serves as a starting point to create and publish Schematics to NPM.
+Simple schematic to create a new NakedObjects Angular application
 
-### Testing
+## To run 
 
-To test locally, install `@angular-devkit/schematics` globally and use the `schematics` command line tool. That tool acts the same as the `generate` command of the Angular CLI, but also has a debug mode.
+Create a new project with @angular/cli then scaffold project with schematics
 
-Check the documentation with
-```bash
-schematics --help
-```
+ng new <project>
+cd <project>
+npm i @nakedobjects/schematics --save-dev
+npm i @nakedobjects/gemini
+npm i @nakedobjects/cicero
+ng serve
 
-### Unit Testing
 
-`npm run test` will run the unit tests, using Jasmine as a runner and test framework.
-
-### Publishing
-
-To publish, simply do:
-
-```bash
-npm run build
-npm publish
-```
-
-That's it!
- 
