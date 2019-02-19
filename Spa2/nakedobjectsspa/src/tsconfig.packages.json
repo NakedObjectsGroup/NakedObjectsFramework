@@ -2,7 +2,6 @@
   "extends": "../tsconfig.json",
   "angularCompilerOptions": {
     "paths": {
-      "@nakedobjects/lib": [ "../dist/nakedobjects-lib" ]
     }
   },
   "compilerOptions": {
@@ -11,7 +10,6 @@
     "baseUrl": "",
     "types": [],
     "paths": {
-      "@nakedobjects/lib": [ "../dist/nakedobjects-lib" ]
     }
   },
   "exclude": [

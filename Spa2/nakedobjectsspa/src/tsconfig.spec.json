@@ -10,9 +10,6 @@
         "node"
       ],
       "paths": {
-        "@nakedobjects/lib": [
-          "../dist/nakedobjects-lib"
-        ]
       }
     },
     "files": [
@@ -20,7 +17,6 @@
       "polyfills.ts"
     ],
     "include": [
-      "../nakedobjects-lib/**/*.ts"
     ],
     "exclude": [
       "node_modules",
