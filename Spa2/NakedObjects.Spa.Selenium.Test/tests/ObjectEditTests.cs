@@ -35,11 +35,22 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual("Days To Manufacture:\r\n" + newDays, properties[17].Text);
         }
 
+        private bool isInt(string s) {
+            int temp;
+            return int.TryParse(s, out temp);
+        }
+
         public virtual void ObjectEditCancelLeavesUnchanged() {
             var rand = new Random();
             GeminiUrl("object?o1=___1.Product--870");
             EditObject();
             var oldPrice = WaitForCss("#listprice1").GetAttribute("value");
+
+            // try to make more robust
+            while (!isInt(oldPrice)) {
+                oldPrice = WaitForCss("#listprice1").GetAttribute("value");
+            }
+
             var newPrice = rand.Next(50, 150);
             ClearFieldThenType("#listprice1", newPrice.ToString());
 

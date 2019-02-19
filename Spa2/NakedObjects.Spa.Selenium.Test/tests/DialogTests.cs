@@ -384,6 +384,8 @@ namespace NakedObjects.Selenium {
             ClearFieldThenType("#comment1", "foo");
             Click(OKButton());
             WaitUntilElementDoesNotExist(".dialog");
+            // robustness hack
+            Thread.Sleep(1000);
             OpenActionDialog("Add Multi Line Comment");
             Assert.AreEqual("", WaitForCss("#comment1").GetAttribute("value"));
         }
