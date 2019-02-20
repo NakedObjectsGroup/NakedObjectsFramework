@@ -107,7 +107,8 @@
     <Content Include="favicon.ico" />
     <Content Include="iconFont.507ceb31df41f6b52dc8.svg" />
     <Content Include="index.html" />
-    <Content Include="main.dcfd2fd9cfbe7e406e87.js" />
+    <Content Include="list.697c8b857c1eba797d5e.png" />
+    <Content Include="main.267600708ecc980ad661.js" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -118,9 +119,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="polyfills.7a0e6866a34e280f48e7.js" />
-    <Content Include="runtime.a66f828dca56eeb90e02.js" />
-    <Content Include="styles.b76823b8e0918c571d52.css" />
+    <Content Include="polyfills.698952173c7ffe02e13c.js" />
+    <Content Include="runtime.a5dd35324ddfd942bef1.js" />
+    <Content Include="styles.2f01a7a557ae9d7bf896.css" />
+    <Content Include="summary.f67923f950a28f9c5a12.png" />
+    <Content Include="table.48b72d4d56f021fd164e.png" />
     <Content Include="web.config" />
     <Content Include="iconFont.61e31f00a5b39f5a3786.eot" />
     <Content Include="iconFont.2f87c9f2aedf8f582535.woff" />
