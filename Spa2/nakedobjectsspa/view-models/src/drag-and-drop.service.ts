@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as Ro from '@nakedobjects/restful-objects';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { IDraggableViewModel } from './idraggable-view-model';
 
 @Injectable()
@@ -14,11 +14,11 @@ export class DragAndDropService {
 
     private copiedViewModel: IDraggableViewModel | null;
 
-    private dropZoneIdsSource = new Subject<string[]>();
+    private dropZoneIds: string[] = [];
+    // Use BehaviorSubject so that subscriptions pick up current values
+    private dropZoneIdsSource = new BehaviorSubject<string[]>(this.dropZoneIds);
 
     dropZoneIds$ = this.dropZoneIdsSource.asObservable();
-
-    private dropZoneIds: string[] = [];
 
     setCopyViewModel(dvm: IDraggableViewModel | null) {
         this.copiedViewModel = dvm;

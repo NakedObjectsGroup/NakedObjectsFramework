@@ -41,7 +41,7 @@
         "dest": "../dist/nakedobjects-gemini"
     },
     "name": "@nakedobjects/gemini",
-    "version": "10.0.0-rc.1",
+    "version": "10.0.0-rc.2",
     "description": "Single Page Application client for a Naked Objects application.",
     "license": "Apache-2.0",
     "author": "Richard Pawson <rpawson@nakedobjects.org>",
@@ -80,7 +80,7 @@
         "@angular/cdk": "^7.3.0",
         "@nakedobjects/restful-objects": "^10.0.0-rc.1",
         "@nakedobjects/services": "^10.0.0-rc.1",
-        "@nakedobjects/view-models": "^10.0.0-rc.1"
+        "@nakedobjects/view-models": "^10.0.0-rc.2"
     },
     "peerDependencies": {
         "@angular/animations": "~7.2.0",
