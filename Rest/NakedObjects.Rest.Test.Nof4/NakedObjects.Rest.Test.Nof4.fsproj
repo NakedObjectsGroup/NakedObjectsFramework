@@ -150,7 +150,7 @@
       <HintPath>..\..\packages\NakedObjects.Core.10.0.0-rc01\lib\net451\NakedObjects.Unity.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Xat">
-      <HintPath>..\..\packages\NakedObjects.Xat.9.0.0\lib\net451\NakedObjects.Xat.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Xat.10.0.0-rc01\lib\net451\NakedObjects.Xat.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
