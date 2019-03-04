@@ -111,7 +111,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Facade">
-      <HintPath>..\..\packages\NakedObjects.Facade.8.1.1-beta01\lib\net451\NakedObjects.Facade.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Facade.10.0.0-rc01\lib\net451\NakedObjects.Facade.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
