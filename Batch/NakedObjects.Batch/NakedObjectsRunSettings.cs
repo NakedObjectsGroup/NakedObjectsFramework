@@ -10,11 +10,14 @@ using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
 using AdventureWorksModel;
+using AdventureWorksModel.Sales;
 using NakedObjects.Core.Async;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Menu;
+using NakedObjects.Meta.Audit;
+using NakedObjects.Meta.Authorization;
 
 namespace NakedObjects.Batch {
     /// <summary>
@@ -25,16 +28,35 @@ namespace NakedObjects.Batch {
         //Any other simple configuration options (e.g. bool or string) on the old Run classes should be
         //moved onto a single SystemConfiguration, which can delegate e.g. to Web.config 
 
-        private const string awModel = "AdventureWorksModel";
-
-        private static string[] ModelNamespaces {
-            get {
-                return new string[] { awModel }; //Add top-level namespace(s) that cover the domain model
+        private static string[] ModelNamespaces
+        {
+            get
+            {
+                return new string[] { "AdventureWorksModel" };
             }
         }
 
-        private static Type[] Services {
-            get {
+        private static Type[] Types
+        {
+            get
+            {
+                return new[] {
+                    typeof (EntityCollection<object>),
+                    typeof (ObjectQuery<object>),
+                    typeof (CustomerCollectionViewModel),
+                    typeof (OrderLine),
+                    typeof (OrderStatus),
+                    typeof (QuickOrderForm),
+                    typeof (ProductProductPhoto),
+                    typeof (ProductModelProductDescriptionCulture)
+                };
+            }
+        }
+
+        private static Type[] Services
+        {
+            get
+            {
                 return new[] {
                     typeof (CustomerRepository),
                     typeof (OrderRepository),
@@ -42,34 +64,16 @@ namespace NakedObjects.Batch {
                     typeof (EmployeeRepository),
                     typeof (SalesRepository),
                     typeof (SpecialOfferRepository),
-                    typeof (ContactRepository),
+                    typeof (PersonRepository),
                     typeof (VendorRepository),
                     typeof (PurchaseOrderRepository),
                     typeof (WorkOrderRepository),
                     typeof (OrderContributedActions),
                     typeof (CustomerContributedActions),
-                    typeof (AsyncService)
+                    typeof (SpecialOfferContributedActions),
+                    typeof (ServiceWithNoVisibleActions)
                 };
             }
-        }
-
-        /// <summary>
-        /// Specify any types that need to be reflected-over by the framework and that
-        /// will not be discovered via the services
-        /// </summary>
-        private static Type[] Types {
-            get {
-                return new[] {
-                    typeof (EnumerableQuery<object>),
-                    typeof (EntityCollection<object>),
-                    typeof (ObjectQuery<object>)
-                };
-            }
-        }
-
-        private static Type[] AllPersistedTypesInMainModel() {
-            var allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == awModel).GetTypes();
-            return allTypes.Where(t => t.BaseType == typeof (AWDomainObject) && !t.IsAbstract).ToArray();
         }
 
         public static ReflectorConfiguration ReflectorConfig() {
@@ -78,9 +82,16 @@ namespace NakedObjects.Batch {
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {
             var config = new EntityObjectStoreConfiguration();
-            config.UsingEdmxContext("Model").AssociateTypes(AllPersistedTypesInMainModel);
-            config.SpecifyTypesNotAssociatedWithAnyContext(() => new[] {typeof (AWDomainObject)});
+            config.UsingCodeFirstContext(() => new AdventureWorksContext());
             return config;
+        }
+
+        public static IAuditConfiguration AuditConfig() {
+            return null;
+        }
+
+        public static IAuthorizationConfiguration AuthorizationConfig() {
+            return null;
         }
 
         /// <summary>
