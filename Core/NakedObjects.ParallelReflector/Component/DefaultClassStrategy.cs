@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Common.Logging;
+using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core.Util;
@@ -20,7 +20,6 @@ namespace NakedObjects.ParallelReflect.Component {
     /// </summary>
     [Serializable]
     public class DefaultClassStrategy : IClassStrategy {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(DefaultClassStrategy));
         private readonly IReflectorConfiguration config;
 
         public DefaultClassStrategy(IReflectorConfiguration config) {
@@ -31,7 +30,7 @@ namespace NakedObjects.ParallelReflect.Component {
 
         public virtual bool IsTypeToBeIntrospected(Type type) {
             Type returnType = FilterNullableAndProxies(type);
-            return !IsTypeMarkedUpToBeIgnored(returnType) &&
+            return !IsTypeIgnored(returnType) &&
                    !IsTypeUnsupportedByReflector(returnType) &&
                    IsTypeWhiteListed(returnType) &&
                    (!IsGenericCollection(type) || type.GetGenericArguments().All(IsTypeToBeIntrospected));
@@ -44,7 +43,7 @@ namespace NakedObjects.ParallelReflect.Component {
 
         public virtual Type FilterNullableAndProxies(Type type) {
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>)) {
-                // use type inside nullable wrapper
+                // use type inside nullable wrapper          
                 return type.GetGenericArguments()[0];
             }
 
@@ -60,26 +59,21 @@ namespace NakedObjects.ParallelReflect.Component {
         }
 
         public virtual string GetKeyForType(Type type) {
-            string key;
             if (IsGenericCollection(type)) {
-                key = type.Namespace + "." + type.Name;
-            }
-            else if (type.IsArray && !(type.GetElementType().IsValueType || type.GetElementType() == typeof(string))) {
-                key = "System.Array";
-            }
-            else {
-                key = type.GetProxiedTypeFullName();
+                return type.Namespace + "." + type.Name;
             }
 
-            return key;
+            if (type.IsArray && !(type.GetElementType().IsValueType || type.GetElementType() == typeof(string))) {
+                return "System.Array";
+            }
+
+            return type.GetProxiedTypeFullName();
         }
 
         #endregion
 
-        private bool IsTypeMarkedUpToBeIgnored(Type type) {
-            return false;
-            //var attr = type.GetCustomAttribute<NakedObjectsTypeAttribute>();
-            //return attr != null && attr.ReflectionScope == ReflectOver.None;
+        private bool IsTypeIgnored(Type type) {
+            return type.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null;
         }
 
         private bool IsNamespaceMatch(Type type) {
