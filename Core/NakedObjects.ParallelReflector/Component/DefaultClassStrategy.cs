@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -7,9 +7,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
-using System.Reflection;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
@@ -22,10 +20,8 @@ namespace NakedObjects.ParallelReflect.Component {
     /// </summary>
     [Serializable]
     public class DefaultClassStrategy : IClassStrategy {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (DefaultClassStrategy));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(DefaultClassStrategy));
         private readonly IReflectorConfiguration config;
-        // only intended for use during initial reflection
-        //[NonSerialized] private IImmutableDictionary<Type, bool> namespaceScratchPad = ImmutableDictionary<Type, bool>.Empty;
 
         public DefaultClassStrategy(IReflectorConfiguration config) {
             this.config = config;
@@ -47,13 +43,15 @@ namespace NakedObjects.ParallelReflect.Component {
         }
 
         public virtual Type FilterNullableAndProxies(Type type) {
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof (Nullable<>)) {
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>)) {
                 // use type inside nullable wrapper
                 return type.GetGenericArguments()[0];
             }
+
             if (FasterTypeUtils.IsProxy(type)) {
                 return type.BaseType;
             }
+
             return type;
         }
 
@@ -85,13 +83,6 @@ namespace NakedObjects.ParallelReflect.Component {
         }
 
         private bool IsNamespaceMatch(Type type) {
-            //if (!namespaceScratchPad.ContainsKey(type)) {
-            //    var ns = type.Namespace ?? "";
-            //    var match = config.ModelNamespaces.Any(ns.StartsWith);
-            //    namespaceScratchPad = namespaceScratchPad.Add(type, match);
-            //}
-
-            //return namespaceScratchPad[type];
             var ns = type.Namespace ?? "";
             return config.ModelNamespaces.Any(sn => ns.StartsWith(sn, StringComparison.Ordinal));
         }
@@ -101,7 +92,7 @@ namespace NakedObjects.ParallelReflect.Component {
         }
 
         private bool IsTypeExplicitlyRequested(Type type) {
-            IEnumerable<Type> services = config.Services;
+            var services = config.Services;
             return config.TypesToIntrospect.Any(t => t == type) || services.Any(t => t == type) || type.IsGenericType && config.TypesToIntrospect.Any(t => t == type.GetGenericTypeDefinition());
         }
 
@@ -123,8 +114,8 @@ namespace NakedObjects.ParallelReflect.Component {
 
         // because Sets don't implement IEnumerable<>
         private static bool IsGenericCollection(Type type) {
-            return CollectionUtils.IsGenericType(type, typeof (IEnumerable<>)) ||
-                   CollectionUtils.IsGenericType(type, typeof (ISet<>));
+            return CollectionUtils.IsGenericType(type, typeof(IEnumerable<>)) ||
+                   CollectionUtils.IsGenericType(type, typeof(ISet<>));
         }
     }
 

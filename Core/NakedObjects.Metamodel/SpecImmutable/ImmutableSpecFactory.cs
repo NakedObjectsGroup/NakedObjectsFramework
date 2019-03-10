@@ -14,7 +14,7 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.SpecImmutable {
     public static class ImmutableSpecFactory {
-        private static Dictionary<Type, ITypeSpecBuilder> specCache = new Dictionary<Type, ITypeSpecBuilder>();
+        private static readonly Dictionary<Type, ITypeSpecBuilder> specCache = new Dictionary<Type, ITypeSpecBuilder>();
 
         public static IActionParameterSpecImmutable CreateActionParameterSpecImmutable(IObjectSpecImmutable spec, IIdentifier identifier) {
             return new ActionParameterSpecImmutable(spec, identifier);
@@ -41,10 +41,6 @@ namespace NakedObjects.Meta.SpecImmutable {
         }
 
         public static IObjectSpecBuilder CreateObjectSpecImmutable(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            //if (specCache.ContainsKey(type)) {
-            //    return specCache[type] as IObjectSpecBuilder;
-            //}
-
             lock (specCache) {
                 if (!specCache.ContainsKey(type)) {
                     specCache.Add(type, new ObjectSpecImmutable(type));
@@ -52,15 +48,9 @@ namespace NakedObjects.Meta.SpecImmutable {
 
                 return specCache[type] as IObjectSpecBuilder;
             }
-
-            //return new ObjectSpecImmutable(type);
         }
 
         public static IServiceSpecBuilder CreateServiceSpecImmutable(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            //if (specCache.ContainsKey(type)) {
-            //    return specCache[type] as IServiceSpecBuilder;
-            //}
-
             lock (specCache) {
                 if (!specCache.ContainsKey(type)) {
                     specCache.Add(type, new ServiceSpecImmutable(type));
@@ -68,13 +58,11 @@ namespace NakedObjects.Meta.SpecImmutable {
 
                 return specCache[type] as IServiceSpecBuilder;
             }
-
-            //return new ServiceSpecImmutable(type);
         }
 
         public static void ClearCache() {
             lock (specCache) {
-               specCache.Clear();
+                specCache.Clear();
             }
         }
     }

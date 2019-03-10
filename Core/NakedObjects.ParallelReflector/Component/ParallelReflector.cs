@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -142,7 +142,7 @@ namespace NakedObjects.ParallelReflect.Component {
 
         private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectPlaceholders(IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var ph = metamodel.Where(i => string.IsNullOrEmpty(i.Value.FullName)).Select(i => i.Value.Type);
-            var mm = ph.AsParallel().SelectMany(type => IntrospectSpecification(type, metamodel).Item2).Distinct(new DE()).ToDictionary(kvp => kvp.Key, kvp => kvp.Value).ToImmutableDictionary();
+            var mm = ph.AsParallel().SelectMany(type => IntrospectSpecification(type, metamodel).Item2).Distinct(new TypeSpecKeyComparer()).ToDictionary(kvp => kvp.Key, kvp => kvp.Value).ToImmutableDictionary();
 
             if (mm.Any(i => string.IsNullOrEmpty(i.Value.FullName))) {
                 return IntrospectPlaceholders(mm);
@@ -205,36 +205,32 @@ namespace NakedObjects.ParallelReflect.Component {
         }
 
         private void PopulateContributedActions(IObjectSpecBuilder spec, Type[] services, IMetamodel metamodel) {
+            var result = services.AsParallel().Select(serviceType => {
+                var serviceSpecification = (IServiceSpecImmutable) metamodel.GetSpecification(serviceType);
+                IActionSpecImmutable[] serviceActions = serviceSpecification.ObjectActions.Where(sa => sa != null).ToArray();
 
-            var result = services.
-                AsParallel().
-                Select(serviceType => {
-                    var serviceSpecification = (IServiceSpecImmutable)metamodel.GetSpecification(serviceType);
-                    IActionSpecImmutable[] serviceActions = serviceSpecification.ObjectActions.Where(sa => sa != null).ToArray();
+                var matchingActionsForObject = new List<IActionSpecImmutable>();
+                var matchingActionsForCollection = new List<IActionSpecImmutable>();
+                var finderActions = new List<IActionSpecImmutable>();
 
-                    var matchingActionsForObject = new List<IActionSpecImmutable>();
-                    var matchingActionsForCollection = new List<IActionSpecImmutable>();
-                    var finderActions = new List<IActionSpecImmutable>();
-
-                    foreach (var sa in serviceActions) {
-                        if (serviceType != spec.Type) {
-                            if (sa.IsContributedTo(spec)) {
-                                matchingActionsForObject.Add(sa);
-                            }
-
-                            if (sa.IsContributedToCollectionOf(spec)) {
-                                matchingActionsForCollection.Add(sa);
-                            }
+                foreach (var sa in serviceActions) {
+                    if (serviceType != spec.Type) {
+                        if (sa.IsContributedTo(spec)) {
+                            matchingActionsForObject.Add(sa);
                         }
 
-                        if (sa.IsFinderMethodFor(spec)) {
-                            finderActions.Add(sa);
+                        if (sa.IsContributedToCollectionOf(spec)) {
+                            matchingActionsForCollection.Add(sa);
                         }
                     }
 
-                    return new Tuple<List<IActionSpecImmutable>, List<IActionSpecImmutable>, List<IActionSpecImmutable>>(matchingActionsForObject, matchingActionsForCollection, finderActions.OrderBy(a => a, new MemberOrderComparator<IActionSpecImmutable>()).ToList());
-                }).
-                Aggregate(new Tuple<List<IActionSpecImmutable>, List<IActionSpecImmutable>, List<IActionSpecImmutable>>(new List<IActionSpecImmutable>(), new List<IActionSpecImmutable>(), new List<IActionSpecImmutable>()),
+                    if (sa.IsFinderMethodFor(spec)) {
+                        finderActions.Add(sa);
+                    }
+                }
+
+                return new Tuple<List<IActionSpecImmutable>, List<IActionSpecImmutable>, List<IActionSpecImmutable>>(matchingActionsForObject, matchingActionsForCollection, finderActions.OrderBy(a => a, new MemberOrderComparator<IActionSpecImmutable>()).ToList());
+            }).Aggregate(new Tuple<List<IActionSpecImmutable>, List<IActionSpecImmutable>, List<IActionSpecImmutable>>(new List<IActionSpecImmutable>(), new List<IActionSpecImmutable>(), new List<IActionSpecImmutable>()),
                 (a, t) => {
                     a.Item1.AddRange(t.Item1);
                     a.Item2.AddRange(t.Item2);
@@ -255,8 +251,6 @@ namespace NakedObjects.ParallelReflect.Component {
             spec.AddCollectionContributedActions(result.Item2);
             spec.AddFinderActions(result.Item3);
         }
-
-
 
         private ITypeSpecBuilder GetPlaceholder(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             ITypeSpecBuilder specification = CreateSpecification(type, metamodel);
@@ -281,7 +275,7 @@ namespace NakedObjects.ParallelReflect.Component {
         }
 
         private IImmutableDictionary<string, ITypeSpecBuilder> GetPlaceholders(Type[] types) {
-            return types.Select(t => ClassStrategy.GetType(t)).Where(t => t != null).Distinct(new DR(ClassStrategy)).ToDictionary(t => ClassStrategy.GetKeyForType(t), t => GetPlaceholder(t, null)).ToImmutableDictionary();
+            return types.Select(t => ClassStrategy.GetType(t)).Where(t => t != null).Distinct(new TypeKeyComparer(ClassStrategy)).ToDictionary(t => ClassStrategy.GetKeyForType(t), t => GetPlaceholder(t, null)).ToImmutableDictionary();
         }
 
         private Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>> LoadSpecificationAndCache(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -306,30 +300,12 @@ namespace NakedObjects.ParallelReflect.Component {
             return serviceTypes.Contains(type);
         }
 
-        #region Nested type: DE
+        #region Nested type: TypeKeyComparer
 
-        private class DE : IEqualityComparer<KeyValuePair<string, ITypeSpecBuilder>> {
-            #region IEqualityComparer<KeyValuePair<string,ITypeSpecBuilder>> Members
-
-            public bool Equals(KeyValuePair<string, ITypeSpecBuilder> x, KeyValuePair<string, ITypeSpecBuilder> y) {
-                return x.Key.Equals(y.Key, StringComparison.Ordinal);
-            }
-
-            public int GetHashCode(KeyValuePair<string, ITypeSpecBuilder> obj) {
-                return obj.Key.GetHashCode();
-            }
-
-            #endregion
-        }
-
-        #endregion
-
-        #region Nested type: DR
-
-        private class DR : IEqualityComparer<Type> {
+        private class TypeKeyComparer : IEqualityComparer<Type> {
             private readonly IClassStrategy classStrategy;
 
-            public DR(IClassStrategy classStrategy) {
+            public TypeKeyComparer(IClassStrategy classStrategy) {
                 this.classStrategy = classStrategy;
             }
 
@@ -341,6 +317,24 @@ namespace NakedObjects.ParallelReflect.Component {
 
             public int GetHashCode(Type obj) {
                 return classStrategy.GetKeyForType(obj).GetHashCode();
+            }
+
+            #endregion
+        }
+
+        #endregion
+
+        #region Nested type: TypeSpecKeyComparer
+
+        private class TypeSpecKeyComparer : IEqualityComparer<KeyValuePair<string, ITypeSpecBuilder>> {
+            #region IEqualityComparer<KeyValuePair<string,ITypeSpecBuilder>> Members
+
+            public bool Equals(KeyValuePair<string, ITypeSpecBuilder> x, KeyValuePair<string, ITypeSpecBuilder> y) {
+                return x.Key.Equals(y.Key, StringComparison.Ordinal);
+            }
+
+            public int GetHashCode(KeyValuePair<string, ITypeSpecBuilder> obj) {
+                return obj.Key.GetHashCode();
             }
 
             #endregion
