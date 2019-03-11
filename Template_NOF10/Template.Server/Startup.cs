@@ -5,6 +5,7 @@ using Microsoft.Owin.Security.Jwt;
 using Owin;
 using System.Web.Http;
 using Auth0.Owin;
+using Microsoft.IdentityModel.Tokens;
 using AuthenticationMode = Microsoft.Owin.Security.AuthenticationMode;
 
 [assembly: OwinStartup(typeof(Template.Server.Startup))]
