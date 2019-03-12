@@ -9,7 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Services;
 using NakedObjects.Xat;
@@ -1060,8 +1062,15 @@ namespace NakedObjects.SystemTest.Method {
 
         [TestMethod]
         public virtual void ITitleBuilderTestAllAppendsAndConcats() {
-            var obj = NewTestObject<Title10>();
-            obj.AssertTitleEquals("x& y y t1 t2 t3$ t1ct1*t1: no dateno date 02/04/2007 Female Not Specified");
+            var culture = Thread.CurrentThread.CurrentCulture;
+            try {
+                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+                var obj = NewTestObject<Title10>();
+                obj.AssertTitleEquals("x& y y t1 t2 t3$ t1ct1*t1: no dateno date 04/02/2007 Female Not Specified");
+            }
+            finally {
+                Thread.CurrentThread.CurrentCulture = culture;
+            }
         }
 
         [TestMethod]
