@@ -8,7 +8,9 @@
 using System;
 using System.ComponentModel;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Menu;
 using NakedObjects.Services;
@@ -164,41 +166,55 @@ namespace NakedObjects.SystemTest.XATs {
 
         [TestMethod]
         public virtual void TestGetProperty() {
-            ITestObject obj = NewTestObject<Object1>();
-
-            obj.GetPropertyByName("Prop1");
-            obj.GetPropertyByName("Bar");
-
-            obj.GetPropertyById("Prop1");
-            obj.GetPropertyById("Prop2");
-
+            var culture = Thread.CurrentThread.CurrentCulture;
             try {
-                obj.GetPropertyById("Bar");
-                Assert.Fail("Shouldn't get to here!");
-            }
-            catch (Exception e) {
-                Assert.AreEqual("Assert.Fail failed. No Property with Id 'Bar'", e.Message);
-            }
+                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+                ITestObject obj = NewTestObject<Object1>();
 
-            try {
-                obj.GetPropertyByName("Prop4");
-                Assert.Fail("Shouldn't get to here!");
+                obj.GetPropertyByName("Prop1");
+                obj.GetPropertyByName("Bar");
+
+                obj.GetPropertyById("Prop1");
+                obj.GetPropertyById("Prop2");
+
+                try {
+                    obj.GetPropertyById("Bar");
+                    Assert.Fail("Shouldn't get to here!");
+                }
+                catch (Exception e) {
+                    Assert.AreEqual("Assert.Fail failed. No Property with Id 'Bar'", e.Message);
+                }
+
+                try {
+                    obj.GetPropertyByName("Prop4");
+                    Assert.Fail("Shouldn't get to here!");
+                }
+                catch (Exception e) {
+                    Assert.AreEqual("Assert.Fail failed. No Property named 'Prop4'", e.Message);
+                }
             }
-            catch (Exception e) {
-                Assert.AreEqual("Assert.Fail failed. No Property named 'Prop4'", e.Message);
+            finally {
+                Thread.CurrentThread.CurrentCulture = culture;
             }
         }
 
         [TestMethod]
         public virtual void TestPropertyValue() {
-            ITestObject obj = NewTestObject<Object1>();
+            var culture = Thread.CurrentThread.CurrentCulture;
+            try {
+                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+                ITestObject obj = NewTestObject<Object1>();
 
-            obj.GetPropertyById("Prop3").SetValue("16/08/2013");
+                obj.GetPropertyById("Prop3").SetValue("08/16/2013");
 
-            ITestProperty p1 = obj.GetPropertyById("Prop3");
+                ITestProperty p1 = obj.GetPropertyById("Prop3");
 
-            p1.AssertValueIsEqual("16/08/2013 00:00:00");
-            p1.AssertTitleIsEqual("16/08/2013");
+                p1.AssertValueIsEqual("08/16/2013 00:00:00");
+                p1.AssertTitleIsEqual("08/16/2013");
+            }
+            finally {
+                Thread.CurrentThread.CurrentCulture = culture;
+            }
         }
 
         [TestMethod]
