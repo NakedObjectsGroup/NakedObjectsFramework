@@ -5,6 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Globalization;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NakedObjects.SystemTest.Util {
@@ -12,10 +14,18 @@ namespace NakedObjects.SystemTest.Util {
     [TestClass]
     public class NewTitleBuilderWithInitialContentTest {
         private NewTitleBuilder builder;
+        private CultureInfo culture;
 
         [TestInitialize]
         public void NewBuilder() {
+            culture = Thread.CurrentThread.CurrentCulture;
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             builder = new NewTitleBuilder("Text");
+        }
+
+        [TestCleanup]
+        public void Cleanup() {
+            Thread.CurrentThread.CurrentCulture = culture;
         }
 
         private void AssertTitleIs(string expected, NewTitleBuilder builder) {

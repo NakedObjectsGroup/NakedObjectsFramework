@@ -6,6 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Globalization;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NakedObjects.SystemTest.Util {
@@ -13,10 +15,18 @@ namespace NakedObjects.SystemTest.Util {
     [TestClass]
     public class TitleBuilderWithNoIntialContentTest {
         private TitleBuilder builder;
+        private CultureInfo culture;
 
         [TestInitialize]
         public void NewBuilder() {
+            culture = Thread.CurrentThread.CurrentCulture;
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             builder = new TitleBuilder();
+        }
+
+        [TestCleanup]
+        public void Cleanup() {
+            Thread.CurrentThread.CurrentCulture = culture;
         }
 
         private void AssertTitleIs(string expected) {
@@ -76,7 +86,7 @@ namespace NakedObjects.SystemTest.Util {
         [TestMethod]
         public void TestAppendFormat() {
             builder.Append(new DateTime(2007, 4, 2), "d", null);
-            AssertTitleIs("02/04/2007");
+            AssertTitleIs("04/02/2007");
         }
 
         [TestMethod]

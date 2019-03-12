@@ -6,6 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Globalization;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NakedObjects.SystemTest.Util {
@@ -13,10 +15,18 @@ namespace NakedObjects.SystemTest.Util {
     [TestClass]
     public class NewTitleBuilderWithNoInitialContentTest {
         private NewTitleBuilder initiallyEmptyBuilder;
+        private CultureInfo culture;
 
         [TestInitialize]
         public void NewBuilder() {
+            culture = Thread.CurrentThread.CurrentCulture;
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             initiallyEmptyBuilder = new NewTitleBuilder();
+        }
+
+        [TestCleanup]
+        public void Cleanup() {
+            Thread.CurrentThread.CurrentCulture = culture;
         }
 
         private void AssertTitleIs(string expected, NewTitleBuilder builder) {
@@ -112,7 +122,7 @@ namespace NakedObjects.SystemTest.Util {
             initiallyEmptyBuilder.Append(34).Format("0000");
             initiallyEmptyBuilder.Separator(" -").Append(date).Format("d");
             //   builder.Default("no date");
-            AssertTitleIs("Order 0034 - 01/04/2007", initiallyEmptyBuilder);
+            AssertTitleIs("Order 0034 - 04/01/2007", initiallyEmptyBuilder);
         }
 
         // truncate
@@ -166,14 +176,14 @@ namespace NakedObjects.SystemTest.Util {
             var customer = new Customer();
             var date = new DateTime(2007, 4, 1);
             initiallyEmptyBuilder.Append(customer).Separator(" - ").Concat(date).Format("d");
-            AssertTitleIs("Harry Smith - 01/04/2007", initiallyEmptyBuilder);
+            AssertTitleIs("Harry Smith - 04/01/2007", initiallyEmptyBuilder);
         }
 
         [TestMethod]
         public void Compound4() {
             var date = new DateTime(2007, 4, 1);
             initiallyEmptyBuilder.Append(null).Separator(" - ").Concat(date).Format("d");
-            AssertTitleIs("01/04/2007", initiallyEmptyBuilder);
+            AssertTitleIs("04/01/2007", initiallyEmptyBuilder);
         }
 
         [TestMethod]
