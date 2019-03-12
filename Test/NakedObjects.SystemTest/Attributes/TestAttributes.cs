@@ -550,20 +550,27 @@ namespace NakedObjects.SystemTest.Attributes {
 
         [TestMethod]
         public virtual void DMaskOnDateProperty() {
-            var mask1 = NewTestObject<Mask1>();
-            var prop1 = mask1.GetPropertyByName("Prop1");
-            prop1.SetValue("23/09/2009 11:34:50");
-            var prop2 = mask1.GetPropertyByName("Prop2");
-            prop2.SetValue("23/09/2009 11:34:50");
-            var dom = (Mask1) mask1.GetDomainObject();
-            Equals("23/09/2009 11:34:50", dom.Prop1.ToString());
-            Equals("23/09/2009 11:34:50", prop1.Content.Title);
-            Equals("23/09/2009 11:34:50", dom.Prop2.ToString());
-            Equals("23/09/2009", prop2.Content.Title);
-            prop1.AssertTitleIsEqual("23/09/2009 11:34:50");
-            prop1.AssertValueIsEqual("23/09/2009 11:34:50");
-            prop2.AssertTitleIsEqual("23/09/2009");
-            prop2.AssertValueIsEqual("23/09/2009 11:34:50");
+            var culture = Thread.CurrentThread.CurrentCulture;
+            try {
+                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+                var mask1 = NewTestObject<Mask1>();
+                var prop1 = mask1.GetPropertyByName("Prop1");
+                prop1.SetValue("09/23/2009 11:34:50");
+                var prop2 = mask1.GetPropertyByName("Prop2");
+                prop2.SetValue("09/23/2009 11:34:50");
+                var dom = (Mask1)mask1.GetDomainObject();
+                Equals("09/23/2009 11:34:50", dom.Prop1.ToString());
+                Equals("09/23/2009 11:34:50", prop1.Content.Title);
+                Equals("09/23/2009 11:34:50", dom.Prop2.ToString());
+                Equals("09/23/2009", prop2.Content.Title);
+                prop1.AssertTitleIsEqual("09/23/2009 11:34:50");
+                prop1.AssertValueIsEqual("09/23/2009 11:34:50");
+                prop2.AssertTitleIsEqual("09/23/2009");
+                prop2.AssertValueIsEqual("09/23/2009 11:34:50");
+            }
+            finally {
+                Thread.CurrentThread.CurrentCulture = culture;
+            }
         }
 
         #endregion
