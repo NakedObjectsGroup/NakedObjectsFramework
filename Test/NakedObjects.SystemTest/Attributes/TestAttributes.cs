@@ -10,8 +10,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using SystemTest.Attributes;
+using AdventureWorksModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects;
 using NakedObjects.Architecture.Spec;
@@ -527,15 +530,22 @@ namespace NakedObjects.SystemTest.Attributes {
 
         [TestMethod]
         public virtual void CMaskOnDecimalProperty() {
-            var mask1 = NewTestObject<Mask2>();
-            var prop1 = mask1.GetPropertyByName("Prop1");
-            prop1.SetValue("32.70");
-            var dom = (Mask2) mask1.GetDomainObject();
-            Equals("32.7", dom.Prop1.ToString());
-            Equals("32.70", prop1.Content.Title);
-            Equals("£32.70", prop1.Title);
-            prop1.AssertTitleIsEqual("£32.70");
-            prop1.AssertValueIsEqual("32.70");
+            var culture = Thread.CurrentThread.CurrentCulture;
+            try {
+                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+                var mask1 = NewTestObject<Mask2>();
+                var prop1 = mask1.GetPropertyByName("Prop1");
+                prop1.SetValue("32.70");
+                var dom = (Mask2)mask1.GetDomainObject();
+                Equals("32.7", dom.Prop1.ToString());
+                Equals("32.70", prop1.Content.Title);
+                Equals("¤32.70", prop1.Title);
+                prop1.AssertTitleIsEqual("¤32.70");
+                prop1.AssertValueIsEqual("32.70");
+            }
+            finally {
+                Thread.CurrentThread.CurrentCulture = culture;
+            }
         }
 
         [TestMethod]
