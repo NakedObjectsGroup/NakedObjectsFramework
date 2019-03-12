@@ -90,7 +90,7 @@
 
   
   <Target Name="SystemTest" DependsOnTargets="BuildTests">
-    <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(TestPath)\NakedObjects.SystemTest\bin\%(Configuration.Identity)\NakedObjects.SystemTest.dll" /resultsfile:$(TestResultsPath)\NakedObjects.SystemTest.trx' />
+    <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(TestPath)\NakedObjects.SystemTest\bin\%(Configuration.Identity)\NakedObjects.SystemTest.dll" /resultsfile:$(TestResultsPath)\NakedObjects.SystemTest.trx' /detail:stdout />
     <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(TestPath)\NakedObjects.Batch.Test\bin\%(Configuration.Identity)\NakedObjects.Batch.Test.dll" /resultsfile:$(TestResultsPath)\NakedObjects.Batch.Test.trx' />
 </Target>
 
