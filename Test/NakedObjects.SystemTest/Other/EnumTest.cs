@@ -48,7 +48,7 @@ namespace NakedObjects.SystemTest.Enum {
         public virtual void EnumPropertyWithDefault() {
             ITestObject foo = NewTestObject<Foo>();
             //Property with no default
-            foo.GetPropertyByName("Sex1").AssertValueIsEqual("0");
+            foo.GetPropertyByName("Sex1").AssertValueIsEqual("Male");
             //Property with default
             foo.GetPropertyByName("Sex2").AssertValueIsEqual("Unknown");
         }
@@ -57,7 +57,7 @@ namespace NakedObjects.SystemTest.Enum {
         public virtual void EnumPropertyWithChoices() {
             ITestObject foo = NewTestObject<Foo>();
 
-            ITestProperty sex1 = foo.GetPropertyByName("Sex3").AssertValueIsEqual("0");
+            ITestProperty sex1 = foo.GetPropertyByName("Sex3").AssertValueIsEqual("Male");
             ITestNaked[] values = sex1.GetChoices();
             Assert.AreEqual(2, values.Count());
             Assert.AreEqual("Male", values.ElementAt(0).NakedObject.TitleString());

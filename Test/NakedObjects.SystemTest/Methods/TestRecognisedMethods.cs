@@ -310,72 +310,14 @@ namespace NakedObjects.SystemTest.Method {
 
         #region Clear
 
-        private void SetupForClearTests(out ITestProperty prop0, out ITestProperty prop1) {
-            ITestObject obj = NewTestObject<Clear1>();
-            prop0 = obj.GetPropertyByName("Prop0");
-            prop1 = obj.GetPropertyByName("Prop1");
-
-            prop0.AssertIsEmpty();
-            prop1.AssertIsEmpty();
-
-            prop1.SetValue("Foo");
-            prop1.AssertValueIsEqual("Foo");
-            prop0.AssertIsEmpty();
-        }
-
-        private static void CheckForClearTests(ITestProperty prop0, ITestProperty prop1) {
-            prop1.AssertIsEmpty();
-            prop0.AssertValueIsEqual("Prop1 has been cleared");
-        }
-
+        // Note Clear Prefix has been removed as a recognised prefix for complementary actions 
         [TestMethod]
-        public void ClearMethodDoesNotShowUpAsAnAction() {
+        public void ClearMethodDoesShowUpAsAnAction() {
             ITestObject obj1 = NewTestObject<Clear1>();
-            try {
-                obj1.GetAction("Clear Prop1");
-                Assert.Fail();
-            }
-            catch (Exception e) {
-                Assert.AreEqual("Assert.Fail failed. No Action named 'Clear Prop1'", e.Message);
-            }
+            var action = obj1.GetAction("Clear Prop1");
+            action.AssertHasFriendlyName("Clear Prop1");
         }
 
-        [TestMethod]
-        public void ClearMethodOnReferenceProperty() {
-            ITestObject obj3 = NewTestObject<Clear3>();
-            obj3.GetPropertyByName("Prop1").SetValue("Foo");
-            obj3.Save();
-
-            ITestObject obj1 = NewTestObject<Clear1>();
-            ITestProperty prop3 = obj1.GetPropertyByName("Prop3");
-            ITestProperty prop4 = obj1.GetPropertyByName("Prop4");
-
-            prop3.AssertIsEmpty();
-            prop4.AssertIsEmpty();
-
-            prop4.SetObject(obj3);
-            prop4.AssertObjectIsEqual(obj3);
-            prop3.AssertIsEmpty();
-
-            prop4.ClearObject();
-            prop3.AssertValueIsEqual("Prop4 has been cleared");
-        }
-
-        [TestMethod]
-        public void ClearMethodOnValueProperty() {
-            ITestProperty prop0, prop1;
-            SetupForClearTests(out prop0, out prop1);
-            prop1.ClearValue();
-            CheckForClearTests(prop0, prop1);
-        }
-
-        [TestMethod]
-        public void SetToEmptyStringOnValueProperty() {
-            ITestProperty prop0, prop1;
-            SetupForClearTests(out prop0, out prop1);
-            prop1.SetValue("");
-            CheckForClearTests(prop0, prop1);
-        }
 
         [TestMethod]
         public void UnmatchedClearMethodShowsUpAsAnAction() {
@@ -958,42 +900,6 @@ namespace NakedObjects.SystemTest.Method {
             prop1.ClearValue();
             prop1.AssertIsEmpty();
             prop0.AssertValueIsEqual("Prop1 has been modified");
-        }
-
-        [TestMethod]
-        public void NotCalledWhenReferencePropertyClearedIfClear() {
-            ITestObject obj3 = NewTestObject<Modify3>();
-            obj3.GetPropertyByName("Prop1").SetValue("Foo");
-            obj3.Save();
-
-            ITestObject obj1 = NewTestObject<Modify4>();
-            ITestProperty prop3 = obj1.GetPropertyByName("Prop3");
-            ITestProperty prop4 = obj1.GetPropertyByName("Prop4");
-
-            prop3.AssertIsEmpty();
-            prop4.AssertIsEmpty();
-
-            prop4.SetObject(obj3);
-            prop4.AssertObjectIsEqual(obj3);
-            prop3.SetValue("Neutral");
-
-            prop4.ClearObject();
-            prop4.AssertIsEmpty();
-            prop3.AssertValueIsEqual("Neutral");
-        }
-
-        [TestMethod]
-        public void NotCalledWhenValuePropertyIsClearedIfClear() {
-            ITestObject obj = NewTestObject<Modify4>();
-            ITestProperty prop0 = obj.GetPropertyByName("Prop0");
-            ITestProperty prop1 = obj.GetPropertyByName("Prop1");
-
-            prop1.SetValue("Foo");
-            prop0.SetValue("Foo");
-
-            prop1.ClearValue();
-            prop1.AssertIsEmpty();
-            prop0.AssertValueIsEqual("Foo");
         }
 
         [TestMethod]

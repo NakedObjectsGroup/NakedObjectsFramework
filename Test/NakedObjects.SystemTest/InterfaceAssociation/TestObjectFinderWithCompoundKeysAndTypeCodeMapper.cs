@@ -34,6 +34,15 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
             }
         }
 
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc) {
+            Database.Delete(PaymentContext.DatabaseName);
+            var context = Activator.CreateInstance<PaymentContext>();
+
+            context.Database.Create();
+            ObjectFinderCompoundKeys.DatabaseInitializer.Seed(context);
+        }
+
         [ClassCleanup]
         public static void TearDownTest() {
             CleanupNakedObjectsFramework(new TestObjectFinderWithCompoundKeysAndTypeCodeMapper());
