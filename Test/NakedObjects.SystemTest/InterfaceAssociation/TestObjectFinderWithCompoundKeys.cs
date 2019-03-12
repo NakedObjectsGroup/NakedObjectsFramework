@@ -7,6 +7,8 @@
 
 using System;
 using System.Data.Entity;
+using System.Globalization;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Services;
 
@@ -70,14 +72,21 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
 
         [TestMethod]
         public virtual void WorksWithADateTimeKey() {
-            payee1.SetObject(customer4);
-            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerFour|1|16/01/2015 00:00:00");
-            payee1.AssertObjectIsEqual(customer4);
-            payee1.ClearObject();
+            var culture = Thread.CurrentThread.CurrentCulture;
+            try {
+                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+                payee1.SetObject(customer4);
+                key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerFour|1|01/16/2015 00:00:00");
+                payee1.AssertObjectIsEqual(customer4);
+                payee1.ClearObject();
 
-            key1.SetValue("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerFour|1|17/01/2015 00:00:00");
-            payee1.AssertIsNotEmpty();
-            payee1.AssertObjectIsEqual(customer4a);
+                key1.SetValue("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerFour|1|01/17/2015 00:00:00");
+                payee1.AssertIsNotEmpty();
+                payee1.AssertObjectIsEqual(customer4a);
+            }
+            finally {
+                Thread.CurrentThread.CurrentCulture = culture;
+            }
         }
 
         [TestMethod]
