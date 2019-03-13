@@ -279,6 +279,9 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
                                 TProperty
                                     ("ADateTimeValue", 
                                      TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("2012-02-10")) ]))
+                                TProperty
+                                    ("ATimeSpanValue", 
+                                     TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("02:03:04")) ]))
                                 TProperty("ADisabledValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(103)) ]))
                                 TProperty("AHiddenValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(105)) ]))
                                 TProperty("AStringValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("one hundred four")) ]))
@@ -287,10 +290,26 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
                                 TProperty("AValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(102)) ]))
                                 TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ])) ])
 
+    let argsObj1 = TObjectJson([ TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(3)) ]))
+                                 TProperty("AConditionalChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(3)) ]))
+                                
+                                 TProperty
+                                    ("ADateTimeValue", 
+                                     TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(new DateTime(2012, 2, 10))) ]))
+                                 TProperty
+                                    ("ATimeSpanValue", 
+                                     TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("02:03:04")) ]))
+                                 TProperty("ADisabledValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(103)) ]))
+                                 TProperty("AHiddenValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(105)) ]))
+                                 TProperty("AStringValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("one hundred four")) ]))
+                                 TProperty("AUserDisabledValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ]))
+                                 TProperty("AUserHiddenValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ]))
+                                 TProperty("AValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(102)) ]))
+                                 TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ])) ])
 
     let argsMembers = TProperty(JsonPropertyNames.Members, argsObj )
 
-    let promptArgsMembers = TProperty(JsonPropertyNames.PromptMembers, argsObj )
+    let promptArgsMembers = TProperty(JsonPropertyNames.PromptMembers, argsObj1 )
     
     let args = TProperty(JsonPropertyNames.Arguments, TObjectJson([ argsMembers ]))
     
@@ -396,6 +415,33 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
                                                                                          TProperty
                                                                                              (JsonPropertyNames.FriendlyName, TObjectVal("A Date Time Value"))
                                                                                          TProperty(JsonPropertyNames.MemberOrder, TObjectVal(4))
+                                                                                         TProperty(JsonPropertyNames.CustomMask, TObjectVal("d"))
+                                                                                         TProperty(JsonPropertyNames.Optional, TObjectVal(true)) ])) ]))
+                                         TProperty("ATimeSpanValue", 
+                                                   TObjectJson([ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Property))
+                                                                 TProperty(JsonPropertyNames.Id, TObjectVal("ATimeSpanValue"))
+                                                                 
+                                                                 TProperty
+                                                                     (JsonPropertyNames.Value,    TObjectVal("02:03:04"))
+                                                                 TProperty(JsonPropertyNames.HasChoices, TObjectVal(false))
+                                                                 
+                                                                 TProperty
+                                                                     (JsonPropertyNames.Links, 
+                                                                      
+                                                                      TArray
+                                                                          ([  ]))
+                                                                 TProperty(JsonPropertyNames.Extensions, 
+                                                                           TObjectJson([ TProperty
+                                                                                             (JsonPropertyNames.Description, 
+                                                                                              TObjectVal("A timespan value for testing"))
+                                                                                         TProperty(JsonPropertyNames.ReturnType, TObjectVal("string"))
+                                                                                         TProperty(JsonPropertyNames.MaxLength, TObjectVal(0))
+                                                                                         TProperty(JsonPropertyNames.Pattern, TObjectVal(""))
+                                                                                         TProperty(JsonPropertyNames.Format, TObjectVal("time"))
+                                                                                         
+                                                                                         TProperty
+                                                                                             (JsonPropertyNames.FriendlyName, TObjectVal("A Time Span Value"))
+                                                                                         TProperty(JsonPropertyNames.MemberOrder, TObjectVal(5))
                                                                                          TProperty(JsonPropertyNames.CustomMask, TObjectVal("d"))
                                                                                          TProperty(JsonPropertyNames.Optional, TObjectVal(true)) ])) ]))
                                          TProperty("ADisabledValue", 
@@ -507,7 +553,7 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("With Values"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                               TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class1 class2"))
-                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
+                                              //TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false))
                                               TProperty(JsonPropertyNames.InteractionMode, TObjectVal("transient")) ])) ])
     

@@ -208,7 +208,6 @@ type CNof4TestsDomainType() =
             Objects9.PersistMostSimpleTransientObjectValidateOnly x.api
         
         [<Test>]
-        [<Ignore("why?")>]
         member x.GetWithValueTransientObject() = Objects9.GetWithValueTransientObject x.api
         
         [<Test>]
