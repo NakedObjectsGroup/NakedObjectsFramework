@@ -220,11 +220,9 @@ type CNof4TestsDomainType() =
         
         // remove these just because the ids get changed. The tests have already been run once if uncomment and run 
         // on their own should pass - only fail because previous run changes ids.
-        // [<Test>]
-        // member x.PersistWithValueTransientObject() = Objects9.PersistWithValueTransientObject x.api
-        // 
-        // [<Test>]
-        // member x.PersistWithValueTransientObjectFormalOnly() = Objects9.PersistWithValueTransientObjectFormalOnly x.api
+        [<Test>]
+        member x.PersistWithValueTransientObject() = Objects9.PersistWithValueTransientObject x.api
+        
         [<Test>]        
         member x.PersistWithReferenceTransientObject() = Objects9.PersistWithReferenceTransientObject x.api
         
