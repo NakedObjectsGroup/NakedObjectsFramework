@@ -76,6 +76,9 @@ type CNof4TestsDomainType() =
                    typeof<WithNestedViewModel>
                    typeof<WithReference>
                    typeof<WithReferenceViewModel>
+                   typeof<WithValueViewModelEdit>
+                   typeof<WithNestedViewModelEdit>
+                   typeof<WithReferenceViewModelEdit>
                    typeof<MostSimple>
                    typeof<MostSimpleViewModel>
                    typeof<WithValue>
@@ -559,15 +562,12 @@ type CNof4TestsDomainType() =
         member x.GetWithNestedViewModel() = DomainObject14.GetWithNestedViewModel x.api
         
         [<Test>]
-        [<Ignore("why?")>]
         member x.PutWithReferenceViewModel() = DomainObject14.PutWithReferenceViewModel x.api
         
         [<Test>]
-        [<Ignore("why?")>]
         member x.PutWithNestedViewModel() = DomainObject14.PutWithNestedViewModel x.api
         
         [<Test>]
-        [<Ignore("why?")>]
         member x.PutWithValueViewModel() = DomainObject14.PutWithValueViewModel x.api
         
         [<Test>]

@@ -60,6 +60,8 @@ type ANof4Tests() =
                    typeof<WithCollectionViewModel>
                    typeof<WithValueViewModel>
                    typeof<WithNestedViewModel>
+                   typeof<WithValueViewModelEdit>
+                   typeof<WithNestedViewModelEdit>
                    typeof<RedirectedObject>
                    typeof<WithScalars>
                    typeof<VerySimple>
@@ -75,6 +77,7 @@ type ANof4Tests() =
                    typeof<WithNestedViewModel>
                    typeof<WithReference>
                    typeof<WithReferenceViewModel>
+                   typeof<WithReferenceViewModelEdit>
                    typeof<MostSimple>
                    typeof<MostSimpleViewModel>
                    typeof<WithValue>
@@ -549,15 +552,12 @@ type ANof4Tests() =
         member x.GetWithNestedViewModel() = DomainObject14.GetWithNestedViewModel x.api
         
         [<Test>]
-        [<Ignore("why?")>]
         member x.PutWithReferenceViewModel() = DomainObject14.PutWithReferenceViewModel x.api
         
         [<Test>]
-        [<Ignore("why?")>]
         member x.PutWithNestedViewModel() = DomainObject14.PutWithNestedViewModel x.api
         
         [<Test>]
-        [<Ignore("why?")>]
         member x.PutWithValueViewModel() = DomainObject14.PutWithValueViewModel x.api
         
         [<Test>]

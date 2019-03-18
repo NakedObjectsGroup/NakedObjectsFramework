@@ -75,6 +75,9 @@ type DNof4TestsDomainTypeConcurrency() =
                    typeof<WithNestedViewModel>
                    typeof<WithReference>
                    typeof<WithReferenceViewModel>
+                   typeof<WithValueViewModelEdit>
+                   typeof<WithNestedViewModelEdit>
+                   typeof<WithReferenceViewModelEdit>
                    typeof<MostSimple>
                    typeof<MostSimpleViewModel>
                    typeof<WithValue>

@@ -3672,7 +3672,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
     compareObject expected parsedResult
 
 let PutWithReferenceViewModel(api : RestfulObjectsControllerBase) = 
-    let oType = ttc "RestfulObjects.Test.Data.WithReferenceViewModel"
+    let oType = ttc "RestfulObjects.Test.Data.WithReferenceViewModelEdit"
     let oid = oType + "/" + ktc "1--1--1--1"
     let rOid = oType + "/" + ktc "2--1--1--2"
     let url = sprintf "http://localhost/objects/%s" oid
@@ -3770,7 +3770,7 @@ let PutWithReferenceViewModel(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(sb(oType)); TObjectJson(sp(oType))
-                             TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" rOid) RepresentationTypes.Object oType) ]))
+                              ]))
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ TProperty
                                       ("AChoicesReference", 
@@ -3798,10 +3798,10 @@ let PutWithReferenceViewModel(api : RestfulObjectsControllerBase) =
                                   TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" rOid "Id" (TObjectVal(1)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-                                  TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Reference View Model"))
-                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("With Reference View Models"))
+                                  TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Reference View Model Edit"))
+                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("With Reference View Model Edits"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
-                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("form"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
@@ -3811,7 +3811,7 @@ let PutWithReferenceViewModel(api : RestfulObjectsControllerBase) =
     compareObject expected parsedResult
 
 let PutWithNestedViewModel(api : RestfulObjectsControllerBase) = 
-    let oType = ttc "RestfulObjects.Test.Data.WithNestedViewModel"
+    let oType = ttc "RestfulObjects.Test.Data.WithNestedViewModelEdit"
     let oid = oType + "/" + ktc "1--1--1--1--1"
     let rOid = oType + "/" + ktc "2--2--1--1--2"
     let url = sprintf "http://localhost/objects/%s" oid
@@ -3863,10 +3863,10 @@ let PutWithNestedViewModel(api : RestfulObjectsControllerBase) =
                                   TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" rOid "Id" (TObjectVal(1)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-                                  TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Nested View Model"))
-                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("With Nested View Models"))
+                                  TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Nested View Model Edit"))
+                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("With Nested View Model Edits"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
-                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("form"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
@@ -3876,10 +3876,11 @@ let PutWithNestedViewModel(api : RestfulObjectsControllerBase) =
     compareObject expected parsedResult
 
 let PutWithValueViewModel(api : RestfulObjectsControllerBase) = 
-    let oType = ttc "RestfulObjects.Test.Data.WithValueViewModel"
+    let oType = ttc "RestfulObjects.Test.Data.WithValueViewModelEdit"
     let ticks = (new DateTime(2012, 2, 10)).Ticks.ToString()
-    let key = ktc ("1--100--200--4--0----" + ticks + "--8--0")
-    let rKey = ktc ("1--222--200--4--333----" + ticks + "--8--0")
+    let ticksTs = (new TimeSpan(2, 3, 4)).Ticks.ToString()
+    let key = ktc ("1--100--200--4--0----" + ticks + "--" + ticksTs + "--0--2")
+    let rKey = ktc ("1--222--200--4--333----" + ticks + "--" + ticksTs + "--0--2")
     let oid = oType + "/" + key
     let rOid = oType + "/" + rKey
     let url = sprintf "http://localhost/objects/%s" oid
@@ -3910,7 +3911,7 @@ let PutWithValueViewModel(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(sb(oType)); TObjectJson(sp(oType))
-                             TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" rOid) RepresentationTypes.Object oType) ]))
+                              ]))
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ TProperty("AChoicesValue", TObjectJson(makeObjectPropertyMember "AChoicesValue" rOid "A Choices Value" (TObjectVal(333))))
                                   
@@ -3920,6 +3921,14 @@ let PutWithValueViewModel(api : RestfulObjectsControllerBase) =
                                        TObjectJson
                                            (makePropertyMemberDateTime "objects" "ADateTimeValue" rOid "A Date Time Value" "A datetime value for testing" true 
                                                 (TObjectVal("2012-02-10")) "date"))
+
+                                  TProperty
+                                      ("ATimeSpanValue", 
+                                       
+                                       TObjectJson
+                                           (makePropertyMemberTimeSpan "objects" "ATimeSpanValue" rOid "A Time Span Value" "A timespan value for testing" true 
+                                                (TObjectVal("02:03:04")) "time"))
+
                                   TProperty("ADisabledValue", TObjectJson(disabledValue))
                                   
                                   TProperty
@@ -3934,15 +3943,15 @@ let PutWithValueViewModel(api : RestfulObjectsControllerBase) =
                                        
                                        TObjectJson
                                            (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Not authorized to edit")) 
-                                            :: makeObjectPropertyMember "AUserDisabledValue" rOid "A User Disabled Value" (TObjectVal(0))))
+                                            :: makeObjectPropertyMember "AUserDisabledValue" rOid "A User Disabled Value" (TObjectVal(2))))
                                   TProperty("AValue", TObjectJson(makeObjectPropertyMember "AValue" rOid "A Value" (TObjectVal(222))))
                                   TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" rOid "Id" (TObjectVal(1)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-                                  TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Value View Model"))
-                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("With Value View Models"))
+                                  TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Value View Model Edit"))
+                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("With Value View Model Edits"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
-                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("form"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
