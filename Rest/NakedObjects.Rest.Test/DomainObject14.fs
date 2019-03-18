@@ -3671,7 +3671,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
     //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
-let PutWithReferenceViewModel(api : RestfulObjectsControllerBase) = 
+let PutWithReferenceViewModelEdit(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithReferenceViewModelEdit"
     let oid = oType + "/" + ktc "1--1--1--1"
     let rOid = oType + "/" + ktc "2--1--1--2"
@@ -3810,7 +3810,7 @@ let PutWithReferenceViewModel(api : RestfulObjectsControllerBase) =
     //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
-let PutWithNestedViewModel(api : RestfulObjectsControllerBase) = 
+let PutWithNestedViewModelEdit(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithNestedViewModelEdit"
     let oid = oType + "/" + ktc "1--1--1--1--1"
     let rOid = oType + "/" + ktc "2--2--1--1--2"
@@ -3875,7 +3875,7 @@ let PutWithNestedViewModel(api : RestfulObjectsControllerBase) =
     //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
-let PutWithValueViewModel(api : RestfulObjectsControllerBase) = 
+let PutWithValueViewModelEdit(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithValueViewModelEdit"
     let ticks = (new DateTime(2012, 2, 10)).Ticks.ToString()
     let ticksTs = (new TimeSpan(2, 3, 4)).Ticks.ToString()
@@ -3959,6 +3959,69 @@ let PutWithValueViewModel(api : RestfulObjectsControllerBase) =
     assertTransactionalCache result
     //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
+
+let PutWithReferenceViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithReferenceViewModel"
+    let oid = oType + "/" + ktc "1--1--1--1"
+    let rOid = oType + "/" + ktc "2--1--1--2"
+    let url = sprintf "http://localhost/objects/%s" oid
+    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
+    let rooid = roType + "/" + ktc "2"
+    let pid = "AnEagerReference"
+    let ourl = sprintf "objects/%s" rOid
+    let purl = sprintf "%s/properties/%s" ourl pid
+    let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "2")))).ToString()))
+    let props = 
+        new JObject(new JProperty("AReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))), 
+                    new JProperty("AnEagerReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))), 
+                    new JProperty("AChoicesReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))))
+    let args = CreateArgMap props
+    api.Request <- jsonPutMsg url (props.ToString())
+    let result = api.PutObject(oType, ktc "1--1--1--1", args)
+    let jsonResult = readSnapshotToJson result
+    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
+    Assert.AreEqual("199 RestfulObjects \"Field disabled as object cannot be changed\", 199 RestfulObjects \"Field disabled as object cannot be changed\", 199 RestfulObjects \"Field disabled as object cannot be changed\"", result.Headers.Warning.ToString())
+    Assert.AreEqual("", jsonResult)
+
+let PutWithNestedViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithNestedViewModel"
+    let oid = oType + "/" + ktc "1--1--1--1--1"
+    let rOid = oType + "/" + ktc "2--2--1--1--2"
+    let url = sprintf "http://localhost/objects/%s" oid
+    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
+    let roType1 = ttc "RestfulObjects.Test.Data.WithReferenceViewModel"
+    let ref1 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "2")))).ToString()))
+    let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType1 (ktc "2--1--1--2")))).ToString()))
+    let props = 
+        new JObject(new JProperty("AReference", new JObject(new JProperty(JsonPropertyNames.Value, ref1))), 
+                    new JProperty("AViewModelReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))))
+    let args = CreateArgMap props
+    api.Request <- jsonPutMsg url (props.ToString())
+    let result = api.PutObject(oType, ktc "1--1--1--1--1", args)
+    let jsonResult = readSnapshotToJson result
+    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
+    Assert.AreEqual("199 RestfulObjects \"Field disabled as object cannot be changed\", 199 RestfulObjects \"Field disabled as object cannot be changed\"", result.Headers.Warning.ToString())
+    Assert.AreEqual("", jsonResult)
+
+let PutWithValueViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithValueViewModel"
+    let ticks = (new DateTime(2012, 2, 10)).Ticks.ToString()
+    let ticksTs = (new TimeSpan(2, 3, 4)).Ticks.ToString()
+    let key = ktc ("1--100--200--4--0----" + ticks + "--" + ticksTs + "--0--2")
+    let rKey = ktc ("1--222--200--4--333----" + ticks + "--" + ticksTs + "--0--2")
+    let oid = oType + "/" + key
+    let rOid = oType + "/" + rKey
+    let url = sprintf "http://localhost/objects/%s" oid
+    let props = 
+        new JObject(new JProperty("AValue", new JObject(new JProperty(JsonPropertyNames.Value, 222))), 
+                    new JProperty("AChoicesValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))))
+    let args = CreateArgMap props
+    api.Request <- jsonPutMsg url (props.ToString())
+    let result = api.PutObject(oType, key, args)
+    let jsonResult = readSnapshotToJson result
+    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
+    Assert.AreEqual("199 RestfulObjects \"Field disabled as object cannot be changed\", 199 RestfulObjects \"Field disabled as object cannot be changed\"", result.Headers.Warning.ToString())
+    Assert.AreEqual("", jsonResult)
 
 // 400    
 let InvalidGetObject(api : RestfulObjectsControllerBase) = 

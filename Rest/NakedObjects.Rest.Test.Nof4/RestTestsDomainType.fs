@@ -569,6 +569,15 @@ type CNof4TestsDomainType() =
         
         [<Test>]
         member x.PutWithValueViewModel() = DomainObject14.PutWithValueViewModel x.api
+
+        [<Test>]
+        member x.PutWithReferenceViewModelEdit() = DomainObject14.PutWithReferenceViewModelEdit x.api
+        
+        [<Test>]
+        member x.PutWithNestedViewModelEdit() = DomainObject14.PutWithNestedViewModelEdit x.api
+        
+        [<Test>]
+        member x.PutWithValueViewModelEdit() = DomainObject14.PutWithValueViewModelEdit x.api
         
         [<Test>]
         member x.GetService() = DomainService15.GetService x.api
