@@ -936,6 +936,7 @@ let PersistWithValueTransientObject(api : RestfulObjectsControllerBase) =
                   TObjectJson([ TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AConditionalChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("ADateTimeValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("ATimeSpanValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AStringValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
@@ -961,6 +962,14 @@ let PersistWithValueTransientObject(api : RestfulObjectsControllerBase) =
                                        TObjectJson
                                            (makePropertyMemberDateTime "objects" "ADateTimeValue" oid "A Date Time Value" "A datetime value for testing" true 
                                                 (TObjectVal("2012-02-10")) "date"))
+
+                                  TProperty
+                                      ("ATimeSpanValue", 
+                                       
+                                       TObjectJson
+                                           (makePropertyMemberTimeSpan "objects" "ATimeSpanValue" oid "A Time Span Value" "A timespan value for testing" true 
+                                                (TObjectVal("02:03:04")) "time"))
+
                                   TProperty("ADisabledValue", TObjectJson(disabledValue))
                                   
                                   TProperty

@@ -212,11 +212,10 @@ type ANof4Tests() =
         [<Test>]
         member x.GetWithCollectionTransientObject() = Objects9.GetWithCollectionTransientObject x.api
         
-        //        [<Test>]
-        //        [<Ignore>] // temp ignore untill fix persist id
-        //        member x.PersistWithValueTransientObject() = Objects9.PersistWithValueTransientObject x.api
         [<Test>]
-        [<Ignore("until fix persist id")>] // temp ignore untill fix persist id
+        member x.PersistWithValueTransientObject() = Objects9.PersistWithValueTransientObject x.api
+
+        [<Test>]
         member x.PersistWithReferenceTransientObject() = Objects9.PersistWithReferenceTransientObject x.api
         
         [<Test>]
@@ -600,7 +599,6 @@ type ANof4Tests() =
         member x.GetMenuWithMediaType() = DomainMenu15.GetMenuWithMediaType x.api
         
         [<Test>]
-        //[<Ignore>]
         member x.GetWithActionMenu() = DomainMenu15.GetWithActionMenu x.api
         
         [<Test>]
@@ -615,8 +613,6 @@ type ANof4Tests() =
         [<Test>]
         member x.GetValueProperty() = ObjectProperty16.GetValueProperty x.api
         
-      
-
         [<Test>]
         member x.GetRepeatedValueProperty() = ObjectProperty16.GetRepeatedValueProperty x.api
         

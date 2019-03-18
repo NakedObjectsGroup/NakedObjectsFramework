@@ -202,7 +202,6 @@ type CNof4TestsDomainType() =
         member x.PersistMostSimpleTransientObject() = Objects9.PersistMostSimpleTransientObject x.api
         
         [<Test>]
-        [<Ignore("until fix persist id")>]
          member x.PersistMostSimpleTransientObjectSimpleOnly() = 
             Objects9.PersistMostSimpleTransientObjectSimpleOnly x.api
         
@@ -603,7 +602,6 @@ type CNof4TestsDomainType() =
         [<Test>]
         member x.NotAcceptableGetServiceWrongMediaType() = DomainService15.NotAcceptableGetServiceWrongMediaType x.api
         
-        //
         [<Test>]
         member x.GetMenu() = DomainMenu15.GetMenu x.api
         
@@ -617,7 +615,6 @@ type CNof4TestsDomainType() =
         member x.GetMenuWithMediaType() = DomainMenu15.GetMenuWithMediaType x.api
         
         [<Test>]
-        //[<Ignore>]
         member x.GetWithActionMenu() = DomainMenu15.GetWithActionMenu x.api
         
         [<Test>]
@@ -629,11 +626,8 @@ type CNof4TestsDomainType() =
         [<Test>]
         member x.NotAcceptableGetMenuWrongMediaType() = DomainMenu15.NotAcceptableGetMenuWrongMediaType x.api
         
-        //f
         [<Test>]
         member x.GetValueProperty() = ObjectProperty16.GetValueProperty x.api
-
-      
         
         [<Test>]
         member x.GetFileAttachmentProperty() = ObjectProperty16.GetFileAttachmentProperty x.api
