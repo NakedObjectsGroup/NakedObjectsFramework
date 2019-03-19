@@ -29,7 +29,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             get { return facetFactory; }
         }
         [TestMethod]
-        [Ignore]
         public void TestImmutableAnnotationPickedUpOnClassAndDefaultsToAlways() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
@@ -43,7 +42,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             Assert.IsNotNull(metamodel);
         }
         [TestMethod]
-        [Ignore]
         public void TestImmutableAnnotationAlwaysPickedUpOnClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
@@ -58,7 +56,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         [TestMethod]
-        [Ignore]
         public void TestImmutableAnnotationNeverPickedUpOnClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 

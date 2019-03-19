@@ -47,35 +47,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         [TestMethod]
-        public void TestNakedObjectsTypeReflectOverAll() {
-            facetFactory.Process(Reflector, typeof(Customer2), MethodRemover, Specification);
-            AssertRemovedCalled(0);
-        }
-
-        [TestMethod, Ignore] //Pending re-instatement of NakedObjectsType & Include attributes (PM 7.2)
-        public void TestNakedObjectsTypeReflectOverTypeOnly() {
-            facetFactory.Process(Reflector, typeof(Customer3), MethodRemover, Specification);
-            AssertRemovedCalled(7); //That's 3 from the class, and 4 inherited from objec (e.g. ToString())
-        }
-
-        [TestMethod, Ignore] //Pending re-instatement of NakedObjectsType & Include attributes (PM 7.2)
-        public void TestNakedObjectsTypeReflectOverNone() {
-            try {
-                facetFactory.Process(Reflector, typeof(Customer4), MethodRemover, Specification);
-                Assert.Fail("Shouldn't get to here!");
-            } catch (Exception e) {
-                Assert.AreEqual("Attempting to introspect a class that has been marked with NakedObjectsType with ReflectOver.None", e.Message);
-            }
-
-        }
-
-        [TestMethod,Ignore] //Pending re-instatement of NakedObjectsType & Include attributes (PM 7.2)
-        public void TestNakedObjectsTypeReflectOverExplicitlyIncludedMembersOnly() {
-            facetFactory.Process(Reflector, typeof(Customer5), MethodRemover, Specification);
-            AssertRemovedCalled(6); //That's 2 from the class, and 4 inherited from objec (e.g. ToString())
-        }
-
-        [TestMethod]
         public override void TestFeatureTypes() {
             FeatureType featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
@@ -95,48 +66,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             public void Method1() { }
 
             [NakedObjectsIgnore]
-            public void Method2() { }
-
-            public void Method3() { }
-        }
-
-       // [NakedObjectsType(ReflectOver.All)]
-        private class Customer2 {
-
-            public void Method1() { }
-
-            public void Method2() { }
-
-            public void Method3() { }
-        }
-
-        //[NakedObjectsType(ReflectOver.TypeOnlyNoMembers)]
-        private class Customer3 {
-
-            [NakedObjectsIgnore] //Irrelevant!
-            public void Method1() { }
-
-            public void Method2() { }
-
-            public void Method3() { }
-        }
-
-        //[NakedObjectsType(ReflectOver.None)]
-        private class Customer4 {
-
-            public void Method1() { }
-
-            public void Method2() { }
-
-            public void Method3() { }
-        }
-
-        //[NakedObjectsType(ReflectOver.ExplicitlyIncludedMembersOnly)]
-        private class Customer5 {
-
-            public void Method1() { }
-
-           // [NakedObjectsInclude]
             public void Method2() { }
 
             public void Method3() { }
