@@ -391,20 +391,94 @@ namespace NakedObjects.ParallelReflect.Test {
         }
 
         [TestMethod]
-        [Ignore] // todo fix
         public void ReflectWithScalars() {
             IUnityContainer container = GetContainer();
             ReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {typeof(WithScalars)}, new Type[] { }, new[] {"System"});
+            var rc = new ReflectorConfiguration(new[] { typeof(WithScalars) }, new Type[] { }, new[] { "System" });
             rc.SupportedSystemTypes.Clear();
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-
             var specs = reflector.AllObjectSpecImmutables;
             Assert.AreEqual(74, specs.Length);
+
+
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IComparable<System.Decimal>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.Int16), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.Collections.IList), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.UInt32), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IComparable<System.String>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IEquatable<System.Int64>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IEquatable<System.Int32>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.Decimal), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.Int32), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IComparable<System.Byte>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IConvertible), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IEquatable<System.Byte>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.Object), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IEquatable<System.DateTime>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IEquatable<System.Single>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IComparable<System.Boolean>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IComparable<System.Char>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IComparable<System.Single>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IEquatable<System.Boolean>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.Byte[]), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.DateTimeKind), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.Array), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.Char), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.ValueType), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IComparable<System.TimeSpan>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.DayOfWeek), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IEquatable<System.UInt16>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IComparable<System.Int64>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.Int64), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.DateTime), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.Collections.IStructuralComparable), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IComparable<System.DateTime>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.UInt64), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.Enum), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.SByte[]), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IComparable<System.SByte>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(NakedObjects.ParallelReflect.Test.ReflectorTest.WithScalars), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IComparable), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.Collections.ICollection), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.Boolean), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IComparable<System.Double>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IEquatable<System.Decimal>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IComparable<System.UInt16>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IEquatable<System.UInt32>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.ICloneable), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IEquatable<System.Int16>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.TimeSpan), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IEquatable<System.String>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.Collections.Generic.IList<>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.Byte), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IEquatable<System.Char>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.Char[]), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IComparable<System.UInt32>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.Single), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IFormattable), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.Runtime.Serialization.ISerializable), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IComparable<System.Int32>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.SByte), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IEquatable<System.SByte>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.String), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.Collections.Generic.IReadOnlyList<>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.Collections.Generic.IReadOnlyCollection<>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.Collections.IStructuralEquatable), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.Collections.Generic.ICollection<>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IComparable<System.UInt64>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IEquatable<System.TimeSpan>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.UInt16), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IEquatable<System.UInt64>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.Collections.Generic.IEnumerable<>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IComparable<System.Int16>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.Runtime.Serialization.IDeserializationCallback), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.Collections.IEnumerable), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(System.IEquatable<System.Double>), specs);
+
         }
 
         [TestMethod]

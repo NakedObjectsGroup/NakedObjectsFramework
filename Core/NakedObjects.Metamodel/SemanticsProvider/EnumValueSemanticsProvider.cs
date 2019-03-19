@@ -39,13 +39,21 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #endregion
 
+
+        private static bool IsEnumSubtype() {
+            return TypeUtils.IsEnum(AdaptedType) && !(AdaptedType == typeof(Enum));
+        }
+
         private static T GetDefault() {
             // default(T) for an enum just returns 0 - but that's 
             // not necessarily a valid value for the enum - and that breaks serialization
             // return the first value. 
-            var values = Enum.GetValues(AdaptedType);
-            if (values.Length > 0) {
-                return (T) values.GetValue(0);
+            // Value could be an EnumDataType rather than Enum - so check first
+            if (IsEnumSubtype()) {
+                var values = Enum.GetValues(AdaptedType);
+                if (values.Length > 0) {
+                    return (T)values.GetValue(0);
+                }
             }
 
             return default(T);
