@@ -8,10 +8,9 @@ namespace RestfulObjects.Test.EndToEnd {
     [TestClass]
     public class DomainTypeCollectionTests {
         private const string dtc = Urls.DomainTypes + Urls.NameSpace + @"WithCollection/collections/AnEmptyCollection";
-        [Ignore]
         [TestMethod]
         public void DomainTypeCollection() {
-            Helpers.TestResponse(dtc, "DomainTypeCollection");
+            Helpers.TestResponse(dtc, null, null, Methods.Put, Codes.MethodNotValid);
         }
 
         [TestMethod]

@@ -8,10 +8,10 @@ namespace RestfulObjects.Test.EndToEnd {
     [TestClass]
     public class DomainTypeActionParameterDescriptionTests {
         private const string dt = Urls.DomainTypes + Urls.NameSpace + @"WithActionObject/actions/AnActionReturnsScalarWithParameters/params/parm1";
-        [Ignore]
+       
         [TestMethod]
         public void DomainTypeResource() {
-            Helpers.TestResponse(dt, "DomainTypeActionParameterDescription");
+            Helpers.TestResponse(dt, null, null, Methods.Put, Codes.MethodNotValid);
         }
 
         [TestMethod]
