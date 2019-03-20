@@ -14,7 +14,6 @@ namespace RestfulObjects.Test.EndToEnd {
         #endregion
 
         [TestMethod]
-        [Ignore] // if not protopersistent this is now a valid method
         public void AttemptPost() {
             Helpers.TestResponse(objectsUrl + @"RestfulObjects.Test.Data.MostSimple/1", null, JsonRep.Empty(), Methods.Post, Codes.MethodNotValid);
         }
