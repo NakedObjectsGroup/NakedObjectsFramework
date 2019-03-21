@@ -60,7 +60,7 @@ namespace RestfulObjects.Test.EndToEnd {
         }
 
         [TestMethod]
-    [IgnoreAttribute]
+        //[IgnoreAttribute]
         public void DateTime() {
             var body = new JObject(new JProperty("value", "2007-07-13"));
             WithValue("ADateTimeValue", "DateTime", body.ToString(), Methods.Put, Codes.Succeeded);
