@@ -42,6 +42,7 @@ namespace NakedObjects.Rest.Test.App {
                     typeof (WithReferenceViewModel),
                     typeof (WithCollectionViewModel),
                     typeof (WithActionViewModel),
+                    typeof (FormViewModel),
                     typeof (VerySimple),
                     typeof (TestEnum),
                     typeof (SetWrapper<MostSimple>),
