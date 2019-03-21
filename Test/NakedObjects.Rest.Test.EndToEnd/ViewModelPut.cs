@@ -18,17 +18,12 @@ namespace RestfulObjects.Test.EndToEnd {
 
         #endregion
 
-        [Ignore]
         [TestMethod]
         public void MostSimple() {
-            //Note:  This is a slightly unusual situation, in that the act of putting a new
-            //value into the Id property of the view model effectively creates a different view model instance!
-            //so the 'self' link url has changed!
             var body = new JObject(new JProperty("Id", new JObject(new JProperty("value", 123))));
-            Object(Urls.VMMostSimple + key1, "MostSimpleViewModel", body.ToString(), Methods.Put);
+            Object(Urls.VMMostSimple + key1, "MostSimpleViewModel", body.ToString(), Methods.Put, Codes.Forbidden);
         }
 
-        [Ignore]
         [TestMethod] 
         public void WithReference() {
             var simpleJ = new JObject(new JProperty("value", new JObject(new JProperty(JsonRep.Href, Urls.Objects + Urls.MostSimple1))));
@@ -40,9 +35,8 @@ namespace RestfulObjects.Test.EndToEnd {
                 new JProperty("AnEagerReference", simpleJ),
                 new JProperty("Id", new JObject(new JProperty("value", key1)))
                 );
-            Object(Urls.VMWithReference + "1--2--2--1", "WithReference", body.ToString(), Methods.Put);
+            Object(Urls.VMWithReference + "1--2--2--1", "WithReference", body.ToString(), Methods.Put, Codes.Forbidden);
         }
-      
-     
+
     }
 }
