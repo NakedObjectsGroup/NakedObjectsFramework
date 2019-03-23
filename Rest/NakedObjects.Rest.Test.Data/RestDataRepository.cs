@@ -41,12 +41,12 @@ namespace RestfulObjects.Test.Data {
             return Container.Instances<MostSimple>().Single(ms => ms.Id == 1);
         }
 
-        public MostSimple CreateTransientMostSimple() {
-            return Container.NewTransientInstance<MostSimple>();
+        public MostSimplePersist CreateTransientMostSimple() {
+            return Container.NewTransientInstance<MostSimplePersist>();
         }
 
-        public WithValue CreateTransientWithValue() {
-            var withValue = Container.NewTransientInstance<WithValue>();
+        public WithValuePersist CreateTransientWithValue() {
+            var withValue = Container.NewTransientInstance<WithValuePersist>();
 
             withValue.AValue = 102;
             withValue.AChoicesValue = 3;
@@ -60,8 +60,8 @@ namespace RestfulObjects.Test.Data {
             return withValue;
         }
 
-        public WithReference CreateTransientWithReference() {
-            var wr = Container.NewTransientInstance<WithReference>();
+        public WithReferencePersist CreateTransientWithReference() {
+            var wr = Container.NewTransientInstance<WithReferencePersist>();
 
             wr.AReference = Container.Instances<MostSimple>().Single(ms => ms.Id == 1);
             //wr.AHiddenReference = Container.Instances<MostSimple>().Single(ms => ms.Id == 1);
@@ -74,8 +74,8 @@ namespace RestfulObjects.Test.Data {
             return wr;
         }
 
-        public WithCollection CreateTransientWithCollection() {
-            var twc = Container.NewTransientInstance<WithCollection>();
+        public WithCollectionPersist CreateTransientWithCollection() {
+            var twc = Container.NewTransientInstance<WithCollectionPersist>();
             var ms1 = Container.Instances<MostSimple>().Single(ms => ms.Id == 1);
             var ms2 = Container.Instances<MostSimple>().Single(ms => ms.Id == 2);
 

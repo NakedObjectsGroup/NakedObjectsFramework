@@ -154,9 +154,11 @@
     <Compile Include="CodeFirstContext.cs" />
     <Compile Include="CodeFirstContextLocal.cs" />
     <Compile Include="ContributerService.cs" />
+    <Compile Include="MostSimplePersist.cs" />
     <Compile Include="NullStringHasher.cs" />
     <Compile Include="SwitchableViewModel.cs" />
     <Compile Include="FormViewModel.cs" />
+    <Compile Include="VerySimplePersist.cs" />
     <Compile Include="WithAttachments.cs" />
     <Compile Include="RedirectedObject.cs" />
     <Compile Include="MostSimpleViewModel.cs" />
@@ -165,12 +167,14 @@
     <Compile Include="TestTypeCodeMapper.cs" />
     <Compile Include="VerySimpleEager.cs" />
     <Compile Include="WithActionViewModel.cs" />
+    <Compile Include="WithCollectionPersist.cs" />
     <Compile Include="WithCollectionViewModel.cs" />
     <Compile Include="WithGuidKey.cs" />
     <Compile Include="WithDateTimeKey.cs" />
     <Compile Include="VerySimple.cs" />
     <Compile Include="WithNestedViewModelEdit.cs" />
     <Compile Include="WithNestedViewModel.cs" />
+    <Compile Include="WithReferencePersist.cs" />
     <Compile Include="WithReferenceViewModelEdit.cs" />
     <Compile Include="WithReferenceViewModel.cs" />
     <Compile Include="WithScalars.cs" />
@@ -181,6 +185,7 @@
     <Compile Include="WithError.cs" />
     <Compile Include="WithActionObject.cs" />
     <Compile Include="WithCollection.cs" />
+    <Compile Include="WithValuePersist.cs" />
     <Compile Include="WithValue.cs" />
     <Compile Include="MostSimple.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

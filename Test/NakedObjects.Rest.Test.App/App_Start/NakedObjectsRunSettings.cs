@@ -58,7 +58,12 @@ namespace NakedObjects.Rest.Test.App {
                     typeof (EntityCollection<object>),
                     typeof (ObjectQuery<object>),
                     typeof (EntityCollection<object>),
-                    typeof (ObjectQuery<object>)
+                    typeof (ObjectQuery<object>),
+                    typeof (MostSimplePersist),
+                    typeof (VerySimplePersist),
+                    typeof (WithValuePersist),
+                    typeof (WithReferencePersist),
+                    typeof (WithCollectionPersist),
             };
             }
         }
