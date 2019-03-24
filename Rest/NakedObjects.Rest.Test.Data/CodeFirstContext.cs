@@ -26,6 +26,12 @@ namespace RestfulObjects.Test.Data {
         public DbSet<WithScalars> WithScalarses { get; set; }
         public DbSet<WithValue> WithValues { get; set; }
 
+        public DbSet<MostSimplePersist> MostSimplePersists { get; set; }
+        public DbSet<WithValuePersist> WithValuePersists { get; set; }
+        public DbSet<WithReferencePersist> WithReferencePersists { get; set; }
+        public DbSet<WithCollectionPersist> WithCollectionPersists { get; set; }
+
+
         private static class CodeFirstInitializer {
             private static void SeedCodeFirstDatabase(CodeFirstContext context) {
                 var ms1 = new MostSimple { Id = 1 };

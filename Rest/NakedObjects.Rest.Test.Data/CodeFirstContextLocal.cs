@@ -27,6 +27,12 @@ namespace RestfulObjects.Test.Data {
         public DbSet<WithScalars> WithScalarses { get; set; }
         public DbSet<WithValue> WithValues { get; set; }
 
+        public DbSet<MostSimplePersist> MostSimplePersists { get; set; }
+        public DbSet<WithValuePersist> WithValuePersists { get; set; }
+        public DbSet<WithReferencePersist> WithReferencePersists { get; set; }
+        public DbSet<WithCollectionPersist> WithCollectionPersists { get; set; }
+
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder) {
             Database.SetInitializer(new CodeFirstInitializer());
         }

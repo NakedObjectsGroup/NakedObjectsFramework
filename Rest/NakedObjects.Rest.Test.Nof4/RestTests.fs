@@ -76,6 +76,10 @@ type ANof4Tests() =
                    typeof<WithGetError>
                    typeof<WithNestedViewModel>
                    typeof<WithReference>
+                   typeof<WithReferencePersist>
+                   typeof<MostSimplePersist>
+                   typeof<WithValuePersist>
+                   typeof<WithCollectionPersist>
                    typeof<WithReferenceViewModel>
                    typeof<WithReferenceViewModelEdit>
                    typeof<MostSimple>

@@ -26,6 +26,7 @@ let GetMenu(api : RestfulObjectsControllerBase) =
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
     let mst = ttc "RestfulObjects.Test.Data.MostSimple"
+    let mstp = ttc "RestfulObjects.Test.Data.MostSimplePersist"
     
     let makeParm pmid pid fid rt = 
      
@@ -81,19 +82,19 @@ let GetMenu(api : RestfulObjectsControllerBase) =
                       
                       TProperty
                           ("AzContributedActionWithValueParm", TObjectJson(makeServiceActionMember "AzContributedActionWithValueParm" sName mst [ p5; p6 ]))
-                      TProperty("CreateTransientMostSimple", TObjectJson(makeServiceActionMemberNoParms "CreateTransientMostSimple" sName mst))
+                      TProperty("CreateTransientMostSimple", TObjectJson(makeServiceActionMemberNoParms "CreateTransientMostSimple" sName mstp))
                       
                       TProperty
                           ("CreateTransientWithValue", 
-                           TObjectJson(makeServiceActionMemberNoParms "CreateTransientWithValue" sName (ttc "RestfulObjects.Test.Data.WithValue")))
+                           TObjectJson(makeServiceActionMemberNoParms "CreateTransientWithValue" sName (ttc "RestfulObjects.Test.Data.WithValuePersist")))
                       
                       TProperty
                           ("CreateTransientWithReference", 
-                           TObjectJson(makeServiceActionMemberNoParms "CreateTransientWithReference" sName (ttc "RestfulObjects.Test.Data.WithReference")))
+                           TObjectJson(makeServiceActionMemberNoParms "CreateTransientWithReference" sName (ttc "RestfulObjects.Test.Data.WithReferencePersist")))
                       
                       TProperty
                           ("CreateTransientWithCollection", 
-                           TObjectJson(makeServiceActionMemberNoParms "CreateTransientWithCollection" sName (ttc "RestfulObjects.Test.Data.WithCollection"))) ]))
+                           TObjectJson(makeServiceActionMemberNoParms "CreateTransientWithCollection" sName (ttc "RestfulObjects.Test.Data.WithCollectionPersist"))) ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([  ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
@@ -188,6 +189,8 @@ let GetMenuSimpleOnly(api : RestfulObjectsControllerBase) =
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
     let mst = ttc "RestfulObjects.Test.Data.MostSimple"
+    let mstp = ttc "RestfulObjects.Test.Data.MostSimplePersist"
+
     
     let makeParm pmid pid fid rt = 
        
@@ -243,21 +246,21 @@ let GetMenuSimpleOnly(api : RestfulObjectsControllerBase) =
                       TProperty
                           ("AzContributedActionWithValueParm", 
                            TObjectJson(makeServiceActionMemberSimple "AzContributedActionWithValueParm" sName mst [ p5; p6 ]))
-                      TProperty("CreateTransientMostSimple", TObjectJson(makeServiceActionMemberNoParmsSimple "CreateTransientMostSimple" sName mst))
+                      TProperty("CreateTransientMostSimple", TObjectJson(makeServiceActionMemberNoParmsSimple "CreateTransientMostSimple" sName mstp))
                       
                       TProperty
                           ("CreateTransientWithValue", 
-                           TObjectJson(makeServiceActionMemberNoParmsSimple "CreateTransientWithValue" sName (ttc "RestfulObjects.Test.Data.WithValue")))
+                           TObjectJson(makeServiceActionMemberNoParmsSimple "CreateTransientWithValue" sName (ttc "RestfulObjects.Test.Data.WithValuePersist")))
                       
                       TProperty
                           ("CreateTransientWithReference", 
-                           TObjectJson(makeServiceActionMemberNoParmsSimple "CreateTransientWithReference" sName (ttc "RestfulObjects.Test.Data.WithReference")))
+                           TObjectJson(makeServiceActionMemberNoParmsSimple "CreateTransientWithReference" sName (ttc "RestfulObjects.Test.Data.WithReferencePersist")))
                       
                       TProperty
                           ("CreateTransientWithCollection", 
                            
                            TObjectJson
-                               (makeServiceActionMemberNoParmsSimple "CreateTransientWithCollection" sName (ttc "RestfulObjects.Test.Data.WithCollection"))) ]))
+                               (makeServiceActionMemberNoParmsSimple "CreateTransientWithCollection" sName (ttc "RestfulObjects.Test.Data.WithCollectionPersist"))) ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([  ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
@@ -278,6 +281,8 @@ let GetMenuWithMediaType(api : RestfulObjectsControllerBase) =
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
     let mst = ttc "RestfulObjects.Test.Data.MostSimple"
+    let mstp = ttc "RestfulObjects.Test.Data.MostSimplePersist"
+
     
     let makeParm pmid pid fid rt = 
        
@@ -334,19 +339,19 @@ let GetMenuWithMediaType(api : RestfulObjectsControllerBase) =
                       
                       TProperty
                           ("AzContributedActionWithValueParm", TObjectJson(makeServiceActionMember "AzContributedActionWithValueParm" sName mst [ p5; p6 ]))
-                      TProperty("CreateTransientMostSimple", TObjectJson(makeServiceActionMemberNoParms "CreateTransientMostSimple" sName mst))
+                      TProperty("CreateTransientMostSimple", TObjectJson(makeServiceActionMemberNoParms "CreateTransientMostSimple" sName mstp))
                       
                       TProperty
                           ("CreateTransientWithValue", 
-                           TObjectJson(makeServiceActionMemberNoParms "CreateTransientWithValue" sName (ttc "RestfulObjects.Test.Data.WithValue")))
+                           TObjectJson(makeServiceActionMemberNoParms "CreateTransientWithValue" sName (ttc "RestfulObjects.Test.Data.WithValuePersist")))
                       
                       TProperty
                           ("CreateTransientWithReference", 
-                           TObjectJson(makeServiceActionMemberNoParms "CreateTransientWithReference" sName (ttc "RestfulObjects.Test.Data.WithReference")))
+                           TObjectJson(makeServiceActionMemberNoParms "CreateTransientWithReference" sName (ttc "RestfulObjects.Test.Data.WithReferencePersist")))
                       
                       TProperty
                           ("CreateTransientWithCollection", 
-                           TObjectJson(makeServiceActionMemberNoParms "CreateTransientWithCollection" sName (ttc "RestfulObjects.Test.Data.WithCollection"))) ]))
+                           TObjectJson(makeServiceActionMemberNoParms "CreateTransientWithCollection" sName (ttc "RestfulObjects.Test.Data.WithCollectionPersist"))) ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([  ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
