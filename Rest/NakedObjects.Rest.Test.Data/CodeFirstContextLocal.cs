@@ -28,6 +28,7 @@ namespace RestfulObjects.Test.Data {
         public DbSet<WithValue> WithValues { get; set; }
 
         public DbSet<MostSimplePersist> MostSimplePersists { get; set; }
+        public DbSet<VerySimplePersist> VerySimplePersists { get; set; }
         public DbSet<WithValuePersist> WithValuePersists { get; set; }
         public DbSet<WithReferencePersist> WithReferencePersists { get; set; }
         public DbSet<WithCollectionPersist> WithCollectionPersists { get; set; }
