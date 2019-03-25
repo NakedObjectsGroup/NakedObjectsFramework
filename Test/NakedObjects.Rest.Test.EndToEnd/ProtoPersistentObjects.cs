@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 
 namespace RestfulObjects.Test.EndToEnd {
     // for the moment ignore these
-    [TestClass, Ignore] // These tests are corrupting MostSimple/1 and hence causing other tests to fail
+    [TestClass] // These tests are corrupting MostSimple/1 and hence causing other tests to fail
     public class ProtoPersistentObjects {
         #region Helpers
 
@@ -64,28 +64,29 @@ namespace RestfulObjects.Test.EndToEnd {
         }
 
         [TestMethod]
+        //[Ignore] // temp ignore 
         public void PersistMostSimple() {
             string body = ProtoPersistentMostSimple(10001).ToString();
-            Helpers.TestResponse(Urls.Objects + Urls.NameSpace + "MostSimple", "PersistMostSimple", body, Methods.Post, Codes.SucceededNewRepresentation);
+            Helpers.TestResponse(Urls.Objects + Urls.NameSpace + "MostSimplePersist", "PersistMostSimple", body, Methods.Post, Codes.SucceededNewRepresentation);
         }
 
         [TestMethod]
-        [Ignore] // temp ignore 
+        //[Ignore] // temp ignore 
         public void PersistVerySimple() {
             string body = ProtoPersistentVerySimple(10002).ToString();
-            Helpers.TestResponse(Urls.Objects + Urls.NameSpace + "VerySimple", "PersistVerySimple", body, Methods.Post, Codes.SucceededNewRepresentation);
+            Helpers.TestResponse(Urls.Objects + Urls.NameSpace + "VerySimplePersist", "PersistVerySimple", body, Methods.Post, Codes.SucceededNewRepresentation);
         }
 
         [TestMethod]
         public void AttemptPersistWithPut() {
             string body = ProtoPersistentMostSimple(10003).ToString();
-            Helpers.TestResponse(Urls.Objects + Urls.NameSpace + "MostSimple", null, body, Methods.Put, Codes.MethodNotValid);
+            Helpers.TestResponse(Urls.Objects + Urls.NameSpace + "MostSimplePersist", null, body, Methods.Put, Codes.MethodNotValid);
         }
 
         [TestMethod]
         public void AttemptPersistWithMalformedBody() {
             string body = ProtoPersistentMalformed(10004).ToString();
-            Helpers.TestResponse(Urls.Objects + Urls.NameSpace + "MostSimple", null, body, Methods.Post, Codes.SyntacticallyInvalid);
+            Helpers.TestResponse(Urls.Objects + Urls.NameSpace + "MostSimplePersist", null, body, Methods.Post, Codes.SyntacticallyInvalid);
         }
 
         [TestMethod]
