@@ -50,6 +50,7 @@ namespace MvcTestApp {
                    typeof(WithScalars),
                    typeof(VerySimple),
                    typeof(VerySimpleEager),
+                   typeof(VerySimplePersist),
                    typeof(WithAction),
                    typeof(WithActionObject),
                    typeof(WithAttachments),
