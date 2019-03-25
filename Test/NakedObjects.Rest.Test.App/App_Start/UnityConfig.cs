@@ -24,7 +24,7 @@ namespace NakedObjects.Rest.Test.App {
 
     public class InvariantStringHasher : IStringHasher {
         public string GetHash(string toHash) {
-            return "";
+            return "1234";
         }
     }
 
