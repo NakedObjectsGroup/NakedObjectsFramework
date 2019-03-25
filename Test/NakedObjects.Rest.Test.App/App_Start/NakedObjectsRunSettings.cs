@@ -38,13 +38,23 @@ namespace NakedObjects.Rest.Test.App {
             get
             {
                 return new Type[] {
+                
+                    typeof (TestEnum),
+                    typeof (MostSimple),
+                    typeof (VerySimple),
+                    typeof (WithValue),
+                    typeof (WithReference),
+                    typeof (WithCollection),
                     typeof (WithValueViewModel),
                     typeof (WithReferenceViewModel),
                     typeof (WithCollectionViewModel),
                     typeof (WithActionViewModel),
                     typeof (FormViewModel),
-                    typeof (VerySimple),
-                    typeof (TestEnum),
+                    typeof (MostSimplePersist),
+                    typeof (VerySimplePersist),
+                    typeof (WithValuePersist),
+                    typeof (WithReferencePersist),
+                    typeof (WithCollectionPersist),
                     typeof (SetWrapper<MostSimple>),
                     typeof (List<MostSimple>),
                     typeof (HashSet<MostSimple>),
@@ -58,12 +68,7 @@ namespace NakedObjects.Rest.Test.App {
                     typeof (EntityCollection<object>),
                     typeof (ObjectQuery<object>),
                     typeof (EntityCollection<object>),
-                    typeof (ObjectQuery<object>),
-                    typeof (MostSimplePersist),
-                    typeof (VerySimplePersist),
-                    typeof (WithValuePersist),
-                    typeof (WithReferencePersist),
-                    typeof (WithCollectionPersist),
+                    typeof (ObjectQuery<object>)
             };
             }
         }
