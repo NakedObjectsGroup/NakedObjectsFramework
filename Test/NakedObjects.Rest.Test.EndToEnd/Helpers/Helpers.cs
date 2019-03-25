@@ -45,6 +45,7 @@ namespace RestfulObjects.Test.EndToEnd {
 
             httpRequest.KeepAlive = false;
             httpRequest.Method = method;
+            httpRequest.Headers.Add("If-Match", "\"1234\"");
 
             httpRequest.ContentType = @"application/json";
             if (acceptHeader != null) {
