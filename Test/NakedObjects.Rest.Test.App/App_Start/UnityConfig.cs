@@ -21,6 +21,14 @@ using Microsoft.Practices.Unity;
 
 
 namespace NakedObjects.Rest.Test.App {
+
+    private class NullStringHasher : IStringHasher {
+        public string GetHash(string toHash) {
+            return "";
+        }
+    }
+
+
     /// <summary>
     /// Specifies the Unity configuration for the main container.
     /// </summary>
@@ -62,7 +70,7 @@ namespace NakedObjects.Rest.Test.App {
             container.RegisterType<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>(new PerResolveLifetimeManager());
 
             container.RegisterType<IOidStrategy, EntityOidStrategy>(new PerResolveLifetimeManager());
-            container.RegisterType<IStringHasher, SimpleStringHasher>(new PerResolveLifetimeManager());
+            container.RegisterType<IStringHasher, NullStringHasher>(new PerResolveLifetimeManager());
             container.RegisterType<IFrameworkFacade, FrameworkFacade>(new PerResolveLifetimeManager());
 
             //Externals
