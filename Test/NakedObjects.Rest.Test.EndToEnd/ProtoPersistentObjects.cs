@@ -64,14 +64,14 @@ namespace RestfulObjects.Test.EndToEnd {
         }
 
         [TestMethod]
-        //[Ignore] // temp ignore 
+        [Ignore] // temp ignore 
         public void PersistMostSimple() {
             string body = ProtoPersistentMostSimple(10001).ToString();
             Helpers.TestResponse(Urls.Objects + Urls.NameSpace + "MostSimplePersist", "PersistMostSimple", body, Methods.Post, Codes.SucceededNewRepresentation);
         }
 
         [TestMethod]
-        //[Ignore] // temp ignore 
+        [Ignore] // temp ignore 
         public void PersistVerySimple() {
             string body = ProtoPersistentVerySimple(10002).ToString();
             Helpers.TestResponse(Urls.Objects + Urls.NameSpace + "VerySimplePersist", "PersistVerySimple", body, Methods.Post, Codes.SucceededNewRepresentation);
