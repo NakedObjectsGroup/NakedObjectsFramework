@@ -6,8 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 
 namespace RestfulObjects.Test.EndToEnd {
-    // for the moment ignore these
-    [TestClass] // These tests are corrupting MostSimple/1 and hence causing other tests to fail
+    [TestClass]
     public class ProtoPersistentObjects {
         #region Helpers
 
@@ -70,7 +69,6 @@ namespace RestfulObjects.Test.EndToEnd {
         }
 
         [TestMethod]
-        [Ignore] // temp ignore 
         public void PersistVerySimple() {
             string body = ProtoPersistentVerySimple(10002).ToString();
             Helpers.TestResponse(Urls.Objects + Urls.NameSpace + "VerySimplePersist", "PersistVerySimple", body, Methods.Post, Codes.SucceededNewRepresentation, null, "1234");
