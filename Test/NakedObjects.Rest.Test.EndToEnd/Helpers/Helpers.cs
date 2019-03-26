@@ -35,7 +35,7 @@ namespace RestfulObjects.Test.EndToEnd {
             }
         }
 
-        public static void TestResponse(string url, string fileName, string body = null, string method = Methods.Get, Codes expectedCode = Codes.Succeeded, string acceptHeader = null) {
+        public static void TestResponse(string url, string fileName, string body = null, string method = Methods.Get, Codes expectedCode = Codes.Succeeded, string acceptHeader = null, string ifMatchHeader = null) {
             if (body != null && (method == Methods.Get || method == Methods.Delete)) {
                 //Add the arguments as a url-encoded query string
                 string args = HttpUtility.UrlEncode(body);
@@ -45,12 +45,17 @@ namespace RestfulObjects.Test.EndToEnd {
 
             httpRequest.KeepAlive = false;
             httpRequest.Method = method;
-            httpRequest.Headers.Add("If-Match", "\"1234\"");
+            
 
             httpRequest.ContentType = @"application/json";
             if (acceptHeader != null) {
                 httpRequest.Accept = acceptHeader;
             }
+
+            if (ifMatchHeader != null) {
+                httpRequest.Headers.Add("If-Match", "\"1234\"");
+            }
+
             if (body != null && method != Methods.Get) {
                 httpRequest.ContentLength = body.Length;
                 using (var sw = new StreamWriter(httpRequest.GetRequestStream())) {

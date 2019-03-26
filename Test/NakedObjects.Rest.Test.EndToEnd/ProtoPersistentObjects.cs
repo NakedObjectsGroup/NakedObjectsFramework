@@ -42,56 +42,56 @@ namespace RestfulObjects.Test.EndToEnd {
         [TestMethod]
         public void CreateTransientMostSimple() {
             string url = Urls.RestDataRepository + Urls.Actions + @"CreateTransientMostSimple/" + Urls.Invoke;
-            Helpers.TestResponse(url, "CreateTransientMostSimple", null, Methods.Post);
+            Helpers.TestResponse(url, "CreateTransientMostSimple", null, Methods.Post, Codes.Succeeded, null, "1234");
         }
 
         [TestMethod]
         public void CreateTransientWithValue() {
             string url = Urls.RestDataRepository + Urls.Actions + @"CreateTransientWithValue/" + Urls.Invoke;
-            Helpers.TestResponse(url, "CreateTransientWithValue", null, Methods.Post);
+            Helpers.TestResponse(url, "CreateTransientWithValue", null, Methods.Post, Codes.Succeeded, null, "1234");
         }
 
         [TestMethod]
         public void CreateTransientWithReference() {
             string url = Urls.RestDataRepository + Urls.Actions + @"CreateTransientWithReference/" + Urls.Invoke;
-            Helpers.TestResponse(url, "CreateTransientWithReference", null, Methods.Post);
+            Helpers.TestResponse(url, "CreateTransientWithReference", null, Methods.Post, Codes.Succeeded, null, "1234");
         }
 
         [TestMethod]
         public void CreateTransientWithCollection() {
             string url = Urls.RestDataRepository + Urls.Actions + @"CreateTransientWithCollection/" + Urls.Invoke;
-            Helpers.TestResponse(url, "CreateTransientWithCollection", null, Methods.Post);
+            Helpers.TestResponse(url, "CreateTransientWithCollection", null, Methods.Post, Codes.Succeeded, null, "1234");
         }
 
         [TestMethod]
         public void PersistMostSimple() {
             string body = ProtoPersistentMostSimple(10001).ToString();
-            Helpers.TestResponse(Urls.Objects + Urls.NameSpace + "MostSimplePersist", "PersistMostSimple", body, Methods.Post, Codes.SucceededNewRepresentation);
+            Helpers.TestResponse(Urls.Objects + Urls.NameSpace + "MostSimplePersist", "PersistMostSimple", body, Methods.Post, Codes.SucceededNewRepresentation, null, "1234");
         }
 
         [TestMethod]
         [Ignore] // temp ignore 
         public void PersistVerySimple() {
             string body = ProtoPersistentVerySimple(10002).ToString();
-            Helpers.TestResponse(Urls.Objects + Urls.NameSpace + "VerySimplePersist", "PersistVerySimple", body, Methods.Post, Codes.SucceededNewRepresentation);
+            Helpers.TestResponse(Urls.Objects + Urls.NameSpace + "VerySimplePersist", "PersistVerySimple", body, Methods.Post, Codes.SucceededNewRepresentation, null, "1234");
         }
 
         [TestMethod]
         public void AttemptPersistWithPut() {
             string body = ProtoPersistentMostSimple(10003).ToString();
-            Helpers.TestResponse(Urls.Objects + Urls.NameSpace + "MostSimplePersist", null, body, Methods.Put, Codes.MethodNotValid);
+            Helpers.TestResponse(Urls.Objects + Urls.NameSpace + "MostSimplePersist", null, body, Methods.Put, Codes.MethodNotValid, null, "1234");
         }
 
         [TestMethod]
         public void AttemptPersistWithMalformedBody() {
             string body = ProtoPersistentMalformed(10004).ToString();
-            Helpers.TestResponse(Urls.Objects + Urls.NameSpace + "MostSimplePersist", null, body, Methods.Post, Codes.SyntacticallyInvalid);
+            Helpers.TestResponse(Urls.Objects + Urls.NameSpace + "MostSimplePersist", null, body, Methods.Post, Codes.SyntacticallyInvalid, null, "1234");
         }
 
         [TestMethod]
         public void AttemptPersistWithUnknownType() {
             string body = ProtoPersistentMostSimple(10005).ToString();
-            Helpers.TestResponse(Urls.Objects + Urls.NameSpace + "NotAType", null, body, Methods.Post, Codes.NotFound);
+            Helpers.TestResponse(Urls.Objects + Urls.NameSpace + "NotAType", null, body, Methods.Post, Codes.NotFound, null, "1234");
         }
     }
 }
